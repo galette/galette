@@ -108,8 +108,10 @@
 				$value = $DB->qstr($value);
 		
 			$update_string .= ", ".$key."=".$value;
-			$insert_string_fields .= ", ".$key;
-			$insert_string_values .= ", ".$value;
+			if ($key != 'id_cotis') {
+				$insert_string_fields .= ", ".$key;
+				$insert_string_values .= ", ".$value;
+			}
 		}
 		
 		// missing relations
@@ -132,7 +134,8 @@
 				$requete = "INSERT INTO ".PREFIX_DB."cotisations
 				(" . substr($insert_string_fields,1) . ")
 				VALUES (" . substr($insert_string_values,1) . ")";
-				$DB->Execute($requete);
+				if (!$DB->Execute($requete))
+					print "$requete: ".$DB->ErrorMsg();
 				
 				// to allow the string to be extracted for translation
 				$foo = _T("Contribution added");
@@ -173,7 +176,7 @@
 		if ($contribution["id_cotis"] == "")
 		{
 			// initialiser la structure contribution à vide (nouvelle contribution)
-			$contribution['duree_mois_cotis']=12;
+			$contribution['duree_mois_cotis']=PREF_MEMBERSHIP_EXT;
 			$contribution['date_cotis'] = date("d/m/Y");
 		}
 		else

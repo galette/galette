@@ -92,6 +92,20 @@
 					</TD>
 				</TR>         
 				<TR>
+					<TH {if $required.pref_membership_ext eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Default membership extension:")}</TH>
+					<TD>
+						<INPUT type="text" name="pref_membership_ext" value="{$pref.pref_membership_ext}" maxlength="2">
+						<SPAN class="exemple">{_T("(Months)")}</SPAN>
+					</TD>
+				</TR>         
+				<TR>
+					<TH {if $required.pref_beg_membership eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Beginning of membership:")}</TH>
+					<TD>
+						<INPUT type="text" name="pref_beg_membership" value="{$pref.pref_beg_membership}" maxlength="5">
+						<SPAN class="exemple">{_T("(DD/MM)")}</SPAN>
+					</TD>
+				</TR>         
+				<TR>
 					<TH colspan="2" id="header"><BR>{_T("Mail settings:")}</TH>
 				</TR> 
 				<TR>
