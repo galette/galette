@@ -2,8 +2,6 @@ ALTER TABLE galette_adherents ADD pref_lang varchar(20) default 'french' AFTER d
 INSERT INTO galette_types_cotisation VALUES (7, 'Cotisation annuelle (à payer)');
 ALTER TABLE galette_adherents ADD  UNIQUE (login_adh);
 
--- TODI: change ddn_adh type from date to varchar(10) default NULL;
-
 -- Add new or missing preferences;
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_pays', '');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_method', '0');

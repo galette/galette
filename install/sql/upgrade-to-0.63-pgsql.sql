@@ -1,5 +1,3 @@
--- TODO: change ddn-adh type from date to varchar(10) default null;
-
 ALTER TABLE galette_adherents ADD pref_lang character varying(20);
 ALTER TABLE galette_adherents ALTER pref_lang SET DEFAULT 'french';
 INSERT INTO galette_types_cotisation VALUES (7, 'Cotisation annuelle (à payer)');
