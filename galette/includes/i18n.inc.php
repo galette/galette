@@ -53,6 +53,78 @@ $domain = 'galette';
 $textdomain= THIS_BASE_DIR . "/../lang";
 bindtextdomain($domain, $textdomain);
 textdomain($domain);
+
+
+function add_dynamic_translation($DB, $text_orig, $error_detected)
+{
+	global $languages, $language;
+	$l10n_table = PREFIX_DB."l10n";
+	$quoted_text_orig = $DB->qstr($text_orig);
+	foreach (array_values($languages) as $text_locale) {
+		$quoted_locale = $DB->qstr($text_locale);
+		// User is supposed to use his own language as original text.
+		$quoted_trans = $DB->qstr($text_locale == $language ? $text_orig : "");
+		$where_cond = "text_orig=$quoted_text_orig AND text_locale=$quoted_locale";
+		$nref = $DB->GetOne("SELECT text_nref FROM $l10n_table where $where_cond");
+		if (is_numeric($nref) && $nref > 0) {
+			$query = "UPDATE $l10n_table
+				  SET text_nref=text_nref+1
+				  WHERE $where_cond";
+			$result = $DB->Execute($query);
+		} else {
+			$query = "INSERT INTO $l10n_table
+					(text_orig, text_locale, text_trans)
+				  VALUES ($quoted_text_orig, $quoted_locale, $quoted_trans)";
+			
+			$result = parse_db_result(&$DB, $DB->Execute($query), &$error_detected, $query);
+		}
+	}
+}
+
+function delete_dynamic_translation($DB, $text_orig, $error_detected)
+{
+	global $languages;
+	$l10n_table = PREFIX_DB."l10n";
+	$quoted_text_orig = $DB->qstr($text_orig);
+	foreach (array_values($languages) as $text_locale) {
+		$quoted_locale = $DB->qstr($text_locale);
+		$query = "UPDATE $l10n_table
+			  SET text_nref=text_nref-1
+			  WHERE text_orig=$quoted_text_orig AND text_locale=$quoted_locale";
+		$result = parse_db_result(&$DB, $DB->Execute($query), &$error_detected, $query);
+		if ($result)
+			$result->Close();
+	}
+	$query = "DELETE FROM $l10n_table WHERE text_nref=0";
+	$result = parse_db_result(&$DB, $DB->Execute($query), &$error_detected, $query);
+	if ($result)
+		$result->Close();
+}
+
+function update_dynamic_translation($DB, $text_orig, $text_locale, $text_trans, $error_detected)
+{
+	$l10n_table = PREFIX_DB."l10n";
+	$quoted_text_orig = $DB->qstr($text_orig);
+	$quoted_locale = $DB->qstr($text_locale);
+	$quoted_text_trans = $DB->qstr($text_trans);
+	$query = "UPDATE $l10n_table
+		  SET text_trans=$quoted_text_trans
+		  WHERE text_orig=$quoted_text_orig AND text_locale=$quoted_locale";
+	$result = parse_db_result(&$DB, $DB->Execute($query), &$error_detected, $query);
+	if ($result)
+		$result->Close();
+}
+
+function get_dynamic_translation($DB, $text_orig, $text_locale)
+{
+	$l10n_table = PREFIX_DB."l10n";
+	$query = "SELECT text_trans
+		  FROM $l10n_table
+		  WHERE text_orig=".$DB->qstr($text_orig). " AND 
+		  	text_locale=".$DB->qstr($text_locale);
+	return $DB->GetOne($query);
+}
+
 if ($loc!=$language || $disable_gettext)
 {
         include(WEB_ROOT."lang/lang_".$pref_lang.".php");
@@ -63,14 +135,22 @@ if ($loc!=$language || $disable_gettext)
         {
                 function _T($chaine)
                 {
+			global $language;
                         if (isset($GLOBALS["lang"]))
                         {
-                                if (!isset($GLOBALS["lang"][$chaine]))
-                                        return $chaine." (not translated)";
-                                elseif ($GLOBALS["lang"][$chaine]=="")
-                                        return $chaine." (not translated)";
-                                else
-                                        return $GLOBALS["lang"][$chaine];
+				$trans = $chaine;
+                                if (isset($GLOBALS["lang"][$chaine]) && $GLOBALS["lang"][$chaine]!="")
+                                        $trans = $GLOBALS["lang"][$chaine];
+				else {
+					$trans = false;
+					if (isset($GLOBALS["DB"]))
+						$trans = get_dynamic_translation($GLOBALS["DB"], $chaine, $language);
+                                	if ($trans)
+						$GLOBALS["lang"][$chaine] = $trans;
+					else
+						$trans = $chaine." (not translated)";
+				}
+				return $trans;
                         }
                         else
                                 return _($chaine);

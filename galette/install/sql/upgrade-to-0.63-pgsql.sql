@@ -80,3 +80,13 @@ ALTER TABLE galette_types_cotisation ADD cotis_extension character(1);
 ALTER TABLE galette_types_cotisation ALTER COLUMN cotis_extension SET DEFAULT NULL;
 UPDATE galette_types_cotisation SET cotis_extension=1 WHERE
 	id_type_cotis <= 3 OR id_type_cotis = 7;
+
+-- Table for dynamic translation of strings;
+DROP TABLE galette_l10n;
+CREATE TABLE galette_l10n (
+  text_orig character varying(40) NOT NULL,
+  text_locale character varying(15) NOT NULL,
+  text_nref integer DEFAULT '1' NOT NULL,
+  text_trans character varying(40) DEFAULT '' NOT NULL
+);
+CREATE UNIQUE INDEX galette_l10n_idx ON galette_l10n (text_orig, text_locale);

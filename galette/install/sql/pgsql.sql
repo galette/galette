@@ -185,3 +185,13 @@ CREATE TABLE galette_pictures (
   height integer DEFAULT '0' NOT NULL
 );
 CREATE INDEX galette_pictures_idx ON galette_pictures (id_adh);
+
+-- Table for dynamic translation of strings;
+DROP TABLE galette_l10n;
+CREATE TABLE galette_l10n (
+  text_orig character varying(40) NOT NULL,
+  text_locale character varying(15) NOT NULL,
+  text_nref integer DEFAULT '1' NOT NULL,
+  text_trans character varying(40) DEFAULT '' NOT NULL
+);
+CREATE UNIQUE INDEX galette_l10n_idx ON galette_l10n (text_orig, text_locale);

@@ -226,6 +226,7 @@
 			if ($admin_status!=1 && $result->fields['perm']==$perm_admin)
 				$disabled[$field_id] = 'disabled';
 			$cur_fields = &$result->fields;
+			$cur_fields['field_name'] = _T($cur_fields['field_name']);
 			$properties = $field_properties[$result->fields['field_type']];
 			if ($properties['multi_valued']) {
 				if ($cur_fields['field_repeat'] == 0) { // Infinite multi-valued field
