@@ -29,7 +29,8 @@
 				</TD>
 			</TR>
 		</TABLE>
-		<TABLE width="100%"> 
+		<FORM action="gestion_adherents.php" method="get" name="listform">
+		<TABLE width="100%" id="listing"> 
 			<TR> 
 				<TH width="15" class="listing">#</TH> 
 	  			<TH width="250" class="listing left"> 
@@ -86,6 +87,7 @@
 			<TR>
 				<TD width="15" class="{$member.class}">{$ordre}</TD>
 				<TD class="{$member.class}" nowrap>
+					<INPUT type="checkbox" name="member_sel[]" value="{$member.id_adh}">
 				{if $member.genre eq 1}
 					<IMG src="{$template_subdir}images/icon-male.png" Alt="{_T("[M]")}" align="middle" width="10" height="12">
 				{elseif $member.genre eq 2 || $member.genre eq 3}
@@ -118,15 +120,47 @@
 			<TR><TD colspan="6" class="emptylist">{_T("no member")}</TD></TR>
 {/foreach}
 		</TABLE>
-		<DIV id="infoline2" class="right">
-			{_T("Pages:")}
-			<SPAN class="pagelink">
-			{section name="pageLoop" start=1 loop=$nb_pages+1}
-			{if $smarty.section.pageLoop.index eq $page}
-			{$smarty.section.pageLoop.index}
-			{else}
-			<A href="gestion_adherents.php?page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</A>
-			{/if}
-			{/section}
-			</SPAN>
-		</DIV>
+		{literal}
+		<SCRIPT LANGUAGE="JavaScript">
+		<!--
+		var checked = 1; 	
+		function check()
+		{
+			for (var i=0;i<document.listform.elements.length;i++)
+			{
+				var e = document.listform.elements[i];
+				if(e.type == "checkbox")
+				{
+					e.checked = checked;
+				}
+			}
+			checked = !checked;
+		}
+		-->
+		</SCRIPT>
+		{/literal}
+		<TABLE id="infoline" width="100%">
+			<TR>
+				<TD class="left">
+					<A href="#" onClick="check()">{_T("(Un)Check all")}</A><BR>
+					{_T("Selection:")}
+					<UL>
+						<LI><A href="#">{_T("Delete")}</A></LI>
+						<LI><A href="#">{_T("Mail all")}</A></LI>
+						<LI><A href="#">{_T("Generate labels")}</A></LI>
+					</UL>
+				</TD>
+				<TD class="right">{_T("Pages:")}
+					<SPAN class="pagelink">
+					{section name="pageLoop" start=1 loop=$nb_pages+1}
+						{if $smarty.section.pageLoop.index eq $page}
+							{$smarty.section.pageLoop.index}
+						{else}
+							<A href="gestion_adherents.php?page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</A>
+						{/if}
+					{/section}
+					</SPAN>
+				</TD>
+			</TR>
+		</TABLE>
+		</FORM>
