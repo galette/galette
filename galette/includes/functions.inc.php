@@ -252,5 +252,10 @@
 		return $result;
 	}
 	
-	
+function UniqueLogin($DB,$l) {
+  $result = $DB->Execute("SELECT * FROM ".PREFIX_DB."adherents 
+                          WHERE login_adh='".addslashes($l)."'");
+  return ($result->RecordCount() == 0);
+}
+
 ?>
