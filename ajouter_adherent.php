@@ -156,8 +156,9 @@
 							$error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!");
 						break;
 					case 'email_adh':
+					case 'msn_adh':
 						if (!is_valid_email($value))
-						        $error_detected[] = _T("- Non-valid E-Mail address!");
+						        $error_detected[] = _T("- Non-valid E-Mail address!")." (".$key.")";
 						break;
 					case 'url_adh':
 						if (!is_valid_web_url($value))
