@@ -295,4 +295,23 @@ function beg_membership_after($date) {
 	return $beg;
 }
 
+function get_form_value($name, $defval)
+{
+	$val = $defval;
+	if (isset($_GET[$name]))
+		$val = $_GET[$name];
+	elseif (isset($_POST[$name]))
+		$val = $_POST[$name];
+	return $val;
+}
+
+function get_numeric_form_value($name, $defval)
+{
+	$val = get_form_value($name, $defval);
+	if (!is_numeric($val))
+		unset($val);
+	return $val;
+}
+
+
 ?>

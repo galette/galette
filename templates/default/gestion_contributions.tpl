@@ -164,9 +164,7 @@
 		<BR>
 			<A href="voir_adherent.php?id_adh={$smarty.session.filtre_cotis_adh}">{_T("[ See member profile ]")}</A>
 			&nbsp;&nbsp;&nbsp;
-			<A href="ajouter_contribution.php?cotis_extension=1&id_adh={$smarty.session.filtre_cotis_adh}">{_T("[ Add member fee ]")}</A>
-			&nbsp;&nbsp;&nbsp;
-			<A href="ajouter_contribution.php?cotis_extension=0&id_adh={$smarty.session.filtre_cotis_adh}">{_T("[ Add a contribution ]")}</A>
+			<A href="ajouter_contribution.php?&id_adh={$smarty.session.filtre_cotis_adh}">{_T("[ Add a contribution ]")}</A>
 {/if}
 		</DIV>
 {/if}

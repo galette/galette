@@ -33,23 +33,21 @@
 		header("location: voir_adherent.php");
 		
 	// new or edit
-	$contribution['id_cotis'] = '';
-	if (isset($_GET["id_cotis"]))
-		if (is_numeric($_GET["id_cotis"]))
-			$contribution['id_cotis'] = $_GET["id_cotis"];
-	if (isset($_POST["id_cotis"]))
-		if (is_numeric($_POST["id_cotis"]))
-			$contribution['id_cotis'] = $_POST["id_cotis"];
-			
-	if (isset($_GET["id_adh"]))
-		if (is_numeric($_GET["id_adh"]))
-			$contribution['id_adh'] = $_GET["id_adh"];			
+	$contribution['id_cotis'] = get_numeric_form_value("id_cotis", '');
+	$contribution['id_type_cotis'] = get_numeric_form_value("id_type_cotis", '');
+	$contribution['id_adh'] = get_numeric_form_value("id_adh", '');
+	$adh_selected = isset($contribution['id_adh']);
+	$tpl->assign("adh_selected", $adh_selected);
 
-	$cotis_extension = 0;
-	if (isset($_GET["cotis_extension"]))
-		$cotis_extension = $_GET["cotis_extension"];
-	elseif (isset($_POST["cotis_extension"]))
-		$cotis_extension = $_POST["cotis_extension"];
+	$type_selected = get_form_value("type_selected", 0);
+	$tpl->assign("type_selected", $type_selected);
+
+	if (isset($contribution['id_type_cotis'])) {
+		$request = "SELECT cotis_extension
+			    FROM ".PREFIX_DB."types_cotisation
+			    WHERE id_type_cotis = ".$contribution['id_type_cotis'];
+		$cotis_extension = &$DB->GetOne($request);
+	}
 
 	// initialize warning
  	$error_detected = array();
@@ -146,10 +144,6 @@
 		{
 			// missing relations
 			// Check that membership fees does not overlap
-			$request = "SELECT cotis_extension
-				    FROM ".PREFIX_DB."types_cotisation
-				    WHERE id_type_cotis = ".$contribution['id_type_cotis'];
-			$cotis_extension = &$DB->GetOne($request);
 			if ($cotis_extension) {
 				$date_debut = date_text2db($DB, $contribution['date_debut_cotis']);
 				$date_fin = date_text2db($DB, $contribution['date_fin_cotis']);
@@ -273,9 +267,10 @@
 		    FROM ".PREFIX_DB."types_cotisation";
         $exval = &$DB->GetOne($requete);
 	$requete = "SELECT id_type_cotis, libelle_type_cotis
-			FROM ".PREFIX_DB."types_cotisation
-			WHERE cotis_extension IS ".($cotis_extension ? "NOT " : "")." NULL
-			ORDER BY libelle_type_cotis";
+		   FROM ".PREFIX_DB."types_cotisation ";
+	if ($type_selected == 1)
+		$requete .= "WHERE cotis_extension IS ".($cotis_extension ? "NOT " : "")." NULL ";
+	$requete .= "ORDER BY libelle_type_cotis";
 	$result = &$DB->Execute($requete);
 	if (!$result)
 		print $DB->ErrorMsg();

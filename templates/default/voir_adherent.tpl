@@ -162,9 +162,7 @@
 						<A href="gestion_contributions.php?id_adh={$adherent.id_adh}">{_T("[ Contributions ]")}</A>
 {if $smarty.session.admin_status eq 1}
 						&nbsp;&nbsp;&nbsp;
-						<A href="ajouter_contribution.php?cotis_extension=1&id_adh={$adherent.id_adh}">{_T("[ Add member fee ]")}</A>
-						&nbsp;&nbsp;&nbsp;
-						<A href="ajouter_contribution.php?cotis_extension=0&id_adh={$adherent.id_adh}">{_T("[ Add a contribution ]")}</A>
+						<A href="ajouter_contribution.php?id_adh={$adherent.id_adh}">{_T("[ Add a contribution ]")}</A>
 {/if}
 					</TD>
 				</TR>
