@@ -57,10 +57,12 @@
 		$form_title = '';
 		$tpl->assign("all_forms", $all_forms);
 
-		$all_texts = db_get_all(&$DB, "SELECT DISTINCT(text_orig)
-					       FROM ".PREFIX_DB."l10n
-					       ORDER BY text_orig", &$error_detected);
-		if (is_array($all_texts) && count($all_texts) > 0) {
+		$l10n_table = PREFIX_DB."l10n";
+		$nb_fields = $DB->GetOne("SELECT COUNT(text_orig) FROM $l10n_table");
+		if (is_numeric($nb_fields) && $nb_fields > 0) {
+			$all_texts = db_get_all(&$DB, "SELECT DISTINCT(text_orig)
+						       FROM $l10n_table
+						       ORDER BY text_orig", &$error_detected);
 			$orig = array();
 			foreach ($all_texts as $idx => $row)
 				$orig[] = $row['text_orig'];
