@@ -39,8 +39,7 @@
 			$mailing_adh[]=$value;
 		}
 	}else{
-		print _T("Vous n'avez sélectionné aucun adhérent,
-		veuillez cocher au moins une case en début de ligne");
+		print _T("You have not selected a member, please check at least one box in the beginning of lines");
 		die();
 	}
 		$requete = "SELECT id_adh, nom_adh, prenom_adh, adresse_adh,
