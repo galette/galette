@@ -1,7 +1,4 @@
 		<H1 class="titre">{_T("Profile configuration")}{if $form_title != ''} ({$form_title}){/if}</H1>
-{if $form_title == ''}
-		<H2 class="soustitre">{_T("Select the form to customize")}</H2>
-{/if}
 		<FORM action="configurer_fiches.php" method="post" enctype="multipart/form-data">
 {if $error_detected|@count != 0}
 		<DIV id="errorbox">
@@ -92,33 +89,3 @@
 		<INPUT type="hidden" name="form" value="{$form_name}">
 {/if} {* $form_title == '' *}
 		</FORM> 
-{if $form_title == '' && $text_orig != ''}
-		<H2 class="soustitre">{_T("Translate field contents")}</H2>
-		<FORM action="configurer_fiches.php" method="post" enctype="multipart/form-data">
-			<TABLE width="100%" id="input-table"> 
-				<TR>
-					<TH class="listing left">{_T("Language")}</TH>
-					<TH class="listing" width="100%">{_T("Text")}</TH>
-				</TR>
-				<TR>
-					<TD class="listing left">{_T("Original")}</TD> 
-					<TD class="listing left">
-						<SELECT name="text_orig" onChange="form.submit()">
-							{html_options values=$orig output=$orig selected=$text_orig}
-						</SELECT>
-					</TD>
-				</TR>
-{section name="lang" loop=$trans}
-				<TR>
-					<TD class="listing left">{$trans[lang].name}</TD> 
-					<TD class="listing left">
-						<INPUT type="text" name="text_trans_{$trans[lang].key}" value="{$trans[lang].text}">
-					</TD>
-				</TR>
-{/section}
-			</TABLE>
-			<BR>
-			<INPUT type="submit" name="trans" value="{_T("Save")}">&nbsp;
-			<INPUT type="submit" name="update" value="{_T("Update")}">
-		</FORM> 
-{/if}

@@ -37,6 +37,7 @@
 			<UL>
 				<LI><A href="preferences.php">{_T("Settings")}</A></LI>
 				<LI><A href="configurer_fiches.php">{_T("Configure member forms")}</A></LI>
+				<LI><A href="traduire_libelles.php">{_T("Translate labels")}</A></LI>
 			</UL>
 		</DIV>
 {/if}

@@ -40,53 +40,11 @@
 
 	$form_not_set = ($form_name == '');
 	
-	if ($form_name == '') { // Select form name or translate strings
-		
-		$text_orig = get_form_value('text_orig', '');
-		if (isset($_POST["trans"]) && isset($text_orig)) {
-			while (list($key, $value) = each($_POST))
-			{
-				if (substr($key, 0, 11) == 'text_trans_')
-				{
-					$trans_lang = substr($key, 11);
-					update_dynamic_translation(&$DB, $text_orig, $languages[$trans_lang], $value, &$error_detected);
-				}
-			}
-		}
+	if ($form_name == '') {
 
 		$form_title = '';
 		$tpl->assign("all_forms", $all_forms);
 
-		$l10n_table = PREFIX_DB."l10n";
-		$nb_fields = $DB->GetOne("SELECT COUNT(text_orig) FROM $l10n_table");
-		if (is_numeric($nb_fields) && $nb_fields > 0) {
-			$all_texts = db_get_all(&$DB, "SELECT DISTINCT(text_orig)
-						       FROM $l10n_table
-						       ORDER BY text_orig", &$error_detected);
-			$orig = array();
-			foreach ($all_texts as $idx => $row)
-				$orig[] = $row['text_orig'];
-			if ($text_orig == '')
-				$text_orig = $orig[0];
-			
-			$lang_keys = array();
-			$lang_names = array();
-			$trans = array();
-			$sorted_languages = array_keys($languages);
-			sort($sorted_languages);
-			foreach ($languages as $l => $locale) {
-				$text_trans = get_dynamic_translation(&$DB, $text_orig, $locale);
-				$lang_name = _T($l);
-				$trans[] = array('key'=>$l, 'name'=> $lang_name, 'text'=> $text_trans);
-			}
-			function sort_lang($a, $b) { return strcmp($a['name'], $b['name']); }
-			usort($trans, "sort_lang");
-
-			$tpl->assign("orig", $orig);
-			$tpl->assign("trans", $trans);
-		}
-		$tpl->assign("text_orig", $text_orig);
-	
 	} else {
 
 		$form_title = $all_forms[$form_name];
@@ -117,7 +75,8 @@
 						$field_id = get_last_auto_increment(&$DB, $field_types_table, "field_id", &$error_detected);
 						header("location: editer_champ.php?form=$form_name&id=$field_id");
 					}
-					add_dynamic_translation(&$DB, $field_name, &$error_detected);
+					if ($field_name != '')
+						add_dynamic_translation(&$DB, $field_name, &$error_detected);
 					$DB->CompleteTrans();
 				}
 			}
