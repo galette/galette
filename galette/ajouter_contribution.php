@@ -63,6 +63,7 @@
 			'id_adh' => 1);
 
 	// Validation
+	$contribution['dyn'] = array();
 	if (isset($_POST["valid"]))
 	{
 		$contribution['dyn'] = extract_posted_dynamic_fields($DB, $_POST, array());
