@@ -35,12 +35,14 @@
 	$mailing_adh = array();
 	if (isset($_POST["mailing_adh"]))
 	{
-		while (list($key,$value)=each($_POST["mailing_adh"]))
+		while (list($key,$value)=each($_POST["mailing_adh"])) {
 			$mailing_adh[]=$value;
-	}
-	else
+		}
+	}else{
+		print _T("Vous n'avez sélectionné aucun adhérent,
+		veuillez cocher au moins une case en début de ligne");
 		die();
-
+	}
 		$requete = "SELECT id_adh, nom_adh, prenom_adh, adresse_adh,
 									titre_adh, cp_adh, ville_adh, pays_adh, adresse2_adh
 									FROM ".PREFIX_DB."adherents
