@@ -56,8 +56,8 @@
 			else
 				dblog(_T("Echec authentification. Login :")." \"" . $_POST["login"] . "\"");
 		}
-	} 
-	 
+	}
+
 	if ($_SESSION["logged_status"]!=0)
 		header("location: gestion_adherents.php");
 	else
