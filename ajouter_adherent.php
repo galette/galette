@@ -362,16 +362,8 @@
 				$adherent = $result->fields;
 
 				// reformat dates
-				if ($adherent['ddn_adh'] != '')
-				{
-					list($a,$m,$j)=split("-",$adherent['ddn_adh']);
-					$adherent['ddn_adh']="$j/$m/$a";
-				}
-				if ($adherent['date_crea_adh'] != '')
-				{
-					list($a,$m,$j)=split("-",$adherent['date_crea_adh']);
-					$adherent['date_crea_adh']="$j/$m/$a";
-				}
+				$adherent['ddn_adh'] = date_db2text($adherent['ddn_adh']);
+				$adherent['date_crea_adh'] = date_db2text($adherent['date_crea_adh']);
 
 				// dynamic fields
 				$sql =  "SELECT id_cat, index_info, val_info ".

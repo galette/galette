@@ -35,9 +35,9 @@
 					<TD><input type="text" name="duree_mois_cotis" value="{$contribution.duree_mois_cotis}" maxlength="3"> {_T("months")}</TD>
 				</TR>
 				<TR> 
-					<TH {if $required.date_cotis eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Date of contribution:")}<BR>&nbsp;</TH> 
+					<TH {if $required.date_debut_cotis eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Date of contribution:")}<BR>&nbsp;</TH> 
 					<TD colspan="3">
-						<INPUT type="text" name="date_cotis" value="{$contribution.date_cotis}" maxlength="10"><BR>
+						<INPUT type="text" name="date_debut_cotis" value="{$contribution.date_debut_cotis}" maxlength="10"><BR>
 						<DIV class="exemple">{_T("(dd/mm/yyyy format)")}</DIV>
 					</TD> 
 				</TR> 

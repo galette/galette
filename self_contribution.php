@@ -71,7 +71,7 @@ $montant_cotis_req=" style=\"color: #FF0000;\"";
 
 // et les valeurs par defaut
 $id_type_cotis = "1";
-$duree_mois_cotis = "12";
+$duree_mois_cotis = PREF_MEMBERSHIP_EXT;
 
 //
 // FIN parametrage des champs

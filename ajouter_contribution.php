@@ -51,8 +51,8 @@
 	// flagging required fields
 	$required = array(
 			'montant_cotis' => 1,
-			'duree_mois_cotis' => 1,
-			'date_cotis' => 1,
+			'date_debut_cotis' => 1,
+			'date_fin_cotis' => 1,
 			'id_type_cotis' => 1,
 			'id_adh' => 1);
 
@@ -70,7 +70,16 @@
 			$key = strtolower($key);
 			if (isset($_POST[$key]))
 				$value = trim($_POST[$key]);
-			else
+			else if ($key == 'date_enreg')
+				$value = $DB->DBDate(time());
+			else if ($key == 'date_fin_cotis' && isset($_POST['duree_mois_cotis']) &&
+				 isset($_POST['date_debut_cotis'])) {
+				$nmonths = trim($_POST['duree_mois_cotis']);
+				if (!is_numeric($nmonths) && $nmonths >= 0)
+					$error_detected[] = _T("- The duration must be an integer!");
+				else if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_POST['date_debut_cotis'], $debut))
+					$value = date("d/m/Y", mktime(0, 0, 0, $debut[2] + $nmonths, $debut[1], $debut[3]));
+			} else
 				$value = '';
 	
 			// fill up the contribution structure
@@ -81,20 +90,16 @@
 			switch ($key)
 			{
 				// date
-				case 'date_cotis':
-					if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $value, $array_jours))
+				case 'date_debut_cotis':
+				case 'date_fin_cotis':
+					if (ereg("^[0-9]{2}/[0-9]{2}/[0-9]{4}$", $value, $array_jours))
 					{
-						if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
-							$value = $DB->DBDate(mktime(0,0,0,$array_jours[2],$array_jours[1],$array_jours[3]));
-						else
+						$value = date_text2db($DB, $value);
+						if ($value == "")
 							$error_detected[] = _T("- Non valid date!")." ($key)";
 					}
 					else
 						$error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!")." ($key)";
-					break;
-				case 'duree_mois_cotis':
- 					if (!is_numeric($value))
-						$error_detected[] = _T("- The duration must be an integer!");
 					break;
  				case 'montant_cotis':
  					$us_value = strtr($value, ",", ".");
@@ -104,18 +109,14 @@
 			}
 
 			// dates already quoted
-			if ($key != 'date_cotis' || $value=='')
+			if (strncmp($key, "date_", 5) != 0)
 				$value = $DB->qstr($value);
-		
 			$update_string .= ", ".$key."=".$value;
 			if ($key != 'id_cotis') {
 				$insert_string_fields .= ", ".$key;
 				$insert_string_values .= ", ".$value;
 			}
 		}
-		
-		// missing relations
-		// none here yet
 		
 		// missing required fields?
 		while (list($key,$val) = each($required))
@@ -127,6 +128,23 @@
 					$error_detected[] = _T("- Mandatory field empty.")." ($key)";
 		}
 		
+		if (count($error_detected) == 0)
+		{
+			// missing relations
+			$date_debut = date_text2db($DB, $contribution['date_debut_cotis']);
+			$date_fin = date_text2db($DB, $contribution['date_fin_cotis']);
+			$requete = "SELECT date_debut_cotis, date_fin_cotis
+				    FROM ".PREFIX_DB."cotisations
+				    WHERE ((date_debut_cotis >= ".$date_debut." AND date_debut_cotis < ".$date_fin.")
+				           OR (date_fin_cotis > ".$date_debut." AND date_fin_cotis <= ".$date_fin."))";
+			$result = $DB->Execute($requete);
+			if (!$result)
+				print "$requete: ".$DB->ErrorMsg();
+			if (!$result->EOF)
+				$error_detected[] = _T("- Membership period overlaps period starting at ").date_db2text($result->fields['date_debut_cotis']);
+			$result->Close();
+		}
+
 		if (count($error_detected)==0)
 		{
 			if ($contribution["id_cotis"] == "")
@@ -160,7 +178,7 @@
 			// update deadline
 			$date_fin = get_echeance($DB, $contribution['id_adh']);
 			if ($date_fin!="")
-				$date_fin_update = $DB->DBDate(mktime(0,0,0,$date_fin[1],$date_fin[0],$date_fin[2]));
+				$date_fin_update = date_text2db($DB, implode("/", $date_fin));
 			else
 				$date_fin_update = "NULL";
 			$requete = "UPDATE ".PREFIX_DB."adherents
@@ -177,7 +195,15 @@
 		{
 			// initialiser la structure contribution à vide (nouvelle contribution)
 			$contribution['duree_mois_cotis']=PREF_MEMBERSHIP_EXT;
-			$contribution['date_cotis'] = date("d/m/Y");
+			if (isset($contribution["id_adh"])) {
+				$curend = get_echeance($DB, $contribution["id_adh"]);
+				if ($curend == "")
+					$beg_cotis = time();
+				else
+					$beg_cotis = mktime(0, 0, 0, $curend[1], $curend[0], $curend[2]);
+			} else
+				$beg_cotis = time();
+			$contribution['date_debut_cotis'] = date("d/m/Y", $beg_cotis);
 		}
 		else
 		{
@@ -194,11 +220,9 @@
 				$contribution = $result->fields;
 
 				// reformat dates
-				if ($contribution['date_cotis'] != '')
-				{
-					list($a,$m,$j)=split("-",$contribution['date_cotis']);
-					$contribution['date_cotis']="$j/$m/$a";
-				}
+				$contribution['date_debut_cotis'] = date_db2text($contribution['date_debut_cotis']);
+				$contribution['date_fin_cotis'] = date_db2text($contribution['date_fin_cotis']);
+				$contribution['duree_mois_cotis'] = distance_months($contribution['date_debut_cotis'], $contribution['date_fin_cotis']);
 			}	
 		}
 	}

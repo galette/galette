@@ -65,53 +65,26 @@
 		else
 			$exempt=$exempt_default;
 		
+		$return_date = "";
 		// définition couleur pour adherent exempt de cotisation
-		if ($exempt=="1")
-			return "";
-		else
+		if ($exempt != "1")
 		{
-			$requete_cotis = "SELECT *
+			$requete_cotis = "SELECT count(*)
 					  FROM ".PREFIX_DB."cotisations
-					  WHERE id_adh=" . $cotisant . "
-					  ORDER BY date_cotis";
-			$resultat_cotis = &$DB->Execute($requete_cotis);
-			$diff = 0;
-			$duree_old = 0;
-			$ts_old = 0;
-			while (!$resultat_cotis->EOF) 
-			{
-				// difference avec date precedente
-			
-				// timestamp actuel
-				list($a,$m,$j)=split("-",$resultat_cotis->fields["date_cotis"]);
-				$ts = mktime(0,0,0,$m,$j,$a);
-			
-				// duree cotisation courante (en s)
-				$duree = (mktime(0,0,0,$m+$resultat_cotis->fields["duree_mois_cotis"],$j,$a)-mktime(0,0,0,$m,$j,$a));
-			
-				// diff = (date_prec + duree_prec + diff) - date_courante
-				$diff = ($ts_old + $duree_old + $diff)-$ts;
-			
-				if ($diff < 0)
-				  $diff = 0;
-			  
-				$ts_old = $ts;
-				$duree_old = $duree;
-				$resultat_cotis->MoveNext();
+					  WHERE id_adh=" . $cotisant;
+			$count = &$DB->GetOne($requete_cotis);
+			if ($count) {
+				$requete_cotis = "SELECT max(date_fin_cotis)
+						  FROM ".PREFIX_DB."cotisations
+						  WHERE id_adh=" . $cotisant;
+				$max_date = &$DB->GetOne($requete_cotis);
+				if ($max_date)
+				{
+					list($a,$m,$j) = split("-", $max_date);
+					$return_date = split("/", date("d/m/Y", mktime(0,0,0,$m,$j,$a)));
+				}
 			}
-			$resultat_cotis->Close();
-		
-			if ($ts_old==0)
-				return "";
-			else
-				$cumul = intval((($ts_old + $duree_old + $diff)-time())/(3600*24));
 		}	
-
-		  //
-		 // Fin du calcul du temps d'adhésion
-		// 
-	 	 
-		$return_date = date("d/m/Y",time()+$cumul*3600*24);
-		return split("/",$return_date);
+		return $return_date;
 	}
 ?>

@@ -30,7 +30,7 @@ CREATE TABLE galette_adherents (
     prenom_adh character varying(20) DEFAULT NULL,
     pseudo_adh character varying(20) DEFAULT NULL,
     titre_adh smallint DEFAULT '0' NOT NULL,
-    ddn_adh date,
+    ddn_adh date DEFAULT '19010101',
     adresse_adh character varying(150) DEFAULT '' NOT NULL,
     adresse2_adh character varying(150) DEFAULT NULL,
     cp_adh character varying(10) DEFAULT '' NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE galette_adherents (
     prof_adh character varying(150),
     login_adh character varying(20) DEFAULT '' NOT NULL,
     mdp_adh character varying(20) DEFAULT '' NOT NULL,
-    date_crea_adh date NOT NULL,
+    date_crea_adh date DEFAULT '00000101' NOT NULL,
     activite_adh character(1) DEFAULT '0' NOT NULL,
     bool_admin_adh character(1) DEFAULT NULL,
     bool_exempt_adh character(1) DEFAULT NULL,
@@ -65,8 +65,9 @@ CREATE TABLE galette_cotisations (
     id_type_cotis integer DEFAULT '0' NOT NULL,
     montant_cotis real DEFAULT '0',
     info_cotis text,
-    duree_mois_cotis smallint DEFAULT '12' NOT NULL,
-    date_cotis date NOT NULL
+    date_enreg date DEFAULT '00000101' NOT NULL,
+    date_debut_cotis date DEFAULT '00000101' NOT NULL,
+    date_fin_cotis date DEFAULT '00000101' NOT NULL
 );
 CREATE UNIQUE INDEX galette_cotisations_idx ON galette_cotisations (id_cotis);
 
@@ -158,3 +159,13 @@ CREATE TABLE galette_adh_info (
   val_info text DEFAULT ''
 );
 CREATE INDEX galette_ahd_info_idx ON galette_adh_info (id_adh);
+
+DROP TABLE galette_pictures;
+CREATE TABLE galette_pictures (
+  id_adh integer DEFAULT '0' NOT NULL,
+  picture bytea NOT NULL,
+  format character varying(30) DEFAULT '' NOT NULL,
+  width integer DEFAULT '0' NOT NULL,
+  height integer DEFAULT '0' NOT NULL
+);
+CREATE INDEX galette_pictures_idx ON galette_pictures (id_adh);

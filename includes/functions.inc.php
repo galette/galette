@@ -257,4 +257,30 @@ function UniqueLogin($DB,$l) {
   return ($result->RecordCount() == 0);
 }
 
+function date_db2text($date) {
+	if ($date != '')
+	{
+		list($a,$m,$j)=split("-",$date);
+		$date="$j/$m/$a";
+	}
+	return $date;
+}
+
+function date_text2db($DB, $date) {
+	list($j, $m, $a)=split("/",$date);
+	if (!checkdate($m, $j, $a))
+		return "";
+	return $DB->DBDate(mktime(0, 0, 0, $m, $j, $a));
+}
+
+function distance_months($beg, $end) {
+	list($bj, $bm, $ba) = split("/", $beg);
+	list($ej, $em, $ea) = split("/", $end);
+	if ($bm > $em) {
+		$em += 12;
+		$ea--;
+	}
+	return ($ea -$ba)*12 + $em - $bm;
+}
+
 ?>
