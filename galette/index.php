@@ -23,11 +23,11 @@
 	include("includes/config.inc.php"); 
 	include(WEB_ROOT."includes/database.inc.php"); 
 	include(WEB_ROOT."includes/functions.inc.php"); 
-	include(WEB_ROOT."includes/lang.inc.php"); 
 	include(WEB_ROOT."includes/session.inc.php"); 
 	 
 	if (isset($_POST["ident"])) 
 	{ 
+	        include(WEB_ROOT."includes/lang.inc.php"); 
 		if ($_POST["login"]==PREF_ADMIN_LOGIN && $_POST["password"]==PREF_ADMIN_PASS)
 		{
 			$_SESSION["logged_status"]=1;
@@ -62,6 +62,11 @@
 		header("location: gestion_adherents.php");
 	else
 	{ 
+	  $req = "SELECT pref_lang FROM ".PREFIX_DB."adherents
+			WHERE id_adh=".$_SESSION["logged_id_adh"];
+	  $pref_lang = &$DB->Execute($req);
+	  $pref_lang = $pref_lang->fields[0];
+	  include(WEB_ROOT."includes/lang.inc.php"); 
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> 

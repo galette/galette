@@ -22,7 +22,6 @@
 	include("includes/config.inc.php"); 
 	include(WEB_ROOT."includes/database.inc.php"); 
 	include(WEB_ROOT."includes/functions.inc.php"); 
-	include(WEB_ROOT."includes/lang.inc.php"); 
 	include(WEB_ROOT."includes/session.inc.php"); 
 	include(WEB_ROOT."includes/categories.inc.php"); 
 
@@ -80,6 +79,7 @@
 		$$proprietes_arr["name"] = htmlentities(stripslashes(addslashes($val)), ENT_QUOTES);
 	}
 	reset($fields);
+	include(WEB_ROOT."includes/lang.inc.php"); 
 	include("header.php");
 ?>  
 			<H1 class="titre"><? echo _T("Fiche adhérent"); ?></H1>					
@@ -184,6 +184,8 @@
 					<TR>
 						<TD bgcolor="#DDDDFF"><B><? echo _T("Je souhaite apparaître dans la liste des membres :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? if ($bool_display_info=="1") echo _T("Oui"); else echo _T("Non"); ?></TD> 
+                                                <TD bgcolor="#DDDDFF"><? echo _T("Langue :"); ?></TD>
+                                                <TD bgcolor="#EEEEEE" ALIGN="center"><IMG SRC="<? echo "lang/".$pref_lang.".gif"; ?>"></TD>
 					</TR>
 <?
 	if ($_SESSION["admin_status"]!=0)

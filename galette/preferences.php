@@ -63,7 +63,6 @@
 		    $fieldname=="pref_etiq_hsize" ||
 		    $fieldname=="pref_etiq_vsize" ||
 		    $fieldname=="pref_etiq_cols" ||
-		    $fieldname=="pref_mail_method" ||
 		    $fieldname=="pref_etiq_rows" ||
 		    $fieldname=="pref_etiq_corps" ||
 		    $fieldname=="pref_admin_login" ||
@@ -178,15 +177,6 @@
  					else
  						$value = $DB->qstr($post_value, true);
  				}
-				elseif ($fieldname=="pref_mail_method")
-				{
-					if (!isset($_POST["pref_mail_smtp"]) && $post_value=="2")
-						$error_detected .= "<LI>"._T("- Vous devez indiquer le serveur SMTP a utiliser pour l'envoi des mails !")."</LI>";
-					elseif ($_POST["pref_mail_smtp"]=="" && $post_value=="2")
-						$error_detected .= "<LI>"._T("- Vous devez indiquer le serveur SMTP a utiliser pour l'envoi des mails !")."</LI>";
-					else
-						$value = $DB->qstr($post_value, true);
-				}
  				else
  				{
  					// on se contente d'escaper le html et les caracteres speciaux
@@ -194,8 +184,8 @@
 				}
 
 				// mise a jour des chaines d'insertion
-				/*if ($value=="''")
-					$value="NULL";*/
+				if ($value=="''")
+					$value="NULL";
 				$insert_values[$fieldname] = $value;	
 			}
 			$result->MoveNext();
@@ -463,19 +453,7 @@
 						  <TR>
 								<TH<? echo $pref_email_req ?> id="libelle"><? echo _T("Email expéditeur :"); ?></TH> 
 								<td><input type="text" name="pref_email" value="<? echo $pref_email; ?>" maxlength="100" size="30"></td> 
-							</TR>						  
-							<TR>
-								<TH<? echo $pref_mail_method_req ?> id="libelle"><? echo _T("Methode d'envoi :"); ?></TH>
-								<TD>
-									<input type="radio" name="pref_mail_method" value="0" <? isChecked("0",$pref_mail_method); ?>> <? echo _T("Pas d'envoi de mails"); ?><br>
-									<input type="radio" name="pref_mail_method" value="1" <? isChecked("1",$pref_mail_method); ?>> <? echo _T("Fonction PHP mail()"); ?><br>
-									<input type="radio" name="pref_mail_method" value="2" <? isChecked("2",$pref_mail_method); ?>> <? echo _T("Via un serveur SMTP (lent)"); ?><br>
-								</TD>	
-							</TR>
-							<TR>
-								<TH<? echo $pref_mail_smtp_req ?> id="libelle"><? echo _T("Serveur SMTP :"); ?></TH>
-								<TD><input type="text" name="pref_mail_smtp" value="<? echo $pref_mail_smtp; ?>" maxlength="100" size="30"></td>
-							</TR>
+							</TR>						   
 							<TR>
 								<TH colspan="2" id="header"><BR><? echo _T("Paramètres de génération d'étiquettes :"); ?></TH>
 							</TR> 

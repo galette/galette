@@ -1,5 +1,11 @@
 <?
-	include(WEB_ROOT."lang/lang_".PREF_LANG.".php");
+if (LANG_INC!="lang_inc"){
+        define(LANG_INC,"lang_inc");
+        if (isset($GLOBALS["pref_lang"])){
+	  include(WEB_ROOT."lang/lang_".$GLOBALS["pref_lang"].".php");
+	} else {
+	  include(WEB_ROOT."lang/lang_".PREF_LANG.".php");
+	}
 	function _T($chaine)
 	{
 		// echo "$chaine";die();
@@ -10,4 +16,5 @@
 		else
 			return $GLOBALS["lang"][$chaine];
 	}
+}
 ?>
