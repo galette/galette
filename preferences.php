@@ -28,7 +28,7 @@
 	if ($_SESSION["logged_status"]==0) 
 		header("location: index.php");
 	if ($_SESSION["admin_status"]==0) 
-		header("location: gestion_informations.php");
+		header("location: voir_adherent.php");
 
 	// On vérifie si on a une référence => modif ou création
 
