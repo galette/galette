@@ -77,7 +77,8 @@
 		<TD align="center">
 			<IMG src="images/galette.jpg" alt="[ Galette ]" width="103" height="80"><BR>
 			<FORM action="index.php" method="post"> 
-				<B class="title"><? echo _T("Identification"); ?></B> 
+				<B class="title"><? echo _T("Identification"); ?></B><BR>
+				<BR>
 				<BR>
 				<TABLE> 
 					<TR> 
@@ -88,15 +89,10 @@
 						<TD><? echo _T("Mot de passe :"); ?></TD> 
 						<TD><INPUT type="password" name="password"></TD> 
 					</TR> 
-					<TR> 
-						<TD>&nbsp;</TD> 
-						<TD><INPUT type="submit" name="ident" value="<? echo _T("Identification"); ?>"></TD> 
-					</TR> 
-					<TR> 
-						<TD>&nbsp;</TD> 
-						<TD><A HREF="lostpasswd.php"><? echo _T("Mot de passe perdu ?"); ?></a></TD> 
-					</TR> 
-				</TABLE> 
+				</TABLE>
+				<INPUT type="submit" name="ident" value="<? echo _T("Identification"); ?>"><BR>
+				<BR>
+				<A HREF="lostpasswd.php"><? echo _T("Mot de passe perdu ?"); ?></a>
 			</FORM>
 		</TD>
 	</TR>
