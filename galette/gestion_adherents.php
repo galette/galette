@@ -286,7 +286,7 @@
 			$row_class = "inactif";
 			
 		// temps d'adhésion
-		if($resultat->fields[6])
+		if($resultat->fields[6]=="1")
 		{
 			$statut_cotis = _T("Exempt de cotisation");
 			$row_class .= " cotis-exempt";
