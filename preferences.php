@@ -1,6 +1,6 @@
 <? 
-/* ajouter_adherent.php
- * - Saisie d'un adhérent
+/* preferences.php
+ * - Preferences Galette
  * Copyright (c) 2004 Frédéric Jaqcuot
  *
  * This program is free software; you can redistribute it and/or
