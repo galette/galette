@@ -121,7 +121,7 @@
 ?>
 
 	<H1>Welcome to the Galette Install!</H1>
-	<P>Please select your language</P>
+	<P>Please select your administration language</P>
 	<FORM action="index.php" method="POST">
 		<SELECT name="install_lang">
 <?
@@ -871,11 +871,7 @@ define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (8,'pref_email_nom','Galette')";
 			$DB->Execute($default);			
 			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (9,'pref_email','mail@domain.com')";
-			$DB->Execute($default);		
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (8,'pref_mail_method','1')";
-			$DB->Execute($default);
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (8,'pref_mail_smtp','')";
-			$DB->Execute($default);
+			$DB->Execute($default);			
 			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (10,'pref_etiq_marges','10')";
 			$DB->Execute($default);			
 			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (11,'pref_etiq_hspace','10')";

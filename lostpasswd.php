@@ -73,8 +73,8 @@
 			$mail_text .= _T("A trés bientôt !")."\n";
 			$mail_text .= "\n";
 			$mail_text .= _T("(ce mail est un envoi automatique)")."\n";
-			$result_mail = custom_mail ($email_adh,$mail_subject,$mail_text);
-			if ($result_mail==0) {
+			$mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\n";
+			if(  mail($email_adh,$mail_subject,$mail_text, $mail_headers) ) {
 				dblog(_T("Mot de passe envoyé. Login :")." \"" . $login_adh . "\"");
 				$warning_detected = _T("Mot de passe envoyé. Login :")." \"" . $login_adh . "\"";
 				$password_sent = true;

@@ -488,7 +488,7 @@
 		{
 			if (isset($_POST["mailing_confirmed"]))
 			{
-				custom_mail ($resultat->fields[8], $mailing_objet, $mailing_corps);
+				mail ($resultat->fields[8], $mailing_objet, $mailing_corps,"From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\nContent-Type: text/plain; charset=iso-8859-15\n");
 				$concatmail = $concatmail . " " . $resultat->fields[8];
 				$num_mails++;
 			}		

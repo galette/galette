@@ -23,7 +23,6 @@
 	include("includes/config.inc.php"); 
 	include(WEB_ROOT."includes/database.inc.php"); 
 	include(WEB_ROOT."includes/functions.inc.php"); 
-	include(WEB_ROOT."includes/lang.inc.php"); 
 	include(WEB_ROOT."includes/session.inc.php"); 
 	
 	$filtre_id_adh = "";
@@ -95,8 +94,12 @@
 		}
 	}
 
+	$req = "SELECT pref_lang FROM ".PREFIX_DB."adherents
+			WHERE id_adh=".$_SESSION["filtre_cotis_adh"];
+        $pref_lang = &$DB->Execute($req);
+        $pref_lang = $pref_lang->fields[0];
+	include(WEB_ROOT."includes/lang.inc.php"); 
 	include("header.php");
-
 	if ($_SESSION["admin_status"]==1) 
 	if (isset($_GET["sup"]))
 	{

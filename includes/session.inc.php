@@ -26,9 +26,10 @@
 			isset($HTTP_GET_VARS["logout"]))
 	{
 		if (isset($HTTP_POST_VARS["logout"]) ||
-			isset($HTTP_GET_VARS["logout"]))
+		    isset($HTTP_GET_VARS["logout"])){
+                        include("lang.inc.php");
 			dblog(_T("Déconnexion"));
-
+		}
 		$_SESSION["admin_status"]=0;
 		$_SESSION["logged_status"]=0;
 		$_SESSION["logged_id_adh"]=0;

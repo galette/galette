@@ -22,9 +22,9 @@
 	include("includes/config.inc.php");
 	include(WEB_ROOT."includes/database.inc.php"); 
 	include(WEB_ROOT."includes/functions.inc.php"); 
-	include(WEB_ROOT."includes/lang.inc.php"); 
 	include(WEB_ROOT."includes/session.inc.php"); 
         include(WEB_ROOT."includes/categories.inc.php");
+
         
 	if ($_SESSION["logged_status"]==0) 
 		header("location: index.php");
@@ -43,6 +43,11 @@
 	if ($_SESSION["admin_status"]!=1) 
 		$id_adh = $_SESSION["logged_id_adh"];
 
+	$req = "SELECT pref_lang FROM ".PREFIX_DB."adherents
+			WHERE id_adh=".$id_adh;
+        $pref_lang = &$DB->Execute($req);
+        $pref_lang = $pref_lang->fields[0];
+	include(WEB_ROOT."includes/lang.inc.php"); 
 	// variables d'erreur (pour affichage)	    
  	$error_detected = "";
  	$warning_detected = "";
@@ -279,7 +284,8 @@
 						$mail_text .= _T("A trés bientôt !")."\n";
 						$mail_text .= "\n";
 						$mail_text .= _T("(ce mail est un envoi automatique)")."\n";
-						custom_mail ($email_adh,$mail_subject,$mail_text);
+						$mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\nContent-Type: text/plain; charset=iso-8859-15\n";
+						mail ($email_adh,$mail_subject,$mail_text, $mail_headers);
 					}
 				
 			// récupération du max pour insertion photo
@@ -467,7 +473,7 @@
 	if ($url_adh=="")
 		$url_adh = "http://";
 	if ($mdp_adh=="")
-		$mdp_adh = makeRandomPassword(7);
+		$mdp_adh = makeRandomPassword();
 
 	// variable pour la desactivation de champs		
 	if ($_SESSION["admin_status"]==0)
@@ -522,7 +528,7 @@
 							<TR> 
 								<TH <? echo $nom_adh_req ?> id="libelle"><? echo _T("Nom :"); ?></TH> 
 								<TD><INPUT type="text" name="nom_adh" value="<? echo $nom_adh; ?>" maxlength="<? echo $nom_adh_len; ?>" <? echo $disabled_field; ?>></TD> 
-								<TD colspan="2" rowspan="5" align="center" width="130">
+								<TD colspan="2" rowspan="4" align="center" width="130">
 <?
 	$image_adh = "";
 	if (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".jpg"))
@@ -568,10 +574,6 @@
 							<TR>
 							  <TH <? echo $prof_adh_req ?> id="libelle"><? echo _T("Profession :"); ?></TH> 
 								<TD><input type="text" name="prof_adh" value="<? echo $prof_adh; ?>" maxlength="<? echo $prof_adh_len; ?>"></TD> 
-							</TR> 
-							<TR>
-								<TH id="libelle"><? echo _T("Je souhaite apparaître dans la liste des membres :"); ?></TH>
-								<TD><input type="checkbox" name="bool_display_info" value="1"<? isChecked($bool_display_info,"1") ?>></TD> 
 								<TH id="libelle"><? echo _T("Photo :"); ?></TH> 
 								<TD> 
 								<?
@@ -591,6 +593,28 @@
 									}
 								?>
 								</TD> 
+							</TR> 
+							<TR>
+								<TH id="libelle"><? echo _T("Je souhaite apparaître dans la liste des membres :"); ?></TH>
+								<TD><input type="checkbox" name="bool_display_info" value="1"<? isChecked($bool_display_info,"1") ?>></TD> 
+								<TH id="libelle"><? echo _T("Langue :") ?></TH>
+                                                                <td>
+<?
+			$path = "lang";
+			$dir_handle = @opendir($path);
+			while ($file = readdir($dir_handle))
+			{
+				if (substr($file,0,5)=="lang_" && substr($file,-4)==".php")
+				{
+		        $file = substr(substr($file,5),0,-4);
+?>
+		<INPUT TYPE="radio" NAME="pref_lang" value="<? echo $file; ?>" <? isChecked($pref_lang,$file) ?>><IMG SRC="lang/<? echo $file.".gif"; ?>"></INPUT>
+<?
+				}
+			}
+			closedir($dir_handle);
+?>
+                                                                </td>
 							</TR>
 <?
 	if ($_SESSION["admin_status"]!=0)
@@ -775,9 +799,6 @@
                 }
                 $field_name = "info_field_".$id_cat."_".$i;
                 $val = $res_info->EOF ? "" : $res_info->fields[0];
-		// Recuperation de l'eventuelle valeur postee
-		if (isset($_POST[$field_name]))
-			$val = $_POST[$field_name];
 ?> 
                                                     <TD colspan="3">
 <?
