@@ -39,7 +39,7 @@
 	{
 		$requete[0] = "DELETE FROM ".PREFIX_DB."logs";
 		$DB->Execute($requete[0]);
-		dblog(_("Réinitialisation de l'historique"));
+		dblog(_("Flush the logs"));
 	}
 
     // Tri
@@ -105,15 +105,15 @@
 	}
 	
 ?>
-	<H1 class="titre"><? echo _("Historique"); ?></H1>
+	<H1 class="titre"><? echo _("Logs"); ?></H1>
 	<FORM action="log.php" method="post">
-		<DIV align="center"><INPUT type="submit" value="<? echo _("Réinitialisation de l'historique") ?>"></DIV>
+		<DIV align="center"><INPUT type="submit" value="<? echo _("Flush the logs") ?>"></DIV>
 		<INPUT type="hidden" name="reset" value="1">
 	</FORM>
 	<TABLE id="infoline" width="100%">
 		<TR>
-			<TD class="left"><? echo $nb_lines->fields[0]." "; if ($nb_lines->fields[0]!=1) echo _("lignes"); else echo _("ligne"); ?></TD>
-			<TD class="right"><? echo _("Pages :"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></TD>
+			<TD class="left"><? echo $nb_lines->fields[0]." "; if ($nb_lines->fields[0]!=1) echo _("lines"); else echo _("line"); ?></TD>
+			<TD class="right"><? echo _("Pages:"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></TD>
 		</TR>
 	</TABLE>
 		<TABLE width="100%"> 
@@ -150,7 +150,7 @@
 				<IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
             </TH> 
   			<TH class="listing left" width="150">
-				<A href="log.php?tri=2" class="listing"><? echo _("Adhérent"); ?></A>
+				<A href="log.php?tri=2" class="listing"><? echo _("Member"); ?></A>
 <?
 	if ($_SESSION["tri_log"]=="2")
 	{
@@ -185,7 +185,7 @@
 	if ($resultat->EOF)
 	{
 ?>	
-		<TR><TD colspan="5" class="emptylist"><? echo _("historique vide"); ?></TD></TR>
+		<TR><TD colspan="5" class="emptylist"><? echo _("logs are empty"); ?></TD></TR>
 <?
 	}
 	else while (!$resultat->EOF) 
@@ -205,7 +205,7 @@
 	$resultat->Close();
 ?>
   	</TABLE>	
-	<DIV id="infoline2" class="right"><? echo _("Pages :"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></DIV>
+	<DIV id="infoline2" class="right"><? echo _("Pages:"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></DIV>
 <?
 	include("footer.php");
 ?>

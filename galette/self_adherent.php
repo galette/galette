@@ -86,10 +86,10 @@ if (!isset($_POST["valid"]) ||
     $pref_lang=$_POST["pref_lang"];
     include(WEB_ROOT."includes/lang.inc.php"); 
     if(!PasswordCheck($_POST["mdp_adh"],$_POST["mdp_crypt"])){
-      $warning_detected.=_("Erreur en recopiant le mot de passe : ").$_POST["mdp_adh"]."\n";
+      $warning_detected.=_("Password misrepeated: ").$_POST["mdp_adh"]."\n";
     }
     if(!UniqueLogin($DB,$_POST["login_adh"])){
-      $warning_detected.=_("Désolé, ").$_POST["login_adh"]._(" est un identifiant déjà utilisé, choisissez-en un autre\n");
+      $warning_detected.=_("Sorry, ").$_POST["login_adh"]._(" is a username already used by another member, please select another one\n");
     }
     //	
     // Pré-remplissage des champs
@@ -122,25 +122,25 @@ if (!isset($_POST["valid"]) ||
   $req="INSERT INTO ".PREFIX_DB."adherents
          (".$listkeys.")
          VALUES (".$listvalues.")";
-  dblog(_("Auto-inscription d'adhérent :")." ".strtoupper($_POST["nom_adh"])." ".$_POST["prenom_adh"], $req);
+  dblog(_("Self_subscription as a member:")." ".strtoupper($_POST["nom_adh"])." ".$_POST["prenom_adh"], $req);
   $DB->Execute($req);
   // il est temps d'envoyer un mail
-  $mail_subject = _("Vos identifiants Galette");
-  $mail_text =  _("Bonjour,")."\n";
+  $mail_subject = _("Your Galette identifiers");
+  $mail_text =  _("Hello,")."\n";
   $mail_text .= "\n";
-  $mail_text .= _("Vous venez d'être inscrit sur le système de gestion d'adhérents de l'association.")."\n";
-  $mail_text .= _("Il vous est désormais possible de suivre en temps réel l'état de votre adhésion")."\n";
-  $mail_text .= _("et de mettre à jour vos coordonnées par l'interface web prévue à cet effet.")."\n";
+  $mail_text .= _("You've just been subscribed on the members management system of the association.")."\n";
+  $mail_text .= _("It is now possible to follow in real time the state of your subscription")."\n";
+  $mail_text .= _("and to update your preferences from the web interface.")."\n";
   $mail_text .= "\n";
-  $mail_text .= _("Veuillez vous identifier à cette adresse :")."\n";
+  $mail_text .= _("Please login at this address:")."\n";
   $mail_text .= HTTP."://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
   $mail_text .= "\n";
-  $mail_text .= _("Identifiant :")." ".custom_html_entity_decode($_POST["login_adh"])."\n";
-  $mail_text .= _("Mot de passe :")." ".custom_html_entity_decode($_POST["mdp_adh"])."\n";
+  $mail_text .= _("Username:")." ".custom_html_entity_decode($_POST["login_adh"])."\n";
+  $mail_text .= _("Password:")." ".custom_html_entity_decode($_POST["mdp_adh"])."\n";
   $mail_text .= "\n";
-  $mail_text .= _("A trés bientôt !")."\n";
+  $mail_text .= _("See you soon!")."\n";
   $mail_text .= "\n";
-  $mail_text .= _("(ce mail est un envoi automatique)")."\n";
+  $mail_text .= _("(this mail was sent automatically)")."\n";
   $mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\nContent-Type: text/plain; charset=iso-8859-15\n";
   mail ($_POST["email_adh"],$mail_subject,$mail_text, $mail_headers);
   header("location: self_contribution.php?login_adh=".$_POST["login_adh"]);
@@ -157,8 +157,8 @@ include("header.php");
 ?> 
  
 <H1 class="titre">
-  <? echo _("Fiche adhérent"); ?> 
-  (<? if ($id_adh!="") echo _("modification"); else echo _("création"); ?>)
+  <? echo _("Member Profile"); ?> 
+  (<? if ($id_adh!="") echo _("modification"); else echo _("creation"); ?>)
 </H1>
 <SCRIPT LANGUAGE="JavaScript1.1">
 function isblank(s){
@@ -186,8 +186,8 @@ function verify(f){
     return true;
   }
   msg ="-------------------------------------------------------\n";
-  msg+="<? echo _("Le formulaire n'est pas valide car certains champs"); ?>"+"\n";
-  msg+="<? echo _("obligatoires sont vides, veuillez les remplir :"); ?>"+"\n";
+  msg+="<? echo _("The form is not valid because some fields"); ?>"+"\n";
+  msg+="<? echo _("are mandatory but still empty, please fill them:"); ?>"+"\n";
   msg+="-------------------------------------------------------\n";
   if (empty_fields){
     msg+=empty_fields;
@@ -210,7 +210,7 @@ function verify(f){
     return verify(this);">
   <? if ($error_detected!="") { ?>
   <DIV id="errorbox">
-    <H1><? echo _("- ERREUR -"); ?></H1>
+    <H1><? echo _("- ERROR -"); ?></H1>
     <UL>
       <? echo $error_detected; ?>
     </UL>
@@ -219,7 +219,7 @@ function verify(f){
     if ($warning_detected!="") {
   ?>
   <DIV id="warningbox">
-    <H1><? echo _("- AVERTISSEMENT -"); ?></H1>
+    <H1><? echo _("- WARNING -"); ?></H1>
     <UL>
       <? echo $warning_detected; ?>
     </UL>
@@ -234,33 +234,33 @@ function verify(f){
       <TABLE border="0" id="input-table"> 
         <TR> 
 	  <TH <? echo $titre_adh_req ?> id="libelle">
-            <? echo _("Titre :"); ?>
+            <? echo _("Title:"); ?>
           </TH> 
 	  <TD colspan="3">
 	    <INPUT type="radio" name="titre_adh" value="3" <? isChecked($titre_adh,"3") ?>> 
-            <? echo _("Mademoiselle"); ?>&nbsp;&nbsp;
+            <? echo _("Miss"); ?>&nbsp;&nbsp;
 	    <INPUT type="radio" name="titre_adh" value="2" <? isChecked($titre_adh,"2") ?>> 
-            <? echo _("Madame"); ?>&nbsp;&nbsp;
+            <? echo _("Mrs"); ?>&nbsp;&nbsp;
 	    <INPUT type="radio" name="titre_adh" value="1" <? isChecked($titre_adh,"1") ?>> 
-            <? echo _("Monsieur"); ?>&nbsp;&nbsp;
+            <? echo _("Mister"); ?>&nbsp;&nbsp;
 	  </TD> 
         </TR> 
         <TR> 
   	  <TH <? echo $nom_adh_req ?> id="libelle">
-            <? echo _("Nom :"); ?>
+            <? echo _("Name:"); ?>
           </TH> 
   	  <TD>
             <INPUT type="text" name="nom_adh" value="<? echo $nom_adh; ?>" maxlength="<? echo $nom_adh_len; ?>" >
           </TD> 
   	  <TD colspan="2" rowspan="4" align="center" width="130">
-            <? echo _("Vous pouvez préparer une photo à télécharger après avoir envoyé"); ?>
-            <? echo _("votre cotisation.") ?>
+            <? echo _("You can prepare a picture to upload after sending"); ?>
+            <? echo _("your fee.") ?>
             <!-- l'adhérent qui s'auto-inscrit ne peut pas tout de suite expédier une image -->
   	  </TD>
         </TR>
         <TR>
   	  <TH <? echo $prenom_adh_req ?> id="libelle">
-            <? echo _("Prénom :"); ?>
+            <? echo _("First name:"); ?>
           </TH> 
   	  <TD>
             <INPUT type="text" name="prenom_adh" value="<? echo $prenom_adh; ?>" maxlength="<? echo $prenom_adh_len; ?>" >
@@ -268,7 +268,7 @@ function verify(f){
         </TR>						   
         <TR> 
   	  <TH <? echo $pseudo_adh_req ?> id="libelle">
-            <? echo _("Pseudo :"); ?>
+            <? echo _("Nickname:"); ?>
           </TH> 
   	  <TD>
             <INPUT type="text" name="pseudo_adh" value="<? echo $pseudo_adh; ?>" maxlength="<? echo $pseudo_adh_len; ?>">
@@ -276,19 +276,19 @@ function verify(f){
         </TR> 
         <TR> 
   	  <TH <? echo $ddn_adh_req ?> id="libelle">
-            <? echo _("Date de naissance :"); ?><br>&nbsp;
+            <? echo _("birth date:"); ?><br>&nbsp;
           </TH> 
   	  <TD>
             <INPUT type="text" name="ddn_adh" value="<? echo $ddn_adh; ?>" maxlength="10">
             <BR>
             <DIV class="exemple">
-              <? echo _("(format jj/mm/aaaa)"); ?>
+              <? echo _("(dd/mm/yyyy format)"); ?>
             </DIV>
           </TD>
         </TR>
         <TR>
   	  <TH <? echo $prof_adh_req ?> id="libelle">
-  	    <? echo _("Profession :"); ?>
+  	    <? echo _("Profession:"); ?>
   	  </TH> 
   	  <TD>
   	    <input type="text" name="prof_adh" value="<? echo $prof_adh; ?>" maxlength="<? echo $prof_adh_len; ?>">
@@ -302,13 +302,13 @@ function verify(f){
         </TR> 
         <TR>
   	  <TH id="libelle">
-  	    <? echo _("Je souhaite apparaître dans la liste des membres :"); ?>
+  	    <? echo _("Be visible in the<br /> members list :"); ?>
   	  </TH>
   	  <TD>
   	    <input type="checkbox" name="bool_display_info" value="1"<? isChecked($bool_display_info,"1") ?>>
   	  </TD> 
   	  <TH id="libelle">
-  	    <? echo _("Langue :") ?>
+  	    <? echo _("Language:") ?>
   	  </TH>
   	  <TD>
   	    <SELECT NAME="pref_lang">
@@ -335,7 +335,7 @@ function verify(f){
         </TR>
         <TR> 
   	  <TH id="libelle" <? echo $adresse_adh_req ?>>
-  	    <? echo _("Adresse :"); ?>
+  	    <? echo _("Address:"); ?>
   	  </TH> 
   	  <TD colspan="3">
   	    <INPUT type="text" name="adresse_adh" value="<? echo $adresse_adh; ?>" maxlength="<? echo $adresse_adh_len; ?>" size="63">
@@ -345,13 +345,13 @@ function verify(f){
         </TR> 
         <TR> 
   	  <TH id="libelle" <? echo $cp_adh_req ?>>
-  	    <? echo _("Code Postal :"); ?>
+  	    <? echo _("Zip Code:"); ?>
   	  </TH> 
   	  <TD>
   	    <INPUT type="text" name="cp_adh" value="<? echo $cp_adh; ?>" maxlength="<? echo $cp_adh_len; ?>">
   	  </TD> 
   	  <TH id="libelle" <? echo $ville_adh_req ?>>
-  	    <? echo _("Ville :"); ?>
+  	    <? echo _("City:"); ?>
   	  </TH> 
   	  <TD>
   	    <INPUT type="text" name="ville_adh" value="<? echo $ville_adh; ?>" maxlength="<? echo $ville_adh_len; ?>">
@@ -359,13 +359,13 @@ function verify(f){
         </TR> 
         <TR> 
   	  <TH id="libelle" <? echo $pays_adh_req ?>>
-  	    <? echo _("Pays :"); ?>
+  	    <? echo _("Country:"); ?>
   	  </TH> 
   	  <TD>
   	    <INPUT type="text" name="pays_adh" value="<? echo $pays_adh; ?>" maxlength="<? echo $pays_adh_len; ?>">
   	  </TD> 
   	  <TH id="libelle" <? echo $tel_adh_req ?>>
-  	    <? echo _("Tel :"); ?>
+  	    <? echo _("Phone:"); ?>
   	  </TH> 
   	  <TD>
   	    <INPUT type="text" name="tel_adh" value="<? echo $tel_adh; ?>" maxlength="<? echo $tel_adh_len; ?>">
@@ -373,13 +373,13 @@ function verify(f){
         </TR> 
         <TR> 
   	  <TH id="libelle" <? echo $gsm_adh_req ?>>
-  	    <? echo _("GSM :"); ?>
+  	    <? echo _("Mobile phone:"); ?>
   	  </TH> 
   	  <TD>
   	    <INPUT type="text" name="gsm_adh" value="<? echo $gsm_adh; ?>" maxlength="<? echo $gsm_adh_len; ?>">
   	  </TD> 
   	  <TH id="libelle" <? echo $email_adh_req ?>>
-  	    <? echo _("E-Mail :"); ?>
+  	    <? echo _("E-Mail:"); ?>
   	  </TH>
   	  <TD>
   	    <INPUT type="text" name="email_adh" value="<? echo $email_adh; ?>" maxlength="<? echo $email_adh_len; ?>" size="30">
@@ -387,13 +387,13 @@ function verify(f){
         </TR> 
         <TR> 
   	  <TH id="libelle" <? echo $url_adh_req ?>>
-  	    <? echo _("Site Web :"); ?>
+  	    <? echo _("Website:"); ?>
   	  </TH> 
   	  <TD>
   	    <INPUT type="text" name="url_adh" value="http://" maxlength="<? echo $url_adh_len; ?>" size="30">
   	  </TD> 
   	  <TH id="libelle" <? echo $icq_adh_req ?>>
-  	    <? echo _("ICQ :"); ?>
+  	    <? echo _("ICQ:"); ?>
   	  </TH> 
   	  <TD>
   	    <INPUT type="text" name="icq_adh" value="<? echo $icq_adh; ?>" maxlength="<? echo $icq_adh_len; ?>">
@@ -401,13 +401,13 @@ function verify(f){
         </TR> 
         <TR> 
   	  <TH id="libelle" <? echo $jabber_adh_req ?>>
-  	    <? echo _("Jabber :"); ?>
+  	    <? echo _("Jabber:"); ?>
   	  </TH> 
   	  <TD>
   	    <INPUT type="text" name="jabber_adh" value="<? echo $jabber_adh; ?>" maxlength="<? echo $jabber_adh_len; ?>" size="30">
   	  </TD> 
   	  <TH id="libelle" <? echo $msn_adh_req ?>>
-  	    <? echo _("MSN :"); ?>
+  	    <? echo _("MSN:"); ?>
   	  </TH> 
   	  <TD>
   	    <INPUT type="text" name="msn_adh" value="<? echo $msn_adh; ?>" maxlength="<? echo $msn_adh_len; ?>" size="30">
@@ -418,22 +418,22 @@ function verify(f){
         </TR>
         <TR> 
   	  <TH id="libelle" <? echo $login_adh_req ?>>
-  	    <? echo _("Identifiant :"); ?><BR>&nbsp;
+  	    <? echo _("Username:"); ?><BR>&nbsp;
           </TH> 
   	  <TD>
   	    <INPUT type="text" name="login_adh" value="<? echo $login_adh; ?>" maxlength="<? echo $login_adh_len; ?>"><BR>
   	    <DIV class="exemple">
-  	      <? echo _("(au moins 4 caractères)"); ?>
+  	      <? echo _("(at least 4 characters)"); ?>
   	    </DIV>
   	  </TD> 
   	  <TH id="libelle" <? echo $mdp_adh_req ?>>
-  	    <? echo _("Mot de passe :"); ?><BR>&nbsp;
+  	    <? echo _("Password:"); ?><BR>&nbsp;
           </TH> 
   	  <TD>
             <?
               $c=PasswordImage();
               $f=PasswordImageName($c);
-              echo _("Recopiez dans le cadre le mot de passe présenté dans l'image.")."<BR>\n";
+              echo _("Please repeat in the field the password shown in the image.")."<BR>\n";
             ?>
             <INPUT type="hidden" name="mdp_crypt" value="<? echo $c ?>">
             <IMG SRC="photo.php?pw=<? echo $f ?>"><BR>
@@ -442,7 +442,7 @@ function verify(f){
         </TR>
         <TR> 
           <TH id="libelle" <? echo $info_public_adh_req ?>>
-            <? echo _("Autres informations :"); ?>
+            <? echo _("Other informations:"); ?>
           </TH> 
   	  <TD colspan="3">
   	    <TEXTAREA name="info_public_adh" cols="61" rows="6">
@@ -518,14 +518,14 @@ function verify(f){
   ?> 
         <TR> 
           <TH align="center" colspan="4"><BR>
-            <INPUT type="submit" name="valid" value="<? echo _("Enregistrer"); ?>">
+            <INPUT type="submit" name="valid" value="<? echo _("Save"); ?>">
           </TH> 
         </TR> 
       </TABLE> 
     </DIV>
     <BR> 
-    <? echo _("NB : Les champs obligatoires apparaissent en"); ?> 
-    <FONT style="color: #FF0000"><? echo _("rouge"); ?></FONT>. 
+    <? echo _("NB : The mandatory fields are in"); ?> 
+    <FONT style="color: #FF0000"><? echo _("red"); ?></FONT>. 
   </BLOCKQUOTE> 
   <INPUT type="hidden" name="id_adh" value="<? echo $id_adh ?>"> 
 </FORM> 

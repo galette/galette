@@ -8,100 +8,99 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-05 18:27+0200\n"
+"POT-Creation-Date: 2004-08-07 20:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../index.php:38 ../footer.php:105
-msgid "Administrateur"
+msgid "Admin"
 msgstr ""
 
 #: ../index.php:39 ../index.php:60 ../index.php:91 ../index.php:104
-msgid "Identification"
+msgid "Login"
 msgstr ""
 
 #: ../index.php:63
-msgid "Echec authentification. Login :"
+msgid "Authentication failed. Login:"
 msgstr ""
 
 #: ../index.php:96 ../self_adherent.php:138 ../self_adherent.php:421
 #: ../lostpasswd.php:71 ../lostpasswd.php:131 ../preferences.php:492
-#: ../voir_adherent.php:242 ../install/index.php:787
+#: ../voir_adherent.php:242 ../install/index.php:754
 #: ../ajouter_adherent.php:298 ../ajouter_adherent.php:726
-msgid "Identifiant :"
+msgid "Username:"
 msgstr ""
 
 #: ../index.php:100 ../self_adherent.php:139 ../self_adherent.php:430
 #: ../lostpasswd.php:72 ../preferences.php:496 ../voir_adherent.php:244
-#: ../install/index.php:334 ../install/index.php:793
+#: ../install/index.php:301 ../install/index.php:760
 #: ../ajouter_adherent.php:299 ../ajouter_adherent.php:728
-msgid "Mot de passe :"
+msgid "Password:"
 msgstr ""
 
 #: ../index.php:106
-msgid "Mot de passe perdu ?"
+msgid "Lost your password?"
 msgstr ""
 
 #: ../self_adherent.php:89
-msgid "Erreur en recopiant le mot de passe : "
+msgid "Password misrepeated: "
 msgstr ""
 
 #: ../self_adherent.php:92 ../ajouter_adherent.php:120
-msgid "Désolé, "
+msgid "Sorry, "
 msgstr ""
 
 #: ../self_adherent.php:92 ../ajouter_adherent.php:120
-msgid " est un identifiant déjà utilisé, choisissez-en un autre\n"
+msgid ""
+" is a username already used by another member, please select another one\n"
 msgstr ""
 
 #: ../self_adherent.php:125
-msgid "Auto-inscription d'adhérent :"
+msgid "Self_subscription as a member:"
 msgstr ""
 
 #: ../self_adherent.php:128 ../lostpasswd.php:63 ../ajouter_adherent.php:288
-msgid "Vos identifiants Galette"
+msgid "Your Galette identifiers"
 msgstr ""
 
 #: ../self_adherent.php:129 ../lostpasswd.php:64 ../ajouter_adherent.php:289
-msgid "Bonjour,"
+msgid "Hello,"
 msgstr ""
 
 #: ../self_adherent.php:131 ../ajouter_adherent.php:291
 msgid ""
-"Vous venez d'être inscrit sur le système de gestion d'adhérents de "
-"l'association."
+"You've just been subscribed on the members management system of the "
+"association."
 msgstr ""
 
 #: ../self_adherent.php:132 ../ajouter_adherent.php:292
 msgid ""
-"Il vous est désormais possible de suivre en temps réel l'état de votre "
-"adhésion"
+"It is now possible to follow in real time the state of your subscription"
 msgstr ""
 
 #: ../self_adherent.php:133 ../ajouter_adherent.php:293
-msgid ""
-"et de mettre à jour vos coordonnées par l'interface web prévue à cet effet."
+msgid "and to update your preferences from the web interface."
 msgstr ""
 
 #: ../self_adherent.php:135 ../lostpasswd.php:68 ../ajouter_adherent.php:295
-msgid "Veuillez vous identifier à cette adresse :"
+msgid "Please login at this address:"
 msgstr ""
 
 #: ../self_adherent.php:141 ../lostpasswd.php:74 ../ajouter_adherent.php:301
-msgid "A trés bientôt !"
+msgid "See you soon!"
 msgstr ""
 
 #: ../self_adherent.php:143 ../lostpasswd.php:76 ../ajouter_adherent.php:303
-msgid "(ce mail est un envoi automatique)"
+msgid "(this mail was sent automatically)"
 msgstr ""
 
 #: ../self_adherent.php:160 ../voir_adherent.php:86
 #: ../ajouter_adherent.php:506
-msgid "Fiche adhérent"
+msgid "Member Profile"
 msgstr ""
 
 #: ../self_adherent.php:161 ../self_contribution.php:208
@@ -111,195 +110,195 @@ msgstr ""
 
 #: ../self_adherent.php:161 ../self_contribution.php:208
 #: ../ajouter_contribution.php:297 ../ajouter_adherent.php:506
-msgid "création"
+msgid "creation"
 msgstr ""
 
 #: ../self_adherent.php:189
-msgid "Le formulaire n'est pas valide car certains champs"
+msgid "The form is not valid because some fields"
 msgstr ""
 
 #: ../self_adherent.php:190
-msgid "obligatoires sont vides, veuillez les remplir :"
+msgid "are mandatory but still empty, please fill them:"
 msgstr ""
 
 #: ../self_adherent.php:213 ../mailing_adherents.php:113
 #: ../self_contribution.php:217 ../lostpasswd.php:111
 #: ../configurer_fiches.php:89 ../preferences.php:321
 #: ../ajouter_contribution.php:306 ../ajouter_adherent.php:515
-msgid "- ERREUR -"
+msgid "- ERROR -"
 msgstr ""
 
-#: ../self_adherent.php:222 ../lostpasswd.php:120 ../preferences.php:332
-#: ../ajouter_adherent.php:526
-msgid "- AVERTISSEMENT -"
+#: ../self_adherent.php:222 ../mailing_adherents.php:475 ../lostpasswd.php:120
+#: ../preferences.php:332 ../ajouter_adherent.php:526
+msgid "- WARNING -"
 msgstr ""
 
 #: ../self_adherent.php:237 ../ajouter_adherent.php:538
-msgid "Titre :"
+msgid "Title:"
 msgstr ""
 
 #: ../self_adherent.php:241 ../ajouter_adherent.php:540
-msgid "Mademoiselle"
+msgid "Miss"
 msgstr ""
 
 #: ../self_adherent.php:243 ../ajouter_adherent.php:541
-msgid "Madame"
+msgid "Mrs"
 msgstr ""
 
 #: ../self_adherent.php:245 ../ajouter_adherent.php:542
-msgid "Monsieur"
+msgid "Mister"
 msgstr ""
 
 #: ../self_adherent.php:250 ../voir_adherent.php:91
 #: ../ajouter_adherent.php:546
-msgid "Nom :"
+msgid "Name:"
 msgstr ""
 
 #: ../self_adherent.php:256
-msgid "Vous pouvez préparer une photo à télécharger après avoir envoyé"
+msgid "You can prepare a picture to upload after sending"
 msgstr ""
 
 #: ../self_adherent.php:257
-msgid "votre cotisation."
+msgid "your fee."
 msgstr ""
 
 #: ../self_adherent.php:263 ../ajouter_adherent.php:572
-msgid "Prénom :"
+msgid "First name:"
 msgstr ""
 
 #: ../self_adherent.php:271 ../voir_adherent.php:151
 #: ../ajouter_adherent.php:576
-msgid "Pseudo :"
+msgid "Nickname:"
 msgstr ""
 
 #: ../self_adherent.php:279 ../voir_adherent.php:155
 #: ../ajouter_adherent.php:580
-msgid "Date de naissance :"
+msgid "birth date:"
 msgstr ""
 
 #: ../self_adherent.php:285 ../self_contribution.php:249
 #: ../ajouter_contribution.php:366 ../ajouter_adherent.php:581
 #: ../ajouter_adherent.php:741
-msgid "(format jj/mm/aaaa)"
+msgid "(dd/mm/yyyy format)"
 msgstr ""
 
 #: ../self_adherent.php:291 ../voir_adherent.php:173
 #: ../ajouter_adherent.php:584
-msgid "Profession :"
+msgid "Profession:"
 msgstr ""
 
 #: ../self_adherent.php:305 ../voir_adherent.php:177
 #: ../ajouter_adherent.php:607
-msgid "Je souhaite apparaître dans la liste des membres :"
+msgid "Be visible in the<br /> members list :"
 msgstr ""
 
 #: ../self_adherent.php:311 ../preferences.php:407 ../voir_adherent.php:195
 #: ../ajouter_adherent.php:609
-msgid "Langue :"
+msgid "Language:"
 msgstr ""
 
 #: ../self_adherent.php:338 ../mailing_adherents.php:769
 #: ../preferences.php:384 ../voir_adherent.php:205 ../ajouter_adherent.php:686
-msgid "Adresse :"
+msgid "Address:"
 msgstr ""
 
 #: ../self_adherent.php:348 ../preferences.php:392 ../voir_adherent.php:209
 #: ../ajouter_adherent.php:693
-msgid "Code Postal :"
+msgid "Zip Code:"
 msgstr ""
 
 #: ../self_adherent.php:354 ../preferences.php:396 ../voir_adherent.php:211
 #: ../ajouter_adherent.php:695
-msgid "Ville :"
+msgid "City:"
 msgstr ""
 
 #: ../self_adherent.php:362 ../preferences.php:400 ../voir_adherent.php:215
 #: ../ajouter_adherent.php:699
-msgid "Pays :"
+msgid "Country:"
 msgstr ""
 
 #: ../self_adherent.php:368 ../mailing_adherents.php:771
 #: ../voir_adherent.php:217 ../ajouter_adherent.php:701
-msgid "Tel :"
+msgid "Phone:"
 msgstr ""
 
 #: ../self_adherent.php:376 ../mailing_adherents.php:773
 #: ../voir_adherent.php:221 ../ajouter_adherent.php:705
-msgid "GSM :"
+msgid "Mobile phone:"
 msgstr ""
 
 #: ../self_adherent.php:382 ../voir_adherent.php:223
 #: ../ajouter_adherent.php:707
-msgid "E-Mail :"
+msgid "E-Mail:"
 msgstr ""
 
 #: ../self_adherent.php:390 ../voir_adherent.php:227
 #: ../ajouter_adherent.php:711
-msgid "Site Web :"
+msgid "Website:"
 msgstr ""
 
 #: ../self_adherent.php:396 ../mailing_adherents.php:775
 #: ../voir_adherent.php:229 ../ajouter_adherent.php:713
-msgid "ICQ :"
+msgid "ICQ:"
 msgstr ""
 
 #: ../self_adherent.php:404 ../mailing_adherents.php:777
 #: ../voir_adherent.php:233 ../ajouter_adherent.php:717
-msgid "Jabber :"
+msgid "Jabber:"
 msgstr ""
 
 #: ../self_adherent.php:410 ../mailing_adherents.php:779
 #: ../voir_adherent.php:235 ../ajouter_adherent.php:719
-msgid "MSN :"
+msgid "MSN:"
 msgstr ""
 
 #: ../self_adherent.php:426 ../ajouter_adherent.php:727
 #: ../ajouter_adherent.php:729
-msgid "(au moins 4 caractères)"
+msgid "(at least 4 characters)"
 msgstr ""
 
 #: ../self_adherent.php:436
-msgid "Recopiez dans le cadre le mot de passe présenté dans l'image."
+msgid "Please repeat in the field the password shown in the image."
 msgstr ""
 
 #: ../self_adherent.php:445 ../voir_adherent.php:265
 #: ../ajouter_adherent.php:751
-msgid "Autres informations :"
+msgid "Other informations:"
 msgstr ""
 
 #: ../self_adherent.php:521 ../self_contribution.php:256
 #: ../preferences.php:500 ../ajouter_contribution.php:373
 #: ../ajouter_adherent.php:838
-msgid "Enregistrer"
+msgid "Save"
 msgstr ""
 
 #: ../self_adherent.php:527 ../self_contribution.php:261
 #: ../preferences.php:505 ../ajouter_contribution.php:378
 #: ../ajouter_adherent.php:843
-msgid "NB : Les champs obligatoires apparaissent en"
+msgid "NB : The mandatory fields are in"
 msgstr ""
 
 #: ../self_adherent.php:528 ../self_contribution.php:261
 #: ../preferences.php:505 ../ajouter_contribution.php:378
 #: ../ajouter_adherent.php:843
-msgid "rouge"
+msgid "red"
 msgstr ""
 
 #: ../mailing_adherents.php:56
-msgid "Veuillez indiquer un objet pour le message."
+msgid "Please type an object for the message."
 msgstr ""
 
 #: ../mailing_adherents.php:59
-msgid "Veuillez saisir un message."
+msgid "Please enter a message."
 msgstr ""
 
 #: ../mailing_adherents.php:62
-msgid "Veuillez sélectionner au moins un adhérent."
+msgid "Please select at least one member."
 msgstr ""
 
 #: ../mailing_adherents.php:98 ../mailing_adherents.php:404
 #: ../mailing_adherents.php:840 ../footer.php:46
-msgid "Génération d'étiquettes"
+msgid "Generate labels"
 msgstr ""
 
 #: ../mailing_adherents.php:104 ../mailing_adherents.php:471
@@ -307,54 +306,54 @@ msgid "Mailing"
 msgstr ""
 
 #: ../mailing_adherents.php:212 ../gestion_adherents.php:204
-msgid "adhérents"
+msgid "members"
 msgstr ""
 
 #: ../mailing_adherents.php:212 ../gestion_adherents.php:204
-msgid "adhérent"
+msgid "member"
 msgstr ""
 
 #: ../mailing_adherents.php:216 ../gestion_adherents.php:187
-msgid "Afficher :"
+msgid "Display:"
 msgstr ""
 
 #: ../mailing_adherents.php:218 ../gestion_adherents.php:189
-msgid "Tout les adhérents"
+msgid "All members"
 msgstr ""
 
 #: ../mailing_adherents.php:219 ../gestion_adherents.php:190
-msgid "Les adhérents à jour"
+msgid "Members up to date"
 msgstr ""
 
 #: ../mailing_adherents.php:220 ../gestion_adherents.php:191
-msgid "Les échéances proches"
+msgid "Close expiries"
 msgstr ""
 
 #: ../mailing_adherents.php:221 ../gestion_adherents.php:192
-msgid "Les retardataires"
+msgid "Latecomers"
 msgstr ""
 
 #: ../mailing_adherents.php:224 ../gestion_adherents.php:195
-msgid "Tous  les comptes"
+msgid "All the accounts"
 msgstr ""
 
 #: ../mailing_adherents.php:225 ../gestion_adherents.php:196
-msgid "Comptes actifs"
+msgid "Active accounts"
 msgstr ""
 
 #: ../mailing_adherents.php:226 ../gestion_adherents.php:197
-msgid "Comptes désactivés"
+msgid "Inactive accounts"
 msgstr ""
 
 #: ../mailing_adherents.php:228 ../gestion_contributions.php:234
 #: ../gestion_adherents.php:199
-msgid "Filtrer"
+msgid "Filter"
 msgstr ""
 
 #: ../mailing_adherents.php:252 ../mailing_adherents.php:481
 #: ../mailing_adherents.php:649 ../footer.php:120 ../footer.php:124
 #: ../configurer_fiches.php:102 ../gestion_adherents.php:212
-msgid "Nom"
+msgid "Name"
 msgstr ""
 
 #: ../mailing_adherents.php:262 ../mailing_adherents.php:482
@@ -363,75 +362,75 @@ msgstr ""
 
 #: ../mailing_adherents.php:272 ../mailing_adherents.php:483
 #: ../mailing_adherents.php:651 ../gestion_adherents.php:242
-msgid "Statut"
+msgid "Status"
 msgstr ""
 
 #: ../mailing_adherents.php:282 ../mailing_adherents.php:484
 #: ../mailing_adherents.php:652 ../gestion_adherents.php:257
-msgid "Etat cotisations"
+msgid "State of dues"
 msgstr ""
 
 #: ../mailing_adherents.php:298 ../mailing_adherents.php:493
 #: ../mailing_adherents.php:659 ../gestion_adherents.php:278
-msgid "aucun adhérent"
+msgid "no member"
 msgstr ""
 
 #: ../mailing_adherents.php:313 ../mailing_adherents.php:515
 #: ../mailing_adherents.php:674 ../gestion_contributions.php:393
 #: ../gestion_adherents.php:292
-msgid "Exempt de cotisation"
+msgid "Freed of dues"
 msgstr ""
 
 #: ../mailing_adherents.php:320 ../mailing_adherents.php:522
 #: ../mailing_adherents.php:681 ../footer.php:129
 #: ../gestion_contributions.php:400 ../gestion_adherents.php:299
-msgid "N'a jamais cotisé"
+msgid "Never contributed"
 msgstr ""
 
 #: ../mailing_adherents.php:332 ../mailing_adherents.php:534
 #: ../mailing_adherents.php:693 ../gestion_contributions.php:414
 #: ../gestion_adherents.php:311
-msgid "Dernier jour !"
+msgid "Last day!"
 msgstr ""
 
 #: ../mailing_adherents.php:337 ../mailing_adherents.php:539
 #: ../mailing_adherents.php:698 ../gestion_adherents.php:316
-msgid "En retard de "
+msgid "Late of "
 msgstr ""
 
 #: ../mailing_adherents.php:337 ../mailing_adherents.php:539
 #: ../mailing_adherents.php:698 ../gestion_contributions.php:419
 #: ../gestion_adherents.php:316
-msgid "jours"
+msgid "days"
 msgstr ""
 
 #: ../mailing_adherents.php:337 ../mailing_adherents.php:539
 #: ../mailing_adherents.php:698 ../gestion_contributions.php:419
 #: ../gestion_adherents.php:316
-msgid "depuis le"
+msgid "since"
 msgstr ""
 
 #: ../mailing_adherents.php:342 ../mailing_adherents.php:544
 #: ../mailing_adherents.php:703 ../gestion_contributions.php:425
 #: ../gestion_adherents.php:322
-msgid "jours restants"
+msgid "days remaining"
 msgstr ""
 
 #: ../mailing_adherents.php:342 ../mailing_adherents.php:544
 #: ../mailing_adherents.php:703 ../gestion_contributions.php:425
 #: ../gestion_contributions.php:427 ../gestion_adherents.php:322
 #: ../gestion_adherents.php:324
-msgid "fin le"
+msgid "ending on"
 msgstr ""
 
 #: ../mailing_adherents.php:359 ../mailing_adherents.php:559
 #: ../mailing_adherents.php:718 ../footer.php:85 ../gestion_adherents.php:339
-msgid "[H]"
+msgid "[M]"
 msgstr ""
 
 #: ../mailing_adherents.php:363 ../mailing_adherents.php:563
 #: ../mailing_adherents.php:722 ../footer.php:89 ../gestion_adherents.php:343
-msgid "[F]"
+msgid "[W]"
 msgstr ""
 
 #: ../mailing_adherents.php:370 ../mailing_adherents.php:570
@@ -450,102 +449,98 @@ msgstr ""
 
 #: ../mailing_adherents.php:388 ../gestion_adherents.php:373
 msgid ""
-"Voulez-vous vraiment supprimer cet adhérent de la base, ceci supprimera "
-"aussi l'historique de ses cotisations. Pour éviter cela vous pouvez "
-"simplement désactiver le compte.\n"
+"Do you really want to delete this member from the base, this will delete "
+"also the history of her fees. To avoid this you can just unactivate her "
+"account.\n"
 "\n"
-"Voulez-vous tout de même supprimer cet adhérent ?"
+"Do you still want to delete this member ?"
 msgstr ""
 
 #: ../mailing_adherents.php:388 ../footer.php:116 ../footer.php:162
 #: ../configurer_fiches.php:140 ../gestion_contributions.php:367
 #: ../gestion_adherents.php:373
-msgid "[sup]"
+msgid "[del]"
 msgstr ""
 
 #: ../mailing_adherents.php:397
-msgid "[ Tout cocher / décocher ]"
+msgid "[ Select / unselect all ]"
 msgstr ""
 
 #: ../mailing_adherents.php:413 ../mailing_adherents.php:607
-msgid "Objet :"
+msgid "Object:"
 msgstr ""
 
 #: ../mailing_adherents.php:419 ../mailing_adherents.php:609
-msgid "Message :"
+msgid "Message:"
 msgstr ""
 
 #: ../mailing_adherents.php:427
-msgid "Prévisualiser"
+msgid "Preview"
 msgstr ""
 
 #: ../mailing_adherents.php:469
 msgid ""
-"Pensez à contacter les adhérents ne disposant pas d'une adresse E-Mail par "
-"un autre moyen."
+"Don't forget to contact the members who don't have an email address by "
+"another way."
 msgstr ""
 
 #: ../mailing_adherents.php:471
-msgid "effectué !"
+msgid "done!"
 msgstr ""
 
 #: ../mailing_adherents.php:471
-msgid "(prévisualisation)"
-msgstr ""
-
-#: ../mailing_adherents.php:475
-msgid "- ATTENTION -"
+msgid "(preview)"
 msgstr ""
 
 #: ../mailing_adherents.php:478
-msgid "Destinataires du mailing :"
+msgid "Recipients of the mailing:"
 msgstr ""
 
 #: ../mailing_adherents.php:596
-msgid "Envoi d'un mailing intitulé :"
+msgid "Send of a mailing titled:"
 msgstr ""
 
 #: ../mailing_adherents.php:596
-msgid "destinataires"
+msgid "recipients"
 msgstr ""
 
 #: ../mailing_adherents.php:636
-msgid "Envoyer"
+msgid "Send"
 msgstr ""
 
 #: ../mailing_adherents.php:646
-msgid "Adhérents non joignables par email :"
+msgid "Members who can't be reachable by e-mail:"
 msgstr ""
 
 #: ../mailing_adherents.php:650
-msgid "Coordonnées"
+msgid "Profile"
 msgstr ""
 
 #: ../mailing_adherents.php:815 ../mailing_adherents.php:825
-#: ../install/index.php:407
-msgid "Retour"
+#: ../install/index.php:374
+msgid "Go back"
 msgstr ""
 
 #: ../log.php:42 ../log.php:110
-msgid "Réinitialisation de l'historique"
+msgid "Flush the logs"
 msgstr ""
 
 #: ../log.php:108 ../footer.php:47
-msgid "Historique"
+msgid "Logs"
 msgstr ""
 
 #: ../log.php:115
-msgid "lignes"
+msgid "lines"
 msgstr ""
 
 #: ../log.php:115
-msgid "ligne"
+msgid "line"
 msgstr ""
 
 #: ../log.php:116 ../log.php:208 ../gestion_contributions.php:240
 #: ../gestion_contributions.php:378 ../gestion_adherents.php:205
 #: ../gestion_adherents.php:383
-msgid "Pages :"
+msgid "Pages:"
 msgstr ""
 
 #: ../log.php:123 ../gestion_contributions.php:247
@@ -557,7 +552,7 @@ msgid "IP"
 msgstr ""
 
 #: ../log.php:153 ../gestion_contributions.php:261
-msgid "Adhérent"
+msgid "Member"
 msgstr ""
 
 #: ../log.php:168
@@ -565,128 +560,125 @@ msgid "Description"
 msgstr ""
 
 #: ../log.php:188
-msgid "historique vide"
+msgid "logs are empty"
 msgstr ""
 
 #: ../self_contribution.php:126 ../ajouter_contribution.php:142
-msgid "- Vérifiez que tous les champs obligatoires sont renseignés."
+msgid "- Check that all mandatory fields are filled in."
 msgstr ""
 
 #: ../self_contribution.php:136 ../gestion_contributions.php:55
 #: ../gestion_contributions.php:70 ../ajouter_contribution.php:155
 #: ../ajouter_adherent.php:177
-msgid "- Date non valide !"
+msgid "- Non valid date!"
 msgstr ""
 
 #: ../self_contribution.php:140 ../gestion_contributions.php:62
 #: ../gestion_contributions.php:77 ../ajouter_contribution.php:159
 #: ../ajouter_adherent.php:180
-msgid "- Mauvais format de date (jj/mm/aaaa) !"
+msgid "- Wrong date format (dd/mm/yyyy)!"
 msgstr ""
 
 #: ../self_contribution.php:146 ../ajouter_contribution.php:166
-msgid "- La durée doit être un entier !"
+msgid "- The duration must be an integer!"
 msgstr ""
 
 #: ../self_contribution.php:153 ../ajouter_contribution.php:174
-msgid "- Le montant doit être un chiffre !"
+msgid "- The amount must be an integer!"
 msgstr ""
 
 #: ../self_contribution.php:177
-msgid "Ajout d'une self-contribution :"
+msgid "Add a self-contribution:"
 msgstr ""
 
 #: ../self_contribution.php:208 ../ajouter_contribution.php:297
-msgid "Fiche contribution"
+msgid "Contribution card"
 msgstr ""
 
 #: ../self_contribution.php:229 ../ajouter_contribution.php:318
-msgid "Contributeur :"
+msgid "Contributor:"
 msgstr ""
 
 #: ../self_contribution.php:234 ../ajouter_contribution.php:338
-msgid "Type de contribution :"
+msgid "Contribution type:"
 msgstr ""
 
 #: ../self_contribution.php:238
-msgid "Cotisation annuelle (à payer)"
+msgid "Annual fee (to be paid)"
 msgstr ""
 
 #: ../self_contribution.php:242 ../ajouter_contribution.php:359
-msgid "Montant :"
+msgid "Amount:"
 msgstr ""
 
 #: ../self_contribution.php:244 ../ajouter_contribution.php:361
-msgid "Prologation adhésion :"
+msgid "Extension of adhesion:"
 msgstr ""
 
 #: ../self_contribution.php:245 ../ajouter_contribution.php:362
-msgid "mois"
+msgid "months"
 msgstr ""
 
 #: ../self_contribution.php:248 ../ajouter_contribution.php:365
-msgid "Date contribution :"
+msgid "Date of contribution:"
 msgstr ""
 
 #: ../self_contribution.php:252 ../ajouter_contribution.php:369
-msgid "Commentaire :"
+msgid "Comments:"
 msgstr ""
 
 #: ../lostpasswd.php:31
-msgid "login vide"
+msgid "empty login"
 msgstr ""
 
 #: ../lostpasswd.php:39
-msgid "login inexistant"
+msgid "this login doesn't exist"
 msgstr ""
 
 #: ../lostpasswd.php:40
-msgid ""
-"Login inexistant envoyé via le formulaire de récupération du mot de passe"
+msgid "Nonexistent login sent via the lost password form. Login:"
 msgstr ""
 
 #: ../lostpasswd.php:44
 msgid ""
-"Ce compte ne contient pas d'adresse email, veuillez contacter un "
-"administrateur"
+"This account doesn't have a valid email address. Please contact an "
+"administrator."
 msgstr ""
 
 #: ../lostpasswd.php:45
-msgid "Demande d'envoi de mot de passe mais email vide. Login :"
+msgid "Someone asked to recover his password but had no email. Login:"
 msgstr ""
 
 #: ../lostpasswd.php:66
-msgid ""
-"Quelqu'un (sûrement vous) à demandé à ce que l'on vous renvoie votre mot de "
-"passe."
+msgid "Someone (probably you) asked to recover your password."
 msgstr ""
 
 #: ../lostpasswd.php:79 ../lostpasswd.php:80
-msgid "Mot de passe envoyé. Login :"
+msgid "Password sent. Login:"
 msgstr ""
 
 #: ../lostpasswd.php:83 ../lostpasswd.php:84
-msgid "Un problème est survenu dans l'envoi du mot de passe pour le compte :"
+msgid "A problem happened while sending password for account:"
 msgstr ""
 
 #: ../lostpasswd.php:106
-msgid "Récupération de mot de passe"
+msgid "Password recovery"
 msgstr ""
 
 #: ../lostpasswd.php:135
-msgid "Envoyez-moi mon mot de passe"
+msgid "Send me my password"
 msgstr ""
 
 #: ../lostpasswd.php:141
-msgid "Retour à l'identification"
+msgid "Back to login page"
 msgstr ""
 
 #: ../footer.php:26
-msgid "Page affichée en"
+msgid "Page displayed in"
 msgstr ""
 
 #: ../footer.php:26
-msgid "secondes."
+msgid "seconds."
 msgstr ""
 
 #: ../footer.php:35
@@ -694,31 +686,31 @@ msgid "Navigation"
 msgstr ""
 
 #: ../footer.php:41
-msgid "Liste des adhérents"
+msgid "List of members"
 msgstr ""
 
 #: ../footer.php:42
-msgid "Liste des contributions"
+msgid "List of contributions"
 msgstr ""
 
 #: ../footer.php:43
-msgid "Ajouter un adhérent"
+msgid "Add a member"
 msgstr ""
 
 #: ../footer.php:44
-msgid "Ajouter une contribution"
+msgid "Add a contribution"
 msgstr ""
 
 #: ../footer.php:45
-msgid "Effectuer un mailing"
+msgid "Do a mailing"
 msgstr ""
 
 #: ../footer.php:53
-msgid "Mes informations"
+msgid "My information"
 msgstr ""
 
 #: ../footer.php:54
-msgid "Mes contributions"
+msgid "My contributions"
 msgstr ""
 
 #: ../footer.php:65
@@ -726,27 +718,27 @@ msgid "Configuration"
 msgstr ""
 
 #: ../footer.php:67 ../preferences.php:313
-msgid "Préférences"
+msgid "Settings"
 msgstr ""
 
 #: ../footer.php:68
-msgid "Configurer les fiches"
+msgid "Configure member forms"
 msgstr ""
 
 #: ../footer.php:75 ../includes/session.inc.php:32
-msgid "Déconnexion"
+msgid "Log off"
 msgstr ""
 
 #: ../footer.php:82 ../footer.php:151
-msgid "Légende"
+msgid "Legend"
 msgstr ""
 
 #: ../footer.php:86
-msgid "Homme"
+msgid "Man"
 msgstr ""
 
 #: ../footer.php:90
-msgid "Femme"
+msgid "Woman"
 msgstr ""
 
 #: ../footer.php:97 ../gestion_adherents.php:348
@@ -754,7 +746,7 @@ msgid "[Mail]"
 msgstr ""
 
 #: ../footer.php:98
-msgid "Envoyer un mail"
+msgid "Send a mail"
 msgstr ""
 
 #: ../footer.php:109 ../footer.php:159
@@ -766,107 +758,107 @@ msgid "Contributions"
 msgstr ""
 
 #: ../footer.php:117 ../footer.php:163
-msgid "Suppression"
+msgid "Deletion"
 msgstr ""
 
 #: ../footer.php:121
-msgid "Compte actif"
+msgid "Active account"
 msgstr ""
 
 #: ../footer.php:125
-msgid "Compte désactivé"
+msgid "Inactive account"
 msgstr ""
 
 #: ../footer.php:133
-msgid "Adhésion en règle"
+msgid "Membership in order"
 msgstr ""
 
 #: ../footer.php:137
-msgid "Adhésion à échéance (<30j)"
+msgid "Membership will expire soon (&lt;30d)"
 msgstr ""
 
 #: ../footer.php:141
-msgid "Retard de cotisation"
+msgid "Lateness in fee"
 msgstr ""
 
 #: ../footer.php:170
-msgid "Cotisation"
+msgid "Contribution"
 msgstr ""
 
 #: ../footer.php:174
-msgid "Don"
+msgid "Gift"
 msgstr ""
 
 #: ../includes/i18n.inc.php:58
-msgid "Réalisation :"
+msgid "Realization:"
 msgstr ""
 
 #: ../includes/i18n.inc.php:59
-msgid "Graphisme :"
+msgid "Graphics:"
 msgstr ""
 
 #: ../includes/i18n.inc.php:60
-msgid "Editeur :"
+msgid "Publisher:"
 msgstr ""
 
 #: ../includes/i18n.inc.php:61
-msgid "Président"
+msgid "President"
 msgstr ""
 
 #: ../includes/i18n.inc.php:62
-msgid "Vice-président"
+msgid "Vice-president"
 msgstr ""
 
 #: ../includes/i18n.inc.php:63
-msgid "Trésorier"
+msgid "Treasurer"
 msgstr ""
 
 #: ../includes/i18n.inc.php:64
-msgid "Secrétaire"
+msgid "Secretary"
 msgstr ""
 
 #: ../includes/i18n.inc.php:65
-msgid "Membre actif"
+msgid "Active member"
 msgstr ""
 
 #: ../includes/i18n.inc.php:66
-msgid "Membre bienfaiteur"
+msgid "Benefactor member"
 msgstr ""
 
 #: ../includes/i18n.inc.php:67
-msgid "Membre fondateur"
+msgid "Founder member"
 msgstr ""
 
 #: ../includes/i18n.inc.php:68
-msgid "Ancien"
+msgid "Old-timer"
 msgstr ""
 
 #: ../includes/i18n.inc.php:69
-msgid "Personne morale"
+msgid "Legal entity"
 msgstr ""
 
 #: ../includes/i18n.inc.php:70
-msgid "Non membre"
+msgid "Non-member"
 msgstr ""
 
 #: ../includes/i18n.inc.php:71
-msgid "Cotisation annuelle réduite"
+msgid "Reduced annual contribution"
 msgstr ""
 
 #: ../includes/i18n.inc.php:72
-msgid "Cotisation entreprise"
+msgid "Company cotisation"
 msgstr ""
 
 #: ../includes/i18n.inc.php:73
-msgid "Donation en nature"
+msgid "Donation in kind"
 msgstr ""
 
 #: ../includes/i18n.inc.php:74
-msgid "Donation pécunière"
+msgid "Donation in money"
 msgstr ""
 
 #: ../includes/i18n.inc.php:75
-msgid "Partenariat"
+msgid "Partnership"
 msgstr ""
 
 #: ../includes/i18n.inc.php:76
@@ -882,15 +874,15 @@ msgid "spanish"
 msgstr ""
 
 #: ../configurer_fiches.php:41
-msgid "- Le champ nom ne doit pas être vide."
+msgid "- The field Name cannot be void."
 msgstr ""
 
 #: ../configurer_fiches.php:97
-msgid "Configuration des fiches"
+msgid "Profile configuration"
 msgstr ""
 
 #: ../configurer_fiches.php:103
-msgid "Visibilité"
+msgid "Visibility"
 msgstr ""
 
 #: ../configurer_fiches.php:104 ../gestion_contributions.php:274
@@ -898,7 +890,7 @@ msgid "Type"
 msgstr ""
 
 #: ../configurer_fiches.php:105
-msgid "Nombre"
+msgid "Size"
 msgstr ""
 
 #: ../configurer_fiches.php:106 ../gestion_contributions.php:308
@@ -908,12 +900,12 @@ msgstr ""
 
 #: ../configurer_fiches.php:111
 msgid ""
-"Voulez-vous vraiment supprimer cette catégorie de la base, ceci supprimera "
-"aussi toutes les données associées ?"
+"Do you really want to delete this category ? All associated data will be "
+"deleted as well."
 msgstr ""
 
 #: ../configurer_fiches.php:120 ../configurer_fiches.php:184
-msgid "tous"
+msgid "all"
 msgstr ""
 
 #: ../configurer_fiches.php:121 ../configurer_fiches.php:185
@@ -921,121 +913,121 @@ msgid "admin"
 msgstr ""
 
 #: ../configurer_fiches.php:122 ../configurer_fiches.php:128
-msgid "inconnu"
+msgid "unknown"
 msgstr ""
 
 #: ../configurer_fiches.php:125 ../configurer_fiches.php:190
-msgid "séparateur"
+msgid "separator"
 msgstr ""
 
 #: ../configurer_fiches.php:126 ../configurer_fiches.php:191
-msgid "texte libre"
+msgid "free text"
 msgstr ""
 
 #: ../configurer_fiches.php:127 ../configurer_fiches.php:192
-msgid "champ"
+msgid "field"
 msgstr ""
 
 #: ../configurer_fiches.php:150
-msgid "[haut]"
+msgid "[top]"
 msgstr ""
 
 #: ../configurer_fiches.php:163
-msgid "[bas]"
+msgid "[bottom]"
 msgstr ""
 
 #: ../configurer_fiches.php:198
-msgid "Ajouter"
+msgid "Add"
 msgstr ""
 
 #: ../preferences.php:112 ../ajouter_adherent.php:166
-msgid "- Champ obligatoire non renseigné."
+msgid "- Mandatory field empty."
 msgstr ""
 
 #: ../preferences.php:121
-msgid "- Langue non valide !"
+msgid "- Non-valid language!"
 msgstr ""
 
 #: ../preferences.php:128 ../ajouter_adherent.php:186
-msgid "- Adresse E-mail non valide !"
+msgid "- Non-valid E-Mail address!"
 msgstr ""
 
 #: ../preferences.php:136 ../ajouter_adherent.php:207
-msgid "- L'identifiant doit être composé d'au moins 4 caractères !"
+msgid "- The username must be composed of at least 4 characters!"
 msgstr ""
 
 #: ../preferences.php:148 ../ajouter_adherent.php:117
 #: ../ajouter_adherent.php:219
-msgid "- Cet identifiant est déjà utilisé par un autre adhérent !"
+msgid "- This username is already used by another member !"
 msgstr ""
 
 #: ../preferences.php:171
-msgid "- Les nombres et mesures doivent être des entiers !"
+msgid "- The numbers and measures have to be integers!"
 msgstr ""
 
 #: ../preferences.php:177 ../ajouter_adherent.php:227
-msgid "- Le mot de passe doit être composé d'au moins 4 caractères !"
+msgid "- The password must be of at least 4 characters!"
 msgstr ""
 
 #: ../preferences.php:245 ../ajouter_adherent.php:353
 msgid ""
-"- La photo semble ne pas avoir été transmise correstement. L'enregistrement "
-"a cependant été effectué."
+"- The photo seems not to be transferred correctly. But registration has been "
+"made."
 msgstr ""
 
 #: ../preferences.php:254 ../ajouter_adherent.php:360
 msgid ""
-"- Le fichier transmis n'est pas une image valide (GIF, PNG ou JPEG). "
-"L'enregistrement a cependant été effectué."
+"- The transfered file isn't a valid image (GIF, PNG or JPEG). But "
+"registration has been made."
 msgstr ""
 
 #: ../preferences.php:256 ../ajouter_adherent.php:362
 msgid ""
-"- Le fichier transmis n'est pas une image valide (PNG ou JPEG). "
-"L'enregistrement a cependant été effectué."
+"- The transfered file isn't a valid image (PNG or JPEG). But registration "
+"has been made."
 msgstr ""
 
 #: ../preferences.php:345
-msgid "Informations générales :"
+msgid "General information:"
 msgstr ""
 
 #: ../preferences.php:348
-msgid "Nom (raison sociale) de l'association :"
+msgid "Name (corporate name) of the association:"
 msgstr ""
 
 #: ../preferences.php:352
-msgid "Logo :"
+msgid "Logo:"
 msgstr ""
 
 #: ../preferences.php:370 ../voir_adherent.php:137 ../voir_adherent.php:143
 #: ../ajouter_adherent.php:568
-msgid "Photo"
+msgid "Picture"
 msgstr ""
 
 #: ../preferences.php:371 ../ajouter_adherent.php:594
-msgid "Supprimer la photo"
+msgid "Delete the picture"
 msgstr ""
 
 #: ../preferences.php:404
-msgid "Paramètres galette :"
+msgid "Galette's parameters:"
 msgstr ""
 
 #: ../preferences.php:429
-msgid "Lignes / Page :"
+msgid "Lines / Page:"
 msgstr ""
 
 #: ../preferences.php:430 ../preferences.php:458 ../preferences.php:462
 #: ../preferences.php:466 ../preferences.php:470 ../preferences.php:474
 #: ../preferences.php:478 ../preferences.php:482 ../preferences.php:486
-msgid "(Entier)"
+msgid "(Integer)"
 msgstr ""
 
 #: ../preferences.php:433
-msgid "Niveau d'historique :"
+msgid "Logging level:"
 msgstr ""
 
 #: ../preferences.php:436
-msgid "Nul"
+msgid "Disabled"
 msgstr ""
 
 #: ../preferences.php:437
@@ -1043,75 +1035,75 @@ msgid "Normal"
 msgstr ""
 
 #: ../preferences.php:438
-msgid "Détaillé"
+msgid "Detailed"
 msgstr ""
 
 #: ../preferences.php:443
-msgid "Paramètres mail :"
+msgid "Mail settings:"
 msgstr ""
 
 #: ../preferences.php:446
-msgid "Nom expéditeur :"
+msgid "Sender name:"
 msgstr ""
 
 #: ../preferences.php:450
-msgid "Email expéditeur :"
+msgid "Sender Email:"
 msgstr ""
 
 #: ../preferences.php:454
-msgid "Paramètres de génération d'étiquettes :"
+msgid "Label generation parameters:"
 msgstr ""
 
 #: ../preferences.php:457
-msgid "Marges :"
+msgid "Margins:"
 msgstr ""
 
 #: ../preferences.php:461
-msgid "Espacement horizontal :"
+msgid "Horizontal spacing:"
 msgstr ""
 
 #: ../preferences.php:465
-msgid "Espacement vertical :"
+msgid "Vertical spacing:"
 msgstr ""
 
 #: ../preferences.php:469
-msgid "Largeur étiquette :"
+msgid "Label width:"
 msgstr ""
 
 #: ../preferences.php:473
-msgid "Hauteur étiquette :"
+msgid "Label height:"
 msgstr ""
 
 #: ../preferences.php:477
-msgid "Nombre de colonnes d'étiquettes :"
+msgid "Number of label columns:"
 msgstr ""
 
 #: ../preferences.php:481
-msgid "Nombre de lignes d'étiquettes :"
+msgid "Number of label lines:"
 msgstr ""
 
 #: ../preferences.php:485
-msgid "Corps du texte :"
+msgid "Font size:"
 msgstr ""
 
 #: ../preferences.php:489
-msgid "Compte administrateur (indépendant des adhérents) :"
+msgid "Admin account (independant of members):"
 msgstr ""
 
 #: ../voir_adherent.php:97 ../etiquettes_adherents.php:83
-msgid "M."
+msgid "Mr."
 msgstr ""
 
 #: ../voir_adherent.php:100 ../etiquettes_adherents.php:86
-msgid "Mme."
+msgid "Mrs."
 msgstr ""
 
 #: ../voir_adherent.php:103 ../etiquettes_adherents.php:89
-msgid "Mlle."
+msgid "Miss."
 msgstr ""
 
 #: ../voir_adherent.php:159 ../ajouter_adherent.php:648
-msgid "Statut :"
+msgid "Status:"
 msgstr ""
 
 #: ../voir_adherent.php:167 ../ajouter_adherent.php:659
@@ -1119,43 +1111,43 @@ msgid "libelle_statut"
 msgstr ""
 
 #: ../voir_adherent.php:178 ../voir_adherent.php:190 ../voir_adherent.php:194
-msgid "Oui"
+msgid "Yes"
 msgstr ""
 
 #: ../voir_adherent.php:178 ../voir_adherent.php:190 ../voir_adherent.php:194
-msgid "Non"
+msgid "No"
 msgstr ""
 
 #: ../voir_adherent.php:185 ../ajouter_adherent.php:638
-msgid "Compte :"
+msgid "Account:"
 msgstr ""
 
 #: ../voir_adherent.php:186 ../ajouter_adherent.php:641
-msgid "Actif"
+msgid "Active"
 msgstr ""
 
 #: ../voir_adherent.php:186 ../ajouter_adherent.php:642
-msgid "Inactif"
+msgid "Inactive"
 msgstr ""
 
 #: ../voir_adherent.php:189 ../ajouter_adherent.php:670
-msgid "Admin Galette :"
+msgid "Galette Admin:"
 msgstr ""
 
 #: ../voir_adherent.php:193 ../ajouter_adherent.php:675
-msgid "Exempt de cotisation :"
+msgid "Freed of dues:"
 msgstr ""
 
 #: ../voir_adherent.php:253 ../ajouter_adherent.php:740
-msgid "Date de création :"
+msgid "Creation date:"
 msgstr ""
 
 #: ../voir_adherent.php:257 ../ajouter_adherent.php:744
-msgid "Autres informations (admin) :"
+msgid "Other informations (admin):"
 msgstr ""
 
 #: ../voir_adherent.php:261 ../gestion_contributions.php:457
-msgid "[ Ajouter une contribution ]"
+msgid "[ Add a contribution ]"
 msgstr ""
 
 #: ../voir_adherent.php:319
@@ -1167,19 +1159,19 @@ msgid "[ Contributions ]"
 msgstr ""
 
 #: ../gestion_contributions.php:137
-msgid "Suppression d'une contribution :"
+msgid "Contribution deleted:"
 msgstr ""
 
 #: ../gestion_contributions.php:144
-msgid "Gestion des contributions"
+msgid "Management of contributions"
 msgstr ""
 
 #: ../gestion_contributions.php:230
-msgid "Afficher les contributions du"
+msgid "Show contributions since"
 msgstr ""
 
 #: ../gestion_contributions.php:232
-msgid "au"
+msgid "until"
 msgstr ""
 
 #: ../gestion_contributions.php:239
@@ -1191,15 +1183,15 @@ msgid "contribution"
 msgstr ""
 
 #: ../gestion_contributions.php:284
-msgid "Montant"
+msgid "Amount"
 msgstr ""
 
 #: ../gestion_contributions.php:294
-msgid "Durée"
+msgid "Duration"
 msgstr ""
 
 #: ../gestion_contributions.php:325
-msgid "aucune contribution"
+msgid "no contribution"
 msgstr ""
 
 #: ../gestion_contributions.php:358 ../ajouter_contribution.php:349
@@ -1207,538 +1199,505 @@ msgid "libelle_type_cotis"
 msgstr ""
 
 #: ../gestion_contributions.php:367
-msgid "Voulez-vous vraiment supprimer cette contribution de la base ?"
+msgid "Do you really want to delete this contribution of the database ?"
 msgstr ""
 
 #: ../gestion_contributions.php:419
-msgid "En retard de"
+msgid "Late of"
 msgstr ""
 
 #: ../gestion_contributions.php:427 ../gestion_adherents.php:324
-msgid "jour restant"
+msgid "day remaining"
 msgstr ""
 
 #: ../gestion_contributions.php:455
-msgid "[ Voir la fiche adhérent ]"
+msgid "[ See member profile ]"
 msgstr ""
 
 #: ../ajouter_contribution.php:201
-msgid "Mise à jour d'une contribution :"
+msgid "Contribution updated:"
 msgstr ""
 
 #: ../ajouter_contribution.php:211
-msgid "Ajout d'une contribution :"
+msgid "Add a contribution :"
 msgstr ""
 
 #: ../ajouter_contribution.php:321
-msgid "-- selectionner un nom --"
+msgid "-- select a name --"
 msgstr ""
 
 #: ../gestion_adherents.php:89
-msgid "Suppression de la fiche adhérent (et cotisations) :"
+msgid "Delete the member card (and dues)"
 msgstr ""
 
 #: ../gestion_adherents.php:96
-msgid "Gestion des adhérents"
+msgid "Management of members"
 msgstr ""
 
 #: ../gestion_adherents.php:227
-msgid "Pseudo"
+msgid "Nickname"
 msgstr ""
 
 #: ../etiquettes_adherents.php:121
-msgid "Génération de "
+msgid "Generation of "
 msgstr ""
 
 #: ../etiquettes_adherents.php:121
-msgid "étiquette(s)"
+msgid "label(s)"
 msgstr ""
 
-#: ../install/index.php:28 ../install/index.php:38
-msgid "Type d'installation inconnu"
+#: ../install/index.php:29 ../install/index.php:39
+msgid "Installation mode unknown"
 msgstr ""
 
-#: ../install/index.php:49
-msgid "Type de base inconnu"
+#: ../install/index.php:50
+msgid "Database type unknown"
 msgstr ""
 
-#: ../install/index.php:51 ../install/index.php:85
-msgid "Nom d'utilisateur vide"
+#: ../install/index.php:52 ../install/index.php:86
+msgid "No user name"
 msgstr ""
 
-#: ../install/index.php:53 ../install/index.php:87
-msgid "Mot de passe vide"
+#: ../install/index.php:54 ../install/index.php:88
+msgid "No password"
 msgstr ""
 
-#: ../install/index.php:55
-msgid "Nom de la base non précisé"
-msgstr ""
-
-#: ../install/index.php:157
-msgid "Type d'installation"
+#: ../install/index.php:56
+msgid "No database name"
 msgstr ""
 
 #: ../install/index.php:158
-msgid "Selectionnez le type d'installation à lancer"
+msgid "Installation mode"
 msgstr ""
 
-#: ../install/index.php:161
-msgid "Nouvelle installation :"
+#: ../install/index.php:159
+msgid "Select installation mode to launch"
 msgstr ""
 
 #: ../install/index.php:162
+msgid "New installation:"
+msgstr ""
+
+#: ../install/index.php:163
 msgid ""
-"Vous installez Galette pour la première fois, ou vous souhaitez écraser une "
-"ancienne version de Galette sans conserver vos données"
+"You're installing Galette for the first time, or you wish to erase an older "
+"version of Galette without keeping your data"
 msgstr ""
 
-#: ../install/index.php:179
-msgid "Mise à jour :"
+#: ../install/index.php:180
+msgid "Update:"
 msgstr ""
 
-#: ../install/index.php:182
-msgid "Votre version actuelle de Galette est comprise entre"
+#: ../install/index.php:183
+msgid "Your current Galette version is comprised between"
 msgstr ""
 
-#: ../install/index.php:182
-msgid "et"
+#: ../install/index.php:183
+msgid "and"
 msgstr ""
 
-#: ../install/index.php:184
-msgid "Votre version actuelle de Galette est la"
+#: ../install/index.php:185
+msgid "Your current Galette version is"
 msgstr ""
 
-#: ../install/index.php:186
-msgid "Attention : Pensez à sauvegarder votre base existante."
+#: ../install/index.php:187
+msgid "Warning: Don't forget to backup your current database."
 msgstr ""
 
-#: ../install/index.php:193 ../install/index.php:282 ../install/index.php:367
-#: ../install/index.php:421 ../install/index.php:616 ../install/index.php:747
-#: ../install/index.php:800 ../install/index.php:915
-msgid "Etape suivante"
+#: ../install/index.php:194 ../install/index.php:249 ../install/index.php:334
+#: ../install/index.php:388 ../install/index.php:583 ../install/index.php:714
+#: ../install/index.php:767 ../install/index.php:883
+msgid "Next step"
 msgstr ""
 
-#: ../install/index.php:199
-msgid "Etape 2 - Type d'installation"
-msgstr ""
-
-#: ../install/index.php:211
-msgid "Permissions de fichiers"
+#: ../install/index.php:200
+msgid "Step 2 - Installation mode"
 msgstr ""
 
 #: ../install/index.php:212
-msgid "Vérification des permissions des fichiers et dossier"
-msgstr ""
-
-#: ../install/index.php:220
-msgid "Le dossier"
+msgid "Files permissions"
 msgstr ""
 
 #: ../install/index.php:222
-msgid "Le fichier"
-msgstr ""
-
-#: ../install/index.php:231
-msgid "n'est pas autorisé en écriture"
-msgstr ""
-
-#: ../install/index.php:242
-msgid "est autorisé en écriture"
-msgstr ""
-
-#: ../install/index.php:255
 msgid ""
-"Pour fonctionner correctement, Galette a besoin d'avoir les droits en "
-"écriture sur ces fichiers."
+"For a correct functioning, Galette needs the Write permission on these files."
 msgstr ""
 
-#: ../install/index.php:256
+#: ../install/index.php:223
 msgid ""
-"Pour être mis à jour et fonctionner correctement, Galette a besoin d'avoir "
-"les droits en écriture sur ces fichiers."
+"In order to be updated, Galette needs the Write permission on these files."
 msgstr ""
 
-#: ../install/index.php:259
-msgid "Sous UNIX/Linux, vous pouvez donner ces droits par les commandes"
+#: ../install/index.php:226
+msgid "Under UNIX/Linux, you can give the permissions using those commands"
+msgstr ""
+
+#: ../install/index.php:227
+msgid "apache_user"
+msgstr ""
+
+#: ../install/index.php:227 ../install/index.php:228
+msgid "file_name"
+msgstr ""
+
+#: ../install/index.php:228
+msgid "(for a file)"
+msgstr ""
+
+#: ../install/index.php:229
+msgid "direcory_name"
+msgstr ""
+
+#: ../install/index.php:229
+msgid "(for a directory)"
+msgstr ""
+
+#: ../install/index.php:232
+msgid ""
+"Under Windows, check these files are not in Read-Only mode in their property "
+"panel."
+msgstr ""
+
+#: ../install/index.php:236 ../install/index.php:562 ../install/index.php:689
+#: ../install/index.php:910
+msgid "Retry"
+msgstr ""
+
+#: ../install/index.php:246
+msgid "Files permissions are OK!"
 msgstr ""
 
 #: ../install/index.php:260
-msgid "utilisateur_apache"
+msgid "Step 3 - Permissions"
 msgstr ""
 
-#: ../install/index.php:260 ../install/index.php:261
-msgid "nom_fichier"
+#: ../install/index.php:268
+msgid "Database"
 msgstr ""
 
-#: ../install/index.php:261
-msgid "(pour un fichier)"
+#: ../install/index.php:274
+msgid "If it hadn't been made, create a database and a user for Galette."
 msgstr ""
 
-#: ../install/index.php:262
-msgid "nom_dossier"
+#: ../install/index.php:275
+msgid "Enter connection data for the existing database."
 msgstr ""
 
-#: ../install/index.php:262
-msgid "(pour un dossier)"
-msgstr ""
-
-#: ../install/index.php:265
+#: ../install/index.php:276
 msgid ""
-"Sous Windows, vérifiez que les fichiers en question ne sont pas en lecture "
-"seule dans leurs propriétés."
+"The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 msgstr ""
 
-#: ../install/index.php:269 ../install/index.php:595 ../install/index.php:722
-#: ../install/index.php:942
-msgid "Rééssayer"
+#: ../install/index.php:280
+msgid "Database type:"
 msgstr ""
 
-#: ../install/index.php:279
-msgid "Les permissions des fichiers sont correctes !"
+#: ../install/index.php:289
+msgid "Host:"
 msgstr ""
 
-#: ../install/index.php:293
-msgid "Etape 3 - Permissions"
-msgstr ""
-
-#: ../install/index.php:301
-msgid "Base de données"
+#: ../install/index.php:295
+msgid "User:"
 msgstr ""
 
 #: ../install/index.php:307
+msgid "Database:"
+msgstr ""
+
+#: ../install/index.php:314
+msgid "Table prefix:"
+msgstr ""
+
+#: ../install/index.php:326
+msgid "(Indicate the CURRENT prefix of your Galette tables)"
+msgstr ""
+
+#: ../install/index.php:342
+msgid "Step 4 - Database"
+msgstr ""
+
+#: ../install/index.php:350
+msgid "Check of the database"
+msgstr ""
+
+#: ../install/index.php:351
+msgid "Check the parameters and the existence of the database"
+msgstr ""
+
+#: ../install/index.php:360
+msgid "Unable to connect to the database"
+msgstr ""
+
+#: ../install/index.php:364
+msgid "Connection to database is OK"
+msgstr ""
+
+#: ../install/index.php:371
 msgid ""
-"Si ce n'est pas déjà fait, créez une base de données et un utilisateur pour "
-"Galette."
+"Database can't be reached. Please go back to enter the connection parameters "
+"again."
 msgstr ""
 
-#: ../install/index.php:308
-msgid "Veuillez entrer les paramètres de connexion à la base existante."
+#: ../install/index.php:385
+msgid "Database exists and connection parameters are OK."
 msgstr ""
 
-#: ../install/index.php:309
+#: ../install/index.php:407
+msgid "Step 5 - Access to the database"
+msgstr ""
+
+#: ../install/index.php:417
+msgid "Permissions on the base"
+msgstr ""
+
+#: ../install/index.php:419
 msgid ""
-"Les droits nécessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et INSERT."
+"To run, Galette needs a number of rights on the database (CREATE, DROP, "
+"DELETE, UPDATE, SELECT and INSERT)"
 msgstr ""
 
-#: ../install/index.php:313
-msgid "Type de base de données :"
-msgstr ""
-
-#: ../install/index.php:322
-msgid "Hôte :"
-msgstr ""
-
-#: ../install/index.php:328
-msgid "Utilisateur :"
-msgstr ""
-
-#: ../install/index.php:340
-msgid "Nom de la base :"
-msgstr ""
-
-#: ../install/index.php:347
-msgid "Prefixe de table :"
-msgstr ""
-
-#: ../install/index.php:359
-msgid "(Indiquez le prefixe ACTUEL de vos tables Galette)"
-msgstr ""
-
-#: ../install/index.php:375
-msgid "Etape 4 - Base de données"
-msgstr ""
-
-#: ../install/index.php:383
-msgid "Vérification de la base"
-msgstr ""
-
-#: ../install/index.php:384
-msgid "Vérification des paramètres et de l'existence de la base"
-msgstr ""
-
-#: ../install/index.php:393
-msgid "Connexion à la base impossible"
-msgstr ""
-
-#: ../install/index.php:397
-msgid "La connexion à la base est établie"
-msgstr ""
-
-#: ../install/index.php:404
+#: ../install/index.php:420
 msgid ""
-"La base n'est accessible. Veuillez revenir en arrière pour saisir à nouveau "
-"les paramètres de connexion."
+"In order to be updated, Galette needs a number of rights on the database "
+"(CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)"
 msgstr ""
 
-#: ../install/index.php:418
-msgid "La base existe et les paramètres de connexion sont corrects."
+#: ../install/index.php:437 ../install/index.php:543
+msgid "DROP operation not allowed"
 msgstr ""
 
-#: ../install/index.php:440
-msgid "Etape 5 - Accès à la base"
-msgstr ""
-
-#: ../install/index.php:450
-msgid "Permissions sur la base"
+#: ../install/index.php:440 ../install/index.php:547
+msgid "DROP operation allowed"
 msgstr ""
 
 #: ../install/index.php:452
+msgid "CREATE operation not allowed"
+msgstr ""
+
+#: ../install/index.php:456
+msgid "CREATE operation allowed"
+msgstr ""
+
+#: ../install/index.php:467
+msgid "INSERT operation not allowed"
+msgstr ""
+
+#: ../install/index.php:471
+msgid "INSERT operation allowed"
+msgstr ""
+
+#: ../install/index.php:482
+msgid "UPDATE operation not allowed"
+msgstr ""
+
+#: ../install/index.php:486
+msgid "UPDATE operation allowed"
+msgstr ""
+
+#: ../install/index.php:497
+msgid "SELECT operation not allowed"
+msgstr ""
+
+#: ../install/index.php:501
+msgid "SELECT operation allowed"
+msgstr ""
+
+#: ../install/index.php:512
+msgid "ALTER operation not allowed"
+msgstr ""
+
+#: ../install/index.php:516
+msgid "ALTER operation allowed"
+msgstr ""
+
+#: ../install/index.php:527
+msgid "DELETE operation not allowed"
+msgstr ""
+
+#: ../install/index.php:531
+msgid "DELETE operation allowed"
+msgstr ""
+
+#: ../install/index.php:557
 msgid ""
-"Pour fonctionner, Galette doit avoir un certain nombre de droits sur la base "
-"de données (CREATE, DROP, DELETE, UPDATE, SELECT et INSERT)"
+"Galette hasn't got enough permissions on the database to continue the "
+"installation."
 msgstr ""
 
-#: ../install/index.php:453
+#: ../install/index.php:558
 msgid ""
-"Pour être mis à jour, Galette doit avoir un certain nombre de droits sur la "
-"base de données (CREATE, DROP, DELETE, UPDATE, SELECT, INSERT et ALTER)"
+"Galette hasn't got enough permissions on the database to continue the update."
 msgstr ""
 
-#: ../install/index.php:470 ../install/index.php:576
-msgid "Opération DROP non autorisée"
+#: ../install/index.php:580
+msgid "Permissions to database are OK."
 msgstr ""
 
-#: ../install/index.php:473 ../install/index.php:580
-msgid "Opération DROP autorisée"
+#: ../install/index.php:602
+msgid "Step 6 - Access permissions to database"
 msgstr ""
 
-#: ../install/index.php:485
-msgid "Opération CREATE non autorisée"
+#: ../install/index.php:611
+msgid "Creation of the database"
 msgstr ""
 
-#: ../install/index.php:489
-msgid "Opération CREATE autorisée"
+#: ../install/index.php:612
+msgid "Update of the database"
 msgstr ""
 
-#: ../install/index.php:500
-msgid "Opération INSERT non autorisée"
+#: ../install/index.php:615
+msgid "Installation Report"
 msgstr ""
 
-#: ../install/index.php:504
-msgid "Opération INSERT autorisée"
+#: ../install/index.php:616
+msgid "Update Report"
 msgstr ""
 
-#: ../install/index.php:515
-msgid "Opération UPDATE non autorisée"
+#: ../install/index.php:677
+msgid "(Errors on DROP and RENAME operations can be ignored)"
 msgstr ""
 
-#: ../install/index.php:519
-msgid "Opération UPDATE autorisée"
+#: ../install/index.php:683
+msgid "The database isn't totally created, it's maybe a permission problem."
 msgstr ""
 
-#: ../install/index.php:530
-msgid "Opération SELECT non autorisée"
+#: ../install/index.php:684
+msgid "The database isn't totally updated, it's maybe a permission problem."
 msgstr ""
 
-#: ../install/index.php:534
-msgid "Opération SELECT autorisée"
+#: ../install/index.php:685
+msgid "Your database is maybe not usable, try to restore the older version."
 msgstr ""
 
-#: ../install/index.php:545
-msgid "Opération ALTER non autorisée"
-msgstr ""
-
-#: ../install/index.php:549
-msgid "Opération ALTER autorisée"
-msgstr ""
-
-#: ../install/index.php:560
-msgid "Opération DELETE non autorisée"
-msgstr ""
-
-#: ../install/index.php:564
-msgid "Opération DELETE autorisée"
-msgstr ""
-
-#: ../install/index.php:590
-msgid ""
-"Galette ne dispose pas de droits suffisants sur la base de données pour "
-"poursuivre l'installation."
-msgstr ""
-
-#: ../install/index.php:591
-msgid ""
-"Galette ne dispose pas de droits suffisants sur la base de données pour "
-"poursuivre la mise à jour."
-msgstr ""
-
-#: ../install/index.php:613
-msgid "Les droits d'accès à la base sont corrects."
-msgstr ""
-
-#: ../install/index.php:635
-msgid "Etape 6 - Droits d'accès à la base"
-msgstr ""
-
-#: ../install/index.php:644
-msgid "Création de la base"
-msgstr ""
-
-#: ../install/index.php:645
-msgid "Mise à jour de la base"
-msgstr ""
-
-#: ../install/index.php:648
-msgid "Compte rendu d'installation"
-msgstr ""
-
-#: ../install/index.php:649
-msgid "Compte rendu de mise à jour"
+#: ../install/index.php:709
+msgid "The database has been correctly created."
 msgstr ""
 
 #: ../install/index.php:710
-msgid "(Les erreurs sur les opérations DROP et RENAME peuvent être ignorées)"
+msgid "The database has been correctly updated."
 msgstr ""
 
-#: ../install/index.php:716
+#: ../install/index.php:735
+msgid "Step 7 - Database Creation"
+msgstr ""
+
+#: ../install/index.php:736
+msgid "Step 7 - Database Update"
+msgstr ""
+
+#: ../install/index.php:745
+msgid "Admin settings"
+msgstr ""
+
+#: ../install/index.php:750
+msgid "Please chose the parameters of the admin account on Galette"
+msgstr ""
+
+#: ../install/index.php:784
+msgid "Step 8 - Admin parameters"
+msgstr ""
+
+#: ../install/index.php:792
+msgid "Save the parameters"
+msgstr ""
+
+#: ../install/index.php:811
+msgid "Configuration file created (includes/config.inc.php)"
+msgstr ""
+
+#: ../install/index.php:815
+msgid "Unable to create configuration file (includes/config.inc.php)"
+msgstr ""
+
+#: ../install/index.php:869
+msgid "Parameters saved into the database"
+msgstr ""
+
+#: ../install/index.php:872
+msgid "Parameters couldn't be save into the database"
+msgstr ""
+
+#: ../install/index.php:907
+msgid "Parameters couldn't be saved."
+msgstr ""
+
+#: ../install/index.php:908
 msgid ""
-"La base de données n'a pas pu être totalement créée, il s'agit peut-être "
-"d'un problème de droits."
+"This can come from the permissions on the file includes/config.inc.php or "
+"the impossibility to make an INSERT into the database."
 msgstr ""
 
-#: ../install/index.php:717
-msgid ""
-"La base de données n'a pas pu être totalement mise à jour, il s'agit peut-"
-"être d'un problème de droits."
+#: ../install/index.php:932
+msgid "Step 9 - Saving of the parameters"
 msgstr ""
 
-#: ../install/index.php:718
-msgid ""
-"Votre base est peut-être inutilisable, essayez de restaurer une ancienne "
-"version."
+#: ../install/index.php:941
+msgid "Installation complete !"
 msgstr ""
 
-#: ../install/index.php:742
-msgid "La base de données a été correctement créée."
+#: ../install/index.php:942
+msgid "Update complete !"
 msgstr ""
 
-#: ../install/index.php:743
-msgid "La base de données a été correctement mise à jour."
+#: ../install/index.php:945
+msgid "Galette has been successfully installed!"
 msgstr ""
 
-#: ../install/index.php:768
-msgid "Etape 7 - Création de la base"
+#: ../install/index.php:946
+msgid "Galette has been successfully updated!"
 msgstr ""
 
-#: ../install/index.php:769
-msgid "Etape 7 - Mise à jour de la base"
+#: ../install/index.php:948
+msgid "For securing the system, please delete the install directory"
 msgstr ""
 
-#: ../install/index.php:778
-msgid "Paramètres administrateur"
+#: ../install/index.php:951
+msgid "Homepage"
 msgstr ""
 
-#: ../install/index.php:783
-msgid "Veuillez choisir les paramètres du compte administrateur Galette"
+#: ../install/index.php:957
+msgid "Step 10 - End of the installation"
 msgstr ""
 
-#: ../install/index.php:817
-msgid "Etape 8 - Paramètres administrateur"
-msgstr ""
-
-#: ../install/index.php:825
-msgid "Sauvegarde des paramètres"
-msgstr ""
-
-#: ../install/index.php:843
-msgid "Fichier de configuration crée (includes/config.inc.php)"
-msgstr ""
-
-#: ../install/index.php:847
-msgid ""
-"Impossible de créer le fichier de configuration (includes/config.inc.php)"
-msgstr ""
-
-#: ../install/index.php:901
-msgid "Paramètres sauvegardés dans la base de données"
-msgstr ""
-
-#: ../install/index.php:904
-msgid "Les paramètres n'ont pas pu être sauvegardés dans la base de données"
-msgstr ""
-
-#: ../install/index.php:939
-msgid "Les paramètres n'ont pas pu être sauvegardés."
-msgstr ""
-
-#: ../install/index.php:940
-msgid ""
-"Ceci peut provenir des droits sur le fichier includes/config.inc.php ou de "
-"l'impossibilité de faire un INSERT dans la base."
-msgstr ""
-
-#: ../install/index.php:964
-msgid "Etape 9 - Sauvegarde des paramètres"
-msgstr ""
-
-#: ../install/index.php:973
-msgid "Fin de l'installation"
-msgstr ""
-
-#: ../install/index.php:974
-msgid "Fin de la mise à jour"
-msgstr ""
-
-#: ../install/index.php:977
-msgid "Galette a été installé avec succès !"
-msgstr ""
-
-#: ../install/index.php:978
-msgid "Galette a été mis à jour avec succès !"
-msgstr ""
-
-#: ../install/index.php:980
-msgid "Pour sécuriser le système, veuillez supprimer le dossier install"
-msgstr ""
-
-#: ../install/index.php:983
-msgid "Page d'accueil"
-msgstr ""
-
-#: ../install/index.php:989
-msgid "Etape 10 - Fin de l'installation"
-msgstr ""
-
-#: ../install/index.php:990
-msgid "Etape 10 - Fin de la mise à jour"
+#: ../install/index.php:958
+msgid "Step 10 - End of the update"
 msgstr ""
 
 #: ../ajouter_adherent.php:191
 msgid ""
-"- Vous ne pouvez pas envoyer de confirmation par mail si l'adhérent n'a pas "
-"d'adresse !"
+"- You can't send a confirmation by email if the member hasn't got an address!"
 msgstr ""
 
 #: ../ajouter_adherent.php:196
-msgid "- Adresse web non valide ! Oubli du http:// ?"
+msgid "- Non-valid Website address! Maybe you've skipped the http:// ?"
 msgstr ""
 
 #: ../ajouter_adherent.php:259
-msgid "Mise à jour de la fiche adhérent :"
+msgid "Member card update:"
 msgstr ""
 
 #: ../ajouter_adherent.php:278
-msgid "Ajout de la fiche adhérent :"
+msgid "Member card added:"
 msgstr ""
 
 #: ../ajouter_adherent.php:586
-msgid "Photo :"
+msgid "Photo:"
 msgstr ""
 
 #: ../ajouter_adherent.php:736
-msgid "Envoi de mail :"
+msgid "Send a mail:"
 msgstr ""
 
 #: ../ajouter_adherent.php:737
 msgid ""
-"(l'adhérent recevra son identifiant et son mot de passe par mail, s'il a une "
-"adresse.)"
+"(the member will receive his username and password by email, if he has an "
+"address.)"
 msgstr ""
 
 #: ../ajouter_adherent.php:745
-msgid "Ce commentaire n'est visible que par les administrateurs."
+msgid "This comment is only displayed for admins."
 msgstr ""
 
 #: ../ajouter_adherent.php:758
-msgid "Ce commentaire est réservé à l'adhérent."
+msgid "This comment is reserved to the member."
 msgstr ""

@@ -34,8 +34,4 @@ all : messages.po
 	done
 
 messages.po : ${PHP_SOURCES}
-	xgettext -n --from-code=iso-8859-15 ${PHP_SOURCES} >/dev/null 2>&1
-	sed "s/UTF-8/ISO-8859-15/" messages.po > messages.tmp
-	mv messages.tmp messages.po
-	recode UTF-8..ISO-8859-15 messages.po
-
+	xgettext -n ${PHP_SOURCES} >/dev/null 2>&1

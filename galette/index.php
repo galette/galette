@@ -35,8 +35,8 @@
 			$_SESSION["logged_status"]=1;
 			$_SESSION["admin_status"]=1;
 			$_SESSION["logged_username"]=$_POST["login"];
-			$_SESSION["logged_nom_adh"]=_("Administrateur");
-			dblog(_("Identification"));
+			$_SESSION["logged_nom_adh"]=_("Admin");
+			dblog(_("Login"));
 		}
 		else
 		{
@@ -57,10 +57,10 @@
 				$_SESSION["logged_id_adh"]=$resultat->fields[0];
 				$_SESSION["logged_status"]=1;
 				$_SESSION["logged_nom_adh"]=strtoupper($resultat->fields[2]) . " " . strtolower($resultat->fields[3]);
-				dblog(_("Identification"));
+				dblog(_("Login"));
 			}
 			else
-				dblog(_("Echec authentification. Login :")." \"" . $_POST["login"] . "\"");
+				dblog(_("Authentication failed. Login:")." \"" . $_POST["login"] . "\"");
 		}
 	}
 
@@ -88,22 +88,22 @@
 		<TD align="center">
 			<IMG src="images/galette.jpg" alt="[ Galette ]" width="103" height="80"><BR>
 			<FORM action="index.php" method="post"> 
-				<B class="title"><? echo _("Identification"); ?></B><BR>
+				<B class="title"><? echo _("Login"); ?></B><BR>
 				<BR>
 				<BR>
 				<TABLE> 
 					<TR> 
-						<TD><? echo _("Identifiant :"); ?></TD> 
+						<TD><? echo _("Username:"); ?></TD> 
 						<TD><INPUT type="text" name="login"></TD> 
 					</TR> 
 					<TR> 
-						<TD><? echo _("Mot de passe :"); ?></TD> 
+						<TD><? echo _("Password:"); ?></TD> 
 						<TD><INPUT type="password" name="password"></TD> 
 					</TR> 
 				</TABLE>
-				<INPUT type="submit" name="ident" value="<? echo _("Identification"); ?>"><BR>
+				<INPUT type="submit" name="ident" value="<? echo _("Login"); ?>"><BR>
 				<BR>
-				<A HREF="lostpasswd.php"><? echo _("Mot de passe perdu ?"); ?></a>
+				<A HREF="lostpasswd.php"><? echo _("Lost your password?"); ?></a>
 			</FORM>
 		</TD>
 	</TR>

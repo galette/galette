@@ -52,14 +52,14 @@
 	      if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
 	         $_SESSION["filtre_date_cotis_1"]=$_GET["contrib_filter_1"];
 	      else
-	         $error_detected .= "<LI>"._("- Date non valide !")."</LI>";
+	         $error_detected .= "<LI>"._("- Non valid date!")."</LI>";
 	   }
 	   elseif (ereg("^([0-9]{4})$", $_GET["contrib_filter_1"], $array_jours))
 	      $_SESSION["filtre_date_cotis_1"]="01/01/".$array_jours[1];
 	   elseif ($_GET["contrib_filter_1"]=="")
 	      $_SESSION["filtre_date_cotis_1"]="";
 	   else
-	      $error_detected .= "<LI>"._("- Mauvais format de date (jj/mm/aaaa) !")."</LI>";
+	      $error_detected .= "<LI>"._("- Wrong date format (dd/mm/yyyy)!")."</LI>";
 
 	if (isset($_GET["contrib_filter_2"]))
 	   if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_GET["contrib_filter_2"], $array_jours))
@@ -67,14 +67,14 @@
 	      if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
 	         $_SESSION["filtre_date_cotis_2"]=$_GET["contrib_filter_2"];
 	      else
-	         $error_detected .= "<LI>"._("- Date non valide !")."</LI>";
+	         $error_detected .= "<LI>"._("- Non valid date!")."</LI>";
 	   }
 	   elseif (ereg("^([0-9]{4})$", $_GET["contrib_filter_2"], $array_jours))
 	      $_SESSION["filtre_date_cotis_2"]="01/01/".$array_jours[1];
 	   elseif ($_GET["contrib_filter_2"]=="")
 	      $_SESSION["filtre_date_cotis_2"]="";
 	   else
-	      $error_detected .= "<LI>"._("- Mauvais format de date (jj/mm/aaaa) !")."</LI>";
+	      $error_detected .= "<LI>"._("- Wrong date format (dd/mm/yyyy)!")."</LI>";
 
 	
 	$page = 1;
@@ -134,14 +134,14 @@
 					    SET date_echeance=".$date_fin_update."
 					    WHERE id_adh=".$DB->qstr($id_adh);
 				$DB->Execute($requeteup);
- 				dblog(_("Suppression d'une contribution :")." ".strtoupper($resultat->fields[0])." ".$resultat->fields[1], $requetesup);							
+ 				dblog(_("Contribution deleted:")." ".strtoupper($resultat->fields[0])." ".$resultat->fields[1], $requetesup);							
  			}
  			$resultat->Close();
  		}
  		$result_adh->Close();
 	}
 ?> 
-		<H1 class="titre"><? echo _("Gestion des contributions"); ?></H1>
+		<H1 class="titre"><? echo _("Management of contributions"); ?></H1>
 <?
 	$requete[0] = "SELECT ".PREFIX_DB."cotisations.*, ".PREFIX_DB."adherents.nom_adh, ".PREFIX_DB."adherents.prenom_adh,
 			".PREFIX_DB."types_cotisation.libelle_type_cotis
@@ -227,17 +227,17 @@
 ?>
   				<DIV id="listfilter">
 	                	   <FORM action="gestion_contributions.php" method="get" name="filtre">
-			              <? echo _("Afficher les contributions du"); ?>&nbsp;
+			              <? echo _("Show contributions since"); ?>&nbsp;
 				      <INPUT type="text" name="contrib_filter_1" maxlength="10" size="10" value="<? echo $_SESSION["filtre_date_cotis_1"]; ?>">
-				      <? echo _("au"); ?>&nbsp;
+				      <? echo _("until"); ?>&nbsp;
 				      <INPUT type="text" name="contrib_filter_2" maxlength="10" size="10" value="<? echo $_SESSION["filtre_date_cotis_2"]; ?>">
-				      <INPUT type="submit" value="<? echo _("Filtrer"); ?>">
+				      <INPUT type="submit" value="<? echo _("Filter"); ?>">
 				   </FORM>
 				</DIV>
 						<TABLE id="infoline" width="100%">
 							<TR>
 								<TD class="left"><? echo $nbcotis->fields[0]." "; if ($nbcotis->fields[0]!=1) echo _("contributions"); else echo _("contribution"); ?></TD>
-								<TD class="right"><? echo _("Pages :"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></TD>
+								<TD class="right"><? echo _("Pages:"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></TD>
 							</TR>
 						</TABLE>
 						<TABLE width="100%"> 
@@ -258,7 +258,7 @@
 	{
 ?>
 								<TH class="listing left"> 
-									<A href="gestion_contributions.php?tri=1&amp;id_adh=<? echo $_SESSION["filtre_cotis_adh"] ?>" class="listing"><? echo _("Adhérent"); ?></A>
+									<A href="gestion_contributions.php?tri=1&amp;id_adh=<? echo $_SESSION["filtre_cotis_adh"] ?>" class="listing"><? echo _("Member"); ?></A>
 									<?
 										if ($_SESSION["tri_cotis"]=="1")
 											if ($_SESSION["tri_cotis_sens"]=="0")
@@ -281,7 +281,7 @@
 									?>
 								</TH> 
 								<TH class="listing left"> 
-									<A href="gestion_contributions.php?tri=3&amp;id_adh=<? echo $_SESSION["filtre_cotis_adh"] ?>" class="listing"><? echo _("Montant"); ?></A>
+									<A href="gestion_contributions.php?tri=3&amp;id_adh=<? echo $_SESSION["filtre_cotis_adh"] ?>" class="listing"><? echo _("Amount"); ?></A>
 									<?
 										if ($_SESSION["tri_cotis"]=="3")
 											if ($_SESSION["tri_cotis_sens"]=="0")
@@ -291,7 +291,7 @@
 									?>
 								</TH> 
 								<TH class="listing left"> 
-									<A href="gestion_contributions.php?tri=4&amp;id_adh=<? echo $_SESSION["filtre_cotis_adh"] ?>" class="listing"><? echo _("Durée"); ?></A>
+									<A href="gestion_contributions.php?tri=4&amp;id_adh=<? echo $_SESSION["filtre_cotis_adh"] ?>" class="listing"><? echo _("Duration"); ?></A>
 									<?
 										if ($_SESSION["tri_cotis"]=="4")
 											if ($_SESSION["tri_cotis_sens"]=="0")
@@ -322,7 +322,7 @@
 			$colspan = 5;
 ?>
 							<TR>
-								<TD colspan="<? echo $colspan; ?>" class="emptylist"><? echo _("aucune contribution"); ?></TD>
+								<TD colspan="<? echo $colspan; ?>" class="emptylist"><? echo _("no contribution"); ?></TD>
 							</TR>
 <?	
 	}
@@ -364,7 +364,7 @@
 ?>
 								<TD width="55" class="<? echo $row_class; ?> center" nowrap>  
 									<A href="ajouter_contribution.php?id_cotis=<? echo $resultat->fields["id_cotis"] ?>"><IMG src="images/icon-edit.png" alt="<? echo _("[mod]"); ?>" border="0" width="12" height="13"></A>
-									<A onClick="return confirm('<? echo str_replace("\n","\\n",addslashes(_("Voulez-vous vraiment supprimer cette contribution de la base ?"))); ?>')" href="gestion_contributions.php?sup=<? echo $resultat->fields["id_cotis"] ?>"><IMG src="images/icon-trash.png" alt="<? echo _("[sup]"); ?>" border="0" width="11" height="13"></A>
+									<A onClick="return confirm('<? echo str_replace("\n","\\n",addslashes(_("Do you really want to delete this contribution of the database ?"))); ?>')" href="gestion_contributions.php?sup=<? echo $resultat->fields["id_cotis"] ?>"><IMG src="images/icon-trash.png" alt="<? echo _("[del]"); ?>" border="0" width="11" height="13"></A>
 								</TD> 
 <?
         }
@@ -375,7 +375,7 @@
 	$resultat->Close();
 ?>
 						</TABLE>
-						<DIV id="infoline2" class="right"><? echo _("Pages :"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></DIV>
+						<DIV id="infoline2" class="right"><? echo _("Pages:"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></DIV>
 <?	
 	// affichage du temps d'ahésion restant si on est en train de visualiser
 	// les cotisations d'un membre unique
@@ -390,14 +390,14 @@
 		// temps d'adhésion
 		if($resultat->fields[1])
 		{
-			$statut_cotis = _("Exempt de cotisation");
+			$statut_cotis = _("Freed of dues");
 			$color = "#DDFFDD";
 		}
 		else
 		{
 			if ($resultat->fields[0]=="")
 			{
-				$statut_cotis = _("N'a jamais cotisé");
+				$statut_cotis = _("Never contributed");
 				$color = "#EEEEEE";			
 			}
 			else
@@ -411,20 +411,20 @@
 			$difference = intval(($ts_date_fin - $aujourdhui)/(3600*24));
 			if ($difference==0)
 			{
-				$statut_cotis = _("Dernier jour !");
+				$statut_cotis = _("Last day!");
 				$color = "#FFDDDD";
 			}
 			elseif ($difference<0)
 			{
-				$statut_cotis = _("En retard de")." ".-$difference." "._("jours")." ("._("depuis le")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+				$statut_cotis = _("Late of")." ".-$difference." "._("days")." ("._("since")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
 				$color = "#FFDDDD";
 			}
 			else
 			{
 				if ($difference!=1)
-					$statut_cotis = $difference." "._("jours restants")." ("._("fin le")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+					$statut_cotis = $difference." "._("days remaining")." ("._("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
 				else
-					$statut_cotis = $difference." "._("jour restant")." ("._("fin le")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+					$statut_cotis = $difference." "._("day remaining")." ("._("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
 				if ($difference < 30)
 					$color = "#FFE9AB";
 				else
@@ -452,9 +452,9 @@
 	        {
 ?>
 	<BR>
-	<A href="voir_adherent.php?id_adh=<? echo $_SESSION["filtre_cotis_adh"]; ?>"><? echo _("[ Voir la fiche adhérent ]"); ?></A>
+	<A href="voir_adherent.php?id_adh=<? echo $_SESSION["filtre_cotis_adh"]; ?>"><? echo _("[ See member profile ]"); ?></A>
 	&nbsp;&nbsp;&nbsp;
-	<A href="ajouter_contribution.php?id_adh=<? echo $_SESSION["filtre_cotis_adh"]; ?>"><? echo _("[ Ajouter une contribution ]"); ?></A>
+	<A href="ajouter_contribution.php?id_adh=<? echo $_SESSION["filtre_cotis_adh"]; ?>"><? echo _("[ Add a contribution ]"); ?></A>
 <?
 		}	
 ?>

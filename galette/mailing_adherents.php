@@ -53,13 +53,13 @@
 	if (isset($_POST["mailing_go"]))
 	{
 		if ($mailing_objet=="")
-			$error_detected .= "<LI>"._("Veuillez indiquer un objet pour le message.")."</LI>";
+			$error_detected .= "<LI>"._("Please type an object for the message.")."</LI>";
 
 		if ($mailing_corps=="")
-			$error_detected .= "<LI>"._("Veuillez saisir un message.")."</LI>";
+			$error_detected .= "<LI>"._("Please enter a message.")."</LI>";
 			
 		if (!isset($_POST["mailing_adh"]))
-			$error_detected .= "<LI>"._("Veuillez sélectionner au moins un adhérent.")."</LI>";
+			$error_detected .= "<LI>"._("Please select at least one member.")."</LI>";
 
 		if ($error_detected=="")
 			$etape = 1;
@@ -95,7 +95,7 @@
 		if (isset($_GET["etiquettes"]))
 		{
 ?> 
-			<H1 class="titre"><? echo _("Génération d'étiquettes"); ?></H1>
+			<H1 class="titre"><? echo _("Generate labels"); ?></H1>
 <?
 		}
 		else
@@ -110,7 +110,7 @@
 		{
 ?>
 		  	<DIV id="errorbox">
-		  		<H1><? echo _("- ERREUR -"); ?></H1>
+		  		<H1><? echo _("- ERROR -"); ?></H1>
 		  		<UL>
 		  			<? echo $error_detected; ?>
 		  		</UL>
@@ -209,23 +209,23 @@
 		</SCRIPT>
 		<TABLE id="infoline" width="100%">
 			<TR>
-				<TD class="left"><? echo $nbadh->fields[0]." "; if ($nbadh->fields[0]!=1) echo _("adhérents"); else echo _("adhérent"); ?></TD>
+				<TD class="left"><? echo $nbadh->fields[0]." "; if ($nbadh->fields[0]!=1) echo _("members"); else echo _("member"); ?></TD>
 				<TD class="right">
 					<DIV id="listfilter">
 						<FORM action="mailing_adherents.php" method="get" name="filtre">
-						 	<? echo _("Afficher :"); ?>&nbsp;
+						 	<? echo _("Display:"); ?>&nbsp;
 							<SELECT name="filtre" onChange="form.submit()">
-								<OPTION value="0"<? isSelected("0",$_SESSION["filtre_adh"]) ?>><? echo _("Tout les adhérents"); ?></OPTION>
-								<OPTION value="3"<? isSelected("3",$_SESSION["filtre_adh"]) ?>><? echo _("Les adhérents à jour"); ?></OPTION>
-								<OPTION value="1"<? isSelected("1",$_SESSION["filtre_adh"]) ?>><? echo _("Les échéances proches"); ?></OPTION>
-								<OPTION value="2"<? isSelected("2",$_SESSION["filtre_adh"]) ?>><? echo _("Les retardataires"); ?></OPTION>
+								<OPTION value="0"<? isSelected("0",$_SESSION["filtre_adh"]) ?>><? echo _("All members"); ?></OPTION>
+								<OPTION value="3"<? isSelected("3",$_SESSION["filtre_adh"]) ?>><? echo _("Members up to date"); ?></OPTION>
+								<OPTION value="1"<? isSelected("1",$_SESSION["filtre_adh"]) ?>><? echo _("Close expiries"); ?></OPTION>
+								<OPTION value="2"<? isSelected("2",$_SESSION["filtre_adh"]) ?>><? echo _("Latecomers"); ?></OPTION>
 							</SELECT>
 							<SELECT name="filtre_2" onChange="form.submit()">
-								<OPTION value="0"<? isSelected("0",$_SESSION["filtre_adh_2"]) ?>><? echo _("Tous  les comptes"); ?></OPTION>
-								<OPTION value="1"<? isSelected("1",$_SESSION["filtre_adh_2"]) ?>><? echo _("Comptes actifs"); ?></OPTION>
-								<OPTION value="2"<? isSelected("2",$_SESSION["filtre_adh_2"]) ?>><? echo _("Comptes désactivés"); ?></OPTION>
+								<OPTION value="0"<? isSelected("0",$_SESSION["filtre_adh_2"]) ?>><? echo _("All the accounts"); ?></OPTION>
+								<OPTION value="1"<? isSelected("1",$_SESSION["filtre_adh_2"]) ?>><? echo _("Active accounts"); ?></OPTION>
+								<OPTION value="2"<? isSelected("2",$_SESSION["filtre_adh_2"]) ?>><? echo _("Inactive accounts"); ?></OPTION>
 							</SELECT>
-							<INPUT type="submit" value="<? echo _("Filtrer"); ?>">
+							<INPUT type="submit" value="<? echo _("Filter"); ?>">
 						</FORM>
 					</DIV>
 				</TD>
@@ -249,7 +249,7 @@
 							<TR> 
 							<TH class="listing" width="15">#</TH> 
 				  			<TH class="listing left" width="250"> 
-									<A href="mailing_adherents.php?tri=0" class="listing"><? echo _("Nom"); ?></A>
+									<A href="mailing_adherents.php?tri=0" class="listing"><? echo _("Name"); ?></A>
 									<?
 										if ($_SESSION["tri_adh"]=="0")
 											if ($_SESSION["tri_adh_sens"]=="0")
@@ -269,7 +269,7 @@
 									?>
 								</TH> 
 								<TH class="listing left"> 
-									<A href="mailing_adherents.php?tri=2" class="listing"><? echo _("Statut"); ?></A>
+									<A href="mailing_adherents.php?tri=2" class="listing"><? echo _("Status"); ?></A>
 									<?
 										if ($_SESSION["tri_adh"]=="2")
 											if ($_SESSION["tri_adh_sens"]=="0")
@@ -279,7 +279,7 @@
 									?>
 								</TH> 
 								<TH class="listing left"> 
-									<A href="mailing_adherents.php?tri=3" class="listing"><? echo _("Etat cotisations"); ?></A>
+									<A href="mailing_adherents.php?tri=3" class="listing"><? echo _("State of dues"); ?></A>
 									<?
 										if ($_SESSION["tri_adh"]=="3")
 											if ($_SESSION["tri_adh_sens"]=="0")
@@ -295,7 +295,7 @@
 		{
 ?>	
 							<tr>
-								<td colspan="6" class="emptylist"><? echo _("aucun adhérent"); ?></td>
+								<td colspan="6" class="emptylist"><? echo _("no member"); ?></td>
 							</tr>
 <?
 		}
@@ -310,14 +310,14 @@
 		// temps d'adhésion
 		if($resultat->fields[6])
 		{
-			$statut_cotis = _("Exempt de cotisation");
+			$statut_cotis = _("Freed of dues");
 			$row_class .= " cotis-exempt";
 		}
 		else
 		{
 			if ($resultat->fields[10]=="")
 			{
-				$statut_cotis = _("N'a jamais cotisé");
+				$statut_cotis = _("Never contributed");
 				$row_class .= " cotis-never";
 			}
 			else
@@ -329,17 +329,17 @@
 				$difference = intval(($ts_date_fin - $aujourdhui)/(3600*24));
 				if ($difference==0)
 				{
-					$statut_cotis = _("Dernier jour !");
+					$statut_cotis = _("Last day!");
 					$row_class .= " cotis-lastday";
 				}
 				elseif ($difference<0)
 				{
-					$statut_cotis = _("En retard de ").-$difference." "._("jours")." ("._("depuis le")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+					$statut_cotis = _("Late of ").-$difference." "._("days")." ("._("since")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
 					$row_class .= " cotis-late";
 				}
 				else
 				{
-					$statut_cotis = $difference." "._("jours restants")." ("._("fin le")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+					$statut_cotis = $difference." "._("days remaining")." ("._("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
 					if ($difference < 30)
 						$row_class .= " cotis-soon";
 					else
@@ -356,11 +356,11 @@
 <?
 			if ($resultat->fields[7]=="1") {
 ?>
-									<IMG src="images/icon-male.png" Alt="<? echo _("[H]"); ?>" align="middle" width="10" height="12">
+									<IMG src="images/icon-male.png" Alt="<? echo _("[M]"); ?>" align="middle" width="10" height="12">
 <?
 			} else {
 ?>
-									<IMG src="images/icon-female.png" Alt="<? echo _("[F]"); ?>" align="middle" width="9" height="12">
+									<IMG src="images/icon-female.png" Alt="<? echo _("[W]"); ?>" align="middle" width="9" height="12">
 <?
 			}
 ?>
@@ -385,7 +385,7 @@
 								<TD width="55" class="<? echo $row_class; ?> center"> 
 									<A href="ajouter_adherent.php?id_adh=<? echo $resultat->fields[0] ?>"><IMG src="images/icon-edit.png" alt="<? echo _("[mod]"); ?>" border="0" width="12" height="13"></A>
 									<A href="gestion_contributions.php?id_adh=<? echo $resultat->fields[0] ?>"><IMG src="images/icon-money.png" alt="<? echo _("[$]"); ?>" border="0" width="13" height="13"></A>
-									<A onClick="return confirm('<? echo str_replace("\n","\\n",addslashes(_("Voulez-vous vraiment supprimer cet adhérent de la base, ceci supprimera aussi l'historique de ses cotisations. Pour éviter cela vous pouvez simplement désactiver le compte.\n\nVoulez-vous tout de même supprimer cet adhérent ?"))); ?>')" href="gestion_adherents.php?sup=<? echo $resultat->fields[0] ?>"><IMG src="images/icon-trash.png" alt="<? echo _("[sup]"); ?>" border="0" width="11" height="13"></A>
+									<A onClick="return confirm('<? echo str_replace("\n","\\n",addslashes(_("Do you really want to delete this member from the base, this will delete also the history of her fees. To avoid this you can just unactivate her account.\n\nDo you still want to delete this member ?"))); ?>')" href="gestion_adherents.php?sup=<? echo $resultat->fields[0] ?>"><IMG src="images/icon-trash.png" alt="<? echo _("[del]"); ?>" border="0" width="11" height="13"></A>
 								</TD> 
 							</TR> 
 <? 
@@ -394,14 +394,14 @@
 		$resultat->Close();
 ?>							 
 						</TABLE>
-						<A href="#" onClick="check()"><? echo _("[ Tout cocher / décocher ]"); ?></A>
+						<A href="#" onClick="check()"><? echo _("[ Select / unselect all ]"); ?></A>
 						<BR>
 						<BR>
 <?
 		if (isset($_GET["etiquettes"]))
 		{
 ?>
-							<DIV align="center"><INPUT type="submit" value="<? echo _("Génération d'étiquettes"); ?>"></DIV>
+							<DIV align="center"><INPUT type="submit" value="<? echo _("Generate labels"); ?>"></DIV>
 <?
 		}
 		else
@@ -410,13 +410,13 @@
 						<DIV align="center">
 						<TABLE border="0" id="input-table">
 							<TR>
-								<TH id="libelle"><? echo _("Objet :"); ?></TH>
+								<TH id="libelle"><? echo _("Object:"); ?></TH>
 							</TR>
 							<TR>
 								<TD><INPUT type="text" name="mailing_objet" value="<? echo htmlentities($mailing_objet, ENT_QUOTES); ?>" size="80"></TD>
 							</TR>
 							<TR>
-								<TH id="libelle"><? echo _("Message :"); ?></TH>
+								<TH id="libelle"><? echo _("Message:"); ?></TH>
 							</TR>
 							<TR>
 								<TD><TEXTAREA name="mailing_corps" cols="72" rows="15"><? echo htmlentities($mailing_corps, ENT_QUOTES); ?></TEXTAREA></TD>
@@ -424,7 +424,7 @@
 							<TR>
 								<TH align="center">
 									<BR>
-									<INPUT type="submit" value="<? echo _("Prévisualiser"); ?>">
+									<INPUT type="submit" value="<? echo _("Preview"); ?>">
 								</TH>
 							</TR>
 						</TABLE>
@@ -466,22 +466,22 @@
 		$resultat_adh_nomail = &$DB->Execute($requete);
         
 		if (isset($_POST["mailing_confirmed"]) && $resultat_adh_nomail->EOF==false)
-            $confirm_detected = _("Pensez à contacter les adhérents ne disposant pas d'une adresse E-Mail par un autre moyen.");
+            $confirm_detected = _("Don't forget to contact the members who don't have an email address by another way.");
 ?>
-			<H1 class="titre"><? echo _("Mailing"); ?> <? if (isset($_POST["mailing_confirmed"])) echo _("effectué !"); else echo _("(prévisualisation)"); ?></H1>
+			<H1 class="titre"><? echo _("Mailing"); ?> <? if (isset($_POST["mailing_confirmed"])) echo _("done!"); else echo _("(preview)"); ?></H1>
 <?
 		// Affichage des erreurs
 		if ($confirm_detected!="")
-	  	echo "			<BR><DIV align=\"center\"><TABLE><TR><TD style=\"background: #DDFFDD; color: #FF0000\"><B><DIV align=\"center\">"._("- ATTENTION -")."</DIV></B>" . $confirm_detected . "</TD></TR></TABLE></DIV>";
+	  	echo "			<BR><DIV align=\"center\"><TABLE><TR><TD style=\"background: #DDFFDD; color: #FF0000\"><B><DIV align=\"center\">"._("- WARNING -")."</DIV></B>" . $confirm_detected . "</TD></TR></TABLE></DIV>";
 ?>
 			<BR>
-			<B><? echo _("Destinataires du mailing :"); ?></B>
+			<B><? echo _("Recipients of the mailing:"); ?></B>
 			<TABLE width="100%"> 
 				<TR> 
-	  				<TH class="listing left" width="250"><? echo _("Nom"); ?></TH> 
+	  				<TH class="listing left" width="250"><? echo _("Name"); ?></TH> 
 					<TH class="listing left"><? echo _("E-Mail"); ?></TH> 
-					<TH class="listing left"> <? echo _("Statut"); ?></TH> 
-					<TH class="listing left"><? echo _("Etat cotisations"); ?></TH> 
+					<TH class="listing left"> <? echo _("Status"); ?></TH> 
+					<TH class="listing left"><? echo _("State of dues"); ?></TH> 
 				</TR> 			
 <?		
 		$num_mails = 0;
@@ -490,7 +490,7 @@
 		{
 ?>	
 				<tr>
-					<td colspan="4" bgcolor="#EEEEEE" align="center"><i><? echo _("aucun adhérent"); ?></i></td>
+					<td colspan="4" bgcolor="#EEEEEE" align="center"><i><? echo _("no member"); ?></i></td>
 				</tr>
 <?
 		}
@@ -512,14 +512,14 @@
 			// temps d'adhésion
 			if($resultat->fields[6])
 			{
-				$statut_cotis = _("Exempt de cotisation");
+				$statut_cotis = _("Freed of dues");
 				$color = "#DDFFDD";
 			}
 			else
 			{
 				if ($resultat->fields[10]=="")
 				{
-					$statut_cotis = _("N'a jamais cotisé");
+					$statut_cotis = _("Never contributed");
 					$color = "#EEEEEE";			
 				}
 				else
@@ -531,17 +531,17 @@
 					$difference = intval(($ts_date_fin - $aujourdhui)/(3600*24));
 					if ($difference==0)
 					{
-						$statut_cotis = _("Dernier jour !");
+						$statut_cotis = _("Last day!");
 						$color = "#FFDDDD";
 					}
 					elseif ($difference<0)
 					{
-						$statut_cotis = _("En retard de ").-$difference." "._("jours")." ("._("depuis le")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+						$statut_cotis = _("Late of ").-$difference." "._("days")." ("._("since")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
 						$color = "#FFDDDD";
 					}
 					else
 					{
-						$statut_cotis = $difference." "._("jours restants")." ("._("fin le")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+						$statut_cotis = $difference." "._("days remaining")." ("._("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
 						if ($difference < 30)
 							$color = "#FFE9AB";
 						else
@@ -556,11 +556,11 @@
 <?
 			if ($resultat->fields[7]=="1") {
 ?>
-						<img src="images/icon-male.png" Alt="<? echo _("[H]"); ?>" align="middle" width="10" height="12">
+						<img src="images/icon-male.png" Alt="<? echo _("[M]"); ?>" align="middle" width="10" height="12">
 <?
 			} else {
 ?>
-						<img src="images/icon-female.png" Alt="<? echo _("[F]"); ?>" align="middle" width="9" height="12">
+						<img src="images/icon-female.png" Alt="<? echo _("[W]"); ?>" align="middle" width="9" height="12">
 <?
 			}
 ?>
@@ -593,7 +593,7 @@
 		}
 		
 		if (isset($_POST["mailing_confirmed"]))
-			dblog(_("Envoi d'un mailing intitulé :")." \"".$mailing_objet."\" - ".$num_mails." "._("destinataires"), $concatmail."\n".$mailing_corps);
+			dblog(_("Send of a mailing titled:")." \"".$mailing_objet."\" - ".$num_mails." "._("recipients"), $concatmail."\n".$mailing_corps);
 		
 		$resultat->Close();
 ?>
@@ -604,9 +604,9 @@
 ?>
 			<DIV id="mailing_preview">
 				<TABLE border="0" id="input-table" style="width: 100%;">
-				<TR><TH id="libelle"><? echo _("Objet :"); ?></TH></TR>
+				<TR><TH id="libelle"><? echo _("Object:"); ?></TH></TR>
 				<TR><TD><? echo htmlentities($mailing_objet, ENT_QUOTES); ?></TD></TR>
-				<TR><TH id="libelle"><? echo _("Message :"); ?></TH></TR>
+				<TR><TH id="libelle"><? echo _("Message:"); ?></TH></TR>
 				<TR><TD style="height: 200px; vertical-align: top;"><? echo nl2br(htmlentities($mailing_corps, ENT_QUOTES)); ?></TD></TR>
 				</TABLE>
 			</DIV>
@@ -633,7 +633,7 @@
 										<INPUT type ="hidden" name="mailing_objet" value="<? echo htmlentities($mailing_objet, ENT_QUOTES); ?>">
 										<INPUT type ="hidden" name="mailing_confirmed" value="1">
 										<INPUT type ="hidden" name="mailing_go" value="1">
-										&nbsp;&nbsp;&nbsp;<INPUT type="submit" value="<? echo _("Envoyer"); ?>">
+										&nbsp;&nbsp;&nbsp;<INPUT type="submit" value="<? echo _("Send"); ?>">
 									</FORM>
 								</TD>
 <?
@@ -643,20 +643,20 @@
 						</TABLE>
 						</DIV>
 						<BR>
-			<B><? echo _("Adhérents non joignables par email :"); ?></B>
+			<B><? echo _("Members who can't be reachable by e-mail:"); ?></B>
 			<TABLE width="100%"> 
 				<TR> 
-	  				<TH class="listing left" width="250"><? echo _("Nom"); ?></TH> 
-					<TH class="listing left"><? echo _("Coordonnées"); ?></TH> 
-					<TH class="listing left"> <? echo _("Statut"); ?></TH> 
-					<TH class="listing left"><? echo _("Etat cotisations"); ?></TH> 
+	  				<TH class="listing left" width="250"><? echo _("Name"); ?></TH> 
+					<TH class="listing left"><? echo _("Profile"); ?></TH> 
+					<TH class="listing left"> <? echo _("Status"); ?></TH> 
+					<TH class="listing left"><? echo _("State of dues"); ?></TH> 
 				</TR> 			
 <?
 		if ($resultat_adh_nomail->EOF)
 		{
 ?>	
 							<tr>
-								<td colspan="4" bgcolor="#EEEEEE" align="center"><i><? echo _("aucun adhérent"); ?></i></td>
+								<td colspan="4" bgcolor="#EEEEEE" align="center"><i><? echo _("no member"); ?></i></td>
 							</tr>
 <?
 		}
@@ -671,14 +671,14 @@
 				// temps d'adhésion
 				if($resultat_adh_nomail->fields[6])
 				{
-					$statut_cotis = _("Exempt de cotisation");
+					$statut_cotis = _("Freed of dues");
 					$color = "#DDFFDD";
 				}
 				else
 				{
 					if ($resultat_adh_nomail->fields[10]=="")
 					{
-						$statut_cotis = _("N'a jamais cotisé");
+						$statut_cotis = _("Never contributed");
 						$color = "#EEEEEE";			
 					}
 					else
@@ -690,17 +690,17 @@
 						$difference = intval(($ts_date_fin - $aujourdhui)/(3600*24));
 						if ($difference==0)
 						{
-							$statut_cotis = _("Dernier jour !");
+							$statut_cotis = _("Last day!");
 							$color = "#FFDDDD";
 						}
 						elseif ($difference<0)
 						{
-							$statut_cotis = _("En retard de ").-$difference." "._("jours")." ("._("depuis le")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+							$statut_cotis = _("Late of ").-$difference." "._("days")." ("._("since")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
 							$color = "#FFDDDD";
 						}
 						else
 						{
-							$statut_cotis = $difference." "._("jours restants")." ("._("fin le")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+							$statut_cotis = $difference." "._("days remaining")." ("._("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
 							if ($difference < 30)
 								$color = "#FFE9AB";
 							else
@@ -715,11 +715,11 @@
 <?
 				if ($resultat_adh_nomail->fields[7]=="1") {
 ?>
-									<img src="images/icon-male.png" Alt="<? echo _("[H]"); ?>" align="middle" width="10" height="12">
+									<img src="images/icon-male.png" Alt="<? echo _("[M]"); ?>" align="middle" width="10" height="12">
 <?
 				} else {
 ?>
-									<img src="images/icon-female.png" Alt="<? echo _("[F]"); ?>" align="middle" width="9" height="12">
+									<img src="images/icon-female.png" Alt="<? echo _("[W]"); ?>" align="middle" width="9" height="12">
 <?
 				}
 ?>
@@ -766,17 +766,17 @@
 					$adresse_adh .= htmlentities($resultat_adh_nomail->fields[18], ENT_QUOTES);
 				}
 				if ($adresse_adh!="")
-					$coord_adh .= "<tr><td width=\"10\" valign=\"top\"><B>".str_replace(" ","&nbsp;",_("Adresse :"))."</B>&nbsp;</td><td>".$adresse_adh."</td></tr>";
+					$coord_adh .= "<tr><td width=\"10\" valign=\"top\"><B>".str_replace(" ","&nbsp;",_("Address:"))."</B>&nbsp;</td><td>".$adresse_adh."</td></tr>";
 				if ($resultat_adh_nomail->fields[12]!="") 
-					$coord_adh .= "<tr><td style=\"padding-right: 1px;\"><B>".str_replace(" ","&nbsp;",_("Tel :"))."</B>&nbsp;</td><td>".htmlentities($resultat_adh_nomail->fields[12], ENT_QUOTES)."</td></tr>";
+					$coord_adh .= "<tr><td style=\"padding-right: 1px;\"><B>".str_replace(" ","&nbsp;",_("Phone:"))."</B>&nbsp;</td><td>".htmlentities($resultat_adh_nomail->fields[12], ENT_QUOTES)."</td></tr>";
 				if ($resultat_adh_nomail->fields[13]!="") 
-					$coord_adh .= "<tr><td><B>".str_replace(" ","&nbsp;",_("GSM :"))."</B>&nbsp;</td><td>".htmlentities($resultat_adh_nomail->fields[13], ENT_QUOTES)."</td></tr>";
+					$coord_adh .= "<tr><td><B>".str_replace(" ","&nbsp;",_("Mobile phone:"))."</B>&nbsp;</td><td>".htmlentities($resultat_adh_nomail->fields[13], ENT_QUOTES)."</td></tr>";
 				if ($resultat_adh_nomail->fields[15]!="") 
-					$coord_adh .= "<tr><td><B>".str_replace(" ","&nbsp;",_("ICQ :"))."</B>&nbsp;</td><td>".htmlentities($resultat_adh_nomail->fields[15], ENT_QUOTES)."</td></tr>";
+					$coord_adh .= "<tr><td><B>".str_replace(" ","&nbsp;",_("ICQ:"))."</B>&nbsp;</td><td>".htmlentities($resultat_adh_nomail->fields[15], ENT_QUOTES)."</td></tr>";
 				if ($resultat_adh_nomail->fields[17]!="") 
-					$coord_adh .= "<tr><td><B>".str_replace(" ","&nbsp;",_("Jabber :"))."</B>&nbsp;</td><td>".htmlentities($resultat_adh_nomail->fields[17], ENT_QUOTES)."</td></tr>";
+					$coord_adh .= "<tr><td><B>".str_replace(" ","&nbsp;",_("Jabber:"))."</B>&nbsp;</td><td>".htmlentities($resultat_adh_nomail->fields[17], ENT_QUOTES)."</td></tr>";
 				if ($resultat_adh_nomail->fields[14]!="") 
-					$coord_adh .= "<tr><td><B>".str_replace(" ","&nbsp;",_("MSN :"))."</B>&nbsp;</td><td>".htmlentities($resultat_adh_nomail->fields[14], ENT_QUOTES)."</td></tr>";
+					$coord_adh .= "<tr><td><B>".str_replace(" ","&nbsp;",_("MSN:"))."</B>&nbsp;</td><td>".htmlentities($resultat_adh_nomail->fields[14], ENT_QUOTES)."</td></tr>";
 				$coord_adh .= "</table>";
 ?>
 								<td valign="top" bgcolor="<? echo $color ?>"<? echo $activity_class ?>"><? echo $coord_adh; ?></td> 
@@ -812,7 +812,7 @@
 ?>
 										<INPUT type ="hidden" name="mailing_corps" value="<? echo htmlentities($mailing_corps, ENT_QUOTES); ?>">
 										<INPUT type ="hidden" name="mailing_objet" value="<? echo htmlentities($mailing_objet, ENT_QUOTES); ?>">
-										<INPUT type="submit" value="<? echo _("Retour"); ?>">&nbsp;&nbsp;&nbsp;
+										<INPUT type="submit" value="<? echo _("Go back"); ?>">&nbsp;&nbsp;&nbsp;
 									</FORM>
 								</TD>
 <?
@@ -822,7 +822,7 @@
 ?>
 								<TD>
 									<FORM action="gestion_adherents.php" method="post">
-										<INPUT type="submit" value="<? echo _("Retour"); ?>">
+										<INPUT type="submit" value="<? echo _("Go back"); ?>">
 									</FORM>
 								</TD>
 <?
@@ -837,7 +837,7 @@
 			echo "<INPUT type=\"hidden\" name=\"mailing_adh[]\" value=\"".$value."\">";
 		}
 ?>
-										&nbsp;&nbsp;&nbsp;<INPUT type="submit" value="<? echo _("Génération d'étiquettes"); ?>">
+										&nbsp;&nbsp;&nbsp;<INPUT type="submit" value="<? echo _("Generate labels"); ?>">
 									</FORM>
 								</TD>
 							<TR>
