@@ -124,9 +124,12 @@
 					imagepng($thumb, $img2);
 					break;
 				case ".gif":
-					$image = ImageCreateFromGif($img);
-					imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $imagedata[0], $imagedata[1]);
-					imagegif($thumb, $img2);
+					if (function_exists("imagegif"))
+					{
+						$image = ImageCreateFromGif($img);
+						imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $imagedata[0], $imagedata[1]);
+						imagegif($thumb, $img2);
+					}
 					break;					
 			}
 		}

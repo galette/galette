@@ -333,7 +333,7 @@
 			 	}
 			 	else
 				{
-					if (function_exists("ImageCreateFromGif"))
+					if (function_exists("imagegif"))
 			 			$warning_detected .= "<LI>"._T("- Le fichier transmis n'est pas une image valide (GIF, PNG ou JPEG). L'enregistrement a cependant été effectué.")."</LI>"; 
 					else
 			 			$warning_detected .= "<LI>"._T("- Le fichier transmis n'est pas une image valide (PNG ou JPEG). L'enregistrement a cependant été effectué.")."</LI>"; 
