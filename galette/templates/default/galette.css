@@ -124,6 +124,11 @@ th.listing {
 a.listing {
 	color: #FFFFFF;
 	font-weight: bold;
+	vertical-align: middle;
+}
+
+td.listing {
+	vertical-align: middle;
 }
 
 a.listing:hover {
@@ -265,6 +270,7 @@ a.listing:hover {
 
 #listfilter {
 	text-align: right;
+	margin-bottom: 10px;
 }
 
 #listfilter form {
@@ -272,7 +278,16 @@ a.listing:hover {
 }
 
 #infoline {
-	margin-top: 10px;
+	vertical-align: top;
+}
+
+#infoline td {
+        vertical-align: top;
+}	
+
+#infoline ul {
+	margin: 0px;
+	list-style-type: circle;
 }
 
 #infoline2 {
@@ -414,4 +429,16 @@ a.listing:hover {
 	left: 0px;
 	right: 0px;
 	margin: 0px;
-}	
+}
+
+#listing td {
+	vertical-align: middle;
+}
+
+#listing input {
+	vertical-align: middle;
+}
+
+#listing img {
+        vertical-align: middle;
+}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-08 21:24+0100\n"
+"POT-Creation-Date: 2004-11-08 23:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,6 +67,8 @@ msgstr ""
 #: ../self_adherent.php:138 ../self_adherent.php:443 ../lostpasswd.php:71
 #: ../lostpasswd.php:131 ../install/index.php:756 ../ajouter_adherent.php:303
 #: ../templates/default/index.tpl:23 ../templates/default/preferences.tpl:194
+#: ../templates/default/ajouter_adherent.tpl:171
+#: ../templates/default/voir_adherent.tpl:117
 msgid "Username:"
 msgstr ""
 
@@ -74,6 +76,8 @@ msgstr ""
 #: ../install/index.php:303 ../install/index.php:762
 #: ../ajouter_adherent.php:304 ../templates/default/index.tpl:27
 #: ../templates/default/preferences.tpl:200
+#: ../templates/default/ajouter_adherent.tpl:176
+#: ../templates/default/voir_adherent.tpl:119
 msgid "Password:"
 msgstr ""
 
@@ -85,15 +89,20 @@ msgstr ""
 msgid "(this mail was sent automatically)"
 msgstr ""
 
-#: ../self_adherent.php:160
+#: ../self_adherent.php:160 ../templates/default/ajouter_adherent.tpl:1
+#: ../templates/default/voir_adherent.tpl:1
 msgid "Member Profile"
 msgstr ""
 
 #: ../self_adherent.php:161 ../self_contribution.php:208
+#: ../templates/default/ajouter_adherent.tpl:1
+#: ../templates/default/ajouter_contribution.tpl:1
 msgid "modification"
 msgstr ""
 
 #: ../self_adherent.php:161 ../self_contribution.php:208
+#: ../templates/default/ajouter_adherent.tpl:1
+#: ../templates/default/ajouter_contribution.tpl:1
 msgid "creation"
 msgstr ""
 
@@ -108,15 +117,19 @@ msgstr ""
 #: ../self_adherent.php:213 ../mailing_adherents.php:119
 #: ../self_contribution.php:217 ../lostpasswd.php:111
 #: ../templates/default/preferences.tpl:5
+#: ../templates/default/ajouter_adherent.tpl:5
+#: ../templates/default/ajouter_contribution.tpl:5
+#: ../templates/default/configurer_fiches.tpl:5
 msgid "- ERROR -"
 msgstr ""
 
 #: ../self_adherent.php:222 ../mailing_adherents.php:482 ../lostpasswd.php:120
 #: ../templates/default/preferences.tpl:15
+#: ../templates/default/ajouter_adherent.tpl:15
 msgid "- WARNING -"
 msgstr ""
 
-#: ../self_adherent.php:237
+#: ../self_adherent.php:237 ../templates/default/ajouter_adherent.tpl:25
 msgid "Title:"
 msgstr ""
 
@@ -132,7 +145,8 @@ msgstr ""
 msgid "Mister"
 msgstr ""
 
-#: ../self_adherent.php:250
+#: ../self_adherent.php:250 ../templates/default/ajouter_adherent.tpl:31
+#: ../templates/default/voir_adherent.tpl:6
 msgid "Name:"
 msgstr ""
 
@@ -144,88 +158,119 @@ msgstr ""
 msgid "your fee."
 msgstr ""
 
-#: ../self_adherent.php:263
+#: ../self_adherent.php:263 ../templates/default/ajouter_adherent.tpl:39
 msgid "First name:"
 msgstr ""
 
-#: ../self_adherent.php:271
+#: ../self_adherent.php:271 ../templates/default/ajouter_adherent.tpl:43
+#: ../templates/default/voir_adherent.tpl:17
 msgid "Nickname:"
 msgstr ""
 
-#: ../self_adherent.php:279
+#: ../self_adherent.php:279 ../templates/default/ajouter_adherent.tpl:47
+#: ../templates/default/voir_adherent.tpl:21
 msgid "birth date:"
 msgstr ""
 
 #: ../self_adherent.php:285 ../self_contribution.php:249
+#: ../templates/default/ajouter_adherent.tpl:50
+#: ../templates/default/ajouter_adherent.tpl:194
+#: ../templates/default/ajouter_contribution.tpl:41
 msgid "(dd/mm/yyyy format)"
 msgstr ""
 
-#: ../self_adherent.php:291
+#: ../self_adherent.php:291 ../templates/default/ajouter_adherent.tpl:54
+#: ../templates/default/voir_adherent.tpl:29
 msgid "Profession:"
 msgstr ""
 
-#: ../self_adherent.php:305
+#: ../self_adherent.php:305 ../templates/default/ajouter_adherent.tpl:66
+#: ../templates/default/voir_adherent.tpl:33
 msgid "Be visible in the<br /> members list :"
 msgstr ""
 
-#: ../self_adherent.php:311
+#: ../self_adherent.php:311 ../templates/default/ajouter_adherent.tpl:68
+#: ../templates/default/voir_adherent.tpl:48
 msgid "Language:"
 msgstr ""
 
 #: ../self_adherent.php:346 ../mailing_adherents.php:776
 #: ../templates/default/preferences.tpl:45
+#: ../templates/default/ajouter_adherent.tpl:125
+#: ../templates/default/voir_adherent.tpl:56
 msgid "Address:"
 msgstr ""
 
 #: ../self_adherent.php:356 ../templates/default/preferences.tpl:53
+#: ../templates/default/ajouter_adherent.tpl:132
+#: ../templates/default/voir_adherent.tpl:63
 msgid "Zip Code:"
 msgstr ""
 
 #: ../self_adherent.php:362 ../templates/default/preferences.tpl:57
+#: ../templates/default/ajouter_adherent.tpl:134
+#: ../templates/default/voir_adherent.tpl:65
 msgid "City:"
 msgstr ""
 
 #: ../self_adherent.php:370 ../templates/default/preferences.tpl:61
+#: ../templates/default/ajouter_adherent.tpl:138
+#: ../templates/default/voir_adherent.tpl:69
 msgid "Country:"
 msgstr ""
 
 #: ../self_adherent.php:376 ../mailing_adherents.php:778
+#: ../templates/default/ajouter_adherent.tpl:140
+#: ../templates/default/voir_adherent.tpl:71
 msgid "Phone:"
 msgstr ""
 
 #: ../self_adherent.php:384 ../mailing_adherents.php:780
+#: ../templates/default/ajouter_adherent.tpl:144
+#: ../templates/default/voir_adherent.tpl:75
 msgid "Mobile phone:"
 msgstr ""
 
-#: ../self_adherent.php:390
+#: ../self_adherent.php:390 ../templates/default/ajouter_adherent.tpl:146
+#: ../templates/default/voir_adherent.tpl:77
 msgid "E-Mail:"
 msgstr ""
 
-#: ../self_adherent.php:398
+#: ../self_adherent.php:398 ../templates/default/ajouter_adherent.tpl:150
+#: ../templates/default/voir_adherent.tpl:86
 msgid "Website:"
 msgstr ""
 
 #: ../self_adherent.php:404 ../mailing_adherents.php:782
+#: ../templates/default/ajouter_adherent.tpl:152
+#: ../templates/default/voir_adherent.tpl:93
 msgid "ICQ:"
 msgstr ""
 
 #: ../self_adherent.php:412 ../mailing_adherents.php:784
+#: ../templates/default/ajouter_adherent.tpl:156
+#: ../templates/default/voir_adherent.tpl:97
 msgid "Jabber:"
 msgstr ""
 
 #: ../self_adherent.php:418 ../mailing_adherents.php:786
+#: ../templates/default/ajouter_adherent.tpl:158
+#: ../templates/default/voir_adherent.tpl:99
 msgid "MSN:"
 msgstr ""
 
-#: ../self_adherent.php:426
+#: ../self_adherent.php:426 ../templates/default/ajouter_adherent.tpl:162
+#: ../templates/default/voir_adherent.tpl:108
 msgid "Id GNUpg (GPG):"
 msgstr ""
 
-#: ../self_adherent.php:432
+#: ../self_adherent.php:432 ../templates/default/ajouter_adherent.tpl:164
+#: ../templates/default/voir_adherent.tpl:110
 msgid "fingerprint:"
 msgstr ""
 
-#: ../self_adherent.php:448
+#: ../self_adherent.php:448 ../templates/default/ajouter_adherent.tpl:174
+#: ../templates/default/ajouter_adherent.tpl:179
 msgid "(at least 4 characters)"
 msgstr ""
 
@@ -233,7 +278,8 @@ msgstr ""
 msgid "Please repeat in the field the password shown in the image."
 msgstr ""
 
-#: ../self_adherent.php:467
+#: ../self_adherent.php:467 ../templates/default/ajouter_adherent.tpl:206
+#: ../templates/default/voir_adherent.tpl:133
 msgid "Other informations:"
 msgstr ""
 
@@ -243,11 +289,15 @@ msgstr ""
 
 #: ../self_adherent.php:549 ../self_contribution.php:261
 #: ../templates/default/preferences.tpl:211
+#: ../templates/default/ajouter_adherent.tpl:242
+#: ../templates/default/ajouter_contribution.tpl:54
 msgid "NB : The mandatory fields are in"
 msgstr ""
 
 #: ../self_adherent.php:550 ../self_contribution.php:261
 #: ../templates/default/preferences.tpl:211
+#: ../templates/default/ajouter_adherent.tpl:242
+#: ../templates/default/ajouter_contribution.tpl:54
 msgid "red"
 msgstr ""
 
@@ -265,6 +315,7 @@ msgstr ""
 
 #: ../mailing_adherents.php:104 ../mailing_adherents.php:411
 #: ../mailing_adherents.php:847 ../footer.php:45
+#: ../templates/default/gestion_adherents.tpl:150
 #: ../templates/default/page.tpl:28
 msgid "Generate labels"
 msgstr ""
@@ -326,8 +377,9 @@ msgstr ""
 
 #: ../mailing_adherents.php:259 ../mailing_adherents.php:488
 #: ../mailing_adherents.php:656 ../footer.php:119 ../footer.php:123
-#: ../templates/default/gestion_adherents.tpl:36
+#: ../templates/default/gestion_adherents.tpl:37
 #: ../templates/default/page.tpl:83 ../templates/default/page.tpl:87
+#: ../templates/default/configurer_fiches.tpl:16
 msgid "Name"
 msgstr ""
 
@@ -336,17 +388,17 @@ msgid "E-Mail"
 msgstr ""
 
 #: ../mailing_adherents.php:279 ../mailing_adherents.php:490
-#: ../mailing_adherents.php:658 ../templates/default/gestion_adherents.tpl:60
+#: ../mailing_adherents.php:658 ../templates/default/gestion_adherents.tpl:61
 msgid "Status"
 msgstr ""
 
 #: ../mailing_adherents.php:289 ../mailing_adherents.php:491
-#: ../mailing_adherents.php:659 ../templates/default/gestion_adherents.tpl:72
+#: ../mailing_adherents.php:659 ../templates/default/gestion_adherents.tpl:73
 msgid "State of dues"
 msgstr ""
 
 #: ../mailing_adherents.php:305 ../mailing_adherents.php:500
-#: ../mailing_adherents.php:666 ../templates/default/gestion_adherents.tpl:118
+#: ../mailing_adherents.php:666 ../templates/default/gestion_adherents.tpl:120
 msgid "no member"
 msgstr ""
 
@@ -523,14 +575,17 @@ msgid "Add a self-contribution:"
 msgstr ""
 
 #: ../self_contribution.php:208
+#: ../templates/default/ajouter_contribution.tpl:1
 msgid "Contribution card"
 msgstr ""
 
 #: ../self_contribution.php:229
+#: ../templates/default/ajouter_contribution.tpl:17
 msgid "Contributor:"
 msgstr ""
 
 #: ../self_contribution.php:234
+#: ../templates/default/ajouter_contribution.tpl:24
 msgid "Contribution type:"
 msgstr ""
 
@@ -539,6 +594,7 @@ msgid "Annual fee (to be paid)"
 msgstr ""
 
 #: ../self_contribution.php:242
+#: ../templates/default/ajouter_contribution.tpl:32
 msgid "Amount:"
 msgstr ""
 
@@ -547,14 +603,17 @@ msgid "Duration:"
 msgstr ""
 
 #: ../self_contribution.php:245
+#: ../templates/default/ajouter_contribution.tpl:35
 msgid "months"
 msgstr ""
 
 #: ../self_contribution.php:248
+#: ../templates/default/ajouter_contribution.tpl:38
 msgid "Date of contribution:"
 msgstr ""
 
 #: ../self_contribution.php:252
+#: ../templates/default/ajouter_contribution.tpl:45
 msgid "Comments:"
 msgstr ""
 
@@ -637,6 +696,7 @@ msgid "Do a mailing"
 msgstr ""
 
 #: ../footer.php:46 ../templates/default/page.tpl:29
+#: ../templates/default/log.tpl:1
 msgid "Logs"
 msgstr ""
 
@@ -821,11 +881,11 @@ msgstr ""
 msgid "- The field Name cannot be void."
 msgstr ""
 
-#: ../configurer_fiches.php:102
+#: ../configurer_fiches.php:102 ../templates/default/configurer_fiches.tpl:57
 msgid "all"
 msgstr ""
 
-#: ../configurer_fiches.php:105
+#: ../configurer_fiches.php:105 ../templates/default/configurer_fiches.tpl:58
 msgid "admin"
 msgstr ""
 
@@ -833,15 +893,15 @@ msgstr ""
 msgid "unknown"
 msgstr ""
 
-#: ../configurer_fiches.php:113
+#: ../configurer_fiches.php:113 ../templates/default/configurer_fiches.tpl:63
 msgid "separator"
 msgstr ""
 
-#: ../configurer_fiches.php:116
+#: ../configurer_fiches.php:116 ../templates/default/configurer_fiches.tpl:64
 msgid "free text"
 msgstr ""
 
-#: ../configurer_fiches.php:119
+#: ../configurer_fiches.php:119 ../templates/default/configurer_fiches.tpl:65
 msgid "field"
 msgstr ""
 
@@ -921,11 +981,11 @@ msgstr ""
 msgid "Miss."
 msgstr ""
 
-#: ../voir_adherent.php:98
+#: ../voir_adherent.php:98 ../templates/default/ajouter_adherent.tpl:95
 msgid "Active"
 msgstr ""
 
-#: ../voir_adherent.php:100
+#: ../voir_adherent.php:100 ../templates/default/ajouter_adherent.tpl:96
 msgid "Inactive"
 msgstr ""
 
@@ -1422,16 +1482,37 @@ msgid "among:"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:19
-#: ../templates/default/gestion_adherents.tpl:122
+#: ../templates/default/gestion_adherents.tpl:153
+#: ../templates/default/gestion_contributions.tpl:14
+#: ../templates/default/gestion_contributions.tpl:133
+#: ../templates/default/log.tpl:10 ../templates/default/log.tpl:100
 msgid "Pages:"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:48
+#: ../templates/default/gestion_adherents.tpl:49
 msgid "Nickname"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:83
+#: ../templates/default/gestion_adherents.tpl:84
+#: ../templates/default/configurer_fiches.tpl:20
+#: ../templates/default/gestion_contributions.tpl:93
 msgid "Actions"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:145
+msgid "(Un)Check all"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:146
+msgid "Selection:"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:148
+msgid "Delete"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:149
+msgid "Mail all"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:27
@@ -1572,4 +1653,168 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:191
 msgid "Admin account (independant of members):"
+msgstr ""
+
+#: ../templates/default/ajouter_adherent.tpl:56
+msgid "Photo:"
+msgstr ""
+
+#: ../templates/default/ajouter_adherent.tpl:92
+#: ../templates/default/voir_adherent.tpl:38
+msgid "Account:"
+msgstr ""
+
+#: ../templates/default/ajouter_adherent.tpl:102
+#: ../templates/default/voir_adherent.tpl:25
+msgid "Status:"
+msgstr ""
+
+#: ../templates/default/ajouter_adherent.tpl:111
+#: ../templates/default/voir_adherent.tpl:42
+msgid "Galette Admin:"
+msgstr ""
+
+#: ../templates/default/ajouter_adherent.tpl:116
+#: ../templates/default/voir_adherent.tpl:46
+msgid "Freed of dues:"
+msgstr ""
+
+#: ../templates/default/ajouter_adherent.tpl:184
+msgid "Send a mail:"
+msgstr ""
+
+#: ../templates/default/ajouter_adherent.tpl:187
+msgid ""
+"(the member will receive his username and password by email, if he has an "
+"address.)"
+msgstr ""
+
+#: ../templates/default/ajouter_adherent.tpl:191
+#: ../templates/default/voir_adherent.tpl:124
+msgid "Creation date:"
+msgstr ""
+
+#: ../templates/default/ajouter_adherent.tpl:198
+#: ../templates/default/voir_adherent.tpl:128
+msgid "Other informations (admin):"
+msgstr ""
+
+#: ../templates/default/ajouter_adherent.tpl:201
+msgid "This comment is only displayed for admins."
+msgstr ""
+
+#: ../templates/default/ajouter_adherent.tpl:210
+msgid "This comment is reserved to the member."
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:20
+msgid "-- select a name --"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:34
+msgid "Membership extension:"
+msgstr ""
+
+#: ../templates/default/configurer_fiches.tpl:1
+msgid "Profile configuration"
+msgstr ""
+
+#: ../templates/default/configurer_fiches.tpl:17
+msgid "Visibility"
+msgstr ""
+
+#: ../templates/default/configurer_fiches.tpl:18
+#: ../templates/default/gestion_contributions.tpl:57
+msgid "Type"
+msgstr ""
+
+#: ../templates/default/configurer_fiches.tpl:19
+msgid "Size"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:1
+msgid "Management of contributions"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:4
+msgid "Show contributions since"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:6
+msgid "until"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:13
+msgid "contributions"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:13
+msgid "contribution"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:31
+#: ../templates/default/log.tpl:27
+msgid "Date"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:44
+msgid "Member"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:69
+msgid "Amount"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:81
+msgid "Duration"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:126
+#: ../templates/default/gestion_contributions.tpl:128
+msgid "no contribution"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:155
+msgid "[ See member profile ]"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:157
+#: ../templates/default/voir_adherent.tpl:165
+msgid "[ Add a contribution ]"
+msgstr ""
+
+#: ../templates/default/log.tpl:8
+msgid "lines"
+msgstr ""
+
+#: ../templates/default/log.tpl:8
+msgid "line"
+msgstr ""
+
+#: ../templates/default/log.tpl:39
+msgid "IP"
+msgstr ""
+
+#: ../templates/default/log.tpl:51
+msgid "User"
+msgstr ""
+
+#: ../templates/default/log.tpl:63
+msgid "Action"
+msgstr ""
+
+#: ../templates/default/log.tpl:75
+msgid "Description"
+msgstr ""
+
+#: ../templates/default/log.tpl:97
+msgid "logs are empty"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:160
+msgid "[ Modification ]"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:162
+msgid "[ Contributions ]"
 msgstr ""
