@@ -102,6 +102,7 @@ INSERT INTO galette_types_cotisation VALUES (3,'Cotisation entreprise');
 INSERT INTO galette_types_cotisation VALUES (4,'Donation en nature');
 INSERT INTO galette_types_cotisation VALUES (5,'Donation pécunière');
 INSERT INTO galette_types_cotisation VALUES (6,'Partenariat');
+INSERT INTO galette_types_cotisation VALUES (7, 'Cotisation annuelle (à payer)');
 
 DROP TABLE galette_preferences;
 CREATE TABLE galette_preferences (
