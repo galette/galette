@@ -34,6 +34,7 @@
 		$_SESSION["filtre_cotis_adh"] = $_SESSION["logged_id_adh"];
 	else
 	{
+		if (isset($_GET["id_adh"]))
 		if (is_numeric($_GET["id_adh"]))
 			$_SESSION["filtre_cotis_adh"]=$_GET["id_adh"];
 		else
