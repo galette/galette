@@ -147,10 +147,12 @@
 					{
 					  if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $post_value, $array_jours))
 					  {
-						  if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
-								$value=$DB->DBDate(mktime(0,0,0,$array_jours[2],$array_jours[1],$array_jours[3]));
-							else
-								$error_detected .= "<LI>"._T("- Date non valide !")."</LI>";
+					    if (checkdate($array_jours[2],$array_jours[1],$array_jours[3])){
+					      //$value=$DB->DBDate(mktime(0,0,0,$array_jours[2],$array_jours[1],$array_jours[3]));
+					      $value = "'".$array_jours[3]."-".$array_jours[2]."-".$array_jours[1],."'";
+					    } else{
+					      $error_detected .= "<LI>"._T("- Date non valide !")."</LI>";
+					    }
 					  }
 					  else
 					  	$error_detected .= "<LI>"._T("- Mauvais format de date (jj/mm/aaaa) !")."</LI>";
@@ -211,11 +213,12 @@
 			
 			// mise a jour de l'échéance
 			$date_fin = get_echeance($DB, $id_adh);
-			if ($date_fin!="")
-				$date_fin_update = $DB->DBDate(mktime(0,0,0,$date_fin[1],$date_fin[0],$date_fin[2]));
-			else
-				$date_fin_update = "'NULL'";
-
+			if ($date_fin!=""){
+			  //$date_fin_update = $DB->DBDate(mktime(0,0,0,$date_fin[1],$date_fin[0],$date_fin[2]));
+			  $date_fin_update = "'".$date_fin[2]."-".$date_fin[1]."-".$date_fin[0],."'";
+			} else{
+			  $date_fin_update = "'NULL'";
+			}
 			$requete = "UPDATE ".PREFIX_DB."adherents
 				    SET date_echeance=".$date_fin_update."
 				    WHERE id_adh='".$id_adh."'";
