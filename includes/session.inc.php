@@ -39,6 +39,8 @@
 		$_SESSION["filtre_date_cotis_2"]="";
 		$_SESSION["tri_adh"]=0;
 		$_SESSION["tri_adh_sens"]=0;
+		$_SESSION["tri_log"]=0;
+		$_SESSION["tri_log_sens"]=0;
 		$_SESSION["filtre_cotis"]=0;
 		$_SESSION["tri_cotis"]=0;
 		$_SESSION["tri_cotis_sens"]=1;

@@ -41,9 +41,49 @@
 		dblog(_T("Réinitialisation de l'historique"));
 	}
 
-	$requete[0] = "SELECT date_log, adh_log, text_log, ip_log FROM ".PREFIX_DB."logs ORDER BY date_log DESC, id_log DESC";
+    // Tri
+	if (isset($_GET["tri"]))
+		if (is_numeric($_GET["tri"]))
+		{
+			if ($_SESSION["tri_log"]==$_GET["tri"])
+				$_SESSION["tri_log_sens"]=($_SESSION["tri_log_sens"]+1)%2;
+			else
+			{
+				$_SESSION["tri_log"]=$_GET["tri"];
+				$_SESSION["tri_log_sens"]=0;
+			}
+		}
+    
+	$requete[0] = "SELECT date_log, adh_log, text_log, ip_log FROM ".PREFIX_DB."logs ";
 	$requete[1] = "SELECT count(id_log) FROM ".PREFIX_DB."logs";
-	$resultat = &$DB->SelectLimit($requete[0],PREF_NUMROWS,($page-1)*PREF_NUMROWS);
+	
+    // phase de tri	
+	if ($_SESSION["tri_log_sens"]=="0")
+		$tri_log_sens_txt="ASC";
+	else
+		$tri_log_sens_txt="DESC";
+
+	$requete[0] .= "ORDER BY ";
+	
+	// tri par date
+	if ($_SESSION["tri_log"]=="0")
+		$requete[0] .= "date_log ".$tri_log_sens_txt.",";
+		
+	// tri par ip
+	elseif ($_SESSION["tri_log"]=="1")
+		$requete[0] .= "ip_log ".$tri_log_sens_txt.",";
+
+	// tri par adhérent
+	elseif ($_SESSION["tri_log"]=="2")
+		$requete[0] .= "adh_log ".$tri_log_sens_txt.",";
+
+	// tri par description
+	elseif ($_SESSION["tri_log"]=="3")
+		$requete[0] .= "text_log ".$tri_log_sens_txt.",";
+    
+    $requete[0] .= "id_log ".$tri_log_sens_txt;
+    
+    $resultat = &$DB->SelectLimit($requete[0],PREF_NUMROWS,($page-1)*PREF_NUMROWS);
 	$nb_lines = &$DB->Execute($requete[1]);
 		
 	include("header.php");
@@ -78,10 +118,66 @@
 		<TABLE width="100%"> 
 		<TR> 
 			<TH width="15" class="listing">#</TH> 
-  			<TH class="listing left" width="150"><? echo _T("Date"); ?></TH> 
-  			<TH class="listing left" width="150"><? echo _T("IP"); ?></TH> 
-  			<TH class="listing left" width="150"><? echo _T("Adhérent"); ?></TH> 
-  			<TH class="listing left"><? echo _T("Description"); ?></TH>
+  			<TH class="listing left" width="150">
+				<A href="log.php?tri=0" class="listing"><? echo _T("Date"); ?></A>
+<?
+	if ($_SESSION["tri_log"]=="0")
+	{
+		if ($_SESSION["tri_log_sens"]=="0")
+			$img_sens = "asc.png";
+		else
+			$img_sens = "desc.png";
+	}
+	else
+		$img_sens = "icon-empty.png";
+?>
+				<IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
+            </TH> 
+  			<TH class="listing left" width="150">
+				<A href="log.php?tri=1" class="listing"><? echo _T("IP"); ?></A>
+<?
+	if ($_SESSION["tri_log"]=="1")
+	{
+		if ($_SESSION["tri_log_sens"]=="0")
+			$img_sens = "asc.png";
+		else
+			$img_sens = "desc.png";
+	}
+	else
+		$img_sens = "icon-empty.png";
+?>
+				<IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
+            </TH> 
+  			<TH class="listing left" width="150">
+				<A href="log.php?tri=2" class="listing"><? echo _T("Adhérent"); ?></A>
+<?
+	if ($_SESSION["tri_log"]=="2")
+	{
+		if ($_SESSION["tri_log_sens"]=="0")
+			$img_sens = "asc.png";
+		else
+			$img_sens = "desc.png";
+	}
+	else
+		$img_sens = "icon-empty.png";
+?>
+				<IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
+            </TH> 
+  			<TH class="listing left">
+				<A href="log.php?tri=3" class="listing"><? echo _T("Description"); ?></A>
+<?
+	if ($_SESSION["tri_log"]=="3")
+	{
+		if ($_SESSION["tri_log_sens"]=="0")
+			$img_sens = "asc.png";
+		else
+			$img_sens = "desc.png";
+	}
+	else
+		$img_sens = "icon-empty.png";
+?>
+				<IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
+            </TH>
   		</TR>
 <? 
 	$compteur = 1+($page-1)*PREF_NUMROWS;

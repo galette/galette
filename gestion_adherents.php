@@ -70,7 +70,7 @@
 			{
 				// supression record adhérent
 				$requetesup = "DELETE FROM ".PREFIX_DB."adherents 
-										WHERE id_adh=".$DB->qstr($_GET["sup"]); 
+						WHERE id_adh=".$DB->qstr($_GET["sup"]); 
 				$DB->Execute($requetesup); 		
 	
 				// suppression de l'eventuelle photo
@@ -83,7 +83,7 @@
 			
 				// suppression records cotisations
 				$requetesup = "DELETE FROM ".PREFIX_DB."cotisations 
-										WHERE id_adh=" . $DB->qstr($_GET["sup"]); 
+						WHERE id_adh=" . $DB->qstr($_GET["sup"]); 
 				$DB->Execute($requetesup); 			
 				dblog(_T("Suppression de la fiche adhérent (et cotisations) :")." ".strtoupper($resultat->fields[0])." ".$resultat->fields[1], $requetesup);
 			}
@@ -207,7 +207,7 @@
 	<TABLE width="100%"> 
 		<TR> 
 			<TH width="15" class="listing">#</TH> 
-  				<TH width="250" class="listing left"> 
+  			<TH width="250" class="listing left"> 
 				<A href="gestion_adherents.php?tri=0" class="listing"><? echo _T("Nom"); ?></A>
 <?
 	if ($_SESSION["tri_adh"]=="0")
@@ -329,7 +329,7 @@
 			}
 		}
 ?>							 
-		<TR> 
+		<TR>
 			<TD width="15" class="<? echo $row_class ?>"><? echo $compteur ?></TD> 
 			<TD class="<? echo $row_class ?>" nowrap>
 <?
