@@ -151,7 +151,7 @@
 						if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $value, $array_jours))
 						{
 							if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
-								$value = $DB->DBDate(mktime(0,0,0,$array_jours[3],$array_jours[2],$array_jours[1]));
+								$value = $DB->DBDate(mktime(0,0,0,$array_jours[2],$array_jours[1],$array_jours[3]));
 							else
 								$error_detected[] = _T("- Non valid date!");
 						}
@@ -190,9 +190,14 @@
 							$error_detected[] = _T("- The password must be of at least 4 characters!");
 						break;
 				}
-				$update_string .= ", ".$key."=".$DB->qstr($value);
+				
+				// dates already quoted
+				if (($key!='ddn_adh' && $key!='date_crea_adh') || $value=='')
+					$value = $DB->qstr($value);
+				
+				$update_string .= ", ".$key."=".$value;
 				$insert_string_fields .= ", ".$key;
-				$insert_string_values .= ", ".$DB->qstr($value);
+				$insert_string_values .= ", ".$value;
 			}
 		}	
 
@@ -209,10 +214,10 @@
 		while (list($key,$val) = each($required))
 		{
 			if (!isset($adherent[$key]) && !isset($disabled[$key]))
-				$error_detected[] = _T("- Mandatory field empty.")." ".$key;
+				$error_detected[] = _T("- Mandatory field empty.")." ($key)";
 			elseif (isset($adherent[$key]) && !isset($disabled[$key]))
 				if (trim($adherent[$key])=='')
-					$error_detected[] = _T("- Mandatory field empty.")." ".$key;
+					$error_detected[] = _T("- Mandatory field empty.")." ($key)";
 		}
 
 		if (count($error_detected)==0)
@@ -223,15 +228,13 @@
 				(" . substr($insert_string_fields,1) . ")
 				VALUES (" . substr($insert_string_values,1) . ")";
 				$DB->Execute($requete);
-				echo $requete;
-				
+				$adherent['id_adh'] = $DB->Insert_ID();
+
 				// to allow the string to be extracted for translation
 				$foo = _T("Member card added");
 
 				// logging
 				dblog('Member card added',strtoupper($_POST['nom_adh']).' '.$_POST["prenom_adh"], $requete);
-
-				$adherent['id_adh'] = $DB->Insert_ID();
 			}
 			else
 			{
@@ -245,18 +248,8 @@
 
 				// logging
                                 dblog('Member card updated:',strtoupper($_POST["nom_adh"]).' '.$_POST["prenom_adh"], $requete);
-
-                                $date_fin = get_echeance($DB, $adherent['id_adh']);
-                                if ($date_fin!="")
-                                        $date_fin_update = $DB->DBDate(mktime(0,0,0,$date_fin[1],$date_fin[0],$date_fin[2]));
-                                else
-                                        $date_fin_update = "NULL";
-                                $requete = "UPDATE ".PREFIX_DB."adherents
-                                            SET date_echeance=".$date_fin_update."
-                                            WHERE id_adh=" . $adherent['id_adh'];
-				$DB->Execute($requete);
 			}
-
+			
                         if (isset($_POST["mail_confirm"]))
                                 if ($_POST["mail_confirm"]=="1")
                                         if ($adherent['email_adh']!="")
@@ -295,6 +288,8 @@
 					SET date_echeance=".$date_fin_update."
 					WHERE id_adh=" . $adherent['id_adh'];
 			$DB->Execute($requete);
+			
+			header ('location: ajouter_contribution.php?id_adh='.$adherent['id_adh']);
 		}
 	}
 	else
@@ -398,7 +393,7 @@
 	$result->Close();
 	$tpl->assign("statuts",$statuts);
 
-	// page genaration
+	// page generation
 	$content = $tpl->fetch("ajouter_adherent.tpl");
 	$tpl->assign("content",$content);
 	$tpl->display("page.tpl");

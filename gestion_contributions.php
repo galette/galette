@@ -132,6 +132,7 @@
 
 	$date_cotis_format = &$DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_cotis');
 	$requete[0] = "SELECT $date_cotis_format AS date_cotis,
+			".PREFIX_DB."cotisations.id_cotis, 
 			".PREFIX_DB."cotisations.id_adh, 
 			".PREFIX_DB."cotisations.duree_mois_cotis, 
 			".PREFIX_DB."cotisations.montant_cotis, 
@@ -217,6 +218,7 @@
 			$row_class = "cotis-give";
 			
 		$contributions[$compteur]["class"]=$row_class;
+		$contributions[$compteur]["id_cotis"]=$resultat->fields['id_cotis'];
 		$contributions[$compteur]["date"]=$resultat->fields['date_cotis'];
 		$contributions[$compteur]["id_adh"]=$resultat->fields['id_adh'];
 		$contributions[$compteur]["nom"]=htmlentities(strtoupper($resultat->fields['nom_adh']),ENT_QUOTES);
@@ -299,90 +301,4 @@
 	$content = $tpl->fetch("gestion_contributions.tpl");
 	$tpl->assign("content",$content);
 	$tpl->display("page.tpl");
-
-/*
-	// affichage du temps d'ahésion restant si on est en train de visualiser
-	// les cotisations d'un membre unique
-	
-	if ($_SESSION["filtre_cotis_adh"]!="")
-	{
-		$requete = "SELECT date_echeance, bool_exempt_adh
-			    FROM ".PREFIX_DB."adherents
-			    WHERE id_adh='".$_SESSION["filtre_cotis_adh"]."'";
-		$resultat = $DB->Execute($requete);
-		
-		// temps d'adhésion
-		if($resultat->fields[1])
-		{
-			$statut_cotis = _T("Freed of dues");
-			$color = "#DDFFDD";
-		}
-		else
-		{
-			if ($resultat->fields[0]=="")
-			{
-				$statut_cotis = _T("Never contributed");
-				$color = "#EEEEEE";			
-			}
-			else
-			{
-			
-			
-			$date_fin = split("-",$resultat->fields[0]);
-			$ts_date_fin = mktime(0,0,0,$date_fin[1],$date_fin[2],$date_fin[0]);
-			$aujourdhui = time();
-			
-			$difference = intval(($ts_date_fin - $aujourdhui)/(3600*24));
-			if ($difference==0)
-			{
-				$statut_cotis = _T("Last day!");
-				$color = "#FFDDDD";
-			}
-			elseif ($difference<0)
-			{
-				$statut_cotis = _T("Late of")." ".-$difference." "._T("days")." ("._T("since")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
-				$color = "#FFDDDD";
-			}
-			else
-			{
-				if ($difference!=1)
-					$statut_cotis = $difference." "._T("days remaining")." ("._T("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
-				else
-					$statut_cotis = $difference." "._T("day remaining")." ("._T("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
-				if ($difference < 30)
-					$color = "#FFE9AB";
-				else
-					$color = "#DDFFDD";	
-			}
-			
-			}
-		}		
-		
-		
-?>	
-		<BR>
-		<DIV align="center">
-		  <TABLE bgcolor="<? echo $color; ?>">
-		    <TR>
-		      <TD><? echo $statut_cotis; ?></TD>
-		    </TR>
-		  </TABLE>
-<?
-		if ($_SESSION["admin_status"]==1)
-	        {
-?>
-	<BR>
-	<A href="voir_adherent.php?id_adh=<? echo $_SESSION["filtre_cotis_adh"]; ?>"><? echo _T("[ See member profile ]"); ?></A>
-	&nbsp;&nbsp;&nbsp;
-	<A href="ajouter_contribution.php?id_adh=<? echo $_SESSION["filtre_cotis_adh"]; ?>"><? echo _T("[ Add a contribution ]"); ?></A>
-<?
-		}	
-?>
-		</DIV>
-<?
-	}	
-*/
-
-
-
 ?>
