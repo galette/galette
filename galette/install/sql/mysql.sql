@@ -46,7 +46,9 @@ CREATE TABLE galette_cotisations (
   montant_cotis float unsigned default '0',
   info_cotis text,
   duree_mois_cotis tinyint(3) unsigned NOT NULL default '12',
-  date_cotis date NOT NULL default '0000-00-00',
+  date_enreg date NOT NULL default '0000-00-00',
+  date_debut_cotis date NOT NULL default '0000-00-00',
+  date_fin_cotis date NOT NULL default '0000-00-00'
   PRIMARY KEY  (id_cotis)
 ) TYPE=MyISAM;
 

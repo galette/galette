@@ -103,7 +103,7 @@
 			<TR> 
 				<TD width="15" class="{$contribution.class} center" nowrap>{$ordre}</TD> 
 				<TD width="50" class="{$contribution.class}" nowrap>
-					{$contribution.date}
+					{$contribution.date_debut}
 			</TD> 
 {if $smarty.session.admin_status eq 1}
 			<TD class="{$contribution.class}" nowrap>

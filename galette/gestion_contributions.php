@@ -135,11 +135,12 @@
  		$result_adh->Close();
 	}
 
-	$date_cotis_format = &$DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_cotis');
-	$requete[0] = "SELECT $date_cotis_format AS date_cotis,
+	$date_debut_cotis_format = &$DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_debut_cotis');
+	$date_fin_cotis_format = &$DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_fin_cotis');
+	$requete[0] = "SELECT $date_debut_cotis_format AS date_debut_cotis,
+			$date_fin_cotis_format AS date_fin_cotis,
 			".PREFIX_DB."cotisations.id_cotis, 
 			".PREFIX_DB."cotisations.id_adh, 
-			".PREFIX_DB."cotisations.duree_mois_cotis, 
 			".PREFIX_DB."cotisations.montant_cotis, 
 			".PREFIX_DB."adherents.nom_adh, 
 			".PREFIX_DB."adherents.prenom_adh,
@@ -165,16 +166,16 @@
 	   ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_SESSION["filtre_date_cotis_1"], $array_jours);
 	   //$datemin = $DB->DBDate(mktime(0,0,0,$array_jours[2],$array_jours[1],$array_jours[3]));
 	   $datemin = "'".$array_jours[3]."-".$array_jours[2]."-".$array_jours[1]."'";
-	   $requete[0] .= "AND ".PREFIX_DB."cotisations.date_cotis >= " . $datemin . " ";
-	   $requete[1] .= "AND ".PREFIX_DB."cotisations.date_cotis >= " . $datemin . " ";
+	   $requete[0] .= "AND ".PREFIX_DB."cotisations.date_debut_cotis >= " . $datemin . " ";
+	   $requete[1] .= "AND ".PREFIX_DB."cotisations.date_debut_cotis >= " . $datemin . " ";
 	}
 	if ($_SESSION["filtre_date_cotis_2"]!="")
 	{
 	   ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_SESSION["filtre_date_cotis_2"], $array_jours);
 	   //$datemax = $DB->DBDate(mktime(0,0,0,$array_jours[2],$array_jours[1],$array_jours[3]));
 	   $datemax = "'".$array_jours[3]."-".$array_jours[2]."-".$array_jours[1]."'";
-	   $requete[0] .= "AND ".PREFIX_DB."cotisations.date_cotis <= " . $datemax . " ";
-	   $requete[1] .= "AND ".PREFIX_DB."cotisations.date_cotis <= " . $datemax . " ";
+	   $requete[0] .= "AND ".PREFIX_DB."cotisations.date_debut_cotis <= " . $datemax . " ";
+	   $requete[1] .= "AND ".PREFIX_DB."cotisations.date_debut_cotis <= " . $datemax . " ";
 	}
 
 	// phase de tri
@@ -200,43 +201,43 @@
 
 	// tri par duree
 	elseif ($_SESSION["tri_cotis"]=="4")
-		$requete[0] .= "duree_mois_cotis ".$tri_cotis_sens_txt.",";
+		$requete[0] .= "(date_fin_cotis - date_debut_cotis) ".$tri_cotis_sens_txt.",";
 
 	// defaut : tri par date
-	$requete[0] .= " ".PREFIX_DB."cotisations.date_cotis ".$tri_cotis_sens_txt; 
+	$requete[0] .= " ".PREFIX_DB."cotisations.date_debut_cotis ".$tri_cotis_sens_txt; 
 
 	if ($numrows==0)
 		$resultat = &$DB->Execute($requete[0]);
 	else
 		$resultat = &$DB->SelectLimit($requete[0],$numrows,($page-1)*$numrows);
 							
-	$nb_contributions = &$DB->Execute($requete[1]); 
+	$nb_contributions = &$DB->GetOne($requete[1]); 
 	$contributions = array();
 
 	if ($numrows==0)
 		$nbpages = 1;
-	else if ($nb_contributions->fields[0]%$numrows==0) 
-		$nbpages = intval($nb_contributions->fields[0]/$numrows);
+	else if ($nb_contributions%$numrows==0) 
+		$nbpages = intval($nb_contributions/$numrows);
 	else 
-		$nbpages = intval($nb_contributions->fields[0]/$numrows)+1;
+		$nbpages = intval($nb_contributions/$numrows)+1;
 		
 	$compteur = 1+($page-1)*$numrows;
 	while(!$resultat->EOF) 
 	{ 
-		if ($resultat->fields["duree_mois_cotis"]!="0")
+		if ($resultat->fields["date_fin_cotis"]==$resultat->fields["date_debut_cotis"])
 			$row_class = "cotis-normal";
 		else
 			$row_class = "cotis-give";
 			
 		$contributions[$compteur]["class"]=$row_class;
 		$contributions[$compteur]["id_cotis"]=$resultat->fields['id_cotis'];
-		$contributions[$compteur]["date"]=$resultat->fields['date_cotis'];
+		$contributions[$compteur]["date_debut"]=$resultat->fields['date_debut_cotis'];
 		$contributions[$compteur]["id_adh"]=$resultat->fields['id_adh'];
 		$contributions[$compteur]["nom"]=htmlentities(strtoupper($resultat->fields['nom_adh']),ENT_QUOTES);
 		$contributions[$compteur]["prenom"]=htmlentities($resultat->fields['prenom_adh'], ENT_QUOTES);
 		$contributions[$compteur]["libelle_type_cotis"]=$resultat->fields['libelle_type_cotis'];;
 		$contributions[$compteur]["montant_cotis"]=$resultat->fields['montant_cotis'];;
-		$contributions[$compteur]["duree_mois_cotis"]=$resultat->fields['duree_mois_cotis'];;
+		$contributions[$compteur]["duree_mois_cotis"] = distance_months($resultat->fields['date_debut_cotis'], $resultat->fields['date_fin_cotis']);
 		$compteur++;
 		$resultat->MoveNext();
 	}
@@ -296,7 +297,7 @@
 	
 
 	$tpl->assign("contributions",$contributions);
-	$tpl->assign("nb_contributions",$nb_contributions->fields[0]);
+	$tpl->assign("nb_contributions",$nb_contributions);
 	$tpl->assign("nb_pages",$nbpages);
 	$tpl->assign("page",$page);
 	$tpl->assign('filtre_options', array(

@@ -120,7 +120,7 @@
 						$error_detected[] = _T("- The password must be of at least 4 characters!");
 					break;
 				case 'pref_membership_ext':
-					if (!is_numeric($value) || $value < 1 || $value > 12)
+					if (!is_numeric($value) || $value < 0)
 						$error_detected[] = _T("- Invalid number of months of membership extension.");
 					break;
 				case 'pref_beg_membership':
