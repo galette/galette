@@ -47,6 +47,7 @@ $lang["Utilisateur :"]="User:";
 $lang["Hôte :"]="Host:";
 $lang["Nom de la base :"]="Database:";
 $lang["Prefixe de table :"]="Table prefix:";
+$lang["(Indiquez le prefixe ACTUEL de vos tables Galette)"]="(Indicate the CURRENT prefix of your Galette tables)";
 $lang["Etape 4 - Base de données"]="Step 4 - Database";
 $lang["Vérification de la base"]="Check of the database";
 $lang["Vérification des paramètres et de l'existence de la base"]="Check the parameters and the existence of the database";
