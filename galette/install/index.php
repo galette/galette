@@ -342,11 +342,25 @@
 				</TD>
 			</TR>					
                         <TR>
-                                <TD><? echo _T("Prefixe de table :"); ?></TD>
+                                <TD>
+					<? echo _T("Prefixe de table :"); ?>
+				</TD>
                                 <TD>
                                         <INPUT type="text" name="install_dbprefix" value="<? if(isset($_POST["install_dbprefix"])) echo $_POST["install_dbprefix"]; else echo "galette_" ?>">
                                 </TD>
-                	</TR>
+			</TR>
+			<?
+				if (substr($_POST["install_type"],0,8)=="upgrade-")
+				{
+			?>
+			<TR>
+				<TD colspan="2" style="color: #FF0000; font-weight: bold;">
+					<? echo _T("(Indiquez le prefixe ACTUEL de vos tables Galette)"); ?>
+				</TD>
+			</TR>
+			<?
+				}
+			?>
 		</TABLE>
 		<P id="submitbutton3">
 			<INPUT type="submit" value="<? echo _T("Etape suivante"); ?>">
