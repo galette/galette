@@ -101,7 +101,7 @@
 <TABLE width="100%" style="height: 100%">
 	<TR>
 		<TD align="center">
-			<IMG src="images/galette.jpg" alt="[ Galette ]" width="103" height="80"><BR>
+			<IMG src="images/galette.png" alt="[ Galette ]" width="129" height="60"><BR><BR>
 			<FORM action="lostpasswd.php" method="post"> 
 				<B class="title"><? echo _T("Password recovery"); ?></B><BR>
 				<BR>

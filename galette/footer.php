@@ -28,8 +28,7 @@
 	</DIV>
 	<DIV id="menu">
 		<DIV id="logo">
-			<IMG src="images/galette.jpg" alt="[ Galette ]" width="103" height="80"><BR>
-			Galette
+			<IMG src="images/galette.png" alt="[ Galette ]" width="129" height="60">
 		</DIV>	
 		<DIV id="nav1">
 			<H1><? echo _T("Navigation"); ?></H1>
