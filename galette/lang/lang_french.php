@@ -343,6 +343,7 @@ $lang["Lignes / Page :"]="Lignes / Page :";
 $lang["Langue :"]="Langue :";
 $lang["french"]="français";
 $lang["english"]="anglais";
+$lang["spanish"]="espagnol";
 $lang["Paramètres galette :"]="Paramètres galette :";
 $lang["Informations générales :"]="Informations générales :";
 $lang["- Les nombres et mesures doivent être des entiers !"]="- Les nombres et mesures doivent être des entiers !";

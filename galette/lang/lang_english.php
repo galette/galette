@@ -344,6 +344,7 @@ $lang["Lignes / Page :"]="Lines / Page:";
 $lang["Langue :"]="Language:";
 $lang["french"]="french";
 $lang["english"]="english";
+$lang["spanish"]="spanish";
 $lang["Paramètres galette :"]="Galette's parameters:";
 $lang["Informations générales :"]="General information:";
 $lang["- Les nombres et mesures doivent être des entiers !"]="- The numbers and measures have to be integers!";
