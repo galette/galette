@@ -278,7 +278,7 @@
 						$mail_text .= _T("A trés bientôt !")."\n";
 						$mail_text .= "\n";
 						$mail_text .= _T("(ce mail est un envoi automatique)")."\n";
-						$mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\n";
+						$mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\nContent-Type: text/plain; charset=iso-8859-15\n";
 						mail ($email_adh,$mail_subject,$mail_text, $mail_headers);
 					}
 				
