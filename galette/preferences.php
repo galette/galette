@@ -406,7 +406,7 @@
 	$dir_handle = @opendir($path);
 	while ($file = readdir($dir_handle))
 	{
-		if ($file!="." && $file!="..")
+		if (substr($file,0,5)=="lang_" && substr($file,-4)==".php")
 		{
         $file = substr(substr($file,5),0,-4);
 ?>
