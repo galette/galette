@@ -658,10 +658,11 @@
                                                                                                                                                   
 			for ($i = 0; $i < sizeof($sql_query); $i++)
 			{
-				if (trim($sql_query[$i]) != '')
+				$query = trim($sql_query[$i]);
+				if ($query != '' && $query[0] != '-')
 				{
-					$DB->Execute($sql_query[$i]);
-					@list($w1, $w2, $w3, $extra) = split(" ", $sql_query[$i], 4);
+					$DB->Execute($query);
+					@list($w1, $w2, $w3, $extra) = split(" ", $query, 4);
 					if ($extra!="") $extra="...";
 					if ($DB->ErrorNo())
 					{
@@ -824,51 +825,51 @@ define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 			$DB->Execute($default);			
 			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (2,'pref_adresse','-')";
 			$DB->Execute($default);		
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (2,'pref_adresse2','')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (3,'pref_adresse2','')";
 			$DB->Execute($default);
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (3,'pref_cp','-')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (4,'pref_cp','-')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (4,'pref_ville','-')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (5,'pref_ville','-')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (5,'pref_pays','-')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (6,'pref_pays','-')";
                         $DB->Execute($default);
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (6,'pref_lang',".$DB->qstr($_POST["install_lang"]).")";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (7,'pref_lang',".$DB->qstr($_POST["install_lang"]).")";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (7,'pref_numrows','30')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (8,'pref_numrows','30')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (8,'pref_log','2')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (9,'pref_log','2')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (9,'pref_email_nom','Galette')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (10,'pref_email_nom','Galette')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (10,'pref_email','mail@domain.com')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (11,'pref_email','mail@domain.com')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (11,'pref_etiq_marges','10')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (12,'pref_etiq_marges','10')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (12,'pref_etiq_hspace','10')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (13,'pref_etiq_hspace','10')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (13,'pref_etiq_vspace','5')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (14,'pref_etiq_vspace','5')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (14,'pref_etiq_hsize','90')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (15,'pref_etiq_hsize','90')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (15,'pref_etiq_vsize','35')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (16,'pref_etiq_vsize','35')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (16,'pref_etiq_cols','2')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (17,'pref_etiq_cols','2')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (17,'pref_etiq_rows','7')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (18,'pref_etiq_rows','7')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (18,'pref_etiq_corps','12')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (19,'pref_etiq_corps','12')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (19,'pref_admin_login',".$DB->qstr($_POST["install_adminlogin"]).")";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (20,'pref_admin_login',".$DB->qstr($_POST["install_adminlogin"]).")";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (20,'pref_admin_pass',".$DB->qstr($_POST["install_adminpass"]).")";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (21,'pref_admin_pass',".$DB->qstr($_POST["install_adminpass"]).")";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (21,'pref_mail_method','0')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (22,'pref_mail_method','0')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (22,'pref_mail_smtp','0')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (23,'pref_mail_smtp','0')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (23,'pref_membership_ext','12')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (24,'pref_membership_ext','12')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (24,'pref_beg_membership','')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (25,'pref_beg_membership','')";
 			
 			// NB: il faudrait améliorer cette partie car la détection
 			// d'erreur ne s'effectue que sur le dernier insert. Prévoir une boucle.
