@@ -129,7 +129,7 @@
  		}
  		$result_adh->Close();
 	}
-//".PREFIX_DB."cotisations.*,
+
 	$date_cotis_format = &$DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_cotis');
 	$requete[0] = "SELECT $date_cotis_format AS date_cotis,
 			".PREFIX_DB."cotisations.id_adh, 
@@ -228,6 +228,59 @@
 		$resultat->MoveNext();
 	}
 	$resultat->Close();
+	
+	// if viewing a member's contributions, show deadline
+	if ($_SESSION["filtre_cotis_adh"]!="")
+	{
+		$requete = "SELECT date_echeance, bool_exempt_adh
+			    FROM ".PREFIX_DB."adherents
+			    WHERE id_adh='".$_SESSION["filtre_cotis_adh"]."'";
+		$resultat = $DB->Execute($requete);
+		if($resultat->fields[1])
+		{
+			$statut_cotis = _T("Freed of dues");
+			$statut_class = 'cotis-exempt';
+		}
+		else
+		{
+			if ($resultat->fields[0]=="")
+			{
+				$statut_cotis = _T("Never contributed");
+				$statut_class = 'cotis-never';			
+			}
+			else
+			{
+				$date_fin = split("-",$resultat->fields[0]);
+				$ts_date_fin = mktime(0,0,0,$date_fin[1],$date_fin[2],$date_fin[0]);
+				$aujourdhui = time();
+				$difference = intval(($ts_date_fin - $aujourdhui)/(3600*24));
+				if ($difference==0)
+				{
+					$statut_cotis = _T("Last day!");
+					$statut_class = 'cotis-lastday';
+				}
+				elseif ($difference<0)
+				{
+					$statut_cotis = _T("Late of")." ".-$difference." "._T("days")." ("._T("since")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+					$statut_class = 'cotis-late';
+				}
+				else
+				{
+					if ($difference!=1)
+						$statut_cotis = $difference." "._T("days remaining")." ("._T("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+					else
+						$statut_cotis = $difference." "._T("day remaining")." ("._T("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+					if ($difference < 30)
+						$statut_class = 'cotis-soon';
+					else
+						$statut_class = 'cotis-ok';	
+				}		
+			}
+		}
+		$tpl->assign("statut_cotis",$statut_cotis);
+		$tpl->assign("statut_class",$statut_class);		
+	}
+	
 
 	$tpl->assign("contributions",$contributions);
 	$tpl->assign("nb_contributions",count($contributions));
