@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Galette V1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-30 18:56+0200\n"
+"POT-Creation-Date: 2004-11-06 19:16+0100\n"
 "PO-Revision-Date: 2004-08-08 23:03+0200\n"
 "Last-Translator: (no translation)\n"
 "MIME-Version: 1.0\n"
@@ -67,13 +67,13 @@ msgid "Please login at this address:"
 msgstr "Veuillez vous identifier à cette adresse :"
 
 #: ../self_adherent.php:138 ../self_adherent.php:443 ../lostpasswd.php:71
-#: ../lostpasswd.php:131 ../install/index.php:755 ../ajouter_adherent.php:266
+#: ../lostpasswd.php:131 ../install/index.php:756 ../ajouter_adherent.php:266
 #: ../templates/default/index.tpl:23
 msgid "Username:"
 msgstr "Identifiant :"
 
 #: ../self_adherent.php:139 ../self_adherent.php:452 ../lostpasswd.php:72
-#: ../install/index.php:302 ../install/index.php:761
+#: ../install/index.php:303 ../install/index.php:762
 #: ../ajouter_adherent.php:267 ../templates/default/index.tpl:27
 msgid "Password:"
 msgstr "Mot de passe :"
@@ -269,50 +269,50 @@ msgstr "Génération d'étiquettes"
 msgid "Mailing"
 msgstr "Mailing"
 
-#: ../mailing_adherents.php:218 ../templates/default/gestion_adherents.tpl:16
+#: ../mailing_adherents.php:218 ../templates/default/gestion_adherents.tpl:18
 msgid "members"
 msgstr "adhérents"
 
-#: ../mailing_adherents.php:218 ../templates/default/gestion_adherents.tpl:16
+#: ../mailing_adherents.php:218 ../templates/default/gestion_adherents.tpl:18
 msgid "member"
 msgstr "adhérent"
 
-#: ../mailing_adherents.php:222 ../templates/default/gestion_adherents.tpl:4
+#: ../mailing_adherents.php:222
 msgid "Display:"
 msgstr "Afficher :"
 
 #: ../mailing_adherents.php:224 ../gestion_contributions.php:293
-#: ../gestion_adherents.php:244
+#: ../gestion_adherents.php:257
 msgid "All members"
 msgstr "Tout les adhérents"
 
 #: ../mailing_adherents.php:225 ../gestion_contributions.php:294
-#: ../gestion_adherents.php:245
+#: ../gestion_adherents.php:258
 msgid "Members up to date"
 msgstr "Les adhérents à jour"
 
 #: ../mailing_adherents.php:226 ../gestion_contributions.php:295
-#: ../gestion_adherents.php:246
+#: ../gestion_adherents.php:259
 msgid "Close expiries"
 msgstr "Les échéances proches"
 
 #: ../mailing_adherents.php:227 ../gestion_contributions.php:296
-#: ../gestion_adherents.php:247
+#: ../gestion_adherents.php:260
 msgid "Latecomers"
 msgstr "Les retardataires"
 
 #: ../mailing_adherents.php:230 ../gestion_contributions.php:298
-#: ../gestion_adherents.php:249
+#: ../gestion_adherents.php:262
 msgid "All the accounts"
 msgstr "Tous  les comptes"
 
 #: ../mailing_adherents.php:231 ../gestion_contributions.php:299
-#: ../gestion_adherents.php:250
+#: ../gestion_adherents.php:263
 msgid "Active accounts"
 msgstr "Comptes actifs"
 
 #: ../mailing_adherents.php:232 ../gestion_contributions.php:300
-#: ../gestion_adherents.php:251
+#: ../gestion_adherents.php:264
 msgid "Inactive accounts"
 msgstr "Comptes désactivés"
 
@@ -322,7 +322,7 @@ msgstr "Filtrer"
 
 #: ../mailing_adherents.php:259 ../mailing_adherents.php:488
 #: ../mailing_adherents.php:656 ../footer.php:119 ../footer.php:123
-#: ../templates/default/gestion_adherents.tpl:34
+#: ../templates/default/gestion_adherents.tpl:36
 #: ../templates/default/page.tpl:83 ../templates/default/page.tpl:87
 msgid "Name"
 msgstr "Nom"
@@ -332,66 +332,66 @@ msgid "E-Mail"
 msgstr "E-Mail"
 
 #: ../mailing_adherents.php:279 ../mailing_adherents.php:490
-#: ../mailing_adherents.php:658 ../templates/default/gestion_adherents.tpl:58
+#: ../mailing_adherents.php:658 ../templates/default/gestion_adherents.tpl:60
 msgid "Status"
 msgstr "Statut"
 
 #: ../mailing_adherents.php:289 ../mailing_adherents.php:491
-#: ../mailing_adherents.php:659 ../templates/default/gestion_adherents.tpl:70
+#: ../mailing_adherents.php:659 ../templates/default/gestion_adherents.tpl:72
 msgid "State of dues"
 msgstr "État cotisations"
 
 #: ../mailing_adherents.php:305 ../mailing_adherents.php:500
-#: ../mailing_adherents.php:666 ../templates/default/gestion_adherents.tpl:116
+#: ../mailing_adherents.php:666 ../templates/default/gestion_adherents.tpl:118
 msgid "no member"
 msgstr "aucun adhérent"
 
 #: ../mailing_adherents.php:320 ../mailing_adherents.php:522
 #: ../mailing_adherents.php:681 ../gestion_contributions.php:244
-#: ../gestion_adherents.php:184
+#: ../gestion_adherents.php:197
 msgid "Freed of dues"
 msgstr "Exempt de cotisation"
 
 #: ../mailing_adherents.php:327 ../mailing_adherents.php:529
 #: ../mailing_adherents.php:688 ../footer.php:128
-#: ../gestion_contributions.php:251 ../gestion_adherents.php:191
+#: ../gestion_contributions.php:251 ../gestion_adherents.php:204
 #: ../templates/default/page.tpl:92
 msgid "Never contributed"
 msgstr "N'a jamais cotisé"
 
 #: ../mailing_adherents.php:339 ../mailing_adherents.php:541
 #: ../mailing_adherents.php:700 ../gestion_contributions.php:262
-#: ../gestion_adherents.php:203
+#: ../gestion_adherents.php:216
 msgid "Last day!"
 msgstr "Dernier jour !"
 
 #: ../mailing_adherents.php:344 ../mailing_adherents.php:546
-#: ../mailing_adherents.php:705 ../gestion_adherents.php:208
+#: ../mailing_adherents.php:705 ../gestion_adherents.php:221
 msgid "Late of "
 msgstr "En retard de "
 
 #: ../mailing_adherents.php:344 ../mailing_adherents.php:546
 #: ../mailing_adherents.php:705 ../gestion_contributions.php:267
-#: ../gestion_adherents.php:208
+#: ../gestion_adherents.php:221
 msgid "days"
 msgstr "jours"
 
 #: ../mailing_adherents.php:344 ../mailing_adherents.php:546
 #: ../mailing_adherents.php:705 ../gestion_contributions.php:267
-#: ../gestion_adherents.php:208
+#: ../gestion_adherents.php:221
 msgid "since"
 msgstr "depuis le"
 
 #: ../mailing_adherents.php:349 ../mailing_adherents.php:551
 #: ../mailing_adherents.php:710 ../gestion_contributions.php:273
-#: ../gestion_adherents.php:214
+#: ../gestion_adherents.php:227
 msgid "days remaining"
 msgstr "jours restants"
 
 #: ../mailing_adherents.php:349 ../mailing_adherents.php:551
 #: ../mailing_adherents.php:710 ../gestion_contributions.php:273
-#: ../gestion_contributions.php:275 ../gestion_adherents.php:214
-#: ../gestion_adherents.php:216
+#: ../gestion_contributions.php:275 ../gestion_adherents.php:227
+#: ../gestion_adherents.php:229
 msgid "ending on"
 msgstr "fin le"
 
@@ -493,7 +493,7 @@ msgid "Profile"
 msgstr "Coordonnées"
 
 #: ../mailing_adherents.php:822 ../mailing_adherents.php:832
-#: ../install/index.php:375
+#: ../install/index.php:376
 msgid "Go back"
 msgstr "Retour"
 
@@ -740,87 +740,87 @@ msgstr "Contributions"
 msgid "Gift"
 msgstr "Don"
 
-#: ../includes/i18n.inc.php:97
+#: ../includes/i18n.inc.php:100
 msgid "Realization:"
 msgstr "Réalisation :"
 
-#: ../includes/i18n.inc.php:98
+#: ../includes/i18n.inc.php:101
 msgid "Graphics:"
 msgstr "Graphisme :"
 
-#: ../includes/i18n.inc.php:99
+#: ../includes/i18n.inc.php:102
 msgid "Publisher:"
 msgstr "Éditeur :"
 
-#: ../includes/i18n.inc.php:100
+#: ../includes/i18n.inc.php:103
 msgid "President"
 msgstr "Président"
 
-#: ../includes/i18n.inc.php:101
+#: ../includes/i18n.inc.php:104
 msgid "Vice-president"
 msgstr "Vice-président"
 
-#: ../includes/i18n.inc.php:102
+#: ../includes/i18n.inc.php:105
 msgid "Treasurer"
 msgstr "Trésorier"
 
-#: ../includes/i18n.inc.php:103
+#: ../includes/i18n.inc.php:106
 msgid "Secretary"
 msgstr "Secrétaire"
 
-#: ../includes/i18n.inc.php:104
+#: ../includes/i18n.inc.php:107
 msgid "Active member"
 msgstr "Membre actif"
 
-#: ../includes/i18n.inc.php:105
+#: ../includes/i18n.inc.php:108
 msgid "Benefactor member"
 msgstr "Membre bienfaiteur"
 
-#: ../includes/i18n.inc.php:106
+#: ../includes/i18n.inc.php:109
 msgid "Founder member"
 msgstr "Membre fondateur"
 
-#: ../includes/i18n.inc.php:107
+#: ../includes/i18n.inc.php:110
 msgid "Old-timer"
 msgstr "Ancien"
 
-#: ../includes/i18n.inc.php:108
+#: ../includes/i18n.inc.php:111
 msgid "Legal entity"
 msgstr "Personne morale"
 
-#: ../includes/i18n.inc.php:109
+#: ../includes/i18n.inc.php:112
 msgid "Non-member"
 msgstr "Non membre"
 
-#: ../includes/i18n.inc.php:110
+#: ../includes/i18n.inc.php:113
 msgid "Reduced annual contribution"
 msgstr "Cotisation annuelle réduite"
 
-#: ../includes/i18n.inc.php:111
+#: ../includes/i18n.inc.php:114
 msgid "Company cotisation"
 msgstr "Cotisation entreprise"
 
-#: ../includes/i18n.inc.php:112
+#: ../includes/i18n.inc.php:115
 msgid "Donation in kind"
 msgstr "Donation en nature"
 
-#: ../includes/i18n.inc.php:113
+#: ../includes/i18n.inc.php:116
 msgid "Donation in money"
 msgstr "Donation pécunière"
 
-#: ../includes/i18n.inc.php:114
+#: ../includes/i18n.inc.php:117
 msgid "Partnership"
 msgstr "Partenariat"
 
-#: ../includes/i18n.inc.php:115
+#: ../includes/i18n.inc.php:118
 msgid "french"
 msgstr "français"
 
-#: ../includes/i18n.inc.php:116
+#: ../includes/i18n.inc.php:119
 msgid "english"
 msgstr "anglais"
 
-#: ../includes/i18n.inc.php:117
+#: ../includes/i18n.inc.php:120
 msgid "spanish"
 msgstr "espagnol"
 
@@ -926,7 +926,7 @@ msgstr "libelle_statut"
 msgid "Late of"
 msgstr "En retard de"
 
-#: ../gestion_contributions.php:275 ../gestion_adherents.php:216
+#: ../gestion_contributions.php:275 ../gestion_adherents.php:229
 msgid "day remaining"
 msgstr "jour restant"
 
@@ -956,39 +956,39 @@ msgstr "Génération de "
 msgid "label(s)"
 msgstr "étiquette(s)"
 
-#: ../install/index.php:30 ../install/index.php:40
+#: ../install/index.php:31 ../install/index.php:41
 msgid "Installation mode unknown"
 msgstr "Type d'installation inconnu"
 
-#: ../install/index.php:51
+#: ../install/index.php:52
 msgid "Database type unknown"
 msgstr "Type de base inconnu"
 
-#: ../install/index.php:53 ../install/index.php:87
+#: ../install/index.php:54 ../install/index.php:88
 msgid "No user name"
 msgstr "Nom d'utilisateur vide"
 
-#: ../install/index.php:55 ../install/index.php:89
+#: ../install/index.php:56 ../install/index.php:90
 msgid "No password"
 msgstr "Mot de passe vide"
 
-#: ../install/index.php:57
+#: ../install/index.php:58
 msgid "No database name"
 msgstr "Nom de la base non précisé"
 
-#: ../install/index.php:159
+#: ../install/index.php:160
 msgid "Installation mode"
 msgstr "Type d'installation"
 
-#: ../install/index.php:160
+#: ../install/index.php:161
 msgid "Select installation mode to launch"
 msgstr "Selectionnez le type d'installation à lancer"
 
-#: ../install/index.php:163
+#: ../install/index.php:164
 msgid "New installation:"
 msgstr "Nouvelle installation :"
 
-#: ../install/index.php:164
+#: ../install/index.php:165
 msgid ""
 "You're installing Galette for the first time, or you wish to erase an older "
 "version of Galette without keeping your data"
@@ -996,79 +996,79 @@ msgstr ""
 "Vous installez Galette pour la première fois, ou vous souhaitez écraser une "
 "ancienne version de Galette sans conserver vos données"
 
-#: ../install/index.php:181
+#: ../install/index.php:182
 msgid "Update:"
 msgstr "Mise à jour :"
 
-#: ../install/index.php:184
+#: ../install/index.php:185
 msgid "Your current Galette version is comprised between"
 msgstr "Votre version actuelle de Galette est comprise entre"
 
-#: ../install/index.php:184
+#: ../install/index.php:185
 msgid "and"
 msgstr "et"
 
-#: ../install/index.php:186
+#: ../install/index.php:187
 msgid "Your current Galette version is"
 msgstr "Votre version actuelle de Galette est la"
 
-#: ../install/index.php:188
+#: ../install/index.php:189
 msgid "Warning: Don't forget to backup your current database."
 msgstr "Attention : Pensez à sauvegarder votre base existante."
 
-#: ../install/index.php:195 ../install/index.php:250 ../install/index.php:335
-#: ../install/index.php:389 ../install/index.php:584 ../install/index.php:715
-#: ../install/index.php:768 ../install/index.php:883
+#: ../install/index.php:196 ../install/index.php:251 ../install/index.php:336
+#: ../install/index.php:390 ../install/index.php:585 ../install/index.php:716
+#: ../install/index.php:769 ../install/index.php:884
 msgid "Next step"
 msgstr "Étape suivante"
 
-#: ../install/index.php:201
+#: ../install/index.php:202
 msgid "Step 2 - Installation mode"
 msgstr "Étape 2 - Type d'installation"
 
-#: ../install/index.php:213
+#: ../install/index.php:214
 msgid "Files permissions"
 msgstr "Permissions de fichiers"
 
-#: ../install/index.php:223
+#: ../install/index.php:224
 msgid ""
 "For a correct functioning, Galette needs the Write permission on these files."
 msgstr ""
 "Pour fonctionner correctement, Galette a besoin d'avoir les droits en "
 "écriture sur ces fichiers."
 
-#: ../install/index.php:224
+#: ../install/index.php:225
 msgid ""
 "In order to be updated, Galette needs the Write permission on these files."
 msgstr ""
 "Pour être mis à jour et fonctionner correctement, Galette a besoin d'avoir "
 "les droits en écriture sur ces fichiers."
 
-#: ../install/index.php:227
+#: ../install/index.php:228
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr "Sous UNIX/Linux, vous pouvez donner ces droits par les commandes"
 
-#: ../install/index.php:228
+#: ../install/index.php:229
 msgid "apache_user"
 msgstr "utilisateur_apache"
 
-#: ../install/index.php:228 ../install/index.php:229
+#: ../install/index.php:229 ../install/index.php:230
 msgid "file_name"
 msgstr "nom_fichier"
 
-#: ../install/index.php:229
+#: ../install/index.php:230
 msgid "(for a file)"
 msgstr "(pour un fichier)"
 
-#: ../install/index.php:230
+#: ../install/index.php:231
 msgid "direcory_name"
 msgstr "nom_dossier"
 
-#: ../install/index.php:230
+#: ../install/index.php:231
 msgid "(for a directory)"
 msgstr "(pour un dossier)"
 
-#: ../install/index.php:233
+#: ../install/index.php:234
 msgid ""
 "Under Windows, check these files are not in Read-Only mode in their property "
 "panel."
@@ -1076,84 +1076,84 @@ msgstr ""
 "Sous Windows, vérifiez que les fichiers en question ne sont pas en lecture "
 "seule dans leurs propriétés."
 
-#: ../install/index.php:237 ../install/index.php:563 ../install/index.php:690
-#: ../install/index.php:910
+#: ../install/index.php:238 ../install/index.php:564 ../install/index.php:691
+#: ../install/index.php:911
 msgid "Retry"
 msgstr "Réessayer"
 
-#: ../install/index.php:247
+#: ../install/index.php:248
 msgid "Files permissions are OK!"
 msgstr "Les permissions des fichiers sont correctes !"
 
-#: ../install/index.php:261
+#: ../install/index.php:262
 msgid "Step 3 - Permissions"
 msgstr "Étape 3 - Permissions"
 
-#: ../install/index.php:269
+#: ../install/index.php:270
 msgid "Database"
 msgstr "Base de données"
 
-#: ../install/index.php:275
+#: ../install/index.php:276
 msgid "If it hadn't been made, create a database and a user for Galette."
 msgstr ""
 "Si ce n'est pas déjà fait, créez une base de données et un utilisateur pour "
 "Galette."
 
-#: ../install/index.php:276
+#: ../install/index.php:277
 msgid "Enter connection data for the existing database."
 msgstr "Veuillez entrer les paramètres de connexion à la base existante."
 
-#: ../install/index.php:277
+#: ../install/index.php:278
 msgid ""
 "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 msgstr ""
 "Les droits nécessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et INSERT."
 
-#: ../install/index.php:281
+#: ../install/index.php:282
 msgid "Database type:"
 msgstr "Type de base de données :"
 
-#: ../install/index.php:290
+#: ../install/index.php:291
 msgid "Host:"
 msgstr "Hôte :"
 
-#: ../install/index.php:296
+#: ../install/index.php:297
 msgid "User:"
 msgstr "Utilisateur :"
 
-#: ../install/index.php:308
+#: ../install/index.php:309
 msgid "Database:"
 msgstr "Nom de la base :"
 
-#: ../install/index.php:315
+#: ../install/index.php:316
 msgid "Table prefix:"
 msgstr "Préfixe de table :"
 
-#: ../install/index.php:327
+#: ../install/index.php:328
 msgid "(Indicate the CURRENT prefix of your Galette tables)"
 msgstr "(Indiquez le préfixe ACTUEL de vos tables Galette)"
 
-#: ../install/index.php:343
+#: ../install/index.php:344
 msgid "Step 4 - Database"
 msgstr "Étape 4 - Base de données"
 
-#: ../install/index.php:351
+#: ../install/index.php:352
 msgid "Check of the database"
 msgstr "Vérification de la base"
 
-#: ../install/index.php:352
+#: ../install/index.php:353
 msgid "Check the parameters and the existence of the database"
 msgstr "Vérification des paramètres et de l'existence de la base"
 
-#: ../install/index.php:361
+#: ../install/index.php:362
 msgid "Unable to connect to the database"
 msgstr "Connexion à la base impossible"
 
-#: ../install/index.php:365
+#: ../install/index.php:366
 msgid "Connection to database is OK"
 msgstr "La connexion à la base est établie"
 
-#: ../install/index.php:372
+#: ../install/index.php:373
 msgid ""
 "Database can't be reached. Please go back to enter the connection parameters "
 "again."
@@ -1161,19 +1161,19 @@ msgstr ""
 "La base n'est accessible. Veuillez revenir en arrière pour saisir à nouveau "
 "les paramètres de connexion."
 
-#: ../install/index.php:386
+#: ../install/index.php:387
 msgid "Database exists and connection parameters are OK."
 msgstr "La base existe et les paramètres de connexion sont corrects."
 
-#: ../install/index.php:408
+#: ../install/index.php:409
 msgid "Step 5 - Access to the database"
 msgstr "Étape 5 - Accès à la base"
 
-#: ../install/index.php:418
+#: ../install/index.php:419
 msgid "Permissions on the base"
 msgstr "Permissions sur la base"
 
-#: ../install/index.php:420
+#: ../install/index.php:421
 msgid ""
 "To run, Galette needs a number of rights on the database (CREATE, DROP, "
 "DELETE, UPDATE, SELECT and INSERT)"
@@ -1181,7 +1181,7 @@ msgstr ""
 "Pour fonctionner, Galette doit avoir un certain nombre de droits sur la base "
 "de données (CREATE, DROP, DELETE, UPDATE, SELECT et INSERT)"
 
-#: ../install/index.php:421
+#: ../install/index.php:422
 msgid ""
 "In order to be updated, Galette needs a number of rights on the database "
 "(CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)"
@@ -1189,63 +1189,63 @@ msgstr ""
 "Pour être mis à jour, Galette doit avoir un certain nombre de droits sur la "
 "base de données (CREATE, DROP, DELETE, UPDATE, SELECT, INSERT et ALTER)"
 
-#: ../install/index.php:438 ../install/index.php:544
+#: ../install/index.php:439 ../install/index.php:545
 msgid "DROP operation not allowed"
 msgstr "Opération DROP non autorisée"
 
-#: ../install/index.php:441 ../install/index.php:548
+#: ../install/index.php:442 ../install/index.php:549
 msgid "DROP operation allowed"
 msgstr "Opération DROP autorisée"
 
-#: ../install/index.php:453
+#: ../install/index.php:454
 msgid "CREATE operation not allowed"
 msgstr "Opération CREATE non autorisée"
 
-#: ../install/index.php:457
+#: ../install/index.php:458
 msgid "CREATE operation allowed"
 msgstr "Opération CREATE autorisée"
 
-#: ../install/index.php:468
+#: ../install/index.php:469
 msgid "INSERT operation not allowed"
 msgstr "Opération INSERT non autorisée"
 
-#: ../install/index.php:472
+#: ../install/index.php:473
 msgid "INSERT operation allowed"
 msgstr "Opération INSERT autorisée"
 
-#: ../install/index.php:483
+#: ../install/index.php:484
 msgid "UPDATE operation not allowed"
 msgstr "Opération UPDATE non autorisée"
 
-#: ../install/index.php:487
+#: ../install/index.php:488
 msgid "UPDATE operation allowed"
 msgstr "Opération UPDATE autorisée"
 
-#: ../install/index.php:498
+#: ../install/index.php:499
 msgid "SELECT operation not allowed"
 msgstr "Opération SELECT non autorisée"
 
-#: ../install/index.php:502
+#: ../install/index.php:503
 msgid "SELECT operation allowed"
 msgstr "Opération SELECT autorisée"
 
-#: ../install/index.php:513
+#: ../install/index.php:514
 msgid "ALTER operation not allowed"
 msgstr "Opération ALTER non autorisée"
 
-#: ../install/index.php:517
+#: ../install/index.php:518
 msgid "ALTER operation allowed"
 msgstr "Opération ALTER autorisée"
 
-#: ../install/index.php:528
+#: ../install/index.php:529
 msgid "DELETE operation not allowed"
 msgstr "Opération DELETE non autorisée"
 
-#: ../install/index.php:532
+#: ../install/index.php:533
 msgid "DELETE operation allowed"
 msgstr "Opération DELETE autorisée"
 
-#: ../install/index.php:558
+#: ../install/index.php:559
 msgid ""
 "Galette hasn't got enough permissions on the database to continue the "
 "installation."
@@ -1253,113 +1253,113 @@ msgstr ""
 "Galette ne dispose pas de droits suffisants sur la base de données pour "
 "poursuivre l'installation."
 
-#: ../install/index.php:559
+#: ../install/index.php:560
 msgid ""
 "Galette hasn't got enough permissions on the database to continue the update."
 msgstr ""
 "Galette ne dispose pas de droits suffisants sur la base de données pour "
 "poursuivre la mise à jour."
 
-#: ../install/index.php:581
+#: ../install/index.php:582
 msgid "Permissions to database are OK."
 msgstr "Les droits d'accès à la base sont corrects."
 
-#: ../install/index.php:603
+#: ../install/index.php:604
 msgid "Step 6 - Access permissions to database"
 msgstr "Étape 6 - Droits d'accès à la base"
 
-#: ../install/index.php:612
+#: ../install/index.php:613
 msgid "Creation of the database"
 msgstr "Création de la base"
 
-#: ../install/index.php:613
+#: ../install/index.php:614
 msgid "Update of the database"
 msgstr "Mise à jour de la base"
 
-#: ../install/index.php:616
+#: ../install/index.php:617
 msgid "Installation Report"
 msgstr "Compte rendu d'installation"
 
-#: ../install/index.php:617
+#: ../install/index.php:618
 msgid "Update Report"
 msgstr "Compte rendu de mise à jour"
 
-#: ../install/index.php:678
+#: ../install/index.php:679
 msgid "(Errors on DROP and RENAME operations can be ignored)"
 msgstr "(Les erreurs sur les opérations DROP et RENAME peuvent être ignorées)"
 
-#: ../install/index.php:684
+#: ../install/index.php:685
 msgid "The database isn't totally created, it's maybe a permission problem."
 msgstr ""
 "La base de données n'a pas pu être totalement créée, il s'agit peut-être "
 "d'un problème de droits."
 
-#: ../install/index.php:685
+#: ../install/index.php:686
 msgid "The database isn't totally updated, it's maybe a permission problem."
 msgstr ""
 "La base de données n'a pas pu être totalement mise à jour, il s'agit peut-"
 "être d'un problème de droits."
 
-#: ../install/index.php:686
+#: ../install/index.php:687
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr ""
 "Votre base est peut-être inutilisable, essayez de restaurer une ancienne "
 "version."
 
-#: ../install/index.php:710
+#: ../install/index.php:711
 msgid "The database has been correctly created."
 msgstr "La base de données a été correctement créée."
 
-#: ../install/index.php:711
+#: ../install/index.php:712
 msgid "The database has been correctly updated."
 msgstr "La base de données a été correctement mise à jour."
 
-#: ../install/index.php:736
+#: ../install/index.php:737
 msgid "Step 7 - Database Creation"
 msgstr "Étape 7 - Création de la base"
 
-#: ../install/index.php:737
+#: ../install/index.php:738
 msgid "Step 7 - Database Update"
 msgstr "Étape 7 - Mise à jour de la base"
 
-#: ../install/index.php:746
+#: ../install/index.php:747
 msgid "Admin settings"
 msgstr "Paramètres administrateur"
 
-#: ../install/index.php:751
+#: ../install/index.php:752
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr "Veuillez choisir les paramètres du compte administrateur Galette"
 
-#: ../install/index.php:785
+#: ../install/index.php:786
 msgid "Step 8 - Admin parameters"
 msgstr "Étape 8 - Paramètres administrateur"
 
-#: ../install/index.php:793
+#: ../install/index.php:794
 msgid "Save the parameters"
 msgstr "Sauvegarde des paramètres"
 
-#: ../install/index.php:811
+#: ../install/index.php:812
 msgid "Configuration file created (includes/config.inc.php)"
 msgstr "Fichier de configuration crée (includes/config.inc.php)"
 
-#: ../install/index.php:815
+#: ../install/index.php:816
 msgid "Unable to create configuration file (includes/config.inc.php)"
 msgstr ""
 "Impossible de créer le fichier de configuration (includes/config.inc.php)"
 
-#: ../install/index.php:869
+#: ../install/index.php:870
 msgid "Parameters saved into the database"
 msgstr "Paramètres sauvegardés dans la base de données"
 
-#: ../install/index.php:872
+#: ../install/index.php:873
 msgid "Parameters couldn't be save into the database"
 msgstr "Les paramètres n'ont pas pu être sauvegardés dans la base de données"
 
-#: ../install/index.php:907
+#: ../install/index.php:908
 msgid "Parameters couldn't be saved."
 msgstr "Les paramètres n'ont pas pu être sauvegardés."
 
-#: ../install/index.php:908
+#: ../install/index.php:909
 msgid ""
 "This can come from the permissions on the file includes/config.inc.php or "
 "the impossibility to make an INSERT into the database."
@@ -1367,39 +1367,39 @@ msgstr ""
 "Ceci peut provenir des droits sur le fichier includes/config.inc.php ou de "
 "l'impossibilité de faire un INSERT dans la base."
 
-#: ../install/index.php:932
+#: ../install/index.php:933
 msgid "Step 9 - Saving of the parameters"
 msgstr "Étape 9 - Sauvegarde des paramètres"
 
-#: ../install/index.php:941
+#: ../install/index.php:942
 msgid "Installation complete !"
 msgstr "Fin de l'installation"
 
-#: ../install/index.php:942
+#: ../install/index.php:943
 msgid "Update complete !"
 msgstr "Fin de la mise à jour"
 
-#: ../install/index.php:945
+#: ../install/index.php:946
 msgid "Galette has been successfully installed!"
 msgstr "Galette a été installé avec succès !"
 
-#: ../install/index.php:946
+#: ../install/index.php:947
 msgid "Galette has been successfully updated!"
 msgstr "Galette a été mis à jour avec succès !"
 
-#: ../install/index.php:948
+#: ../install/index.php:949
 msgid "For securing the system, please delete the install directory"
 msgstr "Pour sécuriser le système, veuillez supprimer le dossier install"
 
-#: ../install/index.php:951
+#: ../install/index.php:952
 msgid "Homepage"
 msgstr "Page d'accueil"
 
-#: ../install/index.php:957
+#: ../install/index.php:958
 msgid "Step 10 - End of the installation"
 msgstr "Étape 10 - Fin de l'installation"
 
-#: ../install/index.php:958
+#: ../install/index.php:959
 msgid "Step 10 - End of the update"
 msgstr "Étape 10 - Fin de la mise à jour"
 
@@ -1441,16 +1441,25 @@ msgstr "Mot de passe perdu ?"
 msgid "Management of members"
 msgstr "Gestion des adhérents"
 
-#: ../templates/default/gestion_adherents.tpl:17
-#: ../templates/default/gestion_adherents.tpl:120
+#: ../templates/default/gestion_adherents.tpl:4
+msgid "Search:"
+msgstr "Rechercher:"
+
+#: ../templates/default/gestion_adherents.tpl:6
+#, fuzzy
+msgid "among:"
+msgstr "parmi :"
+
+#: ../templates/default/gestion_adherents.tpl:19
+#: ../templates/default/gestion_adherents.tpl:122
 msgid "Pages:"
 msgstr "Pages :"
 
-#: ../templates/default/gestion_adherents.tpl:46
+#: ../templates/default/gestion_adherents.tpl:48
 msgid "Nickname"
 msgstr "Pseudo"
 
-#: ../templates/default/gestion_adherents.tpl:81
+#: ../templates/default/gestion_adherents.tpl:83
 msgid "Actions"
 msgstr "Actions"
 

@@ -21,7 +21,7 @@
  *
  */
 
-$disable_gettext=false;
+$disable_gettext=true;
 
 // I18N support information here
 if (isset($_POST['pref_lang']))

@@ -39,6 +39,9 @@
 	if (isset($_GET["page"]))
 		$page = $_GET["page"];
 
+	if (isset($_GET["filtre_nom"]))
+		$_SESSION["filtre_adh_nom"]=trim(stripslashes(htmlspecialchars($_GET["filtre_nom"],ENT_QUOTES)));
+
 	if (isset($_GET["filtre"]))
 		if (is_numeric($_GET["filtre"]))
 			$_SESSION["filtre_adh"]=$_GET["filtre"];
@@ -102,7 +105,17 @@
 	$requete[1] = "SELECT count(id_adh)
 		       FROM ".PREFIX_DB."adherents 
 		       WHERE 1=1 ";
-								
+	
+	// name filter
+	if ($_SESSION["filtre_adh_nom"]!="")
+	{
+		$concat1 = $DB->Concat(PREFIX_DB."adherents.nom_adh",$DB->Qstr(" "),PREFIX_DB."adherents.prenom_adh");
+		$concat2 = $DB->Concat(PREFIX_DB."adherents.prenom_adh",$DB->Qstr(" "),PREFIX_DB."adherents.nom_adh");
+		$requete[0] .= "AND (".$concat1." like '%".$_SESSION["filtre_adh_nom"]."%' ";
+		$requete[0] .= "OR ".$concat2." like '%".$_SESSION["filtre_adh_nom"]."%') ";
+		$requete[1] .= "AND (".$concat1." like '%".$_SESSION["filtre_adh_nom"]."%' ";
+		$requete[1] .= "OR ".$concat2." like '%".$_SESSION["filtre_adh_nom"]."%') ";
+	}
 	// filtre d'affichage des adherents activés/desactivés
 	if ($_SESSION["filtre_adh_2"]=="1")
 	{

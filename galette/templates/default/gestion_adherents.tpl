@@ -1,7 +1,9 @@
 		<H1 class="titre">{_T("Management of members")}</H1>
 		<DIV id="listfilter">
 			<FORM action="gestion_adherents.php" method="get" name="filtre">
-			 	{_T("Display:")}&nbsp;
+				{_T("Search:")}&nbsp;
+				<INPUT type="text" name="filtre_nom" value="{$smarty.session.filtre_adh_nom}">&nbsp;
+			 	{_T("among:")}&nbsp;
 				<SELECT name="filtre" onChange="form.submit()">
 					{html_options options=$filtre_options selected=$smarty.session.filtre_adh}
 				</SELECT>
