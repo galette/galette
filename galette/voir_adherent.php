@@ -20,19 +20,19 @@
  */
 
 	include("includes/config.inc.php"); 
-	include(WEB_ROOT."includes/database.inc.php"); 
-	include(WEB_ROOT."includes/functions.inc.php"); 
+	include(WEB_ROOT."includes/database.inc.php");
+        include(WEB_ROOT."includes/session.inc.php");
+	include(WEB_ROOT."includes/functions.inc.php");
         include_once("includes/i18n.inc.php"); 
-	include(WEB_ROOT."includes/session.inc.php"); 
+	include(WEB_ROOT."includes/smarty.inc.php");
 	include(WEB_ROOT."includes/categories.inc.php"); 
-
+	
 	$id_adh = "";
 	if ($_SESSION["logged_status"]==0) 
 		header("location: index.php");
 	if ($_SESSION["admin_status"]==0) 
 		$id_adh = $_SESSION["logged_id_adh"];
 
-	// On vérifie si on a une référence => modif ou création
 	if (isset($_GET["id_adh"]))
 		if (is_numeric($_GET["id_adh"]))
 			$id_adh = $_GET["id_adh"];
@@ -42,46 +42,104 @@
 	if ($id_adh=="")
 		header("location: index.php");
 
-     //	
-    // Pré-remplissage des champs
-   //  avec des valeurs issues de la base
-  //
-	
 	$requete = "SELECT * 
-							FROM ".PREFIX_DB."adherents 
-							WHERE id_adh=$id_adh";
+		    FROM ".PREFIX_DB."adherents 
+		    WHERE id_adh=$id_adh";
 	$result = &$DB->Execute($requete);
         if ($result->EOF)
 		header("location: index.php");
 
-	// recuperation de la liste de champs de la table
-  $fields = &$DB->MetaColumns(PREFIX_DB."adherents");
-	while (list($champ, $proprietes) = each($fields))
+	$adherent=array();
+	while (list($key,$val)=each($result->fields))
 	{
-		$val="";
-		$proprietes_arr = get_object_vars($proprietes);
-		// on obtient name, max_length, type, not_null, has_default, primary_key,
-		
-		// déclaration des variables correspondant aux champs
-		// et reformatage des dates.
-			
-		// on doit faire cette verif pour une enventuelle valeur "NULL"
-		// non renvoyée -> ex: pas de tel
-		// sinon on obtient un warning
-		if (isset($result->fields[$proprietes_arr["name"]]))
-			$val = $result->fields[$proprietes_arr["name"]];
-
-		if($proprietes_arr["type"]=="date" && $val!="")
+		if (!is_numeric($key))
+		switch ($key)
 		{
-			list($a,$m,$j)=split("-",$val);
-			$val="$j/$m/$a";
+			// convert dates
+			case 'date_crea_adh':
+			case 'date_echeance':
+			case 'ddn_adh':
+				if ($val!='')
+				{
+					list($a,$m,$j)=split("-",$val);
+					$adherent[$key]="$j/$m/$a";
+				}
+				break;
+			case 'bool_display_info':
+			case 'bool_admin_adh':
+			case 'bool_exempt_adh':
+				if ($val==1)
+					$adherent[$key]=_T("Yes");
+				else
+					$adherent[$key]=_T("No");
+				break;
+			default:
+				$adherent[$key]=htmlentities(stripslashes(addslashes($val)), ENT_QUOTES);
+				break;
 		}
-
-		$$proprietes_arr["name"] = htmlentities(stripslashes(addslashes($val)), ENT_QUOTES);
 	}
-	reset($fields);
-	include(WEB_ROOT."includes/lang.inc.php"); 
-	include("header.php");
+
+        switch($adherent['titre_adh'])
+        {
+                case "1" :
+                        $adherent['titre_adh'] = _T("Mr.");
+                        break;
+                case "2" :
+                        $adherent['titre_adh'] = _T("Mrs.");
+                        break;
+                default :
+                        $adherent['titre_adh'] = _T("Miss.");
+        }
+
+	if ($adherent['activite_adh']==1)
+		$adherent['activite_adh']=_T("Active");
+	else
+		$adherent['activite_adh']=_T("Inactive");
+
+	$adherent['info_adh'] = nl2br($adherent['info_adh']);
+	$adherent['info_public_adh'] = nl2br($adherent['info_public_adh']);
+	
+        $requete = "SELECT libelle_statut
+		    FROM ".PREFIX_DB."statuts
+		    WHERE id_statut=".$adherent['id_statut']."
+		    ORDER BY priorite_statut";
+        $result = &$DB->Execute($requete);
+        if (!$result->EOF)
+                $adherent['libelle_statut'] = _T($result->fields['libelle_statut']);
+        $result->Close();
+
+        // - declare dynamic fields for display
+	$requete = "SELECT * ".
+		   "FROM ".PREFIX_DB."info_categories ".
+		   "ORDER BY index_cat";
+	$result = &$DB->Execute($requete);
+	while (!$result->EOF)
+	{
+		$dynamic_fields[] = $result->fields;
+		$result->MoveNext();
+	}
+	$result->Close();
+	
+	// declare dynamic field values
+	$sql =  "SELECT id_cat, index_info, val_info ".
+		"FROM ".PREFIX_DB."adh_info ".
+		"WHERE id_adh=".$adherent['id_adh'];
+	$result = &$DB->Execute($sql);
+	while (!$result->EOF)
+	{
+		$adherent['dyn'][$result->fields['id_cat']][$result->fields['index_info']] = nl2br(htmlentities($result->fields['val_info'],ENT_QUOTES));
+		$result->MoveNext();
+	}
+	$result->Close();
+																																													
+
+
+        $tpl->assign("adherent",$adherent);
+	$tpl->assign("dynamic_fields",$dynamic_fields);
+	$content = $tpl->fetch("voir_adherent.tpl");
+	$tpl->assign("content",$content);
+	$tpl->display("page.tpl");
+/*																														
 ?>  
 			<H1 class="titre"><? echo _T("Member Profile"); ?></H1>					
 			<BLOCKQUOTE>
@@ -330,4 +388,5 @@
 		</BLOCKQUOTE> 			
 <? 
   include("footer.php") 
+  */
 ?>

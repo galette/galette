@@ -79,7 +79,6 @@
 		$result->MoveNext();
 	}
 	$result->Close();
-	// TODO : admin dynamic fields disabled for member
 
 	// initialize warnings
 	$error_detected = array();
@@ -344,6 +343,7 @@
 					$adherent['dyn'][$result->fields['id_cat']][$result->fields['index_info']] = $result->fields['val_info'];
 					$result->MoveNext();
 				}
+				$result->Close();
 			}
 
 		}
