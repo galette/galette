@@ -11,3 +11,5 @@
 #	[<whitespace>]<filename><whitespace><error message><end-of-line>
 #
 # comment lines begin with '#'
+readers         Wont be able to control read-only access.
+passwd          Wont be able to add pserver accounts.
