@@ -37,15 +37,15 @@
 	     	return $pass;
 	}
 
-        function PasswordImagePath($c){
-	  return "photos/pw_".md5($c).".png";
+        function PasswordImageName($c){
+	  return "pw_".md5($c).".png";
 	}
 
         function PasswordImage(){
 	  // outputs a png image for a random password
 	  // and a crypted string for it. The filename
 	  // for this image can be computed from the crypted
-	  // string by PasswordImagePath.
+	  // string by PasswordImageName.
 	  // the retrun value is just the crypted password.
 	  
 	  $mdp=makeRandomPassword(7);
@@ -53,7 +53,7 @@
           $png= imagecreate(10+7.5*strlen($mdp),18);
 	  $bg= imagecolorallocate($png,160,160,160);
 	  imagestring($png, 3, 5, 2, $mdp, imagecolorallocate($png,0,0,0));
-	  imagepng($png,PasswordImagePath($c));
+	  imagepng($png,"photos/".PasswordImageName($c));
 	  return $c;
 	}
 

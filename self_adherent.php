@@ -417,11 +417,11 @@ function verify(f){
   	  <TD>
             <?
               $c=PasswordImage();
-              $f=PasswordImagePath($c);
+              $f=PasswordImageName($c);
               echo _T("Recopiez dans le cadre le mot de passe présenté dans l'image.")."<BR>\n";
             ?>
             <INPUT type="hidden" name="mdp_crypt" value="<? echo $c ?>">
-            <IMG SRC="<? echo $f ?>"><BR>
+            <IMG SRC="photo.php?pw=<? echo $f ?>"><BR>
   	    <INPUT type="text" name="mdp_adh" value="" maxlength="<? echo $mdp_adh_len; ?>">
   	  </TD> 
         </TR>
