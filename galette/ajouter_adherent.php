@@ -598,7 +598,8 @@
 								<TH id="libelle"><? echo _T("Je souhaite apparaître dans la liste des membres :"); ?></TH>
 								<TD><input type="checkbox" name="bool_display_info" value="1"<? isChecked($bool_display_info,"1") ?>></TD> 
 								<TH id="libelle"><? echo _T("Langue :") ?></TH>
-                                                                <td>
+                                <TD>
+                                <SELECT NAME="pref_lang">
 <?
 			$path = "lang";
 			$dir_handle = @opendir($path);
@@ -608,13 +609,14 @@
 				{
 		        $file = substr(substr($file,5),0,-4);
 ?>
-		<INPUT TYPE="radio" NAME="pref_lang" value="<? echo $file; ?>" <? isChecked($pref_lang,$file) ?>><IMG SRC="lang/<? echo $file.".gif"; ?>"></INPUT>
+                                    <OPTION value="<? echo $file; ?>" <? isSelected($pref_lang,$file) ?> style="padding-left: 30px; background-image: url(lang/<? echo $file.".gif"; ?>); background-repeat: no-repeat"><? echo $file; ?></OPTION>
 <?
 				}
 			}
 			closedir($dir_handle);
 ?>
-                                                                </td>
+                                </SELECT>
+                                </TD>
 							</TR>
 <?
 	if ($_SESSION["admin_status"]!=0)
