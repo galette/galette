@@ -37,6 +37,7 @@ while (list($champ, $proprietes) = each($fields)){
   // auto_increment et binary		
   
   $fieldname = $proprietes_arr["name"];
+  $existfield[$fieldname]="1";
   
   // on ne met jamais a jour id_adh
   if ($fieldname!="id_adh" && $fieldname!="date_echeance")
@@ -93,9 +94,7 @@ if (!isset($_POST["valid"]) ||
   $listkey="";
   $listvalues="";
   foreach($_POST as $k => $v){
-    if ($k!="valid" && 
-	$k!="id_adh" &&
-	$k!="mdp_crypt"){
+    if ($existfield[$k]=="1"){
       $listkeys .= ",".$k." ";
       $listvalues .=",'".addslashes($v)."' ";
     }
@@ -121,14 +120,14 @@ if (!isset($_POST["valid"]) ||
   $mail_text .= _T("Veuillez vous identifier à cette adresse :")."\n";
   $mail_text .= "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
   $mail_text .= "\n";
-  $mail_text .= _T("Identifiant :")." ".custom_html_entity_decode($login_adh)."\n";
-  $mail_text .= _T("Mot de passe :")." ".custom_html_entity_decode($mdp_adh)."\n";
+  $mail_text .= _T("Identifiant :")." ".custom_html_entity_decode($_POST["login_adh"])."\n";
+  $mail_text .= _T("Mot de passe :")." ".custom_html_entity_decode($_POST["mdp_adh"])."\n";
   $mail_text .= "\n";
   $mail_text .= _T("A trés bientôt !")."\n";
   $mail_text .= "\n";
   $mail_text .= _T("(ce mail est un envoi automatique)")."\n";
   $mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\nContent-Type: text/plain; charset=iso-8859-15\n";
-  mail ($email_adh,$mail_subject,$mail_text, $mail_headers);
+  mail ($_POST["email_adh"],$mail_subject,$mail_text, $mail_headers);
   header("location: index.php");
   echo "<html><header></header><body></body></html>";
   exit();
