@@ -1443,7 +1443,7 @@ msgstr "Gestion des adhérents"
 
 #: ../templates/default/gestion_adherents.tpl:4
 msgid "Search:"
-msgstr "Rechercher:"
+msgstr "Rechercher :"
 
 #: ../templates/default/gestion_adherents.tpl:6
 #, fuzzy

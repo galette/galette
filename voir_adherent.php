@@ -139,6 +139,7 @@
 
         $tpl->assign("adherent",$adherent);
 	$tpl->assign("dynamic_fields",$dynamic_fields);
+	$tpl->assign("time",time());
 	$content = $tpl->fetch("voir_adherent.tpl");
 	$tpl->assign("content",$content);
 	$tpl->display("page.tpl");
