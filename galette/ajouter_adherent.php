@@ -72,6 +72,9 @@
 	$result = &$DB->Execute($requete);
 	while (!$result->EOF)
 	{
+		// disable admin fields when logged as member
+		if ($_SESSION["admin_status"]!=1 && $result->fields['perm']==$perm_admin)
+			$disabled['dyn'][$result->fields['id_cat']] = 'disabled';	
 		$dynamic_fields[] = $result->fields;
 		$result->MoveNext();
 	}
