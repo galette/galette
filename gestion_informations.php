@@ -222,7 +222,7 @@
                             $_FILES["photo"]["tmp_name"]!="") 
 			{ 
 				if ($_FILES['photo']['type']=="image/jpeg" || 
-				    $_FILES['photo']['type']=="image/gif" || 
+				    (function_exists("ImageCreateFromGif") && $_FILES['photo']['type']=="image/gif") || 
 				    $_FILES['photo']['type']=="image/png" ||
 				    $_FILES['photo']['type']=="image/x-png")
 				{
@@ -242,14 +242,23 @@
 					@unlink(WEB_ROOT . "photos/".$id_adh.".jpg");
 					@unlink(WEB_ROOT . "photos/".$id_adh.".gif");
 					@unlink(WEB_ROOT . "photos/".$id_adh.".jpg");
+					@unlink(WEB_ROOT . "photos/tn_".$id_adh.".jpg");
+					@unlink(WEB_ROOT . "photos/tn_".$id_adh.".gif");
+					@unlink(WEB_ROOT . "photos/tn_".$id_adh.".jpg");
 						
 					// copie fichier temporaire				 		
 					if (!@move_uploaded_file($tmp_name,WEB_ROOT . "photos/".$id_adh.$ext_image))
-					$warning_detected .= "<LI>"._T("- La photo semble ne pas avoir été transmise correstement. L'enregistrement a cependant été effectué.")."</LI>";
-				 	
+						$warning_detected .= "<LI>"._T("- La photo semble ne pas avoir été transmise correstement. L'enregistrement a cependant été effectué.")."</LI>";
+				 	else
+						resizeimage(WEB_ROOT . "photos/".$id_adh.$ext_image,WEB_ROOT . "photos/tn_".$id_adh.$ext_image,130,130);
 			 	}
 			 	else
-			 		$warning_detected .= "<LI>"._T("- Le fichier transmis n'est pas une image valide (GIF, PNG ou JPEG). L'enregistrement a cependant été effectué.")."</LI>"; 
+				{
+					if (function_exists("ImageCreateFromGif"))
+			 			$warning_detected .= "<LI>"._T("- Le fichier transmis n'est pas une image valide (GIF, PNG ou JPEG). L'enregistrement a cependant été effectué.")."</LI>"; 
+					else
+			 			$warning_detected .= "<LI>"._T("- Le fichier transmis n'est pas une image valide (PNG ou JPEG). L'enregistrement a cependant été effectué.")."</LI>"; 
+				}
 			}
 		} 
 		if ($warning_detected=="" && $error_detected=="")
@@ -262,6 +271,9 @@
  		@unlink(WEB_ROOT . "photos/" . $id_adh . ".jpg");
  		@unlink(WEB_ROOT . "photos/" . $id_adh . ".png");
  		@unlink(WEB_ROOT . "photos/" . $id_adh . ".gif");
+ 		@unlink(WEB_ROOT . "photos/tn_" . $id_adh . ".jpg");
+ 		@unlink(WEB_ROOT . "photos/tn_" . $id_adh . ".png");
+ 		@unlink(WEB_ROOT . "photos/tn_" . $id_adh . ".gif");
  	} 	
 	
 	  //	
@@ -350,17 +362,27 @@
 								<td colspan="2" rowspan="5" align="center" width="100">
 								<?
 									$image_adh = "";
-									if (file_exists(WEB_ROOT . "photos/" . $id_adh . ".jpg"))
+									if (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".jpg"))
+										$image_adh = "photos/tn_" . $id_adh . ".jpg";
+									elseif (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".gif"))
+										$image_adh = "photos/tn_" . $id_adh . ".gif";
+									elseif (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".png"))
+										$image_adh = "photos/tn_" . $id_adh . ".png";
+									elseif (file_exists(WEB_ROOT . "photos/" . $id_adh . ".jpg"))
 										$image_adh = "photos/" . $id_adh . ".jpg";
-									if (file_exists(WEB_ROOT . "photos/" . $id_adh . ".gif"))
+									elseif (file_exists(WEB_ROOT . "photos/" . $id_adh . ".gif"))
 										$image_adh = "photos/" . $id_adh . ".gif";
-									if (file_exists(WEB_ROOT . "photos/" . $id_adh . ".png"))
+									elseif (file_exists(WEB_ROOT . "photos/" . $id_adh . ".png"))
 										$image_adh = "photos/" . $id_adh . ".png";
 									
 									if ($image_adh != "")
 									{
+										if (function_exists("ImageCreateFromString"))
+											$imagedata = getimagesize($image_adh);
+										else
+											$imagedata = array("130","");
 								?>
-									<img src="<? echo $image_adh ?>" border="1" alt="<? echo _T("Photo"); ?>" width="100">
+									<img src="<? echo $image_adh ?>" border="1" alt="<? echo _T("Photo"); ?>" width="<? echo $imagedata[0]; ?>" height="<? echo $imagedata[1]; ?>">
 								<?
 									}
 									else

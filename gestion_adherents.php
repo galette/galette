@@ -77,6 +77,9 @@
 				@unlink(WEB_ROOT . "photos/".$id_adh.".jpg");
 				@unlink(WEB_ROOT . "photos/".$id_adh.".gif");
 				@unlink(WEB_ROOT . "photos/".$id_adh.".jpg");
+				@unlink(WEB_ROOT . "photos/tn_".$id_adh.".jpg");
+				@unlink(WEB_ROOT . "photos/tn_".$id_adh.".gif");
+				@unlink(WEB_ROOT . "photos/tn_".$id_adh.".jpg");
 			
 				// suppression records cotisations
 				$requetesup = "DELETE FROM cotisations 

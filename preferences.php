@@ -204,7 +204,7 @@
 			{ 
 
 				if ($_FILES['photo']['type']=="image/jpeg" || 
-				    $_FILES['photo']['type']=="image/gif" || 
+				    (function_exists("ImageCreateFromGif") && $_FILES['photo']['type']=="image/gif") || 
 				    $_FILES['photo']['type']=="image/png" ||
 				    $_FILES['photo']['type']=="image/x-png")
 				{
@@ -224,14 +224,24 @@
 					@unlink(WEB_ROOT . "photos/logo.jpg");
 					@unlink(WEB_ROOT . "photos/logo.gif");
 					@unlink(WEB_ROOT . "photos/logo.jpg");
+					@unlink(WEB_ROOT . "photos/tn_logo.jpg");
+					@unlink(WEB_ROOT . "photos/tn_logo.gif");
+					@unlink(WEB_ROOT . "photos/tn_logo.jpg");
 						
 					// copie fichier temporaire				 		
 					if (!@move_uploaded_file($tmp_name,WEB_ROOT . "photos/logo".$ext_image))
-					$warning_detected .= "<LI>"._T("- La photo semble ne pas avoir été transmise correstement. L'enregistrement a cependant été effectué.")."</LI>";
-				 		
+						$warning_detected .= "<LI>"._T("- La photo semble ne pas avoir été transmise correstement. L'enregistrement a cependant été effectué.")."</LI>";
+				 	else
+						resizeimage(WEB_ROOT . "photos/logo".$ext_image,WEB_ROOT . "photos/tn_logo".$ext_image,130,130);
+
 			 	}
 			 	else
-			 		$warning_detected .= "<LI>"._T("- Le fichier transmis n'est pas une image valide (GIF, PNG ou JPEG). L'enregistrement a cependant été effectué.")."</LI>"; 
+				{
+					if (function_exists("ImageCreateFromGif"))
+			 			$warning_detected .= "<LI>"._T("- Le fichier transmis n'est pas une image valide (GIF, PNG ou JPEG). L'enregistrement a cependant été effectué.")."</LI>"; 
+					else
+			 			$warning_detected .= "<LI>"._T("- Le fichier transmis n'est pas une image valide (PNG ou JPEG). L'enregistrement a cependant été effectué.")."</LI>"; 
+				}
 			}
 			
 			// retour à l'accueil
@@ -249,6 +259,9 @@
  		@unlink(WEB_ROOT . "photos/logo.jpg");
  		@unlink(WEB_ROOT . "photos/logo.png");
  		@unlink(WEB_ROOT . "photos/logo.gif");
+ 		@unlink(WEB_ROOT . "photos/tn_logo.jpg");
+ 		@unlink(WEB_ROOT . "photos/tn_logo.png");
+ 		@unlink(WEB_ROOT . "photos/tn_logo.gif");
  	} 	
 	
 	  //	
@@ -351,17 +364,27 @@
 								<td>
 								<?
 									$logo_asso = "";
-									if (file_exists(WEB_ROOT . "photos/logo.jpg"))
+									if (file_exists(WEB_ROOT . "photos/tn_logo.jpg"))
+										$logo_asso = "photos/tn_logo.jpg";
+									elseif (file_exists(WEB_ROOT . "photos/tn_logo.gif"))
+										$logo_asso = "photos/tn_logo.gif";
+									elseif (file_exists(WEB_ROOT . "photos/tn_logo.png"))
+										$logo_asso = "photos/tn_logo.png";
+									elseif (file_exists(WEB_ROOT . "photos/logo.jpg"))
 										$logo_asso = "photos/logo.jpg";
-									if (file_exists(WEB_ROOT . "photos/logo.gif"))
+									elseif (file_exists(WEB_ROOT . "photos/logo.gif"))
 										$logo_asso = "photos/logo.gif";
-									if (file_exists(WEB_ROOT . "photos/logo.png"))
+									elseif (file_exists(WEB_ROOT . "photos/logo.png"))
 										$logo_asso = "photos/logo.png";
 									
 									if ($logo_asso != "")
 									{
+										if (function_exists("ImageCreateFromString"))
+											$imagedata = getimagesize($logo_asso);
+										else
+											$imagedata = array("130","");
 								?>
-									<img src="<? echo $logo_asso."?nocache=".time(); ?>" border="1" alt="<? echo _T("Photo"); ?>" width="100"><BR>
+									<img src="<? echo $logo_asso."?nocache=".time(); ?>" border="1" alt="<? echo _T("Photo"); ?>" width="<? echo $imagedata[0]; ?>" height="<? echo $imagedata[1]; ?>"><BR>
 									<input type="submit" name="del_photo" value="<? echo _T("Supprimer la photo"); ?>">
 								<?
 									}

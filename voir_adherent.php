@@ -105,15 +105,45 @@
 						<TD bgcolor="#EEEEEE"><? echo $nom_adh_ext; ?></TD>
 <?
 	$image_adh = "";
+	if (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".jpg"))
+	{
+		$image_adh = "photos/tn_" . $id_adh . ".jpg";
+		$image_adh_full = "photos/" . $id_adh . ".jpg";
+	}
+	elseif (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".gif"))
+	{
+		$image_adh = "photos/tn_" . $id_adh . ".gif";
+		$image_adh_full = "photos/" . $id_adh . ".gif";
+	}
+	elseif (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".png"))
+	{
+		$image_adh = "photos/tn_" . $id_adh . ".png";
+		$image_adh_full = "photos/" . $id_adh . ".png";
+	}
 	if (file_exists(WEB_ROOT . "photos/" . $id_adh . ".jpg"))
+	{
 		$image_adh = "photos/" . $id_adh . ".jpg";
+		$image_adh_full = "photos/" . $id_adh . ".jpg";
+	}
 	elseif (file_exists(WEB_ROOT . "photos/" . $id_adh . ".gif"))
+	{
 		$image_adh = "photos/" . $id_adh . ".gif";
+		$image_adh_full = "photos/" . $id_adh . ".gif";
+	}
 	elseif (file_exists(WEB_ROOT . "photos/" . $id_adh . ".png"))
+	{
 		$image_adh = "photos/" . $id_adh . ".png";
+		$image_adh_full = "photos/" . $id_adh . ".png";
+	}
 									
 	if ($image_adh != "")
-		$photo_adh ="<IMG src=\"".$image_adh."?nocache".time()."\" border=\"1\" alt=\""._T("Photo")."\" width=\"100\">";
+	{
+                if (function_exists("ImageCreateFromString"))
+                        $imagedata = getimagesize($image_adh);
+                else
+                        $imagedata = array("130","");
+		$photo_adh ="<A href=\"".$image_adh_full."\" target=\"_blank\"><IMG src=\"".$image_adh."?nocache".time()."\" border=\"1\" alt=\""._T("Photo")."\" width=\"".$imagedata[0]."\" width=\"".$imagedata[1]."\"></A>";
+	}
 	else
 		$photo_adh = _T("[ pas de photo ]");
 
