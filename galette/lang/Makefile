@@ -24,7 +24,14 @@ PHP_SOURCES = ../index.php \
 ../ajouter_adherent.php \
 ../templates/default/index.tpl \
 ../templates/default/gestion_adherents.tpl \
-../templates/default/page.tpl
+../templates/default/page.tpl \
+../templates/default/preferences.tpl \
+../templates/default/ajouter_adherent.tpl \
+../templates/default/ajouter_contribution.tpl \
+../templates/default/configurer_fiches.tpl \
+../templates/default/gestion_contributions.tpl \
+../templates/default/log.tpl \
+../templates/default/voir_adherent.tpl
 
 all : messages.po lang
 	@echo "Génération des fichiers *.po :"
