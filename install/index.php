@@ -684,7 +684,7 @@
 					if ($DB->ErrorNo())
 					{
 						echo "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> ".$w1." ".$w2." ".$w3." ".$extra."<BR>";
-						if (trim($w1) != "DROP") $error = true;
+						if (trim($w1) != "DROP" && trim($w1) != "RENAME") $error = true;
 					}
 					else
 						echo "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> ".$w1." ".$w2." ".$w3." ".$extra."<BR>";
@@ -694,7 +694,7 @@
 
 ?>	
 	</TD></TR></TABLE>
-	<P><? echo _T("(Les erreurs sur les opérations DROP peuvent être ignorées)"); ?></P>
+	<P><? echo _T("(Les erreurs sur les opérations DROP et RENAME peuvent être ignorées)"); ?></P>
 	<?
 			if (isset($error))
 			{
