@@ -92,3 +92,25 @@ CREATE TABLE galette_l10n (
   text_trans character varying(40) DEFAULT '' NOT NULL
 );
 CREATE UNIQUE INDEX galette_l10n_idx ON galette_l10n (text_orig, text_locale);
+
+-- Table for transactions;
+DROP SEQUENCE galette_transactions_id_seq;
+CREATE SEQUENCE galette_transactions_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
+DROP TABLE galette_transactions;
+CREATE TABLE galette_transactions (
+    trans_id integer DEFAULT nextval('galette_transactions_id_seq'::text)  NOT NULL,
+    trans_date date DEFAULT '00000101' NOT NULL,
+    trans_amount real DEFAULT '0',
+    trans_desc character varying(30) NOT NULL DEFAULT '',
+    id_adh integer DEFAULT NULL
+)
+CREATE UNIQUE INDEX galette_transactions_idx ON galette_transactions (trans_id);
+
+ALTER TABLE galette_cotisations ADD trans_id integer;
+ALTER TABLE galette_cotisations ALTER COLUMN trans_id SET DEFAULT NULL;

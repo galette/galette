@@ -1,5 +1,5 @@
-<? // -*- Mode: PHP; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- 
- 
+<? // -*- Mode: PHP; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*-
+
 /* functions.inc.php
  * - Fonctions utilitaires
  * Copyright (c) 2003 Frédéric Jaqcuot
@@ -9,18 +9,18 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
- 
+
 
 function makeRandomPassword($size){
   $pass = "";
@@ -44,7 +44,7 @@ function PasswordImageClean(){
   // cleans any password image file older than 1 minute
   $dh=@opendir("photos");
   while($file=readdir($dh)){
-    if (substr($file,0,3)=="pw_" && 
+    if (substr($file,0,3)=="pw_" &&
         time() - filemtime("photos/".$file) > 60) {
       unlink("photos/".$file);
     }
@@ -57,7 +57,7 @@ function PasswordImage(){
   // for this image can be computed from the crypted
   // string by PasswordImageName.
   // the retrun value is just the crypted password.
-  
+
   PasswordImageClean(); // purges former passwords
   $mdp=makeRandomPassword(7);
   $c=crypt($mdp);
@@ -72,20 +72,20 @@ function PasswordCheck($pass,$crypt){
   return crypt($pass,$crypt)==$crypt;
 }
 
-function isSelected($champ1, $champ2) { 
-  if ($champ1 == $champ2) { 
-    echo " selected"; 
-  } 
-} 
+function isSelected($champ1, $champ2) {
+  if ($champ1 == $champ2) {
+    echo " selected";
+  }
+}
 
-function isChecked($champ1, $champ2) { 
-  if ($champ1 == $champ2) { 
-    echo " checked"; 
-  } 
-} 
+function isChecked($champ1, $champ2) {
+  if ($champ1 == $champ2) {
+    echo " checked";
+  }
+}
 
-function txt_sqls($champ) { 
-  return "'".str_replace("'", "\'", str_replace('\\', '', $champ))."'"; 
+function txt_sqls($champ) {
+  return "'".str_replace("'", "\'", str_replace('\\', '', $champ))."'";
 }
 
 function is_valid_web_url($url) {
@@ -126,9 +126,9 @@ function dblog($action, $argument="", $query="")
 		if (PREF_LOG==1)
 			$query="";
 		$requete = "INSERT INTO ".PREFIX_DB."logs (date_log, ip_log, adh_log, action_log, text_log, sql_log)
-				VALUES (" . $GLOBALS["DB"]->DBTimeStamp(time()) . ", " . 
-						$GLOBALS["DB"]->qstr($_SERVER["REMOTE_ADDR"]) . ", " . 
-						$GLOBALS["DB"]->qstr($_SESSION["logged_nom_adh"]) . ", " . 
+				VALUES (" . $GLOBALS["DB"]->DBTimeStamp(time()) . ", " .
+						$GLOBALS["DB"]->qstr($_SERVER["REMOTE_ADDR"]) . ", " .
+						$GLOBALS["DB"]->qstr($_SESSION["logged_nom_adh"]) . ", " .
 						$GLOBALS["DB"]->qstr($action) . ", " .
 						$GLOBALS["DB"]->qstr($argument) . ", " .
 						$GLOBALS["DB"]->qstr($query) . ");";
@@ -167,7 +167,7 @@ function resizeimage($img,$img2,$w,$h)
               imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $imagedata[0], $imagedata[1]);
               imagegif($thumb, $img2);
             }
-          break;					
+          break;
         }
     }
 }
@@ -186,9 +186,9 @@ function custom_mail($email_adh,$mail_subject,$mail_text)
   //  1 - erreur mail()
   //  2 - mail desactive
   //  3 - mauvaise configuration
-  //  4 - SMTP injoignable 
+  //  4 - SMTP injoignable
   $result = 0;
-  
+
   // Headers :
   $headers = array("Subject: $mail_subject",
                    "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">",
@@ -200,7 +200,7 @@ function custom_mail($email_adh,$mail_subject,$mail_text)
                    "X-Mailer: Galette-".GALETTE_VERSION,
                    "X-Priority: 3",
                    "Content-Type: text/plain; charset=iso-8859-15");
-  
+
   switch (PREF_MAIL_METHOD)
     {
     case 0:
@@ -215,7 +215,7 @@ function custom_mail($email_adh,$mail_subject,$mail_text)
       break;
     case 2:
       // $toArray format --> array("Name1" => "address1", "Name2" => "address2", ...)
-      
+
       ini_set(sendmail_from, "myemail@address.com");
       $errno = "";
       $errstr = "";
@@ -252,7 +252,7 @@ function custom_mail($email_adh,$mail_subject,$mail_text)
 }
 
 function UniqueLogin($DB,$l) {
-  $result = $DB->Execute("SELECT * FROM ".PREFIX_DB."adherents 
+  $result = $DB->Execute("SELECT * FROM ".PREFIX_DB."adherents
                           WHERE login_adh='".addslashes($l)."'");
   return ($result->RecordCount() == 0);
 }
@@ -321,5 +321,6 @@ function get_numeric_posted_value($name, $defval) {
 	}
 	return $defval;
 }
+
 
 ?>

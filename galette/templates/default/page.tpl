@@ -1,13 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> 
-<HTML> 
-<HEAD> 
-	<TITLE>Galette {$GALETTE_VERSION}</TITLE> 
-	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1"> 
-	<LINK rel="stylesheet" type="text/css" href="{$template_subdir}galette.css" > 
-</HEAD> 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+	<TITLE>Galette {$GALETTE_VERSION}</TITLE>
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+	<LINK rel="stylesheet" type="text/css" href="{$template_subdir}galette.css" >
+</HEAD>
 <BODY BGCOLOR="#FFFFFF">
 	<DIV id="content">
-{$content}	
+{$content}
 		<DIV id="copyright">
 			<A href="http://galette.logeek.com:8080/fr/" target="_blank">Galette {$GALETTE_VERSION}</A>
 		</DIV>
@@ -15,20 +15,22 @@
 	<DIV id="menu">
 		<DIV id="logo">
 			<IMG src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60">
-		</DIV>	
+		</DIV>
 		<DIV id="nav1">
 			<H1>{_T("Navigation")}</H1>
 			<UL>
 {if $smarty.session.admin_status eq 1}
 				<LI><A href="gestion_adherents.php">{_T("List of members")}</A></LI>
 				<LI><A href="gestion_contributions.php?id_adh=all">{_T("List of contributions")}</A></LI>
+				<LI><A href="gestion_transactions.php">{_T("List of transactions")}</A></LI>
 				<LI><A href="ajouter_adherent.php">{_T("Add a member")}</A></LI>
 				<LI><A href="ajouter_contribution.php">{_T("Add a contribution")}</A></LI>
+				<LI><A href="ajouter_transaction.php">{_T("Add a transaction")}</A></LI>
 				<LI><A href="log.php">{_T("Logs")}</A></LI>
 {else}
 				<LI><A href="voir_adherent.php">{_T("My information")}</A></LI>
 				<LI><A href="gestion_contributions.php">{_T("My contributions")}</A></LI>
-{/if}				
+{/if}
 			</UL>
 		</DIV>
 {if $smarty.session.admin_status eq 1}
@@ -130,5 +132,5 @@
 		</DIV>
 {/if}
 	</DIV>
-</BODY> 
+</BODY>
 </HTML>

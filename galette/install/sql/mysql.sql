@@ -48,7 +48,18 @@ CREATE TABLE galette_cotisations (
   date_enreg date NOT NULL default '0000-00-00',
   date_debut_cotis date NOT NULL default '0000-00-00',
   date_fin_cotis date NOT NULL default '0000-00-00',
+  trans_id int(10) unsigned default NULL,
   PRIMARY KEY  (id_cotis)
+) TYPE=MyISAM;
+
+DROP TABLE galette_transactions;
+CREATE TABLE galette_transactions (
+  trans_id int(10) unsigned NOT NULL auto_increment,
+  trans_date date NOT NULL default '0000-00-00',
+  trans_amount float default '0',
+  trans_desc varchar(30) NOT NULL default '',
+  id_adh int(10) unsigned default NULL,
+  PRIMARY KEY  (trans_id)
 ) TYPE=MyISAM;
 
 DROP TABLE galette_statuts;

@@ -14,6 +14,14 @@ CREATE SEQUENCE galette_cotisations_id_seq
     MINVALUE 1
     CACHE 1;
 
+DROP SEQUENCE galette_transactions_id_seq;
+CREATE SEQUENCE galette_transactions_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
 DROP SEQUENCE galette_preferences_id_seq;
 CREATE SEQUENCE galette_preferences_id_seq
     START 1
@@ -71,9 +79,20 @@ CREATE TABLE galette_cotisations (
     info_cotis text,
     date_enreg date DEFAULT '00000101' NOT NULL,
     date_debut_cotis date DEFAULT '00000101' NOT NULL,
-    date_fin_cotis date DEFAULT '00000101' NOT NULL
+    date_fin_cotis date DEFAULT '00000101' NOT NULL,
+    trans_id integer DEFAULT NULL
 );
 CREATE UNIQUE INDEX galette_cotisations_idx ON galette_cotisations (id_cotis);
+
+DROP TABLE galette_transactions;
+CREATE TABLE galette_transactions (
+    trans_id integer DEFAULT nextval('galette_transactions_id_seq'::text)  NOT NULL,
+    trans_date date DEFAULT '00000101' NOT NULL,
+    trans_amount real DEFAULT '0',
+    trans_desc character varying(30) NOT NULL DEFAULT '',
+    id_adh integer DEFAULT NULL
+)
+CREATE UNIQUE INDEX galette_transactions_idx ON galette_transactions (trans_id);
 
 DROP TABLE galette_statuts;
 CREATE TABLE galette_statuts (
