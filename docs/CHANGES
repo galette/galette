@@ -1,6 +1,24 @@
 Changes
 -------
 
+0.61 -> 0.62
+
+- More documentation
+- Typos fixed
+- Recoded the html_entity_decode() function to preserve compatibility with pre-4.3 PHP
+- Defined a maxsize for the text fields (preferences)
+- First version of the Upgrade documentation using a Linux shell (in French)
+- Font size for table headers defined
+- "Update complete" string translated
+- Errors on DROP and RENAME operations can now be safely be ignored
+- Structure of the 'preferences' table enhanced
+- Font size defined for form labels
+- Bugfix concerning a call to imagegif when the function wasn't available (reported by Vincent Bossuet)
+- Fixed a bug reported by Lois Taulelle. Membership ending date wasn't updated when removing the "Freed of dues" attribute
+- Added the possibility to be visible or not in the members list (if you wan't to list members outside from Galette). Courtesy of Stephane Sales
+- Removed many PHP warnings (Galette should be running fine when error_reporting = E_ALL)
+- The log can now be sorted
+
 O.60 -> 0.61
 
 - Bugfix in member edition form (admin)
