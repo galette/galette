@@ -29,178 +29,186 @@
 		header("location: index.php");
 	if ($_SESSION["admin_status"]==0) 
 		header("location: voir_adherent.php");
-
+	
 	// On vérifie si on a une référence => modif ou création
 
 	// variables d'erreur (pour affichage)	    
  	$error_detected = "";
  	$warning_detected = "";
 
-	 //
-	// DEBUT parametrage des champs
-	//  On recupere de la base la longueur et les flags des champs
-	//   et on initialise des valeurs par defaut
-    
-	// recuperation de la liste de champs de la table
-	$fields = &$DB->MetaColumns(PREFIX_DB."preferences");
-	while (list($champ, $proprietes) = each($fields))
-	{
-		$proprietes_arr = get_object_vars($proprietes);
-		// on obtient name, max_length, type, not_null, has_default, primary_key,
-		// auto_increment et binary		
-		
-		$fieldname = $proprietes_arr["name"];
-				
-		// on ne met jamais a jour id_adh
-		if ($fieldname!="id_adh" && $fieldname!="date_echeance")
-			$$fieldname="";
+	  //
+	 // DEBUT parametrage des champs
+	//  on initialise des valeurs par defaut
 
-	  // definissons  aussi la longueur des input text
-	  $max_tmp = $proprietes_arr["max_length"];
-	  if ($max_tmp == "-1")
-	  	$max_tmp = 10;
-	  $fieldlen = $fieldname."_len";
-	  $fieldreq = $fieldname."_req";
-	  $$fieldlen = $max_tmp;
-
-	  // et s'ils sont obligatoires (à partir de la base)
-	  if ($proprietes_arr["not_null"]==1)
-	    $$fieldreq = " style=\"color: #FF0000;\"";
-	  else
-	    $$fieldreq = "";
-	}
-	reset($fields);
+	// recup des donnees
+        $requete = "SELECT nom_pref
+                    FROM ".PREFIX_DB."preferences";
+        $result = &$DB->Execute($requete);
+        while (!$result->EOF)
+        {
+		$fieldname = $result->fields["nom_pref"];
+                $$fieldname = "";
 	
-	/*
-	// et les valeurs par defaut
-	$id_statut = "4";
-	$titre_adh = "1";
-	*/
+		// declaration des champs obligatoires
+		$fieldreq = $fieldname."_req";
+		if ($fieldname=="pref_nom" ||
+		    $fieldname=="pref_lang" ||
+		    $fieldname=="pref_numrows" ||
+		    $fieldname=="pref_log" ||
+		    $fieldname=="pref_email_nom" ||
+		    $fieldname=="pref_email" ||
+		    $fieldname=="pref_etiq_marges" ||
+		    $fieldname=="pref_etiq_hspace" ||
+		    $fieldname=="pref_etiq_vspace" ||
+		    $fieldname=="pref_etiq_hsize" ||
+		    $fieldname=="pref_etiq_vsize" ||
+		    $fieldname=="pref_etiq_cols" ||
+		    $fieldname=="pref_etiq_rows" ||
+		    $fieldname=="pref_etiq_corps" ||
+		    $fieldname=="pref_admin_login" ||
+		    $fieldname=="pref_admin_pass")
+			$$fieldreq = " style=\"color: #FF0000;\"";
+		else
+			$$fieldreq = "";
+
+		 $result->MoveNext();
+        }
+        $result->Close();
 
 	  //
 	 // FIN parametrage des champs
 	// 	    	    
     
-    //
-   // Validation du formulaire
-  //
+	  //
+	 // Validation du formulaire
+	//
   
-  if (isset($_POST["valid"]))
-  {
-  	// verification de champs
-  	$update_string = "";
-  	$insert_string_fields = "";
-  	$insert_string_values = "";
-  
-  	// recuperation de la liste de champs de la table
-	  while (list($champ, $proprietes) = each($fields))
+	if (isset($_POST["valid"]))
+	{
+  		// verification de champs
+	  	$insert_values = array();
+
+		// recuperation de la liste de champs de la table
+		$requete = "SELECT nom_pref
+			    FROM ".PREFIX_DB."preferences";
+		$result=&$DB->Execute($requete);
+		while (!$result->EOF)
 		{
-			$proprietes_arr = get_object_vars($proprietes);
-			// on obtient name, max_length, type, not_null, has_default, primary_key,
-			// auto_increment et binary		
-		
-			$fieldname = $proprietes_arr["name"];
+			$fieldname = $result->fields["nom_pref"];
 			$fieldreq = $fieldname."_req";
 
-				if (isset($_POST[$fieldname]))
-				  $post_value=trim($_POST[$fieldname]);
-				else			
-					$post_value="";
+			if (isset($_POST[$fieldname]))
+				$post_value=trim($_POST[$fieldname]);
+			else			
+				$post_value="";
 					
-				// on declare les variables pour la présaisie en cas d'erreur
-				$$fieldname=htmlentities(stripslashes($post_value),ENT_QUOTES);
+			// on declare les variables pour la présaisie en cas d'erreur
+			$$fieldname=htmlentities(stripslashes($post_value),ENT_QUOTES);
 
-				// vérification de la présence des champs obligatoires
-				$req = $$fieldreq;
-				if ($req!="" && $post_value=="")
-				  $error_detected .= "<LI>"._T("- Champ obligatoire non renseigné.")."</LI>";
-				else
-				{
-					// validation de la langue
-					if ($fieldname=="pref_lang")
- 					{
- 						if (file_exists(WEB_ROOT . "lang/lang_" . $post_value . ".php"))
-		 					$value = $DB->qstr($post_value, true);
-		 				else
-					  		$error_detected .= "<LI>"._T("- Langue non valide !")."</LI>";
-					}
-					// validation des dates				
-					elseif ($fieldname=="pref_email")
- 					{
- 						$post_value=strtolower($post_value);
-						if (!is_valid_email($post_value) && $post_value!="")
-					  	$error_detected .= "<LI>"._T("- Adresse E-mail non valide !")."</LI>";
-						else
-		 					$value = $DB->qstr($post_value, true);
-					}
-  					elseif ($fieldname=="pref_admin_login")
- 					{
- 						if (strlen($post_value)<4)
- 							$error_detected .= "<LI>"._T("- L'identifiant doit être composé d'au moins 4 caractères !")."</LI>";
- 						else
- 						{
- 							// on vérifie que le login n'est pas déjà utilisé
- 							$requete = "SELECT id_adh
- 								    FROM ".PREFIX_DB."adherents
- 								    WHERE login_adh=". $DB->qstr($post_value, true);
- 							if ($id_adh!="")
- 								$requete .= " AND id_adh!=" . $DB->qstr($id_adh, true);
-
- 							$result = &$DB->Execute($requete);
-							if (!$result->EOF)
-	 							$error_detected .= "<LI>"._T("- Cet identifiant est déjà utilisé par un adhérent !")."</LI>";
-							else
-	 							$value = $DB->qstr($post_value, true);
-						}
- 					}
- 					elseif(strstr($proprietes_arr["type"],"int"))
- 					{
- 						// évitons la divison par zero
- 						if ($fieldname=="pref_numrows" && $post_value=="0")
- 							$post_value="1";
- 					
- 						if ((is_numeric($post_value) && $post_value >=0) || $post_value=="")
-						  $value=$DB->qstr($post_value,ENT_QUOTES);
-						else
-							$error_detected .= "<LI>"._T("- Les nombres et mesures doivent être des entiers !")."</LI>";
- 					}
- 					elseif ($fieldname=="pref_admin_pass")
- 					{
- 						if (strlen($post_value)<4)
- 							$error_detected .= "<LI>"._T("- Le mot de passe doit être composé d'au moins 4 caractères !")."</LI>";
- 						else
- 							$value = $DB->qstr($post_value, true);
- 					}
+			// vérification de la présence des champs obligatoires
+			$req = $$fieldreq;
+			if ($req!="" && $post_value=="")
+				$error_detected .= "<LI>"._T("- Champ obligatoire non renseigné.")."</LI>";
+			else
+			{
+				// validation de la langue
+				if ($fieldname=="pref_lang")
+ 				{
+ 					if (file_exists(WEB_ROOT . "lang/lang_" . $post_value . ".php"))
+		 				$value = $DB->qstr($post_value, true);
+		 			else
+				  		$error_detected .= "<LI>"._T("- Langue non valide !")."</LI>";
+				}
+				// validation des adresses mail				
+				elseif ($fieldname=="pref_email")
+ 				{
+ 					$post_value=strtolower($post_value);
+					if (!is_valid_email($post_value) && $post_value!="")
+				  	$error_detected .= "<LI>"._T("- Adresse E-mail non valide !")."</LI>";
+					else
+		 				$value = $DB->qstr($post_value, true);
+				}
+				// validation login
+  				elseif ($fieldname=="pref_admin_login")
+ 				{
+ 					if (strlen($post_value)<4)
+ 						$error_detected .= "<LI>"._T("- L'identifiant doit être composé d'au moins 4 caractères !")."</LI>";
  					else
  					{
- 						// on se contente d'escaper le html et les caracteres speciaux
-							$value = $DB->qstr($post_value, true);
-					}
+ 						// on vérifie que le login n'est pas déjà utilisé
+ 						$requete = "SELECT id_adh
+ 							    FROM ".PREFIX_DB."adherents
+ 							    WHERE login_adh=". $DB->qstr($post_value, true);
+ 						if ($id_adh!="")
+ 							$requete .= " AND id_adh!=" . $DB->qstr($id_adh, true);
 
-					// mise à jour des chaines d'insertion/update
-					if ($value=="''")
-						$value="NULL";
-					$update_string .= ",".$fieldname."=".$value;
-					$insert_string_fields .= ",".$fieldname;
-					$insert_string_values .= ",".$value;		
+ 						$result2 = &$DB->Execute($requete);
+						if (!$result2->EOF)
+	 						$error_detected .= "<LI>"._T("- Cet identifiant est déjà utilisé par un adhérent !")."</LI>";
+						else
+	 						$value = $DB->qstr($post_value, true);
+					}
+ 				}
+				// validation des entiers
+				elseif ($fieldname=="pref_numrows" ||
+				        $fieldname=="pref_etiq_marges" ||
+		                        $fieldname=="pref_etiq_hspace" ||
+					$fieldname=="pref_etiq_vspace" ||
+					$fieldname=="pref_etiq_hsize" ||
+					$fieldname=="pref_etiq_vsize" ||
+					$fieldname=="pref_etiq_cols" ||
+					$fieldname=="pref_etiq_rows" ||
+					$fieldname=="pref_etiq_corps")
+ 				{
+ 					// évitons la divison par zero
+ 					if ($fieldname=="pref_numrows" && $post_value=="0")
+ 						$post_value="1";
+ 					
+ 					if ((is_numeric($post_value) && $post_value >=0) || $post_value=="")
+						$value=$DB->qstr($post_value,ENT_QUOTES);
+					else
+						$error_detected .= "<LI>"._T("- Les nombres et mesures doivent être des entiers !")."</LI>";
+ 				}
+				// validation mot de passe
+ 				elseif ($fieldname=="pref_admin_pass")
+ 				{
+ 					if (strlen($post_value)<4)
+ 						$error_detected .= "<LI>"._T("- Le mot de passe doit être composé d'au moins 4 caractères !")."</LI>";
+ 					else
+ 						$value = $DB->qstr($post_value, true);
+ 				}
+ 				else
+ 				{
+ 					// on se contente d'escaper le html et les caracteres speciaux
+					$value = $DB->qstr($post_value, true);
+				}
+
+				// mise a jour des chaines d'insertion
+				if ($value=="''")
+					$value="NULL";
+				$insert_values[$fieldname] = $value;	
 			}
+			$result->MoveNext();
 		}
-		reset($fields);
+		$result->Close();
   
-  	// modif ou ajout
-  	if ($error_detected=="")
-  	{  	
+  		// modif ou ajout
+  		if ($error_detected=="")
+  		{  
+			// vidage des preferences
 			$requete = "DELETE FROM ".PREFIX_DB."preferences";
 			$DB->Execute($requete);
-  			$requete = "INSERT INTO ".PREFIX_DB."preferences
-  									(" . substr($insert_string_fields,1) . ") 
-  									VALUES (" . substr($insert_string_values,1) . ")";
-			$DB->Execute($requete);
- 			dblog(_T("Mise à jour des préférences"),$requete);							
-							
-			// récupération du max pour insertion photo
-			// ou passage en mode modif apres insertion
-
+			
+			// insertion des nouvelles preferences
+			while (list($champ,$valeur)=each($insert_values))
+			{
+				$requete = "INSERT INTO ".PREFIX_DB."preferences 
+					    (nom_pref, val_pref)
+					    VALUES (".$DB->qstr($champ).",".$valeur.");";
+				$DB->Execute($requete);
+			}
+			
+			// ajout photo
 			if (isset($_FILES["photo"]["tmp_name"]))
                         if ($_FILES["photo"]["tmp_name"]!="none" &&
                             $_FILES["photo"]["tmp_name"]!="") 
@@ -275,57 +283,33 @@
 	
 	if (!isset($_POST["valid"]) || (isset($_POST["valid"]) && $error_detected==""))
 	{
-		// recup des données
+		// recup des donnees
 		$requete = "SELECT * 
-								FROM ".PREFIX_DB."preferences";
+		  	    FROM ".PREFIX_DB."preferences";
 		$result = &$DB->Execute($requete);
         	if ($result->EOF)
 	                header("location: index.php");
-			                                                                                                                    
-																	    
-			
-		// recuperation de la liste de champs de la table
-	  //$fields = &$DB->MetaColumns(PREFIX_DB."cotisations");
-	  while (list($champ, $proprietes) = each($fields))
+		else
 		{
-			//echo $proprietes_arr["name"]." -- (".$result->fields[$proprietes_arr["name"]].")<br>";
-
-			$val="";
-			$proprietes_arr = get_object_vars($proprietes);
-			// on obtient name, max_length, type, not_null, has_default, primary_key,
-			// auto_increment et binary		
-		
-		  // déclaration des variables correspondant aux champs
-		  // et reformatage des dates.
-			
-			// on doit faire cette verif pour une enventuelle valeur "NULL"
-			// non renvoyée -> ex: pas de societe membre
-			// sinon on obtient un warning
-			if (isset($result->fields[$proprietes_arr["name"]]))
-				$val = $result->fields[$proprietes_arr["name"]];
-
-			if($proprietes_arr["type"]=="date" && $val!="")
+			while (!$result->EOF)
 			{
-			  list($a,$m,$j)=split("-",$val);
-			  $val="$j/$m/$a";
+				$fieldname=$result->fields["nom_pref"];
+				$$fieldname = htmlentities(stripslashes(addslashes($result->fields["val_pref"])), ENT_QUOTES);
+				$result->MoveNext();
 			}
-		  $$proprietes_arr["name"] = htmlentities(stripslashes(addslashes($val)), ENT_QUOTES);
 		}
-		reset($fields);
+		$result->Close();
 	}
 	else
 	{
 		// initialisation des champs
-			
 	}
 
 	include("header.php");
 
 ?> 
- 
 						<H1 class="titre"><? echo _T("Préférences"); ?></H1>
 						<FORM action="preferences.php" method="post" enctype="multipart/form-data"> 
-						
 <?
 	// Affichage des erreurs
 	if ($error_detected!="")

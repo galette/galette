@@ -21,7 +21,7 @@
 	{
 		if ($_POST["install_type"]=="install")
 			$step="i3";
-		elseif ($_POST["install_type"]=="upgrade")
+		elseif (substr($_POST["install_type"],0,7)=="upgrade")
 			$step="u3";
 		else
 	  		$error_detected .= "<LI>"._T("Type d'installation inconnu")."</LI>";
@@ -31,7 +31,7 @@
 	{
 		if ($_POST["install_type"]=="install")
 			$step="i4";
-		elseif ($_POST["install_type"]=="upgrade")
+		elseif (substr($_POST["install_type"],0,7)=="upgrade")
 			$step="u4";
 		else
 	  		$error_detected .= "<LI>"._T("Type d'installation inconnu")."</LI>";
@@ -63,19 +63,19 @@
 				@$DB->Connect($_POST["install_dbhost"], $_POST["install_dbuser"], $_POST["install_dbpass"], $_POST["install_dbname"]);
 				if ($_POST["install_type"]=="install")
 					$step="i6";
-				elseif ($_POST["install_type"]=="upgrade")
+				elseif (substr($_POST["install_type"],0,7)=="upgrade")
 					$step="u6";
 					
 				if (isset($_POST["install_dbperms_ok"]))
 				if ($_POST["install_type"]=="install")
 					$step="i7";					
-				elseif ($_POST["install_type"]=="upgrade")
+				elseif (substr($_POST["install_type"],0,7)=="upgrade")
 					$step="u7";
 					
 				if (isset($_POST["install_dbwrite_ok"]))
 				if ($_POST["install_type"]=="install")
 					$step="i8";					
-				elseif ($_POST["install_type"]=="upgrade")
+				elseif (substr($_POST["install_type"],0,7)=="upgrade")
 					$step="u8";
 					
 				if (isset($_POST["install_adminlogin"]) && isset($_POST["install_adminpass"]))
@@ -87,13 +87,13 @@
 					if ($error_detected=="")
 					if ($_POST["install_type"]=="install")
 						$step="i9";					
-					elseif ($_POST["install_type"]=="upgrade")
+					elseif (substr($_POST["install_type"],0,7)=="upgrade")
 						$step="u9";
 						
 					if (isset($_POST["install_prefs_ok"]))
 					if ($_POST["install_type"]=="install")
 						$step="i10";					
-					elseif ($_POST["install_type"]=="upgrade")
+					elseif (substr($_POST["install_type"],0,7)=="upgrade")
 						$step="u10";
 				}					
 			}
@@ -159,11 +159,35 @@
 		<P>
 			<INPUT type="radio" name="install_type" value="install" SELECTED> <? echo _T("Nouvelle installation :"); ?><BR>
 		 	<? echo _T("Vous installez Galette pour la première fois, ou vous souhaitez écraser une ancienne version de Galette sans conserver vos données"); ?>
-		 </P>
-		<P>
-			<INPUT type="radio" name="install_type" value="upgrade"> <? echo _T("Mise à jour :"); ?><BR>
-		 	<? echo _T("Vous souhaitez mettre à jour une version Galette inférieure ou égale à 0.57. Attention : Pensez à sauvegarder votre base existante."); ?>
 		</P>
+<?
+			$dh = opendir("sql");
+			$update_scripts = array();
+			while (($file = readdir($dh)) !== false)
+			{
+				if (ereg("upgrade-to-(.*)-mysql.sql",$file,$ver))
+					$update_scripts[] = $ver[1];
+			}
+			closedir($dh);
+			asort($update_scripts);
+			$last = "0.00";
+			while (list ($key, $val) = each ($update_scripts))
+			{
+?>
+		<P>
+			<INPUT type="radio" name="install_type" value="upgrade-<? echo $val; ?>"> <? echo _T("Mise à jour :"); ?><BR>
+<?
+				if ($last!=number_format($val-0.01,2))
+					echo _T("Votre version actuelle de Galette est comprise entre")." ".$last." "._T("et")." ".number_format($val-0.01,2)."<br>";
+				else
+					echo _T("Votre version actuelle de Galette est la")." ".number_format($val-0.01,2)."<br>";
+				$last = $val;
+				echo _T("Attention : Pensez à sauvegarder votre base existante.");
+?>
+		</P>
+<?
+			}
+?>
 		<P id="submitbutton3">
 			<INPUT type="submit" value="<? echo _T("Etape suivante"); ?>">
 		</P>
@@ -617,12 +641,37 @@
 			
 			$prefix = "";
 			$table_prefix = $_POST["install_dbprefix"];
-			if ($step=="u7") $prefix="upgrade-";
-                                                                                                                                                  
-			$sql_query = @fread(@fopen($prefix.$_POST["install_dbtype"].".sql", 'r'), @filesize($prefix.$_POST["install_dbtype"].".sql"));
+			if ($step=="u7")
+			{
+				$prefix="upgrade-to-";
+				//echo $_POST["install_type"];
+
+				$dh = opendir("sql");
+       	                	$update_scripts = array();
+				$first_file_found = false;
+				while (($file = readdir($dh)) !== false)
+				{
+					if (ereg("upgrade-to-(.*)-".$_POST["install_dbtype"].".sql",$file,$ver))
+					{
+						if (substr($_POST["install_type"],8)==$ver[1])
+							$first_file_found = true;
+						if ($first_file_found)
+							$update_scripts[$ver[1]] = $file;
+					}
+				}
+				ksort($update_scripts);
+			}
+			else
+				$update_scripts["current"] = $_POST["install_dbtype"].".sql";
+
+			ksort($update_scripts);
+			$sql_query = "";
+			while(list($key,$val)=each($update_scripts))
+				$sql_query .= @fread(@fopen("sql/".$val, 'r'), @filesize("sql/".$val))."\n";
+			
 			$sql_query = preg_replace('/galette_/', $table_prefix, $sql_query);
-                                                                                                                                                  
 			$sql_query = remove_remarks($sql_query);
+			
 			$sql_query = split_sql_file($sql_query, ";");
                                                                                                                                                   
 			for ($i = 0; $i < sizeof($sql_query); $i++)
@@ -788,8 +837,48 @@ define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 
 			// sauvegarde des parametres
 			$default = "DELETE FROM ".$_POST["install_dbprefix"]."preferences";
-			$DB->Execute($default);
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES ('Galette','-',NULL,'-','-',NULL,".$DB->qstr($_POST["install_lang"]).",30,'1','Galette','mail@domain.com',10,10,5,90,35,2,7,12,".$DB->qstr($_POST["install_adminlogin"]).",".$DB->qstr($_POST["install_adminpass"]).");";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (1,'pref_nom','Galette')";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (2,'pref_adresse','-')";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (3,'pref_cp','-')";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (4,'pref_ville','-')";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (5,'pref_lang',".$DB->qstr($_POST["install_lang"]).")";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (6,'pref_numrows','30')";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (7,'pref_log','2')";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (8,'pref_email_nom','Galette')";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (9,'pref_email','mail@domain.com')";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (10,'pref_etiq_marges','10')";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (11,'pref_etiq_hspace','10')";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (12,'pref_etiq_vspace','5')";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (13,'pref_etiq_hsize','90')";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (14,'pref_etiq_vsize','35')";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (15,'pref_etiq_cols','2')";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (16,'pref_etiq_rows','7')";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (17,'pref_etiq_corps','12')";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (18,'pref_admin_login',".$DB->qstr($_POST["install_adminlogin"]).")";
+			$DB->Execute($default);			
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (19,'pref_admin_pass',".$DB->qstr($_POST["install_adminpass"]).")";
+			
+			// NB: il faudrait améliorer cette partie car la détection
+			// d'erreur ne s'effectue que sur le dernier insert. Prévoir une boucle.
+			
 			$DB->Execute($default);
 			if (!$DB->ErrorNo())
 				echo "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Paramètres sauvegardés dans la base de données")."<BR>";

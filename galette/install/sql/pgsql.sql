@@ -14,6 +14,14 @@ CREATE SEQUENCE galette_cotisations_id_seq
     MINVALUE 1
     CACHE 1;
 
+DROP SEQUENCE galette_preferences_id_seq
+CREATE SEQUENCE galette_preferences_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
 DROP TABLE galette_adherents;
 CREATE TABLE galette_adherents (
     id_adh integer DEFAULT nextval('galette_adherents_id_seq'::text) NOT NULL,
@@ -89,6 +97,13 @@ INSERT INTO galette_types_cotisation VALUES (3,'Cotisation entreprise');
 INSERT INTO galette_types_cotisation VALUES (4,'Donation en nature');
 INSERT INTO galette_types_cotisation VALUES (5,'Donation pécunière');
 INSERT INTO galette_types_cotisation VALUES (6,'Partenariat');
+
+DROP TABLE galette_preferences;
+CREATE TABLE galette_preferences (
+  id_pref integer DEFAULT nextval('galette_preferences_id_seq'::text) NOT NULL,
+  nom_pref varying(100) DEFAULT '' NOT NULL,
+  val_pref varying(200) DEFAULT '' NOT NULL
+);
 
 DROP TABLE galette_preferences;
 CREATE TABLE galette_preferences (
