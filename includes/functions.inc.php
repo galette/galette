@@ -20,13 +20,13 @@
  *
  */
  
-	function makeRandomPassword()
+	function makeRandomPassword($size)
 	{
 		$pass = "";
   		$salt = "abcdefghjkmnpqrstuvwxyz0123456789";
     		srand((double)microtime()*1000000);
           	$i = 0;
-	        while ($i <= 6) 
+	        while ($i <= $size-1) 
 		{
 	        	$num = rand() % 33;
 	        	$tmp = substr($salt, $num, 1);
@@ -157,10 +157,11 @@
 		$headers = array("Subject: $mail_subject",
 				"From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">",
 				"To: <".$email_adh.">",
+				"Message-ID: <".makeRandomPassword(16)."-galette@".$_SERVER['SERVER_NAME'].">",
 				"X-Sender: <".PREF_EMAIL.">",
 				"Return-Path: <".PREF_EMAIL.">",
 				"Errors-To: <".PREF_EMAIL.">",
-				"X-Mailer: PHP",
+				"X-Mailer: Galette-".GALETTE_VERSION,
 				"X-Priority: 3",
 				"Content-Type: text/plain; charset=iso-8859-15");
 		
