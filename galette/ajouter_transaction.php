@@ -169,7 +169,7 @@ if (isset($_POST["valid"]))
 		}
 
 		// dynamic fields
-		set_all_dynamic_fields($DB, 'transaction', $transaction['trans_id'], $transaction['dyn']);
+		set_all_dynamic_fields($DB, 'trans', $transaction['trans_id'], $transaction['dyn']);
 
 		if ($missing_amount > 0) {
 			$url = 'ajouter_contribution.php?trans_id='.$transaction['trans_id'];
@@ -207,7 +207,7 @@ else
 		}
 
 		// dynamic fields
-		$transaction['dyn'] = get_dynamic_fields($DB, 'transaction', $transaction["trans_id"], false);
+		$transaction['dyn'] = get_dynamic_fields($DB, 'trans', $transaction["trans_id"], false);
 
 	}
 
@@ -234,7 +234,7 @@ $result->Close();
 $tpl->assign("adh_options",$adh_options);
 
 // - declare dynamic fields for display
-$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'transaction', $_SESSION["admin_status"], $transaction['dyn'], array(), 1);
+$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'trans', $_SESSION["admin_status"], $transaction['dyn'], array(), 1);
 $tpl->assign("dynamic_fields",$dynamic_fields);
 
 // page generation

@@ -1,4 +1,4 @@
-<? 
+<?
 /* categories.inc.php
  * - Categories configuration
  * Copyright (c) 2004 Laurent Pelecq <laurent.pelecq@soleil.org>
@@ -7,12 +7,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -55,7 +55,7 @@
 					    'multi_valued' => false,
 					    'fixed_values' => true)
 	);
-	
+
 
 	$perm_all = 0;
 	$perm_admin = 1;
@@ -68,10 +68,11 @@
 	$field_positions = array($field_pos_middle => _T('middle'),
 				 $field_pos_left => _T('left'),
 				 $field_pos_right => _T('right'));
-	
+
 	$all_forms = array(
 		'adh' => _T("Members"),
-		'contrib' => _T("Contributions")
+		'contrib' => _T("Contributions"),
+		'trans' => _T("Transactions")
 	);
 
 	$fields_table = PREFIX_DB."dynamic_fields";
@@ -81,7 +82,7 @@
 	function fixed_values_table_name($field_id) {
 		return PREFIX_DB."field_contents_$field_id";
 	}
-	
+
 	// Returns an array of fixed valued for a field of type 'choice'.
 	function get_fixed_values($DB, $field_id) {
 		$contents_table = fixed_values_table_name($field_id);
