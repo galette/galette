@@ -23,6 +23,7 @@
 				<TH class="listing">{_T("Visibility")}</TH>
 				<TH class="listing">{_T("Type")}</TH>
 				<TH class="listing">{_T("Required")}</TH>
+				<TH class="listing">{_T("Position")}</TH>
 				<TH class="listing">{_T("Actions")}</TH>
 			</TR>
 {foreach from=$dyn_fields item=field}
@@ -36,6 +37,7 @@
 						{if $field.required}{_T("Yes")}{else}{_T("No")}{/if}
 					{/if}
 				</TD>
+				<TD class="listing left">{$field.pos}</TD>
 				<TD class="listing center">
 {if $field.no_data}
 					<IMG src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="12" height="13">
@@ -81,6 +83,11 @@
 					<SELECT name="field_required">
 						<OPTION value="0">{_T("No")}</OPTION>
 						<OPTION value="1">{_T("Yes")}</OPTION>
+					</SELECT>
+				</TD>
+				<TD width="60" class="listing left">
+					<SELECT name="field_pos">
+						{html_options options=$field_positions selected="0"}
 					</SELECT>
 				</TD>
 				<TD class="listing center"><INPUT type="submit" name="valid" value="{_T("Add")}"></TD>

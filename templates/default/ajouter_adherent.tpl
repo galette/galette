@@ -211,7 +211,7 @@
 {/if}
 					</TD>
 				</TR>
-{include file="dynamic_fields_form.tpl"}
+{include file="display_dynamic_fields.tpl" is_form=true}
 				<TR> 
 					<TH align="center" colspan="4"><BR><INPUT type="submit" name="valid" value="{_T("Save")}"></TH> 
 				</TR>

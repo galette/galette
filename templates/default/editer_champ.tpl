@@ -27,16 +27,24 @@
 							<OPTION value="{$perm_admin}" {if $data.perm == $perm_admin}selected="selected"{/if}>{$perm_names[$perm_admin]}</OPTION>
 						</SELECT>
 					</TD>
+					<TH id="libelle">{_T("Position:")}</TH> 
+					<TD>
+						<SELECT name="field_pos">
+							{html_options options=$field_positions selected=$data.pos}
+						</SELECT>
+					</TD>
+				</TR>
 {if !$properties.no_data}
+				<TR>
 					<TH id="libelle">{_T("Required:")}</TH> 
-					<TD class="listing">
+					<TD class="listing" colspan="3">
 						<SELECT name="field_required">
 							<OPTION value="0" {if $data.required == 0}selected="selected"{/if}>{_T("No")}</OPTION>
 							<OPTION value="1" {if $data.required == 1}selected="selected"{/if}>{_T("Yes")}</OPTION>
 						</SELECT>
 					</TD>
-{/if}
 				</TR>
+{/if}
 {if $properties.with_width}
 				<TR>
 					<TH id="libelle">{_T("Width:")}</TH> 

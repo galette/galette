@@ -134,7 +134,7 @@
 					<TD bgcolor="#EEEEEE" colspan="3">{$data.info_public_adh}</TD> 
 				</TR>
 
-{include file="display_dynamic_fields.tpl"}
+{include file="display_dynamic_fields.tpl" is_form=false}
 
 				<TR>
 					<TD colspan="4" align="center">

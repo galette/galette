@@ -72,7 +72,7 @@
 					<TH {if $required.info_cotis eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Comments:")}</TH> 
 					<TD colspan="3"><TEXTAREA name="info_cotis" cols="61" rows="6">{$data.info_cotis}</TEXTAREA></TD> 
 				</TR> 
-{include file="dynamic_fields_form.tpl"}
+{include file="display_dynamic_fields.tpl" is_form=true}
 				<TR> 
 					<TH align="center" colspan="4"><BR><input type="submit" value="{_T("Save")}"></TH> 
 				</TR> 

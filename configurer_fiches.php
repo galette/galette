@@ -60,6 +60,7 @@
 				$field_perm = $_POST["field_perm"];
 				$field_type = $_POST["field_type"];
 				$field_required = $_POST["field_required"];
+				$field_pos = $_POST["field_pos"];
 				$query = "SELECT COUNT(*) + 1 AS idx
 					  FROM $field_types_table
 					  WHERE field_form=$quoted_form_name";
@@ -68,8 +69,8 @@
 					$DB->StartTrans();
 					$quoted_field_name = $DB->qstr($field_name, true);
 					$query = "INSERT INTO $field_types_table
-						    (field_index, field_form, field_name, field_perm, field_type, field_required)
-						  VALUES ($idx, $quoted_form_name, $quoted_field_name, $field_perm, $field_type, $field_required)";
+						    (field_index, field_form, field_name, field_perm, field_type, field_required, field_pos)
+						  VALUES ($idx, $quoted_form_name, $quoted_field_name, $field_perm, $field_type, $field_required, $field_pos)";
 					db_execute(&$DB, $query, &$error_detected);
 					if ($field_type != $field_type_separator && count($error_detected) == 0) {
 						$field_id = get_last_auto_increment(&$DB, $field_types_table, "field_id", &$error_detected);
@@ -161,6 +162,7 @@
 				$dyn_fields[$count]['perm'] = $perm_names[$result->fields['field_perm']];
 				$dyn_fields[$count]['type'] = $field_type_names[$result->fields['field_type']];
 				$dyn_fields[$count]['required'] = ($result->fields['field_required'] == '1');
+				$dyn_fields[$count]['pos'] = $field_positions[$result->fields['field_pos']];
 				$result->MoveNext();
 				++$count;
 			}
@@ -180,6 +182,7 @@
 
 	$tpl->assign("perm_names", $perm_names);
 	$tpl->assign("field_type_names", $field_type_names);
+	$tpl->assign("field_positions", $field_positions);
 
 	$content = $tpl->fetch("configurer_fiches.tpl");
 	$tpl->assign("content",$content);

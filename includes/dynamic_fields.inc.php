@@ -62,6 +62,13 @@
 
 	$perm_names = array($perm_all => _T('all'), $perm_admin => _T('admin'));
 
+	$field_pos_middle = 0;
+	$field_pos_left = 1;
+	$field_pos_right = 2;
+	$field_positions = array($field_pos_middle => _T('middle'),
+				 $field_pos_left => _T('left'),
+				 $field_pos_right => _T('right'));
+	
 	$all_forms = array(
 		'adh' => _T("Members"),
 		'contrib' => _T("Contributions")
