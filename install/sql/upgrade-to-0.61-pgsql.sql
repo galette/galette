@@ -30,3 +30,10 @@ INSERT INTO statuts VALUES (3,'Secrétaire',20);
 INSERT INTO statuts VALUES (7,'Ancien',60);
 INSERT INTO statuts VALUES (8,'Personne morale',70);
 INSERT INTO statuts VALUES (9,'Non membre',80);
+
+ALTER TABLE adherents RENAME TO galette_adherents;
+ALTER TABLE cotisations RENAME TO galette_cotisations;
+ALTER TABLE logs RENAME TO galette_logs;
+ALTER TABLE preferences RENAME TO galette_preferences;
+ALTER TABLE statuts RENAME TO galette_statuts;
+ALTER TABLE types_cotisation RENAME TO galette_types_cotisation;
