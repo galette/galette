@@ -132,7 +132,13 @@
 		}
 	}
 	
-	
+	function custom_html_entity_decode( $given_html, $quote_style = ENT_QUOTES )
+	{
+   	$trans_table = array_flip(get_html_translation_table( HTML_ENTITIES, $quote_style ));
+   	$trans_table['&#39;'] = "'";
+   	return ( strtr( $given_html, $trans_table ) );
+	}
+
 	
 	
 	

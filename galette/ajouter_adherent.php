@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
-
+ 
 	include("includes/config.inc.php");
 	include(WEB_ROOT."includes/database.inc.php"); 
 	include(WEB_ROOT."includes/functions.inc.php"); 
@@ -268,8 +268,8 @@
 						$mail_text .= _T("Veuillez vous identifier à cette adresse :")."\n";
 						$mail_text .= "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
 						$mail_text .= "\n";
-						$mail_text .= _T("Identifiant :")." ".html_entity_decode($login_adh, ENT_QUOTES)."\n";
-						$mail_text .= _T("Mot de passe :")." ".html_entity_decode($mdp_adh, ENT_QUOTES)."\n";
+						$mail_text .= _T("Identifiant :")." ".custom_html_entity_decode($login_adh)."\n";
+						$mail_text .= _T("Mot de passe :")." ".custom_html_entity_decode($mdp_adh)."\n";
 						$mail_text .= "\n";
 						$mail_text .= _T("A trés bientôt !")."\n";
 						$mail_text .= "\n";
