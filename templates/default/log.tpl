@@ -48,7 +48,7 @@
 					{/if}
 				</TH>
 				<TH class="listing left" width="150">
-					<A href="log.php?tri=2" class="listing">{_T("Member")}</A>
+					<A href="log.php?tri=2" class="listing">{_T("User")}</A>
 					{if $smarty.session.tri_log eq 2}
 					{if $smarty.session.tri_log_sens eq 0}
 					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt="">
