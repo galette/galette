@@ -1,0 +1,25 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Name</h1>
+<p>get_color -- Return a RGB array from a symbolic color name.</p>
+<h1>Synopsis</h1>
+<p>array <b>get_color</b> ( string name )</p>
+<h1>Description</h1>
+<p>This method returns an array in proper RGB form (suitable for storing in
+an array parameter such as 'fillcolor' or 'strokecolor') from a symbolic name.</p>
+<p>The symbolic name can be either a name (in the form 'black' or 'blue') or a
+set of hex triplets (such as #ffdd00).</p>
+<h1>Examples</h1>
+<pre>
+// Set the default stroke color to blue
+$pdf->set_default('strokecolor', $pdf->get_color('blue'));
+</pre>
+<h1>See Also</h1>
+<a href='data.parameters.html'>Parameter array</a>
+<h1>History</h1>
+<p>This function was added in version 2.1. Hex triplet support was added in 2.3.</p>
+<h1>Bugs</h1>
+<p>The only symbolic names that work right now are black, white, red, blue, and green.</p>
+</BODY>
+</HTML>

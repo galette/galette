@@ -1,0 +1,36 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Name</h1>
+<p>packer->fill_text -- fill provided text into remaining free space</p>
+<h1>Synopsis</h1>
+<p>mixed <b>packer->fill_text</b> ( string text[, float padding[, float minwidth]] )</p>
+<h1>Description</h1>
+<p>This function takes the text provided in <code>text</code> and places it on
+the page, using whatever free space remains in the free space map, using the
+current default text settings.</p>
+<p><code>padding</code> specifies an amount away from the edge of each field
+to hold the text. This prevents the text from running together when fields have
+edges that touch. The value is in em (the width of the letter "M" in the current
+font) and defaults to 1.</p>
+<p><code>minwidth</code> is the minimum width fragment that should be used.
+Fragments narrower than <code>minwidth</code> are not used to place text.
+The calculation takes <code>padding</code> in to account, so the actual width
+of the fragment must equal or exceed 2 * <code>padding</code> +
+<code>minwidth</code>. The value is in em.</p>
+<p>The function returns <code>true</code> if all text was placed. If the text
+could not be fit in the available free space, the text that was not placed is
+returned.</p>
+<h1>Examples</h1>
+<p>See <code>example-packer.php</code> in the examples directory.</p>
+<h1>See Also</h1>
+<h1>History</h1>
+<p>Added with the packer in 2.6</p>
+<h1>Bugs</h1>
+<p>This should create new pages as needed, but the logic to do so without
+"shooting the programmer in the foot" has not occured to me yet.</p>
+<p>The layout policy is "closest fragment to upper-left corner". Aside from
+being non-i18n, this policy probably won't always flow text in the way the
+user would like.</p>
+</BODY>
+</HTML>

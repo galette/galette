@@ -1,0 +1,62 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Overview</h1>
+<h2>Overview of the library</h2>
+<p>phppdflib is a php class library for the purpose of creating dynamic documents
+in the PDF format developed by Adobe.</p>
+<h2>Theory of Operation</h2>
+<p>With the design goals in mind, the decision was made to produce a two-stage engine.</p>
+<p>The first stage is the collection of data for objects that will go into the resultant file.
+Most of the class methods are involved with this stage.
+Each step of this stage is generally invoved in validating the data, then storing the
+necessary information in a structured array for later use.</p>
+<p>The second stage is the processing of the data objects to convert them into the PDF format.
+This stage is initiated by the <code>generate()</code> method but calls many other methods
+to do the work.
+Other than <code>generate()</code>, these methods are intended only for internal use within
+the library.
+<code>generate()</code> first preprocesses the objects in an attempt to combine as many as
+possible into <code>mstream</code> objects.
+This process reduces the number of array objects that are converted to PDF objects, thus
+reducing the size and complexity of the resultant PDF.
+The <code>generate()</code> function then creates some static PDF objects, specifically
+the document catalog, root pagenode, and the resource dictionary.
+While the location of these objects is static, the content of the root pagenode and resource
+dictionary is dynamic.
+<code>generate()</code> then processes the objects in the structured library and converts
+them into properly formatted PDF objects, building the data stream as it goes.
+During this process, data is recorded on the size of each object necessary for the generation
+of the PDF xref table.
+At the end of the process, the xref table is generated and appended to the data stream.
+A document trailer and end of file marker are then appended to the data stream and the
+stream is <code>return</code>ed to the calling process.</p>
+<h3>Thoughts</h3>
+<p>The two step process has advantages as well as disadvantages.</p>
+<p>Since the addition of objects and conversion into the PDF format is done seperately,
+the user may create the PDF file in any order, except that parent objects must be created
+prior to their children.
+For example, a user may create all the pages in the PDF, then paint to them; or he may
+create each page and paint it as a seperate step; or any combination of the two.
+A user my even paint to pages out of order, for example, after all other data has been
+written, the script may then add a footnote to each page denoting the total number of
+pages.
+It is the job of the generation process to be sure the document hierarchy is reorganized
+such that it is valid PDF.</p>
+<p>The obvious disadvantage is that memory usage is increased.  During the later stages
+of generation, the entire PDF is stored in memory twice (once as the structured array,
+and again as the PDF stream itself). Additionally, the library provides no method for
+freeing the memory after generation is complete. It is my thought that it is unlikely
+that scripts will continue to do processing after generation is complete, but if it is
+the case, the library instance should be <code>unset()</code> to free the (possibly
+significant) memory allocated.</p>
+<p>Significant focus is placed on making the resultant PDF file as small as possible,
+even at the expense of additional processing or memory usage during generation.
+The rational is that most servers using the library will have significant CPU and
+memory resources, while many end users receiving the PDF files will have limited
+bandwidth. The only feature of this mentality which is tunable (outside of recoding
+the library) is the use of compression, which (because it implements a compression
+algorithm internally supported by php) does not seem to use significant amounts of
+memory or processor compared to the rest of the process.</p>
+</BODY>
+</HTML>

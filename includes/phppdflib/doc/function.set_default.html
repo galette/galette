@@ -1,0 +1,40 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Name</h1>
+<p>set_default -- Set a default value for all future operations</p>
+<h1>Synopsis</h1>
+<p>bool <b>set_default</b> ( string name, mixed value )</p>
+<h1>Description</h1>
+<p>Use this function to set default values that all subsequent functions
+will use. Parameters set in this manner become the new default values
+and are used whenever a parameter is not specified in the parameters
+array of a function.</p>
+<p>There are two exceptions to this behaviour:</p>
+<ul>
+<li>The 'pagesize' value, which
+is not used via a parameters array, but simply specified as the only
+parameter to the method <code>new_page()</code>. Specifying the page size via this command allows
+the parameter to be omitted from calls to <code>new_page()</code> as well as setting
+the page size for any functions that create new pages automatically.
+<li>Margins are only applied to pages, and the margins that are applied to
+painting operations are the margin that was assigned to the page being
+painted to, not the current default values for margins.
+</ul>
+<h1>Examples</h1>
+<p>Set the default page size to a5</p>
+<pre>
+$pdf->set_default('pagesize', 'a5');
+</pre>
+<p>Set the default font to Courier</p>
+<pre>
+$pdf->set_default('font', 'Courier');
+</pre>
+<h1>See Also</h1>
+<h1>History</h1>
+<p>This command was added in version 2 of the library.</p>
+<h1>Bugs</h1>
+<p>Very little sanity checking is done at this time, so it's easy to set a
+number of invalid defaults without any warning.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,57 @@
+<HTML>
+<BODY>
+<h1>Name</h1>
+<p>draw_text -- Paint a text string to a page</p>
+<h1>Synopsis</h1>
+<p>int <b>draw_text</b> ( int left, int bottom, string text, int pageid [,array parameters] )</p>
+<h1>Description</h1>
+<p>This function paints a string of text on a page specified by
+<code>pageid</code> at the location specified by <code>left</code> and
+<code>bottom</code>.  The optional array <code>parameters</code> can
+be used to override the default text settings when placing the text.</p>
+<p>Possible values for "font" are:</p>
+<ul>
+<li>Courier
+<li>Courier-Bold
+<li>Courier-Oblique
+<li>Courier-BoldOblique
+<li>Helvetica
+<li>Helvetica-Bold
+<li>Helvetica-Oblique
+<li>Helvetica-BoldOblique
+<li>Times-Roman
+<li>Times-Bold
+<li>Times-Italic
+<li>Times-BoldItalic
+<li>Symbol
+<li>ZapfDingbats
+</ul>
+<p>Font names are case-sensitive.</p>
+<h1>Examples</h1>
+<p>This is a complete script for creating a single paged PDF file:</p>
+<pre>
+$pdf = new pdffile;
+$page = $pdf->new_page("letter");
+$pdf->draw_text(50, 50, "This is a single page", $page);
+echo $pdf->generate();
+</pre>
+<p>Place text 1 inch from the lower left corner of the page at size
+16 point.</p>
+<pre>
+$param["height"] = 16;
+$pdf->draw_text(72, 72, "This is 16 point text", $page, $param);
+</pre>
+<p>Place red, Courier text:</p>
+<pre>
+$param["color"] = $pdf->get_color('red');
+$param["font"] = "Courier";
+$pdf->draw_text(144, 144, "This is red, Courier text", $page, $param);
+</pre>
+<h1>See Also</h1>
+<h1>History</h1>
+<p>Early versions of the library had a draw_stext() function, but this
+has been replaced by draw_text().</p>
+<h1>Bugs</h1>
+<p>None known</p>
+</BODY>
+</HTML>

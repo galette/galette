@@ -1,0 +1,42 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Name</h1>
+<p>add_series -- Add a series of values to the chart.</p>
+<h1>Synopsis</h1>
+<p>bool <b>chart->add_series</b> ( string name, array points[, string color[, float width[, string type]]] )</p>
+<h1>Description</h1>
+<p>This method adds a series of points to the chart that will be connected by a line.</p>
+<p>Each seperate call to chart->add_series() will result in another line being drawn on the chart.</p>
+<p><code>name</code> is the name of the series, and will be used to represent it in the legend.
+Each series <b>must</b> have a unique name, even if no legend is drawn.</p>
+<p><code>points</code> is an array of points to be drawn on the chart.</p>
+<p><code>color</code> is a color for the series to be drawn in. It must be a symbolic reference
+to a color as describe for <a href='function.get_color.html'>get_color()</a>.</p>
+<p><code>width</code> is the width of the line in PDF units</p>
+<p><code>type</code> is the type of line to draw, only 'line' type is supported at this time.</p>
+<h1>Examples</h1>
+<pre>
+// set the background to dark green
+$pdf->chart->setcolor('background', 0, .5, 0);
+// Add a series
+$p[] = 5;
+$p[] = 10;
+$p[] = 7;
+$p[] = 3.2;
+$pdf->chart->add_series('series 1', $p);
+$pdf->chart->place_chart($page, 10, 10, 300, 200, 'line');
+</pre>
+<h1>See Also</h1>
+<ul>
+<li><a href='function.enable_chart.html'>enable_chart()</a>
+<li><a href='function.chart.clearchart.html'>chart->clearchart()</a>
+<li><a href='function.chart.setcolor.html'>chart->setcolor()</a>
+<li><a href='function.chart.place_chart.html'>chart->place_chart()</a>
+</ul>
+<h1>History</h1>
+<p>This function was added in version 2.1.</p>
+<h1>Bugs</h1>
+<p>A lot of functionality described in this document simply doesn't exist yet.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,27 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Name</h1>
+<p>template->place -- Paint a template to a page</p>
+<h1>Synopsis</h1>
+<p>bool <b>template->place</b> ( int template, int page, float left, float bottom[, array fields] )</p>
+<h1>Description</h1>
+<p>This method is used to paint an instanance of a predefined template
+to a page.</p>
+<p><code>template</code> must be a valid template ID.
+<code>page</code> must be a valid page ID.
+<code>left</code> and <code>bottom</code> specify where the lower left corner of the
+template will be located.
+<code>fields</code> is an array specifying values to be place in fields created by
+<code>template->field()</code>.  If omitted, default values are used for all fields.</p>
+<p><code>true</code> is returned if template placement occurred without errors. If
+<code>false</code> is returned, use one of the error methods to check the message
+stack. Unlike other paragraph placement methods, <code>false</code> is returned if
+text overflows an ifield.</p>
+<h1>Examples</h1>
+<h1>See Also</h1>
+<h1>History</h1>
+<p>This function was added in version 2.2.</p>
+<h1>Bugs</h1>
+</BODY>
+</HTML>

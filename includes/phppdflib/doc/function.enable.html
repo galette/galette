@@ -1,0 +1,34 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Name</h1>
+<p>enable -- Install phppdflib extension for use</p>
+<h1>Synopsis</h1>
+<p>bool <b>enable</b> ( string extension_name )</p>
+<h1>Description</h1>
+<p>This method makes the extension methods named by <code>extension_name</code>
+available for use.</p>
+<p>All extensions are enabled as a subobject of the main phppdflib object.
+Thus, enabling an extension called 'foo' will make its methods available as
+<code>$pdf->x['foo']->methodname()</code>.</p>
+<p>Extensions that ship with phppdflib also have aliases directly off the
+phppdflib object (the example above would be <code>$pdf->foo->methodname</code>).
+Either method of access is acceptable, as the two variables are references to the
+same object.</p>
+<h1>Examples</h1>
+<pre>
+$pdf->enable('chart');
+$pdf->x['chart']->new_chart();
+$pdf->enable('template');
+$pdf->template->new();
+</pre>
+<h1>See Also</h1>
+<p>The documentation for the extension you are enabling.</p>
+<h1>History</h1>
+<p>This function was added in version 2.1, and was called enable_chart().</p>
+<p>The more flexible enable('extension_name') replaced that syntax in 2.2.</p>
+<p>The universal <code>$pdf->x['extensionname']</code> syntax was added in 2.4.</p>
+<h1>Bugs</h1>
+<p>None known.</p>
+</BODY>
+</HTML>

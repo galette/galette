@@ -1,0 +1,122 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Internal data structures and methods</h1>
+<p>phppdflib uses several data structures and methods that are
+hidden from the average programmer who is using the library.
+That does not mean that these structures and methods are of
+no use to the average implementer, it's mainly that accessing
+them violates the design goal of "simplicity" and abstracting
+the PDF format from the implementer.</p>
+<p>In the interest of documentation completeness, as well as
+the possibility that these structures and methods were made
+private by some error of the developers, they are documented
+briefly here. If you find something that you feel should be
+made a public method and more fully documented, don't hesitate
+to email your case to me.</p>
+<h2>Data Structures</h2>
+<h3>->objects</h3>
+<p>The most interesting data structure is the ->objects array.
+This is where all PDF objects are stored prior to
+<code>->generate()</code> being called.</p>
+<p>While the library methods that access this (most all of them)
+use it in an "append-only/read-only" fashon, it is possible to
+modify the attributes of pre-existing library objects by directly
+altering its contents.</p>
+<p>The array is arranged such that the first index is the ID of
+the object, and the next is the parameter of that object to access.
+The array may have additional indicies for certain parameters
+(color, for example, which is an array of red, green, and blue
+values).  Thus <code>$pdf->objects[4]['type']</code> will return
+the type of object #4 ('rectangle', for example) and
+<code>$pdf->objects[4]['width']</code> will return the line width
+with which that rectange will be drawn.</p>
+<p>Prior to calling <code>->generate()</code> it is possible to
+alter the ->objects array to change how objects occur. Doing so
+without understing ->objects is liable to create a corrupt PDF
+or cause <code>->generate()</code> to fail. See the source.</p>
+<h2>Private Methods</h2>
+<h3>->_resolve_mode ( array parameters, string type )</h3>
+<p>Returns a mode number suitable for inserting directly into
+the final PDF stream from the applicable part of the array
+<code>parameters</code>. <code>type</code> indicates the type
+of element that will be using this mode (i.e. text or shape)</p>
+<h3>->_adjust_margin ( float &x, float &y, int page )</h3>
+<p>Adjusts the cordinates for the margins on the specified page</p>
+<h3>->_resolve_param ( array parameters[, bool textmode] )</h3>
+<p>Takes a parameters array and returns a complete parameters array
+with default values substituted where needed. <code>textmode</code>
+controls how the painting modes are interpreted.</p>
+<h3>->_push_error ( int errornumber, string errormessage )</h3>
+<p>Pushes an error onto the message stack.</p>
+<h3>->_push_std_error ( int errornumber )</h3>
+<p>Pushes an error onto the message stack as defined by
+<code>errornumber</code>. Use to debloat the code by having common
+error message stored centrally.</p>
+<h3>->_resolve_colors ( array colors, array parameters )</h3>
+<p>Oddly, I'm not sure what this does. Could be code bloat.</p>
+<h3>->_use_font ( int fontid )</h3>
+<p>Check to see if a requested font is already in the
+list, if not add it.  Either way, return the libid
+of the font.</p>
+<h3>->_int_val ( string binaryvalue )</h3>
+<p>Convert a big-endian byte stream into an integer.</p>
+<h3>->_make_raw_image ( int libraryID )</p>
+<p>Returns the binary data to embed into the PDF for the given
+image.</p>
+<h3>->_place_raw_image ( int libraryID )</p>
+<p>Returns the binary data to embed into the PDF for the given
+image placement.</p>
+<h3>->_rotate ( float angle )</h3>
+<p>Returns proper PDF code to specify a rotation angle.</p>
+<h3>->_get_operator ( int libraryID )</h3>
+<p>Returns the proper character to tell PDF to perform an
+operation on a shape (i.e. stroke, fill, whatever)</p>
+<h3>->_make_line ( int libraryID )</h3>
+<p>Returns code appropriate for the PDF to create a line from
+the library object.</p>
+<h3>->_make_rect ( int libraryID )</h3>
+<p>Returns code appropriate for the PDF to create a rectangle
+from the library object.</p>
+<h3>->_make_circle ( int libraryID )</h3>
+<p>Returns code appropriate for the PDF to create a circle
+from the library object.</p>
+<h3>->_make_text ( int libraryID )</h3>
+<p>Returns code appropriate for the PDF to create a text object
+from the library object.</p>
+<h3>->_colorset ( int libraryID )</h3>
+<p>Returns a string to set the apropriate stroke and fill colors
+for an object.</p>
+<h3>->_becomes_object ( int libraryID )</h3>
+<p>Returns true if the library object converts to a PDF object.
+(this is almost definately code bloat that needs cleaned up)</p>
+<h3>->_get_kids ( int libraryID )</h3>
+<p>Creates a PDF array of child objects of the given object.</p>
+<h3>->_order_pages ( int pagenodeID )</h3>
+<p>Builds an array of pages for the given pagenode in the correct
+order.</p>
+<h3>->_addnewoid ()</h3>
+<p>simple helper function to return the current oid
+and increment it by one.</p>
+<h3>->_addtoxreftable ( int offset, int gennum )</h3>
+<p>Add an object to the xref table data structure with the given
+offset and generation number.</p>
+<h3>->_makedictionary ( array entries )</h3>
+<p>Returns a properly formatted pdf dictionary
+containing entries specified by the array $entries.</p>
+<h3>->_makearray ( array entries )</h3>
+<p>Returns a properly formatted pdf array.</p>
+<h3>->_stringify ( string string )</h3>
+<p>Returns a properly formatted string, with any
+special characters escaped.</p>
+<h3>->_streamify ( string data[, array entries] )</h3>
+<p>Creates a properly formatted PDF "stream" object.
+If specified, the items in <code>entries</code> are
+added to the dictionary part of the stream.</p>
+<h3>->_makepagenode ( array kids[, array options] )</h3>
+<p>Returns a properly formatted page node.</p>
+<h3>_makepage ( int parent, array contents, int libraryID )</h3>
+<p>Creates a PDF page.  The calling syntax is a bit bloated,
+it could probably work with just the libraryID.</p>
+</BODY>
+</HTML>

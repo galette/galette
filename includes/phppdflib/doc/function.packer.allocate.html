@@ -1,0 +1,28 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Name</h1>
+<p>packer->allocate -- remove a rectangular region from the free space map</p>
+<h1>Synopsis</h1>
+<p>int <b>packer->allocate</b> ( object field area )</p>
+<h1>Description</h1>
+<p>This function takes the area defined by the single parameter and subtracts
+it from the current free space map. The function never fails, if the space isn't
+available, no changes are made to the free space map.</p>
+<p><code>area</code> must be a <code>field</code> object.</p>
+<p>Allocate currently only has one policy it applies to fragmentation: "prefer
+vertical fragment".  This may change in the future. After fragmentation, the
+free space map is examined and fragments that have a common border are joined
+into a single fragment.</p>
+<h1>Examples</h1>
+<p>See <code>example-packer.php</code> in the examples directory.</p>
+<h1>See Also</h1>
+<h1>History</h1>
+<p>Added with the packer in 2.6</p>
+<h1>Bugs</h1>
+<p>"prefer vertical fragment" is pretty limited. At the least there should also
+be "prefer horizontal fragment" available.  Even more fragmentation policies
+are available, and may be necessary to build any real intelligence into the
+packer.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,29 @@
+<HTML>
+<!-- $Id -->
+<BODY>
+<h1>Name</h1>
+<p>pop_error -- Return the last library message and remove it from the message stack</p>
+<h1>Synopsis</h1>
+<p>int <b>pop_error</b> ( int &error_num, string &error_message )</p>
+<h1>Description</h1>
+<p>This method returns the most recent library message and number (via the error_num
+and error_message variables) and removes it from the library message stack.</p>
+<p>All methods return a result that equates to <code>true</code> apon success, and
+false on error. If an error is indicated, this command can be used to get the
+details of the error.</p>
+<p>The error number and message are stored in the provided variables which are
+passed by reference. The error number is also returned or <code>false</code> if
+there are no more messages on the message stack.</p>
+<h1>Examples</h1>
+
+<h1>See Also</h1>
+<a href='data.errors.html'>Error codes and their meanings</a><br>
+<a href='function.error_array.html'>error_array()</a>
+<h1>History</h1>
+<p>This command was added in version 2 of the library.</p>
+<h1>Bugs</h1>
+<p>Currently only one non-failure condition results in a message added to the message
+stack (#3001) but there is no way to determine if this condition has occurred, short
+of checking the message stack via this or the error_array() function.</p>
+</BODY>
+</HTML>
