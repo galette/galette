@@ -181,10 +181,13 @@
 	
 	$nbadh = &$DB->Execute($requete[1]);
 	if ($numrows==0)
-		$numrows = $nbadh->fields[0];
-	$resultat = &$DB->SelectLimit($requete[0],$numrows,($page-1)*$numrows);
+		$resultat = &$DB->Execute($requete[0]);
+	else
+		$resultat = &$DB->SelectLimit($requete[0],$numrows,($page-1)*$numrows);
 
-	if ($nbadh->fields[0]%$numrows==0) 
+	if ($numrows==0)
+		$nbpages = 1;
+	else if ($nbadh->fields[0]%$numrows==0) 
 		$nbpages = intval($nbadh->fields[0]/$numrows);
 	else 
 		$nbpages = intval($nbadh->fields[0]/$numrows)+1;
@@ -260,6 +263,7 @@
 	$tpl->assign("nb_members",$nbadh->fields[0]);
 	$tpl->assign("nb_pages",$nbpages);
 	$tpl->assign("page",$page);
+	$tpl->assign("numrows",$numrows);
 	$tpl->assign('filtre_options', array(
 			0 => _T("All members"),
 			3 => _T("Members up to date"),

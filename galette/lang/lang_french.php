@@ -1,5 +1,5 @@
 <?
-// This file was automatically generated on Mon Nov  8 22:52:33 2004 (GMT)
+// This file was automatically generated on Mon Nov  8 23:15:44 2004 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -238,7 +238,7 @@ $lang['Show:'] = 'Afficher :';
 $lang['Mobile phone:'] = 'GSM :';
 
 // ../gestion_adherents.php:275 
-$lang['All'] = 'Tous';
+$lang['All'] = 'Tout';
 
 // ../self_adherent.php:139 ../self_adherent.php:452 ../lostpasswd.php:72 ../install/index.php:303 ../install/index.php:762 ../ajouter_adherent.php:304 ../templates/default/index.tpl:27 ../templates/default/preferences.tpl:200 ../templates/default/ajouter_adherent.tpl:176 ../templates/default/voir_adherent.tpl:119 
 $lang['Password:'] = 'Mot de passe :';

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: galette 2.16\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-08 23:51+0100\n"
+"POT-Creation-Date: 2004-11-09 00:15+0100\n"
 "PO-Revision-Date: 2004-09-20 20:56+0200\n"
 "Last-Translator: Juan Rafael Fernández García <juanrafael."
 "fernandez@hispalinux.es>\n"
@@ -71,7 +71,7 @@ msgstr "Por favor identifíquese usted en esta dirección:"
 
 #: ../self_adherent.php:138 ../self_adherent.php:443 ../lostpasswd.php:71
 #: ../lostpasswd.php:131 ../install/index.php:756 ../ajouter_adherent.php:303
-#: ../templates/default/index.tpl:23 ../templates/default/preferences.tpl:194
+#: ../templates/default/index.tpl:23 ../templates/default/preferences.tpl:195
 #: ../templates/default/ajouter_adherent.tpl:171
 #: ../templates/default/voir_adherent.tpl:117
 msgid "Username:"
@@ -80,7 +80,7 @@ msgstr "Login:"
 #: ../self_adherent.php:139 ../self_adherent.php:452 ../lostpasswd.php:72
 #: ../install/index.php:303 ../install/index.php:762
 #: ../ajouter_adherent.php:304 ../templates/default/index.tpl:27
-#: ../templates/default/preferences.tpl:200
+#: ../templates/default/preferences.tpl:201
 #: ../templates/default/ajouter_adherent.tpl:176
 #: ../templates/default/voir_adherent.tpl:119
 msgid "Password:"
@@ -293,14 +293,14 @@ msgid "Save"
 msgstr "Grabar"
 
 #: ../self_adherent.php:549 ../self_contribution.php:261
-#: ../templates/default/preferences.tpl:211
+#: ../templates/default/preferences.tpl:212
 #: ../templates/default/ajouter_adherent.tpl:242
 #: ../templates/default/ajouter_contribution.tpl:54
 msgid "NB : The mandatory fields are in"
 msgstr "Nota: los campos obligatorios aparecen en"
 
 #: ../self_adherent.php:550 ../self_contribution.php:261
-#: ../templates/default/preferences.tpl:211
+#: ../templates/default/preferences.tpl:212
 #: ../templates/default/ajouter_adherent.tpl:242
 #: ../templates/default/ajouter_contribution.tpl:54
 msgid "red"
@@ -342,37 +342,37 @@ msgid "Display:"
 msgstr "Mostrar:"
 
 #: ../mailing_adherents.php:224 ../gestion_contributions.php:293
-#: ../gestion_adherents.php:262
+#: ../gestion_adherents.php:265
 msgid "All members"
 msgstr "Todos los socios"
 
 #: ../mailing_adherents.php:225 ../gestion_contributions.php:294
-#: ../gestion_adherents.php:263
+#: ../gestion_adherents.php:266
 msgid "Members up to date"
 msgstr "Los socios al día"
 
 #: ../mailing_adherents.php:226 ../gestion_contributions.php:295
-#: ../gestion_adherents.php:264
+#: ../gestion_adherents.php:267
 msgid "Close expiries"
 msgstr "Plazos que expirarán pronto"
 
 #: ../mailing_adherents.php:227 ../gestion_contributions.php:296
-#: ../gestion_adherents.php:265
+#: ../gestion_adherents.php:268
 msgid "Latecomers"
 msgstr "Retrasados"
 
 #: ../mailing_adherents.php:230 ../gestion_contributions.php:298
-#: ../gestion_adherents.php:267
+#: ../gestion_adherents.php:270
 msgid "All the accounts"
 msgstr "Todas las cuentas"
 
 #: ../mailing_adherents.php:231 ../gestion_contributions.php:299
-#: ../gestion_adherents.php:268
+#: ../gestion_adherents.php:271
 msgid "Active accounts"
 msgstr "Cuentas activas"
 
 #: ../mailing_adherents.php:232 ../gestion_contributions.php:300
-#: ../gestion_adherents.php:269
+#: ../gestion_adherents.php:272
 msgid "Inactive accounts"
 msgstr "Cuentas desactivadas"
 
@@ -409,50 +409,50 @@ msgstr "ningún socio"
 
 #: ../mailing_adherents.php:320 ../mailing_adherents.php:522
 #: ../mailing_adherents.php:681 ../gestion_contributions.php:244
-#: ../gestion_adherents.php:202
+#: ../gestion_adherents.php:204
 msgid "Freed of dues"
 msgstr "Exento de cuota"
 
 #: ../mailing_adherents.php:327 ../mailing_adherents.php:529
 #: ../mailing_adherents.php:688 ../footer.php:128
-#: ../gestion_contributions.php:251 ../gestion_adherents.php:209
+#: ../gestion_contributions.php:251 ../gestion_adherents.php:211
 #: ../templates/default/page.tpl:92
 msgid "Never contributed"
 msgstr "Nunca pagó la cuota"
 
 #: ../mailing_adherents.php:339 ../mailing_adherents.php:541
 #: ../mailing_adherents.php:700 ../gestion_contributions.php:262
-#: ../gestion_adherents.php:221
+#: ../gestion_adherents.php:223
 msgid "Last day!"
 msgstr "¡Último día!"
 
 #: ../mailing_adherents.php:344 ../mailing_adherents.php:546
-#: ../mailing_adherents.php:705 ../gestion_adherents.php:226
+#: ../mailing_adherents.php:705 ../gestion_adherents.php:228
 msgid "Late of "
 msgstr "Retraso de "
 
 #: ../mailing_adherents.php:344 ../mailing_adherents.php:546
 #: ../mailing_adherents.php:705 ../gestion_contributions.php:267
-#: ../gestion_adherents.php:226
+#: ../gestion_adherents.php:228
 msgid "days"
 msgstr "días"
 
 #: ../mailing_adherents.php:344 ../mailing_adherents.php:546
 #: ../mailing_adherents.php:705 ../gestion_contributions.php:267
-#: ../gestion_adherents.php:226
+#: ../gestion_adherents.php:228
 msgid "since"
 msgstr "desde el"
 
 #: ../mailing_adherents.php:349 ../mailing_adherents.php:551
 #: ../mailing_adherents.php:710 ../gestion_contributions.php:273
-#: ../gestion_adherents.php:232
+#: ../gestion_adherents.php:234
 msgid "days remaining"
 msgstr "días restantes"
 
 #: ../mailing_adherents.php:349 ../mailing_adherents.php:551
 #: ../mailing_adherents.php:710 ../gestion_contributions.php:273
-#: ../gestion_contributions.php:275 ../gestion_adherents.php:232
-#: ../gestion_adherents.php:234
+#: ../gestion_contributions.php:275 ../gestion_adherents.php:234
+#: ../gestion_adherents.php:236
 msgid "ending on"
 msgstr "finaliza el"
 
@@ -978,6 +978,11 @@ msgstr ""
 msgid "- Mandatory field empty."
 msgstr "- Campo obligatorio no rellenado."
 
+#: ../preferences.php:216 ../gestion_adherents.php:278
+#, fuzzy
+msgid "All"
+msgstr "todos"
+
 #: ../voir_adherent.php:72
 msgid "Yes"
 msgstr "Sí"
@@ -1014,7 +1019,7 @@ msgstr "libelle_statut"
 msgid "Late of"
 msgstr "Retrasado"
 
-#: ../gestion_contributions.php:275 ../gestion_adherents.php:234
+#: ../gestion_contributions.php:275 ../gestion_adherents.php:236
 msgid "day remaining"
 msgstr "día restante"
 
@@ -1027,11 +1032,6 @@ msgstr "Ficha de contribución"
 #, fuzzy
 msgid "Contribution updated"
 msgstr "Actualización de una contribución:"
-
-#: ../gestion_adherents.php:275
-#, fuzzy
-msgid "All"
-msgstr "todos"
 
 #: ../etiquettes_adherents.php:42
 msgid ""
@@ -1607,121 +1607,120 @@ msgstr "Idioma:"
 msgid "Lines / Page:"
 msgstr "Líneas / Página:"
 
-#: ../templates/default/preferences.tpl:81
-#: ../templates/default/preferences.tpl:138
-#: ../templates/default/preferences.tpl:145
-#: ../templates/default/preferences.tpl:152
-#: ../templates/default/preferences.tpl:159
-#: ../templates/default/preferences.tpl:166
-#: ../templates/default/preferences.tpl:173
-#: ../templates/default/preferences.tpl:180
-#: ../templates/default/preferences.tpl:187
-msgid "(Integer)"
-msgstr "(Entero)"
-
-#: ../templates/default/preferences.tpl:85
+#: ../templates/default/preferences.tpl:86
 msgid "Logging level:"
 msgstr "Nivel de historial:"
 
-#: ../templates/default/preferences.tpl:88
+#: ../templates/default/preferences.tpl:89
 msgid "Disabled"
 msgstr "Ninguno"
 
-#: ../templates/default/preferences.tpl:89
+#: ../templates/default/preferences.tpl:90
 msgid "Normal"
 msgstr "Normal"
 
-#: ../templates/default/preferences.tpl:90
+#: ../templates/default/preferences.tpl:91
 msgid "Detailed"
 msgstr "Detallado"
 
-#: ../templates/default/preferences.tpl:95
+#: ../templates/default/preferences.tpl:96
 msgid "Default membership extension:"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:98
+#: ../templates/default/preferences.tpl:99
 #, fuzzy
 msgid "(Months)"
 msgstr "meses"
 
-#: ../templates/default/preferences.tpl:102
+#: ../templates/default/preferences.tpl:103
 #, fuzzy
 msgid "Beginning of membership:"
 msgstr "Lista de socios"
 
-#: ../templates/default/preferences.tpl:105
+#: ../templates/default/preferences.tpl:106
 msgid "(DD/MM)"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:109
+#: ../templates/default/preferences.tpl:110
 msgid "Mail settings:"
 msgstr "Parámetros del correo:"
 
-#: ../templates/default/preferences.tpl:112
+#: ../templates/default/preferences.tpl:113
 msgid "Sender name:"
 msgstr "Nombre del remitente:"
 
-#: ../templates/default/preferences.tpl:116
+#: ../templates/default/preferences.tpl:117
 msgid "Sender Email:"
 msgstr "E-mail del remitente:"
 
-#: ../templates/default/preferences.tpl:120
+#: ../templates/default/preferences.tpl:121
 msgid "Methode d'envoi :"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:122
+#: ../templates/default/preferences.tpl:123
 msgid "Pas d'envoi de mails"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:123
+#: ../templates/default/preferences.tpl:124
 msgid "Fonction PHP mail()"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:124
+#: ../templates/default/preferences.tpl:125
 msgid "Via un serveur SMTP (lent)"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:128
+#: ../templates/default/preferences.tpl:129
 msgid "Serveur SMTP :"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:132
+#: ../templates/default/preferences.tpl:133
 msgid "Label generation parameters:"
 msgstr "Parámetros de la generación de etiquetas:"
 
-#: ../templates/default/preferences.tpl:135
+#: ../templates/default/preferences.tpl:136
 msgid "Margins:"
 msgstr "Márgenes:"
 
-#: ../templates/default/preferences.tpl:142
+#: ../templates/default/preferences.tpl:139
+#: ../templates/default/preferences.tpl:146
+#: ../templates/default/preferences.tpl:153
+#: ../templates/default/preferences.tpl:160
+#: ../templates/default/preferences.tpl:167
+#: ../templates/default/preferences.tpl:174
+#: ../templates/default/preferences.tpl:181
+#: ../templates/default/preferences.tpl:188
+msgid "(Integer)"
+msgstr "(Entero)"
+
+#: ../templates/default/preferences.tpl:143
 msgid "Horizontal spacing:"
 msgstr "Distancia horizontal:"
 
-#: ../templates/default/preferences.tpl:149
+#: ../templates/default/preferences.tpl:150
 msgid "Vertical spacing:"
 msgstr "Distancia vertical:"
 
-#: ../templates/default/preferences.tpl:156
+#: ../templates/default/preferences.tpl:157
 msgid "Label width:"
 msgstr "Anchura de la etiqueta:"
 
-#: ../templates/default/preferences.tpl:163
+#: ../templates/default/preferences.tpl:164
 msgid "Label height:"
 msgstr "Altura de la etiqueta:"
 
-#: ../templates/default/preferences.tpl:170
+#: ../templates/default/preferences.tpl:171
 msgid "Number of label columns:"
 msgstr "Número de columnas de etiquetas:"
 
-#: ../templates/default/preferences.tpl:177
+#: ../templates/default/preferences.tpl:178
 msgid "Number of label lines:"
 msgstr "Número de líneas de etiquetas:"
 
-#: ../templates/default/preferences.tpl:184
+#: ../templates/default/preferences.tpl:185
 msgid "Font size:"
 msgstr "Tamaño del tipo de letra:"
 
-#: ../templates/default/preferences.tpl:191
+#: ../templates/default/preferences.tpl:192
 msgid "Admin account (independant of members):"
 msgstr "Cuenta administradora (independiente de los socios):"
 

@@ -44,6 +44,11 @@
 		}
 	}		
 
+        $numrows = PREF_NUMROWS;
+	if (isset($_GET["nbshow"]))
+		if (is_numeric($_GET["nbshow"]))
+			$numrows = $_GET["nbshow"];
+							
         if (isset($_GET["contrib_filter_1"]))
 	if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_GET["contrib_filter_1"], $array_jours))
 	{
@@ -199,18 +204,23 @@
 
 	// defaut : tri par date
 	$requete[0] .= " ".PREFIX_DB."cotisations.date_cotis ".$tri_cotis_sens_txt; 
-	
-	// $resultat = &$DB->Execute($requete[0]); 
-	$resultat = &$DB->SelectLimit($requete[0],PREF_NUMROWS,($page-1)*PREF_NUMROWS);
+
+	if ($numrows==0)
+		$resultat = &$DB->Execute($requete[0]);
+	else
+		$resultat = &$DB->SelectLimit($requete[0],$numrows,($page-1)*$numrows);
+							
 	$nb_contributions = &$DB->Execute($requete[1]); 
 	$contributions = array();
 
-	if ($nb_contributions->fields[0]%PREF_NUMROWS==0) 
-		$nbpages = intval($nb_contributions->fields[0]/PREF_NUMROWS);
+	if ($numrows==0)
+		$nbpages = 1;
+	else if ($nb_contributions->fields[0]%$numrows==0) 
+		$nbpages = intval($nb_contributions->fields[0]/$numrows);
 	else 
-		$nbpages = intval($nb_contributions->fields[0]/PREF_NUMROWS)+1;
+		$nbpages = intval($nb_contributions->fields[0]/$numrows)+1;
 		
-	$compteur = 1+($page-1)*PREF_NUMROWS;
+	$compteur = 1+($page-1)*$numrows;
 	while(!$resultat->EOF) 
 	{ 
 		if ($resultat->fields["duree_mois_cotis"]!="0")
@@ -286,7 +296,7 @@
 	
 
 	$tpl->assign("contributions",$contributions);
-	$tpl->assign("nb_contributions",count($contributions));
+	$tpl->assign("nb_contributions",$nb_contributions->fields[0]);
 	$tpl->assign("nb_pages",$nbpages);
 	$tpl->assign("page",$page);
 	$tpl->assign('filtre_options', array(
@@ -298,7 +308,13 @@
 			0 => _T("All the accounts"),
 			1 => _T("Active accounts"),
 			2 => _T("Inactive accounts")));
-										
+        $tpl->assign('nbshow_options', array(
+			10 => "10",
+			20 => "20",
+			50 => "50",
+			100 => "100",
+			0 => _T("All")));
+	$tpl->assign("numrows",$numrows);
 	$content = $tpl->fetch("gestion_contributions.tpl");
 	$tpl->assign("content",$content);
 	$tpl->display("page.tpl");
