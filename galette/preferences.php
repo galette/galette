@@ -42,7 +42,7 @@
 	//   et on initialise des valeurs par defaut
     
 	// recuperation de la liste de champs de la table
-	$fields = &$DB->MetaColumns("preferences");
+	$fields = &$DB->MetaColumns(PREFIX_DB."preferences");
 	while (list($champ, $proprietes) = each($fields))
 	{
 		$proprietes_arr = get_object_vars($proprietes);
@@ -141,7 +141,7 @@
  						{
  							// on vérifie que le login n'est pas déjà utilisé
  							$requete = "SELECT id_adh
- 								    FROM adherents
+ 								    FROM ".PREFIX_DB."adherents
  								    WHERE login_adh=". $DB->qstr($post_value, true);
  							if ($id_adh!="")
  								$requete .= " AND id_adh!=" . $DB->qstr($id_adh, true);
@@ -190,9 +190,9 @@
   	// modif ou ajout
   	if ($error_detected=="")
   	{  	
-			$requete = "DELETE FROM preferences";
+			$requete = "DELETE FROM ".PREFIX_DB."preferences";
 			$DB->Execute($requete);
-  			$requete = "INSERT INTO preferences
+  			$requete = "INSERT INTO ".PREFIX_DB."preferences
   									(" . substr($insert_string_fields,1) . ") 
   									VALUES (" . substr($insert_string_values,1) . ")";
 			$DB->Execute($requete);
@@ -277,7 +277,7 @@
 	{
 		// recup des données
 		$requete = "SELECT * 
-								FROM preferences";
+								FROM ".PREFIX_DB."preferences";
 		$result = &$DB->Execute($requete);
         	if ($result->EOF)
 	                header("location: index.php");
@@ -285,7 +285,7 @@
 																	    
 			
 		// recuperation de la liste de champs de la table
-	  //$fields = &$DB->MetaColumns("cotisations");
+	  //$fields = &$DB->MetaColumns(PREFIX_DB."cotisations");
 	  while (list($champ, $proprietes) = each($fields))
 		{
 			//echo $proprietes_arr["name"]." -- (".$result->fields[$proprietes_arr["name"]].")<br>";

@@ -39,7 +39,7 @@
 		else
 		{
 			$requete = "SELECT id_adh, bool_admin_adh, nom_adh, prenom_adh
-									FROM adherents
+					FROM ".PREFIX_DB."adherents
 									WHERE login_adh=" . txt_sqls($_POST["login"]) . "
 									AND activite_adh='1'
 									AND mdp_adh=" . txt_sqls($_POST["password"]);

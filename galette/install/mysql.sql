@@ -1,5 +1,5 @@
-DROP TABLE adherents;
-CREATE TABLE adherents (
+DROP TABLE galette_adherents;
+CREATE TABLE galette_adherents (
   id_adh int(10) unsigned NOT NULL auto_increment,
   id_statut int(10) unsigned NOT NULL default '4',
   nom_adh varchar(20) NOT NULL default '',
@@ -33,8 +33,8 @@ CREATE TABLE adherents (
   PRIMARY KEY  (id_adh)
 ) TYPE=MyISAM;
 
-DROP TABLE cotisations;
-CREATE TABLE cotisations (
+DROP TABLE galette_cotisations;
+CREATE TABLE galette_cotisations (
   id_cotis int(10) unsigned NOT NULL auto_increment,
   id_adh int(10) unsigned NOT NULL default '0',
   id_type_cotis int(10) unsigned NOT NULL default '0',
@@ -45,8 +45,8 @@ CREATE TABLE cotisations (
   PRIMARY KEY  (id_cotis)
 ) TYPE=MyISAM;
 
-DROP TABLE statuts;
-CREATE TABLE statuts (
+DROP TABLE galette_statuts;
+CREATE TABLE galette_statuts (
   id_statut int(10) unsigned NOT NULL auto_increment,
   libelle_statut varchar(20) NOT NULL default '',
   priorite_statut tinyint(4) NOT NULL default '0',
@@ -54,34 +54,34 @@ CREATE TABLE statuts (
 ) TYPE=MyISAM;
 
 
-INSERT INTO statuts VALUES (1,'Président',0);
-INSERT INTO statuts VALUES (10,'Vice-président',5);
-INSERT INTO statuts VALUES (2,'Trésorier',10);
-INSERT INTO statuts VALUES (4,'Membre actif',30);
-INSERT INTO statuts VALUES (5,'Membre bienfaiteur',40);
-INSERT INTO statuts VALUES (6,'Membre fondateur',50);
-INSERT INTO statuts VALUES (3,'Secrétaire',20);
-INSERT INTO statuts VALUES (7,'Ancien',60);
-INSERT INTO statuts VALUES (8,'Personne morale',70);
-INSERT INTO statuts VALUES (9,'Non membre',80);
+INSERT INTO galette_statuts VALUES (1,'Président',0);
+INSERT INTO galette_statuts VALUES (10,'Vice-président',5);
+INSERT INTO galette_statuts VALUES (2,'Trésorier',10);
+INSERT INTO galette_statuts VALUES (4,'Membre actif',30);
+INSERT INTO galette_statuts VALUES (5,'Membre bienfaiteur',40);
+INSERT INTO galette_statuts VALUES (6,'Membre fondateur',50);
+INSERT INTO galette_statuts VALUES (3,'Secrétaire',20);
+INSERT INTO galette_statuts VALUES (7,'Ancien',60);
+INSERT INTO galette_statuts VALUES (8,'Personne morale',70);
+INSERT INTO galette_statuts VALUES (9,'Non membre',80);
 
-DROP TABLE types_cotisation;
-CREATE TABLE types_cotisation (
+DROP TABLE galette_types_cotisation;
+CREATE TABLE galette_types_cotisation (
   id_type_cotis int(10) unsigned NOT NULL auto_increment,
   libelle_type_cotis varchar(30) NOT NULL default '',
   PRIMARY KEY  (id_type_cotis)
 ) TYPE=MyISAM;
 
 
-INSERT INTO types_cotisation VALUES (1,'Cotisation annuelle normale');
-INSERT INTO types_cotisation VALUES (2,'Cotisation annuelle réduite');
-INSERT INTO types_cotisation VALUES (3,'Cotisation entreprise');
-INSERT INTO types_cotisation VALUES (4,'Donation en nature');
-INSERT INTO types_cotisation VALUES (5,'Donation pécunière');
-INSERT INTO types_cotisation VALUES (6,'Partenariat');
+INSERT INTO galette_types_cotisation VALUES (1,'Cotisation annuelle normale');
+INSERT INTO galette_types_cotisation VALUES (2,'Cotisation annuelle réduite');
+INSERT INTO galette_types_cotisation VALUES (3,'Cotisation entreprise');
+INSERT INTO galette_types_cotisation VALUES (4,'Donation en nature');
+INSERT INTO galette_types_cotisation VALUES (5,'Donation pécunière');
+INSERT INTO galette_types_cotisation VALUES (6,'Partenariat');
 
-DROP TABLE preferences;
-CREATE TABLE preferences (
+DROP TABLE galette_preferences;
+CREATE TABLE galette_preferences (
   pref_nom varchar(40) NOT NULL default '',
   pref_adresse varchar(150) NOT NULL default '',
   pref_adresse2 varchar(150) default NULL,
@@ -105,8 +105,8 @@ CREATE TABLE preferences (
   pref_admin_pass varchar(20) NOT NULL default ''
 ) TYPE=MyISAM;
 
-DROP TABLE logs;
-CREATE TABLE logs (
+DROP TABLE galette_logs;
+CREATE TABLE galette_logs (
   id_log int(10) unsigned NOT NULL auto_increment,
   date_log datetime NOT NULL,
   ip_log varchar(30) NOT NULL default '',

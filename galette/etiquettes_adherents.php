@@ -42,7 +42,7 @@
 
 		$requete = "SELECT id_adh, nom_adh, prenom_adh, adresse_adh,
 									titre_adh, cp_adh, ville_adh, pays_adh, adresse2_adh
-									FROM adherents
+									FROM ".PREFIX_DB."adherents
 			       				WHERE ";
 		$where_clause = "";
 		while(list($key,$value)=each($mailing_adh))

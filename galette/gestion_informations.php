@@ -33,7 +33,7 @@
 
   	if ($id_adh!="")
   	{
-  		$requete = "SELECT nom_adh, prenom_adh FROM adherents WHERE id_adh=".$DB->qstr($id_adh);
+  		$requete = "SELECT nom_adh, prenom_adh FROM ".PREFIX_DB."adherents WHERE id_adh=".$DB->qstr($id_adh);
 		$resultat = $DB->Execute($requete);
 		if (!$resultat->EOF)
 		{
@@ -54,7 +54,7 @@
   //  et on initialise des valeurs par defaut
     
   // recuperation de la liste de champs de la table
-  $fields = &$DB->MetaColumns("adherents");
+  $fields = &$DB->MetaColumns(PREFIX_DB."adherents");
   while (list($champ, $proprietes) = each($fields))
 	{
 		$proprietes_arr = get_object_vars($proprietes);
@@ -169,7 +169,7 @@
  						{
  							// on vérifie que le login n'est pas déjà utilisé
  							$requete = "SELECT id_adh
- 													FROM adherents
+ 													FROM ".PREFIX_DB."adherents
  													WHERE login_adh=" . $DB->qstr($post_value) . " ";
  							if ($id_adh!="")
  								$requete .= "AND id_adh!=" . $DB->qstr($id_adh);
@@ -214,7 +214,7 @@
   	// modif ou ajout
   	if ($error_detected=="")
   	{  	 		 		
- 		 	$requete = "UPDATE adherents
+ 		 	$requete = "UPDATE ".PREFIX_DB."adherents
  		 								SET " . substr($update_string,1) . " 
  		 								WHERE id_adh=" . $id_adh;
 			$DB->Execute($requete);
@@ -288,12 +288,12 @@
 	{
 		// recup des données
 		$requete = "SELECT * 
-			    FROM adherents 
+			    FROM ".PREFIX_DB."adherents 
 			    WHERE id_adh=$id_adh";
 		$result = &$DB->Execute($requete);
 		
 		// recuperation de la liste de champs de la table
-	  //$fields = &$DB->MetaColumns("cotisations");
+	  //$fields = &$DB->MetaColumns(PREFIX_DB."cotisations");
 	  while (list($champ, $proprietes) = each($fields))
 		{
 			$val="";

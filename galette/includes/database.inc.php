@@ -25,8 +25,8 @@
 
 	// Chargement des preferences
 	// recuperation de la liste de champs de la table
-		$result = $DB->Execute("SELECT * FROM preferences");
-		$fields = &$DB->MetaColumns("preferences");
+		$result = $DB->Execute("SELECT * FROM ".PREFIX_DB."preferences");
+		$fields = &$DB->MetaColumns(PREFIX_DB."preferences");
 		while (list($champ, $proprietes) = @each($fields))
 		{
 			$proprietes_arr = get_object_vars($proprietes);
@@ -42,7 +42,7 @@
 		if ($exempt_default=="")
 		{
 			$requete_cotis = "SELECT bool_exempt_adh
-					  FROM adherents
+					  FROM ".PREFIX_DB."adherents
 					  WHERE id_adh=" . $cotisant;
 			$resultat_cotis = &$DB->Execute($requete_cotis);
 			if ($resultat_cotis->EOF)
@@ -60,9 +60,9 @@
 		else
 		{
 			$requete_cotis = "SELECT *
-					  FROM cotisations
+					  FROM ".PREFIX_DB."cotisations
 					  WHERE id_adh=" . $cotisant . "
-												ORDER BY date_cotis";
+					  ORDER BY date_cotis";
 			$resultat_cotis = &$DB->Execute($requete_cotis);
 			$diff = 0;
 			$duree_old = 0;

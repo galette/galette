@@ -47,14 +47,14 @@
   //
 	
 	$requete = "SELECT * 
-							FROM adherents 
+							FROM ".PREFIX_DB."adherents 
 							WHERE id_adh=$id_adh";
 	$result = &$DB->Execute($requete);
         if ($result->EOF)
 		header("location: index.php");
 
 	// recuperation de la liste de champs de la table
-  $fields = &$DB->MetaColumns("adherents");
+  $fields = &$DB->MetaColumns(PREFIX_DB."adherents");
 	while (list($champ, $proprietes) = each($fields))
 	{
 		$val="";
@@ -166,7 +166,7 @@
 						<TD bgcolor="#DDDDFF"><B><? echo _T("Statut :"); ?></B></TD> 
 <?
 	$requete = "SELECT libelle_statut
-								FROM statuts
+								FROM ".PREFIX_DB."statuts
 								WHERE id_statut=".$id_statut."
 								ORDER BY priorite_statut";
 	$result = &$DB->Execute($requete);

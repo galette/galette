@@ -51,7 +51,7 @@
 	//   et on initialise des valeurs par defaut
     
 	// recuperation de la liste de champs de la table
-	$fields = &$DB->MetaColumns("adherents");
+	$fields = &$DB->MetaColumns(PREFIX_DB."adherents");
 	while (list($champ, $proprietes) = each($fields))
 	{
 		$proprietes_arr = get_object_vars($proprietes);
@@ -170,7 +170,7 @@
  						{
  							// on vérifie que le login n'est pas déjà utilisé
  							$requete = "SELECT id_adh
- 								    FROM adherents
+ 								    FROM ".PREFIX_DB."adherents
  								    WHERE login_adh=". $DB->qstr($post_value, true);
  							if ($id_adh!="")
  								$requete .= " AND id_adh!=" . $DB->qstr($id_adh, true);
@@ -219,7 +219,7 @@
 					$date_fin_update = "NULL";
 																									$update_string = "date_echeance=".$date_fin_update.$update_string;
  		 		
-				$requete = "UPDATE adherents
+				$requete = "UPDATE ".PREFIX_DB."adherents
  		 			    SET " . $update_string . " 
  		 			    WHERE id_adh=" . $id_adh;
 				dblog(_T("Mise à jour de la fiche adhérent :")." ".strtoupper($_POST["nom_adh"])." ".$_POST["prenom_adh"], $requete);
@@ -229,7 +229,7 @@
   			// ajout
  			$insert_string_fields = substr($insert_string_fields,1);
 			$insert_string_values = substr($insert_string_values,1);
-  			$requete = "INSERT INTO adherents
+  			$requete = "INSERT INTO ".PREFIX_DB."adherents
   				    (" . $insert_string_fields . ") 
   				    VALUES (" . $insert_string_values . ")";
 			dblog(_T("Ajout de la fiche adhérent :")." ".strtoupper($_POST["nom_adh"])." ".$_POST["prenom_adh"], $requete);
@@ -268,7 +268,7 @@
 			{
 				$requete = "SELECT max(id_adh)
 										AS max
-										FROM adherents";
+										FROM ".PREFIX_DB."adherents";
 				$max = &$DB->Execute($requete);
 				$id_adh_new = $max->fields["max"];
 			}	
@@ -364,7 +364,7 @@
 	{
 		// recup des données
 		$requete = "SELECT * 
-								FROM adherents 
+								FROM ".PREFIX_DB."adherents 
 			  				WHERE id_adh=$id_adh";
 		$result = &$DB->Execute($requete);
         	if ($result->EOF)
@@ -373,7 +373,7 @@
 																	    
 			
 		// recuperation de la liste de champs de la table
-	  //$fields = &$DB->MetaColumns("cotisations");
+	  //$fields = &$DB->MetaColumns(PREFIX_DB."cotisations");
 	  while (list($champ, $proprietes) = each($fields))
 		{
 			//echo $proprietes_arr["name"]." -- (".$result->fields[$proprietes_arr["name"]].")<br>";
@@ -511,7 +511,7 @@
 									<SELECT name="id_statut">
 									<?
 										$requete = "SELECT *
-		 														FROM statuts
+		 														FROM ".PREFIX_DB."statuts
 		 														ORDER BY priorite_statut";
 										$result = &$DB->Execute($requete);
 										while (!$result->EOF)
