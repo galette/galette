@@ -467,7 +467,7 @@
 	if ($url_adh=="")
 		$url_adh = "http://";
 	if ($mdp_adh=="")
-		$mdp_adh = makeRandomPassword();
+		$mdp_adh = makeRandomPassword(7);
 
 	// variable pour la desactivation de champs		
 	if ($_SESSION["admin_status"]==0)
