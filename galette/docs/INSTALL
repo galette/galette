@@ -1,6 +1,7 @@
 Dependencies
 ------------
 
+[english]
   Required:     - PHP Capable web server:
                   Apache is fine
 		  Galette was tested on Apache 1.3.22 and 1.3.26
@@ -13,7 +14,7 @@ Dependencies
   Recommended : - GD extension for PHP (built in PHP or as a module)
                   (needed for picture resizing)
 
-
+[french]
   Requis :	- Serveur web supportant PHP :
   		  Apache est une bonne option
 		  Galette a été testé sur Apache 1.3.22 et 1.3.26
@@ -25,3 +26,42 @@ Dependencies
 
   Recommandé :  - Extension GD pour PHP (intègré à PHP en en module)
   		  (Nécessaire pour la réduction des photos)
+
+Installation :
+_____________
+
+[french]
+  Récupérez les fichiers depuis http://download.gna.org/galette/
+  Préférez prendre la dernière version en date (numéro de version le plus élevé).
+  
+  Décompressez l'archive là où pointe le RootDirectory de votre serveur web 
+  (ici, dans /var/www/).
+  
+  $ cd /var/www
+  $ wget http://download.gna.org/galette/galette-0.62.tgz
+  $ tar -xzvf galette-0.62.tgz 
+
+  Le répertoire galette-0.62/ sera automatiquement crée. Vous pouvez le renommer
+  à votre convenance.
+
+  Il faut attribuer à tous les fichiers de Galette les droits de l'utilisateur
+  du serveur web (ici, pour l'exemple, www-data et apache) :
+  
+  # chown -R www-data:www-data galette-0.62/
+
+  Il vous faut maintenant créer un utilisateur et une base pour Galette sur 
+  votre serveur SQL (MySQL ou PostgreSQL). L'utilisateur créé doit avoir 
+  tous les droits sur la base créée pour Galette.
+
+  Se reporter à la documentation de votre serveur SQL pour ce faire.
+
+  Connectez-vous ensuite au sous répertoire "install" avec votre navigateur web.
+  Dans notre exemple, il s'agit de http://serveur/galette-0.62/install.
+
+  Vous n'avez plus qu'à vous laissez guider par les 10 étapes de l'installeur 
+  Web.
+
+  Une fois le script d'installation terminé, et après avoir vérifié que tout
+  fonctionne, il est fortement conseillé de supprimer le dossier install/.
+
+
