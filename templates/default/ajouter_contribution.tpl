@@ -25,7 +25,8 @@
 					</TD> 
 					<TH {if $required.id_type_cotis eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Contribution type:")}</TH> 
 					<TD>
-						<SELECT name="id_type_cotis" onchange="form.submit()">
+						<SELECT name="id_type_cotis"
+							{if $type_selected eq 0}onchange="form.submit()"{/if}>
 							{html_options options=$type_cotis_options selected=$contribution.id_type_cotis}
 						</SELECT>
 					</TD> 
@@ -87,8 +88,7 @@
 		<INPUT type="hidden" name="id_cotis" value="{$contribution.id_cotis}">
 		{if $type_selected eq 1}
 		<INPUT type="hidden" name="valid" value="1">
-		{else} {* $type_selected ne 1 *}
-		<INPUT type="hidden" name="type_selected" value="1">
 		{/if} {* $type_selected eq 1 *}
+		<INPUT type="hidden" name="type_selected" value="1">
 		<INPUT type="hidden" name="cotis_extension" value="{$cotis_extension}">
 		</FORM>

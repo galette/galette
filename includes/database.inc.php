@@ -45,25 +45,17 @@
 	   $result->MoveNext();
 	}
 	$result->Close();
-	
-	function get_echeance ($DB, $cotisant, $exempt_default="") {
-		if ($exempt_default=="")
-		{
-			$requete_cotis = "SELECT bool_exempt_adh
-					  FROM ".PREFIX_DB."adherents
-					  WHERE id_adh=" . $cotisant;
-			$resultat_cotis = &$DB->Execute($requete_cotis);
-			if ($resultat_cotis) {
-				if ($resultat_cotis->EOF)
-					$exempt="1";
-				else
-					$exempt=$resultat_cotis->fields[0];
-				$resultat_cotis->Close();
-			} else
-				$exempt_default;
-		}	
-		else
-			$exempt=$exempt_default;
+
+	function is_exempt($DB, $cotisant)
+	{
+		$request = "SELECT bool_exempt_adh
+			      FROM ".PREFIX_DB."adherents
+			     WHERE id_adh=" . $cotisant;
+		return $DB->GetOne($requete_cotis);
+	}
+
+	function get_echeance ($DB, $cotisant) {
+		$exempt = is_exempt($DB, $cotisant);
 		
 		$return_date = "";
 		// définition couleur pour adherent exempt de cotisation
@@ -87,4 +79,5 @@
 		}	
 		return $return_date;
 	}
+
 ?>

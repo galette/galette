@@ -39,9 +39,10 @@
 	$adh_selected = isset($contribution['id_adh']);
 	$tpl->assign("adh_selected", $adh_selected);
 
-	$type_selected = get_form_value("type_selected", 0);
+	$type_selected = isset($contribution['id_cotis']) || get_form_value("type_selected", 0);
 	$tpl->assign("type_selected", $type_selected);
 
+	$cotis_extension = 0;
 	if (isset($contribution['id_type_cotis'])) {
 		$request = "SELECT cotis_extension
 			    FROM ".PREFIX_DB."types_cotisation
@@ -79,9 +80,10 @@
 			else if ($key == 'date_fin_cotis' && isset($_POST['duree_mois_cotis']) &&
 				 isset($_POST['date_debut_cotis'])) {
 				$nmonths = trim($_POST['duree_mois_cotis']);
-				if (!is_numeric($nmonths) && $nmonths >= 0)
+				if (!is_numeric($nmonths) && $nmonths >= 0) {
 					$error_detected[] = _T("- The duration must be an integer!");
-				else if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_POST['date_debut_cotis'], $debut))
+					$value="01/01/0001"; // To avoid error msg about date format
+				} else if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_POST['date_debut_cotis'], $debut))
 					$value = date("d/m/Y", mktime(0, 0, 0, $debut[2] + $nmonths, $debut[1], $debut[3]));
 			} else
 				$value = '';
@@ -150,11 +152,11 @@
 				$requete = "SELECT date_debut_cotis, date_fin_cotis
 					    FROM ".PREFIX_DB."cotisations, ".PREFIX_DB."types_cotisation
 					    WHERE ".PREFIX_DB."cotisations.id_type_cotis = ".PREFIX_DB."types_cotisation.id_type_cotis AND 
-					           cotis_extension = '1' AND ";
+					           cotis_extension = '1' ";
 				if ($contribution["id_cotis"] != "")
-					$requete .= "id_cotis != ".$contribution["id_cotis"]." AND ";
-				$requete .= "((date_debut_cotis >= ".$date_debut." AND date_debut_cotis < ".$date_fin.")
-					     OR (date_fin_cotis > ".$date_debut." AND date_fin_cotis <= ".$date_fin."))";
+					$requete .= "AND id_cotis != ".$contribution["id_cotis"]." ";
+				$requete .= "AND ((date_debut_cotis >= ".$date_debut." AND date_debut_cotis < ".$date_fin.")
+					          OR (date_fin_cotis > ".$date_debut." AND date_fin_cotis <= ".$date_fin."))";
 				$result = $DB->Execute($requete);
 				if (!$result)
 					print "$requete: ".$DB->ErrorMsg();
@@ -209,6 +211,15 @@
 
 			header ('location: gestion_contributions.php?id_adh='.$contribution['id_adh']);
 		}
+	
+		if (!isset($contribution['duree_mois_cotis']) || $contribution['duree_mois_cotis'] == "") {
+			// On error restore entered value or default to display the form again
+			if (isset($_POST['duree_mois_cotis']) && $_POST['duree_mois_cotis'] != "")
+				$contribution['duree_mois_cotis'] = $_POST['duree_mois_cotis'];
+			else
+				$contribution['duree_mois_cotis'] = PREF_MEMBERSHIP_EXT;
+		}
+
 	}
 	else
 	{
@@ -216,7 +227,7 @@
 		{
 			// initialiser la structure contribution à vide (nouvelle contribution)
 			$contribution['duree_mois_cotis']=PREF_MEMBERSHIP_EXT;
-			if (isset($contribution["id_adh"])) {
+			if ($cotis_extension && isset($contribution["id_adh"])) {
 				$curend = get_echeance($DB, $contribution["id_adh"]);
 				if ($curend == "")
 					$beg_cotis = time();
@@ -255,6 +266,7 @@
 				$cotis_extension = &$DB->GetOne($request);
 			}	
 		}
+
 	}
 
 	// template variable declaration
