@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Galette V1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-21 22:21+0200\n"
+"POT-Creation-Date: 2004-09-22 00:37+0200\n"
 "PO-Revision-Date: 2004-08-08 22:51+0200\n"
 "Last-Translator: Simon DEPIETS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,101 +14,1266 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../includes/session.inc.php:30
+#: ../index.php:59 ../templates/default/index.tpl:35
+msgid "Subscribe"
+msgstr "Subscribe"
+
+#: ../self_adherent.php:89
+msgid "Password misrepeated: "
+msgstr "Password misrepeated: "
+
+#: ../self_adherent.php:92 ../ajouter_adherent.php:120
+msgid "Sorry, "
+msgstr "Sorry, "
+
+#: ../self_adherent.php:92 ../ajouter_adherent.php:120
+msgid ""
+" is a username already used by another member, please select another one\n"
+msgstr ""
+" is a username already used by another member, please select another one\n"
+
+#: ../self_adherent.php:125
+msgid "Self_subscription as a member:"
+msgstr "Self_subscription as a member:"
+
+#: ../self_adherent.php:128 ../lostpasswd.php:63 ../ajouter_adherent.php:288
+msgid "Your Galette identifiers"
+msgstr "Your Galette identifiers"
+
+#: ../self_adherent.php:129 ../lostpasswd.php:64 ../ajouter_adherent.php:289
+msgid "Hello,"
+msgstr "Hello,"
+
+#: ../self_adherent.php:131 ../ajouter_adherent.php:291
+msgid ""
+"You've just been subscribed on the members management system of the "
+"association."
+msgstr ""
+"You've just been subscribed on the members management system of the "
+"association."
+
+#: ../self_adherent.php:132 ../ajouter_adherent.php:292
+msgid ""
+"It is now possible to follow in real time the state of your subscription"
+msgstr ""
+"It is now possible to follow in real time the state of your subscription"
+
+#: ../self_adherent.php:133 ../ajouter_adherent.php:293
+msgid "and to update your preferences from the web interface."
+msgstr "and to update your preferences from the web interface."
+
+#: ../self_adherent.php:135 ../lostpasswd.php:68 ../ajouter_adherent.php:295
+msgid "Please login at this address:"
+msgstr "Please login at this address:"
+
+#: ../self_adherent.php:138 ../self_adherent.php:443 ../lostpasswd.php:71
+#: ../lostpasswd.php:131 ../preferences.php:492 ../voir_adherent.php:248
+#: ../install/index.php:755 ../ajouter_adherent.php:298
+#: ../ajouter_adherent.php:740 ../templates/default/index.tpl:23
+msgid "Username:"
+msgstr "Username:"
+
+#: ../self_adherent.php:139 ../self_adherent.php:452 ../lostpasswd.php:72
+#: ../preferences.php:496 ../voir_adherent.php:250 ../install/index.php:302
+#: ../install/index.php:761 ../ajouter_adherent.php:299
+#: ../ajouter_adherent.php:742 ../templates/default/index.tpl:27
+msgid "Password:"
+msgstr "Password:"
+
+#: ../self_adherent.php:141 ../lostpasswd.php:74 ../ajouter_adherent.php:301
+msgid "See you soon!"
+msgstr "See you soon!"
+
+#: ../self_adherent.php:143 ../lostpasswd.php:76 ../ajouter_adherent.php:303
+msgid "(this mail was sent automatically)"
+msgstr "(this mail was sent automatically)"
+
+#: ../self_adherent.php:160 ../voir_adherent.php:86
+#: ../ajouter_adherent.php:506
+msgid "Member Profile"
+msgstr "Member Profile"
+
+#: ../self_adherent.php:161 ../self_contribution.php:208
+#: ../ajouter_contribution.php:297 ../ajouter_adherent.php:506
+msgid "modification"
+msgstr "modification"
+
+#: ../self_adherent.php:161 ../self_contribution.php:208
+#: ../ajouter_contribution.php:297 ../ajouter_adherent.php:506
+msgid "creation"
+msgstr "creation"
+
+#: ../self_adherent.php:189
+msgid "The form is not valid because some fields"
+msgstr "The form is not valid because some fields"
+
+#: ../self_adherent.php:190
+msgid "are mandatory but still empty, please fill them:"
+msgstr "are mandatory but still empty, please fill them:"
+
+#: ../self_adherent.php:213 ../mailing_adherents.php:119
+#: ../self_contribution.php:217 ../lostpasswd.php:111
+#: ../configurer_fiches.php:89 ../preferences.php:321
+#: ../ajouter_contribution.php:306 ../ajouter_adherent.php:515
+msgid "- ERROR -"
+msgstr "- ERROR -"
+
+#: ../self_adherent.php:222 ../mailing_adherents.php:482 ../lostpasswd.php:120
+#: ../preferences.php:332 ../ajouter_adherent.php:526
+msgid "- WARNING -"
+msgstr "- WARNING -"
+
+#: ../self_adherent.php:237 ../ajouter_adherent.php:538
+msgid "Title:"
+msgstr "Title:"
+
+#: ../self_adherent.php:241 ../ajouter_adherent.php:540
+msgid "Miss"
+msgstr "Miss"
+
+#: ../self_adherent.php:243 ../ajouter_adherent.php:541
+msgid "Mrs"
+msgstr "Mrs"
+
+#: ../self_adherent.php:245 ../ajouter_adherent.php:542
+msgid "Mister"
+msgstr "Mister"
+
+#: ../self_adherent.php:250 ../voir_adherent.php:91
+#: ../ajouter_adherent.php:546
+msgid "Name:"
+msgstr "Name:"
+
+#: ../self_adherent.php:256
+msgid "You can prepare a picture to upload after sending"
+msgstr "You can prepare a picture to upload after sending"
+
+#: ../self_adherent.php:257
+msgid "your fee."
+msgstr "your fee."
+
+#: ../self_adherent.php:263 ../ajouter_adherent.php:572
+msgid "First name:"
+msgstr "First name:"
+
+#: ../self_adherent.php:271 ../voir_adherent.php:151
+#: ../ajouter_adherent.php:576
+msgid "Nickname:"
+msgstr "Nickname:"
+
+#: ../self_adherent.php:279 ../voir_adherent.php:155
+#: ../ajouter_adherent.php:580
+msgid "birth date:"
+msgstr "birth date:"
+
+#: ../self_adherent.php:285 ../self_contribution.php:249
+#: ../ajouter_contribution.php:366 ../ajouter_adherent.php:581
+#: ../ajouter_adherent.php:755
+msgid "(dd/mm/yyyy format)"
+msgstr "(dd/mm/yyyy format)"
+
+#: ../self_adherent.php:291 ../voir_adherent.php:173
+#: ../ajouter_adherent.php:584
+msgid "Profession:"
+msgstr "Profession:"
+
+#: ../self_adherent.php:305 ../voir_adherent.php:177
+#: ../ajouter_adherent.php:607
+msgid "Be visible in the<br /> members list :"
+msgstr "Be visible in the<br /> members list :"
+
+#: ../self_adherent.php:311 ../preferences.php:407 ../voir_adherent.php:195
+#: ../ajouter_adherent.php:609
+msgid "Language:"
+msgstr "Language:"
+
+#: ../self_adherent.php:346 ../mailing_adherents.php:776
+#: ../preferences.php:384 ../voir_adherent.php:205 ../ajouter_adherent.php:694
+msgid "Address:"
+msgstr "Address:"
+
+#: ../self_adherent.php:356 ../preferences.php:392 ../voir_adherent.php:209
+#: ../ajouter_adherent.php:701
+msgid "Zip Code:"
+msgstr "Zip Code:"
+
+#: ../self_adherent.php:362 ../preferences.php:396 ../voir_adherent.php:211
+#: ../ajouter_adherent.php:703
+msgid "City:"
+msgstr "City:"
+
+#: ../self_adherent.php:370 ../preferences.php:400 ../voir_adherent.php:215
+#: ../ajouter_adherent.php:707
+msgid "Country:"
+msgstr "Country:"
+
+#: ../self_adherent.php:376 ../mailing_adherents.php:778
+#: ../voir_adherent.php:217 ../ajouter_adherent.php:709
+msgid "Phone:"
+msgstr "Phone:"
+
+#: ../self_adherent.php:384 ../mailing_adherents.php:780
+#: ../voir_adherent.php:221 ../ajouter_adherent.php:713
+msgid "Mobile phone:"
+msgstr "Mobile phone:"
+
+#: ../self_adherent.php:390 ../voir_adherent.php:223
+#: ../ajouter_adherent.php:715
+msgid "E-Mail:"
+msgstr "E-Mail:"
+
+#: ../self_adherent.php:398 ../voir_adherent.php:227
+#: ../ajouter_adherent.php:719
+msgid "Website:"
+msgstr "Website:"
+
+#: ../self_adherent.php:404 ../mailing_adherents.php:782
+#: ../voir_adherent.php:229 ../ajouter_adherent.php:721
+msgid "ICQ:"
+msgstr "ICQ:"
+
+#: ../self_adherent.php:412 ../mailing_adherents.php:784
+#: ../voir_adherent.php:233 ../ajouter_adherent.php:725
+msgid "Jabber:"
+msgstr "Jabber:"
+
+#: ../self_adherent.php:418 ../mailing_adherents.php:786
+#: ../voir_adherent.php:235 ../ajouter_adherent.php:727
+msgid "MSN:"
+msgstr "MSN:"
+
+#: ../self_adherent.php:426 ../voir_adherent.php:239
+#: ../ajouter_adherent.php:731
+msgid "Id GNUpg (GPG):"
+msgstr "Id GNUpg (GPG):"
+
+#: ../self_adherent.php:432 ../voir_adherent.php:241
+#: ../ajouter_adherent.php:733
+msgid "fingerprint:"
+msgstr "fingerprint:"
+
+#: ../self_adherent.php:448 ../ajouter_adherent.php:741
+#: ../ajouter_adherent.php:743
+msgid "(at least 4 characters)"
+msgstr "(at least 4 characters)"
+
+#: ../self_adherent.php:458
+msgid "Please repeat in the field the password shown in the image."
+msgstr "Please repeat in the field the password shown in the image."
+
+#: ../self_adherent.php:467 ../voir_adherent.php:271
+#: ../ajouter_adherent.php:765
+msgid "Other informations:"
+msgstr "Other informations:"
+
+#: ../self_adherent.php:543 ../self_contribution.php:256
+#: ../preferences.php:500 ../ajouter_contribution.php:373
+#: ../ajouter_adherent.php:852
+msgid "Save"
+msgstr "Save"
+
+#: ../self_adherent.php:549 ../self_contribution.php:261
+#: ../preferences.php:505 ../ajouter_contribution.php:378
+#: ../ajouter_adherent.php:857
+msgid "NB : The mandatory fields are in"
+msgstr "NB : The mandatory fields are in"
+
+#: ../self_adherent.php:550 ../self_contribution.php:261
+#: ../preferences.php:505 ../ajouter_contribution.php:378
+#: ../ajouter_adherent.php:857
+msgid "red"
+msgstr "red"
+
+#: ../mailing_adherents.php:56
+msgid "Please type an object for the message."
+msgstr "Please type an object for the message."
+
+#: ../mailing_adherents.php:59
+msgid "Please enter a message."
+msgstr "Please enter a message."
+
+#: ../mailing_adherents.php:62
+msgid "Please select at least one member."
+msgstr "Please select at least one member."
+
+#: ../mailing_adherents.php:104 ../mailing_adherents.php:411
+#: ../mailing_adherents.php:847 ../footer.php:45
+#: ../templates/default/page.tpl:28
+msgid "Generate labels"
+msgstr "Generate labels"
+
+#: ../mailing_adherents.php:110 ../mailing_adherents.php:478
+msgid "Mailing"
+msgstr "Mailing"
+
+#: ../mailing_adherents.php:218 ../templates/default/gestion_adherents.tpl:16
+msgid "members"
+msgstr "members"
+
+#: ../mailing_adherents.php:218 ../templates/default/gestion_adherents.tpl:16
+msgid "member"
+msgstr "member"
+
+#: ../mailing_adherents.php:222 ../templates/default/gestion_adherents.tpl:4
+msgid "Display:"
+msgstr "Display:"
+
+#: ../mailing_adherents.php:224 ../gestion_adherents.php:245
+msgid "All members"
+msgstr "All members"
+
+#: ../mailing_adherents.php:225 ../gestion_adherents.php:246
+msgid "Members up to date"
+msgstr "Members up to date"
+
+#: ../mailing_adherents.php:226 ../gestion_adherents.php:247
+msgid "Close expiries"
+msgstr "Close expiries"
+
+#: ../mailing_adherents.php:227 ../gestion_adherents.php:248
+msgid "Latecomers"
+msgstr "Latecomers"
+
+#: ../mailing_adherents.php:230 ../gestion_adherents.php:250
+msgid "All the accounts"
+msgstr "All the accounts"
+
+#: ../mailing_adherents.php:231
+msgid "Active accounts"
+msgstr "Active accounts"
+
+#: ../mailing_adherents.php:232 ../gestion_adherents.php:251
+msgid "Inactive accounts"
+msgstr "Inactive accounts"
+
+#: ../mailing_adherents.php:235 ../gestion_contributions.php:234
+msgid "Filter"
+msgstr "Filter"
+
+#: ../mailing_adherents.php:259 ../mailing_adherents.php:488
+#: ../mailing_adherents.php:656 ../footer.php:119 ../footer.php:123
+#: ../configurer_fiches.php:102 ../templates/default/gestion_adherents.tpl:34
+#: ../templates/default/page.tpl:83 ../templates/default/page.tpl:87
+msgid "Name"
+msgstr "Name"
+
+#: ../mailing_adherents.php:269 ../mailing_adherents.php:489
+msgid "E-Mail"
+msgstr "E-Mail"
+
+#: ../mailing_adherents.php:279 ../mailing_adherents.php:490
+#: ../mailing_adherents.php:658 ../templates/default/gestion_adherents.tpl:58
+msgid "Status"
+msgstr "Status"
+
+#: ../mailing_adherents.php:289 ../mailing_adherents.php:491
+#: ../mailing_adherents.php:659 ../templates/default/gestion_adherents.tpl:70
+msgid "State of dues"
+msgstr "State of dues"
+
+#: ../mailing_adherents.php:305 ../mailing_adherents.php:500
+#: ../mailing_adherents.php:666 ../gestion_adherents.php:171
+#: ../templates/default/gestion_adherents.tpl:114
+msgid "no member"
+msgstr "no member"
+
+#: ../mailing_adherents.php:320 ../mailing_adherents.php:522
+#: ../mailing_adherents.php:681 ../gestion_contributions.php:398
+#: ../gestion_adherents.php:185
+msgid "Freed of dues"
+msgstr "Freed of dues"
+
+#: ../mailing_adherents.php:327 ../mailing_adherents.php:529
+#: ../mailing_adherents.php:688 ../footer.php:128
+#: ../gestion_contributions.php:405 ../gestion_adherents.php:192
+#: ../templates/default/page.tpl:92
+msgid "Never contributed"
+msgstr "Never contributed"
+
+#: ../mailing_adherents.php:339 ../mailing_adherents.php:541
+#: ../mailing_adherents.php:700 ../gestion_contributions.php:419
+#: ../gestion_adherents.php:204
+msgid "Last day!"
+msgstr "Last day!"
+
+#: ../mailing_adherents.php:344 ../mailing_adherents.php:546
+#: ../mailing_adherents.php:705 ../gestion_adherents.php:209
+msgid "Late of "
+msgstr "Late of "
+
+#: ../mailing_adherents.php:344 ../mailing_adherents.php:546
+#: ../mailing_adherents.php:705 ../gestion_contributions.php:424
+#: ../gestion_adherents.php:209
+msgid "days"
+msgstr "days"
+
+#: ../mailing_adherents.php:344 ../mailing_adherents.php:546
+#: ../mailing_adherents.php:705 ../gestion_contributions.php:424
+#: ../gestion_adherents.php:209
+msgid "since"
+msgstr "since"
+
+#: ../mailing_adherents.php:349 ../mailing_adherents.php:551
+#: ../mailing_adherents.php:710 ../gestion_contributions.php:430
+#: ../gestion_adherents.php:215
+msgid "days remaining"
+msgstr "days remaining"
+
+#: ../mailing_adherents.php:349 ../mailing_adherents.php:551
+#: ../mailing_adherents.php:710 ../gestion_contributions.php:430
+#: ../gestion_contributions.php:432 ../gestion_adherents.php:215
+#: ../gestion_adherents.php:217
+msgid "ending on"
+msgstr "ending on"
+
+#: ../mailing_adherents.php:366 ../mailing_adherents.php:566
+#: ../mailing_adherents.php:725 ../footer.php:84
+msgid "[M]"
+msgstr "[M]"
+
+#: ../mailing_adherents.php:370 ../mailing_adherents.php:570
+#: ../mailing_adherents.php:729 ../footer.php:88
+msgid "[W]"
+msgstr "[W]"
+
+#: ../mailing_adherents.php:377 ../mailing_adherents.php:577
+#: ../mailing_adherents.php:736 ../footer.php:103
+msgid "[admin]"
+msgstr "[admin]"
+
+#: ../mailing_adherents.php:393 ../footer.php:107 ../footer.php:157
+#: ../gestion_contributions.php:371
+msgid "[mod]"
+msgstr "[mod]"
+
+#: ../mailing_adherents.php:394 ../footer.php:111
+msgid "[$]"
+msgstr "[$]"
+
+#: ../mailing_adherents.php:395
+msgid ""
+"Do you really want to delete this member from the base, this will delete "
+"also the history of her fees. To avoid this you can just unactivate her "
+"account.\n"
+"\n"
+"Do you still want to delete this member ?"
+msgstr ""
+"Do you really want to delete this member from the base, this will delete "
+"also the history of her fees. To avoid this you can just unactivate her "
+"account.\n"
+"\n"
+"Do you still want to delete this member ?"
+
+#: ../mailing_adherents.php:395 ../footer.php:115 ../footer.php:161
+#: ../configurer_fiches.php:140 ../gestion_contributions.php:372
+msgid "[del]"
+msgstr "[del]"
+
+#: ../mailing_adherents.php:404
+msgid "[ Select / unselect all ]"
+msgstr "[ Select / unselect all ]"
+
+#: ../mailing_adherents.php:420 ../mailing_adherents.php:614
+msgid "Object:"
+msgstr "Object:"
+
+#: ../mailing_adherents.php:426 ../mailing_adherents.php:616
+msgid "Message:"
+msgstr "Message:"
+
+#: ../mailing_adherents.php:434
+msgid "Preview"
+msgstr "Preview"
+
+#: ../mailing_adherents.php:476
+msgid ""
+"Don't forget to contact the members who don't have an email address by "
+"another way."
+msgstr ""
+"Don't forget to contact the members who don't have an email address by "
+"another way."
+
+#: ../mailing_adherents.php:478
+msgid "done!"
+msgstr "done!"
+
+#: ../mailing_adherents.php:478
+msgid "(preview)"
+msgstr "(preview)"
+
+#: ../mailing_adherents.php:485
+msgid "Recipients of the mailing:"
+msgstr "Recipients of the mailing:"
+
+#: ../mailing_adherents.php:603
+msgid "Send of a mailing titled:"
+msgstr "Send of a mailing titled:"
+
+#: ../mailing_adherents.php:603
+msgid "recipients"
+msgstr "recipients"
+
+#: ../mailing_adherents.php:643
+msgid "Send"
+msgstr "Send"
+
+#: ../mailing_adherents.php:653
+msgid "Members who can't be reachable by e-mail:"
+msgstr "Members who can't be reachable by e-mail:"
+
+#: ../mailing_adherents.php:657
+msgid "Profile"
+msgstr "Profile"
+
+#: ../mailing_adherents.php:822 ../mailing_adherents.php:832
+#: ../install/index.php:375
+msgid "Go back"
+msgstr "Go back"
+
+#: ../log.php:41 ../log.php:109
+msgid "Flush the logs"
+msgstr "Flush the logs"
+
+#: ../log.php:107 ../footer.php:46 ../templates/default/page.tpl:29
+msgid "Logs"
+msgstr "Logs"
+
+#: ../log.php:114
+msgid "lines"
+msgstr "lines"
+
+#: ../log.php:114
+msgid "line"
+msgstr "line"
+
+#: ../log.php:115 ../log.php:231 ../gestion_contributions.php:240
+#: ../gestion_contributions.php:383
+#: ../templates/default/gestion_adherents.tpl:17
+#: ../templates/default/gestion_adherents.tpl:118
+msgid "Pages:"
+msgstr "Pages:"
+
+#: ../log.php:122 ../gestion_contributions.php:247
+msgid "Date"
+msgstr "Date"
+
+#: ../log.php:137
+msgid "IP"
+msgstr "IP"
+
+#: ../log.php:152 ../gestion_contributions.php:261
+msgid "Member"
+msgstr "Member"
+
+#: ../log.php:169
+#, fuzzy
+msgid "Action"
+msgstr "Actions"
+
+#: ../log.php:190
+msgid "Description"
+msgstr "Description"
+
+#: ../log.php:210
+msgid "logs are empty"
+msgstr "logs are empty"
+
+#: ../self_contribution.php:136 ../gestion_contributions.php:55
+#: ../gestion_contributions.php:70 ../ajouter_contribution.php:155
+#: ../ajouter_adherent.php:177
+msgid "- Non valid date!"
+msgstr "- Non valid date!"
+
+#: ../self_contribution.php:140 ../gestion_contributions.php:62
+#: ../gestion_contributions.php:77 ../ajouter_contribution.php:159
+#: ../ajouter_adherent.php:180
+msgid "- Wrong date format (dd/mm/yyyy)!"
+msgstr "- Wrong date format (dd/mm/yyyy)!"
+
+#: ../self_contribution.php:146 ../ajouter_contribution.php:166
+msgid "- The duration must be an integer!"
+msgstr "- The duration must be an integer!"
+
+#: ../self_contribution.php:153 ../ajouter_contribution.php:174
+msgid "- The amount must be an integer!"
+msgstr "- The amount must be an integer!"
+
+#: ../self_contribution.php:177
+msgid "Add a self-contribution:"
+msgstr "Add a self-contribution:"
+
+#: ../self_contribution.php:208 ../ajouter_contribution.php:297
+msgid "Contribution card"
+msgstr "Contribution card"
+
+#: ../self_contribution.php:229 ../ajouter_contribution.php:318
+msgid "Contributor:"
+msgstr "Contributor:"
+
+#: ../self_contribution.php:234 ../ajouter_contribution.php:338
+msgid "Contribution type:"
+msgstr "Contribution type:"
+
+#: ../self_contribution.php:238
+msgid "Annual fee (to be paid)"
+msgstr "Annual fee (to be paid)"
+
+#: ../self_contribution.php:242 ../ajouter_contribution.php:359
+msgid "Amount:"
+msgstr "Amount:"
+
+#: ../self_contribution.php:244
+msgid "Duration:"
+msgstr "Duration:"
+
+#: ../self_contribution.php:245 ../ajouter_contribution.php:362
+msgid "months"
+msgstr "months"
+
+#: ../self_contribution.php:248 ../ajouter_contribution.php:365
+msgid "Date of contribution:"
+msgstr "Date of contribution:"
+
+#: ../self_contribution.php:252 ../ajouter_contribution.php:369
+msgid "Comments:"
+msgstr "Comments:"
+
+#: ../lostpasswd.php:31
+msgid "empty login"
+msgstr "empty login"
+
+#: ../lostpasswd.php:39
+msgid "this login doesn't exist"
+msgstr "this login doesn't exist"
+
+#: ../lostpasswd.php:40
+msgid "Nonexistent login sent via the lost password form. Login:"
+msgstr "Nonexistent login sent via the lost password form. Login:"
+
+#: ../lostpasswd.php:44
+msgid ""
+"This account doesn't have a valid email address. Please contact an "
+"administrator."
+msgstr ""
+"This account doesn't have a valid email address. Please contact an "
+"administrator."
+
+#: ../lostpasswd.php:45
+msgid "Someone asked to recover his password but had no email. Login:"
+msgstr "Someone asked to recover his password but had no email. Login:"
+
+#: ../lostpasswd.php:66
+msgid "Someone (probably you) asked to recover your password."
+msgstr "Someone (probably you) asked to recover your password."
+
+#: ../lostpasswd.php:79 ../lostpasswd.php:80
+msgid "Password sent. Login:"
+msgstr "Password sent. Login:"
+
+#: ../lostpasswd.php:83 ../lostpasswd.php:84
+msgid "A problem happened while sending password for account:"
+msgstr "A problem happened while sending password for account:"
+
+#: ../lostpasswd.php:106
+msgid "Password recovery"
+msgstr "Password recovery"
+
+#: ../lostpasswd.php:135
+msgid "Send me my password"
+msgstr "Send me my password"
+
+#: ../lostpasswd.php:141
+msgid "Back to login page"
+msgstr "Back to login page"
+
+#: ../footer.php:26
+msgid "Page displayed in"
+msgstr "Page displayed in"
+
+#: ../footer.php:26
+msgid "seconds."
+msgstr "seconds."
+
+#: ../footer.php:34 ../templates/default/page.tpl:20
+msgid "Navigation"
+msgstr "Navigation"
+
+#: ../footer.php:40 ../templates/default/page.tpl:23
+msgid "List of members"
+msgstr "List of members"
+
+#: ../footer.php:41 ../templates/default/page.tpl:24
+msgid "List of contributions"
+msgstr "List of contributions"
+
+#: ../footer.php:42 ../templates/default/page.tpl:25
+msgid "Add a member"
+msgstr "Add a member"
+
+#: ../footer.php:43 ../templates/default/page.tpl:26
+msgid "Add a contribution"
+msgstr "Add a contribution"
+
+#: ../footer.php:44 ../templates/default/page.tpl:27
+msgid "Do a mailing"
+msgstr "Do a mailing"
+
+#: ../footer.php:52 ../templates/default/page.tpl:31
+msgid "My information"
+msgstr "My information"
+
+#: ../footer.php:53 ../templates/default/page.tpl:32
+msgid "My contributions"
+msgstr "My contributions"
+
+#: ../footer.php:64 ../templates/default/page.tpl:38
+msgid "Configuration"
+msgstr "Configuration"
+
+#: ../footer.php:66 ../preferences.php:313 ../templates/default/page.tpl:40
+msgid "Settings"
+msgstr "Settings"
+
+#: ../footer.php:67 ../templates/default/page.tpl:41
+msgid "Configure member forms"
+msgstr "Configure member forms"
+
+#: ../footer.php:74 ../includes/session.inc.php:30
+#: ../templates/default/page.tpl:46
 msgid "Log off"
 msgstr "Log off"
 
-#: ../includes/i18n.inc.php:63
+#: ../footer.php:81 ../footer.php:150 ../templates/default/page.tpl:50
+#: ../templates/default/page.tpl:110
+msgid "Legend"
+msgstr "Legend"
+
+#: ../footer.php:85 ../templates/default/page.tpl:54
+msgid "Man"
+msgstr "Man"
+
+#: ../footer.php:89 ../templates/default/page.tpl:58
+msgid "Woman"
+msgstr "Woman"
+
+#: ../footer.php:96
+msgid "[Mail]"
+msgstr "[Mail]"
+
+#: ../footer.php:97 ../templates/default/page.tpl:63
+msgid "Send a mail"
+msgstr "Send a mail"
+
+#: ../footer.php:104 ../templates/default/page.tpl:68
+msgid "Admin"
+msgstr "Admin"
+
+#: ../footer.php:108 ../footer.php:158 ../templates/default/page.tpl:72
+#: ../templates/default/page.tpl:115
+msgid "Modification"
+msgstr "Modification"
+
+#: ../footer.php:112 ../templates/default/page.tpl:76
+msgid "Contributions"
+msgstr "Contributions"
+
+#: ../footer.php:116 ../footer.php:162 ../templates/default/page.tpl:80
+#: ../templates/default/page.tpl:119
+msgid "Deletion"
+msgstr "Deletion"
+
+#: ../footer.php:120 ../templates/default/page.tpl:84
+msgid "Active account"
+msgstr "Active account"
+
+#: ../footer.php:124 ../templates/default/page.tpl:88
+msgid "Inactive account"
+msgstr "Inactive account"
+
+#: ../footer.php:132 ../templates/default/page.tpl:96
+msgid "Membership in order"
+msgstr "Membership in order"
+
+#: ../footer.php:136 ../templates/default/page.tpl:100
+msgid "Membership will expire soon (&lt;30d)"
+msgstr "Membership will expire soon (&lt;30d)"
+
+#: ../footer.php:140 ../templates/default/page.tpl:104
+msgid "Lateness in fee"
+msgstr "Lateness in fee"
+
+#: ../footer.php:169 ../templates/default/page.tpl:124
+msgid "Contribution"
+msgstr "Contribution"
+
+#: ../footer.php:173 ../templates/default/page.tpl:128
+msgid "Gift"
+msgstr "Gift"
+
+#: ../includes/i18n.inc.php:80
 msgid "Realization:"
 msgstr "Realization:"
 
-#: ../includes/i18n.inc.php:64
+#: ../includes/i18n.inc.php:81
 msgid "Graphics:"
 msgstr "Graphics:"
 
-#: ../includes/i18n.inc.php:65
+#: ../includes/i18n.inc.php:82
 msgid "Publisher:"
 msgstr "Publisher:"
 
-#: ../includes/i18n.inc.php:66
+#: ../includes/i18n.inc.php:83
 msgid "President"
 msgstr "President"
 
-#: ../includes/i18n.inc.php:67
+#: ../includes/i18n.inc.php:84
 msgid "Vice-president"
 msgstr "Vice-president"
 
-#: ../includes/i18n.inc.php:68
+#: ../includes/i18n.inc.php:85
 msgid "Treasurer"
 msgstr "Treasurer"
 
-#: ../includes/i18n.inc.php:69
+#: ../includes/i18n.inc.php:86
 msgid "Secretary"
 msgstr "Secretary"
 
-#: ../includes/i18n.inc.php:70
+#: ../includes/i18n.inc.php:87
 msgid "Active member"
 msgstr "Active member"
 
-#: ../includes/i18n.inc.php:71
+#: ../includes/i18n.inc.php:88
 msgid "Benefactor member"
 msgstr "Benefactor member"
 
-#: ../includes/i18n.inc.php:72
+#: ../includes/i18n.inc.php:89
 msgid "Founder member"
 msgstr "Founder member"
 
-#: ../includes/i18n.inc.php:73
+#: ../includes/i18n.inc.php:90
 msgid "Old-timer"
 msgstr "Old-timer"
 
-#: ../includes/i18n.inc.php:74
+#: ../includes/i18n.inc.php:91
 msgid "Legal entity"
 msgstr "Legal entity"
 
-#: ../includes/i18n.inc.php:75
+#: ../includes/i18n.inc.php:92
 msgid "Non-member"
 msgstr "Non-member"
 
-#: ../includes/i18n.inc.php:76
+#: ../includes/i18n.inc.php:93
 msgid "Reduced annual contribution"
 msgstr "Reduced annual contribution"
 
-#: ../includes/i18n.inc.php:77
+#: ../includes/i18n.inc.php:94
 msgid "Company cotisation"
 msgstr "Company contribution"
 
-#: ../includes/i18n.inc.php:78
+#: ../includes/i18n.inc.php:95
 msgid "Donation in kind"
 msgstr "Donation in kind"
 
-#: ../includes/i18n.inc.php:79
+#: ../includes/i18n.inc.php:96
 msgid "Donation in money"
 msgstr "Donation in money"
 
-#: ../includes/i18n.inc.php:80
+#: ../includes/i18n.inc.php:97
 msgid "Partnership"
 msgstr "Partnership"
 
-#: ../includes/i18n.inc.php:81
+#: ../includes/i18n.inc.php:98
 msgid "french"
 msgstr "french"
 
-#: ../includes/i18n.inc.php:82
+#: ../includes/i18n.inc.php:99
 msgid "english"
 msgstr "english"
 
-#: ../includes/i18n.inc.php:83
+#: ../includes/i18n.inc.php:100
 msgid "spanish"
 msgstr "spanish"
+
+#: ../configurer_fiches.php:41
+msgid "- The field Name cannot be void."
+msgstr "- The field Name cannot be void."
+
+#: ../configurer_fiches.php:97
+msgid "Profile configuration"
+msgstr "Profile configuration"
+
+#: ../configurer_fiches.php:103
+msgid "Visibility"
+msgstr "Visibility"
+
+#: ../configurer_fiches.php:104 ../gestion_contributions.php:274
+msgid "Type"
+msgstr "Type"
+
+#: ../configurer_fiches.php:105
+msgid "Size"
+msgstr "Size"
+
+#: ../configurer_fiches.php:106 ../gestion_contributions.php:308
+#: ../templates/default/gestion_adherents.tpl:81
+msgid "Actions"
+msgstr "Actions"
+
+#: ../configurer_fiches.php:111
+msgid ""
+"Do you really want to delete this category ? All associated data will be "
+"deleted as well."
+msgstr ""
+"Do you really want to delete this category ? All associated data will be "
+"deleted as well."
+
+#: ../configurer_fiches.php:120 ../configurer_fiches.php:184
+msgid "all"
+msgstr "all"
+
+#: ../configurer_fiches.php:121 ../configurer_fiches.php:185
+msgid "admin"
+msgstr "admin"
+
+#: ../configurer_fiches.php:122 ../configurer_fiches.php:128
+msgid "unknown"
+msgstr "unknown"
+
+#: ../configurer_fiches.php:125 ../configurer_fiches.php:190
+msgid "separator"
+msgstr "separator"
+
+#: ../configurer_fiches.php:126 ../configurer_fiches.php:191
+msgid "free text"
+msgstr "free text"
+
+#: ../configurer_fiches.php:127 ../configurer_fiches.php:192
+msgid "field"
+msgstr "field"
+
+#: ../configurer_fiches.php:150
+msgid "[top]"
+msgstr "[top]"
+
+#: ../configurer_fiches.php:163
+msgid "[bottom]"
+msgstr "[bottom]"
+
+#: ../configurer_fiches.php:198
+msgid "Add"
+msgstr "Add"
+
+#: ../preferences.php:112 ../ajouter_adherent.php:166
+msgid "- Mandatory field empty."
+msgstr "- Mandatory field empty."
+
+#: ../preferences.php:121
+msgid "- Non-valid language!"
+msgstr "- Non-valid language!"
+
+#: ../preferences.php:128 ../ajouter_adherent.php:186
+msgid "- Non-valid E-Mail address!"
+msgstr "- Non-valid E-Mail address!"
+
+#: ../preferences.php:136 ../ajouter_adherent.php:207
+msgid "- The username must be composed of at least 4 characters!"
+msgstr "- The username must be composed of at least 4 characters!"
+
+#: ../preferences.php:148 ../ajouter_adherent.php:117
+#: ../ajouter_adherent.php:219
+msgid "- This username is already used by another member !"
+msgstr "- This username is already used by another member !"
+
+#: ../preferences.php:171
+msgid "- The numbers and measures have to be integers!"
+msgstr "- The numbers and measures have to be integers!"
+
+#: ../preferences.php:177 ../ajouter_adherent.php:227
+msgid "- The password must be of at least 4 characters!"
+msgstr "- The password must be of at least 4 characters!"
+
+#: ../preferences.php:245 ../ajouter_adherent.php:353
+msgid ""
+"- The photo seems not to be transferred correctly. But registration has been "
+"made."
+msgstr ""
+"- The photo seems not to be transferred correctly. But registration has been "
+"made."
+
+#: ../preferences.php:254 ../ajouter_adherent.php:360
+msgid ""
+"- The transfered file isn't a valid image (GIF, PNG or JPEG). But "
+"registration has been made."
+msgstr ""
+"- The transfered file isn't a valid image (GIF, PNG or JPEG). But "
+"registration has been made."
+
+#: ../preferences.php:256 ../ajouter_adherent.php:362
+msgid ""
+"- The transfered file isn't a valid image (PNG or JPEG). But registration "
+"has been made."
+msgstr ""
+"- The transfered file isn't a valid image (PNG or JPEG). But registration "
+"has been made."
+
+#: ../preferences.php:345
+msgid "General information:"
+msgstr "General information:"
+
+#: ../preferences.php:348
+msgid "Name (corporate name) of the association:"
+msgstr "Name (corporate name) of the association:"
+
+#: ../preferences.php:352
+msgid "Logo:"
+msgstr "Logo:"
+
+#: ../preferences.php:370 ../voir_adherent.php:137 ../voir_adherent.php:143
+#: ../ajouter_adherent.php:568
+msgid "Picture"
+msgstr "Picture"
+
+#: ../preferences.php:371 ../ajouter_adherent.php:594
+msgid "Delete the picture"
+msgstr "Delete the picture"
+
+#: ../preferences.php:404
+msgid "Galette's parameters:"
+msgstr "Galette's parameters:"
+
+#: ../preferences.php:429
+msgid "Lines / Page:"
+msgstr "Lines / Page:"
+
+#: ../preferences.php:430 ../preferences.php:458 ../preferences.php:462
+#: ../preferences.php:466 ../preferences.php:470 ../preferences.php:474
+#: ../preferences.php:478 ../preferences.php:482 ../preferences.php:486
+msgid "(Integer)"
+msgstr "(Integer)"
+
+#: ../preferences.php:433
+msgid "Logging level:"
+msgstr "Logging level:"
+
+#: ../preferences.php:436
+msgid "Disabled"
+msgstr "Disabled"
+
+#: ../preferences.php:437
+msgid "Normal"
+msgstr "Normal"
+
+#: ../preferences.php:438
+msgid "Detailed"
+msgstr "Detailed"
+
+#: ../preferences.php:443
+msgid "Mail settings:"
+msgstr "Mail settings:"
+
+#: ../preferences.php:446
+msgid "Sender name:"
+msgstr "Sender name:"
+
+#: ../preferences.php:450
+msgid "Sender Email:"
+msgstr "Sender Email:"
+
+#: ../preferences.php:454
+msgid "Label generation parameters:"
+msgstr "Label generation parameters:"
+
+#: ../preferences.php:457
+msgid "Margins:"
+msgstr "Margins:"
+
+#: ../preferences.php:461
+msgid "Horizontal spacing:"
+msgstr "Horizontal spacing:"
+
+#: ../preferences.php:465
+msgid "Vertical spacing:"
+msgstr "Vertical spacing:"
+
+#: ../preferences.php:469
+msgid "Label width:"
+msgstr "Label width:"
+
+#: ../preferences.php:473
+msgid "Label height:"
+msgstr "Label height:"
+
+#: ../preferences.php:477
+msgid "Number of label columns:"
+msgstr "Number of label columns:"
+
+#: ../preferences.php:481
+msgid "Number of label lines:"
+msgstr "Number of label lines:"
+
+#: ../preferences.php:485
+msgid "Font size:"
+msgstr "Font size:"
+
+#: ../preferences.php:489
+msgid "Admin account (independant of members):"
+msgstr "Admin account (independant of members):"
+
+#: ../voir_adherent.php:97 ../etiquettes_adherents.php:83
+msgid "Mr."
+msgstr "Mr."
+
+#: ../voir_adherent.php:100 ../etiquettes_adherents.php:86
+msgid "Mrs."
+msgstr "Mrs."
+
+#: ../voir_adherent.php:103 ../etiquettes_adherents.php:89
+msgid "Miss."
+msgstr "Miss."
+
+#: ../voir_adherent.php:159 ../ajouter_adherent.php:656
+msgid "Status:"
+msgstr "Status:"
 
 #: ../voir_adherent.php:167 ../ajouter_adherent.php:667
 msgid "libelle_statut"
 msgstr "libelle_statut"
 
+#: ../voir_adherent.php:178 ../voir_adherent.php:190 ../voir_adherent.php:194
+msgid "Yes"
+msgstr "Yes"
+
+#: ../voir_adherent.php:178 ../voir_adherent.php:190 ../voir_adherent.php:194
+msgid "No"
+msgstr "No"
+
+#: ../voir_adherent.php:185 ../ajouter_adherent.php:646
+msgid "Account:"
+msgstr "Account:"
+
+#: ../voir_adherent.php:186 ../ajouter_adherent.php:649
+msgid "Active"
+msgstr "Active"
+
+#: ../voir_adherent.php:186 ../ajouter_adherent.php:650
+msgid "Inactive"
+msgstr "Inactive"
+
+#: ../voir_adherent.php:189 ../ajouter_adherent.php:678
+msgid "Galette Admin:"
+msgstr "Galette Admin:"
+
+#: ../voir_adherent.php:193 ../ajouter_adherent.php:683
+msgid "Freed of dues:"
+msgstr "Freed of dues:"
+
+#: ../voir_adherent.php:259 ../ajouter_adherent.php:754
+msgid "Creation date:"
+msgstr "Creation date:"
+
+#: ../voir_adherent.php:263 ../ajouter_adherent.php:758
+msgid "Other informations (admin):"
+msgstr "Other informations (admin):"
+
+#: ../voir_adherent.php:267 ../gestion_contributions.php:462
+msgid "[ Add a contribution ]"
+msgstr "[ Add a contribution ]"
+
+#: ../voir_adherent.php:325
+msgid "[ Modification ]"
+msgstr "[ Modification ]"
+
+#: ../voir_adherent.php:325
+msgid "[ Contributions ]"
+msgstr "[ Contributions ]"
+
+#: ../gestion_contributions.php:137
+msgid "Contribution deleted:"
+msgstr "Contribution deleted:"
+
+#: ../gestion_contributions.php:144
+msgid "Management of contributions"
+msgstr "Management of contributions"
+
+#: ../gestion_contributions.php:230
+msgid "Show contributions since"
+msgstr "Show contributions since"
+
+#: ../gestion_contributions.php:232
+msgid "until"
+msgstr "until"
+
+#: ../gestion_contributions.php:239
+msgid "contributions"
+msgstr "contributions"
+
+#: ../gestion_contributions.php:239
+msgid "contribution"
+msgstr "contribution"
+
+#: ../gestion_contributions.php:284
+msgid "Amount"
+msgstr "Amount"
+
+#: ../gestion_contributions.php:294
+msgid "Duration"
+msgstr "Duration"
+
+#: ../gestion_contributions.php:325
+msgid "no contribution"
+msgstr "no contribution"
+
 #: ../gestion_contributions.php:363 ../ajouter_contribution.php:349
 msgid "libelle_type_cotis"
 msgstr "libelle_type_cotis"
+
+#: ../gestion_contributions.php:372
+msgid "Do you really want to delete this contribution of the database ?"
+msgstr "Do you really want to delete this contribution of the database ?"
+
+#: ../gestion_contributions.php:424
+msgid "Late of"
+msgstr "Late of"
+
+#: ../gestion_contributions.php:432 ../gestion_adherents.php:217
+msgid "day remaining"
+msgstr "day remaining"
+
+#: ../gestion_contributions.php:460
+msgid "[ See member profile ]"
+msgstr "[ See member profile ]"
+
+#: ../ajouter_contribution.php:142
+msgid "- Check that all mandatory fields are filled in."
+msgstr "- Check that all mandatory fields are filled in."
+
+#: ../ajouter_contribution.php:201
+msgid "Contribution updated:"
+msgstr "Contribution updated:"
+
+#: ../ajouter_contribution.php:211
+msgid "Add a contribution :"
+msgstr "Add a contribution :"
+
+#: ../ajouter_contribution.php:321
+msgid "-- select a name --"
+msgstr "-- select a name --"
+
+#: ../ajouter_contribution.php:361
+msgid "Extension of adhesion:"
+msgstr "Extension of adhesion:"
+
+#: ../gestion_adherents.php:86
+msgid "Delete the member card (and dues)"
+msgstr "Delete the member card (and dues)"
+
+#: ../etiquettes_adherents.php:121
+msgid "Generation of "
+msgstr "Generation of "
+
+#: ../etiquettes_adherents.php:121
+msgid "label(s)"
+msgstr "label(s)"
 
 #: ../install/index.php:30 ../install/index.php:40
 msgid "Installation mode unknown"
@@ -271,10 +1436,6 @@ msgstr "Host:"
 msgid "User:"
 msgstr "User:"
 
-#: ../install/index.php:302 ../install/index.php:761
-msgid "Password:"
-msgstr "Password:"
-
 #: ../install/index.php:308
 msgid "Database:"
 msgstr "Database:"
@@ -314,10 +1475,6 @@ msgid ""
 msgstr ""
 "Database can't be reached. Please go back to enter the connection parameters "
 "again."
-
-#: ../install/index.php:375
-msgid "Go back"
-msgstr "Go back"
 
 #: ../install/index.php:386
 msgid "Database exists and connection parameters are OK."
@@ -481,10 +1638,6 @@ msgstr "Admin settings"
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr "Please chose the parameters of the admin account on Galette"
 
-#: ../install/index.php:755
-msgid "Username:"
-msgstr "Username:"
-
 #: ../install/index.php:785
 msgid "Step 8 - Admin parameters"
 msgstr "Step 8 - Admin parameters"
@@ -557,856 +1710,63 @@ msgstr "Step 10 - End of the installation"
 msgid "Step 10 - End of the update"
 msgstr "Step 10 - End of the update"
 
-#~ msgid "Subscribe"
-#~ msgstr "Subscribe"
+#: ../ajouter_adherent.php:191
+msgid ""
+"- You can't send a confirmation by email if the member hasn't got an address!"
+msgstr ""
+"- You can't send a confirmation by email if the member hasn't got an address!"
 
-#~ msgid "Admin"
-#~ msgstr "Admin"
+#: ../ajouter_adherent.php:196
+msgid "- Non-valid Website address! Maybe you've skipped the http:// ?"
+msgstr "- Non-valid Website address! Maybe you've skipped the http:// ?"
 
-#~ msgid "Login"
-#~ msgstr "Login"
+#: ../ajouter_adherent.php:259
+msgid "Member card update:"
+msgstr "Member card update:"
+
+#: ../ajouter_adherent.php:278
+msgid "Member card added:"
+msgstr "Member card added:"
+
+#: ../ajouter_adherent.php:586
+msgid "Photo:"
+msgstr "Photo:"
+
+#: ../ajouter_adherent.php:750
+msgid "Send a mail:"
+msgstr "Send a mail:"
+
+#: ../ajouter_adherent.php:751
+msgid ""
+"(the member will receive his username and password by email, if he has an "
+"address.)"
+msgstr ""
+"(the member will receive his username and password by email, if he has an "
+"address.)"
+
+#: ../ajouter_adherent.php:759
+msgid "This comment is only displayed for admins."
+msgstr "This comment is only displayed for admins."
+
+#: ../ajouter_adherent.php:772
+msgid "This comment is reserved to the member."
+msgstr "This comment is reserved to the member."
+
+#: ../templates/default/index.tpl:18
+msgid "Login"
+msgstr "Login"
+
+#: ../templates/default/index.tpl:33
+msgid "Lost your password?"
+msgstr "Lost your password?"
+
+#: ../templates/default/gestion_adherents.tpl:1
+msgid "Management of members"
+msgstr "Management of members"
+
+#: ../templates/default/gestion_adherents.tpl:46
+msgid "Nickname"
+msgstr "Nickname"
 
 #~ msgid "Authentication failed. Login:"
 #~ msgstr "Authentication failed. Login:"
-
-#~ msgid "Lost your password?"
-#~ msgstr "Lost your password?"
-
-#~ msgid "Password misrepeated: "
-#~ msgstr "Password misrepeated: "
-
-#~ msgid "Sorry, "
-#~ msgstr "Sorry, "
-
-#~ msgid ""
-#~ " is a username already used by another member, please select another one\n"
-#~ msgstr ""
-#~ " is a username already used by another member, please select another one\n"
-
-#~ msgid "Self_subscription as a member:"
-#~ msgstr "Self_subscription as a member:"
-
-#~ msgid "Your Galette identifiers"
-#~ msgstr "Your Galette identifiers"
-
-#~ msgid "Hello,"
-#~ msgstr "Hello,"
-
-#~ msgid ""
-#~ "You've just been subscribed on the members management system of the "
-#~ "association."
-#~ msgstr ""
-#~ "You've just been subscribed on the members management system of the "
-#~ "association."
-
-#~ msgid ""
-#~ "It is now possible to follow in real time the state of your subscription"
-#~ msgstr ""
-#~ "It is now possible to follow in real time the state of your subscription"
-
-#~ msgid "and to update your preferences from the web interface."
-#~ msgstr "and to update your preferences from the web interface."
-
-#~ msgid "Please login at this address:"
-#~ msgstr "Please login at this address:"
-
-#~ msgid "See you soon!"
-#~ msgstr "See you soon!"
-
-#~ msgid "(this mail was sent automatically)"
-#~ msgstr "(this mail was sent automatically)"
-
-#~ msgid "Member Profile"
-#~ msgstr "Member Profile"
-
-#~ msgid "modification"
-#~ msgstr "modification"
-
-#~ msgid "creation"
-#~ msgstr "creation"
-
-#~ msgid "The form is not valid because some fields"
-#~ msgstr "The form is not valid because some fields"
-
-#~ msgid "are mandatory but still empty, please fill them:"
-#~ msgstr "are mandatory but still empty, please fill them:"
-
-#~ msgid "- ERROR -"
-#~ msgstr "- ERROR -"
-
-#~ msgid "- WARNING -"
-#~ msgstr "- WARNING -"
-
-#~ msgid "Title:"
-#~ msgstr "Title:"
-
-#~ msgid "Miss"
-#~ msgstr "Miss"
-
-#~ msgid "Mrs"
-#~ msgstr "Mrs"
-
-#~ msgid "Mister"
-#~ msgstr "Mister"
-
-#~ msgid "Name:"
-#~ msgstr "Name:"
-
-#~ msgid "You can prepare a picture to upload after sending"
-#~ msgstr "You can prepare a picture to upload after sending"
-
-#~ msgid "your fee."
-#~ msgstr "your fee."
-
-#~ msgid "First name:"
-#~ msgstr "First name:"
-
-#~ msgid "Nickname:"
-#~ msgstr "Nickname:"
-
-#~ msgid "birth date:"
-#~ msgstr "birth date:"
-
-#~ msgid "(dd/mm/yyyy format)"
-#~ msgstr "(dd/mm/yyyy format)"
-
-#~ msgid "Profession:"
-#~ msgstr "Profession:"
-
-#~ msgid "Be visible in the<br /> members list :"
-#~ msgstr "Be visible in the<br /> members list :"
-
-#~ msgid "Language:"
-#~ msgstr "Language:"
-
-#~ msgid "Address:"
-#~ msgstr "Address:"
-
-#~ msgid "Zip Code:"
-#~ msgstr "Zip Code:"
-
-#~ msgid "City:"
-#~ msgstr "City:"
-
-#~ msgid "Country:"
-#~ msgstr "Country:"
-
-#~ msgid "Phone:"
-#~ msgstr "Phone:"
-
-#~ msgid "Mobile phone:"
-#~ msgstr "Mobile phone:"
-
-#~ msgid "E-Mail:"
-#~ msgstr "E-Mail:"
-
-#~ msgid "Website:"
-#~ msgstr "Website:"
-
-#~ msgid "ICQ:"
-#~ msgstr "ICQ:"
-
-#~ msgid "Jabber:"
-#~ msgstr "Jabber:"
-
-#~ msgid "MSN:"
-#~ msgstr "MSN:"
-
-#~ msgid "Id GNUpg (GPG):"
-#~ msgstr "Id GNUpg (GPG):"
-
-#~ msgid "fingerprint:"
-#~ msgstr "fingerprint:"
-
-#~ msgid "(at least 4 characters)"
-#~ msgstr "(at least 4 characters)"
-
-#~ msgid "Please repeat in the field the password shown in the image."
-#~ msgstr "Please repeat in the field the password shown in the image."
-
-#~ msgid "Other informations:"
-#~ msgstr "Other informations:"
-
-#~ msgid "Save"
-#~ msgstr "Save"
-
-#~ msgid "NB : The mandatory fields are in"
-#~ msgstr "NB : The mandatory fields are in"
-
-#~ msgid "red"
-#~ msgstr "red"
-
-#~ msgid "Please type an object for the message."
-#~ msgstr "Please type an object for the message."
-
-#~ msgid "Please enter a message."
-#~ msgstr "Please enter a message."
-
-#~ msgid "Please select at least one member."
-#~ msgstr "Please select at least one member."
-
-#~ msgid "Generate labels"
-#~ msgstr "Generate labels"
-
-#~ msgid "Mailing"
-#~ msgstr "Mailing"
-
-#~ msgid "members"
-#~ msgstr "members"
-
-#~ msgid "member"
-#~ msgstr "member"
-
-#~ msgid "Display:"
-#~ msgstr "Display:"
-
-#~ msgid "All members"
-#~ msgstr "All members"
-
-#~ msgid "Members up to date"
-#~ msgstr "Members up to date"
-
-#~ msgid "Close expiries"
-#~ msgstr "Close expiries"
-
-#~ msgid "Latecomers"
-#~ msgstr "Latecomers"
-
-#~ msgid "All the accounts"
-#~ msgstr "All the accounts"
-
-#~ msgid "Active accounts"
-#~ msgstr "Active accounts"
-
-#~ msgid "Inactive accounts"
-#~ msgstr "Inactive accounts"
-
-#~ msgid "Filter"
-#~ msgstr "Filter"
-
-#~ msgid "Name"
-#~ msgstr "Name"
-
-#~ msgid "E-Mail"
-#~ msgstr "E-Mail"
-
-#~ msgid "Status"
-#~ msgstr "Status"
-
-#~ msgid "State of dues"
-#~ msgstr "State of dues"
-
-#~ msgid "no member"
-#~ msgstr "no member"
-
-#~ msgid "Freed of dues"
-#~ msgstr "Freed of dues"
-
-#~ msgid "Never contributed"
-#~ msgstr "Never contributed"
-
-#~ msgid "Last day!"
-#~ msgstr "Last day!"
-
-#~ msgid "Late of "
-#~ msgstr "Late of "
-
-#~ msgid "days"
-#~ msgstr "days"
-
-#~ msgid "since"
-#~ msgstr "since"
-
-#~ msgid "days remaining"
-#~ msgstr "days remaining"
-
-#~ msgid "ending on"
-#~ msgstr "ending on"
-
-#~ msgid "[M]"
-#~ msgstr "[M]"
-
-#~ msgid "[W]"
-#~ msgstr "[W]"
-
-#~ msgid "[admin]"
-#~ msgstr "[admin]"
-
-#~ msgid "[mod]"
-#~ msgstr "[mod]"
-
-#~ msgid "[$]"
-#~ msgstr "[$]"
-
-#~ msgid ""
-#~ "Do you really want to delete this member from the base, this will delete "
-#~ "also the history of her fees. To avoid this you can just unactivate her "
-#~ "account.\n"
-#~ "\n"
-#~ "Do you still want to delete this member ?"
-#~ msgstr ""
-#~ "Do you really want to delete this member from the base, this will delete "
-#~ "also the history of her fees. To avoid this you can just unactivate her "
-#~ "account.\n"
-#~ "\n"
-#~ "Do you still want to delete this member ?"
-
-#~ msgid "[del]"
-#~ msgstr "[del]"
-
-#~ msgid "[ Select / unselect all ]"
-#~ msgstr "[ Select / unselect all ]"
-
-#~ msgid "Object:"
-#~ msgstr "Object:"
-
-#~ msgid "Message:"
-#~ msgstr "Message:"
-
-#~ msgid "Preview"
-#~ msgstr "Preview"
-
-#~ msgid ""
-#~ "Don't forget to contact the members who don't have an email address by "
-#~ "another way."
-#~ msgstr ""
-#~ "Don't forget to contact the members who don't have an email address by "
-#~ "another way."
-
-#~ msgid "done!"
-#~ msgstr "done!"
-
-#~ msgid "(preview)"
-#~ msgstr "(preview)"
-
-#~ msgid "Recipients of the mailing:"
-#~ msgstr "Recipients of the mailing:"
-
-#~ msgid "Send of a mailing titled:"
-#~ msgstr "Send of a mailing titled:"
-
-#~ msgid "recipients"
-#~ msgstr "recipients"
-
-#~ msgid "Send"
-#~ msgstr "Send"
-
-#~ msgid "Members who can't be reachable by e-mail:"
-#~ msgstr "Members who can't be reachable by e-mail:"
-
-#~ msgid "Profile"
-#~ msgstr "Profile"
-
-#~ msgid "Flush the logs"
-#~ msgstr "Flush the logs"
-
-#~ msgid "Logs"
-#~ msgstr "Logs"
-
-#~ msgid "lines"
-#~ msgstr "lines"
-
-#~ msgid "line"
-#~ msgstr "line"
-
-#~ msgid "Pages:"
-#~ msgstr "Pages:"
-
-#~ msgid "Date"
-#~ msgstr "Date"
-
-#~ msgid "IP"
-#~ msgstr "IP"
-
-#~ msgid "Member"
-#~ msgstr "Member"
-
-#~ msgid "Description"
-#~ msgstr "Description"
-
-#~ msgid "logs are empty"
-#~ msgstr "logs are empty"
-
-#~ msgid "- Non valid date!"
-#~ msgstr "- Non valid date!"
-
-#~ msgid "- Wrong date format (dd/mm/yyyy)!"
-#~ msgstr "- Wrong date format (dd/mm/yyyy)!"
-
-#~ msgid "- The duration must be an integer!"
-#~ msgstr "- The duration must be an integer!"
-
-#~ msgid "- The amount must be an integer!"
-#~ msgstr "- The amount must be an integer!"
-
-#~ msgid "Add a self-contribution:"
-#~ msgstr "Add a self-contribution:"
-
-#~ msgid "Contribution card"
-#~ msgstr "Contribution card"
-
-#~ msgid "Contributor:"
-#~ msgstr "Contributor:"
-
-#~ msgid "Contribution type:"
-#~ msgstr "Contribution type:"
-
-#~ msgid "Annual fee (to be paid)"
-#~ msgstr "Annual fee (to be paid)"
-
-#~ msgid "Amount:"
-#~ msgstr "Amount:"
-
-#~ msgid "Duration:"
-#~ msgstr "Duration:"
-
-#~ msgid "months"
-#~ msgstr "months"
-
-#~ msgid "Date of contribution:"
-#~ msgstr "Date of contribution:"
-
-#~ msgid "Comments:"
-#~ msgstr "Comments:"
-
-#~ msgid "empty login"
-#~ msgstr "empty login"
-
-#~ msgid "this login doesn't exist"
-#~ msgstr "this login doesn't exist"
-
-#~ msgid "Nonexistent login sent via the lost password form. Login:"
-#~ msgstr "Nonexistent login sent via the lost password form. Login:"
-
-#~ msgid ""
-#~ "This account doesn't have a valid email address. Please contact an "
-#~ "administrator."
-#~ msgstr ""
-#~ "This account doesn't have a valid email address. Please contact an "
-#~ "administrator."
-
-#~ msgid "Someone asked to recover his password but had no email. Login:"
-#~ msgstr "Someone asked to recover his password but had no email. Login:"
-
-#~ msgid "Someone (probably you) asked to recover your password."
-#~ msgstr "Someone (probably you) asked to recover your password."
-
-#~ msgid "Password sent. Login:"
-#~ msgstr "Password sent. Login:"
-
-#~ msgid "A problem happened while sending password for account:"
-#~ msgstr "A problem happened while sending password for account:"
-
-#~ msgid "Password recovery"
-#~ msgstr "Password recovery"
-
-#~ msgid "Send me my password"
-#~ msgstr "Send me my password"
-
-#~ msgid "Back to login page"
-#~ msgstr "Back to login page"
-
-#~ msgid "Page displayed in"
-#~ msgstr "Page displayed in"
-
-#~ msgid "seconds."
-#~ msgstr "seconds."
-
-#~ msgid "Navigation"
-#~ msgstr "Navigation"
-
-#~ msgid "List of members"
-#~ msgstr "List of members"
-
-#~ msgid "List of contributions"
-#~ msgstr "List of contributions"
-
-#~ msgid "Add a member"
-#~ msgstr "Add a member"
-
-#~ msgid "Add a contribution"
-#~ msgstr "Add a contribution"
-
-#~ msgid "Do a mailing"
-#~ msgstr "Do a mailing"
-
-#~ msgid "My information"
-#~ msgstr "My information"
-
-#~ msgid "My contributions"
-#~ msgstr "My contributions"
-
-#~ msgid "Configuration"
-#~ msgstr "Configuration"
-
-#~ msgid "Settings"
-#~ msgstr "Settings"
-
-#~ msgid "Configure member forms"
-#~ msgstr "Configure member forms"
-
-#~ msgid "Legend"
-#~ msgstr "Legend"
-
-#~ msgid "Man"
-#~ msgstr "Man"
-
-#~ msgid "Woman"
-#~ msgstr "Woman"
-
-#~ msgid "[Mail]"
-#~ msgstr "[Mail]"
-
-#~ msgid "Send a mail"
-#~ msgstr "Send a mail"
-
-#~ msgid "Modification"
-#~ msgstr "Modification"
-
-#~ msgid "Contributions"
-#~ msgstr "Contributions"
-
-#~ msgid "Deletion"
-#~ msgstr "Deletion"
-
-#~ msgid "Active account"
-#~ msgstr "Active account"
-
-#~ msgid "Inactive account"
-#~ msgstr "Inactive account"
-
-#~ msgid "Membership in order"
-#~ msgstr "Membership in order"
-
-#~ msgid "Membership will expire soon (&lt;30d)"
-#~ msgstr "Membership will expire soon (&lt;30d)"
-
-#~ msgid "Lateness in fee"
-#~ msgstr "Lateness in fee"
-
-#~ msgid "Contribution"
-#~ msgstr "Contribution"
-
-#~ msgid "Gift"
-#~ msgstr "Gift"
-
-#~ msgid "- The field Name cannot be void."
-#~ msgstr "- The field Name cannot be void."
-
-#~ msgid "Profile configuration"
-#~ msgstr "Profile configuration"
-
-#~ msgid "Visibility"
-#~ msgstr "Visibility"
-
-#~ msgid "Type"
-#~ msgstr "Type"
-
-#~ msgid "Size"
-#~ msgstr "Size"
-
-#~ msgid "Actions"
-#~ msgstr "Actions"
-
-#~ msgid ""
-#~ "Do you really want to delete this category ? All associated data will be "
-#~ "deleted as well."
-#~ msgstr ""
-#~ "Do you really want to delete this category ? All associated data will be "
-#~ "deleted as well."
-
-#~ msgid "all"
-#~ msgstr "all"
-
-#~ msgid "admin"
-#~ msgstr "admin"
-
-#~ msgid "unknown"
-#~ msgstr "unknown"
-
-#~ msgid "separator"
-#~ msgstr "separator"
-
-#~ msgid "free text"
-#~ msgstr "free text"
-
-#~ msgid "field"
-#~ msgstr "field"
-
-#~ msgid "[top]"
-#~ msgstr "[top]"
-
-#~ msgid "[bottom]"
-#~ msgstr "[bottom]"
-
-#~ msgid "Add"
-#~ msgstr "Add"
-
-#~ msgid "- Mandatory field empty."
-#~ msgstr "- Mandatory field empty."
-
-#~ msgid "- Non-valid language!"
-#~ msgstr "- Non-valid language!"
-
-#~ msgid "- Non-valid E-Mail address!"
-#~ msgstr "- Non-valid E-Mail address!"
-
-#~ msgid "- The username must be composed of at least 4 characters!"
-#~ msgstr "- The username must be composed of at least 4 characters!"
-
-#~ msgid "- This username is already used by another member !"
-#~ msgstr "- This username is already used by another member !"
-
-#~ msgid "- The numbers and measures have to be integers!"
-#~ msgstr "- The numbers and measures have to be integers!"
-
-#~ msgid "- The password must be of at least 4 characters!"
-#~ msgstr "- The password must be of at least 4 characters!"
-
-#~ msgid ""
-#~ "- The photo seems not to be transferred correctly. But registration has "
-#~ "been made."
-#~ msgstr ""
-#~ "- The photo seems not to be transferred correctly. But registration has "
-#~ "been made."
-
-#~ msgid ""
-#~ "- The transfered file isn't a valid image (GIF, PNG or JPEG). But "
-#~ "registration has been made."
-#~ msgstr ""
-#~ "- The transfered file isn't a valid image (GIF, PNG or JPEG). But "
-#~ "registration has been made."
-
-#~ msgid ""
-#~ "- The transfered file isn't a valid image (PNG or JPEG). But registration "
-#~ "has been made."
-#~ msgstr ""
-#~ "- The transfered file isn't a valid image (PNG or JPEG). But registration "
-#~ "has been made."
-
-#~ msgid "General information:"
-#~ msgstr "General information:"
-
-#~ msgid "Name (corporate name) of the association:"
-#~ msgstr "Name (corporate name) of the association:"
-
-#~ msgid "Logo:"
-#~ msgstr "Logo:"
-
-#~ msgid "Picture"
-#~ msgstr "Picture"
-
-#~ msgid "Delete the picture"
-#~ msgstr "Delete the picture"
-
-#~ msgid "Galette's parameters:"
-#~ msgstr "Galette's parameters:"
-
-#~ msgid "Lines / Page:"
-#~ msgstr "Lines / Page:"
-
-#~ msgid "(Integer)"
-#~ msgstr "(Integer)"
-
-#~ msgid "Logging level:"
-#~ msgstr "Logging level:"
-
-#~ msgid "Disabled"
-#~ msgstr "Disabled"
-
-#~ msgid "Normal"
-#~ msgstr "Normal"
-
-#~ msgid "Detailed"
-#~ msgstr "Detailed"
-
-#~ msgid "Mail settings:"
-#~ msgstr "Mail settings:"
-
-#~ msgid "Sender name:"
-#~ msgstr "Sender name:"
-
-#~ msgid "Sender Email:"
-#~ msgstr "Sender Email:"
-
-#~ msgid "Label generation parameters:"
-#~ msgstr "Label generation parameters:"
-
-#~ msgid "Margins:"
-#~ msgstr "Margins:"
-
-#~ msgid "Horizontal spacing:"
-#~ msgstr "Horizontal spacing:"
-
-#~ msgid "Vertical spacing:"
-#~ msgstr "Vertical spacing:"
-
-#~ msgid "Label width:"
-#~ msgstr "Label width:"
-
-#~ msgid "Label height:"
-#~ msgstr "Label height:"
-
-#~ msgid "Number of label columns:"
-#~ msgstr "Number of label columns:"
-
-#~ msgid "Number of label lines:"
-#~ msgstr "Number of label lines:"
-
-#~ msgid "Font size:"
-#~ msgstr "Font size:"
-
-#~ msgid "Admin account (independant of members):"
-#~ msgstr "Admin account (independant of members):"
-
-#~ msgid "Mr."
-#~ msgstr "Mr."
-
-#~ msgid "Mrs."
-#~ msgstr "Mrs."
-
-#~ msgid "Miss."
-#~ msgstr "Miss."
-
-#~ msgid "Status:"
-#~ msgstr "Status:"
-
-#~ msgid "Yes"
-#~ msgstr "Yes"
-
-#~ msgid "No"
-#~ msgstr "No"
-
-#~ msgid "Account:"
-#~ msgstr "Account:"
-
-#~ msgid "Active"
-#~ msgstr "Active"
-
-#~ msgid "Inactive"
-#~ msgstr "Inactive"
-
-#~ msgid "Galette Admin:"
-#~ msgstr "Galette Admin:"
-
-#~ msgid "Freed of dues:"
-#~ msgstr "Freed of dues:"
-
-#~ msgid "Creation date:"
-#~ msgstr "Creation date:"
-
-#~ msgid "Other informations (admin):"
-#~ msgstr "Other informations (admin):"
-
-#~ msgid "[ Add a contribution ]"
-#~ msgstr "[ Add a contribution ]"
-
-#~ msgid "[ Modification ]"
-#~ msgstr "[ Modification ]"
-
-#~ msgid "[ Contributions ]"
-#~ msgstr "[ Contributions ]"
-
-#~ msgid "Contribution deleted:"
-#~ msgstr "Contribution deleted:"
-
-#~ msgid "Management of contributions"
-#~ msgstr "Management of contributions"
-
-#~ msgid "Show contributions since"
-#~ msgstr "Show contributions since"
-
-#~ msgid "until"
-#~ msgstr "until"
-
-#~ msgid "contributions"
-#~ msgstr "contributions"
-
-#~ msgid "contribution"
-#~ msgstr "contribution"
-
-#~ msgid "Amount"
-#~ msgstr "Amount"
-
-#~ msgid "Duration"
-#~ msgstr "Duration"
-
-#~ msgid "no contribution"
-#~ msgstr "no contribution"
-
-#~ msgid "Do you really want to delete this contribution of the database ?"
-#~ msgstr "Do you really want to delete this contribution of the database ?"
-
-#~ msgid "Late of"
-#~ msgstr "Late of"
-
-#~ msgid "day remaining"
-#~ msgstr "day remaining"
-
-#~ msgid "[ See member profile ]"
-#~ msgstr "[ See member profile ]"
-
-#~ msgid "- Check that all mandatory fields are filled in."
-#~ msgstr "- Check that all mandatory fields are filled in."
-
-#~ msgid "Contribution updated:"
-#~ msgstr "Contribution updated:"
-
-#~ msgid "Add a contribution :"
-#~ msgstr "Add a contribution :"
-
-#~ msgid "-- select a name --"
-#~ msgstr "-- select a name --"
-
-#~ msgid "Extension of adhesion:"
-#~ msgstr "Extension of adhesion:"
-
-#~ msgid "Delete the member card (and dues)"
-#~ msgstr "Delete the member card (and dues)"
-
-#~ msgid "Management of members"
-#~ msgstr "Management of members"
-
-#~ msgid "Nickname"
-#~ msgstr "Nickname"
-
-#~ msgid "Generation of "
-#~ msgstr "Generation of "
-
-#~ msgid "label(s)"
-#~ msgstr "label(s)"
-
-#~ msgid ""
-#~ "- You can't send a confirmation by email if the member hasn't got an "
-#~ "address!"
-#~ msgstr ""
-#~ "- You can't send a confirmation by email if the member hasn't got an "
-#~ "address!"
-
-#~ msgid "- Non-valid Website address! Maybe you've skipped the http:// ?"
-#~ msgstr "- Non-valid Website address! Maybe you've skipped the http:// ?"
-
-#~ msgid "Member card update:"
-#~ msgstr "Member card update:"
-
-#~ msgid "Member card added:"
-#~ msgstr "Member card added:"
-
-#~ msgid "Photo:"
-#~ msgstr "Photo:"
-
-#~ msgid "Send a mail:"
-#~ msgstr "Send a mail:"
-
-#~ msgid ""
-#~ "(the member will receive his username and password by email, if he has an "
-#~ "address.)"
-#~ msgstr ""
-#~ "(the member will receive his username and password by email, if he has an "
-#~ "address.)"
-
-#~ msgid "This comment is only displayed for admins."
-#~ msgstr "This comment is only displayed for admins."
-
-#~ msgid "This comment is reserved to the member."
-#~ msgstr "This comment is reserved to the member."

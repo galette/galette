@@ -422,9 +422,13 @@ class Smarty_Compiler extends Smarty {
                         (?:\s+(.*))?$
                         ~xs',$template_tag,$match))
                 {
-                        $match[1] = '"'._T($match[2]).'"';
+                        $match[1] = 'trans';
+                        $coin = $match[2];
                         $match[2] = $match[3];
-                        $match[3] = '';
+                        $match[3]=$coin;
+                       /* $match[1] = '"'._T($match[2]).'"';
+                        $match[2] = $match[3];
+                        $match[3] = ''; */
                 }
                 else
                     $this->_syntax_error("unrecognized tag: $template_tag", E_USER_ERROR, __FILE__, __LINE__);
@@ -461,6 +465,13 @@ class Smarty_Compiler extends Smarty {
 
             case 'include_php':
                 return $this->_compile_include_php_tag($tag_args);
+
+            case 'trans':
+                $output="_T(\"".$tag_args."\")";
+                if ($tag_modifier=='')
+                        $output.=";";
+                $this->_parse_modifiers($output, $tag_modifier);
+                return "<?php echo $output ?>";
 
             case 'if':
                 $this->_push_tag('if');
