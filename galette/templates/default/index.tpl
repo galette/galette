@@ -28,11 +28,12 @@
 							<TD><INPUT type="password" name="password"></TD> 
 						</TR> 
 					</TABLE>
-					<INPUT type="submit" name="ident" value="{_T("Login")}"><BR>
+					<INPUT type="submit" value="{_T("Login")}"><BR>
 					<BR>
 					<A HREF="lostpasswd.php">{_T("Lost your password?")}</a>
 				        <BR>
 					<A href="self_adherent.php">{_T("Subscribe")}</A>
+					<INPUT type="hidden" name="ident" value="1">
 				</FORM>
 			</TD>
 		</TR>
