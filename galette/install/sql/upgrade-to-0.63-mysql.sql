@@ -24,4 +24,14 @@ CREATE TABLE galette_adh_info (
     PRIMARY KEY  (id_adh_info)
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS galette_pictures;
+CREATE TABLE `galette_pictures` (
+    `id_adh` int(10) unsigned NOT NULL default '0',
+    `picture` blob NOT NULL,
+    `format` varchar(10) NOT NULL default '',
+    `width` int(10) unsigned NOT NULL default '0',
+    `height` int(10) unsigned NOT NULL default '0',
+    PRIMARY KEY  (`id_adh`)
+) TYPE=MyISAM;
+			
 
