@@ -361,7 +361,7 @@
 <?
 		}
 ?>
-				<A href="voir_adherent.php?id_adh=<? echo $resultat->fields["id_adh"] ?>"><? echo strtoupper(htmlentities($resultat->fields[1],ENT_QUOTES))." ".htmlentities($resultat->fields[2], ENT_QUOTES) ?></A>
+				<A href="voir_adherent.php?id_adh=<? echo $resultat->fields["id_adh"] ?>"><? echo htmlentities(strtoupper($resultat->fields[1]),ENT_QUOTES)." ".htmlentities($resultat->fields[2], ENT_QUOTES) ?></A>
 			</TD> 
 			<TD class="<? echo $row_class ?>" nowrap><? echo htmlentities($resultat->fields[3], ENT_QUOTES) ?></TD> 
 			<TD class="<? echo $row_class ?>" nowrap><? echo _T($resultat->fields[5]) ?></TD> 
