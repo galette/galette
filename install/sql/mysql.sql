@@ -146,3 +146,12 @@ CREATE TABLE `galette_pictures` (
     PRIMARY KEY  (`id_adh`)
 ) TYPE=MyISAM;
 
+-- Table for dynamic translation of strings;
+DROP TABLE galette_l10n;
+CREATE TABLE galette_l10n (
+    text_orig varchar(40) NOT NULL,
+    text_locale varchar(15) NOT NULL,
+    text_nref int(10) NOT NULL default '1',
+    text_trans varchar(100) NOT NULL default '',
+    UNIQUE INDEX (text_orig(20), text_locale(5))
+) TYPE=MyISAM;

@@ -40,10 +40,50 @@
 
 	$form_not_set = ($form_name == '');
 	
-	if ($form_name == '') {
+	if ($form_name == '') { // Select form name or translate strings
+		
+		$text_orig = get_form_value('text_orig', '');
+		if (isset($_POST["trans"]) && isset($text_orig)) {
+			while (list($key, $value) = each($_POST))
+			{
+				if (substr($key, 0, 11) == 'text_trans_')
+				{
+					$trans_lang = substr($key, 11);
+					update_dynamic_translation(&$DB, $text_orig, $languages[$trans_lang], $value, &$error_detected);
+				}
+			}
+		}
 
 		$form_title = '';
 		$tpl->assign("all_forms", $all_forms);
+
+		$all_texts = db_get_all(&$DB, "SELECT DISTINCT(text_orig)
+					       FROM ".PREFIX_DB."l10n
+					       ORDER BY text_orig", &$error_detected);
+		if (is_array($all_texts) && count($all_texts) > 0) {
+			$orig = array();
+			foreach ($all_texts as $idx => $row)
+				$orig[] = $row['text_orig'];
+			if ($text_orig == '')
+				$text_orig = $orig[0];
+			
+			$lang_keys = array();
+			$lang_names = array();
+			$trans = array();
+			$sorted_languages = array_keys($languages);
+			sort($sorted_languages);
+			foreach ($languages as $l => $locale) {
+				$text_trans = get_dynamic_translation(&$DB, $text_orig, $locale);
+				$lang_name = _T($l);
+				$trans[] = array('key'=>$l, 'name'=> $lang_name, 'text'=> $text_trans);
+			}
+			function sort_lang($a, $b) { return strcmp($a['name'], $b['name']); }
+			usort($trans, sort_lang);
+
+			$tpl->assign("orig", $orig);
+			$tpl->assign("trans", $trans);
+		}
+		$tpl->assign("text_orig", $text_orig);
 	
 	} else {
 
@@ -65,6 +105,7 @@
 					  WHERE field_form=$quoted_form_name";
 				$idx = db_get_one(&$DB, $query, &$error_detected);
 				if ($idx != false) {
+					$DB->StartTrans();
 					$quoted_field_name = $DB->qstr($field_name, true);
 					$query = "INSERT INTO $field_types_table
 						    (field_index, field_form, field_name, field_perm, field_type, field_required)
@@ -74,6 +115,8 @@
 						$field_id = get_last_auto_increment(&$DB, $field_types_table, "field_id", &$error_detected);
 						header("location: editer_champ.php?form=$form_name&id=$field_id");
 					}
+					add_dynamic_translation(&$DB, $field_name, &$error_detected);
+					$DB->CompleteTrans();
 				}
 			}
 		}
@@ -115,6 +158,11 @@
 							$contents_table = fixed_values_table_name($field_id);
 							$query_list[] = "DROP TABLE $contents_table";
 						}
+						$query = "SELECT field_name
+							  FROM $field_types_table
+							  WHERE field_id=$field_id";
+						$field_name = db_get_one(&$DB, $query, &$error_detected);
+						delete_dynamic_translation(&$DB, $field_name, &$error_detected);
 					}
 					elseif ($action != "")
 					{
@@ -162,10 +210,10 @@
 		$tpl->assign("field_type_names", $field_type_names);
 		
 		$tpl->assign("dyn_fields",$dyn_fields);
-		$tpl->assign("error_detected",$error_detected);
 	
 	} // $form_name == ''
 
+	$tpl->assign("error_detected",$error_detected);
 	$tpl->assign("form_name", $form_name);
 	$tpl->assign("form_title", $form_title);
 

@@ -89,7 +89,7 @@
 
 	function parse_db_result($DB, $result, $error_detected, $query) {
 		if ($result == false)
-			$error_detected[] = _T("- SQL error: [$query]").$DB->ErrorMsg();
+			$error_detected[] = _T("- SQL error: ")."[$query]".$DB->ErrorMsg();
 		return $result;
 	}
 
@@ -99,6 +99,14 @@
 
 	function db_get_one($DB, $query, $error_detected) {
 		return parse_db_result($DB, $DB->GetOne($query), &$error_detected, $query);
+	}
+
+	function db_get_row($DB, $query, $error_detected) {
+		return parse_db_result($DB, $DB->GetRow($query), &$error_detected, $query);
+	}
+
+	function db_get_all($DB, $query, $error_detected) {
+		return parse_db_result($DB, $DB->GetAll($query), &$error_detected, $query);
 	}
 
 	function db_boolean($val) {

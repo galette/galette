@@ -67,6 +67,14 @@
 			$duplicate = $DB->GetOne($query);
 			if ($duplicate != 0)
 				$error_detected[] = _T("- Field name already used.");
+			$query = "SELECT field_name
+				  FROM $field_types_table
+				  WHERE field_id=$field_id";
+			$old_field_name = db_get_one(&$DB, $query, &$error_detected);
+			if ($old_field_name && $field_name != $old_field_name) {
+				add_dynamic_translation(&$DB, $field_name, &$error_detected);
+				delete_dynamic_translation(&$DB, $old_field_name, &$error_detected);
+			}
 			if (count($error_detected)==0) {
 				$query = "UPDATE $field_types_table
 					  SET field_name=$quoted_field_name,
