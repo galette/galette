@@ -1,0 +1,49 @@
+Changes
+-------
+
+O.60 -> 0.61
+
+- Bugfix in member edition form (admin)
+- Merged ajouter_adherent.php and gestion_contributions.php (member edition)
+- Table prefixes are now allowed
+- Removed all eval() functions (potentially dangerous)
+- Picture resizing if GD is available
+- HTML equivalents in members' names were badly displayed
+- Go back to the member's contributions after adding one
+- "1 days left" was not correct ;)
+- Date filter added in contribution listing
+- Correction of a few spelling mistake
+- Navigation links when on a member's contributions list added
+- Clicking on a member's name in the contributions list shows his
+  contributions intead of his profile
+- Lost password recovery added
+- Removed the Galette acronym meaning
+- Header corrections
+- Better language file detection
+- Bugfix in thumbnail display
+- DROP permission wasn't checked during install process
+- English translation
+
+
+O.60 -> 0.61
+
+- Correction du formulaire d'édition d'adhérent (admin)
+- Fusion des fichiers ajouter_adherent.php et gestion_contributions.php
+  (edition de membre)
+- Les prefixes de tables sont maintenant autorisés
+- Réduction des photos si GD est disponible
+- Les équivalents HTML dans les noms d'adhérents étaient parfois
+  mal affichés
+- Retour aux contributions d'un membre après l'ajout d'un contribution
+- Filtre sur les dates dans le listing des cotisations
+- Correction de fautes d'orthographe
+- Liens de navigation sur la fiche de cotisations d'un membre
+- Cliquer sur le nom d'un adhérent dans la liste des cotisations
+  permet d'obtenir ses contributions au lieud e son profil
+- Lien "mot de passe perdu"
+- Masquage de la signification de l'acronyme "Galette"
+- Corrections dans les en-têtes
+- Meilleure détection du fichier de langue
+- Correction de bug dans l'affichage des vignettes
+- Le permission DROP n'était pas vérifié durant l'installation
+- Traduction en anglais
