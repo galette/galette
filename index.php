@@ -112,7 +112,7 @@ if (isset($_POST["ident"]))
 <TABLE width="100%" style="height: 100%">
 	<TR>
 		<TD align="center">
-			<IMG src="images/galette.jpg" alt="[ Galette ]" width="103" height="80"><BR>
+			<IMG src="images/galette.png" alt="[ Galette ]" width="129" height="60"><BR><BR>
      <? drapeaux(); ?><br>
 			<FORM action="index.php" method="post"> 
 				<B class="title"><? echo _T("Login"); ?></B><BR>
