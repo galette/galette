@@ -87,8 +87,11 @@
                 case "2" :
                         $adherent['titre_adh'] = _T("Mrs.");
                         break;
+		case "3":
+			$adherent['titre_adh'] = _T("Miss.");
+			break;
                 default :
-                        $adherent['titre_adh'] = _T("Miss.");
+                        $adherent['titre_adh'] = '';
         }
 
 	if ($adherent['activite_adh']==1)

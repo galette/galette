@@ -253,6 +253,7 @@ a.listing:hover {
 	position: absolute;
 	padding-right: 15px;
 	left: 170px;
+	right: 0px;
 }
 
 #menu {
