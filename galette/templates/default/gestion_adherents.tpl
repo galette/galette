@@ -80,7 +80,7 @@
 				</TH> 
 				<TH width="55" class="listing">{_T("Actions")}</TH> 
 			</TR>
-			{foreach from=$members item=member key=ordre}
+{foreach from=$members item=member key=ordre}
 			<TR>
 				<TD width="15" class="{$member.class}">{$ordre}</TD>
 				<TD class="{$member.class}" nowrap>
@@ -110,9 +110,9 @@
 					<A onClick="return confirm('{_T("Do you really want to delete this member from the base, this will delete also the history of her fees. To avoid this you can just unactivate her account.\n\nDo you still want to delete this member ?")|escape:"javascript"}')" href="gestion_adherents.php?sup={$member.id_adh}"><IMG src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"></A>
 				</TD>
 			</TR>
-			{foreachelse}
+{foreachelse}
 			<TR><TD colspan="6" class="emptylist">{_T("no member")}</TD></TR>
-			{/foreach}
+{/foreach}
 		</TABLE>
 		<DIV id="infoline2" class="right">
 			{_T("Pages:")}
