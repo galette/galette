@@ -359,7 +359,7 @@
 								<TH id="libelle" <? echo $montant_cotis_req ?>><? echo _("Amount:"); ?></TH> 
 								<td><input type="text" name="montant_cotis" value="<? echo $montant_cotis; ?>" maxlength="<? echo $montant_cotis_len; ?>"></td> 
 								<TH id="libelle" <? echo $duree_mois_cotis_req ?>><? echo _("Extension of adhesion:"); ?></TH> 
-								<td><input type="text" name="duree_months_cotis" value="<? echo $duree_months_cotis; ?>" maxlength="<? echo $duree_months_cotis_len; ?>"> <? echo _("months"); ?></td>
+								<td><input type="text" name="duree_mois_cotis" value="<? echo $duree_mois_cotis; ?>" maxlength="<? echo $duree_mois_cotis_len; ?>"> <? echo _("months"); ?></td>
 							</tr>
 							<tr> 
 								<TH id="libelle" <? echo $date_cotis_req ?>><? echo _("Date of contribution:"); ?><br>&nbsp;</TH> 
