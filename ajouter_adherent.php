@@ -64,21 +64,6 @@
 				'info_adh' => 'disabled'
 			);
 	}
-	
-	// - declare dynamic fields for display
-	$requete = "SELECT * ".
-			"FROM ".PREFIX_DB."info_categories ".
-			"ORDER BY index_cat";
-	$result = &$DB->Execute($requete);
-	while (!$result->EOF)
-	{
-		// disable admin fields when logged as member
-		if ($_SESSION["admin_status"]!=1 && $result->fields['perm']==$perm_admin)
-			$disabled['dyn'][$result->fields['id_cat']] = 'disabled';	
-		$dynamic_fields[] = $result->fields;
-		$result->MoveNext();
-	}
-	$result->Close();
 
 	// initialize warnings
 	$error_detected = array();
@@ -229,8 +214,8 @@
 				VALUES (" . substr($insert_string_values,1) . ")";
 				if (!$DB->Execute($requete))
 					print substr($insert_string_values,1).": ".$DB->ErrorMsg();
-				$adherent['id_adh'] = $DB->Insert_ID();
-
+				$adherent['id_adh'] = get_last_auto_increment($DB, PREFIX_DB."adherents", "id_adh");
+				
 				// to allow the string to be extracted for translation
 				$foo = _T("Member card added");
 
@@ -395,6 +380,27 @@
 	}
 	else
 		$adherent["has_picture"]=0;
+
+	// - declare dynamic fields for display
+	$requete = "SELECT * ".
+			"FROM ".PREFIX_DB."info_categories ".
+			"ORDER BY index_cat";
+	$result = &$DB->Execute($requete);
+	while (!$result->EOF)
+	{
+		// disable admin fields when logged as member
+		if ($_SESSION["admin_status"]!=1 && $result->fields['perm']==$perm_admin)
+			$disabled['dyn'][$result->fields['id_cat']] = 'disabled';
+		$cur_fields = &$result->fields;
+		if ($cur_fields['size_cat'] == 0) {
+			if (isset($adherent['dyn']))
+				$cur_fields['size_cat'] = count($adherent['dyn'][$cur_fields['id_cat']]);
+			$cur_fields['size_cat']++;
+		}
+		$dynamic_fields[] = $cur_fields;
+		$result->MoveNext();
+	}
+	$result->Close();
 
 	// template variable declaration
 	$tpl->assign("required",$required);
