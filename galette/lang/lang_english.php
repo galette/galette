@@ -236,10 +236,12 @@ $lang["Mes informations"]="My information";
 $lang["Fiche adhérent (modification)"]="Member Profile (modification)";
 $lang["- CONFIRMATION -"]="- CONFIRMATION -";
 $lang["Navigation"]="Navigation";
+$lang["Configuration"]="Configuration";
 $lang["Liste des adhérents"]="List of members";
 $lang["Liste des contributions"]="List of contributions";
 $lang["Ajouter un adhérent"]="Add a member";
 $lang["Ajouter une contribution"]="Add a contribution";
+$lang["Configurer les fiches"]="Configure member forms";
 $lang["Mes contributions"]="My contributions";
 $lang["Déconnexion"]="Log off";
 $lang["Historique"]="Logs";
@@ -380,4 +382,14 @@ $lang["Récupération de mot de passe"]="Password recovery";
 $lang["Retour à l'identification"]="Back to login page";
 
 $lang["Je souhaite apparaître dans la liste des membres :"]="Be visible in the<br /> members list :";
+$lang["Configuration des fiches"]="Profile configuration";
+$lang["Visibilité"]="Visibility";
+$lang["Nombre"]="Size";
+$lang["tous"]="all";
+$lang["admin"]="admin";
+$lang["texte libre"]="free text";
+$lang["séparateur"]="separator";
+$lang["champ"]="field";
+$lang["Ajouter"]="Add";
+$lang["Voulez-vous vraiment supprimer cette catégorie de la base, ceci supprimera aussi toutes les données associées ?"]="Do you really want to delete this category ? All associated data will be deleted as well.";
 ?>
