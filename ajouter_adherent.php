@@ -34,12 +34,7 @@
 	$adherent["id_adh"] = "";
 	if ($_SESSION["admin_status"]==1)
 	{
-		if (isset($_GET["id_adh"]))
-			if (is_numeric($_GET["id_adh"]))
-				$adherent["id_adh"] = $_GET["id_adh"];
-		if (isset($_POST["id_adh"]))
-			if (is_numeric($_POST["id_adh"]))
-				$adherent["id_adh"] = $_POST["id_adh"];
+		$adherent["id_adh"] = get_numeric_form_value("id_adh", "");
 		// disable some fields
 		$disabled = array(
 				'id_adh' => 'disabled',
@@ -205,7 +200,6 @@
 				if (!$DB->Execute($requete))
 					print substr($insert_string_values,1).": ".$DB->ErrorMsg();
 				$adherent['id_adh'] = get_last_auto_increment($DB, PREFIX_DB."adherents", "id_adh");
-				
 				// to allow the string to be extracted for translation
 				$foo = _T("Member card added");
 
@@ -365,7 +359,6 @@
 		$adherent['dyn'] = array();
 
 	$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $_SESSION["admin_status"], $adherent['dyn'], $disabled['dyn'], 1);
-	
 	// template variable declaration
 	$tpl->assign("required",$required);
 	$tpl->assign("disabled",$disabled);

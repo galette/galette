@@ -18,48 +18,109 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
- 
+
 	$field_type_separator = 0;	// Field separator
-	$field_type_text = 1;	// Multiline text
-	$field_type_line = 2;	// Single line text
+	$field_type_text = 1;		// Multiline text
+	$field_type_line = 2;		// Single line text
+	$field_type_choice = 3;		// Fixed choices as combo-box
+
+	$field_type_names = array($field_type_separator => _T('separator'),
+				  $field_type_text => _T('free text'),
+				  $field_type_line => _T('single line'),
+				  $field_type_choice => _T('choice'));
+
+	$field_properties = array(
+		$field_type_separator => array('no_data' => true,
+					  'with_width' => false,
+					  'with_height' => false,
+					  'with_size' => false,
+					  'multi_valued' => false,
+					  'fixed_values' => false),
+		$field_type_text => array('no_data' => false,
+					  'with_width' => true,
+					  'with_height' => true,
+					  'with_size' => false,
+					  'multi_valued' => false,
+					  'fixed_values' => false),
+		$field_type_line => array('no_data' => false,
+					  'with_width' => true,
+					  'with_height' => false,
+					  'with_size' => true,
+					  'multi_valued' => true,
+					  'fixed_values' => false),
+		$field_type_choice => array('no_data' => false,
+					    'with_width' => false,
+					    'with_height' => false,
+					    'with_size' => false,
+					    'multi_valued' => false,
+					    'fixed_values' => true)
+	);
 	
+
 	$perm_all = 0;
 	$perm_admin = 1;
 
-	$form_desc = array(
-		'adh' => array( 'title' => _T("Members"),
-				'data_table' => PREFIX_DB."adh_fields",
-				'type_table' => PREFIX_DB."adh_field_type",
-				'id_key_name' => 'id_adh' )
+	$perm_names = array($perm_all => _T('all'), $perm_admin => _T('admin'));
+
+	$all_forms = array(
+		'adh' => _T("Members"),
+		'contrib' => _T("Contributions")
 	);
 
+	$fields_table = PREFIX_DB."dynamic_fields";
+	$field_types_table = PREFIX_DB."field_types";
+
+	// Return the table where fixed values are stored
+	function fixed_values_table_name($field_id) {
+		return PREFIX_DB."field_contents_$field_id";
+	}
+	
+	// Returns an array of fixed valued for a field of type 'choice'.
+	function get_fixed_values($DB, $field_id) {
+		$contents_table = fixed_values_table_name($field_id);
+		$query = "SELECT val FROM $contents_table ORDER BY id";
+		$fixed_values = array();
+		$result = $DB->Execute($query);
+		if ($result != false) {
+			while(!$result->EOF) {
+				$fixed_values[] = $result->fields[0];
+				$result->MoveNext();
+			}
+		}
+		return $fixed_values;
+	}
+
 	// Set dynamic fields for a given entry
-	// $form_name: Form name in $form_desc
-	// $entry_id: Key to find entry values.
+	// $form_name: Form name in $all_forms
+	// $item_id: Key to find entry values.
 	// $field_id: Id assign to the field on creation.
 	// $val_index: For multi-valued fields, it is the rank of this particular value.
 	// $field_val: The value itself.
-	function set_dynamic_field($DB, $form_name, $entry_id, $field_id, $val_index, $field_val) {
-		global $form_desc;
-		$id_key_name = $form_desc[$form_name]['id_key_name'];
-		$table = $form_desc[$form_name]['data_table'];
+	function set_dynamic_field($DB, $form_name, $item_id, $field_id, $val_index, $field_val) {
+		global $fields_table;
 		$ret = false;
+		$quoted_form_name = $DB->qstr($form_name, true);
 		$DB->StartTrans();
-		$query = "SELECT COUNT(*) FROM $table WHERE $id_key_name=$entry_id AND field_id=$field_id AND val_index=$val_index";
+		$query = "SELECT COUNT(*) FROM $fields_table
+			  WHERE item_id=$item_id AND field_form=$quoted_form_name AND
+			  	field_id=$field_id AND val_index=$val_index";
 		$count = $DB->GetOne($query);
 		if (isset($count)) {
 		    if ($field_val == "")
-			$query = "DELETE FROM $table WHERE $id_key_name=$entry_id AND field_id=$field_id AND val_index=$val_index";
+			$query = "DELETE FROM $fields_table
+				  WHERE item_id=$item_id AND field_form=$quoted_form_name AND
+				        field_id=$field_id AND val_index=$val_index";
 		    else {
 			$value = $DB->qstr($field_val, true);
 			if ($count > 0)
-			    $query = "UPDATE $table SET field_val=$value WHERE $id_key_name=$entry_id AND field_id=$field_id AND val_index=$val_index";
+			    $query = "UPDATE $fields_table SET field_val=$value
+			    	      WHERE item_id=$item_id AND field_form=$quoted_form_name AND
+					    field_id=$field_id AND val_index=$val_index";
 			else
-			    $query = "INSERT INTO $table ($id_key_name, field_id, val_index, field_val) VALUES ($entry_id, $field_id, $val_index, $value)";
+			    $query = "INSERT INTO $fields_table (item_id, field_form, field_id, val_index, field_val)
+				      VALUES ($item_id, $quoted_form_name, $field_id, $val_index, $value)";
 		    }
 		    $result = $DB->Execute($query);
-		    if (!$result)
-		    	print "$query: ".$DB->ErrorMsg()."<br>";
 		    $ret = ($result != false);
 		}
 		$DB->CompleteTrans();
@@ -67,39 +128,54 @@
 	}
 
 	// Set all dynamic fields for a given entry
-	// $form_name: Form name in $form_desc
-	// $id: Key to find values. It depends on the table and must be the only primary key in $table.
+	// $form_name: Form name in $all_forms
+	// $item_id: Key to find entry values.
 	// $all_values: Values as returned by extract_posted_dynamic_fields.
-	function set_all_dynamic_fields($DB, $form_name, $id, $all_values) {
+	function set_all_dynamic_fields($DB, $form_name, $item_id, $all_values) {
+		$ret = true;
 		while (list($field_id, $contents)=each($all_values))
 			while (list($val_index, $field_val)=each($contents))
-				set_dynamic_field($DB, $form_name, $id, $field_id, $val_index, $field_val);
+				if (!set_dynamic_field($DB, $form_name, $item_id, $field_id, $val_index, $field_val))
+					$ret = false;
+		return $ret;
 	}
 
 	// Get dynamic fields for one entry
 	//
 	// It returns an 2d-array with field id as first key and value index as second key.
-	// $form_name: Form name in $form_desc
-	// $id: Key to find values. It depends on the table and must be the only primary key in $table.
+	// $form_name: Form name in $all_forms
+	// $item_id: Key to find entry values.
 	// $quote: If true, values are quoted for HTML output.
-	function get_dynamic_fields($DB, $form_name, $id, $quote) {
-		global $form_desc;
-		$id_key_name = $form_desc[$form_name]['id_key_name'];
-		$table = $form_desc[$form_name]['data_table'];
+	function get_dynamic_fields($DB, $form_name, $item_id, $quote) {
+		global $field_properties, $fields_table, $field_types_table;
+		$quoted_form_name = $DB->qstr($form_name, true);
+		$DB->StartTrans();
 		$query =  "SELECT field_id, val_index, field_val ".
-			  "FROM $table ".
-			  "WHERE $id_key_name=$id";
-		$result = &$DB->Execute($query);
+			  "FROM $fields_table ".
+			  "WHERE item_id=$item_id AND field_form=$quoted_form_name";
+		$result = $DB->Execute($query);
+		if ($result == false)
+			return false;
 		$dyn_fields = array();
 		while (!$result->EOF)
 		{
+			$field_id = $result->fields['field_id'];
 			$value = $result->fields['field_val'];
-			if ($quote)
+			if ($quote) {
+				$field_type = $DB->GetOne("SELECT field_type
+							   FROM $field_types_table
+							   WHERE field_id=$field_id");
+				if ($field_properties[$field_type]['fixed_values']) {
+					$choices = get_fixed_values(&$DB, $field_id);
+					$value = $choices[$value];
+				}
 				$value = htmlentities($value, ENT_QUOTES);
-			$dyn_fields[$result->fields['field_id']][$result->fields['val_index']] = $value;
+			}
+			$dyn_fields[$field_id][$result->fields['val_index']] = $value;
 			$result->MoveNext();
 		}
 		$result->Close();
+		$DB->CompleteTrans();
 		return $dyn_fields;
 	}
 
@@ -115,44 +191,54 @@
 			{
 				if (substr($key,0,11)=='info_field_')
 				{
-					list ($id, $val_index) = explode ('_', substr($key,11));
-					if (is_numeric($id) && is_numeric($val_index))
-					$dyn_fields[$id][$val_index] = $value;
+					list ($field_id, $val_index) = explode ('_', substr($key,11));
+					if (is_numeric($field_id) && is_numeric($val_index))
+					$dyn_fields[$field_id][$val_index] = $value;
 				}
 			}
 		}
 		return $dyn_fields;
 	}
 
-	// Returns an array of all value to display.
-	// $form_name: Form name in $form_desc
+	// Returns an array of all kind of fields to display.
+	// $form_name: Form name in $all_forms
 	// $admin_status: Must be true for an admin or false otherwise.
 	// $all_values: Values as returned by extract_posted_dynamic_fields.
 	// $disabled: Array that will be filled with fields that are discarded as key.
 	// $edit: Must be true if prepared for edition.
 	function prepare_dynamic_fields_for_display($DB, $form_name, $admin_status, $all_values, $disabled, $edit) {
-		global $form_desc;
-		$id_key_name = $form_desc[$form_name]['id_key_name'];
-		$type_table = $form_desc[$form_name]['type_table'];
-		$query = "SELECT * ".
-			 "FROM $type_table ".
-			 "ORDER BY field_index";
+		global $field_properties, $field_types_table;
+		$quoted_form_name = $DB->qstr($form_name, true);
+		$query = "SELECT *
+			  FROM $field_types_table
+			  WHERE field_form=$quoted_form_name
+			  ORDER BY field_index";
 		$result = &$DB->Execute($query);
 		$dyn_fields = array();
 		$extra = $edit ? 1 : 0;
 
+		if (!$result)
+			return false;
 		while (!$result->EOF)
 		{
+			$field_id = $result->fields['field_id'];
 			// disable admin fields when logged as member
 			if ($admin_status!=1 && $result->fields['perm']==$perm_admin)
-				$disabled[$result->fields['field_id']] = 'disabled';
+				$disabled[$field_id] = 'disabled';
 			$cur_fields = &$result->fields;
-			if ($cur_fields['field_repeat'] == 0) { // Infinite multi-valued field
-				$nb_values = count($all_values[$cur_fields['field_id']]);
-				if (isset($all_values))
-					$cur_fields['field_repeat'] = $nb_values + $extra;
-				else
-					$cur_fields['field_repeat'] = 1;
+			$properties = $field_properties[$result->fields['field_type']];
+			if ($properties['multi_valued']) {
+				if ($cur_fields['field_repeat'] == 0) { // Infinite multi-valued field
+					$nb_values = count($all_values[$cur_fields['field_id']]);
+					if (isset($all_values))
+						$cur_fields['field_repeat'] = $nb_values + $extra;
+					else
+						$cur_fields['field_repeat'] = 1;
+				}
+			} else {
+				$cur_fields['field_repeat'] = 1;
+				if ($properties['fixed_values'])
+					$cur_fields['choices'] = get_fixed_values(&$DB, $field_id);
 			}
 			$dyn_fields[] = $cur_fields;
 			$result->MoveNext();

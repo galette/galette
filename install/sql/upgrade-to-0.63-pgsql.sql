@@ -21,34 +21,42 @@ INSERT INTO galette_preferences VALUES (24, 'pref_membership_ext', '12');
 INSERT INTO galette_preferences VALUES (25, 'pref_beg_membership', '');
 
 -- New tables for dynamic fields;
-DROP SEQUENCE galette_categories_id_seq;
-CREATE SEQUENCE galette_categories_id_seq
+DROP SEQUENCE galette_field_types_id_seq;
+CREATE SEQUENCE galette_field_types_id_seq
     START 1
     INCREMENT 1
     MAXVALUE 2147483647
     MINVALUE 1
     CACHE 1;
- 
-DROP TABLE galette_info_categories;
-CREATE TABLE galette_info_categories (
-  id_cat integer DEFAULT nextval('galette_categories_id_seq'::text) NOT NULL,
-  index_cat integer DEFAULT '0' NOT NULL,
-  name_cat character varying(40) DEFAULT '' NOT NULL,
-  perm_cat integer DEFAULT '0' NOT NULL,
-  type_cat integer DEFAULT '0' NOT NULL,
-  size_cat integer DEFAULT '1' NOT NULL,
-  contents_cat text DEFAULT ''
-);
-CREATE UNIQUE INDEX galette_info_categories_idx ON galette_info_categories (id_cat);
 
-DROP TABLE galette_adh_info; 
-CREATE TABLE galette_adh_info (
-  id_adh integer DEFAULT '0' NOT NULL,
-  id_cat integer DEFAULT '0' NOT NULL,
-  index_info integer DEFAULT '0' NOT NULL,
-  val_info text DEFAULT ''
+DROP TABLE galette_field_types;
+CREATE TABLE galette_field_types (
+  field_id integer DEFAULT nextval('galette_field_types_id_seq'::text) NOT NULL,
+  field_form character varying(10) NOT NULL,
+  field_index integer DEFAULT '0' NOT NULL,
+  field_name character varying(40) DEFAULT '' NOT NULL,
+  field_perm integer DEFAULT '0' NOT NULL,
+  field_type integer DEFAULT '0' NOT NULL,
+  field_required character(1) DEFAULT NULL,
+  field_pos integer DEFAULT '0' NOT NULL,
+  field_width integer DEFAULT NULL,
+  field_height integer DEFAULT NULL,
+  field_size integer DEFAULT NULL,
+  field_repeat integer DEFAULT NULL,
+  field_layout integer DEFAULT NULL
 );
-CREATE INDEX galette_ahd_info_idx ON galette_adh_info (id_adh);
+CREATE UNIQUE INDEX galette_field_types_idx ON galette_field_types (field_id);
+CREATE INDEX galette_field_types_form_idx ON galette_field_types (field_form);
+
+DROP TABLE galette_dynamic_fields;
+CREATE TABLE galette_dynamic_fields (
+  item_id integer DEFAULT '0' NOT NULL,
+  field_id integer DEFAULT '0' NOT NULL,
+  field_form character varying(10) NOT NULL,
+  val_index integer DEFAULT '0' NOT NULL,
+  field_val text DEFAULT ''
+);
+CREATE INDEX galette_dynamic_fields_item_idx ON galette_dynamic_fields (item_id);
 
 -- Change table cotisations to store date_fin_cotis instead of duration;
 ALTER TABLE galette_cotisations ADD date_enreg date;

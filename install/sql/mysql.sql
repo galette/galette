@@ -94,7 +94,7 @@ CREATE TABLE galette_preferences (
   val_pref varchar(200) NOT NULL default '',
   PRIMARY KEY  (id_pref)
 ) TYPE=MyISAM;
-	
+
 DROP TABLE galette_logs;
 CREATE TABLE galette_logs (
   id_log int(10) unsigned NOT NULL auto_increment,
@@ -105,26 +105,35 @@ CREATE TABLE galette_logs (
   PRIMARY KEY  (id_log)
 ) TYPE=MyISAM;
 
-DROP TABLE galette_adh_field_type;
-CREATE TABLE galette_adh_field_type (
+-- Table for dynamic fields description;
+DROP TABLE galette_field_types;
+CREATE TABLE galette_field_types (
     field_id int(10) unsigned NOT NULL auto_increment,
+    field_form varchar(10) NOT NULL,
     field_index int(10) NOT NULL default '0',
     field_name varchar(40) NOT NULL default '',
     field_perm int(10) NOT NULL default '0',
     field_type int(10) NOT NULL default '0',
-    field_repeat int(10) NOT NULL default '1',
-    field_req enum('1') default NULL,
-    field_contents text DEFAULT '',
-    PRIMARY KEY  (field_id)
+    field_required enum('1') default NULL,
+    field_pos int(10) NOT NULL default '0',
+    field_width int(10) default NULL,
+    field_height int(10) default NULL,
+    field_size int(10) default NULL,
+    field_repeat int(10) default NULL,
+    field_layout int(10) default NULL,
+    PRIMARY KEY (field_id),
+    INDEX (field_form)
 ) TYPE=MyISAM;
 
-DROP TABLE galette_adh_fields;
-CREATE TABLE galette_adh_fields (
-    id_adh int(10) NOT NULL default '0',
+-- Table for dynamic fields data;
+DROP TABLE galette_dynamic_fields;
+CREATE TABLE galette_dynamic_fields (
+    item_id int(10) NOT NULL default '0',
     field_id int(10) NOT NULL default '0',
+    field_form varchar(10) NOT NULL,
     val_index int(10) NOT NULL default '0',
     field_val text DEFAULT '',
-    KEY  (id_adh)
+    KEY  (item_id)
 ) TYPE=MyISAM;
 
 DROP TABLE IF EXISTS galette_pictures;

@@ -1,4 +1,4 @@
-		<H1 class="titre">{_T("Contribution card")} ({if $contribution.id_cotis != ""}{_T("modification")}{else}{_T("creation")}{/if})</H1>
+		<H1 class="titre">{_T("Contribution card")} ({if $data.id_cotis != ""}{_T("modification")}{else}{_T("creation")}{/if})</H1>
 		<FORM action="ajouter_contribution.php" method="post"> 						
 {if $error_detected|@count != 0}
 		<DIV id="errorbox">
@@ -20,21 +20,21 @@
 							{if $adh_selected eq 0}
 							<OPTION>{_T("-- select a name --")}</OPTION>
 							{/if}
-							{html_options options=$adh_options selected=$contribution.id_adh}
+							{html_options options=$adh_options selected=$data.id_adh}
 						</SELECT>
 					</TD> 
 					<TH {if $required.id_type_cotis eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Contribution type:")}</TH> 
 					<TD>
 						<SELECT name="id_type_cotis"
 							{if $type_selected eq 0}onchange="form.submit()"{/if}>
-							{html_options options=$type_cotis_options selected=$contribution.id_type_cotis}
+							{html_options options=$type_cotis_options selected=$data.id_type_cotis}
 						</SELECT>
 					</TD> 
 				</TR>
 				{if $type_selected eq 1}
 				<TR>
 					<TH {if $required.montant_cotis eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Amount:")}</TH> 
-					<TD colspan="3"><INPUT type="text" name="montant_cotis" value="{$contribution.montant_cotis}" maxlength="10"></TD> 
+					<TD colspan="3"><INPUT type="text" name="montant_cotis" value="{$data.montant_cotis}" maxlength="10"></TD> 
 				</TR>
 				<TR> 
 					<TH {if $required.date_debut_cotis eq 1}style="color: #FF0000;"{/if} id="libelle">
@@ -45,7 +45,7 @@
 						{/if}
 						<BR>&nbsp;</TH> 
 					<TD {if $cotis_extension eq 0}colspan="3"{/if}>
-						<INPUT type="text" name="date_debut_cotis" value="{$contribution.date_debut_cotis}" maxlength="10"><BR>
+						<INPUT type="text" name="date_debut_cotis" value="{$data.date_debut_cotis}" maxlength="10"><BR>
 						<DIV class="exemple">{_T("(dd/mm/yyyy format)")}</DIV>
 					</TD> 
 					{if $cotis_extension ne 0}
@@ -59,10 +59,10 @@
 					</TH> 
 					<TD>
 						{if $pref_membership_ext != ""}
-						<INPUT type="text" name="duree_mois_cotis" value="{$contribution.duree_mois_cotis}" maxlength="3"><BR>
+						<INPUT type="text" name="duree_mois_cotis" value="{$data.duree_mois_cotis}" maxlength="3"><BR>
 						<DIV class="exemple">{_T("months")}</DIV>
 						{else}
-						<INPUT type="text" name="date_fin_cotis" value="{$contribution.date_fin_cotis}" maxlength="10"><BR>
+						<INPUT type="text" name="date_fin_cotis" value="{$data.date_fin_cotis}" maxlength="10"><BR>
 						<DIV class="exemple">{_T("(dd/mm/yyyy format)")}</DIV>
 						{/if}
 					</TD>
@@ -70,8 +70,9 @@
 				</TR> 
 				<TR> 
 					<TH {if $required.info_cotis eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Comments:")}</TH> 
-					<TD colspan="3"><TEXTAREA name="info_cotis" cols="61" rows="6">{$contribution.info_cotis}</TEXTAREA></TD> 
+					<TD colspan="3"><TEXTAREA name="info_cotis" cols="61" rows="6">{$data.info_cotis}</TEXTAREA></TD> 
 				</TR> 
+{include file="dynamic_fields_form.tpl"}
 				<TR> 
 					<TH align="center" colspan="4"><BR><input type="submit" value="{_T("Save")}"></TH> 
 				</TR> 
@@ -85,7 +86,7 @@
 		<BR> 
 		{_T("NB : The mandatory fields are in")} <font style="color: #FF0000">{_T("red")}</font>. 
 		</BLOCKQUOTE> 
-		<INPUT type="hidden" name="id_cotis" value="{$contribution.id_cotis}">
+		<INPUT type="hidden" name="id_cotis" value="{$data.id_cotis}">
 		{if $type_selected eq 1}
 		<INPUT type="hidden" name="valid" value="1">
 		{/if} {* $type_selected eq 1 *}

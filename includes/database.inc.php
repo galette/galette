@@ -86,4 +86,22 @@
 		$val = $DB->GetOne("SELECT $column FROM $table WHERE oid=$val_or_oid");
 		return $val ? $val : $val_or_oid;
 	}
+
+	function parse_db_result($DB, $result, $error_detected, $query) {
+		if ($result == false)
+			$error_detected[] = _T("- SQL error: [$query]").$DB->ErrorMsg();
+		return $result;
+	}
+
+	function db_execute($DB, $query, $error_detected) {
+		return parse_db_result($DB, $DB->Execute($query), &$error_detected, $query);
+	}
+
+	function db_get_one($DB, $query, $error_detected) {
+		return parse_db_result($DB, $DB->GetOne($query), &$error_detected, $query);
+	}
+
+	function db_boolean($val) {
+		return $val ? "'1'" : "NULL";
+	}
 ?>

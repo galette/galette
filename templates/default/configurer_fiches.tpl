@@ -22,7 +22,7 @@
 				<TH class="listing left">{_T("Name")}</TH>
 				<TH class="listing">{_T("Visibility")}</TH>
 				<TH class="listing">{_T("Type")}</TH>
-				<TH class="listing">{_T("Repeat")}</TH>
+				<TH class="listing">{_T("Required")}</TH>
 				<TH class="listing">{_T("Actions")}</TH>
 			</TR>
 {foreach from=$dyn_fields item=field}
@@ -31,23 +31,32 @@
 				<TD class="listing left">{$field.name}</TD>
 				<TD class="listing left">{$field.perm}</TD>
 				<TD class="listing left">{$field.type}</TD>
-				<TD class="listing">{$field.repeat}</TD>
+				<TD class="listing">
+					{if $field.type != $field_type_separator}
+						{if $field.required}{_T("Yes")}{else}{_T("No")}{/if}
+					{/if}
+				</TD>
 				<TD class="listing center">
-					<A onClick="return confirm('{_T("Do you really want to delete this category ?\n All associated data will be deleted as well.")|escape:"javascript"}')" href="configurer_fiches.php?sup={$field.id}">
+{if $field.no_data}
+					<IMG src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="12" height="13">
+{else}
+					<A href="editer_champ.php?form={$form_name}&id={$field.id}"><IMG src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"></A>
+{/if}
+					<A onClick="return confirm('{_T("Do you really want to delete this category ?\n All associated data will be deleted as well.")|escape:"javascript"}')" href="configurer_fiches.php?form={$form_name}&del={$field.id}">
 					<IMG src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13">
 					</A>
 {if $field.index eq 1}
-					<IMG src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="11" height="13">
+					<IMG src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="9" height="13">
 {else}
-					<A href="configurer_fiches.php?up={$field.id}">
-					<IMG src="{$template_subdir}images/icon-up.png" alt="{_T("[top]")}" border="0" width="9" height="8">
+					<A href="configurer_fiches.php?form={$form_name}&up={$field.id}">
+					<IMG src="{$template_subdir}images/icon-up.png" alt="{_T("[up]")}" border="0" width="9" height="8">
 					</A>
 {/if}
 {if $field.index eq $dyn_fields|@count}
-					<IMG src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="11" height="13">
+					<IMG src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="9" height="13">
 {else}
-					<A href="configurer_fiches.php?down={$field.id}">
-					<IMG src="{$template_subdir}images/icon-down.png" alt="{_T("[bottom]")}" border="0" width="9" height="8">
+					<A href="configurer_fiches.php?form={$form_name}&down={$field.id}">
+					<IMG src="{$template_subdir}images/icon-down.png" alt="{_T("[down]")}" border="0" width="9" height="8">
 					</A>
 {/if}
 				</TD>
@@ -60,19 +69,19 @@
 				</TD>
 				<TD width="60" class="listing left">
 					<SELECT name="field_perm">
-						<OPTION value="{$perm_all}">{_T("all")}</OPTION>
-						<OPTION value="{$perm_admin}">{_T("admin")}</OPTION>
+						{html_options options=$perm_names selected="0"}
 					</SELECT>
 				</TD>
 				<TD width="60" class="listing left">
 					<SELECT name="field_type">
-						<OPTION value="{$field_type_separator}">{_T("separator")}</OPTION>
-						<OPTION value="{$field_type_text}">{_T("free text")}</OPTION>
-						<OPTION value="{$field_type_line}">{_T("single line")}</OPTION>
+						{html_options options=$field_type_names selected="0"}
 					</SELECT>
 				</TD>
 				<TD class="listing">
-					<INPUT size="2" maxlength="2" type="text" value="1" name="field_repeat">
+					<SELECT name="field_required">
+						<OPTION value="0">{_T("No")}</OPTION>
+						<OPTION value="1">{_T("Yes")}</OPTION>
+					</SELECT>
 				</TD>
 				<TD class="listing center"><INPUT type="submit" name="valid" value="{_T("Add")}"></TD>
 			</TR>

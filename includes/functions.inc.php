@@ -313,5 +313,13 @@ function get_numeric_form_value($name, $defval)
 	return $val;
 }
 
+function get_numeric_posted_value($name, $defval) {
+	if (isset($_POST[$name])) {
+		$val = $_POST[$name];
+ 		if (is_numeric($val))
+			return $val;
+	}
+	return $defval;
+}
 
 ?>
