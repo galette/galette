@@ -45,10 +45,9 @@ CREATE TABLE galette_cotisations (
   id_type_cotis int(10) unsigned NOT NULL default '0',
   montant_cotis float unsigned default '0',
   info_cotis text,
-  duree_mois_cotis tinyint(3) unsigned NOT NULL default '12',
   date_enreg date NOT NULL default '0000-00-00',
   date_debut_cotis date NOT NULL default '0000-00-00',
-  date_fin_cotis date NOT NULL default '0000-00-00'
+  date_fin_cotis date NOT NULL default '0000-00-00',
   PRIMARY KEY  (id_cotis)
 ) TYPE=MyISAM;
 
@@ -76,17 +75,18 @@ DROP TABLE galette_types_cotisation;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis int(10) unsigned NOT NULL auto_increment,
   libelle_type_cotis varchar(30) NOT NULL default '',
+  cotis_extension enum('1') default NULL,
   PRIMARY KEY  (id_type_cotis)
 ) TYPE=MyISAM;
 
+INSERT INTO galette_types_cotisation VALUES (1, 'Cotisation annuelle normale', '1');
+INSERT INTO galette_types_cotisation VALUES (2, 'Cotisation annuelle réduite', '1');
+INSERT INTO galette_types_cotisation VALUES (3, 'Cotisation entreprise', '1');
+INSERT INTO galette_types_cotisation VALUES (4, 'Donation en nature', null);
+INSERT INTO galette_types_cotisation VALUES (5, 'Donation pécunière', null);
+INSERT INTO galette_types_cotisation VALUES (6, 'Partenariat', null);
+INSERT INTO galette_types_cotisation VALUES (7, 'Cotisation annuelle (à payer)', '1');
 
-INSERT INTO galette_types_cotisation VALUES (1,'Cotisation annuelle normale');
-INSERT INTO galette_types_cotisation VALUES (2,'Cotisation annuelle réduite');
-INSERT INTO galette_types_cotisation VALUES (3,'Cotisation entreprise');
-INSERT INTO galette_types_cotisation VALUES (4,'Donation en nature');
-INSERT INTO galette_types_cotisation VALUES (5,'Donation pécunière');
-INSERT INTO galette_types_cotisation VALUES (6,'Partenariat');
-INSERT INTO galette_types_cotisation VALUES (7, 'Cotisation annuelle (à payer)');
 DROP TABLE galette_preferences;
 CREATE TABLE galette_preferences (
   id_pref int(10) unsigned NOT NULL auto_increment,

@@ -283,4 +283,16 @@ function distance_months($beg, $end) {
 	return ($ea -$ba)*12 + $em - $bm;
 }
 
+function beg_membership_after($date) {
+	$beg = "";
+	if (PREF_BEG_MEMBERSHIP != "") {
+		list($j, $m) = split("/", PREF_BEG_MEMBERSHIP);
+		$y = strftime("%Y");
+		while (mktime(0, 0, 0, $m, $j, $y) <= $date)
+			$y++;
+		$beg = $j."/".$m."/".$y;
+	}
+	return $beg;
+}
+
 ?>

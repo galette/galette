@@ -45,6 +45,7 @@
 					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt="">
 					{/if}
 				</TH> 
+				<TH class="listing left"> {_T("Date fin")}</TH> 
 {if $smarty.session.admin_status eq 1}
 				<TH class="listing left"> 
 					<A href="gestion_contributions.php?tri=1" class="listing">{_T("Member")}</A>
@@ -104,7 +105,10 @@
 				<TD width="15" class="{$contribution.class} center" nowrap>{$ordre}</TD> 
 				<TD width="50" class="{$contribution.class}" nowrap>
 					{$contribution.date_debut}
-			</TD> 
+				</TD> 
+				<TD width="50" class="{$contribution.class}" nowrap>
+					{$contribution.date_fin}
+				</TD> 
 {if $smarty.session.admin_status eq 1}
 			<TD class="{$contribution.class}" nowrap>
 {if $smarty.session.filtre_cotis_adh eq ""}
@@ -160,7 +164,9 @@
 		<BR>
 			<A href="voir_adherent.php?id_adh={$smarty.session.filtre_cotis_adh}">{_T("[ See member profile ]")}</A>
 			&nbsp;&nbsp;&nbsp;
-			<A href="ajouter_contribution.php?id_adh={$smarty.session.filtre_cotis_adh}">{_T("[ Add a contribution ]")}</A>
+			<A href="ajouter_contribution.php?cotis_extension=1&id_adh={$smarty.session.filtre_cotis_adh}">{_T("[ Add member fee ]")}</A>
+			&nbsp;&nbsp;&nbsp;
+			<A href="ajouter_contribution.php?cotis_extension=0&id_adh={$smarty.session.filtre_cotis_adh}">{_T("[ Add a contribution ]")}</A>
 {/if}
 		</DIV>
 {/if}

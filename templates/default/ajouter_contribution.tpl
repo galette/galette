@@ -30,16 +30,39 @@
 				</TR>
 				<TR>
 					<TH {if $required.montant_cotis eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Amount:")}</TH> 
-					<TD><INPUT type="text" name="montant_cotis" value="{$contribution.montant_cotis}" maxlength="10"></TD> 
-					<TH {if $required.duree_mois_cotis eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Membership extension:")}</TH> 
-					<TD><input type="text" name="duree_mois_cotis" value="{$contribution.duree_mois_cotis}" maxlength="3"> {_T("months")}</TD>
+					<TD colspan="3"><INPUT type="text" name="montant_cotis" value="{$contribution.montant_cotis}" maxlength="10"></TD> 
 				</TR>
 				<TR> 
-					<TH {if $required.date_debut_cotis eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Date of contribution:")}<BR>&nbsp;</TH> 
-					<TD colspan="3">
+					<TH {if $required.date_debut_cotis eq 1}style="color: #FF0000;"{/if} id="libelle">
+						{if $cotis_extension eq 0}
+							{_T("Date of contribution:")}
+						{else}
+							{_T("Start date of membership:")}
+						{/if}
+						<BR>&nbsp;</TH> 
+					<TD {if $cotis_extension eq 0}colspan="3"{/if}>
 						<INPUT type="text" name="date_debut_cotis" value="{$contribution.date_debut_cotis}" maxlength="10"><BR>
 						<DIV class="exemple">{_T("(dd/mm/yyyy format)")}</DIV>
 					</TD> 
+					{if $cotis_extension ne 0}
+					<TH {if $required.date_fin_cotis eq 1}style="color: #FF0000;"{/if} id="libelle">
+						{if $pref_membership_ext != ""}
+							{_T("Membership extension:")}
+						{else}
+							{_T("End date of membership:")}
+						{/if}
+						<BR>&nbsp;
+					</TH> 
+					<TD>
+						{if $pref_membership_ext != ""}
+						<INPUT type="text" name="duree_mois_cotis" value="{$contribution.duree_mois_cotis}" maxlength="3"><BR>
+						<DIV class="exemple">{_T("months")}</DIV>
+						{else}
+						<INPUT type="text" name="date_fin_cotis" value="{$contribution.date_fin_cotis}" maxlength="10"><BR>
+						<DIV class="exemple">{_T("(dd/mm/yyyy format)")}</DIV>
+						{/if}
+					</TD>
+					{/if}
 				</TR> 
 				<TR> 
 					<TH {if $required.info_cotis eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Comments:")}</TH> 
@@ -55,4 +78,5 @@
 		</BLOCKQUOTE> 
 		<INPUT type="hidden" name="id_cotis" value="{$contribution.id_cotis}">
 		<INPUT type="hidden" name="valid" value="1">
+		<INPUT type="hidden" name="cotis_extension" value="{$cotis_extension}">
 		</FORM>

@@ -134,7 +134,7 @@
  		}
  		$result_adh->Close();
 	}
-
+	
 	$date_debut_cotis_format = &$DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_debut_cotis');
 	$date_fin_cotis_format = &$DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_fin_cotis');
 	$requete[0] = "SELECT $date_debut_cotis_format AS date_debut_cotis,
@@ -144,7 +144,8 @@
 			".PREFIX_DB."cotisations.montant_cotis, 
 			".PREFIX_DB."adherents.nom_adh, 
 			".PREFIX_DB."adherents.prenom_adh,
-			".PREFIX_DB."types_cotisation.libelle_type_cotis
+			".PREFIX_DB."types_cotisation.libelle_type_cotis,
+			".PREFIX_DB."types_cotisation.cotis_extension
 			FROM ".PREFIX_DB."cotisations,".PREFIX_DB."adherents,".PREFIX_DB."types_cotisation
 			WHERE ".PREFIX_DB."cotisations.id_adh=".PREFIX_DB."adherents.id_adh
 			AND ".PREFIX_DB."types_cotisation.id_type_cotis=".PREFIX_DB."cotisations.id_type_cotis ";
@@ -228,16 +229,17 @@
 			$row_class = "cotis-normal";
 		else
 			$row_class = "cotis-give";
-			
+		$is_cotis = ($resultat->fields['cotis_extension'] == '1');
 		$contributions[$compteur]["class"]=$row_class;
 		$contributions[$compteur]["id_cotis"]=$resultat->fields['id_cotis'];
 		$contributions[$compteur]["date_debut"]=$resultat->fields['date_debut_cotis'];
+		$contributions[$compteur]["date_fin"]= $is_cotis ? $resultat->fields['date_fin_cotis'] : "";
 		$contributions[$compteur]["id_adh"]=$resultat->fields['id_adh'];
 		$contributions[$compteur]["nom"]=htmlentities(strtoupper($resultat->fields['nom_adh']),ENT_QUOTES);
 		$contributions[$compteur]["prenom"]=htmlentities($resultat->fields['prenom_adh'], ENT_QUOTES);
 		$contributions[$compteur]["libelle_type_cotis"]=$resultat->fields['libelle_type_cotis'];;
 		$contributions[$compteur]["montant_cotis"]=$resultat->fields['montant_cotis'];;
-		$contributions[$compteur]["duree_mois_cotis"] = distance_months($resultat->fields['date_debut_cotis'], $resultat->fields['date_fin_cotis']);
+		$contributions[$compteur]["duree_mois_cotis"] = $is_cotis ? distance_months($resultat->fields['date_debut_cotis'], $resultat->fields['date_fin_cotis']) : "";
 		$compteur++;
 		$resultat->MoveNext();
 	}
