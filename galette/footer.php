@@ -39,7 +39,7 @@
 	{
 ?>
 				<LI><A href="gestion_adherents.php"><? echo _T("List of members"); ?></A></LI>
-				<LI><A href="gestion_contributions.php"><? echo _T("List of contributions"); ?></A></LI>
+				<LI><A href="gestion_contributions.php?id_adh=all"><? echo _T("List of contributions"); ?></A></LI>
 				<LI><A href="ajouter_adherent.php"><? echo _T("Add a member"); ?></A></LI>
 				<LI><A href="ajouter_contribution.php"><? echo _T("Add a contribution"); ?></A></LI>
 				<LI><A href="mailing_adherents.php"><? echo _T("Do a mailing"); ?></A></LI>

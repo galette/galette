@@ -41,8 +41,8 @@
 			else
 				$_SESSION["filtre_cotis_adh"]="";
 		}
-		else
-			$_SESSION["filtre_cotis_adh"]="";
+		//else
+		//	$_SESSION["filtre_cotis_adh"]="";
 	}		
 
 
