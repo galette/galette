@@ -119,7 +119,6 @@
 				// mise a jour de l'échéance
 				$date_fin = get_echeance($DB, $id_adh);
 				if ($date_fin!=""){
-				  //$date_fin_update = $DB->DBDate(mktime(0,0,0,$date_fin[1],$date_fin[0],$date_fin[2]));
 				  $date_fin_update = "'".$date_fin[2]."-".$date_fin[1]."-".$date_fin[0]."'";
 				} else {
 				  $date_fin_update = "NULL";	
@@ -167,7 +166,6 @@
 	if ($_SESSION["filtre_date_cotis_1"]!="")
 	{
 	   ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_SESSION["filtre_date_cotis_1"], $array_jours);
-	   //$datemin = $DB->DBDate(mktime(0,0,0,$array_jours[2],$array_jours[1],$array_jours[3]));
 	   $datemin = "'".$array_jours[3]."-".$array_jours[2]."-".$array_jours[1]."'";
 	   $requete[0] .= "AND ".PREFIX_DB."cotisations.date_debut_cotis >= " . $datemin . " ";
 	   $requete[1] .= "AND ".PREFIX_DB."cotisations.date_debut_cotis >= " . $datemin . " ";
@@ -175,7 +173,6 @@
 	if ($_SESSION["filtre_date_cotis_2"]!="")
 	{
 	   ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_SESSION["filtre_date_cotis_2"], $array_jours);
-	   //$datemax = $DB->DBDate(mktime(0,0,0,$array_jours[2],$array_jours[1],$array_jours[3]));
 	   $datemax = "'".$array_jours[3]."-".$array_jours[2]."-".$array_jours[1]."'";
 	   $requete[0] .= "AND ".PREFIX_DB."cotisations.date_debut_cotis <= " . $datemax . " ";
 	   $requete[1] .= "AND ".PREFIX_DB."cotisations.date_debut_cotis <= " . $datemax . " ";
