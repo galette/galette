@@ -19,187 +19,123 @@
  *
  */
  
-    include("includes/config.inc.php");
-    include(WEB_ROOT."includes/database.inc.php"); 
-    include(WEB_ROOT."includes/functions.inc.php"); 
-    include_once("includes/i18n.inc.php"); 
-    include(WEB_ROOT."includes/lang.inc.php"); 
-    include(WEB_ROOT."includes/session.inc.php"); 
-    include(WEB_ROOT."includes/categories.inc.php");
+	include("includes/config.inc.php");
+	include(WEB_ROOT."includes/database.inc.php"); 
+	include(WEB_ROOT."includes/session.inc.php");
+	include(WEB_ROOT."includes/functions.inc.php"); 
+        include(WEB_ROOT."includes/i18n.inc.php");
+	include(WEB_ROOT."includes/smarty.inc.php");
+        include(WEB_ROOT."includes/categories.inc.php");
 
-    if ($_SESSION["logged_status"]==0)
-            header("location: index.php");
-    if ($_SESSION["admin_status"]==0) 
-            header("location: voir_adherent.php");
+	if ($_SESSION["logged_status"]==0)
+		header("location: index.php");
+	if ($_SESSION["admin_status"]==0) 
+		header("location: voir_adherent.php");
 
-    $error_detected = "";
+	$error_detected = array();
     
-    if (isset($_POST["valid"]))
-    {
-        if ($_POST["perm_cat"] != $category_separator &&
-            (!isset($_POST["name_cat"]) || $_POST["name_cat"] == "")) {
-            $error_detected .= "<LI>"._T("- The field Name cannot be void.")."</LI>";
-        } else {
-            $name_cat = $_POST["name_cat"];
-            $perm_cat = $_POST["perm_cat"];
-            $type_cat = $_POST["type_cat"];
-            $size_cat = $_POST["size_cat"];
-	    $requete = "SELECT COUNT(*) + 1 AS idx 
-			FROM $info_cat_table";
-	    $result = $DB->Execute($requete);
-            $requete = "INSERT INTO $info_cat_table
-                        ( index_cat, name_cat, perm_cat, type_cat, size_cat )
-                        VALUES ('".$result->fields["idx"]."',".$DB->qstr($name_cat, true).", $perm_cat, $type_cat, $size_cat)";
-            $DB->Execute($requete);
-        }
-    } else {
-        $action = "";
-        foreach (array("sup", "up", "down") as $varname) {
-            if (isset($_GET[$varname]) && is_numeric($_GET[$varname])) {
-                $action = $varname;
-                $id_cat = (integer)$_GET[$varname];
-                break;
-            }
-        }
-        $DB->StartTrans();
-        $res = $DB->Execute("SELECT index_cat FROM $info_cat_table WHERE id_cat=$id_cat");
-        if (!$res->EOF) {
-            $old_rank = $res->fields[0];
-            if ($action == "sup") {
-                $DB->Execute("UPDATE $info_cat_table SET index_cat=index_cat-1 WHERE index_cat > $old_rank");
-                $DB->Execute("DELETE FROM $info_adh_table WHERE id_cat=$id_cat");
-                $DB->Execute("DELETE FROM $info_cat_table WHERE id_cat=$id_cat");
-            } elseif ($action != "") {
-                $direction = $action == "up" ? -1: 1;
-                $new_rank = $old_rank + $direction;
-                $DB->Execute("UPDATE $info_cat_table SET index_cat=$old_rank WHERE index_cat=$new_rank");
-                $DB->Execute("UPDATE $info_cat_table SET index_cat=$new_rank WHERE id_cat=$id_cat");
-            }
-        }
-        $DB->CompleteTrans();
-    }
-            
-    include("header.php");
+	if (isset($_POST["valid"]))
+	{
+		if ($_POST["perm_cat"] != $category_separator &&
+		   (!isset($_POST["name_cat"]) || $_POST["name_cat"] == "")) {
+			$error_detected[] = _T("- The field Name cannot be void.");
+		} else {
+			$name_cat = $_POST["name_cat"];
+			$perm_cat = $_POST["perm_cat"];
+			$type_cat = $_POST["type_cat"];
+			$size_cat = $_POST["size_cat"];
+			$requete = "SELECT COUNT(*) + 1 AS idx 
+				    FROM $info_cat_table";
+			$result = $DB->Execute($requete);
+			$requete = "INSERT INTO $info_cat_table
+				    ( index_cat, name_cat, perm_cat, type_cat, size_cat )
+				    VALUES ('".$result->fields["idx"]."',".$DB->qstr($name_cat, true).", $perm_cat, $type_cat, $size_cat)";
+			$DB->Execute($requete);
+		}
+	}
+	else
+	{
+		$action = "";
+		$id_cat = "";
+		foreach (array("sup", "up", "down") as $varname)
+		{
+			if (isset($_GET[$varname]) && is_numeric($_GET[$varname]))
+			{
+				$action = $varname;
+				$id_cat = (integer)$_GET[$varname];
+				break;
+			}
+		}
+		$DB->StartTrans();
+		$res = $DB->Execute("SELECT index_cat FROM $info_cat_table WHERE id_cat=$id_cat");
+		if (!$res->EOF)
+		{
+			$old_rank = $res->fields[0];
+			if ($action == "sup")
+			{
+				$DB->Execute("UPDATE $info_cat_table SET index_cat=index_cat-1 WHERE index_cat > $old_rank");
+				$DB->Execute("DELETE FROM $info_adh_table WHERE id_cat=$id_cat");
+				$DB->Execute("DELETE FROM $info_cat_table WHERE id_cat=$id_cat");
+			}
+			elseif ($action != "")
+			{
+				$direction = $action == "up" ? -1: 1;
+				$new_rank = $old_rank + $direction;
+				$DB->Execute("UPDATE $info_cat_table SET index_cat=$old_rank WHERE index_cat=$new_rank");
+				$DB->Execute("UPDATE $info_cat_table SET index_cat=$new_rank WHERE id_cat=$id_cat");
+			}
+		}
+		$DB->CompleteTrans();
+	}
 
-    // Affichage des erreurs
-    if ($error_detected!="")
-    {
-?>
-    <DIV id="errorbox">
-        <H1><? echo _T("- ERROR -"); ?></H1>
-        <UL>
-            <? echo $error_detected; ?>
-        </UL>
-    </DIV>
-<?
-    }
-?> 
-    <H1 class="titre"><? echo _T("Profile configuration"); ?></H1>
-    <FORM action="configurer_fiches.php" method="post" enctype="multipart/form-data">
-        <TABLE width="100%" id="input-table"> 
-            <TR>
-                <TH class="listing">#</TH> 
-                <TH class="listing left"><? echo _T("Name"); ?></TH>
-                <TH class="listing"><? echo _T("Visibility"); ?></TH>
-                <TH class="listing"><? echo _T("Type"); ?></TH>
-                <TH class="listing"><? echo _T("Size"); ?></TH>
-                <TH class="listing"><? echo _T("Actions"); ?></TH>
-            </TR>
-<?
-    $count = 1;
-    $confirm_sup = str_replace("\n", "\\n",
-                               addslashes(_T("Do you really want to delete this category ? All associated data will be deleted as well.")));
-    $request = "SELECT id_cat, index_cat, name_cat, perm_cat, type_cat, size_cat FROM $info_cat_table ORDER BY index_cat";
-    $result = $DB->Execute($request);
-    while (!$result->EOF)
-    {
-        $id = $result->fields[0];
-        $index = $result->fields[1];
-        $name = $result->fields[2];
-        switch($result->fields[3]) {
-            case $perm_all: $perm = _T('all'); break;
-            case $perm_admin: $perm = _T('admin'); break;
-            default: $perm = _T('unknown');
-        }
-        switch($result->fields[4]) {
-            case $category_separator: $type_name = _T('separator'); break;
-            case $category_text: $type_name = _T('free text'); break;
-            case $category_field: $type_name = _T('field'); break;
-            default: $type_name = _T('unknown');
-        }
-        $size = $result->fields[5];
-?>        
-            <TR>
-                <TD class="listing"><? echo $index; ?></TD> 
-                <TD class="listing left"><? echo $name; ?></TD>
-                <TD class="listing left"><? echo $perm; ?></TD>
-                <TD class="listing left"><? echo $type_name; ?></TD>
-                <TD class="listing"><? echo $size; ?></TD>
-                <TD class="listing center">
-                <A onClick="return confirm('<? echo $confirm_sup; ?>')" href="configurer_fiches.php?sup=<? echo $id ?>">
-                    <IMG src="images/icon-trash.png" alt="<? echo _T("[del]"); ?>" border="0" width="11" height="13">
-                </A>
-<?
-        if ($index == 1) {
-?>                
-                    <IMG src="images/icon-empty.png" alt="" border="0" width="11" height="13">
-<?
-        } else {
-?>                
-                    <A href="configurer_fiches.php?up=<? echo $id; ?>">
-                        <IMG src="images/icon-up.png" alt="<? echo _T("[top]"); ?>" border="0" width="9" height="8">
-                    </A>
-<?
-        }
-?>                
-<?
-        if ($index == $result->RecordCount()) {
-?>                
-                    <IMG src="images/icon-empty.png" alt="" border="0" width="11" height="13">
-<?
-        } else {
-?>                
-                    <A href="configurer_fiches.php?down=<? echo $id; ?>">
-                        <IMG src="images/icon-down.png" alt="<? echo _T("[bottom]"); ?>" border="0" width="9" height="8">
-                    </A>
-<?
-        }
-?>                
-                </TD>
-            </TR>
-<?    
-        $result->MoveNext();
-        ++$count;
-    }
-    $result->Close();
+	$request = "SELECT id_cat, index_cat, name_cat, perm_cat, type_cat, size_cat FROM $info_cat_table ORDER BY index_cat";
+	$result = $DB->Execute($request);
+	$count = 0;
+	while (!$result->EOF)
+	{
+		$dyn_fields[$count]['id'] = $result->fields[0];
+		$dyn_fields[$count]['index'] = $result->fields[1];
+		$dyn_fields[$count]['name'] = $result->fields[2];
+		switch($result->fields[3])
+		{
+			case $perm_all:
+				$dyn_fields[$count]['perm'] = _T('all');
+				break;
+			case $perm_admin:
+				$dyn_fields[$count]['perm'] = _T('admin');
+				break;
+			default:
+				$dyn_fields[$count]['perm'] = _T('unknown');
+		}
+		switch($result->fields[4])
+		{
+			case $category_separator:
+				$dyn_fields[$count]['type_name'] = _T('separator');
+				break;
+			case $category_text:
+				$dyn_fields[$count]['type_name'] = _T('free text');
+				break;
+			case $category_field:
+				$dyn_fields[$count]['type_name'] = _T('field');
+				break;
+			default:
+				$dyn_fields[$count]['type_name'] = _T('unknown');
+		}
+		$dyn_fields[$count]['size'] = $result->fields[5];
+		$result->MoveNext();
+		++$count;
+	}
+	$result->Close();
 
-?>        
-            <TR>
-                <TD width="15" class="listing">&nbsp;</TD> 
-                <TD class="listing left">
-                    <INPUT size="40" type="text" name="name_cat">
-                </TD>
-                <TD width="60" class="listing left">
-                    <SELECT name="perm_cat">
-                        <OPTION value="<?php echo $perm_all; ?>"><? echo _T("all"); ?></OPTION>
-                        <OPTION value="<?php echo $perm_admin; ?>"><? echo _T("admin"); ?></OPTION>
-                    </SELECT>
-                </TD>
-                <TD width="60" class="listing left">
-                    <SELECT name="type_cat">
-                        <OPTION value="<?php echo $category_separator; ?>"><? echo _T("separator"); ?></OPTION>
-                        <OPTION value="<?php echo $category_text; ?>"><? echo _T("free text"); ?></OPTION>
-                        <OPTION value="<?php echo $category_field; ?>"><? echo _T("field"); ?></OPTION>
-                    </SELECT>
-                </TD>
-                <TD class="listing">
-                    <INPUT size="2" maxlength="2" type="text" value="1" name="size_cat">
-                </TD>
-		<TD class="listing center"><INPUT type="submit" name="valid" value="<? echo _T("Add"); ?>"></TD>
-            </TR>
-        </TABLE> 
-    </FORM> 
-
-<? 
-  include("footer.php") 
+	$tpl->assign("perm_all",$perm_all);
+	$tpl->assign("perm_admin",$perm_admin);
+	$tpl->assign("category_separator",$category_separator);
+	$tpl->assign("category_text",$category_text);
+	$tpl->assign("category_field",$category_field);
+	
+	$tpl->assign("dyn_fields",$dyn_fields);
+	$tpl->assign("error_detected",$error_detected);
+	$content = $tpl->fetch("configurer_fiches.tpl");
+	$tpl->assign("content",$content);
+	$tpl->display("page.tpl");
 ?>
