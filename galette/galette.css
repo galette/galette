@@ -1,0 +1,412 @@
+body {
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px
+}
+
+td {
+	font-size: 11px
+}
+
+input {
+	font-size: 11px
+}
+
+select {
+	font-size: 11px
+}
+
+textarea {
+	font-size: 11px
+}
+
+a {
+	text-decoration: none;
+	color: #0000FF;
+}
+
+a:hover {
+	color: #FF0000;
+}
+
+.left {
+	text-align: left;
+}
+
+.right {
+	text-align: right;
+}
+	
+.center {
+	text-align: center;
+}
+
+.cotis-ok {
+	background-color: #DDFFDD;
+	vertical-align: top;
+}
+
+.cotis-never {
+	background-color: #EEEEEE;
+	vertical-align: top;
+}
+
+.cotis-exempt {
+	background-color: #DDFFDD;
+	vertical-align: top;
+}
+
+.cotis-soon {
+	background-color: #FFE9AB;
+	vertical-align: top;
+}
+		
+.cotis-late {
+	background-color: #FFDDDD;
+	vertical-align: top;
+}
+	
+.cotis-lastday {
+	background-color: #FFDDDD;
+	vertical-align: top;
+}
+
+.cotis-normal {
+	background-color: #DDFFDD;
+	vertical-align: top;
+}
+
+.cotis-give {
+	background-color: #FFDDDD;
+	vertical-align: top;
+}
+
+.totalcount {
+	text-align: left;
+}
+	
+.pageswitch {
+	text-align: center;
+	margin-top: 4px;
+}
+		
+.pagelink {
+	font-weight: bold;
+}
+
+.filtermenus {
+	text-align: right;
+}
+
+.titre {
+	font-size: 15px;
+	text-align: center;
+	font-weight: bold;
+	border-style: solid;
+	border-width: 1px;
+	background-color: #FBFBFB;
+	border-color: #BBBBBB;
+	margin-top: 10px;
+	margin-bottom: 20px;
+	color: #000000;
+	width: 100%;
+}
+
+th.listing {
+	background-color: #000000;
+	color: #FFFFFF;
+}
+
+a.listing {
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+a.listing:hover {
+	color: #FF0000;
+}
+	
+.emptylist {
+	background-color: #EEEEEE;
+	text-align: center;
+	font-style: italic;
+}
+	
+.actif {
+}
+
+.inactif {
+	color: #777777;
+	font-style: italic;
+}
+
+.acronyme {
+	color: #AAAAAA;
+	font-style: italic;
+}
+
+#copyright {
+	color: #CCCCCC;
+	font-style: italic;
+	text-align: center;
+	padding-top: 10px;
+	margin-bottom: 10px;
+}
+
+#copyright a {
+	color: #CCCCCC;
+}
+
+#copyright a:hover {
+	color: #FF0000;
+}
+
+.exemple {
+	color: #999999;
+}
+
+#logo {
+	text-align: center;
+	font-weight: bold;
+	margin-top: 10px;
+	width: 150px;
+	height: 100px;
+}
+
+#nav1 {
+	width: 150px;
+	margin-left: 5px;
+	border-color: #7777FF;
+	border-width: 2px;
+	border-style: solid;
+}
+
+#nav1 h1 {
+	margin: 2px;
+	font-size: 10px;
+	background-color: #DDDDFF;
+	padding-left: 2px;
+}
+
+#nav1 ul {
+	list-style-type: none;
+	margin: 2px;
+	padding: 0px;
+	border: none;
+}
+
+#nav1 li {
+	background-color: #EEEEEE;
+	margin-bottom: 2px;
+	padding-left: 2px;
+}	
+
+#logout {
+	width: 150px;
+	margin-left: 5px;
+	text-align: center;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#legende {
+	width: 150px;
+	margin-left: 5px;
+	margin-bottom: 5px;
+	border-color: #7777FF;
+	border-width: 2px;
+	border-style: solid;
+}
+
+#legende table {
+	width: 100%;
+}
+
+#legende h1 {
+	margin: 2px;
+	font-size: 10px;
+	background-color: #DDDDFF;
+	padding-left: 2px;
+	text-align: left;
+}	 
+
+#legende td {
+	padding-left: 2px;
+}	 
+
+#legende .back {
+	background-color: #EEEEEE;
+}	 
+		
+.color-sample {
+	border-color: #AAAAAA;
+	border-width: 1px;
+	border-style: solid;		
+}	 
+	
+#content {
+	position: absolute;
+	padding-right: 15px;
+	left: 170px;
+}
+
+#menu {
+	float: left;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+#listfilter {
+	text-align: right;
+}
+
+#listfilter form {
+	margin-bottom: 0px;
+}
+
+#infoline {
+	margin-top: 10px;
+}
+
+#infoline2 {
+	margin-top: 2px;
+}
+
+#mailing_preview {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: 30px;;
+	margin-right: 30px;
+	border-color: #DDDDDD;
+	border-width: 2px;
+	border-style: solid;
+}
+	
+#mailing_preview th {
+	font-size: 10px;
+	font-weight: bold;
+	text-align: left;
+	background-color: #EEEEEE;
+}
+
+#errorbox {
+	color: #FF0000;
+	border-color: #FFDDDD;
+	border-width: 2px;
+	border-style: solid;
+}
+		
+#errorbox h1 {
+	background-color: #FFDDDD;
+	text-align: center;
+	font-size: 10px;
+	font-weight: bold;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+#errorbox ul {
+	list-style-type: none;
+	margin: 2px;
+	padding: 0px;
+	border: none;
+}
+
+#warningbox {
+	color: #000000;
+	border-color: #FFE8CC;
+	border-width: 2px;
+	border-style: solid;
+}
+		
+#warningbox h1 {
+	background-color: #FFE8CC;
+	text-align: center;
+	font-size: 10px;
+	font-weight: bold;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+#warningbox ul {
+	list-style-type: none;
+	margin: 2px;
+	padding: 0px;
+	border: none;
+}		
+
+#input-table #libelle {
+	text-align: left;
+	background-color: #DDDDFF;
+	font-weight: normal;
+}
+
+#input-table #header {
+	text-align: left;
+	font-weight: bold;
+}
+	
+#input-table td {
+	background-color: #EEEEEE;
+}
+
+#installpage {
+	background-color: #DDDDFF;
+	padding-left: 20px;
+}
+
+#installpage p {
+	background-color: #DDDDFF;
+	padding-left: 20px;
+	width: 80%;
+}
+	
+#installpage h1 {
+	text-align: left;
+	margin: 0px;
+	font-size: 12px;
+}
+	
+#installpage #submitbutton2 {
+	text-align: center;
+	padding-left: 20px;
+}
+	
+#installpage #submitbutton3 {
+	text-align: right;
+	padding-right: 20px;
+}
+		
+.titreinstall {
+	font-size: 15px;
+	text-align: center;
+	font-weight: bold;
+	border-style: solid;
+	border-width: 1px;
+	background-color: #FBFBFB;
+	border-color: #BBBBBB;
+	color: #000000;
+	left: 0px;
+	right: 0px;
+	padding: 10px 0px 10px 0px;
+	margin: 0px;
+}
+
+.footerinstall {
+	font-size: 11px;
+	text-align: right;
+	padding-right: 20px;
+	font-weight: normal;
+	border-style: solid;
+	border-width: 1px;
+	background-color: #FBFBFB;
+	border-color: #BBBBBB;
+	color: #000000;
+	left: 0px;
+	right: 0px;
+	margin: 0px;
+}	
