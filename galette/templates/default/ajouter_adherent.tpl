@@ -32,7 +32,7 @@
 					<TD>
 						<INPUT type="text" name="nom_adh" value="{$adherent.nom_adh}" maxlength="20" {$disabled.nom_adh}></TD> 
 					<TD colspan="2" rowspan="4" align="center" width="130">
-						<IMG src="photo.php?tn=1&id_adh={$adherent.id_adh}&nocache={$time}" border="1" alt="{_T("Picture")}" width="{$imagedata[0]}" height="{$imagedata[1]}">
+						<IMG src="picture.php?id_adh={$adherent.id_adh}&rand={$time}" border="1" alt="{_T("Picture")}">
 					 </TD>
 				</TR>
 				<TR>

@@ -10,7 +10,7 @@
 {else}
 					<TD colspan="2" rowspan="5" align="center">
 {/if}
-						photo
+						<IMG src="picture.php?id_adh={$adherent.id_adh}&rand={$time}" border="1" alt="{_T("Picture")}">
                         		</TD>
 				</TR>
 				<TR> 

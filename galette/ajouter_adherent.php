@@ -248,7 +248,42 @@
 				// logging
                                 dblog('Member card updated:',strtoupper($_POST["nom_adh"]).' '.$_POST["prenom_adh"], $requete);
 			}
-			
+
+			// picture upload
+			if (isset($_FILES['photo']))
+			{
+				/*
+					TODO :  check filetype
+						check filesize
+						check file dimensions
+						resize picture if gd available
+				*/
+				
+				if (is_uploaded_file($_FILES['photo']['tmp_name']))
+				{
+					$sql = "DELETE FROM ".PREFIX_DB."pictures
+						WHERE id_adh=".$adherent['id_adh'];
+					$DB->Execute($sql);
+					
+					$f = fopen($_FILES['photo']['tmp_name'],"r");
+					$picture = '';
+					while ($r=fread($f,8192))
+						$picture .= $r;
+					fclose($f);
+	
+					$sql = "INSERT INTO ".PREFIX_DB."pictures
+						(id_adh, picture, format, width, height)
+						VALUES (".$DB->Qstr($adherent['id_adh']).",".$DB->Qstr($picture).",'','','')";
+					$DB->Execute($sql);
+				}
+			}
+			elseif (isset($_POST['del_photo']))
+			{
+				$sql = "DELETE FROM ".PREFIX_DB."pictures
+					WHERE id_adh=".$adherent['id_adh'];
+				$DB->Execute($sql);													
+			}
+
                         if (isset($_POST["mail_confirm"]))
                                 if ($_POST["mail_confirm"]=="1")
                                         if ($adherent['email_adh']!="")
@@ -287,8 +322,11 @@
 					SET date_echeance=".$date_fin_update."
 					WHERE id_adh=" . $adherent['id_adh'];
 			$DB->Execute($requete);
-			
-			header ('location: ajouter_contribution.php?id_adh='.$adherent['id_adh']);
+		
+			if (!isset($_POST['id_adh']))
+				header('location: ajouter_contribution.php?id_adh='.$adherent['id_adh']);
+			elseif (!isset($_POST['del_photo']))
+				header('location: voir_adherent.php?id_adh='.$adherent['id_adh']);
 		}
 	}
 	else
@@ -352,11 +390,11 @@
 	// picture available ?
 	if ($adherent["id_adh"]!="")
 	{
-		$sql =  "SELECT id_adh".
+		$sql =  "SELECT id_adh ".
 			"FROM ".PREFIX_DB."pictures ".
 			"WHERE id_adh=".$adherent["id_adh"];
 		$result = &$DB->Execute($sql);
-		if (!$result->EOF)
+		if ($result->RecordCount()!=0)
 			$adherent["has_picture"]=1;
 		else
 			$adherent["has_picture"]=0;
@@ -368,6 +406,7 @@
 	$tpl->assign("required",$required);
 	$tpl->assign("disabled",$disabled);
 	$tpl->assign("adherent",$adherent);
+	$tpl->assign("time",time());
 	$tpl->assign("dynamic_fields",$dynamic_fields);
 	$tpl->assign("error_detected",$error_detected);
 	$tpl->assign("warning_detected",$warning_detected);

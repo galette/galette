@@ -25,10 +25,10 @@ $disable_gettext=true;
 
 // I18N support information here
 if (isset($_POST['pref_lang']))
-        $pref_lang=$_SESSION["pref_lang"]=$_POST['pref_lang'];
+        $_SESSION["pref_lang"]=$_POST['pref_lang'];
 else if (isset($_GET['pref_lang']))
-        $pref_lang=$_SESSION["pref_lang"]=$_GET['pref_lang'];
-else if (isset($_SESSION["pref_lang"]))
+        $_SESSION["pref_lang"]=$_GET['pref_lang'];
+if (isset($_SESSION["pref_lang"]))
 	$pref_lang=$_SESSION["pref_lang"];
 else
 	$pref_lang="english";
