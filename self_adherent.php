@@ -76,14 +76,20 @@ reset($fields);
 // 	    	    
 
 if (!isset($_POST["valid"]) || 
-    !PasswordCheck($_POST["mdp_adh"],$_POST["mdp_crypt"])){
+    !PasswordCheck($_POST["mdp_adh"],$_POST["mdp_crypt"]) ||
+    !UniqueLogin($DB,$_POST["login_adh"])){
   if (!isset($_POST["titre_adh"])){
     $titre_adh="1"; //monsieur par défaut
   }
   if (isset($_POST["valid"])){
     $pref_lang=$_POST["pref_lang"];
     include(WEB_ROOT."includes/lang.inc.php"); 
-    $warning_detected=_T("Erreur en recopiant le mot de passe : ").$_POST["mdp_adh"];
+    if(!PasswordCheck($_POST["mdp_adh"],$_POST["mdp_crypt"])){
+      $warning_detected.=_T("Erreur en recopiant le mot de passe : ").$_POST["mdp_adh"]."\n";
+    }
+    if(!UniqueLogin($DB,$_POST["login_adh"])){
+      $warning_detected.=_T("Désolé, ").$_POST["login_adh"]._T(" est un identifiant déjà utilisé, choisissez-en un autre\n");
+    }
     //	
     // Pré-remplissage des champs
     foreach($_POST as $k => $v){
