@@ -24,8 +24,6 @@
 				<LI><A href="gestion_contributions.php?id_adh=all">{_T("List of contributions")}</A></LI>
 				<LI><A href="ajouter_adherent.php">{_T("Add a member")}</A></LI>
 				<LI><A href="ajouter_contribution.php">{_T("Add a contribution")}</A></LI>
-				<LI><A href="mailing_adherents.php">{_T("Do a mailing")}</A></LI>
-				<LI><A href="mailing_adherents.php?etiquettes=1">{_T("Generate labels")}</A></LI>
 				<LI><A href="log.php">{_T("Logs")}</A></LI>
 {else}
 				<LI><A href="voir_adherent.php">{_T("My information")}</A></LI>

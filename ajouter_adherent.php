@@ -116,6 +116,15 @@
 				{
 					// dates
 					case 'ddn_adh':
+						// we don't convert to DB format to overcome the 31/12/1969 limit
+						if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $value, $array_jours))
+						{
+							if (!checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
+								$error_detected[] = _T("- Non valid date!");
+						}
+						else
+							$error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!");
+						break;
 					case 'date_crea_adh':
 						if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $value, $array_jours))
 						{
@@ -161,7 +170,7 @@
 				}
 				
 				// dates already quoted
-				if (($key!='ddn_adh' && $key!='date_crea_adh') || $value=='')
+				if (($key!='date_crea_adh') || $value=='')
 					$value = $DB->qstr($value);
 				
 				$update_string .= ", ".$key."=".$value;
@@ -326,7 +335,6 @@
 				$adherent = $result->fields;
 
 				// reformat dates
-				$adherent['ddn_adh'] = date_db2text($adherent['ddn_adh']);
 				$adherent['date_crea_adh'] = date_db2text($adherent['date_crea_adh']);
 
 				// dynamic fields
@@ -353,8 +361,11 @@
 
 	// - declare dynamic fields for display
 	$disabled['dyn'] = array();
-	$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $_SESSION["admin_status"], $adherent['dyn'], $disabled['dyn'], 1);
+	if (!isset($adherent['dyn']))
+		$adherent['dyn'] = array();
 
+	$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $_SESSION["admin_status"], $adherent['dyn'], $disabled['dyn'], 1);
+	
 	// template variable declaration
 	$tpl->assign("required",$required);
 	$tpl->assign("disabled",$disabled);

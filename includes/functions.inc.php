@@ -309,7 +309,7 @@ function get_numeric_form_value($name, $defval)
 {
 	$val = get_form_value($name, $defval);
 	if (!is_numeric($val))
-		unset($val);
+		$val = '';
 	return $val;
 }
 

@@ -39,7 +39,7 @@
 	$adh_selected = isset($contribution['id_adh']);
 	$tpl->assign("adh_selected", $adh_selected);
 
-	$type_selected = isset($contribution['id_cotis']) || get_form_value("type_selected", 0);
+	$type_selected = $contribution['id_cotis']!='' || get_form_value("type_selected", 0);
 	$tpl->assign("type_selected", $type_selected);
 
 	$cotis_extension = 0;
@@ -299,7 +299,9 @@
 			FROM ".PREFIX_DB."adherents
 			ORDER BY nom_adh, prenom_adh";
 	$result = &$DB->Execute($requete);
-	while (!$result->EOF)
+	if ($result->EOF)
+		$adh_options = array('' => _T("You must first register a member"));
+	else while (!$result->EOF)
 	{
 		$adh_options[$result->fields[0]] = htmlentities(stripslashes(strtoupper($result->fields[1])." ".$result->fields[2]),ENT_QUOTES);
 		$result->MoveNext();

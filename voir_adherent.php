@@ -58,7 +58,6 @@
 			// convert dates
 			case 'date_crea_adh':
 			case 'date_echeance':
-			case 'ddn_adh':
 				if ($val!='')
 				{
 					list($a,$m,$j)=split("-",$val);

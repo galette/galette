@@ -48,9 +48,9 @@
 
 	function is_exempt($DB, $cotisant)
 	{
-		$request = "SELECT bool_exempt_adh
-			      FROM ".PREFIX_DB."adherents
-			     WHERE id_adh=" . $cotisant;
+		$requete_cotis = "SELECT bool_exempt_adh
+				FROM ".PREFIX_DB."adherents
+				WHERE id_adh=" . $cotisant;
 		return $DB->GetOne($requete_cotis);
 	}
 

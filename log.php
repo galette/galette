@@ -92,8 +92,10 @@
 		$nbpages = intval($nb_lines->fields[0]/PREF_NUMROWS);
 	else 
 		$nbpages = intval($nb_lines->fields[0]/PREF_NUMROWS)+1;
+	if ($nbpages == 0) $nbpages = 1;
 	
 	$compteur = 1+($page-1)*PREF_NUMROWS;
+	$logs = array();
 	while (!$resultat->EOF) 
 	{
 		$logs[$compteur]['date'] = $resultat->fields[0];
