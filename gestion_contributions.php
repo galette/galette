@@ -278,7 +278,7 @@
 	{
 ?>
 								<TD class="<? echo $row_class; ?>" nowrap> 
-									<A href="voir_adherent.php?id_adh=<? echo $resultat->fields["id_adh"] ?>"><?
+									<A href="gestion_contributions.php?id_adh=<? echo $resultat->fields["id_adh"] ?>"><?
 										echo strtoupper(htmlentities($resultat->fields["nom_adh"], ENT_QUOTES))." ";
 										if (isset($resultat->fields["prenom_adh"]))
 											echo htmlentities($resultat->fields["prenom_adh"], ENT_QUOTES);
