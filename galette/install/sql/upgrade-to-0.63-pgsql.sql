@@ -65,7 +65,7 @@ ALTER TABLE galette_cotisations ALTER COLUMN date_fin_cotis SET DEFAULT '0000010
 ALTER TABLE galette_cotisations DROP duree_mois_cotis;
 ALTER TABLE galette_cotisations DROP date_cotis;
 
--- Add column to galette_types_cotisations
+-- Add column to galette_types_cotisations;
 ALTER TABLE galette_types_cotisation ADD cotis_extension character(1);
 ALTER TABLE galette_types_cotisation ALTER COLUMN cotis_extension SET DEFAULT NULL;
 UPDATE galette_types_cotisation SET cotis_extension=1 WHERE

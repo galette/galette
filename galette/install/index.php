@@ -675,6 +675,57 @@
 			}
 			// END : copyright (2002) The phpBB Group (support@phpbb.com)
 
+			// BEGIN: Fix overlapping fees
+			$cotis = array();
+			$query = "SELECT id_cotis, date_enreg, date_debut_cotis, date_fin_cotis
+				    FROM ".$table_prefix."cotisations, ".$table_prefix."types_cotisation
+				   WHERE ".$table_prefix."cotisations.id_type_cotis = ".$table_prefix."types_cotisation.id_type_cotis
+					   AND ".$table_prefix."types_cotisation.cotis_extension = '1'
+				   ORDER BY date_enreg;";
+			$result = $DB->Execute($query);
+			if (!$result)
+				print $query.": ".$DB->ErrorMsg();
+			else {
+				while (!$result->EOF) {
+					$c = $result->FetchRow();
+					$newc = array('id_cotis' => $c['id_cotis']);
+					list($by, $bm, $bd) = split("-", $c['date_debut_cotis']);
+					list($ey, $em, $ed) = split("-", $c['date_fin_cotis']);
+					$newc['start_date'] = mktime(0, 0, 0, $bm, $bd, $by);
+					$newc['end_date'] = mktime(0, 0, 0, $em, $ed, $ey);
+					if ($bm > $em) {
+						$em += 12;
+						$ey--;
+					}
+					$newc['duration'] = ($ey -$by)*12 + $em - $bm;
+					$cotis[] = $newc;
+				}
+				$result->Close();
+			}
+			if (count($cotis) > 0) {
+				unset($cprev);
+				foreach ($cotis as $c) {
+					if (isset($cprev) && $c['start_date'] < $cprev['end_date']) {
+						$c['start_date'] = $cprev['end_date'];
+						$start_date = $DB->DBDate($c['start_date']);
+						$new_start_date = localtime($c['start_date'], 1);
+						$c['end_date'] = mktime(0, 0, 0, $new_start_date['tm_mon'] + $c['duration'] + 1, $new_start_date['tm_mday'], $new_start_date['tm_year']);
+						$end_date = $DB->DBDate($c['end_date']);
+						$query = "UPDATE ".$table_prefix."cotisations 
+							     SET date_debut_cotis = ".$start_date.", 
+								 date_fin_cotis = ".$end_date."
+							     WHERE id_cotis = ".$c['id_cotis'];
+						$result = $DB->Execute($query);
+						if (!$result)
+							print $query.": ".$DB->ErrorMsg();
+						else
+							$result->Close();
+					}
+					$cprev = $c;
+				}
+			}
+			// END: Fix overlapping fees
+
 ?>	
 	</TD></TR></TABLE>
 	<P><? echo _T("(Errors on DROP and RENAME operations can be ignored)"); ?></P>
