@@ -776,6 +776,9 @@
                 }
                 $field_name = "info_field_".$id_cat."_".$i;
                 $val = $res_info->EOF ? "" : $res_info->fields[0];
+		// Recuperation de l'eventuelle valeur postee
+		if (isset($_POST[$field_name]))
+			$val = $_POST[$field_name];
 ?> 
                                                     <TD colspan="3">
 <?
