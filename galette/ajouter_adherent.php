@@ -275,7 +275,7 @@
 			// deadline
 			$date_fin = get_echeance($DB, $adherent['id_adh']);
 			if ($date_fin!="")
-				$date_fin_update = $DB->DBDate(mktime(0,0,0,$date_fin[1],$date_fin[0],$date_fin[2]));
+				$date_fin_update = $DB->DBDate($date_fin[2].'-'.$date_fin[1].'-'.$date_fin[0]);
 			else
 				$date_fin_update = "NULL";
 			$requete = "UPDATE ".PREFIX_DB."adherents

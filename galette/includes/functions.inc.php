@@ -270,7 +270,7 @@ function date_text2db($DB, $date) {
 	list($j, $m, $a)=split("/",$date);
 	if (!checkdate($m, $j, $a))
 		return "";
-	return $DB->DBDate(mktime(0, 0, 0, $m, $j, $a));
+	return $DB->DBDate($a.'-'.$m.'-'.$j);
 }
 
 function distance_months($beg, $end) {
