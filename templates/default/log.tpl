@@ -91,7 +91,7 @@
 				<TD valign="top" nowrap>{$log.ip}</TD>
 				<TD valign="top" nowrap>{$log.adh}</TD>
 				<TD valign="top" nowrap>{$log.action}</TD>
-				<TD valign="top" nowrap>{$log.desc}</TD>
+				<TD valign="top">{$log.desc}</TD>
 			</TR>
 {foreachelse}
 			<TR><TD colspan="5" class="emptylist">{_T("logs are empty")}</TD></TR>
