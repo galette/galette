@@ -281,11 +281,12 @@ a.listing:hover {
 #mailing_preview {
 	margin-top: 10px;
 	margin-bottom: 10px;
-	margin-left: 30px;;
-	margin-right: 30px;
+	width: 70%;
 	border-color: #DDDDDD;
 	border-width: 2px;
 	border-style: solid;
+    margin-left: auto;
+    margin-right: auto;
 }
 	
 #mailing_preview th {

@@ -453,10 +453,19 @@
 			$where_clause .= "id_adh='".$value."'";
 		}
 		$requete .= $where_clause.") AND email_adh IS NOT NULL ORDER by nom_adh, prenom_adh;";
-		// echo $requete;
 		$resultat = &$DB->Execute($requete);
-		if (isset($_POST["mailing_confirmed"]))
-			$confirm_detected = _T("Pensez à contacter les adhérents ne disposant pas d'une adresse E-Mail par un autre moyen.");
+
+		// adhérents sans email
+		$requete = "SELECT id_adh, nom_adh, prenom_adh, adresse_adh, activite_adh,
+				libelle_statut, bool_exempt_adh, titre_adh, cp_adh, bool_admin_adh, date_echeance,
+				ville_adh, tel_adh, gsm_adh, msn_adh, icq_adh, pays_adh, jabber_adh, adresse2_adh
+				FROM ".PREFIX_DB."adherents, ".PREFIX_DB."statuts
+			       	WHERE ".PREFIX_DB."adherents.id_statut=".PREFIX_DB."statuts.id_statut AND (";
+		$requete .= $where_clause.") AND email_adh IS NULL ORDER by nom_adh, prenom_adh;";
+		$resultat_adh_nomail = &$DB->Execute($requete);
+        
+		if (isset($_POST["mailing_confirmed"]) && $resultat_adh_nomail->EOF==false)
+            $confirm_detected = _T("Pensez à contacter les adhérents ne disposant pas d'une adresse E-Mail par un autre moyen.");
 ?>
 			<H1 class="titre"><? echo _T("Mailing"); ?> <? if (isset($_POST["mailing_confirmed"])) echo _T("effectué !"); else echo _T("(prévisualisation)"); ?></H1>
 <?
@@ -588,14 +597,21 @@
 		$resultat->Close();
 ?>
 			</TABLE>
-			<DIV id="mailing_preview" align="center">
-				<TABLE border="0">
-				<TR><TH><? echo _T("Objet :"); ?></TH></TR>
+<?
+		if (!isset($_POST["mailing_confirmed"]))
+		{
+?>
+			<DIV id="mailing_preview">
+				<TABLE border="0" id="input-table" style="width: 100%;">
+				<TR><TH id="libelle"><? echo _T("Objet :"); ?></TH></TR>
 				<TR><TD><? echo htmlentities($mailing_objet, ENT_QUOTES); ?></TD></TR>
-				<TR><TH><? echo _T("Message :"); ?></TH></TR>
-				<TR><TD><? echo nl2br(htmlentities($mailing_corps, ENT_QUOTES)); ?></TD></TR>
+				<TR><TH id="libelle"><? echo _T("Message :"); ?></TH></TR>
+				<TR><TD style="height: 200px; vertical-align: top;"><? echo nl2br(htmlentities($mailing_corps, ENT_QUOTES)); ?></TD></TR>
 				</TABLE>
 			</DIV>
+<?
+		}
+?>
 						<DIV align="center">
 						<TABLE>
 							<TR>
@@ -614,33 +630,9 @@
 ?>
 										<INPUT type ="hidden" name="mailing_corps" value="<? echo htmlentities($mailing_corps, ENT_QUOTES); ?>">
 										<INPUT type ="hidden" name="mailing_objet" value="<? echo htmlentities($mailing_objet, ENT_QUOTES); ?>">
-										<INPUT type="submit" value="<? echo _T("Retour"); ?>">&nbsp;&nbsp;&nbsp;
-									</FORM>
-								</TD>
-								<TD>
-									<FORM action="mailing_adherents.php" method="post">
-<?
-			reset($mailing_adh);
-			while(list($key,$value)=each($mailing_adh))
-			{
-				echo "<INPUT type=\"hidden\" name=\"mailing_adh[]\" value=\"".$value."\">";
-			}
-?>
-										<INPUT type ="hidden" name="mailing_corps" value="<? echo htmlentities($mailing_corps, ENT_QUOTES); ?>">
-										<INPUT type ="hidden" name="mailing_objet" value="<? echo htmlentities($mailing_objet, ENT_QUOTES); ?>">
 										<INPUT type ="hidden" name="mailing_confirmed" value="1">
 										<INPUT type ="hidden" name="mailing_go" value="1">
 										&nbsp;&nbsp;&nbsp;<INPUT type="submit" value="<? echo _T("Envoyer"); ?>">
-									</FORM>
-								</TD>
-<?
-		}
-		else
-		{
-?>
-								<TD>
-									<FORM action="gestion_adherents.php" method="post">
-										<INPUT type="submit" value="<? echo _T("Retour"); ?>">
 									</FORM>
 								</TD>
 <?
@@ -659,17 +651,7 @@
 					<TH class="listing left"><? echo _T("Etat cotisations"); ?></TH> 
 				</TR> 			
 <?
-		// adhérents sans email
-		$requete = "SELECT id_adh, nom_adh, prenom_adh, adresse_adh, activite_adh,
-				libelle_statut, bool_exempt_adh, titre_adh, cp_adh, bool_admin_adh, date_echeance,
-				ville_adh, tel_adh, gsm_adh, msn_adh, icq_adh, pays_adh, jabber_adh, adresse2_adh
-				FROM ".PREFIX_DB."adherents, ".PREFIX_DB."statuts
-			       	WHERE ".PREFIX_DB."adherents.id_statut=".PREFIX_DB."statuts.id_statut AND (";
-		$requete .= $where_clause.") AND email_adh IS NULL ORDER by nom_adh, prenom_adh;";
-		// echo $requete;
-		$resultat = &$DB->Execute($requete);
-
-		if ($resultat->EOF)
+		if ($resultat_adh_nomail->EOF)
 		{
 ?>	
 							<tr>
@@ -677,30 +659,30 @@
 							</tr>
 <?
 		}
-		else while (!$resultat->EOF) 
+		else while (!$resultat_adh_nomail->EOF) 
 			{
 				// définition CSS pour adherent désactivé
-				if ($resultat->fields[4]=="1")
+				if ($resultat_adh_nomail->fields[4]=="1")
 					$activity_class = "";
 				else
 					$activity_class = " class=\"inactif\"";
 					
 				// temps d'adhésion
-				if($resultat->fields[6])
+				if($resultat_adh_nomail->fields[6])
 				{
 					$statut_cotis = _T("Exempt de cotisation");
 					$color = "#DDFFDD";
 				}
 				else
 				{
-					if ($resultat->fields[10]=="")
+					if ($resultat_adh_nomail->fields[10]=="")
 					{
 						$statut_cotis = _T("N'a jamais cotisé");
 						$color = "#EEEEEE";			
 					}
 					else
 					{
-						$date_fin = split("-",$resultat->fields[10]);
+						$date_fin = split("-",$resultat_adh_nomail->fields[10]);
 						$ts_date_fin = mktime(0,0,0,$date_fin[1],$date_fin[2],$date_fin[0]);
 						$aujourdhui = time();
 						
@@ -730,7 +712,7 @@
 							<tr> 
 								<td valign="top" bgcolor="<? echo $color ?>"<? echo $activity_class ?>>
 <?
-				if ($resultat->fields[7]=="1") {
+				if ($resultat_adh_nomail->fields[7]=="1") {
 ?>
 									<img src="images/icon-male.png" Alt="<? echo _T("[H]"); ?>" align="middle" width="10" height="12">
 <?
@@ -741,7 +723,7 @@
 				}
 ?>
 <?
-				if ($resultat->fields[9]=="1") {
+				if ($resultat_adh_nomail->fields[9]=="1") {
 ?>
 									<img src="images/icon-star.png" Alt="<? echo _T("[admin]"); ?>" align="middle" width="12" height="13">
 <?
@@ -751,61 +733,61 @@
 <?
 				}
 ?>
-									<a href="voir_adherent.php?id_adh=<? echo $resultat->fields["id_adh"] ?>"><? echo htmlentities(strtoupper($resultat->fields[1]), ENT_QUOTES)." ".htmlentities($resultat->fields[2], ENT_QUOTES); ?></a>
+									<a href="voir_adherent.php?id_adh=<? echo $resultat_adh_nomail->fields["id_adh"] ?>"><? echo htmlentities(strtoupper($resultat_adh_nomail->fields[1]), ENT_QUOTES)." ".htmlentities($resultat_adh_nomail->fields[2], ENT_QUOTES); ?></a>
 								</td> 
 <?
 				$coord_adh = "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">";
 				$adresse_adh = "";
-				if ($resultat->fields[3]!="")
-					$adresse_adh .= htmlentities($resultat->fields[3], ENT_QUOTES);
-				if ($resultat->fields[8]!="") 
+				if ($resultat_adh_nomail->fields[3]!="")
+					$adresse_adh .= htmlentities($resultat_adh_nomail->fields[3], ENT_QUOTES);
+				if ($resultat_adh_nomail->fields[8]!="") 
 				{	
 					if ($adresse_adh!="")
 						$adresse_adh .= "<BR>";
-					$adresse_adh .= htmlentities($resultat->fields[8], ENT_QUOTES);
+					$adresse_adh .= htmlentities($resultat_adh_nomail->fields[8], ENT_QUOTES);
 				}
-				if ($resultat->fields[11]!="") 
+				if ($resultat_adh_nomail->fields[11]!="") 
 				{	
 					if ($adresse_adh!="")
 						$adresse_adh .= "<BR>";
-					$adresse_adh .= htmlentities($resultat->fields[11], ENT_QUOTES);
+					$adresse_adh .= htmlentities($resultat_adh_nomail->fields[11], ENT_QUOTES);
 				}
-				if ($resultat->fields[16]!="") 
+				if ($resultat_adh_nomail->fields[16]!="") 
 				{	
 					if ($adresse_adh!="")
 						$adresse_adh .= "<BR>";
-					$adresse_adh .= htmlentities($resultat->fields[16], ENT_QUOTES);
+					$adresse_adh .= htmlentities($resultat_adh_nomail->fields[16], ENT_QUOTES);
 				}
-				if ($resultat->fields[18]!="") 
+				if ($resultat_adh_nomail->fields[18]!="") 
 				{	
 					if ($adresse_adh!="")
 						$adresse_adh .= "<BR>";
-					$adresse_adh .= htmlentities($resultat->fields[18], ENT_QUOTES);
+					$adresse_adh .= htmlentities($resultat_adh_nomail->fields[18], ENT_QUOTES);
 				}
 				if ($adresse_adh!="")
 					$coord_adh .= "<tr><td width=\"10\" valign=\"top\"><B>".str_replace(" ","&nbsp;",_T("Adresse :"))."</B>&nbsp;</td><td>".$adresse_adh."</td></tr>";
-				if ($resultat->fields[12]!="") 
-					$coord_adh .= "<tr><td style=\"padding-right: 1px;\"><B>".str_replace(" ","&nbsp;",_T("Tel :"))."</B>&nbsp;</td><td>".htmlentities($resultat->fields[12], ENT_QUOTES)."</td></tr>";
-				if ($resultat->fields[13]!="") 
-					$coord_adh .= "<tr><td><B>".str_replace(" ","&nbsp;",_T("GSM :"))."</B>&nbsp;</td><td>".htmlentities($resultat->fields[13], ENT_QUOTES)."</td></tr>";
-				if ($resultat->fields[15]!="") 
-					$coord_adh .= "<tr><td><B>".str_replace(" ","&nbsp;",_T("ICQ :"))."</B>&nbsp;</td><td>".htmlentities($resultat->fields[15], ENT_QUOTES)."</td></tr>";
-				if ($resultat->fields[17]!="") 
-					$coord_adh .= "<tr><td><B>".str_replace(" ","&nbsp;",_T("Jabber :"))."</B>&nbsp;</td><td>".htmlentities($resultat->fields[17], ENT_QUOTES)."</td></tr>";
-				if ($resultat->fields[14]!="") 
-					$coord_adh .= "<tr><td><B>".str_replace(" ","&nbsp;",_T("MSN :"))."</B>&nbsp;</td><td>".htmlentities($resultat->fields[14], ENT_QUOTES)."</td></tr>";
+				if ($resultat_adh_nomail->fields[12]!="") 
+					$coord_adh .= "<tr><td style=\"padding-right: 1px;\"><B>".str_replace(" ","&nbsp;",_T("Tel :"))."</B>&nbsp;</td><td>".htmlentities($resultat_adh_nomail->fields[12], ENT_QUOTES)."</td></tr>";
+				if ($resultat_adh_nomail->fields[13]!="") 
+					$coord_adh .= "<tr><td><B>".str_replace(" ","&nbsp;",_T("GSM :"))."</B>&nbsp;</td><td>".htmlentities($resultat_adh_nomail->fields[13], ENT_QUOTES)."</td></tr>";
+				if ($resultat_adh_nomail->fields[15]!="") 
+					$coord_adh .= "<tr><td><B>".str_replace(" ","&nbsp;",_T("ICQ :"))."</B>&nbsp;</td><td>".htmlentities($resultat_adh_nomail->fields[15], ENT_QUOTES)."</td></tr>";
+				if ($resultat_adh_nomail->fields[17]!="") 
+					$coord_adh .= "<tr><td><B>".str_replace(" ","&nbsp;",_T("Jabber :"))."</B>&nbsp;</td><td>".htmlentities($resultat_adh_nomail->fields[17], ENT_QUOTES)."</td></tr>";
+				if ($resultat_adh_nomail->fields[14]!="") 
+					$coord_adh .= "<tr><td><B>".str_replace(" ","&nbsp;",_T("MSN :"))."</B>&nbsp;</td><td>".htmlentities($resultat_adh_nomail->fields[14], ENT_QUOTES)."</td></tr>";
 				$coord_adh .= "</table>";
 ?>
 								<td valign="top" bgcolor="<? echo $color ?>"<? echo $activity_class ?>"><? echo $coord_adh; ?></td> 
-								<td valign="top" bgcolor="<? echo $color ?>"<? echo $activity_class ?>><? echo _T($resultat->fields[5]) ?></td> 
+								<td valign="top" bgcolor="<? echo $color ?>"<? echo $activity_class ?>><? echo _T($resultat_adh_nomail->fields[5]) ?></td> 
 								<td valign="top" bgcolor="<? echo $color ?>"<? echo $activity_class ?>><? echo $statut_cotis ?></td>
 							</TR>
 
 <?	
-				$nomail_adh[]=$resultat->fields[0];
-				$resultat->MoveNext();
+				$nomail_adh[]=$resultat_adh_nomail->fields[0];
+				$resultat_adh_nomail->MoveNext();
 			} 
-			$resultat->Close();
+			$resultat_adh_nomail->Close();
 			
 
 ?>
