@@ -114,10 +114,10 @@
 	      " AND id_adh!=" . $DB->qstr($id_adh, true);
 	    $result = &$DB->Execute($requete);
 	    if (!$result->EOF || $_POST["login_adh"]==PREF_ADMIN_LOGIN){
-	      $error_detected .= "<LI>"._("- This username is already used by another member !")."</LI>";
+	      $error_detected .= "<LI>"._T("- This username is already used by another member !")."</LI>";
 	    } 
           } else {
-	    $error_detected .=_("Sorry, ").$_POST["login_adh"]._(" is a username already used by another member, please select another one\n");
+	    $error_detected .=_T("Sorry, ").$_POST["login_adh"]._T(" is a username already used by another member, please select another one\n");
           }
 	}
   	// verification de champs
@@ -163,7 +163,7 @@
 		
 				// vérification de la présence des champs obligatoires
 				if ($$fieldreq!="" && $post_value=="")
-				  $error_detected .= "<LI>"._("- Mandatory field empty.")."</LI>";
+				  $error_detected .= "<LI>"._T("- Mandatory field empty.")."</LI>";
 				else
 				{
 					// validation des dates				
@@ -174,26 +174,26 @@
 							if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]) || $post_value=="")
 								$value="'".$array_jours[3]."-".$array_jours[2]."-".$array_jours[1]."'";
 							else
-								$error_detected .= "<LI>"._("- Non valid date!")."</LI>";
+								$error_detected .= "<LI>"._T("- Non valid date!")."</LI>";
 						}
 					  	else
-					  		$error_detected .= "<LI>"._("- Wrong date format (dd/mm/yyyy)!")."</LI>";
+					  		$error_detected .= "<LI>"._T("- Wrong date format (dd/mm/yyyy)!")."</LI>";
 					}
  					elseif ($fieldname=="email_adh")
  					{
  						$post_value=strtolower($post_value);
 						if (!is_valid_email($post_value) && $post_value!="")
-					  	$error_detected .= "<LI>"._("- Non-valid E-Mail address!")."</LI>";
+					  	$error_detected .= "<LI>"._T("- Non-valid E-Mail address!")."</LI>";
 						else
 		 					$value = $DB->qstr($post_value, true);
 		 					
 		 				if ($post_value=="" && isset($_POST["mail_confirm"]))
-		 					$error_detected .= "<LI>"._("- You can't send a confirmation by email if the member hasn't got an address!")."</LI>";
+		 					$error_detected .= "<LI>"._T("- You can't send a confirmation by email if the member hasn't got an address!")."</LI>";
 					}
  					elseif ($fieldname=="url_adh")
  					{
  						if (!is_valid_web_url($post_value) && $post_value!="" && $post_value!="http://")
-					  	$error_detected .= "<LI>"._("- Non-valid Website address! Maybe you've skipped the http:// ?")."</LI>";
+					  	$error_detected .= "<LI>"._T("- Non-valid Website address! Maybe you've skipped the http:// ?")."</LI>";
 						else
 						{
 							if ($post_value=="http://")
@@ -204,7 +204,7 @@
  					elseif ($fieldname=="login_adh")
  					{
  						if (strlen($post_value)<4)
- 							$error_detected .= "<LI>"._("- The username must be composed of at least 4 characters!")."</LI>";
+ 							$error_detected .= "<LI>"._T("- The username must be composed of at least 4 characters!")."</LI>";
  						else
  						{
  							// on vérifie que le login n'est pas déjà utilisé
@@ -216,7 +216,7 @@
 
  							$result = &$DB->Execute($requete);
 							if (!$result->EOF || $post_value==PREF_ADMIN_LOGIN)
-	 							$error_detected .= "<LI>"._("- This username is already used by another member !")."</LI>";
+	 							$error_detected .= "<LI>"._T("- This username is already used by another member !")."</LI>";
 							else
 	 							$value = $DB->qstr($post_value, true);
 						}
@@ -224,7 +224,7 @@
  					elseif ($fieldname=="mdp_adh")
  					{
  						if (strlen($post_value)<4)
- 							$error_detected .= "<LI>"._("- The password must be of at least 4 characters!")."</LI>";
+ 							$error_detected .= "<LI>"._T("- The password must be of at least 4 characters!")."</LI>";
  						else
  							$value = $DB->qstr($post_value, true);
  					}
@@ -256,7 +256,7 @@
  		 			    SET " . substr($update_string,1) . " 
  		 			    WHERE id_adh=" . $id_adh;
 				$DB->Execute($requete);
-				dblog(_("Member card update:")." ".strtoupper($_POST["nom_adh"])." ".$_POST["prenom_adh"], $requete);
+				dblog(_T("Member card update:")." ".strtoupper($_POST["nom_adh"])." ".$_POST["prenom_adh"], $requete);
 
 				$date_fin = get_echeance($DB, $id_adh);
 				if ($date_fin!="")
@@ -275,7 +275,7 @@
   			$requete = "INSERT INTO ".PREFIX_DB."adherents
   				    (" . $insert_string_fields . ") 
   				    VALUES (" . $insert_string_values . ")";
-			dblog(_("Member card added:")." ".strtoupper($_POST["nom_adh"])." ".$_POST["prenom_adh"], $requete);
+			dblog(_T("Member card added:")." ".strtoupper($_POST["nom_adh"])." ".$_POST["prenom_adh"], $requete);
   							
   		}
 			$DB->Execute($requete);
@@ -285,22 +285,22 @@
 				if ($_POST["mail_confirm"]=="1")
 					if ($email_adh!="")
 					{
-						$mail_subject = _("Your Galette identifiers");
-						$mail_text =  _("Hello,")."\n";
+						$mail_subject = _T("Your Galette identifiers");
+						$mail_text =  _T("Hello,")."\n";
 						$mail_text .= "\n";
-						$mail_text .= _("You've just been subscribed on the members management system of the association.")."\n";
-						$mail_text .= _("It is now possible to follow in real time the state of your subscription")."\n";
-						$mail_text .= _("and to update your preferences from the web interface.")."\n";
+						$mail_text .= _T("You've just been subscribed on the members management system of the association.")."\n";
+						$mail_text .= _T("It is now possible to follow in real time the state of your subscription")."\n";
+						$mail_text .= _T("and to update your preferences from the web interface.")."\n";
 						$mail_text .= "\n";
-						$mail_text .= _("Please login at this address:")."\n";
+						$mail_text .= _T("Please login at this address:")."\n";
 						$mail_text .= "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
 						$mail_text .= "\n";
-						$mail_text .= _("Username:")." ".custom_html_entity_decode($login_adh)."\n";
-						$mail_text .= _("Password:")." ".custom_html_entity_decode($mdp_adh)."\n";
+						$mail_text .= _T("Username:")." ".custom_html_entity_decode($login_adh)."\n";
+						$mail_text .= _T("Password:")." ".custom_html_entity_decode($mdp_adh)."\n";
 						$mail_text .= "\n";
-						$mail_text .= _("See you soon!")."\n";
+						$mail_text .= _T("See you soon!")."\n";
 						$mail_text .= "\n";
-						$mail_text .= _("(this mail was sent automatically)")."\n";
+						$mail_text .= _T("(this mail was sent automatically)")."\n";
 						$mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\nContent-Type: text/plain; charset=iso-8859-15\n";
 						mail ($email_adh,$mail_subject,$mail_text, $mail_headers);
 					}
@@ -341,25 +341,25 @@
 					// suppression ancienne photo
 					// NB : une verification sur le type de $id_adh permet d'eviter une faille
 					//      du style $id_adh = "../../../image"
-					@unlink(VAR_ROOT . "photos/".$id_adh_new.".jpg");
-					@unlink(VAR_ROOT . "photos/".$id_adh_new.".gif");
-					@unlink(VAR_ROOT . "photos/".$id_adh_new.".jpg");
-					@unlink(VAR_ROOT . "photos/tn_".$id_adh_new.".jpg");
-					@unlink(VAR_ROOT . "photos/tn_".$id_adh_new.".gif");
-					@unlink(VAR_ROOT . "photos/tn_".$id_adh_new.".jpg");
+					@unlink(WEB_ROOT . "photos/".$id_adh_new.".jpg");
+					@unlink(WEB_ROOT . "photos/".$id_adh_new.".gif");
+					@unlink(WEB_ROOT . "photos/".$id_adh_new.".jpg");
+					@unlink(WEB_ROOT . "photos/tn_".$id_adh_new.".jpg");
+					@unlink(WEB_ROOT . "photos/tn_".$id_adh_new.".gif");
+					@unlink(WEB_ROOT . "photos/tn_".$id_adh_new.".jpg");
 						
 					// copie fichier temporaire			 		
-					if (!@move_uploaded_file($tmp_name,VAR_ROOT . "photos/".$id_adh_new.$ext_image))
-						$warning_detected .= "<LI>"._("- The photo seems not to be transferred correctly. But registration has been made.")."</LI>";
+					if (!@move_uploaded_file($tmp_name,WEB_ROOT . "photos/".$id_adh_new.$ext_image))
+						$warning_detected .= "<LI>"._T("- The photo seems not to be transferred correctly. But registration has been made.")."</LI>";
 				 	else
-						resizeimage(VAR_ROOT . "photos/".$id_adh_new.$ext_image,VAR_ROOT . "photos/tn_".$id_adh_new.$ext_image,130,130);
+						resizeimage(WEB_ROOT . "photos/".$id_adh_new.$ext_image,WEB_ROOT . "photos/tn_".$id_adh_new.$ext_image,130,130);
 			 	}
 			 	else
 				{
 					if (function_exists("imagegif"))
-			 			$warning_detected .= "<LI>"._("- The transfered file isn't a valid image (GIF, PNG or JPEG). But registration has been made.")."</LI>"; 
+			 			$warning_detected .= "<LI>"._T("- The transfered file isn't a valid image (GIF, PNG or JPEG). But registration has been made.")."</LI>"; 
 					else
-			 			$warning_detected .= "<LI>"._("- The transfered file isn't a valid image (PNG or JPEG). But registration has been made.")."</LI>"; 
+			 			$warning_detected .= "<LI>"._T("- The transfered file isn't a valid image (PNG or JPEG). But registration has been made.")."</LI>"; 
 				}
 			}
                                
@@ -419,12 +419,12 @@
  	// suppression photo
 	if (isset($_POST["del_photo"]))
 	{
- 		@unlink(VAR_ROOT . "photos/" . $id_adh . ".jpg");
- 		@unlink(VAR_ROOT . "photos/" . $id_adh . ".png");
- 		@unlink(VAR_ROOT . "photos/" . $id_adh . ".gif");
- 		@unlink(VAR_ROOT . "photos/tn_" . $id_adh . ".jpg");
- 		@unlink(VAR_ROOT . "photos/tn_" . $id_adh . ".png");
- 		@unlink(VAR_ROOT . "photos/tn_" . $id_adh . ".gif");
+ 		@unlink(WEB_ROOT . "photos/" . $id_adh . ".jpg");
+ 		@unlink(WEB_ROOT . "photos/" . $id_adh . ".png");
+ 		@unlink(WEB_ROOT . "photos/" . $id_adh . ".gif");
+ 		@unlink(WEB_ROOT . "photos/tn_" . $id_adh . ".jpg");
+ 		@unlink(WEB_ROOT . "photos/tn_" . $id_adh . ".png");
+ 		@unlink(WEB_ROOT . "photos/tn_" . $id_adh . ".gif");
  	} 	
 	
 	  //	
@@ -503,7 +503,7 @@
 
 ?> 
  
-						<H1 class="titre"><? echo _("Member Profile"); ?> (<? if ($id_adh!="") echo _("modification"); else echo _("creation"); ?>)</H1>
+						<H1 class="titre"><? echo _T("Member Profile"); ?> (<? if ($id_adh!="") echo _T("modification"); else echo _T("creation"); ?>)</H1>
 						<FORM action="ajouter_adherent.php" method="post" enctype="multipart/form-data" name="form"> 
 						
 <?
@@ -512,7 +512,7 @@
 	{
 ?>
   	<DIV id="errorbox">
-  		<H1><? echo _("- ERROR -"); ?></H1>
+  		<H1><? echo _T("- ERROR -"); ?></H1>
   		<UL>
   			<? echo $error_detected; ?>
   		</UL>
@@ -523,7 +523,7 @@
 	{
 ?>
 	<DIV id="warningbox">
-  		<H1><? echo _("- WARNING -"); ?></H1>
+  		<H1><? echo _T("- WARNING -"); ?></H1>
   		<UL>
   			<? echo $warning_detected; ?>
   		</UL>
@@ -535,63 +535,63 @@
 						<DIV align="center">
 						<TABLE border="0" id="input-table"> 
 							<TR> 
-								<TH <? echo $titre_adh_req ?> id="libelle"><? echo _("Title:"); ?></TH> 
+								<TH <? echo $titre_adh_req ?> id="libelle"><? echo _T("Title:"); ?></TH> 
 								<TD colspan="3">
-									<INPUT type="radio" name="titre_adh" value="3"<? isChecked($titre_adh,"3") ?> <? echo $disabled_field; ?>> <? echo _("Miss"); ?>&nbsp;&nbsp;
-									<INPUT type="radio" name="titre_adh" value="2"<? isChecked($titre_adh,"2") ?> <? echo $disabled_field; ?>> <? echo _("Mrs"); ?>&nbsp;&nbsp;
-									<INPUT type="radio" name="titre_adh" value="1"<? isChecked($titre_adh,"1") ?> <? echo $disabled_field; ?>> <? echo _("Mister"); ?>&nbsp;&nbsp;
+									<INPUT type="radio" name="titre_adh" value="3"<? isChecked($titre_adh,"3") ?> <? echo $disabled_field; ?>> <? echo _T("Miss"); ?>&nbsp;&nbsp;
+									<INPUT type="radio" name="titre_adh" value="2"<? isChecked($titre_adh,"2") ?> <? echo $disabled_field; ?>> <? echo _T("Mrs"); ?>&nbsp;&nbsp;
+									<INPUT type="radio" name="titre_adh" value="1"<? isChecked($titre_adh,"1") ?> <? echo $disabled_field; ?>> <? echo _T("Mister"); ?>&nbsp;&nbsp;
 								</TD> 
 						  </TR> 
 							<TR> 
-								<TH <? echo $nom_adh_req ?> id="libelle"><? echo _("Name:"); ?></TH> 
+								<TH <? echo $nom_adh_req ?> id="libelle"><? echo _T("Name:"); ?></TH> 
 								<TD><INPUT type="text" name="nom_adh" value="<? echo $nom_adh; ?>" maxlength="<? echo $nom_adh_len; ?>" <? echo $disabled_field; ?>></TD> 
 								<TD colspan="2" rowspan="4" align="center" width="130">
 <?
 	$image_adh = "";
-	if (file_exists(VAR_ROOT . "photos/tn_" . $id_adh . ".jpg"))
-		$image_adh = VAR_ROOT . "photos/tn_" . $id_adh . ".jpg";
-	elseif (file_exists(VAR_ROOT . "photos/tn_" . $id_adh . ".gif"))
-		$image_adh = VAR_ROOT . "photos/tn_" . $id_adh . ".gif";
-	elseif (file_exists(VAR_ROOT . "photos/tn_" . $id_adh . ".png"))
-		$image_adh = VAR_ROOT . "photos/tn_" . $id_adh . ".png";
+	if (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".jpg"))
+		$image_adh = WEB_ROOT . "photos/tn_" . $id_adh . ".jpg";
+	elseif (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".gif"))
+		$image_adh = WEB_ROOT . "photos/tn_" . $id_adh . ".gif";
+	elseif (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".png"))
+		$image_adh = WEB_ROOT . "photos/tn_" . $id_adh . ".png";
 
     if (function_exists("ImageCreateFromString"))
     {
         if ($image_adh != "")
             $imagedata = getimagesize($image_adh);
         else
-            $imagedata = getimagesize(VAR_ROOT . "photos/default.png");
+            $imagedata = getimagesize(WEB_ROOT . "photos/default.png");
     }
     else
         $imagedata = array("130","");
 ?>
-									<IMG src="photo.php?tn=1&id_adh=<? echo $id_adh."&nocache=".time(); ?>" border="1" alt="<? echo _("Picture"); ?>" width="<? echo $imagedata[0]; ?>" height="<? echo $imagedata[1]; ?>">
+									<IMG src="photo.php?tn=1&id_adh=<? echo $id_adh."&nocache=".time(); ?>" border="1" alt="<? echo _T("Picture"); ?>" width="<? echo $imagedata[0]; ?>" height="<? echo $imagedata[1]; ?>">
 								</TD>
 						  </TR>
 						  <TR>
-								<TH <? echo $prenom_adh_req ?> id="libelle"><? echo _("First name:"); ?></TH> 
+								<TH <? echo $prenom_adh_req ?> id="libelle"><? echo _T("First name:"); ?></TH> 
 								<TD><INPUT type="text" name="prenom_adh" value="<? echo $prenom_adh; ?>" maxlength="<? echo $prenom_adh_len; ?>" <? echo $disabled_field; ?>></TD> 
 							</TR>						   
 							<TR> 
-								<TH <? echo $pseudo_adh_req ?> id="libelle"><? echo _("Nickname:"); ?></TH> 
+								<TH <? echo $pseudo_adh_req ?> id="libelle"><? echo _T("Nickname:"); ?></TH> 
 								<TD><INPUT type="text" name="pseudo_adh" value="<? echo $pseudo_adh; ?>" maxlength="<? echo $pseudo_adh_len; ?>"></TD> 
 						  </TR> 
 							<TR> 
-								<TH <? echo $ddn_adh_req ?> id="libelle"><? echo _("birth date:"); ?><br>&nbsp;</TH> 
-								<TD><INPUT type="text" name="ddn_adh" value="<? echo $ddn_adh; ?>" maxlength="10"><BR><DIV class="exemple"><? echo _("(dd/mm/yyyy format)"); ?></DIV></TD>
+								<TH <? echo $ddn_adh_req ?> id="libelle"><? echo _T("birth date:"); ?><br>&nbsp;</TH> 
+								<TD><INPUT type="text" name="ddn_adh" value="<? echo $ddn_adh; ?>" maxlength="10"><BR><DIV class="exemple"><? echo _T("(dd/mm/yyyy format)"); ?></DIV></TD>
 							</TR>
 							<TR>
-							  <TH <? echo $prof_adh_req ?> id="libelle"><? echo _("Profession:"); ?></TH> 
+							  <TH <? echo $prof_adh_req ?> id="libelle"><? echo _T("Profession:"); ?></TH> 
 								<TD><input type="text" name="prof_adh" value="<? echo $prof_adh; ?>" maxlength="<? echo $prof_adh_len; ?>"></TD> 
-								<TH id="libelle"><? echo _("Photo:"); ?></TH> 
+								<TH id="libelle"><? echo _T("Photo:"); ?></TH> 
 								<TD> 
 								<?
-									if (file_exists(VAR_ROOT . "photos/" . $id_adh . ".jpg") ||
-											file_exists(VAR_ROOT . "photos/" . $id_adh . ".png") ||
-											file_exists(VAR_ROOT . "photos/" . $id_adh . ".gif"))
+									if (file_exists(WEB_ROOT . "photos/" . $id_adh . ".jpg") ||
+											file_exists(WEB_ROOT . "photos/" . $id_adh . ".png") ||
+											file_exists(WEB_ROOT . "photos/" . $id_adh . ".gif"))
 									{
 								?>
-									<INPUT type="submit" name="del_photo" value="<? echo _("Delete the picture"); ?>">
+									<INPUT type="submit" name="del_photo" value="<? echo _T("Delete the picture"); ?>">
 								<?
 									}
 									else
@@ -604,9 +604,9 @@
 								</TD> 
 							</TR> 
 							<TR>
-								<TH id="libelle"><? echo _("Be visible in the<br /> members list :"); ?></TH>
+								<TH id="libelle"><? echo _T("Be visible in the<br /> members list :"); ?></TH>
 								<TD><input type="checkbox" name="bool_display_info" value="1"<? isChecked($bool_display_info,"1") ?>></TD> 
-								<TH id="libelle"><? echo _("Language:") ?></TH>
+								<TH id="libelle"><? echo _T("Language:") ?></TH>
                 <TD>
                   <script language="javascript" type="text/javascript">
                     <!--
@@ -626,7 +626,7 @@
 				{
 		        $file = substr(substr($file,5),0,-4);
 ?>
-                                    <OPTION value="<? echo $file; ?>" <? isSelected($pref_lang,$file) ?> style="padding-left: 30px; background-image: url(lang/<? echo $file.".gif"; ?>); background-repeat: no-repeat"><? echo ucfirst(_($file)); ?></OPTION>
+                                    <OPTION value="<? echo $file; ?>" <? isSelected($pref_lang,$file) ?> style="padding-left: 30px; background-image: url(lang/<? echo $file.".gif"; ?>); background-repeat: no-repeat"><? echo ucfirst(_T($file)); ?></OPTION>
 <?
 				}
 			}
@@ -643,17 +643,17 @@
 								<TH colspan="4" id="header">&nbsp;</TH> 
 							</TR>
 							<TR>
-								<TH <? echo $activite_adh_req ?> id="libelle"><? echo _("Account:"); ?></TH> 
+								<TH <? echo $activite_adh_req ?> id="libelle"><? echo _T("Account:"); ?></TH> 
 								<TD>
 								  <SELECT name="activite_adh">
-								  	<OPTION value="1"<? isSelected($activite_adh,"1") ?>><? echo _("Active"); ?></OPTION>
-								  	<OPTION value="0"<? isSelected($activite_adh,"0") ?>><? echo _("Inactive"); ?></OPTION>
+								  	<OPTION value="1"<? isSelected($activite_adh,"1") ?>><? echo _T("Active"); ?></OPTION>
+								  	<OPTION value="0"<? isSelected($activite_adh,"0") ?>><? echo _T("Inactive"); ?></OPTION>
 									</SELECT>
 								</TD>
 								<TH id="header" colspan="2">&nbsp;</TH>
 							</TR>
 							<TR> 
-								<TH <? echo $id_statut_req ?> id="libelle"><? echo _("Status:"); ?></TH> 
+								<TH <? echo $id_statut_req ?> id="libelle"><? echo _T("Status:"); ?></TH> 
 								<TD>
 									<SELECT name="id_statut">
 									<?
@@ -675,12 +675,12 @@
 								<TH id="header" colspan="2">&nbsp;</TH>
 							</TR>
 							<TR> 
-								<TH id="libelle"><? echo _("Galette Admin:"); ?></TH> 
+								<TH id="libelle"><? echo _T("Galette Admin:"); ?></TH> 
 								<TD><input type="checkbox" name="bool_admin_adh" value="1"<? isChecked($bool_admin_adh,"1") ?>></TD> 
 								<TH id="header" colspan="2">&nbsp;</TH>
 						  	</TR> 
 							<TR> 
-								<TH id="libelle"><? echo _("Freed of dues:"); ?></TH> 
+								<TH id="libelle"><? echo _T("Freed of dues:"); ?></TH> 
 								<TD><INPUT type="checkbox" name="bool_exempt_adh" value="1"<? isChecked($bool_exempt_adh,"1") ?>></TD> 
 								<TH id="header" colspan="2">&nbsp;</TH>
 						  	</TR>
@@ -691,85 +691,85 @@
 								<TH colspan="4" id="header">&nbsp;</TH> 
 							</TR>
 							<TR> 
-								<TH id="libelle" <? echo $adresse_adh_req ?>><? echo _("Address:"); ?></TH> 
+								<TH id="libelle" <? echo $adresse_adh_req ?>><? echo _T("Address:"); ?></TH> 
 								<TD colspan="3">
 									<INPUT type="text" name="adresse_adh" value="<? echo $adresse_adh; ?>" maxlength="<? echo $adresse_adh_len; ?>" size="63"><BR>
 									<INPUT type="text" name="adresse2_adh" value="<? echo $adresse2_adh; ?>" maxlength="<? echo $adresse2_adh_len; ?>" size="63">
 								</TD> 
 						  </TR> 
 							<TR> 
-								<TH id="libelle" <? echo $cp_adh_req ?>><? echo _("Zip Code:"); ?></TH> 
+								<TH id="libelle" <? echo $cp_adh_req ?>><? echo _T("Zip Code:"); ?></TH> 
 								<TD><INPUT type="text" name="cp_adh" value="<? echo $cp_adh; ?>" maxlength="<? echo $cp_adh_len; ?>"></TD> 
-								<TH id="libelle" <? echo $ville_adh_req ?>><? echo _("City:"); ?></TH> 
+								<TH id="libelle" <? echo $ville_adh_req ?>><? echo _T("City:"); ?></TH> 
 								<TD><INPUT type="text" name="ville_adh" value="<? echo $ville_adh; ?>" maxlength="<? echo $ville_adh_len; ?>"></TD> 
 						  </TR> 
 							<TR> 
-								<TH id="libelle" <? echo $pays_adh_req ?>><? echo _("Country:"); ?></TH> 
+								<TH id="libelle" <? echo $pays_adh_req ?>><? echo _T("Country:"); ?></TH> 
 								<TD><INPUT type="text" name="pays_adh" value="<? echo $pays_adh; ?>" maxlength="<? echo $pays_adh_len; ?>"></TD> 
-								<TH id="libelle" <? echo $tel_adh_req ?>><? echo _("Phone:"); ?></TH> 
+								<TH id="libelle" <? echo $tel_adh_req ?>><? echo _T("Phone:"); ?></TH> 
 								<TD><INPUT type="text" name="tel_adh" value="<? echo $tel_adh; ?>" maxlength="<? echo $tel_adh_len; ?>"></TD> 
 						  </TR> 
 							<TR> 
-								<TH id="libelle" <? echo $gsm_adh_req ?>><? echo _("Mobile phone:"); ?></TH> 
+								<TH id="libelle" <? echo $gsm_adh_req ?>><? echo _T("Mobile phone:"); ?></TH> 
 								<TD><INPUT type="text" name="gsm_adh" value="<? echo $gsm_adh; ?>" maxlength="<? echo $gsm_adh_len; ?>"></TD> 
-								<TH id="libelle" <? echo $email_adh_req ?>><? echo _("E-Mail:"); ?></TH> 
+								<TH id="libelle" <? echo $email_adh_req ?>><? echo _T("E-Mail:"); ?></TH> 
 								<TD><INPUT type="text" name="email_adh" value="<? echo $email_adh; ?>" maxlength="<? echo $email_adh_len; ?>" size="30"></TD> 
 						  </TR> 
 							<TR> 
-								<TH id="libelle" <? echo $url_adh_req ?>><? echo _("Website:"); ?></TH> 
+								<TH id="libelle" <? echo $url_adh_req ?>><? echo _T("Website:"); ?></TH> 
 								<TD><INPUT type="text" name="url_adh" value="<? echo $url_adh; ?>" maxlength="<? echo $url_adh_len; ?>" size="30"></TD> 
-								<TH id="libelle" <? echo $icq_adh_req ?>><? echo _("ICQ:"); ?></TH> 
+								<TH id="libelle" <? echo $icq_adh_req ?>><? echo _T("ICQ:"); ?></TH> 
 								<TD><INPUT type="text" name="icq_adh" value="<? echo $icq_adh; ?>" maxlength="<? echo $icq_adh_len; ?>"></TD> 
 						  </TR> 
 							<TR> 
-								<TH id="libelle" <? echo $jabber_adh_req ?>><? echo _("Jabber:"); ?></TH> 
+								<TH id="libelle" <? echo $jabber_adh_req ?>><? echo _T("Jabber:"); ?></TH> 
 								<TD><INPUT type="text" name="jabber_adh" value="<? echo $jabber_adh; ?>" maxlength="<? echo $jabber_adh_len; ?>" size="30"></TD> 
-								<TH id="libelle" <? echo $msn_adh_req ?>><? echo _("MSN:"); ?></TH> 
+								<TH id="libelle" <? echo $msn_adh_req ?>><? echo _T("MSN:"); ?></TH> 
 								<TD><INPUT type="text" name="msn_adh" value="<? echo $msn_adh; ?>" maxlength="<? echo $msn_adh_len; ?>" size="30"></TD> 
 						  </TR> 
               <TR> 
-                <TH id="libelle" <? echo $gpgid_req ?>><? echo _("Id GNUpg (GPG):"); ?></TH> 
+                <TH id="libelle" <? echo $gpgid_req ?>><? echo _T("Id GNUpg (GPG):"); ?></TH> 
                 <TD><INPUT type="text" name="gpgid" value="<? echo $gpgid; ?>" maxlength="<? echo $gpgid_len; ?>" size="8"></TD> 
-                <TH id="libelle" <? echo $fingerprint_req ?>><? echo _("fingerprint:"); ?></TH> 
+                <TH id="libelle" <? echo $fingerprint_req ?>><? echo _T("fingerprint:"); ?></TH> 
                 <TD><INPUT type="text" name="fingerprint" value="<? echo $fingerprint; ?>" maxlength="<? echo $fingerprint_len; ?>" size="30"></TD> 
               </TR> 
 							<TR> 
 								<TH colspan="4" id="header">&nbsp;</TH> 
 							</TR>
 							<TR> 
-								<TH id="libelle" <? echo $login_adh_req ?>><? echo _("Username:"); ?><BR>&nbsp;</TH> 
-								<TD><INPUT type="text" name="login_adh" value="<? echo $login_adh; ?>" maxlength="<? echo $login_adh_len; ?>"><BR><DIV class="exemple"><? echo _("(at least 4 characters)"); ?></DIV></TD> 
-								<TH id="libelle" <? echo $mdp_adh_req ?>><? echo _("Password:"); ?><BR>&nbsp;</TH> 
-								<TD><INPUT type="text" name="mdp_adh" value="<? echo $mdp_adh; ?>" maxlength="<? echo $mdp_adh_len; ?>"><BR><DIV class="exemple"><? echo _("(at least 4 characters)"); ?></DIV></TD> 
+								<TH id="libelle" <? echo $login_adh_req ?>><? echo _T("Username:"); ?><BR>&nbsp;</TH> 
+								<TD><INPUT type="text" name="login_adh" value="<? echo $login_adh; ?>" maxlength="<? echo $login_adh_len; ?>"><BR><DIV class="exemple"><? echo _T("(at least 4 characters)"); ?></DIV></TD> 
+								<TH id="libelle" <? echo $mdp_adh_req ?>><? echo _T("Password:"); ?><BR>&nbsp;</TH> 
+								<TD><INPUT type="text" name="mdp_adh" value="<? echo $mdp_adh; ?>" maxlength="<? echo $mdp_adh_len; ?>"><BR><DIV class="exemple"><? echo _T("(at least 4 characters)"); ?></DIV></TD> 
 						</TR>
 <?
 	if ($_SESSION["admin_status"]!=0)
 	{
 ?>
 						<TR> 
-								<TH id="libelle"><? echo _("Send a mail:"); ?><BR>&nbsp;</TH> 
-								<TD colspan="3"><INPUT type="checkbox" name="mail_confirm" value="1" <? if ($id_adh=="") echo "CHECKED"; ?>><BR><DIV class="exemple"><? echo _("(the member will receive his username and password by email, if he has an address.)"); ?></DIV></TD> 
+								<TH id="libelle"><? echo _T("Send a mail:"); ?><BR>&nbsp;</TH> 
+								<TD colspan="3"><INPUT type="checkbox" name="mail_confirm" value="1" <? if ($id_adh=="") echo "CHECKED"; ?>><BR><DIV class="exemple"><? echo _T("(the member will receive his username and password by email, if he has an address.)"); ?></DIV></TD> 
 						  </TR> 
 							<TR> 
-								<TH id="libelle"><? echo _("Creation date:"); ?><BR>&nbsp;</TH> 
-								<TD colspan="3"><INPUT type="text" name="date_crea_adh" value="<? echo $date_crea_adh; ?>" maxlength="10"><BR><DIV class="exemple"><? echo _("(dd/mm/yyyy format)"); ?></DIV></TD> 
+								<TH id="libelle"><? echo _T("Creation date:"); ?><BR>&nbsp;</TH> 
+								<TD colspan="3"><INPUT type="text" name="date_crea_adh" value="<? echo $date_crea_adh; ?>" maxlength="10"><BR><DIV class="exemple"><? echo _T("(dd/mm/yyyy format)"); ?></DIV></TD> 
 						  </TR> 
 							<TR> 
-								<TH id="libelle" <? echo $info_adh_req ?>><? echo _("Other informations (admin):"); ?></TH> 
-								<TD colspan="3"><TEXTAREA name="info_adh" cols="61" rows="6"><? echo $info_adh; ?></TEXTAREA><BR><DIV class="exemple"><? echo _("This comment is only displayed for admins."); ?></DIV></TD> 
+								<TH id="libelle" <? echo $info_adh_req ?>><? echo _T("Other informations (admin):"); ?></TH> 
+								<TD colspan="3"><TEXTAREA name="info_adh" cols="61" rows="6"><? echo $info_adh; ?></TEXTAREA><BR><DIV class="exemple"><? echo _T("This comment is only displayed for admins."); ?></DIV></TD> 
 						  </TR> 
 <?
 	}
 ?>
 							<TR> 
-								<TH id="libelle" <? echo $info_public_adh_req ?>><? echo _("Other informations:"); ?></TH> 
+								<TH id="libelle" <? echo $info_public_adh_req ?>><? echo _T("Other informations:"); ?></TH> 
 								<TD colspan="3">
 									<TEXTAREA name="info_public_adh" cols="61" rows="6"><? echo $info_public_adh; ?></TEXTAREA>
 <?
 	if ($_SESSION["admin_status"]!=0)
 	{
 ?>	
-									<BR><DIV class="exemple"><? echo _("This comment is reserved to the member."); ?></DIV>
+									<BR><DIV class="exemple"><? echo _T("This comment is reserved to the member."); ?></DIV>
 <?
 	}
 ?>	
@@ -849,12 +849,12 @@
     $res_cat->Close();
 ?> 
 							<TR> 
-								<TH align="center" colspan="4"><BR><INPUT type="submit" name="valid" value="<? echo _("Save"); ?>"></TH> 
+								<TH align="center" colspan="4"><BR><INPUT type="submit" name="valid" value="<? echo _T("Save"); ?>"></TH> 
 						  </TR> 
                                                         </TABLE> 
 						</DIV>
 						<BR> 
-						<? echo _("NB : The mandatory fields are in"); ?> <FONT style="color: #FF0000"><? echo _("red"); ?></FONT>. 
+						<? echo _T("NB : The mandatory fields are in"); ?> <FONT style="color: #FF0000"><? echo _T("red"); ?></FONT>. 
 						</BLOCKQUOTE> 
 						<INPUT type="hidden" name="id_adh" value="<? echo $id_adh ?>"> 
 						</FORM> 

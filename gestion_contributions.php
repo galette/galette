@@ -52,14 +52,14 @@
 	      if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
 	         $_SESSION["filtre_date_cotis_1"]=$_GET["contrib_filter_1"];
 	      else
-	         $error_detected .= "<LI>"._("- Non valid date!")."</LI>";
+	         $error_detected .= "<LI>"._T("- Non valid date!")."</LI>";
 	   }
 	   elseif (ereg("^([0-9]{4})$", $_GET["contrib_filter_1"], $array_jours))
 	      $_SESSION["filtre_date_cotis_1"]="01/01/".$array_jours[1];
 	   elseif ($_GET["contrib_filter_1"]=="")
 	      $_SESSION["filtre_date_cotis_1"]="";
 	   else
-	      $error_detected .= "<LI>"._("- Wrong date format (dd/mm/yyyy)!")."</LI>";
+	      $error_detected .= "<LI>"._T("- Wrong date format (dd/mm/yyyy)!")."</LI>";
 
 	if (isset($_GET["contrib_filter_2"]))
 	   if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_GET["contrib_filter_2"], $array_jours))
@@ -67,14 +67,14 @@
 	      if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
 	         $_SESSION["filtre_date_cotis_2"]=$_GET["contrib_filter_2"];
 	      else
-	         $error_detected .= "<LI>"._("- Non valid date!")."</LI>";
+	         $error_detected .= "<LI>"._T("- Non valid date!")."</LI>";
 	   }
 	   elseif (ereg("^([0-9]{4})$", $_GET["contrib_filter_2"], $array_jours))
 	      $_SESSION["filtre_date_cotis_2"]="01/01/".$array_jours[1];
 	   elseif ($_GET["contrib_filter_2"]=="")
 	      $_SESSION["filtre_date_cotis_2"]="";
 	   else
-	      $error_detected .= "<LI>"._("- Wrong date format (dd/mm/yyyy)!")."</LI>";
+	      $error_detected .= "<LI>"._T("- Wrong date format (dd/mm/yyyy)!")."</LI>";
 
 	
 	$page = 1;
@@ -134,14 +134,14 @@
 					    SET date_echeance=".$date_fin_update."
 					    WHERE id_adh=".$DB->qstr($id_adh);
 				$DB->Execute($requeteup);
- 				dblog(_("Contribution deleted:")." ".strtoupper($resultat->fields[0])." ".$resultat->fields[1], $requetesup);							
+ 				dblog(_T("Contribution deleted:")." ".strtoupper($resultat->fields[0])." ".$resultat->fields[1], $requetesup);							
  			}
  			$resultat->Close();
  		}
  		$result_adh->Close();
 	}
 ?> 
-		<H1 class="titre"><? echo _("Management of contributions"); ?></H1>
+		<H1 class="titre"><? echo _T("Management of contributions"); ?></H1>
 <?
 	$requete[0] = "SELECT ".PREFIX_DB."cotisations.*, ".PREFIX_DB."adherents.nom_adh, ".PREFIX_DB."adherents.prenom_adh,
 			".PREFIX_DB."types_cotisation.libelle_type_cotis
@@ -227,24 +227,24 @@
 ?>
   				<DIV id="listfilter">
 	                	   <FORM action="gestion_contributions.php" method="get" name="filtre">
-			              <? echo _("Show contributions since"); ?>&nbsp;
+			              <? echo _T("Show contributions since"); ?>&nbsp;
 				      <INPUT type="text" name="contrib_filter_1" maxlength="10" size="10" value="<? echo $_SESSION["filtre_date_cotis_1"]; ?>">
-				      <? echo _("until"); ?>&nbsp;
+				      <? echo _T("until"); ?>&nbsp;
 				      <INPUT type="text" name="contrib_filter_2" maxlength="10" size="10" value="<? echo $_SESSION["filtre_date_cotis_2"]; ?>">
-				      <INPUT type="submit" value="<? echo _("Filter"); ?>">
+				      <INPUT type="submit" value="<? echo _T("Filter"); ?>">
 				   </FORM>
 				</DIV>
 						<TABLE id="infoline" width="100%">
 							<TR>
-								<TD class="left"><? echo $nbcotis->fields[0]." "; if ($nbcotis->fields[0]!=1) echo _("contributions"); else echo _("contribution"); ?></TD>
-								<TD class="right"><? echo _("Pages:"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></TD>
+								<TD class="left"><? echo $nbcotis->fields[0]." "; if ($nbcotis->fields[0]!=1) echo _T("contributions"); else echo _T("contribution"); ?></TD>
+								<TD class="right"><? echo _T("Pages:"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></TD>
 							</TR>
 						</TABLE>
 						<TABLE width="100%"> 
 							<TR> 
 								<TH width="15" class="listing">#</TH> 
 			  					<TH class="listing left"> 
-									<A href="gestion_contributions.php?tri=0&amp;id_adh=<? echo $_SESSION["filtre_cotis_adh"] ?>" class="listing"><? echo _("Date"); ?></A>
+									<A href="gestion_contributions.php?tri=0&amp;id_adh=<? echo $_SESSION["filtre_cotis_adh"] ?>" class="listing"><? echo _T("Date"); ?></A>
 									<?
 										if ($_SESSION["tri_cotis"]=="0")
 											if ($_SESSION["tri_cotis_sens"]=="0")
@@ -258,7 +258,7 @@
 	{
 ?>
 								<TH class="listing left"> 
-									<A href="gestion_contributions.php?tri=1&amp;id_adh=<? echo $_SESSION["filtre_cotis_adh"] ?>" class="listing"><? echo _("Member"); ?></A>
+									<A href="gestion_contributions.php?tri=1&amp;id_adh=<? echo $_SESSION["filtre_cotis_adh"] ?>" class="listing"><? echo _T("Member"); ?></A>
 									<?
 										if ($_SESSION["tri_cotis"]=="1")
 											if ($_SESSION["tri_cotis_sens"]=="0")
@@ -271,7 +271,7 @@
 	}
 ?>
 								<TH class="listing left"> 
-									<A href="gestion_contributions.php?tri=2&amp;id_adh=<? echo $_SESSION["filtre_cotis_adh"] ?>" class="listing"><? echo _("Type"); ?></A>
+									<A href="gestion_contributions.php?tri=2&amp;id_adh=<? echo $_SESSION["filtre_cotis_adh"] ?>" class="listing"><? echo _T("Type"); ?></A>
 <?
 										if ($_SESSION["tri_cotis"]=="2")
 											if ($_SESSION["tri_cotis_sens"]=="0")
@@ -281,7 +281,7 @@
 									?>
 								</TH> 
 								<TH class="listing left"> 
-									<A href="gestion_contributions.php?tri=3&amp;id_adh=<? echo $_SESSION["filtre_cotis_adh"] ?>" class="listing"><? echo _("Amount"); ?></A>
+									<A href="gestion_contributions.php?tri=3&amp;id_adh=<? echo $_SESSION["filtre_cotis_adh"] ?>" class="listing"><? echo _T("Amount"); ?></A>
 									<?
 										if ($_SESSION["tri_cotis"]=="3")
 											if ($_SESSION["tri_cotis_sens"]=="0")
@@ -291,7 +291,7 @@
 									?>
 								</TH> 
 								<TH class="listing left"> 
-									<A href="gestion_contributions.php?tri=4&amp;id_adh=<? echo $_SESSION["filtre_cotis_adh"] ?>" class="listing"><? echo _("Duration"); ?></A>
+									<A href="gestion_contributions.php?tri=4&amp;id_adh=<? echo $_SESSION["filtre_cotis_adh"] ?>" class="listing"><? echo _T("Duration"); ?></A>
 									<?
 										if ($_SESSION["tri_cotis"]=="4")
 											if ($_SESSION["tri_cotis_sens"]=="0")
@@ -305,7 +305,7 @@
 	{
 ?>
 								<TH width="55" class="listing"> 
-									<? echo _("Actions"); ?> 
+									<? echo _T("Actions"); ?> 
 								</TH> 
 <?
 	}
@@ -322,7 +322,7 @@
 			$colspan = 5;
 ?>
 							<TR>
-								<TD colspan="<? echo $colspan; ?>" class="emptylist"><? echo _("no contribution"); ?></TD>
+								<TD colspan="<? echo $colspan; ?>" class="emptylist"><? echo _T("no contribution"); ?></TD>
 							</TR>
 <?	
 	}
@@ -368,8 +368,8 @@
         {
 ?>
 								<TD width="55" class="<? echo $row_class; ?> center" nowrap>  
-									<A href="ajouter_contribution.php?id_cotis=<? echo $resultat->fields["id_cotis"] ?>"><IMG src="images/icon-edit.png" alt="<? echo _("[mod]"); ?>" border="0" width="12" height="13"></A>
-									<A onClick="return confirm('<? echo str_replace("\n","\\n",addslashes(_("Do you really want to delete this contribution of the database ?"))); ?>')" href="gestion_contributions.php?sup=<? echo $resultat->fields["id_cotis"] ?>"><IMG src="images/icon-trash.png" alt="<? echo _("[del]"); ?>" border="0" width="11" height="13"></A>
+									<A href="ajouter_contribution.php?id_cotis=<? echo $resultat->fields["id_cotis"] ?>"><IMG src="images/icon-edit.png" alt="<? echo _T("[mod]"); ?>" border="0" width="12" height="13"></A>
+									<A onClick="return confirm('<? echo str_replace("\n","\\n",addslashes(_T("Do you really want to delete this contribution of the database ?"))); ?>')" href="gestion_contributions.php?sup=<? echo $resultat->fields["id_cotis"] ?>"><IMG src="images/icon-trash.png" alt="<? echo _T("[del]"); ?>" border="0" width="11" height="13"></A>
 								</TD> 
 <?
         }
@@ -380,7 +380,7 @@
 	$resultat->Close();
 ?>
 						</TABLE>
-						<DIV id="infoline2" class="right"><? echo _("Pages:"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></DIV>
+						<DIV id="infoline2" class="right"><? echo _T("Pages:"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></DIV>
 <?	
 	// affichage du temps d'ahésion restant si on est en train de visualiser
 	// les cotisations d'un membre unique
@@ -395,14 +395,14 @@
 		// temps d'adhésion
 		if($resultat->fields[1])
 		{
-			$statut_cotis = _("Freed of dues");
+			$statut_cotis = _T("Freed of dues");
 			$color = "#DDFFDD";
 		}
 		else
 		{
 			if ($resultat->fields[0]=="")
 			{
-				$statut_cotis = _("Never contributed");
+				$statut_cotis = _T("Never contributed");
 				$color = "#EEEEEE";			
 			}
 			else
@@ -416,20 +416,20 @@
 			$difference = intval(($ts_date_fin - $aujourdhui)/(3600*24));
 			if ($difference==0)
 			{
-				$statut_cotis = _("Last day!");
+				$statut_cotis = _T("Last day!");
 				$color = "#FFDDDD";
 			}
 			elseif ($difference<0)
 			{
-				$statut_cotis = _("Late of")." ".-$difference." "._("days")." ("._("since")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+				$statut_cotis = _T("Late of")." ".-$difference." "._T("days")." ("._T("since")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
 				$color = "#FFDDDD";
 			}
 			else
 			{
 				if ($difference!=1)
-					$statut_cotis = $difference." "._("days remaining")." ("._("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+					$statut_cotis = $difference." "._T("days remaining")." ("._T("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
 				else
-					$statut_cotis = $difference." "._("day remaining")." ("._("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+					$statut_cotis = $difference." "._T("day remaining")." ("._T("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
 				if ($difference < 30)
 					$color = "#FFE9AB";
 				else
@@ -457,9 +457,9 @@
 	        {
 ?>
 	<BR>
-	<A href="voir_adherent.php?id_adh=<? echo $_SESSION["filtre_cotis_adh"]; ?>"><? echo _("[ See member profile ]"); ?></A>
+	<A href="voir_adherent.php?id_adh=<? echo $_SESSION["filtre_cotis_adh"]; ?>"><? echo _T("[ See member profile ]"); ?></A>
 	&nbsp;&nbsp;&nbsp;
-	<A href="ajouter_contribution.php?id_adh=<? echo $_SESSION["filtre_cotis_adh"]; ?>"><? echo _("[ Add a contribution ]"); ?></A>
+	<A href="ajouter_contribution.php?id_adh=<? echo $_SESSION["filtre_cotis_adh"]; ?>"><? echo _T("[ Add a contribution ]"); ?></A>
 <?
 		}	
 ?>

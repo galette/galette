@@ -109,7 +109,7 @@
 			// vérification de la présence des champs obligatoires
 			$req = $$fieldreq;
 			if ($req!="" && $post_value=="")
-				$error_detected .= "<LI>"._("- Mandatory field empty.")."</LI>";
+				$error_detected .= "<LI>"._T("- Mandatory field empty.")."</LI>";
 			else
 			{
 				// validation de la langue
@@ -118,14 +118,14 @@
  					if (file_exists(WEB_ROOT . "lang/lang_" . $post_value . ".php"))
 		 				$value = $DB->qstr($post_value, true);
 		 			else
-				  		$error_detected .= "<LI>"._("- Non-valid language!")."</LI>";
+				  		$error_detected .= "<LI>"._T("- Non-valid language!")."</LI>";
 				}
 				// validation des adresses mail				
 				elseif ($fieldname=="pref_email")
  				{
  					$post_value=strtolower($post_value);
 					if (!is_valid_email($post_value) && $post_value!="")
-				  	$error_detected .= "<LI>"._("- Non-valid E-Mail address!")."</LI>";
+				  	$error_detected .= "<LI>"._T("- Non-valid E-Mail address!")."</LI>";
 					else
 		 				$value = $DB->qstr($post_value, true);
 				}
@@ -133,7 +133,7 @@
   				elseif ($fieldname=="pref_admin_login")
  				{
  					if (strlen($post_value)<4)
- 						$error_detected .= "<LI>"._("- The username must be composed of at least 4 characters!")."</LI>";
+ 						$error_detected .= "<LI>"._T("- The username must be composed of at least 4 characters!")."</LI>";
  					else
  					{
  						// on vérifie que le login n'est pas déjà utilisé
@@ -145,7 +145,7 @@
 
  						$result2 = &$DB->Execute($requete);
 						if (!$result2->EOF)
-	 						$error_detected .= "<LI>"._("- This username is already used by another member !")."</LI>";
+	 						$error_detected .= "<LI>"._T("- This username is already used by another member !")."</LI>";
 						else
 	 						$value = $DB->qstr($post_value, true);
 					}
@@ -168,13 +168,13 @@
  					if ((is_numeric($post_value) && $post_value >=0) || $post_value=="")
 						$value=$DB->qstr($post_value,ENT_QUOTES);
 					else
-						$error_detected .= "<LI>"._("- The numbers and measures have to be integers!")."</LI>";
+						$error_detected .= "<LI>"._T("- The numbers and measures have to be integers!")."</LI>";
  				}
 				// validation mot de passe
  				elseif ($fieldname=="pref_admin_pass")
  				{
  					if (strlen($post_value)<4)
- 						$error_detected .= "<LI>"._("- The password must be of at least 4 characters!")."</LI>";
+ 						$error_detected .= "<LI>"._T("- The password must be of at least 4 characters!")."</LI>";
  					else
  						$value = $DB->qstr($post_value, true);
  				}
@@ -242,7 +242,7 @@
 						
 					// copie fichier temporaire				 		
 					if (!@move_uploaded_file($tmp_name,WEB_ROOT . "photos/logo".$ext_image))
-						$warning_detected .= "<LI>"._("- The photo seems not to be transferred correctly. But registration has been made.")."</LI>";
+						$warning_detected .= "<LI>"._T("- The photo seems not to be transferred correctly. But registration has been made.")."</LI>";
 				 	else
                     {
 						resizeimage(WEB_ROOT . "photos/logo".$ext_image,WEB_ROOT . "photos/tn_logo".$ext_image,130,130);
@@ -251,9 +251,9 @@
 			 	else
 				{
 					if (function_exists("ImageCreateFromGif"))
-			 			$warning_detected .= "<LI>"._("- The transfered file isn't a valid image (GIF, PNG or JPEG). But registration has been made.")."</LI>"; 
+			 			$warning_detected .= "<LI>"._T("- The transfered file isn't a valid image (GIF, PNG or JPEG). But registration has been made.")."</LI>"; 
 					else
-			 			$warning_detected .= "<LI>"._("- The transfered file isn't a valid image (PNG or JPEG). But registration has been made.")."</LI>"; 
+			 			$warning_detected .= "<LI>"._T("- The transfered file isn't a valid image (PNG or JPEG). But registration has been made.")."</LI>"; 
 				}
 			}
 			
@@ -310,7 +310,7 @@
 	include("header.php");
 
 ?> 
-						<H1 class="titre"><? echo _("Settings"); ?></H1>
+						<H1 class="titre"><? echo _T("Settings"); ?></H1>
 						<FORM action="preferences.php" method="post" enctype="multipart/form-data"> 
 <?
 	// Affichage des erreurs
@@ -318,7 +318,7 @@
 	{
 ?>
   	<DIV id="errorbox">
-  		<H1><? echo _("- ERROR -"); ?></H1>
+  		<H1><? echo _T("- ERROR -"); ?></H1>
   		<UL>
   			<? echo $error_detected; ?>
   		</UL>
@@ -329,7 +329,7 @@
 	{
 ?>
 	<DIV id="warningbox">
-  		<H1><? echo _("- WARNING -"); ?></H1>
+  		<H1><? echo _T("- WARNING -"); ?></H1>
   		<UL>
   			<? echo $warning_detected; ?>
   		</UL>
@@ -342,14 +342,14 @@
 
 						<TABLE border="0" id="input-table">
 							<TR>
-								<TH colspan="2" id="header"><? echo _("General information:"); ?></TH>
+								<TH colspan="2" id="header"><? echo _T("General information:"); ?></TH>
 							</TR> 
 							<TR> 
-								<TH <? echo $pref_nom_req ?> id="libelle"><? echo _("Name (corporate name) of the association:"); ?></TH> 
+								<TH <? echo $pref_nom_req ?> id="libelle"><? echo _T("Name (corporate name) of the association:"); ?></TH> 
 								<TD><INPUT type="text" name="pref_nom" value="<? echo $pref_nom; ?>" maxlength="190"></TD>
 							</TR>
 							<TR>
-								<TH id="libelle"><? echo _("Logo:"); ?></TH> 
+								<TH id="libelle"><? echo _T("Logo:"); ?></TH> 
 								<td>
 								<?
 									$logo_asso = "";
@@ -367,8 +367,8 @@
 										else
 											$imagedata = array("130","");
 								?>
-									<img src="photo.php?tn=1&id_adh=logo&?nocache=<? echo time(); ?>" border="1" alt="<? echo _("Picture"); ?>" width="<? echo $imagedata[0]; ?>" height="<? echo $imagedata[1]; ?>"><BR>
-									<input type="submit" name="del_photo" value="<? echo _("Delete the picture"); ?>">
+									<img src="photo.php?tn=1&id_adh=logo&?nocache=<? echo time(); ?>" border="1" alt="<? echo _T("Picture"); ?>" width="<? echo $imagedata[0]; ?>" height="<? echo $imagedata[1]; ?>"><BR>
+									<input type="submit" name="del_photo" value="<? echo _T("Delete the picture"); ?>">
 								<?
 									}
 									else
@@ -381,7 +381,7 @@
 								</td>
 						  </TR>
 						  <TR>
-								<TH<? echo $pref_adresse_req ?> id="libelle"><? echo _("Address:"); ?></TH> 
+								<TH<? echo $pref_adresse_req ?> id="libelle"><? echo _T("Address:"); ?></TH> 
 								<td><input type="text" name="pref_adresse" value="<? echo $pref_adresse; ?>" maxlength="190" size="42"></td> 
 							</TR>						   
 						  <TR>
@@ -389,22 +389,22 @@
 								<td><input type="text" name="pref_adresse2" value="<? echo $pref_adresse2; ?>" maxlength="190" size="42"></td> 
 							</TR>						   
 						  <TR>
-								<TH<? echo $pref_cp_req ?> id="libelle"><? echo _("Zip Code:"); ?></TH> 
+								<TH<? echo $pref_cp_req ?> id="libelle"><? echo _T("Zip Code:"); ?></TH> 
 								<td><input type="text" name="pref_cp" value="<? echo $pref_cp; ?>" maxlength="10"></td> 
 							</TR>						   
 						  <TR>
-								<TH<? echo $pref_ville_req ?> id="libelle"><? echo _("City:"); ?></TH> 
+								<TH<? echo $pref_ville_req ?> id="libelle"><? echo _T("City:"); ?></TH> 
 								<td><input type="text" name="pref_ville" value="<? echo $pref_ville; ?>" maxlength="100"></td> 
 							</TR>						   
 						  <TR>
-								<TH<? echo $pref_pays_req ?> id="libelle"><? echo _("Country:"); ?></TH> 
+								<TH<? echo $pref_pays_req ?> id="libelle"><? echo _T("Country:"); ?></TH> 
 								<td><input type="text" name="pref_pays" value="<? echo $pref_pays; ?>" maxlength="50"></td> 
 							</TR>						   
 							<TR>
-								<TH colspan="2" id="header"><BR><? echo _("Galette's parameters:"); ?></TH>
+								<TH colspan="2" id="header"><BR><? echo _T("Galette's parameters:"); ?></TH>
 							</TR> 
 						  <TR>
-								<TH<? echo $pref_lang_req ?> id="libelle"><? echo _("Language:"); ?></TH>
+								<TH<? echo $pref_lang_req ?> id="libelle"><? echo _T("Language:"); ?></TH>
 								<TD>
 									<SELECT name="pref_lang">
 <?
@@ -416,7 +416,7 @@
 		{
         $file = substr(substr($file,5),0,-4);
 ?>
-										<OPTION value="<? echo $file; ?>" <? isSelected($file,$pref_lang) ?>><? echo ucfirst(_($file)); ?></OPTION>
+										<OPTION value="<? echo $file; ?>" <? isSelected($file,$pref_lang) ?>><? echo ucfirst(_T($file)); ?></OPTION>
 <?
 		}
 	}
@@ -426,83 +426,83 @@
 								</TD> 
 							</TR>						   
 						  <TR>
-								<TH<? echo $pref_numrows_req ?> id="libelle"><? echo _("Lines / Page:"); ?></TH> 
-								<td><input type="text" name="pref_numrows" value="<? echo $pref_numrows; ?>" maxlength="5"> <SPAN class="exemple"><? echo _("(Integer)"); ?></SPAN></td> 
+								<TH<? echo $pref_numrows_req ?> id="libelle"><? echo _T("Lines / Page:"); ?></TH> 
+								<td><input type="text" name="pref_numrows" value="<? echo $pref_numrows; ?>" maxlength="5"> <SPAN class="exemple"><? echo _T("(Integer)"); ?></SPAN></td> 
 							</TR>						   
 						  <TR>
-								<TH<? echo $pref_log_req ?> id="libelle"><? echo _("Logging level:"); ?></TH> 
+								<TH<? echo $pref_log_req ?> id="libelle"><? echo _T("Logging level:"); ?></TH> 
 								<TD>
 									<SELECT name="pref_log">
-										<OPTION value="0" <? isSelected("0",$pref_log) ?>><? echo _("Disabled"); ?></OPTION>
-										<OPTION value="1" <? isSelected("1",$pref_log) ?>><? echo _("Normal"); ?></OPTION>
-										<OPTION value="2" <? isSelected("2",$pref_log) ?>><? echo _("Detailed"); ?></OPTION>
+										<OPTION value="0" <? isSelected("0",$pref_log) ?>><? echo _T("Disabled"); ?></OPTION>
+										<OPTION value="1" <? isSelected("1",$pref_log) ?>><? echo _T("Normal"); ?></OPTION>
+										<OPTION value="2" <? isSelected("2",$pref_log) ?>><? echo _T("Detailed"); ?></OPTION>
 									</SELECT>
 								</TD>
 							</TR>						   
 							<TR>
-								<TH colspan="2" id="header"><BR><? echo _("Mail settings:"); ?></TH>
+								<TH colspan="2" id="header"><BR><? echo _T("Mail settings:"); ?></TH>
 							</TR> 
 						  <TR>
-								<TH<? echo $pref_email_nom_req ?> id="libelle"><? echo _("Sender name:"); ?></TH> 
+								<TH<? echo $pref_email_nom_req ?> id="libelle"><? echo _T("Sender name:"); ?></TH> 
 								<td><input type="text" name="pref_email_nom" value="<? echo $pref_email_nom; ?>" maxlength="50"></td> 
 							</TR>						   
 						  <TR>
-								<TH<? echo $pref_email_req ?> id="libelle"><? echo _("Sender Email:"); ?></TH> 
+								<TH<? echo $pref_email_req ?> id="libelle"><? echo _T("Sender Email:"); ?></TH> 
 								<td><input type="text" name="pref_email" value="<? echo $pref_email; ?>" maxlength="100" size="30"></td> 
 							</TR>						   
 							<TR>
-								<TH colspan="2" id="header"><BR><? echo _("Label generation parameters:"); ?></TH>
+								<TH colspan="2" id="header"><BR><? echo _T("Label generation parameters:"); ?></TH>
 							</TR> 
 						  <TR>
-								<TH<? echo $pref_etiq_marges_req ?> id="libelle"><? echo _("Margins:"); ?></TH> 
-								<td><input type="text" name="pref_etiq_marges" value="<? echo $pref_etiq_marges; ?>" maxlength="4"> mm <SPAN class="exemple"><? echo _("(Integer)"); ?></SPAN></td> 
+								<TH<? echo $pref_etiq_marges_req ?> id="libelle"><? echo _T("Margins:"); ?></TH> 
+								<td><input type="text" name="pref_etiq_marges" value="<? echo $pref_etiq_marges; ?>" maxlength="4"> mm <SPAN class="exemple"><? echo _T("(Integer)"); ?></SPAN></td> 
 							</TR>						   
 						  <TR>
-								<TH<? echo $pref_etiq_hspace_req ?> id="libelle"><? echo _("Horizontal spacing:"); ?></TH> 
-								<td><input type="text" name="pref_etiq_hspace" value="<? echo $pref_etiq_hspace; ?>" maxlength="4"> mm <SPAN class="exemple"><? echo _("(Integer)"); ?></SPAN></td> 
+								<TH<? echo $pref_etiq_hspace_req ?> id="libelle"><? echo _T("Horizontal spacing:"); ?></TH> 
+								<td><input type="text" name="pref_etiq_hspace" value="<? echo $pref_etiq_hspace; ?>" maxlength="4"> mm <SPAN class="exemple"><? echo _T("(Integer)"); ?></SPAN></td> 
 							</TR>						   
 						  <TR>
-								<TH<? echo $pref_etiq_vspace_req ?> id="libelle"><? echo _("Vertical spacing:"); ?></TH> 
-								<td><input type="text" name="pref_etiq_vspace" value="<? echo $pref_etiq_vspace; ?>" maxlength="4"> mm <SPAN class="exemple"><? echo _("(Integer)"); ?></SPAN></td> 
+								<TH<? echo $pref_etiq_vspace_req ?> id="libelle"><? echo _T("Vertical spacing:"); ?></TH> 
+								<td><input type="text" name="pref_etiq_vspace" value="<? echo $pref_etiq_vspace; ?>" maxlength="4"> mm <SPAN class="exemple"><? echo _T("(Integer)"); ?></SPAN></td> 
 							</TR>						   
 						  <TR>
-								<TH<? echo $pref_etiq_hsize_req ?> id="libelle"><? echo _("Label width:"); ?></TH> 
-								<td><input type="text" name="pref_etiq_hsize" value="<? echo $pref_etiq_hsize; ?>" maxlength="4"> mm <SPAN class="exemple"><? echo _("(Integer)"); ?></SPAN></td> 
+								<TH<? echo $pref_etiq_hsize_req ?> id="libelle"><? echo _T("Label width:"); ?></TH> 
+								<td><input type="text" name="pref_etiq_hsize" value="<? echo $pref_etiq_hsize; ?>" maxlength="4"> mm <SPAN class="exemple"><? echo _T("(Integer)"); ?></SPAN></td> 
 							</TR>						   
 						  <TR>
-								<TH<? echo $pref_etiq_vsize_req ?> id="libelle"><? echo _("Label height:"); ?></TH> 
-								<td><input type="text" name="pref_etiq_vsize" value="<? echo $pref_etiq_vsize; ?>" maxlength="4"> mm <SPAN class="exemple"><? echo _("(Integer)"); ?></SPAN></td> 
+								<TH<? echo $pref_etiq_vsize_req ?> id="libelle"><? echo _T("Label height:"); ?></TH> 
+								<td><input type="text" name="pref_etiq_vsize" value="<? echo $pref_etiq_vsize; ?>" maxlength="4"> mm <SPAN class="exemple"><? echo _T("(Integer)"); ?></SPAN></td> 
 							</TR>						   
 						  <TR>
-								<TH<? echo $pref_etiq_cols_req ?> id="libelle"><? echo _("Number of label columns:"); ?></TH> 
-								<td><input type="text" name="pref_etiq_cols" value="<? echo $pref_etiq_cols; ?>" maxlength="4"> <SPAN class="exemple"><? echo _("(Integer)"); ?></SPAN></td> 
+								<TH<? echo $pref_etiq_cols_req ?> id="libelle"><? echo _T("Number of label columns:"); ?></TH> 
+								<td><input type="text" name="pref_etiq_cols" value="<? echo $pref_etiq_cols; ?>" maxlength="4"> <SPAN class="exemple"><? echo _T("(Integer)"); ?></SPAN></td> 
 							</TR>						   
 						  <TR>
-								<TH<? echo $pref_etiq_rows_req ?> id="libelle"><? echo _("Number of label lines:"); ?></TH> 
-								<td><input type="text" name="pref_etiq_rows" value="<? echo $pref_etiq_rows; ?>" maxlength="4"> <SPAN class="exemple"><? echo _("(Integer)"); ?></SPAN></td> 
+								<TH<? echo $pref_etiq_rows_req ?> id="libelle"><? echo _T("Number of label lines:"); ?></TH> 
+								<td><input type="text" name="pref_etiq_rows" value="<? echo $pref_etiq_rows; ?>" maxlength="4"> <SPAN class="exemple"><? echo _T("(Integer)"); ?></SPAN></td> 
 							</TR>						   
 						  <TR>
-								<TH<? echo $pref_etiq_corps_req ?> id="libelle"><? echo _("Font size:"); ?></TH> 
-								<td><input type="text" name="pref_etiq_corps" value="<? echo $pref_etiq_corps; ?>" maxlength="4"> <SPAN class="exemple"><? echo _("(Integer)"); ?></SPAN></td> 
+								<TH<? echo $pref_etiq_corps_req ?> id="libelle"><? echo _T("Font size:"); ?></TH> 
+								<td><input type="text" name="pref_etiq_corps" value="<? echo $pref_etiq_corps; ?>" maxlength="4"> <SPAN class="exemple"><? echo _T("(Integer)"); ?></SPAN></td> 
 							</TR>						   
 							<TR>
-								<TH colspan="2" id="header"><BR><? echo _("Admin account (independant of members):"); ?></TH>
+								<TH colspan="2" id="header"><BR><? echo _T("Admin account (independant of members):"); ?></TH>
 							</TR> 
 							<TR> 
-								<TH <? echo $pref_admin_login_req ?> id="libelle"><? echo _("Username:"); ?></TH> 
+								<TH <? echo $pref_admin_login_req ?> id="libelle"><? echo _T("Username:"); ?></TH> 
 								<TD><INPUT type="text" name="pref_admin_login" value="<? echo $pref_admin_login; ?>" maxlength="20"></TD>
 							</TR>
 							<TR> 
-								<TH <? echo $pref_admin_pass_req ?> id="libelle"><? echo _("Password:"); ?></TH> 
+								<TH <? echo $pref_admin_pass_req ?> id="libelle"><? echo _T("Password:"); ?></TH> 
 								<TD><INPUT type="text" name="pref_admin_pass" value="<? echo $pref_admin_pass; ?>" maxlength="20"></TD>
 							</TR>
 							<TR> 
-								<TH align="center" colspan="2"><BR><INPUT type="submit" name="valid" value="<? echo _("Save"); ?>"></TH> 
+								<TH align="center" colspan="2"><BR><INPUT type="submit" name="valid" value="<? echo _T("Save"); ?>"></TH> 
 						  </TR> 
 							</TABLE> 
 						</DIV>
 						<BR> 
-						<? echo _("NB : The mandatory fields are in"); ?> <font style="color: #FF0000"><? echo _("red"); ?></font>. 
+						<? echo _T("NB : The mandatory fields are in"); ?> <font style="color: #FF0000"><? echo _T("red"); ?></font>. 
 						</BLOCKQUOTE> 
 						</FORM> 
 <? 

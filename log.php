@@ -39,7 +39,7 @@
 	{
 		$requete[0] = "DELETE FROM ".PREFIX_DB."logs";
 		$DB->Execute($requete[0]);
-		dblog(_("Flush the logs"));
+		dblog(_T("Flush the logs"));
 	}
 
     // Tri
@@ -105,22 +105,22 @@
 	}
 	
 ?>
-	<H1 class="titre"><? echo _("Logs"); ?></H1>
+	<H1 class="titre"><? echo _T("Logs"); ?></H1>
 	<FORM action="log.php" method="post">
-		<DIV align="center"><INPUT type="submit" value="<? echo _("Flush the logs") ?>"></DIV>
+		<DIV align="center"><INPUT type="submit" value="<? echo _T("Flush the logs") ?>"></DIV>
 		<INPUT type="hidden" name="reset" value="1">
 	</FORM>
 	<TABLE id="infoline" width="100%">
 		<TR>
-			<TD class="left"><? echo $nb_lines->fields[0]." "; if ($nb_lines->fields[0]!=1) echo _("lines"); else echo _("line"); ?></TD>
-			<TD class="right"><? echo _("Pages:"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></TD>
+			<TD class="left"><? echo $nb_lines->fields[0]." "; if ($nb_lines->fields[0]!=1) echo _T("lines"); else echo _T("line"); ?></TD>
+			<TD class="right"><? echo _T("Pages:"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></TD>
 		</TR>
 	</TABLE>
 		<TABLE width="100%"> 
 		<TR> 
 			<TH width="15" class="listing">#</TH> 
   			<TH class="listing left" width="150">
-				<A href="log.php?tri=0" class="listing"><? echo _("Date"); ?></A>
+				<A href="log.php?tri=0" class="listing"><? echo _T("Date"); ?></A>
 <?
 	if ($_SESSION["tri_log"]=="0")
 	{
@@ -135,7 +135,7 @@
 				<IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
             </TH> 
   			<TH class="listing left" width="150">
-				<A href="log.php?tri=1" class="listing"><? echo _("IP"); ?></A>
+				<A href="log.php?tri=1" class="listing"><? echo _T("IP"); ?></A>
 <?
 	if ($_SESSION["tri_log"]=="1")
 	{
@@ -150,7 +150,7 @@
 				<IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
             </TH> 
   			<TH class="listing left" width="150">
-				<A href="log.php?tri=2" class="listing"><? echo _("Member"); ?></A>
+				<A href="log.php?tri=2" class="listing"><? echo _T("Member"); ?></A>
 <?
 	if ($_SESSION["tri_log"]=="2")
 	{
@@ -165,7 +165,7 @@
 				<IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
             </TH> 
   			<TH class="listing left">
-				<A href="log.php?tri=3" class="listing"><? echo _("Description"); ?></A>
+				<A href="log.php?tri=3" class="listing"><? echo _T("Description"); ?></A>
 <?
 	if ($_SESSION["tri_log"]=="3")
 	{
@@ -185,7 +185,7 @@
 	if ($resultat->EOF)
 	{
 ?>	
-		<TR><TD colspan="5" class="emptylist"><? echo _("logs are empty"); ?></TD></TR>
+		<TR><TD colspan="5" class="emptylist"><? echo _T("logs are empty"); ?></TD></TR>
 <?
 	}
 	else while (!$resultat->EOF) 
@@ -205,7 +205,7 @@
 	$resultat->Close();
 ?>
   	</TABLE>	
-	<DIV id="infoline2" class="right"><? echo _("Pages:"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></DIV>
+	<DIV id="infoline2" class="right"><? echo _T("Pages:"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></DIV>
 <?
 	include("footer.php");
 ?>

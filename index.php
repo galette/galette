@@ -47,7 +47,7 @@ function self_adhesion(){
     if (isset($_POST["pref_lang"])) $pref_lang=$_POST["pref_lang"];
     if (isset($_GET["pref_lang"])) $pref_lang=$_GET["pref_lang"];
     if (!isset($pref_lang)) $pref_lang=PREF_LANG;
-    echo "<a href=\"self_adherent.php?pref_lang=$pref_lang\">"._("Subscribe")."</a>";
+    echo "<a href=\"self_adherent.php?pref_lang=$pref_lang\">"._T("Subscribe")."</a>";
 }
 
 if (isset($_POST["ident"])) 
@@ -58,8 +58,8 @@ if (isset($_POST["ident"]))
 			$_SESSION["logged_status"]=1;
 			$_SESSION["admin_status"]=1;
 			$_SESSION["logged_username"]=$_POST["login"];
-			$_SESSION["logged_nom_adh"]=_("Admin");
-			dblog(_("Login"));
+			$_SESSION["logged_nom_adh"]=_T("Admin");
+			dblog(_T("Login"));
 		}
 		else
 		{
@@ -82,10 +82,10 @@ if (isset($_POST["ident"]))
 				$_SESSION["logged_nom_adh"]=strtoupper($resultat->fields[2]) . " " . strtolower($resultat->fields[3]);
         $pref_lang = $resultat->fields[5];
         setcookie("pref_lang",$pref_lang);
-				dblog(_("Login"));
+				dblog(_T("Login"));
 			}
 			else
-				dblog(_("Authentication failed. Login:")." \"" . $_POST["login"] . "\"");
+				dblog(_T("Authentication failed. Login:")." \"" . $_POST["login"] . "\"");
 		}
 	}
 
@@ -115,22 +115,22 @@ if (isset($_POST["ident"]))
 			<IMG src="images/galette.jpg" alt="[ Galette ]" width="103" height="80"><BR>
      <? drapeaux(); ?><br>
 			<FORM action="index.php" method="post"> 
-				<B class="title"><? echo _("Login"); ?></B><BR>
+				<B class="title"><? echo _T("Login"); ?></B><BR>
 				<BR>
 				<BR>
 				<TABLE> 
 					<TR> 
-						<TD><? echo _("Username:"); ?></TD> 
+						<TD><? echo _T("Username:"); ?></TD> 
 						<TD><INPUT type="text" name="login"></TD> 
 					</TR> 
 					<TR> 
-						<TD><? echo _("Password:"); ?></TD> 
+						<TD><? echo _T("Password:"); ?></TD> 
 						<TD><INPUT type="password" name="password"></TD> 
 					</TR> 
 				</TABLE>
-				<INPUT type="submit" name="ident" value="<? echo _("Login"); ?>"><BR>
+				<INPUT type="submit" name="ident" value="<? echo _T("Login"); ?>"><BR>
 				<BR>
-				<A HREF="lostpasswd.php"><? echo _("Lost your password?"); ?></a>
+				<A HREF="lostpasswd.php"><? echo _T("Lost your password?"); ?></a>
         <BR>
         <? self_adhesion(); ?>
 			</FORM>

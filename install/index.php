@@ -3,8 +3,7 @@
         else $pref_lang=$_POST["install_lang"];
         include_once("../includes/i18n.inc.php"); 
 	session_start();
-	define("WEB_ROOT", "/usr/share/galette/");
-	define("VAR_ROOT", "/var/lib/galette/");
+	define("WEB_ROOT", realpath(dirname($_SERVER["SCRIPT_FILENAME"])."/../")."/");
 	$step="1";
 	$error_detected="";
 	
@@ -805,7 +804,6 @@ define(\"USER_DB\", \"".$_POST["install_dbuser"]."\");
 define(\"PWD_DB\", \"".$_POST["install_dbpass"]."\");
 define(\"NAME_DB\", \"".$_POST["install_dbname"]."\");
 define(\"WEB_ROOT\", \"".WEB_ROOT."\");
-define(\"VAR_ROOT\", \"".VAR_ROOT."\");
 define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 ?>";
 				fwrite($fd,$data);
