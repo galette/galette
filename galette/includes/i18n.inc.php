@@ -50,4 +50,31 @@ if ($loc!=$language){
   echo "<font color='red'>Warning:</font> locale $language is probably not intalled on the server.<br>";
 }
 
+/***********************************
+ * some constant strings found in the database
+ ***********************************
+ */
+
+$foo=_("Réalisation :");
+$foo=_("Graphisme :");
+$foo=_("Editeur :");
+$foo=_("Président");
+$foo=_("Vice-président");
+$foo=_("Trésorier");
+$foo=_("Secrétaire");
+$foo=_("Membre actif");
+$foo=_("Membre bienfaiteur");
+$foo=_("Membre fondateur");
+$foo=_("Ancien");
+$foo=_("Personne morale");
+$foo=_("Non membre");
+$foo=_("Cotisation annuelle réduite");
+$foo=_("Cotisation entreprise");
+$foo=_("Donation en nature");
+$foo=_("Donation pécunière");
+$foo=_("Partenariat");
+$foo=_("french");
+$foo=_("english");
+$foo=_("spanish");
+
 ?>

@@ -22,6 +22,7 @@
 	include("includes/config.inc.php"); 
 	include(WEB_ROOT."includes/database.inc.php"); 
 	include(WEB_ROOT."includes/functions.inc.php"); 
+        include_once("includes/i18n.inc.php"); 
 	include(WEB_ROOT."includes/session.inc.php"); 
 	include(WEB_ROOT."includes/categories.inc.php"); 
 
@@ -82,24 +83,24 @@
 	include(WEB_ROOT."includes/lang.inc.php"); 
 	include("header.php");
 ?>  
-			<H1 class="titre"><? echo _T("Fiche adhérent"); ?></H1>					
+			<H1 class="titre"><? echo _("Fiche adhérent"); ?></H1>					
 			<BLOCKQUOTE>
 				<DIV align="center">
 				<TABLE border="0"> 
 					<TR> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Nom :"); ?></B></TD>
+						<TD bgcolor="#DDDDFF"><B><? echo _("Nom :"); ?></B></TD>
 <?
 	$nom_adh_ext = "";
 	switch($titre_adh)
 	{
 		case "1" :
-			$nom_adh_ext .= _T("M.");
+			$nom_adh_ext .= _("M.");
 			break;
 		case "2" :
-			$nom_adh_ext .= _T("Mme.");
+			$nom_adh_ext .= _("Mme.");
 			break;
 		default :
-			$nom_adh_ext .= _T("Mlle.");
+			$nom_adh_ext .= _("Mlle.");
 	}
 	$nom_adh_ext .= " ".htmlentities(strtoupper(custom_html_entity_decode($nom_adh)), ENT_QUOTES)." ".ucfirst(strtolower($prenom_adh));
 ?>
@@ -133,13 +134,13 @@
 	if ($image_adh != "")
 	{
 ?> 
-                            <A href="photo.php?&id_adh=<? echo $id_adh."&nocache=".time(); ?>"><IMG src="photo.php?tn=1&id_adh=<? echo $id_adh."&nocache=".time(); ?>" border="1" alt="<? echo _T("Photo"); ?>" width="<? echo $imagedata[0]; ?>" height="<? echo $imagedata[1]; ?>"></A>
+                            <A href="photo.php?&id_adh=<? echo $id_adh."&nocache=".time(); ?>"><IMG src="photo.php?tn=1&id_adh=<? echo $id_adh."&nocache=".time(); ?>" border="1" alt="<? echo _("Photo"); ?>" width="<? echo $imagedata[0]; ?>" height="<? echo $imagedata[1]; ?>"></A>
 <?
     }
     else
     {
 ?>
-                            <IMG src="photo.php?tn=1&id_adh=<? echo $id_adh."&nocache=".time(); ?>" border="1" alt="<? echo _T("Photo"); ?>" width="<? echo $imagedata[0]; ?>" height="<? echo $imagedata[1]; ?>"></A>
+                            <IMG src="photo.php?tn=1&id_adh=<? echo $id_adh."&nocache=".time(); ?>" border="1" alt="<? echo _("Photo"); ?>" width="<? echo $imagedata[0]; ?>" height="<? echo $imagedata[1]; ?>"></A>
 
 <?
     }
@@ -147,15 +148,15 @@
                         </TD>
 					</TR>
 					<TR> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Pseudo :"); ?></B></TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("Pseudo :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? echo $pseudo_adh; ?>&nbsp;</TD> 
 					</TR> 
 					<TR> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Date de naissance :"); ?></B></TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("Date de naissance :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? echo $ddn_adh; ?>&nbsp;</TD>
 					</TR>
 					<TR> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Statut :"); ?></B></TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("Statut :"); ?></B></TD> 
 <?
 	$requete = "SELECT libelle_statut
 								FROM ".PREFIX_DB."statuts
@@ -163,36 +164,36 @@
 								ORDER BY priorite_statut";
 	$result = &$DB->Execute($requete);
 	if (!$result->EOF)
-		$libelle_statut = _T($result->fields["libelle_statut"]);
+		$libelle_statut = gettext($result->fields["libelle_statut"]);
 	$result->Close();
 ?>
 						<TD bgcolor="#EEEEEE"><? echo $libelle_statut ?>&nbsp;</TD> 
 					</TR>
 					<TR>
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Profession :"); ?></B></TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("Profession :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? echo $prof_adh; ?>&nbsp;</TD> 
 					</TR> 
 					<TR>
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Je souhaite apparaître dans la liste des membres :"); ?></B></TD> 
-						<TD bgcolor="#EEEEEE"><? if ($bool_display_info=="1") echo _T("Oui"); else echo _T("Non"); ?></TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("Je souhaite apparaître dans la liste des membres :"); ?></B></TD> 
+						<TD bgcolor="#EEEEEE"><? if ($bool_display_info=="1") echo _("Oui"); else echo _("Non"); ?></TD> 
 					</TR>
 <?
 	if ($_SESSION["admin_status"]!=0)
 	{
 ?>
 					<TR>
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Compte :"); ?></B></TD> 
-						<TD bgcolor="#EEEEEE"><? if ($activite_adh=="1") 	echo _T("Actif"); else echo _T("Inactif"); ?></TD>
+						<TD bgcolor="#DDDDFF"><B><? echo _("Compte :"); ?></B></TD> 
+						<TD bgcolor="#EEEEEE"><? if ($activite_adh=="1") 	echo _("Actif"); else echo _("Inactif"); ?></TD>
 					</TR>
 					<TR> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Admin Galette :"); ?></B></TD> 
-						<TD bgcolor="#EEEEEE"><? if ($bool_admin_adh=="1") echo _T("Oui"); else echo _T("Non"); ?></TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("Admin Galette :"); ?></B></TD> 
+						<TD bgcolor="#EEEEEE"><? if ($bool_admin_adh=="1") echo _("Oui"); else echo _("Non"); ?></TD> 
 					</TR> 
 					<TR> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Exempt de cotisation :"); ?></B></TD> 
-						<TD bgcolor="#EEEEEE"><? if ($bool_exempt_adh=="1") echo _T("Oui"); else echo _T("Non"); ?></TD> 
-                        <TD bgcolor="#DDDDFF"><B><? echo _T("Langue :"); ?><B></TD>
-                        <TD bgcolor="#EEEEEE"><IMG SRC="<? echo "lang/".$pref_lang.".gif"; ?>" align="left"> <? echo ucfirst(_T($pref_lang)); ?></TD>
+						<TD bgcolor="#DDDDFF"><B><? echo _("Exempt de cotisation :"); ?></B></TD> 
+						<TD bgcolor="#EEEEEE"><? if ($bool_exempt_adh=="1") echo _("Oui"); else echo _("Non"); ?></TD> 
+                        <TD bgcolor="#DDDDFF"><B><? echo _("Langue :"); ?><B></TD>
+                        <TD bgcolor="#EEEEEE"><IMG SRC="<? echo "lang/".$pref_lang.".gif"; ?>" align="left"> <? echo ucfirst(_($pref_lang)); ?></TD>
 					</TR> 
 <?
 	}
@@ -201,46 +202,46 @@
 						<TD colspan="4">&nbsp;</TD> 
 					</TR>
 					<TR> 
-						<TD bgcolor="#DDDDFF" valign="top"><B><? echo _T("Adresse :"); ?></B></TD> 
+						<TD bgcolor="#DDDDFF" valign="top"><B><? echo _("Adresse :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE" colspan="3"><? echo $adresse_adh; ?>&nbsp;<BR><? echo $adresse2_adh; ?>&nbsp;</TD> 
 					</TR> 
 					<TR> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Code Postal :"); ?></B></TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("Code Postal :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? echo $cp_adh; ?>&nbsp;</TD> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Ville :"); ?></B></TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("Ville :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? echo $ville_adh; ?>&nbsp;</TD> 
 					</TR> 
 					<TR> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Pays :"); ?></B></TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("Pays :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? echo $pays_adh; ?>&nbsp;</TD> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Tel :"); ?></B></TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("Tel :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? echo $tel_adh; ?>&nbsp;</TD> 
 					</TR> 
 					<TR> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("GSM :"); ?></B></TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("GSM :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? echo $gsm_adh; ?>&nbsp;</TD> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("E-Mail :"); ?></B></TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("E-Mail :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? if ($email_adh!="") { ?><A href="mailto:<? echo $email_adh; ?>"><? echo $email_adh; ?></A><? } ?>&nbsp;</TD> 
 					</TR> 
 					<TR> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Site Web :"); ?></B></TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("Site Web :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? if ($url_adh!="") { ?><A href="<? echo $url_adh; ?>"><? echo $url_adh; ?></A><? } ?>&nbsp;</TD> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("ICQ :"); ?></B></TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("ICQ :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? echo $icq_adh; ?>&nbsp;</TD> 
 					</TR> 
 					<TR> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Jabber :"); ?></B></TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("Jabber :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? echo $jabber_adh; ?>&nbsp;</TD> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("MSN :"); ?></B></TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("MSN :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? if ($msn_adh!="") { ?><A href="mailto:<? echo $msn_adh; ?>"><? echo $msn_adh; ?></A><? } ?>&nbsp;</TD> 
 					</TR> 
 					<TR> 
 						<TD colspan="4">&nbsp;</TD> 
 					</TR>
 					<TR> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Identifiant :"); ?>&nbsp;</B></TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("Identifiant :"); ?>&nbsp;</B></TD> 
 						<TD bgcolor="#EEEEEE"><? echo $login_adh; ?></TD> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Mot de passe :"); ?></B>&nbsp;</TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("Mot de passe :"); ?></B>&nbsp;</TD> 
 						<TD bgcolor="#EEEEEE"><? echo $mdp_adh; ?></TD> 
 					</TR> 
 <?
@@ -249,19 +250,19 @@
 			{
 ?>
 					<TR> 
-						<TD bgcolor="#DDDDFF"><B><? echo _T("Date de création :"); ?></B>&nbsp;</TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("Date de création :"); ?></B>&nbsp;</TD> 
 						<TD bgcolor="#EEEEEE" colspan="3"><? echo $date_crea_adh; ?></TD> 
 					</TR> 
 					<TR> 
-						<TD bgcolor="#DDDDFF" valign="top"><B><? echo _T("Autres informations (admin) :"); ?></B></TD> 
+						<TD bgcolor="#DDDDFF" valign="top"><B><? echo _("Autres informations (admin) :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE" colspan="3"><? echo nl2br($info_adh); ?></TD> 
 					</TR>
 <?
-				$ajout_contrib = "&nbsp;&nbsp;&nbsp;<A href=\"ajouter_contribution.php?id_adh=".$id_adh."\">"._T("[ Ajouter une contribution ]")."</A>";
+				$ajout_contrib = "&nbsp;&nbsp;&nbsp;<A href=\"ajouter_contribution.php?id_adh=".$id_adh."\">"._("[ Ajouter une contribution ]")."</A>";
 			}
 ?>
 					<TR> 
-						<TD bgcolor="#DDDDFF" valign="top"><B><? echo _T("Autres informations :"); ?></B></TD> 
+						<TD bgcolor="#DDDDFF" valign="top"><B><? echo _("Autres informations :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE" colspan="3"><? echo nl2br($info_public_adh); ?></TD> 
 					</TR>
 <?
@@ -315,7 +316,7 @@
     $res_cat->Close();
 ?>
 					<TR>
-						<TD colspan="4" align="center"><BR><A href="ajouter_adherent.php?id_adh=<? echo $id_adh; ?>"><? echo _T("[ Modification ]"); ?></A>&nbsp;&nbsp;&nbsp;<A href="gestion_contributions.php?id_adh=<? echo $id_adh; ?>"><? echo _T("[ Contributions ]"); ?></A><? echo $ajout_contrib; ?></TD>
+						<TD colspan="4" align="center"><BR><A href="ajouter_adherent.php?id_adh=<? echo $id_adh; ?>"><? echo _("[ Modification ]"); ?></A>&nbsp;&nbsp;&nbsp;<A href="gestion_contributions.php?id_adh=<? echo $id_adh; ?>"><? echo _("[ Contributions ]"); ?></A><? echo $ajout_contrib; ?></TD>
 					</TR>
                                 </TABLE> 
 			</DIV>

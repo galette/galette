@@ -1,4 +1,5 @@
 <?
+        include_once("../includes/i18n.inc.php"); 
 	session_start();
 	define("WEB_ROOT", realpath(dirname($_SERVER["SCRIPT_FILENAME"])."/../")."/");
 	$step="1";
@@ -24,7 +25,7 @@
 		elseif (substr($_POST["install_type"],0,7)=="upgrade")
 			$step="u3";
 		else
-	  		$error_detected .= "<LI>"._T("Type d'installation inconnu")."</LI>";
+	  		$error_detected .= "<LI>"._("Type d'installation inconnu")."</LI>";
 	 }
 
 	if ($error_detected=="" && isset($_POST["install_permsok"]))
@@ -34,7 +35,7 @@
 		elseif (substr($_POST["install_type"],0,7)=="upgrade")
 			$step="u4";
 		else
-	  		$error_detected .= "<LI>"._T("Type d'installation inconnu")."</LI>";
+	  		$error_detected .= "<LI>"._("Type d'installation inconnu")."</LI>";
 	 }
 
 	if ($error_detected=="" && isset($_POST["install_dbtype"])  
@@ -45,13 +46,13 @@
 		&& isset($_POST["install_dbprefix"]))
 	{
 		if ($_POST["install_dbtype"]!="mysql" && $_POST["install_dbtype"]!="pgsql")
-	  		$error_detected .= "<IMG src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("Type de base inconnu")."<BR>";
+	  		$error_detected .= "<IMG src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._("Type de base inconnu")."<BR>";
 		if ($_POST["install_dbuser"]=="")
-	  		$error_detected .= "<IMG src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("Nom d'utilisateur vide")."<BR>";
+	  		$error_detected .= "<IMG src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._("Nom d'utilisateur vide")."<BR>";
 		if ($_POST["install_dbpass"]=="")
-	  		$error_detected .= "<IMG src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("Mot de passe vide")."<BR>";
+	  		$error_detected .= "<IMG src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._("Mot de passe vide")."<BR>";
 		if ($_POST["install_dbname"]=="")
-	  		$error_detected .= "<IMG src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("Nom de la base non précisé")."<BR>";
+	  		$error_detected .= "<IMG src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._("Nom de la base non précisé")."<BR>";
 		if ($error_detected=="")
 		{
 			if (isset($_POST["install_dbconn_ok"]))
@@ -81,9 +82,9 @@
 				if (isset($_POST["install_adminlogin"]) && isset($_POST["install_adminpass"]))
 				{
 					if ($_POST["install_adminlogin"]=="")
-				  		$error_detected .= "<IMG src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("Nom d'utilisateur vide")."<BR>";
+				  		$error_detected .= "<IMG src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._("Nom d'utilisateur vide")."<BR>";
 					if ($_POST["install_adminpass"]=="")
-				  		$error_detected .= "<IMG src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("Mot de passe vide")."<BR>";
+				  		$error_detected .= "<IMG src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._("Mot de passe vide")."<BR>";
 					if ($error_detected=="")
 					if ($_POST["install_type"]=="install")
 						$step="i9";					
@@ -153,12 +154,12 @@
 		case "2":
 ?>
 
-	<H1><? echo _T("Type d'installation"); ?></H1>
-	<P><? echo _T("Selectionnez le type d'installation à lancer"); ?></P>
+	<H1><? echo _("Type d'installation"); ?></H1>
+	<P><? echo _("Selectionnez le type d'installation à lancer"); ?></P>
 	<FORM action="index.php" method="POST">
 		<P>
-			<INPUT type="radio" name="install_type" value="install" SELECTED> <? echo _T("Nouvelle installation :"); ?><BR>
-		 	<? echo _T("Vous installez Galette pour la première fois, ou vous souhaitez écraser une ancienne version de Galette sans conserver vos données"); ?>
+			<INPUT type="radio" name="install_type" value="install" SELECTED> <? echo _("Nouvelle installation :"); ?><BR>
+		 	<? echo _("Vous installez Galette pour la première fois, ou vous souhaitez écraser une ancienne version de Galette sans conserver vos données"); ?>
 		</P>
 <?
 			$dh = opendir("sql");
@@ -175,27 +176,27 @@
 			{
 ?>
 		<P>
-			<INPUT type="radio" name="install_type" value="upgrade-<? echo $val; ?>"> <? echo _T("Mise à jour :"); ?><BR>
+			<INPUT type="radio" name="install_type" value="upgrade-<? echo $val; ?>"> <? echo _("Mise à jour :"); ?><BR>
 <?
 				if ($last!=number_format($val-0.01,2))
-					echo _T("Votre version actuelle de Galette est comprise entre")." ".$last." "._T("et")." ".number_format($val-0.01,2)."<br>";
+					echo _("Votre version actuelle de Galette est comprise entre")." ".$last." "._("et")." ".number_format($val-0.01,2)."<br>";
 				else
-					echo _T("Votre version actuelle de Galette est la")." ".number_format($val-0.01,2)."<br>";
+					echo _("Votre version actuelle de Galette est la")." ".number_format($val-0.01,2)."<br>";
 				$last = $val;
-				echo _T("Attention : Pensez à sauvegarder votre base existante.");
+				echo _("Attention : Pensez à sauvegarder votre base existante.");
 ?>
 		</P>
 <?
 			}
 ?>
 		<P id="submitbutton3">
-			<INPUT type="submit" value="<? echo _T("Etape suivante"); ?>">
+			<INPUT type="submit" value="<? echo _("Etape suivante"); ?>">
 		</P>
 		<INPUT type="hidden" name="install_lang" value="<? echo $_POST["install_lang"]; ?>">
 	</FORM>
 	<BR>
 	</DIV>
-	<H1 class="footerinstall"><? echo _T("Etape 2 - Type d'installation"); ?></H1>
+	<H1 class="footerinstall"><? echo _("Etape 2 - Type d'installation"); ?></H1>
 
 <?
 			break;
@@ -207,8 +208,8 @@
 		case "u3":
 ?>
 
-	<H1><? echo _T("Permissions de fichiers"); ?></H1>
-	<P><? echo _T("Vérification des permissions des fichiers et dossier"); ?></P>
+	<H1><? echo _("Permissions de fichiers"); ?></H1>
+	<P><? echo _("Vérification des permissions des fichiers et dossier"); ?></P>
 	<TABLE>
 <?
 			$perms_ok = true;
@@ -216,9 +217,9 @@
 			foreach ($arr as $fileperm)
 			{
 				if (is_dir(WEB_ROOT."/".$fileperm))
-					$texttype = _T("Le dossier");
+					$texttype = _("Le dossier");
 				else
-					$texttype = _T("Le fichier");
+					$texttype = _("Le fichier");
 			
 				if (!is_writable(WEB_ROOT."/".$fileperm))
 				{
@@ -227,7 +228,7 @@
 		<TR>
 			<TD>
 				<IMG src="no.gif" width="6" height="12" border="0" alt="">
-				<? echo $texttype . " " . $fileperm . " " . _T("n'est pas autorisé en écriture"); ?>
+				<? echo $texttype . " " . $fileperm . " " . _("n'est pas autorisé en écriture"); ?>
 			</TD>
 		</TR>
 <?
@@ -238,7 +239,7 @@
 		<TR>
 			<TD>
 				<IMG src="yes.gif" width="6" height="12" border="0" alt="">
-				<? echo $texttype . " " . $fileperm . " " . _T("est autorisé en écriture"); ?>
+				<? echo $texttype . " " . $fileperm . " " . _("est autorisé en écriture"); ?>
 			</TD>
 		</TR>
 <?
@@ -251,21 +252,21 @@
 			{
 ?>
 	<P>
-		<? if ($step=="i3") echo _T("Pour fonctionner correctement, Galette a besoin d'avoir les droits en écriture sur ces fichiers."); ?>
-		<? if ($step=="u3") echo _T("Pour être mis à jour et fonctionner correctement, Galette a besoin d'avoir les droits en écriture sur ces fichiers."); ?>
+		<? if ($step=="i3") echo _("Pour fonctionner correctement, Galette a besoin d'avoir les droits en écriture sur ces fichiers."); ?>
+		<? if ($step=="u3") echo _("Pour être mis à jour et fonctionner correctement, Galette a besoin d'avoir les droits en écriture sur ces fichiers."); ?>
 	</P>
 	<P>
-		<? echo _T("Sous UNIX/Linux, vous pouvez donner ces droits par les commandes"); ?><BR>
-		<CODE>chown <I><? echo _T("utilisateur_apache"); ?></I> <I><? echo _T("nom_fichier"); ?></I><BR>
-		chmod 600 <I><? echo _T("nom_fichier"); ?></I> <? echo _T("(pour un fichier)"); ?><BR>
-		chmod 700 <I><? echo _T("nom_dossier"); ?></I> <? echo _T("(pour un dossier)"); ?></CODE>
+		<? echo _("Sous UNIX/Linux, vous pouvez donner ces droits par les commandes"); ?><BR>
+		<CODE>chown <I><? echo _("utilisateur_apache"); ?></I> <I><? echo _("nom_fichier"); ?></I><BR>
+		chmod 600 <I><? echo _("nom_fichier"); ?></I> <? echo _("(pour un fichier)"); ?><BR>
+		chmod 700 <I><? echo _("nom_dossier"); ?></I> <? echo _("(pour un dossier)"); ?></CODE>
 	<P>
 	<P>
-		<? echo _T("Sous Windows, vérifiez que les fichiers en question ne sont pas en lecture seule dans leurs propriétés."); ?>
+		<? echo _("Sous Windows, vérifiez que les fichiers en question ne sont pas en lecture seule dans leurs propriétés."); ?>
 	<P>
 	<FORM action="index.php" method="POST">
 		<P id="submitbutton2">
-			<INPUT type="submit" value="<? echo _T("Rééssayer"); ?>">
+			<INPUT type="submit" value="<? echo _("Rééssayer"); ?>">
 		</P>
 		<INPUT type="hidden" name="install_lang" value="<? echo $_POST["install_lang"]; ?>">
 		<INPUT type="hidden" name="install_type" value="<? echo $_POST["install_type"]; ?>">
@@ -275,10 +276,10 @@
 			else
 			{
 ?>
-	<P><? echo _T("Les permissions des fichiers sont correctes !"); ?></P>
+	<P><? echo _("Les permissions des fichiers sont correctes !"); ?></P>
 	<FORM action="index.php" method="POST">
 		<P id="submitbutton3">
-			<INPUT type="submit" value="<? echo _T("Etape suivante"); ?>">
+			<INPUT type="submit" value="<? echo _("Etape suivante"); ?>">
 		</P>
 		<INPUT type="hidden" name="install_lang" value="<? echo $_POST["install_lang"]; ?>">
 		<INPUT type="hidden" name="install_type" value="<? echo $_POST["install_type"]; ?>">
@@ -289,7 +290,7 @@
 ?>
 	<BR>
 	</DIV>
-	<H1 class="footerinstall"><? echo _T("Etape 3 - Permissions"); ?></H1>
+	<H1 class="footerinstall"><? echo _("Etape 3 - Permissions"); ?></H1>
 
 <?
 			break;
@@ -297,19 +298,19 @@
 			case "u4";
 ?>
 
-	<H1><? echo _T("Base de données"); ?></H1>
+	<H1><? echo _("Base de données"); ?></H1>
 	<P>
 <?
 				if ($error_detected!="")
 					echo "<TABLE><TR><TD>".$error_detected."</TD></TR></TABLE><BR>";
 ?>	
-		<? if ($step=="i4") echo _T("Si ce n'est pas déjà fait, créez une base de données et un utilisateur pour Galette."); ?><BR>
-		<? if ($step=="u4") echo _T("Veuillez entrer les paramètres de connexion à la base existante."); ?><BR>
-		<? echo _T("Les droits nécessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et INSERT."); ?></P>
+		<? if ($step=="i4") echo _("Si ce n'est pas déjà fait, créez une base de données et un utilisateur pour Galette."); ?><BR>
+		<? if ($step=="u4") echo _("Veuillez entrer les paramètres de connexion à la base existante."); ?><BR>
+		<? echo _("Les droits nécessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et INSERT."); ?></P>
 	<FORM action="index.php" method="POST">
 		<TABLE>
 			<TR>
-				<TD><? echo _T("Type de base de données :"); ?></TD>
+				<TD><? echo _("Type de base de données :"); ?></TD>
 				<TD>
 					<SELECT name="install_dbtype">
 						<OPTION value="mysql">MySQL</OPTION>
@@ -318,32 +319,32 @@
 				</TD>
 			</TR>
 			<TR>
-				<TD><? echo _T("Hôte :"); ?></TD>
+				<TD><? echo _("Hôte :"); ?></TD>
 				<TD>
 					<INPUT type="text" name="install_dbhost" value="<? if(isset($_POST["install_dbhost"])) echo $_POST["install_dbhost"]; ?>">
 				</TD>
 			</TR>
 			<TR>
-				<TD><? echo _T("Utilisateur :"); ?></TD>
+				<TD><? echo _("Utilisateur :"); ?></TD>
 				<TD>
 					<INPUT type="text" name="install_dbuser" value="<? if(isset($_POST["install_dbuser"])) echo $_POST["install_dbuser"]; ?>">
 				</TD>
 			</TR>
 			<TR>
-				<TD><? echo _T("Mot de passe :"); ?></TD>
+				<TD><? echo _("Mot de passe :"); ?></TD>
 				<TD>
 					<INPUT type="password" name="install_dbpass" value="<? if(isset($_POST["install_dbpass"])) echo $_POST["install_dbpass"]; ?>">
 				</TD>
 			</TR>
 			<TR>
-				<TD><? echo _T("Nom de la base :"); ?></TD>
+				<TD><? echo _("Nom de la base :"); ?></TD>
 				<TD>
 					<INPUT type="text" name="install_dbname" value="<? if(isset($_POST["install_dbname"])) echo $_POST["install_dbname"]; ?>">
 				</TD>
 			</TR>					
                         <TR>
                                 <TD>
-					<? echo _T("Prefixe de table :"); ?>
+					<? echo _("Prefixe de table :"); ?>
 				</TD>
                                 <TD>
                                         <INPUT type="text" name="install_dbprefix" value="<? if(isset($_POST["install_dbprefix"])) echo $_POST["install_dbprefix"]; else echo "galette_" ?>">
@@ -355,7 +356,7 @@
 			?>
 			<TR>
 				<TD colspan="2" style="color: #FF0000; font-weight: bold;">
-					<? echo _T("(Indiquez le prefixe ACTUEL de vos tables Galette)"); ?>
+					<? echo _("(Indiquez le prefixe ACTUEL de vos tables Galette)"); ?>
 				</TD>
 			</TR>
 			<?
@@ -363,7 +364,7 @@
 			?>
 		</TABLE>
 		<P id="submitbutton3">
-			<INPUT type="submit" value="<? echo _T("Etape suivante"); ?>">
+			<INPUT type="submit" value="<? echo _("Etape suivante"); ?>">
 		</P>
 		<INPUT type="hidden" name="install_lang" value="<? echo $_POST["install_lang"]; ?>">
 		<INPUT type="hidden" name="install_type" value="<? echo $_POST["install_type"]; ?>">
@@ -371,7 +372,7 @@
 	</FORM>
 	<BR>
 	</DIV>
-	<H1 class="footerinstall"><? echo _T("Etape 4 - Base de données"); ?></H1>
+	<H1 class="footerinstall"><? echo _("Etape 4 - Base de données"); ?></H1>
 	
 <?
 			break;
@@ -379,8 +380,8 @@
 			case "u5":
 ?>
 
-	<H1><? echo _T("Vérification de la base"); ?></H1>
-	<P><? echo _T("Vérification des paramètres et de l'existence de la base"); ?></P>
+	<H1><? echo _("Vérification de la base"); ?></H1>
+	<P><? echo _("Vérification des paramètres et de l'existence de la base"); ?></P>
 <?
 				include(WEB_ROOT."/includes/adodb/adodb.inc.php");
 				$DB = ADONewConnection($_POST["install_dbtype"]);
@@ -389,21 +390,21 @@
 				if(!@$DB->Connect($_POST["install_dbhost"], $_POST["install_dbuser"], $_POST["install_dbpass"], $_POST["install_dbname"]))
 				{
 					$permsdb_ok = false;
-					echo "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Connexion à la base impossible")."<BR>";
+					echo "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Connexion à la base impossible")."<BR>";
 				}
 				else
 				{
-					echo "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("La connexion à la base est établie")."<BR>";
+					echo "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("La connexion à la base est établie")."<BR>";
 					$DB->Close();
 				}
 
 				if (!$permsdb_ok)
 				{
 ?>
-	<P><? echo _T("La base n'est accessible. Veuillez revenir en arrière pour saisir à nouveau les paramètres de connexion."); ?></P>
+	<P><? echo _("La base n'est accessible. Veuillez revenir en arrière pour saisir à nouveau les paramètres de connexion."); ?></P>
 	<FORM action="index.php" method="POST">
 		<P id="submitbutton2">
-			<INPUT type="submit" value="<? echo _T("Retour"); ?>">
+			<INPUT type="submit" value="<? echo _("Retour"); ?>">
 		</P>
 		<INPUT type="hidden" name="install_lang" value="<? echo $_POST["install_lang"]; ?>">
 		<INPUT type="hidden" name="install_type" value="<? echo $_POST["install_type"]; ?>">
@@ -414,10 +415,10 @@
 				else
 				{
 ?>
-	<P><? echo _T("La base existe et les paramètres de connexion sont corrects."); ?></P>
+	<P><? echo _("La base existe et les paramètres de connexion sont corrects."); ?></P>
 	<FORM action="index.php" method="POST">
 		<P id="submitbutton3">
-			<INPUT type="submit" value="<? echo _T("Etape suivante"); ?>">
+			<INPUT type="submit" value="<? echo _("Etape suivante"); ?>">
 		</P>
 		<INPUT type="hidden" name="install_lang" value="<? echo $_POST["install_lang"]; ?>">
 		<INPUT type="hidden" name="install_type" value="<? echo $_POST["install_type"]; ?>">
@@ -436,7 +437,7 @@
 
 	<BR>
 	</DIV>
-	<H1 class="footerinstall"><? echo _T("Etape 5 - Accès à la base"); ?></H1>
+	<H1 class="footerinstall"><? echo _("Etape 5 - Accès à la base"); ?></H1>
 	
 
 <?
@@ -446,10 +447,10 @@
 ?>
 
 
-	<H1><? echo _T("Permissions sur la base"); ?></H1>
+	<H1><? echo _("Permissions sur la base"); ?></H1>
 	<P>
-		<? if ($step=="i6") echo _T("Pour fonctionner, Galette doit avoir un certain nombre de droits sur la base de données (CREATE, DROP, DELETE, UPDATE, SELECT et INSERT)"); ?>
-		<? if ($step=="u6") echo _T("Pour être mis à jour, Galette doit avoir un certain nombre de droits sur la base de données (CREATE, DROP, DELETE, UPDATE, SELECT, INSERT et ALTER)"); ?>
+		<? if ($step=="i6") echo _("Pour fonctionner, Galette doit avoir un certain nombre de droits sur la base de données (CREATE, DROP, DELETE, UPDATE, SELECT et INSERT)"); ?>
+		<? if ($step=="u6") echo _("Pour être mis à jour, Galette doit avoir un certain nombre de droits sur la base de données (CREATE, DROP, DELETE, UPDATE, SELECT, INSERT et ALTER)"); ?>
 	</P>
 <?
 				$result = "";
@@ -466,10 +467,10 @@
 						if($DB->ErrorNo())
 						{
 							$error = 1;
-							$result = "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Opération DROP non autorisée")."<BR>";
+							$result = "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Opération DROP non autorisée")."<BR>";
 						}
 						else
-							$result = "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Opération DROP autorisée")."<BR>";
+							$result = "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Opération DROP autorisée")."<BR>";
 					}
 				}
 					
@@ -481,11 +482,11 @@
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
-						$result .= "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Opération CREATE non autorisée")."<BR>";
+						$result .= "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Opération CREATE non autorisée")."<BR>";
 						$error = 1;
 					}
 					else
-						$result .= "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Opération CREATE autorisée")."<BR>";
+						$result .= "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Opération CREATE autorisée")."<BR>";
 				}
 				
 				// création d'enregistrement
@@ -496,11 +497,11 @@
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
-						$result .= "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Opération INSERT non autorisée")."<BR>";
+						$result .= "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Opération INSERT non autorisée")."<BR>";
 						$error = 1;
 					}
 					else
-						$result .= "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Opération INSERT autorisée")."<BR>";
+						$result .= "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Opération INSERT autorisée")."<BR>";
 				}				
 
 				// mise à jour d'enregistrement
@@ -511,11 +512,11 @@
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
-						$result .= "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Opération UPDATE non autorisée")."<BR>";
+						$result .= "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Opération UPDATE non autorisée")."<BR>";
 						$error = 1;
 					}
 					else
-						$result .= "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Opération UPDATE autorisée")."<BR>";
+						$result .= "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Opération UPDATE autorisée")."<BR>";
 				}				
 
 				// selection d'enregistrement
@@ -526,11 +527,11 @@
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
-						$result .= "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Opération SELECT non autorisée")."<BR>";
+						$result .= "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Opération SELECT non autorisée")."<BR>";
 						$error = 1;
 					}
 					else
-						$result .= "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Opération SELECT autorisée")."<BR>";
+						$result .= "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Opération SELECT autorisée")."<BR>";
 				}
 
 				// alter pour la mise à jour
@@ -541,11 +542,11 @@
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
-						$result .= "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Opération ALTER non autorisée")."<BR>";
+						$result .= "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Opération ALTER non autorisée")."<BR>";
 						$error = 1;
 					}
 					else
-						$result .= "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Opération ALTER autorisée")."<BR>";
+						$result .= "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Opération ALTER autorisée")."<BR>";
 				}
 
 				// suppression d'enregistrement
@@ -556,11 +557,11 @@
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
-						$result .= "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Opération DELETE non autorisée")."<BR>";
+						$result .= "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Opération DELETE non autorisée")."<BR>";
 						$error = 1;
 					}
 					else
-						$result .= "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Opération DELETE autorisée")."<BR>";
+						$result .= "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Opération DELETE autorisée")."<BR>";
 				}				
 
 				// suppression de table
@@ -572,11 +573,11 @@
 					if (!isset($droptest))
 					if($DB->ErrorNo())
 					{
-						$result .= "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Opération DROP non autorisée")."<BR>";
+						$result .= "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Opération DROP non autorisée")."<BR>";
 						$error = 1;
 					}
 					else
-						$result .= "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Opération DROP autorisée")."<BR>";
+						$result .= "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Opération DROP autorisée")."<BR>";
 				}				
 
 				if ($result!="")
@@ -586,12 +587,12 @@
 				{		
 ?>
 	<P>
-		<? if ($step=="i6") echo _T("Galette ne dispose pas de droits suffisants sur la base de données pour poursuivre l'installation."); ?>
-		<? if ($step=="u6") echo _T("Galette ne dispose pas de droits suffisants sur la base de données pour poursuivre la mise à jour."); ?>
+		<? if ($step=="i6") echo _("Galette ne dispose pas de droits suffisants sur la base de données pour poursuivre l'installation."); ?>
+		<? if ($step=="u6") echo _("Galette ne dispose pas de droits suffisants sur la base de données pour poursuivre la mise à jour."); ?>
 	</P>
 	<FORM action="index.php" method="POST">
 		<P id="submitbutton2">
-			<INPUT type="submit" value="<? echo _T("Rééssayer"); ?>">
+			<INPUT type="submit" value="<? echo _("Rééssayer"); ?>">
 		</P>
 		<INPUT type="hidden" name="install_lang" value="<? echo $_POST["install_lang"]; ?>">
 		<INPUT type="hidden" name="install_type" value="<? echo $_POST["install_type"]; ?>">
@@ -609,10 +610,10 @@
 				else
 				{
 ?>
-	<P><? echo _T("Les droits d'accès à la base sont corrects."); ?></P>
+	<P><? echo _("Les droits d'accès à la base sont corrects."); ?></P>
 	<FORM action="index.php" method="POST">
 		<P id="submitbutton3">
-			<INPUT type="submit" value="<? echo _T("Etape suivante"); ?>">
+			<INPUT type="submit" value="<? echo _("Etape suivante"); ?>">
 		</P>
 		<INPUT type="hidden" name="install_lang" value="<? echo $_POST["install_lang"]; ?>">
 		<INPUT type="hidden" name="install_type" value="<? echo $_POST["install_type"]; ?>">
@@ -631,7 +632,7 @@
 ?>
 	<BR>
 	</DIV>
-	<H1 class="footerinstall"><? echo _T("Etape 6 - Droits d'accès à la base"); ?></H1>
+	<H1 class="footerinstall"><? echo _("Etape 6 - Droits d'accès à la base"); ?></H1>
 	
 <?
 			break;
@@ -640,12 +641,12 @@
 ?>
 
 	<H1>
-		<? if ($step=="i7") echo _T("Création de la base"); ?>
-		<? if ($step=="u7") echo _T("Mise à jour de la base"); ?>
+		<? if ($step=="i7") echo _("Création de la base"); ?>
+		<? if ($step=="u7") echo _("Mise à jour de la base"); ?>
 	</H1>
 	<P>
-		<? if ($step=="i7") echo _T("Compte rendu d'installation"); ?>
-		<? if ($step=="u7") echo _T("Compte rendu de mise à jour"); ?>
+		<? if ($step=="i7") echo _("Compte rendu d'installation"); ?>
+		<? if ($step=="u7") echo _("Compte rendu de mise à jour"); ?>
 	</P>
 	<TABLE><TR><TD>
 <?
@@ -706,19 +707,19 @@
 
 ?>	
 	</TD></TR></TABLE>
-	<P><? echo _T("(Les erreurs sur les opérations DROP et RENAME peuvent être ignorées)"); ?></P>
+	<P><? echo _("(Les erreurs sur les opérations DROP et RENAME peuvent être ignorées)"); ?></P>
 	<?
 			if (isset($error))
 			{
 ?>
 	<P>
-		<? if ($step=="i7") echo _T("La base de données n'a pas pu être totalement créée, il s'agit peut-être d'un problème de droits."); ?>
-		<? if ($step=="u7") echo _T("La base de données n'a pas pu être totalement mise à jour, il s'agit peut-être d'un problème de droits."); ?>
-		<? if ($step=="u7") echo _T("Votre base est peut-être inutilisable, essayez de restaurer une ancienne version."); ?>
+		<? if ($step=="i7") echo _("La base de données n'a pas pu être totalement créée, il s'agit peut-être d'un problème de droits."); ?>
+		<? if ($step=="u7") echo _("La base de données n'a pas pu être totalement mise à jour, il s'agit peut-être d'un problème de droits."); ?>
+		<? if ($step=="u7") echo _("Votre base est peut-être inutilisable, essayez de restaurer une ancienne version."); ?>
 	</P>
 	<FORM action="index.php" method="POST">
 		<P id="submitbutton2">
-			<INPUT type="submit" value="<? echo _T("Rééssayer"); ?>">
+			<INPUT type="submit" value="<? echo _("Rééssayer"); ?>">
 		</P>
 		<INPUT type="hidden" name="install_lang" value="<? echo $_POST["install_lang"]; ?>">
 		<INPUT type="hidden" name="install_type" value="<? echo $_POST["install_type"]; ?>">
@@ -738,12 +739,12 @@
 			{
 ?>	
 	<P>
-		<? if ($step=="i7") echo _T("La base de données a été correctement créée."); ?>
-		<? if ($step=="u7") echo _T("La base de données a été correctement mise à jour."); ?>
+		<? if ($step=="i7") echo _("La base de données a été correctement créée."); ?>
+		<? if ($step=="u7") echo _("La base de données a été correctement mise à jour."); ?>
 	</P>
 	<FORM action="index.php" method="POST">
 		<P id="submitbutton3">
-			<INPUT type="submit" value="<? echo _T("Etape suivante"); ?>">
+			<INPUT type="submit" value="<? echo _("Etape suivante"); ?>">
 		</P>
 		<INPUT type="hidden" name="install_lang" value="<? echo $_POST["install_lang"]; ?>">
 		<INPUT type="hidden" name="install_type" value="<? echo $_POST["install_type"]; ?>">
@@ -764,8 +765,8 @@
 	<BR>
 	</DIV>
 	<H1 class="footerinstall">
-		<? if ($step=="i7") echo _T("Etape 7 - Création de la base"); ?>
-		<? if ($step=="u7") echo _T("Etape 7 - Mise à jour de la base"); ?>
+		<? if ($step=="i7") echo _("Etape 7 - Création de la base"); ?>
+		<? if ($step=="u7") echo _("Etape 7 - Mise à jour de la base"); ?>
 	</H1>
 	
 <?
@@ -774,29 +775,29 @@
 		case "u8":
 ?>
 
-	<H1><? echo _T("Paramètres administrateur"); ?></H1>
+	<H1><? echo _("Paramètres administrateur"); ?></H1>
 <?
 				if ($error_detected!="")
 					echo "<P><TABLE><TR><TD>".$error_detected."</TD></TR></TABLE></P>";
 ?>	
-	<P><? echo _T("Veuillez choisir les paramètres du compte administrateur Galette"); ?></P>
+	<P><? echo _("Veuillez choisir les paramètres du compte administrateur Galette"); ?></P>
 	<FORM action="index.php" method="POST">
 		<TABLE>
 			<TR>
-				<TD><? echo _T("Identifiant :"); ?></TD>
+				<TD><? echo _("Identifiant :"); ?></TD>
 				<TD>
 					<INPUT type="text" name="install_adminlogin" value="<? if(isset($_POST["install_adminlogin"])) echo $_POST["install_adminlogin"]; ?>">
 				</TD>
 			</TR>
 			<TR>
-				<TD><? echo _T("Mot de passe :"); ?></TD>
+				<TD><? echo _("Mot de passe :"); ?></TD>
 				<TD>
 					<INPUT type="text" name="install_adminpass" value="<? if(isset($_POST["install_adminpass"])) echo $_POST["install_adminpass"]; ?>">
 				</TD>
 			</TR>
 		</TABLE>
 		<P id="submitbutton3">
-			<INPUT type="submit" value="<? echo _T("Etape suivante"); ?>">
+			<INPUT type="submit" value="<? echo _("Etape suivante"); ?>">
 		</P>
 		<INPUT type="hidden" name="install_lang" value="<? echo $_POST["install_lang"]; ?>">
 		<INPUT type="hidden" name="install_type" value="<? echo $_POST["install_type"]; ?>">
@@ -813,7 +814,7 @@
 	</FORM>
 	<BR>
 	</DIV>
-	<H1 class="footerinstall"><? echo _T("Etape 8 - Paramètres administrateur"); ?></H1>
+	<H1 class="footerinstall"><? echo _("Etape 8 - Paramètres administrateur"); ?></H1>
 	
 <?
 			break;
@@ -821,7 +822,7 @@
 		case "u9";
 ?>
 
-	<H1><? echo _T("Sauvegarde des paramètres"); ?></H1>
+	<H1><? echo _("Sauvegarde des paramètres"); ?></H1>
 	<P><TABLE><TR><TD>
 <?
 			// création du fichier de configuration
@@ -839,11 +840,11 @@ define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 ?>";
 				fwrite($fd,$data);
 				fclose($fd);	
-				echo "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Fichier de configuration crée (includes/config.inc.php)")."<BR>";
+				echo "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Fichier de configuration crée (includes/config.inc.php)")."<BR>";
 			}
 			else
 			{
-				echo "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Impossible de créer le fichier de configuration (includes/config.inc.php)")."<BR>";
+				echo "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Impossible de créer le fichier de configuration (includes/config.inc.php)")."<BR>";
 				$error = true;
 			}
 
@@ -897,10 +898,10 @@ define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 			
 			$DB->Execute($default);
 			if (!$DB->ErrorNo())
-				echo "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Paramètres sauvegardés dans la base de données")."<BR>";
+				echo "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Paramètres sauvegardés dans la base de données")."<BR>";
 			else
 			{
-				echo "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Les paramètres n'ont pas pu être sauvegardés dans la base de données")."<BR>";
+				echo "<IMG src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._("Les paramètres n'ont pas pu être sauvegardés dans la base de données")."<BR>";
 				$error = true;
 			}
 ?>
@@ -911,7 +912,7 @@ define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 ?>
 	<FORM action="index.php" method="POST">
 		<P id="submitbutton3">
-			<INPUT type="submit" value="<? echo _T("Etape suivante"); ?>">
+			<INPUT type="submit" value="<? echo _("Etape suivante"); ?>">
 		</P>
 		<INPUT type="hidden" name="install_lang" value="<? echo $_POST["install_lang"]; ?>">
 		<INPUT type="hidden" name="install_type" value="<? echo $_POST["install_type"]; ?>">
@@ -935,10 +936,10 @@ define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 			{
 ?>
 	<FORM action="index.php" method="POST">
-		<P><? echo _T("Les paramètres n'ont pas pu être sauvegardés."); ?></P>
-		<P><? echo _T("Ceci peut provenir des droits sur le fichier includes/config.inc.php ou de l'impossibilité de faire un INSERT dans la base."); ?></P>
+		<P><? echo _("Les paramètres n'ont pas pu être sauvegardés."); ?></P>
+		<P><? echo _("Ceci peut provenir des droits sur le fichier includes/config.inc.php ou de l'impossibilité de faire un INSERT dans la base."); ?></P>
 		<P id="submitbutton2">
-			<INPUT type="submit" value="<? echo _T("Rééssayer"); ?>">
+			<INPUT type="submit" value="<? echo _("Rééssayer"); ?>">
 		</P>
 		<INPUT type="hidden" name="install_lang" value="<? echo $_POST["install_lang"]; ?>">
 		<INPUT type="hidden" name="install_type" value="<? echo $_POST["install_type"]; ?>">
@@ -960,7 +961,7 @@ define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 ?>
 	<BR>
 	</DIV>
-	<H1 class="footerinstall"><? echo _T("Etape 9 - Sauvegarde des paramètres"); ?></H1>
+	<H1 class="footerinstall"><? echo _("Etape 9 - Sauvegarde des paramètres"); ?></H1>
 
 <?
 			break;
@@ -969,24 +970,24 @@ define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 ?>
 
 	<H1>
-		<? if ($step=="i10") echo _T("Fin de l'installation"); ?>
-		<? if ($step=="u10") echo _T("Fin de la mise à jour"); ?>
+		<? if ($step=="i10") echo _("Fin de l'installation"); ?>
+		<? if ($step=="u10") echo _("Fin de la mise à jour"); ?>
 	</H1>
 	<P>
-		<? if ($step=="i10") echo _T("Galette a été installé avec succès !"); ?>
-		<? if ($step=="u10") echo _T("Galette a été mis à jour avec succès !"); ?>
+		<? if ($step=="i10") echo _("Galette a été installé avec succès !"); ?>
+		<? if ($step=="u10") echo _("Galette a été mis à jour avec succès !"); ?>
 	</P>
-	<P><? echo _T("Pour sécuriser le système, veuillez supprimer le dossier install"); ?></P>
+	<P><? echo _("Pour sécuriser le système, veuillez supprimer le dossier install"); ?></P>
 	<FORM action="../index.php" method="GET">
 		<P id="submitbutton3">
-			<INPUT type="submit" value="<? echo _T("Page d'accueil"); ?>">
+			<INPUT type="submit" value="<? echo _("Page d'accueil"); ?>">
 		</P>
 	</FORM>
 	<BR>
 	</DIV>
 	<H1 class="footerinstall">
-		<? if ($step=="i10") echo _T("Etape 10 - Fin de l'installation"); ?>
-		<? if ($step=="u10") echo _T("Etape 10 - Fin de la mise à jour"); ?>
+		<? if ($step=="i10") echo _("Etape 10 - Fin de l'installation"); ?>
+		<? if ($step=="u10") echo _("Etape 10 - Fin de la mise à jour"); ?>
 	</H1>
 
 

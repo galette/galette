@@ -22,12 +22,13 @@
 	include("includes/config.inc.php"); 
 	include(WEB_ROOT."includes/database.inc.php"); 
 	include(WEB_ROOT."includes/functions.inc.php"); 
+        include_once("includes/i18n.inc.php"); 
 	include(WEB_ROOT."includes/lang.inc.php"); 
 	include(WEB_ROOT."includes/session.inc.php"); 
 
 	function isEmail($login) {
 		if( empty($login) ) {
-			$GLOBALS["error_detected"] = _T("login vide");
+			$GLOBALS["error_detected"] = _("login vide");
 		} else {
 			$req = "SELECT email_adh
 				FROM ".PREFIX_DB."adherents
@@ -35,13 +36,13 @@
 			$result = &$GLOBALS["DB"]->Execute($req);
 
 			if ($result->EOF) {
-				$GLOBALS["error_detected"] = _T("login inexistant");
-				dblog(_T("Login inexistant envoyé via le formulaire de récupération du mot de passe")." \"" . $login ."\"");
+				$GLOBALS["error_detected"] = _("login inexistant");
+				dblog(_("Login inexistant envoyé via le formulaire de récupération du mot de passe")." \"" . $login ."\"");
 			}else{
 				$email=$result->fields[0];
 				if( empty($email) ) {
-					$GLOBALS["error_detected"] = _T("Ce compte ne contient pas d'adresse email, veuillez contacter un administrateur");
-					dblog(_T("Demande d'envoi de mot de passe mais email vide. Login :")." \"" . $login . "\"");
+					$GLOBALS["error_detected"] = _("Ce compte ne contient pas d'adresse email, veuillez contacter un administrateur");
+					dblog(_("Demande d'envoi de mot de passe mais email vide. Login :")." \"" . $login . "\"");
 				}else
 				return $email;
 			}
@@ -59,28 +60,28 @@
 			$result = &$DB->Execute($req);
 			if (!$result->EOF)
 				$mdp_adh = $result->fields[0];
-			$mail_subject = _T("Vos identifiants Galette");
-			$mail_text =  _T("Bonjour,")."\n";
+			$mail_subject = _("Vos identifiants Galette");
+			$mail_text =  _("Bonjour,")."\n";
 			$mail_text .= "\n";
-			$mail_text .= _T("Quelqu'un (sûrement vous) à demandé à ce que l'on vous renvoie votre mot de passe.")."\n";
+			$mail_text .= _("Quelqu'un (sûrement vous) à demandé à ce que l'on vous renvoie votre mot de passe.")."\n";
 			$mail_text .= "\n";
-			$mail_text .= _T("Veuillez vous identifier à cette adresse :")."\n";
+			$mail_text .= _("Veuillez vous identifier à cette adresse :")."\n";
 			$mail_text .= HTTP."://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
 			$mail_text .= "\n";
-			$mail_text .= _T("Identifiant :")." ".custom_html_entity_decode($login_adh, ENT_QUOTES)."\n";
-			$mail_text .= _T("Mot de passe :")." ".custom_html_entity_decode($mdp_adh, ENT_QUOTES)."\n";
+			$mail_text .= _("Identifiant :")." ".custom_html_entity_decode($login_adh, ENT_QUOTES)."\n";
+			$mail_text .= _("Mot de passe :")." ".custom_html_entity_decode($mdp_adh, ENT_QUOTES)."\n";
 			$mail_text .= "\n";
-			$mail_text .= _T("A trés bientôt !")."\n";
+			$mail_text .= _("A trés bientôt !")."\n";
 			$mail_text .= "\n";
-			$mail_text .= _T("(ce mail est un envoi automatique)")."\n";
+			$mail_text .= _("(ce mail est un envoi automatique)")."\n";
 			$mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\n";
 			if(  mail($email_adh,$mail_subject,$mail_text, $mail_headers) ) {
-				dblog(_T("Mot de passe envoyé. Login :")." \"" . $login_adh . "\"");
-				$warning_detected = _T("Mot de passe envoyé. Login :")." \"" . $login_adh . "\"";
+				dblog(_("Mot de passe envoyé. Login :")." \"" . $login_adh . "\"");
+				$warning_detected = _("Mot de passe envoyé. Login :")." \"" . $login_adh . "\"";
 				$password_sent = true;
 			}else{
-				dblog(_T("Un problème est survenu dans l'envoi du mot de passe pour le compte :")." \"" . $login_adh . "\"");
-				$warning_detected = _T("Un problème est survenu dans l'envoi du mot de passe pour le compte :")." \"" . $login_adh . "\"";
+				dblog(_("Un problème est survenu dans l'envoi du mot de passe pour le compte :")." \"" . $login_adh . "\"");
+				$warning_detected = _("Un problème est survenu dans l'envoi du mot de passe pour le compte :")." \"" . $login_adh . "\"";
 			}
 		}
 	}
@@ -102,12 +103,12 @@
 		<TD align="center">
 			<IMG src="images/galette.jpg" alt="[ Galette ]" width="103" height="80"><BR>
 			<FORM action="lostpasswd.php" method="post"> 
-				<B class="title"><? echo _T("Récupération de mot de passe"); ?></B><BR>
+				<B class="title"><? echo _("Récupération de mot de passe"); ?></B><BR>
 				<BR>
 				
 <?php if( isset($error_detected) ) { ?>
 <DIV id="errorbox" style="width: 300px">
-	<H1><? echo _T("- ERREUR -"); ?></H1>
+	<H1><? echo _("- ERREUR -"); ?></H1>
 	<UL>
 		<? echo $error_detected; ?>
 	</UL>
@@ -116,7 +117,7 @@
 
 <?php if( isset($warning_detected) ) { ?>
 <DIV id="errorbox" style="width: 300px">
-	<H1><? echo _T("- AVERTISSEMENT -"); ?></H1>
+	<H1><? echo _("- AVERTISSEMENT -"); ?></H1>
 	<UL>
 		<? echo $warning_detected; ?>
 	</UL>
@@ -127,17 +128,17 @@
 <?php if( !isset($password_sent) ) { ?>
 				<TABLE> 
 					<TR> 
-						<TD><? echo _T("Identifiant :"); ?></TD> 
+						<TD><? echo _("Identifiant :"); ?></TD> 
 						<TD><INPUT type="text" name="login"></TD> 
 					</TR> 
 				</TABLE>
-				<INPUT type="submit" name="lostpasswd" value="<? echo _T("Envoyez-moi mon mot de passe"); ?>">
+				<INPUT type="submit" name="lostpasswd" value="<? echo _("Envoyez-moi mon mot de passe"); ?>">
 				<BR>
 				<BR>
 <?php } ?>
 			</FORM>
 			<FORM action="index.php" method="get">
-				<INPUT type="submit" name="lostpasswd" value="<? echo _T("Retour à l'identification"); ?>">
+				<INPUT type="submit" name="lostpasswd" value="<? echo _("Retour à l'identification"); ?>">
 			</FORM>
 		</TD>
 	</TR>
