@@ -361,5 +361,16 @@ $lang["Assurez vous que l'utilisateur galette a les droits nécessaires (SELECT, 
 $lang["Afficher les contributions du"]="Afficher les contributions du";
 $lang["au"]="au";
 
+$lang["login vide"]="login vide";
+$lang["login inexistant"]="ce login n'existe pas";
+$lang["Login inexistant envoyé via le formulaire de récupération du mot de passe"]="Login inexistant envoyé via le formulaire de récupération du mot de passe. Login :";
+$lang["Ce compte ne contient pas d'adresse email, veuillez contacter un adminstrateur"]="Ce compte ne contient pas d'adresse email, veuillez contacter un adminstrateur.";
+$lang["Demande d'envoi de mot de passe mais email vide. Login :"]="Demande d'envoi de mot de passe mais email vide. Login :";
+$lang["Envoyez moi mon mot de passe"]="Envoyez moi mon mot de passe";
+$lang["Un problème est survenu dans l'envoi du mot de passe pour le compte :"]="Un problème est survenu dans l'envoi du mot de passe pour le compte :";
+$lang["Mot de passe envoyé. Login :"]="Mot de passe envoyé. Login :";
+$lang["Quelqu'un (surement vous) à demander à ce que l'on vous renvoie votre mot de passe."]="Quelqu'un (surement vous) à demander à ce que l'on vous renvoie votre mot de passe";
+$lang["Mot de passe perdu ?"]="Lost your password ?";
+
 
 ?>

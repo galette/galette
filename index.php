@@ -58,7 +58,7 @@
 		}
 	} 
 	 
-	if ($_SESSION["logged_status"]!=0) 
+	if ($_SESSION["logged_status"]!=0)
 		header("location: gestion_adherents.php");
 	else
 	{ 
@@ -91,6 +91,10 @@
 					<TR> 
 						<TD>&nbsp;</TD> 
 						<TD><INPUT type="submit" name="ident" value="<? echo _T("Identification"); ?>"></TD> 
+					</TR> 
+					<TR> 
+						<TD>&nbsp;</TD> 
+						<TD><A HREF="lostpasswd.php"><? echo _T("Mot de passe perdu ?"); ?></a></TD> 
 					</TR> 
 				</TABLE> 
 			</FORM>
