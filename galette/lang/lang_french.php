@@ -374,4 +374,5 @@ $lang["Mot de passe perdu ?"]="Mot de passe perdu ?";
 $lang["Récupération de mot de passe"]="Récupération de mot de passe";
 $lang["Retour à l'identification"]="Retour à l'identification";
 
+$lang["Je souhaite apparaître dans la liste des membres :"]="Apparaître dans la<br /> liste des membres :";
 ?>

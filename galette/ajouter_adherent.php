@@ -533,7 +533,8 @@
 								<TD><input type="text" name="prof_adh" value="<? echo $prof_adh; ?>" maxlength="<? echo $prof_adh_len; ?>"></TD> 
 							</TR> 
 							<TR>
-								<TH id="header" colspan="2">&nbsp;</TH>
+								<TH id="libelle"><? echo _T("Je souhaite apparaître dans la liste des membres :"); ?></TH>
+								<TD><input type="checkbox" name="bool_display_info" value="1"<? isChecked($bool_display_info,"1") ?>></TD> 
 								<TH id="libelle"><? echo _T("Photo :"); ?></TH> 
 								<TD> 
 								<?

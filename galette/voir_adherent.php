@@ -180,6 +180,10 @@
 						<TD bgcolor="#DDDDFF"><B><? echo _T("Profession :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? echo $prof_adh; ?>&nbsp;</TD> 
 					</TR> 
+					<TR>
+						<TD bgcolor="#DDDDFF"><B><? echo _T("Je souhaite apparaître dans la liste des membres :"); ?></B></TD> 
+						<TD bgcolor="#EEEEEE"><? if ($bool_display_info=="1") echo _T("Oui"); else echo _T("Non"); ?></TD> 
+					</TR>
 <?
 	if ($_SESSION["admin_status"]!=0)
 	{
