@@ -3,7 +3,7 @@
 /* functions.inc.php
  * - Fonctions utilitaires
  * Copyright (c) 2003 Frédéric Jaqcuot
- * Copyright (c) 2004 Georges Khaznadar (password encryption, images, gettext i18n)
+ * Copyright (c) 2004 Georges Khaznadar (password encryption, images)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,35 +21,6 @@
  *
  */
  
-// I18N support information here
-
-if (!isset($pref_lang)) $pref_lang = 'french';
-
-$languages = array (
-		    "french"  => "fr_FR@euro",
-		    "english"   => "en_US",
-		    "spanish"   => "es_ES@euro"
-		    );
-$language=$languages[$pref_lang];
-
-putenv("LANG=$language");
-putenv("LANGUAGE=$language");
-putenv("LC_ALL=$language");
-$loc=setlocale(LC_ALL, $language);
-
-$domain = 'galette';
-
-/**
- * Base directory of application
- */
-@define('THIS_BASE_DIR', dirname(__FILE__) );
-$textdomain= THIS_BASE_DIR . "/../lang";
-bindtextdomain($domain, $textdomain); 
-textdomain($domain);
-if ($loc!=$language){
-  echo "<font color='red'>Warning:</font> locale $language is probably not intalled on the server.<br>";
-}
-
 
 function makeRandomPassword($size){
   $pass = "";

@@ -23,6 +23,7 @@
  
 	include("includes/config.inc.php"); 
 	include(WEB_ROOT."includes/database.inc.php"); 
+  include_once("includes/i18n.inc.php"); 
 	include(WEB_ROOT."includes/functions.inc.php"); 
 	include(WEB_ROOT."includes/session.inc.php"); 
 	 
