@@ -18,12 +18,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
- 
-	include("includes/config.inc.php"); 
+
+	include("includes/config.inc.php");
 	include(WEB_ROOT."includes/database.inc.php"); 
-	include(WEB_ROOT."includes/session.inc.php"); 
+	include(WEB_ROOT."includes/session.inc.php");
 	include(WEB_ROOT."includes/functions.inc.php"); 
-        include_once("includes/i18n.inc.php"); 
+        include(WEB_ROOT."includes/i18n.inc.php");
 	//include(WEB_ROOT."includes/lang.inc.php"); 
 	include(WEB_ROOT."includes/phppdflib/phppdflib.class.php");
 	
