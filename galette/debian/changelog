@@ -1,3 +1,9 @@
+galette (0.6.3-1) unstable; urgency=low
+
+  * added a field pref_lang in the table of members to mean the mother tongue
+
+ -- Georges Khaznadar <gekhajofour@netinfo.fr>  Tue, 13 Jul 2004 18:14:40 +0200
+
 galette (0.6.2-1) unstable; urgency=low
 
   * Initial Release.
