@@ -1,0 +1,1302 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Galette V1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-08-05 12:33+0200\n"
+"PO-Revision-Date: 2004-08-05 13:46+0200\n"
+"Last-Translator: Georges Khaznadar <gekhajofour@netinfo.fr>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-15\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../index.php:37
+msgid "Administrateur"
+msgstr "Administrador"
+
+#: ../index.php:38 ../index.php:59 ../index.php:90 ../index.php:103
+msgid "Identification"
+msgstr "Identificación"
+
+#: ../index.php:62
+msgid "Echec authentification. Login :"
+msgstr "Autentificación fracasada. Login :"
+
+#: ../index.php:95
+msgid "Identifiant :"
+msgstr "Login :"
+
+#: ../index.php:99
+msgid "Mot de passe :"
+msgstr "Contraseña :"
+
+#: ../index.php:105
+msgid "Mot de passe perdu ?"
+msgstr "¿ Contraseña olvidada ?"
+
+#~ msgid "Type d'installation inconnu"
+#~ msgstr "Tipo de instalación desconocido"
+
+#~ msgid "Type de base inconnu"
+#~ msgstr "Tipo de base desconocido"
+
+#~ msgid "Nom d'utilisateur vide"
+#~ msgstr "Apellido del usuario vacio"
+
+#~ msgid "Mot de passe vide"
+#~ msgstr "contraseña vacia"
+
+#~ msgid "Nom de la base non précisé"
+#~ msgstr "Nombre de la base desconocido"
+
+#~ msgid "Type d'installation"
+#~ msgstr "Tipo de instalación"
+
+#~ msgid "Selectionnez le type d'installation à lancer"
+#~ msgstr "Seleccionar el tipo de instalación que lanzar"
+
+#~ msgid "Nouvelle installation :"
+#~ msgstr "Nueva instalación"
+
+#~ msgid ""
+#~ "Vous installez Galette pour la première fois, ou vous souhaitez écraser "
+#~ "une ancienne version de Galette sans conserver vos données"
+#~ msgstr ""
+#~ "Vd instala Galette por la primera vez, o quiere sustituir una version "
+#~ "antigua de Galette sin conservar sus datos"
+
+#~ msgid "Mise à jour :"
+#~ msgstr "Actualizar :"
+
+#~ msgid "Votre version actuelle de Galette est la"
+#~ msgstr "La version actual de Galette es la"
+
+#~ msgid "Votre version actuelle de Galette est comprise entre"
+#~ msgstr "La version actual de Galette es en el intervalo entre"
+
+#~ msgid "et"
+#~ msgstr "y"
+
+#~ msgid "Attention : Pensez à sauvegarder votre base existante."
+#~ msgstr ""
+#~ "Cuidado : piensa Vd a hacer una copia de seguridad de su base actual."
+
+#~ msgid "Etape suivante"
+#~ msgstr "Etapa siguiente"
+
+#~ msgid "Etape 2 - Type d'installation"
+#~ msgstr "Etapa 2 - Tipo de instalación"
+
+#~ msgid "Permissions de fichiers"
+#~ msgstr "Permisos de ficheros"
+
+#~ msgid "Vérification des permissions des fichiers et dossier"
+#~ msgstr "Verificación de permisos de ficheros y directorios"
+
+#~ msgid "Le dossier"
+#~ msgstr "El directorio"
+
+#~ msgid "Le fichier"
+#~ msgstr "El fichero"
+
+#~ msgid "n'est pas autorisé en écriture"
+#~ msgstr "no es autorizado para escribir"
+
+#~ msgid "est autorisé en écriture"
+#~ msgstr "es autorizado para escribir"
+
+#~ msgid ""
+#~ "Pour fonctionner correctement, Galette a besoin d'avoir les droits en "
+#~ "écriture sur ces fichiers."
+#~ msgstr ""
+#~ "Para funcionar normalmente, Galette necesita tener derechos para escribir "
+#~ "en estos ficheros."
+
+#~ msgid ""
+#~ "Pour être mis à jour et fonctionner correctement, Galette a besoin "
+#~ "d'avoir les droits en écriture sur ces fichiers."
+#~ msgstr ""
+#~ "Para ser actualizada y funcionar normalmente, Galette necesita tener "
+#~ "derechos para escribir en estos ficheros."
+
+#~ msgid "Sous UNIX/Linux, vous pouvez donner ces droits par les commandes"
+#~ msgstr "Con UNIX/Linux, se puede dar estos derechos con los mandos"
+
+#~ msgid "utilisateur_apache"
+#~ msgstr "usuario_apache"
+
+#~ msgid "nom_fichier"
+#~ msgstr "nombre_fichero"
+
+#~ msgid "nom_dossier"
+#~ msgstr "nombre_directorio"
+
+#~ msgid "(pour un fichier)"
+#~ msgstr "(para un fichero)"
+
+#~ msgid "(pour un dossier)"
+#~ msgstr "(para un directorio)"
+
+#~ msgid ""
+#~ "Sous Windows, vérifiez que les fichiers en question ne sont pas en "
+#~ "lecture seule dans leurs propriétés."
+#~ msgstr ""
+#~ "Con Windows, Vd debe verificar que estos ficheros no sean en lectura sola "
+#~ "por sus propriedades."
+
+#~ msgid "Rééssayer"
+#~ msgstr "Intentar otra vez"
+
+#~ msgid "Les permissions des fichiers sont correctes !"
+#~ msgstr "¡ Las permisiones de los ficheros son correctas !"
+
+#~ msgid "Etape 3 - Permissions"
+#~ msgstr "Etapa 3 - Permisiones"
+
+#~ msgid "Base de données"
+#~ msgstr "Base de datos"
+
+#~ msgid ""
+#~ "Si ce n'est pas déjà fait, créez une base de données et un utilisateur "
+#~ "pour Galette."
+#~ msgstr ""
+#~ "Si no lo ha ya hecho, crea Vd una base de datos y un usuario para Galette."
+
+#~ msgid "Veuillez entrer les paramètres de connexion à la base existante."
+#~ msgstr ""
+#~ "Por favor escribe Vd los parametros de conección a la base existente."
+
+#~ msgid ""
+#~ "Les droits nécessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et "
+#~ "INSERT."
+#~ msgstr ""
+#~ "Los drechos necesarios son CREATE, DROP, DELETE, UPDATE, SELECT y INSERT."
+
+#~ msgid "Type de base de données :"
+#~ msgstr "Tipo de base de datos :"
+
+#~ msgid "Utilisateur :"
+#~ msgstr "Usuario :"
+
+#~ msgid "Hôte :"
+#~ msgstr "Hostname :"
+
+#~ msgid "Nom de la base :"
+#~ msgstr "Nombre de la base :"
+
+#~ msgid "Prefixe de table :"
+#~ msgstr "Prefijo de la tabla :"
+
+#~ msgid "(Indiquez le prefixe ACTUEL de vos tables Galette)"
+#~ msgstr "(Indica Vd el prefijo ACTUAL de sus tabals Galette)"
+
+#~ msgid "Etape 4 - Base de données"
+#~ msgstr "Etapa 4 - Base de datos"
+
+#~ msgid "Vérification de la base"
+#~ msgstr "Verificación de la base"
+
+#~ msgid "Vérification des paramètres et de l'existence de la base"
+#~ msgstr "Verificación de los parametros y de la existencia de la base"
+
+#~ msgid "Connexion à la base impossible"
+#~ msgstr "Conección a la base imposible"
+
+#~ msgid "La connexion à la base est établie"
+#~ msgstr "La conección a la base fue establecida"
+
+#~ msgid ""
+#~ "La base n'est accessible. Veuillez revenir en arrière pour saisir à "
+#~ "nouveau les paramètres de connexion."
+#~ msgstr ""
+#~ "La base no es accesible. Por favor regresa Vd para entrar otra vez los "
+#~ "parametros de conección."
+
+#~ msgid "Retour"
+#~ msgstr "Regresar"
+
+#~ msgid "La base existe et les paramètres de connexion sont corrects."
+#~ msgstr "La base exista y los parametros de conección son correctos."
+
+#~ msgid "Etape 5 - Accès à la base"
+#~ msgstr "Etapa 5 - Acceso a la base"
+
+#~ msgid "Permissions sur la base"
+#~ msgstr "Permisiones sobre la base"
+
+#~ msgid ""
+#~ "Pour fonctionner, Galette doit avoir un certain nombre de droits sur la "
+#~ "base de données (CREATE, DROP, DELETE, UPDATE, SELECT et INSERT)"
+#~ msgstr ""
+#~ "Para funcionar, Galette debe tener algunos derechos sobre la base de "
+#~ "datos (CREATE, DROP, DELETE, UPDATE, SELECT y INSERT)"
+
+#~ msgid "Opération DROP non autorisée"
+#~ msgstr "Operación DROP no autorizada"
+
+#~ msgid "Opération DROP autorisée"
+#~ msgstr "Operación DROP autorizada"
+
+#~ msgid "Opération CREATE non autorisée"
+#~ msgstr "Operación CREATE no autorizada"
+
+#~ msgid "Opération CREATE autorisée"
+#~ msgstr "Operación CREATE autorizada"
+
+#~ msgid "Opération INSERT non autorisée"
+#~ msgstr "Operación INSERT no autorizada"
+
+#~ msgid "Opération INSERT autorisée"
+#~ msgstr "Operación INSERT autorizada"
+
+#~ msgid "Opération UPDATE non autorisée"
+#~ msgstr "Operación UPDATE no autorizada"
+
+#~ msgid "Opération UPDATE autorisée"
+#~ msgstr "Operación UPDATE autorizada"
+
+#~ msgid "Opération SELECT non autorisée"
+#~ msgstr "Operación SELECT no autorizada"
+
+#~ msgid "Opération SELECT autorisée"
+#~ msgstr "Operación SELECT autorizada"
+
+#~ msgid "Opération ALTER non autorisée"
+#~ msgstr "Operación ALTER no autorizada"
+
+#~ msgid "Opération ALTER autorisée"
+#~ msgstr "Operación ALTER autorizada"
+
+#~ msgid "Opération DELETE non autorisée"
+#~ msgstr "Operación DELETE no autorizada"
+
+#~ msgid "Opération DELETE autorisée"
+#~ msgstr "Operación DELETE autorizada"
+
+#~ msgid ""
+#~ "Galette ne dispose pas de droits suffisants sur la base de données pour "
+#~ "poursuivre l'installation."
+#~ msgstr ""
+#~ "Galette no tiene bastante derechos sobre la base de datos para continuar "
+#~ "con la instalación."
+
+#~ msgid ""
+#~ "Galette ne dispose pas de droits suffisants sur la base de données pour "
+#~ "poursuivre la mise à jour."
+#~ msgstr ""
+#~ "Galette no tiene bastante derechos sobre la base de datos para continuar "
+#~ "con la actualización."
+
+#~ msgid "Les droits d'accès à la base sont corrects."
+#~ msgstr "Los derechos de acceso son correctos."
+
+#~ msgid "Etape 6 - Droits d'accès à la base"
+#~ msgstr "Etapa 6 - Derechos de acceso a la base"
+
+#~ msgid "Création de la base"
+#~ msgstr "Creación de la base"
+
+#~ msgid "Mise à jour de la base"
+#~ msgstr "Actualización de la base"
+
+#~ msgid "Compte rendu d'installation"
+#~ msgstr "Informe de instalación"
+
+#~ msgid "Compte rendu de mise à jour"
+#~ msgstr "Informe de actualización"
+
+#~ msgid ""
+#~ "(Les erreurs sur les opérations DROP et RENAME peuvent être ignorées)"
+#~ msgstr ""
+#~ "Las errores con las operaciones DROP y RENAME pueden ser desconocidas"
+
+#~ msgid ""
+#~ "La base de données n'a pas pu être totalement créée, il s'agit peut-être "
+#~ "d'un problème de droits."
+#~ msgstr ""
+#~ "La base de datos no fue creada totalmente, puede ser un problema con los "
+#~ "derechos."
+
+#~ msgid ""
+#~ "La base de données n'a pas pu être totalement mise à jour, il s'agit peut-"
+#~ "être d'un problème de droits."
+#~ msgstr ""
+#~ "La base de datos no fue actualizada totalmente, puede ser un problema con "
+#~ "los derechos."
+
+#~ msgid ""
+#~ "Votre base est peut-être inutilisable, essayez de restaurer une ancienne "
+#~ "version."
+#~ msgstr ""
+#~ "Su base puede ser inutilizable, intenta restaurar una version antigua."
+
+#~ msgid "La base de données a été correctement créée."
+#~ msgstr "La base de datos fue creada correctemente."
+
+#~ msgid "La base de données a été correctement mise à jour."
+#~ msgstr "La base de datos fue actualizada correctemente."
+
+#~ msgid "Etape 7 - Création de la base"
+#~ msgstr "Etapa 7 - Creación de la base"
+
+#~ msgid "Etape 7 - Mise à jour de la base"
+#~ msgstr "Etapa 7 - Actualización de la base"
+
+#~ msgid "Paramètres administrateur"
+#~ msgstr "Parametros administrador"
+
+#~ msgid "Veuillez choisir les paramètres du compte administrateur Galette"
+#~ msgstr ""
+#~ "Por favor elija Vd los parametros de la cuenta administrador Galette"
+
+#~ msgid "Etape 8 - Paramètres administrateur"
+#~ msgstr "Etapa 8 - Parametros admistrador"
+
+#~ msgid "Sauvegarde des paramètres"
+#~ msgstr "Grabar los parametros"
+
+#~ msgid "Fichier de configuration crée (includes/config.inc.php)"
+#~ msgstr "Fichero de configuración creado (includes/config.inc.php)"
+
+#~ msgid ""
+#~ "Impossible de créer le fichier de configuration (includes/config.inc.php)"
+#~ msgstr ""
+#~ "Creación imposible del fichero de configuration (includes/config.inc.php)"
+
+#~ msgid "Paramètres sauvegardés dans la base de données"
+#~ msgstr "Parametros grabados en la base de datos"
+
+#~ msgid "Les paramètres n'ont pas pu être sauvegardés dans la base de données"
+#~ msgstr "Los parametros no fueron grabados en la base de datos"
+
+#~ msgid "Les paramètres n'ont pas pu être sauvegardés."
+#~ msgstr "No fue posible grabar los parametros."
+
+#~ msgid ""
+#~ "Ceci peut provenir des droits sur le fichier includes/config.inc.php ou "
+#~ "de l'impossibilité de faire un INSERT dans la base."
+#~ msgstr ""
+#~ "Eso puede ser causado por derechos sobre el fichero includes/config.inc."
+#~ "php o por la imposibilidad de hacer un INSERT en la base."
+
+#~ msgid "Etape 9 - Sauvegarde des paramètres"
+#~ msgstr "Etapa 9 - Grabar los parametros"
+
+#~ msgid "Fin de l'installation"
+#~ msgstr "Final de la instalación"
+
+#~ msgid "Fin de la mise à jour"
+#~ msgstr "Final de la actualización"
+
+#~ msgid "Galette a été installé avec succès !"
+#~ msgstr "¡ Galette fue instalada con éxito !"
+
+#~ msgid "Galette a été mis à jour avec succès !"
+#~ msgstr "¡ Galette fue actualizada con éxito !"
+
+#~ msgid "Pour sécuriser le système, veuillez supprimer le dossier install"
+#~ msgstr ""
+#~ "Para securizar el sistema, por favor suprimar Vd el directorio install"
+
+#~ msgid "Page d'accueil"
+#~ msgstr "Página principal"
+
+#~ msgid "Etape 10 - Fin de l'installation"
+#~ msgstr "Etapa 10 - Final de la instalación"
+
+#~ msgid "Etape 10 - Fin de la mise à jour"
+#~ msgstr "Etapa 10 - Final de la actualización"
+
+#~ msgid "- Champ obligatoire non renseigné."
+#~ msgstr "- Campo obligatorio no informado."
+
+#~ msgid "- Date non valide !"
+#~ msgstr "- ¡ Fecha invalida !"
+
+#~ msgid "- Mauvais format de date (jj/mm/aaaa) !"
+#~ msgstr "¡ Malo formato de fecha (dd/mm/aaaa) !"
+
+#~ msgid "- Adresse E-mail non valide !"
+#~ msgstr "- ¡ e-mail invalido !"
+
+#~ msgid "- Adresse web non valide ! Oubli du http:// ?"
+#~ msgstr "- ¡ Directorio web invalido ! ¿ Se ha olvidado el http:// ?"
+
+#~ msgid "- L'identifiant doit être composé d'au moins 4 caractères !"
+#~ msgstr "- ¡ El login debe consistir en 4 letras al menos !"
+
+#~ msgid "- Cet identifiant est déjà utilisé par un autre adhérent !"
+#~ msgstr "- ¡ Este login ya esta utilizado por un otro socio !"
+
+#~ msgid "- Le mot de passe doit être composé d'au moins 4 caractères !"
+#~ msgstr "- ¡ La contraseña debe consistir en 4 letras al menos !"
+
+#~ msgid ""
+#~ "- La photo semble ne pas avoir été transmise correstement. "
+#~ "L'enregistrement a cependant été effectué."
+#~ msgstr ""
+#~ "- Parece que la foto no fue transmita correctemente. No obstante, la "
+#~ "grabación fue hecha."
+
+#~ msgid ""
+#~ "- Le fichier transmis n'est pas une image valide (GIF, PNG ou JPEG). "
+#~ "L'enregistrement a cependant été effectué."
+#~ msgstr ""
+#~ "- El fichero trasmitido no es una imagen valida (GIF, PNG o JPEG). No "
+#~ "obstante, la grabación fue hecha."
+
+#~ msgid ""
+#~ "- Le fichier transmis n'est pas une image valide (PNG ou JPEG). "
+#~ "L'enregistrement a cependant été effectué."
+#~ msgstr ""
+#~ "- El fichero trasmitido no es una imagen valida (PNG o JPEG). No "
+#~ "obstante, la grabación fue hecha."
+
+#~ msgid "Fiche adhérent"
+#~ msgstr "Ficha de socio"
+
+#~ msgid "modification"
+#~ msgstr "modificar"
+
+#~ msgid "création"
+#~ msgstr "crear"
+
+#~ msgid "- ERREUR -"
+#~ msgstr "- ERROR -"
+
+#~ msgid "- AVERTISSEMENT -"
+#~ msgstr "- ADVERTENCIA -"
+
+#~ msgid "Titre :"
+#~ msgstr "Título :"
+
+#~ msgid "Mademoiselle"
+#~ msgstr "Señorita"
+
+#~ msgid "Madame"
+#~ msgstr "Señora"
+
+#~ msgid "Monsieur"
+#~ msgstr "Señor"
+
+#~ msgid "Nom :"
+#~ msgstr "Apellido :"
+
+#~ msgid "Photo"
+#~ msgstr "Foto"
+
+#~ msgid "[ pas de photo ]"
+#~ msgstr "[ ninguna foto ]"
+
+#~ msgid "Prénom :"
+#~ msgstr "Nombre :"
+
+#~ msgid "Pseudo :"
+#~ msgstr "Seudónimo :"
+
+#~ msgid "Date de naissance :"
+#~ msgstr "Fecha de nacimiento :"
+
+#~ msgid "(format jj/mm/aaaa)"
+#~ msgstr "(format dd/mm/aaaa)"
+
+#~ msgid "Statut :"
+#~ msgstr "Estatuto :"
+
+#~ msgid "Profession :"
+#~ msgstr "Profesión :"
+
+#~ msgid "Compte :"
+#~ msgstr "Cuenta :"
+
+#~ msgid "Actif"
+#~ msgstr "Activo"
+
+#~ msgid "Inactif"
+#~ msgstr "Inactivo"
+
+#~ msgid "Photo :"
+#~ msgstr "Foto :"
+
+#~ msgid "Supprimer la photo"
+#~ msgstr "Suprimir la foto"
+
+#~ msgid "Admin Galette :"
+#~ msgstr "Admin Galette :"
+
+#~ msgid "Exempt de cotisation :"
+#~ msgstr "Exento de cuota :"
+
+#~ msgid "Adresse :"
+#~ msgstr "Dirección :"
+
+#~ msgid "Code Postal :"
+#~ msgstr "Código postal :"
+
+#~ msgid "Ville :"
+#~ msgstr "Cuidad :"
+
+#~ msgid "Pays :"
+#~ msgstr "País :"
+
+#~ msgid "Tel :"
+#~ msgstr "Tel :"
+
+#~ msgid "GSM :"
+#~ msgstr "GSM :"
+
+#~ msgid "E-Mail :"
+#~ msgstr "E-Mail :"
+
+#~ msgid "Site Web :"
+#~ msgstr "Sitio Web :"
+
+#~ msgid "MSN :"
+#~ msgstr "MSN :"
+
+#~ msgid "ICQ :"
+#~ msgstr "ICQ :"
+
+#~ msgid "Jabber :"
+#~ msgstr "Jabber :"
+
+#~ msgid "(au moins 4 caractères)"
+#~ msgstr "(al menos 4 letras)"
+
+#~ msgid "Date de création :"
+#~ msgstr "Fecha de creación :"
+
+#~ msgid "Commentaire :"
+#~ msgstr "Comentarios :"
+
+#~ msgid "Autres informations (admin) :"
+#~ msgstr "Otras informaciones (admin) :"
+
+#~ msgid "Ce commentaire n'est visible que par les administrateurs."
+#~ msgstr "Este comentario puede ser visto solamente por los admistradores."
+
+#~ msgid "Autres informations :"
+#~ msgstr "Otras informaciones :"
+
+#~ msgid "Ce commentaire est réservé à l'adhérent."
+#~ msgstr "Este comentario es reservado para el socio."
+
+#~ msgid "Enregistrer"
+#~ msgstr "Grabar"
+
+#~ msgid "NB : Les champs obligatoires apparaissent en"
+#~ msgstr "NB : campos obligatorios parecen en"
+
+#~ msgid "rouge"
+#~ msgstr "rojo"
+
+#~ msgid "- Vérifiez que tous les champs obligatoires sont renseignés."
+#~ msgstr "- Verifica Vd que todos los campos obligatorios sean informados."
+
+#~ msgid "- La durée doit être un entier !"
+#~ msgstr "- ¡ La duración debe ser un entero !"
+
+#~ msgid "- Le montant doit être un chiffre !"
+#~ msgstr "- ¡ El importe debe ser una cifra !"
+
+#~ msgid "Fiche contribution"
+#~ msgstr "Ficha contribución"
+
+#~ msgid "Contributeur :"
+#~ msgstr "Contribuidor :"
+
+#~ msgid "-- selectionner un nom --"
+#~ msgstr "-- selecciona un nombre --"
+
+#~ msgid "Type de contribution :"
+#~ msgstr "Tipo de contribución"
+
+#~ msgid "Montant :"
+#~ msgstr "Importe"
+
+#~ msgid "Prologation adhésion :"
+#~ msgstr "Prolongación de la afiliación"
+
+#~ msgid "mois"
+#~ msgstr "mes"
+
+#~ msgid "Date contribution :"
+#~ msgstr "Fecha de contribución"
+
+#~ msgid "Gestion des adhérents"
+#~ msgstr "Gestión de los socios"
+
+#~ msgid "adhérents"
+#~ msgstr "socios"
+
+#~ msgid "adhérent"
+#~ msgstr "socio"
+
+#~ msgid "Pages :"
+#~ msgstr "Páginas :"
+
+#~ msgid "Nom"
+#~ msgstr "Apellido"
+
+#~ msgid "Pseudo"
+#~ msgstr "Seudónimo"
+
+#~ msgid "Statut"
+#~ msgstr "Estatuto"
+
+#~ msgid "Etat cotisations"
+#~ msgstr "Informe cuotas"
+
+#~ msgid "aucun adhérent"
+#~ msgstr "ninguno socio"
+
+#~ msgid "Exempt de cotisation"
+#~ msgstr "Exento de cuota"
+
+#~ msgid "N'a jamais cotisé"
+#~ msgstr "Nunca pago la cuota"
+
+#~ msgid "Dernier jour !"
+#~ msgstr "¡ Ultimo día !"
+
+#~ msgid "En retard de "
+#~ msgstr "Retraso de "
+
+#~ msgid "[ Voir la fiche adhérent ]"
+#~ msgstr "[ Vea la ficha de socio ]"
+
+#~ msgid "jours"
+#~ msgstr "dias"
+
+#~ msgid "depuis le"
+#~ msgstr "desde el"
+
+#~ msgid "jour restant"
+#~ msgstr "dia restante"
+
+#~ msgid "jours restants"
+#~ msgstr "dias restantes"
+
+#~ msgid "fin le"
+#~ msgstr "final el"
+
+#~ msgid "[H]"
+#~ msgstr "[H]"
+
+#~ msgid "[F]"
+#~ msgstr "[M]"
+
+#~ msgid "[Mail]"
+#~ msgstr "[Mail]"
+
+#~ msgid "E-Mail"
+#~ msgstr "E-Mail"
+
+#~ msgid "[admin]"
+#~ msgstr "[admin]"
+
+#~ msgid "[mod]"
+#~ msgstr "[mod]"
+
+#~ msgid "[$]"
+#~ msgstr "[$]"
+
+#~ msgid "[sup]"
+#~ msgstr "[sup]"
+
+#~ msgid "Afficher :"
+#~ msgstr "Mostrar :"
+
+#~ msgid "Tout les adhérents"
+#~ msgstr "Todos los socios"
+
+#~ msgid "Les adhérents à jour"
+#~ msgstr "Los socios al día"
+
+#~ msgid "Les échéances proches"
+#~ msgstr "Socios a corto plazo"
+
+#~ msgid "Les retardataires"
+#~ msgstr "Retrasados"
+
+#~ msgid "Tous  les comptes"
+#~ msgstr "Todas las cuentas"
+
+#~ msgid "Comptes actifs"
+#~ msgstr "Cuentas activas"
+
+#~ msgid "Comptes désactivés"
+#~ msgstr "Cuentas desactivadas"
+
+#~ msgid "Filtrer"
+#~ msgstr "Filtrar"
+
+#~ msgid "Gestion des contributions"
+#~ msgstr "Gestión de contribuciones"
+
+#~ msgid "contributions"
+#~ msgstr "contribuciones"
+
+#~ msgid "contribution"
+#~ msgstr "contribución"
+
+#~ msgid "Date"
+#~ msgstr "Fecha"
+
+#~ msgid "Adhérent"
+#~ msgstr "Socio"
+
+#~ msgid "Type"
+#~ msgstr "Tipo"
+
+#~ msgid "Montant"
+#~ msgstr "Importe"
+
+#~ msgid "Durée"
+#~ msgstr "Duración"
+
+#~ msgid "Actions"
+#~ msgstr "Acciones"
+
+#~ msgid "aucune contribution"
+#~ msgstr "ninguna contribución"
+
+#~ msgid "Voulez-vous vraiment supprimer cette contribution de la base ?"
+#~ msgstr "¿ Se quiere verdaderamente suprimir esta contribución de la base ?"
+
+#~ msgid "En retard de"
+#~ msgstr "Retrasado de"
+
+#~ msgid "Mes informations"
+#~ msgstr "Mis informaciones"
+
+#~ msgid "Fiche adhérent (modification)"
+#~ msgstr "Ficha socio (modificación)"
+
+#~ msgid "- CONFIRMATION -"
+#~ msgstr "- CONFIRMACIÓN -"
+
+#~ msgid "Navigation"
+#~ msgstr "Navegación"
+
+#~ msgid "Configuration"
+#~ msgstr "Configuración"
+
+#~ msgid "Liste des adhérents"
+#~ msgstr "Lista de socios"
+
+#~ msgid "Liste des contributions"
+#~ msgstr "Lista de contribuciones"
+
+#~ msgid "Ajouter un adhérent"
+#~ msgstr "Añadir un socio"
+
+#~ msgid "Ajouter une contribution"
+#~ msgstr "Añadir una contribución"
+
+#~ msgid "Configurer les fiches"
+#~ msgstr "Configurar mis fichas"
+
+#~ msgid "Mes contributions"
+#~ msgstr "Mis contribuciones"
+
+#~ msgid "Déconnexion"
+#~ msgstr "Desconexión"
+
+#~ msgid "Historique"
+#~ msgstr "Historia"
+
+#~ msgid "Légende"
+#~ msgstr "Pie"
+
+#~ msgid "Homme"
+#~ msgstr "Hombre"
+
+#~ msgid "Femme"
+#~ msgstr "Mujer"
+
+#~ msgid "Envoyer un mail"
+#~ msgstr "Enviar un e-mail"
+
+#~ msgid "Modification"
+#~ msgstr "Modificación"
+
+#~ msgid "Contributions"
+#~ msgstr "Contribuciones"
+
+#~ msgid "Suppression"
+#~ msgstr "Supresión"
+
+#~ msgid "Compte actif"
+#~ msgstr "Cuenta activa"
+
+#~ msgid "Compte désactivé"
+#~ msgstr "Cuenta desactivada"
+
+#~ msgid "Adhésion en règle"
+#~ msgstr "Afiliación en regla"
+
+#~ msgid "Adhésion à échéance (<30j)"
+#~ msgstr "Afiliación a plazo (<30d)"
+
+#~ msgid "Retard de cotisation"
+#~ msgstr "Retraso de cuota"
+
+#~ msgid "Cotisation"
+#~ msgstr "Cuota"
+
+#~ msgid "Don"
+#~ msgstr "Donativo"
+
+#~ msgid "Réalisation :"
+#~ msgstr "Realizado por :"
+
+#~ msgid "Graphisme :"
+#~ msgstr "Grafismo :"
+
+#~ msgid "Editeur :"
+#~ msgstr "Editor :"
+
+#~ msgid "Page affichée en"
+#~ msgstr "Pagina calculada en"
+
+#~ msgid "Président"
+#~ msgstr "Presidente"
+
+#~ msgid "Vice-président"
+#~ msgstr "Vicepresidente"
+
+#~ msgid "Trésorier"
+#~ msgstr "Tresorero"
+
+#~ msgid "Secrétaire"
+#~ msgstr "Secretario"
+
+#~ msgid "Membre actif"
+#~ msgstr "Socio activo"
+
+#~ msgid "Membre bienfaiteur"
+#~ msgstr "Socio bienhechor"
+
+#~ msgid "Membre fondateur"
+#~ msgstr "Socio fundador"
+
+#~ msgid "Ancien"
+#~ msgstr "Antiguo"
+
+#~ msgid "Personne morale"
+#~ msgstr "Persona moral"
+
+#~ msgid "Non membre"
+#~ msgstr "No Socio"
+
+#~ msgid "Cotisation annuelle normale"
+#~ msgstr "Cuota anual normal"
+
+#~ msgid "Cotisation annuelle réduite"
+#~ msgstr "Cuota anual reducida"
+
+#~ msgid "Cotisation entreprise"
+#~ msgstr "Cuota empresarial"
+
+#~ msgid "Donation en nature"
+#~ msgstr "Donativo en natural"
+
+#~ msgid "Donation pécunière"
+#~ msgstr "Donativo en especie"
+
+#~ msgid "Partenariat"
+#~ msgstr "Participación"
+
+#~ msgid "Envoi de mail :"
+#~ msgstr "Envío de e-mail"
+
+#~ msgid ""
+#~ "(l'adhérent recevra son identifiant et son mot de passe par mail, s'il a "
+#~ "une adresse.)"
+#~ msgstr ""
+#~ "(el socio recibira su login y su contraseña por e-mail, si tiene una "
+#~ "dirección.)"
+
+#~ msgid ""
+#~ "- Vous ne pouvez pas envoyer de confirmation par mail si l'adhérent n'a "
+#~ "pas d'adresse !"
+#~ msgstr ""
+#~ "- ¡ Vd no puede enviar confirmación por e-mail si el socio no tiene "
+#~ "dirección !"
+
+#~ msgid "Vos identifiants Galette"
+#~ msgstr "Sus identificaciones Galette"
+
+#~ msgid "Bonjour,"
+#~ msgstr "Buenos días,"
+
+#~ msgid ""
+#~ "Vous venez d'être inscrit sur le système de gestion d'adhérents de "
+#~ "l'association."
+#~ msgstr ""
+#~ "Vd fue suscrito en el sistema de gestión de socios de la asociación."
+
+#~ msgid ""
+#~ "Il vous est désormais possible de suivre en temps réel l'état de votre "
+#~ "adhésion"
+#~ msgstr ""
+#~ "Vd puede en adelante seguir en tiempo real el estatuto de su afiliación"
+
+#~ msgid ""
+#~ "et de mettre à jour vos coordonnées par l'interface web prévue à cet "
+#~ "effet."
+#~ msgstr ""
+#~ "y actualizar sus direcciones por la interfáz web prevista con este fin."
+
+#~ msgid "Veuillez vous identifier à cette adresse :"
+#~ msgstr "Por favor identifique Vd en esta dirección :"
+
+#~ msgid "A trés bientôt !"
+#~ msgstr "¡ Hasta my pronto !"
+
+#~ msgid "(ce mail est un envoi automatique)"
+#~ msgstr "(est e-mail es enviado automaticamente)"
+
+#~ msgid "M."
+#~ msgstr "Sr."
+
+#~ msgid "Mme."
+#~ msgstr "Sra."
+
+#~ msgid "Mlle."
+#~ msgstr "Srta."
+
+#~ msgid "Oui"
+#~ msgstr "Sí"
+
+#~ msgid "Non"
+#~ msgstr "No"
+
+#~ msgid "[ Contributions ]"
+#~ msgstr "[ Contribuciones ]"
+
+#~ msgid "[ Modification ]"
+#~ msgstr "[ Moficación ]"
+
+#~ msgid "[ Ajouter une contribution ]"
+#~ msgstr "[ Añadir una contribución ]"
+
+#~ msgid "Effectuer un mailing"
+#~ msgstr "Hacer un envío general de e-mail"
+
+#~ msgid "Mailing"
+#~ msgstr "Envío general de e-mail"
+
+#~ msgid "Prévisualiser"
+#~ msgstr "Previsualizar"
+
+#~ msgid "Envoyer"
+#~ msgstr "Enviar"
+
+#~ msgid "Message :"
+#~ msgstr "Mensage :"
+
+#~ msgid "Objet :"
+#~ msgstr "Objeto :"
+
+#~ msgid "secondes."
+#~ msgstr "segundas."
+
+#~ msgid "Veuillez indiquer un objet pour le message."
+#~ msgstr "Por favor informe Vd el objeto para el mensaje."
+
+#~ msgid "Veuillez saisir un message."
+#~ msgstr "Por favor tecle Vd un mensaje."
+
+#~ msgid "Veuillez sélectionner au moins un adhérent."
+#~ msgstr "Por favor seleccione al menos un socio."
+
+#~ msgid "(prévisualisation)"
+#~ msgstr "(previsualización)"
+
+#~ msgid "Destinataires du mailing :"
+#~ msgstr "Destinatarios del envío general e-mail :"
+
+#~ msgid "Adhérents non joignables par email :"
+#~ msgstr "Socios no alcanzables por e-mail :"
+
+#~ msgid "Coordonnées"
+#~ msgstr "Direcciones"
+
+#~ msgid "[ Tout cocher / décocher ]"
+#~ msgstr "[ Todo marcar/desmarcar ]"
+
+#~ msgid "effectué !"
+#~ msgstr "¡ hecho !"
+
+#~ msgid "- ATTENTION -"
+#~ msgstr "- ATENCIÓN -"
+
+#~ msgid ""
+#~ "Pensez à contacter les adhérents ne disposant pas d'une adresse E-Mail "
+#~ "par un autre moyen."
+#~ msgstr ""
+#~ "Pense Vd a contactar los socios que no tienen una dirección e-mail por un "
+#~ "otro medio."
+
+#~ msgid "Génération d'étiquettes"
+#~ msgstr "Generación de etiquetas"
+
+#~ msgid "Préférences"
+#~ msgstr "Preferencias"
+
+#~ msgid "Nom (raison sociale) de l'association :"
+#~ msgstr "Nombre (razón social) de la asociación :"
+
+#~ msgid "[ pas de logo ]"
+#~ msgstr "[ ningún logo ]"
+
+#~ msgid "Logo :"
+#~ msgstr "Logo :"
+
+#~ msgid "Compte administrateur (indépendant des adhérents) :"
+#~ msgstr "Cuenta administradora (independiente de los socios) :"
+
+#~ msgid "Corps du texte :"
+#~ msgstr "Cuerpo del texto :"
+
+#~ msgid "Nombre de lignes d'étiquettes :"
+#~ msgstr "Número de lineas de etiquetas :"
+
+#~ msgid "Nombre de colonnes d'étiquettes :"
+#~ msgstr "Número de columnas de etiquetas :"
+
+#~ msgid "Hauteur étiquette :"
+#~ msgstr "Altura etiqueta :"
+
+#~ msgid "Largeur étiquette :"
+#~ msgstr "Anchura etiqueta :"
+
+#~ msgid "Espacement vertical :"
+#~ msgstr "Distancia vertical :"
+
+#~ msgid "Espacement horizontal :"
+#~ msgstr "Distancia horizontal :"
+
+#~ msgid "Marges :"
+#~ msgstr "Márgenes :"
+
+#~ msgid "Paramètres de génération d'étiquettes :"
+#~ msgstr "Parametros de generación de etiquetas :"
+
+#~ msgid "Email expéditeur :"
+#~ msgstr "E-mail remitente :"
+
+#~ msgid "Nom expéditeur :"
+#~ msgstr "Apellido remitente"
+
+#~ msgid "Paramètres mail :"
+#~ msgstr "Parametros e-mail :"
+
+#~ msgid "Methode d'envoi :"
+#~ msgstr "Método de envío"
+
+#~ msgid "Pas d'envoi de mails"
+#~ msgstr "No envío de e-mail"
+
+#~ msgid "Fonction PHP mail()"
+#~ msgstr "Fución PHP mail()"
+
+#~ msgid "Via un serveur SMTP (lent)"
+#~ msgstr "Via un servidor SMTP (lento)"
+
+#~ msgid "Serveur SMTP :"
+#~ msgstr "Servidor SMTP :"
+
+#~ msgid ""
+#~ "- Vous devez indiquer le serveur SMTP a utiliser pour l'envoi des mails !"
+#~ msgstr ""
+#~ "- ¡ Vd debe indicar el servidor SMTP que utilizar para envíar los e-"
+#~ "mails !"
+
+#~ msgid "Lignes / Page :"
+#~ msgstr "Lineas / Página"
+
+#~ msgid "Langue :"
+#~ msgstr "Idioma"
+
+#~ msgid "french"
+#~ msgstr "francès"
+
+#~ msgid "english"
+#~ msgstr "inglès"
+
+#~ msgid "spanish"
+#~ msgstr "español"
+
+#~ msgid "Paramètres galette :"
+#~ msgstr "Parametros Galette :"
+
+#~ msgid "Informations générales :"
+#~ msgstr "Informaciones generales :"
+
+#~ msgid "- Les nombres et mesures doivent être des entiers !"
+#~ msgstr "- ¡ Los números y las medidas deben ser enteros !"
+
+#~ msgid "(Entier)"
+#~ msgstr "(Entero)"
+
+#~ msgid "- Langue non valide !"
+#~ msgstr "- ¡ Idioma invalido !"
+
+#~ msgid "Réinitialisation de l'historique"
+#~ msgstr "Reinicialización de la historia"
+
+#~ msgid "IP"
+#~ msgstr "IP"
+
+#~ msgid "Description"
+#~ msgstr "Descripción"
+
+#~ msgid "historique vide"
+#~ msgstr "historia vacia"
+
+#~ msgid "Mise à jour de la fiche adhérent :"
+#~ msgstr "Actualización de la ficha de socio :"
+
+#~ msgid "Ajout de la fiche adhérent :"
+#~ msgstr "Añadir la ficha de socio :"
+
+#~ msgid "Suppression de la fiche adhérent (et cotisations) :"
+#~ msgstr "Suprimir la ficha de socio (y las cuotas) :"
+
+#~ msgid "Mise à jour d'une contribution :"
+#~ msgstr "Actualización de una contribución :"
+
+#~ msgid "Suppression d'une contribution :"
+#~ msgstr "Supresión de una contribución :"
+
+#~ msgid "Mise à jour des préférences"
+#~ msgstr "Actualización de las preferencias"
+
+#~ msgid "Envoi d'un mailing intitulé :"
+#~ msgstr "Enviar une e-mail general con titulo :"
+
+#~ msgid "destinataires"
+#~ msgstr "destinatarios"
+
+#~ msgid "Génération de "
+#~ msgstr "Generación de "
+
+#~ msgid "étiquette(s)"
+#~ msgstr "etiqueta(s)"
+
+#~ msgid "Niveau d'historique :"
+#~ msgstr "Nivel de historia :"
+
+#~ msgid "Nul"
+#~ msgstr "Ninguno"
+
+#~ msgid "Normal"
+#~ msgstr "Normal"
+
+#~ msgid "Détaillé"
+#~ msgstr "Detallado"
+
+#~ msgid "ligne"
+#~ msgstr "línea"
+
+#~ msgid "lignes"
+#~ msgstr "líneas"
+
+#~ msgid ""
+#~ "Assurez vous que l'utilisateur galette a les droits nécessaires (SELECT, "
+#~ "INSERT, UPDATE, CREATE, ALTER et DELETE) !"
+#~ msgstr ""
+#~ "¡ Asegurese que el usuario galette tiene los derechos necesarios (SELECT, "
+#~ "INSERT, UPDATE, CREATE, ALTER y DELETE) !"
+
+#~ msgid "Afficher les contributions du"
+#~ msgstr "Mostrar la contribuciones del"
+
+#~ msgid "au"
+#~ msgstr "al"
+
+#~ msgid "login vide"
+#~ msgstr "login vacio"
+
+#~ msgid "login inexistant"
+#~ msgstr "login no existente"
+
+#~ msgid ""
+#~ "Login inexistant envoyé via le formulaire de récupération du mot de passe"
+#~ msgstr ""
+#~ "Login no existente enviado via el impreso de recuperación de la contraseña"
+
+#~ msgid ""
+#~ "Ce compte ne contient pas d'adresse email, veuillez contacter un "
+#~ "administrateur"
+#~ msgstr ""
+#~ "Esta cuenta no tiene dirección e-mail, por favor tome contacto con un "
+#~ "administrador"
+
+#~ msgid "Demande d'envoi de mot de passe mais email vide. Login :"
+#~ msgstr "Mando de envío de contraseña pero e-mail vacio. Login :"
+
+#~ msgid "Envoyez-moi mon mot de passe"
+#~ msgstr "Envíame mi contraseña"
+
+#~ msgid ""
+#~ "Un problème est survenu dans l'envoi du mot de passe pour le compte :"
+#~ msgstr "Ocurrió un problema en el envío de la contraseña para la cuenta :"
+
+#~ msgid "Mot de passe envoyé. Login :"
+#~ msgstr "Contraseña enviada. Login :"
+
+#~ msgid ""
+#~ "Quelqu'un (sûrement vous) à demandé à ce que l'on vous renvoie votre mot "
+#~ "de passe."
+#~ msgstr "Algién (seguramente Vd) mandó que se re-envía su contraseña."
+
+#~ msgid "Récupération de mot de passe"
+#~ msgstr "Recuperar la contraseña"
+
+#~ msgid "Retour à l'identification"
+#~ msgstr "Regresar a la identificación"
+
+#~ msgid "Je souhaite apparaître dans la liste des membres :"
+#~ msgstr "Quiero ser visible en la liste de socios :"
+
+#~ msgid "Configuration des fiches"
+#~ msgstr "Configuración de las fichas"
+
+#~ msgid "Visibilité"
+#~ msgstr "Visibilidad"
+
+#~ msgid "Nombre"
+#~ msgstr "Número"
+
+#~ msgid "tous"
+#~ msgstr "todos"
+
+#~ msgid "admin"
+#~ msgstr "admin"
+
+#~ msgid "texte libre"
+#~ msgstr "texto libre"
+
+#~ msgid "séparateur"
+#~ msgstr "separador"
+
+#~ msgid "champ"
+#~ msgstr "campo"
+
+#~ msgid "Ajouter"
+#~ msgstr "Añadir"
+
+#~ msgid ""
+#~ "Voulez-vous vraiment supprimer cette catégorie de la base, ceci "
+#~ "supprimera aussi toutes les données associées ?"
+#~ msgstr ""
+#~ "¿ Quiere Vd verdaderamente suprimir esta categoria de la base, eso "
+#~ "suprimira también todos los datos asociados ?"

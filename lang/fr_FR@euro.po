@@ -1,0 +1,40 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Galette V1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-08-05 12:33+0200\n"
+"PO-Revision-Date: 2004-08-05 12:32+0200\n"
+"Last-Translator: Georges Khaznadar <gekhajofour@netinfo.fr>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-15\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../index.php:37
+msgid "Administrateur"
+msgstr ""
+
+#: ../index.php:38 ../index.php:59 ../index.php:90 ../index.php:103
+msgid "Identification"
+msgstr ""
+
+#: ../index.php:62
+msgid "Echec authentification. Login :"
+msgstr ""
+
+#: ../index.php:95
+msgid "Identifiant :"
+msgstr ""
+
+#: ../index.php:99
+msgid "Mot de passe :"
+msgstr ""
+
+#: ../index.php:105
+msgid "Mot de passe perdu ?"
+msgstr ""
