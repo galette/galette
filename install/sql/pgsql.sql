@@ -91,7 +91,7 @@ CREATE TABLE galette_transactions (
     trans_amount real DEFAULT '0',
     trans_desc character varying(30) NOT NULL DEFAULT '',
     id_adh integer DEFAULT NULL
-)
+);
 CREATE UNIQUE INDEX galette_transactions_idx ON galette_transactions (trans_id);
 
 DROP TABLE galette_statuts;

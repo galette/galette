@@ -29,11 +29,14 @@
 
 	if ($_SESSION["logged_status"]==0)
 		header("location: index.php");
+	if ($_SESSION["admin_status"]==0)
+		$id_adh = $_SESSION["logged_id_adh"];
+	else
+		$id_adh = get_numeric_form_value("id_adh", '');
 
         $numrows = get_numeric_form_value("nbshow", PREF_NUMROWS);
 
         $page = get_numeric_form_value("page", 1);
-        $id_adh = get_numeric_form_value("id_adh", '');
 
 	// Tri
 	if (isset($_GET["tri"]))
@@ -78,8 +81,10 @@
 	$nquery = "SELECT COUNT(trans_id) FROM $trans_table";
 
 	// Filter
-	if (is_numeric($id_adh))
+	if (is_numeric($id_adh)) {
 		$query .= " AND $trans_table.id_adh=$id_adh";
+		$nquery .= " WHERE id_adh=$id_adh";
+	}
 
 	// phase de tri
 
