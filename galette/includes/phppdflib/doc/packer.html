@@ -1,0 +1,125 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Name</h1>
+<p>Introduction to the packer</p>
+<h1>Description</h1>
+<p>The packer extension is intended to be a major leap forward in the
+technology of generating PDFs. The eventual goal is that you'll just feed all
+your data to the packer, and it will figure out how to fit it on the page
+(or create new pages as needed).</p>
+<p>The packer is a long way from achieving that goal, but it does have some
+useful things it can do:</p>
+<ul>
+<li>It will keep track of unused regions (called fields) on a page.
+<li>It will fill text into those regions.
+</ul>
+<p>Ok, ok, it's not much, but it's a start. Here's how to use the packer as it
+currently stands:</p>
+<ol>
+<li>Enable the packer extension:<br>
+    <code>$pdf->enable('packer');</code>
+<li>Use the packer's method to create new pages:<br>
+    <code>$page = $pdf->packer->new_page();</code>
+<li>Place fixed-sized elements on the page:<br>
+    <code>$pdf->draw_rectangle(50, 10, 10, 50, $page);</code>
+<li>Make sure the packer knows that space is no longer available for use.<br>
+    <code>$space = new field(10, 50, 10, 50);<br>
+    $pdf->packer->allocate($space);</code>
+<li>Ask the packer to fill your text in around other objects:<br>
+    <code>$pdf->packer->fill_text($text);</code>
+<li>Repeat for additional pages.
+</ol>
+<p>At the time of writing, the packer seems to be working in the sense that I've
+yet to see it do anything insane, or crash. That doesn't mean it's going to
+produce useful results. As detailed below in the "rational", there are areas
+of potential failure that I still have not addressed. </p>
+<h2>Rational</h2>
+<p>The concept of the packer engine started with perl's Tk library, and the
+packer included.
+phppdflib's packer will run somewhat differently, since the main restraining
+factor is available page space and phppdflib can create new pages at will - two
+things the perl packer doesn't factor in to its reasoning.</p>
+<p>The basic idea I have is that each page will store an array of rectangles
+that indicate the unused space on the page. Initially, a page will consist of a
+single rectangle (bounded by the page margins)  All painting functions will
+remove the space they use from this pool, thus keeping track of how much space
+is still available to use on the page. Special functions will allow a client
+script to paint an object "in the next available space", and the packer should
+create new pages as needed to place objects.</p>
+<p>Inside the machine, the painting of an object will take the rectangle that
+it's placed in and break it into sub-rectangles that identify remaining space.
+To illistrate, a page initially consists of a single "field" (that's the term
+I'm going to coin, we'll see if it sticks):<br>
+<pre>
++----------+
+|          |
+|          |
+|          |
+|          |
+|          |
+|          |
++----------+
+</pre>
+When we place (for example) an image on the page, it allocates some space (a)
+and the remaining space is broken into new rectangles (b & c)<br>
+<pre>
++----+-----+
+|    |  a  |
+|    |     |
+| b  +-----+
+|    |     |
+|    |  c  |
+|    |     |
++----+-----+
+</pre>
+The allotment of remaining space is not arbitrary, it attempts to keep the
+largest vertical area possible (b) since that's how text normally flows. A
+special function will exist to "fill in" text in the remaining space - the
+idea being that a user can place all her/his images in the document, and then
+automagically have the packer flow the text around the images.</p>
+<p>Since this section was originally written, I believe I've solved some of the
+problems that orinally worried me. I feel that the code I currently have in
+place can handle any possible allocation of space from a collection of fields
+of arbitrary complexity. However, this has introduced new concerns:</p>
+<ul>
+<li>What if the fragmentation of free regions is unideal. Perhaps the packer
+    should support different allocation polocies that fragment differently
+    (vertical vs. horizontal?)  Possibly functions so that a client script could
+    request restructuring of the fields under a different policy?
+<li>So far it seems apparent that attempts should be made to consolodate small
+    fields into larger ones after each allocation (this realization came about
+    through early testing). The easiest scenerio to handle is already handled,
+    and that is joining fields that have a common border (see ->merge() in the
+    source). Other (more complicated) scenerios will probably need addressed.
+<li>There's probably some threshold at which a field is too small to be useful.
+    Unfortunately, that threshold is probably different for each different type
+    of object. Text, for example, has a more aggresive horizontal threshold
+    than vertical, while images may not have any practical threshold that
+    should be set.
+<li>Some sort of function to tile images throughout the remaining space might
+    be useful
+<li>I call the current fragmenting policy "prefer vertical".  Others are
+    possible, and quite likely necessary. Here's what I can think of
+    right now:
+    <ul>
+    <li>Prefer vertical: See above
+    <li>Prefer horizontal: Obvious variant
+    <li>Prefer largest area: Arrange fragments so each one uses the largest
+        space possible
+    <li>Prefer common border: creates many small fragments, so all shared
+        borders are exactly shared.
+    </ul>
+    Possibly, by creating a free space map object, these different policies
+    could all be available and dynamically generated as needed. Hmmm ...
+</ul>
+<h1>Examples</h1>
+<p>See <code>example-packer.php</code> in the examples directory.</p>
+<h1>See Also</h1>
+<h1>History</h1>
+<p>The first incarnation of the packer was added in 2.6</p>
+<h1>Bugs</h1>
+<p>The packer is very much experimental at this time, it is also very
+incomplete.</p>
+</BODY>
+</HTML>

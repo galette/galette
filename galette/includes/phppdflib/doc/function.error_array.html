@@ -1,0 +1,30 @@
+<HTML>
+<!-- $Id -->
+<BODY>
+<h1>Name</h1>
+<p>error_array -- Return all library messages and clear the message stack</p>
+<h1>Synopsis</h1>
+<p>array <b>error_array</b> ( )</p>
+<h1>Description</h1>
+<p>This method returns all the library messages on the message stack in reverse
+cronological order (newest to oldest). The result is stored in an array of
+strings, with each element containing both the error number and message.</p>
+<p>All methods return a result that equates to <code>true</code> apon success, and
+false on error. If an error is indicated, this command can be used to get the
+details of the error.</p>
+<p>It's possible for errors to "chain", such that the problem that caused the
+error actually resulted in additional errors added to the message stack by calling
+functions within the library. This makes for accurate debugging information since
+the error is traced all the way back to its original cause.</p>
+<h1>Examples</h1>
+<h1>See Also</h1>
+<a href='data.errors.html'>Error codes and their meanings</a><br>
+<a href='function.pop_error.html'>pop_error()</a>
+<h1>History</h1>
+<p>This command was added in version 2 of the library.</p>
+<h1>Bugs</h1>
+<p>Currently only one non-failure condition results in a message added to the message
+stack (#3001) but there is no way to determine if this condition has occurred, short
+of checking the message stack via this or the pop_error() function.</p>
+</BODY>
+</HTML>

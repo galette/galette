@@ -1,0 +1,25 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Name</h1>
+<p>template->pfield -- Add a paragraph of variable text to a template</p>
+<h1>Synopsis</h1>
+<p>int <b>template->pfield</b> ( int template, float bottom, float left, float top, float right, string name[, string default[, array parameters]] )</p>
+<h1>Description</h1>
+<p>This method is used to add a paragraph of variable text to a template.</p>
+<p><code>template</code> must be a valid template ID.
+<code>bottom, left, top,</code> and <code>right</code>
+define a bounding box for the paragraph.
+Text is wrapped at word boundries.
+The actual text string is defined at the time of placement in the variable array.
+If not provided, the value in <code>default</code> is used.
+If <code>default</code> is omitted, the empty string is used.
+<code>parameters</code> is an array as described in the parameters documentation.
+If omitted, default values are used.</p>
+<h1>Examples</h1>
+<h1>See Also</h1>
+<h1>History</h1>
+<p>This function was added in version 2.2.</p>
+<h1>Bugs</h1>
+</BODY>
+</HTML>

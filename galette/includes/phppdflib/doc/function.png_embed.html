@@ -1,0 +1,40 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Name</h1>
+<p>png_embed -- embed a png image into the PDF</p>
+<h1>Synopsis</h1>
+<p>int <b>png_embed</b> ( binary string data )</p>
+<h1>Description</h1>
+<p>This function is used to insert an external PNG file into the PDF
+file.</p>
+<p>The single parameter <code>data</code> should contain the raw,
+binary PNG data. The function returns a library ID that must be used
+to paint the embedded image, or false on error.</p>
+<h1>Examples</h1>
+<p>Assuming that <code>image.png</code> is a valid PNG file, the
+following code will extract the file data, embed it into the PDF
+file, and paint it to a page.</p>
+<pre>
+$page = $pdf->new_page("letter");
+$fh = fopen("image.png", "r");
+$filedata = fread($fh, filesize("image.png"));
+fclose($fh);
+$image = $pdf->png_embed($filedata);
+$placement = $pdf->image_place($image, 10, 10, $page);
+</pre>
+<h1>See Also</h1>
+<p>This function is really only a convenience wrapper around
+<code><a href='function.image_raw_embed.html'>->image_raw_embed()</a></code>
+that extracts the necessary data for embedding the image from the png
+stream itself.</p>
+<h1>History</h1>
+<p>This function was added in 2.5</p>
+<p>Many thanks to Oliver Plathey. This code is heavily derived
+from his fpdf library (with permission).</p>
+<h1>Bugs</h1>
+<p>The png format has many options available. Only some of these
+are supported by phppdflib. In particular, images with Indexed
+or 16 bit color, or with alpha channel are not supported.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,30 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Name</h1>
+<p>wrap_text -- Break a text string into an array of lines</p>
+<h1>Synopsis</h1>
+<p>array <b>wrap_text</b> ( string string, float width[, array param])</p>
+<h1>Description</h1>
+<p>This function takes a text string and breaks it into an array of
+strings based on the width parameter. The resultant array is broken
+on word boundries and paragraph bounderies (newlines). The resultant
+array can be used to paint the string, line-by-line on the page.</p>
+<p>When a single word is too long to fit on a line, a blank line is
+returned where that word would have existed, and the remainer of the
+string is processed as normal.</p>
+<p>The param array is used to determine font and font size.
+If omitted, 12pt Helvetica is assumed.</p>
+<h1>Examples</h1>
+<p>Breaks the string $data into an array of strings, none of which
+will be greater than 200 PDF units wide when placed as 12 point
+Helvetica.</p>
+<pre>
+$strings = $pdf->wrap_text($data, 200);
+</pre>
+<h1>See Also</h1>
+<h1>History</h1>
+<p>The <code>wrap_text()</code> function was added in version 1.14</p>
+<h1>Bugs</h1>
+</BODY>
+</HTML>

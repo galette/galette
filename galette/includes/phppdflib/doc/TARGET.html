@@ -1,0 +1,101 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Target</h1>
+<p>This document briefly describes the current organization of
+the development process.</p>
+<h1>Versioning</h1>
+<p>The version numbering is designed on a simple sequential
+model. No special numbering will be used to indicate the
+status of each version, this will be announced elsewhere.
+The current status of version 1 is obsolete.
+The current status of version 2 is stable.
+Once the library has seen sufficient testing,
+we will make a release candidate.
+After sufficient testing in the user community
+with this version, the version will be announced as a
+stable version (or a subsequent version, if bugfixes are
+required, possibly resulting in multiple release candidates
+before an acceptable stable version is achieved). Any
+bugfixes that are required after the release
+version is announced will be incremented in minor number
+and announced as bugfixes to the release.</p>
+<h2>Extensions</h2>
+<p>Because of enhanced extensibility in version 2, we are
+not planning to fork the code when 2 becomes stable. Instead
+we plan to add enhancements to version 2 via the extension
+mechanism. The code will be forked only when further enhancements
+will require changes to the codebase that would threaten
+the library's stability.</p>
+<p>Current development effort is directed toward an "effects"
+extension and a "packer" extension.</p>
+<h1>Target</h1>
+<p>The functionality target for the 2.x release of phppdflib
+follows.</p>
+<h2>General Functionality</h2>
+<p>The goal of phppdflib is to create a php class that allows
+a programmer to easily integrate PDF formatted output into
+php scripts.</p>
+<p>The library is designed with a "no limitations" theory.
+All limitations to the capibility of the library are vested
+in the php programming language or the limits of the PDF
+format. Furthermore, version 2 will not do bounds checking to
+ensure limits are maintained. Thus version 2 is
+capable of creating PDF files that exceed the implementation
+limits of the PDF format and are thus invalid.  For the moment,
+staying within the limits of the PDF standard are the responsibility
+of the calling application.</p>
+<h2>Methods</h2>
+<p>The following methods are planned to go into version 2.x.
+This is our primary method for determining when we have reached
+release status for the library.
+<i>Italic text indicates improvments over version 1.</i></p>
+<ul>
+<li>draw_text() will support the following:
+ <ul>
+ <li>The 14 standard PDF fonts
+ <li>Fill, stroke, or both painting modes
+ <li>All point sizes
+ <li>Rotate font to any angle
+ </ul>
+<li>A function will exist to return the width of strings drawn
+    in a particular font at a particular point size
+<li>draw_rectangle(), draw_line(), <i>draw_circle()</i> supporting:
+ <ul>
+ <li>Colors
+ <li>Line weights
+ <li>Fill, <i>stroke</i>, or both painting modes
+ </ul>
+<li>new_page() supporting symbolic codes for common page sizes
+    as well as an absolute representation to allow any page
+    size to be created
+<li>zlib compression
+<li>jfif_embed()
+<li><i>png_embed()</i>
+<li>Function to return the size of an embedded image in PDF units
+<li>image_place()
+<li><i>A system of default values for specifying page sizes, text
+parameters and any other parameters that may be reused (to avoid
+the need for parameters arrays each time an object is painted)</i>
+<li><i>An error reporting system that allows a client script to
+accurately detect and sanely react to errors</i>
+<li><i>A set of template functions that allow a user to generate
+layout templates, and then paint information to the page, formatted
+by those templates</i>
+ <ul>
+ <li><i>template->create()</i>
+ <li><i>template->place()</i>
+ <li><i>template->size()</i>
+ <li><i>template->text()</i>
+ <li><i>template->field()</i>
+ <li><i>template->paragraph()</i>
+ <li><i>template->rectangle()</i>
+ <li><i>template->line()</i>
+ <li><i>template->circle()</i>
+ <li><i>template->image()</i>
+ </ul>
+</ul>
+<p>Note that the Template interface obsoletes both the band interface
+and the column interface.  These methods have been removed from the library.</p>
+</BODY>
+</HTML>

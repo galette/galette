@@ -1,0 +1,29 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Name</h1>
+<p>template->create -- Begin the definition of a template</p>
+<h1>Synopsis</h1>
+<p>int <b>template->create</b> ( )</p>
+<h1>Description</h1>
+<p>This function creates a new template that can be defined by
+the various template commands as well as painted to the page.</p>
+<p>The function returns an ID for the template that must be used
+to add objects to it, and to paint it.</p>
+<h1>Examples</h1>
+<pre>
+$pdf->enable('template');
+$tid = $pdf->template->create();
+$pdf->template->rectangle($tid, 0, 0, 15, 100);
+$pdf->template->field($tid, 3, 3, "num");
+for ($i = 0; $i < 10; $i++) {
+    $v['num'] = $i;
+    $pdf->template->place($tid, $v, 0, $i * 15, $page);
+}
+</pre>
+<h1>See Also</h1>
+<h1>History</h1>
+<p>Added in 2.2</p>
+<h1>Bugs</h1>
+</BODY>
+</HTML>

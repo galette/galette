@@ -1,0 +1,39 @@
+<HTML>
+<BODY>
+<h1>Name</h1>
+<p>jfif_embed -- embed a jfif (jpeg) image into the PDF</p>
+<h1>Synopsis</h1>
+<p>int <b>jfif_embed</b> ( string data )</p>
+<h1>Description</h1>
+<p>This function is used to insert an external JFIF file into the PDF
+file. (JFIF files are commonly called jpeg files, this is not entirely
+accurate, however)</p>
+<p>The single parameter <code>data</code> should contain the raw,
+binary JFIF data. The function returns a library ID that must be used
+to paint the embedded image, or false on error.</p>
+<h1>Examples</h1>
+<p>Assuming that <code>image.jpg</code> is a valid JFIF file, the
+following code will extract the file data, embed it into the PDF
+file, and paint it to a page.</p>
+<pre>
+$page = $pdf->new_page("letter");
+$fh = fopen("image.jpg", "r");
+$filedata = fread($fh, filesize("image.jpg"));
+fclose($fh);
+$image = $pdf->jfif_embed($filedata);
+$placement = $pdf->image_place($image, 10, 10, $page);
+</pre>
+<h1>See Also</h1>
+<p>This function is really only a convenience wrapper around
+<code><a href='function.image_raw_embed.html'>->image_raw_embed()</a></code>
+that extracts the necessary data for embedding the image from the jfif
+stream itself.</p>
+<h1>History</h1>
+<h1>Bugs</h1>
+<p>Some PDF viewers have problems displaying images in
+certain formats. Before reporting bugs concerning images, ensure that
+you are using the latest version of your PDF viewer program.  Also
+be sure that the image is not created with unusual jfif options (try
+creating it with all special optimizations turned off).</p>
+</BODY>
+</HTML>

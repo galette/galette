@@ -1,0 +1,80 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Name</h1>
+<p>Parameter array -- data for PDF objects</p>
+<h1>Description</h1>
+<p>The parameters array is used by many PDF objects to define
+many facets of their placement and appearance.  The values that
+are applicable differ for each type of PDF object.  See the
+documentation for a particular PDF object to find out what
+parameters are applicable.  Inapplicable parameters are ignored.
+Undefined parameters are set to reasonable defaults.</p>
+<p>Any one of the parameters shown here can also be set using
+the <a href='function.set_default.html'>set_default()</a>
+function, and it will become the default value for all subsequent
+operations.</p>
+The complete list of parameters:<br>
+<table border='1'>
+<tr>
+<th>Parameter</th><th>Meaning</th><th>Possible Values</th><th>Default</th><th>Applies to</th>
+</tr>
+<tr>
+<td>font</td><td>font</td>
+<td>Courier, Courier-Bold, Courier-Oblique, Courier-BoldOblique, Helvetica, Helvetica-Bold, Helvetica-Oblique, Helvetica-BoldOblique, Times-Roman, Times-Bold, Times-Italic, Times-BoldItalic, Symbol, ZapfDingbats</td>
+<td>Helvetica</td><td>all text objects</td>
+</tr>
+<tr>
+<td>height</td><td>font height</td><td>Positive, nonzero values</td><td>12</td><td>all text objects</td>
+</tr>
+<tr>
+<td>align</td><td>Font alignment</td><td>right, center, left</td><td>left</td><td>paragraph text objects</td>
+</tr>
+<tr>
+<td>width</td><td>stroking width</td><td>Positive, nonzero values</td><td>1</td><td>rectangle, line, circle</td>
+</tr>
+<tr>
+<td>mode<br>smode<br>tmode</td><td>The method of painting the object<br>mode can be used to set both the text and shape mode in one step</td><td>fill, stroke, fill+stroke</td><td>fill for text, stroke for shapes</td><td>all closed objects</td>
+</tr>
+<tr>
+<td>rotation</td><td>Angle to paint the object</td><td>all real numbers</td><td>0</td><td>text objects</td>
+</tr>
+<tr>
+<td>color<br>fillcolor<br>strokecolor</td><td>Components of the painting color<br>If the stroking or fill color is not specified, this value for color is used for both</td><td>an array of red, green, and blue values from 0-1</td><td>black</td><td>all objects</td>
+</tr>
+<tr>
+<td>pagesize</td><td>Size of new pages</td><td>positive numbers and symbolic names (see new_page())</td><td>letter</td>
+<td>this parameter is <b>only</b> applicable to new_page(), however functions that automatically create
+new pages as need will use this value as set by set_default()</td>
+</tr>
+<tr>
+<td>margin<br>margin-top<br>margin-bottom<br>margin-left<br>margin-right</td>
+<td>Margins used to adjust placement of object on page<br>
+    margin sets all four margins in a single step.</td>
+<td>positive numbers</td>
+<td>72</td>
+<td>The value of these parameters is used to adapt the placement of objects to simulate page margins.</td>
+</tr>
+</table>
+<h2>Notes</h2>
+<p>color, fillcolor, and strokecolor must be specified as an array of red, blue, and
+green values. For example:</p>
+<pre>
+$param['fillcolor']['red'] = 1;
+$param['fillcolor']['blue'] = 0.5;
+$param['fillcolor']['green'] = 0;
+</pre>
+<p>See the <a href='function.get_color.html'>get_color()</a> command for an easier way to do this.</p>
+<h1>Examples</h1>
+<p>Sets some parameters for placing text:</p>
+<pre>
+$p["height"] = 12;
+$p["font"] = "Times-Roman";
+$pdf->draw_text(10, 10, "Hello World", $page, $p);
+</pre>
+<h1>See Also</h1>
+<h1>History</h1>
+<p>The color system was changed in 2.1</p>
+<h1>Bugs</h1>
+</BODY>
+</HTML>

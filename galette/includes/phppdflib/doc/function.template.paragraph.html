@@ -1,0 +1,24 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Name</h1>
+<p>template->paragraph -- Add a paragraph of fixed text to a template</p>
+<h1>Synopsis</h1>
+<p>int <b>template->paragraph</b> ( int template, float bottom, float left, float top, float right, string text[, array parameters] )</p>
+<h1>Description</h1>
+<p>This method is used to add a paragraph of fixed text to a template.</p>
+<p><code>template</code> must be a valid template ID.
+<code>bottom, left, top,</code> and <code>right</code>
+define a bounding box for the paragraph.
+Text is wrapped at word boundries.
+<code>parameters</code> is an array as described in the parameters documentation.
+If omitted, default values are used.</p>
+<h1>Examples</h1>
+<h1>See Also</h1>
+<h1>History</h1>
+<p>This function was added in version 2.2.</p>
+<h1>Bugs</h1>
+<p>At this time, if the text overflows the bounding area,
+it is lost and the calling process is not alerted to this in any way.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,27 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Name</h1>
+<p>swap_pages -- swap the order of two pages</p>
+<h1>Synopsis</h1>
+<p>bool <b>swap_pages</b> ( int page1, int page2 )</p>
+<h1>Description</h1>
+<p>This function is used to alter the order in which pages will appear in
+the resultant PDF file.  This function in no way changes which objects are
+painted to the pages</p>
+<h1>Examples</h1>
+<p>Create three pages and then change the order of pages 2 and 3.</p>
+<pre>
+$page1 = $pdf->new_page("letter");
+$page2 = $pdf->new_page("letter");
+$page3 = $pdf->new_page("letter");
+$pdf->swap_pages($page2, $page3);
+</pre>
+<h1>See Also</h1>
+<h1>History</h1>
+<p>The ability to reorder pages was added in version 1.13 but did not work
+properly.  It was corrected in version 1.14.</p>
+<h1>Bugs</h1>
+<p>None known</p>
+</BODY>
+</HTML>

@@ -1,0 +1,28 @@
+<HTML>
+<BODY>
+<h1>Name</h1>
+<p>draw_rectangle -- Paint a rectangle to a page</p>
+<h1>Synopsis</h1>
+<p>int <b>draw_rectangle</b> ( float top, float left, float bottom, float right, int page [,array parameters] )</p>
+<h1>Description</h1>
+<p>This function paints a rectangle to the page specified by <code>page</code>.
+</p>
+<p>The <code>parameters</code> array provides control over the painting operation.
+See the parameters documentation for details.</p>
+<h1>Examples</h1>
+<p>Paints a rectangle with default parameters:</p>
+<pre>
+$pdf->draw_rectangle(100, 50, 50, 100, $page);
+</pre>
+<p>Place a red, thick-lined rectangle:</p>
+<pre>
+$param["width"] = 3; // PDF units
+$param["strokecolor"] = $pdf->get_color('red');
+$pdf->draw_rectangle(100, 50, 50, 100, $page, $param);
+</pre>
+<h1>See Also</h1>
+<h1>History</h1>
+<h1>Bugs</h1>
+<p>None known</p>
+</BODY>
+</HTML>

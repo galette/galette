@@ -1,0 +1,42 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Name</h1>
+<p>new_page -- create a new page</p>
+<h1>Synopsis</h1>
+<p>int <b>new_page</b> ( [string size] )</p>
+<h1>Description</h1>
+<p>This function creates a new page of the size specified by <code>size</code>
+(or the default page size if no size is specified)
+and returns a page id that must be used to paint to the page.</p>
+<p><code>size</code> can be one of the following keywords:
+letter, legal, executive, tabloid, a3, a4, or a5.
+Or <code>size</code> can be specified by dimensions in the format
+<code><i>width</i>x<i>height</i>[in|cm]</code></p>
+<p>Pages will appear in the PDF file in the sequence they are created
+but can be reordered with
+<a href='function.move_page_before.html'>move_page_before()</a> and
+<a href='function.swap_pages.html'>swap_pages()</a>.</p>
+<h1>Examples</h1>
+<p>This is a valid script for creating a single paged PDF file:</p>
+<pre>
+$pdf = new pdffile;
+$page = $pdf->new_page("letter");
+$pdf->draw_text(50, 50, "This is a single page", $page);
+echo $pdf->generate();
+</pre>
+<p>The following creates a page 5 inches by 3 inches:</p>
+<pre>
+$page = $pdf->new_page("5x3in");
+</pre>
+<p>The following creates a page using metric sizes:</p>
+<pre>
+$page = $pdf->new_page("15x10cm");
+</pre>
+<h1>See Also</h1>
+<h1>History</h1>
+<p>The size parameter became optional with version 2.</p>
+<h1>Bugs</h1>
+<p>None known</p>
+</BODY>
+</HTML>

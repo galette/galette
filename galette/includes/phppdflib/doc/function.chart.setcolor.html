@@ -1,0 +1,34 @@
+<HTML>
+<!-- $Id$ -->
+<BODY>
+<h1>Name</h1>
+<p>setcolor -- Configure colors for chart.</p>
+<h1>Synopsis</h1>
+<p>bool <b>chart->setcolor</b> ( string setting, float red, float green, float blue )</p>
+<h1>Description</h1>
+<p>This method sets color values for the overall chart. The red, green, and blue
+values are bewteen 0 and 1, with 0 representing none of that color, and 1 representing
+full intensity.</p>
+<p>Available defaults at this time are: background, border, hlabel, vlabel,
+hgrade, vgrade</p>
+<h1>Examples</h1>
+<pre>
+// set the background to dark green
+$pdf->chart->setcolor('background', 0, .5, 0);
+$pdf->chart->place_chart($page, 10, 10, 300, 200, 'line');
+</pre>
+<h1>See Also</h1>
+<ul>
+<li><a href='function.enable_chart.html'>enable_chart()</a>
+<li><a href='function.chart.clearchart.html'>chart->clearchart()</a>
+<li><a href='function.chart.add_series.html'>chart->add_series()</a>
+<li><a href='function.chart.place_chart.html'>chart->place_chart()</a>
+</ul>
+<h1>History</h1>
+<p>This function was added in version 2.1.</p>
+<h1>Bugs</h1>
+<p>Only 'background' is used at this time.
+This function does little sanity checking, it's possible to set invalid
+defaults with no error reported.</p>
+</BODY>
+</HTML>
