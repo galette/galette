@@ -280,7 +280,7 @@
 ?>	
 		<? if ($step=="i4") echo _T("Si ce n'est pas déjà fait, créez une base de données et un utilisateur pour Galette."); ?><BR>
 		<? if ($step=="u4") echo _T("Veuillez entrer les paramètres de connexion à la base existante."); ?><BR>
-		<? echo _T("Les droits nécessaires sont CREATE, DELETE, UPDATE, SELECT et INSERT."); ?></P>
+		<? echo _T("Les droits nécessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et INSERT."); ?></P>
 	<FORM action="index.php" method="POST">
 		<TABLE>
 			<TR>
