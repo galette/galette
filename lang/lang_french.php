@@ -235,10 +235,12 @@ $lang["Mes informations"]="Mes informations";
 $lang["Fiche adhérent (modification)"]="Fiche adhérent (modification)";
 $lang["- CONFIRMATION -"]="- CONFIRMATION -";
 $lang["Navigation"]="Navigation";
+$lang["Configuration"]="Configuration";
 $lang["Liste des adhérents"]="Liste des adhérents";
 $lang["Liste des contributions"]="Liste des contributions";
 $lang["Ajouter un adhérent"]="Ajouter un adhérent";
 $lang["Ajouter une contribution"]="Ajouter une contribution";
+$lang["Configurer les fiches"]="Configurer les fiches";
 $lang["Mes contributions"]="Mes contributions";
 $lang["Déconnexion"]="Déconnexion";
 $lang["Historique"]="Historique";
@@ -380,4 +382,14 @@ $lang["Récupération de mot de passe"]="Récupération de mot de passe";
 $lang["Retour à l'identification"]="Retour à l'identification";
 
 $lang["Je souhaite apparaître dans la liste des membres :"]="Apparaître dans la<br /> liste des membres :";
+$lang["Configuration des fiches"]="Configuration des fiches";
+$lang["Visibilité"]="Visibilité";
+$lang["Nombre"]="Nombre";
+$lang["tous"]="tous";
+$lang["admin"]="admin";
+$lang["texte libre"]="texte libre";
+$lang["séparateur"]="séparateur";
+$lang["champ"]="champ";
+$lang["Ajouter"]="Ajouter";
+$lang["Voulez-vous vraiment supprimer cette catégorie de la base, ceci supprimera aussi toutes les données associées ?"]="Voulez-vous vraiment supprimer cette catégorie de la base, ceci supprimera aussi toutes les données associées ?";
 ?>

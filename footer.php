@@ -44,7 +44,6 @@
 				<LI><A href="mailing_adherents.php"><? echo _T("Effectuer un mailing"); ?></A></LI>
 				<LI><A href="mailing_adherents.php?etiquettes=1"><? echo _T("Génération d'étiquettes"); ?></A></LI>
 				<LI><A href="log.php"><? echo _T("Historique"); ?></A></LI>
-				<LI><A href="preferences.php"><? echo _T("Préférences"); ?></A></LI>
 <?
 	}
 	else
@@ -57,6 +56,20 @@
 ?>				
 			</UL>
 		</DIV>
+<?
+	if ($_SESSION["admin_status"]==1)
+	{
+?>
+		<DIV id="nav1">
+			<H1><? echo _T("Configuration"); ?></H1>
+			<UL>
+				<LI><A href="preferences.php"><? echo _T("Préférences"); ?></A></LI>
+				<LI><A href="configurer_fiches.php"><? echo _T("Configurer les fiches"); ?></A></LI>
+			</UL>
+		</DIV>
+<?
+	}
+?>
 		<DIV id="logout">
 			<A href="index.php?logout=1"><? echo _T("Déconnexion"); ?></A>
 		</DIV>

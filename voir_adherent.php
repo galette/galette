@@ -24,6 +24,7 @@
 	include(WEB_ROOT."includes/functions.inc.php"); 
 	include(WEB_ROOT."includes/lang.inc.php"); 
 	include(WEB_ROOT."includes/session.inc.php"); 
+	include(WEB_ROOT."includes/categories.inc.php"); 
 
 	$id_adh = "";
 	if ($_SESSION["logged_status"]==0) 
@@ -270,10 +271,60 @@
 						<TD bgcolor="#DDDDFF" valign="top"><B><? echo _T("Autres informations :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE" colspan="3"><? echo nl2br($info_public_adh); ?></TD> 
 					</TR>
+<?
+    $requete = "SELECT id_cat, index_cat, name_cat, perm_cat, type_cat, size_cat FROM $info_cat_table";
+    if ($_SESSION["admin_status"] != 1)
+       $requete .= " WHERE perm_cat=$perm_all";
+    $requete .= " ORDER BY index_cat";
+    $res_cat = $DB->Execute($requete);
+    while (!$res_cat->EOF)
+    {
+        $id_cat = $res_cat->fields[0];
+        $rank_cat = $res_cat->fields[1];
+        $name_cat = $res_cat->fields[2];
+        $perm_cat = $res_cat->fields[3];
+        $type_cat = $res_cat->fields[4];
+        $size_cat = $res_cat->fields[5];
+
+        if ($type_cat == $category_separator) {
+            for ($i = 0; $i < $size_cat; ++$i) {
+?>                                                
+                                                    <TR><TH colspan="4" id="header">&nbsp;</TH></TR> 
+<?
+            }
+        } else {
+            $res_info = $DB->Execute("SELECT val_info, index_info FROM ".PREFIX_DB."adh_info WHERE id_cat=$id_cat and id_adh=$id_adh ORDER BY index_info");
+            $current_size = $size_cat;
+            if ($size_cat == 0)
+                $current_size = $res_info->RecordCount();
+            for ($i = 0; $i < $current_size; ++$i) {
+?> 
+                                                <TR>
+<?
+                if ($i == 0) {
+?> 
+                                                    <TD rowspan="<?php echo $current_size; ?>" bgcolor="#DDDDFF" valign="top"><B><?php echo $name_cat."&nbsp;:"; ?></B></TD> 
+<?
+                }
+                $val = $res_info->EOF ? "&nbsp;" : htmlspecialchars($res_info->fields[0]);
+                if ($type_cat == $category_text)
+                    $val = nl2br($val);
+?> 
+                                                    <TD bgcolor="#EEEEEE" colspan="3"><? echo $val; ?></TD> 
+                                                </TR>
+<?
+                $res_info->MoveNext();
+            }
+            $res_info->Close();
+        }
+        $res_cat->MoveNext();
+    }
+    $res_cat->Close();
+?>
 					<TR>
 						<TD colspan="4" align="center"><BR><A href="ajouter_adherent.php?id_adh=<? echo $id_adh; ?>"><? echo _T("[ Modification ]"); ?></A>&nbsp;&nbsp;&nbsp;<A href="gestion_contributions.php?id_adh=<? echo $id_adh; ?>"><? echo _T("[ Contributions ]"); ?></A><? echo $ajout_contrib; ?></TD>
 					</TR>
-				</TABLE> 
+                                </TABLE> 
 			</DIV>
 			<BR> 
 		</BLOCKQUOTE> 			

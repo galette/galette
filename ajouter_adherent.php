@@ -24,7 +24,8 @@
 	include(WEB_ROOT."includes/functions.inc.php"); 
 	include(WEB_ROOT."includes/lang.inc.php"); 
 	include(WEB_ROOT."includes/session.inc.php"); 
-
+        include(WEB_ROOT."includes/categories.inc.php");
+        
 	if ($_SESSION["logged_status"]==0) 
 		header("location: index.php");
 		
@@ -221,7 +222,7 @@
 			}
 		}
 		reset($fields);
-  
+                                
   	// modif ou ajout
   	if ($error_detected=="")
   	{  	
@@ -339,6 +340,38 @@
 			 			$warning_detected .= "<LI>"._T("- Le fichier transmis n'est pas une image valide (PNG ou JPEG). L'enregistrement a cependant été effectué.")."</LI>"; 
 				}
 			}
+                               
+                        // Ajout des champs dynamiques
+                        $requete = "SELECT id_cat, index_cat, name_cat, perm_cat, type_cat, size_cat FROM $info_cat_table";
+                        if ($_SESSION["admin_status"] != 1)
+                            $requete .= " WHERE perm_cat=$perm_all";
+                        $res_cat = $DB->Execute($requete);
+                        while (!$res_cat->EOF) {
+                            $id_cat = $res_cat->fields[0];
+                            $name_cat = $res_cat->fields[1];
+                            $perm_cat = $res_cat->fields[2];
+                            $type_cat = $res_cat->fields[3];
+                            $size_cat = $res_cat->fields[4];
+                            if ($_SESSION["admin_status"] != 1 && $perm_cat == $perm_admin)
+                                continue;
+                            $current_size = $_POST["info_field_size_$id_cat"];
+                            $ins_idx =1;
+                            for ($i = 0; $i < $current_size; ++$i) {
+                                $field_name = "info_field_".$id_cat."_".$i;
+                                $val = "";
+                                if (isset($_POST[$field_name]))
+                                    $val = $_POST[$field_name];
+                                set_adh_info($DB, $id_adh_new, $id_cat, $ins_idx, $val);
+                                if ($val != "")
+                                    ++$ins_idx;
+                            }
+                            while($ins_idx <= $current_size) {
+                                set_adh_info($DB, $id_adh_new, $id_cat, $ins_idx, "");
+                                ++$ins_idx;
+                            }
+                            $res_cat->MoveNext();
+                        }
+                        $res_cat->Close();
 			
 			// retour à la liste ou passage à la contribution
 			if ($warning_detected=="" && $id_adh=="")
@@ -357,8 +390,9 @@
 				die();
 			}
 			$id_adh=$id_adh_new;
-  	}  	
-  }
+  	    }
+      
+      }
   
  	// suppression photo
 	if (isset($_POST["del_photo"]))
@@ -693,10 +727,83 @@
 ?>	
 								</TD> 
 						  </TR> 
+<?
+    $requete = "SELECT id_cat, index_cat, name_cat, perm_cat, type_cat, size_cat FROM $info_cat_table";
+    if ($_SESSION["admin_status"] != 1)
+       $requete .= " WHERE perm_cat=$perm_all";
+    $requete .= " ORDER BY index_cat";
+    $res_cat = $DB->Execute($requete);
+    while (!$res_cat->EOF)
+    {
+        $id_cat = $res_cat->fields[0];
+        $rank_cat = $res_cat->fields[1];
+        $name_cat = $res_cat->fields[2];
+        $perm_cat = $res_cat->fields[3];
+        $type_cat = $res_cat->fields[4];
+        $size_cat = $res_cat->fields[5];
+    
+        if ($type_cat == $category_separator) {
+            for ($i = 0; $i < $size_cat; ++$i) {
+?>                                                
+                                                    <TR><TH colspan="4" id="header">&nbsp;</TH></TR> 
+<?
+            }
+        } else {
+            $cond = "id_cat=$id_cat";
+            if (is_numeric($id_adh))
+                $cond .= " and id_adh=$id_adh";
+	    else
+	    	$cond .= " and 1=2";
+	    // Cette condition est stupide
+	    // Je l'ai rajoutee pour eviter d'avoir des valeurs a la creation de nouvelles fiches
+	    // TODO : recoder proprement
+	    
+            $res_info = $DB->Execute("SELECT val_info, index_info FROM ".PREFIX_DB."adh_info WHERE $cond ORDER BY index_info");
+            $current_size = $size_cat;
+            if ($size_cat == 0)
+                $current_size = $res_info->RecordCount() + 1;
+            for ($i = 0; $i < $current_size; ++$i) {
+?> 
+                                                <TR>
+<?
+                if ($i == 0) {
+?> 
+                                                    <TH id="libelle" rowspan="<?php echo $current_size; ?>" <?php echo $info_public_adh_req ?> >
+                                                        <INPUT type="hidden" name="info_field_size_<?php echo $id_cat; ?>" value="<?php echo $current_size; ?>" >
+                                                        <?php echo $name_cat."&nbsp;:"; ?> 
+                                                    </TH> 
+<?
+                }
+                $field_name = "info_field_".$id_cat."_".$i;
+                $val = $res_info->EOF ? "" : $res_info->fields[0];
+?> 
+                                                    <TD colspan="3">
+<?
+                if ($type_cat == $category_text) {
+?> 
+                                                        <TEXTAREA name="<?php echo $field_name; ?>" cols="61" rows="6"><?php echo $val; ?></TEXTAREA>
+<?
+                } elseif ($type_cat == $category_field) {
+?> 
+                                                        <INPUT type="text" name="<?php echo $field_name; ?>" value="<? echo $val; ?>" size="63">
+<?
+                }
+?> 
+                                                    </TD> 
+                                                </TR>
+<?
+                $res_info->MoveNext();
+            }
+            $res_info->Close();
+        }
+        $res_cat->MoveNext();
+    }
+    $res_cat->Close();
+?> 
 							<TR> 
 								<TH align="center" colspan="4"><BR><INPUT type="submit" name="valid" value="<? echo _T("Enregistrer"); ?>"></TH> 
 						  </TR> 
-							</TABLE> 
+                                                        </TABLE> 
 						</DIV>
 						<BR> 
 						<? echo _T("NB : Les champs obligatoires apparaissent en"); ?> <FONT style="color: #FF0000"><? echo _T("rouge"); ?></FONT>. 

@@ -55,6 +55,7 @@ CREATE TABLE galette_adherents (
     bool_display_info character(1) DEFAULT NULL,
     date_echeance date
 );
+CREATE UNIQUE INDEX galette_adherents_idx ON galette_adherents (id_adh);
 
 DROP TABLE galette_cotisations;
 CREATE TABLE galette_cotisations (
@@ -66,6 +67,7 @@ CREATE TABLE galette_cotisations (
     duree_mois_cotis smallint DEFAULT '12' NOT NULL,
     date_cotis date NOT NULL
 );
+CREATE UNIQUE INDEX galette_cotisations_idx ON galette_cotisations (id_cotis);
 
 DROP TABLE galette_statuts;
 CREATE TABLE galette_statuts (
@@ -73,6 +75,7 @@ CREATE TABLE galette_statuts (
   libelle_statut  character varying(20) DEFAULT '' NOT NULL,
   priorite_statut smallint DEFAULT '0' NOT NULL
 );
+CREATE UNIQUE INDEX galette_statuts_idx ON galette_statuts (id_statut);
 
 INSERT INTO galette_statuts VALUES (1,'Président',0);
 INSERT INTO galette_statuts VALUES (2,'Trésorier',10);
@@ -90,6 +93,7 @@ CREATE TABLE galette_types_cotisation (
   id_type_cotis integer NOT NULL,
   libelle_type_cotis character varying(30) DEFAULT '' NOT NULL
 );
+CREATE UNIQUE INDEX galette_types_cotisation_idx ON galette_types_cotisation (id_type_cotis);
 
 INSERT INTO galette_types_cotisation VALUES (1,'Cotisation annuelle normale');
 INSERT INTO galette_types_cotisation VALUES (2,'Cotisation annuelle réduite');
@@ -104,6 +108,7 @@ CREATE TABLE galette_preferences (
   nom_pref character varying(100) DEFAULT '' NOT NULL,
   val_pref character varying(200) DEFAULT '' NOT NULL
 );
+CREATE UNIQUE INDEX galette_preferences_idx ON galette_preferences (id_pref);
 
 DROP SEQUENCE galette_logs_id_seq;
 CREATE SEQUENCE galette_logs_id_seq
@@ -121,5 +126,33 @@ CREATE TABLE galette_logs (
   adh_log character varying(41) DEFAULT '' NOT NULL,
   text_log text
 );
+CREATE UNIQUE INDEX galette_logs_idx ON galette_logs (id_log);
 
+DROP SEQUENCE galette_categories_id_seq;
+CREATE SEQUENCE galette_categories_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
 
+DROP TABLE galette_info_categories;
+CREATE TABLE galette_info_categories (
+  id_cat integer DEFAULT nextval('galette_categories_id_seq'::text) NOT NULL,
+  index_cat integer DEFAULT '0' NOT NULL,
+  name_cat character varying(40) DEFAULT '' NOT NULL,
+  perm_cat integer DEFAULT '0' NOT NULL,
+  type_cat integer DEFAULT '0' NOT NULL,
+  size_cat integer DEFAULT '1' NOT NULL,
+  contents_cat text DEFAULT ''
+);
+CREATE UNIQUE INDEX galette_info_categories_idx ON galette_info_categories (id_cat);
+
+DROP TABLE galette_adh_info;
+CREATE TABLE galette_adh_info (
+  id_adh integer DEFAULT '0' NOT NULL,
+  id_cat integer DEFAULT '0' NOT NULL,
+  index_info integer DEFAULT '0' NOT NULL,
+  val_info text DEFAULT ''
+);
+CREATE INDEX galette_ahd_info_idx ON galette_adh_info (id_adh);
