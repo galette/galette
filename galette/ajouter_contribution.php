@@ -222,7 +222,7 @@
 			$DB->Execute($requete);
 			
 			// retour à la liste
-			header("location: gestion_contributions.php");
+			header("location: gestion_contributions.php?id_adh=".$id_adh);
 
 			// récupération du max pour passage en mode modif apres insertion
 			if ($id_cotis=="")
