@@ -9,6 +9,6 @@ CREATE SEQUENCE galette_preferences_id_seq
 DROP TABLE galette_preferences;
 CREATE TABLE galette_preferences (
   id_pref integer DEFAULT nextval('galette_preferences_id_seq'::text) NOT NULL,
-  nom_pref varying(100) DEFAULT '' NOT NULL,
-  val_pref varying(200) DEFAULT '' NOT NULL
+  nom_pref character varying(100) DEFAULT '' NOT NULL,
+  val_pref character varying(200) DEFAULT '' NOT NULL
 );
