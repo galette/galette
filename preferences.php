@@ -42,7 +42,6 @@
 			'pref_lang' => 1,
 			'pref_numrows' => 1,
 			'pref_log' => 1,
-			'pref_email_nom' => 1,
 			'pref_etiq_marges' => 1,
 			'pref_etiq_hspace' => 1,
 			'pref_etiq_vspace' => 1,
@@ -126,12 +125,23 @@
 		// missing relations
 		if (isset($pref['pref_mail_method']))
 		{
-			if ($pref['pref_mail_method']==2)
+			if ($pref['pref_mail_method']==2 || $pref['pref_mail_method']==1)
 			{
-				if (!isset($pref['pref_mail_smtp']))
-					$error_detected[] = _T("- You must indicate the SMTP server you wan't to use!");
-				elseif ($pref['pref_mail_smtp']=='')
-					$error_detected[] = _T("- You must indicate the SMTP server you wan't to use!");
+				if ($pref['pref_mail_method']==2)
+				{
+					if (!isset($pref['pref_mail_smtp']))
+						$error_detected[] = _T("- You must indicate the SMTP server you wan't to use!");
+					elseif ($pref['pref_mail_smtp']=='')
+						$error_detected[] = _T("- You must indicate the SMTP server you wan't to use!");
+				}
+				if (!isset($pref['pref_email_nom']))
+					$error_detected[] = _T("- You must indicate a sender name for emails!");
+				elseif ($pref['pref_email_nom']=='')
+					$error_detected[] = _T("- You must indicate a sender name for emails!");
+				if (!isset($pref['pref_email']))
+					$error_detected[] = _T("- You must indicate an email address Galette should use to send emails!");
+				elseif ($pref['pref_email']=='')
+					$error_detected[] = _T("- You must indicate an email address Galette should use to send emails!");
 			}
 		}
 		
