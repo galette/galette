@@ -1768,5 +1768,12 @@ msgstr "Management of members"
 msgid "Nickname"
 msgstr "Nickname"
 
+#: ../etiquettes_adherents.php:42
+msgid ""
+"You have not selected a member, please check at least one box in the "
+"beginning of lines"
+msgstr "You have not selected a member, please check at least one box in the "
+"beginning of lines"
+
 #~ msgid "Authentication failed. Login:"
 #~ msgstr "Authentication failed. Login:"

@@ -1,5 +1,5 @@
 <?
-// This file was automatically generated on Tue Sep 21 22:37:59 2004 (GMT)
+// This file was automatically generated on Sat Oct 30 16:05:39 2004 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -81,7 +81,7 @@ $lang['Gift'] = 'Gift';
 // ../install/index.php:55 ../install/index.php:89 
 $lang['No password'] = 'No password';
 
-// ../includes/i18n.inc.php:64 
+// ../includes/i18n.inc.php:81 
 $lang['Graphics:'] = 'Graphics:';
 
 // ../voir_adherent.php:159 ../ajouter_adherent.php:656 
@@ -183,7 +183,7 @@ $lang['Check the parameters and the existence of the database'] = 'Check the par
 // ../self_contribution.php:252 ../ajouter_contribution.php:369 
 $lang['Comments:'] = 'Comments:';
 
-// ../includes/i18n.inc.php:75 
+// ../includes/i18n.inc.php:92 
 $lang['Non-member'] = 'Non-member';
 
 // ../install/index.php:351 
@@ -192,7 +192,10 @@ $lang['Check of the database'] = 'Check of the database';
 // ../install/index.php:710 
 $lang['The database has been correctly created.'] = 'The database has been correctly created.';
 
-// ../includes/i18n.inc.php:67 
+// ../etiquettes_adherents.php:42 
+$lang['You have not selected a member, please check at least one box in the beginning of lines'] = 'You have not selected a member, please check at least one box in the beginning of lines';
+
+// ../includes/i18n.inc.php:84 
 $lang['Vice-president'] = 'Vice-president';
 
 // ../self_adherent.php:138 ../self_adherent.php:443 ../lostpasswd.php:71 ../lostpasswd.php:131 ../preferences.php:492 ../voir_adherent.php:248 ../install/index.php:755 ../ajouter_adherent.php:298 ../ajouter_adherent.php:740 ../templates/default/index.tpl:23 
@@ -231,7 +234,7 @@ $lang['Installation mode'] = 'Installation mode';
 // ../preferences.php:433 
 $lang['Logging level:'] = 'Logging level:';
 
-// ../includes/i18n.inc.php:78 
+// ../includes/i18n.inc.php:95 
 $lang['Donation in kind'] = 'Donation in kind';
 
 // ../ajouter_adherent.php:191 
@@ -288,7 +291,7 @@ $lang['modification'] = 'modification';
 // ../self_adherent.php:222 ../mailing_adherents.php:482 ../lostpasswd.php:120 ../preferences.php:332 ../ajouter_adherent.php:526 
 $lang['- WARNING -'] = '- WARNING -';
 
-// ../includes/i18n.inc.php:63 
+// ../includes/i18n.inc.php:80 
 $lang['Realization:'] = 'Realization:';
 
 // ../install/index.php:613 
@@ -321,7 +324,7 @@ $lang['You can prepare a picture to upload after sending'] = 'You can prepare a 
 // ../voir_adherent.php:267 ../gestion_contributions.php:462 
 $lang['[ Add a contribution ]'] = '[ Add a contribution ]';
 
-// ../includes/i18n.inc.php:72 
+// ../includes/i18n.inc.php:89 
 $lang['Founder member'] = 'Founder member';
 
 // ../self_adherent.php:131 ../ajouter_adherent.php:291 
@@ -399,10 +402,10 @@ $lang['days'] = 'days';
 // ../configurer_fiches.php:125 ../configurer_fiches.php:190 
 $lang['separator'] = 'separator';
 
-// ../includes/i18n.inc.php:79 
+// ../includes/i18n.inc.php:96 
 $lang['Donation in money'] = 'Donation in money';
 
-// ../includes/i18n.inc.php:74 
+// ../includes/i18n.inc.php:91 
 $lang['Legal entity'] = 'Legal entity';
 
 // ../install/index.php:532 
@@ -414,7 +417,7 @@ $lang['See you soon!'] = 'See you soon!';
 // ../footer.php:116 ../footer.php:162 ../templates/default/page.tpl:80 ../templates/default/page.tpl:119 
 $lang['Deletion'] = 'Deletion';
 
-// ../includes/i18n.inc.php:83 
+// ../includes/i18n.inc.php:100 
 $lang['spanish'] = 'spanish';
 
 // ../mailing_adherents.php:327 ../mailing_adherents.php:529 ../mailing_adherents.php:688 ../footer.php:128 ../gestion_contributions.php:405 ../gestion_adherents.php:192 ../templates/default/page.tpl:92 
@@ -456,7 +459,7 @@ $lang['free text'] = 'free text';
 // ../install/index.php:269 
 $lang['Database'] = 'Database';
 
-// ../includes/i18n.inc.php:76 
+// ../includes/i18n.inc.php:93 
 $lang['Reduced annual contribution'] = 'Reduced annual contribution';
 
 // ../install/index.php:785 
@@ -477,7 +480,7 @@ $lang['CREATE operation allowed'] = 'CREATE operation allowed';
 // ../templates/default/gestion_adherents.tpl:46 
 $lang['Nickname'] = 'Nickname';
 
-// ../includes/i18n.inc.php:80 
+// ../includes/i18n.inc.php:97 
 $lang['Partnership'] = 'Partnership';
 
 // ../gestion_contributions.php:230 
@@ -612,7 +615,7 @@ $lang['Parameters couldn\'t be saved.'] = 'Parameters couldn\'t be saved.';
 // ../footer.php:81 ../footer.php:150 ../templates/default/page.tpl:50 ../templates/default/page.tpl:110 
 $lang['Legend'] = 'Legend';
 
-// ../includes/i18n.inc.php:71 
+// ../includes/i18n.inc.php:88 
 $lang['Benefactor member'] = 'Benefactor member';
 
 // ../gestion_contributions.php:144 
@@ -627,7 +630,7 @@ $lang['Title:'] = 'Title:';
 // ../install/index.php:957 
 $lang['Step 10 - End of the installation'] = 'Step 10 - End of the installation';
 
-// ../includes/i18n.inc.php:65 
+// ../includes/i18n.inc.php:82 
 $lang['Publisher:'] = 'Publisher:';
 
 // ../install/index.php:751 
@@ -693,7 +696,7 @@ $lang['DELETE operation not allowed'] = 'DELETE operation not allowed';
 // ../mailing_adherents.php:485 
 $lang['Recipients of the mailing:'] = 'Recipients of the mailing:';
 
-// ../includes/i18n.inc.php:81 
+// ../includes/i18n.inc.php:98 
 $lang['french'] = 'french';
 
 // ../install/index.php:343 
@@ -747,7 +750,7 @@ $lang['(Integer)'] = '(Integer)';
 // ../preferences.php:345 
 $lang['General information:'] = 'General information:';
 
-// ../includes/i18n.inc.php:68 
+// ../includes/i18n.inc.php:85 
 $lang['Treasurer'] = 'Treasurer';
 
 // ../install/index.php:327 
@@ -765,7 +768,7 @@ $lang['Log off'] = 'Log off';
 // ../install/index.php:603 
 $lang['Step 6 - Access permissions to database'] = 'Step 6 - Access permissions to database';
 
-// ../includes/i18n.inc.php:70 
+// ../includes/i18n.inc.php:87 
 $lang['Active member'] = 'Active member';
 
 // ../self_adherent.php:257 
@@ -780,7 +783,7 @@ $lang['Navigation'] = 'Navigation';
 // ../preferences.php:450 
 $lang['Sender Email:'] = 'Sender Email:';
 
-// ../includes/i18n.inc.php:69 
+// ../includes/i18n.inc.php:86 
 $lang['Secretary'] = 'Secretary';
 
 // ../self_adherent.php:285 ../self_contribution.php:249 ../ajouter_contribution.php:366 ../ajouter_adherent.php:581 ../ajouter_adherent.php:755 
@@ -840,7 +843,7 @@ $lang['[Mail]'] = '[Mail]';
 // ../install/index.php:213 
 $lang['Files permissions'] = 'Files permissions';
 
-// ../includes/i18n.inc.php:66 
+// ../includes/i18n.inc.php:83 
 $lang['President'] = 'President';
 
 // ../self_adherent.php:250 ../voir_adherent.php:91 ../ajouter_adherent.php:546 
@@ -891,7 +894,7 @@ $lang['Add a contribution'] = 'Add a contribution';
 // ../self_adherent.php:92 ../ajouter_adherent.php:120 
 $lang['Sorry, '] = 'Sorry, ';
 
-// ../includes/i18n.inc.php:82 
+// ../includes/i18n.inc.php:99 
 $lang['english'] = 'english';
 
 // ../gestion_adherents.php:86 
@@ -909,7 +912,7 @@ $lang['Member Profile'] = 'Member Profile';
 // ../footer.php:26 
 $lang['seconds.'] = 'seconds.';
 
-// ../includes/i18n.inc.php:73 
+// ../includes/i18n.inc.php:90 
 $lang['Old-timer'] = 'Old-timer';
 
 // ../self_adherent.php:432 ../voir_adherent.php:241 ../ajouter_adherent.php:733 
@@ -1113,7 +1116,7 @@ $lang['- This username is already used by another member !'] = '- This username 
 // ../install/index.php:164 
 $lang['You\'re installing Galette for the first time, or you wish to erase an older version of Galette without keeping your data'] = 'You\'re installing Galette for the first time, or you wish to erase an older version of Galette without keeping your data';
 
-// ../includes/i18n.inc.php:77 
+// ../includes/i18n.inc.php:94 
 $lang['Company cotisation'] = 'Company contribution';
 
 // ../mailing_adherents.php:339 ../mailing_adherents.php:541 ../mailing_adherents.php:700 ../gestion_contributions.php:419 ../gestion_adherents.php:204 
