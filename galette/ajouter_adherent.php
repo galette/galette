@@ -19,7 +19,7 @@
  *
  */
 
-	include("includes/config.inc.php"); 
+	include("includes/config.inc.php");
 	include(WEB_ROOT."includes/database.inc.php"); 
 	include(WEB_ROOT."includes/functions.inc.php"); 
 	include(WEB_ROOT."includes/lang.inc.php"); 
@@ -27,9 +27,7 @@
 
 	if ($_SESSION["logged_status"]==0) 
 		header("location: index.php");
-	if ($_SESSION["admin_status"]==0) 
-		header("location: gestion_informations.php");
-
+		
 	// On vérifie si on a une référence => modif ou création
 	$id_adh = "";
 	$date_crea_adh = "";
@@ -39,6 +37,10 @@
 	if (isset($_POST["id_adh"]))
 		if (is_numeric($_POST["id_adh"]))
 			$id_adh = $_POST["id_adh"];
+
+	// Si c'est un user qui est loggé, on va à sa fiche
+	if ($_SESSION["logged_status"]!=0) 
+		$id_adh = $_SESSION["logged_id_adh"];
 
 	// variables d'erreur (pour affichage)	    
  	$error_detected = "";
@@ -110,8 +112,22 @@
 		
 			$fieldname = $proprietes_arr["name"];
 			
-			// on ne met jamais a jour id_adh
-			if ($fieldname!="id_adh" && $fieldname!="date_echeance")
+			// on précise les champs non modifiables
+			if (
+				($_SESSION["admin_status"]==1 && $fieldname!="id_adh"
+							      && $fieldname!="date_echeance") ||
+			    	($_SESSION["admin_status"]==0 && $fieldname!="date_crea_adh"
+			    				      && $fieldname!="id_adh"
+			    				      && $fieldname!="titre_adh"
+			    				      && $fieldname!="id_statut"
+			    				      && $fieldname!="nom_adh"
+			    				      && $fieldname!="prenom_adh"
+			    				      && $fieldname!="activite_adh"
+			    				      && $fieldname!="bool_exempt_adh"
+			    				      && $fieldname!="bool_admin_adh"
+			    				      && $fieldname!="date_echeance"
+			    				      && $fieldname!="info_adh")
+			   )
 			{			
 				if (isset($_POST[$fieldname]))
 				  $post_value=trim($_POST[$fieldname]);
@@ -416,6 +432,13 @@
 	if ($mdp_adh=="")
 		$mdp_adh = makeRandomPassword();
 
+	// variable pour la desactivation de champs		
+	if ($_SESSION["admin_status"]==0)
+		$disabled_field = "disabled";
+	else
+		$disabled_field = "";
+
+
 	include("header.php");
 
 ?> 
@@ -454,15 +477,15 @@
 							<TR> 
 								<TH <? echo $titre_adh_req ?> id="libelle"><? echo _T("Titre :"); ?></TH> 
 								<TD colspan="3">
-									<INPUT type="radio" name="titre_adh" value="3"<? isChecked($titre_adh,"3") ?>> <? echo _T("Mademoiselle"); ?>&nbsp;&nbsp;
-									<INPUT type="radio" name="titre_adh" value="2"<? isChecked($titre_adh,"2") ?>> <? echo _T("Madame"); ?>&nbsp;&nbsp;
-									<INPUT type="radio" name="titre_adh" value="1"<? isChecked($titre_adh,"1") ?>> <? echo _T("Monsieur"); ?>&nbsp;&nbsp;
+									<INPUT type="radio" name="titre_adh" value="3"<? isChecked($titre_adh,"3") ?> <? echo $disabled_field; ?>> <? echo _T("Mademoiselle"); ?>&nbsp;&nbsp;
+									<INPUT type="radio" name="titre_adh" value="2"<? isChecked($titre_adh,"2") ?> <? echo $disabled_field; ?>> <? echo _T("Madame"); ?>&nbsp;&nbsp;
+									<INPUT type="radio" name="titre_adh" value="1"<? isChecked($titre_adh,"1") ?> <? echo $disabled_field; ?>> <? echo _T("Monsieur"); ?>&nbsp;&nbsp;
 								</TD> 
 						  </TR> 
 							<TR> 
 								<TH <? echo $nom_adh_req ?> id="libelle"><? echo _T("Nom :"); ?></TH> 
-								<TD><INPUT type="text" name="nom_adh" value="<? echo $nom_adh; ?>" maxlength="<? echo $nom_adh_len; ?>"></TD> 
-								<TD colspan="2" rowspan="6" align="center" width="130">
+								<TD><INPUT type="text" name="nom_adh" value="<? echo $nom_adh; ?>" maxlength="<? echo $nom_adh_len; ?>" <? echo $disabled_field; ?>></TD> 
+								<TD colspan="2" rowspan="5" align="center" width="130">
 <?
 	$image_adh = "";
 	if (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".jpg"))
@@ -495,7 +518,7 @@
 						  </TR>
 						  <TR>
 								<TH <? echo $prenom_adh_req ?> id="libelle"><? echo _T("Prénom :"); ?></TH> 
-								<TD><INPUT type="text" name="prenom_adh" value="<? echo $prenom_adh; ?>" maxlength="<? echo $prenom_adh_len; ?>"></TD> 
+								<TD><INPUT type="text" name="prenom_adh" value="<? echo $prenom_adh; ?>" maxlength="<? echo $prenom_adh_len; ?>" <? echo $disabled_field; ?>></TD> 
 							</TR>						   
 							<TR> 
 								<TH <? echo $pseudo_adh_req ?> id="libelle"><? echo _T("Pseudo :"); ?></TH> 
@@ -505,39 +528,12 @@
 								<TH <? echo $ddn_adh_req ?> id="libelle"><? echo _T("Date de naissance :"); ?><br>&nbsp;</TH> 
 								<TD><INPUT type="text" name="ddn_adh" value="<? echo $ddn_adh; ?>" maxlength="10"><BR><DIV class="exemple"><? echo _T("(format jj/mm/aaaa)"); ?></DIV></TD>
 							</TR>
-							<TR> 
-								<TH <? echo $id_statut_req ?> id="libelle"><? echo _T("Statut :"); ?></TH> 
-								<TD>
-									<SELECT name="id_statut">
-									<?
-										$requete = "SELECT *
-		 														FROM ".PREFIX_DB."statuts
-		 														ORDER BY priorite_statut";
-										$result = &$DB->Execute($requete);
-										while (!$result->EOF)
-										{									
-									?>
-										<OPTION value="<? echo $result->fields["id_statut"] ?>"<? isSelected($id_statut,$result->fields["id_statut"]) ?>><? echo _T($result->fields["libelle_statut"]); ?></OPTION>
-									<?
-											$result->MoveNext();
-										}
-										$result->Close();
-									?>
-									</SELECT>
-								</TD> 
-							</TR>
 							<TR>
 							  <TH <? echo $prof_adh_req ?> id="libelle"><? echo _T("Profession :"); ?></TH> 
 								<TD><input type="text" name="prof_adh" value="<? echo $prof_adh; ?>" maxlength="<? echo $prof_adh_len; ?>"></TD> 
 							</TR> 
 							<TR>
-								<TH <? echo $activite_adh_req ?> id="libelle"><? echo _T("Compte :"); ?></TH> 
-								<TD>
-								  <SELECT name="activite_adh">
-								  	<OPTION value="1"<? isSelected($activite_adh,"1") ?>><? echo _T("Actif"); ?></OPTION>
-								  	<OPTION value="0"<? isSelected($activite_adh,"0") ?>><? echo _T("Inactif"); ?></OPTION>
-									</SELECT>
-								</TD>
+								<TH id="header" colspan="2">&nbsp;</TH>
 								<TH id="libelle"><? echo _T("Photo :"); ?></TH> 
 								<TD> 
 								<?
@@ -558,26 +554,65 @@
 								?>
 								</TD> 
 							</TR>
+<?
+	if ($_SESSION["admin_status"]!=0)
+	{
+?>
+							<TR> 
+								<TH colspan="4" id="header">&nbsp;</TH> 
+							</TR>
+							<TR>
+								<TH <? echo $activite_adh_req ?> id="libelle"><? echo _T("Compte :"); ?></TH> 
+								<TD>
+								  <SELECT name="activite_adh">
+								  	<OPTION value="1"<? isSelected($activite_adh,"1") ?>><? echo _T("Actif"); ?></OPTION>
+								  	<OPTION value="0"<? isSelected($activite_adh,"0") ?>><? echo _T("Inactif"); ?></OPTION>
+									</SELECT>
+								</TD>
+								<TH id="header" colspan="2">&nbsp;</TH>
+							</TR>
+							<TR> 
+								<TH <? echo $id_statut_req ?> id="libelle"><? echo _T("Statut :"); ?></TH> 
+								<TD>
+									<SELECT name="id_statut">
+									<?
+										$requete = "SELECT *
+		 									    FROM ".PREFIX_DB."statuts
+		 									    ORDER BY priorite_statut";
+										$result = &$DB->Execute($requete);
+										while (!$result->EOF)
+										{									
+									?>
+										<OPTION value="<? echo $result->fields["id_statut"] ?>"<? isSelected($id_statut,$result->fields["id_statut"]) ?>><? echo _T($result->fields["libelle_statut"]); ?></OPTION>
+									<?
+											$result->MoveNext();
+										}
+										$result->Close();
+									?>
+									</SELECT>
+								</TD>
+								<TH id="header" colspan="2">&nbsp;</TH>
+							</TR>
 							<TR> 
 								<TH id="libelle"><? echo _T("Admin Galette :"); ?></TH> 
-								<TD colspan="3"><input type="checkbox" name="bool_admin_adh" value="1"<? isChecked($bool_admin_adh,"1") ?>></TD> 
-						  </TR> 
+								<TD><input type="checkbox" name="bool_admin_adh" value="1"<? isChecked($bool_admin_adh,"1") ?>></TD> 
+								<TH id="header" colspan="2">&nbsp;</TH>
+						  	</TR> 
 							<TR> 
 								<TH id="libelle"><? echo _T("Exempt de cotisation :"); ?></TH> 
-								<TD colspan="3"><INPUT type="checkbox" name="bool_exempt_adh" value="1"<? isChecked($bool_exempt_adh,"1") ?>></TD> 
-						  </TR> 
+								<TD><INPUT type="checkbox" name="bool_exempt_adh" value="1"<? isChecked($bool_exempt_adh,"1") ?>></TD> 
+								<TH id="header" colspan="2">&nbsp;</TH>
+						  	</TR>
+<?
+	}
+?>
 							<TR> 
 								<TH colspan="4" id="header">&nbsp;</TH> 
 							</TR>
 							<TR> 
 								<TH id="libelle" <? echo $adresse_adh_req ?>><? echo _T("Adresse :"); ?></TH> 
 								<TD colspan="3">
-									<INPUT type="text" name="adresse_adh" value="<? echo $adresse_adh; ?>" maxlength="<? echo $adresse_adh_len; ?>" size="63">
-								</TD> 
-						  </TR> 
-							<TR> 
-								<TH id="libelle">&nbsp;</TH> 
-								<TD colspan="3">
+									<INPUT type="text" name="adresse_adh" value="<? echo $adresse_adh; ?>" maxlength="<? echo $adresse_adh_len; ?>" size="63"><BR>
 									<INPUT type="text" name="adresse2_adh" value="<? echo $adresse2_adh; ?>" maxlength="<? echo $adresse2_adh_len; ?>" size="63">
 								</TD> 
 						  </TR> 
@@ -619,8 +654,12 @@
 								<TD><INPUT type="text" name="login_adh" value="<? echo $login_adh; ?>" maxlength="<? echo $login_adh_len; ?>"><BR><DIV class="exemple"><? echo _T("(au moins 4 caractères)"); ?></DIV></TD> 
 								<TH id="libelle" <? echo $mdp_adh_req ?>><? echo _T("Mot de passe :"); ?><BR>&nbsp;</TH> 
 								<TD><INPUT type="text" name="mdp_adh" value="<? echo $mdp_adh; ?>" maxlength="<? echo $mdp_adh_len; ?>"><BR><DIV class="exemple"><? echo _T("(au moins 4 caractères)"); ?></DIV></TD> 
-						  </TR> 
-							<TR> 
+						</TR>
+<?
+	if ($_SESSION["admin_status"]!=0)
+	{
+?>
+						<TR> 
 								<TH id="libelle"><? echo _T("Envoi de mail :"); ?><BR>&nbsp;</TH> 
 								<TD colspan="3"><INPUT type="checkbox" name="mail_confirm" value="1" <? if ($id_adh=="") echo "CHECKED"; ?>><BR><DIV class="exemple"><? echo _T("(l'adhérent recevra son identifiant et son mot de passe par mail, s'il a une adresse.)"); ?></DIV></TD> 
 						  </TR> 
@@ -632,9 +671,22 @@
 								<TH id="libelle" <? echo $info_adh_req ?>><? echo _T("Autres informations (admin) :"); ?></TH> 
 								<TD colspan="3"><TEXTAREA name="info_adh" cols="61" rows="6"><? echo $info_adh; ?></TEXTAREA><BR><DIV class="exemple"><? echo _T("Ce commentaire n'est visible que par les administrateurs."); ?></DIV></TD> 
 						  </TR> 
+<?
+	}
+?>
 							<TR> 
 								<TH id="libelle" <? echo $info_public_adh_req ?>><? echo _T("Autres informations :"); ?></TH> 
-								<TD colspan="3"><TEXTAREA name="info_public_adh" cols="61" rows="6"><? echo $info_public_adh; ?></TEXTAREA><BR><DIV class="exemple"><? echo _T("Ce commentaire est réservé à l'adhérent."); ?></DIV></TD> 
+								<TD colspan="3">
+									<TEXTAREA name="info_public_adh" cols="61" rows="6"><? echo $info_public_adh; ?></TEXTAREA>
+<?
+	if ($_SESSION["admin_status"]!=0)
+	{
+?>	
+									<BR><DIV class="exemple"><? echo _T("Ce commentaire est réservé à l'adhérent."); ?></DIV>
+<?
+	}
+?>	
+								</TD> 
 						  </TR> 
 							<TR> 
 								<TH align="center" colspan="4"><BR><INPUT type="submit" name="valid" value="<? echo _T("Enregistrer"); ?>"></TH> 
