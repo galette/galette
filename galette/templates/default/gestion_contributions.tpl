@@ -45,7 +45,8 @@
 					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt="">
 					{/if}
 				</TH> 
-				<TH class="listing left"> {_T("Date fin")}</TH> 
+				<TH class="listing left"> {_T("Begin.")}</TH> 
+				<TH class="listing left"> {_T("End")}</TH> 
 {if $smarty.session.admin_status eq 1}
 				<TH class="listing left"> 
 					<A href="gestion_contributions.php?tri=1" class="listing">{_T("Member")}</A>
@@ -103,6 +104,9 @@
 {foreach from=$contributions item=contribution key=ordre}
 			<TR> 
 				<TD width="15" class="{$contribution.class} center" nowrap>{$ordre}</TD> 
+				<TD width="50" class="{$contribution.class}" nowrap>
+					{$contribution.date_enreg}
+				</TD> 
 				<TD width="50" class="{$contribution.class}" nowrap>
 					{$contribution.date_debut}
 				</TD> 
