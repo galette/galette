@@ -64,12 +64,12 @@
 	{
 		if (is_numeric($_GET["sup"]))
 		{
-			$requetesup = "SELECT nom_adh, prenom_adh FROM adherents WHERE id_adh=".$DB->qstr($_GET["sup"]);
+			$requetesup = "SELECT nom_adh, prenom_adh FROM ".PREFIX_DB."adherents WHERE id_adh=".$DB->qstr($_GET["sup"]);
 			$resultat = $DB->Execute($requetesup);
 			if (!$resultat->EOF)
 			{
 				// supression record adhérent
-				$requetesup = "DELETE FROM adherents 
+				$requetesup = "DELETE FROM ".PREFIX_DB."adherents 
 										WHERE id_adh=".$DB->qstr($_GET["sup"]); 
 				$DB->Execute($requetesup); 		
 	
@@ -82,7 +82,7 @@
 				@unlink(WEB_ROOT . "photos/tn_".$id_adh.".jpg");
 			
 				// suppression records cotisations
-				$requetesup = "DELETE FROM cotisations 
+				$requetesup = "DELETE FROM ".PREFIX_DB."cotisations 
 										WHERE id_adh=" . $DB->qstr($_GET["sup"]); 
 				$DB->Execute($requetesup); 			
 				dblog(_T("Suppression de la fiche adhérent (et cotisations) :")." ".strtoupper($resultat->fields[0])." ".$resultat->fields[1], $requetesup);
@@ -98,22 +98,22 @@
 		
 	$requete[0] = "SELECT id_adh, nom_adh, prenom_adh, pseudo_adh, activite_adh,
 		       libelle_statut, bool_exempt_adh, titre_adh, email_adh, bool_admin_adh, date_echeance
-		       FROM adherents, statuts
-		       WHERE adherents.id_statut=statuts.id_statut ";
+		       FROM ".PREFIX_DB."adherents, ".PREFIX_DB."statuts
+		       WHERE ".PREFIX_DB."adherents.id_statut=".PREFIX_DB."statuts.id_statut ";
 	$requete[1] = "SELECT count(id_adh)
-		       FROM adherents 
+		       FROM ".PREFIX_DB."adherents 
 		       WHERE 1=1 ";
 								
 	// filtre d'affichage des adherents activés/desactivés
 	if ($_SESSION["filtre_adh_2"]=="1")
 	{
-		$requete[0] .= "AND adherents.activite_adh='1' ";
-		$requete[1] .= "AND adherents.activite_adh='1' ";
+		$requete[0] .= "AND ".PREFIX_DB."adherents.activite_adh='1' ";
+		$requete[1] .= "AND ".PREFIX_DB."adherents.activite_adh='1' ";
 	}
 	elseif ($_SESSION["filtre_adh_2"]=="2")
 	{
-		$requete[0] .= "AND adherents.activite_adh='0' ";
-		$requete[1] .= "AND adherents.activite_adh='0' ";
+		$requete[0] .= "AND ".PREFIX_DB."adherents.activite_adh='0' ";
+		$requete[1] .= "AND ".PREFIX_DB."adherents.activite_adh='0' ";
 	}
 
 	// filtre d'affichage des adherents retardataires

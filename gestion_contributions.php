@@ -97,19 +97,19 @@
 	{
 		// recherche adherent
 		$requetesel = "SELECT id_adh
-			    FROM cotisations 
+			    FROM ".PREFIX_DB."cotisations 
 			    WHERE id_cotis=".$DB->qstr($_GET["sup"]); 
 		$result_adh = &$DB->Execute($requetesel);
 		if (!$result_adh->EOF)
 		{			
 			$id_adh = $result_adh->fields["id_adh"];
 
-			$requetesup = "SELECT nom_adh, prenom_adh FROM adherents WHERE id_adh=".$DB->qstr($id_adh);
+			$requetesup = "SELECT nom_adh, prenom_adh FROM ".PREFIX_DB."adherents WHERE id_adh=".$DB->qstr($id_adh);
 			$resultat = $DB->Execute($requetesup);
 			if (!$resultat->EOF)
 			{			
 				// supression record cotisation
-				$requetesup = "DELETE FROM cotisations 
+				$requetesup = "DELETE FROM ".PREFIX_DB."cotisations 
 				    	    WHERE id_cotis=".$DB->qstr($_GET["sup"]); 
 				$DB->Execute($requetesup);
 			
@@ -119,7 +119,7 @@
 					$date_fin_update = $DB->DBDate(mktime(0,0,0,$date_fin[1],$date_fin[0],$date_fin[2]));
 				else
 					$date_fin_update = "NULL";	
-				$requeteup = "UPDATE adherents
+				$requeteup = "UPDATE ".PREFIX_DB."adherents
 					    SET date_echeance=".$date_fin_update."
 					    WHERE id_adh=".$DB->qstr($id_adh);
 				$DB->Execute($requeteup);
@@ -132,21 +132,21 @@
 ?> 
 		<H1 class="titre"><? echo _T("Gestion des contributions"); ?></H1>
 <?
-	$requete[0] = "SELECT cotisations.*, adherents.nom_adh, adherents.prenom_adh,
-			types_cotisation.libelle_type_cotis
-			FROM cotisations,adherents,types_cotisation
-			WHERE cotisations.id_adh=adherents.id_adh
-			AND types_cotisation.id_type_cotis=cotisations.id_type_cotis ";
+	$requete[0] = "SELECT ".PREFIX_DB."cotisations.*, ".PREFIX_DB."adherents.nom_adh, ".PREFIX_DB."adherents.prenom_adh,
+			".PREFIX_DB."types_cotisation.libelle_type_cotis
+			FROM ".PREFIX_DB."cotisations,".PREFIX_DB."adherents,".PREFIX_DB."types_cotisation
+			WHERE ".PREFIX_DB."cotisations.id_adh=".PREFIX_DB."adherents.id_adh
+			AND ".PREFIX_DB."types_cotisation.id_type_cotis=".PREFIX_DB."cotisations.id_type_cotis ";
 	$requete[1] = "SELECT count(id_cotis)
-			FROM cotisations
+			FROM ".PREFIX_DB."cotisations
 			WHERE 1=1 ";
 
 	// phase filtre
 	
 	if ($_SESSION["filtre_cotis_adh"]!="")
 	{
-		$requete[0] .= "AND cotisations.id_adh='" . $_SESSION["filtre_cotis_adh"] . "' ";
-		$requete[1] .= "AND cotisations.id_adh='" . $_SESSION["filtre_cotis_adh"] . "' ";
+		$requete[0] .= "AND ".PREFIX_DB."cotisations.id_adh='" . $_SESSION["filtre_cotis_adh"] . "' ";
+		$requete[1] .= "AND ".PREFIX_DB."cotisations.id_adh='" . $_SESSION["filtre_cotis_adh"] . "' ";
 	}
 		
 	// date filter
@@ -154,15 +154,15 @@
 	{
 	   ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_SESSION["filtre_date_cotis_1"], $array_jours);
 	   $datemin = $DB->DBDate(mktime(0,0,0,$array_jours[2],$array_jours[1],$array_jours[3]));
-	   $requete[0] .= "AND cotisations.date_cotis >= " . $datemin . " ";
-	   $requete[1] .= "AND cotisations.date_cotis >= " . $datemin . " ";
+	   $requete[0] .= "AND ".PREFIX_DB."cotisations.date_cotis >= " . $datemin . " ";
+	   $requete[1] .= "AND ".PREFIX_DB."cotisations.date_cotis >= " . $datemin . " ";
 	}
 	if ($_SESSION["filtre_date_cotis_2"]!="")
 	{
 	   ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_SESSION["filtre_date_cotis_2"], $array_jours);
 	   $datemax = $DB->DBDate(mktime(0,0,0,$array_jours[2],$array_jours[1],$array_jours[3]));
-	   $requete[0] .= "AND cotisations.date_cotis <= " . $datemax . " ";
-	   $requete[1] .= "AND cotisations.date_cotis <= " . $datemax . " ";
+	   $requete[0] .= "AND ".PREFIX_DB."cotisations.date_cotis <= " . $datemax . " ";
+	   $requete[1] .= "AND ".PREFIX_DB."cotisations.date_cotis <= " . $datemax . " ";
 	}
 
 	// phase de tri
@@ -191,7 +191,7 @@
 		$requete[0] .= "duree_mois_cotis ".$tri_cotis_sens_txt.",";
 
 	// defaut : tri par date
-	$requete[0] .= " cotisations.date_cotis ".$tri_cotis_sens_txt; 
+	$requete[0] .= " ".PREFIX_DB."cotisations.date_cotis ".$tri_cotis_sens_txt; 
 	
 	// $resultat = &$DB->Execute($requete[0]); 
 	$resultat = &$DB->SelectLimit($requete[0],PREF_NUMROWS,($page-1)*PREF_NUMROWS);
@@ -370,7 +370,7 @@
 	if ($_SESSION["filtre_cotis_adh"]!="")
 	{
 		$requete = "SELECT date_echeance, bool_exempt_adh
-			    FROM adherents
+			    FROM ".PREFIX_DB."adherents
 			    WHERE id_adh='".$_SESSION["filtre_cotis_adh"]."'";
 		$resultat = $DB->Execute($requete);
 		

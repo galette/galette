@@ -41,7 +41,8 @@
 		&& isset($_POST["install_dbhost"]) 
 		&& isset($_POST["install_dbuser"]) 
 		&& isset($_POST["install_dbpass"]) 
-		&& isset($_POST["install_dbname"]))
+		&& isset($_POST["install_dbname"])
+		&& isset($_POST["install_dbprefix"]))
 	{
 		if ($_POST["install_dbtype"]!="mysql" && $_POST["install_dbtype"]!="pgsql")
 	  		$error_detected .= "<IMG src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("Type de base inconnu")."<BR>";
@@ -316,6 +317,12 @@
 					<INPUT type="text" name="install_dbname" value="<? if(isset($_POST["install_dbname"])) echo $_POST["install_dbname"]; ?>">
 				</TD>
 			</TR>					
+                        <TR>
+                                <TD><? echo _T("Prefixe de table :"); ?></TD>
+                                <TD>
+                                        <INPUT type="text" name="install_dbprefix" value="<? if(isset($_POST["install_dbprefix"])) echo $_POST["install_dbprefix"]; else echo "galette_" ?>">
+                                </TD>
+                	</TR>
 		</TABLE>
 		<P id="submitbutton3">
 			<INPUT type="submit" value="<? echo _T("Etape suivante"); ?>">
@@ -382,6 +389,7 @@
 		<INPUT type="hidden" name="install_dbuser" value="<? echo $_POST["install_dbuser"]; ?>">
 		<INPUT type="hidden" name="install_dbpass" value="<? echo $_POST["install_dbpass"]; ?>">
 		<INPUT type="hidden" name="install_dbname" value="<? echo $_POST["install_dbname"]; ?>">
+                <INPUT type="hidden" name="install_dbprefix" value="<? echo $_POST["install_dbprefix"]; ?>">
 		<INPUT type="hidden" name="install_dbconn_ok" value="1">
 	</FORM>
 <?
@@ -412,7 +420,7 @@
 				$tables = $DB->MetaTables('TABLES');
 				while (list($key,$value)=each($tables))
 				{
-					if ($value=="test")
+					if ($value=="galette_test")
 					{
 						$droptest =1;
 						$requete = "DROP table ".$value;
@@ -431,7 +439,7 @@
 				if (!isset($error))
 				{	
 					// à adapter selon le type de base
-					$requete="CREATE table test (testcol text)";
+					$requete="CREATE table galette_test (testcol text)";
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
@@ -446,7 +454,7 @@
 				if (!isset($error))
 				{	
 					// à adapter selon le type de base
-					$requete="INSERT INTO test VALUES (".$DB->qstr("test").")";
+					$requete="INSERT INTO galette_test VALUES (".$DB->qstr("test").")";
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
@@ -461,7 +469,7 @@
 				if (!isset($error))
 				{	
 					// à adapter selon le type de base
-					$requete="UPDATE test SET testcol=".$DB->qstr("test");
+					$requete="UPDATE galette_test SET testcol=".$DB->qstr("test");
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
@@ -476,7 +484,7 @@
 				if (!isset($error))
 				{	
 					// à adapter selon le type de base
-					$requete="SELECT * FROM test";
+					$requete="SELECT * FROM galette_test";
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
@@ -491,7 +499,7 @@
 				if (!isset($error) && $step=="u6")
 				{	
 					// à adapter selon le type de base
-					$requete="ALTER TABLE test ADD testalter text";
+					$requete="ALTER TABLE galette_test ADD testalter text";
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
@@ -506,7 +514,7 @@
 				if (!isset($error))
 				{	
 					// à adapter selon le type de base
-					$requete="DELETE FROM test";
+					$requete="DELETE FROM galette_test";
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
@@ -521,7 +529,7 @@
 				if (!isset($error))
 				{	
 					// à adapter selon le type de base
-					$requete="DROP TABLE test";
+					$requete="DROP TABLE galette_test";
 					$DB->Execute($requete);
 					if (!isset($droptest))
 					if($DB->ErrorNo())
@@ -555,6 +563,7 @@
 		<INPUT type="hidden" name="install_dbuser" value="<? echo $_POST["install_dbuser"]; ?>">
 		<INPUT type="hidden" name="install_dbpass" value="<? echo $_POST["install_dbpass"]; ?>">
 		<INPUT type="hidden" name="install_dbname" value="<? echo $_POST["install_dbname"]; ?>">
+		<INPUT type="hidden" name="install_dbprefix" value="<? echo $_POST["install_dbprefix"]; ?>">
 		<INPUT type="hidden" name="install_dbconn_ok" value="1">
 	</FORM>
 <?
@@ -575,6 +584,7 @@
 		<INPUT type="hidden" name="install_dbuser" value="<? echo $_POST["install_dbuser"]; ?>">
 		<INPUT type="hidden" name="install_dbpass" value="<? echo $_POST["install_dbpass"]; ?>">
 		<INPUT type="hidden" name="install_dbname" value="<? echo $_POST["install_dbname"]; ?>">
+		<INPUT type="hidden" name="install_dbprefix" value="<? echo $_POST["install_dbprefix"]; ?>">
 		<INPUT type="hidden" name="install_dbconn_ok" value="1">
 		<INPUT type="hidden" name="install_dbperms_ok" value="1">
 	</FORM>
@@ -606,10 +616,11 @@
 			include("sql_parse.php");
 			
 			$prefix = "";
+			$table_prefix = $_POST["install_dbprefix"];
 			if ($step=="u7") $prefix="upgrade-";
                                                                                                                                                   
 			$sql_query = @fread(@fopen($prefix.$_POST["install_dbtype"].".sql", 'r'), @filesize($prefix.$_POST["install_dbtype"].".sql"));
-			// $sql_query = preg_replace('/phpbb_/', $table_prefix, $sql_query);
+			$sql_query = preg_replace('/galette_/', $table_prefix, $sql_query);
                                                                                                                                                   
 			$sql_query = remove_remarks($sql_query);
 			$sql_query = split_sql_file($sql_query, ";");
@@ -656,6 +667,7 @@
 		<INPUT type="hidden" name="install_dbuser" value="<? echo $_POST["install_dbuser"]; ?>">
 		<INPUT type="hidden" name="install_dbpass" value="<? echo $_POST["install_dbpass"]; ?>">
 		<INPUT type="hidden" name="install_dbname" value="<? echo $_POST["install_dbname"]; ?>">
+		<INPUT type="hidden" name="install_dbprefix" value="<? echo $_POST["install_dbprefix"]; ?>">
 		<INPUT type="hidden" name="install_dbconn_ok" value="1">
 		<INPUT type="hidden" name="install_dbperms_ok" value="1">
 	</FORM>
@@ -680,6 +692,7 @@
 		<INPUT type="hidden" name="install_dbuser" value="<? echo $_POST["install_dbuser"]; ?>">
 		<INPUT type="hidden" name="install_dbpass" value="<? echo $_POST["install_dbpass"]; ?>">
 		<INPUT type="hidden" name="install_dbname" value="<? echo $_POST["install_dbname"]; ?>">
+		<INPUT type="hidden" name="install_dbprefix" value="<? echo $_POST["install_dbprefix"]; ?>">
 		<INPUT type="hidden" name="install_dbconn_ok" value="1">
 		<INPUT type="hidden" name="install_dbperms_ok" value="1">
 		<INPUT type="hidden" name="install_dbwrite_ok" value="1">
@@ -732,6 +745,7 @@
 		<INPUT type="hidden" name="install_dbuser" value="<? echo $_POST["install_dbuser"]; ?>">
 		<INPUT type="hidden" name="install_dbpass" value="<? echo $_POST["install_dbpass"]; ?>">
 		<INPUT type="hidden" name="install_dbname" value="<? echo $_POST["install_dbname"]; ?>">
+		<INPUT type="hidden" name="install_dbprefix" value="<? echo $_POST["install_dbprefix"]; ?>">
 		<INPUT type="hidden" name="install_dbconn_ok" value="1">
 		<INPUT type="hidden" name="install_dbperms_ok" value="1">
 		<INPUT type="hidden" name="install_dbwrite_ok" value="1">
@@ -760,6 +774,7 @@ define(\"USER_DB\", \"".$_POST["install_dbuser"]."\");
 define(\"PWD_DB\", \"".$_POST["install_dbpass"]."\");
 define(\"NAME_DB\", \"".$_POST["install_dbname"]."\");
 define(\"WEB_ROOT\", \"".WEB_ROOT."\");
+define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 ?>";
 				fwrite($fd,$data);
 				fclose($fd);	
@@ -772,9 +787,9 @@ define(\"WEB_ROOT\", \"".WEB_ROOT."\");
 			}
 
 			// sauvegarde des parametres
-			$default = "DELETE FROM preferences";
+			$default = "DELETE FROM ".$_POST["install_dbprefix"]."preferences";
 			$DB->Execute($default);
-			$default = "INSERT INTO preferences VALUES ('Galette','-',NULL,'-','-',NULL,".$DB->qstr($_POST["install_lang"]).",30,'1','Galette','mail@domain.com',10,10,5,90,35,2,7,12,".$DB->qstr($_POST["install_adminlogin"]).",".$DB->qstr($_POST["install_adminpass"]).");";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES ('Galette','-',NULL,'-','-',NULL,".$DB->qstr($_POST["install_lang"]).",30,'1','Galette','mail@domain.com',10,10,5,90,35,2,7,12,".$DB->qstr($_POST["install_adminlogin"]).",".$DB->qstr($_POST["install_adminpass"]).");";
 			$DB->Execute($default);
 			if (!$DB->ErrorNo())
 				echo "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Paramètres sauvegardés dans la base de données")."<BR>";
@@ -801,6 +816,7 @@ define(\"WEB_ROOT\", \"".WEB_ROOT."\");
 		<INPUT type="hidden" name="install_dbuser" value="<? echo $_POST["install_dbuser"]; ?>">
 		<INPUT type="hidden" name="install_dbpass" value="<? echo $_POST["install_dbpass"]; ?>">
 		<INPUT type="hidden" name="install_dbname" value="<? echo $_POST["install_dbname"]; ?>">
+		<INPUT type="hidden" name="install_dbprefix" value="<? echo $_POST["install_dbprefix"]; ?>">
 		<INPUT type="hidden" name="install_dbconn_ok" value="1">
 		<INPUT type="hidden" name="install_dbperms_ok" value="1">
 		<INPUT type="hidden" name="install_dbwrite_ok" value="1">
@@ -827,6 +843,7 @@ define(\"WEB_ROOT\", \"".WEB_ROOT."\");
 		<INPUT type="hidden" name="install_dbuser" value="<? echo $_POST["install_dbuser"]; ?>">
 		<INPUT type="hidden" name="install_dbpass" value="<? echo $_POST["install_dbpass"]; ?>">
 		<INPUT type="hidden" name="install_dbname" value="<? echo $_POST["install_dbname"]; ?>">
+		<INPUT type="hidden" name="install_dbprefix" value="<? echo $_POST["install_dbprefix"]; ?>">
 		<INPUT type="hidden" name="install_dbconn_ok" value="1">
 		<INPUT type="hidden" name="install_dbperms_ok" value="1">
 		<INPUT type="hidden" name="install_dbwrite_ok" value="1">

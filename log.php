@@ -36,13 +36,13 @@
 		
 	if (isset($_POST["reset"]))
 	{
-		$requete[0] = "DELETE FROM logs";
+		$requete[0] = "DELETE FROM ".PREFIX_DB."logs";
 		$DB->Execute($requete[0]);
 		dblog(_T("Réinitialisation de l'historique"));
 	}
 
-	$requete[0] = "SELECT date_log, adh_log, text_log, ip_log FROM logs ORDER BY date_log DESC, id_log DESC";
-	$requete[1] = "SELECT count(id_log) FROM logs";
+	$requete[0] = "SELECT date_log, adh_log, text_log, ip_log FROM ".PREFIX_DB."logs ORDER BY date_log DESC, id_log DESC";
+	$requete[1] = "SELECT count(id_log) FROM ".PREFIX_DB."logs";
 	$resultat = &$DB->SelectLimit($requete[0],PREF_NUMROWS,($page-1)*PREF_NUMROWS);
 	$nb_lines = &$DB->Execute($requete[1]);
 		

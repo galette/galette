@@ -41,6 +41,7 @@ $lang["Type de base de données :"]="Database type:";
 $lang["Utilisateur :"]="User:";
 $lang["Hôte :"]="Host:";
 $lang["Nom de la base :"]="Database:";
+$lang["Prefixe de table :"]="Table prefix:";
 $lang["Etape 4 - Base de données"]="Step 4 - Database";
 $lang["Vérification de la base"]="Check of the database";
 $lang["Vérification des paramètres et de l'existence de la base"]="Check the parameters and the existence of the database";

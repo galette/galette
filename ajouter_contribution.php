@@ -49,7 +49,7 @@
   //  et on initialise des valeurs par defaut
     
  	// recuperation de la liste de champs de la table
-  $fields = &$DB->MetaColumns("cotisations");
+  $fields = &$DB->MetaColumns(PREFIX_DB."cotisations");
   while (list($champ, $proprietes) = each($fields))
 	{
 		$proprietes_arr = get_object_vars($proprietes);
@@ -93,7 +93,7 @@
   	$id_adh = $_POST["id_adh"];
   	if ($id_adh!="")
   	{
-  		$requete = "SELECT nom_adh, prenom_adh FROM adherents WHERE id_adh=".$DB->qstr($id_adh);
+  		$requete = "SELECT nom_adh, prenom_adh FROM ".PREFIX_DB."adherents WHERE id_adh=".$DB->qstr($id_adh);
 		$resultat = $DB->Execute($requete);
 		if (!$resultat->EOF)
 		{
@@ -115,7 +115,7 @@
   	$insert_string_values = "";
   
 		// recuperation de la liste de champs de la table
-	  //$fields = &$DB->MetaColumns("cotisations");
+	  //$fields = &$DB->MetaColumns(PREFIX_DB."cotisations");
 	  while (list($champ, $proprietes) = each($fields))
 		{
 			$proprietes_arr = get_object_vars($proprietes);
@@ -192,7 +192,7 @@
  		 	{
  		 		// modif
  		 		
- 		 		$requete = "UPDATE cotisations
+ 		 		$requete = "UPDATE ".PREFIX_DB."cotisations
  		 								SET " . substr($update_string,1) . " 
  		 								WHERE id_cotis=" . $DB->qstr($id_cotis);
 				dblog(_T("Mise à jour d'une contribution :")." ".strtoupper($nom_adh)." ".$prenom_adh, $requete);							
@@ -201,7 +201,7 @@
  		 	{
   			// ajout
  				
-   			$requete = "INSERT INTO cotisations
+   			$requete = "INSERT INTO ".PREFIX_DB."cotisations
   									(" . substr($insert_string_fields,1) . ") 
   									VALUES (" . substr($insert_string_values,1) . ")";
   									
@@ -216,7 +216,7 @@
 			else
 				$date_fin_update = "'NULL'";
 
-			$requete = "UPDATE adherents
+			$requete = "UPDATE ".PREFIX_DB."adherents
 				    SET date_echeance=".$date_fin_update."
 				    WHERE id_adh='".$id_adh."'";
 			$DB->Execute($requete);
@@ -228,8 +228,8 @@
 			if ($id_cotis=="")
 			{
 				$requete = "SELECT max(id_cotis)
-										AS max
-										FROM cotisations";
+						AS max
+						FROM ".PREFIX_DB."cotisations";
 				$max = &$DB->Execute($requete);
 				$id_cotis = $max->fields["max"];
 			}	
@@ -247,7 +247,7 @@
 	{ 
 		// recup des données
 		$requete = "SELECT * 
-								FROM cotisations 
+								FROM ".PREFIX_DB."cotisations 
 			  				WHERE id_cotis=$id_cotis";
 		$result = &$DB->Execute($requete);
         	if ($result->EOF)
@@ -256,7 +256,7 @@
 
 			
 		// recuperation de la liste de champs de la table
-	  //$fields = &$DB->MetaColumns("cotisations");
+	  //$fields = &$DB->MetaColumns(PREFIX_DB."cotisations");
 	  while (list($champ, $proprietes) = each($fields))
 		{
 			$proprietes_arr = get_object_vars($proprietes);
@@ -317,7 +317,7 @@
 										<option value="" <? isSelected($id_adh,"") ?>><? echo _T("-- selectionner un nom --"); ?></option>
 									<?
 										$requete = "SELECT id_adh, nom_adh, prenom_adh
-		 														FROM adherents
+		 														FROM ".PREFIX_DB."adherents
 		 														ORDER BY nom_adh, prenom_adh";
 										$result = &$DB->Execute($requete);
 										while (!$result->EOF)
@@ -336,7 +336,7 @@
 									<select name="id_type_cotis">
 									<?
 										$requete = "SELECT id_type_cotis, libelle_type_cotis
-		 														FROM types_cotisation
+		 														FROM ".PREFIX_DB."types_cotisation
 		 														ORDER BY libelle_type_cotis";
 										$result = &$DB->Execute($requete);
 										while (!$result->EOF)

@@ -121,22 +121,22 @@
 			
 		$requete[0] = "SELECT id_adh, nom_adh, prenom_adh, pseudo_adh, activite_adh,
 			       libelle_statut, bool_exempt_adh, titre_adh, email_adh, bool_admin_adh, date_echeance
-			       FROM adherents, statuts
-			       WHERE adherents.id_statut=statuts.id_statut ";
+			       FROM ".PREFIX_DB."adherents, ".PREFIX_DB."statuts
+			       WHERE ".PREFIX_DB."adherents.id_statut=".PREFIX_DB."statuts.id_statut ";
 		$requete[1] = "SELECT count(id_adh)
-			       FROM adherents
+			       FROM ".PREFIX_DB."adherents
 			       WHERE 1=1 ";
 									
 		// filtre d'affichage des adherents activés/desactivés
 		if ($_SESSION["filtre_adh_2"]=="1")
 		{
-			$requete[0] .= "AND adherents.activite_adh='1' ";
-			$requete[1] .= "AND adherents.activite_adh='1' ";
+			$requete[0] .= "AND ".PREFIX_DB."adherents.activite_adh='1' ";
+			$requete[1] .= "AND ".PREFIX_DB."adherents.activite_adh='1' ";
 		}
 		if ($_SESSION["filtre_adh_2"]=="2")
 		{
-			$requete[0] .= "AND adherents.activite_adh='0' ";
-			$requete[1] .= "AND adherents.activite_adh='0' ";
+			$requete[0] .= "AND ".PREFIX_DB."adherents.activite_adh='0' ";
+			$requete[1] .= "AND ".PREFIX_DB."adherents.activite_adh='0' ";
 		}
 
 		// filtre d'affichage des adherents à jour
@@ -442,9 +442,9 @@
 		// $mailing_corps = $_POST["mailing_corps"];
 		// adhérents avec email
 		$requete = "SELECT id_adh, nom_adh, prenom_adh, pseudo_adh, activite_adh,
-									libelle_statut, bool_exempt_adh, titre_adh, email_adh, bool_admin_adh, date_echeance
-									FROM adherents, statuts
-			       				WHERE adherents.id_statut=statuts.id_statut AND (";
+				libelle_statut, bool_exempt_adh, titre_adh, email_adh, bool_admin_adh, date_echeance
+				FROM ".PREFIX_DB."adherents, ".PREFIX_DB."statuts
+	  				WHERE ".PREFIX_DB."adherents.id_statut=".PREFIX_DB."statuts.id_statut AND (";
 		$where_clause = "";
 		while(list($key,$value)=each($mailing_adh))
 		{
@@ -661,10 +661,10 @@
 <?
 		// adhérents sans email
 		$requete = "SELECT id_adh, nom_adh, prenom_adh, adresse_adh, activite_adh,
-									libelle_statut, bool_exempt_adh, titre_adh, cp_adh, bool_admin_adh, date_echeance,
-									ville_adh, tel_adh, gsm_adh, msn_adh, icq_adh, pays_adh, jabber_adh, adresse2_adh
-									FROM adherents, statuts
-			       				WHERE adherents.id_statut=statuts.id_statut AND (";
+				libelle_statut, bool_exempt_adh, titre_adh, cp_adh, bool_admin_adh, date_echeance,
+				ville_adh, tel_adh, gsm_adh, msn_adh, icq_adh, pays_adh, jabber_adh, adresse2_adh
+				FROM ".PREFIX_DB."adherents, ".PREFIX_DB."statuts
+			       	WHERE ".PREFIX_DB."adherents.id_statut=".PREFIX_DB."statuts.id_statut AND (";
 		$requete .= $where_clause.") AND email_adh IS NULL ORDER by nom_adh, prenom_adh;";
 		// echo $requete;
 		$resultat = &$DB->Execute($requete);
