@@ -653,9 +653,7 @@
 				{
 					if (ereg("upgrade-to-(.*)-".$_POST["install_dbtype"].".sql",$file,$ver))
 					{
-						if (substr($_POST["install_type"],8)==$ver[1])
-							$first_file_found = true;
-						if ($first_file_found)
+						if (substr($_POST["install_type"],8)<=$ver[1])
 							$update_scripts[$ver[1]] = $file;
 					}
 				}
