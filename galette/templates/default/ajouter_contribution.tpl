@@ -17,17 +17,20 @@
 					<TH {if $required.id_adh eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Contributor:")}</TH> 
 					<TD>
 						<SELECT name="id_adh">
+							{if $adh_selected eq 0}
 							<OPTION>{_T("-- select a name --")}</OPTION>
+							{/if}
 							{html_options options=$adh_options selected=$contribution.id_adh}
 						</SELECT>
 					</TD> 
 					<TH {if $required.id_type_cotis eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Contribution type:")}</TH> 
 					<TD>
-						<SELECT name="id_type_cotis">
+						<SELECT name="id_type_cotis" onchange="form.submit()">
 							{html_options options=$type_cotis_options selected=$contribution.id_type_cotis}
 						</SELECT>
 					</TD> 
 				</TR>
+				{if $type_selected eq 1}
 				<TR>
 					<TH {if $required.montant_cotis eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Amount:")}</TH> 
 					<TD colspan="3"><INPUT type="text" name="montant_cotis" value="{$contribution.montant_cotis}" maxlength="10"></TD> 
@@ -71,12 +74,21 @@
 				<TR> 
 					<TH align="center" colspan="4"><BR><input type="submit" value="{_T("Save")}"></TH> 
 				</TR> 
+				{else} {* $type_selected ne 1 *}
+				<TR> 
+					<TH align="center" colspan="4"><BR><input type="submit" value="{_T("Continue")}"></TH> 
+				</TR> 
+				{/if} {* $type_selected eq 1 *}
 			</TABLE> 
 		</DIV>
 		<BR> 
 		{_T("NB : The mandatory fields are in")} <font style="color: #FF0000">{_T("red")}</font>. 
 		</BLOCKQUOTE> 
 		<INPUT type="hidden" name="id_cotis" value="{$contribution.id_cotis}">
+		{if $type_selected eq 1}
 		<INPUT type="hidden" name="valid" value="1">
+		{else} {* $type_selected ne 1 *}
+		<INPUT type="hidden" name="type_selected" value="1">
+		{/if} {* $type_selected eq 1 *}
 		<INPUT type="hidden" name="cotis_extension" value="{$cotis_extension}">
 		</FORM>

@@ -40,8 +40,7 @@
 				<LI><A href="gestion_adherents.php"><? echo _T("List of members"); ?></A></LI>
 				<LI><A href="gestion_contributions.php?id_adh=all"><? echo _T("List of contributions"); ?></A></LI>
 				<LI><A href="ajouter_adherent.php"><? echo _T("Add a member"); ?></A></LI>
-				<LI><A href="ajouter_contribution.php?cotis_extension=1"><? echo _T("Add member fee"); ?></A></LI>
-				<LI><A href="ajouter_contribution.php?cotis_extension=0"><? echo _T("Add a contribution"); ?></A></LI>
+				<LI><A href="ajouter_contribution.php"><? echo _T("Add a contribution"); ?></A></LI>
 				<LI><A href="mailing_adherents.php"><? echo _T("Do a mailing"); ?></A></LI>
 				<LI><A href="mailing_adherents.php?etiquettes=1"><? echo _T("Generate labels"); ?></A></LI>
 				<LI><A href="log.php"><? echo _T("Logs"); ?></A></LI>
