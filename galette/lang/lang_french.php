@@ -118,6 +118,7 @@ $lang["- Cet identifiant est déjà utilisé par un autre adhérent !"]="- Cet ident
 $lang["- Le mot de passe doit être composé d'au moins 4 caractères !"]="- Le mot de passe doit être composé d'au moins 4 caractères !";
 $lang["- La photo semble ne pas avoir été transmise correstement. L'enregistrement a cependant été effectué."]="- La photo semble ne pas avoir été transmise correstement. L'enregistrement a cependant été effectué.";
 $lang["- Le fichier transmis n'est pas une image valide (GIF, PNG ou JPEG). L'enregistrement a cependant été effectué."]="- Le fichier transmis n'est pas une image valide (GIF, PNG ou JPEG). L'enregistrement a cependant été effectué.";
+$lang["- Le fichier transmis n'est pas une image valide (PNG ou JPEG). L'enregistrement a cependant été effectué."]="- Le fichier transmis n'est pas une image valide (PNG ou JPEG). L'enregistrement a cependant été effectué.";
 $lang["Fiche adhérent"]="Fiche adhérent";
 $lang["modification"]="modification";
 $lang["création"]="création";
