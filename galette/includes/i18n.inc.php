@@ -39,6 +39,9 @@ $languages = array (
                     "spanish"   => "es_ES@euro"
                     );
 $language=$languages[$pref_lang];
+
+if (function_exists('putenv'))
+{
 putenv("LANG=$language");
 putenv("LANGUAGE=$language");
 putenv("LC_ALL=$language");
@@ -53,7 +56,9 @@ $domain = 'galette';
 $textdomain= THIS_BASE_DIR . "/../lang";
 bindtextdomain($domain, $textdomain);
 textdomain($domain);
-
+}
+else
+$loc='';
 
 function add_dynamic_translation($DB, $text_orig, $error_detected)
 {

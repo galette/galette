@@ -58,6 +58,10 @@ CREATE TABLE galette_dynamic_fields (
 );
 CREATE INDEX galette_dynamic_fields_item_idx ON galette_dynamic_fields (item_id);
 
+-- Add two fields for logs;
+ALTER TABLE galette_logs ADD action_log text;
+ALTER TABLE galette_logs ADD sql_log text;
+
 -- Change table cotisations to store date_fin_cotis instead of duration;
 ALTER TABLE galette_cotisations ADD date_enreg date;
 ALTER TABLE galette_cotisations ADD date_debut_cotis date;

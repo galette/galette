@@ -102,6 +102,8 @@ CREATE TABLE galette_logs (
   ip_log varchar(30) NOT NULL default '',
   adh_log varchar(41) NOT NULL default '',
   text_log text,
+  action_log text,
+  sql_log text,
   PRIMARY KEY  (id_log)
 ) TYPE=MyISAM;
 
