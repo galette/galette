@@ -100,6 +100,7 @@ $lang[ "Les paramètres n'ont pas pu être sauvegardés."]= "Les paramètres n'ont p
 $lang["Ceci peut provenir des droits sur le fichier includes/config.inc.php ou de l'impossibilité de faire un INSERT dans la base."]="Ceci peut provenir des droits sur le fichier includes/config.inc.php ou de l'impossibilité de faire un INSERT dans la base.";
 $lang["Etape 9 - Sauvegarde des paramètres"]="Etape 9 - Sauvegarde des paramètres";
 $lang["Fin de l'installation"]="Fin de l'installation";
+$lang["Fin de la mise à jour"]="Fin de la mise à jour";
 $lang["Galette a été installé avec succès !"]="Galette a été installé avec succès !";
 $lang["Galette a été mis à jour avec succès !"]="Galette a été mis à jour avec succès !";
 $lang["Pour sécuriser le système, veuillez supprimer le dossier install"]="Pour sécuriser le système, veuillez supprimer le dossier install";
