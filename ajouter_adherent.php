@@ -1,4 +1,4 @@
-<? 
+<? // -*- Mode: PHP; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 /* ajouter_adherent.php
  * - Saisie d'un adhérent
  * Copyright (c) 2004 Frédéric Jaqcuot
@@ -504,7 +504,7 @@
 ?> 
  
 						<H1 class="titre"><? echo _("Member Profile"); ?> (<? if ($id_adh!="") echo _("modification"); else echo _("creation"); ?>)</H1>
-						<FORM action="ajouter_adherent.php" method="post" enctype="multipart/form-data"> 
+						<FORM action="ajouter_adherent.php" method="post" enctype="multipart/form-data" name="form"> 
 						
 <?
 	// Affichage des erreurs
@@ -607,8 +607,16 @@
 								<TH id="libelle"><? echo _("Be visible in the<br /> members list :"); ?></TH>
 								<TD><input type="checkbox" name="bool_display_info" value="1"<? isChecked($bool_display_info,"1") ?>></TD> 
 								<TH id="libelle"><? echo _("Language:") ?></TH>
-                                <TD>
-                                <SELECT NAME="pref_lang">
+                <TD>
+                  <script language="javascript" type="text/javascript">
+                    <!--
+                    function updatelanguage(){
+                        document.cookie = "pref_lang="+document.form.pref_lang.value;
+                        window.location.reload()
+                    }
+                    -->
+                  </script>
+                  <SELECT NAME="pref_lang" onChange="updatelanguage()">
 <?
 			$path = "lang";
 			$dir_handle = @opendir($path);
@@ -719,6 +727,12 @@
 								<TH id="libelle" <? echo $msn_adh_req ?>><? echo _("MSN:"); ?></TH> 
 								<TD><INPUT type="text" name="msn_adh" value="<? echo $msn_adh; ?>" maxlength="<? echo $msn_adh_len; ?>" size="30"></TD> 
 						  </TR> 
+              <TR> 
+                <TH id="libelle" <? echo $gpgid_req ?>><? echo _("Id GNUpg (GPG):"); ?></TH> 
+                <TD><INPUT type="text" name="gpgid" value="<? echo $gpgid; ?>" maxlength="<? echo $gpgid_len; ?>" size="8"></TD> 
+                <TH id="libelle" <? echo $fingerprint_req ?>><? echo _("fingerprint:"); ?></TH> 
+                <TD><INPUT type="text" name="fingerprint" value="<? echo $fingerprint; ?>" maxlength="<? echo $fingerprint_len; ?>" size="30"></TD> 
+              </TR> 
 							<TR> 
 								<TH colspan="4" id="header">&nbsp;</TH> 
 							</TR>

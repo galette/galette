@@ -1,4 +1,4 @@
-<?
+<? // -*- Mode: PHP; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 /* voir_adherent.php
  * - Visualisation d'une fiche adhérent
  * Copyright (c) 2004 Frédéric Jaqcuot
@@ -234,6 +234,12 @@
 						<TD bgcolor="#EEEEEE"><? echo $jabber_adh; ?>&nbsp;</TD> 
 						<TD bgcolor="#DDDDFF"><B><? echo _("MSN:"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? if ($msn_adh!="") { ?><A href="mailto:<? echo $msn_adh; ?>"><? echo $msn_adh; ?></A><? } ?>&nbsp;</TD> 
+					</TR> 
+					<TR> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("Id GNUpg (GPG):"); ?></B></TD> 
+						<TD bgcolor="#EEEEEE"><? echo $gpgid; ?>&nbsp;</TD> 
+						<TD bgcolor="#DDDDFF"><B><? echo _("fingerprint:"); ?></B></TD> 
+						<TD bgcolor="#EEEEEE"><? echo $fingerprint; ?>&nbsp;</TD> 
 					</TR> 
 					<TR> 
 						<TD colspan="4">&nbsp;</TD> 
