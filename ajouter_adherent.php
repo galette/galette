@@ -104,6 +104,9 @@
   
   if (isset($_POST["valid"]))
   {
+        if(!UniqueLogin($DB,$_POST["login_adh"])){
+	  $error_detected .=_T("Désolé, ").$_POST["login_adh"]._T(" est un identifiant déjà utilisé, choisissez-en un autre\n");
+	}
   	// verification de champs
   	$update_string = "";
   	$insert_string_fields = "";
