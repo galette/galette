@@ -184,8 +184,6 @@
 					<TR>
 						<TD bgcolor="#DDDDFF"><B><? echo _T("Je souhaite apparaître dans la liste des membres :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? if ($bool_display_info=="1") echo _T("Oui"); else echo _T("Non"); ?></TD> 
-                                                <TD bgcolor="#DDDDFF"><? echo _T("Langue :"); ?></TD>
-                                                <TD bgcolor="#EEEEEE" ALIGN="center"><IMG SRC="<? echo "lang/".$pref_lang.".gif"; ?>"></TD>
 					</TR>
 <?
 	if ($_SESSION["admin_status"]!=0)
@@ -202,11 +200,13 @@
 					<TR> 
 						<TD bgcolor="#DDDDFF"><B><? echo _T("Exempt de cotisation :"); ?></B></TD> 
 						<TD bgcolor="#EEEEEE"><? if ($bool_exempt_adh=="1") echo _T("Oui"); else echo _T("Non"); ?></TD> 
+                        <TD bgcolor="#DDDDFF"><B><? echo _T("Langue :"); ?><B></TD>
+                        <TD bgcolor="#EEEEEE"><IMG SRC="<? echo "lang/".$pref_lang.".gif"; ?>" align="left"> <? echo ucfirst(_T($pref_lang)); ?></TD>
 					</TR> 
 <?
 	}
 ?>
-					<TR> 
+                    <TR>
 						<TD colspan="4">&nbsp;</TD> 
 					</TR>
 					<TR> 

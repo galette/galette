@@ -609,7 +609,7 @@
 				{
 		        $file = substr(substr($file,5),0,-4);
 ?>
-                                    <OPTION value="<? echo $file; ?>" <? isSelected($pref_lang,$file) ?> style="padding-left: 30px; background-image: url(lang/<? echo $file.".gif"; ?>); background-repeat: no-repeat"><? echo $file; ?></OPTION>
+                                    <OPTION value="<? echo $file; ?>" <? isSelected($pref_lang,$file) ?> style="padding-left: 30px; background-image: url(lang/<? echo $file.".gif"; ?>); background-repeat: no-repeat"><? echo ucfirst(_T($file)); ?></OPTION>
 <?
 				}
 			}
