@@ -23,7 +23,8 @@
 	include(WEB_ROOT."includes/database.inc.php");
 	include(WEB_ROOT."includes/session.inc.php");
 	include(WEB_ROOT."includes/functions.inc.php"); 
-        include_once("includes/i18n.inc.php"); 
+        include(WEB_ROOT."includes/i18n.inc.php");
+	include(WEB_ROOT."includes/smarty.inc.php");
 	
 	if ($_SESSION["logged_status"]==0) 
 		header("location: index.php");
@@ -41,7 +42,7 @@
 		dblog(_T("Flush the logs"));
 	}
 
-    // Tri
+	// Tri
 	if (isset($_GET["tri"]))
 		if (is_numeric($_GET["tri"]))
 		{
@@ -57,7 +58,7 @@
 	$requete[0] = "SELECT date_log, adh_log, text_log, ip_log, action_log, sql_log FROM ".PREFIX_DB."logs ";
 	$requete[1] = "SELECT count(id_log) FROM ".PREFIX_DB."logs";
 	
-    // phase de tri	
+	// phase de tri	
 	if ($_SESSION["tri_log_sens"]=="0")
 		$tri_log_sens_txt="ASC";
 	else
@@ -81,154 +82,34 @@
 	elseif ($_SESSION["tri_log"]=="3")
 		$requete[0] .= "text_log ".$tri_log_sens_txt.",";
     
-    $requete[0] .= "id_log ".$tri_log_sens_txt;
-    
-    $resultat = &$DB->SelectLimit($requete[0],PREF_NUMROWS,($page-1)*PREF_NUMROWS);
+	$requete[0] .= "id_log ".$tri_log_sens_txt;
+
+	$resultat = &$DB->SelectLimit($requete[0],PREF_NUMROWS,($page-1)*PREF_NUMROWS);
 	$nb_lines = &$DB->Execute($requete[1]);
-		
-	include("header.php");
 
 	if ($nb_lines->fields[0]%PREF_NUMROWS==0) 
 		$nbpages = intval($nb_lines->fields[0]/PREF_NUMROWS);
 	else 
 		$nbpages = intval($nb_lines->fields[0]/PREF_NUMROWS)+1;
-	$pagestring = "";
-        if ($nbpages==0)
-		$pagestring = "<b>1</b>";
-	else for ($i=1;$i<=$nbpages;$i++)
-	{
-		if ($i!=$page)
-			$pagestring .= "<A href=\"log.php?page=".$i."\">".$i."</A> ";
-		else
-			$pagestring .= $i." ";
-	}
 	
-?>
-	<H1 class="titre"><? echo _T("Logs"); ?></H1>
-	<FORM action="log.php" method="post">
-		<DIV align="center"><INPUT type="submit" value="<? echo _T("Flush the logs") ?>"></DIV>
-		<INPUT type="hidden" name="reset" value="1">
-	</FORM>
-	<TABLE id="infoline" width="100%">
-		<TR>
-			<TD class="left"><? echo $nb_lines->fields[0]." "; if ($nb_lines->fields[0]!=1) echo _T("lines"); else echo _T("line"); ?></TD>
-			<TD class="right"><? echo _T("Pages:"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></TD>
-		</TR>
-	</TABLE>
-		<TABLE width="100%" border="1"> 
-		<TR> 
-			<TH width="15" class="listing">#</TH> 
-  			<TH class="listing left" width="150">
-				<A href="log.php?tri=0" class="listing"><? echo _T("Date"); ?></A>
-<?
-	if ($_SESSION["tri_log"]=="0")
-	{
-		if ($_SESSION["tri_log_sens"]=="0")
-			$img_sens = "asc.png";
-		else
-			$img_sens = "desc.png";
-	}
-	else
-		$img_sens = "icon-empty.png";
-?>
-				<IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
-            </TH> 
-  			<TH class="listing left" width="150">
-				<A href="log.php?tri=1" class="listing"><? echo _T("IP"); ?></A>
-<?
-	if ($_SESSION["tri_log"]=="1")
-	{
-		if ($_SESSION["tri_log_sens"]=="0")
-			$img_sens = "asc.png";
-		else
-			$img_sens = "desc.png";
-	}
-	else
-		$img_sens = "icon-empty.png";
-?>
-				<IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
-            </TH> 
-  			<TH class="listing left" width="150">
-				<A href="log.php?tri=2" class="listing"><? echo _T("Member"); ?></A>
-<?
-	if ($_SESSION["tri_log"]=="2")
-	{
-		if ($_SESSION["tri_log_sens"]=="0")
-			$img_sens = "asc.png";
-		else
-			$img_sens = "desc.png";
-	}
-	else
-		$img_sens = "icon-empty.png";
-?>
-				<IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
-            </TH> 
-
-
-                       <TH class="listing left" width="150">
-                                <A href="log.php?tri=4" class="listing"><? echo _T("Action"); ?></A>
-<?
-        if ($_SESSION["tri_log"]=="4")
-        {
-                if ($_SESSION["tri_log_sens"]=="0")
-                        $img_sens = "asc.png";
-                else
-                        $img_sens = "desc.png";
-        }
-        else
-                $img_sens = "icon-empty.png";
-?>
-                                <IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
-            </TH>
-
-
-
-
-
-
-  			<TH class="listing left">
-				<A href="log.php?tri=3" class="listing"><? echo _T("Description"); ?></A>
-<?
-	if ($_SESSION["tri_log"]=="3")
-	{
-		if ($_SESSION["tri_log_sens"]=="0")
-			$img_sens = "asc.png";
-		else
-			$img_sens = "desc.png";
-	}
-	else
-		$img_sens = "icon-empty.png";
-?>
-				<IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
-            </TH>
-  		</TR>
-<? 
 	$compteur = 1+($page-1)*PREF_NUMROWS;
-	if ($resultat->EOF)
+	while (!$resultat->EOF) 
 	{
-?>	
-		<TR><TD colspan="5" class="emptylist"><? echo _T("logs are empty"); ?></TD></TR>
-<?
-	}
-	else while (!$resultat->EOF) 
-	{ 
-?>
-		<TR class="cotis-never">
-			<TD width="15" valign="top"><? echo $compteur ?></TD> 
-			<TD valign="top" nowrap><? echo $resultat->fields[0]; ?></TD>
-			<TD valign="top" nowrap><? echo $resultat->fields[3]; ?></TD>
-			<TD valign="top" nowrap><? echo $resultat->fields[1]; ?></TD>
-			<TD valign="top" nowrap><? echo _T($resultat->fields[4]); ?></TD>
-			<TD valign="top" nowrap><? echo $resultat->fields[2]."<br>".$resultat->fields[5]; ?></TD>
-		</TR>
-<?
+		$logs[$compteur]['date'] = $resultat->fields[0];
+		$logs[$compteur]['ip'] = $resultat->fields[3];
+		$logs[$compteur]['adh'] = $resultat->fields[1];
+		$logs[$compteur]['action'] = _T($resultat->fields[4]);
+		$logs[$compteur]['desc'] = $resultat->fields[2]."<br>".$resultat->fields[5];
 		$resultat->MoveNext();
 		$compteur++;
 	}
 	$resultat->Close();
-?>
-  	</TABLE>	
-	<DIV id="infoline2" class="right"><? echo _T("Pages:"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></DIV>
-<?
-	include("footer.php");
+
+	$tpl->assign("logs",$logs);
+	$tpl->assign("nb_lines",count($logs));
+	$tpl->assign("nb_pages",$nbpages);
+	$tpl->assign("page",$page);
+	$content = $tpl->fetch("log.tpl");
+	$tpl->assign("content",$content);
+	$tpl->display("page.tpl");
 ?>
