@@ -1,20 +1,21 @@
 <?
         if (!isset($_POST["install_lang"])) $pref_lang="english";
         else $pref_lang=$_POST["install_lang"];
+	define("WEB_ROOT", realpath(dirname($_SERVER["SCRIPT_FILENAME"])."/../")."/");
         include_once("../includes/i18n.inc.php"); 
 	session_start();
-	define("WEB_ROOT", realpath(dirname($_SERVER["SCRIPT_FILENAME"])."/../")."/");
 	$step="1";
 	$error_detected="";
 	
 	// traitement page 1 - language
 	if (isset($_POST["install_lang"]))
 	{
-		if (file_exists(WEB_ROOT . "lang/lang_" . $_POST["install_lang"] . ".php"))
+		$lang_inc = WEB_ROOT . "lang/lang_" . $_POST["install_lang"] . ".php";
+		if ($lang_inc)
 		{
 			define("PREF_LANG",$_POST["install_lang"]);
 			$step="2";
-			include ("../includes/lang.inc.php");
+			include ($lang_inc);
 		}
 		else
 	  		$error_detected .= "<LI>Unknown language</LI>";
