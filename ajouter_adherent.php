@@ -228,17 +228,21 @@
  		 	if ($id_adh!="")
  		 	{
  		 		// modif
- 		 		$date_fin = get_echeance($DB, $id_adh);
+ 		 		
+				$requete = "UPDATE ".PREFIX_DB."adherents
+ 		 			    SET " . substr($update_string,1) . " 
+ 		 			    WHERE id_adh=" . $id_adh;
+				$DB->Execute($requete);
+				dblog(_T("Mise à jour de la fiche adhérent :")." ".strtoupper($_POST["nom_adh"])." ".$_POST["prenom_adh"], $requete);
+
+				$date_fin = get_echeance($DB, $id_adh);
 				if ($date_fin!="")
 					$date_fin_update = $DB->DBDate(mktime(0,0,0,$date_fin[1],$date_fin[0],$date_fin[2]));
 				else
 					$date_fin_update = "NULL";
-																									$update_string = "date_echeance=".$date_fin_update.$update_string;
- 		 		
 				$requete = "UPDATE ".PREFIX_DB."adherents
- 		 			    SET " . $update_string . " 
- 		 			    WHERE id_adh=" . $id_adh;
-				dblog(_T("Mise à jour de la fiche adhérent :")." ".strtoupper($_POST["nom_adh"])." ".$_POST["prenom_adh"], $requete);
+					    SET date_echeance=".$date_fin_update."
+					    WHERE id_adh=" . $id_adh;
   			}
  		 	else
  		 	{
