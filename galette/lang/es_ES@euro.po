@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Galette V1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-08 22:50+0200\n"
-"PO-Revision-Date: 2004-08-08 22:52+0200\n"
+"POT-Creation-Date: 2004-08-08 23:15+0200\n"
+"PO-Revision-Date: 2004-08-08 23:15+0200\n"
 "Last-Translator: Georges Khaznadar <gekhajofour@netinfo.fr>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -32,14 +32,14 @@ msgstr "Autentificación fracasada. Login :"
 
 #: ../index.php:119 ../self_adherent.php:138 ../self_adherent.php:443
 #: ../lostpasswd.php:71 ../lostpasswd.php:131 ../preferences.php:492
-#: ../voir_adherent.php:248 ../install/index.php:754
+#: ../voir_adherent.php:248 ../install/index.php:756
 #: ../ajouter_adherent.php:298 ../ajouter_adherent.php:740
 msgid "Username:"
 msgstr "Login :"
 
 #: ../index.php:123 ../self_adherent.php:139 ../self_adherent.php:452
 #: ../lostpasswd.php:72 ../preferences.php:496 ../voir_adherent.php:250
-#: ../install/index.php:301 ../install/index.php:760
+#: ../install/index.php:303 ../install/index.php:762
 #: ../ajouter_adherent.php:299 ../ajouter_adherent.php:742
 msgid "Password:"
 msgstr "Contraseña :"
@@ -539,7 +539,7 @@ msgid "Profile"
 msgstr "Direcciones"
 
 #: ../mailing_adherents.php:815 ../mailing_adherents.php:825
-#: ../install/index.php:374
+#: ../install/index.php:376
 msgid "Go back"
 msgstr "Regresar"
 
@@ -883,12 +883,13 @@ msgid "Partnership"
 msgstr "Participación"
 
 #: ../includes/i18n.inc.php:76
+#, fuzzy
 msgid "french"
-msgstr "francás"
+msgstr "francés"
 
 #: ../includes/i18n.inc.php:77
 msgid "english"
-msgstr "inglás"
+msgstr "inglés"
 
 #: ../includes/i18n.inc.php:78
 msgid "spanish"
@@ -1283,39 +1284,39 @@ msgstr "Generación de "
 msgid "label(s)"
 msgstr "etiqueta(s)"
 
-#: ../install/index.php:29 ../install/index.php:39
+#: ../install/index.php:31 ../install/index.php:41
 msgid "Installation mode unknown"
 msgstr "Tipo de instalación desconocido"
 
-#: ../install/index.php:50
+#: ../install/index.php:52
 msgid "Database type unknown"
 msgstr "Tipo de base desconocido"
 
-#: ../install/index.php:52 ../install/index.php:86
+#: ../install/index.php:54 ../install/index.php:88
 msgid "No user name"
 msgstr "Apellido del usuario vacio"
 
-#: ../install/index.php:54 ../install/index.php:88
+#: ../install/index.php:56 ../install/index.php:90
 msgid "No password"
 msgstr "contraseña vacia"
 
-#: ../install/index.php:56
+#: ../install/index.php:58
 msgid "No database name"
 msgstr "Nombre de la base desconocido"
 
-#: ../install/index.php:158
+#: ../install/index.php:160
 msgid "Installation mode"
 msgstr "Tipo de instalación"
 
-#: ../install/index.php:159
+#: ../install/index.php:161
 msgid "Select installation mode to launch"
 msgstr "Seleccionar el tipo de instalación que lanzar"
 
-#: ../install/index.php:162
+#: ../install/index.php:164
 msgid "New installation:"
 msgstr "Nueva instalación"
 
-#: ../install/index.php:163
+#: ../install/index.php:165
 msgid ""
 "You're installing Galette for the first time, or you wish to erase an older "
 "version of Galette without keeping your data"
@@ -1323,79 +1324,79 @@ msgstr ""
 "Vd instala Galette por la primera vez, o quiere sustituir una version "
 "antigua de Galette sin conservar sus datos"
 
-#: ../install/index.php:180
+#: ../install/index.php:182
 msgid "Update:"
 msgstr "Actualizar :"
 
-#: ../install/index.php:183
+#: ../install/index.php:185
 msgid "Your current Galette version is comprised between"
 msgstr "La version actual de Galette es en el intervalo entre"
 
-#: ../install/index.php:183
+#: ../install/index.php:185
 msgid "and"
 msgstr "y"
 
-#: ../install/index.php:185
+#: ../install/index.php:187
 msgid "Your current Galette version is"
 msgstr "La version actual de Galette es la"
 
-#: ../install/index.php:187
+#: ../install/index.php:189
 msgid "Warning: Don't forget to backup your current database."
 msgstr "Cuidado : piensa Vd a hacer una copia de seguridad de su base actual."
 
-#: ../install/index.php:194 ../install/index.php:249 ../install/index.php:334
-#: ../install/index.php:388 ../install/index.php:583 ../install/index.php:714
-#: ../install/index.php:767 ../install/index.php:883
+#: ../install/index.php:196 ../install/index.php:251 ../install/index.php:336
+#: ../install/index.php:390 ../install/index.php:585 ../install/index.php:716
+#: ../install/index.php:769 ../install/index.php:885
 msgid "Next step"
 msgstr "Etapa siguiente"
 
-#: ../install/index.php:200
+#: ../install/index.php:202
 msgid "Step 2 - Installation mode"
 msgstr "Etapa 2 - Tipo de instalación"
 
-#: ../install/index.php:212
+#: ../install/index.php:214
 msgid "Files permissions"
 msgstr "Permisos de ficheros"
 
-#: ../install/index.php:222
+#: ../install/index.php:224
 msgid ""
 "For a correct functioning, Galette needs the Write permission on these files."
 msgstr ""
 "Para funcionar normalmente, Galette necesita tener derechos para escribir en "
 "estos ficheros."
 
-#: ../install/index.php:223
+#: ../install/index.php:225
 msgid ""
 "In order to be updated, Galette needs the Write permission on these files."
 msgstr ""
 "Para ser actualizada y funcionar normalmente, Galette necesita tener "
 "derechos para escribir en estos ficheros."
 
-#: ../install/index.php:226
+#: ../install/index.php:228
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr "Con UNIX/Linux, se puede dar estos derechos con los mandos"
 
-#: ../install/index.php:227
+#: ../install/index.php:229
 msgid "apache_user"
 msgstr "usuario_apache"
 
-#: ../install/index.php:227 ../install/index.php:228
+#: ../install/index.php:229 ../install/index.php:230
 msgid "file_name"
 msgstr "nombre_fichero"
 
-#: ../install/index.php:228
+#: ../install/index.php:230
 msgid "(for a file)"
 msgstr "(para un fichero)"
 
-#: ../install/index.php:229
+#: ../install/index.php:231
 msgid "direcory_name"
 msgstr "nombre_directorio"
 
-#: ../install/index.php:229
+#: ../install/index.php:231
 msgid "(for a directory)"
 msgstr "(para un directorio)"
 
-#: ../install/index.php:232
+#: ../install/index.php:234
 msgid ""
 "Under Windows, check these files are not in Read-Only mode in their property "
 "panel."
@@ -1403,83 +1404,83 @@ msgstr ""
 "Con Windows, Vd debe verificar que estos ficheros no sean en lectura sola "
 "por sus propriedades."
 
-#: ../install/index.php:236 ../install/index.php:562 ../install/index.php:689
-#: ../install/index.php:910
+#: ../install/index.php:238 ../install/index.php:564 ../install/index.php:691
+#: ../install/index.php:912
 msgid "Retry"
 msgstr "Intentar otra vez"
 
-#: ../install/index.php:246
+#: ../install/index.php:248
 msgid "Files permissions are OK!"
 msgstr "¡ Las permisiones de los ficheros son correctas !"
 
-#: ../install/index.php:260
+#: ../install/index.php:262
 msgid "Step 3 - Permissions"
 msgstr "Etapa 3 - Permisiones"
 
-#: ../install/index.php:268
+#: ../install/index.php:270
 msgid "Database"
 msgstr "Base de datos"
 
-#: ../install/index.php:274
+#: ../install/index.php:276
 msgid "If it hadn't been made, create a database and a user for Galette."
 msgstr ""
 "Si no lo ha ya hecho, crea Vd una base de datos y un usuario para Galette."
 
-#: ../install/index.php:275
+#: ../install/index.php:277
 msgid "Enter connection data for the existing database."
 msgstr "Por favor escribe Vd los parametros de conección a la base existente."
 
-#: ../install/index.php:276
+#: ../install/index.php:278
 msgid ""
 "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 msgstr ""
 "Los drechos necesarios son CREATE, DROP, DELETE, UPDATE, SELECT y INSERT."
 
-#: ../install/index.php:280
+#: ../install/index.php:282
 msgid "Database type:"
 msgstr "Tipo de base de datos :"
 
-#: ../install/index.php:289
+#: ../install/index.php:291
 msgid "Host:"
 msgstr "Hostname :"
 
-#: ../install/index.php:295
+#: ../install/index.php:297
 msgid "User:"
 msgstr "Usuario :"
 
-#: ../install/index.php:307
+#: ../install/index.php:309
 msgid "Database:"
 msgstr "Nombre de la base :"
 
-#: ../install/index.php:314
+#: ../install/index.php:316
 msgid "Table prefix:"
 msgstr "Prefijo de la tabla :"
 
-#: ../install/index.php:326
+#: ../install/index.php:328
 msgid "(Indicate the CURRENT prefix of your Galette tables)"
 msgstr "(Indica Vd el prefijo ACTUAL de sus tabals Galette)"
 
-#: ../install/index.php:342
+#: ../install/index.php:344
 msgid "Step 4 - Database"
 msgstr "Etapa 4 - Base de datos"
 
-#: ../install/index.php:350
+#: ../install/index.php:352
 msgid "Check of the database"
 msgstr "Verificación de la base"
 
-#: ../install/index.php:351
+#: ../install/index.php:353
 msgid "Check the parameters and the existence of the database"
 msgstr "Verificación de los parametros y de la existencia de la base"
 
-#: ../install/index.php:360
+#: ../install/index.php:362
 msgid "Unable to connect to the database"
 msgstr "Conección a la base imposible"
 
-#: ../install/index.php:364
+#: ../install/index.php:366
 msgid "Connection to database is OK"
 msgstr "La conección a la base fue establecida"
 
-#: ../install/index.php:371
+#: ../install/index.php:373
 msgid ""
 "Database can't be reached. Please go back to enter the connection parameters "
 "again."
@@ -1487,19 +1488,19 @@ msgstr ""
 "La base no es accesible. Por favor regresa Vd para entrar otra vez los "
 "parametros de conección."
 
-#: ../install/index.php:385
+#: ../install/index.php:387
 msgid "Database exists and connection parameters are OK."
 msgstr "La base exista y los parametros de conección son correctos."
 
-#: ../install/index.php:407
+#: ../install/index.php:409
 msgid "Step 5 - Access to the database"
 msgstr "Etapa 5 - Acceso a la base"
 
-#: ../install/index.php:417
+#: ../install/index.php:419
 msgid "Permissions on the base"
 msgstr "Permisiones sobre la base"
 
-#: ../install/index.php:419
+#: ../install/index.php:421
 msgid ""
 "To run, Galette needs a number of rights on the database (CREATE, DROP, "
 "DELETE, UPDATE, SELECT and INSERT)"
@@ -1507,7 +1508,7 @@ msgstr ""
 "Para funcionar, Galette debe tener algunos derechos sobre la base de datos "
 "(CREATE, DROP, DELETE, UPDATE, SELECT y INSERT)"
 
-#: ../install/index.php:420
+#: ../install/index.php:422
 msgid ""
 "In order to be updated, Galette needs a number of rights on the database "
 "(CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)"
@@ -1515,63 +1516,63 @@ msgstr ""
 "Para ser puesta al día, Galette debe tener algunos derechos sobre la base de "
 "datos (CREATE, DROP, DELETE, UPDATE, SELECT, INSERT y ALTER)"
 
-#: ../install/index.php:437 ../install/index.php:543
+#: ../install/index.php:439 ../install/index.php:545
 msgid "DROP operation not allowed"
 msgstr "Operación DROP no autorizada"
 
-#: ../install/index.php:440 ../install/index.php:547
+#: ../install/index.php:442 ../install/index.php:549
 msgid "DROP operation allowed"
 msgstr "Operación DROP autorizada"
 
-#: ../install/index.php:452
+#: ../install/index.php:454
 msgid "CREATE operation not allowed"
 msgstr "Operación CREATE no autorizada"
 
-#: ../install/index.php:456
+#: ../install/index.php:458
 msgid "CREATE operation allowed"
 msgstr "Operación CREATE autorizada"
 
-#: ../install/index.php:467
+#: ../install/index.php:469
 msgid "INSERT operation not allowed"
 msgstr "Operación INSERT no autorizada"
 
-#: ../install/index.php:471
+#: ../install/index.php:473
 msgid "INSERT operation allowed"
 msgstr "Operación INSERT autorizada"
 
-#: ../install/index.php:482
+#: ../install/index.php:484
 msgid "UPDATE operation not allowed"
 msgstr "Operación UPDATE no autorizada"
 
-#: ../install/index.php:486
+#: ../install/index.php:488
 msgid "UPDATE operation allowed"
 msgstr "Operación UPDATE autorizada"
 
-#: ../install/index.php:497
+#: ../install/index.php:499
 msgid "SELECT operation not allowed"
 msgstr "Operación SELECT no autorizada"
 
-#: ../install/index.php:501
+#: ../install/index.php:503
 msgid "SELECT operation allowed"
 msgstr "Operación SELECT autorizada"
 
-#: ../install/index.php:512
+#: ../install/index.php:514
 msgid "ALTER operation not allowed"
 msgstr "Operación ALTER no autorizada"
 
-#: ../install/index.php:516
+#: ../install/index.php:518
 msgid "ALTER operation allowed"
 msgstr "Operación ALTER autorizada"
 
-#: ../install/index.php:527
+#: ../install/index.php:529
 msgid "DELETE operation not allowed"
 msgstr "Operación DELETE no autorizada"
 
-#: ../install/index.php:531
+#: ../install/index.php:533
 msgid "DELETE operation allowed"
 msgstr "Operación DELETE autorizada"
 
-#: ../install/index.php:557
+#: ../install/index.php:559
 msgid ""
 "Galette hasn't got enough permissions on the database to continue the "
 "installation."
@@ -1579,111 +1580,111 @@ msgstr ""
 "Galette no tiene bastante derechos sobre la base de datos para continuar con "
 "la instalación."
 
-#: ../install/index.php:558
+#: ../install/index.php:560
 msgid ""
 "Galette hasn't got enough permissions on the database to continue the update."
 msgstr ""
 "Galette no tiene bastante derechos sobre la base de datos para continuar con "
 "la actualización."
 
-#: ../install/index.php:580
+#: ../install/index.php:582
 msgid "Permissions to database are OK."
 msgstr "Los derechos de acceso son correctos."
 
-#: ../install/index.php:602
+#: ../install/index.php:604
 msgid "Step 6 - Access permissions to database"
 msgstr "Etapa 6 - Derechos de acceso a la base"
 
-#: ../install/index.php:611
+#: ../install/index.php:613
 msgid "Creation of the database"
 msgstr "Creación de la base"
 
-#: ../install/index.php:612
+#: ../install/index.php:614
 msgid "Update of the database"
 msgstr "Actualización de la base"
 
-#: ../install/index.php:615
+#: ../install/index.php:617
 msgid "Installation Report"
 msgstr "Informe de instalación"
 
-#: ../install/index.php:616
+#: ../install/index.php:618
 msgid "Update Report"
 msgstr "Informe de actualización"
 
-#: ../install/index.php:677
+#: ../install/index.php:679
 msgid "(Errors on DROP and RENAME operations can be ignored)"
 msgstr "Las errores con las operaciones DROP y RENAME pueden ser desconocidas"
 
-#: ../install/index.php:683
+#: ../install/index.php:685
 msgid "The database isn't totally created, it's maybe a permission problem."
 msgstr ""
 "La base de datos no fue creada totalmente, puede ser un problema con los "
 "derechos."
 
-#: ../install/index.php:684
+#: ../install/index.php:686
 msgid "The database isn't totally updated, it's maybe a permission problem."
 msgstr ""
 "La base de datos no fue actualizada totalmente, puede ser un problema con "
 "los derechos."
 
-#: ../install/index.php:685
+#: ../install/index.php:687
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr "Su base puede ser inutilizable, intenta restaurar una version antigua."
 
-#: ../install/index.php:709
+#: ../install/index.php:711
 msgid "The database has been correctly created."
 msgstr "La base de datos fue creada correctemente."
 
-#: ../install/index.php:710
+#: ../install/index.php:712
 msgid "The database has been correctly updated."
 msgstr "La base de datos fue actualizada correctemente."
 
-#: ../install/index.php:735
+#: ../install/index.php:737
 msgid "Step 7 - Database Creation"
 msgstr "Etapa 7 - Creación de la base"
 
-#: ../install/index.php:736
+#: ../install/index.php:738
 msgid "Step 7 - Database Update"
 msgstr "Etapa 7 - Actualización de la base"
 
-#: ../install/index.php:745
+#: ../install/index.php:747
 msgid "Admin settings"
 msgstr "Parametros administrador"
 
-#: ../install/index.php:750
+#: ../install/index.php:752
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr "Por favor elija Vd los parametros de la cuenta administrador Galette"
 
-#: ../install/index.php:784
+#: ../install/index.php:786
 msgid "Step 8 - Admin parameters"
 msgstr "Etapa 8 - Parametros admistrador"
 
-#: ../install/index.php:792
+#: ../install/index.php:794
 msgid "Save the parameters"
 msgstr "Grabar los parametros"
 
-#: ../install/index.php:811
+#: ../install/index.php:813
 msgid "Configuration file created (includes/config.inc.php)"
 msgstr "Fichero de configuración creado (includes/config.inc.php)"
 
-#: ../install/index.php:815
+#: ../install/index.php:817
 msgid "Unable to create configuration file (includes/config.inc.php)"
 msgstr ""
 "Creación imposible del fichero de configuration (includes/config.inc.php)"
 
-#: ../install/index.php:869
+#: ../install/index.php:871
 msgid "Parameters saved into the database"
 msgstr "Parametros grabados en la base de datos"
 
-#: ../install/index.php:872
+#: ../install/index.php:874
 msgid "Parameters couldn't be save into the database"
 msgstr "Los parametros no fueron grabados en la base de datos"
 
-#: ../install/index.php:907
+#: ../install/index.php:909
 msgid "Parameters couldn't be saved."
 msgstr "No fue posible grabar los parametros."
 
-#: ../install/index.php:908
+#: ../install/index.php:910
 msgid ""
 "This can come from the permissions on the file includes/config.inc.php or "
 "the impossibility to make an INSERT into the database."
@@ -1691,39 +1692,39 @@ msgstr ""
 "Eso puede ser causado por derechos sobre el fichero includes/config.inc.php "
 "o por la imposibilidad de hacer un INSERT en la base."
 
-#: ../install/index.php:932
+#: ../install/index.php:934
 msgid "Step 9 - Saving of the parameters"
 msgstr "Etapa 9 - Grabar los parametros"
 
-#: ../install/index.php:941
+#: ../install/index.php:943
 msgid "Installation complete !"
 msgstr "Final de la instalación"
 
-#: ../install/index.php:942
+#: ../install/index.php:944
 msgid "Update complete !"
 msgstr "Final de la actualización"
 
-#: ../install/index.php:945
+#: ../install/index.php:947
 msgid "Galette has been successfully installed!"
 msgstr "¡ Galette fue instalada con éxito !"
 
-#: ../install/index.php:946
+#: ../install/index.php:948
 msgid "Galette has been successfully updated!"
 msgstr "¡ Galette fue actualizada con éxito !"
 
-#: ../install/index.php:948
+#: ../install/index.php:950
 msgid "For securing the system, please delete the install directory"
 msgstr "Para securizar el sistema, por favor suprimar Vd el directorio install"
 
-#: ../install/index.php:951
+#: ../install/index.php:953
 msgid "Homepage"
 msgstr "Página principal"
 
-#: ../install/index.php:957
+#: ../install/index.php:959
 msgid "Step 10 - End of the installation"
 msgstr "Etapa 10 - Final de la instalación"
 
-#: ../install/index.php:958
+#: ../install/index.php:960
 msgid "Step 10 - End of the update"
 msgstr "Etapa 10 - Final de la actualización"
 
