@@ -123,7 +123,7 @@ if (isset($_POST["valid"]) && $_POST["self_contribution"])
       
       // vérification de la présence des champs obligatoires
       if ($$fieldreq!="" && $post_value=="")
-	$error_detected = "<LI>"._("- Vérifiez que tous les champs obligatoires sont renseignés.")."</LI>";
+	$error_detected = "<LI>"._("- Check that all mandatory fields are filled in.")."</LI>";
       else{
 	$value = "";
 	// validation des dates			
@@ -133,24 +133,24 @@ if (isset($_POST["valid"]) && $_POST["self_contribution"])
 	    if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
 	      $value=$DB->DBDate(mktime(0,0,0,$array_jours[2],$array_jours[1],$array_jours[3]));
 	    else{
-	      $error_detected .= "<LI>"._("- Date non valide !")."</LI>";
+	      $error_detected .= "<LI>"._("- Non valid date!")."</LI>";
 	    }
 	  }
 	  else{
-	    $error_detected .= "<LI>"._("- Mauvais format de date (jj/mm/aaaa) !")."</LI>";
+	    $error_detected .= "<LI>"._("- Wrong date format (dd/mm/yyyy)!")."</LI>";
 	  }
 	}elseif(strstr($proprietes_arr["type"],"int")){
 	  if (is_numeric($post_value) || $post_value=="")
 	    $value=$DB->qstr($post_value,ENT_QUOTES);
 	  else{
-	    $error_detected .= "<LI>"._("- La durée doit être un entier !")."</LI>";
+	    $error_detected .= "<LI>"._("- The duration must be an integer!")."</LI>";
 	  }
 	}elseif(strstr($proprietes_arr["type"],"float")){
 	  $us_value = strtr($post_value, ",", ".");
 	  if (is_numeric($us_value) || $us_value=="")
 	    $value=$DB->qstr($us_value,ENT_QUOTES);
 	  else{
-	    $error_detected .= "<LI>"._("- Le montant doit être un chiffre !")."</LI>";
+	    $error_detected .= "<LI>"._("- The amount must be an integer!")."</LI>";
 	  }
 	}else{
 	  // on se contente d'escaper le html et les caracteres speciaux
@@ -174,7 +174,7 @@ if (isset($_POST["valid"]) && $_POST["self_contribution"])
       substr($insert_string_fields,1) . ") VALUES (" . 
       substr($insert_string_values,1) . ")";
     
-    dblog(_("Ajout d'une self-contribution :").
+    dblog(_("Add a self-contribution:").
 	  " ".strtoupper($nom_adh)." ".$prenom_adh, $requete);							
     $DB->Execute($requete);
     
@@ -205,7 +205,7 @@ include("header.php");
 
 ?> 
 
-<H1 class="titre"><? echo _("Fiche contribution"); ?> (<? if ($id_cotis!="") echo _("modification"); else echo _("création"); ?>)</H1>
+<H1 class="titre"><? echo _("Contribution card"); ?> (<? if ($id_cotis!="") echo _("modification"); else echo _("creation"); ?>)</H1>
 <FORM action="self_contribution.php" method="post"> 
   <input type="hidden" name="self_contribution" value="1">					
   <input type="hidden" name="id_adh" value="<? echo $id_adh ?>">					
@@ -214,7 +214,7 @@ include("header.php");
     if ($error_detected!=""){
   ?>
   <DIV id="errorbox">
-    <H1><? echo _("- ERREUR -"); ?></H1>
+    <H1><? echo _("- ERROR -"); ?></H1>
     <UL>
       <? echo $error_detected; ?>
     </UL>
@@ -226,39 +226,39 @@ include("header.php");
     <div align="center">
       <table border="0" id="input-table"> 
         <tr> 
-          <TH id="libelle"><? echo _("Contributeur :"); ?></TH> 
+          <TH id="libelle"><? echo _("Contributor:"); ?></TH> 
 	  <td>
 	    <input type="hidden" name="nom_adh" value="<? echo $nom_adh;?>">
 	    <? echo $nom_adh." ".$prenom_adh; ?>
 	  </td> 
-	  <TH id="libelle"><? echo _("Type de contribution :"); ?></TH> 
+	  <TH id="libelle"><? echo _("Contribution type:"); ?></TH> 
 	  <td>
 	    <input type="hidden" name="id_type_cotis" value="7">
 	    <!-- 7 is for "Cotisation annuelle (à payer)" -->
-	    <? echo _("Cotisation annuelle (à payer)"); ?>
+	    <? echo _("Annual fee (to be paid)"); ?>
 	  </td> 
 	</tr>
         <tr>
-	  <TH id="libelle" <? echo $montant_cotis_req ?>><? echo _("Montant :"); ?></TH> 
+	  <TH id="libelle" <? echo $montant_cotis_req ?>><? echo _("Amount:"); ?></TH> 
 	  <td><input type="text" name="montant_cotis" value="<? echo $montant_cotis; ?>" maxlength="<? echo $montant_cotis_len; ?>"></td> 
-	  <TH id="libelle" <? echo $duree_mois_cotis_req ?>><? echo _("Prologation adhésion :"); ?></TH> 
-	  <td><input type="text" name="duree_mois_cotis" value="<? echo $duree_mois_cotis; ?>" maxlength="<? echo $duree_mois_cotis_len; ?>"> <? echo _("mois"); ?></td>
+	  <TH id="libelle" <? echo $duree_mois_cotis_req ?>><? echo _("Extension of adhesion:"); ?></TH> 
+	  <td><input type="text" name="duree_months_cotis" value="<? echo $duree_months_cotis; ?>" maxlength="<? echo $duree_months_cotis_len; ?>"> <? echo _("months"); ?></td>
 	</tr>
         <tr> 
-	  <TH id="libelle" <? echo $date_cotis_req ?>><? echo _("Date contribution :"); ?><br>&nbsp;</TH> 
-	  <td colspan="3"><input type="text" name="date_cotis" value="<? echo $date_cotis; ?>" maxlength="10"><BR><DIV class="exemple"><? echo _("(format jj/mm/aaaa)"); ?></DIV></td> 
+	  <TH id="libelle" <? echo $date_cotis_req ?>><? echo _("Date of contribution:"); ?><br>&nbsp;</TH> 
+	  <td colspan="3"><input type="text" name="date_cotis" value="<? echo $date_cotis; ?>" maxlength="10"><BR><DIV class="exemple"><? echo _("(dd/mm/yyyy format)"); ?></DIV></td> 
         </tr> 
         <tr> 
-	  <TH id="libelle" <? echo $info_cotis_req ?>><? echo _("Commentaire :"); ?></TH> 
+	  <TH id="libelle" <? echo $info_cotis_req ?>><? echo _("Comments:"); ?></TH> 
 	  <td colspan="3"><textarea name="info_cotis" cols="61" rows="6"><? echo $info_cotis; ?></textarea></td> 
         </tr> 
         <tr> 
-	  <TH align="center" colspan="4"><BR><input type="submit" name="valid" value="<? echo _("Enregistrer"); ?>"></TH> 
+	  <TH align="center" colspan="4"><BR><input type="submit" name="valid" value="<? echo _("Save"); ?>"></TH> 
         </tr> 
       </table> 
     </div>
     <br> 
-    <? echo _("NB : Les champs obligatoires apparaissent en"); ?> <font style="color: #FF0000"><? echo _("rouge"); ?></font>. 
+    <? echo _("NB : The mandatory fields are in"); ?> <font style="color: #FF0000"><? echo _("red"); ?></font>. 
   </BLOCKQUOTE> 
   <input type="hidden" name="id_cotis" value="<? echo $id_cotis ?>"> 
 </form> 

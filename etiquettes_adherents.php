@@ -80,13 +80,13 @@
 			switch($resultat->fields[4])
 			{
 				case "1" :
-					$nom_adh_ext .= _("M.");
+					$nom_adh_ext .= _("Mr.");
 					break;
 				case "2" :
-					$nom_adh_ext .= _("Mme.");
+					$nom_adh_ext .= _("Mrs.");
 					break;
 				default :
-					$nom_adh_ext .= _("Mlle.");
+					$nom_adh_ext .= _("Miss.");
 			}
 			
 			$x1 = $xorigin + ($col-1)*(round(PREF_ETIQ_HSIZE*2.835)+round(PREF_ETIQ_HSPACE*2.835));
@@ -118,7 +118,7 @@
 			$nb_etiq++;
 		} 
 		$resultat->Close();
-		dblog(_("Génération de ")." ".$nb_etiq." "._("étiquette(s)"),$concatname);
+		dblog(_("Generation of ")." ".$nb_etiq." "._("label(s)"),$concatname);
 		
 		header("Content-Disposition: filename=example.pdf");
 		header("Content-Type: application/pdf");
