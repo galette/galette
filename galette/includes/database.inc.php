@@ -80,4 +80,10 @@
 		return $return_date;
 	}
 
+	function get_last_auto_increment($DB, $table, $column) {
+		$val_or_oid = $DB->Insert_ID();
+		// When calling Insert_ID, postgres returns the OID
+		$val = $DB->GetOne("SELECT $column FROM $table WHERE oid=$val_or_oid");
+		return $val ? $val : $val_or_oid;
+	}
 ?>

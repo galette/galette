@@ -111,18 +111,6 @@
                 $adherent['libelle_statut'] = _T($result->fields['libelle_statut']);
         $result->Close();
 
-        // - declare dynamic fields for display
-	$requete = "SELECT * ".
-		   "FROM ".PREFIX_DB."info_categories ".
-		   "ORDER BY index_cat";
-	$result = &$DB->Execute($requete);
-	while (!$result->EOF)
-	{
-		$dynamic_fields[] = $result->fields;
-		$result->MoveNext();
-	}
-	$result->Close();
-	
 	// declare dynamic field values
 	$sql =  "SELECT id_cat, index_info, val_info ".
 		"FROM ".PREFIX_DB."adh_info ".
@@ -134,8 +122,28 @@
 		$result->MoveNext();
 	}
 	$result->Close();
-																																													
 
+	// - declare dynamic fields for display
+	$requete = "SELECT * ".
+			"FROM ".PREFIX_DB."info_categories ".
+			"ORDER BY index_cat";
+	$result = &$DB->Execute($requete);
+	while (!$result->EOF)
+	{
+		// disable admin fields when logged as member
+		if ($_SESSION["admin_status"]!=1 && $result->fields['perm']==$perm_admin)
+			$disabled['dyn'][$result->fields['id_cat']] = 'disabled';
+		$cur_fields = &$result->fields;
+		if ($cur_fields['size_cat'] == 0) {
+			if (isset($adherent['dyn']))
+				$cur_fields['size_cat'] = count($adherent['dyn'][$cur_fields['id_cat']]);
+			else
+				$cur_fields['size_cat'] = 1;
+		}
+		$dynamic_fields[] = $cur_fields;
+		$result->MoveNext();
+	}
+	$result->Close();
 
         $tpl->assign("adherent",$adherent);
 	$tpl->assign("dynamic_fields",$dynamic_fields);
