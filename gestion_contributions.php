@@ -2,7 +2,7 @@
  
 /* gestion_contributions.php
  * - Récapitulatif des contributions
- * Copyright (c) 2003 Frédéric Jaqcuot
+ * Copyright (c) 2004 Frédéric Jaqcuot
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,10 +26,6 @@
 	include(WEB_ROOT."includes/lang.inc.php"); 
 	include(WEB_ROOT."includes/session.inc.php"); 
 	
-	// XXX
-//	error_reporting(E_ALL);
-//	print_r($_SESSION);
-//	print("filtre_date: ".$_SESSION['filtre_date']."");
 	$filtre_id_adh = "";
 	
 	if ($_SESSION["logged_status"]==0) 
@@ -43,8 +39,39 @@
 		else
 			$_SESSION["filtre_cotis_adh"]="";
 	}		
-			
 
+
+        if (isset($_GET["contrib_filter_1"]))
+	   if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_GET["contrib_filter_1"], $array_jours))
+	   {
+	      if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
+	         $_SESSION["filtre_date_cotis_1"]=$_GET["contrib_filter_1"];
+	      else
+	         $error_detected .= "<LI>"._T("- Date non valide !")."</LI>";
+	   }
+	   elseif (ereg("^([0-9]{4})$", $_GET["contrib_filter_1"], $array_jours))
+	      $_SESSION["filtre_date_cotis_1"]="01/01/".$array_jours[1];
+	   elseif ($_GET["contrib_filter_1"]=="")
+	      $_SESSION["filtre_date_cotis_1"]="";
+	   else
+	      $error_detected .= "<LI>"._T("- Mauvais format de date (jj/mm/aaaa) !")."</LI>";
+
+	if (isset($_GET["contrib_filter_2"]))
+	   if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_GET["contrib_filter_2"], $array_jours))
+	   {
+	      if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
+	         $_SESSION["filtre_date_cotis_2"]=$_GET["contrib_filter_2"];
+	      else
+	         $error_detected .= "<LI>"._T("- Date non valide !")."</LI>";
+	   }
+	   elseif (ereg("^([0-9]{4})$", $_GET["contrib_filter_2"], $array_jours))
+	      $_SESSION["filtre_date_cotis_2"]="01/01/".$array_jours[1];
+	   elseif ($_GET["contrib_filter_2"]=="")
+	      $_SESSION["filtre_date_cotis_2"]="";
+	   else
+	      $error_detected .= "<LI>"._T("- Mauvais format de date (jj/mm/aaaa) !")."</LI>";
+
+	
 	$page = 1;
 	if (isset($_GET["page"]))
 		$page = $_GET["page"];
@@ -111,27 +138,31 @@
 			WHERE cotisations.id_adh=adherents.id_adh
 			AND types_cotisation.id_type_cotis=cotisations.id_type_cotis ";
 	$requete[1] = "SELECT count(id_cotis)
-			FROM cotisations ";
+			FROM cotisations
+			WHERE 1=1 ";
 
 	// phase filtre
 	
 	if ($_SESSION["filtre_cotis_adh"]!="")
 	{
 		$requete[0] .= "AND cotisations.id_adh='" . $_SESSION["filtre_cotis_adh"] . "' ";
-		$requete[1] .= "WHERE cotisations.id_adh='" . $_SESSION["filtre_cotis_adh"] . "' ";
+		$requete[1] .= "AND cotisations.id_adh='" . $_SESSION["filtre_cotis_adh"] . "' ";
 	}
 		
 	// date filter
-	if(isset($_POST['filtre_date'])) {
-		$_SESSION['filtre_date']=$_POST['filtre_date'];
+	if ($_SESSION["filtre_date_cotis_1"]!="")
+	{
+	   ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_SESSION["filtre_date_cotis_1"], $array_jours);
+	   $datemin = $DB->DBDate(mktime(0,0,0,$array_jours[2],$array_jours[1],$array_jours[3]));
+	   $requete[0] .= "AND cotisations.date_cotis >= " . $datemin . " ";
+	   $requete[1] .= "AND cotisations.date_cotis >= " . $datemin . " ";
 	}
-	if( isset($_GET['filtre'])) {
-		$_SESSION['filtre']=$_GET['filtre'];
-	}elseif( !isset($_SESSION['filtre'])) $_SESSION['filtre']=-1; 
-	//else $_SESSION['filtre']=-1; 
-	if ( $_SESSION['filtre']!=-1 && isset($_SESSION['filtre_date']) && $_SESSION['filtre_date']!=""){
-		$requete[0] .= "AND date_cotis like '" . $_SESSION["filtre_date"] . "' ";
-		// XXX $requete[1] .= "WHERE cotisations.id_adh='" . $_SESSION["filtre_cotis_adh"] . "' ";
+	if ($_SESSION["filtre_date_cotis_2"]!="")
+	{
+	   ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_SESSION["filtre_date_cotis_2"], $array_jours);
+	   $datemax = $DB->DBDate(mktime(0,0,0,$array_jours[2],$array_jours[1],$array_jours[3]));
+	   $requete[0] .= "AND cotisations.date_cotis <= " . $datemax . " ";
+	   $requete[1] .= "AND cotisations.date_cotis <= " . $datemax . " ";
 	}
 
 	// phase de tri
@@ -180,28 +211,21 @@
 		else
 			$pagestring .= $i." ";
 	}
-	//XXX
-	if( $_SESSION['filtre']=='0' ){
-		$url_filtre_date="<a href=\"gestion_contributions.php?filtre=-1\">"._T("filtrer sur la date")."</a> ";
-	}else{
-		$url_filtre_date="<a href=\"gestion_contributions.php?filtre=0\">"._T("filtrer sur la date")."</a> ";
-	}
 ?>
+  				<DIV id="listfilter">
+	                	   <FORM action="gestion_contributions.php" method="get" name="filtre">
+			              <? echo _T("Afficher les contributions du"); ?>&nbsp;
+				      <INPUT type="text" name="contrib_filter_1" maxlength="10" size="10" value="<? echo $_SESSION["filtre_date_cotis_1"]; ?>">
+				      <? echo _T("au"); ?>&nbsp;
+				      <INPUT type="text" name="contrib_filter_2" maxlength="10" size="10" value="<? echo $_SESSION["filtre_date_cotis_2"]; ?>">
+				      <INPUT type="submit" value="<? echo _T("Filtrer"); ?>">
+				   </FORM>
+				</DIV>
 						<TABLE id="infoline" width="100%">
 							<TR>
 								<TD class="left"><? echo $nbcotis->fields[0]." "; if ($nbcotis->fields[0]!=1) echo _T("contributions"); else echo _T("contribution"); ?></TD>
-								<TD class="left"><SPAN class="pagelink"><? echo $url_filtre_date; ?></SPAN></TD>
 								<TD class="right"><? echo _T("Pages :"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></TD>
 							</TR>
-							<? if( isset($_SESSION['filtre']) && ($_SESSION['filtre']=='0')){ ?>
-							<TR>
-								<TD class="left">
-									<form method="post" name="XXX" action="">
-										<input type="text" name="filtre_date" value="<?php if(isset($_SESSION['filtre_date'])) echo $_SESSION['filtre_date']; ?>" size="10" maxlength="10" />
-									</form>
-								</TD>
-							</TR>
-							<?php } ?>
 						</TABLE>
 						<TABLE width="100%"> 
 							<TR> 

@@ -35,6 +35,8 @@
 		$_SESSION["logged_nom_adh"]="";
 		$_SESSION["filtre_adh"]=0;
 		$_SESSION["filtre_adh_2"]=1;
+		$_SESSION["filtre_date_cotis_1"]="";
+		$_SESSION["filtre_date_cotis_2"]="";
 		$_SESSION["tri_adh"]=0;
 		$_SESSION["tri_adh_sens"]=0;
 		$_SESSION["filtre_cotis"]=0;
