@@ -93,17 +93,18 @@ INSERT INTO galette_statuts VALUES (10,'Vice-président',5);
 DROP TABLE galette_types_cotisation;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis integer NOT NULL,
-  libelle_type_cotis character varying(30) DEFAULT '' NOT NULL
+  libelle_type_cotis character varying(30) DEFAULT '' NOT NULL,
+  cotis_extension character(1) DEFAULT NULL
 );
 CREATE UNIQUE INDEX galette_types_cotisation_idx ON galette_types_cotisation (id_type_cotis);
 
-INSERT INTO galette_types_cotisation VALUES (1,'Cotisation annuelle normale');
-INSERT INTO galette_types_cotisation VALUES (2,'Cotisation annuelle réduite');
-INSERT INTO galette_types_cotisation VALUES (3,'Cotisation entreprise');
-INSERT INTO galette_types_cotisation VALUES (4,'Donation en nature');
-INSERT INTO galette_types_cotisation VALUES (5,'Donation pécunière');
-INSERT INTO galette_types_cotisation VALUES (6,'Partenariat');
-INSERT INTO galette_types_cotisation VALUES (7, 'Cotisation annuelle (à payer)');
+INSERT INTO galette_types_cotisation VALUES (1, 'Cotisation annuelle normale', '1');
+INSERT INTO galette_types_cotisation VALUES (2, 'Cotisation annuelle réduite', '1');
+INSERT INTO galette_types_cotisation VALUES (3, 'Cotisation entreprise', '1');
+INSERT INTO galette_types_cotisation VALUES (4, 'Donation en nature', NULL);
+INSERT INTO galette_types_cotisation VALUES (5, 'Donation pécunière', NULL);
+INSERT INTO galette_types_cotisation VALUES (6, 'Partenariat', NULL);
+INSERT INTO galette_types_cotisation VALUES (7, 'Cotisation annuelle (à payer)', '1');
 
 DROP TABLE galette_preferences;
 CREATE TABLE galette_preferences (

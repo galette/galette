@@ -52,3 +52,8 @@ UPDATE galette_cotisations
 	    date_fin_cotis=DATE_ADD(date_cotis, INTERVAL duree_mois_cotis MONTH);
 ALTER TABLE galette_cotisations DROP duree_mois_cotis;
 ALTER TABLE galette_cotisations DROP date_cotis;
+
+-- Add column to galette_types_cotisations
+ALTER TABLE galette_types_cotisation ADD cotis_extension enum('1') default NULL;
+UPDATE galette_types_cotisation SET cotis_extension='1' WHERE
+	id_type_cotis <= 3 OR id_type_cotis = 7;
