@@ -21,6 +21,8 @@
  *
  */
 
+$disable_gettext=false;
+
 // I18N support information here
 if (isset($_POST['pref_lang']))
         $_SESSION["pref_lang"]=$_POST['pref_lang'];
@@ -34,7 +36,6 @@ $languages = array (
                     "spanish"   => "es_ES@euro"
                     );
 $language=$languages[$pref_lang];
-
 putenv("LANG=$language");
 putenv("LANGUAGE=$language");
 putenv("LC_ALL=$language");
@@ -49,42 +50,12 @@ $domain = 'galette';
 $textdomain= THIS_BASE_DIR . "/../lang";
 bindtextdomain($domain, $textdomain);
 textdomain($domain);
-if ($loc!=$language)
+if ($loc!=$languagei || $disable_gettext)
 {
         include(WEB_ROOT."lang/lang_".$pref_lang.".php");
         //echo "<font color='red'>Warning:</font> locale $language is probably not intalled on the server.<br>";
 }
 
-/***********************************
- * some constant strings found in the database
- ***********************************
- */
-
-$foo=_("Realization:");
-$foo=_("Graphics:");
-$foo=_("Publisher:");
-$foo=_("President");
-$foo=_("Vice-president");
-$foo=_("Treasurer");
-$foo=_("Secretary");
-$foo=_("Active member");
-$foo=_("Benefactor member");
-$foo=_("Founder member");
-$foo=_("Old-timer");
-$foo=_("Legal entity");
-$foo=_("Non-member");
-$foo=_("Reduced annual contribution");
-$foo=_("Company cotisation");
-$foo=_("Donation in kind");
-$foo=_("Donation in money");
-$foo=_("Partnership");
-$foo=_("french");
-$foo=_("english");
-$foo=_("spanish");
-
-
-?>
-<?
         if (!function_exists("_T"))
         {
                 function _T($chaine)
@@ -102,4 +73,31 @@ $foo=_("spanish");
                                 return _($chaine);
                 }
         }
+
+/**********************************************
+* some constant strings found in the database *
+**********************************************/
+   
+$foo=_T("Realization:");
+$foo=_T("Graphics:");
+$foo=_T("Publisher:");
+$foo=_T("President");
+$foo=_T("Vice-president");
+$foo=_T("Treasurer");
+$foo=_T("Secretary");
+$foo=_T("Active member");
+$foo=_T("Benefactor member");
+$foo=_T("Founder member");
+$foo=_T("Old-timer");
+$foo=_T("Legal entity");
+$foo=_T("Non-member");
+$foo=_T("Reduced annual contribution");
+$foo=_T("Company cotisation");
+$foo=_T("Donation in kind");
+$foo=_T("Donation in money");
+$foo=_T("Partnership");
+$foo=_T("french");
+$foo=_T("english");
+$foo=_T("spanish");
+
 ?>

@@ -21,7 +21,10 @@ PHP_SOURCES = ../index.php \
 ../gestion_adherents.php \
 ../etiquettes_adherents.php \
 ../install/index.php \
-../ajouter_adherent.php
+../ajouter_adherent.php \
+../templates/default/index.tpl \
+../templates/default/gestion_adherents.tpl \
+../templates/default/page.tpl
 
 all : messages.po lang
 	@echo "Génération des fichiers *.po :"
@@ -78,4 +81,4 @@ lang :
 	fi; 
 
 messages.po : ${PHP_SOURCES}
-	xgettext -n ${PHP_SOURCES} >/dev/null 2>&1
+	xgettext -k_T -n ${PHP_SOURCES} >/dev/null 2>&1
