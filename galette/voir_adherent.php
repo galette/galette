@@ -25,7 +25,7 @@
 	include(WEB_ROOT."includes/functions.inc.php");
         include_once("includes/i18n.inc.php"); 
 	include(WEB_ROOT."includes/smarty.inc.php");
-	include(WEB_ROOT."includes/categories.inc.php"); 
+	include(WEB_ROOT."includes/dynamic_fields.inc.php"); 
 	
 	$id_adh = "";
 	if ($_SESSION["logged_status"]==0) 
@@ -112,40 +112,13 @@
         $result->Close();
 
 	// declare dynamic field values
-	$sql =  "SELECT id_cat, index_info, val_info ".
-		"FROM ".PREFIX_DB."adh_info ".
-		"WHERE id_adh=".$adherent['id_adh'];
-	$result = &$DB->Execute($sql);
-	while (!$result->EOF)
-	{
-		$adherent['dyn'][$result->fields['id_cat']][$result->fields['index_info']] = nl2br(htmlentities($result->fields['val_info'],ENT_QUOTES));
-		$result->MoveNext();
-	}
-	$result->Close();
+	$adherent['dyn'] = get_dynamic_fields($DB, 'adh', $adherent["id_adh"], true);
 
 	// - declare dynamic fields for display
-	$requete = "SELECT * ".
-			"FROM ".PREFIX_DB."info_categories ".
-			"ORDER BY index_cat";
-	$result = &$DB->Execute($requete);
-	while (!$result->EOF)
-	{
-		// disable admin fields when logged as member
-		if ($_SESSION["admin_status"]!=1 && $result->fields['perm']==$perm_admin)
-			$disabled['dyn'][$result->fields['id_cat']] = 'disabled';
-		$cur_fields = &$result->fields;
-		if ($cur_fields['size_cat'] == 0) {
-			if (isset($adherent['dyn']))
-				$cur_fields['size_cat'] = count($adherent['dyn'][$cur_fields['id_cat']]);
-			else
-				$cur_fields['size_cat'] = 1;
-		}
-		$dynamic_fields[] = $cur_fields;
-		$result->MoveNext();
-	}
-	$result->Close();
+	$disabled['dyn'] = array();
+	$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $_SESSION["admin_status"], $adherent['dyn'], $disabled['dyn'], 1);
 
-        $tpl->assign("adherent",$adherent);
+        $tpl->assign("data",$adherent);
 	$tpl->assign("dynamic_fields",$dynamic_fields);
 	$tpl->assign("time",time());
 	$content = $tpl->fetch("voir_adherent.tpl");
