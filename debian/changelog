@@ -1,3 +1,10 @@
+galette (0.6.3-2) unstable; urgency=low
+
+  * fixed a bug about date conversion which caused dates about year 1950
+    to be wrongly managed.
+
+ -- Georges Khaznadar <gekhajofour@netinfo.fr>  Thu, 22 Jul 2004 14:54:58 +0200
+
 galette (0.6.3-1) unstable; urgency=low
 
   * added a field pref_lang in the table of members to mean the mother tongue
