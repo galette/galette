@@ -1,4 +1,6 @@
 <?
+        if (!isset($_POST["install_lang"])) $pref_lang="english";
+        else $pref_lang=$_POST["install_lang"];
         include_once("../includes/i18n.inc.php"); 
 	session_start();
 	define("WEB_ROOT", "/usr/share/galette/");

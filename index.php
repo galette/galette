@@ -20,10 +20,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
- 
+
+if (isset($_GET['pref_lang'])){
+  // set priority to the GET var, which overrides the cookie.
+  setcookie('pref_lang',$_GET['pref_lang']);
+}
 	include("includes/config.inc.php"); 
 	include(WEB_ROOT."includes/database.inc.php"); 
-  include_once("includes/i18n.inc.php"); 
+	include_once(WEB_ROOT."includes/i18n.inc.php"); 
 	include(WEB_ROOT."includes/functions.inc.php"); 
 	include(WEB_ROOT."includes/session.inc.php"); 
 	 

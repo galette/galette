@@ -20,9 +20,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
- 
+
 // I18N support information here
 
+if (isset($_POST['pref_lang'])) $pref_lang=$_POST['pref_lang'];
+if (isset($_GET['pref_lang'])) $pref_lang=$_GET['pref_lang'];
+if (isset($HTTP_COOKIE_VARS['pref_lang'])) $pref_lang=$HTTP_COOKIE_VARS['pref_lang'];
 if (!isset($pref_lang)) $pref_lang=PREF_LANG;
 
 $languages = array (
