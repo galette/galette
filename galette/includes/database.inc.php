@@ -23,6 +23,9 @@
 	$DB->debug = false;
 	if(!@$DB->Connect(HOST_DB, USER_DB, PWD_DB, NAME_DB)) die("No database connection...");
 
+	if (!defined("PREFIX_DB"))
+	   define("PREFIX_DB","");
+
 	// Chargement des preferences
 	// recuperation de la liste de champs de la table
 		$result = $DB->Execute("SELECT * FROM ".PREFIX_DB."preferences");
