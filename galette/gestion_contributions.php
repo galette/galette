@@ -345,9 +345,14 @@
         if ($_SESSION["admin_status"]==1) 
         {
 ?>
-								<TD class="<? echo $row_class; ?>" nowrap> 
-									<A href="gestion_contributions.php?id_adh=<? echo $resultat->fields["id_adh"] ?>"><?
-										echo htmlentities(strtoupper($resultat->fields["nom_adh"]), ENT_QUOTES)." ";
+								<TD class="<? echo $row_class; ?>" nowrap>
+<?
+	if ($_SESSION["filtre_cotis_adh"]=="")
+		$link = "gestion_contributions.php?id_adh=".$resultat->fields["id_adh"];
+	else
+		$link = "voir_adherent.php?id_adh=".$resultat->fields["id_adh"];
+?>
+									<A href="<? echo $link; ?>"><? echo htmlentities(strtoupper($resultat->fields["nom_adh"]), ENT_QUOTES)." ";
 										if (isset($resultat->fields["prenom_adh"]))
 											echo htmlentities($resultat->fields["prenom_adh"], ENT_QUOTES);
 									?></A> 
