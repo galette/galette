@@ -340,6 +340,7 @@ a.listing:hover {
 }		
 
 #input-table #libelle {
+	font-size: 11px;
 	text-align: left;
 	background-color: #DDDDFF;
 	font-weight: normal;
