@@ -420,7 +420,7 @@
 		{
         $file = substr(substr($file,5),0,-4);
 ?>
-										<OPTION value="<? echo $file; ?>" <? isSelected($file,$pref_lang) ?>><? echo ucfirst($file); ?></OPTION>
+										<OPTION value="<? echo $file; ?>" <? isSelected($file,$pref_lang) ?>><? echo ucfirst(_T($file)); ?></OPTION>
 <?
 		}
 	}
