@@ -261,7 +261,4 @@ include("header.php");
   </BLOCKQUOTE> 
   <input type="hidden" name="id_cotis" value="<? echo $id_cotis ?>"> 
 </form> 
-<? 
-  // } 
-  include("footer.php") 
-?>
+</body></html>

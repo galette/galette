@@ -38,6 +38,9 @@ while (list($champ, $proprietes) = each($fields)){
   
   $fieldname = $proprietes_arr["name"];
   $existfield[$fieldname]="1";
+  if ($proprietes_arr["type"]=="date"){
+    $isdate[$fieldname]="1";
+  }
   
   // on ne met jamais a jour id_adh
   if ($fieldname!="id_adh" && $fieldname!="date_echeance")
@@ -95,6 +98,11 @@ if (!isset($_POST["valid"]) ||
   $listvalues="";
   foreach($_POST as $k => $v){
     if ($existfield[$k]=="1"){
+      if ($isdate[$k] == "1" &&
+	  ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $v, $array_jours)){
+	//c'est une date, on la passe au format ISO
+	$v=$array_jours[3]."-".$array_jours[2]."-".$array_jours[1];
+      }
       $listkeys .= ",".$k." ";
       $listvalues .=",'".addslashes($v)."' ";
     }
@@ -128,7 +136,7 @@ if (!isset($_POST["valid"]) ||
   $mail_text .= _T("(ce mail est un envoi automatique)")."\n";
   $mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\nContent-Type: text/plain; charset=iso-8859-15\n";
   mail ($_POST["email_adh"],$mail_subject,$mail_text, $mail_headers);
-  header("location: index.php");
+  header("location: self_contribution.php?login_adh=".$_POST["login_adh"]);
   echo "<html><header></header><body></body></html>";
   exit();
 }

@@ -156,7 +156,7 @@
 					  	if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $post_value, $array_jours) || $post_value=="")
 					  	{
 							if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]) || $post_value=="")
-								$value=$DB->DBDate(mktime(0,0,0,$array_jours[2],$array_jours[1],$array_jours[3]));
+								$value="'".$array_jours[3]."-".$array_jours[2]."-".$array_jours[1]."'";
 							else
 								$error_detected .= "<LI>"._T("- Date non valide !")."</LI>";
 						}
