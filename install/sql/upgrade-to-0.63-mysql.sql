@@ -52,6 +52,10 @@ CREATE TABLE `galette_pictures` (
     PRIMARY KEY  (`id_adh`)
 ) TYPE=MyISAM;
 
+-- Add two fileds for log;
+ALTER TABLE galette_logs ADD action_log text;
+ALTER TABLE galette_logs ADD sql_log text;
+
 -- Change table cotisations to store date_fin_cotis instead of duration;
 ALTER TABLE galette_cotisations ADD date_enreg date NOT NULL default '0000-00-00';
 ALTER TABLE galette_cotisations ADD date_debut_cotis date NOT NULL default '0000-00-00';

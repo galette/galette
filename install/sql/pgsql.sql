@@ -132,7 +132,9 @@ CREATE TABLE galette_logs (
   date_log timestamp NOT NULL,
   ip_log character varying(30) DEFAULT '' NOT NULL,
   adh_log character varying(41) DEFAULT '' NOT NULL,
-  text_log text
+  text_log text,
+  action_log text,
+  sql_log text
 );
 CREATE UNIQUE INDEX galette_logs_idx ON galette_logs (id_log);
 

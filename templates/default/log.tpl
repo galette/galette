@@ -94,7 +94,7 @@
 				<TD valign="top">{$log.desc}</TD>
 			</TR>
 {foreachelse}
-			<TR><TD colspan="5" class="emptylist">{_T("logs are empty")}</TD></TR>
+			<TR><TD colspan="6" class="emptylist">{_T("logs are empty")}</TD></TR>
 {/foreach}
 		</TABLE>
 		<DIV id="infoline2" class="right">{_T("Pages:")}
