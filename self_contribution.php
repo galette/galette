@@ -123,7 +123,7 @@ if (isset($_POST["valid"]) && $_POST["self_contribution"])
       
       // vérification de la présence des champs obligatoires
       if ($$fieldreq!="" && $post_value=="")
-	$error_detected = "<LI>"._("- Check that all mandatory fields are filled in.")."</LI>";
+	$error_detected = "<LI>"._("- Check that all mandatory fields are filled in. ($fieldreq)")."</LI>";
       else{
 	$value = "";
 	// validation des dates			
@@ -190,7 +190,7 @@ if (isset($_POST["valid"]) && $_POST["self_contribution"])
     $DB->Execute($requete);
     
     // retour à la liste
-    header("location: voir_adherent?id_adh=".$id_adh);
+    header("location: voir_adherent.php?id_adh=".$id_adh);
   }	
 }
 
@@ -241,8 +241,8 @@ include("header.php");
         <tr>
 	  <TH id="libelle" <? echo $montant_cotis_req ?>><? echo _("Amount:"); ?></TH> 
 	  <td><input type="text" name="montant_cotis" value="<? echo $montant_cotis; ?>" maxlength="<? echo $montant_cotis_len; ?>"></td> 
-	  <TH id="libelle" <? echo $duree_mois_cotis_req ?>><? echo _("Extension of adhesion:"); ?></TH> 
-	  <td><input type="text" name="duree_months_cotis" value="<? echo $duree_months_cotis; ?>" maxlength="<? echo $duree_months_cotis_len; ?>"> <? echo _("months"); ?></td>
+	  <TH id="libelle" <? echo $duree_mois_cotis_req ?>><? echo _("Duration:"); ?></TH> 
+	  <td><input type="text" name="duree_mois_cotis" value="<? echo $duree_mois_cotis; ?>" maxlength="<? echo $duree_months_cotis_len; ?>"> <? echo _("months"); ?></td>
 	</tr>
         <tr> 
 	  <TH id="libelle" <? echo $date_cotis_req ?>><? echo _("Date of contribution:"); ?><br>&nbsp;</TH> 
