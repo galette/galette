@@ -34,9 +34,9 @@ all : messages.po lang
 	done
 
 lang :
-	make_lang_l12n.py en_US.po lang_english.php
-	make_lang_l12n.py fr_FR@euro.po lang_french.php
-	make_lang_l12n.py es_ES@euro.po lang_spanish.php
+	./make_lang_l12n.py en_US.po lang_english.php
+	./make_lang_l12n.py fr_FR@euro.po lang_french.php
+	./make_lang_l12n.py es_ES@euro.po lang_spanish.php
 
 messages.po : ${PHP_SOURCES}
 	xgettext -n ${PHP_SOURCES} >/dev/null 2>&1

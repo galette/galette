@@ -277,8 +277,9 @@ class tt_dic :
             for file in tt.files:
                 outfile.write(file+" ")
             outfile.write("\n")
-            outfile.write("$lang['"+msgid+"'] = '"+\
-                          tt.msgstr+"';\n\n")
+            """ Stripped quotes """
+            outfile.write("$lang['"+msgid.replace("'","\\'")+"'] = '"+\
+                          tt.msgstr.replace("'","\\'")+"';\n\n")
         outfile.write("?>")
         outfile.close()
         

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Galette V1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-08 23:15+0200\n"
+"POT-Creation-Date: 2004-09-01 21:46+0200\n"
 "PO-Revision-Date: 2004-08-08 23:15+0200\n"
 "Last-Translator: Georges Khaznadar <gekhajofour@netinfo.fr>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,37 +14,37 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../index.php:46
+#: ../index.php:50
 msgid "Subscribe"
 msgstr "Registrarse"
 
-#: ../index.php:57 ../footer.php:105
+#: ../index.php:61 ../footer.php:105
 msgid "Admin"
 msgstr "Administrador"
 
-#: ../index.php:58 ../index.php:81 ../index.php:114 ../index.php:127
+#: ../index.php:62 ../index.php:85 ../index.php:118 ../index.php:131
 msgid "Login"
 msgstr "Identificación"
 
-#: ../index.php:84
+#: ../index.php:88
 msgid "Authentication failed. Login:"
 msgstr "Autentificación fracasada. Login :"
 
-#: ../index.php:119 ../self_adherent.php:138 ../self_adherent.php:443
+#: ../index.php:123 ../self_adherent.php:138 ../self_adherent.php:443
 #: ../lostpasswd.php:71 ../lostpasswd.php:131 ../preferences.php:492
 #: ../voir_adherent.php:248 ../install/index.php:756
 #: ../ajouter_adherent.php:298 ../ajouter_adherent.php:740
 msgid "Username:"
 msgstr "Login :"
 
-#: ../index.php:123 ../self_adherent.php:139 ../self_adherent.php:452
+#: ../index.php:127 ../self_adherent.php:139 ../self_adherent.php:452
 #: ../lostpasswd.php:72 ../preferences.php:496 ../voir_adherent.php:250
 #: ../install/index.php:303 ../install/index.php:762
 #: ../ajouter_adherent.php:299 ../ajouter_adherent.php:742
 msgid "Password:"
 msgstr "Contraseña :"
 
-#: ../index.php:129
+#: ../index.php:133
 msgid "Lost your password?"
 msgstr "¿ Contraseña olvidada ?"
 
@@ -810,88 +810,88 @@ msgstr "Contribuciones"
 msgid "Gift"
 msgstr "Donativo"
 
-#: ../includes/i18n.inc.php:58
+#: ../includes/i18n.inc.php:61
 msgid "Realization:"
 msgstr "Realizado por :"
 
-#: ../includes/i18n.inc.php:59
+#: ../includes/i18n.inc.php:62
 msgid "Graphics:"
 msgstr "Grafismo :"
 
-#: ../includes/i18n.inc.php:60
+#: ../includes/i18n.inc.php:63
 msgid "Publisher:"
 msgstr "Editor :"
 
-#: ../includes/i18n.inc.php:61
+#: ../includes/i18n.inc.php:64
 msgid "President"
 msgstr "Presidente"
 
-#: ../includes/i18n.inc.php:62
+#: ../includes/i18n.inc.php:65
 msgid "Vice-president"
 msgstr "Vicepresidente"
 
-#: ../includes/i18n.inc.php:63
+#: ../includes/i18n.inc.php:66
 msgid "Treasurer"
 msgstr "Tresorero"
 
-#: ../includes/i18n.inc.php:64
+#: ../includes/i18n.inc.php:67
 msgid "Secretary"
 msgstr "Secretario"
 
-#: ../includes/i18n.inc.php:65
+#: ../includes/i18n.inc.php:68
 msgid "Active member"
 msgstr "Socio activo"
 
-#: ../includes/i18n.inc.php:66
+#: ../includes/i18n.inc.php:69
 msgid "Benefactor member"
 msgstr "Socio bienhechor"
 
-#: ../includes/i18n.inc.php:67
+#: ../includes/i18n.inc.php:70
 msgid "Founder member"
 msgstr "Socio fundador"
 
-#: ../includes/i18n.inc.php:68
+#: ../includes/i18n.inc.php:71
 msgid "Old-timer"
 msgstr "Antiguo"
 
-#: ../includes/i18n.inc.php:69
+#: ../includes/i18n.inc.php:72
 msgid "Legal entity"
 msgstr "Persona moral"
 
-#: ../includes/i18n.inc.php:70
+#: ../includes/i18n.inc.php:73
 msgid "Non-member"
 msgstr "No Socio"
 
-#: ../includes/i18n.inc.php:71
+#: ../includes/i18n.inc.php:74
 msgid "Reduced annual contribution"
 msgstr "Cuota anual reducida"
 
-#: ../includes/i18n.inc.php:72
+#: ../includes/i18n.inc.php:75
 msgid "Company cotisation"
 msgstr "Cuota empresarial"
 
-#: ../includes/i18n.inc.php:73
+#: ../includes/i18n.inc.php:76
 msgid "Donation in kind"
 msgstr "Donativo en natural"
 
-#: ../includes/i18n.inc.php:74
+#: ../includes/i18n.inc.php:77
 msgid "Donation in money"
 msgstr "Donativo en especie"
 
-#: ../includes/i18n.inc.php:75
+#: ../includes/i18n.inc.php:78
 msgid "Partnership"
 msgstr "Participación"
 
-#: ../includes/i18n.inc.php:76
+#: ../includes/i18n.inc.php:79
 #, fuzzy
 msgid "french"
 msgstr "francés"
 
-#: ../includes/i18n.inc.php:77
+#: ../includes/i18n.inc.php:80
 msgid "english"
 msgstr "inglés"
 
-#: ../includes/i18n.inc.php:78
+#: ../includes/i18n.inc.php:81
 msgid "spanish"
 msgstr "español"
 
