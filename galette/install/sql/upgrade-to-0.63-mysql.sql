@@ -2,6 +2,12 @@ ALTER TABLE galette_adherents ADD pref_lang varchar(20) default 'french' AFTER d
 INSERT INTO galette_types_cotisation VALUES (7, 'Cotisation annuelle (à payer)');
 ALTER TABLE galette_adherents ADD  UNIQUE (login_adh);
 
+INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_pays', '');
+INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_method', '0');
+INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_smtp', '0');
+INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_membership_ext', '12');
+INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_beg_membership', '');
+
 DROP TABLE galette_info_categories;
 CREATE TABLE galette_info_categories (
     id_cat int(10) unsigned NOT NULL auto_increment,
