@@ -380,7 +380,8 @@
 	$tpl->assign('radio_titres', array(
 			3 => _T("Miss"),
 			2 => _T("Mrs"),
-			1 => _T("Mister")));
+			1 => _T("Mister"),
+			4 => _T("Society")));
 
 	// states
 	$requete = "SELECT * FROM ".PREFIX_DB."statuts ORDER BY priorite_statut";

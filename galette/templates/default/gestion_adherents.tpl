@@ -86,8 +86,10 @@
 				<TD class="{$member.class}" nowrap>
 				{if $member.genre eq 1}
 					<IMG src="{$template_subdir}images/icon-male.png" Alt="{_T("[M]")}" align="middle" width="10" height="12">
-				{else}
+				{elseif $member.genre eq 2 || $member.genre eq 3}
 					<IMG src="{$template_subdir}images/icon-female.png" Alt="{_T("[W]")}" align="middle" width="10" height="12">
+				{else}
+					<IMG src="{$template_subdir}images/icon-empty.png" Alt="" align="middle" width="10" height="12">
 				{/if}
 				{if $member.email != ''}
 					<A href="mailto:{$member.email}"><IMG src="{$template_subdir}images/icon-mail.png" Alt="{_T("[Mail]")}" align="middle" border="0" width="14" height="10"></A>

@@ -203,7 +203,8 @@
 	// $resultat = &$DB->Execute($requete[0]); 
 	$resultat = &$DB->SelectLimit($requete[0],PREF_NUMROWS,($page-1)*PREF_NUMROWS);
 	$nb_contributions = &$DB->Execute($requete[1]); 
-	
+	$contributions = array();
+
 	if ($nb_contributions->fields[0]%PREF_NUMROWS==0) 
 		$nbpages = intval($nb_contributions->fields[0]/PREF_NUMROWS);
 	else 
