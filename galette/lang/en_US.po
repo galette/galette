@@ -1,0 +1,1295 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Galette V1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-08-05 12:33+0200\n"
+"PO-Revision-Date: 2004-08-05 13:49+0200\n"
+"Last-Translator: Simon DEPIETS\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-15\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../index.php:37
+msgid "Administrateur"
+msgstr "Admin"
+
+#: ../index.php:38 ../index.php:59 ../index.php:90 ../index.php:103
+msgid "Identification"
+msgstr "Login"
+
+#: ../index.php:62
+msgid "Echec authentification. Login :"
+msgstr "Authentication failed. Login:"
+
+#: ../index.php:95
+msgid "Identifiant :"
+msgstr "Username:"
+
+#: ../index.php:99
+msgid "Mot de passe :"
+msgstr "Password:"
+
+#: ../index.php:105
+msgid "Mot de passe perdu ?"
+msgstr "Lost your password?"
+
+#~ msgid "Type d'installation inconnu"
+#~ msgstr "Installation mode unknown"
+
+#~ msgid "Type de base inconnu"
+#~ msgstr "Database type unknown"
+
+#~ msgid "Nom d'utilisateur vide"
+#~ msgstr "No user name"
+
+#~ msgid "Mot de passe vide"
+#~ msgstr "No password"
+
+#~ msgid "Nom de la base non précisé"
+#~ msgstr "No database name"
+
+#~ msgid "Type d'installation"
+#~ msgstr "Installation mode"
+
+#~ msgid "Selectionnez le type d'installation à lancer"
+#~ msgstr "Select installation mode to launch"
+
+#~ msgid "Nouvelle installation :"
+#~ msgstr "New installation:"
+
+#~ msgid ""
+#~ "Vous installez Galette pour la première fois, ou vous souhaitez écraser "
+#~ "une ancienne version de Galette sans conserver vos données"
+#~ msgstr ""
+#~ "You're installing Galette for the first time, or you wish to erase an "
+#~ "older version of Galette without keeping your data"
+
+#~ msgid "Mise à jour :"
+#~ msgstr "Update:"
+
+#~ msgid "Votre version actuelle de Galette est la"
+#~ msgstr "Your current Galette version is"
+
+#~ msgid "Votre version actuelle de Galette est comprise entre"
+#~ msgstr "Your current Galette version is included between"
+
+#~ msgid "et"
+#~ msgstr "and"
+
+#~ msgid "Attention : Pensez à sauvegarder votre base existante."
+#~ msgstr "Warning: Don't forget to backup your current database."
+
+#~ msgid "Etape suivante"
+#~ msgstr "Next step"
+
+#~ msgid "Etape 2 - Type d'installation"
+#~ msgstr "Step 2 - Installation mode"
+
+#~ msgid "Permissions de fichiers"
+#~ msgstr "Files permissions"
+
+#~ msgid "Vérification des permissions des fichiers et dossier"
+#~ msgstr "Checking the files and directories permissions"
+
+#~ msgid "Le dossier"
+#~ msgstr "The directory"
+
+#~ msgid "Le fichier"
+#~ msgstr "The file"
+
+#~ msgid "n'est pas autorisé en écriture"
+#~ msgstr "isn't writable"
+
+#~ msgid "est autorisé en écriture"
+#~ msgstr "is writable"
+
+#~ msgid ""
+#~ "Pour fonctionner correctement, Galette a besoin d'avoir les droits en "
+#~ "écriture sur ces fichiers."
+#~ msgstr ""
+#~ "For a correct functionning, Galette needs the Write permission on these "
+#~ "files."
+
+#~ msgid ""
+#~ "Pour être mis à jour et fonctionner correctement, Galette a besoin "
+#~ "d'avoir les droits en écriture sur ces fichiers."
+#~ msgstr ""
+#~ "In order to be updated, Galette needs the Write permission on these files."
+
+#~ msgid "Sous UNIX/Linux, vous pouvez donner ces droits par les commandes"
+#~ msgstr "Under UNIX/Linux, you can give the permissions using those commands"
+
+#~ msgid "utilisateur_apache"
+#~ msgstr "apache_user"
+
+#~ msgid "nom_fichier"
+#~ msgstr "file_name"
+
+#~ msgid "nom_dossier"
+#~ msgstr "direcory_name"
+
+#~ msgid "(pour un fichier)"
+#~ msgstr "(for a file)"
+
+#~ msgid "(pour un dossier)"
+#~ msgstr "(for a directory)"
+
+#~ msgid ""
+#~ "Sous Windows, vérifiez que les fichiers en question ne sont pas en "
+#~ "lecture seule dans leurs propriétés."
+#~ msgstr ""
+#~ "Under Windows, check these files are not in Read-Only mode in their "
+#~ "property panel."
+
+#~ msgid "Rééssayer"
+#~ msgstr "Retry"
+
+#~ msgid "Les permissions des fichiers sont correctes !"
+#~ msgstr "Files permissions are OK!"
+
+#~ msgid "Etape 3 - Permissions"
+#~ msgstr "Step 3 - Permissions"
+
+#~ msgid "Base de données"
+#~ msgstr "Database"
+
+#~ msgid ""
+#~ "Si ce n'est pas déjà fait, créez une base de données et un utilisateur "
+#~ "pour Galette."
+#~ msgstr "If it hadn't been made, create a database and a user for Galette."
+
+#~ msgid "Veuillez entrer les paramètres de connexion à la base existante."
+#~ msgstr "Enter connection data for the existing database."
+
+#~ msgid ""
+#~ "Les droits nécessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et "
+#~ "INSERT."
+#~ msgstr ""
+#~ "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and "
+#~ "INSERT."
+
+#~ msgid "Type de base de données :"
+#~ msgstr "Database type:"
+
+#~ msgid "Utilisateur :"
+#~ msgstr "User:"
+
+#~ msgid "Hôte :"
+#~ msgstr "Host:"
+
+#~ msgid "Nom de la base :"
+#~ msgstr "Database:"
+
+#~ msgid "Prefixe de table :"
+#~ msgstr "Table prefix:"
+
+#~ msgid "(Indiquez le prefixe ACTUEL de vos tables Galette)"
+#~ msgstr "(Indicate the CURRENT prefix of your Galette tables)"
+
+#~ msgid "Etape 4 - Base de données"
+#~ msgstr "Step 4 - Database"
+
+#~ msgid "Vérification de la base"
+#~ msgstr "Check of the database"
+
+#~ msgid "Vérification des paramètres et de l'existence de la base"
+#~ msgstr "Check the parameters and the existence of the database"
+
+#~ msgid "Connexion à la base impossible"
+#~ msgstr "Unable to connect to the database"
+
+#~ msgid "La connexion à la base est établie"
+#~ msgstr "Connection to database is OK"
+
+#~ msgid ""
+#~ "La base n'est accessible. Veuillez revenir en arrière pour saisir à "
+#~ "nouveau les paramètres de connexion."
+#~ msgstr ""
+#~ "Database can't be reached. Please go back to enter the connection "
+#~ "parameters again."
+
+#~ msgid "Retour"
+#~ msgstr "Go back"
+
+#~ msgid "La base existe et les paramètres de connexion sont corrects."
+#~ msgstr "Database exists and connection parameters are OK."
+
+#~ msgid "Etape 5 - Accès à la base"
+#~ msgstr "Step 5 - Access to the database"
+
+#~ msgid "Permissions sur la base"
+#~ msgstr "Permissions on the base"
+
+#~ msgid ""
+#~ "Pour fonctionner, Galette doit avoir un certain nombre de droits sur la "
+#~ "base de données (CREATE, DROP, DELETE, UPDATE, SELECT et INSERT)"
+#~ msgstr ""
+#~ "To run, Galette needs a number of rights on the databse (CREATE, DROP, "
+#~ "DELETE, UPDATE, SELECT and INSERT)"
+
+#~ msgid ""
+#~ "Pour être mis à jour, Galette doit avoir un certain nombre de droits sur "
+#~ "la base de données (CREATE, DROP, DELETE, UPDATE, SELECT, INSERT et ALTER)"
+#~ msgstr ""
+#~ "In order to be updated, Galette needs a number of rights on the databse "
+#~ "(CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)"
+
+#~ msgid "Opération DROP non autorisée"
+#~ msgstr "DROP operation not allowed"
+
+#~ msgid "Opération DROP autorisée"
+#~ msgstr "DROP operation allowed"
+
+#~ msgid "Opération CREATE non autorisée"
+#~ msgstr "CREATE operation not allowed"
+
+#~ msgid "Opération CREATE autorisée"
+#~ msgstr "CREATE operation allowed"
+
+#~ msgid "Opération INSERT non autorisée"
+#~ msgstr "INSERT operation not allowed"
+
+#~ msgid "Opération INSERT autorisée"
+#~ msgstr "INSERT operation allowed"
+
+#~ msgid "Opération UPDATE non autorisée"
+#~ msgstr "UPDATE operation not allowed"
+
+#~ msgid "Opération UPDATE autorisée"
+#~ msgstr "UPDATE operation allowed"
+
+#~ msgid "Opération SELECT non autorisée"
+#~ msgstr "SELECT operation not allowed"
+
+#~ msgid "Opération SELECT autorisée"
+#~ msgstr "SELECT operation allowed"
+
+#~ msgid "Opération ALTER non autorisée"
+#~ msgstr "ALTER operation not allowed"
+
+#~ msgid "Opération ALTER autorisée"
+#~ msgstr "ALTER operation allowed"
+
+#~ msgid "Opération DELETE non autorisée"
+#~ msgstr "DELETE operation not allowed"
+
+#~ msgid "Opération DELETE autorisée"
+#~ msgstr "DELETE operation allowed"
+
+#~ msgid ""
+#~ "Galette ne dispose pas de droits suffisants sur la base de données pour "
+#~ "poursuivre l'installation."
+#~ msgstr ""
+#~ "Galette hasn't got enough permissions on the database to continue the "
+#~ "installation."
+
+#~ msgid ""
+#~ "Galette ne dispose pas de droits suffisants sur la base de données pour "
+#~ "poursuivre la mise à jour."
+#~ msgstr ""
+#~ "Galette hasn't got enough permissions on the database to continue the "
+#~ "update."
+
+#~ msgid "Les droits d'accès à la base sont corrects."
+#~ msgstr "Permissions to database are OK."
+
+#~ msgid "Etape 6 - Droits d'accès à la base"
+#~ msgstr "Step 6 - Access permissions to database"
+
+#~ msgid "Création de la base"
+#~ msgstr "Creation of the database"
+
+#~ msgid "Mise à jour de la base"
+#~ msgstr "Update of the database"
+
+#~ msgid "Compte rendu d'installation"
+#~ msgstr "Installation Report"
+
+#~ msgid "Compte rendu de mise à jour"
+#~ msgstr "Update Report"
+
+#~ msgid ""
+#~ "(Les erreurs sur les opérations DROP et RENAME peuvent être ignorées)"
+#~ msgstr "(Errors on DROP and RENAME operations can be ignored)"
+
+#~ msgid ""
+#~ "La base de données n'a pas pu être totalement créée, il s'agit peut-être "
+#~ "d'un problème de droits."
+#~ msgstr ""
+#~ "The database isn't totally created, it's maybe a permission problem."
+
+#~ msgid ""
+#~ "La base de données n'a pas pu être totalement mise à jour, il s'agit peut-"
+#~ "être d'un problème de droits."
+#~ msgstr ""
+#~ "The database isn't totally updated, it's maybe a permission problem."
+
+#~ msgid ""
+#~ "Votre base est peut-être inutilisable, essayez de restaurer une ancienne "
+#~ "version."
+#~ msgstr ""
+#~ "Your database is maybe not usable, try to restore the older version."
+
+#~ msgid "La base de données a été correctement créée."
+#~ msgstr "The database has been correctly created."
+
+#~ msgid "La base de données a été correctement mise à jour."
+#~ msgstr "The database has been correctly updated."
+
+#~ msgid "Etape 7 - Création de la base"
+#~ msgstr "Step 7 - Database Creation"
+
+#~ msgid "Etape 7 - Mise à jour de la base"
+#~ msgstr "Step 7 - Database Update"
+
+#~ msgid "Paramètres administrateur"
+#~ msgstr "Admin settings"
+
+#~ msgid "Veuillez choisir les paramètres du compte administrateur Galette"
+#~ msgstr "Please chose the parameters of the admin account on Galette"
+
+#~ msgid "Etape 8 - Paramètres administrateur"
+#~ msgstr "Step 8 - Admin parameters"
+
+#~ msgid "Sauvegarde des paramètres"
+#~ msgstr "Save the parameters"
+
+#~ msgid "Fichier de configuration crée (includes/config.inc.php)"
+#~ msgstr "Configuration file created (includes/config.inc.php)"
+
+#~ msgid ""
+#~ "Impossible de créer le fichier de configuration (includes/config.inc.php)"
+#~ msgstr "Unable to create configuration file (includes/config.inc.php)"
+
+#~ msgid "Paramètres sauvegardés dans la base de données"
+#~ msgstr "Parameters saved into the database"
+
+#~ msgid "Les paramètres n'ont pas pu être sauvegardés dans la base de données"
+#~ msgstr "Parameters couldn't be save into the database"
+
+#~ msgid "Les paramètres n'ont pas pu être sauvegardés."
+#~ msgstr "Parameters couldn't be saved."
+
+#~ msgid ""
+#~ "Ceci peut provenir des droits sur le fichier includes/config.inc.php ou "
+#~ "de l'impossibilité de faire un INSERT dans la base."
+#~ msgstr ""
+#~ "This can come from the permissions on the file includes/config.inc.php or "
+#~ "the impossibility to make an INSERT into the database."
+
+#~ msgid "Etape 9 - Sauvegarde des paramètres"
+#~ msgstr "Step 9 - Saving of the parameters"
+
+#~ msgid "Fin de l'installation"
+#~ msgstr "Installation complete !"
+
+#~ msgid "Fin de la mise à jour"
+#~ msgstr "Update complete !"
+
+#~ msgid "Galette a été installé avec succès !"
+#~ msgstr "Galette has been succesfully installed!"
+
+#~ msgid "Galette a été mis à jour avec succès !"
+#~ msgstr "Galette has been succesfully updated!"
+
+#~ msgid "Pour sécuriser le système, veuillez supprimer le dossier install"
+#~ msgstr "For securing the system, please delete the install directory"
+
+#~ msgid "Page d'accueil"
+#~ msgstr "Homepage"
+
+#~ msgid "Etape 10 - Fin de l'installation"
+#~ msgstr "Step 10 - End of the installation"
+
+#~ msgid "Etape 10 - Fin de la mise à jour"
+#~ msgstr "Etape 10 - End of the update"
+
+#~ msgid "- Champ obligatoire non renseigné."
+#~ msgstr "- Mandatory field empty."
+
+#~ msgid "- Date non valide !"
+#~ msgstr "- Non valid date!"
+
+#~ msgid "- Mauvais format de date (jj/mm/aaaa) !"
+#~ msgstr "- Wrong date format (dd/mm/yyyy)!"
+
+#~ msgid "- Adresse E-mail non valide !"
+#~ msgstr "- Non-valid E-Mail adress!"
+
+#~ msgid "- Adresse web non valide ! Oubli du http:// ?"
+#~ msgstr "- Non-valid Website address! Maybe you've skipped the http:// ?"
+
+#~ msgid "- L'identifiant doit être composé d'au moins 4 caractères !"
+#~ msgstr "- The username must be composed of at least 4 characters!"
+
+#~ msgid "- Cet identifiant est déjà utilisé par un autre adhérent !"
+#~ msgstr "- This username is already used by another member!"
+
+#~ msgid "- Le mot de passe doit être composé d'au moins 4 caractères !"
+#~ msgstr "- The password must be of at least 4 characters!"
+
+#~ msgid ""
+#~ "- La photo semble ne pas avoir été transmise correstement. "
+#~ "L'enregistrement a cependant été effectué."
+#~ msgstr ""
+#~ "- The photo seems not to be transferred correctly. But registration has "
+#~ "been made."
+
+#~ msgid ""
+#~ "- Le fichier transmis n'est pas une image valide (GIF, PNG ou JPEG). "
+#~ "L'enregistrement a cependant été effectué."
+#~ msgstr ""
+#~ "- The transfered file isn't a valid image (GIF, PNG or JPEG). But "
+#~ "registration has been made."
+
+#~ msgid ""
+#~ "- Le fichier transmis n'est pas une image valide (PNG ou JPEG). "
+#~ "L'enregistrement a cependant été effectué."
+#~ msgstr ""
+#~ "- The transfered file isn't a valid image (PNG or JPEG). But registration "
+#~ "has been made."
+
+#~ msgid "Fiche adhérent"
+#~ msgstr "Member Profile"
+
+#~ msgid "modification"
+#~ msgstr "modification"
+
+#~ msgid "création"
+#~ msgstr "creation"
+
+#~ msgid "- ERREUR -"
+#~ msgstr "- ERROR -"
+
+#~ msgid "- AVERTISSEMENT -"
+#~ msgstr "- WARNING -"
+
+#~ msgid "Titre :"
+#~ msgstr "Title:"
+
+#~ msgid "Mademoiselle"
+#~ msgstr "Miss"
+
+#~ msgid "Madame"
+#~ msgstr "Mrs"
+
+#~ msgid "Monsieur"
+#~ msgstr "Mister"
+
+#~ msgid "Nom :"
+#~ msgstr "Name:"
+
+#~ msgid "Photo"
+#~ msgstr "Picture"
+
+#~ msgid "Prénom :"
+#~ msgstr "First name:"
+
+#~ msgid "Pseudo :"
+#~ msgstr "Nickname:"
+
+#~ msgid "Date de naissance :"
+#~ msgstr "birth date:"
+
+#~ msgid "(format jj/mm/aaaa)"
+#~ msgstr "(dd/mm/yyyy format)"
+
+#~ msgid "Statut :"
+#~ msgstr "Status:"
+
+#~ msgid "Profession :"
+#~ msgstr "Profession:"
+
+#~ msgid "Compte :"
+#~ msgstr "Account:"
+
+#~ msgid "Actif"
+#~ msgstr "Active"
+
+#~ msgid "Inactif"
+#~ msgstr "Inactive"
+
+#~ msgid "Photo :"
+#~ msgstr "Photo:"
+
+#~ msgid "Supprimer la photo"
+#~ msgstr "Delete the picture"
+
+#~ msgid "Admin Galette :"
+#~ msgstr "Galette Admin:"
+
+#~ msgid "Exempt de cotisation :"
+#~ msgstr "Freed of dues:"
+
+#~ msgid "Adresse :"
+#~ msgstr "Address:"
+
+#~ msgid "Code Postal :"
+#~ msgstr "Zip Code:"
+
+#~ msgid "Ville :"
+#~ msgstr "City:"
+
+#~ msgid "Pays :"
+#~ msgstr "Country:"
+
+#~ msgid "Tel :"
+#~ msgstr "Phone:"
+
+#~ msgid "GSM :"
+#~ msgstr "Mobile phone:"
+
+#~ msgid "E-Mail :"
+#~ msgstr "E-Mail:"
+
+#~ msgid "Site Web :"
+#~ msgstr "Website:"
+
+#~ msgid "MSN :"
+#~ msgstr "MSN:"
+
+#~ msgid "ICQ :"
+#~ msgstr "ICQ:"
+
+#~ msgid "Jabber :"
+#~ msgstr "Jabber:"
+
+#~ msgid "(au moins 4 caractères)"
+#~ msgstr "(at least 4 characters)"
+
+#~ msgid "Date de création :"
+#~ msgstr "Creation date:"
+
+#~ msgid "Commentaire :"
+#~ msgstr "Comments:"
+
+#~ msgid "Autres informations (admin) :"
+#~ msgstr "Other informations (admin):"
+
+#~ msgid "Ce commentaire n'est visible que par les administrateurs."
+#~ msgstr "This comment is only displayed for admins."
+
+#~ msgid "Autres informations :"
+#~ msgstr "Other informations:"
+
+#~ msgid "Ce commentaire est réservé à l'adhérent."
+#~ msgstr "This comment is reserved to the member."
+
+#~ msgid "Enregistrer"
+#~ msgstr "Save"
+
+#~ msgid "NB : Les champs obligatoires apparaissent en"
+#~ msgstr "NB : The mandatory fields are in"
+
+#~ msgid "rouge"
+#~ msgstr "red"
+
+#~ msgid "- Vérifiez que tous les champs obligatoires sont renseignés."
+#~ msgstr "- Check that all mandatory fields are filled in."
+
+#~ msgid "- La durée doit être un entier !"
+#~ msgstr "- The duration must be an integer!"
+
+#~ msgid "- Le montant doit être un chiffre !"
+#~ msgstr "- The amount must be an integer!"
+
+#~ msgid "Fiche contribution"
+#~ msgstr "Contribution card"
+
+#~ msgid "Contributeur :"
+#~ msgstr "Contributor:"
+
+#~ msgid "-- selectionner un nom --"
+#~ msgstr "-- select a name --"
+
+#~ msgid "Type de contribution :"
+#~ msgstr "Contribution type:"
+
+#~ msgid "Montant :"
+#~ msgstr "Amount:"
+
+#~ msgid "Prologation adhésion :"
+#~ msgstr "Extension of adhesion:"
+
+#~ msgid "mois"
+#~ msgstr "months"
+
+#~ msgid "Date contribution :"
+#~ msgstr "Date of contribution:"
+
+#~ msgid "Gestion des adhérents"
+#~ msgstr "Management of the members"
+
+#~ msgid "adhérents"
+#~ msgstr "members"
+
+#~ msgid "adhérent"
+#~ msgstr "member"
+
+#~ msgid "Pages :"
+#~ msgstr "Pages:"
+
+#~ msgid "Nom"
+#~ msgstr "Name"
+
+#~ msgid "Pseudo"
+#~ msgstr "Nickname"
+
+#~ msgid "Statut"
+#~ msgstr "Status"
+
+#~ msgid "Etat cotisations"
+#~ msgstr "State of dues"
+
+#~ msgid "aucun adhérent"
+#~ msgstr "no member"
+
+#~ msgid "Exempt de cotisation"
+#~ msgstr "Freed of dues"
+
+#~ msgid "N'a jamais cotisé"
+#~ msgstr "Never contributed"
+
+#~ msgid "Dernier jour !"
+#~ msgstr "Last day!"
+
+#~ msgid "En retard de "
+#~ msgstr "Late of "
+
+#~ msgid "[ Voir la fiche adhérent ]"
+#~ msgstr "[ See member profile ]"
+
+#~ msgid "jours"
+#~ msgstr "days"
+
+#~ msgid "depuis le"
+#~ msgstr "since"
+
+#~ msgid "jour restant"
+#~ msgstr "day remaining"
+
+#~ msgid "jours restants"
+#~ msgstr "days remaining"
+
+#~ msgid "fin le"
+#~ msgstr "ending on"
+
+#~ msgid "[H]"
+#~ msgstr "[M]"
+
+#~ msgid "[F]"
+#~ msgstr "[W]"
+
+#~ msgid "[Mail]"
+#~ msgstr "[Mail]"
+
+#~ msgid "E-Mail"
+#~ msgstr "E-Mail"
+
+#~ msgid "[admin]"
+#~ msgstr "[admin]"
+
+#~ msgid "[mod]"
+#~ msgstr "[mod]"
+
+#~ msgid "[$]"
+#~ msgstr "[$]"
+
+#~ msgid "[sup]"
+#~ msgstr "[del]"
+
+#~ msgid "Afficher :"
+#~ msgstr "Display:"
+
+#~ msgid "Tout les adhérents"
+#~ msgstr "All members"
+
+#~ msgid "Les adhérents à jour"
+#~ msgstr "Members up to date"
+
+#~ msgid "Les échéances proches"
+#~ msgstr "Close expiries"
+
+#~ msgid "Les retardataires"
+#~ msgstr "Latecomers"
+
+#~ msgid "Tous  les comptes"
+#~ msgstr "All the accounts"
+
+#~ msgid "Comptes actifs"
+#~ msgstr "Active accounts"
+
+#~ msgid "Comptes désactivés"
+#~ msgstr "Inactive accounts"
+
+#~ msgid "Filtrer"
+#~ msgstr "Filter"
+
+#~ msgid "Gestion des contributions"
+#~ msgstr "Management of contributions"
+
+#~ msgid "contributions"
+#~ msgstr "contributions"
+
+#~ msgid "contribution"
+#~ msgstr "contribution"
+
+#~ msgid "Date"
+#~ msgstr "Date"
+
+#~ msgid "Adhérent"
+#~ msgstr "Member"
+
+#~ msgid "Type"
+#~ msgstr "Type"
+
+#~ msgid "Montant"
+#~ msgstr "Amount"
+
+#~ msgid "Durée"
+#~ msgstr "Duration"
+
+#~ msgid "Actions"
+#~ msgstr "Actions"
+
+#~ msgid "aucune contribution"
+#~ msgstr "no contribution"
+
+#~ msgid "Voulez-vous vraiment supprimer cette contribution de la base ?"
+#~ msgstr "Do you really wan't to delete this contribution of the database ?"
+
+#~ msgid "En retard de"
+#~ msgstr "Late of"
+
+#~ msgid "Mes informations"
+#~ msgstr "My information"
+
+#~ msgid "Fiche adhérent (modification)"
+#~ msgstr "Member Profile (modification)"
+
+#~ msgid "- CONFIRMATION -"
+#~ msgstr "- CONFIRMATION -"
+
+#~ msgid "Navigation"
+#~ msgstr "Navigation"
+
+#~ msgid "Configuration"
+#~ msgstr "Configuration"
+
+#~ msgid "Liste des adhérents"
+#~ msgstr "List of members"
+
+#~ msgid "Liste des contributions"
+#~ msgstr "List of contributions"
+
+#~ msgid "Ajouter un adhérent"
+#~ msgstr "Add a member"
+
+#~ msgid "Ajouter une contribution"
+#~ msgstr "Add a contribution"
+
+#~ msgid "Configurer les fiches"
+#~ msgstr "Configure member forms"
+
+#~ msgid "Mes contributions"
+#~ msgstr "My contributions"
+
+#~ msgid "Déconnexion"
+#~ msgstr "Log off"
+
+#~ msgid "Historique"
+#~ msgstr "Logs"
+
+#~ msgid "Légende"
+#~ msgstr "Legend"
+
+#~ msgid "Homme"
+#~ msgstr "Man"
+
+#~ msgid "Femme"
+#~ msgstr "Woman"
+
+#~ msgid "Envoyer un mail"
+#~ msgstr "Send a mail"
+
+#~ msgid "Modification"
+#~ msgstr "Modification"
+
+#~ msgid "Contributions"
+#~ msgstr "Contributions"
+
+#~ msgid "Suppression"
+#~ msgstr "Deletion"
+
+#~ msgid "Compte actif"
+#~ msgstr "Active account"
+
+#~ msgid "Compte désactivé"
+#~ msgstr "Inactive account"
+
+#~ msgid "Adhésion en règle"
+#~ msgstr "Membership in order"
+
+#~ msgid "Adhésion à échéance (<30j)"
+#~ msgstr "Membership will expire soon (&lt;30d)"
+
+#~ msgid "Retard de cotisation"
+#~ msgstr "Late"
+
+#~ msgid "Cotisation"
+#~ msgstr "Cotisation"
+
+#~ msgid "Don"
+#~ msgstr "Gift"
+
+#~ msgid "Réalisation :"
+#~ msgstr "Realisation:"
+
+#~ msgid "Graphisme :"
+#~ msgstr "Graphism:"
+
+#~ msgid "Editeur :"
+#~ msgstr "Editor:"
+
+#~ msgid "Page affichée en"
+#~ msgstr "Page displayed in"
+
+#~ msgid "Président"
+#~ msgstr "President"
+
+#~ msgid "Vice-président"
+#~ msgstr "Vice-president"
+
+#~ msgid "Trésorier"
+#~ msgstr "Treasurer"
+
+#~ msgid "Secrétaire"
+#~ msgstr "Secretary"
+
+#~ msgid "Membre actif"
+#~ msgstr "Active member"
+
+#~ msgid "Membre bienfaiteur"
+#~ msgstr "Benefactor member"
+
+#~ msgid "Membre fondateur"
+#~ msgstr "Founder member"
+
+#~ msgid "Ancien"
+#~ msgstr "Old-timer"
+
+#~ msgid "Personne morale"
+#~ msgstr "Legal entity"
+
+#~ msgid "Non membre"
+#~ msgstr "Non-member"
+
+#~ msgid "Cotisation annuelle normale"
+#~ msgstr "Normal annual cotisation"
+
+#~ msgid "Cotisation annuelle réduite"
+#~ msgstr "Reduced annual cotisation"
+
+#~ msgid "Cotisation entreprise"
+#~ msgstr "Company cotisation"
+
+#~ msgid "Donation en nature"
+#~ msgstr "Donation in kind"
+
+#~ msgid "Donation pécunière"
+#~ msgstr "Donation in money"
+
+#~ msgid "Partenariat"
+#~ msgstr "Partnership"
+
+#~ msgid "Envoi de mail :"
+#~ msgstr "Send a mail:"
+
+#~ msgid ""
+#~ "(l'adhérent recevra son identifiant et son mot de passe par mail, s'il a "
+#~ "une adresse.)"
+#~ msgstr ""
+#~ "(the member will recieve his username and password by email, if he has an "
+#~ "address.)"
+
+#~ msgid ""
+#~ "- Vous ne pouvez pas envoyer de confirmation par mail si l'adhérent n'a "
+#~ "pas d'adresse !"
+#~ msgstr ""
+#~ "- You can't send a confirmation by email if the member hasn't got an "
+#~ "address!"
+
+#~ msgid "Vos identifiants Galette"
+#~ msgstr "Your Galette identifiers"
+
+#~ msgid "Bonjour,"
+#~ msgstr "Hello,"
+
+#~ msgid ""
+#~ "Vous venez d'être inscrit sur le système de gestion d'adhérents de "
+#~ "l'association."
+#~ msgstr ""
+#~ "You've just been suscribed on the members management system of the "
+#~ "association."
+
+#~ msgid ""
+#~ "Il vous est désormais possible de suivre en temps réel l'état de votre "
+#~ "adhésion"
+#~ msgstr ""
+#~ "It is now possible to follow in real time the state of your subscription"
+
+#~ msgid ""
+#~ "et de mettre à jour vos coordonnées par l'interface web prévue à cet "
+#~ "effet."
+#~ msgstr "and to update your preferences from the web interface."
+
+#~ msgid "Veuillez vous identifier à cette adresse :"
+#~ msgstr "Please login at this address:"
+
+#~ msgid "A trés bientôt !"
+#~ msgstr "See you soon!"
+
+#~ msgid "(ce mail est un envoi automatique)"
+#~ msgstr "(this mail was sent automatically)"
+
+#~ msgid "M."
+#~ msgstr "Mr."
+
+#~ msgid "Mme."
+#~ msgstr "Mrs."
+
+#~ msgid "Mlle."
+#~ msgstr "Miss."
+
+#~ msgid "Oui"
+#~ msgstr "Yes"
+
+#~ msgid "Non"
+#~ msgstr "No"
+
+#~ msgid "[ Contributions ]"
+#~ msgstr "[ Contributions ]"
+
+#~ msgid "[ Modification ]"
+#~ msgstr "[ Modification ]"
+
+#~ msgid "[ Ajouter une contribution ]"
+#~ msgstr "[ Add a contribution ]"
+
+#~ msgid "Effectuer un mailing"
+#~ msgstr "Do a mailing"
+
+#~ msgid "Mailing"
+#~ msgstr "Mailing"
+
+#~ msgid "Prévisualiser"
+#~ msgstr "Preview"
+
+#~ msgid "Envoyer"
+#~ msgstr "Send"
+
+#~ msgid "Message :"
+#~ msgstr "Message:"
+
+#~ msgid "Objet :"
+#~ msgstr "Object:"
+
+#~ msgid "secondes."
+#~ msgstr "seconds."
+
+#~ msgid "Veuillez indiquer un objet pour le message."
+#~ msgstr "Please type an object for the message."
+
+#~ msgid "Veuillez saisir un message."
+#~ msgstr "Please enter a message."
+
+#~ msgid "Veuillez sélectionner au moins un adhérent."
+#~ msgstr "Please select at least one member."
+
+#~ msgid "(prévisualisation)"
+#~ msgstr "(preview)"
+
+#~ msgid "Destinataires du mailing :"
+#~ msgstr "Recipients of the mailing:"
+
+#~ msgid "Adhérents non joignables par email :"
+#~ msgstr "Members who can't be reachable by e-mail:"
+
+#~ msgid "Coordonnées"
+#~ msgstr "Profile"
+
+#~ msgid "[ Tout cocher / décocher ]"
+#~ msgstr "[ Select / unselect all ]"
+
+#~ msgid "effectué !"
+#~ msgstr "done!"
+
+#~ msgid "- ATTENTION -"
+#~ msgstr "- WARNING -"
+
+#~ msgid ""
+#~ "Pensez à contacter les adhérents ne disposant pas d'une adresse E-Mail "
+#~ "par un autre moyen."
+#~ msgstr ""
+#~ "Don't forget to contact the members who don't have an email address by "
+#~ "another way."
+
+#~ msgid "Génération d'étiquettes"
+#~ msgstr "Generate labels"
+
+#~ msgid "Préférences"
+#~ msgstr "Settings"
+
+#~ msgid "Nom (raison sociale) de l'association :"
+#~ msgstr "Name (corporate name) of the association:"
+
+#~ msgid "[ pas de logo ]"
+#~ msgstr "[ no logo ]"
+
+#~ msgid "Logo :"
+#~ msgstr "Logo:"
+
+#~ msgid "Compte administrateur (indépendant des adhérents) :"
+#~ msgstr "Admin account (independant of members):"
+
+#~ msgid "Corps du texte :"
+#~ msgstr "Font size:"
+
+#~ msgid "Nombre de lignes d'étiquettes :"
+#~ msgstr "Number of label lines:"
+
+#~ msgid "Nombre de colonnes d'étiquettes :"
+#~ msgstr "Number of label columns:"
+
+#~ msgid "Hauteur étiquette :"
+#~ msgstr "Label height:"
+
+#~ msgid "Largeur étiquette :"
+#~ msgstr "Label width:"
+
+#~ msgid "Espacement vertical :"
+#~ msgstr "Vertical spacing:"
+
+#~ msgid "Espacement horizontal :"
+#~ msgstr "Horizontal spacing:"
+
+#~ msgid "Marges :"
+#~ msgstr "Margins:"
+
+#~ msgid "Paramètres de génération d'étiquettes :"
+#~ msgstr "Label generation parameters:"
+
+#~ msgid "Email expéditeur :"
+#~ msgstr "Sender Email:"
+
+#~ msgid "Nom expéditeur :"
+#~ msgstr "Sender name:"
+
+#~ msgid "Paramètres mail :"
+#~ msgstr "Mail settings:"
+
+#~ msgid "Methode d'envoi :"
+#~ msgstr "Mailing Method :"
+
+#~ msgid "Pas d'envoi de mails"
+#~ msgstr "No mailings"
+
+#~ msgid "Fonction PHP mail()"
+#~ msgstr "PHP mail() function"
+
+#~ msgid "Via un serveur SMTP (lent)"
+#~ msgstr "Through a SMTP Server (slow)"
+
+#~ msgid "Serveur SMTP :"
+#~ msgstr "SMTP Host:"
+
+#~ msgid ""
+#~ "- Vous devez indiquer le serveur SMTP a utiliser pour l'envoi des mails !"
+#~ msgstr "Please fill in the SMTP host!"
+
+#~ msgid "Lignes / Page :"
+#~ msgstr "Lines / Page:"
+
+#~ msgid "Langue :"
+#~ msgstr "Language:"
+
+#~ msgid "french"
+#~ msgstr "french"
+
+#~ msgid "english"
+#~ msgstr "english"
+
+#~ msgid "spanish"
+#~ msgstr "spanish"
+
+#~ msgid "Paramètres galette :"
+#~ msgstr "Galette's parameters:"
+
+#~ msgid "Informations générales :"
+#~ msgstr "General information:"
+
+#~ msgid "- Les nombres et mesures doivent être des entiers !"
+#~ msgstr "- The numbers and measures have to be integers!"
+
+#~ msgid "(Entier)"
+#~ msgstr "(Integer)"
+
+#~ msgid "- Langue non valide !"
+#~ msgstr "- Non-valid language!"
+
+#~ msgid "Réinitialisation de l'historique"
+#~ msgstr "Flush the logs"
+
+#~ msgid "IP"
+#~ msgstr "IP"
+
+#~ msgid "Description"
+#~ msgstr "Description"
+
+#~ msgid "historique vide"
+#~ msgstr "logs are empty"
+
+#~ msgid "Mise à jour de la fiche adhérent :"
+#~ msgstr "Member card update:"
+
+#~ msgid "Ajout de la fiche adhérent :"
+#~ msgstr "Member card added:"
+
+#~ msgid "Suppression de la fiche adhérent (et cotisations) :"
+#~ msgstr "Delete the member card (and dues)"
+
+#~ msgid "Mise à jour d'une contribution :"
+#~ msgstr "Contribution updated:"
+
+#~ msgid "Suppression d'une contribution :"
+#~ msgstr "Contribution deleted:"
+
+#~ msgid "Mise à jour des préférences"
+#~ msgstr "Settings updated"
+
+#~ msgid "Envoi d'un mailing intitulé :"
+#~ msgstr "Send of a mailing titled:"
+
+#~ msgid "destinataires"
+#~ msgstr "recipients"
+
+#~ msgid "Génération de "
+#~ msgstr "Generation of "
+
+#~ msgid "étiquette(s)"
+#~ msgstr "label(s)"
+
+#~ msgid "Niveau d'historique :"
+#~ msgstr "Logging level:"
+
+#~ msgid "Nul"
+#~ msgstr "Disabled"
+
+#~ msgid "Normal"
+#~ msgstr "Normal"
+
+#~ msgid "Détaillé"
+#~ msgstr "Detailed"
+
+#~ msgid "ligne"
+#~ msgstr "line"
+
+#~ msgid "lignes"
+#~ msgstr "lines"
+
+#~ msgid ""
+#~ "Assurez vous que l'utilisateur galette a les droits nécessaires (SELECT, "
+#~ "INSERT, UPDATE, CREATE, ALTER et DELETE) !"
+#~ msgstr ""
+#~ "Verify that galette user has enought permissions (SELECT, INSERT, UPDATE, "
+#~ "CREATE, ALTER and DELETE) !"
+
+#~ msgid "Afficher les contributions du"
+#~ msgstr "Show contributions since"
+
+#~ msgid "au"
+#~ msgstr "until"
+
+#~ msgid "login vide"
+#~ msgstr "empty login"
+
+#~ msgid "login inexistant"
+#~ msgstr "this login doesn't exist"
+
+#~ msgid ""
+#~ "Login inexistant envoyé via le formulaire de récupération du mot de passe"
+#~ msgstr "Nonexistent login sent via the lost password form. Login:"
+
+#~ msgid ""
+#~ "Ce compte ne contient pas d'adresse email, veuillez contacter un "
+#~ "administrateur"
+#~ msgstr ""
+#~ "This account doesn't have a valid email address. Please contact an "
+#~ "administrator."
+
+#~ msgid "Demande d'envoi de mot de passe mais email vide. Login :"
+#~ msgstr "Someone asked to recover his password but had no email. Login:"
+
+#~ msgid "Envoyez-moi mon mot de passe"
+#~ msgstr "Send me my password"
+
+#~ msgid ""
+#~ "Un problème est survenu dans l'envoi du mot de passe pour le compte :"
+#~ msgstr "A problem occured while sending password for account:"
+
+#~ msgid "Mot de passe envoyé. Login :"
+#~ msgstr "Password sent. Login:"
+
+#~ msgid ""
+#~ "Quelqu'un (sûrement vous) à demandé à ce que l'on vous renvoie votre mot "
+#~ "de passe."
+#~ msgstr "Someone (probably you) asked to recover your passoword."
+
+#~ msgid "Récupération de mot de passe"
+#~ msgstr "Password recovery"
+
+#~ msgid "Retour à l'identification"
+#~ msgstr "Back to login page"
+
+#~ msgid "Je souhaite apparaître dans la liste des membres :"
+#~ msgstr "Be visible in the<br /> members list :"
+
+#~ msgid "Configuration des fiches"
+#~ msgstr "Profile configuration"
+
+#~ msgid "Visibilité"
+#~ msgstr "Visibility"
+
+#~ msgid "Nombre"
+#~ msgstr "Size"
+
+#~ msgid "tous"
+#~ msgstr "all"
+
+#~ msgid "admin"
+#~ msgstr "admin"
+
+#~ msgid "texte libre"
+#~ msgstr "free text"
+
+#~ msgid "séparateur"
+#~ msgstr "separator"
+
+#~ msgid "champ"
+#~ msgstr "field"
+
+#~ msgid "Ajouter"
+#~ msgstr "Add"
+
+#~ msgid ""
+#~ "Voulez-vous vraiment supprimer cette catégorie de la base, ceci "
+#~ "supprimera aussi toutes les données associées ?"
+#~ msgstr ""
+#~ "Do you really want to delete this category ? All associated data will be "
+#~ "deleted as well."
