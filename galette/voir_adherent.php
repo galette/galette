@@ -120,7 +120,7 @@
 		$image_adh = "photos/tn_" . $id_adh . ".png";
 		$image_adh_full = "photos/" . $id_adh . ".png";
 	}
-	if (file_exists(WEB_ROOT . "photos/" . $id_adh . ".jpg"))
+	elseif (file_exists(WEB_ROOT . "photos/" . $id_adh . ".jpg"))
 	{
 		$image_adh = "photos/" . $id_adh . ".jpg";
 		$image_adh_full = "photos/" . $id_adh . ".jpg";
