@@ -140,7 +140,8 @@
 			// dates already quoted
 			if (strncmp($key, "date_", 5) != 0)
 				$value = $DB->qstr($value);
-			if ($key != 'date_fin_cotis' || $cotis_extension) {
+			if (($key != 'date_fin_cotis' || $cotis_extension) &&
+			    ($key != 'trans_id' || is_numeric($trans_id))) {
 				$update_string .= ", ".$key."=".$value;
 				if ($key != 'id_cotis') {
 					$insert_string_fields .= ", ".$key;
@@ -208,28 +209,28 @@
 				$requete = "INSERT INTO ".PREFIX_DB."cotisations
 				(" . substr($insert_string_fields,1) . ")
 				VALUES (" . substr($insert_string_values,1) . ")";
-				if (!$DB->Execute($requete))
-					print "$requete: ".$DB->ErrorMsg();
-				$contribution['id_cotis'] = get_last_auto_increment($DB, PREFIX_DB."cotisations", "id_cotis");
+				if (db_execute(&$DB, $requete, &$error_detected)) {
+					$contribution['id_cotis'] = get_last_auto_increment($DB, PREFIX_DB."cotisations", "id_cotis");
 
-				// to allow the string to be extracted for translation
-				$foo = _T("Contribution added");
+					// to allow the string to be extracted for translation
+					$foo = _T("Contribution added");
 
-				// logging
-				dblog('Contribution added','',$requete);
+					// logging
+					dblog('Contribution added','',$requete);
+				}
 			}
 			else
 			{
                                 $requete = "UPDATE ".PREFIX_DB."cotisations
                                             SET " . substr($update_string,1) . "
                                             WHERE id_cotis=" . $contribution['id_cotis'];
-                                $DB->Execute($requete);
+				if (db_execute(&$DB, $requete, &$error_detected)) {
+					// to allow the string to be extracted for translation
+					$foo = _T("Contribution updated");
 
-				// to allow the string to be extracted for translation
-				$foo = _T("Contribution updated");
-
-				// logging
-                                dblog('Contribution updated','',$requete);
+					// logging
+					dblog('Contribution updated','',$requete);
+				}
 			}
 
 			// dynamic fields
@@ -248,11 +249,13 @@
 				$DB->Execute($requete);
 			}
 
-			if ($missing_amount > 0) {
-				$url = 'ajouter_contribution.php?trans_id='.$contribution['trans_id'].'&id_adh='.$contribution['id_adh'];
-			} else
-				$url = 'gestion_contributions.php?id_adh='.$contribution['id_adh'];
-			header ('location: '.$url);
+			if (count($error_detected) == 0) {
+				if ($missing_amount > 0) {
+					$url = 'ajouter_contribution.php?trans_id='.$contribution['trans_id'].'&id_adh='.$contribution['id_adh'];
+				} else
+					$url = 'gestion_contributions.php?id_adh='.$contribution['id_adh'];
+				header ('location: '.$url);
+			}
 		}
 
 		if (!isset($contribution['duree_mois_cotis']) || $contribution['duree_mois_cotis'] == "") {
