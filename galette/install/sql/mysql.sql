@@ -30,6 +30,7 @@ CREATE TABLE galette_adherents (
   bool_exempt_adh enum('1') default NULL,
   bool_display_info enum('1') default NULL,
   date_echeance date default NULL,
+  pref_lang varchar(20) NOT NULL default 'french',
   PRIMARY KEY  (id_adh)
 ) TYPE=MyISAM;
 
