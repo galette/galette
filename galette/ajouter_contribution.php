@@ -26,6 +26,7 @@
 	include(WEB_ROOT."includes/functions.inc.php"); 
         include(WEB_ROOT."includes/i18n.inc.php");
 	include(WEB_ROOT."includes/smarty.inc.php");
+        include(WEB_ROOT."includes/dynamic_fields.inc.php");
 	
 	if ($_SESSION["logged_status"]==0) 
 		header("location: index.php");
@@ -64,6 +65,8 @@
 	// Validation
 	if (isset($_POST["valid"]))
 	{
+		$contribution['dyn'] = extract_posted_dynamic_fields($DB, $_POST, array());
+
 		$update_string = '';
 		$insert_string_fields = '';
 		$insert_string_values = '';
@@ -175,6 +178,7 @@
 				VALUES (" . substr($insert_string_values,1) . ")";
 				if (!$DB->Execute($requete))
 					print "$requete: ".$DB->ErrorMsg();
+				$contribution['id_cotis'] = get_last_auto_increment($DB, PREFIX_DB."cotisations", "id_cotis");
 				
 				// to allow the string to be extracted for translation
 				$foo = _T("Contribution added");
@@ -195,6 +199,9 @@
 				// logging
                                 dblog('Contribution updated','',$requete);
 			}
+
+			// dynamic fields
+			set_all_dynamic_fields($DB, 'contrib', $contribution['id_cotis'], $contribution['dyn']);
 
 			// update deadline
 			if ($cotis_extension) {
@@ -264,14 +271,18 @@
 					    FROM ".PREFIX_DB."types_cotisation
 					    WHERE id_type_cotis = ".$contribution['id_type_cotis'];
 				$cotis_extension = &$DB->GetOne($request);
-			}	
+			}
+
+			// dynamic fields
+			$contribution['dyn'] = get_dynamic_fields($DB, 'contrib', $contribution["id_cotis"], false);
+
 		}
 
 	}
 
 	// template variable declaration
 	$tpl->assign("required",$required);
-	$tpl->assign("contribution",$contribution);
+	$tpl->assign("data",$contribution);
 	$tpl->assign("error_detected",$error_detected);
 
 	// contribution types
@@ -311,6 +322,10 @@
 
 	$tpl->assign("pref_membership_ext", $cotis_extension ? PREF_MEMBERSHIP_EXT : "");
 	$tpl->assign("cotis_extension", $cotis_extension);
+
+	// - declare dynamic fields for display
+	$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'contrib', $_SESSION["admin_status"], $contribution['dyn'], array(), 1);
+	$tpl->assign("dynamic_fields",$dynamic_fields);
 
 	// page generation
 	$content = $tpl->fetch("ajouter_contribution.tpl");

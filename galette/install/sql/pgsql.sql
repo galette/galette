@@ -136,35 +136,45 @@ CREATE TABLE galette_logs (
 );
 CREATE UNIQUE INDEX galette_logs_idx ON galette_logs (id_log);
 
-DROP SEQUENCE galette_adh_field_type_id_seq;
-CREATE SEQUENCE galette_adh_field_type_id_seq
+-- Sequence for dynamic fields description;
+DROP SEQUENCE galette_field_types_id_seq;
+CREATE SEQUENCE galette_field_types_id_seq
     START 1
     INCREMENT 1
     MAXVALUE 2147483647
     MINVALUE 1
     CACHE 1;
 
-DROP TABLE galette_adh_field_type;
-CREATE TABLE galette_adh_field_type (
-  field_id integer DEFAULT nextval('galette_adh_field_type_id_seq'::text) NOT NULL,
+-- Table for dynamic fields description;
+DROP TABLE galette_field_types;
+CREATE TABLE galette_field_types (
+  field_id integer DEFAULT nextval('galette_field_types_id_seq'::text) NOT NULL,
+  field_form character varying(10) NOT NULL,
   field_index integer DEFAULT '0' NOT NULL,
   field_name character varying(40) DEFAULT '' NOT NULL,
   field_perm integer DEFAULT '0' NOT NULL,
   field_type integer DEFAULT '0' NOT NULL,
-  field_repeat integer DEFAULT '1' NOT NULL,
   field_required character(1) DEFAULT NULL,
-  field_contents text DEFAULT ''
+  field_pos integer DEFAULT '0' NOT NULL,
+  field_width integer DEFAULT NULL,
+  field_height integer DEFAULT NULL,
+  field_size integer DEFAULT NULL,
+  field_repeat integer DEFAULT NULL,
+  field_layout integer DEFAULT NULL
 );
-CREATE UNIQUE INDEX galette_adh_field_type_idx ON galette_adh_field_type (field_id);
+CREATE UNIQUE INDEX galette_field_types_idx ON galette_field_types (field_id);
+CREATE INDEX galette_field_types_form_idx ON galette_field_types (field_form);
 
-DROP TABLE galette_adh_fields;
-CREATE TABLE galette_adh_fields (
-  id_adh integer DEFAULT '0' NOT NULL,
+-- Table for dynamic fields data;
+DROP TABLE galette_dynamic_fields;
+CREATE TABLE galette_dynamic_fields (
+  item_id integer DEFAULT '0' NOT NULL,
   field_id integer DEFAULT '0' NOT NULL,
+  field_form character varying(10) NOT NULL,
   val_index integer DEFAULT '0' NOT NULL,
   field_val text DEFAULT ''
 );
-CREATE INDEX galette_adh_field_idx ON galette_adh_fields (id_adh);
+CREATE INDEX galette_dynamic_fields_item_idx ON galette_dynamic_fields (item_id);
 
 DROP TABLE galette_pictures;
 CREATE TABLE galette_pictures (

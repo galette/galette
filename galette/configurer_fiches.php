@@ -1,6 +1,6 @@
 <? 
 /* configurer_fiches.php
- * - Configuration des fiches adhérents
+ * - Configuration des fiches
  * Copyright (c) 2004 Laurent Pelecq <laurent.pelecq@soleil.org>
  *
  * This program is free software; you can redistribute it and/or
@@ -35,28 +35,21 @@
 	$error_detected = array();
 
 	$form_name = get_form_value('form', '');
-	if (!isset($form_desc[$form_name]))
+	if (!isset($all_forms[$form_name]))
 		$form_name = '';
 
-	if ($form_name != '') {
-		$form_not_set = false;
-		$field_type_table = $form_desc[$form_name]['type_table'];
-		$fields_table = $form_desc[$form_name]['data_table'];
-	}
-
+	$form_not_set = ($form_name == '');
+	
 	if ($form_name == '') {
 
 		$form_title = '';
-		$form_keys = array_keys($form_desc);
-		$form_name = $form_keys[0];  // Default value for selection
-		$all_forms = array();
-		foreach ($form_desc as $key => $val)
-			$all_forms[$key] = $val['title'];
 		$tpl->assign("all_forms", $all_forms);
 	
 	} else {
 
-		$form_title = $form_desc[$form_name]['title'];
+		$form_title = $all_forms[$form_name];
+
+		$quoted_form_name = $DB->qstr($form_name, true);
 
 		if (isset($_POST["valid"])) {
 			if ($_POST["field_type"] != $field_type_separator &&
@@ -66,21 +59,29 @@
 				$field_name = $_POST["field_name"];
 				$field_perm = $_POST["field_perm"];
 				$field_type = $_POST["field_type"];
-				$field_repeat = $_POST["field_repeat"];
-				$requete = "SELECT COUNT(*) + 1 AS idx FROM $field_type_table";
-				$idx = $DB->GetOne($requete);
-				$requete = "INSERT INTO $field_type_table
-					    ( field_index, field_name, field_perm, field_type, field_repeat )
-					    VALUES ( $idx, ".$DB->qstr($field_name, true).", $field_perm, $field_type, $field_repeat)";
-				if ($DB->Execute($requete) == false)
-					$error_detected[] = _T("- Database error: ").$DB->ErrorMsg();
+				$field_required = $_POST["field_required"];
+				$query = "SELECT COUNT(*) + 1 AS idx
+					  FROM $field_types_table
+					  WHERE field_form=$quoted_form_name";
+				$idx = db_get_one(&$DB, $query, &$error_detected);
+				if ($idx != false) {
+					$quoted_field_name = $DB->qstr($field_name, true);
+					$query = "INSERT INTO $field_types_table
+						    (field_index, field_form, field_name, field_perm, field_type, field_required)
+						  VALUES ($idx, $quoted_form_name, $quoted_field_name, $field_perm, $field_type, $field_required)";
+					db_execute(&$DB, $query, &$error_detected);
+					if ($field_type != $field_type_separator && count($error_detected) == 0) {
+						$field_id = get_last_auto_increment(&$DB, $field_types_table, "field_id", &$error_detected);
+						header("location: editer_champ.php?form=$form_name&id=$field_id");
+					}
+				}
 			}
 		}
 		else
 		{
 			$action = "";
 			$field_id = "";
-			foreach (array("sup", "up", "down") as $varname)
+			foreach (array("del", "up", "down") as $varname)
 			{
 				if (isset($_GET[$varname]) && is_numeric($_GET[$varname]))
 				{
@@ -91,73 +92,74 @@
 			}
 			if ($action != "") {
 				$DB->StartTrans();
-				$res = $DB->Execute("SELECT field_index FROM $field_type_table WHERE field_id=$field_id");
-				if (!$res->EOF)
+				$query = "SELECT field_type, field_index FROM $field_types_table
+					  WHERE field_id=$field_id AND field_form=$quoted_form_name";
+				$res = db_execute(&$DB, $query, &$error_detected);
+				if ($res != false && !$res->EOF)
 				{
-					$old_rank = $res->fields[0];
-					if ($action == "sup")
+					$old_rank = $res->fields['field_index'];
+					$query_list = array();
+					if ($action == "del")
 					{
-						$DB->Execute("UPDATE $field_type_table SET field_index=field_index-1 WHERE field_index > $old_rank");
-						$DB->Execute("DELETE FROM $fields_table WHERE field_id=$field_id");
-						$DB->Execute("DELETE FROM $field_type_table WHERE field_id=$field_id");
+						$query_list[] = "UPDATE $field_types_table
+								 SET field_index=field_index-1
+								 WHERE field_index > $old_rank AND
+								       field_form=$quoted_form_name";
+						$query_list[] = "DELETE FROM $fields_table
+								 WHERE field_id=$field_id AND
+								       field_form=$quoted_form_name";
+						$query_list[] = "DELETE FROM $field_types_table
+								 WHERE field_id=$field_id AND
+								       field_form=$quoted_form_name";
+						if ($field_properties[$res->fields['field_type']]['fixed_values']) {
+							$contents_table = fixed_values_table_name($field_id);
+							$query_list[] = "DROP TABLE $contents_table";
+						}
 					}
 					elseif ($action != "")
 					{
 						$direction = $action == "up" ? -1: 1;
 						$new_rank = $old_rank + $direction;
-						$DB->Execute("UPDATE $field_type_table SET field_index=$old_rank WHERE field_index=$new_rank");
-						$DB->Execute("UPDATE $field_type_table SET field_index=$new_rank WHERE field_id=$field_id");
+						$query_list[] = "UPDATE $field_types_table
+								 SET field_index=$old_rank
+								 WHERE field_index=$new_rank AND
+								       field_form=$quoted_form_name";
+						$query_list[] = "UPDATE $field_types_table
+								 SET field_index=$new_rank
+								 WHERE field_id=$field_id AND
+								       field_form=$quoted_form_name";
 					}
+					foreach($query_list as $query)
+						db_execute(&$DB, $query, &$error_detected);
 				}
 				$DB->CompleteTrans();
 			}
 		}
 	
-		$request = "SELECT field_id, field_index, field_name, field_perm, field_type, field_repeat FROM $field_type_table ORDER BY field_index";
-		$result = $DB->Execute($request);
-		$count = 0;
-		$dyn_fields=array();
-		while (!$result->EOF)
-		{
-			$dyn_fields[$count]['id'] = $result->fields[0];
-			$dyn_fields[$count]['index'] = $result->fields[1];
-			$dyn_fields[$count]['name'] = $result->fields[2];
-			switch($result->fields[3])
+		$query = "SELECT *
+			  FROM $field_types_table
+			  WHERE field_form=$quoted_form_name
+			  ORDER BY field_index";
+		$result = db_execute(&$DB, $query, &$error_detected);
+		if ($result != false) {
+			$count = 0;
+			$dyn_fields = array();
+			while (!$result->EOF)
 			{
-				case $perm_all:
-					$dyn_fields[$count]['perm'] = _T('all');
-					break;
-				case $perm_admin:
-					$dyn_fields[$count]['perm'] = _T('admin');
-					break;
-				default:
-					$dyn_fields[$count]['perm'] = _T('unknown');
+				$dyn_fields[$count]['id'] = $result->fields['field_id'];
+				$dyn_fields[$count]['index'] = $result->fields['field_index'];
+				$dyn_fields[$count]['name'] = $result->fields['field_name'];
+				$dyn_fields[$count]['perm'] = $perm_names[$result->fields['field_perm']];
+				$dyn_fields[$count]['type'] = $field_type_names[$result->fields['field_type']];
+				$dyn_fields[$count]['required'] = ($result->fields['field_required'] == '1');
+				$result->MoveNext();
+				++$count;
 			}
-			switch($result->fields[4])
-			{
-				case $field_type_separator:
-					$dyn_fields[$count]['type'] = _T('separator');
-					break;
-				case $field_type_text:
-					$dyn_fields[$count]['type'] = _T('free text');
-					break;
-				case $field_type_line:
-					$dyn_fields[$count]['type'] = _T('single line');
-					break;
-				default:
-					$dyn_fields[$count]['type'] = _T('unknown');
-			}
-			$dyn_fields[$count]['repeat'] = $result->fields[5];
-			$result->MoveNext();
-			++$count;
-		}
-		$result->Close();
-	
-		$tpl->assign("perm_all",$perm_all);
-		$tpl->assign("perm_admin",$perm_admin);
-		$tpl->assign("field_type_separator",$field_type_separator);
-		$tpl->assign("field_type_text",$field_type_text);
-		$tpl->assign("field_type_line",$field_type_line);
+			$result->Close();
+		} // $result != false
+
+		$tpl->assign("perm_names", $perm_names);
+		$tpl->assign("field_type_names", $field_type_names);
 		
 		$tpl->assign("dyn_fields",$dyn_fields);
 		$tpl->assign("error_detected",$error_detected);
@@ -166,6 +168,9 @@
 
 	$tpl->assign("form_name", $form_name);
 	$tpl->assign("form_title", $form_title);
+
+	$tpl->assign("perm_names", $perm_names);
+	$tpl->assign("field_type_names", $field_type_names);
 
 	$content = $tpl->fetch("configurer_fiches.tpl");
 	$tpl->assign("content",$content);
