@@ -30,10 +30,10 @@
 			</TR>
 		</TABLE>
 		</FORM>
-		<TABLE width="100%"> 
-			<TR> 
-				<TH width="15" class="listing">#</TH> 
-				<TH class="listing left"> 
+		<TABLE width="100%">
+			<TR>
+				<TH width="15" class="listing">#</TH>
+				<TH class="listing left">
 					<A href="gestion_contributions.php?tri=0" class="listing">{_T("Date")}</A>
 					{if $smarty.session.tri_cotis eq 0}
 					{if $smarty.session.tri_cotis_sens eq 0}
@@ -44,11 +44,11 @@
 					{else}
 					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt="">
 					{/if}
-				</TH> 
-				<TH class="listing left"> {_T("Begin.")}</TH> 
-				<TH class="listing left"> {_T("End")}</TH> 
+				</TH>
+				<TH class="listing left"> {_T("Begin.")}</TH>
+				<TH class="listing left"> {_T("End")}</TH>
 {if $smarty.session.admin_status eq 1}
-				<TH class="listing left"> 
+				<TH class="listing left">
 					<A href="gestion_contributions.php?tri=1" class="listing">{_T("Member")}</A>
 					{if $smarty.session.tri_cotis eq 1}
 					{if $smarty.session.tri_cotis_sens eq 0}
@@ -59,9 +59,9 @@
 					{else}
 					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt="">
 					{/if}
-				</TH> 
+				</TH>
 {/if}
-				<TH class="listing left"> 
+				<TH class="listing left">
 					<A href="gestion_contributions.php?tri=2" class="listing">{_T("Type")}</A>
 					{if $smarty.session.tri_cotis eq 2}
 					{if $smarty.session.tri_cotis_sens eq 0}
@@ -72,8 +72,8 @@
 					{else}
 					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt="">
 					{/if}
-				</TH> 
-				<TH class="listing left"> 
+				</TH>
+				<TH class="listing left">
 					<A href="gestion_contributions.php?tri=3" class="listing">{_T("Amount")}</A>
 					{if $smarty.session.tri_cotis eq 3}
 					{if $smarty.session.tri_cotis_sens eq 0}
@@ -84,8 +84,8 @@
 					{else}
 					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt="">
 					{/if}
-				</TH> 
-				<TH class="listing left"> 
+				</TH>
+				<TH class="listing left">
 					<A href="gestion_contributions.php?tri=4" class="listing">{_T("Duration")}</A>
 					{if $smarty.session.tri_cotis eq 4}
 					{if $smarty.session.tri_cotis_sens eq 0}
@@ -96,23 +96,23 @@
 					{else}
 					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt="">
 					{/if}
-				</TH> 
+				</TH>
 {if $smarty.session.admin_status eq 1}
 				<TH width="55" class="listing">{_T("Actions")}</TH>
 {/if}
-			</TR> 
+			</TR>
 {foreach from=$contributions item=contribution key=ordre}
-			<TR> 
-				<TD width="15" class="{$contribution.class} center" nowrap>{$ordre}</TD> 
+			<TR>
+				<TD width="15" class="{$contribution.class} center" nowrap>{$ordre}</TD>
 				<TD width="50" class="{$contribution.class}" nowrap>
 					{$contribution.date_enreg}
-				</TD> 
+				</TD>
 				<TD width="50" class="{$contribution.class}" nowrap>
 					{$contribution.date_debut}
-				</TD> 
+				</TD>
 				<TD width="50" class="{$contribution.class}" nowrap>
 					{$contribution.date_fin}
-				</TD> 
+				</TD>
 {if $smarty.session.admin_status eq 1}
 			<TD class="{$contribution.class}" nowrap>
 {if $smarty.session.filtre_cotis_adh eq ""}
@@ -124,24 +124,24 @@
 					{$contribution.nom} {$contribution.prenom}
 				</A>
 {/if}
-			</TD> 
+			</TD>
 {/if}
-			<TD class="{$contribution.class}" nowrap>{$contribution.libelle_type_cotis}</TD> 
-			<TD class="{$contribution.class}" nowrap>{$contribution.montant_cotis}</TD> 
-			<TD class="{$contribution.class}" nowrap>{$contribution.duree_mois_cotis}</TD> 
+			<TD class="{$contribution.class}" nowrap>{$contribution.libelle_type_cotis}</TD>
+			<TD class="{$contribution.class}" nowrap>{$contribution.montant_cotis}</TD>
+			<TD class="{$contribution.class}" nowrap>{$contribution.duree_mois_cotis}</TD>
 {if $smarty.session.admin_status eq 1}
-			<TD width="55" class="{$contribution.class} center" nowrap>  
+			<TD width="55" class="{$contribution.class} center" nowrap>
 				<A href="ajouter_contribution.php?id_cotis={$contribution.id_cotis}"><IMG src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"></A>
 				<A onClick="return confirm('{_T("Do you really want to delete this contribution of the database ?")|escape:"javascript"}')" href="gestion_contributions.php?sup={$contribution.id_cotis}"><IMG src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"></A>
-			</TD> 
+			</TD>
 {/if}
-{foreachelse}			
+{foreachelse}
 {if $smarty.session.admin_status eq 1}
-			<TR><TD colspan="7" class="emptylist">{_T("no contribution")}</TD></TR>
+			<TR><TD colspan="9" class="emptylist">{_T("no contribution")}</TD></TR>
 {else}
-			<TR><TD colspan="5" class="emptylist">{_T("no contribution")}</TD></TR>
+			<TR><TD colspan="7" class="emptylist">{_T("no contribution")}</TD></TR>
 {/if}
-{/foreach}			
+{/foreach}
 		</TABLE>
 		<DIV id="infoline2" class="right">
 			{_T("Pages:")}

@@ -1,5 +1,5 @@
-<? 
- 
+<?
+
 /* ajouter_contribution.php
  * - Saisie d'une contributions
  * Copyright (c) 2004 Frédéric Jaqcuot
@@ -8,35 +8,50 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
- 
+
 	include("includes/config.inc.php");
-	include(WEB_ROOT."includes/database.inc.php"); 
+	include(WEB_ROOT."includes/database.inc.php");
 	include(WEB_ROOT."includes/session.inc.php");
-	include(WEB_ROOT."includes/functions.inc.php"); 
+	include(WEB_ROOT."includes/functions.inc.php");
         include(WEB_ROOT."includes/i18n.inc.php");
 	include(WEB_ROOT."includes/smarty.inc.php");
         include(WEB_ROOT."includes/dynamic_fields.inc.php");
-	
-	if ($_SESSION["logged_status"]==0) 
+
+	if ($_SESSION["logged_status"]==0)
 		header("location: index.php");
-	if ($_SESSION["admin_status"]==0) 
+	if ($_SESSION["admin_status"]==0)
 		header("location: voir_adherent.php");
-		
+
+
+	function missing_contrib_amount($DB, $trans_id, $error_detected) {
+		if (is_numeric($trans_id)) {
+			$total_amount = db_get_one(&$DB, "SELECT trans_amount
+							  FROM ".PREFIX_DB."transactions
+							  WHERE trans_id=$trans_id", &$error_detected);
+			$current_amount = $DB->GetOne("SELECT SUM(montant_cotis)
+							FROM ".PREFIX_DB."cotisations
+							WHERE trans_id=$trans_id");
+			return $total_amount - $current_amount;
+		}
+		return 0;
+	}
+
 	// new or edit
 	$contribution['id_cotis'] = get_numeric_form_value("id_cotis", '');
 	$contribution['id_type_cotis'] = get_numeric_form_value("id_type_cotis", '');
 	$contribution['id_adh'] = get_numeric_form_value("id_adh", '');
+	$contribution['trans_id'] = get_numeric_form_value("trans_id", '');
 	$adh_selected = isset($contribution['id_adh']);
 	$tpl->assign("adh_selected", $adh_selected);
 
@@ -71,7 +86,7 @@
 		$update_string = '';
 		$insert_string_fields = '';
 		$insert_string_values = '';
-	
+
 		// checking posted values
 		$fields = &$DB->MetaColumns(PREFIX_DB."cotisations");
 	        while (list($key, $properties) = each($fields))
@@ -91,7 +106,7 @@
 					$value = date("d/m/Y", mktime(0, 0, 0, $debut[2] + $nmonths, $debut[1], $debut[3]));
 			} else
 				$value = '';
-	
+
 			// fill up the contribution structure
 			$contribution[$key] = htmlentities(stripslashes($value),ENT_QUOTES);
 
@@ -133,7 +148,7 @@
 				}
 			}
 		}
-		
+
 		// missing required fields?
 		while (list($key,$val) = each($required))
 		{
@@ -145,18 +160,23 @@
 				if (trim($contribution[$key])=='')
 					$error_detected[] = _T("- Mandatory field empty.")." ($key)";
 		}
-		
+
+		$missing_amount = 0;
 		if (count($error_detected) == 0)
 		{
 			// missing relations
 			// Check that membership fees does not overlap
 			if ($cotis_extension) {
+				$table_cotis = PREFIX_DB."cotisations";
+				$table_type_cotis = PREFIX_DB."types_cotisation";
+				$id_adh = $contribution['id_adh'];
 				$date_debut = date_text2db($DB, $contribution['date_debut_cotis']);
 				$date_fin = date_text2db($DB, $contribution['date_fin_cotis']);
 				$requete = "SELECT date_debut_cotis, date_fin_cotis
-					    FROM ".PREFIX_DB."cotisations, ".PREFIX_DB."types_cotisation
-					    WHERE ".PREFIX_DB."cotisations.id_type_cotis = ".PREFIX_DB."types_cotisation.id_type_cotis AND 
-					           cotis_extension = '1' ";
+					    FROM $table_cotis, $table_type_cotis
+					    WHERE $table_cotis.id_adh = $id_adh AND
+						  $table_cotis.id_type_cotis = $table_type_cotis.id_type_cotis AND
+					          cotis_extension = '1' ";
 				if ($contribution["id_cotis"] != "")
 					$requete .= "AND id_cotis != ".$contribution["id_cotis"]." ";
 				$requete .= "AND ((date_debut_cotis >= ".$date_debut." AND date_debut_cotis < ".$date_fin.")
@@ -167,6 +187,17 @@
 				if (!$result->EOF)
 					$error_detected[] = _T("- Membership period overlaps period starting at ").date_db2text($result->fields['date_debut_cotis']);
 				$result->Close();
+			}
+
+			// If there is a transaction for this contribution, check that the sum of all contributioncoming from that transaction doesn't
+			// exceed the transaction amount itself.
+
+			if (count($error_detected) == 0 && $contribution['trans_id']) {
+				$missing_amount = missing_contrib_amount(&$DB, $contribution['trans_id'], &$error_detected);
+				if ($missing_amount < $contribution['montant_cotis'])
+					$error_detected[] = _T("-  Sum of all contributions exceed corresponding transaction amount.");
+				else
+					$missing_amount -= $contribution['montant_cotis'];
 			}
 		}
 
@@ -180,7 +211,7 @@
 				if (!$DB->Execute($requete))
 					print "$requete: ".$DB->ErrorMsg();
 				$contribution['id_cotis'] = get_last_auto_increment($DB, PREFIX_DB."cotisations", "id_cotis");
-				
+
 				// to allow the string to be extracted for translation
 				$foo = _T("Contribution added");
 
@@ -217,9 +248,13 @@
 				$DB->Execute($requete);
 			}
 
-			header ('location: gestion_contributions.php?id_adh='.$contribution['id_adh']);
+			if ($missing_amount > 0) {
+				$url = 'ajouter_contribution.php?trans_id='.$contribution['trans_id'].'&id_adh='.$contribution['id_adh'];
+			} else
+				$url = 'gestion_contributions.php?id_adh='.$contribution['id_adh'];
+			header ('location: '.$url);
 		}
-	
+
 		if (!isset($contribution['duree_mois_cotis']) || $contribution['duree_mois_cotis'] == "") {
 			// On error restore entered value or default to display the form again
 			if (isset($_POST['duree_mois_cotis']) && $_POST['duree_mois_cotis'] != "")
@@ -249,6 +284,8 @@
 			$contribution['date_debut_cotis'] = date("d/m/Y", $beg_cotis);
 			// End date is the date of next period after this one
 			$contribution['date_fin_cotis'] = beg_membership_after($beg_cotis);
+			if (is_numeric($contribution['trans_id']))
+				$contribution['montant_cotis'] = missing_contrib_amount(&$DB, $contribution['trans_id'], &$error_detected);
 		}
 		else
 		{

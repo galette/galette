@@ -79,3 +79,16 @@ CREATE TABLE galette_l10n (
     text_trans varchar(100) NOT NULL default '',
     UNIQUE INDEX (text_orig(20), text_locale(5))
 ) TYPE=MyISAM;
+
+-- Table for transactions;
+DROP TABLE galette_transactions;
+CREATE TABLE galette_transactions (
+  trans_id int(10) unsigned NOT NULL auto_increment,
+  trans_date date NOT NULL default '0000-00-00',
+  trans_amount float default '0',
+  trans_desc varchar(30) NOT NULL default '',
+  id_adh int(10) unsigned default NULL,
+  PRIMARY KEY  (trans_id)
+) TYPE=MyISAM;
+
+ALTER TABLE galette_cotisations ADD trans_id int(10) unsigned DEFAULT NULL;

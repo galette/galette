@@ -7,27 +7,27 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
- 
+
 	include("includes/config.inc.php");
-	include(WEB_ROOT."includes/database.inc.php"); 
+	include(WEB_ROOT."includes/database.inc.php");
 	include(WEB_ROOT."includes/session.inc.php");
-	include(WEB_ROOT."includes/functions.inc.php"); 
+	include(WEB_ROOT."includes/functions.inc.php");
         include(WEB_ROOT."includes/i18n.inc.php");
 	include(WEB_ROOT."includes/smarty.inc.php");
         include(WEB_ROOT."includes/dynamic_fields.inc.php");
-        
-	if ($_SESSION["logged_status"]==0) 
+
+	if ($_SESSION["logged_status"]==0)
 		header("location: index.php");
 
 	// new or edit
@@ -80,7 +80,7 @@
 		$required['activite_adh'] = 1;
 		$required['id_statut'] = 1;
 	}
-			
+
 	// Validation
 	if (isset($_POST["id_adh"]))
 	{
@@ -89,7 +89,7 @@
 		$insert_string_values = '';
 
 		$adherent['dyn'] = extract_posted_dynamic_fields($DB, $_POST, $disabled);
-		
+
 		// checking posted values for 'regular' fields
 		$fields = &$DB->MetaColumns(PREFIX_DB."adherents");
 	        while (list($key, $properties) = each($fields))
@@ -154,9 +154,7 @@
 							$error_detected[] = _T("- The password must be of at least 4 characters!");
 						break;
 				}
-				
-				if ($key=='ddn_adh') echo $value;
-				
+
 				// dates already quoted
 				if ($key=='date_crea_adh' || $key=='ddn_adh')
 				{
@@ -165,12 +163,12 @@
 				}
 				else
 					$value = $DB->qstr($value);
-				
+
 				$update_string .= ", ".$key."=".$value;
 				$insert_string_fields .= ", ".$key;
 				$insert_string_values .= ", ".$value;
 			}
-		}	
+		}
 
 		// missing relations
 		if (isset($adherent["mail_confirm"]))
@@ -227,19 +225,19 @@
 						check file dimensions
 						resize picture if gd available
 				*/
-				
+
 				if (is_uploaded_file($_FILES['photo']['tmp_name']))
 				{
 					$sql = "DELETE FROM ".PREFIX_DB."pictures
 						WHERE id_adh=".$adherent['id_adh'];
 					$DB->Execute($sql);
-					
+
 					$f = fopen($_FILES['photo']['tmp_name'],"r");
 					$picture = '';
 					while ($r=fread($f,8192))
 						$picture .= $r;
 					fclose($f);
-	
+
 					$sql = "INSERT INTO ".PREFIX_DB."pictures
 						(id_adh, picture, format, width, height)
 						VALUES (".$DB->Qstr($adherent['id_adh']).",".$DB->Qstr($picture).",'','','')";
@@ -250,7 +248,7 @@
 			{
 				$sql = "DELETE FROM ".PREFIX_DB."pictures
 					WHERE id_adh=".$adherent['id_adh'];
-				$DB->Execute($sql);													
+				$DB->Execute($sql);
 			}
 
                         if (isset($_POST["mail_confirm"]))
@@ -289,7 +287,7 @@
 					SET date_echeance=".$date_fin_update."
 					WHERE id_adh=" . $adherent['id_adh'];
 			$DB->Execute($requete);
-		
+
 			if (!isset($_POST['id_adh']))
 				header('location: ajouter_contribution.php?id_adh='.$adherent['id_adh']);
 			elseif (!isset($_POST['del_photo']))
@@ -322,14 +320,14 @@
 				// url_adh is a specific case
 				if ($result->fields['url_adh']=='')
 					$result->fields['url_adh'] = 'http://';
-															
+
 				// plain info
 				$adherent = $result->fields;
 
 				// reformat dates
 				$adherent['date_crea_adh'] = date_db2text($adherent['date_crea_adh']);
 				$adherent['ddn_adh'] = date_db2text($adherent['ddn_adh']);
-				
+
 				// dynamic fields
 				$adherent['dyn'] = get_dynamic_fields($DB, 'adh', $adherent["id_adh"], false);
 			}
