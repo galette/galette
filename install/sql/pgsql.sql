@@ -53,7 +53,8 @@ CREATE TABLE galette_adherents (
     bool_admin_adh character(1) DEFAULT NULL,
     bool_exempt_adh character(1) DEFAULT NULL,
     bool_display_info character(1) DEFAULT NULL,
-    date_echeance date
+    date_echeance date,
+    pref_lang character varying(20) DEFAULT 'french' NOT NULL
 );
 CREATE UNIQUE INDEX galette_adherents_idx ON galette_adherents (id_adh);
 
