@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-08 23:23+0100\n"
+"POT-Creation-Date: 2004-11-08 23:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -315,7 +315,7 @@ msgstr ""
 
 #: ../mailing_adherents.php:104 ../mailing_adherents.php:411
 #: ../mailing_adherents.php:847 ../footer.php:45
-#: ../templates/default/gestion_adherents.tpl:150
+#: ../templates/default/gestion_adherents.tpl:156
 #: ../templates/default/page.tpl:28
 msgid "Generate labels"
 msgstr ""
@@ -324,11 +324,11 @@ msgstr ""
 msgid "Mailing"
 msgstr ""
 
-#: ../mailing_adherents.php:218 ../templates/default/gestion_adherents.tpl:18
+#: ../mailing_adherents.php:218 ../templates/default/gestion_adherents.tpl:17
 msgid "members"
 msgstr ""
 
-#: ../mailing_adherents.php:218 ../templates/default/gestion_adherents.tpl:18
+#: ../mailing_adherents.php:218 ../templates/default/gestion_adherents.tpl:17
 msgid "member"
 msgstr ""
 
@@ -337,37 +337,37 @@ msgid "Display:"
 msgstr ""
 
 #: ../mailing_adherents.php:224 ../gestion_contributions.php:293
-#: ../gestion_adherents.php:257
+#: ../gestion_adherents.php:262
 msgid "All members"
 msgstr ""
 
 #: ../mailing_adherents.php:225 ../gestion_contributions.php:294
-#: ../gestion_adherents.php:258
+#: ../gestion_adherents.php:263
 msgid "Members up to date"
 msgstr ""
 
 #: ../mailing_adherents.php:226 ../gestion_contributions.php:295
-#: ../gestion_adherents.php:259
+#: ../gestion_adherents.php:264
 msgid "Close expiries"
 msgstr ""
 
 #: ../mailing_adherents.php:227 ../gestion_contributions.php:296
-#: ../gestion_adherents.php:260
+#: ../gestion_adherents.php:265
 msgid "Latecomers"
 msgstr ""
 
 #: ../mailing_adherents.php:230 ../gestion_contributions.php:298
-#: ../gestion_adherents.php:262
+#: ../gestion_adherents.php:267
 msgid "All the accounts"
 msgstr ""
 
 #: ../mailing_adherents.php:231 ../gestion_contributions.php:299
-#: ../gestion_adherents.php:263
+#: ../gestion_adherents.php:268
 msgid "Active accounts"
 msgstr ""
 
 #: ../mailing_adherents.php:232 ../gestion_contributions.php:300
-#: ../gestion_adherents.php:264
+#: ../gestion_adherents.php:269
 msgid "Inactive accounts"
 msgstr ""
 
@@ -377,7 +377,7 @@ msgstr ""
 
 #: ../mailing_adherents.php:259 ../mailing_adherents.php:488
 #: ../mailing_adherents.php:656 ../footer.php:119 ../footer.php:123
-#: ../templates/default/gestion_adherents.tpl:37
+#: ../templates/default/gestion_adherents.tpl:43
 #: ../templates/default/page.tpl:83 ../templates/default/page.tpl:87
 #: ../templates/default/configurer_fiches.tpl:16
 msgid "Name"
@@ -388,66 +388,66 @@ msgid "E-Mail"
 msgstr ""
 
 #: ../mailing_adherents.php:279 ../mailing_adherents.php:490
-#: ../mailing_adherents.php:658 ../templates/default/gestion_adherents.tpl:61
+#: ../mailing_adherents.php:658 ../templates/default/gestion_adherents.tpl:67
 msgid "Status"
 msgstr ""
 
 #: ../mailing_adherents.php:289 ../mailing_adherents.php:491
-#: ../mailing_adherents.php:659 ../templates/default/gestion_adherents.tpl:73
+#: ../mailing_adherents.php:659 ../templates/default/gestion_adherents.tpl:79
 msgid "State of dues"
 msgstr ""
 
 #: ../mailing_adherents.php:305 ../mailing_adherents.php:500
-#: ../mailing_adherents.php:666 ../templates/default/gestion_adherents.tpl:120
+#: ../mailing_adherents.php:666 ../templates/default/gestion_adherents.tpl:126
 msgid "no member"
 msgstr ""
 
 #: ../mailing_adherents.php:320 ../mailing_adherents.php:522
 #: ../mailing_adherents.php:681 ../gestion_contributions.php:244
-#: ../gestion_adherents.php:197
+#: ../gestion_adherents.php:202
 msgid "Freed of dues"
 msgstr ""
 
 #: ../mailing_adherents.php:327 ../mailing_adherents.php:529
 #: ../mailing_adherents.php:688 ../footer.php:128
-#: ../gestion_contributions.php:251 ../gestion_adherents.php:204
+#: ../gestion_contributions.php:251 ../gestion_adherents.php:209
 #: ../templates/default/page.tpl:92
 msgid "Never contributed"
 msgstr ""
 
 #: ../mailing_adherents.php:339 ../mailing_adherents.php:541
 #: ../mailing_adherents.php:700 ../gestion_contributions.php:262
-#: ../gestion_adherents.php:216
+#: ../gestion_adherents.php:221
 msgid "Last day!"
 msgstr ""
 
 #: ../mailing_adherents.php:344 ../mailing_adherents.php:546
-#: ../mailing_adherents.php:705 ../gestion_adherents.php:221
+#: ../mailing_adherents.php:705 ../gestion_adherents.php:226
 msgid "Late of "
 msgstr ""
 
 #: ../mailing_adherents.php:344 ../mailing_adherents.php:546
 #: ../mailing_adherents.php:705 ../gestion_contributions.php:267
-#: ../gestion_adherents.php:221
+#: ../gestion_adherents.php:226
 msgid "days"
 msgstr ""
 
 #: ../mailing_adherents.php:344 ../mailing_adherents.php:546
 #: ../mailing_adherents.php:705 ../gestion_contributions.php:267
-#: ../gestion_adherents.php:221
+#: ../gestion_adherents.php:226
 msgid "since"
 msgstr ""
 
 #: ../mailing_adherents.php:349 ../mailing_adherents.php:551
 #: ../mailing_adherents.php:710 ../gestion_contributions.php:273
-#: ../gestion_adherents.php:227
+#: ../gestion_adherents.php:232
 msgid "days remaining"
 msgstr ""
 
 #: ../mailing_adherents.php:349 ../mailing_adherents.php:551
 #: ../mailing_adherents.php:710 ../gestion_contributions.php:273
-#: ../gestion_contributions.php:275 ../gestion_adherents.php:227
-#: ../gestion_adherents.php:229
+#: ../gestion_contributions.php:275 ../gestion_adherents.php:232
+#: ../gestion_adherents.php:234
 msgid "ending on"
 msgstr ""
 
@@ -997,7 +997,7 @@ msgstr ""
 msgid "Late of"
 msgstr ""
 
-#: ../gestion_contributions.php:275 ../gestion_adherents.php:229
+#: ../gestion_contributions.php:275 ../gestion_adherents.php:234
 msgid "day remaining"
 msgstr ""
 
@@ -1007,6 +1007,10 @@ msgstr ""
 
 #: ../ajouter_contribution.php:154
 msgid "Contribution updated"
+msgstr ""
+
+#: ../gestion_adherents.php:275
+msgid "All"
 msgstr ""
 
 #: ../etiquettes_adherents.php:42
@@ -1482,36 +1486,40 @@ msgid "among:"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:19
-#: ../templates/default/gestion_adherents.tpl:153
+msgid "Show:"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:24
+#: ../templates/default/gestion_adherents.tpl:159
 #: ../templates/default/gestion_contributions.tpl:14
 #: ../templates/default/gestion_contributions.tpl:133
 #: ../templates/default/log.tpl:10 ../templates/default/log.tpl:100
 msgid "Pages:"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:49
+#: ../templates/default/gestion_adherents.tpl:55
 msgid "Nickname"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:84
+#: ../templates/default/gestion_adherents.tpl:90
 #: ../templates/default/configurer_fiches.tpl:20
 #: ../templates/default/gestion_contributions.tpl:93
 msgid "Actions"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:145
+#: ../templates/default/gestion_adherents.tpl:151
 msgid "(Un)Check all"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:146
+#: ../templates/default/gestion_adherents.tpl:152
 msgid "Selection:"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:148
+#: ../templates/default/gestion_adherents.tpl:154
 msgid "Delete"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:149
+#: ../templates/default/gestion_adherents.tpl:155
 msgid "Mail all"
 msgstr ""
 

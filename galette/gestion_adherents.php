@@ -49,7 +49,12 @@
 	if (isset($_GET["filtre_2"]))
 		if (is_numeric($_GET["filtre_2"]))
 			$_SESSION["filtre_adh_2"]=$_GET["filtre_2"];
-	
+
+	$numrows = PREF_NUMROWS;
+	if (isset($_GET["nbshow"]))
+		if (is_numeric($_GET["nbshow"]))
+			$numrows = $_GET["nbshow"];
+
 	// Sorting
 	if (isset($_GET["tri"]))
 		if (is_numeric($_GET["tri"]))
@@ -174,15 +179,17 @@
 	// defaut : tri par nom, prenom
 	$requete[0] .= "nom_adh ".$tri_adh_sens_txt.", prenom_adh ".$tri_adh_sens_txt; 
 	
-	$resultat = &$DB->SelectLimit($requete[0],PREF_NUMROWS,($page-1)*PREF_NUMROWS);
 	$nbadh = &$DB->Execute($requete[1]);
+	if ($numrows==0)
+		$numrows = $nbadh->fields[0];
+	$resultat = &$DB->SelectLimit($requete[0],$numrows,($page-1)*$numrows);
 
-	if ($nbadh->fields[0]%PREF_NUMROWS==0) 
-		$nbpages = intval($nbadh->fields[0]/PREF_NUMROWS);
+	if ($nbadh->fields[0]%$numrows==0) 
+		$nbpages = intval($nbadh->fields[0]/$numrows);
 	else 
-		$nbpages = intval($nbadh->fields[0]/PREF_NUMROWS)+1;
+		$nbpages = intval($nbadh->fields[0]/$numrows)+1;
 
-	$compteur = 1+($page-1)*PREF_NUMROWS;
+	$compteur = 1+($page-1)*$numrows;
 	while (!$resultat->EOF) 
 	{ 
 		// définition CSS pour adherent désactivé
@@ -250,7 +257,7 @@
 	$resultat->Close();
 	
 	$tpl->assign("members",$members);
-	$tpl->assign("nb_members",count($members));
+	$tpl->assign("nb_members",$nbadh->fields[0]);
 	$tpl->assign("nb_pages",$nbpages);
 	$tpl->assign("page",$page);
 	$tpl->assign('filtre_options', array(
@@ -262,7 +269,12 @@
 			0 => _T("All the accounts"),
 			1 => _T("Active accounts"),
 			2 => _T("Inactive accounts")));
-										
+	$tpl->assign('nbshow_options', array(
+			10 => "10",
+			20 => "20",
+			50 => "50",
+			100 => "100",
+			0 => _T("All")));
 	$content = $tpl->fetch("gestion_adherents.tpl");
 	$tpl->assign("content",$content);
 	$tpl->display("page.tpl");
