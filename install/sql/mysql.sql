@@ -105,26 +105,26 @@ CREATE TABLE galette_logs (
   PRIMARY KEY  (id_log)
 ) TYPE=MyISAM;
 
-DROP TABLE galette_info_categories;
-CREATE TABLE galette_info_categories (
-    id_cat int(10) unsigned NOT NULL auto_increment,
-    index_cat int(10) NOT NULL default '0',
-    name_cat varchar(40) NOT NULL default '',
-    perm_cat int(10) NOT NULL default '0',
-    type_cat int(10) NOT NULL default '0',
-    size_cat int(10) NOT NULL default '1',
-    contents_cat text DEFAULT '',
-    PRIMARY KEY  (id_cat)
+DROP TABLE galette_adh_field_type;
+CREATE TABLE galette_adh_field_type (
+    field_id int(10) unsigned NOT NULL auto_increment,
+    field_index int(10) NOT NULL default '0',
+    field_name varchar(40) NOT NULL default '',
+    field_perm int(10) NOT NULL default '0',
+    field_type int(10) NOT NULL default '0',
+    field_repeat int(10) NOT NULL default '1',
+    field_req enum('1') default NULL,
+    field_contents text DEFAULT '',
+    PRIMARY KEY  (field_id)
 ) TYPE=MyISAM;
 
-DROP TABLE galette_adh_info;
-CREATE TABLE galette_adh_info (
-    id_adh_info int(10) unsigned NOT NULL auto_increment,
+DROP TABLE galette_adh_fields;
+CREATE TABLE galette_adh_fields (
     id_adh int(10) NOT NULL default '0',
-    id_cat int(10) NOT NULL default '0',
-    index_info int(10) NOT NULL default '0',
-    val_info text DEFAULT '',
-    PRIMARY KEY  (id_adh_info)
+    field_id int(10) NOT NULL default '0',
+    val_index int(10) NOT NULL default '0',
+    field_val text DEFAULT '',
+    KEY  (id_adh)
 ) TYPE=MyISAM;
 
 DROP TABLE IF EXISTS galette_pictures;

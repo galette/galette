@@ -25,7 +25,7 @@
 	include(WEB_ROOT."includes/functions.inc.php"); 
         include(WEB_ROOT."includes/i18n.inc.php");
 	include(WEB_ROOT."includes/smarty.inc.php");
-        include(WEB_ROOT."includes/categories.inc.php");
+        include(WEB_ROOT."includes/dynamic_fields.inc.php");
         
 	if ($_SESSION["logged_status"]==0) 
 		header("location: index.php");
@@ -93,23 +93,7 @@
 		$insert_string_fields = '';
 		$insert_string_values = '';
 
-		$adherent['dyn'] = array();
-		// fill up the adherent structure with posted values
-		// for dynamic fields
-		while (list($key,$value) = each($_POST))
-		{
-			// if the field is enabled, check it
-			if (!isset($disabled[$key]))
-			{
-				if (substr($key,0,11)=='info_field_')
-				{
-					// initialize adherent structure with dynamic fields posted values
-					list ($id_cat, $index_info) = explode ('_', substr($key,11));
-					if (is_numeric($id_cat) && is_numeric($index_info))
-					$adherent['dyn'][$id_cat][$index_info] = $value;
-				}
-			}
-		}
+		$adherent['dyn'] = extract_posted_dynamic_fields($DB, $_POST, $disabled);
 		
 		// checking posted values for 'regular' fields
 		$fields = &$DB->MetaColumns(PREFIX_DB."adherents");
@@ -198,11 +182,8 @@
 		// missing required fields?
 		while (list($key,$val) = each($required))
 		{
-			if (!isset($adherent[$key]) && !isset($disabled[$key]))
+			if (!isset($disabled[$key]) && (!isset($adherent[$key]) || trim($adherent[$key])==''))
 				$error_detected[] = _T("- Mandatory field empty.")." ($key)";
-			elseif (isset($adherent[$key]) && !isset($disabled[$key]))
-				if (trim($adherent[$key])=='')
-					$error_detected[] = _T("- Mandatory field empty.")." ($key)";
 		}
 
 		if (count($error_detected)==0)
@@ -295,9 +276,7 @@
                                         }
 
 			// dynamic fields
-			while (list($category,$content)=each($adherent['dyn']))
-				while (list($index,$value)=each($content))
-					set_adh_info ($DB, $adherent['id_adh'], $category, $index, $value);
+			set_all_dynamic_fields($DB, 'adh', $adherent['id_adh'], $adherent['dyn']);
 
 			// deadline
 			$date_fin = get_echeance($DB, $adherent['id_adh']);
@@ -351,16 +330,7 @@
 				$adherent['date_crea_adh'] = date_db2text($adherent['date_crea_adh']);
 
 				// dynamic fields
-				$sql =  "SELECT id_cat, index_info, val_info ".
-					"FROM ".PREFIX_DB."adh_info ".
-					"WHERE id_adh=".$adherent["id_adh"];
-				$result = &$DB->Execute($sql);
-				while (!$result->EOF)
-				{
-					$adherent['dyn'][$result->fields['id_cat']][$result->fields['index_info']] = $result->fields['val_info'];
-					$result->MoveNext();
-				}
-				$result->Close();
+				$adherent['dyn'] = get_dynamic_fields($DB, 'adh', $adherent["id_adh"], false);
 			}
 
 		}
@@ -382,30 +352,13 @@
 		$adherent["has_picture"]=0;
 
 	// - declare dynamic fields for display
-	$requete = "SELECT * ".
-			"FROM ".PREFIX_DB."info_categories ".
-			"ORDER BY index_cat";
-	$result = &$DB->Execute($requete);
-	while (!$result->EOF)
-	{
-		// disable admin fields when logged as member
-		if ($_SESSION["admin_status"]!=1 && $result->fields['perm']==$perm_admin)
-			$disabled['dyn'][$result->fields['id_cat']] = 'disabled';
-		$cur_fields = &$result->fields;
-		if ($cur_fields['size_cat'] == 0) {
-			if (isset($adherent['dyn']))
-				$cur_fields['size_cat'] = count($adherent['dyn'][$cur_fields['id_cat']]);
-			$cur_fields['size_cat']++;
-		}
-		$dynamic_fields[] = $cur_fields;
-		$result->MoveNext();
-	}
-	$result->Close();
+	$disabled['dyn'] = array();
+	$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $_SESSION["admin_status"], $adherent['dyn'], $disabled['dyn'], 1);
 
 	// template variable declaration
 	$tpl->assign("required",$required);
 	$tpl->assign("disabled",$disabled);
-	$tpl->assign("adherent",$adherent);
+	$tpl->assign("data",$adherent);
 	$tpl->assign("time",time());
 	$tpl->assign("dynamic_fields",$dynamic_fields);
 	$tpl->assign("error_detected",$error_detected);

@@ -136,34 +136,35 @@ CREATE TABLE galette_logs (
 );
 CREATE UNIQUE INDEX galette_logs_idx ON galette_logs (id_log);
 
-DROP SEQUENCE galette_categories_id_seq;
-CREATE SEQUENCE galette_categories_id_seq
+DROP SEQUENCE galette_adh_field_type_id_seq;
+CREATE SEQUENCE galette_adh_field_type_id_seq
     START 1
     INCREMENT 1
     MAXVALUE 2147483647
     MINVALUE 1
     CACHE 1;
 
-DROP TABLE galette_info_categories;
-CREATE TABLE galette_info_categories (
-  id_cat integer DEFAULT nextval('galette_categories_id_seq'::text) NOT NULL,
-  index_cat integer DEFAULT '0' NOT NULL,
-  name_cat character varying(40) DEFAULT '' NOT NULL,
-  perm_cat integer DEFAULT '0' NOT NULL,
-  type_cat integer DEFAULT '0' NOT NULL,
-  size_cat integer DEFAULT '1' NOT NULL,
-  contents_cat text DEFAULT ''
+DROP TABLE galette_adh_field_type;
+CREATE TABLE galette_adh_field_type (
+  field_id integer DEFAULT nextval('galette_adh_field_type_id_seq'::text) NOT NULL,
+  field_index integer DEFAULT '0' NOT NULL,
+  field_name character varying(40) DEFAULT '' NOT NULL,
+  field_perm integer DEFAULT '0' NOT NULL,
+  field_type integer DEFAULT '0' NOT NULL,
+  field_repeat integer DEFAULT '1' NOT NULL,
+  field_required character(1) DEFAULT NULL,
+  field_contents text DEFAULT ''
 );
-CREATE UNIQUE INDEX galette_info_categories_idx ON galette_info_categories (id_cat);
+CREATE UNIQUE INDEX galette_adh_field_type_idx ON galette_adh_field_type (field_id);
 
-DROP TABLE galette_adh_info;
-CREATE TABLE galette_adh_info (
+DROP TABLE galette_adh_fields;
+CREATE TABLE galette_adh_fields (
   id_adh integer DEFAULT '0' NOT NULL,
-  id_cat integer DEFAULT '0' NOT NULL,
-  index_info integer DEFAULT '0' NOT NULL,
-  val_info text DEFAULT ''
+  field_id integer DEFAULT '0' NOT NULL,
+  val_index integer DEFAULT '0' NOT NULL,
+  field_val text DEFAULT ''
 );
-CREATE INDEX galette_ahd_info_idx ON galette_adh_info (id_adh);
+CREATE INDEX galette_adh_field_idx ON galette_adh_fields (id_adh);
 
 DROP TABLE galette_pictures;
 CREATE TABLE galette_pictures (
