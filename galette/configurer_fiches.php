@@ -80,7 +80,7 @@
 				$trans[] = array('key'=>$l, 'name'=> $lang_name, 'text'=> $text_trans);
 			}
 			function sort_lang($a, $b) { return strcmp($a['name'], $b['name']); }
-			usort($trans, sort_lang);
+			usort($trans, "sort_lang");
 
 			$tpl->assign("orig", $orig);
 			$tpl->assign("trans", $trans);

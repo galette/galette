@@ -918,11 +918,58 @@ define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (24,'pref_membership_ext','12')";
 			$DB->Execute($default);			
 			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (25,'pref_beg_membership','')";
+			$DB->Execute($default);
+			
+			if ($step=='i9')
+			{
+			
+			// contribution types
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."types_cotisation VALUES (1, 'Annual fee', '1')";
+			$DB->Execute($default);
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."types_cotisation VALUES (2, 'Reduced annual fee', '1')";
+			$DB->Execute($default);
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."types_cotisation VALUES (3, 'Company fee', '1')";
+			$DB->Execute($default);
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."types_cotisation VALUES (4, 'Donation in kind', null)";
+			$DB->Execute($default);
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."types_cotisation VALUES (5, 'Donation in money', null)";
+			$DB->Execute($default);
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."types_cotisation VALUES (6, 'Partnership', null)";
+			$DB->Execute($default);
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."types_cotisation VALUES (7, 'Annual fee (to be paid)', '1')";
+			$DB->Execute($default);
+
+			// member types
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."statuts VALUES (1,'President',0)";
+			$DB->Execute($default);
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."statuts VALUES (2,'Treasurer',10)";
+			$DB->Execute($default);
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."statuts VALUES (3,'Secretary',20)";
+			$DB->Execute($default);
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."statuts VALUES (4,'Active member',30)";
+			$DB->Execute($default);
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."statuts VALUES (5,'Benefactor member',40)";
+			$DB->Execute($default);
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."statuts VALUES (6,'Founder member',50)";
+			$DB->Execute($default);
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."statuts VALUES (7,'Old-timer',60)";
+			$DB->Execute($default);
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."statuts VALUES (8,'Society',70)";
+			$DB->Execute($default);
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."statuts VALUES (9,'Non-member',80)";
+			$DB->Execute($default);
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."statuts VALUES (10,'Vice-president',5)";
+			$DB->Execute($default);
+
+			}
+			else
+			{
+				// TODO: reimport member and contribution types from previous installation
+			}
 			
 			// NB: il faudrait améliorer cette partie car la détection
 			// d'erreur ne s'effectue que sur le dernier insert. Prévoir une boucle.
 			
-			$DB->Execute($default);
 			if (!$DB->ErrorNo())
 				echo "<IMG src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Parameters saved into the database")."<BR>";
 			else
