@@ -75,21 +75,7 @@
 <TABLE width="100%" style="height: 100%">
 	<TR>
 		<TD align="center">
-			<TABLE border="0">
-				<TR>
-					<TD><IMG src="images/galette.jpg" alt="[ Galette ]" width="103" height="80">&nbsp;&nbsp;&nbsp;</TD>
-					<TD class="acronyme">
-						<B>G</B>estionnaire d'<BR>
-						<B>A</B>dhérents en<BR>
-						<B>L</B>igne<BR>
-						<B>E</B>xtrèmement<BR>
-						<B>T</B>arabiscoté mais<BR>
-						<B>T</B>ellement<BR>
-						<B>E</B>fficace...<BR>
-						<BR>
-					</TD>
-				</TR>
-			</TABLE>
+			<IMG src="images/galette.jpg" alt="[ Galette ]" width="103" height="80"><BR>
 			<FORM action="index.php" method="post"> 
 				<B class="title"><? echo _T("Identification"); ?></B> 
 				<BR>
