@@ -354,8 +354,8 @@ $lang["Normal"]="Normal";
 $lang["Détaillé"]="Detailed";
 $lang["ligne"]="line";
 $lang["lignes"]="lines";
-$lang["Assurez vous que l'utilisateur galette a les droits nécessaires (SELECT, INSERT, UPDATE, CREATE, ALTER et DELETE) !"]="Verify that galette user has enought permissions (SELECT, INSERT, UPDATE, CREATE, ALTER and DELETE) !"
-$lang["filtrer sur la date"]="filter the date";
+$lang["Assurez vous que l'utilisateur galette a les droits nécessaires (SELECT, INSERT, UPDATE, CREATE, ALTER et DELETE) !"]="Verify that galette user has enought permissions (SELECT, INSERT, UPDATE, CREATE, ALTER and DELETE) !";
 
-$lang["XXX"]="XXXen";
+$lang["Afficher les contributions du"]="Show contributions since";
+$lang["au"]="until";
 ?>
