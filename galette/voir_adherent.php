@@ -54,6 +54,7 @@
 		{
 			// convert dates
 			case 'date_crea_adh':
+			case 'ddn_adh':
 			case 'date_echeance':
 				if ($val!='')
 				{

@@ -30,7 +30,7 @@ CREATE TABLE galette_adherents (
     prenom_adh character varying(20) DEFAULT NULL,
     pseudo_adh character varying(20) DEFAULT NULL,
     titre_adh smallint DEFAULT '0' NOT NULL,
-    ddn_adh character varying(10) DEFAULT NULL,
+    ddn_adh date DEFAULT '19010101',
     adresse_adh character varying(150) DEFAULT '' NOT NULL,
     adresse2_adh character varying(150) DEFAULT NULL,
     cp_adh character varying(10) DEFAULT '' NOT NULL,

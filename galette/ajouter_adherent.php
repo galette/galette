@@ -110,21 +110,12 @@
 				switch ($key)
 				{
 					// dates
-					case 'ddn_adh':
-						// we don't convert to DB format to overcome the 31/12/1969 limit
-						if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $value, $array_jours))
-						{
-							if (!checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
-								$error_detected[] = _T("- Non valid date!");
-						}
-						else
-							$error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!");
-						break;
 					case 'date_crea_adh':
+					case 'ddn_adh':
 						if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $value, $array_jours))
 						{
 							if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
-								$value = $DB->DBDate(mktime(0,0,0,$array_jours[2],$array_jours[1],$array_jours[3]));
+								$value = $DB->DBDate($array_jours[3].'-'.$array_jours[2].'-'.$array_jours[1]);
 							else
 								$error_detected[] = _T("- Non valid date!");
 						}
@@ -165,7 +156,7 @@
 				}
 				
 				// dates already quoted
-				if (($key!='date_crea_adh') || $value=='')
+				if (($key!='date_crea_adh' && $key!='ddn_adh') || $value=='')
 					$value = $DB->qstr($value);
 				
 				$update_string .= ", ".$key."=".$value;
@@ -330,7 +321,8 @@
 
 				// reformat dates
 				$adherent['date_crea_adh'] = date_db2text($adherent['date_crea_adh']);
-
+				$adherent['ddn_adh'] = date_db2text($adherent['ddn_adh']);
+				
 				// dynamic fields
 				$adherent['dyn'] = get_dynamic_fields($DB, 'adh', $adherent["id_adh"], false);
 			}
