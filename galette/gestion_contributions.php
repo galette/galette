@@ -26,6 +26,10 @@
 	include(WEB_ROOT."includes/lang.inc.php"); 
 	include(WEB_ROOT."includes/session.inc.php"); 
 	
+	// XXX
+//	error_reporting(E_ALL);
+//	print_r($_SESSION);
+//	print("filtre_date: ".$_SESSION['filtre_date']."");
 	$filtre_id_adh = "";
 	
 	if ($_SESSION["logged_status"]==0) 
@@ -117,6 +121,18 @@
 		$requete[1] .= "WHERE cotisations.id_adh='" . $_SESSION["filtre_cotis_adh"] . "' ";
 	}
 		
+	// date filter
+	if(isset($_POST['filtre_date'])) {
+		$_SESSION['filtre_date']=$_POST['filtre_date'];
+	}
+	if( isset($_GET['filtre'])) {
+		$_SESSION['filtre']=$_GET['filtre'];
+	}elseif( !isset($_SESSION['filtre'])) $_SESSION['filtre']=-1; 
+	//else $_SESSION['filtre']=-1; 
+	if ( $_SESSION['filtre']!=-1 && isset($_SESSION['filtre_date']) && $_SESSION['filtre_date']!=""){
+		$requete[0] .= "AND date_cotis like '" . $_SESSION["filtre_date"] . "' ";
+		// XXX $requete[1] .= "WHERE cotisations.id_adh='" . $_SESSION["filtre_cotis_adh"] . "' ";
+	}
 
 	// phase de tri
 	
@@ -164,13 +180,28 @@
 		else
 			$pagestring .= $i." ";
 	}
-
+	//XXX
+	if( $_SESSION['filtre']=='0' ){
+		$url_filtre_date="<a href=\"gestion_contributions.php?filtre=-1\">"._T("filtrer sur la date")."</a> ";
+	}else{
+		$url_filtre_date="<a href=\"gestion_contributions.php?filtre=0\">"._T("filtrer sur la date")."</a> ";
+	}
 ?>
 						<TABLE id="infoline" width="100%">
 							<TR>
 								<TD class="left"><? echo $nbcotis->fields[0]." "; if ($nbcotis->fields[0]!=1) echo _T("contributions"); else echo _T("contribution"); ?></TD>
+								<TD class="left"><SPAN class="pagelink"><? echo $url_filtre_date; ?></SPAN></TD>
 								<TD class="right"><? echo _T("Pages :"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></TD>
 							</TR>
+							<? if( isset($_SESSION['filtre']) && ($_SESSION['filtre']=='0')){ ?>
+							<TR>
+								<TD class="left">
+									<form method="post" name="XXX" action="">
+										<input type="text" name="filtre_date" value="<?php if(isset($_SESSION['filtre_date'])) echo $_SESSION['filtre_date']; ?>" size="10" maxlength="10" />
+									</form>
+								</TD>
+							</TR>
+							<?php } ?>
 						</TABLE>
 						<TABLE width="100%"> 
 							<TR> 

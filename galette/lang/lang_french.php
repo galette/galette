@@ -355,6 +355,9 @@ $lang["Normal"]="Normal";
 $lang["Détaillé"]="Détaillé";
 $lang["ligne"]="ligne";
 $lang["lignes"]="lignes";
-$lang["Assurez vous que l'utilisateur galette a les droits nécessaires (SELECT, INSERT, UPDATE, CREATE, ALTER et DELETE) !"]="Assurez vous que l'utilisateur galette a les droits nécessaires (SELECT, INSERT, UPDATE, CREATE, ALTER et DELETE) !"
+$lang["Assurez vous que l'utilisateur galette a les droits nécessaires (SELECT, INSERT, UPDATE, CREATE, ALTER et DELETE) !"]="Assurez vous que l'utilisateur galette a les droits nécessaires (SELECT, INSERT, UPDATE, CREATE, ALTER et DELETE) !";
+$lang["filtrer sur la date"]="filtrer sur la date";
+$lang["XXX"]="XXXfr";
+
 
 ?>
