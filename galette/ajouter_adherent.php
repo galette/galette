@@ -105,7 +105,19 @@
   if (isset($_POST["valid"]))
   {
         if(!UniqueLogin($DB,$_POST["login_adh"])){
-	  $error_detected .=_T("Désolé, ").$_POST["login_adh"]._T(" est un identifiant déjà utilisé, choisissez-en un autre\n");
+	  if (isset($_POST["id_adh"]) && $_POST["id_adh"] != ""){
+	    // on vérifie que le login n'est pas déjà utilisé
+	    $requete = "SELECT id_adh FROM ".
+	      PREFIX_DB."adherents WHERE login_adh=". 
+	      $DB->qstr($_POST["login_adh"], true).
+	      " AND id_adh!=" . $DB->qstr($id_adh, true);
+	    $result = &$DB->Execute($requete);
+	    if (!$result->EOF || $_POST["login_adh"]==PREF_ADMIN_LOGIN){
+	      $error_detected .= "<LI>"._T("- Cet identifiant est déjà utilisé par un autre adhérent !")."</LI>";
+	    } 
+          } else {
+	    $error_detected .=_T("Désolé, ").$_POST["login_adh"]._T(" est un identifiant déjà utilisé, choisissez-en un autre\n");
+          }
 	}
   	// verification de champs
   	$update_string = "";
@@ -328,18 +340,18 @@
 					// suppression ancienne photo
 					// NB : une verification sur le type de $id_adh permet d'eviter une faille
 					//      du style $id_adh = "../../../image"
-					@unlink(WEB_ROOT . "photos/".$id_adh_new.".jpg");
-					@unlink(WEB_ROOT . "photos/".$id_adh_new.".gif");
-					@unlink(WEB_ROOT . "photos/".$id_adh_new.".jpg");
-					@unlink(WEB_ROOT . "photos/tn_".$id_adh_new.".jpg");
-					@unlink(WEB_ROOT . "photos/tn_".$id_adh_new.".gif");
-					@unlink(WEB_ROOT . "photos/tn_".$id_adh_new.".jpg");
+					@unlink(VAR_ROOT . "photos/".$id_adh_new.".jpg");
+					@unlink(VAR_ROOT . "photos/".$id_adh_new.".gif");
+					@unlink(VAR_ROOT . "photos/".$id_adh_new.".jpg");
+					@unlink(VAR_ROOT . "photos/tn_".$id_adh_new.".jpg");
+					@unlink(VAR_ROOT . "photos/tn_".$id_adh_new.".gif");
+					@unlink(VAR_ROOT . "photos/tn_".$id_adh_new.".jpg");
 						
 					// copie fichier temporaire			 		
-					if (!@move_uploaded_file($tmp_name,WEB_ROOT . "photos/".$id_adh_new.$ext_image))
+					if (!@move_uploaded_file($tmp_name,VAR_ROOT . "photos/".$id_adh_new.$ext_image))
 						$warning_detected .= "<LI>"._T("- La photo semble ne pas avoir été transmise correstement. L'enregistrement a cependant été effectué.")."</LI>";
 				 	else
-						resizeimage(WEB_ROOT . "photos/".$id_adh_new.$ext_image,WEB_ROOT . "photos/tn_".$id_adh_new.$ext_image,130,130);
+						resizeimage(VAR_ROOT . "photos/".$id_adh_new.$ext_image,VAR_ROOT . "photos/tn_".$id_adh_new.$ext_image,130,130);
 			 	}
 			 	else
 				{
@@ -406,12 +418,12 @@
  	// suppression photo
 	if (isset($_POST["del_photo"]))
 	{
- 		@unlink(WEB_ROOT . "photos/" . $id_adh . ".jpg");
- 		@unlink(WEB_ROOT . "photos/" . $id_adh . ".png");
- 		@unlink(WEB_ROOT . "photos/" . $id_adh . ".gif");
- 		@unlink(WEB_ROOT . "photos/tn_" . $id_adh . ".jpg");
- 		@unlink(WEB_ROOT . "photos/tn_" . $id_adh . ".png");
- 		@unlink(WEB_ROOT . "photos/tn_" . $id_adh . ".gif");
+ 		@unlink(VAR_ROOT . "photos/" . $id_adh . ".jpg");
+ 		@unlink(VAR_ROOT . "photos/" . $id_adh . ".png");
+ 		@unlink(VAR_ROOT . "photos/" . $id_adh . ".gif");
+ 		@unlink(VAR_ROOT . "photos/tn_" . $id_adh . ".jpg");
+ 		@unlink(VAR_ROOT . "photos/tn_" . $id_adh . ".png");
+ 		@unlink(VAR_ROOT . "photos/tn_" . $id_adh . ".gif");
  	} 	
 	
 	  //	
@@ -535,19 +547,19 @@
 								<TD colspan="2" rowspan="4" align="center" width="130">
 <?
 	$image_adh = "";
-	if (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".jpg"))
-		$image_adh = WEB_ROOT . "photos/tn_" . $id_adh . ".jpg";
-	elseif (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".gif"))
-		$image_adh = WEB_ROOT . "photos/tn_" . $id_adh . ".gif";
-	elseif (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".png"))
-		$image_adh = WEB_ROOT . "photos/tn_" . $id_adh . ".png";
+	if (file_exists(VAR_ROOT . "photos/tn_" . $id_adh . ".jpg"))
+		$image_adh = VAR_ROOT . "photos/tn_" . $id_adh . ".jpg";
+	elseif (file_exists(VAR_ROOT . "photos/tn_" . $id_adh . ".gif"))
+		$image_adh = VAR_ROOT . "photos/tn_" . $id_adh . ".gif";
+	elseif (file_exists(VAR_ROOT . "photos/tn_" . $id_adh . ".png"))
+		$image_adh = VAR_ROOT . "photos/tn_" . $id_adh . ".png";
 
     if (function_exists("ImageCreateFromString"))
     {
         if ($image_adh != "")
             $imagedata = getimagesize($image_adh);
         else
-            $imagedata = getimagesize(WEB_ROOT . "photos/default.png");
+            $imagedata = getimagesize(VAR_ROOT . "photos/default.png");
     }
     else
         $imagedata = array("130","");
@@ -573,9 +585,9 @@
 								<TH id="libelle"><? echo _T("Photo :"); ?></TH> 
 								<TD> 
 								<?
-									if (file_exists(WEB_ROOT . "photos/" . $id_adh . ".jpg") ||
-											file_exists(WEB_ROOT . "photos/" . $id_adh . ".png") ||
-											file_exists(WEB_ROOT . "photos/" . $id_adh . ".gif"))
+									if (file_exists(VAR_ROOT . "photos/" . $id_adh . ".jpg") ||
+											file_exists(VAR_ROOT . "photos/" . $id_adh . ".png") ||
+											file_exists(VAR_ROOT . "photos/" . $id_adh . ".gif"))
 									{
 								?>
 									<INPUT type="submit" name="del_photo" value="<? echo _T("Supprimer la photo"); ?>">
