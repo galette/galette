@@ -82,7 +82,13 @@
 				// suppression records cotisations
 				$requetesup = "DELETE FROM ".PREFIX_DB."cotisations 
 						WHERE id_adh=" . $DB->qstr($_GET["sup"]); 
-				$DB->Execute($requetesup); 			
+				$DB->Execute($requetesup);
+
+				// erase custom fields
+				$requetesup = "DELETE FROM ".PREFIX_DB."adh_info
+						WHERE id_adh=".$DB->qstr($_GET["sup"]);
+				$DB->Execute($requetesup);
+				
 				dblog(_T("Delete the member card (and dues)")." ".strtoupper($resultat->fields[0])." ".$resultat->fields[1], $requetesup);
 			}
 			$resultat->Close();

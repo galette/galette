@@ -67,6 +67,11 @@ function smarty_function_html_radios($params, &$smarty)
                 }
                 break;
 
+            case 'disabled':
+	        if ($_val != '')
+	            $extra .= ' disabled ';
+                break;
+
             case 'labels':
                 $$_key = (bool)$_val;
                 break;

@@ -50,7 +50,7 @@ $domain = 'galette';
 $textdomain= THIS_BASE_DIR . "/../lang";
 bindtextdomain($domain, $textdomain);
 textdomain($domain);
-if ($loc!=$languagei || $disable_gettext)
+if ($loc!=$language || $disable_gettext)
 {
         include(WEB_ROOT."lang/lang_".$pref_lang.".php");
         //echo "<font color='red'>Warning:</font> locale $language is probably not intalled on the server.<br>";
@@ -73,6 +73,22 @@ if ($loc!=$languagei || $disable_gettext)
                                 return _($chaine);
                 }
         }
+
+        function drapeaux()
+	{
+		$path = "lang";
+		$dir_handle = @opendir($path);
+		$languages = array();
+		while ($file = readdir($dir_handle))
+		{
+			if (substr($file,0,5)=="lang_" && substr($file,-4)==".php")
+			{
+				$file = substr(substr($file,5),0,-4);
+				$languages[$file]=_T($file);
+			}
+		}
+		return $languages;
+	}
 
 /**********************************************
 * some constant strings found in the database *

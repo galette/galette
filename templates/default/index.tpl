@@ -10,8 +10,8 @@
 		<TR>
 			<TD align="center">
 				<IMG src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60"><BR><BR><BR>
-				{foreach key=langue item=image from=$languages}
-				<A href="index.php?pref_lang={$langue}"><IMG src="{$image}" alt="{$langue}"></A>
+				{foreach key=langue item=langue_t from=$languages}
+				<A href="index.php?pref_lang={$langue}"><IMG src="lang/{$langue}.gif" alt="{$langue_t}"></A>
 				{/foreach}
 				<BR>
 				<FORM action="index.php" method="post"> 

@@ -34,22 +34,6 @@
 	include_once(WEB_ROOT."includes/i18n.inc.php");
 	include_once(WEB_ROOT."includes/smarty.inc.php");
 	
-	function drapeaux()
-	{
-		$path = "lang";
-		$dir_handle = @opendir($path);
-		$languages = array();
-		while ($file = readdir($dir_handle))
-		{
-			if (substr($file,0,5)=="lang_" && substr($file,-4)==".php")
-			{
-				$file = substr(substr($file,5),0,-4);
-				$languages[$file]=$path."/".$file.".gif";
-			}
-		}
-		return $languages;
-	}
-
 	function self_adhesion()
 	{
 		global $_POST, $_GET, $pref_lang;
