@@ -141,88 +141,20 @@
 			{/section}
 			</SPAN>
 		</DIV>
-{if $smarty.session.filtre_cotis_adh != ""}
-{*
-<?	
-	// affichage du temps d'ahésion restant si on est en train de visualiser
-	// les cotisations d'un membre unique
-	
-	if ($_SESSION["filtre_cotis_adh"]!="")
-	{
-		$requete = "SELECT date_echeance, bool_exempt_adh
-			    FROM ".PREFIX_DB."adherents
-			    WHERE id_adh='".$_SESSION["filtre_cotis_adh"]."'";
-		$resultat = $DB->Execute($requete);
-		
-		// temps d'adhésion
-		if($resultat->fields[1])
-		{
-			$statut_cotis = _T("Freed of dues");
-			$color = "#DDFFDD";
-		}
-		else
-		{
-			if ($resultat->fields[0]=="")
-			{
-				$statut_cotis = _T("Never contributed");
-				$color = "#EEEEEE";			
-			}
-			else
-			{
-			
-			
-			$date_fin = split("-",$resultat->fields[0]);
-			$ts_date_fin = mktime(0,0,0,$date_fin[1],$date_fin[2],$date_fin[0]);
-			$aujourdhui = time();
-			
-			$difference = intval(($ts_date_fin - $aujourdhui)/(3600*24));
-			if ($difference==0)
-			{
-				$statut_cotis = _T("Last day!");
-				$color = "#FFDDDD";
-			}
-			elseif ($difference<0)
-			{
-				$statut_cotis = _T("Late of")." ".-$difference." "._T("days")." ("._T("since")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
-				$color = "#FFDDDD";
-			}
-			else
-			{
-				if ($difference!=1)
-					$statut_cotis = $difference." "._T("days remaining")." ("._T("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
-				else
-					$statut_cotis = $difference." "._T("day remaining")." ("._T("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
-				if ($difference < 30)
-					$color = "#FFE9AB";
-				else
-					$color = "#DDFFDD";	
-			}
-			
-			}
-		}		
-		
-		
-		/*$days_left = get_days_left($DB, $_SESSION["filtre_cotis_adh"]);
-		$cumul = $days_left["cumul"];
-		$statut_cotis = $days_left["text"];
-		$color = $days_left["color"];*/
-?>	
+{if $smarty.session.filtre_cotis_adh!=""}
 		<BR>
 		<DIV align="center">
-		  <TABLE bgcolor="<? echo $color; ?>">
-		    <TR>
-		      <TD><? echo $statut_cotis; ?></TD>
-		    </TR>
-		  </TABLE>
-		  
-*}
+			<TABLE class="{$statut_class}">
+				<TR>
+					<TD>{$statut_cotis}</TD>
+				</TR>
+			</TABLE>
 		<BR>
-		<DIV align="center">
 {if $smarty.session.admin_status eq 1}
 		<BR>
 			<A href="voir_adherent.php?id_adh={$smarty.session.filtre_cotis_adh}">{_T("[ See member profile ]")}</A>
 			&nbsp;&nbsp;&nbsp;
 			<A href="ajouter_contribution.php?id_adh={$smarty.session.filtre_cotis_adh}">{_T("[ Add a contribution ]")}</A>
-		</DIV>
 {/if}
+		</DIV>
 {/if}
