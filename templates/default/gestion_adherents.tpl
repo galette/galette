@@ -18,7 +18,7 @@
 				<TD class="center">
 					{_T("Show:")}
 					<SELECT name="nbshow" onChange="form.submit()">
-						{html_options options=$nbshow_options selected=$smarty.get.nbshow}
+						{html_options options=$nbshow_options selected=$numrows}
 					</SELECT>
 				</TD>
 				<TD class="right">{_T("Pages:")}

@@ -77,8 +77,9 @@
 				<TR>
 					<TH {if $required.pref_numrows eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Lines / Page:")}</TH>
 					<TD>
-						<INPUT type="text" name="pref_numrows" value="{$pref.pref_numrows}" maxlength="5">
-						<SPAN class="exemple">{_T("(Integer)")}</SPAN>
+						<SELECT name="pref_numrows">
+							{html_options options=$pref_numrows_options selected=$pref.pref_numrows}
+						</SELECT>
 					</TD>
 				</TR>         
 				<TR>

@@ -1,29 +1,35 @@
 		<H1 class="titre">{_T("Management of contributions")}</H1>
+		<FORM action="gestion_contributions.php" method="get" name="filtre">
 		<DIV id="listfilter">
-			<FORM action="gestion_contributions.php" method="get" name="filtre">
-				{_T("Show contributions since")}&nbsp;
-				<INPUT type="text" name="contrib_filter_1" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_1}">
-				{_T("until")}&nbsp;
-				<INPUT type="text" name="contrib_filter_2" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_2}">
-				<INPUT type="submit" value="{_T("Filter")}">
-			</FORM>
+			{_T("Show contributions since")}&nbsp;
+			<INPUT type="text" name="contrib_filter_1" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_1}">
+			{_T("until")}&nbsp;
+			<INPUT type="text" name="contrib_filter_2" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_2}">
+			<INPUT type="submit" value="{_T("Filter")}">
 		</DIV>
 		<TABLE id="infoline" width="100%">
 			<TR>
 				<TD class="left">{$nb_contributions} {if $nb_contributions != 1}{_T("contributions")}{else}{_T("contribution")}{/if}</TD>
+                                <TD class="center">
+					{_T("Show:")}
+					<SELECT name="nbshow" onChange="form.submit()">
+						{html_options options=$nbshow_options selected=$numrows}
+					</SELECT>
+				</TD>
 				<TD class="right">{_T("Pages:")}
 					<SPAN class="pagelink">
 					{section name="pageLoop" start=1 loop=$nb_pages+1}
 						{if $smarty.section.pageLoop.index eq $page}
 							{$smarty.section.pageLoop.index}
 						{else}
-							<A href="gestion_contributions.php?page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</A>
+							<A href="gestion_contributions.php?nbshow={$smarty.get.nbshow}&page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</A>
 						{/if}
 					{/section}
 					</SPAN>
 				</TD>
 			</TR>
 		</TABLE>
+		</FORM>
 		<TABLE width="100%"> 
 			<TR> 
 				<TH width="15" class="listing">#</TH> 
@@ -136,7 +142,7 @@
 			{if $smarty.section.pageLoop.index eq $page}
 			{$smarty.section.pageLoop.index}
 			{else}
-			<A href="gestion_contributions.php?page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</A>
+			<A href="gestion_contributions.php?nbshow={$smarty.get.nbshow}&page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</A>
 			{/if}
 			{/section}
 			</SPAN>

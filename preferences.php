@@ -98,6 +98,9 @@
 					}
 					break;
 				case 'pref_numrows':
+					if (!is_numeric($value) || $value <0)
+						$error_detected[] = "<LI>"._T("- The numbers and measures have to be integers!")."</LI>";
+					break;
 				case 'pref_etiq_marges':
 				case 'pref_etiq_hspace':
 				case 'pref_etiq_vspace':
@@ -208,6 +211,13 @@
 	}
 		
 	$tpl->assign("pref",$pref);
+	$tpl->assign('pref_numrows_options', array(
+		10 => "10",
+		20 => "20",
+		50 => "50",
+		100 => "100",
+		0 => _T("All")));
+																	
 	$tpl->assign("required",$required);
 	$tpl->assign("languages",drapeaux());
 	$tpl->assign("error_detected",$error_detected);
