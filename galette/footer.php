@@ -22,7 +22,7 @@
 	$end = utime(); $run = $end - $start;
 ?>
 		<DIV id="copyright">
-			<A href="http://www.zopeuse.org/projets/galette/Wiki_galette/FrontPage">Galette <? echo GALETTE_VERSION ?></A> - <? echo _T("Réalisation :"); ?> <A href="mailto:deelight@logeek.com">Deelight</A> - <? echo _T("Graphisme :"); ?> <A href="http://www.gimp.org">Gimp</A> - <? echo _T("Editeur :"); ?> <A href="http://bluefish.openoffice.nl">Bluefish</A> - <? echo _T("Page affichée en")." ".substr($run, 0, 5)." "._T("secondes."); ?>
+			<A href="http://www.zopeuse.org/projets/galette/Wiki_galette/FrontPage">Galette <? echo GALETTE_VERSION ?></A> - <? echo _T("Page affichée en")." ".substr($run, 0, 5)." "._T("secondes."); ?>
 		</DIV>
 	</DIV>
 	<DIV id="menu">
