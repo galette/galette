@@ -230,7 +230,10 @@
 			$properties = $field_properties[$result->fields['field_type']];
 			if ($properties['multi_valued']) {
 				if ($cur_fields['field_repeat'] == 0) { // Infinite multi-valued field
-					$nb_values = count($all_values[$cur_fields['field_id']]);
+					if (isset($all_values[$cur_fields['field_id']]))
+						$nb_values = count($all_values[$cur_fields['field_id']]);
+					else
+						$nb_values = 0;
 					if (isset($all_values))
 						$cur_fields['field_repeat'] = $nb_values + $extra;
 					else

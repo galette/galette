@@ -155,8 +155,15 @@
 						break;
 				}
 				
+				if ($key=='ddn_adh') echo $value;
+				
 				// dates already quoted
-				if (($key!='date_crea_adh' && $key!='ddn_adh') || $value=='')
+				if ($key=='date_crea_adh' || $key=='ddn_adh')
+				{
+					if ($value=='')
+						$value='null';
+				}
+				else
 					$value = $DB->qstr($value);
 				
 				$update_string .= ", ".$key."=".$value;
