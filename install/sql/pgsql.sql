@@ -14,7 +14,7 @@ CREATE SEQUENCE galette_cotisations_id_seq
     MINVALUE 1
     CACHE 1;
 
-DROP SEQUENCE galette_preferences_id_seq
+DROP SEQUENCE galette_preferences_id_seq;
 CREATE SEQUENCE galette_preferences_id_seq
     START 1
     INCREMENT 1
@@ -101,33 +101,8 @@ INSERT INTO galette_types_cotisation VALUES (6,'Partenariat');
 DROP TABLE galette_preferences;
 CREATE TABLE galette_preferences (
   id_pref integer DEFAULT nextval('galette_preferences_id_seq'::text) NOT NULL,
-  nom_pref varying(100) DEFAULT '' NOT NULL,
-  val_pref varying(200) DEFAULT '' NOT NULL
-);
-
-DROP TABLE galette_preferences;
-CREATE TABLE galette_preferences (
-  pref_nom character varying(40) DEFAULT '' NOT NULL,
-  pref_adresse character varying(150) DEFAULT '' NOT NULL,
-  pref_adresse2 character varying(150) DEFAULT NULL,
-  pref_cp character varying(10) DEFAULT '' NOT NULL,
-  pref_ville character varying(50) DEFAULT '' NOT NULL,
-  pref_pays character varying(50) DEFAULT NULL,
-  pref_lang character varying(20) DEFAULT '' NOT NULL,
-  pref_numrows integer DEFAULT '30' NOT NULL,
-  pref_log character(1) DEFAULT '1' NOT NULL,
-  pref_email_nom character varying(20) DEFAULT '' NOT NULL,
-  pref_email character varying(150) DEFAULT '' NOT NULL,
-  pref_etiq_marges integer DEFAULT '0' NOT NULL,
-  pref_etiq_hspace integer DEFAULT '0' NOT NULL,
-  pref_etiq_vspace integer DEFAULT '0' NOT NULL,
-  pref_etiq_hsize integer DEFAULT '0' NOT NULL,
-  pref_etiq_vsize integer DEFAULT '0' NOT NULL,
-  pref_etiq_cols integer DEFAULT '0' NOT NULL,
-  pref_etiq_rows integer DEFAULT '0' NOT NULL,
-  pref_etiq_corps integer DEFAULT '0' NOT NULL,
-  pref_admin_login character varying(20) DEFAULT '' NOT NULL,
-  pref_admin_pass character varying(20) DEFAULT '' NOT NULL
+  nom_pref character varying(100) DEFAULT '' NOT NULL,
+  val_pref character varying(200) DEFAULT '' NOT NULL
 );
 
 DROP SEQUENCE galette_logs_id_seq;
