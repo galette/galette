@@ -8,6 +8,14 @@ CREATE UNIQUE INDEX galette_statuts_idx ON galette_statuts (id_statut);
 CREATE UNIQUE INDEX galette_types_cotisation_idx ON galette_types_cotisation (id_type_cotis);
 CREATE UNIQUE INDEX galette_logs_idx ON galette_logs (id_log);
 
+DELETE FROM galette_preferences WHERE nom_pref == 'pref_pays';
+CREATE UNIQUE INDEX galette_preferences_idx ON galette_preferences (id_pref);
+INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_pays', '');
+INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_method', '0');
+INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_smtp', '0');
+INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_membership_ext', '12');
+INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_beg_membership', '');
+
 CREATE SEQUENCE galette_categories_id_seq
     START 1
     INCREMENT 1
