@@ -80,6 +80,7 @@ function remove_remarks($sql)
 	{
 		if (($i != ($linecount - 1)) || (strlen($lines[$i]) > 0))
 		{
+			if (isset($lines[$i][0]))
 			if ($lines[$i][0] != "#")
 			{
 				$output .= $lines[$i] . "\n";

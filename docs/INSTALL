@@ -4,7 +4,7 @@ Dependencies
   Required:     - PHP Capable web server:
                   Apache is fine
 		  Galette was tested on Apache 1.3.22 and 1.3.26
-                - PHP (At least 4.0.4)
+                - PHP (At least 4.1)
 		  Galette was tested on PHP 4.1.2 and 4.3.3
 	        - Database (MySQL or PostgreSQL)
 		  Galette was tested on MySQL 3.23.49 and PostgresSQL
@@ -17,7 +17,7 @@ Dependencies
   Requis :	- Serveur web supportant PHP :
   		  Apache est une bonne option
 		  Galette a été testé sur Apache 1.3.22 et 1.3.26
-		- PHP (Au moins la version 4.0.4)
+		- PHP (Au moins la version 4.1)
 		  Galette a été testé avec PHP 4.1.2 et 4.3.3
 		- Base de données (MySQL ou PostgreSQL)
 		  Galette a été testé sur MySQL 3.23.49 et PostgresSQL
