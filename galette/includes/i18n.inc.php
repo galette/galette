@@ -26,9 +26,12 @@ $disable_gettext=false;
 // I18N support information here
 if (isset($_POST['pref_lang']))
         $_SESSION["pref_lang"]=$_POST['pref_lang'];
-if (isset($_GET['pref_lang']))
+else if (isset($_GET['pref_lang']))
         $_SESSION["pref_lang"]=$_GET['pref_lang'];
-$pref_lang=$_SESSION["pref_lang"];
+else if (isset($_SESSION["pref_lang"]))
+	$pref_lang=$_SESSION["pref_lang"];
+else
+	$pref_lang="english";
 
 $languages = array (
                     "french"  => "fr_FR@euro",
@@ -93,7 +96,7 @@ if ($loc!=$language || $disable_gettext)
 /**********************************************
 * some constant strings found in the database *
 **********************************************/
-   
+
 $foo=_T("Realization:");
 $foo=_T("Graphics:");
 $foo=_T("Publisher:");
