@@ -194,8 +194,8 @@
 				}
 
 				// mise a jour des chaines d'insertion
-				if ($value=="''")
-					$value="NULL";
+				/*if ($value=="''")
+					$value="NULL";*/
 				$insert_values[$fieldname] = $value;	
 			}
 			$result->MoveNext();
