@@ -39,7 +39,7 @@
 			$id_adh = $_POST["id_adh"];
 
 	// Si c'est un user qui est loggé, on va à sa fiche
-	if ($_SESSION["logged_status"]!=0) 
+	if ($_SESSION["admin_status"]!=1) 
 		$id_adh = $_SESSION["logged_id_adh"];
 
 	// variables d'erreur (pour affichage)	    
