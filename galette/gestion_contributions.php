@@ -35,8 +35,12 @@
 	else
 	{
 		if (isset($_GET["id_adh"]))
-		if (is_numeric($_GET["id_adh"]))
-			$_SESSION["filtre_cotis_adh"]=$_GET["id_adh"];
+		{
+			if (is_numeric($_GET["id_adh"]))
+				$_SESSION["filtre_cotis_adh"]=$_GET["id_adh"];
+			else
+				$_SESSION["filtre_cotis_adh"]="";
+		}
 		else
 			$_SESSION["filtre_cotis_adh"]="";
 	}		
