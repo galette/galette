@@ -26,6 +26,17 @@
 	if (!defined("PREFIX_DB"))
 	   define("PREFIX_DB","");
 
+	// Definition du protocole
+	if (isset($_SERVER["HTTPS"]))
+	{
+		if ($_SERVER["HTTPS"]=="on")
+			define("HTTP","https");
+		else
+			define("HTTP","http");
+	}
+	else
+		define("HTTP","http");
+
 	// Chargement des preferences
 	$result = $DB->Execute("SELECT * FROM ".PREFIX_DB."preferences");
 	while (!$result->EOF)
