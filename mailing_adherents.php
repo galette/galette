@@ -92,7 +92,13 @@
 				}
 			}
 		
+		$etiquettes = 0;
 		if (isset($_GET["etiquettes"]))
+			$etiquettes = $_GET["etiquettes"];
+		elseif (isset($_POST["etiquettes"]))
+			$etiquettes = $_POST["etiquettes"];
+		
+		if ($etiquettes==1)
 		{
 ?> 
 			<H1 class="titre"><? echo _("Generate labels"); ?></H1>
@@ -225,6 +231,7 @@
 								<OPTION value="1"<? isSelected("1",$_SESSION["filtre_adh_2"]) ?>><? echo _("Active accounts"); ?></OPTION>
 								<OPTION value="2"<? isSelected("2",$_SESSION["filtre_adh_2"]) ?>><? echo _("Inactive accounts"); ?></OPTION>
 							</SELECT>
+							<INPUT type="hidden" name="etiquettes" value="<? echo $etiquettes; ?>"> 
 							<INPUT type="submit" value="<? echo _("Filter"); ?>">
 						</FORM>
 					</DIV>
@@ -232,7 +239,7 @@
 			</TR>
 		</TABLE>
 <?
-		if (isset($_GET["etiquettes"]))
+		if ($etiquettes==1)
 		{
 ?>
 						<FORM action="etiquettes_adherents.php" method="post" name="mailing_form" target="_blank">
@@ -398,7 +405,7 @@
 						<BR>
 						<BR>
 <?
-		if (isset($_GET["etiquettes"]))
+		if ($etiquettes==1)
 		{
 ?>
 							<DIV align="center"><INPUT type="submit" value="<? echo _("Generate labels"); ?>"></DIV>
