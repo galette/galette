@@ -679,7 +679,7 @@
 				if (trim($sql_query[$i]) != '')
 				{
 					$DB->Execute($sql_query[$i]);
-					list($w1, $w2, $w3, $extra) = split(" ", $sql_query[$i], 4);
+					@list($w1, $w2, $w3, $extra) = split(" ", $sql_query[$i], 4);
 					if ($extra!="") $extra="...";
 					if ($DB->ErrorNo())
 					{
