@@ -223,6 +223,7 @@
 				(" . substr($insert_string_fields,1) . ")
 				VALUES (" . substr($insert_string_values,1) . ")";
 				$DB->Execute($requete);
+				echo $requete;
 				
 				// to allow the string to be extracted for translation
 				$foo = _T("Member card added");
