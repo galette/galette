@@ -20,11 +20,10 @@
  */
  
 	include("includes/config.inc.php"); 
-	include(WEB_ROOT."includes/database.inc.php"); 
+	include(WEB_ROOT."includes/database.inc.php");
+	include(WEB_ROOT."includes/session.inc.php");
 	include(WEB_ROOT."includes/functions.inc.php"); 
         include_once("includes/i18n.inc.php"); 
-	include(WEB_ROOT."includes/lang.inc.php"); 
-	include(WEB_ROOT."includes/session.inc.php"); 
 	
 	if ($_SESSION["logged_status"]==0) 
 		header("location: index.php");
@@ -55,7 +54,7 @@
 			}
 		}
     
-	$requete[0] = "SELECT date_log, adh_log, text_log, ip_log FROM ".PREFIX_DB."logs ";
+	$requete[0] = "SELECT date_log, adh_log, text_log, ip_log, action_log, sql_log FROM ".PREFIX_DB."logs ";
 	$requete[1] = "SELECT count(id_log) FROM ".PREFIX_DB."logs";
 	
     // phase de tri	
@@ -116,7 +115,7 @@
 			<TD class="right"><? echo _T("Pages:"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></TD>
 		</TR>
 	</TABLE>
-		<TABLE width="100%"> 
+		<TABLE width="100%" border="1"> 
 		<TR> 
 			<TH width="15" class="listing">#</TH> 
   			<TH class="listing left" width="150">
@@ -164,6 +163,29 @@
 ?>
 				<IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
             </TH> 
+
+
+                       <TH class="listing left" width="150">
+                                <A href="log.php?tri=4" class="listing"><? echo _T("Action"); ?></A>
+<?
+        if ($_SESSION["tri_log"]=="4")
+        {
+                if ($_SESSION["tri_log_sens"]=="0")
+                        $img_sens = "asc.png";
+                else
+                        $img_sens = "desc.png";
+        }
+        else
+                $img_sens = "icon-empty.png";
+?>
+                                <IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
+            </TH>
+
+
+
+
+
+
   			<TH class="listing left">
 				<A href="log.php?tri=3" class="listing"><? echo _T("Description"); ?></A>
 <?
@@ -196,7 +218,8 @@
 			<TD valign="top" nowrap><? echo $resultat->fields[0]; ?></TD>
 			<TD valign="top" nowrap><? echo $resultat->fields[3]; ?></TD>
 			<TD valign="top" nowrap><? echo $resultat->fields[1]; ?></TD>
-			<TD valign="top"><? echo nl2br(htmlentities(stripslashes(addslashes($resultat->fields[2])), ENT_QUOTES)); ?></TD>
+			<TD valign="top" nowrap><? echo _T($resultat->fields[4]); ?></TD>
+			<TD valign="top" nowrap><? echo $resultat->fields[2]."<br>".$resultat->fields[5]; ?></TD>
 		</TR>
 <?
 		$resultat->MoveNext();

@@ -21,17 +21,18 @@
  */
  
 	include("includes/config.inc.php"); 
-	include(WEB_ROOT."includes/database.inc.php"); 
+	include(WEB_ROOT."includes/database.inc.php");
+	include(WEB_ROOT."includes/session.inc.php");
 	include(WEB_ROOT."includes/functions.inc.php"); 
-        include_once("includes/i18n.inc.php"); 
-	include(WEB_ROOT."includes/lang.inc.php"); 
-	include(WEB_ROOT."includes/session.inc.php"); 
+        include(WEB_ROOT."includes/i18n.inc.php");
+	include(WEB_ROOT."includes/smarty.inc.php");
 	
 	if ($_SESSION["logged_status"]==0) 
 		header("location: index.php");
 	if ($_SESSION["admin_status"]==0) 
 		header("location: voir_adherent.php");
-		
+	
+	// Filters
 	$page = 1;
 	if (isset($_GET["page"]))
 		$page = $_GET["page"];
@@ -44,8 +45,7 @@
 		if (is_numeric($_GET["filtre_2"]))
 			$_SESSION["filtre_adh_2"]=$_GET["filtre_2"];
 	
-	// Tri
-	
+	// Sorting
 	if (isset($_GET["tri"]))
 		if (is_numeric($_GET["tri"]))
 		{
@@ -58,9 +58,6 @@
 			}
 		}
 	
-
-	include("header.php");
-
 	if (isset($_GET["sup"]))
 	{
 		if (is_numeric($_GET["sup"]))
@@ -92,11 +89,7 @@
  		}
 	}
 
-?> 
-	<H1 class="titre"><? echo _T("Management of members"); ?></H1>
-<?
 	// selection des adherents et application filtre / tri
-		
 	$requete[0] = "SELECT id_adh, nom_adh, prenom_adh, pseudo_adh, activite_adh,
 		       libelle_statut, bool_exempt_adh, titre_adh, email_adh, bool_admin_adh, date_echeance
 		       FROM ".PREFIX_DB."adherents, ".PREFIX_DB."statuts
@@ -141,7 +134,6 @@
 	}
 	
 	// phase de tri	
-	
 	if ($_SESSION["tri_adh_sens"]=="0")
 		$tri_adh_sens_txt="ASC";
 	else
@@ -171,106 +163,7 @@
 		$nbpages = intval($nbadh->fields[0]/PREF_NUMROWS);
 	else 
 		$nbpages = intval($nbadh->fields[0]/PREF_NUMROWS)+1;
-	$pagestring = "";
-        if ($nbpages==0)
-		$pagestring = "<b>1</b>";
-	else for ($i=1;$i<=$nbpages;$i++)
-	{
-		if ($i!=$page)
-			$pagestring .= "<A href=\"gestion_adherents.php?page=".$i."\">".$i."</A> ";
-		else
-			$pagestring .= $i." ";
-	}
-?>
-	<DIV id="listfilter">
-		<FORM action="gestion_adherents.php" method="get" name="filtre">
-		 	<? echo _T("Display:"); ?>&nbsp;
-			<SELECT name="filtre" onChange="form.submit()">
-				<OPTION value="0"<? isSelected("0",$_SESSION["filtre_adh"]) ?>><? echo _T("All members"); ?></OPTION>
-				<OPTION value="3"<? isSelected("3",$_SESSION["filtre_adh"]) ?>><? echo _T("Members up to date"); ?></OPTION>
-				<OPTION value="1"<? isSelected("1",$_SESSION["filtre_adh"]) ?>><? echo _T("Close expiries"); ?></OPTION>
-				<OPTION value="2"<? isSelected("2",$_SESSION["filtre_adh"]) ?>><? echo _T("Latecomers"); ?></OPTION>
-			</SELECT>
-			<SELECT name="filtre_2" onChange="form.submit()">
-				<OPTION value="0"<? isSelected("0",$_SESSION["filtre_adh_2"]) ?>><? echo _T("All the accounts"); ?></OPTION>
-				<OPTION value="1"<? isSelected("1",$_SESSION["filtre_adh_2"]) ?>><? echo _T("Active accounts"); ?></OPTION>
-				<OPTION value="2"<? isSelected("2",$_SESSION["filtre_adh_2"]) ?>><? echo _T("Inactive accounts"); ?></OPTION>
-			</SELECT>
-			<INPUT type="submit" value="<? echo _T("Filter"); ?>">
-		</FORM>
-	</DIV>
-	<TABLE id="infoline" width="100%">
-		<TR>
-			<TD class="left"><? echo $nbadh->fields[0]." "; if ($nbadh->fields[0]!=1) echo _T("members"); else echo _T("member"); ?></TD>
-			<TD class="right"><? echo _T("Pages:"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></TD>
-		</TR>
-	</TABLE>
-	<TABLE width="100%"> 
-		<TR> 
-			<TH width="15" class="listing">#</TH> 
-  			<TH width="250" class="listing left"> 
-				<A href="gestion_adherents.php?tri=0" class="listing"><? echo _T("Name"); ?></A>
-<?
-	if ($_SESSION["tri_adh"]=="0")
-	{
-		if ($_SESSION["tri_adh_sens"]=="0")
-			$img_sens = "asc.png";
-		else
-			$img_sens = "desc.png";
-	}
-	else
-		$img_sens = "icon-empty.png";
-?>
-				<IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
-			</TH> 
-			<TH class="listing left" nowrap> 
-				<A href="gestion_adherents.php?tri=1" class="listing"><? echo _T("Nickname"); ?></A>
-<?
-	if ($_SESSION["tri_adh"]=="1")
-	{
-		if ($_SESSION["tri_adh_sens"]=="0")
-			$img_sens = "asc.png";
-		else
-			$img_sens = "desc.png";
-	}
-	else
-		$img_sens = "icon-empty.png";
-?>
-				<IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
-			</TH> 
-			<TH class="listing left"> 
-				<A href="gestion_adherents.php?tri=2" class="listing"><? echo _T("Status"); ?></A>
-<?
-	if ($_SESSION["tri_adh"]=="2")
-	{
-		if ($_SESSION["tri_adh_sens"]=="0")
-			$img_sens = "asc.png";
-		else
-			$img_sens = "desc.png";
-	}
-	else
-		$img_sens = "icon-empty.png";
-?>
-				<IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
-			</TH> 
-			<TH class="listing left"> 
-				<A href="gestion_adherents.php?tri=3" class="listing"><? echo _T("State of dues"); ?></A>
-<?
-	if ($_SESSION["tri_adh"]=="3")
-	{
-		if ($_SESSION["tri_adh_sens"]=="0")
-			$img_sens = "asc.png";
-		else
-			$img_sens = "desc.png";
-	}
-	else
-		$img_sens = "icon-empty.png";
-?>
-				<IMG src="images/<? echo $img_sens; ?>" width="7" height="7" alt="">
-			</TH> 
-			<TH width="55" class="listing"><? echo _T("Actions"); ?></TH> 
-		</TR> 
-<? 
+
 	$compteur = 1+($page-1)*PREF_NUMROWS;
 	if ($resultat->EOF)
 	{
@@ -329,58 +222,35 @@
 				}				
 			}
 		}
-?>							 
-		<TR>
-			<TD width="15" class="<? echo $row_class ?>"><? echo $compteur ?></TD> 
-			<TD class="<? echo $row_class ?>" nowrap>
-<?
-		if ($resultat->fields[7]=="1") {
-?>
-				<IMG src="images/icon-male.png" Alt="<? echo _T("[M]"); ?>" align="middle" width="10" height="12">
-<?
-		} else {
-?>
-				<IMG src="images/icon-female.png" Alt="<? echo _T("[W]"); ?>" align="middle" width="9" height="12">
-<?
-		}
-		if ($resultat->fields[8]!="") {
-?>
-				<A href="mailto:<? echo $resultat->fields[8] ?>"><IMG src="images/icon-mail.png" Alt="<? echo _T("[Mail]"); ?>" align="middle" border="0" width="14" height="10"></A>
-<?
-		} else {
-?>
-				<IMG src="images/icon-empty.png" Alt="" align="middle" border="0" width="14" height="10">
-<?
-		}
-		if ($resultat->fields[9]=="1") {
-?>
-				<IMG src="images/icon-star.png" Alt="<? echo _T("[admin]"); ?>" align="middle" width="12" height="13">
-<?
-		}	else {
-?>
-				<IMG src="images/icon-empty.png" Alt="" align="middle" width="12" height="13">
-<?
-		}
-?>
-				<A href="voir_adherent.php?id_adh=<? echo $resultat->fields["id_adh"] ?>"><? echo htmlentities(strtoupper($resultat->fields[1]),ENT_QUOTES)." ".htmlentities($resultat->fields[2], ENT_QUOTES) ?></A>
-			</TD> 
-			<TD class="<? echo $row_class ?>" nowrap><? echo htmlentities($resultat->fields[3], ENT_QUOTES) ?></TD> 
-			<TD class="<? echo $row_class ?>" nowrap><? echo _T($resultat->fields[5]) ?></TD> 
-			<TD class="<? echo $row_class ?>" nowrap><? echo $statut_cotis ?></TD>
-			<TD class="<? echo $row_class ?> center"> 
-				<A href="ajouter_adherent.php?id_adh=<? echo $resultat->fields[0] ?>"><IMG src="images/icon-edit.png" alt="<? echo _T("[mod]"); ?>" border="0" width="12" height="13"></A>
-				<A href="gestion_contributions.php?id_adh=<? echo $resultat->fields[0] ?>"><IMG src="images/icon-money.png" alt="<? echo _T("[$]"); ?>" border="0" width="13" height="13"></A>
-				<A onClick="return confirm('<? echo str_replace("\n","\\n",addslashes(_T("Do you really want to delete this member from the base, this will delete also the history of her fees. To avoid this you can just unactivate her account.\n\nDo you still want to delete this member ?"))); ?>')" href="gestion_adherents.php?sup=<? echo $resultat->fields[0] ?>"><IMG src="images/icon-trash.png" alt="<? echo _T("[del]"); ?>" border="0" width="11" height="13"></A>
-			</TD> 
-		</TR> 
-<? 
+		$members[$compteur]["class"]=$row_class;
+		$members[$compteur]["genre"]=$resultat->fields[7];
+		$members[$compteur]["email"]=$resultat->fields[8];
+		$members[$compteur]["admin"]=$resultat->fields[9];
+		$members[$compteur]["nom"]=htmlentities(strtoupper($resultat->fields[1]),ENT_QUOTES);
+		$members[$compteur]["prenom"]=htmlentities($resultat->fields[2], ENT_QUOTES);
+		$members[$compteur]["id_adh"]=$resultat->fields[0];
+		$members[$compteur]["pseudo"]=htmlentities($resultat->fields[3], ENT_QUOTES);
+		$members[$compteur]["statut"]=_T($resultat->fields[5]);
+		$members[$compteur]["statut_cotis"]=$statut_cotis;
 		$compteur++;
 		$resultat->MoveNext();
 	} 
 	$resultat->Close();
-?>							 
-	</TABLE>
-	<DIV id="infoline2" class="right"><? echo _T("Pages:"); ?> <SPAN class="pagelink"><? echo $pagestring; ?></SPAN></DIV>
-<? 
-  include("footer.php"); 
+	
+	$tpl->assign("members",$members);
+	$tpl->assign("nb_members",count($members));
+	$tpl->assign("nb_pages",$nbpages);
+	$tpl->assign("page",$page);
+	$tpl->assign('filtre_options', array(
+			0 => _T("All members"),
+			3 => _T("Members up to date"),
+			1 => _T("Close expiries"),
+			2 => _T("Latecomers")));
+	$tpl->assign('filtre_2_options', array(
+			1 => _T("All the accounts"),
+			2 => _T("Inactive accounts")));
+										
+	$content = $tpl->fetch("gestion_adherents.tpl");
+	$tpl->assign("content",$content);
+	$tpl->display("page.tpl");
 ?>

@@ -20,7 +20,6 @@
  *
  */
  
-        include_once("i18n.inc.php"); 
 	session_start(); 
 	if (!isset($_SESSION["logged_status"]) ||
 			isset($HTTP_POST_VARS["logout"]) ||
@@ -28,7 +27,6 @@
 	{
 		if (isset($HTTP_POST_VARS["logout"]) ||
 		    isset($HTTP_GET_VARS["logout"])){
-                        include("lang.inc.php");
 			dblog(_("Log off"));
 		}
 		$_SESSION["admin_status"]=0;
@@ -47,6 +45,7 @@
 		$_SESSION["tri_cotis"]=0;
 		$_SESSION["tri_cotis_sens"]=1;
 		$_SESSION["filtre_cotis_adh"]="";
+		$_SESSION["pref_lang"]=PREF_LANG;
 	}
 
 ?>

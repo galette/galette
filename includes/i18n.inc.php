@@ -1,5 +1,5 @@
-<? // -*- Mode: PHP; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- 
- 
+<? // -*- Mode: PHP; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*-
+
 /* functions.inc.php
  * - Fonctions utilitaires
  * Copyright (c) 2003 Frédéric Jaqcuot
@@ -9,12 +9,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -22,17 +22,17 @@
  */
 
 // I18N support information here
-
-if (isset($_POST['pref_lang'])) $pref_lang=$_POST['pref_lang'];
-if (isset($_GET['pref_lang'])) $pref_lang=$_GET['pref_lang'];
-if (isset($HTTP_COOKIE_VARS['pref_lang'])) $pref_lang=$HTTP_COOKIE_VARS['pref_lang'];
-if (!isset($pref_lang)) $pref_lang=PREF_LANG;
+if (isset($_POST['pref_lang']))
+        $_SESSION["pref_lang"]=$_POST['pref_lang'];
+if (isset($_GET['pref_lang']))
+        $_SESSION["pref_lang"]=$_GET['pref_lang'];
+$pref_lang=$_SESSION["pref_lang"];
 
 $languages = array (
-		    "french"  => "fr_FR@euro",
-		    "english"   => "en_US",
-		    "spanish"   => "es_ES@euro"
-		    );
+                    "french"  => "fr_FR@euro",
+                    "english"   => "en_US",
+                    "spanish"   => "es_ES@euro"
+                    );
 $language=$languages[$pref_lang];
 
 putenv("LANG=$language");
@@ -47,19 +47,19 @@ $domain = 'galette';
  */
 @define('THIS_BASE_DIR', dirname(__FILE__) );
 $textdomain= THIS_BASE_DIR . "/../lang";
-bindtextdomain($domain, $textdomain); 
+bindtextdomain($domain, $textdomain);
 textdomain($domain);
 if ($loc!=$language)
 {
-	include(WEB_ROOT."lang/lang_".$pref_lang.".php");
-	//echo "<font color='red'>Warning:</font> locale $language is probably not intalled on the server.<br>";
+        include(WEB_ROOT."lang/lang_".$pref_lang.".php");
+        //echo "<font color='red'>Warning:</font> locale $language is probably not intalled on the server.<br>";
 }
 
 /***********************************
  * some constant strings found in the database
  ***********************************
  */
-/*
+
 $foo=_("Realization:");
 $foo=_("Graphics:");
 $foo=_("Publisher:");
@@ -81,5 +81,25 @@ $foo=_("Partnership");
 $foo=_("french");
 $foo=_("english");
 $foo=_("spanish");
-*/
+
+
+?>
+<?
+        if (!function_exists("_T"))
+        {
+                function _T($chaine)
+                {
+                        if (isset($GLOBALS["lang"]))
+                        {
+                                if (!isset($GLOBALS["lang"][$chaine]))
+                                        return $chaine." (not translated)";
+                                elseif ($GLOBALS["lang"][$chaine]=="")
+                                        return $chaine." (not translated)";
+                                else
+                                        return $GLOBALS["lang"][$chaine];
+                        }
+                        else
+                                return _($chaine);
+                }
+        }
 ?>
