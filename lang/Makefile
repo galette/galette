@@ -23,7 +23,7 @@ PHP_SOURCES = ../index.php \
 ../install/index.php \
 ../ajouter_adherent.php
 
-all : messages.po
+all : messages.po lang
 	@for l in ${LANGUAGES}; \
 	  do \
 	  echo "Mise à jour de $$l.po"; \
@@ -32,6 +32,11 @@ all : messages.po
 	  echo "  formattage de ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo."; \
 	  msgfmt $$l.po -o ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo; \
 	done
+
+lang :
+	make_lang_l12n.py en_US.po lang_english.php
+	make_lang_l12n.py fr_FR@euro.po lang_french.php
+	make_lang_l12n.py es_ES@euro.po lang_spanish.php
 
 messages.po : ${PHP_SOURCES}
 	xgettext -n ${PHP_SOURCES} >/dev/null 2>&1
