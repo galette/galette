@@ -1,5 +1,5 @@
 <?
-// This file was automatically generated on Mon Aug  9 08:06:45 2004 (GMT)
+// This file was automatically generated on Wed Sep  1 19:53:57 2004 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -78,13 +78,13 @@ $lang['Gift'] = 'Donativo';
 // ../install/index.php:56 ../install/index.php:90 
 $lang['No password'] = 'contraseña vacia';
 
-// ../includes/i18n.inc.php:59 
+// ../includes/i18n.inc.php:62 
 $lang['Graphics:'] = 'Grafismo :';
 
 // ../voir_adherent.php:159 ../ajouter_adherent.php:656 
 $lang['Status:'] = 'Estatuto :';
 
-// ../index.php:129 
+// ../index.php:133 
 $lang['Lost your password?'] = '¿ Contraseña olvidada ?';
 
 // ../self_adherent.php:213 ../mailing_adherents.php:113 ../self_contribution.php:217 ../lostpasswd.php:111 ../configurer_fiches.php:89 ../preferences.php:321 ../ajouter_contribution.php:306 ../ajouter_adherent.php:515 
@@ -180,7 +180,7 @@ $lang['Check the parameters and the existence of the database'] = 'Verificación 
 // ../self_contribution.php:252 ../ajouter_contribution.php:369 
 $lang['Comments:'] = 'Comentarios :';
 
-// ../includes/i18n.inc.php:70 
+// ../includes/i18n.inc.php:73 
 $lang['Non-member'] = 'No Socio';
 
 // ../install/index.php:352 
@@ -189,10 +189,10 @@ $lang['Check of the database'] = 'Verificación de la base';
 // ../install/index.php:711 
 $lang['The database has been correctly created.'] = 'La base de datos fue creada correctemente.';
 
-// ../includes/i18n.inc.php:62 
+// ../includes/i18n.inc.php:65 
 $lang['Vice-president'] = 'Vicepresidente';
 
-// ../index.php:119 ../self_adherent.php:138 ../self_adherent.php:443 ../lostpasswd.php:71 ../lostpasswd.php:131 ../preferences.php:492 ../voir_adherent.php:248 ../install/index.php:756 ../ajouter_adherent.php:298 ../ajouter_adherent.php:740 
+// ../index.php:123 ../self_adherent.php:138 ../self_adherent.php:443 ../lostpasswd.php:71 ../lostpasswd.php:131 ../preferences.php:492 ../voir_adherent.php:248 ../install/index.php:756 ../ajouter_adherent.php:298 ../ajouter_adherent.php:740 
 $lang['Username:'] = 'Login :';
 
 // ../mailing_adherents.php:313 ../mailing_adherents.php:515 ../mailing_adherents.php:674 ../gestion_contributions.php:393 ../gestion_adherents.php:292 
@@ -207,7 +207,7 @@ $lang['(Errors on DROP and RENAME operations can be ignored)'] = 'Las errores co
 // ../self_adherent.php:384 ../mailing_adherents.php:773 ../voir_adherent.php:221 ../ajouter_adherent.php:713 
 $lang['Mobile phone:'] = 'GSM :';
 
-// ../index.php:123 ../self_adherent.php:139 ../self_adherent.php:452 ../lostpasswd.php:72 ../preferences.php:496 ../voir_adherent.php:250 ../install/index.php:303 ../install/index.php:762 ../ajouter_adherent.php:299 ../ajouter_adherent.php:742 
+// ../index.php:127 ../self_adherent.php:139 ../self_adherent.php:452 ../lostpasswd.php:72 ../preferences.php:496 ../voir_adherent.php:250 ../install/index.php:303 ../install/index.php:762 ../ajouter_adherent.php:299 ../ajouter_adherent.php:742 
 $lang['Password:'] = 'Contraseña :';
 
 // ../install/index.php:282 
@@ -228,11 +228,11 @@ $lang['Installation mode'] = 'Tipo de instalación';
 // ../preferences.php:433 
 $lang['Logging level:'] = 'Nivel de historia :';
 
-// ../includes/i18n.inc.php:73 
+// ../includes/i18n.inc.php:76 
 $lang['Donation in kind'] = 'Donativo en natural';
 
 // ../ajouter_adherent.php:191 
-$lang['- You can't send a confirmation by email if the member hasn't got an address!'] = '- ¡ Vd no puede enviar confirmación por e-mail si el socio no tiene dirección !';
+$lang['- You can\'t send a confirmation by email if the member hasn\'t got an address!'] = '- ¡ Vd no puede enviar confirmación por e-mail si el socio no tiene dirección !';
 
 // ../lostpasswd.php:79 ../lostpasswd.php:80 
 $lang['Password sent. Login:'] = 'Contraseña enviada. Login :';
@@ -262,7 +262,7 @@ $lang['Please enter a message.'] = 'Por favor tecle Vd un mensaje.';
 $lang['Admin account (independant of members):'] = 'Cuenta administradora (independiente de los socios) :';
 
 // ../preferences.php:256 ../ajouter_adherent.php:362 
-$lang['- The transfered file isn't a valid image (PNG or JPEG). But registration has been made.'] = '- El fichero trasmitido no es una imagen valida (PNG o JPEG). No obstante, la grabación fue hecha.';
+$lang['- The transfered file isn\'t a valid image (PNG or JPEG). But registration has been made.'] = '- El fichero trasmitido no es una imagen valida (PNG o JPEG). No obstante, la grabación fue hecha.';
 
 // ../install/index.php:387 
 $lang['Database exists and connection parameters are OK.'] = 'La base exista y los parametros de conección son correctos.';
@@ -282,7 +282,7 @@ $lang['modification'] = 'modificar';
 // ../self_adherent.php:222 ../mailing_adherents.php:475 ../lostpasswd.php:120 ../preferences.php:332 ../ajouter_adherent.php:526 
 $lang['- WARNING -'] = '- ADVERTENCIA -';
 
-// ../includes/i18n.inc.php:58 
+// ../includes/i18n.inc.php:61 
 $lang['Realization:'] = 'Realizado por :';
 
 // ../install/index.php:614 
@@ -315,11 +315,11 @@ $lang['You can prepare a picture to upload after sending'] = 'Vd. puede preparar
 // ../voir_adherent.php:267 ../gestion_contributions.php:457 
 $lang['[ Add a contribution ]'] = '[ Añadir una contribución ]';
 
-// ../includes/i18n.inc.php:67 
+// ../includes/i18n.inc.php:70 
 $lang['Founder member'] = 'Socio fundador';
 
 // ../self_adherent.php:131 ../ajouter_adherent.php:291 
-$lang['You've just been subscribed on the members management system of the association.'] = 'Vd fue suscrito en el sistema de gestión de socios de la asociación.';
+$lang['You\'ve just been subscribed on the members management system of the association.'] = 'Vd fue suscrito en el sistema de gestión de socios de la asociación.';
 
 // ../self_adherent.php:190 
 $lang['are mandatory but still empty, please fill them:'] = 'obligatorios son vacios, por favor informelos :';
@@ -367,7 +367,7 @@ $lang['[top]'] = '[arriba]';
 $lang['[W]'] = '[M]';
 
 // ../install/index.php:685 
-$lang['The database isn't totally created, it's maybe a permission problem.'] = 'La base de datos no fue creada totalmente, puede ser un problema con los derechos.';
+$lang['The database isn\'t totally created, it\'s maybe a permission problem.'] = 'La base de datos no fue creada totalmente, puede ser un problema con los derechos.';
 
 // ../install/index.php:617 
 $lang['Installation Report'] = 'Informe de instalación';
@@ -393,10 +393,10 @@ $lang['days'] = 'dias';
 // ../configurer_fiches.php:125 ../configurer_fiches.php:190 
 $lang['separator'] = 'separador';
 
-// ../includes/i18n.inc.php:74 
+// ../includes/i18n.inc.php:77 
 $lang['Donation in money'] = 'Donativo en especie';
 
-// ../includes/i18n.inc.php:69 
+// ../includes/i18n.inc.php:72 
 $lang['Legal entity'] = 'Persona moral';
 
 // ../install/index.php:533 
@@ -408,7 +408,7 @@ $lang['See you soon!'] = '¡ Hasta my pronto !';
 // ../footer.php:117 ../footer.php:163 
 $lang['Deletion'] = 'Supresión';
 
-// ../includes/i18n.inc.php:78 
+// ../includes/i18n.inc.php:81 
 $lang['spanish'] = 'español';
 
 // ../mailing_adherents.php:320 ../mailing_adherents.php:522 ../mailing_adherents.php:681 ../footer.php:129 ../gestion_contributions.php:400 ../gestion_adherents.php:299 
@@ -450,7 +450,7 @@ $lang['free text'] = 'texto libre';
 // ../install/index.php:270 
 $lang['Database'] = 'Base de datos';
 
-// ../includes/i18n.inc.php:71 
+// ../includes/i18n.inc.php:74 
 $lang['Reduced annual contribution'] = 'Cuota anual reducida';
 
 // ../install/index.php:786 
@@ -471,7 +471,7 @@ $lang['CREATE operation allowed'] = 'Operación CREATE autorizada';
 // ../gestion_adherents.php:227 
 $lang['Nickname'] = 'Seudónimo';
 
-// ../includes/i18n.inc.php:75 
+// ../includes/i18n.inc.php:78 
 $lang['Partnership'] = 'Participación';
 
 // ../gestion_contributions.php:230 
@@ -508,7 +508,7 @@ $lang['Number of label lines:'] = 'Número de lineas de etiquetas :';
 $lang['Password recovery'] = 'Recuperar la contraseña';
 
 // ../install/index.php:373 
-$lang['Database can't be reached. Please go back to enter the connection parameters again.'] = 'La base no es accesible. Por favor regresa Vd para entrar otra vez los parametros de conección.';
+$lang['Database can\'t be reached. Please go back to enter the connection parameters again.'] = 'La base no es accesible. Por favor regresa Vd para entrar otra vez los parametros de conección.';
 
 // ../footer.php:26 
 $lang['Page displayed in'] = 'Pagina calculada en';
@@ -519,7 +519,7 @@ $lang['Number of label columns:'] = 'Número de columnas de etiquetas :';
 // ../mailing_adherents.php:252 ../mailing_adherents.php:481 ../mailing_adherents.php:649 ../footer.php:120 ../footer.php:124 ../configurer_fiches.php:102 ../gestion_adherents.php:212 
 $lang['Name'] = 'Apellido';
 
-// ../index.php:57 ../footer.php:105 
+// ../index.php:61 ../footer.php:105 
 $lang['Admin'] = 'Administrador';
 
 // ../install/index.php:161 
@@ -537,7 +537,7 @@ $lang['Duration'] = 'Duración';
 // ../self_adherent.php:412 ../mailing_adherents.php:777 ../voir_adherent.php:233 ../ajouter_adherent.php:725 
 $lang['Jabber:'] = 'Jabber :';
 
-// ../index.php:58 ../index.php:81 ../index.php:114 ../index.php:127 
+// ../index.php:62 ../index.php:85 ../index.php:118 ../index.php:131 
 $lang['Login'] = 'Identificación';
 
 // ../preferences.php:485 
@@ -564,7 +564,7 @@ $lang['[ Contributions ]'] = '[ Contribuciones ]';
 // ../self_adherent.php:362 ../preferences.php:396 ../voir_adherent.php:211 ../ajouter_adherent.php:703 
 $lang['City:'] = 'Cuidad :';
 
-// ../index.php:46 
+// ../index.php:50 
 $lang['Subscribe'] = 'Registrarse';
 
 // ../gestion_adherents.php:96 
@@ -601,12 +601,12 @@ $lang['Unable to connect to the database'] = 'Conección a la base imposible';
 $lang['birth date:'] = 'Fecha de nacimiento :';
 
 // ../install/index.php:909 
-$lang['Parameters couldn't be saved.'] = 'No fue posible grabar los parametros.';
+$lang['Parameters couldn\'t be saved.'] = 'No fue posible grabar los parametros.';
 
 // ../footer.php:82 ../footer.php:151 
 $lang['Legend'] = 'Pie';
 
-// ../includes/i18n.inc.php:66 
+// ../includes/i18n.inc.php:69 
 $lang['Benefactor member'] = 'Socio bienhechor';
 
 // ../gestion_contributions.php:144 
@@ -621,7 +621,7 @@ $lang['Title:'] = 'Título :';
 // ../install/index.php:959 
 $lang['Step 10 - End of the installation'] = 'Etapa 10 - Final de la instalación';
 
-// ../includes/i18n.inc.php:60 
+// ../includes/i18n.inc.php:63 
 $lang['Publisher:'] = 'Editor :';
 
 // ../install/index.php:752 
@@ -652,12 +652,12 @@ $lang['Membership in order'] = 'Afiliación en regla';
 $lang['Galette Admin:'] = 'Admin Galette :';
 
 // ../install/index.php:276 
-$lang['If it hadn't been made, create a database and a user for Galette.'] = 'Si no lo ha ya hecho, crea Vd una base de datos y un usuario para Galette.';
+$lang['If it hadn\'t been made, create a database and a user for Galette.'] = 'Si no lo ha ya hecho, crea Vd una base de datos y un usuario para Galette.';
 
 // ../self_adherent.php:376 ../mailing_adherents.php:771 ../voir_adherent.php:217 ../ajouter_adherent.php:709 
 $lang['Phone:'] = 'Tel :';
 
-// ../index.php:84 
+// ../index.php:88 
 $lang['Authentication failed. Login:'] = 'Autentificación fracasada. Login :';
 
 // ../install/index.php:454 
@@ -676,7 +676,7 @@ $lang['Members up to date'] = 'Los socios al día';
 $lang['Go back'] = 'Regresar';
 
 // ../ajouter_adherent.php:196 
-$lang['- Non-valid Website address! Maybe you've skipped the http:// ?'] = '- ¡ Directorio web invalido ! ¿ Se ha olvidado el http:// ?';
+$lang['- Non-valid Website address! Maybe you\'ve skipped the http:// ?'] = '- ¡ Directorio web invalido ! ¿ Se ha olvidado el http:// ?';
 
 // ../install/index.php:231 
 $lang['direcory_name'] = 'nombre_directorio';
@@ -690,7 +690,7 @@ $lang['DELETE operation not allowed'] = 'Operación DELETE no autorizada';
 // ../mailing_adherents.php:478 
 $lang['Recipients of the mailing:'] = 'Destinatarios del envío general e-mail :';
 
-// ../includes/i18n.inc.php:76 
+// ../includes/i18n.inc.php:79 
 $lang['french'] = 'francés';
 
 // ../install/index.php:344 
@@ -718,7 +718,7 @@ $lang['Unable to create configuration file (includes/config.inc.php)'] = 'Creaci
 $lang['[ Modification ]'] = '[ Moficación ]';
 
 // ../install/index.php:560 
-$lang['Galette hasn't got enough permissions on the database to continue the update.'] = 'Galette no tiene bastante derechos sobre la base de datos para continuar con la actualización.';
+$lang['Galette hasn\'t got enough permissions on the database to continue the update.'] = 'Galette no tiene bastante derechos sobre la base de datos para continuar con la actualización.';
 
 // ../install/index.php:503 
 $lang['SELECT operation allowed'] = 'Operación SELECT autorizada';
@@ -732,14 +732,14 @@ $lang['Pages:'] = 'Páginas :';
 // ../self_adherent.php:189 
 $lang['The form is not valid because some fields'] = 'El impreso no esta valido porque algunos campos';
 
-// ../includes/i18n.inc.php:72 
+// ../includes/i18n.inc.php:75 
 $lang['Company cotisation'] = 'Cuota empresarial';
 
 // ../mailing_adherents.php:427 
 $lang['Preview'] = 'Previsualizar';
 
 // ../mailing_adherents.php:469 
-$lang['Don't forget to contact the members who don't have an email address by another way.'] = 'Pense Vd a contactar los socios que no tienen una dirección e-mail por un otro medio.';
+$lang['Don\'t forget to contact the members who don\'t have an email address by another way.'] = 'Pense Vd a contactar los socios que no tienen una dirección e-mail por un otro medio.';
 
 // ../preferences.php:430 ../preferences.php:458 ../preferences.php:462 ../preferences.php:466 ../preferences.php:470 ../preferences.php:474 ../preferences.php:478 ../preferences.php:482 ../preferences.php:486 
 $lang['(Integer)'] = '(Entero)';
@@ -747,7 +747,7 @@ $lang['(Integer)'] = '(Entero)';
 // ../preferences.php:345 
 $lang['General information:'] = 'Informaciones generales :';
 
-// ../includes/i18n.inc.php:63 
+// ../includes/i18n.inc.php:66 
 $lang['Treasurer'] = 'Tresorero';
 
 // ../install/index.php:328 
@@ -765,7 +765,7 @@ $lang['Log off'] = 'Desconexión';
 // ../install/index.php:604 
 $lang['Step 6 - Access permissions to database'] = 'Etapa 6 - Derechos de acceso a la base';
 
-// ../includes/i18n.inc.php:65 
+// ../includes/i18n.inc.php:68 
 $lang['Active member'] = 'Socio activo';
 
 // ../self_adherent.php:257 
@@ -780,7 +780,7 @@ $lang['Navigation'] = 'Navegación';
 // ../preferences.php:450 
 $lang['Sender Email:'] = 'E-mail remitente :';
 
-// ../includes/i18n.inc.php:64 
+// ../includes/i18n.inc.php:67 
 $lang['Secretary'] = 'Secretario';
 
 // ../self_adherent.php:285 ../self_contribution.php:249 ../ajouter_contribution.php:366 ../ajouter_adherent.php:581 ../ajouter_adherent.php:755 
@@ -840,7 +840,7 @@ $lang['[Mail]'] = '[Mail]';
 // ../install/index.php:214 
 $lang['Files permissions'] = 'Permisos de ficheros';
 
-// ../includes/i18n.inc.php:61 
+// ../includes/i18n.inc.php:64 
 $lang['President'] = 'Presidente';
 
 // ../self_adherent.php:250 ../voir_adherent.php:91 ../ajouter_adherent.php:546 
@@ -868,7 +868,7 @@ $lang['contribution'] = 'contribución';
 $lang['Permissions on the base'] = 'Permisiones sobre la base';
 
 // ../lostpasswd.php:44 
-$lang['This account doesn't have a valid email address. Please contact an administrator.'] = 'Esta cuenta no tiene dirección e-mail, por favor tome contacto con un administrador';
+$lang['This account doesn\'t have a valid email address. Please contact an administrator.'] = 'Esta cuenta no tiene dirección e-mail, por favor tome contacto con un administrador';
 
 // ../preferences.php:438 
 $lang['Detailed'] = 'Detallado';
@@ -891,7 +891,7 @@ $lang['Add a contribution'] = 'Añadir una contribución';
 // ../self_adherent.php:92 ../ajouter_adherent.php:120 
 $lang['Sorry, '] = 'Lo siento, ';
 
-// ../includes/i18n.inc.php:77 
+// ../includes/i18n.inc.php:80 
 $lang['english'] = 'inglés';
 
 // ../gestion_adherents.php:89 
@@ -909,14 +909,14 @@ $lang['Member Profile'] = 'Ficha de socio';
 // ../footer.php:26 
 $lang['seconds.'] = 'segundas.';
 
-// ../includes/i18n.inc.php:68 
+// ../includes/i18n.inc.php:71 
 $lang['Old-timer'] = 'Antiguo';
 
 // ../self_adherent.php:432 ../voir_adherent.php:241 ../ajouter_adherent.php:733 
 $lang['fingerprint:'] = 'fingerprint:';
 
 // ../mailing_adherents.php:646 
-$lang['Members who can't be reachable by e-mail:'] = 'Socios no alcanzables por e-mail :';
+$lang['Members who can\'t be reachable by e-mail:'] = 'Socios no alcanzables por e-mail :';
 
 // ../self_adherent.php:132 ../ajouter_adherent.php:292 
 $lang['It is now possible to follow in real time the state of your subscription'] = 'Vd puede en adelante seguir en tiempo real el estatuto de su afiliación';
@@ -1051,7 +1051,7 @@ $lang['No'] = 'No';
 $lang['MSN:'] = 'MSN :';
 
 // ../preferences.php:254 ../ajouter_adherent.php:360 
-$lang['- The transfered file isn't a valid image (GIF, PNG or JPEG). But registration has been made.'] = '- El fichero trasmitido no es una imagen valida (GIF, PNG o JPEG). No obstante, la grabación fue hecha.';
+$lang['- The transfered file isn\'t a valid image (GIF, PNG or JPEG). But registration has been made.'] = '- El fichero trasmitido no es una imagen valida (GIF, PNG o JPEG). No obstante, la grabación fue hecha.';
 
 // ../gestion_contributions.php:137 
 $lang['Contribution deleted:'] = 'Supresión de una contribución :';
@@ -1072,7 +1072,7 @@ $lang['Someone (probably you) asked to recover your password.'] = 'Algién (segur
 $lang['Normal'] = 'Normal';
 
 // ../lostpasswd.php:39 
-$lang['this login doesn't exist'] = 'login no existente';
+$lang['this login doesn\'t exist'] = 'login no existente';
 
 // ../preferences.php:371 ../ajouter_adherent.php:594 
 $lang['Delete the picture'] = 'Suprimir la foto';
@@ -1084,7 +1084,7 @@ $lang['Creation date:'] = 'Fecha de creación :';
 $lang['Your database is maybe not usable, try to restore the older version.'] = 'Su base puede ser inutilizable, intenta restaurar una version antigua.';
 
 // ../install/index.php:874 
-$lang['Parameters couldn't be save into the database'] = 'Los parametros no fueron grabados en la base de datos';
+$lang['Parameters couldn\'t be save into the database'] = 'Los parametros no fueron grabados en la base de datos';
 
 // ../ajouter_adherent.php:278 
 $lang['Member card added:'] = 'Añadir la ficha de socio :';
@@ -1093,7 +1093,7 @@ $lang['Member card added:'] = 'Añadir la ficha de socio :';
 $lang['Filter'] = 'Filtrar';
 
 // ../preferences.php:404 
-$lang['Galette's parameters:'] = 'Parametros Galette :';
+$lang['Galette\'s parameters:'] = 'Parametros Galette :';
 
 // ../self_adherent.php:390 ../voir_adherent.php:223 ../ajouter_adherent.php:715 
 $lang['E-Mail:'] = 'E-Mail :';
@@ -1111,7 +1111,7 @@ $lang['No database name'] = 'Nombre de la base desconocido';
 $lang['- This username is already used by another member !'] = '- ¡ Este login ya esta utilizado por un otro socio !';
 
 // ../install/index.php:165 
-$lang['You're installing Galette for the first time, or you wish to erase an older version of Galette without keeping your data'] = 'Vd instala Galette por la primera vez, o quiere sustituir una version antigua de Galette sin conservar sus datos';
+$lang['You\'re installing Galette for the first time, or you wish to erase an older version of Galette without keeping your data'] = 'Vd instala Galette por la primera vez, o quiere sustituir una version antigua de Galette sin conservar sus datos';
 
 // ../etiquettes_adherents.php:121 
 $lang['Generation of '] = 'Generación de ';
@@ -1132,10 +1132,10 @@ $lang['Homepage'] = 'Página principal';
 $lang['Someone asked to recover his password but had no email. Login:'] = 'Mando de envío de contraseña pero e-mail vacio. Login :';
 
 // ../install/index.php:189 
-$lang['Warning: Don't forget to backup your current database.'] = 'Cuidado : piensa Vd a hacer una copia de seguridad de su base actual.';
+$lang['Warning: Don\'t forget to backup your current database.'] = 'Cuidado : piensa Vd a hacer una copia de seguridad de su base actual.';
 
 // ../install/index.php:559 
-$lang['Galette hasn't got enough permissions on the database to continue the installation.'] = 'Galette no tiene bastante derechos sobre la base de datos para continuar con la instalación.';
+$lang['Galette hasn\'t got enough permissions on the database to continue the installation.'] = 'Galette no tiene bastante derechos sobre la base de datos para continuar con la instalación.';
 
 // ../log.php:168 
 $lang['Description'] = 'Descripción';
@@ -1159,7 +1159,7 @@ $lang['Display:'] = 'Mostrar :';
 $lang['Man'] = 'Hombre';
 
 // ../install/index.php:686 
-$lang['The database isn't totally updated, it's maybe a permission problem.'] = 'La base de datos no fue actualizada totalmente, puede ser un problema con los derechos.';
+$lang['The database isn\'t totally updated, it\'s maybe a permission problem.'] = 'La base de datos no fue actualizada totalmente, puede ser un problema con los derechos.';
 
 // ../ajouter_adherent.php:586 
 $lang['Photo:'] = 'Foto :';
