@@ -21,10 +21,10 @@
  
 	include("includes/config.inc.php"); 
 	include(WEB_ROOT."includes/database.inc.php"); 
+	include(WEB_ROOT."includes/session.inc.php"); 
 	include(WEB_ROOT."includes/functions.inc.php"); 
         include_once("includes/i18n.inc.php"); 
-	include(WEB_ROOT."includes/lang.inc.php"); 
-	include(WEB_ROOT."includes/session.inc.php"); 
+	//include(WEB_ROOT."includes/lang.inc.php"); 
 	include(WEB_ROOT."includes/phppdflib/phppdflib.class.php");
 	
 	if ($_SESSION["logged_status"]==0) 
