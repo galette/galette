@@ -49,6 +49,7 @@
 	if (isset($_POST["valid"])) {
 		$field_name = $_POST["field_name"];
 		$field_perm = get_numeric_posted_value("field_perm", '');
+		$field_pos = get_numeric_posted_value("field_pos", 0);
 		$field_required = get_numeric_posted_value("field_required", '0');
 		$field_width = get_numeric_posted_value("field_width", 'NULL');
 		$field_height = get_numeric_posted_value("field_height", 'NULL');
@@ -79,6 +80,7 @@
 				$query = "UPDATE $field_types_table
 					  SET field_name=$quoted_field_name,
 					      field_perm=$field_perm,
+					      field_pos=$field_pos,
 					      field_required=".db_boolean($field_required).",
 					      field_width=$field_width,
 					      field_height=$field_height,
@@ -127,6 +129,7 @@
 			$field_name = $result->fields['field_name'];
 			$field_type = $result->fields['field_name'];
 			$field_perm = $result->fields['field_perm'];
+			$field_pos = $result->fields['field_pos'];
 			$field_required = $result->fields['field_required'];
 			$field_width = $result->fields['field_width'];
 			$field_height = $result->fields['field_height'];
@@ -144,6 +147,7 @@
 	$data['id'] = $field_id;
 	$data['name'] = htmlentities($field_name, ENT_QUOTES);
 	$data['perm'] = $field_perm;
+	$data['pos'] = $field_pos;
 	$data['required'] = ($field_required == '1');
 	$data['width'] = $field_width;
 	$data['height'] = $field_height;
@@ -159,6 +163,8 @@
 	$tpl->assign("perm_all",$perm_all);
 	$tpl->assign("perm_admin",$perm_admin);
 	$tpl->assign("perm_names", $perm_names);
+
+	$tpl->assign("field_positions", $field_positions);
 	
 	$content = $tpl->fetch("editer_champ.tpl");
 	$tpl->assign("content",$content);
