@@ -344,7 +344,7 @@
 							</TR> 
 							<TR> 
 								<TH <? echo $pref_nom_req ?> id="libelle"><? echo _T("Nom (raison sociale) de l'association :"); ?></TH> 
-								<TD><INPUT type="text" name="pref_nom" value="<? echo $pref_nom; ?>" maxlength="<? echo $pref_nom_len; ?>"></TD>
+								<TD><INPUT type="text" name="pref_nom" value="<? echo $pref_nom; ?>" maxlength="190"></TD>
 							</TR>
 							<TR>
 								<TH id="libelle"><? echo _T("Logo :"); ?></TH> 
@@ -386,23 +386,23 @@
 						  </TR>
 						  <TR>
 								<TH<? echo $pref_adresse_req ?> id="libelle"><? echo _T("Adresse :"); ?></TH> 
-								<td><input type="text" name="pref_adresse" value="<? echo $pref_adresse; ?>" maxlength="<? echo $pref_adresse_len; ?>" size="42"></td> 
+								<td><input type="text" name="pref_adresse" value="<? echo $pref_adresse; ?>" maxlength="190" size="42"></td> 
 							</TR>						   
 						  <TR>
 								<TH id="libelle">&nbsp;</TH> 
-								<td><input type="text" name="pref_adresse2" value="<? echo $pref_adresse2; ?>" maxlength="<? echo $pref_adresse2_len; ?>" size="42"></td> 
+								<td><input type="text" name="pref_adresse2" value="<? echo $pref_adresse2; ?>" maxlength="190" size="42"></td> 
 							</TR>						   
 						  <TR>
 								<TH<? echo $pref_cp_req ?> id="libelle"><? echo _T("Code Postal :"); ?></TH> 
-								<td><input type="text" name="pref_cp" value="<? echo $pref_cp; ?>" maxlength="<? echo $pref_cp_len; ?>"></td> 
+								<td><input type="text" name="pref_cp" value="<? echo $pref_cp; ?>" maxlength="10"></td> 
 							</TR>						   
 						  <TR>
 								<TH<? echo $pref_ville_req ?> id="libelle"><? echo _T("Ville :"); ?></TH> 
-								<td><input type="text" name="pref_ville" value="<? echo $pref_ville; ?>" maxlength="<? echo $pref_ville_len; ?>"></td> 
+								<td><input type="text" name="pref_ville" value="<? echo $pref_ville; ?>" maxlength="100"></td> 
 							</TR>						   
 						  <TR>
 								<TH<? echo $pref_pays_req ?> id="libelle"><? echo _T("Pays :"); ?></TH> 
-								<td><input type="text" name="pref_pays" value="<? echo $pref_pays; ?>" maxlength="<? echo $pref_pays_len; ?>"></td> 
+								<td><input type="text" name="pref_pays" value="<? echo $pref_pays; ?>" maxlength="50"></td> 
 							</TR>						   
 							<TR>
 								<TH colspan="2" id="header"><BR><? echo _T("Paramètres galette :"); ?></TH>
@@ -431,7 +431,7 @@
 							</TR>						   
 						  <TR>
 								<TH<? echo $pref_numrows_req ?> id="libelle"><? echo _T("Lignes / Page :"); ?></TH> 
-								<td><input type="text" name="pref_numrows" value="<? echo $pref_numrows; ?>" maxlength="<? echo $pref_numrows_len; ?>"> <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
+								<td><input type="text" name="pref_numrows" value="<? echo $pref_numrows; ?>" maxlength="5"> <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
 							</TR>						   
 						  <TR>
 								<TH<? echo $pref_log_req ?> id="libelle"><? echo _T("Niveau d'historique :"); ?></TH> 
@@ -448,57 +448,57 @@
 							</TR> 
 						  <TR>
 								<TH<? echo $pref_email_nom_req ?> id="libelle"><? echo _T("Nom expéditeur :"); ?></TH> 
-								<td><input type="text" name="pref_email_nom" value="<? echo $pref_email_nom; ?>" maxlength="<? echo $pref_email_nom_len; ?>"></td> 
+								<td><input type="text" name="pref_email_nom" value="<? echo $pref_email_nom; ?>" maxlength="50"></td> 
 							</TR>						   
 						  <TR>
 								<TH<? echo $pref_email_req ?> id="libelle"><? echo _T("Email expéditeur :"); ?></TH> 
-								<td><input type="text" name="pref_email" value="<? echo $pref_email; ?>" maxlength="<? echo $pref_email_len; ?>" size="30"></td> 
+								<td><input type="text" name="pref_email" value="<? echo $pref_email; ?>" maxlength="100" size="30"></td> 
 							</TR>						   
 							<TR>
 								<TH colspan="2" id="header"><BR><? echo _T("Paramètres de génération d'étiquettes :"); ?></TH>
 							</TR> 
 						  <TR>
 								<TH<? echo $pref_etiq_marges_req ?> id="libelle"><? echo _T("Marges :"); ?></TH> 
-								<td><input type="text" name="pref_etiq_marges" value="<? echo $pref_etiq_marges; ?>" maxlength="<? echo $pref_etiq_marges_len; ?>"> mm <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
+								<td><input type="text" name="pref_etiq_marges" value="<? echo $pref_etiq_marges; ?>" maxlength="4"> mm <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
 							</TR>						   
 						  <TR>
 								<TH<? echo $pref_etiq_hspace_req ?> id="libelle"><? echo _T("Espacement horizontal :"); ?></TH> 
-								<td><input type="text" name="pref_etiq_hspace" value="<? echo $pref_etiq_hspace; ?>" maxlength="<? echo $pref_etiq_hspace_len; ?>"> mm <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
+								<td><input type="text" name="pref_etiq_hspace" value="<? echo $pref_etiq_hspace; ?>" maxlength="4"> mm <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
 							</TR>						   
 						  <TR>
 								<TH<? echo $pref_etiq_vspace_req ?> id="libelle"><? echo _T("Espacement vertical :"); ?></TH> 
-								<td><input type="text" name="pref_etiq_vspace" value="<? echo $pref_etiq_vspace; ?>" maxlength="<? echo $pref_etiq_vspace_len; ?>"> mm <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
+								<td><input type="text" name="pref_etiq_vspace" value="<? echo $pref_etiq_vspace; ?>" maxlength="4"> mm <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
 							</TR>						   
 						  <TR>
 								<TH<? echo $pref_etiq_hsize_req ?> id="libelle"><? echo _T("Largeur étiquette :"); ?></TH> 
-								<td><input type="text" name="pref_etiq_hsize" value="<? echo $pref_etiq_hsize; ?>" maxlength="<? echo $pref_etiq_hsize_len; ?>"> mm <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
+								<td><input type="text" name="pref_etiq_hsize" value="<? echo $pref_etiq_hsize; ?>" maxlength="4"> mm <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
 							</TR>						   
 						  <TR>
 								<TH<? echo $pref_etiq_vsize_req ?> id="libelle"><? echo _T("Hauteur étiquette :"); ?></TH> 
-								<td><input type="text" name="pref_etiq_vsize" value="<? echo $pref_etiq_vsize; ?>" maxlength="<? echo $pref_etiq_vsize_len; ?>"> mm <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
+								<td><input type="text" name="pref_etiq_vsize" value="<? echo $pref_etiq_vsize; ?>" maxlength="4"> mm <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
 							</TR>						   
 						  <TR>
 								<TH<? echo $pref_etiq_cols_req ?> id="libelle"><? echo _T("Nombre de colonnes d'étiquettes :"); ?></TH> 
-								<td><input type="text" name="pref_etiq_cols" value="<? echo $pref_etiq_cols; ?>" maxlength="<? echo $pref_etiq_cols_len; ?>"> <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
+								<td><input type="text" name="pref_etiq_cols" value="<? echo $pref_etiq_cols; ?>" maxlength="4"> <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
 							</TR>						   
 						  <TR>
 								<TH<? echo $pref_etiq_rows_req ?> id="libelle"><? echo _T("Nombre de lignes d'étiquettes :"); ?></TH> 
-								<td><input type="text" name="pref_etiq_rows" value="<? echo $pref_etiq_rows; ?>" maxlength="<? echo $pref_etiq_rows_len; ?>"> <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
+								<td><input type="text" name="pref_etiq_rows" value="<? echo $pref_etiq_rows; ?>" maxlength="4"> <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
 							</TR>						   
 						  <TR>
 								<TH<? echo $pref_etiq_corps_req ?> id="libelle"><? echo _T("Corps du texte :"); ?></TH> 
-								<td><input type="text" name="pref_etiq_corps" value="<? echo $pref_etiq_corps; ?>" maxlength="<? echo $pref_etiq_corps_len; ?>"> <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
+								<td><input type="text" name="pref_etiq_corps" value="<? echo $pref_etiq_corps; ?>" maxlength="4"> <SPAN class="exemple"><? echo _T("(Entier)"); ?></SPAN></td> 
 							</TR>						   
 							<TR>
 								<TH colspan="2" id="header"><BR><? echo _T("Compte administrateur (indépendant des adhérents) :"); ?></TH>
 							</TR> 
 							<TR> 
 								<TH <? echo $pref_admin_login_req ?> id="libelle"><? echo _T("Identifiant :"); ?></TH> 
-								<TD><INPUT type="text" name="pref_admin_login" value="<? echo $pref_admin_login; ?>" maxlength="<? echo $pref_admin_login_len; ?>"></TD>
+								<TD><INPUT type="text" name="pref_admin_login" value="<? echo $pref_admin_login; ?>" maxlength="20"></TD>
 							</TR>
 							<TR> 
 								<TH <? echo $pref_admin_pass_req ?> id="libelle"><? echo _T("Mot de passe :"); ?></TH> 
-								<TD><INPUT type="text" name="pref_admin_pass" value="<? echo $pref_admin_pass; ?>" maxlength="<? echo $pref_admin_pass_len; ?>"></TD>
+								<TD><INPUT type="text" name="pref_admin_pass" value="<? echo $pref_admin_pass; ?>" maxlength="20"></TD>
 							</TR>
 							<TR> 
 								<TH align="center" colspan="2"><BR><INPUT type="submit" name="valid" value="<? echo _T("Enregistrer"); ?>"></TH> 
