@@ -292,7 +292,12 @@ a.listing:hover {
 
 #infoline ul {
 	margin: 0px;
+	padding: 0px;
 	list-style-type: none;
+}
+
+#infoline li {
+	display: inline;
 }
 
 #infoline2 {
