@@ -40,6 +40,7 @@
 		$requete[0] = "DELETE FROM ".PREFIX_DB."logs";
 		$DB->Execute($requete[0]);
 		dblog(_T("Logs flushed"));
+		header ('location: log.php');
 	}
 
 	// Tri
