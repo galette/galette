@@ -135,9 +135,11 @@
  		$result_adh->Close();
 	}
 	
+	$date_enreg_format = &$DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_enreg');
 	$date_debut_cotis_format = &$DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_debut_cotis');
 	$date_fin_cotis_format = &$DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_fin_cotis');
-	$requete[0] = "SELECT $date_debut_cotis_format AS date_debut_cotis,
+	$requete[0] = "SELECT $date_enreg_format AS date_enreg,
+			$date_debut_cotis_format AS date_debut_cotis,
 			$date_fin_cotis_format AS date_fin_cotis,
 			".PREFIX_DB."cotisations.id_cotis, 
 			".PREFIX_DB."cotisations.id_adh, 
@@ -232,6 +234,7 @@
 		$is_cotis = ($resultat->fields['cotis_extension'] == '1');
 		$contributions[$compteur]["class"]=$row_class;
 		$contributions[$compteur]["id_cotis"]=$resultat->fields['id_cotis'];
+		$contributions[$compteur]["date_enreg"]=$resultat->fields['date_enreg'];
 		$contributions[$compteur]["date_debut"]=$resultat->fields['date_debut_cotis'];
 		$contributions[$compteur]["date_fin"]= $is_cotis ? $resultat->fields['date_fin_cotis'] : "";
 		$contributions[$compteur]["id_adh"]=$resultat->fields['id_adh'];
