@@ -30,6 +30,7 @@
 {else}
 				<LI><A href="voir_adherent.php">{_T("My information")}</A></LI>
 				<LI><A href="gestion_contributions.php">{_T("My contributions")}</A></LI>
+				<LI><A href="gestion_transactions.php">{_T("My transactions")}</A></LI>
 {/if}
 			</UL>
 		</DIV>
