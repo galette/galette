@@ -76,7 +76,7 @@
 			$val="$j/$m/$a";
 		}
 
-		eval("\$".$proprietes_arr["name"]." = htmlentities(stripslashes(\"".addslashes($val)."\"), ENT_QUOTES);");
+		$$proprietes_arr["name"] = htmlentities(stripslashes(addslashes($val)), ENT_QUOTES);
 	}
 	reset($fields);
 	include("header.php");

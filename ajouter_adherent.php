@@ -62,19 +62,23 @@
 				
 		// on ne met jamais a jour id_adh
 		if ($fieldname!="id_adh" && $fieldname!="date_echeance")
-			eval("\$".$fieldname." = \"\";");
+			$$fieldname= "";
+			
+	  $fieldlen = $fieldname."_len";
+	  $fieldreq = $fieldname."_req";
 
 	  // definissons  aussi la longueur des input text
 	  $max_tmp = $proprietes_arr["max_length"];
 	  if ($max_tmp == "-1")
 	  	$max_tmp = 10;
-	  eval("\$".$fieldname."_len = ".$max_tmp.";");
+	  $fieldlen = $fieldname."_len";
+	  $$fieldlen=$max_tmp;
 
 	  // et s'ils sont obligatoires (à partir de la base)
 	  if ($proprietes_arr["not_null"]==1)
-		  eval("\$".$fieldname."_req = \"style=\\\"color: #FF0000;\\\"\";");
+		  $$fieldreq = "style=\"color: #FF0000;\"";
 		else
-		  eval("\$".$fieldname."_req = \"\";");
+		  $$fieldreq = "";
 	}
 	reset($fields);
 
@@ -105,7 +109,7 @@
 			// auto_increment et binary		
 		
 			$fieldname = $proprietes_arr["name"];
-				
+			
 			// on ne met jamais a jour id_adh
 			if ($fieldname!="id_adh" && $fieldname!="date_echeance")
 			{			
@@ -115,11 +119,11 @@
 					$post_value="";
 					
 				// on declare les variables pour la présaisie en cas d'erreur
-				eval("\$".$fieldname." = htmlentities(stripslashes(\"".$post_value."\"),ENT_QUOTES);");				
-
+				$$fieldname = htmlentities(stripslashes($post_value),ENT_QUOTES);
+				$fieldreq = $fieldname."_req";
+		
 				// vérification de la présence des champs obligatoires
-				eval("\$req = \$" . $fieldname . "_req;");
-				if ($req!="" && $post_value=="")
+				if ($$fieldreq!="" && $post_value=="")
 				  $error_detected .= "<LI>"._T("- Champ obligatoire non renseigné.")."</LI>";
 				else
 				{
@@ -394,7 +398,7 @@
 			  list($a,$m,$j)=split("-",$val);
 			  $val="$j/$m/$a";
 			}
-		  eval("\$".$proprietes_arr["name"]." = htmlentities(stripslashes(\"".addslashes($val)."\"), ENT_QUOTES);");
+		  	$$proprietes_arr["name"]=htmlentities(stripslashes(addslashes($val)), ENT_QUOTES);
 		}
 		reset($fields);
 	}
