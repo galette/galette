@@ -57,6 +57,7 @@ CREATE TABLE galette_adherents (
     pref_lang character varying(20) DEFAULT 'french'
 );
 CREATE UNIQUE INDEX galette_adherents_idx ON galette_adherents (id_adh);
+CREATE UNIQUE INDEX galette_login_idx     ON galette_adherents (login_adh);
 
 DROP TABLE galette_cotisations;
 CREATE TABLE galette_cotisations (

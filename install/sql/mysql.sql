@@ -32,6 +32,7 @@ CREATE TABLE galette_adherents (
   date_echeance date default NULL,
   pref_lang varchar(20) default 'french',
   PRIMARY KEY  (id_adh)
+  UNIQUE (login_adh)
 ) TYPE=MyISAM;
 
 DROP TABLE galette_cotisations;
