@@ -1,34 +1,40 @@
 		<H1 class="titre">{_T("Management of members")}</H1>
+		<FORM action="gestion_adherents.php" method="get" name="filtre">
 		<DIV id="listfilter">
-			<FORM action="gestion_adherents.php" method="get" name="filtre">
-				{_T("Search:")}&nbsp;
-				<INPUT type="text" name="filtre_nom" value="{$smarty.session.filtre_adh_nom}">&nbsp;
-			 	{_T("among:")}&nbsp;
-				<SELECT name="filtre" onChange="form.submit()">
-					{html_options options=$filtre_options selected=$smarty.session.filtre_adh}
-				</SELECT>
-				<SELECT name="filtre_2" onChange="form.submit()">
-					{html_options options=$filtre_2_options selected=$smarty.session.filtre_adh_2}
-				</SELECT>
-				<INPUT type="submit" value="{_T("Filter")}">
-			</FORM>
+			{_T("Search:")}&nbsp;
+			<INPUT type="text" name="filtre_nom" value="{$smarty.session.filtre_adh_nom}">&nbsp;
+		 	{_T("among:")}&nbsp;
+			<SELECT name="filtre" onChange="form.submit()">
+				{html_options options=$filtre_options selected=$smarty.session.filtre_adh}
+			</SELECT>
+			<SELECT name="filtre_2" onChange="form.submit()">
+				{html_options options=$filtre_2_options selected=$smarty.session.filtre_adh_2}
+			</SELECT>
+			<INPUT type="submit" value="{_T("Filter")}">
 		</DIV>
 		<TABLE id="infoline" width="100%">
 			<TR>
 				<TD class="left">{$nb_members} {if $nb_members != 1}{_T("members")}{else}{_T("member")}{/if}</TD>
+				<TD class="center">
+					{_T("Show:")}
+					<SELECT name="nbshow" onChange="form.submit()">
+						{html_options options=$nbshow_options selected=$smarty.get.nbshow}
+					</SELECT>
+				</TD>
 				<TD class="right">{_T("Pages:")}
 					<SPAN class="pagelink">
 					{section name="pageLoop" start=1 loop=$nb_pages+1}
 						{if $smarty.section.pageLoop.index eq $page}
 							{$smarty.section.pageLoop.index}
 						{else}
-							<A href="gestion_adherents.php?page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</A>
+							<A href="gestion_adherents.php?nbshow={$smarty.get.nbshow}&page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</A>
 						{/if}
 					{/section}
 					</SPAN>
 				</TD>
 			</TR>
 		</TABLE>
+		</FORM>
 		<FORM action="gestion_adherents.php" method="get" name="listform">
 		<TABLE width="100%" id="listing"> 
 			<TR> 
@@ -156,7 +162,7 @@
 						{if $smarty.section.pageLoop.index eq $page}
 							{$smarty.section.pageLoop.index}
 						{else}
-							<A href="gestion_adherents.php?page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</A>
+							<A href="gestion_adherents.php?nbshow={$smarty.get.nbshow}&page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</A>
 						{/if}
 					{/section}
 					</SPAN>
