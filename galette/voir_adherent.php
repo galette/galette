@@ -107,53 +107,44 @@
 <?
 	$image_adh = "";
 	if (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".jpg"))
-	{
-		$image_adh = "photos/tn_" . $id_adh . ".jpg";
-		$image_adh_full = "photos/" . $id_adh . ".jpg";
-	}
+		$image_adh = WEB_ROOT . "photos/tn_" . $id_adh . ".jpg";
 	elseif (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".gif"))
-	{
-		$image_adh = "photos/tn_" . $id_adh . ".gif";
-		$image_adh_full = "photos/" . $id_adh . ".gif";
-	}
+		$image_adh = WEB_ROOT . "photos/tn_" . $id_adh . ".gif";
 	elseif (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".png"))
-	{
-		$image_adh = "photos/tn_" . $id_adh . ".png";
-		$image_adh_full = "photos/" . $id_adh . ".png";
-	}
-	elseif (file_exists(WEB_ROOT . "photos/" . $id_adh . ".jpg"))
-	{
-		$image_adh = "photos/" . $id_adh . ".jpg";
-		$image_adh_full = "photos/" . $id_adh . ".jpg";
-	}
-	elseif (file_exists(WEB_ROOT . "photos/" . $id_adh . ".gif"))
-	{
-		$image_adh = "photos/" . $id_adh . ".gif";
-		$image_adh_full = "photos/" . $id_adh . ".gif";
-	}
-	elseif (file_exists(WEB_ROOT . "photos/" . $id_adh . ".png"))
-	{
-		$image_adh = "photos/" . $id_adh . ".png";
-		$image_adh_full = "photos/" . $id_adh . ".png";
-	}
+		$image_adh = WEB_ROOT . "photos/tn_" . $id_adh . ".png";
 									
-	if ($image_adh != "")
-	{
-                if (function_exists("ImageCreateFromString"))
-                        $imagedata = getimagesize($image_adh);
-                else
-                        $imagedata = array("130","");
-		$photo_adh ="<A href=\"".$image_adh_full."\" target=\"_blank\"><IMG src=\"".$image_adh."?nocache".time()."\" border=\"1\" alt=\""._T("Photo")."\" width=\"".$imagedata[0]."\" width=\"".$imagedata[1]."\"></A>";
-	}
-	else
-		$photo_adh = _T("[ pas de photo ]");
+    if (function_exists("ImageCreateFromString"))
+    {
+        if ($image_adh != "")
+            $imagedata = getimagesize($image_adh);
+        else
+            $imagedata = getimagesize(WEB_ROOT . "photos/default.png");
+    }
+    else
+        $imagedata = array("130","");
 
 	if ($_SESSION["admin_status"]!=0)
 		$rowspan_photo = "8";
 	else
 		$rowspan_photo = "5";
 ?>
-						<TD colspan="2" rowspan="<? echo $rowspan_photo; ?>" align="center"><? echo $photo_adh; ?></TD>
+						<TD colspan="2" rowspan="<? echo $rowspan_photo; ?>" align="center">
+<?
+	if ($image_adh != "")
+	{
+?> 
+                            <A href="photo.php?&id_adh=<? echo $id_adh."&nocache=".time(); ?>"><IMG src="photo.php?tn=1&id_adh=<? echo $id_adh."&nocache=".time(); ?>" border="1" alt="<? echo _T("Photo"); ?>" width="<? echo $imagedata[0]; ?>" height="<? echo $imagedata[1]; ?>"></A>
+<?
+    }
+    else
+    {
+?>
+                            <IMG src="photo.php?tn=1&id_adh=<? echo $id_adh."&nocache=".time(); ?>" border="1" alt="<? echo _T("Photo"); ?>" width="<? echo $imagedata[0]; ?>" height="<? echo $imagedata[1]; ?>"></A>
+
+<?
+    }
+?>
+                        </TD>
 					</TR>
 					<TR> 
 						<TD bgcolor="#DDDDFF"><B><? echo _T("Pseudo :"); ?></B></TD> 

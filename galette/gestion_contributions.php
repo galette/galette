@@ -337,8 +337,8 @@
 									?> 
 								</TD> 
 <?
-	if ($_SESSION["admin_status"]==1) 
-	{
+        if ($_SESSION["admin_status"]==1) 
+        {
 ?>
 								<TD class="<? echo $row_class; ?>" nowrap> 
 									<A href="gestion_contributions.php?id_adh=<? echo $resultat->fields["id_adh"] ?>"><?
@@ -348,21 +348,21 @@
 									?></A> 
 								</TD> 
 <?
-	}
+        }
 ?>
 								<TD class="<? echo $row_class; ?>" nowrap><? echo _T($resultat->fields["libelle_type_cotis"]) ?></TD> 
 								<TD class="<? echo $row_class; ?>" nowrap><? echo $resultat->fields["montant_cotis"] ?></TD> 
 								<TD class="<? echo $row_class; ?>" nowrap><? echo $resultat->fields["duree_mois_cotis"] ?></TD> 
 <?
-	if ($_SESSION["admin_status"]==1) 
-	{
+        if ($_SESSION["admin_status"]==1) 
+        {
 ?>
 								<TD width="55" class="<? echo $row_class; ?> center" nowrap>  
 									<A href="ajouter_contribution.php?id_cotis=<? echo $resultat->fields["id_cotis"] ?>"><IMG src="images/icon-edit.png" alt="<? echo _T("[mod]"); ?>" border="0" width="12" height="13"></A>
 									<A onClick="return confirm('<? echo str_replace("\n","\\n",addslashes(_T("Voulez-vous vraiment supprimer cette contribution de la base ?"))); ?>')" href="gestion_contributions.php?sup=<? echo $resultat->fields["id_cotis"] ?>"><IMG src="images/icon-trash.png" alt="<? echo _T("[sup]"); ?>" border="0" width="11" height="13"></A>
 								</TD> 
 <?
-	}
+        }
 
 		$compteur++;
 		$resultat->MoveNext();

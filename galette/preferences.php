@@ -243,8 +243,9 @@
 					if (!@move_uploaded_file($tmp_name,WEB_ROOT . "photos/logo".$ext_image))
 						$warning_detected .= "<LI>"._T("- La photo semble ne pas avoir été transmise correstement. L'enregistrement a cependant été effectué.")."</LI>";
 				 	else
+                    {
 						resizeimage(WEB_ROOT . "photos/logo".$ext_image,WEB_ROOT . "photos/tn_logo".$ext_image,130,130);
-
+                    }  
 			 	}
 			 	else
 				{
@@ -357,12 +358,6 @@
 										$logo_asso = "photos/tn_logo.gif";
 									elseif (file_exists(WEB_ROOT . "photos/tn_logo.png"))
 										$logo_asso = "photos/tn_logo.png";
-									elseif (file_exists(WEB_ROOT . "photos/logo.jpg"))
-										$logo_asso = "photos/logo.jpg";
-									elseif (file_exists(WEB_ROOT . "photos/logo.gif"))
-										$logo_asso = "photos/logo.gif";
-									elseif (file_exists(WEB_ROOT . "photos/logo.png"))
-										$logo_asso = "photos/logo.png";
 									
 									if ($logo_asso != "")
 									{
@@ -371,7 +366,7 @@
 										else
 											$imagedata = array("130","");
 								?>
-									<img src="<? echo $logo_asso."?nocache=".time(); ?>" border="1" alt="<? echo _T("Photo"); ?>" width="<? echo $imagedata[0]; ?>" height="<? echo $imagedata[1]; ?>"><BR>
+									<img src="photo.php?tn=1&id_adh=logo&?nocache=<? echo time(); ?>" border="1" alt="<? echo _T("Photo"); ?>" width="<? echo $imagedata[0]; ?>" height="<? echo $imagedata[1]; ?>"><BR>
 									<input type="submit" name="del_photo" value="<? echo _T("Supprimer la photo"); ?>">
 								<?
 									}
