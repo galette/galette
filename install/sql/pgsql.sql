@@ -14,7 +14,7 @@ CREATE SEQUENCE galette_cotisations_id_seq
     MINVALUE 1
     CACHE 1;
 
-DROP SEQUENCE galette_preferences_id_seq
+DROP SEQUENCE galette_preferences_id_seq;
 CREATE SEQUENCE galette_preferences_id_seq
     START 1
     INCREMENT 1

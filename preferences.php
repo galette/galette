@@ -54,7 +54,7 @@
 			'pref_admin_pass' => 1);
 
 	// Validation
-	if (isset($_POST['valid']))
+	if (isset($_POST['valid']) && $_POST['valid'] == "1")
 	{
   		// verification de champs
 	  	$insert_values = array();
@@ -116,6 +116,20 @@
 					if (strlen($value)<4)
 						$error_detected[] = _T("- The password must be of at least 4 characters!");
 					break;
+				case 'pref_membership_ext':
+					if (!is_numeric($value) || $value < 1 || $value > 12)
+						$error_detected[] = _T("- Invalid number of months of membership extension.");
+					break;
+				case 'pref_beg_membership':
+					$beg_membership = split("/",$value);
+					if (count($beg_membership) != 2)
+						$error_detected[] = _T("- Invalid format of beginning of membership.");
+					else {
+						$now = getdate();
+						if (!checkdate($beg_membership[1], $beg_membership[0], $now['year']))
+							$error_detected[] = _T("- Invalid date for beginning of 	membership.");
+					}
+					break;
 			}
 			$insert_values[$fieldname] = $value;
 			$result->MoveNext();
@@ -123,26 +137,26 @@
 		$result->Close();
  	 		
 		// missing relations
-		if (isset($pref['pref_mail_method']))
+		if (isset($insert_values['pref_mail_method']))
 		{
-			if ($pref['pref_mail_method']==2 || $pref['pref_mail_method']==1)
+			if ($insert_values['pref_mail_method']==2 || $insert_values['pref_mail_method']==1)
 			{
-				if ($pref['pref_mail_method']==2)
+				if ($insert_values['pref_mail_method']==2)
 				{
-					if (!isset($pref['pref_mail_smtp']))
-						$error_detected[] = _T("- You must indicate the SMTP server you wan't to use!");
-					elseif ($pref['pref_mail_smtp']=='')
+					if (!isset($insert_values['pref_mail_smtp']) || $insert_values['pref_mail_smtp']=='')
 						$error_detected[] = _T("- You must indicate the SMTP server you wan't to use!");
 				}
-				if (!isset($pref['pref_email_nom']))
+				if (!isset($insert_values['pref_email_nom']) || $insert_values['pref_email_nom']=='')
 					$error_detected[] = _T("- You must indicate a sender name for emails!");
-				elseif ($pref['pref_email_nom']=='')
-					$error_detected[] = _T("- You must indicate a sender name for emails!");
-				if (!isset($pref['pref_email']))
-					$error_detected[] = _T("- You must indicate an email address Galette should use to send emails!");
-				elseif ($pref['pref_email']=='')
+				if (!isset($insert_values['pref_email']) || $insert_values['pref_email']=='')
 					$error_detected[] = _T("- You must indicate an email address Galette should use to send emails!");
 			}
+		}
+		
+		if (isset($insert_values['pref_beg_membership']) && $insert_values['pref_beg_membership'] != '' &&
+		    isset($insert_values['pref_membership_ext']) && $insert_values['pref_membership_ext'] != '')
+		{
+			$error_detected[] = _T("- Default membership extention and beginning of membership are mutually exclusive.");
 		}
 		
 		// missing required fields?

@@ -53,11 +53,14 @@
 					  FROM ".PREFIX_DB."adherents
 					  WHERE id_adh=" . $cotisant;
 			$resultat_cotis = &$DB->Execute($requete_cotis);
-			if ($resultat_cotis->EOF)
-				$exempt="1";
-			else
-				$exempt=$resultat_cotis->fields[0];
-			$resultat_cotis->Close();
+			if ($resultat_cotis) {
+				if ($resultat_cotis->EOF)
+					$exempt="1";
+				else
+					$exempt=$resultat_cotis->fields[0];
+				$resultat_cotis->Close();
+			} else
+				$exempt_default;
 		}	
 		else
 			$exempt=$exempt_default;

@@ -107,7 +107,8 @@
 		$update_string = '';
 		$insert_string_fields = '';
 		$insert_string_values = '';
-										
+
+		$adherent['dyn'] = array();
 		// fill up the adherent structure with posted values
 		// for dynamic fields
 		while (list($key,$value) = each($_POST))
@@ -226,7 +227,8 @@
 				$requete = "INSERT INTO ".PREFIX_DB."adherents
 				(" . substr($insert_string_fields,1) . ")
 				VALUES (" . substr($insert_string_values,1) . ")";
-				$DB->Execute($requete);
+				if (!$DB->Execute($requete))
+					print substr($insert_string_values,1).": ".$DB->ErrorMsg();
 				$adherent['id_adh'] = $DB->Insert_ID();
 
 				// to allow the string to be extracted for translation
