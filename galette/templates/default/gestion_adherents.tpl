@@ -35,7 +35,7 @@
 			</TR>
 		</TABLE>
 		</FORM>
-		<FORM action="gestion_adherents.php" method="get" name="listform">
+		<FORM action="gestion_adherents.php" method="post" name="listform">
 		<TABLE width="100%" id="listing"> 
 			<TR> 
 				<TH width="15" class="listing">#</TH> 
@@ -126,6 +126,7 @@
 			<TR><TD colspan="6" class="emptylist">{_T("no member")}</TD></TR>
 {/foreach}
 		</TABLE>
+{if $nb_members != 0}		
 		{literal}
 		<SCRIPT LANGUAGE="JavaScript">
 		<!--
@@ -145,17 +146,20 @@
 		-->
 		</SCRIPT>
 		{/literal}
+{/if}
 		<TABLE id="infoline" width="100%">
 			<TR>
+{if $nb_members != 0}
 				<TD class="left">
 					<A href="#" onClick="check()">{_T("(Un)Check all")}</A><BR>
 					{_T("Selection:")}
 					<UL>
-						<LI><A href="#">{_T("Delete")}</A></LI>
-						<LI><A href="#">{_T("Mail all")}</A></LI>
-						<LI><A href="#">{_T("Generate labels")}</A></LI>
+						<LI><INPUT type="submit" onClick="return confirm('{_T("Do you really want to delere all selected accounts (and related contributions)?")|escape:"javascript"}');" name="delete" value="{_T("Delete")}"></LI>
+						<LI><INPUT type="submit" name="mailing" value="{_T("Mail all")}"></LI>
+						<LI><INPUT type="submit" name="labels" value="{_T("Generate labels")}"></LI>
 					</UL>
 				</TD>
+{/if}
 				<TD class="right">{_T("Pages:")}
 					<SPAN class="pagelink">
 					{section name="pageLoop" start=1 loop=$nb_pages+1}

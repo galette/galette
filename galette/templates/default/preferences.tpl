@@ -103,7 +103,7 @@
 					<TH {if $required.pref_beg_membership eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Beginning of membership:")}</TH>
 					<TD>
 						<INPUT type="text" name="pref_beg_membership" value="{$pref.pref_beg_membership}" maxlength="5">
-						<SPAN class="exemple">{_T("(DD/MM)")}</SPAN>
+						<SPAN class="exemple">{_T("(dd/mm)")}</SPAN>
 					</TD>
 				</TR>         
 				<TR>
@@ -120,13 +120,13 @@
 				<TR>
 					<TH {if $required.pref_mail_method eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Methode d'envoi :")}</TH>
 					<TD>
-						<INPUT type="radio" name="pref_mail_method" value="0" {if $pref.pref_mail_method eq 0}CHECKED{/if}> {_T("Pas d'envoi de mails")}<BR>
-						<INPUT type="radio" name="pref_mail_method" value="1" {if $pref.pref_mail_method eq 1}CHECKED{/if}> {_T("Fonction PHP mail()")}<BR>
-						<INPUT type="radio" name="pref_mail_method" value="2" {if $pref.pref_mail_method eq 2}CHECKED{/if}> {_T("Via un serveur SMTP (lent)")}
+						<INPUT type="radio" name="pref_mail_method" value="0" {if $pref.pref_mail_method eq 0}CHECKED{/if}> {_T("Emailing disabled")}<BR>
+						<INPUT type="radio" name="pref_mail_method" value="1" {if $pref.pref_mail_method eq 1}CHECKED{/if}> {_T("PHP mail() function")}<BR>
+						<INPUT type="radio" name="pref_mail_method" value="2" {if $pref.pref_mail_method eq 2}CHECKED{/if}> {_T("Using a SMTP server (slower)")}
 					</TD
 				</TR>
 				<TR>
-					<TH {if $required.pref_mail_smtp eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Serveur SMTP :")}</TH>
+					<TH {if $required.pref_mail_smtp eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("SMTP server:")}</TH>
 					<TD><input type="text" name="pref_mail_smtp" value="{$pref.pref_mail_smtp}" maxlength="100" size="30"></TD>
 				</TR> 
 				<TR>

@@ -116,6 +116,7 @@
 		$request = "SELECT field_id, field_index, field_name, field_perm, field_type, field_repeat FROM $field_type_table ORDER BY field_index";
 		$result = $DB->Execute($request);
 		$count = 0;
+		$dyn_fields=array();
 		while (!$result->EOF)
 		{
 			$dyn_fields[$count]['id'] = $result->fields[0];

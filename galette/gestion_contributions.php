@@ -223,11 +223,13 @@
 		$nbpages = intval($nb_contributions/$numrows);
 	else 
 		$nbpages = intval($nb_contributions/$numrows)+1;
+	if ($nbpages==0)
+		$nbpages = 1;
 		
 	$compteur = 1+($page-1)*$numrows;
 	while(!$resultat->EOF) 
 	{ 
-		if ($resultat->fields["date_fin_cotis"]==$resultat->fields["date_debut_cotis"])
+		if ($resultat->fields["date_fin_cotis"]!=$resultat->fields["date_debut_cotis"])
 			$row_class = "cotis-normal";
 		else
 			$row_class = "cotis-give";

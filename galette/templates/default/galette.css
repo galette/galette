@@ -292,7 +292,7 @@ a.listing:hover {
 
 #infoline ul {
 	margin: 0px;
-	list-style-type: circle;
+	list-style-type: none;
 }
 
 #infoline2 {
@@ -306,8 +306,8 @@ a.listing:hover {
 	border-color: #DDDDDD;
 	border-width: 2px;
 	border-style: solid;
-    margin-left: auto;
-    margin-right: auto;
+	margin-left: auto;
+	margin-right: auto;
 }
 	
 #mailing_preview th {

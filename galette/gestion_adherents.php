@@ -68,33 +68,47 @@
 			}
 		}
 	
-	if (isset($_GET["sup"]))
+	if (isset($_GET["sup"]) || isset($_POST["delete"]))
 	{
-		if (is_numeric($_GET["sup"]))
+		$array_sup = array();
+		if (isset($_GET["sup"]))
 		{
-			$requetesup = "SELECT nom_adh, prenom_adh FROM ".PREFIX_DB."adherents WHERE id_adh=".$DB->qstr($_GET["sup"]);
+			if (is_numeric($_GET["sup"]))
+				$array_sup[] = $_GET["sup"];
+		}
+		else
+		{
+			if (isset($_POST["member_sel"]))
+			foreach ($_POST["member_sel"] as $supval)
+				if (is_numeric($supval))
+					$array_sup[] = $supval;
+		}
+		
+		foreach ($array_sup as $supval)
+		{
+			$requetesup = "SELECT nom_adh, prenom_adh FROM ".PREFIX_DB."adherents WHERE id_adh=".$DB->qstr($supval);
 			$resultat = $DB->Execute($requetesup);
 			if (!$resultat->EOF)
 			{
 				// supression record adhérent
 				$requetesup = "DELETE FROM ".PREFIX_DB."adherents 
-						WHERE id_adh=".$DB->qstr($_GET["sup"]); 
+						WHERE id_adh=".$DB->qstr($supval); 
 				$DB->Execute($requetesup); 		
 				dblog("Delete the member card (and dues)",strtoupper($resultat->fields[0])." ".$resultat->fields[1],$requetesup);
 
 				// suppression records cotisations
 				$requetesup = "DELETE FROM ".PREFIX_DB."cotisations 
-						WHERE id_adh=" . $DB->qstr($_GET["sup"]); 
+						WHERE id_adh=" . $DB->qstr($supval); 
 				$DB->Execute($requetesup);
 
 				// erase custom fields
 				$requetesup = "DELETE FROM ".PREFIX_DB."adh_info
-						WHERE id_adh=".$DB->qstr($_GET["sup"]);
+						WHERE id_adh=".$DB->qstr($supval);
 				$DB->Execute($requetesup);
 
 				// erase picture
 				$requetesup = "DELETE FROM ".PREFIX_DB."pictures
-						WHERE id_adh=".$DB->qstr($_GET["sup"]);
+						WHERE id_adh=".$DB->qstr($supval);
 				$DB->Execute($requetesup);
 			}
 			$resultat->Close();
@@ -191,6 +205,8 @@
 		$nbpages = intval($nbadh->fields[0]/$numrows);
 	else 
 		$nbpages = intval($nbadh->fields[0]/$numrows)+1;
+	if ($nbpages==0)
+		$nbpages = 1;
 
 	$compteur = 1+($page-1)*$numrows;
 	while (!$resultat->EOF) 

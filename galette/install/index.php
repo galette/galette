@@ -112,7 +112,7 @@
 <HEAD> 
 	<TITLE>Galette Installation</TITLE> 
 	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1"> 
-	<LINK rel="stylesheet" type="text/css" href="../galette.css" > 
+	<LINK rel="stylesheet" type="text/css" href="galette.css" > 
 </HEAD> 
 <H1 class="titreinstall">Galette installation</H1>
 <DIV id="installpage" align="center">
@@ -212,9 +212,6 @@
 ?>
 
 	<H1><? echo _T("Files permissions"); ?></H1>
-	<P>
-         <? echo "files permissions are automatically set with the debian package, enjoy ;c)"; ?>
-        </P>
 <?
 			$perms_ok = true;
 			if (!$perms_ok)
@@ -916,7 +913,7 @@ define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 			$DB->Execute($default);			
 			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (22,'pref_mail_method','0')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (23,'pref_mail_smtp','0')";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (23,'pref_mail_smtp','')";
 			$DB->Execute($default);			
 			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (24,'pref_membership_ext','12')";
 			$DB->Execute($default);			

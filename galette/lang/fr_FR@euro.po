@@ -941,11 +941,11 @@ msgstr "- Le mot de passe doit être composé d'au moins 4 caractères !"
 
 #: ../preferences.php:121
 msgid "- Invalid number of months of membership extension."
-msgstr ""
+msgstr "- Durée d'extension d'adhésion invalide"
 
 #: ../preferences.php:126
 msgid "- Invalid format of beginning of membership."
-msgstr ""
+msgstr "- Mauvais format de date de début d'exercice invalide"
 
 #: ../preferences.php:130
 msgid "- Invalid date for beginning of \tmembership."
@@ -1636,8 +1636,8 @@ msgid "Beginning of membership:"
 msgstr "Date de début d'exercice :"
 
 #: ../templates/default/preferences.tpl:106
-msgid "(DD/MM)"
-msgstr ""
+msgid "(dd/mm)"
+msgstr "(jj/mm)"
 
 #: ../templates/default/preferences.tpl:110
 msgid "Mail settings:"
