@@ -150,10 +150,10 @@
 		<TABLE id="infoline" width="100%">
 			<TR>
 {if $nb_members != 0}
-				<TD class="left">
+				<TD class="left" nowrap>
 					<A href="#" onClick="check()">{_T("(Un)Check all")}</A><BR>
-					{_T("Selection:")}
 					<UL>
+						<LI>{_T("Selection:")}</LI>
 						<LI><INPUT type="submit" onClick="return confirm('{_T("Do you really want to delere all selected accounts (and related contributions)?")|escape:"javascript"}');" name="delete" value="{_T("Delete")}"></LI>
 						<LI><INPUT type="submit" name="mailing" value="{_T("Mail all")}"></LI>
 						<LI><INPUT type="submit" name="labels" value="{_T("Generate labels")}"></LI>
