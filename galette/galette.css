@@ -116,6 +116,7 @@ a:hover {
 }
 
 th.listing {
+	font-size: 10px;
 	background-color: #000000;
 	color: #FFFFFF;
 }
