@@ -143,8 +143,76 @@
    	return ( strtr( $given_html, $trans_table ) );
 	}
 
-	
-	
+	function custom_mail($email_adh,$mail_subject,$mail_text)
+	{
+		// codes retour :
+		//  0 - mail envoye
+		//  1 - erreur mail()
+		//  2 - mail desactive
+		//  3 - mauvaise configuration
+		//  4 - SMTP injoignable 
+		$result = 0;
+
+		// Headers :
+		$headers = array("Subject: $mail_subject",
+				"From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">",
+				"To: <".$email_adh.">",
+				"X-Sender: <".PREF_EMAIL.">",
+				"Return-Path: <".PREF_EMAIL.">",
+				"Errors-To: <".PREF_EMAIL.">",
+				"X-Mailer: PHP",
+				"X-Priority: 3",
+				"Content-Type: text/plain; charset=iso-8859-15");
+		
+		switch (PREF_MAIL_METHOD)
+		{
+			case 0:
+				$result = 2;
+				break;
+			case 1:
+				$mail_headers = "";
+				foreach($headers as $oneheader)
+					$mail_headers .= $oneheader."\n";
+				if (!mail($email_adh,$mail_subject,$mail_text, $mail_headers))
+					$result = 1;
+				break;
+			case 2:
+			  // $toArray format --> array("Name1" => "address1", "Name2" => "address2", ...)
+
+			    ini_set(sendmail_from, "myemail@address.com");
+				$errno = "";
+				$errstr = "";
+				if (!$connect = fsockopen (PREF_MAIL_SMTP, 25, $errno, $errstr, 30))
+					$result = 4;
+				else
+				{
+			        	$rcv = fgets($connect, 1024);
+					fputs($connect, "HELO {$_SERVER['SERVER_NAME']}\r\n");
+					$rcv = fgets($connect, 1024);
+					fputs($connect, "MAIL FROM:".PREF_EMAIL."\r\n");
+					$rcv = fgets($connect, 1024);
+					fputs($connect, "RCPT TO:".$email_adh."\r\n");
+					$rcv = fgets($connect, 1024);
+					fputs($connect, "DATA\r\n");
+					$rcv = fgets($connect, 1024);
+					foreach($headers as $oneheader)
+						fputs($connect, $oneheader."\r\n");
+					fputs($connect, "\r\n");
+					fputs($connect, stripslashes($mail_text)." \r\n");
+					fputs($connect, ".\r\n");
+					$rcv = fgets($connect, 1024);
+					fputs($connect, "RSET\r\n");
+					$rcv = fgets($connect, 1024);
+					fputs ($connect, "QUIT\r\n");
+					$rcv = fgets ($connect, 1024);
+					fclose($connect);
+				}
+				break;
+			default:
+				$result = 3;
+		}
+		return $result;
+	}
 	
 	
 ?>
