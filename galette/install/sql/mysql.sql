@@ -6,7 +6,7 @@ CREATE TABLE galette_adherents (
   prenom_adh varchar(20) default NULL,
   pseudo_adh varchar(20) default NULL,
   titre_adh tinyint(3) unsigned NOT NULL default '0',
-  ddn_adh date default NULL,
+  ddn_adh date default '1901-01-01',
   adresse_adh varchar(150) NOT NULL default '',
   adresse2_adh varchar(150) default NULL,
   cp_adh varchar(10) NOT NULL default '',
@@ -31,6 +31,9 @@ CREATE TABLE galette_adherents (
   bool_display_info enum('1') default NULL,
   date_echeance date default NULL,
   pref_lang varchar(20) default 'french',
+  lieu_naissance text default '',
+  gpgid varchar(8) DEFAULT NULL,
+  fingerprint varchar(50) DEFAULT NULL,
   PRIMARY KEY  (id_adh),
   UNIQUE (login_adh)
 ) TYPE=MyISAM;

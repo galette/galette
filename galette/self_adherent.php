@@ -196,7 +196,7 @@ function verify(f){
   return false;
 }
 </SCRIPT>
-<FORM action="self_adherent.php" method="post" 
+<FORM action="self_adherent.php" method="post" name="form"
   enctype="multipart/form-data" 
   onSubmit="
     this.nom_adh.required=true;
@@ -311,7 +311,15 @@ function verify(f){
   	    <? echo _("Language:") ?>
   	  </TH>
   	  <TD>
-  	    <SELECT NAME="pref_lang">
+	  <script language="javascript" type="text/javascript">
+	  <!--
+	  function updatelanguage(){
+	    document.cookie = "pref_lang="+document.form.pref_lang.value;
+	    window.location.reload()
+	  }
+          -->
+	  </script>
+  	    <SELECT NAME="pref_lang" onchange="updatelanguage()">
   	      <?
   	        $path = "lang";
                 $dir_handle = @opendir($path);
@@ -411,6 +419,20 @@ function verify(f){
   	  </TH> 
   	  <TD>
   	    <INPUT type="text" name="msn_adh" value="<? echo $msn_adh; ?>" maxlength="<? echo $msn_adh_len; ?>" size="30">
+  	  </TD> 
+        </TR> 
+        <TR> 
+  	  <TH id="libelle" <? echo $gpgid_req ?>>
+  	    <? echo _("Id GNUpg (GPG):"); ?>
+  	  </TH> 
+  	  <TD>
+  	    <INPUT type="text" name="gpgid" value="<? echo $gpgid; ?>" maxlength="<? echo $gpgid_len; ?>" size="8">
+  	  </TD> 
+  	  <TH id="libelle" <? echo $fingerprint_req ?>>
+  	    <? echo _("fingerprint:"); ?>
+  	  </TH> 
+  	  <TD>
+  	    <INPUT type="text" name="fingerprint" value="<? echo $fingerprint; ?>" maxlength="<? echo $fingerprint_len; ?>" size="30">
   	  </TD> 
         </TR> 
         <TR> 

@@ -23,7 +23,7 @@
  
 // I18N support information here
 
-if (!isset($pref_lang)) $pref_lang = 'french';
+if (!isset($pref_lang)) $pref_lang=PREF_LANG;
 
 $languages = array (
 		    "french"  => "fr_FR@euro",

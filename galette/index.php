@@ -27,7 +27,26 @@
 	include(WEB_ROOT."includes/functions.inc.php"); 
 	include(WEB_ROOT."includes/session.inc.php"); 
 	 
-	if (isset($_POST["ident"])) 
+function drapeaux(){
+    $path = "lang";
+    $dir_handle = @opendir($path);
+    while ($file = readdir($dir_handle)) {
+  		  if (substr($file,0,5)=="lang_" && substr($file,-4)==".php") {
+            $file = substr(substr($file,5),0,-4);
+            echo "<a href=\"index.php?pref_lang=$file\"><img src=\"$path/$file.gif\"></a>";
+        }
+    }
+}
+
+function self_adhesion(){
+    global $_POST, $_GET, $pref_lang;
+    if (isset($_POST["pref_lang"])) $pref_lang=$_POST["pref_lang"];
+    if (isset($_GET["pref_lang"])) $pref_lang=$_GET["pref_lang"];
+    if (!isset($pref_lang)) $pref_lang=PREF_LANG;
+    echo "<a href=\"self_adherent.php?pref_lang=$pref_lang\">"._("Subscribe")."</a>";
+}
+
+if (isset($_POST["ident"])) 
 	{ 
 	        include(WEB_ROOT."includes/lang.inc.php"); 
 		if ($_POST["login"]==PREF_ADMIN_LOGIN && $_POST["password"]==PREF_ADMIN_PASS)
@@ -41,7 +60,7 @@
 		else
 		{
 			$requete = "SELECT id_adh, bool_admin_adh, nom_adh, 
-                                        prenom_adh, mdp_adh
+                         prenom_adh, mdp_adh, pref_lang
 					FROM ".PREFIX_DB."adherents
 					WHERE login_adh=" . txt_sqls($_POST["login"]) . "
 					AND activite_adh='1'";
@@ -57,6 +76,8 @@
 				$_SESSION["logged_id_adh"]=$resultat->fields[0];
 				$_SESSION["logged_status"]=1;
 				$_SESSION["logged_nom_adh"]=strtoupper($resultat->fields[2]) . " " . strtolower($resultat->fields[3]);
+        $pref_lang = $resultat->fields[5];
+        setcookie("pref_lang",$pref_lang);
 				dblog(_("Login"));
 			}
 			else
@@ -72,6 +93,7 @@
 			WHERE id_adh=".$_SESSION["logged_id_adh"];
 	  $pref_lang = &$DB->Execute($req);
 	  $pref_lang = $pref_lang->fields[0];
+    setcookie("pref_lang",$pref_lang);
 	  include(WEB_ROOT."includes/lang.inc.php"); 
 ?>
 
@@ -87,6 +109,7 @@
 	<TR>
 		<TD align="center">
 			<IMG src="images/galette.jpg" alt="[ Galette ]" width="103" height="80"><BR>
+     <? drapeaux(); ?><br>
 			<FORM action="index.php" method="post"> 
 				<B class="title"><? echo _("Login"); ?></B><BR>
 				<BR>
@@ -104,6 +127,8 @@
 				<INPUT type="submit" name="ident" value="<? echo _("Login"); ?>"><BR>
 				<BR>
 				<A HREF="lostpasswd.php"><? echo _("Lost your password?"); ?></a>
+        <BR>
+        <? self_adhesion(); ?>
 			</FORM>
 		</TD>
 	</TR>

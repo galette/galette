@@ -54,7 +54,10 @@ CREATE TABLE galette_adherents (
     bool_exempt_adh character(1) DEFAULT NULL,
     bool_display_info character(1) DEFAULT NULL,
     date_echeance date,
-    pref_lang character varying(20) DEFAULT 'french'
+    pref_lang character varying(20) DEFAULT 'french',
+    lieu_naissance TEXT DEFAULT '',
+    gpgid character varying(8) DEFAULT NULL,
+    fingerprint character varying(50) DEFAULT NULL
 );
 CREATE UNIQUE INDEX galette_adherents_idx ON galette_adherents (id_adh);
 CREATE UNIQUE INDEX galette_login_idx     ON galette_adherents (login_adh);
