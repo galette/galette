@@ -224,6 +224,7 @@ $lang["Actions"]="Actions";
 $lang["aucune contribution"]="aucune contribution";
 $lang["Voulez-vous vraiment supprimer cet contribution de la base ?"]="Voulez-vous vraiment supprimer cet contribution de la base ?";
 $lang["En retard de"]="En retard de";
+$lang["[ Voir la fiche adhérent ]"]="[ Voir la fiche adhérent ]";
 $lang["Mes informations"]="Mes informations";
 $lang["Fiche adhérent (modification)"]="Fiche adhérent (modification)";
 $lang["- CONFIRMATION -"]="- CONFIRMATION -";

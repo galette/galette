@@ -371,10 +371,28 @@
 		$cumul = $days_left["cumul"];
 		$statut_cotis = $days_left["text"];
 		$color = $days_left["color"];*/
-	
-		echo "<BR><DIV align=\"center\"><TABLE bgcolor=\"".$color."\"><TR><TD>".$statut_cotis."</TD></TR></TABLE></DIV>";
-	}
-	
+?>	
+		<BR>
+		<DIV align="center">
+		  <TABLE bgcolor="<? echo $color; ?>">
+		    <TR>
+		      <TD><? echo $statut_cotis; ?></TD>
+		    </TR>
+		  </TABLE>
+<?
+		if ($_SESSION["admin_status"]==1)
+	        {
+?>
+	<BR>
+	<A href="voir_adherent.php?id_adh=<? echo $_SESSION["filtre_cotis_adh"]; ?>"><? echo _T("[ Voir la fiche adhérent ]"); ?></A>
+	&nbsp;&nbsp;&nbsp;
+	<A href="ajouter_contribution.php?id_adh=<? echo $_SESSION["filtre_cotis_adh"]; ?>"><? echo _T("[ Ajouter une contribution ]"); ?></A>
+<?
+		}	
+?>
+		</DIV>
+<?
+	}	
 ?>							 
 
 <? 
