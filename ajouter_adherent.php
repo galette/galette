@@ -129,14 +129,14 @@
 		{
 			$key = strtolower($key);
 			if (isset($_POST[$key]))
-				$value = $_POST[$key];
+				$value = trim($_POST[$key]);
 			else
 				$value = '';
 			// if the field is enabled, check it
 			if (!isset($disabled[$key]))
 			{
 				// fill up the adherent structure
-				$adherent[$key] = $value;
+				$adherent[$key] = htmlentities(stripslashes($value),ENT_QUOTES);
 
 				// now, check validity
 				if ($value != "")
