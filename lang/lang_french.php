@@ -190,6 +190,7 @@ $lang["Dernier jour !"]="Dernier jour !";
 $lang["En retard de "]="En retard de ";
 $lang["jours"]="jours";
 $lang["depuis le"]="depuis le";
+$lang["jour restant"]="jour restant";
 $lang["jours restants"]="jours restants";
 $lang["fin le"]="fin le";
 $lang["[H]"]="[H]";

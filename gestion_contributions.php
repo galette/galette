@@ -353,7 +353,10 @@
 			}
 			else
 			{
-				$statut_cotis = $difference." "._T("jours restants")." ("._T("fin le")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+				if ($difference!=1)
+					$statut_cotis = $difference." "._T("jours restants")." ("._T("fin le")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+				else
+					$statut_cotis = $difference." "._T("jour restant")." ("._T("fin le")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
 				if ($difference < 30)
 					$color = "#FFE9AB";
 				else
