@@ -133,32 +133,6 @@
 	}
 	
 	
-	function isEmail($login) {
-		if( empty($login) ) {
-			$GLOBALS['error_detected'] = _T("login vide");
-		} else {
-			$req = "SELECT email_adh
-				FROM ".PREFIX_DB."adherents
-				WHERE login_adh=".txt_sqls($login);
-			$result = &$GLOBALS["DB"]->Execute($req);
-
-			if ($result->EOF) {
-				$GLOBALS['error_detected'] = _T("login inexistant");
-				dblog(_T("Login inexistant envoyé via le formulaire de récupération du mot de passe")." \"" . $login ."\"");
-				//header("location: index.php");
-			}else{
-				$email=$result->fields[0];
-				if( empty($email) ) {
-					$GLOBALS['error_detected'] = _T("Ce compte ne contient pas d'adresse email, veuillez contacter un adminstrateur");
-					dblog(_T("Demande d'envoi de mot de passe mais email vide. Login :")." \"" . $login . "\"");
-				}else
-				return $email;
-			}
-		}
-	}
-
-	
-	
 	
 	
 	
