@@ -1,5 +1,5 @@
 <?
-	define("GALETTE_VERSION", "v0.60");
+	define("GALETTE_VERSION", "v0.61");
 
 	/*
 	*@author steve gricci

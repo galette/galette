@@ -1,4 +1,6 @@
 <?
+// English translation file
+// By Simon DEPIETS 
 
 // Install - Upgrade
 
