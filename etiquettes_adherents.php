@@ -22,6 +22,7 @@
 	include("includes/config.inc.php"); 
 	include(WEB_ROOT."includes/database.inc.php"); 
 	include(WEB_ROOT."includes/functions.inc.php"); 
+        include_once("includes/i18n.inc.php"); 
 	include(WEB_ROOT."includes/lang.inc.php"); 
 	include(WEB_ROOT."includes/session.inc.php"); 
 	include(WEB_ROOT."includes/phppdflib/phppdflib.class.php");
@@ -79,13 +80,13 @@
 			switch($resultat->fields[4])
 			{
 				case "1" :
-					$nom_adh_ext .= _T("M.");
+					$nom_adh_ext .= _("M.");
 					break;
 				case "2" :
-					$nom_adh_ext .= _T("Mme.");
+					$nom_adh_ext .= _("Mme.");
 					break;
 				default :
-					$nom_adh_ext .= _T("Mlle.");
+					$nom_adh_ext .= _("Mlle.");
 			}
 			
 			$x1 = $xorigin + ($col-1)*(round(PREF_ETIQ_HSIZE*2.835)+round(PREF_ETIQ_HSPACE*2.835));
@@ -117,7 +118,7 @@
 			$nb_etiq++;
 		} 
 		$resultat->Close();
-		dblog(_T("Génération de ")." ".$nb_etiq." "._T("étiquette(s)"),$concatname);
+		dblog(_("Génération de ")." ".$nb_etiq." "._("étiquette(s)"),$concatname);
 		
 		header("Content-Disposition: filename=example.pdf");
 		header("Content-Type: application/pdf");

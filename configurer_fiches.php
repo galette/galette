@@ -22,6 +22,7 @@
     include("includes/config.inc.php");
     include(WEB_ROOT."includes/database.inc.php"); 
     include(WEB_ROOT."includes/functions.inc.php"); 
+    include_once("includes/i18n.inc.php"); 
     include(WEB_ROOT."includes/lang.inc.php"); 
     include(WEB_ROOT."includes/session.inc.php"); 
     include(WEB_ROOT."includes/categories.inc.php");
@@ -37,7 +38,7 @@
     {
         if ($_POST["perm_cat"] != $category_separator &&
             (!isset($_POST["name_cat"]) || $_POST["name_cat"] == "")) {
-            $error_detected .= "<LI>"._T("- Le champ nom ne doit pas être vide.")."</LI>";
+            $error_detected .= "<LI>"._("- Le champ nom ne doit pas être vide.")."</LI>";
         } else {
             $name_cat = $_POST["name_cat"];
             $perm_cat = $_POST["perm_cat"];
@@ -85,7 +86,7 @@
     {
 ?>
     <DIV id="errorbox">
-        <H1><? echo _T("- ERREUR -"); ?></H1>
+        <H1><? echo _("- ERREUR -"); ?></H1>
         <UL>
             <? echo $error_detected; ?>
         </UL>
@@ -93,21 +94,21 @@
 <?
     }
 ?> 
-    <H1 class="titre"><? echo _T("Configuration des fiches"); ?></H1>
+    <H1 class="titre"><? echo _("Configuration des fiches"); ?></H1>
     <FORM action="configurer_fiches.php" method="post" enctype="multipart/form-data">
         <TABLE width="100%" id="input-table"> 
             <TR>
                 <TH class="listing">#</TH> 
-                <TH class="listing left"><? echo _T("Nom"); ?></TH>
-                <TH class="listing"><? echo _T("Visibilité"); ?></TH>
-                <TH class="listing"><? echo _T("Type"); ?></TH>
-                <TH class="listing"><? echo _T("Nombre"); ?></TH>
-                <TH class="listing"><? echo _T("Actions"); ?></TH>
+                <TH class="listing left"><? echo _("Nom"); ?></TH>
+                <TH class="listing"><? echo _("Visibilité"); ?></TH>
+                <TH class="listing"><? echo _("Type"); ?></TH>
+                <TH class="listing"><? echo _("Nombre"); ?></TH>
+                <TH class="listing"><? echo _("Actions"); ?></TH>
             </TR>
 <?
     $count = 1;
     $confirm_sup = str_replace("\n", "\\n",
-                               addslashes(_T("Voulez-vous vraiment supprimer cette catégorie de la base, ceci supprimera aussi toutes les données associées ?")));
+                               addslashes(_("Voulez-vous vraiment supprimer cette catégorie de la base, ceci supprimera aussi toutes les données associées ?")));
     $request = "SELECT id_cat, index_cat, name_cat, perm_cat, type_cat, size_cat FROM $info_cat_table ORDER BY index_cat";
     $result = $DB->Execute($request);
     while (!$result->EOF)
@@ -116,15 +117,15 @@
         $index = $result->fields[1];
         $name = $result->fields[2];
         switch($result->fields[3]) {
-            case $perm_all: $perm = _T('tous'); break;
-            case $perm_admin: $perm = _T('admin'); break;
-            default: $perm = _T('inconnu');
+            case $perm_all: $perm = _('tous'); break;
+            case $perm_admin: $perm = _('admin'); break;
+            default: $perm = _('inconnu');
         }
         switch($result->fields[4]) {
-            case $category_separator: $type_name = _T('séparateur'); break;
-            case $category_text: $type_name = _T('texte libre'); break;
-            case $category_field: $type_name = _T('champ'); break;
-            default: $type_name = _T('inconnu');
+            case $category_separator: $type_name = _('séparateur'); break;
+            case $category_text: $type_name = _('texte libre'); break;
+            case $category_field: $type_name = _('champ'); break;
+            default: $type_name = _('inconnu');
         }
         $size = $result->fields[5];
 ?>        
@@ -136,7 +137,7 @@
                 <TD class="listing"><? echo $size; ?></TD>
                 <TD class="listing center">
                 <A onClick="return confirm('<? echo $confirm_sup; ?>')" href="configurer_fiches.php?sup=<? echo $id ?>">
-                    <IMG src="images/icon-trash.png" alt="<? echo _T("[sup]"); ?>" border="0" width="11" height="13">
+                    <IMG src="images/icon-trash.png" alt="<? echo _("[sup]"); ?>" border="0" width="11" height="13">
                 </A>
 <?
         if ($index == 1) {
@@ -146,7 +147,7 @@
         } else {
 ?>                
                     <A href="configurer_fiches.php?up=<? echo $id; ?>">
-                        <IMG src="images/icon-up.png" alt="<? echo _T("[haut]"); ?>" border="0" width="9" height="8">
+                        <IMG src="images/icon-up.png" alt="<? echo _("[haut]"); ?>" border="0" width="9" height="8">
                     </A>
 <?
         }
@@ -159,7 +160,7 @@
         } else {
 ?>                
                     <A href="configurer_fiches.php?down=<? echo $id; ?>">
-                        <IMG src="images/icon-down.png" alt="<? echo _T("[bas]"); ?>" border="0" width="9" height="8">
+                        <IMG src="images/icon-down.png" alt="<? echo _("[bas]"); ?>" border="0" width="9" height="8">
                     </A>
 <?
         }
@@ -180,21 +181,21 @@
                 </TD>
                 <TD width="60" class="listing left">
                     <SELECT name="perm_cat">
-                        <OPTION value="<?php echo $perm_all; ?>"><? echo _T("tous"); ?></OPTION>
-                        <OPTION value="<?php echo $perm_admin; ?>"><? echo _T("admin"); ?></OPTION>
+                        <OPTION value="<?php echo $perm_all; ?>"><? echo _("tous"); ?></OPTION>
+                        <OPTION value="<?php echo $perm_admin; ?>"><? echo _("admin"); ?></OPTION>
                     </SELECT>
                 </TD>
                 <TD width="60" class="listing left">
                     <SELECT name="type_cat">
-                        <OPTION value="<?php echo $category_separator; ?>"><? echo _T("séparateur"); ?></OPTION>
-                        <OPTION value="<?php echo $category_text; ?>"><? echo _T("texte libre"); ?></OPTION>
-                        <OPTION value="<?php echo $category_field; ?>"><? echo _T("champ"); ?></OPTION>
+                        <OPTION value="<?php echo $category_separator; ?>"><? echo _("séparateur"); ?></OPTION>
+                        <OPTION value="<?php echo $category_text; ?>"><? echo _("texte libre"); ?></OPTION>
+                        <OPTION value="<?php echo $category_field; ?>"><? echo _("champ"); ?></OPTION>
                     </SELECT>
                 </TD>
                 <TD class="listing">
                     <INPUT size="2" maxlength="2" type="text" value="1" name="size_cat">
                 </TD>
-		<TD class="listing center"><INPUT type="submit" name="valid" value="<? echo _T("Ajouter"); ?>"></TD>
+		<TD class="listing center"><INPUT type="submit" name="valid" value="<? echo _("Ajouter"); ?>"></TD>
             </TR>
         </TABLE> 
     </FORM> 
