@@ -157,7 +157,7 @@
 	<FORM action="index.php" method="POST">
 		<P>
 			<INPUT type="radio" name="install_type" value="install" SELECTED> <? echo _T("Nouvelle installation :"); ?><BR>
-		 	<? echo _T("Vous installez Galette pour la première fois, ou vous souhaitez écrauser une ancienne version de Galette sans conserver vos données"); ?>
+		 	<? echo _T("Vous installez Galette pour la première fois, ou vous souhaitez écraser une ancienne version de Galette sans conserver vos données"); ?>
 		 </P>
 		<P>
 			<INPUT type="radio" name="install_type" value="upgrade"> <? echo _T("Mise à jour :"); ?><BR>
