@@ -3,6 +3,7 @@
 /* functions.inc.php
  * - Fonctions utilitaires
  * Copyright (c) 2003 Frédéric Jaqcuot
+ * Copyright (c) 2004 Georges Khaznadar (password encryption and images)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,6 +35,41 @@
 	        	$i++;
 	      	}
 	     	return $pass;
+	}
+
+        function PasswordImagePath($c){
+	  return "photos/pw_".md5($c).".png";
+	}
+
+        function PasswordImage(){
+	  // outputs a png image for a random password
+	  // and a crypted string for it. The filename
+	  // for this image can be computed from the crypted
+	  // string by PasswordImagePath.
+	  // the retrun value is just the crypted password.
+	  
+	  $mdp=makeRandomPassword(7);
+	  $c=crypt($mdp);
+          $png= imagecreate(10+7.5*strlen($mdp),18);
+	  $bg= imagecolorallocate($png,160,160,160);
+	  imagestring($png, 3, 5, 2, $mdp, imagecolorallocate($png,0,0,0));
+	  imagepng($png,PasswordImagePath($c));
+	  return $c;
+	}
+
+        function PasswordImageClean(){
+	  // cleans any password image file older than 1 minute
+	  $dh=@opendir("photos");
+	  while($file=readdir($dh)){
+	    if (substr($file,0,3)=="pw_" && 
+		time() - filemtime("photos/".$file) > 60) {
+	      unlink("photos/".$file);
+	    }
+	  }
+	}
+
+        function PasswordCheck($pass,$crypt){
+	  return crypt($pass,$crypt)==$crypt;
 	}
 
 	function isSelected($champ1, $champ2) { 

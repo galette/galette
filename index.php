@@ -38,13 +38,17 @@
 		}
 		else
 		{
-			$requete = "SELECT id_adh, bool_admin_adh, nom_adh, prenom_adh
+			$requete = "SELECT id_adh, bool_admin_adh, nom_adh, 
+                                        prenom_adh, mdp_adh
 					FROM ".PREFIX_DB."adherents
-									WHERE login_adh=" . txt_sqls($_POST["login"]) . "
-									AND activite_adh='1'
-									AND mdp_adh=" . txt_sqls($_POST["password"]);
+					WHERE login_adh=" . txt_sqls($_POST["login"]) . "
+					AND activite_adh='1'";
 			$resultat = &$DB->Execute($requete);
-			if (!$resultat->EOF)
+			if (!$resultat->EOF&&
+                            ($resultat->fields[4] == $_POST["password"] ||
+                             $resultat->fields[4] == 
+                               crypt($_POST["password"],$resultat->fields[4]))
+                           )
 			{
 				if ($resultat->fields[1]=="1")
 					$_SESSION["admin_status"]=1;
