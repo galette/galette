@@ -473,7 +473,7 @@
 	if ($url_adh=="")
 		$url_adh = "http://";
 	if ($mdp_adh=="")
-		$mdp_adh = makeRandomPassword();
+		$mdp_adh = makeRandomPassword(7);
 
 	// variable pour la desactivation de champs		
 	if ($_SESSION["admin_status"]==0)
@@ -532,31 +532,23 @@
 <?
 	$image_adh = "";
 	if (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".jpg"))
-		$image_adh = "photos/tn_" . $id_adh . ".jpg";
+		$image_adh = WEB_ROOT . "photos/tn_" . $id_adh . ".jpg";
 	elseif (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".gif"))
-		$image_adh = "photos/tn_" . $id_adh . ".gif";
+		$image_adh = WEB_ROOT . "photos/tn_" . $id_adh . ".gif";
 	elseif (file_exists(WEB_ROOT . "photos/tn_" . $id_adh . ".png"))
-		$image_adh = "photos/tn_" . $id_adh . ".png";
-	elseif (file_exists(WEB_ROOT . "photos/" . $id_adh . ".jpg"))
-		$image_adh = "photos/" . $id_adh . ".jpg";
-	elseif (file_exists(WEB_ROOT . "photos/" . $id_adh . ".gif"))
-		$image_adh = "photos/" . $id_adh . ".gif";
-	elseif (file_exists(WEB_ROOT . "photos/" . $id_adh . ".png"))
-		$image_adh = "photos/" . $id_adh . ".png";
+		$image_adh = WEB_ROOT . "photos/tn_" . $id_adh . ".png";
 
-	if ($image_adh != "")
-	{
-		if (function_exists("ImageCreateFromString"))
-			$imagedata = getimagesize($image_adh);
-		else
-			$imagedata = array("130","");
+    if (function_exists("ImageCreateFromString"))
+    {
+        if ($image_adh != "")
+            $imagedata = getimagesize($image_adh);
+        else
+            $imagedata = getimagesize(WEB_ROOT . "photos/default.png");
+    }
+    else
+        $imagedata = array("130","");
 ?>
-									<IMG src="<? echo $image_adh."?nocache=".time(); ?>" border="1" alt="<? echo _T("Photo"); ?>" width="<? echo $imagedata[0]; ?>" height="<? echo $imagedata[1]; ?>">
-<?
-	}
-	else
-		echo _T("[ pas de photo ]");
-?>	
+									<IMG src="photo.php?tn=1&id_adh=<? echo $id_adh."&nocache=".time(); ?>" border="1" alt="<? echo _T("Photo"); ?>" width="<? echo $imagedata[0]; ?>" height="<? echo $imagedata[1]; ?>">
 								</TD>
 						  </TR>
 						  <TR>

@@ -136,7 +136,6 @@ $lang["Madame"]="Madame";
 $lang["Monsieur"]="Monsieur";
 $lang["Nom :"]="Nom :";
 $lang["Photo"]="Photo";
-$lang["[ pas de photo ]"]="[ pas de photo ]";
 $lang["Prénom :"]="Prénom :";
 $lang["Pseudo :"]="Pseudo :";
 $lang["Date de naissance :"]="Date de naissance :";
