@@ -120,6 +120,7 @@
 			
 			// on précise les champs non modifiables
 			if (
+			        ($_POST["self_adherent"]==1) || //!!!faudra restreindre plus !
 				($_SESSION["admin_status"]==1 && $fieldname!="id_adh"
 							      && $fieldname!="date_echeance") ||
 			    	($_SESSION["admin_status"]==0 && $fieldname!="date_crea_adh"
