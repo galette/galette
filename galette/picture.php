@@ -1,7 +1,7 @@
 <? 
 
 /* picture.php
- * - Display a picture or thumbnail
+ * - Display a picture
  * Copyright (c) 2004 Frédéric Jaqcuot
  *
  * This program is free software; you can redistribute it and/or
@@ -47,8 +47,19 @@
 			WHERE id_adh=".$id_adh;
 		$result = &$DB->Execute($sql);
 		if ($result->RecordCount()!=0)
-		{
-			header('Content-type: image/jpeg');
+		{	
+			switch($result->fields['format'])
+			{
+				case 'jpeg':
+					header('Content-type: image/jpeg');
+					break;
+				case 'png':
+					header('Content-type: image/png');
+					break;
+				case 'gif':
+					header('Content-type: image/gif');
+					break;
+			}	
 			echo $result->fields['picture'];
 		}
 		else
