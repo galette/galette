@@ -139,7 +139,7 @@
 
 				// vérification de la présence des champs obligatoires
 				if ($$fieldreq!="" && $post_value=="")
-				  $error_detected = "<LI>"._("- Check that all mandatory fields are filled in.")."</LI>";
+				  $error_detected = "<LI>"._T("- Check that all mandatory fields are filled in.")."</LI>";
 				else
 				{
 					$value = "";
@@ -152,18 +152,18 @@
 					      //$value=$DB->DBDate(mktime(0,0,0,$array_jours[2],$array_jours[1],$array_jours[3]));
 					      $value = "'".$array_jours[3]."-".$array_jours[2]."-".$array_jours[1]."'";
 					    } else{
-					      $error_detected .= "<LI>"._("- Non valid date!")."</LI>";
+					      $error_detected .= "<LI>"._T("- Non valid date!")."</LI>";
 					    }
 					  }
 					  else
-					  	$error_detected .= "<LI>"._("- Wrong date format (dd/mm/yyyy)!")."</LI>";
+					  	$error_detected .= "<LI>"._T("- Wrong date format (dd/mm/yyyy)!")."</LI>";
 					}
  					elseif(strstr($proprietes_arr["type"],"int"))
  					{
  						if (is_numeric($post_value) || $post_value=="")
 						  $value=$DB->qstr($post_value,ENT_QUOTES);
 						else
-							$error_detected .= "<LI>"._("- The duration must be an integer!")."</LI>";
+							$error_detected .= "<LI>"._T("- The duration must be an integer!")."</LI>";
  					}
  					elseif(strstr($proprietes_arr["type"],"float"))
  					{
@@ -171,7 +171,7 @@
  						if (is_numeric($us_value) || $us_value=="")
 						  $value=$DB->qstr($us_value,ENT_QUOTES);
 						else
-							$error_detected .= "<LI>"._("- The amount must be an integer!")."</LI>";
+							$error_detected .= "<LI>"._T("- The amount must be an integer!")."</LI>";
  					}
  					else
  					{
@@ -198,7 +198,7 @@
  		 		$requete = "UPDATE ".PREFIX_DB."cotisations
  		 								SET " . substr($update_string,1) . " 
  		 								WHERE id_cotis=" . $DB->qstr($id_cotis);
-				dblog(_("Contribution updated:")." ".strtoupper($nom_adh)." ".$prenom_adh, $requete);							
+				dblog(_T("Contribution updated:")." ".strtoupper($nom_adh)." ".$prenom_adh, $requete);							
   			}
  		 	else
  		 	{
@@ -208,7 +208,7 @@
   									(" . substr($insert_string_fields,1) . ") 
   									VALUES (" . substr($insert_string_values,1) . ")";
   									
- 				dblog(_("Add a contribution :")." ".strtoupper($nom_adh)." ".$prenom_adh, $requete);							
+ 				dblog(_T("Add a contribution :")." ".strtoupper($nom_adh)." ".$prenom_adh, $requete);							
   			}
 			$DB->Execute($requete);
 			
@@ -294,7 +294,7 @@
 
 ?> 
  
-						<H1 class="titre"><? echo _("Contribution card"); ?> (<? if ($id_cotis!="") echo _("modification"); else echo _("creation"); ?>)</H1>
+						<H1 class="titre"><? echo _T("Contribution card"); ?> (<? if ($id_cotis!="") echo _T("modification"); else echo _T("creation"); ?>)</H1>
 						<FORM action="ajouter_contribution.php" method="post"> 
 						
 <?
@@ -303,7 +303,7 @@
 	{
 ?>
   	<DIV id="errorbox">
-  		<H1><? echo _("- ERROR -"); ?></H1>
+  		<H1><? echo _T("- ERROR -"); ?></H1>
   		<UL>
   			<? echo $error_detected; ?>
   		</UL>
@@ -315,10 +315,10 @@
 						<div align="center">
 						<table border="0" id="input-table"> 
 							<tr> 
-								<TH id="libelle" <? echo $id_adh_req ?>><? echo _("Contributor:"); ?></TH> 
+								<TH id="libelle" <? echo $id_adh_req ?>><? echo _T("Contributor:"); ?></TH> 
 								<td>
 									<select name="id_adh">
-										<option value="" <? isSelected($id_adh,"") ?>><? echo _("-- select a name --"); ?></option>
+										<option value="" <? isSelected($id_adh,"") ?>><? echo _T("-- select a name --"); ?></option>
 									<?
 										$requete = "SELECT id_adh, nom_adh, prenom_adh
 		 														FROM ".PREFIX_DB."adherents
@@ -335,7 +335,7 @@
 									?>
 									</select>
 								</td> 
-								<TH id="libelle" <? echo $id_type_cotis_req ?>><? echo _("Contribution type:"); ?></TH> 
+								<TH id="libelle" <? echo $id_type_cotis_req ?>><? echo _T("Contribution type:"); ?></TH> 
 								<td>
 									<select name="id_type_cotis">
 									<?
@@ -356,26 +356,26 @@
 								</td> 
 							</tr>
 						  <tr>
-								<TH id="libelle" <? echo $montant_cotis_req ?>><? echo _("Amount:"); ?></TH> 
+								<TH id="libelle" <? echo $montant_cotis_req ?>><? echo _T("Amount:"); ?></TH> 
 								<td><input type="text" name="montant_cotis" value="<? echo $montant_cotis; ?>" maxlength="<? echo $montant_cotis_len; ?>"></td> 
-								<TH id="libelle" <? echo $duree_mois_cotis_req ?>><? echo _("Extension of adhesion:"); ?></TH> 
-								<td><input type="text" name="duree_mois_cotis" value="<? echo $duree_mois_cotis; ?>" maxlength="<? echo $duree_mois_cotis_len; ?>"> <? echo _("months"); ?></td>
+								<TH id="libelle" <? echo $duree_mois_cotis_req ?>><? echo _T("Extension of adhesion:"); ?></TH> 
+								<td><input type="text" name="duree_mois_cotis" value="<? echo $duree_mois_cotis; ?>" maxlength="<? echo $duree_mois_cotis_len; ?>"> <? echo _T("months"); ?></td>
 							</tr>
 							<tr> 
-								<TH id="libelle" <? echo $date_cotis_req ?>><? echo _("Date of contribution:"); ?><br>&nbsp;</TH> 
-								<td colspan="3"><input type="text" name="date_cotis" value="<? echo $date_cotis; ?>" maxlength="10"><BR><DIV class="exemple"><? echo _("(dd/mm/yyyy format)"); ?></DIV></td> 
+								<TH id="libelle" <? echo $date_cotis_req ?>><? echo _T("Date of contribution:"); ?><br>&nbsp;</TH> 
+								<td colspan="3"><input type="text" name="date_cotis" value="<? echo $date_cotis; ?>" maxlength="10"><BR><DIV class="exemple"><? echo _T("(dd/mm/yyyy format)"); ?></DIV></td> 
 						  </tr> 
 							<tr> 
-								<TH id="libelle" <? echo $info_cotis_req ?>><? echo _("Comments:"); ?></TH> 
+								<TH id="libelle" <? echo $info_cotis_req ?>><? echo _T("Comments:"); ?></TH> 
 								<td colspan="3"><textarea name="info_cotis" cols="61" rows="6"><? echo $info_cotis; ?></textarea></td> 
 						  </tr> 
 							<tr> 
-								<TH align="center" colspan="4"><BR><input type="submit" name="valid" value="<? echo _("Save"); ?>"></TH> 
+								<TH align="center" colspan="4"><BR><input type="submit" name="valid" value="<? echo _T("Save"); ?>"></TH> 
 						  </tr> 
 							</table> 
 						</div>
 						<br> 
-						<? echo _("NB : The mandatory fields are in"); ?> <font style="color: #FF0000"><? echo _("red"); ?></font>. 
+						<? echo _T("NB : The mandatory fields are in"); ?> <font style="color: #FF0000"><? echo _T("red"); ?></font>. 
 						</BLOCKQUOTE> 
 						<input type="hidden" name="id_cotis" value="<? echo $id_cotis ?>"> 
 						</form> 

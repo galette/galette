@@ -28,7 +28,7 @@
 
 	function isEmail($login) {
 		if( empty($login) ) {
-			$GLOBALS["error_detected"] = _("empty login");
+			$GLOBALS["error_detected"] = _T("empty login");
 		} else {
 			$req = "SELECT email_adh
 				FROM ".PREFIX_DB."adherents
@@ -36,13 +36,13 @@
 			$result = &$GLOBALS["DB"]->Execute($req);
 
 			if ($result->EOF) {
-				$GLOBALS["error_detected"] = _("this login doesn't exist");
-				dblog(_("Nonexistent login sent via the lost password form. Login:")." \"" . $login ."\"");
+				$GLOBALS["error_detected"] = _T("this login doesn't exist");
+				dblog(_T("Nonexistent login sent via the lost password form. Login:")." \"" . $login ."\"");
 			}else{
 				$email=$result->fields[0];
 				if( empty($email) ) {
-					$GLOBALS["error_detected"] = _("This account doesn't have a valid email address. Please contact an administrator.");
-					dblog(_("Someone asked to recover his password but had no email. Login:")." \"" . $login . "\"");
+					$GLOBALS["error_detected"] = _T("This account doesn't have a valid email address. Please contact an administrator.");
+					dblog(_T("Someone asked to recover his password but had no email. Login:")." \"" . $login . "\"");
 				}else
 				return $email;
 			}
@@ -60,28 +60,28 @@
 			$result = &$DB->Execute($req);
 			if (!$result->EOF)
 				$mdp_adh = $result->fields[0];
-			$mail_subject = _("Your Galette identifiers");
-			$mail_text =  _("Hello,")."\n";
+			$mail_subject = _T("Your Galette identifiers");
+			$mail_text =  _T("Hello,")."\n";
 			$mail_text .= "\n";
-			$mail_text .= _("Someone (probably you) asked to recover your password.")."\n";
+			$mail_text .= _T("Someone (probably you) asked to recover your password.")."\n";
 			$mail_text .= "\n";
-			$mail_text .= _("Please login at this address:")."\n";
+			$mail_text .= _T("Please login at this address:")."\n";
 			$mail_text .= HTTP."://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
 			$mail_text .= "\n";
-			$mail_text .= _("Username:")." ".custom_html_entity_decode($login_adh, ENT_QUOTES)."\n";
-			$mail_text .= _("Password:")." ".custom_html_entity_decode($mdp_adh, ENT_QUOTES)."\n";
+			$mail_text .= _T("Username:")." ".custom_html_entity_decode($login_adh, ENT_QUOTES)."\n";
+			$mail_text .= _T("Password:")." ".custom_html_entity_decode($mdp_adh, ENT_QUOTES)."\n";
 			$mail_text .= "\n";
-			$mail_text .= _("See you soon!")."\n";
+			$mail_text .= _T("See you soon!")."\n";
 			$mail_text .= "\n";
-			$mail_text .= _("(this mail was sent automatically)")."\n";
+			$mail_text .= _T("(this mail was sent automatically)")."\n";
 			$mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\n";
 			if(  mail($email_adh,$mail_subject,$mail_text, $mail_headers) ) {
-				dblog(_("Password sent. Login:")." \"" . $login_adh . "\"");
-				$warning_detected = _("Password sent. Login:")." \"" . $login_adh . "\"";
+				dblog(_T("Password sent. Login:")." \"" . $login_adh . "\"");
+				$warning_detected = _T("Password sent. Login:")." \"" . $login_adh . "\"";
 				$password_sent = true;
 			}else{
-				dblog(_("A problem happened while sending password for account:")." \"" . $login_adh . "\"");
-				$warning_detected = _("A problem happened while sending password for account:")." \"" . $login_adh . "\"";
+				dblog(_T("A problem happened while sending password for account:")." \"" . $login_adh . "\"");
+				$warning_detected = _T("A problem happened while sending password for account:")." \"" . $login_adh . "\"";
 			}
 		}
 	}
@@ -103,12 +103,12 @@
 		<TD align="center">
 			<IMG src="images/galette.jpg" alt="[ Galette ]" width="103" height="80"><BR>
 			<FORM action="lostpasswd.php" method="post"> 
-				<B class="title"><? echo _("Password recovery"); ?></B><BR>
+				<B class="title"><? echo _T("Password recovery"); ?></B><BR>
 				<BR>
 				
 <?php if( isset($error_detected) ) { ?>
 <DIV id="errorbox" style="width: 300px">
-	<H1><? echo _("- ERROR -"); ?></H1>
+	<H1><? echo _T("- ERROR -"); ?></H1>
 	<UL>
 		<? echo $error_detected; ?>
 	</UL>
@@ -117,7 +117,7 @@
 
 <?php if( isset($warning_detected) ) { ?>
 <DIV id="errorbox" style="width: 300px">
-	<H1><? echo _("- WARNING -"); ?></H1>
+	<H1><? echo _T("- WARNING -"); ?></H1>
 	<UL>
 		<? echo $warning_detected; ?>
 	</UL>
@@ -128,17 +128,17 @@
 <?php if( !isset($password_sent) ) { ?>
 				<TABLE> 
 					<TR> 
-						<TD><? echo _("Username:"); ?></TD> 
+						<TD><? echo _T("Username:"); ?></TD> 
 						<TD><INPUT type="text" name="login"></TD> 
 					</TR> 
 				</TABLE>
-				<INPUT type="submit" name="lostpasswd" value="<? echo _("Send me my password"); ?>">
+				<INPUT type="submit" name="lostpasswd" value="<? echo _T("Send me my password"); ?>">
 				<BR>
 				<BR>
 <?php } ?>
 			</FORM>
 			<FORM action="index.php" method="get">
-				<INPUT type="submit" name="lostpasswd" value="<? echo _("Back to login page"); ?>">
+				<INPUT type="submit" name="lostpasswd" value="<? echo _T("Back to login page"); ?>">
 			</FORM>
 		</TD>
 	</TR>

@@ -49,15 +49,17 @@ $domain = 'galette';
 $textdomain= THIS_BASE_DIR . "/../lang";
 bindtextdomain($domain, $textdomain); 
 textdomain($domain);
-if ($loc!=$language){
-  echo "<font color='red'>Warning:</font> locale $language is probably not intalled on the server.<br>";
+if ($loc!=$language)
+{
+	include(WEB_ROOT."lang/lang_".$pref_lang.".php");
+	//echo "<font color='red'>Warning:</font> locale $language is probably not intalled on the server.<br>";
 }
 
 /***********************************
  * some constant strings found in the database
  ***********************************
  */
-
+/*
 $foo=_("Realization:");
 $foo=_("Graphics:");
 $foo=_("Publisher:");
@@ -79,5 +81,5 @@ $foo=_("Partnership");
 $foo=_("french");
 $foo=_("english");
 $foo=_("spanish");
-
+*/
 ?>
