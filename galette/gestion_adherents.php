@@ -32,6 +32,8 @@
 	if ($_SESSION["admin_status"]==0) 
 		header("location: voir_adherent.php");
 	
+	$members = array();
+	
 	// Filters
 	$page = 1;
 	if (isset($_GET["page"]))
@@ -70,15 +72,8 @@
 				$requetesup = "DELETE FROM ".PREFIX_DB."adherents 
 						WHERE id_adh=".$DB->qstr($_GET["sup"]); 
 				$DB->Execute($requetesup); 		
-	
-				// suppression de l'eventuelle photo
-				@unlink(WEB_ROOT . "photos/".$id_adh.".jpg");
-				@unlink(WEB_ROOT . "photos/".$id_adh.".gif");
-				@unlink(WEB_ROOT . "photos/".$id_adh.".jpg");
-				@unlink(WEB_ROOT . "photos/tn_".$id_adh.".jpg");
-				@unlink(WEB_ROOT . "photos/tn_".$id_adh.".gif");
-				@unlink(WEB_ROOT . "photos/tn_".$id_adh.".jpg");
-			
+				dblog("Delete the member card (and dues)",strtoupper($resultat->fields[0])." ".$resultat->fields[1],$requetesup);
+
 				// suppression records cotisations
 				$requetesup = "DELETE FROM ".PREFIX_DB."cotisations 
 						WHERE id_adh=" . $DB->qstr($_GET["sup"]); 
@@ -88,10 +83,14 @@
 				$requetesup = "DELETE FROM ".PREFIX_DB."adh_info
 						WHERE id_adh=".$DB->qstr($_GET["sup"]);
 				$DB->Execute($requetesup);
-				
-				dblog(_T("Delete the member card (and dues)")." ".strtoupper($resultat->fields[0])." ".$resultat->fields[1], $requetesup);
+
+				// erase picture
+				$requetesup = "DELETE FROM ".PREFIX_DB."pictures
+						WHERE id_adh=".$DB->qstr($_GET["sup"]);
+				$DB->Execute($requetesup);
 			}
 			$resultat->Close();
+			header ('location: gestion_adherents.php');
  		}
 	}
 
@@ -171,13 +170,7 @@
 		$nbpages = intval($nbadh->fields[0]/PREF_NUMROWS)+1;
 
 	$compteur = 1+($page-1)*PREF_NUMROWS;
-	if ($resultat->EOF)
-	{
-?>	
-		<TR><TD colspan="6" class="emptylist"><? echo _T("no member"); ?></TD></TR>
-<?
-	}
-	else while (!$resultat->EOF) 
+	while (!$resultat->EOF) 
 	{ 
 		// définition CSS pour adherent désactivé
 		if ($resultat->fields[4]=="1")
@@ -253,7 +246,8 @@
 			1 => _T("Close expiries"),
 			2 => _T("Latecomers")));
 	$tpl->assign('filtre_2_options', array(
-			1 => _T("All the accounts"),
+			0 => _T("All the accounts"),
+			1 => _T("Active accounts"),
 			2 => _T("Inactive accounts")));
 										
 	$content = $tpl->fetch("gestion_adherents.tpl");
