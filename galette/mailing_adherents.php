@@ -374,7 +374,7 @@
 <?
 			}
 ?>
-									<A href="voir_adherent.php?id_adh=<? echo $resultat->fields["id_adh"] ?>"><? echo strtoupper(htmlentities($resultat->fields[1], ENT_QUOTES))." ".htmlentities($resultat->fields[2], ENT_QUOTES); ?></A>
+									<A href="voir_adherent.php?id_adh=<? echo $resultat->fields["id_adh"] ?>"><? echo htmlentities(strtoupper($resultat->fields[1]), ENT_QUOTES)." ".htmlentities($resultat->fields[2], ENT_QUOTES); ?></A>
 								</TD> 
 								<TD class="<? echo $row_class; ?>" nowrap> 
 									<? if ($resultat->fields[8]!="") echo "<A href=\"mailto:".htmlentities($resultat->fields[8], ENT_QUOTES)."\">".htmlentities($resultat->fields[8], ENT_QUOTES)."</A>"; ?>&nbsp; 
@@ -565,7 +565,7 @@
 <?
 			}
 ?>
-						<a href="voir_adherent.php?id_adh=<? echo $resultat->fields["id_adh"] ?>"><? echo strtoupper(htmlentities($resultat->fields[1], ENT_QUOTES))." ".htmlentities($resultat->fields[2], ENT_QUOTES) ?></a>
+						<a href="voir_adherent.php?id_adh=<? echo $resultat->fields["id_adh"] ?>"><? echo htmlentities(strtoupper($resultat->fields[1]), ENT_QUOTES)." ".htmlentities($resultat->fields[2], ENT_QUOTES) ?></a>
 					</td> 
 					<td bgcolor="<? echo $color ?>"<? echo $activity_class ?>> 
 						<? if ($resultat->fields[8]!="") echo "<A href=\"mailto:".htmlentities($resultat->fields[8], ENT_QUOTES)."\">".htmlentities($resultat->fields[8], ENT_QUOTES)."</A>"; ?>&nbsp; 
@@ -751,7 +751,7 @@
 <?
 				}
 ?>
-									<a href="voir_adherent.php?id_adh=<? echo $resultat->fields["id_adh"] ?>"><? echo strtoupper(htmlentities($resultat->fields[1], ENT_QUOTES))." ".htmlentities($resultat->fields[2], ENT_QUOTES); ?></a>
+									<a href="voir_adherent.php?id_adh=<? echo $resultat->fields["id_adh"] ?>"><? echo htmlentities(strtoupper($resultat->fields[1]), ENT_QUOTES)." ".htmlentities($resultat->fields[2], ENT_QUOTES); ?></a>
 								</td> 
 <?
 				$coord_adh = "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">";

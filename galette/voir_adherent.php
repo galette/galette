@@ -100,7 +100,7 @@
 		default :
 			$nom_adh_ext .= _T("Mlle.");
 	}
-	$nom_adh_ext .= " ".strtoupper($nom_adh)." ".ucfirst(strtolower($prenom_adh));
+	$nom_adh_ext .= " ".htmlentities(strtoupper(html_entity_decode($nom_adh)), ENT_QUOTES)." ".ucfirst(strtolower($prenom_adh));
 ?>
 						<TD bgcolor="#EEEEEE"><? echo $nom_adh_ext; ?></TD>
 <?

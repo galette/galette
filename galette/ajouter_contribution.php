@@ -323,7 +323,7 @@
 										while (!$result->EOF)
 										{									
 									?>
-										<option value="<? echo $result->fields[0] ?>"<? isSelected($id_adh,$result->fields[0]) ?>><? echo strtoupper(htmlentities($result->fields[1], ENT_QUOTES))." ".htmlentities($result->fields[2], ENT_QUOTES); ?></option>
+										<option value="<? echo $result->fields[0] ?>"<? isSelected($id_adh,$result->fields[0]) ?>><? echo htmlentities(strtoupper($result->fields[1]), ENT_QUOTES)." ".htmlentities($result->fields[2], ENT_QUOTES); ?></option>
 									<?
 											$result->MoveNext();
 										}
