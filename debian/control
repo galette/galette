@@ -7,9 +7,8 @@ Standards-Version: 3.6.0
 
 Package: galette
 Architecture: all
-Depends: php4
+Depends: php4, mysql-server|postgresql, php4-mysql|php4-pgsql
 Description: Yet another LUG administration system.
- Galette makes easy to manage user subscription, annual fee etc.
- The acronym is for the French sentence: Gestionnaire d'Adhérents 
- en Ligne Extrèmement Tarabiscoté mais Tellement Efficace, which means
- In-line membership management extremely sophisticated, but so efficient.
+ Galette makes easy to manage user subscription, annual fee, etc.
+ for association members. It features customization for various
+ nationalities among members.
