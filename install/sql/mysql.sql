@@ -82,29 +82,12 @@ INSERT INTO galette_types_cotisation VALUES (6,'Partenariat');
 
 DROP TABLE galette_preferences;
 CREATE TABLE galette_preferences (
-  pref_nom varchar(40) NOT NULL default '',
-  pref_adresse varchar(150) NOT NULL default '',
-  pref_adresse2 varchar(150) default NULL,
-  pref_cp varchar(10) NOT NULL default '',
-  pref_ville varchar(50) NOT NULL default '',
-  pref_pays varchar(50) default NULL,
-  pref_lang varchar(20) NOT NULL default '',
-  pref_numrows int(10) unsigned NOT NULL default '30',
-  pref_log enum('0','1','2') NOT NULL default '1',
-  pref_email_nom varchar(20) NOT NULL default '',
-  pref_email varchar(150) NOT NULL default '',
-  pref_etiq_marges int(10) unsigned NOT NULL default '0',
-  pref_etiq_hspace int(10) unsigned NOT NULL default '0',
-  pref_etiq_vspace int(10) unsigned NOT NULL default '0',
-  pref_etiq_hsize int(10) unsigned NOT NULL default '0',
-  pref_etiq_vsize int(10) unsigned NOT NULL default '0',
-  pref_etiq_cols int(10) unsigned NOT NULL default '0',
-  pref_etiq_rows int(10) unsigned NOT NULL default '0',
-  pref_etiq_corps int(10) unsigned NOT NULL default '0',
-  pref_admin_login varchar(20) NOT NULL default '',
-  pref_admin_pass varchar(20) NOT NULL default ''
+  id_pref int(10) unsigned NOT NULL auto_increment,
+  nom_pref varchar(100) NOT NULL default '',
+  val_pref varchar(200) NOT NULL default '',
+  PRIMARY KEY  (id_pref)
 ) TYPE=MyISAM;
-
+	
 DROP TABLE galette_logs;
 CREATE TABLE galette_logs (
   id_log int(10) unsigned NOT NULL auto_increment,

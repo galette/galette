@@ -3,29 +3,6 @@ ALTER TABLE adherents ADD bool_display_info enum('1') default NULL AFTER bool_ex
 ALTER TABLE adherents ADD info_public_adh text AFTER info_adh;
 ALTER TABLE adherents ADD pays_adh varchar(50) default NULL AFTER ville_adh;
 ALTER TABLE adherents ADD adresse2_adh varchar(150) default NULL AFTER adresse_adh;
-CREATE TABLE preferences (
-  pref_nom varchar(40) NOT NULL default '',
-  pref_adresse varchar(150) NOT NULL default '',
-  pref_adresse2 varchar(150) default NULL,
-  pref_cp varchar(10) NOT NULL default '',
-  pref_ville varchar(50) NOT NULL default '',
-  pref_pays varchar(50) default NULL,
-  pref_lang varchar(20) NOT NULL default '',
-  pref_numrows int(10) unsigned NOT NULL default '30',
-  pref_log enum('0','1','2') NOT NULL default '1',
-  pref_email_nom varchar(20) NOT NULL default '',
-  pref_email varchar(150) NOT NULL default '',
-  pref_etiq_marges int(10) unsigned NOT NULL default '0',
-  pref_etiq_hspace int(10) unsigned NOT NULL default '0',
-  pref_etiq_vspace int(10) unsigned NOT NULL default '0',
-  pref_etiq_hsize int(10) unsigned NOT NULL default '0',
-  pref_etiq_vsize int(10) unsigned NOT NULL default '0',
-  pref_etiq_cols int(10) unsigned NOT NULL default '0',
-  pref_etiq_rows int(10) unsigned NOT NULL default '0',
-  pref_etiq_corps int(10) unsigned NOT NULL default '0',
-  pref_admin_login varchar(20) NOT NULL default '',
-  pref_admin_pass varchar(20) NOT NULL default ''
-) TYPE=MyISAM;
 
 CREATE TABLE logs (
   id_log int(10) unsigned NOT NULL auto_increment,

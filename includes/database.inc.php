@@ -27,20 +27,14 @@
 	   define("PREFIX_DB","");
 
 	// Chargement des preferences
-	// recuperation de la liste de champs de la table
-		$result = $DB->Execute("SELECT * FROM ".PREFIX_DB."preferences");
-		$fields = &$DB->MetaColumns(PREFIX_DB."preferences");
-		while (list($champ, $proprietes) = @each($fields))
-		{
-			$proprietes_arr = get_object_vars($proprietes);
-			// on obtient name, max_length, type, not_null, has_default, primary_key,
-			// auto_increment et binary		
-			
-			$fieldname = $proprietes_arr["name"];
-			if (isset($result->fields[$proprietes_arr["name"]]))
-				define(strtoupper($proprietes_arr["name"]),$result->fields[$proprietes_arr["name"]]);
-		}
-			
+	$result = $DB->Execute("SELECT * FROM ".PREFIX_DB."preferences");
+	while (!$result->EOF)
+	{
+	   define(strtoupper($result->fields["nom_pref"]), $result->fields["val_pref"]);
+	   $result->MoveNext();
+	}
+	$result->Close();
+	
 	function get_echeance ($DB, $cotisant, $exempt_default="") {
 		if ($exempt_default=="")
 		{
