@@ -119,22 +119,22 @@ function is_valid_email ($address) {
                      trim($address)));
 }
 
-function dblog($text, $query="")
+function dblog($action, $argument="", $query="")
 {
-  if (PREF_LOG=="2")
-    {
-      $requete = "INSERT INTO ".PREFIX_DB."logs (date_log, ip_log, adh_log, text_log) VALUES (" . $GLOBALS["DB"]->DBTimeStamp(time()) . ", " . $GLOBALS["DB"]->qstr($_SERVER["REMOTE_ADDR"]) . ", " . $GLOBALS["DB"]->qstr($_SESSION["logged_nom_adh"]) . ", " . $GLOBALS["DB"]->qstr($text."\n".$query) . ");";
-      $GLOBALS["DB"]->Execute($requete);
-    }
-  elseif (PREF_LOG=="1")
-    {
-      $requete = "INSERT INTO ".PREFIX_DB."logs (date_log, ip_log, adh_log, text_log) VALUES (" . $GLOBALS["DB"]->DBTimeStamp(time()) . ", " . $GLOBALS["DB"]->qstr($_SERVER["REMOTE_ADDR"]) . ", " . $GLOBALS["DB"]->qstr($_SESSION["logged_nom_adh"]) . ", " . $GLOBALS["DB"]->qstr($text) . ");";
-      $GLOBALS["DB"]->Execute($requete);
-    }
+	if (PREF_LOG>="1")
+	{
+		if (PREF_LOG==1)
+			$query="";
+		$requete = "INSERT INTO ".PREFIX_DB."logs (date_log, ip_log, adh_log, action_log, text_log, sql_log)
+				VALUES (" . $GLOBALS["DB"]->DBTimeStamp(time()) . ", " . 
+						$GLOBALS["DB"]->qstr($_SERVER["REMOTE_ADDR"]) . ", " . 
+						$GLOBALS["DB"]->qstr($_SESSION["logged_nom_adh"]) . ", " . 
+						$GLOBALS["DB"]->qstr($action) . ", " .
+						$GLOBALS["DB"]->qstr($argument) . ", " .
+						$GLOBALS["DB"]->qstr($query) . ");";
+		$GLOBALS["DB"]->Execute($requete);
+	}
 }
-
-
-
 
 function resizeimage($img,$img2,$w,$h)
 {
