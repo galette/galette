@@ -112,7 +112,7 @@
 <HEAD> 
 	<TITLE>Galette Installation</TITLE> 
 	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1"> 
-	<LINK rel="stylesheet" type="text/css" href="galette.css" > 
+	<LINK rel="stylesheet" type="text/css" href="../templates/default/galette.css" > 
 </HEAD> 
 <H1 class="titreinstall">Galette installation</H1>
 <DIV id="installpage" align="center">
@@ -940,6 +940,8 @@ define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 			$DB->Execute($default);
 
 			// member types
+			$default = "DELETE FROM ".$_POST["install_dbprefix"]."statuts";
+			$DB->Execute($default);
 			$default = "INSERT INTO ".$_POST["install_dbprefix"]."statuts VALUES (1,'President',0)";
 			$DB->Execute($default);
 			$default = "INSERT INTO ".$_POST["install_dbprefix"]."statuts VALUES (2,'Treasurer',10)";
