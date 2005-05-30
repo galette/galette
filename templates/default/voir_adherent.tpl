@@ -46,7 +46,7 @@
 					<TD bgcolor="#DDDDFF"><B>{_T("Freed of dues:")}</B></TD> 
 					<TD bgcolor="#EEEEEE">{$data.bool_exempt_adh}</TD> 
 					<TD bgcolor="#DDDDFF"><B>{_T("Language:")}<B></TD>
-					<TD bgcolor="#EEEEEE"><IMG SRC="" align="left">{$data.pref_lang}</TD>
+					<TD bgcolor="#EEEEEE"><IMG SRC="{$data.pref_lang_img}" align="left">{$data.pref_lang}</TD>
 				</TR> 
 {/if}
 				<TR>
