@@ -27,7 +27,7 @@
 				</TR>
 				<TR>
 					<TD bgcolor="#DDDDFF"><B>{_T("Profession:")}</B></TD> 
-					<TD bgcolor="#EEEEEE"><? echo $prof_adh; ?>&nbsp;</TD> 
+					<TD bgcolor="#EEEEEE">{$data.prof_adh}</TD> 
 				</TR> 
 				<TR>
 					<TD bgcolor="#DDDDFF"><B>{_T("Be visible in the<br /> members list :")}</B></TD> 
