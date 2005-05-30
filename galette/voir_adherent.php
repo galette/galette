@@ -114,8 +114,11 @@
 	// - declare dynamic fields for display
 	$disabled['dyn'] = array();
 	$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $_SESSION["admin_status"], $adherent['dyn'], $disabled['dyn'], 0);
-
-        $tpl->assign("data",$adherent);
+	
+	$adherent['pref_lang_img'] = 'lang/'.$adherent['pref_lang'].'.gif';
+	$adherent['pref_lang'] = ucfirst(_T($adherent['pref_lang']));
+	
+	$tpl->assign("data",$adherent);
 	$tpl->assign("dynamic_fields",$dynamic_fields);
 	$tpl->assign("time",time());
 	$content = $tpl->fetch("voir_adherent.tpl");
