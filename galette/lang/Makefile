@@ -2,6 +2,7 @@
 INSTALLDIR = .
 LANGUAGES = en_US fr_FR@euro es_ES@euro
 PACKAGE = galette
+MKLANG = ./make_lang_l12n.py
 PHP_SOURCES = ../index.php \
 ../self_adherent.php \
 ../self_adherent.php \
@@ -55,7 +56,7 @@ lang :
 	@echo "Génération des fichiers lang_*.php"
 	@echo "  Mise à jour de lang_english.php"
 	@echo "    extraction des chaines..."
-	@./make_lang_l12n.py en_US.po lang_english.php.new
+	@${MKLANG} en_US.po lang_english.php.new
 	@if diff -qI 'This file was automatically generated.*' lang_english.php lang_english.php.new > /dev/null; then \
 	  echo "    lang_english.php non mis à jour."; \
 	  rm lang_english.php.new; \
@@ -66,7 +67,7 @@ lang :
 
 	@echo "  Mise à jour de lang_french.php"
 	@echo "    extraction des chaines..."
-	@./make_lang_l12n.py fr_FR@euro.po lang_french.php.new
+	@${MKLANG} fr_FR@euro.po lang_french.php.new
 	@if diff -qI 'This file was automatically generated.*' lang_french.php lang_french.php.new > /dev/null; then \
 	  echo "    lang_french.php non mis à jour."; \
 	  rm lang_french.php.new; \
@@ -77,7 +78,7 @@ lang :
 
 	@echo "  Mise à jour de lang_spanish.php"
 	@echo "    extraction des chaines..."
-	@./make_lang_l12n.py es_ES@euro.po lang_spanish.php.new
+	@${MKLANG} es_ES@euro.po lang_spanish.php.new
 	
 	@if diff -qI 'This file was automatically generated.*' lang_spanish.php lang_spanish.php.new > /dev/null; then \
 	  echo "    lang_spanish.php non mis à jour."; \
