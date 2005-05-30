@@ -118,7 +118,7 @@
 					<TD><INPUT type="text" name="pref_email" value="{$pref.pref_email}" maxlength="100" size="30"></TD>
 				</TR>
 				<TR>
-					<TH {if $required.pref_mail_method eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Methode d'envoi :")}</TH>
+					<TH {if $required.pref_mail_method eq 1}style="color: #FF0000;"{/if} id="libelle">{_T("Emailing method:")}</TH>
 					<TD>
 						<INPUT type="radio" name="pref_mail_method" value="0" {if $pref.pref_mail_method eq 0}CHECKED{/if}> {_T("Emailing disabled")}<BR>
 						<INPUT type="radio" name="pref_mail_method" value="1" {if $pref.pref_mail_method eq 1}CHECKED{/if}> {_T("PHP mail() function")}<BR>
