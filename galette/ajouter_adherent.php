@@ -222,26 +222,47 @@
 				/*
 					TODO :  check filetype
 						check filesize
+						check filetype
 						check file dimensions
 						resize picture if gd available
 				*/
 
 				if (is_uploaded_file($_FILES['photo']['tmp_name']))
 				{
-					$sql = "DELETE FROM ".PREFIX_DB."pictures
-						WHERE id_adh=".$adherent['id_adh'];
-					$DB->Execute($sql);
+					switch (strtolower(substr($_FILES['photo']['name'],-4)))
+					{
+						case '.jpg':
+							$format = 'jpg';
+							break;
+						case '.gif':
+							$format = 'gif';
+							break;
+						case '.png':
+							$format = 'png';
+							break;
+						default:
+							$error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
+					}
+					
+					if (count($error_detected)==0)
+					{
+						$sql = "DELETE FROM ".PREFIX_DB."pictures
+							WHERE id_adh=".$adherent['id_adh'];
+						$DB->Execute($sql);
 
-					$f = fopen($_FILES['photo']['tmp_name'],"r");
-					$picture = '';
-					while ($r=fread($f,8192))
-						$picture .= $r;
-					fclose($f);
+						move_uploaded_file($_FILES['photo']['tmp_name'],WEB_ROOT.'photos/'.$adherent['id_adh'].'.'.$format);
+					
+						$f = fopen(WEB_ROOT.'photos/'.$adherent['id_adh'].'.'.$format,"r");
+						$picture = '';
+						while ($r=fread($f,8192))
+							$picture .= $r;
+						fclose($f);
 
-					$sql = "INSERT INTO ".PREFIX_DB."pictures
-						(id_adh, picture, format, width, height)
-						VALUES (".$DB->Qstr($adherent['id_adh']).",".$DB->Qstr($picture).",'','','')";
-					$DB->Execute($sql);
+						$sql = "INSERT INTO ".PREFIX_DB."pictures
+							(id_adh, picture, format, width, height)
+							VALUES (".$DB->Qstr($adherent['id_adh']).",".$DB->Qstr($picture).",".$DB->Qstr($format).",'','')";
+						$DB->Execute($sql);
+					}
 				}
 			}
 			elseif (isset($_POST['del_photo']))
@@ -249,6 +270,12 @@
 				$sql = "DELETE FROM ".PREFIX_DB."pictures
 					WHERE id_adh=".$adherent['id_adh'];
 				$DB->Execute($sql);
+				if (file_exists(WEB_ROOT.'photos/'.$adherent['id_adh'].'.jpg'))
+					unlink (WEB_ROOT.'photos/'.$adherent['id_adh'].'.jpg');
+				elseif (file_exists(WEB_ROOT.'photos/'.$adherent['id_adh'].'.png'))
+					unlink (WEB_ROOT.'photos/'.$adherent['id_adh'].'.png');
+				elseif (file_exists(WEB_ROOT.'photos/'.$adherent['id_adh'].'.gif'))
+					unlink (WEB_ROOT.'photos/'.$adherent['id_adh'].'.gif');
 			}
 
                         if (isset($_POST["mail_confirm"]))
@@ -290,7 +317,7 @@
 
 			if (!isset($_POST['id_adh']))
 				header('location: ajouter_contribution.php?id_adh='.$adherent['id_adh']);
-			elseif (!isset($_POST['del_photo']))
+			elseif (!isset($_POST['del_photo']) && (count($error_detected)==0))
 				header('location: voir_adherent.php?id_adh='.$adherent['id_adh']);
 		}
 	}
