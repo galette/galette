@@ -43,27 +43,44 @@
 		show_default_picture();
 	else
 	{
-		$sql = "SELECT picture,format FROM ".PREFIX_DB."pictures
-			WHERE id_adh=".$id_adh;
-		$result = &$DB->Execute($sql);
-		if ($result->RecordCount()!=0)
-		{	
-			switch($result->fields['format'])
-			{
-				case 'jpeg':
-					header('Content-type: image/jpeg');
-					break;
-				case 'png':
-					header('Content-type: image/png');
-					break;
-				case 'gif':
-					header('Content-type: image/gif');
-					break;
-			}	
-			echo $result->fields['picture'];
-		}
+		if (file_exists(WEB_ROOT.'photos/'.$id_adh.'.jpg'))
+			readfile (WEB_ROOT.'photos/'.$id_adh.'.jpg');
+		elseif (file_exists(WEB_ROOT.'photos/'.$id_adh.'.png'))
+			readfile (WEB_ROOT.'photos/'.$id_adh.'.png');
+		elseif (file_exists(WEB_ROOT.'photos/'.$id_adh.'.gif'))
+			readfile (WEB_ROOT.'photos/'.$id_adh.'.gif');
 		else
-			show_default_picture();
+		{
+			$sql = "SELECT picture,format FROM ".PREFIX_DB."pictures
+				WHERE id_adh=".$id_adh;
+			$result = &$DB->Execute($sql);
+			if ($result->RecordCount()!=0)
+			{
+				$ext = '';
+				switch($result->fields['format'])
+				{
+					case 'jpg':
+						header('Content-type: image/jpeg');
+						$ext = 'jpg';
+						break;
+					case 'png':
+						header('Content-type: image/png');
+						$ext = 'png';
+						break;
+					case 'gif':
+						header('Content-type: image/gif');
+						$ext = 'gif';
+						break;
+				}
+				// We regenerate a physical picture file 
+				$f = fopen(WEB_ROOT.'photos/'.$id_adh.'.'.$ext,"wb");
+				fwrite ($f, $result->fields['picture']);
+				fclose($f);
+				echo $result->fields['picture'];
+			}
+			else
+				show_default_picture();
+		}
 	}
 													
 ?>
