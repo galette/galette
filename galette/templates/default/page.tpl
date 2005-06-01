@@ -9,7 +9,7 @@
 	<DIV id="content">
 {$content}
 		<DIV id="copyright">
-			<A href="http://galette.logeek.com:8080/fr/" target="_blank">Galette {$GALETTE_VERSION}</A>
+			<A href="http://galette.tuxfamily.org/fr" target="_blank">Galette {$GALETTE_VERSION}</A>
 		</DIV>
 	</DIV>
 	<DIV id="menu">
