@@ -45,13 +45,13 @@ if (function_exists('putenv'))
 putenv("LANG=$language");
 putenv("LANGUAGE=$language");
 putenv("LC_ALL=$language");
-$loc=setlocale(LC_ALL, $language);
+
+// PDF Generation fails with this :
+// (I guess this is due to comma conversion in real numbers)
+//$loc=setlocale(LC_ALL, $language);
 
 $domain = 'galette';
 
-/**
- * Base directory of application
- */
 @define('THIS_BASE_DIR', dirname(__FILE__) );
 $textdomain= THIS_BASE_DIR . "/../lang";
 bindtextdomain($domain, $textdomain);

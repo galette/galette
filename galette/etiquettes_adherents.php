@@ -22,9 +22,8 @@
 	include("includes/config.inc.php");
 	include(WEB_ROOT."includes/database.inc.php"); 
 	include(WEB_ROOT."includes/session.inc.php");
-	include(WEB_ROOT."includes/functions.inc.php"); 
-        include(WEB_ROOT."includes/i18n.inc.php");
-	//include(WEB_ROOT."includes/lang.inc.php"); 
+//	include(WEB_ROOT."includes/functions.inc.php"); 
+	include_once(WEB_ROOT."includes/i18n.inc.php");
 	include(WEB_ROOT."includes/phppdflib/phppdflib.class.php");
 	
 	if ($_SESSION["logged_status"]==0) 
@@ -33,13 +32,13 @@
 		die();
 		
 	$mailing_adh = array();
-	if (isset($_POST["mailing_adh"]))
+	if (isset($_GET["mailing_adh"]))
 	{
-		while (list($key,$value)=each($_POST["mailing_adh"])) {
+		while (list($key,$value)=each($_GET["mailing_adh"])) {
 			$mailing_adh[]=$value;
 		}
 	}else{
-		print _T("You have not selected a member, please check at least one box in the beginning of lines");
+		print _T("No member was selected, please check at least one name.");
 		die();
 	}
 		$requete = "SELECT id_adh, nom_adh, prenom_adh, adresse_adh,
@@ -59,12 +58,13 @@
 		
 		$pdf = new pdffile;
 		$pdf->set_default('margin', 0);
-		$firstpage = $pdf->new_page("a4");
 		$param["height"] = PREF_ETIQ_CORPS;
+		$firstpage = $pdf->new_page("a4");
+		
 		$param["fillcolor"] = $pdf->get_color('#000000');
 		$param["align"] = "center";
 		$param["width"] = 1;
-		$param["strokecolor"] = $pdf->get_color('#DDDDDD');
+		$param["color"] = $pdf->get_color('#DDDDDD');
 
 		if ($resultat->EOF)
 			die();
@@ -94,7 +94,7 @@
 			$x2 = $x1 + round(PREF_ETIQ_HSIZE*2.835);
 			$y1 = $yorigin-($row-1)*(round(PREF_ETIQ_VSIZE*2.835)+round(PREF_ETIQ_VSPACE*2.835));
 			$y2 = $y1 - round(PREF_ETIQ_VSIZE*2.835);
-			
+												
 			$nom_adh_ext .= " ".strtoupper($resultat->fields[1])." ".ucfirst(strtolower($resultat->fields[2]));
 			$concatname = $concatname . " - " . $nom_adh_ext;
 			$param["font"] = "Helvetica-Bold";
@@ -117,13 +117,13 @@
 				$firstpage = $pdf->new_page("a4");
 			}
 			$nb_etiq++;
-		} 
+		}
 		$resultat->Close();
-		dblog(_T("Generation of ")." ".$nb_etiq." "._T("label(s)"),$concatname);
+		//dblog(_T("Generation of ")." ".$nb_etiq." "._T("label(s)"),$concatname);
 		
-		header("Content-Disposition: filename=example.pdf");
-		header("Content-Type: application/pdf");
-		$temp = $pdf->generate();
-		header('Content-Length: ' . strlen($temp));
-		echo $temp;
+	header("Content-Disposition: attachment; filename=example.pdf");
+	header("Content-Type: application/pdf");
+	$temp = $pdf->generate(0);
+	header('Content-Length: ' . strlen($temp));
+	echo $temp;
 ?>

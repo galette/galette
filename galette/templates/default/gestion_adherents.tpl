@@ -152,6 +152,7 @@
 {if $nb_members != 0}
 				<TD class="left" nowrap>
 					<A href="#" onClick="check()">{_T("(Un)Check all")}</A><BR>
+					<BR>
 					<UL>
 						<LI>{_T("Selection:")}</LI>
 						<LI><INPUT type="submit" onClick="return confirm('{_T("Do you really want to delere all selected accounts (and related contributions)?")|escape:"javascript"}');" name="delete" value="{_T("Delete")}"></LI>
