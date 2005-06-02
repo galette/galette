@@ -24,13 +24,23 @@
 	include(WEB_ROOT."includes/database.inc.php");
 	include(WEB_ROOT."includes/session.inc.php");
 	include(WEB_ROOT."includes/functions.inc.php"); 
-        include(WEB_ROOT."includes/i18n.inc.php");
+	include(WEB_ROOT."includes/i18n.inc.php");
 	include(WEB_ROOT."includes/smarty.inc.php");
 	
 	if ($_SESSION["logged_status"]==0) 
 		header("location: index.php");
 	if ($_SESSION["admin_status"]==0) 
 		header("location: voir_adherent.php");
+	
+	if (isset($_POST['labels']))
+	{
+		$qstring = 'etiquettes_adherents.php?go=1';
+		if (isset($_POST["member_sel"]))
+			foreach ($_POST["member_sel"] as $labval)
+				if (is_numeric($labval))
+					$qstring .= '&mailing_adh[]='.$labval;
+		header('location: '.$qstring);
+	}
 	
 	$members = array();
 	

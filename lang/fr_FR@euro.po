@@ -1579,7 +1579,7 @@ msgstr "Sélection :"
 #: ../templates/default/page.tpl:25
 #, fuzzy
 msgid "List of transactions"
-msgstr "Liste des contributions"
+msgstr "Liste des transactions"
 
 #: ../templates/default/page.tpl:28
 #, fuzzy
@@ -1594,7 +1594,7 @@ msgstr "Mes contributions"
 #: ../templates/default/page.tpl:43
 #, fuzzy
 msgid "Translate labels"
-msgstr "Génération d'étiquettes"
+msgstr "Traduction de libellés"
 
 #: ../templates/default/preferences.tpl:27
 msgid "General information:"
@@ -1955,11 +1955,11 @@ msgstr "[ Contributions ]"
 #~ msgstr "champ"
 
 #, fuzzy
-#~ msgid "Delete"
-#~ msgstr "Suppression"
+msgid "Delete"
+msgstr "Suppression"
 
-#~ msgid "Mail all"
-#~ msgstr "E-Mail groupé"
+msgid "Mail all"
+msgstr "E-Mail groupé"
 
 #~ msgid "Size"
 #~ msgstr "Nombre"
