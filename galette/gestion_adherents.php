@@ -32,14 +32,22 @@
 	if ($_SESSION["admin_status"]==0) 
 		header("location: voir_adherent.php");
 	
+	$error_detected = array();
+	
 	if (isset($_POST['labels']))
 	{
 		$qstring = 'etiquettes_adherents.php?go=1';
 		if (isset($_POST["member_sel"]))
-			foreach ($_POST["member_sel"] as $labval)
-				if (is_numeric($labval))
-					$qstring .= '&mailing_adh[]='.$labval;
-		header('location: '.$qstring);
+			//foreach ($_POST["member_sel"] as $labval)
+			//	if (is_numeric($labval))
+			//		$qstring .= '&mailing_adh[]='.$labval;
+		//header("HTTP/1.0 307 Temporary redirect");
+		{
+			$_SESSION['galette']['labels'] = $_POST["member_sel"];
+			header('location: '.$qstring);
+		}
+		else
+			$error_detected[] = _T("No member was selected, please check at least one name.");
 	}
 	
 	$members = array();
@@ -285,6 +293,7 @@
 	} 
 	$resultat->Close();
 	
+	$tpl->assign("error_detected",$error_detected);
 	$tpl->assign("members",$members);
 	$tpl->assign("nb_members",$nbadh->fields[0]);
 	$tpl->assign("nb_pages",$nbpages);

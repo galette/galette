@@ -1,5 +1,15 @@
 		<H1 class="titre">{_T("Management of members")}</H1>
 		<FORM action="gestion_adherents.php" method="get" name="filtre">
+{if $error_detected|@count != 0}
+		<DIV id="errorbox">
+			<H1>{_T("- ERROR -")}</H1>
+			<UL>
+{foreach from=$error_detected item=error}
+				<LI>{$error}<LI>
+{/foreach}
+			</UL>
+		</DIV>
+{/if}
 		<DIV id="listfilter">
 			{_T("Search:")}&nbsp;
 			<INPUT type="text" name="filtre_nom" value="{$smarty.session.filtre_adh_nom}">&nbsp;

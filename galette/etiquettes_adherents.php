@@ -32,12 +32,13 @@
 		die();
 		
 	$mailing_adh = array();
-	if (isset($_GET["mailing_adh"]))
+	if (isset($_SESSION['galette']['labels']))
 	{
-		while (list($key,$value)=each($_GET["mailing_adh"])) {
+		while (list($key,$value)=each($_SESSION['galette']['labels']))
 			$mailing_adh[]=$value;
-		}
-	}else{
+	}
+	else
+	{
 		print _T("No member was selected, please check at least one name.");
 		die();
 	}
@@ -121,7 +122,7 @@
 		$resultat->Close();
 		//dblog(_T("Generation of ")." ".$nb_etiq." "._T("label(s)"),$concatname);
 		
-	header("Content-Disposition: attachment; filename=example.pdf");
+	header("Content-Disposition: attachment; filename=labels.pdf");
 	header("Content-Type: application/pdf");
 	$temp = $pdf->generate(0);
 	header('Content-Length: ' . strlen($temp));
