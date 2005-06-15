@@ -60,8 +60,11 @@
 		$result_members->MoveNext();
 	}
 
+	if (isset($_POST["mailing_done"]))
+		header("location: gestion_adherents.php");
+
 	$etape = 0;
-	if (isset($_POST["mailing_go"]) || isset($_POST["mailing_reset"]))
+	if (isset($_POST["mailing_go"]) || isset($_POST["mailing_reset"]) || isset($_POST["mailing_confirm"]))
 	{
 		if ($_POST['mailing_objet']=="")
 			$error_detected[] = _T("Please type an object for the message.");
@@ -78,16 +81,35 @@
 		else
 			$data['mailing_html']=0;
 			
-		if ($data['mailing_html']==0)
-			$data['mailing_corps_display']=htmlspecialchars($data['mailing_corps'],ENT_QUOTES);
-		else 
-			$data['mailing_corps_display']=nl2br($data['mailing_corps']);
-			
-		$data['mailing_corps'] = htmlspecialchars($_POST['mailing_corps'],ENT_QUOTES);
+		$data['mailing_corps_display']=htmlspecialchars($data['mailing_corps'],ENT_QUOTES);
 		
 		if (count($error_detected)==0 && !isset($_POST["mailing_reset"]))
 			$etape = 1;
-	}	
+	}
+	
+	if (isset($_POST["mailing_confirm"]) && count($error_detected)==0)
+	{
+		$etape = 2;
+		foreach ($reachable_members as $id_adh)
+			$member_id_string .= $id_adh.",";
+		$member_id_string = substr($member_id_string,0,-1);
+		$sql = "SELECT id_adh, email_adh, nom_adh, prenom_adh
+						FROM ".PREFIX_DB."adherents
+						WHERE id_adh IN ($member_id_string)";
+		$result_members = &$DB->Execute($sql);
+		if ($data['mailing_html']==0)
+			$content_type = "text/plain";
+		else
+			$content_type = "text/html";
+		while (!$result_members->EOF)
+		{
+			custom_mail ($result_members->fields[1],
+						$data['mailing_objet'],
+						$data['mailing_corps'],
+						$content_type);
+			$result_members->MoveNext();
+		}		
+	}
 	
 	$_SESSION['galette']['labels']=$unreachable_members;
 	

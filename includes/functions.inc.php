@@ -179,7 +179,7 @@ function custom_html_entity_decode( $given_html, $quote_style = ENT_QUOTES )
   return ( strtr( $given_html, $trans_table ) );
 }
 
-function custom_mail($email_adh,$mail_subject,$mail_text)
+function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/plain")
 {
   // codes retour :
   //  0 - mail envoye
@@ -199,7 +199,7 @@ function custom_mail($email_adh,$mail_subject,$mail_text)
                    "Errors-To: <".PREF_EMAIL.">",
                    "X-Mailer: Galette-".GALETTE_VERSION,
                    "X-Priority: 3",
-                   "Content-Type: text/plain; charset=iso-8859-15");
+                   "Content-Type: $content_type; charset=iso-8859-15");
 
   switch (PREF_MAIL_METHOD)
     {
