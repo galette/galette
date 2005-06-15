@@ -337,6 +337,7 @@ a.listing:hover {
 	border-color: #FFDDDD;
 	border-width: 2px;
 	border-style: solid;
+	margin-bottom: 10px;
 }
 		
 #errorbox h1 {
