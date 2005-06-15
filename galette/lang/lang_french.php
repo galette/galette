@@ -946,7 +946,7 @@ $lang['Duration'] = 'Durée';
 $lang['- The field name cannot be void.'] = '- Le champ nom ne doit pas être vide.';
 
 // ../mailing_adherents.php:420 ../mailing_adherents.php:614 
-$lang['Object:'] = 'Objet :';
+$lang['Object:'] = 'Sujet :';
 
 // ../mailing_adherents.php:426 ../mailing_adherents.php:616 
 $lang['Message:'] = 'Message :';

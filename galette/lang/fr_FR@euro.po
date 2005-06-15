@@ -499,7 +499,7 @@ msgstr "[ Tout cocher / décocher ]"
 
 #: ../mailing_adherents.php:420 ../mailing_adherents.php:614
 msgid "Object:"
-msgstr "Objet :"
+msgstr "Sujet :"
 
 #: ../mailing_adherents.php:426 ../mailing_adherents.php:616
 msgid "Message:"
