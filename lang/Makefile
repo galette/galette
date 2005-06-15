@@ -25,6 +25,7 @@ PHP_SOURCES = ../index.php \
 ../ajouter_adherent.php \
 ../templates/default/index.tpl \
 ../templates/default/gestion_adherents.tpl \
+../templates/default/mailing_adherents.tpl \
 ../templates/default/page.tpl \
 ../templates/default/preferences.tpl \
 ../templates/default/ajouter_adherent.tpl \

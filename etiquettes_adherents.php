@@ -38,10 +38,8 @@
 			$mailing_adh[]=$value;
 	}
 	else
-	{
-		print _T("No member was selected, please check at least one name.");
 		die();
-	}
+
 		$requete = "SELECT id_adh, nom_adh, prenom_adh, adresse_adh,
 									titre_adh, cp_adh, ville_adh, pays_adh, adresse2_adh
 									FROM ".PREFIX_DB."adherents

@@ -36,6 +36,10 @@ a:hover {
 	color: #FF0000;
 }
 
+pre {
+	margin: 0px;
+}
+
 .left {
 	text-align: left;
 }
@@ -462,4 +466,10 @@ a.listing:hover {
 
 #listing img {
         vertical-align: middle;
+}
+
+.mail_preview {
+	height: 230px;
+	vertical-align: top;
+	padding: 5px;
 }

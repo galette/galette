@@ -36,14 +36,22 @@
 	
 	if (isset($_POST['labels']))
 	{
-		$qstring = 'etiquettes_adherents.php?go=1';
+		$qstring = 'etiquettes_adherents.php';
 		if (isset($_POST["member_sel"]))
-			//foreach ($_POST["member_sel"] as $labval)
-			//	if (is_numeric($labval))
-			//		$qstring .= '&mailing_adh[]='.$labval;
-		//header("HTTP/1.0 307 Temporary redirect");
 		{
 			$_SESSION['galette']['labels'] = $_POST["member_sel"];
+			header('location: '.$qstring);
+		}
+		else
+			$error_detected[] = _T("No member was selected, please check at least one name.");
+	}
+
+	if (isset($_POST['mailing']))
+	{
+		$qstring = 'mailing_adherents.php';
+		if (isset($_POST["member_sel"]))
+		{
+			$_SESSION['galette']['mailing'] = $_POST["member_sel"];
 			header('location: '.$qstring);
 		}
 		else
