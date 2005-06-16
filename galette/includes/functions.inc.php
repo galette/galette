@@ -89,10 +89,7 @@ function txt_sqls($champ) {
 }
 
 function is_valid_web_url($url) {
-  return (preg_match(
-                     '/^(http|https):\/\/'.
-                     '.*/i', $url, $m
-                     ));
+  return (preg_match('#^http[s]?\\:\\/\\/[a-z0-9\-]+\.([a-z0-9\-]+\.)?[a-z]+#i', $url));
 }
 
 /*
