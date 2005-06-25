@@ -1,11 +1,11 @@
 <?php
 /*
-V4.10 12 Jan 2003  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
+V4.64 20 June 2005  (c) 2000-2005 John Lim (jlim@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
 
-  Latest version is available at http://php.weblogs.com/
+  Latest version is available at http://adodb.sourceforge.net
   
   SQLite info: http://www.hwaci.com/sw/sqlite/
     
@@ -14,6 +14,9 @@ V4.10 12 Jan 2003  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights rese
   1. Place this in adodb/drivers
   2. Rename the file, remove the .txt prefix.
 */
+
+// security - hide paths
+if (!defined('ADODB_DIR')) die();
 
 class ADODB_sqlite extends ADOConnection {
 	var $databaseType = "sqlite";
@@ -26,6 +29,7 @@ class ADODB_sqlite extends ADOConnection {
 	var $metaTablesSQL = "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name";
 	var $sysDate = "adodb_date('Y-m-d')";
 	var $sysTimeStamp = "adodb_date('Y-m-d H:i:s')";
+	var $fmtTimeStamp = "'Y-m-d H:i:s'";
 	
 	function ADODB_sqlite() 
 	{
@@ -105,7 +109,10 @@ class ADODB_sqlite extends ADOConnection {
 	global $ADODB_FETCH_MODE;
 	
 		$rs = $this->Execute("select * from $tab limit 1");
-		if (!$rs) return false;
+		if (!$rs) {
+			$false = false;
+			return $false;
+		}
 		$arr = array();
 		for ($i=0,$max=$rs->_numOfFields; $i < $max; $i++) {
 			$fld =& $rs->FetchField($i);
@@ -126,7 +133,8 @@ class ADODB_sqlite extends ADOConnection {
 	// returns true or false
 	function _connect($argHostname, $argUsername, $argPassword, $argDatabasename)
 	{
-		if (!function_exists('sqlite_open')) return false;
+		if (!function_exists('sqlite_open')) return null;
+		if (empty($argHostname) && $argDatabasename) $argHostname = $argDatabasename;
 		
 		$this->_connectionID = sqlite_open($argHostname);
 		if ($this->_connectionID === false) return false;
@@ -137,7 +145,8 @@ class ADODB_sqlite extends ADOConnection {
 	// returns true or false
 	function _pconnect($argHostname, $argUsername, $argPassword, $argDatabasename)
 	{
-		if (!function_exists('sqlite_open')) return false;
+		if (!function_exists('sqlite_open')) return null;
+		if (empty($argHostname) && $argDatabasename) $argHostname = $argDatabasename;
 		
 		$this->_connectionID = sqlite_popen($argHostname);
 		if ($this->_connectionID === false) return false;
@@ -183,7 +192,7 @@ class ADODB_sqlite extends ADOConnection {
 		$MAXLOOPS = 100;
 		//$this->debug=1;
 		while (--$MAXLOOPS>=0) {
-			$num = $this->GetOne("select id from $seq");
+			@($num = $this->GetOne("select id from $seq"));
 			if ($num === false) {
 				$this->Execute(sprintf($this->_genSeqSQL ,$seq));	
 				$start -= 1;
@@ -227,6 +236,51 @@ class ADODB_sqlite extends ADOConnection {
 		return @sqlite_close($this->_connectionID);
 	}
 
+	function &MetaIndexes ($table, $primary = FALSE, $owner=false)
+	{
+		$false = false;
+		// save old fetch mode
+        global $ADODB_FETCH_MODE;
+        $save = $ADODB_FETCH_MODE;
+        $ADODB_FETCH_MODE = ADODB_FETCH_NUM;
+        if ($this->fetchMode !== FALSE) {
+               $savem = $this->SetFetchMode(FALSE);
+        }
+		$SQL=sprintf("SELECT name,sql FROM sqlite_master WHERE type='index' AND tbl_name='%s'", strtolower($table));
+        $rs = $this->Execute($SQL);
+        if (!is_object($rs)) {
+			if (isset($savem)) 
+				$this->SetFetchMode($savem);
+			$ADODB_FETCH_MODE = $save;
+            return $false;
+        }
+
+		$indexes = array ();
+		while ($row = $rs->FetchRow()) {
+			if ($primary && preg_match("/primary/i",$row[1]) == 0) continue;
+            if (!isset($indexes[$row[0]])) {
+
+			$indexes[$row[0]] = array(
+				   'unique' => preg_match("/unique/i",$row[1]),
+				   'columns' => array());
+			}
+			/**
+			  * There must be a more elegant way of doing this,
+			  * the index elements appear in the SQL statement
+			  * in cols[1] between parentheses
+			  * e.g CREATE UNIQUE INDEX ware_0 ON warehouse (org,warehouse)
+			  */
+			$cols = explode("(",$row[1]);
+			$cols = explode(")",$cols[1]);
+			array_pop($cols);
+			$indexes[$row[0]]['columns'] = $cols;
+		}
+		if (isset($savem)) { 
+            $this->SetFetchMode($savem);
+			$ADODB_FETCH_MODE = $save;
+		}
+        return $indexes;
+	}
 
 }
 
@@ -251,6 +305,7 @@ class ADORecordset_sqlite extends ADORecordSet {
 		case ADODB_FETCH_ASSOC: $this->fetchMode = SQLITE_ASSOC; break;
 		default: $this->fetchMode = SQLITE_BOTH; break;
 		}
+		$this->adodbFetchMode = $mode;
 		
 		$this->_queryID = $queryID;
 	
