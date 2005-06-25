@@ -16,7 +16,8 @@ function for details on default settings and the use of the
 <a href='data.parameters.html'>parameters array</a>.</p>
 <p>Text is wrapped as needed to keep it within the boundries of the defined
 box. Newlines are preserved, so multiple paragraphs can be placed with
-a single command.</p>
+a single command. The function attempts to be intelligent about line endings by
+converting all \r\n to \n.</p>
 <p>If the text string is too large to place in the alloted space,
 the text that could not be placed is returned. If the entire space is
 not filled, the value of <code>bottom</code> that would have been
