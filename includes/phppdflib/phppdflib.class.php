@@ -962,7 +962,12 @@ class pdffile
             $width = 0;
             $len = strlen($string);
             for ($i = 0; $i < $len; $i++) {
-                $width += $this->widths[$font][ord($string{$i})];
+                $ord = ord($string{$i});
+                if (isset($this->widths[$font][$ord])) {
+                    $width += $this->widths[$font][$ord];
+                } else {
+                    $this->_push_error(3002, "Unknown character width: $ord");
+                }
             }
         }
         // We now have the string width in font units
@@ -1001,8 +1006,6 @@ class pdffile
     {
         // break $words into an array separated by manual paragraph break character
         $paragraph = explode("\n", $words);
-        // find the width of 1 space in this font
-        $swidth = $this->strlen( " " , $param );
         // uses each element of $paragraph array and splits it at spaces
         for ($lc = 0; $lc < count($paragraph); $lc++){
             while (strlen($paragraph[$lc]) > 0) {
@@ -1014,6 +1017,7 @@ class pdffile
 
     function draw_one_paragraph($top, $left, $bottom, $right, $text, $page, $param = array())
     {
+        $text = str_replace("\0x0d", '', $text);
         $param = $this->_resolve_param($param);
         $height = 1.1 * $param['height'];
         $width = $right - $left;

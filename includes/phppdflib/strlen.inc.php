@@ -287,4 +287,21 @@ $this->widths['Times-BoldItalic'] = array (32 => 250, 33 => 389, 34 => 555, 35 =
                                              233 => 722, 234 => 944, 235 => 300, 241 => 722, 245 => 278,
                                              248 => 278, 249 => 500, 250 => 722, 251 => 500);
 
+// Additional widths provided by Bjoern Pettersson
+$tmpfnts = array('Helvetica-Bold',
+                 'Helvetica',
+                 'Times',
+                 'Times-Bold',
+                 'Times-Italic',
+                 'Times-BoldItalic'); 
+foreach ($tmpfnts as $fnt)
+{
+    $this->widths[$fnt][229] = $this->widths[$fnt][97];
+    $this->widths[$fnt][228] = $this->widths[$fnt][97];
+    $this->widths[$fnt][246] = $this->widths[$fnt][111];
+    $this->widths[$fnt][196] = $this->widths[$fnt][65];
+    $this->widths[$fnt][197] = $this->widths[$fnt][65];
+    $this->widths[$fnt][214] = $this->widths[$fnt][79];
+} 
+
 ?>

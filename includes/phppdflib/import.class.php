@@ -99,7 +99,7 @@ class import
     
     function recursive_create($id)
     {
-        if (!isset($this->ob[$id]['/Type'])}
+        if (!isset($this->ob[$id]['/Type']))
             $this->ob[$id]['/Type'] = '';
         switch ($this->ob[$id]['/Type']) {
         case '/Info' :
@@ -107,7 +107,7 @@ class import
             break;
             
         case '/Root' :
-            return $this->
+            return 0;
             break;
         }
     }
