@@ -1,12 +1,12 @@
 <?php
 /* 
-V4.10 12 Jan 2003  (c) 2000-2004 John Lim. All rights reserved.
+V4.64 20 June 2005  (c) 2000-2005 John Lim. All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. 
   Set tabs to 4 for best viewing.
   
-  Latest version is available at http://php.weblogs.com/
+  Latest version is available at http://adodb.sourceforge.net
   
   Sybase driver contributed by Toni (toni.tunkkari@finebyte.com)
   
@@ -15,9 +15,12 @@ V4.10 12 Jan 2003  (c) 2000-2004 John Lim. All rights reserved.
   Date patch by Toni 15 Feb 2002
 */
  
+ // security - hide paths
+if (!defined('ADODB_DIR')) die();
+
 class ADODB_sybase extends ADOConnection {
 	var $databaseType = "sybase";	
-	//var $dataProvider = 'sybase';
+	var $dataProvider = 'sybase';
 	var $replaceQuote = "''"; // string to use to replace quotes
 	var $fmtDate = "'Y-m-d'";
 	var $fmtTimeStamp = "'Y-m-d H:i:s'";
@@ -32,13 +35,10 @@ class ADODB_sybase extends ADOConnection {
 	where o.name='%s'";
 	*/
 	var $concat_operator = '+'; 
-	var $sysDate = 'GetDate()';
 	var $arrayClass = 'ADORecordSet_array_sybase';
 	var $sysDate = 'GetDate()';
 	var $leftOuter = '*=';
 	var $rightOuter = '=*';
-	
-	
 	
 	function ADODB_sybase() 
 	{			
@@ -86,15 +86,16 @@ class ADODB_sybase extends ADOConnection {
 	}
 	
 	// http://www.isug.com/Sybase_FAQ/ASE/section6.1.html#6.1.4
-	function RowLock($tables,$where) 
+	function RowLock($tables,$where,$flds='top 1 null as ignore') 
 	{
 		if (!$this->_hastrans) $this->BeginTrans();
 		$tables = str_replace(',',' HOLDLOCK,',$tables);
-		return $this->GetOne("select top 1 null as ignore from $tables HOLDLOCK where $where");
+		return $this->GetOne("select $flds from $tables HOLDLOCK where $where");
 		
 	}	
 		
-	function SelectDB($dbName) {
+	function SelectDB($dbName) 
+	{
 		$this->databaseName = $dbName;
 		if ($this->_connectionID) {
 			return @sybase_select_db($dbName);		
@@ -105,17 +106,21 @@ class ADODB_sybase extends ADOConnection {
 	/*	Returns: the last error message from previous database operation
 		Note: This function is NOT available for Microsoft SQL Server.	*/	
 
-	function ErrorMsg() 
+	
+	function ErrorMsg()
 	{
 		if ($this->_logsql) return $this->_errorMsg;
-		$this->_errorMsg = sybase_get_last_message();
+		if (function_exists('sybase_get_last_message'))
+			$this->_errorMsg = sybase_get_last_message();
+		else
+			$this->_errorMsg = isset($php_errormsg) ? $php_errormsg : 'SYBASE error messages not supported on this platform';
 		return $this->_errorMsg;
 	}
 
 	// returns true or false
 	function _connect($argHostname, $argUsername, $argPassword, $argDatabasename)
 	{
-		if (!function_exists('sybase_connect')) return false;
+		if (!function_exists('sybase_connect')) return null;
 		
 		$this->_connectionID = sybase_connect($argHostname,$argUsername,$argPassword);
 		if ($this->_connectionID === false) return false;
@@ -125,7 +130,7 @@ class ADODB_sybase extends ADOConnection {
 	// returns true or false
 	function _pconnect($argHostname, $argUsername, $argPassword, $argDatabasename)
 	{
-		if (!function_exists('sybase_connect')) return false;
+		if (!function_exists('sybase_connect')) return null;
 		
 		$this->_connectionID = sybase_pconnect($argHostname,$argUsername,$argPassword);
 		if ($this->_connectionID === false) return false;
@@ -151,12 +156,12 @@ class ADODB_sybase extends ADOConnection {
 			$rs =& ADOConnection::SelectLimit($sql,$nrows,$offset,$inputarr,$secs2cache);
 			return $rs;
 		}
-		$cnt = ($nrows > 0) ? $nrows : 0;
+		$cnt = ($nrows >= 0) ? $nrows : 999999999;
 		if ($offset > 0 && $cnt) $cnt += $offset;
 		
 		$this->Execute("set rowcount $cnt"); 
-		$rs =& ADOConnection::SelectLimit($sql,$nrows,$offset,$inputarr,$secs2cache);
-		$this->Execute("set rowcount 0"); 
+		$rs =& ADOConnection::SelectLimit($sql,$nrows,$offset,$inputarr,0);
+		$this->Execute("set rowcount 0");
 		
 		return $rs;
 	}
@@ -283,7 +288,7 @@ class ADORecordset_sybase extends ADORecordSet {
 		}
 		if (!$mode) $this->fetchMode = ADODB_FETCH_ASSOC;
 		else $this->fetchMode = $mode;
-		return $this->ADORecordSet($id,$mode);
+		$this->ADORecordSet($id,$mode);
 	}
 	
 	/*	Returns: an object containing field information. 
