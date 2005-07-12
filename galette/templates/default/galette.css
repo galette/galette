@@ -205,7 +205,7 @@ a.listing:hover {
 	height: 80px;
 }
 
-#nav1 {
+.nav1 {
 	width: 150px;
 	margin-left: 5px;
 	border-color: #7777FF;
@@ -214,21 +214,21 @@ a.listing:hover {
 	margin-bottom: 10px;
 }
 
-#nav1 h1 {
+.nav1 h1 {
 	margin: 2px;
 	font-size: 10px;
 	background-color: #DDDDFF;
 	padding-left: 2px;
 }
 
-#nav1 ul {
+.nav1 ul {
 	list-style-type: none;
 	margin: 2px;
 	padding: 0px;
 	border: none;
 }
 
-#nav1 li {
+.nav1 li {
 	background-color: #EEEEEE;
 	margin-bottom: 2px;
 	padding-left: 2px;
@@ -300,21 +300,21 @@ a.listing:hover {
 	margin-bottom: 0px;
 }
 
-#infoline {
+.infoline {
 	vertical-align: top;
 }
 
-#infoline td {
+.infoline td {
         vertical-align: top;
 	width: 33%;
 }	
 
-#infoline ul {
+.infoline ul {
 	margin: 0px;
 	list-style-type: none;
 }
 
-#infoline2 {
+.infoline2 {
 	margin-top: 2px;
 }
 
@@ -383,14 +383,14 @@ a.listing:hover {
 	border: none;
 }		
 
-#input-table #libelle {
+#input-table .libelle {
 	font-size: 11px;
 	text-align: left;
 	background-color: #DDDDFF;
 	font-weight: normal;
 }
 
-#input-table #header {
+#input-table .header {
 	text-align: left;
 	font-weight: bold;
 }

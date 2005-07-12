@@ -14,7 +14,7 @@
 		<SELECT name="form" onChange="form.submit()">
 			{html_options options=$all_forms selected=$form_name}
 		</SELECT>&nbsp;
-		<INPUT type="submit" name="continue" value="{_T("Continue")}">
+		<INPUT type="submit" name="continue" value="{_T("Continue")}"/>
 {else} {* $form_title != '' *}
 		<TABLE width="100%" id="input-table"> 
 			<TR>
@@ -40,25 +40,25 @@
 				<TD class="listing left">{$field.pos}</TD>
 				<TD class="listing center">
 {if $field.no_data}
-					<IMG src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="12" height="13">
+					<IMG src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="12" height="13"/>
 {else}
-					<A href="editer_champ.php?form={$form_name}&id={$field.id}"><IMG src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"></A>
+					<A href="editer_champ.php?form={$form_name}&amp;id={$field.id}"><IMG src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></A>
 {/if}
-					<A onClick="return confirm('{_T("Do you really want to delete this category ?\n All associated data will be deleted as well.")|escape:"javascript"}')" href="configurer_fiches.php?form={$form_name}&del={$field.id}">
-					<IMG src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13">
+					<A onClick="return confirm('{_T("Do you really want to delete this category ?\n All associated data will be deleted as well.")|escape:"javascript"}')" href="configurer_fiches.php?form={$form_name}&amp;del={$field.id}">
+					<IMG src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/>
 					</A>
 {if $field.index eq 1}
-					<IMG src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="9" height="13">
+					<IMG src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="9" height="13"/>
 {else}
 					<A href="configurer_fiches.php?form={$form_name}&up={$field.id}">
-					<IMG src="{$template_subdir}images/icon-up.png" alt="{_T("[up]")}" border="0" width="9" height="8">
+					<IMG src="{$template_subdir}images/icon-up.png" alt="{_T("[up]")}" border="0" width="9" height="8"/>
 					</A>
 {/if}
 {if $field.index eq $dyn_fields|@count}
-					<IMG src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="9" height="13">
+					<IMG src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="9" height="13"/>
 {else}
 					<A href="configurer_fiches.php?form={$form_name}&down={$field.id}">
-					<IMG src="{$template_subdir}images/icon-down.png" alt="{_T("[down]")}" border="0" width="9" height="8">
+					<IMG src="{$template_subdir}images/icon-down.png" alt="{_T("[down]")}" border="0" width="9" height="8"/>
 					</A>
 {/if}
 				</TD>
@@ -67,7 +67,7 @@
 			<TR>
 				<TD width="15" class="listing">&nbsp;</TD> 
 				<TD class="listing left">
-					<INPUT size="40" type="text" name="field_name">
+					<INPUT size="40" type="text" name="field_name"/>
 				</TD>
 				<TD width="60" class="listing left">
 					<SELECT name="field_perm">
@@ -90,9 +90,9 @@
 						{html_options options=$field_positions selected="0"}
 					</SELECT>
 				</TD>
-				<TD class="listing center"><INPUT type="submit" name="valid" value="{_T("Add")}"></TD>
+				<TD class="listing center"><INPUT type="submit" name="valid" value="{_T("Add")}"/></TD>
 			</TR>
 		</TABLE> 
-		<INPUT type="hidden" name="form" value="{$form_name}">
+		<INPUT type="hidden" name="form" value="{$form_name}"/>
 {/if} {* $form_title == '' *}
 		</FORM> 
