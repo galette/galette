@@ -1,6 +1,6 @@
 		<H1 class="titre">{_T("Management of transactions")}</H1>
 		<FORM action="gestion_transactions.php" method="get" name="filtre">
-		<TABLE id="infoline" width="100%">
+		<TABLE class="infoline" width="100%">
 			<TR>
 				<TD class="left">{$nb_transactions} {if $nb_transactions > 1}{_T("transactions")}{else}{_T("transaction")}{/if}</TD>
 				<TD class="center">
@@ -30,12 +30,12 @@
 					<A href="gestion_transactions.php?tri=0" class="listing">{_T("Date")}</A>
 					{if $smarty.session.sort_by eq 0}
 					{if $smarty.session.sort_direction eq 0}
-					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
 					{else}
-					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
 					{/if}
 					{else}
-					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
 					{/if}
 				</TH>
 				<TH class="listing left">{_T("Description")}</TH>
@@ -44,12 +44,12 @@
 					<A href="gestion_transactions.php?tri=1" class="listing">{_T("Originator")}</A>
 					{if $smarty.session.sort_by eq 1}
 					{if $smarty.session.sort_direction eq 0}
-					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
 					{else}
-					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
 					{/if}
 					{else}
-					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
 					{/if}
 				</TH>
 {/if}
@@ -57,12 +57,12 @@
 					<A href="gestion_transactions.php?tri=2" class="listing">{_T("Amount")}</A>
 					{if $smarty.session.sort_by eq 3}
 					{if $smarty.session.sort_direction eq 0}
-					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
 					{else}
-					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
 					{/if}
 					{else}
-					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
 					{/if}
 				</TH>
 {if $smarty.session.admin_status eq 1}
@@ -94,8 +94,8 @@
 			<TD class="cotis-ok" nowrap>{$transaction.trans_amount}</TD>
 {if $smarty.session.admin_status eq 1}
 			<TD width="55" class="cotis-ok center" nowrap>
-				<A href="ajouter_transaction.php?trans_id={$transaction.trans_id}"><IMG src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"></A>
-				<A onClick="return confirm('{_T("Do you really want to delete this transaction of the database ?")|escape:"javascript"}')" href="gestion_transactions.php?sup={$transaction.trans_id}"><IMG src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"></A>
+				<A href="ajouter_transaction.php?trans_id={$transaction.trans_id}"><IMG src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></A>
+				<A onClick="return confirm('{_T("Do you really want to delete this transaction of the database ?")|escape:"javascript"}')" href="gestion_transactions.php?sup={$transaction.trans_id}"><IMG src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></A>
 			</TD>
 {/if}
 {foreachelse}
@@ -106,7 +106,7 @@
 {/if}
 {/foreach}
 		</TABLE>
-		<DIV id="infoline2" class="right">
+		<DIV class="infoline2 right">
 			{_T("Pages:")}
 			<SPAN class="pagelink">
 			{section name="pageLoop" start=1 loop=$nb_pages+1}

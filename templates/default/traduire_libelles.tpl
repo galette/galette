@@ -28,13 +28,13 @@
 				<TR>
 					<TD class="listing left">{$trans[lang].name}</TD> 
 					<TD class="listing left">
-						<INPUT type="text" name="text_trans_{$trans[lang].key}" value="{$trans[lang].text}">
+						<INPUT type="text" name="text_trans_{$trans[lang].key}" value="{$trans[lang].text}"/>
 					</TD>
 				</TR>
 {/section}
 			</TABLE>
-			<BR>
-			<INPUT type="submit" name="trans" value="{_T("Save")}">&nbsp;
-			<INPUT type="submit" name="update" value="{_T("Update")}">
+			<BR/>
+			<INPUT type="submit" name="trans" value="{_T("Save")}"/>&nbsp;
+			<INPUT type="submit" name="update" value="{_T("Update")}"/>
 		</FORM> 
 {/if}

@@ -1,9 +1,10 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 <HEAD>
 	<TITLE>Galette {$GALETTE_VERSION}</TITLE>
-	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-	<LINK rel="stylesheet" type="text/css" href="{$template_subdir}galette.css" >
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1"/>
+	<LINK rel="stylesheet" type="text/css" href="{$template_subdir}galette.css"/>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF">
 	<DIV id="content">
@@ -14,9 +15,9 @@
 	</DIV>
 	<DIV id="menu">
 		<DIV id="logo">
-			<IMG src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60">
+			<IMG src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60"/>
 		</DIV>
-		<DIV id="nav1">
+		<DIV class="nav1">
 			<H1>{_T("Navigation")}</H1>
 			<UL>
 {if $smarty.session.admin_status eq 1}
@@ -35,7 +36,7 @@
 			</UL>
 		</DIV>
 {if $smarty.session.admin_status eq 1}
-		<DIV id="nav1">
+		<DIV class="nav1">
 			<H1>{_T("Configuration")}</H1>
 			<UL>
 				<LI><A href="preferences.php">{_T("Settings")}</A></LI>
@@ -52,33 +53,33 @@
 			<H1>{_T("Legend")}</H1>
 			<TABLE>
 				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-male.png" Alt="{_T("[M]")}" align="middle" width="10" height="12"></TD>
+					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-male.png" Alt="{_T("[M]")}" align="middle" width="10" height="12"/></TD>
 					<TD class="back">{_T("Man")}</TD>
 				</TR>
 				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-female.png" Alt="{_T("[W]")}" align="middle" width="9" height="12"></TD>
+					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-female.png" Alt="{_T("[W]")}" align="middle" width="9" height="12"/></TD>
 					<TD class="back">{_T("Woman")}</TD>
 				</TR>
 {if $PAGENAME eq "gestion_adherents.php"}
 				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-mail.png" Alt="{_T("[Mail]")}" align="middle" border="0" width="14" height="10"></TD>
+					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-mail.png" Alt="{_T("[Mail]")}" align="middle" border="0" width="14" height="10"/></TD>
 					<TD class="back">{_T("Send a mail")}</TD>
 				</TR>
 {/if}
 				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-star.png" Alt="{_T("[admin]")}" align="middle" width="12" height="13"></TD>
+					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-star.png" Alt="{_T("[admin]")}" align="middle" width="12" height="13"/></TD>
 					<TD class="back">{_T("Admin")}</TD>
 				</TR>
 				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"></TD>
+					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></TD>
 					<TD class="back">{_T("Modification")}</TD>
 				</TR>
 				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-money.png" alt="{_T("[$]")}" border="0" width="13" height="13"></TD>
+					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-money.png" alt="{_T("[$]")}" border="0" width="13" height="13"/></TD>
 					<TD class="back">{_T("Contributions")}</TD>
 				</TR>
 				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"></TD>
+					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></TD>
 					<TD class="back">{_T("Deletion")}</TD>
 				</TR>
 				<TR>
@@ -113,11 +114,11 @@
 			<TABLE>
 {if $smarty.session.admin_status eq 1}
 				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"></TD>
+					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></TD>
 					<TD class="back">{_T("Modification")}</TD>
 				</TR>
 				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"></TD>
+					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></TD>
 					<TD class="back">{_T("Deletion")}</TD>
 				</TR>
 {/if}

@@ -102,7 +102,7 @@
 		$logs[$compteur]['ip'] = $resultat->fields[3];
 		$logs[$compteur]['adh'] = $resultat->fields[1];
 		$logs[$compteur]['action'] = _T($resultat->fields[4]);
-		$logs[$compteur]['desc'] = $resultat->fields[2]."<br>".$resultat->fields[5];
+		$logs[$compteur]['desc'] = $resultat->fields[2]."<br/>".$resultat->fields[5];
 		$resultat->MoveNext();
 		$compteur++;
 	}

@@ -1,9 +1,9 @@
 		<H1 class="titre">{_T("Logs")}</H1>
 		<FORM action="log.php" method="post">
-			<DIV align="center"><INPUT type="submit" value="{_T("Flush the logs")}"></DIV>
-			<INPUT type="hidden" name="reset" value="1">
+			<DIV align="center"><INPUT type="submit" value="{_T("Flush the logs")}"/></DIV>
+			<INPUT type="hidden" name="reset" value="1"/>
 		</FORM>
-		<TABLE id="infoline" width="100%" border="0">
+		<TABLE class="infoline" width="100%" border="0">
 			<TR>
 				<TD class="left">{$nb_lines} {if $nb_lines != 1}{_T("lines")}{else}{_T("line")}{/if}</TD>
 				<TD class="right">
@@ -27,60 +27,60 @@
 					<A href="log.php?tri=0" class="listing">{_T("Date")}</A>
 					{if $smarty.session.tri_log eq 0}
 					{if $smarty.session.tri_log_sens eq 0}
-					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
 					{else}
-					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
 					{/if}
 					{else}
-					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
 					{/if}
 				</TH>
 				<TH class="listing left" width="150">
 					<A href="log.php?tri=1" class="listing">{_T("IP")}</A>
 					{if $smarty.session.tri_log eq 1}
 					{if $smarty.session.tri_log_sens eq 0}
-					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
 					{else}
-					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
 					{/if}
 					{else}
-					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
 					{/if}
 				</TH>
 				<TH class="listing left" width="150">
 					<A href="log.php?tri=2" class="listing">{_T("User")}</A>
 					{if $smarty.session.tri_log eq 2}
 					{if $smarty.session.tri_log_sens eq 0}
-					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
 					{else}
-					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
 					{/if}
 					{else}
-					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
 					{/if}
 				</TH>
 				<TH class="listing left" width="150">
 					<A href="log.php?tri=4" class="listing">{_T("Action")}</A>
 					{if $smarty.session.tri_log eq 4}
 					{if $smarty.session.tri_log_sens eq 0}
-					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
 					{else}
-					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
 					{/if}
 					{else}
-					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
 					{/if}
 				</TH>
 				<TH class="listing left">
 					<A href="log.php?tri=3" class="listing">{_T("Description")}</A>
 					{if $smarty.session.tri_log eq 3}
 					{if $smarty.session.tri_log_sens eq 0}
-					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
 					{else}
-					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
 					{/if}
 					{else}
-					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt="">
+					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
 					{/if}
 				</TH>
 			</TR>
@@ -97,7 +97,7 @@
 			<TR><TD colspan="6" class="emptylist">{_T("logs are empty")}</TD></TR>
 {/foreach}
 		</TABLE>
-		<DIV id="infoline2" class="right">{_T("Pages:")}
+		<DIV class="infoline2 right">{_T("Pages:")}
 			<SPAN class="pagelink">
 			{section name="pageLoop" start=1 loop=$nb_pages+1}
 			{if $smarty.section.pageLoop.index eq $page}

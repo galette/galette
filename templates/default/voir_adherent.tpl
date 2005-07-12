@@ -10,7 +10,7 @@
 {else}
 					<TD colspan="2" rowspan="5" align="center">
 {/if}
-						<IMG src="picture.php?id_adh={$data.id_adh}&rand={$time}" border="1" alt="{_T("Picture")}">
+						<IMG src="picture.php?id_adh={$data.id_adh}&amp;rand={$time}" border="1" alt="{_T("Picture")}"/>
                         		</TD>
 				</TR>
 				<TR> 
@@ -45,8 +45,8 @@
 				<TR> 
 					<TD bgcolor="#DDDDFF"><B>{_T("Freed of dues:")}</B></TD> 
 					<TD bgcolor="#EEEEEE">{$data.bool_exempt_adh}</TD> 
-					<TD bgcolor="#DDDDFF"><B>{_T("Language:")}<B></TD>
-					<TD bgcolor="#EEEEEE"><IMG SRC="{$data.pref_lang_img}" align="left">{$data.pref_lang}</TD>
+					<TD bgcolor="#DDDDFF"><B>{_T("Language:")}</B></TD>
+					<TD bgcolor="#EEEEEE"><IMG SRC="{$data.pref_lang_img}" align="left"/>{$data.pref_lang}</TD>
 				</TR> 
 {/if}
 				<TR>
@@ -55,7 +55,7 @@
 				<TR> 
 					<TD bgcolor="#DDDDFF" valign="top"><B>{_T("Address:")}</B></TD> 
 					<TD bgcolor="#EEEEEE" colspan="3">
-						{$data.adresse_adh}&nbsp;<BR>
+						{$data.adresse_adh}&nbsp;<BR/>
 						{$data.adresse2_adh}&nbsp;
 					</TD> 
 				</TR> 
@@ -138,7 +138,7 @@
 
 				<TR>
 					<TD colspan="4" align="center">
-						<BR>
+						<BR/>
 						<A href="ajouter_adherent.php?id_adh={$data.id_adh}">{_T("[ Modification ]")}</A>
 						&nbsp;&nbsp;&nbsp;
 						<A href="gestion_contributions.php?id_adh={$data.id_adh}">{_T("[ Contributions ]")}</A>
@@ -150,5 +150,5 @@
 				</TR>
 			</TABLE> 
 		</DIV>
-		<BR> 
+		<BR/> 
 		</BLOCKQUOTE> 			
