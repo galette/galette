@@ -523,7 +523,7 @@ $lang['Inactive account'] = 'Cuenta desactivada';
 $lang['file_name'] = 'nombre_fichero';
 
 // ../templates/default/page.tpl:28 
-$lang['Add a transaction'] = 'Añadir una contribución';
+$lang['Add a transaction'] = 'Añadir una retribución';
 
 // ../install/index.php:164 
 $lang['New installation:'] = 'Nueva instalación:';
@@ -550,7 +550,7 @@ $lang['Number of label columns:'] = 'Número de columnas de etiquetas:';
 $lang['Member card added'] = 'Añadida la ficha de socio:';
 
 // ../templates/default/page.tpl:25 
-$lang['List of transactions'] = 'Lista de contribuciones';
+$lang['List of transactions'] = 'Lista de retribuciones';
 
 // ../templates/default/preferences.tpl:125 
 $lang['Using a SMTP server (slower)'] = 'Via un servidor SMTP (lento)';
