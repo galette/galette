@@ -523,7 +523,7 @@ $lang['Inactive account'] = 'Inactive account';
 $lang['file_name'] = 'file_name';
 
 // ../templates/default/page.tpl:28 
-$lang['Add a transaction'] = 'Add a contribution';
+$lang['Add a transaction'] = 'Add a payment';
 
 // ../install/index.php:164 
 $lang['New installation:'] = 'New installation:';
@@ -550,7 +550,7 @@ $lang['Number of label columns:'] = 'Number of label columns:';
 $lang['Member card added'] = 'Member card added:';
 
 // ../templates/default/page.tpl:25 
-$lang['List of transactions'] = 'List of contributions';
+$lang['List of transactions'] = 'List of payments';
 
 // ../templates/default/preferences.tpl:125 
 $lang['Using a SMTP server (slower)'] = '';
