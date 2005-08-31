@@ -23,6 +23,11 @@ PHP_SOURCES = ../index.php \
 ../etiquettes_adherents.php \
 ../install/index.php \
 ../ajouter_adherent.php \
+../ajouter_transaction.php \
+../editer_champ.php \
+../gestion_transactions.php \
+../picture.php \
+../traduire_libelles.php \
 ../templates/default/index.tpl \
 ../templates/default/gestion_adherents.tpl \
 ../templates/default/mailing_adherents.tpl \
@@ -34,7 +39,11 @@ PHP_SOURCES = ../index.php \
 ../templates/default/gestion_contributions.tpl \
 ../templates/default/traduire_libelles.tpl \
 ../templates/default/log.tpl \
-../templates/default/voir_adherent.tpl
+../templates/default/voir_adherent.tpl \
+../templates/default/ajouter_transaction.tpl \
+../templates/default/display_dynamic_fields.tpl \
+../templates/default/editer_champ.tpl \
+../templates/default/gestion_transactions.tpl
 
 all : messages.po lang
 	@echo "Génération des fichiers *.po :"
@@ -81,7 +90,7 @@ lang :
 	@echo "  Mise à jour de lang_spanish.php"
 	@echo "    extraction des chaines..."
 	@${MKLANG} es_ES@euro.po lang_spanish.php.new
-	
+
 	@if diff -qI 'This file was automatically generated.*' lang_spanish.php lang_spanish.php.new > /dev/null; then \
 	  echo "    lang_spanish.php non mis à jour."; \
 	  rm lang_spanish.php.new; \
@@ -92,3 +101,18 @@ lang :
 
 messages.po : ${PHP_SOURCES}
 	xgettext -k_T -n ${PHP_SOURCES} >/dev/null 2>&1
+
+check:
+	@for FILE in ${PHP_SOURCES}; do				\
+		test -f $$FILE || echo "Not found $$FILE";	\
+	done 
+	@for NFILE in ../*.php ../includes/*.php		\
+			../templates/default/*.tpl; do		\
+		for OFILE in ${PHP_SOURCES}; do			\
+			if [ "$$NFILE" = "$$OFILE" ]; then	\
+				unset NFILE;			\
+				break;				\
+			fi;					\
+		done;						\
+		test -z "$$NFILE" || echo "Missing $$NFILE";	\
+	done
