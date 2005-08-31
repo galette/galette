@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: galette 2.16\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-05-30 22:49+0200\n"
+"POT-Creation-Date: 2005-08-31 21:25+0200\n"
 "PO-Revision-Date: 2004-09-20 20:56+0200\n"
 "Last-Translator: Juan Rafael Fernández García <juanrafael."
 "fernandez@hispalinux.es>\n"
@@ -41,36 +41,36 @@ msgstr " es un login ya utilizado por otro socio, por favor elija otro\n"
 msgid "Self_subscription as a member:"
 msgstr "Auto-subscripción como socio:"
 
-#: ../self_adherent.php:128 ../lostpasswd.php:63 ../ajouter_adherent.php:258
+#: ../self_adherent.php:128 ../lostpasswd.php:63 ../ajouter_adherent.php:285
 msgid "Your Galette identifiers"
 msgstr "Sus identificaciones Galette"
 
-#: ../self_adherent.php:129 ../lostpasswd.php:64 ../ajouter_adherent.php:259
+#: ../self_adherent.php:129 ../lostpasswd.php:64 ../ajouter_adherent.php:286
 msgid "Hello,"
 msgstr "Hola,"
 
-#: ../self_adherent.php:131 ../ajouter_adherent.php:261
+#: ../self_adherent.php:131 ../ajouter_adherent.php:288
 msgid ""
 "You've just been subscribed on the members management system of the "
 "association."
 msgstr "Acaba de suscribirse al sistema de gestión de socios de la asociación."
 
-#: ../self_adherent.php:132 ../ajouter_adherent.php:262
+#: ../self_adherent.php:132 ../ajouter_adherent.php:289
 msgid ""
 "It is now possible to follow in real time the state of your subscription"
 msgstr "Ahora puede seguir en tiempo real el estado de su suscripción"
 
-#: ../self_adherent.php:133 ../ajouter_adherent.php:263
+#: ../self_adherent.php:133 ../ajouter_adherent.php:290
 msgid "and to update your preferences from the web interface."
 msgstr ""
 "y actualizar sus preferencias usando la interfaz web prevista con este fin."
 
-#: ../self_adherent.php:135 ../lostpasswd.php:68 ../ajouter_adherent.php:265
+#: ../self_adherent.php:135 ../lostpasswd.php:68 ../ajouter_adherent.php:292
 msgid "Please login at this address:"
 msgstr "Por favor identifíquese usted en esta dirección:"
 
 #: ../self_adherent.php:138 ../self_adherent.php:443 ../lostpasswd.php:71
-#: ../lostpasswd.php:131 ../install/index.php:805 ../ajouter_adherent.php:268
+#: ../lostpasswd.php:131 ../install/index.php:805 ../ajouter_adherent.php:295
 #: ../templates/default/index.tpl:23 ../templates/default/preferences.tpl:195
 #: ../templates/default/ajouter_adherent.tpl:171
 #: ../templates/default/voir_adherent.tpl:117
@@ -79,18 +79,18 @@ msgstr "Login:"
 
 #: ../self_adherent.php:139 ../self_adherent.php:452 ../lostpasswd.php:72
 #: ../install/index.php:300 ../install/index.php:811
-#: ../ajouter_adherent.php:269 ../templates/default/index.tpl:27
+#: ../ajouter_adherent.php:296 ../templates/default/index.tpl:27
 #: ../templates/default/preferences.tpl:201
 #: ../templates/default/ajouter_adherent.tpl:176
 #: ../templates/default/voir_adherent.tpl:119
 msgid "Password:"
 msgstr "Contraseña:"
 
-#: ../self_adherent.php:141 ../lostpasswd.php:74 ../ajouter_adherent.php:271
+#: ../self_adherent.php:141 ../lostpasswd.php:74 ../ajouter_adherent.php:298
 msgid "See you soon!"
 msgstr "¡Hasta pronto!"
 
-#: ../self_adherent.php:143 ../lostpasswd.php:76 ../ajouter_adherent.php:273
+#: ../self_adherent.php:143 ../lostpasswd.php:76 ../ajouter_adherent.php:300
 msgid "(this mail was sent automatically)"
 msgstr "(este mensaje de correo ha sido enviado automáticamente)"
 
@@ -119,16 +119,20 @@ msgstr "El formulario no es válido porque algunos campos"
 msgid "are mandatory but still empty, please fill them:"
 msgstr "obligatorios están vacíos, por favor rellénelos:"
 
-#: ../self_adherent.php:213 ../mailing_adherents.php:119
-#: ../self_contribution.php:217 ../lostpasswd.php:111
+#: ../self_adherent.php:213 ../self_contribution.php:217 ../lostpasswd.php:111
+#: ../templates/default/gestion_adherents.tpl:5
+#: ../templates/default/mailing_adherents.tpl:5
 #: ../templates/default/preferences.tpl:5
 #: ../templates/default/ajouter_adherent.tpl:5
 #: ../templates/default/ajouter_contribution.tpl:5
 #: ../templates/default/configurer_fiches.tpl:5
+#: ../templates/default/traduire_libelles.tpl:5
+#: ../templates/default/ajouter_transaction.tpl:5
+#: ../templates/default/editer_champ.tpl:5
 msgid "- ERROR -"
 msgstr "- ERROR -"
 
-#: ../self_adherent.php:222 ../mailing_adherents.php:482 ../lostpasswd.php:120
+#: ../self_adherent.php:222 ../lostpasswd.php:120
 #: ../templates/default/preferences.tpl:15
 #: ../templates/default/ajouter_adherent.tpl:15
 msgid "- WARNING -"
@@ -138,20 +142,21 @@ msgstr "- ADVERTENCIA -"
 msgid "Title:"
 msgstr "Título:"
 
-#: ../self_adherent.php:241 ../ajouter_adherent.php:374
+#: ../self_adherent.php:241 ../ajouter_adherent.php:401
 msgid "Miss"
 msgstr "Señora"
 
-#: ../self_adherent.php:243 ../ajouter_adherent.php:375
+#: ../self_adherent.php:243 ../ajouter_adherent.php:402
 msgid "Mrs"
 msgstr "Señora"
 
-#: ../self_adherent.php:245 ../ajouter_adherent.php:376
+#: ../self_adherent.php:245 ../ajouter_adherent.php:403
 msgid "Mister"
 msgstr "Señor"
 
 #: ../self_adherent.php:250 ../templates/default/ajouter_adherent.tpl:31
 #: ../templates/default/voir_adherent.tpl:6
+#: ../templates/default/editer_champ.tpl:17
 msgid "Name:"
 msgstr "Nombre:"
 
@@ -182,6 +187,7 @@ msgstr "Fecha de nacimiento:"
 #: ../templates/default/ajouter_adherent.tpl:194
 #: ../templates/default/ajouter_contribution.tpl:53
 #: ../templates/default/ajouter_contribution.tpl:70
+#: ../templates/default/ajouter_transaction.tpl:24
 msgid "(dd/mm/yyyy format)"
 msgstr "(formato dd/mm/aaaa)"
 
@@ -200,8 +206,7 @@ msgstr "Quiero aparecer en el<br /> listado público de socios:"
 msgid "Language:"
 msgstr "Idioma:"
 
-#: ../self_adherent.php:346 ../mailing_adherents.php:776
-#: ../templates/default/preferences.tpl:45
+#: ../self_adherent.php:346 ../templates/default/preferences.tpl:45
 #: ../templates/default/ajouter_adherent.tpl:125
 #: ../templates/default/voir_adherent.tpl:56
 msgid "Address:"
@@ -225,14 +230,12 @@ msgstr "Ciudad:"
 msgid "Country:"
 msgstr "País:"
 
-#: ../self_adherent.php:376 ../mailing_adherents.php:778
-#: ../templates/default/ajouter_adherent.tpl:140
+#: ../self_adherent.php:376 ../templates/default/ajouter_adherent.tpl:140
 #: ../templates/default/voir_adherent.tpl:71
 msgid "Phone:"
 msgstr "Tel.:"
 
-#: ../self_adherent.php:384 ../mailing_adherents.php:780
-#: ../templates/default/ajouter_adherent.tpl:144
+#: ../self_adherent.php:384 ../templates/default/ajouter_adherent.tpl:144
 #: ../templates/default/voir_adherent.tpl:75
 msgid "Mobile phone:"
 msgstr "Móvil:"
@@ -247,20 +250,17 @@ msgstr "E-Mail:"
 msgid "Website:"
 msgstr "Sitio web:"
 
-#: ../self_adherent.php:404 ../mailing_adherents.php:782
-#: ../templates/default/ajouter_adherent.tpl:152
+#: ../self_adherent.php:404 ../templates/default/ajouter_adherent.tpl:152
 #: ../templates/default/voir_adherent.tpl:93
 msgid "ICQ:"
 msgstr "ICQ:"
 
-#: ../self_adherent.php:412 ../mailing_adherents.php:784
-#: ../templates/default/ajouter_adherent.tpl:156
+#: ../self_adherent.php:412 ../templates/default/ajouter_adherent.tpl:156
 #: ../templates/default/voir_adherent.tpl:97
 msgid "Jabber:"
 msgstr "Jabber:"
 
-#: ../self_adherent.php:418 ../mailing_adherents.php:786
-#: ../templates/default/ajouter_adherent.tpl:158
+#: ../self_adherent.php:418 ../templates/default/ajouter_adherent.tpl:158
 #: ../templates/default/voir_adherent.tpl:99
 msgid "MSN:"
 msgstr "MSN:"
@@ -297,6 +297,7 @@ msgstr "Grabar"
 #: ../templates/default/preferences.tpl:212
 #: ../templates/default/ajouter_adherent.tpl:221
 #: ../templates/default/ajouter_contribution.tpl:91
+#: ../templates/default/ajouter_transaction.tpl:47
 msgid "NB : The mandatory fields are in"
 msgstr "Nota: los campos obligatorios aparecen en"
 
@@ -304,258 +305,17 @@ msgstr "Nota: los campos obligatorios aparecen en"
 #: ../templates/default/preferences.tpl:212
 #: ../templates/default/ajouter_adherent.tpl:221
 #: ../templates/default/ajouter_contribution.tpl:91
+#: ../templates/default/ajouter_transaction.tpl:47
 msgid "red"
 msgstr "rojo"
 
-#: ../mailing_adherents.php:56
+#: ../mailing_adherents.php:70
 msgid "Please type an object for the message."
 msgstr "Por favor especifique el objeto del mensaje."
 
-#: ../mailing_adherents.php:59
+#: ../mailing_adherents.php:75
 msgid "Please enter a message."
 msgstr "Por favor teclee un mensaje."
-
-#: ../mailing_adherents.php:62
-msgid "Please select at least one member."
-msgstr "Por favor seleccione al menos un socio."
-
-#: ../mailing_adherents.php:104 ../mailing_adherents.php:411
-#: ../mailing_adherents.php:847 ../footer.php:45
-msgid "Generate labels"
-msgstr "Generación de etiquetas"
-
-#: ../mailing_adherents.php:110 ../mailing_adherents.php:478
-msgid "Mailing"
-msgstr "Envío general de correo"
-
-#: ../mailing_adherents.php:218 ../templates/default/gestion_adherents.tpl:17
-msgid "members"
-msgstr "socios"
-
-#: ../mailing_adherents.php:218 ../templates/default/gestion_adherents.tpl:17
-msgid "member"
-msgstr "socio"
-
-#: ../mailing_adherents.php:222
-msgid "Display:"
-msgstr "Mostrar:"
-
-#: ../mailing_adherents.php:224 ../gestion_contributions.php:308
-#: ../gestion_adherents.php:284
-msgid "All members"
-msgstr "Todos los socios"
-
-#: ../mailing_adherents.php:225 ../gestion_contributions.php:309
-#: ../gestion_adherents.php:285
-msgid "Members up to date"
-msgstr "Los socios al día"
-
-#: ../mailing_adherents.php:226 ../gestion_contributions.php:310
-#: ../gestion_adherents.php:286
-msgid "Close expiries"
-msgstr "Plazos que expirarán pronto"
-
-#: ../mailing_adherents.php:227 ../gestion_contributions.php:311
-#: ../gestion_adherents.php:287
-msgid "Latecomers"
-msgstr "Retrasados"
-
-#: ../mailing_adherents.php:230 ../gestion_contributions.php:313
-#: ../gestion_adherents.php:289
-msgid "All the accounts"
-msgstr "Todas las cuentas"
-
-#: ../mailing_adherents.php:231 ../gestion_contributions.php:314
-#: ../gestion_adherents.php:290
-msgid "Active accounts"
-msgstr "Cuentas activas"
-
-#: ../mailing_adherents.php:232 ../gestion_contributions.php:315
-#: ../gestion_adherents.php:291
-msgid "Inactive accounts"
-msgstr "Cuentas desactivadas"
-
-#: ../mailing_adherents.php:235
-msgid "Filter"
-msgstr "Filtrar"
-
-#: ../mailing_adherents.php:259 ../mailing_adherents.php:488
-#: ../mailing_adherents.php:656 ../footer.php:119 ../footer.php:123
-#: ../templates/default/gestion_adherents.tpl:43
-#: ../templates/default/page.tpl:85 ../templates/default/page.tpl:89
-#: ../templates/default/configurer_fiches.tpl:22
-msgid "Name"
-msgstr "Nombre completo"
-
-#: ../mailing_adherents.php:269 ../mailing_adherents.php:489
-msgid "E-Mail"
-msgstr "E-Mail"
-
-#: ../mailing_adherents.php:279 ../mailing_adherents.php:490
-#: ../mailing_adherents.php:658 ../templates/default/gestion_adherents.tpl:67
-msgid "Status"
-msgstr "Estado"
-
-#: ../mailing_adherents.php:289 ../mailing_adherents.php:491
-#: ../mailing_adherents.php:659 ../templates/default/gestion_adherents.tpl:79
-msgid "State of dues"
-msgstr "Informe de cuotas"
-
-#: ../mailing_adherents.php:305 ../mailing_adherents.php:500
-#: ../mailing_adherents.php:666 ../templates/default/gestion_adherents.tpl:126
-msgid "no member"
-msgstr "ningún socio"
-
-#: ../mailing_adherents.php:320 ../mailing_adherents.php:522
-#: ../mailing_adherents.php:681 ../gestion_contributions.php:259
-#: ../gestion_adherents.php:223
-msgid "Freed of dues"
-msgstr "Exento de cuota"
-
-#: ../mailing_adherents.php:327 ../mailing_adherents.php:529
-#: ../mailing_adherents.php:688 ../footer.php:128
-#: ../gestion_contributions.php:266 ../gestion_adherents.php:230
-#: ../templates/default/page.tpl:94
-msgid "Never contributed"
-msgstr "Nunca pagó la cuota"
-
-#: ../mailing_adherents.php:339 ../mailing_adherents.php:541
-#: ../mailing_adherents.php:700 ../gestion_contributions.php:277
-#: ../gestion_adherents.php:242
-msgid "Last day!"
-msgstr "¡Último día!"
-
-#: ../mailing_adherents.php:344 ../mailing_adherents.php:546
-#: ../mailing_adherents.php:705 ../gestion_adherents.php:247
-msgid "Late of "
-msgstr "Retraso de "
-
-#: ../mailing_adherents.php:344 ../mailing_adherents.php:546
-#: ../mailing_adherents.php:705 ../gestion_contributions.php:282
-#: ../gestion_adherents.php:247
-msgid "days"
-msgstr "días"
-
-#: ../mailing_adherents.php:344 ../mailing_adherents.php:546
-#: ../mailing_adherents.php:705 ../gestion_contributions.php:282
-#: ../gestion_adherents.php:247
-msgid "since"
-msgstr "desde el"
-
-#: ../mailing_adherents.php:349 ../mailing_adherents.php:551
-#: ../mailing_adherents.php:710 ../gestion_contributions.php:288
-#: ../gestion_adherents.php:253
-msgid "days remaining"
-msgstr "días restantes"
-
-#: ../mailing_adherents.php:349 ../mailing_adherents.php:551
-#: ../mailing_adherents.php:710 ../gestion_contributions.php:288
-#: ../gestion_contributions.php:290 ../gestion_adherents.php:253
-#: ../gestion_adherents.php:255
-msgid "ending on"
-msgstr "finaliza el"
-
-#: ../mailing_adherents.php:366 ../mailing_adherents.php:566
-#: ../mailing_adherents.php:725 ../footer.php:84
-msgid "[M]"
-msgstr "[H]"
-
-#: ../mailing_adherents.php:370 ../mailing_adherents.php:570
-#: ../mailing_adherents.php:729 ../footer.php:88
-msgid "[W]"
-msgstr "[M]"
-
-#: ../mailing_adherents.php:377 ../mailing_adherents.php:577
-#: ../mailing_adherents.php:736 ../footer.php:103
-msgid "[admin]"
-msgstr "[admin]"
-
-#: ../mailing_adherents.php:393 ../footer.php:107 ../footer.php:157
-msgid "[mod]"
-msgstr "[mod]"
-
-#: ../mailing_adherents.php:394 ../footer.php:111
-msgid "[$]"
-msgstr "[$]"
-
-#: ../mailing_adherents.php:395
-msgid ""
-"Do you really want to delete this member from the base, this will delete "
-"also the history of her fees. To avoid this you can just unactivate her "
-"account.\n"
-"\n"
-"Do you still want to delete this member ?"
-msgstr ""
-"¿Quiere usted verdaderamente eliminar a este socio de la base? Haciendo eso "
-"eliminará también el historial de sus cuotas. Para evitarlo puede "
-"simplemente desactivar su cuenta.\n"
-"\n"
-"¿Confirma que quiere eliminar a este socio?"
-
-#: ../mailing_adherents.php:395 ../footer.php:115 ../footer.php:161
-msgid "[del]"
-msgstr "[sup]"
-
-#: ../mailing_adherents.php:404
-msgid "[ Select / unselect all ]"
-msgstr "[ Marcar/desmarcar todo ]"
-
-#: ../mailing_adherents.php:420 ../mailing_adherents.php:614
-msgid "Object:"
-msgstr "Objeto:"
-
-#: ../mailing_adherents.php:426 ../mailing_adherents.php:616
-msgid "Message:"
-msgstr "Mensaje:"
-
-#: ../mailing_adherents.php:434
-msgid "Preview"
-msgstr "Vista previa"
-
-#: ../mailing_adherents.php:476
-msgid ""
-"Don't forget to contact the members who don't have an email address by "
-"another way."
-msgstr ""
-"No olvide contactar por otro medio con los socios que no tienen dirección de "
-"correo electrónico."
-
-#: ../mailing_adherents.php:478
-msgid "done!"
-msgstr "¡hecho!"
-
-#: ../mailing_adherents.php:478
-msgid "(preview)"
-msgstr "(vista previa)"
-
-#: ../mailing_adherents.php:485
-msgid "Recipients of the mailing:"
-msgstr "Destinatarios del envío general de e-mail:"
-
-#: ../mailing_adherents.php:603
-msgid "Send of a mailing titled:"
-msgstr "Enviar un e-mail general con título:"
-
-#: ../mailing_adherents.php:603
-msgid "recipients"
-msgstr "destinatarios"
-
-#: ../mailing_adherents.php:643
-msgid "Send"
-msgstr "Enviar"
-
-#: ../mailing_adherents.php:653
-msgid "Members who can't be reachable by e-mail:"
-msgstr "Socios no alcanzables por e-mail:"
-
-#: ../mailing_adherents.php:657
-msgid "Profile"
-msgstr "Perfil"
-
-#: ../mailing_adherents.php:822 ../mailing_adherents.php:832
-#: ../install/index.php:373
-msgid "Go back"
-msgstr "Regresar"
 
 #: ../log.php:42
 msgid "Logs flushed"
@@ -563,13 +323,13 @@ msgstr ""
 
 #: ../self_contribution.php:136 ../gestion_contributions.php:58
 #: ../gestion_contributions.php:73 ../ajouter_contribution.php:128
-#: ../ajouter_adherent.php:120
+#: ../ajouter_adherent.php:120 ../ajouter_transaction.php:97
 msgid "- Non valid date!"
 msgstr "- ¡Fecha inválida!"
 
 #: ../self_contribution.php:140 ../gestion_contributions.php:65
 #: ../gestion_contributions.php:80 ../ajouter_contribution.php:131
-#: ../ajouter_adherent.php:123
+#: ../ajouter_adherent.php:123 ../ajouter_transaction.php:99
 msgid "- Wrong date format (dd/mm/yyyy)!"
 msgstr "- ¡Formato de fecha (dd/mm/aaaa) incorrecto!"
 
@@ -607,6 +367,7 @@ msgstr "Cuota anual (por pagar)"
 
 #: ../self_contribution.php:242
 #: ../templates/default/ajouter_contribution.tpl:36
+#: ../templates/default/ajouter_transaction.tpl:26
 msgid "Amount:"
 msgstr "Importe:"
 
@@ -687,23 +448,23 @@ msgstr "Página calculada en"
 msgid "seconds."
 msgstr "segundos."
 
-#: ../footer.php:34 ../templates/default/page.tpl:20
+#: ../footer.php:34 ../templates/default/page.tpl:21
 msgid "Navigation"
 msgstr "Navegación"
 
-#: ../footer.php:40 ../templates/default/page.tpl:23
+#: ../footer.php:40 ../templates/default/page.tpl:24
 msgid "List of members"
 msgstr "Lista de socios"
 
-#: ../footer.php:41 ../templates/default/page.tpl:24
+#: ../footer.php:41 ../templates/default/page.tpl:25
 msgid "List of contributions"
 msgstr "Lista de contribuciones"
 
-#: ../footer.php:42 ../templates/default/page.tpl:26
+#: ../footer.php:42 ../templates/default/page.tpl:27
 msgid "Add a member"
 msgstr "Añadir un socio"
 
-#: ../footer.php:43 ../templates/default/page.tpl:27
+#: ../footer.php:43 ../templates/default/page.tpl:28
 msgid "Add a contribution"
 msgstr "Añadir una contribución"
 
@@ -711,47 +472,59 @@ msgstr "Añadir una contribución"
 msgid "Do a mailing"
 msgstr "Hacer un envío general de e-mail"
 
-#: ../footer.php:46 ../templates/default/page.tpl:29
+#: ../footer.php:45
+msgid "Generate labels"
+msgstr "Generación de etiquetas"
+
+#: ../footer.php:46 ../templates/default/page.tpl:30
 #: ../templates/default/log.tpl:1
 msgid "Logs"
 msgstr "Historial"
 
-#: ../footer.php:52 ../templates/default/page.tpl:31
+#: ../footer.php:52 ../templates/default/page.tpl:32
 msgid "My information"
 msgstr "Mis informaciones"
 
-#: ../footer.php:53 ../templates/default/page.tpl:32
+#: ../footer.php:53 ../templates/default/page.tpl:33
 msgid "My contributions"
 msgstr "Mis contribuciones"
 
-#: ../footer.php:64 ../templates/default/page.tpl:39
+#: ../footer.php:64 ../templates/default/page.tpl:40
 msgid "Configuration"
 msgstr "Configuración"
 
-#: ../footer.php:66 ../templates/default/page.tpl:41
+#: ../footer.php:66 ../templates/default/page.tpl:42
 #: ../templates/default/preferences.tpl:1
 msgid "Settings"
 msgstr "Preferencias"
 
-#: ../footer.php:67 ../templates/default/page.tpl:42
+#: ../footer.php:67 ../templates/default/page.tpl:43
 msgid "Configure member forms"
 msgstr "Configurar las fichas de suscripción"
 
 #: ../footer.php:74 ../includes/session.inc.php:30
-#: ../templates/default/page.tpl:48
+#: ../templates/default/page.tpl:49
 msgid "Log off"
 msgstr "Desconexión"
 
-#: ../footer.php:81 ../footer.php:150 ../templates/default/page.tpl:52
-#: ../templates/default/page.tpl:112
+#: ../footer.php:81 ../footer.php:150 ../templates/default/page.tpl:53
+#: ../templates/default/page.tpl:113
 msgid "Legend"
 msgstr "Pie"
 
-#: ../footer.php:85 ../templates/default/page.tpl:56
+#: ../footer.php:84
+msgid "[M]"
+msgstr "[H]"
+
+#: ../footer.php:85 ../templates/default/page.tpl:57
 msgid "Man"
 msgstr "Hombre"
 
-#: ../footer.php:89 ../templates/default/page.tpl:60
+#: ../footer.php:88
+msgid "[W]"
+msgstr "[M]"
+
+#: ../footer.php:89 ../templates/default/page.tpl:61
 msgid "Woman"
 msgstr "Mujer"
 
@@ -759,53 +532,81 @@ msgstr "Mujer"
 msgid "[Mail]"
 msgstr "[Mail]"
 
-#: ../footer.php:97 ../templates/default/page.tpl:65
+#: ../footer.php:97 ../templates/default/page.tpl:66
 msgid "Send a mail"
 msgstr "Enviar un e-mail"
 
-#: ../footer.php:104 ../templates/default/page.tpl:70
+#: ../footer.php:103
+msgid "[admin]"
+msgstr "[admin]"
+
+#: ../footer.php:104 ../templates/default/page.tpl:71
 msgid "Admin"
 msgstr "Administrador"
 
-#: ../footer.php:108 ../footer.php:158 ../templates/default/page.tpl:74
-#: ../templates/default/page.tpl:117
+#: ../footer.php:107 ../footer.php:157
+msgid "[mod]"
+msgstr "[mod]"
+
+#: ../footer.php:108 ../footer.php:158 ../templates/default/page.tpl:75
+#: ../templates/default/page.tpl:118
 msgid "Modification"
 msgstr "Modificación"
 
-#: ../footer.php:112 ../templates/default/page.tpl:78
+#: ../footer.php:111
+msgid "[$]"
+msgstr "[$]"
+
+#: ../footer.php:112 ../templates/default/page.tpl:79
 msgid "Contributions"
 msgstr "Contribuciones"
 
-#: ../footer.php:116 ../footer.php:162 ../templates/default/page.tpl:82
-#: ../templates/default/page.tpl:121
+#: ../footer.php:115 ../footer.php:161
+msgid "[del]"
+msgstr "[sup]"
+
+#: ../footer.php:116 ../footer.php:162 ../templates/default/page.tpl:83
+#: ../templates/default/page.tpl:122
 msgid "Deletion"
 msgstr "Supresión"
 
-#: ../footer.php:120 ../templates/default/page.tpl:86
+#: ../footer.php:119 ../footer.php:123
+#: ../templates/default/gestion_adherents.tpl:53
+#: ../templates/default/page.tpl:86 ../templates/default/page.tpl:90
+#: ../templates/default/configurer_fiches.tpl:22
+msgid "Name"
+msgstr "Nombre completo"
+
+#: ../footer.php:120 ../templates/default/page.tpl:87
 msgid "Active account"
 msgstr "Cuenta activa"
 
-#: ../footer.php:124 ../templates/default/page.tpl:90
+#: ../footer.php:124 ../templates/default/page.tpl:91
 msgid "Inactive account"
 msgstr "Cuenta desactivada"
 
-#: ../footer.php:132 ../templates/default/page.tpl:98
+#: ../footer.php:128 ../gestion_contributions.php:266
+#: ../gestion_adherents.php:256 ../templates/default/page.tpl:95
+msgid "Never contributed"
+msgstr "Nunca pagó la cuota"
+
+#: ../footer.php:132 ../templates/default/page.tpl:99
 msgid "Membership in order"
 msgstr "Afiliación en regla"
 
-#: ../footer.php:136 ../templates/default/page.tpl:102
+#: ../footer.php:136 ../templates/default/page.tpl:103
 msgid "Membership will expire soon (&lt;30d)"
 msgstr "La afiliación expirará pronto (<30d)"
 
-#: ../footer.php:140 ../templates/default/page.tpl:106
+#: ../footer.php:140 ../templates/default/page.tpl:107
 msgid "Lateness in fee"
 msgstr "Retraso de la cuota"
 
-#: ../footer.php:169 ../templates/default/page.tpl:126
+#: ../footer.php:169 ../templates/default/page.tpl:127
 msgid "Contribution"
 msgstr "Contribución"
 
-#: ../footer.php:173 ../templates/default/page.tpl:130
+#: ../footer.php:173 ../templates/default/page.tpl:131
 msgid "Gift"
 msgstr "Donativo"
 
@@ -951,35 +752,38 @@ msgstr ""
 
 #: ../preferences.php:169 ../preferences.php:172
 #: ../ajouter_contribution.php:159 ../ajouter_contribution.php:162
-#: ../ajouter_adherent.php:186
+#: ../ajouter_adherent.php:186 ../ajouter_transaction.php:117
+#: ../ajouter_transaction.php:120
 msgid "- Mandatory field empty."
 msgstr "- Campo obligatorio no rellenado."
 
 #: ../preferences.php:219 ../gestion_contributions.php:321
-#: ../gestion_adherents.php:297
+#: ../gestion_adherents.php:324 ../gestion_transactions.php:147
 #, fuzzy
 msgid "All"
 msgstr "todos"
 
 #: ../voir_adherent.php:69 ../templates/default/configurer_fiches.tpl:37
 #: ../templates/default/configurer_fiches.tpl:85
+#: ../templates/default/editer_champ.tpl:43
 msgid "Yes"
 msgstr "Sí"
 
 #: ../voir_adherent.php:71 ../templates/default/configurer_fiches.tpl:37
 #: ../templates/default/configurer_fiches.tpl:84
+#: ../templates/default/editer_champ.tpl:42
 msgid "No"
 msgstr "No"
 
-#: ../voir_adherent.php:82 ../etiquettes_adherents.php:84
+#: ../voir_adherent.php:82 ../etiquettes_adherents.php:83
 msgid "Mr."
 msgstr "Sr."
 
-#: ../voir_adherent.php:85 ../etiquettes_adherents.php:87
+#: ../voir_adherent.php:85 ../etiquettes_adherents.php:86
 msgid "Mrs."
 msgstr "Sra."
 
-#: ../voir_adherent.php:88 ../etiquettes_adherents.php:90
+#: ../voir_adherent.php:88 ../etiquettes_adherents.php:89
 msgid "Miss."
 msgstr "Sra."
 
@@ -991,7 +795,7 @@ msgstr "Activo"
 msgid "Inactive"
 msgstr "Inactivo"
 
-#: ../voir_adherent.php:108 ../ajouter_adherent.php:384
+#: ../voir_adherent.php:108 ../ajouter_adherent.php:411
 msgid "libelle_statut"
 msgstr "libelle_statut"
 
@@ -999,13 +803,66 @@ msgstr "libelle_statut"
 msgid "pref_lang"
 msgstr ""
 
+#: ../gestion_contributions.php:259 ../gestion_adherents.php:249
+msgid "Freed of dues"
+msgstr "Exento de cuota"
+
+#: ../gestion_contributions.php:277 ../gestion_adherents.php:268
+msgid "Last day!"
+msgstr "¡Último día!"
+
 #: ../gestion_contributions.php:282
 msgid "Late of"
 msgstr "Retrasado"
 
-#: ../gestion_contributions.php:290 ../gestion_adherents.php:255
+#: ../gestion_contributions.php:282 ../gestion_adherents.php:273
+msgid "days"
+msgstr "días"
+
+#: ../gestion_contributions.php:282 ../gestion_adherents.php:273
+msgid "since"
+msgstr "desde el"
+
+#: ../gestion_contributions.php:288 ../gestion_adherents.php:279
+msgid "days remaining"
+msgstr "días restantes"
+
+#: ../gestion_contributions.php:288 ../gestion_contributions.php:290
+#: ../gestion_adherents.php:279 ../gestion_adherents.php:281
+msgid "ending on"
+msgstr "finaliza el"
+
+#: ../gestion_contributions.php:290 ../gestion_adherents.php:281
 msgid "day remaining"
 msgstr "día restante"
+
+#: ../gestion_contributions.php:308 ../gestion_adherents.php:311
+msgid "All members"
+msgstr "Todos los socios"
+
+#: ../gestion_contributions.php:309 ../gestion_adherents.php:312
+msgid "Members up to date"
+msgstr "Los socios al día"
+
+#: ../gestion_contributions.php:310 ../gestion_adherents.php:313
+msgid "Close expiries"
+msgstr "Plazos que expirarán pronto"
+
+#: ../gestion_contributions.php:311 ../gestion_adherents.php:314
+msgid "Latecomers"
+msgstr "Retrasados"
+
+#: ../gestion_contributions.php:313 ../gestion_adherents.php:316
+msgid "All the accounts"
+msgstr "Todas las cuentas"
+
+#: ../gestion_contributions.php:314 ../gestion_adherents.php:317
+msgid "Active accounts"
+msgstr "Cuentas activas"
+
+#: ../gestion_contributions.php:315 ../gestion_adherents.php:318
+msgid "Inactive accounts"
+msgstr "Cuentas desactivadas"
 
 #: ../ajouter_contribution.php:119
 msgid "- Select a valid member name!"
@@ -1015,7 +872,7 @@ msgstr ""
 msgid "- Membership period overlaps period starting at "
 msgstr ""
 
-#: ../ajouter_contribution.php:199
+#: ../ajouter_contribution.php:199 ../ajouter_transaction.php:135
 msgid "-  Sum of all contributions exceed corresponding transaction amount."
 msgstr ""
 
@@ -1029,23 +886,18 @@ msgstr "Ficha de contribución"
 msgid "Contribution updated"
 msgstr "Actualización de una contribución:"
 
-#: ../ajouter_contribution.php:355
+#: ../ajouter_contribution.php:355 ../ajouter_transaction.php:227
 msgid "You must first register a member"
 msgstr ""
 
-#: ../etiquettes_adherents.php:42
-msgid ""
-"You have not selected a member, please check at least one box in the "
-"beginning of lines"
-msgstr ""
+#: ../gestion_adherents.php:46 ../gestion_adherents.php:58
+#, fuzzy
+msgid "No member was selected, please check at least one name."
+msgstr "Por favor seleccione al menos un socio."
 
-#: ../etiquettes_adherents.php:122
-msgid "Generation of "
-msgstr "Generación de "
-
-#: ../etiquettes_adherents.php:122
-msgid "label(s)"
-msgstr "etiqueta(s)"
+#: ../gestion_adherents.php:273
+msgid "Late of "
+msgstr "Retraso de "
 
 #: ../install/index.php:31 ../install/index.php:41
 msgid "Installation mode unknown"
@@ -1251,6 +1103,10 @@ msgid ""
 msgstr ""
 "La base no es accesible. Por favor vuelva a introducir los parámetros de "
 "conexión."
+
+#: ../install/index.php:373
+msgid "Go back"
+msgstr "Regresar"
 
 #: ../install/index.php:384
 msgid "Database exists and connection parameters are OK."
@@ -1516,10 +1372,41 @@ msgstr "Añadida la ficha de socio:"
 msgid "Member card updated:"
 msgstr "Actualización de la ficha de socio:"
 
-#: ../ajouter_adherent.php:377
+#: ../ajouter_adherent.php:244
+msgid "- Only .jpg, .gif and .png files are allowed."
+msgstr ""
+
+#: ../ajouter_adherent.php:404
 #, fuzzy
 msgid "Society"
 msgstr "Secretario"
+
+#: ../ajouter_transaction.php:90
+msgid "- Empty transaction description!"
+msgstr ""
+
+#: ../ajouter_transaction.php:133
+#, fuzzy
+msgid "- Transaction amount must be positive."
+msgstr "- ¡El importe debe ser una cifra!"
+
+#: ../ajouter_transaction.php:137
+msgid "- No originator selected (register a non-member first if necessary)."
+msgstr ""
+
+#: ../ajouter_transaction.php:152
+#, fuzzy
+msgid "transaction added"
+msgstr "Mis contribuciones"
+
+#: ../ajouter_transaction.php:165
+#, fuzzy
+msgid "transaction updated"
+msgstr "Actualización de una contribución:"
+
+#: ../editer_champ.php:70
+msgid "- Field name already used."
+msgstr ""
 
 #: ../templates/default/index.tpl:18
 msgid "Login"
@@ -1533,63 +1420,149 @@ msgstr "¿Ha olvidado su contraseña?"
 msgid "Management of members"
 msgstr "Gestión de los socios"
 
-#: ../templates/default/gestion_adherents.tpl:4
+#: ../templates/default/gestion_adherents.tpl:14
 msgid "Search:"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:6
+#: ../templates/default/gestion_adherents.tpl:16
 #, fuzzy
 msgid "among:"
 msgstr "Importe:"
 
-#: ../templates/default/gestion_adherents.tpl:19
+#: ../templates/default/gestion_adherents.tpl:27
+#: ../templates/default/mailing_adherents.tpl:20
+msgid "members"
+msgstr "socios"
+
+#: ../templates/default/gestion_adherents.tpl:27
+#: ../templates/default/mailing_adherents.tpl:20
+msgid "member"
+msgstr "socio"
+
+#: ../templates/default/gestion_adherents.tpl:29
 #: ../templates/default/gestion_contributions.tpl:14
+#: ../templates/default/gestion_transactions.tpl:7
 msgid "Show:"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:24
-#: ../templates/default/gestion_adherents.tpl:163
+#: ../templates/default/gestion_adherents.tpl:34
+#: ../templates/default/gestion_adherents.tpl:174
 #: ../templates/default/gestion_contributions.tpl:19
 #: ../templates/default/gestion_contributions.tpl:147
 #: ../templates/default/log.tpl:10 ../templates/default/log.tpl:100
+#: ../templates/default/gestion_transactions.tpl:12
+#: ../templates/default/gestion_transactions.tpl:110
 msgid "Pages:"
 msgstr "Páginas:"
 
-#: ../templates/default/gestion_adherents.tpl:55
+#: ../templates/default/gestion_adherents.tpl:65
 msgid "Nickname"
 msgstr "Alias"
 
-#: ../templates/default/gestion_adherents.tpl:90
+#: ../templates/default/gestion_adherents.tpl:77
+msgid "Status"
+msgstr "Estado"
+
+#: ../templates/default/gestion_adherents.tpl:89
+msgid "State of dues"
+msgstr "Informe de cuotas"
+
+#: ../templates/default/gestion_adherents.tpl:100
 #: ../templates/default/configurer_fiches.tpl:27
 #: ../templates/default/gestion_contributions.tpl:101
+#: ../templates/default/gestion_transactions.tpl:69
 msgid "Actions"
 msgstr "Acciones"
 
-#: ../templates/default/gestion_adherents.tpl:154
+#: ../templates/default/gestion_adherents.tpl:136
+msgid "no member"
+msgstr "ningún socio"
+
+#: ../templates/default/gestion_adherents.tpl:164
 msgid "(Un)Check all"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:156
+#: ../templates/default/gestion_adherents.tpl:167
 #, fuzzy
 msgid "Selection:"
 msgstr "Supresión"
 
-#: ../templates/default/page.tpl:25
+#: ../templates/default/mailing_adherents.tpl:1
+msgid "Mailing"
+msgstr "Envío general de correo"
+
+#: ../templates/default/mailing_adherents.tpl:16
+msgid "Your e-mail was sent to"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:18
+msgid "You are about to send an e-mail to"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:22
+msgid "Please compose your mail."
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:28
+msgid "Object:"
+msgstr "Objeto:"
+
+#: ../templates/default/mailing_adherents.tpl:41
+msgid "Message:"
+msgstr "Mensaje:"
+
+#: ../templates/default/mailing_adherents.tpl:64
+msgid "Interpret HTML"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:67
+msgid "HTML interpretation:"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:67
+msgid "ON"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:67
+msgid "OFF"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:79
+msgid "None of the selected members has an email address."
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:84
+msgid "unreachable members:"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:84
+#, fuzzy
+msgid "unreachable member"
+msgstr "Socio bienhechor"
+
+#: ../templates/default/mailing_adherents.tpl:85
+msgid ""
+"Some members you have selected have no e-mail address. However, you can "
+"generate envelope labels to contact them by snail mail."
+msgstr ""
+
+#: ../templates/default/page.tpl:26
 #, fuzzy
 msgid "List of transactions"
 msgstr "Lista de contribuciones"
 
-#: ../templates/default/page.tpl:28
+#: ../templates/default/page.tpl:29
 #, fuzzy
 msgid "Add a transaction"
 msgstr "Añadir una contribución"
 
-#: ../templates/default/page.tpl:33
+#: ../templates/default/page.tpl:34
 #, fuzzy
 msgid "My transactions"
 msgstr "Mis contribuciones"
 
-#: ../templates/default/page.tpl:43
+#: ../templates/default/page.tpl:44
+#: ../templates/default/traduire_libelles.tpl:1
 #, fuzzy
 msgid "Translate labels"
 msgstr "Generación de etiquetas"
@@ -1794,6 +1767,7 @@ msgid "This comment is reserved to the member."
 msgstr "Este comentario sólo lo ve el socio."
 
 #: ../templates/default/ajouter_contribution.tpl:21
+#: ../templates/default/ajouter_transaction.tpl:34
 msgid "-- select a name --"
 msgstr "-- seleccione un nombre --"
 
@@ -1860,6 +1834,7 @@ msgstr "contribución"
 
 #: ../templates/default/gestion_contributions.tpl:37
 #: ../templates/default/log.tpl:27
+#: ../templates/default/gestion_transactions.tpl:30
 msgid "Date"
 msgstr "Fecha"
 
@@ -1877,6 +1852,7 @@ msgid "Member"
 msgstr "Socio"
 
 #: ../templates/default/gestion_contributions.tpl:77
+#: ../templates/default/gestion_transactions.tpl:57
 msgid "Amount"
 msgstr "Importe"
 
@@ -1897,6 +1873,19 @@ msgstr "[ Vea la ficha de socio ]"
 #: ../templates/default/voir_adherent.tpl:147
 msgid "[ Add a contribution ]"
 msgstr "[ Añadir una contribución ]"
+
+#: ../templates/default/traduire_libelles.tpl:16
+#, fuzzy
+msgid "Language"
+msgstr "Idioma:"
+
+#: ../templates/default/traduire_libelles.tpl:17
+msgid "Text"
+msgstr ""
+
+#: ../templates/default/traduire_libelles.tpl:20
+msgid "Original"
+msgstr ""
 
 #: ../templates/default/log.tpl:8
 msgid "lines"
@@ -1921,6 +1910,7 @@ msgid "Action"
 msgstr "Acciones"
 
 #: ../templates/default/log.tpl:75
+#: ../templates/default/gestion_transactions.tpl:41
 msgid "Description"
 msgstr "Descripción"
 
@@ -1935,6 +1925,169 @@ msgstr "[ Modificación ]"
 #: ../templates/default/voir_adherent.tpl:144
 msgid "[ Contributions ]"
 msgstr "[ Contribuciones ]"
+
+#: ../templates/default/ajouter_transaction.tpl:1
+#, fuzzy
+msgid "New transaction"
+msgstr "Mis contribuciones"
+
+#: ../templates/default/ajouter_transaction.tpl:17
+#, fuzzy
+msgid "Description:"
+msgstr "Descripción"
+
+#: ../templates/default/ajouter_transaction.tpl:21
+#, fuzzy
+msgid "Date:"
+msgstr "Fecha"
+
+#: ../templates/default/ajouter_transaction.tpl:30
+msgid "Originator:"
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:1
+#, fuzzy
+msgid "Edit field"
+msgstr "campo"
+
+#: ../templates/default/editer_champ.tpl:23
+#, fuzzy
+msgid "Visibility:"
+msgstr "Visibilidad"
+
+#: ../templates/default/editer_champ.tpl:30
+#, fuzzy
+msgid "Position:"
+msgstr "Descripción"
+
+#: ../templates/default/editer_champ.tpl:39
+msgid "Required:"
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:50
+msgid "Width:"
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:58
+#, fuzzy
+msgid "Height:"
+msgstr "Altura de la etiqueta:"
+
+#: ../templates/default/editer_champ.tpl:66
+#, fuzzy
+msgid "Size:"
+msgstr "Tamaño"
+
+#: ../templates/default/editer_champ.tpl:69
+msgid "Maximum number of characters."
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:75
+msgid "Repeat:"
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:78
+msgid "Number of values or zero if infinite."
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:84
+#, fuzzy
+msgid "Values:"
+msgstr "Páginas:"
+
+#: ../templates/default/editer_champ.tpl:87
+msgid "Choice list (one entry per line)."
+msgstr ""
+
+#: ../templates/default/gestion_transactions.tpl:1
+#, fuzzy
+msgid "Management of transactions"
+msgstr "Gestión de contribuciones"
+
+#: ../templates/default/gestion_transactions.tpl:5
+#, fuzzy
+msgid "transactions"
+msgstr "Mis contribuciones"
+
+#: ../templates/default/gestion_transactions.tpl:5
+#, fuzzy
+msgid "transaction"
+msgstr "Mis contribuciones"
+
+#: ../templates/default/gestion_transactions.tpl:44
+msgid "Originator"
+msgstr ""
+
+#: ../templates/default/gestion_transactions.tpl:103
+#: ../templates/default/gestion_transactions.tpl:105
+#, fuzzy
+msgid "no transaction"
+msgstr "Mis contribuciones"
+
+#~ msgid "Display:"
+#~ msgstr "Mostrar:"
+
+#~ msgid "Filter"
+#~ msgstr "Filtrar"
+
+#~ msgid "E-Mail"
+#~ msgstr "E-Mail"
+
+#~ msgid ""
+#~ "Do you really want to delete this member from the base, this will delete "
+#~ "also the history of her fees. To avoid this you can just unactivate her "
+#~ "account.\n"
+#~ "\n"
+#~ "Do you still want to delete this member ?"
+#~ msgstr ""
+#~ "¿Quiere usted verdaderamente eliminar a este socio de la base? Haciendo "
+#~ "eso eliminará también el historial de sus cuotas. Para evitarlo puede "
+#~ "simplemente desactivar su cuenta.\n"
+#~ "\n"
+#~ "¿Confirma que quiere eliminar a este socio?"
+
+#~ msgid "[ Select / unselect all ]"
+#~ msgstr "[ Marcar/desmarcar todo ]"
+
+#~ msgid "Preview"
+#~ msgstr "Vista previa"
+
+#~ msgid ""
+#~ "Don't forget to contact the members who don't have an email address by "
+#~ "another way."
+#~ msgstr ""
+#~ "No olvide contactar por otro medio con los socios que no tienen dirección "
+#~ "de correo electrónico."
+
+#~ msgid "done!"
+#~ msgstr "¡hecho!"
+
+#~ msgid "(preview)"
+#~ msgstr "(vista previa)"
+
+#~ msgid "Recipients of the mailing:"
+#~ msgstr "Destinatarios del envío general de e-mail:"
+
+#~ msgid "Send of a mailing titled:"
+#~ msgstr "Enviar un e-mail general con título:"
+
+#~ msgid "recipients"
+#~ msgstr "destinatarios"
+
+#~ msgid "Send"
+#~ msgstr "Enviar"
+
+#~ msgid "Members who can't be reachable by e-mail:"
+#~ msgstr "Socios no alcanzables por e-mail:"
+
+#~ msgid "Profile"
+#~ msgstr "Perfil"
+
+#~ msgid "Generation of "
+#~ msgstr "Generación de "
+
+#~ msgid "label(s)"
+#~ msgstr "etiqueta(s)"
 
 #~ msgid "all"
 #~ msgstr "todos"
@@ -1951,15 +2104,9 @@ msgstr "[ Contribuciones ]"
 #~ msgid "free text"
 #~ msgstr "texto libre"
 
-#~ msgid "field"
-#~ msgstr "campo"
-
 #, fuzzy
 #~ msgid "Delete"
 #~ msgstr "Supresión"
-
-#~ msgid "Size"
-#~ msgstr "Tamaño"
 
 #~ msgid "Authentication failed. Login:"
 #~ msgstr "Fallo en la autentificación. Login:"
