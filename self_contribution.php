@@ -80,7 +80,7 @@ $duree_mois_cotis = PREF_MEMBERSHIP_EXT;
 if (isset($_POST["login_adh"])) $login_adh=$_POST["login_adh"];
 if (isset($_GET["login_adh"])) $login_adh=$_GET["login_adh"];
 $requete = "SELECT nom_adh, prenom_adh, id_adh FROM ".PREFIX_DB."adherents 
-               WHERE login_adh=".$DB->qstr($login_adh);
+               WHERE login_adh=".$DB->qstr($login_adh, get_magic_quotes_gpc());
 $resultat = $DB->Execute($requete);
 if (!$resultat->EOF){
   $nom_adh = $resultat->fields[0];

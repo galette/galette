@@ -58,8 +58,8 @@
 		$fixed_values = get_form_value("fixed_values", '');
 
 		if ($field_id != '' && $field_perm != '') {
-			$quoted_form_name = $DB->qstr($form_name, true);
-			$quoted_field_name = $DB->qstr($field_name, true);
+			$quoted_form_name = $DB->qstr($form_name, get_magic_quotes_gpc());
+			$quoted_field_name = $DB->qstr($field_name, get_magic_quotes_gpc());
 			$DB->StartTrans();
 			$query = "SELECT COUNT(field_id)
 				  FROM $field_types_table
@@ -109,7 +109,7 @@
 						  val varchar($max_length) NOT NULL)", &$error_detected);
 				if (count($error_detected) == 0) {
 					for ($i = 0; $i < count($values); $i++) {
-						$val = $DB->qstr($values[$i]);
+						$val = $DB->qstr($values[$i], get_magic_quotes_gpc());
 						db_execute(&$DB, "INSERT INTO $contents_table VALUES ($i, $val)", &$error_detected);
 					}
 				}

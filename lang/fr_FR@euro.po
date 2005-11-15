@@ -836,7 +836,7 @@ msgstr "jour restant"
 
 #: ../gestion_contributions.php:308 ../gestion_adherents.php:311
 msgid "All members"
-msgstr "Tout les adhérents"
+msgstr "Tous les adhérents"
 
 #: ../gestion_contributions.php:309 ../gestion_adherents.php:312
 msgid "Members up to date"

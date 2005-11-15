@@ -49,7 +49,7 @@
 		{
 			if ($where_clause!="")
 				$where_clause .= " OR ";
-			$where_clause .= "id_adh=".$DB->qstr($value);
+			$where_clause .= "id_adh=".$DB->qstr($value, get_magic_quotes_gpc());
 		}
 		$requete .= $where_clause." ORDER by nom_adh, prenom_adh;";
 		// echo $requete;

@@ -91,7 +91,7 @@
 						//check if login is already taken
 						$requete2 = "SELECT id_adh
 								FROM ".PREFIX_DB."adherents
-								WHERE login_adh=". $DB->qstr($value, true);
+								WHERE login_adh=". $DB->qstr($value, get_magic_quotes_gpc());
 						$result2 = &$DB->Execute($requete2);
 						if (!$result2->EOF)
 							$error_detected[] = _T("- This username is already used by another member !");
@@ -184,7 +184,7 @@
 				$valeur = stripslashes($valeur);
 				$requete = "INSERT INTO ".PREFIX_DB."preferences 
 					    (nom_pref, val_pref)
-					    VALUES (".$DB->qstr($champ).",".$DB->qstr($valeur).");";
+					    VALUES (".$DB->qstr($champ, get_magic_quotes_gpc()).",".$DB->qstr($valeur, get_magic_quotes_gpc()).");";
 				$DB->Execute($requete);
 			}
 		

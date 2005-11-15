@@ -49,7 +49,7 @@
 
 		$form_title = $all_forms[$form_name];
 
-		$quoted_form_name = $DB->qstr($form_name, true);
+		$quoted_form_name = $DB->qstr($form_name, get_magic_quotes_gpc());
 
 		if (isset($_POST["valid"])) {
 			if ($_POST["field_type"] != $field_type_separator &&
@@ -67,7 +67,7 @@
 				$idx = db_get_one(&$DB, $query, &$error_detected);
 				if ($idx != false) {
 					$DB->StartTrans();
-					$quoted_field_name = $DB->qstr($field_name, true);
+					$quoted_field_name = $DB->qstr($field_name, get_magic_quotes_gpc());
 					$query = "INSERT INTO $field_types_table
 						    (field_index, field_form, field_name, field_perm, field_type, field_required, field_pos)
 						  VALUES ($idx, $quoted_form_name, $quoted_field_name, $field_perm, $field_type, $field_required, $field_pos)";

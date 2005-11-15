@@ -139,7 +139,7 @@
 
 			// dates already quoted
 			if (strncmp($key, "date_", 5) != 0)
-				$value = $DB->qstr($value);
+				$value = $DB->qstr($value,get_magic_quotes_gpc());
 			if (($key != 'date_fin_cotis' || $cotis_extension) &&
 			    ($key != 'trans_id' || is_numeric($trans_id))) {
 				$update_string .= ", ".$key."=".$value;

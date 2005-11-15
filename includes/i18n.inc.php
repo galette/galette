@@ -64,9 +64,9 @@ function add_dynamic_translation($DB, $text_orig, $error_detected)
 {
 	global $languages, $language;
 	$l10n_table = PREFIX_DB."l10n";
-	$quoted_text_orig = $DB->qstr($text_orig);
+	$quoted_text_orig = $DB->qstr($text_orig, get_magic_quotes_gpc());
 	foreach (array_values($languages) as $text_locale) {
-		$quoted_locale = $DB->qstr($text_locale);
+		$quoted_locale = $DB->qstr($text_locale, get_magic_quotes_gpc());
 		// User is supposed to use his own language as original text.
 		$quoted_trans = $DB->qstr($text_locale == $language ? $text_orig : "");
 		$where_cond = "text_orig=$quoted_text_orig AND text_locale=$quoted_locale";
@@ -90,9 +90,9 @@ function delete_dynamic_translation($DB, $text_orig, $error_detected)
 {
 	global $languages;
 	$l10n_table = PREFIX_DB."l10n";
-	$quoted_text_orig = $DB->qstr($text_orig);
+	$quoted_text_orig = $DB->qstr($text_orig, get_magic_quotes_gpc());
 	foreach (array_values($languages) as $text_locale) {
-		$quoted_locale = $DB->qstr($text_locale);
+		$quoted_locale = $DB->qstr($text_locale, get_magic_quotes_gpc());
 		$query = "UPDATE $l10n_table
 			  SET text_nref=text_nref-1
 			  WHERE text_orig=$quoted_text_orig AND text_locale=$quoted_locale";
@@ -109,9 +109,9 @@ function delete_dynamic_translation($DB, $text_orig, $error_detected)
 function update_dynamic_translation($DB, $text_orig, $text_locale, $text_trans, $error_detected)
 {
 	$l10n_table = PREFIX_DB."l10n";
-	$quoted_text_orig = $DB->qstr($text_orig);
-	$quoted_locale = $DB->qstr($text_locale);
-	$quoted_text_trans = $DB->qstr($text_trans);
+	$quoted_text_orig = $DB->qstr($text_orig, get_magic_quotes_gpc());
+	$quoted_locale = $DB->qstr($text_locale, get_magic_quotes_gpc());
+	$quoted_text_trans = $DB->qstr($text_trans, get_magic_quotes_gpc());
 	$query = "UPDATE $l10n_table
 		  SET text_trans=$quoted_text_trans
 		  WHERE text_orig=$quoted_text_orig AND text_locale=$quoted_locale";
@@ -125,8 +125,8 @@ function get_dynamic_translation($DB, $text_orig, $text_locale)
 	$l10n_table = PREFIX_DB."l10n";
 	$query = "SELECT text_trans
 		  FROM $l10n_table
-		  WHERE text_orig=".$DB->qstr($text_orig). " AND 
-		  	text_locale=".$DB->qstr($text_locale);
+		  WHERE text_orig=".$DB->qstr($text_orig, get_magic_quotes_gpc()). " AND 
+		  	text_locale=".$DB->qstr($text_locale, get_magic_quotes_gpc());
 	return $DB->GetOne($query);
 }
 

@@ -1,5 +1,5 @@
 <?
-// This file was automatically generated on Wed Aug 31 19:49:48 2005 (GMT)
+// This file was automatically generated on Tue Nov 15 13:45:29 2005 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -346,7 +346,7 @@ $lang['- The username must be composed of at least 4 characters!'] = '- L\'ident
 $lang['- Default membership extention and beginning of membership are mutually exclusive.'] = '- Vous devez indiquer soit une durée d\'adhésion par défaut, soit une date de début d\'exercice (pas les deux).';
 
 // ../gestion_contributions.php:308 ../gestion_adherents.php:311 
-$lang['All members'] = 'Tout les adhérents';
+$lang['All members'] = 'Tous les adhérents';
 
 // ../templates/default/preferences.tpl:150 
 $lang['Vertical spacing:'] = 'Espacement vertical :';

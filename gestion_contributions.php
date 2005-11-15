@@ -101,19 +101,19 @@
 		// recherche adherent
 		$requetesel = "SELECT id_adh
 				FROM ".PREFIX_DB."cotisations 
-				WHERE id_cotis=".$DB->qstr($_GET["sup"]); 
+				WHERE id_cotis=".$DB->qstr($_GET["sup"], get_magic_quotes_gpc()); 
 		$result_adh = &$DB->Execute($requetesel);
 		if (!$result_adh->EOF)
 		{			
 			$id_adh = $result_adh->fields["id_adh"];
 
-			$requetesup = "SELECT nom_adh, prenom_adh FROM ".PREFIX_DB."adherents WHERE id_adh=".$DB->qstr($id_adh);
+			$requetesup = "SELECT nom_adh, prenom_adh FROM ".PREFIX_DB."adherents WHERE id_adh=".$DB->qstr($id_adh, get_magic_quotes_gpc());
 			$resultat = $DB->Execute($requetesup);
 			if (!$resultat->EOF)
 			{			
 				// supression record cotisation
 				$requetesup = "DELETE FROM ".PREFIX_DB."cotisations 
-				    	    WHERE id_cotis=".$DB->qstr($_GET["sup"]); 
+				    	    WHERE id_cotis=".$DB->qstr($_GET["sup"], get_magic_quotes_gpc()); 
 				$DB->Execute($requetesup);
 			
 				// mise a jour de l'échéance
@@ -125,7 +125,7 @@
 				}
 				$requeteup = "UPDATE ".PREFIX_DB."adherents
 					    SET date_echeance=".$date_fin_update."
-					    WHERE id_adh=".$DB->qstr($id_adh);
+					    WHERE id_adh=".$DB->qstr($id_adh, get_magic_quotes_gpc());
 				$DB->Execute($requeteup);
  				dblog("Contribution deleted:",strtoupper($resultat->fields[0])." ".$resultat->fields[1],$requetesup);							
  			}

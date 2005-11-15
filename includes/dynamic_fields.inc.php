@@ -107,7 +107,7 @@
 	function set_dynamic_field($DB, $form_name, $item_id, $field_id, $val_index, $field_val) {
 		global $fields_table;
 		$ret = false;
-		$quoted_form_name = $DB->qstr($form_name, true);
+		$quoted_form_name = $DB->qstr($form_name, get_magic_quotes_gpc());
 		$DB->StartTrans();
 		$query = "SELECT COUNT(*) FROM $fields_table
 			  WHERE item_id=$item_id AND field_form=$quoted_form_name AND
@@ -119,7 +119,7 @@
 				  WHERE item_id=$item_id AND field_form=$quoted_form_name AND
 				        field_id=$field_id AND val_index=$val_index";
 		    else {
-			$value = $DB->qstr($field_val, true);
+			$value = $DB->qstr($field_val, get_magic_quotes_gpc());
 			if ($count > 0)
 			    $query = "UPDATE $fields_table SET field_val=$value
 			    	      WHERE item_id=$item_id AND field_form=$quoted_form_name AND
@@ -156,7 +156,7 @@
 	// $quote: If true, values are quoted for HTML output.
 	function get_dynamic_fields($DB, $form_name, $item_id, $quote) {
 		global $field_properties, $fields_table, $field_types_table;
-		$quoted_form_name = $DB->qstr($form_name, true);
+		$quoted_form_name = $DB->qstr($form_name, get_magic_quotes_gpc());
 		$DB->StartTrans();
 		$query =  "SELECT field_id, val_index, field_val ".
 			  "FROM $fields_table ".
@@ -216,7 +216,7 @@
 	// $edit: Must be true if prepared for edition.
 	function prepare_dynamic_fields_for_display($DB, $form_name, $admin_status, $all_values, $disabled, $edit) {
 		global $field_properties, $field_types_table;
-		$quoted_form_name = $DB->qstr($form_name, true);
+		$quoted_form_name = $DB->qstr($form_name, get_magic_quotes_gpc());
 		$query = "SELECT *
 			  FROM $field_types_table
 			  WHERE field_form=$quoted_form_name

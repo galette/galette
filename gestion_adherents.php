@@ -112,29 +112,29 @@
 		
 		foreach ($array_sup as $supval)
 		{
-			$requetesup = "SELECT nom_adh, prenom_adh FROM ".PREFIX_DB."adherents WHERE id_adh=".$DB->qstr($supval);
+			$requetesup = "SELECT nom_adh, prenom_adh FROM ".PREFIX_DB."adherents WHERE id_adh=".$DB->qstr($supval, get_magic_quotes_gpc());
 			$resultat = $DB->Execute($requetesup);
 			if (!$resultat->EOF)
 			{
 				// supression record adhérent
 				$requetesup = "DELETE FROM ".PREFIX_DB."adherents 
-						WHERE id_adh=".$DB->qstr($supval); 
+						WHERE id_adh=".$DB->qstr($supval, get_magic_quotes_gpc()); 
 				$DB->Execute($requetesup); 		
 				dblog("Delete the member card (and dues)",strtoupper($resultat->fields[0])." ".$resultat->fields[1],$requetesup);
 
 				// suppression records cotisations
 				$requetesup = "DELETE FROM ".PREFIX_DB."cotisations 
-						WHERE id_adh=" . $DB->qstr($supval); 
+						WHERE id_adh=" . $DB->qstr($supval, get_magic_quotes_gpc()); 
 				$DB->Execute($requetesup);
 
 				// erase custom fields
 				$requetesup = "DELETE FROM ".PREFIX_DB."adh_info
-						WHERE id_adh=".$DB->qstr($supval);
+						WHERE id_adh=".$DB->qstr($supval, get_magic_quotes_gpc());
 				$DB->Execute($requetesup);
 
 				// erase picture
 				$requetesup = "DELETE FROM ".PREFIX_DB."pictures
-						WHERE id_adh=".$DB->qstr($supval);
+						WHERE id_adh=".$DB->qstr($supval, get_magic_quotes_gpc());
 				$DB->Execute($requetesup);
 			}
 			$resultat->Close();
