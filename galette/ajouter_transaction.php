@@ -88,7 +88,7 @@ if (isset($_POST["valid"]))
 			case 'trans_desc':
 				if ($value == '')
 					$error_detected[] = _T("- Empty transaction description!");
-				$value = $DB->qstr($value);
+				$value = $DB->qstr($value,get_magic_quotes_gpc());
 				break;
 			case 'trans_date':
 				if (ereg("^[0-9]{2}/[0-9]{2}/[0-9]{4}$", $value, $result)) {

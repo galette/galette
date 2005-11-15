@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-31 21:25+0200\n"
+"POT-Creation-Date: 2005-11-15 14:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -137,15 +137,15 @@ msgstr ""
 msgid "Title:"
 msgstr ""
 
-#: ../self_adherent.php:241 ../ajouter_adherent.php:401
+#: ../self_adherent.php:241 ../ajouter_adherent.php:404
 msgid "Miss"
 msgstr ""
 
-#: ../self_adherent.php:243 ../ajouter_adherent.php:402
+#: ../self_adherent.php:243 ../ajouter_adherent.php:405
 msgid "Mrs"
 msgstr ""
 
-#: ../self_adherent.php:245 ../ajouter_adherent.php:403
+#: ../self_adherent.php:245 ../ajouter_adherent.php:406
 msgid "Mister"
 msgstr ""
 
@@ -782,7 +782,7 @@ msgstr ""
 msgid "Inactive"
 msgstr ""
 
-#: ../voir_adherent.php:108 ../ajouter_adherent.php:411
+#: ../voir_adherent.php:108 ../ajouter_adherent.php:414
 msgid "libelle_statut"
 msgstr ""
 
@@ -1325,7 +1325,7 @@ msgstr ""
 msgid "- Only .jpg, .gif and .png files are allowed."
 msgstr ""
 
-#: ../ajouter_adherent.php:404
+#: ../ajouter_adherent.php:407
 msgid "Society"
 msgstr ""
 

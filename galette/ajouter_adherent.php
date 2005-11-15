@@ -141,9 +141,9 @@
 							//check if login is already taken
 							$requete = "SELECT id_adh
 									FROM ".PREFIX_DB."adherents
-									WHERE login_adh=". $DB->qstr($value, true);
+									WHERE login_adh=". $DB->qstr($value, get_magic_quotes_gpc());
 							if ($adherent['id_adh'] != '')
-								$requete .= " AND id_adh!=" . $DB->qstr($adherent['id_adh'], true);
+								$requete .= " AND id_adh!=" . $DB->qstr($adherent['id_adh'], get_magic_quotes_gpc());
 							$result = &$DB->Execute($requete);
 							if (!$result->EOF || $value==PREF_ADMIN_LOGIN)
 								$error_detected[] = _T("- This username is already used by another member !");
@@ -162,7 +162,7 @@
 						$value='null';
 				}
 				else
-					$value = $DB->qstr($value);
+					$value = $DB->qstr($value, get_magic_quotes_gpc());
 
 				$update_string .= ", ".$key."=".$value;
 				$insert_string_fields .= ", ".$key;
@@ -329,7 +329,9 @@
 			$adherent["id_statut"] = "4";
 			$adherent["titre_adh"] = "1";
 			$adherent["date_crea_adh"] =date("d/m/Y");
-			$adherent["url_adh"] = "http://";
+      #annoying 
+			#$adherent["url_adh"] = "http://";
+			$adherent["url_adh"] = "";
 			$adherent["mdp_adh"] = makeRandomPassword(7);
 			$adherent["pref_lang"] = PREF_LANG;
 		}
@@ -344,9 +346,10 @@
 				header("location: index.php");
 			else
 			{
+        #annoying
 				// url_adh is a specific case
-				if ($result->fields['url_adh']=='')
-					$result->fields['url_adh'] = 'http://';
+				//if ($result->fields['url_adh']=='')
+				//	$result->fields['url_adh'] = 'http://';
 
 				// plain info
 				$adherent = $result->fields;

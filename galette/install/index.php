@@ -459,7 +459,7 @@
 				if (!isset($error))
 				{	
 					// à adapter selon le type de base
-					$requete="INSERT INTO galette_test VALUES (".$DB->qstr("test").")";
+					$requete="INSERT INTO galette_test VALUES (".$DB->qstr("test", get_magic_quotes_gpc()).")";
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
@@ -474,7 +474,7 @@
 				if (!isset($error))
 				{	
 					// à adapter selon le type de base
-					$requete="UPDATE galette_test SET testcol=".$DB->qstr("test");
+					$requete="UPDATE galette_test SET testcol=".$DB->qstr("test", get_magic_quotes_gpc());
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
@@ -881,7 +881,7 @@ define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 			$DB->Execute($default);			
 			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (6,'pref_pays','-')";
                         $DB->Execute($default);
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (7,'pref_lang',".$DB->qstr($_POST["install_lang"]).")";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (7,'pref_lang',".$DB->qstr($_POST["install_lang"], get_magic_quotes_gpc()).")";
 			$DB->Execute($default);			
 			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (8,'pref_numrows','30')";
 			$DB->Execute($default);			
@@ -907,9 +907,9 @@ define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 			$DB->Execute($default);			
 			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (19,'pref_etiq_corps','12')";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (20,'pref_admin_login',".$DB->qstr($_POST["install_adminlogin"]).")";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (20,'pref_admin_login',".$DB->qstr($_POST["install_adminlogin"], get_magic_quotes_gpc()).")";
 			$DB->Execute($default);			
-			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (21,'pref_admin_pass',".$DB->qstr($_POST["install_adminpass"]).")";
+			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (21,'pref_admin_pass',".$DB->qstr($_POST["install_adminpass"], get_magic_quotes_gpc()).")";
 			$DB->Execute($default);			
 			$default = "INSERT INTO ".$_POST["install_dbprefix"]."preferences VALUES (22,'pref_mail_method','0')";
 			$DB->Execute($default);			

@@ -124,11 +124,11 @@ function dblog($action, $argument="", $query="")
 			$query="";
 		$requete = "INSERT INTO ".PREFIX_DB."logs (date_log, ip_log, adh_log, action_log, text_log, sql_log)
 				VALUES (" . $GLOBALS["DB"]->DBTimeStamp(time()) . ", " .
-						$GLOBALS["DB"]->qstr($_SERVER["REMOTE_ADDR"]) . ", " .
-						$GLOBALS["DB"]->qstr($_SESSION["logged_nom_adh"]) . ", " .
-						$GLOBALS["DB"]->qstr($action) . ", " .
-						$GLOBALS["DB"]->qstr($argument) . ", " .
-						$GLOBALS["DB"]->qstr($query) . ");";
+						$GLOBALS["DB"]->qstr($_SERVER["REMOTE_ADDR"], get_magic_quotes_gpc()) . ", " .
+						$GLOBALS["DB"]->qstr($_SESSION["logged_nom_adh"], get_magic_quotes_gpc()) . ", " .
+						$GLOBALS["DB"]->qstr($action, get_magic_quotes_gpc()) . ", " .
+						$GLOBALS["DB"]->qstr($argument, get_magic_quotes_gpc()) . ", " .
+						$GLOBALS["DB"]->qstr($query, get_magic_quotes_gpc()) . ");";
 		$GLOBALS["DB"]->Execute($requete);
 	}
 }
