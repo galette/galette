@@ -18,13 +18,22 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
- 
-	include("includes/config.inc.php"); 
-	include(WEB_ROOT."includes/database.inc.php"); 
-	include(WEB_ROOT."includes/functions.inc.php"); 
-        include_once("includes/i18n.inc.php"); 
-	include(WEB_ROOT."includes/lang.inc.php"); 
-	include(WEB_ROOT."includes/session.inc.php"); 
+
+	include("includes/config.inc.php");
+	include(WEB_ROOT."includes/database.inc.php");
+	include(WEB_ROOT."includes/functions.inc.php");
+	include(WEB_ROOT."includes/session.inc.php");
+  include_once(WEB_ROOT."includes/i18n.inc.php");
+  include_once(WEB_ROOT."includes/smarty.inc.php");
+
+	// initialize warnings
+	$error_detected = array();
+	$warning_detected = array();
+  global $_POST, $_GET, $pref_lang;
+  if (isset($_POST["pref_lang"])) $pref_lang=$_POST["pref_lang"];
+  if (isset($_GET["pref_lang"])) $pref_lang=$_GET["pref_lang"];
+  if (!isset($pref_lang)) $pref_lang=PREF_LANG;
+
 
 	function isEmail($login) {
 		if( empty($login) ) {
@@ -49,7 +58,9 @@
 		}
 	}
 
-	if( isset($_POST["login"]) ) {
+	//if( isset($_POST["login"]) ) {}
+	// Validation
+	if (isset($_POST['valid']) && $_POST['valid'] == "1") {
 		$login_adh=$_POST['login'];
 		$email_adh=isEmail($login_adh);
 
@@ -85,63 +96,11 @@
 			}
 		}
 	}
+
+	$tpl->assign("error_detected",$error_detected);
+	$tpl->assign("warning_detected",$warning_detected);
+
+  // display page
+  $tpl->assign("languages",drapeaux());
+	$tpl->display("lostpasswd.tpl");
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> 
-<HTML> 
-<HEAD> 
-<TITLE>Galette <? echo GALETTE_VERSION ?></TITLE> 
-<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
-<LINK rel="stylesheet" type="text/css" href="galette.css"> 
-</HEAD> 
-<BODY bgcolor="#FFFFFF">
-
-
-
-
-<TABLE width="100%" style="height: 100%">
-	<TR>
-		<TD align="center">
-			<IMG src="images/galette.png" alt="[ Galette ]" width="129" height="60"><BR><BR>
-			<FORM action="lostpasswd.php" method="post"> 
-				<B class="title"><? echo _T("Password recovery"); ?></B><BR>
-				<BR>
-				
-<?php if( isset($error_detected) ) { ?>
-<DIV id="errorbox" style="width: 300px">
-	<H1><? echo _T("- ERROR -"); ?></H1>
-	<UL>
-		<? echo $error_detected; ?>
-	</UL>
-</DIV>
-<?php } ?>
-
-<?php if( isset($warning_detected) ) { ?>
-<DIV id="errorbox" style="width: 300px">
-	<H1><? echo _T("- WARNING -"); ?></H1>
-	<UL>
-		<? echo $warning_detected; ?>
-	</UL>
-</DIV>
-<?php } ?>
-
-				<BR>
-<?php if( !isset($password_sent) ) { ?>
-				<TABLE> 
-					<TR> 
-						<TD><? echo _T("Username:"); ?></TD> 
-						<TD><INPUT type="text" name="login"></TD> 
-					</TR> 
-				</TABLE>
-				<INPUT type="submit" name="lostpasswd" value="<? echo _T("Send me my password"); ?>">
-				<BR>
-				<BR>
-<?php } ?>
-			</FORM>
-			<FORM action="index.php" method="get">
-				<INPUT type="submit" name="lostpasswd" value="<? echo _T("Back to login page"); ?>">
-			</FORM>
-		</TD>
-	</TR>
-</TABLE> 
-</BODY>
-</HTML>

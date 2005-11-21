@@ -56,17 +56,17 @@
 			$DB->StartTrans();
 			$query = "DELETE FROM ".PREFIX_DB."cotisations
 				  WHERE trans_id=".$trans_id;
-			if (db_execute(&$DB, $query, &$error_detected))
+			if (db_execute($DB, $query, $error_detected))
 				dblog("Transactions deleted", "", $query);
 			$query = "DELETE FROM ".PREFIX_DB."transactions
 				  WHERE trans_id=".$trans_id;
-			if (db_execute(&$DB, $query, &$error_detected))
+			if (db_execute($DB, $query, $error_detected))
 				dblog("Transaction deleted", "", $query);
 			$DB->CompleteTrans();
 		}
 	}
 
-	$trans_date_format = &$DB->SQLDate('d/m/Y',PREFIX_DB.'transactions.trans_date');
+	$trans_date_format = $DB->SQLDate('d/m/Y',PREFIX_DB.'transactions.trans_date');
 	$trans_table = PREFIX_DB."transactions";
 	$member_table = PREFIX_DB."adherents";
 	$query = "SELECT $trans_date_format AS trans_date,
@@ -88,7 +88,8 @@
 
 	// phase de tri
 
-	if ($_SESSION["sort_direction"]=="0")
+  /*FIXME : sort_direction is undefined*/
+	if (isset($_SESSION["sort_direction"]) &&  $_SESSION["sort_direction"]=="0")
 		$sort_direction_txt="ASC";
 	else
 		$sort_direction_txt="DESC";
@@ -96,9 +97,11 @@
 	$query .= " ORDER BY ";
 
 	// tri par adherent
-	if ($_SESSION["sort_by"]=="1")
+  /*FIXME : sort_by is undefined*/
+	if (isset($_SESSION["sort_by"]) && $_SESSION["sort_by"]=="1")
 		$query .= "nom_adh ".$sort_direction_txt.", prenom_adh ".$sort_direction_txt.",";
-	else if ($_SESSION["sort_by"]=="2")
+  /*FIXME : sort_by is undefined*/
+	else if (isset($_SESSION["sort_by"]) && $_SESSION["sort_by"]=="2")
 		$query .= "trans_amount ".$sort_direction_txt.",";
 	$query .= " ".PREFIX_DB."transactions.trans_date ".$sort_direction_txt;
 

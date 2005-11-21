@@ -134,9 +134,9 @@
  		$result_adh->Close();
 	}
 	
-	$date_enreg_format = &$DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_enreg');
-	$date_debut_cotis_format = &$DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_debut_cotis');
-	$date_fin_cotis_format = &$DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_fin_cotis');
+	$date_enreg_format = $DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_enreg');
+	$date_debut_cotis_format = $DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_debut_cotis');
+	$date_fin_cotis_format = $DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_fin_cotis');
 	$requete[0] = "SELECT $date_enreg_format AS date_enreg,
 			$date_debut_cotis_format AS date_debut_cotis,
 			$date_fin_cotis_format AS date_fin_cotis,
@@ -211,7 +211,7 @@
 	else
 		$resultat = &$DB->SelectLimit($requete[0],$numrows,($page-1)*$numrows);
 							
-	$nb_contributions = &$DB->GetOne($requete[1]); 
+	$nb_contributions = $DB->GetOne($requete[1]); 
 	$contributions = array();
 
 	if ($numrows==0)

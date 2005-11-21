@@ -42,23 +42,23 @@ $language=$languages[$pref_lang];
 
 if (function_exists('putenv'))
 {
-putenv("LANG=$language");
-putenv("LANGUAGE=$language");
-putenv("LC_ALL=$language");
+  putenv("LANG=$language");
+  putenv("LANGUAGE=$language");
+  putenv("LC_ALL=$language");
 
-// PDF Generation fails with this :
-// (I guess this is due to comma conversion in real numbers)
-//$loc=setlocale(LC_ALL, $language);
+  // PDF Generation fails with this :
+  // (I guess this is due to comma conversion in real numbers)
+  //$loc=setlocale(LC_ALL, $language);
 
-$domain = 'galette';
+  $domain = 'galette';
 
-@define('THIS_BASE_DIR', dirname(__FILE__) );
-$textdomain= THIS_BASE_DIR . "/../lang";
-bindtextdomain($domain, $textdomain);
-textdomain($domain);
+  @define('THIS_BASE_DIR', dirname(__FILE__) );
+  $textdomain= THIS_BASE_DIR . "/../lang";
+  bindtextdomain($domain, $textdomain);
+  textdomain($domain);
 }
 else
-$loc='';
+  $loc='';
 
 function add_dynamic_translation($DB, $text_orig, $error_detected)
 {
@@ -81,7 +81,7 @@ function add_dynamic_translation($DB, $text_orig, $error_detected)
 					(text_orig, text_locale, text_trans)
 				  VALUES ($quoted_text_orig, $quoted_locale, $quoted_trans)";
 			
-			$result = parse_db_result(&$DB, $DB->Execute($query), &$error_detected, $query);
+			$result = parse_db_result($DB, $DB->Execute($query), $error_detected, $query);
 		}
 	}
 }
@@ -96,12 +96,12 @@ function delete_dynamic_translation($DB, $text_orig, $error_detected)
 		$query = "UPDATE $l10n_table
 			  SET text_nref=text_nref-1
 			  WHERE text_orig=$quoted_text_orig AND text_locale=$quoted_locale";
-		$result = parse_db_result(&$DB, $DB->Execute($query), &$error_detected, $query);
+		$result = parse_db_result($DB, $DB->Execute($query), $error_detected, $query);
 		if ($result)
 			$result->Close();
 	}
 	$query = "DELETE FROM $l10n_table WHERE text_nref=0";
-	$result = parse_db_result(&$DB, $DB->Execute($query), &$error_detected, $query);
+	$result = parse_db_result($DB, $DB->Execute($query), $error_detected, $query);
 	if ($result)
 		$result->Close();
 }
@@ -115,7 +115,7 @@ function update_dynamic_translation($DB, $text_orig, $text_locale, $text_trans, 
 	$query = "UPDATE $l10n_table
 		  SET text_trans=$quoted_text_trans
 		  WHERE text_orig=$quoted_text_orig AND text_locale=$quoted_locale";
-	$result = parse_db_result(&$DB, $DB->Execute($query), &$error_detected, $query);
+	$result = parse_db_result($DB, $DB->Execute($query), $error_detected, $query);
 	if ($result)
 		$result->Close();
 }
@@ -125,12 +125,13 @@ function get_dynamic_translation($DB, $text_orig, $text_locale)
 	$l10n_table = PREFIX_DB."l10n";
 	$query = "SELECT text_trans
 		  FROM $l10n_table
-		  WHERE text_orig=".$DB->qstr($text_orig, get_magic_quotes_gpc()). " AND 
-		  	text_locale=".$DB->qstr($text_locale, get_magic_quotes_gpc());
+		  WHERE text_orig=".$DB->qstr($text_orig, get_magic_quotes_gpc()). " AND
+			text_locale=".$DB->qstr($text_locale, get_magic_quotes_gpc());
 	return $DB->GetOne($query);
 }
 
-if ($loc!=$language || $disable_gettext)
+/*FIXME : $loc undefined*/
+if ( (isset($loc) && $loc!=$language) || $disable_gettext)
 {
         include(WEB_ROOT."lang/lang_".$pref_lang.".php");
         //echo "<font color='red'>Warning:</font> locale $language is probably not intalled on the server.<br>";
