@@ -36,9 +36,9 @@
 
 	function missing_contrib_amount($DB, $trans_id, $error_detected) {
 		if (is_numeric($trans_id)) {
-			$total_amount = db_get_one(&$DB, "SELECT trans_amount
+			$total_amount = db_get_one($DB, "SELECT trans_amount
 							  FROM ".PREFIX_DB."transactions
-							  WHERE trans_id=$trans_id", &$error_detected);
+							  WHERE trans_id=$trans_id", $error_detected);
 			$current_amount = $DB->GetOne("SELECT SUM(montant_cotis)
 							FROM ".PREFIX_DB."cotisations
 							WHERE trans_id=$trans_id");
@@ -63,7 +63,7 @@
 		$request = "SELECT cotis_extension
 			    FROM ".PREFIX_DB."types_cotisation
 			    WHERE id_type_cotis = ".$contribution['id_type_cotis'];
-		$cotis_extension = &$DB->GetOne($request);
+		$cotis_extension = $DB->GetOne($request);
 	}
 
 	// initialize warning
@@ -140,6 +140,7 @@
 			// dates already quoted
 			if (strncmp($key, "date_", 5) != 0)
 				$value = $DB->qstr($value,get_magic_quotes_gpc());
+/*FIXME : $trans_id undefined*/
 			if (($key != 'date_fin_cotis' || $cotis_extension) &&
 			    ($key != 'trans_id' || is_numeric($trans_id))) {
 				$update_string .= ", ".$key."=".$value;
@@ -194,7 +195,7 @@
 			// exceed the transaction amount itself.
 
 			if (count($error_detected) == 0 && $contribution['trans_id']) {
-				$missing_amount = missing_contrib_amount(&$DB, $contribution['trans_id'], &$error_detected);
+				$missing_amount = missing_contrib_amount($DB, $contribution['trans_id'], $error_detected);
 				if ($missing_amount < $contribution['montant_cotis'])
 					$error_detected[] = _T("-  Sum of all contributions exceed corresponding transaction amount.");
 				else
@@ -209,7 +210,7 @@
 				$requete = "INSERT INTO ".PREFIX_DB."cotisations
 				(" . substr($insert_string_fields,1) . ")
 				VALUES (" . substr($insert_string_values,1) . ")";
-				if (db_execute(&$DB, $requete, &$error_detected)) {
+				if (db_execute($DB, $requete, $error_detected)) {
 					$contribution['id_cotis'] = get_last_auto_increment($DB, PREFIX_DB."cotisations", "id_cotis");
 
 					// to allow the string to be extracted for translation
@@ -224,7 +225,7 @@
                                 $requete = "UPDATE ".PREFIX_DB."cotisations
                                             SET " . substr($update_string,1) . "
                                             WHERE id_cotis=" . $contribution['id_cotis'];
-				if (db_execute(&$DB, $requete, &$error_detected)) {
+				if (db_execute($DB, $requete, $error_detected)) {
 					// to allow the string to be extracted for translation
 					$foo = _T("Contribution updated");
 
@@ -288,7 +289,7 @@
 			// End date is the date of next period after this one
 			$contribution['date_fin_cotis'] = beg_membership_after($beg_cotis);
 			if (is_numeric($contribution['trans_id']))
-				$contribution['montant_cotis'] = missing_contrib_amount(&$DB, $contribution['trans_id'], &$error_detected);
+				$contribution['montant_cotis'] = missing_contrib_amount($DB, $contribution['trans_id'], $error_detected);
 		}
 		else
 		{
@@ -329,7 +330,7 @@
 	// contribution types
 	$requete = "SELECT DISTINCT cotis_extension
 		    FROM ".PREFIX_DB."types_cotisation";
-        $exval = &$DB->GetOne($requete);
+        $exval = $DB->GetOne($requete);
 	$requete = "SELECT id_type_cotis, libelle_type_cotis
 		   FROM ".PREFIX_DB."types_cotisation ";
 	if ($type_selected == 1)

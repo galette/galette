@@ -122,7 +122,7 @@ if (isset($_POST["valid"]))
 
 	$contrib_amount = 0;
 	if ($transaction['trans_id'] != "")
-		$contrib_amount = current_contrib_amount(&$DB, $transaction['trans_id'], &$error_detected);
+		$contrib_amount = current_contrib_amount($DB, $transaction['trans_id'], $error_detected);
 	$missing_amount = $transaction['trans_amount'] - $contrib_amount;
 
 	if (count($error_detected) == 0)

@@ -64,20 +64,20 @@
 				$query = "SELECT COUNT(*) + 1 AS idx
 					  FROM $field_types_table
 					  WHERE field_form=$quoted_form_name";
-				$idx = db_get_one(&$DB, $query, &$error_detected);
+				$idx = db_get_one($DB, $query, $error_detected);
 				if ($idx != false) {
 					$DB->StartTrans();
 					$quoted_field_name = $DB->qstr($field_name, get_magic_quotes_gpc());
 					$query = "INSERT INTO $field_types_table
 						    (field_index, field_form, field_name, field_perm, field_type, field_required, field_pos)
 						  VALUES ($idx, $quoted_form_name, $quoted_field_name, $field_perm, $field_type, $field_required, $field_pos)";
-					db_execute(&$DB, $query, &$error_detected);
+					db_execute($DB, $query, $error_detected);
 					if ($field_type != $field_type_separator && count($error_detected) == 0) {
-						$field_id = get_last_auto_increment(&$DB, $field_types_table, "field_id", &$error_detected);
+						$field_id = get_last_auto_increment($DB, $field_types_table, "field_id", $error_detected);
 						header("location: editer_champ.php?form=$form_name&id=$field_id");
 					}
 					if ($field_name != '')
-						add_dynamic_translation(&$DB, $field_name, &$error_detected);
+						add_dynamic_translation($DB, $field_name, $error_detected);
 					$DB->CompleteTrans();
 				}
 			}
@@ -99,7 +99,7 @@
 				$DB->StartTrans();
 				$query = "SELECT field_type, field_index FROM $field_types_table
 					  WHERE field_id=$field_id AND field_form=$quoted_form_name";
-				$res = db_execute(&$DB, $query, &$error_detected);
+				$res = db_execute($DB, $query, $error_detected);
 				if ($res != false && !$res->EOF)
 				{
 					$old_rank = $res->fields['field_index'];
@@ -123,8 +123,8 @@
 						$query = "SELECT field_name
 							  FROM $field_types_table
 							  WHERE field_id=$field_id";
-						$field_name = db_get_one(&$DB, $query, &$error_detected);
-						delete_dynamic_translation(&$DB, $field_name, &$error_detected);
+						$field_name = db_get_one($DB, $query, $error_detected);
+						delete_dynamic_translation($DB, $field_name, $error_detected);
 					}
 					elseif ($action != "")
 					{
@@ -140,7 +140,7 @@
 								       field_form=$quoted_form_name";
 					}
 					foreach($query_list as $query)
-						db_execute(&$DB, $query, &$error_detected);
+						db_execute($DB, $query, $error_detected);
 				}
 				$DB->CompleteTrans();
 			}
@@ -150,7 +150,7 @@
 			  FROM $field_types_table
 			  WHERE field_form=$quoted_form_name
 			  ORDER BY field_index";
-		$result = db_execute(&$DB, $query, &$error_detected);
+		$result = db_execute($DB, $query, $error_detected);
 		if ($result != false) {
 			$count = 0;
 			$dyn_fields = array();

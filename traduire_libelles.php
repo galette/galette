@@ -41,34 +41,35 @@ if (isset($_POST["trans"]) && isset($text_orig)) {
 		if (substr($key, 0, 11) == 'text_trans_')
 		{
 			$trans_lang = substr($key, 11);
-			update_dynamic_translation(&$DB, $text_orig, $languages[$trans_lang], $value, &$error_detected);
+			update_dynamic_translation($DB, $text_orig, $languages[$trans_lang], $value, $error_detected);
 		}
 	}
 }
 
 $form_title = '';
+/*FIXME : $all_forms undefined*/
 $tpl->assign("all_forms", $all_forms);
 
 $l10n_table = PREFIX_DB."l10n";
 $nb_fields = $DB->GetOne("SELECT COUNT(text_orig) FROM $l10n_table");
 
 if (is_numeric($nb_fields) && $nb_fields > 0) {
-	$all_texts = db_get_all(&$DB, "SELECT DISTINCT(text_orig)
+	$all_texts = db_get_all($DB, "SELECT DISTINCT(text_orig)
 				       FROM $l10n_table
-				       ORDER BY text_orig", &$error_detected);
+				       ORDER BY text_orig", $error_detected);
 	$orig = array();
 	foreach ($all_texts as $idx => $row)
 		$orig[] = $row['text_orig'];
 	if ($text_orig == '')
 		$text_orig = $orig[0];
-	
+
 	$lang_keys = array();
 	$lang_names = array();
 	$trans = array();
 	$sorted_languages = array_keys($languages);
 	sort($sorted_languages);
 	foreach ($languages as $l => $locale) {
-		$text_trans = get_dynamic_translation(&$DB, $text_orig, $locale);
+		$text_trans = get_dynamic_translation($DB, $text_orig, $locale);
 		$lang_name = _T($l);
 		$trans[] = array('key'=>$l, 'name'=> $lang_name, 'text'=> $text_trans);
 	}

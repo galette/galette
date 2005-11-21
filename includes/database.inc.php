@@ -64,12 +64,12 @@
 			$requete_cotis = "SELECT count(*)
 					  FROM ".PREFIX_DB."cotisations
 					  WHERE id_adh=" . $cotisant;
-			$count = &$DB->GetOne($requete_cotis);
+			$count = $DB->GetOne($requete_cotis);
 			if ($count) {
 				$requete_cotis = "SELECT max(date_fin_cotis)
 						  FROM ".PREFIX_DB."cotisations
 						  WHERE id_adh=" . $cotisant;
-				$max_date = &$DB->GetOne($requete_cotis);
+				$max_date = $DB->GetOne($requete_cotis);
 				if ($max_date)
 				{
 					list($a,$m,$j) = split("-", $max_date);
@@ -94,19 +94,19 @@
 	}
 
 	function db_execute($DB, $query, $error_detected) {
-		return parse_db_result($DB, $DB->Execute($query), &$error_detected, $query);
+		return parse_db_result($DB, $DB->Execute($query), $error_detected, $query);
 	}
 
 	function db_get_one($DB, $query, $error_detected) {
-		return parse_db_result($DB, $DB->GetOne($query), &$error_detected, $query);
+		return parse_db_result($DB, $DB->GetOne($query), $error_detected, $query);
 	}
 
 	function db_get_row($DB, $query, $error_detected) {
-		return parse_db_result($DB, $DB->GetRow($query), &$error_detected, $query);
+		return parse_db_result($DB, $DB->GetRow($query), $error_detected, $query);
 	}
 
 	function db_get_all($DB, $query, $error_detected) {
-		return parse_db_result($DB, $DB->GetAll($query), &$error_detected, $query);
+		return parse_db_result($DB, $DB->GetAll($query), $error_detected, $query);
 	}
 
 	function db_boolean($val) {

@@ -174,7 +174,7 @@
 							   FROM $field_types_table
 							   WHERE field_id=$field_id");
 				if ($field_properties[$field_type]['fixed_values']) {
-					$choices = get_fixed_values(&$DB, $field_id);
+					$choices = get_fixed_values($DB, $field_id);
 					$value = $choices[$value];
 				}
 				$value = htmlentities($value, ENT_QUOTES);
@@ -250,7 +250,7 @@
 			} else {
 				$cur_fields['field_repeat'] = 1;
 				if ($properties['fixed_values'])
-					$cur_fields['choices'] = get_fixed_values(&$DB, $field_id);
+					$cur_fields['choices'] = get_fixed_values($DB, $field_id);
 			}
 			$dyn_fields[] = $cur_fields;
 			$result->MoveNext();

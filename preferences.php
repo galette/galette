@@ -23,7 +23,7 @@
 	include(WEB_ROOT."includes/database.inc.php"); 
 	include(WEB_ROOT."includes/session.inc.php");
 	include(WEB_ROOT."includes/functions.inc.php"); 
-        include(WEB_ROOT."includes/i18n.inc.php");
+  include(WEB_ROOT."includes/i18n.inc.php");
 	include(WEB_ROOT."includes/smarty.inc.php");
 
 	if ($_SESSION["logged_status"]==0) 
@@ -221,8 +221,9 @@
 	$tpl->assign("required",$required);
 	$tpl->assign("languages",drapeaux());
 	$tpl->assign("error_detected",$error_detected);
+	$tpl->assign("warning_detected",$warning_detected);
 	
-	// page genaration
+	// page generation
 	$content = $tpl->fetch("preferences.tpl");
 	$tpl->assign("content",$content);
 	$tpl->display("page.tpl");
