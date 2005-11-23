@@ -21,536 +21,240 @@
  
 include("includes/config.inc.php");
 include(WEB_ROOT."includes/database.inc.php"); 
-include_once("includes/i18n.inc.php"); 
 include(WEB_ROOT."includes/functions.inc.php"); 
 include(WEB_ROOT."includes/session.inc.php"); 
-include(WEB_ROOT."includes/categories.inc.php");
+include_once(WEB_ROOT."includes/i18n.inc.php");
+include_once(WEB_ROOT."includes/smarty.inc.php");
+include(WEB_ROOT."includes/dynamic_fields.inc.php");
+
+	// initialize warnings
+	$error_detected = array();
+	$warning_detected = array();
+	$confirm_detected = array();
+
+	// flagging required fields
+	$required = array(
+			'titre_adh' => 1,
+			'nom_adh' => 1,
+			'login_adh' => 1,
+			'mdp_adh' => 1,
+			'adresse_adh' => 1,
+			'cp_adh' => 1,
+			'ville_adh' => 1);
+
+  $disabled = array(
+      //'titre_adh' => 'disabled',
+      'id_adh' => 'disabled',
+      //'nom_adh' => 'disabled',
+      //'prenom_adh' => 'disabled',
+      'date_crea_adh' => 'disabled',
+      'id_statut' => 'disabled',
+      'activite_adh' => 'disabled',
+      'bool_exempt_adh' => 'disabled',
+      'bool_admin_adh' => 'disabled',
+      'date_echeance' => 'disabled',
+      'info_adh' => 'disabled'
+    );
 
 // DEBUT parametrage des champs
 //  On recupere de la base la longueur et les flags des champs
 //   et on initialise des valeurs par defaut
 
-// recuperation de la liste de champs de la table
-$fields = &$DB->MetaColumns(PREFIX_DB."adherents");
-while (list($champ, $proprietes) = each($fields)){
-  $proprietes_arr = get_object_vars($proprietes);
-  // on obtient name, max_length, type, not_null, has_default, primary_key,
-  // auto_increment et binary		
-  
-  $fieldname = $proprietes_arr["name"];
-  $existfield[$fieldname]="1";
-  if ($proprietes_arr["type"]=="date"){
-    $isdate[$fieldname]="1";
-  }
-  
-  // on ne met jamais a jour id_adh
-  if ($fieldname!="id_adh" && $fieldname!="date_echeance")
-    $$fieldname= "";
-  
-  $fieldlen = $fieldname."_len";
-  $fieldreq = $fieldname."_req";
-  
-  // definissons  aussi la longueur des input text
-  $max_tmp = $proprietes_arr["max_length"];
-  if ($max_tmp == "-1")
-    $max_tmp = 10;
-  $fieldlen = $fieldname."_len";
-  $$fieldlen=$max_tmp;
-  
-  // par défaut les champs ne sont pas obligatoires ici
-  $$fieldreq = "";
-}
-//voici la liste des champs obligatoires :
-$nom_adh_req = "style=\"color: #FF0000;\"";
-$prenom_adh_req = "style=\"color: #FF0000;\"";
-$adresse_adh_req = "style=\"color: #FF0000;\"";
-$cp_adh_req = "style=\"color: #FF0000;\"";
-$ville_adh_req = "style=\"color: #FF0000;\"";
-$email_adh_req = "style=\"color: #FF0000;\"";
-$login_adh_req = "style=\"color: #FF0000;\"";
-$mdp_adh_req = "style=\"color: #FF0000;\"";
+  $update_string = '';
+  $insert_string_fields = '';
+  $insert_string_values = '';
 
-reset($fields);
+  $adherent['dyn'] = extract_posted_dynamic_fields($DB, $_POST, $disabled);
 
-//
-// FIN parametrage des champs
-// 	    	    
+	// checking posted values for 'regular' fields
+  if ( isset($_POST["valid"]) ) {
+    //check fields goodness
+    $fields = &$DB->MetaColumns(PREFIX_DB."adherents");
+    while (list($key, $properties) = each($fields)) {
+      $key = strtolower($key);
+      if (isset($_POST[$key]))
+        $value = trim($_POST[$key]);
+      else
+        $value = '';
+      // if the field is enabled, check it
+      if (!isset($disabled[$key]))
+      {
+        // fill up the adherent structure
+        $adherent[$key] = htmlentities(stripslashes($value),ENT_QUOTES);
 
-if (!isset($_POST["valid"]) || 
-    !PasswordCheck($_POST["mdp_adh"],$_POST["mdp_crypt"]) ||
-    !UniqueLogin($DB,$_POST["login_adh"])){
-  if (!isset($_POST["titre_adh"])){
-    $titre_adh="1"; //monsieur par défaut
-  }
-  if (isset($_POST["valid"])){
-    $pref_lang=$_POST["pref_lang"];
-    include(WEB_ROOT."includes/lang.inc.php"); 
-    if(!PasswordCheck($_POST["mdp_adh"],$_POST["mdp_crypt"])){
-      $warning_detected.=_T("Password misrepeated: ").$_POST["mdp_adh"]."\n";
-    }
-    if(!UniqueLogin($DB,$_POST["login_adh"])){
-      $warning_detected.=_T("Sorry, ").$_POST["login_adh"]._T(" is a username already used by another member, please select another one\n");
-    }
-    //	
-    // Pré-remplissage des champs
-    foreach($_POST as $k => $v){
-      $$k=$v;
-    }
-  }
-} else {
-  // initialisation des champs
-  $pref_lang=$_POST["pref_lang"];
-  include(WEB_ROOT."includes/lang.inc.php"); 
-  $listkey="";
-  $listvalues="";
-  foreach($_POST as $k => $v){
-    if ($existfield[$k]=="1"){
-      if ($isdate[$k] == "1" &&
-	  ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $v, $array_jours)){
-	//c'est une date, on la passe au format ISO
-	$v=$array_jours[3]."-".$array_jours[2]."-".$array_jours[1];
-      }
-      $listkeys .= ",".$k." ";
-      $listvalues .=",'".addslashes($v)."' ";
-    }
-  }
-  $date_crea_adh = date("Y-m-d");
-  $listkeys .= ",date_crea_adh";
-  $listvalues .=",'".$date_crea_adh."'";
-  $listkeys = substr($listkeys,1);
-  $listvalues = substr($listvalues,1);
-  $req="INSERT INTO ".PREFIX_DB."adherents
-         (".$listkeys.")
-         VALUES (".$listvalues.")";
-  dblog(_T("Self_subscription as a member:")." ".strtoupper($_POST["nom_adh"])." ".$_POST["prenom_adh"], $req);
-  $DB->Execute($req);
-  // il est temps d'envoyer un mail
-  $mail_subject = _T("Your Galette identifiers");
-  $mail_text =  _T("Hello,")."\n";
-  $mail_text .= "\n";
-  $mail_text .= _T("You've just been subscribed on the members management system of the association.")."\n";
-  $mail_text .= _T("It is now possible to follow in real time the state of your subscription")."\n";
-  $mail_text .= _T("and to update your preferences from the web interface.")."\n";
-  $mail_text .= "\n";
-  $mail_text .= _T("Please login at this address:")."\n";
-  $mail_text .= HTTP."://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
-  $mail_text .= "\n";
-  $mail_text .= _T("Username:")." ".custom_html_entity_decode($_POST["login_adh"])."\n";
-  $mail_text .= _T("Password:")." ".custom_html_entity_decode($_POST["mdp_adh"])."\n";
-  $mail_text .= "\n";
-  $mail_text .= _T("See you soon!")."\n";
-  $mail_text .= "\n";
-  $mail_text .= _T("(this mail was sent automatically)")."\n";
-  $mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\nContent-Type: text/plain; charset=iso-8859-15\n";
-  mail ($_POST["email_adh"],$mail_subject,$mail_text, $mail_headers);
-  header("location: self_contribution.php?login_adh=".$_POST["login_adh"]);
-  echo "<html><header></header><body></body></html>";
-  exit();
-}
-
-
-$pref_lang=PREF_LANG;
-// force la langue d'administration par défaut
-include(WEB_ROOT."includes/lang.inc.php"); 
-include("header.php");
-
-?> 
- 
-<H1 class="titre">
-  <? echo _T("Member Profile"); ?> 
-  (<? if ($id_adh!="") echo _T("modification"); else echo _T("creation"); ?>)
-</H1>
-<SCRIPT LANGUAGE="JavaScript1.1">
-function isblank(s){
-  //from the Javascript book, D. Flanagan, ed. O'Reilly 1998
-  for(var i=0; i< s.length;i++){
-    var c=s.charAt(i);
-    if ((c!=' ') && (c!='\n') && (c!='\t')) return false;
-  }
-  return true;
-}
-
-function verify(f){
-  //loop through the form elements and verify that mandatory
-  //informations don't miss
-  empty_fields="";
-  for (var i=0; i<f.length;i++){
-    e = f.elements[i];
-    if ((e.type=="text" || e.type=="textarea") && e.required){
-      if (e.value==null || e.value=="" || isblank(e.value)){
-        empty_fields +="\n     - "+e.name;
-      }
-    }
-  }
-  if (!empty_fields){
-    return true;
-  }
-  msg ="-------------------------------------------------------\n";
-  msg+="<? echo _T("The form is not valid because some fields"); ?>"+"\n";
-  msg+="<? echo _T("are mandatory but still empty, please fill them:"); ?>"+"\n";
-  msg+="-------------------------------------------------------\n";
-  if (empty_fields){
-    msg+=empty_fields;
-  }
-  alert(msg);
-  return false;
-}
-</SCRIPT>
-<FORM action="self_adherent.php" method="post" name="form"
-  enctype="multipart/form-data" 
-  onSubmit="
-    this.nom_adh.required=true;
-    this.prenom_adh.required=true;
-    this.adresse_adh.required=true;
-    this.cp_adh.required=true;
-    this.ville_adh.required=true;
-    this.email_adh.required=true;
-    this.login_adh.required=true;
-    this.mdp_adh.required=true;
-    return verify(this);">
-  <? if ($error_detected!="") { ?>
-  <DIV id="errorbox">
-    <H1><? echo _T("- ERROR -"); ?></H1>
-    <UL>
-      <? echo $error_detected; ?>
-    </UL>
-  </DIV>
-  <? }
-    if ($warning_detected!="") {
-  ?>
-  <DIV id="warningbox">
-    <H1><? echo _T("- WARNING -"); ?></H1>
-    <UL>
-      <? echo $warning_detected; ?>
-    </UL>
-  </DIV>
-  <? } ?>	
-  <input type="hidden" name="id_statut" value="4">
-  <input type="hidden" name="titre_adh" value="1">
-  <input type="hidden" name="activite_adh" value="1">
-					
-  <BLOCKQUOTE>
-    <DIV align="center">
-      <TABLE border="0" id="input-table"> 
-        <TR> 
-	  <TH <? echo $titre_adh_req ?> id="libelle">
-            <? echo _T("Title:"); ?>
-          </TH> 
-	  <TD colspan="3">
-	    <INPUT type="radio" name="titre_adh" value="3" <? isChecked($titre_adh,"3") ?>> 
-            <? echo _T("Miss"); ?>&nbsp;&nbsp;
-	    <INPUT type="radio" name="titre_adh" value="2" <? isChecked($titre_adh,"2") ?>> 
-            <? echo _T("Mrs"); ?>&nbsp;&nbsp;
-	    <INPUT type="radio" name="titre_adh" value="1" <? isChecked($titre_adh,"1") ?>> 
-            <? echo _T("Mister"); ?>&nbsp;&nbsp;
-	  </TD> 
-        </TR> 
-        <TR> 
-  	  <TH <? echo $nom_adh_req ?> id="libelle">
-            <? echo _T("Name:"); ?>
-          </TH> 
-  	  <TD>
-            <INPUT type="text" name="nom_adh" value="<? echo $nom_adh; ?>" maxlength="<? echo $nom_adh_len; ?>" >
-          </TD> 
-  	  <TD colspan="2" rowspan="4" align="center" width="130">
-            <? echo _T("You can prepare a picture to upload after sending"); ?>
-            <? echo _T("your fee.") ?>
-            <!-- l'adhérent qui s'auto-inscrit ne peut pas tout de suite expédier une image -->
-  	  </TD>
-        </TR>
-        <TR>
-  	  <TH <? echo $prenom_adh_req ?> id="libelle">
-            <? echo _T("First name:"); ?>
-          </TH> 
-  	  <TD>
-            <INPUT type="text" name="prenom_adh" value="<? echo $prenom_adh; ?>" maxlength="<? echo $prenom_adh_len; ?>" >
-          </TD> 
-        </TR>						   
-        <TR> 
-  	  <TH <? echo $pseudo_adh_req ?> id="libelle">
-            <? echo _T("Nickname:"); ?>
-          </TH> 
-  	  <TD>
-            <INPUT type="text" name="pseudo_adh" value="<? echo $pseudo_adh; ?>" maxlength="<? echo $pseudo_adh_len; ?>">
-          </TD> 
-        </TR> 
-        <TR> 
-  	  <TH <? echo $ddn_adh_req ?> id="libelle">
-            <? echo _T("birth date:"); ?><br>&nbsp;
-          </TH> 
-  	  <TD>
-            <INPUT type="text" name="ddn_adh" value="<? echo $ddn_adh; ?>" maxlength="10">
-            <BR>
-            <DIV class="exemple">
-              <? echo _T("(dd/mm/yyyy format)"); ?>
-            </DIV>
-          </TD>
-        </TR>
-        <TR>
-  	  <TH <? echo $prof_adh_req ?> id="libelle">
-  	    <? echo _T("Profession:"); ?>
-  	  </TH> 
-  	  <TD>
-  	    <input type="text" name="prof_adh" value="<? echo $prof_adh; ?>" maxlength="<? echo $prof_adh_len; ?>">
-  	  </TD> 
-  	  <TH id="libelle">
-  	    &nbsp;<!-- ? echo _T("Photo :"); ? -->
-  	  </TH> 
-  	  <TD> 
-  	    &nbsp;<!-- pas de téléchargement de photo encore -->
-  	  </TD> 
-        </TR> 
-        <TR>
-  	  <TH id="libelle">
-  	    <? echo _T("Be visible in the<br /> members list :"); ?>
-  	  </TH>
-  	  <TD>
-  	    <input type="checkbox" name="bool_display_info" value="1"<? isChecked($bool_display_info,"1") ?>>
-  	  </TD> 
-  	  <TH id="libelle">
-  	    <? echo _T("Language:") ?>
-  	  </TH>
-  	  <TD>
-	  <script language="javascript" type="text/javascript">
-	  <!--
-	  function updatelanguage(){
-	    document.cookie = "pref_lang="+document.form.pref_lang.value;
-	    window.location.reload()
-	  }
-          -->
-	  </script>
-  	    <SELECT NAME="pref_lang" onchange="updatelanguage()">
-  	      <?
-  	        $path = "lang";
-                $dir_handle = @opendir($path);
-                while ($file = readdir($dir_handle)) {
-  		  if (substr($file,0,5)=="lang_" && substr($file,-4)==".php") {
-  		    $file = substr(substr($file,5),0,-4);
-  	      ?>
-  	      <OPTION value="<? echo $file; ?>" <? isSelected($pref_lang,$file) ?> style="padding-left: 30px; background-image: url(lang/<? echo $file.".gif"; ?>); background-repeat: no-repeat">
-  		<? echo ucfirst(_T($file)); ?>
-  	      </OPTION>
-  	      <?
-  		  }
-  	        }
-                closedir($dir_handle);
-              ?>
-            </SELECT>
-          </TD>
-        </TR>
-        <TR> 
-          <TH colspan="4" id="header">&nbsp;</TH> 
-        </TR>
-        <TR> 
-  	  <TH id="libelle" <? echo $adresse_adh_req ?>>
-  	    <? echo _T("Address:"); ?>
-  	  </TH> 
-  	  <TD colspan="3">
-  	    <INPUT type="text" name="adresse_adh" value="<? echo $adresse_adh; ?>" maxlength="<? echo $adresse_adh_len; ?>" size="63">
-  	    <BR>
-  	    <INPUT type="text" name="adresse2_adh" value="<? echo $adresse2_adh; ?>" maxlength="<? echo $adresse2_adh_len; ?>" size="63">
-  	  </TD> 
-        </TR> 
-        <TR> 
-  	  <TH id="libelle" <? echo $cp_adh_req ?>>
-  	    <? echo _T("Zip Code:"); ?>
-  	  </TH> 
-  	  <TD>
-  	    <INPUT type="text" name="cp_adh" value="<? echo $cp_adh; ?>" maxlength="<? echo $cp_adh_len; ?>">
-  	  </TD> 
-  	  <TH id="libelle" <? echo $ville_adh_req ?>>
-  	    <? echo _T("City:"); ?>
-  	  </TH> 
-  	  <TD>
-  	    <INPUT type="text" name="ville_adh" value="<? echo $ville_adh; ?>" maxlength="<? echo $ville_adh_len; ?>">
-  	  </TD> 
-        </TR> 
-        <TR> 
-  	  <TH id="libelle" <? echo $pays_adh_req ?>>
-  	    <? echo _T("Country:"); ?>
-  	  </TH> 
-  	  <TD>
-  	    <INPUT type="text" name="pays_adh" value="<? echo $pays_adh; ?>" maxlength="<? echo $pays_adh_len; ?>">
-  	  </TD> 
-  	  <TH id="libelle" <? echo $tel_adh_req ?>>
-  	    <? echo _T("Phone:"); ?>
-  	  </TH> 
-  	  <TD>
-  	    <INPUT type="text" name="tel_adh" value="<? echo $tel_adh; ?>" maxlength="<? echo $tel_adh_len; ?>">
-  	  </TD> 
-        </TR> 
-        <TR> 
-  	  <TH id="libelle" <? echo $gsm_adh_req ?>>
-  	    <? echo _T("Mobile phone:"); ?>
-  	  </TH> 
-  	  <TD>
-  	    <INPUT type="text" name="gsm_adh" value="<? echo $gsm_adh; ?>" maxlength="<? echo $gsm_adh_len; ?>">
-  	  </TD> 
-  	  <TH id="libelle" <? echo $email_adh_req ?>>
-  	    <? echo _T("E-Mail:"); ?>
-  	  </TH>
-  	  <TD>
-  	    <INPUT type="text" name="email_adh" value="<? echo $email_adh; ?>" maxlength="<? echo $email_adh_len; ?>" size="30">
-  	  </TD> 
-        </TR> 
-        <TR> 
-  	  <TH id="libelle" <? echo $url_adh_req ?>>
-  	    <? echo _T("Website:"); ?>
-  	  </TH> 
-  	  <TD>
-  	    <INPUT type="text" name="url_adh" value="http://" maxlength="<? echo $url_adh_len; ?>" size="30">
-  	  </TD> 
-  	  <TH id="libelle" <? echo $icq_adh_req ?>>
-  	    <? echo _T("ICQ:"); ?>
-  	  </TH> 
-  	  <TD>
-  	    <INPUT type="text" name="icq_adh" value="<? echo $icq_adh; ?>" maxlength="<? echo $icq_adh_len; ?>">
-  	  </TD> 
-        </TR> 
-        <TR> 
-  	  <TH id="libelle" <? echo $jabber_adh_req ?>>
-  	    <? echo _T("Jabber:"); ?>
-  	  </TH> 
-  	  <TD>
-  	    <INPUT type="text" name="jabber_adh" value="<? echo $jabber_adh; ?>" maxlength="<? echo $jabber_adh_len; ?>" size="30">
-  	  </TD> 
-  	  <TH id="libelle" <? echo $msn_adh_req ?>>
-  	    <? echo _T("MSN:"); ?>
-  	  </TH> 
-  	  <TD>
-  	    <INPUT type="text" name="msn_adh" value="<? echo $msn_adh; ?>" maxlength="<? echo $msn_adh_len; ?>" size="30">
-  	  </TD> 
-        </TR> 
-        <TR> 
-  	  <TH id="libelle" <? echo $gpgid_req ?>>
-  	    <? echo _T("Id GNUpg (GPG):"); ?>
-  	  </TH> 
-  	  <TD>
-  	    <INPUT type="text" name="gpgid" value="<? echo $gpgid; ?>" maxlength="<? echo $gpgid_len; ?>" size="8">
-  	  </TD> 
-  	  <TH id="libelle" <? echo $fingerprint_req ?>>
-  	    <? echo _T("fingerprint:"); ?>
-  	  </TH> 
-  	  <TD>
-  	    <INPUT type="text" name="fingerprint" value="<? echo $fingerprint; ?>" maxlength="<? echo $fingerprint_len; ?>" size="30">
-  	  </TD> 
-        </TR> 
-        <TR> 
-  	  <TH colspan="4" id="header">&nbsp;</TH> 
-        </TR>
-        <TR> 
-  	  <TH id="libelle" <? echo $login_adh_req ?>>
-  	    <? echo _T("Username:"); ?><BR>&nbsp;
-          </TH> 
-  	  <TD>
-  	    <INPUT type="text" name="login_adh" value="<? echo $login_adh; ?>" maxlength="<? echo $login_adh_len; ?>"><BR>
-  	    <DIV class="exemple">
-  	      <? echo _T("(at least 4 characters)"); ?>
-  	    </DIV>
-  	  </TD> 
-  	  <TH id="libelle" <? echo $mdp_adh_req ?>>
-  	    <? echo _T("Password:"); ?><BR>&nbsp;
-          </TH> 
-  	  <TD>
-            <?
-              $c=PasswordImage();
-              $f=PasswordImageName($c);
-              echo _T("Please repeat in the field the password shown in the image.")."<BR>\n";
-            ?>
-            <INPUT type="hidden" name="mdp_crypt" value="<? echo $c ?>">
-            <IMG SRC="photo.php?pw=<? echo $f ?>"><BR>
-  	    <INPUT type="text" name="mdp_adh" value="" maxlength="<? echo $mdp_adh_len; ?>">
-  	  </TD> 
-        </TR>
-        <TR> 
-          <TH id="libelle" <? echo $info_public_adh_req ?>>
-            <? echo _T("Other informations:"); ?>
-          </TH> 
-  	  <TD colspan="3">
-  	    <TEXTAREA name="info_public_adh" cols="61" rows="6">
-  	      <? echo $info_public_adh; ?>
-  	    </TEXTAREA>
-  	  </TD> 
-        </TR> 
-        <?
-  	  $requete = "SELECT id_cat, index_cat, name_cat, perm_cat, type_cat, size_cat FROM $info_cat_table";
-          $requete .= " WHERE perm_cat=$perm_all";
-          $requete .= " ORDER BY index_cat";
-  	  $res_cat = $DB->Execute($requete);
-  	  while (!$res_cat->EOF) {
-	    $id_cat = $res_cat->fields[0];
-	    $rank_cat = $res_cat->fields[1];
-	    $name_cat = $res_cat->fields[2];
-	    $perm_cat = $res_cat->fields[3];
-	    $type_cat = $res_cat->fields[4];
-	    $size_cat = $res_cat->fields[5];
-      
-	    if ($type_cat == $category_separator) {
-              for ($i = 0; $i < $size_cat; ++$i) {
-        ?>                                                
-        <TR>
-  	  <TH colspan="4" id="header">&nbsp;</TH>
-        </TR> 
-        <?
-  	  }
-        } else {
-  	  $cond = "id_cat=$id_cat";
-  	  if (is_numeric($id_adh))
-  	    $cond .= " and id_adh=$id_adh";
-  	  else
-  	    $cond .= " and 1=2";
-  	  // Cette condition est stupide
-  	  // Je l'ai rajoutee pour eviter d'avoir des valeurs a la creation de nouvelles fiches
-  	  // TODO : recoder proprement
-  	  
-  	  $res_info = $DB->Execute("SELECT val_info, index_info FROM ".PREFIX_DB."adh_info WHERE $cond ORDER BY index_info");
-  	  $current_size = $size_cat;
-  	  if ($size_cat == 0)
-  	    $current_size = $res_info->RecordCount() + 1;
-  	  for ($i = 0; $i < $current_size; ++$i) {
-        ?> 
-        <TR>
-  	  <? if ($i == 0) { ?> 
-          <TH id="libelle" rowspan="<?php echo $current_size; ?>" <?php echo $info_public_adh_req ?> >
-            <INPUT type="hidden" name="info_field_size_<?php echo $id_cat; ?>" value="<?php echo $current_size; ?>" >
-  	    <?php echo $name_cat."&nbsp;:"; ?> 
-  	  </TH> 
-  	  <? }
-             $field_name = "info_field_".$id_cat."_".$i;
-  	     $val = $res_info->EOF ? "" : $res_info->fields[0];
-  	  ?> 
-  	  <TD colspan="3">
-            <? if ($type_cat == $category_text) { ?> 
-  	    <TEXTAREA name="<?php echo $field_name; ?>" cols="61" rows="6">
-              <?php echo $val; ?>
-  	    </TEXTAREA>
-  	    <? } elseif ($type_cat == $category_field) { ?> 
-            <INPUT type="text" name="<?php echo $field_name; ?>" value="<? echo $val; ?>" size="63">
-  	    <? } ?> 
-  	  </TD> 
-        </TR>
-        <?
-          $res_info->MoveNext();
+        // now, check validity
+        if ($value != "")
+        switch ($key)
+        {
+          // dates
+          case 'date_crea_adh':
+          case 'ddn_adh':
+            if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $value, $array_jours))
+            {
+              if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
+                $value = $DB->DBDate($array_jours[3].'-'.$array_jours[2].'-'.$array_jours[1]);
+              else
+                $error_detected[] = _T("- Non valid date!");
+            }
+            else
+              $error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!");
+            break;
+          case 'email_adh':
+          case 'msn_adh':
+            if (!is_valid_email($value))
+                    $error_detected[] = _T("- Non-valid E-Mail address!")." (".$key.")";
+            break;
+          case 'url_adh':
+            if (!is_valid_web_url($value))
+              $error_detected[] = _T("- Non-valid Website address! Maybe you've skipped the http:// ?");
+            elseif ($value=='http://')
+              $value = '';
+            break;
+          case 'login_adh':
+            if (strlen($value)<4)
+              $error_detected[] = _T("- The username must be composed of at least 4 characters!");
+            else
+            {
+              //check if login is already taken
+              $requete = "SELECT id_adh
+                  FROM ".PREFIX_DB."adherents
+                  WHERE login_adh=". $DB->qstr($value, get_magic_quotes_gpc());
+              if (isset($adherent['id_adh']) && $adherent['id_adh'] != '')
+                $requete .= " AND id_adh!=" . $DB->qstr($adherent['id_adh'], get_magic_quotes_gpc());
+              $result = &$DB->Execute($requete);
+              if (!$result->EOF || $value==PREF_ADMIN_LOGIN)
+                $error_detected[] = _T("- This username is already used by another member !");
+            }
+            break;
+          case 'mdp_adh':
+            if( !PasswordCheck($_POST["mdp_adh"],$_POST["mdp_crypt"]) ) {
+              $error_detected[] = _T("Password misrepeated: ");
+            }
+            if (strlen($value)<4)
+              $error_detected[] = _T("- The password must be of at least 4 characters!");
+            break;
         }
-        $res_info->Close();
+
+        // dates already quoted
+        if ($key=='date_crea_adh' || $key=='ddn_adh')
+        {
+          if ($value=='')
+            $value='null';
+        }
+        else
+          $value = $DB->qstr($value, get_magic_quotes_gpc());
+
+        $update_string .= ", ".$key."=".$value;
+        $insert_string_fields .= ", ".$key;
+        $insert_string_values .= ", ".$value;
       }
-      $res_cat->MoveNext();
     }
-    $res_cat->Close();
-  ?> 
-        <TR> 
-          <TH align="center" colspan="4"><BR>
-            <INPUT type="submit" name="valid" value="<? echo _T("Save"); ?>">
-          </TH> 
-        </TR> 
-      </TABLE> 
-    </DIV>
-    <BR> 
-    <? echo _T("NB : The mandatory fields are in"); ?> 
-    <FONT style="color: #FF0000"><? echo _T("red"); ?></FONT>. 
-  </BLOCKQUOTE> 
-  <INPUT type="hidden" name="id_adh" value="<? echo $id_adh ?>"> 
-</FORM> 
-<? 
-  include("footer.php") 
+
+    // missing required fields?
+    while (list($key,$val) = each($required))
+    {
+      if (!isset($disabled[$key]) && (!isset($adherent[$key]) || trim($adherent[$key])==''))
+        $error_detected[] = _T("- Mandatory field empty.")." ($key)";
+    }
+
+    if (count($error_detected)==0) {
+      $date_crea_adh = date("Y-m-d");
+      $insert_string_fields .= ",date_crea_adh";
+      $insert_string_values .= ",'".$date_crea_adh."'";
+      $requete = "INSERT INTO ".PREFIX_DB."adherents
+      (" . substr($insert_string_fields,1) . ")
+      VALUES (" . substr($insert_string_values,1) . ")";
+      if (!$DB->Execute($requete))
+        print substr($insert_string_values,1).": ".$DB->ErrorMsg();
+      $adherent['id_adh'] = get_last_auto_increment($DB, PREFIX_DB."adherents", "id_adh");
+      dblog(_T("Self_subscription as a member:")." ".strtoupper($_POST["nom_adh"])." ".$_POST["prenom_adh"], $requete);
+
+      // il est temps d'envoyer un mail
+      if ($adherent['email_adh']!="") {
+        //$mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\nContent-Type: text/plain; charset=iso-8859-15\n";
+        $mail_subject = _T("Your Galette identifiers");
+        $mail_text =  _T("Hello,")."\n";
+        $mail_text .= "\n";
+        $mail_text .= _T("You've just been subscribed on the members management system of the association.")."\n";
+        $mail_text .= _T("It is now possible to follow in real time the state of your subscription")."\n";
+        $mail_text .= _T("and to update your preferences from the web interface.")."\n";
+        $mail_text .= "\n";
+        $mail_text .= _T("Please login at this address:")."\n";
+        $mail_text .= "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
+        $mail_text .= "\n";
+        $mail_text .= _T("Username:")." ".custom_html_entity_decode($adherent['login_adh'])."\n";
+        $mail_text .= _T("Password:")." ".custom_html_entity_decode($adherent['mdp_adh'])."\n";
+        $mail_text .= "\n";
+        $mail_text .= _T("See you soon!")."\n";
+        $mail_text .= "\n";
+        $mail_text .= _T("(this mail was sent automatically)")."\n";
+        custom_mail ($adherent['email_adh'],$mail_subject,$mail_text);
+        //header("location: self_contribution.php?login_adh=".$_POST["login_adh"]);
+        //echo "<html><header></header><body></body></html>";
+        dblog(_T("Self subscribe - Send subscription mail to :")." ".strtoupper($_POST["email_adh"])." ".$_POST["prenom_adh"], $requete);
+      }
+
+			// dynamic fields
+			set_all_dynamic_fields($DB, 'adh', $adherent['id_adh'], $adherent['dyn']);
+
+			// deadline
+			$date_fin = get_echeance($DB, $adherent['id_adh']);
+			if ($date_fin!="")
+				$date_fin_update = $DB->DBDate($date_fin[2].'-'.$date_fin[1].'-'.$date_fin[0]);
+			else
+				$date_fin_update = "NULL";
+			$requete = "UPDATE ".PREFIX_DB."adherents
+					SET date_echeance=".$date_fin_update."
+					WHERE id_adh=" . $adherent['id_adh'];
+			$DB->Execute($requete);
+      //header("location: self_contribution.php?login_adh=".$_POST["login_adh"]);
+    }
+  } else {
+    // initialiser la structure adhérent à vide (nouvelle fiche)
+    $adherent["id_statut"] = "4";
+    $adherent["titre_adh"] = "1";
+    $adherent["date_crea_adh"] =date("d/m/Y");
+    #annoying
+    #$adherent["url_adh"] = "http://";
+    $adherent["url_adh"] = "";
+    //$adherent["mdp_adh"] = makeRandomPassword(7);
+    $adherent["pref_lang"] = PREF_LANG;
+  }
+
+
+	// - declare dynamic fields for display
+	$disabled['dyn'] = array();
+	if (!isset($adherent['dyn']))
+		$adherent['dyn'] = array();
+
+  //image to defeat mass filling forms
+  $spam_pass=PasswordImage();
+  $s=PasswordImageName($spam_pass);
+  $spam_img = print_img($s);
+
+	$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $_SESSION["admin_status"], $adherent['dyn'], $disabled['dyn'], 1);
+	// template variable declaration
+	$tpl->assign("spam_pass",$spam_pass);
+	$tpl->assign("spam_img",$spam_img);
+	$tpl->assign("required",$required);
+	$tpl->assign("disabled",$disabled);
+	$tpl->assign("data",$adherent);
+	$tpl->assign("time",time());
+	$tpl->assign("dynamic_fields",$dynamic_fields);
+	$tpl->assign("error_detected",$error_detected);
+	$tpl->assign("warning_detected",$warning_detected);
+	$tpl->assign("languages",drapeaux());
+
+	// pseudo random int
+	$tpl->assign("time",time());
+
+	// genre
+	$tpl->assign('radio_titres', array(
+			3 => _T("Miss"),
+			2 => _T("Mrs"),
+			1 => _T("Mister"),
+			4 => _T("Society")));
+
+  // display page
+	$tpl->display("self_adherent.tpl");
 ?>

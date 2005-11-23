@@ -92,7 +92,7 @@
 
 		// checking posted values for 'regular' fields
 		$fields = &$DB->MetaColumns(PREFIX_DB."adherents");
-	        while (list($key, $properties) = each($fields))
+	  while (list($key, $properties) = each($fields))
 		{
 			$key = strtolower($key);
 			if (isset($_POST[$key]))
@@ -200,7 +200,9 @@
 				$foo = _T("Member card added");
 
 				// logging
-				dblog('Member card added',strtoupper($_POST['nom_adh']).' '.$_POST["prenom_adh"], $requete);
+       //nom_adh and prenom_adh is not sent when form is used by a simple user
+       //dblog('Member card updated:',strtoupper($_POST["nom_adh"]).' '.$_POST["prenom_adh"], $requete);
+       dblog('Member card updated:',strtoupper($_POST["login_adh"]),$requete);
 			}
 			else
 			{
@@ -213,7 +215,9 @@
 				$foo = _T("Member card updated:");
 
 				// logging
-                                dblog('Member card updated:',strtoupper($_POST["nom_adh"]).' '.$_POST["prenom_adh"], $requete);
+       //nom_adh and prenom_adh is not sent when form is used by a simple user
+       //dblog('Member card updated:',strtoupper($_POST["nom_adh"]).' '.$_POST["prenom_adh"], $requete);
+       dblog('Member card updated:',strtoupper($_POST["login_adh"]), $requete);
 			}
 
 			// picture upload
@@ -278,28 +282,28 @@
 					unlink (WEB_ROOT.'photos/'.$adherent['id_adh'].'.gif');
 			}
 
-                        if (isset($_POST["mail_confirm"]))
-                                if ($_POST["mail_confirm"]=="1")
-                                        if ($adherent['email_adh']!="")
-                                        {
-                                                $mail_subject = _T("Your Galette identifiers");
-                                                $mail_text =  _T("Hello,")."\n";
-                                                $mail_text .= "\n";
-                                                $mail_text .= _T("You've just been subscribed on the members management system of the association.")."\n";
-                                                $mail_text .= _T("It is now possible to follow in real time the state of your subscription")."\n";
-                                                $mail_text .= _T("and to update your preferences from the web interface.")."\n";
-                                                $mail_text .= "\n";
-                                                $mail_text .= _T("Please login at this address:")."\n";
-                                                $mail_text .= "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
-                                                $mail_text .= "\n";
-                                                $mail_text .= _T("Username:")." ".custom_html_entity_decode($adherent['login_adh'])."\n";
-                                                $mail_text .= _T("Password:")." ".custom_html_entity_decode($adherent['mdp_adh'])."\n";
-                                                $mail_text .= "\n";
-                                                $mail_text .= _T("See you soon!")."\n";
-                                                $mail_text .= "\n";
-                                                $mail_text .= _T("(this mail was sent automatically)")."\n";
-                                                custom_mail ($adherent['email_adh'],$mail_subject,$mail_text);
-                                        }
+    if (isset($_POST["mail_confirm"]))
+      if ($_POST["mail_confirm"]=="1")
+        if ($adherent['email_adh']!="")
+        {
+          $mail_subject = _T("Your Galette identifiers");
+          $mail_text =  _T("Hello,")."\n";
+          $mail_text .= "\n";
+          $mail_text .= _T("You've just been subscribed on the members management system of the association.")."\n";
+          $mail_text .= _T("It is now possible to follow in real time the state of your subscription")."\n";
+          $mail_text .= _T("and to update your preferences from the web interface.")."\n";
+          $mail_text .= "\n";
+          $mail_text .= _T("Please login at this address:")."\n";
+          $mail_text .= "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
+          $mail_text .= "\n";
+          $mail_text .= _T("Username:")." ".custom_html_entity_decode($adherent['login_adh'])."\n";
+          $mail_text .= _T("Password:")." ".custom_html_entity_decode($adherent['mdp_adh'])."\n";
+          $mail_text .= "\n";
+          $mail_text .= _T("See you soon!")."\n";
+          $mail_text .= "\n";
+          $mail_text .= _T("(this mail was sent automatically)")."\n";
+          custom_mail ($adherent['email_adh'],$mail_subject,$mail_text);
+        }
 
 			// dynamic fields
 			set_all_dynamic_fields($DB, 'adh', $adherent['id_adh'], $adherent['dyn']);

@@ -7,12 +7,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -29,10 +29,6 @@
 	// initialize warnings
 	$error_detected = array();
 	$warning_detected = array();
-  global $_POST, $_GET, $pref_lang;
-  if (isset($_POST["pref_lang"])) $pref_lang=$_POST["pref_lang"];
-  if (isset($_GET["pref_lang"])) $pref_lang=$_GET["pref_lang"];
-  if (!isset($pref_lang)) $pref_lang=PREF_LANG;
 
 
 	function isEmail($login) {
@@ -69,8 +65,11 @@
 		{
 			$req = "SELECT mdp_adh from ".PREFIX_DB."adherents where login_adh=".txt_sqls($login_adh);
 			$result = &$DB->Execute($req);
-			if (!$result->EOF)
+			if ($result->EOF) {
+				$warning_detected = _T("There is  no password for user :")." \"" . $login_adh . "\"";
+      } else {
 				$mdp_adh = $result->fields[0];
+      }
 			$mail_subject = _T("Your Galette identifiers");
 			$mail_text =  _T("Hello,")."\n";
 			$mail_text .= "\n";
@@ -85,14 +84,32 @@
 			$mail_text .= _T("See you soon!")."\n";
 			$mail_text .= "\n";
 			$mail_text .= _T("(this mail was sent automatically)")."\n";
-			$mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\n";
-			if(  mail($email_adh,$mail_subject,$mail_text, $mail_headers) ) {
+			//$mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\n";
+      $mail_result = custom_mail($email_adh,$mail_subject,$mail_text);
+			if( $mail_result == 1) {
 				dblog(_T("Password sent. Login:")." \"" . $login_adh . "\"");
 				$warning_detected = _T("Password sent. Login:")." \"" . $login_adh . "\"";
 				$password_sent = true;
 			}else{
-				dblog(_T("A problem happened while sending password for account:")." \"" . $login_adh . "\"");
-				$warning_detected = _T("A problem happened while sending password for account:")." \"" . $login_adh . "\"";
+        switch ($mail_result) {
+          case 2 :
+            dblog(_T("Email sent is desactived in the preferences. Ask galette admin."));
+            $warning_detected = _T("Email sent is desactived in the preferences. Ask galette admin");
+            break;
+          case 3 :
+            dblog(_T("A problem happened while sending password for account:")." \"" . $login_adh . "\"");
+            $warning_detected = _T("A problem happened while sending password for account:")." \"" . $login_adh . "\"";
+            break;
+          case 4 :
+            dblog(_T("The server mail filled in the preferences cannot be reached. Ask Galette admin"));
+            $warning_detected = _T("The server mail filled in the preferences cannot be reached. Ask Galette admin");
+            break;
+          default :
+            dblog(_T("A problem happened while sending password for account:")." \"" . $login_adh . "\"");
+            $warning_detected = _T("A problem happened while sending password for account:")." \"" . $login_adh . "\"";
+            break;
+
+        }
 			}
 		}
 	}
@@ -101,6 +118,5 @@
 	$tpl->assign("warning_detected",$warning_detected);
 
   // display page
-  $tpl->assign("languages",drapeaux());
 	$tpl->display("lostpasswd.tpl");
 ?>

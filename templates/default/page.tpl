@@ -1,138 +1,138 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
-<HEAD>
-	<TITLE>Galette {$GALETTE_VERSION}</TITLE>
-	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1"/>
-	<LINK rel="stylesheet" type="text/css" href="{$template_subdir}galette.css"/>
-</HEAD>
-<BODY BGCOLOR="#FFFFFF">
-	<DIV id="content">
+<head>
+	<title>Galette {$GALETTE_VERSION}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+	<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css"/>
+</head>
+<body style="backgound-color:#FFFFFF">
+	<div id="content">
 {$content}
-		<DIV id="copyright">
-			<A href="http://galette.tuxfamily.org/fr" target="_blank">Galette {$GALETTE_VERSION}</A>
-		</DIV>
-	</DIV>
-	<DIV id="menu">
-		<DIV id="logo">
-			<IMG src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60"/>
-		</DIV>
-		<DIV class="nav1">
-			<H1>{_T("Navigation")}</H1>
-			<UL>
+		<div id="copyright">
+			<a href="http://galette.tuxfamily.org/fr" target="_blank">Galette {$GALETTE_VERSION}</a>
+		</div>
+	</div>
+	<div id="menu">
+		<div id="logo">
+			<img src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60"/>
+		</div>
+		<div class="nav1">
+			<h1>{_T("Navigation")}</h1>
+			<ul>
 {if $smarty.session.admin_status eq 1}
-				<LI><A href="gestion_adherents.php">{_T("List of members")}</A></LI>
-				<LI><A href="gestion_contributions.php?id_adh=all">{_T("List of contributions")}</A></LI>
-				<LI><A href="gestion_transactions.php">{_T("List of transactions")}</A></LI>
-				<LI><A href="ajouter_adherent.php">{_T("Add a member")}</A></LI>
-				<LI><A href="ajouter_contribution.php">{_T("Add a contribution")}</A></LI>
-				<LI><A href="ajouter_transaction.php">{_T("Add a transaction")}</A></LI>
-				<LI><A href="log.php">{_T("Logs")}</A></LI>
+				<li><a href="gestion_adherents.php">{_T("List of members")}</a></li>
+				<li><a href="gestion_contributions.php?id_adh=all">{_T("List of contributions")}</a></li>
+				<li><a href="gestion_transactions.php">{_T("List of transactions")}</a></li>
+				<li><a href="ajouter_adherent.php">{_T("Add a member")}</a></li>
+				<li><a href="ajouter_contribution.php">{_T("Add a contribution")}</a></li>
+				<li><a href="ajouter_transaction.php">{_T("Add a transaction")}</A></li>
+				<li><a href="log.php">{_T("Logs")}</a></li>
 {else}
-				<LI><A href="voir_adherent.php">{_T("My information")}</A></LI>
-				<LI><A href="gestion_contributions.php">{_T("My contributions")}</A></LI>
-				<LI><A href="gestion_transactions.php">{_T("My transactions")}</A></LI>
+				<li><a href="voir_adherent.php">{_T("My information")}</a></li>
+				<li><a href="gestion_contributions.php">{_T("My contributions")}</a></li>
+				<li><a href="gestion_transactions.php">{_T("My transactions")}</a></li>
 {/if}
-			</UL>
-		</DIV>
+			</ul>
+		</div>
 {if $smarty.session.admin_status eq 1}
-		<DIV class="nav1">
-			<H1>{_T("Configuration")}</H1>
-			<UL>
-				<LI><A href="preferences.php">{_T("Settings")}</A></LI>
-				<LI><A href="configurer_fiches.php">{_T("Configure member forms")}</A></LI>
-				<LI><A href="traduire_libelles.php">{_T("Translate labels")}</A></LI>
-			</UL>
-		</DIV>
+		<div class="nav1">
+			<h1>{_T("Configuration")}</h1>
+			<ul>
+				<li><a href="preferences.php">{_T("Settings")}</a></li>
+				<li><a href="configurer_fiches.php">{_T("Configure member forms")}</a></li>
+				<li><a href="traduire_libelles.php">{_T("Translate labels")}</a></li>
+			</ul>
+		</div>
 {/if}
-		<DIV id="logout">
-			<A href="index.php?logout=1">{_T("Log off")}</A>
-		</DIV>
+		<div id="logout">
+			<a href="index.php?logout=1">{_T("Log off")}</a>
+		</div>
 {if $PAGENAME eq "gestion_adherents.php" || $PAGENAME eq "mailing_adherents.php"}
-		<DIV id="legende">
-			<H1>{_T("Legend")}</H1>
-			<TABLE>
-				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-male.png" Alt="{_T("[M]")}" align="middle" width="10" height="12"/></TD>
-					<TD class="back">{_T("Man")}</TD>
-				</TR>
-				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-female.png" Alt="{_T("[W]")}" align="middle" width="9" height="12"/></TD>
-					<TD class="back">{_T("Woman")}</TD>
-				</TR>
+		<div id="legende">
+			<h1>{_T("Legend")}</h1>
+			<table>
+				<tr>
+					<td width="30" class="back"><img src="{$template_subdir}images/icon-male.png" alt="{_T("[M]")}" align="middle" width="10" height="12"/></td>
+					<td class="back">{_T("Man")}</td>
+				</tr>
+				<tr>
+					<td width="30" class="back"><img src="{$template_subdir}images/icon-female.png" alt="{_T("[W]")}" align="middle" width="9" height="12"/></td>
+					<td class="back">{_T("Woman")}</td>
+				</tr>
 {if $PAGENAME eq "gestion_adherents.php"}
-				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-mail.png" Alt="{_T("[Mail]")}" align="middle" border="0" width="14" height="10"/></TD>
-					<TD class="back">{_T("Send a mail")}</TD>
-				</TR>
+				<tr>
+					<td width="30" class="back"><img src="{$template_subdir}images/icon-mail.png" alt="{_T("[Mail]")}" align="middle" border="0" width="14" height="10"/></td>
+					<td class="back">{_T("Send a mail")}</td>
+				</tr>
 {/if}
-				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-star.png" Alt="{_T("[admin]")}" align="middle" width="12" height="13"/></TD>
-					<TD class="back">{_T("Admin")}</TD>
-				</TR>
-				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></TD>
-					<TD class="back">{_T("Modification")}</TD>
-				</TR>
-				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-money.png" alt="{_T("[$]")}" border="0" width="13" height="13"/></TD>
-					<TD class="back">{_T("Contributions")}</TD>
-				</TR>
-				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></TD>
-					<TD class="back">{_T("Deletion")}</TD>
-				</TR>
-				<TR>
-					<TD width="30" class="back">{_T("Name")}</TD>
-					<TD class="back">{_T("Active account")}</TD>
-				</TR>
-				<TR>
-					<TD width="30" class="inactif back">{_T("Name")}</TD>
-					<TD class="back">{_T("Inactive account")}</TD>
-				</TR>
-				<TR>
-					<TD width="30" class="cotis-never color-sample">&nbsp;</TD>
-					<TD class="back">{_T("Never contributed")}</TD>
-				</TR>
-				<TR>
-					<TD width="30" class="cotis-ok color-sample">&nbsp;</TD>
-					<TD class="back">{_T("Membership in order")}</TD>
-				</TR>
-				<TR>
-					<TD width="30" class="cotis-soon color-sample">&nbsp;</TD>
-					<TD class="back">{_T("Membership will expire soon (&lt;30d)")}</TD>
-				</TR>
-				<TR>
-					<TD width="30" class="cotis-late color-sample">&nbsp;</TD>
-					<TD class="back">{_T("Lateness in fee")}</TD>
-				</TR>
-			</TABLE>
-		</DIV>
+				<tr>
+					<td width="30" class="back"><img src="{$template_subdir}images/icon-star.png" alt="{_T("[admin]")}" align="middle" width="12" height="13"/></td>
+					<td class="back">{_T("Admin")}</td>
+				</tr>
+				<tr>
+					<td width="30" class="back"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></td>
+					<td class="back">{_T("Modification")}</td>
+				</tr>
+				<tr>
+					<td width="30" class="back"><img src="{$template_subdir}images/icon-money.png" alt="{_T("[$]")}" border="0" width="13" height="13"/></td>
+					<td class="back">{_T("Contributions")}</td>
+				</tr>
+				<tr>
+					<td width="30" class="back"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></td>
+					<td class="back">{_T("Deletion")}</td>
+				</tr>
+				<tr>
+					<td width="30" class="back">{_T("Name")}</td>
+					<td class="back">{_T("Active account")}</td>
+				</tr>
+				<tr>
+					<td width="30" class="inactif back">{_T("Name")}</td>
+					<td class="back">{_T("Inactive account")}</td>
+				</tr>
+				<tr>
+					<td width="30" class="cotis-never color-sample">&nbsp;</td>
+					<td class="back">{_T("Never contributed")}</td>
+				</tr>
+				<tr>
+					<td width="30" class="cotis-ok color-sample">&nbsp;</td>
+					<td class="back">{_T("Membership in order")}</td>
+				</tr>
+				<tr>
+					<td width="30" class="cotis-soon color-sample">&nbsp;</td>
+					<td class="back">{_T("Membership will expire soon (&lt;30d)")}</td>
+				</tr>
+				<tr>
+					<td width="30" class="cotis-late color-sample">&nbsp;</td>
+					<td class="back">{_T("Lateness in fee")}</td>
+				</tr>
+			</table>
+		</div>
 {elseif $PAGENAME eq "gestion_contributions.php"}
-		<DIV id="legende">
-			<H1>{_T("Legend")}</H1>
-			<TABLE>
+		<div id="legende">
+			<h1>{_T("Legend")}</h1>
+			<table>
 {if $smarty.session.admin_status eq 1}
-				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></TD>
-					<TD class="back">{_T("Modification")}</TD>
-				</TR>
-				<TR>
-					<TD width="30" class="back"><IMG src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></TD>
-					<TD class="back">{_T("Deletion")}</TD>
-				</TR>
+				<tr>
+					<td width="30" class="back"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></td>
+					<td class="back">{_T("Modification")}</td>
+				</tr>
+				<tr>
+					<td width="30" class="back"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></td>
+					<td class="back">{_T("Deletion")}</td>
+				</tr>
 {/if}
-				<TR>
-					<TD width="30" class="cotis-normal color-sample">&nbsp;</TD>
-					<TD class="back">{_T("Contribution")}</TD>
-				</TR>
-				<TR>
-					<TD width="30" class="cotis-give color-sample">&nbsp;</TD>
-					<TD class="back">{_T("Gift")}</TD>
-				</TR>
-			</TABLE>
-		</DIV>
+				<tr>
+					<td width="30" class="cotis-normal color-sample">&nbsp;</td>
+					<td class="back">{_T("Contribution")}</td>
+				</tr>
+				<tr>
+					<td width="30" class="cotis-give color-sample">&nbsp;</td>
+					<td class="back">{_T("Gift")}</td>
+				</tr>
+			</table>
+		</div>
 {/if}
-	</DIV>
-</BODY>
-</HTML>
+	</div>
+</body>
+</html>
