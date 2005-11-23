@@ -64,13 +64,27 @@ function PasswordImage(){
   $png= imagecreate(10+7.5*strlen($mdp),18);
   $bg= imagecolorallocate($png,160,160,160);
   imagestring($png, 3, 5, 2, $mdp, imagecolorallocate($png,0,0,0));
-  imagepng($png,"photos/".PasswordImageName($c));
+	$file = STOCK_FILES."/".PasswordImageName($c);
+
+	//FIXME:2 lines below is useless but necessary by a bug in php-gd(http://bugs.php.net/bug.php?id=35246)
+	$fh=fopen($file,'w');
+	fclose($fh);
+
+  imagepng($png,$file);
   return $c;
 }
 
 function PasswordCheck($pass,$crypt){
   return crypt($pass,$crypt)==$crypt;
 }
+
+function print_img($img) {
+	$file = STOCK_FILES."/".$img;
+	if( exif_imagetype($file) ) {
+		return $file;
+	}
+}
+
 
 function isSelected($champ1, $champ2) {
   if ($champ1 == $champ2) {
@@ -122,13 +136,15 @@ function dblog($action, $argument="", $query="")
 	{
 		if (PREF_LOG==1)
 			$query="";
+		//FIXME : for $query, there is a problem if magic_quotes is enabled
+		//FIXME : same for $action .. probably fot others too :/
 		$requete = "INSERT INTO ".PREFIX_DB."logs (date_log, ip_log, adh_log, action_log, text_log, sql_log)
 				VALUES (" . $GLOBALS["DB"]->DBTimeStamp(time()) . ", " .
 						$GLOBALS["DB"]->qstr($_SERVER["REMOTE_ADDR"], get_magic_quotes_gpc()) . ", " .
 						$GLOBALS["DB"]->qstr($_SESSION["logged_nom_adh"], get_magic_quotes_gpc()) . ", " .
-						$GLOBALS["DB"]->qstr($action, get_magic_quotes_gpc()) . ", " .
+						$GLOBALS["DB"]->qstr($action) . ", " .
 						$GLOBALS["DB"]->qstr($argument, get_magic_quotes_gpc()) . ", " .
-						$GLOBALS["DB"]->qstr($query, get_magic_quotes_gpc()) . ");";
+						$GLOBALS["DB"]->qstr($query) . ");";
 		$GLOBALS["DB"]->Execute($requete);
 	}
 }
@@ -179,8 +195,8 @@ function custom_html_entity_decode( $given_html, $quote_style = ENT_QUOTES )
 function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/plain")
 {
   // codes retour :
-  //  0 - mail envoye
-  //  1 - erreur mail()
+  //  0 - erreur mail()
+  //  1 - mail envoye
   //  2 - mail desactive
   //  3 - mauvaise configuration
   //  4 - SMTP injoignable
@@ -208,12 +224,13 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
       foreach($headers as $oneheader)
         $mail_headers .= $oneheader."\n";
       if (!mail($email_adh,$mail_subject,$mail_text, $mail_headers))
-        $result = 1;
+        $result = 0;
       break;
     case 2:
       // $toArray format --> array("Name1" => "address1", "Name2" => "address2", ...)
 
-      ini_set(sendmail_from, "myemail@address.com");
+      //apparently useless and print warning : "undefined constant sendmail_from"
+      //ini_set(sendmail_from, "myemail@address.com");
       $errno = "";
       $errstr = "";
       if (!$connect = fsockopen (PREF_MAIL_SMTP, 25, $errno, $errstr, 30))
@@ -240,6 +257,7 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
           fputs ($connect, "QUIT\r\n");
           $rcv = fgets ($connect, 1024);
           fclose($connect);
+          $result = 1;
         }
       break;
     default:
@@ -318,6 +336,4 @@ function get_numeric_posted_value($name, $defval) {
 	}
 	return $defval;
 }
-
-
 ?>
