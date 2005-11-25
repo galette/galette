@@ -223,8 +223,11 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
       $mail_headers = "";
       foreach($headers as $oneheader)
         $mail_headers .= $oneheader."\n";
-      if (!mail($email_adh,$mail_subject,$mail_text, $mail_headers))
+      if (!mail($email_adh,$mail_subject,$mail_text, $mail_headers)) {
         $result = 0;
+      } else {
+        $result = 1;
+      }
       break;
     case 2:
       // $toArray format --> array("Name1" => "address1", "Name2" => "address2", ...)

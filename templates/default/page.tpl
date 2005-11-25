@@ -10,7 +10,7 @@
 	<div id="content">
 {$content}
 		<div id="copyright">
-			<a href="http://galette.tuxfamily.org/fr" target="_blank">Galette {$GALETTE_VERSION}</a>
+			<a href="http://galette.tuxfamily.org/fr">Galette {$GALETTE_VERSION}</a>
 		</div>
 	</div>
 	<div id="menu">
@@ -26,7 +26,7 @@
 				<li><a href="gestion_transactions.php">{_T("List of transactions")}</a></li>
 				<li><a href="ajouter_adherent.php">{_T("Add a member")}</a></li>
 				<li><a href="ajouter_contribution.php">{_T("Add a contribution")}</a></li>
-				<li><a href="ajouter_transaction.php">{_T("Add a transaction")}</A></li>
+				<li><a href="ajouter_transaction.php">{_T("Add a transaction")}</a></li>
 				<li><a href="log.php">{_T("Logs")}</a></li>
 {else}
 				<li><a href="voir_adherent.php">{_T("My information")}</a></li>

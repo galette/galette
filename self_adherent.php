@@ -30,7 +30,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 	// initialize warnings
 	$error_detected = array();
 	$warning_detected = array();
-	$confirm_detected = array();
+	//$confirm_detected = array();
 
 	// flagging required fields
 	$required = array(
@@ -188,10 +188,33 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
         $mail_text .= _T("See you soon!")."\n";
         $mail_text .= "\n";
         $mail_text .= _T("(this mail was sent automatically)")."\n";
-        custom_mail ($adherent['email_adh'],$mail_subject,$mail_text);
+        $mail_result = custom_mail ($adherent['email_adh'],$mail_subject,$mail_text);
+        if( $mail_result == 1) {
+          dblog(_T("Self subscribe - Send subscription mail to :")."$_POST[email_adh])", $requete);
+          $warning_detected[] = _T("Password sent. Login:")." \"" . $login_adh . "\"";
+          //$password_sent = true;
+        }else{
+          switch ($mail_result) {
+            case 2 :
+              dblog(_T("Self subscribe - Email sent is desactived in the preferences. Ask galette admin."));
+              //$warning_detected[] = _T("Email sent is desactived in the preferences. Ask galette admin");
+              break;
+            case 3 :
+              dblog(_T("Self subscribe - A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"");
+              //$warning_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"";
+              break;
+            case 4 :
+              dblog(_T("Self subscribe - The server mail filled in the preferences cannot be reached. Ask Galette admin"));
+              //$warning_detected[] = _T("The server mail filled in the preferences cannot be reached. Ask Galette admin");
+              break;
+            default :
+              dblog(_T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"");
+              //$warning_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"";
+              break;
+          }
+        }
         //header("location: self_contribution.php?login_adh=".$_POST["login_adh"]);
-        //echo "<html><header></header><body></body></html>";
-        dblog(_T("Self subscribe - Send subscription mail to :")." ".strtoupper($_POST["email_adh"])." ".$_POST["prenom_adh"], $requete);
+        //$warning_detected[] = _T("Your login and password was sent by mail at this address :")." $adherent[email_adh]";
       }
 
 			// dynamic fields
@@ -206,7 +229,9 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 			$requete = "UPDATE ".PREFIX_DB."adherents
 					SET date_echeance=".$date_fin_update."
 					WHERE id_adh=" . $adherent['id_adh'];
-			$DB->Execute($requete);
+			if ( $DB->Execute($requete) )
+        $warning_detected[] = _T("Inscription sent for approval to administrator");
+
       //header("location: self_contribution.php?login_adh=".$_POST["login_adh"]);
     }
   } else {
@@ -233,6 +258,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
   $spam_img = print_img($s);
 
 	$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $_SESSION["admin_status"], $adherent['dyn'], $disabled['dyn'], 1);
+
 	// template variable declaration
 	$tpl->assign("spam_pass",$spam_pass);
 	$tpl->assign("spam_img",$spam_img);

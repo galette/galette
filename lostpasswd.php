@@ -54,7 +54,6 @@
 		}
 	}
 
-	//if( isset($_POST["login"]) ) {}
 	// Validation
 	if (isset($_POST['valid']) && $_POST['valid'] == "1") {
 		$login_adh=$_POST['login'];
@@ -89,7 +88,7 @@
 			if( $mail_result == 1) {
 				dblog(_T("Password sent. Login:")." \"" . $login_adh . "\"");
 				$warning_detected = _T("Password sent. Login:")." \"" . $login_adh . "\"";
-				$password_sent = true;
+				//$password_sent = true;
 			}else{
         switch ($mail_result) {
           case 2 :
@@ -108,7 +107,6 @@
             dblog(_T("A problem happened while sending password for account:")." \"" . $login_adh . "\"");
             $warning_detected = _T("A problem happened while sending password for account:")." \"" . $login_adh . "\"";
             break;
-
         }
 			}
 		}
