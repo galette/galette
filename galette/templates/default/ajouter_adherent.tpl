@@ -56,11 +56,12 @@
 					<td><input type="text" name="prof_adh" value="{$data.prof_adh}" maxlength="150" {$disabled.prof_adh}/></td>
 					<th class="libelle">{_T("Photo:")}</th>
 					<td>
-{if $data.has_picture eq 1 }					
-						<input type="submit" name="del_photo" value="{_T("Delete the picture")}"/>
-{else}
-						<input type="file" name="photo"/>
+            <p>
+{if $data.has_picture eq 1 }
+						<input type="submit" name="del_photo" value="{_T("Delete the picture")}"/><br/>
 {/if}
+						<input type="file" name="photo"/>
+            </p>
 					</td>
 				</tr>
 				<tr>
@@ -80,7 +81,7 @@
 						{/literal}
 						<select name="pref_lang" onChange="updatelanguage()" {$disabled.pref_lang}>
 						{foreach key=langue item=langue_t from=$languages}
-							<option value="{$langue}" {if $data.pref_lang eq $langue}selected{/if} style="padding-left: 30px; background-image: url(lang/{$langue}.gif); background-repeat: no-repeat">{$langue_t|capitalize}</option>
+							<option value="{$langue}" {if $data.pref_lang eq $langue}selected="selected"{/if} style="padding-left: 30px; background-image: url(lang/{$langue}.gif); background-repeat: no-repeat">{$langue_t|capitalize}</option>
 						{/foreach}
 						</select>
 					</td>
@@ -93,8 +94,8 @@
 					<th {if $required.activite_adh eq 1}style="color: #FF0000;"{/if} class="libelle">{_T("Account:")}</th> 
 					<td>
 						<select name="activite_adh" {$disabled.activite_adh}>
-							<option value="1" {if $data.activite_adh eq 1}selected{/if}>{_T("Active")}</option>
-							<option value="0" {if $data.activite_adh eq 0}selected{/if}>{_T("Inactive")}</option>
+							<option value="1" {if $data.activite_adh eq 1}selected="selected"{/if}>{_T("Active")}</option>
+							<option value="0" {if $data.activite_adh eq 0}selected="selected"{/if}>{_T("Inactive")}</option>
 						</select>
 					</td>
 					<th class="header" colspan="2">&nbsp;</th>

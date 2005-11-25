@@ -1,4 +1,4 @@
-<? 
+<?
 /* preferences.php
  * - Preferences Galette
  * Copyright (c) 2004 Frédéric Jaqcuot
@@ -7,12 +7,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -20,17 +20,17 @@
  */
 
 	include("includes/config.inc.php");
-	include(WEB_ROOT."includes/database.inc.php"); 
+	include(WEB_ROOT."includes/database.inc.php");
 	include(WEB_ROOT."includes/session.inc.php");
-	include(WEB_ROOT."includes/functions.inc.php"); 
+	include(WEB_ROOT."includes/functions.inc.php");
   include(WEB_ROOT."includes/i18n.inc.php");
 	include(WEB_ROOT."includes/smarty.inc.php");
 
-	if ($_SESSION["logged_status"]==0) 
+	if ($_SESSION["logged_status"]==0)
 		header("location: index.php");
-	if ($_SESSION["admin_status"]==0) 
+	if ($_SESSION["admin_status"]==0)
 		header("location: voir_adherent.php");
-	
+
 	// initialize warnings
 	$error_detected = array();
 	$warning_detected = array();
@@ -56,8 +56,8 @@
 	// Validation
 	if (isset($_POST['valid']) && $_POST['valid'] == "1")
 	{
-  		// verification de champs
-	  	$insert_values = array();
+    // verification de champs
+		$insert_values = array();
 
 		// obtain fields
 		$requete = "SELECT nom_pref
@@ -69,12 +69,12 @@
 
 			if (isset($_POST[$fieldname]))
 				$value=trim($_POST[$fieldname]);
-			else			
+			else
 				$value="";
-			
+
 			// fill up pref structure
 			$pref[$fieldname] = htmlentities(stripslashes($value),ENT_QUOTES);
-			
+
 			// now, check validity
 			if ($value != '')
 			switch ($fieldname)
@@ -138,7 +138,7 @@
 			$result->MoveNext();
 		}
 		$result->Close();
- 	 		
+
 		// missing relations
 		if (isset($insert_values['pref_mail_method']))
 		{
@@ -155,13 +155,13 @@
 					$error_detected[] = _T("- You must indicate an email address Galette should use to send emails!");
 			}
 		}
-		
+
 		if (isset($insert_values['pref_beg_membership']) && $insert_values['pref_beg_membership'] != '' &&
 		    isset($insert_values['pref_membership_ext']) && $insert_values['pref_membership_ext'] != '')
 		{
 			$error_detected[] = _T("- Default membership extention and beginning of membership are mutually exclusive.");
 		}
-		
+
 		// missing required fields?
 		while (list($key,$val) = each($required))
 		{
@@ -177,28 +177,94 @@
 			// empty preferences
 			$requete = "DELETE FROM ".PREFIX_DB."preferences";
 			$DB->Execute($requete);
-		
+
 			// insert new preferences
 			while (list($champ,$valeur)=each($insert_values))
 			{
 				$valeur = stripslashes($valeur);
-				$requete = "INSERT INTO ".PREFIX_DB."preferences 
+				$requete = "INSERT INTO ".PREFIX_DB."preferences
 					    (nom_pref, val_pref)
-					    VALUES (".$DB->qstr($champ, get_magic_quotes_gpc()).",".$DB->qstr($valeur, get_magic_quotes_gpc()).");";
+					    VALUES (".$DB->qstr($champ).",".$DB->qstr($valeur).");";
 				$DB->Execute($requete);
 			}
-		
-			// TODO: Insert logo in database
+
+			// picture upload
+			if (isset($_FILES['logo']) )
+			{
+				/*
+					TODO :  check filetype
+						check filesize
+						check filetype
+						check file dimensions
+						resize picture if gd available
+				*/
+
+
+			  if ($_FILES['logo']['tmp_name'] !='' )
+				if (is_uploaded_file($_FILES['logo']['tmp_name']))
+				{
+					switch (strtolower(substr($_FILES['logo']['name'],-4)))
+					{
+						case '.jpg':
+							$format = 'jpg';
+							break;
+						case '.gif':
+							$format = 'gif';
+							break;
+						case '.png':
+							$format = 'png';
+							break;
+						default:
+							$error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
+					}
+
+					if (count($error_detected)==0)
+					{
+						$sql = "DELETE FROM ".PREFIX_DB."pictures
+							WHERE id_adh=-1";
+						$DB->Execute($sql);
+
+						move_uploaded_file($_FILES['logo']['tmp_name'],WEB_ROOT.'photos/-1'.'.'.$format);
+
+						$f = fopen(WEB_ROOT.'photos/-1'.'.'.$format,"r");
+						$picture = '';
+						while ($r=fread($f,8192))
+							$picture .= $r;
+						fclose($f);
+
+						$sql = "INSERT INTO ".PREFIX_DB."pictures
+							(id_adh, picture, format, width, height)
+							VALUES (-1,'  ',".$DB->Qstr($format).",'1','1')";
+						if ( ! $DB->Execute($sql) )
+              $error_detected[] = _T("Insert failed");
+						if ( ! $DB->UpdateBlob(PREFIX_DB.'pictures','picture',$picture,'id_adh=-1') )
+              $error_detected[] = _T("Update Blob failed");
+					}
+				}
+        if (isset($_POST['del_logo']))
+        {
+          $sql = "DELETE FROM ".PREFIX_DB."pictures
+            WHERE id_adh=-1";
+          if ( ! $DB->Execute($sql) )
+            $error_detected[] = _T("Delete failed");
+          if (file_exists(WEB_ROOT.'photos/-1'.'.jpg'))
+            unlink (WEB_ROOT.'photos/-1'.'.jpg');
+          elseif (file_exists(WEB_ROOT.'photos/-1'.'.png'))
+            unlink (WEB_ROOT.'photos/-1'.'.png');
+          elseif (file_exists(WEB_ROOT.'photos/-1'.'.gif'))
+            unlink (WEB_ROOT.'photos/-1'.'.gif');
+        }
+			}
 		}
 	}
 	else
 	{
 		// collect data
-		$requete = "SELECT * 
-		  	    FROM ".PREFIX_DB."preferences";
+		$requete = "SELECT *
+			    FROM ".PREFIX_DB."preferences";
 		$result = &$DB->Execute($requete);
-        	if ($result->EOF)
-	                header("location: index.php");
+	  if ($result->EOF)
+	    header("location: index.php");
 		else
 		{
 			while (!$result->EOF)
@@ -209,7 +275,17 @@
 		}
 		$result->Close();
 	}
-		
+
+	// logo available ?
+		$sql =  "SELECT id_adh ".
+			"FROM ".PREFIX_DB."pictures ".
+			"WHERE id_adh=-1";
+		$result = &$DB->Execute($sql);
+		if ($result->RecordCount()!=0)
+			$pref["has_logo"]=1;
+		else
+			$pref["has_logo"]=0;
+
 	$tpl->assign("pref",$pref);
 	$tpl->assign('pref_numrows_options', array(
 		10 => "10",
@@ -217,12 +293,12 @@
 		50 => "50",
 		100 => "100",
 		0 => _T("All")));
-																	
+
 	$tpl->assign("required",$required);
 	$tpl->assign("languages",drapeaux());
 	$tpl->assign("error_detected",$error_detected);
 	$tpl->assign("warning_detected",$warning_detected);
-	
+
 	// page generation
 	$content = $tpl->fetch("preferences.tpl");
 	$tpl->assign("content",$content);

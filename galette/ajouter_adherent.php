@@ -231,6 +231,7 @@
 						resize picture if gd available
 				*/
 
+        if ( $_FILES['photo']['tmp_name'] !='' )
 				if (is_uploaded_file($_FILES['photo']['tmp_name']))
 				{
 					switch (strtolower(substr($_FILES['photo']['name'],-4)))
@@ -247,15 +248,16 @@
 						default:
 							$error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
 					}
-					
+
 					if (count($error_detected)==0)
 					{
 						$sql = "DELETE FROM ".PREFIX_DB."pictures
 							WHERE id_adh=".$adherent['id_adh'];
-						$DB->Execute($sql);
+            if ( ! $DB->Execute($sql) )
+              $error_detected[] = _T("Delete failed");
 
 						move_uploaded_file($_FILES['photo']['tmp_name'],WEB_ROOT.'photos/'.$adherent['id_adh'].'.'.$format);
-					
+
 						$f = fopen(WEB_ROOT.'photos/'.$adherent['id_adh'].'.'.$format,"r");
 						$picture = '';
 						while ($r=fread($f,8192))
@@ -264,27 +266,31 @@
 
 						$sql = "INSERT INTO ".PREFIX_DB."pictures
 							(id_adh, picture, format, width, height)
-							VALUES (".$DB->Qstr($adherent['id_adh']).",".$DB->Qstr($picture).",".$DB->Qstr($format).",'','')";
-						$DB->Execute($sql);
+							VALUES (".$DB->Qstr($adherent['id_adh']).",'  ',".$DB->Qstr($format).",'1','1')";
+						if ( ! $DB->Execute($sql) )
+              $error_detected[] = _T("Insert failed");
+						if ( ! $DB->UpdateBlob(PREFIX_DB.'pictures','picture',$picture,"id_adh=".$adherent['id_adh']) )
+              $error_detected[] = _T("Update Blob failed");
 					}
 				}
-			}
-			elseif (isset($_POST['del_photo']))
-			{
-				$sql = "DELETE FROM ".PREFIX_DB."pictures
-					WHERE id_adh=".$adherent['id_adh'];
-				$DB->Execute($sql);
-				if (file_exists(WEB_ROOT.'photos/'.$adherent['id_adh'].'.jpg'))
-					unlink (WEB_ROOT.'photos/'.$adherent['id_adh'].'.jpg');
-				elseif (file_exists(WEB_ROOT.'photos/'.$adherent['id_adh'].'.png'))
-					unlink (WEB_ROOT.'photos/'.$adherent['id_adh'].'.png');
-				elseif (file_exists(WEB_ROOT.'photos/'.$adherent['id_adh'].'.gif'))
-					unlink (WEB_ROOT.'photos/'.$adherent['id_adh'].'.gif');
+        if (isset($_POST['del_photo']))
+        {
+          $sql = "DELETE FROM ".PREFIX_DB."pictures
+            WHERE id_adh=".$adherent['id_adh'];
+          if ( ! $DB->Execute($sql) )
+            $error_detected[] = _T("Delete failed");
+          if (file_exists(WEB_ROOT.'photos/'.$adherent['id_adh'].'.jpg'))
+            unlink (WEB_ROOT.'photos/'.$adherent['id_adh'].'.jpg');
+          elseif (file_exists(WEB_ROOT.'photos/'.$adherent['id_adh'].'.png'))
+            unlink (WEB_ROOT.'photos/'.$adherent['id_adh'].'.png');
+          elseif (file_exists(WEB_ROOT.'photos/'.$adherent['id_adh'].'.gif'))
+            unlink (WEB_ROOT.'photos/'.$adherent['id_adh'].'.gif');
+        }
 			}
 
     if (isset($_POST["mail_confirm"]))
       if ($_POST["mail_confirm"]=="1")
-        if ($adherent['email_adh']!="")
+        if (isset($adherent['email_adh']) && $adherent['email_adh']!="")
         {
           $mail_subject = _T("Your Galette identifiers");
           $mail_text =  _T("Hello,")."\n";
@@ -302,7 +308,33 @@
           $mail_text .= _T("See you soon!")."\n";
           $mail_text .= "\n";
           $mail_text .= _T("(this mail was sent automatically)")."\n";
-          custom_mail ($adherent['email_adh'],$mail_subject,$mail_text);
+          $mail_result = custom_mail($adherent['email_adh'],$mail_subject,$mail_text);
+          if( $mail_result == 1) {
+            dblog(_T("Send subscription mail to :")."$_POST[email_adh])", $requete);
+            $warning_detected[] = _T("Password sent. Login:")." \"" . $login_adh . "\"";
+            //$password_sent = true;
+          }else{
+            switch ($mail_result) {
+              case 2 :
+                dblog(_T("Email sent is desactived in the preferences. Ask galette admin."));
+                $error_detected[] = _T("Email sent is desactived in the preferences. Ask galette admin");
+                break;
+              case 3 :
+                dblog(_T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"");
+                $error_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"";
+                break;
+              case 4 :
+                dblog(_T("The server mail filled in the preferences cannot be reached. Ask Galette admin"));
+                $error_detected[] = _T("The server mail filled in the preferences cannot be reached. Ask Galette admin");
+                break;
+              default :
+                dblog(_T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"");
+                $error_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"";
+                break;
+            }
+          }
+        }else{
+          $error_detected[] = _T("Sent mail is checked but there is no email address")." \"" . $_POST[login_adh] . "\"";
         }
 
 			// dynamic fields
@@ -333,11 +365,12 @@
 			$adherent["id_statut"] = "4";
 			$adherent["titre_adh"] = "1";
 			$adherent["date_crea_adh"] =date("d/m/Y");
-      #annoying 
-			#$adherent["url_adh"] = "http://";
+      //annoying
+		  //$adherent["url_adh"] = "http://";
 			$adherent["url_adh"] = "";
 			$adherent["mdp_adh"] = makeRandomPassword(7);
 			$adherent["pref_lang"] = PREF_LANG;
+			$adherent["activite_adh"] = "1";
 		}
 		else
 		{
