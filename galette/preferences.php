@@ -241,7 +241,7 @@
               $error_detected[] = _T("Update Blob failed");
 					}
 				}
-        if (isset($_POST['del_logo']))
+        if ( isset($_POST['del_logo']) && $_POST['del_logo'] == 1 )
         {
           $sql = "DELETE FROM ".PREFIX_DB."pictures
             WHERE id_adh=-1";

@@ -36,7 +36,7 @@
             <p>
 {if $pref.has_logo eq 1}
 						<img src="picture.php?id_adh=-1&amp;rand={$time}" style="border-width:1" alt="{_T("Picture")}"/><br />
-						<input type="submit" name="del_logo" value="{_T("Delete the logo")}" /><br />
+						<span>{_T("Delete image")}</span><input type="checkbox" name="del_logo" value="1" /><br />
 {/if}
 						<input type="file" name="logo" />
             </p>
