@@ -58,7 +58,7 @@
 					<td>
             <p>
 {if $data.has_picture eq 1 }
-						<input type="submit" name="del_photo" value="{_T("Delete the picture")}"/><br/>
+						<span>{_T("Delete image")}</span><input type="checkbox" name="del_photo" value="1"/><br/>
 {/if}
 						<input type="file" name="photo"/>
             </p>

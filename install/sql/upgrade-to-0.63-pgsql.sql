@@ -1,5 +1,21 @@
 ALTER TABLE galette_adherents ADD pref_lang character varying(20);
 ALTER TABLE galette_adherents ALTER pref_lang SET DEFAULT 'french';
+-- stephs
+ALTER TABLE galette_adherents ALTER ddn_adh SET DEFAULT '19010101';
+ALTER TABLE galette_adherents ALTER date_crea_adh SET DEFAULT '00000101';
+ALTER TABLE galette_adherents ADD lieu_naissance character varying(20);
+ALTER TABLE galette_adherents ALTER lieu_naissance SET DEFAULT '';
+ALTER TABLE galette_adherents ADD gpgid character varying(8);
+ALTER TABLE galette_adherents ADD fingerprint character varying(50);
+CREATE TABLE galette_pictures (
+    id_adh integer DEFAULT 0 NOT NULL,
+    picture bytea NOT NULL,
+    format character varying(30) DEFAULT ''::character varying NOT NULL,
+    width integer DEFAULT 0 NOT NULL,
+    height integer DEFAULT 0 NOT NULL
+);
+
+-- stephs
 INSERT INTO galette_types_cotisation VALUES (7, 'Cotisation annuelle (à payer)');
 CREATE UNIQUE INDEX galette_adherents_idx ON galette_adherents (id_adh);
 CREATE UNIQUE INDEX galette_login_idx     ON galette_adherents (login_adh);
@@ -9,8 +25,9 @@ CREATE UNIQUE INDEX galette_types_cotisation_idx ON galette_types_cotisation (id
 CREATE UNIQUE INDEX galette_logs_idx ON galette_logs (id_log);
 
 -- Fix table preference with duplicate ids and create index;
-UPDATE galette_preferences SET id_pref=id_pref+1 WHERE (id_pref >= 4 AND nom_pref != 'pref_ville');
-UPDATE galette_preferences SET id_pref=id_pref+1 WHERE (id_pref >= 2 AND nom_pref != 'pref_adresse');
+-- Cause problems with aldil dump(stephs)
+-- UPDATE galette_preferences SET id_pref=id_pref+1 WHERE (id_pref >= 4 AND nom_pref != 'pref_ville');
+-- UPDATE galette_preferences SET id_pref=id_pref+1 WHERE (id_pref >= 2 AND nom_pref != 'pref_adresse');
 CREATE UNIQUE INDEX galette_preferences_idx ON galette_preferences (id_pref);
 -- Add new or missing preferences
 INSERT INTO galette_preferences VALUES (22, 'pref_mail_method', '0');
@@ -109,7 +126,7 @@ CREATE TABLE galette_transactions (
     trans_amount real DEFAULT '0',
     trans_desc character varying(30) NOT NULL DEFAULT '',
     id_adh integer DEFAULT NULL
-)
+);
 CREATE UNIQUE INDEX galette_transactions_idx ON galette_transactions (trans_id);
 
 ALTER TABLE galette_cotisations ADD trans_id integer;
