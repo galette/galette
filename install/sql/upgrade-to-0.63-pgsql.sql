@@ -30,10 +30,10 @@ CREATE UNIQUE INDEX galette_logs_idx ON galette_logs (id_log);
 -- UPDATE galette_preferences SET id_pref=id_pref+1 WHERE (id_pref >= 2 AND nom_pref != 'pref_adresse');
 CREATE UNIQUE INDEX galette_preferences_idx ON galette_preferences (id_pref);
 -- Add new or missing preferences
-INSERT INTO galette_preferences VALUES (22, 'pref_mail_method', '0');
-INSERT INTO galette_preferences VALUES (23, 'pref_mail_smtp', '0');
-INSERT INTO galette_preferences VALUES (24, 'pref_membership_ext', '12');
-INSERT INTO galette_preferences VALUES (25, 'pref_beg_membership', '');
+-- INSERT INTO galette_preferences VALUES (22, 'pref_mail_method', '0');
+-- INSERT INTO galette_preferences VALUES (23, 'pref_mail_smtp', '0');
+-- INSERT INTO galette_preferences VALUES (24, 'pref_membership_ext', '12');
+-- INSERT INTO galette_preferences VALUES (25, 'pref_beg_membership', '');
 
 -- New tables for dynamic fields;
 DROP SEQUENCE galette_field_types_id_seq;
