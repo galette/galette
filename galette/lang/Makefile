@@ -5,11 +5,9 @@ PACKAGE = galette
 MKLANG = ./make_lang_l12n.py
 PHP_SOURCES = ../index.php \
 ../self_adherent.php \
-../self_adherent.php \
 ../mailing_adherents.php \
 ../log.php \
 ../self_contribution.php \
-../index.php \
 ../lostpasswd.php \
 ../footer.php \
 ../includes/session.inc.php \
@@ -43,7 +41,10 @@ PHP_SOURCES = ../index.php \
 ../templates/default/ajouter_transaction.tpl \
 ../templates/default/display_dynamic_fields.tpl \
 ../templates/default/editer_champ.tpl \
-../templates/default/gestion_transactions.tpl
+../templates/default/gestion_transactions.tpl \
+../templates/default/lostpasswd.tpl \
+../templates/default/self_adherent.tpl
+
 
 all : messages.po lang
 	@echo "Génération des fichiers *.po :"

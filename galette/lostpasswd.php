@@ -92,7 +92,7 @@
 			}else{
         switch ($mail_result) {
           case 2 :
-            dblog(_T("Email sent is desactived in the preferences. Ask galette admin."));
+            dblog(_T("Email sent is desactived in the preferences"));
             $warning_detected = _T("Email sent is desactived in the preferences. Ask galette admin");
             break;
           case 3 :
@@ -100,7 +100,7 @@
             $warning_detected = _T("A problem happened while sending password for account:")." \"" . $login_adh . "\"";
             break;
           case 4 :
-            dblog(_T("The server mail filled in the preferences cannot be reached. Ask Galette admin"));
+            dblog(_T("The server mail filled in the preferences cannot be reached"));
             $warning_detected = _T("The server mail filled in the preferences cannot be reached. Ask Galette admin");
             break;
           default :

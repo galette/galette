@@ -423,7 +423,7 @@
 	</p>
 <?
 				$result = "";
-				
+
 				// drop de table (si 'test' existe)
 				$tables = $DB->MetaTables('TABLES');
 				while (list($key,$value)=each($tables))
@@ -442,10 +442,10 @@
 							$result = "<img src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("DROP operation allowed")."<br />";
 					}
 				}
-					
+
 				// création de table
 				if (!isset($error))
-				{	
+				{
 					// à adapter selon le type de base
 					$requete="create table galette_test (testcol text)";
 					$DB->Execute($requete);
@@ -939,7 +939,7 @@ define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 define(\"STOCK_FILES\", \"tempimages\");
 ?>";
 				fwrite($fd,$data);
-				fclose($fd);	
+				fclose($fd);
 				echo "<img src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Configuration file created (includes/config.inc.php)")."<br />";
 			}
 			else
@@ -948,112 +948,124 @@ define(\"STOCK_FILES\", \"tempimages\");
 				$error = true;
 			}
 
-			// sauvegarde des parametres
-			$default = "delete from ".$_POST["install_dbprefix"]."preferences";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (1,'pref_nom','galette')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (2,'pref_adresse','-')";
-			$DB->Execute($default);		
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (3,'pref_adresse2','')";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (4,'pref_cp','-')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (5,'pref_ville','-')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (6,'pref_pays','-')";
-                        $DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (7,'pref_lang',".$DB->qstr($_POST["install_lang"], get_magic_quotes_gpc()).")";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (8,'pref_numrows','30')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (9,'pref_log','2')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (10,'pref_email_nom','galette')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (11,'pref_email','mail@domain.com')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (12,'pref_etiq_marges','10')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (13,'pref_etiq_hspace','10')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (14,'pref_etiq_vspace','5')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (15,'pref_etiq_hsize','90')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (16,'pref_etiq_vsize','35')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (17,'pref_etiq_cols','2')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (18,'pref_etiq_rows','7')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (19,'pref_etiq_corps','12')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (20,'pref_admin_login',".$DB->qstr($_POST["install_adminlogin"], get_magic_quotes_gpc()).")";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (21,'pref_admin_pass',".$DB->qstr($_POST["install_adminpass"], get_magic_quotes_gpc()).")";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (22,'pref_mail_method','0')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (23,'pref_mail_smtp','')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (24,'pref_membership_ext','12')";
-			$DB->Execute($default);			
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences values (25,'pref_beg_membership','')";
-			$DB->Execute($default);
-			
-			if ($step=='i9')
-			{
-			
-			// contribution types
-			$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation values (1, 'annual fee', '1')";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation values (2, 'reduced annual fee', '1')";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation values (3, 'company fee', '1')";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation values (4, 'donation in kind', null)";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation values (5, 'donation in money', null)";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation values (6, 'partnership', null)";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation values (7, 'annual fee (to be paid)', '1')";
-			$DB->Execute($default);
 
-			// member types
-			$default = "delete from ".$_POST["install_dbprefix"]."statuts";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."statuts values (1,'President',0)";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."statuts values (2,'Treasurer',10)";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."statuts values (3,'Secretary',20)";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."statuts values (4,'Active member',30)";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."statuts values (5,'Benefactor member',40)";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."statuts values (6,'Founder member',50)";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."statuts values (7,'Old-timer',60)";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."statuts values (8,'Society',70)";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."statuts values (9,'Non-member',80)";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."statuts values (10,'Vice-president',5)";
-			$DB->Execute($default);
+			if ($step=='i9') {
+				//preferences
+				$default = "delete from ".$_POST["install_dbprefix"]."preferences";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_nom','galette')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_adresse','-')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_adresse2','')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_cp','-')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_ville','-')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_pays','-')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_lang',".$DB->qstr($_POST["install_lang"], get_magic_quotes_gpc()).")";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_numrows','30')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_log','2')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_email_nom','galette')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_email','mail@domain.com')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_marges','10')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_hspace','10')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_vspace','5')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_hsize','90')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_vsize','35')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_cols','2')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_rows','7')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_corps','12')";
+				$DB->Execute($default);
 
-			}
-			else
-			{
+				// contribution types
+				$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation(id_type_cotis,libelle_type_cotis,cotis_extension) values (1, 'annual fee', '1')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation(id_type_cotis,libelle_type_cotis,cotis_extension) values (2, 'reduced annual fee', '1')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation(id_type_cotis,libelle_type_cotis,cotis_extension) values (3, 'company fee', '1')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation(id_type_cotis,libelle_type_cotis,cotis_extension) values (4, 'donation in kind', null)";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation(id_type_cotis,libelle_type_cotis,cotis_extension) values (5, 'donation in money', null)";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation(id_type_cotis,libelle_type_cotis,cotis_extension) values (6, 'partnership', null)";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation(id_type_cotis,libelle_type_cotis,cotis_extension) values (7, 'annual fee (to be paid)', '1')";
+				$DB->Execute($default);
+
+				// member types
+				$default = "delete from ".$_POST["install_dbprefix"]."statuts";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (1, 'President',0)";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (2, 'Treasurer',10)";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (3, 'Secretary',20)";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (4, 'Active member',30)";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (5, 'Benefactor member',40)";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (6, 'Founder member',50)";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (7, 'Old-timer',60)";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (8, 'Society',70)";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (9, 'Non-member',80)";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (10, 'Vice-president',5)";
+				$DB->Execute($default);
+
+			}	else if ($step=='u9') {
 				// TODO: reimport member and contribution types from previous installation
+
+				//delete old admin login/password
+				$default = "delete from ".$_POST["install_dbprefix"]."preferences where nom_pref = 'pref_admin_login';";
+				$DB->Execute($default);
+				$default = "delete from ".$_POST["install_dbprefix"]."preferences where nom_pref = 'pref_admin_pass';";
+				$DB->Execute($default);
 			}
-			
+			//set admin login/password
+			$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_admin_login',".$DB->qstr($_POST["install_adminlogin"], get_magic_quotes_gpc()).")";
+			$DB->Execute($default);
+			$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_admin_pass',".$DB->qstr($_POST["install_adminpass"], get_magic_quotes_gpc()).")";
+			$DB->Execute($default);
+
+			//on some version pref_adresse2 disapeared so we test it now and add one if not present
+			if( !$DB->GetRow("select nom_pref from ".$_POST["install_dbprefix"]."preferences where nom_pref='pref_adresse2'") ) {
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_adresse2','')";
+				$DB->Execute($default);
+			}
+
+			//some new values in v0.63 for preferences
+			$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_mail_method','0')";
+			$DB->Execute($default);
+			$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_mail_smtp','')";
+			$DB->Execute($default);
+			$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_membership_ext','12')";
+			$DB->Execute($default);
+			$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_beg_membership','')";
+			$DB->Execute($default);
+
 			// NB: il faudrait améliorer cette partie car la détection
 			// d'erreur ne s'effectue que sur le dernier insert. prévoir une boucle.
-			
+
 			if (!$DB->ErrorNo())
 				echo "<img src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Parameters saved into the database")."<br />";
 			else
@@ -1063,7 +1075,7 @@ define(\"STOCK_FILES\", \"tempimages\");
 			}
 ?>
 	</td></tr></table></p>
-<?			
+<?
 			if (!isset($error))
 			{
 ?>
