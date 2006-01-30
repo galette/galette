@@ -1,40 +1,40 @@
-		<H1 class="titre">{_T("Translate labels")}</H1>
-		<FORM action="traduire_libelles.php" method="post" enctype="multipart/form-data">
+		<h1 class="titre">{_T("Translate labels")}</h1>
+		<form action="traduire_libelles.php" method="post" enctype="multipart/form-data">
 {if $error_detected|@count != 0}
-		<DIV id="errorbox">
-			<H1>{_T("- ERROR -")}</H1>
-			<UL>
+		<div id="errorbox">
+			<h1>{_T("- ERROR -")}</h1>
+			<ul>
 {foreach from=$error_detected item=error}
-				<LI>{$error}<LI>
+				<li>{$error}<li>
 {/foreach}
-			</UL>
-		</DIV>
+			</ul>
+		</div>
 {/if}
 {if $text_orig != ''}
-			<TABLE width="100%" id="input-table"> 
-				<TR>
-					<TH class="listing left">{_T("Language")}</TH>
-					<TH class="listing" width="100%">{_T("Text")}</TH>
-				</TR>
-				<TR>
-					<TD class="listing left">{_T("Original")}</TD> 
-					<TD class="listing left">
-						<SELECT name="text_orig" onChange="form.submit()">
+			<table width="100%" id="input-table"> 
+				<tr>
+					<th class="listing left">{_T("Language")}</th>
+					<th class="listing" width="100%">{_T("Text")}</th>
+				</tr>
+				<tr>
+					<td class="listing left">{_T("Original")}</td> 
+					<td class="listing left">
+						<select name="text_orig" onChange="form.submit()">
 							{html_options values=$orig output=$orig selected=$text_orig}
-						</SELECT>
-					</TD>
-				</TR>
+						</select>
+					</td>
+				</tr>
 {section name="lang" loop=$trans}
-				<TR>
-					<TD class="listing left">{$trans[lang].name}</TD> 
-					<TD class="listing left">
-						<INPUT type="text" name="text_trans_{$trans[lang].key}" value="{$trans[lang].text}"/>
-					</TD>
-				</TR>
+				<tr>
+					<td class="listing left">{$trans[lang].name}</td> 
+					<td class="listing left">
+						<input type="text" name="text_trans_{$trans[lang].key}" value="{$trans[lang].text}"/>
+					</td>
+				</tr>
 {/section}
-			</TABLE>
-			<BR/>
-			<INPUT type="submit" name="trans" value="{_T("Save")}"/>&nbsp;
-			<INPUT type="submit" name="update" value="{_T("Update")}"/>
-		</FORM> 
+			</table>
+			<br/>
+			<input type="submit" name="trans" value="{_T("Save")}"/>&nbsp;
+			<input type="submit" name="update" value="{_T("Update")}"/>
+		</form> 
 {/if}

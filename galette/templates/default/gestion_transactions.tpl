@@ -1,120 +1,120 @@
-		<H1 class="titre">{_T("Management of transactions")}</H1>
-		<FORM action="gestion_transactions.php" method="get" name="filtre">
-		<TABLE class="infoline" width="100%">
-			<TR>
-				<TD class="left">{$nb_transactions} {if $nb_transactions > 1}{_T("transactions")}{else}{_T("transaction")}{/if}</TD>
-				<TD class="center">
+		<h1 class="titre">{_T("Management of transactions")}</h1>
+		<form action="gestion_transactions.php" method="get" name="filtre">
+		<table class="infoline" width="100%">
+			<tr>
+				<td class="left">{$nb_transactions} {if $nb_transactions > 1}{_T("transactions")}{else}{_T("transaction")}{/if}</td>
+				<td class="center">
 					{_T("Show:")}
-					<SELECT name="nbshow" onChange="form.submit()">
+					<select name="nbshow" onChange="form.submit()">
 						{html_options options=$nbshow_options selected=$numrows}
-					</SELECT>
-				</TD>
-				<TD class="right">{_T("Pages:")}
-					<SPAN class="pagelink">
+					</select>
+				</td>
+				<td class="right">{_T("Pages:")}
+					<span class="pagelink">
 					{section name="pageLoop" start=1 loop=$nb_pages+1}
 						{if $smarty.section.pageLoop.index eq $page}
 							{$smarty.section.pageLoop.index}
 						{else}
-							<A href="gestion_transactions.php?nbshow={$smarty.get.nbshow}&page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</A>
+							<a href="gestion_transactions.php?nbshow={$smarty.get.nbshow}&page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
 						{/if}
 					{/section}
-					</SPAN>
-				</TD>
-			</TR>
-		</TABLE>
-		</FORM>
-		<TABLE width="100%">
-			<TR>
-				<TH width="15" class="listing">#</TH>
-				<TH class="listing left">
-					<A href="gestion_transactions.php?tri=0" class="listing">{_T("Date")}</A>
+					</span>
+				</td>
+			</tr>
+		</table>
+		</form>
+		<table width="100%">
+			<tr>
+				<th width="15" class="listing">#</th>
+				<th class="listing left">
+					<a href="gestion_transactions.php?tri=0" class="listing">{_T("Date")}</a>
 					{if $smarty.session.sort_by eq 0}
 					{if $smarty.session.sort_direction eq 0}
-					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
 					{else}
-					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
 					{/if}
 					{else}
-					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
 					{/if}
-				</TH>
-				<TH class="listing left">{_T("Description")}</TH>
+				</th>
+				<th class="listing left">{_T("Description")}</th>
 {if $smarty.session.admin_status eq 1}
-				<TH class="listing left">
-					<A href="gestion_transactions.php?tri=1" class="listing">{_T("Originator")}</A>
+				<th class="listing left">
+					<a href="gestion_transactions.php?tri=1" class="listing">{_T("Originator")}</a>
 					{if $smarty.session.sort_by eq 1}
 					{if $smarty.session.sort_direction eq 0}
-					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
 					{else}
-					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
 					{/if}
 					{else}
-					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
 					{/if}
-				</TH>
+				</th>
 {/if}
-				<TH class="listing left">
-					<A href="gestion_transactions.php?tri=2" class="listing">{_T("Amount")}</A>
+				<th class="listing left">
+					<a href="gestion_transactions.php?tri=2" class="listing">{_T("Amount")}</a>
 					{if $smarty.session.sort_by eq 3}
 					{if $smarty.session.sort_direction eq 0}
-					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
 					{else}
-					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
 					{/if}
 					{else}
-					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
 					{/if}
-				</TH>
+				</th>
 {if $smarty.session.admin_status eq 1}
-				<TH width="55" class="listing">{_T("Actions")}</TH>
+				<th width="55" class="listing">{_T("Actions")}</th>
 {/if}
-			</TR>
+			</tr>
 {foreach from=$transactions item=transaction}
-			<TR>
-				<TD width="15" class="cotis-ok center" nowrap>{$transaction.trans_id}</TD>
-				<TD width="50" class="cotis-ok" nowrap>
+			<tr>
+				<td width="15" class="cotis-ok center" nowrap>{$transaction.trans_id}</td>
+				<td width="50" class="cotis-ok" nowrap>
 					{$transaction.trans_date}
-				</TD>
-				<TD class="cotis-ok" nowrap>
+				</td>
+				<td class="cotis-ok" nowrap>
 					{$transaction.trans_desc}
-				</TD>
+				</td>
 {if $smarty.session.admin_status eq 1}
-			<TD class="cotis-ok" nowrap>
+			<td class="cotis-ok" nowrap>
 {if $smarty.session.id_adh eq ""}
-				<A href="gestion_transactions.php?id_adh={$transaction.id_adh}">
+				<a href="gestion_transactions.php?id_adh={$transaction.id_adh}">
 					{$transaction.lastname} {$transaction.firstname}
-				</A>
+				</a>
 {else}
-				<A href="voir_adherent.php?id_adh={$transaction.id_adh}">
+				<a href="voir_adherent.php?id_adh={$transaction.id_adh}">
 					{$transaction.lastname} {$transaction.firstname}
-				</A>
+				</a>
 {/if}
-			</TD>
+			</td>
 {/if}
-			<TD class="cotis-ok" nowrap>{$transaction.trans_amount}</TD>
+			<td class="cotis-ok" nowrap>{$transaction.trans_amount}</td>
 {if $smarty.session.admin_status eq 1}
-			<TD width="55" class="cotis-ok center" nowrap>
-				<A href="ajouter_transaction.php?trans_id={$transaction.trans_id}"><IMG src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></A>
-				<A onClick="return confirm('{_T("Do you really want to delete this transaction of the database ?")|escape:"javascript"}')" href="gestion_transactions.php?sup={$transaction.trans_id}"><IMG src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></A>
-			</TD>
+			<td width="55" class="cotis-ok center" nowrap>
+				<a href="ajouter_transaction.php?trans_id={$transaction.trans_id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></a>
+				<a onClick="return confirm('{_T("Do you really want to delete this transaction of the database ?")|escape:"javascript"}')" href="gestion_transactions.php?sup={$transaction.trans_id}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></a>
+			</td>
 {/if}
 {foreachelse}
 {if $smarty.session.admin_status eq 1}
-			<TR><TD colspan="6" class="emptylist">{_T("no transaction")}</TD></TR>
+			<tr><td colspan="6" class="emptylist">{_T("no transaction")}</td></tr>
 {else}
-			<TR><TD colspan="4" class="emptylist">{_T("no transaction")}</TD></TR>
+			<tr><td colspan="4" class="emptylist">{_T("no transaction")}</td></tr>
 {/if}
 {/foreach}
-		</TABLE>
-		<DIV class="infoline2 right">
+		</table>
+		<div class="infoline2 right">
 			{_T("Pages:")}
-			<SPAN class="pagelink">
+			<span class="pagelink">
 			{section name="pageLoop" start=1 loop=$nb_pages+1}
 			{if $smarty.section.pageLoop.index eq $page}
 			{$smarty.section.pageLoop.index}
 			{else}
-			<A href="gestion_transactions.php?nbshow={$smarty.get.nbshow}&page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</A>
+			<a href="gestion_transactions.php?nbshow={$smarty.get.nbshow}&page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
 			{/if}
 			{/section}
-			</SPAN>
-		</DIV>
+			</span>
+		</div>
