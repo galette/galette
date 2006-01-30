@@ -130,7 +130,7 @@
 					else {
 						$now = getdate();
 						if (!checkdate($beg_membership[1], $beg_membership[0], $now['year']))
-							$error_detected[] = _T("- Invalid date for beginning of	membership.");
+							$error_detected[] = _T("- Invalid date for beginning of membership.");
 					}
 					break;
 			}

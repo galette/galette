@@ -100,8 +100,8 @@ lang :
 	  mv lang_spanish.php.new lang_spanish.php; \
 	fi; 
 
-messages.po : ${PHP_SOURCES}
-	xgettext -k_T -n ${PHP_SOURCES} >/dev/null 2>&1
+messages.po : ${PHP_SOURCES} Makefile xgettext.py
+	./xgettext.py ${PHP_SOURCES}
 
 check:
 	@for FILE in ${PHP_SOURCES}; do				\
