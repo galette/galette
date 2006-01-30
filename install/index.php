@@ -88,7 +88,7 @@
 				  		$error_detected .= "<img src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("No user name")."<br />";
 					if ($_POST["install_adminpass"]=="")
 				  		$error_detected .= "<img src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("No password")."<br />";
-          if ( ! $_POST["install_passwdverified"] && strcmp($_POST["install_adminpass"],$_POST["install_adminpass_verif"]) ) {
+          if ( ! isset($_POST["install_passwdverified"]) && strcmp($_POST["install_adminpass"],$_POST["install_adminpass_verif"]) ) {
             $error_detected .= "<img src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("Passwords mismatch")."<br />";
           }
 					if ($error_detected=="")
@@ -108,13 +108,13 @@
 				$step="i5";
 		}
 	 }
-	
+	header('Content-Type: text/html; charset=iso-8859-15');	
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> 
 <html> 
 <head> 
 	<title>Galette Installation</title> 
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15"> 
 	<link rel="stylesheet" type="text/css" href="../templates/default/galette.css" > 
 </head> 
 <h1 class="titreinstall">Galette installation</h1>
@@ -217,6 +217,7 @@
 	<h1><?php echo _T("Files permissions"); ?></h1>
 <?
 			$perms_ok = true;
+			// TODO : check file permissions
 			if (!$perms_ok)
 			{
 ?>
