@@ -142,7 +142,7 @@
 				$value = $DB->qstr($value,get_magic_quotes_gpc());
 /*FIXME : $trans_id undefined*/
 			if (($key != 'date_fin_cotis' || $cotis_extension) &&
-			    ($key != 'trans_id' || is_numeric($trans_id))) {
+			    ($key != 'trans_id' || (isset($trans_id) && is_numeric($trans_id)))) {
 				$update_string .= ", ".$key."=".$value;
 				if ($key != 'id_cotis') {
 					$insert_string_fields .= ", ".$key;

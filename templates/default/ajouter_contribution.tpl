@@ -1,11 +1,11 @@
 		<h1 class="titre">{_T("Contribution card")} ({if $data.id_cotis != ""}{_T("modification")}{else}{_T("creation")}{/if})</h1>
-		<from action="ajouter_contribution.php" method="post">
+		<form action="ajouter_contribution.php" method="post">
 {if $error_detected|@count != 0}
 		<div id="errorbox">
 			<h1>{_T("- ERROR -")}</h1>
 			<ul>
 {foreach from=$error_detected item=error}
-				<li>{$error}<li>
+				<li>{$error}</li>
 {/foreach}
 			</ul>
 		</div>
@@ -99,4 +99,4 @@
 		{/if} {* $type_selected eq 1 *}
 		<input type="hidden" name="type_selected" value="1"/>
 		<input type="hidden" name="cotis_extension" value="{$cotis_extension}"/>
-		</from>
+		</form>

@@ -64,6 +64,7 @@
 		header("location: gestion_adherents.php");
 
 	$etape = 0;
+	$data = array();
 	if (isset($_POST["mailing_go"]) || isset($_POST["mailing_reset"]) || isset($_POST["mailing_confirm"]))
 	{
 		if ($_POST['mailing_objet']=="")

@@ -31,7 +31,7 @@
 			<h1>{_T("- WARNING -")}</h1>
 			<ul>
 {foreach from=$warning_detected item=warning}
-				<li>{$warning}<li>
+				<li>{$warning}</li>
 {/foreach}
 			</ul>
 		</div>
