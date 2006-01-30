@@ -1,174 +1,174 @@
-		<H1 class="titre">{_T("Management of contributions")}</H1>
-		<FORM action="gestion_contributions.php" method="get" name="filtre">
-		<DIV id="listfilter">
+		<h1 class="titre">{_T("Management of contributions")}</h1>
+		<form action="gestion_contributions.php" method="get" name="filtre">
+		<div id="listfilter">
 			{_T("Show contributions since")}&nbsp;
-			<INPUT type="text" name="contrib_filter_1" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_1}"/>
+			<input type="text" name="contrib_filter_1" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_1}"/>
 			{_T("until")}&nbsp;
-			<INPUT type="text" name="contrib_filter_2" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_2}"/>
-			<INPUT type="submit" value="{_T("Filter")}"/>
-		</DIV>
-		<TABLE class="infoline" width="100%">
-			<TR>
-				<TD class="left">{$nb_contributions} {if $nb_contributions != 1}{_T("contributions")}{else}{_T("contribution")}{/if}</TD>
-                                <TD class="center">
+			<input type="text" name="contrib_filter_2" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_2}"/>
+			<input type="submit" value="{_T("Filter")}"/>
+		</div>
+		<table class="infoline" width="100%">
+			<tr>
+				<td class="left">{$nb_contributions} {if $nb_contributions != 1}{_T("contributions")}{else}{_T("contribution")}{/if}</td>
+                                <td class="center">
 					{_T("Show:")}
-					<SELECT name="nbshow" onChange="form.submit()">
+					<select name="nbshow" onChange="form.submit()">
 						{html_options options=$nbshow_options selected=$numrows}
-					</SELECT>
-				</TD>
-				<TD class="right">{_T("Pages:")}
-					<SPAN class="pagelink">
+					</select>
+				</td>
+				<td class="right">{_T("Pages:")}
+					<span class="pagelink">
 					{section name="pageLoop" start=1 loop=$nb_pages+1}
 						{if $smarty.section.pageLoop.index eq $page}
 							{$smarty.section.pageLoop.index}
 						{else}
-							<A href="gestion_contributions.php?nbshow={$smarty.get.nbshow}&page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</A>
+							<a href="gestion_contributions.php?nbshow={$smarty.get.nbshow}&page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
 						{/if}
 					{/section}
-					</SPAN>
-				</TD>
-			</TR>
-		</TABLE>
-		</FORM>
-		<TABLE width="100%">
-			<TR>
-				<TH width="15" class="listing">#</TH>
-				<TH class="listing left">
-					<A href="gestion_contributions.php?tri=0" class="listing">{_T("Date")}</A>
+					</span>
+				</td>
+			</tr>
+		</table>
+		</form>
+		<table width="100%">
+			<tr>
+				<th width="15" class="listing">#</th>
+				<th class="listing left">
+					<a href="gestion_contributions.php?tri=0" class="listing">{_T("Date")}</a>
 					{if $smarty.session.tri_cotis eq 0}
 					{if $smarty.session.tri_cotis_sens eq 0}
-					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
 					{else}
-					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
 					{/if}
 					{else}
-					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
 					{/if}
-				</TH>
-				<TH class="listing left"> {_T("Begin.")}</TH>
-				<TH class="listing left"> {_T("End")}</TH>
+				</th>
+				<th class="listing left"> {_T("Begin.")}</th>
+				<th class="listing left"> {_T("End")}</th>
 {if $smarty.session.admin_status eq 1}
-				<TH class="listing left">
-					<A href="gestion_contributions.php?tri=1" class="listing">{_T("Member")}</A>
+				<th class="listing left">
+					<a href="gestion_contributions.php?tri=1" class="listing">{_T("Member")}</a>
 					{if $smarty.session.tri_cotis eq 1}
 					{if $smarty.session.tri_cotis_sens eq 0}
-					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
 					{else}
-					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
 					{/if}
 					{else}
-					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
 					{/if}
-				</TH>
+				</th>
 {/if}
-				<TH class="listing left">
-					<A href="gestion_contributions.php?tri=2" class="listing">{_T("Type")}</A>
+				<th class="listing left">
+					<a href="gestion_contributions.php?tri=2" class="listing">{_T("Type")}</a>
 					{if $smarty.session.tri_cotis eq 2}
 					{if $smarty.session.tri_cotis_sens eq 0}
-					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
 					{else}
-					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
 					{/if}
 					{else}
-					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
 					{/if}
-				</TH>
-				<TH class="listing left">
-					<A href="gestion_contributions.php?tri=3" class="listing">{_T("Amount")}</A>
+				</th>
+				<th class="listing left">
+					<a href="gestion_contributions.php?tri=3" class="listing">{_T("Amount")}</a>
 					{if $smarty.session.tri_cotis eq 3}
 					{if $smarty.session.tri_cotis_sens eq 0}
-					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
 					{else}
-					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
 					{/if}
 					{else}
-					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
 					{/if}
-				</TH>
-				<TH class="listing left">
-					<A href="gestion_contributions.php?tri=4" class="listing">{_T("Duration")}</A>
+				</th>
+				<th class="listing left">
+					<a href="gestion_contributions.php?tri=4" class="listing">{_T("Duration")}</a>
 					{if $smarty.session.tri_cotis eq 4}
 					{if $smarty.session.tri_cotis_sens eq 0}
-					<IMG src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
 					{else}
-					<IMG src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
 					{/if}
 					{else}
-					<IMG src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
+					<img src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
 					{/if}
-				</TH>
+				</th>
 {if $smarty.session.admin_status eq 1}
-				<TH width="55" class="listing">{_T("Actions")}</TH>
+				<th width="55" class="listing">{_T("Actions")}</th>
 {/if}
-			</TR>
+			</tr>
 {foreach from=$contributions item=contribution key=ordre}
-			<TR>
-				<TD width="15" class="{$contribution.class} center" nowrap>{$ordre}</TD>
-				<TD width="50" class="{$contribution.class}" nowrap>
+			<tr>
+				<td width="15" class="{$contribution.class} center" nowrap>{$ordre}</td>
+				<td width="50" class="{$contribution.class}" nowrap>
 					{$contribution.date_enreg}
-				</TD>
-				<TD width="50" class="{$contribution.class}" nowrap>
+				</td>
+				<td width="50" class="{$contribution.class}" nowrap>
 					{$contribution.date_debut}
-				</TD>
-				<TD width="50" class="{$contribution.class}" nowrap>
+				</td>
+				<td width="50" class="{$contribution.class}" nowrap>
 					{$contribution.date_fin}
-				</TD>
+				</td>
 {if $smarty.session.admin_status eq 1}
-			<TD class="{$contribution.class}" nowrap>
+			<td class="{$contribution.class}" nowrap>
 {if $smarty.session.filtre_cotis_adh eq ""}
-				<A href="gestion_contributions.php?id_adh={$contribution.id_adh}">
+				<a href="gestion_contributions.php?id_adh={$contribution.id_adh}">
 					{$contribution.nom} {$contribution.prenom}
-				</A>
+				</a>
 {else}
-				<A href="voir_adherent.php?id_adh={$contribution.id_adh}">
+				<a href="voir_adherent.php?id_adh={$contribution.id_adh}">
 					{$contribution.nom} {$contribution.prenom}
-				</A>
+				</a>
 {/if}
-			</TD>
+			</td>
 {/if}
-			<TD class="{$contribution.class}" nowrap>{$contribution.libelle_type_cotis}</TD>
-			<TD class="{$contribution.class}" nowrap>{$contribution.montant_cotis}</TD>
-			<TD class="{$contribution.class}" nowrap>{$contribution.duree_mois_cotis}</TD>
+			<td class="{$contribution.class}" nowrap>{$contribution.libelle_type_cotis}</td>
+			<td class="{$contribution.class}" nowrap>{$contribution.montant_cotis}</td>
+			<td class="{$contribution.class}" nowrap>{$contribution.duree_mois_cotis}</td>
 {if $smarty.session.admin_status eq 1}
-			<TD width="55" class="{$contribution.class} center" nowrap>
-				<A href="ajouter_contribution.php?id_cotis={$contribution.id_cotis}"><IMG src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></A>
-				<A onClick="return confirm('{_T("Do you really want to delete this contribution of the database ?")|escape:"javascript"}')" href="gestion_contributions.php?sup={$contribution.id_cotis}"><IMG src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></A>
-			</TD>
+			<td width="55" class="{$contribution.class} center" nowrap>
+				<a href="ajouter_contribution.php?id_cotis={$contribution.id_cotis}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></a>
+				<a onClick="return confirm('{_T("Do you really want to delete this contribution of the database ?")|escape:"javascript"}')" href="gestion_contributions.php?sup={$contribution.id_cotis}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></a>
+			</td>
 {/if}
 {foreachelse}
 {if $smarty.session.admin_status eq 1}
-			<TR><TD colspan="9" class="emptylist">{_T("no contribution")}</TD></TR>
+			<tr><td colspan="9" class="emptylist">{_T("no contribution")}</td></tr>
 {else}
-			<TR><TD colspan="7" class="emptylist">{_T("no contribution")}</TD></TR>
+			<tr><td colspan="7" class="emptylist">{_T("no contribution")}</td></tr>
 {/if}
 {/foreach}
-		</TABLE>
-		<DIV class="infoline2 right">
+		</table>
+		<div class="infoline2 right">
 			{_T("Pages:")}
-			<SPAN class="pagelink">
+			<span class="pagelink">
 			{section name="pageLoop" start=1 loop=$nb_pages+1}
 			{if $smarty.section.pageLoop.index eq $page}
 			{$smarty.section.pageLoop.index}
 			{else}
-			<A href="gestion_contributions.php?nbshow={$smarty.get.nbshow}&page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</A>
+			<a href="gestion_contributions.php?nbshow={$smarty.get.nbshow}&page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
 			{/if}
 			{/section}
-			</SPAN>
-		</DIV>
+			</span>
+		</div>
 {if $smarty.session.filtre_cotis_adh!=""}
-		<BR/>
-		<DIV align="center">
-			<TABLE class="{$statut_class}">
-				<TR>
-					<TD>{$statut_cotis}</TD>
-				</TR>
-			</TABLE>
-		<BR/>
+		<br/>
+		<div align="center">
+			<table class="{$statut_class}">
+				<tr>
+					<td>{$statut_cotis}</td>
+				</tr>
+			</table>
+		<br/>
 {if $smarty.session.admin_status eq 1}
-		<BR/>
-			<A href="voir_adherent.php?id_adh={$smarty.session.filtre_cotis_adh}">{_T("[ See member profile ]")}</A>
+		<br/>
+			<a href="voir_adherent.php?id_adh={$smarty.session.filtre_cotis_adh}">{_T("[ See member profile ]")}</a>
 			&nbsp;&nbsp;&nbsp;
-			<A href="ajouter_contribution.php?&amp;id_adh={$smarty.session.filtre_cotis_adh}">{_T("[ Add a contribution ]")}</A>
+			<a href="ajouter_contribution.php?&amp;id_adh={$smarty.session.filtre_cotis_adh}">{_T("[ Add a contribution ]")}</a>
 {/if}
-		</DIV>
+		</div>
 {/if}
