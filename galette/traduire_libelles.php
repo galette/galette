@@ -47,7 +47,8 @@ if (isset($_POST["trans"]) && isset($text_orig)) {
 }
 
 $form_title = '';
-/*FIXME : $all_forms undefined*/
+if (!isset($all_forms))
+	$all_forms='';
 $tpl->assign("all_forms", $all_forms);
 
 $l10n_table = PREFIX_DB."l10n";

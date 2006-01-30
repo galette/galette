@@ -103,18 +103,18 @@
 			</tr>
 {foreach from=$contributions item=contribution key=ordre}
 			<tr>
-				<td width="15" class="{$contribution.class} center" nowrap>{$ordre}</td>
-				<td width="50" class="{$contribution.class}" nowrap>
+				<td width="15" class="{$contribution.class} center" nowrap="nowrap">{$ordre}</td>
+				<td width="50" class="{$contribution.class}" nowrap="nowrap">
 					{$contribution.date_enreg}
 				</td>
-				<td width="50" class="{$contribution.class}" nowrap>
+				<td width="50" class="{$contribution.class}" nowrap="nowrap">
 					{$contribution.date_debut}
 				</td>
-				<td width="50" class="{$contribution.class}" nowrap>
+				<td width="50" class="{$contribution.class}" nowrap="nowrap">
 					{$contribution.date_fin}
 				</td>
 {if $smarty.session.admin_status eq 1}
-			<td class="{$contribution.class}" nowrap>
+			<td class="{$contribution.class}" nowrap="nowrap">
 {if $smarty.session.filtre_cotis_adh eq ""}
 				<a href="gestion_contributions.php?id_adh={$contribution.id_adh}">
 					{$contribution.nom} {$contribution.prenom}
@@ -126,15 +126,16 @@
 {/if}
 			</td>
 {/if}
-			<td class="{$contribution.class}" nowrap>{$contribution.libelle_type_cotis}</td>
-			<td class="{$contribution.class}" nowrap>{$contribution.montant_cotis}</td>
-			<td class="{$contribution.class}" nowrap>{$contribution.duree_mois_cotis}</td>
+			<td class="{$contribution.class}" nowrap="nowrap">{$contribution.libelle_type_cotis}</td>
+			<td class="{$contribution.class}" nowrap="nowrap">{$contribution.montant_cotis}</td>
+			<td class="{$contribution.class}" nowrap="nowrap">{$contribution.duree_mois_cotis}</td>
 {if $smarty.session.admin_status eq 1}
-			<td width="55" class="{$contribution.class} center" nowrap>
+			<td width="55" class="{$contribution.class} center" nowrap="nowrap">
 				<a href="ajouter_contribution.php?id_cotis={$contribution.id_cotis}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></a>
 				<a onClick="return confirm('{_T("Do you really want to delete this contribution of the database ?")|escape:"javascript"}')" href="gestion_contributions.php?sup={$contribution.id_cotis}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></a>
 			</td>
 {/if}
+		</tr>
 {foreachelse}
 {if $smarty.session.admin_status eq 1}
 			<tr><td colspan="9" class="emptylist">{_T("no contribution")}</td></tr>

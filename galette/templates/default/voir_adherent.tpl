@@ -77,7 +77,7 @@
 					<td bgcolor="#DDDDFF"><b>{_T("E-Mail:")}</b></td> 
 					<td bgcolor="#EEEEEE">
 {if $data.email_adh ne ''}					
-						<a href="mailto:{$data.email_adh}">{$data.email_adh}</A>
+						<a href="mailto:{$data.email_adh}">{$data.email_adh}</a>
 {/if}
 						&nbsp;
 					</td>
@@ -86,7 +86,7 @@
 					<td bgcolor="#DDDDFF"><b>{_T("Website:")}</b></td> 
 					<td bgcolor="#EEEEEE">
 {if $data.url_adh ne ''}
-						<a href="{$data.url_adh}">{$data.url_adh}</A>
+						<a href="{$data.url_adh}">{$data.url_adh}</a>
 {/if}						
 						&nbsp;
 					</td> 
@@ -99,7 +99,7 @@
 					<td bgcolor="#DDDDFF"><b>{_T("MSN:")}</b></td> 
 					<td bgcolor="#EEEEEE">
 {if $data.msn_adh ne ''}
-						<a href="mailto:{$data.msn_adh}">{$data.msn_adh}</A>
+						<a href="mailto:{$data.msn_adh}">{$data.msn_adh}</a>
 {/if}
 						&nbsp;
 					</td>
@@ -139,12 +139,12 @@
 				<tr>
 					<td colspan="4" align="center">
 						<br/>
-						<a href="ajouter_adherent.php?id_adh={$data.id_adh}">{_T("[ Modification ]")}</A>
+						<a href="ajouter_adherent.php?id_adh={$data.id_adh}">{_T("[ Modification ]")}</a>
 						&nbsp;&nbsp;&nbsp;
-						<a href="gestion_contributions.php?id_adh={$data.id_adh}">{_T("[ Contributions ]")}</A>
+						<a href="gestion_contributions.php?id_adh={$data.id_adh}">{_T("[ Contributions ]")}</a>
 {if $smarty.session.admin_status eq 1}
 						&nbsp;&nbsp;&nbsp;
-						<a href="ajouter_contribution.php?id_adh={$data.id_adh}">{_T("[ Add a contribution ]")}</A>
+						<a href="ajouter_contribution.php?id_adh={$data.id_adh}">{_T("[ Add a contribution ]")}</a>
 {/if}
 					</td>
 				</tr>

@@ -87,10 +87,10 @@
 {foreach from=$logs item=log key=ordre}
 			<tr class="cotis-never">
 				<td width="15" valign="top">{$ordre}</td>
-				<td valign="top" nowrap>{$log.date}</td>
-				<td valign="top" nowrap>{$log.ip}</td>
-				<td valign="top" nowrap>{$log.adh}</td>
-				<td valign="top" nowrap>{$log.action}</td>
+				<td valign="top" nowrap="nowrap">{$log.date}</td>
+				<td valign="top" nowrap="nowrap">{$log.ip}</td>
+				<td valign="top" nowrap="nowrap">{$log.adh}</td>
+				<td valign="top" nowrap="nowrap">{$log.action}</td>
 				<td valign="top">{$log.desc}</td>
 			</tr>
 {foreachelse}

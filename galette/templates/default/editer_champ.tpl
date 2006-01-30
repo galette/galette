@@ -5,7 +5,7 @@
 			<h1>{_T("- ERROR -")}</h1>
 			<ul>
 {foreach from=$error_detected item=error}
-				<li>{$error}<li>
+				<li>{$error}</li>
 {/foreach}
 			</ul>
 		</div>
@@ -66,7 +66,7 @@
 					<th id="libelle">{_T("Size:")}</th> 
 					<td colspan="3">
 						<input type="text" name="field_size" value="{$data.size}" size="3">
-						<br><div class="exemple">{_T("Maximum number of characters.")}</div>
+						<br/><div class="exemple">{_T("Maximum number of characters.")}</div>
 					</td>
 				</tr>
 {/if}
@@ -75,7 +75,7 @@
 					<th id="libelle">{_T("Repeat:")}</th> 
 					<td colspan="3">
 						<input type="text" name="field_repeat" value="{$data.repeat}" size="3">
-						<br><div class="exemple">{_T("Number of values or zero if infinite.")}</div>
+						<br/><div class="exemple">{_T("Number of values or zero if infinite.")}</div>
 					</td>
 				</tr>
 {/if}
@@ -84,17 +84,17 @@
 					<th id="libelle">{_T("Values:")}</th> 
 					<td colspan="3">
 						<textarea name="fixed_values" cols="20" rows="6">{$data.fixed_values}</textarea>
-						<br><div class="exemple">{_T("Choice list (one entry per line).")}</div>
+						<br/><div class="exemple">{_T("Choice list (one entry per line).")}</div>
 					</td>
 				</tr>
 {/if}
 				<tr> 
-					<th align="center" colspan="2"><br><input type="submit" name="valid" value="{_T("Save")}"></th> 
-					<th align="center" colspan="2"><br><input type="submit" name="cancel" value="{_T("Cancel")}"></th> 
+					<th align="center" colspan="2"><br/><input type="submit" name="valid" value="{_T("Save")}"></th> 
+					<th align="center" colspan="2"><br/><input type="submit" name="cancel" value="{_T("Cancel")}"></th> 
 				</tr> 
 			</table> 
 		</div>
-		<br> 
+		<br/> 
 		</blockquote> 
 		<input type="hidden" name="form" value="{$form_name}">
 		<input type="hidden" name="id" value="{$data.id}">

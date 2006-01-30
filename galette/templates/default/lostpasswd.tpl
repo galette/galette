@@ -21,7 +21,7 @@
 			<h1>{_T("- ERROR -")}</h1>
 			<ul>
 {foreach from=$error_detected item=error}
-				<li>{$error}<li>
+				<li>{$error}</li>
 {/foreach}
 			</ul>
 		</div>
@@ -31,7 +31,7 @@
 			<h1>{_T("- WARNING -")}</h1>
 			<ul>
 {foreach from=$warning_detected item=warning}
-				<li>{$warning}<li>
+				<li>{$warning}</li>
 {/foreach}
 			</ul>
 		</div>

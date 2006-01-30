@@ -71,15 +71,15 @@
 			</tr>
 {foreach from=$transactions item=transaction}
 			<tr>
-				<td width="15" class="cotis-ok center" nowrap>{$transaction.trans_id}</td>
-				<td width="50" class="cotis-ok" nowrap>
+				<td width="15" class="cotis-ok center" nowrap="nowrap">{$transaction.trans_id}</td>
+				<td width="50" class="cotis-ok" nowrap="nowrap">
 					{$transaction.trans_date}
 				</td>
-				<td class="cotis-ok" nowrap>
+				<td class="cotis-ok" nowrap="nowrap">
 					{$transaction.trans_desc}
 				</td>
 {if $smarty.session.admin_status eq 1}
-			<td class="cotis-ok" nowrap>
+			<td class="cotis-ok" nowrap="nowrap">
 {if $smarty.session.id_adh eq ""}
 				<a href="gestion_transactions.php?id_adh={$transaction.id_adh}">
 					{$transaction.lastname} {$transaction.firstname}
@@ -91,13 +91,14 @@
 {/if}
 			</td>
 {/if}
-			<td class="cotis-ok" nowrap>{$transaction.trans_amount}</td>
+			<td class="cotis-ok" nowrap="nowrap">{$transaction.trans_amount}</td>
 {if $smarty.session.admin_status eq 1}
-			<td width="55" class="cotis-ok center" nowrap>
+			<td width="55" class="cotis-ok center" nowrap="nowrap">
 				<a href="ajouter_transaction.php?trans_id={$transaction.trans_id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></a>
 				<a onClick="return confirm('{_T("Do you really want to delete this transaction of the database ?")|escape:"javascript"}')" href="gestion_transactions.php?sup={$transaction.trans_id}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></a>
 			</td>
 {/if}
+		</tr>
 {foreachelse}
 {if $smarty.session.admin_status eq 1}
 			<tr><td colspan="6" class="emptylist">{_T("no transaction")}</td></tr>

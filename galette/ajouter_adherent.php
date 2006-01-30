@@ -37,8 +37,8 @@
 		$adherent["id_adh"] = get_numeric_form_value("id_adh", "");
 		// disable some fields
 		$disabled = array(
-				'id_adh' => 'disabled',
-				'date_echeance' => 'disabled'
+				'id_adh' => 'disabled="disabled"',
+				'date_echeance' => 'disabled="disabled"'
 			);
 	}
 	else
@@ -47,16 +47,16 @@
 		// disable some fields
 		$disabled = array(
 				'titre_adh' => 'disabled',
-				'id_adh' => 'disabled',
-				'nom_adh' => 'disabled',
-				'prenom_adh' => 'disabled',
-				'date_crea_adh' => 'disabled',
-				'id_statut' => 'disabled',
-				'activite_adh' => 'disabled',
-				'bool_exempt_adh' => 'disabled',
-				'bool_admin_adh' => 'disabled',
-				'date_echeance' => 'disabled',
-				'info_adh' => 'disabled'
+				'id_adh' => 'disabled="disabled"',
+				'nom_adh' => 'disabled="disabled"',
+				'prenom_adh' => 'disabled="disabled"',
+				'date_crea_adh' => 'disabled="disabled"',
+				'id_statut' => 'disabled="disabled"',
+				'activite_adh' => 'disabled="disabled"',
+				'bool_exempt_adh' => 'disabled="disabled"',
+				'bool_admin_adh' => 'disabled="disabled"',
+				'date_echeance' => 'disabled="disabled"',
+				'info_adh' => 'disabled="disabled"'
 			);
 	}
 

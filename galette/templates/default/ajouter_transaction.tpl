@@ -5,7 +5,7 @@
 			<h1>{_T("- ERROR -")}</h1>
 			<ul>
 {foreach from=$error_detected item=error}
-				<li>{$error}<li>
+				<li>{$error}</li>
 {/foreach}
 			</ul>
 		</div>
