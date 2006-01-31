@@ -19,27 +19,29 @@
  *
  */
 
- 
-	include("includes/config.inc.php"); 
+
+	include("includes/config.inc.php");
 	include(WEB_ROOT."includes/database.inc.php");
 	include(WEB_ROOT."includes/session.inc.php");
-	include(WEB_ROOT."includes/functions.inc.php"); 
+	include(WEB_ROOT."includes/functions.inc.php");
 	include(WEB_ROOT."includes/i18n.inc.php");
 	include(WEB_ROOT."includes/smarty.inc.php");
-	
-	if ($_SESSION["logged_status"]==0) 
+
+	if ($_SESSION["logged_status"]==0)
 		header("location: index.php");
-	if ($_SESSION["admin_status"]==0) 
+	if ($_SESSION["admin_status"]==0)
 		header("location: voir_adherent.php");
-	
+
 	$error_detected = array();
-	
+	$warning_detected = array();
+  $data = array();
+
 	$mailing_adh = array();
 	if (isset($_SESSION['galette']['mailing']))
 		$mailing_adh = $_SESSION['galette']['mailing'];
 	else
 		die();
-		
+
 	$reachable_members = array();
 	$unreachable_members = array();
 
@@ -64,7 +66,6 @@
 		header("location: gestion_adherents.php");
 
 	$etape = 0;
-	$data = array();
 	if (isset($_POST["mailing_go"]) || isset($_POST["mailing_reset"]) || isset($_POST["mailing_confirm"]))
 	{
 		if ($_POST['mailing_objet']=="")
@@ -76,21 +77,22 @@
 			$error_detected[] = _T("Please enter a message.");
 		else
 			$data['mailing_corps'] = $_POST['mailing_corps'];
-		
+
 		if (isset($_POST['mailing_html']))
 			$data['mailing_html']=$_POST['mailing_html'];
 		else
 			$data['mailing_html']=0;
-			
+
 		$data['mailing_corps_display']=htmlspecialchars($data['mailing_corps'],ENT_QUOTES);
-		
+
 		if (count($error_detected)==0 && !isset($_POST["mailing_reset"]))
 			$etape = 1;
 	}
-	
+
 	if (isset($_POST["mailing_confirm"]) && count($error_detected)==0)
 	{
 		$etape = 2;
+		$member_id_string = "";
 		foreach ($reachable_members as $id_adh)
 			$member_id_string .= $id_adh.",";
 		$member_id_string = substr($member_id_string,0,-1);
@@ -103,21 +105,47 @@
 			$content_type = "text/plain";
 		else
 			$content_type = "text/html";
+		$mail_result = "";
 		while (!$result_members->EOF)
 		{
-			custom_mail ($result_members->fields[1],
-						$data['mailing_objet'],
-						$data['mailing_corps'],
-						$content_type);
+			$mail_result = custom_mail($result_members->fields[1],
+																	$data['mailing_objet'],
+																	$data['mailing_corps'],
+																	$content_type);
+			if( $mail_result == 1) {
+				$email_adh = $result_members->fields[1];
+				dblog(_T("Send mail to :")." \"" . $email_adh . "\"", $sql);
+				$warning_detected[] = _T("Mail sent to :")." \"" . $email_adh . "\"";
+			} else {
+      switch ($mail_result) {
+        case 2 :
+          dblog(_T("Email sent is desactived in the preferences. Ask galette admin."));
+          $error_detected[] = _T("Email sent is desactived in the preferences. Ask galette admin");
+          break;
+        case 3 :
+          dblog(_T("A problem happened while sending mail to :")." \"" . $email_adh . "\"");
+          $error_detected[] = _T("A problem happened while sending mail to :")." \"" . $email_adh . "\"";
+          break;
+        case 4 :
+          dblog(_T("The server mail filled in the preferences cannot be reached. Ask Galette admin"));
+          $error_detected[] = _T("The server mail filled in the preferences cannot be reached. Ask Galette admin");
+          break;
+        default :
+          dblog(_T("A problem happened while sending mail to :")." \"" . $email_adh . "\"");
+          $error_detected[] = _T("A problem happened while sending mail to :")." \"" . $email_adh . "\"";
+          break;
+      }
+    }
 			$result_members->MoveNext();
-		}		
+		}
 	}
-	
+
 	$_SESSION['galette']['labels']=$unreachable_members;
-	
+
 	$nb_reachable_members = count($reachable_members);
 	$nb_unreachable_members = count($unreachable_members);
-		
+
+	$tpl->assign("warning_detected",$warning_detected);
 	$tpl->assign("error_detected",$error_detected);
 	$tpl->assign("nb_reachable_members",$nb_reachable_members);
 	$tpl->assign("nb_unreachable_members",$nb_unreachable_members);

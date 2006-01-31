@@ -14,7 +14,9 @@
 		<div id="warningbox">
 			<h1>{_T("- WARNING -")}</h1>
 			<ul>
-				<li>{$warning_detected}</li>
+				{foreach from=$warning_detected item=warning}
+					<li>{$warning}</li>
+				{/foreach}
 			</ul>
 		</div>
 {/if}

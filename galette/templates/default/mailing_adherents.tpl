@@ -10,6 +10,16 @@
 			</ul>
 		</div>
 {/if}
+{if $warning_detected|@count != 0}
+		<div id="warningbox">
+			<h1>{_T("- WARNING -")}</h1>
+			<ul>
+				{foreach from=$warning_detected item=warning}
+					<li>{$warning}</li>
+				{/foreach}
+			</ul>
+		</div>
+{/if}
 		<p>
 {if $nb_reachable_members > 0}
 	{if $etape==2}

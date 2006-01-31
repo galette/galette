@@ -1944,7 +1944,7 @@ msgstr "Description :"
 #: ../footer.php:45 ../templates/default/gestion_adherents.tpl:170
 #: ../templates/default/mailing_adherents.tpl:88
 msgid "Generate labels"
-msgstr "Génération d'étiquettes"
+msgstr "Générer les étiquettes"
 
 #: ../templates/default/gestion_adherents.tpl:132
 msgid ""
