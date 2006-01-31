@@ -66,7 +66,7 @@ function PasswordImage(){
   imagestring($png, 3, 5, 2, $mdp, imagecolorallocate($png,0,0,0));
 	$file = STOCK_FILES."/".PasswordImageName($c);
 
-	//FIXME:2 lines below is useless but necessary by a bug in php-gd(http://bugs.php.net/bug.php?id=35246)
+	//TODO:2 lines below is useless but necessary by a bug in php-gd(http://bugs.php.net/bug.php?id=35246)
 	$fh=fopen($file,'w');
 	fclose($fh);
 
@@ -137,7 +137,7 @@ function dblog($action, $argument="", $query="")
 		if (PREF_LOG==1)
 			$query="";
 		//FIXME : for $query, there is a problem if magic_quotes is enabled
-		//FIXME : same for $action .. probably fot others too :/
+		//FIXME : same for $action .. probably for others too :/
 		$requete = "INSERT INTO ".PREFIX_DB."logs (date_log, ip_log, adh_log, action_log, text_log, sql_log)
 				VALUES (" . $GLOBALS["DB"]->DBTimeStamp(time()) . ", " .
 						$GLOBALS["DB"]->qstr($_SERVER["REMOTE_ADDR"], get_magic_quotes_gpc()) . ", " .
@@ -203,16 +203,14 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
   $result = 0;
 
   // Headers :
-  $headers = array("Subject: $mail_subject",
-                   "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">",
-                   "To: <".$email_adh.">",
-                   "Message-ID: <".makeRandomPassword(16)."-galette@".$_SERVER['SERVER_NAME'].">",
-                   "X-Sender: <".PREF_EMAIL.">",
-                   "Return-Path: <".PREF_EMAIL.">",
-                   "Errors-To: <".PREF_EMAIL.">",
-                   "X-Mailer: Galette-".GALETTE_VERSION,
-                   "X-Priority: 3",
-                   "Content-Type: $content_type; charset=iso-8859-15");
+  $headers = array("From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">",
+									"Message-ID: <".makeRandomPassword(16)."-galette@".$_SERVER['SERVER_NAME'].">",
+									"X-Sender: <".PREF_EMAIL.">",
+									"Return-Path: <".PREF_EMAIL.">",
+									"Errors-To: <".PREF_EMAIL.">",
+									"X-Mailer: Galette-".GALETTE_VERSION,
+									"X-Priority: 3",
+									"Content-Type: $content_type; charset=iso-8859-15");
 
   switch (PREF_MAIL_METHOD)
     {
@@ -223,6 +221,8 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
       $mail_headers = "";
       foreach($headers as $oneheader)
         $mail_headers .= $oneheader."\n";
+			//TODO dunno if -f is a good idea ( http://fr.php.net/manual/fr/ref.mail.php#ini.sendmail-from )
+      //if (!mail($email_adh,$mail_subject,$mail_text, $mail_headers,"-f ".PREF_EMAIL)) {
       if (!mail($email_adh,$mail_subject,$mail_text, $mail_headers)) {
         $result = 0;
       } else {
@@ -232,7 +232,7 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
     case 2:
       // $toArray format --> array("Name1" => "address1", "Name2" => "address2", ...)
 
-      //apparently useless and print warning : "undefined constant sendmail_from"
+      //see upper
       //ini_set(sendmail_from, "myemail@address.com");
       $errno = "";
       $errstr = "";

@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: en_US\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-12-20 16:44+0100\n"
-"PO-Revision-Date: 2006-01-25 14:27+0100\n"
+"PO-Revision-Date: 2006-01-30 20:11+0100\n"
 "Last-Translator: Stéphane Salès <ssales@tuxz.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -303,9 +303,8 @@ msgid "- Invalid date for beginning of membership."
 msgstr "- Invalid date for beginning of membership."
 
 #: ../templates/default/gestion_adherents.tpl:167
-#, fuzzy
 msgid "Selection:"
-msgstr "Deletion"
+msgstr "Selection:"
 
 #: ../templates/default/lostpasswd.tpl:18
 msgid "Password recovery"
@@ -1123,9 +1122,8 @@ msgid "Reduced annual contribution"
 msgstr "Reduced annual contribution"
 
 #: ../templates/default/gestion_adherents.tpl:168
-#, fuzzy
 msgid "Delete"
-msgstr "Deletion"
+msgstr "Delete"
 
 #: ../footer.php:74 ../templates/default/page.tpl:48
 msgid "Log off"
@@ -1439,9 +1437,8 @@ msgid "You must first register a member"
 msgstr "You must first register a member"
 
 #: ../templates/default/mailing_adherents.tpl:65
-#, fuzzy
 msgid "Preview"
-msgstr "President"
+msgstr "Preview"
 
 #: ../self_contribution.php:208 ../templates/default/ajouter_adherent.tpl:1
 #: ../templates/default/ajouter_contribution.tpl:1

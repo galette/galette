@@ -151,7 +151,7 @@ $lang['Website:'] = 'Website:';
 $lang['[up]'] = '[up]';
 
 // ../templates/default/gestion_adherents.tpl:167 
-$lang['Selection:'] = 'Deletion';
+$lang['Selection:'] = 'Selection:';
 
 // ../templates/default/gestion_contributions.tpl:52 
 $lang['Member'] = 'Member';
@@ -496,7 +496,7 @@ $lang['Freed of dues'] = 'Freed of dues';
 $lang['Galette has been successfully updated!'] = 'Galette has been successfully updated!';
 
 // ../templates/default/gestion_adherents.tpl:168 
-$lang['Delete'] = 'Deletion';
+$lang['Delete'] = 'Delete';
 
 // ../self_adherent.php:233 
 $lang['Inscription sent for approval to administrator'] = 'Inscription sent for approval to administrator';
@@ -925,7 +925,7 @@ $lang['Be visible in the<br /> members list :'] = 'Be visible in the<br /> membe
 $lang['Pages:'] = 'Pages:';
 
 // ../templates/default/mailing_adherents.tpl:65 
-$lang['Preview'] = 'President';
+$lang['Preview'] = 'Preview';
 
 // ../templates/default/preferences.tpl:140 ../templates/default/preferences.tpl:147 ../templates/default/preferences.tpl:154 ../templates/default/preferences.tpl:161 ../templates/default/preferences.tpl:168 ../templates/default/preferences.tpl:175 ../templates/default/preferences.tpl:188 
 $lang['(Integer)'] = '(Integer)';

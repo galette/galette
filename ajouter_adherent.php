@@ -310,9 +310,10 @@
           $mail_text .= "\n";
           $mail_text .= _T("(this mail was sent automatically)")."\n";
           $mail_result = custom_mail($adherent['email_adh'],$mail_subject,$mail_text);
+          //TODO: duplicate piece of code with mailing_adherent
           if( $mail_result == 1) {
             dblog(_T("Send subscription mail to :")."$_POST[email_adh])", $requete);
-            $warning_detected[] = _T("Password sent. Login:")." \"" . $login_adh . "\"";
+            $warning_detected[] = _T("Password sent. Login:")." \"" . $adherent['login_adh'] . "\"";
             //$password_sent = true;
           }else{
             switch ($mail_result) {
