@@ -217,7 +217,21 @@
 	<h1><?php echo _T("Files permissions"); ?></h1>
 <?
 			$perms_ok = true;
-			// TODO : check file permissions
+			$files_need_rw = array ('/templates_c',
+						'/photos',
+						'/cache',
+						'/includes/config.inc.php');
+			foreach ($files_need_rw as $file)
+			{
+				if (!is_writable(dirname(__FILE__).'/..'.$file))
+				{
+					$perms_ok = false;
+					echo "<img src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> ".$file."<br/>";
+				}
+				else
+					echo "<img src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> ".$file."<br />";
+			}
+
 			if (!$perms_ok)
 			{
 ?>
@@ -353,7 +367,7 @@
 	<h1><?php echo _T("Check of the database"); ?></h1>
 	<p><?php echo _T("Check the parameters and the existence of the database"); ?></p>
 <?
-				include(WEB_ROOT."/includes/adodb/adodb.inc.php");
+				include("../includes/adodb/adodb.inc.php");
 				$DB = adonewconnection($_POST["install_dbtype"]);
 				$DB->debug = false;
 				$permsdb_ok = true;
