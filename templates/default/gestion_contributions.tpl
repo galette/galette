@@ -22,7 +22,7 @@
 						{if $smarty.section.pageLoop.index eq $page}
 							{$smarty.section.pageLoop.index}
 						{else}
-							<a href="gestion_contributions.php?nbshow={$smarty.get.nbshow}&page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
+							<a href="gestion_contributions.php?nbshow={$smarty.get.nbshow}&amp;page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
 						{/if}
 					{/section}
 					</span>
@@ -151,7 +151,7 @@
 			{if $smarty.section.pageLoop.index eq $page}
 			{$smarty.section.pageLoop.index}
 			{else}
-			<a href="gestion_contributions.php?nbshow={$smarty.get.nbshow}&page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
+			<a href="gestion_contributions.php?nbshow={$smarty.get.nbshow}&amp;page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
 			{/if}
 			{/section}
 			</span>
