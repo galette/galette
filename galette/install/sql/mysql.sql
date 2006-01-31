@@ -1,4 +1,4 @@
-DROP TABLE galette_adherents;
+DROP TABLE IF EXISTS galette_adherents;
 CREATE TABLE galette_adherents (
   id_adh int(10) unsigned NOT NULL auto_increment,
   id_statut int(10) unsigned NOT NULL default '4',
@@ -38,7 +38,7 @@ CREATE TABLE galette_adherents (
   UNIQUE (login_adh)
 ) TYPE=MyISAM;
 
-DROP TABLE galette_cotisations;
+DROP TABLE IF EXISTS galette_cotisations;
 CREATE TABLE galette_cotisations (
   id_cotis int(10) unsigned NOT NULL auto_increment,
   id_adh int(10) unsigned NOT NULL default '0',
@@ -52,7 +52,7 @@ CREATE TABLE galette_cotisations (
   PRIMARY KEY  (id_cotis)
 ) TYPE=MyISAM;
 
-DROP TABLE galette_transactions;
+DROP TABLE IF EXISTS galette_transactions;
 CREATE TABLE galette_transactions (
   trans_id int(10) unsigned NOT NULL auto_increment,
   trans_date date NOT NULL default '0000-00-00',
@@ -62,7 +62,7 @@ CREATE TABLE galette_transactions (
   PRIMARY KEY  (trans_id)
 ) TYPE=MyISAM;
 
-DROP TABLE galette_statuts;
+DROP TABLE IF EXISTS galette_statuts;
 CREATE TABLE galette_statuts (
   id_statut int(10) unsigned NOT NULL auto_increment,
   libelle_statut varchar(20) NOT NULL default '',
@@ -70,7 +70,7 @@ CREATE TABLE galette_statuts (
   PRIMARY KEY  (id_statut)
 ) TYPE=MyISAM;
 
-DROP TABLE galette_types_cotisation;
+DROP TABLE IF EXISTS galette_types_cotisation;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis int(10) unsigned NOT NULL auto_increment,
   libelle_type_cotis varchar(30) NOT NULL default '',
@@ -78,7 +78,7 @@ CREATE TABLE galette_types_cotisation (
   PRIMARY KEY  (id_type_cotis)
 ) TYPE=MyISAM;
 
-DROP TABLE galette_preferences;
+DROP TABLE IF EXISTS galette_preferences;
 CREATE TABLE galette_preferences (
   id_pref int(10) unsigned NOT NULL auto_increment,
   nom_pref varchar(100) NOT NULL default '',
@@ -86,7 +86,7 @@ CREATE TABLE galette_preferences (
   PRIMARY KEY  (id_pref)
 ) TYPE=MyISAM;
 
-DROP TABLE galette_logs;
+DROP TABLE IF EXISTS galette_logs;
 CREATE TABLE galette_logs (
   id_log int(10) unsigned NOT NULL auto_increment,
   date_log datetime NOT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE galette_logs (
 ) TYPE=MyISAM;
 
 -- Table for dynamic fields description;
-DROP TABLE galette_field_types;
+DROP TABLE IF EXISTS galette_field_types;
 CREATE TABLE galette_field_types (
     field_id int(10) unsigned NOT NULL auto_increment,
     field_form varchar(10) NOT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE galette_field_types (
 ) TYPE=MyISAM;
 
 -- Table for dynamic fields data;
-DROP TABLE galette_dynamic_fields;
+DROP TABLE IF EXISTS galette_dynamic_fields;
 CREATE TABLE galette_dynamic_fields (
     item_id int(10) NOT NULL default '0',
     field_id int(10) NOT NULL default '0',
@@ -140,7 +140,7 @@ CREATE TABLE `galette_pictures` (
 ) TYPE=MyISAM;
 
 -- Table for dynamic translation of strings;
-DROP TABLE galette_l10n;
+DROP TABLE IF EXISTS galette_l10n;
 CREATE TABLE galette_l10n (
     text_orig varchar(40) NOT NULL,
     text_locale varchar(15) NOT NULL,
