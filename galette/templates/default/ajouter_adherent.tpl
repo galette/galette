@@ -33,7 +33,7 @@
 						<input type="text" name="nom_adh" value="{$data.nom_adh}" maxlength="20" {$disabled.nom_adh}/>
           </td> 
 					<td colspan="2" rowspan="4" align="center" width="130">
-						<img src="picture.php?id_adh={$data.id_adh}&amp;rand={$time}" border="1" alt="{_T("Picture")}"/>
+						<img src="picture.php?id_adh={$data.id_adh}&amp;rand={$time}" border="1" width="{$data.picture_width}" height="{$data.picture_height}" alt="{_T("Picture")}"/>
 					 </td>
 				</tr>
 				<tr>

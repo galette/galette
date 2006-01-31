@@ -26,6 +26,7 @@
         include(WEB_ROOT."includes/i18n.inc.php");
 	include(WEB_ROOT."includes/smarty.inc.php");
         include(WEB_ROOT."includes/dynamic_fields.inc.php");
+	require_once('includes/picture.class.php');
 
 	if ($_SESSION["logged_status"]==0)
 		header("location: index.php");
@@ -402,20 +403,17 @@
 		}
 	}
 
-	// picture available ?
-	if ($adherent["id_adh"]!="")
-	{
-		$sql =  "SELECT id_adh ".
-			"FROM ".PREFIX_DB."pictures ".
-			"WHERE id_adh=".$adherent["id_adh"];
-		$result = &$DB->Execute($sql);
-		if ($result->RecordCount()!=0)
-			$adherent["has_picture"]=1;
-		else
-			$adherent["has_picture"]=0;
-	}
+	// picture data
+	if ($adherent["id_adh"]!='') 
+		$picture = new picture($adherent["id_adh"]);
+	else
+		$picture = new picture();
+	if ($picture->hasPicture())
+		$adherent["has_picture"]=1;
 	else
 		$adherent["has_picture"]=0;
+	$adherent['picture_height'] = $picture->getOptimalHeight();
+	$adherent['picture_width'] = $picture->getOptimalWidth();
 
 	// - declare dynamic fields for display
 	$disabled['dyn'] = array();
