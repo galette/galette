@@ -69,17 +69,7 @@
 					<td><input type="checkbox" name="bool_display_info" value="1" {if $data.bool_display_info eq 1}checked="checked"{/if} {$disabled.bool_display_info}/></td>
 					<th {if $required.pref_lang eq 1}style="color: #FF0000;"{/if} class="libelle">{_T("Language:")}</th>
 					<td>
-						{literal}
-						<script language="javascript" type="text/javascript">
-						<!--
-							function updatelanguage(){
-								document.cookie = "pref_lang="+document.form.pref_lang.value;
-								window.location.reload()
-							}
-						-->
-						</script>
-						{/literal}
-						<select name="pref_lang" onChange="updatelanguage()" {$disabled.pref_lang}>
+						<select name="pref_lang" {$disabled.pref_lang}>
 						{foreach key=langue item=langue_t from=$languages}
 							<option value="{$langue}" {if $data.pref_lang eq $langue}selected="selected"{/if} style="padding-left: 30px; background-image: url(lang/{$langue}.gif); background-repeat: no-repeat">{$langue_t|capitalize}</option>
 						{/foreach}

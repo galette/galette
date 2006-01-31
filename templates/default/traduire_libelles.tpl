@@ -19,7 +19,7 @@
 				<tr>
 					<td class="listing left">{_T("Original")}</td> 
 					<td class="listing left">
-						<select name="text_orig" onChange="form.submit()">
+						<select name="text_orig" onchange="form.submit()">
 							{html_options values=$orig output=$orig selected=$text_orig}
 						</select>
 					</td>
