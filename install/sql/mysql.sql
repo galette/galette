@@ -132,7 +132,7 @@ CREATE TABLE galette_dynamic_fields (
 DROP TABLE IF EXISTS galette_pictures;
 CREATE TABLE `galette_pictures` (
     `id_adh` int(10) unsigned NOT NULL default '0',
-    `picture` blob NOT NULL,
+    `picture` mediumblob NOT NULL,
     `format` varchar(10) NOT NULL default '',
     `width` int(10) unsigned NOT NULL default '0',
     `height` int(10) unsigned NOT NULL default '0',
