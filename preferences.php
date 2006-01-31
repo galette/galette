@@ -23,13 +23,21 @@
 	include(WEB_ROOT."includes/database.inc.php");
 	include(WEB_ROOT."includes/session.inc.php");
 	include(WEB_ROOT."includes/functions.inc.php");
-  include(WEB_ROOT."includes/i18n.inc.php");
+	include(WEB_ROOT."includes/i18n.inc.php");
 	include(WEB_ROOT."includes/smarty.inc.php");
 
+	require_once('includes/picture.class.php');
+
 	if ($_SESSION["logged_status"]==0)
+	{
 		header("location: index.php");
+		die();
+	}
 	if ($_SESSION["admin_status"]==0)
+	{
 		header("location: voir_adherent.php");
+		die();
+	}
 
 	// initialize warnings
 	$error_detected = array();
@@ -221,12 +229,12 @@
 					if (count($error_detected)==0)
 					{
 						$sql = "DELETE FROM ".PREFIX_DB."pictures
-							WHERE id_adh=-1";
+							WHERE id_adh=0";
 						$DB->Execute($sql);
 
-						move_uploaded_file($_FILES['logo']['tmp_name'],WEB_ROOT.'photos/-1'.'.'.$format);
+						move_uploaded_file($_FILES['logo']['tmp_name'],WEB_ROOT.'photos/0'.'.'.$format);
 
-						$f = fopen(WEB_ROOT.'photos/-1'.'.'.$format,"r");
+						$f = fopen(WEB_ROOT.'photos/0'.'.'.$format,"r");
 						$picture = '';
 						while ($r=fread($f,8192))
 							$picture .= $r;
@@ -234,25 +242,25 @@
 
 						$sql = "INSERT INTO ".PREFIX_DB."pictures
 							(id_adh, picture, format, width, height)
-							VALUES (-1,'  ',".$DB->Qstr($format).",'1','1')";
+							VALUES (0,'  ',".$DB->Qstr($format).",'1','1')";
 						if ( ! $DB->Execute($sql) )
               $error_detected[] = _T("Insert failed");
-						if ( ! $DB->UpdateBlob(PREFIX_DB.'pictures','picture',$picture,'id_adh=-1') )
+						if ( ! $DB->UpdateBlob(PREFIX_DB.'pictures','picture',$picture,'id_adh=0') )
               $error_detected[] = _T("Update Blob failed");
 					}
 				}
         if ( isset($_POST['del_logo']) && $_POST['del_logo'] == 1 )
         {
           $sql = "DELETE FROM ".PREFIX_DB."pictures
-            WHERE id_adh=-1";
+            WHERE id_adh=0";
           if ( ! $DB->Execute($sql) )
             $error_detected[] = _T("Delete failed");
-          if (file_exists(WEB_ROOT.'photos/-1'.'.jpg'))
-            unlink (WEB_ROOT.'photos/-1'.'.jpg');
-          elseif (file_exists(WEB_ROOT.'photos/-1'.'.png'))
-            unlink (WEB_ROOT.'photos/-1'.'.png');
-          elseif (file_exists(WEB_ROOT.'photos/-1'.'.gif'))
-            unlink (WEB_ROOT.'photos/-1'.'.gif');
+          if (file_exists(WEB_ROOT.'photos/0'.'.jpg'))
+            unlink (WEB_ROOT.'photos/0'.'.jpg');
+          elseif (file_exists(WEB_ROOT.'photos/0'.'.png'))
+            unlink (WEB_ROOT.'photos/0'.'.png');
+          elseif (file_exists(WEB_ROOT.'photos/0'.'.gif'))
+            unlink (WEB_ROOT.'photos/0'.'.gif');
         }
 			}
 		}
@@ -276,15 +284,14 @@
 		$result->Close();
 	}
 
-	// logo available ?
-		$sql =  "SELECT id_adh ".
-			"FROM ".PREFIX_DB."pictures ".
-			"WHERE id_adh=-1";
-		$result = &$DB->Execute($sql);
-		if ($result->RecordCount()!=0)
-			$pref["has_logo"]=1;
-		else
-			$pref["has_logo"]=0;
+	// logo data
+	$picture = new picture(0);
+	if ($picture->hasPicture())
+		$pref["has_logo"]=1;
+	else
+		$pref["has_logo"]=0;
+        $pref['picture_height'] = $picture->getOptimalHeight();
+        $pref['picture_width'] = $picture->getOptimalWidth();
 
 	$tpl->assign("pref",$pref);
 	$tpl->assign('pref_numrows_options', array(

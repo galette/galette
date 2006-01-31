@@ -10,7 +10,7 @@
 {else}
 					<td colspan="2" rowspan="5" align="center">
 {/if}
-						<img src="picture.php?id_adh={$data.id_adh}&amp;rand={$time}" border="1" alt="{_T("Picture")}"/>
+						<img src="picture.php?id_adh={$data.id_adh}&amp;rand={$time}" border="1" width="{$data.picture_width}" height="{$data.picture_height}" alt="{_T("Picture")}"/>
                         		</td>
 				</tr>
 				<tr> 

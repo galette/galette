@@ -25,7 +25,9 @@
 	include(WEB_ROOT."includes/functions.inc.php");
         include_once("includes/i18n.inc.php"); 
 	include(WEB_ROOT."includes/smarty.inc.php");
-	include(WEB_ROOT."includes/dynamic_fields.inc.php"); 
+	include(WEB_ROOT."includes/dynamic_fields.inc.php");
+
+	require_once('includes/picture.class.php');
 	
 	if ($_SESSION["logged_status"]==0) 
 		header("location: index.php");
@@ -117,6 +119,11 @@
 	
 	$adherent['pref_lang_img'] = 'lang/'.$adherent['pref_lang'].'.gif';
 	$adherent['pref_lang'] = ucfirst(_T($adherent['pref_lang']));
+
+	// picture size
+	$picture = new picture($id_adh);
+	$adherent['picture_height'] = $picture->getOptimalHeight();
+	$adherent['picture_width'] = $picture->getOptimalWidth();
 	
 	$tpl->assign("data",$adherent);
 	$tpl->assign("dynamic_fields",$dynamic_fields);

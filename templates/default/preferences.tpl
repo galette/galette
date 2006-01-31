@@ -35,7 +35,7 @@
 					<td>
             <p>
 {if $pref.has_logo eq 1}
-						<img src="picture.php?id_adh=-1&amp;rand={$time}" style="border-width:1" alt="{_T("Picture")}"/><br />
+						<img src="picture.php?id_adh=0&amp;rand={$time}" border="1" width="{$pref.picture_width}" height="{$pref.picture_height}" alt="{_T("Picture")}"/><br/>
 						<span>{_T("Delete image")}</span><input type="checkbox" name="del_logo" value="1" /><br />
 {/if}
 						<input type="file" name="logo" />
