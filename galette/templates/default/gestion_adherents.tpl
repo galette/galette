@@ -14,10 +14,10 @@
 			{_T("Search:")}&nbsp;
 			<input type="text" name="filtre_nom" value="{$smarty.session.filtre_adh_nom}"/>&nbsp;
 		 	{_T("among:")}&nbsp;
-			<select name="filtre" onChange="form.submit()">
+			<select name="filtre" onchange="form.submit()">
 				{html_options options=$filtre_options selected=$smarty.session.filtre_adh}
 			</select>
-			<select name="filtre_2" onChange="form.submit()">
+			<select name="filtre_2" onchange="form.submit()">
 				{html_options options=$filtre_2_options selected=$smarty.session.filtre_adh_2}
 			</select>
 			<input type="submit" value="{_T("Filter")}"/>
@@ -27,7 +27,7 @@
 				<td class="left">{$nb_members} {if $nb_members != 1}{_T("members")}{else}{_T("member")}{/if}</td>
 				<td class="center">
 					{_T("Show:")}
-					<select name="nbshow" onChange="form.submit()">
+					<select name="nbshow" onchange="form.submit()">
 						{html_options options=$nbshow_options selected=$numrows}
 					</select>
 				</td>
@@ -129,7 +129,7 @@
 				<td class="{$member.class} center">
 					<a href="ajouter_adherent.php?id_adh={$member.id_adh}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></a>
 					<a href="gestion_contributions.php?id_adh={$member.id_adh}"><img src="{$template_subdir}images/icon-money.png" alt="{_T("[$]")}" border="0" width="13" height="13"/></a>
-					<a onClick="return confirm('{_T("Do you really want to delete this member from the base, this will delete also the history of her fees. To avoid this you can just unactivate her account.\n\nDo you still want to delete this member ?")|escape:"javascript"}')" href="gestion_adherents.php?sup={$member.id_adh}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></a>
+					<a onclick="return confirm('{_T("Do you really want to delete this member from the base, this will delete also the history of her fees. To avoid this you can just unactivate her account.\n\nDo you still want to delete this member ?")|escape:"javascript"}')" href="gestion_adherents.php?sup={$member.id_adh}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></a>
 				</td>
 			</tr>
 {foreachelse}
@@ -139,21 +139,22 @@
 {if $nb_members != 0}		
 		{literal}
 		<script type="text/javascript">
-		<!--
+		<![CDATA[ 
 		var checked = 1; 	
 		function check()
 		{
-			for (var i=0;i<document.listform.elements.length;i++)
+			for (var i=0;i<document.forms.listform.elements.length;i++)
 			{
-				var e = document.listform.elements[i];
+				var e = document.forms.listform.elements[i];
 				if(e.type == "checkbox")
 				{
 					e.checked = checked;
 				}
 			}
 			checked = !checked;
+			return(false);
 		}
-		-->
+		]]>
 		</script>
 		{/literal}
 {/if}
@@ -161,11 +162,11 @@
 			<tr>
 {if $nb_members != 0}
 				<td class="left" nowrap="nowrap">
-					<a href="#" onClick="check()">{_T("(Un)Check all")}</a><br/>
+					<a href="#" onclick="check();">{_T("(Un)Check all")}</a><br/>
 					<br/>
 					<ul>
 						<li>{_T("Selection:")}</li>
-						<li><input type="submit" onClick="return confirm('{_T("Do you really want to delere all selected accounts (and related contributions)?")|escape:"javascript"}');" name="delete" value="{_T("Delete")}"/></li>
+						<li><input type="submit" onclick="return confirm('{_T("Do you really want to delere all selected accounts (and related contributions)?")|escape:"javascript"}');" name="delete" value="{_T("Delete")}"/></li>
 						<li><input type="submit" name="mailing" value="{_T("Mail all")}"/></li>
 						<li><input type="submit" name="labels" value="{_T("Generate labels")}"/></li>
 					</ul>

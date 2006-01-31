@@ -12,7 +12,7 @@
 				<td class="left">{$nb_contributions} {if $nb_contributions != 1}{_T("contributions")}{else}{_T("contribution")}{/if}</td>
                                 <td class="center">
 					{_T("Show:")}
-					<select name="nbshow" onChange="form.submit()">
+					<select name="nbshow" onchange="form.submit()">
 						{html_options options=$nbshow_options selected=$numrows}
 					</select>
 				</td>
@@ -132,7 +132,7 @@
 {if $smarty.session.admin_status eq 1}
 			<td width="55" class="{$contribution.class} center" nowrap="nowrap">
 				<a href="ajouter_contribution.php?id_cotis={$contribution.id_cotis}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></a>
-				<a onClick="return confirm('{_T("Do you really want to delete this contribution of the database ?")|escape:"javascript"}')" href="gestion_contributions.php?sup={$contribution.id_cotis}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></a>
+				<a onclick="return confirm('{_T("Do you really want to delete this contribution of the database ?")|escape:"javascript"}')" href="gestion_contributions.php?sup={$contribution.id_cotis}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></a>
 			</td>
 {/if}
 		</tr>
