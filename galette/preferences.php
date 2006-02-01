@@ -198,71 +198,14 @@
 
 			// picture upload
 			if (isset($_FILES['logo']) )
-			{
-				/*
-					TODO :  check filetype
-						check filesize
-						check filetype
-						check file dimensions
-						resize picture if gd available
-				*/
-
-
-			  if ($_FILES['logo']['tmp_name'] !='' )
-				if (is_uploaded_file($_FILES['logo']['tmp_name']))
-				{
-					switch (strtolower(substr($_FILES['logo']['name'],-4)))
-					{
-						case '.jpg':
-							$format = 'jpg';
-							break;
-						case '.gif':
-							$format = 'gif';
-							break;
-						case '.png':
-							$format = 'png';
-							break;
-						default:
+				if ($_FILES['logo']['tmp_name'] !='' )
+					if (is_uploaded_file($_FILES['logo']['tmp_name']))
+						if (!picture::store(0, $_FILES['logo']['tmp_name'], $_FILES['logo']['name'])) 
 							$error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
-					}
-
-					if (count($error_detected)==0)
-					{
-						$sql = "DELETE FROM ".PREFIX_DB."pictures
-							WHERE id_adh=0";
-						$DB->Execute($sql);
-
-						move_uploaded_file($_FILES['logo']['tmp_name'],WEB_ROOT.'photos/0'.'.'.$format);
-
-						$f = fopen(WEB_ROOT.'photos/0'.'.'.$format,"r");
-						$picture = '';
-						while ($r=fread($f,8192))
-							$picture .= $r;
-						fclose($f);
-
-						$sql = "INSERT INTO ".PREFIX_DB."pictures
-							(id_adh, picture, format, width, height)
-							VALUES (0,'  ',".$DB->Qstr($format).",'1','1')";
-						if ( ! $DB->Execute($sql) )
-              $error_detected[] = _T("Insert failed");
-						if ( ! $DB->UpdateBlob(PREFIX_DB.'pictures','picture',$picture,'id_adh=0') )
-              $error_detected[] = _T("Update Blob failed");
-					}
-				}
-        if ( isset($_POST['del_logo']) && $_POST['del_logo'] == 1 )
-        {
-          $sql = "DELETE FROM ".PREFIX_DB."pictures
-            WHERE id_adh=0";
-          if ( ! $DB->Execute($sql) )
-            $error_detected[] = _T("Delete failed");
-          if (file_exists(WEB_ROOT.'photos/0'.'.jpg'))
-            unlink (WEB_ROOT.'photos/0'.'.jpg');
-          elseif (file_exists(WEB_ROOT.'photos/0'.'.png'))
-            unlink (WEB_ROOT.'photos/0'.'.png');
-          elseif (file_exists(WEB_ROOT.'photos/0'.'.gif'))
-            unlink (WEB_ROOT.'photos/0'.'.gif');
-        }
-			}
+			
+			if (isset($_POST['del_logo']))
+				if (!picture::delete(0))
+					$error_detected[] = _T("Delete failed");
 		}
 	}
 	else
