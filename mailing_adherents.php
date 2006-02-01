@@ -71,7 +71,7 @@
 		if ($_POST['mailing_objet']=="")
 			$error_detected[] = _T("Please type an object for the message.");
 		else
-			$data['mailing_objet'] = $_POST['mailing_objet'];
+			$data['mailing_objet']=htmlspecialchars($_POST['mailing_objet'],ENT_QUOTES);
 
 		if ($_POST['mailing_corps']=="")
 			$error_detected[] = _T("Please enter a message.");
@@ -106,6 +106,7 @@
 		else
 			$content_type = "text/html";
 		$mail_result = "";
+		$email_adh = "";
 		while (!$result_members->EOF)
 		{
 			$mail_result = custom_mail($result_members->fields[1],
@@ -129,6 +130,10 @@
         case 4 :
           dblog(_T("The server mail filled in the preferences cannot be reached. Ask Galette admin"));
           $error_detected[] = _T("The server mail filled in the preferences cannot be reached. Ask Galette admin");
+          break;
+        case 5 :
+          dblog(_T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"");
+          $error_detected[] = _T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"";
           break;
         default :
           dblog(_T("A problem happened while sending mail to :")." \"" . $email_adh . "\"");
