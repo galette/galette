@@ -208,6 +208,17 @@ function custom_html_entity_decode( $given_html, $quote_style = ENT_QUOTES )
   return ( strtr( $given_html, $trans_table ) );
 }
 
+//sanityze fields
+function sanityze_mail_headers($field) {
+	$result = 0;
+	if (eregi("\r",$field) || eregi("\n",$field)){
+		 $result = 0;
+	} else {
+		$result = 1;
+	}
+	return $result;
+}
+
 function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/plain")
 {
   // codes retour :
@@ -216,7 +227,21 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
   //  2 - mail desactive
   //  3 - mauvaise configuration
   //  4 - SMTP injoignable
+  //  5 - breaking attempt
   $result = 0;
+
+	//sanityze parameters
+	$params = array($email_adh,
+										$mail_subject,
+										$mail_text,
+										$content_type);
+	foreach ($params as $param) {
+		//if (true) {}
+		if( ! sanityze_mail_headers($param) ) {
+			return 5;
+			break;
+		}
+	}
 
   // Headers :
   $headers = array("From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">",
@@ -236,10 +261,9 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
     case 1:
       $mail_headers = "";
       foreach($headers as $oneheader)
-        $mail_headers .= $oneheader."\n";
-			//TODO dunno if -f is a good idea ( http://fr.php.net/manual/fr/ref.mail.php#ini.sendmail-from )
-      //if (!mail($email_adh,$mail_subject,$mail_text, $mail_headers,"-f ".PREF_EMAIL)) {
-      if (!mail($email_adh,$mail_subject,$mail_text, $mail_headers)) {
+        $mail_headers .= $oneheader . "\r\n";
+      //-f .PREF_EMAIL is to set Return-Path
+      if (!mail($email_adh,$mail_subject,$mail_text, $mail_headers,"-f ".PREF_EMAIL)) {
         $result = 0;
       } else {
         $result = 1;
@@ -248,8 +272,8 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
     case 2:
       // $toArray format --> array("Name1" => "address1", "Name2" => "address2", ...)
 
-      //see upper
-      //ini_set(sendmail_from, "myemail@address.com");
+      //set Return-Path
+      ini_set('sendmail_from', PREF_EMAIL);
       $errno = "";
       $errstr = "";
       if (!$connect = fsockopen (PREF_MAIL_SMTP, 25, $errno, $errstr, 30))
