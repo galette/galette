@@ -151,38 +151,54 @@ function dblog($action, $argument="", $query="")
 
 function resizeimage($img,$img2,$w,$h)
 {
-  if (function_exists("imagecreate"))
-    {
-      $ext = substr($img,-4);
-      $imagedata = getimagesize($img);
-      $ratio = $imagedata[0]/$imagedata[1];
-      if ($imagedata[0]>$imagedata[1])
-        $h = $w/$ratio;
-      else
-        $w = $h*$ratio;
-      $thumb = imagecreate ($w, $h);
-      switch($ext)
-        {
-        case ".jpg":
-          $image = ImageCreateFromJpeg($img);
-          imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $imagedata[0], $imagedata[1]);
-          imagejpeg($thumb, $img2);
-          break;
-        case ".png":
-          $image = ImageCreateFromPng($img);
-          imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $imagedata[0], $imagedata[1]);
-          imagepng($thumb, $img2);
-          break;
-        case ".gif":
-          if (function_exists("imagegif"))
-            {
-              $image = ImageCreateFromGif($img);
-              imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $imagedata[0], $imagedata[1]);
-              imagegif($thumb, $img2);
-            }
-          break;
-        }
-    }
+	if(function_exists("gd_info"))
+	{
+		$ext = substr($img,-4);
+		$gdinfo = gd_info();
+		switch(strtolower($ext))
+		{
+			case '.jpg':
+				if (!$gdinfo['JPG Support'])
+					return false;
+				break;
+			case '.png':
+				if (!$gdinfo['PNG Support'])
+					return false;
+				break;
+			case '.gif':
+				if (!$gdinfo['GIF Create Support'])
+					return false;
+				break;
+			default:
+				return false;
+		}
+
+		$imagedata = getimagesize($img);
+		$ratio = $imagedata[0]/$imagedata[1];
+		if ($imagedata[0]>$imagedata[1])
+			$h = $w/$ratio;
+		else
+			$w = $h*$ratio;
+		$thumb = imagecreatetruecolor ($w, $h);
+		switch($ext)
+		{
+			case ".jpg":
+				$image = ImageCreateFromJpeg($img);
+				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $imagedata[0], $imagedata[1]);
+				imagejpeg($thumb, $img2);
+				break;
+			case ".png":
+				$image = ImageCreateFromPng($img);
+				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $imagedata[0], $imagedata[1]);
+				imagepng($thumb, $img2);
+				break;
+			case ".gif":
+				$image = ImageCreateFromGif($img);
+				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $imagedata[0], $imagedata[1]);
+				imagegif($thumb, $img2);
+				break;
+		}
+	}
 }
 
 function custom_html_entity_decode( $given_html, $quote_style = ENT_QUOTES )

@@ -1,7 +1,27 @@
 <?
+/* picture.class.php
+ * - Picture handling
+ * Copyright (c) 2006 Frédéric Jaqcuot
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ */
 	require_once('includes/config.inc.php');
 	require_once('includes/database.inc.php');
 	require_once('includes/smarty.inc.php');
+	require_once('includes/functions.inc.php');
 
 	class picture
 	{
@@ -38,7 +58,7 @@
 				}
 				elseif (file_exists(dirname(__FILE__).'/../photos/'.$id_adh.'.gif'))
 				{
-					$found_picture = dirname(__FILE__).'/../photos/'.$id_adh.'.png';
+					$found_picture = dirname(__FILE__).'/../photos/'.$id_adh.'.gif';
 					$format = 'gif';
 					$mime = 'image/gif';
 				}
@@ -154,7 +174,6 @@
 		{
 			// TODO : error codes
 			// TODO : check file size
-			// TODO : resize picture (if gd available)
 			
 			global $DB;
 			
@@ -174,9 +193,17 @@
 			$sql = "DELETE FROM ".PREFIX_DB."pictures
 				WHERE id_adh='".$id."'";
 			$DB->Execute($sql);
-				
-			move_uploaded_file($tmpfile, dirname(__FILE__).'/../photos/'.$id.'.'.$extension);
-			$f = fopen(dirname(__FILE__).'/../photos/'.$id.'.'.$extension,'r');
+			
+			picture::delete($id);
+			
+			$new_file = dirname(__FILE__).'/../photos/'.$id.'.'.$extension;
+			move_uploaded_file($tmpfile, $new_file);
+
+			// resize (if gd available)
+			if(function_exists("gd_info"))
+				resizeimage($new_file, $new_file, 200, 200);
+			
+			$f = fopen($new_file,'r');
 			$picture = '';
 			while ($r=fread($f,8192))
 				$picture .= $r;

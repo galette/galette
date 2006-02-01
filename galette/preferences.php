@@ -235,6 +235,7 @@
 		$pref["has_logo"]=0;
         $pref['picture_height'] = $picture->getOptimalHeight();
         $pref['picture_width'] = $picture->getOptimalWidth();
+	$tpl->assign("time",time());
 
 	$tpl->assign("pref",$pref);
 	$tpl->assign('pref_numrows_options', array(
