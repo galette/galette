@@ -50,14 +50,14 @@
 {if $field.index eq 1}
 					<img src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="9" height="13"/>
 {else}
-					<a href="configurer_fiches.php?form={$form_name}&up={$field.id}">
+					<a href="configurer_fiches.php?form={$form_name}&amp;up={$field.id}">
 					<img src="{$template_subdir}images/icon-up.png" alt="{_T("[up]")}" border="0" width="9" height="8"/>
 					</a>
 {/if}
 {if $field.index eq $dyn_fields|@count}
 					<img src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="9" height="13"/>
 {else}
-					<a href="configurer_fiches.php?form={$form_name}&down={$field.id}">
+					<a href="configurer_fiches.php?form={$form_name}&amp;down={$field.id}">
 					<img src="{$template_subdir}images/icon-down.png" alt="{_T("[down]")}" border="0" width="9" height="8"/>
 					</a>
 {/if}

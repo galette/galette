@@ -16,7 +16,7 @@
 				<tr> 
 					<th id="libelle">{_T("Name:")}</th> 
 					<td colspan="3">
-						<input type="text" name="field_name" value="{$data.name}">
+						<input type="text" name="field_name" value="{$data.name}"/>
 					</td> 
 				</tr>
 				<tr>
@@ -49,7 +49,7 @@
 				<tr>
 					<th id="libelle">{_T("Width:")}</th> 
 					<td colspan="3">
-						<input type="text" name="field_width" value="{$data.width}" size="3">
+						<input type="text" name="field_width" value="{$data.width}" size="3"/>
 					</td>
 				</tr>
 {/if}
@@ -57,7 +57,7 @@
 				<tr>
 					<th id="libelle">{_T("Height:")}</th> 
 					<td colspan="3">
-						<input type="text" name="field_height" value="{$data.height}" size="3">
+						<input type="text" name="field_height" value="{$data.height}" size="3"/>
 					</td>
 				</tr>
 {/if}
@@ -65,7 +65,7 @@
 				<tr>
 					<th id="libelle">{_T("Size:")}</th> 
 					<td colspan="3">
-						<input type="text" name="field_size" value="{$data.size}" size="3">
+						<input type="text" name="field_size" value="{$data.size}" size="3"/>
 						<br/><div class="exemple">{_T("Maximum number of characters.")}</div>
 					</td>
 				</tr>
@@ -74,7 +74,7 @@
 				<tr>
 					<th id="libelle">{_T("Repeat:")}</th> 
 					<td colspan="3">
-						<input type="text" name="field_repeat" value="{$data.repeat}" size="3">
+						<input type="text" name="field_repeat" value="{$data.repeat}" size="3"/>
 						<br/><div class="exemple">{_T("Number of values or zero if infinite.")}</div>
 					</td>
 				</tr>
@@ -89,13 +89,13 @@
 				</tr>
 {/if}
 				<tr> 
-					<th align="center" colspan="2"><br/><input type="submit" name="valid" value="{_T("Save")}"></th> 
-					<th align="center" colspan="2"><br/><input type="submit" name="cancel" value="{_T("Cancel")}"></th> 
+					<th align="center" colspan="2"><br/><input type="submit" name="valid" value="{_T("Save")}"/></th> 
+					<th align="center" colspan="2"><br/><input type="submit" name="cancel" value="{_T("Cancel")}"/></th> 
 				</tr> 
 			</table> 
 		</div>
 		<br/> 
 		</blockquote> 
-		<input type="hidden" name="form" value="{$form_name}">
-		<input type="hidden" name="id" value="{$data.id}">
+		<input type="hidden" name="form" value="{$form_name}"/>
+		<input type="hidden" name="id" value="{$data.id}"/>
 		</form>
