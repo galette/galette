@@ -182,9 +182,7 @@ DROP TABLE galette_pictures;
 CREATE TABLE galette_pictures (
   id_adh integer DEFAULT '0' NOT NULL,
   picture bytea NOT NULL,
-  format character varying(30) DEFAULT '' NOT NULL,
-  width integer DEFAULT '0' NOT NULL,
-  height integer DEFAULT '0' NOT NULL
+  format character varying(30) DEFAULT '' NOT NULL
 );
 CREATE INDEX galette_pictures_idx ON galette_pictures (id_adh);
 

@@ -183,8 +183,8 @@
 			fclose($f);
 
 			$sql = "INSERT INTO ".PREFIX_DB."pictures
-				(id_adh, picture, format, width, height)
-				VALUES ('".$id."','',".$DB->Qstr($extension).",'1','1')";
+				(id_adh, picture, format)
+				VALUES ('".$id."','',".$DB->Qstr($extension).")";
 			if (!$DB->Execute($sql))
 				return false;
 			if (!$DB->UpdateBlob(PREFIX_DB.'pictures','picture',$picture,'id_adh='.$id))
