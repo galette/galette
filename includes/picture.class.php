@@ -54,10 +54,10 @@
 					if ($result->RecordCount()!=0)
 					{
 						// we must regenerate the picture file
-						$f = fopen('photos/'.$id_adh.'.'.$result->fields['format'],"wb");
+						$f = fopen(dirname(__FILE__).'/../photos/'.$id_adh.'.'.$result->fields['format'],"wb");
 						fwrite ($f, $result->fields['picture']);
 						fclose($f);
-						$found_picture = 'photos/'.$id_adh.'.'.$result->fields['format'];
+						$found_picture = dirname(__FILE__).'/../photos/'.$id_adh.'.'.$result->fields['format'];
 					}
 				}
 			}
@@ -127,6 +127,69 @@
 		{
 			header('Content-type: '.$this->MIME);
 			readfile($this->FILE_PATH);
+		}
+
+		// Helpers
+
+		function delete($id)
+		{
+			global $DB;
+			$sql = "DELETE FROM ".PREFIX_DB."pictures
+				WHERE id_adh='".$id."'";
+			if ( ! $DB->Execute($sql) )
+				return false;
+			else
+			{
+				if (file_exists(dirname(__FILE__).'/../photos/'.$id.'.jpg'))
+					return unlink(dirname(__FILE__).'/../photos/'.$id.'.jpg');
+				elseif (file_exists(dirname(__FILE__).'/../photos/'.$id.'.png'))
+					return unlink(dirname(__FILE__).'/../photos/'.$id.'.png');
+				elseif (file_exists(dirname(__FILE__).'/../photos/'.$id.'.gif'))
+					return unlink(dirname(__FILE__).'/../photos/'.$id.'.gif');
+			}
+			return false;
+		}
+
+		function store($id, $tmpfile, $name)
+		{
+			// TODO : error codes
+			// TODO : check file size
+			// TODO : resize picture (if gd available)
+			
+			global $DB;
+			
+			$allowed_extensions = array('jpg', 'png', 'gif');
+			$format_ok = false;
+			foreach($allowed_extensions as $allowed_extension)
+			{
+				if (strtolower(substr($name,-4))=='.'.$allowed_extension)
+				{
+					$format_ok = true;
+					$extension = $allowed_extension;
+				}
+			}
+			if (!$format_ok)
+				return false;
+
+			$sql = "DELETE FROM ".PREFIX_DB."pictures
+				WHERE id_adh='".$id."'";
+			$DB->Execute($sql);
+				
+			move_uploaded_file($tmpfile, dirname(__FILE__).'/../photos/'.$id.'.'.$extension);
+			$f = fopen(dirname(__FILE__).'/../photos/'.$id.'.'.$extension,'r');
+			$picture = '';
+			while ($r=fread($f,8192))
+				$picture .= $r;
+			fclose($f);
+
+			$sql = "INSERT INTO ".PREFIX_DB."pictures
+				(id_adh, picture, format, width, height)
+				VALUES ('".$id."','',".$DB->Qstr($extension).",'1','1')";
+			if (!$DB->Execute($sql))
+				return false;
+			if (!$DB->UpdateBlob(PREFIX_DB.'pictures','picture',$picture,'id_adh='.$id))
+				return false;
+			return true;
 		}
 	}
 ?>

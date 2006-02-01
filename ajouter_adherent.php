@@ -223,72 +223,15 @@
 
 			// picture upload
 			if (isset($_FILES['photo']))
-			{
-				/*
-					TODO :  check filetype
-						check filesize
-						check filetype
-						check file dimensions
-						resize picture if gd available
-				*/
-
-        if ( $_FILES['photo']['tmp_name'] !='' )
-				if (is_uploaded_file($_FILES['photo']['tmp_name']))
-				{
-					switch (strtolower(substr($_FILES['photo']['name'],-4)))
-					{
-						case '.jpg':
-							$format = 'jpg';
-							break;
-						case '.gif':
-							$format = 'gif';
-							break;
-						case '.png':
-							$format = 'png';
-							break;
-						default:
+				if ($_FILES['photo']['tmp_name'] !='')
+					if (is_uploaded_file($_FILES['photo']['tmp_name']))
+						if (!picture::store($adherent['id_adh'], $_FILES['photo']['tmp_name'], $_FILES['photo']['name']))
 							$error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
-					}
-
-					if (count($error_detected)==0)
-					{
-						$sql = "DELETE FROM ".PREFIX_DB."pictures
-							WHERE id_adh=".$adherent['id_adh'];
-            if ( ! $DB->Execute($sql) )
-              $error_detected[] = _T("Delete failed");
-
-						move_uploaded_file($_FILES['photo']['tmp_name'],WEB_ROOT.'photos/'.$adherent['id_adh'].'.'.$format);
-
-						$f = fopen(WEB_ROOT.'photos/'.$adherent['id_adh'].'.'.$format,"r");
-						$picture = '';
-						while ($r=fread($f,8192))
-							$picture .= $r;
-						fclose($f);
-
-						$sql = "INSERT INTO ".PREFIX_DB."pictures
-							(id_adh, picture, format, width, height)
-							VALUES (".$DB->Qstr($adherent['id_adh']).",'  ',".$DB->Qstr($format).",'1','1')";
-						if ( ! $DB->Execute($sql) )
-              $error_detected[] = _T("Insert failed");
-						if ( ! $DB->UpdateBlob(PREFIX_DB.'pictures','picture',$picture,"id_adh=".$adherent['id_adh']) )
-              $error_detected[] = _T("Update Blob failed");
-					}
-				}
-        if ( isset($_POST['del_photo']) && $_POST['del_photo'] == 1 )
-        {
-          $sql = "DELETE FROM ".PREFIX_DB."pictures
-            WHERE id_adh=".$adherent['id_adh'];
-          if ( ! $DB->Execute($sql) )
-            $error_detected[] = _T("Delete failed");
-          if (file_exists(WEB_ROOT.'photos/'.$adherent['id_adh'].'.jpg'))
-            unlink (WEB_ROOT.'photos/'.$adherent['id_adh'].'.jpg');
-          elseif (file_exists(WEB_ROOT.'photos/'.$adherent['id_adh'].'.png'))
-            unlink (WEB_ROOT.'photos/'.$adherent['id_adh'].'.png');
-          elseif (file_exists(WEB_ROOT.'photos/'.$adherent['id_adh'].'.gif'))
-            unlink (WEB_ROOT.'photos/'.$adherent['id_adh'].'.gif');
-        }
-			}
-
+        
+			if (isset($_POST['del_photo']))
+				if (!picture::delete($adherent['id_adh']))
+					$error_detected[] = _T("Delete failed");
+				
     if (isset($_POST["mail_confirm"]))
       if ($_POST["mail_confirm"]=="1")
         if (isset($adherent['email_adh']) && $adherent['email_adh']!="")
