@@ -292,7 +292,11 @@ a.listing:hover {
 }
 
 #listfilter {
-	text-align: right;
+	text-align: center;
+	background-color: #DDDDFF;
+	padding: 10px;
+	-moz-border-radius: 8px;
+	border: 1px solid #BBBBBB;
 	margin-bottom: 10px;
 }
 
