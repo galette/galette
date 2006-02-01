@@ -134,8 +134,6 @@ CREATE TABLE `galette_pictures` (
     `id_adh` int(10) unsigned NOT NULL default '0',
     `picture` mediumblob NOT NULL,
     `format` varchar(10) NOT NULL default '',
-    `width` int(10) unsigned NOT NULL default '0',
-    `height` int(10) unsigned NOT NULL default '0',
     PRIMARY KEY  (`id_adh`)
 ) TYPE=MyISAM;
 

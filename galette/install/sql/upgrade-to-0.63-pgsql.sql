@@ -10,9 +10,7 @@ ALTER TABLE galette_adherents ADD fingerprint character varying(50);
 CREATE TABLE galette_pictures (
     id_adh integer DEFAULT 0 NOT NULL,
     picture bytea NOT NULL,
-    format character varying(30) DEFAULT ''::character varying NOT NULL,
-    width integer DEFAULT 0 NOT NULL,
-    height integer DEFAULT 0 NOT NULL
+    format character varying(30) DEFAULT ''::character varying NOT NULL
 );
 
 -- stephs
