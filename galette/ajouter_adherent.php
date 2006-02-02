@@ -71,10 +71,14 @@
 			'titre_adh' => 1,
 			'nom_adh' => 1,
 			'login_adh' => 1,
-			'mdp_adh' => 1,
 			'adresse_adh' => 1,
 			'cp_adh' => 1,
 			'ville_adh' => 1);
+
+	// password required if we create a new member
+	if ($adherent["id_adh"]=='')
+		$required['mdp_adh'] = 1;
+			
 	// flagging required fields invisible to members
 	if ($_SESSION["admin_status"]==1)
 	{
@@ -151,26 +155,43 @@
 						}
 						break;
 					case 'mdp_adh':
-						if (strlen($value)<4)
-							$error_detected[] = _T("- The password must be of at least 4 characters!");
-						break;
+						if (isset($_POST['mdp_adh2']))
+						if ($_POST['mdp_adh2']==$value)
+						{
+							if (strlen($value)<4)
+								$error_detected[] = _T("- The password must be of at least 4 characters!");
+							else
+								$value = md5($value);
+						}
+						else
+							$error_detected[] = _T("- The passwords don't match!");
 				}
 
-				// dates already quoted
-				if ($key=='date_crea_adh' || $key=='ddn_adh')
+				switch($key)
 				{
-					if ($value=='')
-						$value='null';
+					case 'date_crea_adh':
+					case 'ddn_adh':
+						// dates already quoted
+						if ($value=='')
+							$value='null';
+						break;
+					default:
+						$value = $DB->qstr($value, get_magic_quotes_gpc());
+				}
+
+				if ($key=='mdp_adh' && $_POST['mdp_adh']=='')
+				{	
+					// don't update
 				}
 				else
-					$value = $DB->qstr($value, get_magic_quotes_gpc());
-
-				$update_string .= ", ".$key."=".$value;
-				$insert_string_fields .= ", ".$key;
-				$insert_string_values .= ", ".$value;
+				{
+					$update_string .= ", ".$key."=".$value;
+					$insert_string_fields .= ", ".$key;
+					$insert_string_values .= ", ".$value;
+				}
 			}
 		}
-
+		
 		// missing relations
 		if (isset($adherent["mail_confirm"]))
 		{

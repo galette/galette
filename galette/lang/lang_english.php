@@ -1,5 +1,5 @@
 <?
-// This file was automatically generated on Wed Feb  1 23:05:55 2006 (GMT)
+// This file was automatically generated on Thu Feb  2 21:51:16 2006 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -1357,7 +1357,7 @@ $lang['Contribution'] = 'Contribution';
 $lang['Original'] = 'Original';
 
 // ../mailing_adherents.php:135 ../mailing_adherents.php:136 
-$lang['**IMPORTANT** There was a probably breaking attempt when sending mail to :'] = '';
+$lang['**IMPORTANT** There was a probably breaking attempt when sending mail to :'] = '**IMPORTANT** There was a probably breaking attempt when sending mail to :';
 
 // ../ajouter_contribution.php:190 
 $lang['- Membership period overlaps period starting at '] = '- Membership period overlaps period starting at ';

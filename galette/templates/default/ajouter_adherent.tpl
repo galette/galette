@@ -163,14 +163,18 @@
 				</tr>
 				<tr> 
 					<th {if $required.login_adh eq 1}style="color: #FF0000;"{/if} class="libelle">{_T("Username:")}<br/>&nbsp;</th> 
-					<td>
+					<td colspan="3">
 						<input type="text" name="login_adh" value="{$data.login_adh}" maxlength="20" {$disabled.login_adh}/><br/>
 						<div class="exemple">{_T("(at least 4 characters)")}</div>
 					</td> 
+				</tr>
+				<tr>
 					<th {if $required.mdp_adh eq 1}style="color: #FF0000;"{/if} class="libelle">{_T("Password:")}<br/>&nbsp;</th> 
-					<td>
-						<input type="text" name="mdp_adh" value="{$data.mdp_adh}" maxlength="20" {$disabled.mdp_adh}/><br/>
-						<div class="exemple">{_T("(at least 4 characters)")}</div>
+					<td colspan="3">
+						<input type="password" name="mdp_adh" value="" maxlength="20" {$disabled.mdp_adh}/>
+						<div class="exemple">{_T("(at least 4 characters)")}</div><br/>
+						<input type="password" name="mdp_adh2" value="" maxlength="20" {$disabled.mdp_adh}/>
+						<div class="exemple">{_T("(Confirmation)")}</div><br/>
 					</td> 
 				</tr>
 {if $smarty.session.admin_status eq 1}

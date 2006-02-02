@@ -1592,7 +1592,7 @@ msgstr "aucun adhérent"
 
 #: ../templates/default/lostpasswd.tpl:48
 msgid "Send me my password"
-msgstr "Envoyer moi mon mot de passe"
+msgstr "Envoyez-moi mon mot de passe"
 
 #: ../self_contribution.php:126
 msgid "- Check that all mandatory fields are filled in. ($fieldreq)"

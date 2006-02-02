@@ -1059,7 +1059,7 @@ define(\"STOCK_FILES\", \"tempimages\");
 			//set admin login/password
 			$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_admin_login',".$DB->qstr($_POST["install_adminlogin"], get_magic_quotes_gpc()).")";
 			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_admin_pass',".$DB->qstr($_POST["install_adminpass"], get_magic_quotes_gpc()).")";
+			$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_admin_pass',".$DB->qstr(md5($_POST["install_adminpass"]), get_magic_quotes_gpc()).")";
 			$DB->Execute($default);
 
 			//on some version pref_adresse2 disapeared so we test it now and add one if not present

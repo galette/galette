@@ -1,5 +1,5 @@
 <?
-// This file was automatically generated on Wed Feb  1 23:05:56 2006 (GMT)
+// This file was automatically generated on Thu Feb  2 21:51:17 2006 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -856,7 +856,7 @@ $lang['CREATE operation not allowed'] = 'Opération CREATE non autorisée';
 $lang['Late of '] = 'En retard de ';
 
 // ../templates/default/lostpasswd.tpl:48 
-$lang['Send me my password'] = 'Envoyer moi mon mot de passe';
+$lang['Send me my password'] = 'Envoyez-moi mon mot de passe';
 
 // ../gestion_contributions.php:309 ../gestion_adherents.php:312 
 $lang['Members up to date'] = 'Les adhérents à jour';

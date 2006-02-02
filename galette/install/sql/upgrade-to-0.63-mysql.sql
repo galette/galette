@@ -1,6 +1,7 @@
 ALTER TABLE galette_adherents ADD pref_lang varchar(20) default 'french' AFTER date_echeance;
 INSERT INTO galette_types_cotisation VALUES (7, 'Cotisation annuelle (à payer)');
 ALTER TABLE galette_adherents ADD  UNIQUE (login_adh);
+ALTER TABLE `galette_adherents` CHANGE `mdp_adh` `mdp_adh` VARCHAR(40);
 
 -- Add new or missing preferences;
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_pays', '');

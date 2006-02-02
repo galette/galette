@@ -46,7 +46,10 @@
 	// Authentication procedure
 	if (isset($_POST["ident"])) 
 	{ 
-		if ($_POST["login"]==PREF_ADMIN_LOGIN && $_POST["password"]==PREF_ADMIN_PASS)
+		if (
+			($_POST["login"]==PREF_ADMIN_LOGIN && $_POST["password"]==PREF_ADMIN_PASS) ||
+			($_POST["login"]==PREF_ADMIN_LOGIN && md5($_POST["password"])==PREF_ADMIN_PASS)
+			)
 		{
 			$_SESSION["logged_status"]=1;
 			$_SESSION["admin_status"]=1;
@@ -63,7 +66,7 @@
 			$resultat = &$DB->Execute($requete);
 			if (!$resultat->EOF &&
 				($resultat->fields[4] == $_POST["password"] ||
-				$resultat->fields[4] == crypt($_POST["password"],$resultat->fields[4]))
+				$resultat->fields[4] == md5($_POST["password"]))
                            )
 			{
 				if ($resultat->fields[1]=="1")
