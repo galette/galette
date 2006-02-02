@@ -115,9 +115,7 @@
 				</tr>
 				<tr> 
 					<td bgcolor="#DDDDFF"><b>{_T("Username:")}&nbsp;</b></td> 
-					<td bgcolor="#EEEEEE">{$data.login_adh}</td> 
-					<td bgcolor="#DDDDFF"><b>{_T("Password:")}</b>&nbsp;</td> 
-					<td bgcolor="#EEEEEE">{$data.mdp_adh}</td> 
+					<td bgcolor="#EEEEEE" colspan="3">{$data.login_adh}</td> 
 				</tr> 
 {if $smarty.session.admin_status eq 1}
 				<tr> 
