@@ -20,13 +20,15 @@
  */
 
 	require_once('includes/session.inc.php');
-	require_once('includes/picture.class.php');
 
 	if ($_SESSION["logged_status"]==0)
 	{
 		header("location: index.php");
 		die();
 	}
+
+	require_once('includes/picture.class.php');
+
 	if ($_SESSION["admin_status"]==0)
 		$id_adh = $_SESSION["logged_id_adh"];
 	else

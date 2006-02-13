@@ -77,6 +77,19 @@
 						$f = fopen(dirname(__FILE__).'/../photos/'.$id_adh.'.'.$result->fields['format'],"wb");
 						fwrite ($f, $result->fields['picture']);
 						fclose($f);
+						$format = $result->fields['format'];
+						switch($format)
+						{
+							case 'jpg':
+								$mime = 'image/jpeg';
+								break;
+							case 'png':
+								$mime = 'image/png';
+								break;
+							case 'gif':
+								$mime = 'image/gif';
+								break;
+						}
 						$found_picture = dirname(__FILE__).'/../photos/'.$id_adh.'.'.$result->fields['format'];
 					}
 				}

@@ -20,13 +20,8 @@
  */
 
 	include("includes/config.inc.php");
-	include(WEB_ROOT."includes/database.inc.php");
-	include(WEB_ROOT."includes/session.inc.php");
-	include(WEB_ROOT."includes/functions.inc.php");
-	include(WEB_ROOT."includes/i18n.inc.php");
-	include(WEB_ROOT."includes/smarty.inc.php");
-
-	require_once('includes/picture.class.php');
+	include("includes/database.inc.php");
+	include("includes/session.inc.php");
 
 	if ($_SESSION["logged_status"]==0)
 	{
@@ -38,6 +33,12 @@
 		header("location: voir_adherent.php");
 		die();
 	}
+	
+	include("includes/functions.inc.php");
+	include("includes/i18n.inc.php");
+	include("includes/smarty.inc.php");
+
+	require_once('includes/picture.class.php');
 
 	// initialize warnings
 	$error_detected = array();
