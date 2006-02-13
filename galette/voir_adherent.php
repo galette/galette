@@ -28,6 +28,10 @@
 		header("location: index.php");
 		die();
 	}
+
+	include(WEB_ROOT."includes/functions.inc.php");
+	$id_adh = get_numeric_form_value("id_adh", "");
+
 	if ($_SESSION["admin_status"]==0)
 		$id_adh = $_SESSION["logged_id_adh"];
 	if ($id_adh=="")
@@ -36,18 +40,12 @@
 		die();
 	}
 
-	include(WEB_ROOT."includes/functions.inc.php");
         include_once("includes/i18n.inc.php"); 
 	include(WEB_ROOT."includes/smarty.inc.php");
 	include(WEB_ROOT."includes/dynamic_fields.inc.php");
 
 	require_once('includes/picture.class.php');
 	
-	if ($_SESSION["admin_status"]==0) 
-		$id_adh = $_SESSION["logged_id_adh"];
-
-	$id_adh = get_numeric_form_value("id_adh", "");
-
 	$requete = "SELECT * 
 		    FROM ".PREFIX_DB."adherents 
 		    WHERE id_adh=$id_adh";
