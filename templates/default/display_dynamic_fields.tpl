@@ -18,7 +18,7 @@
 		{if $is_form eq false}
 			<td bgcolor="#DDDDFF" valign="top">&nbsp;</td><td>&nbsp;</td></tr><tr>
 		{else}
-			<th id="libelle">&nbsp;</th><td>&nbsp;</td></tr><tr>
+			<th class="libelle">&nbsp;</th><td>&nbsp;</td></tr><tr>
 		{/if}
 	{else}
 		{cycle name="col" advance="false" print=false}
@@ -27,21 +27,21 @@
 		{if $is_form eq false}
 			<td bgcolor="#DDDDFF" valign="top">&nbsp;</td><td>&nbsp;</td></tr><tr>
 		{else}
-			<th id="libelle">&nbsp;</th><td>&nbsp;</td></tr><tr>
+			<th class="libelle">&nbsp;</th><td>&nbsp;</td></tr><tr>
 		{/if}
 	{cycle name="col" advance="false" print=false}
 {elseif $field.field_pos == 2 && $col == "left"}
 		{if $is_form eq false}
 			<td bgcolor="#DDDDFF" valign="top">&nbsp;</td><td>&nbsp;</td>
 		{else}
-			<th id="libelle">&nbsp;</th><td>&nbsp;</td>
+			<th class="libelle">&nbsp;</th><td>&nbsp;</td>
 		{/if}
 	{cycle name="col" advance="false" print=false}
 {/if}
 		{if $is_form eq false}
 					<td bgcolor="#DDDDFF" valign="top" rowspan="{$field.field_repeat}"><b>{$field.field_name}</b>&nbsp;</td>
 		{else}
-					<th {if $field.field_required eq 1}style="color: #FF0000;"{/if} id="libelle" rowspan="{$field.field_repeat}">{$field.field_name}&nbsp;</th>
+					<th {if $field.field_required eq 1}style="color: #FF0000;"{/if} class="libelle" rowspan="{$field.field_repeat}">{$field.field_name}&nbsp;</th>
 		{/if}
 {/if}
 {if $field.field_pos == 0 || $field.field_repeat != 1}
@@ -69,7 +69,7 @@
 						<input type="text" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}"
 						{if $field.field_width > 0}size="{$field.field_width}"{/if}
 						{if $field.field_size > 0}maxlength="{$field.field_size}"{/if}
-						value="{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}" size="63" {$disabled.dyn[$field.field_id]}>
+						value="{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}" size="63" {$disabled.dyn[$field.field_id]}/>
 	{elseif $field.field_type eq 3}
 						<select name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}">
 							{html_options options=$field.choices selected=$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}
