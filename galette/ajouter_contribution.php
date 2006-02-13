@@ -23,16 +23,22 @@
 	include("includes/config.inc.php");
 	include(WEB_ROOT."includes/database.inc.php");
 	include(WEB_ROOT."includes/session.inc.php");
+
+	if ($_SESSION["logged_status"]==0)
+	{
+		header("location: index.php");
+		die();
+	}
+	if ($_SESSION["admin_status"]==0)
+	{
+		header("location: voir_adherent.php");
+		die();
+	}
+	
 	include(WEB_ROOT."includes/functions.inc.php");
         include(WEB_ROOT."includes/i18n.inc.php");
 	include(WEB_ROOT."includes/smarty.inc.php");
         include(WEB_ROOT."includes/dynamic_fields.inc.php");
-
-	if ($_SESSION["logged_status"]==0)
-		header("location: index.php");
-	if ($_SESSION["admin_status"]==0)
-		header("location: voir_adherent.php");
-
 
 	function missing_contrib_amount($DB, $trans_id, $error_detected) {
 		if (is_numeric($trans_id)) {

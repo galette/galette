@@ -23,12 +23,17 @@
 	include("includes/config.inc.php");
 	include(WEB_ROOT."includes/database.inc.php");
 	include(WEB_ROOT."includes/session.inc.php");
+
+	if ($_SESSION["logged_status"]==0)
+	{
+		header("location: index.php");
+		die();
+	}
+
 	include(WEB_ROOT."includes/functions.inc.php");
         include(WEB_ROOT."includes/i18n.inc.php");
 	include(WEB_ROOT."includes/smarty.inc.php");
 
-	if ($_SESSION["logged_status"]==0)
-		header("location: index.php");
 	if ($_SESSION["admin_status"]==0)
 		$id_adh = $_SESSION["logged_id_adh"];
 	else
