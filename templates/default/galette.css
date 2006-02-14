@@ -19,6 +19,21 @@ input {
 	font-size: 11px
 }
 
+input.submit
+{
+	background-color: #FBFBFB;
+	font-size: 12px;
+	font-weight: bold;
+	color: #666666;
+	border: 1px solid #BBBBBB;
+	margin: 1px;
+}
+
+input.submit:hover
+{
+	color: #FF0000;
+}
+
 select {
 	font-size: 11px
 }
@@ -509,7 +524,6 @@ a.listing:hover {
 .button-link a:hover
 {
 	color: #FF0000;
-	text-decoration: underline;
 }
 .button-back
 {

@@ -29,7 +29,7 @@
 						</tr> 
 					</table>
 	<div>
-		<input type="submit" value="{_T("Login")}" /><br />
+		<input type="submit" class="submit" value="{_T("Login")}" /><br />
 		<input type="hidden" name="ident" value="1" />
 	</div>
 				</form>

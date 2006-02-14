@@ -14,7 +14,7 @@
 		<select name="form" onchange="form.submit()">
 			{html_options options=$all_forms selected=$form_name}
 		</select>&nbsp;
-		<input type="submit" name="continue" value="{_T("Continue")}"/>
+		<input type="submit" class="submit" name="continue" value="{_T("Continue")}"/>
 {else} {* $form_title != '' *}
 		<table width="100%" id="input-table"> 
 			<tr>
@@ -90,7 +90,7 @@
 						{html_options options=$field_positions selected="0"}
 					</select>
 				</td>
-				<td class="listing center"><input type="submit" name="valid" value="{_T("Add")}"/></td>
+				<td class="listing center"><input type="submit" class="submit" name="valid" value="{_T("Add")}"/></td>
 			</tr>
 		</table> 
 		<input type="hidden" name="form" value="{$form_name}"/>

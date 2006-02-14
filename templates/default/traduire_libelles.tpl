@@ -34,7 +34,7 @@
 {/section}
 			</table>
 			<br/>
-			<input type="submit" name="trans" value="{_T("Save")}"/>&nbsp;
-			<input type="submit" name="update" value="{_T("Update")}"/>
+			<input type="submit" class="submit" name="trans" value="{_T("Save")}"/>&nbsp;
+			<input type="submit" class="submit" name="update" value="{_T("Update")}"/>
 		</form> 
 {/if}

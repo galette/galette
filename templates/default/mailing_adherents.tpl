@@ -72,14 +72,14 @@
 				<td align="center">
 	{if $etape==0}
 				<input type="checkbox" name="mailing_html" value="1" {if $data.mailing_html eq 1}checked="checked"{/if}/>{_T("Interpret HTML")}<br/><br/>
-				<input type="submit" name="mailing_go" value="{_T("Preview")}"/>
+				<input type="submit" class="submit" name="mailing_go" value="{_T("Preview")}"/>
 	{elseif $etape==1}
 				{_T("HTML interpretation:")} {if $data.mailing_html eq 1}{_T("ON")}{else}{_T("OFF")}{/if}<br/><br/>
 				<input type="hidden" name="mailing_html" value="{if $data.mailing_html eq 1}1{else}0{/if}"/>
-				<input type="submit" name="mailing_reset" value="{_T("Reedit")}"/>
-				<input type="submit" name="mailing_confirm" value="{_T("Send")}"/>
+				<input type="submit" class="submit" name="mailing_reset" value="{_T("Reedit")}"/>
+				<input type="submit" class="submit" name="mailing_confirm" value="{_T("Send")}"/>
 	{else}
-				<input type="submit" name="mailing_done" value="{_T("Go back to the member listing")}"/>
+				<input type="submit" class="submit" name="mailing_done" value="{_T("Go back to the member listing")}"/>
 	{/if}
 				</td>
 			</tr>

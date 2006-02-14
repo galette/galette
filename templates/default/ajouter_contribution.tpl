@@ -78,11 +78,11 @@
 				</tr>
 {include file="display_dynamic_fields.tpl" is_form=true}
 				<tr>
-					<th align="center" colspan="4"><br/><input type="submit" value="{_T("Save")}"/></th>
+					<th align="center" colspan="4"><br/><input type="submit" class="submit" value="{_T("Save")}"/></th>
 				</tr>
 				{else} {* $type_selected ne 1 *}
 				<tr>
-					<th align="center" colspan="4"><br/><input type="submit" value="{_T("Continue")}"/></th>
+					<th align="center" colspan="4"><br/><input type="submit" class="submit" value="{_T("Continue")}"/></th>
 				</tr>
 				{/if} {* $type_selected eq 1 *}
 			</table>

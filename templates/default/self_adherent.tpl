@@ -176,7 +176,7 @@
             </tr>
 {include file="display_dynamic_fields.tpl" is_form=true}
             <tr>
-              <th align="center" colspan="4"><br/><input type="submit" name="submit" value="{_T("Save")}"/></th>
+              <th align="center" colspan="4"><br/><input type="submit" class="submit" name="submit" value="{_T("Save")}"/></th>
             </tr>
           </table>
           <input type="hidden" name="valid" value="1"/>
@@ -184,7 +184,7 @@
       </form>
       <form action="index.php" method="get">
         <div>
-          <input type="submit" name="back" value="{_T("Back to login page")}"/>
+          <input type="submit" class="submit" name="back" value="{_T("Back to login page")}"/>
         </div>
       </form>
     </blockquote>
