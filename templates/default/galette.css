@@ -606,7 +606,10 @@ a.listing:hover {
 }
 .member-card .separator
 {
+	padding-top: 10px;
+	padding-bottom: 5px;
 	background-color: #FFFFFF;
+	font-weight: bold;
 }
 .member-card .picture
 {
