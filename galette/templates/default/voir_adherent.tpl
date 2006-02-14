@@ -1,5 +1,5 @@
 	<h1 class="titre">{_T("Member Profile")}</h1>
-	<div class="member-card">
+	<div class="bigtable">
 		<table>
 			<tr>
 				<th class="separator" colspan="2">{_T("Identity:")}</th>
