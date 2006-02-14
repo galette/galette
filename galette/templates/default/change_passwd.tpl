@@ -28,16 +28,22 @@
 			</ul>
 		</div>
 {/if}
-		<form action="lostpasswd.php" method="post" enctype="multipart/form-data">
+		<form action="change_passwd.php" method="post" enctype="multipart/form-data">
 		<table>
 			<tr>
-				<th>{_T("Username:")}</th>
-				<td><input type="text" name="login" maxlength="20" /></td>
+					<th {if $required.mdp_adh eq 1}style="color: #FF0000;"{/if} class="libelle">{_T("Password:")}<br/>&nbsp;</th> 
+					<td colspan="3">
+						<input type="password" name="mdp_adh" value="" maxlength="20"/>
+						<div class="exemple">{_T("(at least 4 characters)")}</div><br/>
+						<input type="password" name="mdp_adh2" value="" maxlength="20"/>
+						<div class="exemple">{_T("(Confirmation)")}</div><br/>
+					</td>
 			</tr>
 		</table>
 		<br/>
-		<input type="submit" class="submit" name="lostpasswd" value="{_T("Send me my password")}" />
+		<input type="submit" class="submit" name="change_passwd" value="{_T("Change my  password")}"/>
 		<input type="hidden" name="valid" value="1"/>
+		<input type="hidden" name="hash" value="{$hash}"/>
 		<br/><br/>
 		</form>
 	</div>

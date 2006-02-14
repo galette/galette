@@ -62,24 +62,41 @@
 		//send the password
 		if(	$email_adh!="" )
 		{
-			$req = "SELECT mdp_adh from ".PREFIX_DB."adherents where login_adh=".txt_sqls($login_adh);
-			$result = &$DB->Execute($req);
+			$query = "SELECT id_adh from ".PREFIX_DB."adherents where login_adh=".txt_sqls($login_adh);
+			$result = &$DB->Execute($query);
 			if ($result->EOF) {
 				$warning_detected = _T("There is  no password for user :")." \"" . $login_adh . "\"";
+				//TODO need to clean die here
       } else {
-				$mdp_adh = $result->fields[0];
+				$id_adh = $result->fields[0];
       }
+			//make temp password
+			$tmp_passwd = makeRandomPassword(7);
+			$hash = md5($tmp_passwd);
+			//delete old tmp_passwd
+			$query = "DELETE FROM ".PREFIX_DB."tmppasswds";
+			$query .= " WHERE id_adh = $id_adh ";
+			if (!$DB->Execute($query))
+				$warning_detected = _T("delete failed");
+			//insert temp passwd in database
+			$query = "INSERT INTO ".PREFIX_DB."tmppasswds";
+			$query .= " (id_adh, tmp_passwd, date_crea_tmp_passwd)";
+			$query .= " VALUES($id_adh, '$hash', ".$DB->DBTimeStamp(time()).")";
+			if (!$DB->Execute($query))
+				$warning_detected = _T("There was a database error when inserting data");
+				//$warning_detected = $DB->ErrorMsg();
+			//prepare mail and send it
 			$mail_subject = _T("Your Galette identifiers");
 			$mail_text =  _T("Hello,")."\n";
 			$mail_text .= "\n";
 			$mail_text .= _T("Someone (probably you) asked to recover your password.")."\n";
 			$mail_text .= "\n";
-			$mail_text .= _T("Please login at this address:")."\n";
-			$mail_text .= HTTP."://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
+			$mail_text .= _T("Please login at this address to set your new password :")."\n";
+			$mail_text .= HTTP."://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."/change_passwd.php?hash=$hash\n";
 			$mail_text .= "\n";
-			$mail_text .= _T("Username:")." ".custom_html_entity_decode($login_adh, ENT_QUOTES)."\n";
-			$mail_text .= _T("Password:")." ".custom_html_entity_decode($mdp_adh, ENT_QUOTES)."\n";
-			$mail_text .= "\n";
+			//$mail_text .= _T("Username:")." ".custom_html_entity_decode($login_adh, ENT_QUOTES)."\n";
+			//$mail_text .= _T("Temporary password:")." ".custom_html_entity_decode($hash, ENT_QUOTES)."\n";
+			//$mail_text .= "\n";
 			$mail_text .= _T("See you soon!")."\n";
 			$mail_text .= "\n";
 			$mail_text .= _T("(this mail was sent automatically)")."\n";
@@ -89,7 +106,7 @@
 				dblog(_T("Password sent. Login:")." \"" . $login_adh . "\"");
 				$warning_detected = _T("Password sent. Login:")." \"" . $login_adh . "\"";
 				//$password_sent = true;
-			}else{
+			} else {
         switch ($mail_result) {
           case 2 :
             dblog(_T("Email sent is desactived in the preferences"));
@@ -103,6 +120,10 @@
             dblog(_T("The server mail filled in the preferences cannot be reached"));
             $warning_detected = _T("The server mail filled in the preferences cannot be reached. Ask Galette admin");
             break;
+					case 5 :
+						dblog(_T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"");
+						$error_detected[] = _T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"";
+						break;
           default :
             dblog(_T("A problem happened while sending password for account:")." \"" . $login_adh . "\"");
             $warning_detected = _T("A problem happened while sending password for account:")." \"" . $login_adh . "\"";

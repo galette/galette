@@ -209,14 +209,31 @@ function custom_html_entity_decode( $given_html, $quote_style = ENT_QUOTES )
 }
 
 //sanityze fields
+//TODO better handling (replace bad string not just detect it)
 function sanityze_mail_headers($field) {
 	$result = 0;
-	if (eregi("\r",$field) || eregi("\n",$field)){
+	if ( eregi("\r",$field) || eregi("\n",$field) ) {
 		 $result = 0;
 	} else {
 		$result = 1;
 	}
 	return $result;
+}
+
+//TODO better handling (replace bad string not just detect it)
+function sanityze_superglobals_arrays() {
+	$errors = 0;
+	foreach($_GET as $k => $v) {
+		if (eregi("'",$v) || eregi(";",$v) || eregi("\"",$v) ) {
+			 $errors++;
+		}
+	}
+	foreach($_POST as $k => $v) {
+		if (eregi("'",$v) || eregi(";",$v) || eregi("\"",$v) ) {
+			 $errors++;
+		}
+	}
+	return $errors;
 }
 
 function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/plain")
@@ -230,10 +247,10 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
   //  5 - breaking attempt
   $result = 0;
 
-	//sanityze parameters
+	//sanityze headers
 	$params = array($email_adh,
 										$mail_subject,
-										$mail_text,
+										//mail_text
 										$content_type);
 	foreach ($params as $param) {
 		//if (true) {}

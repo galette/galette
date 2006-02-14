@@ -297,6 +297,10 @@
                 dblog(_T("The server mail filled in the preferences cannot be reached. Ask Galette admin"));
                 $error_detected[] = _T("The server mail filled in the preferences cannot be reached. Ask Galette admin");
                 break;
+							case 5 :
+								dblog(_T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"");
+								$error_detected[] = _T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"";
+								break;
               default :
                 dblog(_T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"");
                 $error_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"";
