@@ -88,13 +88,16 @@
 {else}
 		<b>{_T("None of the selected members has an email address.")}</b>
 {/if}
+		</p>
 		</form>
 		{if $nb_unreachable_members > 0}
 		<p>
 		<b>{$nb_unreachable_members} {if $nb_unreachable_members != 1}{_T("unreachable members:")}{else}{_T("unreachable member")}{/if}</b><br/>
 		{_T("Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail.")}
 		</p>
-		<form method="get" action="etiquettes_adherents.php">
-			<input type="submit" value="{_T("Generate labels")}"/>
-		</form>
+		<div class="button-container">
+			<div class="button-link button-labels">
+				<a href="etiquettes_adherents.php">{_T("Generate labels")}</a>
+			</div>
+		</div>
 		{/if}
