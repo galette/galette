@@ -6,44 +6,36 @@
 	<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css" /> 
 </head> 
 <body style="backgound-color:#FFFFFF">
-	<table width="100%" style="height: 100%">
-		<tr>
-			<td align="center">
-				<img src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60" /><br /><br /><br />
-				<br />
-				<form action="index.php" method="post"> 
-					<p class="titre">{_T("Login")}</p>
-        <p>
-				{foreach key=langue item=langue_t from=$languages}
-				<a href="index.php?pref_lang={$langue}"><img src="lang/{$langue}.gif" alt="{$langue_t}" /></a>
-				{/foreach}
-        </p>
-					<table> 
-						<tr> 
-							<td>{_T("Username:")}</td> 
-							<td><input type="text" name="login" /></td> 
-						</tr> 
-						<tr> 
-							<td>{_T("Password:")}</td> 
-							<td><input type="password" name="password" /></td> 
-						</tr> 
-					</table>
-	<div>
-		<input type="submit" class="submit" value="{_T("Login")}" /><br />
+	<div class="login-box">
+	<form action="index.php" method="post">
+		<h1 class="titre">{_T("Login")}</h1>
+{foreach key=langue item=langue_t from=$languages}
+		<a href="index.php?pref_lang={$langue}"><img src="lang/{$langue}.gif" alt="{$langue_t}" class="flag"/></a>
+{/foreach}
+		<br/><br/>
+		<table> 
+			<tr> 
+				<th>{_T("Username:")}</th> 
+				<td><input type="text" name="login" /></td> 
+			</tr> 
+			<tr> 
+				<th>{_T("Password:")}</th> 
+				<td><input type="password" name="password" /></td> 
+			</tr> 
+		</table>
+		<br/>
+		<input type="submit" class="submit" value="{_T("Login")}" />
 		<input type="hidden" name="ident" value="1" />
+	</form>
 	</div>
-				</form>
-			</td>
-		</tr>
-	</table>
-
-<div class="button-container">
-	<div class="button-link button-subscribe">
-		<a href="self_adherent.php">{_T("Subscribe")}</a>
+	
+	<div class="button-container">
+		<div class="button-link button-subscribe">
+			<a href="self_adherent.php">{_T("Subscribe")}</a>
+		</div>
+		<div class="button-link button-lost-password">
+			<a href="lostpasswd.php">{_T("Lost your password?")}</a>
+		</div>
 	</div>
-	<div class="button-link button-lost-password">
-		<a href="lostpasswd.php">{_T("Lost your password?")}</a><br />
-	</div>
-</div>
 </body>
 </html>
