@@ -16,9 +16,11 @@ td {
 }
 
 input {
-	font-size: 12px
+	font-size: 11px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	padding: 0px 2px 0px 2px;
+	margin-top: 1px;
+	margin-bottom: 1px;
 }
 
 input.submit
@@ -417,10 +419,6 @@ a.listing:hover {
 	font-weight: bold;
 }
 	
-#input-table td {
-	background-color: #EEEEEE;
-}
-
 #installpage {
 	background-color: #DDDDFF;
 	padding-left: 20px;
@@ -580,6 +578,11 @@ a.listing:hover {
 	font-size: 12px;
 	text-align: right;
 }
+.login-box input {
+	font-size: 12px
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	padding: 0px 2px 0px 2px;
+}			
 
 .member-card
 {
