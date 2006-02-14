@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+{html_doctype xhtml=true type=strict omitxml=false encoding=iso-8859-1}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 <head>
 	<title>Galette {$GALETTE_VERSION}</title>
@@ -36,7 +35,6 @@
 			</ul>
 		</div>
 {/if}
-		<blockquote>
       <form action="lostpasswd.php" method="post" enctype="multipart/form-data">
         <div style="position:relative;padding-left:40%">
           <table border="0" id="input-table">
@@ -47,19 +45,14 @@
           </table>
           <input type="submit" name="lostpasswd" value="{_T("Send me my password")}" />
           <input type="hidden" name="valid" value="1"/>
+	<p>{_T("NB : The mandatory fields are in")} <span style="color: #FF0000">{_T("red")}</span></p>
         </div>
       </form>
-      <form action="index.php" method="get">
-        <div style="position:relative;padding-left:40%">
-          <input type="submit" name="back" value="{_T("Back to login page")}" />
-        </div>
-      </form>
-		</blockquote>
-		<p>{_T("NB : The mandatory fields are in")} <span style="color: #FF0000">{_T("red")}</span></p>
-		<br />
-		<div id="copyright">
-			<a href="http://galette.tuxfamily.org/fr">Galette {$GALETTE_VERSION}</a>
+	<div class="back-link-container">
+		<div class="back-link">
+			<a href="index.php">{_T("Back to login page")}</a>
 		</div>
+	</div>
 	</div>
 </body>
 </html>

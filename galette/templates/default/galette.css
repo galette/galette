@@ -477,3 +477,37 @@ a.listing:hover {
 	vertical-align: top;
 	padding: 5px;
 }
+
+
+.back-link-container
+{
+	margin-top: 20px;
+	text-align: center;
+}
+.back-link
+{
+        font-size: 12px;
+        text-align: right;
+        font-weight: bold;
+        border-style: solid;
+        border-width: 1px;
+        background-color: #FBFBFB;
+        border-color: #BBBBBB;
+        color: #000000;
+        padding: 10px 10px 10px 0px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 19em;
+	background-image: url(images/back.png);
+	background-repeat: no-repeat;
+	background-position: 10px center;
+}
+.back-link a
+{
+	color: #666666;
+}
+.back-link a:hover
+{
+	color: #FF0000;
+	text-decoration: underline;
+}
