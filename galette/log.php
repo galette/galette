@@ -42,7 +42,7 @@
 	if (isset($_GET["page"]))
 		$page = $_GET["page"];
 		
-	if (isset($_POST["reset"]))
+	if (isset($_GET["reset"]))
 	{
 		$requete[0] = "DELETE FROM ".PREFIX_DB."logs";
 		$DB->Execute($requete[0]);

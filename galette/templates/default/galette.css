@@ -523,3 +523,11 @@ a.listing:hover {
 {
 	background-image: url(images/add.png);
 }
+.button-labels
+{
+	background-image: url(images/labels.png);
+}
+.button-flush-logs
+{
+	background-image: url(images/trash.png);
+}

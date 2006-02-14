@@ -1,8 +1,9 @@
 		<h1 class="titre">{_T("Logs")}</h1>
-		<form action="log.php" method="post">
-			<div align="center"><input type="submit" value="{_T("Flush the logs")}"/></div>
-			<input type="hidden" name="reset" value="1"/>
-		</form>
+		<div class="button-container">
+			<div class="button-link button-flush-logs">
+				<a href="log.php?reset=1">{_T("Flush the logs")}</a>
+			</div>
+		</div>
 		<table class="infoline" width="100%" border="0">
 			<tr>
 				<td class="left">{$nb_lines} {if $nb_lines != 1}{_T("lines")}{else}{_T("line")}{/if}</td>
