@@ -59,7 +59,7 @@
 					<td><input type="text" name="pref_pays" value="{$pref.pref_pays}" maxlength="50"/></td>
 				</tr>         
 				<tr>
-					<th colspan="2" class="separator"><br/>{_T("Galette's parameters:")}</th>
+					<th colspan="2" class="separator">{_T("Galette's parameters:")}</th>
 				</tr> 
 				<tr>
 					<th {if $required.pref_lang eq 1}style="color: #FF0000;"{/if}>{_T("Default language:")}</th>
@@ -104,7 +104,7 @@
 					</td>
 				</tr>         
 				<tr>
-					<th colspan="2" class="separator"><br/>{_T("Mail settings:")}</th>
+					<th colspan="2" class="separator">{_T("Mail settings:")}</th>
 				</tr> 
 				<tr>
 					<th {if $required.pref_email_nom eq 1}style="color: #FF0000;"{/if}>{_T("Sender name:")}</th> 
@@ -127,7 +127,7 @@
 					<td><input type="text" name="pref_mail_smtp" value="{$pref.pref_mail_smtp}" maxlength="100" size="30"/></td>
 				</tr>
 				<tr>
-					<th colspan="2" class="separator"><br/>{_T("Label generation parameters:")}</th>
+					<th colspan="2" class="separator">{_T("Label generation parameters:")}</th>
 				</tr>
 				<tr>
 					<th {if $required.pref_etiq_marges eq 1}style="color: #FF0000;"{/if}>{_T("Margins:")}</th> 
@@ -185,7 +185,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th colspan="2" class="separator"><br/>{_T("Admin account (independant of members):")}</th>
+					<th colspan="2" class="separator">{_T("Admin account (independant of members):")}</th>
 				</tr>
 				<tr>
 					<th {if $required.pref_admin_login eq 1}style="color: #FF0000;"{/if}>{_T("Username:")}</th>
