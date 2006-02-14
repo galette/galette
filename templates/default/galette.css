@@ -584,16 +584,16 @@ a.listing:hover {
 	padding: 0px 2px 0px 2px;
 }			
 
-.member-card
+.bigtable
 {
 	text-align: center;
 }
-.member-card table
+.bigtable table
 {
 	margin-left: auto;
 	margin-right: auto;
 }
-.member-card th
+.bigtable th
 {
 	font-weight: normal;
 	text-align: left;
@@ -601,20 +601,20 @@ a.listing:hover {
 	background-color: #DDDDFF;
 	padding: 0px 5px 0px 5px;
 }
-.member-card td
+.bigtable td
 {
 	background-color: #EEEEEE;
 	padding: 0px 5px 0px 5px;
 	text-align: left;
 }
-.member-card .separator
+.bigtable .separator
 {
 	padding-top: 10px;
 	padding-bottom: 5px;
 	background-color: #FFFFFF;
 	font-weight: bold;
 }
-.member-card .picture
+.bigtable .picture
 {
 	border: 1px solid black;
 	margin-top: 5px;

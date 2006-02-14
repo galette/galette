@@ -20,7 +20,7 @@
 			</ul>
 		</div>
 {/if}
-		<div class="member-card">
+		<div class="bigtable">
 			<table>
 				<tr> 
 					<th colspan="2" class="separator">{_T("Identity:")}</th> 
