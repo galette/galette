@@ -1,152 +1,161 @@
-		<h1 class="titre">{_T("Member Profile")}</h1>					
-		<blockquote>
-			<div align="center">
-			<table border="0"> 
-				<tr> 
-					<td bgcolor="#DDDDFF"><b>{_T("Name:")}</b></td>
-					<td bgcolor="#EEEEEE">{$data.titres_adh} {$data.nom_adh} {$data.prenom_adh}</td>
+	<h1 class="titre">{_T("Member Profile")}</h1>
+	<div class="member-card">
+		<table>
+			<tr>
+				<th>{_T("Picture:")}</th>
+				<td><img src="picture.php?id_adh={$data.id_adh}&amp;rand={$time}" class="picture" width="{$data.picture_width}" height="{$data.picture_height}" alt="{_T("Picture")}"/></td>
+			</tr>
+			<tr> 
+				<th>{_T("Name:")}</th>
+				<td>{$data.titres_adh} {$data.nom_adh} {$data.prenom_adh}</td>
+			</tr>
+			<tr> 
+				<th>{_T("Nickname:")}</th> 
+				<td>{$data.pseudo_adh}&nbsp;</td> 
+			</tr> 
+			<tr> 
+				<th>{_T("birth date:")}</th> 
+				<td>{$data.ddn_adh}&nbsp;</td>
+			</tr>
+			<tr> 
+				<th>{_T("Status:")}</th> 
+				<td>{$data.libelle_statut}&nbsp;</td> 
+			</tr>
+			<tr>
+				<th>{_T("Profession:")}</th> 
+				<td>{$data.prof_adh}</td> 
+			</tr> 
+			<tr>
+				<th>{_T("Be visible in the<br /> members list :")}</th> 
+				<td>{$data.bool_display_info}</td>
+			</tr>
 {if $smarty.session.admin_status eq 1}
-					<td colspan="2" rowspan="8" align="center">
-{else}
-					<td colspan="2" rowspan="5" align="center">
+			<tr>
+				<th>{_T("Account:")}</th> 
+				<td>{$data.activite_adh}</td>
+			</tr>
+			<tr> 
+				<th>{_T("Galette Admin:")}</th> 
+				<td>{$data.bool_admin_adh}</td> 
+			</tr> 
+			<tr> 
+				<th>{_T("Freed of dues:")}</th> 
+				<td>{$data.bool_exempt_adh}</td>
+			</tr>
+			<tr>
+				<th>{_T("Language:")}</th>
+				<td><img SRC="{$data.pref_lang_img}" align="left"/>{$data.pref_lang}</td>
+			</tr> 
 {/if}
-						<img src="picture.php?id_adh={$data.id_adh}&amp;rand={$time}" border="1" width="{$data.picture_width}" height="{$data.picture_height}" alt="{_T("Picture")}"/>
-                        		</td>
-				</tr>
-				<tr> 
-					<td bgcolor="#DDDDFF"><b>{_T("Nickname:")}</b></td> 
-					<td bgcolor="#EEEEEE">{$data.pseudo_adh}&nbsp;</td> 
-				</tr> 
-				<tr> 
-					<td bgcolor="#DDDDFF"><b>{_T("birth date:")}</b></td> 
-					<td bgcolor="#EEEEEE">{$data.ddn_adh}&nbsp;</td>
-				</tr>
-				<tr> 
-					<td bgcolor="#DDDDFF"><b>{_T("Status:")}</b></td> 
-					<td bgcolor="#EEEEEE">{$data.libelle_statut}&nbsp;</td> 
-				</tr>
-				<tr>
-					<td bgcolor="#DDDDFF"><b>{_T("Profession:")}</b></td> 
-					<td bgcolor="#EEEEEE">{$data.prof_adh}</td> 
-				</tr> 
-				<tr>
-					<td bgcolor="#DDDDFF"><b>{_T("Be visible in the<br /> members list :")}</b></td> 
-					<td bgcolor="#EEEEEE">{$data.bool_display_info}</td>
-				</tr>
-{if $smarty.session.admin_status eq 1}
-				<tr>
-					<td bgcolor="#DDDDFF"><b>{_T("Account:")}</b></td> 
-					<td bgcolor="#EEEEEE">{$data.activite_adh}</td>
-				</tr>
-				<tr> 
-					<td bgcolor="#DDDDFF"><b>{_T("Galette Admin:")}</b></td> 
-					<td bgcolor="#EEEEEE">{$data.bool_admin_adh}</td> 
-				</tr> 
-				<tr> 
-					<td bgcolor="#DDDDFF"><b>{_T("Freed of dues:")}</b></td> 
-					<td bgcolor="#EEEEEE">{$data.bool_exempt_adh}</td> 
-					<td bgcolor="#DDDDFF"><b>{_T("Language:")}</b></td>
-					<td bgcolor="#EEEEEE"><img SRC="{$data.pref_lang_img}" align="left"/>{$data.pref_lang}</td>
-				</tr> 
+			<tr>
+				<td class="separator">&nbsp;</td> 
+			</tr>
+			<tr> 
+				<th>{_T("Address:")}</th> 
+				<td>
+					{$data.adresse_adh}&nbsp;
+{if $data.adresse2_adh ne ''}
+					<br/>{$data.adresse2_adh}&nbsp;
 {/if}
-				<tr>
-					<td colspan="4">&nbsp;</td> 
-				</tr>
-				<tr> 
-					<td bgcolor="#DDDDFF" valign="top"><b>{_T("Address:")}</b></td> 
-					<td bgcolor="#EEEEEE" colspan="3">
-						{$data.adresse_adh}&nbsp;<br/>
-						{$data.adresse2_adh}&nbsp;
-					</td> 
-				</tr> 
-				<tr> 
-					<td bgcolor="#DDDDFF"><b>{_T("Zip Code:")}</b></td> 
-					<td bgcolor="#EEEEEE">{$data.cp_adh}&nbsp;</td> 
-					<td bgcolor="#DDDDFF"><b>{_T("City:")}</b></td> 
-					<td bgcolor="#EEEEEE">{$data.ville_adh}&nbsp;</td> 
-				</tr> 
-				<tr> 
-					<td bgcolor="#DDDDFF"><b>{_T("Country:")}</b></td> 
-					<td bgcolor="#EEEEEE">{$data.pays_adh}&nbsp;</td> 
-					<td bgcolor="#DDDDFF"><b>{_T("Phone:")}</b></td> 
-					<td bgcolor="#EEEEEE">{$data.tel_adh}&nbsp;</td> 
-				</tr> 
-				<tr> 
-					<td bgcolor="#DDDDFF"><b>{_T("Mobile phone:")}</b></td> 
-					<td bgcolor="#EEEEEE">{$data.gsm_adh}&nbsp;</td> 
-					<td bgcolor="#DDDDFF"><b>{_T("E-Mail:")}</b></td> 
-					<td bgcolor="#EEEEEE">
+				</td> 
+			</tr> 
+			<tr> 
+				<th>{_T("Zip Code:")}</th> 
+				<td>{$data.cp_adh}&nbsp;</td>
+			</tr>
+			<tr> 
+				<th>{_T("City:")}</th> 
+				<td>{$data.ville_adh}&nbsp;</td> 
+			</tr> 
+			<tr> 
+				<th>{_T("Country:")}</th> 
+				<td>{$data.pays_adh}&nbsp;</td> 
+			</tr>
+			<tr>
+				<th>{_T("Phone:")}</th> 
+				<td>{$data.tel_adh}&nbsp;</td> 
+			</tr> 
+			<tr> 
+				<th>{_T("Mobile phone:")}</th> 
+				<td>{$data.gsm_adh}&nbsp;</td> 
+			</tr>
+			<tr>
+				<th>{_T("E-Mail:")}</th> 
+				<td>
 {if $data.email_adh ne ''}					
-						<a href="mailto:{$data.email_adh}">{$data.email_adh}</a>
+					<a href="mailto:{$data.email_adh}">{$data.email_adh}</a>
 {/if}
-						&nbsp;
-					</td>
-				</tr> 
-				<tr> 
-					<td bgcolor="#DDDDFF"><b>{_T("Website:")}</b></td> 
-					<td bgcolor="#EEEEEE">
+					&nbsp;
+				</td>
+			</tr> 
+			<tr> 
+				<th>{_T("Website:")}</th> 
+				<td>
 {if $data.url_adh ne ''}
-						<a href="{$data.url_adh}">{$data.url_adh}</a>
+					<a href="{$data.url_adh}">{$data.url_adh}</a>
 {/if}						
-						&nbsp;
-					</td> 
-					<td bgcolor="#DDDDFF"><b>{_T("ICQ:")}</b></td> 
-					<td bgcolor="#EEEEEE">{$data.icq_adh}&nbsp;</td> 
-				</tr> 
-				<tr> 
-					<td bgcolor="#DDDDFF"><b>{_T("Jabber:")}</b></td> 
-					<td bgcolor="#EEEEEE">{$data.jabber_adh}&nbsp;</td> 
-					<td bgcolor="#DDDDFF"><b>{_T("MSN:")}</b></td> 
-					<td bgcolor="#EEEEEE">
+					&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<th>{_T("ICQ:")}</th> 
+				<td>{$data.icq_adh}&nbsp;</td> 
+			</tr> 
+			<tr> 
+				<th>{_T("Jabber:")}</th> 
+				<td>{$data.jabber_adh}&nbsp;</td> 
+			</tr>
+			<tr>
+				<th>{_T("MSN:")}</th> 
+				<td>
 {if $data.msn_adh ne ''}
-						<a href="mailto:{$data.msn_adh}">{$data.msn_adh}</a>
+					<a href="mailto:{$data.msn_adh}">{$data.msn_adh}</a>
 {/if}
-						&nbsp;
-					</td>
-				</tr> 
-				<tr> 
-					<td bgcolor="#DDDDFF"><b>{_T("Id GNUpg (GPG):")}</b></td> 
-					<td bgcolor="#EEEEEE">{$data.gpgid}&nbsp;</td> 
-					<td bgcolor="#DDDDFF"><b>{_T("fingerprint:")}</b></td> 
-					<td bgcolor="#EEEEEE">{$data.fingerprint}&nbsp;</td> 
-				</tr> 
-				<tr> 
-					<td colspan="4">&nbsp;</td> 
-				</tr>
-				<tr> 
-					<td bgcolor="#DDDDFF"><b>{_T("Username:")}&nbsp;</b></td> 
-					<td bgcolor="#EEEEEE" colspan="3">{$data.login_adh}</td> 
-				</tr> 
+					&nbsp;
+				</td>
+			</tr> 
+			<tr> 
+				<th>{_T("Id GNUpg (GPG):")}</th> 
+				<td>{$data.gpgid}&nbsp;</td> 
+			</tr>
+			<tr>
+				<th>{_T("fingerprint:")}</th> 
+				<td>{$data.fingerprint}&nbsp;</td> 
+			</tr> 
+			<tr> 
+				<td class="separator">&nbsp;</td> 
+			</tr>
+			<tr> 
+				<th>{_T("Username:")}&nbsp;</th> 
+				<td>{$data.login_adh}</td> 
+			</tr> 
 {if $smarty.session.admin_status eq 1}
-				<tr> 
-					<td bgcolor="#DDDDFF"><b>{_T("Creation date:")}</b>&nbsp;</td> 
-					<td bgcolor="#EEEEEE" colspan="3">{$data.date_crea_adh}</td> 
-				</tr> 
-				<tr> 
-					<td bgcolor="#DDDDFF" valign="top"><b>{_T("Other informations (admin):")}</b></td> 
-					<td bgcolor="#EEEEEE" colspan="3">{$data.info_adh}</td> 
-				</tr>
+			<tr> 
+				<th>{_T("Creation date:")}&nbsp;</th> 
+				<td>{$data.date_crea_adh}</td> 
+			</tr> 
+			<tr> 
+				<th>{_T("Other informations (admin):")}</th> 
+				<td>{$data.info_adh}</td> 
+			</tr>
 {/if}
-				<tr> 
-					<td bgcolor="#DDDDFF" valign="top"><b>{_T("Other informations:")}</b></td> 
-					<td bgcolor="#EEEEEE" colspan="3">{$data.info_public_adh}</td> 
-				</tr>
-
+			<tr> 
+				<th>{_T("Other informations:")}</th> 
+				<td>{$data.info_public_adh}</td> 
+			</tr>
 {include file="display_dynamic_fields.tpl" is_form=false}
-
-				<tr>
-					<td colspan="4" align="center">
-						<br/>
-						<a href="ajouter_adherent.php?id_adh={$data.id_adh}">{_T("[ Modification ]")}</a>
-						&nbsp;&nbsp;&nbsp;
-						<a href="gestion_contributions.php?id_adh={$data.id_adh}">{_T("[ Contributions ]")}</a>
-{if $smarty.session.admin_status eq 1}
-						&nbsp;&nbsp;&nbsp;
-						<a href="ajouter_contribution.php?id_adh={$data.id_adh}">{_T("[ Add a contribution ]")}</a>
-{/if}
-					</td>
-				</tr>
-			</table> 
+		</table>
+	</div>
+	<div class="button-container">
+		<div class="button-link button-edit">
+			<a href="ajouter_adherent.php?id_adh={$data.id_adh}">{_T("Modification")}</a>
 		</div>
-		<br/> 
-		</blockquote> 			
+		<div class="button-link button-view-contributions">
+			<a href="gestion_contributions.php?id_adh={$data.id_adh}">{_T("View contributions")}</a>
+		</div>
+{if $smarty.session.admin_status eq 1}
+		<div class="button-link button-add-contribution">
+			<a href="ajouter_contribution.php?id_adh={$data.id_adh}">{_T("Add a contribution")}</a>
+		</div>
+{/if}
+	</div>
