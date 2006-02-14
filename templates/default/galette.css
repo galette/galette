@@ -386,6 +386,7 @@ a.listing:hover {
 	border-color: #FFE8CC;
 	border-width: 2px;
 	border-style: solid;
+	margin-bottom: 10px;
 }
 		
 #warningbox h1 {
@@ -577,4 +578,5 @@ a.listing:hover {
 .login-box th
 {
 	font-size: 12px;
+	text-align: right;
 }
