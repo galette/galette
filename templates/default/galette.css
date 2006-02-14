@@ -592,6 +592,7 @@ a.listing:hover {
 {
 	margin-left: auto;
 	margin-right: auto;
+	border: 1px solid #BBBBBB;
 }
 .bigtable th
 {

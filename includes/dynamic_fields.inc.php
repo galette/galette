@@ -215,7 +215,7 @@
 	// $disabled: Array that will be filled with fields that are discarded as key.
 	// $edit: Must be true if prepared for edition.
 	function prepare_dynamic_fields_for_display($DB, $form_name, $admin_status, $all_values, $disabled, $edit) {
-		global $field_properties, $field_types_table;
+		global $field_properties, $field_types_table, $perm_admin;
 		$quoted_form_name = $DB->qstr($form_name, get_magic_quotes_gpc());
 		$query = "SELECT *
 			  FROM $field_types_table
@@ -231,7 +231,7 @@
 		{
 			$field_id = $result->fields['field_id'];
 			// disable admin fields when logged as member
-			if ($admin_status!=1 && $result->fields['perm']==$perm_admin)
+			if ($admin_status!=1 && $result->fields['field_perm']==$perm_admin)
 				$disabled[$field_id] = 'disabled';
 			$cur_fields = &$result->fields;
 			$cur_fields['field_name'] = _T($cur_fields['field_name']);
