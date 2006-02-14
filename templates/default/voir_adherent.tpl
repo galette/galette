@@ -2,6 +2,9 @@
 	<div class="member-card">
 		<table>
 			<tr>
+				<th class="separator" colspan="2">{_T("Identity:")}</th>
+			</tr>
+			<tr>
 				<th>{_T("Picture:")}</th>
 				<td><img src="picture.php?id_adh={$data.id_adh}&amp;rand={$time}" class="picture" width="{$data.picture_width}" height="{$data.picture_height}" alt="{_T("Picture")}"/></td>
 			</tr>
@@ -17,14 +20,21 @@
 				<th>{_T("birth date:")}</th> 
 				<td>{$data.ddn_adh}&nbsp;</td>
 			</tr>
-			<tr> 
-				<th>{_T("Status:")}</th> 
-				<td>{$data.libelle_statut}&nbsp;</td> 
-			</tr>
 			<tr>
 				<th>{_T("Profession:")}</th> 
 				<td>{$data.prof_adh}</td> 
 			</tr> 
+			<tr>
+				<th>{_T("Language:")}</th>
+				<td><img SRC="{$data.pref_lang_img}" align="left"/>{$data.pref_lang}</td>
+			</tr> 
+			<tr>
+				<th class="separator">{_T("Galette-related data:")}</th>
+			</tr>
+			<tr> 
+				<th>{_T("Status:")}</th> 
+				<td>{$data.libelle_statut}&nbsp;</td> 
+			</tr>
 			<tr>
 				<th>{_T("Be visible in the<br /> members list :")}</th> 
 				<td>{$data.bool_display_info}</td>
@@ -42,13 +52,23 @@
 				<th>{_T("Freed of dues:")}</th> 
 				<td>{$data.bool_exempt_adh}</td>
 			</tr>
-			<tr>
-				<th>{_T("Language:")}</th>
-				<td><img SRC="{$data.pref_lang_img}" align="left"/>{$data.pref_lang}</td>
+{/if}
+			<tr> 
+				<th>{_T("Username:")}&nbsp;</th> 
+				<td>{$data.login_adh}</td> 
 			</tr> 
+{if $smarty.session.admin_status eq 1}
+			<tr> 
+				<th>{_T("Creation date:")}&nbsp;</th> 
+				<td>{$data.date_crea_adh}</td> 
+			</tr> 
+			<tr> 
+				<th>{_T("Other informations (admin):")}</th> 
+				<td>{$data.info_adh}</td> 
+			</tr>
 {/if}
 			<tr>
-				<td class="separator">&nbsp;</td> 
+				<th class="separator">{_T("Contact information:")}</th> 
 			</tr>
 			<tr> 
 				<th>{_T("Address:")}</th> 
@@ -122,27 +142,6 @@
 				<th>{_T("fingerprint:")}</th> 
 				<td>{$data.fingerprint}&nbsp;</td> 
 			</tr> 
-			<tr> 
-				<td class="separator">&nbsp;</td> 
-			</tr>
-			<tr> 
-				<th>{_T("Username:")}&nbsp;</th> 
-				<td>{$data.login_adh}</td> 
-			</tr> 
-{if $smarty.session.admin_status eq 1}
-			<tr> 
-				<th>{_T("Creation date:")}&nbsp;</th> 
-				<td>{$data.date_crea_adh}</td> 
-			</tr> 
-			<tr> 
-				<th>{_T("Other informations (admin):")}</th> 
-				<td>{$data.info_adh}</td> 
-			</tr>
-{/if}
-			<tr> 
-				<th>{_T("Other informations:")}</th> 
-				<td>{$data.info_public_adh}</td> 
-			</tr>
 {include file="display_dynamic_fields.tpl" is_form=false}
 		</table>
 	</div>
