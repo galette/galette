@@ -20,9 +20,8 @@
 			</ul>
 		</div>
 {/if}
-		<blockquote>
 		<div class="member-card">
-			<table border="0" id="input-table">
+			<table>
 				<tr> 
 					<th colspan="2" class="separator">{_T("Identity:")}</th> 
 				</tr>
@@ -227,6 +226,5 @@
 		</div>
 		<br/> 
 		{_T("NB : The mandatory fields are in")} <font style="color: #FF0000">{_T("red")}</font>. 
-		</blockquote> 
 		<input type="hidden" name="id_adh" value="{$data.id_adh}"/> 
 		</form> 
