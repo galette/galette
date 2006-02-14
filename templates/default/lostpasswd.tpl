@@ -13,7 +13,6 @@
       </td>
     </tr>
   </table>
-	<div id="content">
 		<h1 class="titre">{_T("Password recovery")}</h1>
 {if $error_detected|@count != 0}
 		<div id="errorbox">
@@ -52,7 +51,6 @@
 		<div class="button-link button-back">
 			<a href="index.php">{_T("Back to login page")}</a>
 		</div>
-	</div>
 	</div>
 </body>
 </html>
