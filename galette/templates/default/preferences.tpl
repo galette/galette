@@ -204,7 +204,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th align="center" colspan="2"><br/><input type="submit" value="{_T("Save")}"/></th>
+					<th align="center" colspan="2"><br/><input type="submit" class="submit" value="{_T("Save")}"/></th>
           <td><input type="hidden" name="valid" value="1"/></td>
 				</tr>
 			</table>

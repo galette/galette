@@ -20,7 +20,7 @@
 			<select name="filtre_2" onchange="form.submit()">
 				{html_options options=$filtre_2_options selected=$smarty.session.filtre_adh_2}
 			</select>
-			<input type="submit" value="{_T("Filter")}"/>
+			<input type="submit" class="submit" value="{_T("Filter")}"/>
 		</div>
 		<table class="infoline" width="100%">
 			<tr>
@@ -166,9 +166,9 @@
 					<br/>
 					<ul>
 						<li>{_T("Selection:")}</li>
-						<li><input type="submit" onclick="return confirm('{_T("Do you really want to delere all selected accounts (and related contributions)?")|escape:"javascript"}');" name="delete" value="{_T("Delete")}"/></li>
-						<li><input type="submit" name="mailing" value="{_T("Mail all")}"/></li>
-						<li><input type="submit" name="labels" value="{_T("Generate labels")}"/></li>
+						<li><input type="submit" class="submit" onclick="return confirm('{_T("Do you really want to delere all selected accounts (and related contributions)?")|escape:"javascript"}');" name="delete" value="{_T("Delete")}"/></li>
+						<li><input type="submit" class="submit" name="mailing" value="{_T("Mail all")}"/></li>
+						<li><input type="submit" class="submit" name="labels" value="{_T("Generate labels")}"/></li>
 					</ul>
 				</td>
 {/if}

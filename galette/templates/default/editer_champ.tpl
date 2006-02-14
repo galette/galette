@@ -89,8 +89,8 @@
 				</tr>
 {/if}
 				<tr> 
-					<th align="center" colspan="2"><br/><input type="submit" name="valid" value="{_T("Save")}"/></th> 
-					<th align="center" colspan="2"><br/><input type="submit" name="cancel" value="{_T("Cancel")}"/></th> 
+					<th align="center" colspan="2"><br/><input type="submit" class="submit" name="valid" value="{_T("Save")}"/></th> 
+					<th align="center" colspan="2"><br/><input type="submit" class="submit" name="cancel" value="{_T("Cancel")}"/></th> 
 				</tr> 
 			</table> 
 		</div>

@@ -42,7 +42,7 @@
               <td><input type="text" name="login" maxlength="20" /></td>
             </tr>
           </table>
-          <input type="submit" name="lostpasswd" value="{_T("Send me my password")}" />
+          <input type="submit" class="submit" name="lostpasswd" value="{_T("Send me my password")}" />
           <input type="hidden" name="valid" value="1"/>
 	<p>{_T("NB : The mandatory fields are in")} <span style="color: #FF0000">{_T("red")}</span></p>
         </div>

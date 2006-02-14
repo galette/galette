@@ -39,7 +39,7 @@
 				</tr>
 {include file="display_dynamic_fields.tpl" is_form=true}
 				<tr>
-					<th align="center" colspan="4"><br/><input type="submit" value="{_T("Save")}"/></th>
+					<th align="center" colspan="4"><br/><input type="submit" class="submit" value="{_T("Save")}"/></th>
 				</tr>
 			</table>
 		</div>
