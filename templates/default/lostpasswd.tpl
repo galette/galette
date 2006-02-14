@@ -48,8 +48,8 @@
 	<p>{_T("NB : The mandatory fields are in")} <span style="color: #FF0000">{_T("red")}</span></p>
         </div>
       </form>
-	<div class="back-link-container">
-		<div class="back-link">
+	<div class="button-container">
+		<div class="button-link button-back">
 			<a href="index.php">{_T("Back to login page")}</a>
 		</div>
 	</div>

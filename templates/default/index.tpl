@@ -28,15 +28,22 @@
 							<td><input type="password" name="password" /></td> 
 						</tr> 
 					</table>
-          <div>
-            <input type="submit" value="{_T("Login")}" /><br />
-            <a href="lostpasswd.php">{_T("Lost your password?")}</a><br />
-            <a href="self_adherent.php">{_T("Subscribe")}</a><br />
-            <input type="hidden" name="ident" value="1" />
-          </div>
+	<div>
+		<input type="submit" value="{_T("Login")}" /><br />
+		<input type="hidden" name="ident" value="1" />
+	</div>
 				</form>
 			</td>
 		</tr>
-	</table> 
+	</table>
+
+<div class="button-container">
+	<div class="button-link button-subscribe">
+		<a href="self_adherent.php">{_T("Subscribe")}</a>
+	</div>
+	<div class="button-link button-lost-password">
+		<a href="lostpasswd.php">{_T("Lost your password?")}</a><br />
+	</div>
+</div>
 </body>
 </html>

@@ -479,35 +479,47 @@ a.listing:hover {
 }
 
 
-.back-link-container
+.button-container
 {
-	margin-top: 20px;
 	text-align: center;
 }
-.back-link
+.button-link
 {
         font-size: 12px;
-        text-align: right;
+        text-align: left;
         font-weight: bold;
         border-style: solid;
         border-width: 1px;
         background-color: #FBFBFB;
         border-color: #BBBBBB;
         color: #000000;
-        padding: 10px 10px 10px 0px;
+        padding: 10px 10px 10px 40px;
 	margin-left: auto;
 	margin-right: auto;
-	width: 19em;
-	background-image: url(images/back.png);
+	margin-top: 10px;
+	width: 18em;
+	background-image: url(images/lost_password.png);
 	background-repeat: no-repeat;
 	background-position: 10px center;
 }
-.back-link a
+.button-link a
 {
 	color: #666666;
 }
-.back-link a:hover
+.button-link a:hover
 {
 	color: #FF0000;
 	text-decoration: underline;
+}
+.button-back
+{
+	background-image: url(images/back.png);
+}
+.button-lost-password
+{
+	background-image: url(images/lost_password.png);
+}
+.button-subscribe
+{
+	background-image: url(images/add.png);
 }
