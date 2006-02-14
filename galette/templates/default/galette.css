@@ -16,7 +16,9 @@ td {
 }
 
 input {
-	font-size: 11px
+	font-size: 12px
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	padding: 0px 2px 0px 2px;
 }
 
 input.submit
@@ -544,4 +546,35 @@ a.listing:hover {
 .button-flush-logs
 {
 	background-image: url(images/trash.png);
+}
+
+.login-box
+{
+	width: 27em;
+	border: 1px solid #BBBBBB;
+	margin-top: 60px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0px 10px 10px 10px;
+	text-align: center;
+}
+
+.login-box h1
+{
+	margin: 10px 0px 15px 0px;
+}
+
+.login-box table
+{
+	width: 100%;
+}
+
+.login-box .flag
+{
+	border: 1px solid black;
+}
+
+.login-box th
+{
+	font-size: 12px;
 }
