@@ -77,6 +77,11 @@
 			}
 		}
 	}
+	else
+	{
+		header('location: index.php');
+		die();
+	}
 
 	$tpl->assign("error_detected",$error_detected);
 	$tpl->assign("warning_detected",$warning_detected);
