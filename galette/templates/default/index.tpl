@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /> 
 	<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css" /> 
 </head> 
-<body style="backgound-color:#FFFFFF">
+<body>
 	<div class="login-box">
 	<form action="index.php" method="post">
 		<h1 class="titre">{_T("Login")}</h1>

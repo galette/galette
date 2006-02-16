@@ -5,9 +5,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
 	<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css"/>
 </head>
-<body style="backgound-color:#FFFFFF">
+<body>
 	<div id="content">
+<div class="content-box">
 {$content}
+</div>
 		<div id="copyright">
 			<a href="http://galette.tuxfamily.org/fr">Galette {$GALETTE_VERSION}</a>
 		</div>
