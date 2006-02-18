@@ -129,3 +129,12 @@ CREATE UNIQUE INDEX galette_transactions_idx ON galette_transactions (trans_id);
 
 ALTER TABLE galette_cotisations ADD trans_id integer;
 ALTER TABLE galette_cotisations ALTER COLUMN trans_id SET DEFAULT NULL;
+
+-- new table for temporary passwords  2006-02-18
+DROP TABLE galette_tmppasswds;
+CREATE TABLE galette_tmppasswds (
+    id_adh integer NOT NULL,
+		tmp_passwd character varying(40) NOT NULL,
+		date_crea_tmp_passwd timestamp NOT NULL
+		);
+CREATE UNIQUE INDEX galette_tmppasswds_idx ON galette_tmppasswds (id_adh);
