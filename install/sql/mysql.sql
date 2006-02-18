@@ -146,3 +146,12 @@ CREATE TABLE galette_l10n (
     text_trans varchar(100) NOT NULL default '',
     UNIQUE INDEX (text_orig(20), text_locale(5))
 ) TYPE=MyISAM;
+
+-- new table for temporary passwords  2006-02-18
+DROP TABLE IF EXISTS galette_tmppasswds;
+CREATE TABLE galette_tmppasswds (
+    id_adh int(10) NOT NULL,
+    tmp_passwd varchar(40) NOT NULL,
+		date_crea_tmp_passwd datetime NOT NULL,
+    PRIMARY KEY (id_adh)
+) TYPE=MyISAM;

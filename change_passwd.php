@@ -32,7 +32,7 @@
 	$hash = "";
 
 	//TODO need to sanityze superglobals, see sanityze_superglobals_arrays
-	// get hash id $_GET if passed by url, $_POST if passed by this form
+	// get hash id, $_GET if passed by url, $_POST if passed by this form
 	if (isset($_GET['hash']) && !empty($_GET['hash']) ) {
 		$hash=$_GET['hash'];
 	} else {
@@ -51,11 +51,11 @@
 		}
 		// Validation
 		if ( isset($_POST['valid']) && $_POST['valid'] == "1") {
- 			if ($_POST["mdp_adh"]=="") {
+			if ($_POST["mdp_adh"]=="") {
 				$error_detected[] = _T("No password");
 			}
 			//if ($_POST['mdp_adh2']==$_POST['mdp_adh'])
-			if ( isset($_POST['mdp_adh2']) ) { 
+			if ( isset($_POST['mdp_adh2']) ) {
 				if ( strcmp($_POST["mdp_adh"],$_POST["mdp_adh2"]) ) {
 					$error_detected[] = _T("- The passwords don't match!");
 				} else {
