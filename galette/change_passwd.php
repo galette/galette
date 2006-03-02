@@ -45,6 +45,7 @@
 		$result = &$DB->Execute($query);
 		if ($result->EOF) {
 			$warning_detected = _T("We could'nt find this password in the database");
+			print "<meta http-equiv=\"refresh\" content=\"3;url=index.php\">";
 			//TODO need to clean die here
 		} else {
 			$id_adh = $result->fields[0];
@@ -71,6 +72,8 @@
 							//$warning_detected = $DB->ErrorMsg();
 						} else {
 							dblog(_T("**Password changed**. id:")." \"" . $id_adh . "\"");
+							$warning_detected = _T("Password changed, you will be redirect to login page");
+							print "<meta http-equiv=\"refresh\" content=\"10;url=index.php\">";
 						}
 					}
 				}

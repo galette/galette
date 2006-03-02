@@ -143,19 +143,23 @@
 							$value = '';
 						break;
 					case 'login_adh':
-						if (strlen($value)<4)
+						if (strlen($value)<4) {
 							$error_detected[] = _T("- The username must be composed of at least 4 characters!");
-						else
-						{
-							//check if login is already taken
-							$requete = "SELECT id_adh
-									FROM ".PREFIX_DB."adherents
-									WHERE login_adh=". $DB->qstr($value, get_magic_quotes_gpc());
-							if ($adherent['id_adh'] != '')
-								$requete .= " AND id_adh!=" . $DB->qstr($adherent['id_adh'], get_magic_quotes_gpc());
-							$result = &$DB->Execute($requete);
-							if (!$result->EOF || $value==PREF_ADMIN_LOGIN)
-								$error_detected[] = _T("- This username is already used by another member !");
+						} else {
+							//check if login does not contain the @ character
+							if ( strpos($value,'@') != FALSE ) {
+								$error_detected[] = _T("- The username cannot contain the @ character");
+							}	else	{
+								//check if login is already taken
+								$requete = "SELECT id_adh
+										FROM ".PREFIX_DB."adherents
+										WHERE login_adh=". $DB->qstr($value, get_magic_quotes_gpc());
+								if ($adherent['id_adh'] != '')
+									$requete .= " AND id_adh!=" . $DB->qstr($adherent['id_adh'], get_magic_quotes_gpc());
+								$result = &$DB->Execute($requete);
+								if (!$result->EOF || $value==PREF_ADMIN_LOGIN)
+									$error_detected[] = _T("- This username is already used by another member !");
+							}
 						}
 						break;
 					case 'mdp_adh':
