@@ -57,8 +57,8 @@
 	// Validation
 	if (isset($_POST['valid']) && $_POST['valid'] == "1") {
 		$login_adh=$_POST['login'];
-		$temp = strpos($login_adh,'@');
-		if ( $temp !== FALSE ) {
+		//if field contain the character @ we consider that is an email
+		if ( strpos($login_adh,'@') !== FALSE ) {
 			$query = "SELECT login_adh from ".PREFIX_DB."adherents where email_adh=".txt_sqls($login_adh);
 			$result = &$DB->Execute($query);
 			$login_adh = $result->fields[0];

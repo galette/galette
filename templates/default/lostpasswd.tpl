@@ -31,7 +31,7 @@
 		<form action="lostpasswd.php" method="post" enctype="multipart/form-data">
 		<table>
 			<tr>
-				<th>{_T("Username:")}</th>
+				<th>{_T("Username or email:")}</th>
 				<td><input type="text" name="login" maxlength="20" /></td>
 			</tr>
 		</table>

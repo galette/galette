@@ -86,6 +86,9 @@
 				{
 					if ($_POST["install_adminlogin"]=="")
 				  		$error_detected .= "<img src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("No user name")."<br />";
+					if ( strpos($_POST["install_adminlogin"],'@') != FALSE ) 
+						$error_detected[] = "<img src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("- The username cannot contain the @ character")."<br />;
+				  		$error_detected .= "<img src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("No user name")."<br />";
 					if ($_POST["install_adminpass"]=="")
 				  		$error_detected .= "<img src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("No password")."<br />";
           if ( ! isset($_POST["install_passwdverified"]) && strcmp($_POST["install_adminpass"],$_POST["install_adminpass_verif"]) ) {
