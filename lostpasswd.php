@@ -57,6 +57,12 @@
 	// Validation
 	if (isset($_POST['valid']) && $_POST['valid'] == "1") {
 		$login_adh=$_POST['login'];
+		$temp = strpos($login_adh,'@');
+		if ( $temp !== FALSE ) {
+			$query = "SELECT login_adh from ".PREFIX_DB."adherents where email_adh=".txt_sqls($login_adh);
+			$result = &$DB->Execute($query);
+			$login_adh = $result->fields[0];
+		}
 		$email_adh=isEmail($login_adh);
 
 		//send the password
