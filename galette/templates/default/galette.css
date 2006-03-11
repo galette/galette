@@ -114,12 +114,12 @@ pre {
 .totalcount {
 	text-align: left;
 }
-	
+
 .pageswitch {
 	text-align: center;
 	margin-top: 4px;
 }
-		
+
 .pagelink {
 	font-weight: bold;
 }
@@ -281,22 +281,22 @@ a.listing:hover {
 	background-color: #DDDDFF;
 	padding-left: 2px;
 	text-align: left;
-}	 
+}
 
 #legende td {
 	padding-left: 2px;
-}	 
+}
 
 #legende .back {
 	background-color: #EEEEEE;
-}	 
-		
+}
+
 .color-sample {
 	border-color: #AAAAAA;
 	border-width: 1px;
-	border-style: solid;		
-}	 
-	
+	border-style: solid;
+}
+
 #content {
 	position: absolute;
 	padding-right: 15px;
@@ -310,6 +310,11 @@ a.listing:hover {
 	top: 0px;
 	left: 0px;
 }
+
+#menu a {
+	display: block;
+}
+
 
 #listfilter {
 	text-align: center;
@@ -587,10 +592,10 @@ a.listing:hover {
 	text-align: right;
 }
 .login-box input {
-	font-size: 12px
+	font-size: 12px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	padding: 0px 2px 0px 2px;
-}			
+}
 
 .bigtable
 {
