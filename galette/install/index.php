@@ -222,6 +222,7 @@
 			$files_need_rw = array ('/templates_c',
 						'/photos',
 						'/cache',
+						'/tempimages',
 						'/includes/config.inc.php');
 			foreach ($files_need_rw as $file)
 			{
