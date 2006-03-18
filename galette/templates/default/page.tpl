@@ -54,57 +54,57 @@
 			<h1>{_T("Legend")}</h1>
 			<table>
 				<tr>
-					<td width="30" class="back"><img src="{$template_subdir}images/icon-male.png" alt="{_T("[M]")}" align="middle" width="10" height="12"/></td>
+					<td class="back"><img src="{$template_subdir}images/icon-male.png" alt="{_T("[M]")}" width="10" height="12"/></td>
 					<td class="back">{_T("Man")}</td>
 				</tr>
 				<tr>
-					<td width="30" class="back"><img src="{$template_subdir}images/icon-female.png" alt="{_T("[W]")}" align="middle" width="9" height="12"/></td>
+					<td class="back"><img src="{$template_subdir}images/icon-female.png" alt="{_T("[W]")}" width="9" height="12"/></td>
 					<td class="back">{_T("Woman")}</td>
 				</tr>
 {if $PAGENAME eq "gestion_adherents.php"}
 				<tr>
-					<td width="30" class="back"><img src="{$template_subdir}images/icon-mail.png" alt="{_T("[Mail]")}" align="middle" border="0" width="14" height="10"/></td>
+					<td class="back"><img src="{$template_subdir}images/icon-mail.png" alt="{_T("[Mail]")}" width="14" height="10"/></td>
 					<td class="back">{_T("Send a mail")}</td>
 				</tr>
 {/if}
 				<tr>
-					<td width="30" class="back"><img src="{$template_subdir}images/icon-star.png" alt="{_T("[admin]")}" align="middle" width="12" height="13"/></td>
+					<td class="back"><img src="{$template_subdir}images/icon-star.png" alt="{_T("[admin]")}" width="12" height="13"/></td>
 					<td class="back">{_T("Admin")}</td>
 				</tr>
 				<tr>
-					<td width="30" class="back"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></td>
+					<td class="back"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" width="12" height="13"/></td>
 					<td class="back">{_T("Modification")}</td>
 				</tr>
 				<tr>
-					<td width="30" class="back"><img src="{$template_subdir}images/icon-money.png" alt="{_T("[$]")}" border="0" width="13" height="13"/></td>
+					<td class="back"><img src="{$template_subdir}images/icon-money.png" alt="{_T("[$]")}" width="13" height="13"/></td>
 					<td class="back">{_T("Contributions")}</td>
 				</tr>
 				<tr>
-					<td width="30" class="back"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></td>
+					<td class="back"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" width="11" height="13"/></td>
 					<td class="back">{_T("Deletion")}</td>
 				</tr>
 				<tr>
-					<td width="30" class="back">{_T("Name")}</td>
+					<td class="back">{_T("Name")}</td>
 					<td class="back">{_T("Active account")}</td>
 				</tr>
 				<tr>
-					<td width="30" class="inactif back">{_T("Name")}</td>
+					<td class="inactif back">{_T("Name")}</td>
 					<td class="back">{_T("Inactive account")}</td>
 				</tr>
 				<tr>
-					<td width="30" class="cotis-never color-sample">&nbsp;</td>
+					<td class="cotis-never color-sample">&nbsp;</td>
 					<td class="back">{_T("Never contributed")}</td>
 				</tr>
 				<tr>
-					<td width="30" class="cotis-ok color-sample">&nbsp;</td>
+					<td class="cotis-ok color-sample">&nbsp;</td>
 					<td class="back">{_T("Membership in order")}</td>
 				</tr>
 				<tr>
-					<td width="30" class="cotis-soon color-sample">&nbsp;</td>
+					<td class="cotis-soon color-sample">&nbsp;</td>
 					<td class="back">{_T("Membership will expire soon (&lt;30d)")}</td>
 				</tr>
 				<tr>
-					<td width="30" class="cotis-late color-sample">&nbsp;</td>
+					<td class="cotis-late color-sample">&nbsp;</td>
 					<td class="back">{_T("Lateness in fee")}</td>
 				</tr>
 			</table>
@@ -115,20 +115,20 @@
 			<table>
 {if $smarty.session.admin_status eq 1}
 				<tr>
-					<td width="30" class="back"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></td>
+					<td class="back"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" width="12" height="13"/></td>
 					<td class="back">{_T("Modification")}</td>
 				</tr>
 				<tr>
-					<td width="30" class="back"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></td>
+					<td class="back"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" width="11" height="13"/></td>
 					<td class="back">{_T("Deletion")}</td>
 				</tr>
 {/if}
 				<tr>
-					<td width="30" class="cotis-normal color-sample">&nbsp;</td>
+					<td class="cotis-normal color-sample">&nbsp;</td>
 					<td class="back">{_T("Contribution")}</td>
 				</tr>
 				<tr>
-					<td width="30" class="cotis-give color-sample">&nbsp;</td>
+					<td class="cotis-give color-sample">&nbsp;</td>
 					<td class="back">{_T("Gift")}</td>
 				</tr>
 			</table>
