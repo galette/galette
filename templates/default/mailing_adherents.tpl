@@ -1,5 +1,9 @@
 		<h1 class="titre">{_T("Mailing")}</h1>
+		<!--
+		attribute name for form element is forbiden in xhtml strict
 		<form action="mailing_adherents.php" method="post" name="listform">
+		//-->
+		<form action="mailing_adherents.php" method="post">
 {if $error_detected|@count != 0}
 		<div id="errorbox">
 			<h1>{_T("- ERROR -")}</h1>
@@ -32,7 +36,7 @@
 		{_T("Please compose your mail.")}
 	{/if}
 		</p>
-		<div align="center">
+		<div>
 		<table border="0" id="input-table">
 			<tr>
 				<th class="libelle">{_T("Object:")}</th>
@@ -69,7 +73,7 @@
 	{/if}
 			</tr>
 			<tr>
-				<td align="center">
+				<td style="text-align:center">
 	{if $etape==0}
 				<input type="checkbox" name="mailing_html" value="1" {if $data.mailing_html eq 1}checked="checked"{/if}/>{_T("Interpret HTML")}<br/><br/>
 				<input type="submit" class="submit" name="mailing_go" value="{_T("Preview")}"/>
@@ -88,7 +92,6 @@
 {else}
 		<b>{_T("None of the selected members has an email address.")}</b>
 {/if}
-		</p>
 		</form>
 		{if $nb_unreachable_members > 0}
 		<p>

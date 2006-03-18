@@ -239,11 +239,11 @@ function sanityze_superglobals_arrays() {
 function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/plain")
 {
   // codes retour :
-  //  0 - erreur mail()
-  //  1 - mail envoye
-  //  2 - mail desactive
-  //  3 - mauvaise configuration
-  //  4 - SMTP injoignable
+  //  0 - error mail()
+  //  1 - mail sent
+  //  2 - mail desactived in preferences
+  //  3 - bad configuration ?
+  //  4 - SMTP unreacheable
   //  5 - breaking attempt
   $result = 0;
 
@@ -253,7 +253,6 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
 										//mail_text
 										$content_type);
 	foreach ($params as $param) {
-		//if (true) {}
 		if( ! sanityze_mail_headers($param) ) {
 			return 5;
 			break;
@@ -280,7 +279,11 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
       foreach($headers as $oneheader)
         $mail_headers .= $oneheader . "\r\n";
       //-f .PREF_EMAIL is to set Return-Path
-      if (!mail($email_adh,$mail_subject,$mail_text, $mail_headers,"-f ".PREF_EMAIL)) {
+      //if (!mail($email_adh,$mail_subject,$mail_text, $mail_headers,"-f ".PREF_EMAIL))
+      //set Return-Path
+			//seems to does not work
+      ini_set('sendmail_from', PREF_EMAIL);
+      if (!mail($email_adh,$mail_subject,$mail_text, $mail_headers)) {
         $result = 0;
       } else {
         $result = 1;
@@ -308,6 +311,7 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
           $rcv = fgets($connect, 1024);
           foreach($headers as $oneheader)
             fputs($connect, $oneheader."\r\n");
+          fputs($connect, stripslashes("Subject: ".$mail_subject)."\r\n");
           fputs($connect, "\r\n");
           fputs($connect, stripslashes($mail_text)." \r\n");
           fputs($connect, ".\r\n");
@@ -391,7 +395,7 @@ function get_numeric_form_value($name, $defval)
 function get_numeric_posted_value($name, $defval) {
 	if (isset($_POST[$name])) {
 		$val = $_POST[$name];
- 		if (is_numeric($val))
+		if (is_numeric($val))
 			return $val;
 	}
 	return $defval;
