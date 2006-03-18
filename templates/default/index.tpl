@@ -6,8 +6,8 @@
 	<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css" /> 
 </head> 
 <body>
-	<div class="login-box">
 	<form action="index.php" method="post">
+		<div class="login-box">
 		<h1 class="titre">{_T("Login")}</h1>
 {foreach key=langue item=langue_t from=$languages}
 		<a href="index.php?pref_lang={$langue}"><img src="lang/{$langue}.gif" alt="{$langue_t}" class="flag"/></a>
@@ -15,19 +15,19 @@
 		<br/><br/>
 		<table> 
 			<tr> 
-				<th>{_T("Username:")}</th> 
-				<td><input type="text" name="login" /></td> 
+				<th><label for="login">{_T("Username:")}</label></th> 
+				<td><input type="text" name="login" id="login" /></td> 
 			</tr> 
 			<tr> 
-				<th>{_T("Password:")}</th> 
-				<td><input type="password" name="password" /></td> 
+				<th><label for="password">{_T("Password:")}</label></th> 
+				<td><input type="password" name="password" id="password"/></td> 
 			</tr> 
 		</table>
 		<br/>
 		<input type="submit" class="submit" value="{_T("Login")}" />
 		<input type="hidden" name="ident" value="1" />
-	</form>
 	</div>
+	</form>
 	
 	<div class="button-container">
 		<div class="button-link button-subscribe">

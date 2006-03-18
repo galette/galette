@@ -49,13 +49,13 @@
 		&& isset($_POST["install_dbprefix"]))
 	{
 		if ($_POST["install_dbtype"]!="mysql" && $_POST["install_dbtype"]!="pgsql")
-	  		$error_detected .= "<img src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("Database type unknown")."<br />";
+	  		$error_detected .= "<li class=\"install-bad\">"._T("Database type unknown")."</li>";
 		if ($_POST["install_dbuser"]=="")
-	  		$error_detected .= "<img src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("No user name")."<br />";
+	  		$error_detected .= "<li class=\"install-bad\">"._T("No user name")."</li>";
 		if ($_POST["install_dbpass"]=="")
-	  		$error_detected .= "<img src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("No password")."<br />";
+	  		$error_detected .= "<li class=\"install-bad\">"._T("No password")."</li>";
 		if ($_POST["install_dbname"]=="")
-	  		$error_detected .= "<img src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("No database name")."<br />";
+	  		$error_detected .= "<li class=\"install-bad\">"._T("No database name")."</li>";
 		if ($error_detected=="")
 		{
 			if (isset($_POST["install_dbconn_ok"]))
@@ -85,13 +85,13 @@
 				if (isset($_POST["install_adminlogin"]) && isset($_POST["install_adminpass"]))
 				{
 					if ($_POST["install_adminlogin"]=="")
-						$error_detected .= "<img src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("No user name")."<br />";
+						$error_detected .= "<li class=\"install-bad\">"._T("No user name")."</li>";
 					if ( strpos($_POST["install_adminlogin"],'@') != FALSE )
-						$error_detected[] = "<img src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("The username cannot contain the @ character")."<br />";
+						$error_detected[] = "<li class=\"install-bad\">"._T("The username cannot contain the @ character")."</li>";
 					if ($_POST["install_adminpass"]=="")
-						$error_detected .= "<img src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("No password")."<br />";
+						$error_detected .= "<li class=\"install-bad\">"._T("No password")."</li>";
           if ( ! isset($_POST["install_passwdverified"]) && strcmp($_POST["install_adminpass"],$_POST["install_adminpass_verif"]) ) {
-            $error_detected .= "<img src=\"no.gif\" width=\"6\" height=\"10\" border=\"0\" alt=\"\"> "._T("Passwords mismatch")."<br />";
+            $error_detected .= "<li class=\"install-bad\">"._T("Passwords mismatch")."</li>";
           }
 					if ($error_detected=="")
 					if ($_POST["install_type"]=="install")
@@ -166,7 +166,7 @@
 	<p><?php echo _T("Select installation mode to launch"); ?></p>
 	<form action="index.php" method="POST">
 		<p>
-			<input type="radio" name="install_type" value="install" selected="selected"> <?php echo _T("New installation:"); ?><br />
+			<input type="radio" name="install_type" value="install" checked="checked" id="install"> <label for="install"><?php echo _T("New installation:"); ?></label><br />
 		 	<?php echo _T("You're installing Galette for the first time, or you wish to erase an older version of Galette without keeping your data"); ?>
 		</p>
 <?
@@ -184,12 +184,12 @@
 			{
 ?>
 		<p>
-			<input type="radio" name="install_type" value="upgrade-<?php echo $val; ?>"> <?php echo _T("Update:"); ?><br />
+			<input type="radio" name="install_type" value="upgrade-<?php echo $val; ?>" id="upgrade-<?php echo $val; ?>"> <label for="upgrade-<?php echo $val; ?>"><?php echo _T("Update:"); ?><br />
 <?
 				if ($last!=number_format($val-0.01,2))
-					echo _T("Your current Galette version is comprised between")." ".$last." "._T("and")." ".number_format($val-0.01,2)."<br />";
+					echo _T("Your current Galette version is comprised between")." ".$last." "._T("and")." ".number_format($val-0.01,2)."</label><br />";
 				else
-					echo _T("Your current Galette version is")." ".number_format($val-0.01,2)."<br />";
+					echo _T("Your current Galette version is")." ".number_format($val-0.01,2)."</label><br />";
 				$last = $val;
 				echo _T("Warning: Don't forget to backup your current database.");
 ?>
@@ -217,6 +217,7 @@
 ?>
 
 	<h1><?php echo _T("Files permissions"); ?></h1>
+<ul>
 <?
 			$perms_ok = true;
 			$files_need_rw = array ('/templates_c',
@@ -229,12 +230,12 @@
 				if (!is_writable(dirname(__FILE__).'/..'.$file))
 				{
 					$perms_ok = false;
-					echo "<img src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> ".$file."<br/>";
+					echo "<li class=\"install-bad\">".$file."</li>";
 				}
 				else
-					echo "<img src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> ".$file."<br />";
+					echo "<li class=\"install-ok\">".$file."</li>";
 			}
-
+			echo "</ul>";
 			if (!$perms_ok)
 			{
 ?>
@@ -289,7 +290,7 @@
 	<p>
 <?
 				if ($error_detected!="")
-					echo "<table><tr><td>".$error_detected."</td></tr></table><br />";
+					echo "<table><tr><td><ul>".$error_detected."</ul></td></tr></table><br />";
 ?>	
 		<?php if ($step=="i4") echo _T("If it hadn't been made, create a database and a user for Galette."); ?><br />
 		<?php if ($step=="u4") echo _T("Enter connection data for the existing database."); ?><br />
@@ -297,44 +298,44 @@
 	<form action="index.php" method="POST">
 		<table>
 			<tr>
-				<td><?php echo _T("Database type:"); ?></td>
+				<td><label for="install_dbtype"><?php echo _T("Database type:"); ?></label></td>
 				<td>
-					<select name="install_dbtype">
+					<select name="install_dbtype" id="install_dbtype">
 						<option value="mysql">Mysql</option>
 						<option value="pgsql">Postgresql</option>
 					</select>
 				</td>
 			</tr>
 			<tr>
-				<td><?php echo _T("Host:"); ?></td>
+				<td><label for="install_dbhost"><?php echo _T("Host:"); ?></label></td>
 				<td>
-					<input type="text" name="install_dbhost" value="<?php if(isset($_POST["install_dbhost"])) echo $_POST["install_dbhost"]; ?>">
+					<input type="text" name="install_dbhost" id="install_dbhost" value="<?php if(isset($_POST["install_dbhost"])) echo $_POST["install_dbhost"]; ?>">
 				</td>
 			</tr>
 			<tr>
-				<td><?php echo _T("User:"); ?></td>
+				<td><label for="install_dbuser"><?php echo _T("User:"); ?></label></td>
 				<td>
-					<input type="text" name="install_dbuser" value="<?php if(isset($_POST["install_dbuser"])) echo $_POST["install_dbuser"]; ?>">
+					<input type="text" name="install_dbuser" id="install_dbuser" value="<?php if(isset($_POST["install_dbuser"])) echo $_POST["install_dbuser"]; ?>">
 				</td>
 			</tr>
 			<tr>
-				<td><?php echo _T("Password:"); ?></td>
+				<td><label for="install_dbpass"><?php echo _T("Password:"); ?></label></td>
 				<td>
-					<input type="password" name="install_dbpass" value="<?php if(isset($_POST["install_dbpass"])) echo $_POST["install_dbpass"]; ?>">
+					<input type="password" name="install_dbpass" id="install_dbpass" value="<?php if(isset($_POST["install_dbpass"])) echo $_POST["install_dbpass"]; ?>">
 				</td>
 			</tr>
 			<tr>
-				<td><?php echo _T("Database:"); ?></td>
+				<td><label for="install_dbname"><?php echo _T("Database:"); ?></label></td>
 				<td>
-					<input type="text" name="install_dbname" value="<?php if(isset($_POST["install_dbname"])) echo $_POST["install_dbname"]; ?>">
+					<input type="text" name="install_dbname" id="install_dbname" value="<?php if(isset($_POST["install_dbname"])) echo $_POST["install_dbname"]; ?>">
 				</td>
 			</tr>
                         <tr>
                                 <td>
-					<?php echo _T("Table prefix:"); ?>
+					<label for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
 				</td>
                                 <td>
-                                        <input type="text" name="install_dbprefix" value="<?php if(isset($_POST["install_dbprefix"])) echo $_POST["install_dbprefix"]; else echo "galette_" ?>">
+                                        <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php if(isset($_POST["install_dbprefix"])) echo $_POST["install_dbprefix"]; else echo "galette_" ?>">
                                 </td>
 			</tr>
 			<?
@@ -369,6 +370,7 @@
 
 	<h1><?php echo _T("Check of the database"); ?></h1>
 	<p><?php echo _T("Check the parameters and the existence of the database"); ?></p>
+<ul>
 <?
 				include("../includes/adodb/adodb.inc.php");
 				$DB = adonewconnection($_POST["install_dbtype"]);
@@ -377,14 +379,14 @@
 				if(!@$DB->Connect($_POST["install_dbhost"], $_POST["install_dbuser"], $_POST["install_dbpass"], $_POST["install_dbname"]))
 				{
 					$permsdb_ok = false;
-					echo "<img src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Unable to connect to the database")."<br />";
+					echo "<li class=\"install-bad\">"._T("Unable to connect to the database")."</li>";
 				}
 				else
 				{
-					echo "<img src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Connection to database is OK")."<br />";
+					echo "<li class=\"install-ok\"> "._T("Connection to database is OK")."</li>";
 					$DB->Close();
 				}
-
+echo "</ul>";
 				if (!$permsdb_ok)
 				{
 ?>
@@ -454,10 +456,10 @@
 						if($DB->ErrorNo())
 						{
 							$error = 1;
-							$result = "<img src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("DROP operation not allowed")."<br />";
+							$result = "<li class=\"install-bad\">"._T("DROP operation not allowed")."</li>";
 						}
 						else
-							$result = "<img src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("DROP operation allowed")."<br />";
+							$result = "<li class=\"install-ok\">"._T("DROP operation allowed")."</li>";
 					}
 				}
 
@@ -469,11 +471,11 @@
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
-						$result .= "<img src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("CREATE operation not allowed")."<br />";
+						$result .= "<li class=\"install-bad\">"._T("CREATE operation not allowed")."</li>";
 						$error = 1;
 					}
 					else
-						$result .= "<img src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("CREATE operation allowed")."<br />";
+						$result .= "<li class=\"install-ok\">"._T("CREATE operation allowed")."</li>";
 				}
 
 				// création d'enregistrement
@@ -484,11 +486,11 @@
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
-						$result .= "<img src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("INSERT operation not allowed")."<br />";
+						$result .= "<li class=\"install-bad\">"._T("INSERT operation not allowed")."</li>";
 						$error = 1;
 					}
 					else
-						$result .= "<img src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("INSERT operation allowed")."<br />";
+						$result .= "<li class=\"install-ok\">"._T("INSERT operation allowed")."</li>";
 				}
 
 				// mise à jour d'enregistrement
@@ -499,11 +501,11 @@
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
-						$result .= "<img src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("UPDATE operation not allowed")."<br />";
+						$result .= "<li class=\"install-bad\">"._T("UPDATE operation not allowed")."</li>";
 						$error = 1;
 					}
 					else
-						$result .= "<img src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("UPDATE operation allowed")."<br />";
+						$result .= "<li class=\"install-ok\">"._T("UPDATE operation allowed")."</li>";
 				}
 
 				// selection d'enregistrement
@@ -514,11 +516,11 @@
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
-						$result .= "<img src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("SELECT operation not allowed")."<br />";
+						$result .= "<li class=\"install-bad\">"._T("SELECT operation not allowed")."</li>";
 						$error = 1;
 					}
 					else
-						$result .= "<img src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("SELECT operation allowed")."<br />";
+						$result .= "<li class=\"install-ok\">"._T("SELECT operation allowed")."</li>";
 				}
 
 				// alter pour la mise à jour
@@ -529,11 +531,11 @@
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
-						$result .= "<img src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("ALTER Operation not allowed")."<br />";
+						$result .= "<li class=\"install-bad\">"._T("ALTER Operation not allowed")."</li>";
 						$error = 1;
 					}
 					else
-						$result .= "<img src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("ALTER Operation allowed")."<br />";
+						$result .= "<li class=\"install-ok\">"._T("ALTER Operation allowed")."</li>";
 				}
 
 				// suppression d'enregistrement
@@ -544,11 +546,11 @@
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
 					{
-						$result .= "<img src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("DELETE operation not allowed")."<br />";
+						$result .= "<<li class=\"install-bad\">"._T("DELETE operation not allowed")."</li>";
 						$error = 1;
 					}
 					else
-						$result .= "<img src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("DELETE operation allowed")."<br />";
+						$result .= "<li class=\"install-ok\">"._T("DELETE operation allowed")."</li>";
 				}
 
 				// suppression de table
@@ -560,15 +562,15 @@
 					if (!isset($droptest))
 					if($DB->ErrorNo())
 					{
-						$result .= "<img src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("DROP OPeration not allowed")."<br />";
+						$result .= "<li class=\"install-bad\">"._T("DROP OPeration not allowed")."</li>";
 						$error = 1;
 					}
 					else
-						$result .= "<img src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("DROP OPeration allowed")."<br />";
+						$result .= "<li class=\"install-ok\">"._T("DROP OPeration allowed")."</li>";
 				}
 
 				if ($result!="")
-					echo "<table><tr><td>".$result."</td></tr></table>";
+					echo "<table><tr><td><ul>".$result."</ul></td></tr></table>";
 
 				if (isset($error))
 				{
@@ -636,6 +638,7 @@
 		<?php if ($step=="u7") echo _T("Update Report"); ?>
 	</p>
 	<table><tr><td>
+<ul>
 <?
 			// begin : copyright (2002) the phpbb group (support@phpbb.com)	
 			// load in the sql parser
@@ -684,15 +687,16 @@
 					if ($extra!="") $extra="...";
 					if ($DB->ErrorNo())
 					{
-						echo "<img src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> ".$w1." ".$w2." ".$w3." ".$extra."<br />";
+						echo "<li class=\"install-bad\">".$w1." ".$w2." ".$w3." ".$extra."</li>";
 						//doesn't work if "drop" or "rename" is uppercase
 						//if (trim($w1) != "drop" && trim($w1) != "rename") $error = true;
 						if ( ! strcasecmp(trim($w1),"drop") && ! strcasecmp(trim($w1),"rename") ) $error = true;
 					}
 					else
-						echo "<img src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> ".$w1." ".$w2." ".$w3." ".$extra."<br />";
+						echo "<li class=\"install-ok\">".$w1." ".$w2." ".$w3." ".$extra."</li>";
 				}
 			}
+echo "</ul>\n";
 			// end : copyright (2002) the phpbb group (support@phpbb.com)
 
 			// begin: fix overlapping fees
@@ -886,30 +890,30 @@
 	<h1><?php echo _T("Admin settings"); ?></h1>
 <?
 				if ($error_detected!="")
-					echo "<p><table><tr><td>".$error_detected."</td></tr></table></p>";
+					echo "<p><table><tr><td><ul>".$error_detected."</ul></td></tr></table></p>";
 ?>	
 	<p><?php echo _T("Please chose the parameters of the admin account on Galette"); ?></p>
 	<form action="index.php" method="POST">
 		<table>
 			<tr>
-				<td><?php echo _T("Username:"); ?></td>
+				<td><label for="install_adminlogin"><?php echo _T("Username:"); ?></label></td>
 				<td>
-					<input type="text" name="install_adminlogin" value="<?php if(isset($_POST["install_adminlogin"])) echo $_POST["install_adminlogin"]; ?>">
+					<input type="text" name="install_adminlogin" id="install_adminlogin" value="<?php if(isset($_POST["install_adminlogin"])) echo $_POST["install_adminlogin"]; ?>">
 				</td>
 			</tr>
 			<tr>
-				<td><?php echo _T("Password:"); ?></td>
+				<td><label for="install_adminpass"><?php echo _T("Password:"); ?></label></td>
 				<td>
           <!--
 					<input type="text" name="install_adminpass" value="<?php //if(isset($_POST["install_adminpass"])) echo $_POST["install_adminpass"]; ?>">
           //-->
-					<input type="password" name="install_adminpass" value="">
+					<input type="password" name="install_adminpass" id="install_adminpass" value="">
         </td>
       </tr>
       <tr>
-				<td><?php echo _T("Retype password:"); ?></td>
+				<td><label for="install_adminpass_verif"><?php echo _T("Retype password:"); ?></label></td>
         <td>
-					<input type="password" name="install_adminpass_verif" value="">
+					<input type="password" name="install_adminpass_verif" id="install_adminpass_verif" value="">
 				</td>
 			</tr>
 		</table>
@@ -941,6 +945,7 @@
 
 	<h1><?php echo _T("Save the parameters"); ?></h1>
 	<p><table><tr><td>
+<ul>
 <?
 			// création du fichier de configuration
 
@@ -958,11 +963,11 @@ define(\"STOCK_FILES\", \"tempimages\");
 ?>";
 				fwrite($fd,$data);
 				fclose($fd);
-				echo "<img src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Configuration file created (includes/config.inc.php)")."<br />";
+				echo "<li class=\"install-ok\">"._T("Configuration file created (includes/config.inc.php)")."</li>";
 			}
 			else
 			{
-				echo "<img src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Unable to create configuration file (includes/config.inc.php)")."<br />";
+				echo "<li class=\"install-bad\">"._T("Unable to create configuration file (includes/config.inc.php)")."</li>";
 				$error = true;
 			}
 
@@ -1085,13 +1090,14 @@ define(\"STOCK_FILES\", \"tempimages\");
 			// d'erreur ne s'effectue que sur le dernier insert. prévoir une boucle.
 
 			if (!$DB->ErrorNo())
-				echo "<img src=\"yes.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Parameters saved into the database")."<br />";
+				echo "<li class=\"install-ok\">"._T("Parameters saved into the database")."</li>";
 			else
 			{
-				echo "<img src=\"no.gif\" width=\"6\" height=\"12\" border=\"0\" alt=\"\"> "._T("Parameters couldn't be save into the database")."<br />";
+				echo "<li class=\"install-bad\">"._T("Parameters couldn't be save into the database")."</li>";
 				$error = true;
 			}
 ?>
+</ul>
 	</td></tr></table></p>
 <?
 			if (!isset($error))

@@ -30,7 +30,7 @@
 					<td width="130">
 						<img src="picture.php?id_adh={$data.id_adh}&amp;rand={$time}" class="picture" width="{$data.picture_width}" height="{$data.picture_height}" alt="{_T("Picture")}"/><br/>
 {if $data.has_picture eq 1 }
-						<span>{_T("Delete image")}</span><input type="checkbox" name="del_photo" value="1"/><br/>
+						<span><label for="del_photo">{_T("Delete image")}</label></span><input type="checkbox" name="del_photo" id="del_photo" value="1"/><br/>
 {/if}
 						<input type="file" name="photo"/>
 					 </td>

@@ -375,6 +375,11 @@
 
 				// dynamic fields
 				$adherent['dyn'] = get_dynamic_fields($DB, 'adh', $adherent["id_adh"], false);
+
+				// Correct html
+				foreach($adherent as $field => $data) {
+				if(is_string($adherent[$field])) { $adherent[$field] = htmlentities($data); }
+				}
 			}
 
 		}

@@ -147,7 +147,7 @@ CREATE TABLE galette_l10n (
     UNIQUE INDEX (text_orig(20), text_locale(5))
 ) TYPE=MyISAM;
 
--- new table for temporary passwords  2006-02-18
+-- new table for temporary passwords  2006-02-18;
 DROP TABLE IF EXISTS galette_tmppasswds;
 CREATE TABLE galette_tmppasswds (
     id_adh int(10) NOT NULL,

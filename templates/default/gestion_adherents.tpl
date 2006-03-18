@@ -11,8 +11,8 @@
 		</div>
 {/if}
 		<div id="listfilter">
-			{_T("Search:")}&nbsp;
-			<input type="text" name="filtre_nom" value="{$smarty.session.filtre_adh_nom}"/>&nbsp;
+			<label for="filtre_nom">{_T("Search:")}&nbsp;</label>
+			<input type="text" name="filtre_nom" id="filtre_nom" value="{$smarty.session.filtre_adh_nom}"/>&nbsp;
 		 	{_T("among:")}&nbsp;
 			<select name="filtre" onchange="form.submit()">
 				{html_options options=$filtre_options selected=$smarty.session.filtre_adh}
