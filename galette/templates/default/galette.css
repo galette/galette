@@ -482,6 +482,14 @@ a.listing:hover {
 	margin: 0px;
 }
 
+.install-ok {
+	list-style-image: url("../../install/yes.gif");
+}
+
+.install-bad {
+	list-style-image: url("../../install/no.gif");
+}
+
 #listing td {
 	vertical-align: middle;
 }

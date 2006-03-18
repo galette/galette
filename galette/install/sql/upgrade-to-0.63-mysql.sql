@@ -92,7 +92,7 @@ CREATE TABLE galette_transactions (
 
 ALTER TABLE galette_cotisations ADD trans_id int(10) unsigned DEFAULT NULL;
 
--- new table for temporary passwords  2006-02-18
+-- new table for temporary passwords  2006-02-18;
 DROP TABLE IF EXISTS galette_tmppasswds;
 CREATE TABLE galette_tmppasswds (
     id_adh int(10) NOT NULL,

@@ -196,7 +196,7 @@ CREATE TABLE galette_l10n (
 );
 CREATE UNIQUE INDEX galette_l10n_idx ON galette_l10n (text_orig, text_locale);
 
--- new table for temporary passwords  2006-02-18
+-- new table for temporary passwords  2006-02-18;
 DROP TABLE galette_tmppasswds;
 CREATE TABLE galette_tmppasswds (
     id_adh integer NOT NULL,
