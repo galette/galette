@@ -71,6 +71,9 @@ function PasswordImage(){
 	fclose($fh);
 
   imagepng($png,$file);
+  // The perms of the file can be wrong, correct it
+  // WARN : chmod() can be desacivated (i.e. : Free/Online)
+  @chmod($file, 0644);
   return $c;
 }
 
