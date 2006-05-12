@@ -81,9 +81,6 @@
 			else
 				$value="";
 
-			// fill up pref structure
-			$pref[$fieldname] = htmlentities(stripslashes($value),ENT_QUOTES);
-
 			// now, check validity
 			if ($value != '')
 			switch ($fieldname)
@@ -122,11 +119,13 @@
 					if ($fieldname=='pref_numrows' && $value=='0')
 						$value = '1';
 					if (!is_numeric($value) || $value <0)
-						$error_detected[] = "<LI>"._T("- The numbers and measures have to be integers!")."</LI>";
+						$error_detected[] = "<li>"._T("- The numbers and measures have to be integers!")."</li>";
 					break;
 				case 'pref_admin_pass':
 					if (strlen($value)<4)
 						$error_detected[] = _T("- The password must be of at least 4 characters!");
+					else
+						$value = md5($value);
 					break;
 				case 'pref_membership_ext':
 					if (!is_numeric($value) || $value < 0)
@@ -143,6 +142,10 @@
 					}
 					break;
 			}
+
+			// fill up pref structure (after $value's modifications)
+			$pref[$fieldname] = htmlentities(stripslashes($value),ENT_QUOTES);
+
 			$insert_values[$fieldname] = $value;
 			$result->MoveNext();
 		}
