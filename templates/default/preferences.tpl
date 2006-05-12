@@ -117,9 +117,9 @@
 				<tr>
 					<th {if $required.pref_mail_method eq 1}style="color: #FF0000;"{/if}>{_T("Emailing method:")}</th>
 					<td>
-						<p><input type="radio" name="pref_mail_method" value="0" {if $pref.pref_mail_method eq 0}checked="checked"{/if}/>{_T("Emailing disabled")}<br />
-						<input type="radio" name="pref_mail_method" value="1" {if $pref.pref_mail_method eq 1}checked="checked"{/if}/>{_T("PHP mail() function")}<br />
-						<input type="radio" name="pref_mail_method" value="2" {if $pref.pref_mail_method eq 2}checked="checked"{/if}/>{_T("Using a SMTP server (slower)")}</p>
+						<p><input type="radio" name="pref_mail_method" id="no" value="0" {if $pref.pref_mail_method eq 0}checked="checked"{/if}/><label for="no">{_T("Emailing disabled")}</label><br />
+						<input type="radio" name="pref_mail_method" id="php" value="1" {if $pref.pref_mail_method eq 1}checked="checked"{/if}/><label for="php">{_T("PHP mail() function")}</label><br />
+						<input type="radio" name="pref_mail_method" id="smtp" value="2" {if $pref.pref_mail_method eq 2}checked="checked"{/if}/><label for="smtp">{_T("Using a SMTP server (slower)")}</label></p>
 					</td>
 				</tr>
 				<tr>
