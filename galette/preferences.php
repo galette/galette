@@ -59,8 +59,7 @@
 			'pref_etiq_cols' => 1,
 			'pref_etiq_rows' => 1,
 			'pref_etiq_corps' => 1,
-			'pref_admin_login' => 1,
-			'pref_admin_pass' => 1);
+			'pref_admin_login' => 1);
 
 	// Validation
 	if (isset($_POST['valid']) && $_POST['valid'] == "1")
@@ -105,7 +104,7 @@
 					break;
 				case 'pref_numrows':
 					if (!is_numeric($value) || $value <0)
-						$error_detected[] = "<LI>"._T("- The numbers and measures have to be integers!")."</LI>";
+						$error_detected[] = "<li>"._T("- The numbers and measures have to be integers!")."</li>";
 					break;
 				case 'pref_etiq_marges':
 				case 'pref_etiq_hspace':
@@ -124,8 +123,6 @@
 				case 'pref_admin_pass':
 					if (strlen($value)<4)
 						$error_detected[] = _T("- The password must be of at least 4 characters!");
-					else
-						$value = md5($value);
 					break;
 				case 'pref_membership_ext':
 					if (!is_numeric($value) || $value < 0)
@@ -184,20 +181,26 @@
 					$error_detected[] = _T("- Mandatory field empty.")." ".$key;
 		}
 
+		// Check (and crypt) passwords
+		if(strcmp($insert_values['pref_admin_pass'],$_POST['pref_admin_pass_check']) != 0) {
+			$error_detected[] = _T("Passwords mismatch");
+		} else {
+			$insert_values['pref_admin_pass'] = md5($insert_values['pref_admin_pass']);
+		}
+
 		if (count($error_detected)==0)
 		{
-			// empty preferences
-			$requete = "DELETE FROM ".PREFIX_DB."preferences";
-			$DB->Execute($requete);
-
-			// insert new preferences
+			// update preferences
 			while (list($champ,$valeur)=each($insert_values))
 			{
-				$valeur = stripslashes($valeur);
-				$requete = "INSERT INTO ".PREFIX_DB."preferences
-					    (nom_pref, val_pref)
-					    VALUES (".$DB->qstr($champ).",".$DB->qstr($valeur).");";
-				$DB->Execute($requete);
+				if(($champ == "pref_admin_pass" && $_POST['pref_admin_pass']!= '')
+				 | ($champ != "pref_admin_pass")) {
+					$valeur = stripslashes($valeur);
+					$requete = "UPDATE ".PREFIX_DB."preferences
+						    set val_pref=".$DB->qstr($valeur)."
+						    WHERE nom_pref=".$DB->qstr($champ).";\n";
+					$DB->Execute($requete);
+				}
 			}
 
 			// picture upload

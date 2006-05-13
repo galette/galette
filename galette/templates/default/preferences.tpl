@@ -196,7 +196,13 @@
 				<tr>
 					<th {if $required.pref_admin_pass eq 1}style="color: #FF0000;"{/if}>{_T("Password:")}</th>
 					<td>
-						<input type="text" name="pref_admin_pass" value="{$pref.pref_admin_pass}" maxlength="20"/>
+						<input type="password" name="pref_admin_pass" value="" maxlength="20"/>
+					</td>
+				</tr>
+				<tr>
+					<th {if $required.pref_admin_pass_check eq 1}style="color: #FF0000;"{/if}>{_T("Retype password:")}</th>
+					<td>
+						<input type="password" name="pref_admin_pass_check" value="" maxlength="20"/>
 					</td>
 				</tr>
 			</table>
