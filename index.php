@@ -43,6 +43,26 @@
 		echo "<a href=\"self_adherent.php?pref_lang=$pref_lang\">"._T("Subscribe")."</a>";
 	}
 
+	if( @opendir("install")) {
+		if(!(@remove_directory("./install/"))) {
+			echo '<html>
+				<head><title>galette Installation</title></head>
+				<link rel="stylesheet" type="text/css" href="./templates/default/galette.css" >
+				<body>
+				<h1 class="titreinstall">Galette installation</h1>
+				<div id="installpage" align="center"><h1>'
+				._T("For securing the system, please delete the install directory").'</h1>
+				<form method="get">
+				<p id="submitbutton3">
+				<input type="submit" value="'._T("Homepage").'">
+				</p>
+				</form>
+				</div>
+				</body></html>';
+			die();
+		}
+	}
+
 	// Authentication procedure
 	if (isset($_POST["ident"])) 
 	{ 
