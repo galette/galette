@@ -7,6 +7,13 @@ ALTER TABLE galette_adherents ADD lieu_naissance character varying(20);
 ALTER TABLE galette_adherents ALTER lieu_naissance SET DEFAULT '';
 ALTER TABLE galette_adherents ADD gpgid character varying(8);
 ALTER TABLE galette_adherents ADD fingerprint character varying(50);
+-- to test
+ALTER TABLE galette_adherents ADD mdp_temp_adh character varying(40) ;
+UPDATE galette_adherents SET mdp_temp_adh = CAST(mdp_adh AS character varying(40));
+ALTER TABLE galette_adherents DROP COLUMN mdp_adh;
+ALTER TABLE galette_adherents RENAME mdp_temp_adh TO mdp_adh;
+
+
 CREATE TABLE galette_pictures (
     id_adh integer DEFAULT 0 NOT NULL,
     picture bytea NOT NULL,
