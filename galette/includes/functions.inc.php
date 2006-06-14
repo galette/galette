@@ -404,16 +404,4 @@ function get_numeric_posted_value($name, $defval) {
 	return $defval;
 }
 
-function remove_directory($dir) {
-/* from http://fr2.php.net/manual/fr/function.rmdir.php#66009 , brianleeholub at yahoo dot com */
-	$dir_contents = scandir($dir);
-	foreach ($dir_contents as $item) {
-		if (is_dir($dir.$item) && $item != '.' && $item != '..') {
-			remove_directory($dir.$item.'/');
-		} elseif (file_exists($dir.$item) && $item != '.' && $item != '..') {
-			unlink($dir.$item);
-		}
-	}
-       return rmdir($dir);
-}
 ?>

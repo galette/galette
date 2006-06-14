@@ -26,14 +26,21 @@
 		$_SESSION["pref_lang"]=$_GET['pref_lang'];
 	}
 	*/
-	
-	include("includes/config.inc.php"); 
+
+	// test if galette is already installed and redirect to install page if not
+	$installed = file_exists(dirname( __FILE__).'/includes/config.inc.php');
+	if (! $installed) {
+		header("location: install/index.php");
+	}
+
+	include("includes/config.inc.php");
 	include(WEB_ROOT."includes/database.inc.php");
 	include(WEB_ROOT."includes/functions.inc.php");
 	include(WEB_ROOT."includes/session.inc.php");
 	include_once(WEB_ROOT."includes/i18n.inc.php");
 	include_once(WEB_ROOT."includes/smarty.inc.php");
-	
+
+
 	function self_adhesion()
 	{
 		global $_POST, $_GET, $pref_lang;
@@ -43,29 +50,9 @@
 		echo "<a href=\"self_adherent.php?pref_lang=$pref_lang\">"._T("Subscribe")."</a>";
 	}
 
-	if( @opendir("install")) {
-		if(!(@remove_directory("./install/"))) {
-			echo '<html>
-				<head><title>galette Installation</title></head>
-				<link rel="stylesheet" type="text/css" href="./templates/default/galette.css" >
-				<body>
-				<h1 class="titreinstall">Galette installation</h1>
-				<div id="installpage" align="center"><h1>'
-				._T("For securing the system, please delete the install directory").'</h1>
-				<form method="get">
-				<p id="submitbutton3">
-				<input type="submit" value="'._T("Homepage").'">
-				</p>
-				</form>
-				</div>
-				</body></html>';
-			die();
-		}
-	}
-
 	// Authentication procedure
-	if (isset($_POST["ident"])) 
-	{ 
+	if (isset($_POST["ident"]))
+	{
 		if (
 			($_POST["login"]==PREF_ADMIN_LOGIN && $_POST["password"]==PREF_ADMIN_PASS) ||
 			($_POST["login"]==PREF_ADMIN_LOGIN && md5($_POST["password"])==PREF_ADMIN_PASS)
