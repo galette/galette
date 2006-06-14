@@ -1,8 +1,16 @@
 <?
-        if (!isset($_POST["install_lang"])) $pref_lang="english";
-        else $pref_lang=$_POST["install_lang"];
-	define("WEB_ROOT", realpath(dirname($_SERVER["SCRIPT_FILENAME"])."/../")."/");
-        include_once("../includes/i18n.inc.php"); 
+	if (!isset($_POST["install_lang"])) $pref_lang="english";
+		else $pref_lang=$_POST["install_lang"];
+	define("WEB_ROOT", realpath(dirname(__FILE__)."/../")."/");
+	include_once("../includes/i18n.inc.php"); 
+
+// test if galette is already installed and redirect to index page if so
+$configfile = dirname( __FILE__).'/../includes/config.inc.php';
+$installed = file_exists($configfile);
+if ($installed) {
+	header("location: ../index.php");
+}
+
 	session_start();
 	$step="1";
 	$error_detected="";
@@ -224,7 +232,7 @@
 						'/photos',
 						'/cache',
 						'/tempimages',
-						'/includes/config.inc.php');
+						'/includes');
 			foreach ($files_need_rw as $file)
 			{
 				if (!is_writable(dirname(__FILE__).'/..'.$file))
@@ -260,7 +268,7 @@
 		<input type="hidden" name="install_type" value="<?php echo $_POST["install_type"]; ?>">
 	</form>		
 <?
-			}
+		}
 			else
 			{
 ?>
