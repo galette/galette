@@ -1,10 +1,10 @@
 		<h1 class="titre">{_T("Management of contributions")}</h1>
 		<form action="gestion_contributions.php" method="get" name="filtre">
 		<div id="listfilter">
-			{_T("Show contributions since")}&nbsp;
-			<input type="text" name="contrib_filter_1" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_1}"/>
-			{_T("until")}&nbsp;
-			<input type="text" name="contrib_filter_2" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_2}"/>
+			<label for="contrib_filter_1">{_T("Show contributions since")}</label>&nbsp;
+			<input type="text" name="contrib_filter_1" id="contrib_filter_1" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_1}"/>
+			<label for="contrib_filter_2">{_T("until")}</label>&nbsp;
+			<input type="text" name="contrib_filter_2" id="contrib_filter_2" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_2}"/>
 			<input type="submit" class="submit" value="{_T("Filter")}"/>
 		</div>
 		<table class="infoline" width="100%">

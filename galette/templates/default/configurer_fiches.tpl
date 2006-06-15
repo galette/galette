@@ -29,7 +29,7 @@
 {foreach from=$dyn_fields item=field}
 			<tr>
 				<td class="listing">{$field.index}</td> 
-				<td class="listing left">{$field.name}</td>
+				<td class="listing left">{$field.name|escape}</td>
 				<td class="listing left">{$field.perm}</td>
 				<td class="listing left">{$field.type}</td>
 				<td class="listing">
