@@ -226,10 +226,9 @@ a.listing:hover {
 }
 
 .nav1 {
-	width: 150px;
-	margin-left: 5px;
+	width: 155px;
 	border-color: #7777FF;
-	border-width: 2px;
+	border-width: 1px;
 	border-style: solid;
 	margin-bottom: 10px;
 }
@@ -237,7 +236,7 @@ a.listing:hover {
 .nav1 h1 {
 	margin: 2px;
 	font-size: 10px;
-	background-color: #DDDDFF;
+	background-color: #CDCDFF;
 	padding-left: 2px;
 }
 
@@ -263,11 +262,9 @@ a.listing:hover {
 }
 
 #legende {
-	width: 150px;
-	margin-left: 5px;
-	margin-bottom: 5px;
+	width: 155px;
 	border-color: #7777FF;
-	border-width: 2px;
+	border-width: 1px;
 	border-style: solid;
 }
 
@@ -278,7 +275,7 @@ a.listing:hover {
 #legende h1 {
 	margin: 2px;
 	font-size: 10px;
-	background-color: #DDDDFF;
+	background-color: #CDCDFF;
 	padding-left: 2px;
 	text-align: left;
 }
@@ -299,8 +296,8 @@ a.listing:hover {
 
 #content {
 	position: absolute;
-	padding-right: 15px;
-	left: 170px;
+	padding-right: 10px;
+	left: 180px;
 	right: 0px;
 }
 
@@ -309,6 +306,12 @@ a.listing:hover {
 	position: absolute;
 	top: 0px;
 	left: 0px;
+	background-color: #DDDDFF;
+	padding: 5px;
+        border-color: #7777FF;
+        border-width: 1px;
+        border-style: solid;
+	-moz-border-radius: 0px 0px 8px 0px;
 }
 
 #menu a {
