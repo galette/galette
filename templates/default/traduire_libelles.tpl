@@ -28,7 +28,7 @@
 				<tr>
 					<td class="listing left">{$trans[lang].name}</td> 
 					<td class="listing left">
-						<input type="text" name="text_trans_{$trans[lang].key}" value="{$trans[lang].text}"/>
+						<input type="text" name="text_trans_{$trans[lang].key}" value="{$trans[lang].text|escape}"/>
 					</td>
 				</tr>
 {/section}
