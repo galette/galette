@@ -698,7 +698,8 @@ echo "</ul>";
 						echo "<li class=\"install-bad\">".$w1." ".$w2." ".$w3." ".$extra."</li>";
 						//doesn't work if "drop" or "rename" is uppercase
 						//if (trim($w1) != "drop" && trim($w1) != "rename") $error = true;
-						if ( ! strcasecmp(trim($w1),"drop") && ! strcasecmp(trim($w1),"rename") ) $error = true;
+						//if error are not on drop,DROP,rename or RENAME we can continue
+						if ( (strcasecmp(trim($w1),"drop") != 0) && (strcasecmp(trim($w1),"rename") != 0) ) $error = true;
 					}
 					else
 						echo "<li class=\"install-ok\">".$w1." ".$w2." ".$w3." ".$extra."</li>";
