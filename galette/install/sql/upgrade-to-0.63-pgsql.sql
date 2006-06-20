@@ -1,14 +1,14 @@
 ALTER TABLE galette_adherents ADD pref_lang character varying(20);
 ALTER TABLE galette_adherents ALTER pref_lang SET DEFAULT 'french';
--- stephs
 ALTER TABLE galette_adherents ALTER ddn_adh SET DEFAULT '19010101';
 ALTER TABLE galette_adherents ALTER date_crea_adh SET DEFAULT '00000101';
 ALTER TABLE galette_adherents ADD lieu_naissance character varying(20);
 ALTER TABLE galette_adherents ALTER lieu_naissance SET DEFAULT '';
 ALTER TABLE galette_adherents ADD gpgid character varying(8);
 ALTER TABLE galette_adherents ADD fingerprint character varying(50);
--- to test
-ALTER TABLE galette_adherents ADD mdp_temp_adh character varying(40) ;
+
+-- to test;
+ALTER TABLE galette_adherents ADD mdp_temp_adh character varying(40);
 UPDATE galette_adherents SET mdp_temp_adh = CAST(mdp_adh AS character varying(40));
 ALTER TABLE galette_adherents DROP COLUMN mdp_adh;
 ALTER TABLE galette_adherents RENAME mdp_temp_adh TO mdp_adh;
@@ -20,7 +20,7 @@ CREATE TABLE galette_pictures (
     format character varying(30) DEFAULT ''::character varying NOT NULL
 );
 
--- stephs
+-- stephs ;
 INSERT INTO galette_types_cotisation VALUES (7, 'Cotisation annuelle (à payer)');
 CREATE UNIQUE INDEX galette_adherents_idx ON galette_adherents (id_adh);
 CREATE UNIQUE INDEX galette_login_idx     ON galette_adherents (login_adh);
@@ -30,13 +30,13 @@ CREATE UNIQUE INDEX galette_types_cotisation_idx ON galette_types_cotisation (id
 CREATE UNIQUE INDEX galette_logs_idx ON galette_logs (id_log);
 
 -- Fix table preference with duplicate ids and create index;
--- Cause problems with aldil dump(stephs)
+-- Cause problems with aldil dump(stephs) ;
 -- UPDATE galette_preferences SET id_pref=id_pref+1 WHERE (id_pref >= 4 AND nom_pref != 'pref_ville');
 -- UPDATE galette_preferences SET id_pref=id_pref+1 WHERE (id_pref >= 2 AND nom_pref != 'pref_adresse');
 CREATE UNIQUE INDEX galette_preferences_idx ON galette_preferences (id_pref);
--- Add new or missing preferences
+-- Add new or missing preferences;
 -- INSERT INTO galette_preferences VALUES (22, 'pref_mail_method', '0');
--- INSERT INTO galette_preferences VALUES (23, 'pref_mail_smtp', '0');
+-- INSERT INTO galette_preferences VALUES (23, 'pref_mail_smtp', '0'); 
 -- INSERT INTO galette_preferences VALUES (24, 'pref_membership_ext', '12');
 -- INSERT INTO galette_preferences VALUES (25, 'pref_beg_membership', '');
 
