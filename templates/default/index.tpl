@@ -8,7 +8,10 @@
 <body>
 	<form action="index.php" method="post">
 		<div class="login-box">
-		<h1 class="titre">{_T("Login")}</h1>
+  {if $smarty.session.customLogo}
+  <img src="photos/0.{$smarty.session.customLogoFormat}" height="{$smarty.session.customLogoHeight}" width="{$smarty.session.customLogoWidth}" alt="[ Galette ]"/>
+  {/if}
+<h1 class="titre">{_T("Login")}</h1>
 {foreach key=langue item=langue_t from=$languages}
 		<a href="index.php?pref_lang={$langue}"><img src="lang/{$langue}.gif" alt="{$langue_t}" class="flag"/></a>
 {/foreach}

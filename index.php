@@ -39,7 +39,7 @@
 	include(WEB_ROOT."includes/session.inc.php");
 	include_once(WEB_ROOT."includes/i18n.inc.php");
 	include_once(WEB_ROOT."includes/smarty.inc.php");
-
+  require_once(WEB_ROOT."includes/picture.class.php");
 
 	function self_adhesion()
 	{
@@ -94,6 +94,18 @@
 		header("location: gestion_adherents.php");
 	else
 	{
+     //check if there's a custom logo
+     $customLogo =& new picture(0);
+     if ( $customLogo->HAS_PICTURE ) {
+       $_SESSION["customLogo"] = true;
+       $_SESSION["customLogoFormat"] = $customLogo->FORMAT;
+       $_SESSION["customLogoHeight"] = $customLogo->OPTIMAL_HEIGHT;
+       $_SESSION["customLogoWidth"] = $customLogo->OPTIMAL_WIDTH;
+     } else {
+       $_SESSION["customLogo"] = false;
+     }
+
+
 		// display page
 		$tpl->assign("languages",drapeaux());
 		$tpl->display("index.tpl");
