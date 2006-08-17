@@ -16,7 +16,11 @@
 	</div>
 	<div id="menu">
 		<div id="logo">
-			<img src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60"/>
+  {if $smarty.session.customLogo}
+  <img src="photos/0.{$smarty.session.customLogoFormat}" height="60" alt="[ Galette ]"/>
+  {else}
+  <img src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60"/>  
+  {/if}
 		</div>
 		<div class="nav1">
 			<h1>{_T("Navigation")}</h1>
