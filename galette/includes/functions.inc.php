@@ -263,14 +263,24 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
 	}
 
   // Headers :
+
+  // Add a Reply-To field in the mail headers.
+  // Fix bug #6654.
+  
+  if ( PREF_EMAIL_REPLY_TO )
+    $reply_to = PREF_EMAIL_REPLY_TO;
+  else
+    $reply_to = PREF_EMAIL;
+
   $headers = array("From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">",
-									"Message-ID: <".makeRandomPassword(16)."-galette@".$_SERVER['SERVER_NAME'].">",
-									"X-Sender: <".PREF_EMAIL.">",
-									"Return-Path: <".PREF_EMAIL.">",
-									"Errors-To: <".PREF_EMAIL.">",
-									"X-Mailer: Galette-".GALETTE_VERSION,
-									"X-Priority: 3",
-									"Content-Type: $content_type; charset=iso-8859-15");
+                   "Message-ID: <".makeRandomPassword(16)."-galette@".$_SERVER['SERVER_NAME'].">",
+                   "Reply-To: <".$reply_to.">",
+                   "X-Sender: <".PREF_EMAIL.">",                   
+                   "Return-Path: <".PREF_EMAIL.">",
+                   "Errors-To: <".PREF_EMAIL.">",
+                   "X-Mailer: Galette-".GALETTE_VERSION,
+                   "X-Priority: 3",
+                   "Content-Type: $content_type; charset=iso-8859-15");
 
   switch (PREF_MAIL_METHOD)
     {
