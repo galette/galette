@@ -115,6 +115,10 @@
 					<td><input type="text" name="pref_email" value="{$pref.pref_email}" maxlength="100" size="30"/></td>
 				</tr>
 				<tr>
+					<th {if $required.pref_email_reply_to eq 1}style="color: #FF0000;"{/if}>{_T("Reply-To Email:")}</th> 
+					<td><input type="text" name="pref_email_reply_to" value="{$pref.pref_email_reply_to}" maxlength="100" size="30"/><br/><span class="exemple">{_T("Leave empty to use Sender Email as reply address")}</span></td>
+				</tr>
+				<tr>
 					<th {if $required.pref_mail_method eq 1}style="color: #FF0000;"{/if}>{_T("Emailing method:")}</th>
 					<td>
 						<p><input type="radio" name="pref_mail_method" id="no" value="0" {if $pref.pref_mail_method eq 0}checked="checked"{/if}/><label for="no">{_T("Emailing disabled")}</label><br />
