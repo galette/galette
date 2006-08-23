@@ -47,7 +47,7 @@
 
 	$field_id = get_numeric_form_value("id", '');
 	if ($field_id == '')
-		header("location: configurer_fiches?form=$form_name");
+		header("location: configurer_fiches.php?form=$form_name");
 	$field_type = $DB->GetOne("SELECT field_type FROM $field_types_table WHERE field_id=$field_id");
 	$properties = $field_properties[$field_type];
 	
@@ -123,10 +123,10 @@
 			} 
 		}
 		if (count($error_detected)==0)
-			header("location: configurer_fiches?form=$form_name");
+			header("location: configurer_fiches.php?form=$form_name");
 	}
 	elseif (isset($_POST["cancel"])) {
-		header("location: configurer_fiches?form=$form_name");
+		header("location: configurer_fiches.php?form=$form_name");
 	} else {
 		$query = "SELECT *
 			  FROM $field_types_table
