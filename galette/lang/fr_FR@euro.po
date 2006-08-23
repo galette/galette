@@ -1,7 +1,7 @@
 # translation of fr_FR@euro.po to fr_FR@euro
-# translation of fr_FR@euro.po to
 # Copyright (C) 2005, 2006 Free Software Foundation, Inc.
 #
+# Georges Khaznadar <gekhajofour@netinfo.fr>, 2004.
 # Stéphane Salès <ssales@tuxz.org>, 2005, 2006.
 # Loïs Taulelle <gruiick@gmail.com>, 2006.
 msgid ""
