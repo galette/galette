@@ -3,7 +3,7 @@
 This is an example for your configuration file,
 read comments and replace the "blanks".
 
-$Id 
+$Id$ 
 */
 
 /* choose your database engine, values : pgsql|mysql */
@@ -16,7 +16,7 @@ define("USER_DB", "galette");
 define("PWD_DB", "demo");
 /* the database name */
 define("NAME_DB", "galette");
-/* FIXME database root directory ?! */
+/* Galette root directory in webserver */
 define("WEB_ROOT", "/var/www/galette/");
 /* tables name prefix (default is galette_) */
 define("PREFIX_DB", "galette_");
