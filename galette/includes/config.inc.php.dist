@@ -1,0 +1,26 @@
+<?php
+/* 
+This is an example for your configuration file,
+read comments and replace the "blanks".
+
+$Id 
+*/
+
+/* choose your database engine, values : pgsql|mysql */
+define("TYPE_DB", "pgsql"); 
+/* hostname for the database */
+define("HOST_DB", "localhost"); 
+/* the username for the database */
+define("USER_DB", "galette");
+/* password for the username define above */
+define("PWD_DB", "demo");
+/* the database name */
+define("NAME_DB", "galette");
+/* FIXME database root directory ?! */
+define("WEB_ROOT", "/var/www/galette/");
+/* tables name prefix (default is galette_) */
+define("PREFIX_DB", "galette_");
+/* FIXME will disappear soon */
+define("STOCK_FILES", "tempimages");
+
+?>
