@@ -1023,6 +1023,17 @@ define(\"STOCK_FILES\", \"tempimages\");
 				$DB->Execute($default);
 				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_corps','12')";
 				$DB->Execute($default);
+				//some new values in v0.63 for preferences
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_mail_method','0')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_mail_smtp','')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_membership_ext','12')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_beg_membership','')";
+				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_mail_reply_to','')";
+				$DB->Execute($default);
 
 				// contribution types
 				$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation(id_type_cotis,libelle_type_cotis,cotis_extension) values (1, 'annual fee', '1')";
@@ -1085,15 +1096,6 @@ define(\"STOCK_FILES\", \"tempimages\");
 				$DB->Execute($default);
 			}
 
-			//some new values in v0.63 for preferences
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_mail_method','0')";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_mail_smtp','')";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_membership_ext','12')";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_beg_membership','')";
-			$DB->Execute($default);
 
 			// NB: il faudrait améliorer cette partie car la détection
 			// d'erreur ne s'effectue que sur le dernier insert. prévoir une boucle.
