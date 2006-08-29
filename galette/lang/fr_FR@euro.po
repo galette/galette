@@ -42,7 +42,8 @@ msgstr "Tel :"
 
 #: ../templates/default/gestion_contributions.tpl:135
 msgid "Do you really want to delete this contribution of the database ?"
-msgstr "Voulez vous vraiment effacer cette contribution de la base de données ?"
+msgstr ""
+"Voulez vous vraiment effacer cette contribution de la base de données ?"
 
 #: ../install/index.php:258
 msgid "(for a directory)"
@@ -62,7 +63,9 @@ msgstr "Éditer de nouveau"
 
 #: ../self_adherent.php:217
 msgid "Your login and password was sent by mail at this address :"
-msgstr "Votre nom d'utilisateur et votre mot de passe vous ont été envoyés par mail à cette adresse : "
+msgstr ""
+"Votre nom d'utilisateur et votre mot de passe vous ont été envoyés par mail "
+"à cette adresse : "
 
 #: ../templates/default/editer_champ.tpl:30
 msgid "Position:"
@@ -86,7 +89,8 @@ msgstr "- Adresse courriel non valide !"
 
 #: ../templates/default/preferences.tpl:119
 msgid "Leave empty to use Sender Email as reply address"
-msgstr "Laisser vide pour utiliser le courriel expéditeur comme adresse de réponse"
+msgstr ""
+"Laisser vide pour utiliser le courriel expéditeur comme adresse de réponse"
 
 #: ../install/index.php:641
 msgid "Creation of the database"
@@ -94,7 +98,9 @@ msgstr "Création de la base"
 
 #: ../preferences.php:164
 msgid "- You must indicate an email address Galette should use to send emails!"
-msgstr "- Vous devez indiquer l'adresse qu'utilisera Galette pour expédier des courriels !"
+msgstr ""
+"- Vous devez indiquer l'adresse qu'utilisera Galette pour expédier des "
+"courriels !"
 
 #: ../includes/i18n.inc.php:207
 msgid "Partnership"
@@ -108,7 +114,9 @@ msgstr "Je souhaite apparaître dans la liste des membres :"
 
 #: ../install/index.php:839
 msgid "Your database is maybe not usable, try to restore the older version."
-msgstr "Votre base est peut-être inutilisable, essayez de restaurer une ancienne version."
+msgstr ""
+"Votre base est peut-être inutilisable, essayez de restaurer une ancienne "
+"version."
 
 #: ../footer.php:119 ../footer.php:123
 #: ../templates/default/gestion_adherents.tpl:53
@@ -137,7 +145,7 @@ msgstr "Paramètres administrateur"
 msgid "Delete failed"
 msgstr "La suppression a échouée"
 
-#: ../install/index.php:1177
+#: ../install/index.php:1179
 msgid "Installation complete !"
 msgstr "Fin de l'installation"
 
@@ -164,7 +172,9 @@ msgstr "[mod]"
 msgid ""
 "This account doesn't have a valid email address. Please contact an "
 "administrator."
-msgstr "Ce compte ne contient pas d'adresse courriel, contactez votre administrateur Galette"
+msgstr ""
+"Ce compte ne contient pas d'adresse courriel, contactez votre administrateur "
+"Galette"
 
 #: ../self_contribution.php:234
 #: ../templates/default/ajouter_contribution.tpl:26
@@ -242,7 +252,8 @@ msgstr "[suppr]"
 
 #: ../lostpasswd.php:45
 msgid "Nonexistent login sent via the lost password form. Login:"
-msgstr "Login inexistant envoyé via le formulaire de récupération du mot de passe :"
+msgstr ""
+"Login inexistant envoyé via le formulaire de récupération du mot de passe :"
 
 #: ../templates/default/preferences.tpl:151
 msgid "Vertical spacing:"
@@ -340,15 +351,20 @@ msgstr "Vice-président"
 msgid ""
 "Database can't be reached. Please go back to enter the connection parameters "
 "again."
-msgstr "La base n'est accessible. Veuillez revenir en arrière pour saisir à nouveau les paramètres de connexion."
+msgstr ""
+"La base n'est accessible. Veuillez revenir en arrière pour saisir à nouveau "
+"les paramètres de connexion."
 
 #: ../voir_adherent.php:102 ../templates/default/ajouter_adherent.tpl:92
 msgid "Active"
 msgstr "Actif"
 
 #: ../ajouter_adherent.php:207 ../ajouter_adherent.php:209
-msgid "- You can't send a confirmation by email if the member hasn't got an address!"
-msgstr "- Vous ne pouvez pas envoyer de confirmation par courriel si l'adhérent n'a pas d'adresse !"
+msgid ""
+"- You can't send a confirmation by email if the member hasn't got an address!"
+msgstr ""
+"- Vous ne pouvez pas envoyer de confirmation par courriel si l'adhérent n'a "
+"pas d'adresse !"
 
 #: ../install/index.php:573
 msgid "DROP OPeration not allowed"
@@ -367,7 +383,7 @@ msgstr "Paramètres courriel :"
 msgid "List of contributions"
 msgstr "Liste des contributions"
 
-#: ../install/index.php:1184
+#: ../install/index.php:1186
 msgid "For securing the system, please delete the install directory"
 msgstr "Pour sécuriser le système, veuillez supprimer le dossier install"
 
@@ -384,7 +400,7 @@ msgstr "Mot de passe envoyé. Login :"
 msgid "IP"
 msgstr "IP"
 
-#: ../install/index.php:1143
+#: ../install/index.php:1145
 msgid ""
 "This can come from the permissions on the file includes/config.inc.php or "
 "the impossibility to make an INSERT into the database."
@@ -509,7 +525,9 @@ msgstr "Gestion des contributions"
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the "
 "installation."
-msgstr "Galette ne dispose pas de droits suffisants sur la base de données pour poursuivre l'installation."
+msgstr ""
+"Galette ne dispose pas de droits suffisants sur la base de données pour "
+"poursuivre l'installation."
 
 #: ../templates/default/ajouter_adherent.tpl:132
 msgid "Send a mail:"
@@ -621,7 +639,8 @@ msgstr "Type d'installation"
 
 #: ../ajouter_transaction.php:144
 msgid "- No originator selected (register a non-member first if necessary)."
-msgstr "- Aucun emetteur sélectionné (enregistrez un non-membre si nécessaire)."
+msgstr ""
+"- Aucun emetteur sélectionné (enregistrez un non-membre si nécessaire)."
 
 #: ../templates/default/lostpasswd.tpl:34
 msgid "Username or email:"
@@ -676,7 +695,9 @@ msgstr "Monsieur"
 msgid ""
 "Do you really want to delete this category ?\n"
 " All associated data will be deleted as well."
-msgstr "Voulez vous vraiment effacer cette catégorie ? \n Toutes les données associées seront effacées avec"
+msgstr ""
+"Voulez vous vraiment effacer cette catégorie ? \n"
+" Toutes les données associées seront effacées avec"
 
 #: ../templates/default/preferences.tpl:134
 msgid "Label generation parameters:"
@@ -692,7 +713,9 @@ msgstr "secondes."
 
 #: ../lostpasswd.php:126
 msgid "The server mail filled in the preferences cannot be reached"
-msgstr "Le serveur de mail indiqué dans les préférences ne peut être joint. Contactez votre administrateur Galette."
+msgstr ""
+"Le serveur de mail indiqué dans les préférences ne peut être joint. "
+"Contactez votre administrateur Galette."
 
 #: ../templates/default/configurer_fiches.tpl:26
 msgid "Position"
@@ -798,7 +821,7 @@ msgstr "Nombre de lignes d'étiquettes :"
 msgid "Contributions"
 msgstr "Contributions"
 
-#: ../install/index.php:1187
+#: ../install/index.php:1189
 msgid "Homepage"
 msgstr "Page d'accueil"
 
@@ -831,8 +854,9 @@ msgid ""
 "Some members you have selected have no e-mail address. However, you can "
 "generate envelope labels to contact them by snail mail."
 msgstr ""
-"Certains des membres que vous avez sélectionnés n'ont pas d'adresse de courriel. Cependant vous pouvez produire des étiquettes d'enveloppes "
-"pour les contacter par courrier postal."
+"Certains des membres que vous avez sélectionnés n'ont pas d'adresse de "
+"courriel. Cependant vous pouvez produire des étiquettes d'enveloppes pour "
+"les contacter par courrier postal."
 
 #: ../footer.php:169 ../templates/default/page.tpl:132
 msgid "Contribution"
@@ -859,7 +883,9 @@ msgstr "Président"
 msgid ""
 "(the member will receive his username and password by email, if he has an "
 "address.)"
-msgstr "(l'adhérent recevra son identifiant et son mot de passe par courriel, s'il a une adresse.)"
+msgstr ""
+"(l'adhérent recevra son identifiant et son mot de passe par courriel, s'il a "
+"une adresse.)"
 
 #: ../footer.php:53 ../templates/default/page.tpl:38
 msgid "My contributions"
@@ -889,7 +915,7 @@ msgstr "Les adhérents à jour"
 msgid "transaction added"
 msgstr "transaction ajoutée"
 
-#: ../install/index.php:1194
+#: ../install/index.php:1196
 msgid "Step 10 - End of the update"
 msgstr "Étape 10 - Fin de la mise à jour"
 
@@ -942,7 +968,7 @@ msgstr "- Le mot de passe doit être composé d'au moins 4 caractères !"
 msgid "Please enter a message."
 msgstr "Veuillez saisir un message."
 
-#: ../install/index.php:1182
+#: ../install/index.php:1184
 msgid "Galette has been successfully updated!"
 msgstr "Galette a été mis à jour avec succès !"
 
@@ -1022,7 +1048,7 @@ msgstr "Fiche adhérent ajoutée"
 msgid "DROP operation allowed"
 msgstr "Opération DROP autorisée"
 
-#: ../install/index.php:1102
+#: ../install/index.php:1104
 msgid "Parameters saved into the database"
 msgstr "Paramètres sauvegardés dans la base de données"
 
@@ -1045,15 +1071,18 @@ msgid "Send subscription mail to :"
 msgstr "Envoyer le courriel d'inscription à :"
 
 #: ../install/index.php:588
-msgid "GALETTE hasn't got enough permissions on the database to continue the update."
-msgstr "Galette ne dispose pas de droits suffisants sur la base de données pour poursuivre la mise à jour."
+msgid ""
+"GALETTE hasn't got enough permissions on the database to continue the update."
+msgstr ""
+"Galette ne dispose pas de droits suffisants sur la base de données pour "
+"poursuivre la mise à jour."
 
 #: ../templates/default/ajouter_contribution.tpl:85
 #: ../templates/default/configurer_fiches.tpl:17
 msgid "Continue"
 msgstr "Continuer"
 
-#: ../install/index.php:1168
+#: ../install/index.php:1170
 msgid "Step 9 - Saving of the parameters"
 msgstr "Étape 9 - Sauvegarde des paramètres"
 
@@ -1067,7 +1096,9 @@ msgstr "La base de données a été correctement créée."
 
 #: ../lostpasswd.php:98
 msgid "Someone (probably you) asked to recover your password."
-msgstr "Quelqu'un (sûrement vous) à demandé à ce que l'on vous renvoie votre mot de passe."
+msgstr ""
+"Quelqu'un (sûrement vous) à demandé à ce que l'on vous renvoie votre mot de "
+"passe."
 
 #: ../install/index.php:390
 msgid "Unable to connect to the database"
@@ -1145,7 +1176,9 @@ msgstr "Préfixe de table :"
 msgid ""
 "To run, Galette needs a number of rights on the database (CREATE, DROP, "
 "DELETE, UPDATE, SELECT and INSERT)"
-msgstr "Pour fonctionner, Galette doit avoir un certain nombre de droits sur la base de données (CREATE, DROP, DELETE, UPDATE, SELECT et INSERT)"
+msgstr ""
+"Pour fonctionner, Galette doit avoir un certain nombre de droits sur la base "
+"de données (CREATE, DROP, DELETE, UPDATE, SELECT et INSERT)"
 
 #: ../footer.php:96 ../templates/default/gestion_adherents.tpl:115
 #: ../templates/default/page.tpl:70
@@ -1159,7 +1192,7 @@ msgstr "Admin Galette :"
 
 #: ../install/index.php:209 ../install/index.php:278 ../install/index.php:363
 #: ../install/index.php:418 ../install/index.php:613 ../install/index.php:868
-#: ../install/index.php:930 ../install/index.php:1117
+#: ../install/index.php:930 ../install/index.php:1119
 msgid "Next step"
 msgstr "Étape suivante"
 
@@ -1197,7 +1230,9 @@ msgstr "Préférences"
 msgid ""
 "You're installing Galette for the first time, or you wish to erase an older "
 "version of Galette without keeping your data"
-msgstr "Vous installez Galette pour la première fois, ou vous souhaitez écraser une ancienne version de Galette sans conserver vos données"
+msgstr ""
+"Vous installez Galette pour la première fois, ou vous souhaitez écraser une "
+"ancienne version de Galette sans conserver vos données"
 
 #: ../templates/default/gestion_contributions.tpl:12
 msgid "contributions"
@@ -1234,8 +1269,11 @@ msgstr "Veuillez indiquer un objet pour le message."
 #: ../mailing_adherents.php:142 ../mailing_adherents.php:143
 #: ../lostpasswd.php:130 ../lostpasswd.php:131 ../ajouter_adherent.php:305
 #: ../ajouter_adherent.php:306
-msgid "**IMPORTANT** There was a probably breaking attempt when sending mail to :"
-msgstr "**IMPORTANT** Il est possible qu'une tentative d'atteinte au système ai eu lieu lors de l'envoi à :"
+msgid ""
+"**IMPORTANT** There was a probably breaking attempt when sending mail to :"
+msgstr ""
+"**IMPORTANT** Il est possible qu'une tentative d'atteinte au système ai eu "
+"lieu lors de l'envoi à :"
 
 #: ../self_contribution.php:208 ../templates/default/ajouter_adherent.tpl:1
 #: ../templates/default/ajouter_contribution.tpl:1
@@ -1270,13 +1308,14 @@ msgstr "-- selectionner un nom --"
 
 #: ../install/index.php:979
 msgid "Unable to create configuration file (includes/config.inc.php)"
-msgstr "Impossible de créer le fichier de configuration (includes/config.inc.php)"
+msgstr ""
+"Impossible de créer le fichier de configuration (includes/config.inc.php)"
 
 #: ../templates/default/gestion_contributions.tpl:52
 msgid "Member"
 msgstr "Adhérent"
 
-#: ../install/index.php:1181
+#: ../install/index.php:1183
 msgid "Galette has been successfully installed!"
 msgstr "Galette a été installé avec succès !"
 
@@ -1297,7 +1336,9 @@ msgstr "haut"
 msgid ""
 "Do you really want to delere all selected accounts (and related "
 "contributions)?"
-msgstr "Voulez vous réellement effacer tous les comptes sélectionnés (ainsi que toutes les contributions associées) ?"
+msgstr ""
+"Voulez vous réellement effacer tous les comptes sélectionnés (ainsi que "
+"toutes les contributions associées) ?"
 
 #: ../templates/default/log.tpl:64
 msgid "Action"
@@ -1377,7 +1418,7 @@ msgid "transaction updated"
 msgstr "transaction mise à jour"
 
 #: ../install/index.php:265 ../install/index.php:592 ../install/index.php:843
-#: ../install/index.php:1145
+#: ../install/index.php:1147
 msgid "Retry"
 msgstr "Réessayer"
 
@@ -1389,7 +1430,9 @@ msgstr "Nom de la base :"
 msgid ""
 "Under Windows, check these files are not in Read-Only mode in their property "
 "panel."
-msgstr "Sous Windows, vérifiez que les fichiers en question ne sont pas en lecture seule dans leurs propriétés."
+msgstr ""
+"Sous Windows, vérifiez que les fichiers en question ne sont pas en lecture "
+"seule dans leurs propriétés."
 
 #: ../templates/default/ajouter_adherent.tpl:39
 #: ../templates/default/self_adherent.tpl:44
@@ -1409,7 +1452,9 @@ msgstr "fin le"
 msgid ""
 "- Default membership extention and beginning of membership are mutually "
 "exclusive."
-msgstr "- Vous devez indiquer soit une durée d'adhésion par défaut, soit une date de début d'exercice (pas les deux)."
+msgstr ""
+"- Vous devez indiquer soit une durée d'adhésion par défaut, soit une date de "
+"début d'exercice (pas les deux)."
 
 #: ../templates/default/preferences.tpl:86
 msgid "Disabled"
@@ -1462,7 +1507,9 @@ msgstr "Effacer"
 msgid ""
 "The server mail filled in the preferences cannot be reached. Ask Galette "
 "admin"
-msgstr "Le serveur de mail indiqué dans les préférences n'est pas joignable. Contactez votre administrateur Galette"
+msgstr ""
+"Le serveur de mail indiqué dans les préférences n'est pas joignable. "
+"Contactez votre administrateur Galette"
 
 #: ../footer.php:140 ../templates/default/page.tpl:112
 msgid "Lateness in fee"
@@ -1542,16 +1589,22 @@ msgid "There is  no password for user :"
 msgstr "Il n'y a pas de mot de passe pour l'utilisateur :"
 
 #: ../install/index.php:252
-msgid "In order to be updated, Galette needs the Write permission on these files."
-msgstr "Pour être mis à jour et fonctionner correctement, Galette a besoin d'avoir les droits en écriture sur ces fichiers."
+msgid ""
+"In order to be updated, Galette needs the Write permission on these files."
+msgstr ""
+"Pour être mis à jour et fonctionner correctement, Galette a besoin d'avoir "
+"les droits en écriture sur ces fichiers."
 
 #: ../ajouter_contribution.php:223
 msgid "Contribution added"
 msgstr "Contribution ajoutée"
 
 #: ../install/index.php:251
-msgid "For a correct functioning, Galette needs the Write permission on these files."
-msgstr "Pour fonctionner correctement, Galette a besoin d'avoir les droits en écriture sur ces fichiers."
+msgid ""
+"For a correct functioning, Galette needs the Write permission on these files."
+msgstr ""
+"Pour fonctionner correctement, Galette a besoin d'avoir les droits en "
+"écriture sur ces fichiers."
 
 #: ../templates/default/mailing_adherents.tpl:98
 msgid "unreachable members:"
@@ -1653,18 +1706,23 @@ msgid "Originator:"
 msgstr "Emetteur :"
 
 #: ../install/index.php:305
-msgid "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
-msgstr "Les droits nécessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et INSERT."
+msgid ""
+"The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
+msgstr ""
+"Les droits nécessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et INSERT."
 
 #: ../self_adherent.php:179 ../ajouter_adherent.php:272
-msgid "It is now possible to follow in real time the state of your subscription"
-msgstr "Il vous est désormais possible de suivre en temps réel l'état de votre adhésion"
+msgid ""
+"It is now possible to follow in real time the state of your subscription"
+msgstr ""
+"Il vous est désormais possible de suivre en temps réel l'état de votre "
+"adhésion"
 
 #: ../templates/default/mailing_adherents.tpl:84
 msgid "Send"
 msgstr "Envoyer"
 
-#: ../install/index.php:1105
+#: ../install/index.php:1107
 msgid "Parameters couldn't be save into the database"
 msgstr "Les paramètres n'ont pas pu être sauvegardés dans la base de données"
 
@@ -1706,7 +1764,9 @@ msgstr "Recopiez dans le cadre le mot de passe présenté dans l'image."
 msgid ""
 "Self subscribe - The server mail filled in the preferences cannot be "
 "reached. Ask Galette admin"
-msgstr "Le serveur de mail indiqué dans les préférences ne peut être joint. Contactez votre administrateur Galette."
+msgstr ""
+"Le serveur de mail indiqué dans les préférences ne peut être joint. "
+"Contactez votre administrateur Galette."
 
 #: ../gestion_contributions.php:313 ../gestion_adherents.php:318
 msgid "All members"
@@ -1752,17 +1812,20 @@ msgstr "Prénom :"
 
 #: ../ajouter_contribution.php:206 ../ajouter_transaction.php:142
 msgid "-  Sum of all contributions exceed corresponding transaction amount."
-msgstr "-  La somme de toutes les contributions dépasse le montant de la transaction."
+msgstr ""
+"-  La somme de toutes les contributions dépasse le montant de la transaction."
 
 #: ../install/index.php:838
 msgid "The database isn't totally updated, it's maybe a permission problem."
-msgstr "La base de données n'a pas pu être totalement mise à jour, il s'agit peut-être d'un problème de droits."
+msgstr ""
+"La base de données n'a pas pu être totalement mise à jour, il s'agit peut-"
+"être d'un problème de droits."
 
 #: ../gestion_adherents.php:53 ../gestion_adherents.php:65
 msgid "No member was selected, please check at least one name."
 msgstr "Veuillez sélectionner au moins un adhérent."
 
-#: ../install/index.php:1193
+#: ../install/index.php:1195
 msgid "Step 10 - End of the installation"
 msgstr "Étape 10 - Fin de l'installation"
 
@@ -1827,9 +1890,11 @@ msgstr "Mailing"
 msgid ""
 "You've just been subscribed on the members management system of the "
 "association."
-msgstr "Vous venez d'être inscrit sur le système de gestion d'adhérents de l'association."
+msgstr ""
+"Vous venez d'être inscrit sur le système de gestion d'adhérents de "
+"l'association."
 
-#: ../install/index.php:1178
+#: ../install/index.php:1180
 msgid "Update complete !"
 msgstr "Fin de la mise à jour"
 
@@ -1847,11 +1912,14 @@ msgstr "Vérification de la base"
 
 #: ../install/index.php:303
 msgid "If it hadn't been made, create a database and a user for Galette."
-msgstr "Si ce n'est pas déjà fait, créez une base de données et un utilisateur pour Galette."
+msgstr ""
+"Si ce n'est pas déjà fait, créez une base de données et un utilisateur pour "
+"Galette."
 
 #: ../mailing_adherents.php:130 ../ajouter_adherent.php:293
 msgid "Email sent is desactived in the preferences. Ask galette admin."
-msgstr "L'envoi de courriel est désactivé. Contactez votre administrateur Galette."
+msgstr ""
+"L'envoi de courriel est désactivé. Contactez votre administrateur Galette."
 
 #: ../footer.php:42 ../templates/default/page.tpl:32
 msgid "Add a member"
@@ -1864,7 +1932,9 @@ msgstr "et"
 #: ../self_adherent.php:200 ../mailing_adherents.php:131 ../lostpasswd.php:119
 #: ../ajouter_adherent.php:294
 msgid "Email sent is desactived in the preferences. Ask galette admin"
-msgstr "L'envoi de courriel est désactivé dans les préférences. Contactez votre administrateur Galette."
+msgstr ""
+"L'envoi de courriel est désactivé dans les préférences. Contactez votre "
+"administrateur Galette."
 
 #: ../footer.php:34 ../templates/default/page.tpl:26
 msgid "Navigation"
@@ -1886,7 +1956,9 @@ msgstr "Interprétation HTML :"
 msgid ""
 "Self subscribe - Email sent is desactived in the preferences. Ask galette "
 "admin."
-msgstr "\"S'inscrire\" - L'envoi de courriel est désactivé dans les préférences. Contactez votre administrateur Galette."
+msgstr ""
+"\"S'inscrire\" - L'envoi de courriel est désactivé dans les préférences. "
+"Contactez votre administrateur Galette."
 
 #: ../install/index.php:380
 msgid "Check the parameters and the existence of the database"
@@ -1935,7 +2007,8 @@ msgid ""
 "\n"
 "Do you still want to delete this member ?"
 msgstr ""
-"Voulez vous vraiment effacer cet adhérent, celà effacera tout l'historique de ses contributions. Pour éviter celà vous pouvez juste désactiver son "
+"Voulez vous vraiment effacer cet adhérent, celà effacera tout l'historique "
+"de ses contributions. Pour éviter celà vous pouvez juste désactiver son "
 "compte.\n"
 "\n"
 "Voulez vous toujours effacer cet adhérent ?"
@@ -1947,7 +2020,9 @@ msgstr "Autres informations (admin) :"
 
 #: ../install/index.php:837
 msgid "The database isn't totally created, it's maybe a permission problem."
-msgstr "La base de données n'a pas pu être totalement créée, il s'agit peut-être d'un problème de droits."
+msgstr ""
+"La base de données n'a pas pu être totalement créée, il s'agit peut-être "
+"d'un problème de droits."
 
 #: ../install/index.php:437
 msgid "Step 5 - Access to the database"
@@ -1998,7 +2073,8 @@ msgstr "rouge"
 
 #: ../self_adherent.php:180 ../ajouter_adherent.php:273
 msgid "and to update your preferences from the web interface."
-msgstr "et de mettre à jour vos coordonnées par l'interface web prévue à cet effet."
+msgstr ""
+"et de mettre à jour vos coordonnées par l'interface web prévue à cet effet."
 
 #: ../templates/default/ajouter_adherent.tpl:118
 #: ../templates/default/ajouter_adherent.tpl:125
@@ -2153,7 +2229,7 @@ msgstr "[bas]"
 msgid "Never contributed"
 msgstr "N'a jamais cotisé"
 
-#: ../install/index.php:1142
+#: ../install/index.php:1144
 msgid "Parameters couldn't be saved."
 msgstr "Les paramètres n'ont pas pu être sauvegardés."
 
@@ -2236,7 +2312,9 @@ msgstr "Visibilité"
 msgid ""
 "In order to be updated, Galette needs a number of rights on the database "
 "(CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)"
-msgstr "Pour être mis à jour, Galette doit avoir un certain nombre de droits sur la base de données (CREATE, DROP, DELETE, UPDATE, SELECT, INSERT et ALTER)"
+msgstr ""
+"Pour être mis à jour, Galette doit avoir un certain nombre de droits sur la "
+"base de données (CREATE, DROP, DELETE, UPDATE, SELECT, INSERT et ALTER)"
 
 #: ../self_adherent.php:182 ../ajouter_adherent.php:275
 msgid "Please login at this address:"
@@ -2245,4 +2323,3 @@ msgstr "Veuillez vous identifier à cette adresse :"
 #: ../templates/default/gestion_contributions.tpl:172
 msgid "[ Add a contribution ]"
 msgstr "[ Ajouter une contribution ]"
-
