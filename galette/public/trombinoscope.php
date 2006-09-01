@@ -17,6 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
+ * $Id$
  */
 
 include("includes/config.inc.php"); 
@@ -35,7 +36,13 @@ else
 
 
 // Select all adh who have put a photo & would like to appear in public views.
-$query = "SELECT a.id_adh,a.nom_adh,a.prenom_adh,a.pseudo_adh,p.format FROM adherents a JOIN pictures p ON a.id_adh=p.id_adh WHERE a.bool_display_info='1'";
+// FIXME: les adhérents "à jour" de cotisation => vérifier la requête
+$query = "SELECT a.id_adh,a.nom_adh,a.prenom_adh,a.pseudo_adh,p.format 
+          FROM adherents a 
+          JOIN pictures p 
+          ON a.id_adh=p.id_adh 
+          WHERE a.bool_display_info='1'
+          AND a.age(date_echeance) < '0'";
 
 $adh =&$DB->Execute($query);
 $i = 0; // used to add new rows in the table
