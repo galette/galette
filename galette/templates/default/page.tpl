@@ -11,7 +11,7 @@
 {$content}
 </div>
 		<div id="copyright">
-			<a href="http://galette.tuxfamily.org/fr">Galette {$GALETTE_VERSION}</a>
+			<a href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
 		</div>
 	</div>
 	<div id="menu">
