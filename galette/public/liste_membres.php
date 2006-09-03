@@ -31,20 +31,22 @@ if ( ! $ch )
 else
   include("custom_header.php");
 
-
+// Here come some HTML
+print '<h1>Trombinoscope</h1>';
+print '<br /><br /><br />';
+print '<ul>';
 
 // Select all adh who would like to appear in public views.
+// FIXME: les adhérents "à jour" de cotisation => vérifier la requête
 $query = "SELECT prenom_adh, nom_adh, pseudo_adh, url_adh 
           FROM adherents 
-          WHERE age(date_echeance) < '0'
-          AND bool_display_info='1'
+          WHERE bool_display_info='1'
           OR bool_exempt_adh = '1'
           ORDER BY nom_adh, prenom_adh";
 
 $adh =&$DB->Execute($query);
 
-print '<ul>';
-
+// main loop
 while ( !$adh->EOF ) {
   print "<li>".$adh->fields['prenom_adh']." ".$adh->fields['nom_adh'];
   if ($adh->fields['pseudo_adh']) {
@@ -59,6 +61,7 @@ while ( !$adh->EOF ) {
   $adh->MoveNext();
 }
 
+// closing list
 print '</ul>';
 
 // Here you can include your site's footer.

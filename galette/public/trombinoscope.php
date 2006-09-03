@@ -41,15 +41,18 @@ $query = "SELECT a.id_adh,a.nom_adh,a.prenom_adh,a.pseudo_adh,p.format
           FROM adherents a 
           JOIN pictures p 
           ON a.id_adh=p.id_adh 
-          WHERE a.bool_display_info='1'
-          AND a.age(date_echeance) < '0'";
+          WHERE a.bool_display_info='1'";
 
 $adh =&$DB->Execute($query);
 $i = 0; // used to add new rows in the table
 
+// Here come some HTML
+print '<h1>Trombinoscope</h1>';
+print '<br /><br /><br />';
 print '<table align="center">';
 print '<tr>';
 
+// main loop
 while ( !$adh->EOF ) {
   $pic =& new picture($adh->fields['id_adh']);
 
