@@ -1032,7 +1032,7 @@ define(\"STOCK_FILES\", \"tempimages\");
 				$DB->Execute($default);
 				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_beg_membership','')";
 				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_mail_reply_to','')";
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_email_reply_to','')";
 				$DB->Execute($default);
 
 				// contribution types

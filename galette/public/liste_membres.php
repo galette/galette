@@ -1,7 +1,7 @@
 <?php
-/* trombinoscope.php - Part of the Galette Project
+/* liste_membres.php - Part of the Galette Project
  * 
- * Copyright (c) 2006 Alexandre 'laotseu' DE DOMMELIN
+ * Copyright (c) 2006 Loïs 'GruiicK' Taulelle
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,8 +22,6 @@
 
 include("includes/config.inc.php"); 
 include("includes/database.inc.php");
-include("includes/picture.class.php");
-
 
 // if no custom header, use the default one.
 $ch = file_exists(dirname( __FILE__)."/custom_header.php");
@@ -33,49 +31,43 @@ if ( ! $ch )
 else
   include("custom_header.php");
 
-
-
-// Select all adh who have put a photo & would like to appear in public views.
-// FIXME: les adhérents "à jour" de cotisation => vérifier la requête
-$query = "SELECT a.id_adh,a.nom_adh,a.prenom_adh,a.pseudo_adh,p.format 
-          FROM adherents a 
-          JOIN pictures p 
-          ON a.id_adh=p.id_adh 
-          WHERE a.bool_display_info='1'";
-
-$adh =&$DB->Execute($query);
-$i = 0; // used to add new rows in the table
-
 // Here come some HTML
 print '<h1>Trombinoscope</h1>';
 print '<br /><br /><br />';
-print '<table align="center">';
-print '<tr>';
+print '<ul>';
+
+// Select all adh who would like to appear in public views.
+// FIXME: les adhérents "à jour" de cotisation => vérifier la requête
+$query = "SELECT prenom_adh, nom_adh, pseudo_adh, url_adh 
+          FROM adherents 
+          WHERE bool_display_info='1'
+          OR bool_exempt_adh = '1'
+          ORDER BY nom_adh, prenom_adh";
+
+$adh =&$DB->Execute($query);
 
 // main loop
 while ( !$adh->EOF ) {
-  $pic =& new picture($adh->fields['id_adh']);
-
-  if ( $pic->hasPicture() ) {
-    print '<td align="center">';
-    print '<img src="../photos/'.$adh->fields['id_adh'].'.'.$pic->FORMAT.'" height="'.$pic->OPTIMAL_HEIGHT.'" width="'.$pic->OPTIMAL_WIDTH.'" />';
-    print '<br />';
-    print $adh->fields['nom_adh']." ".$adh->fields['prenom_adh'];
-    print '</td>';
-
-    $i++;
-    if ( $i%5 == 0 )
-      print '</tr><tr>';
+  print "<li>".$adh->fields['prenom_adh']." ".$adh->fields['nom_adh'];
+  if ($adh->fields['pseudo_adh']) {
+    print " ".$adh->fields['pseudo_adh'];
   }
-  
+  if ($adh->fields['url_adh']) {
+    print " - <a href=\"".$adh->fields['url_adh']."\">site web</a>";
+  }
+
+  print '</li>';
+
   $adh->MoveNext();
 }
 
-if ( $i%5 ) // if the row isn't be closed, do it before closing the table.
-  print '</tr>';
+// closing list
+print '</ul>';
 
-print '</table>';
+// Here you can include your site's footer.
+//include("footer.php");
 print '</body></html>';
+
 $adh->Close();
 ?>
 

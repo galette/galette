@@ -1,6 +1,7 @@
 # translation of en_US.po to
 # Copyright (C) 2006 Free Software Foundation, Inc.
 #
+# Simon DEPIETS <>, 2004.
 # Stéphane Salès <ssales@tuxz.org>, 2006.
 msgid ""
 msgstr ""
@@ -139,7 +140,7 @@ msgstr "Admin settings"
 msgid "Delete failed"
 msgstr "Delete failed"
 
-#: ../install/index.php:1177
+#: ../install/index.php:1179
 msgid "Installation complete !"
 msgstr "Installation complete !"
 
@@ -381,7 +382,7 @@ msgstr "Mail settings:"
 msgid "List of contributions"
 msgstr "List of contributions"
 
-#: ../install/index.php:1184
+#: ../install/index.php:1186
 msgid "For securing the system, please delete the install directory"
 msgstr "For securing the system, please delete the install directory"
 
@@ -398,7 +399,7 @@ msgstr "Password sent. Login:"
 msgid "IP"
 msgstr "IP"
 
-#: ../install/index.php:1143
+#: ../install/index.php:1145
 msgid ""
 "This can come from the permissions on the file includes/config.inc.php or "
 "the impossibility to make an INSERT into the database."
@@ -832,7 +833,7 @@ msgstr "Number of label lines:"
 msgid "Contributions"
 msgstr "Contributions"
 
-#: ../install/index.php:1187
+#: ../install/index.php:1189
 msgid "Homepage"
 msgstr "Homepage"
 
@@ -927,7 +928,7 @@ msgstr "Members up to date"
 msgid "transaction added"
 msgstr "transaction added"
 
-#: ../install/index.php:1194
+#: ../install/index.php:1196
 msgid "Step 10 - End of the update"
 msgstr "Step 10 - End of the update"
 
@@ -982,7 +983,7 @@ msgstr "- The password must be of at least 4 characters!"
 msgid "Please enter a message."
 msgstr "Please enter a message."
 
-#: ../install/index.php:1182
+#: ../install/index.php:1184
 msgid "Galette has been successfully updated!"
 msgstr "Galette has been successfully updated!"
 
@@ -1067,7 +1068,7 @@ msgstr "Member card added:"
 msgid "DROP operation allowed"
 msgstr "DROP operation allowed"
 
-#: ../install/index.php:1102
+#: ../install/index.php:1104
 msgid "Parameters saved into the database"
 msgstr "Parameters saved into the database"
 
@@ -1102,7 +1103,7 @@ msgstr ""
 msgid "Continue"
 msgstr "Continue"
 
-#: ../install/index.php:1168
+#: ../install/index.php:1170
 msgid "Step 9 - Saving of the parameters"
 msgstr "Step 9 - Saving of the parameters"
 
@@ -1211,7 +1212,7 @@ msgstr "Galette Admin:"
 
 #: ../install/index.php:209 ../install/index.php:278 ../install/index.php:363
 #: ../install/index.php:418 ../install/index.php:613 ../install/index.php:868
-#: ../install/index.php:930 ../install/index.php:1117
+#: ../install/index.php:930 ../install/index.php:1119
 msgid "Next step"
 msgstr "Next step"
 
@@ -1333,7 +1334,7 @@ msgstr "Unable to create configuration file (includes/config.inc.php)"
 msgid "Member"
 msgstr "Member"
 
-#: ../install/index.php:1181
+#: ../install/index.php:1183
 msgid "Galette has been successfully installed!"
 msgstr "Galette has been successfully installed!"
 
@@ -1441,7 +1442,7 @@ msgid "transaction updated"
 msgstr "Contribution updated:"
 
 #: ../install/index.php:265 ../install/index.php:592 ../install/index.php:843
-#: ../install/index.php:1145
+#: ../install/index.php:1147
 msgid "Retry"
 msgstr "Retry"
 
@@ -1748,7 +1749,7 @@ msgstr ""
 msgid "Send"
 msgstr "Legend"
 
-#: ../install/index.php:1105
+#: ../install/index.php:1107
 msgid "Parameters couldn't be save into the database"
 msgstr "Parameters couldn't be save into the database"
 
@@ -1851,7 +1852,7 @@ msgstr "The database isn't totally updated, it's maybe a permission problem."
 msgid "No member was selected, please check at least one name."
 msgstr "Please select at least one member."
 
-#: ../install/index.php:1193
+#: ../install/index.php:1195
 msgid "Step 10 - End of the installation"
 msgstr "Step 10 - End of the installation"
 
@@ -1922,7 +1923,7 @@ msgstr ""
 "You've just been subscribed on the members management system of the "
 "association."
 
-#: ../install/index.php:1178
+#: ../install/index.php:1180
 msgid "Update complete !"
 msgstr "Update complete !"
 
@@ -2257,7 +2258,7 @@ msgstr "[admin]"
 msgid "Never contributed"
 msgstr "Never contributed"
 
-#: ../install/index.php:1142
+#: ../install/index.php:1144
 msgid "Parameters couldn't be saved."
 msgstr "Parameters couldn't be saved."
 
