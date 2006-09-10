@@ -191,7 +191,7 @@
 		<p>{_T("NB : The mandatory fields are in")} <span style="color: #FF0000">{_T("red")}</span></p>
 		<br />
 		<div id="copyright">
-			<a href="http://galette.tuxfamily.org/fr">Galette {$GALETTE_VERSION}</a>
+			<a href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
 		</div>
 	</div>
 </body>

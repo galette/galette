@@ -1,5 +1,5 @@
 <?
-// This file was automatically generated on Fri Aug 18 13:04:02 2006 (GMT)
+// This file was automatically generated on Sun Sep 10 10:57:47 2006 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -99,7 +99,7 @@ $lang['- The amount must be an integer!'] = '- The amount must be an integer!';
 // ../ajouter_adherent.php:245 
 $lang['Member card updated:'] = 'Member card update:';
 
-// ../install/index.php:1184 
+// ../install/index.php:1186 
 $lang['For securing the system, please delete the install directory'] = 'For securing the system, please delete the install directory';
 
 // ../templates/default/voir_adherent.tpl:153 
@@ -429,7 +429,7 @@ $lang['Publisher:'] = 'Publisher:';
 // ../lostpasswd.php:74 
 $lang['There is  no password for user :'] = 'There is  no password for user :';
 
-// ../install/index.php:265 ../install/index.php:592 ../install/index.php:843 ../install/index.php:1145 
+// ../install/index.php:265 ../install/index.php:592 ../install/index.php:843 ../install/index.php:1147 
 $lang['Retry'] = 'Retry';
 
 // ../templates/default/gestion_contributions.tpl:49 
@@ -513,7 +513,7 @@ $lang['Email sent is desactived in the preferences. Ask galette admin.'] = 'Emai
 // ../gestion_contributions.php:264 ../gestion_adherents.php:256 
 $lang['Freed of dues'] = 'Freed of dues';
 
-// ../install/index.php:1182 
+// ../install/index.php:1184 
 $lang['Galette has been successfully updated!'] = 'Galette has been successfully updated!';
 
 // ../templates/default/gestion_adherents.tpl:169 
@@ -588,7 +588,7 @@ $lang['Date'] = 'Date';
 // ../templates/default/gestion_adherents.tpl:65 
 $lang['Nickname'] = 'Nickname';
 
-// ../install/index.php:1102 
+// ../install/index.php:1104 
 $lang['Parameters saved into the database'] = 'Parameters saved into the database';
 
 // ../templates/default/ajouter_adherent.tpl:52 ../templates/default/self_adherent.tpl:61 
@@ -615,7 +615,7 @@ $lang['Membership in order'] = 'Membership in order';
 // ../ajouter_transaction.php:144 
 $lang['- No originator selected (register a non-member first if necessary).'] = '- No originator selected (register a non-member first if necessary).';
 
-// ../install/index.php:1181 
+// ../install/index.php:1183 
 $lang['Galette has been successfully installed!'] = 'Galette has been successfully installed!';
 
 // ../install/index.php:486 
@@ -690,7 +690,7 @@ $lang['List of transactions'] = 'List of transactions';
 // ../templates/default/mailing_adherents.tpl:36 
 $lang['Please compose your mail.'] = 'Please compose your mail.';
 
-// ../install/index.php:1105 
+// ../install/index.php:1107 
 $lang['Parameters couldn\'t be save into the database'] = 'Parameters couldn\'t be save into the database';
 
 // ../footer.php:119 ../footer.php:123 ../templates/default/gestion_adherents.tpl:53 ../templates/default/page.tpl:91 ../templates/default/page.tpl:95 ../templates/default/configurer_fiches.tpl:22 
@@ -792,7 +792,7 @@ $lang['Update'] = 'Update:';
 // ../templates/default/ajouter_adherent.tpl:60 ../templates/default/voir_adherent.tpl:20 ../templates/default/self_adherent.tpl:69 
 $lang['birth date:'] = 'birth date:';
 
-// ../install/index.php:1142 
+// ../install/index.php:1144 
 $lang['Parameters couldn\'t be saved.'] = 'Parameters couldn\'t be saved.';
 
 // ../templates/default/page.tpl:49 ../templates/default/traduire_libelles.tpl:1 
@@ -822,7 +822,7 @@ $lang['direcory_name'] = 'direcory_name';
 // ../install/index.php:573 
 $lang['DROP OPeration not allowed'] = 'DROP operation not allowed';
 
-// ../install/index.php:1193 
+// ../install/index.php:1195 
 $lang['Step 10 - End of the installation'] = 'Step 10 - End of the installation';
 
 // ../etiquettes_adherents.php:128 
@@ -843,7 +843,7 @@ $lang['Disabled'] = 'Disabled';
 // ../install/index.php:62 ../install/index.php:96 
 $lang['No user name'] = 'No user name';
 
-// ../install/index.php:1143 
+// ../install/index.php:1145 
 $lang['This can come from the permissions on the file includes/config.inc.php or the impossibility to make an INSERT into the database.'] = 'This can come from the permissions on the file includes/config.inc.php or the impossibility to make an INSERT into the database.';
 
 // ../ajouter_contribution.php:223 
@@ -852,7 +852,7 @@ $lang['Contribution added'] = 'Contribution card';
 // ../self_contribution.php:146 ../ajouter_contribution.php:109 
 $lang['- The duration must be an integer!'] = '- The duration must be an integer!';
 
-// ../install/index.php:1177 
+// ../install/index.php:1179 
 $lang['Installation complete !'] = 'Installation complete !';
 
 // ../templates/default/mailing_adherents.tpl:84 
@@ -1191,7 +1191,7 @@ $lang['Contribution type:'] = 'Contribution type:';
 // ../editer_champ.php:77 
 $lang['- Field name already used.'] = '- Field name already used.';
 
-// ../install/index.php:1178 
+// ../install/index.php:1180 
 $lang['Update complete !'] = 'Update complete !';
 
 // ../ajouter_contribution.php:362 ../ajouter_transaction.php:234 
@@ -1266,7 +1266,7 @@ $lang['(at least 4 characters)'] = '(at least 4 characters)';
 // ../templates/default/ajouter_adherent.tpl:56 ../templates/default/voir_adherent.tpl:16 ../templates/default/self_adherent.tpl:65 
 $lang['Nickname:'] = 'Nickname:';
 
-// ../install/index.php:1168 
+// ../install/index.php:1170 
 $lang['Step 9 - Saving of the parameters'] = 'Step 9 - Saving of the parameters';
 
 // ../preferences.php:212 ../ajouter_adherent.php:258 
@@ -1284,7 +1284,7 @@ $lang['Nonexistent login sent via the lost password form. Login:'] = 'Nonexisten
 // ../footer.php:45 ../templates/default/gestion_adherents.tpl:171 ../templates/default/mailing_adherents.tpl:103 
 $lang['Generate labels'] = 'Generate labels';
 
-// ../install/index.php:209 ../install/index.php:278 ../install/index.php:363 ../install/index.php:418 ../install/index.php:613 ../install/index.php:868 ../install/index.php:930 ../install/index.php:1117 
+// ../install/index.php:209 ../install/index.php:278 ../install/index.php:363 ../install/index.php:418 ../install/index.php:613 ../install/index.php:868 ../install/index.php:930 ../install/index.php:1119 
 $lang['Next step'] = 'Next step';
 
 // ../install/index.php:646 
@@ -1440,7 +1440,7 @@ $lang['Last day!'] = 'Last day!';
 // ../footer.php:103 ../templates/default/gestion_adherents.tpl:120 ../templates/default/page.tpl:75 
 $lang['[admin]'] = '[admin]';
 
-// ../install/index.php:1187 
+// ../install/index.php:1189 
 $lang['Homepage'] = 'Homepage';
 
 // ../lostpasswd.php:50 
@@ -1479,7 +1479,7 @@ $lang['Lines / Page:'] = 'Lines / Page:';
 // ../install/index.php:889 
 $lang['Step 7 - Database Creation'] = 'Step 7 - Database Creation';
 
-// ../install/index.php:1194 
+// ../install/index.php:1196 
 $lang['Step 10 - End of the update'] = 'Step 10 - End of the update';
 
 // ../templates/default/ajouter_adherent.tpl:201 ../templates/default/voir_adherent.tpl:121 ../templates/default/self_adherent.tpl:134 
