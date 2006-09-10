@@ -644,7 +644,7 @@ msgstr ""
 
 #: ../templates/default/lostpasswd.tpl:34
 msgid "Username or email:"
-msgstr "Identifiant :"
+msgstr "Identifiant ou adresse e-mail :"
 
 #: ../self_contribution.php:249 ../templates/default/ajouter_adherent.tpl:63
 #: ../templates/default/ajouter_adherent.tpl:142
