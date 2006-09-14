@@ -1,5 +1,5 @@
 <?
-// This file was automatically generated on Sun Sep 10 10:57:47 2006 (GMT)
+// This file was automatically generated on Thu Sep 14 12:55:21 2006 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -14,9 +14,6 @@ $lang['Logo:'] = 'Logo:';
 
 // ../templates/default/self_adherent.tpl:56 
 $lang['your fee.'] = 'your fee.';
-
-// ../install/index.php:864 
-$lang['The database has been correctly updated.'] = 'The database has been correctly updated.';
 
 // ../templates/default/configurer_fiches.tpl:23 
 $lang['Visibility'] = 'Visibility';
@@ -99,9 +96,6 @@ $lang['- The amount must be an integer!'] = '- The amount must be an integer!';
 // ../ajouter_adherent.php:245 
 $lang['Member card updated:'] = 'Member card update:';
 
-// ../install/index.php:1186 
-$lang['For securing the system, please delete the install directory'] = 'For securing the system, please delete the install directory';
-
 // ../templates/default/voir_adherent.tpl:153 
 $lang['View contributions'] = 'contributions';
 
@@ -145,7 +139,7 @@ $lang['- Mandatory field empty.'] = '- Mandatory field empty.';
 $lang['Width:'] = 'Width:';
 
 // ../lostpasswd.php:92 
-$lang['There was a database error when inserting data'] = '';
+$lang['There was a database error when inserting data'] = 'There was a database error when inserting data';
 
 // ../install/index.php:39 ../install/index.php:49 
 $lang['Installation mode unknown'] = 'Installation mode unknown';
@@ -167,6 +161,9 @@ $lang['Member'] = 'Member';
 
 // ../templates/default/ajouter_adherent.tpl:26 ../templates/default/voir_adherent.tpl:5 
 $lang['Identity:'] = '';
+
+// ../install/index.php:838 
+$lang['The tables are not totally updated, it\'s maybe a permission problem.'] = 'The tables are not totally updated, it\'s maybe a permission problem.';
 
 // ../templates/default/preferences.tpl:137 
 $lang['Margins:'] = 'Margins:';
@@ -191,6 +188,9 @@ $lang['until'] = 'until';
 
 // ../templates/default/ajouter_contribution.tpl:39 
 $lang['Transaction number:'] = 'Transaction number:';
+
+// ../install/index.php:890 
+$lang['Step 7 - Tables Update'] = 'Step 7 - Tables Update';
 
 // ../templates/default/preferences.tpl:134 
 $lang['Label generation parameters:'] = 'Label generation parameters:';
@@ -246,8 +246,8 @@ $lang['- The numbers and measures have to be integers!'] = '- The numbers and me
 // ../self_adherent.php:281 ../ajouter_adherent.php:423 
 $lang['Mister'] = 'Mister';
 
-// ../install/index.php:275 
-$lang['Files permissions are OK!'] = 'Files permissions are OK!';
+// ../install/index.php:401 
+$lang['Database can\'t be reached. Please go back to enter the connection parameters again.'] = 'Database can\'t be reached. Please go back to enter the connection parameters again.';
 
 // ../ajouter_transaction.php:172 
 $lang['transaction updated'] = 'Contribution updated:';
@@ -284,9 +284,6 @@ $lang['The server mail filled in the preferences cannot be reached'] = 'The serv
 
 // ../templates/default/preferences.tpl:119 
 $lang['Leave empty to use Sender Email as reply address'] = '';
-
-// ../install/index.php:863 
-$lang['The database has been correctly created.'] = 'The database has been correctly created.';
 
 // ../includes/i18n.inc.php:194 
 $lang['Vice-president'] = 'Vice-president';
@@ -375,9 +372,6 @@ $lang['GALETTE hasn\'t got enough permissions on the database to continue the in
 // ../install/index.php:542 
 $lang['ALTER Operation not allowed'] = 'ALTER operation not allowed';
 
-// ../install/index.php:641 
-$lang['Creation of the database'] = 'Creation of the database';
-
 // ../gestion_contributions.php:318 ../gestion_adherents.php:323 
 $lang['All the accounts'] = 'All the accounts';
 
@@ -404,9 +398,6 @@ $lang['- WARNING -'] = '- WARNING -';
 
 // ../includes/i18n.inc.php:190 
 $lang['Realization:'] = 'Realization:';
-
-// ../install/index.php:642 
-$lang['Update of the database'] = 'Update of the database';
 
 // ../self_adherent.php:115 ../preferences.php:93 ../ajouter_adherent.php:147 
 $lang['- The username must be composed of at least 4 characters!'] = '- The username must be composed of at least 4 characters!';
@@ -446,6 +437,9 @@ $lang['You can prepare a picture to upload after sending'] = 'You can prepare a 
 
 // ../mailing_adherents.php:126 
 $lang['Mail sent to :'] = 'Mail settings:';
+
+// ../footer.php:128 ../gestion_contributions.php:271 ../gestion_adherents.php:263 ../templates/default/page.tpl:100 
+$lang['Never contributed'] = 'Never contributed';
 
 // ../includes/i18n.inc.php:199 
 $lang['Founder member'] = 'Founder member';
@@ -497,9 +491,6 @@ $lang['Values:'] = 'Pages:';
 
 // ../footer.php:88 ../templates/default/gestion_adherents.tpl:110 ../templates/default/page.tpl:65 
 $lang['[W]'] = '[W]';
-
-// ../install/index.php:837 
-$lang['The database isn\'t totally created, it\'s maybe a permission problem.'] = 'The database isn\'t totally created, it\'s maybe a permission problem.';
 
 // ../install/index.php:645 
 $lang['Installation Report'] = 'Installation Report';
@@ -561,8 +552,8 @@ $lang['Deletion'] = 'Deletion';
 // ../includes/i18n.inc.php:210 
 $lang['spanish'] = 'spanish';
 
-// ../footer.php:128 ../gestion_contributions.php:271 ../gestion_adherents.php:263 ../templates/default/page.tpl:100 
-$lang['Never contributed'] = 'Never contributed';
+// ../install/index.php:837 
+$lang['The tables are not totally created, it\'s maybe a permission problem.'] = 'The tables are not totally created, it\'s maybe a permission problem.';
 
 // ../self_contribution.php:208 ../templates/default/ajouter_contribution.tpl:1 
 $lang['Contribution card'] = 'Contribution card';
@@ -579,8 +570,8 @@ $lang['label(s)'] = 'label(s)';
 // ../self_contribution.php:261 ../templates/default/preferences.tpl:219 ../templates/default/ajouter_adherent.tpl:228 ../templates/default/ajouter_contribution.tpl:91 ../templates/default/ajouter_transaction.tpl:47 ../templates/default/self_adherent.tpl:191 
 $lang['NB : The mandatory fields are in'] = 'NB : The mandatory fields are in';
 
-// ../templates/default/lostpasswd.tpl:34 
-$lang['Username or email:'] = 'Username:';
+// ../install/index.php:1104 
+$lang['Parameters saved into the database'] = 'Parameters saved into the database';
 
 // ../templates/default/gestion_contributions.tpl:37 ../templates/default/log.tpl:28 ../templates/default/gestion_transactions.tpl:30 
 $lang['Date'] = 'Date';
@@ -588,8 +579,8 @@ $lang['Date'] = 'Date';
 // ../templates/default/gestion_adherents.tpl:65 
 $lang['Nickname'] = 'Nickname';
 
-// ../install/index.php:1104 
-$lang['Parameters saved into the database'] = 'Parameters saved into the database';
+// ../templates/default/lostpasswd.tpl:34 
+$lang['Username or email:'] = 'Username:';
 
 // ../templates/default/ajouter_adherent.tpl:52 ../templates/default/self_adherent.tpl:61 
 $lang['First name:'] = 'First name:';
@@ -933,6 +924,9 @@ $lang['Member profile'] = 'Member Profile';
 // ../templates/default/ajouter_adherent.tpl:127 
 $lang['(Confirmation)'] = 'Configuration';
 
+// ../install/index.php:275 
+$lang['Files permissions are OK!'] = 'Files permissions are OK!';
+
 // ../templates/default/gestion_contributions.tpl:12 
 $lang['contribution'] = 'contribution';
 
@@ -1047,9 +1041,6 @@ $lang['SELECT operation not allowed'] = 'SELECT operation not allowed';
 // ../mailing_adherents.php:79 
 $lang['Please type an object for the message.'] = 'Please type an object for the message.';
 
-// ../install/index.php:890 
-$lang['Step 7 - Database Update'] = 'Step 7 - Database Update';
-
 // ../lostpasswd.php:36 
 $lang['empty login'] = 'empty login';
 
@@ -1092,8 +1083,8 @@ $lang['Configuration file created (includes/config.inc.php)'] = 'Configuration f
 // ../self_adherent.php:182 ../ajouter_adherent.php:275 
 $lang['Please login at this address:'] = 'Please login at this address:';
 
-// ../install/index.php:401 
-$lang['Database can\'t be reached. Please go back to enter the connection parameters again.'] = 'Database can\'t be reached. Please go back to enter the connection parameters again.';
+// ../install/index.php:1186 
+$lang['For securing the system, please delete the install directory'] = 'For securing the system, please delete the install directory';
 
 // ../gestion_contributions.php:293 ../gestion_adherents.php:286 
 $lang['days remaining'] = 'days remaining';
@@ -1124,6 +1115,9 @@ $lang['Lateness in fee'] = 'Lateness in fee';
 
 // ../footer.php:43 ../templates/default/page.tpl:33 ../templates/default/voir_adherent.tpl:157 
 $lang['Add a contribution'] = 'Add a contribution';
+
+// ../install/index.php:864 
+$lang['The tables has been correctly updated.'] = 'The tables has been correctly updated.';
 
 // ../includes/i18n.inc.php:209 
 $lang['english'] = 'english';
@@ -1165,10 +1159,13 @@ $lang['Old-timer'] = 'Old-timer';
 $lang['fingerprint:'] = 'fingerprint:';
 
 // ../ajouter_adherent.php:287 
-$lang['Send subscription mail to :'] = 'Self_subscription as a member:';
+$lang['Send subscription mail to :'] = 'Self subscription as a member:';
 
 // ../templates/default/configurer_fiches.tpl:47 
 $lang['Do you really want to delete this category ?\n All associated data will be deleted as well.'] = 'Do you really want to delete this category ?\n All associated data will be deleted as well.';
+
+// ../install/index.php:641 
+$lang['Creation of the tables'] = 'Creation of the tables';
 
 // ../self_adherent.php:179 ../ajouter_adherent.php:272 
 $lang['It is now possible to follow in real time the state of your subscription'] = 'It is now possible to follow in real time the state of your subscription';
@@ -1217,6 +1214,9 @@ $lang['no member'] = 'no member';
 
 // ../templates/default/mailing_adherents.tpl:81 
 $lang['ON'] = 'ON';
+
+// ../install/index.php:642 
+$lang['Update of the tables'] = 'Update of the tables';
 
 // ../mailing_adherents.php:134 ../mailing_adherents.php:135 ../mailing_adherents.php:146 ../mailing_adherents.php:147 
 $lang['A problem happened while sending mail to :'] = 'A problem happened while sending mail to :';
@@ -1298,6 +1298,9 @@ $lang['Country:'] = 'Country:';
 
 // ../templates/default/mailing_adherents.tpl:1 
 $lang['Mailing'] = 'Mailing';
+
+// ../install/index.php:889 
+$lang['Step 7 - Tables Creation'] = 'Step 7 - Tables Creation';
 
 // ../templates/default/preferences.tpl:124 
 $lang['Emailing disabled'] = 'Emailing disabled';
@@ -1470,14 +1473,11 @@ $lang['Database exists and connection parameters are OK.'] = 'Database exists an
 // ../footer.php:85 ../templates/default/page.tpl:62 
 $lang['Man'] = 'Man';
 
-// ../install/index.php:838 
-$lang['The database isn\'t totally updated, it\'s maybe a permission problem.'] = 'The database isn\'t totally updated, it\'s maybe a permission problem.';
+// ../install/index.php:863 
+$lang['The tables has been correctly created.'] = 'The tables has been correctly created.';
 
 // ../templates/default/preferences.tpl:75 
 $lang['Lines / Page:'] = 'Lines / Page:';
-
-// ../install/index.php:889 
-$lang['Step 7 - Database Creation'] = 'Step 7 - Database Creation';
 
 // ../install/index.php:1196 
 $lang['Step 10 - End of the update'] = 'Step 10 - End of the update';

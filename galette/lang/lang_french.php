@@ -1,5 +1,5 @@
 <?
-// This file was automatically generated on Sun Sep 10 10:59:17 2006 (GMT)
+// This file was automatically generated on Thu Sep 14 12:55:21 2006 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -14,9 +14,6 @@ $lang['Logo:'] = 'Logo :';
 
 // ../templates/default/self_adherent.tpl:56 
 $lang['your fee.'] = 'votre cotisation.';
-
-// ../install/index.php:864 
-$lang['The database has been correctly updated.'] = 'La base de données a été correctement mise à jour.';
 
 // ../templates/default/configurer_fiches.tpl:23 
 $lang['Visibility'] = 'Visibilité';
@@ -99,9 +96,6 @@ $lang['- The amount must be an integer!'] = '- Le montant doit être un nombre en
 // ../ajouter_adherent.php:245 
 $lang['Member card updated:'] = 'Fiche adhérent mise à jour :';
 
-// ../install/index.php:1186 
-$lang['For securing the system, please delete the install directory'] = 'Pour sécuriser le système, veuillez supprimer le dossier install';
-
 // ../templates/default/voir_adherent.tpl:153 
 $lang['View contributions'] = 'Voir les contributions';
 
@@ -168,6 +162,9 @@ $lang['Member'] = 'Adhérent';
 // ../templates/default/ajouter_adherent.tpl:26 ../templates/default/voir_adherent.tpl:5 
 $lang['Identity:'] = 'Identité :';
 
+// ../install/index.php:838 
+$lang['The tables are not totally updated, it\'s maybe a permission problem.'] = 'Les tables n\'ont pas pu être totalement mises à jour, il s\'agit peut-être d\'un problème de droits.';
+
 // ../templates/default/preferences.tpl:137 
 $lang['Margins:'] = 'Marges :';
 
@@ -191,6 +188,9 @@ $lang['until'] = 'au';
 
 // ../templates/default/ajouter_contribution.tpl:39 
 $lang['Transaction number:'] = 'Numéro de transaction :';
+
+// ../install/index.php:890 
+$lang['Step 7 - Tables Update'] = 'Étape 7 - Mise à jour des tables';
 
 // ../templates/default/preferences.tpl:134 
 $lang['Label generation parameters:'] = 'Paramètres de génération d\'étiquettes :';
@@ -246,8 +246,8 @@ $lang['- The numbers and measures have to be integers!'] = '- Les nombres et mes
 // ../self_adherent.php:281 ../ajouter_adherent.php:423 
 $lang['Mister'] = 'Monsieur';
 
-// ../install/index.php:275 
-$lang['Files permissions are OK!'] = 'Les permissions des fichiers sont correctes !';
+// ../install/index.php:401 
+$lang['Database can\'t be reached. Please go back to enter the connection parameters again.'] = 'La base n\'est accessible. Veuillez revenir en arrière pour saisir à nouveau les paramètres de connexion.';
 
 // ../ajouter_transaction.php:172 
 $lang['transaction updated'] = 'transaction mise à jour';
@@ -284,9 +284,6 @@ $lang['The server mail filled in the preferences cannot be reached'] = 'Le serve
 
 // ../templates/default/preferences.tpl:119 
 $lang['Leave empty to use Sender Email as reply address'] = 'Laisser vide pour utiliser le courriel expéditeur comme adresse de réponse';
-
-// ../install/index.php:863 
-$lang['The database has been correctly created.'] = 'La base de données a été correctement créée.';
 
 // ../includes/i18n.inc.php:194 
 $lang['Vice-president'] = 'Vice-président';
@@ -375,9 +372,6 @@ $lang['GALETTE hasn\'t got enough permissions on the database to continue the in
 // ../install/index.php:542 
 $lang['ALTER Operation not allowed'] = 'Opération ALTER non autorisée';
 
-// ../install/index.php:641 
-$lang['Creation of the database'] = 'Création de la base';
-
 // ../gestion_contributions.php:318 ../gestion_adherents.php:323 
 $lang['All the accounts'] = 'Tous  les comptes';
 
@@ -404,9 +398,6 @@ $lang['- WARNING -'] = '- AVERTISSEMENT -';
 
 // ../includes/i18n.inc.php:190 
 $lang['Realization:'] = 'Réalisation :';
-
-// ../install/index.php:642 
-$lang['Update of the database'] = 'Mise à jour de la base';
 
 // ../self_adherent.php:115 ../preferences.php:93 ../ajouter_adherent.php:147 
 $lang['- The username must be composed of at least 4 characters!'] = '- L\'identifiant doit être composé d\'au moins 4 caractères !';
@@ -446,6 +437,9 @@ $lang['You can prepare a picture to upload after sending'] = 'Vous pouvez prépar
 
 // ../mailing_adherents.php:126 
 $lang['Mail sent to :'] = 'Courriel envoyé à :';
+
+// ../footer.php:128 ../gestion_contributions.php:271 ../gestion_adherents.php:263 ../templates/default/page.tpl:100 
+$lang['Never contributed'] = 'N\'a jamais cotisé';
 
 // ../includes/i18n.inc.php:199 
 $lang['Founder member'] = 'Membre fondateur';
@@ -497,9 +491,6 @@ $lang['Values:'] = 'Valeurs :';
 
 // ../footer.php:88 ../templates/default/gestion_adherents.tpl:110 ../templates/default/page.tpl:65 
 $lang['[W]'] = '[F]';
-
-// ../install/index.php:837 
-$lang['The database isn\'t totally created, it\'s maybe a permission problem.'] = 'La base de données n\'a pas pu être totalement créée, il s\'agit peut-être d\'un problème de droits.';
 
 // ../install/index.php:645 
 $lang['Installation Report'] = 'Compte rendu d\'installation';
@@ -561,8 +552,8 @@ $lang['Deletion'] = 'Suppression';
 // ../includes/i18n.inc.php:210 
 $lang['spanish'] = 'espagnol';
 
-// ../footer.php:128 ../gestion_contributions.php:271 ../gestion_adherents.php:263 ../templates/default/page.tpl:100 
-$lang['Never contributed'] = 'N\'a jamais cotisé';
+// ../install/index.php:837 
+$lang['The tables are not totally created, it\'s maybe a permission problem.'] = 'Les tables n\'ont pas pu être totalement créées, il s\'agit peut-être d\'un problème de droits.';
 
 // ../self_contribution.php:208 ../templates/default/ajouter_contribution.tpl:1 
 $lang['Contribution card'] = 'Fiche contribution';
@@ -579,8 +570,8 @@ $lang['label(s)'] = 'étiquette(s)';
 // ../self_contribution.php:261 ../templates/default/preferences.tpl:219 ../templates/default/ajouter_adherent.tpl:228 ../templates/default/ajouter_contribution.tpl:91 ../templates/default/ajouter_transaction.tpl:47 ../templates/default/self_adherent.tpl:191 
 $lang['NB : The mandatory fields are in'] = 'NB : Les champs obligatoires apparaissent en';
 
-// ../templates/default/lostpasswd.tpl:34 
-$lang['Username or email:'] = 'Identifiant ou adresse e-mail :';
+// ../install/index.php:1104 
+$lang['Parameters saved into the database'] = 'Paramètres sauvegardés dans la base de données';
 
 // ../templates/default/gestion_contributions.tpl:37 ../templates/default/log.tpl:28 ../templates/default/gestion_transactions.tpl:30 
 $lang['Date'] = 'Date';
@@ -588,8 +579,8 @@ $lang['Date'] = 'Date';
 // ../templates/default/gestion_adherents.tpl:65 
 $lang['Nickname'] = 'Pseudo';
 
-// ../install/index.php:1104 
-$lang['Parameters saved into the database'] = 'Paramètres sauvegardés dans la base de données';
+// ../templates/default/lostpasswd.tpl:34 
+$lang['Username or email:'] = 'Identifiant ou adresse e-mail :';
 
 // ../templates/default/ajouter_adherent.tpl:52 ../templates/default/self_adherent.tpl:61 
 $lang['First name:'] = 'Prénom :';
@@ -933,6 +924,9 @@ $lang['Member profile'] = 'Fiche adhérent';
 // ../templates/default/ajouter_adherent.tpl:127 
 $lang['(Confirmation)'] = '(Confirmation)';
 
+// ../install/index.php:275 
+$lang['Files permissions are OK!'] = 'Les permissions des fichiers sont correctes !';
+
 // ../templates/default/gestion_contributions.tpl:12 
 $lang['contribution'] = 'contribution';
 
@@ -1047,9 +1041,6 @@ $lang['SELECT operation not allowed'] = 'Opération SELECT non autorisée';
 // ../mailing_adherents.php:79 
 $lang['Please type an object for the message.'] = 'Veuillez indiquer un objet pour le message.';
 
-// ../install/index.php:890 
-$lang['Step 7 - Database Update'] = 'Étape 7 - Mise à jour de la base';
-
 // ../lostpasswd.php:36 
 $lang['empty login'] = 'login vide';
 
@@ -1092,8 +1083,8 @@ $lang['Configuration file created (includes/config.inc.php)'] = 'Fichier de conf
 // ../self_adherent.php:182 ../ajouter_adherent.php:275 
 $lang['Please login at this address:'] = 'Veuillez vous identifier à cette adresse :';
 
-// ../install/index.php:401 
-$lang['Database can\'t be reached. Please go back to enter the connection parameters again.'] = 'La base n\'est accessible. Veuillez revenir en arrière pour saisir à nouveau les paramètres de connexion.';
+// ../install/index.php:1186 
+$lang['For securing the system, please delete the install directory'] = 'Pour sécuriser le système, veuillez supprimer le dossier install';
 
 // ../gestion_contributions.php:293 ../gestion_adherents.php:286 
 $lang['days remaining'] = 'jours restants';
@@ -1124,6 +1115,9 @@ $lang['Lateness in fee'] = 'Retard de cotisation';
 
 // ../footer.php:43 ../templates/default/page.tpl:33 ../templates/default/voir_adherent.tpl:157 
 $lang['Add a contribution'] = 'Ajouter une contribution';
+
+// ../install/index.php:864 
+$lang['The tables has been correctly updated.'] = 'Les atables ont été correctement mises à jour.';
 
 // ../includes/i18n.inc.php:209 
 $lang['english'] = 'anglais';
@@ -1169,6 +1163,9 @@ $lang['Send subscription mail to :'] = 'Envoyer le courriel d\'inscription à :';
 
 // ../templates/default/configurer_fiches.tpl:47 
 $lang['Do you really want to delete this category ?\n All associated data will be deleted as well.'] = 'Voulez vous vraiment effacer cette catégorie ? \n Toutes les données associées seront effacées avec';
+
+// ../install/index.php:641 
+$lang['Creation of the tables'] = 'Création des tables';
 
 // ../self_adherent.php:179 ../ajouter_adherent.php:272 
 $lang['It is now possible to follow in real time the state of your subscription'] = 'Il vous est désormais possible de suivre en temps réel l\'état de votre adhésion';
@@ -1217,6 +1214,9 @@ $lang['no member'] = 'aucun adhérent';
 
 // ../templates/default/mailing_adherents.tpl:81 
 $lang['ON'] = 'Activé';
+
+// ../install/index.php:642 
+$lang['Update of the tables'] = 'Mise à jour des tables';
 
 // ../mailing_adherents.php:134 ../mailing_adherents.php:135 ../mailing_adherents.php:146 ../mailing_adherents.php:147 
 $lang['A problem happened while sending mail to :'] = 'Un problème est survenu dans l\'envoi du courriel pour le compte :';
@@ -1298,6 +1298,9 @@ $lang['Country:'] = 'Pays :';
 
 // ../templates/default/mailing_adherents.tpl:1 
 $lang['Mailing'] = 'Mailing';
+
+// ../install/index.php:889 
+$lang['Step 7 - Tables Creation'] = 'Étape 7 - Création des tables';
 
 // ../templates/default/preferences.tpl:124 
 $lang['Emailing disabled'] = 'Envoi de courriel désactivé';
@@ -1470,14 +1473,11 @@ $lang['Database exists and connection parameters are OK.'] = 'La base existe et 
 // ../footer.php:85 ../templates/default/page.tpl:62 
 $lang['Man'] = 'Homme';
 
-// ../install/index.php:838 
-$lang['The database isn\'t totally updated, it\'s maybe a permission problem.'] = 'La base de données n\'a pas pu être totalement mise à jour, il s\'agit peut-être d\'un problème de droits.';
+// ../install/index.php:863 
+$lang['The tables has been correctly created.'] = 'Les tables ont été correctement créées.';
 
 // ../templates/default/preferences.tpl:75 
 $lang['Lines / Page:'] = 'Lignes / Page :';
-
-// ../install/index.php:889 
-$lang['Step 7 - Database Creation'] = 'Étape 7 - Création des tables';
 
 // ../install/index.php:1196 
 $lang['Step 10 - End of the update'] = 'Étape 10 - Fin de la mise à jour';

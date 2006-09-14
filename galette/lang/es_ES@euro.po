@@ -99,10 +99,6 @@ msgstr ""
 "Déjelo vacío para utilizar el correo del remitente como dirección de "
 "respuesta"
 
-#: ../install/index.php:641
-msgid "Creation of the database"
-msgstr "Creación de la base de datos"
-
 #: ../preferences.php:164
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
@@ -417,9 +413,10 @@ msgstr ""
 "La causa puede estar en los permisos del fichero includes/config.inc.php o "
 "en la imposibilidad de hacer un INSERT en la base de datos."
 
-#: ../ajouter_contribution.php:196
-msgid "- Membership period overlaps period starting at "
-msgstr "- El período de afiliación supera el periodo que comienza el "
+#: ../install/index.php:889
+#, fuzzy
+msgid "Step 7 - Tables Creation"
+msgstr "Paso 7º - Creación de la base de datos"
 
 #: ../install/index.php:527
 msgid "SELECT operation not allowed"
@@ -676,10 +673,6 @@ msgstr "Informe de cuotas"
 #: ../footer.php:89 ../templates/default/page.tpl:66
 msgid "Woman"
 msgstr "Mujer"
-
-#: ../install/index.php:889
-msgid "Step 7 - Database Creation"
-msgstr "Paso 7º - Creación de la base de datos"
 
 #: ../templates/default/self_adherent.tpl:56
 msgid "your fee."
@@ -1003,10 +996,6 @@ msgstr "Fecha:"
 msgid "Your current Galette version is comprised between"
 msgstr "Su versión actual de Galette se encuentra entre"
 
-#: ../install/index.php:864
-msgid "The database has been correctly updated."
-msgstr "La base de datos fue actualizada correctamente."
-
 #: ../templates/default/self_adherent.tpl:55
 msgid "You can prepare a picture to upload after sending"
 msgstr "Puede preparar una foto para enviarla después de remitir"
@@ -1083,6 +1072,13 @@ msgstr "Cuentas activas"
 msgid "Send subscription mail to :"
 msgstr "Enviar correo de afiliación a:"
 
+#: ../install/index.php:838
+#, fuzzy
+msgid "The tables are not totally updated, it's maybe a permission problem."
+msgstr ""
+"La base de datos no fue actualizada totalmente, puede deberse a un problema "
+"de permisos."
+
 #: ../install/index.php:588
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the update."
@@ -1102,10 +1098,6 @@ msgstr "Paso 9º - Grabar los parámetros"
 #: ../voir_adherent.php:89 ../etiquettes_adherents.php:90
 msgid "Mr."
 msgstr "Sr."
-
-#: ../install/index.php:863
-msgid "The database has been correctly created."
-msgstr "La base de datos fue creada correctamente."
 
 #: ../lostpasswd.php:98
 msgid "Someone (probably you) asked to recover your password."
@@ -1138,9 +1130,16 @@ msgstr "- ¡El importe debe ser una cifra!"
 msgid "No"
 msgstr "No"
 
-#: ../install/index.php:890
-msgid "Step 7 - Database Update"
-msgstr "Paso 7º - Actualización de la base de datos"
+#: ../install/index.php:837
+#, fuzzy
+msgid "The tables are not totally created, it's maybe a permission problem."
+msgstr ""
+"La base de datos no fue creada totalmente, puede deberse a un problema de "
+"permisos."
+
+#: ../footer.php:173 ../templates/default/page.tpl:136
+msgid "Gift"
+msgstr "Donativo"
 
 #: ../gestion_contributions.php:315 ../gestion_adherents.php:320
 msgid "Close expiries"
@@ -1478,6 +1477,11 @@ msgstr "En primer lugar debe dar de alta a un socio"
 msgid "Preview"
 msgstr "Vista previa"
 
+#: ../install/index.php:863
+#, fuzzy
+msgid "The tables has been correctly created."
+msgstr "La base de datos fue creada correctamente."
+
 #: ../self_contribution.php:208 ../templates/default/ajouter_adherent.tpl:1
 #: ../templates/default/ajouter_contribution.tpl:1
 msgid "modification"
@@ -1609,6 +1613,11 @@ msgstr ""
 msgid "Contribution added"
 msgstr "Contribución añadida"
 
+#: ../install/index.php:642
+#, fuzzy
+msgid "Update of the tables"
+msgstr "Actualización de la base"
+
 #: ../install/index.php:251
 msgid ""
 "For a correct functioning, Galette needs the Write permission on these files."
@@ -1716,6 +1725,11 @@ msgstr "Permisos de los ficheros"
 #: ../templates/default/ajouter_transaction.tpl:30
 msgid "Originator:"
 msgstr "Emisor:"
+
+#: ../install/index.php:890
+#, fuzzy
+msgid "Step 7 - Tables Update"
+msgstr "Paso 7º - Actualización de la base de datos"
 
 #: ../install/index.php:305
 msgid ""
@@ -1826,12 +1840,6 @@ msgstr ""
 "- La suma de todas las contribuciones es superior a las transacciones "
 "correspondientes."
 
-#: ../install/index.php:838
-msgid "The database isn't totally updated, it's maybe a permission problem."
-msgstr ""
-"La base de datos no fue actualizada totalmente, puede deberse a un problema "
-"de permisos."
-
 #: ../gestion_adherents.php:53 ../gestion_adherents.php:65
 msgid "No member was selected, please check at least one name."
 msgstr ""
@@ -1840,10 +1848,6 @@ msgstr ""
 #: ../install/index.php:1195
 msgid "Step 10 - End of the installation"
 msgstr "Paso 10º - Final de la instalación"
-
-#: ../footer.php:173 ../templates/default/page.tpl:136
-msgid "Gift"
-msgstr "Donativo"
 
 #: ../templates/default/ajouter_adherent.tpl:110
 #: ../templates/default/voir_adherent.tpl:52
@@ -2030,12 +2034,6 @@ msgstr ""
 msgid "Other informations (admin):"
 msgstr "Otras informaciones (admin):"
 
-#: ../install/index.php:837
-msgid "The database isn't totally created, it's maybe a permission problem."
-msgstr ""
-"La base de datos no fue creada totalmente, puede deberse a un problema de "
-"permisos."
-
 #: ../install/index.php:437
 msgid "Step 5 - Access to the database"
 msgstr "Paso 5º - Acceso a la base de datos"
@@ -2133,6 +2131,11 @@ msgstr "Actualizar"
 msgid "[ See member profile ]"
 msgstr "[Ver el perfil del socio]"
 
+#: ../install/index.php:864
+#, fuzzy
+msgid "The tables has been correctly updated."
+msgstr "La base de datos fue actualizada correctamente."
+
 #: ../templates/default/ajouter_adherent.tpl:45
 #: ../templates/default/voir_adherent.tpl:12
 #: ../templates/default/editer_champ.tpl:17
@@ -2163,6 +2166,11 @@ msgstr "(dd/mm)"
 #: ../ajouter_adherent.php:151
 msgid "- The username cannot contain the @ character"
 msgstr "- El nombre de usuario no puede contener el carácter @"
+
+#: ../install/index.php:641
+#, fuzzy
+msgid "Creation of the tables"
+msgstr "Creación de la base de datos"
 
 #: ../self_adherent.php:157 ../preferences.php:178 ../preferences.php:181
 #: ../ajouter_contribution.php:166 ../ajouter_contribution.php:169
@@ -2217,10 +2225,6 @@ msgstr "La base de datos existe y los parámetros de conexión son correctos."
 msgid "Database"
 msgstr "Base de datos"
 
-#: ../install/index.php:642
-msgid "Update of the database"
-msgstr "Actualización de la base"
-
 #: ../templates/default/preferences.tpl:165
 msgid "Label height:"
 msgstr "Altura de la etiqueta:"
@@ -2236,6 +2240,10 @@ msgstr "Tipo de instalación desconocido"
 #: ../templates/default/configurer_fiches.tpl:61
 msgid "[down]"
 msgstr "[abajo]"
+
+#: ../ajouter_contribution.php:196
+msgid "- Membership period overlaps period starting at "
+msgstr "- El período de afiliación supera el periodo que comienza el "
 
 #: ../footer.php:128 ../gestion_contributions.php:271
 #: ../gestion_adherents.php:263 ../templates/default/page.tpl:100

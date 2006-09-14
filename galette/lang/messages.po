@@ -68,10 +68,6 @@ msgstr ""
 msgid "Leave empty to use Sender Email as reply address"
 msgstr ""
 
-#: ../install/index.php:641
-msgid "Creation of the database"
-msgstr ""
-
 #: ../preferences.php:164
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
@@ -344,8 +340,8 @@ msgstr ""
 msgid "This can come from the permissions on the file includes/config.inc.php or the impossibility to make an INSERT into the database."
 msgstr ""
 
-#: ../ajouter_contribution.php:196
-msgid "- Membership period overlaps period starting at "
+#: ../install/index.php:889
+msgid "Step 7 - Tables Creation"
 msgstr ""
 
 #: ../install/index.php:527
@@ -590,10 +586,6 @@ msgstr ""
 
 #: ../footer.php:89 ../templates/default/page.tpl:66
 msgid "Woman"
-msgstr ""
-
-#: ../install/index.php:889
-msgid "Step 7 - Database Creation"
 msgstr ""
 
 #: ../templates/default/self_adherent.tpl:56
@@ -893,10 +885,6 @@ msgstr ""
 msgid "Your current Galette version is comprised between"
 msgstr ""
 
-#: ../install/index.php:864
-msgid "The database has been correctly updated."
-msgstr ""
-
 #: ../templates/default/self_adherent.tpl:55
 msgid "You can prepare a picture to upload after sending"
 msgstr ""
@@ -970,6 +958,10 @@ msgstr ""
 msgid "Send subscription mail to :"
 msgstr ""
 
+#: ../install/index.php:838
+msgid "The tables are not totally updated, it's maybe a permission problem."
+msgstr ""
+
 #: ../install/index.php:588
 msgid "GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr ""
@@ -984,10 +976,6 @@ msgstr ""
 
 #: ../voir_adherent.php:89 ../etiquettes_adherents.php:90
 msgid "Mr."
-msgstr ""
-
-#: ../install/index.php:863
-msgid "The database has been correctly created."
 msgstr ""
 
 #: ../lostpasswd.php:98
@@ -1019,8 +1007,12 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: ../install/index.php:890
-msgid "Step 7 - Database Update"
+#: ../install/index.php:837
+msgid "The tables are not totally created, it's maybe a permission problem."
+msgstr ""
+
+#: ../footer.php:173 ../templates/default/page.tpl:136
+msgid "Gift"
 msgstr ""
 
 #: ../gestion_contributions.php:315 ../gestion_adherents.php:320
@@ -1327,6 +1319,10 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
+#: ../install/index.php:863
+msgid "The tables has been correctly created."
+msgstr ""
+
 #: ../self_contribution.php:208 ../templates/default/ajouter_adherent.tpl:1
 #: ../templates/default/ajouter_contribution.tpl:1
 msgid "modification"
@@ -1446,6 +1442,10 @@ msgstr ""
 msgid "Contribution added"
 msgstr ""
 
+#: ../install/index.php:642
+msgid "Update of the tables"
+msgstr ""
+
 #: ../install/index.php:251
 msgid "For a correct functioning, Galette needs the Write permission on these files."
 msgstr ""
@@ -1544,6 +1544,10 @@ msgstr ""
 msgid "Originator:"
 msgstr ""
 
+#: ../install/index.php:890
+msgid "Step 7 - Tables Update"
+msgstr ""
+
 #: ../install/index.php:305
 msgid "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 msgstr ""
@@ -1640,20 +1644,12 @@ msgstr ""
 msgid "-  Sum of all contributions exceed corresponding transaction amount."
 msgstr ""
 
-#: ../install/index.php:838
-msgid "The database isn't totally updated, it's maybe a permission problem."
-msgstr ""
-
 #: ../gestion_adherents.php:53 ../gestion_adherents.php:65
 msgid "No member was selected, please check at least one name."
 msgstr ""
 
 #: ../install/index.php:1195
 msgid "Step 10 - End of the installation"
-msgstr ""
-
-#: ../footer.php:173 ../templates/default/page.tpl:136
-msgid "Gift"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:110 ../templates/default/voir_adherent.tpl:52
@@ -1811,10 +1807,6 @@ msgstr ""
 msgid "Other informations (admin):"
 msgstr ""
 
-#: ../install/index.php:837
-msgid "The database isn't totally created, it's maybe a permission problem."
-msgstr ""
-
 #: ../install/index.php:437
 msgid "Step 5 - Access to the database"
 msgstr ""
@@ -1901,6 +1893,10 @@ msgstr ""
 msgid "[ See member profile ]"
 msgstr ""
 
+#: ../install/index.php:864
+msgid "The tables has been correctly updated."
+msgstr ""
+
 #: ../templates/default/ajouter_adherent.tpl:45 ../templates/default/voir_adherent.tpl:12
 #: ../templates/default/editer_champ.tpl:17 ../templates/default/self_adherent.tpl:50
 msgid "Name:"
@@ -1928,6 +1924,10 @@ msgstr ""
 
 #: ../ajouter_adherent.php:151
 msgid "- The username cannot contain the @ character"
+msgstr ""
+
+#: ../install/index.php:641
+msgid "Creation of the tables"
 msgstr ""
 
 #: ../self_adherent.php:157 ../preferences.php:178
@@ -1981,10 +1981,6 @@ msgstr ""
 msgid "Database"
 msgstr ""
 
-#: ../install/index.php:642
-msgid "Update of the database"
-msgstr ""
-
 #: ../templates/default/preferences.tpl:165
 msgid "Label height:"
 msgstr ""
@@ -1999,6 +1995,10 @@ msgstr ""
 
 #: ../templates/default/configurer_fiches.tpl:61
 msgid "[down]"
+msgstr ""
+
+#: ../ajouter_contribution.php:196
+msgid "- Membership period overlaps period starting at "
 msgstr ""
 
 #: ../footer.php:128 ../gestion_contributions.php:271
