@@ -638,8 +638,8 @@ echo "</ul>";
 ?>
 
 	<h1>
-		<?php if ($step=="i7") echo _T("Creation of the database"); ?>
-		<?php if ($step=="u7") echo _T("Update of the database"); ?>
+		<?php if ($step=="i7") echo _T("Creation of the tables"); ?>
+		<?php if ($step=="u7") echo _T("Update of the tables"); ?>
 	</h1>
 	<p>
 		<?php if ($step=="i7") echo _T("Installation Report"); ?>
@@ -834,8 +834,8 @@ echo "</ul>\n";
 			{
 ?>
 	<p>
-		<?php if ($step=="i7") echo _T("The database isn't totally created, it's maybe a permission problem."); ?>
-		<?php if ($step=="u7") echo _T("The database isn't totally updated, it's maybe a permission problem."); ?>
+		<?php if ($step=="i7") echo _T("The tables are not totally created, it's maybe a permission problem."); ?>
+		<?php if ($step=="u7") echo _T("The tables are not totally updated, it's maybe a permission problem."); ?>
 		<?php if ($step=="u7") echo _T("Your database is maybe not usable, try to restore the older version."); ?>
 	</p>
 	<form action="index.php" method="POST">
@@ -860,8 +860,8 @@ echo "</ul>\n";
 			{
 ?>
 	<p>
-		<?php if ($step=="i7") echo _T("The database has been correctly created."); ?>
-		<?php if ($step=="u7") echo _T("The database has been correctly updated."); ?>
+		<?php if ($step=="i7") echo _T("The tables has been correctly created."); ?>
+		<?php if ($step=="u7") echo _T("The tables has been correctly updated."); ?>
 	</p>
 	<form action="index.php" method="POST">
 		<p id="submitbutton3">
@@ -886,8 +886,8 @@ echo "</ul>\n";
 	<br />
 	</div>
 	<h1 class="footerinstall">
-		<?php if ($step=="i7") echo _T("Step 7 - Database Creation"); ?>
-		<?php if ($step=="u7") echo _T("Step 7 - Database Update"); ?>
+		<?php if ($step=="i7") echo _T("Step 7 - Tables Creation"); ?>
+		<?php if ($step=="u7") echo _T("Step 7 - Tables Update"); ?>
 	</h1>
 	
 <?

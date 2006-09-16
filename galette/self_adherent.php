@@ -167,7 +167,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
       if (!$DB->Execute($requete))
         print substr($insert_string_values,1).": ".$DB->ErrorMsg();
       $adherent['id_adh'] = get_last_auto_increment($DB, PREFIX_DB."adherents", "id_adh");
-      dblog(_T("Self_subscription as a member:")." ".strtoupper($_POST["nom_adh"])." ".$_POST["prenom_adh"], $requete);
+      dblog("Self_subscription as a member:"." ".strtoupper($_POST["nom_adh"])." ".$_POST["prenom_adh"], $requete);
 
       // il est temps d'envoyer un mail
       if ($adherent['email_adh']!="") {
@@ -190,25 +190,25 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
         $mail_text .= _T("(this mail was sent automatically)")."\n";
         $mail_result = custom_mail ($adherent['email_adh'],$mail_subject,$mail_text);
         if( $mail_result == 1) {
-          dblog(_T("Self subscribe - Send subscription mail to :")."$_POST[email_adh])", $requete);
+          dblog("Self subscribe - Send subscription mail to :"."$_POST[email_adh])", $requete);
           $warning_detected[] = _T("Password sent. Login:")." \"" . $login_adh . "\"";
           //$password_sent = true;
         }else{
           switch ($mail_result) {
             case 2 :
-              dblog(_T("Self subscribe - Email sent is desactived in the preferences. Ask galette admin."));
+              dblog("Self subscribe - Email sent is desactived in the preferences. Ask galette admin.");
               //$warning_detected[] = _T("Email sent is desactived in the preferences. Ask galette admin");
               break;
             case 3 :
-              dblog(_T("Self subscribe - A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"");
+              dblog("Self subscribe - A problem happened while sending password for account:"." \"" . $_POST[email_adh] . "\"");
               //$warning_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"";
               break;
             case 4 :
-              dblog(_T("Self subscribe - The server mail filled in the preferences cannot be reached. Ask Galette admin"));
+              dblog("Self subscribe - The server mail filled in the preferences cannot be reached. Ask Galette admin");
               //$warning_detected[] = _T("The server mail filled in the preferences cannot be reached. Ask Galette admin");
               break;
             default :
-              dblog(_T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"");
+              dblog("A problem happened while sending password for account:"." \"" . $_POST[email_adh] . "\"");
               //$warning_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"";
               break;
           }

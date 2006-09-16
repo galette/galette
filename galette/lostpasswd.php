@@ -42,12 +42,12 @@
 
 			if ($result->EOF) {
 				$GLOBALS["error_detected"] = _T("this login doesn't exist");
-				dblog(_T("Nonexistent login sent via the lost password form. Login:")." \"" . $login ."\"");
+				dblog("Nonexistent login sent via the lost password form. Login:"." \"" . $login ."\"");
 			}else{
 				$email=$result->fields[0];
 				if( empty($email) ) {
 					$GLOBALS["error_detected"] = _T("This account doesn't have a valid email address. Please contact an administrator.");
-					dblog(_T("Someone asked to recover his password but had no email. Login:")." \"" . $login . "\"");
+					dblog("Someone asked to recover his password but had no email. Login:"." \"" . $login . "\"");
 				}else
 				return $email;
 			}
@@ -109,29 +109,29 @@
 			//$mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\n";
       $mail_result = custom_mail($email_adh,$mail_subject,$mail_text);
 			if( $mail_result == 1) {
-				dblog(_T("Password sent. Login:")." \"" . $login_adh . "\"");
+				dblog("Password sent. Login:"." \"" . $login_adh . "\"");
 				$warning_detected = _T("Password sent. Login:")." \"" . $login_adh . "\"";
 				//$password_sent = true;
 			} else {
         switch ($mail_result) {
           case 2 :
-            dblog(_T("Email sent is desactived in the preferences"));
+            dblog("Email sent is desactived in the preferences");
             $warning_detected = _T("Email sent is desactived in the preferences. Ask galette admin");
             break;
           case 3 :
-            dblog(_T("A problem happened while sending password for account:")." \"" . $login_adh . "\"");
+            dblog("A problem happened while sending password for account:"." \"" . $login_adh . "\"");
             $warning_detected = _T("A problem happened while sending password for account:")." \"" . $login_adh . "\"";
             break;
           case 4 :
-            dblog(_T("The server mail filled in the preferences cannot be reached"));
+            dblog("The server mail filled in the preferences cannot be reached");
             $warning_detected = _T("The server mail filled in the preferences cannot be reached. Ask Galette admin");
             break;
 					case 5 :
-						dblog(_T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"");
+						dblog("**IMPORTANT** There was a probably breaking attempt when sending mail to :"." \"" . $email_adh . "\"");
 						$error_detected[] = _T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"";
 						break;
           default :
-            dblog(_T("A problem happened while sending password for account:")." \"" . $login_adh . "\"");
+            dblog("A problem happened while sending password for account:"." \"" . $login_adh . "\"");
             $warning_detected = _T("A problem happened while sending password for account:")." \"" . $login_adh . "\"";
             break;
         }

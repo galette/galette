@@ -284,29 +284,29 @@
           $mail_result = custom_mail($adherent['email_adh'],$mail_subject,$mail_text);
           //TODO: duplicate piece of code with mailing_adherent
           if( $mail_result == 1) {
-            dblog(_T("Send subscription mail to :")."$_POST[email_adh])", $requete);
+            dblog("Send subscription mail to :"."$_POST[email_adh])", $requete);
             $warning_detected[] = _T("Password sent. Login:")." \"" . $adherent['login_adh'] . "\"";
             //$password_sent = true;
           }else{
             switch ($mail_result) {
               case 2 :
-                dblog(_T("Email sent is desactived in the preferences. Ask galette admin."));
+                dblog("Email sent is desactived in the preferences. Ask galette admin.");
                 $error_detected[] = _T("Email sent is desactived in the preferences. Ask galette admin");
                 break;
               case 3 :
-                dblog(_T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"");
+                dblog("A problem happened while sending password for account:"." \"" . $_POST[email_adh] . "\"");
                 $error_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"";
                 break;
               case 4 :
-                dblog(_T("The server mail filled in the preferences cannot be reached. Ask Galette admin"));
+                dblog("The server mail filled in the preferences cannot be reached. Ask Galette admin");
                 $error_detected[] = _T("The server mail filled in the preferences cannot be reached. Ask Galette admin");
                 break;
 							case 5 :
-								dblog(_T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"");
+								dblog("**IMPORTANT** There was a probably breaking attempt when sending mail to :"." \"" . $email_adh . "\"");
 								$error_detected[] = _T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"";
 								break;
               default :
-                dblog(_T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"");
+                dblog("A problem happened while sending password for account:"." \"" . $_POST[email_adh] . "\"");
                 $error_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"";
                 break;
             }
