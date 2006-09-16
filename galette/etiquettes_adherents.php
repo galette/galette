@@ -125,7 +125,7 @@
 			$nb_etiq++;
 		}
 		$resultat->Close();
-		//dblog(_T("Generation of ")." ".$nb_etiq." "._T("label(s)"),$concatname);
+		//dblog("Generation of "." ".$nb_etiq." "."label(s)",$concatname);
 		
 	header("Content-Disposition: attachment; filename=labels.pdf");
 	header("Content-Type: application/pdf");

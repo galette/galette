@@ -72,7 +72,7 @@
 							$warning_detected = _T("There was a database error");
 							//$warning_detected = $DB->ErrorMsg();
 						} else {
-							dblog(_T("**Password changed**. id:")." \"" . $id_adh . "\"");
+							dblog("**Password changed**. id:"." \"" . $id_adh . "\"");
 							$warning_detected = _T("Password changed, you will be redirect to login page");
 							print "<meta http-equiv=\"refresh\" content=\"10;url=index.php\">";
 						}
