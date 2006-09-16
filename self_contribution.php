@@ -174,7 +174,7 @@ if (isset($_POST["valid"]) && $_POST["self_contribution"])
       substr($insert_string_fields,1) . ") VALUES (" . 
       substr($insert_string_values,1) . ")";
     
-    dblog(_T("Add a self-contribution:").
+    dblog("Add a self-contribution:".
 	  " ".strtoupper($nom_adh)." ".$prenom_adh, $requete);							
     $DB->Execute($requete);
     

@@ -122,28 +122,28 @@
 																	$content_type);
 			if( $mail_result == 1) {
 				$email_adh = $result_members->fields[1];
-				dblog(_T("Send mail to :")." \"" . $email_adh . "\"", $sql);
+				dblog("Send mail to :"." \"" . $email_adh . "\"", $sql);
 				$warning_detected[] = _T("Mail sent to :")." \"" . $email_adh . "\"";
 			} else {
       switch ($mail_result) {
         case 2 :
-          dblog(_T("Email sent is desactived in the preferences. Ask galette admin."));
+          dblog("Email sent is desactived in the preferences. Ask galette admin.");
           $error_detected[] = _T("Email sent is desactived in the preferences. Ask galette admin");
           break;
         case 3 :
-          dblog(_T("A problem happened while sending mail to :")." \"" . $email_adh . "\"");
+          dblog("A problem happened while sending mail to :"." \"" . $email_adh . "\"");
           $error_detected[] = _T("A problem happened while sending mail to :")." \"" . $email_adh . "\"";
           break;
         case 4 :
-          dblog(_T("The server mail filled in the preferences cannot be reached. Ask Galette admin"));
+          dblog("The server mail filled in the preferences cannot be reached. Ask Galette admin");
           $error_detected[] = _T("The server mail filled in the preferences cannot be reached. Ask Galette admin");
           break;
         case 5 :
-          dblog(_T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"");
+          dblog("**IMPORTANT** There was a probably breaking attempt when sending mail to :"." \"" . $email_adh . "\"");
           $error_detected[] = _T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"";
           break;
         default :
-          dblog(_T("A problem happened while sending mail to :")." \"" . $email_adh . "\"");
+          dblog("A problem happened while sending mail to :"." \"" . $email_adh . "\"");
           $error_detected[] = _T("A problem happened while sending mail to :")." \"" . $email_adh . "\"";
           break;
       }

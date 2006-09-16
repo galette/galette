@@ -10,7 +10,7 @@
 			</tr>
 			<tr> 
 				<th>{_T("Name:")}</th>
-				<td>{$data.titres_adh} {$data.nom_adh} {$data.prenom_adh}</td>
+				<td>{$data.titre_adh} {$data.nom_adh} {$data.prenom_adh}</td>
 			</tr>
 			<tr> 
 				<th>{_T("Nickname:")}</th> 
