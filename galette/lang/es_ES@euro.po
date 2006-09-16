@@ -79,12 +79,6 @@ msgstr "Puesto:"
 msgid "End date of membership:"
 msgstr "Fecha de terminación de la afiliación:"
 
-#: ../self_adherent.php:203
-msgid "Self subscribe - A problem happened while sending password for account:"
-msgstr ""
-"Autoinscripción - Ocurrió un problema en el envío de la contraseña para la "
-"cuenta:"
-
 #: ../templates/default/editer_champ.tpl:1
 msgid "Edit field"
 msgstr "Edición del campo"
@@ -144,10 +138,6 @@ msgstr "Operación UPDATE autorizada"
 msgid "Admin settings"
 msgstr "Configuraciones de administración"
 
-#: ../preferences.php:222 ../ajouter_adherent.php:262
-msgid "Delete failed"
-msgstr "Fallo en la supresión de datos"
-
 #: ../install/index.php:1179
 msgid "Installation complete !"
 msgstr "¡Instalación completada!"
@@ -184,9 +174,9 @@ msgstr ""
 msgid "Contribution type:"
 msgstr "Tipo de contribución:"
 
-#: ../includes/i18n.inc.php:209
-msgid "english"
-msgstr "inglés"
+#: ../install/index.php:198
+msgid "Your current Galette version is comprised between"
+msgstr "Su versión actual de Galette se encuentra entre"
 
 #: ../templates/default/editer_champ.tpl:84
 msgid "Values:"
@@ -244,20 +234,10 @@ msgstr ""
 msgid "Admin account (independant of members):"
 msgstr "Cuenta de administrador (independiente de los socios):"
 
-#: ../footer.php:115 ../footer.php:161
-#: ../templates/default/gestion_adherents.tpl:132
-#: ../templates/default/page.tpl:87 ../templates/default/page.tpl:126
-#: ../templates/default/configurer_fiches.tpl:48
-#: ../templates/default/gestion_contributions.tpl:135
-#: ../templates/default/gestion_transactions.tpl:98
-msgid "[del]"
-msgstr "[sup]"
-
-#: ../lostpasswd.php:45
-msgid "Nonexistent login sent via the lost password form. Login:"
-msgstr ""
-"Identificador no existente enviado mediante el formulario de recuperación de "
-"la contraseña. Login:"
+#: ../templates/default/gestion_adherents.tpl:23
+#: ../templates/default/gestion_contributions.tpl:8
+msgid "Filter"
+msgstr "Filtrar"
 
 #: ../templates/default/preferences.tpl:151
 msgid "Vertical spacing:"
@@ -308,9 +288,9 @@ msgstr "Comienzo de la afiliación:"
 msgid "Save"
 msgstr "Grabar"
 
-#: ../footer.php:44
-msgid "Do a mailing"
-msgstr "Hacer un envío general de correo"
+#: ../self_adherent.php:131
+msgid "Password misrepeated: "
+msgstr "Error en la repetición de la contraseña: "
 
 #: ../preferences.php:138
 msgid "- Invalid date for beginning of membership."
@@ -374,10 +354,9 @@ msgstr ""
 msgid "DROP OPeration not allowed"
 msgstr "Operación DROP no autorizada"
 
-#: ../templates/default/preferences.tpl:37
-#: ../templates/default/ajouter_adherent.tpl:33
-msgid "Delete image"
-msgstr "Borrar la imagen"
+#: ../gestion_contributions.php:287
+msgid "Late of"
+msgstr "Retrasado"
 
 #: ../templates/default/preferences.tpl:107
 msgid "Mail settings:"
@@ -396,8 +375,7 @@ msgstr ""
 msgid "Choice list (one entry per line)."
 msgstr "Lista de opciones (una entrada por línea)."
 
-#: ../self_adherent.php:194 ../lostpasswd.php:112 ../lostpasswd.php:113
-#: ../ajouter_adherent.php:288
+#: ../self_adherent.php:194 ../lostpasswd.php:113 ../ajouter_adherent.php:288
 msgid "Password sent. Login:"
 msgstr "Contraseña enviada. Login:"
 
@@ -565,10 +543,6 @@ msgstr "Ver las contribuciones"
 msgid "ICQ:"
 msgstr "ICQ:"
 
-#: ../log.php:49
-msgid "Logs flushed"
-msgstr "Logs reinicializados"
-
 #: ../install/index.php:309
 msgid "Database type:"
 msgstr "Tipo de base de datos:"
@@ -595,10 +569,6 @@ msgstr "Borrado"
 #: ../templates/default/ajouter_contribution.tpl:39
 msgid "Transaction number:"
 msgstr "Número de transacción:"
-
-#: ../self_contribution.php:177
-msgid "Add a self-contribution:"
-msgstr "Añadir una contribución voluntaria:"
 
 #: ../templates/default/preferences.tpl:137
 msgid "Margins:"
@@ -710,18 +680,13 @@ msgstr "Parámetros de la generación de etiquetas:"
 msgid "Step 6 - Access permissions to database"
 msgstr "Paso 6º - Permisos de acceso a la base de datos"
 
-#: ../footer.php:26
-msgid "seconds."
-msgstr "segundos."
-
-#: ../lostpasswd.php:126
-msgid "The server mail filled in the preferences cannot be reached"
+#: ../templates/default/gestion_adherents.tpl:169
+msgid ""
+"Do you really want to delere all selected accounts (and related "
+"contributions)?"
 msgstr ""
-"No se logra conectar con el servidor de correo indicado en las preferencias"
-
-#: ../templates/default/configurer_fiches.tpl:26
-msgid "Position"
-msgstr "Puesto"
+"¿Quiere verdaderamente eliminar todas las cuentas seleccionadas (y las "
+"contribuciones relacionadas con ellas)?"
 
 #: ../install/index.php:255
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
@@ -731,10 +696,8 @@ msgstr "En UNIX/Linux, puede fijar los permisos con dichos comandos"
 msgid "Add"
 msgstr "Añadir"
 
-#: ../self_adherent.php:204 ../self_adherent.php:211 ../self_adherent.php:212
-#: ../lostpasswd.php:122 ../lostpasswd.php:123 ../lostpasswd.php:134
-#: ../lostpasswd.php:135 ../ajouter_adherent.php:297
-#: ../ajouter_adherent.php:298 ../ajouter_adherent.php:309
+#: ../self_adherent.php:204 ../self_adherent.php:212 ../lostpasswd.php:123
+#: ../lostpasswd.php:135 ../ajouter_adherent.php:298
 #: ../ajouter_adherent.php:310
 msgid "A problem happened while sending password for account:"
 msgstr "Ocurrió un problema en el envío de la contraseña para la cuenta:"
@@ -796,10 +759,6 @@ msgstr "Informe de actualización"
 msgid "months"
 msgstr "meses"
 
-#: ../etiquettes_adherents.php:128
-msgid "label(s)"
-msgstr "etiqueta(s)"
-
 #: ../templates/default/preferences.tpl:87
 msgid "Normal"
 msgstr "Normal"
@@ -827,12 +786,6 @@ msgstr "Contribuciones"
 #: ../install/index.php:1189
 msgid "Homepage"
 msgstr "Página principal"
-
-#: ../lostpasswd.php:50
-msgid "Someone asked to recover his password but had no email. Login:"
-msgstr ""
-"Petición de recuperación de contraseña sin proporcionar correo electrónico. "
-"Login:"
 
 #: ../templates/default/gestion_contributions.tpl:48
 msgid "Begin."
@@ -904,9 +857,12 @@ msgstr "Tipo de base de datos desconocido"
 msgid "Please compose your mail."
 msgstr "Por favor introduzca su dirección de correo electrónico."
 
-#: ../self_adherent.php:131
-msgid "Password misrepeated: "
-msgstr "Error en la repetición de la contraseña: "
+#: ../templates/default/preferences.tpl:58
+#: ../templates/default/ajouter_adherent.tpl:181
+#: ../templates/default/voir_adherent.tpl:91
+#: ../templates/default/self_adherent.tpl:120
+msgid "Country:"
+msgstr "País:"
 
 #: ../templates/default/mailing_adherents.tpl:55
 msgid "Message:"
@@ -984,17 +940,13 @@ msgstr "¡Galette fue actualizada con éxito!"
 msgid "Nickname:"
 msgstr "Alias:"
 
-#: ../self_adherent.php:193
-msgid "Self subscribe - Send subscription mail to :"
-msgstr "Autoinscripción - Enviar correo de inscripción a:"
-
 #: ../templates/default/ajouter_transaction.tpl:21
 msgid "Date:"
 msgstr "Fecha:"
 
-#: ../install/index.php:198
-msgid "Your current Galette version is comprised between"
-msgstr "Su versión actual de Galette se encuentra entre"
+#: ../includes/i18n.inc.php:209
+msgid "english"
+msgstr "inglés"
 
 #: ../templates/default/self_adherent.tpl:55
 msgid "You can prepare a picture to upload after sending"
@@ -1068,10 +1020,6 @@ msgstr "Paso 2º - Modalidad de instalación"
 msgid "Active accounts"
 msgstr "Cuentas activas"
 
-#: ../ajouter_adherent.php:287
-msgid "Send subscription mail to :"
-msgstr "Enviar correo de afiliación a:"
-
 #: ../install/index.php:838
 #, fuzzy
 msgid "The tables are not totally updated, it's maybe a permission problem."
@@ -1141,9 +1089,9 @@ msgstr ""
 msgid "Gift"
 msgstr "Donativo"
 
-#: ../gestion_contributions.php:315 ../gestion_adherents.php:320
-msgid "Close expiries"
-msgstr "Plazos que expirarán pronto"
+#: ../install/index.php:62 ../install/index.php:96
+msgid "No user name"
+msgstr "Falta nombre de usuario"
 
 #: ../templates/default/editer_champ.tpl:39
 msgid "Required:"
@@ -1206,11 +1154,9 @@ msgstr "Admin. de  Galette:"
 msgid "Next step"
 msgstr "Siguiente paso"
 
-#: ../templates/default/gestion_adherents.tpl:29
-#: ../templates/default/gestion_contributions.tpl:14
-#: ../templates/default/gestion_transactions.tpl:7
-msgid "Show:"
-msgstr "Mostrar:"
+#: ../templates/default/preferences.tpl:26
+msgid "General information:"
+msgstr "Información general:"
 
 #: ../templates/default/preferences.tpl:75
 msgid "Lines / Page:"
@@ -1252,9 +1198,9 @@ msgstr "contribuciones"
 msgid "Permissions to database are OK."
 msgstr "Los permisos sobre la base de datos son correctos."
 
-#: ../lostpasswd.php:118
-msgid "Email sent is desactived in the preferences"
-msgstr "El envío de correo está desactivado en las preferencias"
+#: ../preferences.php:222 ../ajouter_adherent.php:262
+msgid "Delete failed"
+msgstr "Fallo en la supresión de datos"
 
 #: ../templates/default/mailing_adherents.tpl:98
 msgid "unreachable member"
@@ -1276,8 +1222,7 @@ msgstr "Donativo en especie"
 msgid "Please type an object for the message."
 msgstr "Por favor especifique el objeto del mensaje."
 
-#: ../mailing_adherents.php:142 ../mailing_adherents.php:143
-#: ../lostpasswd.php:130 ../lostpasswd.php:131 ../ajouter_adherent.php:305
+#: ../mailing_adherents.php:143 ../lostpasswd.php:131
 #: ../ajouter_adherent.php:306
 msgid ""
 "**IMPORTANT** There was a probably breaking attempt when sending mail to :"
@@ -1340,13 +1285,14 @@ msgstr "Actualizar:"
 msgid "[up]"
 msgstr "[arriba]"
 
-#: ../templates/default/gestion_adherents.tpl:169
-msgid ""
-"Do you really want to delere all selected accounts (and related "
-"contributions)?"
-msgstr ""
-"¿Quiere verdaderamente eliminar todas las cuentas seleccionadas (y las "
-"contribuciones relacionadas con ellas)?"
+#: ../footer.php:115 ../footer.php:161
+#: ../templates/default/gestion_adherents.tpl:132
+#: ../templates/default/page.tpl:87 ../templates/default/page.tpl:126
+#: ../templates/default/configurer_fiches.tpl:48
+#: ../templates/default/gestion_contributions.tpl:135
+#: ../templates/default/gestion_transactions.tpl:98
+msgid "[del]"
+msgstr "[sup]"
 
 #: ../templates/default/log.tpl:64
 msgid "Action"
@@ -1515,15 +1461,9 @@ msgstr "(Indique el prefijo ACTUAL de sus tablas Galette)"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../self_adherent.php:208 ../mailing_adherents.php:138
-#: ../mailing_adherents.php:139 ../lostpasswd.php:127
-#: ../ajouter_adherent.php:301 ../ajouter_adherent.php:302
-msgid ""
-"The server mail filled in the preferences cannot be reached. Ask Galette "
-"admin"
-msgstr ""
-"No se logra contactar con el servidor de correo indicado en las "
-"preferencias. Contacte con el administrador de Galette"
+#: ../footer.php:85 ../templates/default/page.tpl:62
+msgid "Man"
+msgstr "Hombre"
 
 #: ../footer.php:140 ../templates/default/page.tpl:112
 msgid "Lateness in fee"
@@ -1544,6 +1484,10 @@ msgstr "Retrasados"
 #: ../footer.php:52 ../templates/default/page.tpl:37
 msgid "My information"
 msgstr "Mis informaciones"
+
+#: ../footer.php:26
+msgid "seconds."
+msgstr "segundos."
 
 #: ../templates/default/preferences.tpl:140
 #: ../templates/default/preferences.tpl:147
@@ -1648,10 +1592,6 @@ msgstr "ningún socio"
 msgid "Legend"
 msgstr "Pie"
 
-#: ../templates/default/preferences.tpl:83
-msgid "Logging level:"
-msgstr "Nivel de historial:"
-
 #: ../templates/default/lostpasswd.tpl:39
 msgid "Send me my password"
 msgstr "Envíeme mi contraseña"
@@ -1672,12 +1612,12 @@ msgstr "Correo electrónico:"
 msgid "Society"
 msgstr "Sociedad"
 
-#: ../gestion_contributions.php:287
-msgid "Late of"
-msgstr "Retrasado"
+#: ../templates/default/preferences.tpl:37
+#: ../templates/default/ajouter_adherent.tpl:33
+msgid "Delete image"
+msgstr "Borrar la imagen"
 
-#: ../mailing_adherents.php:134 ../mailing_adherents.php:135
-#: ../mailing_adherents.php:146 ../mailing_adherents.php:147
+#: ../mailing_adherents.php:135 ../mailing_adherents.php:147
 msgid "A problem happened while sending mail to :"
 msgstr "Ocurrió un problema en el envío del correo a:"
 
@@ -1685,9 +1625,19 @@ msgstr "Ocurrió un problema en el envío del correo a:"
 msgid "New transaction"
 msgstr "Nueva transacción"
 
+#: ../footer.php:44
+msgid "Do a mailing"
+msgstr "Hacer un envío general de correo"
+
 #: ../install/index.php:371
 msgid "Step 4 - Database"
 msgstr "Paso 4º - Base de datos"
+
+#: ../templates/default/gestion_adherents.tpl:29
+#: ../templates/default/gestion_contributions.tpl:14
+#: ../templates/default/gestion_transactions.tpl:7
+msgid "Show:"
+msgstr "Mostrar:"
 
 #: ../templates/default/gestion_contributions.tpl:141
 #: ../templates/default/gestion_contributions.tpl:143
@@ -1762,11 +1712,6 @@ msgstr "Servidor SMTP :"
 msgid "Search:"
 msgstr "Buscar:"
 
-#: ../templates/default/gestion_adherents.tpl:23
-#: ../templates/default/gestion_contributions.tpl:8
-msgid "Filter"
-msgstr "Filtrar"
-
 #: ../footer.php:97 ../templates/default/page.tpl:71
 msgid "Send a mail"
 msgstr "Enviar un correo"
@@ -1783,14 +1728,6 @@ msgstr "Contribución actualizada"
 #: ../templates/default/self_adherent.tpl:160
 msgid "Please repeat in the field the password shown in the image."
 msgstr "Por favor, copie en el campo la contraseña que aparece en la imagen."
-
-#: ../self_adherent.php:207
-msgid ""
-"Self subscribe - The server mail filled in the preferences cannot be "
-"reached. Ask Galette admin"
-msgstr ""
-"Autoinscripción - No se logra contactar con el servidor de correo indicado "
-"en las preferencias. Contacte con el administrador de Galette"
 
 #: ../gestion_contributions.php:313 ../gestion_adherents.php:318
 msgid "All members"
@@ -1859,28 +1796,17 @@ msgstr "Exento de cuota:"
 msgid "Creation date:"
 msgstr "Fecha de creación:"
 
-#: ../mailing_adherents.php:125
-msgid "Send mail to :"
-msgstr "Enviar correo a:"
-
 #: ../templates/default/preferences.tpl:88
 msgid "Detailed"
 msgstr "Detallado"
 
-#: ../install/index.php:62 ../install/index.php:96
-msgid "No user name"
-msgstr "Falta nombre de usuario"
+#: ../gestion_contributions.php:315 ../gestion_adherents.php:320
+msgid "Close expiries"
+msgstr "Plazos que expirarán pronto"
 
-#: ../etiquettes_adherents.php:128
-msgid "Generation of "
-msgstr "Generación de "
-
-#: ../templates/default/preferences.tpl:58
-#: ../templates/default/ajouter_adherent.tpl:181
-#: ../templates/default/voir_adherent.tpl:91
-#: ../templates/default/self_adherent.tpl:120
-msgid "Country:"
-msgstr "País:"
+#: ../templates/default/configurer_fiches.tpl:26
+msgid "Position"
+msgstr "Puesto"
 
 #: ../self_contribution.php:146 ../ajouter_contribution.php:109
 msgid "- The duration must be an integer!"
@@ -1894,9 +1820,9 @@ msgstr "Foto:"
 msgid "- This username is already used by another member !"
 msgstr "- ¡Este nombre de usuario ya lo utiliza otro socio!"
 
-#: ../templates/default/preferences.tpl:26
-msgid "General information:"
-msgstr "Información general:"
+#: ../templates/default/preferences.tpl:83
+msgid "Logging level:"
+msgstr "Nivel de historial:"
 
 #: ../templates/default/mailing_adherents.tpl:1
 msgid "Mailing"
@@ -1918,9 +1844,14 @@ msgstr "¡Actualización completada!"
 msgid "PHP mail() function"
 msgstr "Función PHP mail()"
 
-#: ../footer.php:85 ../templates/default/page.tpl:62
-msgid "Man"
-msgstr "Hombre"
+#: ../self_adherent.php:208 ../mailing_adherents.php:139 ../lostpasswd.php:127
+#: ../ajouter_adherent.php:302
+msgid ""
+"The server mail filled in the preferences cannot be reached. Ask Galette "
+"admin"
+msgstr ""
+"No se logra contactar con el servidor de correo indicado en las "
+"preferencias. Contacte con el administrador de Galette"
 
 #: ../install/index.php:379
 msgid "Check of the database"
@@ -1930,12 +1861,6 @@ msgstr "Verificación de la base de datos"
 msgid "If it hadn't been made, create a database and a user for Galette."
 msgstr ""
 "Si aún no lo ha hecho, cree una base de datos y un usuario para Galette."
-
-#: ../mailing_adherents.php:130 ../ajouter_adherent.php:293
-msgid "Email sent is desactived in the preferences. Ask galette admin."
-msgstr ""
-"El envío de correo está desactivado en las preferencias. Contacte con el "
-"administrador de galette."
 
 #: ../footer.php:42 ../templates/default/page.tpl:32
 msgid "Add a member"
@@ -1968,13 +1893,9 @@ msgstr "Configurar las fichas de socios"
 msgid "HTML interpretation:"
 msgstr "Interpretación HTML:"
 
-#: ../self_adherent.php:199
-msgid ""
-"Self subscribe - Email sent is desactived in the preferences. Ask galette "
-"admin."
-msgstr ""
-"Autoinscripción - El envío de correo está desactivado en las preferencias. "
-"Contacte con el administrador de galette."
+#: ../templates/default/traduire_libelles.tpl:20
+msgid "Original"
+msgstr "Original"
 
 #: ../install/index.php:380
 msgid "Check the parameters and the existence of the database"
@@ -2001,10 +1922,6 @@ msgstr "huella de clave:"
 #: ../templates/default/voir_adherent.tpl:8
 msgid "Picture:"
 msgstr "Foto:"
-
-#: ../self_adherent.php:170
-msgid "Self_subscription as a member:"
-msgstr "Autoinscripción como socio:"
 
 #: ../templates/default/ajouter_transaction.tpl:17
 msgid "Description:"
@@ -2146,10 +2063,6 @@ msgstr "Nombre:"
 #: ../ajouter_adherent.php:245
 msgid "Member card updated:"
 msgstr "Actualizada la ficha de socio:"
-
-#: ../templates/default/traduire_libelles.tpl:20
-msgid "Original"
-msgstr "Original"
 
 #: ../preferences.php:129
 msgid "- Invalid number of months of membership extension."
@@ -2344,3 +2257,70 @@ msgstr "Por favor identifíquese usted en esta dirección:"
 #: ../templates/default/gestion_contributions.tpl:172
 msgid "[ Add a contribution ]"
 msgstr "[ Añadir una contribución ]"
+
+#~ msgid ""
+#~ "Self subscribe - A problem happened while sending password for account:"
+#~ msgstr ""
+#~ "Autoinscripción - Ocurrió un problema en el envío de la contraseña para "
+#~ "la cuenta:"
+
+#~ msgid "Nonexistent login sent via the lost password form. Login:"
+#~ msgstr ""
+#~ "Identificador no existente enviado mediante el formulario de recuperación "
+#~ "de la contraseña. Login:"
+
+#~ msgid "Logs flushed"
+#~ msgstr "Logs reinicializados"
+
+#~ msgid "Add a self-contribution:"
+#~ msgstr "Añadir una contribución voluntaria:"
+
+#~ msgid "The server mail filled in the preferences cannot be reached"
+#~ msgstr ""
+#~ "No se logra conectar con el servidor de correo indicado en las "
+#~ "preferencias"
+
+#~ msgid "label(s)"
+#~ msgstr "etiqueta(s)"
+
+#~ msgid "Someone asked to recover his password but had no email. Login:"
+#~ msgstr ""
+#~ "Petición de recuperación de contraseña sin proporcionar correo "
+#~ "electrónico. Login:"
+
+#~ msgid "Self subscribe - Send subscription mail to :"
+#~ msgstr "Autoinscripción - Enviar correo de inscripción a:"
+
+#~ msgid "Send subscription mail to :"
+#~ msgstr "Enviar correo de afiliación a:"
+
+#~ msgid "Email sent is desactived in the preferences"
+#~ msgstr "El envío de correo está desactivado en las preferencias"
+
+#~ msgid ""
+#~ "Self subscribe - The server mail filled in the preferences cannot be "
+#~ "reached. Ask Galette admin"
+#~ msgstr ""
+#~ "Autoinscripción - No se logra contactar con el servidor de correo "
+#~ "indicado en las preferencias. Contacte con el administrador de Galette"
+
+#~ msgid "Send mail to :"
+#~ msgstr "Enviar correo a:"
+
+#~ msgid "Generation of "
+#~ msgstr "Generación de "
+
+#~ msgid "Email sent is desactived in the preferences. Ask galette admin."
+#~ msgstr ""
+#~ "El envío de correo está desactivado en las preferencias. Contacte con el "
+#~ "administrador de galette."
+
+#~ msgid ""
+#~ "Self subscribe - Email sent is desactived in the preferences. Ask galette "
+#~ "admin."
+#~ msgstr ""
+#~ "Autoinscripción - El envío de correo está desactivado en las "
+#~ "preferencias. Contacte con el administrador de galette."
+
+#~ msgid "Self_subscription as a member:"
+#~ msgstr "Autoinscripción como socio:"
