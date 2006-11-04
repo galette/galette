@@ -1,4 +1,4 @@
-<?
+<?php
 	define("GALETTE_VERSION", "v0.63");
 
 	/*

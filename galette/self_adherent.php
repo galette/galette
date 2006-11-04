@@ -1,4 +1,4 @@
-<? 
+<?php
 /* self_adherent.php
  * - Saisie d'un adhérent par lui-même
  * Copyright (c) 2004 Frédéric Jaqcuot, Georges Khaznadar

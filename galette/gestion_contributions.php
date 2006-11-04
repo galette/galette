@@ -1,4 +1,4 @@
-<? 
+<?php
  
 /* gestion_contributions.php
  * - Récapitulatif des contributions

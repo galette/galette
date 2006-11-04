@@ -1,4 +1,4 @@
-<?
+<?php
 /* picture.class.php
  * - Picture handling
  * Copyright (c) 2006 Frédéric Jaqcuot

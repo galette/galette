@@ -1,4 +1,4 @@
-<?
+<?php
 /* footer.php
  * - Pied de page
  * Copyright (c) 2003 Frédéric Jaqcuot

@@ -1,4 +1,4 @@
-<? 
+<?php
 /* picture.php
  * - Display a picture
  * Copyright (c) 2006 Frédéric Jaqcuot

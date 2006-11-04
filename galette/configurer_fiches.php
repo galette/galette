@@ -1,4 +1,4 @@
-<? 
+<?php 
 /* configurer_fiches.php
  * - Configuration des fiches
  * Copyright (c) 2004 Laurent Pelecq <laurent.pelecq@soleil.org>

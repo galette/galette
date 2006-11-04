@@ -1,4 +1,4 @@
-<?
+<?php
 
 /* gestion_transactions.php
  * - Récapitulatif des transactions

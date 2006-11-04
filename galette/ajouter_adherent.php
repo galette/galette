@@ -1,4 +1,4 @@
-<? // -*- Mode: PHP; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+<?php // -*- Mode: PHP; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 /* ajouter_adherent.php
  * - Saisie d'un adhérent
  * Copyright (c) 2004 Frédéric Jaqcuot

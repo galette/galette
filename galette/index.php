@@ -1,4 +1,4 @@
-<?
+<?php
 /* index.php
  * - Identification
  * Copyright (c) 2003 Frédéric Jacquot
