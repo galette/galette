@@ -1,4 +1,4 @@
-<? 
+<?php
 
 /* gestion_adherents.php
  * - Récapitulatif des adhérents

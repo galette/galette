@@ -268,7 +268,7 @@ class tt_dic :
         outfile=open(filename,'w')
         import time
         date=time.asctime(time.gmtime())+' (GMT)'
-        outfile.write("<?\n")
+        outfile.write("<?php\n")
         outfile.write("// This file was automatically generated on "+date+"\n")
         outfile.write("// Don't modify it by hand, rather use the target lang from the Makefile.\n\n\n")
         for msgid in self.tts.keys():

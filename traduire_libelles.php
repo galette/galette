@@ -1,4 +1,4 @@
-<? 
+<?php 
 /* traduire_libelles.php
  * - Configuration des fiches
  * Copyright (c) 2004 Laurent Pelecq <laurent.pelecq@soleil.org>

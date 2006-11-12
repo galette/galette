@@ -1,4 +1,4 @@
-<? 
+<?php
  
 /* session.inc.php
  * - Gestion de la session
