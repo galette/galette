@@ -1,4 +1,4 @@
-<?
+<?php
 /* categories.inc.php
  * - Categories configuration
  * Copyright (c) 2004 Laurent Pelecq <laurent.pelecq@soleil.org>

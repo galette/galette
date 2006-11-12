@@ -1,4 +1,4 @@
-<?
+<?php
 
 /* ajouter_transaction.php
  * -Entering a transaction

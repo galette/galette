@@ -1,4 +1,4 @@
-<?
+<?php
 /* header.php
  * - En-tete
  * Copyright (c) 2003 Frédéric Jaqcuot

@@ -1,4 +1,4 @@
-<?
+<?php
 	// smarty-light declaration
 	include(WEB_ROOT.'includes/smarty/Smarty.class.php');
 	$tpl = new Smarty;

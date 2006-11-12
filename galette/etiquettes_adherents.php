@@ -1,4 +1,4 @@
-<? 
+<?php
 /* etiquettes_adherents.php
  * - Generation d'un PDF d'étiquettes
  * Copyright (c) 2003 Frédéric Jaqcuot

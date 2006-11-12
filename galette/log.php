@@ -1,4 +1,4 @@
-<? 
+<?php
 /* log.php
  * - Historique
  * Copyright (c) 2003 Frédéric Jaqcuot

@@ -1,4 +1,4 @@
-<? 
+<?php
 /* editer_champ.php
  * - Edition of optional form fields.
  * Copyright (c) 2004 Laurent Pelecq <laurent.pelecq@soleil.org>

@@ -1,4 +1,4 @@
-<?
+<?php
 /* mailing_adherents.php
  * - Mailing
  * Copyright (c) 2005 Frédéric Jaqcuot

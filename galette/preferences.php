@@ -1,4 +1,4 @@
-<?
+<?php
 /* preferences.php
  * - Preferences Galette
  * Copyright (c) 2004 Frédéric Jaqcuot

@@ -1,4 +1,4 @@
-<? // -*- Mode: PHP; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*-
+<?php // -*- Mode: PHP; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 
 /* functions.inc.php
  * - Fonctions utilitaires

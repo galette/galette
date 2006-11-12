@@ -1,4 +1,4 @@
-<?
+<?php
 
 /* ajouter_contribution.php
  * - Saisie d'une contributions

@@ -1,4 +1,4 @@
-<?
+<?php
 	if (!isset($_POST["install_lang"])) $pref_lang="english";
 		else $pref_lang=$_POST["install_lang"];
 	define("WEB_ROOT", realpath(dirname(__FILE__)."/../")."/");
@@ -131,7 +131,7 @@ if ($installed) {
 <div id="installpage" align="center">
 <br />
 	
-<?
+<?php
 	switch ($step)
 	{
 		case "1":
@@ -141,7 +141,7 @@ if ($installed) {
 	<p>Please select your administration language</p>
 	<form action="index.php" method="POST">
 		<select name="install_lang">
-<?
+<?php
 			$path = "../lang";
 			$dir_handle = @opendir($path);
 			while ($file = readdir($dir_handle))
@@ -151,7 +151,7 @@ if ($installed) {
 		        $file = substr(substr($file,5),0,-4);
 ?>
 		<option value="<?php echo $file; ?>"><?php echo ucfirst($file); ?></option>
-<?
+<?php
 				}
 			}
 			closedir($dir_handle);
@@ -165,7 +165,7 @@ if ($installed) {
 	</div>
 	<h1 class="footerinstall">Step 1 - Language</h1>
 
-<?
+<?php
 			break;
 		case "2":
 ?>
@@ -177,7 +177,7 @@ if ($installed) {
 			<input type="radio" name="install_type" value="install" checked="checked" id="install"> <label for="install"><?php echo _T("New installation:"); ?></label><br />
 		 	<?php echo _T("You're installing Galette for the first time, or you wish to erase an older version of Galette without keeping your data"); ?>
 		</p>
-<?
+<?php
 			$dh = opendir("sql");
 			$update_scripts = array();
 			while (($file = readdir($dh)) !== false)
@@ -193,7 +193,7 @@ if ($installed) {
 ?>
 		<p>
 			<input type="radio" name="install_type" value="upgrade-<?php echo $val; ?>" id="upgrade-<?php echo $val; ?>"> <label for="upgrade-<?php echo $val; ?>"><?php echo _T("Update:"); ?><br />
-<?
+<?php
 				if ($last!=number_format($val-0.01,2))
 					echo _T("Your current Galette version is comprised between")." ".$last." "._T("and")." ".number_format($val-0.01,2)."</label><br />";
 				else
@@ -202,7 +202,7 @@ if ($installed) {
 				echo _T("Warning: Don't forget to backup your current database.");
 ?>
 		</p>
-<?
+<?php
 			}
 ?>
 		<p id="submitbutton3">
@@ -214,11 +214,11 @@ if ($installed) {
 	</div>
 	<h1 class="footerinstall"><?php echo _T("Step 2 - Installation mode"); ?></h1>
 
-<?
+<?php
 			break;
 ?>
 
-<?
+<?php
 			break;
 		case "i3":
 		case "u3":
@@ -226,7 +226,7 @@ if ($installed) {
 
 	<h1><?php echo _T("Files permissions"); ?></h1>
 <ul>
-<?
+<?php
 			$perms_ok = true;
 			$files_need_rw = array ('/templates_c',
 						'/photos',
@@ -267,7 +267,7 @@ if ($installed) {
 		<input type="hidden" name="install_lang" value="<?php echo $_POST["install_lang"]; ?>">
 		<input type="hidden" name="install_type" value="<?php echo $_POST["install_type"]; ?>">
 	</form>		
-<?
+<?php
 		}
 			else
 			{
@@ -281,14 +281,14 @@ if ($installed) {
 		<input type="hidden" name="install_type" value="<?php echo $_POST["install_type"]; ?>">
 		<input type="hidden" name="install_permsok" value="1">
 	</form>
-<?
+<?php
 			}
 ?>
 	<br />
 	</div>
 	<h1 class="footerinstall"><?php echo _T("Step 3 - Permissions"); ?></h1>
 
-<?
+<?php
 			break;
 			case "i4":
 			case "u4";
@@ -296,7 +296,7 @@ if ($installed) {
 
 	<h1><?php echo _T("Database"); ?></h1>
 	<p>
-<?
+<?php
 				if ($error_detected!="")
 					echo "<table><tr><td><ul>".$error_detected."</ul></td></tr></table><br />";
 ?>	
@@ -346,7 +346,7 @@ if ($installed) {
                                         <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php if(isset($_POST["install_dbprefix"])) echo $_POST["install_dbprefix"]; else echo "galette_" ?>">
                                 </td>
 			</tr>
-			<?
+			<?php
 				if (substr($_POST["install_type"],0,8)=="upgrade-")
 				{
 			?>
@@ -355,7 +355,7 @@ if ($installed) {
 					<?php echo _T("(Indicate the CURRENT prefix of your Galette tables)"); ?>
 				</td>
 			</tr>
-			<?
+			<?php
 				}
 			?>
 		</table>
@@ -370,7 +370,7 @@ if ($installed) {
 	</div>
 	<h1 class="footerinstall"><?php echo _T("Step 4 - Database"); ?></h1>
 
-<?
+<?php
 			break;
 			case "i5":
 			case "u5":
@@ -379,7 +379,7 @@ if ($installed) {
 	<h1><?php echo _T("Check of the database"); ?></h1>
 	<p><?php echo _T("Check the parameters and the existence of the database"); ?></p>
 <ul>
-<?
+<?php
 				include("../includes/adodb/adodb.inc.php");
 				$DB = adonewconnection($_POST["install_dbtype"]);
 				$DB->debug = false;
@@ -407,7 +407,7 @@ echo "</ul>";
 		<input type="hidden" name="install_type" value="<?php echo $_POST["install_type"]; ?>">
 		<input type="hidden" name="install_permsok" value="1">
 	</form>
-<?
+<?php
 				}
 				else
 				{
@@ -428,7 +428,7 @@ echo "</ul>";
     <input type="hidden" name="install_dbprefix" value="<?php echo $_POST["install_dbprefix"]; ?>">
 		<input type="hidden" name="install_dbconn_ok" value="1">
 	</form>
-<?
+<?php
 				}
 ?>
 
@@ -437,7 +437,7 @@ echo "</ul>";
 	<h1 class="footerinstall"><?php echo _T("Step 5 - Access to the database"); ?></h1>
 	
 
-<?
+<?php
 			break;
 			case "i6":
 			case "u6":
@@ -449,7 +449,7 @@ echo "</ul>";
 		<?php if ($step=="i6") echo _T("To run, Galette needs a number of rights on the database (CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)"); ?>
 		<?php if ($step=="u6") echo _T("In order to be updated, Galette needs a number of rights on the database (CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)"); ?>
 	</p>
-<?
+<?php
 				$result = "";
 
 				// drop de table (si 'test' existe)
@@ -602,7 +602,7 @@ echo "</ul>";
 		<input type="hidden" name="install_dbprefix" value="<?php echo $_POST["install_dbprefix"]; ?>">
 		<input type="hidden" name="install_dbconn_ok" value="1">
 	</form>
-<?
+<?php
 				}
 				else
 				{
@@ -624,14 +624,14 @@ echo "</ul>";
 		<input type="hidden" name="install_dbconn_ok" value="1">
 		<input type="hidden" name="install_dbperms_ok" value="1">
 	</form>
-<?
+<?php
 				}
 ?>
 	<br />
 	</div>
 	<h1 class="footerinstall"><?php echo _T("Step 6 - Access permissions to database"); ?></h1>
 
-<?
+<?php
 			break;
 		case "i7":
 		case "u7":
@@ -647,7 +647,7 @@ echo "</ul>";
 	</p>
 	<table><tr><td>
 <ul>
-<?
+<?php
 			// begin : copyright (2002) the phpbb group (support@phpbb.com)	
 			// load in the sql parser
 			include("sql_parse.php");
@@ -829,7 +829,7 @@ echo "</ul>\n";
 ?>
 	</td></tr></table>
 	<p><?php echo _T("(Errors on DROP and RENAME operations can be ignored)"); ?></p>
-	<?
+	<?php
 			if (isset($error))
 			{
 ?>
@@ -854,7 +854,7 @@ echo "</ul>\n";
 		<input type="hidden" name="install_dbconn_ok" value="1">
 		<input type="hidden" name="install_dbperms_ok" value="1">
 	</form>
-<?
+<?php
 			}
 			else
 			{
@@ -880,7 +880,7 @@ echo "</ul>\n";
 		<input type="hidden" name="install_dbperms_ok" value="1">
 		<input type="hidden" name="install_dbwrite_ok" value="1">
 	</form>
-	<?
+	<?php
 			}
 ?>	
 	<br />
@@ -890,14 +890,14 @@ echo "</ul>\n";
 		<?php if ($step=="u7") echo _T("Step 7 - Tables Update"); ?>
 	</h1>
 	
-<?
+<?php
 			break;
 		case "i8":
 		case "u8":
 ?>
 
 	<h1><?php echo _T("Admin settings"); ?></h1>
-<?
+<?php
 				if ($error_detected!="")
 					echo "<p><table><tr><td><ul>".$error_detected."</ul></td></tr></table></p>";
 ?>	
@@ -946,7 +946,7 @@ echo "</ul>\n";
 	</div>
 	<h1 class="footerinstall"><?php echo _T("Step 8 - Admin parameters"); ?></h1>
 	
-<?
+<?php
 			break;
 		case "i9";
 		case "u9";
@@ -955,12 +955,12 @@ echo "</ul>\n";
 	<h1><?php echo _T("Save the parameters"); ?></h1>
 	<p><table><tr><td>
 <ul>
-<?
+<?php
 			// création du fichier de configuration
 
 			if($fd = @fopen (WEB_ROOT ."includes/config.inc.php", "w"))
 			{
-				$data = "<?
+				$data = "<?php
 define(\"TYPE_DB\", \"".$_POST["install_dbtype"]."\");
 define(\"HOST_DB\", \"".$_POST["install_dbhost"]."\");
 define(\"USER_DB\", \"".$_POST["install_dbuser"]."\");
@@ -1110,7 +1110,7 @@ define(\"STOCK_FILES\", \"tempimages\");
 ?>
 </ul>
 	</td></tr></table></p>
-<?
+<?php
 			if (!isset($error))
 			{
 ?>
@@ -1135,7 +1135,7 @@ define(\"STOCK_FILES\", \"tempimages\");
 		<input type="hidden" name="install_passwdverified" value="1">
 		<input type="hidden" name="install_prefs_ok" value="1">
 	</form>
-<?
+<?php
 			}
 			else
 			{
@@ -1162,14 +1162,14 @@ define(\"STOCK_FILES\", \"tempimages\");
 		<input type="hidden" name="install_adminpass" value="<?php echo $_POST["install_adminpass"]; ?>">
 		<input type="hidden" name="install_passwdverified" value="1">
 	</form>
-<?
+<?php
 			}
 ?>
 	<br />
 	</div>
 	<h1 class="footerinstall"><?php echo _T("Step 9 - Saving of the parameters"); ?></h1>
 
-<?
+<?php
 			break;
 		case "i10":
 		case "u10":
@@ -1201,12 +1201,12 @@ define(\"STOCK_FILES\", \"tempimages\");
 
 
 
-<?
+<?php
 			break;
 ?>
 
 
-<?
+<?php
 	}
 ?>	
 	
