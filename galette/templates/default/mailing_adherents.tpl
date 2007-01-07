@@ -24,8 +24,9 @@
 			</ul>
 		</div>
 {/if}
-		<p>
+
 {if $nb_reachable_members > 0}
+		<p>
 	{if $etape==2}
 		{_T("Your e-mail was sent to")}
 	{else}
@@ -90,12 +91,12 @@
 		</table>
 		</div>
 {else}
-		<b>{_T("None of the selected members has an email address.")}</b>
+		<strong>{_T("None of the selected members has an email address.")}</strong>
 {/if}
 		</form>
 		{if $nb_unreachable_members > 0}
 		<p>
-		<b>{$nb_unreachable_members} {if $nb_unreachable_members != 1}{_T("unreachable members:")}{else}{_T("unreachable member")}{/if}</b><br/>
+		<strong>{$nb_unreachable_members} {if $nb_unreachable_members != 1}{_T("unreachable members:")}{else}{_T("unreachable member")}{/if}</strong><br/>
 		{_T("Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail.")}
 		</p>
 		<div class="button-container">
