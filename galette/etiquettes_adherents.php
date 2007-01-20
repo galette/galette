@@ -75,8 +75,8 @@
 		if ($resultat->EOF)
 			die();
 			
-	   $yorigin=842-round(PREF_ETIQ_MARGES*2.835);
-	   $xorigin=round(PREF_ETIQ_MARGES*2.835);
+	   $yorigin=842-round(PREF_ETIQ_MARGES_V*2.835);
+	   $xorigin=round(PREF_ETIQ_MARGES_H*2.835);
 	   $col=1;
 	   $row=1;
 	   $nb_etiq=0;

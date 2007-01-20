@@ -134,9 +134,16 @@
 					<th colspan="2" class="separator">{_T("Label generation parameters:")}</th>
 				</tr>
 				<tr>
-					<th {if $required.pref_etiq_marges eq 1}style="color: #FF0000;"{/if}>{_T("Margins:")}</th> 
+					<th {if $required.pref_etiq_marges_v eq 1}style="color: #FF0000;"{/if}>{_T("Vertical margins:")}</th> 
 					<td>
-						<input type="text" name="pref_etiq_marges" value="{$pref.pref_etiq_marges}" maxlength="4"/> mm 
+						<input type="text" name="pref_etiq_marges_v" value="{$pref.pref_etiq_marges_v}" maxlength="4"/> mm 
+						<span class="exemple">{_T("(Integer)")}</span>
+					</td>
+				</tr>
+				<tr>
+					<th {if $required.pref_etiq_marges_h eq 1}style="color: #FF0000;"{/if}>{_T("Horizontal margins:")}</th> 
+					<td>
+						<input type="text" name="pref_etiq_marges_h" value="{$pref.pref_etiq_marges_h}" maxlength="4"/> mm 
 						<span class="exemple">{_T("(Integer)")}</span>
 					</td>
 				</tr>
