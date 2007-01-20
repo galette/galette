@@ -39,7 +39,7 @@ print '<ul>';
 // Select all adh who would like to appear in public views.
 // FIXME: les adhérents "à jour" de cotisation => vérifier la requête
 $query = "SELECT prenom_adh, nom_adh, pseudo_adh, url_adh 
-          FROM adherents 
+          FROM ".PREFIX_DB."adherents 
           WHERE bool_display_info='1'
           OR bool_exempt_adh = '1'
           ORDER BY nom_adh, prenom_adh";
