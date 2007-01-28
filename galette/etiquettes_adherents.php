@@ -92,8 +92,14 @@
 				case "2" :
 					$nom_adh_ext .= _T("Mrs.");
 					break;
-				default :
+				case "3" :
 					$nom_adh_ext .= _T("Miss.");
+					break;
+				case "4" :
+					$nom_adh_ext .= _T("Society");
+					break;
+				default :
+					$nom_adh_ext .= "";
 			}
 			
 			$x1 = $xorigin + ($col-1)*(round(PREF_ETIQ_HSIZE*2.835)+round(PREF_ETIQ_HSPACE*2.835));
