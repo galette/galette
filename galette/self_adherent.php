@@ -158,6 +158,10 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
     }
 
     if (count($error_detected)==0) {
+      // md5sum du mot de passe
+      // On garde le mot en clair pour le mail et le template
+      $adherent['mdp_adh_plain'] = $adherent['mdp_adh'];
+      $adherent['mdp_adh'] = md5($adherent['mdp_adh']);
       $date_crea_adh = date("Y-m-d");
       $insert_string_fields .= ",date_crea_adh";
       $insert_string_values .= ",'".$date_crea_adh."'";
@@ -183,7 +187,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
         $mail_text .= "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
         $mail_text .= "\n";
         $mail_text .= _T("Username:")." ".custom_html_entity_decode($adherent['login_adh'])."\n";
-        $mail_text .= _T("Password:")." ".custom_html_entity_decode($adherent['mdp_adh'])."\n";
+        $mail_text .= _T("Password:")." ".custom_html_entity_decode($adherent['mdp_adh_plain'])."\n";
         $mail_text .= "\n";
         $mail_text .= _T("See you soon!")."\n";
         $mail_text .= "\n";
