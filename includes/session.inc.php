@@ -22,11 +22,11 @@
  
 	session_start(); 
 	if (!isset($_SESSION["logged_status"]) ||
-			isset($HTTP_POST_VARS["logout"]) ||
-			isset($HTTP_GET_VARS["logout"]))
+			isset($_POST["logout"]) ||
+			isset($_GET["logout"]))
 	{
-		if (isset($HTTP_POST_VARS["logout"]) ||
-		    isset($HTTP_GET_VARS["logout"])){
+		if (isset($_POST["logout"]) ||
+		    isset($_GET["logout"])){
 			dblog(_("Log off"));
 		}
 		$_SESSION["admin_status"]=0;
@@ -48,5 +48,4 @@
 		$_SESSION["filtre_cotis_adh"]="";
 		$_SESSION["pref_lang"]=PREF_LANG;
 	}
-
 ?>

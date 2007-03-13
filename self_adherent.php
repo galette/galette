@@ -129,9 +129,13 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
           case 'mdp_adh':
             if( !PasswordCheck($_POST["mdp_adh"],$_POST["mdp_crypt"]) ) {
               $error_detected[] = _T("Password misrepeated: ");
-            }
-            if (strlen($value)<4)
+            } elseif (strlen($value)<4)
               $error_detected[] = _T("- The password must be of at least 4 characters!");
+	    } else {
+	    	// md5sum du mot de passe
+	        // On garde le mot en clair pour le mail et le template
+      		$adherent['mdp_adh_plain'] = $adherent['mdp_adh'];
+		$adherent['mdp_adh'] = md5($adherent['mdp_adh']);
             break;
         }
 
@@ -183,7 +187,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
         $mail_text .= "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
         $mail_text .= "\n";
         $mail_text .= _T("Username:")." ".custom_html_entity_decode($adherent['login_adh'])."\n";
-        $mail_text .= _T("Password:")." ".custom_html_entity_decode($adherent['mdp_adh'])."\n";
+        $mail_text .= _T("Password:")." ".custom_html_entity_decode($adherent['mdp_adh_plain'])."\n";
         $mail_text .= "\n";
         $mail_text .= _T("See you soon!")."\n";
         $mail_text .= "\n";

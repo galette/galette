@@ -165,7 +165,7 @@
                 <img SRC="photo.php?pw={$spam_img}"><br />
                 //-->
                 <img src="{$spam_img}" alt="{_T("Passworg image")}" /><br />
-                <input type="text" name="mdp_adh" value="{$data.mdp_adh}" maxlength="20" {$disabled.mdp_adh}/><br/>
+                <input type="text" name="mdp_adh" value="{$data.mdp_adh_plain}" maxlength="20" {$disabled.mdp_adh}/><br/>
               </td>
             </tr>
             <tr>

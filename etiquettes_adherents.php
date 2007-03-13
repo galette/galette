@@ -75,8 +75,8 @@
 		if ($resultat->EOF)
 			die();
 			
-	   $yorigin=842-round(PREF_ETIQ_MARGES*2.835);
-	   $xorigin=round(PREF_ETIQ_MARGES*2.835);
+	   $yorigin=842-round(PREF_ETIQ_MARGES_V*2.835);
+	   $xorigin=round(PREF_ETIQ_MARGES_H*2.835);
 	   $col=1;
 	   $row=1;
 	   $nb_etiq=0;
@@ -92,8 +92,14 @@
 				case "2" :
 					$nom_adh_ext .= _T("Mrs.");
 					break;
-				default :
+				case "3" :
 					$nom_adh_ext .= _T("Miss.");
+					break;
+				case "4" :
+					$nom_adh_ext .= _T("Society");
+					break;
+				default :
+					$nom_adh_ext .= "";
 			}
 			
 			$x1 = $xorigin + ($col-1)*(round(PREF_ETIQ_HSIZE*2.835)+round(PREF_ETIQ_HSPACE*2.835));
