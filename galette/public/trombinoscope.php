@@ -38,8 +38,8 @@ else
 // Select all adh who have put a photo & would like to appear in public views.
 // FIXME: les adhérents "à jour" de cotisation => vérifier la requête
 $query = "SELECT a.id_adh,a.nom_adh,a.prenom_adh,a.pseudo_adh,p.format 
-          FROM adherents a 
-          JOIN pictures p 
+          FROM ".PREFIX_DB."adherents a 
+          JOIN ".PREFIX_DB."pictures p 
           ON a.id_adh=p.id_adh 
           WHERE a.bool_display_info='1'";
 

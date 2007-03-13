@@ -51,7 +51,8 @@ $required = array(
 		  'pref_lang' => 1,
 		  'pref_numrows' => 1,
 		  'pref_log' => 1,
-		  'pref_etiq_marges' => 1,
+		  'pref_etiq_marges_v' => 1,
+		  'pref_etiq_marges_h' => 1,
 		  'pref_etiq_hspace' => 1,
 		  'pref_etiq_vspace' => 1,
 		  'pref_etiq_hsize' => 1,
@@ -106,7 +107,8 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1")
 	      if (!is_numeric($value) || $value <0)
 		$error_detected[] = "<li>"._T("- The numbers and measures have to be integers!")."</li>";
 	      break;
-	    case 'pref_etiq_marges':
+	    case 'pref_etiq_marges_h':
+		case 'pref_etiq_marges_v':
 	    case 'pref_etiq_hspace':
 	    case 'pref_etiq_vspace':
 	    case 'pref_etiq_hsize':
