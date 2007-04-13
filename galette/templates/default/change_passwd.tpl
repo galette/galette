@@ -4,6 +4,7 @@
 	<title>Galette {$GALETTE_VERSION}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
 	<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css"/>
+{if $head_redirect}{$head_redirect}{/if}
 </head>
 <body>
 	<div class="login-box">
@@ -28,6 +29,7 @@
 			</ul>
 		</div>
 {/if}
+{if !$head_redirect}
 		<form action="change_passwd.php" method="post" enctype="multipart/form-data">
 		<table>
 			<tr>
@@ -46,6 +48,7 @@
 		<input type="hidden" name="hash" value="{$hash}"/>
 		<br/><br/>
 		</form>
+{/if}
 	</div>
 	<div class="button-container">
 		<div class="button-link button-back">
