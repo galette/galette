@@ -40,6 +40,8 @@ $languages = array (
                     );
 $language=$languages[$pref_lang];
 
+setlocale(LC_CTYPE, $language);
+
 // if (function_exists('putenv')) putenv() can exist, but doesn't work ...
 if( @putenv("LANG=$language") or
     @putenv("LANGUAGE=$language") or
