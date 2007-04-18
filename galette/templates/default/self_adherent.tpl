@@ -5,15 +5,27 @@
 	<title>Galette {$GALETTE_VERSION}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
 	<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css"/>
+	{literal}
+	<script type="text/javascript">
+	<!--
+		function updatelanguage(){
+			//document.cookie = "pref_lang="+document.forms[0].pref_lang.value;
+			document.forms[0].update_lang.value=1;
+			document.forms[0].submit();
+		}
+	-->
+	</script>
+	{/literal}
+{if $head_redirect}{$head_redirect}{/if}
 </head>
 <body>
 	<table width="100%" style="height: 100%">
 		<tr>
 			<td align="center">
-				<img src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60" /><br /><br /><br />
-      </td>
-    </tr>
-  </table>
+				<img src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60" />
+			</td>
+		</tr>
+	</table>
 	<div id="content">
 		<h1 class="titre">{_T("Member profile")}</h1>
 {if $error_detected|@count != 0}
@@ -37,6 +49,7 @@
 		</div>
 {/if}
 		<blockquote>
+{if !$head_redirect}
 		  <form action="self_adherent.php" method="post" enctype="multipart/form-data">
         <div>
 			    <table border="0" id="input-table">
@@ -83,21 +96,12 @@
               <td><input type="checkbox" name="bool_display_info" id="bool_display_info" value="1" {if $data.bool_display_info eq 1}checked="checked"{/if} {$disabled.bool_display_info}/></td>
               <th class="libelle{if $required.pref_lang eq 1} required{/if}"><label for="pref_lang">{_T("Language:")}</label></th>
               <td>
-                {literal}
-                <script type="text/javascript">
-                <!--
-                  function updatelanguage(){
-                    document.cookie = "pref_lang="+document.form.pref_lang.value;
-                    window.location.reload()
-                  }
-                -->
-                </script>
-                {/literal}
-                <select name="pref_lang" id="pref_lang" onchange="updatelanguage()" {$disabled.pref_lang}>
+                <select name="pref_lang" id="pref_lang" onchange="javascript:updatelanguage();" {$disabled.pref_lang}>
                 {foreach key=langue item=langue_t from=$languages}
                   <option value="{$langue}" {if $data.pref_lang eq $langue}selected="selected"{/if} style="padding-left: 30px; background-image: url(lang/{$langue}.gif); background-repeat: no-repeat">{$langue_t|capitalize}</option>
                 {/foreach}
                 </select>
+		<input type="hidden" name="update_lang" value="0" />
               </td>
             </tr>
             <tr>
@@ -158,11 +162,8 @@
               <th class="libelle{if $required.mdp_adh eq 1} required{/if}"><label for="mdp_adh">{_T("Password:")}</label></th>
               <td>
                 <input type="hidden" name="mdp_crypt" value="{$spam_pass}" />
-                <!--
-                <img SRC="photo.php?pw={$spam_img}">
-                //-->
                 <img src="{$spam_img}" alt="{_T("Passworg image")}" /><br />
-                <input type="text" name="mdp_adh" id="mdp_adh" value="{$data.mdp_adh}" maxlength="20" {$disabled.mdp_adh}/><br/>{_T("Please repeat in the field the password shown in the image.")}
+                <input type="text" name="mdp_adh" id="mdp_adh" value="" maxlength="20" {$disabled.mdp_adh}/><br/>{_T("Please repeat in the field the password shown in the image.")}
               </td>
             </tr>
             <tr>
@@ -173,19 +174,22 @@
             </tr>
 {include file="display_dynamic_fields.tpl" is_form=true}
             <tr>
-              <th align="center" colspan="4"><input type="submit" class="submit" name="submit" value="{_T("Save")}"/></th>
+              <th align="center" colspan="4"><input type="submit" class="submit" value="{_T("Save")}"/></th>
             </tr>
           </table>
           <input type="hidden" name="valid" value="1"/>
         </div>
       </form>
-      <form action="index.php" method="get">
-        <div>
-          <input type="submit" class="submit" name="back" value="{_T("Back to login page")}"/>
-        </div>
-      </form>
+{/if}
+	<form action="index.php" method="get">
+	<div>
+		<input type="submit" class="submit" name="back" value="{_T("Back to login page")}"/>
+	</div>
+	</form>
     </blockquote>
+{if !$head_redirect}
 		<p>{_T("NB : The mandatory fields are in")} <span class="required">{_T("red")}</span></p>
+{/if}
 		<div id="copyright">
 			<a href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
 		</div>
