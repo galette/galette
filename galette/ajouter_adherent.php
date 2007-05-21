@@ -284,7 +284,7 @@
           $mail_result = custom_mail($adherent['email_adh'],$mail_subject,$mail_text);
           //TODO: duplicate piece of code with mailing_adherent
           if( $mail_result == 1) {
-            dblog("Send subscription mail to :".$_POST["email_adh"]), $requete);
+            dblog("Send subscription mail to :".$_POST["email_adh"], $requete);
             $warning_detected[] = _T("Password sent. Login:")." \"" . $adherent['login_adh'] . "\"";
             //$password_sent = true;
           }else{
