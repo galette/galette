@@ -129,7 +129,7 @@
 				<td class="{$member.class} center">
 					<a href="ajouter_adherent.php?id_adh={$member.id_adh}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></a>
 					<a href="gestion_contributions.php?id_adh={$member.id_adh}"><img src="{$template_subdir}images/icon-money.png" alt="{_T("[$]")}" border="0" width="13" height="13"/></a>
-					<a onclick="return confirm('{_T("Do you really want to delete this member from the base, this will delete also the history of her fees. To avoid this you can just unactivate her account.\n\nDo you still want to delete this member ?")|escape:"javascript"}')" href="gestion_adherents.php?sup={$member.id_adh}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></a>
+					<a onclick="return confirm('{_T("Do you really want to delete this member from the base, this will delete also the history of his fees. To avoid this you can just disable his account.\\n\\nDo you still want to delete this member ?")|escape:"javascript"}')" href="gestion_adherents.php?sup={$member.id_adh}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></a>
 				</td>
 			</tr>
 {foreachelse}
@@ -166,7 +166,7 @@
 					<br/>
 					<ul>
 						<li>{_T("Selection:")}</li>
-						<li><input type="submit" class="submit" onclick="return confirm('{_T("Do you really want to delere all selected accounts (and related contributions)?")|escape:"javascript"}');" name="delete" value="{_T("Delete")}"/></li>
+						<li><input type="submit" class="submit" onclick="return confirm('{_T("Do you really want to delete all selected accounts (and related contributions)?")|escape:"javascript"}');" name="delete" value="{_T("Delete")}"/></li>
 						<li><input type="submit" class="submit" name="mailing" value="{_T("Mail all")}"/></li>
 						<li><input type="submit" class="submit" name="labels" value="{_T("Generate labels")}"/></li>
 					</ul>

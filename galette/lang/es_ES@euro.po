@@ -41,7 +41,7 @@ msgstr "Este comentario sólo es visible por los administradores."
 
 #: ../templates/default/ajouter_adherent.tpl:185
 #: ../templates/default/voir_adherent.tpl:95
-#: ../templates/default/self_adherent.tpl:122
+#: ../templates/default/self_adherent.tpl:126
 msgid "Phone:"
 msgstr "Tel.:"
 
@@ -61,15 +61,9 @@ msgstr "Estado"
 msgid "Emailing disabled"
 msgstr "Correo desactivado"
 
-#: ../templates/default/mailing_adherents.tpl:83
+#: ../templates/default/mailing_adherents.tpl:84
 msgid "Reedit"
 msgstr "Reeditar"
-
-#: ../self_adherent.php:217
-msgid "Your login and password was sent by mail at this address :"
-msgstr ""
-"Su identificador y contraseña han sido enviados a la dirección de correo "
-"siguiente:"
 
 #: ../templates/default/editer_champ.tpl:30
 msgid "Position:"
@@ -83,7 +77,7 @@ msgstr "Fecha de terminación de la afiliación:"
 msgid "Edit field"
 msgstr "Edición del campo"
 
-#: ../self_adherent.php:105 ../preferences.php:89 ../ajouter_adherent.php:137
+#: ../self_adherent.php:111 ../preferences.php:90 ../ajouter_adherent.php:137
 msgid "- Non-valid E-Mail address!"
 msgstr "- ¡Correo electrónico inválido!"
 
@@ -93,19 +87,19 @@ msgstr ""
 "Déjelo vacío para utilizar el correo del remitente como dirección de "
 "respuesta"
 
-#: ../preferences.php:164
+#: ../preferences.php:166
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
 "- ¡ Tiene que indicar una dirección de correo electrónico para que Galette "
 "la utilice para enviar correos!"
 
-#: ../includes/i18n.inc.php:207
+#: ../includes/i18n.inc.php:209
 msgid "Partnership"
 msgstr "Afiliación"
 
 #: ../templates/default/ajouter_adherent.tpl:84
 #: ../templates/default/voir_adherent.tpl:39
-#: ../templates/default/self_adherent.tpl:82
+#: ../templates/default/self_adherent.tpl:95
 msgid "Be visible in the<br /> members list :"
 msgstr "Quiero aparecer en el<br /> listado público de socios:"
 
@@ -138,7 +132,7 @@ msgstr "Operación UPDATE autorizada"
 msgid "Admin settings"
 msgstr "Configuraciones de administración"
 
-#: ../install/index.php:1179
+#: ../install/index.php:1181
 msgid "Installation complete !"
 msgstr "¡Instalación completada!"
 
@@ -189,7 +183,7 @@ msgstr "[admin]"
 
 #: ../templates/default/ajouter_adherent.tpl:197
 #: ../templates/default/voir_adherent.tpl:112
-#: ../templates/default/self_adherent.tpl:132
+#: ../templates/default/self_adherent.tpl:136
 msgid "Website:"
 msgstr "Sitio web:"
 
@@ -200,15 +194,20 @@ msgstr "contribución"
 #: ../templates/default/preferences.tpl:50
 #: ../templates/default/ajouter_adherent.tpl:173
 #: ../templates/default/voir_adherent.tpl:83
-#: ../templates/default/self_adherent.tpl:114
+#: ../templates/default/self_adherent.tpl:118
 msgid "Zip Code:"
 msgstr "Código postal:"
 
-#: ../self_adherent.php:186 ../install/index.php:330 ../install/index.php:914
+#: ../templates/default/preferences.tpl:144
+#, fuzzy
+msgid "Horizontal margins:"
+msgstr "Distancia horizontal:"
+
+#: ../self_adherent.php:197 ../install/index.php:330 ../install/index.php:914
 #: ../ajouter_adherent.php:279 ../templates/default/index.tpl:25
-#: ../templates/default/preferences.tpl:201
+#: ../templates/default/preferences.tpl:208
 #: ../templates/default/ajouter_adherent.tpl:122
-#: ../templates/default/self_adherent.tpl:158
+#: ../templates/default/self_adherent.tpl:162
 msgid "Password:"
 msgstr "Contraseña:"
 
@@ -221,7 +220,7 @@ msgstr "Información de contacto:"
 msgid "Show contributions since"
 msgstr "Mostrar la contribuciones del"
 
-#: ../includes/i18n.inc.php:204
+#: ../includes/i18n.inc.php:206
 msgid "Company cotisation"
 msgstr "Cuota empresarial"
 
@@ -230,7 +229,7 @@ msgid "Sent mail is checked but there is no email address"
 msgstr ""
 "La opción 'envío de correo' está seleccionada pero no hay ninguna dirección"
 
-#: ../templates/default/preferences.tpl:192
+#: ../templates/default/preferences.tpl:199
 msgid "Admin account (independant of members):"
 msgstr "Cuenta de administrador (independiente de los socios):"
 
@@ -239,11 +238,11 @@ msgstr "Cuenta de administrador (independiente de los socios):"
 msgid "Filter"
 msgstr "Filtrar"
 
-#: ../templates/default/preferences.tpl:151
+#: ../templates/default/preferences.tpl:158
 msgid "Vertical spacing:"
 msgstr "Distancia vertical:"
 
-#: ../templates/default/mailing_adherents.tpl:42
+#: ../templates/default/mailing_adherents.tpl:43
 msgid "Object:"
 msgstr "Objeto:"
 
@@ -267,7 +266,7 @@ msgstr "Operación CREATE no autorizada"
 msgid "Management of transactions"
 msgstr "Gestión de transacciones"
 
-#: ../self_adherent.php:97 ../self_contribution.php:136
+#: ../self_adherent.php:103 ../self_contribution.php:136
 #: ../gestion_contributions.php:63 ../gestion_contributions.php:78
 #: ../ajouter_contribution.php:134 ../ajouter_adherent.php:129
 #: ../ajouter_transaction.php:104
@@ -278,21 +277,21 @@ msgstr "- ¡Fecha inválida!"
 msgid "Beginning of membership:"
 msgstr "Comienzo de la afiliación:"
 
-#: ../self_contribution.php:256 ../templates/default/preferences.tpl:217
+#: ../self_contribution.php:256 ../templates/default/preferences.tpl:224
 #: ../templates/default/ajouter_adherent.tpl:225
 #: ../templates/default/ajouter_contribution.tpl:81
 #: ../templates/default/traduire_libelles.tpl:37
 #: ../templates/default/ajouter_transaction.tpl:42
 #: ../templates/default/editer_champ.tpl:92
-#: ../templates/default/self_adherent.tpl:179
+#: ../templates/default/self_adherent.tpl:177
 msgid "Save"
 msgstr "Grabar"
 
-#: ../self_adherent.php:131
+#: ../self_adherent.php:135
 msgid "Password misrepeated: "
 msgstr "Error en la repetición de la contraseña: "
 
-#: ../preferences.php:138
+#: ../preferences.php:140
 msgid "- Invalid date for beginning of membership."
 msgstr "- La fecha de comienzo de la afiliación no es correcta."
 
@@ -308,13 +307,13 @@ msgstr "Recuperación de la contraseña"
 msgid "Your current Galette version is"
 msgstr "Su versión actual de Galette es la"
 
-#: ../templates/default/preferences.tpl:144
+#: ../templates/default/preferences.tpl:151
 msgid "Horizontal spacing:"
 msgstr "Distancia horizontal:"
 
 #: ../templates/default/ajouter_adherent.tpl:213
 #: ../templates/default/voir_adherent.tpl:138
-#: ../templates/default/self_adherent.tpl:144
+#: ../templates/default/self_adherent.tpl:148
 msgid "Id GNUpg (GPG):"
 msgstr "Id. GNUpg (GPG):"
 
@@ -323,11 +322,11 @@ msgstr "Id. GNUpg (GPG):"
 msgid "Galette-related data:"
 msgstr "Información relativa a Galette:"
 
-#: ../self_adherent.php:109 ../ajouter_adherent.php:141
+#: ../self_adherent.php:115 ../ajouter_adherent.php:141
 msgid "- Non-valid Website address! Maybe you've skipped the http:// ?"
 msgstr "- ¡Dirección web inválida! ¿Omitió usted el http:// ?"
 
-#: ../includes/i18n.inc.php:194
+#: ../includes/i18n.inc.php:196
 msgid "Vice-president"
 msgstr "Vicepresidente"
 
@@ -366,7 +365,7 @@ msgstr "Parámetros del correo:"
 msgid "List of contributions"
 msgstr "Lista de contribuciones"
 
-#: ../install/index.php:1186
+#: ../install/index.php:1188
 msgid "For securing the system, please delete the install directory"
 msgstr ""
 "Para mejorar la seguridad del sistema, por favor borre el directorio install"
@@ -375,7 +374,7 @@ msgstr ""
 msgid "Choice list (one entry per line)."
 msgstr "Lista de opciones (una entrada por línea)."
 
-#: ../self_adherent.php:194 ../lostpasswd.php:113 ../ajouter_adherent.php:288
+#: ../self_adherent.php:213 ../lostpasswd.php:113 ../ajouter_adherent.php:288
 msgid "Password sent. Login:"
 msgstr "Contraseña enviada. Login:"
 
@@ -383,7 +382,7 @@ msgstr "Contraseña enviada. Login:"
 msgid "IP"
 msgstr "IP"
 
-#: ../install/index.php:1145
+#: ../install/index.php:1147
 msgid ""
 "This can come from the permissions on the file includes/config.inc.php or "
 "the impossibility to make an INSERT into the database."
@@ -410,7 +409,7 @@ msgstr "Duración de la afiliación:"
 
 #: ../templates/default/ajouter_adherent.tpl:71
 #: ../templates/default/voir_adherent.tpl:28
-#: ../templates/default/self_adherent.tpl:84
+#: ../templates/default/self_adherent.tpl:97
 msgid "Language:"
 msgstr "Idioma:"
 
@@ -422,7 +421,7 @@ msgstr "Paso 8º - Parámetros de administración"
 msgid "days"
 msgstr "días"
 
-#: ../self_adherent.php:190 ../lostpasswd.php:108 ../ajouter_adherent.php:283
+#: ../self_adherent.php:201 ../lostpasswd.php:108 ../ajouter_adherent.php:283
 msgid "(this mail was sent automatically)"
 msgstr "(este correo ha sido enviado automáticamente)"
 
@@ -430,11 +429,11 @@ msgstr "(este correo ha sido enviado automáticamente)"
 msgid "- The field name cannot be void."
 msgstr "- El campo Apellido no puede estar vacío."
 
-#: ../templates/default/self_adherent.tpl:18
+#: ../templates/default/self_adherent.tpl:30
 msgid "Member profile"
 msgstr "Perfil de socio"
 
-#: ../templates/default/preferences.tpl:172
+#: ../templates/default/preferences.tpl:179
 msgid "Number of label columns:"
 msgstr "Número de columnas de etiquetas:"
 
@@ -442,15 +441,21 @@ msgstr "Número de columnas de etiquetas:"
 msgid "direcory_name"
 msgstr "nombre_directorio"
 
+#: ../templates/default/ajouter_adherent.tpl:193
+#: ../templates/default/voir_adherent.tpl:103
+#: ../templates/default/self_adherent.tpl:132
+msgid "E-Mail:"
+msgstr "Correo electrónico:"
+
 #: ../templates/default/gestion_transactions.tpl:5
 msgid "transactions"
 msgstr "transacciones"
 
-#: ../includes/i18n.inc.php:195
+#: ../includes/i18n.inc.php:197
 msgid "Treasurer"
 msgstr "Tesorero"
 
-#: ../preferences.php:107 ../preferences.php:121
+#: ../preferences.php:108 ../preferences.php:123
 msgid "- The numbers and measures have to be integers!"
 msgstr "- ¡Los números y las medidas deben ser enteros!"
 
@@ -489,7 +494,7 @@ msgstr "al"
 #: ../templates/default/preferences.tpl:43
 #: ../templates/default/ajouter_adherent.tpl:166
 #: ../templates/default/voir_adherent.tpl:74
-#: ../templates/default/self_adherent.tpl:107
+#: ../templates/default/self_adherent.tpl:111
 msgid "Address:"
 msgstr "Dirección:"
 
@@ -517,7 +522,7 @@ msgstr ""
 msgid "Send a mail:"
 msgstr "Envío de e-mail:"
 
-#: ../templates/default/mailing_adherents.tpl:30
+#: ../templates/default/mailing_adherents.tpl:31
 msgid "Your e-mail was sent to"
 msgstr "Su correo ha sido enviado a"
 
@@ -525,7 +530,7 @@ msgstr "Su correo ha sido enviado a"
 msgid "New installation:"
 msgstr "Nueva instalación:"
 
-#: ../preferences.php:186 ../install/index.php:102
+#: ../preferences.php:188 ../install/index.php:102
 msgid "Passwords mismatch"
 msgstr "Las contraseñas no coinciden"
 
@@ -539,7 +544,7 @@ msgstr "Ver las contribuciones"
 
 #: ../templates/default/ajouter_adherent.tpl:201
 #: ../templates/default/voir_adherent.tpl:121
-#: ../templates/default/self_adherent.tpl:134
+#: ../templates/default/self_adherent.tpl:138
 msgid "ICQ:"
 msgstr "ICQ:"
 
@@ -551,7 +556,7 @@ msgstr "Tipo de base de datos:"
 msgid "Inactive"
 msgstr "Inactivo"
 
-#: ../preferences.php:212 ../ajouter_adherent.php:258
+#: ../preferences.php:214 ../ajouter_adherent.php:258
 msgid "- Only .jpg, .gif and .png files are allowed."
 msgstr "- Sólos los ficheros .jpg, .gif y .png están permitidos."
 
@@ -569,10 +574,6 @@ msgstr "Borrado"
 #: ../templates/default/ajouter_contribution.tpl:39
 msgid "Transaction number:"
 msgstr "Número de transacción:"
-
-#: ../templates/default/preferences.tpl:137
-msgid "Margins:"
-msgstr "Márgenes:"
 
 #: ../templates/default/traduire_libelles.tpl:16
 msgid "Language"
@@ -602,7 +603,7 @@ msgstr "Operación DELETE no autorizada"
 msgid "Profile configuration"
 msgstr "Configuración del perfil"
 
-#: ../self_adherent.php:100 ../self_contribution.php:140
+#: ../self_adherent.php:106 ../self_contribution.php:140
 #: ../gestion_contributions.php:70 ../gestion_contributions.php:85
 #: ../ajouter_contribution.php:137 ../ajouter_adherent.php:132
 #: ../ajouter_transaction.php:106
@@ -628,11 +629,11 @@ msgstr "Nombre o correo electrónico del usuario:"
 #: ../templates/default/ajouter_contribution.tpl:53
 #: ../templates/default/ajouter_contribution.tpl:70
 #: ../templates/default/ajouter_transaction.tpl:24
-#: ../templates/default/self_adherent.tpl:72
+#: ../templates/default/self_adherent.tpl:85
 msgid "(dd/mm/yyyy format)"
 msgstr "(formato dd/mm/aaaa)"
 
-#: ../includes/i18n.inc.php:190
+#: ../includes/i18n.inc.php:192
 msgid "Realization:"
 msgstr "Realizado por:"
 
@@ -644,11 +645,11 @@ msgstr "Informe de cuotas"
 msgid "Woman"
 msgstr "Mujer"
 
-#: ../templates/default/self_adherent.tpl:56
+#: ../templates/default/self_adherent.tpl:69
 msgid "your fee."
 msgstr "su cuota."
 
-#: ../includes/i18n.inc.php:206
+#: ../includes/i18n.inc.php:208
 msgid "Donation in money"
 msgstr "Donativo en metálico"
 
@@ -656,11 +657,11 @@ msgstr "Donativo en metálico"
 msgid "User:"
 msgstr "Usuario:"
 
-#: ../templates/default/self_adherent.tpl:167
+#: ../templates/default/self_adherent.tpl:165
 msgid "Passworg image"
 msgstr "Error en la copia de la contraseña:"
 
-#: ../self_adherent.php:281 ../ajouter_adherent.php:423
+#: ../self_adherent.php:306 ../ajouter_adherent.php:423
 msgid "Mister"
 msgstr "Señor"
 
@@ -680,13 +681,9 @@ msgstr "Parámetros de la generación de etiquetas:"
 msgid "Step 6 - Access permissions to database"
 msgstr "Paso 6º - Permisos de acceso a la base de datos"
 
-#: ../templates/default/gestion_adherents.tpl:169
-msgid ""
-"Do you really want to delere all selected accounts (and related "
-"contributions)?"
-msgstr ""
-"¿Quiere verdaderamente eliminar todas las cuentas seleccionadas (y las "
-"contribuciones relacionadas con ellas)?"
+#: ../footer.php:26
+msgid "seconds."
+msgstr "segundos."
 
 #: ../install/index.php:255
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
@@ -696,8 +693,7 @@ msgstr "En UNIX/Linux, puede fijar los permisos con dichos comandos"
 msgid "Add"
 msgstr "Añadir"
 
-#: ../self_adherent.php:204 ../self_adherent.php:212 ../lostpasswd.php:123
-#: ../lostpasswd.php:135 ../ajouter_adherent.php:298
+#: ../lostpasswd.php:123 ../lostpasswd.php:135 ../ajouter_adherent.php:298
 #: ../ajouter_adherent.php:310
 msgid "A problem happened while sending password for account:"
 msgstr "Ocurrió un problema en el envío de la contraseña para la cuenta:"
@@ -706,7 +702,7 @@ msgstr "Ocurrió un problema en el envío de la contraseña para la cuenta:"
 msgid "Late of "
 msgstr "Retraso de "
 
-#: ../templates/default/mailing_adherents.tpl:93
+#: ../templates/default/mailing_adherents.tpl:94
 msgid "None of the selected members has an email address."
 msgstr "Ninguno de los socios seleccionados tiene cuenta de correo."
 
@@ -714,7 +710,7 @@ msgstr "Ninguno de los socios seleccionados tiene cuenta de correo."
 msgid "Height:"
 msgstr "Altura de la etiqueta:"
 
-#: ../self_adherent.php:115 ../preferences.php:93 ../ajouter_adherent.php:147
+#: ../self_adherent.php:121 ../preferences.php:94 ../ajouter_adherent.php:147
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- ¡El nombre de usuario debe tener al menos 4 caracteres!"
 
@@ -737,7 +733,7 @@ msgstr "Acciones"
 msgid "Sender name:"
 msgstr "Nombre del remitente:"
 
-#: ../includes/i18n.inc.php:201
+#: ../includes/i18n.inc.php:203
 msgid "Legal entity"
 msgstr "Persona moral"
 
@@ -763,7 +759,7 @@ msgstr "meses"
 msgid "Normal"
 msgstr "Normal"
 
-#: ../includes/i18n.inc.php:196
+#: ../includes/i18n.inc.php:198
 msgid "Secretary"
 msgstr "Secretario/a"
 
@@ -775,7 +771,7 @@ msgstr "Éxito en la conexión a la base de datos"
 msgid "No database name"
 msgstr "Falta el nombre de la base de datos"
 
-#: ../templates/default/preferences.tpl:179
+#: ../templates/default/preferences.tpl:186
 msgid "Number of label lines:"
 msgstr "Número de líneas de etiquetas:"
 
@@ -783,7 +779,7 @@ msgstr "Número de líneas de etiquetas:"
 msgid "Contributions"
 msgstr "Contribuciones"
 
-#: ../install/index.php:1189
+#: ../install/index.php:1191
 msgid "Homepage"
 msgstr "Página principal"
 
@@ -807,7 +803,7 @@ msgstr "Páginas:"
 msgid "Amount:"
 msgstr "Importe:"
 
-#: ../templates/default/mailing_adherents.tpl:99
+#: ../templates/default/mailing_adherents.tpl:100
 msgid ""
 "Some members you have selected have no e-mail address. However, you can "
 "generate envelope labels to contact them by snail mail."
@@ -825,7 +821,7 @@ msgid "apache_user"
 msgstr "usuario_apache"
 
 #: ../templates/default/gestion_adherents.tpl:27
-#: ../templates/default/mailing_adherents.tpl:34
+#: ../templates/default/mailing_adherents.tpl:35
 msgid "members"
 msgstr "socios"
 
@@ -833,7 +829,7 @@ msgstr "socios"
 msgid "Temporary password:"
 msgstr "Contraseña provisional:"
 
-#: ../includes/i18n.inc.php:193
+#: ../includes/i18n.inc.php:195
 msgid "President"
 msgstr "Presidente/a"
 
@@ -853,18 +849,18 @@ msgstr "Mis contribuciones"
 msgid "Database type unknown"
 msgstr "Tipo de base de datos desconocido"
 
-#: ../templates/default/mailing_adherents.tpl:36
+#: ../templates/default/mailing_adherents.tpl:37
 msgid "Please compose your mail."
 msgstr "Por favor introduzca su dirección de correo electrónico."
 
 #: ../templates/default/preferences.tpl:58
 #: ../templates/default/ajouter_adherent.tpl:181
 #: ../templates/default/voir_adherent.tpl:91
-#: ../templates/default/self_adherent.tpl:120
+#: ../templates/default/self_adherent.tpl:124
 msgid "Country:"
 msgstr "País:"
 
-#: ../templates/default/mailing_adherents.tpl:55
+#: ../templates/default/mailing_adherents.tpl:56
 msgid "Message:"
 msgstr "Mensaje:"
 
@@ -876,7 +872,7 @@ msgstr "Los socios al día"
 msgid "transaction added"
 msgstr "Transacción añadida"
 
-#: ../install/index.php:1196
+#: ../install/index.php:1198
 msgid "Step 10 - End of the update"
 msgstr "Paso 10º - Final de la actualización"
 
@@ -889,7 +885,7 @@ msgid "Select installation mode to launch"
 msgstr "Seleccionar el tipo de instalación que se va a iniciar"
 
 #: ../templates/default/lostpasswd.tpl:46
-#: ../templates/default/self_adherent.tpl:187
+#: ../templates/default/self_adherent.tpl:186
 msgid "Back to login page"
 msgstr "Regresar a la página de identificación"
 
@@ -901,7 +897,7 @@ msgstr "Duración por defecto de la afiliación:"
 msgid "Start date of membership:"
 msgstr "Fecha de inicio de la afiliación:"
 
-#: ../includes/i18n.inc.php:191
+#: ../includes/i18n.inc.php:193
 msgid "Graphics:"
 msgstr "Grafismo:"
 
@@ -922,7 +918,7 @@ msgstr ""
 msgid "Originator"
 msgstr "Emisor"
 
-#: ../self_adherent.php:134 ../preferences.php:125 ../ajouter_adherent.php:170
+#: ../self_adherent.php:137 ../preferences.php:127 ../ajouter_adherent.php:170
 msgid "- The password must be of at least 4 characters!"
 msgstr "- ¡La contraseña debe consistir en 4 caracteres al menos!"
 
@@ -930,13 +926,13 @@ msgstr "- ¡La contraseña debe consistir en 4 caracteres al menos!"
 msgid "Please enter a message."
 msgstr "Por favor teclee un mensaje."
 
-#: ../install/index.php:1184
+#: ../install/index.php:1186
 msgid "Galette has been successfully updated!"
 msgstr "¡Galette fue actualizada con éxito!"
 
 #: ../templates/default/ajouter_adherent.tpl:56
 #: ../templates/default/voir_adherent.tpl:16
-#: ../templates/default/self_adherent.tpl:65
+#: ../templates/default/self_adherent.tpl:78
 msgid "Nickname:"
 msgstr "Alias:"
 
@@ -944,11 +940,11 @@ msgstr "Alias:"
 msgid "Date:"
 msgstr "Fecha:"
 
-#: ../includes/i18n.inc.php:209
+#: ../includes/i18n.inc.php:211
 msgid "english"
 msgstr "inglés"
 
-#: ../templates/default/self_adherent.tpl:55
+#: ../templates/default/self_adherent.tpl:68
 msgid "You can prepare a picture to upload after sending"
 msgstr "Puede preparar una foto para enviarla después de remitir"
 
@@ -965,7 +961,7 @@ msgstr "Operación INSERT no autorizada"
 msgid "Comments:"
 msgstr "Comentarios:"
 
-#: ../self_adherent.php:233
+#: ../self_adherent.php:249
 msgid "Inscription sent for approval to administrator"
 msgstr "Se ha enviado la afiliación al administrador para su aprobación"
 
@@ -977,7 +973,7 @@ msgstr "- El nombre de campo ya está en uso."
 msgid "Configuration file created (includes/config.inc.php)"
 msgstr "Fichero de configuración creado (includes/config.inc.php)"
 
-#: ../install/index.php:923 ../templates/default/preferences.tpl:207
+#: ../install/index.php:923 ../templates/default/preferences.tpl:214
 msgid "Retype password:"
 msgstr "Vuelva a introducir la contraseña:"
 
@@ -1002,13 +998,13 @@ msgstr "Añadida la ficha de socio"
 msgid "DROP operation allowed"
 msgstr "Operación DROP autorizada"
 
-#: ../install/index.php:1104
+#: ../install/index.php:1106
 msgid "Parameters saved into the database"
 msgstr "Parámetros grabados en la base de datos"
 
 #: ../templates/default/ajouter_adherent.tpl:209
 #: ../templates/default/voir_adherent.tpl:129
-#: ../templates/default/self_adherent.tpl:140
+#: ../templates/default/self_adherent.tpl:144
 msgid "MSN:"
 msgstr "MSN:"
 
@@ -1039,7 +1035,7 @@ msgstr ""
 msgid "Continue"
 msgstr "Continuar"
 
-#: ../install/index.php:1170
+#: ../install/index.php:1172
 msgid "Step 9 - Saving of the parameters"
 msgstr "Paso 9º - Grabar los parámetros"
 
@@ -1097,7 +1093,7 @@ msgstr "Falta nombre de usuario"
 msgid "Required:"
 msgstr "Obligatorio:"
 
-#: ../includes/i18n.inc.php:203
+#: ../includes/i18n.inc.php:205
 msgid "Reduced annual contribution"
 msgstr "Cuota anual reducida"
 
@@ -1150,7 +1146,7 @@ msgstr "Admin. de  Galette:"
 
 #: ../install/index.php:209 ../install/index.php:278 ../install/index.php:363
 #: ../install/index.php:418 ../install/index.php:613 ../install/index.php:868
-#: ../install/index.php:930 ../install/index.php:1119
+#: ../install/index.php:930 ../install/index.php:1121
 msgid "Next step"
 msgstr "Siguiente paso"
 
@@ -1198,23 +1194,23 @@ msgstr "contribuciones"
 msgid "Permissions to database are OK."
 msgstr "Los permisos sobre la base de datos son correctos."
 
-#: ../preferences.php:222 ../ajouter_adherent.php:262
+#: ../preferences.php:224 ../ajouter_adherent.php:262
 msgid "Delete failed"
 msgstr "Fallo en la supresión de datos"
 
-#: ../templates/default/mailing_adherents.tpl:98
+#: ../templates/default/mailing_adherents.tpl:99
 msgid "unreachable member"
 msgstr "Socio no localizable"
 
-#: ../includes/i18n.inc.php:200
+#: ../includes/i18n.inc.php:202
 msgid "Old-timer"
 msgstr "Antiguo"
 
-#: ../self_adherent.php:175 ../lostpasswd.php:95 ../ajouter_adherent.php:268
+#: ../self_adherent.php:186 ../lostpasswd.php:95 ../ajouter_adherent.php:268
 msgid "Your Galette identifiers"
 msgstr "Sus identificaciones Galette"
 
-#: ../includes/i18n.inc.php:205
+#: ../includes/i18n.inc.php:207
 msgid "Donation in kind"
 msgstr "Donativo en especie"
 
@@ -1233,7 +1229,12 @@ msgstr "**IMPORTANTE** Probable intento de intrusión al enviar correo a:"
 msgid "creation"
 msgstr "creación"
 
-#: ../templates/default/mailing_adherents.tpl:81
+#: ../templates/default/preferences.tpl:137
+#, fuzzy
+msgid "Vertical margins:"
+msgstr "Distancia vertical:"
+
+#: ../templates/default/mailing_adherents.tpl:82
 msgid "OFF"
 msgstr "DESCONECTADO"
 
@@ -1241,7 +1242,7 @@ msgstr "DESCONECTADO"
 msgid "Enter connection data for the existing database."
 msgstr "Especifique los parámetros de conexión a la base de datos."
 
-#: ../templates/default/mailing_adherents.tpl:32
+#: ../templates/default/mailing_adherents.tpl:33
 msgid "You are about to send an e-mail to"
 msgstr "Va a enviar un correo a"
 
@@ -1250,7 +1251,7 @@ msgstr "Va a enviar un correo a"
 msgid "Add a contribution"
 msgstr "Añadir una contribución"
 
-#: ../includes/i18n.inc.php:208
+#: ../includes/i18n.inc.php:210
 msgid "french"
 msgstr "francés"
 
@@ -1268,7 +1269,7 @@ msgstr ""
 msgid "Member"
 msgstr "Socio"
 
-#: ../install/index.php:1183
+#: ../install/index.php:1185
 msgid "Galette has been successfully installed!"
 msgstr "¡Galette fue instalada con éxito!"
 
@@ -1324,7 +1325,7 @@ msgstr "Historial"
 msgid "DROP OPeration allowed"
 msgstr "Operación DROP autorizada"
 
-#: ../self_adherent.php:279 ../ajouter_adherent.php:421
+#: ../self_adherent.php:304 ../ajouter_adherent.php:421
 msgid "Miss"
 msgstr "Señora"
 
@@ -1340,12 +1341,12 @@ msgstr "La afiliación expirará pronto (<30d)"
 msgid "logs are empty"
 msgstr "historial vacío"
 
-#: ../self_adherent.php:185 ../lostpasswd.php:103 ../install/index.php:908
+#: ../self_adherent.php:196 ../lostpasswd.php:103 ../install/index.php:908
 #: ../ajouter_adherent.php:278 ../templates/default/index.tpl:21
-#: ../templates/default/preferences.tpl:195
+#: ../templates/default/preferences.tpl:202
 #: ../templates/default/ajouter_adherent.tpl:115
 #: ../templates/default/voir_adherent.tpl:57
-#: ../templates/default/self_adherent.tpl:153
+#: ../templates/default/self_adherent.tpl:157
 msgid "Username:"
 msgstr "Nombre de usuario:"
 
@@ -1364,7 +1365,7 @@ msgstr "Donante:"
 msgid "End"
 msgstr "Fin"
 
-#: ../templates/default/mailing_adherents.tpl:78
+#: ../templates/default/mailing_adherents.tpl:79
 msgid "Interpret HTML"
 msgstr "Interpretar HTML"
 
@@ -1373,7 +1374,7 @@ msgid "transaction updated"
 msgstr "Transacción actualizada"
 
 #: ../install/index.php:265 ../install/index.php:592 ../install/index.php:843
-#: ../install/index.php:1147
+#: ../install/index.php:1149
 msgid "Retry"
 msgstr "Intentar otra vez"
 
@@ -1390,7 +1391,7 @@ msgstr ""
 "panel de propiedades."
 
 #: ../templates/default/ajouter_adherent.tpl:39
-#: ../templates/default/self_adherent.tpl:44
+#: ../templates/default/self_adherent.tpl:57
 msgid "Title:"
 msgstr "Título:"
 
@@ -1403,7 +1404,7 @@ msgstr "¡Último día!"
 msgid "ending on"
 msgstr "finaliza el"
 
-#: ../preferences.php:171
+#: ../preferences.php:173
 msgid ""
 "- Default membership extention and beginning of membership are mutually "
 "exclusive."
@@ -1419,7 +1420,7 @@ msgstr "Deshabilitado"
 msgid "You must first register a member"
 msgstr "En primer lugar debe dar de alta a un socio"
 
-#: ../templates/default/mailing_adherents.tpl:79
+#: ../templates/default/mailing_adherents.tpl:80
 msgid "Preview"
 msgstr "Vista previa"
 
@@ -1433,7 +1434,7 @@ msgstr "La base de datos fue creada correctamente."
 msgid "modification"
 msgstr "modificación"
 
-#: ../templates/default/preferences.tpl:158
+#: ../templates/default/preferences.tpl:165
 msgid "Label width:"
 msgstr "Anchura de la etiqueta:"
 
@@ -1485,26 +1486,23 @@ msgstr "Retrasados"
 msgid "My information"
 msgstr "Mis informaciones"
 
-#: ../footer.php:26
-msgid "seconds."
-msgstr "segundos."
-
 #: ../templates/default/preferences.tpl:140
 #: ../templates/default/preferences.tpl:147
 #: ../templates/default/preferences.tpl:154
 #: ../templates/default/preferences.tpl:161
 #: ../templates/default/preferences.tpl:168
 #: ../templates/default/preferences.tpl:175
-#: ../templates/default/preferences.tpl:188
+#: ../templates/default/preferences.tpl:182
+#: ../templates/default/preferences.tpl:195
 msgid "(Integer)"
 msgstr "(Entero)"
 
 #: ../templates/default/ajouter_adherent.tpl:154
-#: ../templates/default/self_adherent.tpl:172
+#: ../templates/default/self_adherent.tpl:170
 msgid "Other informations:"
 msgstr "Otras informaciones:"
 
-#: ../preferences.php:159
+#: ../preferences.php:161
 msgid "- You must indicate the SMTP server you wan't to use!"
 msgstr "- ¡Tiene que indicar qué servidor SMTP quiere usar!"
 
@@ -1522,7 +1520,7 @@ msgstr "Mis transacciones"
 
 #: ../templates/default/ajouter_adherent.tpl:189
 #: ../templates/default/voir_adherent.tpl:99
-#: ../templates/default/self_adherent.tpl:126
+#: ../templates/default/self_adherent.tpl:130
 msgid "Mobile phone:"
 msgstr "Móvil:"
 
@@ -1530,7 +1528,7 @@ msgstr "Móvil:"
 msgid "Do you really want to delete this transaction of the database ?"
 msgstr "¿Quiere verdaderamente eliminar esta transacción de la base de datos?"
 
-#: ../includes/i18n.inc.php:192
+#: ../includes/i18n.inc.php:194
 msgid "Publisher:"
 msgstr "Editor:"
 
@@ -1538,7 +1536,7 @@ msgstr "Editor:"
 msgid "List of members"
 msgstr "Lista de socios"
 
-#: ../self_adherent.php:280 ../ajouter_adherent.php:422
+#: ../self_adherent.php:305 ../ajouter_adherent.php:422
 msgid "Mrs"
 msgstr "Señora"
 
@@ -1569,13 +1567,13 @@ msgstr ""
 "Para un funcionamiento correcto, Galette necesita tener permiso de escritura "
 "en estos ficheros."
 
-#: ../templates/default/mailing_adherents.tpl:98
+#: ../templates/default/mailing_adherents.tpl:99
 msgid "unreachable members:"
 msgstr "socios no localizables:"
 
 #: ../templates/default/ajouter_adherent.tpl:205
 #: ../templates/default/voir_adherent.tpl:125
-#: ../templates/default/self_adherent.tpl:138
+#: ../templates/default/self_adherent.tpl:142
 msgid "Jabber:"
 msgstr "Jabber:"
 
@@ -1602,13 +1600,12 @@ msgstr ""
 "- Verifique que todos los campos obligatorios estén cumplimentados. "
 "($fieldreq)"
 
-#: ../templates/default/ajouter_adherent.tpl:193
-#: ../templates/default/voir_adherent.tpl:103
-#: ../templates/default/self_adherent.tpl:128
-msgid "E-Mail:"
-msgstr "Correo electrónico:"
+#: ../templates/default/mailing_adherents.tpl:1
+msgid "Mailing"
+msgstr "Envío general de correo"
 
-#: ../self_adherent.php:282 ../ajouter_adherent.php:424
+#: ../self_adherent.php:307 ../etiquettes_adherents.php:99
+#: ../ajouter_adherent.php:424
 msgid "Society"
 msgstr "Sociedad"
 
@@ -1648,7 +1645,7 @@ msgstr "ninguna contribución"
 msgid "The username cannot contain the @ character"
 msgstr "El nombre de usuario no puede contener el carácter @"
 
-#: ../preferences.php:134
+#: ../preferences.php:136
 msgid "- Invalid format of beginning of membership."
 msgstr "- Formato de comienzo de afiliación incorrecto."
 
@@ -1656,7 +1653,7 @@ msgstr "- Formato de comienzo de afiliación incorrecto."
 #: ../templates/default/preferences.tpl:15
 #: ../templates/default/ajouter_adherent.tpl:15
 #: ../templates/default/lostpasswd.tpl:23
-#: ../templates/default/self_adherent.tpl:31
+#: ../templates/default/self_adherent.tpl:43
 msgid "- WARNING -"
 msgstr "- ADVERTENCIA -"
 
@@ -1687,16 +1684,16 @@ msgid ""
 msgstr ""
 "Los permisos necesarios son CREATE, DROP, DELETE, UPDATE, SELECT e INSERT."
 
-#: ../self_adherent.php:179 ../ajouter_adherent.php:272
+#: ../self_adherent.php:190 ../ajouter_adherent.php:272
 msgid ""
 "It is now possible to follow in real time the state of your subscription"
 msgstr "Ahora puede seguir en tiempo real el estado de su inscripción"
 
-#: ../templates/default/mailing_adherents.tpl:84
+#: ../templates/default/mailing_adherents.tpl:85
 msgid "Send"
 msgstr "Enviar"
 
-#: ../install/index.php:1107
+#: ../install/index.php:1109
 msgid "Parameters couldn't be save into the database"
 msgstr "No fue posible grabar los parámetros en la base de datos"
 
@@ -1725,7 +1722,7 @@ msgstr "Identidad:"
 msgid "Contribution updated"
 msgstr "Contribución actualizada"
 
-#: ../templates/default/self_adherent.tpl:160
+#: ../templates/default/self_adherent.tpl:166
 msgid "Please repeat in the field the password shown in the image."
 msgstr "Por favor, copie en el campo la contraseña que aparece en la imagen."
 
@@ -1733,7 +1730,12 @@ msgstr "Por favor, copie en el campo la contraseña que aparece en la imagen."
 msgid "All members"
 msgstr "Todos los socios"
 
-#: ../templates/default/mailing_adherents.tpl:86
+#: ../templates/default/self_adherent.tpl:111
+#, fuzzy
+msgid " continuation"
+msgstr "contribución"
+
+#: ../templates/default/mailing_adherents.tpl:87
 msgid "Go back to the member listing"
 msgstr "Volver al listado de socios"
 
@@ -1749,11 +1751,11 @@ msgstr "Correo del remitente:"
 msgid "Default language:"
 msgstr "Idioma por defecto:"
 
-#: ../includes/i18n.inc.php:202
+#: ../includes/i18n.inc.php:204
 msgid "Non-member"
 msgstr "No socio"
 
-#: ../includes/i18n.inc.php:197
+#: ../includes/i18n.inc.php:199
 msgid "Active member"
 msgstr "Socio activo"
 
@@ -1767,7 +1769,7 @@ msgid "Description"
 msgstr "Descripción"
 
 #: ../templates/default/ajouter_adherent.tpl:52
-#: ../templates/default/self_adherent.tpl:61
+#: ../templates/default/self_adherent.tpl:74
 msgid "First name:"
 msgstr "Nombre:"
 
@@ -1782,7 +1784,7 @@ msgid "No member was selected, please check at least one name."
 msgstr ""
 "No se ha seleccionado ningún socio; por favor marque al menos un nombre."
 
-#: ../install/index.php:1195
+#: ../install/index.php:1197
 msgid "Step 10 - End of the installation"
 msgstr "Paso 10º - Final de la instalación"
 
@@ -1812,11 +1814,11 @@ msgstr "Puesto"
 msgid "- The duration must be an integer!"
 msgstr "- ¡La duración debe ser un entero!"
 
-#: ../templates/default/self_adherent.tpl:78
+#: ../templates/default/self_adherent.tpl:91
 msgid "Photo :"
 msgstr "Foto:"
 
-#: ../self_adherent.php:126 ../preferences.php:102 ../ajouter_adherent.php:161
+#: ../self_adherent.php:130 ../preferences.php:103 ../ajouter_adherent.php:161
 msgid "- This username is already used by another member !"
 msgstr "- ¡Este nombre de usuario ya lo utiliza otro socio!"
 
@@ -1824,11 +1826,16 @@ msgstr "- ¡Este nombre de usuario ya lo utiliza otro socio!"
 msgid "Logging level:"
 msgstr "Nivel de historial:"
 
-#: ../templates/default/mailing_adherents.tpl:1
-msgid "Mailing"
-msgstr "Envío general de correo"
+#: ../self_adherent.php:226
+#, fuzzy
+msgid ""
+"The server mail filled in the preferences cannot be reached. Ask Galette "
+"admin."
+msgstr ""
+"No se logra contactar con el servidor de correo indicado en las "
+"preferencias. Contacte con el administrador de Galette"
 
-#: ../self_adherent.php:178 ../ajouter_adherent.php:271
+#: ../self_adherent.php:189 ../ajouter_adherent.php:271
 msgid ""
 "You've just been subscribed on the members management system of the "
 "association."
@@ -1836,7 +1843,7 @@ msgstr ""
 "Acaba de ser dado de alta en el sistema de gestión de socios de la "
 "asociación."
 
-#: ../install/index.php:1180
+#: ../install/index.php:1182
 msgid "Update complete !"
 msgstr "¡Actualización completada!"
 
@@ -1844,7 +1851,7 @@ msgstr "¡Actualización completada!"
 msgid "PHP mail() function"
 msgstr "Función PHP mail()"
 
-#: ../self_adherent.php:208 ../mailing_adherents.php:139 ../lostpasswd.php:127
+#: ../mailing_adherents.php:139 ../lostpasswd.php:127
 #: ../ajouter_adherent.php:302
 msgid ""
 "The server mail filled in the preferences cannot be reached. Ask Galette "
@@ -1862,6 +1869,12 @@ msgid "If it hadn't been made, create a database and a user for Galette."
 msgstr ""
 "Si aún no lo ha hecho, cree una base de datos y un usuario para Galette."
 
+#: ../self_adherent.php:218
+msgid "Email sent is desactived in the preferences. Ask galette admin."
+msgstr ""
+"El envío de correo está desactivado en las preferencias. Contacte con el "
+"administrador de galette."
+
 #: ../footer.php:42 ../templates/default/page.tpl:32
 msgid "Add a member"
 msgstr "Añadir un socio"
@@ -1870,7 +1883,7 @@ msgstr "Añadir un socio"
 msgid "and"
 msgstr "y"
 
-#: ../self_adherent.php:200 ../mailing_adherents.php:131 ../lostpasswd.php:119
+#: ../mailing_adherents.php:131 ../lostpasswd.php:119
 #: ../ajouter_adherent.php:294
 msgid "Email sent is desactived in the preferences. Ask galette admin"
 msgstr ""
@@ -1881,7 +1894,7 @@ msgstr ""
 msgid "Navigation"
 msgstr "Navegación"
 
-#: ../preferences.php:162
+#: ../preferences.php:164
 msgid "- You must indicate a sender name for emails!"
 msgstr "¡Los correos deben llevar un remitente!"
 
@@ -1889,7 +1902,7 @@ msgstr "¡Los correos deben llevar un remitente!"
 msgid "Configure member forms"
 msgstr "Configurar las fichas de socios"
 
-#: ../templates/default/mailing_adherents.tpl:81
+#: ../templates/default/mailing_adherents.tpl:82
 msgid "HTML interpretation:"
 msgstr "Interpretación HTML:"
 
@@ -1906,15 +1919,29 @@ msgstr "Verifique los parámetros y la existencia de la base de datos"
 msgid "[$]"
 msgstr "[$]"
 
+#: ../templates/default/gestion_adherents.tpl:132
+msgid ""
+"Do you really want to delete this member from the base, this will delete "
+"also the history of his fees. To avoid this you can just disable his "
+"account.\n"
+"\n"
+"Do you still want to delete this member ?"
+msgstr ""
+"¿Quiere usted verdaderamente eliminar a este socio de la base? Haciendo eso "
+"eliminará también el historial de sus cuotas. Para evitarlo puede "
+"simplemente desactivar su cuenta.\n"
+"\n"
+"¿Confirma que quiere eliminar a este socio?"
+
 #: ../templates/default/ajouter_adherent.tpl:60
 #: ../templates/default/voir_adherent.tpl:20
-#: ../templates/default/self_adherent.tpl:69
+#: ../templates/default/self_adherent.tpl:82
 msgid "birth date:"
 msgstr "Fecha de nacimiento:"
 
 #: ../templates/default/ajouter_adherent.tpl:217
 #: ../templates/default/voir_adherent.tpl:142
-#: ../templates/default/self_adherent.tpl:146
+#: ../templates/default/self_adherent.tpl:150
 msgid "fingerprint:"
 msgstr "huella de clave:"
 
@@ -1928,23 +1955,9 @@ msgid "Description:"
 msgstr "Descripción:"
 
 #: ../footer.php:45 ../templates/default/gestion_adherents.tpl:171
-#: ../templates/default/mailing_adherents.tpl:103
+#: ../templates/default/mailing_adherents.tpl:104
 msgid "Generate labels"
 msgstr "Generación de etiquetas"
-
-#: ../templates/default/gestion_adherents.tpl:132
-msgid ""
-"Do you really want to delete this member from the base, this will delete "
-"also the history of her fees. To avoid this you can just unactivate her "
-"account.\n"
-"\n"
-"Do you still want to delete this member ?"
-msgstr ""
-"¿Quiere usted verdaderamente eliminar a este socio de la base? Haciendo eso "
-"eliminará también el historial de sus cuotas. Para evitarlo puede "
-"simplemente desactivar su cuenta.\n"
-"\n"
-"¿Confirma que quiere eliminar a este socio?"
 
 #: ../templates/default/ajouter_adherent.tpl:146
 #: ../templates/default/voir_adherent.tpl:66
@@ -1965,7 +1978,7 @@ msgstr "Paso 5º - Acceso a la base de datos"
 #: ../templates/default/ajouter_transaction.tpl:5
 #: ../templates/default/editer_champ.tpl:5
 #: ../templates/default/lostpasswd.tpl:13
-#: ../templates/default/self_adherent.tpl:21
+#: ../templates/default/self_adherent.tpl:33
 msgid "- ERROR -"
 msgstr "- ERROR -"
 
@@ -1986,11 +1999,11 @@ msgstr "Duración"
 msgid "Visibility:"
 msgstr "Visibilidad:"
 
-#: ../self_adherent.php:188 ../lostpasswd.php:106 ../ajouter_adherent.php:281
+#: ../self_adherent.php:199 ../lostpasswd.php:106 ../ajouter_adherent.php:281
 msgid "See you soon!"
 msgstr "¡Hasta pronto!"
 
-#: ../self_contribution.php:261 ../templates/default/preferences.tpl:219
+#: ../self_contribution.php:261 ../templates/default/preferences.tpl:226
 #: ../templates/default/ajouter_adherent.tpl:228
 #: ../templates/default/ajouter_contribution.tpl:91
 #: ../templates/default/ajouter_transaction.tpl:47
@@ -1998,14 +2011,14 @@ msgstr "¡Hasta pronto!"
 msgid "red"
 msgstr "rojo"
 
-#: ../self_adherent.php:180 ../ajouter_adherent.php:273
+#: ../self_adherent.php:191 ../ajouter_adherent.php:273
 msgid "and to update your preferences from the web interface."
 msgstr ""
 "y actualizar sus preferencias usando la interfaz web prevista con este fin."
 
 #: ../templates/default/ajouter_adherent.tpl:118
 #: ../templates/default/ajouter_adherent.tpl:125
-#: ../templates/default/self_adherent.tpl:156
+#: ../templates/default/self_adherent.tpl:160
 msgid "(at least 4 characters)"
 msgstr "(al menos 4 caracteres)"
 
@@ -2020,11 +2033,11 @@ msgstr "- El importe de la transacción debe ser positivo."
 #: ../templates/default/preferences.tpl:54
 #: ../templates/default/ajouter_adherent.tpl:177
 #: ../templates/default/voir_adherent.tpl:87
-#: ../templates/default/self_adherent.tpl:116
+#: ../templates/default/self_adherent.tpl:120
 msgid "City:"
 msgstr "Ciudad:"
 
-#: ../includes/i18n.inc.php:199
+#: ../includes/i18n.inc.php:201
 msgid "Founder member"
 msgstr "Socio fundador"
 
@@ -2056,7 +2069,7 @@ msgstr "La base de datos fue actualizada correctamente."
 #: ../templates/default/ajouter_adherent.tpl:45
 #: ../templates/default/voir_adherent.tpl:12
 #: ../templates/default/editer_champ.tpl:17
-#: ../templates/default/self_adherent.tpl:50
+#: ../templates/default/self_adherent.tpl:63
 msgid "Name:"
 msgstr "Nombre:"
 
@@ -2064,7 +2077,7 @@ msgstr "Nombre:"
 msgid "Member card updated:"
 msgstr "Actualizada la ficha de socio:"
 
-#: ../preferences.php:129
+#: ../preferences.php:131
 msgid "- Invalid number of months of membership extension."
 msgstr "- La duración en meses de la afiliación es inválida."
 
@@ -2085,7 +2098,7 @@ msgstr "- El nombre de usuario no puede contener el carácter @"
 msgid "Creation of the tables"
 msgstr "Creación de la base de datos"
 
-#: ../self_adherent.php:157 ../preferences.php:178 ../preferences.php:181
+#: ../self_adherent.php:168 ../preferences.php:180 ../preferences.php:183
 #: ../ajouter_contribution.php:166 ../ajouter_contribution.php:169
 #: ../ajouter_adherent.php:216 ../ajouter_transaction.php:124
 #: ../ajouter_transaction.php:127
@@ -2102,7 +2115,7 @@ msgid "Please chose the parameters of the admin account on Galette"
 msgstr ""
 "Por favor elija los parámetros de la cuenta del administrador de Galette"
 
-#: ../includes/i18n.inc.php:198
+#: ../includes/i18n.inc.php:200
 msgid "Benefactor member"
 msgstr "Socio bienhechor"
 
@@ -2110,7 +2123,7 @@ msgstr "Socio bienhechor"
 msgid "Reply-To Email:"
 msgstr "Correo electrónico al que enviar las respuestas:"
 
-#: ../self_contribution.php:261 ../templates/default/preferences.tpl:219
+#: ../self_contribution.php:261 ../templates/default/preferences.tpl:226
 #: ../templates/default/ajouter_adherent.tpl:228
 #: ../templates/default/ajouter_contribution.tpl:91
 #: ../templates/default/ajouter_transaction.tpl:47
@@ -2122,11 +2135,11 @@ msgstr "Nota: los campos obligatorios aparecen en"
 msgid "Annual fee (to be paid)"
 msgstr "Cuota anual (por pagar)"
 
-#: ../self_adherent.php:176 ../lostpasswd.php:96 ../ajouter_adherent.php:269
+#: ../self_adherent.php:187 ../lostpasswd.php:96 ../ajouter_adherent.php:269
 msgid "Hello,"
 msgstr "Hola,"
 
-#: ../includes/i18n.inc.php:210
+#: ../includes/i18n.inc.php:212
 msgid "spanish"
 msgstr "español"
 
@@ -2138,7 +2151,7 @@ msgstr "La base de datos existe y los parámetros de conexión son correctos."
 msgid "Database"
 msgstr "Base de datos"
 
-#: ../templates/default/preferences.tpl:165
+#: ../templates/default/preferences.tpl:172
 msgid "Label height:"
 msgstr "Altura de la etiqueta:"
 
@@ -2163,7 +2176,7 @@ msgstr "- El período de afiliación supera el periodo que comienza el "
 msgid "Never contributed"
 msgstr "Nunca pagó la cuota"
 
-#: ../install/index.php:1144
+#: ../install/index.php:1146
 msgid "Parameters couldn't be saved."
 msgstr "No fue posible grabar los parámetros."
 
@@ -2185,7 +2198,7 @@ msgstr "Regresar"
 msgid "transaction"
 msgstr "transacción"
 
-#: ../preferences.php:263 ../gestion_contributions.php:326
+#: ../preferences.php:265 ../gestion_contributions.php:326
 #: ../gestion_adherents.php:331 ../gestion_transactions.php:155
 msgid "All"
 msgstr "Todos"
@@ -2199,17 +2212,17 @@ msgid "DELETE operation allowed"
 msgstr "Operación DELETE autorizada"
 
 #: ../templates/default/gestion_adherents.tpl:27
-#: ../templates/default/mailing_adherents.tpl:34
+#: ../templates/default/mailing_adherents.tpl:35
 msgid "member"
 msgstr "socio"
 
 #: ../templates/default/ajouter_adherent.tpl:67
 #: ../templates/default/voir_adherent.tpl:24
-#: ../templates/default/self_adherent.tpl:76
+#: ../templates/default/self_adherent.tpl:89
 msgid "Profession:"
 msgstr "Profesión:"
 
-#: ../templates/default/mailing_adherents.tpl:81
+#: ../templates/default/mailing_adherents.tpl:82
 msgid "ON"
 msgstr "CONECTADO"
 
@@ -2221,7 +2234,7 @@ msgstr "Grabar los parámetros"
 msgid "User"
 msgstr "Usuario"
 
-#: ../templates/default/preferences.tpl:185
+#: ../templates/default/preferences.tpl:192
 msgid "Font size:"
 msgstr "Tamaño del tipo de letra:"
 
@@ -2250,13 +2263,29 @@ msgstr ""
 "Para su actualización, Galette debe tener varios permisos sobre la base de "
 "datos (CREATE, DROP, DELETE, UPDATE, SELECT e INSERT)"
 
-#: ../self_adherent.php:182 ../ajouter_adherent.php:275
+#: ../templates/default/gestion_adherents.tpl:169
+msgid ""
+"Do you really want to delete all selected accounts (and related "
+"contributions)?"
+msgstr ""
+"¿Quiere verdaderamente eliminar todas las cuentas seleccionadas (y las "
+"contribuciones relacionadas con ellas)?"
+
+#: ../self_adherent.php:193 ../ajouter_adherent.php:275
 msgid "Please login at this address:"
 msgstr "Por favor identifíquese usted en esta dirección:"
 
 #: ../templates/default/gestion_contributions.tpl:172
 msgid "[ Add a contribution ]"
 msgstr "[ Añadir una contribución ]"
+
+#~ msgid "Your login and password was sent by mail at this address :"
+#~ msgstr ""
+#~ "Su identificador y contraseña han sido enviados a la dirección de correo "
+#~ "siguiente:"
+
+#~ msgid "Margins:"
+#~ msgstr "Márgenes:"
 
 #~ msgid ""
 #~ "Self subscribe - A problem happened while sending password for account:"
@@ -2309,11 +2338,6 @@ msgstr "[ Añadir una contribución ]"
 
 #~ msgid "Generation of "
 #~ msgstr "Generación de "
-
-#~ msgid "Email sent is desactived in the preferences. Ask galette admin."
-#~ msgstr ""
-#~ "El envío de correo está desactivado en las preferencias. Contacte con el "
-#~ "administrador de galette."
 
 #~ msgid ""
 #~ "Self subscribe - Email sent is desactived in the preferences. Ask galette "
