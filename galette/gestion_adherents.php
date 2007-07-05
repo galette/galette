@@ -83,6 +83,10 @@
 		if (is_numeric($_GET["filtre_2"]))
 			$_SESSION["filtre_adh_2"]=$_GET["filtre_2"];
 
+	if (isset($_GET["filtre_fld"]))
+		if (is_numeric($_GET["filtre_fld"]))
+			$_SESSION["filtre_adh_fld"]=$_GET["filtre_fld"];
+
 	$numrows = PREF_NUMROWS;
 	if (isset($_GET["nbshow"]))
 		if (is_numeric($_GET["nbshow"]))
@@ -158,15 +162,60 @@
 		       FROM ".PREFIX_DB."adherents 
 		       WHERE 1=1 ";
 	
-	// name filter
+	// Advanced filter
 	if ($_SESSION["filtre_adh_nom"]!="")
 	{
-		$concat1 = $DB->Concat(PREFIX_DB."adherents.nom_adh",$DB->Qstr(" "),PREFIX_DB."adherents.prenom_adh");
-		$concat2 = $DB->Concat(PREFIX_DB."adherents.prenom_adh",$DB->Qstr(" "),PREFIX_DB."adherents.nom_adh");
-		$requete[0] .= "AND (".$concat1." like '%".$_SESSION["filtre_adh_nom"]."%' ";
-		$requete[0] .= "OR ".$concat2." like '%".$_SESSION["filtre_adh_nom"]."%') ";
-		$requete[1] .= "AND (".$concat1." like '%".$_SESSION["filtre_adh_nom"]."%' ";
-		$requete[1] .= "OR ".$concat2." like '%".$_SESSION["filtre_adh_nom"]."%') ";
+		$token = " like '%".$_SESSION["filtre_adh_nom"]."%' ";
+		switch ($_SESSION["filtre_adh_fld"])
+		{
+		//	0 => Name
+		case 0:
+			$concat1 = $DB->Concat(PREFIX_DB."adherents.nom_adh",$DB->Qstr(" "),PREFIX_DB."adherents.prenom_adh",$DB->Qstr(" "),PREFIX_DB."adherents.pseudo_adh");
+			$concat2 = $DB->Concat(PREFIX_DB."adherents.prenom_adh",$DB->Qstr(" "),PREFIX_DB."adherents.nom_adh",$DB->Qstr(" "),PREFIX_DB."adherents.pseudo_adh");
+			$requete[0] .= "AND (".$concat1.$token;
+			$requete[0] .= "OR ".$concat2.$token.") ";
+			$requete[1] .= "AND (".$concat1.$token;
+			$requete[1] .= "OR ".$concat2.$token.") ";
+			break;
+		// 1 => Address
+		case 1:
+			$requete[0] .= "AND (".PREFIX_DB."adherents.adresse_adh ".$token;
+			$requete[0] .= "OR ".PREFIX_DB."adherents.adresse2_adh ".$token;
+			$requete[0] .= "OR ".PREFIX_DB."adherents.cp_adh ".$token;
+			$requete[0] .= "OR ".PREFIX_DB."adherents.ville_adh ".$token;
+			$requete[0] .= "OR ".PREFIX_DB."adherents.pays_adh ".$token.") ";
+			$requete[1] .= "AND (".PREFIX_DB."adherents.adresse_adh ".$token;
+			$requete[1] .= "OR ".PREFIX_DB."adherents.adresse2_adh ".$token;
+			$requete[1] .= "OR ".PREFIX_DB."adherents.cp_adh ".$token;
+			$requete[1] .= "OR ".PREFIX_DB."adherents.ville_adh ".$token;
+			$requete[1] .= "OR ".PREFIX_DB."adherents.pays_adh ".$token.") ";
+			break;
+		//	2 => Email,URL,IM
+		case 2:
+			$requete[0] .= "AND (".PREFIX_DB."adherents.email_adh ".$token;
+			$requete[0] .= "OR ".PREFIX_DB."adherents.url_adh ".$token;
+			$requete[0] .= "OR ".PREFIX_DB."adherents.msn_adh ".$token;
+			$requete[0] .= "OR ".PREFIX_DB."adherents.icq_adh ".$token;
+			$requete[0] .= "OR ".PREFIX_DB."adherents.jabber_adh ".$token.") ";
+			$requete[1] .= "AND (".PREFIX_DB."adherents.email_adh ".$token;
+			$requete[1] .= "OR ".PREFIX_DB."adherents.url_adh ".$token;
+			$requete[1] .= "OR ".PREFIX_DB."adherents.msn_adh ".$token;
+			$requete[1] .= "OR ".PREFIX_DB."adherents.icq_adh ".$token;
+			$requete[1] .= "OR ".PREFIX_DB."adherents.jabber_adh ".$token.") ";
+			break;
+		//	3 => Job
+		case 3:
+			$requete[0] .= "AND ".PREFIX_DB."adherents.prof_adh ".$token;
+			$requete[1] .= "AND ".PREFIX_DB."adherents.prof_adh ".$token;
+			break;
+		//	4 => Infos
+		case 4:
+			$requete[0] .= "AND (".PREFIX_DB."adherents.info_adh ".$token;
+			$requete[0] .= "OR ".PREFIX_DB."adherents.info_public_adh ".$token.") ";
+			$requete[1] .= "AND (".PREFIX_DB."adherents.info_adh ".$token;
+			$requete[1] .= "OR ".PREFIX_DB."adherents.info_public_adh ".$token.") ";
+			break;
+		}
 	}
 	// filtre d'affichage des adherents activés/desactivés
 	if ($_SESSION["filtre_adh_2"]=="1")
@@ -314,6 +363,12 @@
 	$tpl->assign("nb_pages",$nbpages);
 	$tpl->assign("page",$page);
 	$tpl->assign("numrows",$numrows);
+	$tpl->assign('filtre_fld_options', array(
+			0 => _T("Name"),
+			1 => _T("Address"),
+			2 => _T("Email,URL,IM"),
+			3 => _T("Job"),
+			4 => _T("Infos")));
 	$tpl->assign('filtre_options', array(
 			0 => _T("All members"),
 			3 => _T("Members up to date"),

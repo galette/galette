@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sat Jun 30 09:22:19 2007 (GMT)
+// This file was automatically generated on Sat Jun 30 09:57:35 2007 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -47,6 +47,9 @@ $lang['Height:'] = 'Hauteur :';
 
 // ../voir_adherent.php:92 ../etiquettes_adherents.php:93 
 $lang['Mrs.'] = 'Mme.';
+
+// ../templates/default/self_adherent.tpl:111 
+$lang[' (continuation)'] = ' (suite)';
 
 // ../templates/default/gestion_contributions.tpl:77 ../templates/default/gestion_transactions.tpl:57 
 $lang['Amount'] = 'Montant';
@@ -115,7 +118,7 @@ $lang['Status:'] = 'Statut :';
 $lang['Lost your password?'] = 'Mot de passe perdu ?';
 
 // ../self_adherent.php:226 
-$lang['The server mail filled in the preferences cannot be reached. Ask Galette admin.'] = 'Le serveur de mail indiqué dans les préférences n\'est pas joignable. Contactez votre administrateur Galette';
+$lang['The server mail filled in the preferences cannot be reached. Ask Galette admin.'] = 'Le serveur de mail indiqué dans les préférences ne peut pas être contacté. Contactez votre administrateur Galette.';
 
 // ../templates/default/gestion_adherents.tpl:165 
 $lang['(Un)Check all'] = 'Tout (dé)cocher';
@@ -309,9 +312,6 @@ $lang['Mobile phone:'] = 'GSM :';
 // ../ajouter_adherent.php:151 
 $lang['- The username cannot contain the @ character'] = '- L\'identifiant ne peut pas contenir le caractère @ !';
 
-// ../templates/default/gestion_adherents.tpl:132 
-$lang['Do you really want to delete this member from the base, this will delete also the history of his fees. To avoid this you can just disable his account.\n\nDo you still want to delete this member ?'] = 'Voulez vous vraiment effacer cet adhérent, celà effacera tout l\'historique de ses contributions. Pour éviter celà vous pouvez juste désactiver son compte.\n\nVoulez vous toujours effacer cet adhérent ?';
-
 // ../preferences.php:265 ../gestion_contributions.php:326 ../gestion_adherents.php:331 ../gestion_transactions.php:155 
 $lang['All'] = 'Tout';
 
@@ -375,8 +375,8 @@ $lang['Please enter a message.'] = 'Veuillez saisir un message.';
 // ../templates/default/preferences.tpl:199 
 $lang['Admin account (independant of members):'] = 'Compte administrateur (indépendant des adhérents) :';
 
-// ../install/index.php:577 
-$lang['DROP OPeration allowed'] = 'Opération DROP autorisée';
+// ../preferences.php:140 
+$lang['- Invalid date for beginning of membership.'] = '- Mauvais format de date de début d\'exercice.';
 
 // ../install/index.php:470 
 $lang['DROP operation allowed'] = 'Opération DROP autorisée';
@@ -533,6 +533,9 @@ $lang['- You must indicate the SMTP server you wan\'t to use!'] = '- Vous devez 
 
 // ../install/index.php:561 
 $lang['DELETE operation allowed'] = 'Opération DELETE autorisée';
+
+// ../templates/default/gestion_adherents.tpl:132 
+$lang['Do you really want to delete this member from the base, this will delete also the history of his fees. To avoid this you can just disable his account.\\n\\nDo you still want to delete this member ?'] = 'Voulez vous vraiment effacer cet adhérent de la base, cela effacera l\'historique de ses contributions. Pour éviter cela vous pouvez simplement désactiver son compte.\n\nVoulez vous toujours effacer cet adhérent ?';
 
 // ../self_adherent.php:199 ../lostpasswd.php:106 ../ajouter_adherent.php:281 
 $lang['See you soon!'] = 'A très bientôt !';
@@ -700,7 +703,7 @@ $lang['Reedit'] = 'Éditer de nouveau';
 $lang['Login'] = 'Identification';
 
 // ../templates/default/ajouter_adherent.tpl:163 ../templates/default/voir_adherent.tpl:71 
-$lang['Contact information:'] = 'Informations générales :';
+$lang['Contact information:'] = 'Informations de contact :';
 
 // ../templates/default/preferences.tpl:192 
 $lang['Font size:'] = 'Corps du texte :';
@@ -770,6 +773,9 @@ $lang['Update'] = 'Mise à jour :';
 
 // ../templates/default/ajouter_adherent.tpl:60 ../templates/default/voir_adherent.tpl:20 ../templates/default/self_adherent.tpl:82 
 $lang['birth date:'] = 'Date de naissance :';
+
+// ../templates/default/traduire_libelles.tpl:20 
+$lang['Original'] = 'Original';
 
 // ../install/index.php:1146 
 $lang['Parameters couldn\'t be saved.'] = 'Les paramètres n\'ont pas pu être sauvegardés.';
@@ -845,9 +851,6 @@ $lang['Phone:'] = 'Tel :';
 
 // ../self_adherent.php:307 ../etiquettes_adherents.php:99 ../ajouter_adherent.php:424 
 $lang['Society'] = 'Personne morale';
-
-// ../templates/default/self_adherent.tpl:111 
-$lang[' continuation'] = 'contribution';
 
 // ../install/index.php:482 
 $lang['CREATE operation not allowed'] = 'Opération CREATE non autorisée';
@@ -1128,9 +1131,6 @@ $lang['Old-timer'] = 'Ancien';
 // ../templates/default/ajouter_adherent.tpl:217 ../templates/default/voir_adherent.tpl:142 ../templates/default/self_adherent.tpl:150 
 $lang['fingerprint:'] = 'fingerprint:';
 
-// ../templates/default/configurer_fiches.tpl:47 
-$lang['Do you really want to delete this category ?\n All associated data will be deleted as well.'] = 'Voulez vous vraiment effacer cette catégorie ? \n Toutes les données associées seront effacées avec';
-
 // ../install/index.php:641 
 $lang['Creation of the tables'] = 'Création des tables';
 
@@ -1302,8 +1302,8 @@ $lang['No'] = 'Non';
 // ../templates/default/ajouter_adherent.tpl:209 ../templates/default/voir_adherent.tpl:129 ../templates/default/self_adherent.tpl:144 
 $lang['MSN:'] = 'MSN :';
 
-// ../preferences.php:140 
-$lang['- Invalid date for beginning of membership.'] = '- Mauvais format de date de début d\'exercice.';
+// ../install/index.php:577 
+$lang['DROP OPeration allowed'] = 'Opération DROP autorisée';
 
 // ../templates/default/configurer_fiches.tpl:93 
 $lang['Add'] = 'Ajouter';
@@ -1365,8 +1365,8 @@ $lang['E-Mail:'] = 'Courriel :';
 // ../footer.php:169 ../templates/default/page.tpl:132 
 $lang['Contribution'] = 'Contributions';
 
-// ../templates/default/traduire_libelles.tpl:20 
-$lang['Original'] = 'Original';
+// ../templates/default/configurer_fiches.tpl:47 
+$lang['Do you really want to delete this category ?\\n All associated data will be deleted as well.'] = 'Voulez vous vraiment effacer cette catégorie ? \n Toutes les données associées seront effacées.';
 
 // ../mailing_adherents.php:143 ../lostpasswd.php:131 ../ajouter_adherent.php:306 
 $lang['**IMPORTANT** There was a probably breaking attempt when sending mail to :'] = '**IMPORTANT** Il est possible qu\'une tentative d\'atteinte au système ai eu lieu lors de l\'envoi à :';

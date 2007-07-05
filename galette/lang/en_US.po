@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.1\n"
 
-#: ../templates/default/gestion_adherents.tpl:16
+#: ../templates/default/gestion_adherents.tpl:20
 #, fuzzy
 msgid "among:"
 msgstr "Amount:"
@@ -48,7 +48,7 @@ msgstr "Do you really want to delete this contribution of the database ?"
 msgid "(for a directory)"
 msgstr "(for a directory)"
 
-#: ../templates/default/gestion_adherents.tpl:77
+#: ../templates/default/gestion_adherents.tpl:81
 msgid "Status"
 msgstr "Status"
 
@@ -100,8 +100,8 @@ msgstr "Be visible in the<br /> members list :"
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr "Your database is maybe not usable, try to restore the older version."
 
-#: ../footer.php:119 ../footer.php:123
-#: ../templates/default/gestion_adherents.tpl:53
+#: ../footer.php:119 ../footer.php:123 ../gestion_adherents.php:367
+#: ../templates/default/gestion_adherents.tpl:57
 #: ../templates/default/page.tpl:91 ../templates/default/page.tpl:95
 #: ../templates/default/configurer_fiches.tpl:22
 msgid "Name"
@@ -138,7 +138,7 @@ msgid "Lost your password?"
 msgstr "Lost your password?"
 
 #: ../footer.php:107 ../footer.php:157
-#: ../templates/default/gestion_adherents.tpl:130
+#: ../templates/default/gestion_adherents.tpl:134
 #: ../templates/default/page.tpl:79 ../templates/default/page.tpl:122
 #: ../templates/default/configurer_fiches.tpl:45
 #: ../templates/default/gestion_contributions.tpl:134
@@ -168,7 +168,7 @@ msgstr "Your current Galette version is comprised between"
 msgid "Values:"
 msgstr "Pages:"
 
-#: ../footer.php:103 ../templates/default/gestion_adherents.tpl:120
+#: ../footer.php:103 ../templates/default/gestion_adherents.tpl:124
 #: ../templates/default/page.tpl:75
 msgid "[admin]"
 msgstr "[admin]"
@@ -226,7 +226,7 @@ msgstr "Sent mail is checked but there is no email address"
 msgid "Admin account (independant of members):"
 msgstr "Admin account (independant of members):"
 
-#: ../templates/default/gestion_adherents.tpl:23
+#: ../templates/default/gestion_adherents.tpl:27
 #: ../templates/default/gestion_contributions.tpl:8
 msgid "Filter"
 msgstr "Filter"
@@ -244,7 +244,7 @@ msgstr "Object:"
 msgid "Emailing method:"
 msgstr "Emailing method:"
 
-#: ../gestion_contributions.php:264 ../gestion_adherents.php:256
+#: ../gestion_contributions.php:264 ../gestion_adherents.php:305
 msgid "Freed of dues"
 msgstr "Freed of dues"
 
@@ -269,6 +269,10 @@ msgstr "Management of contributions"
 msgid "- Non valid date!"
 msgstr "- Non valid date!"
 
+#: ../gestion_adherents.php:369
+msgid "Email,URL,IM"
+msgstr ""
+
 #: ../templates/default/preferences.tpl:100
 msgid "Beginning of membership:"
 msgstr "Beginning of membership:"
@@ -291,7 +295,7 @@ msgstr "Password misrepeated: "
 msgid "- Invalid date for beginning of membership."
 msgstr "- Invalid date for beginning of membership."
 
-#: ../templates/default/gestion_adherents.tpl:168
+#: ../templates/default/gestion_adherents.tpl:172
 msgid "Selection:"
 msgstr "Selection:"
 
@@ -412,7 +416,7 @@ msgstr "Language:"
 msgid "Step 8 - Admin parameters"
 msgstr "Step 8 - Admin parameters"
 
-#: ../gestion_contributions.php:287 ../gestion_adherents.php:280
+#: ../gestion_contributions.php:287 ../gestion_adherents.php:329
 msgid "days"
 msgstr "days"
 
@@ -456,6 +460,15 @@ msgstr "Treasurer"
 #: ../preferences.php:108 ../preferences.php:123
 msgid "- The numbers and measures have to be integers!"
 msgstr "- The numbers and measures have to be integers!"
+
+#: ../templates/default/configurer_fiches.tpl:47
+#, fuzzy
+msgid ""
+"Do you really want to delete this category ?\\n All associated data will be "
+"deleted as well."
+msgstr ""
+"Do you really want to delete this category ?\n"
+" All associated data will be deleted as well."
 
 #: ../install/index.php:512
 msgid "UPDATE operation not allowed"
@@ -505,6 +518,11 @@ msgstr "Permissions on the base"
 msgid "INSERT operation allowed"
 msgstr "INSERT operation allowed"
 
+#: ../templates/default/self_adherent.tpl:111
+#, fuzzy
+msgid " (continuation)"
+msgstr "contribution"
+
 #: ../templates/default/gestion_contributions.tpl:1
 msgid "Management of contributions"
 msgstr "Management of contributions"
@@ -535,9 +553,27 @@ msgstr "New installation:"
 msgid "Passwords mismatch"
 msgstr "Password misrepeated: "
 
+#: ../templates/default/gestion_adherents.tpl:16
+msgid "in:"
+msgstr ""
+
 #: ../install/index.php:645
 msgid "Installation Report"
 msgstr "Installation Report"
+
+#: ../templates/default/gestion_adherents.tpl:136
+#, fuzzy
+msgid ""
+"Do you really want to delete this member from the base? this will also "
+"delete the history of his fees. You could instead disable the account.\n"
+"\n"
+"Do you still want to delete this member ?"
+msgstr ""
+"Do you really want to delete this member from the base, this will delete "
+"also the history of his fees. To avoid this you can just disable his "
+"account.\n"
+"\n"
+"Do you still want to delete this member ?"
 
 #: ../templates/default/voir_adherent.tpl:153
 #, fuzzy
@@ -553,6 +589,10 @@ msgstr "ICQ:"
 #: ../install/index.php:309
 msgid "Database type:"
 msgstr "Database type:"
+
+#: ../gestion_adherents.php:370
+msgid "Job"
+msgstr ""
 
 #: ../voir_adherent.php:104 ../templates/default/ajouter_adherent.tpl:93
 msgid "Inactive"
@@ -640,7 +680,7 @@ msgstr "(dd/mm/yyyy format)"
 msgid "Realization:"
 msgstr "Realization:"
 
-#: ../templates/default/gestion_adherents.tpl:89
+#: ../templates/default/gestion_adherents.tpl:93
 msgid "State of dues"
 msgstr "State of dues"
 
@@ -669,14 +709,6 @@ msgstr "Password misrepeated: "
 msgid "Mister"
 msgstr "Mister"
 
-#: ../templates/default/configurer_fiches.tpl:47
-msgid ""
-"Do you really want to delete this category ?\n"
-" All associated data will be deleted as well."
-msgstr ""
-"Do you really want to delete this category ?\n"
-" All associated data will be deleted as well."
-
 #: ../templates/default/preferences.tpl:134
 msgid "Label generation parameters:"
 msgstr "Label generation parameters:"
@@ -702,7 +734,7 @@ msgstr "Add"
 msgid "A problem happened while sending password for account:"
 msgstr "A problem happened while sending password for account:"
 
-#: ../gestion_adherents.php:280
+#: ../gestion_adherents.php:329
 msgid "Late of "
 msgstr "Late of "
 
@@ -728,7 +760,7 @@ msgstr "Size"
 msgid "Page displayed in"
 msgstr "Page displayed in"
 
-#: ../templates/default/gestion_adherents.tpl:100
+#: ../templates/default/gestion_adherents.tpl:104
 #: ../templates/default/configurer_fiches.tpl:27
 #: ../templates/default/gestion_contributions.tpl:101
 #: ../templates/default/gestion_transactions.tpl:69
@@ -793,8 +825,8 @@ msgstr "Homepage"
 msgid "Begin."
 msgstr "Begin."
 
-#: ../templates/default/gestion_adherents.tpl:34
-#: ../templates/default/gestion_adherents.tpl:175
+#: ../templates/default/gestion_adherents.tpl:38
+#: ../templates/default/gestion_adherents.tpl:179
 #: ../templates/default/gestion_contributions.tpl:19
 #: ../templates/default/gestion_contributions.tpl:148
 #: ../templates/default/log.tpl:11 ../templates/default/log.tpl:101
@@ -825,7 +857,7 @@ msgstr "Contribution"
 msgid "apache_user"
 msgstr "apache_user"
 
-#: ../templates/default/gestion_adherents.tpl:27
+#: ../templates/default/gestion_adherents.tpl:31
 #: ../templates/default/mailing_adherents.tpl:35
 msgid "members"
 msgstr "members"
@@ -870,7 +902,7 @@ msgstr "Country:"
 msgid "Message:"
 msgstr "Message:"
 
-#: ../gestion_contributions.php:314 ../gestion_adherents.php:319
+#: ../gestion_contributions.php:314 ../gestion_adherents.php:374
 msgid "Members up to date"
 msgstr "Members up to date"
 
@@ -883,7 +915,7 @@ msgstr "transaction added"
 msgid "Step 10 - End of the update"
 msgstr "Step 10 - End of the update"
 
-#: ../gestion_contributions.php:318 ../gestion_adherents.php:323
+#: ../gestion_contributions.php:318 ../gestion_adherents.php:378
 msgid "All the accounts"
 msgstr "All the accounts"
 
@@ -1025,7 +1057,7 @@ msgstr "MSN:"
 msgid "Step 2 - Installation mode"
 msgstr "Step 2 - Installation mode"
 
-#: ../gestion_contributions.php:319 ../gestion_adherents.php:324
+#: ../gestion_contributions.php:319 ../gestion_adherents.php:379
 msgid "Active accounts"
 msgstr "Active accounts"
 
@@ -1071,7 +1103,7 @@ msgstr "Configuration"
 msgid "Amount"
 msgstr "Amount"
 
-#: ../templates/default/gestion_adherents.tpl:165
+#: ../templates/default/gestion_adherents.tpl:169
 msgid "(Un)Check all"
 msgstr "(Un)Check all"
 
@@ -1106,7 +1138,7 @@ msgstr "Required:"
 msgid "Reduced annual contribution"
 msgstr "Reduced annual contribution"
 
-#: ../templates/default/gestion_adherents.tpl:169
+#: ../templates/default/gestion_adherents.tpl:173
 msgid "Delete"
 msgstr "Delete"
 
@@ -1118,7 +1150,7 @@ msgstr "Log off"
 msgid "Using a SMTP server (slower)"
 msgstr "Using a SMTP server (slower)"
 
-#: ../footer.php:88 ../templates/default/gestion_adherents.tpl:110
+#: ../footer.php:88 ../templates/default/gestion_adherents.tpl:114
 #: ../templates/default/page.tpl:65
 msgid "[W]"
 msgstr "[W]"
@@ -1143,7 +1175,7 @@ msgstr ""
 "To run, Galette needs a number of rights on the database (CREATE, DROP, "
 "DELETE, UPDATE, SELECT and INSERT)"
 
-#: ../footer.php:96 ../templates/default/gestion_adherents.tpl:115
+#: ../footer.php:96 ../templates/default/gestion_adherents.tpl:119
 #: ../templates/default/page.tpl:70
 msgid "[Mail]"
 msgstr "[Mail]"
@@ -1297,7 +1329,7 @@ msgid "[up]"
 msgstr "[up]"
 
 #: ../footer.php:115 ../footer.php:161
-#: ../templates/default/gestion_adherents.tpl:132
+#: ../templates/default/gestion_adherents.tpl:136
 #: ../templates/default/page.tpl:87 ../templates/default/page.tpl:126
 #: ../templates/default/configurer_fiches.tpl:48
 #: ../templates/default/gestion_contributions.tpl:135
@@ -1409,12 +1441,12 @@ msgstr ""
 msgid "Title:"
 msgstr "Title:"
 
-#: ../gestion_contributions.php:282 ../gestion_adherents.php:275
+#: ../gestion_contributions.php:282 ../gestion_adherents.php:324
 msgid "Last day!"
 msgstr "Last day!"
 
 #: ../gestion_contributions.php:293 ../gestion_contributions.php:295
-#: ../gestion_adherents.php:286 ../gestion_adherents.php:288
+#: ../gestion_adherents.php:335 ../gestion_adherents.php:337
 msgid "ending on"
 msgstr "ending on"
 
@@ -1464,7 +1496,11 @@ msgstr "(for a file)"
 msgid "ALTER Operation not allowed"
 msgstr "ALTER operation not allowed"
 
-#: ../templates/default/gestion_adherents.tpl:65
+#: ../gestion_adherents.php:371
+msgid "Infos"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:69
 msgid "Nickname"
 msgstr "Nickname"
 
@@ -1484,7 +1520,7 @@ msgstr "Man"
 msgid "Lateness in fee"
 msgstr "Lateness in fee"
 
-#: ../gestion_contributions.php:287 ../gestion_adherents.php:280
+#: ../gestion_contributions.php:287 ../gestion_adherents.php:329
 msgid "since"
 msgstr "since"
 
@@ -1492,7 +1528,7 @@ msgstr "since"
 msgid "Login"
 msgstr "Login"
 
-#: ../gestion_contributions.php:316 ../gestion_adherents.php:321
+#: ../gestion_contributions.php:316 ../gestion_adherents.php:376
 msgid "Latecomers"
 msgstr "Latecomers"
 
@@ -1520,7 +1556,7 @@ msgstr "Other informations:"
 msgid "- You must indicate the SMTP server you wan't to use!"
 msgstr "- You must indicate the SMTP server you wan't to use!"
 
-#: ../gestion_contributions.php:320 ../gestion_adherents.php:325
+#: ../gestion_contributions.php:320 ../gestion_adherents.php:380
 msgid "Inactive accounts"
 msgstr "Inactive accounts"
 
@@ -1590,11 +1626,11 @@ msgstr "unreachable members:"
 msgid "Jabber:"
 msgstr "Jabber:"
 
-#: ../templates/default/gestion_adherents.tpl:170
+#: ../templates/default/gestion_adherents.tpl:174
 msgid "Mail all"
 msgstr "Mail all"
 
-#: ../templates/default/gestion_adherents.tpl:136
+#: ../templates/default/gestion_adherents.tpl:140
 msgid "no member"
 msgstr "no member"
 
@@ -1642,11 +1678,16 @@ msgstr "Do a mailing"
 msgid "Step 4 - Database"
 msgstr "Step 4 - Database"
 
-#: ../templates/default/gestion_adherents.tpl:29
+#: ../templates/default/gestion_adherents.tpl:33
 #: ../templates/default/gestion_contributions.tpl:14
 #: ../templates/default/gestion_transactions.tpl:7
 msgid "Show:"
 msgstr "Show:"
+
+#: ../gestion_adherents.php:368
+#, fuzzy
+msgid "Address"
+msgstr "Address:"
 
 #: ../templates/default/gestion_contributions.tpl:141
 #: ../templates/default/gestion_contributions.tpl:143
@@ -1741,14 +1782,9 @@ msgstr "Contribution updated:"
 msgid "Please repeat in the field the password shown in the image."
 msgstr "Please repeat in the field the password shown in the image."
 
-#: ../gestion_contributions.php:313 ../gestion_adherents.php:318
+#: ../gestion_contributions.php:313 ../gestion_adherents.php:373
 msgid "All members"
 msgstr "All members"
-
-#: ../templates/default/self_adherent.tpl:111
-#, fuzzy
-msgid " continuation"
-msgstr "contribution"
 
 #: ../templates/default/mailing_adherents.tpl:87
 msgid "Go back to the member listing"
@@ -1816,7 +1852,7 @@ msgstr "Creation date:"
 msgid "Detailed"
 msgstr "Detailed"
 
-#: ../gestion_contributions.php:315 ../gestion_adherents.php:320
+#: ../gestion_contributions.php:315 ../gestion_adherents.php:375
 msgid "Close expiries"
 msgstr "Close expiries"
 
@@ -1925,24 +1961,10 @@ msgstr "Original"
 msgid "Check the parameters and the existence of the database"
 msgstr "Check the parameters and the existence of the database"
 
-#: ../footer.php:111 ../templates/default/gestion_adherents.tpl:131
+#: ../footer.php:111 ../templates/default/gestion_adherents.tpl:135
 #: ../templates/default/page.tpl:83
 msgid "[$]"
 msgstr "[$]"
-
-#: ../templates/default/gestion_adherents.tpl:132
-msgid ""
-"Do you really want to delete this member from the base, this will delete "
-"also the history of his fees. To avoid this you can just disable his "
-"account.\n"
-"\n"
-"Do you still want to delete this member ?"
-msgstr ""
-"Do you really want to delete this member from the base, this will delete "
-"also the history of his fees. To avoid this you can just disable his "
-"account.\n"
-"\n"
-"Do you still want to delete this member ?"
 
 #: ../templates/default/ajouter_adherent.tpl:60
 #: ../templates/default/voir_adherent.tpl:20
@@ -1967,7 +1989,7 @@ msgstr "Picture"
 msgid "Description:"
 msgstr "Description"
 
-#: ../footer.php:45 ../templates/default/gestion_adherents.tpl:171
+#: ../footer.php:45 ../templates/default/gestion_adherents.tpl:175
 #: ../templates/default/mailing_adherents.tpl:104
 msgid "Generate labels"
 msgstr "Generate labels"
@@ -2120,7 +2142,7 @@ msgstr "Creation of the tables"
 msgid "- Mandatory field empty."
 msgstr "- Mandatory field empty."
 
-#: ../footer.php:84 ../templates/default/gestion_adherents.tpl:108
+#: ../footer.php:84 ../templates/default/gestion_adherents.tpl:112
 #: ../templates/default/page.tpl:61
 msgid "[M]"
 msgstr "[M]"
@@ -2187,7 +2209,7 @@ msgid "- Membership period overlaps period starting at "
 msgstr "- Membership period overlaps period starting at "
 
 #: ../footer.php:128 ../gestion_contributions.php:271
-#: ../gestion_adherents.php:263 ../templates/default/page.tpl:100
+#: ../gestion_adherents.php:312 ../templates/default/page.tpl:100
 msgid "Never contributed"
 msgstr "Never contributed"
 
@@ -2201,7 +2223,7 @@ msgstr "Parameters couldn't be saved."
 msgid "Modification"
 msgstr "Modification"
 
-#: ../gestion_contributions.php:293 ../gestion_adherents.php:286
+#: ../gestion_contributions.php:293 ../gestion_adherents.php:335
 msgid "days remaining"
 msgstr "days remaining"
 
@@ -2215,12 +2237,12 @@ msgid "transaction"
 msgstr "My contributions"
 
 #: ../preferences.php:265 ../gestion_contributions.php:326
-#: ../gestion_adherents.php:331 ../gestion_transactions.php:155
+#: ../gestion_adherents.php:386 ../gestion_transactions.php:155
 #, fuzzy
 msgid "All"
 msgstr "all"
 
-#: ../gestion_contributions.php:295 ../gestion_adherents.php:288
+#: ../gestion_contributions.php:295 ../gestion_adherents.php:337
 msgid "day remaining"
 msgstr "day remaining"
 
@@ -2228,7 +2250,7 @@ msgstr "day remaining"
 msgid "DELETE operation allowed"
 msgstr "DELETE operation allowed"
 
-#: ../templates/default/gestion_adherents.tpl:27
+#: ../templates/default/gestion_adherents.tpl:31
 #: ../templates/default/mailing_adherents.tpl:35
 msgid "member"
 msgstr "member"
@@ -2282,7 +2304,7 @@ msgstr ""
 "In order to be updated, Galette needs a number of rights on the database "
 "(CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)"
 
-#: ../templates/default/gestion_adherents.tpl:169
+#: ../templates/default/gestion_adherents.tpl:173
 msgid ""
 "Do you really want to delete all selected accounts (and related "
 "contributions)?"

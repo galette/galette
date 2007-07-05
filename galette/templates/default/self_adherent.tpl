@@ -108,7 +108,7 @@
               <th colspan="4" class="header">&nbsp;</th>
             </tr>
             <tr>
-              <th class="libelle{if $required.adresse_adh eq 1} required{/if}"><label for="adresse_adh">{_T("Address:")}</label><br /><label for="adresse2_adh">{_T("Address:")} ({_T(" continuation")})</label></th>
+              <th class="libelle{if $required.adresse_adh eq 1} required{/if}"><label for="adresse_adh">{_T("Address:")}</label><br /><label for="adresse2_adh">{_T("Address:")} {_T(" (continuation)")}</label></th>
               <td colspan="3">
                 <input type="text" name="adresse_adh" id="adresse_adh" value="{$data.adresse_adh}" maxlength="150" size="63" {$disabled.adresse_adh}/><br/>
                 <input type="text" name="adresse2_adh" id="adresse2_adh" value="{$data.adresse2_adh}" maxlength="150" size="63" {$disabled.adresse2_adh}/>

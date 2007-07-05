@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sat Jun 30 09:22:19 2007 (GMT)
+// This file was automatically generated on Sat Jun 30 09:57:35 2007 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -47,6 +47,9 @@ $lang['Height:'] = 'Label height:';
 
 // ../voir_adherent.php:92 ../etiquettes_adherents.php:93 
 $lang['Mrs.'] = 'Mrs.';
+
+// ../templates/default/self_adherent.tpl:111 
+$lang[' (continuation)'] = 'contribution';
 
 // ../templates/default/gestion_contributions.tpl:77 ../templates/default/gestion_transactions.tpl:57 
 $lang['Amount'] = 'Amount';
@@ -309,9 +312,6 @@ $lang['Mobile phone:'] = 'Mobile phone:';
 // ../ajouter_adherent.php:151 
 $lang['- The username cannot contain the @ character'] = '- The username must be composed of at least 4 characters!';
 
-// ../templates/default/gestion_adherents.tpl:132 
-$lang['Do you really want to delete this member from the base, this will delete also the history of his fees. To avoid this you can just disable his account.\n\nDo you still want to delete this member ?'] = 'Do you really want to delete this member from the base, this will delete also the history of his fees. To avoid this you can just disable his account.\n\nDo you still want to delete this member ?';
-
 // ../preferences.php:265 ../gestion_contributions.php:326 ../gestion_adherents.php:331 ../gestion_transactions.php:155 
 $lang['All'] = 'all';
 
@@ -375,8 +375,8 @@ $lang['Please enter a message.'] = 'Please enter a message.';
 // ../templates/default/preferences.tpl:199 
 $lang['Admin account (independant of members):'] = 'Admin account (independant of members):';
 
-// ../install/index.php:577 
-$lang['DROP OPeration allowed'] = 'DROP operation allowed';
+// ../preferences.php:140 
+$lang['- Invalid date for beginning of membership.'] = '- Invalid date for beginning of membership.';
 
 // ../install/index.php:470 
 $lang['DROP operation allowed'] = 'DROP operation allowed';
@@ -533,6 +533,9 @@ $lang['- You must indicate the SMTP server you wan\'t to use!'] = '- You must in
 
 // ../install/index.php:561 
 $lang['DELETE operation allowed'] = 'DELETE operation allowed';
+
+// ../templates/default/gestion_adherents.tpl:132 
+$lang['Do you really want to delete this member from the base, this will delete also the history of his fees. To avoid this you can just disable his account.\\n\\nDo you still want to delete this member ?'] = 'Do you really want to delete this member from the base, this will delete also the history of his fees. To avoid this you can just disable his account.\n\nDo you still want to delete this member ?';
 
 // ../self_adherent.php:199 ../lostpasswd.php:106 ../ajouter_adherent.php:281 
 $lang['See you soon!'] = 'See you soon!';
@@ -771,6 +774,9 @@ $lang['Update'] = 'Update:';
 // ../templates/default/ajouter_adherent.tpl:60 ../templates/default/voir_adherent.tpl:20 ../templates/default/self_adherent.tpl:82 
 $lang['birth date:'] = 'birth date:';
 
+// ../templates/default/traduire_libelles.tpl:20 
+$lang['Original'] = 'Original';
+
 // ../install/index.php:1146 
 $lang['Parameters couldn\'t be saved.'] = 'Parameters couldn\'t be saved.';
 
@@ -845,9 +851,6 @@ $lang['Phone:'] = 'Phone:';
 
 // ../self_adherent.php:307 ../etiquettes_adherents.php:99 ../ajouter_adherent.php:424 
 $lang['Society'] = 'Society';
-
-// ../templates/default/self_adherent.tpl:111 
-$lang[' continuation'] = 'contribution';
 
 // ../install/index.php:482 
 $lang['CREATE operation not allowed'] = 'CREATE operation not allowed';
@@ -1128,9 +1131,6 @@ $lang['Old-timer'] = 'Old-timer';
 // ../templates/default/ajouter_adherent.tpl:217 ../templates/default/voir_adherent.tpl:142 ../templates/default/self_adherent.tpl:150 
 $lang['fingerprint:'] = 'fingerprint:';
 
-// ../templates/default/configurer_fiches.tpl:47 
-$lang['Do you really want to delete this category ?\n All associated data will be deleted as well.'] = 'Do you really want to delete this category ?\n All associated data will be deleted as well.';
-
 // ../install/index.php:641 
 $lang['Creation of the tables'] = 'Creation of the tables';
 
@@ -1302,8 +1302,8 @@ $lang['No'] = 'No';
 // ../templates/default/ajouter_adherent.tpl:209 ../templates/default/voir_adherent.tpl:129 ../templates/default/self_adherent.tpl:144 
 $lang['MSN:'] = 'MSN:';
 
-// ../preferences.php:140 
-$lang['- Invalid date for beginning of membership.'] = '- Invalid date for beginning of membership.';
+// ../install/index.php:577 
+$lang['DROP OPeration allowed'] = 'DROP operation allowed';
 
 // ../templates/default/configurer_fiches.tpl:93 
 $lang['Add'] = 'Add';
@@ -1365,8 +1365,8 @@ $lang['E-Mail:'] = 'E-Mail:';
 // ../footer.php:169 ../templates/default/page.tpl:132 
 $lang['Contribution'] = 'Contribution';
 
-// ../templates/default/traduire_libelles.tpl:20 
-$lang['Original'] = 'Original';
+// ../templates/default/configurer_fiches.tpl:47 
+$lang['Do you really want to delete this category ?\\n All associated data will be deleted as well.'] = 'Do you really want to delete this category ?\n All associated data will be deleted as well.';
 
 // ../mailing_adherents.php:143 ../lostpasswd.php:131 ../ajouter_adherent.php:306 
 $lang['**IMPORTANT** There was a probably breaking attempt when sending mail to :'] = '**IMPORTANT** There was a probably breaking attempt when sending mail to :';
