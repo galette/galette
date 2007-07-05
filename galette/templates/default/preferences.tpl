@@ -59,6 +59,10 @@
 					<td><input type="text" name="pref_pays" value="{$pref.pref_pays}" maxlength="50"/></td>
 				</tr>         
 				<tr>
+					<th {if $required.pref_website eq 1}style="color: #FF0000;"{/if}>{_T("Website:")}</th> 
+					<td><input type="text" name="pref_website" value="{$pref.pref_website}" maxlength="100"/></td>
+				</tr>
+				<tr>
 					<th colspan="2" class="separator">{_T("Galette's parameters:")}</th>
 				</tr> 
 				<tr>

@@ -471,10 +471,10 @@ echo "</ul>";
 					}
 				}
 
-				// création de table
+				// crï¿½ation de table
 				if (!isset($error))
 				{
-					// à adapter selon le type de base
+					// ï¿½ adapter selon le type de base
 					$requete="create table galette_test (testcol text)";
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
@@ -486,10 +486,10 @@ echo "</ul>";
 						$result .= "<li class=\"install-ok\">"._T("CREATE operation allowed")."</li>";
 				}
 
-				// création d'enregistrement
+				// crï¿½ation d'enregistrement
 				if (!isset($error))
 				{
-					// à adapter selon le type de base
+					// ï¿½ adapter selon le type de base
 					$requete="INSERT into galette_test values (".$DB->qstr("test", get_magic_quotes_gpc()).")";
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
@@ -501,10 +501,10 @@ echo "</ul>";
 						$result .= "<li class=\"install-ok\">"._T("INSERT operation allowed")."</li>";
 				}
 
-				// mise à jour d'enregistrement
+				// mise ï¿½ jour d'enregistrement
 				if (!isset($error))
 				{
-					// à adapter selon le type de base
+					// ï¿½ adapter selon le type de base
 					$requete="update galette_test set testcol=".$DB->qstr("test", get_magic_quotes_gpc());
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
@@ -519,7 +519,7 @@ echo "</ul>";
 				// selection d'enregistrement
 				if (!isset($error))
 				{
-					// à adapter selon le type de base
+					// ï¿½ adapter selon le type de base
 					$requete="select * from galette_test";
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
@@ -531,10 +531,10 @@ echo "</ul>";
 						$result .= "<li class=\"install-ok\">"._T("SELECT operation allowed")."</li>";
 				}
 
-				// alter pour la mise à jour
+				// alter pour la mise ï¿½ jour
 				if (!isset($error) && $step=="u6")
 				{
-					// à adapter selon le type de base
+					// ï¿½ adapter selon le type de base
 					$requete="alter table galette_test add testalter text";
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
@@ -549,7 +549,7 @@ echo "</ul>";
 				// suppression d'enregistrement
 				if (!isset($error))
 				{
-					// à adapter selon le type de base
+					// ï¿½ adapter selon le type de base
 					$requete="delete from galette_test";
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
@@ -564,7 +564,7 @@ echo "</ul>";
 				// suppression de table
 				if (!isset($error))
 				{
-					// à adapter selon le type de base
+					// ï¿½ adapter selon le type de base
 					$requete="drop table galette_test";
 					$DB->Execute($requete);
 					if (!isset($droptest))
@@ -956,7 +956,7 @@ echo "</ul>\n";
 	<p><table><tr><td>
 <ul>
 <?php
-			// création du fichier de configuration
+			// crï¿½ation du fichier de configuration
 
 			if($fd = @fopen (WEB_ROOT ."includes/config.inc.php", "w"))
 			{
@@ -1036,6 +1036,8 @@ define(\"STOCK_FILES\", \"tempimages\");
 				$DB->Execute($default);
 				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_email_reply_to','')";
 				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_website','')";
+				$DB->Execute($default);
 
 				// contribution types
 				$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation(id_type_cotis,libelle_type_cotis,cotis_extension) values (1, 'annual fee', '1')";
@@ -1099,8 +1101,8 @@ define(\"STOCK_FILES\", \"tempimages\");
 			}
 
 
-			// NB: il faudrait améliorer cette partie car la détection
-			// d'erreur ne s'effectue que sur le dernier insert. prévoir une boucle.
+			// NB: il faudrait amï¿½liorer cette partie car la dï¿½tection
+			// d'erreur ne s'effectue que sur le dernier insert. prï¿½voir une boucle.
 
 			if (!$DB->ErrorNo())
 				echo "<li class=\"install-ok\">"._T("Parameters saved into the database")."</li>";
