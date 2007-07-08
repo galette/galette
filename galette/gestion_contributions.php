@@ -1,8 +1,8 @@
 <?php
  
 /* gestion_contributions.php
- * - Récapitulatif des contributions
- * Copyright (c) 2004 Frédéric Jaqcuot
+ * - Rï¿½capitulatif des contributions
+ * Copyright (c) 2004 Frï¿½dï¿½ric Jaqcuot
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -121,7 +121,7 @@
 				    	    WHERE id_cotis=".$DB->qstr($_GET["sup"], get_magic_quotes_gpc()); 
 				$DB->Execute($requetesup);
 			
-				// mise a jour de l'échéance
+				// mise a jour de l'ï¿½chï¿½ance
 				$date_fin = get_echeance($DB, $id_adh);
 				if ($date_fin!=""){
 				  $date_fin_update = "'".$date_fin[2]."-".$date_fin[1]."-".$date_fin[0]."'";
@@ -290,9 +290,9 @@
 				else
 				{
 					if ($difference!=1)
-						$statut_cotis = $difference." "._T("days remaining")." ("._T("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+						$statut_cotis = $difference." "._T("remaining days")." ("._T("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
 					else
-						$statut_cotis = $difference." "._T("day remaining")." ("._T("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+						$statut_cotis = $difference." "._T("remaining day")." ("._T("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
 					if ($difference < 30)
 						$statut_class = 'cotis-soon';
 					else

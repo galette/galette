@@ -1,8 +1,8 @@
 <?php
 
 /* gestion_adherents.php
- * - Récapitulatif des adhérents
- * Copyright (c) 2003 Frédéric Jaqcuot
+ * - Rï¿½capitulatif des adhï¿½rents
+ * Copyright (c) 2003 Frï¿½dï¿½ric Jaqcuot
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -127,7 +127,7 @@
 			$resultat = $DB->Execute($requetesup);
 			if (!$resultat->EOF)
 			{
-				// supression record adhérent
+				// supression record adhï¿½rent
 				$requetesup = "DELETE FROM ".PREFIX_DB."adherents 
 						WHERE id_adh=".$DB->qstr($supval, get_magic_quotes_gpc()); 
 				$DB->Execute($requetesup); 		
@@ -217,7 +217,7 @@
 			break;
 		}
 	}
-	// filtre d'affichage des adherents activés/desactivés
+	// filtre d'affichage des adherents activï¿½s/desactivï¿½s
 	if ($_SESSION["filtre_adh_2"]=="1")
 	{
 		$requete[0] .= "AND ".PREFIX_DB."adherents.activite_adh='1' ";
@@ -236,7 +236,7 @@
 		$requete[1] .= "AND date_echeance < ".$DB->DBDate(time())." ";
 	}
 
-	// filtre d'affichage des adherents à jour
+	// filtre d'affichage des adherents ï¿½ jour
 	if ($_SESSION["filtre_adh"]=="3")
 	{
 		$requete[0] .= "AND (date_echeance > ".$DB->DBDate(time())." OR bool_exempt_adh='1') ";
@@ -293,13 +293,13 @@
 	$compteur = 1+($page-1)*$numrows;
 	while (!$resultat->EOF) 
 	{ 
-		// définition CSS pour adherent désactivé
+		// dï¿½finition CSS pour adherent dï¿½sactivï¿½
 		if ($resultat->fields[4]=="1")
 			$row_class = "actif";
 		else
 			$row_class = "inactif";
 			
-		// temps d'adhésion
+		// temps d'adhï¿½sion
 		if($resultat->fields[6] == "1")
 		{
 			$statut_cotis = _T("Freed of dues");
@@ -332,9 +332,9 @@
 				else
 				{
 					if ($difference!=1)
-						$statut_cotis = $difference." "._T("days remaining")." ("._T("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+						$statut_cotis = $difference." "._T("remaining days")." ("._T("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
 					else
-						$statut_cotis = $difference." "._T("day remaining")." ("._T("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
+						$statut_cotis = $difference." "._T("remaining day")." ("._T("ending on")." ".$date_fin[2]."/".$date_fin[1]."/".$date_fin[0].")";
 					if ($difference < 30)
 						$row_class .= " cotis-soon";
 					else

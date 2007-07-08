@@ -391,7 +391,7 @@ if ($installed) {
 				}
 				else
 				{
-					echo "<li class=\"install-ok\"> "._T("Connection to database is OK")."</li>";
+					echo "<li class=\"install-ok\"> "._T("Connection to database successfull")."</li>";
 					$DB->Close();
 				}
 echo "</ul>";
@@ -835,7 +835,7 @@ echo "</ul>\n";
 ?>
 	<p>
 		<?php if ($step=="i7") echo _T("The tables are not totally created, it's maybe a permission problem."); ?>
-		<?php if ($step=="u7") echo _T("The tables are not totally updated, it's maybe a permission problem."); ?>
+		<?php if ($step=="u7") echo _T("The tables have not been totally created, it may be a permission problem."); ?>
 		<?php if ($step=="u7") echo _T("Your database is maybe not usable, try to restore the older version."); ?>
 	</p>
 	<form action="index.php" method="POST">
@@ -1171,7 +1171,7 @@ define(\"STOCK_FILES\", \"tempimages\");
 ?>
 	<br />
 	</div>
-	<h1 class="footerinstall"><?php echo _T("Step 9 - Saving of the parameters"); ?></h1>
+	<h1 class="footerinstall"><?php echo _T("Step 9 - Saving the parameters"); ?></h1>
 
 <?php
 			break;

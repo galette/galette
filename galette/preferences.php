@@ -1,7 +1,7 @@
 <?php
 /* preferences.php
  * - Preferences Galette
- * Copyright (c) 2004 Frédéric Jaqcuot
+ * Copyright (c) 2004 Frï¿½dï¿½ric Jaqcuot
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -158,7 +158,7 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1")
 	    if ($insert_values['pref_mail_method']==2)
 	      {
 		if (!isset($insert_values['pref_mail_smtp']) || $insert_values['pref_mail_smtp']=='')
-		  $error_detected[] = _T("- You must indicate the SMTP server you wan't to use!");
+		  $error_detected[] = _T("- You must indicate the SMTP server you want to use!");
 	      }
 	    if (!isset($insert_values['pref_email_nom']) || $insert_values['pref_email_nom']=='')
 	      $error_detected[] = _T("- You must indicate a sender name for emails!");

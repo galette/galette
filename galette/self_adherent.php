@@ -1,7 +1,7 @@
 <?php
 /* self_adherent.php
- * - Saisie d'un adhérent par lui-même
- * Copyright (c) 2004 Frédéric Jaqcuot, Georges Khaznadar
+ * - Saisie d'un adhï¿½rent par lui-mï¿½me
+ * Copyright (c) 2004 Frï¿½dï¿½ric Jaqcuot, Georges Khaznadar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -214,16 +214,16 @@ if ( isset($_POST["valid"]) ) {
 			}else{ //warn user if not
 				switch ($mail_result) {
 					case 2 :
-						dblog("Self subscribe - Email sent is desactived in the preferences. Ask galette admin.");
-						$warning_detected[] = _T("Email sent is desactived in the preferences. Ask galette admin.");
+						dblog("Self subscribe - Email sent is disabled in the preferences. Ask galette admin.");
+						$warning_detected[] = _T("Email sent is disabled in the preferences. Ask galette admin.");
 						break;
 					case 3 :
 						dblog("Self subscribe - A problem happened while sending password for account:"." \"" . $adherent["email_adh"] . "\"");
 						$warning_detected[] = _T("A problem happened while sending password for account:"." \"" . $adherent["email_adh"] . "\".");
 						break;
 					case 4 :
-						dblog("Self subscribe - The server mail filled in the preferences cannot be reached. Ask Galette admin");
-						$warning_detected[] = _T("The server mail filled in the preferences cannot be reached. Ask Galette admin.");
+						dblog("Self subscribe - The mail server filled in the preferences cannot be reached. Ask Galette admin");
+						$warning_detected[] = _T("The mail server filled in the preferences cannot be reached. Ask Galette admin.");
 						break;
 					default :
 						dblog("A problem happened while sending password for account:"." \"" . $adherent["email_adh"] . "\"");
@@ -246,7 +246,7 @@ if ( isset($_POST["valid"]) ) {
 			$date_fin_update = "NULL";
 		$requete = "UPDATE ".PREFIX_DB."adherents SET date_echeance=".$date_fin_update." WHERE id_adh=" . $adherent['id_adh'];
 		if ( $DB->Execute($requete) ){
-			$warning_detected[] = _T("Inscription sent for approval to administrator");
+			$warning_detected[] = _T("Inscription sent to the administrator for approval");
 			$head_redirect = "<meta http-equiv=\"refresh\" content=\"10;url=index.php\" />";
 		}*/
 	}

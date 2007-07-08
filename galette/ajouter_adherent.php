@@ -1,7 +1,7 @@
 <?php // -*- Mode: PHP; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 /* ajouter_adherent.php
- * - Saisie d'un adhérent
- * Copyright (c) 2004 Frédéric Jaqcuot
+ * - Saisie d'un adhï¿½rent
+ * Copyright (c) 2004 Frï¿½dï¿½ric Jaqcuot
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -290,16 +290,16 @@
           }else{
             switch ($mail_result) {
               case 2 :
-                dblog("Email sent is desactived in the preferences. Ask galette admin.");
-                $error_detected[] = _T("Email sent is desactived in the preferences. Ask galette admin");
+                dblog("Email sent is disabled in the preferences. Ask galette admin.");
+                $error_detected[] = _T("Email sent is disabled in the preferences. Ask galette admin");
                 break;
               case 3 :
                 dblog("A problem happened while sending password for account:"." \"" . $_POST["email_adh"] . "\"");
                 $error_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST["email_adh"] . "\"";
                 break;
               case 4 :
-                dblog("The server mail filled in the preferences cannot be reached. Ask Galette admin");
-                $error_detected[] = _T("The server mail filled in the preferences cannot be reached. Ask Galette admin");
+                dblog("The mail server filled in the preferences cannot be reached. Ask Galette admin");
+                $error_detected[] = _T("The mail server filled in the preferences cannot be reached. Ask Galette admin");
                 break;
 							case 5 :
 								dblog("**IMPORTANT** There was a probably breaking attempt when sending mail to :"." \"" . $email_adh . "\"");
@@ -339,7 +339,7 @@
 	{
 		if ($adherent["id_adh"] == "")
 		{
-			// initialiser la structure adhérent à vide (nouvelle fiche)
+			// initialiser la structure adhï¿½rent ï¿½ vide (nouvelle fiche)
 			$adherent["id_statut"] = "4";
 			$adherent["titre_adh"] = "1";
 			$adherent["date_crea_adh"] =date("d/m/Y");
