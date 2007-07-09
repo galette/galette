@@ -200,6 +200,122 @@
 					</td>
 				</tr>
 				<tr>
+					<th colspan="2" class="separator">{_T("Cards generation parameters:")}</th>
+				</tr>
+				<tr> 
+					<th {if $required.pref_card_abrev eq 1}style="color: #FF0000;"{/if}>{_T("Short Text (Card Center):")}</th>
+					<td><input type="text" name="pref_card_abrev" value="{$pref.pref_card_abrev}" size="10" maxlength="10"/>
+						<span class="exemple">{_T("(10 characters max)")}</span>
+					</td>
+				</tr>
+				<tr> 
+					<th {if $required.pref_card_strip eq 1}style="color: #FF0000;"{/if}>{_T("Long Text (Bottom Line):")}</th>
+					<td><input type="text" name="pref_card_strip" value="{$pref.pref_card_strip}" size="40" maxlength="65"/>
+						<span class="exemple">{_T("(65 characters max)")}</span>
+						</td>
+				</tr>
+				<tr>
+					<th {if $required.pref_card_tcol eq 1}style="color: #FF0000;"{/if}>{_T("Strip Text Color:")}</th> 
+					<td>
+						<input type="text" name="pref_card_tcol" value="{$pref.pref_card_tcol}" size="6" maxlength="6"/> 
+						<span class="exemple">{_T("(6 hex digits:RRGGBB)")}</span>
+					</td>
+				</tr>
+				<tr>
+					<th class="subtitle">{_T("Strip Background colors:")}</th>
+					<td class="exemple">{_T("(Strip color will change according to member's status)")}</td>
+				</tr>
+				<tr>
+					<th {if $required.pref_card_scol eq 1}style="color: #FF0000;"{/if}>{_T("Active Member Color:")}</th> 
+					<td>
+						<input type="text" name="pref_card_scol" value="{$pref.pref_card_scol}" size="6" maxlength="6"/> 
+						<span style="color: #{$pref.pref_card_tcol}; background-color: #{$pref.pref_card_scol};">&nbsp;{$pref.pref_card_abrev}&nbsp;</span>
+						<span class="exemple">{_T("(6 hex digits:RRGGBB)")}</span>
+					</td>
+				</tr>
+				<tr>
+					<th {if $required.pref_card_bcol eq 1}style="color: #FF0000;"{/if}>{_T("Board Members Color:")}</th> 
+					<td>
+						<input type="text" name="pref_card_bcol" value="{$pref.pref_card_bcol}" size="6" maxlength="6"/> 
+						<span style="color: #{$pref.pref_card_tcol}; background-color: #{$pref.pref_card_bcol};">&nbsp;{$pref.pref_card_abrev}&nbsp;</span>
+						<span class="exemple">{_T("(6 hex digits:RRGGBB)")}</span>
+					</td>
+				</tr>
+				<tr>
+					<th {if $required.pref_card_hcol eq 1}style="color: #FF0000;"{/if}>{_T("Honor Members Color:")}</th> 
+					<td>
+						<input type="text" name="pref_card_hcol" value="{$pref.pref_card_hcol}" size="6" maxlength="6"/> 
+						<span style="color: #{$pref.pref_card_tcol}; background-color: #{$pref.pref_card_hcol};">&nbsp;{$pref.pref_card_abrev}&nbsp;</span>
+						<span class="exemple">{_T("(6 hex digits:RRGGBB)")}</span>
+					</td>
+				</tr>
+				<tr>
+					<th>{_T("Logo:")}</th> 
+					<td>
+{if $pref.has_card_logo eq 1}
+						<img src="picture.php?id_adh=999999&amp;rand={$time}" class="picture" width="{$pref.card_logo_width}" height="{$pref.card_logo_height}" alt="{_T("Logo")}"/><br/>
+						<span>{_T("Delete image")}</span><input type="checkbox" name="del_card_logo" value="1" /><br />
+{/if}
+						<input type="file" name="card_logo" />
+					</td>
+				</tr>
+				<tr>
+					<th {if $required.pref_bool_display_title eq 1}style="color: #FF0000;"{/if}>{_T("Show title ?")}</th>
+					<td><input type="checkbox" name="pref_bool_display_title" value="1" {if $pref.pref_bool_display_title eq 1}checked="checked"{/if}/>
+						<span class="exemple">{_T("(Show or not title in front of name)")}</span>
+					</td>
+				</tr>
+				<tr>
+					<th {if $required.pref_card_address eq 1}style="color: #FF0000;"{/if}>{_T("Address type:")}</th>
+					<td>
+						<select name="pref_card_address">
+							<option value="0" {if $pref.pref_card_address eq 0}selected="selected"{/if}>{_T("Email")}</option>
+							<option value="1" {if $pref.pref_card_address eq 1}selected="selected"{/if}>{_T("MSN")}</option>
+							<option value="2" {if $pref.pref_card_address eq 2}selected="selected"{/if}>{_T("Jabber")}</option>
+							<option value="3" {if $pref.pref_card_address eq 3}selected="selected"{/if}>{_T("Site web")}</option>
+							<option value="4" {if $pref.pref_card_address eq 4}selected="selected"{/if}>{_T("ICQ")}</option>
+							<option value="5" {if $pref.pref_card_address eq 5}selected="selected"{/if}>{_T("Zip - Town")}</option>
+							<option value="6" {if $pref.pref_card_address eq 6}selected="selected"{/if}>{_T("Pseudo")}</option>
+							<option value="7" {if $pref.pref_card_address eq 7}selected="selected"{/if}>{_T("Profession")}</option>
+						</select>
+					</td>
+				</tr>         
+				<tr>
+					<th {if $required.pref_card_year eq 1}style="color: #FF0000;"{/if}>{_T("Year:")}</th> 
+					<td>
+						<input type="text" name="pref_card_year" value="{$pref.pref_card_year}" maxlength="4"/>
+						<span class="exemple">{_T("(Integer)")}</span>
+					</td>
+				</tr>
+				<tr>
+					<th {if $required.pref_card_marges_v eq 1}style="color: #FF0000;"{/if}>{_T("Vertical margins:")}</th> 
+					<td>
+						<input type="text" name="pref_card_marges_v" value="{$pref.pref_card_marges_v}" maxlength="4"/> mm 
+						<span class="exemple">{_T("(Integer)")}</span>
+					</td>
+				</tr>
+				<tr>
+					<th {if $required.pref_card_marges_h eq 1}style="color: #FF0000;"{/if}>{_T("Horizontal margins:")}</th> 
+					<td>
+						<input type="text" name="pref_card_marges_h" value="{$pref.pref_card_marges_h}" maxlength="4"/> mm 
+						<span class="exemple">{_T("(Integer)")}</span>
+					</td>
+				</tr>
+				<tr>
+					<th {if $required.pref_card_vspace eq 1}style="color: #FF0000;"{/if}>{_T("Vertical spacing:")}</th>
+					<td>
+						<input type="text" name="pref_card_vspace" value="{$pref.pref_card_vspace}" maxlength="4"/> mm
+						<span class="exemple">{_T("(Integer)")}</span>
+					</td>
+				</tr>
+				<tr>
+					<th {if $required.pref_card_hspace eq 1}style="color: #FF0000;"{/if}>{_T("Horizontal spacing:")}</th>
+					<td>
+						<input type="text" name="pref_card_hspace" value="{$pref.pref_card_hspace}" maxlength="4"/> mm
+						<span class="exemple">{_T("(Integer)")}</span>
+					</td>
+				</tr>
+				<tr>
 					<th colspan="2" class="separator">{_T("Admin account (independant of members):")}</th>
 				</tr>
 				<tr>

@@ -146,6 +146,9 @@
 		</table>
 	</div>
 	<div class="button-container">
+		<div class="button-link button-card">
+			<a href="carte_adherent.php?id_adh={$data.id_adh}">{_T("Generate Member Card")}</a>
+		</div>
 		<div class="button-link button-edit">
 			<a href="ajouter_adherent.php?id_adh={$data.id_adh}">{_T("Modification")}</a>
 		</div>

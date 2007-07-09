@@ -60,6 +60,12 @@ $required = array(
 		  'pref_etiq_cols' => 1,
 		  'pref_etiq_rows' => 1,
 		  'pref_etiq_corps' => 1,
+		  'pref_card_abrev' => 1,
+		  'pref_card_strip' => 1,
+		  'pref_card_marges_v' => 1,
+		  'pref_card_marges_h' => 1,
+		  'pref_card_hspace' => 1,
+		  'pref_card_vspace' => 1,
 		  'pref_admin_login' => 1);
 
 // Validation
@@ -108,7 +114,7 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1")
 		$error_detected[] = "<li>"._T("- The numbers and measures have to be integers!")."</li>";
 	      break;
 	    case 'pref_etiq_marges_h':
-		case 'pref_etiq_marges_v':
+		 case 'pref_etiq_marges_v':
 	    case 'pref_etiq_hspace':
 	    case 'pref_etiq_vspace':
 	    case 'pref_etiq_hsize':
@@ -116,29 +122,45 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1")
 	    case 'pref_etiq_cols':
 	    case 'pref_etiq_rows':
 	    case 'pref_etiq_corps':
+	    case 'pref_card_marges_v':
+	    case 'pref_card_marges_h':
+	    case 'pref_card_hspace':
+	    case 'pref_card_vspace':
 	      // prevent division by zero
 	      if ($fieldname=='pref_numrows' && $value=='0')
-		$value = '1';
+				$value = '10';
 	      if (!is_numeric($value) || $value <0)
-		$error_detected[] = "<li>"._T("- The numbers and measures have to be integers!")."</li>";
+				$error_detected[] = _T("- The numbers and measures have to be integers!");
+	      break;
+	    case 'pref_card_tcol':
+	    // Set strip text color to white
+	      if (! eregi("([0-9A-F]{6})", $value))
+				$value = 'FFFFFF';
+	      break;
+	    case 'pref_card_scol':
+	    case 'pref_card_bcol':
+	    case 'pref_card_hcol':
+	    // Set strip background colors to black
+	      if (! eregi("([0-9A-F]{6})", $value))
+				$value = '000000';
 	      break;
 	    case 'pref_admin_pass':
 	      if (strlen($value)<4)
-		$error_detected[] = _T("- The password must be of at least 4 characters!");
+				$error_detected[] = _T("- The password must be of at least 4 characters!");
 	      break;
 	    case 'pref_membership_ext':
 	      if (!is_numeric($value) || $value < 0)
-		$error_detected[] = _T("- Invalid number of months of membership extension.");
+				$error_detected[] = _T("- Invalid number of months of membership extension.");
 	      break;
 	    case 'pref_beg_membership':
 	      $beg_membership = split("/",$value);
 	      if (count($beg_membership) != 2)
-		$error_detected[] = _T("- Invalid format of beginning of membership.");
+				$error_detected[] = _T("- Invalid format of beginning of membership.");
 	      else {
-		$now = getdate();
-		if (!checkdate($beg_membership[1], $beg_membership[0], $now['year']))
-		  $error_detected[] = _T("- Invalid date for beginning of membership.");
-	      }
+				$now = getdate();
+				if (!checkdate($beg_membership[1], $beg_membership[0], $now['year']))
+			  		$error_detected[] = _T("- Invalid date for beginning of membership.");
+		      }
 	      break;
 	    }
 
@@ -176,11 +198,11 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1")
     // missing required fields?
     while (list($key,$val) = each($required))
       {
-	if (!isset($pref[$key]))
-	  $error_detected[] = _T("- Mandatory field empty.")." ".$key;
-	elseif (isset($pref[$key]))
-	  if (trim($pref[$key])=='')
-	    $error_detected[] = _T("- Mandatory field empty.")." ".$key;
+		if (!isset($pref[$key]))
+		  $error_detected[] = _T("- Mandatory field empty.")." ".$key;
+		elseif (isset($pref[$key]))
+		  if (trim($pref[$key])=='')
+		    $error_detected[] = _T("- Mandatory field empty.")." ".$key;
       }
 
     // Check (and crypt) passwords
@@ -192,17 +214,17 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1")
 
     if (count($error_detected)==0)
       {
-	// update preferences
-	while (list($champ,$valeur)=each($insert_values))
-	  {
-	    if(($champ == "pref_admin_pass" && $_POST['pref_admin_pass']!= '')
-	       | ($champ != "pref_admin_pass")) {
-	      $valeur = stripslashes($valeur);
-	      $requete = "UPDATE ".PREFIX_DB."preferences
-						    set val_pref=".$DB->qstr($valeur)."
-						    WHERE nom_pref=".$DB->qstr($champ).";\n";
-	      $DB->Execute($requete);
-	    }
+		// update preferences
+		while (list($champ,$valeur)=each($insert_values))
+		  {
+		    if(($champ == "pref_admin_pass" && $_POST['pref_admin_pass']!= '')
+		       | ($champ != "pref_admin_pass")) {
+		      $valeur = stripslashes($valeur);
+		      $requete = "UPDATE ".PREFIX_DB."preferences
+							    set val_pref=".$DB->qstr($valeur)."
+							    WHERE nom_pref=".$DB->qstr($champ).";\n";
+		      $DB->Execute($requete);
+		    }
 	  }
 
 	// picture upload
@@ -213,49 +235,74 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1")
 	      if (! $pic->store(0, $_FILES['logo']['tmp_name'], $_FILES['logo']['name'])) {
 		      $error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
 	      } else {
-    		  $_SESSION["customLogoFormat"] = $pic->FORMAT;
+    		   $_SESSION["customLogoFormat"] = $pic->FORMAT;
 		      $_SESSION["customLogo"] = true;
 	      }
 
 	  }
-	
 	if (isset($_POST['del_logo']))
 	  if (!picture::delete(0))
 	    $error_detected[] = _T("Delete failed");
 	  else
 	    $_SESSION["customLogo"] = false;
 
-      }
-  }
- else
-   {
+	// Card logo upload
+	if (isset($_FILES['card_logo']) )
+	  if ($_FILES['card_logo']['tmp_name'] !='' ) {
+	    $cardpic =& new picture(999999);
+	    if (is_uploaded_file($_FILES['card_logo']['tmp_name']))
+	      if (! $cardpic->store(999999, $_FILES['card_logo']['tmp_name'], $_FILES['card_logo']['name'])) {
+		      $error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
+	      } else {
+    		   $_SESSION["customCardLogoFormat"] = $cardpic->FORMAT;
+		      $_SESSION["customCardLogo"] = true;
+	      }
+
+	  }
+	if (isset($_POST['del_card_logo']))
+	  if (!picture::delete(999999))
+	    $error_detected[] = _T("Delete failed");
+	  else
+	    $_SESSION["customCardLogo"] = false;
+
+   }
+}
+else {
      // collect data
      $requete = "SELECT *
 			    FROM ".PREFIX_DB."preferences";
      $result = &$DB->Execute($requete);
      if ($result->EOF)
        header("location: index.php");
-     else
-       {
-	 while (!$result->EOF)
-	   {
-	     $pref[$result->fields['nom_pref']] = htmlentities(stripslashes(addslashes($result->fields['val_pref'])), ENT_QUOTES);
-	     $result->MoveNext();
-	   }
-       }
+     else  {
+		 while (!$result->EOF) {
+		     $pref[$result->fields['nom_pref']] = htmlentities(stripslashes(addslashes($result->fields['val_pref'])), ENT_QUOTES);
+		     $result->MoveNext();
+		 }
+     }
      $result->Close();
-   }
+}
+
+// Card logo data
+$cardlogo = new picture(999999);
+if ($cardlogo->hasPicture())
+  $pref["has_card_logo"]=1;
+ else
+  $pref["has_card_logo"]=0;
+
+$pref['card_logo_height'] = $cardlogo->getOptimalHeight();
+$pref['card_logo_width'] = $cardlogo->getOptimalWidth();
 
 // logo data
 $picture = new picture(0);
 if ($picture->hasPicture())
   $pref["has_logo"]=1;
  else
-   $pref["has_logo"]=0;
+  $pref["has_logo"]=0;
+
 $pref['picture_height'] = $picture->getOptimalHeight();
 $pref['picture_width'] = $picture->getOptimalWidth();
 $tpl->assign("time",time());
-
 $tpl->assign("pref",$pref);
 $tpl->assign('pref_numrows_options', array(
 					   10 => "10",

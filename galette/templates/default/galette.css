@@ -640,6 +640,11 @@ a.listing:hover {
 	background-color: #FFFFFF;
 	font-weight: bold;
 }
+.bigtable .subtitle
+{
+	color:#0C0CC0;
+	padding: 0px 5px 0px 5px;
+}
 .bigtable .picture
 {
 	border: 1px solid black;

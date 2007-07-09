@@ -40,6 +40,18 @@
 	include(WEB_ROOT."includes/smarty.inc.php");
 	
 	$error_detected = array();
+
+	if (isset($_POST['cards']))
+	{
+		$qstring = 'carte_adherent.php';
+		if (isset($_POST["member_sel"]))
+		{
+			$_SESSION['galette']['cards'] = $_POST["member_sel"];
+			header('location: '.$qstring);
+		}
+		else
+			$error_detected[] = _T("No member was selected, please check at least one name.");
+	}
 	
 	if (isset($_POST['labels']))
 	{
