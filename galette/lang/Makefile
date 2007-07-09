@@ -18,6 +18,7 @@ PHP_SOURCES = ../index.php \
 ../gestion_contributions.php \
 ../ajouter_contribution.php \
 ../gestion_adherents.php \
+../carte_adherent.php \
 ../etiquettes_adherents.php \
 ../install/index.php \
 ../ajouter_adherent.php \

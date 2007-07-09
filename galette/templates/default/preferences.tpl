@@ -272,7 +272,7 @@
 							<option value="0" {if $pref.pref_card_address eq 0}selected="selected"{/if}>{_T("Email")}</option>
 							<option value="1" {if $pref.pref_card_address eq 1}selected="selected"{/if}>{_T("MSN")}</option>
 							<option value="2" {if $pref.pref_card_address eq 2}selected="selected"{/if}>{_T("Jabber")}</option>
-							<option value="3" {if $pref.pref_card_address eq 3}selected="selected"{/if}>{_T("Site web")}</option>
+							<option value="3" {if $pref.pref_card_address eq 3}selected="selected"{/if}>{_T("Web Site")}</option>
 							<option value="4" {if $pref.pref_card_address eq 4}selected="selected"{/if}>{_T("ICQ")}</option>
 							<option value="5" {if $pref.pref_card_address eq 5}selected="selected"{/if}>{_T("Zip - Town")}</option>
 							<option value="6" {if $pref.pref_card_address eq 6}selected="selected"{/if}>{_T("Pseudo")}</option>
