@@ -26,7 +26,11 @@
  * 
  */
 
-require_once("MDB2.php");
+/** TODO
+* This constant should be defined at higher level
+*/
+define("MDB2_VERSION", "2.4.1");
+require_once(WEB_ROOT."classes/MDB2-".MDB2_VERSION."/MDB2.php");
 
 class Required{
 	private $all_required;
