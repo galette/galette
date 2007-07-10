@@ -36,6 +36,7 @@ CREATE UNIQUE INDEX galette_logs_idx ON galette_logs (id_log);
 CREATE UNIQUE INDEX galette_preferences_idx ON galette_preferences (id_pref);
 -- Add new or missing preferences;
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_pays', '-');
+INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_WEBSITE', '');
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_mail_method', '0');
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_mail_smtp', '0'); 
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_membership_ext', '12');
@@ -160,3 +161,11 @@ CREATE TABLE galette_tmppasswds (
 		date_crea_tmp_passwd timestamp NOT NULL
 		);
 CREATE UNIQUE INDEX galette_tmppasswds_idx ON galette_tmppasswds (id_adh);
+
+-- Table for dynamic required fields 2007-07-10;
+DROP TABLE galette_required;
+CREATE TABLE galette_required (
+	field_id  character varying(15) NOT NULL,
+	required integer DEFAULT '0' NOT NULL,
+);
+CREATE UNIQUE INDEX galette_required_idx ON galette_required (field_id);

@@ -156,6 +156,14 @@ CREATE TABLE galette_tmppasswds (
     PRIMARY KEY (id_adh)
 ) TYPE=MyISAM;
 
+-- Table for dynamic required fields 2007-07-10;
+DROP TABLE IF EXISTS galette_required;
+CREATE TABLE galette_required (
+	field_id varchar(15) NOT NULL,
+	required tinyint(1) NOT NULL,
+	PRIMARY KEY  (`field_id`)
+) TYPE=MyISAM;
+
 -- Add card preferences;
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_abrev', 'GALETTE');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_strip','Gestion d Adherents en Ligne Extrêmement Tarabiscoté');

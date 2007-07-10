@@ -205,6 +205,14 @@ CREATE TABLE galette_tmppasswds (
 		);
 CREATE UNIQUE INDEX galette_tmppasswds_idx ON galette_tmppasswds (id_adh);
 
+-- Table for dynamic required fields 2007-07-10;
+DROP TABLE galette_required;
+CREATE TABLE galette_required (
+	field_id  character varying(15) NOT NULL,
+	required integer DEFAULT '0' NOT NULL,
+);
+CREATE UNIQUE INDEX galette_required_idx ON galette_required (field_id);
+
 -- Add card preferences;
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_card_abrev', 'GALETTE');
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_card_strip','Gestion d Adherents en Ligne Extrêmement Tarabiscoté');

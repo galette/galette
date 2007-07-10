@@ -5,6 +5,7 @@ ALTER TABLE `galette_adherents` CHANGE `mdp_adh` `mdp_adh` VARCHAR(40);
 
 -- Add new or missing preferences;
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_pays', '-');
+INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_WEBSITE', '');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_method', '0');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_smtp', '0');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_membership_ext', '12');
@@ -113,4 +114,12 @@ CREATE TABLE galette_tmppasswds (
     tmp_passwd varchar(40) NOT NULL,
 		date_crea_tmp_passwd datetime NOT NULL,
     PRIMARY KEY (id_adh)
+) TYPE=MyISAM;
+
+-- Table for dynamic required fields 2007-07-10;
+DROP TABLE IF EXISTS galette_required;
+CREATE TABLE galette_required (
+	field_id varchar(15) NOT NULL,
+	required tinyint(1) NOT NULL,
+	PRIMARY KEY  (`field_id`)
 ) TYPE=MyISAM;
