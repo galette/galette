@@ -1,17 +1,29 @@
+{if $is_form eq true}
+<fieldset class="cssform">
+	<legend>{_T("Additionnal informations:")}</legend>
+{/if}
 {foreach from=$dynamic_fields item=field}
 {if $field.field_perm ne 1 || $smarty.session.admin_status eq 1}
 	{if $field.field_type eq 0}
-			<tr>
-				<th class="separator">{$field.field_name|escape}&nbsp;</th>
-			</tr>
+			{if $is_form eq false}
+				<tr>
+					<th class="separator">{$field.field_name|escape}&nbsp;</th>
+				</tr>
+			{else}
+				<div class="separator">{$field.field_name|escape}</div>
+			{/if}
 	{else}
-			<tr>
+			{if $is_form eq false}
+				<tr>
+			{else}
+				<p>
+			{/if}
 		{if $is_form eq false}
 				<th>{$field.field_name|escape}&nbsp;</th>
 		{else}
-				<th {if $field.field_required eq 1}style="color: #FF0000;"{/if} class="libelle">{$field.field_name|escape}&nbsp;</th>
+				<label class="bline libelle {if $field.field_required eq 1} required{/if}">{$field.field_name|escape}&nbsp;</label>
 		{/if}
-				<td>
+				{if $is_form eq false}<td>{/if}
 		{section name="fieldLoop" start=1 loop=$field.field_repeat+1}
 		{if $is_form eq false}
 					{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|nl2br|default:"&nbsp;"}
@@ -34,10 +46,17 @@
 		{/if}
 		<br/>
 		{/section}
-				</td>
+				{if $is_form eq false}</td>{/if}
 		{if $field.field_pos != 1 || $field.field_repeat != 1}
-			</tr>
+			{if $is_form eq false}
+				</tr>
+			{else}
+				</p>
+			{/if}
 		{/if}
 	{/if}
 {/if}
 {/foreach}
+{if $is_form eq true}
+	</fieldset>
+{/if}

@@ -32,18 +32,10 @@ $error_detected = array();
 $warning_detected = array();
 //$confirm_detected = array();
 
-/** TODO
-* - export to a class so users can dynamicaly modify this
-*/
 // flagging required fields
-$required = array(
-	'titre_adh' => 1,
-	'nom_adh' => 1,
-	'login_adh' => 1,
-	'mdp_adh' => 1,
-	'adresse_adh' => 1,
-	'cp_adh' => 1,
-	'ville_adh' => 1);
+include(WEB_ROOT."classes/required.class.php");
+$requires = new Required();
+$required = $requires->getRequired();
 
 /**
 * TODO

@@ -222,8 +222,7 @@ a.listing:hover {
 	text-align: center;
 	font-weight: bold;
 	margin-top: 10px;
-	width: 150px;
-	height: 80px;
+	width: 15em;
 }
 
 .nav1 {
@@ -309,6 +308,7 @@ a.listing:hover {
 	left: 0px;
 	background-color: #DDDDFF;
 	padding: 5px;
+	width:15em;
         border-color: #7777FF;
         border-width: 1px;
         border-style: solid;
@@ -654,4 +654,58 @@ a.listing:hover {
 .required{
 	color:#FF0000;
 	font-weight:bold;
+}
+
+/** Accessibility **/
+/*input, label{
+	margin:0 0 0.5em 0;
+}*/
+fieldset{
+	border: 1px solid #BBBBBB;
+	margin:0 auto 1em auto;
+	width:60%;
+	text-align:left;
+}
+fieldset ul{
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+fieldset li{
+/* 	border:1px purple dashed; */
+	margin:0.1em 0;
+	clear:left;
+}
+legend{
+	display:block;
+	border: 1px solid #BBBBBB;
+	font-weight:bold;
+	padding:0.2em 2em 0.2em 0.3em;
+}
+
+.cssform p{
+	clear: left;
+	margin: 0;
+	padding: 5px 0 8px 0;
+	padding-left: 21em; /*width of left column containing the label elements*/
+	border-top: 1px dashed gray;
+	height: 1%;
+}
+
+.cssform .bline{
+	font-weight: bold;
+	float: left;
+	margin-left: -21em;
+	width: 20em;
+	background-color: #DDDDFF;
+	padding:0.1em 0.3em;
+}
+
+.cssform textarea{
+	width: 250px;
+	height: 150px;
+}
+
+.logo{
+	margin:0.3em 0;
 }

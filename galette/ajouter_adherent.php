@@ -71,13 +71,10 @@
 	$confirm_detected = array();
 
 	// flagging required fields
-	$required = array(
-			'titre_adh' => 1,
-			'nom_adh' => 1,
-			'login_adh' => 1,
-			'adresse_adh' => 1,
-			'cp_adh' => 1,
-			'ville_adh' => 1);
+	include(WEB_ROOT."classes/required.class.php");
+	
+	$requires = new Required();
+	$required = $requires->getRequired();
 
 	// password required if we create a new member
 	if ($adherent["id_adh"]=='')
