@@ -37,12 +37,12 @@ if (!defined("K_TCPDF_EXTERNAL_CONFIG")) {
 	/**
 	 * installation path
 	 */
-	define ("K_PATH_MAIN", "/var/www/html/galette/includes/tcpdf/");
+	define ("K_PATH_MAIN", WEB_ROOT."/includes/tcpdf/");
 	
 	/**
 	 * url path
 	 */
-	define ("K_PATH_URL", "http://localhost/galette/includes/tcpdf/");
+	define ("K_PATH_URL", "../../../includes/tcpdf/");
 	
 	/**
 	 * path for PDF fonts

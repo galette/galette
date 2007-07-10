@@ -46,13 +46,15 @@
 	}
 	
 	$mailing_adh = array();
-	if (isset($_SESSION['galette']['cards']))
-	{
+	if (isset($_SESSION['galette']['cards'])) {
 		while (list($key,$value)=each($_SESSION['galette']['cards']))
 			$mailing_adh[]=$value;
-	}
-	else
+			
+	} elseif ($_GET["id_adh"] > 0)
+		$mailing_adh[]=$_GET["id_adh"];
+	else	
 		die();
+
 // Select address filed to display
 	switch (PREF_CARD_ADDRESS){
 	case 0:
@@ -117,7 +119,7 @@
 			$hlogo = $wlogo/$ratio;
 		}
 	} else {
-		$logofile=WEB_ROOT."templates/default/images/galette_noalpha.png";
+		$logofile=WEB_ROOT."templates/default/images/galette_no_alpha.png";
 		$wlogo = 15;
 		$hlogo = 7;
 	}			
