@@ -29,8 +29,16 @@
 /** TODO
 * This constant should be defined at higher level
 */
+define("PEAR_VERSION", "1.6.1");
+set_include_path(get_include_path() . PATH_SEPARATOR . WEB_ROOT . "includes/pear/" . PATH_SEPARATOR . WEB_ROOT . "includes/pear/PEAR-" . PEAR_VERSION . "/");
+// echo get_include_path();
+
 define("MDB2_VERSION", "2.4.1");
-require_once(WEB_ROOT."classes/MDB2-".MDB2_VERSION."/MDB2.php");
+// require_once("PEAR-".PEAR_VERSION."/PEAR.php");
+// require_once("/var/www/html/public/galette-svn/galette/includes/pear/PEAR-1.6.1/PEAR.php");
+require_once("MDB2-".MDB2_VERSION."/MDB2.php");
+
+
 
 class Required{
 	private $all_required;
