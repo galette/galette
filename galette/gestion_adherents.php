@@ -1,8 +1,16 @@
 <?php
 
-/* gestion_adherents.php
- * - Rï¿½capitulatif des adhï¿½rents
- * Copyright (c) 2003 Frï¿½dï¿½ric Jaqcuot
+/** 
+ * gestion_adherents.php: Récapitulatif des adhérents
+ *
+ * Affichage de la liste des adhérents et possibilités
+ * de tri en fonction:
+ * - du statut de membre
+ * - de l'état de la cotisation
+ * - de l'état du compte
+ * - du contenu de champs texte 
+ * 
+ * PHP versions 5
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,6 +26,16 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
+ * @package    Galette
+ * @author     Frédéric Jaqcuot
+ * @copyright  2003 Frédéric Jaqcuot
+ * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0
+ * @version    $Id$
+ * @since      Disponible depuis la Release 0.62
+ */
+
+/**
+ * 
  */
  
 	include("includes/config.inc.php"); 
@@ -167,7 +185,7 @@
 
 	// selection des adherents et application filtre / tri
 	$requete[0] = "SELECT id_adh, nom_adh, prenom_adh, pseudo_adh, activite_adh,
-		       libelle_statut, bool_exempt_adh, titre_adh, email_adh, bool_admin_adh, date_echeance
+		       libelle_statut, bool_exempt_adh, titre_adh, email_adh, bool_admin_adh, date_echeance, date_crea_adh
 		       FROM ".PREFIX_DB."adherents, ".PREFIX_DB."statuts
 		       WHERE ".PREFIX_DB."adherents.id_statut=".PREFIX_DB."statuts.id_statut ";
 	$requete[1] = "SELECT count(id_adh)
@@ -229,7 +247,7 @@
 			break;
 		}
 	}
-	// filtre d'affichage des adherents activï¿½s/desactivï¿½s
+	// filtre d'affichage des adherents activés/desactivés
 	if ($_SESSION["filtre_adh_2"]=="1")
 	{
 		$requete[0] .= "AND ".PREFIX_DB."adherents.activite_adh='1' ";
@@ -248,14 +266,14 @@
 		$requete[1] .= "AND date_echeance < ".$DB->DBDate(time())." ";
 	}
 
-	// filtre d'affichage des adherents ï¿½ jour
+	// filtre d'affichage des adherents à jour
 	if ($_SESSION["filtre_adh"]=="3")
 	{
 		$requete[0] .= "AND (date_echeance > ".$DB->DBDate(time())." OR bool_exempt_adh='1') ";
 		$requete[1] .= "AND (date_echeance > ".$DB->DBDate(time())." OR bool_exempt_adh='1') ";
 	}
 
-	// filtre d'affichage des adherents bientot a echeance
+	// filtre d'affichage des adherents bientot à echeance
 	if ($_SESSION["filtre_adh"]=="1")
 	{
 		$requete[0] .= "AND date_echeance > ".$DB->DBDate(time())."
@@ -263,6 +281,13 @@
 		$requete[1] .= "AND date_echeance > ".$DB->DBDate(time())."
 			        AND date_echeance < ".$DB->OffsetDate(30)." ";
 	}
+	// filtre d'affichage des adherents n'ayant jamais cotisé
+	if ($_SESSION["filtre_adh"]=="4")
+	{
+		$requete[0] .= "AND isnull(date_echeance)";
+		$requete[1] .= "AND isnull(date_echeance)";
+	}
+
 	
 	// phase de tri	
 	if ($_SESSION["tri_adh_sens"]=="0")
@@ -305,13 +330,13 @@
 	$compteur = 1+($page-1)*$numrows;
 	while (!$resultat->EOF) 
 	{ 
-		// dï¿½finition CSS pour adherent dï¿½sactivï¿½
+		// définition CSS pour adherent désactivé
 		if ($resultat->fields[4]=="1")
 			$row_class = "actif";
 		else
 			$row_class = "inactif";
 			
-		// temps d'adhï¿½sion
+		// temps d'adhésion
 		if($resultat->fields[6] == "1")
 		{
 			$statut_cotis = _T("Freed of dues");
@@ -321,7 +346,10 @@
 		{
 			if ($resultat->fields[10]=="")
 			{
-				$statut_cotis = _T("Never contributed");
+				$date_crea = split("-",$resultat->fields[11]);
+				$ts_date_crea = mktime(0,0,0,$date_crea[1],$date_crea[2],$date_crea[0]);
+			    $difference = -intval(($ts_date_crea - time())/(3600*24));
+				$statut_cotis = _T("Never contributed: Registered $difference days ago (since ").$date_crea[2]."/".$date_crea[1]."/".$date_crea[0].")";
 				$row_class .= " cotis-never";
 			}
 			else
@@ -385,7 +413,8 @@
 			0 => _T("All members"),
 			3 => _T("Members up to date"),
 			1 => _T("Close expiries"),
-			2 => _T("Latecomers")));
+			2 => _T("Latecomers"),
+			4 => _T("Never contributed")));
 	$tpl->assign('filtre_2_options', array(
 			0 => _T("All the accounts"),
 			1 => _T("Active accounts"),

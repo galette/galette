@@ -1,0 +1,100 @@
+<refentry id="{@id}">
+    <refnamediv>
+     <refname>Tutoriel Galette</refname>
+     <refpurpose>Manuel Utilisateur</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+     <author>
+      John Perr
+      <authorblurb>
+       {@link mailto:cellog@php.net cellog@php.net}
+      </authorblurb>
+     </author>
+    </refsynopsisdiv>
+    <refsect1 id="{@id install}">
+    <title>Installation :</title>
+    <para>Récupérez les fichiers depuis http://download.gna.org/galette/</para>
+    <para>Préférez prendre la dernière version en date (numéro de version le plus élevé).</para>
+    <para>Décompressez l'archive là où pointe le RootDirectory de votre serveur web
+      (ici, dans /var/www/).</para>
+      
+<programlisting>
+      $ cd /var/www
+      $ wget http://download.gna.org/galette/galette-0.63.tgz
+      $ tar -xzvf galette-0.63.tgz 
+</programlisting>    
+
+    <para>Le répertoire galette-0.63/ sera automatiquement crée. Vous pouvez le renommer
+      à votre convenance.</para>
+    
+    <para>Il faut attribuer à tous les fichiers de Galette les droits de l'utilisateur
+      du serveur web (ici, pour l'exemple, www-data et apache) :</para>
+<programlisting>
+      # chown -R www-data:www-data galette-0.63/
+</programlisting>    
+    <para>Il vous faut maintenant créer un utilisateur et une base pour Galette sur 
+      votre serveur SQL (MySQL ou PostgreSQL). L'utilisateur créé doit avoir 
+      tous les droits sur la base créée pour Galette.</para>
+    <para>Se reporter à la documentation de votre serveur SQL pour ce faire.</para>
+    <para>Connectez-vous ensuite au sous répertoire "install" avec votre navigateur web.
+      Dans notre exemple, il s'agit de http://serveur/galette-0.63/install.</para>
+    <para>Vous n'avez plus qu'à vous laissez guider par les 10 étapes de l'installeur 
+      Web.</para>
+    <para>Une fois le script d'installation terminé, et après avoir vérifié que tout
+      fonctionne, il est fortement conseillé de supprimer le dossier install/.</para>
+    </refsect1>
+    <refsect1 id="{@id cartes}">
+    <title>Préférences liées aux cartes</title>
+    <para>
+    Les préférences liées à la création des cartes au format
+    pdf permettent de choisir le logo, les textes propres à
+    l'association, un court et un long ainsi que les couleurs.
+    Le texte long apparaît sur un bandeau coloré en bas de page.
+    </para>
+    <para>
+        Les couleurs se choisissent parmi:
+        <itemizedlist>
+            <listitem><para>La couleur de texte du bandeau, blanche par défaut. C'est la
+                  couleur du texte long qui sera écrit sur le bandeau coloré
+                  au bas de la carte.</para>
+            </listitem>
+            <listitem><para>La couleur du bandeau pour les membres actifs, bordeaux par
+                  défaut.</para>
+            </listitem>
+            <listitem><para>La couleur du bandeau pour les membres du bureau, bleue par
+                  défaut.</para>
+            </listitem>
+            <listitem><para>La couleur du bandeau pour les membres honoraires, verte par
+                  défaut.</para>
+            </listitem>
+        </itemizedlist>
+    </para>
+    <para>
+    La couleur de fond du bandeau sera aussi celle utilisée pour
+    écrire le texte court, l'année sous le logo et le numéro
+    d'adhérent en bas à droite de la carte.
+    </para>
+    <para>
+    Le texte restant est choisi dans les préférences parmi une
+    des adresses, ou la profession de l'adherant. Il est écrit
+    en noir et sa taille varie en fonction de sa longueur.
+    Les couleurs sont définies dans l'écran des préférences
+    en utilisant des codes identiques à ceux utilisés en HTML.
+    3 groupes de deux caractères hexadécimaux définissent le 
+    niveau de chaque couleur dans l'ordre Rouge, Vert, Bleu.
+    </para>
+    <para>
+    Par exemple:
+    <itemizedlist>
+    	  <listitem><para>
+            <listitem><para>000000: Noir</para></listitem>
+            <listitem><para>FFFFFF: Blanc</para></listitem>
+            <listitem><para>FF0000: Rouge</para></listitem>
+            <listitem><para>00FF00: Vert</para></listitem>
+            <listitem><para>0000FF: Bleu</para></listitem>
+            <listitem><para>008080: Jaune moyen</para></listitem>
+          </para></listitem>
+    </itemizedlist>
+    </para>
+    </refsect1>
+</refentry>
