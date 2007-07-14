@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: fr_FR@euro\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-12-20 16:44+0100\n"
-"PO-Revision-Date: 2007-07-14 18:48+0200\n"
+"PO-Revision-Date: 2007-07-14 19:05+0200\n"
 "Last-Translator: Thomas Canniot <mrtom@fedoraproject.org>\n"
 "Language-Team: Français <fedora-trans-fr@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -69,10 +69,6 @@ msgstr "Courriel"
 #: ../templates/default/mailing_adherents.tpl:84
 msgid "Reedit"
 msgstr "Éditer de nouveau"
-
-#: ../gestion_adherents.php:352
-msgid "Never contributed: Registered $difference days ago (since "
-msgstr "N'a jamais contributé depuis $difference jours. (Depuis le "
 
 #: ../templates/default/editer_champ.tpl:30
 msgid "Position:"
@@ -313,6 +309,10 @@ msgstr "Courriel envoyé à :"
 #: ../install/index.php:482
 msgid "CREATE operation not allowed"
 msgstr "Opération CREATE non autorisée"
+
+#: ../gestion_adherents.php:352
+msgid "Never contributed: Registered "
+msgstr "N'a jamais cotisé : Inscrit depuis "
 
 #: ../templates/default/gestion_transactions.tpl:1
 msgid "Management of transactions"
@@ -1054,9 +1054,9 @@ msgstr "Liste des transactions"
 msgid "this login doesn't exist"
 msgstr "Login inexistant"
 
-#: ../install/index.php:202
-msgid "Warning: Don't forget to backup your current database."
-msgstr "Attention : Pensez à sauvegarder votre base existante."
+#: ../install/index.php:318
+msgid "Host:"
+msgstr "Hôte :"
 
 #: ../templates/default/gestion_transactions.tpl:44
 msgid "Originator"
@@ -1599,10 +1599,9 @@ msgstr "Étape 9 - Sauvegarde des paramètres"
 msgid "Last day!"
 msgstr "Dernier jour !"
 
-#: ../gestion_contributions.php:293 ../gestion_contributions.php:295
-#: ../gestion_adherents.php:375 ../gestion_adherents.php:377
-msgid "ending on"
-msgstr "fin le"
+#: ../install/index.php:257
+msgid "(for a file)"
+msgstr "(pour un fichier)"
 
 #: ../preferences.php:216
 msgid ""
@@ -1643,9 +1642,10 @@ msgstr "Largeur étiquette :"
 msgid "Repeat:"
 msgstr "Répétition :"
 
-#: ../install/index.php:257
-msgid "(for a file)"
-msgstr "(pour un fichier)"
+#: ../gestion_contributions.php:293 ../gestion_contributions.php:295
+#: ../gestion_adherents.php:375 ../gestion_adherents.php:377
+msgid "ending on"
+msgstr "fin le"
 
 #: ../install/index.php:542
 msgid "ALTER Operation not allowed"
@@ -2322,6 +2322,10 @@ msgstr "Administrateur"
 msgid "Membership in order"
 msgstr "Adhésion en règle"
 
+#: ../gestion_adherents.php:352
+msgid " days ago (since "
+msgstr " jours (depuis "
+
 #: ../templates/default/ajouter_adherent.tpl:132
 msgid "This comment is reserved to the member."
 msgstr "Ce commentaire est réservé à l'adhérent."
@@ -2355,9 +2359,9 @@ msgstr "Fiche adhérent mise à jour :"
 msgid "- Invalid number of months of membership extension."
 msgstr "- Durée d'extension d'adhésion invalide"
 
-#: ../install/index.php:318
-msgid "Host:"
-msgstr "Hôte :"
+#: ../install/index.php:202
+msgid "Warning: Don't forget to backup your current database."
+msgstr "Attention : Pensez à sauvegarder votre base existante."
 
 #: ../templates/default/preferences.tpl:101
 #: ../templates/default/preferences.tpl:369
@@ -2570,6 +2574,9 @@ msgstr "Veuillez vous identifier à cette adresse :"
 #: ../templates/default/gestion_contributions.tpl:172
 msgid "[ Add a contribution ]"
 msgstr "[ Ajouter une contribution ]"
+
+#~ msgid "Never contributed: Registered $difference days ago (since "
+#~ msgstr "N'a jamais contributÃ© depuis $difference jours. (Depuis le "
 
 #~ msgid "Photo :"
 #~ msgstr "Photo :"

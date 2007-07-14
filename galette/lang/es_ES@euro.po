@@ -73,10 +73,6 @@ msgstr "Correo electrónico:"
 msgid "Reedit"
 msgstr "Reeditar"
 
-#: ../gestion_adherents.php:352
-msgid "Never contributed: Registered $difference days ago (since "
-msgstr ""
-
 #: ../templates/default/editer_champ.tpl:30
 msgid "Position:"
 msgstr "Puesto:"
@@ -323,6 +319,11 @@ msgstr "Correo enviado a:"
 #: ../install/index.php:482
 msgid "CREATE operation not allowed"
 msgstr "Operación CREATE no autorizada"
+
+#: ../gestion_adherents.php:352
+#, fuzzy
+msgid "Never contributed: Registered "
+msgstr "Nunca pagó la cuota"
 
 #: ../templates/default/gestion_transactions.tpl:1
 msgid "Management of transactions"
@@ -1080,10 +1081,9 @@ msgstr "Lista de transacciones"
 msgid "this login doesn't exist"
 msgstr "identificador no existente"
 
-#: ../install/index.php:202
-msgid "Warning: Don't forget to backup your current database."
-msgstr ""
-"Aviso: no olvide hacer una copia de seguridad de su base de datos actual."
+#: ../install/index.php:318
+msgid "Host:"
+msgstr "Hostname:"
 
 #: ../templates/default/gestion_transactions.tpl:44
 msgid "Originator"
@@ -1633,10 +1633,9 @@ msgstr "Paso 9º - Grabar los parámetros"
 msgid "Last day!"
 msgstr "¡Último día!"
 
-#: ../gestion_contributions.php:293 ../gestion_contributions.php:295
-#: ../gestion_adherents.php:375 ../gestion_adherents.php:377
-msgid "ending on"
-msgstr "finaliza el"
+#: ../install/index.php:257
+msgid "(for a file)"
+msgstr "(para un fichero)"
 
 #: ../preferences.php:216
 msgid ""
@@ -1678,9 +1677,10 @@ msgstr "Anchura de la etiqueta:"
 msgid "Repeat:"
 msgstr "Repetir:"
 
-#: ../install/index.php:257
-msgid "(for a file)"
-msgstr "(para un fichero)"
+#: ../gestion_contributions.php:293 ../gestion_contributions.php:295
+#: ../gestion_adherents.php:375 ../gestion_adherents.php:377
+msgid "ending on"
+msgstr "finaliza el"
 
 #: ../install/index.php:542
 msgid "ALTER Operation not allowed"
@@ -2370,6 +2370,10 @@ msgstr "Administrador"
 msgid "Membership in order"
 msgstr "Afiliación en regla"
 
+#: ../gestion_adherents.php:352
+msgid " days ago (since "
+msgstr ""
+
 #: ../templates/default/ajouter_adherent.tpl:132
 msgid "This comment is reserved to the member."
 msgstr "Este comentario sólo lo ve el socio."
@@ -2405,9 +2409,10 @@ msgstr "Actualizada la ficha de socio:"
 msgid "- Invalid number of months of membership extension."
 msgstr "- La duración en meses de la afiliación es inválida."
 
-#: ../install/index.php:318
-msgid "Host:"
-msgstr "Hostname:"
+#: ../install/index.php:202
+msgid "Warning: Don't forget to backup your current database."
+msgstr ""
+"Aviso: no olvide hacer una copia de seguridad de su base de datos actual."
 
 #: ../templates/default/preferences.tpl:101
 #: ../templates/default/preferences.tpl:369

@@ -43,10 +43,6 @@ msgstr ""
 msgid "Reedit"
 msgstr ""
 
-#: ../gestion_adherents.php:352
-msgid "Never contributed: Registered $difference days ago (since "
-msgstr ""
-
 #: ../templates/default/editer_champ.tpl:30
 msgid "Position:"
 msgstr ""
@@ -250,6 +246,10 @@ msgstr ""
 
 #: ../install/index.php:482
 msgid "CREATE operation not allowed"
+msgstr ""
+
+#: ../gestion_adherents.php:352
+msgid "Never contributed: Registered "
 msgstr ""
 
 #: ../templates/default/gestion_transactions.tpl:1
@@ -910,8 +910,8 @@ msgstr ""
 msgid "this login doesn't exist"
 msgstr ""
 
-#: ../install/index.php:202
-msgid "Warning: Don't forget to backup your current database."
+#: ../install/index.php:318
+msgid "Host:"
 msgstr ""
 
 #: ../templates/default/gestion_transactions.tpl:44
@@ -1398,9 +1398,8 @@ msgstr ""
 msgid "Last day!"
 msgstr ""
 
-#: ../gestion_contributions.php:293 ../gestion_contributions.php:295
-#: ../gestion_adherents.php:375 ../gestion_adherents.php:377
-msgid "ending on"
+#: ../install/index.php:257
+msgid "(for a file)"
 msgstr ""
 
 #: ../preferences.php:216
@@ -1436,8 +1435,9 @@ msgstr ""
 msgid "Repeat:"
 msgstr ""
 
-#: ../install/index.php:257
-msgid "(for a file)"
+#: ../gestion_contributions.php:293 ../gestion_contributions.php:295
+#: ../gestion_adherents.php:375 ../gestion_adherents.php:377
+msgid "ending on"
 msgstr ""
 
 #: ../install/index.php:542
@@ -2019,6 +2019,10 @@ msgstr ""
 msgid "Membership in order"
 msgstr ""
 
+#: ../gestion_adherents.php:352
+msgid " days ago (since "
+msgstr ""
+
 #: ../templates/default/ajouter_adherent.tpl:132
 msgid "This comment is reserved to the member."
 msgstr ""
@@ -2049,8 +2053,8 @@ msgstr ""
 msgid "- Invalid number of months of membership extension."
 msgstr ""
 
-#: ../install/index.php:318
-msgid "Host:"
+#: ../install/index.php:202
+msgid "Warning: Don't forget to backup your current database."
 msgstr ""
 
 #: ../templates/default/preferences.tpl:101 ../templates/default/preferences.tpl:369

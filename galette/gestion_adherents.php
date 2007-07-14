@@ -349,7 +349,7 @@
 				$date_crea = split("-",$resultat->fields[11]);
 				$ts_date_crea = mktime(0,0,0,$date_crea[1],$date_crea[2],$date_crea[0]);
 			    $difference = -intval(($ts_date_crea - time())/(3600*24));
-				$statut_cotis = _T("Never contributed: Registered $difference days ago (since ").$date_crea[2]."/".$date_crea[1]."/".$date_crea[0].")";
+				$statut_cotis = _T("Never contributed: Registered ").$difference._T(" days ago (since ").$date_crea[2]."/".$date_crea[1]."/".$date_crea[0].")";
 				$row_class .= " cotis-never";
 			}
 			else

@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sat Jul 14 16:48:27 2007 (GMT)
+// This file was automatically generated on Sat Jul 14 17:05:31 2007 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -320,6 +320,9 @@ $lang['Freed of dues'] = 'Exento de cuota';
 
 // ../install/index.php:289 
 $lang['Step 3 - Permissions'] = 'Paso 3º - Permisos';
+
+// ../gestion_adherents.php:352 
+$lang[' days ago (since '] = '';
 
 // ../templates/default/ajouter_contribution.tpl:85 ../templates/default/configurer_fiches.tpl:17 
 $lang['Continue'] = 'Continuar';
@@ -813,9 +816,6 @@ $lang['Do you really want to delete this member from the base? This will also de
 // ../templates/default/editer_champ.tpl:78 
 $lang['Number of values or zero if infinite.'] = 'Número de valores o cero si es infinito';
 
-// ../install/index.php:482 
-$lang['CREATE operation not allowed'] = 'Operación CREATE no autorizada';
-
 // ../footer.php:84 ../templates/default/gestion_adherents.tpl:112 ../templates/default/page.tpl:61 
 $lang['[M]'] = '[H]';
 
@@ -927,8 +927,8 @@ $lang['Phone:'] = 'Tel.:';
 // ../self_adherent.php:299 ../carte_adherent.php:256 ../etiquettes_adherents.php:127 ../ajouter_adherent.php:421 
 $lang['Society'] = 'Sociedad';
 
-// ../gestion_adherents.php:352 
-$lang['Never contributed: Registered $difference days ago (since '] = '';
+// ../install/index.php:482 
+$lang['CREATE operation not allowed'] = 'Operación CREATE no autorizada';
 
 // ../gestion_adherents.php:369 
 $lang['Late of '] = 'Retraso de ';
@@ -1299,8 +1299,8 @@ $lang['To run, Galette needs a number of rights on the database (CREATE, DROP, D
 // ../ajouter_adherent.php:312 
 $lang['Sent mail is checked but there is no email address'] = 'La opción \'envío de correo\' está seleccionada pero no hay ninguna dirección';
 
-// ../self_contribution.php:208 ../templates/default/ajouter_adherent.tpl:1 ../templates/default/ajouter_contribution.tpl:1 
-$lang['creation'] = 'creación';
+// ../gestion_adherents.php:352 
+$lang['Never contributed: Registered '] = 'Nunca pagó la cuota';
 
 // ../install/index.php:252 
 $lang['In order to be updated, Galette needs the Write permission on these files.'] = 'Para su actualización, Galette necesita tener permiso de escritura en estos ficheros.';
@@ -1451,6 +1451,9 @@ $lang['Creation date:'] = 'Fecha de creación:';
 
 // ../templates/default/ajouter_contribution.tpl:58 
 $lang['Membership extension:'] = 'Duración de la afiliación:';
+
+// ../self_contribution.php:208 ../templates/default/ajouter_adherent.tpl:1 ../templates/default/ajouter_contribution.tpl:1 
+$lang['creation'] = 'creación';
 
 // ../install/index.php:839 
 $lang['Your database is maybe not usable, try to restore the older version.'] = 'Su base de datos puede ser inutilizable, intente recuperar la versión anterior.';

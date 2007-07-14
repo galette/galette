@@ -69,10 +69,6 @@ msgstr "E-Mail:"
 msgid "Reedit"
 msgstr "Reedit"
 
-#: ../gestion_adherents.php:352
-msgid "Never contributed: Registered $difference days ago (since "
-msgstr ""
-
 #: ../templates/default/editer_champ.tpl:30
 msgid "Position:"
 msgstr "Position:"
@@ -311,6 +307,11 @@ msgstr "Mail sent to :"
 #: ../install/index.php:482
 msgid "CREATE operation not allowed"
 msgstr "CREATE operation not allowed"
+
+#: ../gestion_adherents.php:352
+#, fuzzy
+msgid "Never contributed: Registered "
+msgstr "Never contributed"
 
 #: ../templates/default/gestion_transactions.tpl:1
 msgid "Management of transactions"
@@ -1051,9 +1052,9 @@ msgstr "List of transactions"
 msgid "this login doesn't exist"
 msgstr "this login doesn't exist"
 
-#: ../install/index.php:202
-msgid "Warning: Don't forget to backup your current database."
-msgstr "Warning: Don't forget to backup your current database."
+#: ../install/index.php:318
+msgid "Host:"
+msgstr "Host:"
 
 #: ../templates/default/gestion_transactions.tpl:44
 msgid "Originator"
@@ -1592,10 +1593,9 @@ msgstr " Step 9 - Saving of the parameters"
 msgid "Last day!"
 msgstr "Last day!"
 
-#: ../gestion_contributions.php:293 ../gestion_contributions.php:295
-#: ../gestion_adherents.php:375 ../gestion_adherents.php:377
-msgid "ending on"
-msgstr "ending on"
+#: ../install/index.php:257
+msgid "(for a file)"
+msgstr "(for a file)"
 
 #: ../preferences.php:216
 msgid ""
@@ -1636,9 +1636,10 @@ msgstr "Label width:"
 msgid "Repeat:"
 msgstr "Repeat:"
 
-#: ../install/index.php:257
-msgid "(for a file)"
-msgstr "(for a file)"
+#: ../gestion_contributions.php:293 ../gestion_contributions.php:295
+#: ../gestion_adherents.php:375 ../gestion_adherents.php:377
+msgid "ending on"
+msgstr "ending on"
 
 #: ../install/index.php:542
 msgid "ALTER Operation not allowed"
@@ -2312,6 +2313,10 @@ msgstr "Admin"
 msgid "Membership in order"
 msgstr "Membership in order"
 
+#: ../gestion_adherents.php:352
+msgid " days ago (since "
+msgstr ""
+
 #: ../templates/default/ajouter_adherent.tpl:132
 msgid "This comment is reserved to the member."
 msgstr "This comment is reserved to the member."
@@ -2346,9 +2351,9 @@ msgstr "Member card updated:"
 msgid "- Invalid number of months of membership extension."
 msgstr "- Invalid number of months of membership extension."
 
-#: ../install/index.php:318
-msgid "Host:"
-msgstr "Host:"
+#: ../install/index.php:202
+msgid "Warning: Don't forget to backup your current database."
+msgstr "Warning: Don't forget to backup your current database."
 
 #: ../templates/default/preferences.tpl:101
 #: ../templates/default/preferences.tpl:369
