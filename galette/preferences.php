@@ -1,7 +1,7 @@
 <?php
 /* preferences.php
  * - Preferences Galette
- * Copyright (c) 2004 Fr�d�ric Jaqcuot
+ * Copyright (c) 2004 Frédéric Jaqcuot
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -44,6 +44,7 @@ require_once('includes/picture.class.php');
 $error_detected = array();
 $warning_detected = array();
 $confirm_detected = array();
+$current_tab = (!isset($_GET["tab"]) && !isset($_POST["tab"]))?"main":(isset($_GET["tab"]))?$_GET["tab"]:$_POST["tab"];
 
 // flagging required fields
 $required = array(
@@ -315,6 +316,7 @@ $tpl->assign("required",$required);
 $tpl->assign("languages",drapeaux());
 $tpl->assign("error_detected",$error_detected);
 $tpl->assign("warning_detected",$warning_detected);
+$tpl->assign("current_tab",$current_tab);
 
 // page generation
 $content = $tpl->fetch("preferences.tpl");

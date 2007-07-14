@@ -643,7 +643,9 @@ a.listing:hover {
 .bigtable .subtitle
 {
 	color:#0C0CC0;
-	padding: 0px 5px 0px 5px;
+	padding: 1em 5px 0.5em 5px;
+	font-weight:bold;
+	border-top:1px solid;
 }
 .bigtable .picture
 {
