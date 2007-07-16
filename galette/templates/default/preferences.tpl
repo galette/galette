@@ -1,12 +1,12 @@
 		<h1 class="titre">{_T("Settings")}</h1>
-		<ul id="tabs">
+		<!--<ul id="tabs">
 			<li id="main"{if $current_tab == "main"} class="selected"{/if}><a href="?tab=main">{php}echo rtrim(_T("General information:"),":"){/php}</a></li>
 			<li id="mail"{if $current_tab == "mail"} class="selected"{/if}><a href="?tab=mail">{php}echo rtrim(_T("Mail settings:"),":"){/php}</a></li>
 			<li id="tags"{if $current_tab == "tags"} class="selected"{/if}><a href="?tab=tags">{php}echo rtrim(_T("Label generation parameters:"),":"){/php}</a></li>
 			<li id="cards"{if $current_tab == "cards"} class="selected"{/if}><a href="?tab=cards">{php}echo rtrim(_T("Cards generation parameters:"),":"){/php}</a></li>
 			<li id="required"{if $current_tab == "required"} class="selected"{/if}><a href="?tab=required">{_T("Required fields")}</a></li>
 			<li id="admin"{if $current_tab == "admin"} class="selected"{/if}><a href="?tab=admin">{_T("Admin account")}</a></li>
-		</ul>
+		</ul>-->
 		<form action="preferences.php" method="post" enctype="multipart/form-data"> 
 {if $error_detected|@count != 0}
 		<div id="errorbox">

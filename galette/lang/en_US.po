@@ -1,18 +1,18 @@
-# translation of en_US.po to Français
 # translation of en_US.po to
 # Copyright (C) 2006, 2007 Free Software Foundation, Inc.
 #
 # Simon DEPIETS <>, 2004.
 # Stéphane Salès <ssales@tuxz.org>, 2006.
 # Thomas Canniot <mrtom@fedoraproject.org>, 2007.
+# Johan Cwiklinski <johan@x-tnd.be>, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: en_US\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-12-20 16:44+0100\n"
-"PO-Revision-Date: 2007-07-08 11:54+0200\n"
-"Last-Translator: Thomas Canniot <mrtom@fedoraproject.org>\n"
-"Language-Team: Français <fedora-trans-fr@redhat.com>\n"
+"PO-Revision-Date: 2007-07-16 10:44+0200\n"
+"Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
+"Language-Team:  <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -61,9 +61,8 @@ msgstr "Emailing disabled"
 
 #: ../templates/default/preferences.tpl:233
 #: ../templates/default/preferences.tpl:534
-#, fuzzy
 msgid "Email"
-msgstr "E-Mail:"
+msgstr "Email"
 
 #: ../templates/default/mailing_adherents.tpl:84
 msgid "Reedit"
@@ -92,8 +91,7 @@ msgstr "Leave empty to use Sender Email as reply address"
 
 #: ../preferences.php:209
 msgid "- You must indicate an email address Galette should use to send emails!"
-msgstr ""
-"- You must indicate an email address Galette should use to send emails!"
+msgstr "- You must indicate an email address Galette should use to send emails!"
 
 #: ../includes/i18n.inc.php:209
 msgid "Partnership"
@@ -176,7 +174,7 @@ msgstr "Your current Galette version is comprised between"
 #: ../templates/default/preferences.tpl:205
 #: ../templates/default/preferences.tpl:499
 msgid "Board Members Color:"
-msgstr ""
+msgstr "Board Members Color:"
 
 #: ../templates/default/editer_champ.tpl:84
 msgid "Values:"
@@ -198,15 +196,13 @@ msgstr "Website:"
 
 #: ../templates/default/preferences.tpl:231
 #: ../templates/default/preferences.tpl:531
-#, fuzzy
 msgid "Address type:"
-msgstr "Address:"
+msgstr "Address type:"
 
 #: ../templates/default/preferences.tpl:235
 #: ../templates/default/preferences.tpl:536
-#, fuzzy
 msgid "Jabber"
-msgstr "Jabber:"
+msgstr "Jabber"
 
 #: ../templates/default/gestion_contributions.tpl:12
 msgid "contribution"
@@ -268,12 +264,11 @@ msgstr "Admin account (independant of members):"
 #: ../templates/default/preferences.tpl:197
 #: ../templates/default/preferences.tpl:487
 msgid "Strip Background colors:"
-msgstr ""
+msgstr "Strip Background colors:"
 
 #: ../templates/default/voir_adherent.tpl:150
-#, fuzzy
 msgid "Generate Member Card"
-msgstr "Generate labels"
+msgstr "Generate Member Card"
 
 #: ../templates/default/gestion_adherents.tpl:27
 #: ../templates/default/gestion_contributions.tpl:8
@@ -309,9 +304,8 @@ msgid "CREATE operation not allowed"
 msgstr "CREATE operation not allowed"
 
 #: ../gestion_adherents.php:352
-#, fuzzy
 msgid "Never contributed: Registered "
-msgstr "Never contributed"
+msgstr "Never contributed: Registered "
 
 #: ../templates/default/gestion_transactions.tpl:1
 msgid "Management of transactions"
@@ -409,10 +403,8 @@ msgid "Active"
 msgstr "Active"
 
 #: ../ajouter_adherent.php:204 ../ajouter_adherent.php:206
-msgid ""
-"- You can't send a confirmation by email if the member hasn't got an address!"
-msgstr ""
-"- You can't send a confirmation by email if the member hasn't got an address!"
+msgid "- You can't send a confirmation by email if the member hasn't got an address!"
+msgstr "- You can't send a confirmation by email if the member hasn't got an address!"
 
 #: ../install/index.php:573
 msgid "DROP OPeration not allowed"
@@ -470,9 +462,8 @@ msgstr "SELECT operation not allowed"
 
 #: ../templates/default/preferences.tpl:240
 #: ../templates/default/preferences.tpl:541
-#, fuzzy
 msgid "Profession"
-msgstr "Profession:"
+msgstr "Profession"
 
 #: ../footer.php:64 ../templates/default/page.tpl:45
 msgid "Configuration"
@@ -502,9 +493,8 @@ msgid "(this mail was sent automatically)"
 msgstr "(this mail was sent automatically)"
 
 #: ../carte_adherent.php:138
-#, fuzzy
 msgid "Member's Cards"
-msgstr "Members up to date"
+msgstr "Member's Cards"
 
 #: ../templates/default/self_adherent.tpl:30
 msgid "Member profile"
@@ -525,7 +515,7 @@ msgstr "transactions"
 
 #: ../carte_adherent.php:140 ../carte_adherent.php:351
 msgid "Cards"
-msgstr ""
+msgstr "Cards"
 
 #: ../includes/i18n.inc.php:197
 msgid "Treasurer"
@@ -660,9 +650,8 @@ msgstr "Job"
 
 #: ../templates/default/preferences.tpl:236
 #: ../templates/default/preferences.tpl:537
-#, fuzzy
 msgid "Web Site"
-msgstr "Website:"
+msgstr "Web Site"
 
 #: ../voir_adherent.php:104 ../templates/default/ajouter_adherent.tpl:79
 msgid "Inactive"
@@ -762,16 +751,15 @@ msgstr "State of dues"
 #: ../templates/default/preferences.tpl:503
 #: ../templates/default/preferences.tpl:511
 msgid "(6 hex digits:RRGGBB)"
-msgstr ""
+msgstr "(6 hex digits:RRGGBB)"
 
 #: ../footer.php:89 ../templates/default/page.tpl:66
 msgid "Woman"
 msgstr "Woman"
 
 #: ../templates/default/preferences.tpl:7
-#, fuzzy
 msgid "Required fields"
-msgstr "Required"
+msgstr "Required fields"
 
 #: ../templates/default/self_adherent.tpl:71
 #: ../templates/default/self_adherent.tpl:192
@@ -893,9 +881,8 @@ msgstr "Secretary"
 
 #: ../templates/default/preferences.tpl:244
 #: ../templates/default/preferences.tpl:546
-#, fuzzy
 msgid "Year:"
-msgstr "Search:"
+msgstr "Year:"
 
 #: ../install/index.php:66
 msgid "No database name"
@@ -973,9 +960,8 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:185
 #: ../templates/default/preferences.tpl:470
-#, fuzzy
 msgid "(10 characters max)"
-msgstr "(at least 4 characters)"
+msgstr "(10 characters max)"
 
 #: ../footer.php:53 ../templates/default/page.tpl:38
 msgid "My contributions"
@@ -1074,9 +1060,8 @@ msgstr "Galette has been successfully updated!"
 
 #: ../templates/default/preferences.tpl:237
 #: ../templates/default/preferences.tpl:538
-#, fuzzy
 msgid "ICQ"
-msgstr "ICQ:"
+msgstr "ICQ"
 
 #: ../templates/default/ajouter_adherent.tpl:47
 #: ../templates/default/voir_adherent.tpl:16
@@ -1110,7 +1095,7 @@ msgstr "INSERT operation not allowed"
 #: ../templates/default/preferences.tpl:228
 #: ../templates/default/preferences.tpl:527
 msgid "(Show or not title in front of name)"
-msgstr ""
+msgstr "(Show or not title in front of name)"
 
 #: ../self_contribution.php:252
 #: ../templates/default/ajouter_contribution.tpl:76
@@ -1148,9 +1133,8 @@ msgid "Member card added"
 msgstr " Member card added:"
 
 #: ../templates/default/display_dynamic_fields.tpl:3
-#, fuzzy
 msgid "Additionnal informations:"
-msgstr "Contact information:"
+msgstr "Additionnal informations:"
 
 #: ../install/index.php:470
 msgid "DROP operation allowed"
@@ -1170,13 +1154,12 @@ msgstr " MSN:"
 #: ../templates/default/preferences.tpl:183
 #: ../templates/default/preferences.tpl:468
 msgid "Short Text (Card Center):"
-msgstr ""
+msgstr "Short Text (Card Center):"
 
 #: ../templates/default/preferences.tpl:199
 #: ../templates/default/preferences.tpl:491
-#, fuzzy
 msgid "Active Member Color:"
-msgstr "Active member"
+msgstr "Active Member Color:"
 
 #: ../install/index.php:215
 msgid "Step 2 - Installation mode"
@@ -1187,8 +1170,7 @@ msgid "Active accounts"
 msgstr " Active accounts"
 
 #: ../install/index.php:588
-msgid ""
-"GALETTE hasn't got enough permissions on the database to continue the update."
+msgid "GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr ""
 " Galette hasn't got enough permissions on the database to continue the "
 "update."
@@ -1199,9 +1181,8 @@ msgid "Continue"
 msgstr " Continue"
 
 #: ../etiquettes_adherents.php:66
-#, fuzzy
 msgid "Member's Labels"
-msgstr "Members up to date"
+msgstr "Member's Labels"
 
 #: ../voir_adherent.php:89 ../carte_adherent.php:244
 #: ../etiquettes_adherents.php:118
@@ -1333,7 +1314,7 @@ msgstr "Miss."
 
 #: ../etiquettes_adherents.php:68 ../etiquettes_adherents.php:165
 msgid "Labels"
-msgstr ""
+msgstr "Labels"
 
 #: ../self_contribution.php:248
 #: ../templates/default/ajouter_contribution.tpl:46
@@ -1387,10 +1368,8 @@ msgstr "Please type an object for the message."
 
 #: ../mailing_adherents.php:143 ../lostpasswd.php:131
 #: ../ajouter_adherent.php:303
-msgid ""
-"**IMPORTANT** There was a probably breaking attempt when sending mail to :"
-msgstr ""
-"**IMPORTANT** There was a probably breaking attempt when sending mail to :"
+msgid "**IMPORTANT** There was a probably breaking attempt when sending mail to :"
+msgstr "**IMPORTANT** There was a probably breaking attempt when sending mail to :"
 
 #: ../self_contribution.php:208 ../templates/default/ajouter_adherent.tpl:1
 #: ../templates/default/ajouter_contribution.tpl:1
@@ -1417,8 +1396,7 @@ msgid "You are about to send an e-mail to"
 msgstr "You are about to send an e-mail to"
 
 #: ../install/index.php:838
-msgid ""
-"The tables have not been totally created, it may be a permission problem."
+msgid "The tables have not been totally created, it may be a permission problem."
 msgstr " The tables are not totally created, it's maybe a permission problem."
 
 #: ../footer.php:43 ../templates/default/page.tpl:33
@@ -1485,7 +1463,7 @@ msgstr " Generate labels"
 #: ../templates/default/preferences.tpl:239
 #: ../templates/default/preferences.tpl:540
 msgid "Pseudo"
-msgstr ""
+msgstr "Pseudo"
 
 #: ../lostpasswd.php:92
 msgid "There was a database error when inserting data"
@@ -1583,7 +1561,7 @@ msgstr ""
 #: ../templates/default/preferences.tpl:211
 #: ../templates/default/preferences.tpl:507
 msgid "Honor Members Color:"
-msgstr ""
+msgstr "Honor Members Color:"
 
 #: ../install/index.php:1200
 msgid "Step 9 - Saving the parameters"
@@ -1760,10 +1738,8 @@ msgid "There is  no password for user :"
 msgstr "There is  no password for user :"
 
 #: ../install/index.php:252
-msgid ""
-"In order to be updated, Galette needs the Write permission on these files."
-msgstr ""
-"In order to be updated, Galette needs the Write permission on these files."
+msgid "In order to be updated, Galette needs the Write permission on these files."
+msgstr "In order to be updated, Galette needs the Write permission on these files."
 
 #: ../ajouter_contribution.php:223
 msgid "Contribution added"
@@ -1774,10 +1750,8 @@ msgid "Update of the tables"
 msgstr "Update of the tables"
 
 #: ../install/index.php:251
-msgid ""
-"For a correct functioning, Galette needs the Write permission on these files."
-msgstr ""
-"For a correct functioning, Galette needs the Write permission on these files."
+msgid "For a correct functioning, Galette needs the Write permission on these files."
+msgstr "For a correct functioning, Galette needs the Write permission on these files."
 
 #: ../templates/default/mailing_adherents.tpl:99
 msgid "unreachable members:"
@@ -1856,7 +1830,7 @@ msgstr "Show:"
 #: ../templates/default/preferences.tpl:226
 #: ../templates/default/preferences.tpl:525
 msgid "Show title ?"
-msgstr ""
+msgstr "Show title ?"
 
 #: ../gestion_adherents.php:408
 msgid "Address"
@@ -1877,9 +1851,8 @@ msgstr "- Invalid format of beginning of membership."
 
 #: ../templates/default/preferences.tpl:220
 #: ../templates/default/preferences.tpl:518
-#, fuzzy
 msgid "Logo"
-msgstr "Logo:"
+msgstr "Logo"
 
 #: ../templates/default/mailing_adherents.tpl:19
 #: ../templates/default/preferences.tpl:23
@@ -1912,21 +1885,16 @@ msgstr "Step 7 - Tables Update"
 #: ../templates/default/preferences.tpl:6
 #: ../templates/default/preferences.tpl:181
 #: ../templates/default/preferences.tpl:465
-#, fuzzy
 msgid "Cards generation parameters:"
-msgstr "Label generation parameters:"
+msgstr "Cards generation parameters:"
 
 #: ../install/index.php:305
-msgid ""
-"The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
-msgstr ""
-"The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
+msgid "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
+msgstr "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 
 #: ../self_adherent.php:182 ../ajouter_adherent.php:269
-msgid ""
-"It is now possible to follow in real time the state of your subscription"
-msgstr ""
-"It is now possible to follow in real time the state of your subscription"
+msgid "It is now possible to follow in real time the state of your subscription"
+msgstr "It is now possible to follow in real time the state of your subscription"
 
 #: ../templates/default/mailing_adherents.tpl:85
 msgid "Send"
@@ -1955,9 +1923,8 @@ msgstr "Send a mail"
 
 #: ../templates/default/preferences.tpl:234
 #: ../templates/default/preferences.tpl:535
-#, fuzzy
 msgid "MSN"
-msgstr " MSN:"
+msgstr "MSN"
 
 #: ../templates/default/ajouter_adherent.tpl:25
 #: ../templates/default/voir_adherent.tpl:5
@@ -2115,9 +2082,8 @@ msgid "PHP mail() function"
 msgstr "PHP mail() function"
 
 #: ../templates/default/gestion_adherents.tpl:176
-#, fuzzy
 msgid "Generate Member Cards"
-msgstr "Generate labels"
+msgstr "Generate Member Cards"
 
 #: ../install/index.php:379
 msgid "Check of the database"
@@ -2132,9 +2098,8 @@ msgid "Add a member"
 msgstr "Add a member"
 
 #: ../templates/default/preferences.tpl:8
-#, fuzzy
 msgid "Admin account"
-msgstr "Active account"
+msgstr "Admin account"
 
 #: ../install/index.php:198
 msgid "and"
@@ -2195,7 +2160,7 @@ msgstr "Picture:"
 #: ../templates/default/preferences.tpl:193
 #: ../templates/default/preferences.tpl:480
 msgid "Strip Text Color:"
-msgstr ""
+msgstr "Strip Text Color:"
 
 #: ../templates/default/ajouter_transaction.tpl:17
 msgid "Description:"
@@ -2245,7 +2210,7 @@ msgstr "Duration"
 #: ../templates/default/preferences.tpl:188
 #: ../templates/default/preferences.tpl:474
 msgid "Long Text (Bottom Line):"
-msgstr ""
+msgstr "Long Text (Bottom Line):"
 
 #: ../templates/default/editer_champ.tpl:23
 msgid "Visibility:"
@@ -2266,7 +2231,7 @@ msgstr "red"
 #: ../templates/default/preferences.tpl:197
 #: ../templates/default/preferences.tpl:488
 msgid "(Strip color will change according to member's status)"
-msgstr ""
+msgstr "(Strip color will change according to member's status)"
 
 #: ../self_adherent.php:183 ../ajouter_adherent.php:270
 msgid "and to update your preferences from the web interface."
@@ -2315,7 +2280,7 @@ msgstr "Membership in order"
 
 #: ../gestion_adherents.php:352
 msgid " days ago (since "
-msgstr ""
+msgstr " days ago (since "
 
 #: ../templates/default/ajouter_adherent.tpl:132
 msgid "This comment is reserved to the member."
@@ -2323,9 +2288,8 @@ msgstr "This comment is reserved to the member."
 
 #: ../templates/default/preferences.tpl:190
 #: ../templates/default/preferences.tpl:476
-#, fuzzy
 msgid "(65 characters max)"
-msgstr "(at least 4 characters)"
+msgstr "(65 characters max)"
 
 #: ../templates/default/gestion_contributions.tpl:170
 msgid "[ See member profile ]"
@@ -2476,7 +2440,7 @@ msgstr "All"
 #: ../templates/default/preferences.tpl:238
 #: ../templates/default/preferences.tpl:539
 msgid "Zip - Town"
-msgstr ""
+msgstr "Zip - Town"
 
 #: ../gestion_contributions.php:295 ../gestion_adherents.php:377
 msgid "remaining day"
@@ -2499,9 +2463,8 @@ msgid "Profession:"
 msgstr "Profession:"
 
 #: ../carte_adherent.php:139 ../etiquettes_adherents.php:67
-#, fuzzy
 msgid "Generated by Galette"
-msgstr "Generate labels"
+msgstr "Generated by Galette"
 
 #: ../templates/default/mailing_adherents.tpl:82
 msgid "ON"
@@ -2568,5 +2531,3 @@ msgstr "Please login at this address:"
 msgid "[ Add a contribution ]"
 msgstr "[ Add a contribution ]"
 
-#~ msgid "Photo :"
-#~ msgstr " Photo:"
