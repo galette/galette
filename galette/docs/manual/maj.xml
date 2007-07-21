@@ -1,0 +1,95 @@
+<sect2 id="maj">   <title>Mise à Jour</title>   <sect3 id="maj1">    <sect4 id="maj10">      <warning>
+       <title></title>
+       <para role="warning">Faites une sauvegarde avant toute manipulation !!</para>
+      </warning>
+      <para>
+        Si vous souhaitez mettre à jour votre version de Galette,
+        prenez surtout la précaution de sauvegarder votre ancienne base,
+        il serait dommage de perdre toutes vos données parce que vous
+        avez oublié cette étape. Ensuite, c'est assez simple :
+      </para>
+    </sect4>    <sect4 id="maj11">      <title>Tout d'abord, sauvegardez l'ensemble du répertoire Galette actuel</title>        <programlisting>
+         cp -rp galette old.galette
+        </programlisting>
+    </sect4>    <sect4 id="maj12">      <title>Ensuite récupérez la dernière version de Galette (ici, la 0.62.2) :</title>      <programlisting>
+        wget http://download.gna.org/galette/galette-0.62.2.tgz
+      </programlisting>
+      <para>Pour une liste complète des miroirs, voir la section download</para>
+    </sect4>    <sect4 id="maj13">      <title>On décompacte l'archive :</title>       <programlisting>
+         tar -xzvf galette-0.62.2.tgz
+       </programlisting>
+    </sect4>    <sect4 id="maj14">      <title>On copie les fichiers de la nouvelle Galette vers l'ancienne :</title>      <programlisting>
+        cp -rp galette-0.62.2/* galette/
+      </programlisting>
+    </sect4>    <sect4 id="maj15">      <title>On remet le bon proprio qui va bien :</title>      <programlisting>
+       chown -R utilisateur_apache galette
+      </programlisting>
+    </sect4>    <sect4 id="maj16">      <title>On vérifie un petit coup les droits :</title>        <para><code>(d)r-(x)------ (400)</code> pour tout, sauf "photos/" en <code>drwx------ (700)</code></para>
+        <programlisting>
+            ls -l galette
+            total 120
+            -r--------    1 apache   apache      20689 Jan 24 11:22 ajouter_adherent.php
+            -r--------    1 apache   apache      11996 Jan 24 11:22 ajouter_contribution.php
+            dr-x------    2 apache   apache       4096 Jan 24 11:20 docs
+            -r--------    1 apache   apache       1156 Jan 24 11:22 etiquettes_adherents.php
+            -r--------    1 apache   apache       1156 Jan 24 11:22 footer.php
+            -r--------    1 apache   apache        660 Jan 24 11:22 galette.css
+            -r--------    1 apache   apache      12264 Jan 24 11:22 gestion_adherents.php
+            -r--------    1 apache   apache      12056 Jan 24 11:22 gestion_contributions.php
+            -r--------    1 apache   apache      16768 Jan 24 11:22 gestion_informations.php
+            -r--------    1 apache   apache       7197 Jan 24 11:22 header.php
+            dr-x------    2 apache   apache       4096 Jan 24 11:20 images
+            dr-x------    3 apache   apache       4096 Jan 24 11:23 includes
+            -r--------    1 apache   apache       3147 Jan 24 11:23 index.php
+            dr-x------    3 apache   apache       4096 Jan 24 11:23 lang
+            -r--------    1 apache   apache       3147 Jan 24 11:23 log.php
+            -r--------    1 apache   apache       3147 Jan 24 11:23 mailing_adherents.php
+            dr-x------    2 apache   apache       4096 Jan 19 00:17 install
+            drwx------    2 apache   apache       4096 Jan 19 20:07 photos
+            -r--------    1 apache   apache       3147 Jan 24 11:23 preferences.php
+            -r--------    1 apache   apache       3147 Jan 24 11:23 voir_adherent.php
+        </programlisting>
+        <para>
+          Pensez à bien vérifier les droits en lecture/écriture/modification
+          à apache sur le répertoire photos. C'est là que sont stockés les photos des membres.
+          Vérifiez aussi que les anciennes photos uploadées sont toujours là.
+        </para>
+    </sect4>    <sect4 id="maj17">      <title>Connectez vous à votre Galette</title>        <para>Dans le sous-répertoire install :
+         http://www.example.com/galette/install
+         par exemple. A partir de là, laissez-vous guider :)</para>
+        <para><emphasis>Mise a jour 0.62 -> 0.62a.</emphasis></para>
+      <warning>
+       <title></title>
+       <para role="warning">Faites une sauvegarde avant toute manipulation !!</para>
+      </warning>
+        <para>Pas besoin de faire jouer le script d'installation.
+         Remplacez simplement les fichiers existant par les nouveaux.
+         Attention à ne pas écraser le fichier includes/config.inc.php,
+         l'archive en contient un vide.</para>
+        <para><emphasis>Mise a jour 0.61 -> 0.62</emphasis></para>
+        <para>Même problèmes que vu plus haut, il faut sauvegarder avant tout.
+              Sisi, j'insiste. Ensuite, le déroulement est le même jusqu'à l'étape 6.</para>
+        <para>Il n'y a pas de changement majeur entre les versions 0.61 et 0.62.</para>
+        <para><emphasis>Mise a jour 0.60 -> 0.61</emphasis></para>
+        <para>Même problèmes que vu plus haut, il faut sauvegarder avant tout.
+         Sisi, j'insiste. Ensuite, le déroulement est le même jusqu'à l'étape 6.</para>
+        <para>Il n'y a pas de changement majeur entre les versions 0.60 et 0.61.</para>
+    </sect4>    <sect4 id="maj18">      <title>Fichier de configuration</title>        <para>Recopiez ensuite votre ancien fichier de configuration,
+         qui se trouve dans votre sauvegarde old.galette.
+        </para>
+        <programlisting>
+         cp -rp old.galette/includes/config.inc.php galette/includes/config.inc.php
+        </programlisting>
+    </sect4>    <sect4 id="maj19">      <title>Nettoyage</title>      <para>
+         Supprimer les droits en écriture sur includes/config.inc.php
+         et supprimez le dossier install.
+      </para>
+      <programlisting>
+        rm -rf install
+      </programlisting>
+      <para>
+         Et là si tout va bien, ça tourne. Donc, on peut supprimer le répertoire
+         galette-0.60 et old.galette. Et c'est tout.
+      </para>
+    </sect4>   </sect3></sect2>
+

@@ -1,6 +1,6 @@
 <?php
 /** 
- * preferences.php: Choix des préférences de galette
+ * Choix des préférences de galette
  *
  * Les préférences se répartissent selon les groupes suivants:
  * - Association: Paramètres généraux de l'association tel

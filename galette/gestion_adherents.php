@@ -1,7 +1,7 @@
 <?php
 
 /** 
- * gestion_adherents.php: Récapitulatif des adhérents
+ * Récapitulatif des adhérents
  *
  * Affichage de la liste des adhérents et possibilités
  * de tri en fonction:
@@ -10,22 +10,6 @@
  * - de l'état du compte
  * - du contenu de champs texte 
  * 
- * PHP versions 5
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  * @package    Galette
  * @author     Frédéric Jaqcuot
  * @copyright  2003 Frédéric Jaqcuot
@@ -58,41 +42,39 @@
 	include(WEB_ROOT."includes/smarty.inc.php");
 	
 	$error_detected = array();
+// Set caller page ref for cards error reporting	
+    $_SESSION['galette']['caller']='gestion_adherents.php';	
 
-	if (isset($_POST['cards']))
-	{
+	if (isset($_POST['cards'])) {
 		$qstring = 'carte_adherent.php';
-		if (isset($_POST["member_sel"]))
-		{
+		if (isset($_POST["member_sel"])) {
 			$_SESSION['galette']['cards'] = $_POST["member_sel"];
 			header('location: '.$qstring);
-		}
-		else
+		} else {
 			$error_detected[] = _T("No member was selected, please check at least one name.");
+        }
 	}
 	
-	if (isset($_POST['labels']))
-	{
+	if (isset($_POST['labels'])) {
 		$qstring = 'etiquettes_adherents.php';
-		if (isset($_POST["member_sel"]))
-		{
+		if (isset($_POST["member_sel"])) {
 			$_SESSION['galette']['labels'] = $_POST["member_sel"];
 			header('location: '.$qstring);
-		}
-		else
+		} else
 			$error_detected[] = _T("No member was selected, please check at least one name.");
 	}
 
-	if (isset($_POST['mailing']))
-	{
+	if (isset($_POST['mailing'])) {
 		$qstring = 'mailing_adherents.php';
-		if (isset($_POST["member_sel"]))
-		{
+		if (isset($_POST["member_sel"])) {
 			$_SESSION['galette']['mailing'] = $_POST["member_sel"];
 			header('location: '.$qstring);
-		}
-		else
+		} else
 			$error_detected[] = _T("No member was selected, please check at least one name.");
+	}
+
+	if ($_SESSION['galette']['pdf_error']) {
+	    $error_detected[] = $_SESSION['galette']['pdf_error_msg'];
 	}
 	
 	$members = array();
@@ -306,9 +288,13 @@
 		$requete[0] .= "priorite_statut ".$tri_adh_sens_txt.",";
 
 	// tri par echeance
-	elseif ($_SESSION["tri_adh"]=="3")
-		$requete[0] .= "bool_exempt_adh ".$tri_adh_sens_txt.", date_echeance ".$tri_adh_sens_txt.",";
-
+	elseif ($_SESSION["tri_adh"]=="3") {
+    	if ($_SESSION["filtre_adh"]=="4") {
+    		$requete[0] .= " date_crea_adh ".$tri_adh_sens_txt.",";
+    	} else {
+    		$requete[0] .= "bool_exempt_adh ".$tri_adh_sens_txt.", date_echeance ".$tri_adh_sens_txt.",";
+    	}
+    }	
 	// defaut : tri par nom, prenom
 	$requete[0] .= "nom_adh ".$tri_adh_sens_txt.", prenom_adh ".$tri_adh_sens_txt; 
 	

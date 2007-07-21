@@ -11,26 +11,10 @@
  * Les couleurs sont définies dans l'écran des préférences
  * en utilisant des codes identiques à ceux utilisés en HTML.
  *
- * PHP versions 5
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  * @package    Galette
  * @author     John Perr <johnperr@abul.org>
  * @copyright  2007 John Perr
- * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0
+ * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0 or (at your option) any later version
  * @version    $Id$
  * @since      Disponible depuis la Release 0.63
  */
@@ -42,41 +26,25 @@
     include(WEB_ROOT."includes/database.inc.php"); 
     include(WEB_ROOT."includes/session.inc.php");
 
-    if ($_SESSION["logged_status"]==0)
-    {
+    if ($_SESSION["logged_status"]==0) {
         header("location: index.php");
         die();
     }
-    if ($_SESSION["admin_status"]==0)
-    {
+    if ($_SESSION["admin_status"]==0) {
         header("location: voir_adherent.php");
         die();
     }
 
     include_once(WEB_ROOT."includes/i18n.inc.php");
     include_once(WEB_ROOT."includes/picture.class.php");
-    require_once (WEB_ROOT."includes/tcpdf/tcpdf.php");
+    require_once (WEB_ROOT."includes/pdf.class.php");
 
-/**
- * Fonction de conversion d'une couleur au format HTML
- * #RRVVBB en un tableau de 3 valeurs comprises dans
- * l'interval [0;255]
- *
- * @param  chaîne de 6 caratères RRVVBB
- * @return tableau de 3 valeur R, G et B comprises entre 0 et 255
- */
-    function ColorHex2Dec($hex6) {
-        $dec = array("R" => hexdec(substr($hex6,0,2)),
-                     "G" => hexdec(substr($hex6,2,2)),
-                     "B" => hexdec(substr($hex6,4,2)));
-        return $dec;
-    }
-    
 // Fill array $mailing_adh with selected ids
     $mailing_adh = array();
     if (isset($_SESSION['galette']['cards'])) {
         while (list($key,$value)=each($_SESSION['galette']['cards']))
             $mailing_adh[]=$value;
+        unset($_SESSION['galette']['cards']);
 
 // If we are called from "Voir_adherent" get unique id value           
     } elseif ($_GET["id_adh"] > 0)
@@ -148,14 +116,22 @@
     if ($logo->HAS_PICTURE){
         $logofile = $logo->FILE_PATH;
 
-// Set logo size to max width 25 mm or max height 30 mm
+// Set logo size to max width 30 mm or max height 25 mm
         $ratio = $logo->WIDTH/$logo->HEIGHT;
         if ($ratio < 1) {
-            $hlogo = 16;
-            $wlogo = $hlogo*$ratio;
+            if ($logo->HEIGHT > 16) {
+                $hlogo = 25;
+            } else {
+                $hlogo = $logo->HEIGHT;
+            }                
+            $wlogo = round($hlogo*$ratio);
         } else {
-            $wlogo = 16;
-            $hlogo = $wlogo/$ratio;
+            if ($logo->WIDTH > 16) {
+                $wlogo = 30;
+            } else {
+                $wlogo = $logo->WIDTH;
+            }                
+            $hlogo = round($wlogo/$ratio);
         }
 // If no logo chosen force default one
     } else {
@@ -165,7 +141,7 @@
     }            
        
 // Create new PDF document
-    $pdf = new TCPDF("P","mm","A4",true,"UTF-8"); 
+    $pdf = new PDF("P","mm","A4",true,"UTF-8"); 
 
 // Set document information
     $pdf->SetCreator(PDF_CREATOR);
@@ -189,10 +165,10 @@
 // Set colors
     $pdf->SetDrawColor(160,160,160);
     $pdf->SetTextColor(0);
-    $tcol=ColorHex2Dec(PREF_CARD_TCOL);
-    $scol=ColorHex2Dec(PREF_CARD_SCOL);
-    $bcol=ColorHex2Dec(PREF_CARD_BCOL);
-    $hcol=ColorHex2Dec(PREF_CARD_HCOL);
+    $tcol=$pdf->ColorHex2Dec(PREF_CARD_TCOL);
+    $scol=$pdf->ColorHex2Dec(PREF_CARD_SCOL);
+    $bcol=$pdf->ColorHex2Dec(PREF_CARD_BCOL);
+    $hcol=$pdf->ColorHex2Dec(PREF_CARD_HCOL);
    
 // Set margins
     $pdf->SetMargins(PREF_CARD_MARGES_H, PREF_CARD_MARGES_V);
@@ -230,6 +206,8 @@
 // Set origin
         $x0 = $xorigin + $col*(round($w)+round($hspacing));
         $y0 = $yorigin + $row*(round($h)+round($vspacing));
+// Logo X position
+        $xl = round($x0 + $w - $wlogo);
 // Get data
 // Extract town if zip - town selected
         if ( PREF_CARD_ADDRESS == 5 )
@@ -286,7 +264,7 @@
 
 // Photo 100x130 and logo
         $pdf->Image($photofile,$x0,$y0,25);
-        $pdf->Image($logofile,$x0 + 60,$y0,$wlogo);
+        $pdf->Image($logofile,$xl,$y0,round($wlogo));
 
 // Color=#8C8C8C: Shadow of the year
          $pdf->SetTextColor(140);
@@ -294,16 +272,16 @@
          $pdf->SetXY($x0 + 65,$y0+$hlogo);
          $pdf->writeHTML($an_cot,false,0);
 
-// Color=#8C2453: Colored Text (Big label, id, year)
+// Colored Text (Big label, id, year)
 // Abbrev: Adapt font size to text length
         $pdf->SetTextColor($fcol["R"],$fcol["G"],$fcol["B"]);
         $fontsz = 48;
         $pdf->SetFontSize($fontsz);
-        while ($pdf->GetStringWidth($abrev) > 40) {
+        while ($pdf->GetStringWidth($abrev) > 50) {
             $fontsz--;
             $pdf->SetFontSize($fontsz);
         }
-        $pdf->SetXY($x0 + 27,$y0 + 6);
+        $pdf->SetXY($x0 + 27,$y0 + 10);
         $pdf->writeHTML($abrev,false,0);
     
         $pdf->SetFontSize(8);
@@ -317,7 +295,7 @@
         $pdf->SetTextColor(0);
         $fontsz=16;
         $pdf->SetFontSize($fontsz);
-        while ($pdf->GetStringWidth($nom_adh_ext) > 45) {
+        while ($pdf->GetStringWidth($nom_adh_ext) > 50) {
             $fontsz--;
             $pdf->SetFontSize($fontsz);
         }
@@ -348,6 +326,7 @@
     }
     $resultat->Close();
 // Send PDF code to browser
+    $_SESSION['galette']['pdf_error'] = false;
     $pdf->Output(_T("Cards").".pdf","D");
 /*
  * Local variables:

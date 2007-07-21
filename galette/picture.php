@@ -1,7 +1,6 @@
 <?php
-/* picture.php
- * - Display a picture
- * Copyright (c) 2006 Frédéric Jaqcuot
+/**
+ * Displays a picture
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,6 +16,16 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
+ * @package    Galette
+ * @author     Frédéric Jaqcuot
+ * @copyright  2004 Frédéric Jaqcuot
+ * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0
+ * @version    $Id$
+ * @since      Disponible depuis la Release 0.62
+ */
+
+/**
+ * 
  */
 
 	require_once('includes/session.inc.php');

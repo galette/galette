@@ -1,0 +1,321 @@
+<sect2 id="webinstall">  <title>Installation chez un hébergeur</title>
+  <simplesect id="webinst0">  <para>Cette page a pour objet de décrire les
+   <emphasis role="underline">différentes étapes</emphasis>
+    de l'installation (depuis Windows) de <emphasis>Galette version 0.62.2</emphasis>
+    (fonctionne de la même manière depuis GNU/Linux, MacOSX ou autres).
+  </para>
+  <para>Elle a été réalisée à partir d'une installation chez un hébergeur
+    payant puis amendée pour une installation chez free (accès gratuit)
+    et chez NFrance (Formule : basic).
+  </para>
+  </simplesect>
+  <sect3 id="instweb1">    <title>Télécharger</title>    <para>
+     Télécharger - si ce n'est pas encore fait ;-)
+     la dernière version stable de Galette :
+    </para>
+    <para>
+     <ulink url="http://download.gna.org/galette/galette-0.62.2.tgz">
+      http://download.gna.org/galette/galette-0.62.2.tgz
+     </ulink>
+    </para>
+  </sect3>  <sect3 id="instweb2">    <title>Décompresser</title>    <para>
+     Décompresser le fichier <emphasis>galette-0.62.2.tgz</emphasis> sur votre
+     disque dur, dans un sous-répertoire créé pour l'occasion,
+     à l'aide de Winzip ou de 7-zip, logiciel libre disponible ici
+     <ulink url="http://www.7-zip.org/fr/">http://www.7-zip.org/fr/</ulink>.
+     Dans un ultime sous-répertoire "Galette", on obtient les dossiers et
+     fichiers ci-dessous :
+    </para>
+    <mediaobject>
+     <imageobject>
+	  <imagedata fileref="images/filezilla.jpeg" format="jpg" />
+     </imageobject>
+     <textobject>
+      <phrase>dossiers et fichiers après décompression</phrase>
+     </textobject>
+    </mediaobject>
+    <para>
+     Sur les OS fournissant les utilitaires <wordasword>tar</wordasword>
+     et <wordasword>gzip</wordasword>,
+     la commande a utiliser est <code>tar -xzvf galette-0.62.2.tgz</code>.
+    </para>
+  </sect3>  <sect3 id="instweb3">    <title>Uploader</title>    <para>Télécharger à l'emplacement prévu, chez votre hébergeur,
+     l'ensemble des 6 dossiers et 14 fichiers ci-dessus à l'aide d'un
+     client FTP, FileZilla par exemple qui est un logiciel libre
+     disponible ici
+     <ulink url="http://sourceforge.net/project/showfiles.php?group_id=21558">
+      http://sourceforge.net/project/showfiles.php?group_id=21558
+     </ulink>.
+    </para>
+    <mediaobject>
+     <imageobject>
+	  <imagedata fileref="images/tarlist.jpeg" format="jpg" />
+     </imageobject>
+     <textobject>
+      <phrase>télécharger les dossiers et fichiers</phrase>
+     </textobject>
+    </mediaobject>
+    <para>
+     Pour des raisons pratiques, l'auteur, qui dispose d'un site à
+     l'adresse (fictive) www.example.org, a transféré l'ensemble
+     des dossiers et fichiers dans le sous-répertoire <emphasis>galette</emphasis> ;
+     une fois l'installation achevée, <emphasis>galette</emphasis> sera
+     donc accessible à l'adresse (fictive) www.example.org/galette ;
+     en attendant, l'attention du lecteur est portée sur les points suivants :
+    </para>
+    <itemizedlist>
+	 <listitem>
+	  <para>
+	   <emphasis role="bold">1er point</emphasis> :
+	   vérifier si le dossier
+       <emphasis>photos</emphasis> (qui est vide) a bien été créé.
+       A défaut, le créer "à la main",
+      </para>
+      </listitem>
+	  <listitem>
+	   <para>
+	    <emphasis role="bold">2e point</emphasis> :
+	    <emphasis role="underline">accorder</emphasis> au dossier
+        <emphasis>photos</emphasis> et au fichier <emphasis>includes/config.inc.php</emphasis>
+        les <emphasis role="underline">droits en écriture</emphasis>  (CHMOD 700).<sbr />
+        <emphasis role="bold">Cas particulier de free</emphasis> : le dossier
+        <emphasis>photos</emphasis>  accepte au mieux le CHMOD 700 et le fichier
+        <emphasis>config.inc.php</emphasis> le CHMOD 644 ce qui semble suffisant,
+       </para>
+      </listitem>
+	  <listitem>
+	   <para>
+	    <emphasis role="bold">3e point</emphasis> : dans le sous-répertoire
+	    <emphasis>includes</emphasis>, supprimer le fichier sans extension
+	    <emphasis>adodb</emphasis> et renommer le dossier <emphasis>adodb471-1</emphasis>
+	    en <emphasis>adodb</emphasis>,
+      </para>
+      <note><title></title>
+       <para role="note">Cette manipulation est valable pour tous les hébergeurs</para></note>
+     </listitem>
+	 <listitem>
+	  <para>
+	   <emphasis role="bold">4e point</emphasis> :
+       <emphasis role="bold">cas particulier de free</emphasis> :
+       quelque soit le sous-répertoire dans lequel vous venez de télécharger
+       Galette, vous devez créer un dossier <emphasis>sessions</emphasis>
+       à la racine de votre hébergement.
+      </para>
+     </listitem>
+    </itemizedlist>
+  </sect3>  <sect3 id="instweb4">   <title>Installer</title>    <simplesect id="instweb40">    <para>
+     Procéder à l'installation complète de <emphasis>Galette</emphasis> en
+     saisissant dans un navigateur (Internet Explorer, FireFox ...) l'adresse
+     (à adapter) www.example.org/galette/install
+    </para>
+   </simplesect>   <sect4 id="instweb41">    <title>choix de la langue (d'installation) :</title>    <mediaobject>
+     <imageobject>
+	  <imagedata fileref="images/step1.jpeg" format="jpg" />
+     </imageobject>
+     <textobject>
+      <phrase>choisir entre l'anglais et le français comme langue d'installation</phrase>
+     </textobject>
+    </mediaobject>
+   </sect4>   <sect4 id="instweb42">    <title>type d'installation :</title>    <mediaobject>
+     <imageobject>
+	  <imagedata fileref="images/step2.jpeg" format="jpg" />
+     </imageobject>
+     <textobject>
+      <phrase>choisir "nouvelle installation</phrase>
+     </textobject>
+    </mediaobject>
+   </sect4>   <sect4 id="instweb43">    <title>Vérification des permissions des fichier et dossier :</title>    <mediaobject>
+     <imageobject>
+	  <imagedata fileref="images/step3.jpeg" format="jpg" />
+     </imageobject>
+     <textobject>
+      <phrase>vérifier les droits</phrase>
+     </textobject>
+    </mediaobject>
+    <para>
+     En cas d'erreur (rectangle rouge), rétablir les droits en écriture (CHMOD 777)
+     à l'aide du client FTP - Cf. 3 étape, 2e point - puis utiliser la fonction
+     "Affichage|Actualiser" du navigateur pour vérification.
+    </para>
+    <para>
+     Avant de passer au point suivant, vous devez
+     <emphasis role="underline">créer votre base de données</emphasis>
+     ou, si elle existe déjà, en rassembler les éléments (hôte, utilisateur,
+     mot de passe, nom de la base).
+    </para>
+   </sect4>   <sect4 id="instweb44">    <title>Cas particulier de free :</title>    <para>
+     Free n'autorise qu'une seule base de données dont les éléments sont les suivants :
+    </para>
+    <itemizedlist>
+      <listitem><para>
+        hôte : <emphasis>sql.free.fr</emphasis>,
+      </para></listitem>
+	  <listitem><para>
+	   utilisateur : <emphasis>jean.dupond</emphasis> (si l'adresse électronique de
+       votre compte principal est jean.dupond@free.fr)
+      </para></listitem>
+	  <listitem><para>
+        mot de passe : le <emphasis>mot de passe</emphasis> associé à votre compte principal,
+      </para></listitem>
+	  <listitem><para>
+        nom de la base : <emphasis>jean_dupond</emphasis> (si votre login comprend un
+         ".", le remplacer par un "_" (le trait du 8 comme disent nos amis africains ;-))
+      </para></listitem>
+    </itemizedlist>
+   </sect4>   <sect4 id="instweb45">    <title>Cas particulier de NFrance :</title>
+    <para>
+     à l'instar de free, NFrance n'autorise qu'une seule base de données
+     (tout au moins dans le cas de la formule basic) :
+    </para>
+    <itemizedlist>
+      <listitem><para>
+        hôte : <emphasis>localhost</emphasis>,
+      </para></listitem>
+	  <listitem><para>
+        utilisateur : <emphasis>juXXXXX</emphasis>,
+      </para></listitem>
+	  <listitem><para>
+        mot de passe : <emphasis>mot de passe</emphasis> associé à votre abonnement chez NFrance,
+      </para></listitem>
+	  <listitem><para>
+        nom de la base : <emphasis>juXXXXX</emphasis> (identique au nom d'utilisateur/login).
+      </para></listitem>
+    </itemizedlist>
+    <para>
+     En cas de doutes, se rendre à la page
+     <ulink url="https://espace-client.nfrance.com/">
+      https://espace-client.nfrance.com/
+     </ulink>
+    </para>
+    <mediaobject>
+     <imageobject>
+	  <imagedata fileref="images/step3_nfrance.jpeg" format="jpg" />
+     </imageobject>
+     <textobject>
+      <phrase>espace-client.nfrance.com</phrase>
+     </textobject>
+    </mediaobject>
+   </sect4>   <sect4 id="instweb46">    <title>Saisie des éléments de la base de données :</title>    <mediaobject>
+     <imageobject>
+	  <imagedata fileref="images/step4.jpeg" format="jpg" />
+     </imageobject>
+     <textobject>
+      <phrase>renseigner les champs</phrase>
+     </textobject>
+    </mediaobject>
+   </sect4>   <sect4 id="instweb47">    <title>érification des éléments saisis :</title>    <mediaobject>
+     <imageobject>
+	  <imagedata fileref="images/step5.jpeg" format="jpg" />
+     </imageobject>
+     <textobject>
+      <phrase>vérifier les éléments</phrase>
+     </textobject>
+    </mediaobject>
+    <para>
+     En cas d'erreur (rectangle rouge), revenir à l'étape précédente à l'aide de la flèche
+     "reculer d'une page" du navigateur puis valider de nouveau en cliquant le bouton
+     "étape suivante".
+    </para>
+   </sect4>   <sect4 id="instweb48">    <title>Vérification des droits d'accès à la base :</title>    <mediaobject>
+     <imageobject>
+	  <imagedata fileref="images/step6.jpeg" format="jpg" />
+     </imageobject>
+     <textobject>
+      <phrase>vérifier les droits d'accès</phrase>
+     </textobject>
+    </mediaobject>
+   </sect4>   <sect4 id="instweb49">    <title>Création des tables :</title>    <mediaobject>
+     <imageobject>
+	  <imagedata fileref="images/step7.jpeg" format="jpg" />
+     </imageobject>
+     <textobject>
+      <phrase>créer les tables</phrase>
+     </textobject>
+    </mediaobject>
+    <para>
+     La création des 6 tables peut être vérifiée à l'aide de PhpMyAdmin.
+    </para>
+    <mediaobject>
+     <imageobject>
+	  <imagedata fileref="images/step7_phpmyadmin.jpeg" format="jpg" />
+     </imageobject>
+     <textobject>
+      <phrase>PhpMyAdmin</phrase>
+     </textobject>
+    </mediaobject>
+   </sect4>   <sect4 id="instweb410">    <title>Saisie des paramètres administrateur :</title>    <mediaobject>
+     <imageobject>
+	  <imagedata fileref="images/step8.jpeg" format="jpg" />
+     </imageobject>
+     <textobject>
+      <phrase>paramètres administrateur</phrase>
+     </textobject>
+    </mediaobject>
+    <note><title></title>
+     <para role="note">le mot de passe est saisi et sauvegardé dans la table
+      "galette_preferences" en clair. Il est crypté à partir de
+      la version 0.63.
+     </para>
+    </note>
+   </sect4>   <sect4 id="instweb411">    <title>Sauvegarde des paramètres saisis :</title>    <mediaobject>
+     <imageobject>
+	  <imagedata fileref="images/step9.jpeg" format="jpg" />
+     </imageobject>
+     <textobject>
+      <phrase>Sauvegarde des paramètres saisis</phrase>
+     </textobject>
+    </mediaobject>
+   </sect4>   <sect4 id="instweb412">    <title>Fin de l'installation :</title>    <mediaobject>
+     <imageobject>
+	  <imagedata fileref="images/step10.jpeg" format="jpg" />
+     </imageobject>
+     <textobject>
+      <phrase>Fin de l'installation</phrase>
+     </textobject>
+    </mediaobject>
+    <note><title></title>
+     <para role="note">
+      Pour des raisons de sécurité, n'oubliez pas, au mieux de détruire le dossier
+      <emphasis>install</emphasis>, à défaut de le renommer.
+     </para>
+    </note>
+    <para>Enjoy ! :-)</para>
+    <mediaobject>
+     <imageobject>
+	  <imagedata fileref="images/login.jpeg" format="jpg" />
+     </imageobject>
+     <textobject>
+      <phrase>Ecran d'accueil</phrase>
+     </textobject>
+    </mediaobject>
+   </sect4>   <sect4 id="instweb413">    <title>Remarque :</title>    <mediaobject>
+     <imageobject>
+	  <imagedata fileref="images/pref_mail.jpeg" format="jpg" />
+     </imageobject>
+     <textobject>
+      <phrase>paramètres pour la mailing-list</phrase>
+     </textobject>
+    </mediaobject>
+    <para>
+     Il est recommandé de modifier les préférences notamment les paramètres pour la mailing-list ;
+     cette <emphasis>mailing-list fonctionne correctement chez free</emphasis> sans modification
+     particulière (test du rédacteur sur un nombre très limité de destinataires) ; pour NFrance, les tests
+     sont en cours.
+    </para>
+   </sect4>  </sect3>  <sect3 id="instweb3">    <title>Eventuellement, modifier les scripts</title>    <para>
+     <emphasis role="bold">Cas particulier de Galette installé chez NFrance</emphasis> :
+    </para>
+    <para>
+     La variable d'environnement <emphasis>SERVER_NAME</emphasis> renvoie l'adresse IP du serveur
+     Apache au lieu du nom du site web. Faire les modifications suivantes :
+    </para>
+    <itemizedlist>
+     <listitem><para>
+      script <emphasis>ajouter_adherent.php</emphasis>, ligne 275, remplacer
+      <emphasis>SERVER_NAME</emphasis> par HTTP_HOST,
+     </para></listitem>
+     <listitem><para>
+      script <emphasis>lost_password.php</emphasis>, ligne 68, idem.
+     </para></listitem>
+    </itemizedlist>
+ </sect3></sect2>

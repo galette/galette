@@ -1,30 +1,30 @@
 <?php // -*- Mode: PHP; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 4 -*-
-/* voir_adherent.php
- * - Visualisation d'une fiche adhérent
- * Copyright (c) 2004 Frédéric Jaqcuot
+/** 
+ * Visualisation d'un adhérent
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * Affichage des cractéristiques d'un adhérents et possibilités de :
+ * - Modifier ces caractéristiques
+ * - De visualiser les contributions
+ * - De saisir une contribution
+ * - De gébérer la carte de membre en pdf
  * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
+ * @package    Galette
+ * @author     Frédéric Jaqcuot
+ * @copyright  2003 Frédéric Jaqcuot
+ * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0
+ * @version    $Id$
+ * @since      Disponible depuis la Release 0.60
  */
 
+/**
+ * 
+ */
+ 
 	include("includes/config.inc.php"); 
 	include(WEB_ROOT."includes/database.inc.php");
-        include(WEB_ROOT."includes/session.inc.php");
+    include(WEB_ROOT."includes/session.inc.php");
 
-	if ($_SESSION["logged_status"]==0)
-	{
+	if ($_SESSION["logged_status"]==0) {
 		header("location: index.php");
 		die();
 	}
@@ -34,18 +34,23 @@
 
 	if ($_SESSION["admin_status"]==0)
 		$id_adh = $_SESSION["logged_id_adh"];
-	if ($id_adh=="")
-	{
+
+	if ($id_adh=="") {
 		header("location: index.php");
 		die();
 	}
+	if ($_SESSION['galette']['pdf_error']) {
+	    $error_detected[] = $_SESSION['galette']['pdf_error_msg'];
+	}
 
-        include_once("includes/i18n.inc.php"); 
+    include_once("includes/i18n.inc.php"); 
 	include(WEB_ROOT."includes/smarty.inc.php");
 	include(WEB_ROOT."includes/dynamic_fields.inc.php");
 
 	require_once('includes/picture.class.php');
-	
+// Set caller page ref for cards error reporting	
+    $_SESSION['galette']['caller']='voir_adherent.php?id_adh='.$id_adh;	
+
 	$requete = "SELECT * 
 		    FROM ".PREFIX_DB."adherents 
 		    WHERE id_adh=$id_adh";
@@ -130,6 +135,7 @@
 	$adherent['picture_height'] = $picture->getOptimalHeight();
 	$adherent['picture_width'] = $picture->getOptimalWidth();
 	
+	$tpl->assign("error_detected",$error_detected);
 	$tpl->assign("data",$adherent);
 	$tpl->assign("dynamic_fields",$dynamic_fields);
 	$tpl->assign("time",time());

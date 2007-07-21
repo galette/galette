@@ -1,0 +1,42 @@
+<?xml version='1.0'?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//ENTITIES Added Latin 1//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY quickinst SYSTEM "quickinstall.xml">
+<!ENTITY unixinst SYSTEM "unixinstall.xml">
+<!ENTITY wininst SYSTEM "wininstall.xml">
+<!ENTITY webinst SYSTEM "webinstall.xml">
+<!ENTITY maj SYSTEM "maj.xml">
+<!ENTITY user SYSTEM "user.xml">
+<!ENTITY pref SYSTEM "pref.xml">
+]>
+
+<book>
+    <title>Documentation Galette</title>
+    <subtitle>Manuel Utilisateur</subtitle>
+    <bookinfo>
+     <authorgroup>
+      <author>
+       <firstname>Loïs</firstname> -  
+       <surname>Taulelle</surname>
+       <othername>
+        <ulink url="https://gna.org/users/gruiick">gruiick</ulink>
+       </othername>
+      </author>
+      <collab>
+       <collabname>
+        <ulink url="https://gna.org/users/johnperr">John Perr</ulink>
+       </collabname>
+      </collab>
+     </authorgroup>
+    </bookinfo>
+    <sect1 id="install">     <title>Installation</title>     &quickinst;
+     &unixinst;
+     &wininst;
+     &webinst;
+     &maj;
+    </sect1>
+    <sect1 id="userdoc">     <title>Utilisation</title>     &user;
+    </sect1>
+    <sect1 id="pref">     <title>Préférences</title>     &pref;
+    </sect1>
+</book>
