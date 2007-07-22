@@ -3,14 +3,21 @@
 # du source docbook
 #
 
-SOURCE	   = galette
+SOURCES	   = galette.xml \
+maj.xml \
+pref.xml \
+quickinstall.xml \
+unixinstall.xml \
+user.xml webinstall.xml \
+wininstall.xml
+
 TARGET     = manual
 HTMLDIR    = ./
 
 # Path à changer selon configuration locale
 XSLDIR     = /usr/share/xml/docbook/stylesheet/nwalsh
 
-XMLFILE     = ${SOURCE}.xml
+XMLFILE     = galette.xml
 HTMLFILE    = ${HTMLDIR}${TARGET}.html
 FOFILE      = ${TARGET}.fo
 PDFFILE     = ${TARGET}.pdf
@@ -18,18 +25,16 @@ PDFFILE     = ${TARGET}.pdf
 FOSTYLESHEET      = ${XSLDIR}/fo/docbook.xsl
 HTMLSTYLESHEET    = ${SOURCE}.xsl
 
-all:	html pdf
+all:	${HTMLFILE} ${PDFFILE}
 
-${HTMLFILE}:  ${XMLFILE}
+${HTMLFILE}:	${SOURCES}
 	xsltproc -o $@ ${HTMLSTYLESHEET} $<
 
-${PDFFILE}:  ${XMLFILE}
-	xsltproc -o ${FOFILE} ${FOSTYLESHEET} $<
-	Fop -fo ${FOFILE} $@
-
-html:	${XMLFILE}
-
-pdf:	${XMLFILE}
+${PDFFILE}:	${SOURCES}
+	xsltproc -o ${FOFILE} --stringparam fop.extensions 1 ${FOSTYLESHEET} ${XMLFILE}
+	fop -fo ${FOFILE} ${PDFFILE}
+#	Alternate command with fop only using xalan for fo transformation
+#	fop -xml ${XMLFILE} -xsl ${FOSTYLESHEET} -pdf ${PDFFILE}
 
 clean:
 	rm -f ${HTMLFILE} ${PDFFILE}

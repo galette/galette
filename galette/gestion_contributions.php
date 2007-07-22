@@ -1,8 +1,8 @@
 <?php
  
 /* gestion_contributions.php
- * - Rï¿½capitulatif des contributions
- * Copyright (c) 2004 Frï¿½dï¿½ric Jaqcuot
+ * - Récapitulatif des contributions
+ * Copyright (c) 2004 Frédéric Jaqcuot
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

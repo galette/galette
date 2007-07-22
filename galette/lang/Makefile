@@ -12,6 +12,7 @@ PHP_SOURCES = ../index.php \
 ../footer.php \
 ../includes/session.inc.php \
 ../includes/i18n.inc.php \
+../includes/pdf.class.php \
 ../configurer_fiches.php \
 ../preferences.php \
 ../voir_adherent.php \

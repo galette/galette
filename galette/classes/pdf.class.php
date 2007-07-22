@@ -2,7 +2,34 @@
 //
 //  PDF class for galette
 //
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
+/**
+ * PDF class for galette
+ * Traps tcpdf errors by overloading tcpdf::error method
+ * Adds convenient method to convert color html codes
+ * Adds a _parsegif function to convert gif to png
+ *
+ * @package Galette
+ * 
+ * @author     John Perr <johnperr@abul.org>
+ * @copyright  2007 John Perr
+ * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0 or (at your option) any later version
+ * @version    $Id$
+ * @since      Disponible depuis la Release 0.63
+ */
 
 /**
  *  Require TCPDF class
@@ -11,16 +38,11 @@
 
 /**
  * PDF class for galette
- * Traps tcpdf errors by overloading tcpdf::error method
- * Adds convenient method to convert color html codes
+ *
  * @name PDF
- * @package galette
- * @abstract Class for extanding TCPDF.
- * @author     John Perr <johnperr@abul.org>
- * @copyright  2007 John Perr
- * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0 or (at your option) any later version
- * @version    $Id$
- * @since      Disponible depuis la Release 0.63
+ * @package Galette
+ * @abstract Class for expanding TCPDF.
+ *
  */
 
 class PDF extends TCPDF
@@ -77,16 +99,17 @@ class PDF extends TCPDF
 
 /**
  * Extract info from a GIF file
- * (In fact: converts gif image to png and feed it to _parsepng)
+ * (In fact: converts gif image to png and feeds it to _parsepng)
  * @access protected
+ * @param path to the gif file
  */
 	protected function _parsegif($file) {
 		$a=GetImageSize($file);
 		if(empty($a)) {
-			$this->Error(_T('Missing or incorrect image file ').$file);
+			$this->Error(_T("Missing or incorrect image file ").$file);
 		}
 		if($a[2]!=1) {
-			$this->Error(_T('Not a GIF file ').$file);
+			$this->Error(_T("Not a GIF file ").$file);
 		}
 
 // Tentative d'ouverture du fichier
@@ -95,15 +118,15 @@ class PDF extends TCPDF
 
 // Test d'échec & Affichage d'un message d'erreur
             if (!$data) {
-			    $this->Error(_T('Error loading ').$file);
+			    $this->Error(_T("Error loading ").$file);
             }
             if (Imagepng($data,WEB_ROOT.'tempimages/gif2png.png')) {
      	        return $this->_parsepng(WEB_ROOT.'tempimages/gif2png.png');
 	       } else {
-			    $this->Error(_T('Error creating temporary png file from ').$file);
+			    $this->Error(_T("Error creating temporary png file from ").$file);
            }
         } else {
-		    $this->Error(_T('Unable to convert GIF file ').$file);
+		    $this->Error(_T("Unable to convert GIF file ").$file);
         }
 	}
 }

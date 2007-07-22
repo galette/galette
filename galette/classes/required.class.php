@@ -1,29 +1,37 @@
 <?php
-/*
+//
+//  required.class.php, 06 juillet 2007
+//
+// Copyright © 2007 Johan Cwiklinski
+//
+// File :               	required.class.php
+// Author's email :     	johan@x-tnd.be
+// Author's Website :   	http://galette.tuxfamily.org
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+/**
  * required.class.php, 06 juillet 2007
+ *
+ * @package Galette
  * 
- * This file is part of Galette.
- *
- * Copyright Â© 2007 Johan Cwiklinski
- *
- * File :               	required.class.php
- * Author's email :     	johan@x-tnd.be
- * Author's Website :   	http://galette.tuxfamily.org
- * 
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ * @author     Johan Cwiklinski <jjohan@x-tnd.be>
+ * @copyright  2007 Johan Cwiklinski
+ * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0 or (at your option) any later version
+ * @version    $Id$
+ * @since      Disponible depuis la Release 0.63
  */
 
 /** TODO
@@ -36,6 +44,13 @@ define("MDB2_VERSION", "2.4.1");
 require_once("MDB2-".MDB2_VERSION."/MDB2.php");
 
 
+/**
+ * Required class for galette
+ *
+ * @name Required
+ * @package Galette
+ *
+ */
 
 class Required{
 	private $all_required;
@@ -61,7 +76,7 @@ class Required{
 		);
 		
 		$this->db = & MDB2::connect($dsn, $options);
-		// VÃ©rification des erreurs
+		// Vérification des erreurs
 		if (MDB2::isError($this->db)) {
 			echo $db->getDebugInfo().'<BR/>';
 			echo $db->getMessage();
@@ -84,7 +99,7 @@ class Required{
 		if ($this->db->getOption('result_buffering')){
 			$requete = "SELECT * FROM ".PREFIX_DB."adherents LIMIT 1";
 			$result2 = $this->db->query( $requete );
-			// VÃ©rification des erreurs
+			// Vérification des erreurs
 			if (MDB2::isError($result2)) {
 				echo $result2->getDebugInfo().'<BR/>';
 				echo $result2->getMessage();
@@ -92,7 +107,7 @@ class Required{
 
 			$requete = "SELECT * FROM ".PREFIX_DB."required";
 			$result = $this->db->query( $requete );
-			// VÃ©rification des erreurs
+			// Vérification des erreurs
 			if (MDB2::isError($result)) {
 				echo $result->getDebugInfo().'<BR/>';
 				echo $result->getMessage();
@@ -122,7 +137,7 @@ class Required{
 
 	/**
 	* Init data into required table.
-	* @param $reinit : true if we must first delete all data on required table.
+	* @param boolean: true if we must first delete all data on required table.
 	* This should occurs when adherents table has been updated. For the first
 	* initialisation, value should be off.
 	*/
@@ -134,7 +149,7 @@ class Required{
 	
 		$requete = "SELECT * FROM ".PREFIX_DB."adherents LIMIT 1";
 		$result = $this->db->query( $requete );
-		// VÃ©rification des erreurs
+		// Vérification des erreurs
 		if (MDB2::isError($result)) {
 			echo $result->getDebugInfo().'<BR/>';
 			echo $result->getMessage();
@@ -149,7 +164,7 @@ class Required{
 		$stmt = $this->db->prepare('INSERT INTO '.PREFIX_DB.'required VALUES(?,?)', array('text', 'boolean'), false);
 		foreach ($f as $row){
 			/** TODO :
-			* Informer dans le log que la table des required a Ã©tÃ© mise Ã  jour
+			* Informer dans le log que la table des required a été mise à jour
 			*/
 			$stmt->bindParamArray($row);
 			$stmt->execute();
@@ -163,17 +178,24 @@ class Required{
 	}
 
 
-	/* GETTERS */
+	/**
+	* GETTERS
+	* @return array of all required fields. Field names = keys
+	*/
 	public function getRequired(){return $this->all_required;}
 
-	/* SETTERS */
+	/**
+	* SETTERS
+    * @param string: Field name to set to required state
+	* @return boolean: true = field set
+	*/
 	public function setRequired($value){
 		$requete = "UPDATE ".PREFIX_DB."required SET required=1 WHERE field_id=";
 		$requete .= (is_array($value))?implode(" OR field_id=", $value):"$value";
 		echo $requete;
 
 		$result = $this->db->query( $requete );
-		// VÃ©rification des erreurs
+		// Vérification des erreurs
 		if (MDB2::isError($result)) {
 			echo $result->getDebugInfo().'<BR/>';
 			echo $result->getMessage();
