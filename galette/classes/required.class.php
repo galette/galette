@@ -2,7 +2,7 @@
 //
 //  required.class.php, 06 juillet 2007
 //
-// Copyright © 2007 Johan Cwiklinski
+// Copyright Â© 2007 Johan Cwiklinski
 //
 // File :               	required.class.php
 // Author's email :     	johan@x-tnd.be
@@ -27,7 +27,7 @@
  *
  * @package Galette
  * 
- * @author     Johan Cwiklinski <jjohan@x-tnd.be>
+ * @author     Johan Cwiklinski <johan@x-tnd.be>
  * @copyright  2007 Johan Cwiklinski
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0 or (at your option) any later version
  * @version    $Id$
@@ -37,11 +37,9 @@
 /** TODO
 * This constant should be defined at higher level
 */
-define("PEAR_VERSION", "1.6.1");
-set_include_path(get_include_path() . PATH_SEPARATOR . WEB_ROOT . "includes/pear/" . PATH_SEPARATOR . WEB_ROOT . "includes/pear/PEAR-" . PEAR_VERSION . "/");
+set_include_path(get_include_path() . PATH_SEPARATOR . WEB_ROOT . "includes/pear/" . PATH_SEPARATOR . WEB_ROOT . "includes/pear/PEAR/" . PATH_SEPARATOR . WEB_ROOT . "includes/pear/MDB2/");
 
-define("MDB2_VERSION", "2.4.1");
-require_once("MDB2-".MDB2_VERSION."/MDB2.php");
+require_once("MDB2/MDB2.php");
 
 
 /**
@@ -76,7 +74,7 @@ class Required{
 		);
 		
 		$this->db = & MDB2::connect($dsn, $options);
-		// Vérification des erreurs
+		// Vï¿½rification des erreurs
 		if (MDB2::isError($this->db)) {
 			echo $db->getDebugInfo().'<BR/>';
 			echo $db->getMessage();
@@ -99,7 +97,7 @@ class Required{
 		if ($this->db->getOption('result_buffering')){
 			$requete = "SELECT * FROM ".PREFIX_DB."adherents LIMIT 1";
 			$result2 = $this->db->query( $requete );
-			// Vérification des erreurs
+			// Vï¿½rification des erreurs
 			if (MDB2::isError($result2)) {
 				echo $result2->getDebugInfo().'<BR/>';
 				echo $result2->getMessage();
@@ -107,7 +105,7 @@ class Required{
 
 			$requete = "SELECT * FROM ".PREFIX_DB."required";
 			$result = $this->db->query( $requete );
-			// Vérification des erreurs
+			// Vï¿½rification des erreurs
 			if (MDB2::isError($result)) {
 				echo $result->getDebugInfo().'<BR/>';
 				echo $result->getMessage();
@@ -149,7 +147,7 @@ class Required{
 	
 		$requete = "SELECT * FROM ".PREFIX_DB."adherents LIMIT 1";
 		$result = $this->db->query( $requete );
-		// Vérification des erreurs
+		// Vï¿½rification des erreurs
 		if (MDB2::isError($result)) {
 			echo $result->getDebugInfo().'<BR/>';
 			echo $result->getMessage();
@@ -164,7 +162,7 @@ class Required{
 		$stmt = $this->db->prepare('INSERT INTO '.PREFIX_DB.'required VALUES(?,?)', array('text', 'boolean'), false);
 		foreach ($f as $row){
 			/** TODO :
-			* Informer dans le log que la table des required a été mise à jour
+			* Informer dans le log que la table des required a ï¿½tï¿½ mise ï¿½ jour
 			*/
 			$stmt->bindParamArray($row);
 			$stmt->execute();
@@ -195,7 +193,7 @@ class Required{
 		echo $requete;
 
 		$result = $this->db->query( $requete );
-		// Vérification des erreurs
+		// Vï¿½rification des erreurs
 		if (MDB2::isError($result)) {
 			echo $result->getDebugInfo().'<BR/>';
 			echo $result->getMessage();

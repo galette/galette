@@ -44,7 +44,6 @@
 					</select>
 			{/if}
 		{/if}
-		<br/>
 		{/section}
 				{if $is_form eq false}</td>{/if}
 		{if $field.field_pos != 1 || $field.field_repeat != 1}
@@ -53,6 +52,8 @@
 			{else}
 				</p>
 			{/if}
+		{else}
+			</p>
 		{/if}
 	{/if}
 {/if}
