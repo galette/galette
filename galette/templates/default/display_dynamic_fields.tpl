@@ -5,19 +5,19 @@
 {foreach from=$dynamic_fields item=field}
 {if $field.field_perm ne 1 || $smarty.session.admin_status eq 1}
 	{if $field.field_type eq 0}
-			{if $is_form eq false}
-				<tr>
-					<th class="separator">{$field.field_name|escape}&nbsp;</th>
-				</tr>
-			{else}
-				<div class="separator">{$field.field_name|escape}</div>
-			{/if}
+		{if $is_form eq false}
+			<tr>
+				<th class="separator">{$field.field_name|escape}&nbsp;</th>
+			</tr>
+		{else}
+			<div class="separator">{$field.field_name|escape}</div>
+		{/if}
 	{else}
-			{if $is_form eq false}
-				<tr>
-			{else}
-				<p>
-			{/if}
+		{if $is_form eq false}
+			<tr>
+		{else}
+			<p>
+		{/if}
 		{if $is_form eq false}
 				<th>{$field.field_name|escape}&nbsp;</th>
 		{else}
@@ -45,13 +45,9 @@
 			{/if}
 		{/if}
 		{/section}
-				{if $is_form eq false}</td>{/if}
-		{if $field.field_pos != 1 || $field.field_repeat != 1}
-			{if $is_form eq false}
-				</tr>
-			{else}
-				</p>
-			{/if}
+		{if $is_form eq false}
+				</td>
+			</tr>
 		{else}
 			</p>
 		{/if}
