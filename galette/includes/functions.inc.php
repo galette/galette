@@ -2,7 +2,7 @@
 
 /* functions.inc.php
  * - Fonctions utilitaires
- * Copyright (c) 2003 Frédéric Jaqcuot
+ * Copyright (c) 2003 Frï¿½dï¿½ric Jaqcuot
  * Copyright (c) 2004 Georges Khaznadar (password encryption, images)
  *
  * This program is free software; you can redistribute it and/or
@@ -249,6 +249,13 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
   //  4 - SMTP unreacheable
   //  5 - breaking attempt
   $result = 0;
+
+	//Strip slashes if magic_quotes_gpc is enabled
+	//Fix bug #9705
+	if(get_magic_quotes_gpc()){
+		$mail_subject = stripslashes($mail_subject);
+		$mail_text = stripslashes($mail_text);
+	}
 
 	//sanityze headers
 	$params = array($email_adh,
