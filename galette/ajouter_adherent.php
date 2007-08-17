@@ -91,7 +91,9 @@
 	// password required if we create a new member
 	if ($adherent["id_adh"]=='')
 		$required['mdp_adh'] = 1;
-			
+	else
+		unset($required['mdp_adh']);
+
 	// flagging required fields invisible to members
 	if ($_SESSION["admin_status"]==1)
 	{
