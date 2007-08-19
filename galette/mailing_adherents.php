@@ -83,7 +83,7 @@
 		if ($_POST['mailing_corps']=="")
 			$error_detected[] = _T("Please enter a message.");
 		else
-			$data['mailing_corps'] = $_POST['mailing_corps'];
+			$data['mailing_corps'] = (get_magic_quotes_gpc())?stripslashes($_POST['mailing_corps']):$_POST['mailing_corps'];
 
 		if (isset($_POST['mailing_html']))
 			$data['mailing_html']=$_POST['mailing_html'];
