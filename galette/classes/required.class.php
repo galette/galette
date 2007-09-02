@@ -38,9 +38,9 @@
 * - The above constant should be defined at higher level
 * - all errors messages should be handled by pear::log
 */
-set_include_path(get_include_path() . PATH_SEPARATOR . WEB_ROOT . "includes/pear/" . PATH_SEPARATOR . WEB_ROOT . "includes/pear/PEAR/" . PATH_SEPARATOR . WEB_ROOT . "includes/pear/MDB2/");
+set_include_path(get_include_path() . PATH_SEPARATOR . WEB_ROOT . "includes/pear/" . PATH_SEPARATOR . WEB_ROOT . "includes/pear/PEAR/" . PATH_SEPARATOR . WEB_ROOT . "includes/pear/MDB2");
 
-require_once("MDB2/MDB2.php");
+require_once("MDB2.php");
 
 
 /**
@@ -69,8 +69,8 @@ class Required{
 	);
 	
 	function __construct(){
-		//$dsn = TYPE_DB.'://'.USER_DB.':'.PWD_DB.'@'.HOST_DB.'/'.NAME_DB;
-		$dsn = 'mysqli://'.USER_DB.':'.PWD_DB.'@'.HOST_DB.'/'.NAME_DB;
+		$dsn = TYPE_DB.'://'.USER_DB.':'.PWD_DB.'@'.HOST_DB.'/'.NAME_DB;
+		//$dsn = 'mysqli://'.USER_DB.':'.PWD_DB.'@'.HOST_DB.'/'.NAME_DB;
 		$options = array(
 			'debug'       => 2,
 			'portability' => MDB2_PORTABILITY_ALL,
@@ -161,10 +161,10 @@ class Required{
 
 		$f = array();
 		foreach($fields as $key=>$value){
-			$f[] = array($key,(($reinit)?array_key_exists($key, $this->all_required):in_array($key, $this->defaults)?true:false));
+			$f[] = array("id" => $key,"required" => (($reinit)?array_key_exists($key, $this->all_required):in_array($key, $this->defaults)?true:false));
 		}
 
-		$stmt = $this->db->prepare('INSERT INTO '.PREFIX_DB.'required VALUES(?,?)', array('text', 'boolean'), false);
+		$stmt = $this->db->prepare('INSERT INTO '.PREFIX_DB.'required (field_id, required) VALUES(:id, :required)', array('text', 'boolean'), MDB2_PREPARE_MANIP);
 		foreach ($f as $row){
 			/** TODO :
 			* Informer dans le log que la table des required a été mise à jour
