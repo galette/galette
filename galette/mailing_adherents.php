@@ -77,8 +77,10 @@
 	{
 		if ($_POST['mailing_objet']=="")
 			$error_detected[] = _T("Please type an object for the message.");
-		else
+		else{
+			$_POST['mailing_objet'] = (get_magic_quotes_gpc())?stripslashes($_POST['mailing_objet']):$_POST['mailing_objet'];
 			$data['mailing_objet']=htmlspecialchars($_POST['mailing_objet'],ENT_QUOTES);
+		}
 
 		if ($_POST['mailing_corps']=="")
 			$error_detected[] = _T("Please enter a message.");
@@ -116,12 +118,12 @@
 		$email_adh = "";
 		while (!$result_members->EOF)
 		{
+			$email_adh = $result_members->fields[1];
 			$mail_result = custom_mail($result_members->fields[1],
 																	$data['mailing_objet'],
 																	$data['mailing_corps'],
 																	$content_type);
 			if( $mail_result == 1) {
-				$email_adh = $result_members->fields[1];
 				dblog("Send mail to :"." \"" . $email_adh . "\"", $sql);
 				$warning_detected[] = _T("Mail sent to :")." \"" . $email_adh . "\"";
 			} else {
