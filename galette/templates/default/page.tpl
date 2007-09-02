@@ -45,6 +45,7 @@
 			<h1>{_T("Configuration")}</h1>
 			<ul>
 				<li><a href="preferences.php">{_T("Settings")}</a></li>
+				<li><a href="champs_requis.php">{_T("Required fields")}</a></li>
 				<li><a href="configurer_fiches.php">{_T("Configure member forms")}</a></li>
 				<li><a href="traduire_libelles.php">{_T("Translate labels")}</a></li>
 			</ul>

@@ -8,6 +8,10 @@ body {
 	background-color:white;
 }
 
+img{
+	border:none;
+}
+
 form {
 	margin: 0px;
 }
