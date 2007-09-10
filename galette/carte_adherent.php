@@ -93,7 +93,7 @@
         $addr_fld="cp_adh";
         break;
 
-    case 5:
+    case 6:
         $addr_fld="pseudo_adh";
         break;
 
