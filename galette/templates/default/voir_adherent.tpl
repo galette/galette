@@ -156,9 +156,11 @@
 		</table>
 	</div>
 	<div class="button-container">
+{if ($data.pref_card_self eq 1) or ($smarty.session.admin_status eq 1)}
 		<div class="button-link button-card">
 			<a href="carte_adherent.php?id_adh={$data.id_adh}">{_T("Generate Member Card")}</a>
 		</div>
+{/if}
 		<div class="button-link button-edit">
 			<a href="ajouter_adherent.php?id_adh={$data.id_adh}">{_T("Modification")}</a>
 		</div>

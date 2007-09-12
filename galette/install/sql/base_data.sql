@@ -46,6 +46,7 @@ INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_marges_v
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_marges_h', '20');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_vspace', '5');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_hspace', '10');
+INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_self', '1');
 
 -- Contribution types
 INSERT INTO galette_types_cotisation (id_type_cotis,libelle_type_cotis,cotis_extension) VALUES (1, 'annual fee', '1');

@@ -144,6 +144,7 @@
 	
 	$adherent['pref_lang_img'] = 'lang/'.$adherent['pref_lang'].'.gif';
 	$adherent['pref_lang'] = ucfirst(_T($adherent['pref_lang']));
+	$adherent['pref_card_self'] = PREF_CARD_SELF;
 
 	// picture size
 	$picture = new picture($id_adh);

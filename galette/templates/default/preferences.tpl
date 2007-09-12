@@ -223,6 +223,11 @@
 					<input type="file" name="card_logo" id="card_logo"/>
 				</p>
 				<p>
+					<label for="pref_card_self" class="bline{if $required.pref_bool_display_title eq 1} required{/if}">{_T("Allow members to print card ?")}</label>
+					<input type="checkbox" name="pref_card_self" id="pref_card_self" value="1" {if $pref.pref_card_self eq 1}checked="checked"{/if}/>
+					<span class="exemple">{_T("(Members will be able to generate their own member card)")}</span>
+				</p>
+				<p>
 					<label for="pref_bool_display_title" class="bline{if $required.pref_bool_display_title eq 1} required{/if}">{_T("Show title ?")}</label>
 					<input type="checkbox" name="pref_bool_display_title" id="pref_bool_display_title" value="1" {if $pref.pref_bool_display_title eq 1}checked="checked"{/if}/>
 					<span class="exemple">{_T("(Show or not title in front of name)")}</span>
@@ -239,6 +244,7 @@
 						<option value="6" {if $pref.pref_card_address eq 6}selected="selected"{/if}>{_T("Pseudo")}</option>
 						<option value="7" {if $pref.pref_card_address eq 7}selected="selected"{/if}>{_T("Profession")}</option>
 					</select>
+					<span class="exemple">{_T("(Choose address printed below name)")}</span>
 				</p>
 				<p>
 					<label for="pref_card_year" class="bline{if $required.pref_card_year eq 1} required{/if}">{_T("Year:")}</label>

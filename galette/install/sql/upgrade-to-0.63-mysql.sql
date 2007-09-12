@@ -24,6 +24,7 @@ INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_marges_v
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_marges_h', '20');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_vspace', '5');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_hspace', '10');
+INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_self', '1');
 
 -- New tables for dynamic fields;
 DROP TABLE galette_field_types;

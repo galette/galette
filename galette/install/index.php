@@ -1064,6 +1064,8 @@ define(\"STOCK_FILES\", \"tempimages\");
 				$DB->Execute($default);
 				$default = "insert into ".$_POST["install_dbprefix"]."preferences (nom_pref, val_pref) values ('pref_card_hspace', '10')";
 				$DB->Execute($default);
+				$default = "insert into ".$_POST["install_dbprefix"]."preferences (nom_pref, val_pref) values ('pref_card_self', '1')";
+				$DB->Execute($default);
 
 				// contribution types
 				$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation(id_type_cotis,libelle_type_cotis,cotis_extension) values (1, 'annual fee', '1')";

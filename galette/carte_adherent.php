@@ -45,14 +45,10 @@
         header("location: index.php");
         die();
     }
-    if ($_SESSION["admin_status"]==0) {
-        header("location: voir_adherent.php");
-        die();
-    }
 
     include_once(WEB_ROOT."includes/i18n.inc.php");
     include_once(WEB_ROOT."includes/picture.class.php");
-    require_once (WEB_ROOT."classes/pdf.class.php");
+    require_once(WEB_ROOT."classes/pdf.class.php");
 
 // Fill array $mailing_adh with selected ids
     $mailing_adh = array();
@@ -64,7 +60,7 @@
 // If we are called from "Voir_adherent" get unique id value           
     } elseif ($_GET["id_adh"] > 0)
         $mailing_adh[]=$_GET["id_adh"];
-    else    
+    else 
         die();
 
 // Select address field to display
