@@ -187,7 +187,7 @@
 				</p>
 				<p>
 					<label for="fingerprint" class="bline{if $required.fingerprint eq 1}required{/if}">{_T("fingerprint:")}</label>
-					<input type="text" name="fingerprint" id="fingerprint" value="{$data.fingerprint}" maxlength="30" size="30" {$disabled.fingerprint}/>
+					<input type="text" name="fingerprint" id="fingerprint" value="{$data.fingerprint}" maxlength="40" size="40" {$disabled.fingerprint}/>
 				</p>
 			</fieldset>
 {include file="display_dynamic_fields.tpl" is_form=true}
