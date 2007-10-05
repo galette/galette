@@ -242,7 +242,7 @@ if ( isset($_POST["valid"]) ) {
 			$head_redirect = "<meta http-equiv=\"refresh\" content=\"10;url=index.php\" />";
 		}*/
 	}
-}elseif($_POST["update_lang"] == 1){
+}elseif(isset($_POST["update_lang"]) && $_POST["update_lang"] == 1){
 	while (list($key, $properties) = each($fields)) {
 		$key = strtolower($key);
 		if (isset($_POST[$key]))
@@ -285,7 +285,7 @@ $tpl->assign("dynamic_fields",$dynamic_fields);
 $tpl->assign("error_detected",$error_detected);
 $tpl->assign("warning_detected",$warning_detected);
 $tpl->assign("languages",drapeaux());
-$tpl->assign("head_redirect", $head_redirect);
+if(isset($head_redirect)) $tpl->assign("head_redirect", $head_redirect);
 
 
 // pseudo random int

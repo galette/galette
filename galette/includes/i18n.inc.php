@@ -2,7 +2,7 @@
 
 /* functions.inc.php
  * - Fonctions utilitaires
- * Copyright (c) 2003 Frédéric Jaqcuot
+ * Copyright (c) 2003 FrÃ©dÃ©ric Jaqcuot
  * Copyright (c) 2004 Georges Khaznadar (i18n using gettext)
  *
  * This program is free software; you can redistribute it and/or
@@ -38,7 +38,15 @@ $languages = array (
                     "english"   => "en_US",
                     "spanish"   => "es_ES@euro"
                     );
+
+$short_languages = array(
+			'french'	=>	'fr',
+			'english'	=>	'en',
+			'spanish'	=>	'es'
+		);
+
 $language=$languages[$pref_lang];
+$short_language = $short_languages[$pref_lang];
 
 setlocale(LC_CTYPE, $language);
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$galette_lang}" lang="{$galette_lang}">
 <head>
 	<title>Galette {$GALETTE_VERSION}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
@@ -28,7 +28,7 @@
 		<!--<img src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60" />-->
 	</div>
 	<h1 class="titre">{_T("Member profile")}</h1>
-	<div id="">
+	<div>
 {if $error_detected|@count != 0}
 		<div id="errorbox">
 			<h1>{_T("- ERROR -")}</h1>
@@ -51,7 +51,7 @@
 {/if}
 		<blockquote>
 {if !$head_redirect}
-		  <form action="self_adherent.php" method="post" enctype="multipart/form-data">
+		<form action="self_adherent.php" method="post" enctype="multipart/form-data">
 			<fieldset class="cssform">
 				<legend>{_T("Identity:")}</legend>
 				<p>
@@ -174,139 +174,17 @@
 				</p>
 			</fieldset>
 			{include file="display_dynamic_fields.tpl" is_form=true}
-        <div>
-			    <!--<table border="0" id="input-table">
-			    <tr>
-              <th class="libelle{if $required.titre_adh eq 1} required{/if}">{_T("Title:")}</th>
-              <td colspan="3">
-                {html_radios name="titre_adh" options=$radio_titres checked=$data.titre_adh separator="&nbsp;&nbsp;" disabled=$disabled.titre_adh}
-              </td>
-            </tr>
-            <tr>
-              <th class="libelle{if $required.nom_adh eq 1} required{/if}"><label for="nom_adh">{_T("Name:")}</label></th>
-              <td>
-                <input type="text" name="nom_adh" id="nom_adh" value="{$data.nom_adh}" maxlength="20" {$disabled.nom_adh}/>
-              </td>
-              <td colspan="2" rowspan="4" align="center">
-                {_T("You can prepare a picture to upload after sending")}
-                {_T("your fee.")}
-              </td>
-            </tr>
-            <tr>
-              <th class="libelle{if $required.prenom_adh eq 1} required{/if}"><label for="prenom_adh">{_T("First name:")}</label></th>
-              <td><input type="text" name="prenom_adh" id="prenom_adh" value="{$data.prenom_adh}" maxlength="20" {$disabled.prenom_adh}/></td>
-            </tr>
-            <tr>
-              <th class="libelle{if $required.pseudo_adh eq 1} required{/if}"><label for="pseudo_adh">{_T("Nickname:")}</label></th>
-              <td><input type="text" name="pseudo_adh" id="pseudo_adh" value="{$data.pseudo_adh}" maxlength="20" {$disabled.pseudo_adh}/></td>
-            </tr>
-            <tr>
-              <th class="libelle{if $required.ddn_adh eq 1} required{/if}"><label for="ddn_adh">{_T("birth date:")}</label></th>
-              <td>
-                <input type="text" name="ddn_adh" id="ddn_adh" value="{$data.ddn_adh}" maxlength="10" {$disabled.ddn_adh}/>
-                <div class="exemple">{_T("(dd/mm/yyyy format)")}</div>
-              </td>
-            </tr>
-            <tr>
-              <th class="libelle{if $required.prof_adh eq 1} required{/if}"><label for="prof_adh">{_T("Profession:")}</label></th>
-              <td><input type="text" name="prof_adh" id="prof_adh" value="{$data.prof_adh}" maxlength="150" {$disabled.prof_adh}/></td>
-            </tr>
-            <tr>
-              <th class="libelle{if $required.bool_display_info eq 1} required{/if}"><label for="bool_display_info">{_T("Be visible in the<br /> members list :")}</label></th>
-              <td><input type="checkbox" name="bool_display_info" id="bool_display_info" value="1" {if $data.bool_display_info eq 1}checked="checked"{/if} {$disabled.bool_display_info}/></td>
-              <th class="libelle{if $required.pref_lang eq 1} required{/if}"><label for="pref_lang">{_T("Language:")}</label></th>
-              <td>
-                <select name="pref_lang" id="pref_lang" onchange="javascript:updatelanguage();" {$disabled.pref_lang}>
-                {foreach key=langue item=langue_t from=$languages}
-                  <option value="{$langue}" {if $data.pref_lang eq $langue}selected="selected"{/if} style="padding-left: 30px; background-image: url(lang/{$langue}.gif); background-repeat: no-repeat">{$langue_t|capitalize}</option>
-                {/foreach}
-                </select>
-		<input type="hidden" name="update_lang" value="0" />
-              </td>
-            </tr>
-            <tr>
-              <th colspan="4" class="header">&nbsp;</th>
-            </tr>
-            <tr>
-              <th class="libelle{if $required.adresse_adh eq 1} required{/if}"><label for="adresse_adh">{_T("Address:")}</label><br /><label for="adresse2_adh">{_T("Address:")} {_T(" (continuation)")}</label></th>
-              <td colspan="3">
-                <input type="text" name="adresse_adh" id="adresse_adh" value="{$data.adresse_adh}" maxlength="150" size="63" {$disabled.adresse_adh}/><br/>
-                <input type="text" name="adresse2_adh" id="adresse2_adh" value="{$data.adresse2_adh}" maxlength="150" size="63" {$disabled.adresse2_adh}/>
-              </td>
-            </tr>
-            <tr>
-              <th class="libelle{if $required.cp_adh eq 1} required{/if}"><label for="cp_adh">{_T("Zip Code:")}</label></th>
-              <td><input type="text" name="cp_adh" id="cp_adh" value="{$data.cp_adh}" maxlength="10" {$disabled.cp_adh}/></td>
-              <th class="libelle{if $required.ville_adh eq 1} required{/if}"><label for="ville_adh">{_T("City:")}</label></th>
-              <td><input type="text" name="ville_adh" id="ville_adh" value="{$data.ville_adh}" maxlength="50" {$disabled.ville_adh}/></td>
-            </tr>
-            <tr>
-              <th class="libelle{if $required.pays_adh eq 1} required{/if}"><label for="pays_adh">{_T("Country:")}</label></th>
-              <td><input type="text" name="pays_adh" id="pays_adh" value="{$data.pays_adh}" maxlength="50" {$disabled.pays_adh}/></td>
-              <th class="libelle{if $required.tel_adh eq 1} required{/if}"><label for="tel_adh">{_T("Phone:")}</label></th>
-              <td><input type="text" name="tel_adh" id="tel_adh" value="{$data.tel_adh}" maxlength="20" {$disabled.tel_adh}/></td>
-            </tr>
-            <tr>
-              <th class="libelle{if $required.gsm_adh eq 1} required{/if}"><label for="gsm_adh">{_T("Mobile phone:")}</label></th>
-              <td><input type="text" name="gsm_adh" id="gsm_adh" value="{$data.gsm_adh}" maxlength="20" {$disabled.gsm_adh}/></td>
-              <th class="libelle{if $required.email_adh eq 1} required{/if}"><label for="email_adh">{_T("E-Mail:")}</label></th>
-              <td><input type="text" name="email_adh" id="email_adh" value="{$data.email_adh}" maxlength="150" size="30" {$disabled.email_adh}/></td>
-            </tr>
-            <tr>
-              <th class="libelle{if $required.url_adh eq 1} required{/if}"><label for="url_adh">{_T("Website:")}</label></th>
-              <td><input type="text" name="url_adh" id="url_adh" value="{$data.url_adh}" maxlength="200" size="30" {$disabled.url_adh}/></td>
-              <th class="libelle{if $required.icq_adh eq 1} required{/if}"><label for="icq_adh">{_T("ICQ:")}</label></th>
-              <td><input type="text" name="icq_adh" id="icq_adh" value="{$data.icq_adh}" maxlength="20" {$disabled.icq_adh}/></td>
-            </tr>
-            <tr>
-              <th class="libelle{if $required.jabber_adh eq 1} required{/if}"><label for="jabber_adh">{_T("Jabber:")}</label></th>
-              <td><input type="text" name="jabber_adh" id="jabber_adh" value="{$data.jabber_adh}" maxlength="150" size="30" {$disabled.jabber_adh}/></td>
-              <th class="libelle{if $required.msn_adh eq 1} required{/if}"><label for="msn_adh">{_T("MSN:")}</label></th>
-              <td><input type="text" name="msn_adh" id="msn_adh" value="{$data.msn_adh}" maxlength="150" size="30" {$disabled.msn_adh}/></td>
-            </tr>
-            <tr>
-              <th class="libelle{if $required.gpgid eq 1} required{/if}"><label for="gpgid">{_T("Id GNUpg (GPG):")}</label></th>
-              <td><input type="text" name="gpgid" id="gpgid" value="{$data.gpgid}" maxlength="8" size="8" {$disabled.gpgid}/></td>
-              <th  class="libelle{if $required.fingerprint eq 1} required{/if}"><label for="fingerprint">{_T("fingerprint:")}</label></th>
-              <td><input type="text" name="fingerprint" id="fingerprint" value="{$data.fingerprint}" maxlength="30" size="30" {$disabled.fingerprint}/></td>
-            </tr>
-            <tr>
-              <th colspan="4" class="header">&nbsp;</th>
-            </tr>
-            <tr>
-              <th  class="libelle{if $required.login_adh eq 1} required{/if}"><label for="login_adh">{_T("Username:")}</label></th>
-              <td>
-                <input type="text" name="login_adh" id="login_adh" value="{$data.login_adh}" maxlength="20" {$disabled.login_adh}/>
-                <div class="exemple">{_T("(at least 4 characters)")}</div>
-              </td>
-              <th class="libelle{if $required.mdp_adh eq 1} required{/if}"><label for="mdp_adh">{_T("Password:")}</label></th>
-              <td>
-                <input type="hidden" name="mdp_crypt" value="{$spam_pass}" />
-                <img src="{$spam_img}" alt="{_T("Passworg image")}" /><br />
-                <input type="text" name="mdp_adh" id="mdp_adh" value="" maxlength="20" {$disabled.mdp_adh}/><br/>{_T("Please repeat in the field the password shown in the image.")}
-              </td>
-            </tr>
-            <tr>
-              <th class="libelle{if $required.info_public_adh eq 1} required{/if}"><label for="info_public_adh">{_T("Other informations:")}</label></th>
-              <td colspan="3">
-                <textarea name="info_public_adh" id="info_public_adh" cols="61" rows="6" {$disabled.info_public_adh}>{$data.info_public_adh}</textarea>
-              </td>
-            </tr>
-{include file="display_dynamic_fields.tpl" is_form=true}
-            <tr>
-              <th align="center" colspan="4"><input type="submit" class="submit" value="{_T("Save")}"/></th>
-            </tr>
-          </table>-->
-	<input type="submit" class="submit" value="{_T("Save")}"/>
-          <input type="hidden" name="valid" value="1"/>
-        </div>
-      </form>
+		<div>
+			<input type="submit" class="submit" value="{_T("Save")}"/>
+			<input type="hidden" name="valid" value="1"/>
+		</div>
+	</form>
 {/if}
 
-	<div class="button-link button-back">
-		<a href="index.php">{_T("Back to login page")}</a>
-	</div>
-    </blockquote>
+		<div class="button-link button-back">
+			<a href="index.php">{_T("Back to login page")}</a>
+		</div>
+		</blockquote>
 {if !$head_redirect}
 		<p>{_T("NB : The mandatory fields are in")} <span class="required">{_T("red")}</span></p>
 {/if}

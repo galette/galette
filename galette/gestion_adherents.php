@@ -88,7 +88,7 @@
 			$error_detected[] = _T("No member was selected, please check at least one name.");
 	}
 
-	if ($_SESSION['galette']['pdf_error']) {
+	if (isset($_SESSION['galette']['pdf_error']) && $_SESSION['galette']['pdf_error']) {
 	    $error_detected[] = $_SESSION['galette']['pdf_error_msg'];
 	}
 	

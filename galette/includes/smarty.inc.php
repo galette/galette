@@ -11,4 +11,5 @@
 	$tpl->assign("template_subdir",$template_subdir);
 	$tpl->assign("PAGENAME",basename($_SERVER["SCRIPT_NAME"]));
 	$tpl->assign("GALETTE_VERSION",GALETTE_VERSION);
+	$tpl->assign('galette_lang', $short_language);
 ?>

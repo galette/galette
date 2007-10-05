@@ -1,5 +1,5 @@
 {html_doctype xhtml=true type=strict omitxml=false encoding=iso-8859-1}
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$galette_lang}" lang="{$galette_lang}">
 <head>
 	<title>Galette {$GALETTE_VERSION}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
