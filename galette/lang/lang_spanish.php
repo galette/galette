@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Wed Sep 12 20:59:32 2007 (GMT)
+// This file was automatically generated on Fri Oct  5 04:06:33 2007 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -651,8 +651,8 @@ $lang['- No originator selected (register a non-member first if necessary).'] = 
 // ../templates/default/preferences.tpl:188 
 $lang['Long Text (Bottom Line):'] = '';
 
-// ../templates/default/preferences.tpl:205 
-$lang['Board Members Color:'] = '';
+// ../install/index.php:1215 
+$lang['Galette has been successfully installed!'] = '¡Galette fue instalada con éxito!';
 
 // ../gestion_contributions.php:293 ../gestion_adherents.php:376 
 $lang['remaining days'] = 'día restante';
@@ -780,8 +780,8 @@ $lang['Begin.'] = 'Comenzar.';
 // ../templates/default/ajouter_adherent.tpl:123 ../templates/default/voir_adherent.tpl:76 
 $lang['Other informations (admin):'] = 'Otras informaciones (admin):';
 
-// ../install/index.php:178 
-$lang['You\'re installing Galette for the first time, or you wish to erase an older version of Galette without keeping your data'] = '¿Instala Galette por primera vez, o desea sustituir una versión antigua de Galette sin conservar sus datos?';
+// ../install/index.php:257 
+$lang['(for a file)'] = '(para un fichero)';
 
 // ../install/index.php:324 
 $lang['User:'] = 'Usuario:';
@@ -867,8 +867,8 @@ $lang['OFF'] = 'DESCONECTADO';
 // ../includes/i18n.inc.php:200 
 $lang['Benefactor member'] = 'Socio bienhechor';
 
-// ../install/index.php:1215 
-$lang['Galette has been successfully installed!'] = '¡Galette fue instalada con éxito!';
+// ../templates/default/preferences.tpl:205 
+$lang['Board Members Color:'] = '';
 
 // ../templates/default/gestion_contributions.tpl:1 
 $lang['Management of contributions'] = 'Gestión de contribuciones';
@@ -1125,9 +1125,6 @@ $lang['Your e-mail was sent to'] = 'Su correo ha sido enviado a';
 // ../install/index.php:501 
 $lang['INSERT operation allowed'] = 'Operación INSERT autorizada';
 
-// ../install/index.php:257 
-$lang['(for a file)'] = '(para un fichero)';
-
 // ../carte_adherent.php:117 
 $lang['Member\'s Cards'] = 'Los socios al día';
 
@@ -1246,7 +1243,7 @@ $lang['It is now possible to follow in real time the state of your subscription'
 $lang['Treasurer'] = 'Tesorero';
 
 // ../footer.php:136 ../templates/default/page.tpl:109 
-$lang['Membership will expire soon (&lt;30d)'] = 'La afiliación expirará pronto (<30d)';
+$lang['Membership will expire soon (&lt;30d)'] = 'La afiliación expirará pronto (&lt;30d)';
 
 // ../ajouter_adherent.php:186 
 $lang['- The passwords don\'t match!'] = '- ¡Las contraseñas no coinciden!';
@@ -1511,6 +1508,9 @@ $lang['- Check that all mandatory fields are filled in. ($fieldreq)'] = '- Verif
 
 // ../self_adherent.php:122 ../preferences.php:131 ../ajouter_adherent.php:172 
 $lang['- This username is already used by another member !'] = '- ¡Este nombre de usuario ya lo utiliza otro socio!';
+
+// ../install/index.php:178 
+$lang['You\'re installing Galette for the first time, or you wish to erase an older version of Galette without keeping your data'] = '¿Instala Galette por primera vez, o desea sustituir una versión antigua de Galette sin conservar sus datos?';
 
 // ../includes/i18n.inc.php:206 
 $lang['Company cotisation'] = 'Cuota empresarial';

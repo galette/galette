@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Wed Sep 12 20:59:32 2007 (GMT)
+// This file was automatically generated on Fri Oct  5 04:06:33 2007 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -651,8 +651,8 @@ $lang['- No originator selected (register a non-member first if necessary).'] = 
 // ../templates/default/preferences.tpl:188 
 $lang['Long Text (Bottom Line):'] = 'Texte du bandeau&nbsp;:';
 
-// ../templates/default/preferences.tpl:205 
-$lang['Board Members Color:'] = 'Couleur pour les membres du bureau&nbsp;:';
+// ../install/index.php:1215 
+$lang['Galette has been successfully installed!'] = 'Galette a été installé avec succès&nbsp;!';
 
 // ../gestion_contributions.php:293 ../gestion_adherents.php:376 
 $lang['remaining days'] = 'jour restant';
@@ -780,8 +780,8 @@ $lang['Begin.'] = 'Début';
 // ../templates/default/ajouter_adherent.tpl:123 ../templates/default/voir_adherent.tpl:76 
 $lang['Other informations (admin):'] = 'Autres informations (admin)&nbsp;:';
 
-// ../install/index.php:178 
-$lang['You\'re installing Galette for the first time, or you wish to erase an older version of Galette without keeping your data'] = 'Vous installez Galette pour la première fois, ou vous souhaitez écraser une ancienne version de Galette sans conserver vos données';
+// ../install/index.php:257 
+$lang['(for a file)'] = '(pour un fichier)';
 
 // ../install/index.php:324 
 $lang['User:'] = 'Utilisateur&nbsp;:';
@@ -867,8 +867,8 @@ $lang['OFF'] = 'Desactivé';
 // ../includes/i18n.inc.php:200 
 $lang['Benefactor member'] = 'Membre bienfaiteur';
 
-// ../install/index.php:1215 
-$lang['Galette has been successfully installed!'] = 'Galette a été installé avec succès&nbsp;!';
+// ../templates/default/preferences.tpl:205 
+$lang['Board Members Color:'] = 'Couleur pour les membres du bureau&nbsp;:';
 
 // ../templates/default/gestion_contributions.tpl:1 
 $lang['Management of contributions'] = 'Gestion des contributions';
@@ -1124,9 +1124,6 @@ $lang['Your e-mail was sent to'] = 'Votre courriel a été envoyé à';
 
 // ../install/index.php:501 
 $lang['INSERT operation allowed'] = 'Opération INSERT autorisée';
-
-// ../install/index.php:257 
-$lang['(for a file)'] = '(pour un fichier)';
 
 // ../carte_adherent.php:117 
 $lang['Member\'s Cards'] = 'Cartes de Membres';
@@ -1511,6 +1508,9 @@ $lang['- Check that all mandatory fields are filled in. ($fieldreq)'] = 'Veuille
 
 // ../self_adherent.php:122 ../preferences.php:131 ../ajouter_adherent.php:172 
 $lang['- This username is already used by another member !'] = '- Cet identifiant est déjà utilisé par un autre adhérent&nbsp;!';
+
+// ../install/index.php:178 
+$lang['You\'re installing Galette for the first time, or you wish to erase an older version of Galette without keeping your data'] = 'Vous installez Galette pour la première fois, ou vous souhaitez écraser une ancienne version de Galette sans conserver vos données';
 
 // ../includes/i18n.inc.php:206 
 $lang['Company cotisation'] = 'Cotisation entreprise';
