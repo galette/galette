@@ -89,6 +89,8 @@ if (isset($_POST["ident"]))
 			$loginfault = true;
 			dblog('Authentication failed', $_POST['login']);
 		}
+	}
+}
 
 if( !$login->isLogged() )
 {
