@@ -1,15 +1,15 @@
 <?php
 /**
- * Création des cartes d'adhérents au format PDF
+ * CrÃ©ation des cartes d'adhÃ©rents au format PDF
  *
- * La création des cartes au format pdf se fait soit
- * - depuis la page de gestion des adhérents en sélectionnant
- *   les adhérents  dans la liste
- * - depuis la page de visualisation d'un adhérent. Une seule
- *   carte est alors générée
+ * La crÃ©ation des cartes au format pdf se fait soit
+ * - depuis la page de gestion des adhÃ©rents en sÃ©lectionnant
+ *   les adhÃ©rents  dans la liste
+ * - depuis la page de visualisation d'un adhÃ©rent. Une seule
+ *   carte est alors gÃ©nÃ©rÃ©e
  *
- * Les couleurs sont définies dans l'écran des préférences
- * en utilisant des codes identiques à ceux utilisés en HTML.
+ * Les couleurs sont dÃ©finies dans l'Ã©cran des prÃ©fÃ©rences
+ * en utilisant des codes identiques Ã  ceux utilisÃ©s en HTML.
  *
  * @package    Galette
  * @author     John Perr <johnperr@abul.org>
@@ -37,18 +37,14 @@
 /**
  * 
  */
-    include("includes/config.inc.php");
-    include(WEB_ROOT."includes/database.inc.php"); 
-    include(WEB_ROOT."includes/session.inc.php");
+require_once('includes/galette.inc.php');
 
-    if ($_SESSION["logged_status"]==0) {
-        header("location: index.php");
-        die();
-    }
+if ($_SESSION["logged_status"]==0) {
+	header("location: index.php");
+	die();
+}
 
-    include_once(WEB_ROOT."includes/i18n.inc.php");
-    include_once(WEB_ROOT."includes/picture.class.php");
-    require_once(WEB_ROOT."classes/pdf.class.php");
+require_once(WEB_ROOT."classes/pdf.class.php");
 
 // Fill array $mailing_adh with selected ids
     $mailing_adh = array();

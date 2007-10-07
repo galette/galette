@@ -1,34 +1,40 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+{html_doctype xhtml=true type=strict omitxml=false encoding=iso-8859-1}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$galette_lang}" lang="{$galette_lang}">
-<head>
-	<title>Galette {$GALETTE_VERSION}</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
-	<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css"/>
-	{literal}
-	<script type="text/javascript">
-	<!--
-		function updatelanguage(){
-			//document.cookie = "pref_lang="+document.forms[0].pref_lang.value;
-			document.forms[0].update_lang.value=1;
-			document.forms[0].submit();
-		}
-	-->
-	</script>
-	{/literal}
+	<head>
+		<title>Galette {$GALETTE_VERSION}</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+		<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css"/>
+		<script type="text/javascript" src="{$jquery_dir}jquery-1.2.1.pack.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}jquery.bgFade.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}niftycube.js"></script>
+		<script type="text/javascript" src="{$scripts_dir}common.js"></script>
+{literal}
+		<script type="text/javascript">
+		<!--
+			function updatelanguage(){
+				//document.cookie = "pref_lang="+document.forms[0].pref_lang.value;
+				document.forms[0].update_lang.value=1;
+				document.forms[0].submit();
+			}
+		-->
+		</script>
+{/literal}
 {if $head_redirect}{$head_redirect}{/if}
-</head>
-<body>
-	<div class="center logo">
-		{if $smarty.session.customLogo}
+	</head>
+	<body>
+		<div id="main_logo">
+{if $smarty.session.customLogo}
 			<img src="photos/0.{$smarty.session.customLogoFormat}" alt="[ Galette ]"/>
-		{else}
+{else}
 			<img src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60"/>  
-		{/if}
-		<!--<img src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60" />-->
-	</div>
-	<h1 class="titre">{_T("Member profile")}</h1>
-	<div>
+{/if}
+		</div>
+		<h1 id="titre">{_T("Member profile")}</h1>
+		<ul class="menu m_subscribe">
+			<li id="backhome"><a href="index.php">{_T("Back to login page")}</a></li>
+			<li id="lostpassword"><a href="lostpasswd.php">{_T("Lost your password?")}</a></li>
+		</ul>
+		<div>
 {if $error_detected|@count != 0}
 		<div id="errorbox">
 			<h1>{_T("- ERROR -")}</h1>
@@ -52,6 +58,9 @@
 		<blockquote>
 {if !$head_redirect}
 		<form action="self_adherent.php" method="post" enctype="multipart/form-data">
+{if !$head_redirect}
+			<p>{_T("NB : The mandatory fields are in")} <span class="required">{_T("red")}</span></p>
+{/if}
 			<fieldset class="cssform">
 				<legend>{_T("Identity:")}</legend>
 				<p>
@@ -181,13 +190,7 @@
 	</form>
 {/if}
 
-		<div class="button-link button-back">
-			<a href="index.php">{_T("Back to login page")}</a>
-		</div>
 		</blockquote>
-{if !$head_redirect}
-		<p>{_T("NB : The mandatory fields are in")} <span class="required">{_T("red")}</span></p>
-{/if}
 		<div id="copyright">
 			<a href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
 		</div>

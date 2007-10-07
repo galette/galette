@@ -1,7 +1,7 @@
 <?php
 /* log.php
  * - Historique
- * Copyright (c) 2003 Frédéric Jaqcuot
+ * Copyright (c) 2003 FrÃ©dÃ©ric Jaqcuot
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,25 +19,19 @@
  *
  */
  
-	include("includes/config.inc.php"); 
-	include(WEB_ROOT."includes/database.inc.php");
-	include(WEB_ROOT."includes/session.inc.php");
+require_once('includes/galette.inc.php');
 
-	if ($_SESSION["logged_status"]==0)
-	{
-		header("location: index.php");
-		die();
-	}
-	if ($_SESSION["admin_status"]==0)
-	{
-		header("location: voir_adherent.php");
-		die();
-	}
-	
-	include(WEB_ROOT."includes/functions.inc.php"); 
-        include(WEB_ROOT."includes/i18n.inc.php");
-	include(WEB_ROOT."includes/smarty.inc.php");
-	
+if ($_SESSION["logged_status"]==0)
+{
+	header("location: index.php");
+	die();
+}
+if ($_SESSION["admin_status"]==0)
+{
+	header("location: voir_adherent.php");
+	die();
+}
+
 	$page = 1;
 	if (isset($_GET["page"]))
 		$page = $_GET["page"];
@@ -82,7 +76,7 @@
 	elseif ($_SESSION["tri_log"]=="1")
 		$requete[0] .= "ip_log ".$tri_log_sens_txt.",";
 
-	// tri par adhérent
+	// tri par adhï¿½rent
 	elseif ($_SESSION["tri_log"]=="2")
 		$requete[0] .= "adh_log ".$tri_log_sens_txt.",";
 

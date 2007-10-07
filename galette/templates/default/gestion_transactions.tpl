@@ -1,4 +1,4 @@
-		<h1 class="titre">{_T("Management of transactions")}</h1>
+		<h1 id="titre">{_T("Management of transactions")}</h1>
 		<form action="gestion_transactions.php" method="get" name="filtre">
 		<table class="infoline" width="100%">
 			<tr>
@@ -94,8 +94,8 @@
 			<td class="cotis-ok" nowrap="nowrap">{$transaction.trans_amount}</td>
 {if $smarty.session.admin_status eq 1}
 			<td width="55" class="cotis-ok center" nowrap="nowrap">
-				<a href="ajouter_transaction.php?trans_id={$transaction.trans_id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></a>
-				<a onclick="return confirm('{_T("Do you really want to delete this transaction of the database ?")|escape:"javascript"}')" href="gestion_transactions.php?sup={$transaction.trans_id}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></a>
+				<a href="ajouter_transaction.php?trans_id={$transaction.trans_id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" width="16" height="16"/></a>
+				<a onclick="return confirm('{_T("Do you really want to delete this transaction of the database ?")|escape:"javascript"}')" href="gestion_transactions.php?sup={$transaction.trans_id}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" width="16" height="16"/></a>
 			</td>
 {/if}
 		</tr>

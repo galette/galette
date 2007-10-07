@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div class="login-box">
-		<h1 class="titre">{_T("Password recovery")}</h1>
+		<h1 id="titre">{_T("Password recovery")}</h1>
 {if $error_detected|@count != 0}
 		<div id="errorbox">
 			<h1>{_T("- ERROR -")}</h1>

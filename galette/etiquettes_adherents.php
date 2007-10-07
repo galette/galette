@@ -1,17 +1,17 @@
 <?php
 /**
- * Generation d'un PDF d'étiquettes
+ * Generation d'un PDF d'Ã©tiquettes
  *
- * La création des étiquettes au format pdf se fait 
- * depuis la page de gestion des adhérents en sélectionnant
- *   les adhérents  dans la liste
+ * La crÃ©ation des Ã©tiquettes au format pdf se fait 
+ * depuis la page de gestion des adhÃ©rents en sÃ©lectionnant
+ *   les adhÃ©rents  dans la liste
  *
- * Le format des étiquettes et leur mise en page est définie
- * dans l'écran des préférences
+ * Le format des Ã©tiquettes et leur mise en page est dÃ©finie
+ * dans l'Ã©cran des prÃ©fÃ©rences
  *
  * @package    Galette
- * @author     Frédéric Jaqcuot
- * @copyright  2004 Frédéric Jaqcuot
+ * @author     FrÃ©dÃ©ric Jaqcuot
+ * @copyright  2004 FrÃ©dÃ©ric Jaqcuot
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0
  * @version    $Id$
  * @since      Disponible depuis la Release 0.62
@@ -36,21 +36,18 @@
  * 
  */
 
-	include("includes/config.inc.php");
-	include(WEB_ROOT."includes/database.inc.php"); 
-	include(WEB_ROOT."includes/session.inc.php");
+require_once('includes/galette.inc.php');
 
-	if ($_SESSION["logged_status"]==0) {
-		header("location: index.php");
-		die();
-	}
-	if ($_SESSION["admin_status"]==0) {
-		header("location: voir_adherent.php");
-		die();
-	}
+if ($_SESSION["logged_status"]==0) {
+	header("location: index.php");
+	die();
+}
+if ($_SESSION["admin_status"]==0) {
+	header("location: voir_adherent.php");
+	die();
+}
 
-	include_once(WEB_ROOT."includes/i18n.inc.php");
-    require_once (WEB_ROOT."classes/pdf.class.php");
+require_once (WEB_ROOT."classes/pdf.class.php");
 	
 	$mailing_adh = array();
 	if (isset($_SESSION['galette']['labels'])) {

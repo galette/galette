@@ -1,4 +1,4 @@
-		<h1 class="titre">{_T("New transaction")}</h1>
+		<h1 id="titre">{_T("New transaction")}</h1>
 		<form action="ajouter_transaction.php" method="post">
 {if $error_detected|@count != 0}
 		<div id="errorbox">

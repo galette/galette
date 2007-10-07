@@ -1,4 +1,4 @@
-		<h1 class="titre">{_T("Profile configuration")}{if $form_title != ''} ({$form_title}){/if}</h1>
+		<h1 id="titre">{_T("Profile configuration")}{if $form_title != ''} ({$form_title}){/if}</h1>
 		<form action="configurer_fiches.php" method="post" enctype="multipart/form-data">
 {if $error_detected|@count != 0}
 		<div id="errorbox">
@@ -40,25 +40,25 @@
 				<td class="listing left">{$field.pos}</td>
 				<td class="listing center">
 {if $field.no_data}
-					<img src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="12" height="13"/>
+					<img src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="16" height="16"/>
 {else}
-					<a href="editer_champ.php?form={$form_name}&amp;id={$field.id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></a>
+					<a href="editer_champ.php?form={$form_name}&amp;id={$field.id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" width="16" height="16"/></a>
 {/if}
 					<a onclick="return confirm('{_T("Do you really want to delete this category ?\\n All associated data will be deleted as well.")|escape:"javascript"}')" href="configurer_fiches.php?form={$form_name}&amp;del={$field.id}">
-					<img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/>
+					<img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" width="16" height="16"/>
 					</a>
 {if $field.index eq 1}
-					<img src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="9" height="13"/>
+					<img src="{$template_subdir}images/icon-empty.png" alt="" width="9" height="8"/>
 {else}
 					<a href="configurer_fiches.php?form={$form_name}&amp;up={$field.id}">
-					<img src="{$template_subdir}images/icon-up.png" alt="{_T("[up]")}" border="0" width="9" height="8"/>
+					<img src="{$template_subdir}images/icon-up.png" alt="{_T("[up]")}" width="9" height="8"/>
 					</a>
 {/if}
 {if $field.index eq $dyn_fields|@count}
-					<img src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="9" height="13"/>
+					<img src="{$template_subdir}images/icon-empty.png" alt="" width="9" height="8"/>
 {else}
 					<a href="configurer_fiches.php?form={$form_name}&amp;down={$field.id}">
-					<img src="{$template_subdir}images/icon-down.png" alt="{_T("[down]")}" border="0" width="9" height="8"/>
+					<img src="{$template_subdir}images/icon-down.png" alt="{_T("[down]")}" width="9" height="8"/>
 					</a>
 {/if}
 				</td>

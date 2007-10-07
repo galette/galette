@@ -1,7 +1,7 @@
 <?php
 /* lostpasswd.php
  * - Lost password
- * Copyright (c) 2004 St�phane Sal�s
+ * Copyright (c) 2004 Stéphane Salès
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,12 +19,7 @@
  *
  */
 
-	include("includes/config.inc.php");
-	include(WEB_ROOT."includes/database.inc.php");
-	include(WEB_ROOT."includes/functions.inc.php");
-	include(WEB_ROOT."includes/session.inc.php");
-  include_once(WEB_ROOT."includes/i18n.inc.php");
-  include_once(WEB_ROOT."includes/smarty.inc.php");
+require_once('includes/galette.inc.php');
 
 	// initialize warnings
 	$error_detected = array();

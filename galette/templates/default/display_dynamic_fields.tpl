@@ -1,6 +1,6 @@
 {if $is_form eq true}
 <fieldset class="cssform">
-	<legend>{_T("Additionnal informations:")}</legend>
+	<legend>{_T("Additionnal fields:")}</legend>
 {/if}
 {foreach from=$dynamic_fields item=field}
 {if $field.field_perm ne 1 || $smarty.session.admin_status eq 1}
@@ -37,8 +37,9 @@
 					<input type="text" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}"
 					{if $field.field_width > 0}size="{$field.field_width}"{/if}
 					{if $field.field_size > 0}maxlength="{$field.field_size}"{/if}
-					value="{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|escape}" size="63" {$disabled.dyn[$field.field_id]}/>
+					value="{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|escape}" size="50" {$disabled.dyn[$field.field_id]}/>
 			{elseif $field.field_type eq 3}
+					<!-- FIXME: if no option present, page is not XHTML compliant -->
 					<select name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}">
 						{html_options options=$field.choices selected=$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}
 					</select>

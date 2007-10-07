@@ -1,50 +1,60 @@
 {html_doctype xhtml=true type=strict omitxml=false encoding=iso-8859-1}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$galette_lang}" lang="{$galette_lang}">
-<head>
-	<title>Galette {$GALETTE_VERSION}</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
-	<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css"/>
-</head>
-<body>
-	<div class="login-box">
-		<h1 class="titre">{_T("Password recovery")}</h1>
-{if $error_detected|@count != 0}
-		<div id="errorbox">
-			<h1>{_T("- ERROR -")}</h1>
-			<ul>
-{foreach from=$error_detected item=error}
-				<li>{$error}</li>
-{/foreach}
-			</ul>
+	<head>
+		<title>Galette {$GALETTE_VERSION}</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+		<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css"/>
+		<script type="text/javascript" src="{$jquery_dir}jquery-1.2.1.pack.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}jquery.bgFade.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}niftycube.js"></script>
+		<script type="text/javascript" src="{$scripts_dir}common.js"></script>
+	</head>
+	<body>
+		<div id="main_logo">
+{if $smarty.session.customLogo}
+			<img src="photos/0.{$smarty.session.customLogoFormat}" height="{$smarty.session.customLogoHeight}" width="{$smarty.session.customLogoWidth}" alt="[ Galette ]"/>
+{else}
+			<img src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60"/>
+{/if}
 		</div>
+
+		<div class="login-box">
+			<h1 id="titre">{_T("Password recovery")}</h1>
+{if $error_detected|@count != 0}
+			<div id="errorbox">
+				<h1>{_T("- ERROR -")}</h1>
+				<ul>
+{foreach from=$error_detected item=error}
+					<li>{$error}</li>
+{/foreach}
+				</ul>
+			</div>
 {/if}
 {if $warning_detected|@count != 0}
-		<div id="warningbox">
-			<h1>{_T("- WARNING -")}</h1>
-			<ul>
+			<div id="warningbox">
+				<h1>{_T("- WARNING -")}</h1>
+				<ul>
 {foreach from=$warning_detected item=warning}
-				<li>{$warning}</li>
+					<li>{$warning}</li>
 {/foreach}
-			</ul>
-		</div>
+				</ul>
+			</div>
 {/if}
-		<form action="lostpasswd.php" method="post" enctype="multipart/form-data">
-		<table>
-			<tr>
-				<th>{_T("Username or email:")}</th>
-				<td><input type="text" name="login" maxlength="50" /></td>
-			</tr>
-		</table>
-		<div>
-			<input type="submit" class="submit" name="lostpasswd" value="{_T("Send me my password")}" />
-			<input type="hidden" name="valid" value="1"/>
+			<form action="lostpasswd.php" method="post" enctype="multipart/form-data">
+				<div>
+					<label for="login" class="">{_T("Username or email:")}</label>
+					<input type="text" name="login" id="login" maxlength="50" />
+					<input type="submit" class="submit" name="lostpasswd" value="{_T("Send me my password")}" />
+					<input type="hidden" name="valid" value="1"/>
+					<ul class="menu">
+						<li id="subscribe"><a href="self_adherent.php">{_T("Subscribe")}</a></li>
+						<li id="backhome"><a href="index.php">{_T("Back to login page")}</a></li>
+					</ul>
+				</div>
+			</form>
 		</div>
-		</form>
-	</div>
-	<div class="button-container">
-		<div class="button-link button-back">
-			<a href="index.php">{_T("Back to login page")}</a>
+		<div id="copyright">
+			<a href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
 		</div>
-	</div>
-</body>
+	</body>
 </html>

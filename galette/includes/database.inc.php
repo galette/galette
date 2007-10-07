@@ -1,6 +1,4 @@
 <?php
-	define("GALETTE_VERSION", "v0.7alpha");
-
 	/*
 	*@author steve gricci
 	*@access public

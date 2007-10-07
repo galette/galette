@@ -1,4 +1,4 @@
-		<h1 class="titre">{_T("Member Profile")} ({if $data.id_adh != ""}{_T("modification")}{else}{_T("creation")}{/if})</h1>
+		<h1 id="titre">{_T("Member Profile")} ({if $data.id_adh != ""}{_T("modification")}{else}{_T("creation")}{/if})</h1>
 		<form action="ajouter_adherent.php" method="post" enctype="multipart/form-data" id="form"> 
 {if $error_detected|@count != 0}
 		<div id="errorbox">
@@ -138,8 +138,8 @@
 				<legend>{_T("Contact information:")}</legend>
 				<p>
 					<label for="adresse_adh" class="bline{if $required.adresse_adh eq 1} required{/if}">{_T("Address:")}</label>
-					<input type="text" name="adresse_adh" id="adresse_adh" value="{$data.adresse_adh}" maxlength="150" size="63" {$disabled.adresse_adh}/><br/>
-					<input class="labelalign" type="text" name="adresse2_adh" value="{$data.adresse2_adh}" maxlength="150" size="63" {$disabled.adresse2_adh}/>
+					<input type="text" name="adresse_adh" id="adresse_adh" value="{$data.adresse_adh}" maxlength="150" size="50" {$disabled.adresse_adh}/><br/>
+					<input class="labelalign" type="text" name="adresse2_adh" value="{$data.adresse2_adh}" maxlength="150" size="50" {$disabled.adresse2_adh}/>
 				</p>
 				<p>
 					<label for="cp_adh" class="bline{if $required.cp_adh eq 1} required{/if}">{_T("Zip Code:")}</label>

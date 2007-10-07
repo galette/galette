@@ -17,8 +17,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  * @package    Galette
- * @author     Frédéric Jaqcuot
- * @copyright  2004 Frédéric Jaqcuot
+ * @author     FrÃ©dÃ©ric Jaqcuot
+ * @copyright  2004 FrÃ©dÃ©ric Jaqcuot
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0
  * @version    $Id$
  * @since      Disponible depuis la Release 0.62
@@ -43,20 +43,18 @@
  * 
  */
 
-	require_once('includes/session.inc.php');
+require_once('includes/galette.inc.php');
 
-	if ($_SESSION["logged_status"]==0)
-	{
-		header("location: index.php");
-		die();
-	}
+if ($_SESSION["logged_status"]==0)
+{
+	header("location: index.php");
+	die();
+}
 
-	require_once('includes/picture.class.php');
-
-	if ($_SESSION["admin_status"]==0)
-		$id_adh = $_SESSION["logged_id_adh"];
-	else
-		$id_adh = $_GET['id_adh'];
+if ($_SESSION["admin_status"]==0)
+	$id_adh = $_SESSION["logged_id_adh"];
+else
+	$id_adh = $_GET['id_adh'];
 
 	$picture = new picture($id_adh);
 	$picture->display();

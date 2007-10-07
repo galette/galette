@@ -1,4 +1,4 @@
-		<h1 class="titre">{_T("Mailing")}</h1>
+		<h1 id="titre">{_T("Mailing")}</h1>
 		<!--
 		attribute name for form element is forbiden in xhtml strict
 		<form action="mailing_adherents.php" method="post" name="listform">

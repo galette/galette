@@ -31,32 +31,23 @@
  * @copyright  2007 Johan Cwiklinski
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0 or (at your option) any later version
  * @version    $Id$
- * @since      Disponible depuis la Release 0.63
+ * @since      Disponible depuis la Release 0.7alpha
  */
 
-/** TODO
-* - The above constant should be defined at higher level
-* - all errors messages should be handled by pear::log
-*/
-set_include_path(get_include_path() . PATH_SEPARATOR . WEB_ROOT . "includes/pear/" . PATH_SEPARATOR . WEB_ROOT . "includes/pear/PEAR/" . PATH_SEPARATOR . WEB_ROOT . "includes/pear/MDB2");
-
-require_once("MDB2.php");
-
-
 /**
- * Required class for galette
+ * Required class for galette :
+ * defines which fields are mandatory and which are not.
  *
  * @name Required
  * @package Galette
  *
  */
-
 class Required{
 	private $all_required;
 	private $error = array();
 	private $db;
 	private $fields = array();
-	const TABLE = "required";
+	const TABLE = 'required';
 
 	private $defaults = array(
 		'titre_adh',
@@ -69,26 +60,7 @@ class Required{
 	);
 	
 	function __construct(){
-		$dsn = TYPE_DB.'://'.USER_DB.':'.PWD_DB.'@'.HOST_DB.'/'.NAME_DB;
-		//$dsn = 'mysqli://'.USER_DB.':'.PWD_DB.'@'.HOST_DB.'/'.NAME_DB;
-		$options = array(
-			'debug'       => 2,
-			'portability' => MDB2_PORTABILITY_ALL,
-		);
-		
-		$this->db = & MDB2::connect($dsn, $options);
-		// Vérification des erreurs
-		if (MDB2::isError($this->db)) {
-			echo $this->db->getDebugInfo().'<br/>';
-			echo $this->db->getMessage();
-		}
-		$this->db->setFetchMode(MDB2_FETCHMODE_OBJECT);
-
 		$this->checkUpdate();
-	}
-
-	function __destruct(){
-		$this->db->disconnect();
 	}
 
 	/**
@@ -97,22 +69,33 @@ class Required{
 	* has been modified.
 	*/
 	private function checkUpdate(){
-		if ($this->db->getOption('result_buffering')){
-			$requete = "SELECT * FROM ".PREFIX_DB."adherents LIMIT 1";
-			$result2 = $this->db->query( $requete );
+		global $mdb2_db;
+		if ($mdb2_db->getOption('result_buffering')){
+			$requete = 'SELECT * FROM ' . PREFIX_DB . Adherents::TABLE . ' LIMIT 1';
+
+			/** TODO: what to do on error ? */
+			if( !$result2 = $mdb2_db->query( $requete ) )
+				return -1;
+
+			/*$result2 = $this->db->query( $requete );
 			// Vérification des erreurs
 			if (MDB2::isError($result2)) {
 				echo $result2->getDebugInfo().'<br/>';
 				echo $result2->getMessage();
-			}
+			}*/
 
-			$requete = "SELECT * FROM ".PREFIX_DB.self::TABLE;
-			$result = $this->db->query( $requete );
+			$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE;
+
+			/** TODO: what to do on error ? */
+			if( !$result = $mdb2_db->query( $requete ) )
+				return -1;
+
+			/*$result = $this->db->query( $requete );
 			// Vérification des erreurs
 			if (MDB2::isError($result)) {
 				echo $result->getDebugInfo().'<br/>';
 				echo $result->getMessage();
-			}
+			}*/
 			
 			if($result->numRows()==0){
 				$this->init();
@@ -145,26 +128,41 @@ class Required{
 	* initialisation, value should be off.
 	*/
 	function init($reinit=false){
+		global $mdb2_db;
 		if($reinit){
-			$requetesup = "DELETE FROM ".PREFIX_DB."required";
-			$this->db->query( $requetesup );
+			$requetesup = 'DELETE FROM ' . PREFIX_DB . self::TABLE;
+			/** TODO: what to do on error ? */
+			if( !$init_result = $mdb2_db->query( $requete ) )
+				return -1;
+			//$this->db->query( $requetesup );
 		}
 	
-		$requete = "SELECT * FROM ".PREFIX_DB."adherents LIMIT 1";
-		$result = $this->db->query( $requete );
+		$requete = 'SELECT * FROM ' . PREFIX_DB . Adherents::TABLE . ' LIMIT 1';
+
+		/** TODO: what to do on error ? */
+		if( !$result = $mdb2_db->query( $requete ) )
+			return -1;
+
+		/*$result = $this->db->query( $requete );
 		// Vérification des erreurs
 		if (MDB2::isError($result)) {
 			echo $result->getDebugInfo().'<br/>';
 			echo $result->getMessage();
-		}
+		}*/
+
 		$fields = $result->getColumnNames();
 
 		$f = array();
 		foreach($fields as $key=>$value){
-			$f[] = array("id" => $key,"required" => (($reinit)?array_key_exists($key, $this->all_required):in_array($key, $this->defaults)?true:false));
+			$f[] = array('id' => $key, 'required' => (($reinit)?array_key_exists($key, $this->all_required):in_array($key, $this->defaults)?true:false));
 		}
 
-		$stmt = $this->db->prepare('INSERT INTO '.PREFIX_DB.'required (field_id, required) VALUES(:id, :required)', array('text', 'boolean'), MDB2_PREPARE_MANIP);
+		$stmt = $mdb2_db->prepare(
+				'INSERT INTO ' . PREFIX_DB . self::TABLE . ' (field_id, required) VALUES(:id, :required)',
+				array('text', 'boolean'),
+				MDB2_PREPARE_MANIP
+			);
+
 		foreach ($f as $row){
 			/** TODO :
 			* Informer dans le log que la table des required a été mise à jour
@@ -195,29 +193,37 @@ class Required{
 	*/
 	public function setRequired($value){
 		//set required fields
-		$requete = "UPDATE ".PREFIX_DB."required SET required=1 WHERE field_id='";
-		$requete .= implode("' OR field_id='", $value);
-		$requete .= "'";
+		$requete = 'UPDATE ' . PREFIX_DB . self::TABLE . ' SET required=1 WHERE field_id=\'';
+		$requete .= implode('\' OR field_id=\'', $value);
+		$requete .= '\'';
 
-		$result = $this->db->query( $requete );
+		/** TODO: what to do on error ? */
+		if( !$result = $mdb2_db->query( $requete ) )
+			return -1;
+
+		/*$result = $this->db->query( $requete );
 		// Vérification des erreurs
 		if (MDB2::isError($result)) {
 			echo $result->getDebugInfo().'<br/>';
 			echo $result->getMessage();
-		}
+		}*/
 
 		//set not required fields (ie. all others...)
 		$not_required = array_diff($this->fields, $value);
-		$requete2 = "UPDATE ".PREFIX_DB."required SET required=0 WHERE field_id='";
-		$requete2 .= implode("' OR field_id='", $not_required);
-		$requete2 .= "'";
+		$requete2 = 'UPDATE ' . PREFIX_DB . self::TABLE . ' SET required=0 WHERE field_id=\'';
+		$requete2 .= implode('\' OR field_id=\'', $not_required);
+		$requete2 .= '\'';
 
-		$result = $this->db->query( $requete2 );
+		/** TODO: what to do on error ? */
+		if( !$result = $mdb2_db->query( $requete2 ) )
+			return -1;
+
+		/*$result = $this->db->query( $requete2 );
 		// Vérification des erreurs
 		if (MDB2::isError($result)) {
 			echo $result->getDebugInfo().'<br/>';
 			echo $result->getMessage();
-		}
+		}*/
 
 		$this->checkUpdate();
 	}

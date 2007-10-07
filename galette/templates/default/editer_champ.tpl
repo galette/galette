@@ -1,4 +1,4 @@
-		<h1 class="titre">{_T("Edit field")}</h1>
+		<h1 id="titre">{_T("Edit field")}</h1>
 		<form action="editer_champ.php" method="post"> 						
 {if $error_detected|@count != 0}
 		<div id="errorbox">

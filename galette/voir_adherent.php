@@ -1,16 +1,16 @@
 <?php // -*- Mode: PHP; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 /** 
- * Visualisation d'un adhérent
+ * Visualisation d'un adhÃ©rent
  *
- * Affichage des cractéristiques d'un adhérents et possibilités de :
- * - Modifier ces caractéristiques
+ * Affichage des cractÃ©ristiques d'un adhÃ©rent et possibilitÃ©s de :
+ * - Modifier ces caractÃ©ristiques
  * - De visualiser les contributions
  * - De saisir une contribution
- * - De gébérer la carte de membre en pdf
+ * - De gÃ©nÃ©rer la carte de membre en pdf
  * 
  * @package    Galette
- * @author     Frédéric Jaqcuot
- * @copyright  2003 Frédéric Jaqcuot
+ * @author     FrÃ©dÃ©ric Jaqcuot
+ * @copyright  2003 FrÃ©dÃ©ric Jaqcuot
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0
  * @version    $Id$
  * @since      Disponible depuis la Release 0.60
@@ -35,34 +35,28 @@
  * 
  */
  
-	include("includes/config.inc.php"); 
-	include(WEB_ROOT."includes/database.inc.php");
-    include(WEB_ROOT."includes/session.inc.php");
+require_once('includes/galette.inc.php');
 
-	if ($_SESSION["logged_status"]==0) {
-		header("location: index.php");
-		die();
-	}
+if ($_SESSION["logged_status"]==0) {
+	header("location: index.php");
+	die();
+}
 
-	include(WEB_ROOT."includes/functions.inc.php");
-	$id_adh = get_numeric_form_value("id_adh", "");
+$id_adh = get_numeric_form_value("id_adh", "");
 
-	if ($_SESSION["admin_status"]==0)
-		$id_adh = $_SESSION["logged_id_adh"];
+if ($_SESSION["admin_status"]==0)
+	$id_adh = $_SESSION["logged_id_adh"];
 
-	if ($id_adh=="") {
-		header("location: index.php");
-		die();
-	}
-	if ($_SESSION['galette']['pdf_error']) {
-	    $error_detected[] = $_SESSION['galette']['pdf_error_msg'];
-	}
+if ($id_adh=="") {
+	header("location: index.php");
+	die();
+}
+if ($_SESSION['galette']['pdf_error']) {
+	$error_detected[] = $_SESSION['galette']['pdf_error_msg'];
+}
 
-    include_once("includes/i18n.inc.php"); 
-	include(WEB_ROOT."includes/smarty.inc.php");
-	include(WEB_ROOT."includes/dynamic_fields.inc.php");
+include(WEB_ROOT."includes/dynamic_fields.inc.php");
 
-	require_once('includes/picture.class.php');
 // Set caller page ref for cards error reporting	
     $_SESSION['galette']['caller']='voir_adherent.php?id_adh='.$id_adh;	
 
@@ -144,6 +138,7 @@
 	
 	$adherent['pref_lang_img'] = 'lang/'.$adherent['pref_lang'].'.gif';
 	$adherent['pref_lang'] = ucfirst(_T($adherent['pref_lang']));
+	/** FIXME: PREF_CARD_SELF is not defined */
 	$adherent['pref_card_self'] = PREF_CARD_SELF;
 
 	// picture size
@@ -151,7 +146,8 @@
 	$adherent['picture_height'] = $picture->getOptimalHeight();
 	$adherent['picture_width'] = $picture->getOptimalWidth();
 	
-	$tpl->assign("error_detected",$error_detected);
+	if(isset($error_detected))
+		$tpl->assign("error_detected",$error_detected);
 	$tpl->assign("data",$adherent);
 	$tpl->assign("dynamic_fields",$dynamic_fields);
 	$tpl->assign("time",time());

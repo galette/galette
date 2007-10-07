@@ -45,8 +45,10 @@ $short_languages = array(
 			'spanish'	=>	'es'
 		);
 
-$language=$languages[$pref_lang];
-$short_language = $short_languages[$pref_lang];
+$language = $i18n->getFileName();
+$short_language = $i18n->getAbbrev();
+// $language=$languages[$pref_lang];
+// $short_language = $short_languages[$pref_lang];
 
 setlocale(LC_CTYPE, $language);
 
@@ -147,7 +149,7 @@ function get_dynamic_translation($DB, $text_orig, $text_locale)
 /*FIXME : $loc undefined*/
 if ( (isset($loc) && $loc!=$language) || $disable_gettext)
 {
-        include(WEB_ROOT."lang/lang_".$pref_lang.".php");
+        include(WEB_ROOT."lang/lang_".$language.".php");
         //echo "<font color='red'>Warning:</font> locale $language is probably not intalled on the server.<br>";
 }
 
@@ -218,5 +220,12 @@ $foo=_T("Partnership");
 $foo=_T("french");
 $foo=_T("english");
 $foo=_T("spanish");
-
+//Added 07/10/2007
+$foo = _T("annual fee");
+$foo = _T("annual fee (to be paid)");
+$foo = _T("company fee");
+$foo = _T("donation in kind");
+$foo = _T("donation in money");
+$foo = _T("partnership");
+$foo = _T("reduced annual fee");
 ?>

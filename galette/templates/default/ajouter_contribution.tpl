@@ -1,4 +1,4 @@
-		<h1 class="titre">{_T("Contribution card")} ({if $data.id_cotis != ""}{_T("modification")}{else}{_T("creation")}{/if})</h1>
+		<h1 id="titre">{_T("Contribution card")} ({if $data.id_cotis != ""}{_T("modification")}{else}{_T("creation")}{/if})</h1>
 		<form action="ajouter_contribution.php" method="post">
 {if $error_detected|@count != 0}
 		<div id="errorbox">
@@ -12,25 +12,27 @@
 {/if}
 		<blockquote>
 		<div align="center">
+			<fieldset class="cssform">
+				<legend>{_T("Select contributor and contribution type")}</legend>
+				<p>
+					<label for="id_adh" class="bline{if $required.id_adh eq 1} required{/if}">{_T("Contributor:")}</label>
+					<select name="id_adh" id="id_adh">
+						{if $adh_selected eq 0}
+						<option value="0">{_T("-- select a name --")}</option>
+						{/if}
+						{html_options options=$adh_options selected=$data.id_adh}
+					</select>
+				</p>
+				<p>
+					<label for="id_type_cotis" class="bline{if $required.id_type_cotis eq 1} required{/if}">{_T("Contribution type:")}</label>
+					<select name="id_type_cotis" id="id_type_cotis"
+						{if $type_selected eq 0}onchange="form.submit()"{/if}>
+						{html_options options=$type_cotis_options selected=$data.id_type_cotis}
+					</select>
+				</p>
+			</fieldset>
+
 			<table border="0" id="input-table">
-				<tr>
-					<th {if $required.id_adh eq 1}style="color: #FF0000;"{/if} class="libelle">{_T("Contributor:")}</th>
-					<td>
-						<select name="id_adh">
-							{if $adh_selected eq 0}
-							<option value="0">{_T("-- select a name --")}</option>
-							{/if}
-							{html_options options=$adh_options selected=$data.id_adh}
-						</select>
-					</td>
-					<th {if $required.id_type_cotis eq 1}style="color: #FF0000;"{/if} class="libelle">{_T("Contribution type:")}</th>
-					<td>
-						<select name="id_type_cotis"
-							{if $type_selected eq 0}onchange="form.submit()"{/if}>
-							{html_options options=$type_cotis_options selected=$data.id_type_cotis}
-						</select>
-					</td>
-				</tr>
 				{if $type_selected eq 1}
 				<tr>
 					<th {if $required.montant_cotis eq 1}style="color: #FF0000;"{/if} class="libelle">{_T("Amount:")}</th>
@@ -86,17 +88,16 @@
 				</tr>
 				{/if} {* $type_selected eq 1 *}
 			</table>
+			<input type="hidden" name="id_cotis" value="{$data.id_cotis}"/>
+			<input type="hidden" name="trans_id" value="{$data.trans_id}"/>
+			{if $type_selected eq 1}
+			<input type="hidden" name="valid" value="1"/>
+			{else}
+			<input type="hidden" name="montant_cotis" value="{$data.montant_cotis}"/>
+			{/if} {* $type_selected eq 1 *}
+			<input type="hidden" name="type_selected" value="1"/>
+			<input type="hidden" name="cotis_extension" value="{$cotis_extension}"/>
 		</div>
-		<br/>
-		{_T("NB : The mandatory fields are in")} <font style="color: #FF0000">{_T("red")}</font>.
+		<p>{_T("NB : The mandatory fields are in")} <span class="required">{_T("red")}</span></p>
 		</blockquote>
-		<input type="hidden" name="id_cotis" value="{$data.id_cotis}"/>
-		<input type="hidden" name="trans_id" value="{$data.trans_id}"/>
-		{if $type_selected eq 1}
-		<input type="hidden" name="valid" value="1"/>
-		{else}
-		<input type="hidden" name="montant_cotis" value="{$data.montant_cotis}"/>
-		{/if} {* $type_selected eq 1 *}
-		<input type="hidden" name="type_selected" value="1"/>
-		<input type="hidden" name="cotis_extension" value="{$cotis_extension}"/>
 		</form>

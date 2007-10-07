@@ -19,27 +19,22 @@
  *
  */
  
-	include("includes/config.inc.php");
-	include(WEB_ROOT."includes/database.inc.php"); 
-	include(WEB_ROOT."includes/session.inc.php");
+require_once('includes/galette.inc.php');
 
-	if ($_SESSION["logged_status"]==0)
-	{
-		header("location: index.php");
-		die();
-	}
-	if ($_SESSION["admin_status"]==0)
-	{
-		header("location: voir_adherent.php");
-		die();
-	}
+if ($_SESSION["logged_status"]==0)
+{
+	header("location: index.php");
+	die();
+}
+if ($_SESSION["admin_status"]==0)
+{
+	header("location: voir_adherent.php");
+	die();
+}
 	
-	include(WEB_ROOT."includes/functions.inc.php"); 
-        include(WEB_ROOT."includes/i18n.inc.php");
-	include(WEB_ROOT."includes/smarty.inc.php");
-        include(WEB_ROOT."includes/dynamic_fields.inc.php");
+include(WEB_ROOT."includes/dynamic_fields.inc.php");
 
-	$error_detected = array();
+$error_detected = array();
 
 	$form_name = get_form_value('form', '');
 	if (!isset($all_forms[$form_name]))

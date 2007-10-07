@@ -1,12 +1,12 @@
 <?php
 /** 
- * Saisie d'un adhérent
+ * Saisie d'un adhÃ©rent
  *
- * Permet de saisir un nouvel adhérent ou d'en modifier un existant
+ * Permet de saisir un nouvel adhÃ©rent ou d'en modifier un existant
  * 
  * @package    Galette
- * @author     Frédéric Jaqcuot
- * @copyright  2004 Frédéric Jaqcuot
+ * @author     FrÃ©dÃ©ric Jaqcuot
+ * @copyright  2004 FrÃ©dÃ©ric Jaqcuot
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0
  * @version    $Id$
  * @since      Disponible depuis la Release 0.62
@@ -30,103 +30,96 @@
 /**
  * 
  */
+require_once('includes/galette.inc.php');
 
-	include("includes/config.inc.php");
-	include("includes/database.inc.php");
-	include("includes/session.inc.php");
+if ($_SESSION["logged_status"]==0)
+{
+	header("location: index.php");
+	die();
+}
 
-	if ($_SESSION["logged_status"]==0)
-	{
-		header("location: index.php");
-		die();
-	}
+include("includes/dynamic_fields.inc.php");
 
-	include("includes/functions.inc.php");
-        include("includes/i18n.inc.php");
-	include("includes/smarty.inc.php");
-        include("includes/dynamic_fields.inc.php");
-	require_once('includes/picture.class.php');
+// new or edit
+$adherent["id_adh"] = "";
+if ($_SESSION["admin_status"]==1)
+{
+	$adherent["id_adh"] = get_numeric_form_value("id_adh", "");
+	// disable some fields
+	$disabled = array(
+			'id_adh' => 'disabled="disabled"',
+			'date_echeance' => 'disabled="disabled"'
+		);
+}
+else
+{
+	$adherent["id_adh"] = $_SESSION["logged_id_adh"];
+	// disable some fields
+	$disabled = array(
+			'titre_adh' => 'disabled',
+			'id_adh' => 'disabled="disabled"',
+			'nom_adh' => 'disabled="disabled"',
+			'prenom_adh' => 'disabled="disabled"',
+			'date_crea_adh' => 'disabled="disabled"',
+			'id_statut' => 'disabled="disabled"',
+			'activite_adh' => 'disabled="disabled"',
+			'bool_exempt_adh' => 'disabled="disabled"',
+			'bool_admin_adh' => 'disabled="disabled"',
+			'date_echeance' => 'disabled="disabled"',
+			'info_adh' => 'disabled="disabled"'
+		);
+}
 
-	// new or edit
-	$adherent["id_adh"] = "";
-	if ($_SESSION["admin_status"]==1)
-	{
-		$adherent["id_adh"] = get_numeric_form_value("id_adh", "");
-		// disable some fields
-		$disabled = array(
-				'id_adh' => 'disabled="disabled"',
-				'date_echeance' => 'disabled="disabled"'
-			);
-	}
-	else
-	{
-		$adherent["id_adh"] = $_SESSION["logged_id_adh"];
-		// disable some fields
-		$disabled = array(
-				'titre_adh' => 'disabled',
-				'id_adh' => 'disabled="disabled"',
-				'nom_adh' => 'disabled="disabled"',
-				'prenom_adh' => 'disabled="disabled"',
-				'date_crea_adh' => 'disabled="disabled"',
-				'id_statut' => 'disabled="disabled"',
-				'activite_adh' => 'disabled="disabled"',
-				'bool_exempt_adh' => 'disabled="disabled"',
-				'bool_admin_adh' => 'disabled="disabled"',
-				'date_echeance' => 'disabled="disabled"',
-				'info_adh' => 'disabled="disabled"'
-			);
-	}
+// initialize warnings
+$error_detected = array();
+$warning_detected = array();
+$confirm_detected = array();
 
-	// initialize warnings
-	$error_detected = array();
-	$warning_detected = array();
-	$confirm_detected = array();
-
-	// flagging required fields
-	include(WEB_ROOT."classes/required.class.php");
+// flagging required fields
+include(WEB_ROOT."classes/required.class.php");
 	
-	$requires = new Required();
-	$required = $requires->getRequired();
+$requires = new Required();
+$required = $requires->getRequired();
 
-	// password required if we create a new member
-	if ($adherent["id_adh"]=='')
-		$required['mdp_adh'] = 1;
-	else
-		unset($required['mdp_adh']);
+// password required if we create a new member
+if ($adherent["id_adh"]=='')
+	$required['mdp_adh'] = 1;
+else
+	unset($required['mdp_adh']);
 
-	// flagging required fields invisible to members
-	if ($_SESSION["admin_status"]==1)
+// flagging required fields invisible to members
+if ($_SESSION["admin_status"]==1)
+{
+	$required['activite_adh'] = 1;
+	$required['id_statut'] = 1;
+}
+
+// Validation
+if (isset($_POST["id_adh"]))
+{
+	$update_string = '';
+	$insert_string_fields = '';
+	$insert_string_values = '';
+
+	$adherent['dyn'] = extract_posted_dynamic_fields($DB, $_POST, $disabled);
+
+	// checking posted values for 'regular' fields
+	$fields = &$DB->MetaColumns(PREFIX_DB."adherents");
+	while (list($key, $properties) = each($fields))
 	{
-		$required['activite_adh'] = 1;
-		$required['id_statut'] = 1;
-	}
-
-	// Validation
-	if (isset($_POST["id_adh"]))
-	{
-		$update_string = '';
-		$insert_string_fields = '';
-		$insert_string_values = '';
-
-		$adherent['dyn'] = extract_posted_dynamic_fields($DB, $_POST, $disabled);
-
-		// checking posted values for 'regular' fields
-		$fields = &$DB->MetaColumns(PREFIX_DB."adherents");
-	  while (list($key, $properties) = each($fields))
+		$key = strtolower($key);
+		if (isset($_POST[$key]))
+			$value = trim($_POST[$key]);
+		else
+			$value = '';
+		// if the field is enabled, check it
+		if (!isset($disabled[$key]))
 		{
-			$key = strtolower($key);
-			if (isset($_POST[$key]))
-				$value = trim($_POST[$key]);
-			else
-				$value = '';
-			// if the field is enabled, check it
-			if (!isset($disabled[$key]))
-			{
-				// fill up the adherent structure
-				$adherent[$key] = htmlentities(stripslashes($value),ENT_QUOTES);
+			// fill up the adherent structure
+			$adherent[$key] = htmlentities(stripslashes($value),ENT_QUOTES);
 
-				// now, check validity
-				if ($value != "")
+			// now, check validity
+			if ($value != "")
 				switch ($key)
 				{
 					// dates
@@ -208,154 +201,154 @@
 					$insert_string_fields .= ", ".$key;
 					$insert_string_values .= ", ".$value;
 				}
-			}
 		}
+	}
 		
-		// missing relations
-		if (isset($adherent["mail_confirm"]))
+	// missing relations
+	if (isset($adherent["mail_confirm"]))
+	{
+		if (!isset($adherent["email_adh"]))
+			$error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
+		elseif ($adherent["email_adh"]=="")
+			$error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
+	}
+
+	// missing required fields?
+	while (list($key,$val) = each($required))
+	{
+		if (!isset($disabled[$key]) && (!isset($adherent[$key]) || trim($adherent[$key])==''))
+			$error_detected[] = _T("- Mandatory field empty.")." ($key)";
+	}
+
+	if (count($error_detected)==0)
+	{
+		if ($adherent["id_adh"] == "")
 		{
-			if (!isset($adherent["email_adh"]))
-				$error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
-			elseif ($adherent["email_adh"]=="")
-				$error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
+			$requete = "INSERT INTO ".PREFIX_DB."adherents
+			(" . substr($insert_string_fields,1) . ")
+			VALUES (" . substr($insert_string_values,1) . ")";
+			if (!$DB->Execute($requete))
+				print substr($insert_string_values,1).": ".$DB->ErrorMsg();
+			$adherent['id_adh'] = get_last_auto_increment($DB, PREFIX_DB."adherents", "id_adh");
+			// to allow the string to be extracted for translation
+			$foo = _T("Member card added");
+
+			// logging
+			//nom_adh and prenom_adh is not sent when form is used by a simple user
+			//dblog('Member card updated:',strtoupper($_POST["nom_adh"]).' '.$_POST["prenom_adh"], $requete);
+			dblog('Member card updated:',strtoupper($_POST["login_adh"]),$requete);
+		}
+		else
+		{
+			$requete = "UPDATE ".PREFIX_DB."adherents
+				SET " . substr($update_string,1) . "
+				WHERE id_adh=" . $adherent['id_adh'];
+			$DB->Execute($requete);
+
+			// to allow the string to be extracted for translation
+			$foo = _T("Member card updated:");
+
+			// logging
+			//nom_adh and prenom_adh is not sent when form is used by a simple user
+			//dblog('Member card updated:',strtoupper($_POST["nom_adh"]).' '.$_POST["prenom_adh"], $requete);
+			dblog('Member card updated:',strtoupper($_POST["login_adh"]), $requete);
 		}
 
-		// missing required fields?
-		while (list($key,$val) = each($required))
-		{
-			if (!isset($disabled[$key]) && (!isset($adherent[$key]) || trim($adherent[$key])==''))
-				$error_detected[] = _T("- Mandatory field empty.")." ($key)";
-		}
-
-		if (count($error_detected)==0)
-		{
-			if ($adherent["id_adh"] == "")
-			{
-				$requete = "INSERT INTO ".PREFIX_DB."adherents
-				(" . substr($insert_string_fields,1) . ")
-				VALUES (" . substr($insert_string_values,1) . ")";
-				if (!$DB->Execute($requete))
-					print substr($insert_string_values,1).": ".$DB->ErrorMsg();
-				$adherent['id_adh'] = get_last_auto_increment($DB, PREFIX_DB."adherents", "id_adh");
-				// to allow the string to be extracted for translation
-				$foo = _T("Member card added");
-
-				// logging
-       //nom_adh and prenom_adh is not sent when form is used by a simple user
-       //dblog('Member card updated:',strtoupper($_POST["nom_adh"]).' '.$_POST["prenom_adh"], $requete);
-       dblog('Member card updated:',strtoupper($_POST["login_adh"]),$requete);
-			}
-			else
-			{
-                                $requete = "UPDATE ".PREFIX_DB."adherents
-                                            SET " . substr($update_string,1) . "
-                                            WHERE id_adh=" . $adherent['id_adh'];
-                                $DB->Execute($requete);
-
-				// to allow the string to be extracted for translation
-				$foo = _T("Member card updated:");
-
-				// logging
-       //nom_adh and prenom_adh is not sent when form is used by a simple user
-       //dblog('Member card updated:',strtoupper($_POST["nom_adh"]).' '.$_POST["prenom_adh"], $requete);
-       dblog('Member card updated:',strtoupper($_POST["login_adh"]), $requete);
-			}
-
-			// picture upload
-			if (isset($_FILES['photo']))
-				if ($_FILES['photo']['tmp_name'] !='')
-					if (is_uploaded_file($_FILES['photo']['tmp_name']))
-						if (!picture::store($adherent['id_adh'], $_FILES['photo']['tmp_name'], $_FILES['photo']['name']))
-							$error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
+		// picture upload
+		if (isset($_FILES['photo']))
+			if ($_FILES['photo']['tmp_name'] !='')
+				if (is_uploaded_file($_FILES['photo']['tmp_name']))
+					if (!picture::store($adherent['id_adh'], $_FILES['photo']['tmp_name'], $_FILES['photo']['name']))
+						$error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
         
-			if (isset($_POST['del_photo']))
-				if (!picture::delete($adherent['id_adh']))
-					$error_detected[] = _T("Delete failed");
-				
-    if (isset($_POST["mail_confirm"]))
-      if ($_POST["mail_confirm"]=="1")
-        if (isset($adherent['email_adh']) && $adherent['email_adh']!="")
-        {
-          $mail_subject = _T("Your Galette identifiers");
-          $mail_text =  _T("Hello,")."\n";
-          $mail_text .= "\n";
-          $mail_text .= _T("You've just been subscribed on the members management system of the association.")."\n";
-          $mail_text .= _T("It is now possible to follow in real time the state of your subscription")."\n";
-          $mail_text .= _T("and to update your preferences from the web interface.")."\n";
-          $mail_text .= "\n";
-          $mail_text .= _T("Please login at this address:")."\n";
-          $mail_text .= "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
-          $mail_text .= "\n";
-          $mail_text .= _T("Username:")." ".custom_html_entity_decode($adherent['login_adh'])."\n";
-          $mail_text .= _T("Password:")." ".custom_html_entity_decode($adherent['mdp_adh'])."\n";
-          $mail_text .= "\n";
-          $mail_text .= _T("See you soon!")."\n";
-          $mail_text .= "\n";
-          $mail_text .= _T("(this mail was sent automatically)")."\n";
-          $mail_result = custom_mail($adherent['email_adh'],$mail_subject,$mail_text);
-          //TODO: duplicate piece of code with mailing_adherent
-          if( $mail_result == 1) {
-            dblog("Send subscription mail to :".$_POST["email_adh"], $requete);
-            $warning_detected[] = _T("Password sent. Login:")." \"" . $adherent['login_adh'] . "\"";
-            //$password_sent = true;
-          }else{
-            switch ($mail_result) {
-              case 2 :
-                dblog("Email sent is disabled in the preferences. Ask galette admin.");
-                $error_detected[] = _T("Email sent is disabled in the preferences. Ask galette admin");
-                break;
-              case 3 :
-                dblog("A problem happened while sending password for account:"." \"" . $_POST["email_adh"] . "\"");
-                $error_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST["email_adh"] . "\"";
-                break;
-              case 4 :
-                dblog("The mail server filled in the preferences cannot be reached. Ask Galette admin");
-                $error_detected[] = _T("The mail server filled in the preferences cannot be reached. Ask Galette admin");
-                break;
+		if (isset($_POST['del_photo']))
+			if (!picture::delete($adherent['id_adh']))
+				$error_detected[] = _T("Delete failed");
+
+		if (isset($_POST["mail_confirm"]))
+			if ($_POST["mail_confirm"]=="1")
+				if (isset($adherent['email_adh']) && $adherent['email_adh']!="")
+				{
+					$mail_subject = _T("Your Galette identifiers");
+					$mail_text =  _T("Hello,")."\n";
+					$mail_text .= "\n";
+					$mail_text .= _T("You've just been subscribed on the members management system of the association.")."\n";
+					$mail_text .= _T("It is now possible to follow in real time the state of your subscription")."\n";
+					$mail_text .= _T("and to update your preferences from the web interface.")."\n";
+					$mail_text .= "\n";
+					$mail_text .= _T("Please login at this address:")."\n";
+					$mail_text .= "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
+					$mail_text .= "\n";
+					$mail_text .= _T("Username:")." ".custom_html_entity_decode($adherent['login_adh'])."\n";
+					$mail_text .= _T("Password:")." ".custom_html_entity_decode($adherent['mdp_adh'])."\n";
+					$mail_text .= "\n";
+					$mail_text .= _T("See you soon!")."\n";
+					$mail_text .= "\n";
+					$mail_text .= _T("(this mail was sent automatically)")."\n";
+					$mail_result = custom_mail($adherent['email_adh'],$mail_subject,$mail_text);
+					//TODO: duplicate piece of code with mailing_adherent
+					if( $mail_result == 1) {
+						dblog("Send subscription mail to :".$_POST["email_adh"], $requete);
+						$warning_detected[] = _T("Password sent. Login:")." \"" . $adherent['login_adh'] . "\"";
+						//$password_sent = true;
+					}else{
+						switch ($mail_result) {
+							case 2 :
+								dblog("Email sent is disabled in the preferences. Ask galette admin.");
+								$error_detected[] = _T("Email sent is disabled in the preferences. Ask galette admin");
+								break;
+							case 3 :
+								dblog("A problem happened while sending password for account:"." \"" . $_POST["email_adh"] . "\"");
+								$error_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST["email_adh"] . "\"";
+								break;
+							case 4 :
+								dblog("The mail server filled in the preferences cannot be reached. Ask Galette admin");
+								$error_detected[] = _T("The mail server filled in the preferences cannot be reached. Ask Galette admin");
+								break;
 							case 5 :
 								dblog("**IMPORTANT** There was a probably breaking attempt when sending mail to :"." \"" . $email_adh . "\"");
 								$error_detected[] = _T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"";
 								break;
-              default :
-                dblog("A problem happened while sending password for account:"." \"" . $_POST["email_adh"] . "\"");
-                $error_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST["email_adh"] . "\"";
-                break;
-            }
-          }
-        }else{
-          $error_detected[] = _T("Sent mail is checked but there is no email address")." \"" . $_POST["login_adh"] . "\"";
-        }
+							default :
+								dblog("A problem happened while sending password for account:"." \"" . $_POST["email_adh"] . "\"");
+								$error_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST["email_adh"] . "\"";
+								break;
+						}
+					}
+				}else{
+					$error_detected[] = _T("Sent mail is checked but there is no email address")." \"" . $_POST["login_adh"] . "\"";
+				}
 
-			// dynamic fields
-			set_all_dynamic_fields($DB, 'adh', $adherent['id_adh'], $adherent['dyn']);
+				// dynamic fields
+				set_all_dynamic_fields($DB, 'adh', $adherent['id_adh'], $adherent['dyn']);
 
-			// deadline
-			$date_fin = get_echeance($DB, $adherent['id_adh']);
-			if ($date_fin!="")
-				$date_fin_update = $DB->DBDate($date_fin[2].'-'.$date_fin[1].'-'.$date_fin[0]);
-			else
-				$date_fin_update = "NULL";
-			$requete = "UPDATE ".PREFIX_DB."adherents
-					SET date_echeance=".$date_fin_update."
-					WHERE id_adh=" . $adherent['id_adh'];
-			$DB->Execute($requete);
-
-			if (!isset($_POST['id_adh']))
-				header('location: ajouter_contribution.php?id_adh='.$adherent['id_adh']);
-			elseif (!isset($_POST['del_photo']) && (count($error_detected)==0))
-				header('location: voir_adherent.php?id_adh='.$adherent['id_adh']);
-		}
+				// deadline
+				$date_fin = get_echeance($DB, $adherent['id_adh']);
+				if ($date_fin!="")
+					$date_fin_update = $DB->DBDate($date_fin[2].'-'.$date_fin[1].'-'.$date_fin[0]);
+				else
+					$date_fin_update = "NULL";
+				$requete = "UPDATE ".PREFIX_DB."adherents
+						SET date_echeance=".$date_fin_update."
+						WHERE id_adh=" . $adherent['id_adh'];
+				$DB->Execute($requete);
+	
+				if (!isset($_POST['id_adh']))
+					header('location: ajouter_contribution.php?id_adh='.$adherent['id_adh']);
+				elseif (!isset($_POST['del_photo']) && (count($error_detected)==0))
+					header('location: voir_adherent.php?id_adh='.$adherent['id_adh']);
+			}
 	}
 	else
 	{
 		if ($adherent["id_adh"] == "")
 		{
-			// initialiser la structure adhï¿½rent ï¿½ vide (nouvelle fiche)
+			// initialiser la structure adhÃ©rent Ã  vide (nouvelle fiche)
 			$adherent["id_statut"] = "4";
 			$adherent["titre_adh"] = "1";
 			$adherent["date_crea_adh"] =date("d/m/Y");
-      //annoying
-		  //$adherent["url_adh"] = "http://";
+			//annoying
+			//$adherent["url_adh"] = "http://";
 			$adherent["url_adh"] = "";
 			$adherent["mdp_adh"] = makeRandomPassword(7);
 			$adherent["pref_lang"] = PREF_LANG;
@@ -372,7 +365,7 @@
 				header("location: index.php");
 			else
 			{
-        #annoying
+				#annoying
 				// url_adh is a specific case
 				//if ($result->fields['url_adh']=='')
 				//	$result->fields['url_adh'] = 'http://';
@@ -392,62 +385,60 @@
 				if(is_string($adherent[$field])) { $adherent[$field] = htmlentities($data); }
 				}
 			}
-
-		}
 	}
+}
 
-	// picture data
-	if ($adherent["id_adh"]!='') 
-		$picture = new picture($adherent["id_adh"]);
-	else
-		$picture = new picture();
-	if ($picture->hasPicture())
-		$adherent["has_picture"]=1;
-	else
-		$adherent["has_picture"]=0;
-	$adherent['picture_height'] = $picture->getOptimalHeight();
-	$adherent['picture_width'] = $picture->getOptimalWidth();
+// picture data
+if ($adherent["id_adh"]!='') 
+	$picture = new picture($adherent["id_adh"]);
+else
+	$picture = new picture();
+if ($picture->hasPicture())
+	$adherent["has_picture"]=1;
+else
+	$adherent["has_picture"]=0;
+$adherent['picture_height'] = $picture->getOptimalHeight();
+$adherent['picture_width'] = $picture->getOptimalWidth();
 
-	// - declare dynamic fields for display
-	$disabled['dyn'] = array();
-	if (!isset($adherent['dyn']))
-		$adherent['dyn'] = array();
+// - declare dynamic fields for display
+$disabled['dyn'] = array();
+if (!isset($adherent['dyn']))
+	$adherent['dyn'] = array();
 
-	$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $_SESSION["admin_status"], $adherent['dyn'], $disabled['dyn'], 1);
-	// template variable declaration
-	$tpl->assign("required",$required);
-	$tpl->assign("disabled",$disabled);
-	$tpl->assign("data",$adherent);
-	$tpl->assign("time",time());
-	$tpl->assign("dynamic_fields",$dynamic_fields);
-	$tpl->assign("error_detected",$error_detected);
-	$tpl->assign("warning_detected",$warning_detected);
-	$tpl->assign("languages",drapeaux());
+$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $_SESSION["admin_status"], $adherent['dyn'], $disabled['dyn'], 1);
+// template variable declaration
+$tpl->assign("required",$required);
+$tpl->assign("disabled",$disabled);
+$tpl->assign("data",$adherent);
+$tpl->assign("time",time());
+$tpl->assign("dynamic_fields",$dynamic_fields);
+$tpl->assign("error_detected",$error_detected);
+$tpl->assign("warning_detected",$warning_detected);
+$tpl->assign("languages",drapeaux());
 
-	// pseudo random int
-	$tpl->assign("time",time());
+// pseudo random int
+$tpl->assign("time",time());
 
-	// genre
-	$tpl->assign('radio_titres', array(
-			3 => _T("Miss"),
-			2 => _T("Mrs"),
-			1 => _T("Mister"),
-			4 => _T("Society")));
+// genre
+$tpl->assign('radio_titres', array(
+		3 => _T("Miss"),
+		2 => _T("Mrs"),
+		1 => _T("Mister"),
+		4 => _T("Society")));
 
-	// states
-	$requete = "SELECT * FROM ".PREFIX_DB."statuts ORDER BY priorite_statut";
-	$result = &$DB->Execute($requete);
-	while (!$result->EOF)
-	{
-		$statuts[$result->fields["id_statut"]] = _T($result->fields["libelle_statut"]);
-		$result->MoveNext();
-	}
-	$result->Close();
-	$tpl->assign("statuts",$statuts);
+// states
+$requete = "SELECT * FROM ".PREFIX_DB."statuts ORDER BY priorite_statut";
+$result = &$DB->Execute($requete);
+while (!$result->EOF)
+{
+	$statuts[$result->fields["id_statut"]] = _T($result->fields["libelle_statut"]);
+	$result->MoveNext();
+}
+$result->Close();
+$tpl->assign("statuts",$statuts);
 
-	// page generation
-	$content = $tpl->fetch("ajouter_adherent.tpl");
-	$tpl->assign("content",$content);
-	$tpl->display("page.tpl");
-// -*- Mode: PHP; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+// page generation
+$content = $tpl->fetch("ajouter_adherent.tpl");
+$tpl->assign("content",$content);
+$tpl->display("page.tpl");
 ?>

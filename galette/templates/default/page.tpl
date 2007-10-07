@@ -3,17 +3,14 @@
 <head>
 	<title>Galette {$GALETTE_VERSION}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css"/>
+	<script type="text/javascript" src="{$jquery_dir}jquery-1.2.1.pack.js"></script>
+	<script type="text/javascript" src="{$jquery_dir}jquery.bgFade.js"></script>
+	<script type="text/javascript" src="{$jquery_dir}niftycube.js"></script>
+	<script type="text/javascript" src="{$scripts_dir}common.js"></script>
 </head>
 <body>
-	<div id="content">
-<div class="content-box">
-{$content}
-</div>
-		<div id="copyright">
-			<a href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
-		</div>
-	</div>
 	<div id="menu">
 		<div id="logo">
   {if $smarty.session.customLogo}
@@ -59,57 +56,57 @@
 			<h1>{_T("Legend")}</h1>
 			<table>
 				<tr>
-					<td class="back"><img src="{$template_subdir}images/icon-male.png" alt="{_T("[M]")}" width="10" height="12"/></td>
+					<th><img src="{$template_subdir}images/icon-male.png" alt="{_T("[M]")}" width="16" height="16"/></th>
 					<td class="back">{_T("Man")}</td>
 				</tr>
 				<tr>
-					<td class="back"><img src="{$template_subdir}images/icon-female.png" alt="{_T("[W]")}" width="9" height="12"/></td>
+					<th><img src="{$template_subdir}images/icon-female.png" alt="{_T("[W]")}" width="16" height="16"/></th>
 					<td class="back">{_T("Woman")}</td>
 				</tr>
 {if $PAGENAME eq "gestion_adherents.php"}
 				<tr>
-					<td class="back"><img src="{$template_subdir}images/icon-mail.png" alt="{_T("[Mail]")}" width="14" height="10"/></td>
+					<th><img src="{$template_subdir}images/icon-mail.png" alt="{_T("[Mail]")}" width="16" height="16"/></th>
 					<td class="back">{_T("Send a mail")}</td>
 				</tr>
 {/if}
 				<tr>
-					<td class="back"><img src="{$template_subdir}images/icon-star.png" alt="{_T("[admin]")}" width="12" height="13"/></td>
+					<th><img src="{$template_subdir}images/icon-star.png" alt="{_T("[admin]")}" width="16" height="16"/></th>
 					<td class="back">{_T("Admin")}</td>
 				</tr>
 				<tr>
-					<td class="back"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" width="12" height="13"/></td>
+					<th><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" width="16" height="16"/></th>
 					<td class="back">{_T("Modification")}</td>
 				</tr>
 				<tr>
-					<td class="back"><img src="{$template_subdir}images/icon-money.png" alt="{_T("[$]")}" width="13" height="13"/></td>
+					<th><img src="{$template_subdir}images/icon-money.png" alt="{_T("[$]")}" width="16" height="16"/></th>
 					<td class="back">{_T("Contributions")}</td>
 				</tr>
 				<tr>
-					<td class="back"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" width="11" height="13"/></td>
+					<th><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" width="16" height="16"/></th>
 					<td class="back">{_T("Deletion")}</td>
 				</tr>
 				<tr>
-					<td class="back">{_T("Name")}</td>
+					<th class="back">{_T("Name")}</th>
 					<td class="back">{_T("Active account")}</td>
 				</tr>
 				<tr>
-					<td class="inactif back">{_T("Name")}</td>
+					<th class="inactif back">{_T("Name")}</th>
 					<td class="back">{_T("Inactive account")}</td>
 				</tr>
 				<tr>
-					<td class="cotis-never color-sample">&nbsp;</td>
+					<th class="cotis-never color-sample">&nbsp;</th>
 					<td class="back">{_T("Never contributed")}</td>
 				</tr>
 				<tr>
-					<td class="cotis-ok color-sample">&nbsp;</td>
+					<th class="cotis-ok color-sample">&nbsp;</th>
 					<td class="back">{_T("Membership in order")}</td>
 				</tr>
 				<tr>
-					<td class="cotis-soon color-sample">&nbsp;</td>
+					<th class="cotis-soon color-sample">&nbsp;</th>
 					<td class="back">{_T("Membership will expire soon (&lt;30d)")}</td>
 				</tr>
 				<tr>
-					<td class="cotis-late color-sample">&nbsp;</td>
+					<th class="cotis-late color-sample">&nbsp;</th>
 					<td class="back">{_T("Lateness in fee")}</td>
 				</tr>
 			</table>
@@ -120,11 +117,11 @@
 			<table>
 {if $smarty.session.admin_status eq 1}
 				<tr>
-					<td class="back"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" width="12" height="13"/></td>
+					<td class="back"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" width="16" height="16"/></td>
 					<td class="back">{_T("Modification")}</td>
 				</tr>
 				<tr>
-					<td class="back"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" width="11" height="13"/></td>
+					<td class="back"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" width="16" height="16"/></td>
 					<td class="back">{_T("Deletion")}</td>
 				</tr>
 {/if}
@@ -139,6 +136,14 @@
 			</table>
 		</div>
 {/if}
+	</div>
+	<div id="content">
+		<div class="content-box">
+			{$content}
+		</div>
+		<div id="copyright">
+			<a href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
+		</div>
 	</div>
 </body>
 </html>

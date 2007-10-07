@@ -26,12 +26,7 @@
  * 
  */
 
-include("includes/config.inc.php");
-include(WEB_ROOT."includes/database.inc.php"); 
-include(WEB_ROOT."includes/session.inc.php");
-include(WEB_ROOT."includes/functions.inc.php");
-include_once(WEB_ROOT."includes/i18n.inc.php");
-include(WEB_ROOT."includes/smarty.inc.php");
+require_once('includes/galette.inc.php');
 
 if ($_SESSION["logged_status"]==0){
 	header("location: index.php");

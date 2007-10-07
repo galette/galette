@@ -1,11 +1,11 @@
-		<h1 class="titre">{_T("Management of contributions")}</h1>
+		<h1 id="titre">{_T("Management of contributions")}</h1>
 		<form action="gestion_contributions.php" method="get" name="filtre">
 		<div id="listfilter">
 			<label for="contrib_filter_1">{_T("Show contributions since")}</label>&nbsp;
 			<input type="text" name="contrib_filter_1" id="contrib_filter_1" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_1}"/>
 			<label for="contrib_filter_2">{_T("until")}</label>&nbsp;
 			<input type="text" name="contrib_filter_2" id="contrib_filter_2" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_2}"/>
-			<input type="submit" class="submit" value="{_T("Filter")}"/>
+			<input type="submit" class="submit inline" value="{_T("Filter")}"/>
 		</div>
 		<table class="infoline" width="100%">
 			<tr>
@@ -131,8 +131,8 @@
 			<td class="{$contribution.class}" nowrap="nowrap">{$contribution.duree_mois_cotis}</td>
 {if $smarty.session.admin_status eq 1}
 			<td width="55" class="{$contribution.class} center" nowrap="nowrap">
-				<a href="ajouter_contribution.php?id_cotis={$contribution.id_cotis}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></a>
-				<a onclick="return confirm('{_T("Do you really want to delete this contribution of the database ?")|escape:"javascript"}')" href="gestion_contributions.php?sup={$contribution.id_cotis}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/></a>
+				<a href="ajouter_contribution.php?id_cotis={$contribution.id_cotis}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" width="16" height="16"/></a>
+				<a onclick="return confirm('{_T("Do you really want to delete this contribution of the database ?")|escape:"javascript"}')" href="gestion_contributions.php?sup={$contribution.id_cotis}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" width="16" height="16"/></a>
 			</td>
 {/if}
 		</tr>

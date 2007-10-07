@@ -20,9 +20,7 @@
  *
  */
 
-include("includes/config.inc.php");
-include(WEB_ROOT."includes/database.inc.php");
-include(WEB_ROOT."includes/session.inc.php");
+require_once('includes/galette.inc.php');
 
 if ($_SESSION["logged_status"]==0)
 {
@@ -35,9 +33,6 @@ if ($_SESSION["admin_status"]==0)
 	die();
 }
 
-include(WEB_ROOT."includes/functions.inc.php");
-include(WEB_ROOT."includes/i18n.inc.php");
-include(WEB_ROOT."includes/smarty.inc.php");
 include(WEB_ROOT."includes/dynamic_fields.inc.php");
 
 // new or edit
@@ -192,7 +187,7 @@ else
 {
 	if ($transaction['trans_id'] == "")
 	{
-		// initialiser la structure transaction à vide (nouvelle transaction)
+		// initialiser la structure transaction Ã  vide (nouvelle transaction)
 		$transaction['trans_date'] = date("d/m/Y", time());
 	}
 	else

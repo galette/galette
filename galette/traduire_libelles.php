@@ -18,10 +18,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
- 
-include("includes/config.inc.php");
-include(WEB_ROOT."includes/database.inc.php"); 
-include(WEB_ROOT."includes/session.inc.php");
+
+require_once('includes/galette.inc.php');
 
 if ($_SESSION["logged_status"]==0)
 {
@@ -33,10 +31,6 @@ if ($_SESSION["admin_status"]==0)
 	header("location: voir_adherent.php");
 	die();
 }
-
-include(WEB_ROOT."includes/functions.inc.php"); 
-include(WEB_ROOT."includes/i18n.inc.php");
-include(WEB_ROOT."includes/smarty.inc.php");
 
 $error_detected = array();
 

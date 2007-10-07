@@ -1,4 +1,4 @@
-	<h1 class="titre">{_T("Required fields for adherents")}</h1>
+	<h1 id="titre">{_T("Required fields for adherents")}</h1>
 	<form action="champs_requis.php" method="post">
 		<fieldset class="cssform">
 			<legend>{_T("Select mandatory fields for new adherents:")}</legend>

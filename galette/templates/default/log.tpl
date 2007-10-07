@@ -1,4 +1,4 @@
-		<h1 class="titre">{_T("Logs")}</h1>
+		<h1 id="titre">{_T("Logs")}</h1>
 		<div class="button-container">
 			<div class="button-link button-flush-logs">
 				<a href="log.php?reset=1">{_T("Flush the logs")}</a>

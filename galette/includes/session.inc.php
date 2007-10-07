@@ -2,7 +2,7 @@
  
 /* session.inc.php
  * - Gestion de la session
- * Copyright (c) 2003 Frédéric Jaqcuot
+ * Copyright (c) 2003 FrÃ©dÃ©ric Jaqcuot
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,33 +19,36 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
- 
-	session_start(); 
-	if (!isset($_SESSION["logged_status"]) ||
-			isset($_POST["logout"]) ||
-			isset($_GET["logout"]))
-	{
-		if (isset($_POST["logout"]) ||
-		    isset($_GET["logout"])){
-			dblog(_("Log off"));
-		}
-		$_SESSION["admin_status"]=0;
-		$_SESSION["logged_status"]=0;
-		$_SESSION["logged_id_adh"]=0;
-		$_SESSION["logged_nom_adh"]="";
-		$_SESSION["filtre_adh_nom"]="";
-		$_SESSION["filtre_adh"]=0;
-		$_SESSION["filtre_adh_2"]=1;
-		$_SESSION["filtre_date_cotis_1"]="";
-		$_SESSION["filtre_date_cotis_2"]="";
-		$_SESSION["tri_adh"]=0;
-		$_SESSION["tri_adh_sens"]=0;
-		$_SESSION["tri_log"]=0;
-		$_SESSION["tri_log_sens"]=0;
-		$_SESSION["filtre_cotis"]=0;
-		$_SESSION["tri_cotis"]=0;
-		$_SESSION["tri_cotis_sens"]=1;
-		$_SESSION["filtre_cotis_adh"]="";
-		$_SESSION["pref_lang"]=PREF_LANG;
+if (!isset(
+	$_SESSION["logged_status"]) || 
+	isset($_POST["logout"]) ||
+	isset($_GET["logout"]))
+{
+	if (
+		isset($_POST["logout"]) ||
+		isset($_GET["logout"])){
+		dblog(_("Log off"));
+		$_SESSION['galette']['db'] = null;
+		unset($_SESSION['galette']['db']);
 	}
+	$_SESSION["admin_status"]=0;
+	$_SESSION["logged_status"]=0;
+	$_SESSION["logged_id_adh"]=0;
+	$_SESSION["logged_nom_adh"]="";
+	$_SESSION["filtre_adh_nom"]="";
+	$_SESSION["filtre_adh"]=0;
+	$_SESSION["filtre_adh_2"]=1;
+	$_SESSION["filtre_date_cotis_1"]="";
+	$_SESSION["filtre_date_cotis_2"]="";
+	$_SESSION["tri_adh"]=0;
+	$_SESSION["tri_adh_sens"]=0;
+	$_SESSION["tri_log"]=0;
+	$_SESSION["tri_log_sens"]=0;
+	$_SESSION["filtre_cotis"]=0;
+	$_SESSION["tri_cotis"]=0;
+	$_SESSION["tri_cotis_sens"]=1;
+	$_SESSION["filtre_cotis_adh"]="";
+	if(!isset($_SESSION['pref_lang']))
+		$_SESSION["pref_lang"]=PREF_LANG;
+}
 ?>

@@ -1,21 +1,21 @@
 <?php
 /** 
- * Choix des préférences de galette
+ * Choix des prÃ©fÃ©rences de galette
  *
- * Les préférences se répartissent selon les groupes suivants:
- * - Association: Paramètres généraux de l'association tel
+ * Les prÃ©fÃ©rences se rÃ©partissent selon les groupes suivants:
+ * - Association: ParamÃ¨tres gÃ©nÃ©raux de l'association tel
  *   que l'adresse, le logo etc...
- * - Galette: Préférences d'utilisation du logiciel
- * - Courriel: Adresse d'expéditeur et de réponse des courriers
- * - Etiquettes : Définition du format des étiquettes
+ * - Galette: PrÃ©fÃ©rences d'utilisation du logiciel
+ * - Courriel: Adresse d'expÃ©diteur et de rÃ©ponse des courriers
+ * - Etiquettes : DÃ©finition du format des Ã©tiquettes
  * - Cartes de membres : Choix du format des cartes
- * - Compte d'administration : Paramètres d'accès
+ * - Compte d'administration : ParamÃ¨tres d'accÃ¨s
  * 
  * PHP versions 5
  *
  * @package    Galette
- * @author     Frédéric Jaqcuot
- * @copyright  2004 Frédéric Jaqcuot
+ * @author     FrÃ©dÃ©ric Jaqcuot
+ * @copyright  2004 FrÃ©dÃ©ric Jaqcuot
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0
  * @version    $Id$
  * @since      Disponible depuis la Release 0.62
@@ -39,33 +39,23 @@
 /**
  * 
  */
-
-include("includes/config.inc.php");
-include("includes/database.inc.php");
-include("includes/session.inc.php");
+require_once('includes/galette.inc.php');
 
 if ($_SESSION["logged_status"]==0)
-  {
-    header("location: index.php");
-    die();
-  }
+{
+	header("location: index.php");
+	die();
+}
 if ($_SESSION["admin_status"]==0)
-  {
-    header("location: voir_adherent.php");
-    die();
-  }
-	
-include("includes/functions.inc.php");
-include("includes/i18n.inc.php");
-include("includes/smarty.inc.php");
-
-require_once('includes/picture.class.php');
+{
+	header("location: voir_adherent.php");
+	die();
+}
 
 // initialize warnings
 $error_detected = array();
 $warning_detected = array();
 $confirm_detected = array();
-$current_tab = (!isset($_GET["tab"]) && !isset($_POST["tab"]))?"main":(isset($_GET["tab"]))?$_GET["tab"]:$_POST["tab"];
 
 // flagging required fields
 $required = array(
@@ -337,7 +327,6 @@ $tpl->assign("required",$required);
 $tpl->assign("languages",drapeaux());
 $tpl->assign("error_detected",$error_detected);
 $tpl->assign("warning_detected",$warning_detected);
-$tpl->assign("current_tab",$current_tab);
 
 // page generation
 $content = $tpl->fetch("preferences.tpl");

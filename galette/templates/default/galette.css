@@ -1,11 +1,9 @@
 body {
-	margin-top: 0px;
-	margin-left: 0px;
-	margin-right: 0px;
-	margin-bottom: 0px;
+	margin: 0px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 11px;
+	font-size:0.8em;
 	background-color:white;
+	color:black;
 }
 
 img{
@@ -16,13 +14,7 @@ form {
 	margin: 0px;
 }
 
-td {
-	font-size: 11px
-}
-
 input {
-	font-size: 11px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
 	padding: 0px 2px 0px 2px;
 	margin-top: 1px;
 	margin-bottom: 1px;
@@ -30,12 +22,12 @@ input {
 
 input.submit
 {
+	display:block;
 	background-color: #FBFBFB;
-	font-size: 12px;
 	font-weight: bold;
 	color: #666666;
 	border: 1px solid #BBBBBB;
-	margin: 1px;
+	margin: 0.5em auto 0 auto;
 }
 
 input.submit:hover
@@ -44,11 +36,11 @@ input.submit:hover
 }
 
 select {
-	font-size: 11px
+	/*font-size: 11px*/
 }
 
 textarea {
-	font-size: 11px
+	/*font-size: 11px*/
 }
 
 a {
@@ -77,42 +69,42 @@ pre {
 }
 
 .cotis-ok {
-	background-color: #DDFFDD;
+	background-color: #DDFFDD!important;
 	vertical-align: top;
 }
 
 .cotis-never {
-	background-color: #EEEEEE;
+	background-color: #EEEEEE!important;
 	vertical-align: top;
 }
 
 .cotis-exempt {
-	background-color: #DDFFDD;
+	background-color: #DDFFDD!important;
 	vertical-align: top;
 }
 
 .cotis-soon {
-	background-color: #FFE9AB;
+	background-color: #FFE9AB!important;
 	vertical-align: top;
 }
 		
 .cotis-late {
-	background-color: #FFDDDD;
+	background-color: #FFDDDD!important;
 	vertical-align: top;
 }
 	
 .cotis-lastday {
-	background-color: #FFDDDD;
+	background-color: #FFDDDD!important;
 	vertical-align: top;
 }
 
 .cotis-normal {
-	background-color: #DDFFDD;
+	background-color: #DDFFDD!important;
 	vertical-align: top;
 }
 
 .cotis-give {
-	background-color: #FFDDDD;
+	background-color: #FFDDDD!important;
 	vertical-align: top;
 }
 
@@ -133,22 +125,32 @@ pre {
 	text-align: right;
 }
 
+#titre{
+	font-size:1.3em;
+	line-height:1.7em;
+	background-color:#DDDDFF;
+	margin:0.5em 1em 1em 1em;
+	color: #666;
+	text-align:center;
+}
+
 .titre {
-	font-size: 15px;
+	font-size:1.3em;
 	text-align: center;
 	font-weight: bold;
 	border-style: solid;
 	border-width: 1px;
 	background-color: #FBFBFB;
 	border-color: #BBBBBB;
-	margin-top: 10px;
-	margin-bottom: 20px;
+	margin-top: 0.5em;
+	margin-bottom: 1em;
 	color: #000000;
 	width: 100%;
 }
 
 .soustitre {
-	font-size: 12px;
+	/*font-size: 12px;*/
+	font-size:1.2em;
 	text-align: left;
 	font-weight: bold;
 	font-weight: bold;
@@ -156,17 +158,25 @@ pre {
 	border-width: 1px;
 	background-color: #FBFBFB;
 	border-color: #BBBBBB;
-	margin-top: 20px;
-	margin-bottom: 10px;
+	margin-top: 1em;
+	margin-bottom: 0.5em;
 	color: #000000;
 	width: 100%;
 }
 
 th.listing {
-	font-size: 10px;
 	background-color: #000000;
 	color: #FFFFFF;
 	white-space: nowrap;
+}
+#id_row{
+	width:1%;
+}
+.username_row{
+	width:25%;
+}
+.actions_row{
+	width:1%;
 }
 
 a.listing {
@@ -225,23 +235,30 @@ a.listing:hover {
 #logo {
 	text-align: center;
 	font-weight: bold;
-	margin-top: 10px;
-	width: 15em;
+	margin-top: 0.5em;
+	width: 14em;
+}
+
+#main_logo{
+	position:absolute;
+	right:1em;
+	top:1em;
 }
 
 .nav1 {
-	width: 155px;
+	width: 13em;
+	margin-left:0.3em;
 	border-color: #7777FF;
 	border-width: 1px;
 	border-style: solid;
-	margin-bottom: 10px;
+	margin-bottom: 0.5em;
 }
 
 .nav1 h1 {
 	margin: 2px;
-	font-size: 10px;
+	font-size:1em;
 	background-color: #CDCDFF;
-	padding-left: 2px;
+	padding-left: 0.2em;
 }
 
 .nav1 ul {
@@ -258,18 +275,16 @@ a.listing:hover {
 }	
 
 #logout {
-	width: 150px;
-	margin-left: 5px;
+	width:13em;
 	text-align: center;
-	margin-top: 10px;
-	margin-bottom: 10px;
+	margin:0.7em 0;
 }
 
 #legende {
-	width: 155px;
-	border-color: #7777FF;
-	border-width: 1px;
-	border-style: solid;
+	border: 1px #7777FF solid;
+	width:13em;
+	margin-left:0.3em;
+	margin-bottom:0.7em;
 }
 
 #legende table {
@@ -278,17 +293,17 @@ a.listing:hover {
 
 #legende h1 {
 	margin: 2px;
-	font-size: 10px;
+	font-size:1em;
 	background-color: #CDCDFF;
-	padding-left: 2px;
+	padding-left: 0.2em;
 	text-align: left;
 }
 
-#legende td {
-	padding-left: 2px;
+#legende th{
+	text-align:center;
 }
-
-#legende .back {
+#legende td, #legende th {
+	padding-left: 2px;
 	background-color: #EEEEEE;
 }
 
@@ -299,24 +314,16 @@ a.listing:hover {
 }
 
 #content {
-	position: absolute;
-	padding-right: 10px;
-	left: 180px;
-	right: 0px;
+	margin-left:15em;
+	padding-right: 0.5em;
 }
 
 #menu {
 	float: left;
-	position: absolute;
-	top: 0px;
-	left: 0px;
 	background-color: #DDDDFF;
-	padding: 5px;
-	width:15em;
-        border-color: #7777FF;
-        border-width: 1px;
-        border-style: solid;
-	-moz-border-radius: 0px 0px 8px 0px;
+/* 	padding: 0.5em; */
+	margin:0 0 0.5em 0.4em;
+ 	width:14em;
 }
 
 #menu a {
@@ -328,9 +335,10 @@ a.listing:hover {
 	text-align: center;
 	background-color: #DDDDFF;
 	padding: 10px;
-	-moz-border-radius: 8px;
-	border: 1px solid #BBBBBB;
-	margin-bottom: 10px;
+	/*-moz-border-radius: 8px;
+	border: 1px solid #BBBBBB;*/
+	margin:0 1em 1em 1em;
+	/*margin-bottom: 10px;*/
 }
 
 #listfilter form {
@@ -367,27 +375,28 @@ a.listing:hover {
 }
 	
 #mailing_preview th {
-	font-size: 10px;
+	/*font-size: 10px;*/
 	font-weight: bold;
 	text-align: left;
 	background-color: #EEEEEE;
 }
 
 #errorbox {
-	color: #FF0000;
-	border-color: #FFDDDD;
-	border-width: 2px;
-	border-style: solid;
-	margin-bottom: 10px;
+	text-align:center;
+	color:black;
+	border : 2px solid #c00;
+	padding : 0.5em 0.5em 0.5em 40px;
+	margin-bottom : 1em;
+	background : white url(images/error.png) no-repeat 5px 50%;
+	width: 80%;
+	margin:0 auto 0.8em auto;
 }
 		
 #errorbox h1 {
-	background-color: #FFDDDD;
-	text-align: center;
-	font-size: 10px;
+	/*background-color: #FFDDDD;*/
+	font-size:1em;
 	font-weight: bold;
-	margin-top: 0px;
-	margin-bottom: 0px;
+	margin: 0;
 }
 
 #errorbox ul {
@@ -447,7 +456,7 @@ a.listing:hover {
 #installpage h1 {
 	text-align: left;
 	margin: 0px;
-	font-size: 12px;
+	font-size:1em;
 }
 	
 #installpage #submitbutton2 {
@@ -461,7 +470,7 @@ a.listing:hover {
 }
 		
 .titreinstall {
-	font-size: 15px;
+	font-size:1.3em;
 	text-align: center;
 	font-weight: bold;
 	border-style: solid;
@@ -498,6 +507,10 @@ a.listing:hover {
 	list-style-image: url("../../install/no.gif");
 }
 
+#listing{
+	width:100%;
+}
+
 #listing td {
 	vertical-align: middle;
 }
@@ -523,7 +536,7 @@ a.listing:hover {
 }
 .button-link
 {
-        font-size: 12px;
+        /*font-size: 12px;*/
         text-align: left;
         font-weight: bold;
         border-style: solid;
@@ -548,13 +561,24 @@ a.listing:hover {
 {
 	color: #FF0000;
 }
+
+#backhome a{
+	background:url(images/home.png) right 50% no-repeat;
+}
 .button-back
 {
 	background-image: url(images/back.png);
 }
+
+#lostpassword a{
+	background:url(images/lost_pass.png) right 50% no-repeat;
+}
 .button-lost-password
 {
 	background-image: url(images/lost_password.png);
+}
+#subscribe a{
+	background:url(images/subscribe.png) right 50% no-repeat;
 }
 .button-subscribe
 {
@@ -566,7 +590,7 @@ a.listing:hover {
 }
 .button-flush-logs
 {
-	background-image: url(images/trash.png);
+	background-image: url(images/delete.png);
 }
 
 .login-box
@@ -576,7 +600,7 @@ a.listing:hover {
 	margin-top: 60px;
 	margin-left: auto;
 	margin-right: auto;
-	padding: 0px 10px 10px 10px;
+	padding: 1em;
 	text-align: center;
 }
 
@@ -604,13 +628,11 @@ a.listing:hover {
 
 .login-box th
 {
-	font-size: 12px;
 	text-align: right;
 }
 .login-box input {
-	font-size: 12px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	padding: 0px 2px 0px 2px;
+	padding: 0 2px;
 }
 
 .bigtable
@@ -698,13 +720,17 @@ legend{
 	height: 1%;
 }
 
-.cssform .bline{
+.bline{
 	font-weight: bold;
-	float: left;
-	margin-left: -21em;
-	width: 20em;
 	background-color: #DDDDFF;
 	padding:0.1em 0.3em;
+	margin-bottom:1em;
+	display:block;
+}
+.cssform .bline{
+	float: left;
+	margin: 0 0 0 -21em;
+	width: 20em;
 }
 
 .cssform textarea{
@@ -715,3 +741,64 @@ legend{
 .logo{
 	margin:0.3em 0;
 }
+
+#langs{
+	list-style-type:none;
+	margin:1em;
+	padding:0;
+}
+#langs li{
+	padding:0;
+	margin:0;
+	display:inline;
+}
+
+.menu{
+	margin:0.7em 0 0 0;
+	padding:0;
+	text-align:right;
+	font-weight:bold;
+}
+.menu li{
+	margin:0.5em 0;
+	list-style-type:none;
+}
+.menu a{
+	color: #666666;
+	padding:0.3em 20px 0.3em 0;
+}
+.menu a:hover{color: #FF0000;}
+
+.inline{ display:inline!important; }
+
+.nowrap{ white-space:nowrap; }
+
+.m_subscribe{
+	position:absolute;
+	right:1em;
+	top:6em;
+}
+
+.selection_menu{
+	margin:0;
+	padding:0;
+	font-weight:bold;
+}
+.selection_menu li{
+	margin:0.2em 0;
+	list-style-type:none;
+}
+.selection_menu input.submit{
+	margin:0;
+	background:none;
+	display:inline;
+	cursor:pointer;
+	border:none;
+	font-weight:normal;
+	padding-right:20px;
+}
+
+#sendmail{ background:url(images/icon-mail.png) right 50% no-repeat; }
+#delete{ background:url(images/icon-trash.png) right 50% no-repeat; }
+
+.fleft{float:left;}

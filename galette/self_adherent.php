@@ -1,7 +1,7 @@
 <?php
 /* self_adherent.php
- * - Saisie d'un adh�rent par lui-m�me
- * Copyright (c) 2004 Fr�d�ric Jaqcuot, Georges Khaznadar
+ * - Saisie d'un adhérent par lui-même
+ * Copyright (c) 2004 Frédéric Jaqcuot, Georges Khaznadar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,13 +19,9 @@
  *
  */
 
-include("includes/config.inc.php");
-include(WEB_ROOT."includes/database.inc.php"); 
-include(WEB_ROOT."includes/functions.inc.php"); 
-include(WEB_ROOT."includes/session.inc.php"); 
-include_once(WEB_ROOT."includes/i18n.inc.php");
-include_once(WEB_ROOT."includes/smarty.inc.php");
-include(WEB_ROOT."includes/dynamic_fields.inc.php");
+//include("includes/config.inc.php");
+require_once('includes/galette.inc.php');
+include_once(WEB_ROOT."includes/dynamic_fields.inc.php");
 
 // initialize warnings
 $error_detected = array();
@@ -251,7 +247,7 @@ if ( isset($_POST["valid"]) ) {
 			$adherent[$key] = '';
 	}
 } else {
-	// initialiser la structure adh�ent �vide (nouvelle fiche)
+	// initialiser la structure adhérent à vide (nouvelle fiche)
 	$adherent["id_statut"] = "4";
 	$adherent["titre_adh"] = "1";
 	$adherent["date_crea_adh"] =date("d/m/Y");

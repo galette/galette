@@ -2,7 +2,7 @@
 
 /* ajouter_contribution.php
  * - Saisie d'une contributions
- * Copyright (c) 2004 Frédéric Jaqcuot
+ * Copyright (c) 2004 FrÃ©dÃ©ric Jaqcuot
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,25 +20,20 @@
  *
  */
 
-	include("includes/config.inc.php");
-	include(WEB_ROOT."includes/database.inc.php");
-	include(WEB_ROOT."includes/session.inc.php");
+require_once('includes/galette.inc.php');
 
-	if ($_SESSION["logged_status"]==0)
-	{
-		header("location: index.php");
-		die();
-	}
-	if ($_SESSION["admin_status"]==0)
-	{
-		header("location: voir_adherent.php");
-		die();
-	}
+if ($_SESSION["logged_status"]==0)
+{
+	header("location: index.php");
+	die();
+}
+if ($_SESSION["admin_status"]==0)
+{
+	header("location: voir_adherent.php");
+	die();
+}
 	
-	include(WEB_ROOT."includes/functions.inc.php");
-        include(WEB_ROOT."includes/i18n.inc.php");
-	include(WEB_ROOT."includes/smarty.inc.php");
-        include(WEB_ROOT."includes/dynamic_fields.inc.php");
+include(WEB_ROOT."includes/dynamic_fields.inc.php");
 
 	function missing_contrib_amount($DB, $trans_id, $error_detected) {
 		if (is_numeric($trans_id)) {
@@ -278,7 +273,7 @@
 	{
 		if ($contribution["id_cotis"] == "")
 		{
-			// initialiser la structure contribution à vide (nouvelle contribution)
+			// initialiser la structure contribution ï¿½ vide (nouvelle contribution)
 			$contribution['duree_mois_cotis']=PREF_MEMBERSHIP_EXT;
 			if ($cotis_extension && isset($contribution["id_adh"])) {
 				$curend = get_echeance($DB, $contribution["id_adh"]);

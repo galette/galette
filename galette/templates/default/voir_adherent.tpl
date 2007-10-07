@@ -1,4 +1,4 @@
-	<h1 class="titre">{_T("Member Profile")}</h1>
+	<h1 id="titre">{_T("Member Profile")}</h1>
     {if $error_detected|@count != 0}
     		<div id="errorbox">
     			<h1>{_T("- ERROR -")}</h1>

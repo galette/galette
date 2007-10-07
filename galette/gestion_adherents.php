@@ -1,18 +1,19 @@
 <?php
 
 /** 
- * Récapitulatif des adhérents
+ * RÃ©capitulatif des adhÃ©rents
  *
- * Affichage de la liste des adhérents et possibilités
+ * Affichage de la liste des adhÃ©rents et possibilitÃ©s
  * de tri en fonction:
  * - du statut de membre
- * - de l'état de la cotisation
- * - de l'état du compte
+ * - de l'Ã©tat de la cotisation
+ * - de l'Ã©tat du compte
  * - du contenu de champs texte 
- * 
+ *
  * @package    Galette
- * @author     Frédéric Jaqcuot
- * @copyright  2003 Frédéric Jaqcuot
+ * @author     FrÃ©dÃ©ric Jaqcuot
+ * @author     Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright  2003 FrÃ©dÃ©ric Jaqcuot
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0
  * @version    $Id$
  * @since      Disponible depuis la Release 0.62
@@ -36,101 +37,91 @@
 /**
  * 
  */
- 
-	include("includes/config.inc.php"); 
-	include(WEB_ROOT."includes/database.inc.php");
-	include(WEB_ROOT."includes/session.inc.php");
+require_once('includes/galette.inc.php');
 
-	if ($_SESSION["logged_status"]==0)
-	{
-		header("location: index.php");
-		die();
-	}
-	if ($_SESSION["admin_status"]==0)
-	{
-		header("location: voir_adherent.php");
-		die();
-	}
+if( !$login->isLogged() ){
+	header("location: index.php");
+	die();
+}elseif( !$login->isAdmin() ){
+	header("location: voir_adherent.php");
+	die();
+}
 
-	include(WEB_ROOT."includes/functions.inc.php"); 
-	include(WEB_ROOT."includes/i18n.inc.php");
-	include(WEB_ROOT."includes/smarty.inc.php");
-	
-	$error_detected = array();
+$error_detected = array();
 // Set caller page ref for cards error reporting	
-    $_SESSION['galette']['caller']='gestion_adherents.php';	
+$_SESSION['galette']['caller']='gestion_adherents.php';	
 
-	if (isset($_POST['cards'])) {
-		$qstring = 'carte_adherent.php';
-		if (isset($_POST["member_sel"])) {
-			$_SESSION['galette']['cards'] = $_POST["member_sel"];
-			header('location: '.$qstring);
-		} else {
-			$error_detected[] = _T("No member was selected, please check at least one name.");
-        }
+if (isset($_POST['cards'])) {
+	$qstring = 'carte_adherent.php';
+	if (isset($_POST["member_sel"])) {
+		$_SESSION['galette']['cards'] = $_POST["member_sel"];
+		header('location: '.$qstring);
+	} else {
+		$error_detected[] = _T("No member was selected, please check at least one name.");
 	}
+}
 	
-	if (isset($_POST['labels'])) {
-		$qstring = 'etiquettes_adherents.php';
-		if (isset($_POST["member_sel"])) {
-			$_SESSION['galette']['labels'] = $_POST["member_sel"];
-			header('location: '.$qstring);
-		} else
-			$error_detected[] = _T("No member was selected, please check at least one name.");
-	}
+if (isset($_POST['labels'])) {
+	$qstring = 'etiquettes_adherents.php';
+	if (isset($_POST["member_sel"])) {
+		$_SESSION['galette']['labels'] = $_POST["member_sel"];
+		header('location: '.$qstring);
+	} else
+		$error_detected[] = _T("No member was selected, please check at least one name.");
+}
 
-	if (isset($_POST['mailing'])) {
-		$qstring = 'mailing_adherents.php';
-		if (isset($_POST["member_sel"])) {
-			$_SESSION['galette']['mailing'] = $_POST["member_sel"];
-			header('location: '.$qstring);
-		} else
-			$error_detected[] = _T("No member was selected, please check at least one name.");
-	}
+if (isset($_POST['mailing'])) {
+	$qstring = 'mailing_adherents.php';
+	if (isset($_POST["member_sel"])) {
+		$_SESSION['galette']['mailing'] = $_POST["member_sel"];
+		header('location: '.$qstring);
+	} else
+		$error_detected[] = _T("No member was selected, please check at least one name.");
+}
 
-	if (isset($_SESSION['galette']['pdf_error']) && $_SESSION['galette']['pdf_error']) {
-	    $error_detected[] = $_SESSION['galette']['pdf_error_msg'];
-	}
-	
-	$members = array();
-	
-	// Filters
-	$page = 1;
-	if (isset($_GET["page"]))
-		$page = $_GET["page"];
+if (isset($_SESSION['galette']['pdf_error']) && $_SESSION['galette']['pdf_error']) {
+	$error_detected[] = $_SESSION['galette']['pdf_error_msg'];
+}
 
-	if (isset($_GET["filtre_nom"]))
-		$_SESSION["filtre_adh_nom"]=trim(stripslashes(htmlspecialchars($_GET["filtre_nom"],ENT_QUOTES)));
+$members = array();
 
-	if (isset($_GET["filtre"]))
-		if (is_numeric($_GET["filtre"]))
-			$_SESSION["filtre_adh"]=$_GET["filtre"];
+// Filters
+$page = 1;
+if (isset($_GET["page"]))
+	$page = $_GET["page"];
 
-	if (isset($_GET["filtre_2"]))
-		if (is_numeric($_GET["filtre_2"]))
-			$_SESSION["filtre_adh_2"]=$_GET["filtre_2"];
+if (isset($_GET["filtre_nom"]))
+	$_SESSION["filtre_adh_nom"]=trim(stripslashes(htmlspecialchars($_GET["filtre_nom"],ENT_QUOTES)));
 
-	if (isset($_GET["filtre_fld"]))
-		if (is_numeric($_GET["filtre_fld"]))
-			$_SESSION["filtre_adh_fld"]=$_GET["filtre_fld"];
+if (isset($_GET["filtre"]))
+	if (is_numeric($_GET["filtre"]))
+		$_SESSION["filtre_adh"]=$_GET["filtre"];
 
-	$numrows = PREF_NUMROWS;
-	if (isset($_GET["nbshow"]))
-		if (is_numeric($_GET["nbshow"]))
-			$numrows = $_GET["nbshow"];
+if (isset($_GET["filtre_2"]))
+	if (is_numeric($_GET["filtre_2"]))
+		$_SESSION["filtre_adh_2"]=$_GET["filtre_2"];
 
-	// Sorting
-	if (isset($_GET["tri"]))
-		if (is_numeric($_GET["tri"]))
+if (isset($_GET["filtre_fld"]))
+	if (is_numeric($_GET["filtre_fld"]))
+		$_SESSION["filtre_adh_fld"]=$_GET["filtre_fld"];
+
+$numrows = PREF_NUMROWS;
+if (isset($_GET["nbshow"]))
+	if (is_numeric($_GET["nbshow"]))
+		$numrows = $_GET["nbshow"];
+
+// Sorting
+if (isset($_GET["tri"]))
+	if (is_numeric($_GET["tri"]))
+	{
+		if ($_SESSION["tri_adh"]==$_GET["tri"])
+			$_SESSION["tri_adh_sens"]=($_SESSION["tri_adh_sens"]+1)%2;
+		else
 		{
-			if ($_SESSION["tri_adh"]==$_GET["tri"])
-				$_SESSION["tri_adh_sens"]=($_SESSION["tri_adh_sens"]+1)%2;
-			else
-			{
-				$_SESSION["tri_adh"]=$_GET["tri"];
-				$_SESSION["tri_adh_sens"]=0;
-			}
+			$_SESSION["tri_adh"]=$_GET["tri"];
+			$_SESSION["tri_adh_sens"]=0;
 		}
+	}
 	
 	if (isset($_GET["sup"]) || isset($_POST["delete"]))
 	{
@@ -244,7 +235,7 @@
 			break;
 		}
 	}
-	// filtre d'affichage des adherents activés/desactivés
+	// filtre d'affichage des adherents activÃ©s/desactivÃ©s
 	if ($_SESSION["filtre_adh_2"]=="1")
 	{
 		$requete[0] .= "AND ".PREFIX_DB."adherents.activite_adh='1' ";
@@ -263,14 +254,14 @@
 		$requete[1] .= "AND date_echeance < ".$DB->DBDate(time())." ";
 	}
 
-	// filtre d'affichage des adherents à jour
+	// filtre d'affichage des adherents Ã  jour
 	if ($_SESSION["filtre_adh"]=="3")
 	{
 		$requete[0] .= "AND (date_echeance > ".$DB->DBDate(time())." OR bool_exempt_adh='1') ";
 		$requete[1] .= "AND (date_echeance > ".$DB->DBDate(time())." OR bool_exempt_adh='1') ";
 	}
 
-	// filtre d'affichage des adherents bientot à echeance
+	// filtre d'affichage des adherents bientot Ã  echeance
 	if ($_SESSION["filtre_adh"]=="1")
 	{
 		$requete[0] .= "AND date_echeance > ".$DB->DBDate(time())."
@@ -278,7 +269,7 @@
 		$requete[1] .= "AND date_echeance > ".$DB->DBDate(time())."
 			        AND date_echeance < ".$DB->OffsetDate(30)." ";
 	}
-	// filtre d'affichage des adherents n'ayant jamais cotisé
+	// filtre d'affichage des adherents n'ayant jamais cotisÃ©
 	if ($_SESSION["filtre_adh"]=="4")
 	{
 		$requete[0] .= "AND isnull(date_echeance)";
@@ -331,13 +322,13 @@
 	$compteur = 1+($page-1)*$numrows;
 	while (!$resultat->EOF) 
 	{ 
-		// définition CSS pour adherent désactivé
+		// dÃ©finition CSS pour adherent dÃ©sactivÃ©
 		if ($resultat->fields[4]=="1")
 			$row_class = "actif";
 		else
 			$row_class = "inactif";
 			
-		// temps d'adhésion
+		// temps d'adhÃ©sion
 		if($resultat->fields[6] == "1")
 		{
 			$statut_cotis = _T("Freed of dues");

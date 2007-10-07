@@ -1,7 +1,7 @@
 <?php
 /* mailing_adherents.php
  * - Mailing
- * Copyright (c) 2005 Fr�d�ric Jaqcuot
+ * Copyright (c) 2005 Frédéric Jaqcuot
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,25 +19,18 @@
  *
  */
 
+require_once('includes/galette.inc.php');
 
-	include("includes/config.inc.php");
-	include(WEB_ROOT."includes/database.inc.php");
-	include(WEB_ROOT."includes/session.inc.php");
-
-	if ($_SESSION["logged_status"]==0)
-	{
-		header("location: index.php");
-		die();
-	}
-	if ($_SESSION["admin_status"]==0)
-	{
-		header("location: voir_adherent.php");
-		die();
-	}
-	
-	include(WEB_ROOT."includes/functions.inc.php");
-	include(WEB_ROOT."includes/i18n.inc.php");
-	include(WEB_ROOT."includes/smarty.inc.php");
+if ($_SESSION["logged_status"]==0)
+{
+	header("location: index.php");
+	die();
+}
+if ($_SESSION["admin_status"]==0)
+{
+	header("location: voir_adherent.php");
+	die();
+}
 
 	$error_detected = array();
 	$warning_detected = array();
