@@ -388,7 +388,8 @@ if (isset($_GET["tri"]))
 		$resultat->MoveNext();
 	} 
 	$resultat->Close();
-	
+
+	$tpl->assign('page_title', _T("Management of members"));
 	$tpl->assign("error_detected",$error_detected);
 	$tpl->assign("members",$members);
 	$tpl->assign("nb_members",$nbadh->fields[0]);
@@ -419,5 +420,6 @@ if (isset($_GET["tri"]))
 			0 => _T("All")));
 	$content = $tpl->fetch("gestion_adherents.tpl");
 	$tpl->assign("content",$content);
+	//$tpl->assign("pref", $pref);
 	$tpl->display("page.tpl");
 ?>

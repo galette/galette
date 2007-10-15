@@ -49,7 +49,7 @@ a {
 }
 
 a:hover {
-	color: #FF0000;
+	color: #eea423;
 }
 
 pre {
@@ -165,7 +165,7 @@ pre {
 }
 
 th.listing {
-	background-color: #000000;
+	background-color: #eea423;
 	color: #FFFFFF;
 	white-space: nowrap;
 }
@@ -190,7 +190,7 @@ td.listing {
 }
 
 a.listing:hover {
-	color: #FF0000;
+	color: #666;
 }
 	
 .emptylist {
@@ -240,6 +240,7 @@ a.listing:hover {
 }
 
 #main_logo{
+	z-index:10;
 	position:absolute;
 	right:1em;
 	top:1em;
@@ -429,6 +430,11 @@ a.listing:hover {
 	padding: 0px;
 	border: none;
 }		
+
+#input-table{
+	width:100%;
+	margin:0.4em 0 0 0;
+}
 
 #input-table .libelle {
 	font-size: 11px;
@@ -638,6 +644,7 @@ a.listing:hover {
 .bigtable
 {
 	text-align: center;
+	padding:0.4em 0 0 0;
 }
 .bigtable table
 {
@@ -691,7 +698,7 @@ a.listing:hover {
 fieldset{
 	border: 1px solid #BBBBBB;
 	margin:0 auto 1em auto;
-	width:60%;
+	width:80%;
 	text-align:left;
 }
 fieldset ul{
@@ -709,8 +716,10 @@ legend{
 	border: 1px solid #BBBBBB;
 	font-weight:bold;
 	padding:0.2em 2em 0.2em 0.3em;
+	background-color:white;
 }
 
+.cssform{ background-color:white; }
 .cssform p{
 	clear: left;
 	margin: 0;
@@ -802,3 +811,66 @@ legend{
 #delete{ background:url(images/icon-trash.png) right 50% no-repeat; }
 
 .fleft{float:left;}
+
+input.large{
+	width:90%;
+}
+
+/*** Onglets ***/
+#tabs, #tabs li{
+	list-style-type: none;
+	margin:0;
+	padding:0;
+}
+
+ul#tabs{
+	width: 100%;
+}
+
+ul#tabs li{
+	float:right;
+	background-color:#DDDDFF;
+	margin:0 0 0 0.2em;
+	line-height:2em;
+}
+
+#tabs a{
+	text-decoration: none;
+	color: #666;
+	font-weight:bold;
+	padding:0 1em;
+	display:block;
+	z-index:10;
+}
+
+#tabs a:hover, .tabselected a {
+	text-decoration:underline;
+}
+.tabbed{
+	background-color:#DDDDFF;
+	clear:right;
+}
+.current_tab{
+	background-color:#eea423;
+	color:white!important;
+}
+/*** /Onglets ***/
+
+/*** Tooltips ***/
+#tooltip {
+	position: absolute;
+	z-index: 3000;
+	border: 1px solid #111;
+	background-color: #eee;
+	padding: 5px;
+	opacity: 0.85;
+}
+#tooltip h3, #tooltip div { margin: 0; }
+
+.tt{
+	width:20em;
+}
+/*.tooltip{
+	background-color:red;
+}*/
+/*** /Tooltips ***/

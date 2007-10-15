@@ -4,6 +4,7 @@ INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_admin_login',
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_admin_pass', '21232f297a57a5a743894a0e4a801fc3');
 
 INSERT INTO galette_preferences (nom_pref,val_pref) VALUES ('pref_nom','galette');
+INSERT INTO galette_preferences (nom_pref,val_pref) VALUES ('pref_slogan','');
 INSERT INTO galette_preferences (nom_pref,val_pref) VALUES ('pref_adresse','-');
 INSERT INTO galette_preferences (nom_pref,val_pref) VALUES ('pref_adresse2','');
 INSERT INTO galette_preferences (nom_pref,val_pref) VALUES ('pref_cp','-');

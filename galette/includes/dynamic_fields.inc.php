@@ -24,10 +24,10 @@
 	$field_type_line = 2;		// Single line text
 	$field_type_choice = 3;		// Fixed choices as combo-box
 
-	$field_type_names = array($field_type_separator => _T('separator'),
-				  $field_type_text => _T('free text'),
-				  $field_type_line => _T('single line'),
-				  $field_type_choice => _T('choice'));
+	$field_type_names = array($field_type_separator => _T("separator"),
+				  $field_type_text => _T("free text"),
+				  $field_type_line => _T("single line"),
+				  $field_type_choice => _T("choice"));
 
 	$field_properties = array(
 		$field_type_separator => array('no_data' => true,
@@ -60,14 +60,14 @@
 	$perm_all = 0;
 	$perm_admin = 1;
 
-	$perm_names = array($perm_all => _T('all'), $perm_admin => _T('admin'));
+	$perm_names = array($perm_all => _T("all"), $perm_admin => _T("admin"));
 
 	$field_pos_middle = 0;
 	$field_pos_left = 1;
 	$field_pos_right = 2;
-	$field_positions = array($field_pos_middle => _T('middle'),
-				 $field_pos_left => _T('left'),
-				 $field_pos_right => _T('right'));
+	$field_positions = array($field_pos_middle => _T("middle"),
+				 $field_pos_left => _T("left"),
+				 $field_pos_right => _T("right"));
 
 	$all_forms = array(
 		'adh' => _T("Members"),

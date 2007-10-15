@@ -30,7 +30,7 @@ CREATE TABLE galette_adherents (
   bool_exempt_adh enum('1') default NULL,
   bool_display_info enum('1') default NULL,
   date_echeance date default NULL,
-  pref_lang varchar(20) default 'french',
+  pref_lang varchar(20) default 'fr_FR',
   lieu_naissance text default '',
   gpgid varchar(8) DEFAULT NULL,
   fingerprint varchar(50) DEFAULT NULL,
@@ -163,18 +163,3 @@ CREATE TABLE galette_required (
 	required tinyint(1) NOT NULL,
 	PRIMARY KEY  (`field_id`)
 ) TYPE=MyISAM;
-
--- Add card preferences;
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_abrev', 'GALETTE');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_strip','Gestion d Adherents en Ligne Extrêmement Tarabiscoté');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_tcol', 'FFFFFF');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_scol', '8C2453');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_bcol', '53248C');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_hcol', '248C53');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_bool_display_title', '');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_address', '1');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_year', '2007');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_marges_v', '15');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_marges_h', '20');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_vspace', '5');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_hspace', '10');

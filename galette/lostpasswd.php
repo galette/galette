@@ -134,6 +134,7 @@ require_once('includes/galette.inc.php');
 		}
 	}
 
+$tpl->assign('page_title', _T("Password recovery"));
 	$tpl->assign("error_detected",$error_detected);
 	$tpl->assign("warning_detected",$warning_detected);
 

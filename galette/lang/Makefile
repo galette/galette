@@ -24,7 +24,9 @@ PHP_SOURCES = ../index.php \
 ../editer_champ.php \
 ../gestion_transactions.php \
 ../picture.php \
+../champs_requis.php \
 ../traduire_libelles.php \
+../includes/dynamic_fields.inc.php \
 ../templates/default/index.tpl \
 ../templates/default/gestion_adherents.tpl \
 ../templates/default/mailing_adherents.tpl \
@@ -42,60 +44,61 @@ PHP_SOURCES = ../index.php \
 ../templates/default/editer_champ.tpl \
 ../templates/default/gestion_transactions.tpl \
 ../templates/default/lostpasswd.tpl \
-../templates/default/self_adherent.tpl
+../templates/default/self_adherent.tpl \
+../templates/default/champ_requis.tpl
 
 
 all : messages.po lang
-	@echo "Génération des fichiers *.po :"
+	@echo "Gï¿½nï¿½ration des fichiers *.po :"
 	@for l in ${LANGUAGES}; do \
-	  echo "  Mise à jour de $$l.po"; \
+	  echo "  Mise ï¿½ jour de $$l.po"; \
 	  msgmerge -U $$l.po messages.po >/dev/null 2>&1; \
 	  mkdir -p ${INSTALLDIR}/$$l/LC_MESSAGES; \
 	  echo "    formatage de ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo."; \
 	  msgfmt $$l.po -o ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo.new; \
 	  if diff -qI 'PO-Revision-Date:.*' ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo.new ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo > /dev/null; then \
-	    echo "    ${PACKAGE}.mo non mis à jour."; \
+	    echo "    ${PACKAGE}.mo non mis ï¿½ jour."; \
 	    rm ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo.new; \
 	  else \
-	    echo "    ${PACKAGE}.mo mis à jour."; \
+	    echo "    ${PACKAGE}.mo mis ï¿½ jour."; \
 	    mv ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo.new ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo; \
 	  fi; \
 	done
 
 
 lang :
-	@echo "Génération des fichiers lang_*.php"
-	@echo "  Mise à jour de lang_english.php"
+	@echo "Gï¿½nï¿½ration des fichiers lang_*.php"
+	@echo "  Mise ï¿½ jour de lang_english.php"
 	@echo "    extraction des chaines..."
 	@${MKLANG} en_US.po lang_english.php.new
 	@if diff -qI 'This file was automatically generated.*' lang_english.php lang_english.php.new > /dev/null; then \
-	  echo "    lang_english.php non mis à jour."; \
+	  echo "    lang_english.php non mis ï¿½ jour."; \
 	  rm lang_english.php.new; \
 	else \
-	  echo "    lang_english.php mis à jour."; \
+	  echo "    lang_english.php mis ï¿½ jour."; \
 	  mv lang_english.php.new lang_english.php; \
 	fi; 
 
-	@echo "  Mise à jour de lang_french.php"
+	@echo "  Mise ï¿½ jour de lang_french.php"
 	@echo "    extraction des chaines..."
 	@${MKLANG} fr_FR@euro.po lang_french.php.new
 	@if diff -qI 'This file was automatically generated.*' lang_french.php lang_french.php.new > /dev/null; then \
-	  echo "    lang_french.php non mis à jour."; \
+	  echo "    lang_french.php non mis ï¿½ jour."; \
 	  rm lang_french.php.new; \
 	else \
-	  echo "    lang_french.php mis à jour."; \
+	  echo "    lang_french.php mis ï¿½ jour."; \
 	  mv lang_french.php.new lang_french.php; \
 	fi; 
 
-	@echo "  Mise à jour de lang_spanish.php"
+	@echo "  Mise ï¿½ jour de lang_spanish.php"
 	@echo "    extraction des chaines..."
 	@${MKLANG} es_ES@euro.po lang_spanish.php.new
 
 	@if diff -qI 'This file was automatically generated.*' lang_spanish.php lang_spanish.php.new > /dev/null; then \
-	  echo "    lang_spanish.php non mis à jour."; \
+	  echo "    lang_spanish.php non mis ï¿½ jour."; \
 	  rm lang_spanish.php.new; \
 	else \
-	  echo "    lang_spanish.php mis à jour."; \
+	  echo "    lang_spanish.php mis ï¿½ jour."; \
 	  mv lang_spanish.php.new lang_spanish.php; \
 	fi; 
 

@@ -1,22 +1,21 @@
 {html_doctype xhtml=true type=strict omitxml=false encoding=iso-8859-1}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$galette_lang}" lang="{$galette_lang}">
 	<head>
-		<title>Galette {$GALETTE_VERSION}</title>
+		<title>{if $pref_slogan ne ""}{$pref_slogan} - {/if}{if $page_title ne ""}{$page_title} - {/if}Galette {$GALETTE_VERSION}</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
 		<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css"/>
 		<script type="text/javascript" src="{$jquery_dir}jquery-1.2.1.pack.js"></script>
 		<script type="text/javascript" src="{$jquery_dir}jquery.bgFade.js"></script>
-		<script type="text/javascript" src="{$jquery_dir}niftycube.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}jquery.corner.js"></script>
 		<script type="text/javascript" src="{$scripts_dir}common.js"></script>
 {literal}
 		<script type="text/javascript">
-		<!--
+
 			function updatelanguage(){
-				//document.cookie = "pref_lang="+document.forms[0].pref_lang.value;
 				document.forms[0].update_lang.value=1;
+				document.forms[0].valid.value=0;
 				document.forms[0].submit();
 			}
-		-->
 		</script>
 {/literal}
 {if $head_redirect}{$head_redirect}{/if}
@@ -55,7 +54,6 @@
 			</ul>
 		</div>
 {/if}
-		<blockquote>
 {if !$head_redirect}
 		<form action="self_adherent.php" method="post" enctype="multipart/form-data">
 {if !$head_redirect}
@@ -99,8 +97,8 @@
 				<p>
 					<label for="pref_lang" class="bline libelle{if $required.pref_lang eq 1} required{/if}">{_T("Language:")}</label>
 					<select name="pref_lang" id="pref_lang" onchange="javascript:updatelanguage();" {$disabled.pref_lang}>
-						{foreach key=langue item=langue_t from=$languages}
-							<option value="{$langue}" {if $data.pref_lang eq $langue}selected="selected"{/if} style="padding-left: 30px; background-image: url(lang/{$langue}.gif); background-repeat: no-repeat">{$langue_t|capitalize}</option>
+						{foreach item=langue from=$languages}
+							<option value="{$langue->getID()}"{if $data.pref_lang eq $langue->getID()} selected="selected"{/if} style="background:url({$langue->getFlag()}) no-repeat;padding-left:30px;">{$langue->getName()|capitalize}</option>
 						{/foreach}
 					</select>
 					<input type="hidden" name="update_lang" value="0" />
@@ -110,9 +108,9 @@
 				<legend>{_T("Contact information:")}</legend>
 				<p>
 					<label for="adresse_adh" class="bline libelle{if $required.adresse_adh eq 1} required{/if}">{_T("Address:")}</label>
-					<input type="text" name="adresse_adh" id="adresse_adh" value="{$data.adresse_adh}" maxlength="150" size="63" {$disabled.adresse_adh}/><!--<br/>
-					<label for="adresse2_adh">{_T("Address:")} {_T(" (continuation)")}</label>-->
-					<input type="text" name="adresse2_adh" id="adresse2_adh" value="{$data.adresse2_adh}" maxlength="150" size="63" {$disabled.adresse2_adh}/>
+					<input type="text" name="adresse_adh" id="adresse_adh" value="{$data.adresse_adh}" maxlength="150" class="large" {$disabled.adresse_adh}/><br/>
+					<label for="adresse2_adh" class="bline libelle{if $required.adresse_adh eq 1} required{/if}">{_T("Address:")} {_T(" (continuation)")}</label>
+					<input type="text" name="adresse2_adh" id="adresse2_adh" value="{$data.adresse2_adh}" maxlength="150" class="large" {$disabled.adresse2_adh}/>
 				</p>
 				<p>
 					<label for="cp_adh" class="bline libelle{if $required.cp_adh eq 1} required{/if}">{_T("Zip Code:")}</label>
@@ -136,11 +134,11 @@
 				</p>
 				<p>
 					<label for="email_adh" class="bline libelle{if $required.email_adh eq 1} required{/if}">{_T("E-Mail:")}</label>
-					<input type="text" name="email_adh" id="email_adh" value="{$data.email_adh}" maxlength="150" size="30" {$disabled.email_adh}/>
+					<input type="text" name="email_adh" id="email_adh" value="{$data.email_adh}" maxlength="150" class="large" {$disabled.email_adh}/>
 				</p>
 				<p>
 					<label for="url_adh" class="bline libelle{if $required.url_adh eq 1} required{/if}">{_T("Website:")}</label>
-              				<input type="text" name="url_adh" id="url_adh" value="{$data.url_adh}" maxlength="200" size="30" {$disabled.url_adh}/>
+              				<input type="text" name="url_adh" id="url_adh" value="{$data.url_adh}" maxlength="200" class="large" {$disabled.url_adh}/>
 				</p>
 				<p>
 					<label for="icq_adh" class="bline libelle{if $required.icq_adh eq 1} required{/if}">{_T("ICQ:")}</label>
@@ -148,11 +146,11 @@
 				</p>
 				<p>
 					<label for="jabber_adh" class="bline libelle{if $required.jabber_adh eq 1} required{/if}">{_T("Jabber:")}</label>
-					<input type="text" name="jabber_adh" id="jabber_adh" value="{$data.jabber_adh}" maxlength="150" size="30" {$disabled.jabber_adh}/>
+					<input type="text" name="jabber_adh" id="jabber_adh" value="{$data.jabber_adh}" maxlength="150" class="large" {$disabled.jabber_adh}/>
 				</p>
 				<p>
 					<label for="msn_adh" class="bline libelle{if $required.msn_adh eq 1} required{/if}">{_T("MSN:")}</label>
-					<input type="text" name="msn_adh" id="msn_adh" value="{$data.msn_adh}" maxlength="150" size="30" {$disabled.msn_adh}/>
+					<input type="text" name="msn_adh" id="msn_adh" value="{$data.msn_adh}" maxlength="150" class="large" {$disabled.msn_adh}/>
 				</p>
 				<p>
 					<label for="gpgid" class="bline libelle{if $required.gpgid eq 1} required{/if}">{_T("Id GNUpg (GPG):")}</label>
@@ -160,7 +158,7 @@
 				</p>
 				<p>
 					<label for="fingerprint" class="bline libelle{if $required.fingerprint eq 1} required{/if}">{_T("fingerprint:")}</label>
-					<input type="text" name="fingerprint" id="fingerprint" value="{$data.fingerprint}" maxlength="30" size="30" {$disabled.fingerprint}/>
+					<input type="text" name="fingerprint" id="fingerprint" value="{$data.fingerprint}" maxlength="40" class="large" {$disabled.fingerprint}/>
 				</p>
 			</fieldset>
 			<fieldset class="cssform">
@@ -190,7 +188,6 @@
 	</form>
 {/if}
 
-		</blockquote>
 		<div id="copyright">
 			<a href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
 		</div>

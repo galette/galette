@@ -1,5 +1,5 @@
 		<h1 id="titre">{_T("Settings")}</h1>
-		<form action="preferences.php" method="post" enctype="multipart/form-data"> 
+		<form action="preferences.php" method="post" enctype="multipart/form-data">
 {if $error_detected|@count != 0}
 		<div id="errorbox">
 			<h1>{_T("- ERROR -")}</h1>
@@ -20,12 +20,25 @@
 			</ul>
 		</div>
 {/if}
-		<div class="bigtable">
-			<fieldset class="cssform">
+		<ul id="tabs">
+			<li><a href="#admin">{_T("Admin")}</a></li>
+			<li><a href="#cards">{_T("Cards")}</a></li>
+			<li><a href="#labels">{_T("Labels")}</a></li>
+			<li><a href="#mail">{_T("E-Mail")}</a></li>
+			<li><a href="#parameters">{_T("Parameters")}</a></li>
+			<li><a href="#general" class="current_tab">{_T("General")}</a></li>
+		</ul>
+		<div class="bigtable tabbed">
+			<fieldset class="cssform" id="general">
 				<legend>{_T("General information:")}</legend>
 				<p>
 					<label for="pref_nom" class="bline{if $required.pref_nom eq 1} required{/if}">{_T("Name (corporate name) of the association:")}</label>
 					<input type="text" name="pref_nom" id="pref_nom" value="{$pref.pref_nom}" maxlength="190"/>
+				</p>
+				<p>
+					<label for="pref_slogan" class="bline{if $required.pref_slogan eq 1} required{/if} tooltip" title="{_T("Enter here a short description for your association, it will be displayed on the index page and into pages' title.")}">{_T("Association's short description:")}</label>
+					<span class="tip">{_T("Enter here a short description for your association, it will be displayed on the index page and into pages' title.")}</span>
+					<input type="text" class="large" name="pref_slogan" id="pref_slogan" value="{$pref.pref_slogan}"/>
 				</p>
 				<p>
 					<label for="logo_picture" class="bline">{_T("Logo:")}</label>
@@ -36,9 +49,10 @@
 					<input type="file" name="logo" id="logo_picture"/>
 				</p>
 				<p>
-					<label for="pref_adresse" class="bline{if $required.pref_adresse eq 1} required{/if}">{_T("Address:")}</label> 
-					<input type="text" name="pref_adresse" id="pref_adresse" value="{$pref.pref_adresse}" maxlength="190" size="42"/><br/>
-					<input type="text" name="pref_adresse2" id="pref_adresse2" value="{$pref.pref_adresse2}" maxlength="190" size="42"/>
+					<label for="pref_adresse" class="bline{if $required.pref_adresse eq 1} required{/if}">{_T("Address:")}</label>
+					<input type="text" name="pref_adresse" id="pref_adresse" value="{$pref.pref_adresse}" maxlength="190" class="large"/><br/>
+					<label for="pref_adresse2" class="bline libelle{if $required.pref_adresse eq 1} required{/if}">{_T("Address:")} {_T(" (continuation)")}</label>
+					<input type="text" name="pref_adresse2" id="pref_adresse2" value="{$pref.pref_adresse2}" maxlength="190" class="large"/>
 				</p>
 				<p>
 					<label for="pref_cp" class="bline{if $required.pref_cp eq 1} required{/if}">{_T("Zip Code:")}</label>
@@ -58,13 +72,13 @@
 				</p>
 			</fieldset>
 
-			<fieldset class="cssform">
+			<fieldset class="cssform" id="parameters">
 				<legend>{_T("Galette's parameters:")}</legend>
 				<p>
 					<label for="pref_lang" class="bline{if $required.pref_lang eq 1} required{/if}">{_T("Default language:")}</label>
 					<select name="pref_lang" id="pref_lang">
-{foreach key=langue item=langue_t from=$languages}
-						<option value="{$langue}" {if $pref.pref_lang eq $langue}selected="selected"{/if} style="padding-left: 30px; background-image: url(lang/{$langue}.gif); background-repeat: no-repeat">{$langue_t|capitalize}</option>
+{foreach item=langue from=$languages}
+						<option value="{$langue->getID()}" {if $pref.pref_lang eq $langue->getID()}selected="selected"{/if} style="padding-left: 30px; background-image: url({$langue->getFlag()}); background-repeat: no-repeat">{$langue->getName()|capitalize}</option>
 {/foreach}
 					</select>
 				</p>
@@ -94,7 +108,7 @@
 				</p>
 			</fieldset>
 
-			<fieldset class="cssform">
+			<fieldset class="cssform" id="mail">
 				<legend>{_T("Mail settings:")}</legend>
 				<p>
 					<label for="pref_email_nom" class="bline{if $required.pref_email_nom eq 1} required{/if}">{_T("Sender name:")}</label>
@@ -121,7 +135,7 @@
 				</p>
 			</fieldset>
 
-			<fieldset class="cssform">
+			<fieldset class="cssform" id="labels">
 				<legend>{_T("Label generation parameters:")}</legend>
 				<p>
 					<label for="pref_etiq_marges_v" class="bline{if $required.pref_etiq_marges_v eq 1} required{/if}">{_T("Vertical margins:")}</label>
@@ -169,7 +183,7 @@
 				</p>
 			</fieldset>
 
-			<fieldset class="cssform">
+			<fieldset class="cssform" id="cards">
 				<legend>{_T("Cards generation parameters:")}</legend>
 				<p> 
 					<label for="pref_card_abrev" class="bline{if $required.pref_card_abrev eq 1} required{/if}">{_T("Short Text (Card Center):")}</label>
@@ -265,7 +279,7 @@
 				</p>
 			</fieldset>
 
-			<fieldset class="cssform">
+			<fieldset class="cssform" id="admin">
 				<legend>{_T("Admin account (independant of members):")}</legend>
 				<p>
 					<label for="pref_admin_login" class="bline{if $required.pref_admin_login eq 1} required{/if}">{_T("Username:")}</label>
@@ -287,3 +301,35 @@
 		</div>
 		<p>{_T("NB : The mandatory fields are in")} <span class="required">{_T("red")}</span></p>
 		</form>
+		{literal}
+		<script type="text/javascript">
+			<![CDATA[
+			//let's round some corners
+			$('#tabs li').corner('top');
+			$('.tabbed').corner('bottom');
+
+			//if javascript active, hide tabs
+			//$('fieldset.cssform').hide();
+			$('fieldset.cssform').slideUp('fast');
+			//and then, show only the default one
+			$('fieldset.cssform:first-child').slideDown('fast');
+			$('fieldset.cssform:first-child').fadeIn('slow');
+
+			/*$('#parameters').hide();
+			$('#mail').hide();
+			$('#labels').hide();
+			$('#cards').hide();
+			$('#admin').hide();*/
+
+			//what to do when tab clicked
+			$('#tabs li a').click(function(){
+				/*$('fieldset.cssform').fadeOut(10);
+				$($(this).attr('href')).fadeIn('slow');*/
+				$('fieldset.cssform').slideUp('fast');
+				$('.current_tab').removeClass();
+				$(this).addClass('current_tab');
+				$($(this).attr('href')).slideDown('slow');
+			});
+			]]>
+		</script>
+		{/literal}

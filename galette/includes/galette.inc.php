@@ -8,8 +8,8 @@ require_once('config.inc.php');
 //we start a php session
 session_start();
 
-define("GALETTE_VERSION", "v0.7alpha");
-set_include_path(get_include_path() . PATH_SEPARATOR . WEB_ROOT . "includes/pear/" . PATH_SEPARATOR . WEB_ROOT . "includes/pear/PEAR/" . PATH_SEPARATOR . WEB_ROOT . "includes/pear/MDB2");
+define('GALETTE_VERSION', 'v0.7alpha');
+set_include_path(get_include_path() . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/PEAR/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/MDB2' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/Log');
 
 /*--------------------------------------------------------------------------------------
 LOG and DEBUG
@@ -46,6 +46,27 @@ $log->addChild($display);
 $log->addChild($file);
 
 /**
+* MDB2 instanciation
+*/
+require_once(WEB_ROOT . '/classes/mdb2.class.php');
+/** TODO: Replace mdb2_db by db once adodb will be removed */
+/** FIXME: mdb2 object should be stored into the session. This causes a fatal error on __destruct */
+/*if( isset($_SESSION['galette']['db']) ){
+	$mdb2_db = unserialize($_SESSION['galette']['db']);
+}else{
+	$mdb2_db = new GaletteMdb2();
+	$_SESSION['galette']['db'] = serialize($mdb2_db);
+}*/
+$mdb2_db = new GaletteMdb2();
+
+/**
+* Load preferences
+*/
+require_once(WEB_ROOT . 'classes/preferences.class.php');
+$p = new Preferences();
+$preferences = $p->prefs;
+
+/**
 * Language instantiation
 */
 require_once(WEB_ROOT . 'classes/i18n.class.php');
@@ -62,33 +83,13 @@ if( isset($_SESSION['galette_lang']) ){
 }*/
 $i18n = new i18n((isset($_SESSION['pref_lang'])?$_SESSION['pref_lang']:''));
 
-//print_r($_SESSION);
-
-//if(get_class($i18n) != 'i18n') $i18n = new i18n();
-
-
-//$i18n = ( isset($_SESSION['galette']['lang']) )?unserialize($_SESSION['galette']['lang']):new i18n();
-
+if( isset($_POST['pref_lang']) ){ $_GET['pref_lang'] = $_POST['pref_lang']; }
 if( isset($_GET['pref_lang']) ){
 	$i18n->changeLanguage( $_GET['pref_lang'] );
 	$_SESSION['pref_lang'] = $_GET['pref_lang'];
 }
 
-/**
-* MDB2 instanciation
-*/
-require_once(WEB_ROOT . "/classes/mdb2.class.php");
-/** TODO: Replace mdb2_db by db once adodb will be removed */
-/** FIXME: mdb2 object should be stored into the session. This causes a fatal error on __destruct */
-/*if( isset($_SESSION['galette']['db']) ){
-	$mdb2_db = unserialize($_SESSION['galette']['db']);
-}else{
-	$mdb2_db = new GaletteMdb2();
-	$_SESSION['galette']['db'] = serialize($mdb2_db);
-}*/
-$mdb2_db = new GaletteMdb2();
-
-require_once(WEB_ROOT . "/classes/adherents.class.php");
+require_once(WEB_ROOT . '/classes/adherents.class.php');
 if(isset($_SESSION['galette']['login']))
 	$login = unserialize($_SESSION['galette']['login']);
 else $login = new Adherents();
@@ -97,11 +98,11 @@ else $login = new Adherents();
 * Now that all objects are correctly setted,
 * we can include files that need it
 */
-require_once(WEB_ROOT."includes/database.inc.php");
-require_once(WEB_ROOT."includes/functions.inc.php");
-include_once(WEB_ROOT."includes/session.inc.php");
-require_once(WEB_ROOT."includes/i18n.inc.php");
-require_once(WEB_ROOT."includes/smarty.inc.php");
-require_once(WEB_ROOT."includes/picture.class.php");
+require_once(WEB_ROOT . 'includes/database.inc.php');
+require_once(WEB_ROOT . 'includes/functions.inc.php');
+include_once(WEB_ROOT . 'includes/session.inc.php');
+require_once(WEB_ROOT . 'includes/i18n.inc.php');
+require_once(WEB_ROOT . 'includes/smarty.inc.php');
+require_once(WEB_ROOT . 'includes/picture.class.php');
 
 ?>

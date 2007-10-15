@@ -324,7 +324,7 @@ $tpl->assign('pref_numrows_options', array(
 					   0 => _T("All")));
 
 $tpl->assign("required",$required);
-$tpl->assign("languages",drapeaux());
+$tpl->assign("languages",$i18n->getList());
 $tpl->assign("error_detected",$error_detected);
 $tpl->assign("warning_detected",$warning_detected);
 

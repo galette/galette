@@ -10,7 +10,6 @@
 			</ul>
 		</div>
 {/if}
-		<blockquote>
 		<div align="center">
 			<table border="0" id="input-table"> 
 				<tr> 
@@ -94,8 +93,6 @@
 				</tr> 
 			</table> 
 		</div>
-		<br/> 
-		</blockquote> 
 		<input type="hidden" name="form" value="{$form_name}"/>
 		<input type="hidden" name="id" value="{$data.id}"/>
 		</form>

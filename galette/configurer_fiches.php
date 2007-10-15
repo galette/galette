@@ -36,7 +36,8 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 
 $error_detected = array();
 
-	$form_name = get_form_value('form', '');
+	$form_name = ( isset($_GET['form']) )?$_GET['form']:'adh';
+
 	if (!isset($all_forms[$form_name]))
 		$form_name = '';
 
@@ -45,7 +46,6 @@ $error_detected = array();
 	if ($form_name == '') {
 
 		$form_title = '';
-		$tpl->assign("all_forms", $all_forms);
 
 	} else {
 
@@ -178,15 +178,14 @@ $error_detected = array();
 	
 	} // $form_name == ''
 
-	$tpl->assign("error_detected",$error_detected);
-	$tpl->assign("form_name", $form_name);
-	$tpl->assign("form_title", $form_title);
-
-	$tpl->assign("perm_names", $perm_names);
-	$tpl->assign("field_type_names", $field_type_names);
-	$tpl->assign("field_positions", $field_positions);
-
-	$content = $tpl->fetch("configurer_fiches.tpl");
-	$tpl->assign("content",$content);
-	$tpl->display("page.tpl");
+$tpl->assign("all_forms", $all_forms);
+$tpl->assign("error_detected",$error_detected);
+$tpl->assign("form_name", $form_name);
+$tpl->assign("form_title", $form_title);
+$tpl->assign("perm_names", $perm_names);
+$tpl->assign("field_type_names", $field_type_names);
+$tpl->assign("field_positions", $field_positions);
+$content = $tpl->fetch("configurer_fiches.tpl");
+$tpl->assign("content",$content);
+$tpl->display("page.tpl");
 ?>

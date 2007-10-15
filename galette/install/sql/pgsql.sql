@@ -212,18 +212,3 @@ CREATE TABLE galette_required (
 	required integer DEFAULT '0' NOT NULL,
 );
 CREATE UNIQUE INDEX galette_required_idx ON galette_required (field_id);
-
--- Add card preferences;
-INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_card_abrev', 'GALETTE');
-INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_card_strip','Gestion d Adherents en Ligne Extrêmement Tarabiscoté');
-INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_card_tcol', 'FFFFFF');
-INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_card_scol', '8C2453');
-INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_card_bcol', '53248C');
-INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_card_hcol', '248C53');
-INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_bool_display_title', '');
-INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_card_address', '1');
-INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_card_year', '2007');
-INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_card_marges_v', '15');
-INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_card_marges_h', '20');
-INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_card_vspace', '5');
-INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_card_hspace', '10');

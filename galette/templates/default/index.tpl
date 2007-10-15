@@ -1,12 +1,12 @@
 {html_doctype xhtml=true type=strict omitxml=false encoding=iso-8859-1}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$galette_lang}" lang="{$galette_lang}">
 	<head>
-		<title>Galette {$galette_version}</title>
+		<title>{if $pref_slogan ne ""}{$pref_slogan} - {/if}{if $page_title ne ""}{$page_title} - {/if}Galette {$GALETTE_VERSION}</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css" />
 		<script type="text/javascript" src="{$jquery_dir}jquery-1.2.1.pack.js"></script>
 		<script type="text/javascript" src="{$jquery_dir}jquery.bgFade.js"></script>
-		<script type="text/javascript" src="{$jquery_dir}niftycube.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}jquery.corner.js"></script>
 		<script type="text/javascript" src="{$scripts_dir}common.js"></script>
 	</head>
 	<body>
@@ -24,7 +24,7 @@
 				<div id="errorbox">{_T("Login failed.")}</div>
 {/if}
 				<ul id="langs">
-{foreach item=langue from=$languages_new}
+{foreach item=langue from=$languages}
 					<li><a href="index.php?pref_lang={$langue->getID()}"><img src="{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}" class="flag"/></a></li>
 {/foreach}
 				</ul>

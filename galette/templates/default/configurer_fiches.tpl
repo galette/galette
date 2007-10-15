@@ -10,13 +10,17 @@
 			</ul>
 		</div>
 {/if}
-{if $form_title == ''}
-		<select name="form" onchange="form.submit()">
+		<!--<select name="form" onchange="form.submit()">
 			{html_options options=$all_forms selected=$form_name}
 		</select>&nbsp;
-		<input type="submit" class="submit" name="continue" value="{_T("Continue")}"/>
-{else} {* $form_title != '' *}
-		<table width="100%" id="input-table"> 
+		<input type="submit" class="submit" name="continue" value="{_T("Continue")}"/>-->
+		<ul id="tabs">
+{foreach from=$all_forms key=key item=form}
+			<li><a href="?form={$key}"{if $form_name eq $key} class="current_tab"{/if}>{$form}</a></li>
+{/foreach}
+		</ul>
+		<div class="tabbed">
+		<table id="input-table">
 			<tr>
 				<th class="listing">#</th> 
 				<th class="listing left">{_T("Name")}</th>
@@ -92,7 +96,15 @@
 				</td>
 				<td class="listing center"><input type="submit" class="submit" name="valid" value="{_T("Add")}"/></td>
 			</tr>
-		</table> 
+		</table>
+		</div>
 		<input type="hidden" name="form" value="{$form_name}"/>
-{/if} {* $form_title == '' *}
-		</form> 
+		</form>
+		{literal}
+		<script type="text/javascript">
+			<![CDATA[
+			$('#tabs li').corner('top');
+			$('.tabbed').corner('bottom');
+			]]>
+		</script>
+		{/literal}

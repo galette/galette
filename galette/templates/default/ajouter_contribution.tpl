@@ -10,8 +10,7 @@
 			</ul>
 		</div>
 {/if}
-		<blockquote>
-		<div align="center">
+		<div class="center">
 			<fieldset class="cssform">
 				<legend>{_T("Select contributor and contribution type")}</legend>
 				<p>
@@ -99,5 +98,4 @@
 			<input type="hidden" name="cotis_extension" value="{$cotis_extension}"/>
 		</div>
 		<p>{_T("NB : The mandatory fields are in")} <span class="required">{_T("red")}</span></p>
-		</blockquote>
 		</form>

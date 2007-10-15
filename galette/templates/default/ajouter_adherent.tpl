@@ -58,8 +58,8 @@
 				<p>
 					<label for="pref_lang" class="bline {if $required.pref_lang eq 1} required{/if}">{_T("Language:")}</label>
 					<select name="pref_lang" id="pref_lang" {$disabled.pref_lang}>
-						{foreach key=langue item=langue_t from=$languages}
-							<option value="{$langue}" {if $data.pref_lang eq $langue}selected="selected"{/if} style="padding-left: 30px; background-image: url(lang/{$langue}.gif); background-repeat: no-repeat">{$langue_t|capitalize}</option>
+						{foreach item=langue from=$languages}
+							<option value="{$langue->getID()}"{if $data.pref_lang eq $langue->getID()} selected="selected"{/if} style="background:url({$langue->getFlag()}) no-repeat;padding-left:30px;">{$langue->getName()|capitalize}</option>
 						{/foreach}
 					</select>
 				</p>
@@ -139,7 +139,8 @@
 				<p>
 					<label for="adresse_adh" class="bline{if $required.adresse_adh eq 1} required{/if}">{_T("Address:")}</label>
 					<input type="text" name="adresse_adh" id="adresse_adh" value="{$data.adresse_adh}" maxlength="150" size="50" {$disabled.adresse_adh}/><br/>
-					<input class="labelalign" type="text" name="adresse2_adh" value="{$data.adresse2_adh}" maxlength="150" size="50" {$disabled.adresse2_adh}/>
+					<label for="adresse2_adh" class="bline libelle{if $required.adresse_adh eq 1} required{/if}">{_T("Address:")} {_T(" (continuation)")}</label>
+					<input type="text" name="adresse2_adh" id="adresse2_adh" value="{$data.adresse2_adh}" maxlength="150" size="50" {$disabled.adresse2_adh}/>
 				</p>
 				<p>
 					<label for="cp_adh" class="bline{if $required.cp_adh eq 1} required{/if}">{_T("Zip Code:")}</label>

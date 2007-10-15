@@ -60,11 +60,11 @@ $insert_string_fields = '';
 $insert_string_values = '';
 
 $adherent['dyn'] = extract_posted_dynamic_fields($DB, $_POST, $disabled);
+$fields = &$DB->MetaColumns(PREFIX_DB."adherents");
 
 // checking posted values for 'regular' fields
-if ( isset($_POST["valid"]) ) {
+if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
 	//check fields goodness
-	$fields = &$DB->MetaColumns(PREFIX_DB."adherents");
 	while (list($key, $properties) = each($fields)) {
 		$key = strtolower($key);
 		if (isset($_POST[$key]))
@@ -240,6 +240,7 @@ if ( isset($_POST["valid"]) ) {
 	}
 }elseif(isset($_POST["update_lang"]) && $_POST["update_lang"] == 1){
 	while (list($key, $properties) = each($fields)) {
+		
 		$key = strtolower($key);
 		if (isset($_POST[$key]))
 			$adherent[$key] = trim($_POST[$key]);
@@ -270,6 +271,7 @@ $spam_img = print_img($s);
 
 $dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $_SESSION["admin_status"], $adherent['dyn'], $disabled['dyn'], 1);
 
+$tpl->assign('page_title', _T("Subscription"));
 // template variable declaration
 $tpl->assign("spam_pass",$spam_pass);
 $tpl->assign("spam_img",$spam_img);
@@ -280,9 +282,9 @@ $tpl->assign("time",time());
 $tpl->assign("dynamic_fields",$dynamic_fields);
 $tpl->assign("error_detected",$error_detected);
 $tpl->assign("warning_detected",$warning_detected);
-$tpl->assign("languages",drapeaux());
+$tpl->assign("languages", $i18n->getList());
+//$tpl->assign("languages",drapeaux());
 if(isset($head_redirect)) $tpl->assign("head_redirect", $head_redirect);
-
 
 // pseudo random int
 $tpl->assign("time",time());

@@ -10,8 +10,7 @@
 			</ul>
 		</div>
 {/if}
-		<blockquote>
-		<div align="center">
+		<div class="center">
 			<table border="0" id="input-table">
 				<tr>
 					<th {if $required.trans_desc eq 1}style="color: #FF0000;"{/if} class="libelle">{_T("Description:")}</th>
@@ -45,7 +44,6 @@
 		</div>
 		<br/>
 		{_T("NB : The mandatory fields are in")} <font style="color: #FF0000">{_T("red")}</font>.
-		</blockquote>
 		<input type="hidden" name="trans_id" value="{$data.trans_id}"/>
 		<input type="hidden" name="valid" value="1"/>
 		</form>

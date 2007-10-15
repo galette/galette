@@ -55,52 +55,52 @@
 				<tr> 
 					<th class="listing" id="id_row">#</th>
 					<th class="listing left"> 
-						<a href="gestion_adherents.php?tri=0" class="listing">{_T("Name")}</a>
-						{if $smarty.session.tri_adh eq 0}
-						{if $smarty.session.tri_adh_sens eq 0}
-						<img src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
-						{else}
-						<img src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
-						{/if}
-						{else}
-						<img src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
-						{/if}
+						<a href="gestion_adherents.php?tri=0" class="listing">
+							{_T("Name")}
+							{if $smarty.session.tri_adh eq 0}
+							{if $smarty.session.tri_adh_sens eq 0}
+							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+							{else}
+							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+							{/if}
+							{/if}
+						</a>
 					</th>
 					<th class="listing left">
-						<a href="gestion_adherents.php?tri=1" class="listing">{_T("Nickname")}</a>
-						{if $smarty.session.tri_adh eq 1}
-						{if $smarty.session.tri_adh_sens eq 0}
-						<img src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
-						{else}
-						<img src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
-						{/if}
-						{else}
-						<img src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
-						{/if}
+						<a href="gestion_adherents.php?tri=1" class="listing">
+							{_T("Nickname")}
+							{if $smarty.session.tri_adh eq 1}
+							{if $smarty.session.tri_adh_sens eq 0}
+							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+							{else}
+							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+							{/if}
+							{/if}
+						</a>
 					</th> 
 					<th class="listing left"> 
-						<a href="gestion_adherents.php?tri=2" class="listing">{_T("Status")}</a>
-						{if $smarty.session.tri_adh eq 2}
-						{if $smarty.session.tri_adh_sens eq 0}
-						<img src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
-						{else}
-						<img src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
-						{/if}
-						{else}
-						<img src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
-						{/if}
+						<a href="gestion_adherents.php?tri=2" class="listing">
+							{_T("Status")}
+							{if $smarty.session.tri_adh eq 2}
+							{if $smarty.session.tri_adh_sens eq 0}
+							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+							{else}
+							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+							{/if}
+							{/if}
+						</a>
 					</th> 
 					<th class="listing left"> 
-						<a href="gestion_adherents.php?tri=3" class="listing">{_T("State of dues")}</a>
-						{if $smarty.session.tri_adh eq 3}
-						{if $smarty.session.tri_adh_sens eq 0}
-						<img src="{$template_subdir}images/asc.png" width="7" height="7" alt=""/>
-						{else}
-						<img src="{$template_subdir}images/desc.png" width="7" height="7" alt=""/>
-						{/if}
-						{else}
-						<img src="{$template_subdir}images/icon-empty.png" width="7" height="7" alt=""/>
-						{/if}
+						<a href="gestion_adherents.php?tri=3" class="listing">
+							{_T("State of dues")}
+							{if $smarty.session.tri_adh eq 3}
+							{if $smarty.session.tri_adh_sens eq 0}
+							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+							{else}
+							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+							{/if}
+							{/if}
+						</a>
 					</th> 
 					<th class="listing">{_T("Actions")}</th> 
 				</tr>

@@ -40,8 +40,23 @@ $(function() {
 	/**
 	* Let's round some corners !
 	*/
-	Nifty('#menu');
-	Nifty('#listfilter');
-	Nifty('#titre');
+	//should work for IE6 but... ?
+	$('#titre').corner();
+	$('#menu').corner();
+	$('#listfilter').corner();
 
+	//for tootltips
+	//first, we hide tooltips in the page
+	$('.tip').hide();
+	//and then, we show them on rollover
+	$('.tooltip').Tooltip({
+		//track: true,
+		delay: 0,
+		showURL: false, 
+		showBody: ' - ',
+		extraClass: 'tt',
+		bodyHandler: function() {
+			return $(this).next().html();
+		}
+	});
 });

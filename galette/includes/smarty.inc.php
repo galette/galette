@@ -15,4 +15,5 @@
 	/** FIXME: on certains pages PHP notice that GALETTE_VERSION does not exists although it appears correctly*/
 	$tpl->assign('GALETTE_VERSION', GALETTE_VERSION);
 	$tpl->assign('galette_lang', $i18n->getAbbrev());
+	$tpl->assign('pref_slogan', $preferences['pref_slogan']);
 ?>

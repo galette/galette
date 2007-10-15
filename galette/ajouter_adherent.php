@@ -414,7 +414,7 @@ $tpl->assign("time",time());
 $tpl->assign("dynamic_fields",$dynamic_fields);
 $tpl->assign("error_detected",$error_detected);
 $tpl->assign("warning_detected",$warning_detected);
-$tpl->assign("languages",drapeaux());
+$tpl->assign("languages", $i18n->getList());
 
 // pseudo random int
 $tpl->assign("time",time());
