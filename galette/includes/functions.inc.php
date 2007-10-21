@@ -239,7 +239,7 @@ function sanityze_superglobals_arrays() {
 	return $errors;
 }
 
-function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/plain")
+function custom_mail($email_to,$mail_subject,$mail_text, $content_type="text/plain")
 {
   // codes retour :
   //  0 - error mail()
@@ -258,7 +258,7 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
 	}
 
 	//sanityze headers
-	$params = array($email_adh,
+	$params = array($email_to,
 										$mail_subject,
 										//mail_text
 										$content_type);
@@ -299,11 +299,11 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
       foreach($headers as $oneheader)
         $mail_headers .= $oneheader . "\r\n";
       //-f .PREF_EMAIL is to set Return-Path
-      //if (!mail($email_adh,$mail_subject,$mail_text, $mail_headers,"-f ".PREF_EMAIL))
+      //if (!mail($email_to,$mail_subject,$mail_text, $mail_headers,"-f ".PREF_EMAIL))
       //set Return-Path
 			//seems to does not work
       ini_set('sendmail_from', PREF_EMAIL);
-      if (!mail($email_adh,$mail_subject,$mail_text, $mail_headers)) {
+      if (!mail($email_to,$mail_subject,$mail_text, $mail_headers)) {
         $result = 0;
       } else {
         $result = 1;
@@ -325,7 +325,7 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
           $rcv = fgets($connect, 1024);
           fputs($connect, "MAIL FROM:".PREF_EMAIL."\r\n");
           $rcv = fgets($connect, 1024);
-          fputs($connect, "RCPT TO:".$email_adh."\r\n");
+          fputs($connect, "RCPT TO:".$email_to."\r\n");
           $rcv = fgets($connect, 1024);
           fputs($connect, "DATA\r\n");
           $rcv = fgets($connect, 1024);

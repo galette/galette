@@ -739,12 +739,12 @@ legend{
 .cssform .bline{
 	float: left;
 	margin: 0 0 0 -21em;
-	width: 20em;
+	width: 21em;
 }
 
 .cssform textarea{
-	width: 250px;
-	height: 150px;
+	width: 450px;
+	height: 280px;
 }
 
 .logo{

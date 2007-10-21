@@ -81,7 +81,7 @@ if( isset($_SESSION['galette_lang']) ){
 	$i18n = new i18n();
 	$_SESSION['galette_lang'] = serialize($i18n);
 }*/
-$i18n = new i18n((isset($_SESSION['pref_lang'])?$_SESSION['pref_lang']:''));
+$i18n = new i18n((isset($_SESSION['pref_lang'])?$_SESSION['pref_lang']:'en_EN'));
 
 if( isset($_POST['pref_lang']) ){ $_GET['pref_lang'] = $_POST['pref_lang']; }
 if( isset($_GET['pref_lang']) ){

@@ -39,6 +39,7 @@ if ($_SESSION["logged_status"]==0)
 }
 
 include("includes/dynamic_fields.inc.php");
+include(WEB_ROOT."classes/texts.class.php");
 
 // new or edit
 $adherent["id_adh"] = "";
@@ -269,23 +270,15 @@ if (isset($_POST["id_adh"]))
 			if ($_POST["mail_confirm"]=="1")
 				if (isset($adherent['email_adh']) && $adherent['email_adh']!="")
 				{
-					$mail_subject = _T("Your Galette identifiers");
-					$mail_text =  _T("Hello,")."\n";
-					$mail_text .= "\n";
-					$mail_text .= _T("You've just been subscribed on the members management system of the association.")."\n";
-					$mail_text .= _T("It is now possible to follow in real time the state of your subscription")."\n";
-					$mail_text .= _T("and to update your preferences from the web interface.")."\n";
-					$mail_text .= "\n";
-					$mail_text .= _T("Please login at this address:")."\n";
-					$mail_text .= "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
-					$mail_text .= "\n";
-					$mail_text .= _T("Username:")." ".custom_html_entity_decode($adherent['login_adh'])."\n";
-					$mail_text .= _T("Password:")." ".custom_html_entity_decode($adherent['mdp_adh'])."\n";
-					$mail_text .= "\n";
-					$mail_text .= _T("See you soon!")."\n";
-					$mail_text .= "\n";
-					$mail_text .= _T("(this mail was sent automatically)")."\n";
-					$mail_result = custom_mail($adherent['email_adh'],$mail_subject,$mail_text);
+					// Get email text in database
+					$texts = new texts();
+					$mtxt = $texts->getTexts("sub",PREF_LANG);
+					// Replace Tokens
+					$mtxt[tbody] = str_replace("{NAME}", PREF_NOM, $mtxt[tbody]);
+					$mtxt[tbody] = str_replace("{LOGIN_URI}", "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI",$mtxt[tbody]);
+					$mtxt[tbody] = str_replace("{LOGIN}", custom_html_entity_decode($adherent['login_adh']), $mtxt[tbody]);
+					$mtxt[tbody] = str_replace("{PASSWORD}", custom_html_entity_decode($adherent['mdp_adh']),$mtxt[tbody]);
+					$mail_result = custom_mail($adherent['email_adh'],$mtxt[tsubject],$mtxt[tbody]);
 					//TODO: duplicate piece of code with mailing_adherent
 					if( $mail_result == 1) {
 						dblog("Send subscription mail to :".$_POST["email_adh"], $requete);

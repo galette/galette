@@ -124,6 +124,16 @@
 					<span class="exemple">{_T("Leave empty to use Sender Email as reply address")}</span>
 				</p>
 				<p>
+					<label for="pref_email_newadh" class="bline{if $required.pref_email_newadh eq 1} required{/if}">{_T("Members administrator's Email:")}</label>
+					<input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{$pref.pref_email_newadh}" maxlength="100" size="30"/>
+					<span class="exemple">{_T("(Recipient of new online registation emails)")}</span>
+				</p>
+				<p>
+					<label for="pref_bool_mailadh" class="bline{if $required.pref_bool_mailadh eq 1} required{/if}">{_T("Send email to administrators ?")}</label>
+					<input type="checkbox" name="pref_bool_mailadh" id="pref_bool_mailadh" value="1" {if $pref.pref_bool_mailadh eq 1}checked="checked"{/if}/>
+					<span class="exemple">{_T("(Sends an email each time a new member registers online)")}</span>
+				</p>
+				<p>
 					<span class="bline{if $required.pref_mail_method eq 1} required{/if}">{_T("Emailing method:")}</span>
 					<input type="radio" name="pref_mail_method" id="no" value="0" {if $pref.pref_mail_method eq 0}checked="checked"{/if}/><label for="no">{_T("Emailing disabled")}</label><br />
 					<input type="radio" name="pref_mail_method" id="php" value="1" {if $pref.pref_mail_method eq 1}checked="checked"{/if}/><label for="php">{_T("PHP mail() function")}</label><br />

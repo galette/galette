@@ -20,6 +20,7 @@
  */
 
 require_once('includes/galette.inc.php');
+include(WEB_ROOT."classes/texts.class.php");
 
 	// initialize warnings
 	$error_detected = array();
@@ -86,23 +87,14 @@ require_once('includes/galette.inc.php');
 			if (!$DB->Execute($query))
 				$warning_detected = _T("There was a database error when inserting data");
 				//$warning_detected = $DB->ErrorMsg();
-			//prepare mail and send it
-			$mail_subject = _T("Your Galette identifiers");
-			$mail_text =  _T("Hello,")."\n";
-			$mail_text .= "\n";
-			$mail_text .= _T("Someone (probably you) asked to recover your password.")."\n";
-			$mail_text .= "\n";
-			$mail_text .= _T("Please login at this address to set your new password :")."\n";
-			$mail_text .= HTTP."://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."/change_passwd.php?hash=$hash\n";
-			$mail_text .= "\n";
-			//$mail_text .= _T("Username:")." ".custom_html_entity_decode($login_adh, ENT_QUOTES)."\n";
-			//$mail_text .= _T("Temporary password:")." ".custom_html_entity_decode($hash, ENT_QUOTES)."\n";
-			//$mail_text .= "\n";
-			$mail_text .= _T("See you soon!")."\n";
-			$mail_text .= "\n";
-			$mail_text .= _T("(this mail was sent automatically)")."\n";
-			//$mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\n";
-      $mail_result = custom_mail($email_adh,$mail_subject,$mail_text);
+			// Get email text in database
+			$texts = new texts();
+			$mtxt = $texts->getTexts("pwd",PREF_LANG);
+			// Replace Tokens
+			$mtxt[tbody] = str_replace("{CHG_PWD_URI}", "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."/change_passwd.php?hash=$hash",$mtxt[tbody]);
+			$mtxt[tbody] = str_replace("{LOGIN}", custom_html_entity_decode($login_adh, ENT_QUOTES), $mtxt[tbody]);
+			$mtxt[tbody] = str_replace("{PASSWORD}", custom_html_entity_decode($tmp_passwd, ENT_QUOTES),$mtxt[tbody]);
+      	$mail_result = custom_mail($email_adh,$mtxt[tsubject],$mtxt[tbody]);
 			if( $mail_result == 1) {
 				dblog("Password sent. Login:"." \"" . $login_adh . "\"");
 				$warning_detected = _T("Password sent. Login:")." \"" . $login_adh . "\"";

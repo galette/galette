@@ -171,54 +171,47 @@ if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
 		// il est temps d'envoyer un mail
 		if ($adherent['email_adh']!="") {
 				//$mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\nContent-Type: text/plain; charset=iso-8859-15\n";
-			$mail_subject = _T("Your Galette identifiers");
-			$mail_text =  _T("Hello,")."\n";
-			$mail_text .= "\n";
-			$mail_text .= _T("You've just been subscribed on the members management system of the association.")."\n";
-			$mail_text .= _T("It is now possible to follow in real time the state of your subscription")."\n";
-			$mail_text .= _T("and to update your preferences from the web interface.")."\n";
-			$mail_text .= "\n";
-			$mail_text .= _T("Please login at this address:")."\n";
-			$mail_text .= "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
-			$mail_text .= "\n";
-			$mail_text .= _T("Username:")." ".custom_html_entity_decode($adherent['login_adh'])."\n";
-			$mail_text .= _T("Password:")." ".custom_html_entity_decode($adherent['mdp_adh_plain'])."\n";
-			$mail_text .= "\n";
-			$mail_text .= _T("See you soon!")."\n";
-			$mail_text .= "\n";
-			$mail_text .= _T("(this mail was sent automatically)")."\n";
-			/** For debug **/
-			//echo "mail content (send to ".$_POST['email_adh']." with subject '".$mail_subject."') will be :<br />".$mail_text."<br />";
-			$mail_result = custom_mail ($_POST['email_adh'],$mail_subject,$mail_text);
-
-			/** TODO
-			* Send email to admin(s?) to inform a new account has been created.
-			* Btw, emailing admin(s?) should be added in the preferences
-			*/
-
-			if( $mail_result == 1) { //check if mail was successfully send
-				dblog("Self subscribe - Send subscription mail to:".$adherent["email_adh"], $requete);
-				$warning_detected[] = _T("Password sent. Login:")." \"" . $adherent["login_adh"] . "\"";
-			}else{ //warn user if not
-				switch ($mail_result) {
-					case 2 :
-						dblog("Self subscribe - Email sent is disabled in the preferences. Ask galette admin.");
-						$warning_detected[] = _T("Email sent is disabled in the preferences. Ask galette admin.");
-						break;
-					case 3 :
-						dblog("Self subscribe - A problem happened while sending password for account:"." \"" . $adherent["email_adh"] . "\"");
-						$warning_detected[] = _T("A problem happened while sending password for account:"." \"" . $adherent["email_adh"] . "\".");
-						break;
-					case 4 :
-						dblog("Self subscribe - The mail server filled in the preferences cannot be reached. Ask Galette admin");
-						$warning_detected[] = _T("The mail server filled in the preferences cannot be reached. Ask Galette admin.");
-						break;
-					default :
-						dblog("A problem happened while sending password for account:"." \"" . $adherent["email_adh"] . "\"");
-						$warning_detected[] = _T("A problem happened while sending password for account:"." \"" . $adherent["email_adh"] . "\"");
-					break;
-				}
-			}
+            // Get mail subject and content in the db:
+            $requete="SELECT tsubject, tbody FROM ".PREFIX_DB."texts WHERE tname=".$DB->Qstr("newreg");           
+		    $result = &$DB->Execute($requete);
+		    if ($result->EOF)
+			    $error_detected[] = _T("A problem arises while retreiving the mail text:").$DB->ErrorMsg();
+            else {
+        		$mail_subject = $result->fields[0]; 
+        		$mail_text =  $result->fields[1];
+        		$mail_uri = "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n\n";
+        		$mail_uri .= _T("Username:")." ".custom_html_entity_decode($adherent['login_adh'])."\n";
+        		$mail_uri .= _T("Password:")." ".custom_html_entity_decode($adherent['mdp_adh_plain'])."\n";
+                $mail_body = str_replace("{%URILOGIN%}",$mail_uri,$mail_text);
+        
+        		/** For debug **/
+//			    echo "mail content (send to ".$_POST['email_adh']." with subject '".$mail_subject."') will be :<br />".nl2br($mail_body)."<br />";
+        		$mail_result = custom_mail ($_POST['email_adh'],$mail_subject,$mail_body);
+        
+        		if( $mail_result == 1) { //check if mail was successfully send
+        			dblog("Self subscribe - Send subscription mail to:".$adherent["email_adh"], $requete);
+        			$warning_detected[] = _T("Password sent. Login:")." \"" . $adherent["login_adh"] . "\"";
+        		}else{ //warn user if not
+        			switch ($mail_result) {
+        				case 2 :
+        					dblog("Self subscribe - Email sent is disabled in the preferences. Ask galette admin.");
+        					$warning_detected[] = _T("Email sent is disabled in the preferences. Ask galette admin.");
+        					break;
+        				case 3 :
+        					dblog("Self subscribe - A problem happened while sending password for account:"." \"" . $adherent["email_adh"] . "\"");
+        					$warning_detected[] = _T("A problem happened while sending password for account:"." \"" . $adherent["email_adh"] . "\".");
+        					break;
+        				case 4 :
+        					dblog("Self subscribe - The mail server filled in the preferences cannot be reached. Ask Galette admin");
+        					$warning_detected[] = _T("The mail server filled in the preferences cannot be reached. Ask Galette admin.");
+        					break;
+        				default :
+        					dblog("A problem happened while sending password for account:"." \"" . $adherent["email_adh"] . "\"");
+        					$warning_detected[] = _T("A problem happened while sending password for account:"." \"" . $adherent["email_adh"] . "\"");
+        				break;
+        			}
+        		}
+    		}
 		}
 
 		$head_redirect = "<meta http-equiv=\"refresh\" content=\"10;url=index.php\" />";
