@@ -275,7 +275,7 @@ if (isset($_POST["id_adh"]))
 					$mtxt = $texts->getTexts("sub",PREF_LANG);
 					// Replace Tokens
 					$mtxt[tbody] = str_replace("{NAME}", PREF_NOM, $mtxt[tbody]);
-					$mtxt[tbody] = str_replace("{LOGIN_URI}", "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI",$mtxt[tbody]);
+					$mtxt[tbody] = str_replace("{LOGIN_URI}", "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"]),$mtxt[tbody]);
 					$mtxt[tbody] = str_replace("{LOGIN}", custom_html_entity_decode($adherent['login_adh']), $mtxt[tbody]);
 					$mtxt[tbody] = str_replace("{PASSWORD}", custom_html_entity_decode($adherent['mdp_adh']),$mtxt[tbody]);
 					$mail_result = custom_mail($adherent['email_adh'],$mtxt[tsubject],$mtxt[tbody]);

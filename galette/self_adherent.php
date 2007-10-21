@@ -171,22 +171,20 @@ if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
 		// il est temps d'envoyer un mail
 		if ($adherent['email_adh']!="") {
 				//$mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\nContent-Type: text/plain; charset=iso-8859-15\n";
-            // Get mail subject and content in the db:
-            $requete="SELECT tsubject, tbody FROM ".PREFIX_DB."texts WHERE tname=".$DB->Qstr("newreg");           
-		    $result = &$DB->Execute($requete);
-		    if ($result->EOF)
-			    $error_detected[] = _T("A problem arises while retreiving the mail text:").$DB->ErrorMsg();
-            else {
-        		$mail_subject = $result->fields[0]; 
-        		$mail_text =  $result->fields[1];
-        		$mail_uri = "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n\n";
-        		$mail_uri .= _T("Username:")." ".custom_html_entity_decode($adherent['login_adh'])."\n";
-        		$mail_uri .= _T("Password:")." ".custom_html_entity_decode($adherent['mdp_adh_plain'])."\n";
-                $mail_body = str_replace("{%URILOGIN%}",$mail_uri,$mail_text);
-        
+
+					// Get email text in database
+					$texts = new texts();
+					$mtxt = $texts->getTexts("sub",PREF_LANG);
+					// Replace Tokens
+					$mtxt[tbody] = str_replace("{NAME}", PREF_NOM, $mtxt[tbody]);
+					$mtxt[tbody] = str_replace("{LOGIN_URI}", "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"]),$mtxt[tbody]);
+					$mtxt[tbody] = str_replace("{LOGIN}", custom_html_entity_decode($adherent['login_adh']), $mtxt[tbody]);
+					$mtxt[tbody] = str_replace("{PASSWORD}", custom_html_entity_decode($adherent['mdp_adh_plain']),$mtxt[tbody]);
+					$mail_result = custom_mail($adherent['email_adh'],$mtxt[tsubject],$mtxt[tbody]);
+
         		/** For debug **/
 //			    echo "mail content (send to ".$_POST['email_adh']." with subject '".$mail_subject."') will be :<br />".nl2br($mail_body)."<br />";
-        		$mail_result = custom_mail ($_POST['email_adh'],$mail_subject,$mail_body);
+        		$mail_result = custom_mail ($_POST['email_adh'],$mtxt[tsubject],$mtxt[tbody]);
         
         		if( $mail_result == 1) { //check if mail was successfully send
         			dblog("Self subscribe - Send subscription mail to:".$adherent["email_adh"], $requete);
@@ -231,7 +229,7 @@ if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
 			$head_redirect = "<meta http-equiv=\"refresh\" content=\"10;url=index.php\" />";
 		}*/
 	}
-}elseif(isset($_POST["update_lang"]) && $_POST["update_lang"] == 1){
+elseif(isset($_POST["update_lang"]) && $_POST["update_lang"] == 1){
 	while (list($key, $properties) = each($fields)) {
 		
 		$key = strtolower($key);
