@@ -25,29 +25,29 @@
 			<fieldset class="cssform" id="{$mtxt.tlang}">
 				<legend>{$mtxt.tcomment}</legend>
 				<p>
-					<label class="bline">{_T("Language:")}</label>
-					<select name="sel_lang" onchange="form.submit()">
+					<label for="sel_lang" class="bline">{_T("Language:")}</label>
+					<select name="sel_lang" id="sel_lang" onchange="form.submit()">
 						{foreach item=langue from=$langlist}
 							<option value="{$langue->getID()}" {if $cur_lang eq $langue->getID()}selected="selected"{/if} style="padding-left: 30px; background-image: url({$langue->getFlag()}); background-repeat: no-repeat">{$langue->getName()}</option>
 						{/foreach}
 					</select>
 				</p>
 				<p>
-					<label class="bline">{_T("Reference:")}</label>
-					<select name="sel_ref" onchange="form.submit()">
+					<label for="sel_ref" class="bline">{_T("Reference:")}</label>
+					<select name="sel_ref" id="sel_ref" onchange="form.submit()">
 						{foreach item=ref from=$reflist}
 							<option value="{$ref.tref}" {if $cur_ref eq $ref.tref}selected="selected"{/if} >{$ref.tcomment}</option>
 						{/foreach}
 					</select>
 				</p>
 				<p>
-					<label class="bline">{_T("Email Subject")}</label> 
+					<label for="tsubject" class="bline">{_T("Email Subject")}</label> 
 					<input type="text" name="text_subject" id="tsubject" value="{$mtxt.tsubject}" maxlength="32" size="32"/><br/>
 					<span class="exemple">{_T("(Max 32 characters)")}</span>
 				</p>
 				<p>
-					<label class="bline">{_T("Email Body:")}</label>
-					<textarea name="text_body" cols="64" rows="15">{$mtxt.tbody}</textarea><br/>
+					<label for="text_body" class="bline">{_T("Email Body:")}</label>
+					<textarea name="text_body" id="text_body" cols="64" rows="15">{$mtxt.tbody}</textarea><br/>
 				</p>
 			</fieldset>
 		</div>
