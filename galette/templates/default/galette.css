@@ -387,14 +387,12 @@ a.listing:hover {
 	color:black;
 	border : 2px solid #c00;
 	padding : 0.5em 0.5em 0.5em 40px;
-	margin-bottom : 1em;
 	background : white url(images/error.png) no-repeat 5px 50%;
 	width: 80%;
 	margin:0 auto 0.8em auto;
 }
 		
 #errorbox h1 {
-	/*background-color: #FFDDDD;*/
 	font-size:1em;
 	font-weight: bold;
 	margin: 0;
@@ -431,6 +429,29 @@ a.listing:hover {
 	border: none;
 }		
 
+#infobox {
+	text-align:center;
+	color:black;
+	border : 2px solid #04CC65;
+	padding : 0.5em 0.5em 0.5em 40px;
+	background : white url(images/ok.png) no-repeat 5px 50%;
+	width: 80%;
+	margin:0 auto 0.8em auto;
+}
+		
+#infobox h1 {
+	font-size:1em;
+	font-weight: bold;
+	margin: 0;
+}
+
+#infobox ul {
+	list-style-type: none;
+	margin: 2px;
+	padding: 0px;
+	border: none;
+}
+
 #input-table{
 	width:100%;
 	margin:0.4em 0 0 0;
@@ -448,71 +469,6 @@ a.listing:hover {
 	font-weight: bold;
 }
 	
-#installpage {
-	background-color: #DDDDFF;
-	padding-left: 20px;
-}
-
-#installpage p {
-	background-color: #DDDDFF;
-	padding-left: 20px;
-	width: 80%;
-}
-	
-#installpage h1 {
-	text-align: left;
-	margin: 0px;
-	font-size:1em;
-}
-	
-#installpage #submitbutton2 {
-	text-align: center;
-	padding-left: 20px;
-}
-	
-#installpage #submitbutton3 {
-	text-align: right;
-	padding-right: 20px;
-}
-		
-.titreinstall {
-	font-size:1.3em;
-	text-align: center;
-	font-weight: bold;
-	border-style: solid;
-	border-width: 1px;
-	background-color: #FBFBFB;
-	border-color: #BBBBBB;
-	color: #000000;
-	left: 0px;
-	right: 0px;
-	padding: 10px 0px 10px 0px;
-	margin: 0px;
-}
-
-.footerinstall {
-	font-size: 11px;
-	text-align: right;
-	padding-right: 20px;
-	font-weight: normal;
-	border-style: solid;
-	border-width: 1px;
-	background-color: #FBFBFB;
-	border-color: #BBBBBB;
-	color: #000000;
-	left: 0px;
-	right: 0px;
-	margin: 0px;
-}
-
-.install-ok {
-	list-style-image: url("../../install/yes.gif");
-}
-
-.install-bad {
-	list-style-image: url("../../install/no.gif");
-}
-
 #listing{
 	width:100%;
 }
@@ -542,20 +498,18 @@ a.listing:hover {
 }
 .button-link
 {
-        /*font-size: 12px;*/
-        text-align: left;
-        font-weight: bold;
-        border-style: solid;
-        border-width: 1px;
-        background-color: #FBFBFB;
-        border-color: #BBBBBB;
-        color: #000000;
-        padding: 10px 10px 10px 40px;
+	text-align: left;
+	font-weight: bold;
+	border-style: solid;
+	border-width: 1px;
+	background-color: #FBFBFB;
+	border-color: #BBBBBB;
+	color: #000000;
+	padding: 10px 10px 10px 40px;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 10px;
 	width: 18em;
-	background-image: url(images/lost_password.png);
 	background-repeat: no-repeat;
 	background-position: 10px center;
 }
@@ -579,10 +533,7 @@ a.listing:hover {
 #lostpassword a{
 	background:url(images/lost_pass.png) right 50% no-repeat;
 }
-.button-lost-password
-{
-	background-image: url(images/lost_password.png);
-}
+
 #subscribe a{
 	background:url(images/subscribe.png) right 50% no-repeat;
 }
@@ -707,7 +658,6 @@ fieldset ul{
 	padding:0;
 }
 fieldset li{
-/* 	border:1px purple dashed; */
 	margin:0.1em 0;
 	clear:left;
 }
@@ -720,6 +670,13 @@ legend{
 }
 
 .cssform{ background-color:white; }
+.cssform ul{
+	margin-left:1em;
+	padding:0;
+}
+.cssform li{
+	clear:none;
+}
 .cssform p{
 	clear: left;
 	margin: 0;
@@ -784,8 +741,8 @@ legend{
 
 .m_subscribe{
 	position:absolute;
-	right:1em;
-	top:6em;
+	right:150px;
+	top:2em;
 }
 
 .selection_menu{
@@ -870,7 +827,134 @@ ul#tabs li{
 .tt{
 	width:20em;
 }
-/*.tooltip{
-	background-color:red;
-}*/
+
+.tooltip{
+	background-image:url(images/info.png);
+	background-position:right 50%;
+	background-repeat:no-repeat;
+}
 /*** /Tooltips ***/
+
+/*** Installation pages ***/
+#installpage{
+	text-align:center;
+	margin:0 1em 0.5em 1em;
+	position:relative;
+}
+
+/*#installpage p {
+	background-color: #DDDDFF;
+	padding-left: 20px;
+	width: 80%;
+}*/
+	
+#installpage h2{
+	/*text-align: left;*/
+	margin: 0;
+	font-size:1.2em;
+}
+
+#installpage #submit_btn{
+	position:absolute;
+	right:0;
+	bottom:0;
+	text-align: right;
+	margin:0;
+}
+
+#installpage ul.list{
+	margin:0 auto;
+	width:40em;
+	text-align:left;
+	list-style-type:none;
+}
+ul#paths{
+	width:10em!important;
+}
+	
+#installpage #retry_btn {
+	text-align: center;
+}
+
+#submitbutton3 {
+	position:absolute;
+	right:0;
+	bottom:0;
+	text-align: right;
+	margin:0;
+}
+
+#installpage #warningbox{
+	text-align:center;
+	color:black;
+	padding : 0.5em 0.5em 0.5em 40px;
+	background : white url(images/warning.png) no-repeat 5px 50%;
+	width: 80%;
+	margin:0 auto 0.8em auto;
+	display:block;
+}
+
+.titreinstall {
+	font-size:1.3em;
+	text-align: center;
+	font-weight: bold;
+	border-style: solid;
+	border-width: 1px;
+	background-color: #FBFBFB;
+	border-color: #BBBBBB;
+	color: #000000;
+	left: 0px;
+	right: 0px;
+	padding: 10px 0px 10px 0px;
+	margin: 0px;
+}
+
+#footerinstall{
+	margin:0 1em;
+	background-color:#DDDDFF;
+	text-align:right;
+	font-size: 0.85em;
+}
+#footerinstall p{
+	margin:0.5em 0.5em 0 0.5em;
+	font-weight:bold;
+}
+#footerinstall ol{
+	color:#999;
+	padding:0;
+	margin:0 0.5em 0.5em 0.5em;
+	list-style-type:none;
+}
+#footerinstall li{
+	line-height:1.7em;
+	display:inline;
+	white-space:nowrap;
+}
+#footerinstall .current{
+	color:black;
+	font-weight:bold;
+}
+
+.footerinstall {
+	text-align: right;
+	padding-right: 20px;
+	border:1px solid #BBBBBB;
+	background-color: #FBFBFB;
+	color: #000000;
+	margin: 0;
+}
+
+.install-ok {
+	list-style-image: url("../../install/yes.png");
+	list-style-position:inside;
+}
+
+.install-bad {
+	list-style-image: url("../../install/no.png");
+	background-color:#FF8A8A;
+	list-style-position:inside;
+}
+
+
+
+/*** /Installation pages ***/

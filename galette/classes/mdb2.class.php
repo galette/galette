@@ -118,6 +118,37 @@ class GaletteMdb2{
 		}
 	}
 
+	/**
+	* Test if database can be contacted
+	* Mostly used for installation
+	* @param type db type
+	* @param user database's user
+	* @param pass password for the user
+	* @param host which host we want to connect to
+	* @param db database name
+	*/
+	public static function testConnectivity($type, $user, $pass, $host, $db){
+		$dsn = $type . '://' . $user . ':' . $pass . '@' . $host . '/' . $db;
+		$options = array(
+			'persistent'	=>	false,
+			'debug'		=>	2,
+			'portability'	=>	MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_EMPTY_TO_NULL,
+		);
+
+		$db = MDB2::connect($dsn, $options);
+
+		if (MDB2::isError($db)){
+			$ret = array(
+				'main'	=>	$db->getMessage(),
+				'debug'	=>	$db->getDebugInfo()
+			);
+			return $ret;
+		}else{
+			$db->disconnect();
+			return false;
+		}
+	}
+
 	public function getOption($arg){
 		return $this->db->getOption($arg);
 	}

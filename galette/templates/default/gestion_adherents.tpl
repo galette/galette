@@ -132,6 +132,8 @@
 						<img src="{$template_subdir}images/icon-male.png" alt="{_T("[M]")}" align="middle" width="16" height="16"/>
 					{elseif $member.genre eq 2 || $member.genre eq 3}
 						<img src="{$template_subdir}images/icon-female.png" alt="{_T("[W]")}" align="middle" width="16" height="16"/>
+					{elseif $member.genre eq 4}
+						<img src="{$template_subdir}images/icon-company.png" alt="{_T("[W]")}" align="middle" width="16" height="16"/>
 					{else}
 						<img src="{$template_subdir}images/icon-empty.png" alt="" align="middle" width="10" height="12"/>
 					{/if}

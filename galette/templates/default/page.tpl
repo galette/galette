@@ -61,33 +61,37 @@
 			<h1>{_T("Legend")}</h1>
 			<table>
 				<tr>
-					<th><img src="{$template_subdir}images/icon-male.png" alt="{_T("[M]")}" width="16" height="16"/></th>
+					<th><img src="{$template_subdir}images/icon-male.png" alt="{_T("Mister")}" width="16" height="16"/></th>
 					<td class="back">{_T("Man")}</td>
 				</tr>
 				<tr>
-					<th><img src="{$template_subdir}images/icon-female.png" alt="{_T("[W]")}" width="16" height="16"/></th>
+					<th><img src="{$template_subdir}images/icon-female.png" alt="{_T("Miss")} / {_T("Mrs")}" width="16" height="16"/></th>
 					<td class="back">{_T("Woman")}</td>
+				</tr>
+				<tr>
+					<th><img src="{$template_subdir}images/icon-company.png" alt="{_T("Society")}" width="16" height="16"/></th>
+					<td class="back">{_T("Society")}</td>
 				</tr>
 {if $PAGENAME eq "gestion_adherents.php"}
 				<tr>
-					<th><img src="{$template_subdir}images/icon-mail.png" alt="{_T("[Mail]")}" width="16" height="16"/></th>
+					<th><img src="{$template_subdir}images/icon-mail.png" alt="{_T("E-mail")}" width="16" height="16"/></th>
 					<td class="back">{_T("Send a mail")}</td>
 				</tr>
 {/if}
 				<tr>
-					<th><img src="{$template_subdir}images/icon-star.png" alt="{_T("[admin]")}" width="16" height="16"/></th>
+					<th><img src="{$template_subdir}images/icon-star.png" alt="{_T("Admin")}" width="16" height="16"/></th>
 					<td class="back">{_T("Admin")}</td>
 				</tr>
 				<tr>
-					<th><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" width="16" height="16"/></th>
+					<th><img src="{$template_subdir}images/icon-edit.png" alt="{_T("Modify")}" width="16" height="16"/></th>
 					<td class="back">{_T("Modification")}</td>
 				</tr>
 				<tr>
-					<th><img src="{$template_subdir}images/icon-money.png" alt="{_T("[$]")}" width="16" height="16"/></th>
+					<th><img src="{$template_subdir}images/icon-money.png" alt="{_T("Contribution")}" width="16" height="16"/></th>
 					<td class="back">{_T("Contributions")}</td>
 				</tr>
 				<tr>
-					<th><img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" width="16" height="16"/></th>
+					<th><img src="{$template_subdir}images/icon-trash.png" alt="{_T("Delete")}" width="16" height="16"/></th>
 					<td class="back">{_T("Deletion")}</td>
 				</tr>
 				<tr>

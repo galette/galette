@@ -36,12 +36,6 @@
  * @version    $Id$
  */
 
-// test if galette is already installed and redirect to install page if not
-$installed = file_exists(dirname( __FILE__).'/includes/config.inc.php');
-if (! $installed) {
-	header("location: install/index.php");
-}
-
 require_once('includes/galette.inc.php');
 //fo default, there is no login error
 $loginfault = false;

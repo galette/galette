@@ -274,7 +274,6 @@ $tpl->assign("dynamic_fields",$dynamic_fields);
 $tpl->assign("error_detected",$error_detected);
 $tpl->assign("warning_detected",$warning_detected);
 $tpl->assign("languages", $i18n->getList());
-//$tpl->assign("languages",drapeaux());
 if(isset($head_redirect)) $tpl->assign("head_redirect", $head_redirect);
 
 // pseudo random int

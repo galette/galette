@@ -36,6 +36,15 @@ $(function() {
 	$('#errorbox').backgroundFade({sColor:'#ffffff',eColor:'#ff9999',steps:50},function() {
 		$(this).backgroundFade({sColor:'#ff9999',eColor:'#ffffff'});
 	});
+	$('#infobox').backgroundFade({sColor:'#ffffff',eColor:'#99FF99',steps:50},function() {
+		$(this).backgroundFade({sColor:'#99FF99',eColor:'#ffffff'});
+	});
+	$('.debuginfos span').hide();
+	/** TODO: find a way to translate this message ==> ajax ? */
+	$('.debuginfos').attr('title', 'Click to get more details.');
+	$('.debuginfos').click(function(){
+		$('.debuginfos span').slideToggle('slow');
+	});
 
 	/**
 	* Let's round some corners !

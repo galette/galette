@@ -1,5 +1,11 @@
 <?php
 
+// test if galette is already installed and redirect to install page if not
+$installed = file_exists(dirname( __FILE__).'/config.inc.php');
+if (! $installed) {
+	header("location: install/index.php");
+}
+
 /**
 * Import configuration settings
 */
@@ -25,7 +31,6 @@ PEAR_LOG_DEBUG		=>	Debug-level messages
 
 --------------------------------------------------------------------------------------*/
 /** TODO
-* - Include PEAR::Log in the sources
 * - Set a database logger to replace actual one
 */
 require_once('Log.php');

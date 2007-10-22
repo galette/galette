@@ -119,25 +119,33 @@
 					<input type="text" name="pref_email" id="pref_email" value="{$pref.pref_email}" maxlength="100" size="30"/>
 				</p>
 				<p>
-					<label for="pref_email_reply_to" class="bline{if $required.pref_email_reply_to eq 1} required{/if}">{_T("Reply-To Email:")}</label>
+					<label for="pref_email_reply_to" class="bline{if $required.pref_email_reply_to eq 1} required{/if} tooltip" title="{_T("Leave empty to use Sender Email as reply address")}">{_T("Reply-To Email:")}</label>
+					<span class="tip">{_T("Leave empty to use Sender Email as reply address")}</span>
 					<input type="text" name="pref_email_reply_to" id="pref_email_reply_to" value="{$pref.pref_email_reply_to}" maxlength="100" size="30"/>
-					<span class="exemple">{_T("Leave empty to use Sender Email as reply address")}</span>
 				</p>
 				<p>
-					<label for="pref_email_newadh" class="bline{if $required.pref_email_newadh eq 1} required{/if}">{_T("Members administrator's Email:")}</label>
+					<label for="pref_email_newadh" class="bline{if $required.pref_email_newadh eq 1} required{/if} tooltip" title="{_T("Recipient of new online registation emails")}">{_T("Members administrator's Email:")}</label>
+					<span class="tip">{_T("Recipient of new online registation emails")}</span>
 					<input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{$pref.pref_email_newadh}" maxlength="100" size="30"/>
-					<span class="exemple">{_T("(Recipient of new online registation emails)")}</span>
 				</p>
 				<p>
-					<label for="pref_bool_mailadh" class="bline{if $required.pref_bool_mailadh eq 1} required{/if}">{_T("Send email to administrators ?")}</label>
+					<label for="pref_bool_mailadh" class="bline{if $required.pref_bool_mailadh eq 1} required{/if} tooltip" title="{_T("Sends an email each time a new member registers online")}">{_T("Send email to administrators ?")}</label>
+					<span class="tip">{_T("Sends an email each time a new member registers online")}</span>
 					<input type="checkbox" name="pref_bool_mailadh" id="pref_bool_mailadh" value="1" {if $pref.pref_bool_mailadh eq 1}checked="checked"{/if}/>
-					<span class="exemple">{_T("(Sends an email each time a new member registers online)")}</span>
 				</p>
 				<p>
 					<span class="bline{if $required.pref_mail_method eq 1} required{/if}">{_T("Emailing method:")}</span>
-					<input type="radio" name="pref_mail_method" id="no" value="0" {if $pref.pref_mail_method eq 0}checked="checked"{/if}/><label for="no">{_T("Emailing disabled")}</label><br />
-					<input type="radio" name="pref_mail_method" id="php" value="1" {if $pref.pref_mail_method eq 1}checked="checked"{/if}/><label for="php">{_T("PHP mail() function")}</label><br />
-					<input type="radio" name="pref_mail_method" id="smtp" value="2" {if $pref.pref_mail_method eq 2}checked="checked"{/if}/><label for="smtp">{_T("Using a SMTP server (slower)")}</label>
+					<ul>
+						<li>
+							<input type="radio" name="pref_mail_method" id="no" value="0" {if $pref.pref_mail_method eq 0}checked="checked"{/if}/><label for="no">{_T("Emailing disabled")}</label>
+						</li>
+						<li>
+							<input type="radio" name="pref_mail_method" id="php" value="1" {if $pref.pref_mail_method eq 1}checked="checked"{/if}/><label for="php">{_T("PHP mail() function")}</label>
+						</li>
+						<li>
+							<input type="radio" name="pref_mail_method" id="smtp" value="2" {if $pref.pref_mail_method eq 2}checked="checked"{/if}/><label for="smtp">{_T("Using a SMTP server (slower)")}</label>
+						</li>
+					</ul>
 				</p>
 				<p>
 					<label for="pref_mail_smtp" class="bline{if $required.pref_mail_smtp eq 1} required{/if}">{_T("SMTP server:")}</label>

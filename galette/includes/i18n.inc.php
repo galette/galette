@@ -179,26 +179,10 @@ if ( (isset($loc) && $loc!=$language) || $disable_gettext)
                 }
         }
 
-        function drapeaux()
-	{
-		$path = "lang";
-		$dir_handle = @opendir($path);
-		$languages = array();
-		while ($file = readdir($dir_handle))
-		{
-			if (substr($file,0,5)=="lang_" && substr($file,-4)==".php")
-			{
-				$file = substr(substr($file,5),0,-4);
-				$languages[$file]=_T($file);
-			}
-		}
-		return $languages;
-	}
-
 /**********************************************
 * some constant strings found in the database *
 **********************************************/
-
+/** TODO: these string should be not be handled here */
 $foo=_T("Realization:");
 $foo=_T("Graphics:");
 $foo=_T("Publisher:");

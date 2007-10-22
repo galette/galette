@@ -7,6 +7,8 @@
 		<script type="text/javascript" src="{$jquery_dir}jquery-1.2.1.pack.js"></script>
 		<script type="text/javascript" src="{$jquery_dir}jquery.bgFade.js"></script>
 		<script type="text/javascript" src="{$jquery_dir}jquery.corner.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}chili-1.7.pack.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}jquery.tooltip.pack.js"></script>
 		<script type="text/javascript" src="{$scripts_dir}common.js"></script>
 {literal}
 		<script type="text/javascript">
