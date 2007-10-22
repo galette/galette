@@ -5,16 +5,16 @@ UPDATE galette_preferences SET pref_lang='en_EN' WHERE pref_lang='english';
 UPDATE galette_preferences SET pref_lang='es_ES' WHERE pref_lang='spanish';
 
 -- Add new table for automatic mails and their translations
-DROP TABLE IF EXISTS `galette_texts`;
-CREATE TABLE IF NOT EXISTS `galette_texts` (
-  `tid` smallint(6) NOT NULL auto_increment,
-  `tref` varchar(20) NOT NULL,
-  `tsubject` varchar(256) NOT NULL,
+DROP TABLE galette_texts;
+CREATE TABLE galette_texts (
+  `tid` integer(6) DEFAULT nextval('galette_texts_id_seq'::text) NOT NULL,
+  `tref` character varying(20) NOT NULL,
+  `tsubject` character varying(256) NOT NULL,
   `tbody` text NOT NULL,
-  `tlang` varchar(16) NOT NULL,
-  `tcomment` varchar(64) NOT NULL,
-  PRIMARY KEY  (`tid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COMMENT='Textes des mails' AUTO_INCREMENT=7 ;
+  `tlang` character varying(16) NOT NULL,
+  `tcomment` character varying(64) NOT NULL
+);
+CREATE UNIQUE INDEX galette_texts_idx ON galette_texts (tid);
 
 -- 
 -- Contenu de la table `galette_texts`

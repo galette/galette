@@ -163,3 +163,15 @@ CREATE TABLE galette_required (
 	required tinyint(1) NOT NULL,
 	PRIMARY KEY  (`field_id`)
 ) TYPE=MyISAM;
+
+-- Add new table for automatic mails and their translations
+DROP TABLE IF EXISTS `galette_texts`;
+CREATE TABLE IF NOT EXISTS `galette_texts` (
+  `tid` smallint(6) NOT NULL auto_increment,
+  `tref` varchar(20) NOT NULL,
+  `tsubject` varchar(256) NOT NULL,
+  `tbody` text NOT NULL,
+  `tlang` varchar(16) NOT NULL,
+  `tcomment` varchar(64) NOT NULL,
+  PRIMARY KEY  (`tid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COMMENT='Textes des mails' AUTO_INCREMENT=7 ;

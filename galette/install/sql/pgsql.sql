@@ -209,6 +209,19 @@ CREATE UNIQUE INDEX galette_tmppasswds_idx ON galette_tmppasswds (id_adh);
 DROP TABLE galette_required;
 CREATE TABLE galette_required (
 	field_id  character varying(15) NOT NULL,
-	required integer DEFAULT '0' NOT NULL,
+	required integer DEFAULT '0' NOT NULL
 );
 CREATE UNIQUE INDEX galette_required_idx ON galette_required (field_id);
+
+-- Table for automatic mails and their translations 2007-10-22;
+DROP TABLE galette_texts;
+CREATE TABLE galette_texts (
+  `tid` integer(6) DEFAULT nextval('galette_texts_id_seq'::text) NOT NULL,
+  `tref` character varying(20) NOT NULL,
+  `tsubject` character varying(256) NOT NULL,
+  `tbody` text NOT NULL,
+  `tlang` character varying(16) NOT NULL,
+  `tcomment` character varying(64) NOT NULL
+);
+CREATE UNIQUE INDEX galette_texts_idx ON galette_texts (tid);
+
