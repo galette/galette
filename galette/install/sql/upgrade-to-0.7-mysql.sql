@@ -1,5 +1,8 @@
 -- Add new or missing preferences;
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_slogan', '');
+UPDATE galette_preferences SET pref_lang='fr_FR' WHERE pref_lang='french';
+UPDATE galette_preferences SET pref_lang='en_EN' WHERE pref_lang='english';
+UPDATE galette_preferences SET pref_lang='es_ES' WHERE pref_lang='spanish';
 
 -- Add new table for automatic mails and their translations
 DROP TABLE IF EXISTS `galette_texts`;
