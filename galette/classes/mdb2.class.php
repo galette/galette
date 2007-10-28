@@ -55,6 +55,7 @@ class GaletteMdb2{
 	private $dsn;
 	private $options;
 	private $db;
+	private $error;
 
 	function __construct($persistent = false){
 		/** TODO: declare PEAR::Log somewhere... */
@@ -95,6 +96,7 @@ class GaletteMdb2{
 		$result = $this->db->query($query);
 				// Vérification des erreurs
 		if (MDB2::isError($result)) {
+			$this->error = $result;
 			$log->log('There were an error executing query ' . $query . '(' . $result->getMessage() . ') - ' . $result->getDebugInfo(), PEAR_LOG_WARNING);
 			return -1;
 		}else{
@@ -427,5 +429,27 @@ class GaletteMdb2{
 	}
 
 	public function getDb(){ return $this->db; }
+
+	/**
+	* Has an error occured ?
+	*/
+	public function inError(){
+		if( MDB2::isError($this->error) ) return true; 
+		else return false;
+	}
+
+	/**
+	* Get main MDB2 error message
+	*/
+	public function getErrorMessage(){
+		return $this->error->getMessage();
+	}
+
+	/**
+	* Get additionnal informations about the error
+	*/
+	public function getErrorDetails(){
+		return $this->error->getDebugInfo();
+	}
 }
 ?>

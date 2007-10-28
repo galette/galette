@@ -730,7 +730,8 @@ if ($step == 'u7') echo _T("Update Report"); ?></p>
 					if ($extra != '') $extra = '...';
 					if ( $result == -1 )
 					{
-						echo "<li class=\"install-bad\">".$w1." ".$w2." ".$w3." ".$extra."</li>";
+						echo '<li class="install-bad debuginfos">' . $w1 . ' ' . $w2 . ' ' . $w3 . ' ' . $extra . '<span>' . $mdb->getErrorMessage() . '<br/>(' . $mdb->getErrorDetails() . ')</span></li>';
+
 						//if error are not on drop, DROP, rename or RENAME we can continue
 						if ( (strcasecmp(trim($w1),"drop") != 0) && (strcasecmp(trim($w1),"rename") != 0) ) $error = true;
 					}
