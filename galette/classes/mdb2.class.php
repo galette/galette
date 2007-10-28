@@ -280,7 +280,7 @@ class GaletteMdb2{
 			),
 			'test_text'      => array(
 				'type'       => 'text',
-				'length'     => 12,
+				'length'     => 20,
 			),
 			'test_boolean'   => array(
 				'type'       => 'boolean',
@@ -380,7 +380,7 @@ class GaletteMdb2{
 			$results['select'] = $select;
 		}
 
-		if(!$stop){
+		if(!$stop && $mode == 'u'){
 			//can Galette ALTER tables ?
 			$alter = array(
 				'add' => array(
