@@ -216,7 +216,7 @@ CREATE UNIQUE INDEX galette_required_idx ON galette_required (field_id);
 -- Table for automatic mails and their translations 2007-10-22;
 DROP TABLE galette_texts;
 CREATE TABLE galette_texts (
-  tid integer(6) DEFAULT nextval('galette_texts_id_seq'::text) NOT NULL,
+  tid integer DEFAULT nextval('galette_texts_id_seq'::text) NOT NULL,
   tref character varying(20) NOT NULL,
   tsubject character varying(256) NOT NULL,
   tbody text NOT NULL,
