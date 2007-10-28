@@ -95,7 +95,7 @@ class GaletteMdb2{
 		$result = $this->db->query($query);
 				// Vérification des erreurs
 		if (MDB2::isError($result)) {
-			$log->log('There were an error executing query ' . $query . '(' . $result->getMessage() . ') - ' . $result->getDebugInfo(), PEAR_LOG_ERR);
+			$log->log('There were an error executing query ' . $query . '(' . $result->getMessage() . ') - ' . $result->getDebugInfo(), PEAR_LOG_WARNING);
 			return -1;
 		}else{
 			$log->log('Query successfull : ' . $query, PEAR_LOG_DEBUG);
