@@ -914,6 +914,7 @@ if ($step=="u7") echo _T("The tables has been correctly updated."); ?></p>
 			break; //ends 8th step
 		case "i9";
 		case "u9";
+			define('PREFIX_DB', $_POST['install_dbprefix']);
 			require_once('../classes/preferences.class.php');
 			require_once('../classes/contributions_types.class.php');
 			require_once('../classes/status.class.php');
