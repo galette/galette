@@ -69,12 +69,12 @@ class Required{
 	* has been modified.
 	*/
 	private function checkUpdate(){
-		global $mdb2_db;
-		if ($mdb2_db->getOption('result_buffering')){
+		global $mdb;
+		if ($mdb->getOption('result_buffering')){
 			$requete = 'SELECT * FROM ' . PREFIX_DB . Adherents::TABLE . ' LIMIT 1';
 
 			/** TODO: what to do on error ? */
-			if( !$result2 = $mdb2_db->query( $requete ) )
+			if( !$result2 = $mdb->query( $requete ) )
 				return -1;
 
 			/*$result2 = $this->db->query( $requete );
@@ -87,7 +87,7 @@ class Required{
 			$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE;
 
 			/** TODO: what to do on error ? */
-			if( !$result = $mdb2_db->query( $requete ) )
+			if( !$result = $mdb->query( $requete ) )
 				return -1;
 
 			/*$result = $this->db->query( $requete );
@@ -128,11 +128,11 @@ class Required{
 	* initialisation, value should be off.
 	*/
 	function init($reinit=false){
-		global $mdb2_db;
+		global $mdb;
 		if($reinit){
 			$requetesup = 'DELETE FROM ' . PREFIX_DB . self::TABLE;
 			/** TODO: what to do on error ? */
-			if( !$init_result = $mdb2_db->query( $requete ) )
+			if( !$init_result = $mdb->query( $requete ) )
 				return -1;
 			//$this->db->query( $requetesup );
 		}
@@ -140,7 +140,7 @@ class Required{
 		$requete = 'SELECT * FROM ' . PREFIX_DB . Adherents::TABLE . ' LIMIT 1';
 
 		/** TODO: what to do on error ? */
-		if( !$result = $mdb2_db->query( $requete ) )
+		if( !$result = $mdb->query( $requete ) )
 			return -1;
 
 		/*$result = $this->db->query( $requete );
@@ -157,7 +157,7 @@ class Required{
 			$f[] = array('id' => $key, 'required' => (($reinit)?array_key_exists($key, $this->all_required):in_array($key, $this->defaults)?true:false));
 		}
 
-		$stmt = $mdb2_db->prepare(
+		$stmt = $mdb->prepare(
 				'INSERT INTO ' . PREFIX_DB . self::TABLE . ' (field_id, required) VALUES(:id, :required)',
 				array('text', 'boolean'),
 				MDB2_PREPARE_MANIP
@@ -198,7 +198,7 @@ class Required{
 		$requete .= '\'';
 
 		/** TODO: what to do on error ? */
-		if( !$result = $mdb2_db->query( $requete ) )
+		if( !$result = $mdb->query( $requete ) )
 			return -1;
 
 		/*$result = $this->db->query( $requete );
@@ -215,7 +215,7 @@ class Required{
 		$requete2 .= '\'';
 
 		/** TODO: what to do on error ? */
-		if( !$result = $mdb2_db->query( $requete2 ) )
+		if( !$result = $mdb->query( $requete2 ) )
 			return -1;
 
 		/*$result = $this->db->query( $requete2 );

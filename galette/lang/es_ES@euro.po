@@ -27,7 +27,7 @@ msgstr ""
 msgid "among:"
 msgstr "entre:"
 
-#: ../install/index.php:667
+#: ../install/index.php:601
 msgid "SELECT operation allowed"
 msgstr "Operación SELECT autorizada"
 
@@ -50,7 +50,7 @@ msgstr "Tel.:"
 msgid "Do you really want to delete this contribution of the database ?"
 msgstr "¿Quiere verdaderamente eliminar esta contribución de la base de datos?"
 
-#: ../install/index.php:408
+#: ../install/index.php:400
 msgid "(for a directory)"
 msgstr "(para un directorio)"
 
@@ -114,7 +114,7 @@ msgstr "Afiliación"
 msgid "Be visible in the<br /> members list :"
 msgstr "Quiero aparecer en el<br /> listado público de socios:"
 
-#: ../install/index.php:975
+#: ../install/index.php:823
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr ""
 "Su base de datos puede ser inutilizable, intente recuperar la versión "
@@ -138,15 +138,15 @@ msgstr "línea"
 msgid "Required"
 msgstr "Obligatorio"
 
-#: ../install/index.php:652
+#: ../install/index.php:595
 msgid "UPDATE operation allowed"
 msgstr "Operación UPDATE autorizada"
 
-#: ../install/index.php:1035
+#: ../install/index.php:875
 msgid "Admin settings"
 msgstr "Configuraciones de administración"
 
-#: ../install/index.php:1347
+#: ../install/index.php:1054
 msgid "Installation complete !"
 msgstr "¡Instalación completada!"
 
@@ -180,7 +180,7 @@ msgstr ""
 msgid "Contribution type:"
 msgstr "Tipo de contribución:"
 
-#: ../install/index.php:355
+#: ../install/index.php:346
 msgid "Your current Galette version is comprised between"
 msgstr "Su versión actual de Galette se encuentra entre"
 
@@ -235,7 +235,7 @@ msgstr "Código postal:"
 msgid "Horizontal margins:"
 msgstr "Distancia horizontal:"
 
-#: ../install/index.php:472 ../install/index.php:1050
+#: ../install/index.php:464 ../install/index.php:888
 #: ../templates/default/index.tpl:39 ../templates/default/preferences.tpl:307
 #: ../templates/default/ajouter_adherent.tpl:103
 #: ../templates/default/self_adherent.tpl:174
@@ -261,7 +261,7 @@ msgstr "Obligatorio"
 msgid "Company cotisation"
 msgstr "Cuota empresarial"
 
-#: ../install/index.php:408
+#: ../install/index.php:400
 msgid "direcory_name"
 msgstr "nombre_directorio"
 
@@ -269,6 +269,11 @@ msgstr "nombre_directorio"
 msgid "Sent mail is checked but there is no email address"
 msgstr ""
 "La opción 'envío de correo' está seleccionada pero no hay ninguna dirección"
+
+#: ../install/index.php:963
+#, fuzzy
+msgid "Default preferences were successfully stored."
+msgstr "¡Galette fue instalada con éxito!"
 
 #: ../templates/default/preferences.tpl:301
 msgid "Admin account (independant of members):"
@@ -308,7 +313,7 @@ msgstr "Exento de cuota"
 msgid "Mail sent to :"
 msgstr "Correo enviado a:"
 
-#: ../install/index.php:618
+#: ../install/index.php:580
 msgid "CREATE operation not allowed"
 msgstr "Operación CREATE no autorizada"
 
@@ -353,7 +358,11 @@ msgstr "Comienzo de la afiliación:"
 msgid "Save"
 msgstr "Grabar"
 
-#: ../preferences.php:222 ../install/index.php:210
+#: ../install/index.php:973
+msgid "Default status cannot be initialized."
+msgstr ""
+
+#: ../preferences.php:222 ../install/index.php:201
 msgid "Passwords mismatch"
 msgstr "Las contraseñas no coinciden"
 
@@ -369,7 +378,7 @@ msgstr "Selección:"
 msgid "Password recovery"
 msgstr "Recuperación de la contraseña"
 
-#: ../install/index.php:357
+#: ../install/index.php:348
 msgid "Your current Galette version is"
 msgstr "Su versión actual de Galette es la"
 
@@ -390,7 +399,7 @@ msgstr "Id. GNUpg (GPG):"
 msgid "Galette-related data:"
 msgstr "Información relativa a Galette:"
 
-#: ../install/index.php:242 ../install/index.php:1375
+#: ../install/index.php:233 ../install/index.php:1075
 #, fuzzy
 msgid "Permissions"
 msgstr "Permisos de los ficheros"
@@ -404,7 +413,7 @@ msgstr "Vicepresidente"
 msgid "donation in kind"
 msgstr "Donativo en especie"
 
-#: ../install/index.php:539
+#: ../install/index.php:519
 msgid ""
 "Database can't be reached. Please go back to enter the connection parameters "
 "again."
@@ -423,10 +432,6 @@ msgstr ""
 "- ¡No se puede enviar confirmación por correo electrónico si el socio no "
 "tiene dirección!"
 
-#: ../install/index.php:709
-msgid "DROP OPeration not allowed"
-msgstr "Operación DROP no autorizada"
-
 #: ../templates/default/preferences.tpl:47
 #: ../templates/default/preferences.tpl:245
 #: ../templates/default/ajouter_adherent.tpl:30
@@ -441,11 +446,6 @@ msgstr "Parámetros del correo:"
 msgid "List of contributions"
 msgstr "Lista de contribuciones"
 
-#: ../install/index.php:1354
-msgid "For securing the system, please delete the install directory"
-msgstr ""
-"Para mejorar la seguridad del sistema, por favor borre el directorio install"
-
 #: ../templates/default/editer_champ.tpl:86
 msgid "Choice list (one entry per line)."
 msgstr "Lista de opciones (una entrada por línea)."
@@ -458,11 +458,16 @@ msgstr "Correo del remitente:"
 msgid "Password sent. Login:"
 msgstr "Contraseña enviada. Login:"
 
+#: ../install/index.php:975
+#, fuzzy
+msgid "Default status were successfully stored."
+msgstr "¡Galette fue instalada con éxito!"
+
 #: ../templates/default/log.tpl:40
 msgid "IP"
 msgstr "IP"
 
-#: ../install/index.php:1313
+#: ../install/index.php:1021
 msgid ""
 "This can come from the permissions on the file includes/config.inc.php or "
 "the impossibility to make an INSERT into the database."
@@ -475,12 +480,11 @@ msgstr ""
 msgid "Never contributed"
 msgstr "Nunca pagó la cuota"
 
-#: ../install/index.php:1025
-#, fuzzy
-msgid "Step 7 - Tables Creation"
-msgstr "Paso 7º - Creación de la base de datos"
+#: ../ajouter_contribution.php:191
+msgid "- Membership period overlaps period starting at "
+msgstr "- El período de afiliación supera el periodo que comienza el "
 
-#: ../install/index.php:663
+#: ../install/index.php:598
 msgid "SELECT operation not allowed"
 msgstr "Operación SELECT no autorizada"
 
@@ -502,10 +506,6 @@ msgstr "Duración de la afiliación:"
 #: ../templates/default/self_adherent.tpl:100
 msgid "Language:"
 msgstr "Idioma:"
-
-#: ../install/index.php:1083
-msgid "Step 8 - Admin parameters"
-msgstr "Paso 8º - Parámetros de administración"
 
 #: ../gestion_contributions.php:281 ../gestion_adherents.php:361
 msgid "days"
@@ -560,11 +560,11 @@ msgstr ""
 "¿Quiere verdaderamente eliminar esta categoría de la base?\n"
 " Suprimirá también todos los datos asociados."
 
-#: ../install/index.php:648
+#: ../install/index.php:592
 msgid "UPDATE operation not allowed"
 msgstr "Operación UPDATE no autorizada"
 
-#: ../install/index.php:682
+#: ../install/index.php:621
 msgid "ALTER Operation allowed"
 msgstr "Operación ALTER autorizada"
 
@@ -576,7 +576,7 @@ msgstr "Gestión de los socios"
 msgid "Maximum number of characters."
 msgstr "Número máximo de caracteres."
 
-#: ../install/index.php:172 ../install/index.php:208
+#: ../install/index.php:152 ../install/index.php:199
 msgid "No password"
 msgstr "Falta contraseña"
 
@@ -603,11 +603,11 @@ msgstr "al"
 msgid "Address:"
 msgstr "Dirección:"
 
-#: ../install/index.php:584
+#: ../install/index.php:563
 msgid "Permissions on the base"
 msgstr "Permisos de la base de datos"
 
-#: ../install/index.php:637
+#: ../install/index.php:589
 msgid "INSERT operation allowed"
 msgstr "Operación INSERT autorizada"
 
@@ -622,7 +622,7 @@ msgstr "contribución"
 msgid "Management of contributions"
 msgstr "Gestión de contribuciones"
 
-#: ../install/index.php:723
+#: ../install/index.php:628
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the "
 "installation."
@@ -638,7 +638,7 @@ msgstr "Envío de e-mail:"
 msgid "Your e-mail was sent to"
 msgstr "Su correo ha sido enviado a"
 
-#: ../install/index.php:332
+#: ../install/index.php:323
 msgid "New installation:"
 msgstr "Nueva instalación:"
 
@@ -646,7 +646,7 @@ msgstr "Nueva instalación:"
 msgid "in:"
 msgstr ""
 
-#: ../install/index.php:781
+#: ../install/index.php:683
 msgid "Installation Report"
 msgstr "Informe de instalación"
 
@@ -664,7 +664,7 @@ msgstr "ICQ:"
 msgid "Text"
 msgstr "Texto"
 
-#: ../install/index.php:457
+#: ../install/index.php:449
 msgid "Database type:"
 msgstr "Tipo de base de datos:"
 
@@ -700,7 +700,12 @@ msgstr "Borrado"
 msgid "Transaction number:"
 msgstr "Número de transacción:"
 
-#: ../install/index.php:235 ../install/index.php:1373
+#: ../install/index.php:396
+#, fuzzy
+msgid "Files permissions are not OK!"
+msgstr "¡Los permisos de los ficheros son correctos!"
+
+#: ../install/index.php:226 ../install/index.php:1073
 #: ../templates/default/traduire_libelles.tpl:16
 msgid "Language"
 msgstr "Idioma"
@@ -721,7 +726,7 @@ msgstr "Fallo en el borrado de datos"
 msgid "Number of values or zero if infinite."
 msgstr "Número de valores o cero si es infinito"
 
-#: ../install/index.php:693
+#: ../install/index.php:606
 msgid "DELETE operation not allowed"
 msgstr "Operación DELETE no autorizada"
 
@@ -729,11 +734,11 @@ msgstr "Operación DELETE no autorizada"
 msgid "Profile configuration"
 msgstr "Configuración del perfil"
 
-#: ../install/index.php:238 ../install/index.php:328 ../install/index.php:1374
+#: ../install/index.php:229 ../install/index.php:319 ../install/index.php:1074
 msgid "Installation mode"
 msgstr "Modalidad de instalación"
 
-#: ../install/index.php:310
+#: ../install/index.php:301
 msgid "Please select your administration language"
 msgstr ""
 
@@ -788,7 +793,7 @@ msgstr "su cuota."
 msgid "Donation in money"
 msgstr "Donativo en metálico"
 
-#: ../install/index.php:468
+#: ../install/index.php:460
 msgid "User:"
 msgstr "Usuario:"
 
@@ -801,20 +806,15 @@ msgstr "Error en la copia de la contraseña:"
 msgid "Mister"
 msgstr "Señor"
 
-#: ../includes/dynamic_fields.inc.php:75
-#, fuzzy
-msgid "Transactions"
-msgstr "transacciones"
+#: ../includes/dynamic_fields.inc.php:30
+msgid "choice"
+msgstr ""
 
 #: ../templates/default/preferences.tpl:157
 msgid "Label generation parameters:"
 msgstr "Parámetros de la generación de etiquetas:"
 
-#: ../install/index.php:768
-msgid "Step 6 - Access permissions to database"
-msgstr "Paso 6º - Permisos de acceso a la base de datos"
-
-#: ../install/index.php:405
+#: ../install/index.php:397
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr "En UNIX/Linux, puede fijar los permisos con dichos comandos"
 
@@ -884,7 +884,7 @@ msgstr ""
 msgid "- Empty transaction description!"
 msgstr "¡Descripción de transacción vacía!"
 
-#: ../install/index.php:782
+#: ../install/index.php:684
 msgid "Update Report"
 msgstr "Informe de actualización"
 
@@ -919,7 +919,7 @@ msgstr ""
 msgid "Duration"
 msgstr "Duración"
 
-#: ../install/index.php:174
+#: ../install/index.php:154
 msgid "No database name"
 msgstr "Falta el nombre de la base de datos"
 
@@ -931,7 +931,7 @@ msgstr "Número de líneas de etiquetas:"
 msgid "Contributions"
 msgstr "Contribuciones"
 
-#: ../install/index.php:1357
+#: ../install/index.php:1062
 msgid "Homepage"
 msgstr "Página principal"
 
@@ -971,7 +971,7 @@ msgstr ""
 msgid "Contribution"
 msgstr "Contribución"
 
-#: ../install/index.php:406
+#: ../install/index.php:398
 msgid "apache_user"
 msgstr "usuario_apache"
 
@@ -1019,7 +1019,7 @@ msgstr ""
 "No se logra contactar con el servidor de correo indicado en las "
 "preferencias. Contacte con el administrador de Galette"
 
-#: ../install/index.php:166
+#: ../install/index.php:146
 msgid "Database type unknown"
 msgstr "Tipo de base de datos desconocido"
 
@@ -1043,10 +1043,6 @@ msgstr "Los socios al día"
 msgid "transaction added"
 msgstr "Transacción añadida"
 
-#: ../install/index.php:1364
-msgid "Step 10 - End of the update"
-msgstr "Paso 10º - Final de la actualización"
-
 #: ../includes/dynamic_fields.inc.php:63
 #, fuzzy
 msgid "admin"
@@ -1056,7 +1052,7 @@ msgstr "[admin]"
 msgid "All the accounts"
 msgstr "Todas las cuentas"
 
-#: ../install/index.php:329
+#: ../install/index.php:320
 msgid "Select installation mode to launch"
 msgstr "Seleccionar el tipo de instalación que se va a iniciar"
 
@@ -1065,7 +1061,7 @@ msgstr "Seleccionar el tipo de instalación que se va a iniciar"
 msgid "Back to login page"
 msgstr "Regresar a la página de identificación"
 
-#: ../install/index.php:309
+#: ../install/index.php:300
 msgid "Welcome to the Galette Install!"
 msgstr ""
 
@@ -1085,7 +1081,7 @@ msgstr "Lista de transacciones"
 msgid "this login doesn't exist"
 msgstr "identificador no existente"
 
-#: ../install/index.php:464
+#: ../install/index.php:456
 msgid "Host:"
 msgstr "Hostname:"
 
@@ -1101,7 +1097,7 @@ msgstr "- ¡La contraseña debe consistir en 4 caracteres al menos!"
 msgid "Please enter a message."
 msgstr "Por favor teclee un mensaje."
 
-#: ../install/index.php:1352
+#: ../install/index.php:1058
 msgid "Galette has been successfully updated!"
 msgstr "¡Galette fue actualizada con éxito!"
 
@@ -1132,7 +1128,7 @@ msgstr "Puede preparar una foto para enviarla después de remitir"
 msgid "(Months)"
 msgstr "(Meses)"
 
-#: ../install/index.php:633
+#: ../install/index.php:586
 msgid "INSERT operation not allowed"
 msgstr "Operación INSERT no autorizada"
 
@@ -1153,11 +1149,11 @@ msgstr "Afiliación"
 msgid "- Field name already used."
 msgstr "- El nombre de campo ya está en uso."
 
-#: ../install/index.php:1111
+#: ../install/index.php:941
 msgid "Configuration file created (includes/config.inc.php)"
 msgstr "Fichero de configuración creado (includes/config.inc.php)"
 
-#: ../install/index.php:1059 ../templates/default/preferences.tpl:311
+#: ../install/index.php:892 ../templates/default/preferences.tpl:311
 msgid "Retype password:"
 msgstr "Vuelva a introducir la contraseña:"
 
@@ -1169,22 +1165,19 @@ msgstr "Ancho:"
 msgid "- The passwords don't match!"
 msgstr "- ¡Las contraseñas no coinciden!"
 
-#: ../templates/default/ajouter_adherent.tpl:1
-#: ../templates/default/voir_adherent.tpl:1
-msgid "Member Profile"
-msgstr "Perfil de socio"
+#: ../install/index.php:1059
+#, fuzzy
+msgid "To secure the system, please delete the install directory"
+msgstr ""
+"Para mejorar la seguridad del sistema, por favor borre el directorio install"
 
 #: ../ajouter_adherent.php:235
 msgid "Member card added"
 msgstr "Añadida la ficha de socio"
 
-#: ../install/index.php:606
+#: ../install/index.php:615
 msgid "DROP operation allowed"
 msgstr "Operación DROP autorizada"
-
-#: ../install/index.php:1272
-msgid "Parameters saved into the database"
-msgstr "Parámetros grabados en la base de datos"
 
 #: ../templates/default/ajouter_adherent.tpl:182
 #: ../templates/default/voir_adherent.tpl:139
@@ -1256,7 +1249,12 @@ msgstr "No"
 msgid "Default membership extension:"
 msgstr "Duración por defecto de la afiliación:"
 
-#: ../install/index.php:973
+#: ../templates/default/ajouter_adherent.tpl:1
+#: ../templates/default/voir_adherent.tpl:1
+msgid "Member Profile"
+msgstr "Perfil de socio"
+
+#: ../install/index.php:819
 #, fuzzy
 msgid "The tables are not totally created, it's maybe a permission problem."
 msgstr ""
@@ -1267,7 +1265,7 @@ msgstr ""
 msgid "separator"
 msgstr ""
 
-#: ../install/index.php:170 ../install/index.php:204
+#: ../install/index.php:150 ../install/index.php:195
 msgid "No user name"
 msgstr "Falta nombre de usuario"
 
@@ -1313,11 +1311,11 @@ msgstr "Nombre (razón social) de la asociación:"
 msgid "Mrs."
 msgstr "Sra."
 
-#: ../install/index.php:483
+#: ../install/index.php:475
 msgid "Table prefix:"
 msgstr "Prefijo de la tabla:"
 
-#: ../install/index.php:586
+#: ../install/index.php:565
 msgid ""
 "To run, Galette needs a number of rights on the database (CREATE, DROP, "
 "DELETE, UPDATE, SELECT and INSERT)"
@@ -1334,9 +1332,9 @@ msgstr "[Correo]"
 msgid "Galette Admin:"
 msgstr "Admin. de  Galette:"
 
-#: ../install/index.php:368 ../install/index.php:425 ../install/index.php:488
-#: ../install/index.php:562 ../install/index.php:749 ../install/index.php:1004
-#: ../install/index.php:1066 ../install/index.php:1287
+#: ../install/index.php:359 ../install/index.php:417 ../install/index.php:480
+#: ../install/index.php:542 ../install/index.php:656 ../install/index.php:852
+#: ../install/index.php:897 ../install/index.php:996
 msgid "Next step"
 msgstr "Siguiente paso"
 
@@ -1354,6 +1352,10 @@ msgstr "Líneas / Página:"
 #: ../etiquettes_adherents.php:132
 msgid "Miss."
 msgstr "Sra."
+
+#: ../install/index.php:1022
+msgid "Check above errors to know what went wrong."
+msgstr ""
 
 #: ../etiquettes_adherents.php:78 ../etiquettes_adherents.php:173
 #: ../templates/default/preferences.tpl:26
@@ -1377,7 +1379,7 @@ msgstr "Pie"
 msgid "contributions"
 msgstr "contribuciones"
 
-#: ../install/index.php:746
+#: ../install/index.php:653
 msgid "Permissions to database are OK."
 msgstr "Los permisos sobre la base de datos son correctos."
 
@@ -1430,7 +1432,7 @@ msgstr "Distancia vertical:"
 msgid "OFF"
 msgstr "DESCONECTADO"
 
-#: ../install/index.php:451
+#: ../install/index.php:443
 msgid "Enter connection data for the existing database."
 msgstr "Especifique los parámetros de conexión a la base de datos."
 
@@ -1438,7 +1440,7 @@ msgstr "Especifique los parámetros de conexión a la base de datos."
 msgid "You are about to send an e-mail to"
 msgstr "Va a enviar un correo a"
 
-#: ../install/index.php:974
+#: ../install/index.php:821
 #, fuzzy
 msgid ""
 "The tables have not been totally created, it may be a permission problem."
@@ -1459,7 +1461,7 @@ msgstr "francés"
 msgid "-- select a name --"
 msgstr "-- seleccione un nombre --"
 
-#: ../install/index.php:1115
+#: ../install/index.php:945
 msgid "Unable to create configuration file (includes/config.inc.php)"
 msgstr ""
 "Error en la creación del fichero de configuración (includes/config.inc.php)"
@@ -1468,7 +1470,7 @@ msgstr ""
 msgid "Member"
 msgstr "Socio"
 
-#: ../install/index.php:1351
+#: ../install/index.php:1057
 msgid "Galette has been successfully installed!"
 msgstr "¡Galette fue instalada con éxito!"
 
@@ -1526,7 +1528,7 @@ msgstr "Se produjo un error en la base de datos al introducir datos"
 msgid "Inactive account"
 msgstr "Cuenta desactivada"
 
-#: ../install/index.php:254 ../install/index.php:1378
+#: ../install/index.php:245 ../install/index.php:1078
 #, fuzzy
 msgid "Access permissions to database"
 msgstr "Paso 6º - Permisos de acceso a la base de datos"
@@ -1539,16 +1541,12 @@ msgstr ""
 msgid "Logs"
 msgstr "Historial"
 
-#: ../install/index.php:713
-msgid "DROP OPeration allowed"
-msgstr "Operación DROP autorizada"
-
 #: ../self_adherent.php:284 ../ajouter_adherent.php:417
 #: ../templates/default/page.tpl:68
 msgid "Miss"
 msgstr "Señora"
 
-#: ../install/index.php:724
+#: ../install/index.php:629
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr ""
@@ -1569,7 +1567,7 @@ msgstr "La afiliación expirará pronto (&lt;30d)"
 msgid "Title:"
 msgstr "Título:"
 
-#: ../install/index.php:522 ../install/index.php:532
+#: ../install/index.php:513
 #, fuzzy
 msgid "Connection to database successfull"
 msgstr "Éxito en la conexión a la base de datos"
@@ -1578,7 +1576,7 @@ msgstr "Éxito en la conexión a la base de datos"
 msgid "logs are empty"
 msgstr "historial vacío"
 
-#: ../install/index.php:1044 ../templates/default/index.tpl:35
+#: ../install/index.php:884 ../templates/default/index.tpl:35
 #: ../templates/default/preferences.tpl:303
 #: ../templates/default/ajouter_adherent.tpl:98
 #: ../templates/default/voir_adherent.tpl:67
@@ -1613,20 +1611,21 @@ msgstr "Interpretar HTML"
 msgid "transaction updated"
 msgstr "Transacción actualizada"
 
-#: ../install/index.php:413 ../install/index.php:728 ../install/index.php:979
-#: ../install/index.php:1315
+#: ../install/index.php:405 ../install/index.php:635 ../install/index.php:829
+#: ../install/index.php:1027
 msgid "Retry"
 msgstr "Intentar otra vez"
 
-#: ../install/index.php:476
+#: ../install/index.php:468
 msgid "Database:"
 msgstr "Base de datos:"
 
-#: ../includes/dynamic_fields.inc.php:30
-msgid "choice"
-msgstr ""
+#: ../includes/dynamic_fields.inc.php:75
+#, fuzzy
+msgid "Transactions"
+msgstr "transacciones"
 
-#: ../install/index.php:410
+#: ../install/index.php:402
 msgid ""
 "Under Windows, check these files are not in Read-Only mode in their property "
 "panel."
@@ -1634,7 +1633,7 @@ msgstr ""
 "En Windows, compruebe que estos ficheros no estén en modo sólo lectura en su "
 "panel de propiedades."
 
-#: ../install/index.php:301
+#: ../install/index.php:292
 #, fuzzy
 msgid "Galette installation"
 msgstr "Nueva instalación:"
@@ -1643,17 +1642,12 @@ msgstr "Nueva instalación:"
 msgid "Honor Members Color:"
 msgstr ""
 
-#: ../install/index.php:1371
+#: ../install/index.php:1071
 #, fuzzy
 msgid "Steps:"
 msgstr "Estado:"
 
-#: ../install/index.php:1338
-#, fuzzy
-msgid "Step 9 - Saving the parameters"
-msgstr "Paso 9º - Grabar los parámetros"
-
-#: ../install/index.php:321
+#: ../install/index.php:312
 #, fuzzy
 msgid "Next Page"
 msgstr "Siguiente paso"
@@ -1662,7 +1656,7 @@ msgstr "Siguiente paso"
 msgid "Last day!"
 msgstr "¡Último día!"
 
-#: ../install/index.php:407
+#: ../install/index.php:399
 msgid "(for a file)"
 msgstr "(para un fichero)"
 
@@ -1687,7 +1681,7 @@ msgstr "En primer lugar debe dar de alta a un socio"
 msgid "reduced annual fee"
 msgstr "Cuota anual reducida"
 
-#: ../install/index.php:278
+#: ../install/index.php:269
 #, fuzzy
 msgid "Galette Installation"
 msgstr "Nueva instalación:"
@@ -1696,7 +1690,7 @@ msgstr "Nueva instalación:"
 msgid "Preview"
 msgstr "Vista previa"
 
-#: ../install/index.php:999
+#: ../install/index.php:848
 #, fuzzy
 msgid "The tables has been correctly created."
 msgstr "La base de datos fue creada correctamente."
@@ -1724,7 +1718,7 @@ msgstr "Repetir:"
 msgid "ending on"
 msgstr "finaliza el"
 
-#: ../install/index.php:678
+#: ../install/index.php:618
 msgid "ALTER Operation not allowed"
 msgstr "Operación ALTER no autorizada"
 
@@ -1736,7 +1730,7 @@ msgstr ""
 msgid "Nickname"
 msgstr "Alias"
 
-#: ../install/index.php:481
+#: ../install/index.php:473
 msgid "(Indicate the CURRENT prefix of your Galette tables)"
 msgstr "(Indique el prefijo ACTUAL de sus tablas Galette)"
 
@@ -1769,7 +1763,7 @@ msgstr "Retrasados"
 msgid "My information"
 msgstr "Mis informaciones"
 
-#: ../install/index.php:250 ../install/index.php:1377
+#: ../install/index.php:241 ../install/index.php:1077
 #, fuzzy
 msgid "Access to the database"
 msgstr "Paso 5º - Acceso a la base de datos"
@@ -1803,7 +1797,7 @@ msgstr "Cuentas desactivadas"
 msgid "empty login"
 msgstr "identificador vacío"
 
-#: ../install/index.php:518 ../install/index.php:528
+#: ../install/index.php:509
 msgid "Unable to connect to the database"
 msgstr "Error en la conexión a la base de datos"
 
@@ -1835,7 +1829,7 @@ msgstr "Altura de la etiqueta:"
 msgid "There is  no password for user :"
 msgstr "El usuario no tiene contraseña:"
 
-#: ../install/index.php:403
+#: ../install/index.php:394
 msgid ""
 "In order to be updated, Galette needs the Write permission on these files."
 msgstr ""
@@ -1846,12 +1840,12 @@ msgstr ""
 msgid "Contribution added"
 msgstr "Contribución añadida"
 
-#: ../install/index.php:778
+#: ../install/index.php:681
 #, fuzzy
 msgid "Update of the tables"
 msgstr "Actualización de la base"
 
-#: ../install/index.php:402
+#: ../install/index.php:393
 msgid ""
 "For a correct functioning, Galette needs the Write permission on these files."
 msgstr ""
@@ -1931,7 +1925,7 @@ msgstr "Dirección:"
 msgid "no contribution"
 msgstr "ninguna contribución"
 
-#: ../install/index.php:206
+#: ../install/index.php:197
 msgid "The username cannot contain the @ character"
 msgstr "El nombre de usuario no puede contener el carácter @"
 
@@ -1961,7 +1955,7 @@ msgstr "- ADVERTENCIA -"
 msgid "annual fee (to be paid)"
 msgstr "Cuota anual (por pagar)"
 
-#: ../install/index.php:406 ../install/index.php:407
+#: ../install/index.php:398 ../install/index.php:399
 msgid "file_name"
 msgstr "nombre_fichero"
 
@@ -1969,7 +1963,7 @@ msgstr "nombre_fichero"
 msgid "Add a transaction"
 msgstr "Añadir una transacción"
 
-#: ../install/index.php:378
+#: ../install/index.php:369
 msgid "Files permissions"
 msgstr "Permisos de los ficheros"
 
@@ -1977,12 +1971,7 @@ msgstr "Permisos de los ficheros"
 msgid "Originator:"
 msgstr "Emisor:"
 
-#: ../install/index.php:1026
-#, fuzzy
-msgid "Step 7 - Tables Update"
-msgstr "Paso 7º - Actualización de la base de datos"
-
-#: ../install/index.php:452
+#: ../install/index.php:444
 msgid ""
 "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 msgstr ""
@@ -1992,11 +1981,7 @@ msgstr ""
 msgid "Send"
 msgstr "Enviar"
 
-#: ../install/index.php:1275
-msgid "Parameters couldn't be save into the database"
-msgstr "No fue posible grabar los parámetros en la base de datos"
-
-#: ../install/index.php:422
+#: ../install/index.php:414
 msgid "Files permissions are OK!"
 msgstr "¡Los permisos de los ficheros son correctos!"
 
@@ -2048,7 +2033,7 @@ msgstr "Volver al listado de socios"
 msgid "- Select a valid member name!"
 msgstr "- ¡Seleccione un nombre de socio válido!"
 
-#: ../install/index.php:258 ../install/index.php:1379
+#: ../install/index.php:249 ../install/index.php:1079
 #, fuzzy
 msgid "Tables Creation/Update"
 msgstr "Fecha de creación:"
@@ -2094,10 +2079,6 @@ msgstr ""
 msgid "No member was selected, please check at least one name."
 msgstr ""
 "No se ha seleccionado ningún socio; por favor marque al menos un nombre."
-
-#: ../install/index.php:1363
-msgid "Step 10 - End of the installation"
-msgstr "Paso 10º - Final de la instalación"
 
 #: ../templates/default/page.tpl:143
 msgid "Gift"
@@ -2162,7 +2143,7 @@ msgstr ""
 msgid "Cards generation parameters:"
 msgstr "Parámetros de la generación de etiquetas:"
 
-#: ../install/index.php:1348
+#: ../install/index.php:1055
 msgid "Update complete !"
 msgstr "¡Actualización completada!"
 
@@ -2175,11 +2156,11 @@ msgstr "Función PHP mail()"
 msgid "Generate Member Cards"
 msgstr "Generación de etiquetas"
 
-#: ../install/index.php:499
+#: ../install/index.php:491
 msgid "Check of the database"
 msgstr "Verificación de la base de datos"
 
-#: ../install/index.php:450
+#: ../install/index.php:442
 msgid "If it hadn't been made, create a database and a user for Galette."
 msgstr ""
 "Si aún no lo ha hecho, cree una base de datos y un usuario para Galette."
@@ -2192,7 +2173,7 @@ msgstr "Añadir un socio"
 msgid "Modify"
 msgstr ""
 
-#: ../install/index.php:355
+#: ../install/index.php:346
 msgid "and"
 msgstr "y"
 
@@ -2220,7 +2201,7 @@ msgstr "Interpretación HTML:"
 msgid "Original"
 msgstr "Original"
 
-#: ../install/index.php:500
+#: ../install/index.php:492
 msgid "Check the parameters and the existence of the database"
 msgstr "Verifique los parámetros y la existencia de la base de datos"
 
@@ -2257,7 +2238,7 @@ msgstr ""
 msgid "Description:"
 msgstr "Descripción:"
 
-#: ../install/index.php:270 ../install/index.php:1382
+#: ../install/index.php:261 ../install/index.php:1082
 #, fuzzy
 msgid "End!"
 msgstr "Fin"
@@ -2276,7 +2257,8 @@ msgstr "Otras informaciones (admin):"
 msgid "company fee"
 msgstr ""
 
-#: ../install/index.php:444 ../templates/default/gestion_adherents.tpl:5
+#: ../install/index.php:436 ../install/index.php:878 ../install/index.php:1020
+#: ../templates/default/gestion_adherents.tpl:5
 #: ../templates/default/mailing_adherents.tpl:9
 #: ../templates/default/preferences.tpl:5
 #: ../templates/default/ajouter_adherent.tpl:5
@@ -2291,7 +2273,7 @@ msgstr ""
 msgid "- ERROR -"
 msgstr "- ERROR -"
 
-#: ../install/index.php:967
+#: ../install/index.php:813
 msgid "(Errors on DROP and RENAME operations can be ignored)"
 msgstr "(Las errores en las operaciones DROP y RENAME pueden ser ignorados)"
 
@@ -2331,7 +2313,7 @@ msgstr ""
 msgid "(at least 4 characters)"
 msgstr "(al menos 4 caracteres)"
 
-#: ../install/index.php:622
+#: ../install/index.php:583
 msgid "CREATE operation allowed"
 msgstr "Operación CREATE autorizada"
 
@@ -2375,7 +2357,7 @@ msgstr ""
 msgid "This comment is reserved to the member."
 msgstr "Este comentario sólo lo ve el socio."
 
-#: ../install/index.php:347 ../templates/default/traduire_libelles.tpl:38
+#: ../install/index.php:338 ../templates/default/traduire_libelles.tpl:38
 msgid "Update"
 msgstr "Actualizar"
 
@@ -2383,7 +2365,7 @@ msgstr "Actualizar"
 msgid "[ See member profile ]"
 msgstr "[Ver el perfil del socio]"
 
-#: ../install/index.php:1000
+#: ../install/index.php:849
 #, fuzzy
 msgid "The tables has been correctly updated."
 msgstr "La base de datos fue actualizada correctamente."
@@ -2408,10 +2390,14 @@ msgstr "Afiliación"
 msgid "- Invalid number of months of membership extension."
 msgstr "- La duración en meses de la afiliación es inválida."
 
-#: ../install/index.php:347
+#: ../install/index.php:338
 msgid "Warning: Don't forget to backup your current database."
 msgstr ""
 "Aviso: no olvide hacer una copia de seguridad de su base de datos actual."
+
+#: ../install/index.php:967
+msgid "Default contributions types cannot be initialized."
+msgstr ""
 
 #: ../templates/default/preferences.tpl:107
 msgid "(dd/mm)"
@@ -2421,7 +2407,7 @@ msgstr "(dd/mm)"
 msgid "- The username cannot contain the @ character"
 msgstr "- El nombre de usuario no puede contener el carácter @"
 
-#: ../install/index.php:777
+#: ../install/index.php:680
 #, fuzzy
 msgid "Creation of the tables"
 msgstr "Creación de la base de datos"
@@ -2437,11 +2423,11 @@ msgstr "- Campo obligatorio no rellenado."
 msgid "[M]"
 msgstr "[H]"
 
-#: ../install/index.php:168
+#: ../install/index.php:148
 msgid "No host"
 msgstr ""
 
-#: ../install/index.php:1040
+#: ../install/index.php:882
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr ""
 "Por favor elija los parámetros de la cuenta del administrador de Galette"
@@ -2466,16 +2452,16 @@ msgstr "Nota: los campos obligatorios aparecen en"
 msgid "spanish"
 msgstr "español"
 
-#: ../install/index.php:559
+#: ../install/index.php:539
 msgid "Database exists and connection parameters are OK."
 msgstr "La base de datos existe y los parámetros de conexión son correctos."
 
-#: ../install/index.php:246 ../install/index.php:439 ../install/index.php:455
-#: ../install/index.php:1376
+#: ../install/index.php:237 ../install/index.php:431 ../install/index.php:447
+#: ../install/index.php:1076
 msgid "Database"
 msgstr "Base de datos"
 
-#: ../install/index.php:262 ../install/index.php:1380
+#: ../install/index.php:253 ../install/index.php:1080
 #, fuzzy
 msgid "Admin parameters"
 msgstr "Paso 8º - Parámetros de administración"
@@ -2489,7 +2475,7 @@ msgstr "Altura de la etiqueta:"
 msgid "Logo:"
 msgstr "Logo:"
 
-#: ../install/index.php:143 ../install/index.php:153
+#: ../install/index.php:123 ../install/index.php:133
 msgid "Installation mode unknown"
 msgstr "Tipo de instalación desconocido"
 
@@ -2502,16 +2488,12 @@ msgstr "Borrar"
 msgid "[down]"
 msgstr "[abajo]"
 
-#: ../ajouter_contribution.php:191
-msgid "- Membership period overlaps period starting at "
-msgstr "- El período de afiliación supera el periodo que comienza el "
-
-#: ../install/index.php:266 ../install/index.php:1381
+#: ../install/index.php:257 ../install/index.php:1081
 #, fuzzy
 msgid "Saving the parameters"
 msgstr "Grabar los parámetros"
 
-#: ../install/index.php:1312
+#: ../install/index.php:1021
 msgid "Parameters couldn't be saved."
 msgstr "No fue posible grabar los parámetros."
 
@@ -2520,7 +2502,7 @@ msgstr "No fue posible grabar los parámetros."
 msgid "Modification"
 msgstr "Modificación"
 
-#: ../install/index.php:542
+#: ../install/index.php:522
 msgid "Go back"
 msgstr "Regresar"
 
@@ -2542,7 +2524,11 @@ msgstr ""
 msgid "remaining day"
 msgstr "día restante"
 
-#: ../install/index.php:697
+#: ../install/index.php:961
+msgid "Default preferences cannot be initialized."
+msgstr ""
+
+#: ../install/index.php:609
 msgid "DELETE operation allowed"
 msgstr "Operación DELETE autorizada"
 
@@ -2570,7 +2556,7 @@ msgstr ""
 msgid "ON"
 msgstr "CONECTADO"
 
-#: ../install/index.php:1091
+#: ../install/index.php:923
 msgid "Save the parameters"
 msgstr "Grabar los parámetros"
 
@@ -2597,7 +2583,7 @@ msgstr "Cuenta activa"
 msgid "no transaction"
 msgstr "sin transacción"
 
-#: ../install/index.php:603
+#: ../install/index.php:612
 msgid "DROP operation not allowed"
 msgstr "Operación DROP no autorizada"
 
@@ -2605,7 +2591,7 @@ msgstr "Operación DROP no autorizada"
 msgid "Visibility"
 msgstr "Visibilidad"
 
-#: ../install/index.php:587
+#: ../install/index.php:566
 msgid ""
 "In order to be updated, Galette needs a number of rights on the database "
 "(CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)"
@@ -2626,7 +2612,11 @@ msgstr ""
 msgid "Additionnal fields:"
 msgstr "Información de contacto:"
 
-#: ../install/index.php:333
+#: ../install/index.php:969
+msgid "Default contributions types were successfully stored."
+msgstr ""
+
+#: ../install/index.php:324
 msgid ""
 "You're installing Galette for the first time, or you wish to erase an older "
 "version of Galette without keeping your data"
@@ -2637,6 +2627,46 @@ msgstr ""
 #: ../templates/default/gestion_contributions.tpl:172
 msgid "[ Add a contribution ]"
 msgstr "[ Añadir una contribución ]"
+
+#~ msgid "DROP OPeration not allowed"
+#~ msgstr "Operación DROP no autorizada"
+
+#~ msgid "Step 10 - End of the update"
+#~ msgstr "Paso 10º - Final de la actualización"
+
+#~ msgid "Parameters saved into the database"
+#~ msgstr "Parámetros grabados en la base de datos"
+
+#~ msgid "DROP OPeration allowed"
+#~ msgstr "Operación DROP autorizada"
+
+#~ msgid "Parameters couldn't be save into the database"
+#~ msgstr "No fue posible grabar los parámetros en la base de datos"
+
+#~ msgid "Step 10 - End of the installation"
+#~ msgstr "Paso 10º - Final de la instalación"
+
+#, fuzzy
+#~ msgid "$chain operation not allowed"
+#~ msgstr "Operación DROP no autorizada"
+
+#, fuzzy
+#~ msgid "Step 7 - Tables Creation"
+#~ msgstr "Paso 7º - Creación de la base de datos"
+
+#~ msgid "Step 8 - Admin parameters"
+#~ msgstr "Paso 8º - Parámetros de administración"
+
+#, fuzzy
+#~ msgid "Step 9 - Saving the parameters"
+#~ msgstr "Paso 9º - Grabar los parámetros"
+
+#, fuzzy
+#~ msgid "Step 7 - Tables Update"
+#~ msgstr "Paso 7º - Actualización de la base de datos"
+
+#~ msgid "Step 6 - Access permissions to database"
+#~ msgstr "Paso 6º - Permisos de acceso a la base de datos"
 
 #~ msgid "(this mail was sent automatically)"
 #~ msgstr "(este correo ha sido enviado automáticamente)"

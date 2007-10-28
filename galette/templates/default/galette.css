@@ -855,9 +855,9 @@ ul#tabs li{
 }
 
 #installpage #submit_btn{
-	position:absolute;
+	/*position:absolute;
 	right:0;
-	bottom:0;
+	bottom:0;*/
 	text-align: right;
 	margin:0;
 }

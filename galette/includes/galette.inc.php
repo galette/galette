@@ -54,15 +54,14 @@ $log->addChild($file);
 * MDB2 instanciation
 */
 require_once(WEB_ROOT . '/classes/mdb2.class.php');
-/** TODO: Replace mdb2_db by db once adodb will be removed */
 /** FIXME: mdb2 object should be stored into the session. This causes a fatal error on __destruct */
 /*if( isset($_SESSION['galette']['db']) ){
-	$mdb2_db = unserialize($_SESSION['galette']['db']);
+	$mdb = unserialize($_SESSION['galette']['db']);
 }else{
-	$mdb2_db = new GaletteMdb2();
-	$_SESSION['galette']['db'] = serialize($mdb2_db);
+	$mdb2 = new GaletteMdb2();
+	$_SESSION['galette']['db'] = serialize($mdb2);
 }*/
-$mdb2_db = new GaletteMdb2();
+$mdb = new GaletteMdb2();
 
 /**
 * Load preferences

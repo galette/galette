@@ -71,11 +71,11 @@ class Adherents{
 	*	'1' if user were logged in successfully
 	*/
 	public function logIn($user, $passe){
-		global $mdb2_db;
+		global $mdb;
 
 		$requete = 'SELECT id_adh, bool_admin_adh, nom_adh, prenom_adh, mdp_adh, pref_lang, activite_adh FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=\'' . $user. '\' AND mdp_adh=\'' . $passe . '\'';
 
-		if( !$result = $mdb2_db->query( $requete ) )
+		if( !$result = $mdb->query( $requete ) )
 			return -1;
 		
 		if($result->numRows() == 0){
@@ -85,12 +85,7 @@ class Adherents{
 			$this->id = $row->id_adh;
 			$this->login = $row->login_adh;
 			$this->passe = $row->mdp_adh;
-			//$this->email = $row->mail;
 			$this->admin = $row->bool_admin_adh;
-			//$this->auth = $row->auth;
-			//$this->date_inscription = $row->date;
-			//$this->last_login = $row->last_connect;
-			//$this->use_ajax = $row->use_ajax;
 			$this->name = $row->nom_adh;
 			$this->surname = $row->prenom_adh;
 			$this->lang = $row->pref_lang;
@@ -128,14 +123,6 @@ class Adherents{
 	public function isLogged(){return $this->logged;}
 	public function isAdmin(){return $this->admin;}
 	public function isActive(){return $this->active;}
-	//public function isAuth(){return $this->auth;}
-	//public function getLogin(){return $this->login;}
-	//public function getPasse(){return $this->passe;}
-	//public function getMail(){return $this->email;}
-	//public function getDateInscription(){return $this->date_inscription;}
-	//public function getLastConnect(){return $this->last_login;}
-	//public function getCompte(){return $this->compte;}
-	//public function useAjax(){return $this->use_ajax;}
 	public function __get($name){
 		$forbidden = array('logged', 'admin', 'active');
 		if( !in_array($name, $forbidden) )

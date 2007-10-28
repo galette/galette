@@ -45,9 +45,7 @@ if ($installed) {
 	header("location: ../index.php");
 }
 
-if (!isset($_POST["install_lang"])) $pref_lang="english";
-	else $pref_lang=$_POST["install_lang"];
-define("WEB_ROOT", realpath(dirname(__FILE__)."/../")."/");
+define('WEB_ROOT', realpath(dirname(__FILE__) . '/../') . '/');
 
 //we start a php session
 session_start();
@@ -77,7 +75,7 @@ require_once('Log.php');
 /** FIXME: for stables versions, log level must not be DEBUG, most probably WARNING or NOTICE */
 define('_file_log', PEAR_LOG_DEBUG);				// ***** LOG : enregistrement des erreur dans un fichier de log
 define('_log_file', WEB_ROOT . '/logs/galette.log');		// ***** LOG : fichier de log 
-define('_screen_log', PEAR_LOG_WARNING);			// ***** LOG : affichage des erreurs à l'écran
+define('_screen_log', PEAR_LOG_ERR);				// ***** LOG : affichage des erreurs à l'écran
 
 $conf = array(
 	'error_prepend'	=>	'<div id="error" class="error">',
@@ -94,19 +92,9 @@ $log->addChild($file);
 * Language instantiation
 */
 require_once(WEB_ROOT . 'classes/i18n.class.php');
-/** FIXME: i18n object should be stored into the session.
-* Actually, unserialize fails with 'Node no longer exists' ...
-*/
-/*unset($_SESSION['galette_lang']);
 
-if( isset($_SESSION['galette_lang']) ){
-	$i18n = unserialize($_SESSION['galette_lang']);
-}else{
-	$i18n = new i18n();
-	$_SESSION['galette_lang'] = serialize($i18n);
-}*/
 if(isset($_POST['install_lang'])) $_SESSION['pref_lang'] = $_POST['install_lang'];
-$i18n = new i18n((isset($_SESSION['pref_lang'])?$_SESSION['pref_lang']:i18n::DEFAULT_LANG));
+$i18n = new i18n((isset($_SESSION['pref_lang']) && $_SESSION['pref_lang']!='')?$_SESSION['pref_lang']:i18n::DEFAULT_LANG);
 
 /** FIXME: ... end fixme :-) */
 
@@ -120,18 +108,10 @@ $step="1";
 $error_detected = false;
 
 	// traitement page 1 - language
-	if (isset($_POST["install_lang"]))
+	if (isset($_POST['install_lang']))
 	{
-		$lang_inc = WEB_ROOT . 'lang/lang_' . $_POST['install_lang'] . '.php';
-		if ($lang_inc)
-		{
-			define("PREF_LANG",$_POST['install_lang']);
-			$step = '2';
-			include ($lang_inc);
-		}
-		else
-	  		$error_detected .= '<li>Unknown language</li>';
-	 }
+		$step = '2';
+	}
 
 	if ($error_detected == '' && isset($_POST['install_type']) )
 	{
@@ -176,11 +156,22 @@ $error_detected = false;
 		{
 			if (isset($_POST['install_dbconn_ok']))
 			{
+				require_once('../classes/mdb2.class.php');
+
+				define('TYPE_DB', $_POST['install_dbtype']);
+				define('USER_DB', $_POST['install_dbuser']);
+				define('PWD_DB', $_POST['install_dbpass']);
+				define('HOST_DB', $_POST['install_dbhost']);
+				define('NAME_DB', $_POST['install_dbname']);
+
+				$mdb = new GaletteMdb2();
+
 				include(WEB_ROOT."/includes/adodb/adodb.inc.php");
 				$DB = ADONewConnection($_POST["install_dbtype"]);
 				$DB->debug = false;
 				$permsdb_ok = true;
 				@$DB->Connect($_POST["install_dbhost"], $_POST["install_dbuser"], $_POST["install_dbpass"], $_POST["install_dbname"]);
+
 				if ($_POST["install_type"]=="install")
 					$step="i6";
 				elseif (substr($_POST["install_type"],0,7)=="upgrade")
@@ -402,6 +393,7 @@ header('Content-Type: text/html; charset=iso-8859-15');
 if ($step == 'i3') echo _T("For a correct functioning, Galette needs the Write permission on these files.");
 if ($step == 'u3') echo _T("In order to be updated, Galette needs the Write permission on these files.");
 			?></p>
+			<p id="errorbox"><?php echo _T("Files permissions are not OK!"); ?></p>
 			<p><?php echo _T("Under UNIX/Linux, you can give the permissions using those commands"); ?><br />
 				<code>chown <em><?php echo _T("apache_user"); ?></em> <em><?php echo _T("file_name"); ?></em><br />
 				chmod 600 <em><?php echo _T("file_name"); ?></em> <?php echo _T("(for a file)"); ?><br />
@@ -419,7 +411,7 @@ if ($step == 'u3') echo _T("In order to be updated, Galette needs the Write perm
 			else
 			{
 ?>
-			<p><?php echo _T("Files permissions are OK!"); ?></p>
+			<p id="infobox"><?php echo _T("Files permissions are OK!"); ?></p>
 			<form action="index.php" method="POST">
 				<p id="submit_btn">
 					<input type="submit" value="<?php echo _T("Next step"); ?>">
@@ -433,8 +425,8 @@ if ($step == 'u3') echo _T("In order to be updated, Galette needs the Write perm
 		</div>
 <?php
 			break; //ends third step
-			case 'i4':
-			case 'u4':
+		case 'i4':
+		case 'u4':
 ?>
 			<h2><?php echo _T("Database"); ?></h2>
 <?php
@@ -456,8 +448,8 @@ if ($step == 'u3') echo _T("In order to be updated, Galette needs the Write perm
 					<p>
 						<label class="bline" for="install_dbtype"><?php echo _T("Database type:"); ?></label>
 						<select name="install_dbtype" id="install_dbtype">
-							<option value="mysql"<?php if($_POST['install_dbtype'] == 'mysql'){echo ' selected="selected"';} ?>>Mysql</option>
-							<option value="pgsql"<?php if($_POST['install_dbtype'] == 'pgsql'){echo ' selected="selected"';} ?>>Postgresql</option>
+							<option value="mysql"<?php if(isset($_POST['install_dbtype']) && $_POST['install_dbtype'] == 'mysql'){echo ' selected="selected"';} ?>>Mysql</option>
+							<option value="pgsql"<?php if(isset($_POST['install_dbtype']) && $_POST['install_dbtype'] == 'pgsql'){echo ' selected="selected"';} ?>>Postgresql</option>
 						</select>
 					</p>
 					<p>
@@ -478,7 +470,7 @@ if ($step == 'u3') echo _T("In order to be updated, Galette needs the Write perm
 					</p>
 					<p>
 <?php
-if (substr($_POST["install_type"],0,8)=="upgrade-"){echo '<span class="required">' .  _T("(Indicate the CURRENT prefix of your Galette tables)") . '</span><br/>';}
+if (substr($_POST['install_type'],0,8) == 'upgrade-'){echo '<span class="required">' .  _T("(Indicate the CURRENT prefix of your Galette tables)") . '</span><br/>';}
 ?>
 						<label class="bline" for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
 						<input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo (isset($_POST['install_dbprefix']))?$_POST['install_dbprefix']:'galette_'; ?>">
@@ -486,24 +478,23 @@ if (substr($_POST["install_type"],0,8)=="upgrade-"){echo '<span class="required"
 				</fieldset>
 				<p id="submit_btn">
 					<input type="submit" value="<?php echo _T("Next step"); ?>">
-					<input type="hidden" name="install_type" value="<?php echo $_POST["install_type"]; ?>">
+					<input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
 					<input type="hidden" name="install_permsok" value="1">
 				</p>
 			</form>
 		</div>
 <?php
 			break; //ends fourth step
-			case "i5":
-			case "u5":
+		case 'i5':
+		case 'u5':
 ?>
 			<h2><?php echo _T("Check of the database"); ?></h2>
 			<p><?php echo _T("Check the parameters and the existence of the database"); ?></p>
-			<!--<ul>-->
 <?php
 				require_once('../classes/mdb2.class.php');
-				include("../includes/adodb/adodb.inc.php");
-				$DB = adonewconnection($_POST["install_dbtype"]);
-				$DB->debug = false;
+				/*include('../includes/adodb/adodb.inc.php');
+				$DB = adonewconnection($_POST['install_dbtype']);
+				$DB->debug = false;*/
 				$permsdb_ok = true;
 
 				if($test = GaletteMdb2::testConnectivity(
@@ -522,17 +513,6 @@ if (substr($_POST["install_type"],0,8)=="upgrade-"){echo '<span class="required"
 					echo '<p id="infobox">' . _T("Connection to database successfull") . '</p>';
 				}
 
-				/*if(!@$DB->Connect($_POST["install_dbhost"], $_POST["install_dbuser"], $_POST["install_dbpass"], $_POST["install_dbname"]))
-				{
-					$permsdb_ok = false;
-					echo '<p id="errorbox">' . _T("Unable to connect to the database") . '</p>';
-				}
-				else
-				{
-					echo '<p id="infobox">' . _T("Connection to database successfull") . '</p>';
-					$DB->Close();
-				}*/
-// echo "</ul>";
 				if (!$permsdb_ok)
 				{
 ?>
@@ -560,7 +540,6 @@ if (substr($_POST["install_type"],0,8)=="upgrade-"){echo '<span class="required"
 			<form action="index.php" method="POST">
 				<p id="submit_btn">
 					<input type="submit" value="<?php echo _T("Next step"); ?>">
-					<input type="hidden" name="install_lang" value="<?php echo $_POST['install_lang']; ?>">
 					<input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
 					<input type="hidden" name="install_permsok" value="1">
 					<input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>">
@@ -578,8 +557,8 @@ if (substr($_POST["install_type"],0,8)=="upgrade-"){echo '<span class="required"
 		</div>
 <?php
 			break; //ends 5th step
-			case "i6":
-			case "u6":
+		case 'i6':
+		case 'u6':
 ?>
 			<h2><?php echo _T("Permissions on the base"); ?></h2>
 			<p><?php
@@ -587,154 +566,81 @@ if ($step == 'i6') echo _T("To run, Galette needs a number of rights on the data
 if ($step == 'u6') echo _T("In order to be updated, Galette needs a number of rights on the database (CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)");
 			?></p>
 <?php
+				/** FIXME: when tables already exists and DROP not allowed at this time
+				the showd error is about CREATE, whenever CREATE is allowed */
+				//We delete the table if exists, no error at this time
+				$mdb->testDropTable();
+
+				$results = $mdb->grantCheck();
+
 				$result = '';
-				// drop de table (si 'test' existe)
-				$tables = $DB->MetaTables('TABLES');
-				while (list($key,$value)=each($tables))
-				{
-					if ($value == 'galette_test')
-					{
-						$droptest =1;
-						$requete = 'DROP table ' . $value;
-						$DB->Execute($requete);
-						if($DB->ErrorNo())
-						{
-							$error = 1;
-							$result = "<li class=\"install-bad\">"._T("DROP operation not allowed")."</li>";
-						}
-						else
-							$result = "<li class=\"install-ok\">"._T("DROP operation allowed")."</li>";
-					}
-				}
+				$error = false;
+				//test returned values
+				if( MDB2::isError($results['create']) ){
+					$result .= '<li class="install-bad debuginfos">' . _T("CREATE operation not allowed") . '<span>' . $results['create']->getMessage() . '</span></li>';
+					$error = true;
+				}elseif( $results['create'] != '' )
+					$result .= '<li class="install-ok">' . _T("CREATE operation allowed") . '</li>';
 
-				// cr�ation de table
-				if (!isset($error))
-				{
-					// � adapter selon le type de base
-					$requete="create table galette_test (testcol text)";
-					$DB->Execute($requete);
-					if($DB->ErrorNo())
-					{
-						$result .= "<li class=\"install-bad\">"._T("CREATE operation not allowed")."</li>";
-						$error = 1;
-					}
-					else
-						$result .= "<li class=\"install-ok\">"._T("CREATE operation allowed")."</li>";
-				}
+				if( MDB2::isError($results['insert']) ){
+					$result .= '<li class="install-bad debuginfos">' . _T("INSERT operation not allowed") . '<span>' . $results['insert']->getMessage() . '<br/>(' . $results['insert']->getDebugInfo() . ')</span></li>';
+					$error = true;
+				}elseif( $results['insert'] != '' )
+					$result .= '<li class="install-ok">' . _T("INSERT operation allowed") . '</li>';
 
-				// cr�ation d'enregistrement
-				if (!isset($error))
-				{
-					// � adapter selon le type de base
-					$requete="INSERT into galette_test values (".$DB->qstr("test", get_magic_quotes_gpc()).")";
-					$DB->Execute($requete);
-					if($DB->ErrorNo())
-					{
-						$result .= "<li class=\"install-bad\">"._T("INSERT operation not allowed")."</li>";
-						$error = 1;
-					}
-					else
-						$result .= "<li class=\"install-ok\">"._T("INSERT operation allowed")."</li>";
-				}
+				if( MDB2::isError($results['update']) ){
+					$result .= '<li class="install-bad debuginfos">' . _T("UPDATE operation not allowed") . '<span>' . $results['update']->getMessage() . '<br/>(' . $results['update']->getDebugInfo() . ')</span></li>';
+					$error = true;
+				}elseif( $results['update'] != '' )
+					$result .= '<li class="install-ok">' . _T("UPDATE operation allowed") . '</li>';
 
-				// mise � jour d'enregistrement
-				if (!isset($error))
-				{
-					// � adapter selon le type de base
-					$requete="update galette_test set testcol=".$DB->qstr("test", get_magic_quotes_gpc());
-					$DB->Execute($requete);
-					if($DB->ErrorNo())
-					{
-						$result .= "<li class=\"install-bad\">"._T("UPDATE operation not allowed")."</li>";
-						$error = 1;
-					}
-					else
-						$result .= "<li class=\"install-ok\">"._T("UPDATE operation allowed")."</li>";
-				}
+				if( MDB2::isError($results['select']) ){
+					$result .= '<li class="install-bad debuginfos">' . _T("SELECT operation not allowed") . '<span>' . $results['select']->getMessage() . '<br/>(' . $results['select']->getDebugInfo() . ')</span></li>';
+					$error = true;
+				}elseif( $results['select'] != '' )
+					$result .= '<li class="install-ok">' . _T("SELECT operation allowed") . '</li>';
 
-				// selection d'enregistrement
-				if (!isset($error))
-				{
-					// � adapter selon le type de base
-					$requete="select * from galette_test";
-					$DB->Execute($requete);
-					if($DB->ErrorNo())
-					{
-						$result .= "<li class=\"install-bad\">"._T("SELECT operation not allowed")."</li>";
-						$error = 1;
-					}
-					else
-						$result .= "<li class=\"install-ok\">"._T("SELECT operation allowed")."</li>";
-				}
+				/** TODO: check at upgrade time if Galette can ALTER */
 
-				// alter pour la mise � jour
-				if (!isset($error) && $step=="u6")
-				{
-					// � adapter selon le type de base
-					$requete="alter table galette_test add testalter text";
-					$DB->Execute($requete);
-					if($DB->ErrorNo())
-					{
-						$result .= "<li class=\"install-bad\">"._T("ALTER Operation not allowed")."</li>";
-						$error = 1;
-					}
-					else
-						$result .= "<li class=\"install-ok\">"._T("ALTER Operation allowed")."</li>";
-				}
+				if( MDB2::isError($results['delete']) ){
+					$result .= '<li class="install-bad debuginfos">' . _T("DELETE operation not allowed") . '<span>' . $results['delete']->getMessage() . '<br/>(' . $results['delete']->getDebugInfo() . ')</span></li>';
+					$error = true;
+				}elseif( $results['delete'] != '' )
+					$result .= '<li class="install-ok">' . _T("DELETE operation allowed") . '</li>';
 
-				// suppression d'enregistrement
-				if (!isset($error))
-				{
-					// � adapter selon le type de base
-					$requete="delete from galette_test";
-					$DB->Execute($requete);
-					if($DB->ErrorNo())
-					{
-						$result .= "<<li class=\"install-bad\">"._T("DELETE operation not allowed")."</li>";
-						$error = 1;
-					}
-					else
-						$result .= "<li class=\"install-ok\">"._T("DELETE operation allowed")."</li>";
-				}
+				if( MDB2::isError($results['drop']) ){
+					$result .= '<li class="install-bad debuginfos">' . _T("DROP operation not allowed") . '<span>' . $results['drop']->getMessage() . '<br/>(' . $results['drop']->getDebugInfo() . ')</span></li>';
+					$error = true;
+				}elseif( $results['drop'] != '' )
+					$result .= '<li class="install-ok">' . _T("DROP operation allowed") . '</li>';
 
-				// suppression de table
-				if (!isset($error))
-				{
-					// � adapter selon le type de base
-					$requete="drop table galette_test";
-					$DB->Execute($requete);
-					if (!isset($droptest))
-					if($DB->ErrorNo())
-					{
-						$result .= "<li class=\"install-bad\">"._T("DROP OPeration not allowed")."</li>";
-						$error = 1;
-					}
-					else
-						$result .= "<li class=\"install-ok\">"._T("DROP OPeration allowed")."</li>";
-				}
+				if( MDB2::isError($results['alter']) ){
+					$result .= '<li class="install-bad debuginfos">' . _T("ALTER Operation not allowed") . '<span>' . $results['alter']->getMessage() . '</span></li>';
+					$error = true;
+				}elseif( $results['alter'] != '' )
+					$result .= '<li class="install-ok">' . _T("ALTER Operation allowed") . '</li>';
 
-				if ($result!="")
-					echo "<table><tr><td><ul>".$result."</ul></td></tr></table>";
 
-				if (isset($error))
-				{
+				if ($error){
+					echo "<ul>" . $result . "</ul>\n";
+					echo '<div id="errorbox">';
+					echo '<h1>';
+					if( $step == 'i6' ) echo _T("GALETTE hasn't got enough permissions on the database to continue the installation.");
+					if ($step == 'u6') echo _T("GALETTE hasn't got enough permissions on the database to continue the update.");
+					echo '</h1>';
+					echo '</div>';
 ?>
-			<p><?php 
-if ($step == 'i6') echo _T("GALETTE hasn't got enough permissions on the database to continue the installation.");
-if ($step == 'u6') echo _T("GALETTE hasn't got enough permissions on the database to continue the update.");
-			?></p>
 			<form action="index.php" method="post">
 				<p id="retry_btn">
 					<input type="submit" value="<?php echo _T("Retry"); ?>">
-					<input type="hidden" name="install_lang" value="<?php echo $_POST["install_lang"]; ?>">
-					<input type="hidden" name="install_type" value="<?php echo $_POST["install_type"]; ?>">
+					<input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
 					<input type="hidden" name="install_permsok" value="1">
-					<input type="hidden" name="install_dbtype" value="<?php echo $_POST["install_dbtype"]; ?>">
-					<input type="hidden" name="install_dbhost" value="<?php echo $_POST["install_dbhost"]; ?>">
-					<input type="hidden" name="install_dbuser" value="<?php echo $_POST["install_dbuser"]; ?>">
-					<input type="hidden" name="install_dbpass" value="<?php echo $_POST["install_dbpass"]; ?>">
-					<input type="hidden" name="install_dbname" value="<?php echo $_POST["install_dbname"]; ?>">
-					<input type="hidden" name="install_dbprefix" value="<?php echo $_POST["install_dbprefix"]; ?>">
+					<input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>">
+					<input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>">
+					<input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>">
+					<input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>">
+					<input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>">
+					<input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>">
 					<input type="hidden" name="install_dbconn_ok" value="1">
 				</p>
 			</form>
@@ -743,98 +649,89 @@ if ($step == 'u6') echo _T("GALETTE hasn't got enough permissions on the databas
 				else
 				{
 ?>
-	<p><?php echo _T("Permissions to database are OK."); ?></p>
-	<form action="index.php" method="POST">
-		<p id="submitbutton3">
-			<input type="submit" value="<?php echo _T("Next step"); ?>">
-		</p>
-		<input type="hidden" name="install_lang" value="<?php echo $_POST["install_lang"]; ?>">
-		<input type="hidden" name="install_type" value="<?php echo $_POST["install_type"]; ?>">
-		<input type="hidden" name="install_permsok" value="1">
-		<input type="hidden" name="install_dbtype" value="<?php echo $_POST["install_dbtype"]; ?>">
-		<input type="hidden" name="install_dbhost" value="<?php echo $_POST["install_dbhost"]; ?>">
-		<input type="hidden" name="install_dbuser" value="<?php echo $_POST["install_dbuser"]; ?>">
-		<input type="hidden" name="install_dbpass" value="<?php echo $_POST["install_dbpass"]; ?>">
-		<input type="hidden" name="install_dbname" value="<?php echo $_POST["install_dbname"]; ?>">
-		<input type="hidden" name="install_dbprefix" value="<?php echo $_POST["install_dbprefix"]; ?>">
-		<input type="hidden" name="install_dbconn_ok" value="1">
-		<input type="hidden" name="install_dbperms_ok" value="1">
-	</form>
+			<ul><?php echo $result; ?></ul>
+			<p id="infobox"><?php echo _T("Permissions to database are OK."); ?></p>
+			<form action="index.php" method="POST">
+				<p id="submit_btn">
+					<input type="submit" value="<?php echo _T("Next step"); ?>">
+					<input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
+					<input type="hidden" name="install_permsok" value="1">
+					<input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>">
+					<input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>">
+					<input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>">
+					<input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>">
+					<input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>">
+					<input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>">
+					<input type="hidden" name="install_dbconn_ok" value="1">
+					<input type="hidden" name="install_dbperms_ok" value="1">
+				</p>
+			</form>
 <?php
 				}
 ?>
-	<br />
-	</div>
-	<h1 class="footerinstall"><?php echo _T("Step 6 - Access permissions to database"); ?></h1>
-
+		</div>
 <?php
 			break; //ends 6th step
-		case "i7":
-		case "u7":
+		case 'i7':
+		case 'u7':
 ?>
 
-	<h1>
-		<?php if ($step=="i7") echo _T("Creation of the tables"); ?>
-		<?php if ($step=="u7") echo _T("Update of the tables"); ?>
-	</h1>
-	<p>
-		<?php if ($step=="i7") echo _T("Installation Report"); ?>
-		<?php if ($step=="u7") echo _T("Update Report"); ?>
-	</p>
-	<table><tr><td>
+			<h2><?php
+if ($step == 'i7') echo _T("Creation of the tables");
+if ($step == 'u7') echo _T("Update of the tables"); ?></h2>
+			<p><?php
+if ($step == 'i7') echo _T("Installation Report");
+if ($step == 'u7') echo _T("Update Report"); ?></p>
 <ul>
 <?php
 			// begin : copyright (2002) the phpbb group (support@phpbb.com)	
 			// load in the sql parser
-			include("sql_parse.php");
+			include('sql_parse.php');
 
-			$prefix = "";
-			$table_prefix = $_POST["install_dbprefix"];
-			if ($step=="u7")
+			$prefix = '';
+			$table_prefix = $_POST['install_dbprefix'];
+			if ($step == 'u7')
 			{
-				$prefix="upgrade-to-";
-				//echo $_POST["install_type"];
+				$prefix='upgrade-to-';
 
-				$dh = opendir("sql");
+				$dh = opendir('sql');
 				$update_scripts = array();
 				$first_file_found = false;
 				while (($file = readdir($dh)) !== false)
 				{
-					if (ereg("upgrade-to-(.*)-".$_POST["install_dbtype"].".sql",$file,$ver))
+					if (ereg('upgrade-to-(.*)-' . $_POST['install_dbtype'] . '.sql', $file,$ver))
 					{
-						if (substr($_POST["install_type"],8)<=$ver[1])
+						if (substr($_POST['install_type'], 8)<=$ver[1])
 							$update_scripts[$ver[1]] = $file;
 					}
 				}
 				ksort($update_scripts);
 			}
 			else
-				$update_scripts["current"] = $_POST["install_dbtype"].".sql";
+				$update_scripts['current'] = $_POST['install_dbtype'] . '.sql';
 
 			ksort($update_scripts);
-			$sql_query = "";
+			$sql_query = '';
 			while(list($key,$val)=each($update_scripts))
-				$sql_query .= @fread(@fopen("sql/".$val, 'r'), @filesize("sql/".$val))."\n";
+				$sql_query .= @fread(@fopen('sql/' . $val, 'r'), @filesize('sql/' . $val)) . "\n";
 
 			$sql_query = preg_replace('/galette_/', $table_prefix, $sql_query);
 			$sql_query = remove_remarks($sql_query);
 
-			$sql_query = split_sql_file($sql_query, ";");
+			$sql_query = split_sql_file($sql_query, ';');
 
 			for ($i = 0; $i < sizeof($sql_query); $i++)
 			{
 				$query = trim($sql_query[$i]);
 				if ($query != '' && $query[0] != '-')
 				{
-					$DB->Execute($query);
-					@list($w1, $w2, $w3, $extra) = split(" ", $query, 4);
-					if ($extra!="") $extra="...";
-					if ($DB->ErrorNo())
+					$result = $mdb->query($query);
+					@list($w1, $w2, $w3, $extra) = split(' ', $query, 4);
+					if ($extra != '') $extra = '...';
+					if ( MDB2::isError($result) )
 					{
 						echo "<li class=\"install-bad\">".$w1." ".$w2." ".$w3." ".$extra."</li>";
-						//doesn't work if "drop" or "rename" is uppercase
-						//if (trim($w1) != "drop" && trim($w1) != "rename") $error = true;
-						//if error are not on drop,DROP,rename or RENAME we can continue
+						//if error are not on drop, DROP, rename or RENAME we can continue
 						if ( (strcasecmp(trim($w1),"drop") != 0) && (strcasecmp(trim($w1),"rename") != 0) ) $error = true;
 					}
 					else
@@ -842,59 +739,9 @@ if ($step == 'u6') echo _T("GALETTE hasn't got enough permissions on the databas
 				}
 			}
 echo "</ul>\n";
-			// end : copyright (2002) the phpbb group (support@phpbb.com)
-
-			// begin: fix overlapping fees
-			/*
-			$cotis = array();
-			$query = "SELECT id_cotis, date_enreg, date_debut_cotis, date_fin_cotis
-				    from ".$table_prefix."cotisations, ".$table_prefix."types_cotisation
-				   where ".$table_prefix."cotisations.id_type_cotis = ".$table_prefix."types_cotisation.id_type_cotis
-					   and ".$table_prefix."types_cotisation.cotis_extension = '1'
-				   order by date_enreg;";
-			$result = $DB->Execute($query);
-			if (!$result)
-				print $query.": ".$DB->ErrorMsg();
-			else {
-				while (!$result->EOF) {
-					$c = $result->FetchRow();
-					$newc = array('id_cotis' => $c['id_cotis']);
-					list($by, $bm, $bd) = split("-", $c['date_debut_cotis']);
-					list($ey, $em, $ed) = split("-", $c['date_fin_cotis']);
-					$newc['start_date'] = mktime(0, 0, 0, $bm, $bd, $by);
-					$newc['end_date'] = mktime(0, 0, 0, $em, $ed, $ey);
-					if ($bm > $em) {
-						$em += 12;
-						$ey--;
-					}
-					$newc['duration'] = ($ey -$by)*12 + $em - $bm;
-					$cotis[] = $newc;
-				}
-				$result->Close();
-			}
-			if (count($cotis) > 0) {
-				unset($cprev);
-				foreach ($cotis as $c) {
-					if (isset($cprev) && $c['start_date'] < $cprev['end_date']) {
-						$c['start_date'] = $cprev['end_date'];
-						$start_date = $DB->DBDate($c['start_date']);
-						$new_start_date = localtime($c['start_date'], 1);
-						$c['end_date'] = mktime(0, 0, 0, $new_start_date['tm_mon'] + $c['duration'] + 1, $new_start_date['tm_mday'], $new_start_date['tm_year']);
-						$end_date = $DB->DBDate($c['end_date']);
-						$query = "update ".$table_prefix."cotisations 
-							     set date_debut_cotis = ".$start_date.", 
-								 date_fin_cotis = ".$end_date."
-							     where id_cotis = ".$c['id_cotis'];
-						$result = $DB->Execute($query);
-						if (!$result)
-							print $query.": ".$DB->ErrorMsg();
-						else
-							$result->Close();
-					}
-					$cprev = $c;
-				}
-			}
-			// end: fix overlapping fees
+			/**
+			* FIXME: is this code util ?
+			* shouldn't overlapping fess catched when stored ?
 			*/
 			// begin: fix overlapping fees
 			$adh_list = array();
@@ -963,406 +810,259 @@ echo "</ul>\n";
 			}
 
 ?>
-	</td></tr></table>
-	<p><?php echo _T("(Errors on DROP and RENAME operations can be ignored)"); ?></p>
-	<?php
+			<p><?php echo _T("(Errors on DROP and RENAME operations can be ignored)"); ?></p>
+<?php
 			if (isset($error))
 			{
 ?>
-	<p>
-		<?php if ($step=="i7") echo _T("The tables are not totally created, it's maybe a permission problem."); ?>
-		<?php if ($step=="u7") echo _T("The tables have not been totally created, it may be a permission problem."); ?>
-		<?php if ($step=="u7") echo _T("Your database is maybe not usable, try to restore the older version."); ?>
-	</p>
-	<form action="index.php" method="POST">
-		<p id="submitbutton2">
-			<input type="submit" value="<?php echo _T("Retry"); ?>">
-		</p>
-		<input type="hidden" name="install_lang" value="<?php echo $_POST["install_lang"]; ?>">
-		<input type="hidden" name="install_type" value="<?php echo $_POST["install_type"]; ?>">
-		<input type="hidden" name="install_permsok" value="1">
-		<input type="hidden" name="install_dbtype" value="<?php echo $_POST["install_dbtype"]; ?>">
-		<input type="hidden" name="install_dbhost" value="<?php echo $_POST["install_dbhost"]; ?>">
-		<input type="hidden" name="install_dbuser" value="<?php echo $_POST["install_dbuser"]; ?>">
-		<input type="hidden" name="install_dbpass" value="<?php echo $_POST["install_dbpass"]; ?>">
-		<input type="hidden" name="install_dbname" value="<?php echo $_POST["install_dbname"]; ?>">
-		<input type="hidden" name="install_dbprefix" value="<?php echo $_POST["install_dbprefix"]; ?>">
-		<input type="hidden" name="install_dbconn_ok" value="1">
-		<input type="hidden" name="install_dbperms_ok" value="1">
-	</form>
+			<p id="errorbox"><?php
+if ($step == 'i7') echo _T("The tables are not totally created, it's maybe a permission problem.");
+if ($step == 'u7'){
+	echo _T("The tables have not been totally created, it may be a permission problem.");
+	echo '<br/>';
+	echo _T("Your database is maybe not usable, try to restore the older version.");
+}
+?>
+			</p>
+			<form action="index.php" method="POST">
+				<p id="retry_btn">
+					<input type="submit" value="<?php echo _T("Retry"); ?>">
+					<input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
+					<input type="hidden" name="install_permsok" value="1">
+					<input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>">
+					<input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>">
+					<input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>">
+					<input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>">
+					<input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>">
+					<input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>">
+					<input type="hidden" name="install_dbconn_ok" value="1">
+					<input type="hidden" name="install_dbperms_ok" value="1">
+				</p>
+			</form>
 <?php
 			}
 			else
 			{
 ?>
-	<p>
-		<?php if ($step=="i7") echo _T("The tables has been correctly created."); ?>
-		<?php if ($step=="u7") echo _T("The tables has been correctly updated."); ?>
-	</p>
-	<form action="index.php" method="POST">
-		<p id="submitbutton3">
-			<input type="submit" value="<?php echo _T("Next step"); ?>">
-		</p>
-		<input type="hidden" name="install_lang" value="<?php echo $_POST["install_lang"]; ?>">
-		<input type="hidden" name="install_type" value="<?php echo $_POST["install_type"]; ?>">
-		<input type="hidden" name="install_permsok" value="1">
-		<input type="hidden" name="install_dbtype" value="<?php echo $_POST["install_dbtype"]; ?>">
-		<input type="hidden" name="install_dbhost" value="<?php echo $_POST["install_dbhost"]; ?>">
-		<input type="hidden" name="install_dbuser" value="<?php echo $_POST["install_dbuser"]; ?>">
-		<input type="hidden" name="install_dbpass" value="<?php echo $_POST["install_dbpass"]; ?>">
-		<input type="hidden" name="install_dbname" value="<?php echo $_POST["install_dbname"]; ?>">
-		<input type="hidden" name="install_dbprefix" value="<?php echo $_POST["install_dbprefix"]; ?>">
-		<input type="hidden" name="install_dbconn_ok" value="1">
-		<input type="hidden" name="install_dbperms_ok" value="1">
-		<input type="hidden" name="install_dbwrite_ok" value="1">
-	</form>
+			<p id="infobox"><?php
+if ($step=="i7") echo _T("The tables has been correctly created.");
+if ($step=="u7") echo _T("The tables has been correctly updated."); ?></p>
+			<form action="index.php" method="POST">
+				<p id="submit_btn">
+					<input type="submit" value="<?php echo _T("Next step"); ?>">
+					<input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
+					<input type="hidden" name="install_permsok" value="1">
+					<input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>">
+					<input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>">
+					<input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>">
+					<input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>">
+					<input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>">
+					<input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>">
+					<input type="hidden" name="install_dbconn_ok" value="1">
+					<input type="hidden" name="install_dbperms_ok" value="1">
+					<input type="hidden" name="install_dbwrite_ok" value="1">
+				</p>
+			</form>
 	<?php
 			}
 ?>	
-	<br />
-	</div>
-	<h1 class="footerinstall">
-		<?php if ($step=="i7") echo _T("Step 7 - Tables Creation"); ?>
-		<?php if ($step=="u7") echo _T("Step 7 - Tables Update"); ?>
-	</h1>
-	
+		</div>
 <?php
 			break; //ends 7th step
-		case "i8":
-		case "u8":
+		case 'i8':
+		case 'u8':
 ?>
-
-	<h1><?php echo _T("Admin settings"); ?></h1>
+			<h2><?php echo _T("Admin settings"); ?></h2>
 <?php
-				if ($error_detected!="")
-					echo "<p><table><tr><td><ul>".$error_detected."</ul></td></tr></table></p>";
+				if ($error_detected != '')
+					echo '<div id="errorbox"><h1>' . _T("- ERROR -") . '</h1><ul>' . $error_detected . '</ul></div>';
 ?>	
-	<p><?php echo _T("Please chose the parameters of the admin account on Galette"); ?></p>
-	<form action="index.php" method="POST">
-		<table>
-			<tr>
-				<td><label for="install_adminlogin"><?php echo _T("Username:"); ?></label></td>
-				<td>
-					<input type="text" name="install_adminlogin" id="install_adminlogin" value="<?php if(isset($_POST["install_adminlogin"])) echo $_POST["install_adminlogin"]; ?>">
-				</td>
-			</tr>
-			<tr>
-				<td><label for="install_adminpass"><?php echo _T("Password:"); ?></label></td>
-				<td>
-          <!--
-					<input type="text" name="install_adminpass" value="<?php //if(isset($_POST["install_adminpass"])) echo $_POST["install_adminpass"]; ?>">
-          //-->
-					<input type="password" name="install_adminpass" id="install_adminpass" value="">
-        </td>
-      </tr>
-      <tr>
-				<td><label for="install_adminpass_verif"><?php echo _T("Retype password:"); ?></label></td>
-        <td>
-					<input type="password" name="install_adminpass_verif" id="install_adminpass_verif" value="">
-				</td>
-			</tr>
-		</table>
-		<p id="submitbutton3">
-			<input type="submit" value="<?php echo _T("Next step"); ?>">
-		</p>
-		<input type="hidden" name="install_lang" value="<?php echo $_POST["install_lang"]; ?>">
-		<input type="hidden" name="install_type" value="<?php echo $_POST["install_type"]; ?>">
-		<input type="hidden" name="install_permsok" value="1">
-		<input type="hidden" name="install_dbtype" value="<?php echo $_POST["install_dbtype"]; ?>">
-		<input type="hidden" name="install_dbhost" value="<?php echo $_POST["install_dbhost"]; ?>">
-		<input type="hidden" name="install_dbuser" value="<?php echo $_POST["install_dbuser"]; ?>">
-		<input type="hidden" name="install_dbpass" value="<?php echo $_POST["install_dbpass"]; ?>">
-		<input type="hidden" name="install_dbname" value="<?php echo $_POST["install_dbname"]; ?>">
-		<input type="hidden" name="install_dbprefix" value="<?php echo $_POST["install_dbprefix"]; ?>">
-		<input type="hidden" name="install_dbconn_ok" value="1">
-		<input type="hidden" name="install_dbperms_ok" value="1">
-		<input type="hidden" name="install_dbwrite_ok" value="1">
-	</form>
-	<br />
-	</div>
-	<h1 class="footerinstall"><?php echo _T("Step 8 - Admin parameters"); ?></h1>
-	
+			<form action="index.php" method="post">
+				<fieldset class="cssform">
+					<legend><?php echo _T("Please chose the parameters of the admin account on Galette"); ?></legend>
+					<p>
+						<label for="install_adminlogin" class="bline"><?php echo _T("Username:"); ?></label>
+						<input type="text" name="install_adminlogin" id="install_adminlogin" value="<?php if(isset($_POST['install_adminlogin'])) echo $_POST['install_adminlogin']; ?>">
+					</p>
+					<p>
+						<label for="install_adminpass" class="bline"><?php echo _T("Password:"); ?></label>
+						<input type="password" name="install_adminpass" id="install_adminpass" value="">
+					</p>
+					<p>
+						<label for="install_adminpass_verif" class="bline"><?php echo _T("Retype password:"); ?></label>
+						<input type="password" name="install_adminpass_verif" id="install_adminpass_verif" value="">
+					</p>
+				</fieldset>
+				<p id="submit_btn">
+					<input type="submit" value="<?php echo _T("Next step"); ?>">
+					<input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
+					<input type="hidden" name="install_permsok" value="1">
+					<input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>">
+					<input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>">
+					<input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>">
+					<input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>">
+					<input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>">
+					<input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>">
+					<input type="hidden" name="install_dbconn_ok" value="1">
+					<input type="hidden" name="install_dbperms_ok" value="1">
+					<input type="hidden" name="install_dbwrite_ok" value="1">
+				</p>
+			</form>
+		</div>
 <?php
 			break; //ends 8th step
 		case "i9";
 		case "u9";
+			require_once('../classes/preferences.class.php');
+			require_once('../classes/contributions_types.class.php');
+			require_once('../classes/status.class.php');
+
+			$oks = array();
+			$errs = array();
 ?>
-
-	<h1><?php echo _T("Save the parameters"); ?></h1>
-	<p><table><tr><td>
-<ul>
+			<h2><?php echo _T("Save the parameters"); ?></h2>
 <?php
-			// cr�ation du fichier de configuration
+			// création du fichier de configuration
 
-			if($fd = @fopen (WEB_ROOT ."includes/config.inc.php", "w"))
+			if($fd = @fopen (WEB_ROOT . 'includes/config.inc.php', 'w'))
 			{
-				$data = "<?php
-define(\"TYPE_DB\", \"".$_POST["install_dbtype"]."\");
-define(\"HOST_DB\", \"".$_POST["install_dbhost"]."\");
-define(\"USER_DB\", \"".$_POST["install_dbuser"]."\");
-define(\"PWD_DB\", \"".$_POST["install_dbpass"]."\");
-define(\"NAME_DB\", \"".$_POST["install_dbname"]."\");
-define(\"WEB_ROOT\", \"".WEB_ROOT."\");
-define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
-define(\"STOCK_FILES\", \"tempimages\");
-?>";
+				$data = '<?php
+define("TYPE_DB", "' . $_POST['install_dbtype'] . '");
+define("HOST_DB", "' . $_POST['install_dbhost'] . '");
+define("USER_DB", "' . $_POST['install_dbuser'] . '");
+define("PWD_DB", "' . $_POST['install_dbpass'] . '");
+define("NAME_DB", "' . $_POST['install_dbname'] . '");
+define("WEB_ROOT", "' . WEB_ROOT . '");
+define("PREFIX_DB", "' . $_POST['install_dbprefix'] . '");
+define("STOCK_FILES", "tempimages");
+?>';
 				fwrite($fd,$data);
 				fclose($fd);
-				echo "<li class=\"install-ok\">"._T("Configuration file created (includes/config.inc.php)")."</li>";
+				$oks[] =  '<li class="install-ok">' . _T("Configuration file created (includes/config.inc.php)") . '</li>';
 			}
 			else
 			{
-				echo "<li class=\"install-bad\">"._T("Unable to create configuration file (includes/config.inc.php)")."</li>";
+				$errs[] =  '<li class="install-bad">' . _T("Unable to create configuration file (includes/config.inc.php)") . '</li>';
 				$error = true;
 			}
-
 
 			if ($step=='i9') {
-				//preferences
-				$default = "delete from ".$_POST["install_dbprefix"]."preferences";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_nom','galette')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_adresse','-')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_adresse2','')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_cp','-')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_ville','-')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_pays','-')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_lang',".$DB->qstr($_POST["install_lang"], get_magic_quotes_gpc()).")";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_numrows','30')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_log','2')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_email_nom','galette')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_email','mail@domain.com')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_marges_v','10')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_marges_h','10')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_hspace','10')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_vspace','5')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_hsize','90')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_vsize','35')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_cols','2')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_rows','7')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_etiq_corps','12')";
-				$DB->Execute($default);
-				//some new values in v0.63 for preferences
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_mail_method','0')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_mail_smtp','')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_membership_ext','12')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_beg_membership','')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_email_reply_to','')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_website','')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences (nom_pref, val_pref) values ('pref_card_abrev', 'GALETTE')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences (nom_pref, val_pref) values ('pref_card_strip','Gestion d Adherents en Ligne Extrêmement Tarabiscoté')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences (nom_pref, val_pref) values ('pref_card_tcol', 'FFFFFF')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences (nom_pref, val_pref) values ('pref_card_scol', '8C2453')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences (nom_pref, val_pref) values ('pref_card_bcol', '53248C')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences (nom_pref, val_pref) values ('pref_card_hcol', '248C53')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences (nom_pref, val_pref) values ('pref_bool_display_title', '')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences (nom_pref, val_pref) values ('pref_card_address', '1')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences (nom_pref, val_pref) values ('pref_card_year', '2007')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences (nom_pref, val_pref) values ('pref_card_marges_v', '15')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences (nom_pref, val_pref) values ('pref_card_marges_h', '20')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences (nom_pref, val_pref) values ('pref_card_vspace', '5')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences (nom_pref, val_pref) values ('pref_card_hspace', '10')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences (nom_pref, val_pref) values ('pref_card_self', '1')";
-				$DB->Execute($default);
+				$prefs = new Preferences();
+				$ct = new ContributionsTypes();
+				$status = new Status();
 
-				// contribution types
-				$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation(id_type_cotis,libelle_type_cotis,cotis_extension) values (1, 'annual fee', '1')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation(id_type_cotis,libelle_type_cotis,cotis_extension) values (2, 'reduced annual fee', '1')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation(id_type_cotis,libelle_type_cotis,cotis_extension) values (3, 'company fee', '1')";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation(id_type_cotis,libelle_type_cotis,cotis_extension) values (4, 'donation in kind', null)";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation(id_type_cotis,libelle_type_cotis,cotis_extension) values (5, 'donation in money', null)";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation(id_type_cotis,libelle_type_cotis,cotis_extension) values (6, 'partnership', null)";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."types_cotisation(id_type_cotis,libelle_type_cotis,cotis_extension) values (7, 'annual fee (to be paid)', '1')";
-				$DB->Execute($default);
+				//init default values
+				$prefs->installInit(
+					$i18n->getID(),
+					$_POST["install_adminlogin"],
+					md5($_POST["install_adminpass"])
+				);
+				if( $prefs->inError() )
+					$errs[] = '<li class="install-bad">' . _T("Default preferences cannot be initialized.") . '<span>' . $prefs->getErrorMessage() . '(' . $prefs->getErrorDetails() . ')</span></li>';
+				else
+					$oks[] = '<li class="install-ok">' . _T("Default preferences were successfully stored.") . '</li>';
 
-				// member types
-				$default = "delete from ".$_POST["install_dbprefix"]."statuts";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (1, 'President',0)";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (2, 'Treasurer',10)";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (3, 'Secretary',20)";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (4, 'Active member',30)";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (5, 'Benefactor member',40)";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (6, 'Founder member',50)";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (7, 'Old-timer',60)";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (8, 'Society',70)";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (9, 'Non-member',80)";
-				$DB->Execute($default);
-				$default = "insert into ".$_POST["install_dbprefix"]."statuts(id_statut,libelle_statut,priorite_statut) values (10, 'Vice-president',5)";
-				$DB->Execute($default);
+				$ct->installInit();
+				if( $ct->inError() )
+					$errs[] = '<li class="install-bad">' . _T("Default contributions types cannot be initialized.") . '<span>' . $ct->getErrorMessage() . '(' . $ct->getErrorDetails() . ')</span></li>';
+				else
+					$oks[] = '<li class="install-ok">' . _T("Default contributions types were successfully stored.") . '</li>';
 
-			}	else if ($step=='u9') {
-				// TODO: reimport member and contribution types from previous installation
+				$status->installInit();
+				if( $status->inError() )
+					$errs[] = '<li class="install-bad">' . _T("Default status cannot be initialized.") . '<span>' . $status->getErrorMessage() . '(' . $status->getErrorDetails() . ')</span></li>';
+				else
+					$oks[] = '<li class="install-ok">' . _T("Default status were successfully stored.") . '</li>';
 
-				//delete old admin login/password
-				$default = "delete from ".$_POST["install_dbprefix"]."preferences where nom_pref = 'pref_admin_login';";
-				$DB->Execute($default);
-				$default = "delete from ".$_POST["install_dbprefix"]."preferences where nom_pref = 'pref_admin_pass';";
-				$DB->Execute($default);
-			}
-			//set admin login/password
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_admin_login',".$DB->qstr($_POST["install_adminlogin"], get_magic_quotes_gpc()).")";
-			$DB->Execute($default);
-			$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_admin_pass',".$DB->qstr(md5($_POST["install_adminpass"]), get_magic_quotes_gpc()).")";
-			$DB->Execute($default);
-
-			//on some version pref_adresse2 disapeared so we test it now and add one if not present
-			if( !$DB->GetRow("select nom_pref from ".$_POST["install_dbprefix"]."preferences where nom_pref='pref_adresse2'") ) {
-				$default = "insert into ".$_POST["install_dbprefix"]."preferences(nom_pref,val_pref) values ('pref_adresse2','')";
-				$DB->Execute($default);
-			}
-
-
-			// NB: il faudrait am�liorer cette partie car la d�tection
-			// d'erreur ne s'effectue que sur le dernier insert. pr�voir une boucle.
-
-			if (!$DB->ErrorNo())
-				echo "<li class=\"install-ok\">"._T("Parameters saved into the database")."</li>";
-			else
-			{
-				echo "<li class=\"install-bad\">"._T("Parameters couldn't be save into the database")."</li>";
-				$error = true;
+			} else if ($step=='u9') {
+				$prefs->pref_admin_login = $_POST['install_adminlogin'];
+				$prefs->pref_admin_pass = $_POST['install_adminpass'];
 			}
 ?>
-</ul>
-	</td></tr></table></p>
+			<div<?php if( count($errs) == 0) echo ' id="infobox"'; ?>>
+				<ul>
 <?php
-			if (!isset($error))
+foreach($oks as $o)
+	echo "\t\t\t\t\t" . $o . "\n";
+?>
+				</ul>
+			</div>
+<?php
+			if ( count($errs) ==0 )
 			{
 ?>
-	<form action="index.php" method="POST">
-		<p id="submitbutton3">
-			<input type="submit" value="<?php echo _T("Next step"); ?>">
-		</p>
-		<input type="hidden" name="install_lang" value="<?php echo $_POST["install_lang"]; ?>">
-		<input type="hidden" name="install_type" value="<?php echo $_POST["install_type"]; ?>">
-		<input type="hidden" name="install_permsok" value="1">
-		<input type="hidden" name="install_dbtype" value="<?php echo $_POST["install_dbtype"]; ?>">
-		<input type="hidden" name="install_dbhost" value="<?php echo $_POST["install_dbhost"]; ?>">
-		<input type="hidden" name="install_dbuser" value="<?php echo $_POST["install_dbuser"]; ?>">
-		<input type="hidden" name="install_dbpass" value="<?php echo $_POST["install_dbpass"]; ?>">
-		<input type="hidden" name="install_dbname" value="<?php echo $_POST["install_dbname"]; ?>">
-		<input type="hidden" name="install_dbprefix" value="<?php echo $_POST["install_dbprefix"]; ?>">
-		<input type="hidden" name="install_dbconn_ok" value="1">
-		<input type="hidden" name="install_dbperms_ok" value="1">
-		<input type="hidden" name="install_dbwrite_ok" value="1">
-		<input type="hidden" name="install_adminlogin" value="<?php echo $_POST["install_adminlogin"]; ?>">
-		<input type="hidden" name="install_adminpass" value="<?php echo $_POST["install_adminpass"]; ?>">
-		<input type="hidden" name="install_passwdverified" value="1">
-		<input type="hidden" name="install_prefs_ok" value="1">
-	</form>
+			<form action="index.php" method="POST">
+				<p id="submit_btn">
+					<input type="submit" value="<?php echo _T("Next step"); ?>">
+					<input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
+					<input type="hidden" name="install_permsok" value="1">
+					<input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>">
+					<input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>">
+					<input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>">
+					<input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>">
+					<input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>">
+					<input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>">
+					<input type="hidden" name="install_dbconn_ok" value="1">
+					<input type="hidden" name="install_dbperms_ok" value="1">
+					<input type="hidden" name="install_dbwrite_ok" value="1">
+					<input type="hidden" name="install_adminlogin" value="<?php echo $_POST['install_adminlogin']; ?>">
+					<input type="hidden" name="install_adminpass" value="<?php echo $_POST['install_adminpass']; ?>">
+					<input type="hidden" name="install_passwdverified" value="1">
+					<input type="hidden" name="install_prefs_ok" value="1">
+				</p>
+			</form>
 <?php
 			}
 			else
 			{
 ?>
-	<form action="index.php" method="POST">
-		<p><?php echo _T("Parameters couldn't be saved."); ?></p>
-		<p><?php echo _T("This can come from the permissions on the file includes/config.inc.php or the impossibility to make an INSERT into the database."); ?></p>
-		<p id="submitbutton2">
-			<input type="submit" value="<?php echo _T("Retry"); ?>">
-		</p>
-		<input type="hidden" name="install_lang" value="<?php echo $_POST["install_lang"]; ?>">
-		<input type="hidden" name="install_type" value="<?php echo $_POST["install_type"]; ?>">
-		<input type="hidden" name="install_permsok" value="1">
-		<input type="hidden" name="install_dbtype" value="<?php echo $_POST["install_dbtype"]; ?>">
-		<input type="hidden" name="install_dbhost" value="<?php echo $_POST["install_dbhost"]; ?>">
-		<input type="hidden" name="install_dbuser" value="<?php echo $_POST["install_dbuser"]; ?>">
-		<input type="hidden" name="install_dbpass" value="<?php echo $_POST["install_dbpass"]; ?>">
-		<input type="hidden" name="install_dbname" value="<?php echo $_POST["install_dbname"]; ?>">
-		<input type="hidden" name="install_dbprefix" value="<?php echo $_POST["install_dbprefix"]; ?>">
-		<input type="hidden" name="install_dbconn_ok" value="1">
-		<input type="hidden" name="install_dbperms_ok" value="1">
-		<input type="hidden" name="install_dbwrite_ok" value="1">
-		<input type="hidden" name="install_adminlogin" value="<?php echo $_POST["install_adminlogin"]; ?>">
-		<input type="hidden" name="install_adminpass" value="<?php echo $_POST["install_adminpass"]; ?>">
-		<input type="hidden" name="install_passwdverified" value="1">
-	</form>
+			<div id="errorbox">
+				<h1><?php echo _T("- ERROR -"); ?></h1>
+				<p><?php echo _T("Parameters couldn't be saved."); ?><br/><?php echo _T("This can come from the permissions on the file includes/config.inc.php or the impossibility to make an INSERT into the database."); ?></p>
+				<p><?php echo _T("Check above errors to know what went wrong."); ?></p>
+				<ul><?php echo implode("\n", $errs); ?></ul>
+			</div>
+			<form action="index.php" method="POST">
+				<p id="retry_btn">
+					<input type="submit" value="<?php echo _T("Retry"); ?>">
+					<input type="hidden" name="install_type" value="<?php echo $_POST["install_type"]; ?>">
+					<input type="hidden" name="install_permsok" value="1">
+					<input type="hidden" name="install_dbtype" value="<?php echo $_POST["install_dbtype"]; ?>">
+					<input type="hidden" name="install_dbhost" value="<?php echo $_POST["install_dbhost"]; ?>">
+					<input type="hidden" name="install_dbuser" value="<?php echo $_POST["install_dbuser"]; ?>">
+					<input type="hidden" name="install_dbpass" value="<?php echo $_POST["install_dbpass"]; ?>">
+					<input type="hidden" name="install_dbname" value="<?php echo $_POST["install_dbname"]; ?>">
+					<input type="hidden" name="install_dbprefix" value="<?php echo $_POST["install_dbprefix"]; ?>">
+					<input type="hidden" name="install_dbconn_ok" value="1">
+					<input type="hidden" name="install_dbperms_ok" value="1">
+					<input type="hidden" name="install_dbwrite_ok" value="1">
+					<input type="hidden" name="install_adminlogin" value="<?php echo $_POST["install_adminlogin"]; ?>">
+					<input type="hidden" name="install_adminpass" value="<?php echo $_POST["install_adminpass"]; ?>">
+					<input type="hidden" name="install_passwdverified" value="1">
+				</p>
+			</form>
 <?php
 			}
 ?>
-	<br />
-	</div>
-	<h1 class="footerinstall"><?php echo _T("Step 9 - Saving the parameters"); ?></h1>
-
+		</div>
 <?php
 			break; //ends 9th step
 		case "i10":
 		case "u10":
 ?>
-
-	<h1>
-		<?php if ($step=="i10") echo _T("Installation complete !"); ?>
-		<?php if ($step=="u10") echo _T("Update complete !"); ?>
-	</h1>
-	<p>
-		<?php if ($step=="i10") echo _T("Galette has been successfully installed!"); ?>
-		<?php if ($step=="u10") echo _T("Galette has been successfully updated!"); ?>
-	</p>
-	<p><?php echo _T("For securing the system, please delete the install directory"); ?></p>
-	<form action="../index.php" method="get">
-		<p id="submitbutton3">
-			<input type="submit" value="<?php echo _T("Homepage"); ?>">
-		</p>
-	</form>
-	<br />
-	</div>
-	<h1 class="footerinstall">
-		<?php if ($step=="i10") echo _T("Step 10 - End of the installation"); ?>
-		<?php if ($step=="u10") echo _T("Step 10 - End of the update"); ?>
-	</h1>
+			<h2><?php 
+if ($step=="i10") echo _T("Installation complete !");
+if ($step=="u10") echo _T("Update complete !"); ?></h2>
+			<p><?php
+if ($step=="i10") echo _T("Galette has been successfully installed!");
+if ($step=="u10") echo _T("Galette has been successfully updated!"); ?></p>
+			<p><?php echo _T("To secure the system, please delete the install directory"); ?></p>
+			<form action="../index.php" method="get">
+				<p id="submit_btn">
+					<input type="submit" value="<?php echo _T("Homepage"); ?>">
+				</p>
+			</form>
+		</div>
 <?php
 			break; //ends 10th step and finish install
 	} // switch
