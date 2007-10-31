@@ -3,6 +3,17 @@ INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_slogan', '');
 UPDATE galette_preferences SET pref_lang='fr_FR' WHERE pref_lang='french';
 UPDATE galette_preferences SET pref_lang='en_EN' WHERE pref_lang='english';
 UPDATE galette_preferences SET pref_lang='es_ES' WHERE pref_lang='spanish';
+UPDATE galette_adherents SET pref_lang='fr_FR' WHERE pref_lang='french';
+UPDATE galette_adherents SET pref_lang='en_EN' WHERE pref_lang='english';
+UPDATE galette_adherents SET pref_lang='es_ES' WHERE pref_lang='spanish';
+
+-- Table for dynamic required fields 2007-07-10;
+DROP TABLE IF EXISTS galette_required;
+CREATE TABLE galette_required (
+	field_id varchar(15) NOT NULL,
+	required tinyint(1) NOT NULL,
+	PRIMARY KEY  (`field_id`)
+) TYPE=MyISAM;
 
 -- Add new table for automatic mails and their translations
 DROP TABLE IF EXISTS `galette_texts`;
@@ -14,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `galette_texts` (
   `tlang` varchar(16) NOT NULL,
   `tcomment` varchar(64) NOT NULL,
   PRIMARY KEY  (`tid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COMMENT='Textes des mails' AUTO_INCREMENT=7 ;
+) TYPE=MyISAM;
 
 -- 
 -- Contenu de la table `galette_texts`

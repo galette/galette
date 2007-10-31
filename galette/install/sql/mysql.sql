@@ -174,4 +174,4 @@ CREATE TABLE IF NOT EXISTS `galette_texts` (
   `tlang` varchar(16) NOT NULL,
   `tcomment` varchar(64) NOT NULL,
   PRIMARY KEY  (`tid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COMMENT='Textes des mails' AUTO_INCREMENT=7 ;
+) TYPE=MyISAM;

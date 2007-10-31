@@ -1,3 +1,4 @@
+{if !empty($fields)}
 {if $is_form eq true}
 <fieldset class="cssform">
 	<legend>{_T("Additionnal fields:")}</legend>
@@ -60,4 +61,5 @@
 {/foreach}
 {if $is_form eq true}
 	</fieldset>
+{/if}
 {/if}

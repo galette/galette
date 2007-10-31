@@ -36,7 +36,7 @@
 			</tr> 
 			<tr>
 				<th>{_T("Language:")}</th>
-				<td><img SRC="{$data.pref_lang_img}" align="left"/>{$data.pref_lang}</td>
+				<td><img src="{$data.pref_lang_img}"/> {$data.pref_lang}</td>
 			</tr> 
 			<tr>
 				<th class="separator">{_T("Galette-related data:")}</th>

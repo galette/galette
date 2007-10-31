@@ -68,8 +68,8 @@ class Required{
 	* since it has not yet appened or adherents table
 	* has been modified.
 	*/
-	private function checkUpdate(){
-		global $mdb;
+	private function checkUpdate($try = true){
+		global $mdb, $log;
 		if ($mdb->getOption('result_buffering')){
 			$requete = 'SELECT * FROM ' . PREFIX_DB . Adherents::TABLE . ' LIMIT 1';
 
@@ -97,7 +97,7 @@ class Required{
 				echo $result->getMessage();
 			}*/
 			
-			if($result->numRows()==0){
+			if($result->numRows()==0 && $try){
 				$this->init();
 				//exit();
 			}else{
@@ -109,6 +109,7 @@ class Required{
 						$this->all_required[$k->field_id] = $k->required;
 				}
 				if($result2->numCols() != $result->numRows()){
+					$log->log('Count for adherents columns does not match required records. Is : ' . $result->numRows() . ' and should be ' . $result2->numCols() . '. Reinit.', PEAR_LOG_DEBUG);
 					$this->init(true);
 					//exit();
 				}
@@ -128,16 +129,18 @@ class Required{
 	* initialisation, value should be off.
 	*/
 	function init($reinit=false){
-		global $mdb;
+		global $mdb, $log;
+		$log->log('Initializing required fiels', PEAR_LOG_DEBUG);
 		if($reinit){
-			$requetesup = 'DELETE FROM ' . PREFIX_DB . self::TABLE;
+			$log->log('Reinit mode, we delete table\'s content', PEAR_LOG_DEBUG);
+			$requetesup = 'DELETE FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE);
 			/** TODO: what to do on error ? */
-			if( !$init_result = $mdb->query( $requete ) )
+			if( !$init_result = $mdb->execute( $requetesup ) )
 				return -1;
 			//$this->db->query( $requetesup );
 		}
 	
-		$requete = 'SELECT * FROM ' . PREFIX_DB . Adherents::TABLE . ' LIMIT 1';
+		$requete = 'SELECT * FROM ' . $mdb->quoteIdentifier(PREFIX_DB . Adherents::TABLE) . ' LIMIT 1';
 
 		/** TODO: what to do on error ? */
 		if( !$result = $mdb->query( $requete ) )
@@ -170,11 +173,13 @@ class Required{
 			$stmt->bindParamArray($row);
 			$stmt->execute();
 		}
+
 		if (MDB2::isError($stmt)) {
-			echo $result->getDebugInfo().'<br/>';
-			echo $result->getMessage();
+			echo $stmt->getDebugInfo().'<br/>';
+			echo $stmt->getMessage();
 		}else{
-			$this->checkUpdate();
+			$log->log('Initialisation seems successfull, we reload the object', PEAR_LOG_DEBUG);
+			$this->checkUpdate(false);
 		}
 	}
 

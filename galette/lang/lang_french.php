@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sun Oct 28 14:54:51 2007 (GMT)
+// This file was automatically generated on Wed Oct 31 20:53:05 2007 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -1081,7 +1081,7 @@ $lang['Permissions'] = 'Permissions';
 $lang['Picture:'] = 'Image&nbsp;:';
 
 // ../templates/default/display_dynamic_fields.tpl:3 
-$lang['Additionnal fields:'] = 'Informations de contact&nbsp;:';
+$lang['Additionnal fields:'] = 'Champs supplémentaires&nbsp;:';
 
 // ../templates/default/page.tpl:57 
 $lang['Log off'] = 'Déconnexion';

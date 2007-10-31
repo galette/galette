@@ -128,6 +128,26 @@ class i18n{
 		return $result;
 	}
 
+	/**
+	* Gets language full name from its ID
+	* @param id the language identifier
+	*/
+	public function getNameFromId($id){
+		$current = $this->langs->xpath('//lang[@id=\'' . $id . '\']');
+		$sxe = $current[0];
+		return $sxe->longname;
+	}
+
+	/**
+	* Gets the language flag from its ID
+	* @param id the language identifier
+	*/
+	public function getFlagFromId($id){
+		$current = $this->langs->xpath('//lang[@id=\'' . $id . '\']');
+		$sxe = $current[0];
+		return $this->dir . $sxe->flag;
+	}
+
 	public function getID(){ return $this->id; }
 	public function getLongID(){ return $this->longid; }
 	public function getName(){ return utf8_decode($this->name); }

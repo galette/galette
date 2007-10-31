@@ -62,7 +62,7 @@ CREATE TABLE galette_adherents (
     bool_exempt_adh character(1) DEFAULT NULL,
     bool_display_info character(1) DEFAULT NULL,
     date_echeance date,
-    pref_lang character varying(20) DEFAULT 'french',
+    pref_lang character varying(20) DEFAULT 'fr_FR',
     lieu_naissance text DEFAULT '',
     gpgid character varying(8) DEFAULT NULL,
     fingerprint character varying(50) DEFAULT NULL
@@ -208,8 +208,8 @@ CREATE UNIQUE INDEX galette_tmppasswds_idx ON galette_tmppasswds (id_adh);
 -- Table for dynamic required fields 2007-07-10;
 DROP TABLE galette_required;
 CREATE TABLE galette_required (
-	field_id  character varying(15) NOT NULL,
-	required integer DEFAULT '0' NOT NULL
+	field_id  character varying(20) NOT NULL,
+	required boolean DEFAULT false NOT NULL
 );
 CREATE UNIQUE INDEX galette_required_idx ON galette_required (field_id);
 
@@ -224,4 +224,3 @@ CREATE TABLE galette_texts (
   tcomment character varying(64) NOT NULL
 );
 CREATE UNIQUE INDEX galette_texts_idx ON galette_texts (tid);
-
