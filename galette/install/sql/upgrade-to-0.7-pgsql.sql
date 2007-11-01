@@ -27,6 +27,32 @@ CREATE TABLE galette_texts (
 );
 CREATE UNIQUE INDEX galette_texts_idx ON galette_texts (tid);
 
+-- Modify table picture to allow for negative indexes
+ALTER TABLE galette_pictures CHANGE id_adh id_adh INT( 10 ) NOT NULL DEFAULT '0' 
+
+-- Add a new table to store models descriptions for documents
+DROP TABLE IF EXISTS galette_models;
+CREATE TABLE IF NOT EXISTS galette_models (
+  mod_id int(11) NOT NULL,
+  mod_carac varchar(64) NOT NULL,
+  carac_id varchar(32) default NULL,
+  carac_type varchar(32) NOT NULL,
+  carac_value varchar(256) NOT NULL,
+  carac_xpath varchar(256) NOT NULL,
+  carac_cond_id int(11) default NULL'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Modèles des documents';
+CREATE UNIQUE INDEX galette_models_idx ON galette_models (mod_id);
+
+-- Add a new table to store conditionals fields for models
+DROP TABLE IF EXISTS galette_models_conditions;
+CREATE TABLE IF NOT EXISTS galette_models_conditions (
+  cond_id int(11) NOT NULL,
+  cond_field varchar(32) NOT NULL,
+  cond_in varchar(64) NOT NULL,
+  cond_out varchar(64) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+CREATE UNIQUE INDEX galette_models_conditions_idx ON galette_models_conditions (cond_id);
+
 -- 
 -- Contenu de la table `galette_texts`
 -- 

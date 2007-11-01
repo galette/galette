@@ -20,54 +20,50 @@
  * $Id$
  */
 
-include("includes/config.inc.php"); 
-include("includes/database.inc.php");
-
-// if no custom header, use the default one.
-$ch = file_exists(dirname( __FILE__)."/custom_header.php");
-
-if ( ! $ch ) 
-  include("header.php");
-else
-  include("custom_header.php");
-
-// Here come some HTML
-print '<h1>Trombinoscope</h1>';
-print '<br /><br /><br />';
-print '<ul>';
+require_once('includes/galette.inc.php');
 
 // Select all adh who would like to appear in public views.
 // FIXME: les adhérents "à jour" de cotisation => vérifier la requête
-$query = "SELECT prenom_adh, nom_adh, pseudo_adh, url_adh 
-          FROM ".PREFIX_DB."adherents 
-          WHERE bool_display_info='1'
-          OR bool_exempt_adh = '1'
-          ORDER BY nom_adh, prenom_adh";
+$query = "SELECT a.id_adh,a.nom_adh,a.prenom_adh,a.pseudo_adh,a.url_adh,a.info_public_adh,a.date_echeance,a.bool_exempt_adh,p.format 
+          FROM ".PREFIX_DB."adherents a 
+          JOIN ".PREFIX_DB."pictures p 
+          ON a.id_adh=p.id_adh 
+          WHERE a.bool_display_info='1'
+          AND (a.date_echeance > ".$DB->DBDate(time())." OR a.bool_exempt_adh='1')";
 
 $adh =&$DB->Execute($query);
 
+print "<html>\n<body>\n<h1>Liste des membres</h1>\n";
+print "<table align=\"center\">\n<tr><th>"._T("Name")."</th><th>"._T("Pseudo")."</th><th>"._T("Comments")."</th></tr>";
+
 // main loop
 while ( !$adh->EOF ) {
-  print "<li>".$adh->fields['prenom_adh']." ".$adh->fields['nom_adh'];
-  if ($adh->fields['pseudo_adh']) {
-    print " ".$adh->fields['pseudo_adh'];
-  }
   if ($adh->fields['url_adh']) {
-    print " - <a href=\"".$adh->fields['url_adh']."\">site web</a>";
+    print '<tr><td><a href="'.$adh->fields['url_adh'].'">'.$adh->fields['prenom_adh'].' '.$adh->fields['nom_adh'].'</a></td>';
+  } else {
+	 print '<tr><td>'.$adh->fields['prenom_adh'].' '.$adh->fields['nom_adh'].'</td>';
   }
-
-  print '</li>';
-
+  if ($adh->fields['pseudo_adh']) {
+    print "<td>".$adh->fields['pseudo_adh']."</td>\n";
+  } else {
+	 print "<td>&nbsp</td>\n";
+  }
+  if ($adh->fields['info_public_adh']) {
+    print "<td>".$adh->fields['info_public_adh']."</td></tr>\n";
+  } else {
+	 print "<td>&nbsp</td></tr>\n";
+  }
   $adh->MoveNext();
 }
 
 // closing list
-print '</ul>';
+
+print "</table>\n</body>\n</html>";
+$adh->Close();
 
 // Here you can include your site's footer.
 //include("footer.php");
-print '</body></html>';
+print "\n</body>\n</html>";
 
-$adh->Close();
 ?>
 

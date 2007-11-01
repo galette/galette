@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+	<image>
+		<largeur>1</largeur>
+		<pos_x>5.5</pos_x>
+		<pos_y>3</pos_y>
+		<hauteur>1</hauteur>
+		<name>logo</name>
+	</image>
+	<text>
+		<couleur>#000000</couleur>
+		<pos_x>5.66666666667</pos_x>
+		<pos_y>2.7</pos_y>
+		<font>Arial 20</font>
+		<name>nom</name>
+	</text>
+	<image>
+		<largeur>2.5</largeur>
+		<pos_x>2.83333333333</pos_x>
+		<pos_y>2.7</pos_y>
+		<hauteur>3</hauteur>
+		<name>photo</name>
+	</image>
+	<info>
+		<couleur>#ffffe6</couleur>
+		<nom>Nouveau Modèle</nom>
+		<largeur>8.5</largeur>
+		<hauteur>5.4</hauteur>
+		<name>general</name>
+	</info>
+</Model>
