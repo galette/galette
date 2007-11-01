@@ -1,5 +1,5 @@
 		<h1 id="titre">{_T("Management of contributions")}</h1>
-		<form action="gestion_contributions.php" method="get" name="filtre">
+		<form action="gestion_contributions.php" method="get" id="filtre">
 		<div id="listfilter">
 			<label for="contrib_filter_1">{_T("Show contributions since")}</label>&nbsp;
 			<input type="text" name="contrib_filter_1" id="contrib_filter_1" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_1}"/>

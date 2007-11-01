@@ -1,3 +1,4 @@
+# translation of en_US.po to Français
 # translation of en_US.po to
 # Copyright (C) 2006, 2007 Free Software Foundation, Inc.
 #
@@ -10,9 +11,9 @@ msgstr ""
 "Project-Id-Version: en_US\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-12-20 16:44+0100\n"
-"PO-Revision-Date: 2007-10-28 15:54+0100\n"
+"PO-Revision-Date: 2007-11-01 10:06+0100\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
-"Language-Team:  <fr@li.org>\n"
+"Language-Team: Français <fedora-trans-fr@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -93,8 +94,7 @@ msgstr "Leave empty to use Sender Email as reply address"
 
 #: ../preferences.php:200
 msgid "- You must indicate an email address Galette should use to send emails!"
-msgstr ""
-"- You must indicate an email address Galette should use to send emails!"
+msgstr "- You must indicate an email address Galette should use to send emails!"
 
 #: ../includes/i18n.inc.php:203
 msgid "Partnership"
@@ -112,7 +112,7 @@ msgstr "Your database is maybe not usable, try to restore the older version."
 
 #: ../gestion_adherents.php:401 ../templates/default/gestion_adherents.tpl:59
 #: ../templates/default/page.tpl:98 ../templates/default/page.tpl:102
-#: ../templates/default/configurer_fiches.tpl:26
+#: ../templates/default/configurer_fiches.tpl:22
 msgid "Name"
 msgstr "Name"
 
@@ -124,7 +124,7 @@ msgstr "(Choose address printed below name)"
 msgid "line"
 msgstr "line"
 
-#: ../templates/default/configurer_fiches.tpl:29
+#: ../templates/default/configurer_fiches.tpl:25
 msgid "Required"
 msgstr "Required"
 
@@ -152,7 +152,7 @@ msgstr "Lost your password?"
 
 #: ../templates/default/gestion_adherents.tpl:156
 #: ../templates/default/page.tpl:129
-#: ../templates/default/configurer_fiches.tpl:49
+#: ../templates/default/configurer_fiches.tpl:45
 #: ../templates/default/gestion_contributions.tpl:134
 #: ../templates/default/gestion_transactions.tpl:97
 msgid "[mod]"
@@ -234,6 +234,10 @@ msgstr "Password:"
 msgid "Contact information:"
 msgstr "Contact information:"
 
+#: ../templates/default/gestion_textes.tpl:49
+msgid "Email Body:"
+msgstr "Email Body:"
+
 #: ../templates/default/gestion_contributions.tpl:4
 msgid "Show contributions since"
 msgstr "Show contributions since"
@@ -288,6 +292,11 @@ msgstr "Object:"
 msgid "Emailing method:"
 msgstr "Emailing method:"
 
+#: ../templates/default/gestion_textes.tpl:33
+#: ../templates/default/gestion_textes.tpl:42
+msgid "Change"
+msgstr "Change"
+
 #: ../gestion_contributions.php:258 ../gestion_adherents.php:334
 msgid "Freed of dues"
 msgstr "Freed of dues"
@@ -314,6 +323,10 @@ msgstr "Management of transactions"
 msgid "- Non valid date!"
 msgstr "- Non valid date!"
 
+#: ../templates/default/gestion_textes.tpl:45
+msgid "Email Subject"
+msgstr "Email Subject"
+
 #: ../self_adherent.php:196
 msgid "Email sent is disabled in the preferences. Ask galette admin."
 msgstr "Email sent is disabled in the preferences. Ask galette admin."
@@ -334,6 +347,7 @@ msgstr "Beginning of membership:"
 #: ../templates/default/editer_champ.tpl:91
 #: ../templates/default/self_adherent.tpl:187
 #: ../templates/default/champ_requis.tpl:16
+#: ../templates/default/gestion_textes.tpl:56
 msgid "Save"
 msgstr "Save"
 
@@ -403,10 +417,8 @@ msgid "Active"
 msgstr "Active"
 
 #: ../ajouter_adherent.php:212 ../ajouter_adherent.php:214
-msgid ""
-"- You can't send a confirmation by email if the member hasn't got an address!"
-msgstr ""
-"- You can't send a confirmation by email if the member hasn't got an address!"
+msgid "- You can't send a confirmation by email if the member hasn't got an address!"
+msgstr "- You can't send a confirmation by email if the member hasn't got an address!"
 
 #: ../templates/default/preferences.tpl:47
 #: ../templates/default/preferences.tpl:245
@@ -478,6 +490,7 @@ msgstr "Membership extension:"
 #: ../templates/default/ajouter_adherent.tpl:59
 #: ../templates/default/voir_adherent.tpl:38
 #: ../templates/default/self_adherent.tpl:100
+#: ../templates/default/gestion_textes.tpl:27
 msgid "Language:"
 msgstr "Language:"
 
@@ -522,14 +535,6 @@ msgstr "Treasurer"
 #: ../preferences.php:126 ../preferences.php:145
 msgid "- The numbers and measures have to be integers!"
 msgstr "- The numbers and measures have to be integers!"
-
-#: ../templates/default/configurer_fiches.tpl:51
-msgid ""
-"Do you really want to delete this category ?\\n All associated data will be "
-"deleted as well."
-msgstr ""
-"Do you really want to delete this category ?\\n All associated data will be "
-"deleted as well."
 
 #: ../install/index.php:592
 msgid "UPDATE operation not allowed"
@@ -586,6 +591,10 @@ msgstr "INSERT operation allowed"
 #: ../templates/default/self_adherent.tpl:114
 msgid " (continuation)"
 msgstr " (continuation)"
+
+#: ../gestion_textes.php:67
+msgid "Email: '%s' has been successfully modified."
+msgstr "Email: '%s' has been successfully modified."
 
 #: ../templates/default/gestion_contributions.tpl:1
 msgid "Management of contributions"
@@ -653,8 +662,8 @@ msgstr "Inactive"
 msgid "- Only .jpg, .gif and .png files are allowed."
 msgstr "- Only .jpg, .gif and .png files are allowed."
 
-#: ../voir_adherent.php:90 ../templates/default/configurer_fiches.tpl:41
-#: ../templates/default/configurer_fiches.tpl:89
+#: ../voir_adherent.php:90 ../templates/default/configurer_fiches.tpl:37
+#: ../templates/default/configurer_fiches.tpl:85
 #: ../templates/default/editer_champ.tpl:42
 #: ../templates/default/champ_requis.tpl:8
 msgid "Yes"
@@ -782,7 +791,7 @@ msgstr "Label generation parameters:"
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr "Under UNIX/Linux, you can give the permissions using those commands"
 
-#: ../templates/default/configurer_fiches.tpl:97
+#: ../templates/default/configurer_fiches.tpl:93
 msgid "Add"
 msgstr "Add"
 
@@ -812,11 +821,15 @@ msgid "Size:"
 msgstr "Size:"
 
 #: ../templates/default/gestion_adherents.tpl:105
-#: ../templates/default/configurer_fiches.tpl:31
+#: ../templates/default/configurer_fiches.tpl:27
 #: ../templates/default/gestion_contributions.tpl:101
 #: ../templates/default/gestion_transactions.tpl:69
 msgid "Actions"
 msgstr "Actions"
+
+#: ../gestion_textes.php:65
+msgid "Email: '%s' has not been modified!"
+msgstr "Email: '%s' has not been modified!"
 
 #: ../templates/default/preferences.tpl:114
 msgid "Sender name:"
@@ -849,6 +862,10 @@ msgstr "- Empty transaction description!"
 #: ../install/index.php:684
 msgid "Update Report"
 msgstr "Update Report"
+
+#: ../templates/default/gestion_textes.tpl:1
+msgid "Automatic emails texts edition"
+msgstr "Automatic emails texts edition"
 
 #: ../templates/default/ajouter_contribution.tpl:68
 msgid "months"
@@ -1094,6 +1111,14 @@ msgstr "(Show or not title in front of name)"
 msgid "Comments:"
 msgstr "Comments:"
 
+#: ../templates/default/configurer_fiches.tpl:47
+msgid ""
+"Do you really want to delete this field ?\\n All associated data will be "
+"deleted as well."
+msgstr ""
+"Do you really want to delete this field ?\n"
+" All associated data will be deleted as well."
+
 #: ../includes/i18n.inc.php:213
 msgid "partnership"
 msgstr "partnership"
@@ -1153,7 +1178,6 @@ msgid "Subscribe"
 msgstr "Subscribe"
 
 #: ../templates/default/ajouter_contribution.tpl:86
-#: ../templates/default/configurer_fiches.tpl:16
 msgid "Continue"
 msgstr " Continue"
 
@@ -1187,8 +1211,8 @@ msgstr "(Un)Check all"
 msgid "- The amount must be an integer!"
 msgstr "- The amount must be an integer!"
 
-#: ../voir_adherent.php:92 ../templates/default/configurer_fiches.tpl:41
-#: ../templates/default/configurer_fiches.tpl:88
+#: ../voir_adherent.php:92 ../templates/default/configurer_fiches.tpl:37
+#: ../templates/default/configurer_fiches.tpl:84
 #: ../templates/default/editer_champ.tpl:41
 #: ../templates/default/champ_requis.tpl:10
 msgid "No"
@@ -1360,10 +1384,8 @@ msgstr "Please type an object for the message."
 
 #: ../mailing_adherents.php:138 ../lostpasswd.php:118
 #: ../ajouter_adherent.php:303
-msgid ""
-"**IMPORTANT** There was a probably breaking attempt when sending mail to :"
-msgstr ""
-"**IMPORTANT** There was a probably breaking attempt when sending mail to :"
+msgid "**IMPORTANT** There was a probably breaking attempt when sending mail to :"
+msgstr "**IMPORTANT** There was a probably breaking attempt when sending mail to :"
 
 #: ../templates/default/ajouter_adherent.tpl:1
 #: ../templates/default/ajouter_contribution.tpl:1
@@ -1388,8 +1410,7 @@ msgid "You are about to send an e-mail to"
 msgstr "You are about to send an e-mail to"
 
 #: ../install/index.php:822
-msgid ""
-"The tables have not been totally created, it may be a permission problem."
+msgid "The tables have not been totally created, it may be a permission problem."
 msgstr " The tables are not totally created, it's maybe a permission problem."
 
 #: ../templates/default/page.tpl:34 ../templates/default/voir_adherent.tpl:172
@@ -1417,7 +1438,7 @@ msgstr "Member"
 msgid "Galette has been successfully installed!"
 msgstr "Galette has been successfully installed!"
 
-#: ../templates/default/configurer_fiches.tpl:28
+#: ../templates/default/configurer_fiches.tpl:24
 #: ../templates/default/gestion_contributions.tpl:65
 msgid "Type"
 msgstr "Type"
@@ -1432,13 +1453,13 @@ msgstr "- Wrong date format (dd/mm/yyyy)!"
 msgid "Generate Member Card"
 msgstr "Generate Member Card"
 
-#: ../templates/default/configurer_fiches.tpl:58
+#: ../templates/default/configurer_fiches.tpl:54
 msgid "[up]"
 msgstr "[up]"
 
 #: ../templates/default/gestion_adherents.tpl:158
 #: ../templates/default/page.tpl:133
-#: ../templates/default/configurer_fiches.tpl:52
+#: ../templates/default/configurer_fiches.tpl:48
 #: ../templates/default/gestion_contributions.tpl:135
 #: ../templates/default/gestion_transactions.tpl:98
 msgid "[del]"
@@ -1487,8 +1508,7 @@ msgid "Miss"
 msgstr "Miss"
 
 #: ../install/index.php:629
-msgid ""
-"GALETTE hasn't got enough permissions on the database to continue the update."
+msgid "GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr ""
 " Galette hasn't got enough permissions on the database to continue the "
 "update."
@@ -1521,6 +1541,10 @@ msgstr " logs are empty"
 #: ../templates/default/self_adherent.tpl:169
 msgid "Username:"
 msgstr " Username:"
+
+#: ../templates/default/gestion_textes.tpl:36
+msgid "Reference:"
+msgstr "Reference:"
 
 #: ../templates/default/preferences.tpl:27
 msgid "E-Mail"
@@ -1674,7 +1698,7 @@ msgstr "Man"
 msgid "- You must indicate a sender name for emails!"
 msgstr "- You must indicate a sender name for emails!"
 
-#: ../configurer_fiches.php:59
+#: ../configurer_fiches.php:60
 msgid "- The name field cannot be void."
 msgstr " - The field name cannot be void."
 
@@ -1754,10 +1778,8 @@ msgid "There is  no password for user :"
 msgstr "There is  no password for user :"
 
 #: ../install/index.php:394
-msgid ""
-"In order to be updated, Galette needs the Write permission on these files."
-msgstr ""
-"In order to be updated, Galette needs the Write permission on these files."
+msgid "In order to be updated, Galette needs the Write permission on these files."
+msgstr "In order to be updated, Galette needs the Write permission on these files."
 
 #: ../ajouter_contribution.php:218
 msgid "Contribution added"
@@ -1768,10 +1790,8 @@ msgid "Update of the tables"
 msgstr "Update of the tables"
 
 #: ../install/index.php:393
-msgid ""
-"For a correct functioning, Galette needs the Write permission on these files."
-msgstr ""
-"For a correct functioning, Galette needs the Write permission on these files."
+msgid "For a correct functioning, Galette needs the Write permission on these files."
+msgstr "For a correct functioning, Galette needs the Write permission on these files."
 
 #: ../templates/default/mailing_adherents.tpl:99
 msgid "unreachable members:"
@@ -1889,10 +1909,8 @@ msgid "Originator:"
 msgstr "Originator:"
 
 #: ../install/index.php:444
-msgid ""
-"The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
-msgstr ""
-"The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
+msgid "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
+msgstr "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 
 #: ../templates/default/mailing_adherents.tpl:85
 msgid "Send"
@@ -2013,7 +2031,7 @@ msgstr "Detailed"
 msgid "Close expiries"
 msgstr "Close expiries"
 
-#: ../templates/default/configurer_fiches.tpl:30
+#: ../templates/default/configurer_fiches.tpl:26
 msgid "Position"
 msgstr "Position"
 
@@ -2137,6 +2155,10 @@ msgstr "Picture:"
 msgid "Email contents"
 msgstr "Email contents"
 
+#: ../templates/default/gestion_textes.tpl:46
+msgid "(Max 32 characters)"
+msgstr "(Max 32 characters)"
+
 #: ../templates/default/preferences.tpl:217
 msgid "Strip Text Color:"
 msgstr "Strip Text Color:"
@@ -2176,6 +2198,7 @@ msgstr "company fee"
 #: ../templates/default/editer_champ.tpl:5
 #: ../templates/default/lostpasswd.tpl:27
 #: ../templates/default/self_adherent.tpl:41
+#: ../templates/default/gestion_textes.tpl:5
 msgid "- ERROR -"
 msgstr "- ERROR -"
 
@@ -2379,7 +2402,7 @@ msgstr "Installation mode unknown"
 msgid "left"
 msgstr "left"
 
-#: ../templates/default/configurer_fiches.tpl:65
+#: ../templates/default/configurer_fiches.tpl:61
 msgid "[down]"
 msgstr "[down]"
 
@@ -2479,7 +2502,7 @@ msgstr "no transaction"
 msgid "DROP operation not allowed"
 msgstr "DROP operation not allowed"
 
-#: ../templates/default/configurer_fiches.tpl:27
+#: ../templates/default/configurer_fiches.tpl:23
 msgid "Visibility"
 msgstr "Visibility"
 
@@ -2518,3 +2541,4 @@ msgstr ""
 #: ../templates/default/gestion_contributions.tpl:172
 msgid "[ Add a contribution ]"
 msgstr "[ Add a contribution ]"
+

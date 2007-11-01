@@ -58,7 +58,7 @@ class Texts{
 
 	
 	function __construct(){
-		$dsn = TYPE_DB.'://'.USER_DB.':'.PWD_DB.'@'.HOST_DB.'/'.NAME_DB;
+		/*$dsn = TYPE_DB.'://'.USER_DB.':'.PWD_DB.'@'.HOST_DB.'/'.NAME_DB;
 		$options = array(
 			'debug'       => 2,
 			'portability' => MDB2_PORTABILITY_ALL);
@@ -69,13 +69,13 @@ class Texts{
 			echo $this->db->getDebugInfo().'<br/>';
 			echo $this->db->getMessage();
 		}
-		$this->db->setFetchMode(MDB2_FETCHMODE_ASSOC);
+		$this->db->setFetchMode(MDB2_FETCHMODE_ASSOC);*/
 
 	}
 
-	function __destruct(){
+	/*function __destruct(){
 		$this->db->disconnect();
-	}
+	}*/
 
 	/**
 	* GETTERS
@@ -84,18 +84,20 @@ class Texts{
 	* @return array of all text fields for one language.
 	*/
 	public function getTexts($ref,$lang){
-			$requete = "SELECT * FROM ".PREFIX_DB.self::TABLE." WHERE tref='".$ref."' AND tlang='".$lang."'";
-			$result = $this->db->query($requete);
-			// Vérification des erreurs
-			if (MDB2::isError($result)) {
-				echo $result->getDebugInfo().'<br/>';
-				echo $result->getMessage();
-			}
-			
-			if($result->numRows()>0){
-				$this->all_texts = $result->fetchRow(MDB2_FETCHMODE_ASSOC);
-			}
-	return $this->all_texts;
+		global $mdb;
+		$requete = 'SELECT * FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) . ' WHERE tref=' . $mdb->quote($ref) . ' AND tlang=' . $mdb->quote($lang);
+
+		$result = $mdb->query($requete);
+		// Vérification des erreurs
+		/*if (MDB2::isError($result)) {
+			echo $result->getDebugInfo().'<br/>';
+			echo $result->getMessage();
+		}*/
+		
+		if($result->numRows()>0){
+			$this->all_texts = $result->fetchRow(MDB2_FETCHMODE_ASSOC);
+		}
+		return $this->all_texts;
 	}
 
 	/**
@@ -104,38 +106,37 @@ class Texts{
 	* @param string: Texte language to locate
 	* @param string: Subject to set
 	* @param string: Body text to set
-	* @return boolean: true = field set
+	* @return result : mdb2 error or integer
 	*/
 	public function setTexts($ref,$lang,$subject,$body){
+		global $mdb;
 		//set texts
-		$requete = "UPDATE ".PREFIX_DB.self::TABLE;
-		$requete .= " SET tsubject='".$subject."', tbody='".$body."'";
-		$requete .= " WHERE tref='".$ref."' AND tlang='".$lang."'";
+		$requete = 'UPDATE ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE);
+		$requete .= ' SET ' . $mdb->quoteIdentifier('tsubject') . '=' . $mdb->quote($subject) . ', ' . $mdb->quoteIdentifier('tbody') . '=' . $mdb->quote($body);
+		$requete .= ' WHERE ' . $mdb->quoteIdentifier('tref') . '=' . $mdb->quote($ref) . ' AND ' . $mdb->quoteIdentifier('tlang') . '=' . $mdb->quote($lang);
 
-		$result = $this->db->exec($requete);
-		// Vérification des erreurs
-		if (MDB2::isError($result)) {
-			echo $result->getDebugInfo().'<br/>';
-			echo $result->getMessage();
-		}
+		$result = $mdb->execute($requete);
+
+		return $result;
 	}
 	/**
 	* Ref List
 	* @return array: list of references used for texts
 	*/
 	public function getRefs($lang){
-			$requete = "SELECT tref,tcomment FROM ".PREFIX_DB.self::TABLE." WHERE tlang='".$lang."'";
-			$result = $this->db->query($requete);
-			// Vérification des erreurs
-			if (MDB2::isError($result)) {
-				echo $result->getDebugInfo().'<br/>';
-				echo $result->getMessage();
-			}
+		global $mdb;
+		$requete = 'SELECT ' . $mdb->quoteIdentifier('tref') . ', ' . $mdb->quoteIdentifier('tcomment') . ' FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) . ' WHERE ' . $mdb->quoteIdentifier('tlang') . '=' . $mdb->quote($lang);
+		$result = $mdb->query($requete);
+		/*// Vérification des erreurs
+		if (MDB2::isError($result)) {
+			echo $result->getDebugInfo().'<br/>';
+			echo $result->getMessage();
+		}*/
 			
-			if($result->numRows()>0){
-				$refs = $result->fetchAll(MDB2_FETCHMODE_ASSOC);
-			}
-	return $refs;
+		if($result->numRows()>0){
+			$refs = $result->fetchAll(MDB2_FETCHMODE_ASSOC);
+		}
+		return $refs;
 	}
 }
 ?>

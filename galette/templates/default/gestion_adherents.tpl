@@ -49,7 +49,7 @@
 			</tr>
 		</table>
 		</form>
-		<form action="gestion_adherents.php" method="post" name="listform">
+		<form action="gestion_adherents.php" method="post" id="listform">
 		<table id="listing">
 			<thead>
 				<tr> 
@@ -129,23 +129,23 @@
 					<td class="{$member.class} nowrap username_row">
 						<input type="checkbox" name="member_sel[]" value="{$member.id_adh}"/>
 					{if $member.genre eq 1}
-						<img src="{$template_subdir}images/icon-male.png" alt="{_T("[M]")}" align="middle" width="16" height="16"/>
+						<img src="{$template_subdir}images/icon-male.png" alt="{_T("[M]")}" width="16" height="16"/>
 					{elseif $member.genre eq 2 || $member.genre eq 3}
-						<img src="{$template_subdir}images/icon-female.png" alt="{_T("[W]")}" align="middle" width="16" height="16"/>
+						<img src="{$template_subdir}images/icon-female.png" alt="{_T("[W]")}" width="16" height="16"/>
 					{elseif $member.genre eq 4}
-						<img src="{$template_subdir}images/icon-company.png" alt="{_T("[W]")}" align="middle" width="16" height="16"/>
+						<img src="{$template_subdir}images/icon-company.png" alt="{_T("[W]")}" width="16" height="16"/>
 					{else}
-						<img src="{$template_subdir}images/icon-empty.png" alt="" align="middle" width="10" height="12"/>
+						<img src="{$template_subdir}images/icon-empty.png" alt="" width="10" height="12"/>
 					{/if}
 					{if $member.email != ''}
-						<a href="mailto:{$member.email}"><img src="{$template_subdir}images/icon-mail.png" alt="{_T("[Mail]")}" align="middle" width="16" height="16"/></a>
+						<a href="mailto:{$member.email}"><img src="{$template_subdir}images/icon-mail.png" alt="{_T("[Mail]")}" width="16" height="16"/></a>
 					{else}
-						<img src="{$template_subdir}images/icon-empty.png" alt="" align="middle" width="14" height="10"/>
+						<img src="{$template_subdir}images/icon-empty.png" alt="" width="14" height="10"/>
 					{/if}
 					{if $member.admin eq 1}
-						<img src="{$template_subdir}images/icon-star.png" alt="{_T("[admin]")}" align="middle" width="16" height="16"/>
+						<img src="{$template_subdir}images/icon-star.png" alt="{_T("[admin]")}" width="16" height="16"/>
 					{else}
-						<img src="{$template_subdir}images/icon-empty.png" alt="" align="middle" width="12" height="13"/>
+						<img src="{$template_subdir}images/icon-empty.png" alt="" width="12" height="13"/>
 					{/if}
 					<a href="voir_adherent.php?id_adh={$member.id_adh}">{$member.nom} {$member.prenom}</a>
 					</td>

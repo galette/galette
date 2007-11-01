@@ -122,7 +122,7 @@ msgstr ""
 
 #: ../gestion_adherents.php:401 ../templates/default/gestion_adherents.tpl:59
 #: ../templates/default/page.tpl:98 ../templates/default/page.tpl:102
-#: ../templates/default/configurer_fiches.tpl:26
+#: ../templates/default/configurer_fiches.tpl:22
 msgid "Name"
 msgstr "Nombre completo"
 
@@ -134,7 +134,7 @@ msgstr ""
 msgid "line"
 msgstr "línea"
 
-#: ../templates/default/configurer_fiches.tpl:29
+#: ../templates/default/configurer_fiches.tpl:25
 msgid "Required"
 msgstr "Obligatorio"
 
@@ -162,7 +162,7 @@ msgstr "¿Ha olvidado su contraseña?"
 
 #: ../templates/default/gestion_adherents.tpl:156
 #: ../templates/default/page.tpl:129
-#: ../templates/default/configurer_fiches.tpl:49
+#: ../templates/default/configurer_fiches.tpl:45
 #: ../templates/default/gestion_contributions.tpl:134
 #: ../templates/default/gestion_transactions.tpl:97
 msgid "[mod]"
@@ -248,6 +248,11 @@ msgstr "Contraseña:"
 msgid "Contact information:"
 msgstr "Información de contacto:"
 
+#: ../templates/default/gestion_textes.tpl:49
+#, fuzzy
+msgid "Email Body:"
+msgstr "Método de envío de correo:"
+
 #: ../templates/default/gestion_contributions.tpl:4
 msgid "Show contributions since"
 msgstr "Mostrar la contribuciones del"
@@ -305,6 +310,12 @@ msgstr "Objeto:"
 msgid "Emailing method:"
 msgstr "Método de envío de correo:"
 
+#: ../templates/default/gestion_textes.tpl:33
+#: ../templates/default/gestion_textes.tpl:42
+#, fuzzy
+msgid "Change"
+msgstr "Cancelar"
+
 #: ../gestion_contributions.php:258 ../gestion_adherents.php:334
 msgid "Freed of dues"
 msgstr "Exento de cuota"
@@ -332,6 +343,10 @@ msgstr "Gestión de transacciones"
 msgid "- Non valid date!"
 msgstr "- ¡Fecha inválida!"
 
+#: ../templates/default/gestion_textes.tpl:45
+msgid "Email Subject"
+msgstr ""
+
 #: ../self_adherent.php:196
 #, fuzzy
 msgid "Email sent is disabled in the preferences. Ask galette admin."
@@ -355,6 +370,7 @@ msgstr "Comienzo de la afiliación:"
 #: ../templates/default/editer_champ.tpl:91
 #: ../templates/default/self_adherent.tpl:187
 #: ../templates/default/champ_requis.tpl:16
+#: ../templates/default/gestion_textes.tpl:56
 msgid "Save"
 msgstr "Grabar"
 
@@ -504,6 +520,7 @@ msgstr "Duración de la afiliación:"
 #: ../templates/default/ajouter_adherent.tpl:59
 #: ../templates/default/voir_adherent.tpl:38
 #: ../templates/default/self_adherent.tpl:100
+#: ../templates/default/gestion_textes.tpl:27
 msgid "Language:"
 msgstr "Idioma:"
 
@@ -550,15 +567,6 @@ msgstr "Tesorero"
 #: ../preferences.php:126 ../preferences.php:145
 msgid "- The numbers and measures have to be integers!"
 msgstr "- ¡Los números y las medidas deben ser enteros!"
-
-#: ../templates/default/configurer_fiches.tpl:51
-#, fuzzy
-msgid ""
-"Do you really want to delete this category ?\\n All associated data will be "
-"deleted as well."
-msgstr ""
-"¿Quiere verdaderamente eliminar esta categoría de la base?\n"
-" Suprimirá también todos los datos asociados."
 
 #: ../install/index.php:592
 msgid "UPDATE operation not allowed"
@@ -617,6 +625,11 @@ msgstr "Operación INSERT autorizada"
 #, fuzzy
 msgid " (continuation)"
 msgstr "contribución"
+
+#: ../gestion_textes.php:67
+#, fuzzy
+msgid "Email: '%s' has been successfully modified."
+msgstr "¡Galette fue actualizada con éxito!"
 
 #: ../templates/default/gestion_contributions.tpl:1
 msgid "Management of contributions"
@@ -685,8 +698,8 @@ msgstr "Inactivo"
 msgid "- Only .jpg, .gif and .png files are allowed."
 msgstr "- Sólos los ficheros .jpg, .gif y .png están permitidos."
 
-#: ../voir_adherent.php:90 ../templates/default/configurer_fiches.tpl:41
-#: ../templates/default/configurer_fiches.tpl:89
+#: ../voir_adherent.php:90 ../templates/default/configurer_fiches.tpl:37
+#: ../templates/default/configurer_fiches.tpl:85
 #: ../templates/default/editer_champ.tpl:42
 #: ../templates/default/champ_requis.tpl:8
 msgid "Yes"
@@ -818,7 +831,7 @@ msgstr "Parámetros de la generación de etiquetas:"
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr "En UNIX/Linux, puede fijar los permisos con dichos comandos"
 
-#: ../templates/default/configurer_fiches.tpl:97
+#: ../templates/default/configurer_fiches.tpl:93
 msgid "Add"
 msgstr "Añadir"
 
@@ -848,11 +861,15 @@ msgid "Size:"
 msgstr "Tamaño:"
 
 #: ../templates/default/gestion_adherents.tpl:105
-#: ../templates/default/configurer_fiches.tpl:31
+#: ../templates/default/configurer_fiches.tpl:27
 #: ../templates/default/gestion_contributions.tpl:101
 #: ../templates/default/gestion_transactions.tpl:69
 msgid "Actions"
 msgstr "Acciones"
+
+#: ../gestion_textes.php:65
+msgid "Email: '%s' has not been modified!"
+msgstr ""
 
 #: ../templates/default/preferences.tpl:114
 msgid "Sender name:"
@@ -887,6 +904,10 @@ msgstr "¡Descripción de transacción vacía!"
 #: ../install/index.php:684
 msgid "Update Report"
 msgstr "Informe de actualización"
+
+#: ../templates/default/gestion_textes.tpl:1
+msgid "Automatic emails texts edition"
+msgstr ""
 
 #: ../templates/default/ajouter_contribution.tpl:68
 msgid "months"
@@ -1140,6 +1161,15 @@ msgstr ""
 msgid "Comments:"
 msgstr "Comentarios:"
 
+#: ../templates/default/configurer_fiches.tpl:47
+#, fuzzy
+msgid ""
+"Do you really want to delete this field ?\\n All associated data will be "
+"deleted as well."
+msgstr ""
+"¿Quiere verdaderamente eliminar esta categoría de la base?\n"
+" Suprimirá también todos los datos asociados."
+
 #: ../includes/i18n.inc.php:213
 #, fuzzy
 msgid "partnership"
@@ -1203,7 +1233,6 @@ msgid "Subscribe"
 msgstr "Dar de alta"
 
 #: ../templates/default/ajouter_contribution.tpl:86
-#: ../templates/default/configurer_fiches.tpl:16
 msgid "Continue"
 msgstr "Continuar"
 
@@ -1238,8 +1267,8 @@ msgstr "(Des)Marcar todo"
 msgid "- The amount must be an integer!"
 msgstr "- ¡El importe debe ser una cifra!"
 
-#: ../voir_adherent.php:92 ../templates/default/configurer_fiches.tpl:41
-#: ../templates/default/configurer_fiches.tpl:88
+#: ../voir_adherent.php:92 ../templates/default/configurer_fiches.tpl:37
+#: ../templates/default/configurer_fiches.tpl:84
 #: ../templates/default/editer_champ.tpl:41
 #: ../templates/default/champ_requis.tpl:10
 msgid "No"
@@ -1474,7 +1503,7 @@ msgstr "Socio"
 msgid "Galette has been successfully installed!"
 msgstr "¡Galette fue instalada con éxito!"
 
-#: ../templates/default/configurer_fiches.tpl:28
+#: ../templates/default/configurer_fiches.tpl:24
 #: ../templates/default/gestion_contributions.tpl:65
 msgid "Type"
 msgstr "Tipo"
@@ -1490,13 +1519,13 @@ msgstr "- ¡Formato de fecha (dd/mm/aaaa) incorrecto!"
 msgid "Generate Member Card"
 msgstr "Generación de etiquetas"
 
-#: ../templates/default/configurer_fiches.tpl:58
+#: ../templates/default/configurer_fiches.tpl:54
 msgid "[up]"
 msgstr "[arriba]"
 
 #: ../templates/default/gestion_adherents.tpl:158
 #: ../templates/default/page.tpl:133
-#: ../templates/default/configurer_fiches.tpl:52
+#: ../templates/default/configurer_fiches.tpl:48
 #: ../templates/default/gestion_contributions.tpl:135
 #: ../templates/default/gestion_transactions.tpl:98
 msgid "[del]"
@@ -1583,6 +1612,11 @@ msgstr "historial vacío"
 #: ../templates/default/self_adherent.tpl:169
 msgid "Username:"
 msgstr "Nombre de usuario:"
+
+#: ../templates/default/gestion_textes.tpl:36
+#, fuzzy
+msgid "Reference:"
+msgstr "francés"
 
 #: ../templates/default/preferences.tpl:27
 #, fuzzy
@@ -1746,7 +1780,7 @@ msgstr "Hombre"
 msgid "- You must indicate a sender name for emails!"
 msgstr "¡Los correos deben llevar un remitente!"
 
-#: ../configurer_fiches.php:59
+#: ../configurer_fiches.php:60
 #, fuzzy
 msgid "- The name field cannot be void."
 msgstr "- El campo Apellido no puede estar vacío."
@@ -2102,7 +2136,7 @@ msgstr "Detallado"
 msgid "Close expiries"
 msgstr "Plazos que expirarán pronto"
 
-#: ../templates/default/configurer_fiches.tpl:30
+#: ../templates/default/configurer_fiches.tpl:26
 msgid "Position"
 msgstr "Puesto"
 
@@ -2230,6 +2264,11 @@ msgstr "Foto:"
 msgid "Email contents"
 msgstr ""
 
+#: ../templates/default/gestion_textes.tpl:46
+#, fuzzy
+msgid "(Max 32 characters)"
+msgstr "(al menos 4 caracteres)"
+
 #: ../templates/default/preferences.tpl:217
 msgid "Strip Text Color:"
 msgstr ""
@@ -2270,6 +2309,7 @@ msgstr ""
 #: ../templates/default/editer_champ.tpl:5
 #: ../templates/default/lostpasswd.tpl:27
 #: ../templates/default/self_adherent.tpl:41
+#: ../templates/default/gestion_textes.tpl:5
 msgid "- ERROR -"
 msgstr "- ERROR -"
 
@@ -2484,7 +2524,7 @@ msgstr "Tipo de instalación desconocido"
 msgid "left"
 msgstr "Borrar"
 
-#: ../templates/default/configurer_fiches.tpl:65
+#: ../templates/default/configurer_fiches.tpl:61
 msgid "[down]"
 msgstr "[abajo]"
 
@@ -2587,7 +2627,7 @@ msgstr "sin transacción"
 msgid "DROP operation not allowed"
 msgstr "Operación DROP no autorizada"
 
-#: ../templates/default/configurer_fiches.tpl:27
+#: ../templates/default/configurer_fiches.tpl:23
 msgid "Visibility"
 msgstr "Visibilidad"
 

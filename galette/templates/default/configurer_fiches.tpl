@@ -10,10 +10,6 @@
 			</ul>
 		</div>
 {/if}
-		<!--<select name="form" onchange="form.submit()">
-			{html_options options=$all_forms selected=$form_name}
-		</select>&nbsp;
-		<input type="submit" class="submit" name="continue" value="{_T("Continue")}"/>-->
 		<ul id="tabs">
 {foreach from=$all_forms key=key item=form}
 			<li><a href="?form={$key}"{if $form_name eq $key} class="current_tab"{/if}>{$form}</a></li>
@@ -48,7 +44,7 @@
 {else}
 					<a href="editer_champ.php?form={$form_name}&amp;id={$field.id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" width="16" height="16"/></a>
 {/if}
-					<a onclick="return confirm('{_T("Do you really want to delete this category ?\\n All associated data will be deleted as well.")|escape:"javascript"}')" href="configurer_fiches.php?form={$form_name}&amp;del={$field.id}">
+					<a onclick="return confirm('{_T("Do you really want to delete this field ?\\n All associated data will be deleted as well.")|escape:"javascript"}')" href="configurer_fiches.php?form={$form_name}&amp;del={$field.id}">
 					<img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" width="16" height="16"/>
 					</a>
 {if $field.index eq 1}

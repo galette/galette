@@ -1,4 +1,4 @@
-{if !empty($fields)}
+{if !empty($dynamic_fields)}
 {if $is_form eq true}
 <fieldset class="cssform">
 	<legend>{_T("Additionnal fields:")}</legend>

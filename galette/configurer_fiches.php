@@ -36,7 +36,8 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 
 $error_detected = array();
 
-	$form_name = ( isset($_GET['form']) )?$_GET['form']:'adh';
+$form_name = ( isset($_GET['form']) )?$_GET['form']:'adh';
+if( isset($_POST['form']) && trim($_POST['form']) != '' ) $form_name = $_POST['form'];
 
 	if (!isset($all_forms[$form_name]))
 		$form_name = '';

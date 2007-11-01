@@ -26,6 +26,7 @@ PHP_SOURCES = ../index.php \
 ../picture.php \
 ../champs_requis.php \
 ../traduire_libelles.php \
+../gestion_textes.php \
 ../includes/dynamic_fields.inc.php \
 ../templates/default/index.tpl \
 ../templates/default/gestion_adherents.tpl \
@@ -45,7 +46,8 @@ PHP_SOURCES = ../index.php \
 ../templates/default/gestion_transactions.tpl \
 ../templates/default/lostpasswd.tpl \
 ../templates/default/self_adherent.tpl \
-../templates/default/champ_requis.tpl
+../templates/default/champ_requis.tpl \
+../templates/default/gestion_textes.tpl
 
 
 all : messages.po lang

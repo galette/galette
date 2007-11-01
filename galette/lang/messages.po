@@ -88,7 +88,7 @@ msgstr ""
 
 #: ../gestion_adherents.php:401 ../templates/default/gestion_adherents.tpl:59
 #: ../templates/default/page.tpl:98 ../templates/default/page.tpl:102
-#: ../templates/default/configurer_fiches.tpl:26
+#: ../templates/default/configurer_fiches.tpl:22
 msgid "Name"
 msgstr ""
 
@@ -100,7 +100,7 @@ msgstr ""
 msgid "line"
 msgstr ""
 
-#: ../templates/default/configurer_fiches.tpl:29
+#: ../templates/default/configurer_fiches.tpl:25
 msgid "Required"
 msgstr ""
 
@@ -126,7 +126,7 @@ msgid "Lost your password?"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:156 ../templates/default/page.tpl:129
-#: ../templates/default/configurer_fiches.tpl:49 ../templates/default/gestion_contributions.tpl:134
+#: ../templates/default/configurer_fiches.tpl:45 ../templates/default/gestion_contributions.tpl:134
 #: ../templates/default/gestion_transactions.tpl:97
 msgid "[mod]"
 msgstr ""
@@ -196,6 +196,10 @@ msgstr ""
 msgid "Contact information:"
 msgstr ""
 
+#: ../templates/default/gestion_textes.tpl:49
+msgid "Email Body:"
+msgstr ""
+
 #: ../templates/default/gestion_contributions.tpl:4
 msgid "Show contributions since"
 msgstr ""
@@ -248,6 +252,10 @@ msgstr ""
 msgid "Emailing method:"
 msgstr ""
 
+#: ../templates/default/gestion_textes.tpl:33 ../templates/default/gestion_textes.tpl:42
+msgid "Change"
+msgstr ""
+
 #: ../gestion_contributions.php:258 ../gestion_adherents.php:334
 msgid "Freed of dues"
 msgstr ""
@@ -274,6 +282,10 @@ msgstr ""
 msgid "- Non valid date!"
 msgstr ""
 
+#: ../templates/default/gestion_textes.tpl:45
+msgid "Email Subject"
+msgstr ""
+
 #: ../self_adherent.php:196
 msgid "Email sent is disabled in the preferences. Ask galette admin."
 msgstr ""
@@ -290,6 +302,7 @@ msgstr ""
 #: ../templates/default/ajouter_contribution.tpl:82 ../templates/default/traduire_libelles.tpl:37
 #: ../templates/default/ajouter_transaction.tpl:41 ../templates/default/editer_champ.tpl:91
 #: ../templates/default/self_adherent.tpl:187 ../templates/default/champ_requis.tpl:16
+#: ../templates/default/gestion_textes.tpl:56
 msgid "Save"
 msgstr ""
 
@@ -419,7 +432,7 @@ msgid "Membership extension:"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:59 ../templates/default/voir_adherent.tpl:38
-#: ../templates/default/self_adherent.tpl:100
+#: ../templates/default/self_adherent.tpl:100 ../templates/default/gestion_textes.tpl:27
 msgid "Language:"
 msgstr ""
 
@@ -462,10 +475,6 @@ msgstr ""
 
 #: ../preferences.php:126 ../preferences.php:145
 msgid "- The numbers and measures have to be integers!"
-msgstr ""
-
-#: ../templates/default/configurer_fiches.tpl:51
-msgid "Do you really want to delete this category ?\\n All associated data will be deleted as well."
 msgstr ""
 
 #: ../install/index.php:592
@@ -518,6 +527,10 @@ msgstr ""
 #: ../templates/default/preferences.tpl:54 ../templates/default/ajouter_adherent.tpl:142
 #: ../templates/default/self_adherent.tpl:114
 msgid " (continuation)"
+msgstr ""
+
+#: ../gestion_textes.php:67
+msgid "Email: '%s' has been successfully modified."
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:1
@@ -582,8 +595,8 @@ msgstr ""
 msgid "- Only .jpg, .gif and .png files are allowed."
 msgstr ""
 
-#: ../voir_adherent.php:90 ../templates/default/configurer_fiches.tpl:41
-#: ../templates/default/configurer_fiches.tpl:89 ../templates/default/editer_champ.tpl:42
+#: ../voir_adherent.php:90 ../templates/default/configurer_fiches.tpl:37
+#: ../templates/default/configurer_fiches.tpl:85 ../templates/default/editer_champ.tpl:42
 #: ../templates/default/champ_requis.tpl:8
 msgid "Yes"
 msgstr ""
@@ -706,7 +719,7 @@ msgstr ""
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr ""
 
-#: ../templates/default/configurer_fiches.tpl:97
+#: ../templates/default/configurer_fiches.tpl:93
 msgid "Add"
 msgstr ""
 
@@ -736,9 +749,13 @@ msgstr ""
 msgid "Size:"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:105 ../templates/default/configurer_fiches.tpl:31
+#: ../templates/default/gestion_adherents.tpl:105 ../templates/default/configurer_fiches.tpl:27
 #: ../templates/default/gestion_contributions.tpl:101 ../templates/default/gestion_transactions.tpl:69
 msgid "Actions"
+msgstr ""
+
+#: ../gestion_textes.php:65
+msgid "Email: '%s' has not been modified!"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:114
@@ -763,6 +780,10 @@ msgstr ""
 
 #: ../install/index.php:684
 msgid "Update Report"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:1
+msgid "Automatic emails texts edition"
 msgstr ""
 
 #: ../templates/default/ajouter_contribution.tpl:68
@@ -991,6 +1012,10 @@ msgstr ""
 msgid "Comments:"
 msgstr ""
 
+#: ../templates/default/configurer_fiches.tpl:47
+msgid "Do you really want to delete this field ?\\n All associated data will be deleted as well."
+msgstr ""
+
 #: ../includes/i18n.inc.php:213
 msgid "partnership"
 msgstr ""
@@ -1048,7 +1073,7 @@ msgstr ""
 msgid "Subscribe"
 msgstr ""
 
-#: ../templates/default/ajouter_contribution.tpl:86 ../templates/default/configurer_fiches.tpl:16
+#: ../templates/default/ajouter_contribution.tpl:86
 msgid "Continue"
 msgstr ""
 
@@ -1081,8 +1106,8 @@ msgstr ""
 msgid "- The amount must be an integer!"
 msgstr ""
 
-#: ../voir_adherent.php:92 ../templates/default/configurer_fiches.tpl:41
-#: ../templates/default/configurer_fiches.tpl:88 ../templates/default/editer_champ.tpl:41
+#: ../voir_adherent.php:92 ../templates/default/configurer_fiches.tpl:37
+#: ../templates/default/configurer_fiches.tpl:84 ../templates/default/editer_champ.tpl:41
 #: ../templates/default/champ_requis.tpl:10
 msgid "No"
 msgstr ""
@@ -1292,7 +1317,7 @@ msgstr ""
 msgid "Galette has been successfully installed!"
 msgstr ""
 
-#: ../templates/default/configurer_fiches.tpl:28 ../templates/default/gestion_contributions.tpl:65
+#: ../templates/default/configurer_fiches.tpl:24 ../templates/default/gestion_contributions.tpl:65
 msgid "Type"
 msgstr ""
 
@@ -1306,12 +1331,12 @@ msgstr ""
 msgid "Generate Member Card"
 msgstr ""
 
-#: ../templates/default/configurer_fiches.tpl:58
+#: ../templates/default/configurer_fiches.tpl:54
 msgid "[up]"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:158 ../templates/default/page.tpl:133
-#: ../templates/default/configurer_fiches.tpl:52 ../templates/default/gestion_contributions.tpl:135
+#: ../templates/default/configurer_fiches.tpl:48 ../templates/default/gestion_contributions.tpl:135
 #: ../templates/default/gestion_transactions.tpl:98
 msgid "[del]"
 msgstr ""
@@ -1385,6 +1410,10 @@ msgstr ""
 #: ../templates/default/preferences.tpl:303 ../templates/default/ajouter_adherent.tpl:98
 #: ../templates/default/voir_adherent.tpl:67 ../templates/default/self_adherent.tpl:169
 msgid "Username:"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:36
+msgid "Reference:"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:27
@@ -1529,7 +1558,7 @@ msgstr ""
 msgid "- You must indicate a sender name for emails!"
 msgstr ""
 
-#: ../configurer_fiches.php:59
+#: ../configurer_fiches.php:60
 msgid "- The name field cannot be void."
 msgstr ""
 
@@ -1840,7 +1869,7 @@ msgstr ""
 msgid "Close expiries"
 msgstr ""
 
-#: ../templates/default/configurer_fiches.tpl:30
+#: ../templates/default/configurer_fiches.tpl:26
 msgid "Position"
 msgstr ""
 
@@ -1960,6 +1989,10 @@ msgstr ""
 msgid "Email contents"
 msgstr ""
 
+#: ../templates/default/gestion_textes.tpl:46
+msgid "(Max 32 characters)"
+msgstr ""
+
 #: ../templates/default/preferences.tpl:217
 msgid "Strip Text Color:"
 msgstr ""
@@ -1991,7 +2024,7 @@ msgstr ""
 #: ../templates/default/configurer_fiches.tpl:5 ../templates/default/traduire_libelles.tpl:4
 #: ../templates/default/voir_adherent.tpl:4 ../templates/default/ajouter_transaction.tpl:5
 #: ../templates/default/editer_champ.tpl:5 ../templates/default/lostpasswd.tpl:27
-#: ../templates/default/self_adherent.tpl:41
+#: ../templates/default/self_adherent.tpl:41 ../templates/default/gestion_textes.tpl:5
 msgid "- ERROR -"
 msgstr ""
 
@@ -2184,7 +2217,7 @@ msgstr ""
 msgid "left"
 msgstr ""
 
-#: ../templates/default/configurer_fiches.tpl:65
+#: ../templates/default/configurer_fiches.tpl:61
 msgid "[down]"
 msgstr ""
 
@@ -2280,7 +2313,7 @@ msgstr ""
 msgid "DROP operation not allowed"
 msgstr ""
 
-#: ../templates/default/configurer_fiches.tpl:27
+#: ../templates/default/configurer_fiches.tpl:23
 msgid "Visibility"
 msgstr ""
 
