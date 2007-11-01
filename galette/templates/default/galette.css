@@ -179,6 +179,10 @@ th.listing {
 	width:1%;
 }
 
+.date_row{
+	width:6em;
+}
+
 a.listing {
 	color: #FFFFFF;
 	font-weight: bold;

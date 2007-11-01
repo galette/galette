@@ -30,10 +30,11 @@
 			<tr>
 				<td class="left">{$nb_members} {if $nb_members != 1}{_T("members")}{else}{_T("member")}{/if}</td>
 				<td class="center">
-					{_T("Show:")}
-					<select name="nbshow" onchange="form.submit()">
+					<label for="nbshow">{_T("Show:")}</label>
+					<select name="nbshow" id="nbshow">
 						{html_options options=$nbshow_options selected=$numrows}
 					</select>
+					<noscript> <span><input type="submit" value="{_T("Change")}" /></span></noscript>
 				</td>
 				<td class="right">{_T("Pages:")}
 					<span class="pagelink">
@@ -195,3 +196,12 @@
 			</ul>
 {/if}
 		</form>
+		{literal}
+		<script type="text/javascript">
+			<![CDATA[
+				$('#nbshow').change(function() {
+					this.form.submit();
+				});
+			]]>
+		</script>
+		{/literal}
