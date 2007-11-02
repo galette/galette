@@ -33,7 +33,7 @@
 				<li><a href="ajouter_adherent.php">{_T("Add a member")}</a></li>
 				<li><a href="ajouter_contribution.php">{_T("Add a contribution")}</a></li>
 				<li><a href="ajouter_transaction.php">{_T("Add a transaction")}</a></li>
-				<li><a href="log.php">{_T("Logs")}</a></li>
+				<li><a href="history.php">{_T("Logs")}</a></li>
 {else}
 				<li><a href="voir_adherent.php">{_T("My information")}</a></li>
 				<li><a href="gestion_contributions.php">{_T("My contributions")}</a></li>

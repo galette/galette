@@ -1,5 +1,5 @@
 <?php
-/* log.php
+/* history.php
  * - Historique
  * Copyright (c) 2003 Frédéric Jaqcuot
  *
@@ -21,12 +21,12 @@
  
 require_once('includes/galette.inc.php');
 
-if ($_SESSION["logged_status"]==0)
+if( !$login->isLogged() )
 {
 	header("location: index.php");
 	die();
 }
-if ($_SESSION["admin_status"]==0)
+if( !$login->isAdmin())
 {
 	header("location: voir_adherent.php");
 	die();
@@ -41,7 +41,7 @@ if ($_SESSION["admin_status"]==0)
 		$requete[0] = "DELETE FROM ".PREFIX_DB."logs";
 		$DB->Execute($requete[0]);
 		dblog("Logs flushed");
-		header ('location: log.php');
+		header ('location: history.php');
 	}
 
 	// Tri
@@ -113,7 +113,7 @@ if ($_SESSION["admin_status"]==0)
 	$tpl->assign("nb_lines",count($logs));
 	$tpl->assign("nb_pages",$nbpages);
 	$tpl->assign("page",$page);
-	$content = $tpl->fetch("log.tpl");
+	$content = $tpl->fetch("history.tpl");
 	$tpl->assign("content",$content);
 	$tpl->display("page.tpl");
 ?>

@@ -39,7 +39,7 @@
  */
 require_once('includes/galette.inc.php');
 
-if ($_SESSION["logged_status"]==0) {
+if( !$login->isLogged() ) {
 	header("location: index.php");
 	die();
 }

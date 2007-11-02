@@ -22,7 +22,7 @@
  
 require_once('includes/galette.inc.php');
 
-if ($_SESSION["logged_status"]==0)
+if ( !$login->isLogged() )
 {
 	header("location: index.php");
 	die();
@@ -30,7 +30,7 @@ if ($_SESSION["logged_status"]==0)
 
 	$filtre_id_adh = "";
 	
-	if ($_SESSION["admin_status"]==0) 
+	if( !$login->isAdmin() ) 
 		$_SESSION["filtre_cotis_adh"] = $_SESSION["logged_id_adh"];
 	else
 	{

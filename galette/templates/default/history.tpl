@@ -1,7 +1,7 @@
 		<h1 id="titre">{_T("Logs")}</h1>
 		<div class="button-container">
 			<div class="button-link button-flush-logs">
-				<a href="log.php?reset=1">{_T("Flush the logs")}</a>
+				<a href="history.php?reset=1">{_T("Flush the logs")}</a>
 			</div>
 		</div>
 		<table id="listing">
@@ -15,7 +15,7 @@
 {if $smarty.section.pageLoop.index eq $page}
 						{$smarty.section.pageLoop.index}
 {else}
-						<a href="log.php?page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
+						<a href="history.php?page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
 {/if}
 {/section}
 						</span>
@@ -24,7 +24,7 @@
 				<tr>
 					<th class="listing">#</th>
 					<th class="listing left" width="150">
-						<a href="log.php?tri=0" class="listing">
+						<a href="history.php?tri=0" class="listing">
 							{_T("Date")}
 							{if $smarty.session.tri_log eq 0}
 							{if $smarty.session.tri_log_sens eq 0}
@@ -36,7 +36,7 @@
 						</a>
 					</th>
 					<th class="listing left" width="150">
-						<a href="log.php?tri=1" class="listing">
+						<a href="history.php?tri=1" class="listing">
 							{_T("IP")}
 							{if $smarty.session.tri_log eq 1}
 							{if $smarty.session.tri_log_sens eq 0}
@@ -48,7 +48,7 @@
 						</a>
 					</th>
 					<th class="listing left" width="150">
-						<a href="log.php?tri=2" class="listing">
+						<a href="history.php?tri=2" class="listing">
 							{_T("User")}
 							{if $smarty.session.tri_log eq 2}
 							{if $smarty.session.tri_log_sens eq 0}
@@ -60,7 +60,7 @@
 						</a>
 					</th>
 					<th class="listing left" width="150">
-						<a href="log.php?tri=4" class="listing">
+						<a href="history.php?tri=4" class="listing">
 							{_T("Action")}
 							{if $smarty.session.tri_log eq 4}
 							{if $smarty.session.tri_log_sens eq 0}
@@ -72,7 +72,7 @@
 						</a>
 					</th>
 					<th class="listing left">
-						<a href="log.php?tri=3" class="listing">
+						<a href="history.php?tri=3" class="listing">
 							{_T("Description")}
 							{if $smarty.session.tri_log eq 3}
 							{if $smarty.session.tri_log_sens eq 0}
@@ -94,7 +94,7 @@
 						{if $smarty.section.pageLoop.index eq $page}
 						{$smarty.section.pageLoop.index}
 						{else}
-						<a href="log.php?page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
+						<a href="history.php?page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
 						{/if}
 						{/section}
 						</span>

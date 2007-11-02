@@ -21,12 +21,12 @@
  
 require_once('includes/galette.inc.php');
 
-if ($_SESSION["logged_status"]==0)
+if( !$login->isLogged() )
 {
 	header("location: index.php");
 	die();
 }
-if ($_SESSION["admin_status"]==0)
+if( !$login->isAdmin() )
 {
 	header("location: voir_adherent.php");
 	die();

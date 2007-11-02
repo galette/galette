@@ -32,18 +32,18 @@
  */
 require_once('includes/galette.inc.php');
 
-if ($_SESSION["logged_status"]==0)
+if ( !$login->isLogged() )
 {
 	header("location: index.php");
 	die();
 }
 
 include("includes/dynamic_fields.inc.php");
-include(WEB_ROOT."classes/texts.class.php");
+include(WEB_ROOT . 'classes/texts.class.php');
 
 // new or edit
-$adherent["id_adh"] = "";
-if ($_SESSION["admin_status"]==1)
+$adherent['id_adh'] = '';
+if ( $login->isAdmin() )
 {
 	$adherent["id_adh"] = get_numeric_form_value("id_adh", "");
 	// disable some fields
@@ -77,7 +77,7 @@ $warning_detected = array();
 $confirm_detected = array();
 
 // flagging required fields
-include(WEB_ROOT."classes/required.class.php");
+require_once(WEB_ROOT . 'classes/required.class.php');
 	
 $requires = new Required();
 $required = $requires->getRequired();

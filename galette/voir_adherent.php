@@ -37,14 +37,14 @@
  
 require_once('includes/galette.inc.php');
 
-if ($_SESSION["logged_status"]==0) {
+if( !$login->isLogged() ) {
 	header("location: index.php");
 	die();
 }
 
 $id_adh = get_numeric_form_value("id_adh", "");
 
-if ($_SESSION["admin_status"]==0)
+if( !$login->isAdmin() )
 	$id_adh = $_SESSION["logged_id_adh"];
 
 if ($id_adh=="") {
