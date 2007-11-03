@@ -54,7 +54,7 @@ require_once(WEB_ROOT."classes/pdf.class.php");
         unset($_SESSION['galette']['cards']);
 
 // If we are called from "Voir_adherent" get unique id value           
-    } elseif ($_GET["id_adh"] > 0)
+    } elseif (isset($_GET["id_adh"]) && $_GET["id_adh"] > 0)
         $mailing_adh[]=$_GET["id_adh"];
     else 
         die();
@@ -116,9 +116,9 @@ require_once(WEB_ROOT."classes/pdf.class.php");
 
 // Get fixed data from preferences
 // and convert strings to utf-8 for tcpdf
-    $an_cot = "<b>".PREF_CARD_YEAR."</b>";
-    $abrev = "<b>".mb_convert_encoding(PREF_CARD_ABREV,"UTF-8")."</b>";
-    $strip = mb_convert_encoding(PREF_CARD_STRIP,"UTF-8");
+    $an_cot = '<strong>' . PREF_CARD_YEAR . '</strong>';
+    $abrev = '<strong>' . mb_convert_encoding(PREF_CARD_ABREV, 'UTF-8') . '</b>';
+    $strip = mb_convert_encoding(PREF_CARD_STRIP, 'UTF-8');
     $logo=& new picture(999999);
     if ($logo->HAS_PICTURE){
         $logofile = $logo->FILE_PATH;
@@ -218,9 +218,9 @@ require_once(WEB_ROOT."classes/pdf.class.php");
 // Get data
 // Extract town if zip - town selected
         if ( PREF_CARD_ADDRESS == 5 )
-            $email = "<b>".mb_convert_encoding($resultat->fields[3]." - ".$resultat->fields[4],"UTF-8")."</b>";
+            $email = '<strong>' . mb_convert_encoding($resultat->fields[3] . ' - ' . $resultat->fields[4], 'UTF-8') . '</strong>';
         else
-            $email = "<b>".mb_convert_encoding($resultat->fields[3],"UTF-8")."</b>";
+            $email = '<strong>' . mb_convert_encoding($resultat->fields[3], 'UTF-8') . '</strong>';
         
         $titre ="";
         if ( PREF_BOOL_DISPLAY_TITLE ) {
@@ -264,13 +264,14 @@ require_once(WEB_ROOT."classes/pdf.class.php");
             $fcol = $scol;
         }
 
-        $id = "<b>".$resultat->fields[0]."</b>";
-        $nom_adh_ext = "<b>".$titre.mb_convert_encoding(strtoupper($resultat->fields[2]." ".$resultat->fields[1]),"UTF-8")."</b>";
+        $id = '<strong>' . $resultat->fields[0] . '</strong>';
+        $nom_adh_ext = '<strong>' . $titre.mb_convert_encoding(strtoupper($resultat->fields[2] . ' ' . $resultat->fields[1]), 'UTF-8') . '</strong>';
         $photo = new picture($resultat->fields[0]);
-        $photofile = $photo->FILE_PATH;
+        $photofile = ($photo->hasPicture())?$photo->FILE_PATH:false;
 
 // Photo 100x130 and logo
-        $pdf->Image($photofile,$x0,$y0,25);
+	if($photofile)
+        	$pdf->Image($photofile,$x0,$y0,25);
         $pdf->Image($logofile,$xl,$y0,round($wlogo));
 
 // Color=#8C8C8C: Shadow of the year

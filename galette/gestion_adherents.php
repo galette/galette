@@ -81,6 +81,8 @@ if (isset($_POST['mailing'])) {
 
 if (isset($_SESSION['galette']['pdf_error']) && $_SESSION['galette']['pdf_error']) {
 	$error_detected[] = $_SESSION['galette']['pdf_error_msg'];
+	unset($_SESSION['galette']['pdf_error_msg']);
+	unset($_SESSION['galette']['pdf_error']);
 }
 
 $members = array();
@@ -391,7 +393,8 @@ if (isset($_GET["tri"]))
 
 	$tpl->assign('page_title', _T("Management of members"));
 	$tpl->assign("error_detected",$error_detected);
-   $tpl->assign("warning_detected",$warning_detected);
+	if(isset($warning_detected))
+		$tpl->assign("warning_detected",$warning_detected);
 	$tpl->assign("members",$members);
 	$tpl->assign("nb_members",$nbadh->fields[0]);
 	$tpl->assign("nb_pages",$nbpages);
