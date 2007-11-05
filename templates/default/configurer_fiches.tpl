@@ -44,7 +44,7 @@
 {else}
 					<a href="editer_champ.php?form={$form_name}&amp;id={$field.id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T("[mod]")}" border="0" width="12" height="13"/></a>
 {/if}
-					<a onclick="return confirm('{_T("Do you really want to delete this category ?\n All associated data will be deleted as well.")|escape:"javascript"}')" href="configurer_fiches.php?form={$form_name}&amp;del={$field.id}">
+					<a onclick="return confirm('{_T("Do you really want to delete this category ?\\n All associated data will be deleted as well.")|escape:"javascript"}')" href="configurer_fiches.php?form={$form_name}&amp;del={$field.id}">
 					<img src="{$template_subdir}images/icon-trash.png" alt="{_T("[del]")}" border="0" width="11" height="13"/>
 					</a>
 {if $field.index eq 1}

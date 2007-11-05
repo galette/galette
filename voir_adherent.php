@@ -130,6 +130,7 @@
 	$adherent['picture_height'] = $picture->getOptimalHeight();
 	$adherent['picture_width'] = $picture->getOptimalWidth();
 	
+	$tpl->assign("error_detected",$error_detected);
 	$tpl->assign("data",$adherent);
 	$tpl->assign("dynamic_fields",$dynamic_fields);
 	$tpl->assign("time",time());

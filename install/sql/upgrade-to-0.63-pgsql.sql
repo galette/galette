@@ -36,6 +36,7 @@ CREATE UNIQUE INDEX galette_logs_idx ON galette_logs (id_log);
 CREATE UNIQUE INDEX galette_preferences_idx ON galette_preferences (id_pref);
 -- Add new or missing preferences;
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_pays', '-');
+INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_WEBSITE', '');
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_mail_method', '0');
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_mail_smtp', '0'); 
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_membership_ext', '12');
