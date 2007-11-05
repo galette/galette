@@ -267,11 +267,10 @@ require_once(WEB_ROOT."classes/pdf.class.php");
         $id = '<strong>' . $resultat->fields[0] . '</strong>';
         $nom_adh_ext = '<strong>' . $titre.mb_convert_encoding(strtoupper($resultat->fields[2] . ' ' . $resultat->fields[1]), 'UTF-8') . '</strong>';
         $photo = new picture($resultat->fields[0]);
-        $photofile = ($photo->hasPicture())?$photo->FILE_PATH:false;
+        $photofile = $photo->FILE_PATH;
 
 // Photo 100x130 and logo
-	if($photofile)
-        	$pdf->Image($photofile,$x0,$y0,25);
+        $pdf->Image($photofile,$x0,$y0,25);
         $pdf->Image($logofile,$xl,$y0,round($wlogo));
 
 // Color=#8C8C8C: Shadow of the year

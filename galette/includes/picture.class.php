@@ -101,7 +101,7 @@
 				global $tpl;
 				$found_picture = $tpl->template_dir.'images/default.png';
 				$format = 'png';
-				$mime = 'image/gif';
+				$mime = 'image/png';
 				$this->HAS_PICTURE = false;
 			}
 			else

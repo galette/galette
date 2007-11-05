@@ -153,7 +153,6 @@ pre {
 	font-size:1.2em;
 	text-align: left;
 	font-weight: bold;
-	font-weight: bold;
 	border-style: solid;
 	border-width: 1px;
 	background-color: #FBFBFB;
@@ -772,10 +771,67 @@ legend{
 #delete{ background:url(images/icon-trash.png) right 50% no-repeat; }
 
 .fleft{float:left;}
+.fright{float:right;}
 
 input.large{
 	width:90%;
 }
+
+/*** Voir adhérent ***/
+.details{
+	width:100%;
+	margin-bottom:1em;
+}
+.details caption{
+	font-weight:bold;
+	font-size:1.1em;
+}
+.details th{
+	width:15em;
+	font-weight:bold;
+	vertical-align:middle;
+	/*line-height:1.5em;*/
+	padding:0.2em 0.1em;
+}
+.details td.photo{
+	width:1%;
+}
+
+#details_menu{
+	margin:1.5em 0 1em 0;
+	padding:0;
+	text-align:right;
+}
+#details_menu li{
+	display:inline;
+	padding:0 0 0 0.5em;
+}
+#details_menu li a{
+	border:1px #BBBBBB solid;
+	padding:25px 0.5em 0.2em 0.5em;
+	font-weight: bold;
+	color: #666666;
+}
+#details_menu li a:hover{
+	color: #eea423;
+	background-color:#EEEEEE;
+}
+/*** /Voir adhérent ***/
+
+/*** Images buttons ***/
+#btn_membercard{
+	background:url(images/member_card.png) 50% 1px no-repeat;
+}
+#btn_edit{
+	background:url(images/edit.png) 50% 1px no-repeat;
+}
+#btn_contrib{
+	background:url(images/contribution.png) 50% 1px no-repeat;
+}
+#btn_addcontrib{
+	background:url(images/add_contribution.png) 50% 1px no-repeat;
+}
+/*** /Images buttons ***/
 
 /*** Onglets ***/
 #tabs, #tabs li{
@@ -958,7 +1014,5 @@ ul#paths{
 	background-color:#FF8A8A;
 	list-style-position:inside;
 }
-
-
 
 /*** /Installation pages ***/

@@ -190,7 +190,7 @@
 			<ul class="selection_menu">
 				<li>{_T("Selection:")}</li>
 				<li><input type="submit" id="delete" class="submit" onclick="return confirm('{_T("Do you really want to delete all selected accounts (and related contributions)?")|escape:"javascript"}');" name="delete" value="{_T("Delete")}"/></li>
-				<li><input type="submit" id="sendmail" class="submit" name="mailing" value="{_T("Mail all")}"/></li>
+				<li><input type="submit" id="sendmail" class="submit" name="mailing" value="{_T("Mail")}"/></li>
 				<li><input type="submit" class="submit" name="labels" value="{_T("Generate labels")}"/></li>
 				<li><input type="submit" class="submit" name="cards" value="{_T("Generate Member Cards")}"/></li>
 			</ul>

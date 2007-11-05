@@ -2,13 +2,16 @@
 {if $is_form eq true}
 <fieldset class="cssform">
 	<legend>{_T("Additionnal fields:")}</legend>
+{else}
+<table class="details">
+	<caption>{_T("Additionnal fields:")}</caption>
 {/if}
 {foreach from=$dynamic_fields item=field}
 {if $field.field_perm ne 1 || $smarty.session.admin_status eq 1}
 	{if $field.field_type eq 0}
 		{if $is_form eq false}
 			<tr>
-				<th class="separator">{$field.field_name|escape}&nbsp;</th>
+				<th class="separator">{$field.field_name|escape}</th>
 			</tr>
 		{else}
 			<div class="separator">{$field.field_name|escape}</div>
@@ -20,9 +23,9 @@
 			<p>
 		{/if}
 		{if $is_form eq false}
-				<th><label for="info_field_{$field.field_id}_1">{$field.field_name|escape}&nbsp;</label></th>
+				<th>{$field.field_name|escape}</th>
 		{else}
-				<label class="bline libelle {if $field.field_required eq 1} required{/if}" for="info_field_{$field.field_id}_1">{$field.field_name|escape}&nbsp;</label>
+				<label class="bline libelle {if $field.field_required eq 1} required{/if}" for="info_field_{$field.field_id}_1">{$field.field_name|escape}</label>
 		{/if}
 				{if $is_form eq false}<td>{/if}
 		{section name="fieldLoop" start=1 loop=$field.field_repeat+1}
@@ -60,6 +63,8 @@
 {/if}
 {/foreach}
 {if $is_form eq true}
-	</fieldset>
+</fieldset>
+{else}
+</table>
 {/if}
 {/if}
