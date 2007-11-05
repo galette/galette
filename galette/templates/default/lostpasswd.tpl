@@ -35,10 +35,10 @@
 				<td><input type="text" name="login" maxlength="50" /></td>
 			</tr>
 		</table>
-		<br/>
-		<input type="submit" class="submit" name="lostpasswd" value="{_T("Send me my password")}" />
-		<input type="hidden" name="valid" value="1"/>
-		<br/><br/>
+		<div>
+			<input type="submit" class="submit" name="lostpasswd" value="{_T("Send me my password")}" />
+			<input type="hidden" name="valid" value="1"/>
+		</div>
 		</form>
 	</div>
 	<div class="button-container">

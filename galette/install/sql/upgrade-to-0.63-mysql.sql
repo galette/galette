@@ -5,6 +5,7 @@ ALTER TABLE `galette_adherents` CHANGE `mdp_adh` `mdp_adh` VARCHAR(40);
 
 -- Add new or missing preferences;
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_pays', '-');
+INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_WEBSITE', '');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_method', '0');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_smtp', '0');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_membership_ext', '12');

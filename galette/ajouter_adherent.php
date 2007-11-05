@@ -284,35 +284,35 @@
           $mail_result = custom_mail($adherent['email_adh'],$mail_subject,$mail_text);
           //TODO: duplicate piece of code with mailing_adherent
           if( $mail_result == 1) {
-            dblog("Send subscription mail to :"."$_POST[email_adh])", $requete);
+            dblog("Send subscription mail to :".$_POST["email_adh"], $requete);
             $warning_detected[] = _T("Password sent. Login:")." \"" . $adherent['login_adh'] . "\"";
             //$password_sent = true;
           }else{
             switch ($mail_result) {
               case 2 :
-                dblog("Email sent is desactived in the preferences. Ask galette admin.");
-                $error_detected[] = _T("Email sent is desactived in the preferences. Ask galette admin");
+                dblog("Email sent is disabled in the preferences. Ask galette admin.");
+                $error_detected[] = _T("Email sent is disabled in the preferences. Ask galette admin");
                 break;
               case 3 :
-                dblog("A problem happened while sending password for account:"." \"" . $_POST[email_adh] . "\"");
-                $error_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"";
+                dblog("A problem happened while sending password for account:"." \"" . $_POST["email_adh"] . "\"");
+                $error_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST["email_adh"] . "\"";
                 break;
               case 4 :
-                dblog("The server mail filled in the preferences cannot be reached. Ask Galette admin");
-                $error_detected[] = _T("The server mail filled in the preferences cannot be reached. Ask Galette admin");
+                dblog("The mail server filled in the preferences cannot be reached. Ask Galette admin");
+                $error_detected[] = _T("The mail server filled in the preferences cannot be reached. Ask Galette admin");
                 break;
 							case 5 :
 								dblog("**IMPORTANT** There was a probably breaking attempt when sending mail to :"." \"" . $email_adh . "\"");
 								$error_detected[] = _T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"";
 								break;
               default :
-                dblog("A problem happened while sending password for account:"." \"" . $_POST[email_adh] . "\"");
-                $error_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST[email_adh] . "\"";
+                dblog("A problem happened while sending password for account:"." \"" . $_POST["email_adh"] . "\"");
+                $error_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST["email_adh"] . "\"";
                 break;
             }
           }
         }else{
-          $error_detected[] = _T("Sent mail is checked but there is no email address")." \"" . $_POST[login_adh] . "\"";
+          $error_detected[] = _T("Sent mail is checked but there is no email address")." \"" . $_POST["login_adh"] . "\"";
         }
 
 			// dynamic fields

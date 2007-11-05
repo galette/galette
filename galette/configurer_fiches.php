@@ -61,7 +61,7 @@
 		if (isset($_POST["valid"])) {
 			if ($_POST["field_type"] != $field_type_separator &&
 			   (!isset($_POST["field_name"]) || $_POST["field_name"] == "")) {
-				$error_detected[] = _T("- The field name cannot be void.");
+				$error_detected[] = _T("- The name field cannot be void.");
 			} else {
 				$field_name = $_POST["field_name"];
 				$field_perm = $_POST["field_perm"];

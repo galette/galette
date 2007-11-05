@@ -1,4 +1,14 @@
 	<h1 class="titre">{_T("Member Profile")}</h1>
+    {if $error_detected|@count != 0}
+    		<div id="errorbox">
+    			<h1>{_T("- ERROR -")}</h1>
+    			<ul>
+    {foreach from=$error_detected item=error}
+    				<li>{$error}</li>
+    {/foreach}
+    			</ul>
+    		</div>
+    {/if}
 	<div class="bigtable">
 		<table>
 			<tr>

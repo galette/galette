@@ -45,7 +45,7 @@
 		$result = &$DB->Execute($query);
 		if ($result->EOF) {
 			$warning_detected = _T("We could'nt find this password in the database");
-			print "<meta http-equiv=\"refresh\" content=\"2;url=index.php\">";
+			$head_redirect = "<meta http-equiv=\"refresh\" content=\"2;url=index.php\" />";
 			//TODO need to clean die here
 		} else {
 			$id_adh = $result->fields[0];
@@ -70,11 +70,16 @@
 						$query .= " WHERE id_adh = '$id_adh'";
 						if (!$DB->Execute($query)) {
 							$warning_detected = _T("There was a database error");
-							//$warning_detected = $DB->ErrorMsg();
 						} else {
-							dblog("**Password changed**. id:"." \"" . $id_adh . "\"");
-							$warning_detected = _T("Password changed, you will be redirect to login page");
-							print "<meta http-equiv=\"refresh\" content=\"10;url=index.php\">";
+							//delete temporary password from table
+							$query = "DELETE from ".PREFIX_DB."tmppasswds where tmp_passwd=".txt_sqls($hash);
+							if (!$DB->Execute($query)) {
+								$warning_detected = _T("There was a database error");
+							}else{
+								dblog("**Password changed**. id:"." \"" . $id_adh . "\"");
+								$warning_detected = _T("Password changed, you will be redirect to login page");
+								$head_redirect = "<meta http-equiv=\"refresh\" content=\"10;url=index.php\" />";
+							}
 						}
 					}
 				}
@@ -89,6 +94,7 @@
 
 	$tpl->assign("error_detected",$error_detected);
 	$tpl->assign("warning_detected",$warning_detected);
+	$tpl->assign("head_redirect", $head_redirect);
 	$tpl->assign("hash",$hash);
 
   // display page

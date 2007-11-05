@@ -2,7 +2,7 @@
 
 /* functions.inc.php
  * - Fonctions utilitaires
- * Copyright (c) 2003 Frédéric Jaqcuot
+ * Copyright (c) 2003 Frï¿½dï¿½ric Jaqcuot
  * Copyright (c) 2004 Georges Khaznadar (i18n using gettext)
  *
  * This program is free software; you can redistribute it and/or
@@ -39,6 +39,8 @@ $languages = array (
                     "spanish"   => "es_ES@euro"
                     );
 $language=$languages[$pref_lang];
+
+setlocale(LC_CTYPE, $language);
 
 // if (function_exists('putenv')) putenv() can exist, but doesn't work ...
 if( @putenv("LANG=$language") or
@@ -208,5 +210,12 @@ $foo=_T("Partnership");
 $foo=_T("french");
 $foo=_T("english");
 $foo=_T("spanish");
-
+//Added 05/11/2007
+$foo = _T("annual fee");
+$foo = _T("annual fee (to be paid)");
+$foo = _T("company fee");
+$foo = _T("donation in kind");
+$foo = _T("donation in money");
+$foo = _T("partnership");
+$foo = _T("reduced annual fee");
 ?>
