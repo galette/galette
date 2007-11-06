@@ -52,31 +52,8 @@ require_once("MDB2.php");
 
 class Texts{
 	private $all_texts;
-	private $error = array();
-	private $db;
 	const TABLE = "texts";
-
 	
-	function __construct(){
-		/*$dsn = TYPE_DB.'://'.USER_DB.':'.PWD_DB.'@'.HOST_DB.'/'.NAME_DB;
-		$options = array(
-			'debug'       => 2,
-			'portability' => MDB2_PORTABILITY_ALL);
-		
-		$this->db = & MDB2::connect($dsn, $options);
-		// Vérification des erreurs
-		if (MDB2::isError($this->db)) {
-			echo $this->db->getDebugInfo().'<br/>';
-			echo $this->db->getMessage();
-		}
-		$this->db->setFetchMode(MDB2_FETCHMODE_ASSOC);*/
-
-	}
-
-	/*function __destruct(){
-		$this->db->disconnect();
-	}*/
-
 	/**
 	* GETTERS
 	* @param string: Reference of text to get
@@ -86,13 +63,7 @@ class Texts{
 	public function getTexts($ref,$lang){
 		global $mdb;
 		$requete = 'SELECT * FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) . ' WHERE tref=' . $mdb->quote($ref) . ' AND tlang=' . $mdb->quote($lang);
-
 		$result = $mdb->query($requete);
-		// Vérification des erreurs
-		/*if (MDB2::isError($result)) {
-			echo $result->getDebugInfo().'<br/>';
-			echo $result->getMessage();
-		}*/
 		
 		if($result->numRows()>0){
 			$this->all_texts = $result->fetchRow(MDB2_FETCHMODE_ASSOC);
@@ -127,11 +98,6 @@ class Texts{
 		global $mdb;
 		$requete = 'SELECT ' . $mdb->quoteIdentifier('tref') . ', ' . $mdb->quoteIdentifier('tcomment') . ' FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) . ' WHERE ' . $mdb->quoteIdentifier('tlang') . '=' . $mdb->quote($lang);
 		$result = $mdb->query($requete);
-		/*// Vérification des erreurs
-		if (MDB2::isError($result)) {
-			echo $result->getDebugInfo().'<br/>';
-			echo $result->getMessage();
-		}*/
 			
 		if($result->numRows()>0){
 			$refs = $result->fetchAll(MDB2_FETCHMODE_ASSOC);

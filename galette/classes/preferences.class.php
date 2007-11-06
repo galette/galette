@@ -68,6 +68,8 @@ class Preferences{
 		'pref_log'		=>	2,
 		'pref_email_nom'	=>	'Galette',
 		'pref_email'		=>	'mail@domain.com',
+		'pref_email_newadh'	=>	'mail@domain.com',
+		'pref_bool_mailadh'	=>	false,
 		/** FIXME: get constant value from mail class here ? */
 		'pref_mail_method'	=>	0,
 		'pref_mail_smtp'	=>	'',

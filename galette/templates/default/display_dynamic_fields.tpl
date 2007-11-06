@@ -43,7 +43,7 @@
 					<input type="text" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}"
 					{if $field.field_width > 0}size="{$field.field_width}"{/if}
 					{if $field.field_size > 0}maxlength="{$field.field_size}"{/if}
-					value="{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|escape}" size="50" {$disabled.dyn[$field.field_id]}/>
+					value="{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|escape}" {$disabled.dyn[$field.field_id]}/>
 			{elseif $field.field_type eq 3}
 					<select name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}">
 						<!-- If no option is present, page is not XHTML compliant -->

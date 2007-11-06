@@ -50,6 +50,7 @@
 				<li><a href="configurer_fiches.php">{_T("Configure member forms")}</a></li>
 				<li><a href="traduire_libelles.php">{_T("Translate labels")}</a></li>
 				<li><a href="gestion_textes.php">{_T("Email contents")}</a></li>
+				<li><a href="utilitaires.php">{_T("Utilities")}</a></li>
 			</ul>
 		</div>
 {/if}

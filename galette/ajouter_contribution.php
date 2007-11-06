@@ -33,6 +33,7 @@ if( !$login->isAdmin() )
 	die();
 }
 	
+include(WEB_ROOT."classes/texts.class.php");
 include(WEB_ROOT."includes/dynamic_fields.inc.php");
 
 	function missing_contrib_amount($DB, $trans_id, $error_detected) {
@@ -90,7 +91,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 
 		// checking posted values
 		$fields = &$DB->MetaColumns(PREFIX_DB."cotisations");
-	        while (list($key, $properties) = each($fields))
+	   while (list($key, $properties) = each($fields))
 		{
 			$key = strtolower($key);
 			if (isset($_POST[$key]))
@@ -249,6 +250,50 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 						SET date_echeance=".$date_fin_update."
 						WHERE id_adh=" . $contribution['id_adh'];
 				$DB->Execute($requete);
+			}
+			if (isset($_POST["mail_confirm"]) && $_POST["mail_confirm"]=="1") {
+				// Get member informations
+				$requete = "SELECT nom_adh, prenom_adh, email_adh,date_echeance,pref_lang
+						FROM ".PREFIX_DB."adherents
+						WHERE id_adh ='".$contribution['id_adh']."'";
+				$result = &$DB->Execute($requete);
+				if (!$result->EOF)
+				{
+					$contribution['nom_adh'] = $result->fields[0];
+					$contribution['prenom_adh'] = $result->fields[1];
+					$contribution['email_adh'] = $result->fields[2];
+					$contribution['date_echeance'] = date_db2text($result->fields[3]);
+					$contribution['pref_lang'] = $result->fields[4];
+				}
+				$result->Close();
+				if ($contribution['email_adh']!=""){
+					$texts = new texts();
+					$mtxt = $texts->getTexts("contrib",$contribution['pref_lang']);
+					$mtxt[tbody] = str_replace("{NAME}", PREF_NOM, $mtxt[tbody]);
+					$mtxt[tbody] = str_replace("{DEADLINE}", custom_html_entity_decode($contribution['date_echeance']), $mtxt[tbody]);
+					$mtxt[tbody] = str_replace("{COMMENT}", custom_html_entity_decode($contribution['info_cotis']), $mtxt[tbody]);
+					$mail_result = custom_mail($contribution['email_adh'],$mtxt[tsubject],$mtxt[tbody]);
+				}else{
+					dblog("A problem happened while sending contribution receipt to user:"." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"");
+					$error_detected[] = _T("A problem happened while sending contribution receipt to user:")." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"";
+				}
+				// Sent email to admin if pref checked
+			   if (PREF_BOOL_MAILADH) { 
+					// Get email text in database
+					$texts = new texts();
+					$mtxt = $texts->getTexts("newcont",PREF_LANG);
+					$mtxt[tsubject] = str_replace("{NAME_ADH}", custom_html_entity_decode($contribution['nom_adh']), $mtxt[tsubject]);
+					$mtxt[tsubject] = str_replace("{SURNAME_ADH}", custom_html_entity_decode($contribution['prenom_adh']), $mtxt[tsubject]);
+					$mtxt[tbody] = str_replace("{NAME_ADH}", custom_html_entity_decode($contribution['nom_adh']), $mtxt[tbody]);
+					$mtxt[tbody] = str_replace("{SURNAME_ADH}", custom_html_entity_decode($contribution['prenom_adh']), $mtxt[tbody]);
+					$mtxt[tbody] = str_replace("{DEADLINE}", custom_html_entity_decode($contribution['date_echeance']), $mtxt[tbody]);
+					$mtxt[tbody] = str_replace("{COMMENT}", custom_html_entity_decode($contribution['info_cotis']), $mtxt[tbody]);
+					$mail_result = custom_mail(PREF_EMAIL_NEWADH,$mtxt[tsubject],$mtxt[tbody]);
+					if( $mail_result != 1) {
+						dblog("A problem happened while sending email to admin for user:"." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"");
+						$error_detected[] = _T("A problem happened while sending email to admin for user:")." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"";
+					}
+				}
 			}
 
 			if (count($error_detected) == 0) {

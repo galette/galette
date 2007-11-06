@@ -234,10 +234,27 @@ if (isset($_POST["id_adh"]))
 			// to allow the string to be extracted for translation
 			$foo = _T("Member card added");
 
+			//Send email to admin if preference checked
+		   if (PREF_BOOL_MAILADH) {
+				$texts = new texts();
+				$mtxt = $texts->getTexts("newadh",PREF_LANG);
+				$mtxt[tsubject] = str_replace("{NAME_ADH}", custom_html_entity_decode($adherent['nom_adh']), $mtxt[tsubject]);
+				$mtxt[tsubject] = str_replace("{SURNAME_ADH}", custom_html_entity_decode($adherent['prenom_adh']), $mtxt[tsubject]);
+				$mtxt[tbody] = str_replace("{NAME_ADH}", custom_html_entity_decode($adherent['nom_adh']), $mtxt[tbody]);
+				$mtxt[tbody] = str_replace("{SURNAME_ADH}", custom_html_entity_decode($adherent['prenom_adh']), $mtxt[tbody]);
+				$mtxt[tbody] = str_replace("{LOGIN}", custom_html_entity_decode($adherent['login_adh']), $mtxt[tbody]);
+				$mail_result = custom_mail(PREF_EMAIL_NEWADH,$mtxt[tsubject],$mtxt[tbody]);
+				unset ($texts);
+				if( $mail_result != 1) {
+					dblog("A problem happened while sending email to admin for account:"." \"" . $_POST["email_adh"] . "\"");
+					$error_detected[] = _T("A problem happened while sending email to admin for account:")." \"" . $_POST["email_adh"] . "\"";
+				}
+			}
+	
 			// logging
 			//nom_adh and prenom_adh is not sent when form is used by a simple user
 			//dblog('Member card updated:',strtoupper($_POST["nom_adh"]).' '.$_POST["prenom_adh"], $requete);
-			dblog('Member card updated:',strtoupper($_POST["login_adh"]),$requete);
+			dblog('Member card added:',strtoupper($_POST["login_adh"]),$requete);
 		}
 		else
 		{
@@ -280,6 +297,7 @@ if (isset($_POST["id_adh"]))
 					$mtxt[tbody] = str_replace("{PASSWORD}", custom_html_entity_decode($adherent['mdp_adh']),$mtxt[tbody]);
 					$mail_result = custom_mail($adherent['email_adh'],$mtxt[tsubject],$mtxt[tbody]);
 					//TODO: duplicate piece of code with mailing_adherent
+					unset ($texts);
 					if( $mail_result == 1) {
 						dblog("Send subscription mail to :".$_POST["email_adh"], $requete);
 						$warning_detected[] = _T("Password sent. Login:")." \"" . $adherent['login_adh'] . "\"";
@@ -325,7 +343,7 @@ if (isset($_POST["id_adh"]))
 						SET date_echeance=".$date_fin_update."
 						WHERE id_adh=" . $adherent['id_adh'];
 				$DB->Execute($requete);
-	
+
 				if (!isset($_POST['id_adh']))
 					header('location: ajouter_contribution.php?id_adh='.$adherent['id_adh']);
 				elseif (!isset($_POST['del_photo']) && (count($error_detected)==0))

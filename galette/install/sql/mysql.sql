@@ -175,3 +175,27 @@ CREATE TABLE IF NOT EXISTS `galette_texts` (
   `tcomment` varchar(64) NOT NULL,
   PRIMARY KEY  (`tid`)
 ) TYPE=MyISAM;
+
+-- New table for documents models: table `galette__models`
+DROP TABLE IF EXISTS `galette_models`;
+CREATE TABLE IF NOT EXISTS `galette_models` (
+  `mod_id` int(11) NOT NULL COMMENT 'id du modèle',
+  `mod_carac` varchar(64) NOT NULL COMMENT 'caracteristique',
+  `carac_id` varchar(32) default NULL COMMENT 'id caractéristique',
+  `carac_type` varchar(32) NOT NULL COMMENT 'type',
+  `carac_value` varchar(256) NOT NULL COMMENT 'valeur',
+  `carac_xpath` varchar(256) NOT NULL,
+  `carac_cond_id` int(11) default NULL COMMENT 'index sur condition',
+  PRIMARY KEY  (`mod_id`)
+) TYPE=MyISAM COMMENT='Modèles des documents';
+
+--Secondary table for conditions in models
+DROP TABLE IF EXISTS `galette_models_conditions`;
+CREATE TABLE IF NOT EXISTS `galette_models_conditions` (
+  `cond_id` int(11) NOT NULL,
+  `cond_field` varchar(32) NOT NULL,
+  `cond_in` varchar(64) NOT NULL,
+  `cond_out` varchar(64) NOT NULL,
+  PRIMARY KEY  (`cond_id`)
+) TYPE=MyISAM;
+

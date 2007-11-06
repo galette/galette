@@ -31,68 +31,70 @@
 				</p>
 			</fieldset>
 
-			<table border="0" id="input-table">
-				{if $type_selected eq 1}
-				<tr>
-					<th {if $required.montant_cotis eq 1}style="color: #FF0000;"{/if} class="libelle">{_T("Amount:")}</th>
-					<td {if !$data.trans_id}colspan="3"{/if}><input type="text" name="montant_cotis" value="{$data.montant_cotis}" maxlength="10"/></td>
-				</tr>
-				<tr>
-					{if $data.trans_id}
-					<th class="libelle">{_T("Transaction number:")}</th>
-					<td >{$data.trans_id}</td>
-					{/if}
-				</tr>
-				<tr>
-					<th {if $required.date_debut_cotis eq 1}style="color: #FF0000;"{/if} class="libelle">
+			<fieldset class="cssform">
+			{if $type_selected eq 1}
+				<legend>{_T("Details of contribution")}</legend>
+				<p>
+					<label {if $required.montant_cotis eq 1}style="color: #FF0000;"{/if} class="bline">{_T("Amount:")}</label>
+					<input type="text" name="montant_cotis" value="{$data.montant_cotis}" maxlength="10"/>
+				</p>
+				{if $data.id_cotis != ""}
+				<p>
+					<label class="bline">{_T("Transaction number:")}</label>
+					{$data.trans_id}
+				</p>
+				{/if}
+				<p>
+					<label {if $required.date_debut_cotis eq 1}style="color: #FF0000;"{/if} class="bline">
 						{if $cotis_extension eq 0}
 							{_T("Date of contribution:")}
 						{else}
 							{_T("Start date of membership:")}
 						{/if}
-						<br/>&nbsp;</th>
-					<td {if $cotis_extension eq 0}colspan="2"{/if}>
+						<br/>&nbsp;</label>
 						<input type="text" name="date_debut_cotis" value="{$data.date_debut_cotis}" maxlength="10"/><br/>
-						<div class="exemple">{_T("(dd/mm/yyyy format)")}</div>
-					</td>
-				</tr>
-				<tr>
+						<span class="exemple">{_T("(dd/mm/yyyy format)")}</span>
+				</p>
+				<p>
 					{if $cotis_extension ne 0}
-					<th {if $required.date_fin_cotis eq 1}style="color: #FF0000;"{/if} class="libelle">
+					<label {if $required.date_fin_cotis eq 1}style="color: #FF0000;"{/if} class="bline">
 						{if $pref_membership_ext != ""}
 							{_T("Membership extension:")}
 						{else}
 							{_T("End date of membership:")}
 						{/if}
 						<br/>&nbsp;
-					</th>
-					<td>
+					</label>
 						{if $pref_membership_ext != ""}
 						<input type="text" name="duree_mois_cotis" value="{$data.duree_mois_cotis}" maxlength="3"/><br/>
-						<div class="exemple">{_T("months")}</div>
+						<span class="exemple">{_T("months")}</span>
 						{else}
 						<input type="text" name="date_fin_cotis" value="{$data.date_fin_cotis}" maxlength="10"/><br/>
-						<div class="exemple">{_T("(dd/mm/yyyy format)")}</div>
+						<span class="exemple">{_T("(dd/mm/yyyy format)")}</span>
 						{/if}
-					</td>
 					{/if}
-				</tr>
-				<tr>
-					<th {if $required.info_cotis eq 1}style="color: #FF0000;"{/if} class="libelle">{_T("Comments:")}</th>
-					<td ><textarea name="info_cotis" cols="61" rows="6">{$data.info_cotis}</textarea></td>
-				</tr>
-				<tr>
-					<th colspan="2" class="libelle">{include file="display_dynamic_fields.tpl" is_form=true}</th>
-				</tr>
-				<tr>
-					<th align="center" colspan="2"><br/><input type="submit" class="submit" value="{_T("Save")}"/></th>
-				</tr>
-				{else} {* $type_selected ne 1 *}
-				<tr>
-					<th align="center" colspan="2"><br/><input type="submit" class="submit" value="{_T("Continue")}"/></th>
-				</tr>
-				{/if} {* $type_selected eq 1 *}
-			</table>
+				</p>
+				<p>
+					<label for="mail_confirm" class="bline">{_T("Send a mail:")}</label>
+					<input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
+					<span class="exemple">{_T("(the member will receive a confirmation by email, if he has an address.)")}</span>
+				</p>
+				<p>
+					<label {if $required.info_cotis eq 1}style="color: #FF0000;"{/if} class="bline">{_T("Comments:")}</label>
+					<textarea name="info_cotis" cols="61" rows="6">{$data.info_cotis}</textarea>
+				</p>
+				<p>
+					<label class="bline">{include file="display_dynamic_fields.tpl" is_form=true}</label>
+				</p>
+				<p>
+					<label align="center"><br/><input type="submit" class="submit" value="{_T("Save")}"/></label>
+				</p>
+			{else} {* $type_selected ne 1 *}
+				<p>
+					<label align="center" ><br/><input type="submit" class="submit" value="{_T("Continue")}"/></label>
+				</p>
+			{/if} {* $type_selected eq 1 *}
+			</fieldset>
 			<input type="hidden" name="id_cotis" value="{$data.id_cotis}"/>
 			<input type="hidden" name="trans_id" value="{$data.trans_id}"/>
 			{if $type_selected eq 1}
