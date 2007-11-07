@@ -46,6 +46,9 @@
 			</ul>
 		</div>
 {/if}
+		<div id="warningbox">
+			<h1>{_T("- WARNING -")}</h1>
+		</div>
 {if $warning_detected|@count != 0}
 		<div id="warningbox">
 			<h1>{_T("- WARNING -")}</h1>
@@ -56,11 +59,12 @@
 			</ul>
 		</div>
 {/if}
+{if $has_register}
+		<p id="infobox">{_T("Your account has been successfully created.")}<br/>{_T("Your browser should redirect you to the login page in a few seconds, if not, please go to: ")} <a href="../index.php">{_T("Homepage")}</a></p>
+{/if}
 {if !$head_redirect}
 		<form action="self_adherent.php" method="post" enctype="multipart/form-data">
-{if !$head_redirect}
 			<p>{_T("NB : The mandatory fields are in")} <span class="required">{_T("red")}</span></p>
-{/if}
 			<fieldset class="cssform">
 				<legend>{_T("Identity:")}</legend>
 				<p>

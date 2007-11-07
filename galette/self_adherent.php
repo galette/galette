@@ -1,7 +1,7 @@
 <?php
 /* self_adherent.php
  * - Saisie d'un adhérent par lui-même
- * Copyright (c) 2004 Frédéric Jaqcuot, Georges Khaznadar
+ * Copyright (c) 2004 Frédéric Jaqcuot, Georges Khaznadar, Johan Cwiklinski
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,7 +21,7 @@
 
 //include("includes/config.inc.php");
 require_once('includes/galette.inc.php');
-include_once(WEB_ROOT."includes/dynamic_fields.inc.php");
+include_once(WEB_ROOT . 'includes/dynamic_fields.inc.php');
 
 // initialize warnings
 $error_detected = array();
@@ -29,9 +29,11 @@ $warning_detected = array();
 //$confirm_detected = array();
 
 // flagging required fields
-include(WEB_ROOT."classes/required.class.php");
+include(WEB_ROOT . 'classes/required.class.php');
 $requires = new Required();
 $required = $requires->getRequired();
+
+include(WEB_ROOT . 'classes/texts.class.php');
 
 /**
 * TODO
@@ -170,25 +172,25 @@ if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
 
 		// il est temps d'envoyer un mail
 		if ($adherent['email_adh']!="") {
-				//$mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\nContent-Type: text/plain; charset=iso-8859-15\n";
+			//$mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">\nContent-Type: text/plain; charset=iso-8859-15\n";
 
-					// Get email text in database
-					$texts = new texts();
-					$mtxt = $texts->getTexts("sub",PREF_LANG);
-					// Replace Tokens
-					$mtxt[tbody] = str_replace("{NAME}", PREF_NOM, $mtxt[tbody]);
-					$mtxt[tbody] = str_replace("{LOGIN_URI}", "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"]),$mtxt[tbody]);
-					$mtxt[tbody] = str_replace("{LOGIN}", custom_html_entity_decode($adherent['login_adh']), $mtxt[tbody]);
-					$mtxt[tbody] = str_replace("{PASSWORD}", custom_html_entity_decode($adherent['mdp_adh_plain']),$mtxt[tbody]);
-					$mail_result = custom_mail($adherent['email_adh'],$mtxt[tsubject],$mtxt[tbody]);
+			// Get email text in database
+			$texts = new texts();
+			$mtxt = $texts->getTexts("sub", PREF_LANG);
+			// Replace Tokens
+			$mtxt['tbody'] = str_replace("{NAME}", PREF_NOM, $mtxt['tbody']);
+			$mtxt['tbody'] = str_replace("{LOGIN_URI}", "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"]),$mtxt['tbody']);
+			$mtxt['tbody'] = str_replace("{LOGIN}", custom_html_entity_decode($adherent['login_adh']), $mtxt['tbody']);
+			$mtxt['tbody'] = str_replace("{PASSWORD}", custom_html_entity_decode($adherent['mdp_adh_plain']),$mtxt['tbody']);
+			$mail_result = custom_mail($adherent['email_adh'],$mtxt['tsubject'],$mtxt['tbody']);
 
         		/** For debug **/
-//			    echo "mail content (send to ".$_POST['email_adh']." with subject '".$mail_subject."') will be :<br />".nl2br($mail_body)."<br />";
-        		$mail_result = custom_mail ($_POST['email_adh'],$mtxt[tsubject],$mtxt[tbody]);
+			//echo "mail content (send to ".$_POST['email_adh']." with subject '".$mail_subject."') will be :<br />".nl2br($mail_body)."<br />";
+        		$mail_result = custom_mail ($_POST['email_adh'],$mtxt['tsubject'],$mtxt['tbody']);
         
         		if( $mail_result == 1) { //check if mail was successfully send
         			dblog("Self subscribe - Send subscription mail to:".$adherent["email_adh"], $requete);
-        			$warning_detected[] = _T("Password sent. Login:")." \"" . $adherent["login_adh"] . "\"";
+        			$warning_detected[] = _T("Password sent. Login:") . ' "' . $adherent['login_adh'] . "\"";
         		}else{ //warn user if not
         			switch ($mail_result) {
         				case 2 :
@@ -209,10 +211,11 @@ if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
         				break;
         			}
         		}
-    		}
 		}
-
 		$head_redirect = "<meta http-equiv=\"refresh\" content=\"10;url=index.php\" />";
+		$has_register = true; 
+	}
+
 
 		// dynamic fields
 		/*set_all_dynamic_fields($DB, 'adh', $adherent['id_adh'], $adherent['dyn']);
@@ -273,6 +276,8 @@ $tpl->assign("time",time());
 $tpl->assign("dynamic_fields",$dynamic_fields);
 $tpl->assign("error_detected",$error_detected);
 $tpl->assign("warning_detected",$warning_detected);
+if($has_register)
+	$tpl->assign('has_register', $has_register);
 $tpl->assign("languages", $i18n->getList());
 if(isset($head_redirect)) $tpl->assign("head_redirect", $head_redirect);
 
