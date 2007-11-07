@@ -90,6 +90,9 @@ class Required{
 			if( !$result = $mdb->query( $requete ) )
 				return -1;
 
+			$types = array('text', 'boolean');
+			$result->setResultTypes($types);
+
 			/*$result = $this->db->query( $requete );
 			// Vérification des erreurs
 			if (MDB2::isError($result)) {
