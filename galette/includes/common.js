@@ -36,6 +36,9 @@ $(function() {
 	$('#errorbox').backgroundFade({sColor:'#ffffff',eColor:'#ff9999',steps:50},function() {
 		$(this).backgroundFade({sColor:'#ff9999',eColor:'#ffffff'});
 	});
+	$('#warningbox').backgroundFade({sColor:'#ffffff',eColor:'#F0FF6D',steps:50},function() {
+		$(this).backgroundFade({sColor:'#F0FF6D',eColor:'#ffffff'});
+	});
 	$('#infobox').backgroundFade({sColor:'#ffffff',eColor:'#99FF99',steps:50},function() {
 		$(this).backgroundFade({sColor:'#99FF99',eColor:'#ffffff'});
 	});

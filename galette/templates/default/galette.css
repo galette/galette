@@ -409,15 +409,18 @@ a.listing:hover {
 }
 
 #warningbox {
-	color: #000000;
-	border-color: #FFE8CC;
-	border-width: 2px;
-	border-style: solid;
-	margin-bottom: 10px;
+	text-align:center;
+	color:black;
+	padding : 0.5em 0.5em 0.5em 40px;
+	background : white url(images/warning.png) no-repeat 5px 50%;
+	width: 80%;
+	margin:0 auto 0.8em auto;
+	display:block;
+	border:2px solid #E9FF24;
 }
 		
 #warningbox h1 {
-	background-color: #FFE8CC;
+	background-color: #E9FF24;
 	text-align: center;
 	font-size: 10px;
 	font-weight: bold;

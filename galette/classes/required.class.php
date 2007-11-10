@@ -49,6 +49,11 @@ class Required{
 	private $fields = array();
 	const TABLE = 'required';
 
+	private $types = array(
+		'text',
+		'boolean'
+	);
+
 	private $defaults = array(
 		'titre_adh',
 		'nom_adh',
@@ -71,38 +76,21 @@ class Required{
 	private function checkUpdate($try = true){
 		global $mdb, $log;
 		if ($mdb->getOption('result_buffering')){
-			$requete = 'SELECT * FROM ' . PREFIX_DB . Adherents::TABLE . ' LIMIT 1';
+			$requete = 'SELECT * FROM ' . PREFIX_DB . Adherents::TABLE;
+			$mdb->getDb()->setLimit(1);
 
-			/** TODO: what to do on error ? */
 			if( !$result2 = $mdb->query( $requete ) )
 				return -1;
 
-			/*$result2 = $this->db->query( $requete );
-			// Vérification des erreurs
-			if (MDB2::isError($result2)) {
-				echo $result2->getDebugInfo().'<br/>';
-				echo $result2->getMessage();
-			}*/
-
 			$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE;
 
-			/** TODO: what to do on error ? */
 			if( !$result = $mdb->query( $requete ) )
 				return -1;
 
-			$types = array('text', 'boolean');
-			$result->setResultTypes($types);
+			$result->setResultTypes($this->types);
 
-			/*$result = $this->db->query( $requete );
-			// Vérification des erreurs
-			if (MDB2::isError($result)) {
-				echo $result->getDebugInfo().'<br/>';
-				echo $result->getMessage();
-			}*/
-			
-			if($result->numRows()==0 && $try){
+			if($result->numRows() == 0 && $try){
 				$this->init();
-				//exit();
 			}else{
 				$required = $result->fetchAll();
 				$this->fields = null;
@@ -114,14 +102,10 @@ class Required{
 				if($result2->numCols() != $result->numRows()){
 					$log->log('Count for adherents columns does not match required records. Is : ' . $result->numRows() . ' and should be ' . $result2->numCols() . '. Reinit.', PEAR_LOG_DEBUG);
 					$this->init(true);
-					//exit();
 				}
 			}
 		}else{
-			/** TODO :
-			* Informer de l'erreur
-			*/
-			echo 'An error has occured';
+			$log->log('An error occured whule checking for required fields update.', PEAR_LOG_ERROR);
 		}
 	}
 
@@ -136,25 +120,17 @@ class Required{
 		$log->log('Initializing required fiels', PEAR_LOG_DEBUG);
 		if($reinit){
 			$log->log('Reinit mode, we delete table\'s content', PEAR_LOG_DEBUG);
-			$requetesup = 'DELETE FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE);
-			/** TODO: what to do on error ? */
+			$requetesup = 'DELETE FROM ' . PREFIX_DB . self::TABLE;
+
 			if( !$init_result = $mdb->execute( $requetesup ) )
 				return -1;
-			//$this->db->query( $requetesup );
 		}
 	
-		$requete = 'SELECT * FROM ' . $mdb->quoteIdentifier(PREFIX_DB . Adherents::TABLE) . ' LIMIT 1';
+		$requete = 'SELECT * FROM ' . PREFIX_DB . Adherents::TABLE;
+		$mdb->getDb()->setLimit(1);
 
-		/** TODO: what to do on error ? */
 		if( !$result = $mdb->query( $requete ) )
 			return -1;
-
-		/*$result = $this->db->query( $requete );
-		// Vérification des erreurs
-		if (MDB2::isError($result)) {
-			echo $result->getDebugInfo().'<br/>';
-			echo $result->getMessage();
-		}*/
 
 		$fields = $result->getColumnNames();
 
@@ -165,23 +141,20 @@ class Required{
 
 		$stmt = $mdb->prepare(
 				'INSERT INTO ' . PREFIX_DB . self::TABLE . ' (field_id, required) VALUES(:id, :required)',
-				array('text', 'boolean'),
+				$this->types,
 				MDB2_PREPARE_MANIP
 			);
 
 		foreach ($f as $row){
-			/** TODO :
-			* Informer dans le log que la table des required a été mise à jour
-			*/
 			$stmt->bindParamArray($row);
 			$stmt->execute();
 		}
 
 		if (MDB2::isError($stmt)) {
-			echo $stmt->getDebugInfo().'<br/>';
-			echo $stmt->getMessage();
+			$log->log(_t("An error occured trying to initialize required fields.") . $stmt->getMessage, PEAR_LOG_ERR);
 		}else{
 			$log->log('Initialisation seems successfull, we reload the object', PEAR_LOG_DEBUG);
+			$log->log(_T("Required adherents table table updated successfully."), PEAR_LOG_INFO);
 			$this->checkUpdate(false);
 		}
 	}
@@ -200,8 +173,10 @@ class Required{
 	* @return boolean: true = field set
 	*/
 	public function setRequired($value){
+		global $mdb, $log;
+
 		//set required fields
-		$requete = 'UPDATE ' . PREFIX_DB . self::TABLE . ' SET required=1 WHERE field_id=\'';
+		$requete = 'UPDATE ' . PREFIX_DB . self::TABLE . ' SET required=' . $mdb->quote(true) . ' WHERE field_id=\'';
 		$requete .= implode('\' OR field_id=\'', $value);
 		$requete .= '\'';
 
@@ -209,29 +184,14 @@ class Required{
 		if( !$result = $mdb->query( $requete ) )
 			return -1;
 
-		/*$result = $this->db->query( $requete );
-		// Vérification des erreurs
-		if (MDB2::isError($result)) {
-			echo $result->getDebugInfo().'<br/>';
-			echo $result->getMessage();
-		}*/
-
 		//set not required fields (ie. all others...)
 		$not_required = array_diff($this->fields, $value);
-		$requete2 = 'UPDATE ' . PREFIX_DB . self::TABLE . ' SET required=0 WHERE field_id=\'';
+		$requete2 = 'UPDATE ' . PREFIX_DB . self::TABLE . ' SET required=' . $mdb->quote(false) . ' WHERE field_id=\'';
 		$requete2 .= implode('\' OR field_id=\'', $not_required);
 		$requete2 .= '\'';
 
-		/** TODO: what to do on error ? */
 		if( !$result = $mdb->query( $requete2 ) )
 			return -1;
-
-		/*$result = $this->db->query( $requete2 );
-		// Vérification des erreurs
-		if (MDB2::isError($result)) {
-			echo $result->getDebugInfo().'<br/>';
-			echo $result->getMessage();
-		}*/
 
 		$this->checkUpdate();
 	}

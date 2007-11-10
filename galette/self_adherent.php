@@ -60,6 +60,8 @@ $disabled = array(
 $update_string = '';
 $insert_string_fields = '';
 $insert_string_values = '';
+$has_register = false;
+
 
 $adherent['dyn'] = extract_posted_dynamic_fields($DB, $_POST, $disabled);
 $fields = &$DB->MetaColumns(PREFIX_DB."adherents");

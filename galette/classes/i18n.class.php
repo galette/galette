@@ -86,15 +86,19 @@ class i18n{
 	* Load language parameters from the XML file
 	*/
 	public function changeLanguage($id){
-		//echo 'trying to change to ' . $id ."\n";
-		/** FIXME: is session already started at this point ? It should be :) */
-		//ini_set("session.use_trans_sid", "0");
-		//session_start();
+		global $log;
+		$log->log('Trying to set locale to ' . $id, PEAR_LOG_DEBUG);
 
 		$current = $this->langs->xpath('//lang[@id=\'' . $id . '\']');
+
 		//if no match, switch to default
-		if(!isset($current[0])) $id = self::DEFAULT_LANG;
-		//print_r($current);
+		if(!isset($current[0])){
+			$log->log($id . ' does not exist in XML file, switching to default.', PEAR_LOG_WARNING);
+			$id = self::DEFAULT_LANG;
+			//do not forget to reload informations from the xml file
+			$current = $this->langs->xpath('//lang[@id=\'' . $id . '\']');
+		}
+
 		$sxe = $current[0];
 		$this->id = $id;
 		$this->longid = ( isset($sxe['long']) )?$sxe['long']:$id;
@@ -102,10 +106,6 @@ class i18n{
 		$this->abbrev = $sxe->shortname;
 		$this->flag = $sxe->flag;
 		$this->filename = $sxe->filename;
-
-		//we store lang object in session
-// 		$_SESSION['galette']['lang'] = serialize($this);
-// 		echo 'pre isset ?' . isset($_SESSION['galette']['lang']);
 	}
 
 	private function load($id){

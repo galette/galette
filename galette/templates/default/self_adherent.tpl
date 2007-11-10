@@ -46,9 +46,6 @@
 			</ul>
 		</div>
 {/if}
-		<div id="warningbox">
-			<h1>{_T("- WARNING -")}</h1>
-		</div>
 {if $warning_detected|@count != 0}
 		<div id="warningbox">
 			<h1>{_T("- WARNING -")}</h1>
