@@ -105,7 +105,8 @@ msgstr "Leave empty to use Sender Email as reply address"
 
 #: ../preferences.php:200
 msgid "- You must indicate an email address Galette should use to send emails!"
-msgstr "- You must indicate an email address Galette should use to send emails!"
+msgstr ""
+"- You must indicate an email address Galette should use to send emails!"
 
 #: ../includes/i18n.inc.php:203
 msgid "Partnership"
@@ -152,7 +153,7 @@ msgid "Installation complete !"
 msgstr "Installation complete !"
 
 #: ../templates/default/gestion_contributions.tpl:39
-#: ../templates/default/history.tpl:28
+#: ../templates/default/history.tpl:37
 #: ../templates/default/gestion_transactions.tpl:30
 msgid "Date"
 msgstr "Date"
@@ -313,6 +314,7 @@ msgstr "Emailing method:"
 #: ../templates/default/gestion_adherents.tpl:37
 #: ../templates/default/gestion_contributions.tpl:18
 #: ../templates/default/traduire_libelles.tpl:20
+#: ../templates/default/history.tpl:18
 #: ../templates/default/gestion_textes.tpl:33
 #: ../templates/default/gestion_textes.tpl:42
 msgid "Change"
@@ -442,8 +444,10 @@ msgid "Active"
 msgstr "Active"
 
 #: ../ajouter_adherent.php:212 ../ajouter_adherent.php:214
-msgid "- You can't send a confirmation by email if the member hasn't got an address!"
-msgstr "- You can't send a confirmation by email if the member hasn't got an address!"
+msgid ""
+"- You can't send a confirmation by email if the member hasn't got an address!"
+msgstr ""
+"- You can't send a confirmation by email if the member hasn't got an address!"
 
 #: ../ajouter_contribution.php:294
 msgid "A problem happened while sending email to admin for user:"
@@ -479,7 +483,7 @@ msgstr "Password sent. Login:"
 msgid "Default status were successfully stored."
 msgstr "Default status were successfully stored."
 
-#: ../templates/default/history.tpl:40
+#: ../templates/default/history.tpl:49
 msgid "IP"
 msgstr "IP"
 
@@ -941,7 +945,7 @@ msgstr "Allow members to print card ?"
 #: ../templates/default/gestion_adherents.tpl:113
 #: ../templates/default/gestion_contributions.tpl:20
 #: ../templates/default/gestion_contributions.tpl:142
-#: ../templates/default/history.tpl:12 ../templates/default/history.tpl:91
+#: ../templates/default/history.tpl:21 ../templates/default/history.tpl:100
 #: ../templates/default/gestion_transactions.tpl:12
 #: ../templates/default/gestion_transactions.tpl:104
 msgid "Pages:"
@@ -1330,6 +1334,7 @@ msgstr "Next step"
 
 #: ../templates/default/gestion_adherents.tpl:33
 #: ../templates/default/gestion_contributions.tpl:14
+#: ../templates/default/history.tpl:14
 #: ../templates/default/gestion_transactions.tpl:7
 msgid "Show:"
 msgstr "Show:"
@@ -1402,8 +1407,10 @@ msgstr "Please type an object for the message."
 
 #: ../mailing_adherents.php:138 ../lostpasswd.php:118
 #: ../ajouter_adherent.php:321
-msgid "**IMPORTANT** There was a probably breaking attempt when sending mail to :"
-msgstr "**IMPORTANT** There was a probably breaking attempt when sending mail to :"
+msgid ""
+"**IMPORTANT** There was a probably breaking attempt when sending mail to :"
+msgstr ""
+"**IMPORTANT** There was a probably breaking attempt when sending mail to :"
 
 #: ../templates/default/ajouter_adherent.tpl:1
 #: ../templates/default/ajouter_contribution.tpl:1
@@ -1428,7 +1435,8 @@ msgid "You are about to send an e-mail to"
 msgstr "You are about to send an e-mail to"
 
 #: ../install/index.php:822
-msgid "The tables have not been totally created, it may be a permission problem."
+msgid ""
+"The tables have not been totally created, it may be a permission problem."
 msgstr " The tables are not totally created, it's maybe a permission problem."
 
 #: ../templates/default/page.tpl:34 ../templates/default/voir_adherent.tpl:32
@@ -1480,7 +1488,7 @@ msgstr "Generate Member Card"
 msgid "[del]"
 msgstr "[del]"
 
-#: ../templates/default/history.tpl:64
+#: ../templates/default/history.tpl:73
 msgid "Action"
 msgstr " Actions"
 
@@ -1527,7 +1535,8 @@ msgid "Miss"
 msgstr "Miss"
 
 #: ../install/index.php:629
-msgid "GALETTE hasn't got enough permissions on the database to continue the update."
+msgid ""
+"GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr ""
 " Galette hasn't got enough permissions on the database to continue the "
 "update."
@@ -1549,7 +1558,7 @@ msgstr "Title:"
 msgid "Connection to database successfull"
 msgstr " Connection to database is OK"
 
-#: ../templates/default/history.tpl:115
+#: ../templates/default/history.tpl:124
 msgid "logs are empty"
 msgstr " logs are empty"
 
@@ -1797,8 +1806,10 @@ msgid "There is  no password for user :"
 msgstr "There is  no password for user :"
 
 #: ../install/index.php:394
-msgid "In order to be updated, Galette needs the Write permission on these files."
-msgstr "In order to be updated, Galette needs the Write permission on these files."
+msgid ""
+"In order to be updated, Galette needs the Write permission on these files."
+msgstr ""
+"In order to be updated, Galette needs the Write permission on these files."
 
 #: ../ajouter_contribution.php:219
 msgid "Contribution added"
@@ -1809,8 +1820,10 @@ msgid "Update of the tables"
 msgstr "Update of the tables"
 
 #: ../install/index.php:393
-msgid "For a correct functioning, Galette needs the Write permission on these files."
-msgstr "For a correct functioning, Galette needs the Write permission on these files."
+msgid ""
+"For a correct functioning, Galette needs the Write permission on these files."
+msgstr ""
+"For a correct functioning, Galette needs the Write permission on these files."
 
 #: ../templates/default/mailing_adherents.tpl:99
 msgid "unreachable members:"
@@ -1928,8 +1941,10 @@ msgid "Originator:"
 msgstr "Originator:"
 
 #: ../install/index.php:444
-msgid "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
-msgstr "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
+msgid ""
+"The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
+msgstr ""
+"The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 
 #: ../templates/default/mailing_adherents.tpl:85
 msgid "Send"
@@ -2013,7 +2028,7 @@ msgstr "Active member"
 msgid "lines"
 msgstr "lines"
 
-#: ../templates/default/history.tpl:76
+#: ../templates/default/history.tpl:85
 #: ../templates/default/gestion_transactions.tpl:40
 msgid "Description"
 msgstr "Description"
@@ -2445,8 +2460,10 @@ msgid "Installation mode unknown"
 msgstr "Installation mode unknown"
 
 #: ../templates/default/ajouter_contribution.tpl:80
-msgid "(the member will receive a confirmation by email, if he has an address.)"
-msgstr "(the member will receive a confirmation by email, if he has an address.)"
+msgid ""
+"(the member will receive a confirmation by email, if he has an address.)"
+msgstr ""
+"(the member will receive a confirmation by email, if he has an address.)"
 
 #: ../includes/dynamic_fields.inc.php:69
 msgid "left"
@@ -2474,7 +2491,7 @@ msgstr "Go back"
 msgid "transaction"
 msgstr "transaction"
 
-#: ../preferences.php:324 ../gestion_contributions.php:320
+#: ../history.php:132 ../preferences.php:324 ../gestion_contributions.php:320
 #: ../gestion_adherents.php:424 ../gestion_transactions.php:149
 msgid "All"
 msgstr "All"
@@ -2528,7 +2545,7 @@ msgstr "Save the parameters"
 msgid "Picture"
 msgstr "Picture"
 
-#: ../templates/default/history.tpl:52
+#: ../templates/default/history.tpl:61
 msgid "User"
 msgstr "User"
 
@@ -2593,4 +2610,3 @@ msgstr ""
 #: ../templates/default/gestion_contributions.tpl:166
 msgid "[ Add a contribution ]"
 msgstr "[ Add a contribution ]"
-

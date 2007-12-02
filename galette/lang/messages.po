@@ -120,7 +120,7 @@ msgstr ""
 msgid "Installation complete !"
 msgstr ""
 
-#: ../templates/default/gestion_contributions.tpl:39 ../templates/default/history.tpl:28
+#: ../templates/default/gestion_contributions.tpl:39 ../templates/default/history.tpl:37
 #: ../templates/default/gestion_transactions.tpl:30
 msgid "Date"
 msgstr ""
@@ -264,8 +264,8 @@ msgid "Emailing method:"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:37 ../templates/default/gestion_contributions.tpl:18
-#: ../templates/default/traduire_libelles.tpl:20 ../templates/default/gestion_textes.tpl:33
-#: ../templates/default/gestion_textes.tpl:42
+#: ../templates/default/traduire_libelles.tpl:20 ../templates/default/history.tpl:18
+#: ../templates/default/gestion_textes.tpl:33 ../templates/default/gestion_textes.tpl:42
 msgid "Change"
 msgstr ""
 
@@ -419,7 +419,7 @@ msgstr ""
 msgid "Default status were successfully stored."
 msgstr ""
 
-#: ../templates/default/history.tpl:40
+#: ../templates/default/history.tpl:49
 msgid "IP"
 msgstr ""
 
@@ -856,7 +856,7 @@ msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:39 ../templates/default/gestion_adherents.tpl:113
 #: ../templates/default/gestion_contributions.tpl:20 ../templates/default/gestion_contributions.tpl:142
-#: ../templates/default/history.tpl:12 ../templates/default/history.tpl:91
+#: ../templates/default/history.tpl:21 ../templates/default/history.tpl:100
 #: ../templates/default/gestion_transactions.tpl:12 ../templates/default/gestion_transactions.tpl:104
 msgid "Pages:"
 msgstr ""
@@ -1209,7 +1209,7 @@ msgid "Next step"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:33 ../templates/default/gestion_contributions.tpl:14
-#: ../templates/default/gestion_transactions.tpl:7
+#: ../templates/default/history.tpl:14 ../templates/default/gestion_transactions.tpl:7
 msgid "Show:"
 msgstr ""
 
@@ -1353,7 +1353,7 @@ msgstr ""
 msgid "[del]"
 msgstr ""
 
-#: ../templates/default/history.tpl:64
+#: ../templates/default/history.tpl:73
 msgid "Action"
 msgstr ""
 
@@ -1418,7 +1418,7 @@ msgstr ""
 msgid "Connection to database successfull"
 msgstr ""
 
-#: ../templates/default/history.tpl:115
+#: ../templates/default/history.tpl:124
 msgid "logs are empty"
 msgstr ""
 
@@ -1852,7 +1852,7 @@ msgstr ""
 msgid "lines"
 msgstr ""
 
-#: ../templates/default/history.tpl:76 ../templates/default/gestion_transactions.tpl:40
+#: ../templates/default/history.tpl:85 ../templates/default/gestion_transactions.tpl:40
 msgid "Description"
 msgstr ""
 
@@ -2282,8 +2282,9 @@ msgstr ""
 msgid "transaction"
 msgstr ""
 
-#: ../preferences.php:324 ../gestion_contributions.php:320
-#: ../gestion_adherents.php:424 ../gestion_transactions.php:149
+#: ../history.php:132 ../preferences.php:324
+#: ../gestion_contributions.php:320 ../gestion_adherents.php:424
+#: ../gestion_transactions.php:149
 msgid "All"
 msgstr ""
 
@@ -2333,7 +2334,7 @@ msgstr ""
 msgid "Picture"
 msgstr ""
 
-#: ../templates/default/history.tpl:52
+#: ../templates/default/history.tpl:61
 msgid "User"
 msgstr ""
 

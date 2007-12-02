@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: fr_FR@euro\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-12-20 16:44+0100\n"
-"PO-Revision-Date: 2007-12-02 12:03+0100\n"
+"PO-Revision-Date: 2007-12-02 21:14+0100\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: fr_FR <fedora-trans-fr@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -46,7 +46,8 @@ msgstr "Tél&nbsp;:"
 
 #: ../templates/default/gestion_contributions.tpl:128
 msgid "Do you really want to delete this contribution of the database ?"
-msgstr "Voulez vous vraiment effacer cette contribution de la base de données&nbsp;?"
+msgstr ""
+"Voulez vous vraiment effacer cette contribution de la base de données&nbsp;?"
 
 #: ../install/index.php:400
 msgid "(for a directory)"
@@ -104,7 +105,8 @@ msgstr "- Adresse courriel non valide&nbsp;!"
 #: ../templates/default/preferences.tpl:122
 #: ../templates/default/preferences.tpl:123
 msgid "Leave empty to use Sender Email as reply address"
-msgstr "Laisser vide pour utiliser le courriel expéditeur comme adresse de réponse"
+msgstr ""
+"Laisser vide pour utiliser le courriel expéditeur comme adresse de réponse"
 
 #: ../preferences.php:200
 msgid "- You must indicate an email address Galette should use to send emails!"
@@ -159,7 +161,7 @@ msgid "Installation complete !"
 msgstr "Fin de l'installation"
 
 #: ../templates/default/gestion_contributions.tpl:39
-#: ../templates/default/history.tpl:28
+#: ../templates/default/history.tpl:37
 #: ../templates/default/gestion_transactions.tpl:30
 msgid "Date"
 msgstr "Date"
@@ -320,6 +322,7 @@ msgstr "Méthode d'envoi des courriels&nbsp;:"
 #: ../templates/default/gestion_adherents.tpl:37
 #: ../templates/default/gestion_contributions.tpl:18
 #: ../templates/default/traduire_libelles.tpl:20
+#: ../templates/default/history.tpl:18
 #: ../templates/default/gestion_textes.tpl:33
 #: ../templates/default/gestion_textes.tpl:42
 msgid "Change"
@@ -357,7 +360,8 @@ msgstr "Sujet du courriel"
 
 #: ../self_adherent.php:200
 msgid "Email sent is disabled in the preferences. Ask galette admin."
-msgstr "L'envoi de courriel est désactivé. Contactez votre administrateur Galette."
+msgstr ""
+"L'envoi de courriel est désactivé. Contactez votre administrateur Galette."
 
 #: ../gestion_adherents.php:406
 msgid "Email,URL,IM"
@@ -449,7 +453,8 @@ msgid "Active"
 msgstr "Actif"
 
 #: ../ajouter_adherent.php:212 ../ajouter_adherent.php:214
-msgid "- You can't send a confirmation by email if the member hasn't got an address!"
+msgid ""
+"- You can't send a confirmation by email if the member hasn't got an address!"
 msgstr ""
 "- Vous ne pouvez pas envoyer de confirmation par courriel si l'adhérent n'a "
 "pas d'adresse&nbsp;!"
@@ -490,7 +495,7 @@ msgstr "Mot de passe envoyé. Identifiant&nbsp;:"
 msgid "Default status were successfully stored."
 msgstr "Les statuts par défaut ont été sauvegardés avec succès."
 
-#: ../templates/default/history.tpl:40
+#: ../templates/default/history.tpl:49
 msgid "IP"
 msgstr "IP"
 
@@ -757,7 +762,8 @@ msgstr "Veuillez sélectionner la langue d'administration"
 
 #: ../ajouter_transaction.php:141
 msgid "- No originator selected (register a non-member first if necessary)."
-msgstr "- Aucun emetteur sélectionné (enregistrez un non-membre si nécessaire)."
+msgstr ""
+"- Aucun emetteur sélectionné (enregistrez un non-membre si nécessaire)."
 
 #: ../templates/default/lostpasswd.tpl:47
 msgid "Username or email:"
@@ -835,7 +841,8 @@ msgstr "Ajouter"
 #: ../lostpasswd.php:110 ../lostpasswd.php:122 ../ajouter_adherent.php:313
 #: ../ajouter_adherent.php:325
 msgid "A problem happened while sending password for account:"
-msgstr "Un problème est survenu dans l'envoi du mot de passe pour le compte&nbsp;:"
+msgstr ""
+"Un problème est survenu dans l'envoi du mot de passe pour le compte&nbsp;:"
 
 #: ../gestion_adherents.php:363
 msgid "Late of "
@@ -952,7 +959,7 @@ msgstr "Permettre aux membres d'imprimer leur carte ?"
 #: ../templates/default/gestion_adherents.tpl:113
 #: ../templates/default/gestion_contributions.tpl:20
 #: ../templates/default/gestion_contributions.tpl:142
-#: ../templates/default/history.tpl:12 ../templates/default/history.tpl:91
+#: ../templates/default/history.tpl:21 ../templates/default/history.tpl:100
 #: ../templates/default/gestion_transactions.tpl:12
 #: ../templates/default/gestion_transactions.tpl:104
 msgid "Pages:"
@@ -1344,6 +1351,7 @@ msgstr "Étape suivante"
 
 #: ../templates/default/gestion_adherents.tpl:33
 #: ../templates/default/gestion_contributions.tpl:14
+#: ../templates/default/history.tpl:14
 #: ../templates/default/gestion_transactions.tpl:7
 msgid "Show:"
 msgstr "Afficher&nbsp;:"
@@ -1416,7 +1424,8 @@ msgstr "Veuillez indiquer un objet pour le message."
 
 #: ../mailing_adherents.php:138 ../lostpasswd.php:118
 #: ../ajouter_adherent.php:321
-msgid "**IMPORTANT** There was a probably breaking attempt when sending mail to :"
+msgid ""
+"**IMPORTANT** There was a probably breaking attempt when sending mail to :"
 msgstr ""
 "**IMPORTANT** Il est possible qu'une tentative d'atteinte au système ai eu "
 "lieu lors de l'envoi à&nbsp;:"
@@ -1444,7 +1453,8 @@ msgid "You are about to send an e-mail to"
 msgstr "Vous êtes sur le point d'envoyer un courriel à"
 
 #: ../install/index.php:822
-msgid "The tables have not been totally created, it may be a permission problem."
+msgid ""
+"The tables have not been totally created, it may be a permission problem."
 msgstr ""
 "Les tables n'ont pas pu être totalement créées, il s'agit peut-être d'un "
 "problème de droits."
@@ -1465,7 +1475,8 @@ msgstr "-- selectionner un nom --"
 
 #: ../install/index.php:947
 msgid "Unable to create configuration file (includes/config.inc.php)"
-msgstr "Impossible de créer le fichier de configuration (includes/config.inc.php)"
+msgstr ""
+"Impossible de créer le fichier de configuration (includes/config.inc.php)"
 
 #: ../templates/default/gestion_contributions.tpl:53
 msgid "Member"
@@ -1498,7 +1509,7 @@ msgstr "Générer la carte de membre"
 msgid "[del]"
 msgstr "[suppr]"
 
-#: ../templates/default/history.tpl:64
+#: ../templates/default/history.tpl:73
 msgid "Action"
 msgstr "Action"
 
@@ -1545,7 +1556,8 @@ msgid "Miss"
 msgstr "Mademoiselle"
 
 #: ../install/index.php:629
-msgid "GALETTE hasn't got enough permissions on the database to continue the update."
+msgid ""
+"GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr ""
 "Galette ne dispose pas de droits suffisants sur la base de données pour "
 "poursuivre la mise à jour."
@@ -1567,7 +1579,7 @@ msgstr "Titre&nbsp;:"
 msgid "Connection to database successfull"
 msgstr "La connexion à la base est établie"
 
-#: ../templates/default/history.tpl:115
+#: ../templates/default/history.tpl:124
 msgid "logs are empty"
 msgstr "historique vide"
 
@@ -1815,7 +1827,8 @@ msgid "There is  no password for user :"
 msgstr "Il n'y a pas de mot de passe pour l'utilisateur&nbsp;:"
 
 #: ../install/index.php:394
-msgid "In order to be updated, Galette needs the Write permission on these files."
+msgid ""
+"In order to be updated, Galette needs the Write permission on these files."
 msgstr ""
 "Pour être mis à jour et fonctionner correctement, Galette a besoin d'avoir "
 "les droits en écriture sur ces fichiers."
@@ -1829,7 +1842,8 @@ msgid "Update of the tables"
 msgstr "Mise à jour des tables"
 
 #: ../install/index.php:393
-msgid "For a correct functioning, Galette needs the Write permission on these files."
+msgid ""
+"For a correct functioning, Galette needs the Write permission on these files."
 msgstr ""
 "Pour fonctionner correctement, Galette a besoin d'avoir les droits en "
 "écriture sur ces fichiers."
@@ -1950,8 +1964,10 @@ msgid "Originator:"
 msgstr "Émetteur&nbsp;:"
 
 #: ../install/index.php:444
-msgid "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
-msgstr "Les droits nécessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et INSERT."
+msgid ""
+"The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
+msgstr ""
+"Les droits nécessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et INSERT."
 
 #: ../templates/default/mailing_adherents.tpl:85
 msgid "Send"
@@ -2021,7 +2037,8 @@ msgstr "Langue par défaut&nbsp;:"
 
 #: ../self_adherent.php:107 ../ajouter_adherent.php:146
 msgid "- Non-valid Website address! Maybe you've skipped the http:// ?"
-msgstr "- Adresse web non valide&nbsp;! Peut être avez vous oublié le http://&nbsp;?"
+msgstr ""
+"- Adresse web non valide&nbsp;! Peut être avez vous oublié le http://&nbsp;?"
 
 #: ../includes/i18n.inc.php:198
 msgid "Non-member"
@@ -2035,7 +2052,7 @@ msgstr "Membre actif"
 msgid "lines"
 msgstr "lignes"
 
-#: ../templates/default/history.tpl:76
+#: ../templates/default/history.tpl:85
 #: ../templates/default/gestion_transactions.tpl:40
 msgid "Description"
 msgstr "Description"
@@ -2047,7 +2064,8 @@ msgstr "Prénom&nbsp;:"
 
 #: ../ajouter_contribution.php:202 ../ajouter_transaction.php:139
 msgid "-  Sum of all contributions exceed corresponding transaction amount."
-msgstr "-  La somme de toutes les contributions dépasse le montant de la transaction."
+msgstr ""
+"-  La somme de toutes les contributions dépasse le montant de la transaction."
 
 #: ../gestion_adherents.php:60 ../gestion_adherents.php:70
 #: ../gestion_adherents.php:79
@@ -2097,7 +2115,7 @@ msgstr "- La durée doit être un entier&nbsp;!"
 
 #: ../gestion_contributions.php:287 ../gestion_adherents.php:369
 msgid "remaining days"
-msgstr "jour restant"
+msgstr "jours restants"
 
 #: ../self_adherent.php:122 ../preferences.php:121 ../ajouter_adherent.php:166
 msgid "- This username is already used by another member !"
@@ -2475,7 +2493,8 @@ msgid "Installation mode unknown"
 msgstr "Type d'installation inconnu"
 
 #: ../templates/default/ajouter_contribution.tpl:80
-msgid "(the member will receive a confirmation by email, if he has an address.)"
+msgid ""
+"(the member will receive a confirmation by email, if he has an address.)"
 msgstr "(l'adhérent recevra confirmation par courriel, s'il a une adresse.)"
 
 #: ../includes/dynamic_fields.inc.php:69
@@ -2504,7 +2523,7 @@ msgstr "Retour"
 msgid "transaction"
 msgstr "transaction"
 
-#: ../preferences.php:324 ../gestion_contributions.php:320
+#: ../history.php:132 ../preferences.php:324 ../gestion_contributions.php:320
 #: ../gestion_adherents.php:424 ../gestion_transactions.php:149
 msgid "All"
 msgstr "Tout"
@@ -2558,7 +2577,7 @@ msgstr "Sauvegarde des paramètres"
 msgid "Picture"
 msgstr "Image"
 
-#: ../templates/default/history.tpl:52
+#: ../templates/default/history.tpl:61
 msgid "User"
 msgstr "Utilisateur"
 
@@ -2623,4 +2642,3 @@ msgstr ""
 #: ../templates/default/gestion_contributions.tpl:166
 msgid "[ Add a contribution ]"
 msgstr "[ Ajouter une contribution ]"
-

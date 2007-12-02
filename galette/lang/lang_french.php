@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sun Dec  2 11:04:54 2007 (GMT)
+// This file was automatically generated on Sun Dec  2 20:14:44 2007 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -673,7 +673,7 @@ $lang['Long Text (Bottom Line):'] = 'Texte du bandeau&nbsp;:';
 $lang['Galette has been successfully installed!'] = 'Galette a été installé avec succès&nbsp;!';
 
 // ../gestion_contributions.php:287 ../gestion_adherents.php:369 
-$lang['remaining days'] = 'jour restant';
+$lang['remaining days'] = 'jours restants';
 
 // ../templates/default/gestion_adherents.tpl:72 
 $lang['Nickname'] = 'Pseudo';
