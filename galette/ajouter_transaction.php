@@ -46,9 +46,11 @@ $transaction['id_adh'] = get_numeric_form_value("id_adh", '');
 $error_detected = array();
 
 // flagging required fields
-$required = array('trans_amount' => 1,
-		  'trans_date' => 1,
-		  'trans_desc' => 1);
+$required = array(
+		'trans_amount' 	=> 	1,
+		'trans_date' 	=> 	1,
+		'trans_desc' 	=> 	1,
+		'id_adh'	=>	1);
 
 function current_contrib_amount($DB, $trans_id, $error_detected) {
 	if (is_numeric($trans_id)) {

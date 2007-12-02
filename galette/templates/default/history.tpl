@@ -8,7 +8,16 @@
 			<thead>
 				<tr>
 					<td colspan="6" class="right">
-						<span class="fleft">{$nb_lines} {if $nb_lines != 1}{_T("lines")}{else}{_T("line")}{/if}</span>
+						<!--<span class="fleft">{$nb_lines} {if $nb_lines != 1}{_T("lines")}{else}{_T("line")}{/if}</span>-->
+						<form action="history.php" method="get" id="historyform">
+							<span class="fleft">
+								<label for="nbshow">{_T("Show:")}</label>
+								<select name="nbshow" id="nbshow">
+									{html_options options=$nbshow_options selected=$numrows}
+								</select>
+								<noscript> <span><input type="submit" value="{_T("Change")}" /></span></noscript>
+							</span>
+						</form>
 						{_T("Pages:")}
 						<span class="pagelink">
 {section name="pageLoop" start=1 loop=$nb_pages+1}
@@ -116,3 +125,12 @@
 {/foreach}
 			</tbody>
 		</table>
+		{literal}
+		<script type="text/javascript">
+			<![CDATA[
+				$('#nbshow').change(function() {
+					this.form.submit();
+				});
+			]]>
+		</script>
+		{/literal}

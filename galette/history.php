@@ -23,42 +23,48 @@ require_once('includes/galette.inc.php');
 
 if( !$login->isLogged() )
 {
-	header("location: index.php");
+	header('location: index.php');
 	die();
 }
 if( !$login->isAdmin())
 {
-	header("location: voir_adherent.php");
+	header('location: voir_adherent.php');
 	die();
 }
 
-	$page = 1;
-	if (isset($_GET["page"]))
-		$page = $_GET["page"];
-		
-	if (isset($_GET["reset"]))
-	{
-		$requete[0] = "DELETE FROM ".PREFIX_DB."logs";
-		$DB->Execute($requete[0]);
-		dblog("Logs flushed");
-		header ('location: history.php');
-	}
+$page = 1;
+if (isset($_GET['page']))
+	$page = $_GET['page'];
+	
+if (isset($_GET['reset']))
+{
+	$requete[0] = 'DELETE FROM ' . PREFIX_DB . 'logs';
+	$DB->Execute($requete[0]);
+	dblog('Logs flushed');
+	header ('location: history.php');
+}
 
-	// Tri
-	if (isset($_GET["tri"]))
-		if (is_numeric($_GET["tri"]))
+$numrows = PREF_NUMROWS;
+if (isset($_GET['nbshow']))
+	if (is_numeric($_GET['nbshow']))
+		$numrows = $_GET['nbshow'];
+
+//echo 'show ' . $numrows . 'lines';
+// Tri
+if (isset($_GET['tri']))
+	if (is_numeric($_GET['tri']))
+	{
+		if ($_SESSION['tri_log'] == $_GET['tri'])
+			$_SESSION['tri_log_sens']=($_SESSION['tri_log_sens']+1)%2;
+		else
 		{
-			if ($_SESSION["tri_log"]==$_GET["tri"])
-				$_SESSION["tri_log_sens"]=($_SESSION["tri_log_sens"]+1)%2;
-			else
-			{
-				$_SESSION["tri_log"]=$_GET["tri"];
-				$_SESSION["tri_log_sens"]=0;
-			}
+			$_SESSION['tri_log'] = $_GET['tri'];
+			$_SESSION['tri_log_sens']=0;
 		}
+	}
     
-	$requete[0] = "SELECT date_log, adh_log, text_log, ip_log, action_log, sql_log FROM ".PREFIX_DB."logs ";
-	$requete[1] = "SELECT count(id_log) FROM ".PREFIX_DB."logs";
+$requete[0] = 'SELECT date_log, adh_log, text_log, ip_log, action_log, sql_log FROM ' . PREFIX_DB . 'logs';
+$requete[1] = 'SELECT count(id_log) FROM ' . PREFIX_DB . 'logs';
 	
 	// phase de tri	
 	if ($_SESSION["tri_log_sens"]=="0")
@@ -66,7 +72,7 @@ if( !$login->isAdmin())
 	else
 		$tri_log_sens_txt="DESC";
 
-	$requete[0] .= "ORDER BY ";
+	$requete[0] .= " ORDER BY ";
 	
 	// tri par date
 	if ($_SESSION["tri_log"]=="0")
@@ -76,7 +82,7 @@ if( !$login->isAdmin())
 	elseif ($_SESSION["tri_log"]=="1")
 		$requete[0] .= "ip_log ".$tri_log_sens_txt.",";
 
-	// tri par adh�rent
+	// tri par adhérent
 	elseif ($_SESSION["tri_log"]=="2")
 		$requete[0] .= "adh_log ".$tri_log_sens_txt.",";
 
@@ -86,16 +92,20 @@ if( !$login->isAdmin())
     
 	$requete[0] .= "id_log ".$tri_log_sens_txt;
 
-	$resultat = &$DB->SelectLimit($requete[0],PREF_NUMROWS,($page-1)*PREF_NUMROWS);
+	if ($numrows==0)
+		$resultat = &$DB->Execute($requete[0]);
+	else
+		$resultat = &$DB->SelectLimit($requete[0],$numrows,($page-1)*$numrows);
+
 	$nb_lines = &$DB->Execute($requete[1]);
 
-	if ($nb_lines->fields[0]%PREF_NUMROWS==0) 
-		$nbpages = intval($nb_lines->fields[0]/PREF_NUMROWS);
+	if ($nb_lines->fields[0]%$numrows==0) 
+		$nbpages = intval($nb_lines->fields[0]/$numrows);
 	else 
-		$nbpages = intval($nb_lines->fields[0]/PREF_NUMROWS)+1;
+		$nbpages = intval($nb_lines->fields[0]/$numrows)+1;
 	if ($nbpages == 0) $nbpages = 1;
 	
-	$compteur = 1+($page-1)*PREF_NUMROWS;
+	$compteur = 1+($page-1)*$numrows;
 	$logs = array();
 	while (!$resultat->EOF) 
 	{
@@ -113,6 +123,13 @@ if( !$login->isAdmin())
 	$tpl->assign("nb_lines",count($logs));
 	$tpl->assign("nb_pages",$nbpages);
 	$tpl->assign("page",$page);
+	$tpl->assign("numrows",$numrows);
+	$tpl->assign('nbshow_options', array(
+			10 => "10",
+			20 => "20",
+			50 => "50",
+			100 => "100",
+			0 => _T("All")));
 	$content = $tpl->fetch("history.tpl");
 	$tpl->assign("content",$content);
 	$tpl->display("page.tpl");

@@ -10,7 +10,7 @@
 			</ul>
 		</div>
 {/if}
-		<div class="bigtable tabbed">
+		<div class="bigtable">
 			<fieldset class="cssform">
 				<legend>{_T("Select contributor and contribution type")}</legend>
 				<p>
@@ -31,8 +31,8 @@
 				</p>
 			</fieldset>
 
-			<fieldset class="cssform">
 			{if $type_selected eq 1}
+			<fieldset class="cssform">
 				<legend>{_T("Details of contribution")}</legend>
 				<p>
 					<label {if $required.montant_cotis eq 1}style="color: #FF0000;"{/if} class="bline">{_T("Amount:")}</label>
@@ -83,18 +83,16 @@
 					<label {if $required.info_cotis eq 1}style="color: #FF0000;"{/if} class="bline">{_T("Comments:")}</label>
 					<textarea name="info_cotis" cols="61" rows="6">{$data.info_cotis}</textarea>
 				</p>
-				<p>
-					<label class="bline">{include file="display_dynamic_fields.tpl" is_form=true}</label>
-				</p>
-				<p>
-					<label align="center"><br/><input type="submit" class="submit" value="{_T("Save")}"/></label>
-				</p>
-			{else} {* $type_selected ne 1 *}
-				<p>
-					<label align="center" ><br/><input type="submit" class="submit" value="{_T("Continue")}"/></label>
-				</p>
-			{/if} {* $type_selected eq 1 *}
 			</fieldset>
+{include file="display_dynamic_fields.tpl" is_form=true}
+			{/if} {* $type_selected eq 1 *}
+		</div>
+		<div class="button-container">
+{if $type_selected eq 1}
+			<input type="submit" class="submit" value="{_T("Save")}"/>
+{else} {* $type_selected ne 1 *}
+			<input type="submit" class="submit" value="{_T("Continue")}"/>
+{/if} {* $type_selected eq 1 *}
 			<input type="hidden" name="id_cotis" value="{$data.id_cotis}"/>
 			<input type="hidden" name="trans_id" value="{$data.trans_id}"/>
 			{if $type_selected eq 1}

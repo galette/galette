@@ -1,3 +1,4 @@
+# translation of fr_FR@euro.po to fr_FR
 # translation of fr_FR@euro.po to
 # Copyright (C) 2005, 2006, 2007 Free Software Foundation, Inc.
 #
@@ -12,9 +13,9 @@ msgstr ""
 "Project-Id-Version: fr_FR@euro\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-12-20 16:44+0100\n"
-"PO-Revision-Date: 2007-11-08 08:17+0100\n"
+"PO-Revision-Date: 2007-12-02 12:03+0100\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
-"Language-Team:  <fr@li.org>\n"
+"Language-Team: fr_FR <fedora-trans-fr@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -295,6 +296,10 @@ msgstr "milieu"
 msgid "Filter"
 msgstr "Filtrer"
 
+#: ../templates/default/traduire_libelles.tpl:23
+msgid "Translation of '%s' label"
+msgstr "Traduction du libellé « %s »"
+
 #: ../templates/default/gestion_adherents.tpl:193
 msgid "Mail"
 msgstr "Envoyer un courriel"
@@ -314,6 +319,7 @@ msgstr "Méthode d'envoi des courriels&nbsp;:"
 
 #: ../templates/default/gestion_adherents.tpl:37
 #: ../templates/default/gestion_contributions.tpl:18
+#: ../templates/default/traduire_libelles.tpl:20
 #: ../templates/default/gestion_textes.tpl:33
 #: ../templates/default/gestion_textes.tpl:42
 msgid "Change"
@@ -341,7 +347,7 @@ msgstr "Gestion des transactions"
 
 #: ../self_adherent.php:95 ../gestion_contributions.php:57
 #: ../gestion_contributions.php:72 ../ajouter_contribution.php:130
-#: ../ajouter_adherent.php:134 ../ajouter_transaction.php:99
+#: ../ajouter_adherent.php:134 ../ajouter_transaction.php:101
 msgid "- Non valid date!"
 msgstr "- Date non valide&nbsp;!"
 
@@ -363,8 +369,8 @@ msgstr "Date de début d'exercice&nbsp;:"
 
 #: ../templates/default/preferences.tpl:318
 #: ../templates/default/ajouter_adherent.tpl:197
-#: ../templates/default/ajouter_contribution.tpl:90
-#: ../templates/default/traduire_libelles.tpl:37
+#: ../templates/default/ajouter_contribution.tpl:92
+#: ../templates/default/traduire_libelles.tpl:33
 #: ../templates/default/ajouter_transaction.tpl:41
 #: ../templates/default/editer_champ.tpl:91
 #: ../templates/default/self_adherent.tpl:188
@@ -450,7 +456,9 @@ msgstr ""
 
 #: ../ajouter_contribution.php:294
 msgid "A problem happened while sending email to admin for user:"
-msgstr "Un problème est survenu dans l'envoi du courriel à l'administrateur pour le compte&nbsp;:"
+msgstr ""
+"Un problème est survenu dans l'envoi du courriel à l'administrateur pour le "
+"compte&nbsp;:"
 
 #: ../templates/default/preferences.tpl:47
 #: ../templates/default/preferences.tpl:245
@@ -592,7 +600,7 @@ msgstr "Mot de passe vide"
 msgid "Select mandatory fields for new adherents:"
 msgstr "Sélectionnez les champs requis pour les nouveaux adhérents :"
 
-#: ../ajouter_transaction.php:135
+#: ../ajouter_transaction.php:137
 msgid "- Transaction amount must be positive."
 msgstr "- Le montant de la transaction doit être positif."
 
@@ -672,10 +680,6 @@ msgstr "Voir les contributions"
 msgid "ICQ:"
 msgstr "ICQ&nbsp;:"
 
-#: ../templates/default/traduire_libelles.tpl:17
-msgid "Text"
-msgstr "Texte"
-
 #: ../install/index.php:449
 msgid "Database type:"
 msgstr "Type de base de données&nbsp;:"
@@ -716,7 +720,6 @@ msgid "Files permissions are not OK!"
 msgstr "Les permissions des fichiers ne sont pas correctes&nbsp;!"
 
 #: ../install/index.php:226 ../install/index.php:1075
-#: ../templates/default/traduire_libelles.tpl:16
 msgid "Language"
 msgstr "Langue"
 
@@ -752,7 +755,7 @@ msgstr "Type d'installation"
 msgid "Please select your administration language"
 msgstr "Veuillez sélectionner la langue d'administration"
 
-#: ../ajouter_transaction.php:139
+#: ../ajouter_transaction.php:141
 msgid "- No originator selected (register a non-member first if necessary)."
 msgstr "- Aucun emetteur sélectionné (enregistrez un non-membre si nécessaire)."
 
@@ -764,7 +767,7 @@ msgstr "Identifiant ou adresse e-mail&nbsp;:"
 #: ../templates/default/ajouter_adherent.tpl:120
 #: ../templates/default/ajouter_contribution.tpl:56
 #: ../templates/default/ajouter_contribution.tpl:73
-#: ../templates/default/ajouter_transaction.tpl:23
+#: ../templates/default/ajouter_transaction.tpl:31
 #: ../templates/default/self_adherent.tpl:90
 msgid "(dd/mm/yyyy format)"
 msgstr "(format jj/mm/aaaa)"
@@ -877,7 +880,7 @@ msgstr "Personne morale"
 msgid "annual fee"
 msgstr "cotisation annuelle"
 
-#: ../ajouter_transaction.php:92
+#: ../ajouter_transaction.php:94
 msgid "- Empty transaction description!"
 msgstr "- La description de la transaction est vide&nbsp;!"
 
@@ -900,6 +903,10 @@ msgstr "Courriel"
 #: ../self_adherent.php:233
 msgid "Inscription sent to the administrator for approval"
 msgstr "Votre inscription a été envoyée pour validation à l'administrateur"
+
+#: ../templates/default/ajouter_transaction.tpl:15
+msgid "Transaction details"
+msgstr "Détails de la transaction"
 
 #: ../includes/i18n.inc.php:192
 msgid "Secretary"
@@ -952,7 +959,7 @@ msgid "Pages:"
 msgstr "Pages&nbsp;:"
 
 #: ../templates/default/ajouter_contribution.tpl:38
-#: ../templates/default/ajouter_transaction.tpl:25
+#: ../templates/default/ajouter_transaction.tpl:34
 msgid "Amount:"
 msgstr "Montant&nbsp;:"
 
@@ -1035,7 +1042,7 @@ msgstr "Message&nbsp;:"
 msgid "Members up to date"
 msgstr "Les adhérents à jour"
 
-#: ../ajouter_transaction.php:154
+#: ../ajouter_transaction.php:156
 msgid "transaction added"
 msgstr "transaction ajoutée"
 
@@ -1106,7 +1113,7 @@ msgstr "ICQ"
 msgid "Nickname:"
 msgstr "Pseudo&nbsp;:"
 
-#: ../templates/default/ajouter_transaction.tpl:20
+#: ../templates/default/ajouter_transaction.tpl:30
 msgid "Date:"
 msgstr "Date&nbsp;:"
 
@@ -1452,7 +1459,7 @@ msgid "french"
 msgstr "français"
 
 #: ../templates/default/ajouter_contribution.tpl:20
-#: ../templates/default/ajouter_transaction.tpl:33
+#: ../templates/default/ajouter_transaction.tpl:24
 msgid "-- select a name --"
 msgstr "-- selectionner un nom --"
 
@@ -1475,7 +1482,7 @@ msgstr "Type"
 
 #: ../self_adherent.php:98 ../gestion_contributions.php:64
 #: ../gestion_contributions.php:79 ../ajouter_contribution.php:133
-#: ../ajouter_adherent.php:137 ../ajouter_transaction.php:101
+#: ../ajouter_adherent.php:137 ../ajouter_transaction.php:103
 msgid "- Wrong date format (dd/mm/yyyy)!"
 msgstr "- Mauvais format de date (jj/mm/aaaa)&nbsp;!"
 
@@ -1597,7 +1604,7 @@ msgstr "Fin"
 msgid "Interpret HTML"
 msgstr "Interpréter les balises HTML"
 
-#: ../ajouter_transaction.php:167
+#: ../ajouter_transaction.php:169
 msgid "transaction updated"
 msgstr "transaction mise à jour"
 
@@ -1658,7 +1665,7 @@ msgstr ""
 msgid "Disabled"
 msgstr "Désactivé"
 
-#: ../ajouter_contribution.php:402 ../ajouter_transaction.php:229
+#: ../ajouter_contribution.php:402 ../ajouter_transaction.php:231
 msgid "You must first register a member"
 msgstr "Vous devez d'abord enregistrer un adhérent"
 
@@ -1938,7 +1945,7 @@ msgstr "Ajouter une transaction"
 msgid "Files permissions"
 msgstr "Permissions de fichiers"
 
-#: ../templates/default/ajouter_transaction.tpl:29
+#: ../templates/default/ajouter_transaction.tpl:21
 msgid "Originator:"
 msgstr "Émetteur&nbsp;:"
 
@@ -2038,7 +2045,7 @@ msgstr "Description"
 msgid "First name:"
 msgstr "Prénom&nbsp;:"
 
-#: ../ajouter_contribution.php:202 ../ajouter_transaction.php:137
+#: ../ajouter_contribution.php:202 ../ajouter_transaction.php:139
 msgid "-  Sum of all contributions exceed corresponding transaction amount."
 msgstr "-  La somme de toutes les contributions dépasse le montant de la transaction."
 
@@ -2168,15 +2175,13 @@ msgstr "depuis le"
 
 #: ../ajouter_adherent.php:250
 msgid "A problem happened while sending email to admin for account:"
-msgstr "Un problème est survenu dans l'envoi du mot de passe à l'administrateur pour le compte&nbsp;:"
+msgstr ""
+"Un problème est survenu dans l'envoi du mot de passe à l'administrateur pour "
+"le compte&nbsp;:"
 
 #: ../templates/default/mailing_adherents.tpl:82
 msgid "HTML interpretation:"
 msgstr "Interprétation HTML&nbsp;:"
-
-#: ../templates/default/traduire_libelles.tpl:20
-msgid "Original"
-msgstr "Original"
 
 #: ../install/index.php:492
 msgid "Check the parameters and the existence of the database"
@@ -2191,6 +2196,10 @@ msgstr "[$]"
 #: ../templates/default/self_adherent.tpl:89
 msgid "birth date:"
 msgstr "Date de naissance&nbsp;:"
+
+#: ../templates/default/traduire_libelles.tpl:16
+msgid "Choose label to translate"
+msgstr "Choisissez le libellé à traduire"
 
 #: ../templates/default/ajouter_adherent.tpl:190
 #: ../templates/default/voir_adherent.tpl:170
@@ -2214,7 +2223,7 @@ msgstr "(maximum 32 caractères)"
 msgid "Strip Text Color:"
 msgstr "Couleur du texte sur le bandeau&nbsp;:"
 
-#: ../templates/default/ajouter_transaction.tpl:16
+#: ../templates/default/ajouter_transaction.tpl:17
 msgid "Description:"
 msgstr "Description&nbsp;:"
 
@@ -2276,8 +2285,8 @@ msgstr "Visibilité&nbsp;:"
 
 #: ../templates/default/preferences.tpl:320
 #: ../templates/default/ajouter_adherent.tpl:200
-#: ../templates/default/ajouter_contribution.tpl:108
-#: ../templates/default/ajouter_transaction.tpl:46
+#: ../templates/default/ajouter_contribution.tpl:106
+#: ../templates/default/ajouter_transaction.tpl:45
 #: ../templates/default/self_adherent.tpl:64
 msgid "red"
 msgstr "rouge"
@@ -2335,7 +2344,7 @@ msgstr " jours (depuis "
 msgid "This comment is reserved to the member."
 msgstr "Ce commentaire est réservé à l'adhérent."
 
-#: ../install/index.php:338 ../templates/default/traduire_libelles.tpl:38
+#: ../install/index.php:338
 msgid "Update"
 msgstr "Mise à jour"
 
@@ -2388,8 +2397,8 @@ msgstr "Création des tables"
 
 #: ../self_adherent.php:160 ../preferences.php:214 ../preferences.php:217
 #: ../ajouter_contribution.php:162 ../ajouter_contribution.php:165
-#: ../ajouter_adherent.php:221 ../ajouter_transaction.php:119
-#: ../ajouter_transaction.php:122
+#: ../ajouter_adherent.php:221 ../ajouter_transaction.php:121
+#: ../ajouter_transaction.php:124
 msgid "- Mandatory field empty."
 msgstr "- Champ obligatoire non renseigné."
 
@@ -2407,7 +2416,9 @@ msgstr "Veuillez choisir les paramètres du compte administrateur Galette"
 
 #: ../ajouter_contribution.php:278
 msgid "A problem happened while sending contribution receipt to user:"
-msgstr "Un problème est survenu lors de l'envoi du reçu pour la contribution de l'adhérent&nbsp;:"
+msgstr ""
+"Un problème est survenu lors de l'envoi du reçu pour la contribution de "
+"l'adhérent&nbsp;:"
 
 #: ../includes/i18n.inc.php:194
 msgid "Benefactor member"
@@ -2419,8 +2430,8 @@ msgstr "Courriel de réponse&nbsp;:"
 
 #: ../templates/default/preferences.tpl:320
 #: ../templates/default/ajouter_adherent.tpl:200
-#: ../templates/default/ajouter_contribution.tpl:108
-#: ../templates/default/ajouter_transaction.tpl:46
+#: ../templates/default/ajouter_contribution.tpl:106
+#: ../templates/default/ajouter_transaction.tpl:45
 #: ../templates/default/self_adherent.tpl:64
 msgid "NB : The mandatory fields are in"
 msgstr "NB&nbsp;: Les champs obligatoires apparaissent en"
@@ -2433,7 +2444,9 @@ msgstr "espagnol"
 msgid ""
 "Your browser should redirect you to the login page in a few seconds, if not, "
 "please go to: "
-msgstr "Votre navigateur devrait vous rediriger vers la page de connexion dans quelques instants. Si tel n'est pas le cas, rendez-vous sur&nbsp;:"
+msgstr ""
+"Votre navigateur devrait vous rediriger vers la page de connexion dans "
+"quelques instants. Si tel n'est pas le cas, rendez-vous sur&nbsp;:"
 
 #: ../install/index.php:539
 msgid "Database exists and connection parameters are OK."
@@ -2463,9 +2476,7 @@ msgstr "Type d'installation inconnu"
 
 #: ../templates/default/ajouter_contribution.tpl:80
 msgid "(the member will receive a confirmation by email, if he has an address.)"
-msgstr ""
-"(l'adhérent recevra confirmation par courriel, s'il a "
-"une adresse.)"
+msgstr "(l'adhérent recevra confirmation par courriel, s'il a une adresse.)"
 
 #: ../includes/dynamic_fields.inc.php:69
 msgid "left"

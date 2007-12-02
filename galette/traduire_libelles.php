@@ -82,9 +82,7 @@ if (is_numeric($nb_fields) && $nb_fields > 0) {
 	$tpl->assign("trans", $trans);
 }
 $tpl->assign("text_orig", $text_orig);
-
 $tpl->assign("error_detected",$error_detected);
-
 $content = $tpl->fetch("traduire_libelles.tpl");
 $tpl->assign("content",$content);
 $tpl->display("page.tpl");
