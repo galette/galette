@@ -426,6 +426,7 @@ $tpl->assign("dynamic_fields",$dynamic_fields);
 $tpl->assign("error_detected",$error_detected);
 $tpl->assign("warning_detected",$warning_detected);
 $tpl->assign("languages", $i18n->getList());
+$tpl->assign('require_calendar', true);
 
 // pseudo random int
 $tpl->assign("time",time());

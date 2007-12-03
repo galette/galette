@@ -52,7 +52,7 @@
 							{_T("Start date of membership:")}
 						{/if}
 						<br/>&nbsp;</label>
-						<input type="text" name="date_debut_cotis" value="{$data.date_debut_cotis}" maxlength="10"/><br/>
+						<input class="past-date-pick" type="text" name="date_debut_cotis" value="{$data.date_debut_cotis}" maxlength="10"/><br/>
 						<span class="exemple">{_T("(dd/mm/yyyy format)")}</span>
 				</p>
 				<p>

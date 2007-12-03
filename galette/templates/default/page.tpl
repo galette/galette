@@ -12,6 +12,14 @@
 	<script type="text/javascript" src="{$jquery_dir}jquery.corner.js"></script>
 	<script type="text/javascript" src="{$jquery_dir}chili-1.7.pack.js"></script>
 	<script type="text/javascript" src="{$jquery_dir}jquery.tooltip.pack.js"></script>
+{if $require_calendar}
+	<link rel="stylesheet" type="text/css" href="{$template_subdir}datePicker.css"/>
+	<script type="text/javascript" src="{$jquery_dir}jquery.datePicker.js"></script>
+	<script type="text/javascript" src="{$jquery_dir}date.js"></script>
+	{if $lang ne 'en'}
+	<script type="text/javascript" src="{$jquery_dir}date_{$galette_lang}.js"></script>
+	{/if}
+{/if}
 	<script type="text/javascript" src="{$scripts_dir}common.js"></script>
 </head>
 <body>
@@ -155,5 +163,19 @@
 			<a href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
 		</div>
 	</div>
+	<script type="text/javascript">
+		<![CDATA[
+			$.dpText = {ldelim}
+				TEXT_PREV_YEAR		:	'{_T("Previous year")}',
+				TEXT_PREV_MONTH		:	'{_T("Previous month")}',
+				TEXT_NEXT_YEAR		:	'{_T("Next year")}',
+				TEXT_NEXT_MONTH		:	'{_T("Next month")}',
+				TEXT_CLOSE		:	'{_T("Close")}',
+				TEXT_CHOOSE_DATE	:	'{_T("Choose date")}'
+			{rdelim}
+			$('.date-pick').datePicker().val(new Date().asString()).trigger('change');;
+			$('.past-date-pick').datePicker({ldelim}startDate:'01/01/1900'{rdelim});
+		]]>
+	</script>
 </body>
 </html>

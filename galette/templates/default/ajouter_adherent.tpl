@@ -49,7 +49,7 @@
 				</p>
 				<p>
 					<label for="ddn_adh" class="bline{if $required.ddn_adh eq 1} required{/if}">{_T("birth date:")}</label>
-					<input type="text" name="ddn_adh" id="ddn_adh" value="{$data.ddn_adh}" maxlength="10" {$disabled.ddn_adh}/> <span class="exemple">{_T("(dd/mm/yyyy format)")}</span>
+					<input class="past-date-pick" type="text" name="ddn_adh" id="ddn_adh" value="{$data.ddn_adh}" maxlength="10" {$disabled.ddn_adh}/> <span class="exemple">{_T("(dd/mm/yyyy format)")}</span>
 				</p>
 				<p>
 					<label for="prof_adh" class="bline{if $required.prof_adh eq 1} required{/if}">{_T("Profession:")}</label>
@@ -116,7 +116,7 @@
 				</p>
 				<p>
 					<label for="date_crea_adh" class="bline {if $required.date_crea_adh eq 1} required{/if}">{_T("Creation date:")}</label>
-					<input type="text" name="date_crea_adh" id="date_crea_adh" value="{$data.date_crea_adh}" maxlength="10" {$disabled.date_crea_adh}/>
+					<input class="past-date-pick" type="text" name="date_crea_adh" id="date_crea_adh" value="{$data.date_crea_adh}" maxlength="10" {$disabled.date_crea_adh}/>
 					<span class="exemple">{_T("(dd/mm/yyyy format)")}</span>
 				</p>
 				<p>

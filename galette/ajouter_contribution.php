@@ -407,6 +407,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 	}
 	$result->Close();
 	$tpl->assign("adh_options",$adh_options);
+	$tpl->assign('require_calendar', true);
 
 	$tpl->assign("pref_membership_ext", $cotis_extension ? PREF_MEMBERSHIP_EXT : "");
 	$tpl->assign("cotis_extension", $cotis_extension);

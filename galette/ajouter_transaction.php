@@ -1,39 +1,44 @@
 <?php
-
-/* ajouter_transaction.php
- * -Entering a transaction
- * Copyright (c) 2004 Laurent Pelecq <laurent.pelecq@soleil.org>
+/** 
+ * Entering a new transaction
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
+ * @package    Galette
+ * @author     Laurent Pelecq <laurent.pelecq@soleil.org>
+ * @author     Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright  2004 Laurent Pelecq
+ * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0
+ * @since      Disponible depuis la Release 0.62
  */
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
 
 require_once('includes/galette.inc.php');
 
 if( !$login->isLogged() )
 {
-	header("location: index.php");
+	header('location: index.php');
 	die();
 }
 if( !$login->isAdmin() )
 {
-	header("location: voir_adherent.php");
+	header('location: voir_adherent.php');
 	die();
 }
 
-include(WEB_ROOT."includes/dynamic_fields.inc.php");
+include(WEB_ROOT . 'includes/dynamic_fields.inc.php');
 
 // new or edit
 $transaction['trans_id'] = get_numeric_form_value("trans_id", '');
@@ -54,9 +59,7 @@ $required = array(
 
 function current_contrib_amount($DB, $trans_id, $error_detected) {
 	if (is_numeric($trans_id)) {
-		$current_amount = $DB->GetOne("SELECT SUM(montant_cotis)
-						FROM ".PREFIX_DB."cotisations
-						WHERE trans_id=$trans_id");
+		$current_amount = $DB->GetOne('SELECT SUM(montant_cotis) FROM ' . PREFIX_DB . 'cotisations WHERE trans_id=' . $trans_id);
 		return $current_amount;
 	}
 	return 0;
@@ -64,7 +67,7 @@ function current_contrib_amount($DB, $trans_id, $error_detected) {
 
 // Validation
 $transaction['dyn'] = array();
-if (isset($_POST["valid"]))
+if (isset($_POST['valid']))
 {
 	$transaction['dyn'] = extract_posted_dynamic_fields($DB, $_POST, array());
 
@@ -73,7 +76,7 @@ if (isset($_POST["valid"]))
 	$insert_string_values = '';
 
 	// checking posted values
-	$fields = &$DB->MetaColumns(PREFIX_DB."transactions");
+	$fields = &$DB->MetaColumns(PREFIX_DB . 'transactions');
 	while (list($key, $properties) = each($fields))
 	{
 		$key = strtolower($key);
@@ -86,7 +89,7 @@ if (isset($_POST["valid"]))
 		$transaction[$key] = htmlentities(stripslashes($value),ENT_QUOTES);
 
 		// now, check validity
-		if ($value != "") {
+		if ($value != '') {
 			switch ($key)
 			{
 			case 'trans_desc':
@@ -98,9 +101,9 @@ if (isset($_POST["valid"]))
 				if (ereg("^[0-9]{2}/[0-9]{2}/[0-9]{4}$", $value, $result)) {
 					$value = date_text2db($DB, $value);
 					if ($value == "")
-						$error_detected[] = _T("- Non valid date!")." ($key)";
+						$error_detected[] = _T("- Non valid date!") . " ($key)";
 				} else
-					$error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!")." ($key)";
+					$error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!") . " ($key)";
 				break;
 			}
 		}
@@ -218,9 +221,10 @@ else
 }
 
 // template variable declaration
-$tpl->assign("required",$required);
-$tpl->assign("data",$transaction);
-$tpl->assign("error_detected",$error_detected);
+$tpl->assign('required', $required);
+$tpl->assign('data', $transaction);
+$tpl->assign('error_detected', $error_detected);
+$tpl->assign('require_calendar', true);
 
 // members
 $requete = "SELECT id_adh, nom_adh, prenom_adh
