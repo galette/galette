@@ -62,8 +62,8 @@ msgstr "Estado"
 msgid "Emailing disabled"
 msgstr "Correo desactivado"
 
-#: ../self_adherent.php:292 ../ajouter_adherent.php:436
-#: ../templates/default/page.tpl:69
+#: ../self_adherent.php:292 ../ajouter_adherent.php:437
+#: ../templates/default/page.tpl:77
 msgid "Mrs"
 msgstr "Señora"
 
@@ -134,7 +134,7 @@ msgstr ""
 "anterior."
 
 #: ../gestion_adherents.php:404 ../templates/default/gestion_adherents.tpl:60
-#: ../templates/default/page.tpl:99 ../templates/default/page.tpl:103
+#: ../templates/default/page.tpl:107 ../templates/default/page.tpl:111
 #: ../templates/default/configurer_fiches.tpl:23
 msgid "Name"
 msgstr "Nombre completo"
@@ -174,7 +174,7 @@ msgid "Lost your password?"
 msgstr "¿Ha olvidado su contraseña?"
 
 #: ../templates/default/gestion_adherents.tpl:157
-#: ../templates/default/page.tpl:130
+#: ../templates/default/page.tpl:138
 #: ../templates/default/gestion_contributions.tpl:127
 #: ../templates/default/gestion_transactions.tpl:90
 msgid "[mod]"
@@ -246,6 +246,10 @@ msgstr "Código postal:"
 #, fuzzy
 msgid "Horizontal margins:"
 msgstr "Distancia horizontal:"
+
+#: ../templates/default/page.tpl:173
+msgid "Close"
+msgstr ""
 
 #: ../install/index.php:464 ../install/index.php:889
 #: ../templates/default/index.tpl:39 ../templates/default/preferences.tpl:307
@@ -365,7 +369,7 @@ msgstr "Gestión de transacciones"
 
 #: ../self_adherent.php:95 ../gestion_contributions.php:57
 #: ../gestion_contributions.php:72 ../ajouter_contribution.php:130
-#: ../ajouter_adherent.php:134 ../ajouter_transaction.php:101
+#: ../ajouter_adherent.php:134 ../ajouter_transaction.php:104
 msgid "- Non valid date!"
 msgstr "- ¡Fecha inválida!"
 
@@ -494,7 +498,7 @@ msgstr "Borrar la imagen"
 msgid "Mail settings:"
 msgstr "Parámetros del correo:"
 
-#: ../templates/default/page.tpl:31
+#: ../templates/default/page.tpl:39
 msgid "List of contributions"
 msgstr "Lista de contribuciones"
 
@@ -528,7 +532,7 @@ msgstr ""
 "en la imposibilidad de hacer un INSERT en la base de datos."
 
 #: ../gestion_contributions.php:265 ../gestion_adherents.php:414
-#: ../templates/default/page.tpl:108
+#: ../templates/default/page.tpl:116
 msgid "Never contributed"
 msgstr "Nunca pagó la cuota"
 
@@ -545,7 +549,7 @@ msgstr "Operación SELECT no autorizada"
 msgid "Profession"
 msgstr "Profesión:"
 
-#: ../templates/default/page.tpl:46
+#: ../templates/default/page.tpl:54
 msgid "Configuration"
 msgstr "Configuración"
 
@@ -559,6 +563,11 @@ msgstr "Duración de la afiliación:"
 #: ../templates/default/gestion_textes.tpl:27
 msgid "Language:"
 msgstr "Idioma:"
+
+#: ../templates/default/ajouter_contribution.tpl:36
+#, fuzzy
+msgid "Details of contribution"
+msgstr "Lista de contribuciones"
 
 #: ../gestion_contributions.php:281 ../gestion_adherents.php:363
 msgid "days"
@@ -629,7 +638,7 @@ msgstr "Falta contraseña"
 msgid "Select mandatory fields for new adherents:"
 msgstr "Nota: los campos obligatorios aparecen en"
 
-#: ../ajouter_transaction.php:137
+#: ../ajouter_transaction.php:140
 msgid "- Transaction amount must be positive."
 msgstr "- El importe de la transacción debe ser positivo."
 
@@ -739,7 +748,7 @@ msgstr "- Sólos los ficheros .jpg, .gif y .png están permitidos."
 msgid "Yes"
 msgstr "Sí"
 
-#: ../templates/default/page.tpl:96 ../templates/default/page.tpl:135
+#: ../templates/default/page.tpl:104 ../templates/default/page.tpl:143
 msgid "Deletion"
 msgstr "Borrado"
 
@@ -751,6 +760,10 @@ msgstr "Número de transacción:"
 #, fuzzy
 msgid "Files permissions are not OK!"
 msgstr "¡Los permisos de los ficheros son correctos!"
+
+#: ../templates/default/page.tpl:170
+msgid "Previous month"
+msgstr ""
 
 #: ../install/index.php:226 ../install/index.php:1075
 msgid "Language"
@@ -788,7 +801,7 @@ msgstr "Modalidad de instalación"
 msgid "Please select your administration language"
 msgstr ""
 
-#: ../ajouter_transaction.php:141
+#: ../ajouter_transaction.php:144
 msgid "- No originator selected (register a non-member first if necessary)."
 msgstr ""
 "- No se seleccionó emisor (dé de alta a los no-socios antes, si es "
@@ -822,11 +835,11 @@ msgstr "Informe de cuotas"
 msgid "(6 hex digits:RRGGBB)"
 msgstr ""
 
-#: ../templates/default/page.tpl:70
+#: ../templates/default/page.tpl:78
 msgid "Woman"
 msgstr "Mujer"
 
-#: ../templates/default/page.tpl:49
+#: ../templates/default/page.tpl:57
 #, fuzzy
 msgid "Required fields"
 msgstr "Obligatorio"
@@ -847,8 +860,8 @@ msgstr "Usuario:"
 msgid "Passworg image"
 msgstr "Error en la copia de la contraseña:"
 
-#: ../self_adherent.php:293 ../ajouter_adherent.php:437
-#: ../templates/default/page.tpl:65
+#: ../self_adherent.php:293 ../ajouter_adherent.php:438
+#: ../templates/default/page.tpl:73
 msgid "Mister"
 msgstr "Señor"
 
@@ -916,7 +929,7 @@ msgstr "Persona moral"
 msgid "annual fee"
 msgstr ""
 
-#: ../ajouter_transaction.php:94
+#: ../ajouter_transaction.php:97
 msgid "- Empty transaction description!"
 msgstr "¡Descripción de transacción vacía!"
 
@@ -972,7 +985,7 @@ msgstr "Falta el nombre de la base de datos"
 msgid "Number of label lines:"
 msgstr "Número de líneas de etiquetas:"
 
-#: ../includes/dynamic_fields.inc.php:74 ../templates/default/page.tpl:92
+#: ../includes/dynamic_fields.inc.php:74 ../templates/default/page.tpl:100
 msgid "Contributions"
 msgstr "Contribuciones"
 
@@ -1012,7 +1025,7 @@ msgstr ""
 "electrónico. Sin embargo es posible generar etiquetas para sobres de forma "
 "que pueda ponerse en contacto con ellos mediante correo ordinario."
 
-#: ../templates/default/page.tpl:91 ../templates/default/page.tpl:140
+#: ../templates/default/page.tpl:99 ../templates/default/page.tpl:148
 msgid "Contribution"
 msgstr "Contribución"
 
@@ -1050,7 +1063,7 @@ msgstr "(al menos 4 caracteres)"
 msgid "Send email to administrators ?"
 msgstr ""
 
-#: ../templates/default/page.tpl:39
+#: ../templates/default/page.tpl:47
 msgid "My contributions"
 msgstr "Mis contribuciones"
 
@@ -1084,7 +1097,7 @@ msgstr "Mensaje:"
 msgid "Members up to date"
 msgstr "Los socios al día"
 
-#: ../ajouter_transaction.php:156
+#: ../ajouter_transaction.php:159
 msgid "transaction added"
 msgstr "Transacción añadida"
 
@@ -1118,7 +1131,7 @@ msgstr "Fecha de inicio de la afiliación:"
 msgid "Graphics:"
 msgstr "Grafismo:"
 
-#: ../templates/default/page.tpl:32
+#: ../templates/default/page.tpl:40
 msgid "List of transactions"
 msgstr "Lista de transacciones"
 
@@ -1270,7 +1283,7 @@ msgstr "Los socios al día"
 msgid "Mr."
 msgstr "Sr."
 
-#: ../templates/default/page.tpl:40
+#: ../templates/default/page.tpl:48
 msgid "My transactions"
 msgstr "Mis transacciones"
 
@@ -1331,11 +1344,11 @@ msgid "Reduced annual contribution"
 msgstr "Cuota anual reducida"
 
 #: ../templates/default/gestion_adherents.tpl:192
-#: ../templates/default/page.tpl:95
+#: ../templates/default/page.tpl:103
 msgid "Delete"
 msgstr "Borrar"
 
-#: ../templates/default/page.tpl:58
+#: ../templates/default/page.tpl:66
 msgid "Log off"
 msgstr "Desconexión"
 
@@ -1421,11 +1434,11 @@ msgstr "etiqueta(s)"
 msgid "Date of contribution:"
 msgstr "Fecha de contribución:"
 
-#: ../templates/default/page.tpl:48 ../templates/default/preferences.tpl:1
+#: ../templates/default/page.tpl:56 ../templates/default/preferences.tpl:1
 msgid "Settings"
 msgstr "Preferencias"
 
-#: ../templates/default/page.tpl:62 ../templates/default/page.tpl:126
+#: ../templates/default/page.tpl:70 ../templates/default/page.tpl:134
 msgid "Legend"
 msgstr "Pie"
 
@@ -1502,7 +1515,7 @@ msgstr ""
 "La base de datos no fue creada totalmente, puede deberse a un problema de "
 "permisos."
 
-#: ../templates/default/page.tpl:34 ../templates/default/voir_adherent.tpl:32
+#: ../templates/default/page.tpl:42 ../templates/default/voir_adherent.tpl:32
 #: ../templates/default/voir_adherent.tpl:191
 msgid "Add a contribution"
 msgstr "Añadir una contribución"
@@ -1536,7 +1549,7 @@ msgstr "Tipo"
 
 #: ../self_adherent.php:98 ../gestion_contributions.php:64
 #: ../gestion_contributions.php:79 ../ajouter_contribution.php:133
-#: ../ajouter_adherent.php:137 ../ajouter_transaction.php:103
+#: ../ajouter_adherent.php:137 ../ajouter_transaction.php:106
 msgid "- Wrong date format (dd/mm/yyyy)!"
 msgstr "- ¡Formato de fecha (dd/mm/aaaa) incorrecto!"
 
@@ -1547,7 +1560,7 @@ msgid "Generate Member Card"
 msgstr "Generación de etiquetas"
 
 #: ../templates/default/gestion_adherents.tpl:159
-#: ../templates/default/page.tpl:134
+#: ../templates/default/page.tpl:142
 #: ../templates/default/gestion_contributions.tpl:128
 #: ../templates/default/gestion_transactions.tpl:91
 msgid "[del]"
@@ -1557,7 +1570,7 @@ msgstr "[sup]"
 msgid "Action"
 msgstr "Acción"
 
-#: ../templates/default/page.tpl:51
+#: ../templates/default/page.tpl:59
 #: ../templates/default/traduire_libelles.tpl:1
 msgid "Translate labels"
 msgstr "Traducir las etiquetas"
@@ -1575,7 +1588,7 @@ msgstr "Generación de etiquetas"
 msgid "There was a database error when inserting data"
 msgstr "Se produjo un error en la base de datos al introducir datos"
 
-#: ../templates/default/page.tpl:104
+#: ../templates/default/page.tpl:112
 msgid "Inactive account"
 msgstr "Cuenta desactivada"
 
@@ -1584,7 +1597,7 @@ msgstr "Cuenta desactivada"
 msgid "Access permissions to database"
 msgstr "Paso 6º - Permisos de acceso a la base de datos"
 
-#: ../templates/default/page.tpl:53
+#: ../templates/default/page.tpl:61
 msgid "Utilities"
 msgstr ""
 
@@ -1592,12 +1605,12 @@ msgstr ""
 msgid "Association's short description:"
 msgstr ""
 
-#: ../templates/default/page.tpl:36 ../templates/default/history.tpl:1
+#: ../templates/default/page.tpl:44 ../templates/default/history.tpl:1
 msgid "Logs"
 msgstr "Historial"
 
-#: ../self_adherent.php:291 ../ajouter_adherent.php:435
-#: ../templates/default/page.tpl:69
+#: ../self_adherent.php:291 ../ajouter_adherent.php:436
+#: ../templates/default/page.tpl:77
 msgid "Miss"
 msgstr "Señora"
 
@@ -1613,7 +1626,7 @@ msgstr ""
 msgid "(65 characters max)"
 msgstr "(al menos 4 caracteres)"
 
-#: ../templates/default/page.tpl:116
+#: ../templates/default/page.tpl:124
 msgid "Membership will expire soon (&lt;30d)"
 msgstr "La afiliación expirará pronto (&lt;30d)"
 
@@ -1626,6 +1639,11 @@ msgstr "Título:"
 #, fuzzy
 msgid "Connection to database successfull"
 msgstr "Éxito en la conexión a la base de datos"
+
+#: ../templates/default/page.tpl:169
+#, fuzzy
+msgid "Previous year"
+msgstr "Vista previa"
 
 #: ../templates/default/history.tpl:124
 msgid "logs are empty"
@@ -1667,7 +1685,7 @@ msgstr "Fin"
 msgid "Interpret HTML"
 msgstr "Interpretar HTML"
 
-#: ../ajouter_transaction.php:169
+#: ../ajouter_transaction.php:172
 msgid "transaction updated"
 msgstr "Transacción actualizada"
 
@@ -1732,7 +1750,7 @@ msgstr ""
 msgid "Disabled"
 msgstr "Deshabilitado"
 
-#: ../ajouter_contribution.php:402 ../ajouter_transaction.php:231
+#: ../ajouter_contribution.php:402 ../ajouter_transaction.php:235
 msgid "You must first register a member"
 msgstr "En primer lugar debe dar de alta a un socio"
 
@@ -1798,7 +1816,12 @@ msgstr "(Indique el prefijo ACTUAL de sus tablas Galette)"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../templates/default/page.tpl:66
+#: ../templates/default/page.tpl:172
+#, fuzzy
+msgid "Next month"
+msgstr "Siguiente paso"
+
+#: ../templates/default/page.tpl:74
 msgid "Man"
 msgstr "Hombre"
 
@@ -1819,7 +1842,7 @@ msgstr "Identificación"
 msgid "Latecomers"
 msgstr "Retrasados"
 
-#: ../templates/default/page.tpl:38
+#: ../templates/default/page.tpl:46
 msgid "My information"
 msgstr "Mis informaciones"
 
@@ -1867,7 +1890,7 @@ msgstr "Error en la conexión a la base de datos"
 msgid "Mobile phone:"
 msgstr "Móvil:"
 
-#: ../templates/default/page.tpl:78
+#: ../templates/default/page.tpl:86
 #, fuzzy
 msgid "E-mail"
 msgstr "Correo electrónico:"
@@ -1876,7 +1899,7 @@ msgstr "Correo electrónico:"
 msgid "Publisher:"
 msgstr "Editor:"
 
-#: ../templates/default/page.tpl:30
+#: ../templates/default/page.tpl:38
 msgid "List of members"
 msgstr "Lista de socios"
 
@@ -1950,8 +1973,8 @@ msgid "E-Mail:"
 msgstr "Correo electrónico:"
 
 #: ../self_adherent.php:294 ../carte_adherent.php:241
-#: ../etiquettes_adherents.php:135 ../ajouter_adherent.php:438
-#: ../templates/default/page.tpl:73 ../templates/default/page.tpl:74
+#: ../etiquettes_adherents.php:135 ../ajouter_adherent.php:439
+#: ../templates/default/page.tpl:81 ../templates/default/page.tpl:82
 msgid "Society"
 msgstr "Sociedad"
 
@@ -2020,7 +2043,7 @@ msgstr "Cuota anual (por pagar)"
 msgid "file_name"
 msgstr "nombre_fichero"
 
-#: ../templates/default/page.tpl:35
+#: ../templates/default/page.tpl:43
 msgid "Add a transaction"
 msgstr "Añadir una transacción"
 
@@ -2058,7 +2081,7 @@ msgstr "Buscar:"
 msgid "Height:"
 msgstr "Altura de la etiqueta:"
 
-#: ../templates/default/page.tpl:79
+#: ../templates/default/page.tpl:87
 msgid "Send a mail"
 msgstr "Enviar un correo"
 
@@ -2133,7 +2156,7 @@ msgstr "Descripción"
 msgid "First name:"
 msgstr "Nombre:"
 
-#: ../ajouter_contribution.php:202 ../ajouter_transaction.php:139
+#: ../ajouter_contribution.php:202 ../ajouter_transaction.php:142
 msgid "-  Sum of all contributions exceed corresponding transaction amount."
 msgstr ""
 "- La suma de todas las contribuciones es superior a las transacciones "
@@ -2145,7 +2168,7 @@ msgid "No member was selected, please check at least one name."
 msgstr ""
 "No se ha seleccionado ningún socio; por favor marque al menos un nombre."
 
-#: ../templates/default/page.tpl:144
+#: ../templates/default/page.tpl:152
 msgid "Gift"
 msgstr "Donativo"
 
@@ -2167,10 +2190,9 @@ msgstr "Detallado"
 msgid "Close expiries"
 msgstr "Plazos que expirarán pronto"
 
-#: ../templates/default/ajouter_contribution.tpl:36
-#, fuzzy
-msgid "Details of contribution"
-msgstr "Lista de contribuciones"
+#: ../templates/default/page.tpl:174
+msgid "Choose date"
+msgstr ""
 
 #: ../templates/default/configurer_fiches.tpl:27
 msgid "Position"
@@ -2240,11 +2262,11 @@ msgstr ""
 msgid "Edit '%s' field"
 msgstr "Edición del campo"
 
-#: ../templates/default/page.tpl:33
+#: ../templates/default/page.tpl:41
 msgid "Add a member"
 msgstr "Añadir un socio"
 
-#: ../templates/default/page.tpl:87
+#: ../templates/default/page.tpl:95
 msgid "Modify"
 msgstr ""
 
@@ -2252,15 +2274,15 @@ msgstr ""
 msgid "and"
 msgstr "y"
 
-#: ../templates/default/page.tpl:27
+#: ../templates/default/page.tpl:35
 msgid "Navigation"
 msgstr "Navegación"
 
-#: ../templates/default/page.tpl:120
+#: ../templates/default/page.tpl:128
 msgid "Lateness in fee"
 msgstr "Retraso de la cuota"
 
-#: ../templates/default/page.tpl:50
+#: ../templates/default/page.tpl:58
 msgid "Configure member forms"
 msgstr "Configurar las fichas de socios"
 
@@ -2305,7 +2327,7 @@ msgstr "huella de clave:"
 msgid "Picture:"
 msgstr "Foto:"
 
-#: ../templates/default/page.tpl:52
+#: ../templates/default/page.tpl:60
 msgid "Email contents"
 msgstr ""
 
@@ -2425,12 +2447,12 @@ msgstr "Normal"
 msgid "Founder member"
 msgstr "Socio fundador"
 
-#: ../templates/default/page.tpl:83 ../templates/default/page.tpl:84
+#: ../templates/default/page.tpl:91 ../templates/default/page.tpl:92
 #: ../templates/default/preferences.tpl:24
 msgid "Admin"
 msgstr "Administrador"
 
-#: ../templates/default/page.tpl:112
+#: ../templates/default/page.tpl:120
 msgid "Membership in order"
 msgstr "Afiliación en regla"
 
@@ -2471,6 +2493,11 @@ msgstr "Actualizada la ficha de socio:"
 msgid "Parameters"
 msgstr "Afiliación"
 
+#: ../templates/default/page.tpl:171
+#, fuzzy
+msgid "Next year"
+msgstr "Siguiente paso"
+
 #: ../preferences.php:165
 msgid "- Invalid number of months of membership extension."
 msgstr "- La duración en meses de la afiliación es inválida."
@@ -2499,8 +2526,8 @@ msgstr "Creación de la base de datos"
 
 #: ../self_adherent.php:160 ../preferences.php:214 ../preferences.php:217
 #: ../ajouter_contribution.php:162 ../ajouter_contribution.php:165
-#: ../ajouter_adherent.php:221 ../ajouter_transaction.php:121
-#: ../ajouter_transaction.php:124
+#: ../ajouter_adherent.php:221 ../ajouter_transaction.php:124
+#: ../ajouter_transaction.php:127
 msgid "- Mandatory field empty."
 msgstr "- Campo obligatorio no rellenado."
 
@@ -2597,7 +2624,7 @@ msgstr "Grabar los parámetros"
 msgid "Parameters couldn't be saved."
 msgstr "No fue posible grabar los parámetros."
 
-#: ../templates/default/page.tpl:88 ../templates/default/page.tpl:131
+#: ../templates/default/page.tpl:96 ../templates/default/page.tpl:139
 #: ../templates/default/voir_adherent.tpl:23
 #: ../templates/default/voir_adherent.tpl:184
 msgid "Modification"
@@ -2675,7 +2702,7 @@ msgstr "Usuario"
 msgid "Font size:"
 msgstr "Tamaño del tipo de letra:"
 
-#: ../templates/default/page.tpl:100
+#: ../templates/default/page.tpl:108
 msgid "Active account"
 msgstr "Cuenta activa"
 
