@@ -33,7 +33,7 @@
 				</p>
 				<p>
 					<span class="bline{if $required.titre_adh eq 1} required{/if}">{_T("Title:")}</span>
-					{html_radios name="titre_adh" options=$radio_titres checked=$data.titre_adh separator="&nbsp;&nbsp;" disabled=$disabled.titre_adh}
+					{html_radios name="titre_adh" options=$radio_titres checked=$data.titre_adh separator="&nbsp;" disabled=$disabled.titre_adh}
 				</p>
 				<p>
 					<label for="nom_adh" class="bline{if $required.nom_adh eq 1} required{/if}">{_T("Name:")}</label>
@@ -121,7 +121,7 @@
 				</p>
 				<p>
 					<label for="info_adh" class="bline{if $required.info_adh eq 1} required{/if}">{_T("Other informations (admin):")}</label>
-					<textarea name="info_adh" id="info_adh" cols="61" rows="6" {$disabled.info_adh}>{$data.info_adh}</textarea><br/>
+					<textarea name="info_adh" id="info_adh" cols="50" rows="6" {$disabled.info_adh}>{$data.info_adh}</textarea><br/>
 					<span class="exemple labelalign">{_T("This comment is only displayed for admins.")}</span>
 				</p>
 {/if}
@@ -138,9 +138,9 @@
 				<legend>{_T("Contact information:")}</legend>
 				<p>
 					<label for="adresse_adh" class="bline{if $required.adresse_adh eq 1} required{/if}">{_T("Address:")}</label>
-					<input type="text" name="adresse_adh" id="adresse_adh" value="{$data.adresse_adh}" maxlength="150" size="50" {$disabled.adresse_adh}/><br/>
+					<input type="text" class="large" name="adresse_adh" id="adresse_adh" value="{$data.adresse_adh}" maxlength="150" {$disabled.adresse_adh}/><br/>
 					<label for="adresse2_adh" class="bline libelle{if $required.adresse_adh eq 1} required{/if}">{_T("Address:")} {_T(" (continuation)")}</label>
-					<input type="text" name="adresse2_adh" id="adresse2_adh" value="{$data.adresse2_adh}" maxlength="150" size="50" {$disabled.adresse2_adh}/>
+					<input type="text" class="large" name="adresse2_adh" id="adresse2_adh" value="{$data.adresse2_adh}" maxlength="150" {$disabled.adresse2_adh}/>
 				</p>
 				<p>
 					<label for="cp_adh" class="bline{if $required.cp_adh eq 1} required{/if}">{_T("Zip Code:")}</label>
