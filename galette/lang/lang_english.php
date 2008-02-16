@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Tue Dec  4 06:05:12 2007 (GMT)
+// This file was automatically generated on Sat Feb 16 10:17:13 2008 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -87,7 +87,7 @@ $lang['Jabber'] = 'Jabber';
 // ../preferences.php:165 
 $lang['- Invalid number of months of membership extension.'] = '- Invalid number of months of membership extension.';
 
-// ../self_adherent.php:129 ../preferences.php:161 ../ajouter_adherent.php:175 
+// ../self_adherent.php:129 ../change_passwd.php:60 ../preferences.php:161 ../ajouter_adherent.php:175 
 $lang['- The password must be of at least 4 characters!'] = '- The password must be of at least 4 characters!';
 
 // ../templates/default/ajouter_adherent.tpl:55 ../templates/default/voir_adherent.tpl:53 ../templates/default/self_adherent.tpl:93 
@@ -96,8 +96,8 @@ $lang['Profession:'] = 'Profession:';
 // ../templates/default/gestion_adherents.tpl:157 ../templates/default/page.tpl:138 ../templates/default/gestion_contributions.tpl:127 ../templates/default/gestion_transactions.tpl:90 
 $lang['[mod]'] = '[mod]';
 
-// ../templates/default/ajouter_transaction.tpl:30 
-$lang['Date:'] = 'Date:';
+// ../change_passwd.php:67 ../change_passwd.php:72 
+$lang['There was a database error'] = 'There was a database error';
 
 // ../templates/default/ajouter_contribution.tpl:20 ../templates/default/ajouter_transaction.tpl:24 
 $lang['-- select a name --'] = '-- select a name --';
@@ -129,7 +129,7 @@ $lang['Gift'] = ' Gift';
 // ../templates/default/preferences.tpl:127 
 $lang['Members administrator\'s Email:'] = 'Members administrator\'s Email:';
 
-// ../install/index.php:152 ../install/index.php:199 
+// ../change_passwd.php:51 ../install/index.php:152 ../install/index.php:199 
 $lang['No password'] = 'No password';
 
 // ../includes/i18n.inc.php:204 
@@ -147,7 +147,7 @@ $lang['(Un)Check all'] = '(Un)Check all';
 // ../install/index.php:312 
 $lang['Next Page'] = 'Next Page';
 
-// ../install/index.php:436 ../install/index.php:879 ../install/index.php:1022 ../templates/default/gestion_adherents.tpl:5 ../templates/default/mailing_adherents.tpl:9 ../templates/default/preferences.tpl:5 ../templates/default/ajouter_adherent.tpl:5 ../templates/default/ajouter_contribution.tpl:5 ../templates/default/configurer_fiches.tpl:5 ../templates/default/traduire_libelles.tpl:4 ../templates/default/voir_adherent.tpl:4 ../templates/default/ajouter_transaction.tpl:5 ../templates/default/editer_champ.tpl:5 ../templates/default/lostpasswd.tpl:27 ../templates/default/self_adherent.tpl:41 ../templates/default/gestion_textes.tpl:5 
+// ../install/index.php:436 ../install/index.php:879 ../install/index.php:1022 ../templates/default/gestion_adherents.tpl:5 ../templates/default/mailing_adherents.tpl:9 ../templates/default/preferences.tpl:5 ../templates/default/ajouter_adherent.tpl:5 ../templates/default/ajouter_contribution.tpl:5 ../templates/default/configurer_fiches.tpl:5 ../templates/default/traduire_libelles.tpl:4 ../templates/default/voir_adherent.tpl:4 ../templates/default/ajouter_transaction.tpl:5 ../templates/default/editer_champ.tpl:5 ../templates/default/lostpasswd.tpl:27 ../templates/default/change_passwd.tpl:28 ../templates/default/self_adherent.tpl:41 ../templates/default/gestion_textes.tpl:5 
 $lang['- ERROR -'] = '- ERROR -';
 
 // ../templates/default/gestion_transactions.tpl:1 
@@ -171,7 +171,7 @@ $lang['There was a database error when inserting data'] = 'There was a database 
 // ../install/index.php:123 ../install/index.php:133 
 $lang['Installation mode unknown'] = 'Installation mode unknown';
 
-// ../templates/default/lostpasswd.tpl:53 ../templates/default/self_adherent.tpl:35 
+// ../templates/default/lostpasswd.tpl:53 ../templates/default/change_passwd.tpl:66 ../templates/default/self_adherent.tpl:35 
 $lang['Back to login page'] = 'Back to login page';
 
 // ../templates/default/preferences.tpl:70 ../templates/default/ajouter_adherent.tpl:170 ../templates/default/voir_adherent.tpl:142 ../templates/default/self_adherent.tpl:143 
@@ -303,6 +303,9 @@ $lang['Member\'s Labels'] = 'Member\'s Labels';
 // ../install/index.php:491 
 $lang['Check of the database'] = 'Check of the database';
 
+// ../change_passwd.php:42 
+$lang['This link is no longer valid. You should <a href=\'lostpasswd.php\'>ask to retrieve your password</a> again.'] = 'This link is no longer valid. You should <a href=\'lostpasswd.php\'>ask to retrieve your password</a> again.';
+
 // ../templates/default/preferences.tpl:122 ../templates/default/preferences.tpl:123 
 $lang['Leave empty to use Sender Email as reply address'] = 'Leave empty to use Sender Email as reply address';
 
@@ -348,10 +351,13 @@ $lang['(Choose address printed below name)'] = '(Choose address printed below na
 // ../ajouter_adherent.php:156 
 $lang['- The username cannot contain the @ character'] = '- The username cannot contain the @ character';
 
+// ../templates/default/change_passwd.tpl:54 
+$lang['Confirmation:'] = 'Confirmation:';
+
 // ../history.php:132 ../preferences.php:324 ../gestion_contributions.php:320 ../gestion_adherents.php:424 ../gestion_transactions.php:149 
 $lang['All'] = 'All';
 
-// ../install/index.php:464 ../install/index.php:889 ../templates/default/index.tpl:39 ../templates/default/preferences.tpl:307 ../templates/default/ajouter_adherent.tpl:103 ../templates/default/self_adherent.tpl:175 
+// ../install/index.php:464 ../install/index.php:889 ../templates/default/index.tpl:39 ../templates/default/preferences.tpl:307 ../templates/default/ajouter_adherent.tpl:103 ../templates/default/change_passwd.tpl:50 ../templates/default/self_adherent.tpl:175 
 $lang['Password:'] = 'Password:';
 
 // ../install/index.php:449 
@@ -444,7 +450,7 @@ $lang['Files permissions'] = 'Files permissions';
 // ../carte_adherent.php:115 ../carte_adherent.php:337 ../templates/default/preferences.tpl:25 
 $lang['Cards'] = 'Cards';
 
-// ../templates/default/mailing_adherents.tpl:19 ../templates/default/preferences.tpl:15 ../templates/default/ajouter_adherent.tpl:15 ../templates/default/lostpasswd.tpl:37 ../templates/default/self_adherent.tpl:51 
+// ../templates/default/mailing_adherents.tpl:19 ../templates/default/preferences.tpl:15 ../templates/default/ajouter_adherent.tpl:15 ../templates/default/lostpasswd.tpl:37 ../templates/default/change_passwd.tpl:38 ../templates/default/self_adherent.tpl:51 
 $lang['- WARNING -'] = '- WARNING -';
 
 // ../includes/i18n.inc.php:186 
@@ -639,6 +645,9 @@ $lang['Username or email:'] = 'Username or email:';
 // ../templates/default/gestion_contributions.tpl:39 ../templates/default/history.tpl:37 ../templates/default/gestion_transactions.tpl:30 
 $lang['Date'] = 'Date';
 
+// ../templates/default/change_passwd.tpl:58 
+$lang['Change my password'] = 'Change my password';
+
 // ../templates/default/preferences.tpl:112 
 $lang['Mail settings:'] = 'Mail settings:';
 
@@ -650,6 +659,9 @@ $lang['First name:'] = 'First name:';
 
 // ../includes/dynamic_fields.inc.php:28 
 $lang['free text'] = 'free text';
+
+// ../templates/default/ajouter_transaction.tpl:30 
+$lang['Date:'] = 'Date:';
 
 // ../install/index.php:226 ../install/index.php:1075 
 $lang['Language'] = 'Language';
@@ -744,7 +756,7 @@ $lang['Number of label lines:'] = 'Number of label lines:';
 // ../templates/default/gestion_transactions.tpl:43 
 $lang['Originator'] = 'Originator';
 
-// ../lostpasswd.php:129 ../templates/default/lostpasswd.tpl:24 
+// ../lostpasswd.php:129 ../templates/default/lostpasswd.tpl:24 ../templates/default/change_passwd.tpl:25 
 $lang['Password recovery'] = 'Password recovery';
 
 // ../install/index.php:519 
@@ -831,11 +843,14 @@ $lang['Address type:'] = 'Address type:';
 // ../install/index.php:249 ../install/index.php:1081 
 $lang['Tables Creation/Update'] = 'Tables Creation/Update';
 
-// ../templates/default/index.tpl:46 ../templates/default/lostpasswd.tpl:52 
+// ../templates/default/index.tpl:46 ../templates/default/lostpasswd.tpl:52 ../templates/default/change_passwd.tpl:65 
 $lang['Subscribe'] = 'Subscribe';
 
 // ../install/index.php:197 
 $lang['The username cannot contain the @ character'] = ' - The username must be composed of at least 4 characters!';
+
+// ../change_passwd.php:75 
+$lang['Password changed, you will be redirected to login page'] = 'Password changed, you will be redirected to login page';
 
 // ../gestion_adherents.php:394 ../templates/default/gestion_adherents.tpl:2 
 $lang['Management of members'] = 'Management of members';
@@ -1335,7 +1350,7 @@ $lang['Treasurer'] = 'Treasurer';
 // ../templates/default/page.tpl:124 
 $lang['Membership will expire soon (&lt;30d)'] = 'Membership will expire soon (&lt;30d)';
 
-// ../ajouter_adherent.php:180 
+// ../change_passwd.php:56 ../ajouter_adherent.php:180 
 $lang['- The passwords don\'t match!'] = ' - The password must be of at least 4 characters!';
 
 // ../templates/default/preferences.tpl:137 
@@ -1443,7 +1458,7 @@ $lang['Other informations:'] = 'Other informations:';
 // ../install/index.php:592 
 $lang['UPDATE operation not allowed'] = 'UPDATE operation not allowed';
 
-// ../templates/default/ajouter_adherent.tpl:100 ../templates/default/ajouter_adherent.tpl:105 ../templates/default/self_adherent.tpl:172 
+// ../templates/default/ajouter_adherent.tpl:100 ../templates/default/ajouter_adherent.tpl:105 ../templates/default/change_passwd.tpl:57 ../templates/default/self_adherent.tpl:172 
 $lang['(at least 4 characters)'] = '(at least 4 characters)';
 
 // ../templates/default/ajouter_adherent.tpl:47 ../templates/default/voir_adherent.tpl:45 ../templates/default/self_adherent.tpl:85 

@@ -1,17 +1,17 @@
 # translation of en_US.po to fr_FR
 # translation of en_US.po to
-# Copyright (C) 2006, 2007 Free Software Foundation, Inc.
+# Copyright (C) 2006, 2007, 2008 Free Software Foundation, Inc.
 #
 # Simon DEPIETS <>, 2004.
 # Stéphane Salès <ssales@tuxz.org>, 2006.
 # Thomas Canniot <mrtom@fedoraproject.org>, 2007.
-# Johan Cwiklinski <johan@x-tnd.be>, 2007.
+# Johan Cwiklinski <johan@x-tnd.be>, 2007, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: en_US\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-12-20 16:44+0100\n"
-"PO-Revision-Date: 2007-12-04 07:05+0100\n"
+"PO-Revision-Date: 2008-02-16 11:16+0100\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: fr_FR <fedora-trans-fr@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -238,6 +238,7 @@ msgstr "Close"
 #: ../install/index.php:464 ../install/index.php:889
 #: ../templates/default/index.tpl:39 ../templates/default/preferences.tpl:307
 #: ../templates/default/ajouter_adherent.tpl:103
+#: ../templates/default/change_passwd.tpl:50
 #: ../templates/default/self_adherent.tpl:175
 msgid "Password:"
 msgstr "Password:"
@@ -398,6 +399,7 @@ msgid "Selection:"
 msgstr "Selection:"
 
 #: ../lostpasswd.php:129 ../templates/default/lostpasswd.tpl:24
+#: ../templates/default/change_passwd.tpl:25
 msgid "Password recovery"
 msgstr "Password recovery"
 
@@ -590,7 +592,7 @@ msgstr "Management of members"
 msgid "Maximum number of characters."
 msgstr "Maximum number of characters."
 
-#: ../install/index.php:152 ../install/index.php:199
+#: ../change_passwd.php:51 ../install/index.php:152 ../install/index.php:199
 msgid "No password"
 msgstr "No password"
 
@@ -671,6 +673,10 @@ msgstr "Installation Report"
 #: ../templates/default/voir_adherent.tpl:187
 msgid "View contributions"
 msgstr "View contributions"
+
+#: ../change_passwd.php:67 ../change_passwd.php:72
+msgid "There was a database error"
+msgstr "There was a database error"
 
 #: ../templates/default/ajouter_adherent.tpl:174
 #: ../templates/default/voir_adherent.tpl:150
@@ -1060,6 +1066,7 @@ msgid "Select installation mode to launch"
 msgstr "Select installation mode to launch"
 
 #: ../templates/default/lostpasswd.tpl:53
+#: ../templates/default/change_passwd.tpl:66
 #: ../templates/default/self_adherent.tpl:35
 msgid "Back to login page"
 msgstr "Back to login page"
@@ -1092,7 +1099,8 @@ msgstr "Host:"
 msgid "Originator"
 msgstr "Originator"
 
-#: ../self_adherent.php:129 ../preferences.php:161 ../ajouter_adherent.php:175
+#: ../self_adherent.php:129 ../change_passwd.php:60 ../preferences.php:161
+#: ../ajouter_adherent.php:175
 msgid "- The password must be of at least 4 characters!"
 msgstr "- The password must be of at least 4 characters!"
 
@@ -1170,7 +1178,7 @@ msgstr "Retype password:"
 msgid "Width:"
 msgstr " Width:"
 
-#: ../ajouter_adherent.php:180
+#: ../change_passwd.php:56 ../ajouter_adherent.php:180
 msgid "- The passwords don't match!"
 msgstr " - The password must be of at least 4 characters!"
 
@@ -1205,6 +1213,7 @@ msgid "Active accounts"
 msgstr " Active accounts"
 
 #: ../templates/default/index.tpl:46 ../templates/default/lostpasswd.tpl:52
+#: ../templates/default/change_passwd.tpl:65
 msgid "Subscribe"
 msgstr "Subscribe"
 
@@ -1731,6 +1740,10 @@ msgstr "Cancel"
 msgid "Next month"
 msgstr "Next month"
 
+#: ../change_passwd.php:75
+msgid "Password changed, you will be redirected to login page"
+msgstr "Password changed, you will be redirected to login page"
+
 #: ../templates/default/page.tpl:74
 msgid "Man"
 msgstr "Man"
@@ -1925,6 +1938,7 @@ msgstr "free text"
 #: ../templates/default/preferences.tpl:15
 #: ../templates/default/ajouter_adherent.tpl:15
 #: ../templates/default/lostpasswd.tpl:37
+#: ../templates/default/change_passwd.tpl:38
 #: ../templates/default/self_adherent.tpl:51
 msgid "- WARNING -"
 msgstr "- WARNING -"
@@ -2253,6 +2267,7 @@ msgstr "company fee"
 #: ../templates/default/ajouter_transaction.tpl:5
 #: ../templates/default/editer_champ.tpl:5
 #: ../templates/default/lostpasswd.tpl:27
+#: ../templates/default/change_passwd.tpl:28
 #: ../templates/default/self_adherent.tpl:41
 #: ../templates/default/gestion_textes.tpl:5
 msgid "- ERROR -"
@@ -2293,6 +2308,7 @@ msgstr "(Strip color will change according to member's status)"
 
 #: ../templates/default/ajouter_adherent.tpl:100
 #: ../templates/default/ajouter_adherent.tpl:105
+#: ../templates/default/change_passwd.tpl:57
 #: ../templates/default/self_adherent.tpl:172
 msgid "(at least 4 characters)"
 msgstr "(at least 4 characters)"
@@ -2478,6 +2494,10 @@ msgstr "(the member will receive a confirmation by email, if he has an address.)
 msgid "left"
 msgstr "left"
 
+#: ../templates/default/change_passwd.tpl:54
+msgid "Confirmation:"
+msgstr "Confirmation:"
+
 #: ../install/index.php:257 ../install/index.php:1083
 msgid "Saving the parameters"
 msgstr "Saving the parameters"
@@ -2558,6 +2578,10 @@ msgstr "Picture"
 msgid "User"
 msgstr "User"
 
+#: ../templates/default/change_passwd.tpl:58
+msgid "Change my password"
+msgstr "Change my password"
+
 #: ../templates/default/preferences.tpl:198
 msgid "Font size:"
 msgstr "Font size:"
@@ -2565,6 +2589,14 @@ msgstr "Font size:"
 #: ../templates/default/page.tpl:108
 msgid "Active account"
 msgstr "Active account"
+
+#: ../change_passwd.php:42
+msgid ""
+"This link is no longer valid. You should <a href='lostpasswd.php'>ask to "
+"retrieve your password</a> again."
+msgstr ""
+"This link is no longer valid. You should <a href='lostpasswd.php'>ask to "
+"retrieve your password</a> again."
 
 #: ../templates/default/gestion_transactions.tpl:97
 #: ../templates/default/gestion_transactions.tpl:99

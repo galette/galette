@@ -254,6 +254,7 @@ msgstr ""
 #: ../install/index.php:464 ../install/index.php:889
 #: ../templates/default/index.tpl:39 ../templates/default/preferences.tpl:307
 #: ../templates/default/ajouter_adherent.tpl:103
+#: ../templates/default/change_passwd.tpl:50
 #: ../templates/default/self_adherent.tpl:175
 msgid "Password:"
 msgstr "Contraseña:"
@@ -426,6 +427,7 @@ msgid "Selection:"
 msgstr "Selección:"
 
 #: ../lostpasswd.php:129 ../templates/default/lostpasswd.tpl:24
+#: ../templates/default/change_passwd.tpl:25
 msgid "Password recovery"
 msgstr "Recuperación de la contraseña"
 
@@ -629,7 +631,7 @@ msgstr "Gestión de los socios"
 msgid "Maximum number of characters."
 msgstr "Número máximo de caracteres."
 
-#: ../install/index.php:152 ../install/index.php:199
+#: ../change_passwd.php:51 ../install/index.php:152 ../install/index.php:199
 msgid "No password"
 msgstr "Falta contraseña"
 
@@ -713,6 +715,11 @@ msgstr "Informe de instalación"
 #: ../templates/default/voir_adherent.tpl:187
 msgid "View contributions"
 msgstr "Ver las contribuciones"
+
+#: ../change_passwd.php:67 ../change_passwd.php:72
+#, fuzzy
+msgid "There was a database error"
+msgstr "Se produjo un error en la base de datos al introducir datos"
 
 #: ../templates/default/ajouter_adherent.tpl:174
 #: ../templates/default/voir_adherent.tpl:150
@@ -1115,6 +1122,7 @@ msgid "Select installation mode to launch"
 msgstr "Seleccionar el tipo de instalación que se va a iniciar"
 
 #: ../templates/default/lostpasswd.tpl:53
+#: ../templates/default/change_passwd.tpl:66
 #: ../templates/default/self_adherent.tpl:35
 msgid "Back to login page"
 msgstr "Regresar a la página de identificación"
@@ -1147,7 +1155,8 @@ msgstr "Hostname:"
 msgid "Originator"
 msgstr "Emisor"
 
-#: ../self_adherent.php:129 ../preferences.php:161 ../ajouter_adherent.php:175
+#: ../self_adherent.php:129 ../change_passwd.php:60 ../preferences.php:161
+#: ../ajouter_adherent.php:175
 msgid "- The password must be of at least 4 characters!"
 msgstr "- ¡La contraseña debe consistir en 4 caracteres al menos!"
 
@@ -1228,7 +1237,7 @@ msgstr "Vuelva a introducir la contraseña:"
 msgid "Width:"
 msgstr "Ancho:"
 
-#: ../ajouter_adherent.php:180
+#: ../change_passwd.php:56 ../ajouter_adherent.php:180
 msgid "- The passwords don't match!"
 msgstr "- ¡Las contraseñas no coinciden!"
 
@@ -1266,6 +1275,7 @@ msgid "Active accounts"
 msgstr "Cuentas activas"
 
 #: ../templates/default/index.tpl:46 ../templates/default/lostpasswd.tpl:52
+#: ../templates/default/change_passwd.tpl:65
 msgid "Subscribe"
 msgstr "Dar de alta"
 
@@ -1821,6 +1831,10 @@ msgstr "Cancelar"
 msgid "Next month"
 msgstr "Siguiente paso"
 
+#: ../change_passwd.php:75
+msgid "Password changed, you will be redirected to login page"
+msgstr ""
+
 #: ../templates/default/page.tpl:74
 msgid "Man"
 msgstr "Hombre"
@@ -2030,6 +2044,7 @@ msgstr ""
 #: ../templates/default/preferences.tpl:15
 #: ../templates/default/ajouter_adherent.tpl:15
 #: ../templates/default/lostpasswd.tpl:37
+#: ../templates/default/change_passwd.tpl:38
 #: ../templates/default/self_adherent.tpl:51
 msgid "- WARNING -"
 msgstr "- ADVERTENCIA -"
@@ -2375,6 +2390,7 @@ msgstr ""
 #: ../templates/default/ajouter_transaction.tpl:5
 #: ../templates/default/editer_champ.tpl:5
 #: ../templates/default/lostpasswd.tpl:27
+#: ../templates/default/change_passwd.tpl:28
 #: ../templates/default/self_adherent.tpl:41
 #: ../templates/default/gestion_textes.tpl:5
 msgid "- ERROR -"
@@ -2416,6 +2432,7 @@ msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:100
 #: ../templates/default/ajouter_adherent.tpl:105
+#: ../templates/default/change_passwd.tpl:57
 #: ../templates/default/self_adherent.tpl:172
 msgid "(at least 4 characters)"
 msgstr "(al menos 4 caracteres)"
@@ -2615,6 +2632,11 @@ msgstr ""
 msgid "left"
 msgstr "Borrar"
 
+#: ../templates/default/change_passwd.tpl:54
+#, fuzzy
+msgid "Confirmation:"
+msgstr "(Confirmación)"
+
 #: ../install/index.php:257 ../install/index.php:1083
 #, fuzzy
 msgid "Saving the parameters"
@@ -2698,6 +2720,11 @@ msgstr "Foto"
 msgid "User"
 msgstr "Usuario"
 
+#: ../templates/default/change_passwd.tpl:58
+#, fuzzy
+msgid "Change my password"
+msgstr "Envíeme mi contraseña"
+
 #: ../templates/default/preferences.tpl:198
 msgid "Font size:"
 msgstr "Tamaño del tipo de letra:"
@@ -2705,6 +2732,12 @@ msgstr "Tamaño del tipo de letra:"
 #: ../templates/default/page.tpl:108
 msgid "Active account"
 msgstr "Cuenta activa"
+
+#: ../change_passwd.php:42
+msgid ""
+"This link is no longer valid. You should <a href='lostpasswd.php'>ask to "
+"retrieve your password</a> again."
+msgstr ""
 
 #: ../templates/default/gestion_transactions.tpl:97
 #: ../templates/default/gestion_transactions.tpl:99

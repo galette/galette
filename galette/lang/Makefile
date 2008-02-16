@@ -8,6 +8,7 @@ PHP_SOURCES = ../index.php \
 ../mailing_adherents.php \
 ../history.php \
 ../lostpasswd.php \
+../change_passwd.php \
 ../includes/session.inc.php \
 ../includes/i18n.inc.php \
 ../configurer_fiches.php \
@@ -45,6 +46,7 @@ PHP_SOURCES = ../index.php \
 ../templates/default/editer_champ.tpl \
 ../templates/default/gestion_transactions.tpl \
 ../templates/default/lostpasswd.tpl \
+../templates/default/change_passwd.tpl \
 ../templates/default/self_adherent.tpl \
 ../templates/default/champ_requis.tpl \
 ../templates/default/gestion_textes.tpl

@@ -416,11 +416,11 @@ a.listing:hover {
 	width: 80%;
 	margin:0 auto 0.8em auto;
 	display:block;
-	border:2px solid #E9FF24;
+	border:2px solid #FFB619;
 }
 		
 #warningbox h1 {
-	background-color: #E9FF24;
+	background-color: #FFB619;
 	text-align: center;
 	font-size: 10px;
 	font-weight: bold;
@@ -703,6 +703,21 @@ legend{
 	float: left;
 	margin: 0 0 0 -21em;
 	width: 21em;
+}
+
+.login-box .cssform .bline{
+	width:11em;
+	margin: 0 0 0 -11em;
+	text-align:left;
+}
+
+.login-box .cssform p{
+	padding-left:11em;
+}
+
+.login-box .cssform p.exemple{
+	text-align:center;
+	padding:0;
 }
 
 .cssform textarea{
