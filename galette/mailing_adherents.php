@@ -34,7 +34,7 @@ if( !$login->isAdmin() )
 
 	$error_detected = array();
 	$warning_detected = array();
-  $data = array();
+	$data = array();
 
 	$mailing_adh = array();
 	if (isset($_SESSION['galette']['mailing']))
@@ -49,9 +49,7 @@ if( !$login->isAdmin() )
 	foreach ($mailing_adh as $id_adh)
 		$member_id_string .= $id_adh.",";
 	$member_id_string = substr($member_id_string,0,-1);
-	$sql = "SELECT id_adh, email_adh
-					FROM ".PREFIX_DB."adherents
-					WHERE id_adh IN ($member_id_string)";
+	$sql = "SELECT id_adh, email_adh FROM ".PREFIX_DB."adherents WHERE id_adh IN ($member_id_string)";
 	$result_members = &$DB->Execute($sql);
 	while (!$result_members->EOF)
 	{
@@ -112,37 +110,40 @@ if( !$login->isAdmin() )
 		while (!$result_members->EOF)
 		{
 			$email_adh = $result_members->fields[1];
-			$mail_result = custom_mail($result_members->fields[1],
-																	$data['mailing_objet'],
-																	$data['mailing_corps'],
-																	$content_type);
+			$mail_result = custom_mail(
+						$result_members->fields[1],
+						$data['mailing_objet'],
+						$data['mailing_corps'],
+						$content_type
+			);
+
 			if( $mail_result == 1) {
 				dblog("Send mail to :"." \"" . $email_adh . "\"", $sql);
 				$warning_detected[] = _T("Mail sent to :")." \"" . $email_adh . "\"";
 			} else {
-      switch ($mail_result) {
-        case 2 :
-          dblog("Email sent is disabled in the preferences. Ask galette admin.");
-          $error_detected[] = _T("Email sent is disabled in the preferences. Ask galette admin");
-          break;
-        case 3 :
-          dblog("A problem happened while sending mail to :"." \"" . $email_adh . "\"");
-          $error_detected[] = _T("A problem happened while sending mail to :")." \"" . $email_adh . "\"";
-          break;
-        case 4 :
-          dblog("The mail server filled in the preferences cannot be reached. Ask Galette admin");
-          $error_detected[] = _T("The mail server filled in the preferences cannot be reached. Ask Galette admin");
-          break;
-        case 5 :
-          dblog("**IMPORTANT** There was a probably breaking attempt when sending mail to :"." \"" . $email_adh . "\"");
-          $error_detected[] = _T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"";
-          break;
-        default :
-          dblog("A problem happened while sending mail to :"." \"" . $email_adh . "\"");
-          $error_detected[] = _T("A problem happened while sending mail to :")." \"" . $email_adh . "\"";
-          break;
-      }
-    }
+				switch ($mail_result) {
+					case 2 :
+						dblog("Email sent is disabled in the preferences. Ask galette admin.");
+						$error_detected[] = _T("Email sent is disabled in the preferences. Ask galette admin");
+						break;
+					case 3 :
+						dblog("A problem happened while sending mail to :"." \"" . $email_adh . "\"");
+						$error_detected[] = _T("A problem happened while sending mail to :")." \"" . $email_adh . "\"";
+						break;
+					case 4 :
+						dblog("The mail server filled in the preferences cannot be reached. Ask Galette admin");
+						$error_detected[] = _T("The mail server filled in the preferences cannot be reached. Ask Galette admin");
+						break;
+					case 5 :
+						dblog("**IMPORTANT** There was a probably breaking attempt when sending mail to :"." \"" . $email_adh . "\"");
+						$error_detected[] = _T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"";
+						break;
+					default :
+						dblog("A problem happened while sending mail to :"." \"" . $email_adh . "\"");
+						$error_detected[] = _T("A problem happened while sending mail to :")." \"" . $email_adh . "\"";
+						break;
+				}
+			}
 			$result_members->MoveNext();
 		}
 	}

@@ -239,16 +239,15 @@ function sanityze_superglobals_arrays() {
 	return $errors;
 }
 
-function custom_mail($email_to,$mail_subject,$mail_text, $content_type="text/plain")
-{
-  // codes retour :
-  //  0 - error mail()
-  //  1 - mail sent
-  //  2 - mail desactived in preferences
-  //  3 - bad configuration ?
-  //  4 - SMTP unreacheable
-  //  5 - breaking attempt
-  $result = 0;
+function custom_mail($email_to,$mail_subject,$mail_text, $content_type="text/plain"){
+	// codes retour :
+	//  0 - error mail()
+	//  1 - mail sent
+	//  2 - mail desactived in preferences
+	//  3 - bad configuration ?
+	//  4 - SMTP unreacheable
+	//  5 - breaking attempt
+	$result = 0;
 
 	//Strip slashes if magic_quotes_gpc is enabled
 	//Fix bug #9705
@@ -258,10 +257,13 @@ function custom_mail($email_to,$mail_subject,$mail_text, $content_type="text/pla
 	}
 
 	//sanityze headers
-	$params = array($email_to,
-										$mail_subject,
-										//mail_text
-										$content_type);
+	$params = array(
+			$email_to,
+			$mail_subject,
+			//mail_text
+			$content_type
+	);
+	
 	foreach ($params as $param) {
 		if( ! sanityze_mail_headers($param) ) {
 			return 5;
@@ -269,85 +271,84 @@ function custom_mail($email_to,$mail_subject,$mail_text, $content_type="text/pla
 		}
 	}
 
-  // Headers :
+	// Headers :
 
-  // Add a Reply-To field in the mail headers.
-  // Fix bug #6654.
-  
-  if ( PREF_EMAIL_REPLY_TO )
-    $reply_to = PREF_EMAIL_REPLY_TO;
-  else
-    $reply_to = PREF_EMAIL;
+	// Add a Reply-To field in the mail headers.
+	// Fix bug #6654.
+	if ( PREF_EMAIL_REPLY_TO )
+		$reply_to = PREF_EMAIL_REPLY_TO;
+	else
+		$reply_to = PREF_EMAIL;
 
-  $headers = array("From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">",
-                   "Message-ID: <".makeRandomPassword(16)."-galette@".$_SERVER['SERVER_NAME'].">",
-                   "Reply-To: <".$reply_to.">",
-                   "X-Sender: <".PREF_EMAIL.">",                   
-                   "Return-Path: <".PREF_EMAIL.">",
-                   "Errors-To: <".PREF_EMAIL.">",
-                   "X-Mailer: Galette-".GALETTE_VERSION,
-                   "X-Priority: 3",
-                   "Content-Type: $content_type; charset=iso-8859-15");
+	$headers = array(
+			"From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">",
+			"Message-ID: <".makeRandomPassword(16)."-galette@".$_SERVER['SERVER_NAME'].">",
+			"Reply-To: <".$reply_to.">",
+			"X-Sender: <".PREF_EMAIL.">",
+			"Return-Path: <".PREF_EMAIL.">",
+			"Errors-To: <".PREF_EMAIL.">",
+			"X-Mailer: Galette-".GALETTE_VERSION,
+			"X-Priority: 3",
+			"Content-Type: $content_type; charset=iso-8859-15"
+	);
 
-  switch (PREF_MAIL_METHOD)
-    {
-    case 0:
-      $result = 2;
-      break;
-    case 1:
-      $mail_headers = "";
-      foreach($headers as $oneheader)
-        $mail_headers .= $oneheader . "\r\n";
-      //-f .PREF_EMAIL is to set Return-Path
-      //if (!mail($email_to,$mail_subject,$mail_text, $mail_headers,"-f ".PREF_EMAIL))
-      //set Return-Path
+	switch (PREF_MAIL_METHOD){
+		case 0:
+			$result = 2;
+			break;
+		case 1:
+			$mail_headers = "";
+			foreach($headers as $oneheader)
+				$mail_headers .= $oneheader . "\r\n";
+			//-f .PREF_EMAIL is to set Return-Path
+			//if (!mail($email_to,$mail_subject,$mail_text, $mail_headers,"-f ".PREF_EMAIL))
+			//set Return-Path
 			//seems to does not work
-      ini_set('sendmail_from', PREF_EMAIL);
-      if (!mail($email_to,$mail_subject,$mail_text, $mail_headers)) {
-        $result = 0;
-      } else {
-        $result = 1;
-      }
-      break;
-    case 2:
-      // $toArray format --> array("Name1" => "address1", "Name2" => "address2", ...)
+			ini_set('sendmail_from', PREF_EMAIL);
+			if (!mail($email_to,$mail_subject,$mail_text, $mail_headers)) {
+				$result = 0;
+			} else {
+				$result = 1;
+			}
+			break;
+		case 2:
+			// $toArray format --> array("Name1" => "address1", "Name2" => "address2", ...)
 
-      //set Return-Path
-      ini_set('sendmail_from', PREF_EMAIL);
-      $errno = "";
-      $errstr = "";
-      if (!$connect = fsockopen (PREF_MAIL_SMTP, 25, $errno, $errstr, 30))
-        $result = 4;
-      else
-        {
-          $rcv = fgets($connect, 1024);
-          fputs($connect, "HELO {$_SERVER['SERVER_NAME']}\r\n");
-          $rcv = fgets($connect, 1024);
-          fputs($connect, "MAIL FROM:".PREF_EMAIL."\r\n");
-          $rcv = fgets($connect, 1024);
-          fputs($connect, "RCPT TO:".$email_to."\r\n");
-          $rcv = fgets($connect, 1024);
-          fputs($connect, "DATA\r\n");
-          $rcv = fgets($connect, 1024);
-          foreach($headers as $oneheader)
-            fputs($connect, $oneheader."\r\n");
-          fputs($connect, stripslashes("Subject: ".$mail_subject)."\r\n");
-          fputs($connect, "\r\n");
-          fputs($connect, stripslashes($mail_text)." \r\n");
-          fputs($connect, ".\r\n");
-          $rcv = fgets($connect, 1024);
-          fputs($connect, "RSET\r\n");
-          $rcv = fgets($connect, 1024);
-          fputs ($connect, "QUIT\r\n");
-          $rcv = fgets ($connect, 1024);
-          fclose($connect);
-          $result = 1;
-        }
-      break;
-    default:
-      $result = 3;
-    }
-  return $result;
+			//set Return-Path
+			ini_set('sendmail_from', PREF_EMAIL);
+			$errno = "";
+			$errstr = "";
+			if (!$connect = fsockopen (PREF_MAIL_SMTP, 25, $errno, $errstr, 30))
+				$result = 4;
+			else{
+				$rcv = fgets($connect, 1024);
+				fputs($connect, "HELO {$_SERVER['SERVER_NAME']}\r\n");
+				$rcv = fgets($connect, 1024);
+				fputs($connect, "MAIL FROM:".PREF_EMAIL."\r\n");
+				$rcv = fgets($connect, 1024);
+				fputs($connect, "RCPT TO:".$email_to."\r\n");
+				$rcv = fgets($connect, 1024);
+				fputs($connect, "DATA\r\n");
+				$rcv = fgets($connect, 1024);
+				foreach($headers as $oneheader)
+					fputs($connect, $oneheader."\r\n");
+				fputs($connect, stripslashes("Subject: ".$mail_subject)."\r\n");
+				fputs($connect, "\r\n");
+				fputs($connect, stripslashes($mail_text)." \r\n");
+				fputs($connect, ".\r\n");
+				$rcv = fgets($connect, 1024);
+				fputs($connect, "RSET\r\n");
+				$rcv = fgets($connect, 1024);
+				fputs ($connect, "QUIT\r\n");
+				$rcv = fgets ($connect, 1024);
+				fclose($connect);
+				$result = 1;
+			}
+			break;
+		default:
+			$result = 3;
+		}
+	return $result;
 }
 
 function UniqueLogin($DB,$l) {
