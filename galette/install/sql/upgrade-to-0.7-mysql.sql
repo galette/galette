@@ -1,8 +1,8 @@
 -- Add new or missing preferences;
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_slogan', '');
-UPDATE galette_preferences SET pref_lang='fr_FR' WHERE pref_lang='french';
-UPDATE galette_preferences SET pref_lang='en_EN' WHERE pref_lang='english';
-UPDATE galette_preferences SET pref_lang='es_ES' WHERE pref_lang='spanish';
+UPDATE galette_preferences SET val_pref='fr_FR' WHERE nom_pref='french';
+UPDATE galette_preferences SET val_pref='en_EN' WHERE nom_pref='english';
+UPDATE galette_preferences SET val_pref='es_ES' WHERE nom_pref='spanish';
 UPDATE galette_adherents SET pref_lang='fr_FR' WHERE pref_lang='french';
 UPDATE galette_adherents SET pref_lang='en_EN' WHERE pref_lang='english';
 UPDATE galette_adherents SET pref_lang='es_ES' WHERE pref_lang='spanish';
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `galette_texts` (
 ) TYPE=MyISAM;
 
 -- Modify table picture to allow for negative indexes
-ALTER TABLE `galette_pictures` CHANGE `id_adh` `id_adh` INT( 10 ) NOT NULL DEFAULT '0' 
+ALTER TABLE `galette_pictures` CHANGE `id_adh` `id_adh` INT( 10 ) NOT NULL DEFAULT '0';
 
 -- Add a new table to store models descriptions for documents
 DROP TABLE IF EXISTS `galette_models`;
