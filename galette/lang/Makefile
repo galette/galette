@@ -9,6 +9,7 @@ PHP_SOURCES = ../index.php \
 ../log.php \
 ../self_contribution.php \
 ../lostpasswd.php \
+../change_passwd.php \
 ../footer.php \
 ../includes/session.inc.php \
 ../includes/i18n.inc.php \
@@ -43,6 +44,7 @@ PHP_SOURCES = ../index.php \
 ../templates/default/editer_champ.tpl \
 ../templates/default/gestion_transactions.tpl \
 ../templates/default/lostpasswd.tpl \
+../templates/default/change_passwd.tpl \
 ../templates/default/self_adherent.tpl
 
 

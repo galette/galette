@@ -35,10 +35,6 @@ msgstr ""
 msgid "Emailing disabled"
 msgstr ""
 
-#: ../templates/default/mailing_adherents.tpl:84
-msgid "Reedit"
-msgstr ""
-
 #: ../templates/default/editer_champ.tpl:30
 msgid "Position:"
 msgstr ""
@@ -164,8 +160,8 @@ msgstr ""
 #: ../self_adherent.php:193 ../install/index.php:330
 #: ../install/index.php:914 ../ajouter_adherent.php:279
 #: ../templates/default/index.tpl:25 ../templates/default/preferences.tpl:179
-#: ../templates/default/ajouter_adherent.tpl:103 ../templates/default/self_adherent.tpl:164
-#: ../templates/default/self_adherent.tpl:281
+#: ../templates/default/ajouter_adherent.tpl:103 ../templates/default/change_passwd.tpl:36
+#: ../templates/default/self_adherent.tpl:164 ../templates/default/self_adherent.tpl:281
 msgid "Password:"
 msgstr ""
 
@@ -178,8 +174,8 @@ msgstr ""
 msgid "Show contributions since"
 msgstr ""
 
-#: ../includes/i18n.inc.php:206
-msgid "Company cotisation"
+#: ../templates/default/preferences.tpl:25
+msgid "General information:"
 msgstr ""
 
 #: ../ajouter_adherent.php:315
@@ -198,7 +194,7 @@ msgstr ""
 msgid "Vertical spacing:"
 msgstr ""
 
-#: ../templates/default/mailing_adherents.tpl:43
+#: ../templates/default/mailing_adherents.tpl:42 ../templates/default/mailing_adherents.tpl:56
 msgid "Object:"
 msgstr ""
 
@@ -265,7 +261,7 @@ msgstr ""
 msgid "Selection:"
 msgstr ""
 
-#: ../templates/default/lostpasswd.tpl:10
+#: ../templates/default/lostpasswd.tpl:10 ../templates/default/change_passwd.tpl:11
 msgid "Password recovery"
 msgstr ""
 
@@ -430,7 +426,8 @@ msgstr ""
 msgid "Maximum number of characters."
 msgstr ""
 
-#: ../install/index.php:64 ../install/index.php:100
+#: ../change_passwd.php:56 ../install/index.php:64
+#: ../install/index.php:100
 msgid "No password"
 msgstr ""
 
@@ -500,6 +497,10 @@ msgstr ""
 
 #: ../templates/default/voir_adherent.tpl:163
 msgid "View contributions"
+msgstr ""
+
+#: ../change_passwd.php:72 ../change_passwd.php:77
+msgid "There was a database error"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:173 ../templates/default/voir_adherent.tpl:131
@@ -656,7 +657,7 @@ msgstr ""
 msgid "Late of "
 msgstr ""
 
-#: ../templates/default/mailing_adherents.tpl:94
+#: ../templates/default/mailing_adherents.tpl:71
 msgid "None of the selected members has an email address."
 msgstr ""
 
@@ -750,7 +751,7 @@ msgstr ""
 msgid "Amount:"
 msgstr ""
 
-#: ../templates/default/mailing_adherents.tpl:100
+#: ../templates/default/mailing_adherents.tpl:77
 msgid "Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail."
 msgstr ""
 
@@ -799,7 +800,7 @@ msgstr ""
 msgid "Password misrepeated: "
 msgstr ""
 
-#: ../templates/default/mailing_adherents.tpl:56
+#: ../templates/default/mailing_adherents.tpl:46 ../templates/default/mailing_adherents.tpl:58
 msgid "Message:"
 msgstr ""
 
@@ -823,7 +824,8 @@ msgstr ""
 msgid "Select installation mode to launch"
 msgstr ""
 
-#: ../templates/default/lostpasswd.tpl:46 ../templates/default/self_adherent.tpl:306
+#: ../templates/default/lostpasswd.tpl:46 ../templates/default/change_passwd.tpl:55
+#: ../templates/default/self_adherent.tpl:306
 msgid "Back to login page"
 msgstr ""
 
@@ -855,8 +857,8 @@ msgstr ""
 msgid "Originator"
 msgstr ""
 
-#: ../self_adherent.php:133 ../preferences.php:127
-#: ../ajouter_adherent.php:170
+#: ../self_adherent.php:133 ../change_passwd.php:65
+#: ../preferences.php:127 ../ajouter_adherent.php:170
 msgid "- The password must be of at least 4 characters!"
 msgstr ""
 
@@ -917,7 +919,7 @@ msgstr ""
 msgid "Width:"
 msgstr ""
 
-#: ../ajouter_adherent.php:175
+#: ../change_passwd.php:61 ../ajouter_adherent.php:175
 msgid "- The passwords don't match!"
 msgstr ""
 
@@ -929,7 +931,7 @@ msgstr ""
 msgid "Member card added"
 msgstr ""
 
-#: ../templates/default/display_dynamic_fields.tpl:3
+#: ../templates/default/display_dynamic_fields.tpl:4
 msgid "Additionnal informations:"
 msgstr ""
 
@@ -974,7 +976,7 @@ msgstr ""
 msgid "Unable to connect to the database"
 msgstr ""
 
-#: ../templates/default/ajouter_adherent.tpl:109
+#: ../templates/default/ajouter_adherent.tpl:109 ../templates/default/change_passwd.tpl:41
 msgid "(Confirmation)"
 msgstr ""
 
@@ -1064,9 +1066,8 @@ msgstr ""
 msgid "Next step"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:33 ../templates/default/gestion_contributions.tpl:14
-#: ../templates/default/gestion_transactions.tpl:7
-msgid "Show:"
+#: ../includes/i18n.inc.php:206
+msgid "Company cotisation"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:72
@@ -1086,9 +1087,8 @@ msgstr ""
 msgid "Date of contribution:"
 msgstr ""
 
-#: ../footer.php:66 ../templates/default/page.tpl:47
-#: ../templates/default/preferences.tpl:1
-msgid "Settings"
+#: ../change_passwd.php:47
+msgid "This link is no longer valid. You should <a href='lostpasswd.php'>ask to retrieve your password</a> again."
 msgstr ""
 
 #: ../install/index.php:178
@@ -1107,7 +1107,7 @@ msgstr ""
 msgid "Delete failed"
 msgstr ""
 
-#: ../templates/default/mailing_adherents.tpl:99
+#: ../templates/default/mailing_adherents.tpl:76
 msgid "unreachable member"
 msgstr ""
 
@@ -1140,10 +1140,6 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:127
 msgid "Vertical margins:"
-msgstr ""
-
-#: ../templates/default/mailing_adherents.tpl:82
-msgid "OFF"
 msgstr ""
 
 #: ../install/index.php:304
@@ -1271,7 +1267,7 @@ msgstr ""
 msgid "End"
 msgstr ""
 
-#: ../templates/default/mailing_adherents.tpl:79
+#: ../templates/default/mailing_adherents.tpl:50
 msgid "Interpret HTML"
 msgstr ""
 
@@ -1325,7 +1321,7 @@ msgstr ""
 msgid "reduced annual fee"
 msgstr ""
 
-#: ../templates/default/mailing_adherents.tpl:80
+#: ../templates/default/mailing_adherents.tpl:51
 msgid "Preview"
 msgstr ""
 
@@ -1369,6 +1365,10 @@ msgstr ""
 
 #: ../templates/default/editer_champ.tpl:93
 msgid "Cancel"
+msgstr ""
+
+#: ../change_passwd.php:80
+msgid "Password changed, you will be redirected to login page"
 msgstr ""
 
 #: ../footer.php:85 ../templates/default/page.tpl:62
@@ -1460,7 +1460,7 @@ msgstr ""
 msgid "For a correct functioning, Galette needs the Write permission on these files."
 msgstr ""
 
-#: ../templates/default/mailing_adherents.tpl:99
+#: ../templates/default/mailing_adherents.tpl:76
 msgid "unreachable members:"
 msgstr ""
 
@@ -1480,10 +1480,6 @@ msgstr ""
 #: ../footer.php:81 ../footer.php:150
 #: ../templates/default/page.tpl:58 ../templates/default/page.tpl:118
 msgid "Legend"
-msgstr ""
-
-#: ../templates/default/preferences.tpl:78
-msgid "Logging level:"
 msgstr ""
 
 #: ../templates/default/lostpasswd.tpl:39
@@ -1524,6 +1520,11 @@ msgstr ""
 msgid "Step 4 - Database"
 msgstr ""
 
+#: ../templates/default/gestion_adherents.tpl:33 ../templates/default/gestion_contributions.tpl:14
+#: ../templates/default/gestion_transactions.tpl:7
+msgid "Show:"
+msgstr ""
+
 #: ../gestion_adherents.php:382
 msgid "Address"
 msgstr ""
@@ -1542,7 +1543,7 @@ msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:19 ../templates/default/preferences.tpl:15
 #: ../templates/default/ajouter_adherent.tpl:15 ../templates/default/lostpasswd.tpl:23
-#: ../templates/default/self_adherent.tpl:43
+#: ../templates/default/change_passwd.tpl:24 ../templates/default/self_adherent.tpl:43
 msgid "- WARNING -"
 msgstr ""
 
@@ -1578,7 +1579,7 @@ msgstr ""
 msgid "It is now possible to follow in real time the state of your subscription"
 msgstr ""
 
-#: ../templates/default/mailing_adherents.tpl:85
+#: ../templates/default/mailing_adherents.tpl:67
 msgid "Send"
 msgstr ""
 
@@ -1621,10 +1622,6 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:218
 msgid "donation in money"
-msgstr ""
-
-#: ../templates/default/mailing_adherents.tpl:87
-msgid "Go back to the member listing"
 msgstr ""
 
 #: ../ajouter_contribution.php:125
@@ -1711,8 +1708,8 @@ msgstr ""
 msgid "- This username is already used by another member !"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:25
-msgid "General information:"
+#: ../templates/default/preferences.tpl:78
+msgid "Logging level:"
 msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:1
@@ -1751,6 +1748,10 @@ msgstr ""
 msgid "and"
 msgstr ""
 
+#: ../templates/default/mailing_adherents.tpl:55
+msgid "Message preview:"
+msgstr ""
+
 #: ../footer.php:34 ../templates/default/page.tpl:26
 msgid "Navigation"
 msgstr ""
@@ -1765,10 +1766,6 @@ msgstr ""
 
 #: ../gestion_contributions.php:287 ../gestion_adherents.php:343
 msgid "since"
-msgstr ""
-
-#: ../templates/default/mailing_adherents.tpl:82
-msgid "HTML interpretation:"
 msgstr ""
 
 #: ../templates/default/traduire_libelles.tpl:20
@@ -1803,7 +1800,7 @@ msgid "Description:"
 msgstr ""
 
 #: ../footer.php:45 ../templates/default/gestion_adherents.tpl:175
-#: ../templates/default/mailing_adherents.tpl:104
+#: ../templates/default/mailing_adherents.tpl:81
 msgid "Generate labels"
 msgstr ""
 
@@ -1825,7 +1822,7 @@ msgstr ""
 #: ../templates/default/configurer_fiches.tpl:5 ../templates/default/traduire_libelles.tpl:4
 #: ../templates/default/voir_adherent.tpl:4 ../templates/default/ajouter_transaction.tpl:5
 #: ../templates/default/editer_champ.tpl:5 ../templates/default/lostpasswd.tpl:13
-#: ../templates/default/self_adherent.tpl:33
+#: ../templates/default/change_passwd.tpl:14 ../templates/default/self_adherent.tpl:33
 msgid "- ERROR -"
 msgstr ""
 
@@ -1861,7 +1858,8 @@ msgid "and to update your preferences from the web interface."
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:100 ../templates/default/ajouter_adherent.tpl:105
-#: ../templates/default/self_adherent.tpl:161 ../templates/default/self_adherent.tpl:279
+#: ../templates/default/change_passwd.tpl:39 ../templates/default/self_adherent.tpl:161
+#: ../templates/default/self_adherent.tpl:279
 msgid "(at least 4 characters)"
 msgstr ""
 
@@ -2061,10 +2059,6 @@ msgstr ""
 msgid "Profession:"
 msgstr ""
 
-#: ../templates/default/mailing_adherents.tpl:82
-msgid "ON"
-msgstr ""
-
 #: ../install/index.php:955
 msgid "Save the parameters"
 msgstr ""
@@ -2073,12 +2067,21 @@ msgstr ""
 msgid "User"
 msgstr ""
 
+#: ../templates/default/change_passwd.tpl:46
+msgid "Change my password"
+msgstr ""
+
 #: ../templates/default/preferences.tpl:166
 msgid "Font size:"
 msgstr ""
 
 #: ../footer.php:120 ../templates/default/page.tpl:92
 msgid "Active account"
+msgstr ""
+
+#: ../footer.php:66 ../templates/default/page.tpl:47
+#: ../templates/default/preferences.tpl:1
+msgid "Settings"
 msgstr ""
 
 #: ../templates/default/gestion_transactions.tpl:104 ../templates/default/gestion_transactions.tpl:106
