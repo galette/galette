@@ -43,7 +43,7 @@
 			</tr>
 		</table>
 		<div>
-			<input type="submit" class="submit" name="change_passwd" value="{_T("Change my  password")}"/>
+			<input type="submit" class="submit" name="change_passwd" value="{_T("Change my password")}"/>
 			<input type="hidden" name="valid" value="1"/>
 			<input type="hidden" name="hash" value="{$hash}"/>
 		</div>

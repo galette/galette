@@ -694,13 +694,18 @@ legend{
 	height: 1%;
 }
 
-.cssform .bline{
+.bline{
 	font-weight: bold;
+	background-color: #DDDDFF;
+	padding:0.1em 0.3em;
+	margin-bottom:1em;
+	display:block;
+}
+
+.cssform .bline{
 	float: left;
 	margin-left: -21em;
 	width: 20em;
-	background-color: #DDDDFF;
-	padding:0.1em 0.3em;
 }
 
 .cssform textarea{

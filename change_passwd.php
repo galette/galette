@@ -1,7 +1,7 @@
 <?php
 /* change_passwd.php
  * - Change passwd
- * Copyright (c) 2005 Stéphane Salès
+ * Copyright (c) 2005 StÃ©phane SalÃ¨s
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -44,8 +44,8 @@
 		$query = "SELECT id_adh from ".PREFIX_DB."tmppasswds where tmp_passwd=".txt_sqls($hash);
 		$result = &$DB->Execute($query);
 		if ($result->EOF) {
-			$warning_detected = _T("We could'nt find this password in the database");
-			$head_redirect = "<meta http-equiv=\"refresh\" content=\"2;url=index.php\" />";
+			$warning_detected = _T("This link is no longer valid. You should <a href='lostpasswd.php'>ask to retrieve your password</a> again.");
+			$head_redirect = "<meta http-equiv=\"refresh\" content=\"30;url=index.php\" />";
 			//TODO need to clean die here
 		} else {
 			$id_adh = $result->fields[0];
@@ -77,7 +77,7 @@
 								$warning_detected = _T("There was a database error");
 							}else{
 								dblog("**Password changed**. id:"." \"" . $id_adh . "\"");
-								$warning_detected = _T("Password changed, you will be redirect to login page");
+								$warning_detected = _T("Password changed, you will be redirected to login page");
 								$head_redirect = "<meta http-equiv=\"refresh\" content=\"10;url=index.php\" />";
 							}
 						}
