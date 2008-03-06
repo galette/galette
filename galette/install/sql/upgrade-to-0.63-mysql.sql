@@ -5,26 +5,12 @@ ALTER TABLE `galette_adherents` CHANGE `mdp_adh` `mdp_adh` VARCHAR(40);
 
 -- Add new or missing preferences;
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_pays', '-');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_WEBSITE', '');
+INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_website', '');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_method', '0');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_smtp', '0');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_membership_ext', '12');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_beg_membership', '');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_email_reply_to', '');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_abrev', 'Galette');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_strip','Gestion d Adherents en Ligne Extrêmement Tarabiscoté');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_tcol', 'FFFFFF');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_scol', '8C2453');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_bcol', '53248C');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_hcol', '248C53');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_bool_display_title', '');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_address', '1');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_year', '2007');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_marges_v', '15');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_marges_h', '20');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_vspace', '5');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_hspace', '10');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_self', '1');
 
 -- New tables for dynamic fields;
 DROP TABLE galette_field_types;
