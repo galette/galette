@@ -218,4 +218,16 @@ $foo = _T("donation in kind");
 $foo = _T("donation in money");
 $foo = _T("partnership");
 $foo = _T("reduced annual fee");
+//Added 06/03/2008
+$foo = _T("Members");
+$foo = _T("Transactions");
+$foo = _T("all");
+$foo = _T("admin");
+$foo = _T("separator");
+$foo = _T("free text");
+$foo = _T("single line");
+$foo = _T("choice");
+$foo = _T("middle");
+$foo = _T("left");
+$foo = _T("right");
 ?>

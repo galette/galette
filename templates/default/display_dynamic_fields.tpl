@@ -1,28 +1,31 @@
 {if !empty($dynamic_fields)}
 {if $is_form eq true}
 <fieldset class="cssform">
-	<legend>{_T("Additionnal informations:")}</legend>
+	<legend>{_T("Additionnal fields:")}</legend>
+{else}
+<table class="details">
+	<caption>{_T("Additionnal fields:")}</caption>
 {/if}
 {foreach from=$dynamic_fields item=field}
 {if $field.field_perm ne 1 || $smarty.session.admin_status eq 1}
 	{if $field.field_type eq 0}
-			{if $is_form eq false}
-				<tr>
-					<th class="separator">{$field.field_name|escape}&nbsp;</th>
-				</tr>
-			{else}
-				<div class="separator">{$field.field_name|escape}</div>
-			{/if}
-	{else}
-			{if $is_form eq false}
-				<tr>
-			{else}
-				<p>
-			{/if}
 		{if $is_form eq false}
-				<th>{$field.field_name|escape}&nbsp;</th>
+			<tr>
+				<th class="separator">{$field.field_name|escape}</th>
+			</tr>
 		{else}
-				<label class="bline libelle {if $field.field_required eq 1} required{/if}">{$field.field_name|escape}&nbsp;</label>
+			<div class="separator">{$field.field_name|escape}</div>
+		{/if}
+	{else}
+		{if $is_form eq false}
+			<tr>
+		{else}
+			<p>
+		{/if}
+		{if $is_form eq false}
+				<th>{$field.field_name|escape}</th>
+		{else}
+				<label class="bline libelle {if $field.field_required eq 1} required{/if}" for="info_field_{$field.field_id}_1">{$field.field_name|escape}</label>
 		{/if}
 				{if $is_form eq false}<td>{/if}
 		{section name="fieldLoop" start=1 loop=$field.field_repeat+1}
@@ -40,7 +43,7 @@
 					<input type="text" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}"
 					{if $field.field_width > 0}size="{$field.field_width}"{/if}
 					{if $field.field_size > 0}maxlength="{$field.field_size}"{/if}
-					value="{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|escape}" size="50" {$disabled.dyn[$field.field_id]}/>
+					value="{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|escape}" {$disabled.dyn[$field.field_id]}/>
 			{elseif $field.field_type eq 3}
 					<select name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}">
 						<!-- If no option is present, page is not XHTML compliant -->
@@ -50,18 +53,18 @@
 			{/if}
 		{/if}
 		{/section}
-				{if $is_form eq false}</td>{/if}
-		{if $field.field_pos != 1 || $field.field_repeat != 1}
-			{if $is_form eq false}
-				</tr>
-			{else}
-				</p>
-			{/if}
+		{if $is_form eq false}
+				</td>
+			</tr>
+		{else}
+			</p>
 		{/if}
 	{/if}
 {/if}
 {/foreach}
 {if $is_form eq true}
-	</fieldset>
+</fieldset>
+{else}
+</table>
 {/if}
 {/if}
