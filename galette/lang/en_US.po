@@ -1,3 +1,4 @@
+# translation of en_US.po to fr_FR
 # translation of en_US.po to
 # Copyright (C) 2006, 2007, 2008 Free Software Foundation, Inc.
 #
@@ -10,9 +11,9 @@ msgstr ""
 "Project-Id-Version: en_US\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-12-20 16:44+0100\n"
-"PO-Revision-Date: 2008-02-20 06:42+0100\n"
+"PO-Revision-Date: 2008-03-06 18:52+0100\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
-"Language-Team:  <fr@li.org>\n"
+"Language-Team: fr_FR <fedora-trans-fr@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -57,6 +58,10 @@ msgstr "Status"
 #: ../templates/default/preferences.tpl:114
 msgid "Emailing disabled"
 msgstr "Emailing disabled"
+
+#: ../self_adherent.php:301 ../ajouter_adherent.php:422
+msgid "Mrs"
+msgstr "Mrs"
 
 #: ../templates/default/editer_champ.tpl:30
 msgid "Position:"
@@ -213,9 +218,13 @@ msgstr "Contact information:"
 msgid "Show contributions since"
 msgstr "Show contributions since"
 
-#: ../templates/default/preferences.tpl:25
-msgid "General information:"
-msgstr "General information:"
+#: ../includes/i18n.inc.php:206
+msgid "Company cotisation"
+msgstr "Company cotisation"
+
+#: ../includes/i18n.inc.php:224
+msgid "all"
+msgstr "all"
 
 #: ../ajouter_adherent.php:315
 msgid "Sent mail is checked but there is no email address"
@@ -224,6 +233,10 @@ msgstr "Sent mail is checked but there is no email address"
 #: ../templates/default/preferences.tpl:173
 msgid "Admin account (independant of members):"
 msgstr "Admin account (independant of members):"
+
+#: ../includes/i18n.inc.php:230
+msgid "middle"
+msgstr "middle"
 
 #: ../templates/default/gestion_adherents.tpl:27
 #: ../templates/default/gestion_contributions.tpl:8
@@ -400,9 +413,9 @@ msgstr ""
 "This can come from the permissions on the file includes/config.inc.php or "
 "the impossibility to make an INSERT into the database."
 
-#: ../install/index.php:889
-msgid "Step 7 - Tables Creation"
-msgstr "Step 7 - Tables Creation"
+#: ../ajouter_contribution.php:196
+msgid "- Membership period overlaps period starting at "
+msgstr "- Membership period overlaps period starting at "
 
 #: ../install/index.php:527
 msgid "SELECT operation not allowed"
@@ -703,6 +716,10 @@ msgstr "Passworg image"
 msgid "Mister"
 msgstr "Mister"
 
+#: ../includes/i18n.inc.php:223
+msgid "Transactions"
+msgstr "Transactions"
+
 #: ../templates/default/preferences.tpl:125
 msgid "Label generation parameters:"
 msgstr "Label generation parameters:"
@@ -795,6 +812,10 @@ msgstr "Inscription sent to the administrator for approval"
 #: ../includes/i18n.inc.php:198
 msgid "Secretary"
 msgstr "Secretary"
+
+#: ../templates/default/gestion_contributions.tpl:89
+msgid "Duration"
+msgstr "Duration"
 
 #: ../install/index.php:66
 msgid "No database name"
@@ -910,6 +931,10 @@ msgstr "transaction added"
 #: ../install/index.php:1200
 msgid "Step 10 - End of the update"
 msgstr "Step 10 - End of the update"
+
+#: ../includes/i18n.inc.php:225
+msgid "admin"
+msgstr "admin"
 
 #: ../gestion_contributions.php:318 ../gestion_adherents.php:393
 msgid "All the accounts"
@@ -1110,9 +1135,9 @@ msgstr "No"
 msgid "The tables are not totally created, it's maybe a permission problem."
 msgstr " The tables are not totally created, it's maybe a permission problem."
 
-#: ../footer.php:173 ../templates/default/page.tpl:136
-msgid "Gift"
-msgstr " Gift"
+#: ../includes/i18n.inc.php:226
+msgid "separator"
+msgstr "separator"
 
 #: ../gestion_contributions.php:315 ../gestion_adherents.php:389
 msgid "Close expiries"
@@ -1179,9 +1204,11 @@ msgstr "Galette Admin:"
 msgid "Next step"
 msgstr "Next step"
 
-#: ../includes/i18n.inc.php:206
-msgid "Company cotisation"
-msgstr "Company cotisation"
+#: ../templates/default/gestion_adherents.tpl:33
+#: ../templates/default/gestion_contributions.tpl:14
+#: ../templates/default/gestion_transactions.tpl:7
+msgid "Show:"
+msgstr "Show:"
 
 #: ../templates/default/preferences.tpl:72
 msgid "Lines / Page:"
@@ -1415,6 +1442,10 @@ msgstr " Retry"
 msgid "Database:"
 msgstr " Database:"
 
+#: ../includes/i18n.inc.php:229
+msgid "choice"
+msgstr "choice"
+
 #: ../install/index.php:261
 msgid ""
 "Under Windows, check these files are not in Read-Only mode in their property "
@@ -1583,9 +1614,9 @@ msgstr "Publisher:"
 msgid "List of members"
 msgstr "List of members"
 
-#: ../self_adherent.php:301 ../ajouter_adherent.php:422
-msgid "Mrs"
-msgstr "Mrs"
+#: ../includes/i18n.inc.php:232
+msgid "right"
+msgstr "right"
 
 #: ../lostpasswd.php:74
 msgid "There is  no password for user :"
@@ -1631,6 +1662,10 @@ msgstr "no member"
 msgid "Legend"
 msgstr "Legend"
 
+#: ../templates/default/preferences.tpl:78
+msgid "Logging level:"
+msgstr "Logging level:"
+
 #: ../templates/default/lostpasswd.tpl:39
 msgid "Send me my password"
 msgstr "Send me my password"
@@ -1675,12 +1710,6 @@ msgstr "New transaction"
 msgid "Step 4 - Database"
 msgstr "Step 4 - Database"
 
-#: ../templates/default/gestion_adherents.tpl:33
-#: ../templates/default/gestion_contributions.tpl:14
-#: ../templates/default/gestion_transactions.tpl:7
-msgid "Show:"
-msgstr "Show:"
-
 #: ../gestion_adherents.php:382
 msgid "Address"
 msgstr "Address"
@@ -1697,6 +1726,10 @@ msgstr " - The username must be composed of at least 4 characters!"
 #: ../preferences.php:136
 msgid "- Invalid format of beginning of membership."
 msgstr "- Invalid format of beginning of membership."
+
+#: ../includes/i18n.inc.php:227
+msgid "free text"
+msgstr "free text"
 
 #: ../templates/default/mailing_adherents.tpl:19
 #: ../templates/default/preferences.tpl:15
@@ -1833,6 +1866,10 @@ msgstr "No member was selected, please check at least one name."
 msgid "Step 10 - End of the installation"
 msgstr "Step 10 - End of the installation"
 
+#: ../footer.php:173 ../templates/default/page.tpl:136
+msgid "Gift"
+msgstr " Gift"
+
 #: ../templates/default/ajouter_adherent.tpl:93
 #: ../templates/default/voir_adherent.tpl:62
 msgid "Freed of dues:"
@@ -1875,9 +1912,9 @@ msgstr " day remaining"
 msgid "- This username is already used by another member !"
 msgstr "- This username is already used by another member !"
 
-#: ../templates/default/preferences.tpl:78
-msgid "Logging level:"
-msgstr "Logging level:"
+#: ../templates/default/preferences.tpl:25
+msgid "General information:"
+msgstr "General information:"
 
 #: ../templates/default/mailing_adherents.tpl:1
 msgid "Mailing"
@@ -2026,9 +2063,9 @@ msgstr "(Errors on DROP and RENAME operations can be ignored)"
 msgid "Account:"
 msgstr "Account:"
 
-#: ../templates/default/gestion_contributions.tpl:89
-msgid "Duration"
-msgstr "Duration"
+#: ../includes/i18n.inc.php:222
+msgid "Members"
+msgstr "Members"
 
 #: ../templates/default/editer_champ.tpl:23
 msgid "Visibility:"
@@ -2206,13 +2243,17 @@ msgstr "Logo:"
 msgid "Installation mode unknown"
 msgstr "Installation mode unknown"
 
+#: ../includes/i18n.inc.php:231
+msgid "left"
+msgstr "left"
+
 #: ../templates/default/configurer_fiches.tpl:61
 msgid "[down]"
 msgstr "[down]"
 
-#: ../ajouter_contribution.php:196
-msgid "- Membership period overlaps period starting at "
-msgstr "- Membership period overlaps period starting at "
+#: ../install/index.php:889
+msgid "Step 7 - Tables Creation"
+msgstr "Step 7 - Tables Creation"
 
 #: ../footer.php:128 ../gestion_contributions.php:271
 #: ../gestion_adherents.php:391 ../templates/default/page.tpl:100
@@ -2261,6 +2302,10 @@ msgstr "member"
 #: ../templates/default/self_adherent.tpl:210
 msgid "Profession:"
 msgstr "Profession:"
+
+#: ../includes/i18n.inc.php:228
+msgid "single line"
+msgstr "single line"
 
 #: ../install/index.php:955
 msgid "Save the parameters"

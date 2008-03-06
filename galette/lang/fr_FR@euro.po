@@ -1,3 +1,4 @@
+# translation of fr_FR@euro.po to fr_FR
 # translation of fr_FR@euro.po to
 # Copyright (C) 2005, 2006, 2007, 2008 Free Software Foundation, Inc.
 #
@@ -12,9 +13,9 @@ msgstr ""
 "Project-Id-Version: fr_FR@euro\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-12-20 16:44+0100\n"
-"PO-Revision-Date: 2008-02-20 06:42+0100\n"
+"PO-Revision-Date: 2008-03-06 18:51+0100\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
-"Language-Team:  <fr@li.org>\n"
+"Language-Team: fr_FR <fedora-trans-fr@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -59,6 +60,10 @@ msgstr "Statut"
 #: ../templates/default/preferences.tpl:114
 msgid "Emailing disabled"
 msgstr "Envoi de courriel désactivé"
+
+#: ../self_adherent.php:301 ../ajouter_adherent.php:422
+msgid "Mrs"
+msgstr "Madame"
 
 #: ../templates/default/editer_champ.tpl:30
 msgid "Position:"
@@ -219,9 +224,13 @@ msgstr "Informations de contact&nbsp;:"
 msgid "Show contributions since"
 msgstr "Afficher les contributions du"
 
-#: ../templates/default/preferences.tpl:25
-msgid "General information:"
-msgstr "Informations générales&nbsp;:"
+#: ../includes/i18n.inc.php:206
+msgid "Company cotisation"
+msgstr "Cotisation entreprise"
+
+#: ../includes/i18n.inc.php:224
+msgid "all"
+msgstr "Tous"
 
 #: ../ajouter_adherent.php:315
 msgid "Sent mail is checked but there is no email address"
@@ -230,6 +239,10 @@ msgstr "Aucun des destinataires sélectionnés n'a d'adresse de courriel."
 #: ../templates/default/preferences.tpl:173
 msgid "Admin account (independant of members):"
 msgstr "Compte administrateur (indépendant des adhérents)&nbsp;:"
+
+#: ../includes/i18n.inc.php:230
+msgid "middle"
+msgstr "milieu"
 
 #: ../templates/default/gestion_adherents.tpl:27
 #: ../templates/default/gestion_contributions.tpl:8
@@ -408,9 +421,9 @@ msgstr ""
 "Ceci peut provenir des droits sur le fichier includes/config.inc.php ou de "
 "l'impossibilité de faire un INSERT dans la base."
 
-#: ../install/index.php:889
-msgid "Step 7 - Tables Creation"
-msgstr "Étape 7 - Création des tables"
+#: ../ajouter_contribution.php:196
+msgid "- Membership period overlaps period starting at "
+msgstr "- La période d'adhésion chevauche la période commençant le "
 
 #: ../install/index.php:527
 msgid "SELECT operation not allowed"
@@ -713,6 +726,10 @@ msgstr "Image mot de passe"
 msgid "Mister"
 msgstr "Monsieur"
 
+#: ../includes/i18n.inc.php:223
+msgid "Transactions"
+msgstr "Transactions"
+
 #: ../templates/default/preferences.tpl:125
 msgid "Label generation parameters:"
 msgstr "Paramètres de génération d'étiquettes&nbsp;:"
@@ -807,6 +824,10 @@ msgstr "Votre inscription a été envoyée pour validation à l'administrateur"
 #: ../includes/i18n.inc.php:198
 msgid "Secretary"
 msgstr "Secrétaire"
+
+#: ../templates/default/gestion_contributions.tpl:89
+msgid "Duration"
+msgstr "Durée"
 
 #: ../install/index.php:66
 msgid "No database name"
@@ -923,6 +944,10 @@ msgstr "transaction ajoutée"
 #: ../install/index.php:1200
 msgid "Step 10 - End of the update"
 msgstr "Étape 10 - Fin de la mise à jour"
+
+#: ../includes/i18n.inc.php:225
+msgid "admin"
+msgstr "admin"
 
 #: ../gestion_contributions.php:318 ../gestion_adherents.php:393
 msgid "All the accounts"
@@ -1127,9 +1152,9 @@ msgstr ""
 "Les tables n'ont pas pu être totalement créées, il s'agit peut-être d'un "
 "problème de droits."
 
-#: ../footer.php:173 ../templates/default/page.tpl:136
-msgid "Gift"
-msgstr "Don"
+#: ../includes/i18n.inc.php:226
+msgid "separator"
+msgstr "séparateur"
 
 #: ../gestion_contributions.php:315 ../gestion_adherents.php:389
 msgid "Close expiries"
@@ -1196,9 +1221,11 @@ msgstr "Administrateur Galette&nbsp;:"
 msgid "Next step"
 msgstr "Étape suivante"
 
-#: ../includes/i18n.inc.php:206
-msgid "Company cotisation"
-msgstr "Cotisation entreprise"
+#: ../templates/default/gestion_adherents.tpl:33
+#: ../templates/default/gestion_contributions.tpl:14
+#: ../templates/default/gestion_transactions.tpl:7
+msgid "Show:"
+msgstr "Afficher&nbsp;:"
 
 #: ../templates/default/preferences.tpl:72
 msgid "Lines / Page:"
@@ -1436,6 +1463,10 @@ msgstr "Réessayer"
 msgid "Database:"
 msgstr "Nom de la base&nbsp;:"
 
+#: ../includes/i18n.inc.php:229
+msgid "choice"
+msgstr "choix"
+
 #: ../install/index.php:261
 msgid ""
 "Under Windows, check these files are not in Read-Only mode in their property "
@@ -1604,9 +1635,9 @@ msgstr "Éditeur&nbsp;:"
 msgid "List of members"
 msgstr "Liste des adhérents"
 
-#: ../self_adherent.php:301 ../ajouter_adherent.php:422
-msgid "Mrs"
-msgstr "Madame"
+#: ../includes/i18n.inc.php:232
+msgid "right"
+msgstr "droite"
 
 #: ../lostpasswd.php:74
 msgid "There is  no password for user :"
@@ -1656,6 +1687,10 @@ msgstr "aucun adhérent"
 msgid "Legend"
 msgstr "Légende"
 
+#: ../templates/default/preferences.tpl:78
+msgid "Logging level:"
+msgstr "Niveau d'historique&nbsp;:"
+
 #: ../templates/default/lostpasswd.tpl:39
 msgid "Send me my password"
 msgstr "Envoyez-moi mon mot de passe"
@@ -1700,12 +1735,6 @@ msgstr "Nouvelle transaction"
 msgid "Step 4 - Database"
 msgstr "Étape 4 - Base de données"
 
-#: ../templates/default/gestion_adherents.tpl:33
-#: ../templates/default/gestion_contributions.tpl:14
-#: ../templates/default/gestion_transactions.tpl:7
-msgid "Show:"
-msgstr "Afficher&nbsp;:"
-
 #: ../gestion_adherents.php:382
 msgid "Address"
 msgstr "Adresse"
@@ -1722,6 +1751,10 @@ msgstr "L'identifiant ne peut pas contenir le caractère @&nbsp;!"
 #: ../preferences.php:136
 msgid "- Invalid format of beginning of membership."
 msgstr "- Mauvais format de date de début d'exercice invalide"
+
+#: ../includes/i18n.inc.php:227
+msgid "free text"
+msgstr "texte libre"
 
 #: ../templates/default/mailing_adherents.tpl:19
 #: ../templates/default/preferences.tpl:15
@@ -1860,6 +1893,10 @@ msgstr "Veuillez sélectionner au moins un adhérent."
 msgid "Step 10 - End of the installation"
 msgstr "Étape 10 - Fin de l'installation"
 
+#: ../footer.php:173 ../templates/default/page.tpl:136
+msgid "Gift"
+msgstr "Don"
+
 #: ../templates/default/ajouter_adherent.tpl:93
 #: ../templates/default/voir_adherent.tpl:62
 msgid "Freed of dues:"
@@ -1902,9 +1939,9 @@ msgstr "jour restant"
 msgid "- This username is already used by another member !"
 msgstr "- Cet identifiant est déjà utilisé par un autre adhérent&nbsp;!"
 
-#: ../templates/default/preferences.tpl:78
-msgid "Logging level:"
-msgstr "Niveau d'historique&nbsp;:"
+#: ../templates/default/preferences.tpl:25
+msgid "General information:"
+msgstr "Informations générales&nbsp;:"
 
 #: ../templates/default/mailing_adherents.tpl:1
 msgid "Mailing"
@@ -2056,9 +2093,9 @@ msgstr "(Les erreurs sur les opérations DROP et RENAME peuvent être ignorées)"
 msgid "Account:"
 msgstr "Compte&nbsp;:"
 
-#: ../templates/default/gestion_contributions.tpl:89
-msgid "Duration"
-msgstr "Durée"
+#: ../includes/i18n.inc.php:222
+msgid "Members"
+msgstr "Adhérents"
 
 #: ../templates/default/editer_champ.tpl:23
 msgid "Visibility:"
@@ -2236,13 +2273,17 @@ msgstr "Logo&nbsp;:"
 msgid "Installation mode unknown"
 msgstr "Type d'installation inconnu"
 
+#: ../includes/i18n.inc.php:231
+msgid "left"
+msgstr "gauche"
+
 #: ../templates/default/configurer_fiches.tpl:61
 msgid "[down]"
 msgstr "[bas]"
 
-#: ../ajouter_contribution.php:196
-msgid "- Membership period overlaps period starting at "
-msgstr "- La période d'adhésion chevauche la période commençant le "
+#: ../install/index.php:889
+msgid "Step 7 - Tables Creation"
+msgstr "Étape 7 - Création des tables"
 
 #: ../footer.php:128 ../gestion_contributions.php:271
 #: ../gestion_adherents.php:391 ../templates/default/page.tpl:100
@@ -2291,6 +2332,10 @@ msgstr "adhérent"
 #: ../templates/default/self_adherent.tpl:210
 msgid "Profession:"
 msgstr "Profession&nbsp;:"
+
+#: ../includes/i18n.inc.php:228
+msgid "single line"
+msgstr "ligne simple"
 
 #: ../install/index.php:955
 msgid "Save the parameters"
