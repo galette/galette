@@ -35,6 +35,10 @@ msgstr ""
 msgid "Emailing disabled"
 msgstr ""
 
+#: ../self_adherent.php:301 ../ajouter_adherent.php:422
+msgid "Mrs"
+msgstr ""
+
 #: ../templates/default/editer_champ.tpl:30
 msgid "Position:"
 msgstr ""
@@ -174,8 +178,12 @@ msgstr ""
 msgid "Show contributions since"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:25
-msgid "General information:"
+#: ../includes/i18n.inc.php:206
+msgid "Company cotisation"
+msgstr ""
+
+#: ../includes/i18n.inc.php:224
+msgid "all"
 msgstr ""
 
 #: ../ajouter_adherent.php:315
@@ -184,6 +192,10 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:173
 msgid "Admin account (independant of members):"
+msgstr ""
+
+#: ../includes/i18n.inc.php:230
+msgid "middle"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:27 ../templates/default/gestion_contributions.tpl:8
@@ -344,8 +356,8 @@ msgstr ""
 msgid "This can come from the permissions on the file includes/config.inc.php or the impossibility to make an INSERT into the database."
 msgstr ""
 
-#: ../install/index.php:889
-msgid "Step 7 - Tables Creation"
+#: ../ajouter_contribution.php:196
+msgid "- Membership period overlaps period starting at "
 msgstr ""
 
 #: ../install/index.php:527
@@ -628,6 +640,10 @@ msgstr ""
 msgid "Mister"
 msgstr ""
 
+#: ../includes/i18n.inc.php:223
+msgid "Transactions"
+msgstr ""
+
 #: ../templates/default/preferences.tpl:125
 msgid "Label generation parameters:"
 msgstr ""
@@ -717,6 +733,10 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:198
 msgid "Secretary"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:89
+msgid "Duration"
 msgstr ""
 
 #: ../install/index.php:66
@@ -814,6 +834,10 @@ msgstr ""
 
 #: ../install/index.php:1200
 msgid "Step 10 - End of the update"
+msgstr ""
+
+#: ../includes/i18n.inc.php:225
+msgid "admin"
 msgstr ""
 
 #: ../gestion_contributions.php:318 ../gestion_adherents.php:393
@@ -1001,8 +1025,8 @@ msgstr ""
 msgid "The tables are not totally created, it's maybe a permission problem."
 msgstr ""
 
-#: ../footer.php:173 ../templates/default/page.tpl:136
-msgid "Gift"
+#: ../includes/i18n.inc.php:226
+msgid "separator"
 msgstr ""
 
 #: ../gestion_contributions.php:315 ../gestion_adherents.php:389
@@ -1066,8 +1090,9 @@ msgstr ""
 msgid "Next step"
 msgstr ""
 
-#: ../includes/i18n.inc.php:206
-msgid "Company cotisation"
+#: ../templates/default/gestion_adherents.tpl:33 ../templates/default/gestion_contributions.tpl:14
+#: ../templates/default/gestion_transactions.tpl:7
+msgid "Show:"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:72
@@ -1284,6 +1309,10 @@ msgstr ""
 msgid "Database:"
 msgstr ""
 
+#: ../includes/i18n.inc.php:229
+msgid "choice"
+msgstr ""
+
 #: ../install/index.php:261
 msgid "Under Windows, check these files are not in Read-Only mode in their property panel."
 msgstr ""
@@ -1436,8 +1465,8 @@ msgstr ""
 msgid "List of members"
 msgstr ""
 
-#: ../self_adherent.php:301 ../ajouter_adherent.php:422
-msgid "Mrs"
+#: ../includes/i18n.inc.php:232
+msgid "right"
 msgstr ""
 
 #: ../lostpasswd.php:74
@@ -1482,6 +1511,10 @@ msgstr ""
 msgid "Legend"
 msgstr ""
 
+#: ../templates/default/preferences.tpl:78
+msgid "Logging level:"
+msgstr ""
+
 #: ../templates/default/lostpasswd.tpl:39
 msgid "Send me my password"
 msgstr ""
@@ -1520,11 +1553,6 @@ msgstr ""
 msgid "Step 4 - Database"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:33 ../templates/default/gestion_contributions.tpl:14
-#: ../templates/default/gestion_transactions.tpl:7
-msgid "Show:"
-msgstr ""
-
 #: ../gestion_adherents.php:382
 msgid "Address"
 msgstr ""
@@ -1539,6 +1567,10 @@ msgstr ""
 
 #: ../preferences.php:136
 msgid "- Invalid format of beginning of membership."
+msgstr ""
+
+#: ../includes/i18n.inc.php:227
+msgid "free text"
 msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:19 ../templates/default/preferences.tpl:15
@@ -1669,6 +1701,10 @@ msgstr ""
 msgid "Step 10 - End of the installation"
 msgstr ""
 
+#: ../footer.php:173 ../templates/default/page.tpl:136
+msgid "Gift"
+msgstr ""
+
 #: ../templates/default/ajouter_adherent.tpl:93 ../templates/default/voir_adherent.tpl:62
 msgid "Freed of dues:"
 msgstr ""
@@ -1708,8 +1744,8 @@ msgstr ""
 msgid "- This username is already used by another member !"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:78
-msgid "Logging level:"
+#: ../templates/default/preferences.tpl:25
+msgid "General information:"
 msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:1
@@ -1834,8 +1870,8 @@ msgstr ""
 msgid "Account:"
 msgstr ""
 
-#: ../templates/default/gestion_contributions.tpl:89
-msgid "Duration"
+#: ../includes/i18n.inc.php:222
+msgid "Members"
 msgstr ""
 
 #: ../templates/default/editer_champ.tpl:23
@@ -2006,12 +2042,16 @@ msgstr ""
 msgid "Installation mode unknown"
 msgstr ""
 
+#: ../includes/i18n.inc.php:231
+msgid "left"
+msgstr ""
+
 #: ../templates/default/configurer_fiches.tpl:61
 msgid "[down]"
 msgstr ""
 
-#: ../ajouter_contribution.php:196
-msgid "- Membership period overlaps period starting at "
+#: ../install/index.php:889
+msgid "Step 7 - Tables Creation"
 msgstr ""
 
 #: ../footer.php:128 ../gestion_contributions.php:271
@@ -2057,6 +2097,10 @@ msgstr ""
 #: ../templates/default/ajouter_adherent.tpl:55 ../templates/default/voir_adherent.tpl:34
 #: ../templates/default/self_adherent.tpl:82 ../templates/default/self_adherent.tpl:210
 msgid "Profession:"
+msgstr ""
+
+#: ../includes/i18n.inc.php:228
+msgid "single line"
 msgstr ""
 
 #: ../install/index.php:955

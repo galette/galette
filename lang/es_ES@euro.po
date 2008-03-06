@@ -62,6 +62,10 @@ msgstr "Estado"
 msgid "Emailing disabled"
 msgstr "Correo desactivado"
 
+#: ../self_adherent.php:301 ../ajouter_adherent.php:422
+msgid "Mrs"
+msgstr "Señora"
+
 #: ../templates/default/editer_champ.tpl:30
 msgid "Position:"
 msgstr "Puesto:"
@@ -225,9 +229,14 @@ msgstr "Información de contacto:"
 msgid "Show contributions since"
 msgstr "Mostrar la contribuciones del"
 
-#: ../templates/default/preferences.tpl:25
-msgid "General information:"
-msgstr "Información general:"
+#: ../includes/i18n.inc.php:206
+msgid "Company cotisation"
+msgstr "Cuota empresarial"
+
+#: ../includes/i18n.inc.php:224
+#, fuzzy
+msgid "all"
+msgstr "Todos"
 
 #: ../ajouter_adherent.php:315
 msgid "Sent mail is checked but there is no email address"
@@ -237,6 +246,10 @@ msgstr ""
 #: ../templates/default/preferences.tpl:173
 msgid "Admin account (independant of members):"
 msgstr "Cuenta de administrador (independiente de los socios):"
+
+#: ../includes/i18n.inc.php:230
+msgid "middle"
+msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:27
 #: ../templates/default/gestion_contributions.tpl:8
@@ -422,10 +435,9 @@ msgstr ""
 "La causa puede estar en los permisos del fichero includes/config.inc.php o "
 "en la imposibilidad de hacer un INSERT en la base de datos."
 
-#: ../install/index.php:889
-#, fuzzy
-msgid "Step 7 - Tables Creation"
-msgstr "Paso 7º - Creación de la base de datos"
+#: ../ajouter_contribution.php:196
+msgid "- Membership period overlaps period starting at "
+msgstr "- El período de afiliación supera el periodo que comienza el "
 
 #: ../install/index.php:527
 msgid "SELECT operation not allowed"
@@ -734,6 +746,11 @@ msgstr "Error en la copia de la contraseña:"
 msgid "Mister"
 msgstr "Señor"
 
+#: ../includes/i18n.inc.php:223
+#, fuzzy
+msgid "Transactions"
+msgstr "transacciones"
+
 #: ../templates/default/preferences.tpl:125
 msgid "Label generation parameters:"
 msgstr "Parámetros de la generación de etiquetas:"
@@ -828,6 +845,10 @@ msgstr "Se ha enviado la afiliación al administrador para su aprobación"
 #: ../includes/i18n.inc.php:198
 msgid "Secretary"
 msgstr "Secretario/a"
+
+#: ../templates/default/gestion_contributions.tpl:89
+msgid "Duration"
+msgstr "Duración"
 
 #: ../install/index.php:66
 msgid "No database name"
@@ -945,6 +966,11 @@ msgstr "Transacción añadida"
 #: ../install/index.php:1200
 msgid "Step 10 - End of the update"
 msgstr "Paso 10º - Final de la actualización"
+
+#: ../includes/i18n.inc.php:225
+#, fuzzy
+msgid "admin"
+msgstr "[admin]"
 
 #: ../gestion_contributions.php:318 ../gestion_adherents.php:393
 msgid "All the accounts"
@@ -1151,9 +1177,9 @@ msgstr ""
 "La base de datos no fue creada totalmente, puede deberse a un problema de "
 "permisos."
 
-#: ../footer.php:173 ../templates/default/page.tpl:136
-msgid "Gift"
-msgstr "Donativo"
+#: ../includes/i18n.inc.php:226
+msgid "separator"
+msgstr ""
 
 #: ../gestion_contributions.php:315 ../gestion_adherents.php:389
 msgid "Close expiries"
@@ -1220,9 +1246,11 @@ msgstr "Admin. de  Galette:"
 msgid "Next step"
 msgstr "Siguiente paso"
 
-#: ../includes/i18n.inc.php:206
-msgid "Company cotisation"
-msgstr "Cuota empresarial"
+#: ../templates/default/gestion_adherents.tpl:33
+#: ../templates/default/gestion_contributions.tpl:14
+#: ../templates/default/gestion_transactions.tpl:7
+msgid "Show:"
+msgstr "Mostrar:"
 
 #: ../templates/default/preferences.tpl:72
 msgid "Lines / Page:"
@@ -1463,6 +1491,10 @@ msgstr "Intentar otra vez"
 msgid "Database:"
 msgstr "Base de datos:"
 
+#: ../includes/i18n.inc.php:229
+msgid "choice"
+msgstr ""
+
 #: ../install/index.php:261
 msgid ""
 "Under Windows, check these files are not in Read-Only mode in their property "
@@ -1635,9 +1667,10 @@ msgstr "Editor:"
 msgid "List of members"
 msgstr "Lista de socios"
 
-#: ../self_adherent.php:301 ../ajouter_adherent.php:422
-msgid "Mrs"
-msgstr "Señora"
+#: ../includes/i18n.inc.php:232
+#, fuzzy
+msgid "right"
+msgstr "Altura de la etiqueta:"
 
 #: ../lostpasswd.php:74
 msgid "There is  no password for user :"
@@ -1690,6 +1723,10 @@ msgstr "ningún socio"
 msgid "Legend"
 msgstr "Pie"
 
+#: ../templates/default/preferences.tpl:78
+msgid "Logging level:"
+msgstr "Nivel de historial:"
+
 #: ../templates/default/lostpasswd.tpl:39
 msgid "Send me my password"
 msgstr "Envíeme mi contraseña"
@@ -1737,12 +1774,6 @@ msgstr "Nueva transacción"
 msgid "Step 4 - Database"
 msgstr "Paso 4º - Base de datos"
 
-#: ../templates/default/gestion_adherents.tpl:33
-#: ../templates/default/gestion_contributions.tpl:14
-#: ../templates/default/gestion_transactions.tpl:7
-msgid "Show:"
-msgstr "Mostrar:"
-
 #: ../gestion_adherents.php:382
 #, fuzzy
 msgid "Address"
@@ -1760,6 +1791,10 @@ msgstr "El nombre de usuario no puede contener el carácter @"
 #: ../preferences.php:136
 msgid "- Invalid format of beginning of membership."
 msgstr "- Formato de comienzo de afiliación incorrecto."
+
+#: ../includes/i18n.inc.php:227
+msgid "free text"
+msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:19
 #: ../templates/default/preferences.tpl:15
@@ -1905,6 +1940,10 @@ msgstr ""
 msgid "Step 10 - End of the installation"
 msgstr "Paso 10º - Final de la instalación"
 
+#: ../footer.php:173 ../templates/default/page.tpl:136
+msgid "Gift"
+msgstr "Donativo"
+
 #: ../templates/default/ajouter_adherent.tpl:93
 #: ../templates/default/voir_adherent.tpl:62
 msgid "Freed of dues:"
@@ -1948,9 +1987,9 @@ msgstr "día restante"
 msgid "- This username is already used by another member !"
 msgstr "- ¡Este nombre de usuario ya lo utiliza otro socio!"
 
-#: ../templates/default/preferences.tpl:78
-msgid "Logging level:"
-msgstr "Nivel de historial:"
+#: ../templates/default/preferences.tpl:25
+msgid "General information:"
+msgstr "Información general:"
 
 #: ../templates/default/mailing_adherents.tpl:1
 msgid "Mailing"
@@ -2103,9 +2142,10 @@ msgstr "(Las errores en las operaciones DROP y RENAME pueden ser ignorados)"
 msgid "Account:"
 msgstr "Cuenta:"
 
-#: ../templates/default/gestion_contributions.tpl:89
-msgid "Duration"
-msgstr "Duración"
+#: ../includes/i18n.inc.php:222
+#, fuzzy
+msgid "Members"
+msgstr "Socio"
 
 #: ../templates/default/editer_champ.tpl:23
 msgid "Visibility:"
@@ -2288,13 +2328,19 @@ msgstr "Logo:"
 msgid "Installation mode unknown"
 msgstr "Tipo de instalación desconocido"
 
+#: ../includes/i18n.inc.php:231
+#, fuzzy
+msgid "left"
+msgstr "Borrar"
+
 #: ../templates/default/configurer_fiches.tpl:61
 msgid "[down]"
 msgstr "[abajo]"
 
-#: ../ajouter_contribution.php:196
-msgid "- Membership period overlaps period starting at "
-msgstr "- El período de afiliación supera el periodo que comienza el "
+#: ../install/index.php:889
+#, fuzzy
+msgid "Step 7 - Tables Creation"
+msgstr "Paso 7º - Creación de la base de datos"
 
 #: ../footer.php:128 ../gestion_contributions.php:271
 #: ../gestion_adherents.php:391 ../templates/default/page.tpl:100
@@ -2344,6 +2390,10 @@ msgstr "socio"
 #: ../templates/default/self_adherent.tpl:210
 msgid "Profession:"
 msgstr "Profesión:"
+
+#: ../includes/i18n.inc.php:228
+msgid "single line"
+msgstr ""
 
 #: ../install/index.php:955
 msgid "Save the parameters"
