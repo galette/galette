@@ -134,6 +134,11 @@
 					<input type="checkbox" name="pref_bool_mailadh" id="pref_bool_mailadh" value="1" {if $pref.pref_bool_mailadh eq 1}checked="checked"{/if}/>
 				</p>
 				<p>
+					<label for="pref_editor_enabled" class="bline{if $required.pref_editor_enabled eq 1} required{/if} tooltip" title="{_T("Should HTML editor be activated on page load ?")}">{_T("Activate HTML editor ?")}</label>
+					<span class="tip">{_T("Should HTML editor be activated on page load ?")}</span>
+					<input type="checkbox" name="pref_editor_enabled" id="pref_editor_enabled" value="1" {if $pref.pref_editor_enabled eq 1}checked="checked"{/if}/>
+				</p>
+				<p>
 					<span class="bline{if $required.pref_mail_method eq 1} required{/if}">{_T("Emailing method:")}</span>
 					<ul>
 						<li>

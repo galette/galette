@@ -10,10 +10,12 @@
 	
 	$tpl->assign('template_subdir', $template_subdir);
 	$tpl->assign('jquery_dir', 'includes/jquery/');
+	$tpl->assign('htmledi_dir', 'includes/tiny_mce/');
 	$tpl->assign('scripts_dir', 'includes/');
 	$tpl->assign('PAGENAME', basename($_SERVER['SCRIPT_NAME']));
 	/** FIXME: on certains pages PHP notice that GALETTE_VERSION does not exists although it appears correctly*/
 	$tpl->assign('GALETTE_VERSION', GALETTE_VERSION);
 	$tpl->assign('galette_lang', $i18n->getAbbrev());
 	$tpl->assign('pref_slogan', $preferences['pref_slogan']);
+	$tpl->assign('pref_editor_enabled', $preferences['pref_editor_enabled']);
 ?>

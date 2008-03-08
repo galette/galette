@@ -152,6 +152,8 @@ if( !$login->isAdmin() )
 
 	$nb_reachable_members = count($reachable_members);
 	$nb_unreachable_members = count($unreachable_members);
+	if( !isset($_POST['html_editor_active']) || trim($_POST['html_editor_active']) == '' )
+		$_POST['html_editor_active'] = $preferences['pref_editor_enabled'];
 
 	$tpl->assign("warning_detected",$warning_detected);
 	$tpl->assign("error_detected",$error_detected);
@@ -159,6 +161,8 @@ if( !$login->isAdmin() )
 	$tpl->assign("nb_unreachable_members",$nb_unreachable_members);
 	$tpl->assign("data",$data);
 	$tpl->assign("etape",$etape);
+	$tpl->assign('html_editor', true);
+	$tpl->assign('html_editor_active', $_POST['html_editor_active']);
 	$content = $tpl->fetch("mailing_adherents.tpl");
 	$tpl->assign("content",$content);
 	$tpl->display("page.tpl");

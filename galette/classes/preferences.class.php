@@ -70,6 +70,7 @@ class Preferences{
 		'pref_email'		=>	'mail@domain.com',
 		'pref_email_newadh'	=>	'mail@domain.com',
 		'pref_bool_mailadh'	=>	false,
+		'pref_editor_enabled'	=>	false,
 		/** FIXME: get constant value from mail class here ? */
 		'pref_mail_method'	=>	0,
 		'pref_mail_smtp'	=>	'',

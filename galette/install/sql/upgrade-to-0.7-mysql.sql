@@ -20,6 +20,8 @@ INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_marges_h
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_vspace', '5');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_hspace', '10');
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_self', '1');
+INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_editor_enabled', '');
+
 
 -- Table for dynamic required fields 2007-07-10;
 DROP TABLE IF EXISTS galette_required;

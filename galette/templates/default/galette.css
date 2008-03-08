@@ -367,6 +367,10 @@ a.listing:hover {
 	margin-top: 2px;
 }
 
+#mailing_objet, #mailing_corps{
+	width:99%;
+}
+
 #mailing_preview {
 	margin-top: 10px;
 	margin-bottom: 10px;

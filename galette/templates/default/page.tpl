@@ -12,6 +12,36 @@
 	<script type="text/javascript" src="{$jquery_dir}jquery.corner.js"></script>
 	<script type="text/javascript" src="{$jquery_dir}chili-1.7.pack.js"></script>
 	<script type="text/javascript" src="{$jquery_dir}jquery.tooltip.pack.js"></script>
+{if $html_editor}
+	<script type="text/javascript" src="{$htmledi_dir}tiny_mce.js"></script>
+	<script type="text/javascript">
+		<![CDATA[
+		tinyMCE.init({ldelim}
+			mode : "none",
+			theme : "advanced",
+			theme_advanced_toolbar_location : "top",
+			theme_advanced_toolbar_align : "left",
+			theme_advanced_statusbar_location : "bottom",
+			theme_advanced_resizing : true,
+			plugins : "safari,insertdatetime,preview,contextmenu,fullscreen,nonbreaking",
+			theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,outdent,indent,blockquote,|,styleselect,formatselect,fontselect,fontsizeselect",
+			theme_advanced_buttons2 : "bullist,numlist,|,undo,redo,|,link,unlink,anchor,image,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,nonbreaking|,insertdate,inserttime,|,forecolor,backcolor,|,fullscreen,cleanup,help,code,preview",
+			theme_advanced_buttons3 : "",
+			language : "{$galette_lang}"
+		{rdelim});
+
+		function toggleEditor(id) {ldelim}
+			var elm = document.getElementById(id);
+		
+			if (tinyMCE.getInstanceById(id) == null)
+				tinyMCE.execCommand('mceAddControl', false, id);
+			else
+				tinyMCE.execCommand('mceRemoveControl', false, id);
+		{rdelim}
+
+		]]>
+	</script>
+{/if}
 {if $require_calendar}
 	<link rel="stylesheet" type="text/css" href="{$template_subdir}datePicker.css"/>
 	<script type="text/javascript" src="{$jquery_dir}jquery.datePicker.js"></script>
@@ -19,6 +49,7 @@
 	{if $lang ne 'en'}
 	<script type="text/javascript" src="{$jquery_dir}date_{$galette_lang}.js"></script>
 	{/if}
+	<script type="text/javascript" src="{$scripts_dir}date_common.js"></script>
 {/if}
 	<script type="text/javascript" src="{$scripts_dir}common.js"></script>
 </head>
@@ -163,6 +194,7 @@
 			<a href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
 		</div>
 	</div>
+{if $require_calendar}
 	<script type="text/javascript">
 		<![CDATA[
 			$.dpText = {ldelim}
@@ -177,5 +209,6 @@
 			$('.past-date-pick').datePicker({ldelim}startDate:'01/01/1900'{rdelim});
 		]]>
 	</script>
+{/if}
 </body>
 </html>

@@ -39,11 +39,13 @@
 				<input type="text" name="mailing_objet" id="mailing_objet" value="{$data.mailing_objet}" size="80"/>
 			</p>
 			<p>
+				<span class="fright"><a href="javascript:toggleMailingEditor('mailing_corps');">{_T("(De)Activate HTML editor")}</a></span>
 				<label for="mailing_corps" class="bline">{_T("Message:")}</label>
-				<textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15">{$data.mailing_corps}</textarea>
+				<textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15">{$data.mailing_corps_display}</textarea>
+				<input type="hidden" name="html_editor_active" id="html_editor_active" value="{if $html_editor_active}1{else}0{/if}"/>
 			</p>
 			<p class="center">
-				<input type="checkbox" name="mailing_html" id="mailing_html" value="1" {if $data.mailing_html eq 1}checked="checked"{/if}/><label for="mailing_html">{_T("Interpret HTML")}</label><br/>
+				<input type="checkbox" name="mailing_html" id="mailing_html" value="1" {if $data.mailing_html eq 1 or $pref_editor_enabled eq 1}checked="checked"{/if}/><label for="mailing_html">{_T("Interpret HTML")}</label><br/>
 				<input type="submit" class="submit" name="mailing_go" value="{_T("Preview")}"/>
 			</p>
 	{if $etape>0}
@@ -78,3 +80,37 @@
 			</div>
 		</div>
 {/if}
+{if $html_editor_active eq 1}
+		<script type="text/javascript">
+			<![CDATA[
+			toggleEditor('mailing_corps');
+			]]>
+		</script>
+{/if}
+		<script type="text/javascript">
+			<![CDATA[
+			$(function(){ldelim}
+				$('#mailing_html').click(function(){ldelim}
+					var id = 'mailing_corps';
+					if(!this.checked && tinyMCE.getInstanceById(id) != null){ldelim}
+						tinyMCE.execCommand('mceRemoveControl', false, id);
+						$('input#html_editor_active').attr('value', '0');
+					{rdelim}
+				{rdelim});
+			{rdelim});
+
+			function toggleMailingEditor(id) {ldelim}
+				if(!$('#mailing_html').attr('checked') && tinyMCE.getInstanceById(id) == null){ldelim}
+					$('#mailing_html').attr('checked', true);
+				{rdelim}
+
+				if(tinyMCE.getInstanceById(id) == null){ldelim}
+					$('input#html_editor_active').attr('value', '1');
+				{rdelim} else {ldelim}
+					$('input#html_editor_active').attr('value', '0');
+				{rdelim}
+
+				toggleEditor(id);
+			{rdelim}
+			]]>
+		</script>
