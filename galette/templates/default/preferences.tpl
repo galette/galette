@@ -138,7 +138,7 @@
 					<span class="tip">{_T("Should HTML editor be activated on page load ?")}</span>
 					<input type="checkbox" name="pref_editor_enabled" id="pref_editor_enabled" value="1" {if $pref.pref_editor_enabled eq 1}checked="checked"{/if}/>
 				</p>
-				<p>
+				<div class="p">
 					<span class="bline{if $required.pref_mail_method eq 1} required{/if}">{_T("Emailing method:")}</span>
 					<ul>
 						<li>
@@ -151,7 +151,7 @@
 							<input type="radio" name="pref_mail_method" id="smtp" value="2" {if $pref.pref_mail_method eq 2}checked="checked"{/if}/><label for="smtp">{_T("Using a SMTP server (slower)")}</label>
 						</li>
 					</ul>
-				</p>
+				</div>
 				<p>
 					<label for="pref_mail_smtp" class="bline{if $required.pref_mail_smtp eq 1} required{/if}">{_T("SMTP server:")}</label>
 					<input type="text" name="pref_mail_smtp" id="pref_mail_smtp" value="{$pref.pref_mail_smtp}" maxlength="100" size="30"/>
@@ -219,28 +219,29 @@
 					<span class="exemple">{_T("(65 characters max)")}</span>
 				</p>
 				<p>
-					<label for="pref_card_tcol" class="bline{if $required.pref_card_tcol eq 1} required{/if}">{_T("Strip Text Color:")}</label> 
-					<input type="text" name="pref_card_tcol" id="pref_card_tcol" value="{$pref.pref_card_tcol}" size="6" maxlength="6"/> 
-					<span class="exemple">{_T("(6 hex digits:RRGGBB)")}</span>
+					<label for="pref_card_tcol" class="bline{if $required.pref_card_tcol eq 1} required{/if} tooltip" title="{_T("Hexadecimal color notation: #RRGGBB")}">{_T("Strip Text Color:")}</label>
+					<span class="tip">{_T("Hexadecimal color notation: #RRGGBB")}</span>
+					<input type="text" name="pref_card_tcol" id="pref_card_tcol" value="{$pref.pref_card_tcol}" size="7" maxlength="7" class="color_selector"/>
+					<span id="pref_card_tcol_toggle" class="picker" style="background-color:{$pref.pref_card_tcol};">&nbsp;</span>
 				</p>
 				<div class="subtitle">{_T("Strip Background colors:")} <span class="exemple">{_T("(Strip color will change according to member's status)")}</span></div>
 				<p>
-					<label for="pref_card_scol" class="bline{if $required.pref_card_scol eq 1} required{/if}">{_T("Active Member Color:")}</label>
-					<input type="text" name="pref_card_scol" id="pref_card_scol" value="{$pref.pref_card_scol}" size="6" maxlength="6"/> 
-					<span style="color: #{$pref.pref_card_tcol}; background-color: #{$pref.pref_card_scol};">&nbsp;{$pref.pref_card_abrev}&nbsp;</span>
-					<span class="exemple">{_T("(6 hex digits:RRGGBB)")}</span>
+					<label for="pref_card_scol" class="bline{if $required.pref_card_scol eq 1} required{/if} tooltip" title="{_T("Hexadecimal color notation: #RRGGBB")}">{_T("Active Member Color:")}</label>
+					<span class="tip">{_T("Hexadecimal color notation: #RRGGBB")}</span>
+					<input type="text" name="pref_card_scol" id="pref_card_scol" value="{$pref.pref_card_scol}" size="7" maxlength="7" class="color_selector"/>
+					<span id="pref_card_scol_toggle" class="picker" style="background-color:{$pref.pref_card_scol};">&nbsp;</span>
 				</p>
 				<p>
-					<label for="pref_card_bcol" class="bline{if $required.pref_card_bcol eq 1} required{/if}">{_T("Board Members Color:")}</label>
-					<input type="text" name="pref_card_bcol" id="pref_card_bcol" value="{$pref.pref_card_bcol}" size="6" maxlength="6"/> 
-					<span style="color: #{$pref.pref_card_tcol}; background-color: #{$pref.pref_card_bcol};">&nbsp;{$pref.pref_card_abrev}&nbsp;</span>
-					<span class="exemple">{_T("(6 hex digits:RRGGBB)")}</span>
+					<label for="pref_card_bcol" class="bline{if $required.pref_card_bcol eq 1} required{/if} tooltip" title="{_T("Hexadecimal color notation: #RRGGBB")}">{_T("Board Members Color:")}</label>
+					<span class="tip">{_T("Hexadecimal color notation: #RRGGBB")}</span>
+					<input type="text" name="pref_card_bcol" id="pref_card_bcol" value="{$pref.pref_card_bcol}" size="7" maxlength="7" class="color_selector"/>
+					<span id="pref_card_bcol_toggle" style="background-color:{$pref.pref_card_bcol};" class="picker">&nbsp;</span>
 				</p>
 				<p>
-					<label for="pref_card_hcol" class="bline{if $required.pref_card_hcol eq 1}required{/if}">{_T("Honor Members Color:")}</label> 
-					<input type="text" name="pref_card_hcol" id="pref_card_hcol" value="{$pref.pref_card_hcol}" size="6" maxlength="6"/> 
-					<span style="color: #{$pref.pref_card_tcol}; background-color: #{$pref.pref_card_hcol};">&nbsp;{$pref.pref_card_abrev}&nbsp;</span>
-					<span class="exemple">{_T("(6 hex digits:RRGGBB)")}</span>
+					<label for="pref_card_hcol" class="bline{if $required.pref_card_hcol eq 1}required{/if} tooltip" title="{_T("Hexadecimal color notation: #RRGGBB")}">{_T("Honor Members Color:")}</label>
+					<span class="tip">{_T("Hexadecimal color notation: #RRGGBB")}</span>
+					<input type="text" name="pref_card_hcol" id="pref_card_hcol" value="{$pref.pref_card_hcol}" size="7" maxlength="7" class="color_selector"/>
+					<span id="pref_card_hcol_toggle" style="background-color:{$pref.pref_card_hcol};" class="picker">&nbsp;</span>
 				</p>
 				<div class="subtitle">&nbsp;</div>
 				<p>
@@ -324,7 +325,6 @@
 		</div>
 		<p>{_T("NB : The mandatory fields are in")} <span class="required">{_T("red")}</span></p>
 		</form>
-		{literal}
 		<script type="text/javascript">
 			<![CDATA[
 			//let's round some corners
@@ -332,27 +332,58 @@
 			$('.tabbed').corner('bottom');
 
 			//if javascript active, hide tabs
-			//$('fieldset.cssform').hide();
 			$('fieldset.cssform').slideUp('fast');
 			//and then, show only the default one
 			$('fieldset.cssform:first-child').slideDown('fast');
 			$('fieldset.cssform:first-child').fadeIn('slow');
 
-			/*$('#parameters').hide();
-			$('#mail').hide();
-			$('#labels').hide();
-			$('#cards').hide();
-			$('#admin').hide();*/
-
 			//what to do when tab clicked
-			$('#tabs li a').click(function(){
-				/*$('fieldset.cssform').fadeOut(10);
-				$($(this).attr('href')).fadeIn('slow');*/
+			$('#tabs li a').click(function(){ldelim}
 				$('fieldset.cssform').slideUp('fast');
 				$('.current_tab').removeClass();
 				$(this).addClass('current_tab');
 				$($(this).attr('href')).slideDown('slow');
-			});
+			{rdelim});
+
+			//for color pickers
+			$(function(){ldelim}
+				$('.picker').each(function(){ldelim}
+					$(this).attr('style', '');
+				{rdelim});
+
+				$('#pref_card_tcol_toggle').farbtastic('#pref_card_tcol');
+				$('#pref_card_scol_toggle').farbtastic('#pref_card_scol');
+				$('#pref_card_bcol_toggle').farbtastic('#pref_card_bcol');
+				$('#pref_card_hcol_toggle').farbtastic('#pref_card_hcol');
+				$('#pref_card_scol_toggle, #pref_card_bcol_toggle, #pref_card_hcol_toggle, #pref_card_tcol_toggle').hide();
+
+				$('.color_selector').each(function(){ldelim}
+					$(this).after(' <a href="#" id="'+$(this).attr('id')+'_show">{_T("Show/Hide color selector")}</a>');
+				{rdelim});
+
+				$('#pref_card_tcol_show').toggle(function(){ldelim}
+					$('#pref_card_tcol_toggle').fadeIn();
+				{rdelim},function(){ldelim}
+					$('#pref_card_tcol_toggle').fadeOut();
+				{rdelim});
+
+				$('#pref_card_scol_show').toggle(function(){ldelim}
+					$('#pref_card_scol_toggle').fadeIn();
+				{rdelim},function(){ldelim}
+					$('#pref_card_scol_toggle').fadeOut();
+				{rdelim});
+
+				$('#pref_card_bcol_show').toggle(function(){ldelim}
+					$('#pref_card_bcol_toggle').fadeIn();
+				{rdelim},function(){ldelim}
+					$('#pref_card_bcol_toggle').fadeOut();
+				{rdelim});
+
+				$('#pref_card_hcol_show').toggle(function(){ldelim}
+					$('#pref_card_hcol_toggle').fadeIn();
+				{rdelim},function(){ldelim}
+					$('#pref_card_hcol_toggle').fadeOut();
+				{rdelim});
+			{rdelim});
 			]]>
 		</script>
-		{/literal}

@@ -687,7 +687,7 @@ legend{
 .cssform li{
 	clear:none;
 }
-.cssform p{
+.cssform p, .cssform div.p{
 	clear: left;
 	margin: 0;
 	padding: 5px 0 8px 0;
@@ -799,6 +799,10 @@ input.large{
 	width:90%;
 }
 
+.picker{
+	padding:0 1em;
+}
+
 /*** Voir adhérent ***/
 .details{
 	width:100%;
@@ -902,7 +906,7 @@ ul#tabs li{
 	border: 1px solid #111;
 	background-color: #eee;
 	padding: 5px;
-	opacity: 0.85;
+	opacity: 0.95;
 }
 #tooltip h3, #tooltip div { margin: 0; }
 
