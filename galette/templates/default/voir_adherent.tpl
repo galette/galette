@@ -13,21 +13,17 @@
 
 	<ul id="details_menu">
 {if ($data.pref_card_self eq 1) or ($smarty.session.admin_status eq 1)}
-		<!--<li class="button-link button-card">-->
 		<li>
 			<a href="carte_adherent.php?id_adh={$data.id_adh}" id="btn_membercard">{_T("Generate Member Card")}</a>
 		</li>
 {/if}
-		<!--<li class="button-link button-edit">-->
 		<li>
 			<a href="ajouter_adherent.php?id_adh={$data.id_adh}" id="btn_edit">{_T("Modification")}</a>
 		</li>
-		<!--<li class="button-link button-view-contributions">-->
 		<li>
 			<a href="gestion_contributions.php?id_adh={$data.id_adh}" id="btn_contrib">{_T("View contributions")}</a>
 		</li>
 {if $smarty.session.admin_status eq 1}
-		<!--<li class="button-link button-add-contribution">-->
 		<li>
 			<a href="ajouter_contribution.php?id_adh={$data.id_adh}" id="btn_addcontrib">{_T("Add a contribution")}</a>
 		</li>
@@ -174,21 +170,3 @@
 
 {include file="display_dynamic_fields.tpl" is_form=false}
 	</div>
-	<!--<div class="button-container">
-{if ($data.pref_card_self eq 1) or ($smarty.session.admin_status eq 1)}
-		<div class="button-link button-card">
-			<a href="carte_adherent.php?id_adh={$data.id_adh}">{_T("Generate Member Card")}</a>
-		</div>
-{/if}
-		<div class="button-link button-edit">
-			<a href="ajouter_adherent.php?id_adh={$data.id_adh}">{_T("Modification")}</a>
-		</div>
-		<div class="button-link button-view-contributions">
-			<a href="gestion_contributions.php?id_adh={$data.id_adh}">{_T("View contributions")}</a>
-		</div>
-{if $smarty.session.admin_status eq 1}
-		<div class="button-link button-add-contribution">
-			<a href="ajouter_contribution.php?id_adh={$data.id_adh}">{_T("Add a contribution")}</a>
-		</div>
-{/if}
-	</div>-->

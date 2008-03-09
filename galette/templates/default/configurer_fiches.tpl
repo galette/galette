@@ -104,9 +104,9 @@
 		</form>
 		{literal}
 		<script type="text/javascript">
-			<![CDATA[
+			//<![CDATA[
 			$('#tabs li').corner('top');
 			$('.tabbed').corner('bottom');
-			]]>
+			//]]>
 		</script>
 		{/literal}

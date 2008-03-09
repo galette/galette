@@ -20,29 +20,29 @@
 {/if}
 		</div>
 
-		<div class="login-box">
-			<h1 id="titre">{_T("Password recovery")}</h1>
+		<form action="lostpasswd.php" method="post" enctype="multipart/form-data" id="login_frm">
+			<div class="login-box">
+				<h1 id="titre">{_T("Password recovery")}</h1>
 {if $error_detected|@count != 0}
-			<div id="errorbox">
-				<h1>{_T("- ERROR -")}</h1>
-				<ul>
+				<div id="errorbox">
+					<h1>{_T("- ERROR -")}</h1>
+					<ul>
 {foreach from=$error_detected item=error}
-					<li>{$error}</li>
+						<li>{$error}</li>
 {/foreach}
-				</ul>
-			</div>
+					</ul>
+				</div>
 {/if}
 {if $warning_detected|@count != 0}
-			<div id="warningbox">
-				<h1>{_T("- WARNING -")}</h1>
-				<ul>
+				<div id="warningbox">
+					<h1>{_T("- WARNING -")}</h1>
+					<ul>
 {foreach from=$warning_detected item=warning}
-					<li>{$warning}</li>
+						<li>{$warning}</li>
 {/foreach}
-				</ul>
-			</div>
+					</ul>
+				</div>
 {/if}
-			<form action="lostpasswd.php" method="post" enctype="multipart/form-data">
 				<div>
 					<label for="login" class="">{_T("Username or email:")}</label>
 					<input type="text" name="login" id="login" maxlength="50" />
@@ -53,8 +53,8 @@
 						<li id="backhome"><a href="index.php">{_T("Back to login page")}</a></li>
 					</ul>
 				</div>
-			</form>
-		</div>
+			</div>
+		</form>
 		<div id="copyright">
 			<a href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
 		</div>

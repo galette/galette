@@ -129,9 +129,12 @@ pre {
 	font-size:1.3em;
 	line-height:1.7em;
 	background-color:#DDDDFF;
-	margin:0.5em 1em 1em 1em;
+	margin:0 1em 1em 1em;
 	color: #666;
 	text-align:center;
+}
+.self_subscribe{
+	margin-top:0.5em!important;
 }
 
 .titre {
@@ -256,6 +259,7 @@ a.listing:hover {
 	border-width: 1px;
 	border-style: solid;
 	margin-bottom: 0.5em;
+	padding:0;
 }
 
 .nav1 h1 {
@@ -276,7 +280,12 @@ a.listing:hover {
 	background-color: #EEEEEE;
 	margin-bottom: 2px;
 	padding-left: 2px;
-}	
+	border:1px solid #EEEEEE; /* without this, IE6 will add spaces into menu :/ */
+}
+/* But we don't want any border here for others browsers*/
+html > * .nav1 li{
+	border:none;
+}
 
 #logout {
 	width:13em;
@@ -325,8 +334,8 @@ a.listing:hover {
 #menu {
 	float: left;
 	background-color: #DDDDFF;
-/* 	padding: 0.5em; */
 	margin:0 0 0.5em 0.4em;
+	margin-top:10px!ie;
  	width:14em;
 }
 
@@ -334,23 +343,24 @@ a.listing:hover {
 	display: block;
 }
 
-
 #listfilter {
 	text-align: center;
 	background-color: #DDDDFF;
 	padding: 10px;
-	/*-moz-border-radius: 8px;
-	border: 1px solid #BBBBBB;*/
 	margin:0 1em 1em 1em;
-	/*margin-bottom: 10px;*/
 }
 
 #listfilter form {
 	margin-bottom: 0px;
 }
 
-.infoline {
+.infoline{
 	vertical-align: top;
+}
+
+/* IE6 does not handle properly 100% width */
+html > * .infoline {
+	width:100%;
 }
 
 .infoline td {
@@ -463,8 +473,11 @@ a.listing:hover {
 }
 
 #input-table{
-	width:100%;
 	margin:0.4em 0 0 0;
+}
+
+html > * #input-table{
+	width:100%;
 }
 
 #input-table .libelle {
@@ -478,8 +491,9 @@ a.listing:hover {
 	text-align: left;
 	font-weight: bold;
 }
-	
-#listing{
+
+/* IE6 does not handle properly 100% width */
+html > * #listing{
 	width:100%;
 }
 
@@ -560,11 +574,15 @@ a.listing:hover {
 	background-image: url(images/delete.png);
 }
 
+#login_frm{
+	margin-top:60px;
+	text-align:center;
+}
+
 .login-box
 {
 	width: 27em;
 	border: 1px solid #BBBBBB;
-	margin-top: 60px;
 	margin-left: auto;
 	margin-right: auto;
 	padding: 1em;
@@ -575,7 +593,7 @@ a.listing:hover {
 {
 	border: 1px solid #BBBBBB;
 	margin-top: 10px;
-	padding: 0px 10px 10px 10px;
+	padding: 0.5em 10px 10px 10px;
 }
 
 .login-box h1
@@ -605,7 +623,6 @@ a.listing:hover {
 .bigtable
 {
 	text-align: center;
-	padding:0.4em 0 0 0;
 }
 .bigtable table
 {
@@ -658,8 +675,8 @@ a.listing:hover {
 }*/
 fieldset{
 	border: 1px solid #BBBBBB;
-	margin:0 auto 1em auto;
-	width:80%;
+	margin:0 10% 1em 10%;
+/* 	width:80%; */
 	text-align:left;
 }
 fieldset ul{
@@ -672,11 +689,12 @@ fieldset li{
 	clear:left;
 }
 legend{
-	display:block;
+/* 	display:block; */
 	border: 1px solid #BBBBBB;
 	font-weight:bold;
 	padding:0.2em 2em 0.2em 0.3em;
 	background-color:white;
+	margin-bottom:0.2em;
 }
 
 .cssform{ background-color:white; }
@@ -703,11 +721,18 @@ legend{
 	margin-bottom:1em;
 	display:block;
 }
+
+/* IE6 does not handle properly negative margins... */
 .cssform .bline{
 	float: left;
-	margin: 0 0 0 -21em;
+	margin: 0 0 0 -10em;
 	width: 21em;
 }
+/* ... so we made the following not readable to it */
+html > * .cssform .bline{
+	margin: 0 0 0 -21em;
+}
+
 
 .login-box .cssform .bline{
 	width:11em;
@@ -786,11 +811,12 @@ legend{
 	cursor:pointer;
 	border:none;
 	font-weight:normal;
-	padding-right:20px;
+	padding-left:20px;
+	text-align:left;
 }
 
-#sendmail{ background:url(images/icon-mail.png) right 50% no-repeat; }
-#delete{ background:url(images/icon-trash.png) right 50% no-repeat; }
+#sendmail{ background:url(images/icon-mail.png) left 50% no-repeat; }
+#delete{ background:url(images/icon-trash.png) left 50% no-repeat; }
 
 .fleft{float:left;}
 .fright{float:right;}
@@ -805,9 +831,15 @@ input.large{
 
 /*** Voir adhérent ***/
 .details{
-	width:100%;
+	width:75%;
 	margin-bottom:1em;
 }
+
+/* IE6 does not handle properly 100% width */
+html > * .details{
+	width:100%;
+}
+
 .details caption{
 	font-weight:bold;
 	font-size:1.1em;
@@ -816,7 +848,6 @@ input.large{
 	width:15em;
 	font-weight:bold;
 	vertical-align:middle;
-	/*line-height:1.5em;*/
 	padding:0.2em 0.1em;
 }
 .details td.photo{
@@ -824,7 +855,7 @@ input.large{
 }
 
 #details_menu{
-	margin:1.5em 0 1em 0;
+	margin:2.5em 0 1em 0;
 	padding:0;
 	text-align:right;
 }
@@ -872,6 +903,7 @@ ul#tabs{
 
 ul#tabs li{
 	float:right;
+	display:inline;
 	background-color:#DDDDFF;
 	margin:0 0 0 0.2em;
 	line-height:2em;
@@ -894,7 +926,9 @@ ul#tabs li{
 	clear:right;
 }
 .current_tab{
-	background-color:#eea423;
+	background-color:#eea423!important;
+}
+.current_tab a{
 	color:white!important;
 }
 /*** /Onglets ***/

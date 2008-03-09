@@ -58,10 +58,10 @@
 		</form>
 		{literal}
 		<script type="text/javascript">
-			<![CDATA[
+			//<![CDATA[
 				$('#sel_ref, #sel_lang').change(function() {
 					this.form.submit();
 				});
-			]]>
+			//]]>
 		</script>
 		{/literal}

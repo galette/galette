@@ -19,7 +19,7 @@
 {if $html_editor}
 	<script type="text/javascript" src="{$htmledi_dir}tiny_mce.js"></script>
 	<script type="text/javascript">
-		<![CDATA[
+		//<![CDATA[
 		tinyMCE.init({ldelim}
 			mode : "none",
 			theme : "advanced",
@@ -43,7 +43,7 @@
 				tinyMCE.execCommand('mceRemoveControl', false, id);
 		{rdelim}
 
-		]]>
+		//]]>
 	</script>
 {/if}
 {if $require_calendar}
@@ -200,7 +200,7 @@
 	</div>
 {if $require_calendar}
 	<script type="text/javascript">
-		<![CDATA[
+		//<![CDATA[
 			$.dpText = {ldelim}
 				TEXT_PREV_YEAR		:	'{_T("Previous year")}',
 				TEXT_PREV_MONTH		:	'{_T("Previous month")}',
@@ -211,7 +211,7 @@
 			{rdelim}
 			$('.date-pick').datePicker().val(new Date().asString()).trigger('change');;
 			$('.past-date-pick').datePicker({ldelim}startDate:'01/01/1900'{rdelim});
-		]]>
+		//]]>
 	</script>
 {/if}
 </body>

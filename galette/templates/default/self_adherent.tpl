@@ -30,7 +30,7 @@
 			<img src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60"/>  
 {/if}
 		</div>
-		<h1 id="titre">{_T("Member profile")}</h1>
+		<h1 id="titre" class="self_subscribe">{_T("Member profile")}</h1>
 		<ul class="menu m_subscribe">
 			<li id="backhome"><a href="index.php">{_T("Back to login page")}</a></li>
 			<li id="lostpassword"><a href="lostpasswd.php">{_T("Lost your password?")}</a></li>

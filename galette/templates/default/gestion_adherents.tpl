@@ -26,7 +26,7 @@
 			</select>
 			<input type="submit" class="submit inline" value="{_T("Filter")}"/>
 		</div>
-		<table class="infoline" width="100%">
+		<table class="infoline">
 			<tr>
 				<td class="left">{$nb_members} {if $nb_members != 1}{_T("members")}{else}{_T("member")}{/if}</td>
 				<td class="center">
@@ -167,7 +167,7 @@
 {if $nb_members != 0}		
 		{literal}
 		<script type="text/javascript">
-		<![CDATA[ 
+		//<![CDATA[ 
 		var checked = 1; 	
 		function check()
 		{
@@ -182,7 +182,7 @@
 			checked = !checked;
 			return(false);
 		}
-		]]>
+		//]]>
 		</script>
 		{/literal}
 {/if}
@@ -198,10 +198,10 @@
 		</form>
 		{literal}
 		<script type="text/javascript">
-			<![CDATA[
+			//<![CDATA[
 				$('#nbshow').change(function() {
 					this.form.submit();
 				});
-			]]>
+			//]]>
 		</script>
 		{/literal}

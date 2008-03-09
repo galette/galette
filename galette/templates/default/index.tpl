@@ -12,7 +12,7 @@
 		<script type="text/javascript" src="{$scripts_dir}common.js"></script>
 	</head>
 	<body>
-		<form action="index.php" method="post">
+		<form action="index.php" method="post" id="login_frm">
 			<div id="main_logo">
 {if $smarty.session.customLogo}
 				<img src="photos/0.{$smarty.session.customLogoFormat}" height="{$smarty.session.customLogoHeight}" width="{$smarty.session.customLogoWidth}" alt="[ Galette ]"/>

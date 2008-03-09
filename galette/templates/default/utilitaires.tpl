@@ -20,10 +20,10 @@
 		</div>
 {/if}
 <form action="utilitaires.php" method="post" enctype="multipart/form-data"> 
-	<table width="100%" id="input-table"> 
+	<table id="input-table"> 
 		<tr>
 			<th class="listing left">{_T("Action")}</th>
-			<th class="listing" width="100%">{_T("Parameters")}</th>
+			<th class="listing">{_T("Parameters")}</th>
 		</tr>
 		<tr>
 			<td class="listing left">

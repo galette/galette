@@ -32,7 +32,7 @@
 				</tr>
 				<tr>
 					<th class="listing">#</th>
-					<th class="listing left" width="150">
+					<th class="listing left">
 						<a href="history.php?tri=0" class="listing">
 							{_T("Date")}
 							{if $smarty.session.tri_log eq 0}
@@ -44,7 +44,7 @@
 							{/if}
 						</a>
 					</th>
-					<th class="listing left" width="150">
+					<th class="listing left">
 						<a href="history.php?tri=1" class="listing">
 							{_T("IP")}
 							{if $smarty.session.tri_log eq 1}
@@ -56,7 +56,7 @@
 							{/if}
 						</a>
 					</th>
-					<th class="listing left" width="150">
+					<th class="listing left">
 						<a href="history.php?tri=2" class="listing">
 							{_T("User")}
 							{if $smarty.session.tri_log eq 2}
@@ -68,7 +68,7 @@
 							{/if}
 						</a>
 					</th>
-					<th class="listing left" width="150">
+					<th class="listing left">
 						<a href="history.php?tri=4" class="listing">
 							{_T("Action")}
 							{if $smarty.session.tri_log eq 4}
@@ -113,11 +113,11 @@
 			<tbody>
 {foreach from=$logs item=log key=ordre}
 				<tr class="cotis-never">
-					<td width="15" valign="top">{$ordre}</td>
-					<td valign="top" nowrap="nowrap">{$log.date}</td>
-					<td valign="top" nowrap="nowrap">{$log.ip}</td>
-					<td valign="top" nowrap="nowrap">{$log.adh}</td>
-					<td valign="top" nowrap="nowrap">{$log.action}</td>
+					<td width="15">{$ordre}</td>
+					<td valign="top" class="nowrap">{$log.date}</td>
+					<td valign="top" class="nowrap">{$log.ip}</td>
+					<td valign="top">{$log.adh}</td>
+					<td valign="top">{$log.action}</td>
 					<td valign="top">{$log.desc}</td>
 				</tr>
 {foreachelse}
@@ -127,10 +127,10 @@
 		</table>
 		{literal}
 		<script type="text/javascript">
-			<![CDATA[
+			//<![CDATA[
 				$('#nbshow').change(function() {
 					this.form.submit();
 				});
-			]]>
+			//]]>
 		</script>
 		{/literal}

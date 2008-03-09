@@ -109,7 +109,7 @@ $requete[1] = 'SELECT count(id_log) FROM ' . PREFIX_DB . 'logs';
 	$logs = array();
 	while (!$resultat->EOF) 
 	{
-		$logs[$compteur]['date'] = $resultat->fields[0];
+		$logs[$compteur]['date'] = strftime("%a %d/%m/%Y - %R", strtotime($resultat->fields[0]));
 		$logs[$compteur]['ip'] = $resultat->fields[3];
 		$logs[$compteur]['adh'] = $resultat->fields[1];
 		$logs[$compteur]['action'] = _T($resultat->fields[4]);

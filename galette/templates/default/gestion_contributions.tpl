@@ -7,7 +7,7 @@
 			<input type="text" name="contrib_filter_2" id="contrib_filter_2" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_2}"/>
 			<input type="submit" class="submit inline" value="{_T("Filter")}"/>
 		</div>
-		<table class="infoline" width="100%">
+		<table class="infoline">
 			<tr>
 				<td class="left">{$nb_contributions} {if $nb_contributions != 1}{_T("contributions")}{else}{_T("contribution")}{/if}</td>
                                 <td class="center">
@@ -169,10 +169,10 @@
 {/if}
 		{literal}
 		<script type="text/javascript">
-			<![CDATA[
+			//<![CDATA[
 				$('#nbshow').change(function() {
 					this.form.submit();
 				});
-			]]>
+			//]]>
 		</script>
 		{/literal}

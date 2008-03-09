@@ -1,6 +1,6 @@
 		<h1 id="titre">{_T("Management of transactions")}</h1>
 		<form action="gestion_transactions.php" method="get" id="filtre">
-		<table class="infoline" width="100%">
+		<table class="infoline">
 			<tr>
 				<td class="left">{$nb_transactions} {if $nb_transactions > 1}{_T("transactions")}{else}{_T("transaction")}{/if}</td>
 				<td class="center">
@@ -23,7 +23,7 @@
 			</tr>
 		</table>
 		</form>
-		<table width="100%">
+		<table id="listing">
 			<tr>
 				<th class="listing" id="id_row">#</th>
 				<th class="listing left date_row">
@@ -114,10 +114,10 @@
 		</div>
 		{literal}
 		<script type="text/javascript">
-			<![CDATA[
+			//<![CDATA[
 				$('#nbshow').change(function() {
 					this.form.submit();
 				});
-			]]>
+			//]]>
 		</script>
 		{/literal}

@@ -82,13 +82,13 @@
 {/if}
 {if $html_editor_active eq 1}
 		<script type="text/javascript">
-			<![CDATA[
+			//<![CDATA[
 			toggleEditor('mailing_corps');
-			]]>
+			//]]>
 		</script>
 {/if}
 		<script type="text/javascript">
-			<![CDATA[
+			//<![CDATA[
 			$(function(){ldelim}
 				$('#mailing_html').click(function(){ldelim}
 					var id = 'mailing_corps';
@@ -112,5 +112,5 @@
 
 				toggleEditor(id);
 			{rdelim}
-			]]>
+			//]]>
 		</script>

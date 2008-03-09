@@ -26,7 +26,7 @@
 			<li><a href="#labels">{_T("Labels")}</a></li>
 			<li><a href="#mail">{_T("E-Mail")}</a></li>
 			<li><a href="#parameters">{_T("Parameters")}</a></li>
-			<li><a href="#general" class="current_tab">{_T("General")}</a></li>
+			<li class="current_tab"><a href="#general">{_T("General")}</a></li>
 		</ul>
 		<div class="bigtable tabbed">
 			<fieldset class="cssform" id="general">
@@ -326,7 +326,7 @@
 		<p>{_T("NB : The mandatory fields are in")} <span class="required">{_T("red")}</span></p>
 		</form>
 		<script type="text/javascript">
-			<![CDATA[
+			//<![CDATA[
 			//let's round some corners
 			$('#tabs li').corner('top');
 			$('.tabbed').corner('bottom');
@@ -341,7 +341,7 @@
 			$('#tabs li a').click(function(){ldelim}
 				$('fieldset.cssform').slideUp('fast');
 				$('.current_tab').removeClass();
-				$(this).addClass('current_tab');
+				$(this).parent().addClass('current_tab');
 				$($(this).attr('href')).slideDown('slow');
 			{rdelim});
 
@@ -385,5 +385,5 @@
 					$('#pref_card_hcol_toggle').fadeOut();
 				{rdelim});
 			{rdelim});
-			]]>
+			//]]>
 		</script>
