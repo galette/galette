@@ -29,6 +29,7 @@ PHP_SOURCES = ../index.php \
 ../traduire_libelles.php \
 ../gestion_textes.php \
 ../includes/dynamic_fields.inc.php \
+../subscription_form.php \
 ../templates/default/index.tpl \
 ../templates/default/gestion_adherents.tpl \
 ../templates/default/mailing_adherents.tpl \
