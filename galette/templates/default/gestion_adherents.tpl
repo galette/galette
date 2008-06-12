@@ -143,7 +143,7 @@
 {if $nb_members != 0}		
 		{literal}
 		<script type="text/javascript">
-		<![CDATA[ 
+		//<![CDATA[ 
 		var checked = 1; 	
 		function check()
 		{
@@ -158,7 +158,7 @@
 			checked = !checked;
 			return(false);
 		}
-		]]>
+		//]]>
 		</script>
 		{/literal}
 {/if}

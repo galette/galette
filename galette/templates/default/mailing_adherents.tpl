@@ -1,9 +1,5 @@
 		<h1 class="titre">{_T("Mailing")}</h1>
-		<!--
-		attribute name for form element is forbiden in xhtml strict
-		<form action="mailing_adherents.php" method="post" name="listform">
-		//-->
-		<form action="mailing_adherents.php#mail_preview" method="post">
+		<form action="mailing_adherents.php#mail_preview" method="post" id="listform">
 {if $error_detected|@count != 0}
 		<div id="errorbox">
 			<h1>{_T("- ERROR -")}</h1>
