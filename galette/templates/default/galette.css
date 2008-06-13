@@ -570,6 +570,10 @@ html > * .nav1 li{
 	background-image: url(images/trash.png);
 }
 
+#login_frm{
+	text-align:center;
+}
+
 .login-box
 {
 	width: 27em;
