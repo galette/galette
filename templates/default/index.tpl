@@ -6,7 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css" /> 
 </head> 
 <body>
-	<form action="index.php" method="post">
+	<form action="index.php" method="post" id="login_frm">
 		<div class="login-box">
   {if $smarty.session.customLogo}
   <img src="photos/0.{$smarty.session.customLogoFormat}" height="{$smarty.session.customLogoHeight}" width="{$smarty.session.customLogoWidth}" alt="[ Galette ]"/>
