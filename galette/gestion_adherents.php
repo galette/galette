@@ -246,9 +246,9 @@
 	// filtre d'affichage des adherents bientot a echeance
 	if ($_SESSION["filtre_adh"]=="1")
 	{
-		$requete[0] .= "AND date_echeance > ".$DB->DBDate(time())."
+		$requete[0] .= "AND date_echeance >= ".$DB->DBDate(time())."
 			        AND date_echeance < ".$DB->OffsetDate(30)." ";
-		$requete[1] .= "AND date_echeance > ".$DB->DBDate(time())."
+		$requete[1] .= "AND date_echeance >= ".$DB->DBDate(time())."
 			        AND date_echeance < ".$DB->OffsetDate(30)." ";
 	}
 	// filtre d'affichage des adherents n'ayant jamais cotisé
