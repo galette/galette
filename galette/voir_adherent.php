@@ -136,8 +136,8 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 	$disabled['dyn'] = array();
 	$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $_SESSION["admin_status"], $adherent['dyn'], $disabled['dyn'], 0);
 
-	$adherent['pref_lang_img'] = utf8_decode($i18n->getFlagFromId($adherent['pref_lang']));
-	$adherent['pref_lang'] = ucfirst(utf8_decode($i18n->getNameFromId($adherent['pref_lang'])));
+	$adherent['pref_lang_img'] = $i18n->getFlagFromId($adherent['pref_lang']);
+	$adherent['pref_lang'] = ucfirst($i18n->getNameFromId($adherent['pref_lang']));
 	/** FIXME: PREF_CARD_SELF is not defined */
 	$adherent['pref_card_self'] = PREF_CARD_SELF;
 

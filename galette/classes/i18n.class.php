@@ -144,7 +144,7 @@ class i18n{
 
 	public function getID(){ return $this->id; }
 	public function getLongID(){ return $this->longid; }
-	public function getName(){ return utf8_decode($this->name); }
+	public function getName(){ return $this->name; }
 	public function getAbbrev(){ return $this->abbrev; }
 	public function getFlag(){ return $this->dir . $this->flag;}
 	public function getFileName(){ return $this->filename; }

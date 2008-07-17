@@ -1,8 +1,16 @@
 <?php
 	// smarty-light declaration
-	include(WEB_ROOT . 'includes/smarty/Smarty.class.php');
+	$galetteSmartyPath = WEB_ROOT . 'includes/Smarty-2.6.19';
+	if (file_exists("/usr/share/Smarty/Smarty.class.php")){
+        	$galetteSmartyPath = '/usr/share/Smarty/';
+	}
+	if (file_exists("/usr/share/php/Smarty/Smarty.class.php")){
+        	$galetteSmartyPath = '/usr/share/php/Smarty/';
+	}
+	include($galetteSmartyPath . 'Smarty.class.php');
 	$tpl = new Smarty;
 	$template_subdir = 'templates/default/';
+	$tpl->plugins_dir[] = WEB_ROOT . 'includes/smarty_plugins';
 	$tpl->template_dir = WEB_ROOT . $template_subdir;
 	$tpl->compile_dir = WEB_ROOT . 'templates_c/';
 	$tpl->cache_dir = WEB_ROOT . 'cache/';

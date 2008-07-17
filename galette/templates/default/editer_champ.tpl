@@ -1,8 +1,8 @@
-		<h1 id="titre">{_T("Edit field")}</h1>
+		<h1 id="titre">{_T string="Edit field"}</h1>
 		<form action="editer_champ.php" method="post"> 						
 {if $error_detected|@count != 0}
 		<div id="errorbox">
-			<h1>{_T("- ERROR -")}</h1>
+			<h1>{_T string="- ERROR -"}</h1>
 			<ul>
 {foreach from=$error_detected item=error}
 				<li>{$error}</li>
@@ -13,20 +13,20 @@
 		<div align="center">
 			<table border="0" id="input-table"> 
 				<tr> 
-					<th id="libelle">{_T("Name:")}</th> 
+					<th id="libelle">{_T string="Name:"}</th> 
 					<td colspan="3">
 						<input type="text" name="field_name" value="{$data.name}"/>
 					</td> 
 				</tr>
 				<tr>
-					<th id="libelle">{_T("Visibility:")}</th> 
+					<th id="libelle">{_T string="Visibility:"}</th> 
 					<td>
 						<select name="field_perm">
 							<option value="{$perm_all}" {if $data.perm == $perm_all}selected="selected"{/if}>{$perm_names[$perm_all]}</option>
 							<option value="{$perm_admin}" {if $data.perm == $perm_admin}selected="selected"{/if}>{$perm_names[$perm_admin]}</option>
 						</select>
 					</td>
-					<th id="libelle">{_T("Position:")}</th> 
+					<th id="libelle">{_T string="Position:"}</th> 
 					<td>
 						<select name="field_pos">
 							{html_options options=$field_positions selected=$data.pos}
@@ -35,18 +35,18 @@
 				</tr>
 {if !$properties.no_data}
 				<tr>
-					<th id="libelle">{_T("Required:")}</th> 
+					<th id="libelle">{_T string="Required:"}</th> 
 					<td class="listing" colspan="3">
 						<select name="field_required">
-							<option value="0" {if $data.required == 0}selected="selected"{/if}>{_T("No")}</option>
-							<option value="1" {if $data.required == 1}selected="selected"{/if}>{_T("Yes")}</option>
+							<option value="0" {if $data.required == 0}selected="selected"{/if}>{_T string="No"}</option>
+							<option value="1" {if $data.required == 1}selected="selected"{/if}>{_T string="Yes"}</option>
 						</select>
 					</td>
 				</tr>
 {/if}
 {if $properties.with_width}
 				<tr>
-					<th id="libelle">{_T("Width:")}</th> 
+					<th id="libelle">{_T string="Width:"}</th> 
 					<td colspan="3">
 						<input type="text" name="field_width" value="{$data.width}" size="3"/>
 					</td>
@@ -54,7 +54,7 @@
 {/if}
 {if $properties.with_height}
 				<tr>
-					<th id="libelle">{_T("Height:")}</th> 
+					<th id="libelle">{_T string="Height:"}</th> 
 					<td colspan="3">
 						<input type="text" name="field_height" value="{$data.height}" size="3"/>
 					</td>
@@ -62,34 +62,34 @@
 {/if}
 {if $properties.with_size}
 				<tr>
-					<th id="libelle">{_T("Size:")}</th> 
+					<th id="libelle">{_T string="Size:"}</th> 
 					<td colspan="3">
 						<input type="text" name="field_size" value="{$data.size}" size="3"/>
-						<br/><div class="exemple">{_T("Maximum number of characters.")}</div>
+						<br/><div class="exemple">{_T string="Maximum number of characters."}</div>
 					</td>
 				</tr>
 {/if}
 {if $properties.multi_valued}
 				<tr>
-					<th id="libelle">{_T("Repeat:")}</th> 
+					<th id="libelle">{_T string="Repeat:"}</th> 
 					<td colspan="3">
 						<input type="text" name="field_repeat" value="{$data.repeat}" size="3"/>
-						<br/><div class="exemple">{_T("Number of values or zero if infinite.")}</div>
+						<br/><div class="exemple">{_T string="Number of values or zero if infinite."}</div>
 					</td>
 				</tr>
 {/if}
 {if $properties.fixed_values}
 				<tr>
-					<th id="libelle">{_T("Values:")}</th> 
+					<th id="libelle">{_T string="Values:"}</th> 
 					<td colspan="3">
 						<textarea name="fixed_values" cols="20" rows="6">{$data.fixed_values}</textarea>
-						<br/><div class="exemple">{_T("Choice list (one entry per line).")}</div>
+						<br/><div class="exemple">{_T string="Choice list (one entry per line)."}</div>
 					</td>
 				</tr>
 {/if}
 				<tr> 
-					<th align="center" colspan="2"><br/><input type="submit" class="submit" name="valid" value="{_T("Save")}"/></th> 
-					<th align="center" colspan="2"><br/><input type="submit" class="submit" name="cancel" value="{_T("Cancel")}"/></th> 
+					<th align="center" colspan="2"><br/><input type="submit" class="submit" name="valid" value="{_T string="Save"}"/></th> 
+					<th align="center" colspan="2"><br/><input type="submit" class="submit" name="cancel" value="{_T string="Cancel"}"/></th> 
 				</tr> 
 			</table> 
 		</div>

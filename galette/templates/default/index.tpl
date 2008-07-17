@@ -1,8 +1,8 @@
-{html_doctype xhtml=true type=strict omitxml=false encoding=iso-8859-1}
+{html_doctype xhtml=true type=strict omitxml=false encoding=UTF-8}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$galette_lang}" lang="{$galette_lang}">
 	<head>
 		<title>{if $pref_slogan ne ""}{$pref_slogan} - {/if}{if $page_title ne ""}{$page_title} - {/if}Galette {$GALETTE_VERSION}</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css" />
 		<script type="text/javascript" src="{$jquery_dir}jquery-1.2.1.pack.js"></script>
 		<script type="text/javascript" src="{$jquery_dir}jquery.bgFade.js"></script>
@@ -21,9 +21,9 @@
 {/if}
 			</div>
 			<div class="login-box">
-				<h1 id="titre">{_T("Login")}</h1>
+				<h1 id="titre">{_T string="Login"}</h1>
 {if $loginfault}
-				<div id="errorbox">{_T("Login failed.")}</div>
+				<div id="errorbox">{_T string="Login failed."}</div>
 {/if}
 				<ul id="langs">
 {foreach item=langue from=$languages}
@@ -32,19 +32,19 @@
 				</ul>
 				<table> 
 					<tr> 
-						<th><label for="login">{_T("Username:")}</label></th> 
+						<th><label for="login">{_T string="Username:"}</label></th> 
 						<td><input type="text" name="login" id="login" /></td> 
 					</tr> 
 					<tr> 
-						<th><label for="password">{_T("Password:")}</label></th> 
+						<th><label for="password">{_T string="Password:"}</label></th> 
 						<td><input type="password" name="password" id="password"/></td> 
 					</tr> 
 				</table>
-				<input type="submit" class="submit" value="{_T("Login")}" />
+				<input type="submit" class="submit" value="{_T string="Login"}" />
 				<input type="hidden" name="ident" value="1" />
 				<ul class="menu">
-					<li id="subscribe"><a href="self_adherent.php">{_T("Subscribe")}</a></li>
-					<li id="lostpassword"><a href="lostpasswd.php">{_T("Lost your password?")}</a></li>
+					<li id="subscribe"><a href="self_adherent.php">{_T string="Subscribe"}</a></li>
+					<li id="lostpassword"><a href="lostpasswd.php">{_T string="Lost your password?"}</a></li>
 				</ul>
 			</div>
 		</form>

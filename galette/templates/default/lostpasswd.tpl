@@ -1,8 +1,8 @@
-{html_doctype xhtml=true type=strict omitxml=false encoding=iso-8859-1}
+{html_doctype xhtml=true type=strict omitxml=false encoding=UTF-8}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$galette_lang}" lang="{$galette_lang}">
 	<head>
 		<title>{if $pref_slogan ne ""}{$pref_slogan} - {/if}{if $page_title ne ""}{$page_title} - {/if}Galette {$GALETTE_VERSION}</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css"/>
 		<script type="text/javascript" src="{$jquery_dir}jquery-1.2.1.pack.js"></script>
 		<script type="text/javascript" src="{$jquery_dir}jquery.bgFade.js"></script>
@@ -22,10 +22,10 @@
 
 		<form action="lostpasswd.php" method="post" enctype="multipart/form-data" id="login_frm">
 			<div class="login-box">
-				<h1 id="titre">{_T("Password recovery")}</h1>
+				<h1 id="titre">{_T string="Password recovery"}</h1>
 {if $error_detected|@count != 0}
 				<div id="errorbox">
-					<h1>{_T("- ERROR -")}</h1>
+					<h1>{_T string="- ERROR -"}</h1>
 					<ul>
 {foreach from=$error_detected item=error}
 						<li>{$error}</li>
@@ -35,7 +35,7 @@
 {/if}
 {if $warning_detected|@count != 0}
 				<div id="warningbox">
-					<h1>{_T("- WARNING -")}</h1>
+					<h1>{_T string="- WARNING -"}</h1>
 					<ul>
 {foreach from=$warning_detected item=warning}
 						<li>{$warning}</li>
@@ -44,13 +44,13 @@
 				</div>
 {/if}
 				<div>
-					<label for="login" class="">{_T("Username or email:")}</label>
+					<label for="login" class="">{_T string="Username or email:"}</label>
 					<input type="text" name="login" id="login" maxlength="50" />
-					<input type="submit" class="submit" name="lostpasswd" value="{_T("Send me my password")}" />
+					<input type="submit" class="submit" name="lostpasswd" value="{_T string="Send me my password"}" />
 					<input type="hidden" name="valid" value="1"/>
 					<ul class="menu">
-						<li id="subscribe"><a href="self_adherent.php">{_T("Subscribe")}</a></li>
-						<li id="backhome"><a href="index.php">{_T("Back to login page")}</a></li>
+						<li id="subscribe"><a href="self_adherent.php">{_T string="Subscribe"}</a></li>
+						<li id="backhome"><a href="index.php">{_T string="Back to login page"}</a></li>
 					</ul>
 				</div>
 			</div>
