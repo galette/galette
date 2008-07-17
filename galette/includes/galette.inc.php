@@ -74,18 +74,13 @@ $preferences = $p->prefs;
 * Language instantiation
 */
 require_once(WEB_ROOT . 'classes/i18n.class.php');
-/** FIXME: i18n object should be stored into the session.
-* Actually, unserialize fails with 'Node no longer exists' ...
-*/
-/*unset($_SESSION['galette_lang']);
 
 if( isset($_SESSION['galette_lang']) ){
 	$i18n = unserialize($_SESSION['galette_lang']);
 }else{
 	$i18n = new i18n();
 	$_SESSION['galette_lang'] = serialize($i18n);
-}*/
-$i18n = new i18n((isset($_SESSION['pref_lang'])?$_SESSION['pref_lang']:i18n::DEFAULT_LANG));
+}
 
 if( isset($_POST['pref_lang']) && strpos($_SERVER['PHP_SELF'], 'champs_requis.php') === false ){ $_GET['pref_lang'] = $_POST['pref_lang']; }
 if( isset($_GET['pref_lang']) ){

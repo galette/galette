@@ -78,6 +78,7 @@
 				<li><a href="ajouter_transaction.php">{_T("Add a transaction")}</a></li>
 				<li><a href="history.php">{_T("Logs")}</a></li>
 {else}
+				<li><a href="subscription_form.php?id_adh={$data.id_adh}">Fiche adherent</a></li>
 				<li><a href="voir_adherent.php">{_T("My information")}</a></li>
 				<li><a href="gestion_contributions.php">{_T("My contributions")}</a></li>
 				<li><a href="gestion_transactions.php">{_T("My transactions")}</a></li>

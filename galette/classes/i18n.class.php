@@ -50,7 +50,6 @@ class i18n{
 	private $flag;
 	private $filename;
 
-	private $langs;
 	private $s_langs;
 
 	const DEFAULT_LANG = 'fr_FR';
@@ -66,20 +65,10 @@ class i18n{
 	function __construct($lang = false){
 		$this->path = WEB_ROOT . $this->dir;
 		$this->file = $this->path . $this->file;
-		$this->langs = simplexml_load_file($this->file);
 
 		if( !$lang )
 			$this->changeLanguage(self::DEFAULT_LANG);
 		else $this->load($lang);
-	}
-
-	public function __destruct(){
-		$this->s_langs = $this->langs->asXML();
-		unset($this->langs);
-	}
-
-	public function __wakeup(){
-		$this->langs = simplexml_load_string($this->s_langs);
 	}
 
 	/**
@@ -89,39 +78,42 @@ class i18n{
 		global $log;
 		$log->log('Trying to set locale to ' . $id, PEAR_LOG_DEBUG);
 
-		$current = $this->langs->xpath('//lang[@id=\'' . $id . '\']');
+		$xml = simplexml_load_file($this->file);
+		$current = $xml->xpath('//lang[@id=\'' . $id . '\']');
 
 		//if no match, switch to default
 		if(!isset($current[0])){
 			$log->log($id . ' does not exist in XML file, switching to default.', PEAR_LOG_WARNING);
 			$id = self::DEFAULT_LANG;
 			//do not forget to reload informations from the xml file
-			$current = $this->langs->xpath('//lang[@id=\'' . $id . '\']');
+			$current = $xml->xpath('//lang[@id=\'' . $id . '\']');
 		}
 
 		$sxe = $current[0];
 		$this->id = $id;
-		$this->longid = ( isset($sxe['long']) )?$sxe['long']:$id;
-		$this->name = $sxe->longname;
-		$this->abbrev = $sxe->shortname;
-		$this->flag = $sxe->flag;
-		$this->filename = $sxe->filename;
+		$this->longid = ( isset($sxe['long']) )?(string)$sxe['long']:$id;
+		$this->name = (string)$sxe->longname;
+		$this->abbrev = (string)$sxe->shortname;
+		$this->flag = (string)$sxe->flag;
+		$this->filename = (string)$sxe->filename;
 	}
 
 	private function load($id){
-		$current = $this->langs->xpath('//lang[@id=\'' . $id . '\']');
+		$xml = simplexml_load_file($this->file);
+		$current = $xml->xpath('//lang[@id=\'' . $id . '\']');
 		$sxe = $current[0];
 		$this->id = $id;
-		$this->longid = ( isset($sxe['long']) )?$sxe->long:$id;
-		$this->name = $sxe->longname;
-		$this->abbrev = $sxe->shortname;
-		$this->flag = $sxe->flag;
-		$this->filename = $sxe->filename;
+		$this->longid = ( isset($sxe['long']) )?(string)$sxe['long']:$id;
+		$this->name = (string)$sxe->longname;
+		$this->abbrev = (string)$sxe->shortname;
+		$this->flag = (string)$sxe->flag;
+		$this->filename = (string)$sxe->filename;
 	}
 
 	public function getList(){
 		$result = array();
-		foreach( $this->langs->lang as $lang ){
+		$xml = simplexml_load_file($this->file);
+		foreach( $xml->lang as $lang ){
 			$result[] = new i18n( $lang['id'] );
 		}
 
@@ -133,9 +125,10 @@ class i18n{
 	* @param id the language identifier
 	*/
 	public function getNameFromId($id){
-		$current = $this->langs->xpath('//lang[@id=\'' . $id . '\']');
+		$xml = simplexml_load_file($this->file);
+		$current = $xml->xpath('//lang[@id=\'' . $id . '\']');
 		$sxe = $current[0];
-		return $sxe->longname;
+		return (string)$sxe->longname;
 	}
 
 	/**
@@ -143,7 +136,8 @@ class i18n{
 	* @param id the language identifier
 	*/
 	public function getFlagFromId($id){
-		$current = $this->langs->xpath('//lang[@id=\'' . $id . '\']');
+		$xml = simplexml_load_file($this->file);
+		$current = $xml->xpath('//lang[@id=\'' . $id . '\']');
 		$sxe = $current[0];
 		return $this->dir . $sxe->flag;
 	}
