@@ -2,16 +2,17 @@
 //============================================================+
 // File name   : tcpdf_config.php
 // Begin       : 2004-06-11
-// Last Update : 2007-03-06
+// Last Update : 2008-06-03
 //
 // Description : Congiguration file for TCPDF.
 //
 // Author: Nicola Asuni
 //
 // (c) Copyright:
-//               Tecnick.com S.r.l.
-//               Via Ugo Foscolo n.19
-//               09045 Quartu Sant'Elena (CA)
+//               Nicola Asuni
+//               Tecnick.com s.r.l.
+//               Via Della Pace, 11
+//               09044 Quartucciu (CA)
 //               ITALY
 //               www.tecnick.com
 //               info@tecnick.com
@@ -20,9 +21,9 @@
 /**
  * Configuration file for TCPDF.
  * @author Nicola Asuni
- * @copyright Copyright &copy; 2004, Tecnick.com S.r.l. - Via Ugo Foscolo n.19 - 09045 Quartu Sant'Elena (CA) - ITALY - www.tecnick.com - info@tecnick.com
+ * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @package com.tecnick.tcpdf
- * @version 1.53.0.TC025
+ * @version 3.0.013
  * @link http://tcpdf.sourceforge.net
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  * @since 2004-10-27
@@ -32,22 +33,46 @@
 
 if (!defined("K_TCPDF_EXTERNAL_CONFIG")) {
 	
-	// PLEASE SET THE FOLLOWING CONSTANTS:
+	// DOCUMENT_ROOT fix for IIS Webserver
+	if ((!isset($_SERVER['DOCUMENT_ROOT'])) OR (empty($_SERVER['DOCUMENT_ROOT']))) {
+		if(isset($_SERVER['SCRIPT_FILENAME'])) {
+			$_SERVER['DOCUMENT_ROOT'] = str_replace( '\\', '/', substr($_SERVER['SCRIPT_FILENAME'], 0, 0-strlen($_SERVER['PHP_SELF'])));
+		} elseif(isset($_SERVER['PATH_TRANSLATED'])) {
+			$_SERVER['DOCUMENT_ROOT'] = str_replace( '\\', '/', substr(str_replace('\\\\', '\\', $_SERVER['PATH_TRANSLATED']), 0, 0-strlen($_SERVER['PHP_SELF'])));
+		}	else {
+			// define here your DOCUMENT_ROOT path if the previous fails
+			$_SERVER['DOCUMENT_ROOT'] = "/var/www";
+		}
+	}
 	
 	/**
-	 * installation path
+	 * Installation path (/var/www/tcpdf/).
+	 * By default it is automatically calculated but you can also set it as a fixed string.
 	 */
-	define ("K_PATH_MAIN", WEB_ROOT."/includes/tcpdf/");
+	define ("K_PATH_MAIN", realpath(substr(dirname(__FILE__), 0, 0-strlen("config")))."/");
+	
+	// Automatic calculation for the following K_PATH_URL constant
+	if (isset($_SERVER["HTTP_HOST"]) AND (!empty($_SERVER["HTTP_HOST"]))) {
+		if(isset($_SERVER["HTTPS"]) AND (!empty($_SERVER["HTTPS"])) AND strtolower($_SERVER['HTTPS'])!='off') {
+			$path_url = "https://";
+		} else {
+			$path_url = "http://";
+		}
+		$path_url .= $_SERVER["HTTP_HOST"];
+		$path_url .= str_replace( '\\', '/', substr($_SERVER["PHP_SELF"], 0, -24));
+	}
 	
 	/**
-	 * url path
+	 * URL path to tcpdf installation folder (http://localhost/tcpdf/).
+	 * By default it is automatically calculated but you can also set it as a fixed string.
 	 */
-	define ("K_PATH_URL", "../../../includes/tcpdf/");
+	define ("K_PATH_URL", $path_url);
 	
 	/**
 	 * path for PDF fonts
+	 * use K_PATH_MAIN."fonts/old/" for old non-UTF8 fonts
 	 */
-	define ("FPDF_FONTPATH", K_PATH_MAIN."fonts/");
+	define ("K_PATH_FONTS", K_PATH_MAIN."fonts/");
 	
 	/**
 	 * cache directory for temporary files (full path)
@@ -92,22 +117,22 @@ if (!defined("K_TCPDF_EXTERNAL_CONFIG")) {
 	/**
 	 * header title
 	 */
-	define ("PDF_HEADER_TITLE", "header title");
+	define ("PDF_HEADER_TITLE", "TCPDF Example");
 	
 	/**
 	 * header description string
 	 */
-	define ("PDF_HEADER_STRING", "first row\nsecond row\nthird row");
+	define ("PDF_HEADER_STRING", "by Nicola Asuni - Tecnick.com\nwww.tcpdf.org");
 	
 	/**
 	 * image logo
 	 */
-	define ("PDF_HEADER_LOGO", "logo_example.png");
+	define ("PDF_HEADER_LOGO", "tcpdf_logo.jpg");
 	
 	/**
 	 * header logo image width [mm]
 	 */
-	define ("PDF_HEADER_LOGO_WIDTH", 20);
+	define ("PDF_HEADER_LOGO_WIDTH", 30);
 	
 	/**
 	 *  document unit of measure [pt=point, mm=millimeter, cm=centimeter, in=inch]
@@ -147,7 +172,7 @@ if (!defined("K_TCPDF_EXTERNAL_CONFIG")) {
 	/**
 	 * main font name
 	 */
-	define ("PDF_FONT_NAME_MAIN", "FreeSerif"); //vera
+	define ("PDF_FONT_NAME_MAIN", "dejavusans");
 	
 	/**
 	 * main font size
@@ -157,7 +182,7 @@ if (!defined("K_TCPDF_EXTERNAL_CONFIG")) {
 	/**
 	 * data font name
 	 */
-	define ("PDF_FONT_NAME_DATA", "FreeSerif"); //verase
+	define ("PDF_FONT_NAME_DATA", "dejavusans");
 	
 	/**
 	 * data font size
