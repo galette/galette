@@ -1,21 +1,23 @@
 <?php
+
+// Copyright Â© 2007 John Perr
+// Copyright Â© 2007-2008 Johan Cwiklinski
 //
-//  PDF class for galette
+// This file is part of Galette (http://galette.tuxfamily.org).
 //
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
+// Galette is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Galette is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//  GNU General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Galette. If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * PDF class for galette
  * Traps tcpdf errors by overloading tcpdf::error method
@@ -26,7 +28,7 @@
  * 
  * @author     John Perr <johnperr@abul.org>
  * @copyright  2007 John Perr
- * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPL License 2.0 or (at your option) any later version
+ * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version    $Id$
  * @since      Disponible depuis la Release 0.63
  */
@@ -86,7 +88,7 @@ class PDF extends TCPDF
  * #RRVVBB en un tableau de 3 valeurs comprises dans
  * l'interval [0;255]
  *
- * @param  chaîne de 6 caratères RRVVBB
+ * @param  chaï¿½ne de 6 caratÃ¨res RRVVBB
  * @return tableau de 3 valeur R, G et B comprises entre 0 et 255
  * @access public
  */
@@ -112,22 +114,22 @@ class PDF extends TCPDF
 			$this->Error(_T("Not a GIF file ").$file);
 		}
 
-// Tentative d'ouverture du fichier
+		// Tentative d'ouverture du fichier
 		if(function_exists('gd_info')) {
-            $data = @imagecreatefromgif ($file);
+			$data = @imagecreatefromgif ($file);
 
-// Test d'échec & Affichage d'un message d'erreur
-            if (!$data) {
-			    $this->Error(_T("Error loading ").$file);
-            }
-            if (Imagepng($data,WEB_ROOT.'tempimages/gif2png.png')) {
-     	        return $this->_parsepng(WEB_ROOT.'tempimages/gif2png.png');
-	       } else {
-			    $this->Error(_T("Error creating temporary png file from ").$file);
-           }
-        } else {
-		    $this->Error(_T("Unable to convert GIF file ").$file);
-        }
+			// Test d'Ã©chec & Affichage d'un message d'erreur
+			if (!$data) {
+					$this->Error(_T("Error loading ").$file);
+			}
+			if (Imagepng($data,WEB_ROOT.'tempimages/gif2png.png')) {
+				return $this->_parsepng(WEB_ROOT.'tempimages/gif2png.png');
+			} else {
+				$this->Error(_T("Error creating temporary png file from ").$file);
+			}
+		} else {
+			$this->Error(_T("Unable to convert GIF file ").$file);
+		}
 	}
 }
 /*

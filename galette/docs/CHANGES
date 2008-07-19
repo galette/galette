@@ -45,23 +45,23 @@ O.60 -> 0.61
 
 O.60 -> 0.61
 
-- Correction du formulaire d'édition d'adhérent (admin)
+- Correction du formulaire d'Ã©dition d'adhÃ©rent (admin)
 - Fusion des fichiers ajouter_adherent.php et gestion_contributions.php
   (edition de membre)
-- Les prefixes de tables sont maintenant autorisés
-- Réduction des photos si GD est disponible
-- Les équivalents HTML dans les noms d'adhérents étaient parfois
-  mal affichés
-- Retour aux contributions d'un membre après l'ajout d'un contribution
+- Les prefixes de tables sont maintenant autorisÃ©s
+- RÃ©duction des photos si GD est disponible
+- Les Ã©quivalents HTML dans les noms d'adhÃ©rents Ã©taient parfois
+  mal affichÃ©s
+- Retour aux contributions d'un membre aprÃ¨s l'ajout d'un contribution
 - Filtre sur les dates dans le listing des cotisations
 - Correction de fautes d'orthographe
 - Liens de navigation sur la fiche de cotisations d'un membre
-- Cliquer sur le nom d'un adhérent dans la liste des cotisations
+- Cliquer sur le nom d'un adhÃ©rent dans la liste des cotisations
   permet d'obtenir ses contributions au lieu de son profil
 - Lien "mot de passe perdu"
 - Masquage de la signification de l'acronyme "Galette"
-- Corrections dans les en-têtes
-- Meilleure détection du fichier de langue
+- Corrections dans les en-tÃªtes
+- Meilleure dÃ©tection du fichier de langue
 - Correction de bug dans l'affichage des vignettes
-- Le permission DROP n'était pas vérifié durant l'installation
+- Le permission DROP n'Ã©tait pas vÃ©rifiÃ© durant l'installation
 - Traduction en anglais

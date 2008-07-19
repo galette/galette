@@ -57,6 +57,8 @@ $(function() {
 	$('#menu').corner();
 	$('#listfilter').corner();
 
+	$('#login').focus();
+
 	//for tootltips
 	//first, we hide tooltips in the page
 	$('.tip').hide();
