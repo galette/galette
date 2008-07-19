@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css"/>
-	<script type="text/javascript" src="{$jquery_dir}jquery-1.2.1.pack.js"></script>
+	<script type="text/javascript" src="{$jquery_dir}jquery-1.2.6.min.js"></script>
 	<script type="text/javascript" src="{$jquery_dir}jquery.bgiframe.pack.js"></script>
 	<script type="text/javascript" src="{$jquery_dir}jquery.dimensions.pack.js"></script>
 	<script type="text/javascript" src="{$jquery_dir}jquery.bgFade.js"></script>
