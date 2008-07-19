@@ -1,17 +1,7 @@
 {html_doctype xhtml=true type=strict omitxml=false encoding=UTF-8}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$galette_lang}" lang="{$galette_lang}">
-<head>
-	<title>{if $pref_slogan ne ""}{$pref_slogan} - {/if}{if $page_title ne ""}{$page_title} - {/if}Galette {$GALETTE_VERSION}</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	<meta http-equiv="Content-Style-Type" content="text/css" />
-	<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css"/>
-	<script type="text/javascript" src="{$jquery_dir}jquery-1.2.6.pack.js"></script>
-	<script type="text/javascript" src="{$jquery_dir}jquery.bgiframe.pack.js"></script>
-	<script type="text/javascript" src="{$jquery_dir}jquery.dimensions.pack.js"></script>
-	<script type="text/javascript" src="{$jquery_dir}jquery.bgFade.js"></script>
-	<script type="text/javascript" src="{$jquery_dir}jquery.corner.js"></script>
-	<script type="text/javascript" src="{$jquery_dir}chili-1.7.pack.js"></script>
-	<script type="text/javascript" src="{$jquery_dir}jquery.tooltip.pack.js"></script>
+	<head>
+		{include file='common_header.tpl'}
 {if $color_picker}
 	<script type="text/javascript" src="{$jquery_dir}farbtastic.js"></script>
 	<link rel="stylesheet" type="text/css" href="{$template_subdir}farbtastic.css"/>

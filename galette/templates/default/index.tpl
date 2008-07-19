@@ -1,15 +1,7 @@
 {html_doctype xhtml=true type=strict omitxml=false encoding=UTF-8}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$galette_lang}" lang="{$galette_lang}">
 	<head>
-		<title>{if $pref_slogan ne ""}{$pref_slogan} - {/if}{if $page_title ne ""}{$page_title} - {/if}Galette {$GALETTE_VERSION}</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css" />
-		<script type="text/javascript" src="{$jquery_dir}jquery-1.2.6.pack.js"></script>
-		<script type="text/javascript" src="{$jquery_dir}jquery.bgFade.js"></script>
-		<script type="text/javascript" src="{$jquery_dir}jquery.corner.js"></script>
-		<script type="text/javascript" src="{$jquery_dir}chili-1.7.pack.js"></script>
-		<script type="text/javascript" src="{$jquery_dir}jquery.tooltip.pack.js"></script>
-		<script type="text/javascript" src="{$scripts_dir}common.js"></script>
+		{include file='common_header.tpl'}
 	</head>
 	<body>
 		<form action="index.php" method="post" id="login_frm">

@@ -1,23 +1,16 @@
 {html_doctype xhtml=true type=strict omitxml=false encoding=UTF-8}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$galette_lang}" lang="{$galette_lang}">
 	<head>
-		<title>{if $pref_slogan ne ""}{$pref_slogan} - {/if}{if $page_title ne ""}{$page_title} - {/if}Galette {$GALETTE_VERSION}</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-		<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css"/>
-		<script type="text/javascript" src="{$jquery_dir}jquery-1.2.6.pack.js"></script>
-		<script type="text/javascript" src="{$jquery_dir}jquery.bgFade.js"></script>
-		<script type="text/javascript" src="{$jquery_dir}jquery.corner.js"></script>
-		<script type="text/javascript" src="{$jquery_dir}chili-1.7.pack.js"></script>
-		<script type="text/javascript" src="{$jquery_dir}jquery.tooltip.pack.js"></script>
-		<script type="text/javascript" src="{$scripts_dir}common.js"></script>
+		{include file='common_header.tpl'}
 {literal}
 		<script type="text/javascript">
-
-			function updatelanguage(){
-				document.forms[0].update_lang.value=1;
-				document.forms[0].valid.value=0;
-				document.forms[0].submit();
-			}
+			$(function(){
+				$('#pref_lang').change(function(){
+					$('#update_lang').attr('value', 1);
+					$('#valid').attr('value', 0);
+					$('#subscribtion_form').submit();
+				});
+			});
 		</script>
 {/literal}
 {if $head_redirect}{$head_redirect}{/if}
@@ -60,7 +53,7 @@
 		<p id="infobox">{_T string="Your account has been successfully created."}<br/>{_T string="Your browser should redirect you to the login page in a few seconds, if not, please go to: "} <a href="../index.php">{_T string="Homepage"}</a></p>
 {/if}
 {if !$head_redirect}
-		<form action="self_adherent.php" method="post" enctype="multipart/form-data">
+		<form action="self_adherent.php" method="post" enctype="multipart/form-data" id="subscribtion_form">
 			<p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
 			<fieldset class="cssform">
 				<legend>{_T string="Identity:"}</legend>
@@ -103,12 +96,12 @@
 				</p>
 				<p>
 					<label for="pref_lang" class="bline libelle{if $required.pref_lang eq 1} required{/if}">{_T string="Language:"}</label>
-					<select name="pref_lang" id="pref_lang" onchange="javascript:updatelanguage();" {$disabled.pref_lang}>
+					<select name="pref_lang" id="pref_lang" {$disabled.pref_lang}>
 						{foreach item=langue from=$languages}
 							<option value="{$langue->getID()}"{if $data.pref_lang eq $langue->getID()} selected="selected"{/if} style="background:url({$langue->getFlag()}) no-repeat;padding-left:30px;">{$langue->getName()|capitalize}</option>
 						{/foreach}
 					</select>
-					<input type="hidden" name="update_lang" value="0" />
+					<input type="hidden" name="update_lang" id="update_lang" value="0" />
 				</p>
 			</fieldset>
 			<fieldset class="cssform">
@@ -190,7 +183,7 @@
 			{include file="display_dynamic_fields.tpl" is_form=true}
 		<div>
 			<input type="submit" class="submit" value="{_T string="Save"}"/>
-			<input type="hidden" name="valid" value="1"/>
+			<input type="hidden" name="valid" id="valid" value="1"/>
 		</div>
 	</form>
 {/if}
