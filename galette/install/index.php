@@ -256,16 +256,16 @@ switch( $step ){
 		$step_title = _T("End!");
 		break;
 }
-header('Content-Type: text/html; charset=iso-8859-15');	
+header('Content-Type: text/html; charset=UTF-8');	
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $i18n->getAbbrev(); ?>">
 	<head>
 		<title><?php echo _T("Galette Installation") . ' - ' . $step_title; ?></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<link rel="stylesheet" type="text/css" href="../templates/default/galette.css"/>
 
-		<script type="text/javascript" src="../includes/jquery/jquery-1.2.1.pack.js"></script>
+		<script type="text/javascript" src="../includes/jquery/jquery-1.2.6.pack.js"></script>
 		<script type="text/javascript" src="../includes/jquery/jquery.bgiframe.pack.js"></script>
 		<script type="text/javascript" src="../includes/jquery/jquery.dimensions.pack.js"></script>
 		<script type="text/javascript" src="../includes/jquery/jquery.bgFade.js"></script>
