@@ -1,69 +1,66 @@
 <?php
-/* liste_membres.php - Part of the Galette Project
- * 
- * Copyright (c) 2006 Loïs 'GruiicK' Taulelle
+
+// Copyright © 2006 Loïs 'GruiicK' Taulelle
+// Copyright © 2007-2008 Johan Cwiklinski
+//
+// This file is part of Galette (http://galette.tuxfamily.org).
+//
+// Galette is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Galette is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Galette. If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Liste publique des adhérents
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * On affiche les adhérents qui ont souhaité rendre leurs informations 
+ * publiques.
  *
+ * @package    Galette
+ *
+ * @author     Loïs 'GruiicK' Taulelle
+ * @author     Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright  2006 Loïs 'GruiicK' Taulelle
+ * @copyright  2007-2008 Johan Cwiklinski
+ * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @version    $Id$
+ * @since      Disponible depuis la Release 0.62
  */
 
 $base_path = '../';
 require_once('../includes/galette.inc.php');
 
-// Select all adh who would like to appear in public views.
-// FIXME: les adhérents "à jour" de cotisation => vérifier la requête
-$query = "SELECT a.id_adh,a.nom_adh,a.prenom_adh,a.pseudo_adh,a.url_adh,a.info_public_adh,a.date_echeance,a.bool_exempt_adh,p.format 
+$query = "SELECT a.id_adh,a.nom_adh,a.prenom_adh,a.pseudo_adh,a.url_adh,a.info_public_adh,a.titre_adh
           FROM ".PREFIX_DB."adherents a 
-          JOIN ".PREFIX_DB."pictures p 
-          ON a.id_adh=p.id_adh 
           WHERE a.bool_display_info='1'
           AND (a.date_echeance > ".$DB->DBDate(time())." OR a.bool_exempt_adh='1')";
 
-$adh =&$DB->Execute($query);
+$resultat = &$DB->Execute($query);
 
-print "<html>\n<body>\n<h1>Liste des membres</h1>\n";
-print "<table align=\"center\">\n<tr><th>"._T("Name")."</th><th>"._T("Pseudo")."</th><th>"._T("Comments")."</th></tr>";
-
-// main loop
-while ( !$adh->EOF ) {
-  if ($adh->fields['url_adh']) {
-    print '<tr><td><a href="'.$adh->fields['url_adh'].'">'.$adh->fields['prenom_adh'].' '.$adh->fields['nom_adh'].'</a></td>';
-  } else {
-	 print '<tr><td>'.$adh->fields['prenom_adh'].' '.$adh->fields['nom_adh'].'</td>';
-  }
-  if ($adh->fields['pseudo_adh']) {
-    print "<td>".$adh->fields['pseudo_adh']."</td>\n";
-  } else {
-	 print "<td>&nbsp</td>\n";
-  }
-  if ($adh->fields['info_public_adh']) {
-    print "<td>".$adh->fields['info_public_adh']."</td></tr>\n";
-  } else {
-	 print "<td>&nbsp</td></tr>\n";
-  }
-  $adh->MoveNext();
+while (!$resultat->EOF) {
+	$members[$compteur]["id_adh"] = $resultat->fields['id_adh'];
+	$members[$compteur]["nom"] = htmlentities(strtoupper($resultat->fields['nom_adh']),ENT_QUOTES);
+	$members[$compteur]["prenom"] = htmlentities($resultat->fields['prenom_adh'], ENT_QUOTES);
+	$members[$compteur]["pseudo"] = htmlentities($resultat->fields['pseudo_adh'], ENT_QUOTES);
+	$members[$compteur]["url"] = $resultat->fields['url_adh'];
+	$members[$compteur]["genre"] = $resultat->fields['titre_adh'];
+	$members[$compteur]["infos"] = $resultat->fields['info_public_adh'];
+	$resultat->MoveNext();
 }
+$resultat->Close();
 
-// closing list
-
-print "</table>\n</body>\n</html>";
-$adh->Close();
-
-// Here you can include your site's footer.
-//include("footer.php");
-print "\n</body>\n</html>";
-
+$tpl->assign('page_title', _T("Members list"));
+$tpl->assign("members",$members);
+$content = $tpl->fetch("liste_membres.tpl");
+$tpl->assign("content",$content);
+$tpl->display("public_page.tpl");
 ?>
 

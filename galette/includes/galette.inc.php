@@ -39,7 +39,6 @@ if (! $installed) {
 * Import configuration settings
 */
 if( !isset($base_path) ) $base_path = './';
-echo 'base path is: ' . $base_path;
 require_once( $base_path . 'config/config.inc.php');
 
 //we start a php session

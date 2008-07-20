@@ -218,6 +218,10 @@ a.listing:hover {
 	font-style: italic;
 }
 
+#full_content #copyright{
+	clear:both;
+}
+
 #copyright {
 	color: #CCCCCC;
 	font-style: italic;
@@ -329,6 +333,10 @@ html > * .nav1 li{
 #content {
 	margin-left:15em;
 	padding-right: 0.5em;
+}
+
+#full_content {
+	padding:0 0.5em;
 }
 
 #menu {
@@ -592,6 +600,12 @@ html > * #listing{
 .content-box
 {
 	border: 1px solid #BBBBBB;
+	margin-top: 10px;
+	padding: 0.5em 10px 10px 10px;
+}
+
+.full-content-box
+{
 	margin-top: 10px;
 	padding: 0.5em 10px 10px 10px;
 }
@@ -1076,3 +1090,15 @@ ul#paths{
 }
 
 /*** /Installation pages ***/
+
+.trombino{
+	background-color: #DDDDFF;
+/* 	padding:.5em; */
+	padding-bottom:.2em;
+	float:left;
+	text-align:center;
+}
+
+.trombino img{
+	margin:.5em .5em 0 .5em;
+}

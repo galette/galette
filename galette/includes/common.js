@@ -56,6 +56,7 @@ $(function() {
 	$('#titre').corner();
 	$('#menu').corner();
 	$('#listfilter').corner();
+	$('.trombino').corner();
 
 	$('#login').focus();
 
