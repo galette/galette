@@ -20,7 +20,8 @@
  * $Id$
  */
 
-require_once('includes/galette.inc.php');
+$base_path = '../';
+require_once('../includes/galette.inc.php');
 
 // if no custom header, use the default one.
 $ch = file_exists(dirname( __FILE__)."/custom_header.php");
@@ -33,7 +34,7 @@ else
 
 
 // Select all adh who have put a photo & would like to appear in public views.
-// FIXME: les adhérents "à jour" de cotisation => vérifier la requête
+// FIXME: les adhÃ©rents "Ã  jour" de cotisation => vÃ©rifier la requÃªte
 
 $query = "SELECT a.id_adh,a.nom_adh,a.prenom_adh,a.pseudo_adh,a.url_adh,a.date_echeance,a.bool_exempt_adh,p.format 
           FROM ".PREFIX_DB."adherents a 

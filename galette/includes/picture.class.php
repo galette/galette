@@ -30,11 +30,6 @@
  * @version    $Id$
  */
 
-	require_once('includes/config.inc.php');
-	require_once('includes/database.inc.php');
-	require_once('includes/smarty.inc.php');
-	require_once('includes/functions.inc.php');
-
 	class picture
 	{
 		var $HEIGHT;

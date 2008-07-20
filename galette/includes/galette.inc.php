@@ -30,7 +30,7 @@
  */
 
 // test if galette is already installed and redirect to install page if not
-$installed = file_exists(dirname( __FILE__).'/config.inc.php');
+$installed = file_exists(dirname( __FILE__).'/../config/config.inc.php');
 if (! $installed) {
 	header("location: install/index.php");
 }
@@ -38,7 +38,9 @@ if (! $installed) {
 /**
 * Import configuration settings
 */
-require_once('config.inc.php');
+if( !isset($base_path) ) $base_path = './';
+echo 'base path is: ' . $base_path;
+require_once( $base_path . 'config/config.inc.php');
 
 //we start a php session
 session_start();

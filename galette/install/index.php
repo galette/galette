@@ -34,7 +34,7 @@
 /** FIXME: Most of these parts should *not* be present here... */
 
 // test if galette is already installed and redirect to index page if so
-$configfile = dirname( __FILE__).'/../includes/config.inc.php';
+$configfile = dirname( __FILE__).'/../config/config.inc.php';
 $installed = file_exists($configfile);
 if ($installed) {
 	header("location: ../index.php");
@@ -921,7 +921,7 @@ if ($step=="u7") echo _T("The tables has been correctly updated."); ?></p>
 <?php
 			// création du fichier de configuration
 
-			if($fd = @fopen (WEB_ROOT . 'includes/config.inc.php', 'w'))
+			if($fd = @fopen (WEB_ROOT . 'config/config.inc.php', 'w'))
 			{
 				$data = '<?php
 define("TYPE_DB", "' . $_POST['install_dbtype'] . '");
@@ -935,11 +935,11 @@ define("STOCK_FILES", "tempimages");
 ?>';
 				fwrite($fd,$data);
 				fclose($fd);
-				$oks[] =  '<li class="install-ok">' . _T("Configuration file created (includes/config.inc.php)") . '</li>';
+				$oks[] =  '<li class="install-ok">' . _T("Configuration file created (config/config.inc.php)") . '</li>';
 			}
 			else
 			{
-				$errs[] =  '<li class="install-bad">' . _T("Unable to create configuration file (includes/config.inc.php)") . '</li>';
+				$errs[] =  '<li class="install-bad">' . _T("Unable to create configuration file (config/config.inc.php)") . '</li>';
 				$error = true;
 			}
 
@@ -1015,7 +1015,7 @@ foreach($oks as $o)
 ?>
 			<div id="errorbox">
 				<h1><?php echo _T("- ERROR -"); ?></h1>
-				<p><?php echo _T("Parameters couldn't be saved."); ?><br/><?php echo _T("This can come from the permissions on the file includes/config.inc.php or the impossibility to make an INSERT into the database."); ?></p>
+				<p><?php echo _T("Parameters couldn't be saved."); ?><br/><?php echo _T("This can come from the permissions on the file config/config.inc.php or the impossibility to make an INSERT into the database."); ?></p>
 				<p><?php echo _T("Check above errors to know what went wrong."); ?></p>
 				<ul><?php echo implode("\n", $errs); ?></ul>
 			</div>

@@ -1,7 +1,7 @@
 <?php
 /* liste_membres.php - Part of the Galette Project
  * 
- * Copyright (c) 2006 Loïs 'GruiicK' Taulelle
+ * Copyright (c) 2006 LoÃ¯s 'GruiicK' Taulelle
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,13 +17,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id$
  */
 
-require_once('includes/galette.inc.php');
+$base_path = '../';
+require_once('../includes/galette.inc.php');
 
 // Select all adh who would like to appear in public views.
-// FIXME: les adhérents "à jour" de cotisation => vérifier la requête
+// FIXME: les adhÃ©rents "Ã  jour" de cotisation => vÃ©rifier la requÃªte
 $query = "SELECT a.id_adh,a.nom_adh,a.prenom_adh,a.pseudo_adh,a.url_adh,a.info_public_adh,a.date_echeance,a.bool_exempt_adh,p.format 
           FROM ".PREFIX_DB."adherents a 
           JOIN ".PREFIX_DB."pictures p 
