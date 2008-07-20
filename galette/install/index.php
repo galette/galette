@@ -369,7 +369,7 @@ header('Content-Type: text/html; charset=UTF-8');
 						'/photos',
 						'/cache',
 						'/tempimages',
-						'/includes');
+						'/config');
 			foreach ($files_need_rw as $file)
 			{
 				if (!is_writable(dirname(__FILE__) . '/..' . $file))
