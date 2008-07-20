@@ -1,0 +1,14 @@
+Galette documentation can be generated using phpDocumentor.
+
+A file named phpDocumentor.ini is provided to automate the process. 
+To generate the documentation, edit this file to replace 'target' line
+with the path where you would to build it.
+
+Example:
+target = /home/user/galette/doc
+
+Once you've edited phpDocumentor.ini, save it to disk then run the build 
+process (from galette/docs/ direcotry):
+phpdoc --useconfig phpDocumentor.ini
+
+HTML files will be generated into 'target' directory.
