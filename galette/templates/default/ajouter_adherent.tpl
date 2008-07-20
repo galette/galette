@@ -63,7 +63,7 @@
 					<label for="pref_lang" class="bline {if $required.pref_lang eq 1} required{/if}">{_T string="Language:"}</label>
 					<select name="pref_lang" id="pref_lang" {$disabled.pref_lang}>
 						{foreach item=langue from=$languages}
-							<option value="{$langue->getID()}"{if $data.pref_lang eq $langue->getID()} selected="selected"{/if} style="background:url({$langue->getFlag()}) no-repeat;padding-left:30px;">{$langue->getName()|capitalize}</option>
+							<option value="{$langue->getID()}"{if $data.pref_lang eq $langue->getID()} selected="selected"{/if} style="background:url({$langue->getFlag()}) no-repeat;padding-left:30px;">{$langue->getName()|ucfirst}</option>
 						{/foreach}
 					</select>
 				</p>
