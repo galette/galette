@@ -130,11 +130,11 @@ CREATE TABLE galette_dynamic_fields (
 ) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_pictures;
-CREATE TABLE `galette_pictures` (
-    `id_adh` int(10) unsigned NOT NULL default '0',
-    `picture` mediumblob NOT NULL,
-    `format` varchar(10) NOT NULL default '',
-    PRIMARY KEY  (`id_adh`)
+CREATE TABLE galette_pictures (
+    id_adh int(10) unsigned NOT NULL default '0',
+    picture mediumblob NOT NULL,
+    format varchar(10) NOT NULL default '',
+    PRIMARY KEY  (id_adh)
 ) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Table for dynamic translation of strings;
@@ -161,31 +161,28 @@ DROP TABLE IF EXISTS galette_required;
 CREATE TABLE galette_required (
 	field_id varchar(15) NOT NULL,
 	required tinyint(1) NOT NULL,
-	PRIMARY KEY  (`field_id`)
+	PRIMARY KEY  (field_id)
 ) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Add new table for automatic mails and their translations
-DROP TABLE IF EXISTS `galette_texts`;
-CREATE TABLE IF NOT EXISTS `galette_texts` (
-  `tid` smallint(6) NOT NULL auto_increment,
-  `tref` varchar(20) NOT NULL,
-  `tsubject` varchar(256) NOT NULL,
-  `tbody` text NOT NULL,
-  `tlang` varchar(16) NOT NULL,
-  `tcomment` varchar(64) NOT NULL,
-  PRIMARY KEY  (`tid`)
+DROP TABLE IF EXISTS galette_texts;
+CREATE TABLE galette_texts (
+  tid smallint(6) NOT NULL auto_increment,
+  tref varchar(20) NOT NULL,
+  tsubject varchar(256) NOT NULL,
+  tbody text NOT NULL,
+  tlang varchar(16) NOT NULL,
+  tcomment varchar(64) NOT NULL,
+  PRIMARY KEY  (tid)
 ) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
--- New table for documents models: table `galette__models`
-DROP TABLE IF EXISTS `galette_models`;
-CREATE TABLE IF NOT EXISTS `galette_models` (
-  `mod_id` int(11) NOT NULL COMMENT 'id du modèle',
-  `mod_carac` varchar(64) NOT NULL COMMENT 'caracteristique',
-  `carac_id` varchar(32) default NULL COMMENT 'id caractéristique',
-  `carac_type` varchar(32) NOT NULL COMMENT 'type',
-  `carac_value` varchar(256) NOT NULL COMMENT 'valeur',
-  `carac_xpath` varchar(256) NOT NULL,
-  `carac_cond_id` int(11) default NULL COMMENT 'index sur condition',
-  PRIMARY KEY  (`mod_id`)
-) TYPE=MyISAM COMMENT='Modèles des documents' DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+-- New table for documents models: table `galette_models`
+-- Add a new table to store models descriptions for documents
+DROP TABLE IF EXISTS galette_models;
+CREATE TABLE galette_models (
+  mod_id int(11) NOT NULL,
+  mod_name varchar(64)  NOT NULL,
+  mod_xml text collate NOT NULL,
+  PRIMARY KEY  (mod_id)
+) ENGINE=MyISAM;
 

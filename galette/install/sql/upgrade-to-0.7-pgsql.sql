@@ -48,22 +48,18 @@ CREATE UNIQUE INDEX galette_texts_idx ON galette_texts (tid);
 -- ALTER TABLE galette_pictures ALTER id_adh id_adh INT( 10 ) NOT NULL DEFAULT '0' 
 
 -- Add a new table to store models descriptions for documents
-DROP TABLE galette_models;
-CREATE TABLE IF NOT EXISTS galette_models (
-  mod_id integer(11) NOT NULL,
-  mod_carac character varying(64) NOT NULL,
-  carac_id character varying(32) DEFAULT NULL,
-  carac_type character varying(32) NOT NULL,
-  carac_value character varying(256) NOT NULL,
-  carac_xpath character varying(256) NOT NULL,
-  carac_cond_id integer(11) DEFAULT NULL
+DROP TABLE IF EXISTS galette_models;
+CREATE TABLE galette_models (
+  mod_id int(11) NOT NULL,
+  mod_name varchar(64)  NOT NULL,
+  mod_xml text collate NOT NULL,
+  PRIMARY KEY  (mod_id)
 );
 CREATE UNIQUE INDEX galette_models_idx ON galette_models (mod_id);
 
 -- 
 -- Contenu de la table `galette_texts`
 -- 
-
 INSERT INTO galette_texts (tid, tref, tsubject, tbody, tlang, tcomment) VALUES 
 (1, 'sub', 'Your identifiers', 'Hello,\r\n\r\nYou''ve just been subscribed on the members management system of {NAME}.\r\n\r\nIt is now possible to follow in real time the state of your subscription and to update your preferences from the web interface.\r\n\r\nPlease login at this address:\r\n{LOGIN_URI}\r\n\r\nUsername: {LOGIN}\r\nPassword: {PASSWORD}\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)', 'en_EN', 'New user registration');
 INSERT INTO galette_texts (tid, tref, tsubject, tbody, tlang, tcomment) VALUES (2, 'sub', 'Votre adhésion', 'Bonjour,\r\n\r\nVous venez d''adhérer à {NAME}.\r\n\r\nVous pouvez désormais accéder à vos coordonnées et souscriptions en vous connectant à l''adresse suivante:\r\n\r\n{LOGIN_URI} \r\n\r\nIdentifiant: {LOGIN}\r\nMot de passe: {PASSWORD}\r\n\r\nA bientôt!\r\n\r\n(Ce courriel est un envoi automatique)', 'fr_FR', 'Nouvelle adhésion');

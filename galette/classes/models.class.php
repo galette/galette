@@ -1,5 +1,5 @@
 <?php
-/
+
 // Copyright © 2007 John Perr
 // Copyright © 2007-2008 Johan Cwiklinski
 //
@@ -105,7 +105,7 @@ class Models {
 				$requete .= ' ('.$mdb->quoteIdentifier('mod_name').','.$mdb->quoteIdentifier('mod_xml').')';
 				$requete .= ' VALUES ('.$mdb->quote($this->modname).','.$mdb->quote($xmlModel->asXML()).')';
 				$result = $mdb->execute($requete);
-				// V�rification des erreurs
+				// Vérification des erreurs
 				self::chekError();
 			}
 		} else {
