@@ -228,22 +228,22 @@ CREATE UNIQUE INDEX galette_texts_idx ON galette_texts (tid);
 -- New table for documents models: table galette__models
 DROP TABLE IF EXISTS galette_models;
 CREATE TABLE IF NOT EXISTS galette_models (
-  mod_id int(11) NOT NULL,
-  mod_carac varchar(64) NOT NULL,
-  carac_id varchar(32) default NULL,
-  carac_type varchar(32) NOT NULL,
-  carac_value varchar(256) NOT NULL,
-  carac_xpath varchar(256) NOT NULL,
-  carac_cond_id int(11) default NULL,
+  mod_id integer NOT NULL,
+  mod_carac character varying(64) NOT NULL,
+  carac_id character varying(32) default NULL,
+  carac_type character varying(32) NOT NULL,
+  carac_value character varying(256) NOT NULL,
+  carac_xpath character varying(256) NOT NULL,
+  carac_cond_id integer default NULL,
 );
 CREATE UNIQUE INDEX galette_models_idx ON galette_models (mod_id);
 
 --Secondary table for conditions in models
 DROP TABLE IF EXISTS galette_models_conditions;
 CREATE TABLE IF NOT EXISTS galette_models_conditions (
-  cond_id int(11) NOT NULL,
-  cond_field varchar(32) NOT NULL,
-  cond_in varchar(64) NOT NULL,
-  cond_out varchar(64) NOT NULL,
+  cond_id integer NOT NULL,
+  cond_field character varying(32) NOT NULL,
+  cond_in character varying(64) NOT NULL,
+  cond_out character varying(64) NOT NULL,
 );
 CREATE UNIQUE INDEX galette_models_conditions_idx ON galette_models_conditions (cond_id);
