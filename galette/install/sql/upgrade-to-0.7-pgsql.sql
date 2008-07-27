@@ -60,16 +60,6 @@ CREATE TABLE IF NOT EXISTS galette_models (
 );
 CREATE UNIQUE INDEX galette_models_idx ON galette_models (mod_id);
 
--- Add a new table to store conditionals fields for models
-DROP TABLE IF EXISTS galette_models_conditions;
-CREATE TABLE IF NOT EXISTS galette_models_conditions (
-  cond_id integer(11) NOT NULL,
-  cond_field character varying(32) NOT NULL,
-  cond_in character varying(64) NOT NULL,
-  cond_out character varying(64) NOT NULL
-);
-CREATE UNIQUE INDEX galette_models_conditions_idx ON galette_models_conditions (cond_id);
-
 -- 
 -- Contenu de la table `galette_texts`
 -- 

@@ -56,16 +56,21 @@ if (isset($_POST['fieldsfile'])) {
 }
 
 if (isset($_POST['xmlupload'])) {
-//	$err = $mods->readXMLModels($_POST['loadxml']);
-	if ($err) {
-		$error_detected = $mods->errors;	
+  if ($_FILES['loadxml']['tmp_name'] !='' ) {
+		$err = $mods->readXMLModels($_FILES['loadxml']['tmp_name']);
+		if ($err) {
+			$error_detected = $mods->getError();	
+		} else {
+			array_push ($warning_detected,$_FILES['loadxml']['name']._T(" sucessfully read."));
+		}
 	} else {
-		array_push ($warning_detected,$_POST['loadxml']._T(" sucessfully read."));
+		array_push ($warning_detected,_T("Error, filename is empty"));
 	}
+
 }
 
 
-$tpl->assign("loadxml",$_POST['loadxml']);
+$tpl->assign("loadxml",$_FILES['loadxml']['name']);
 $tpl->assign("exportfields",empty($_POST['exportfields'])?'adh_fields.txt':$_POST['exportfields']);
 $tpl->assign("error_detected",$error_detected);
 $tpl->assign("warning_detected",$warning_detected);

@@ -189,13 +189,3 @@ CREATE TABLE IF NOT EXISTS `galette_models` (
   PRIMARY KEY  (`mod_id`)
 ) TYPE=MyISAM COMMENT='Modèles des documents' DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
---Secondary table for conditions in models
-DROP TABLE IF EXISTS `galette_models_conditions`;
-CREATE TABLE IF NOT EXISTS `galette_models_conditions` (
-  `cond_id` int(11) NOT NULL,
-  `cond_field` varchar(32) NOT NULL,
-  `cond_in` varchar(64) NOT NULL,
-  `cond_out` varchar(64) NOT NULL,
-  PRIMARY KEY  (`cond_id`)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-

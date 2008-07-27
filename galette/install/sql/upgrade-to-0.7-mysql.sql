@@ -59,16 +59,6 @@ CREATE TABLE IF NOT EXISTS `galette_models` (
   PRIMARY KEY  (`mod_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Modèles des documents';
 
--- Add a new table to store conditionals fields for models
-DROP TABLE IF EXISTS `galette_models_conditions`;
-CREATE TABLE IF NOT EXISTS `galette_models_conditions` (
-  `cond_id` int(11) NOT NULL,
-  `cond_field` varchar(32) NOT NULL,
-  `cond_in` varchar(64) NOT NULL,
-  `cond_out` varchar(64) NOT NULL,
-  PRIMARY KEY  (`cond_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 -- 
 -- Contenu de la table `galette_texts`
 -- 
