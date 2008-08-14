@@ -226,10 +226,10 @@ CREATE TABLE galette_texts (
 CREATE UNIQUE INDEX galette_texts_idx ON galette_texts (tid);
 
 -- New table for documents models: table galette__models
-DROP TABLE IF EXISTS galette_models;
+DROP TABLE galette_models;
 CREATE TABLE galette_models (
-  mod_id int(11) NOT NULL,
-  mod_name varchar(64)  NOT NULL,
+  mod_id integer NOT NULL,
+  mod_name character varying(64)  NOT NULL,
   mod_xml text collate NOT NULL,
 );
 CREATE UNIQUE INDEX galette_models_idx ON galette_models (mod_id);
