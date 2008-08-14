@@ -207,6 +207,10 @@ class Preferences{
 		return $this->error->getDebugInfo();
 	}
 
+	public function getFieldsNames(){
+		return array_keys($this->prefs);
+	}
+
 	/* GETTERS */
 	public function __get($name){
 		$forbidden = array('logged', 'admin', 'active', 'defaults');
@@ -217,9 +221,11 @@ class Preferences{
 	/* SETTERS */
 	public function __set($name, $value){
 		global $mdb, $log;
+		/** FIXME: perfs : cette méthode est utile pour enregistrer/mettre à jour une préférence, mais il serait peut être plus judicieux d'exécuter une requête multiple pour la mise à jour de l'ensemble des préférences depuis l'interface administrateur. */
+
 		//does this pref exists ?
 		if( !array_key_exists($name, self::$defaults) ){
-			$log->log('Trying to set a preferecne value which does not seems to exist', PEAR_LOG_WARNING);
+			$log->log('Trying to set a preference value which does not seems to exist', PEAR_LOG_WARNING);
 			return false;
 		}
 

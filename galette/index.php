@@ -94,7 +94,6 @@ if( !$login->isLogged() )
 	}
 
 	// display page
-	$tpl->assign("languages", $i18n->getList());
 	$tpl->assign('loginfault', $loginfault);
 	$tpl->display("index.tpl");
 }else{

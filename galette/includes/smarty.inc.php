@@ -54,7 +54,9 @@
 	$tpl->assign('PAGENAME', basename($_SERVER['SCRIPT_NAME']));
 	/** FIXME: on certains pages PHP notice that GALETTE_VERSION does not exists although it appears correctly*/
 	$tpl->assign('GALETTE_VERSION', GALETTE_VERSION);
+	/** galette_lang should be removed and languages used instead */
 	$tpl->assign('galette_lang', $i18n->getAbbrev());
+	$tpl->assign("languages", $i18n->getList());
 	$tpl->assign('pref_slogan', $preferences['pref_slogan']);
 	$tpl->assign('pref_editor_enabled', $preferences['pref_editor_enabled']);
 ?>

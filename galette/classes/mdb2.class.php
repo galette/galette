@@ -53,7 +53,6 @@ class GaletteMdb2{
 	private $error;
 
 	function __construct($persistent = false){
-		/** TODO: declare PEAR::Log somewhere... */
 		global $log;
 		$this->persistent = $persistent;
 		$this->dsn = TYPE_DB . '://' . USER_DB . ':' . PWD_DB . '@' . HOST_DB . '/' . NAME_DB;
@@ -107,8 +106,9 @@ class GaletteMdb2{
 	*/
 	public function execute( $query ){
 		global $log;
+		//$this->db->setCharset('UTF-8');
 		$result = $this->db->exec($query);
-				// Vérification des erreurs
+		// Vérification des erreurs
 		if (MDB2::isError($result)) {
 			$log->log('There were an error executing query ' . $query . '(' . $result->getMessage() . ') - ' . $result->getDebugInfo(), PEAR_LOG_ERR);
 			return $result;

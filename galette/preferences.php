@@ -86,10 +86,13 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 	$insert_values = array();
 
 	// obtain fields
-	$requete = "SELECT nom_pref FROM ".PREFIX_DB."preferences";
-	$result=$DB->Execute($requete);
-	while (!$result->EOF){
-		$fieldname = $result->fields['nom_pref'];
+	/** FIXME: try to use Preference object instead of old method. Query, while and $result->close() above should be removed when use of object will be ok. */
+	/*$requete = "SELECT nom_pref FROM ".PREFIX_DB."preferences";
+	$result=$DB->Execute($requete);*/
+	$prefs_fields = $p->getFieldsNames();
+	foreach($prefs_fields as $fieldname){
+	/*while (!$result->EOF){
+		$fieldname = $result->fields['nom_pref'];*/
 
 		if (isset($_POST[$fieldname]))
 			$value=trim($_POST[$fieldname]);
@@ -175,7 +178,7 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 			$insert_values[$fieldname] = $value;
 			$result->MoveNext();
 	}
-	$result->Close();
+	/*$result->Close();*/
 
 	// missing relations
 	if (isset($insert_values['pref_mail_method'])){
@@ -215,9 +218,11 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 		// update preferences
 		while (list($champ,$valeur)=each($insert_values)){
 			if(($champ == "pref_admin_pass" && $_POST['pref_admin_pass']!= '') | ($champ != "pref_admin_pass")) {
-				$valeur = stripslashes($valeur);
+				/** FIXME: try to use Preference object instead of old method. Query above should be removed when use of object will be ok. */
+				/*$valeur = stripslashes($valeur);
 				$requete = "UPDATE ".PREFIX_DB."preferences SET val_pref=".$DB->qstr($valeur)." WHERE nom_pref=".$DB->qstr($champ).";\n";
-				$DB->Execute($requete);
+				$DB->Execute($requete);*/
+				$p->$champ = $valeur;
 			}
 		}
 
@@ -255,25 +260,24 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 
 		if (isset($_POST['del_card_logo']))
 			if (!picture::delete(999999))
-	    $error_detected[] = _T("Delete failed");
-	  else
-	    $_SESSION["customCardLogo"] = false;
-
-   }
+				$error_detected[] = _T("Delete failed");
+			else
+				$_SESSION["customCardLogo"] = false;
+	}
 } else {
-     // collect data
-     $requete = "SELECT *
-			    FROM ".PREFIX_DB."preferences";
-     $result = &$DB->Execute($requete);
-     if ($result->EOF)
-       header("location: index.php");
-     else  {
-		 while (!$result->EOF) {
-		     $pref[$result->fields['nom_pref']] = htmlentities(stripslashes(addslashes($result->fields['val_pref'])), ENT_QUOTES);
-		     $result->MoveNext();
-		 }
-     }
-     $result->Close();
+	// collect data
+	/** FIXME: try to use Preference object instead of old method. */
+	$requete = "SELECT * FROM ".PREFIX_DB."preferences";
+	$result = &$DB->Execute($requete);
+	if ($result->EOF)
+		header("location: index.php");
+	else  {
+		while (!$result->EOF) {
+			$pref[$result->fields['nom_pref']] = htmlentities(stripslashes(addslashes($result->fields['val_pref'])), ENT_QUOTES);
+			$result->MoveNext();
+		}
+	}
+	$result->Close();
 }
 
 // Card logo data

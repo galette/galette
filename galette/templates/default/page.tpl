@@ -43,7 +43,7 @@
 	{if $lang ne 'en'}
 	<script type="text/javascript" src="{$jquery_dir}date_{$galette_lang}.js"></script>
 	{/if}
-	<script type="text/javascript" src="{$scripts_dir}date_common.js"></script>
+	<!--<script type="text/javascript" src="{$scripts_dir}date_common.js"></script>-->
 {/if}
 	<script type="text/javascript" src="{$scripts_dir}common.js"></script>
 </head>
@@ -91,6 +91,12 @@
 		<div id="logout">
 			<a href="index.php?logout=1">{_T string="Log off"}</a>
 		</div>
+		<ul id="langs">
+{foreach item=langue from=$languages}
+			<li><a href="?pref_lang={$langue->getID()}"><img src="{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}" class="flag"/></a></li>
+{/foreach}
+		</ul>
+
 {if $PAGENAME eq "gestion_adherents.php" || $PAGENAME eq "mailing_adherents.php"}
 		<div id="legende">
 			<h1>{_T string="Legend"}</h1>
