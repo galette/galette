@@ -99,8 +99,8 @@ while (!$resultat->EOF) {
 	$members[$compteur]["pic_format"] = $pic->FORMAT;
 	$members[$compteur]["pic_height"] = $pic->OPTIMAL_HEIGHT;
 	$members[$compteur]["pic_width"] = $pic->OPTIMAL_WIDTH;
-
 	$resultat->MoveNext();
+	$compteur++;
 }
 $resultat->Close();
 

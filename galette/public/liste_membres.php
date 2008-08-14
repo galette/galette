@@ -54,6 +54,7 @@ while (!$resultat->EOF) {
 	$members[$compteur]["genre"] = $resultat->fields['titre_adh'];
 	$members[$compteur]["infos"] = $resultat->fields['info_public_adh'];
 	$resultat->MoveNext();
+	$compteur++;
 }
 $resultat->Close();
 
