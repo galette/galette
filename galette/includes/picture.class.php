@@ -219,10 +219,12 @@
 			$new_file = dirname(__FILE__).'/../photos/'.$id.'.'.$extension;
 			move_uploaded_file($tmpfile, $new_file);
 
-			// resize (if gd available)
-			if(function_exists("gd_info"))
+			/** FIXME: Can GD not be present ? */
+			if( function_exists('gd_info') && ($cur_width > 200 || $cur_height > 200) ){
+				list($cur_width, $cur_height, $cur_type, $curattr) = getimagesize($new_file);
 				resizeimage($new_file, $new_file, 200, 200);
-			
+			}
+
 			$f = fopen($new_file,'r');
 			$picture = '';
 			while ($r=fread($f,8192))

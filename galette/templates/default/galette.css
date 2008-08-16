@@ -1092,11 +1092,13 @@ ul#paths{
 /*** /Installation pages ***/
 
 .trombino{
+	margin:.5em 0 0 .5em;
 	background-color: #DDDDFF;
-/* 	padding:.5em; */
 	padding-bottom:.2em;
 	float:left;
 	text-align:center;
+	width:240px;
+	height:240px;
 }
 
 .trombino img{

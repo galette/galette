@@ -45,47 +45,6 @@ $query = "SELECT a.id_adh,a.nom_adh,a.prenom_adh,a.pseudo_adh,a.url_adh
           WHERE a.bool_display_info='1'
           AND (a.date_echeance > ".$DB->DBDate(time())." OR a.bool_exempt_adh='1')";
 
-/*$adh =&$DB->Execute($query);
-$i = 0; // used to add new rows in the table
-
-// Here come some HTML
-print '<h1>Trombinoscope</h1>'."\n";
-print '<br /><br /><br />'."\n";
-print '<table align="center">'."\n";
-print "<tr>\n";
-
-// main loop
-while ( !$adh->EOF ) {
-  $pic =& new picture($adh->fields['id_adh']);
-
-	if ( $pic->hasPicture() ) {
-	   print '<td align="center">';
-	   print '<img src="../photos/'.$adh->fields['id_adh'].'.'.$pic->FORMAT.'" height="'.$pic->OPTIMAL_HEIGHT.'" width="'.$pic->OPTIMAL_WIDTH.'"';
-		if ($adh->fields['pseudo_adh']) {
-		    print ' alt="'.$adh->fields['pseudo_adh'].'"';
-		}
-	   print " /><br />";
-		if ($adh->fields['url_adh']) {
-		    print '<a href="'.$adh->fields['url_adh'].'">'.$adh->fields['nom_adh'].' '.$adh->fields['prenom_adh'].'</a>';
-		}else{
-		    print $adh->fields['nom_adh'].' '.$adh->fields['prenom_adh'];
-		}
-	   print "</td>\n";
-	
-	   $i++;
-	   if ( $i%5 == 0 )
-	      print "</tr>\n<tr>\n";
-	}
-  
-  $adh->MoveNext();
-}
-
-if ( $i%5 ) // if the row isn't closed, do it before closing the table.
-  print "</tr>\n";
-
-print "</table>\n</body>\n</html>";
-$adh->Close();*/
-
 $resultat = &$DB->Execute($query);
 
 while (!$resultat->EOF) {

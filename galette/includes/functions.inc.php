@@ -164,6 +164,7 @@ function dblog($action, $argument="", $query="")
 
 function resizeimage($img,$img2,$w,$h)
 {
+	/** FIXME: Can GD not be present ? */
 	if(function_exists("gd_info"))
 	{
 		$ext = substr($img,-4);
@@ -186,28 +187,32 @@ function resizeimage($img,$img2,$w,$h)
 				return false;
 		}
 
-		$imagedata = getimagesize($img);
-		$ratio = $imagedata[0]/$imagedata[1];
-		if ($imagedata[0]>$imagedata[1])
+		list($cur_width, $cur_height, $cur_type, $curattr) = getimagesize($img);
+
+		$ratio = $cur_width / $cur_height;
+
+		// calculate image size according to ratio
+		if ($cur_witdh>$cur_height)
 			$h = $w/$ratio;
 		else
 			$w = $h*$ratio;
+
 		$thumb = imagecreatetruecolor ($w, $h);
 		switch($ext)
 		{
 			case ".jpg":
 				$image = ImageCreateFromJpeg($img);
-				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $imagedata[0], $imagedata[1]);
+				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
 				imagejpeg($thumb, $img2);
 				break;
 			case ".png":
 				$image = ImageCreateFromPng($img);
-				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $imagedata[0], $imagedata[1]);
+				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
 				imagepng($thumb, $img2);
 				break;
 			case ".gif":
 				$image = ImageCreateFromGif($img);
-				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $imagedata[0], $imagedata[1]);
+				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
 				imagegif($thumb, $img2);
 				break;
 		}
