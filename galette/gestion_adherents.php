@@ -382,10 +382,10 @@ if (isset($_GET["tri"]))
 		$members[$compteur]["genre"]=$resultat->fields[7];
 		$members[$compteur]["email"]=$resultat->fields[8];
 		$members[$compteur]["admin"]=$resultat->fields[9];
-		$members[$compteur]["nom"]=htmlentities(strtoupper($resultat->fields[1]),ENT_QUOTES);
-		$members[$compteur]["prenom"]=htmlentities($resultat->fields[2], ENT_QUOTES);
+		$members[$compteur]["nom"]=strtoupper($resultat->fields[1]);
+		$members[$compteur]["prenom"]=$resultat->fields[2];
 		$members[$compteur]["id_adh"]=$resultat->fields[0];
-		$members[$compteur]["pseudo"]=htmlentities($resultat->fields[3], ENT_QUOTES);
+		$members[$compteur]["pseudo"]=$resultat->fields[3];
 		$members[$compteur]["statut"]=_T($resultat->fields[5]);
 		$members[$compteur]["statut_cotis"]=$statut_cotis;
 		$compteur++;

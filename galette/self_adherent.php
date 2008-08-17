@@ -91,7 +91,7 @@ if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
 		if (!isset($disabled[$key]))
 		{
 			// fill up the adherent structure
-			$adherent[$key] = htmlentities(stripslashes($value),ENT_QUOTES);
+			$adherent[$key] = stripslashes($value);
 
 			// now, check validity
 			if ($value != ""){

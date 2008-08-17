@@ -47,9 +47,9 @@ $resultat = &$DB->Execute($query);
 
 while (!$resultat->EOF) {
 	$members[$compteur]["id_adh"] = $resultat->fields['id_adh'];
-	$members[$compteur]["nom"] = htmlentities(strtoupper(utf8_encode($resultat->fields['nom_adh'])),ENT_QUOTES);
-	$members[$compteur]["prenom"] = htmlentities(utf8_encode($resultat->fields['prenom_adh']), ENT_QUOTES);
-	$members[$compteur]["pseudo"] = htmlentities(utf8_encode($resultat->fields['pseudo_adh']), ENT_QUOTES);
+	$members[$compteur]["nom"] = strtoupper(utf8_encode($resultat->fields['nom_adh']));
+	$members[$compteur]["prenom"] = utf8_encode($resultat->fields['prenom_adh']);
+	$members[$compteur]["pseudo"] = utf8_encode($resultat->fields['pseudo_adh']);
 	$members[$compteur]["url"] = $resultat->fields['url_adh'];
 	$members[$compteur]["genre"] = $resultat->fields['titre_adh'];
 	$members[$compteur]["infos"] = utf8_encode($resultat->fields['info_public_adh']);

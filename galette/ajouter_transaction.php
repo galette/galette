@@ -92,7 +92,7 @@ if (isset($_POST['valid']))
 			$value = '';
 
 		// fill up the transaction structure
-		$transaction[$key] = htmlentities(stripslashes($value),ENT_QUOTES);
+		$transaction[$key] = stripslashes($value);
 
 		// now, check validity
 		if ($value != '') {
@@ -241,7 +241,7 @@ if ($result->EOF)
 	$adh_options = array('' => _T("You must first register a member"));
 else while (!$result->EOF)
 {
-	$adh_options[$result->fields[0]] = htmlentities(stripslashes(strtoupper($result->fields[1])." ".$result->fields[2]),ENT_QUOTES);
+	$adh_options[$result->fields[0]] = stripslashes(strtoupper($result->fields[1])." ".$result->fields[2]);
 	$result->MoveNext();
 }
 $result->Close();

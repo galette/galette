@@ -139,8 +139,8 @@ if( !$login->isLogged() )
 				      'trans_desc' => $result->fields['trans_desc'],
 				      'trans_amount' => $result->fields['trans_amount'],
 				      'id_adh' => $result->fields['id_adh'],
-				      'lastname' => htmlentities(strtoupper($result->fields['nom_adh']),ENT_QUOTES),
-				      'firstname' => htmlentities($result->fields['prenom_adh'], ENT_QUOTES));
+				      'lastname' => strtoupper($result->fields['nom_adh']),
+				      'firstname' => $result->fields['prenom_adh']);
 			$transactions[] = $data;
 			$result->MoveNext();
 		}

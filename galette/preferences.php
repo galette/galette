@@ -173,7 +173,7 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 			}
 
 			// fill up pref structure (after $value's modifications)
-			$pref[$fieldname] = htmlentities(stripslashes($value),ENT_QUOTES);
+			$pref[$fieldname] = stripslashes($value);
 
 			$insert_values[$fieldname] = $value;
 			$result->MoveNext();
@@ -273,7 +273,7 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 		header("location: index.php");
 	else  {
 		while (!$result->EOF) {
-			$pref[$result->fields['nom_pref']] = htmlentities(stripslashes(addslashes($result->fields['val_pref'])), ENT_QUOTES);
+			$pref[$result->fields['nom_pref']] = stripslashes(addslashes($result->fields['val_pref']));
 			$result->MoveNext();
 		}
 	}

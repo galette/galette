@@ -121,7 +121,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 				$value = '';
 
 			// fill up the contribution structure
-			$contribution[$key] = htmlentities(stripslashes($value),ENT_QUOTES);
+			$contribution[$key] = stripslashes($value);
 
 			// now, check validity
 			if ($value != "")
@@ -398,7 +398,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 		print $DB->ErrorMsg();
 	while (!$result->EOF)
 	{
-		$type_cotis_options[$result->fields[0]] = htmlentities(stripslashes(_T($result->fields[1])),ENT_QUOTES);
+		$type_cotis_options[$result->fields[0]] = stripslashes(_T($result->fields[1]));
 		$result->MoveNext();
 	}
 	$result->Close();
@@ -413,7 +413,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 		$adh_options = array('' => _T("You must first register a member"));
 	else while (!$result->EOF)
 	{
-		$adh_options[$result->fields[0]] = htmlentities(stripslashes(strtoupper($result->fields[1])." ".$result->fields[2]),ENT_QUOTES);
+		$adh_options[$result->fields[0]] = stripslashes(strtoupper($result->fields[1])." ".$result->fields[2]);
 		$result->MoveNext();
 	}
 	$result->Close();

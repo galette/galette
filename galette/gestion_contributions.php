@@ -254,8 +254,8 @@ if ( !$login->isLogged() )
 		$contributions[$compteur]["date_debut"]=$resultat->fields['date_debut_cotis'];
 		$contributions[$compteur]["date_fin"]= $is_cotis ? $resultat->fields['date_fin_cotis'] : "";
 		$contributions[$compteur]["id_adh"]=$resultat->fields['id_adh'];
-		$contributions[$compteur]["nom"]=htmlentities(strtoupper($resultat->fields['nom_adh']),ENT_QUOTES);
-		$contributions[$compteur]["prenom"]=htmlentities($resultat->fields['prenom_adh'], ENT_QUOTES);
+		$contributions[$compteur]["nom"]=strtoupper($resultat->fields['nom_adh']);
+		$contributions[$compteur]["prenom"]=$resultat->fields['prenom_adh'];
 		$contributions[$compteur]["libelle_type_cotis"]=_T($resultat->fields['libelle_type_cotis']);
 		$contributions[$compteur]["montant_cotis"]=$resultat->fields['montant_cotis'];;
 		$contributions[$compteur]["duree_mois_cotis"] = $is_cotis ? distance_months($resultat->fields['date_debut_cotis'], $resultat->fields['date_fin_cotis']) : "";

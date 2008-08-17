@@ -158,7 +158,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 	}
 
 	$data['id'] = $field_id;
-	$data['name'] = htmlentities($field_name, ENT_QUOTES);
+	$data['name'] = $field_name;
 	$data['perm'] = $field_perm;
 	$data['pos'] = $field_pos;
 	$data['required'] = ($field_required == '1');

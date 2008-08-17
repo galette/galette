@@ -93,7 +93,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 					$adherent[$key]=_T("No");
 				break;
 			default:
-				$adherent[$key]=htmlentities(stripslashes(addslashes($val)), ENT_QUOTES);
+				$adherent[$key]=stripslashes(addslashes($val));
 				break;
 		}
 	}

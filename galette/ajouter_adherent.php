@@ -120,7 +120,7 @@ if (isset($_POST["id_adh"]))
 		if (!isset($disabled[$key]))
 		{
 			// fill up the adherent structure
-			$adherent[$key] = htmlentities(stripslashes($value),ENT_QUOTES);
+			$adherent[$key] = stripslashes($value);
 
 			// now, check validity
 			if ($value != "")
@@ -396,7 +396,7 @@ if (isset($_POST["id_adh"]))
 
 				// Correct html
 				foreach($adherent as $field => $data) {
-				if(is_string($adherent[$field])) { $adherent[$field] = htmlentities($data); }
+					if(is_string($adherent[$field])) { $adherent[$field] = $data; }
 				}
 			}
 	}

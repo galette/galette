@@ -188,7 +188,6 @@
 					$choices = get_fixed_values($DB, $field_id);
 					$value = $choices[$value];
 				}
-				$value = htmlentities($value, ENT_QUOTES);
 			}
 			$dyn_fields[$field_id][$result->fields['val_index']] = $value;
 			$result->MoveNext();
