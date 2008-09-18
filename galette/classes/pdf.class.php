@@ -88,14 +88,14 @@ class PDF extends TCPDF
  * #RRVVBB en un tableau de 3 valeurs comprises dans
  * l'interval [0;255]
  *
- * @param  cha�ne de 6 caratères RRVVBB
+ * @param  chaine de 7 caratères #RRVVBB
  * @return tableau de 3 valeur R, G et B comprises entre 0 et 255
  * @access public
  */
     public function ColorHex2Dec($hex6) {
-        $dec = array("R" => hexdec(substr($hex6,0,2)),
-                     "G" => hexdec(substr($hex6,2,2)),
-                     "B" => hexdec(substr($hex6,4,2)));
+        $dec = array("R" => hexdec(substr($hex6,1,2)),
+                     "G" => hexdec(substr($hex6,3,2)),
+                     "B" => hexdec(substr($hex6,5,2)));
         return $dec;             
     }
 
