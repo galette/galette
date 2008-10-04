@@ -1438,7 +1438,7 @@ msgstr "Dar de alta"
 
 #: ../footer.php:136 ../templates/default/page.tpl:108
 msgid "Membership will expire soon (&lt;30d)"
-msgstr "La afiliación expirará pronto (<30d)"
+msgstr "La afiliación expirará pronto (&lt;30d)"
 
 #: ../install/index.php:394
 #, fuzzy

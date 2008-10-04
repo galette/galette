@@ -1204,7 +1204,7 @@ $lang['It is now possible to follow in real time the state of your subscription'
 $lang['Treasurer'] = 'Tesorero';
 
 // ../footer.php:136 ../templates/default/page.tpl:108 
-$lang['Membership will expire soon (&lt;30d)'] = 'La afiliación expirará pronto (<30d)';
+$lang['Membership will expire soon (&lt;30d)'] = 'La afiliación expirará pronto (&lt;30d)';
 
 // ../change_passwd.php:61 ../ajouter_adherent.php:175 
 $lang['- The passwords don\'t match!'] = '- ¡Las contraseñas no coinciden!';
