@@ -1,3 +1,5 @@
+-- CREATE DATABASE `galette` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 DROP TABLE IF EXISTS galette_adherents;
 CREATE TABLE galette_adherents (
   id_adh int(10) unsigned NOT NULL auto_increment,
@@ -164,7 +166,7 @@ CREATE TABLE galette_required (
 	PRIMARY KEY  (field_id)
 ) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
--- Add new table for automatic mails and their translations
+-- Add new table for automatic mails and their translations;
 DROP TABLE IF EXISTS galette_texts;
 CREATE TABLE galette_texts (
   tid smallint(6) NOT NULL auto_increment,
@@ -176,13 +178,12 @@ CREATE TABLE galette_texts (
   PRIMARY KEY  (tid)
 ) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
--- New table for documents models: table `galette_models`
--- Add a new table to store models descriptions for documents
+-- New table to store models descriptions for documents;
 DROP TABLE IF EXISTS galette_models;
 CREATE TABLE galette_models (
   mod_id int(11) NOT NULL,
   mod_name varchar(64)  NOT NULL,
-  mod_xml text collate NOT NULL,
+  mod_xml text NOT NULL,
   PRIMARY KEY  (mod_id)
-) ENGINE=MyISAM;
+) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
