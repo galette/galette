@@ -230,6 +230,6 @@ DROP TABLE galette_models;
 CREATE TABLE galette_models (
   mod_id integer NOT NULL,
   mod_name character varying(64)  NOT NULL,
-  mod_xml text collate NOT NULL,
+  mod_xml text NOT NULL
 );
 CREATE UNIQUE INDEX galette_models_idx ON galette_models (mod_id);
