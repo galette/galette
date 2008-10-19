@@ -1,5 +1,3 @@
--- CREATE DATABASE `galette` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-
 DROP TABLE IF EXISTS galette_adherents;
 CREATE TABLE galette_adherents (
   id_adh int(10) unsigned NOT NULL auto_increment,
