@@ -229,7 +229,7 @@ class Preferences{
 			return false;
 		}
 
-		//some values need to ba changed (eg. md5 passwords)
+		//some values need to be changed (eg. md5 passwords)
 		if($name == 'pref_admin_pass') $value = md5($value);
 
 		//build the query

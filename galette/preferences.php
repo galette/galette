@@ -207,11 +207,9 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 				$error_detected[] = _T("- Mandatory field empty.")." ".$key;
 	}
 
-	// Check (and crypt) passwords
+	// Check passwords. MD5 hash will be done into the Preferences class
 	if(strcmp($insert_values['pref_admin_pass'],$_POST['pref_admin_pass_check']) != 0) {
 		$error_detected[] = _T("Passwords mismatch");
-	} else {
-		$insert_values['pref_admin_pass'] = md5($insert_values['pref_admin_pass']);
 	}
 
 	if (count($error_detected)==0){
