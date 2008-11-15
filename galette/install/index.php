@@ -946,6 +946,7 @@ define("STOCK_FILES", "tempimages");
 				$prefs = new Preferences();
 				$ct = new ContributionsTypes();
 				$status = new Status();
+				$texts = new Texts();
 
 				//init default values
 				$prefs->installInit(
@@ -969,6 +970,12 @@ define("STOCK_FILES", "tempimages");
 					$errs[] = '<li class="install-bad">' . _T("Default status cannot be initialized.") . '<span>' . $status->getErrorMessage() . '(' . $status->getErrorDetails() . ')</span></li>';
 				else
 					$oks[] = '<li class="install-ok">' . _T("Default status were successfully stored.") . '</li>';
+
+				$texts->installInit();
+				if( $texts->inError() )
+					$errs[] = '<li class="install-bad">' . _T("Default texts cannot be initialized.") . '<span>' . $texts->getErrorMessage() . '(' . $texts->getErrorDetails() . ')</span></li>';
+				else
+					$oks[] = '<li class="install-ok">' . _T("Default texts were successfully stored.") . '</li>';
 
 			} else if ($step=='u9') {
 				$prefs->pref_admin_login = $_POST['install_adminlogin'];
