@@ -700,6 +700,7 @@ if ($step == 'u7') echo _T("Update Report"); ?></p>
 							$update_scripts[$ver[1]] = $filesql;
 					}
 				}
+				ksort($update_scripts);
 			}
 			else
 				$update_scripts['current'] = $_POST['install_dbtype'] . '.sql';
