@@ -92,10 +92,15 @@
     
 	$requete[0] .= "id_log ".$tri_log_sens_txt;
 
-	$resultat = &$DB->SelectLimit($requete[0],PREF_NUMROWS,($page-1)*PREF_NUMROWS);
+	if (PREF_NUMROWS == 0)
+                $resultat = &$DB->Execute($requete[0]);		
+	else
+		$resultat = &$DB->SelectLimit($requete[0],PREF_NUMROWS,($page-1)*PREF_NUMROWS);
 	$nb_lines = &$DB->Execute($requete[1]);
 
-	if ($nb_lines->fields[0]%PREF_NUMROWS==0) 
+	if (PREF_NUMROWS == 0)
+		$nbpages = 1;
+	else if ($nb_lines->fields[0]%PREF_NUMROWS==0) 
 		$nbpages = intval($nb_lines->fields[0]/PREF_NUMROWS);
 	else 
 		$nbpages = intval($nb_lines->fields[0]/PREF_NUMROWS)+1;
