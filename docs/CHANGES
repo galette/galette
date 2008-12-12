@@ -4,9 +4,9 @@ Changes
 0.62 -> 0.63
 - Project leader change :-)
 - Added transactions managment
-- Added dynamic field managment, to add some extra fields; also added tha ability to translate such fields labels
+- Added dynamic field managment, to add some extra fields; also added the ability to translate such fields labels
 - Members can now self-subscribe
-- Use of Smarty template engine for pages generation. This causes complete xhtml comliant rewrite of html pages
+- Use of Smarty template engine for pages generation. This causes complete xhtml compliant rewrite of html pages
 - Upgrade from ADODB 4.7.1 to 4.9.2
 - Use of gettext possibilities for translations
 - Added spanish translations (all translations are not done yet)
