@@ -13,6 +13,17 @@ Changes
 - Added the possibility to upload a custom logo
 - Fixes numerous bugs
 
+0.62a -> 0.62.2
+- change adodb framework due to security alert :
+http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-0410
+- use x.y.z naming convention (0.62a == 0.62.1)
+
+0.62 -> 0.62a
+- correct bug #590 : date before 1970 [Frédéric Jacquot]
+- Typos fixed [Roland Telle]
+- replace logo by new one [Frédéric Jacquot]
+- add an empty config.inc.php [Loïs Taulelle]
+
 0.61 -> 0.62
 
 - More documentation
