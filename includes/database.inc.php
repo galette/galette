@@ -20,8 +20,12 @@
 	
 	include(WEB_ROOT."/includes/adodb/adodb.inc.php");
 	$DB = ADONewConnection(TYPE_DB);
+	$DB = NewADOConnection($dsn);
 	$DB->debug = false;
 	if(!@$DB->Connect(HOST_DB, USER_DB, PWD_DB, NAME_DB)) die("No database connection...");
+	//For Postgres, we have to hard specify charset to iso-8859-1 (LATIN1)
+        $DB->SetCharSet('LATIN1');
+
 
 	if (!defined("PREFIX_DB"))
 	   define("PREFIX_DB","");
