@@ -36,7 +36,7 @@
 /**
  *  Require TCPDF class
  */
-    require_once (WEB_ROOT."includes/tcpdf/tcpdf.php");
+    require_once (WEB_ROOT."includes/tcpdf_4.4.007/tcpdf.php");
 
 /**
  * PDF class for galette
