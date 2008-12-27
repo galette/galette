@@ -31,7 +31,7 @@
  */
 
 	// smarty-light declaration
-	$galetteSmartyPath = WEB_ROOT . 'includes/Smarty-2.6.19/';
+	$galetteSmartyPath = WEB_ROOT . 'includes/Smarty-2.6.22/';
 	if (file_exists("/usr/share/Smarty/Smarty.class.php")){
         	$galetteSmartyPath = '/usr/share/Smarty/';
 	}
