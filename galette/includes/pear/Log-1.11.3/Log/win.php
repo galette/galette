@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /repository/pear/Log/Log/win.php,v 1.20 2006/07/26 05:21:47 jon Exp $
+ * $Header: /repository/pear/Log/Log/win.php,v 1.21 2008/11/12 05:07:31 jon Exp $
  *
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  * @package Log
  */
 
@@ -73,7 +73,7 @@ class Log_win extends Log
                           $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());
-        $this->_name = $name;
+        $this->_name = str_replace(' ', '_', $name);
         $this->_ident = $ident;
         $this->_mask = Log::UPTO($level);
 

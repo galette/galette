@@ -8,8 +8,8 @@
 
 :Author:        Jon Parise
 :Contact:       jon@php.net
-:Date:          $Date: 2008/02/10 00:15:04 $
-:Revision:      $Revision: 1.39 $
+:Date:          $Date: 2008/11/19 05:12:26 $
+:Revision:      $Revision: 1.41 $
 
 .. contents:: Contents
 .. section-numbering::
@@ -241,6 +241,34 @@ It is also possible to retrieve and modify a Log object's existing mask::
     $logger->setMask($mask);
 
 
+Log Line Format
+---------------
+Most log handlers support configurable line formats.  The following is a list 
+of special tokens that will be expanded at runtime with contextual information
+related to the log event.  Each token has an alternate shorthand notation, as
+well.
+
++------------------+-----------+--------------------------------------------+
+| Token            | Alternate | Description                                |
++==================+===========+============================================+
+| ``%{timestamp}`` | ``%1$s``  | Timestamp.  This is often configurable.    |
++------------------+-----------+--------------------------------------------+
+| ``%{ident}``     | ``%2$s``  | The log handler's identification string.   |
++------------------+-----------+--------------------------------------------+
+| ``%{priority}``  | ``%3$s``  | The log event's priority.                  |
++------------------+-----------+--------------------------------------------+
+| ``%{message}``   | ``%4$s``  | The log event's message text.              |
++------------------+-----------+--------------------------------------------+
+| ``%{file}``      | ``%5$s``  | The full filename of the logging file.     |
++------------------+-----------+--------------------------------------------+
+| ``%{line}``      | ``%6$s``  | The line number on which the event occured.|
++------------------+-----------+--------------------------------------------+
+| ``%{function}``  | ``%7$s``  | The function from which the event occurred.|
++------------------+-----------+--------------------------------------------+
+| ``%{class}``     | ``%8$s``  | The class in which the event occurred.     |
++------------------+-----------+--------------------------------------------+
+
+
 Flushing Log Events
 -------------------
 Some log handlers (such as `the console handler`_) support explicit
@@ -292,7 +320,7 @@ Configuration
 | ``buffering``     | Boolean   | False         | Should the output be      |
 |                   |           |               | buffered until shutdown?  |
 +-------------------+-----------+---------------+---------------------------+
-| ``lineFormat``    | String    | ``%1$s %2$s   | Log line format           |
+| ``lineFormat``    | String    | ``%1$s %2$s   | `Log line format`_        |
 |                   |           | [%3$s] %4$s`` | specification.            |
 +-------------------+-----------+---------------+---------------------------+
 | ``timeFormat``    | String    | ``%b %d       | Time stamp format         |
@@ -323,7 +351,7 @@ Configuration
 +-------------------+-----------+---------------+---------------------------+
 | Parameter         | Type      | Default       | Description               |
 +===================+===========+===============+===========================+
-| ``lineFormat``    | String    | ``<b>%3$s</b>:| Log line format           |
+| ``lineFormat``    | String    | ``<b>%3$s</b>:| `Log line format`_        |
 |                   |           | %4$s``        | specification.            |
 +-------------------+-----------+---------------+---------------------------+
 | ``timeFormat``    | String    | ``%b %d       | Time stamp format         |
@@ -374,6 +402,12 @@ Configuration
 |                   |           |               | when the                  |
 |                   |           |               | ``PEAR_LOG_TYPE_MAIL``    |
 |                   |           |               | type is specified.        |
++-------------------+-----------+---------------+---------------------------+
+| ``lineFormat``    | String    | ``%2$s: %4$s``| `Log line format`_        |
+|                   |           |               | specification.            |
++-------------------+-----------+---------------+---------------------------+
+| ``timeFormat``    | String    | ``%b %d       | Time stamp format         |
+|                   |           | %H:%M:%S``    | (for strftime_).          |
 +-------------------+-----------+---------------+---------------------------+
 
 Error_Log Types
@@ -452,7 +486,7 @@ Configuration
 | ``eol``           | String    | OS default    | The end-on-line character |
 |                   |           |               | sequence.                 |
 +-------------------+-----------+---------------+---------------------------+
-| ``lineFormat``    | String    | ``%1$s %2$s   | Log line format           |
+| ``lineFormat``    | String    | ``%1$s %2$s   | `Log line format`_        |
 |                   |           | [%3$s] %4$s`` | specification.            |
 +-------------------+-----------+---------------+---------------------------+
 | ``timeFormat``    | String    | ``%b %d       | Time stamp format         |
@@ -489,7 +523,7 @@ Configuration
 | ``buffering``     | Boolean   | False         | Should the output be      |
 |                   |           |               | buffered until shutdown?  |
 +-------------------+-----------+---------------+---------------------------+
-| ``lineFormat``    | String    | ``%2$s [%3$s] | Log line format           |
+| ``lineFormat``    | String    | ``%2$s [%3$s] | `Log line format`_        |
 |                   |           | %4$s``        | specification.            |
 +-------------------+-----------+---------------+---------------------------+
 | ``timeFormat``    | String    | ``%b %d       | Time stamp format         |
@@ -535,7 +569,7 @@ Configuration
 +-------------------+-----------+---------------+---------------------------+
 | ``preamble``      | String    | `` `(empty)`  | Preamble for the message. |
 +-------------------+-----------+---------------+---------------------------+
-| ``lineFormat``    | String    | ``%1$s %2$s   | Log line format           |
+| ``lineFormat``    | String    | ``%1$s %2$s   | `Log line format`_        |
 |                   |           | [%3$s] %4$s`` | specification.            |
 +-------------------+-----------+---------------+---------------------------+
 | ``timeFormat``    | String    | ``%b %d       | Time stamp format         |
@@ -1196,7 +1230,7 @@ whether or not the message was successfully logged by the handler.
 The ``log()`` implementation should be sure to call `_announce()`__ whenever
 an event is successfully logged.
 
-.. __: void _announce($event)
+.. __: `void _announce($event)`_
 
 Utility Methods
 ---------------
@@ -1220,7 +1254,9 @@ If the message data is already a string, it will be returned unchanged.
 string _format($format, $timestamp, $priority, $message)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This method produces a formatted log line based on a format string and a set
-of variables representing the current log record and state.
+of `tokens`_ representing the current log record and state.  
+
+.. _tokens: `Log Line Format`_
 
 bool _isMasked($priority)
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1239,7 +1275,7 @@ logged.  ``$event`` is an array containing two named elements::
 event is successfully logged.  Otherwise, registered observers will never
 become aware of the event.
 
-.. _log(): bool log($message, $priority = null)
+.. _log(): `bool log($message, $priority = null)`_
 
 .. |required| replace:: **[required]**
 

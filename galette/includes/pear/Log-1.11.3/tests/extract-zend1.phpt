@@ -32,23 +32,29 @@ $logger->log(new PEAR_Error('PEAR_Error object', 100));
 /* Logging an array. */
 $logger->log(array(1, 2, 'three' => 3));
 
-/* Logging an array with a 'message' key. */
+/* Logging an array with scalar 'message' keys. */
 $logger->log(array('message' => 'Message Key'));
+$logger->log(array('message' => 50));
+
+/* Logging an array with a non-scalar 'message' key. */
+$logger->log(array('message' => array(1, 2, 3)));
 
 --EXPECT--
 ident [info] String
-ident [info] bareobject Object
-(
-)
-
+ident [info] class bareobject {
+}
 ident [info] getMessage
 ident [info] toString
 ident [info] PEAR_Error object
-ident [info] Array
-(
-    [0] => 1
-    [1] => 2
-    [three] => 3
+ident [info] array (
+  0 => 1,
+  1 => 2,
+  'three' => 3,
 )
-
 ident [info] Message Key
+ident [info] 50
+ident [info] array (
+  0 => 1,
+  1 => 2,
+  2 => 3,
+)
