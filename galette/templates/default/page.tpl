@@ -43,9 +43,7 @@
 	{if $lang ne 'en'}
 	<script type="text/javascript" src="{$jquery_dir}date_{$galette_lang}.js"></script>
 	{/if}
-	<!--<script type="text/javascript" src="{$scripts_dir}date_common.js"></script>-->
 {/if}
-	<script type="text/javascript" src="{$scripts_dir}common.js"></script>
 </head>
 <body>
 	<div id="menu">

@@ -2,7 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$galette_lang}" lang="{$galette_lang}">
 	<head>
 		{include file='common_header.tpl'}
-		<script type="text/javascript" src="{$scripts_dir}common.js"></script>
 	</head>
 	<body>
 		<div id="full_content">

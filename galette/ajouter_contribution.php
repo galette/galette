@@ -115,7 +115,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 				if (!is_numeric($nmonths) && $nmonths >= 0) {
 					$error_detected[] = _T("- The duration must be an integer!");
 					$value="01/01/0001"; // To avoid error msg about date format
-				} else if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_POST['date_debut_cotis'], $debut))
+				} else if (preg_match("/^([0-9]{2})/([0-9]{2})/([0-9]{4})$/", $_POST['date_debut_cotis'], $debut))
 					$value = date("d/m/Y", mktime(0, 0, 0, $debut[2] + $nmonths, $debut[1], $debut[3]));
 			} else
 				$value = '';
@@ -134,7 +134,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 				// date
 				case 'date_debut_cotis':
 				case 'date_fin_cotis':
-					if (ereg("^[0-9]{2}/[0-9]{2}/[0-9]{4}$", $value, $array_jours))
+					if (preg_match("/^[0-9]{2}/[0-9]{2}/[0-9]{4}$/", $value, $array_jours))
 					{
 						$value = date_text2db($DB, $value);
 						if ($value == "")

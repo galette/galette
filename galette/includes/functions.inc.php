@@ -230,7 +230,7 @@ function custom_html_entity_decode( $given_html, $quote_style = ENT_QUOTES )
 //TODO better handling (replace bad string not just detect it)
 function sanityze_mail_headers($field) {
 	$result = 0;
-	if ( eregi("\r",$field) || eregi("\n",$field) ) {
+	if ( stripos("\r",$field)!==false || stripos("\n",$field)!==false ) {
 		 $result = 0;
 	} else {
 		$result = 1;
@@ -242,12 +242,12 @@ function sanityze_mail_headers($field) {
 function sanityze_superglobals_arrays() {
 	$errors = 0;
 	foreach($_GET as $k => $v) {
-		if (eregi("'",$v) || eregi(";",$v) || eregi("\"",$v) ) {
+		if (stripos("'",$v)!==false || stripos(";",$v)!==false || stripos("\"",$v)!==false ) {
 			 $errors++;
 		}
 	}
 	foreach($_POST as $k => $v) {
-		if (eregi("'",$v) || eregi(";",$v) || eregi("\"",$v) ) {
+		if (stripos("'",$v)!==false || stripos(";",$v)!==false || stripos("\"",$v)!==false ) {
 			 $errors++;
 		}
 	}
@@ -375,22 +375,22 @@ function UniqueLogin($DB,$l) {
 function date_db2text($date) {
 	if ($date != '')
 	{
-		list($a,$m,$j)=split("-",$date);
+		list($a,$m,$j)=explode("-",$date);
 		$date="$j/$m/$a";
 	}
 	return $date;
 }
 
 function date_text2db($DB, $date) {
-	list($j, $m, $a)=split("/",$date);
+	list($j, $m, $a)=explode("/",$date);
 	if (!checkdate($m, $j, $a))
 		return "";
 	return $DB->DBDate($a.'-'.$m.'-'.$j);
 }
 
 function distance_months($beg, $end) {
-	list($bj, $bm, $ba) = split("/", $beg);
-	list($ej, $em, $ea) = split("/", $end);
+	list($bj, $bm, $ba) = explode("/", $beg);
+	list($ej, $em, $ea) = explode("/", $end);
 	if ($bm > $em) {
 		$em += 12;
 		$ea--;
@@ -401,7 +401,7 @@ function distance_months($beg, $end) {
 function beg_membership_after($date) {
 	$beg = "";
 	if (PREF_BEG_MEMBERSHIP != "") {
-		list($j, $m) = split("/", PREF_BEG_MEMBERSHIP);
+		list($j, $m) = explode("/", PREF_BEG_MEMBERSHIP);
 		$y = strftime("%Y");
 		while (mktime(0, 0, 0, $m, $j, $y) <= $date)
 			$y++;

@@ -80,7 +80,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 			case 'date_echeance':
 				if ($val!='')
 				{
-					list($a,$m,$j)=split("-",$val);
+					list($a,$m,$j)=explode("-",$val);
 					$adherent[$key]="$j/$m/$a";
 				}
 				break;

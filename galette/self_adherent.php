@@ -99,7 +99,7 @@ if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
 				{
 					// dates
 					case 'ddn_adh':
-						if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $value, $array_jours))
+						if (preg_match("/^([0-9]{2})/([0-9]{2})/([0-9]{4})$/", $value, $array_jours))
 						{
 							if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
 								$value = $DB->DBDate($array_jours[3].'-'.$array_jours[2].'-'.$array_jours[1]);

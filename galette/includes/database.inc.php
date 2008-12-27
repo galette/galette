@@ -93,8 +93,8 @@
 				$max_date = $DB->GetOne($requete_cotis);
 				if ($max_date)
 				{
-					list($a,$m,$j) = split("-", $max_date);
-					$return_date = split("/", date("d/m/Y", mktime(0,0,0,$m,$j,$a)));
+					list($a,$m,$j) = explode("-", $max_date);
+					$return_date = explode("/", date("d/m/Y", mktime(0,0,0,$m,$j,$a)));
 				}
 			}
 		}	

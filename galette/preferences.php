@@ -142,14 +142,14 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 					break;
 				case 'pref_card_tcol':
 					// Set strip text color to white
-					if (! eregi("#([0-9A-F]{6})", $value))
+					if (! preg_match("/#([0-9A-F]{6})/i", $value))
 						$value = '#FFFFFF';
 					break;
 				case 'pref_card_scol':
 				case 'pref_card_bcol':
 				case 'pref_card_hcol':
 					// Set strip background colors to black
-					if (! eregi("#([0-9A-F]{6})", $value))
+					if (! preg_match("/#([0-9A-F]{6})/i", $value))
 						$value = '#000000';
 					break;
 				case 'pref_admin_pass':
@@ -161,7 +161,7 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 						$error_detected[] = _T("- Invalid number of months of membership extension.");
 					break;
 				case 'pref_beg_membership':
-					$beg_membership = split("/",$value);
+					$beg_membership = explode("/",$value);
 					if (count($beg_membership) != 2)
 						$error_detected[] = _T("- Invalid format of beginning of membership.");
 					else {

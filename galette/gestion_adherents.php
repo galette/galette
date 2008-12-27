@@ -342,7 +342,7 @@ if (isset($_GET["tri"]))
 		{
 			if ($resultat->fields[10]=="")
 			{
-				$date_crea = split("-",$resultat->fields[11]);
+				$date_crea = explode("-",$resultat->fields[11]);
 				$ts_date_crea = mktime(0,0,0,$date_crea[1],$date_crea[2],$date_crea[0]);
 			    $difference = -intval(($ts_date_crea - time())/(3600*24));
 				$statut_cotis = _T("Never contributed: Registered ").$difference._T(" days ago (since ").$date_crea[2]."/".$date_crea[1]."/".$date_crea[0].")";
@@ -350,7 +350,7 @@ if (isset($_GET["tri"]))
 			}
 			else
 			{
-				$date_fin = split("-",$resultat->fields[10]);
+				$date_fin = explode("-",$resultat->fields[10]);
 				$ts_date_fin = mktime(0,0,0,$date_fin[1],$date_fin[2],$date_fin[0]);
 				$aujourdhui = time();
 				
