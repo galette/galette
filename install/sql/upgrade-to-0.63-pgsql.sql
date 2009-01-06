@@ -42,6 +42,8 @@ INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_mail_smtp', '0
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_membership_ext', '12');
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_beg_membership', '');
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_email_reply_to', '');
+INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_etiq_marges_h', '10');
+INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_etiq_marges_v', '10');
 
 -- New tables for dynamic fields;
 DROP SEQUENCE galette_field_types_id_seq;
