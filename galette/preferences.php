@@ -80,20 +80,15 @@ $required = array(
 	'pref_admin_login' => 1
 );
 
+$prefs_fields = $p->getFieldsNames();
+
 // Validation
 if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 	// verification de champs
 	$insert_values = array();
 
 	// obtain fields
-	/** FIXME: try to use Preference object instead of old method. Query, while and $result->close() above should be removed when use of object will be ok. */
-	/*$requete = "SELECT nom_pref FROM ".PREFIX_DB."preferences";
-	$result=$DB->Execute($requete);*/
-	$prefs_fields = $p->getFieldsNames();
 	foreach($prefs_fields as $fieldname){
-	/*while (!$result->EOF){
-		$fieldname = $result->fields['nom_pref'];*/
-
 		if (isset($_POST[$fieldname]))
 			$value=trim($_POST[$fieldname]);
 		else
@@ -111,6 +106,7 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 						$error_detected[] = _T("- The username must be composed of at least 4 characters!");
 					else{
 						//check if login is already taken
+						/** TODO: use Adherents object to check if username already exists */
 						$requete2 = "SELECT id_adh FROM ".PREFIX_DB."adherents WHERE login_adh=". $DB->qstr($value, get_magic_quotes_gpc());
 						$result2 = &$DB->Execute($requete2);
 						if (!$result2->EOF)
@@ -178,7 +174,6 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 			$insert_values[$fieldname] = $value;
 			$result->MoveNext();
 	}
-	/*$result->Close();*/
 
 	// missing relations
 	if (isset($insert_values['pref_mail_method'])){
@@ -216,10 +211,6 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 		// update preferences
 		while (list($champ,$valeur)=each($insert_values)){
 			if(($champ == "pref_admin_pass" && $_POST['pref_admin_pass']!= '') | ($champ != "pref_admin_pass")) {
-				/** FIXME: try to use Preference object instead of old method. Query above should be removed when use of object will be ok. */
-				/*$valeur = stripslashes($valeur);
-				$requete = "UPDATE ".PREFIX_DB."preferences SET val_pref=".$DB->qstr($valeur)." WHERE nom_pref=".$DB->qstr($champ).";\n";
-				$DB->Execute($requete);*/
 				$p->$champ = $valeur;
 			}
 		}
@@ -264,18 +255,9 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 	}
 } else {
 	// collect data
-	/** FIXME: try to use Preference object instead of old method. */
-	$requete = "SELECT * FROM ".PREFIX_DB."preferences";
-	$result = &$DB->Execute($requete);
-	if ($result->EOF)
-		header("location: index.php");
-	else  {
-		while (!$result->EOF) {
-			$pref[$result->fields['nom_pref']] = stripslashes(addslashes($result->fields['val_pref']));
-			$result->MoveNext();
-		}
+	foreach($prefs_fields as $fieldname){
+		$pref[$fieldname] = $p->$fieldname;
 	}
-	$result->Close();
 }
 
 // Card logo data
