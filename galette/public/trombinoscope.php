@@ -49,8 +49,8 @@ $resultat = &$DB->Execute($query);
 
 while (!$resultat->EOF) {
 	$members[$compteur]["id_adh"] = $resultat->fields['id_adh'];
-	$members[$compteur]["nom"] = strtoupper(utf8_encode($resultat->fields['nom_adh']));
-	$members[$compteur]["prenom"] = utf8_encode($resultat->fields['prenom_adh']);
+	$members[$compteur]["nom"] = strtoupper($resultat->fields['nom_adh']);
+	$members[$compteur]["prenom"] = $resultat->fields['prenom_adh'];
 	$members[$compteur]["pseudo"] = $resultat->fields['pseudo_adh'];
 	$members[$compteur]["url"] = $resultat->fields['url_adh'];
 	//Picutre infos

@@ -47,12 +47,12 @@ $resultat = &$DB->Execute($query);
 
 while (!$resultat->EOF) {
 	$members[$compteur]["id_adh"] = $resultat->fields['id_adh'];
-	$members[$compteur]["nom"] = strtoupper(utf8_encode($resultat->fields['nom_adh']));
-	$members[$compteur]["prenom"] = utf8_encode($resultat->fields['prenom_adh']);
-	$members[$compteur]["pseudo"] = utf8_encode($resultat->fields['pseudo_adh']);
+	$members[$compteur]["nom"] = strtoupper($resultat->fields['nom_adh']);
+	$members[$compteur]["prenom"] = $resultat->fields['prenom_adh'];
+	$members[$compteur]["pseudo"] = $resultat->fields['pseudo_adh'];
 	$members[$compteur]["url"] = $resultat->fields['url_adh'];
 	$members[$compteur]["genre"] = $resultat->fields['titre_adh'];
-	$members[$compteur]["infos"] = utf8_encode($resultat->fields['info_public_adh']);
+	$members[$compteur]["infos"] = $resultat->fields['info_public_adh'];
 	$resultat->MoveNext();
 	$compteur++;
 }
