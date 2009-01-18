@@ -214,8 +214,8 @@ class Preferences{
 	/* GETTERS */
 	public function __get($name){
 		$forbidden = array('logged', 'admin', 'active', 'defaults');
-		if( !in_array($name, $forbidden) )
-			return $this->$name;
+		if( !in_array($name, $forbidden) && isset($this->prefs[$name]))
+			return $this->prefs[$name];
 		else return false;
 	}
 	/* SETTERS */
