@@ -423,6 +423,129 @@ class GaletteMdb2{
 		return $results;
 	}
 
+	/**
+	* Converts recursively database to UTF-8
+	*/
+	public function convertToUTF(){
+		global $log;
+		$this->db->loadModule('Reverse');
+
+		$all_tables = $this->db->listTables();
+		$tables = array();
+		$queries = array();
+
+		// check for prefix in table name, so we keep only galette's tables
+		for($i = 0 ; $i < count($all_tables) ; $i++){
+			if (strstr($all_tables[$i], PREFIX_DB)){
+				$tables[] = $all_tables[$i];
+			}
+		}
+
+		foreach($tables as $table){
+			// in MDB2 2.5.0, a method alterDatabase should have been added
+			//Change whole table charset
+			$query = 'ALTER TABLE ' . $this->quoteIdentifier($table) . ' DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci';
+			if( !$result = $this->db->query( $query ) ) {
+				$log->log('Cannot change charset for table `' . $table . '`, data and fields will not be updated. Try to fix the problem, and run this script again.', PEAR_LOG_ERR);
+			} else {
+				$log->log('Charset successfully changed for table `' . $table .'`', PEAR_LOG_DEBUG);
+				$fields = $this->db->listTableFields( $table );
+		
+				$fields_types = array();
+
+				//change charset for each relevant field from the table
+				foreach($fields as $field){
+					$fdef = $this->db->reverse->getTableFieldDefinition($table, $field);
+					$proceed_data_convert = false;
+
+					/** FIXME: which datatypes should have a bad encoding value ?  */
+					$fields_types[$field] = $fdef[0]['mdb2type'];
+					if($fdef[0]['mdb2type'] == 'text'){
+						$definitions = array();
+						$definitions['type'] = $fdef[0]['mdb2type'];
+						if(isset($fdef[0]['length'])) $definitions['length'] = $fdef[0]['length'];
+						if($fdef[0]['notnull'] == 1) $definitions['notnull'] = true;
+						//To handle DEFAULT ''
+						if($fdef[0]['notnull'] == 1 && $fdef[0]['default'] == '' && $fdef[0]['nativetype'] != 'text'){
+							$definitions['default'] = '';
+						}elseif($fdef[0]['default']){
+							$definitions['default'] = $fdef[0]['default'];
+						}
+						if($fdef[0]['fixed']) $definitions['fixed'] = $fdef[0]['fixed'];
+						$definitions['charset'] = 'utf8';
+						$definitions['collate'] = 'utf8_unicode_ci';
+
+						$alter = array(
+							'change' => array(
+								$field	=>	array(
+									'definition'	=>	$definitions
+								)
+							)
+						);
+						$result = $this->db->manager->alterTable($table, $alter, false);
+						if (MDB2::isError($result)){
+							$log->log('Cannot ALTER TABLE `' . $table . '` (working on field `' . $field . '`)' , PEAR_LOG_ERR);
+						} else {
+							$proceed_data_convert = true;
+							$log->log('Charset for field `' . $field . '` from table `' . $table . '` successfully updated.', PEAR_LOG_DEBUG);
+						}
+					}
+				}
+
+				//Data conversion
+				if($table != PREFIX_DB . 'pictures' && $proceed_data_convert) $this->convertContentToUTF($table, $fields_types);
+			}
+		}
+	}
+
+	private function convertContentToUTF($table, $fields_types) {
+		global $log;
+		$content="";
+		$query = 'SET NAMES latin1';
+
+		if( !$result = $this->db->query( $query ) ) {
+			$log->log('Cannot SET NAMES on table table `' . $table . '`.', PEAR_LOG_ERR);
+		} else {
+			$query = 'SELECT * FROM ' . $this->quoteIdentifier($table);
+			if( !$result = $this->db->query( $query ) ) {
+				$log->log('Cannot retrieve data from table `' . $table . '`.', PEAR_LOG_ERR);
+			} else {
+				$table_info = $this->db->reverse->tableInfo($table);
+				$constraints = $this->db->reverse->getTableConstraintDefinition($table, 'primary');
+				echo 'constrints for ' . $table;
+				var_dump($constraints);
+				$r = $result->fetchAll();
+				foreach($r as $row){
+					$requete = 'UPDATE ' . $this->quoteIdentifier($table) . ' SET ';
+					foreach($row as $key => $value){
+						$requete .= $key . '=';
+						$requete .= $this->db->quote((( !seems_utf8($value) ) ? utf8_encode($value) : $value), $fields_types[$key]);
+						$requete .= ', ';
+					}
+					$requete = rtrim($requete,', ');
+					$requete .= ' WHERE ';
+					//foreach( $constraints as $constraint){
+					foreach( $constraints as $constraint_key => $constraint_value){
+						if($constraint_key == 'fields'){
+							
+							$c = array_keys($constraint_value);
+							foreach($c as $cf){
+								$requete .= $cf . '=' . $row->$cf;
+							}
+						}
+					}
+
+					$result = $this->execute($requete);
+					if (MDB2::isError($result)) {
+						$log->log('Error while converting data ' . $result->getMessage() . '(' . $result->getDebugInfo() . ') - query: ' . $requete, PEAR_LOG_ERR);
+						//return false;
+					}
+				}
+			}
+		}
+		return $content;
+	}
+
 	public function getDb(){ return $this->db; }
 
 	/**

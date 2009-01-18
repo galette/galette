@@ -105,7 +105,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 			$DB->CompleteTrans();
 			if ($properties['fixed_values']) {
 				$values = array();
-				$max_length = 0;
+				$max_length = 1;
 				foreach (explode("\n", $fixed_values) as $val) {
 					$val = trim($val);
 					$len = strlen($val);

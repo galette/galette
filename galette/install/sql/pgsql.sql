@@ -176,6 +176,7 @@ CREATE TABLE galette_dynamic_fields (
   val_index integer DEFAULT '0' NOT NULL,
   field_val text DEFAULT ''
 );
+CREATE UNIQUE INDEX galette_dynamic_fields_unique_idx ON galette_dynamic_fields (item_id, field_id, field_form, val_index);
 CREATE INDEX galette_dynamic_fields_item_idx ON galette_dynamic_fields (item_id);
 
 DROP TABLE galette_pictures;

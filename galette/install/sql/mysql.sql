@@ -27,10 +27,10 @@ CREATE TABLE galette_adherents (
   login_adh varchar(20) NOT NULL default '',
   mdp_adh varchar(40) NOT NULL default '',
   date_crea_adh date NOT NULL default '0000-00-00',
-  activite_adh enum('0','1') NOT NULL default '0',
-  bool_admin_adh enum('1') default NULL,
-  bool_exempt_adh enum('1') default NULL,
-  bool_display_info enum('1') default NULL,
+  activite_adh tinyint(1) NOT NULL default 0,
+  bool_admin_adh tinyint(1) NOT NULL default 0,
+  bool_exempt_adh tinyint(1) NOT NULL default 0,
+  bool_display_info tinyint(1) NOT NULL default 0,
   date_echeance date default NULL,
   pref_lang varchar(20) default 'fr_FR',
   lieu_naissance text default '',
@@ -76,7 +76,7 @@ DROP TABLE IF EXISTS galette_types_cotisation;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis int(10) unsigned NOT NULL auto_increment,
   libelle_type_cotis varchar(30) NOT NULL default '',
-  cotis_extension enum('1') default NULL,
+  cotis_extension tinyint(1) NOT NULL default 0,
   PRIMARY KEY  (id_type_cotis)
 ) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -109,7 +109,7 @@ CREATE TABLE galette_field_types (
     field_name varchar(40) NOT NULL default '',
     field_perm int(10) NOT NULL default '0',
     field_type int(10) NOT NULL default '0',
-    field_required enum('1') default NULL,
+    field_required tinyint(1) NOT NULL default 0,
     field_pos int(10) NOT NULL default '0',
     field_width int(10) default NULL,
     field_height int(10) default NULL,
@@ -129,6 +129,7 @@ CREATE TABLE galette_dynamic_fields (
     val_index int(10) NOT NULL default '0',
     field_val text DEFAULT '',
     KEY  (item_id)
+    PRIMARY KEY (item_id, field_id, field_form, val_index) ;
 ) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_pictures;
@@ -146,7 +147,7 @@ CREATE TABLE galette_l10n (
     text_locale varchar(15) NOT NULL,
     text_nref int(10) NOT NULL default '1',
     text_trans varchar(100) NOT NULL default '',
-    UNIQUE INDEX (text_orig(20), text_locale(5))
+    PRIMARY KEY (text_orig(20), text_locale(5))
 ) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- new table for temporary passwords  2006-02-18;
