@@ -512,8 +512,6 @@ class GaletteMdb2{
 			} else {
 				$table_info = $this->db->reverse->tableInfo($table);
 				$constraints = $this->db->reverse->getTableConstraintDefinition($table, 'primary');
-				echo 'constrints for ' . $table;
-				var_dump($constraints);
 				$r = $result->fetchAll();
 				foreach($r as $row){
 					$requete = 'UPDATE ' . $this->quoteIdentifier($table) . ' SET ';
