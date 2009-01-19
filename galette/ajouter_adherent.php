@@ -129,7 +129,7 @@ if (isset($_POST["id_adh"]))
 					// dates
 					case 'date_crea_adh':
 					case 'ddn_adh':
-						if (preg_match("/^([0-9]{2})/([0-9]{2})/([0-9]{4})$/", $value, $array_jours))
+						if (preg_match("@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@", $value, $array_jours))
 						{
 							if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
 								$value = $DB->DBDate($array_jours[3].'-'.$array_jours[2].'-'.$array_jours[1]);
