@@ -81,7 +81,7 @@ if( !$login->isAdmin() )
 			$error_detected[] = _T("Please type an object for the message.");
 		else{
 			$_POST['mailing_objet'] = (get_magic_quotes_gpc())?stripslashes($_POST['mailing_objet']):$_POST['mailing_objet'];
-			$data['mailing_objet']=htmlspecialchars($_POST['mailing_objet'],ENT_QUOTES);
+			$data['mailing_objet']=$_POST['mailing_objet'];
 		}
 
 		if ($_POST['mailing_corps']=="")
