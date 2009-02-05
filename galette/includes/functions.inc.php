@@ -304,7 +304,7 @@ function custom_mail($email_to,$mail_subject,$mail_text, $content_type="text/pla
 			"Errors-To: <".PREF_EMAIL.">",
 			"X-Mailer: Galette-".GALETTE_VERSION,
 			"X-Priority: 3",
-			"Content-Type: $content_type; charset=iso-8859-15"
+			"Content-Type: $content_type; charset=utf-8"
 	);
 
 	switch (PREF_MAIL_METHOD){
