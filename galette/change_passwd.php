@@ -83,7 +83,7 @@ require_once('includes/galette.inc.php');
 							if (!$DB->Execute($query)) {
 								$warning_detected = _T("There was a database error");
 							}else{
-								dblog("**Password changed**. id:"." \"" . $id_adh . "\"");
+								$hist->add("**Password changed**. id:"." \"" . $id_adh . "\"");
 								$warning_detected = _T("Password changed, you will be redirected to login page");
 								$head_redirect = "<meta http-equiv=\"refresh\" content=\"10;url=index.php\" />";
 							}

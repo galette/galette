@@ -143,25 +143,6 @@ function is_valid_email ($address) {
                      trim($address)));
 }
 
-function dblog($action, $argument="", $query="")
-{
-	if (PREF_LOG>="1")
-	{
-		if (PREF_LOG==1)
-			$query="";
-		//FIXME : for $query, there is a problem if magic_quotes is enabled
-		//FIXME : same for $action .. probably for others too :/
-		$requete = "INSERT INTO ".PREFIX_DB."logs (date_log, ip_log, adh_log, action_log, text_log, sql_log)
-				VALUES (" . $GLOBALS["DB"]->DBTimeStamp(time()) . ", " .
-						$GLOBALS["DB"]->qstr($_SERVER["REMOTE_ADDR"], get_magic_quotes_gpc()) . ", " .
-						$GLOBALS["DB"]->qstr($_SESSION["logged_nom_adh"], get_magic_quotes_gpc()) . ", " .
-						$GLOBALS["DB"]->qstr($action) . ", " .
-						$GLOBALS["DB"]->qstr($argument, get_magic_quotes_gpc()) . ", " .
-						$GLOBALS["DB"]->qstr($query) . ");";
-		$GLOBALS["DB"]->Execute($requete);
-	}
-}
-
 function resizeimage($img,$img2,$w,$h)
 {
 	/** FIXME: Can GD not be present ? */

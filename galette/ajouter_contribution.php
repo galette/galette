@@ -230,7 +230,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 					$foo = _T("Contribution added");
 
 					// logging
-					dblog('Contribution added','',$requete);
+					$hist->add('Contribution added','',$requete);
 				}
 			}
 			else
@@ -243,7 +243,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 					$foo = _T("Contribution updated");
 
 					// logging
-					dblog('Contribution updated','',$requete);
+					$hist->add('Contribution updated','',$requete);
 				}
 			}
 
@@ -285,7 +285,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 					$mtxt[tbody] = str_replace("{COMMENT}", custom_html_entity_decode($contribution['info_cotis']), $mtxt[tbody]);
 					$mail_result = custom_mail($contribution['email_adh'],$mtxt[tsubject],$mtxt[tbody]);
 				}else{
-					dblog("A problem happened while sending contribution receipt to user:"." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"");
+					$hist->add("A problem happened while sending contribution receipt to user:"." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"");
 					$error_detected[] = _T("A problem happened while sending contribution receipt to user:")." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"";
 				}
 				// Sent email to admin if pref checked
@@ -301,7 +301,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 					$mtxt[tbody] = str_replace("{COMMENT}", custom_html_entity_decode($contribution['info_cotis']), $mtxt[tbody]);
 					$mail_result = custom_mail(PREF_EMAIL_NEWADH,$mtxt[tsubject],$mtxt[tbody]);
 					if( $mail_result != 1) {
-						dblog("A problem happened while sending email to admin for user:"." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"");
+						$hist->add("A problem happened while sending email to admin for user:"." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"");
 						$error_detected[] = _T("A problem happened while sending email to admin for user:")." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"";
 					}
 				}

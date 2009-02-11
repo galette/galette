@@ -33,62 +33,62 @@
 				<tr>
 					<th class="listing">#</th>
 					<th class="listing left">
-						<a href="history.php?tri=0" class="listing">
+						<a href="history.php?tri=date_log" class="listing">
 							{_T string="Date"}
-							{if $smarty.session.tri_log eq 0}
-							{if $smarty.session.tri_log_sens eq 0}
-							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-							{else}
-							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-							{/if}
+							{if $history->tri eq "date_log"}
+								{if $history->getDirection() eq "DESC"}
+							<img src="{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
+								{else}
+							<img src="{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
+								{/if}
 							{/if}
 						</a>
 					</th>
 					<th class="listing left">
-						<a href="history.php?tri=1" class="listing">
+						<a href="history.php?tri=ip_log" class="listing">
 							{_T string="IP"}
-							{if $smarty.session.tri_log eq 1}
-							{if $smarty.session.tri_log_sens eq 0}
-							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-							{else}
-							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-							{/if}
+							{if $history->tri eq "ip_log"}
+								{if $history->getDirection() eq "DESC"}
+							<img src="{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
+								{else}
+							<img src="{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
+								{/if}
 							{/if}
 						</a>
 					</th>
 					<th class="listing left">
-						<a href="history.php?tri=2" class="listing">
+						<a href="history.php?tri=adh_log" class="listing">
 							{_T string="User"}
-							{if $smarty.session.tri_log eq 2}
-							{if $smarty.session.tri_log_sens eq 0}
-							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-							{else}
-							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-							{/if}
+							{if $history->tri eq "adh_log"}
+								{if $history->getDirection() eq "DESC"}
+							<img src="{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
+								{else}
+							<img src="{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
+								{/if}
 							{/if}
 						</a>
 					</th>
 					<th class="listing left">
-						<a href="history.php?tri=4" class="listing">
+						<a href="history.php?tri=action_log" class="listing">
 							{_T string="Action"}
-							{if $smarty.session.tri_log eq 4}
-							{if $smarty.session.tri_log_sens eq 0}
-							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-							{else}
-							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-							{/if}
+							{if $history->tri eq "action_log"}
+								{if $history->getDirection() eq "DESC"}
+							<img src="{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
+								{else}
+							<img src="{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
+								{/if}
 							{/if}
 						</a>
 					</th>
 					<th class="listing left">
-						<a href="history.php?tri=3" class="listing">
+						<a href="history.php?tri=text_log" class="listing">
 							{_T string="Description"}
-							{if $smarty.session.tri_log eq 3}
-							{if $smarty.session.tri_log_sens eq 0}
-							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-							{else}
-							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-							{/if}
+							{if $history->tri eq "text_log"}
+								{if $history->getDirection() eq "DESC"}
+							<img src="{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
+								{else}
+							<img src="{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
+								{/if}
 							{/if}
 						</a>
 					</th>
@@ -111,14 +111,15 @@
 				</tr>
 			</tfoot>
 			<tbody>
-{foreach from=$logs item=log key=ordre}
+
+{foreach from=$logs item=log name=eachlog}
 				<tr class="cotis-never">
-					<td width="15">{$ordre}</td>
-					<td valign="top" class="nowrap">{$log.date}</td>
-					<td valign="top" class="nowrap">{$log.ip}</td>
-					<td valign="top">{$log.adh}</td>
-					<td valign="top">{$log.action}</td>
-					<td valign="top">{$log.desc}</td>
+					<td width="15">{$smarty.foreach.eachlog.iteration}</td>
+					<td valign="top" class="nowrap">{$log.date_log|date_format:"%a %d/%m/%Y - %R"}</td>
+					<td valign="top" class="nowrap">{$log.ip_log}</td>
+					<td valign="top">{$log.adh_log}</td>
+					<td valign="top">{_T string=$log.action_log}</td>
+					<td valign="top">{$log.text_log}<br/>{$log.sql_log|escape:"htmlall"}</td>
 				</tr>
 {foreachelse}
 				<tr><td colspan="6" class="emptylist">{_T string="logs are empty"}</td></tr>

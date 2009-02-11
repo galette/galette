@@ -153,7 +153,7 @@ if (isset($_GET["tri"]))
 				$requetesup = "DELETE FROM ".PREFIX_DB."adherents 
 						WHERE id_adh=".$DB->qstr($supval, get_magic_quotes_gpc()); 
 				$DB->Execute($requetesup); 		
-				dblog("Delete the member card (and dues)",strtoupper($resultat->fields[0])." ".$resultat->fields[1],$requetesup);
+				$hist->add("Delete the member card (and dues)",strtoupper($resultat->fields[0])." ".$resultat->fields[1],$requetesup);
 
 				// suppression records cotisations
 				$requetesup = "DELETE FROM ".PREFIX_DB."cotisations 

@@ -66,11 +66,11 @@ if( !$login->isLogged() )
 			$query = "DELETE FROM ".PREFIX_DB."cotisations
 				  WHERE trans_id=".$trans_id;
 			if (db_execute($DB, $query, $error_detected))
-				dblog("Transactions deleted", "", $query);
+				$hist->add("Transactions deleted", "", $query);
 			$query = "DELETE FROM ".PREFIX_DB."transactions
 				  WHERE trans_id=".$trans_id;
 			if (db_execute($DB, $query, $error_detected))
-				dblog("Transaction deleted", "", $query);
+				$hist->add("Transaction deleted", "", $query);
 			$DB->CompleteTrans();
 		}
 	}

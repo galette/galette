@@ -129,28 +129,28 @@ if( !$login->isAdmin() )
 			);
 
 			if( $mail_result == 1) {
-				dblog("Send mail to :"." \"" . $email_adh . "\"", $sql);
+				$hist->add("Send mail to :"." \"" . $email_adh . "\"", $sql);
 				$warning_detected[] = _T("Mail sent to :")." \"" . $email_adh . "\"";
 			} else {
 				switch ($mail_result) {
 					case 2 :
-						dblog("Email sent is disabled in the preferences. Ask galette admin.");
+						$hist->add("Email sent is disabled in the preferences. Ask galette admin.");
 						$error_detected[] = _T("Email sent is disabled in the preferences. Ask galette admin");
 						break;
 					case 3 :
-						dblog("A problem happened while sending mail to :"." \"" . $email_adh . "\"");
+						$hist->add("A problem happened while sending mail to :"." \"" . $email_adh . "\"");
 						$error_detected[] = _T("A problem happened while sending mail to :")." \"" . $email_adh . "\"";
 						break;
 					case 4 :
-						dblog("The mail server filled in the preferences cannot be reached. Ask Galette admin");
+						$hist->add("The mail server filled in the preferences cannot be reached. Ask Galette admin");
 						$error_detected[] = _T("The mail server filled in the preferences cannot be reached. Ask Galette admin");
 						break;
 					case 5 :
-						dblog("**IMPORTANT** There was a probably breaking attempt when sending mail to :"." \"" . $email_adh . "\"");
+						$hist->add("**IMPORTANT** There was a probably breaking attempt when sending mail to :"." \"" . $email_adh . "\"");
 						$error_detected[] = _T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"";
 						break;
 					default :
-						dblog("A problem happened while sending mail to :"." \"" . $email_adh . "\"");
+						$hist->add("A problem happened while sending mail to :"." \"" . $email_adh . "\"");
 						$error_detected[] = _T("A problem happened while sending mail to :")." \"" . $email_adh . "\"";
 						break;
 				}

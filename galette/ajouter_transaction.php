@@ -165,7 +165,7 @@ if (isset($_POST['valid']))
 			$foo = _T("transaction added");
 
 			// logging
-			dblog('transaction added','',$requete);
+			$hist->add('transaction added','',$requete);
 		}
 		else
 		{
@@ -178,7 +178,7 @@ if (isset($_POST['valid']))
 			$foo = _T("transaction updated");
 
 			// logging
-			dblog('transaction updated','',$requete);
+			$hist->add('transaction updated','',$requete);
 		}
 
 		// dynamic fields

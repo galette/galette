@@ -249,15 +249,15 @@ if (isset($_POST["id_adh"]))
 				$mail_result = custom_mail(PREF_EMAIL_NEWADH,$mtxt[tsubject],$mtxt[tbody]);
 				unset ($texts);
 				if( $mail_result != 1) {
-					dblog("A problem happened while sending email to admin for account:"." \"" . $_POST["email_adh"] . "\"");
+					$hist->add("A problem happened while sending email to admin for account:"." \"" . $_POST["email_adh"] . "\"");
 					$error_detected[] = _T("A problem happened while sending email to admin for account:")." \"" . $_POST["email_adh"] . "\"";
 				}
 			}
 	
 			// logging
 			//nom_adh and prenom_adh is not sent when form is used by a simple user
-			//dblog('Member card updated:',strtoupper($_POST["nom_adh"]).' '.$_POST["prenom_adh"], $requete);
-			dblog('Member card added:',strtoupper($_POST["login_adh"]),$requete);
+			//$hist->add('Member card updated:',strtoupper($_POST["nom_adh"]).' '.$_POST["prenom_adh"], $requete);
+			$hist->add('Member card added:',strtoupper($_POST["login_adh"]),$requete);
 		}
 		else
 		{
@@ -271,8 +271,8 @@ if (isset($_POST["id_adh"]))
 
 			// logging
 			//nom_adh and prenom_adh is not sent when form is used by a simple user
-			//dblog('Member card updated:',strtoupper($_POST["nom_adh"]).' '.$_POST["prenom_adh"], $requete);
-			dblog('Member card updated:',strtoupper($_POST["login_adh"]), $requete);
+			//$hist->add('Member card updated:',strtoupper($_POST["nom_adh"]).' '.$_POST["prenom_adh"], $requete);
+			$hist->add('Member card updated:',strtoupper($_POST["login_adh"]), $requete);
 		}
 
 		// picture upload
@@ -302,29 +302,29 @@ if (isset($_POST["id_adh"]))
 					//TODO: duplicate piece of code with mailing_adherent
 					unset ($texts);
 					if( $mail_result == 1) {
-						dblog("Send subscription mail to :".$_POST["email_adh"], $requete);
+						$hist->add("Send subscription mail to :".$_POST["email_adh"], $requete);
 						$warning_detected[] = _T("Password sent. Login:")." \"" . $adherent['login_adh'] . "\"";
 						//$password_sent = true;
 					}else{
 						switch ($mail_result) {
 							case 2 :
-								dblog("Email sent is disabled in the preferences. Ask galette admin.");
+								$hist->add("Email sent is disabled in the preferences. Ask galette admin.");
 								$error_detected[] = _T("Email sent is disabled in the preferences. Ask galette admin");
 								break;
 							case 3 :
-								dblog("A problem happened while sending password for account:"." \"" . $_POST["email_adh"] . "\"");
+								$hist->add("A problem happened while sending password for account:"." \"" . $_POST["email_adh"] . "\"");
 								$error_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST["email_adh"] . "\"";
 								break;
 							case 4 :
-								dblog("The mail server filled in the preferences cannot be reached. Ask Galette admin");
+								$hist->add("The mail server filled in the preferences cannot be reached. Ask Galette admin");
 								$error_detected[] = _T("The mail server filled in the preferences cannot be reached. Ask Galette admin");
 								break;
 							case 5 :
-								dblog("**IMPORTANT** There was a probably breaking attempt when sending mail to :"." \"" . $email_adh . "\"");
+								$hist->add("**IMPORTANT** There was a probably breaking attempt when sending mail to :"." \"" . $email_adh . "\"");
 								$error_detected[] = _T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"";
 								break;
 							default :
-								dblog("A problem happened while sending password for account:"." \"" . $_POST["email_adh"] . "\"");
+								$hist->add("A problem happened while sending password for account:"." \"" . $_POST["email_adh"] . "\"");
 								$error_detected[] = _T("A problem happened while sending password for account:")." \"" . $_POST["email_adh"] . "\"";
 								break;
 						}

@@ -61,7 +61,8 @@ if ( !$login->isLogged() )
 		}
 	}		
 
-        $numrows = PREF_NUMROWS;
+        $numrows = $p->pref_numrows;
+
 	if (isset($_GET["nbshow"]))
 		if (is_numeric($_GET["nbshow"]))
 			$numrows = $_GET["nbshow"];
@@ -144,7 +145,7 @@ if ( !$login->isLogged() )
 					    SET date_echeance=".$date_fin_update."
 					    WHERE id_adh=".$DB->qstr($id_adh, get_magic_quotes_gpc());
 				$DB->Execute($requeteup);
- 				dblog("Contribution deleted:",strtoupper($resultat->fields[0])." ".$resultat->fields[1],$requetesup);							
+ 				$hist-add("Contribution deleted:",strtoupper($resultat->fields[0])." ".$resultat->fields[1],$requetesup);							
  			}
  			$resultat->Close();
  		}

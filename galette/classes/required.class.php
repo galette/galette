@@ -146,7 +146,7 @@ class Required{
 		}
 
 		if (MDB2::isError($stmt)) {
-			$log->log(_t("An error occured trying to initialize required fields.") . $stmt->getMessage, PEAR_LOG_ERR);
+			$log->log(_t("An error occured trying to initialize required fields.") . $stmt->getMessage(), PEAR_LOG_ERR);
 		}else{
 			$log->log('Initialisation seems successfull, we reload the object', PEAR_LOG_DEBUG);
 			$log->log(_T("Required adherents table table updated successfully."), PEAR_LOG_INFO);

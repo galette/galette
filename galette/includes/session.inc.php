@@ -38,7 +38,7 @@ if (!isset(
 	if (
 		isset($_POST["logout"]) ||
 		isset($_GET["logout"])){
-		dblog(_("Log off"));
+		$hist->add(_("Log off"));
 		$_SESSION['galette']['db'] = null;
 		unset($_SESSION['galette']['db']);
 	}

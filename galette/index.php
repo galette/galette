@@ -38,6 +38,8 @@ if( isset($_GET['logout']) ){
 	$login->logOut();
 	$_SESSION['galette']['login'] = null;
 	unset($_SESSION['galette']['login']);
+	$_SESSION['galette']['history'] = null;
+	unset($_SESSION['galette']['history']);
 }
 
 // Authentication procedure
@@ -53,7 +55,7 @@ if (isset($_POST["ident"]))
 		$_SESSION['logged_username'] = $_POST['login'];
 		$_SESSION['logged_nom_adh'] = 'Admin';
 		//end backward compat
-		dblog('Login');
+		$hist->add('Login');
 		header('location: gestion_adherents.php');
 	}
 	else
@@ -70,12 +72,12 @@ if (isset($_POST["ident"]))
 			$pref_lang = $login->lang;
 			setcookie('pref_lang', $pref_lang);
 			//end backward compat
-			dblog('Login');
+			$hist->add('Login');
 			/** FIXME: users should no try to go to admin interface */
 			header('location: gestion_adherents.php');
 		}else{
 			$loginfault = true;
-			dblog('Authentication failed', $_POST['login']);
+			$hist->add('Authentication failed', $_POST['login']);
 		}
 	}
 }

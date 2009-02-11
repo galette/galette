@@ -124,6 +124,14 @@ if(isset($_SESSION['galette']['login']))
 else $login = new Adherents();
 
 /**
+* Instanciate history object
+*/
+require_once(WEB_ROOT . 'classes/history.class.php');
+if(isset($_SESSION['galette']['history']))
+	$hist = unserialize($_SESSION['galette']['history']);
+else $hist = new History();
+
+/**
 * Now that all objects are correctly setted,
 * we can include files that need it
 */

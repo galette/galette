@@ -49,12 +49,12 @@ include(WEB_ROOT."classes/texts.class.php");
 
 			if ($result->EOF) {
 				$GLOBALS["error_detected"] = _T("this login doesn't exist");
-				dblog("Nonexistent login sent via the lost password form. Login:"." \"" . $login ."\"");
+				$hist->add("Nonexistent login sent via the lost password form. Login:"." \"" . $login ."\"");
 			}else{
 				$email=$result->fields[0];
 				if( empty($email) ) {
 					$GLOBALS["error_detected"] = _T("This account doesn't have a valid email address. Please contact an administrator.");
-					dblog("Someone asked to recover his password but had no email. Login:"." \"" . $login . "\"");
+					$hist->add("Someone asked to recover his password but had no email. Login:"." \"" . $login . "\"");
 				}else
 				return $email;
 			}
@@ -107,29 +107,29 @@ include(WEB_ROOT."classes/texts.class.php");
 			$mtxt[tbody] = str_replace("{PASSWORD}", custom_html_entity_decode($tmp_passwd, ENT_QUOTES),$mtxt[tbody]);
       	$mail_result = custom_mail($email_adh,$mtxt[tsubject],$mtxt[tbody]);
 			if( $mail_result == 1) {
-				dblog("Password sent. Login:"." \"" . $login_adh . "\"");
+				$hist->add("Password sent. Login:"." \"" . $login_adh . "\"");
 				$warning_detected = _T("Password sent. Login:")." \"" . $login_adh . "\"";
 				//$password_sent = true;
 			} else {
         switch ($mail_result) {
           case 2 :
-            dblog("Email sent is disabled in the preferences");
+            $hist->add("Email sent is disabled in the preferences");
             $warning_detected = _T("Email sent is disabled in the preferences. Ask galette admin");
             break;
           case 3 :
-            dblog("A problem happened while sending password for account:"." \"" . $login_adh . "\"");
+            $hist->add("A problem happened while sending password for account:"." \"" . $login_adh . "\"");
             $warning_detected = _T("A problem happened while sending password for account:")." \"" . $login_adh . "\"";
             break;
           case 4 :
-            dblog("The mail server filled in the preferences cannot be reached");
+            $hist->add("The mail server filled in the preferences cannot be reached");
             $warning_detected = _T("The mail server filled in the preferences cannot be reached. Ask Galette admin");
             break;
 					case 5 :
-						dblog("**IMPORTANT** There was a probably breaking attempt when sending mail to :"." \"" . $email_adh . "\"");
+						$hist->add("**IMPORTANT** There was a probably breaking attempt when sending mail to :"." \"" . $email_adh . "\"");
 						$error_detected[] = _T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"";
 						break;
           default :
-            dblog("A problem happened while sending password for account:"." \"" . $login_adh . "\"");
+            $hist->add("A problem happened while sending password for account:"." \"" . $login_adh . "\"");
             $warning_detected = _T("A problem happened while sending password for account:")." \"" . $login_adh . "\"";
             break;
         }
