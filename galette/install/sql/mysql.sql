@@ -128,8 +128,7 @@ CREATE TABLE galette_dynamic_fields (
     field_form varchar(10) NOT NULL,
     val_index int(10) NOT NULL default '0',
     field_val text DEFAULT '',
-    KEY  (item_id)
-    PRIMARY KEY (item_id, field_id, field_form, val_index) ;
+    PRIMARY KEY (item_id, field_id, field_form, val_index)
 ) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_pictures;
