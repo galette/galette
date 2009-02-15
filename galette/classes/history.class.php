@@ -32,14 +32,13 @@
 /**
  * History class for galette
  *
- * @name GaletteLogs
+ * @name History
  * @package Galette
  *
  */
 
 class History{
-	//const TABLE = 'logs';
-	const TABLE = 'logs_test';
+	const TABLE = 'logs';
 	const PK = 'id_log';
 
 	const ORDER_ASC = 'ASC';
