@@ -74,7 +74,7 @@ class i18n{
 		$log->log('Trying to set locale to ' . $id, PEAR_LOG_DEBUG);
 
 		$xml = simplexml_load_file($this->file);
-		$current = $xml->xpath('//lang[@id=\'' . $id . '\']');
+		$current = $xml->xpath('//lang[@id=\'' . $id . '\'][not(@inactive)]');
 
 		//if no match, switch to default
 		if(!isset($current[0])){
@@ -109,7 +109,8 @@ class i18n{
 		$result = array();
 		$xml = simplexml_load_file($this->file);
 		foreach( $xml->lang as $lang ){
-			$result[] = new i18n( $lang['id'] );
+			if( !$lang['inactive'] )
+				$result[] = new i18n( $lang['id'] );
 		}
 
 		return $result;
