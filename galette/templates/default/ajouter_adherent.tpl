@@ -1,4 +1,4 @@
-		<h1 id="titre">{_T string="Member Profile"} #{$data.id_adh} ({if $data.id_adh != ""}{_T string="modification"}{else}{_T string="creation"}{/if})</h1>
+		<h1 id="titre">{_T string="Member Profile"} {if $data.id_adh != ""}#{$data.id_adh} ({_T string="modification"}){else}({_T string="creation"}){/if})</h1>
 		<form action="ajouter_adherent.php" method="post" enctype="multipart/form-data" id="form"> 
 {if $error_detected|@count != 0}
 		<div id="errorbox">

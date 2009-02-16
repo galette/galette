@@ -65,6 +65,7 @@
 				<li><a href="ajouter_contribution.php">{_T string="Add a contribution"}</a></li>
 				<li><a href="ajouter_transaction.php">{_T string="Add a transaction"}</a></li>
 				<li><a href="history.php">{_T string="Logs"}</a></li>
+				<li><a href="export.php">{_T string="Exports"}</a></li>
 {else}
 				<li><a href="subscription_form.php?id_adh={$data.id_adh}">Fiche adherent</a></li>
 				<li><a href="voir_adherent.php">{_T string="My information"}</a></li>
