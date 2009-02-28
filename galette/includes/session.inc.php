@@ -19,7 +19,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
- 
+
+	@ini_set('session.use_trans_sid', '0'); 
 	session_start(); 
 	if (!isset($_SESSION["logged_status"]) ||
 			isset($_POST["logout"]) ||
