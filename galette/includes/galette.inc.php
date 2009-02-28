@@ -118,10 +118,10 @@ if( isset($_GET['pref_lang']) ){
 	$_SESSION['pref_lang'] = $_GET['pref_lang'];
 }
 
-require_once(WEB_ROOT . '/classes/adherents.class.php');
+require_once(WEB_ROOT . '/classes/galette-login.class.php');
 if(isset($_SESSION['galette']['login']))
 	$login = unserialize($_SESSION['galette']['login']);
-else $login = new Adherents();
+else $login = new GaletteLogin();
 
 /**
 * Instanciate history object

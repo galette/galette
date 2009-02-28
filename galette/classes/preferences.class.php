@@ -37,6 +37,8 @@
  *
  */
 
+require_once('i18n.class.php');
+
 class Preferences{
 	private $prefs;
 	private $error;
@@ -58,7 +60,7 @@ class Preferences{
 		'pref_cp'		=>	'',
 		'pref_ville'		=>	'',
 		'pref_pays'		=>	'',
-		'pref_lang'		=>	'fr_FR',
+		'pref_lang'		=>	i18n::DEFAULT_LANG,
 		'pref_numrows'		=>	30,
 		'pref_log'		=>	2,
 		'pref_email_nom'	=>	'Galette',

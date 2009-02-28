@@ -1,6 +1,6 @@
 <?php
 
-// Copyright © 2007-2008 Johan Cwiklinski
+// Copyright © 2007-2009 Johan Cwiklinski
 //
 // This file is part of Galette (http://galette.tuxfamily.org).
 //
@@ -18,36 +18,28 @@
 // along with Galette. If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * adherents.class.php, 06 juillet 2007
+ * galette-login.class.php, 06 juillet 2007
  *
  * @package Galette
  * 
  * @author     Johan Cwiklinski <johan@x-tnd.be>
- * @copyright  2007-2008 Johan Cwiklinski
+ * @copyright  2007-2009 Johan Cwiklinski
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version    $Id$
  * @since      Disponible depuis la Release 0.7alpha
  */
 
 /**
- * Members class for galette
+ * Default authentification class for galette
  *
- * @name Adherents
+ * @name GaletteLogin
  * @package Galette
  *
  */
 
-class Adherents{
-	private $login;
-	private $passe;
-	private $name;
-	private $surname;
-	private $admin = false;
-	private $id;
-	private $lang;
-	private $logged = false;
-	private $active = false;
+require_once('autentification.class.php');
 
+class GaletteLogin extends Authentification{
 	const TABLE = 'adherents';
 	const PK = 'login_adh';
 
@@ -92,39 +84,26 @@ class Adherents{
 	}
 
 	/**
-	* Login for the superuser
-	* @param login login name
+	* Does this login already exists ?
+	* These function should be used for setting admin login into Preferences
+	* @param user the username
+	* @return true if the username already exists, false otherwise
 	*/
-	public function logAdmin($login){
-		$this->logged = true;
-		$this->name = 'Admin';
-		$this->login = $login;
-		$this->admin = true;
-		$this->active = true;
-	}
+	public function loginExists($user){
+		global $mdb, $log;
 
-	/**
-	* Log out user and unset variables
-	*/
-	public function logOut(){
-		$this->logged = false;
-		$this->name = null;
-		$this->login = null;
-		$this->admin = false;
-		$this->active = false;
-	}
+		$requete = 'SELECT ' . self::PK . ' FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=\'' . $user . '\'';
 
-	/* GETTERS */
-	public function isLogged(){return $this->logged;}
-	public function isAdmin(){return $this->admin;}
-	public function isActive(){return $this->active;}
-	public function __get($name){
-		$forbidden = array('logged', 'admin', 'active');
-		if( !in_array($name, $forbidden) )
-			return $this->$name;
-		else return false;
+		/* If an error occurs, we consider that username already exists */
+		if( !$result = $mdb->query( $requete ) ){
+			$log->log('Unable to check if username `' . $user . '` already exists. ' . $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')', PEAR_LOG_WARNING);
+			return true;
+		}
+		if($result->numRows() == 0)
+			return false;
+		else
+			return true;
 	}
-	/* SETTERS */
 
 }
 ?>
