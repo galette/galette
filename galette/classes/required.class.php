@@ -37,6 +37,9 @@
  * @package Galette
  *
  */
+
+require_once('adherent.class.php');
+
 class Required{
 	private $all_required;
 	private $error = array();
@@ -71,7 +74,7 @@ class Required{
 	private function checkUpdate($try = true){
 		global $mdb, $log;
 		if ($mdb->getOption('result_buffering')){
-			$requete = 'SELECT * FROM ' . PREFIX_DB . Adherents::TABLE;
+			$requete = 'SELECT * FROM ' . PREFIX_DB . Adherent::TABLE;
 			$mdb->getDb()->setLimit(1);
 
 			if( !$result2 = $mdb->query( $requete ) )
@@ -121,7 +124,7 @@ class Required{
 				return -1;
 		}
 	
-		$requete = 'SELECT * FROM ' . PREFIX_DB . Adherents::TABLE;
+		$requete = 'SELECT * FROM ' . PREFIX_DB . Adherent::TABLE;
 		$mdb->getDb()->setLimit(1);
 
 		if( !$result = $mdb->query( $requete ) )
