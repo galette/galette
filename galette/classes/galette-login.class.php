@@ -37,9 +37,9 @@
  *
  */
 
-require_once('autentification.class.php');
+require_once('authentication.class.php');
 
-class GaletteLogin extends Authentification{
+class GaletteLogin extends Authentication{
 	const TABLE = 'adherents';
 	const PK = 'login_adh';
 

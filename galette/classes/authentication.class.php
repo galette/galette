@@ -32,12 +32,12 @@
 /**
  * Members class for galette
  *
- * @name Authentification
+ * @name Authentication
  * @package Galette
  *
  */
 
-abstract class Authentification{
+abstract class Authentication{
 	private $login;
 	private $passe;
 	private $name;
