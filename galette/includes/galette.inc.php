@@ -140,6 +140,6 @@ require_once(WEB_ROOT . 'includes/functions.inc.php');
 include_once(WEB_ROOT . 'includes/session.inc.php');
 require_once(WEB_ROOT . 'includes/i18n.inc.php');
 require_once(WEB_ROOT . 'includes/smarty.inc.php');
-require_once(WEB_ROOT . 'includes/picture.class.php');
+require_once(WEB_ROOT . 'classes/picture.class.php');
 
 ?>
