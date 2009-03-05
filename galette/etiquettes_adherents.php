@@ -56,7 +56,7 @@ $mailing_adh = array();
 if (isset($_SESSION['galette']['labels'])) {
 	while (list($key,$value)=each($_SESSION['galette']['labels']))
 		$mailing_adh[]=$value;
-	//unset($_SESSION['galette']['labels']);
+	unset($_SESSION['galette']['labels']);
 } else {
 	echo 'die';
 	//die();
