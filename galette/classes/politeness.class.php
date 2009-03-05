@@ -41,6 +41,7 @@ class Politeness {
 	const MR = 1;
 	const MRS = 2;
 	const MISS = 3;
+	const COMPANY = 4;
 
 	/**
 	* Default constructor
@@ -57,6 +58,9 @@ class Politeness {
 				break;
 			case self::MISS:
 				return _T("Miss.");
+				break;
+			case self::COMPANY:
+				return _T("Society");
 				break;
 			default:
 				return '';

@@ -83,14 +83,18 @@ class Adherent {
 	/**
 	* Default constructor
 	*/
-	public function __construct(){
-		$this->active = true;
-		$this->language = i18n::DEFAULT_LANG;
-		$this->creation_date = date("d/m/Y");
-		$this->status = Status::DEFAULT_STATUS;
-		$this->politeness = Politeness::MR;
-		$this->password = makeRandomPassword(7); //Usefull ?
-		$this->picture = new picture();
+	public function __construct($args = null){
+		if( $args == null ) {
+			$this->active = true;
+			$this->language = i18n::DEFAULT_LANG;
+			$this->creation_date = date("d/m/Y");
+			$this->status = Status::DEFAULT_STATUS;
+			$this->politeness = Politeness::MR;
+			$this->password = makeRandomPassword(7); //Usefull ?
+			$this->picture = new picture();
+		} elseif ( is_object($args) ){
+			$this->loadFromRS($args);
+		}
 	}
 
 	/**
@@ -100,7 +104,6 @@ class Adherent {
 	public function load($id){
 		global $mdb, $log;
 
-		$this->id = $id;
 		$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=' . $id;
 
 		$result = $mdb->query( $requete );
@@ -110,7 +113,17 @@ class Adherent {
 			return false;
 		}
 
-		$r = $result->fetchRow();
+		$this->loadFromRS($result->fetchRow());
+		$result->free();
+
+		return true;
+	}
+
+	/**
+	* Populate object from a resultset row
+	*/
+	private function loadFromRS($r){
+		$this->id = $r->id_adh;
 		//Identity
 		$this->politeness = $r->titre_adh;
 		$this->name = $r->nom_adh;
@@ -145,8 +158,6 @@ class Adherent {
 		$this->others_infos = $r->info_public_adh;
 		$this->others_infos_admin = $r->info_adh;
 		$this->picture = new picture($this->id);
-
-		return true;
 	}
 
 	/* GETTERS */
