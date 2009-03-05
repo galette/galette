@@ -18,7 +18,7 @@
 // along with Galette. If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * authentification.class.php, 28 février 2009
+ * authentication.class.php, 28 février 2009
  *
  * @package Galette
  * 
@@ -30,7 +30,7 @@
  */
 
 /**
- * Members class for galette
+ * Abstract authentication class for galette
  *
  * @name Authentication
  * @package Galette

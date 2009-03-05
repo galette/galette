@@ -1,7 +1,7 @@
 <?php
 
 // Copyright © 2004 Frédéric Jaqcuot
-// Copyright © 2007-2008 Johan Cwiklinski
+// Copyright © 2007-2009 Johan Cwiklinski
 //
 // This file is part of Galette (http://galette.tuxfamily.org).
 //
@@ -27,7 +27,7 @@
  *
  * @author     Frédéric Jaqcuot
  * @copyright  2004 Frédéric Jaqcuot
- * @copyright  2007-2008 Johan Cwiklinski
+ * @copyright  2007-2009 Johan Cwiklinski
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version    $Id$
  * @since      Disponible depuis la Release 0.62
@@ -41,6 +41,8 @@ if ( !$login->isLogged() )
 	die();
 }
 
+require_once('classes/adherent.class.php');
+require_once('classes/status.class.php');
 include("includes/dynamic_fields.inc.php");
 include(WEB_ROOT . 'classes/texts.class.php');
 
@@ -49,6 +51,11 @@ $adherent['id_adh'] = '';
 if ( $login->isAdmin() )
 {
 	$adherent["id_adh"] = get_numeric_form_value("id_adh", "");
+	$id = get_numeric_form_value("id_adh", "");
+	$member = new Adherent();
+	if($id)
+		$member->load($adherent["id_adh"]);
+	
 	// disable some fields
 	$disabled = array(
 			'id_adh' => 'disabled="disabled"',
@@ -353,66 +360,6 @@ if (isset($_POST["id_adh"]))
 					header('location: voir_adherent.php?id_adh='.$adherent['id_adh']);
 			}
 	}
-	else
-	{
-		if ($adherent["id_adh"] == "")
-		{
-			// initialiser la structure adhérent à vide (nouvelle fiche)
-			$adherent["id_statut"] = "4";
-			$adherent["titre_adh"] = "1";
-			$adherent["date_crea_adh"] =date("d/m/Y");
-			//annoying
-			//$adherent["url_adh"] = "http://";
-			$adherent["url_adh"] = "";
-			$adherent["mdp_adh"] = makeRandomPassword(7);
-			$adherent["pref_lang"] = PREF_LANG;
-			$adherent["activite_adh"] = "1";
-		}
-		else
-		{
-			// initialize adherent structure with database values
-			$sql =  "SELECT * ".
-				"FROM ".PREFIX_DB."adherents ".
-				"WHERE id_adh=".$adherent["id_adh"];
-			$result = &$DB->Execute($sql);
-			if ($result->EOF)
-				header("location: index.php");
-			else
-			{
-				#annoying
-				// url_adh is a specific case
-				//if ($result->fields['url_adh']=='')
-				//	$result->fields['url_adh'] = 'http://';
-
-				// plain info
-				$adherent = $result->fields;
-
-				// reformat dates
-				$adherent['date_crea_adh'] = date_db2text($adherent['date_crea_adh']);
-				$adherent['ddn_adh'] = date_db2text($adherent['ddn_adh']);
-
-				// dynamic fields
-				$adherent['dyn'] = get_dynamic_fields($DB, 'adh', $adherent["id_adh"], false);
-
-				// Correct html
-				foreach($adherent as $field => $data) {
-					if(is_string($adherent[$field])) { $adherent[$field] = $data; }
-				}
-			}
-	}
-}
-
-// picture data
-if ($adherent["id_adh"]!='') 
-	$picture = new picture($adherent["id_adh"]);
-else
-	$picture = new picture();
-if ($picture->hasPicture())
-	$adherent["has_picture"]=1;
-else
-	$adherent["has_picture"]=0;
-$adherent['picture_height'] = $picture->getOptimalHeight();
-$adherent['picture_width'] = $picture->getOptimalWidth();
 
 // - declare dynamic fields for display
 $disabled['dyn'] = array();
@@ -424,6 +371,7 @@ $dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $_SESSION["admi
 $tpl->assign("required",$required);
 $tpl->assign("disabled",$disabled);
 $tpl->assign("data",$adherent);
+$tpl->assign('member', $member);
 $tpl->assign("dynamic_fields",$dynamic_fields);
 $tpl->assign("error_detected",$error_detected);
 $tpl->assign("warning_detected",$warning_detected);
@@ -440,15 +388,8 @@ $tpl->assign('radio_titres', array(
 		1 => _T("Mister"),
 		4 => _T("Society")));
 
-// states
-$requete = "SELECT * FROM ".PREFIX_DB."statuts ORDER BY priorite_statut";
-$result = &$DB->Execute($requete);
-while (!$result->EOF)
-{
-	$statuts[$result->fields["id_statut"]] = _T($result->fields["libelle_statut"]);
-	$result->MoveNext();
-}
-$result->Close();
+//Status
+$statuts = Status::getList();
 $tpl->assign("statuts",$statuts);
 
 // page generation

@@ -30,7 +30,7 @@
  */
 
 /**
- * Default authentification class for galette
+ * Default authentication class for galette
  *
  * @name GaletteLogin
  * @package Galette

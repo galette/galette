@@ -10,48 +10,47 @@
     		</div>
     {/if}
 	<div class="bigtable">
-
-	<ul id="details_menu">
-{if ($data.pref_card_self eq 1) or ($smarty.session.admin_status eq 1)}
-		<li>
-			<a href="carte_adherent.php?id_adh={$data.id_adh}" id="btn_membercard">{_T string="Generate Member Card"}</a>
-		</li>
+		<ul id="details_menu">
+{if ($pref_card_self eq 1) or ($smarty.session.admin_status eq 1)}
+			<li>
+				<a href="carte_adherent.php?id_adh={$member->id}" id="btn_membercard">{_T string="Generate Member Card"}</a>
+			</li>
 {/if}
-		<li>
-			<a href="ajouter_adherent.php?id_adh={$data.id_adh}" id="btn_edit">{_T string="Modification"}</a>
-		</li>
-		<li>
-			<a href="gestion_contributions.php?id_adh={$data.id_adh}" id="btn_contrib">{_T string="View contributions"}</a>
-		</li>
+			<li>
+				<a href="ajouter_adherent.php?id_adh={$member->id}" id="btn_edit">{_T string="Modification"}</a>
+			</li>
+			<li>
+				<a href="gestion_contributions.php?id_adh={$member->id}" id="btn_contrib">{_T string="View contributions"}</a>
+			</li>
 {if $smarty.session.admin_status eq 1}
-		<li>
-			<a href="ajouter_contribution.php?id_adh={$data.id_adh}" id="btn_addcontrib">{_T string="Add a contribution"}</a>
-		</li>
+			<li>
+				<a href="ajouter_contribution.php?id_adh={$member->id}" id="btn_addcontrib">{_T string="Add a contribution"}</a>
+			</li>
 {/if}
-	</ul>
+		</ul>
 
 		<table class="details">
 			<caption>{_T string="Identity:"}</caption>
 			<tr>
 				<th>{_T string="Name:"}</th>
-				<td>{$data.titre_adh} {$data.nom_adh} {$data.prenom_adh}</td>
-				<td rowspan="5" class="photo"><img src="picture.php?id_adh={$data.id_adh}&amp;rand={$time}" class="picture" width="{$data.picture_width}" height="{$data.picture_height}" alt="{_T string="Picture"}"/></td>
+				<td>{$member->spoliteness} {$member->name} {$member->surname}</td>
+				<td rowspan="5" class="photo"><img src="picture.php?id_adh={$member->id}&amp;rand={$time}" class="picture" width="{$member->picture->getOptimalWidth()}" height="{$member->picture->getOptimalHeight()}" alt="{_T string="Picture"}"/></td>
 			</tr>
 			<tr>
 				<th>{_T string="Nickname:"}</th>
-				<td>{$data.pseudo_adh}</td>
+				<td>{$member->nickname}</td>
 			</tr> 
 			<tr> 
 				<th>{_T string="birth date:"}</th>
-				<td>{$data.ddn_adh}</td>
+				<td>{$member->birthdate}</td>
 			</tr>
 			<tr>
 				<th>{_T string="Profession:"}</th>
-				<td>{$data.prof_adh}</td>
+				<td>{$member->job}</td>
 			</tr>
 			<tr>
 				<th>{_T string="Language:"}</th>
-				<td><img src="{$data.pref_lang_img}" alt=""/> {$data.pref_lang}</td>
+				<td><img src="{$pref_lang_img}" alt=""/> {$pref_lang}</td>
 			</tr>
 		</table>
 
@@ -59,40 +58,44 @@
 			<caption>{_T string="Galette-related data:"}</caption>
 			<tr>
 				<th>{_T string="Status:"}</th>
-				<td>{$data.libelle_statut}</td>
+				<td>{$member->sstatus}</td>
 			</tr>
 			<tr>
 				<th>{_T string="Be visible in the<br /> members list :"}</th>
-				<td>{$data.bool_display_info}</td>
+				<td>{$member->sappears_in_list}</td>
 			</tr>
 {if $smarty.session.admin_status eq 1}
 			<tr>
 				<th>{_T string="Account:"}</th>
-				<td>{$data.activite_adh}</td>
+				<td>{$member->sactive}</td>
 			</tr>
 			<tr>
 				<th>{_T string="Galette Admin:"}</th>
-				<td>{$data.bool_admin_adh}</td>
+				<td>{$member->sadmin}</td>
 			</tr>
 			<tr>
 				<th>{_T string="Freed of dues:"}</th>
-				<td>{$data.bool_exempt_adh}</td>
+				<td>{$member->sdue_free}</td>
 			</tr>
 {/if}
 			<tr>
 				<th>{_T string="Username:"}</th>
-				<td>{$data.login_adh}</td>
+				<td>{$member->login}</td>
 			</tr>
 {if $smarty.session.admin_status eq 1}
 			<tr>
 				<th>{_T string="Creation date:"}</th>
-				<td>{$data.date_crea_adh}</td>
+				<td>{$member->creation_date}</td>
 			</tr>
 			<tr>
 				<th>{_T string="Other informations (admin):"}</th>
-				<td>{$data.info_adh}</td>
+				<td>{$member->others_infos_admin|nl2br}</td>
 			</tr>
 {/if}
+			<tr>
+				<th>{_T string="Other informations:"}</th>
+				<td>{$member->$others_infos|nl2br}</td>
+			</tr>
 		</table>
 
 		<table class="details">
@@ -100,71 +103,71 @@
 			<tr>
 				<th>{_T string="Address:"}</th> 
 				<td>
-					{$data.adresse_adh}
-{if $data.adresse2_adh ne ''}
-					<br/>{$data.adresse2_adh}
+					{$member->adress}
+{if $member->adresse2_adh ne ''}
+					<br/>{$member->adress2}
 {/if}
 				</td>
 			</tr>
 			<tr>
 				<th>{_T string="Zip Code:"}</th>
-				<td>{$data.cp_adh}</td>
+				<td>{$member->zipcode}</td>
 			</tr>
 			<tr>
 				<th>{_T string="City:"}</th>
-				<td>{$data.ville_adh}</td>
+				<td>{$member->town}</td>
 			</tr>
 			<tr>
 				<th>{_T string="Country:"}</th>
-				<td>{$data.pays_adh}</td>
+				<td>{$member->country}</td>
 			</tr>
 			<tr>
 				<th>{_T string="Phone:"}</th>
-				<td>{$data.tel_adh}</td>
+				<td>{$member->phone}</td>
 			</tr>
 			<tr>
 				<th>{_T string="Mobile phone:"}</th>
-				<td>{$data.gsm_adh}</td>
+				<td>{$member->gsm}</td>
 			</tr>
 			<tr>
 				<th>{_T string="E-Mail:"}</th>
 				<td>
-{if $data.email_adh ne ''}					
-					<a href="mailto:{$data.email_adh}">{$data.email_adh}</a>
+{if $member->email ne ''}					
+					<a href="mailto:{$member->email}">{$member->email}</a>
 {/if}
 				</td>
 			</tr>
 			<tr>
 				<th>{_T string="Website:"}</th>
 				<td>
-{if $data.url_adh ne ''}
-					<a href="{$data.url_adh}">{$data.url_adh}</a>
+{if $member->website ne ''}
+					<a href="{$member->website}">{$member->website}</a>
 {/if}						
 				</td>
 			</tr>
 			<tr>
 				<th>{_T string="ICQ:"}</th>
-				<td>{$data.icq_adh}</td>
+				<td>{$member->icq}</td>
 			</tr>
 			<tr>
 				<th>{_T string="Jabber:"}</th>
-				<td>{$data.jabber_adh}</td>
+				<td>{$member->jabber}</td>
 			</tr>
 			<tr>
 				<th>{_T string="MSN:"}</th>
 				<td>
-{if $data.msn_adh ne ''}
-					<a href="mailto:{$data.msn_adh}">{$data.msn_adh}</a>
+{if $member->msn ne ''}
+					<a href="mailto:{$member->msn}">{$member->msn}</a>
 {/if}
 				</td>
 			</tr>
 			<tr>
 				<th>{_T string="Id GNUpg (GPG):"}</th>
-				<td>{$data.gpgid}</td>
+				<td>{$member->gpgid}</td>
 			</tr>
 			<tr>
 				<th>{_T string="fingerprint:"}</th>
-				<td>{$data.fingerprint}</td>
+				<td>{$member->fingerprint}</td>
 			</tr>
 		</table>
 

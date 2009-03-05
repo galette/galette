@@ -41,6 +41,7 @@ class Status{
 	private $status;
 	private $error;
 
+	const DEFAULT_STATUS = 4;
 	const TABLE = 'statuts';
 	const PK = 'id_statut';
 	private static $fields = array(
@@ -68,7 +69,7 @@ class Status{
 	public function __construct(){}
 
 	/**
-	* Set default contribution types at install time
+	* Set default status at install time
 	*/
 	public function installInit(){
 		global $mdb, $log;
@@ -99,6 +100,48 @@ class Status{
 		$stmt->free();
 		$log->log('Default status were successfully stored into database.', PEAR_LOG_INFO);
 		return true;
+	}
+
+	public static function getList(){
+		global $mdb, $log;
+		$list = array();
+
+		$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' ORDER BY priorite_statut';
+
+		$result = $mdb->query( $requete );
+
+		if (MDB2::isError($result)) {
+			$log->log('Unable to list status | ' . $result->getMessage() . '(' . $result->getDebugInfo() . ')', PEAR_LOG_WARNING);
+			return false;
+		}
+
+		if($result->numRows() == 0){
+			$log->log('No status defined in database.', PEAR_LOG_INFO);
+			return(-10);
+		}else{
+			$r = $result->fetchAll();
+			$array = array();
+			foreach($r as $status){
+				$list[$status->id_statut] = _T($status->libelle_statut);
+			}
+			return $list;
+		}
+	}
+
+	public static function getLabel($id){
+		global $mdb, $log;
+
+		$requete = 'SELECT libelle_statut FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK .'=' . $id;
+
+		$result = $mdb->query( $requete );
+
+		if (MDB2::isError($result)) {
+			$log->log('Unable to get label for status `' . $id . '` | ' . $result->getMessage() . '(' . $result->getDebugInfo() . ')', PEAR_LOG_WARNING);
+			return false;
+		}
+
+		$r = $result->fetchOne();
+		return _T($r);
 	}
 
 	/**
