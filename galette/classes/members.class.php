@@ -62,9 +62,10 @@ class Members {
 	/**
 	* Get list of members that has been selected
 	* @param ids an array of members id that has been selected
+	* @param orderby SQL order clause (optionnal)
 	* @return an array of Adherent object
 	*/
-	public static function getArrayList($ids){
+	public static function getArrayList($ids, $orderby = null){
 		global $mdb, $log;
 
 		if( !is_array($ids) || count($ids) < 1 ){
@@ -74,6 +75,8 @@ class Members {
 
 		$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=';
 		$requete .= implode(' OR ' . self::PK . '=', $ids);
+
+		if( $orderby != null && trim($orderby) != '' ) $requete .= ' ORDER BY ' . $orderby;
 
 		$result = $mdb->query( $requete );
 
