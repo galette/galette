@@ -74,8 +74,8 @@ class History{
 	* Default constructor
 	*/
 	public function __construct(){
-		global $p;
-		$this->show = $p->pref_numrows;
+		global $preferences;
+		$this->show = $preferences->pref_numrows;
 		$this->ordered = self::ORDER_ASC;
 	}
 
@@ -109,10 +109,10 @@ class History{
 		));
 
 		if (MDB2::isError($stmt)) {
-			$log->log(_t("An error occured trying to flush logs table.") . $stmt->getMessage(), PEAR_LOG_ERR);
+			$log->log(_t("An error occured trying to add log entry.") . $stmt->getMessage(), PEAR_LOG_ERR);
 			return false;
 		}else{
-			$log->log('Logs table flushed', PEAR_LOG_DEBUG);
+			$log->log('Log entry added', PEAR_LOG_DEBUG);
 		}
 
 		$stmt->free();

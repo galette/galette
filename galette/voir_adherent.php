@@ -75,11 +75,10 @@ $dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $login->isAdmin
 
 if(isset($error_detected))
 	$tpl->assign("error_detected",$error_detected);
-$tpl->assign("data",$adherent);
 $tpl->assign('member', $member);
 $tpl->assign('pref_lang_img', $i18n->getFlagFromId($member->language));
 $tpl->assign('pref_lang', ucfirst($i18n->getNameFromId($member->language)));
-$tpl->assign('pref_card_self', $p->pref_card_self);
+$tpl->assign('pref_card_self', $preferences->pref_card_self);
 $tpl->assign("dynamic_fields",$dynamic_fields);
 $tpl->assign("time",time());
 $content = $tpl->fetch("voir_adherent.tpl");

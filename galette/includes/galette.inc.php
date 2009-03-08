@@ -1,6 +1,6 @@
 <?php
 
-// Copyright © 2007-2008 Johan Cwiklinski
+// Copyright © 2007-2009 Johan Cwiklinski
 //
 // This file is part of Galette (http://galette.tuxfamily.org).
 //
@@ -23,7 +23,7 @@
  * @package Galette
  * 
  * @author     Johan Cwiklinski <johan@x-tnd.be>
- * @copyright  2007-2008 Johan Cwiklinski
+ * @copyright  2007-2009 Johan Cwiklinski
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version    $Id$
  * @since      Disponible depuis la Release 0.7alpha
@@ -97,8 +97,7 @@ $mdb = new GaletteMdb2();
 * Load preferences
 */
 require_once(WEB_ROOT . 'classes/preferences.class.php');
-$p = new Preferences();
-$preferences = $p->prefs;
+$preferences = new Preferences();
 
 /**
 * Language instantiation

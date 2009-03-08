@@ -2,7 +2,7 @@
 
 // Copyright © 2003 Frédéric Jaqcuot
 // Copyright © 2004 Georges Khaznadar (i18n using gettext)
-// Copyright © 2007-2008 Johan Cwiklinski
+// Copyright © 2007-2009 Johan Cwiklinski
 //
 // This file is part of Galette (http://galette.tuxfamily.org).
 //
@@ -25,7 +25,7 @@
  * @package Galette
  * 
  * @author     Frédéric Jaqcuot
- * @copyright  2007-2008 Johan Cwiklinski
+ * @copyright  2007-2009 Johan Cwiklinski
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version    $Id$
  */
@@ -57,6 +57,6 @@
 	/** galette_lang should be removed and languages used instead */
 	$tpl->assign('galette_lang', $i18n->getAbbrev());
 	$tpl->assign("languages", $i18n->getList());
-	$tpl->assign('pref_slogan', $preferences['pref_slogan']);
-	$tpl->assign('pref_editor_enabled', $preferences['pref_editor_enabled']);
+	$tpl->assign('pref_slogan', $preferences->pref_slogan);
+	$tpl->assign('pref_editor_enabled', $preferences->pref_editor_enabled);
 ?>
