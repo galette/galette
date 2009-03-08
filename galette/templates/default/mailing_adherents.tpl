@@ -21,43 +21,46 @@
 		</div>
 {/if}
 
-{if $nb_reachable_members > 0}
+{assign var='count' value=$mailing->recipients|@count}
+{if $count > 0}
 		<p>
-	{if $etape==2}
+	{if $mailing->step == constant('Mailing::STEP_SEND')}
 		{_T string="Your e-mail was sent to"}
 	{else}
 		{_T string="You are about to send an e-mail to"}
 	{/if}
-		{$nb_reachable_members} {if $nb_reachable_members != 1}{_T string="members"}{else}{_T string="member"}{/if}<br/>
-	{if $etape==0}
+		{$count} {if $count != 1}{_T string="members"}{else}{_T string="member"}{/if}<br/>
+	{if $mailing->step == constant('Mailing::STEP_START')}
 		{_T string="Please compose your mail."}
 	{/if}
 		</p>
 		<div>
+	{if $mailing->step lt constant('Mailing::STEP_SEND')}
 			<p>
 				<label for="mailing_objet" class="bline">{_T string="Object:"}</label>
-				<input type="text" name="mailing_objet" id="mailing_objet" value="{$data.mailing_objet}" size="80"/>
+				<input type="text" name="mailing_objet" id="mailing_objet" value="{$mailing->subject}" size="80"/>
 			</p>
 			<p>
 				<span class="fright"><a href="javascript:toggleMailingEditor('mailing_corps');">{_T string="(De)Activate HTML editor"}</a></span>
 				<label for="mailing_corps" class="bline">{_T string="Message:"}</label>
-				<textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15">{$data.mailing_corps_display}</textarea>
+				<textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15">{$mailing->message}</textarea>
 				<input type="hidden" name="html_editor_active" id="html_editor_active" value="{if $html_editor_active}1{else}0{/if}"/>
 			</p>
 			<p class="center">
-				<input type="checkbox" name="mailing_html" id="mailing_html" value="1" {if $data.mailing_html eq 1 or $pref_editor_enabled eq 1}checked="checked"{/if}/><label for="mailing_html">{_T string="Interpret HTML"}</label><br/>
+				<input type="checkbox" name="mailing_html" id="mailing_html" value="1" {if $mailing->html eq 1 or $pref_editor_enabled eq 1}checked="checked"{/if}/><label for="mailing_html">{_T string="Interpret HTML"}</label><br/>
 				<input type="submit" class="submit" name="mailing_go" value="{_T string="Preview"}"/>
 			</p>
-	{if $etape>0}
+	{/if}
+	{if $mailing->step > constant('Mailing::STEP_START')}
 			<div id="mail_preview">
 				<p>{_T string="Message preview:"}</p>
-				<p><span class="bline">{_T string="Object:"}</span>{$data.mailing_objet}</p>
+				<p><span class="bline">{_T string="Object:"}</span>{$mailing->subject}</p>
 				<p>
 					<span class="bline">{_T string="Message:"}</span><br/>
-		{if $data.mailing_html eq 1}
-					{$data.mailing_corps}
+		{if $mailing->html}
+					{$mailing->message}
 		{else}
-					<pre>{$data.mailing_corps_display}</pre>
+					<pre>{$mailing->message}</pre>
 		{/if}
 				</p>
 			</div>
@@ -69,9 +72,11 @@
 		<strong>{_T string="None of the selected members has an email address."}</strong>
 {/if}
 		</form>
-{if $nb_unreachable_members > 0}
+
+{assign var='count_unreachables' value=$mailing->unreachables|@count}
+{if $count_unreachables > 0}
 		<p>
-		<strong>{$nb_unreachable_members} {if $nb_unreachable_members != 1}{_T string="unreachable members:"}{else}{_T string="unreachable member"}{/if}</strong><br/>
+		<strong>{$count_unreachables} {if $count_unreachables != 1}{_T string="unreachable members:"}{else}{_T string="unreachable member"}{/if}</strong><br/>
 		{_T string="Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail."}
 		</p>
 		<div class="button-container">

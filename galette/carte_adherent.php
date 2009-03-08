@@ -52,23 +52,35 @@ if( !$login->isLogged() ) {
 
 require_once(WEB_ROOT."classes/pdf.class.php");
 require_once (WEB_ROOT . 'classes/members.class.php');
+require_once(WEB_ROOT . 'classes/varslist.class.php');
+
+if( isset($_GET[Adherent::PK]) && is_int($_GET[Adherent::PK]) && $_GET[Adherent::PK] > 0 ) {
+	// If we are called from "voir_adherent.php" get unique id value
+	$unique = $_GET[Adherent::PK];
+} else if( isset($_SESSION['galette']['varslist']) ){
+	$varslist = unserialize( $_SESSION['galette']['varslist'] );
+} else {
+	$log->log('No member selected to generate members cards', PEAR_LOG_INFO);
+	if( $login->isAdmin )
+		header('location:gestion_adherent.php');
+	else
+		header('location:voir_adherent.php');
+}
 
 // Fill array $mailing_adh with selected ids
 $mailing_adh = array();
-if (isset($_SESSION['galette']['cards'])) {
-	while (list($key,$value)=each($_SESSION['galette']['cards']))
-		$mailing_adh[]=$value;
-	unset($_SESSION['galette']['cards']);
-
-	// If we are called from "Voir_adherent" get unique id value
-} elseif (isset($_GET["id_adh"]) && $_GET["id_adh"] > 0)
-	$mailing_adh[]=$_GET["id_adh"];
-else 
-	die();
+if( $unique ) {
+	$mailing_adh[] = $unique;
+} else {
+	$mailing_adh = $varslist->selected;
+}
 
 $members = Members::getArrayList($mailing_adh, 'nom_adh, prenom_adh');
 
-if( !is_array($members) || count($members) < 1 ) die();
+if( !is_array($members) || count($members) < 1 ) {
+	$log->log('An error has occured, unable to get members list.', PEAR_LOG_ERR);
+	die();
+}
 
 // Set PDF headings
 $doc_title    = _T("Member's Cards");
@@ -102,13 +114,14 @@ if ($logo->HAS_PICTURE){
 		$hlogo = round($wlogo/$ratio);
 	}
 } else {// If no logo chosen force default one
+	/** FIXME: default logo could be different from galette's logo ; we have to get it from Preferences */
 	$logofile = WEB_ROOT . "templates/default/images/galette.png";
 	$wlogo = 15;
 	$hlogo = 7;
 }
 
 // Create new PDF document
-$pdf = new PDF("P","mm","A4",true,"UTF-8"); 
+$pdf = new PDF("P","mm","A4",true,"UTF-8");
 
 // Set document information
 $pdf->SetCreator(PDF_CREATOR);

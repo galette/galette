@@ -1,7 +1,7 @@
 <?php
 
 // Copyright © 2003 Frédéric Jaqcuot
-// Copyright © 2007-2008 Johan Cwiklinski
+// Copyright © 2007-2009 Johan Cwiklinski
 //
 // This file is part of Galette (http://galette.tuxfamily.org).
 //
@@ -33,7 +33,7 @@
  * @author     Frédéric Jaqcuot
  * @author     Johan Cwiklinski <johan@x-tnd.be>
  * @copyright  2003 Frédéric Jaqcuot
- * @copyright  2007-2008 Johan Cwiklinski
+ * @copyright  2007-2009 Johan Cwiklinski
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version    $Id$
  * @since      Disponible depuis la Release 0.62
@@ -49,36 +49,39 @@ if( !$login->isLogged() ){
 	die();
 }
 
+//Reset Mailing object
+if( isset($_SESSION['galette']['mailing']) ) {
+	$_SESSION['galette']['mailing'] = null;
+	unset($_SESSION['galette']['mailing']);
+}
+
+require_once('classes/varslist.class.php');
+if( isset($_SESSION['galette']['varslist']) ){
+	$varslist = unserialize( $_SESSION['galette']['varslist'] );
+} else { $varslist = new VarsList(); }
+
 $error_detected = array();
 // Set caller page ref for cards error reporting	
 $_SESSION['galette']['caller']='gestion_adherents.php';	
 
-if (isset($_POST['cards'])) {
-	$qstring = 'carte_adherent.php';
+if( isset($_POST['cards']) || isset($_POST['labels']) || isset($_POST['mailing']) ){
 	if (isset($_POST["member_sel"])) {
-		$_SESSION['galette']['cards'] = $_POST["member_sel"];
+		$varslist->selected = $_POST['member_sel'];
+		$_SESSION['galette']['varslist'] = serialize( $varslist );
+
+		if (isset($_POST['cards'])) {
+			$qstring = 'carte_adherent.php';
+		}
+		if (isset($_POST['labels'])) {
+			$qstring = 'etiquettes_adherents.php';
+		}
+		if (isset($_POST['mailing'])) {
+			$qstring = 'mailing_adherents.php';
+		}
 		header('location: '.$qstring);
 	} else {
 		$error_detected[] = _T("No member was selected, please check at least one name.");
 	}
-}
-	
-if (isset($_POST['labels'])) {
-	$qstring = 'etiquettes_adherents.php';
-	if (isset($_POST["member_sel"])) {
-		$_SESSION['galette']['labels'] = $_POST["member_sel"];
-		header('location: '.$qstring);
-	} else
-		$error_detected[] = _T("No member was selected, please check at least one name.");
-}
-
-if (isset($_POST['mailing'])) {
-	$qstring = 'mailing_adherents.php';
-	if (isset($_POST["member_sel"])) {
-		$_SESSION['galette']['mailing'] = $_POST["member_sel"];
-		header('location: '.$qstring);
-	} else
-		$error_detected[] = _T("No member was selected, please check at least one name.");
 }
 
 if (isset($_SESSION['galette']['pdf_error']) && $_SESSION['galette']['pdf_error']) {
@@ -90,9 +93,8 @@ if (isset($_SESSION['galette']['pdf_error']) && $_SESSION['galette']['pdf_error'
 $members = array();
 
 // Filters
-$page = 1;
-if (isset($_GET["page"]))
-	$page = $_GET["page"];
+if (isset($_GET['page']))
+	$varslist->current_page = $_GET['page'];
 
 if (isset($_GET["filtre_nom"]))
 	$_SESSION["filtre_adh_nom"]=trim(stripslashes(htmlspecialchars($_GET["filtre_nom"],ENT_QUOTES)));
@@ -312,7 +314,7 @@ if (isset($_GET["tri"]))
 	if ($numrows==0)
 		$resultat = &$DB->Execute($requete[0]);
 	else
-		$resultat = &$DB->SelectLimit($requete[0],$numrows,($page-1)*$numrows);
+		$resultat = &$DB->SelectLimit($requete[0],$numrows,($varslist->current_page - 1)*$numrows); //$resultat = &$DB->SelectLimit($requete[0],$numrows,($page-1)*$numrows);
 
 	if ($numrows==0)
 		$nbpages = 1;
@@ -323,7 +325,7 @@ if (isset($_GET["tri"]))
 	if ($nbpages==0)
 		$nbpages = 1;
 
-	$compteur = 1+($page-1)*$numrows;
+	$compteur = 1+($varslist->current_page - 1)*$numrows;
 	while (!$resultat->EOF) 
 	{ 
 		// définition CSS pour adherent désactivé
@@ -393,6 +395,8 @@ if (isset($_GET["tri"]))
 	} 
 	$resultat->Close();
 
+$_SESSION['galette']['varslist'] = serialize($varslist);
+
 	$tpl->assign('page_title', _T("Management of members"));
 	$tpl->assign("error_detected",$error_detected);
 	if(isset($warning_detected))
@@ -400,7 +404,7 @@ if (isset($_GET["tri"]))
 	$tpl->assign("members",$members);
 	$tpl->assign("nb_members",$nbadh->fields[0]);
 	$tpl->assign("nb_pages",$nbpages);
-	$tpl->assign("page",$page);
+	$tpl->assign("page",$varslist->current_page);
 	$tpl->assign("numrows",$numrows);
 	$tpl->assign('filtre_fld_options', array(
 			0 => _T("Name"),
@@ -426,6 +430,5 @@ if (isset($_GET["tri"]))
 			0 => _T("All")));
 	$content = $tpl->fetch("gestion_adherents.tpl");
 	$tpl->assign("content",$content);
-	//$tpl->assign("pref", $pref);
 	$tpl->display("page.tpl");
 ?>

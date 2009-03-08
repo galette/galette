@@ -1,7 +1,7 @@
 <?php
 
 // Copyright © 2004 Frédéric Jaqcuot
-// Copyright © 2007-2008 Johan Cwiklinski
+// Copyright © 2007-2009 Johan Cwiklinski
 //
 // This file is part of Galette (http://galette.tuxfamily.org).
 //
@@ -32,7 +32,7 @@
  *
  * @author     Frédéric Jaqcuot
  * @copyright  2004 Frédéric Jaqcuot
- * @copyright  2007-2008 Johan Cwiklinski
+ * @copyright  2007-2009 Johan Cwiklinski
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version    $Id$
  */
@@ -48,21 +48,19 @@ if ( !$login->isAdmin() ) {
 	die();
 }
 
-require_once (WEB_ROOT."classes/pdf.class.php");
-require_once (WEB_ROOT . 'classes/members.class.php');
+require_once(WEB_ROOT . 'classes/pdf.class.php');
+require_once(WEB_ROOT . 'classes/members.class.php');
+require_once(WEB_ROOT . 'classes/varslist.class.php');
 
-	
-$mailing_adh = array();
-if (isset($_SESSION['galette']['labels'])) {
-	while (list($key,$value)=each($_SESSION['galette']['labels']))
-		$mailing_adh[]=$value;
-	unset($_SESSION['galette']['labels']);
+if( isset($_SESSION['galette']['varslist']) ){
+	$varslist = unserialize( $_SESSION['galette']['varslist'] );
 } else {
-	echo 'die';
-	//die();
+	$log->log('No member selected to generate labels', PEAR_LOG_INFO);
+	if( $login->isAdmin )
+		header('location:gestion_adherent.php');
 }
 
-$members = Members::getArrayList($mailing_adh);
+$members = Members::getArrayList($varslist->selected);
 
 if( !is_array($members) || count($members) < 1 ) die();
 
@@ -140,7 +138,6 @@ foreach($members as $member){
 	// Print country
 	$pdf->SetXY($x,$y+$line_h*4);
 	$pdf->Cell($w,$line_h, $member->country,0,0,"C",0);
-	//$resultat->MoveNext();
 	$nb_etiq++;
 
 }
