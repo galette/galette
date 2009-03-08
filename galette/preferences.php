@@ -1,7 +1,7 @@
 <?php
 
 // Copyright © 2004 Frédéric Jaqcuot
-// Copyright © 2007-2008 Johan Cwiklinski
+// Copyright © 2007-2009 Johan Cwiklinski
 //
 // This file is part of Galette (http://galette.tuxfamily.org).
 //
@@ -34,7 +34,7 @@
  *
  * @author     Frédéric Jaqcuot
  * @copyright  2004 Frédéric Jaqcuot
- * @copyright  2007-2008 Johan Cwiklinski
+ * @copyright  2007-2009 Johan Cwiklinski
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version    $Id$
  * @since      Disponible depuis la Release 0.62
@@ -80,7 +80,7 @@ $required = array(
 	'pref_admin_login' => 1
 );
 
-$prefs_fields = $p->getFieldsNames();
+$prefs_fields = $preferences->getFieldsNames();
 
 // Validation
 if (isset($_POST['valid']) && $_POST['valid'] == "1"){
@@ -207,7 +207,7 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 		// update preferences
 		while (list($champ,$valeur)=each($insert_values)){
 			if(($champ == "pref_admin_pass" && $_POST['pref_admin_pass']!= '') | ($champ != "pref_admin_pass")) {
-				$p->$champ = $valeur;
+				$preferences->$champ = $valeur;
 			}
 		}
 
@@ -252,7 +252,7 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 } else {
 	// collect data
 	foreach($prefs_fields as $fieldname){
-		$pref[$fieldname] = $p->$fieldname;
+		$pref[$fieldname] = $preferences->$fieldname;
 	}
 }
 
