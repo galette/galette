@@ -40,12 +40,13 @@ if (! $installed) {
 */
 if( !isset($base_path) ) $base_path = './';
 require_once( $base_path . 'config/config.inc.php');
+require_once( $base_path . 'config/versions.inc.php');
 
 //we start a php session
 session_start();
 
 define('GALETTE_VERSION', 'v0.7alpha');
-set_include_path(get_include_path() . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/PEAR/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/MDB2' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/Log');
+set_include_path(get_include_path() . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/PEAR-' . PEAR_VERSION . '/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/MDB2' . MDB2_VERSION . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/Log' . LOG_VERSION);
 
 /*--------------------------------------------------------------------------------------
 LOG and DEBUG

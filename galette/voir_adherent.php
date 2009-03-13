@@ -52,7 +52,7 @@ if ($id_adh=="") {
 	header("location: index.php");
 	die();
 }
-if ($_SESSION['galette']['pdf_error']) {
+if ( isset($_SESSION['galette']['pdf_error']) ) {
 	$error_detected[] = $_SESSION['galette']['pdf_error_msg'];
 }
 

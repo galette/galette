@@ -94,7 +94,7 @@
 {/if}
 			<tr>
 				<th>{_T string="Other informations:"}</th>
-				<td>{$member->$others_infos|nl2br}</td>
+				<td>{$member->others_infos|nl2br}</td>
 			</tr>
 		</table>
 

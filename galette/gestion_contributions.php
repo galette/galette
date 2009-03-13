@@ -61,7 +61,7 @@ if ( !$login->isLogged() )
 		}
 	}		
 
-        $numrows = $p->pref_numrows;
+        $numrows = $preferences->pref_numrows;
 
 	if (isset($_GET["nbshow"]))
 		if (is_numeric($_GET["nbshow"]))

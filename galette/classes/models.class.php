@@ -32,10 +32,8 @@
  */
 
 /** TODO
-* - The above constant should be defined at higher level
 * - all errors messages should be handled by pear::log
 */
-set_include_path(get_include_path() . PATH_SEPARATOR . WEB_ROOT . "includes/pear/" . PATH_SEPARATOR . WEB_ROOT . "includes/pear/PEAR/" . PATH_SEPARATOR . WEB_ROOT . "includes/pear/MDB2");
 
 require_once("MDB2.php");
 
