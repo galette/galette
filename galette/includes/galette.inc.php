@@ -118,6 +118,17 @@ if( isset($_GET['pref_lang']) ){
 	$_SESSION['pref_lang'] = $_GET['pref_lang'];
 }
 
+/**
+* Plugins
+*/
+define('PLUGINS_PATH', WEB_ROOT . 'plugins');
+require_once( WEB_ROOT . 'classes/plugins.class.php');
+$plugins = new plugins();
+$plugins->loadModules(PLUGINS_PATH, $i18n->getFileName());
+
+/**
+* Authentication
+*/
 require_once(WEB_ROOT . '/classes/galette-login.class.php');
 if(isset($_SESSION['galette']['login']))
 	$login = unserialize($_SESSION['galette']['login']);

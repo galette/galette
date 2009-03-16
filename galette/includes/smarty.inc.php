@@ -59,6 +59,7 @@ $tpl->assign('GALETTE_VERSION', GALETTE_VERSION);
 /** galette_lang should be removed and languages used instead */
 $tpl->assign('galette_lang', $i18n->getAbbrev());
 $tpl->assign("languages", $i18n->getList());
+$tpl->assign('plugins', $plugins);
 $tpl->assign('pref_slogan', $preferences->pref_slogan);
 $tpl->assign('pref_theme', $preferences->pref_theme);
 $tpl->assign('pref_editor_enabled', $preferences->pref_editor_enabled);

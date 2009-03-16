@@ -58,19 +58,19 @@
 			<h1>{_T string="Navigation"}</h1>
 			<ul>
 {if $smarty.session.admin_status eq 1}
-				<li><a href="gestion_adherents.php">{_T string="List of members"}</a></li>
-				<li><a href="gestion_contributions.php?id_adh=all">{_T string="List of contributions"}</a></li>
-				<li><a href="gestion_transactions.php">{_T string="List of transactions"}</a></li>
-				<li><a href="ajouter_adherent.php">{_T string="Add a member"}</a></li>
-				<li><a href="ajouter_contribution.php">{_T string="Add a contribution"}</a></li>
-				<li><a href="ajouter_transaction.php">{_T string="Add a transaction"}</a></li>
-				<li><a href="history.php">{_T string="Logs"}</a></li>
-				<li><a href="export.php">{_T string="Exports"}</a></li>
+				<li><a href="{$galette_base_path}gestion_adherents.php">{_T string="List of members"}</a></li>
+				<li><a href="{$galette_base_path}gestion_contributions.php?id_adh=all">{_T string="List of contributions"}</a></li>
+				<li><a href="{$galette_base_path}gestion_transactions.php">{_T string="List of transactions"}</a></li>
+				<li><a href="{$galette_base_path}ajouter_adherent.php">{_T string="Add a member"}</a></li>
+				<li><a href="{$galette_base_path}ajouter_contribution.php">{_T string="Add a contribution"}</a></li>
+				<li><a href="{$galette_base_path}ajouter_transaction.php">{_T string="Add a transaction"}</a></li>
+				<li><a href="{$galette_base_path}history.php">{_T string="Logs"}</a></li>
+				<li><a href="{$galette_base_path}export.php">{_T string="Exports"}</a></li>
 {else}
-				<li><a href="subscription_form.php?id_adh={$data.id_adh}">Fiche adherent</a></li>
-				<li><a href="voir_adherent.php">{_T string="My information"}</a></li>
-				<li><a href="gestion_contributions.php">{_T string="My contributions"}</a></li>
-				<li><a href="gestion_transactions.php">{_T string="My transactions"}</a></li>
+				<li><a href="{$galette_base_path}subscription_form.php?id_adh={$data.id_adh}">Fiche adherent</a></li>
+				<li><a href="{$galette_base_path}voir_adherent.php">{_T string="My information"}</a></li>
+				<li><a href="{$galette_base_path}gestion_contributions.php">{_T string="My contributions"}</a></li>
+				<li><a href="{$galette_base_path}gestion_transactions.php">{_T string="My transactions"}</a></li>
 {/if}
 			</ul>
 		</div>
@@ -78,15 +78,31 @@
 		<div class="nav1">
 			<h1>{_T string="Configuration"}</h1>
 			<ul>
-				<li><a href="preferences.php">{_T string="Settings"}</a></li>
-				<li><a href="champs_requis.php">{_T string="Required fields"}</a></li>
-				<li><a href="configurer_fiches.php">{_T string="Configure member forms"}</a></li>
-				<li><a href="traduire_libelles.php">{_T string="Translate labels"}</a></li>
-				<li><a href="gestion_textes.php">{_T string="Email contents"}</a></li>
-				<li><a href="utilitaires.php">{_T string="Utilities"}</a></li>
+				<li><a href="{$galette_base_path}preferences.php">{_T string="Settings"}</a></li>
+				<li><a href="{$galette_base_path}champs_requis.php">{_T string="Required fields"}</a></li>
+				<li><a href="{$galette_base_path}configurer_fiches.php">{_T string="Configure member forms"}</a></li>
+				<li><a href="{$galette_base_path}traduire_libelles.php">{_T string="Translate labels"}</a></li>
+				<li><a href="{$galette_base_path}gestion_textes.php">{_T string="Email contents"}</a></li>
+				<li><a href="{$galette_base_path}utilitaires.php">{_T string="Utilities"}</a></li>
 			</ul>
 		</div>
 {/if}
+
+{* Here we include menu entries for each plugin. We take also care to set the web path to the plugin with the var {$galette_[plugin-name]_path} *}
+{php}
+	global $plugins, $preferences, $tpl;
+	foreach(array_keys($plugins->getModules()) as $r){
+		$menu_path = $plugins->moduleRoot($r) . '/templates/' . $preferences->pref_theme . '/menu.tpl';
+		if( $tpl->template_exists( $menu_path ) ){
+			$tpl->assign('menu_path', $menu_path);
+			$tpl->assign('galette_' . strtolower($r) . '_path', 'plugins/' . $r . '/');
+{/php}
+	{include file=$menu_path}
+{php}
+		}
+	}
+{/php}
+
 		<div id="logout">
 			<a href="index.php?logout=1">{_T string="Log off"}</a>
 		</div>
