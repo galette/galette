@@ -40,6 +40,7 @@ if (file_exists("/usr/share/php/Smarty/Smarty.class.php")){
 }
 include($galetteSmartyPath . 'Smarty.class.php');
 $tpl = new Smarty;
+define('TEMPLATES_PATH', WEB_ROOT . 'templates/');
 $template_subdir = 'templates/' . $preferences->pref_theme . '/';
 $tpl->plugins_dir[] = WEB_ROOT . 'includes/smarty_plugins';
 $tpl->template_dir = WEB_ROOT . $template_subdir;

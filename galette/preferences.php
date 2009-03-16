@@ -256,6 +256,16 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 	}
 }
 
+//List available themes
+$themes = array();
+$d = dir(TEMPLATES_PATH);
+while (($entry = $d->read()) !== false) {
+	$full_entry = TEMPLATES_PATH . $entry;
+	if ($entry != '.' && $entry != '..' && is_dir($full_entry) && file_exists($full_entry.'/page.tpl'))
+		$themes[] = $entry;
+}
+$d->close();
+
 // Card logo data
 $cardlogo = new picture(999999);
 if ($cardlogo->hasPicture())
@@ -287,6 +297,7 @@ $tpl->assign('pref_numrows_options', array(
 
 $tpl->assign('required', $required);
 $tpl->assign('languages', $i18n->getList());
+$tpl->assign('themes', $themes);
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('warning_detected', $warning_detected);
 $tpl->assign('color_picker', true);

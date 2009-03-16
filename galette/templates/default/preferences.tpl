@@ -83,6 +83,14 @@
 					</select>
 				</p>
 				<p>
+					<label for="pref_theme" class="bline{if $required.pref_theme eq 1} required{/if}">{_T string="Default theme:"}</label>
+					<select name="pref_theme" id="pref_theme">
+{foreach item=theme from=$themes}
+						<option value="{$theme}" {if $pref.pref_theme eq $theme}selected="selected"{/if}>{$theme|ucfirst}</option>
+{/foreach}
+					</select>
+				</p>
+				<p>
 					<label for="pref_numrows" class="bline{if $required.pref_numrows eq 1} required{/if}">{_T string="Lines / Page:"}</label>
 					<select name="pref_numrows" id="pref_numrows">
 						{html_options options=$pref_numrows_options selected=$pref.pref_numrows}
