@@ -99,7 +99,8 @@ class Preferences{
 		'pref_card_marges_h'	=>	20,
 		'pref_card_vspace'	=>	5,
 		'pref_card_hspace'	=>	10,
-		'pref_card_self'	=>	1
+		'pref_card_self'	=>	1,
+		'pref_theme'		=>	'default'
 	);
 
 	/**

@@ -57,6 +57,9 @@ INSERT INTO `galette_preferences` (`nom_pref`, `val_pref`) VALUES ('pref_card_vs
 INSERT INTO `galette_preferences` (`nom_pref`, `val_pref`) VALUES ('pref_card_hspace', '10');
 INSERT INTO `galette_preferences` (`nom_pref`, `val_pref`) VALUES ('pref_card_self', '1');
 
+-- Default theme
+INSERT INTO `galette_preferences` (`nom_pref`, `val_pref`) VALUES ('pref_theme', 'default');
+
 -- Contribution types
 INSERT INTO `galette_types_cotisation` (`id_type_cotis`,`libelle_type_cotis`,`cotis_extension`) VALUES (1, 'annual fee', '1');
 INSERT INTO `galette_types_cotisation` (`id_type_cotis`,`libelle_type_cotis`,`cotis_extension`) VALUES (2, 'reduced annual fee', '1');

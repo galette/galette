@@ -132,17 +132,21 @@ class i18n{
 	* @param id the language identifier
 	*/
 	public function getFlagFromId($id){
+		global $base_path, $template_subdir;
 		$xml = simplexml_load_file($this->file);
 		$current = $xml->xpath('//lang[@id=\'' . $id . '\']');
 		$sxe = $current[0];
-		return $this->dir . $sxe->flag;
+		return $base_path . $template_subdir . 'images/' . $sxe->flag;
 	}
 
 	public function getID(){ return $this->id; }
 	public function getLongID(){ return $this->longid; }
 	public function getName(){ return $this->name; }
 	public function getAbbrev(){ return $this->abbrev; }
-	public function getFlag(){ return $this->dir . $this->flag;}
+	public function getFlag(){ 
+		global $base_path, $template_subdir;
+		return $base_path . $template_subdir . 'images/' . $this->flag;
+	}
 	public function getFileName(){ return $this->filename; }
 }
 ?>

@@ -40,7 +40,7 @@ if (file_exists("/usr/share/php/Smarty/Smarty.class.php")){
 }
 include($galetteSmartyPath . 'Smarty.class.php');
 $tpl = new Smarty;
-$template_subdir = 'templates/default/';
+$template_subdir = 'templates/' . $preferences->pref_theme . '/';
 $tpl->plugins_dir[] = WEB_ROOT . 'includes/smarty_plugins';
 $tpl->template_dir = WEB_ROOT . $template_subdir;
 $tpl->compile_dir = WEB_ROOT . 'templates_c/';
@@ -52,11 +52,13 @@ $tpl->assign('jquery_dir', $base_path . 'includes/jquery/');
 $tpl->assign('htmledi_dir', $base_path . 'includes/tiny_mce/');
 $tpl->assign('scripts_dir', $base_path . 'includes/');
 $tpl->assign('PAGENAME', basename($_SERVER['SCRIPT_NAME']));
+$tpl->assign('galette_base_path', $base_path);
 /** FIXME: on certains pages PHP notice that GALETTE_VERSION does not exists although it appears correctly*/
 $tpl->assign('GALETTE_VERSION', GALETTE_VERSION);
 /** galette_lang should be removed and languages used instead */
 $tpl->assign('galette_lang', $i18n->getAbbrev());
 $tpl->assign("languages", $i18n->getList());
 $tpl->assign('pref_slogan', $preferences->pref_slogan);
+$tpl->assign('pref_theme', $preferences->pref_theme);
 $tpl->assign('pref_editor_enabled', $preferences->pref_editor_enabled);
 ?>
