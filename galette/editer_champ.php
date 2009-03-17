@@ -84,10 +84,10 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 			$query = "SELECT field_name
 				  FROM $field_types_table
 				  WHERE field_id=$field_id";
-			$old_field_name = db_get_one(&$DB, $query, &$error_detected);
+			$old_field_name = db_get_one($DB, $query, $error_detected);
 			if ($old_field_name && $field_name != $old_field_name) {
-				add_dynamic_translation(&$DB, $field_name, &$error_detected);
-				delete_dynamic_translation(&$DB, $old_field_name, &$error_detected);
+				add_dynamic_translation($DB, $field_name, $error_detected);
+				delete_dynamic_translation($DB, $old_field_name, $error_detected);
 			}
 			if (count($error_detected)==0) {
 				$query = "UPDATE $field_types_table
@@ -100,7 +100,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 					      field_size=$field_size,
 					      field_repeat=$field_repeat
 					  WHERE field_id=$field_id";
-				db_execute(&$DB, $query, &$error_detected);
+				db_execute($DB, $query, $error_detected);
 			}
 			$DB->CompleteTrans();
 			if ($properties['fixed_values']) {
@@ -117,13 +117,13 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 				}
 				$contents_table = fixed_values_table_name($field_id);
 				$DB->Execute("DROP TABLE $contents_table");
-				db_execute(&$DB, "CREATE TABLE $contents_table (
+				db_execute($DB, "CREATE TABLE $contents_table (
 						  id INTEGER NOT NULL,
-						  val varchar($max_length) NOT NULL)", &$error_detected);
+						  val varchar($max_length) NOT NULL)", $error_detected);
 				if (count($error_detected) == 0) {
 					for ($i = 0; $i < count($values); $i++) {
 						$val = $DB->qstr($values[$i], get_magic_quotes_gpc());
-						db_execute(&$DB, "INSERT INTO $contents_table VALUES ($i, $val)", &$error_detected);
+						db_execute($DB, "INSERT INTO $contents_table VALUES ($i, $val)", $error_detected);
 					}
 				}
 			} 
@@ -137,7 +137,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 		$query = "SELECT *
 			  FROM $field_types_table
 			  WHERE field_id=$field_id";
-		$result = db_execute(&$DB, $query, &$error_detected);
+		$result = db_execute($DB, $query, $error_detected);
 		if ($result != false) {
 			$field_name = $result->fields['field_name'];
 			$field_type = $result->fields['field_name'];
@@ -151,7 +151,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 			$result->Close();
 			$fixed_values = '';
 			if ($properties['fixed_values']) {
-				foreach (get_fixed_values(&$DB, $field_id) as $val)
+				foreach (get_fixed_values($DB, $field_id) as $val)
 					$fixed_values .= "$val\n";
 			}
 		} // $result != false
