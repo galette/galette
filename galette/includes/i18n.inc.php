@@ -183,7 +183,7 @@ if ( (isset($loc) && $loc!=$language) || $disable_gettext)
 					else
 						$trans = $chaine." (not translated)";
 				}
-				return utf8_encode($trans);
+				return (seems_utf8($trans)  ? $trans : utf8_encode($trans));
                         }
                         else
                                 return _($chaine);
