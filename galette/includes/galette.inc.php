@@ -46,7 +46,7 @@ require_once( $base_path . 'config/versions.inc.php');
 session_start();
 
 define('GALETTE_VERSION', 'v0.7alpha');
-set_include_path(get_include_path() . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/PEAR-' . PEAR_VERSION . '/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/MDB2' . MDB2_VERSION . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/Log' . LOG_VERSION);
+set_include_path(get_include_path() . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/PEAR-' . PEAR_VERSION . '/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/MDB2-' . MDB2_VERSION . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/Log-' . LOG_VERSION);
 
 /*--------------------------------------------------------------------------------------
 LOG and DEBUG
