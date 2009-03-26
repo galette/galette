@@ -58,7 +58,7 @@ class GaletteLogin extends Authentication{
 	*	'1' if user were logged in successfully
 	*/
 	public function logIn($user, $passe){
-		global $mdb;
+		global $mdb, $log;
 
 		$requete = 'SELECT id_adh, bool_admin_adh, nom_adh, prenom_adh, mdp_adh, pref_lang, activite_adh FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=\'' . $user. '\' AND mdp_adh=\'' . $passe . '\'';
 
@@ -66,8 +66,10 @@ class GaletteLogin extends Authentication{
 			return -1;
 		
 		if($result->numRows() == 0){
+			$log->log('No entry found for login `' . $user . '`', PEAR_LOG_WARNING);
 			return(-10);
 		}else{
+			$log->log('User `' . $user . '` logged in.', PEAR_LOG_DEBUG);
 			$row = $result->fetchRow();
 			$this->id = $row->id_adh;
 			$this->login = $row->login_adh;

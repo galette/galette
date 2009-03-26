@@ -66,9 +66,9 @@ PEAR_LOG_DEBUG		=>	Debug-level messages
 */
 require_once('Log.php');
 /** FIXME: for stables versions, log level must not be DEBUG, most probably WARNING or NOTICE */
-define('_file_log', PEAR_LOG_DEBUG);				// ***** LOG : enregistrement des erreur dans un fichier de log
+define('_file_log', PEAR_LOG_INFO);				// ***** LOG : enregistrement des erreur dans un fichier de log
 define('_log_file', WEB_ROOT . '/logs/galette.log');		// ***** LOG : fichier de log 
-define('_screen_log', PEAR_LOG_WARNING);			// ***** LOG : affichage des erreurs à l'écran
+define('_screen_log', PEAR_LOG_EMERG);			// ***** LOG : affichage des erreurs à l'écran
 
 $conf = array(
 	'error_prepend'	=>	'<div id="error" class="error">',
