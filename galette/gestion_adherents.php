@@ -94,7 +94,7 @@ $members = array();
 
 // Filters
 if (isset($_GET['page']))
-	$varslist->current_page = $_GET['page'];
+	$varslist->current_page = (int)$_GET['page'];
 
 if (isset($_GET["filtre_nom"]))
 	$_SESSION["filtre_adh_nom"]=trim(stripslashes(htmlspecialchars($_GET["filtre_nom"],ENT_QUOTES)));

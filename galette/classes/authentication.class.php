@@ -106,5 +106,8 @@ abstract class Authentication{
 		else return false;
 	}
 	/* SETTERS */
+	protected function __set($name, $value) {
+		$this->$name = $value;
+	}
 }
 ?>
