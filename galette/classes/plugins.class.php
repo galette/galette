@@ -312,6 +312,21 @@ class Plugins {
 	{
 		return isset($this->modules[$id][$info]) ? $this->modules[$id][$info] : null;
 	}
+
+	/**
+	* Search and load menu templates from plugins.
+	* Also sets the web path to the plugin with the var "galette_[plugin-name]_path"
+	*/
+	public function getMenus(){
+		global $tpl, $preferences;
+		foreach(array_keys($this->getModules()) as $r){
+			$menu_path = $this->moduleRoot($r) . '/templates/' . $preferences->pref_theme . '/menu.tpl';
+			if( $tpl->template_exists( $menu_path ) ){
+				$tpl->assign('galette_' . strtolower($r) . '_path', 'plugins/' . $r . '/');
+				$tpl->display($menu_path);
+			}
+		}
+	}
 	
 	private function sortModules($a,$b)
 	{

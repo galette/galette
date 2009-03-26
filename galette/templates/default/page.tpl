@@ -88,20 +88,8 @@
 		</div>
 {/if}
 
-{* Here we include menu entries for each plugin. We take also care to set the web path to the plugin with the var {$galette_[plugin-name]_path} *}
-{php}
-	global $plugins, $preferences, $tpl;
-	foreach(array_keys($plugins->getModules()) as $r){
-		$menu_path = $plugins->moduleRoot($r) . '/templates/' . $preferences->pref_theme . '/menu.tpl';
-		if( $tpl->template_exists( $menu_path ) ){
-			$tpl->assign('menu_path', $menu_path);
-			$tpl->assign('galette_' . strtolower($r) . '_path', 'plugins/' . $r . '/');
-{/php}
-	{include file=$menu_path}
-{php}
-		}
-	}
-{/php}
+{* Include plugins menu entries *}
+{$plugins->getMenus()}
 
 		<div id="logout">
 			<a href="index.php?logout=1">{_T string="Log off"}</a>
