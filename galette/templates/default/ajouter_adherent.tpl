@@ -49,7 +49,7 @@
 				</p>
 				<p>
 					<label for="pseudo_adh" class="bline {if $required.pseudo_adh eq 1} required{/if}">{_T string="Nickname:"}</label>
-					<input type="text" name="pseudo_adh" id="pseudo_adh" value="{$member->nickname}" maxlength="20" {$disabled.pseudo_adh}/>
+					<input type="text" name="pseudo_adh" id="pseudo_adh" value="{$member->nickname|htmlspecialchars}" maxlength="20" {$disabled.pseudo_adh}/>
 				</p>
 				<p>
 					<label for="ddn_adh" class="bline{if $required.ddn_adh eq 1} required{/if}">{_T string="birth date:"}</label>
@@ -57,7 +57,7 @@
 				</p>
 				<p>
 					<label for="prof_adh" class="bline{if $required.prof_adh eq 1} required{/if}">{_T string="Profession:"}</label>
-					<input type="text" name="prof_adh" id="prof_adh" value="{$member->job}" maxlength="150" {$disabled.prof_adh}/>
+					<input type="text" name="prof_adh" id="prof_adh" value="{$member->job|htmlspecialchars}" maxlength="150" {$disabled.prof_adh}/>
 				</p>
 				<p>
 					<label for="pref_lang" class="bline {if $required.pref_lang eq 1} required{/if}">{_T string="Language:"}</label>
@@ -126,13 +126,13 @@
 				</p>
 				<p>
 					<label for="info_adh" class="bline{if $required.info_adh eq 1} required{/if}">{_T string="Other informations (admin):"}</label>
-					<textarea name="info_adh" id="info_adh" cols="50" rows="6" {$disabled.info_adh}>{$member->others_infos_admin}</textarea><br/>
+					<textarea name="info_adh" id="info_adh" cols="50" rows="6" {$disabled.info_adh}>{$member->others_infos_admin|htmlspecialchars}</textarea><br/>
 					<span class="exemple labelalign">{_T string="This comment is only displayed for admins."}</span>
 				</p>
 {/if}
 				<p>
 					<label for="info_public_adh" class="bline{if $required.info_public_adh eq 1} required{/if}">{_T string="Other informations:"}</label> 
-					<textarea name="info_public_adh" id="info_public_adh" cols="61" rows="6" {$disabled.info_public_adh}>{$member->other_infos}</textarea>
+					<textarea name="info_public_adh" id="info_public_adh" cols="61" rows="6" {$disabled.info_public_adh}>{$member->other_infos|htmlspecialchars}</textarea>
 {if $smarty.session.admin_status eq 1}
 					<br/><span class="exemple labelalign">{_T string="This comment is reserved to the member."}</span>
 {/if}
@@ -143,10 +143,10 @@
 				<legend>{_T string="Contact information:"}</legend>
 				<p>
 					<label for="adresse_adh" class="bline{if $required.adresse_adh eq 1} required{/if}">{_T string="Address:"}</label>
-					<input type="text" class="large" name="adresse_adh" id="adresse_adh" value="{$member->adress}" maxlength="150" {$disabled.adresse_adh}/><br/>
+					<input type="text" class="large" name="adresse_adh" id="adresse_adh" value="{$member->adress|htmlspecialchars}" maxlength="150" {$disabled.adresse_adh}/><br/>
 {* FIXME: A-t-on réellement besoin de deux lignes pour une adresse ? *}
 					<label for="adresse2_adh" class="bline libelle{if $required.adresse_adh eq 1} required{/if}">{_T string="Address:"} {_T string=" (continuation)"}</label>
-					<input type="text" class="large" name="adresse2_adh" id="adresse2_adh" value="{$member->adress_continuation}" maxlength="150" {$disabled.adresse2_adh}/>
+					<input type="text" class="large" name="adresse2_adh" id="adresse2_adh" value="{$member->adress_continuation|htmlspecialchars}" maxlength="150" {$disabled.adresse2_adh}/>
 				</p>
 				<p>
 					<label for="cp_adh" class="bline{if $required.cp_adh eq 1} required{/if}">{_T string="Zip Code:"}</label>
@@ -154,11 +154,11 @@
 				</p>
 				<p>
 					<label for="ville_adh" class="bline{if $required.ville_adh eq 1} required{/if}">{_T string="City:"}</label>
-					<input type="text" name="ville_adh" id="ville_adh" value="{$member->town}" maxlength="50" {$disabled.ville_adh}/>
+					<input type="text" name="ville_adh" id="ville_adh" value="{$member->town|htmlspecialchars}" maxlength="50" {$disabled.ville_adh}/>
 				</p>
 				<p>
 					<label for="pays_adh" class="bline{if $required.pays_adh eq 1} required{/if}">{_T string="Country:"}</label> 
-					<input type="text" name="pays_adh" id="pays_adh" value="{$member->country}" maxlength="50" {$disabled.pays_adh}/>
+					<input type="text" name="pays_adh" id="pays_adh" value="{$member->country|htmlspecialchars}" maxlength="50" {$disabled.pays_adh}/>
 				</p>
 				<p>
 					<label for="tel_adh" class="bline{if $required.tel_adh eq 1} required{/if}">{_T string="Phone:"}</label>

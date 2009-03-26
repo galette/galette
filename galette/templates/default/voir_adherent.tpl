@@ -38,7 +38,7 @@
 			</tr>
 			<tr>
 				<th>{_T string="Nickname:"}</th>
-				<td>{$member->nickname}</td>
+				<td>{$member->nickname|htmlspecialchars}</td>
 			</tr> 
 			<tr> 
 				<th>{_T string="birth date:"}</th>
@@ -46,7 +46,7 @@
 			</tr>
 			<tr>
 				<th>{_T string="Profession:"}</th>
-				<td>{$member->job}</td>
+				<td>{$member->job|htmlspecialchars}</td>
 			</tr>
 			<tr>
 				<th>{_T string="Language:"}</th>
@@ -89,12 +89,12 @@
 			</tr>
 			<tr>
 				<th>{_T string="Other informations (admin):"}</th>
-				<td>{$member->others_infos_admin|nl2br}</td>
+				<td>{$member->others_infos_admin|nl2br|htmlspecialchars}</td>
 			</tr>
 {/if}
 			<tr>
 				<th>{_T string="Other informations:"}</th>
-				<td>{$member->others_infos|nl2br}</td>
+				<td>{$member->others_infos|nl2br|htmlspecialchars}</td>
 			</tr>
 		</table>
 
@@ -103,9 +103,9 @@
 			<tr>
 				<th>{_T string="Address:"}</th> 
 				<td>
-					{$member->adress}
+					{$member->adress|htmlspecialchars}
 {if $member->adresse2_adh ne ''}
-					<br/>{$member->adress2}
+					<br/>{$member->adress2|htmlspecialchars}
 {/if}
 				</td>
 			</tr>
@@ -115,11 +115,11 @@
 			</tr>
 			<tr>
 				<th>{_T string="City:"}</th>
-				<td>{$member->town}</td>
+				<td>{$member->town|htmlspecialchars}</td>
 			</tr>
 			<tr>
 				<th>{_T string="Country:"}</th>
-				<td>{$member->country}</td>
+				<td>{$member->country|htmlspecialchars}</td>
 			</tr>
 			<tr>
 				<th>{_T string="Phone:"}</th>

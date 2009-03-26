@@ -150,7 +150,7 @@
 					{/if}
 					<a href="voir_adherent.php?id_adh={$member.id_adh}">{$member.nom} {$member.prenom}</a>
 					</td>
-					<td class="{$member.class} nowrap">{$member.pseudo}</td>
+					<td class="{$member.class} nowrap">{$member.pseudo|htmlspecialchars}</td>
 					<td class="{$member.class} nowrap">{$member.statut}</td>
 					<td class="{$member.class} nowrap">{$member.statut_cotis}</td>
 					<td class="{$member.class} center nowrap actions_row">

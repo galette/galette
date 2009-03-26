@@ -87,7 +87,7 @@
 				</p>
 				<p>
 					<label for="pseudo_adh" class="bline libelle{if $required.pseudo_adh eq 1} required{/if}">{_T string="Nickname:"}</label>
-					<input type="text" name="pseudo_adh" id="pseudo_adh" value="{$data.pseudo_adh}" maxlength="20" {$disabled.pseudo_adh}/>
+					<input type="text" name="pseudo_adh" id="pseudo_adh" value="{$data.pseudo_adh|htmlspecialchars}" maxlength="20" {$disabled.pseudo_adh}/>
 				</p>
 				<p>
 					<label for="ddn_adh" class="bline libelle{if $required.ddn_adh eq 1} required{/if}">{_T string="birth date:"}</label>
@@ -95,7 +95,7 @@
 				</p>
 				<p>
 					<label for="prof_adh" class="bline libelle{if $required.prof_adh eq 1} required{/if}">{_T string="Profession:"}</label>
-					<input type="text" name="prof_adh" id="prof_adh" value="{$data.prof_adh}" maxlength="150" {$disabled.prof_adh}/>
+					<input type="text" name="prof_adh" id="prof_adh" value="{$data.prof_adh|htmlspecialchars}" maxlength="150" {$disabled.prof_adh}/>
 				</p>
 				<p>
 					<label for="bool_display_info" class="bline libelle{if $required.bool_display_info eq 1} required{/if}">{_T string="Be visible in the<br /> members list :"}</label>
@@ -115,9 +115,9 @@
 				<legend>{_T string="Contact information:"}</legend>
 				<p>
 					<label for="adresse_adh" class="bline libelle{if $required.adresse_adh eq 1} required{/if}">{_T string="Address:"}</label>
-					<input type="text" name="adresse_adh" id="adresse_adh" value="{$data.adresse_adh}" maxlength="150" class="large" {$disabled.adresse_adh}/><br/>
+					<input type="text" name="adresse_adh" id="adresse_adh" value="{$data.adresse_adh|htmlspecialchars}" maxlength="150" class="large" {$disabled.adresse_adh}/><br/>
 					<label for="adresse2_adh" class="bline libelle{if $required.adresse_adh eq 1} required{/if}">{_T string="Address:"} {_T string=" (continuation)"}</label>
-					<input type="text" name="adresse2_adh" id="adresse2_adh" value="{$data.adresse2_adh}" maxlength="150" class="large" {$disabled.adresse2_adh}/>
+					<input type="text" name="adresse2_adh" id="adresse2_adh" value="{$data.adresse2_adh|htmlspecialchars}" maxlength="150" class="large" {$disabled.adresse2_adh}/>
 				</p>
 				<p>
 					<label for="cp_adh" class="bline libelle{if $required.cp_adh eq 1} required{/if}">{_T string="Zip Code:"}</label>
@@ -125,11 +125,11 @@
 				</p>
 				<p>
 					<label for="ville_adh" class="bline libelle{if $required.ville_adh eq 1} required{/if}">{_T string="City:"}</label>
-					<input type="text" name="ville_adh" id="ville_adh" value="{$data.ville_adh}" maxlength="50" {$disabled.ville_adh}/>
+					<input type="text" name="ville_adh" id="ville_adh" value="{$data.ville_adh|htmlspecialchars}" maxlength="50" {$disabled.ville_adh}/>
 				</p>
 				<p>
 					<label for="pays_adh" class="bline libelle{if $required.pays_adh eq 1} required{/if}">{_T string="Country:"}</label>
-					<input type="text" name="pays_adh" id="pays_adh" value="{$data.pays_adh}" maxlength="50" {$disabled.pays_adh}/>
+					<input type="text" name="pays_adh" id="pays_adh" value="{$data.pays_adh|htmlspecialchars}" maxlength="50" {$disabled.pays_adh}/>
 				</p>
 				<p>
 					<label for="tel_adh" class="bline libelle{if $required.tel_adh eq 1} required{/if}">{_T string="Phone:"}</label>
@@ -184,7 +184,7 @@
 				</p>
 				<p>
 					<label for="info_public_adh" class="bline libelle{if $required.info_public_adh eq 1} required{/if}">{_T string="Other informations:"}</label>
-					<textarea name="info_public_adh" id="info_public_adh" cols="61" rows="6" {$disabled.info_public_adh}>{$data.info_public_adh}</textarea>
+					<textarea name="info_public_adh" id="info_public_adh" cols="61" rows="6" {$disabled.info_public_adh}>{$data.info_public_adh|htmlspecialchars}</textarea>
 				</p>
 			</fieldset>
 			{include file="display_dynamic_fields.tpl" is_form=true}
