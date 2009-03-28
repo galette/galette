@@ -6,7 +6,7 @@ Just put a {include file='common_header.tpl'} into the head tag.
 <title>{if $pref_slogan ne ""}{$pref_slogan} - {/if}{if $page_title ne ""}{$page_title} - {/if}Galette {$GALETTE_VERSION}</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css" />
-		<script type="text/javascript" src="{$jquery_dir}jquery-1.2.6.pack.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}jquery-1.3.2.min.js"></script>
 		<script type="text/javascript" src="{$jquery_dir}jquery.bgFade.js"></script>
 		<script type="text/javascript" src="{$jquery_dir}jquery.corner.js"></script>
 		<script type="text/javascript" src="{$jquery_dir}chili-1.7.pack.js"></script>
