@@ -12,7 +12,7 @@
 {/if}
 		<ul id="tabs">
 {foreach from=$all_forms key=key item=form}
-			<li><a href="?form={$key}"{if $form_name eq $key} class="current_tab"{/if}>{$form}</a></li>
+			<li{if $form_name eq $key} class="current_tab"{/if}><a href="?form={$key}">{$form}</a></li>
 {/foreach}
 		</ul>
 		<div class="tabbed">

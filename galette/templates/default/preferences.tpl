@@ -340,17 +340,16 @@
 			$('.tabbed').corner('bottom');
 
 			//if javascript active, hide tabs
-			$('fieldset.cssform').slideUp('fast');
+			$('fieldset.cssform').hide();
 			//and then, show only the default one
-			$('fieldset.cssform:first-child').slideDown('fast');
-			$('fieldset.cssform:first-child').fadeIn('slow');
+			$('fieldset.cssform:first-child').show();
 
 			//what to do when tab clicked
 			$('#tabs li a').click(function(){ldelim}
-				$('fieldset.cssform').slideUp('fast');
+				$('fieldset.cssform').hide();
 				$('.current_tab').removeClass();
 				$(this).parent().addClass('current_tab');
-				$($(this).attr('href')).slideDown('slow');
+				$($(this).attr('href')).show();
 			{rdelim});
 
 			//for color pickers

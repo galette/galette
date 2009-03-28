@@ -42,4 +42,6 @@
 			]]>
 		</script>
 {/literal}
+{else}
+		<p>{_T string="No fields to translate."}</p>
 {/if}
