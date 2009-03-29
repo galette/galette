@@ -47,8 +47,13 @@ session_start();
 
 /** TODO: GALETTE_VERSION must be defined once and for all */
 define('GALETTE_VERSION', 'v0.7alpha');
+/**
+* Import configuration settings
+*/
+require_once( WEB_ROOT . 'config/versions.inc.php');
+
 /** TODO: include_path should be defined once also */
-set_include_path(get_include_path() . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/PEAR/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/MDB2' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/Log');
+set_include_path(get_include_path() . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/PEAR-' . PEAR_VERSION . '/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/MDB2-' . MDB2_VERSION . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/Log-' . LOG_VERSION);
 
 /*--------------------------------------------------------------------------------------
 LOG and DEBUG
@@ -97,6 +102,7 @@ $i18n = new i18n((isset($_SESSION['pref_lang']) && $_SESSION['pref_lang']!='')?$
 * Now that all objects are correctly setted,
 * we can include files that need it
 */
+require_once(WEB_ROOT . 'includes/functions.inc.php');
 require_once(WEB_ROOT . 'includes/i18n.inc.php');
 
 $step="1";
@@ -161,7 +167,7 @@ $error_detected = false;
 
 				$mdb = new GaletteMdb2();
 
-				include(WEB_ROOT."/includes/adodb/adodb.inc.php");
+				include(WEB_ROOT."/includes/adodb" . ADODB_VERSION . "/adodb.inc.php");
 				$DB = ADONewConnection($_POST["install_dbtype"]);
 				$DB->debug = false;
 				$permsdb_ok = true;
