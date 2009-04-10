@@ -87,7 +87,7 @@ class Adherent {
 		if( $args == null ) {
 			$this->active = true;
 			$this->language = i18n::DEFAULT_LANG;
-			$this->creation_date = date("d/m/Y");
+			$this->creation_date = date("Y-m-d");
 			$this->status = Status::DEFAULT_STATUS;
 			$this->politeness = Politeness::MR;
 			$this->password = makeRandomPassword(7); //Usefull ?
