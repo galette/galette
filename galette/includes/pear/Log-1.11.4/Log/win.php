@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /repository/pear/Log/Log/win.php,v 1.21 2008/11/12 05:07:31 jon Exp $
+ * $Header: /repository/pear/Log/Log/win.php,v 1.23 2009/03/30 00:49:30 jon Exp $
  *
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.23 $
  * @package Log
  */
 
@@ -143,8 +143,14 @@ $win.document.writeln('td.l5 { $styles[5] }');
 $win.document.writeln('td.l6 { $styles[6] }');
 $win.document.writeln('td.l7 { $styles[7] }');
 $win.document.writeln('</style>');
+$win.document.writeln('<script type="text/javascript">');
+$win.document.writeln('function scroll() {');
+$win.document.writeln(' body = document.getElementById("{$this->_name}");');
+$win.document.writeln(' body.scrollTop = body.scrollHeight;');
+$win.document.writeln('}');
+$win.document.writeln('<\/script>');
 $win.document.writeln('</head>');
-$win.document.writeln('<body>');
+$win.document.writeln('<body id="{$this->_name}" onclick="scroll()">');
 $win.document.writeln('<table border="0" cellpadding="2" cellspacing="0">');
 $win.document.writeln('<tr><th>Time</th>');
 $identHeader
@@ -177,6 +183,7 @@ EOT;
         if ($this->_opened) {
             $this->_writeln('</table>');
             $this->_writeln('</body></html>');
+            $this->_drainBuffer();
             $this->_opened = false;
         }
 
@@ -184,7 +191,26 @@ EOT;
     }
 
     /**
-     * Writes a single line of text to the output window.
+     * Writes the contents of the output buffer to the output window.
+     *
+     * @access private
+     */
+    function _drainBuffer()
+    {
+        $win = $this->_name;
+        foreach ($this->_buffer as $line) {
+            echo "<script language='JavaScript'>\n";
+            echo "$win.document.writeln('" . addslashes($line) . "');\n";
+            echo "self.focus();\n";
+            echo "</script>\n";
+        }
+
+        /* Now that the buffer has been drained, clear it. */
+        $this->_buffer = array();
+    }
+
+    /**
+     * Writes a single line of text to the output buffer.
      *
      * @param string    $line   The line of text to write.
      *
@@ -202,20 +228,11 @@ EOT;
 
         /* If we haven't already opened the output window, do so now. */
         if (!$this->_opened && !$this->open()) {
-            return false;
+            return;
         }
 
         /* Drain the buffer to the output window. */
-        $win = $this->_name;
-        foreach ($this->_buffer as $line) {
-            echo "<script language='JavaScript'>\n";
-            echo "$win.document.writeln('" . addslashes($line) . "');\n";
-            echo "self.focus();\n";
-            echo "</script>\n";
-        }
-
-        /* Now that the buffer has been drained, clear it. */
-        $this->_buffer = array();
+        $this->_drainBuffer();
     }
 
     /**
