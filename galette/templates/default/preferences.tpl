@@ -229,27 +229,23 @@
 				<p>
 					<label for="pref_card_tcol" class="bline{if $required.pref_card_tcol eq 1} required{/if} tooltip" title="{_T string="Hexadecimal color notation: #RRGGBB"}">{_T string="Strip Text Color:"}</label>
 					<span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
-					<input type="text" name="pref_card_tcol" id="pref_card_tcol" value="{$pref.pref_card_tcol}" size="7" maxlength="7" class="color_selector"/>
-					<span id="pref_card_tcol_toggle" class="picker" style="background-color:{$pref.pref_card_tcol};">&nbsp;</span>
+					<input type="text" name="pref_card_tcol" id="pref_card_tcol" value="{$pref.pref_card_tcol}" size="7" maxlength="7" class="hex" />
 				</p>
 				<div class="subtitle">{_T string="Strip Background colors:"} <span class="exemple">{_T string="(Strip color will change according to member's status)"}</span></div>
 				<p>
 					<label for="pref_card_scol" class="bline{if $required.pref_card_scol eq 1} required{/if} tooltip" title="{_T string="Hexadecimal color notation: #RRGGBB"}">{_T string="Active Member Color:"}</label>
 					<span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
-					<input type="text" name="pref_card_scol" id="pref_card_scol" value="{$pref.pref_card_scol}" size="7" maxlength="7" class="color_selector"/>
-					<span id="pref_card_scol_toggle" class="picker" style="background-color:{$pref.pref_card_scol};">&nbsp;</span>
+					<input type="text" name="pref_card_scol" id="pref_card_scol" value="{$pref.pref_card_scol}" size="7" maxlength="7" class="hex"/>
 				</p>
 				<p>
 					<label for="pref_card_bcol" class="bline{if $required.pref_card_bcol eq 1} required{/if} tooltip" title="{_T string="Hexadecimal color notation: #RRGGBB"}">{_T string="Board Members Color:"}</label>
 					<span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
-					<input type="text" name="pref_card_bcol" id="pref_card_bcol" value="{$pref.pref_card_bcol}" size="7" maxlength="7" class="color_selector"/>
-					<span id="pref_card_bcol_toggle" style="background-color:{$pref.pref_card_bcol};" class="picker">&nbsp;</span>
+					<input type="text" name="pref_card_bcol" id="pref_card_bcol" value="{$pref.pref_card_bcol}" size="7" maxlength="7" class="hex"/>
 				</p>
 				<p>
 					<label for="pref_card_hcol" class="bline{if $required.pref_card_hcol eq 1}required{/if} tooltip" title="{_T string="Hexadecimal color notation: #RRGGBB"}">{_T string="Honor Members Color:"}</label>
 					<span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
-					<input type="text" name="pref_card_hcol" id="pref_card_hcol" value="{$pref.pref_card_hcol}" size="7" maxlength="7" class="color_selector"/>
-					<span id="pref_card_hcol_toggle" style="background-color:{$pref.pref_card_hcol};" class="picker">&nbsp;</span>
+					<input type="text" name="pref_card_hcol" id="pref_card_hcol" value="{$pref.pref_card_hcol}" size="7" maxlength="7" class="hex"/>
 				</p>
 				<div class="subtitle">&nbsp;</div>
 				<p>
@@ -354,43 +350,54 @@
 
 			//for color pickers
 			$(function(){ldelim}
-				$('.picker').each(function(){ldelim}
-					$(this).attr('style', '');
+				// hex inputs
+				$('input.hex')
+					.validHex()
+					.keyup(function() {ldelim}
+						$(this).validHex();
+					{rdelim})
+					.click(function(){ldelim}
+						$(this).addClass('focus');
+						$('#picker').remove();
+						$('div.picker-on').removeClass('picker-on');
+						$(this).after('<div id="picker"></div>').parent().addClass('picker-on');
+						$('#picker').farbtastic(this);
+						return false;
+					{rdelim})
+					.wrap('<div class="hasPicker"></div>')
+					.applyFarbtastic();
+
+				//general app click cleanup
+				$('body').click(function() {ldelim}
+					$('div.picker-on').removeClass('picker-on');
+					$('#picker').remove();
+					$('input.focus, select.focus').removeClass('focus');
 				{rdelim});
 
-				$('#pref_card_tcol_toggle').farbtastic('#pref_card_tcol');
-				$('#pref_card_scol_toggle').farbtastic('#pref_card_scol');
-				$('#pref_card_bcol_toggle').farbtastic('#pref_card_bcol');
-				$('#pref_card_hcol_toggle').farbtastic('#pref_card_hcol');
-				$('#pref_card_scol_toggle, #pref_card_bcol_toggle, #pref_card_hcol_toggle, #pref_card_tcol_toggle').hide();
-
-				$('.color_selector').each(function(){ldelim}
-					$(this).after(' <a href="#" id="'+$(this).attr('id')+'_show">{_T string="Show/Hide color selector"}</a>');
-				{rdelim});
-
-				$('#pref_card_tcol_show').toggle(function(){ldelim}
-					$('#pref_card_tcol_toggle').fadeIn();
-				{rdelim},function(){ldelim}
-					$('#pref_card_tcol_toggle').fadeOut();
-				{rdelim});
-
-				$('#pref_card_scol_show').toggle(function(){ldelim}
-					$('#pref_card_scol_toggle').fadeIn();
-				{rdelim},function(){ldelim}
-					$('#pref_card_scol_toggle').fadeOut();
-				{rdelim});
-
-				$('#pref_card_bcol_show').toggle(function(){ldelim}
-					$('#pref_card_bcol_toggle').fadeIn();
-				{rdelim},function(){ldelim}
-					$('#pref_card_bcol_toggle').fadeOut();
-				{rdelim});
-
-				$('#pref_card_hcol_show').toggle(function(){ldelim}
-					$('#pref_card_hcol_toggle').fadeIn();
-				{rdelim},function(){ldelim}
-					$('#pref_card_hcol_toggle').fadeOut();
-				{rdelim});
 			{rdelim});
+
+			//color pickers setup (sets bg color of inputs)
+			$.fn.applyFarbtastic = function() {ldelim}
+				return this.each(function() {ldelim}
+					$('<div/>').farbtastic(this).remove();
+				{rdelim});
+			{rdelim};
+
+			// validation for hex inputs
+			$.fn.validHex = function() {ldelim}
+				
+				return this.each(function() {ldelim}
+					
+					var value = $(this).val();
+					value = value.replace(/[^#a-fA-F0-9]/g, ''); // non [#a-f0-9]
+					if(value.match(/#/g) && value.match(/#/g).length > 1) value = value.replace(/#/g, ''); // ##
+					if(value.indexOf('#') == -1) value = '#'+value; // no #
+					if(value.length > 7) value = value.substr(0,7); // too many chars
+			
+					$(this).val(value);
+				
+				{rdelim});
+			
+			{rdelim};
 			//]]>
 		</script>

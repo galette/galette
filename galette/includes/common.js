@@ -64,7 +64,7 @@ $(function() {
 	//first, we hide tooltips in the page
 	$('.tip').hide();
 	//and then, we show them on rollover
-	$('.tooltip').Tooltip({
+	$('.tooltip').tooltip({
 		//track: true,
 		delay: 0,
 		showURL: false, 

@@ -230,7 +230,26 @@ CREATE UNIQUE INDEX galette_texts_idx ON galette_texts (tid);
 DROP TABLE galette_models;
 CREATE TABLE galette_models (
   mod_id integer NOT NULL,
-  mod_name character varying(64)  NOT NULL,
+  mod_name character varying(64) NOT NULL,
   mod_xml text NOT NULL
 );
 CREATE UNIQUE INDEX galette_models_idx ON galette_models (mod_id);
+
+DROP TABLE galette_fields_categories;
+CREATE TABLE galette_fields_categories (
+  id_field_category integer  DEFAULT nextval('galette_fields_categories_id_seq'::text) NOT NULL,
+  category character varying(50) NOT NULL,
+  position integer NOT NULL,
+  PRIMARY KEY (id_field_category)
+);
+CREATE UNIQUE INDEX galette_fields_categories_idx ON galette_fields_categories (id_field_category);
+
+DROP TABLE galette_config_fields;
+CREATE TABLE galette_config_fields (
+  table_name character varying(30) NOT NULL,
+  field_id character varying(30) NOT NULL,
+  required character(1) NOT NULL,
+  visible character(1) NOT NULL,
+  position integer NOT NULL,
+  id_field_category integer REFERENCES galette_fields_categories ON DELETE RESTRICT
+);

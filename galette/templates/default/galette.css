@@ -166,7 +166,7 @@ pre {
 	width: 100%;
 }
 
-th.listing {
+th.listing, li.listing {
 	background-color: #eea423;
 	color: #FFFFFF;
 	white-space: nowrap;
@@ -693,6 +693,9 @@ fieldset{
 /* 	width:80%; */
 	text-align:left;
 }
+fieldset.large{
+	margin:0 1% 1em 1%;
+}
 fieldset ul{
 	list-style-type:none;
 	margin:0;
@@ -734,6 +737,15 @@ legend{
 	padding:0.1em 0.3em;
 	margin-bottom:1em;
 	display:block;
+}
+
+th.bline, td.bline{
+	font-weight: bold;
+	background-color: #DDDDFF;
+	padding:0.1em 0.3em;
+	margin-bottom:0;
+	display:block;
+	text-align:left;
 }
 
 /* IE6 does not handle properly negative margins... */
@@ -938,6 +950,12 @@ ul#tabs li{
 .tabbed{
 	background-color:#DDDDFF;
 	clear:right;
+	padding-top:.5em;
+	padding-bottom:.5em;
+}
+.tabbed table#listing{
+	width: 98%;
+	margin:.5em 1%;
 }
 .current_tab{
 	background-color:#eea423!important;
@@ -1103,4 +1121,37 @@ ul#paths{
 
 .trombino img{
 	margin:.5em .5em 0 .5em;
+}
+
+.tbl_line_even {
+	background-color: #EEEEEE!important;
+	vertical-align: top;
+}
+
+.tbl_line_odd {
+	background-color: #E2E5EE!important;
+	vertical-align: top;
+}
+
+.fields_list li{
+	height:1.5em;
+	margin-top:.5em;
+	clear:left;
+	padding-top:.2em;
+}
+.fields_list li.listing{
+	font-weight:bold;
+}
+.fields_list span.label{
+	display:block;
+	width:21em;
+	float:left;
+}
+.fields_list span.yesno{
+	margin-right:.2em;
+	/*border:1px purple dashed;*/
+	width:15em;
+	display:block;
+	float:left;
+	text-align:center;
 }

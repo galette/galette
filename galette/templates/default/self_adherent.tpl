@@ -2,13 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$galette_lang}" lang="{$galette_lang}">
 	<head>
 		{include file='common_header.tpl'}
-		<link rel="stylesheet" type="text/css" href="{$template_subdir}datePicker.css"/>
-		<script type="text/javascript" src="{$jquery_dir}jquery.datePicker.js"></script>
-		<script type="text/javascript" src="{$jquery_dir}date.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.datepicker.min.js"></script>
 		{if $lang ne 'en'}
-		<script type="text/javascript" src="{$jquery_dir}date_{$galette_lang}.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/i18n/ui.datepicker-{$galette_lang}.min.js"></script>
 		{/if}
-		<script type="text/javascript" src="{$scripts_dir}date_common.js"></script>
+		<link rel="stylesheet" type="text/css" href="{$template_subdir}jquery-ui/jquery-ui-{$jquery_ui_version}.custom.css" />
 {literal}
 		<script type="text/javascript">
 			$(function(){
@@ -16,6 +14,13 @@
 					$('#update_lang').attr('value', 1);
 					$('#valid').attr('value', 0);
 					$('#subscribtion_form').submit();
+				});
+				$('#ddn_adh').datepicker({
+					changeMonth: true,
+					changeYear: true,
+					showOn: 'button',
+					buttonImage: 'templates/default/images/calendar.png',
+					buttonImageOnly: true
 				});
 			});
 		</script>
@@ -91,7 +96,7 @@
 				</p>
 				<p>
 					<label for="ddn_adh" class="bline libelle{if $required.ddn_adh eq 1} required{/if}">{_T string="birth date:"}</label>
-					<input class="past-date-pick" type="text" name="ddn_adh" id="ddn_adh" value="{$data.ddn_adh}" maxlength="10" {$disabled.ddn_adh}/> <span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
+					<input type="text" name="ddn_adh" id="ddn_adh" value="{$data.ddn_adh}" maxlength="10" {$disabled.ddn_adh}/> <span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
 				</p>
 				<p>
 					<label for="prof_adh" class="bline libelle{if $required.prof_adh eq 1} required{/if}">{_T string="Profession:"}</label>
@@ -199,18 +204,5 @@
 			<a href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
 		</div>
 	</div>
-	<script type="text/javascript">
-		//<![CDATA[
-			$.dpText = {ldelim}
-				TEXT_PREV_YEAR		:	'{_T string="Previous year"}',
-				TEXT_PREV_MONTH		:	'{_T string="Previous month"}',
-				TEXT_NEXT_YEAR		:	'{_T string="Next year"}',
-				TEXT_NEXT_MONTH		:	'{_T string="Next month"}',
-				TEXT_CLOSE		:	'{_T string="Close"}',
-				TEXT_CHOOSE_DATE	:	'{_T string="Choose date"}'
-			{rdelim}
-			$('.past-date-pick').datePicker({ldelim}startDate:'01/01/1900'{rdelim});
-		//]]>
-	</script>
 </body>
 </html>

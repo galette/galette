@@ -50,6 +50,8 @@ $tpl->config_dir = WEB_ROOT . 'configs/';
 
 $tpl->assign('template_subdir', $base_path . $template_subdir);
 $tpl->assign('jquery_dir', $base_path . 'includes/jquery/');
+$tpl->assign('jquery_version', JQUERY_VERSION);
+$tpl->assign('jquery_ui_version', JQUERY_UI_VERSION);
 $tpl->assign('htmledi_dir', $base_path . 'includes/tiny_mce/');
 $tpl->assign('scripts_dir', $base_path . 'includes/');
 $tpl->assign('PAGENAME', basename($_SERVER['SCRIPT_NAME']));

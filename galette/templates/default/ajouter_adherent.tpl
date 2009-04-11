@@ -53,7 +53,7 @@
 				</p>
 				<p>
 					<label for="ddn_adh" class="bline{if $required.ddn_adh eq 1} required{/if}">{_T string="birth date:"}</label>
-					<input class="past-date-pick" type="text" name="ddn_adh" id="ddn_adh" value="{$member->birthdate}" maxlength="10" {$disabled.ddn_adh}/> <span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
+					<input type="text" name="ddn_adh" id="ddn_adh" value="{$member->birthdate}" maxlength="10" {$disabled.ddn_adh}/> <span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
 				</p>
 				<p>
 					<label for="prof_adh" class="bline{if $required.prof_adh eq 1} required{/if}">{_T string="Profession:"}</label>
@@ -121,7 +121,7 @@
 				</p>
 				<p>
 					<label for="date_crea_adh" class="bline {if $required.date_crea_adh eq 1} required{/if}">{_T string="Creation date:"}</label>
-					<input class="past-date-pick" type="text" name="date_crea_adh" id="date_crea_adh" value="{$member->creation_date}" maxlength="10" {$disabled.date_crea_adh}/>
+					<input type="text" name="date_crea_adh" id="date_crea_adh" value="{$member->creation_date}" maxlength="10" {$disabled.date_crea_adh}/>
 					<span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
 				</p>
 				<p>
@@ -205,3 +205,22 @@
 		</div>
 		<p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
 		</form> 
+		<script type="text/javascript">
+			//<![CDATA[
+				$(function() {ldelim}
+					$('#ddn_adh').datepicker({ldelim}
+						changeMonth: true,
+						changeYear: true,
+						showOn: 'button',
+						buttonImage: '{$template_subdir}images/calendar.png',
+						buttonImageOnly: true
+					{rdelim});
+					$('#date_crea_adh').datepicker({ldelim}
+						showOn: 'button',
+						buttonImage: '{$template_subdir}images/calendar.png',
+						buttonImageOnly: true
+					{rdelim});
+				{rdelim});
+	
+			//]]>
+		</script>

@@ -3,46 +3,54 @@
 	<head>
 		{include file='common_header.tpl'}
 {if $color_picker}
-	<script type="text/javascript" src="{$jquery_dir}farbtastic.js"></script>
-	<link rel="stylesheet" type="text/css" href="{$template_subdir}farbtastic.css"/>
+		<script type="text/javascript" src="{$jquery_dir}farbtastic.js"></script>
+		<link rel="stylesheet" type="text/css" href="{$template_subdir}farbtastic.css"/>
 {/if}
-{if $html_editor}
-	<script type="text/javascript" src="{$htmledi_dir}tiny_mce.js"></script>
-	<script type="text/javascript">
-		//<![CDATA[
-		tinyMCE.init({ldelim}
-			mode : "none",
-			theme : "advanced",
-			theme_advanced_toolbar_location : "top",
-			theme_advanced_toolbar_align : "left",
-			theme_advanced_statusbar_location : "bottom",
-			theme_advanced_resizing : true,
-			plugins : "safari,insertdatetime,preview,contextmenu,fullscreen,nonbreaking",
-			theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,outdent,indent,blockquote,|,styleselect,formatselect,fontselect,fontsizeselect",
-			theme_advanced_buttons2 : "bullist,numlist,|,undo,redo,|,link,unlink,anchor,image,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,nonbreaking|,insertdate,inserttime,|,forecolor,backcolor,|,fullscreen,cleanup,help,code,preview",
-			theme_advanced_buttons3 : "",
-			language : "{$galette_lang}"
-		{rdelim});
+{* JQuery UI related *}
+{if $table_sorter || $require_calendar}
+		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.core.min.js"></script>
+{/if}
+{if $table_sorter}
+		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.sortable.min.js"></script>
 
-		function toggleEditor(id) {ldelim}
-			var elm = document.getElementById(id);
-		
-			if (tinyMCE.getInstanceById(id) == null)
-				tinyMCE.execCommand('mceAddControl', false, id);
-			else
-				tinyMCE.execCommand('mceRemoveControl', false, id);
-		{rdelim}
-
-		//]]>
-	</script>
 {/if}
 {if $require_calendar}
-	<link rel="stylesheet" type="text/css" href="{$template_subdir}datePicker.css"/>
-	<script type="text/javascript" src="{$jquery_dir}jquery.datePicker.js"></script>
-	<script type="text/javascript" src="{$jquery_dir}date.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.datepicker.min.js"></script>
 	{if $lang ne 'en'}
-	<script type="text/javascript" src="{$jquery_dir}date_{$galette_lang}.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/i18n/ui.datepicker-{$galette_lang}.min.js"></script>
 	{/if}
+		<link rel="stylesheet" type="text/css" href="{$template_subdir}jquery-ui/jquery-ui-{$jquery_ui_version}.custom.css" />
+{/if}
+{* /JQuery UI related *}
+{if $html_editor}
+		<script type="text/javascript" src="{$htmledi_dir}tiny_mce.js"></script>
+		<script type="text/javascript">
+			//<![CDATA[
+			tinyMCE.init({ldelim}
+				mode : "none",
+				theme : "advanced",
+				theme_advanced_toolbar_location : "top",
+				theme_advanced_toolbar_align : "left",
+				theme_advanced_statusbar_location : "bottom",
+				theme_advanced_resizing : true,
+				plugins : "safari,insertdatetime,preview,contextmenu,fullscreen,nonbreaking",
+				theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,outdent,indent,blockquote,|,styleselect,formatselect,fontselect,fontsizeselect",
+				theme_advanced_buttons2 : "bullist,numlist,|,undo,redo,|,link,unlink,anchor,image,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,nonbreaking|,insertdate,inserttime,|,forecolor,backcolor,|,fullscreen,cleanup,help,code,preview",
+				theme_advanced_buttons3 : "",
+				language : "{$galette_lang}"
+			{rdelim});
+	
+			function toggleEditor(id) {ldelim}
+				var elm = document.getElementById(id);
+			
+				if (tinyMCE.getInstanceById(id) == null)
+					tinyMCE.execCommand('mceAddControl', false, id);
+				else
+					tinyMCE.execCommand('mceRemoveControl', false, id);
+			{rdelim}
+	
+			//]]>
+		</script>
 {/if}
 </head>
 <body>
@@ -198,21 +206,5 @@
 			<a href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
 		</div>
 	</div>
-{if $require_calendar}
-	<script type="text/javascript">
-		//<![CDATA[
-			$.dpText = {ldelim}
-				TEXT_PREV_YEAR		:	'{_T string="Previous year"}',
-				TEXT_PREV_MONTH		:	'{_T string="Previous month"}',
-				TEXT_NEXT_YEAR		:	'{_T string="Next year"}',
-				TEXT_NEXT_MONTH		:	'{_T string="Next month"}',
-				TEXT_CLOSE		:	'{_T string="Close"}',
-				TEXT_CHOOSE_DATE	:	'{_T string="Choose date"}'
-			{rdelim}
-			$('.date-pick').datePicker().val(new Date().asString()).trigger('change');;
-			$('.past-date-pick').datePicker({ldelim}startDate:'01/01/1900'{rdelim});
-		//]]>
-	</script>
-{/if}
 </body>
 </html>

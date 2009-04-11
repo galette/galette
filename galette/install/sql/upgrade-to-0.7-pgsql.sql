@@ -73,4 +73,28 @@ INSERT INTO galette_texts (tid, tref, tsubject, tbody, tlang, tcomment) VALUES (
 -- Add missing primary keys
 CREATE UNIQUE INDEX galette_dynamic_fields_unique_idx ON galette_dynamic_fields (item_id, field_id, field_form, val_index);
 
+-- New table for fields categories
+DROP TABLE galette_fields_categories;
+CREATE TABLE galette_fields_categories (
+  id_field_category integer  DEFAULT nextval('galette_fields_categories_id_seq'::text) NOT NULL,
+  category character varying(50) NOT NULL,
+  position integer NOT NULL,
+  PRIMARY KEY (id_field_category)
+);
+CREATE UNIQUE INDEX galette_fields_categories_idx ON galette_fields_categories (id_field_category);
 
+-- Base fields categories
+INSERT INTO galette_fields_categories (id_field_category, category, position) VALUES (1, 'Identity:', 1);
+INSERT INTO galette_fields_categories (id_field_category, category, position) VALUES (2, 'Galette-related data:', 2);
+INSERT INTO galette_fields_categories (id_field_category, category, position) VALUES (3, 'Contact information:', 3);
+
+-- New table for fields configuration
+DROP TABLE galette_config_fields;
+CREATE TABLE galette_config_fields (
+  table_name character varying(30) NOT NULL,
+  field_id character varying(30) NOT NULL,
+  required character(1) NOT NULL,
+  visible character(1) NOT NULL,
+  position integer NOT NULL,
+  id_field_category integer REFERENCES galette_fields_categories ON DELETE RESTRICT
+);

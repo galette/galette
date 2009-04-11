@@ -1,99 +1,94 @@
-/*
- * jQuery corner plugin
- *
- * version 1.92 (12/18/2007)
- *
+/*!
+ * jQuery corner plugin: simple corner rounding
+ * Examples and documentation at: http://jquery.malsup.com/corner/
+ * version 1.95 (02/26/2009)
  * Dual licensed under the MIT and GPL licenses:
- *   http://www.opensource.org/licenses/mit-license.php
- *   http://www.gnu.org/licenses/gpl.html
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.gnu.org/licenses/gpl.html
  */
 
 /**
- * The corner() method provides a simple way of styling DOM elements.  
+ *  corner() takes a single string argument:  $('#myDiv').corner("effect corners width")
  *
- * corner() takes a single string argument:  $().corner("effect corners width")
+ *  effect:  name of the effect to apply, such as round, bevel, notch, bite, etc (default is round). 
+ *  corners: one or more of: top, bottom, tr, tl, br, or bl. 
+ *           by default, all four corners are adorned. 
+ *  width:   width of the effect; in the case of rounded corners this is the radius. 
+ *           specify this value using the px suffix such as 10px (and yes, it must be pixels).
  *
- *   effect:  The name of the effect to apply, such as round or bevel. 
- *            If you don't specify an effect, rounding is used.
- *
- *   corners: The corners can be one or more of top, bottom, tr, tl, br, or bl. 
- *            By default, all four corners are adorned. 
- *
- *   width:   The width specifies the width of the effect; in the case of rounded corners this 
- *            will be the radius of the width. 
- *            Specify this value using the px suffix such as 10px, and yes it must be pixels.
- *
- * For more details see: http://methvin.com/jquery/jq-corner.html
- * For a full demo see:  http://malsup.com/jquery/corner/
- *
- *
- * @example $('.adorn').corner();
- * @desc Create round, 10px corners 
- *
- * @example $('.adorn').corner("25px");
- * @desc Create round, 25px corners 
- *
- * @example $('.adorn').corner("notch bottom");
- * @desc Create notched, 10px corners on bottom only
- *
- * @example $('.adorn').corner("tr dog 25px");
- * @desc Create dogeared, 25px corner on the top-right corner only
- *
- * @example $('.adorn').corner("round 8px").parent().css('padding', '4px').corner("round 10px");
- * @desc Create a rounded border effect by styling both the element and its parent
- * 
  * @name corner
  * @type jQuery
  * @param String options Options which control the corner style
  * @cat Plugins/Corner
  * @return jQuery
- * @author Dave Methvin (dave.methvin@gmail.com)
- * @author Mike Alsup (malsup@gmail.com)
+ * @author Dave Methvin (http://methvin.com/jquery/jq-corner.html)
+ * @author Mike Alsup   (http://jquery.malsup.com/corner/)
  */
-(function($) { 
+;(function($) { 
+
+var expr = (function() {
+    var div = document.createElement('div');
+    try { div.style.setExpression('width','0+0'); }
+    catch(e) { return false; }
+    return true;
+})();
+    
+function sz(el, p) { 
+    return parseInt($.css(el,p))||0; 
+};
+function hex2(s) {
+    var s = parseInt(s).toString(16);
+    return ( s.length < 2 ) ? '0'+s : s;
+};
+function gpc(node) {
+    for ( ; node && node.nodeName.toLowerCase() != 'html'; node = node.parentNode ) {
+        var v = $.css(node,'backgroundColor');
+        if ( v.indexOf('rgb') >= 0 ) { 
+            if ($.browser.safari && v == 'rgba(0, 0, 0, 0)')
+                continue;
+            var rgb = v.match(/\d+/g); 
+            return '#'+ hex2(rgb[0]) + hex2(rgb[1]) + hex2(rgb[2]);
+        }
+        if ( v && v != 'transparent' )
+            return v;
+    }
+    return '#ffffff';
+};
+
+function getWidth(fx, i, width) {
+    switch(fx) {
+    case 'round':  return Math.round(width*(1-Math.cos(Math.asin(i/width))));
+    case 'cool':   return Math.round(width*(1+Math.cos(Math.asin(i/width))));
+    case 'sharp':  return Math.round(width*(1-Math.cos(Math.acos(i/width))));
+    case 'bite':   return Math.round(width*(Math.cos(Math.asin((width-i-1)/width))));
+    case 'slide':  return Math.round(width*(Math.atan2(i,width/i)));
+    case 'jut':    return Math.round(width*(Math.atan2(width,(width-i-1))));
+    case 'curl':   return Math.round(width*(Math.atan(i)));
+    case 'tear':   return Math.round(width*(Math.cos(i)));
+    case 'wicked': return Math.round(width*(Math.tan(i)));
+    case 'long':   return Math.round(width*(Math.sqrt(i)));
+    case 'sculpt': return Math.round(width*(Math.log((width-i-1),width)));
+    case 'dog':    return (i&1) ? (i+1) : width;
+    case 'dog2':   return (i&2) ? (i+1) : width;
+    case 'dog3':   return (i&3) ? (i+1) : width;
+    case 'fray':   return (i%2)*width;
+    case 'notch':  return width; 
+    case 'bevel':  return i+1;
+    }
+};
 
 $.fn.corner = function(o) {
-    var ie6 = $.browser.msie && /MSIE 6.0/.test(navigator.userAgent);
-    function sz(el, p) { return parseInt($.css(el,p))||0; };
-    function hex2(s) {
-        var s = parseInt(s).toString(16);
-        return ( s.length < 2 ) ? '0'+s : s;
-    };
-    function gpc(node) {
-        for ( ; node && node.nodeName.toLowerCase() != 'html'; node = node.parentNode ) {
-            var v = $.css(node,'backgroundColor');
-            if ( v.indexOf('rgb') >= 0 ) { 
-                if ($.browser.safari && v == 'rgba(0, 0, 0, 0)')
-                    continue;
-                var rgb = v.match(/\d+/g); 
-                return '#'+ hex2(rgb[0]) + hex2(rgb[1]) + hex2(rgb[2]);
-            }
-            if ( v && v != 'transparent' )
-                return v;
+    // in 1.3+ we can fix mistakes with the ready state
+	if (this.length == 0) {
+        if (!$.isReady && this.selector) {
+            var s = this.selector, c = this.context;
+            $(function() {
+                $(s,c).corner(o);
+            });
         }
-        return '#ffffff';
-    };
-    function getW(i) {
-        switch(fx) {
-        case 'round':  return Math.round(width*(1-Math.cos(Math.asin(i/width))));
-        case 'cool':   return Math.round(width*(1+Math.cos(Math.asin(i/width))));
-        case 'sharp':  return Math.round(width*(1-Math.cos(Math.acos(i/width))));
-        case 'bite':   return Math.round(width*(Math.cos(Math.asin((width-i-1)/width))));
-        case 'slide':  return Math.round(width*(Math.atan2(i,width/i)));
-        case 'jut':    return Math.round(width*(Math.atan2(width,(width-i-1))));
-        case 'curl':   return Math.round(width*(Math.atan(i)));
-        case 'tear':   return Math.round(width*(Math.cos(i)));
-        case 'wicked': return Math.round(width*(Math.tan(i)));
-        case 'long':   return Math.round(width*(Math.sqrt(i)));
-        case 'sculpt': return Math.round(width*(Math.log((width-i-1),width)));
-        case 'dog':    return (i&1) ? (i+1) : width;
-        case 'dog2':   return (i&2) ? (i+1) : width;
-        case 'dog3':   return (i&3) ? (i+1) : width;
-        case 'fray':   return (i%2)*width;
-        case 'notch':  return width; 
-        case 'bevel':  return i+1;
-        }
-    };
+        return this;
+	}
+
     o = (o||"").toLowerCase();
     var keep = /keep/.test(o);                       // keep borders?
     var cc = ((o.match(/cc:(#[0-9a-f]+)/)||[])[1]);  // corner color
@@ -119,7 +114,7 @@ $.fn.corner = function(o) {
             B: parseInt($.css(this,'paddingBottom'))||0,  L: parseInt($.css(this,'paddingLeft'))||0
         };
 
-        if ($.browser.msie) this.style.zoom = 1; // force 'hasLayout' in IE
+        if (typeof this.style.zoom != undefined) this.style.zoom = 1; // force 'hasLayout' in IE
         if (!keep) this.style.border = 'none';
         strip.style.borderColor = cc || gpc(this.parentNode);
         var cssHeight = $.curCSS(this, 'height');
@@ -140,7 +135,7 @@ $.fn.corner = function(o) {
                         this.style.position = 'relative';
                     ds.position = 'absolute';
                     ds.bottom = ds.left = ds.padding = ds.margin = '0';
-                    if ($.browser.msie)
+                    if (expr)
                         ds.setExpression('width', 'this.parentNode.offsetWidth');
                     else
                         ds.width = '100%';
@@ -152,10 +147,12 @@ $.fn.corner = function(o) {
                     ds.top = ds.left = ds.right = ds.padding = ds.margin = '0';
                     
                     // fix ie6 problem when blocked element has a border width
-                    var bw = 0;
-                    if (ie6 || !$.boxModel)
-                        bw = sz(this,'borderLeftWidth') + sz(this,'borderRightWidth');
-                    ie6 ? ds.setExpression('width', 'this.parentNode.offsetWidth - '+bw+'+ "px"') : ds.width = '100%';
+                    if (expr) {
+                        var bw = sz(this,'borderLeftWidth') + sz(this,'borderRightWidth');
+                        ds.setExpression('width', 'this.parentNode.offsetWidth - '+bw+'+ "px"');
+                    }
+                    else
+                        ds.width = '100%';
                 }
                 else {
                     ds.margin = !bot ? '-'+pad.T+'px -'+pad.R+'px '+(pad.T-width)+'px -'+pad.L+'px' : 
@@ -163,7 +160,7 @@ $.fn.corner = function(o) {
                 }
 
                 for (var i=0; i < width; i++) {
-                    var w = Math.max(0,getW(i));
+                    var w = Math.max(0,getWidth(fx,i, width));
                     var e = strip.cloneNode(false);
                     e.style.borderWidth = '0 '+(opts[j+'R']?w:0)+'px 0 '+(opts[j+'L']?w:0)+'px';
                     bot ? d.appendChild(e) : d.insertBefore(e, d.firstChild);
@@ -173,6 +170,6 @@ $.fn.corner = function(o) {
     });
 };
 
-$.fn.uncorner = function(o) { return $('.jquery-corner', this).remove(); };
+$.fn.uncorner = function() { return $('.jquery-corner', this).remove(); };
     
 })(jQuery);
