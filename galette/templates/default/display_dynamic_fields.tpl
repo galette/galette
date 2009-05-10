@@ -2,6 +2,7 @@
 {if $is_form eq true}
 <fieldset class="cssform">
 	<legend>{_T string="Additionnal fields:"}</legend>
+	<div>
 {else}
 <table class="details">
 	<caption>{_T string="Additionnal fields:"}</caption>
@@ -63,6 +64,7 @@
 {/if}
 {/foreach}
 {if $is_form eq true}
+	</div>
 </fieldset>
 {else}
 </table>

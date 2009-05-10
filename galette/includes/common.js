@@ -26,6 +26,30 @@
  * 
  */
 
+//set up fieldsets spindowns
+//the function will spin the element just after legend, and will update the icon
+$.fn.spinDown = function() {
+	
+	return this.click(function() {
+		var $this = $(this);
+
+		$this.parent('legend').next().slideToggle(100);
+		$this.toggleClass('ui-icon-circle-arrow-e').toggleClass('ui-icon-circle-arrow-s');
+
+		return false;
+	});
+	
+};
+
+//make fieldsets collapsibles. This requires a legend and all the following elements to be grouped (for example in a div element)
+//The function will 'hide' 
+var _collapsibleFieldsets = function(){
+	$('legend').each(function(){
+		var _collapse = $('<a href="#" class="ui-icon ui-icon-circle-arrow-s collapsible">Collapse/Expand</a>');
+		$(this).prepend(_collapse);
+		_collapse.spinDown();
+	});
+}
 
 /* On document ready
 -------------------------------------------------------- */

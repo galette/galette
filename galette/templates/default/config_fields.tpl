@@ -58,20 +58,6 @@
 		$('#tabs li').corner('top');
 		$('.tabbed').corner('bottom');
 
-		//set up spindowns	
-		$.fn.spinDown = function() {ldelim}
-			
-			return this.click(function() {ldelim}
-				var $this = $(this);
-
-				$this.parent('legend').next().slideToggle(100);
-				$this.toggleClass('ui-icon-circle-arrow-e').toggleClass('ui-icon-circle-arrow-s');
-
-				return false;
-			{rdelim});
-			
-		{rdelim};
-
 		var _initSortable = function(){ldelim}
 			$('.fields_list').sortable({ldelim}
 				items: 'li:not(.listing)',
@@ -116,11 +102,7 @@
 		{rdelim}
 
 		$(function() {ldelim}
-			$('legend').each(function(){ldelim}
-				var _collapse = $('<a href="#" class="ui-icon ui-icon-circle-arrow-s collapsable">Collapse/Expand</a>');
-				$(this).prepend(_collapse);
-				_collapse.spinDown();
-			{rdelim});
+			_collapsibleFieldsets();
 
 			_bindCollapse();
 
