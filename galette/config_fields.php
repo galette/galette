@@ -99,6 +99,7 @@ $tpl->assign('requireds', $fc->getRequired());
 $tpl->assign('visibles', $fc->getVisibles());
 $tpl->assign('positions', $fc->getPositions());
 $tpl->assign('table_sorter', true);
+//$tpl->assign('require_tabs', true);
 $content = $tpl->fetch("config_fields.tpl");
 $tpl->assign("content",$content);
 $tpl->display("page.tpl");

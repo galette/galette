@@ -21,6 +21,12 @@
 	{/if}
 		<link rel="stylesheet" type="text/css" href="{$template_subdir}jquery-ui/jquery-ui-{$jquery_ui_version}.custom.css" />
 {/if}
+{if $require_tabs}
+		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.tabs.min.js"></script>
+{/if}
+{if $table_sorter || $require_calendar || $require_tabs}
+		<link rel="stylesheet" type="text/css" href="{$template_subdir}jquery-ui/jquery-ui-{$jquery_ui_version}.custom.css" />
+{/if}
 {* /JQuery UI related *}
 {if $html_editor}
 		<script type="text/javascript" src="{$htmledi_dir}tiny_mce.js"></script>
@@ -74,6 +80,7 @@
 				<li><a href="{$galette_base_path}ajouter_transaction.php">{_T string="Add a transaction"}</a></li>
 				<li><a href="{$galette_base_path}history.php">{_T string="Logs"}</a></li>
 				<li><a href="{$galette_base_path}export.php">{_T string="Exports"}</a></li>
+				<li><a href="{$galette_base_path}config_fields.php">{_T string="Customize fields order"}</a></li>
 {else}
 				<li><a href="{$galette_base_path}subscription_form.php?id_adh={$data.id_adh}">Fiche adherent</a></li>
 				<li><a href="{$galette_base_path}voir_adherent.php">{_T string="My information"}</a></li>
