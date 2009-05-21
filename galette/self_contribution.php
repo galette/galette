@@ -128,7 +128,7 @@ if (isset($_POST["valid"]) && $_POST["self_contribution"])
 	$value = "";
 	// validation des dates			
 	if($proprietes_arr["type"]=="date"){
-	  if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", 
+	  if (preg_match("@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@", 
 		   $post_value, $array_jours)){
 	    if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
 	      $value=$DB->DBDate($array_jours[3].'-'.$array_jours[2].'-'.$array_jours[1]);

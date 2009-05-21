@@ -98,7 +98,7 @@ if (isset($_POST["valid"]))
 				$value = $DB->qstr($value,get_magic_quotes_gpc());
 				break;
 			case 'trans_date':
-				if (ereg("^[0-9]{2}/[0-9]{2}/[0-9]{4}$", $value, $result)) {
+				if (preg_match("@^[0-9]{2}/[0-9]{2}/[0-9]{4}$@", $value, $result)) {
 					$value = date_text2db($DB, $value);
 					if ($value == "")
 						$error_detected[] = _T("- Non valid date!")." ($key)";

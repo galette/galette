@@ -190,18 +190,27 @@
 			
 			global $DB;
 			
-			$allowed_extensions = array('jpg', 'png', 'gif');
+			$bad_chars = array('\.', '\\\\', "'", ' ', '\/', ':', '\*', '\?', '"', '<', '>', '|');
+			$allowed_extensions = array('jpeg', 'jpg', 'png', 'gif');
+			$allowed_mimes = array('image/jpeg', 'image/png', 'image/gif');
 			$format_ok = false;
-			foreach($allowed_extensions as $allowed_extension)
-			{
-				if (strtolower(substr($name,-4))=='.'.$allowed_extension)
-				{
-					$format_ok = true;
-					$extension = $allowed_extension;
+
+			//First, does the file have valid name ?
+			$reg = "/^(.[^" . implode('', $bad_chars) . "]+)\.(" . implode('|', $allowed_extensions) . ")$/i";
+			if( preg_match( $reg, $name, $matches ) ){
+				$format_ok = true;
+				$extension = $matches[2];
+			} else {
+				return false;
+			}
+
+			//Second, let's see if the mime-type is allowed - if gd is aivailable
+			if(function_exists("gd_info")) {
+				$current = getimagesize($tmpfile);
+				if( !in_array($current['mime'], $allowed_mimes) ){
+					return false;
 				}
 			}
-			if (!$format_ok)
-				return false;
 
 			$sql = "DELETE FROM ".PREFIX_DB."pictures
 				WHERE id_adh='".$id."'";
