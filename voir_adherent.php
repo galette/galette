@@ -65,7 +65,7 @@
 			case 'date_echeance':
 				if ($val!='')
 				{
-					list($a,$m,$j)=split("-",$val);
+					list($a,$m,$j)=explode("-",$val);
 					$adherent[$key]="$j/$m/$a";
 				}
 				break;

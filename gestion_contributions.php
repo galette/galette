@@ -55,14 +55,14 @@
 			$numrows = $_GET["nbshow"];
 							
         if (isset($_GET["contrib_filter_1"]))
-	if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_GET["contrib_filter_1"], $array_jours))
+	if (preg_match("@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@", $_GET["contrib_filter_1"], $array_jours))
 	{
 		if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
 			$_SESSION["filtre_date_cotis_1"]=$_GET["contrib_filter_1"];
 		else
 			$error_detected[] = _T("- Non valid date!");
 	}
-	elseif (ereg("^([0-9]{4})$", $_GET["contrib_filter_1"], $array_jours))
+	elseif (preg_match("/^([0-9]{4})$/", $_GET["contrib_filter_1"], $array_jours))
 		$_SESSION["filtre_date_cotis_1"]="01/01/".$array_jours[1];
 	elseif ($_GET["contrib_filter_1"]=="")
 		$_SESSION["filtre_date_cotis_1"]="";
@@ -70,14 +70,14 @@
 		$error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!");
 
 	if (isset($_GET["contrib_filter_2"]))
-	if (ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_GET["contrib_filter_2"], $array_jours))
+	if (preg_match("@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@", $_GET["contrib_filter_2"], $array_jours))
 	{
 		if (checkdate($array_jours[2],$array_jours[1],$array_jours[3]))
 			$_SESSION["filtre_date_cotis_2"]=$_GET["contrib_filter_2"];
 		else
 			$error_detected[] = _T("- Non valid date!");
 	}
-	elseif (ereg("^([0-9]{4})$", $_GET["contrib_filter_2"], $array_jours))
+	elseif (preg_match("/^([0-9]{4})$/", $_GET["contrib_filter_2"], $array_jours))
 		$_SESSION["filtre_date_cotis_2"]="01/01/".$array_jours[1];
 	elseif ($_GET["contrib_filter_2"]=="")
 		$_SESSION["filtre_date_cotis_2"]="";
@@ -170,14 +170,14 @@
 	// date filter
 	if ($_SESSION["filtre_date_cotis_1"]!="")
 	{
-	   ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_SESSION["filtre_date_cotis_1"], $array_jours);
+	   preg_match("@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@", $_SESSION["filtre_date_cotis_1"], $array_jours);
 	   $datemin = "'".$array_jours[3]."-".$array_jours[2]."-".$array_jours[1]."'";
 	   $requete[0] .= "AND ".PREFIX_DB."cotisations.date_debut_cotis >= " . $datemin . " ";
 	   $requete[1] .= "AND ".PREFIX_DB."cotisations.date_debut_cotis >= " . $datemin . " ";
 	}
 	if ($_SESSION["filtre_date_cotis_2"]!="")
 	{
-	   ereg("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", $_SESSION["filtre_date_cotis_2"], $array_jours);
+	   preg_match("@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@", $_SESSION["filtre_date_cotis_2"], $array_jours);
 	   $datemax = "'".$array_jours[3]."-".$array_jours[2]."-".$array_jours[1]."'";
 	   $requete[0] .= "AND ".PREFIX_DB."cotisations.date_debut_cotis <= " . $datemax . " ";
 	   $requete[1] .= "AND ".PREFIX_DB."cotisations.date_debut_cotis <= " . $datemax . " ";
@@ -273,7 +273,7 @@
 			}
 			else
 			{
-				$date_fin = split("-",$resultat->fields[0]);
+				$date_fin = explode("-",$resultat->fields[0]);
 				$ts_date_fin = mktime(0,0,0,$date_fin[1],$date_fin[2],$date_fin[0]);
 				$aujourdhui = time();
 				$difference = intval(($ts_date_fin - $aujourdhui)/(3600*24));

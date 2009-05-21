@@ -182,7 +182,7 @@ if ($installed) {
 			$update_scripts = array();
 			while (($file = readdir($dh)) !== false)
 			{
-				if (ereg("upgrade-to-(.*)-mysql.sql",$file,$ver))
+				if (preg_match("/upgrade-to-(.*)-mysql.sql/",$file,$ver))
 					$update_scripts[] = $ver[1];
 			}
 			closedir($dh);
@@ -664,7 +664,7 @@ echo "</ul>";
 				$first_file_found = false;
 				while (($file = readdir($dh)) !== false)
 				{
-					if (ereg("upgrade-to-(.*)-".$_POST["install_dbtype"].".sql",$file,$ver))
+					if (preg_match("/upgrade-to-(.*)-".$_POST["install_dbtype"].".sql/",$file,$ver))
 					{
 						if (substr($_POST["install_type"],8)<=$ver[1])
 							$update_scripts[$ver[1]] = $file;
@@ -691,7 +691,7 @@ echo "</ul>";
 				if ($query != '' && $query[0] != '-')
 				{
 					$DB->Execute($query);
-					@list($w1, $w2, $w3, $extra) = split(" ", $query, 4);
+					@list($w1, $w2, $w3, $extra) = explode(" ", $query, 4);
 					if ($extra!="") $extra="...";
 					if ($DB->ErrorNo())
 					{
@@ -723,8 +723,8 @@ echo "</ul>\n";
 				while (!$result->EOF) {
 					$c = $result->FetchRow();
 					$newc = array('id_cotis' => $c['id_cotis']);
-					list($by, $bm, $bd) = split("-", $c['date_debut_cotis']);
-					list($ey, $em, $ed) = split("-", $c['date_fin_cotis']);
+					list($by, $bm, $bd) = explode("-", $c['date_debut_cotis']);
+					list($ey, $em, $ed) = explode("-", $c['date_fin_cotis']);
 					$newc['start_date'] = mktime(0, 0, 0, $bm, $bd, $by);
 					$newc['end_date'] = mktime(0, 0, 0, $em, $ed, $ey);
 					if ($bm > $em) {
@@ -789,8 +789,8 @@ echo "</ul>\n";
 					while (!$result->EOF) {
 						$c = $result->FetchRow();
 						$newc = array('id_cotis' => $c['id_cotis']);
-						list($by, $bm, $bd) = split("-", $c['date_debut_cotis']);
-						list($ey, $em, $ed) = split("-", $c['date_fin_cotis']);
+						list($by, $bm, $bd) = explode("-", $c['date_debut_cotis']);
+						list($ey, $em, $ed) = explode("-", $c['date_fin_cotis']);
 						$newc['start_date'] = mktime(0, 0, 0, $bm, $bd, $by);
 						$newc['end_date'] = mktime(0, 0, 0, $em, $ed, $ey);
 						if ($bm > $em) {

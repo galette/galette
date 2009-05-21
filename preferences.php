@@ -131,7 +131,7 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1")
 		$error_detected[] = _T("- Invalid number of months of membership extension.");
 	      break;
 	    case 'pref_beg_membership':
-	      $beg_membership = split("/",$value);
+	      $beg_membership = explode("/",$value);
 	      if (count($beg_membership) != 2)
 		$error_detected[] = _T("- Invalid format of beginning of membership.");
 	      else {
