@@ -1,8 +1,8 @@
 <?php
  
 /* gestion_contributions.php
- * - Récapitulatif des contributions
- * Copyright (c) 2004 Frédéric Jaqcuot
+ * - Rï¿½capitulatif des contributions
+ * Copyright (c) 2004 Frï¿½dï¿½ric Jaqcuot
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -121,7 +121,7 @@
 				    	    WHERE id_cotis=".$DB->qstr($_GET["sup"], get_magic_quotes_gpc()); 
 				$DB->Execute($requetesup);
 			
-				// mise a jour de l'échéance
+				// mise a jour de l'ï¿½chï¿½ance
 				$date_fin = get_echeance($DB, $id_adh);
 				if ($date_fin!=""){
 				  $date_fin_update = "'".$date_fin[2]."-".$date_fin[1]."-".$date_fin[0]."'";
@@ -151,7 +151,8 @@
 			".PREFIX_DB."adherents.nom_adh, 
 			".PREFIX_DB."adherents.prenom_adh,
 			".PREFIX_DB."types_cotisation.libelle_type_cotis,
-			".PREFIX_DB."types_cotisation.cotis_extension
+			".PREFIX_DB."types_cotisation.cotis_extension,
+			".PREFIX_DB."types_cotisation.id_type_cotis
 			FROM ".PREFIX_DB."cotisations,".PREFIX_DB."adherents,".PREFIX_DB."types_cotisation
 			WHERE ".PREFIX_DB."cotisations.id_adh=".PREFIX_DB."adherents.id_adh
 			AND ".PREFIX_DB."types_cotisation.id_type_cotis=".PREFIX_DB."cotisations.id_type_cotis ";
@@ -230,11 +231,11 @@
 		
 	$compteur = 1+($page-1)*$numrows;
 	while(!$resultat->EOF) 
-	{ 
-		if ($resultat->fields["date_fin_cotis"]!=$resultat->fields["date_debut_cotis"])
-			$row_class = "cotis-normal";
-		else
+	{
+		if( $resultat->fields['id_type_cotis'] == 4 || $resultat->fields['id_type_cotis'] == 5 )
 			$row_class = "cotis-give";
+		else
+			$row_class = "cotis-normal";
 		$is_cotis = ($resultat->fields['cotis_extension'] == '1');
 		$contributions[$compteur]["class"]=$row_class;
 		$contributions[$compteur]["id_cotis"]=$resultat->fields['id_cotis'];
