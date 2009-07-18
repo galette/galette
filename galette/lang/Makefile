@@ -28,8 +28,8 @@ PHP_SOURCES = ../index.php \
 ../champs_requis.php \
 ../traduire_libelles.php \
 ../gestion_textes.php \
+../editer_intitules.php \
 ../includes/dynamic_fields.inc.php \
-../subscription_form.php \
 ../templates/default/index.tpl \
 ../templates/default/gestion_adherents.tpl \
 ../templates/default/mailing_adherents.tpl \
@@ -50,7 +50,9 @@ PHP_SOURCES = ../index.php \
 ../templates/default/change_passwd.tpl \
 ../templates/default/self_adherent.tpl \
 ../templates/default/champ_requis.tpl \
-../templates/default/gestion_textes.tpl
+../templates/default/gestion_textes.tpl \
+../templates/default/editer_intitules.tpl \
+../templates/default/editer_intitule.tpl
 
 
 all : messages.po lang

@@ -45,9 +45,9 @@ else
 	$pref_lang="english";
 
 $languages = array (
-                    "french"  => "fr_FR@euro",
-                    "english"   => "en_US",
-                    "spanish"   => "es_ES@euro"
+                    "fr_FR@euro" => "french",
+                    "en_US"      => "english",
+                    "es_ES@euro" => "spanish"
                     );
 
 $short_languages = array(
@@ -56,7 +56,7 @@ $short_languages = array(
 			'spanish'	=>	'es'
 		);
 
-$language = $i18n->getFileName();
+$language = $i18n->getLongID();
 $short_language = $i18n->getAbbrev();
 // $language=$languages[$pref_lang];
 // $short_language = $short_languages[$pref_lang];
@@ -92,7 +92,7 @@ function add_dynamic_translation($DB, $text_orig, $error_detected)
 	global $languages, $language;
 	$l10n_table = PREFIX_DB."l10n";
 	$quoted_text_orig = $DB->qstr($text_orig, get_magic_quotes_gpc());
-	foreach (array_values($languages) as $text_locale) {
+	foreach (array_keys($languages) as $text_locale) {
 		$quoted_locale = $DB->qstr($text_locale, get_magic_quotes_gpc());
 		// User is supposed to use his own language as original text.
 		$quoted_trans = $DB->qstr($text_locale == $language ? $text_orig : "");
@@ -107,7 +107,6 @@ function add_dynamic_translation($DB, $text_orig, $error_detected)
 			$query = "INSERT INTO $l10n_table
 					(text_orig, text_locale, text_trans)
 				  VALUES ($quoted_text_orig, $quoted_locale, $quoted_trans)";
-			
 			$result = parse_db_result($DB, $DB->Execute($query), $error_detected, $query);
 		}
 	}
@@ -118,7 +117,7 @@ function delete_dynamic_translation($DB, $text_orig, $error_detected)
 	global $languages;
 	$l10n_table = PREFIX_DB."l10n";
 	$quoted_text_orig = $DB->qstr($text_orig, get_magic_quotes_gpc());
-	foreach (array_values($languages) as $text_locale) {
+	foreach (array_keys($languages) as $text_locale) {
 		$quoted_locale = $DB->qstr($text_locale, get_magic_quotes_gpc());
 		$query = "UPDATE $l10n_table
 			  SET text_nref=text_nref-1
@@ -160,7 +159,7 @@ function get_dynamic_translation($DB, $text_orig, $text_locale)
 /*FIXME : $loc undefined*/
 if ( (isset($loc) && $loc!=$language) || $disable_gettext)
 {
-        include(WEB_ROOT."lang/lang_".$language.".php");
+        include(WEB_ROOT."lang/lang_".$languages[$language].".php");
         //echo "<font color='red'>Warning:</font> locale $language is probably not intalled on the server.<br>";
 }
 

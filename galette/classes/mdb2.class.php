@@ -72,6 +72,7 @@ class GaletteMdb2{
 
 		$this->db->setFetchMode(MDB2_FETCHMODE_OBJECT);
 		$this->db->loadModule('Manager');
+		$this->db->loadModule('Reverse');
 	}
 
 	/**
@@ -185,6 +186,14 @@ class GaletteMdb2{
 	*/
 	public function quoteIdentifier($value){
 		return $this->db->quoteIdentifier($value);
+	}
+
+	/**
+	* Wrapper to MDB2 escape
+	* @param value to escape
+	*/
+	public function escape($value){
+		return $this->db->escape($value);
 	}
 
 	/**

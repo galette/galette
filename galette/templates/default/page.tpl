@@ -96,6 +96,7 @@
 				<li><a href="{$galette_base_path}preferences.php">{_T string="Settings"}</a></li>
 				<li><a href="{$galette_base_path}champs_requis.php">{_T string="Required fields"}</a></li>
 				<li><a href="{$galette_base_path}configurer_fiches.php">{_T string="Configure member forms"}</a></li>
+				<li><a href="{$galette_base_path}editer_intitules.php">{_T string="Edit labels"}</a></li>
 				<li><a href="{$galette_base_path}traduire_libelles.php">{_T string="Translate labels"}</a></li>
 				<li><a href="{$galette_base_path}gestion_textes.php">{_T string="Email contents"}</a></li>
 				<li><a href="{$galette_base_path}utilitaires.php">{_T string="Utilities"}</a></li>
