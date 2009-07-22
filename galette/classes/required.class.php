@@ -77,12 +77,14 @@ class Required{
 			$requete = 'SELECT * FROM ' . PREFIX_DB . Adherent::TABLE;
 			$mdb->getDb()->setLimit(1);
 
-			if( !$result2 = $mdb->query( $requete ) )
+			$result2 = $mdb->query( $requete );
+			if( MDB2::isError($result2) )
 				return -1;
 
 			$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE;
 
-			if( !$result = $mdb->query( $requete ) )
+			$result = $mdb->query( $requete );
+			if( MDB2::isError($result) )
 				return -1;
 
 			$result->setResultTypes($this->types);
@@ -127,7 +129,8 @@ class Required{
 		$requete = 'SELECT * FROM ' . PREFIX_DB . Adherent::TABLE;
 		$mdb->getDb()->setLimit(1);
 
-		if( !$result = $mdb->query( $requete ) )
+		$result = $mdb->query( $requete );
+		if( MDB2::isError($result) )
 			return -1;
 
 		$fields = $result->getColumnNames();
@@ -179,7 +182,8 @@ class Required{
 		$requete .= '\'';
 
 		/** TODO: what to do on error ? */
-		if( !$result = $mdb->query( $requete ) )
+		$result = $mdb->query( $requete );
+		if( MDB2::isError($result) )
 			return -1;
 
 		//set not required fields (ie. all others...)
@@ -188,7 +192,8 @@ class Required{
 		$requete2 .= implode('\' OR field_id=\'', $not_required);
 		$requete2 .= '\'';
 
-		if( !$result = $mdb->query( $requete2 ) )
+		$result = $mdb->query( $requete2 );
+		if( MDB2::isError($result) )
 			return -1;
 
 		$this->checkUpdate();

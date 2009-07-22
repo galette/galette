@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<traductions>
+<translations>
 	<lang id="fr_FR" long="fr_FR@euro">
 		<shortname>fr</shortname>
 		<longname>français</longname>
@@ -18,4 +18,4 @@
 		<flag>spanish.gif</flag>
 		<filename>spanish</filename>
 	</lang>
-</traductions>
+</translations>

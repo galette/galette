@@ -115,17 +115,18 @@ class Preferences{
 	* Load current preferences from database.
 	*/
 	public function load(){
-		global $mdb;
+		global $mdb, $log;
 
 		$this->prefs = array();
 
 		$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE;
 
-		if( !$result = $mdb->query( $requete ) )
+		$result = $mdb->query( $requete );
+		if( MDB2::isError($result) )
 			return -1;
 		
 		if($result->numRows() == 0){
-			/** TODO: Log a fatal error, application cannot work if settings are not setted correctly */
+			$log->log('Preferences cannot be loaded. Galette should not work without preferences. Exiting.', PEAR_LOG_EMERG);
 			return(-10);
 		}else{
 			$r = $result->fetchAll();

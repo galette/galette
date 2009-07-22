@@ -729,8 +729,7 @@ if ($step == 'u7') echo _T("Update Report"); ?></p>
 					$result = $mdb->query($query);
 					@list($w1, $w2, $w3, $extra) = explode(' ', $query, 4);
 					if ($extra != '') $extra = '...';
-					if ( $result == -1 )
-					{
+					if ( MDB2::isError($result) ) {
 						echo '<li class="install-bad debuginfos">' . $w1 . ' ' . $w2 . ' ' . $w3 . ' ' . $extra . '<span>' . $mdb->getErrorMessage() . '<br/>(' . $mdb->getErrorDetails() . ')</span></li>';
 
 						//if error are not on drop, DROP, rename or RENAME we can continue

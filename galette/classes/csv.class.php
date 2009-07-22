@@ -174,7 +174,8 @@ class Csv{
 		$xpath = $xml->xpath('/exports/export[@id=\'' . $id . '\'][not(@inactive)][1]');
 		$export = $xpath[0];
 
-		if( !$result = $mdb->query( $export->query ) )
+		$result = $mdb->query( $export->query );
+		if( MDB2::isError($result) )
 			return -1;
 
 		$filename=self::DEFAULT_DIRECTORY . $export['filename'];

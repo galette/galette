@@ -162,7 +162,8 @@ class History{
 
 		$mdb->getDb()->setLimit($this->show,($this->page - 1) * $this->show);
 
-		if( !$result = $mdb->query( $requete ) )
+		$result = $mdb->query( $requete );
+		if( MDB2::isError($result) )
 			return -1;
 
 		$return = array();

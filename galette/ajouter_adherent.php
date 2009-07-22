@@ -286,7 +286,7 @@ if (isset($_POST["id_adh"]))
 		if (isset($_FILES['photo']))
 			if ($_FILES['photo']['tmp_name'] !='')
 				if (is_uploaded_file($_FILES['photo']['tmp_name']))
-					if (!picture::store($adherent['id_adh'], $_FILES['photo']['tmp_name'], $_FILES['photo']['name']))
+					if (!picture::store($adherent['id_adh'], $_FILES['photo']))
 						$error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
         
 		if (isset($_POST['del_photo']))

@@ -86,12 +86,14 @@ class FieldsConfig{
 			$requete = 'SELECT * FROM ' . PREFIX_DB . $this->table;
 			$mdb->getDb()->setLimit(1);
 
-			if( !$result2 = $mdb->query( $requete ) )
+			$result2 = $mdb->query( $requete );
+			if( MDB2::isError($result2) )
 				return -1;
 
 			$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE table_name=\'' . $this->table . '\' ORDER BY id_field_category, position ASC';
 
-			if( !$result = $mdb->query( $requete ) )
+			$result = $mdb->query( $requete );
+			if( MDB2::isError($result) )
 				return -1;
 
 			$result->setResultTypes($this->types);
@@ -155,7 +157,8 @@ class FieldsConfig{
 		$requete = 'SELECT * FROM ' . PREFIX_DB . $this->table;
 		$mdb->getDb()->setLimit(1);
 
-		if( !$result = $mdb->query( $requete ) )
+		$result = $mdb->query( $requete );
+		if( MDB2::isError($result) )
 			return -1;
 
 		$fields = $result->getColumnNames();
@@ -221,7 +224,8 @@ class FieldsConfig{
 		$requete .= ' AND table_name=\'' . $this->table . '\'';
 
 		/** TODO: what to do on error ? */
-		if( !$result = $mdb->query( $requete ) )
+		$result = $mdb->query( $requete );
+		if( MDB2::isError($result) )
 			return -1;
 
 		//set not required fields (ie. all others...)
@@ -232,7 +236,8 @@ class FieldsConfig{
 		$requete2 .= '\'';
 		$requete .= ' AND table_name=\'' . $this->table . '\'';
 
-		if( !$result = $mdb->query( $requete2 ) )
+		$result = $mdb->query( $requete2 );
+		if( MDB2::isError($result) )
 			return -1;
 
 		$this->checkUpdate();

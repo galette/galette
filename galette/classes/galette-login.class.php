@@ -62,7 +62,8 @@ class GaletteLogin extends Authentication{
 
 		$requete = 'SELECT id_adh, bool_admin_adh, nom_adh, prenom_adh, mdp_adh, pref_lang, activite_adh FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=\'' . $user. '\' AND mdp_adh=\'' . $passe . '\'';
 
-		if( !$result = $mdb->query( $requete ) )
+		$result = $mdb->query( $requete );
+		if( MDB2::isError($result) )
 			return -1;
 		
 		if($result->numRows() == 0){
@@ -97,7 +98,8 @@ class GaletteLogin extends Authentication{
 		$requete = 'SELECT ' . self::PK . ' FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=\'' . $user . '\'';
 
 		/* If an error occurs, we consider that username already exists */
-		if( !$result = $mdb->query( $requete ) ){
+		$result = $mdb->query( $requete );
+		if( MDB2::isError($result) ){
 			$log->log('Unable to check if username `' . $user . '` already exists. ' . $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')', PEAR_LOG_WARNING);
 			return true;
 		}

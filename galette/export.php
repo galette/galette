@@ -53,7 +53,8 @@ $tables_list = $mdb->listTables();
 if( isset( $_POST['export_tables'] ) && $_POST['export_tables'] != '' ){;
 	foreach( $_POST['export_tables'] as $table){
 		$requete = 'SELECT * FROM ' . $table;
-		if( !$result = $mdb->query( $requete ) )
+		$result = $mdb->query( $requete );
+		if( MDB2::isError($requete) )
 			return -1;
 	
 		$filename=Csv::DEFAULT_DIRECTORY . $table . '_full.csv';

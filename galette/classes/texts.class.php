@@ -81,7 +81,10 @@ class Texts{
 		$requete = 'SELECT * FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) . ' WHERE tref=' . $mdb->quote($ref) . ' AND tlang=' . $mdb->quote($lang);
 		$result = $mdb->query($requete);
 		
-		if($result->numRows()>0){
+		if(MDB2::isError($result)){
+			$log->log('Cannot get text `' . $ref . '` for lang `' . $lang . '` | ' . $result->getMessage() . '(' . $result->getDebugInfo() . ')', PEAR_LOG_WARNING);
+			return false;
+		} elseif( !$result->numRows() > 0 ){
 			$this->all_texts = $result->fetchRow(MDB2_FETCHMODE_ASSOC);
 		}
 		return $this->all_texts;
@@ -104,6 +107,7 @@ class Texts{
 
 		$result = $mdb->execute($requete);
 
+		/** FIXME: what if we send here a mdb2 error object? */
 		return $result;
 	}
 	/**
@@ -114,8 +118,11 @@ class Texts{
 		global $mdb;
 		$requete = 'SELECT ' . $mdb->quoteIdentifier('tref') . ', ' . $mdb->quoteIdentifier('tcomment') . ' FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) . ' WHERE ' . $mdb->quoteIdentifier('tlang') . '=' . $mdb->quote($lang);
 		$result = $mdb->query($requete);
-			
-		if($result->numRows()>0){
+		
+		if(MDB2::isError($result)){
+			$log->log('Cannot get refs for lang `' . $lang . '` | ' . $result->getMessage() . '(' . $result->getDebugInfo() . ')', PEAR_LOG_WARNING);
+			return false;
+		} elseif( $result->numRows() > 0 ){
 			$refs = $result->fetchAll(MDB2_FETCHMODE_ASSOC);
 		}
 		return $refs;

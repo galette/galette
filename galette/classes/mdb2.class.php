@@ -85,38 +85,39 @@ class GaletteMdb2{
 	/**
 	* Queries the database
 	* @param query the query to execute
+	*
+	* @return either MDB2 resultset if query was successfull, MDB2 error object if something goes wrong
 	*/
 	public function query( $query ){
 		global $log;
 		$result = $this->db->query($query);
-				// Vérification des erreurs
+		// we log a warn if query fails, and an debug if it succeed
 		if (MDB2::isError($result)) {
-			$this->error = $result;
 			$log->log('There were an error executing query ' . $query . '(' . $result->getMessage() . ') - ' . $result->getDebugInfo(), PEAR_LOG_WARNING);
-			return -1;
 		}else{
 			$log->log('Query successfull : ' . $query, PEAR_LOG_DEBUG);
-			return $result;
 		}
+		//anyways, we return $result (either mdb2's error or mdb2's resultset)
+		return $result;
 	}
 
 	/**
 	* Exectue a query on the database (ie. insert, update, delete)
-	* FIXME: ! This function seems to be absent from mysqli driver !
 	* @param query the query to execute
+	*
+	* @return either MDB2 resultset if query was successfull, MDB2 error object if something goes wrong
 	*/
 	public function execute( $query ){
 		global $log;
-		//$this->db->setCharset('UTF-8');
 		$result = $this->db->exec($query);
-		// Vérification des erreurs
+		// we log a warn if query fails, and an debug if it succeed
 		if (MDB2::isError($result)) {
 			$log->log('There were an error executing query ' . $query . '(' . $result->getMessage() . ') - ' . $result->getDebugInfo(), PEAR_LOG_ERR);
-			return $result;
 		}else{
 			$log->log('Query successfull : ' . $query, PEAR_LOG_DEBUG);
-			return $result;
 		}
+		//anyways, we return $result (either mdb2's error or mdb2's resultset)
+		return $result;
 	}
 
 	/**

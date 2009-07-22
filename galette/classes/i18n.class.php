@@ -74,14 +74,14 @@ class i18n{
 		$log->log('Trying to set locale to ' . $id, PEAR_LOG_DEBUG);
 
 		$xml = simplexml_load_file($this->file);
-		$current = $xml->xpath('//lang[@id=\'' . $id . '\'][not(@inactive)]');
+		$current = $xml->xpath('/translations/lang[@id=\'' . $id . '\'][not(@inactive)]');
 
 		//if no match, switch to default
 		if(!isset($current[0])){
 			$log->log($id . ' does not exist in XML file, switching to default.', PEAR_LOG_WARNING);
 			$id = self::DEFAULT_LANG;
 			//do not forget to reload informations from the xml file
-			$current = $xml->xpath('//lang[@id=\'' . $id . '\']');
+			$current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');
 		}
 
 		$sxe = $current[0];
@@ -95,7 +95,7 @@ class i18n{
 
 	private function load($id){
 		$xml = simplexml_load_file($this->file);
-		$current = $xml->xpath('//lang[@id=\'' . $id . '\']');
+		$current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');
 		$sxe = $current[0];
 		$this->id = $id;
 		$this->longid = ( isset($sxe['long']) )?(string)$sxe['long']:$id;
@@ -122,7 +122,7 @@ class i18n{
 	*/
 	public function getNameFromId($id){
 		$xml = simplexml_load_file($this->file);
-		$current = $xml->xpath('//lang[@id=\'' . $id . '\']');
+		$current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');
 		$sxe = $current[0];
 		return (string)$sxe->longname;
 	}
@@ -134,7 +134,7 @@ class i18n{
 	public function getFlagFromId($id){
 		global $base_path, $template_subdir;
 		$xml = simplexml_load_file($this->file);
-		$current = $xml->xpath('//lang[@id=\'' . $id . '\']');
+		$current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');
 		$sxe = $current[0];
 		return $base_path . $template_subdir . 'images/' . $sxe->flag;
 	}
