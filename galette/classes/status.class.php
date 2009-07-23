@@ -29,6 +29,10 @@
  * @since      Disponible depuis la Release 0.7alpha
  */
 
+/* TODO: Most of the code is duplicated in contribution_types.class.php. Should
+ * probably use a superclass for genericity.
+ */
+
 /**
  * Members status
  *
@@ -102,18 +106,18 @@ class Status{
 		return true;
 	}
 
-	public static function getList(){
+        public function getList(){
 		global $mdb, $log;
 		$list = array();
 
-		$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' ORDER BY priorite_statut';
+		$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' ORDER BY priorite_statut, ' . self::PK;
 
-		$result = $mdb->query( $requete );
-
-		if (MDB2::isError($result)) {
-			$log->log('Unable to list status | ' . $result->getMessage() . '(' . $result->getDebugInfo() . ')', PEAR_LOG_WARNING);
-			return false;
-		}
+		$result = $mdb->query($requete);
+		if (MDB2::isError($result))
+		  {
+		    $this->error = $result;
+		    return false;
+		  }
 
 		if($result->numRows() == 0){
 			$log->log('No status defined in database.', PEAR_LOG_INFO);
@@ -122,26 +126,202 @@ class Status{
 			$r = $result->fetchAll();
 			$array = array();
 			foreach($r as $status){
-				$list[$status->id_statut] = _T($status->libelle_statut);
+				$list[$status->id_statut] = array(
+								  _T($status->libelle_statut),
+								  $status->priorite_statut
+								  );
 			}
 			return $list;
 		}
 	}
 
-	public static function getLabel($id){
+	/* Get a status. Return values on error:
+	 * null : no such $id.
+	 * MDB2::Error object : DB error.
+	 */
+	public function get($id) {
 		global $mdb, $log;
 
-		$requete = 'SELECT libelle_statut FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK .'=' . $id;
+		$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK .'=' . $id;
 
-		$result = $mdb->query( $requete );
+		$result = $mdb->query($requete);
+		if (MDB2::isError($result))
+		  {
+		    $this->error = $result;
+		    return $result;
+		  }
 
-		if (MDB2::isError($result)) {
-			$log->log('Unable to get label for status `' . $id . '` | ' . $result->getMessage() . '(' . $result->getDebugInfo() . ')', PEAR_LOG_WARNING);
-			return false;
+		if ($result->numRows() == 0) {
+			$log->log('Status `' . $id . '` does not exist.', PEAR_LOG_WARNING);
+			return null;
 		}
 
-		$r = $result->fetchOne();
-		return _T($r);
+		return $result->fetchRow();
+	}
+
+	/* Get a label. Return values on error:
+	 * null : no such id.
+	 * MDB2::Error object : DB error.
+	 */
+	public function getLabel($id) {
+	        $res = $this->get($id);
+		if (!$res || MDB2::isError($res))
+			return $res;
+
+		return _T($res->libelle_statut);
+	}
+
+	/* Get a status ID from a label. Return an object on success, else:
+	 * null : ID does not exist.
+	 * MDB2::Error object : DB error.
+	 */
+	public function getIdByLabel($label){
+		global $mdb, $log;
+
+		$stmt = $mdb->prepare('SELECT '. self::PK .' FROM ' . PREFIX_DB . self::TABLE 
+				      . ' WHERE ' . $mdb->quoteIdentifier('libelle_statut') . '= :libelle', 
+				      array('text'), MDB2_PREPARE_MANIP);
+		$result = $stmt->execute(array('libelle' => $label));
+
+		if (MDB2::isError($result))
+		  {
+		    $this->error = $result;
+		    return $result;
+		  }
+
+		if ($result == 0 || $result->numRows() == 0)
+			return null;
+
+		return $result->fetchOne();
+	}
+
+
+	/* Add a new status. Return id on success, else:
+	 * -1 : DB error.
+	 * -2 : label already exists.
+	*/
+	public function add($label, $priority)
+	{
+		global $mdb, $log;
+
+		// Avoid duplicates.
+		$ret = $this->getidByLabel($label);
+		if (MDB2::isError($ret))
+			return -1;
+		if ($ret != null)
+			{
+				$log->log('Status `' . $label . '` already exists', PEAR_LOG_WARNING);
+				return -2;
+			}
+
+		$stmt = $mdb->prepare('INSERT INTO ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) 
+				      . ' (' . $mdb->quoteIdentifier('libelle_statut') 
+				      . ', ' . $mdb->quoteIdentifier('priorite_statut') 
+				      . ') VALUES(:libelle, :priorite)',
+				      array('text', 'integer'),
+				      MDB2_PREPARE_MANIP);
+		$stmt->execute(array(
+				     'libelle'  => $label,
+				     'priorite' => $priority
+				     ));
+		
+		if (MDB2::isError($stmt)) {
+			$this->error = $stmt;
+			$log->log('Unable to add new status `' . $label . '` | ' . $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')', PEAR_LOG_WARNING);
+			return -1;
+		}
+
+		$stmt->free();
+		$log->log('New status `' . $label . '` added successfully.', PEAR_LOG_INFO);
+		return $mdb->getDb()->lastInsertId(PREFIX_DB . self::TABLE,
+						   'libelle_statut');
+	}
+
+	/* Update a status. Return values:
+	 * -2 : ID does not exist.
+	 * -1 : DB error.
+	 *  0 : success.
+	 */
+	public function update($id, $field, $value)
+	{
+		global $mdb, $log;
+
+		$ret = $this->get($id);
+		if (!$ret || MDB2::isError($ret))
+			/* get() already logged and set $this->error. */
+			return ($ret ? -1 : -2);
+
+		$fieldtype = '';
+		# label.
+		if ($field == self::$fields[1]) { $fieldtype = 'text'; }
+		# priority.
+		elseif(self::$fields[2]) { $fieldtype = 'integer'; }
+
+		$stmt = $mdb->prepare('UPDATE ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) . ' SET '
+				      . $mdb->quoteIdentifier($field) . ' = :field '
+				      . 'WHERE ' . self::PK . ' = '.$id,
+				      array($fieldtype),
+				      MDB2_PREPARE_MANIP);
+		$stmt->execute(array('field'  => $value));
+
+		if (MDB2::isError($stmt)) {
+			$this->error = $stmt;
+			$log->log('Unable to update status ' . $id . ' | ' . $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')', PEAR_LOG_WARNING);
+			return -1;
+		}
+
+		$stmt->free();
+		$log->log('Status ' . $id . ' updated successfully.', PEAR_LOG_INFO);
+		return 0;
+	}
+
+	/* Delete a status. Return values:
+	 * -2 : ID does not exist.
+	 * -1 : DB error.
+	 *  0 : success.
+	 */
+	public function delete($id)
+	{
+		global $mdb, $log;
+
+		$ret = $this->get($id);
+		if (!$ret || MDB2::isError($ret))
+			/* get() already logged and set $this->error. */
+			return ($ret ? -1 : -2);
+
+		$query = 'DELETE FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE)
+			. ' WHERE ' . self::PK . ' = ' . $id;
+		$result = $mdb->execute($query);
+
+		if (MDB2::isError($result)) {
+			$this->error = $result;
+			$log->log('Unable to delete status ' . $id . ' | ' . $result->getMessage() . '(' . $result->getDebugInfo() . ')', PEAR_LOG_WARNING);
+			return -1;
+		}
+
+		$log->log('Status ' . $id . ' deleted successfully.', PEAR_LOG_INFO);
+		return 0;
+	}
+
+	/* Check whether this status is used. Return values:
+	 * -1 : DB error.
+	 *  0 : not used.
+	 *  1 : used.
+	 */
+	public function isUsed($id){
+		global $mdb, $log;
+
+		// Check if it's used.
+		$query = 'SELECT * FROM ' . $mdb->quoteIdentifier(PREFIX_DB . 'adherents')
+			. ' WHERE ' . $mdb->quoteIdentifier('id_statut') . ' = ' . $id;
+		$result = $mdb->query($query);
+		if (MDB2::isError($result))
+		  {
+		    $this->error = $result;
+		    return -1;
+		  }
+
+		return ($result->numRows() == 0) ? 0 : 1;
 	}
 
 	/**

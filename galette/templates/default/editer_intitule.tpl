@@ -1,51 +1,38 @@
-		<h1 class="titre">{$form_title}</h1>
-		<form action="editer_intitules.php" method="post"> 						
-{if $error_detected|@count != 0}
-		<div id="errorbox">
-			<h1>{_T string="- ERROR -"}</h1>
-			<ul>
-{foreach from=$error_detected item=error}
-				<li>{$error}</li>
-{/foreach}
-			</ul>
-		</div>
-{/if}
-		<blockquote>
-		<div align="center">
-			<table border="0" id="input-table"> 
-				<tr> 
-					<th id="libelle">{_T string="Name:"}</th> 
-					<td colspan="2">
-{if $table == 'statuts'}
-						<input type="hidden" name="mod" value="{$entry.id_statut}"/>
-						<input type="text" name="libelle_statut" value="{$entry.libelle_statut} "/>
-{elseif $table == 'types_cotisation'}
-						<input type="hidden" name="mod" value="{$entry.id_type_cotis} "/>
-						<input type="text" name="libelle_type_cotis" value="{$entry.libelle_type_cotis}"/>
-{/if}
-					</td> 
-				</tr>
-				<tr>
-{if $table == 'statuts'}
-					<th id="libelle">{_T string="Priority:"}</th> 
-{elseif $table == 'types_cotisation'}
-					<th id="libelle">{_T string="Extends membership?"}</th> 
-{/if}
-					<td>
-{if $table == 'statuts'}
-						<input type="text" size="4" name="priorite_statut" value="{$entry.priorite_statut}" />
-{elseif $table == 'types_cotisation'}
-						<input type="checkbox" name="cotis_extension" value="1" {if $entry.cotis_extension == 1}checked="checked" {/if} />
-{/if}
-					</td>
-				</tr>
-				<tr> 
-					<th align="center" colspan="2"><br/><input type="submit" class="submit" name="valid" value="{_T string="Save"}"/></th> 
-					<th align="center" colspan="2"><br/><input type="submit" class="submit" name="cancel" value="{_T string="Cancel"}"/></th> 
-				</tr> 
-			</table>
-		</div>
-		<br/> 
-		</blockquote> 
-		<input type="hidden" name="table" value="{$table}" />
-		</form>
+<h1 id="titre">{$form_title}</h1>
+<form action="editer_intitules.php" method="post" enctype="multipart/form-data">
+
+  <div class="bigtable">
+    <fieldset class="cssform" id="general">
+      <p>
+	<label for="{$fields.$class.name}" class="bline">
+	  {_T string="Name:"}
+	</label>
+	{assign var='name' value=$fields.$class.name}
+	<input type="text" name="{$fields.$class.name}" id="{$fields.$class.name}" value="{$entry.$name}" />
+      </p>
+      <p>
+	<label for="{$fields.$class.field}" class="bline">
+	  {if $class == 'Status'}
+	    {_T string="Priority:"}
+	  {elseif $class == 'ContributionsTypes'}
+  	    {_T string="Extends membership?"}
+	  {/if}
+	</label>
+        {assign var='field' value=$fields.$class.field}
+	{if $class == 'Status'}
+	  <input type="text" size="4" name="{$fields.$class.field}" id="{$fields.$class.field}" value="{$entry.$field}" />
+	{elseif $class == 'ContributionsTypes'}
+	  <input type="checkbox" name="{$fields.$class.field}" id="{$fields.$class.field}" value="1"{if $entry.$field == 1} checked="checked"{/if} />
+	{/if}
+      </p>
+    </fieldset>
+
+    {assign var='id' value=$fields.$class.id}
+    <input type="hidden" name="mod" id="mod" value="{$entry.$id}"/>
+    <input type="hidden" name="class" value="{$class}" />
+
+    <div class="button-container">
+      <input type="submit" class="submit" value="{_T string="Save"}" />
+    </div>
+  </div>
+</form> 

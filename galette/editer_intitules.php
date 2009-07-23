@@ -29,163 +29,116 @@
  * @since      
  */
 
-require_once('includes/galette.inc.php');
+/* FIXME: there is an UTF8 encoding bug with the edit form. The field name gets
+   encoded strangely. */
 
-if( !$login->isLogged() )
+require_once('includes/galette.inc.php');
+require_once('classes/status.class.php');
+require_once('classes/contributions_types.class.php');
+
+if (!$login->isLogged())
 {
-	header("location: index.php");
-	die();
+  header("location: index.php");
+  die();
 }
-if( !$login->isAdmin() )
+if (!$login->isAdmin())
 {
-	header("location: voir_adherent.php");
-	die();
+  header("location: voir_adherent.php");
+  die();
 }
 
 $error_detected = array();
 
-$id_fields = array('statuts' => 'id_statut',
-		   'types_cotisation' => 'id_type_cotis');
-$name_fields = array('statuts' => 'libelle_statut',
-		     'types_cotisation' => 'libelle_type_cotis');
+$fields = array('Status' => array('id' => 'id_statut',
+				  'name' => 'libelle_statut',
+				  'field' => 'priorite_statut'),
+		'ContributionsTypes' => array('id' => 'id_type_cotis',
+					    'name' => 'libelle_type_cotis',
+					    'field' => 'cotis_extension'));
+$forms = array('ContributionsTypes' => _T("Contribution types"),
+	       'Status' => _T("User statuses"));
 
-function my_db_query ($query)
+function del_entry ($id, $class)
 {
-  global $error_detected, $mdb;
-
-  $res = $mdb->query($query);
-  if ($mdb->inError())
-    {
-      $error_detected[] = _T("- Database error: ").$mdb->getErrorMessage();
-      return null;
-    }
-  return $res;
-}
-
-function my_db_execute ($query)
-{
-  global $error_detected, $mdb;
-
-  $res = $mdb->execute($query);
-  if ($mdb->inError())
-    {
-      $error_detected[] = _T("- Database error: ").$mdb->getErrorMessage();
-      return null;
-    }
-  return $res;
-}
-
-function del_entry ($id, $table)
-{
-  global $error_detected, $id_fields, $name_fields, $mdb, $DB;
+  global $error_detected, $DB;
 
   if (!is_numeric($id))
     {
       $error_detected[] = _T("- ID must be an integer!");
       return;
     }
-  
-  // Check if it exists.
-  $query = "SELECT ".$name_fields[$table]." FROM ".PREFIX_DB."$table
-                    WHERE ".$id_fields[$table]." = $id";
-  $res = my_db_query($query);
-  if (!$res || $res->numRows() == 0)
-    {
-      if ($res)
-	$error_detected[] = _T("- Label does not exist");
-      return;
-    }
-  $label = $res->fetchOne();
 
-  // Check if it's used.
-  if ($table == "statuts")
-    $query = "SELECT * FROM ".PREFIX_DB."adherents
-                      WHERE id_statut = $id";
-  elseif ($table == "types_cotisation")
-    $query = "SELECT * FROM ".PREFIX_DB."cotisations
-                      WHERE id_type_cotis = $id";
-  
-  $res = my_db_query($query);
-  if (!$res || $res->numRows() > 0)
+  /* Check if it exists. */
+  $label = $class->getLabel($id);
+  if (!$label || MDB2::isError($label))
     {
-      if ($res)
-	$error_detected[] = _T("- Cannot delete this label: it's still used");
+      if ($label) $error_detected[] = _T("- Database error: ").$class->getErrorMessage();
+      else $error_detected[] = _T("- Label does not exist");
       return;
     }
-  
-  // Delete.
-  $query = "DELETE FROM ".PREFIX_DB."$table
-                    WHERE ".$id_fields[$table]." = $id";
-  if (!my_db_execute($query))
-    return;
+
+  /* Check if it's used. */
+  $ret = $class->isUsed($id);
+  if ($ret != 0)
+    {
+      if ($ret == -1) { $error_detected[] = _T("- Database error: ").$class->getErrorMessage(); }
+      elseif ($ret == 1) { $error_detected[] = _T("- Cannot delete this label: it's still used"); }
+      return;
+    }
+
+  /* Delete. */
+  $ret = $class->delete($id);
+
+  if ($ret != 0)
+    {
+      if ($ret == -2) $error_detected[] = _T("- Label does not exist");
+      elseif ($ret == -1) { $error_detected[] = _T("- Database error: ").$class->getErrorMessage(); }
+      return;
+    }
 
   delete_dynamic_translation($DB, $label, $error_detected);
 
   return;
 }
 
-// Validate an input. Return a correct (quoted) value.
-function check_field_value ($table, $key, $value, $op)
+// Validate an input. Returns true or false.
+function check_field_value ($class, $key, $value)
 {
-  global $error_detected, $mdb;
-  
-  if ($table == 'statuts')
+  global $fields, $error_detected;
+
+  switch ($key)
     {
-      switch ($key)
+    case ($fields[get_class($class)]['name']):
+      if (!is_string($value))
 	{
-	case 'priorite_statut':
-	  if (!is_numeric($value))
+	  $error_detected[] =_T("- Mandatory field empty.")." ($key)";
+	  return false;
+	}
+      break;
+
+    case ($fields[get_class($class)]['field']):
+      if (get_class($class) == 'Status')
+	if (!is_numeric($value)) 
+	  {
 	    $error_detected[] = _T("- Priority must be an integer!");
-	  break;
-	  
-	case 'libelle_statut':
-	  // Avoid duplicates.
-	  if ($op == 'add')
-	    {
-	      $query = "SELECT id_statut
-                          FROM ".PREFIX_DB."statuts
-                          WHERE libelle_statut=".$mdb->quote($mdb->escape($value));
-	      $result = my_db_query($query);
-	      if ($result && ($result->numRows() > 0))
-		$error_detected[] = _T("- This label is already used!");
-	    }
-	  $value = $mdb->quote($mdb->escape($value));
-	  break;
-	}
+	    return false;
+	  }
+      elseif (get_class($class) == 'ContributionsTypes')
+	// Value must be either 0 or 1.
+	if (!is_numeric($value) || (($value != 0) && ($value != 1)))
+	  {
+	    $error_detected[] = _T("- 'Extends membership?' field must be either 0 or 1! (current value:").$value.")";
+	    return false;
+	  }
+      break;
     }
-  elseif ($table == 'types_cotisation')
-    {
-      switch ($key)
-	{
-	case 'libelle_type_cotis':
-	  // Avoid duplicates.
-	  if ($op == 'add')
-	    {
-	      $query = "SELECT id_type_cotis
-                          FROM ".PREFIX_DB."types_cotisation
-                          WHERE libelle_type_cotis=".$mdb->quote($mdb->escape($value));
-	      $result = my_db_query($query);
-	      if ($result && ($result->numRows() > 0))
-		$error_detected[] = _T("- This label is already used!");
-	    }
-          $value = $mdb->quote($mdb->escape($value));
-	  break;
-	  
-	case 'cotis_extension':
-	  if (!is_numeric($value) || (($value != 0) && ($value != 1)))
-	    $error_detected[] = _T("- 'Extends membership?' field must be either true or false! (current value:").$value.")";
-	  break;
-	}
-    }
-  
-  // Return correct (escapes, quoted...) value.
-  return $value;
+
+  return true;
 }
 
-function modify_entry ($id, $table)
+function modify_entry ($id, $class)
 {
-  global $error_detected, $id_fields, $name_fields, $mdb, $DB;
-  $label = '';
+  global $error_detected, $fields,  $DB;
 
   if (!is_numeric($id))
     {
@@ -193,132 +146,82 @@ function modify_entry ($id, $table)
       return;
     }
 
-  // Check if it exists.
-  $query = "SELECT ".$name_fields[$table]." FROM ".PREFIX_DB."$table
-                    WHERE ".$id_fields[$table]." = $id";
-
-  $res = my_db_query($query);
-  if (!$res || ($res->numRows() == 0))
+  $label = '';
+  $oldlabel = $class->getLabel($id);
+  if (!$oldlabel || MDB2::isError($oldlabel))
     {
-      if ($res)
-	$error_detected[] = _T("- Label does not exist");
+      if ($oldlabel) $error_detected[] = _T("- Database error: ").$class->getErrorMessage();
+      else $error_detected[] = _T("- Label does not exist");
       return;
     }
-  $oldlabel = $res->fetchOne();
 
-  // Check input and build query.
-  $update_string = '';
-  $fields = $mdb->getDb()->tableInfo(PREFIX_DB.$table);
-  while (list($fieldid, $field) = each($fields))
+  $toup = array();
+  /* Check field values. */
+  foreach ($fields[get_class($class)] as $field)
     {
-      $key = strtolower($field['name']);
-
-      if (!isset($_POST[$key]))
+      $value = null;
+      if (!isset($_POST[$field]))
 	{
-	  // cotis_extension is a checkbox. If unchecked, it won't appear
-	  // at all in POST.
-	  if ($key == 'cotis_extension')
+	  if ($field == $fields['ContributionsTypes']['field'])
 	    $value = 0;
 	  else
 	    continue;
 	}
-      else
-	$value = $_POST[$key];
+      else $value = $_POST[$field];
 
-      // Get unquoted value for dynamic translation.
-      if ($key == $name_fields[$table])
+      if ($field == $fields[get_class($class)]['name'])
 	$label = $value;
 
-      $value = check_field_value ($table, $key, $value, 'update');
+      check_field_value($class, $field, $value);
 
-      // $value gets quoted by check_field_value.
-      $update_string .= ", ".$key."=".$value;
+      $toup[$field] = trim($value);
     }
 
+  /* Update only if all fields are OK. */
   if (count($error_detected))
     return;
 
-  // Modify.
+  foreach ($toup as $field => $value)
+    {
+      $ret = $class->update($id, $field, $value);
+      if ($ret != 0)
+	{
+	  if ($ret == -2) $error_detected[] = _T("- Label does not exist");
+	  elseif ($ret == -1) { $error_detected[] = _T("- Database error: ").$class->getErrorMessage(); }
+	}
+    }
 
-  $query = "UPDATE ".PREFIX_DB."$table
-                    SET ".substr($update_string, 1)."
-                    WHERE ".$id_fields[$table]."='$id'";
-  if (!my_db_execute($query))
-    return;
 
-  if ($oldlabel != $label)
+  if (isset($label) && ($oldlabel != $label))
     {
       delete_dynamic_translation($DB, $oldlabel, $error_detected);
       add_dynamic_translation($DB, $label, $error_detected);
     }
+
+  return;
 }
 
-function add_entry ($table)
-{
-  global $error_detected, $id_fields, $name_fields, $DB, $mdb;
-  $insert_string_fields = '';
-  $insert_string_values = '';
-  $label = '';
 
-  // Check input and build query.
-  $fields = $mdb->getDb()->tableInfo(PREFIX_DB.$table);
-  while (list($keyid, $key) = each($fields))
-    {
-      $key = strtolower($key['name']);
-      $value = '';
-      
-      // Skip ID, it's automatically computed.
-      if ($key == $id_fields[$table])
-	continue;
-      
-      if (isset($_POST[$key]))
-	$value = trim($_POST[$key]);
-      // Check missing fields.
-      if ($value == '')
-	$error_detected[] =_T("- Mandatory field empty.")." ($key)";
-      
-      // Get unquoted value, it gets quoted by add_dynamic_translation().
-      if ($key == $name_fields[$table])
-	$label = $value;
-      
-      $value = check_field_value ($table, $key, $value, 'add');
-      
-      $insert_string_fields .= ", ".$key;
-      $insert_string_values .= ", ".$value;
-    }
+function add_entry ($class)
+{
+  global $error_detected, $fields, $DB;
+
+  $label = trim($_POST[$fields[get_class($class)]['name']]);
+  $field = trim($_POST[$fields[get_class($class)]['field']]);
+
+  check_field_value($class, $fields[get_class($class)]['name'],
+		    $label);
+  check_field_value($class, $fields[get_class($class)]['field'],
+		    $field);
 
   if (count($error_detected))
     return;
 
-  // Get the next free id.
-  // XXX: it's not atomic because the id is not autoincremented. Either
-  // use a mutex or change the schema.
-  $query = '';
-  {
-    $idn = $id_fields[$table];
-    $ttable = PREFIX_DB.$table;
-    $query = "SELECT MIN($idn+1) FROM $ttable AS t1
-                      WHERE NOT EXISTS(SELECT $idn FROM $ttable AS t2
-                       WHERE t2.$idn = t1.$idn + 1)";
-  }
-
-  $res = my_db_query($query);
-  if (!$res)
-    return;
-
-  $idx = $res->fetchOne();
-  
-  $insert_string_fields .= ", ".$id_fields[$table];
-  $insert_string_values .= ", ".$idx;
-
-  // Insert entry.
-  $query = "INSERT INTO ".PREFIX_DB."$table
-                    (".substr($insert_string_fields, 1).")
-                    VALUES (".substr($insert_string_values, 1).")";
-
-  if (!my_db_execute($query))
+  $ret = $class->add($label, $field);
+  if ($ret < 0)
     {
-      print substr($insert_string_values, 1).": ".$DB->ErrorMsg();
+      if ($ret == -1) { $error_detected[] = _T("- Database error: ").$class->getErrorMessage(); }
+      if ($ret == -2) { $error_detected[] = _T("- This label is already used!"); }
       return;
     }
 
@@ -327,114 +230,114 @@ function add_entry ($table)
 
   return;
 }
-	
-function edit_entry ($id, $table)
-{
-  global $id_fields, $name_fields, $tpl, $error_detected;
 
-  $query = "SELECT * FROM ".PREFIX_DB."$table
-                    WHERE ".$id_fields[$table]." = $id";
-  $result = my_db_query($query);
-  if (!$result || $result->numRows() == 0)
+function edit_entry ($id, $class)
+{
+  global $fields, $tpl, $error_detected;
+
+  if (!is_numeric($id))
     {
-      if ($res)
-	$error_detected[] = _T("- Label does not exist");
+      $error_detected[] = _T("- ID must be an integer!");
+      return;
+    }
+  $entry = $class->get($id);
+
+  if (!$entry || MDB2::isError($entry))
+    {
+      if ($entry) $error_detected[] = _T("- Database error: ").$class->getErrorMessage();
+      else $error_detected[] = _T("- Label does not exist");
       return;
     }
 
-  // Fill $entry and pass it to the template.
-  $entry = $result->fetchRow(MDB2_FETCHMODE_ASSOC);
-  foreach ($entry as $field => $data) 
-    {
-      if (is_string ($entry[$field]))
-	$entry[$field] = htmlentities($data);
-      // Display name in the user locale.
-      if ($field == $name_fields[$table])
-	$entry[$field] = _T($data);
-    }
-
-  $tpl->assign ('entry', $entry);
-  if ($table == 'statuts')
+  $entry->$fields[get_class($class)]['name'] = 
+    htmlentities($entry->$fields[get_class($class)]['name']);
+  
+  $tpl->assign ('entry', get_object_vars($entry));
+  if (get_class($class) == 'Status')
     $tpl->assign ('form_title', _T("Edit status"));
-  elseif ($table == 'types_cotisation')
+  elseif (get_class($class) == 'ContributionsTypes')
     $tpl->assign ('form_title', _T("Edit contribution type"));
 }
 
-function list_entries ($table)
+function list_entries ($class)
 {
-  global $error_detected, $id_fields, $name_fields, $tpl;
-  
-  $query = "SELECT * FROM ".PREFIX_DB."$table ORDER BY ".$id_fields[$table];
-  $result = my_db_query($query);
-  if (!$result)
-    return;
+  global $fields, $tpl;
+
+  $list = $class->getList();
 
   $entries = array();
-  $count = 0;
-
-  while ($row = $result->fetchRow())
+  foreach ($list as $key=>$row)
     {
-      $entries[$count]['id'] = $row->$id_fields[$table];
-      // Display name in the user locale. New labels will be added to
-      // dynamic translations with the user locale.
-      $entries[$count]['name'] = _T($row->$name_fields[$table]);
+      $entry['id'] = $key;
+      $entry['name'] = $row[0];
       
-      if ($table == 'types_cotisation')
-	$entries[$count]['extends'] = ($row->cotis_extension ? _T("Yes") : _T("No"));
+      if (get_class($class) == 'ContributionsTypes')
+	$entry['extends'] = ($row[1] ? _T("Yes") : _T("No"));
+      elseif (get_class($class) == 'Status')
+	$entry['priority'] = $row[1];
       
-      elseif ($table == 'statuts')
-	$entries[$count]['priority'] = $row->priorite_statut;
-      
-      ++$count;
+      $entries[] = $entry;
     }
-  
-  $tpl->assign('namef', $name_fields[$table]);
+
   $tpl->assign('entries', $entries);
-  if ($table == 'statuts')
+
+  if (get_class($class) == 'Status')
     $tpl->assign('form_title', _T("User statuses"));
-  elseif ($table == 'types_cotisation')
+  elseif (get_class($class) == 'ContributionsTypes')
     $tpl->assign('form_title', _T("Contribution types"));
 }
 
 // MAIN CODE.
-// Choose which labels (status, contributions...) first.
-if (!isset($_REQUEST['table']))
+
+function main()
 {
-  $all_forms = array('types_cotisation' => _T("Contribution types"),
-		     'statuts' => _T("User statuses"));
-  $tpl->assign("all_forms", $all_forms);
-}
-else
-{
+  global $tpl;
+  $class = null;
+
+  if (!isset($_REQUEST['class']))
+    return;
+
   // 'statuts', 'types_cotisation'...
-  $table = $_REQUEST['table'];
-  $tpl->assign('table', $table);
-  
+  $class = $_REQUEST['class'];
+
+  $tpl->assign('class', $class);
+
+  if ($class == 'Status')
+    $class = new Status;
+  elseif ($class == 'ContributionsTypes')
+    $class = new ContributionsTypes;
+
   // Display a specific form to edit a label.
   // Otherwise, display a list of entries.
   if (isset($_GET['id']))
-    edit_entry(trim($_GET['id']), $table);
+    edit_entry(trim($_GET['id']), $class);
   else
     {
       if (isset($_GET['del']))
-	del_entry(trim($_GET['del']), $table);
+	del_entry(trim($_GET['del']), $class);
       elseif (isset($_POST['new']))
-	add_entry($table);
+	add_entry($class);
       elseif (isset($_POST['mod']))
-	modify_entry(trim($_POST['mod']), $table);
+	modify_entry(trim($_POST['mod']), $class);
       // Show the list.
-      list_entries($table);
+      list_entries($class);
     }
 }
 
+main();
 
-$tpl->assign("error_detected", $error_detected);
+/* Set template parameters and print. */
 
+$tpl->assign("fields", $fields);
 if (isset($_GET['id']))
-     $content = $tpl->fetch("editer_intitule.tpl");
-     else
-     $content = $tpl->fetch("editer_intitules.tpl");
-$tpl->assign("content",$content);
+  $content = $tpl->fetch("editer_intitule.tpl");
+else
+{
+  $tpl->assign("all_forms", $forms);
+  $tpl->assign("error_detected", $error_detected);
+  $content = $tpl->fetch("editer_intitules.tpl");
+}
+$tpl->assign("content", $content);
 
 $tpl->display("page.tpl");
 
