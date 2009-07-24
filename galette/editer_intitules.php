@@ -29,9 +29,6 @@
  * @since      
  */
 
-/* FIXME: there is an UTF8 encoding bug with the edit form. The field name gets
-   encoded strangely. */
-
 require_once('includes/galette.inc.php');
 require_once('classes/status.class.php');
 require_once('classes/contributions_types.class.php');
@@ -250,7 +247,8 @@ function edit_entry ($id, $class)
     }
 
   $entry->$fields[get_class($class)]['name'] = 
-    htmlentities($entry->$fields[get_class($class)]['name']);
+    htmlentities($entry->$fields[get_class($class)]['name'], 
+		 ENT_QUOTES, 'UTF-8');
   
   $tpl->assign ('entry', get_object_vars($entry));
   if (get_class($class) == 'Status')
