@@ -292,11 +292,11 @@ function main()
   global $tpl;
   $class = null;
 
+  # Show statuses list by default, instead of an empty table.
   if (!isset($_REQUEST['class']))
-    return;
-
-  // 'statuts', 'types_cotisation'...
-  $class = $_REQUEST['class'];
+    $class = 'Status';
+  else
+    $class = $_REQUEST['class'];
 
   $tpl->assign('class', $class);
 

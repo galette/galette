@@ -35,7 +35,8 @@ msgstr ""
 msgid "Emailing disabled"
 msgstr ""
 
-#: ../editer_intitules.php:84 ../editer_intitules.php:192
+#: ../editer_intitules.php:64 ../editer_intitules.php:142
+#: ../editer_intitules.php:237
 msgid "- ID must be an integer!"
 msgstr ""
 
@@ -44,7 +45,7 @@ msgstr ""
 msgid "Mrs"
 msgstr ""
 
-#: ../templates/default/editer_champ.tpl:92 ../templates/default/editer_intitule.tpl:44
+#: ../templates/default/editer_champ.tpl:92
 msgid "Cancel"
 msgstr ""
 
@@ -60,7 +61,7 @@ msgstr ""
 msgid "End date of membership:"
 msgstr ""
 
-#: ../install/index.php:945
+#: ../install/index.php:944
 msgid "Configuration file created (config/config.inc.php)"
 msgstr ""
 
@@ -94,13 +95,13 @@ msgstr ""
 msgid "Be visible in the<br /> members list :"
 msgstr ""
 
-#: ../install/index.php:825
+#: ../install/index.php:824
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr ""
 
 #: ../gestion_adherents.php:410 ../templates/default/gestion_adherents.tpl:60
 #: ../templates/default/page.tpl:158 ../templates/default/page.tpl:162
-#: ../templates/default/configurer_fiches.tpl:23 ../templates/default/editer_intitules.tpl:23
+#: ../templates/default/configurer_fiches.tpl:23 ../templates/default/editer_intitules.tpl:27
 msgid "Name"
 msgstr ""
 
@@ -120,11 +121,11 @@ msgstr ""
 msgid "UPDATE operation allowed"
 msgstr ""
 
-#: ../install/index.php:877
+#: ../install/index.php:876
 msgid "Admin settings"
 msgstr ""
 
-#: ../install/index.php:1065
+#: ../install/index.php:1064
 msgid "Installation complete !"
 msgstr ""
 
@@ -139,7 +140,6 @@ msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:158 ../templates/default/page.tpl:189
 #: ../templates/default/gestion_contributions.tpl:127 ../templates/default/gestion_transactions.tpl:90
-#: ../templates/default/editer_intitules.tpl:41
 msgid "[mod]"
 msgstr ""
 
@@ -197,7 +197,7 @@ msgstr ""
 msgid "Horizontal margins:"
 msgstr ""
 
-#: ../install/index.php:465 ../install/index.php:890
+#: ../install/index.php:465 ../install/index.php:889
 #: ../templates/default/index.tpl:31 ../templates/default/preferences.tpl:317
 #: ../templates/default/ajouter_adherent.tpl:110 ../templates/default/change_passwd.tpl:42
 #: ../templates/default/self_adherent.tpl:191
@@ -233,7 +233,7 @@ msgstr ""
 msgid "Sent mail is checked but there is no email address"
 msgstr ""
 
-#: ../install/index.php:968
+#: ../install/index.php:967
 msgid "Default preferences were successfully stored."
 msgstr ""
 
@@ -251,7 +251,6 @@ msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:160 ../templates/default/page.tpl:193
 #: ../templates/default/gestion_contributions.tpl:128 ../templates/default/gestion_transactions.tpl:91
-#: ../templates/default/editer_intitules.tpl:43
 msgid "[del]"
 msgstr ""
 
@@ -305,7 +304,7 @@ msgstr ""
 msgid "Management of transactions"
 msgstr ""
 
-#: ../editer_intitules.php:150 ../editer_intitules.php:169
+#: ../editer_intitules.php:221
 msgid "- This label is already used!"
 msgstr ""
 
@@ -329,15 +328,16 @@ msgstr ""
 #: ../templates/default/ajouter_contribution.tpl:92 ../templates/default/traduire_libelles.tpl:33
 #: ../templates/default/ajouter_transaction.tpl:41 ../templates/default/editer_champ.tpl:91
 #: ../templates/default/self_adherent.tpl:205 ../templates/default/champ_requis.tpl:16
-#: ../templates/default/gestion_textes.tpl:56 ../templates/default/editer_intitule.tpl:43
+#: ../templates/default/gestion_textes.tpl:56 ../templates/default/editer_intitule.tpl:35
 msgid "Save"
 msgstr ""
 
 #: ../templates/default/configurer_fiches.tpl:81 ../templates/default/configurer_fiches.tpl:81
+#: ../templates/default/editer_intitules.tpl:76 ../templates/default/editer_intitules.tpl:76
 msgid "Delete '%s' field"
 msgstr ""
 
-#: ../install/index.php:978
+#: ../install/index.php:977
 msgid "Default status cannot be initialized."
 msgstr ""
 
@@ -376,7 +376,7 @@ msgstr ""
 msgid "Galette-related data:"
 msgstr ""
 
-#: ../install/index.php:234 ../install/index.php:1086
+#: ../install/index.php:234 ../install/index.php:1085
 msgid "Permissions"
 msgstr ""
 
@@ -413,7 +413,7 @@ msgstr ""
 msgid "Mail settings:"
 msgstr ""
 
-#: ../editer_intitules.php:360
+#: ../editer_intitules.php:257
 msgid "Edit contribution type"
 msgstr ""
 
@@ -434,7 +434,7 @@ msgstr ""
 msgid "Password sent. Login:"
 msgstr ""
 
-#: ../install/index.php:980
+#: ../install/index.php:979
 msgid "Default status were successfully stored."
 msgstr ""
 
@@ -517,11 +517,11 @@ msgstr ""
 msgid "- The numbers and measures have to be integers!"
 msgstr ""
 
-#: ../templates/default/editer_intitules.tpl:42
+#: ../templates/default/editer_intitules.tpl:75
 msgid "Do you really want to delete this category?"
 msgstr ""
 
-#: ../install/index.php:984
+#: ../install/index.php:983
 msgid "Default texts cannot be initialized."
 msgstr ""
 
@@ -642,9 +642,9 @@ msgstr ""
 msgid "- Only .jpg, .gif and .png files are allowed."
 msgstr ""
 
-#: ../editer_intitules.php:383 ../templates/default/configurer_fiches.tpl:50
+#: ../editer_intitules.php:273 ../templates/default/configurer_fiches.tpl:50
 #: ../templates/default/configurer_fiches.tpl:70 ../templates/default/editer_champ.tpl:42
-#: ../templates/default/champ_requis.tpl:8 ../templates/default/editer_intitules.tpl:57
+#: ../templates/default/champ_requis.tpl:8 ../templates/default/editer_intitules.tpl:46
 msgid "Yes"
 msgstr ""
 
@@ -660,7 +660,7 @@ msgstr ""
 msgid "Files permissions are not OK!"
 msgstr ""
 
-#: ../install/index.php:227 ../install/index.php:1084
+#: ../install/index.php:227 ../install/index.php:1083
 msgid "Language"
 msgstr ""
 
@@ -689,7 +689,7 @@ msgid "Profile configuration"
 msgstr ""
 
 #: ../install/index.php:230 ../install/index.php:319
-#: ../install/index.php:1085
+#: ../install/index.php:1084
 msgid "Installation mode"
 msgstr ""
 
@@ -760,7 +760,7 @@ msgstr ""
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr ""
 
-#: ../templates/default/configurer_fiches.tpl:58 ../templates/default/editer_intitules.tpl:65
+#: ../templates/default/configurer_fiches.tpl:58 ../templates/default/editer_intitules.tpl:55
 msgid "Add"
 msgstr ""
 
@@ -792,7 +792,7 @@ msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:106 ../templates/default/configurer_fiches.tpl:28
 #: ../templates/default/gestion_contributions.tpl:98 ../templates/default/gestion_transactions.tpl:66
-#: ../templates/default/editer_intitules.tpl:29
+#: ../templates/default/editer_intitules.tpl:33
 msgid "Actions"
 msgstr ""
 
@@ -872,7 +872,7 @@ msgstr ""
 msgid "Contributions"
 msgstr ""
 
-#: ../install/index.php:1073 ../templates/default/self_adherent.tpl:67
+#: ../install/index.php:1072 ../templates/default/self_adherent.tpl:67
 msgid "Homepage"
 msgstr ""
 
@@ -1026,7 +1026,7 @@ msgstr ""
 msgid "Please enter a message."
 msgstr ""
 
-#: ../install/index.php:1069
+#: ../install/index.php:1068
 msgid "Galette has been successfully updated!"
 msgstr ""
 
@@ -1051,8 +1051,9 @@ msgstr ""
 msgid "You can prepare a picture to upload after sending"
 msgstr ""
 
-#: ../editer_intitules.php:95 ../editer_intitules.php:204
-#: ../editer_intitules.php:341
+#: ../editer_intitules.php:73 ../editer_intitules.php:91
+#: ../editer_intitules.php:151 ../editer_intitules.php:186
+#: ../editer_intitules.php:245
 msgid "- Label does not exist"
 msgstr ""
 
@@ -1080,7 +1081,7 @@ msgstr ""
 msgid "- Field name already used."
 msgstr ""
 
-#: ../install/index.php:894 ../templates/default/preferences.tpl:321
+#: ../install/index.php:893 ../templates/default/preferences.tpl:321
 msgid "Retype password:"
 msgstr ""
 
@@ -1092,7 +1093,7 @@ msgstr ""
 msgid "- The passwords don't match!"
 msgstr ""
 
-#: ../install/index.php:1070
+#: ../install/index.php:1069
 msgid "To secure the system, please delete the install directory"
 msgstr ""
 
@@ -1126,12 +1127,16 @@ msgstr ""
 msgid "Subscribe"
 msgstr ""
 
-#: ../templates/default/ajouter_contribution.tpl:94 ../templates/default/editer_intitules.tpl:18
+#: ../templates/default/ajouter_contribution.tpl:94
 msgid "Continue"
 msgstr ""
 
 #: ../etiquettes_adherents.php:67
 msgid "Member's Labels"
+msgstr ""
+
+#: ../editer_intitules.php:127
+msgid "- 'Extends membership?' field must be either 0 or 1! (current value:"
 msgstr ""
 
 #: ../templates/default/page.tpl:83
@@ -1154,7 +1159,7 @@ msgstr ""
 msgid "(Un)Check all"
 msgstr ""
 
-#: ../templates/default/editer_intitules.tpl:25 ../templates/default/editer_intitule.tpl:32
+#: ../templates/default/editer_intitules.tpl:29 ../templates/default/editer_intitule.tpl:18
 msgid "Extends membership?"
 msgstr ""
 
@@ -1162,9 +1167,9 @@ msgstr ""
 msgid "- The amount must be an integer!"
 msgstr ""
 
-#: ../editer_intitules.php:383 ../templates/default/configurer_fiches.tpl:49
+#: ../editer_intitules.php:273 ../templates/default/configurer_fiches.tpl:49
 #: ../templates/default/configurer_fiches.tpl:70 ../templates/default/editer_champ.tpl:41
-#: ../templates/default/champ_requis.tpl:10 ../templates/default/editer_intitules.tpl:56
+#: ../templates/default/champ_requis.tpl:10 ../templates/default/editer_intitules.tpl:45
 msgid "No"
 msgstr ""
 
@@ -1176,7 +1181,7 @@ msgstr ""
 msgid "Member Profile"
 msgstr ""
 
-#: ../install/index.php:821
+#: ../install/index.php:820
 msgid "The tables are not totally created, it's maybe a permission problem."
 msgstr ""
 
@@ -1238,8 +1243,8 @@ msgstr ""
 
 #: ../install/index.php:359 ../install/index.php:418
 #: ../install/index.php:481 ../install/index.php:543
-#: ../install/index.php:657 ../install/index.php:854
-#: ../install/index.php:899 ../install/index.php:1007
+#: ../install/index.php:657 ../install/index.php:853
+#: ../install/index.php:898 ../install/index.php:1006
 msgid "Next step"
 msgstr ""
 
@@ -1252,7 +1257,10 @@ msgstr ""
 msgid "Lines / Page:"
 msgstr ""
 
-#: ../editer_intitules.php:59 ../editer_intitules.php:72
+#: ../editer_intitules.php:72 ../editer_intitules.php:81
+#: ../editer_intitules.php:92 ../editer_intitules.php:150
+#: ../editer_intitules.php:187 ../editer_intitules.php:220
+#: ../editer_intitules.php:244
 msgid "- Database error: "
 msgstr ""
 
@@ -1260,7 +1268,7 @@ msgstr ""
 msgid "transaction"
 msgstr ""
 
-#: ../install/index.php:1033
+#: ../install/index.php:1032
 msgid "Check above errors to know what went wrong."
 msgstr ""
 
@@ -1339,7 +1347,7 @@ msgstr ""
 msgid "You are about to send an e-mail to"
 msgstr ""
 
-#: ../install/index.php:823
+#: ../install/index.php:822
 msgid "The tables have not been totally created, it may be a permission problem."
 msgstr ""
 
@@ -1370,7 +1378,7 @@ msgstr ""
 msgid "Member"
 msgstr ""
 
-#: ../install/index.php:1068
+#: ../install/index.php:1067
 msgid "Galette has been successfully installed!"
 msgstr ""
 
@@ -1392,7 +1400,7 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
-#: ../install/index.php:949
+#: ../install/index.php:948
 msgid "Unable to create configuration file (config/config.inc.php)"
 msgstr ""
 
@@ -1412,7 +1420,7 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: ../editer_intitules.php:396 ../editer_intitules.php:403
+#: ../editer_intitules.php:55 ../editer_intitules.php:285
 msgid "Contribution types"
 msgstr ""
 
@@ -1424,7 +1432,7 @@ msgstr ""
 msgid "Inactive account"
 msgstr ""
 
-#: ../install/index.php:246 ../install/index.php:1089
+#: ../install/index.php:246 ../install/index.php:1088
 msgid "Access permissions to database"
 msgstr ""
 
@@ -1473,7 +1481,7 @@ msgstr ""
 msgid "logs are empty"
 msgstr ""
 
-#: ../install/index.php:886 ../templates/default/index.tpl:27
+#: ../install/index.php:885 ../templates/default/index.tpl:27
 #: ../templates/default/preferences.tpl:313 ../templates/default/ajouter_adherent.tpl:105
 #: ../templates/default/voir_adherent.tpl:82 ../templates/default/self_adherent.tpl:186
 msgid "Username:"
@@ -1508,7 +1516,7 @@ msgid "transaction updated"
 msgstr ""
 
 #: ../install/index.php:406 ../install/index.php:636
-#: ../install/index.php:831 ../install/index.php:1038
+#: ../install/index.php:830 ../install/index.php:1037
 msgid "Retry"
 msgstr ""
 
@@ -1528,7 +1536,7 @@ msgstr ""
 msgid "Galette installation"
 msgstr ""
 
-#: ../editer_intitules.php:112
+#: ../editer_intitules.php:82
 msgid "- Cannot delete this label: it's still used"
 msgstr ""
 
@@ -1536,7 +1544,7 @@ msgstr ""
 msgid "Honor Members Color:"
 msgstr ""
 
-#: ../install/index.php:1082
+#: ../install/index.php:1081
 msgid "Steps:"
 msgstr ""
 
@@ -1554,7 +1562,7 @@ msgstr ""
 msgid "Last day!"
 msgstr ""
 
-#: ../install/index.php:1032
+#: ../install/index.php:1031
 msgid "This can come from the permissions on the file config/config.inc.php or the impossibility to make an INSERT into the database."
 msgstr ""
 
@@ -1586,7 +1594,7 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
-#: ../install/index.php:850
+#: ../install/index.php:849
 msgid "The tables has been correctly created."
 msgstr ""
 
@@ -1661,7 +1669,7 @@ msgstr ""
 msgid "My information"
 msgstr ""
 
-#: ../install/index.php:242 ../install/index.php:1088
+#: ../install/index.php:242 ../install/index.php:1087
 msgid "Access to the database"
 msgstr ""
 
@@ -1709,15 +1717,15 @@ msgstr ""
 msgid "Publisher:"
 msgstr ""
 
-#: ../install/index.php:986
+#: ../install/index.php:985
 msgid "Default texts were successfully stored."
 msgstr ""
 
-#: ../editer_intitules.php:358
+#: ../editer_intitules.php:255
 msgid "Edit status"
 msgstr ""
 
-#: ../templates/default/editer_intitules.tpl:27
+#: ../templates/default/editer_intitules.tpl:31
 msgid "Priority"
 msgstr ""
 
@@ -1804,7 +1812,7 @@ msgstr ""
 msgid "Your account has been successfully created."
 msgstr ""
 
-#: ../editer_intitules.php:138
+#: ../editer_intitules.php:120
 msgid "- Priority must be an integer!"
 msgstr ""
 
@@ -1919,7 +1927,7 @@ msgstr ""
 msgid "- Select a valid member name!"
 msgstr ""
 
-#: ../install/index.php:250 ../install/index.php:1090
+#: ../install/index.php:250 ../install/index.php:1089
 msgid "Tables Creation/Update"
 msgstr ""
 
@@ -2021,7 +2029,7 @@ msgstr ""
 msgid "Cards generation parameters:"
 msgstr ""
 
-#: ../install/index.php:1066
+#: ../install/index.php:1065
 msgid "Update complete !"
 msgstr ""
 
@@ -2042,6 +2050,7 @@ msgid "If it hadn't been made, create a database and a user for Galette."
 msgstr ""
 
 #: ../templates/default/configurer_fiches.tpl:78 ../templates/default/configurer_fiches.tpl:78
+#: ../templates/default/editer_intitules.tpl:73 ../templates/default/editer_intitules.tpl:73
 msgid "Edit '%s' field"
 msgstr ""
 
@@ -2127,7 +2136,7 @@ msgstr ""
 msgid "Should HTML editor be activated on page load ?"
 msgstr ""
 
-#: ../install/index.php:262 ../install/index.php:1093
+#: ../install/index.php:262 ../install/index.php:1092
 msgid "End!"
 msgstr ""
 
@@ -2143,8 +2152,8 @@ msgstr ""
 msgid "company fee"
 msgstr ""
 
-#: ../install/index.php:437 ../install/index.php:880
-#: ../install/index.php:1031 ../templates/default/gestion_adherents.tpl:5
+#: ../install/index.php:437 ../install/index.php:879
+#: ../install/index.php:1030 ../templates/default/gestion_adherents.tpl:5
 #: ../templates/default/mailing_adherents.tpl:5 ../templates/default/preferences.tpl:5
 #: ../templates/default/ajouter_adherent.tpl:5 ../templates/default/ajouter_contribution.tpl:5
 #: ../templates/default/configurer_fiches.tpl:5 ../templates/default/traduire_libelles.tpl:4
@@ -2152,16 +2161,11 @@ msgstr ""
 #: ../templates/default/editer_champ.tpl:5 ../templates/default/lostpasswd.tpl:20
 #: ../templates/default/change_passwd.tpl:20 ../templates/default/self_adherent.tpl:48
 #: ../templates/default/gestion_textes.tpl:5 ../templates/default/editer_intitules.tpl:5
-#: ../templates/default/editer_intitule.tpl:5
 msgid "- ERROR -"
 msgstr ""
 
-#: ../install/index.php:815
+#: ../install/index.php:814
 msgid "(Errors on DROP and RENAME operations can be ignored)"
-msgstr ""
-
-#: ../editer_intitules.php:176
-msgid "- 'Extends membership?' field must be either true or false! (current value:"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:83 ../templates/default/voir_adherent.tpl:69
@@ -2242,13 +2246,13 @@ msgstr ""
 msgid "[ See member profile ]"
 msgstr ""
 
-#: ../install/index.php:851
+#: ../install/index.php:850
 msgid "The tables has been correctly updated."
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:44 ../templates/default/voir_adherent.tpl:35
 #: ../templates/default/editer_champ.tpl:16 ../templates/default/self_adherent.tpl:84
-#: ../templates/default/editer_intitule.tpl:17
+#: ../templates/default/editer_intitule.tpl:8
 msgid "Name:"
 msgstr ""
 
@@ -2256,7 +2260,7 @@ msgstr ""
 msgid "Member card updated:"
 msgstr ""
 
-#: ../editer_intitules.php:394 ../editer_intitules.php:404
+#: ../editer_intitules.php:56 ../editer_intitules.php:283
 msgid "User statuses"
 msgstr ""
 
@@ -2272,7 +2276,7 @@ msgstr ""
 msgid "Warning: Don't forget to backup your current database."
 msgstr ""
 
-#: ../install/index.php:972
+#: ../install/index.php:971
 msgid "Default contributions types cannot be initialized."
 msgstr ""
 
@@ -2292,7 +2296,7 @@ msgstr ""
 #: ../preferences.php:198 ../ajouter_contribution.php:173
 #: ../ajouter_contribution.php:176 ../ajouter_adherent.php:231
 #: ../ajouter_transaction.php:130 ../ajouter_transaction.php:133
-#: ../editer_intitules.php:278
+#: ../editer_intitules.php:111
 msgid "- Mandatory field empty."
 msgstr ""
 
@@ -2304,7 +2308,7 @@ msgstr ""
 msgid "No host"
 msgstr ""
 
-#: ../install/index.php:884
+#: ../install/index.php:883
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr ""
 
@@ -2339,11 +2343,11 @@ msgid "Database exists and connection parameters are OK."
 msgstr ""
 
 #: ../install/index.php:238 ../install/index.php:432
-#: ../install/index.php:448 ../install/index.php:1087
+#: ../install/index.php:448 ../install/index.php:1086
 msgid "Database"
 msgstr ""
 
-#: ../install/index.php:254 ../install/index.php:1091
+#: ../install/index.php:254 ../install/index.php:1090
 msgid "Admin parameters"
 msgstr ""
 
@@ -2371,11 +2375,11 @@ msgstr ""
 msgid "Confirmation:"
 msgstr ""
 
-#: ../install/index.php:258 ../install/index.php:1092
+#: ../install/index.php:258 ../install/index.php:1091
 msgid "Saving the parameters"
 msgstr ""
 
-#: ../install/index.php:1032
+#: ../install/index.php:1031
 msgid "Parameters couldn't be saved."
 msgstr ""
 
@@ -2401,7 +2405,7 @@ msgstr ""
 msgid "remaining day"
 msgstr ""
 
-#: ../install/index.php:966
+#: ../install/index.php:965
 msgid "Default preferences cannot be initialized."
 msgstr ""
 
@@ -2430,7 +2434,7 @@ msgstr ""
 msgid "single line"
 msgstr ""
 
-#: ../install/index.php:927
+#: ../install/index.php:926
 msgid "Save the parameters"
 msgstr ""
 
@@ -2471,7 +2475,7 @@ msgstr ""
 msgid "Visibility"
 msgstr ""
 
-#: ../templates/default/editer_intitule.tpl:30
+#: ../templates/default/editer_intitule.tpl:16
 msgid "Priority:"
 msgstr ""
 
@@ -2491,7 +2495,7 @@ msgstr ""
 msgid "Send up '%s' field"
 msgstr ""
 
-#: ../install/index.php:974
+#: ../install/index.php:973
 msgid "Default contributions types were successfully stored."
 msgstr ""
 
