@@ -290,19 +290,20 @@ function list_entries ($class)
 function main()
 {
   global $tpl;
+  $className = null;
   $class = null;
 
   # Show statuses list by default, instead of an empty table.
   if (!isset($_REQUEST['class']))
-    $class = 'Status';
+    $className = 'Status';
   else
-    $class = $_REQUEST['class'];
+    $className = $_REQUEST['class'];
 
-  $tpl->assign('class', $class);
+  $tpl->assign('class', $className);
 
-  if ($class == 'Status')
+  if ($className == 'Status')
     $class = new Status;
-  elseif ($class == 'ContributionsTypes')
+  elseif ($className == 'ContributionsTypes')
     $class = new ContributionsTypes;
 
   // Display a specific form to edit a label.

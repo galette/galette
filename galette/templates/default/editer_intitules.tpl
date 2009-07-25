@@ -82,3 +82,10 @@
   </table> 
 </div>
 </form> 
+		<script type="text/javascript">
+			//<![CDATA[
+			//let's round some corners
+			$('#tabs li').corner('top');
+			$('.tabbed').corner('bottom');
+			//]]>
+		</script>
