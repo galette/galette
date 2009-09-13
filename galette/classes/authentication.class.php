@@ -83,7 +83,7 @@ abstract class Authentication{
 		$this->login = $login;
 		$this->admin = true;
 		$this->active = true;
-		//a flag for super admin only, sinci it's not a regular user
+		//a flag for super admin only, since it's not a regular user
 		$this->superadmin = true;
 	}
 
