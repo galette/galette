@@ -53,10 +53,35 @@ class Members {
 
 	/**
 	* Get members list
+	* @param as_members return the results as an array of Member object. When true, fields are not relevant
+	* @param fields field(s) name(s) to get. Should be a string or an array. If null, all fields will be returned
+	* @param filter should add filter... TODO
 	*/
-	public function getList($filter){
+	public static function getList($as_members=false, $fields=null, $filter=null){
+		global $mdb, $log;
+
 		/** TODO: Check if filter is valid ? */
 		if( $filter != null && trim($filter) != '' ) $this->filter = $filter;
+
+		$fieldsList = ( $fields != null && !$as_members ) ? (( !is_array($fields) || count($fields) < 1 ) ? '*' : implode(', ', $fields)) : '*';
+
+		$requete = 'SELECT ' . $fieldsList . ' FROM ' . PREFIX_DB . self::TABLE;
+
+		$result = $mdb->query( $requete );
+		if (MDB2::isError($result)) {
+			$log->log('Cannot members list | ' . $result->getMessage() . '(' . $result->getDebugInfo() . ')', PEAR_LOG_WARNING);
+			return false;
+		}
+
+		$members = array();
+		if( $as_members ) {
+			foreach( $result->fetchAll() as $row ){
+				$members[] = new Adherent($row);
+			}
+		} else {
+			$members = $result->fetchAll();
+		}
+		return $members;
 	}
 
 	/**

@@ -7,7 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="{$template_subdir}farbtastic.css"/>
 {/if}
 {* JQuery UI related *}
-{if $table_sorter || $require_calendar}
+{if $table_sorter || $require_calendar || $require_dialog}
 		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.core.min.js"></script>
 {/if}
 {if $table_sorter}
@@ -23,6 +23,9 @@
 {/if}
 {if $require_tabs}
 		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.tabs.min.js"></script>
+{/if}
+{if $require_dialog}
+		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.dialog.min.js"></script>
 {/if}
 {if $table_sorter || $require_calendar || $require_tabs}
 		<link rel="stylesheet" type="text/css" href="{$template_subdir}jquery-ui/jquery-ui-{$jquery_ui_version}.custom.css" />
@@ -58,6 +61,9 @@
 			//]]>
 		</script>
 {/if}
+{if $headers}
+	{$headers}
+{/if}
 </head>
 <body>
 	<div id="menu">
@@ -71,7 +77,7 @@
 		<div class="nav1">
 			<h1>{_T string="Navigation"}</h1>
 			<ul>
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 				<li><a href="{$galette_base_path}gestion_adherents.php">{_T string="List of members"}</a></li>
 				<li><a href="{$galette_base_path}gestion_contributions.php?id_adh=all">{_T string="List of contributions"}</a></li>
 				<li><a href="{$galette_base_path}gestion_transactions.php">{_T string="List of transactions"}</a></li>
@@ -89,7 +95,7 @@
 {/if}
 			</ul>
 		</div>
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 		<div class="nav1">
 			<h1>{_T string="Configuration"}</h1>
 			<ul>
@@ -184,7 +190,7 @@
 		<div id="legende">
 			<h1>{_T string="Legend"}</h1>
 			<table>
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 				<tr>
 					<td class="back"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></td>
 					<td class="back">{_T string="Modification"}</td>

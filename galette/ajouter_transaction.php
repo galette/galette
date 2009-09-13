@@ -248,7 +248,7 @@ $result->Close();
 $tpl->assign("adh_options",$adh_options);
 
 // - declare dynamic fields for display
-$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'trans', $_SESSION["admin_status"], $transaction['dyn'], array(), 1);
+$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'trans', $transaction['dyn'], array(), 1);
 $tpl->assign("dynamic_fields",$dynamic_fields);
 
 // page generation

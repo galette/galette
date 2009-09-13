@@ -672,12 +672,7 @@ html > * #listing{
 	font-weight:bold;
 	border-top:1px solid;
 }
-.bigtable .picture
-{
-	border: 1px solid black;
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
+
 .required{
 	color:#FF0000;
 	font-weight:bold;
@@ -730,6 +725,12 @@ legend{
 	padding-left: 21em; /*width of left column containing the label elements*/
 	border-top: 1px dashed gray;
 	height: 1%;
+}
+
+.cssform p.notform{
+	padding-left:0;
+	border:none;
+	height:auto;
 }
 
 .bline{
@@ -879,6 +880,11 @@ html > * .details{
 }
 .details td.photo{
 	width:1%;
+}
+td.photo img{
+	border: 1px solid black;
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 
 #details_menu{

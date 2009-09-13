@@ -11,7 +11,7 @@
     {/if}
 	<div class="bigtable">
 		<ul id="details_menu">
-{if ($pref_card_self eq 1) or ($smarty.session.admin_status eq 1)}
+{if ($pref_card_self eq 1) or ($login->isAdmin())}
 			<li>
 				<a href="carte_adherent.php?id_adh={$member->id}" id="btn_membercard">{_T string="Generate Member Card"}</a>
 			</li>
@@ -22,7 +22,7 @@
 			<li>
 				<a href="gestion_contributions.php?id_adh={$member->id}" id="btn_contrib">{_T string="View contributions"}</a>
 			</li>
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 			<li>
 				<a href="ajouter_contribution.php?id_adh={$member->id}" id="btn_addcontrib">{_T string="Add a contribution"}</a>
 			</li>
@@ -34,7 +34,7 @@
 			<tr>
 				<th>{_T string="Name:"}</th>
 				<td>{$member->spoliteness} {$member->name} {$member->surname}</td>
-				<td rowspan="5" class="photo"><img src="picture.php?id_adh={$member->id}&amp;rand={$time}" class="picture" width="{$member->picture->getOptimalWidth()}" height="{$member->picture->getOptimalHeight()}" alt="{_T string="Picture"}"/></td>
+				<td rowspan="5" class="photo"><img src="picture.php?id_adh={$member->id}&amp;rand={$time}" width="{$member->picture->getOptimalWidth()}" height="{$member->picture->getOptimalHeight()}" alt="{_T string="Picture"}"/></td>
 			</tr>
 			<tr>
 				<th>{_T string="Nickname:"}</th>
@@ -64,7 +64,7 @@
 				<th>{_T string="Be visible in the<br /> members list :"}</th>
 				<td>{$member->sappears_in_list}</td>
 			</tr>
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 			<tr>
 				<th>{_T string="Account:"}</th>
 				<td>{$member->sactive}</td>
@@ -82,7 +82,7 @@
 				<th>{_T string="Username:"}</th>
 				<td>{$member->login}</td>
 			</tr>
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 			<tr>
 				<th>{_T string="Creation date:"}</th>
 				<td>{$member->creation_date}</td>

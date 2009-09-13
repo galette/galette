@@ -39,7 +39,7 @@ if( !$login->isLogged() )
 }
 
 	if( !$login->isAdmin() )
-		$id_adh = $_SESSION["logged_id_adh"];
+		$id_adh = $login->id;
 	else
 		$id_adh = get_numeric_form_value("id_adh", '');
 
@@ -59,7 +59,7 @@ if( !$login->isLogged() )
 		}
 	}
 
-	if ($_SESSION["admin_status"] == 1) {
+	if( $login->isAdmin() ) {
 		$trans_id = get_numeric_form_value('sup', '');
 		if ($trans_id != '') {
 			$DB->StartTrans();

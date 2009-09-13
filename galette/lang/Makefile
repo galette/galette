@@ -52,7 +52,11 @@ PHP_SOURCES = ../index.php \
 ../templates/default/champ_requis.tpl \
 ../templates/default/gestion_textes.tpl \
 ../templates/default/editer_intitules.tpl \
-../templates/default/editer_intitule.tpl
+../templates/default/editer_intitule.tpl \
+../classes/adherent.class.php \
+../classes/models.class.php \
+../classes/pdf.class.php \
+../classes/politeness.class.php
 
 
 all : messages.po lang

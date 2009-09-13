@@ -48,7 +48,7 @@
 					</th>
 					<th class="listing left date_row"> {_T string="Begin."}</th>
 					<th class="listing left date_row"> {_T string="End"}</th>
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 					<th class="listing left">
 						<a href="gestion_contributions.php?tri=1" class="listing">{_T string="Member"}
 						{if $smarty.session.tri_cotis eq 1}
@@ -94,7 +94,7 @@
 						{/if}
 						</a>
 					</th>
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 					<th class="listing nowrap actions_row">{_T string="Actions"}</th>
 {/if}
 				</tr>
@@ -106,7 +106,7 @@
 					<td class="{$contribution.class} nowrap">{$contribution.date_enreg}</td>
 					<td class="{$contribution.class} nowrap">{$contribution.date_debut}</td>
 					<td class="{$contribution.class} nowrap">{$contribution.date_fin}</td>
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 					<td class="{$contribution.class}">
 {if $smarty.session.filtre_cotis_adh eq ""}
 						<a href="gestion_contributions.php?id_adh={$contribution.id_adh}">
@@ -122,7 +122,7 @@
 					<td class="{$contribution.class}">{$contribution.libelle_type_cotis}</td>
 					<td class="{$contribution.class} nowrap">{$contribution.montant_cotis}</td>
 					<td class="{$contribution.class} nowrap">{$contribution.duree_mois_cotis}</td>
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 					<td class="{$contribution.class} center nowrap">
 						<a href="ajouter_contribution.php?id_cotis={$contribution.id_cotis}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></a>
 						<a onclick="return confirm('{_T string="Do you really want to delete this contribution of the database ?"|escape:"javascript"}')" href="gestion_contributions.php?sup={$contribution.id_cotis}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/></a>
@@ -130,7 +130,7 @@
 {/if}
 				</tr>
 {foreachelse}
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 				<tr><td colspan="9" class="emptylist">{_T string="no contribution"}</td></tr>
 {else}
 				<tr><td colspan="7" class="emptylist">{_T string="no contribution"}</td></tr>
@@ -159,7 +159,7 @@
 				</tr>
 			</table>
 		<br/>
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 		<br/>
 			<a href="voir_adherent.php?id_adh={$smarty.session.filtre_cotis_adh}">{_T string="[ See member profile ]"}</a>
 			&nbsp;&nbsp;&nbsp;

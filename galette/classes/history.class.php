@@ -109,7 +109,7 @@ class History{
 		));
 
 		if (MDB2::isError($stmt)) {
-			$log->log(_t("An error occured trying to add log entry.") . $stmt->getMessage(), PEAR_LOG_ERR);
+			$log->log("An error occured trying to add log entry. " . $stmt->getMessage(), PEAR_LOG_ERR);
 			return false;
 		}else{
 			$log->log('Log entry added', PEAR_LOG_DEBUG);

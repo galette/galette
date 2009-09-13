@@ -163,8 +163,8 @@ class Status{
 	 * null : no such id.
 	 * MDB2::Error object : DB error.
 	 */
-	public function getLabel($id) {
-	        $res = $this->get($id);
+	public static function getLabel($id) {
+	        $res = self::get($id);
 		if (!$res || MDB2::isError($res))
 			return $res;
 

@@ -64,7 +64,7 @@ if ( $login->isAdmin() )
 }
 else
 {
-	$adherent["id_adh"] = $_SESSION["logged_id_adh"];
+	$adherent["id_adh"] = $login->id;
 	// disable some fields
 	$disabled = array(
 			'titre_adh' => 'disabled',
@@ -99,7 +99,7 @@ else
 	unset($required['mdp_adh']);
 
 // flagging required fields invisible to members
-if ($_SESSION["admin_status"]==1)
+if ( $login->isAdmin() )
 {
 	$required['activite_adh'] = 1;
 	$required['id_statut'] = 1;
@@ -286,11 +286,11 @@ if (isset($_POST["id_adh"]))
 		if (isset($_FILES['photo']))
 			if ($_FILES['photo']['tmp_name'] !='')
 				if (is_uploaded_file($_FILES['photo']['tmp_name']))
-					if (!picture::store($adherent['id_adh'], $_FILES['photo']))
+					if (!Picture::store($adherent['id_adh'], $_FILES['photo']))
 						$error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
         
 		if (isset($_POST['del_photo']))
-			if (!picture::delete($adherent['id_adh']))
+			if (!Picture::delete($adherent['id_adh']))
 				$error_detected[] = _T("Delete failed");
 
 		if (isset($_POST["mail_confirm"]))
@@ -366,7 +366,7 @@ $disabled['dyn'] = array();
 if (!isset($adherent['dyn']))
 	$adherent['dyn'] = array();
 
-$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $_SESSION["admin_status"], $adherent['dyn'], $disabled['dyn'], 1);
+$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $adherent['dyn'], $disabled['dyn'], 1);
 // template variable declaration
 $tpl->assign("required",$required);
 $tpl->assign("disabled",$disabled);

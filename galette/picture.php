@@ -1,7 +1,7 @@
 <?php
 
 // Copyright © 2005 Frédéric Jaqcuot
-// Copyright © 2007-2008 Johan Cwiklinski
+// Copyright © 2007-2009 Johan Cwiklinski
 //
 // This file is part of Galette (http://galette.tuxfamily.org).
 //
@@ -40,10 +40,10 @@ if( !$login->isLogged() )
 }
 
 if( !$login->isAdmin() )
-	$id_adh = $_SESSION["logged_id_adh"];
+	$id_adh = $login->id;
 else
 	$id_adh = $_GET['id_adh'];
 
-	$picture = new picture($id_adh);
+	$picture = new Picture($id_adh);
 	$picture->display();
 ?>

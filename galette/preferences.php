@@ -214,37 +214,63 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 		// picture upload
 		if (isset($_FILES['logo']) )
 			if ($_FILES['logo']['tmp_name'] !='' ) {
-				$pic =& new picture(0);
-				if (is_uploaded_file($_FILES['logo']['tmp_name']))
-					if (! $pic->store(0, $_FILES['logo']['tmp_name'], $_FILES['logo']['name'])) {
-						$error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
+				if (is_uploaded_file($_FILES['logo']['tmp_name'])){
+					$logo =& new Picture();
+					if ( $logo->store(0, $_FILES['logo']) < 0) {
+						//$picLogo = new Picture();
+						switch($picRes){
+							case Picture::INVALID_FILE:
+								$patterns = array('|%s|', '|%t|');
+								$replacements = array($picLogo->getAllowedExts(), $picLogo->getBadChars());
+								$error_detected[] = preg_replace($patterns, $replacements, _T("- Filename or extension is incorrect. Only %s files are allowed. File name should not contains any of: %t"));
+								break;
+							case Picture::FILE_TOO_BIG:
+								$error_detected[] = preg_replace('|%d|', Picture::MAX_FILE_SIZE, _T("File is too big. Maximum allowed size is %d"));
+								break;
+							case Picture::MIME_NOT_ALLOWED:
+								/** FIXME: should be more descriptive */
+								$error_detected[] = _T("Mime-Type not allowed");
+								break;
+							case Picture::SQL_ERROR:
+							case Picture::SQL_BLOB_ERROR:
+								$error_detected[] = _T("An SQL error has occured.");
+								break;
+							
+						}
+						//$error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
 					} else {
-						$_SESSION["customLogoFormat"] = $pic->FORMAT;
+						//$pic =& new Picture(0);
+						$logo =& new Picture(0);
+						$_SESSION['galette']['logo'] = serialize($logo);
+						$_SESSION["customLogoFormat"] = $logo->getFormat();
 						$_SESSION["customLogo"] = true;
 					}
+				}
 			}
 
-			if (isset($_POST['del_logo']))
-				if (!picture::delete(0))
+			if (isset($_POST['del_logo'])){
+				$pic = new Picture(0);
+				if (!$pic->delete())
 					$error_detected[] = _T("Delete failed");
 				else
 					$_SESSION["customLogo"] = false;
+			}
 
 		// Card logo upload
 		if (isset($_FILES['card_logo']) )
 			if ($_FILES['card_logo']['tmp_name'] !='' ) {
-				$cardpic =& new picture(999999);
+				$cardpic =& new Picture(999999);
 				if (is_uploaded_file($_FILES['card_logo']['tmp_name']))
 					if (! $cardpic->store(999999, $_FILES['card_logo']['tmp_name'], $_FILES['card_logo']['name'])) {
 						$error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
 					} else {
-						$_SESSION["customCardLogoFormat"] = $cardpic->FORMAT;
+						$_SESSION["customCardLogoFormat"] = $cardpic->getFormat();
 						$_SESSION["customCardLogo"] = true;
 					}
 			}
 
 		if (isset($_POST['del_card_logo']))
-			if (!picture::delete(999999))
+			if (!Picture::delete(999999))
 				$error_detected[] = _T("Delete failed");
 			else
 				$_SESSION["customCardLogo"] = false;
@@ -267,7 +293,7 @@ while (($entry = $d->read()) !== false) {
 $d->close();
 
 // Card logo data
-$cardlogo = new picture(999999);
+$cardlogo = new Picture(999999);
 if ($cardlogo->hasPicture())
 	$pref["has_card_logo"]=1;
 else
@@ -277,7 +303,7 @@ $pref['card_logo_height'] = $cardlogo->getOptimalHeight();
 $pref['card_logo_width'] = $cardlogo->getOptimalWidth();
 
 // logo data
-$picture = new picture(0);
+$picture = new Picture(0);
 if ($picture->hasPicture())
 	$pref['has_logo']=1;
 else

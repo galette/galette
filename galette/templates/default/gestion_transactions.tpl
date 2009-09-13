@@ -38,7 +38,7 @@
 					</a>
 				</th>
 				<th class="listing left">{_T string="Description"}</th>
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 				<th class="listing left">
 					<a href="gestion_transactions.php?tri=1" class="listing">{_T string="Originator"}
 					{if $smarty.session.sort_by eq 1}
@@ -62,7 +62,7 @@
 					{/if}
 					</a>
 				</th>
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 				<th class="listing actions_row">{_T string="Actions"}</th>
 {/if}
 			</tr>
@@ -71,7 +71,7 @@
 				<td class="cotis-ok center nowrap">{$transaction.trans_id}</td>
 				<td class="cotis-ok nowrap">{$transaction.trans_date}</td>
 				<td class="cotis-ok nowrap">{$transaction.trans_desc}</td>
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 				<td class="cotis-ok">
 {if $smarty.session.id_adh eq ""}
 					<a href="gestion_transactions.php?id_adh={$transaction.id_adh}">
@@ -85,7 +85,7 @@
 				</td>
 {/if}
 				<td class="cotis-ok nowrap">{$transaction.trans_amount}</td>
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 				<td class="cotis-ok center nowrap">
 					<a href="ajouter_transaction.php?trans_id={$transaction.trans_id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></a>
 					<a onclick="return confirm('{_T string="Do you really want to delete this transaction of the database ?"|escape:"javascript"}')" href="gestion_transactions.php?sup={$transaction.trans_id}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/></a>
@@ -93,7 +93,7 @@
 {/if}
 			</tr>
 {foreachelse}
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 			<tr><td colspan="6" class="emptylist">{_T string="no transaction"}</td></tr>
 {else}
 			<tr><td colspan="4" class="emptylist">{_T string="no transaction"}</td></tr>

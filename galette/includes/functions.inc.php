@@ -153,7 +153,7 @@ function resizeimage($img,$img2,$w,$h)
 		switch(strtolower($ext))
 		{
 			case '.jpg':
-				if (!$gdinfo['JPG Support'])
+				if (!$gdinfo['JPEG Support'])
 					return false;
 				break;
 			case '.png':

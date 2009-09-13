@@ -49,7 +49,7 @@ if ( !$login->isLogged() )
 	$filtre_id_adh = "";
 	
 	if( !$login->isAdmin() ) 
-		$_SESSION["filtre_cotis_adh"] = $_SESSION["logged_id_adh"];
+		$_SESSION["filtre_cotis_adh"] = $login->id;
 	else
 	{
 		if (isset($_GET["id_adh"]))
@@ -113,7 +113,7 @@ if ( !$login->isLogged() )
 		}
 	}
 
-	if ($_SESSION["admin_status"]==1) 
+	if ( $login->isAdmin() )
 	if (isset($_GET["sup"]))
 	{
 		// recherche adherent

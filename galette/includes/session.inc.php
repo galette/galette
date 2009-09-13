@@ -30,8 +30,8 @@
  * @version    $Id$
  */
 
-if (!isset(
-	$_SESSION["logged_status"]) || 
+if (
+	!$login->isLogged() ||
 	isset($_POST["logout"]) ||
 	isset($_GET["logout"]))
 {
@@ -42,10 +42,6 @@ if (!isset(
 		$_SESSION['galette']['db'] = null;
 		unset($_SESSION['galette']['db']);
 	}
-	$_SESSION["admin_status"]=0;
-	$_SESSION["logged_status"]=0;
-	$_SESSION["logged_id_adh"]=0;
-	$_SESSION["logged_nom_adh"]="";
 	$_SESSION["filtre_adh_nom"]="";
 	$_SESSION["filtre_adh"]=0;
 	$_SESSION["filtre_adh_2"]=1;

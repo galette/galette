@@ -1,7 +1,7 @@
 <?php
 
 // Copyright © 2006 Alexandre 'laotseu' DE DOMMELIN
-// Copyright © 2007-2008 Johan Cwiklinski
+// Copyright © 2007-2009 Johan Cwiklinski
 //
 // This file is part of Galette (http://galette.tuxfamily.org).
 //
@@ -38,6 +38,7 @@
 $base_path = '../';
 require_once('../includes/galette.inc.php');
 
+/** FIXME: picture handling is done in the Picture class, we probably do not have to join pictures table here */
 $query = "SELECT a.id_adh,a.nom_adh,a.prenom_adh,a.pseudo_adh,a.url_adh
           FROM ".PREFIX_DB."adherents a 
           JOIN ".PREFIX_DB."pictures p 
@@ -54,10 +55,10 @@ while (!$resultat->EOF) {
 	$members[$compteur]["pseudo"] = $resultat->fields['pseudo_adh'];
 	$members[$compteur]["url"] = $resultat->fields['url_adh'];
 	//Picutre infos
-	$pic =& new picture($resultat->fields['id_adh']);
-	$members[$compteur]["pic_format"] = $pic->FORMAT;
-	$members[$compteur]["pic_height"] = $pic->OPTIMAL_HEIGHT;
-	$members[$compteur]["pic_width"] = $pic->OPTIMAL_WIDTH;
+	$pic =& new Picture($resultat->fields['id_adh']);
+	$members[$compteur]["pic_format"] = $pic->getFormat();
+	$members[$compteur]["pic_height"] = $pic->getOptimalHeight();
+	$members[$compteur]["pic_width"] = $pic->getOptimalWidth();
 	$resultat->MoveNext();
 	$compteur++;
 }

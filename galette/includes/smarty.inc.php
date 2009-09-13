@@ -48,6 +48,7 @@ $tpl->compile_dir = WEB_ROOT . 'templates_c/';
 $tpl->cache_dir = WEB_ROOT . 'cache/';
 $tpl->config_dir = WEB_ROOT . 'configs/';
 
+$tpl->assign('login', $login);
 $tpl->assign('template_subdir', $base_path . $template_subdir);
 $tpl->assign('jquery_dir', $base_path . 'includes/jquery/');
 $tpl->assign('jquery_version', JQUERY_VERSION);

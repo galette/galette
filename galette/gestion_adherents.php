@@ -151,10 +151,10 @@ if (isset($_GET["tri"]))
 			$resultat = $DB->Execute($requetesup);
 			if (!$resultat->EOF)
 			{
-				// supression record adh�rent
+				// supression record adhérent
 				$requetesup = "DELETE FROM ".PREFIX_DB."adherents 
 						WHERE id_adh=".$DB->qstr($supval, get_magic_quotes_gpc()); 
-				$DB->Execute($requetesup); 		
+				$DB->Execute($requetesup);
 				$hist->add("Delete the member card (and dues)",strtoupper($resultat->fields[0])." ".$resultat->fields[1],$requetesup);
 
 				// suppression records cotisations
@@ -168,11 +168,14 @@ if (isset($_GET["tri"]))
 				$DB->Execute($requetesup);
 
 				// erase picture
-				$requetesup = "DELETE FROM ".PREFIX_DB."pictures
+				/** TODO: remove this old code, once newer is tested */
+				/*$requetesup = "DELETE FROM ".PREFIX_DB."pictures
 						WHERE id_adh=".$DB->qstr($supval, get_magic_quotes_gpc());
-				$DB->Execute($requetesup);
+				$DB->Execute($requetesup);*/
+				Picture::delete( $DB->qstr($supval, get_magic_quotes_gpc()) );
 			}
 			$resultat->Close();
+			/** FIXME: is that required to reload the page ? Members list should not be loaded yet */
 			header ('location: gestion_adherents.php');
  		}
 	}

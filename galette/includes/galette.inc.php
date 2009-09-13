@@ -129,10 +129,15 @@ $plugins->loadModules(PLUGINS_PATH, $i18n->getFileName());
 /**
 * Authentication
 */
-require_once(WEB_ROOT . '/classes/galette-login.class.php');
+require_once(WEB_ROOT . 'classes/galette-login.class.php');
 if(isset($_SESSION['galette']['login']))
 	$login = unserialize($_SESSION['galette']['login']);
 else $login = new GaletteLogin();
+
+/**
+* Members, alos load Adherent and Picture objects
+*/
+require_once(WEB_ROOT . 'classes/members.class.php');
 
 /**
 * Instanciate history object
@@ -151,6 +156,14 @@ require_once(WEB_ROOT . 'includes/functions.inc.php');
 include_once(WEB_ROOT . 'includes/session.inc.php');
 require_once(WEB_ROOT . 'includes/i18n.inc.php');
 require_once(WEB_ROOT . 'includes/smarty.inc.php');
-require_once(WEB_ROOT . 'classes/picture.class.php');
 
+/**
+* Logo
+*/
+require_once(WEB_ROOT . 'classes/logo.class.php');
+if( isset($_SESSION['galette']['logo']) ){
+	$logo = unserialize($_SESSION['galette']['logo']);
+} else {
+	$logo = new Logo();
+}
 ?>

@@ -1,7 +1,7 @@
 <?php
 
 // Copyright © 2004 Frédéric Jaqcuot
-// Copyright © 2007-2008 Johan Cwiklinski
+// Copyright © 2007-2009 Johan Cwiklinski
 //
 // This file is part of Galette (http://galette.tuxfamily.org).
 //
@@ -51,9 +51,7 @@ if (isset($_POST["ident"]))
 		$_SESSION['galette']['login'] = serialize($login);
 		//for pre 0.7 compat while under devel
 		$_SESSION['logged_status'] = 1;
-		$_SESSION['admin_status'] = 1;
 		$_SESSION['logged_username'] = $_POST['login'];
-		$_SESSION['logged_nom_adh'] = 'Admin';
 		//end backward compat
 		$hist->add('Login');
 		header('location: gestion_adherents.php');
@@ -65,10 +63,8 @@ if (isset($_POST["ident"]))
 		if($login->isLogged()){
 			$_SESSION['galette']['login'] = serialize($login);
 			//for pre 0.7 compat while under devel
-			if($login->isAdmin()) $_SESSION['admin_status'] = 1;
-			$_SESSION['logged_id_adh'] = $login->id;
+			/** FIXME: be sure that session parameters are no longer in use before deleting */
 			$_SESSION['logged_status'] = 1;
-			$_SESSION['logged_nom_adh']=strtoupper($login->name) . ' ' . strtolower($login->surname);
 			$pref_lang = $login->lang;
 			setcookie('pref_lang', $pref_lang);
 			//end backward compat
@@ -85,15 +81,15 @@ if (isset($_POST["ident"]))
 if( !$login->isLogged() )
 {
 	//check if there's a custom logo
-	$customLogo =& new picture(0);
-	if ( $customLogo->HAS_PICTURE ) {
+	/*$customLogo =& new Picture(0);
+	if ( $customLogo->hasPicture() ) {
 		$_SESSION["customLogo"] = true;
-		$_SESSION["customLogoFormat"] = $customLogo->FORMAT;
-		$_SESSION["customLogoHeight"] = $customLogo->OPTIMAL_HEIGHT;
-		$_SESSION["customLogoWidth"] = $customLogo->OPTIMAL_WIDTH;
+		$_SESSION["customLogoFormat"] = $customLogo->getFormat();
+		$_SESSION["customLogoHeight"] = $customLogo->getOptimalHeight();
+		$_SESSION["customLogoWidth"] = $customLogo->getOptimalWidth();
 	} else {
 		$_SESSION["customLogo"] = false;
-	}
+	}*/
 
 	// display page
 	$tpl->assign('loginfault', $loginfault);

@@ -46,7 +46,7 @@ if( !$login->isLogged() ) {
 $id_adh = get_numeric_form_value("id_adh", "");
 
 if( !$login->isAdmin() )
-	$id_adh = $_SESSION["logged_id_adh"];
+	$id_adh = $login->id;
 
 if ($id_adh=="") {
 	header("location: index.php");
@@ -71,7 +71,7 @@ $adherent['dyn'] = get_dynamic_fields($DB, 'adh', $id_adh, true);
 
 // - declare dynamic fields for display
 $disabled['dyn'] = array();
-$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $login->isAdmin(), $adherent['dyn'], $disabled['dyn'], 0);
+$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'adh', $adherent['dyn'], $disabled['dyn'], 0);
 
 if(isset($error_detected))
 	$tpl->assign("error_detected",$error_detected);

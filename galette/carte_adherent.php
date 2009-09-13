@@ -92,24 +92,24 @@ $doc_keywords = _T("Cards");
 $an_cot = '<strong>' . PREF_CARD_YEAR . '</strong>';
 $abrev = '<strong>' . PREF_CARD_ABREV . '</b>';
 $strip = PREF_CARD_STRIP;
-$logo =& new picture(999999);
-if ($logo->HAS_PICTURE){
-	$logofile = $logo->FILE_PATH;
+$logo =& new Picture(999999);
+if( $logo->hasPicture() ){
+	$logofile = $logo->getPath();
 
 	// Set logo size to max width 30 mm or max height 25 mm
-	$ratio = $logo->WIDTH/$logo->HEIGHT;
+	$ratio = $logo->getWidth()/$logo->getHeight();
 	if ($ratio < 1) {
-		if ($logo->HEIGHT > 16) {
+		if ($logo->getHeight() > 16) {
 			$hlogo = 25;
 		} else {
-			$hlogo = $logo->HEIGHT;
+			$hlogo = $logo->getHeight();
 		}
 		$wlogo = round($hlogo*$ratio);
 	} else {
-		if ($logo->WIDTH > 16) {
+		if ($logo->getWidth() > 16) {
 			$wlogo = 30;
 		} else {
-			$wlogo = $logo->WIDTH;
+			$wlogo = $logo->getWidth();
 		}
 		$hlogo = round($wlogo/$ratio);
 	}
@@ -236,7 +236,7 @@ foreach($members as $member){
 	$id = '<strong>' . $member->id_adh . '</strong>';
 	$nom_adh_ext = '<strong>' . (( PREF_BOOL_DISPLAY_TITLE ) ? $member->spoliteness . ' ' : '') . $member->surname . ' ' . $member->name . '</strong>';
 	$photo = $member->picture;
-	$photofile = $photo->FILE_PATH;
+	$photofile = $photo->getPath();
 
 	// Photo 100x130 and logo
 	$pdf->Image($photofile,$x0,$y0,25);

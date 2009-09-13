@@ -40,6 +40,7 @@
 require_once('politeness.class.php');
 require_once('status.class.php');
 require_once('fields_categories.class.php');
+require_once('picture.class.php');
 
 class Adherent {
 	const TABLE = 'adherents';
@@ -148,7 +149,7 @@ class Adherent {
 			$this->status = Status::DEFAULT_STATUS;
 			$this->politeness = Politeness::MR;
 			$this->password = makeRandomPassword(7); //Usefull ?
-			$this->picture = new picture();
+			$this->picture = new Picture();
 		} elseif ( is_object($args) ){
 			$this->loadFromRS($args);
 		}
@@ -214,7 +215,7 @@ class Adherent {
 		$this->creation_date = $r->date_crea_adh;
 		$this->others_infos = $r->info_public_adh;
 		$this->others_infos_admin = $r->info_adh;
-		$this->picture = new picture($this->id);
+		$this->picture = new Picture($this->id);
 	}
 
 	/* GETTERS */
@@ -240,7 +241,7 @@ class Adherent {
 
 	public function __get($name){
 		$forbidden = array('admin', 'due_free', 'appears_in_list', 'active');
-		$virtuals = array('sadmin', 'sdue_free', 'sappears_in_list', 'sactive', 'spoliteness', 'sstatus');
+		$virtuals = array('sadmin', 'sdue_free', 'sappears_in_list', 'sactive', 'spoliteness', 'sstatus', 'sfullname');
 		if( !in_array($name, $forbidden) && isset($this->$name)){
 			switch($name){
 				case 'birthdate':
@@ -267,6 +268,9 @@ class Adherent {
 					break;
 				case 'sstatus':
 					return Status::getLabel($this->status);
+					break;
+				case 'sfullname':
+					return Politeness::getPoliteness($this->politeness) . ' ' . $this->name . ' ' . $this->surname;
 					break;
 			}
 		} else return false;

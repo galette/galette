@@ -220,12 +220,11 @@
 
 	// Returns an array of all kind of fields to display.
 	// $form_name: Form name in $all_forms
-	// $admin_status: Must be true for an admin or false otherwise.
 	// $all_values: Values as returned by extract_posted_dynamic_fields.
 	// $disabled: Array that will be filled with fields that are discarded as key.
 	// $edit: Must be true if prepared for edition.
-	function prepare_dynamic_fields_for_display($DB, $form_name, $admin_status, $all_values, $disabled, $edit) {
-		global $field_properties, $field_types_table, $perm_admin;
+	function prepare_dynamic_fields_for_display($DB, $form_name, $all_values, $disabled, $edit) {
+		global $field_properties, $field_types_table, $perm_admin, $login;
 		$quoted_form_name = $DB->qstr($form_name, get_magic_quotes_gpc());
 		$query = "SELECT *
 			  FROM $field_types_table
@@ -241,7 +240,7 @@
 		{
 			$field_id = $result->fields['field_id'];
 			// disable admin fields when logged as member
-			if ($admin_status!=1 && $result->fields['field_perm']==$perm_admin)
+			if ( !$login->isAdmin() && $result->fields['field_perm']==$perm_admin)
 				$disabled[$field_id] = 'disabled';
 			$cur_fields = &$result->fields;
 			$cur_fields['field_name'] = _T($cur_fields['field_name']);

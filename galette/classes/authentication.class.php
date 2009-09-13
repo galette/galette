@@ -47,6 +47,7 @@ abstract class Authentication{
 	private $lang;
 	private $logged = false;
 	private $active = false;
+	private $superadmin = false;
 
 	/**
 	* Default constructor
@@ -82,6 +83,8 @@ abstract class Authentication{
 		$this->login = $login;
 		$this->admin = true;
 		$this->active = true;
+		//a flag for super admin only, sinci it's not a regular user
+		$this->superadmin = true;
 	}
 
 	/**
@@ -98,6 +101,7 @@ abstract class Authentication{
 	/* GETTERS */
 	public function isLogged(){return $this->logged;}
 	public function isAdmin(){return $this->admin;}
+	public function isSuperAdmin(){return $this->superadmin;}
 	public function isActive(){return $this->active;}
 	public function __get($name){
 		$forbidden = array('logged', 'admin', 'active');

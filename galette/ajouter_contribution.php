@@ -424,7 +424,7 @@ include(WEB_ROOT."includes/dynamic_fields.inc.php");
 	$tpl->assign("cotis_extension", $cotis_extension);
 
 	// - declare dynamic fields for display
-	$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'contrib', $_SESSION["admin_status"], $contribution['dyn'], array(), 1);
+	$dynamic_fields = prepare_dynamic_fields_for_display($DB, 'contrib', $contribution['dyn'], array(), 1);
 	$tpl->assign("dynamic_fields",$dynamic_fields);
 
 	// page generation

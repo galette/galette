@@ -78,7 +78,7 @@
 						<label for="bool_display_info" class="bline {if $required.bool_display_info eq 1} required{/if}">{_T string="Be visible in the<br /> members list :"}</label>
 						<input type="checkbox" name="bool_display_info" id="bool_display_info" value="1" {if $member->appearsInMembersList() eq 1}checked="checked"{/if} {$disabled.bool_display_info}/>
 					</p>
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 					<p>
 						<label for="activite_adh" class="bline {if $required.activite_adh eq 1} required{/if}">{_T string="Account:"}</label>
 						<select name="activite_adh" id="activite_adh" {$disabled.activite_adh}>
@@ -116,7 +116,7 @@
 						<span class="exemple">{_T string="(Confirmation)"}</span>
 					</p>
 {* FIXME: EN cas de modification, veut-on envoyer un mail ? *}
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 					<p>
 						<label for="mail_confirm" class="bline">{_T string="Send a mail:"}</label>
 						<input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
@@ -136,7 +136,7 @@
 					<p>
 						<label for="info_public_adh" class="bline{if $required.info_public_adh eq 1} required{/if}">{_T string="Other informations:"}</label> 
 						<textarea name="info_public_adh" id="info_public_adh" cols="61" rows="6" {$disabled.info_public_adh}>{$member->other_infos|htmlspecialchars}</textarea>
-{if $smarty.session.admin_status eq 1}
+{if $login->isAdmin()}
 						<br/><span class="exemple labelalign">{_T string="This comment is reserved to the member."}</span>
 {/if}
 					</p>
