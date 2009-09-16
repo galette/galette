@@ -128,7 +128,7 @@ class Picture{
 	*/
 	private function checkFileInDB(){
 		global $DB;
-		$sql = 'SELECT picture,format FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=' . $this->id;
+		$sql = 'SELECT picture,format FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=\'' . $this->id . '\'';
 		$result = &$DB->Execute($sql);
 		if ($result->RecordCount()!=0) {
 			// we must regenerate the picture file
