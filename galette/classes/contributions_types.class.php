@@ -62,7 +62,11 @@ class ContributionsTypes{
 	/**
 	* Default constructor
 	*/
-	public function __construct(){}
+	public function __construct($args = null){
+		if ( is_object($args) ){
+			$this->loadFromRS($args);
+		}
+	}
 
 	/**
 	* Set default contribution types at install time
@@ -98,8 +102,19 @@ class ContributionsTypes{
 		return true;
 	}
 
-	
+	/**
+	* Returns the list of statuses, in an array built as :
+	* $array[id] = label status
+	*/
 	public function getList(){
+		/** TODO */
+	}
+
+	/**
+	* Returns the complete list of contributions types, as an array of ContributionsTypes objects
+	* TODO: replace with a static function ?
+	*/
+	public function getCompleteList(){
 		global $mdb, $log;
 		$list = array();
 
@@ -116,13 +131,16 @@ class ContributionsTypes{
 			$log->log('No contribution type defined in database.', PEAR_LOG_INFO);
 			return(-10);
 		}else{
+			/** TODO: an array of Objects would be more relevant here (see members and adherent class) */
+			/*foreach( $result->fetchAll() as $row ){
+				$list[] = new ContributionTypes($row);
+			}*/
 			$r = $result->fetchAll();
-			$array = array();
 			foreach($r as $contrib){
 				$list[$contrib->id_type_cotis] = array(
-								       _T($contrib->libelle_type_cotis),
-								       $contrib->cotis_extension
-								       );
+					_T($contrib->libelle_type_cotis),
+					$contrib->cotis_extension
+				);
 			}
 			return $list;
 		}

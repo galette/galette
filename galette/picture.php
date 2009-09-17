@@ -39,11 +39,15 @@ if( !$login->isLogged() )
 	die();
 }
 
-if( !$login->isAdmin() )
-	$id_adh = $login->id;
-else
-	$id_adh = $_GET['id_adh'];
-
-	$picture = new Picture($id_adh);
-	$picture->display();
+if( isset($_GET['logo']) && $_GET['logo'] == 'true' ){
+	$logo->display();
+} else {
+	if( !$login->isAdmin() )
+		$id_adh = $login->id;
+	else
+		$id_adh = $_GET['id_adh'];
+	
+		$picture = new Picture($id_adh);
+		$picture->display();
+}
 ?>

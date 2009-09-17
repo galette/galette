@@ -80,17 +80,6 @@ if (isset($_POST["ident"]))
 
 if( !$login->isLogged() )
 {
-	//check if there's a custom logo
-	/*$customLogo =& new Picture(0);
-	if ( $customLogo->hasPicture() ) {
-		$_SESSION["customLogo"] = true;
-		$_SESSION["customLogoFormat"] = $customLogo->getFormat();
-		$_SESSION["customLogoHeight"] = $customLogo->getOptimalHeight();
-		$_SESSION["customLogoWidth"] = $customLogo->getOptimalWidth();
-	} else {
-		$_SESSION["customLogo"] = false;
-	}*/
-
 	// display page
 	$tpl->assign('loginfault', $loginfault);
 	$tpl->display("index.tpl");

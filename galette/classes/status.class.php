@@ -48,6 +48,7 @@ class Status{
 	const DEFAULT_STATUS = 4;
 	const TABLE = 'statuts';
 	const PK = 'id_statut';
+	const ORDER_FIELD = 'priorite_statut';
 	private static $fields = array(
 		'id_statut',
 		'libelle_statut',
@@ -70,7 +71,11 @@ class Status{
 	/**
 	* Default constructor
 	*/
-	public function __construct(){}
+	public function __construct($args = null){
+		if ( is_object($args) ){
+			$this->loadFromRS($args);
+		}
+	}
 
 	/**
 	* Set default status at install time
@@ -106,11 +111,15 @@ class Status{
 		return true;
 	}
 
-        public function getList(){
+	/**
+	* Returns the list of statuses, in an array built as :
+	* $array[id] = label status
+	*/
+	public function getList(){
 		global $mdb, $log;
 		$list = array();
 
-		$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' ORDER BY priorite_statut, ' . self::PK;
+		$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' ORDER BY ' . self::ORDER_FIELD . ', ' . self::PK;
 
 		$result = $mdb->query($requete);
 		if (MDB2::isError($result))
@@ -126,10 +135,45 @@ class Status{
 			$r = $result->fetchAll();
 			$array = array();
 			foreach($r as $status){
+				$list[$status->id_statut] = _T($status->libelle_statut);
+			}
+			return $list;
+		}
+
+	}
+
+	/**
+	* Returns the complete list of statuses, as an array of Status objects
+	* TODO: replace with a static function ?
+	*/
+        public function getCompleteList(){
+		global $mdb, $log;
+		$list = array();
+
+		$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' ORDER BY ' . self::ORDER_FIELD . ', ' . self::PK;
+
+		$result = $mdb->query($requete);
+		if (MDB2::isError($result))
+		  {
+		    $this->error = $result;
+		    return false;
+		  }
+
+		if($result->numRows() == 0){
+			$log->log('No status defined in database.', PEAR_LOG_INFO);
+			return(-10);
+		}else{
+			/** TODO: an array of Objects would be more relevant here (see members and adherent class) */
+			/*foreach( $result->fetchAll() as $row ){
+				$list[] = new Status($row);
+			}*/
+			/** END TODO */
+			$r = $result->fetchAll();
+			foreach($r as $status){
 				$list[$status->id_statut] = array(
-								  _T($status->libelle_statut),
-								  $status->priorite_statut
-								  );
+					_T($status->libelle_statut),
+					$status->priorite_statut
+				);
 			}
 			return $list;
 		}

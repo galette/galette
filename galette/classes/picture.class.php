@@ -157,8 +157,7 @@ class Picture{
 	* Gets the default picture to show, anyways
 	*/
 	protected function getDefaultPicture(){
-		global $tpl;
-		$this->file_path = $tpl->template_dir.'images/default.png';
+		$this->file_path = _templates_path . 'images/default.png';
 		$this->format = 'png';
 		$this->mime = 'image/png';
 		$this->has_picture = false;
@@ -279,7 +278,7 @@ class Picture{
 			$log->log('An error has occured inserting picture in database (query was: ' . $sql . ')', PEAR_LOG_ERR);
 			return self::SQL_ERROR;
 		}
-		if (!$DB->UpdateBlob(PREFIX_DB . self::TABLE, 'picture', $picture, self::PK . '=' . $this->id)){
+		if (!$DB->UpdateBlob(PREFIX_DB . self::TABLE, 'picture', $picture, self::PK . '=\'' . $this->id . '\'')){
 			$log->log('An error has occured updating blob in database', PEAR_LOG_ERR);
 			return self::SQL_BLOB_ERROR;
 		}

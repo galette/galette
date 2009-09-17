@@ -40,7 +40,6 @@ if (file_exists("/usr/share/php/Smarty/Smarty.class.php")){
 }
 include($galetteSmartyPath . 'Smarty.class.php');
 $tpl = new Smarty;
-define('TEMPLATES_PATH', WEB_ROOT . 'templates/');
 $template_subdir = 'templates/' . $preferences->pref_theme . '/';
 $tpl->plugins_dir[] = WEB_ROOT . 'includes/smarty_plugins';
 $tpl->template_dir = WEB_ROOT . $template_subdir;
@@ -49,6 +48,7 @@ $tpl->cache_dir = WEB_ROOT . 'cache/';
 $tpl->config_dir = WEB_ROOT . 'configs/';
 
 $tpl->assign('login', $login);
+$tpl->assign('logo', $logo);
 $tpl->assign('template_subdir', $base_path . $template_subdir);
 $tpl->assign('jquery_dir', $base_path . 'includes/jquery/');
 $tpl->assign('jquery_version', JQUERY_VERSION);

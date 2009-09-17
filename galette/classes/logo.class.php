@@ -43,8 +43,7 @@ class Logo extends Picture{
 	}
 
 	protected function getDefaultPicture(){
-		global $tpl;
-		$this->file_path = $tpl->template_dir.'images/galette.png';
+		$this->file_path = _templates_path . 'images/galette.png';
 		$this->format = 'png';
 		$this->mime = 'image/png';
 	}

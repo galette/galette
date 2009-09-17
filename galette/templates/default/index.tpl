@@ -6,11 +6,7 @@
 	<body>
 		<form action="index.php" method="post" id="login_frm">
 			<div id="main_logo">
-{if $smarty.session.customLogo}
-				<img src="photos/0.{$smarty.session.customLogoFormat}" height="{$smarty.session.customLogoHeight}" width="{$smarty.session.customLogoWidth}" alt="[ Galette ]"/>
-{else}
-				<img src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60"/>
-{/if}
+				<img src="picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
 			</div>
 			<div class="login-box">
 				<h1 id="titre">{_T string="Login"}</h1>
@@ -23,14 +19,14 @@
 {/foreach}
 				</ul>
 				<table> 
-					<tr> 
-						<th><label for="login">{_T string="Username:"}</label></th> 
-						<td><input type="text" name="login" id="login" /></td> 
-					</tr> 
-					<tr> 
-						<th><label for="password">{_T string="Password:"}</label></th> 
-						<td><input type="password" name="password" id="password"/></td> 
-					</tr> 
+					<tr>
+						<th><label for="login">{_T string="Username:"}</label></th>
+						<td><input type="text" name="login" id="login" /></td>
+					</tr>
+					<tr>
+						<th><label for="password">{_T string="Password:"}</label></th>
+						<td><input type="password" name="password" id="password"/></td>
+					</tr>
 				</table>
 				<input type="submit" class="submit" value="{_T string="Login"}" />
 				<input type="hidden" name="ident" value="1" />

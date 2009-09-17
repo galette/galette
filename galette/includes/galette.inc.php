@@ -46,6 +46,7 @@ require_once( $base_path . 'config/versions.inc.php');
 session_start();
 
 define('GALETTE_VERSION', 'v0.7alpha');
+define('_templates_path', WEB_ROOT . 'templates/');
 set_include_path(get_include_path() . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/PEAR-' . PEAR_VERSION . '/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/MDB2-' . MDB2_VERSION . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/Log-' . LOG_VERSION);
 
 /*--------------------------------------------------------------------------------------
@@ -134,6 +135,10 @@ if(isset($_SESSION['galette']['login']))
 	$login = unserialize($_SESSION['galette']['login']);
 else $login = new GaletteLogin();
 
+//required by Pictures object, so we put it there
+/** TODO: use Mdb instead of Adodb for Pictures */
+require_once(WEB_ROOT . 'includes/database.inc.php');
+
 /**
 * Members, alos load Adherent and Picture objects
 */
@@ -148,22 +153,21 @@ if(isset($_SESSION['galette']['history']))
 else $hist = new History();
 
 /**
+* Logo
+*/
+require_once(WEB_ROOT . 'classes/logo.class.php');
+/*if( isset($_SESSION['galette']['logo']) ){
+	$logo = unserialize($_SESSION['galette']['logo']);
+} else {
+	$logo = new Logo();
+}*/
+$logo = new Logo();
+/**
 * Now that all objects are correctly setted,
 * we can include files that need it
 */
-require_once(WEB_ROOT . 'includes/database.inc.php');
 require_once(WEB_ROOT . 'includes/functions.inc.php');
 include_once(WEB_ROOT . 'includes/session.inc.php');
 require_once(WEB_ROOT . 'includes/i18n.inc.php');
 require_once(WEB_ROOT . 'includes/smarty.inc.php');
-
-/**
-* Logo
-*/
-require_once(WEB_ROOT . 'classes/logo.class.php');
-if( isset($_SESSION['galette']['logo']) ){
-	$logo = unserialize($_SESSION['galette']['logo']);
-} else {
-	$logo = new Logo();
-}
 ?>

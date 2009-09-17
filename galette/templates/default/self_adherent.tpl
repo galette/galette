@@ -31,11 +31,8 @@
 	</head>
 	<body>
 		<div id="main_logo">
-{if $smarty.session.customLogo}
-			<img src="photos/0.{$smarty.session.customLogoFormat}" alt="[ Galette ]"/>
-{else}
-			<img src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60"/>  
-{/if}
+			<img src="picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
+
 		</div>
 		<h1 id="titre" class="self_subscribe">{_T string="Member profile"}</h1>
 		<ul class="menu m_subscribe">

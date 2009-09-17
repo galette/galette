@@ -5,11 +5,7 @@
 	</head>
 	<body>
 		<div id="main_logo">
-{if $smarty.session.customLogo}
-			<img src="photos/0.{$smarty.session.customLogoFormat}" height="{$smarty.session.customLogoHeight}" width="{$smarty.session.customLogoWidth}" alt="[ Galette ]"/>
-{else}
-			<img src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60"/>
-{/if}
+			<img src="picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
 		</div>
 
 		<form action="lostpasswd.php" method="post" enctype="multipart/form-data" id="login_frm">

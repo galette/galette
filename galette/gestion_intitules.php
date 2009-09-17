@@ -261,7 +261,7 @@ function list_entries ($class)
 {
   global $fields, $tpl;
 
-  $list = $class->getList();
+  $list = $class->getCompleteList();
 
   $entries = array();
   foreach ($list as $key=>$row)
