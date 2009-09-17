@@ -102,6 +102,11 @@ require_once(WEB_ROOT . 'classes/preferences.class.php');
 $preferences = new Preferences();
 
 /**
+* Set the path to the current theme templates
+*/
+define('_current_template_path', _templates_path . $preferences->pref_theme . '/');
+
+/**
 * Language instantiation
 */
 require_once(WEB_ROOT . 'classes/i18n.class.php');
@@ -156,12 +161,12 @@ else $hist = new History();
 * Logo
 */
 require_once(WEB_ROOT . 'classes/logo.class.php');
-/*if( isset($_SESSION['galette']['logo']) ){
+if( isset($_SESSION['galette']['logo']) ){
 	$logo = unserialize($_SESSION['galette']['logo']);
 } else {
 	$logo = new Logo();
-}*/
-$logo = new Logo();
+}
+
 /**
 * Now that all objects are correctly setted,
 * we can include files that need it
