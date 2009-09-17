@@ -334,7 +334,7 @@ else
 {
   $tpl->assign("all_forms", $forms);
   $tpl->assign("error_detected", $error_detected);
-  $content = $tpl->fetch("editer_intitules.tpl");
+  $content = $tpl->fetch("gestion_intitules.tpl");
 }
 $tpl->assign("content", $content);
 
