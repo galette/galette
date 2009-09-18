@@ -69,7 +69,7 @@ class Members {
 
 		$result = $mdb->query( $requete );
 		if (MDB2::isError($result)) {
-			$log->log('Cannot members list | ' . $result->getMessage() . '(' . $result->getDebugInfo() . ')', PEAR_LOG_WARNING);
+			$log->log('Cannot list members | ' . $result->getMessage() . '(' . $result->getDebugInfo() . ')', PEAR_LOG_WARNING);
 			return false;
 		}
 
@@ -80,6 +80,34 @@ class Members {
 			}
 		} else {
 			$members = $result->fetchAll();
+		}
+		return $members;
+	}
+
+	/**
+	* Get members list with public informations available
+	* @param boolean with_photos get only members which have uploaded a photo (for trombinoscope)
+	*/
+	public static function getPublicList($with_photos){
+		global $mdb, $log;
+
+		$where = ' WHERE bool_display_info=1 AND (date_echeance > \''. date("Y-m-d") . '\' OR bool_exempt_adh=1)';
+
+		if( $with_photos ) {
+			$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' a JOIN ' . PREFIX_DB . Picture::TABLE . ' p ON a.' . self::PK . '=p.' . self::PK . $where;
+		} else {
+			$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . $where;
+		}
+
+		$result = $mdb->query( $requete );
+
+		if (MDB2::isError($result)) {
+			$log->log('Cannot list members with public informations (photos: ' . $with_photos . ') | ' . $result->getMessage() . '(' . $result->getDebugInfo() . ')', PEAR_LOG_WARNING);
+			return false;
+		}
+
+		foreach( $result->fetchAll() as $row ){
+			$members[] = new Adherent($row);
 		}
 		return $members;
 	}

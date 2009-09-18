@@ -51,8 +51,10 @@ PHP_SOURCES = ../index.php \
 ../templates/default/self_adherent.tpl \
 ../templates/default/champ_requis.tpl \
 ../templates/default/gestion_textes.tpl \
-../templates/default/editer_intitules.tpl \
+../templates/default/gestion_intitules.tpl \
 ../templates/default/editer_intitule.tpl \
+../templates/default/trombinoscope.tpl \
+../templates/default/liste_membres.tpl \
 ../classes/adherent.class.php \
 ../classes/models.class.php \
 ../classes/pdf.class.php \

@@ -246,6 +246,7 @@ class Adherent {
 			switch($name){
 				case 'birthdate':
 				case 'creation_date':
+					/** FIXME: date function from functions.inc.php does use adodb */
 					return date_db2text($this->$name);
 					break;
 				default:
