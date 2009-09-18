@@ -93,7 +93,14 @@ function PasswordCheck($pass,$crypt){
 
 function print_img($img) {
 	$file = STOCK_FILES."/".$img;
-	if( exif_imagetype($file) ) {
+	$image_type = false;
+	if(function_exists('exif_imagetype')) {
+		$image_type = exif_imagetype($file);
+	} else {
+		$image_size = getimagesize($file);
+		if(is_array($image_size) && isset($image_size[2])) $image_type = $image_size[2];
+	}
+	if( $image_type ) {
 		return $file;
 	}
 }
