@@ -43,7 +43,7 @@
 				<p>
 					<label for="logo_picture" class="bline">{_T string="Logo:"}</label>
 {if $pref.has_logo eq 1}
-					<img src="picture.php?id_adh=0&amp;rand={$time}" class="picture" width="{$pref.picture_width}" height="{$pref.picture_height}" alt="{_T string="Picture"}"/><br/>
+					<img src="picture.php?logo=true&amp;rand={$time}" class="picture" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="{_T string="Current logo"}"/><br/>
 					<span>{_T string="Delete image"}</span><input type="checkbox" name="del_logo" value="1" /><br />
 {/if}
 					<input type="file" name="logo" id="logo_picture"/>
