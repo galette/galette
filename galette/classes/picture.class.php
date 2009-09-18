@@ -64,6 +64,8 @@ class Picture{
 				'gif'	=>	'image/gif'
 			);
 
+	private $error = null;
+
 	protected $id;
 	protected $height;
 	protected $width;
@@ -76,6 +78,7 @@ class Picture{
 	protected $store_path = '../photos/';
 	protected $max_width = 200;
 	protected $max_height = 200;
+	protected $custom = true;
 
 	/**
 	* Default constructor.
@@ -201,9 +204,10 @@ class Picture{
 	* @param int id identifiant for the picture to delete
 	*/
 	public function delete(){
-		global $DB;
+		global $mdb;
 		$sql = 'DELETE FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=\'' . $this->id . '\'';
-		if ( ! $DB->Execute($sql) ){
+		$result = $mdb->query($sql);
+		if( MDB2::isError($result) ){
 			return false;
 		} else {
 			if (file_exists(dirname(__FILE__).'/' . $this->store_path . $this->id . '.jpg'))
@@ -213,7 +217,7 @@ class Picture{
 			elseif (file_exists(dirname(__FILE__).'/' . $this->store_path . $this->id . '.gif'))
 				return unlink(dirname(__FILE__).'/' . $this->store_path . $this->id . '.gif');
 		}
-		return false;
+		return true;
 	}
 
 	public function store($file){
@@ -360,5 +364,8 @@ class Picture{
 		return $this->file_path;
 	}
 
+	public function isCustom(){
+		return $this->custom;
+	}
 }
 ?>

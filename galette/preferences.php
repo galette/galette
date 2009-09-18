@@ -239,6 +239,7 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 					}
 					$logo = new Logo();
 					$_SESSION['galette']['logo'] = serialize($logo);
+					$tpl->assign('logo', $logo);
 				}
 			}
 		}
@@ -249,6 +250,7 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 			} else {
 				$logo = new Logo(); //get default Logo
 				$_SESSION['galette']['logo'] = serialize($logo);
+				$tpl->assign('logo', $logo);
 			}
 		}
 
@@ -299,15 +301,6 @@ else
 $pref['card_logo_height'] = $cardlogo->getOptimalHeight();
 $pref['card_logo_width'] = $cardlogo->getOptimalWidth();
 
-// logo data
-$picture = new Picture(0);
-if ($picture->hasPicture())
-	$pref['has_logo']=1;
-else
-	$pref['has_logo']=0;
-
-$pref['picture_height'] = $picture->getOptimalHeight();
-$pref['picture_width'] = $picture->getOptimalWidth();
 $tpl->assign('time', time());
 $tpl->assign('pref', $pref);
 $tpl->assign('pref_numrows_options', array(

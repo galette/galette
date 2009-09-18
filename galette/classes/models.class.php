@@ -91,14 +91,14 @@ class Models {
 		if (file_exists($modelfile)) {
 			$xmlModel = simplexml_load_file($modelfile);
 			$this->modname = $xmlModel->name;
-	   // First delete models if it already exists in database
+	   		// First delete models if it already exists in database
 			$requete = 'DELETE FROM '.$mdb->quoteIdentifier(PREFIX_DB.self::MODELS);
 			$requete .= ' WHERE '.$mdb->quoteIdentifier('mod_name').'='.$mdb->quote($this->modname);
 			$result = $mdb->execute($requete);
 			// Vérification des erreurs
 			self::chekError();
 			if(!$this->is_error){
-		// Then Load Fields in database (one for each model)
+				// Then Load Fields in database (one for each model)
 				$requete = 'INSERT INTO '.$mdb->quoteIdentifier(PREFIX_DB.self::MODELS);
 				$requete .= ' ('.$mdb->quoteIdentifier('mod_name').','.$mdb->quoteIdentifier('mod_xml').')';
 				$requete .= ' VALUES ('.$mdb->quote($this->modname).','.$mdb->quote($xmlModel->asXML()).')';

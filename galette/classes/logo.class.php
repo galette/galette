@@ -46,6 +46,7 @@ class Logo extends Picture{
 		$this->file_path = _current_template_path . 'images/galette.png';
 		$this->format = 'png';
 		$this->mime = 'image/png';
+		$this->custom = false;
 	}
 }
 ?>
