@@ -55,6 +55,7 @@ if( !$login->isAdmin() ){
 $error_detected = array();
 $warning_detected = array();
 $confirm_detected = array();
+$prefs_stored = false;
 
 // flagging required fields
 $required = array(
@@ -210,6 +211,12 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 				$preferences->$champ = $valeur;
 			}
 		}
+		//once all values has been updated, we can store them
+		if( !$preferences->store() ){
+			$error_detected[] = _T("An SQL error has occured while storing preferences. Please try again, and contact the administrator if the problem persists.");
+		} else {
+			$prefs_stored = true;
+		}
 
 		// picture upload
 		if (isset($_FILES['logo']) ){
@@ -316,6 +323,7 @@ $tpl->assign('languages', $i18n->getList());
 $tpl->assign('themes', $themes);
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('warning_detected', $warning_detected);
+$tpl->assign('prefs_stored', $prefs_stored);
 $tpl->assign('color_picker', true);
 // page generation
 $content = $tpl->fetch('preferences.tpl');

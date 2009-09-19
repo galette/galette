@@ -20,6 +20,9 @@
 			</ul>
 		</div>
 {/if}
+{if $prefs_stored}
+	<div id="infobox">{_T string="Preferences has been saved."}</div>
+{/if}
 		<ul id="tabs">
 			<li><a href="#admin">{_T string="Admin"}</a></li>
 			<li><a href="#cards">{_T string="Cards"}</a></li>

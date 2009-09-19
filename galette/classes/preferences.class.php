@@ -215,6 +215,40 @@ class Preferences{
 		return array_keys($this->prefs);
 	}
 
+	/**
+	* Will store all preferences in the database
+	*/
+	public function store(){
+		global $mdb, $log;
+		$stmt = $mdb->prepare(
+				'UPDATE ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) . ' SET ' . $mdb->quoteIdentifier('val_pref') . '=:value WHERE ' . $mdb->quoteIdentifier('nom_pref') . '=:name',
+				array('text', 'text'),
+				MDB2_PREPARE_MANIP
+			);
+
+		$params = array();
+		foreach(self::$defaults as $k=>$v){
+			$params[] = array(
+				'value'	=>	$this->prefs[$k],
+				'name'	=>	$k
+			);
+		}
+
+		$mdb->getDb()->loadModule('Extended', null, false);
+		$mdb->getDb()->extended->executeMultiple($stmt, $params);
+
+		if (MDB2::isError($stmt)) {
+			$this->error = $stmt;
+			$log->log('Unable to store preferences.' . $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')', PEAR_LOG_WARNING);
+			return false;
+		}
+
+		$stmt->free();
+		$log->log('Preferences were successfully stored into database.', PEAR_LOG_INFO);
+		return true;
+
+	}
+
 	/* GETTERS */
 	public function __get($name){
 		$forbidden = array('logged', 'admin', 'active', 'defaults');
@@ -236,19 +270,8 @@ class Preferences{
 		//some values need to be changed (eg. md5 passwords)
 		if($name == 'pref_admin_pass') $value = md5($value);
 
-		//build the query
-		$requete = 'UPDATE ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) . ' SET ' . $mdb->quoteIdentifier('val_pref') . '=' . $mdb->quote($value) . ' WHERE ' . $mdb->quoteIdentifier('nom_pref') . '=' . $mdb->quote($name);
-
-		$result = $mdb->execute($requete);
-
-		if (MDB2::isError($result)) {
-			$this->error = $result;
-			$log->log('Unable to initialize default preferences.' . $result->getMessage() . '(' . $result->getDebugInfo() . ')', PEAR_LOG_WARNING);
-			return false;
-		}
-
-		$log->log('Preference "' . $name . '" were successfully stored into database.', PEAR_LOG_INFO);
-		return true;
+		//okay, let's update value
+		$this->prefs[$name] = $value;
 	}
 
 }
