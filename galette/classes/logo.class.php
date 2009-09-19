@@ -33,6 +33,8 @@ require_once('picture.class.php');
 
 class Logo extends Picture{
 	protected $id = 'custom_logo';
+	//database wants a member id (integer), not a string. Will be used to query the correct id
+	private $db_id = 0;
 
 	/**
 	* Default constructor.
@@ -47,6 +49,13 @@ class Logo extends Picture{
 		$this->format = 'png';
 		$this->mime = 'image/png';
 		$this->custom = false;
+	}
+
+	/**
+	* @override
+	*/
+	protected function getCheckFileQuery(){
+		return 'SELECT picture, format FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=\'' . $this->db_id . '\'';
 	}
 }
 ?>

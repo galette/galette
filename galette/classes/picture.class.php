@@ -42,7 +42,7 @@ class Picture{
 	const PK = Adherent::PK;
 
 	//private $bad_chars = array('\.', '\\\\', "'", ' ', '\/', ':', '\*', '\?', '"', '<', '>', '|');
-	//array keys contain litteral value of each forbidden character (to be used when showing an error). Maybe is the a better way to handle this...
+	//array keys contain litteral value of each forbidden character (to be used when showing an error). Maybe is there a better way to handle this...
 	private $bad_chars = array(
 		'.'	=>	'\.', 
 		'\\'	=>	'\\\\', 
@@ -104,7 +104,25 @@ class Picture{
 	}
 
 	/**
-	* Check if the specified file is present on the File System
+	* "Magic" function called on unserialize
+	*/
+	public function __wakeup(){
+		//if file has been deleted since we store our object in the session, we try to retrieve it
+		if ( !$this->checkFileOnFS() ) { //if file does not exists on the FileSystem, check for it in the database
+			$this->checkFileInDB();
+		}
+
+		// if we still have no picture, take the default one
+		if ( $this->file_path=='' ){
+			$this->getDefaultPicture();
+		}
+
+		if( $this->file_path !== '' ) //we should not have an empty file_path, but...
+			$this->setSizes();
+	}
+
+	/**
+	* Check if current file is present on the File System
 	*/
 	private function checkFileOnFS(){
 		if (file_exists(dirname(__FILE__).'/' . $this->store_path . $this->id . '.jpg')){
@@ -127,19 +145,25 @@ class Picture{
 	}
 
 	/**
-	* Check if the specified file is present in the database, and copy it to the File System
+	* Check if current file is present in the database, and copy it to the File System
 	*/
 	private function checkFileInDB(){
-		global $DB;
-		$sql = 'SELECT picture,format FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=\'' . $this->id . '\'';
-		$result = &$DB->Execute($sql);
-		if ($result->RecordCount()!=0) {
+		global $mdb;
+		$sql = $this->getCheckFileQuery();
+
+		$result = $mdb->query($sql);
+		if( MDB2::isError($result) ){
+			return false;
+		}
+
+		if( $result->numRows() > 0 ){
 			// we must regenerate the picture file
-			$f = fopen(dirname(__FILE__).'/' . $this->store_path . $this->id . '.' . $result->fields['format'], 'wb');
-			fwrite ($f, $result->fields['picture']);
+			$pic = $result->fetchRow();
+			$f = fopen(dirname(__FILE__).'/' . $this->store_path . $this->id . '.' . $pic->format, 'wb');
+			fwrite ($f, $pic->picture);
 			fclose($f);
-			$this->format = $result->fields['format'];
-			switch($format) {
+			$this->format = $pic->format;
+			switch($this->format) {
 				case 'jpg':
 					$this->mime = 'image/jpeg';
 					break;
@@ -154,6 +178,13 @@ class Picture{
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	* Returns the relevant query to check if picture exists in database.
+	*/
+	protected function getCheckFileQuery(){
+		return 'SELECT picture, format FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=\'' . $this->id . '\'';
 	}
 
 	/**
@@ -222,13 +253,11 @@ class Picture{
 
 	public function store($file){
 		/** TODO:
-			- check function call (replace '$tmpfile, $name' by '$file'
-			- use mdb2
 			- make upload dir configurable
 			- fix max size (by preferences ?)
 			- make possible to store images in database, filesystem or both
 		*/
-		global $DB, $log;
+		global $mdb, $log;
 
 		$name = $file['name'];
 		$tmpfile = $file['tmp_name'];
@@ -277,15 +306,23 @@ class Picture{
 			$picture .= $r;
 		fclose($f);
 
-		$sql = 'INSERT INTO ' . PREFIX_DB . self::TABLE . ' (' . self::PK . ', picture, format) VALUES (\'' . $this->id . '\',\'\',' . $DB->Qstr($extension) . ')';
-		if (!$DB->Execute($sql)) {
-			$log->log('An error has occured inserting picture in database (query was: ' . $sql . ')', PEAR_LOG_ERR);
+		$stmt = $mdb->prepare(
+				'INSERT INTO ' . PREFIX_DB . self::TABLE . ' (' . self::PK . ', picture, format) VALUES (:id, :picture, :extension)',
+				array('integer', 'blob', 'text'),
+				MDB2_PREPARE_MANIP,
+				array('picture')
+			);
+
+		$stmt->bindParam(0, $this->id);
+		$stmt->bindParam(1, $picture);
+		$stmt->bindParam(2, $extension);
+		$stmt->execute();
+
+		if( MDB2::isError($stmt) ){
+			$log->log('An error has occured inserting picture in database | ' . $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')', PEAR_LOG_ERR);
 			return self::SQL_ERROR;
 		}
-		if (!$DB->UpdateBlob(PREFIX_DB . self::TABLE, 'picture', $picture, self::PK . '=\'' . $this->id . '\'')){
-			$log->log('An error has occured updating blob in database', PEAR_LOG_ERR);
-			return self::SQL_BLOB_ERROR;
-		}
+		$stmt->free();
 		return true;
 	}
 
@@ -364,6 +401,9 @@ class Picture{
 		return $this->file_path;
 	}
 
+	/**
+	* Returns custom state
+	*/
 	public function isCustom(){
 		return $this->custom;
 	}
