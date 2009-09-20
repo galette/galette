@@ -18,45 +18,39 @@
 // along with Galette. If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Logo handling
+ * Logo handling - for printing
  *
  * @package Galette
  * 
  * @author     Johan Cwiklinski
  * @copyright  2009 Johan Cwiklinski
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version    $Id: logo.class.php 546 2009-03-05 06:09:00Z trashy $
+ * @version    $Id: print_logo.class.php 546 2009-03-05 06:09:00Z trashy $
  */
 
-require_once('picture.class.php');
+require_once('logo.class.php');
 
-class Logo extends Picture{
-	protected $id = 'custom_logo';
+/**
+* This class stores a logo for printing that could be different from the default one.
+* If no print logo is found, we take the default Logo instead.
+*/
+class PrintLogo extends Logo{
+	protected $id = 'custom_print_logo';
 	//database wants a member id (integer), not a string. Will be used to query the correct id
-	protected $db_id = 0;
-
-	/**
-	* Default constructor.
-	*/
-	public function __construct(){
-		parent::__construct($this->id);
-	}
+	protected $db_id = 999999;
 
 	/**
 	* @override
 	*/
 	protected function getDefaultPicture(){
-		$this->file_path = _current_template_path . 'images/galette.png';
-		$this->format = 'png';
-		$this->mime = 'image/png';
+		//if we are here, we want to serve default logo
+		$pic = new Logo();
+		$this->file_path = $pic->getPath();
+		$this->format = $pic->getFormat();
+		$this->mime = $pic->getMime();
+		//anyways, we have no custom print logo
 		$this->custom = false;
 	}
 
-	/**
-	* @override
-	*/
-	protected function getCheckFileQuery(){
-		return 'SELECT picture, format FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=\'' . $this->db_id . '\'';
-	}
 }
 ?>

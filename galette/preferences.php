@@ -51,11 +51,14 @@ if( !$login->isAdmin() ){
 	die();
 }
 
+require_once(WEB_ROOT . 'classes/print_logo.class.php');
+
 // initialize warnings
 $error_detected = array();
 $warning_detected = array();
 $confirm_detected = array();
 $prefs_stored = false;
+$print_logo = new PrintLogo();
 
 // flagging required fields
 $required = array(
@@ -261,25 +264,41 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1"){
 			}
 		}
 
-		/** TODO: get a specific obbject based on Picture for cards logos */
 		// Card logo upload
 		if (isset($_FILES['card_logo']) )
 			if ($_FILES['card_logo']['tmp_name'] !='' ) {
-				$cardpic =& new Picture(999999);
-				if (is_uploaded_file($_FILES['card_logo']['tmp_name']))
-					if (! $cardpic->store(999999, $_FILES['card_logo']['tmp_name'], $_FILES['card_logo']['name'])) {
-						$error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
-					} else {
-						$_SESSION["customCardLogoFormat"] = $cardpic->getFormat();
-						$_SESSION["customCardLogo"] = true;
+				if (is_uploaded_file($_FILES['card_logo']['tmp_name'])){
+					$res = $print_logo->store($_FILES['card_logo']);
+					if ( $res < 0) {
+						switch($res){
+							case PrintLogo::INVALID_FILE:
+								$patterns = array('|%s|', '|%t|');
+								$replacements = array($print_logo->getAllowedExts(), htmlentities($print_logo->getBadChars()));
+								$error_detected[] = preg_replace($patterns, $replacements, _T("- Filename or extension is incorrect. Only %s files are allowed. File name should not contains any of: %t"));
+								break;
+							case PrintLogo::FILE_TOO_BIG:
+								$error_detected[] = preg_replace('|%d|', PrintLogo::MAX_FILE_SIZE, _T("File is too big. Maximum allowed size is %d"));
+								break;
+							case PrintLogo::MIME_NOT_ALLOWED:
+								/** FIXME: should be more descriptive */
+								$error_detected[] = _T("Mime-Type not allowed");
+								break;
+							case PrintLogo::SQL_ERROR:
+							case PrintLogo::SQL_BLOB_ERROR:
+								$error_detected[] = _T("An SQL error has occured.");
+								break;
+							
+						}
 					}
+				}
 			}
 
 		if (isset($_POST['del_card_logo']))
-			if (!Picture::delete(999999))
+			if (!$print_logo->delete()){
 				$error_detected[] = _T("Delete failed");
-			else
-				$_SESSION["customCardLogo"] = false;
+			} else {
+				$print_logo = new PrintLogo();
+			}
 	}
 } else {
 	// collect data
@@ -298,16 +317,6 @@ while (($entry = $d->read()) !== false) {
 }
 $d->close();
 
-// Card logo data
-$cardlogo = new Picture(999999);
-if ($cardlogo->hasPicture())
-	$pref["has_card_logo"]=1;
-else
-	$pref["has_card_logo"]=0;
-
-$pref['card_logo_height'] = $cardlogo->getOptimalHeight();
-$pref['card_logo_width'] = $cardlogo->getOptimalWidth();
-
 $tpl->assign('time', time());
 $tpl->assign('pref', $pref);
 $tpl->assign('pref_numrows_options', array(
@@ -317,7 +326,7 @@ $tpl->assign('pref_numrows_options', array(
 	100 => '100',
 	0 => _T('All'))
 );
-
+$tpl->assign('print_logo', $print_logo);
 $tpl->assign('required', $required);
 $tpl->assign('languages', $i18n->getList());
 $tpl->assign('themes', $themes);

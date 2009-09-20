@@ -402,6 +402,13 @@ class Picture{
 	}
 
 	/**
+	* Returns current mime type
+	*/
+	public function getMime(){
+		return $this->mime;
+	}
+
+	/**
 	* Returns custom state
 	*/
 	public function isCustom(){

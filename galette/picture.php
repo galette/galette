@@ -39,10 +39,14 @@ if( !$login->isLogged() )
 	die();
 }
 
-if( isset($_GET['logo']) && $_GET['logo'] == 'true' ){
+if( isset($_GET['logo']) && $_GET['logo'] == 'true' ){ //displays the logo
 	$logo->display();
-} else {
-	if( !$login->isAdmin() )
+} elseif( isset($_GET['print_logo']) && $_GET['print_logo'] == 'true' ){//displays the logo for printing
+	require_once(WEB_ROOT . 'classes/print_logo.class.php');
+	$print_logo = new PrintLogo();
+	$print_logo->display();
+} else { //displays the picture
+	if( !$login->isAdmin() ) /** FIXME: these should not be fired when accessing from public pages */
 		$id_adh = $login->id;
 	else
 		$id_adh = $_GET['id_adh'];

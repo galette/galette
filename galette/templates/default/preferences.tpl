@@ -253,9 +253,9 @@
 				<div class="subtitle">&nbsp;</div>
 				<p>
 					<label for="card_logo" class="bline{if $required.card_logo eq 1}required{/if}">{_T string="Logo:"}</label>
-{if $pref.has_card_logo eq 1}
-					<img src="picture.php?id_adh=999999&amp;rand={$time}" class="picture" width="{$pref.card_logo_width}" height="{$pref.card_logo_height}" alt="{_T string="Logo"}"/><br/>
-					<span>{_T string="Delete image"}</span><input type="checkbox" name="del_card_logo" value="1" /><br />
+{if $print_logo->isCustom()}
+					<img src="picture.php?print_logo=true&amp;rand={$time}" class="picture" width="{$print_logo->getOptimalWidth()}" height="{$print_logo->getOptimalHeight()}" alt="{_T string="Current logo for printing"}"/><br/>
+					<label for="del_card_logo">{_T string="Delete image"}</label><input type="checkbox" name="del_card_logo" id="del_card_logo" value="1" /><br />
 {/if}
 					<input type="file" name="card_logo" id="card_logo"/>
 				</p>

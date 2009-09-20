@@ -50,9 +50,10 @@ if( !$login->isLogged() ) {
 	die();
 }
 
-require_once(WEB_ROOT."classes/pdf.class.php");
+require_once(WEB_ROOT. 'classes/pdf.class.php');
 require_once (WEB_ROOT . 'classes/members.class.php');
 require_once(WEB_ROOT . 'classes/varslist.class.php');
+require_once(WEB_ROOT . 'classes/print_logo.class.php');
 
 if( isset($_GET[Adherent::PK]) && is_int($_GET[Adherent::PK]) && $_GET[Adherent::PK] > 0 ) {
 	// If we are called from "voir_adherent.php" get unique id value
@@ -92,32 +93,28 @@ $doc_keywords = _T("Cards");
 $an_cot = '<strong>' . PREF_CARD_YEAR . '</strong>';
 $abrev = '<strong>' . PREF_CARD_ABREV . '</b>';
 $strip = PREF_CARD_STRIP;
-$logo =& new Picture(999999);
+
+$print_logo = new PrintLogo();
 if( $logo->hasPicture() ){
-	$logofile = $logo->getPath();
+	$logofile = $print_logo->getPath();
 
 	// Set logo size to max width 30 mm or max height 25 mm
-	$ratio = $logo->getWidth()/$logo->getHeight();
+	$ratio = $print_logo->getWidth()/$print_logo->getHeight();
 	if ($ratio < 1) {
-		if ($logo->getHeight() > 16) {
+		if ($print_logo->getHeight() > 16) {
 			$hlogo = 25;
 		} else {
-			$hlogo = $logo->getHeight();
+			$hlogo = $print_logo->getHeight();
 		}
 		$wlogo = round($hlogo*$ratio);
 	} else {
-		if ($logo->getWidth() > 16) {
+		if ($print_logo->getWidth() > 16) {
 			$wlogo = 30;
 		} else {
-			$wlogo = $logo->getWidth();
+			$wlogo = $print_logo->getWidth();
 		}
 		$hlogo = round($wlogo/$ratio);
 	}
-} else {// If no logo chosen force default one
-	/** FIXME: default logo could be different from galette's logo ; we have to get it from Preferences */
-	$logofile = WEB_ROOT . "templates/default/images/galette.png";
-	$wlogo = 15;
-	$hlogo = 7;
 }
 
 // Create new PDF document
