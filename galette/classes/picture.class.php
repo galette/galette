@@ -66,6 +66,8 @@ class Picture{
 
 	private $error = null;
 
+	protected $tbl_prefix = '';
+
 	protected $id;
 	protected $height;
 	protected $width;
@@ -184,7 +186,7 @@ class Picture{
 	* Returns the relevant query to check if picture exists in database.
 	*/
 	protected function getCheckFileQuery(){
-		return 'SELECT picture, format FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=\'' . $this->id . '\'';
+		return 'SELECT picture, format FROM ' . PREFIX_DB . $this->tbl_prefix . self::TABLE . ' WHERE ' . self::PK . '=\'' . $this->id . '\'';
 	}
 
 	/**
@@ -236,7 +238,7 @@ class Picture{
 	*/
 	public function delete(){
 		global $mdb;
-		$sql = 'DELETE FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=\'' . $this->id . '\'';
+		$sql = 'DELETE FROM ' . PREFIX_DB . $this->tbl_prefix . self::TABLE . ' WHERE ' . self::PK . '=\'' . $this->id . '\'';
 		$result = $mdb->query($sql);
 		if( MDB2::isError($result) ){
 			return false;
@@ -307,7 +309,7 @@ class Picture{
 		fclose($f);
 
 		$stmt = $mdb->prepare(
-				'INSERT INTO ' . PREFIX_DB . self::TABLE . ' (' . self::PK . ', picture, format) VALUES (:id, :picture, :extension)',
+				'INSERT INTO ' . PREFIX_DB . $this->tbl_prefix . self::TABLE . ' (' . self::PK . ', picture, format) VALUES (:id, :picture, :extension)',
 				array('integer', 'blob', 'text'),
 				MDB2_PREPARE_MANIP,
 				array('picture')

@@ -183,30 +183,30 @@ class Plugins {
 	public function deactivateModule($id)
 	{
 		if (!isset($this->modules[$id])) {
-			throw new Exception(__('No such module.'));
+			throw new Exception(_T('No such module.'));
 		}
 		
 		if (!$this->modules[$id]['root_writable']) {
-			throw new Exception(__('Cannot deactivate plugin.'));
+			throw new Exception(_T('Cannot deactivate plugin.'));
 		}
 		
 		if (@file_put_contents($this->modules[$id]['root'].'/_disabled','')) {
-			throw new Exception(__('Cannot deactivate plugin.'));
+			throw new Exception(_T('Cannot deactivate plugin.'));
 		}
 	}
 	
 	public function activateModule($id)
 	{
 		if (!isset($this->disabled[$id])) {
-			throw new Exception(__('No such module.'));
+			throw new Exception(_T('No such module.'));
 		}
 		
 		if (!$this->disabled[$id]['root_writable']) {
-			throw new Exception(__('Cannot activate plugin.'));
+			throw new Exception(_T('Cannot activate plugin.'));
 		}
 		
 		if (@unlink($this->disabled[$id]['root'].'/_disabled') === false) {
-			throw new Exception(__('Cannot activate plugin.'));
+			throw new Exception(_T('Cannot activate plugin.'));
 		}
 	}
 	
@@ -320,7 +320,7 @@ class Plugins {
 	public function getMenus(){
 		global $tpl, $preferences;
 		foreach(array_keys($this->getModules()) as $r){
-			$menu_path = $this->moduleRoot($r) . '/templates/' . $preferences->pref_theme . '/menu.tpl';
+			$menu_path = $this->getTemplatesPath($r) . '/menu.tpl';
 			if( $tpl->template_exists( $menu_path ) ){
 				$tpl->assign('galette_' . strtolower($r) . '_path', 'plugins/' . $r . '/');
 				$tpl->display($menu_path);
@@ -335,6 +335,15 @@ class Plugins {
 		}
 		
 		return ($a['priority'] < $b['priority']) ? -1 : 1;
+	}
+
+	/**
+	* Get the templates path for a specified module
+	* @param id		<b>string</b>	Module ID
+	*/
+	public function getTemplatesPath($id){
+		global $preferences;
+		return $this->moduleRoot($id) . '/templates/' . $preferences->pref_theme;
 	}
 
 	/* SETTERS */

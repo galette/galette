@@ -68,7 +68,7 @@
 <body>
 	<div id="menu">
 		<div id="logo">
-			<img src="picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
+			<img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
 		</div>
 		<div class="nav1">
 			<h1>{_T string="Navigation"}</h1>
