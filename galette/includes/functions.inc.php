@@ -150,65 +150,7 @@ function is_valid_email ($address) {
                      trim($address)));
 }
 
-function resizeimage($img,$img2,$w,$h)
-{
-	/** FIXME: Can GD not be present ? */
-	if(function_exists("gd_info"))
-	{
-		$ext = substr($img,-4);
-		$gdinfo = gd_info();
-		switch(strtolower($ext))
-		{
-			case '.jpg':
-				if (!$gdinfo['JPEG Support'])
-					return false;
-				break;
-			case '.png':
-				if (!$gdinfo['PNG Support'])
-					return false;
-				break;
-			case '.gif':
-				if (!$gdinfo['GIF Create Support'])
-					return false;
-				break;
-			default:
-				return false;
-		}
-
-		list($cur_width, $cur_height, $cur_type, $curattr) = getimagesize($img);
-
-		$ratio = $cur_width / $cur_height;
-
-		// calculate image size according to ratio
-		if ($cur_witdh>$cur_height)
-			$h = $w/$ratio;
-		else
-			$w = $h*$ratio;
-
-		$thumb = imagecreatetruecolor ($w, $h);
-		switch($ext)
-		{
-			case ".jpg":
-				$image = ImageCreateFromJpeg($img);
-				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
-				imagejpeg($thumb, $img2);
-				break;
-			case ".png":
-				$image = ImageCreateFromPng($img);
-				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
-				imagepng($thumb, $img2);
-				break;
-			case ".gif":
-				$image = ImageCreateFromGif($img);
-				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
-				imagegif($thumb, $img2);
-				break;
-		}
-	}
-}
-
-function custom_html_entity_decode( $given_html, $quote_style = ENT_QUOTES )
-{
+function custom_html_entity_decode( $given_html, $quote_style = ENT_QUOTES ) {
   $trans_table = array_flip(get_html_translation_table( HTML_ENTITIES, $quote_style ));
   $trans_table['&#39;'] = "'";
   return ( strtr( $given_html, $trans_table ) );
@@ -398,8 +340,7 @@ function beg_membership_after($date) {
 	return $beg;
 }
 
-function get_form_value($name, $defval)
-{
+function get_form_value($name, $defval) {
 	$val = $defval;
 	if (isset($_GET[$name]))
 		$val = $_GET[$name];
@@ -408,11 +349,13 @@ function get_form_value($name, $defval)
 	return $val;
 }
 
-function get_numeric_form_value($name, $defval)
-{
+function get_numeric_form_value($name, $defval) {
+	global $log;
 	$val = get_form_value($name, $defval);
-	if (!is_numeric($val))
+	if (!is_numeric($val)){
+		$log->log('[get_numeric_form_value] not a numeric value! (value was: `' . $val . '`)', PEAR_LOG_INFO);
 		$val = '';
+	}
 	return $val;
 }
 

@@ -269,6 +269,7 @@ class Picture{
 		if( preg_match( $reg, $name, $matches ) ){
 			$log->log('Filename and extension are OK, proceed.', PEAR_LOG_DEBUG);
 			$extension = $matches[2];
+			if( $extension == 'jpeg' ) $extension = 'jpg'; // jpeg is an allowed extension, but we change it to jpg to reduce further tests :)
 		} else {
 			$log->log('Invalid filename or extension.', PEAR_LOG_ERR);
 			return self::INVALID_FILE;
@@ -298,7 +299,8 @@ class Picture{
 
 		// current[0] gives width ; current[1] gives height
 		if( $current[0] > $this->max_width || $current[1] > $this->max_height ){
-			resizeimage($new_file, $new_file, $this->max_width, $this->max_height);
+			/** FIXME: what if image cannot be resized? Should'nt we want to stop the process here? */
+			$this->resizeImage($new_file, $extension);
 		}
 
 		//store file in database
@@ -326,6 +328,78 @@ class Picture{
 		}
 		$stmt->free();
 		return true;
+	}
+
+	/**
+	* Resize the image if it exceed max allowed sizes
+	* @param source the source image
+	* @param ext file's extension
+	* @param dest the destination image. If null, we'll use the source image. Defaults to null
+	*/
+	private function resizeImage($source, $ext, $dest = null){
+		global $log;
+		/** FIXME: Can GD not be present ? Is there any another solution to test? */
+		if(function_exists("gd_info")){
+			$gdinfo = gd_info();
+			$h = $this->max_height;
+			$w = $this->max_width;
+			if( $dest == null ) $dest = $source;
+
+			switch(strtolower($ext)){
+				case 'jpg':
+					if (!$gdinfo['JPEG Support']){
+						$log->log('GD has no JPEG Support - pictures could not be resized!', PEAR_LOG_ERROR);
+						return false;
+					}
+					break;
+				case 'png':
+					if (!$gdinfo['PNG Support']){
+						$log->log('GD has no PNG Support - pictures could not be resized!', PEAR_LOG_ERROR);
+						return false;
+					}
+					break;
+				case 'gif':
+					if (!$gdinfo['GIF Create Support']){
+						$log->log('GD has no GIF Support - pictures could not be resized!', PEAR_LOG_ERROR);
+						return false;
+					}
+					break;
+				default:
+					return false;
+			}
+	
+			list($cur_width, $cur_height, $cur_type, $curattr) = getimagesize($source);
+	
+			$ratio = $cur_width / $cur_height;
+	
+			// calculate image size according to ratio
+			if ($cur_witdh>$cur_height)
+				$h = $w/$ratio;
+			else
+				$w = $h*$ratio;
+	
+			$thumb = imagecreatetruecolor ($w, $h);
+			switch($ext)
+			{
+				case 'jpg':
+					$image = ImageCreateFromJpeg($source);
+					imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
+					imagejpeg($thumb, $dest);
+					break;
+				case 'png':
+					$image = ImageCreateFromPng($source);
+					imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
+					imagepng($thumb, $dest);
+					break;
+				case 'gif':
+					$image = ImageCreateFromGif($source);
+					imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
+					imagegif($thumb, $dest);
+					break;
+			}
+		} else {
+			$log->log('GD is not present - pictures could not be resized!', PEAR_LOG_ERROR);
+		}
 	}
 
 	/* GETTERS */
