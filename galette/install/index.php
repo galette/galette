@@ -271,7 +271,7 @@ header('Content-Type: text/html; charset=UTF-8');
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<link rel="stylesheet" type="text/css" href="../templates/default/galette.css"/>
 
-		<script type="text/javascript" src="../includes/jquery/jquery-<?php echo JQUERY_VERSION; ?>.pack.js"></script>
+		<script type="text/javascript" src="../includes/jquery/jquery-<?php echo JQUERY_VERSION; ?>.min.js"></script>
 		<script type="text/javascript" src="../includes/jquery/jquery.bgiframe.pack.js"></script>
 		<script type="text/javascript" src="../includes/jquery/jquery.bgFade.js"></script>
 		<script type="text/javascript" src="../includes/jquery/jquery.corner.js"></script>

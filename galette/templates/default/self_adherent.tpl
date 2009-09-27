@@ -31,7 +31,7 @@
 	</head>
 	<body>
 		<div id="main_logo">
-			<img src="picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
+			<img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
 
 		</div>
 		<h1 id="titre" class="self_subscribe">{_T string="Member profile"}</h1>

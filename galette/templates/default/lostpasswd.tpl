@@ -5,7 +5,7 @@
 	</head>
 	<body>
 		<div id="main_logo">
-			<img src="picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
+			<img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
 		</div>
 
 		<form action="lostpasswd.php" method="post" enctype="multipart/form-data" id="login_frm">

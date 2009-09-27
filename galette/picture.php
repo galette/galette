@@ -33,25 +33,27 @@
 
 require_once('includes/galette.inc.php');
 
-if( !$login->isLogged() )
-{
-	header("location: index.php");
-	die();
-}
-
-if( isset($_GET['logo']) && $_GET['logo'] == 'true' ){ //displays the logo
+//we do not check if user is logged to display main logo
+if( isset($_GET['logo']) && $_GET['logo'] == 'true' ){
 	$logo->display();
-} elseif( isset($_GET['print_logo']) && $_GET['print_logo'] == 'true' ){//displays the logo for printing
-	require_once(WEB_ROOT . 'classes/print_logo.class.php');
-	$print_logo = new PrintLogo();
-	$print_logo->display();
-} else { //displays the picture
-	if( !$login->isAdmin() ) /** FIXME: these should not be fired when accessing from public pages */
-		$id_adh = $login->id;
-	else
-		$id_adh = $_GET['id_adh'];
-	
-		$picture = new Picture($id_adh);
-		$picture->display();
+} else {
+	if( !$login->isLogged() ) {
+		header("location: index.php");
+		die();
+	}
+
+	if( isset($_GET['print_logo']) && $_GET['print_logo'] == 'true' ){//displays the logo for printing
+		require_once(WEB_ROOT . 'classes/print_logo.class.php');
+		$print_logo = new PrintLogo();
+		$print_logo->display();
+	} else { //displays the picture
+		if( !$login->isAdmin() ) /** FIXME: these should not be fired when accessing from public pages */
+			$id_adh = $login->id;
+		else
+			$id_adh = $_GET['id_adh'];
+		
+			$picture = new Picture($id_adh);
+			$picture->display();
+	}
 }
 ?>

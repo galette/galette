@@ -110,7 +110,7 @@
 {$plugins->getMenus()}
 
 		<div id="logout">
-			<a href="index.php?logout=1">{_T string="Log off"}</a>
+			<a href="{$galette_base_path}index.php?logout=1">{_T string="Log off"}</a>
 		</div>
 		<ul id="langs">
 {foreach item=langue from=$languages}

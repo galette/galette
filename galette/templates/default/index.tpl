@@ -6,7 +6,7 @@
 	<body>
 		<form action="index.php" method="post" id="login_frm">
 			<div id="main_logo">
-				<img src="picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
+				<img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
 			</div>
 			<div class="login-box">
 				<h1 id="titre">{_T string="Login"}</h1>

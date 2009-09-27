@@ -46,7 +46,7 @@
 				<p>
 					<label for="logo_picture" class="bline">{_T string="Logo:"}</label>
 {if $logo->isCustom()}
-					<img src="picture.php?logo=true&amp;rand={$time}" class="picture" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="{_T string="Current logo"}"/><br/>
+					<img src="{$galette_base_path}picture.php?logo=true&amp;rand={$time}" class="picture" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="{_T string="Current logo"}"/><br/>
 					<label for="del_logo">{_T string="Delete image"}</label><input type="checkbox" name="del_logo" id="del_logo" value="1" /><br />
 {/if}
 					<input type="file" name="logo" id="logo_picture"/>
@@ -254,7 +254,7 @@
 				<p>
 					<label for="card_logo" class="bline{if $required.card_logo eq 1}required{/if}">{_T string="Logo:"}</label>
 {if $print_logo->isCustom()}
-					<img src="picture.php?print_logo=true&amp;rand={$time}" class="picture" width="{$print_logo->getOptimalWidth()}" height="{$print_logo->getOptimalHeight()}" alt="{_T string="Current logo for printing"}"/><br/>
+					<img src="{$galette_base_path}picture.php?print_logo=true&amp;rand={$time}" class="picture" width="{$print_logo->getOptimalWidth()}" height="{$print_logo->getOptimalHeight()}" alt="{_T string="Current logo for printing"}"/><br/>
 					<label for="del_card_logo">{_T string="Delete image"}</label><input type="checkbox" name="del_card_logo" id="del_card_logo" value="1" /><br />
 {/if}
 					<input type="file" name="card_logo" id="card_logo"/>

@@ -1181,3 +1181,7 @@ ul#paths{
 .collapsible{
 	float:left;
 }
+
+.ui-datepicker-trigger{
+	cursor:pointer;
+}
