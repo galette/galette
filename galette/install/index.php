@@ -493,9 +493,6 @@ if (substr($_POST['install_type'],0,8) == 'upgrade-'){echo '<span class="require
 			<p><?php echo _T("Check the parameters and the existence of the database"); ?></p>
 <?php
 				require_once('../classes/mdb2.class.php');
-				/*include('../includes/adodb/adodb.inc.php');
-				$DB = adonewconnection($_POST['install_dbtype']);
-				$DB->debug = false;*/
 				$permsdb_ok = true;
 
 				if($test = GaletteMdb2::testConnectivity(
@@ -817,7 +814,7 @@ echo "</ul>\n";
 			{
 ?>
 			<p id="errorbox"><?php
-if ($step == 'i7') echo _T("The tables are not totally created, it's maybe a permission problem.");
+if ($step == 'i7') echo _T("The tables are not totally created, it may be a permission problem.");
 if ($step == 'u7'){
 	echo _T("The tables have not been totally created, it may be a permission problem.");
 	echo '<br/>';

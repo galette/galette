@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Thu Sep 17 18:07:51 2009 (GMT)
+// This file was automatically generated on Sat Oct  3 15:28:36 2009 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -168,9 +168,6 @@ $lang['Management of transactions'] = 'Management of transactions';
 // ../templates/default/preferences.tpl:164 
 $lang['SMTP server:'] = 'SMTP server:';
 
-// ../templates/default/liste_membres.tpl:66 
-$lang['There is no member with public informations available.'] = 'There is no member with public informations available.';
-
 // ../self_adherent.php:172 ../preferences.php:195 ../preferences.php:198 ../ajouter_contribution.php:173 ../ajouter_contribution.php:176 ../ajouter_adherent.php:231 ../ajouter_transaction.php:130 ../ajouter_transaction.php:133 ../editer_intitules.php:111 
 $lang['- Mandatory field empty.'] = '- Mandatory field empty.';
 
@@ -258,7 +255,7 @@ $lang['Originator:'] = 'Originator:';
 // ../templates/default/self_adherent.tpl:190 
 $lang['Passworg image'] = 'Passworg image';
 
-// ../templates/default/trombinoscope.tpl:8 
+// ../templates/default/trombinoscope.tpl:8 ../templates/default/liste_membres.tpl:68 
 $lang['No member to show'] = 'No member to show';
 
 // ../templates/default/ajouter_adherent.tpl:64 ../templates/default/voir_adherent.tpl:52 ../templates/default/self_adherent.tpl:110 ../templates/default/gestion_textes.tpl:27 ../classes/adherent.class.php:140 
