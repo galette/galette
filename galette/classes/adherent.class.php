@@ -142,7 +142,7 @@ class Adherent {
 			"gpgid"			=>	array( 'label'=>_T("Id GNUpg (GPG):"), 'required'=>false, 'visible'=>true, 'position'=>32, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
 			"fingerprint"		=>	array( 'label'=>_T("fingerprint:"), 'required'=>false, 'visible'=>true, 'position'=>33, 'category'=>FieldsCategories::CATEGORY_IDENTITY)
 		);
-		if( $args == null ) {
+		if( $args == null || is_int($args) ) {
 			$this->active = true;
 			$this->language = i18n::DEFAULT_LANG;
 			$this->creation_date = date("Y-m-d");
@@ -150,6 +150,7 @@ class Adherent {
 			$this->politeness = Politeness::MR;
 			$this->password = makeRandomPassword(7); //Usefull ?
 			$this->picture = new Picture();
+			if( is_int($args) && $args > 0 ) $this->load($args);
 		} elseif ( is_object($args) ){
 			$this->loadFromRS($args);
 		}
