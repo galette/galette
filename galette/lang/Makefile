@@ -64,8 +64,8 @@ PHP_SOURCES = ../index.php \
 all : messages.po lang
 	@echo "Génération des fichiers *.po :"
 	@for l in ${LANGUAGES}; do \
-	  echo "  Mise à jour de $$l.po"; \
-	  msgmerge -U $$l.po messages.po >/dev/null 2>&1; \
+	  echo -n "  Mise à jour de $$l.po"; \
+	  msgmerge -U $$l.po messages.po >/dev/null ; \
 	  mkdir -p ${INSTALLDIR}/$$l/LC_MESSAGES; \
 	  echo "    formatage de ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo."; \
 	  msgfmt $$l.po -o ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo.new; \
