@@ -31,13 +31,14 @@
  */
 
 class Picture{
+	//constants that will not be overrided
 	const INVALID_FILE = -1;
 	const FILE_TOO_BIG = -2;
 	const MIME_NOT_ALLOWED = -3;
 	const SQL_ERROR = -4;
 	const SQL_BLOB_ERROR = -5;
+	//constants that can be overrided (do not use self::CONSTANT, but get_class[$this]::CONSTANT)
 	const MAX_FILE_SIZE = 1024;
-
 	const TABLE = 'pictures';
 	const PK = Adherent::PK;
 
@@ -186,7 +187,8 @@ class Picture{
 	* Returns the relevant query to check if picture exists in database.
 	*/
 	protected function getCheckFileQuery(){
-		return 'SELECT picture, format FROM ' . PREFIX_DB . $this->tbl_prefix . self::TABLE . ' WHERE ' . self::PK . '=\'' . $this->id . '\'';
+		$class = get_class($this);
+		return 'SELECT picture, format FROM ' . PREFIX_DB . $this->tbl_prefix . $class::TABLE . ' WHERE ' . $class::PK . '=\'' . $this->id . '\'';
 	}
 
 	/**
@@ -238,7 +240,8 @@ class Picture{
 	*/
 	public function delete(){
 		global $mdb;
-		$sql = 'DELETE FROM ' . PREFIX_DB . $this->tbl_prefix . self::TABLE . ' WHERE ' . self::PK . '=\'' . $this->id . '\'';
+		$class = get_class($this);
+		$sql = 'DELETE FROM ' . PREFIX_DB . $this->tbl_prefix . $class::TABLE . ' WHERE ' . $class::PK . '=\'' . $this->id . '\'';
 		$result = $mdb->query($sql);
 		if( MDB2::isError($result) ){
 			return false;
@@ -261,35 +264,37 @@ class Picture{
 		*/
 		global $mdb, $log;
 
+		$class = get_class($this);
+
 		$name = $file['name'];
 		$tmpfile = $file['tmp_name'];
 
 		//First, does the file have a valid name?
 		$reg = "/^(.[^" . implode('', $this->bad_chars) . "]+)\.(" . implode('|', $this->allowed_extensions) . ")$/i";
 		if( preg_match( $reg, $name, $matches ) ){
-			$log->log('Filename and extension are OK, proceed.', PEAR_LOG_DEBUG);
+			$log->log('[' . $class . '] Filename and extension are OK, proceed.', PEAR_LOG_DEBUG);
 			$extension = $matches[2];
 			if( $extension == 'jpeg' ) $extension = 'jpg'; // jpeg is an allowed extension, but we change it to jpg to reduce further tests :)
 		} else {
-			$log->log('Invalid filename or extension.', PEAR_LOG_ERR);
+			$log->log('[' . $class . '] Invalid filename or extension.', PEAR_LOG_ERR);
 			return self::INVALID_FILE;
 		}
 
 		//Second, let's check file size
-		if( $file['size'] > ( self::MAX_FILE_SIZE * 1024 ) ){
-			$log->log('File is too big (' . ( $file['size'] * 1024 ) . 'Ko for maximum authorized ' . ( self::MAX_FILE_SIZE * 1024 ) . 'Ko', PEAR_LOG_ERR);
+		if( $file['size'] > ( $class::MAX_FILE_SIZE * 1024 ) ){
+			$log->log('[' . $class . '] File is too big (' . ( $file['size'] * 1024 ) . 'Ko for maximum authorized ' . ( class::MAX_FILE_SIZE * 1024 ) . 'Ko', PEAR_LOG_ERR);
 			return self::FILE_TOO_BIG;
 		} else {
-			$log->log('Filesize is OK, proceed', PEAR_LOG_DEBUG);
+			$log->log('[' . $class . '] Filesize is OK, proceed', PEAR_LOG_DEBUG);
 		}
 
 		$current = getimagesize($tmpfile);
 
 		if( !in_array($current['mime'], $this->allowed_mimes) ){
-			$log->log('Mimetype not allowed', PEAR_LOG_ERR);
+			$log->log('[' . $class . '] Mimetype not allowed', PEAR_LOG_ERR);
 			return self::MIME_NOT_ALLOWED;
 		} else {
-			$log->log('Mimetype is allowed, proceed', PEAR_LOG_DEBUG);
+			$log->log('[' . $class . '] Mimetype is allowed, proceed', PEAR_LOG_DEBUG);
 		}
 
 		$this->delete();
@@ -310,8 +315,9 @@ class Picture{
 			$picture .= $r;
 		fclose($f);
 
+		$class = get_class($this);
 		$stmt = $mdb->prepare(
-				'INSERT INTO ' . PREFIX_DB . $this->tbl_prefix . self::TABLE . ' (' . self::PK . ', picture, format) VALUES (:id, :picture, :extension)',
+				'INSERT INTO ' . PREFIX_DB . $this->tbl_prefix . $class::TABLE . ' (' . $class::PK . ', picture, format) VALUES (:id, :picture, :extension)',
 				array('integer', 'blob', 'text'),
 				MDB2_PREPARE_MANIP,
 				array('picture')
@@ -323,7 +329,7 @@ class Picture{
 		$stmt->execute();
 
 		if( MDB2::isError($stmt) ){
-			$log->log('An error has occured inserting picture in database | ' . $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')', PEAR_LOG_ERR);
+			$log->log('[' . $class . '] An error has occured inserting picture in database | ' . $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')', PEAR_LOG_ERR);
 			return self::SQL_ERROR;
 		}
 		$stmt->free();
@@ -338,6 +344,7 @@ class Picture{
 	*/
 	private function resizeImage($source, $ext, $dest = null){
 		global $log;
+		$class = get_class($this);
 		/** FIXME: Can GD not be present ? Is there any another solution to test? */
 		if(function_exists("gd_info")){
 			$gdinfo = gd_info();
@@ -348,19 +355,19 @@ class Picture{
 			switch(strtolower($ext)){
 				case 'jpg':
 					if (!$gdinfo['JPEG Support']){
-						$log->log('GD has no JPEG Support - pictures could not be resized!', PEAR_LOG_ERROR);
+						$log->log('[' . $class . '] GD has no JPEG Support - pictures could not be resized!', PEAR_LOG_ERROR);
 						return false;
 					}
 					break;
 				case 'png':
 					if (!$gdinfo['PNG Support']){
-						$log->log('GD has no PNG Support - pictures could not be resized!', PEAR_LOG_ERROR);
+						$log->log('[' . $class . '] GD has no PNG Support - pictures could not be resized!', PEAR_LOG_ERROR);
 						return false;
 					}
 					break;
 				case 'gif':
 					if (!$gdinfo['GIF Create Support']){
-						$log->log('GD has no GIF Support - pictures could not be resized!', PEAR_LOG_ERROR);
+						$log->log('[' . $class . '] GD has no GIF Support - pictures could not be resized!', PEAR_LOG_ERROR);
 						return false;
 					}
 					break;
@@ -398,7 +405,7 @@ class Picture{
 					break;
 			}
 		} else {
-			$log->log('GD is not present - pictures could not be resized!', PEAR_LOG_ERROR);
+			$log->log('[' . $class . '] GD is not present - pictures could not be resized!', PEAR_LOG_ERROR);
 		}
 	}
 
