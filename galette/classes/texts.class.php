@@ -47,6 +47,7 @@ require_once("MDB2.php");
 class Texts{
 	private $all_texts;
 	const TABLE = "texts";
+	const DEFAULT_REF = 'sub';
 	
 	private static $defaults = array(
 	array('tid' => 1,'tref' => 'sub','tsubject' => 'Your identifiers', 'tbody' => 'Hello,\r\n\r\nYou\'ve just been subscribed on the members management system of {NAME}.\r\n\r\nIt is now possible to follow in real time the state of your subscription and to update your preferences from the web interface.\r\n\r\nPlease login at this address:\r\n{LOGIN_URI}\r\n\r\nUsername: {LOGIN}\r\nPassword: {PASSWORD}\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)','tlang'=> 'en_EN','tcomment'=>'New user registration'),
@@ -77,14 +78,16 @@ class Texts{
 	* @return array of all text fields for one language.
 	*/
 	public function getTexts($ref,$lang){
-		global $mdb;
+		global $mdb, $log;
+
+
 		$requete = 'SELECT * FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) . ' WHERE tref=' . $mdb->quote($ref) . ' AND tlang=' . $mdb->quote($lang);
 		$result = $mdb->query($requete);
-		
+
 		if(MDB2::isError($result)){
-			$log->log('Cannot get text `' . $ref . '` for lang `' . $lang . '` | ' . $result->getMessage() . '(' . $result->getDebugInfo() . ')', PEAR_LOG_WARNING);
+			$log->log('Cannot get text `' . $ref . '` for lang `' . $lang . '` | ' . $result->getMessage() . '(' . $result->getDebugInfo() . ')', PEAR_LOG_ERR);
 			return false;
-		} elseif( !$result->numRows() > 0 ){
+		} elseif( $result->numRows() > 0 ){
 			$this->all_texts = $result->fetchRow(MDB2_FETCHMODE_ASSOC);
 		}
 		return $this->all_texts;
