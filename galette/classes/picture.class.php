@@ -282,7 +282,7 @@ class Picture{
 
 		//Second, let's check file size
 		if( $file['size'] > ( $class::MAX_FILE_SIZE * 1024 ) ){
-			$log->log('[' . $class . '] File is too big (' . ( $file['size'] * 1024 ) . 'Ko for maximum authorized ' . ( class::MAX_FILE_SIZE * 1024 ) . 'Ko', PEAR_LOG_ERR);
+			$log->log('[' . $class . '] File is too big (' . ( $file['size'] * 1024 ) . 'Ko for maximum authorized ' . ( $class::MAX_FILE_SIZE * 1024 ) . 'Ko', PEAR_LOG_ERR);
 			return self::FILE_TOO_BIG;
 		} else {
 			$log->log('[' . $class . '] Filesize is OK, proceed', PEAR_LOG_DEBUG);
