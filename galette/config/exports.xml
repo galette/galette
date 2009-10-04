@@ -5,7 +5,7 @@
 	     id must be a unique identifier in this file. All three attributes are required !
 	     You can deactivate a configuration by adding attribute inactive="inactive" here.
 	-->
-	<export id="cotisations" name="Cotisations" filename="galette_cotisations.csv">
+	<export id="cotisations" name="Cotisations" description="Export de l'état des cotisations pour l'ensemble des adhérents" filename="galette_cotisations.csv">
 		<!-- The Query to execute - mandatory -->
 		<query>SELECT nom_adh, prenom_adh, ville_adh, montant_cotis, date_debut_cotis, date_fin_cotis FROM galette_cotisations INNER JOIN galette_adherents ON (galette_cotisations.id_adh=galette_adherents.id_adh)</query>
 		<!-- CSV Headers - optionnal.

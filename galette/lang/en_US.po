@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: en_US\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-12-20 16:44+0100\n"
-"PO-Revision-Date: 2009-10-03 17:29+0200\n"
+"PO-Revision-Date: 2009-10-04 15:26+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -31,6 +31,10 @@ msgstr "SELECT operation allowed"
 #: ../templates/default/preferences.tpl:139
 msgid "Recipient of new online registation emails"
 msgstr "Recipient of new online registation emails"
+
+#: ../templates/default/export.tpl:6
+msgid "The following files have been written on disk:"
+msgstr "The following files have been written on disk:"
 
 #: ../templates/default/ajouter_adherent.tpl:133
 msgid "This comment is only displayed for admins."
@@ -850,6 +854,14 @@ msgstr "your fee."
 msgid "Donation in money"
 msgstr "Donation in money"
 
+#: ../templates/default/export.tpl:2
+msgid ""
+"Each selected export will be stored into a separate file in the exports "
+"directory."
+msgstr ""
+"Each selected export will be stored into a separate file in the exports "
+"directory."
+
 #: ../install/index.php:461
 msgid "User:"
 msgstr "User:"
@@ -1166,6 +1178,10 @@ msgstr "- The password must be of at least 4 characters!"
 msgid "Please enter a message."
 msgstr "Please enter a message."
 
+#: ../templates/default/export.tpl:30
+msgid "Additionnaly, which table(s) do you want to export?"
+msgstr "Additionnaly, which table(s) do you want to export?"
+
 #: ../install/index.php:1065
 msgid "Galette has been successfully updated!"
 msgstr "Galette has been successfully updated!"
@@ -1291,6 +1307,7 @@ msgid "Subscribe"
 msgstr "Subscribe"
 
 #: ../templates/default/ajouter_contribution.tpl:94
+#: ../templates/default/export.tpl:49
 msgid "Continue"
 msgstr "Continue"
 
@@ -1390,6 +1407,10 @@ msgstr "Delete"
 #: ../templates/default/page.tpl:113
 msgid "Log off"
 msgstr "Log off"
+
+#: ../templates/default/export.tpl:28
+msgid "No parameted exports are available."
+msgstr "No parameted exports are available."
 
 #: ../templates/default/preferences.tpl:42
 #: ../templates/default/preferences.tpl:43
@@ -1992,6 +2013,10 @@ msgstr "Default texts were successfully stored."
 #: ../editer_intitules.php:255
 msgid "Edit status"
 msgstr "Edit status"
+
+#: ../templates/default/export.tpl:14
+msgid "Which parameted export(s) do you want to run?"
+msgstr "Which parameted export(s) do you want to run?"
 
 #: ../templates/default/gestion_intitules.tpl:31
 msgid "Priority"
@@ -2754,6 +2779,10 @@ msgstr "Zip - Town"
 #: ../classes/adherent.class.php:118
 msgid "Address (continuation)"
 msgstr "Address (continuation)"
+
+#: ../templates/default/export.tpl:1
+msgid "CVS database Export"
+msgstr "CVS database Export"
 
 #: ../gestion_contributions.php:308 ../gestion_adherents.php:378
 msgid "remaining day"

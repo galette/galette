@@ -171,7 +171,8 @@ th.listing, li.listing {
 	color: #FFFFFF;
 	white-space: nowrap;
 }
-#id_row{
+#id_row,
+th.small_head{
 	width:1%;
 }
 .username_row{
@@ -498,6 +499,12 @@ html > * #input-table{
 #input-table .header {
 	text-align: left;
 	font-weight: bold;
+}
+
+#tables_list{
+	width:25em;
+	margin-left:auto;
+	margin-right:auto;
 }
 
 /* IE6 does not handle properly 100% width */

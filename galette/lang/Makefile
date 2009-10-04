@@ -55,6 +55,7 @@ PHP_SOURCES = ../index.php \
 ../templates/default/editer_intitule.tpl \
 ../templates/default/trombinoscope.tpl \
 ../templates/default/liste_membres.tpl \
+../templates/default/export.tpl \
 ../classes/adherent.class.php \
 ../classes/models.class.php \
 ../classes/pdf.class.php \

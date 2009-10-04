@@ -236,8 +236,22 @@ class GaletteMdb2{
 		return $this->db->prepare($query, $types, $result_types, $lobs);
 	}
 
-	public function listTables(){
-		return $this->db->listTables();
+	/**
+	* Get the tables present in the database.
+	* @param boolean local when true, list will only contains table that correspond to the current PREFIX_DB
+	*/
+	public function listTables($local = true){
+		$list = array();
+		if( $local ){
+			foreach( $this->db->listTables() as $v ){
+				if( substr_compare( $v, PREFIX_DB, 0, strlen(PREFIX_DB)) === 0 )
+					$list[] = $v;
+			}
+		} else {
+			$list = $this->db->listTables();
+		}
+		
+		return $list;
 	}
 
 	public function testDropTable(){

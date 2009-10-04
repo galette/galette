@@ -36,6 +36,10 @@ msgstr "Operación SELECT autorizada"
 msgid "Recipient of new online registation emails"
 msgstr ""
 
+#: ../templates/default/export.tpl:6
+msgid "The following files have been written on disk:"
+msgstr ""
+
 #: ../templates/default/ajouter_adherent.tpl:133
 msgid "This comment is only displayed for admins."
 msgstr "Este comentario sólo es visible por los administradores."
@@ -871,6 +875,12 @@ msgstr "su cuota."
 msgid "Donation in money"
 msgstr "Donativo en metálico"
 
+#: ../templates/default/export.tpl:2
+msgid ""
+"Each selected export will be stored into a separate file in the exports "
+"directory."
+msgstr ""
+
 #: ../install/index.php:461
 msgid "User:"
 msgstr "Usuario:"
@@ -1189,6 +1199,10 @@ msgstr "- ¡La contraseña debe consistir en 4 caracteres al menos!"
 msgid "Please enter a message."
 msgstr "Por favor teclee un mensaje."
 
+#: ../templates/default/export.tpl:30
+msgid "Additionnaly, which table(s) do you want to export?"
+msgstr ""
+
 #: ../install/index.php:1065
 msgid "Galette has been successfully updated!"
 msgstr "¡Galette fue actualizada con éxito!"
@@ -1317,6 +1331,7 @@ msgid "Subscribe"
 msgstr "Dar de alta"
 
 #: ../templates/default/ajouter_contribution.tpl:94
+#: ../templates/default/export.tpl:49
 msgid "Continue"
 msgstr "Continuar"
 
@@ -1419,6 +1434,10 @@ msgstr "Borrar"
 #: ../templates/default/page.tpl:113
 msgid "Log off"
 msgstr "Desconexión"
+
+#: ../templates/default/export.tpl:28
+msgid "No parameted exports are available."
+msgstr ""
 
 #: ../templates/default/preferences.tpl:42
 #: ../templates/default/preferences.tpl:43
@@ -2017,6 +2036,10 @@ msgstr ""
 
 #: ../editer_intitules.php:255
 msgid "Edit status"
+msgstr ""
+
+#: ../templates/default/export.tpl:14
+msgid "Which parameted export(s) do you want to run?"
 msgstr ""
 
 #: ../templates/default/gestion_intitules.tpl:31
@@ -2792,6 +2815,11 @@ msgstr ""
 msgid "Address (continuation)"
 msgstr "Añadir una contribución"
 
+#: ../templates/default/export.tpl:1
+#, fuzzy
+msgid "CVS database Export"
+msgstr "Se produjo un error en la base de datos al introducir datos"
+
 #: ../gestion_contributions.php:308 ../gestion_adherents.php:378
 msgid "remaining day"
 msgstr "día restante"
@@ -2920,10 +2948,6 @@ msgstr "[ Añadir una contribución ]"
 
 #~ msgid "Logo"
 #~ msgstr "Logo"
-
-#, fuzzy
-#~ msgid "- Database error "
-#~ msgstr "Se produjo un error en la base de datos al introducir datos"
 
 #, fuzzy
 #~ msgid "%s Non profit organisation"

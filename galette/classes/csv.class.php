@@ -153,8 +153,9 @@ class Csv{
 		foreach( $xml->export as $export){
 			if( !($export['inactive'] == 'inactive') ){
 				$parameted[] = array(
-					'id'	=>	(string)$export['id'],
-					'name'	=>	(string)$export['name']
+					'id'		=>	(string)$export['id'],
+					'name'		=>	(string)$export['name'],
+					'description'	=>	(string)$export['description']
 				);
 			}
 		}

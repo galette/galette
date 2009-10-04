@@ -10,6 +10,10 @@ msgstr ""
 msgid "Recipient of new online registation emails"
 msgstr ""
 
+#: ../templates/default/export.tpl:6
+msgid "The following files have been written on disk:"
+msgstr ""
+
 #: ../templates/default/ajouter_adherent.tpl:133
 msgid "This comment is only displayed for admins."
 msgstr ""
@@ -759,6 +763,10 @@ msgstr ""
 msgid "Donation in money"
 msgstr ""
 
+#: ../templates/default/export.tpl:2
+msgid "Each selected export will be stored into a separate file in the exports directory."
+msgstr ""
+
 #: ../install/index.php:461
 msgid "User:"
 msgstr ""
@@ -1054,6 +1062,10 @@ msgstr ""
 msgid "Please enter a message."
 msgstr ""
 
+#: ../templates/default/export.tpl:30
+msgid "Additionnaly, which table(s) do you want to export?"
+msgstr ""
+
 #: ../install/index.php:1065
 msgid "Galette has been successfully updated!"
 msgstr ""
@@ -1171,7 +1183,7 @@ msgstr ""
 msgid "Subscribe"
 msgstr ""
 
-#: ../templates/default/ajouter_contribution.tpl:94
+#: ../templates/default/ajouter_contribution.tpl:94 ../templates/default/export.tpl:49
 msgid "Continue"
 msgstr ""
 
@@ -1264,6 +1276,10 @@ msgstr ""
 
 #: ../templates/default/page.tpl:113
 msgid "Log off"
+msgstr ""
+
+#: ../templates/default/export.tpl:28
+msgid "No parameted exports are available."
 msgstr ""
 
 #: ../templates/default/preferences.tpl:42 ../templates/default/preferences.tpl:43
@@ -1800,6 +1816,10 @@ msgstr ""
 
 #: ../editer_intitules.php:255
 msgid "Edit status"
+msgstr ""
+
+#: ../templates/default/export.tpl:14
+msgid "Which parameted export(s) do you want to run?"
 msgstr ""
 
 #: ../templates/default/gestion_intitules.tpl:31
@@ -2512,6 +2532,10 @@ msgstr ""
 
 #: ../classes/adherent.class.php:118
 msgid "Address (continuation)"
+msgstr ""
+
+#: ../templates/default/export.tpl:1
+msgid "CVS database Export"
 msgstr ""
 
 #: ../gestion_contributions.php:308 ../gestion_adherents.php:378
