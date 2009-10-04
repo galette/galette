@@ -45,7 +45,7 @@ $tpl->plugins_dir[] = WEB_ROOT . 'includes/smarty_plugins';
 $tpl->template_dir = WEB_ROOT . $template_subdir;
 $tpl->compile_dir = WEB_ROOT . 'templates_c/';
 $tpl->cache_dir = WEB_ROOT . 'cache/';
-$tpl->config_dir = WEB_ROOT . 'configs/';
+$tpl->config_dir = WEB_ROOT . 'config/';
 
 $tpl->assign('login', $login);
 $tpl->assign('logo', $logo);
