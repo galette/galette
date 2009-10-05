@@ -1,7 +1,7 @@
 <?php
 /* picture.php
  * - Display a picture
- * Copyright (c) 2006 Frédéric Jaqcuot
+ * Copyright (c) 2006 Frï¿½dï¿½ric Jaqcuot
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,7 +21,7 @@
 
 	require_once('includes/session.inc.php');
 
-	if ($_SESSION["logged_status"]==0)
+	if ($_SESSION["logged_status"]==0 && $_GET['id_adh'] != 0)
 	{
 		header("location: index.php");
 		die();
@@ -29,7 +29,7 @@
 
 	require_once('includes/picture.class.php');
 
-	if ($_SESSION["admin_status"]==0)
+	if ($_SESSION["admin_status"]==0 && $_GET['id_adh'] != 0)
 		$id_adh = $_SESSION["logged_id_adh"];
 	else
 		$id_adh = $_GET['id_adh'];
