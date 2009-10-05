@@ -9,7 +9,7 @@
 	<form action="index.php" method="post" id="login_frm">
 		<div class="login-box">
   {if $smarty.session.customLogo}
-  <img src="photos/0.{$smarty.session.customLogoFormat}" height="{$smarty.session.customLogoHeight}" width="{$smarty.session.customLogoWidth}" alt="[ Galette ]"/>
+  <img src="picture.php?id_adh=0" height="{$smarty.session.customLogoHeight}" width="{$smarty.session.customLogoWidth}" alt="[ Galette ]"/>
   {/if}
 <h1 class="titre">{_T("Login")}</h1>
 {foreach key=langue item=langue_t from=$languages}
