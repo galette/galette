@@ -23,11 +23,19 @@
 
 $disable_gettext=true;
 
-// I18N support information here
-if (isset($_POST['pref_lang']))
-        $_SESSION["pref_lang"]=$_POST['pref_lang'];
-else if (isset($_GET['pref_lang']))
-        $_SESSION["pref_lang"]=$_GET['pref_lang'];
+if( 
+	$_SESSION['logged_status'] === 0 || //si on est pas logué
+	$_SESSION['logged_status'] === 1 && // pour les autres cas, il faut être logué
+	isset($_GET['id_adh']) && $_GET['id_adh'] === $_SESSION['logged_id_adh'] || //on check si l'utilisateur en cours change sa langue
+	isset($_POST['id_adh']) && $_POST['id_adh'] === $_SESSION['logged_id_adh'] || //on check si l'utilisateur en cours change sa langue
+	isset($_POST['pref_admin_login']) && $_SESSION['logged_id_adh'] ===0 		//le cas où on change dans les préférences de l'appli. si on est pas connecté en tant que super-utilisateur, on ne change pas la langue
+) {
+	// I18N support information here
+	if (isset($_POST['pref_lang']))
+		$_SESSION["pref_lang"]=$_POST['pref_lang'];
+	else if (isset($_GET['pref_lang']))
+		$_SESSION["pref_lang"]=$_GET['pref_lang'];
+}
 if (isset($_SESSION["pref_lang"]))
 	$pref_lang=$_SESSION["pref_lang"];
 else
