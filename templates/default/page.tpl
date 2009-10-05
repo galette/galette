@@ -17,7 +17,7 @@
 	<div id="menu">
 		<div id="logo">
   {if $smarty.session.customLogo}
-  <img src="photos/0.{$smarty.session.customLogoFormat}" height="60" alt="[ Galette ]"/>
+  <img src="picture.php?id_adh=0" height="60" alt="[ Galette ]"/>
   {else}
   <img src="{$template_subdir}images/galette.png" alt="[ Galette ]" width="129" height="60"/>  
   {/if}
