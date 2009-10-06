@@ -168,7 +168,7 @@ function resizeimage($img,$img2,$w,$h)
 		switch(strtolower($ext))
 		{
 			case '.jpg':
-				if (!$gdinfo['JPG Support'])
+				if (!$gdinfo['JPEG Support'])
 					return false;
 				break;
 			case '.png':
@@ -183,28 +183,36 @@ function resizeimage($img,$img2,$w,$h)
 				return false;
 		}
 
-		$imagedata = getimagesize($img);
-		$ratio = $imagedata[0]/$imagedata[1];
-		if ($imagedata[0]>$imagedata[1])
+		list($cur_width, $cur_height, $cur_type, $curattr) = getimagesize($img);
+		
+		$ratio = $cur_width/$cur_height;
+		if ($cur_width > $cur_height)
 			$h = $w/$ratio;
 		else
 			$w = $h*$ratio;
+
 		$thumb = imagecreatetruecolor ($w, $h);
 		switch($ext)
 		{
 			case ".jpg":
 				$image = ImageCreateFromJpeg($img);
-				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $imagedata[0], $imagedata[1]);
+				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
 				imagejpeg($thumb, $img2);
 				break;
 			case ".png":
 				$image = ImageCreateFromPng($img);
-				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $imagedata[0], $imagedata[1]);
+				// Turn off alpha blending and set alpha flag
+				//That prevent alpha transparency to be saved as an arbitrary color (black in my tests)
+				imagealphablending($thumb, false);
+				imagealphablending($image, false);
+				imagesavealpha($thumb, true);
+				imagesavealpha($image, true);
+				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
 				imagepng($thumb, $img2);
 				break;
 			case ".gif":
 				$image = ImageCreateFromGif($img);
-				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $imagedata[0], $imagedata[1]);
+				imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
 				imagegif($thumb, $img2);
 				break;
 		}
