@@ -31,7 +31,7 @@
 					<label for="logo_picture" class="bline">{_T("Logo:")}</label>
 {if $pref.has_logo eq 1}
 					<img src="picture.php?id_adh=0&amp;rand={$time}" class="picture" width="{$pref.picture_width}" height="{$pref.picture_height}" alt="{_T("Picture")}"/><br/>
-					<span>{_T("Delete image")}</span><input type="checkbox" name="del_logo" value="1" /><br />
+					<label for="del_logo">{_T("Delete image")}</label><input type="checkbox" name="del_logo" id="del_logo" value="1" /><br />
 {/if}
 					<input type="file" name="logo" id="logo_picture"/>
 				</p>
