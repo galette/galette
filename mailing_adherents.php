@@ -78,7 +78,7 @@
 		if ($_POST['mailing_objet']=="")
 			$error_detected[] = _T("Please type an object for the message.");
 		else
-			$data['mailing_objet']=htmlspecialchars($_POST['mailing_objet'],ENT_QUOTES);
+			$data['mailing_objet']=$_POST['mailing_objet'];
 
 		if ($_POST['mailing_corps']=="")
 			$error_detected[] = _T("Please enter a message.");
