@@ -211,6 +211,9 @@
 
 		if (count($error_detected)==0)
 		{
+			//Get user's login to put it in the logs
+			$query = 'SELECT login_adh FROM ' . PREFIX_DB . 'adherents WHERE id_adh=' . $contribution['id_adh'];
+			$login = $DB->GetOne($query);
 			if ($contribution["id_cotis"] == "")
 			{
 				$requete = "INSERT INTO ".PREFIX_DB."cotisations
@@ -223,7 +226,7 @@
 					$foo = _T("Contribution added");
 
 					// logging
-					dblog('Contribution added','',$requete);
+					dblog('Contribution added',strtoupper($login),$requete);
 				}
 			}
 			else
@@ -236,7 +239,7 @@
 					$foo = _T("Contribution updated");
 
 					// logging
-					dblog('Contribution updated','',$requete);
+					dblog('Contribution updated',strtoupper($login),$requete);
 				}
 			}
 
