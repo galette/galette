@@ -966,7 +966,7 @@ define(\"HOST_DB\", \"".$_POST["install_dbhost"]."\");
 define(\"USER_DB\", \"".$_POST["install_dbuser"]."\");
 define(\"PWD_DB\", \"".$_POST["install_dbpass"]."\");
 define(\"NAME_DB\", \"".$_POST["install_dbname"]."\");
-define(\"WEB_ROOT\", \"".WEB_ROOT."\");
+define(\"WEB_ROOT\", '".WEB_ROOT."');
 define(\"PREFIX_DB\", \"".$_POST["install_dbprefix"]."\");
 define(\"STOCK_FILES\", \"tempimages\");
 ?>";
