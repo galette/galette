@@ -45,6 +45,9 @@
 				'id_adh' => 'disabled="disabled"',
 				'date_echeance' => 'disabled="disabled"'
 			);
+		if( PREF_MAIL_METHOD == 0 ){
+			$disabled['send_mail'] = 'disabled="disabled"';
+		}
 	}
 	else
 	{
@@ -203,10 +206,9 @@
 		// missing relations
 		if (isset($adherent["mail_confirm"]))
 		{
-			if (!isset($adherent["email_adh"]))
-				$error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
-			elseif ($adherent["email_adh"]=="")
-				$error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
+			if( PREF_MAIL_METHOD > 0 )
+				if (!isset($adherent["email_adh"]) || $adherent['email_adh'] == '')
+					$error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
 		}
 
 		// missing required fields?
@@ -262,7 +264,7 @@
 					$error_detected[] = _T("Delete failed");
 				
     if (isset($_POST["mail_confirm"]))
-      if ($_POST["mail_confirm"]=="1")
+      if ($_POST["mail_confirm"]=="1" && PREF_MAIL_METHOD > 0){
         if (isset($adherent['email_adh']) && $adherent['email_adh']!="")
         {
           $mail_subject = _T("Your Galette identifiers");
@@ -314,6 +316,10 @@
         }else{
           $error_detected[] = _T("Sent mail is checked but there is no email address")." \"" . $_POST["login_adh"] . "\"";
         }
+}elseif($_POST["mail_confirm"]=="1" && PREF_MAIL_METHOD == 0){
+	//if mail has been disabled in the preferences, we should not be here ; we do not throw an error, just a simple warning that will be show later
+	$_SESSION['galette']['mail_warning'] = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
+}
 
 			// dynamic fields
 			set_all_dynamic_fields($DB, 'adh', $adherent['id_adh'], $adherent['dyn']);
