@@ -135,6 +135,10 @@
 	$tpl->assign("data",$adherent);
 	$tpl->assign("dynamic_fields",$dynamic_fields);
 	$tpl->assign("time",time());
+	if( isset($_SESSION['galette']['mail_warning']) ){
+		$tpl->assign('mail_warning', $_SESSION['galette']['mail_warning']);
+		unset($_SESSION['galette']['mail_warning']);
+	}
 	$content = $tpl->fetch("voir_adherent.tpl");
 	$tpl->assign("content",$content);
 	$tpl->display("page.tpl");
