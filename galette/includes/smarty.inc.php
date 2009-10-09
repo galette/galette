@@ -50,10 +50,14 @@ $tpl->config_dir = WEB_ROOT . 'config/';
 $tpl->assign('login', $login);
 $tpl->assign('logo', $logo);
 $tpl->assign('template_subdir', $base_path . $template_subdir);
+foreach( $plugins->getTplAssignments() as $k=>$v ){
+	$tpl->assign($k, $v);
+}
+$tpl->assign('headers', $plugins->getTplHeaders());
 $tpl->assign('jquery_dir', $base_path . 'includes/jquery/');
 $tpl->assign('jquery_version', JQUERY_VERSION);
 $tpl->assign('jquery_ui_version', JQUERY_UI_VERSION);
-$tpl->assign('htmledi_dir', $base_path . 'includes/tiny_mce/');
+$tpl->assign('jquery_markitup_version', JQUERY_MARKITUP_VERSION);
 $tpl->assign('scripts_dir', $base_path . 'includes/');
 $tpl->assign('PAGENAME', basename($_SERVER['SCRIPT_NAME']));
 $tpl->assign('galette_base_path', $base_path);

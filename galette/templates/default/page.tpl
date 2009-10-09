@@ -32,37 +32,26 @@
 {/if}
 {* /JQuery UI related *}
 {if $html_editor}
-		<script type="text/javascript" src="{$htmledi_dir}tiny_mce.js"></script>
-		<script type="text/javascript">
+	{if !$plugged_html_editor}
+		<script type="text/javascript" src="{$jquery_dir}markitup-{$jquery_markitup_version}/jquery.markitup.pack.js"/>
+		<script type="text/javascript" src="{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/set-{$galette_lang}.js"></script>
+		<link rel="stylesheet" type="text/css" href="{$jquery_dir}markitup-{$jquery_markitup_version}/skins/galette/style.css" />
+		<link rel="stylesheet" type="text/css" href="{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/style.css" />
+		<script language="javascript">
 			//<![CDATA[
-			tinyMCE.init({ldelim}
-				mode : "none",
-				theme : "advanced",
-				theme_advanced_toolbar_location : "top",
-				theme_advanced_toolbar_align : "left",
-				theme_advanced_statusbar_location : "bottom",
-				theme_advanced_resizing : true,
-				plugins : "safari,insertdatetime,preview,contextmenu,fullscreen,nonbreaking",
-				theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,outdent,indent,blockquote,|,styleselect,formatselect,fontselect,fontsizeselect",
-				theme_advanced_buttons2 : "bullist,numlist,|,undo,redo,|,link,unlink,anchor,image,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,nonbreaking|,insertdate,inserttime,|,forecolor,backcolor,|,fullscreen,cleanup,help,code,preview",
-				theme_advanced_buttons3 : "",
-				language : "{$galette_lang}"
+			$(document).ready(function(){ldelim}
+				$('#mailing_corps').markItUp(galetteSettings);
 			{rdelim});
-	
-			function toggleEditor(id) {ldelim}
-				var elm = document.getElementById(id);
-			
-				if (tinyMCE.getInstanceById(id) == null)
-					tinyMCE.execCommand('mceAddControl', false, id);
-				else
-					tinyMCE.execCommand('mceRemoveControl', false, id);
-			{rdelim}
-	
 			//]]>
 		</script>
+	{/if}
 {/if}
-{if $headers}
-	{$headers}
+{* If some additionnals headers should be added from plugins, we load the relevant template file 
+We have to use a template file, so Smrty will do its work (like replacing variables). *}
+{if $headers|@count != 0}
+	{foreach from=$headers item=header}
+		{include file=$header}
+	{/foreach}
 {/if}
 </head>
 <body>

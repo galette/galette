@@ -85,37 +85,3 @@
 			</div>
 		</div>
 {/if}
-{if $html_editor_active eq 1}
-		<script type="text/javascript">
-			//<![CDATA[
-			toggleEditor('mailing_corps');
-			//]]>
-		</script>
-{/if}
-		<script type="text/javascript">
-			//<![CDATA[
-			$(function(){ldelim}
-				$('#mailing_html').click(function(){ldelim}
-					var id = 'mailing_corps';
-					if(!this.checked && tinyMCE.getInstanceById(id) != null){ldelim}
-						tinyMCE.execCommand('mceRemoveControl', false, id);
-						$('input#html_editor_active').attr('value', '0');
-					{rdelim}
-				{rdelim});
-			{rdelim});
-
-			function toggleMailingEditor(id) {ldelim}
-				if(!$('#mailing_html').attr('checked') && tinyMCE.getInstanceById(id) == null){ldelim}
-					$('#mailing_html').attr('checked', true);
-				{rdelim}
-
-				if(tinyMCE.getInstanceById(id) == null){ldelim}
-					$('input#html_editor_active').attr('value', '1');
-				{rdelim} else {ldelim}
-					$('input#html_editor_active').attr('value', '0');
-				{rdelim}
-
-				toggleEditor(id);
-			{rdelim}
-			//]]>
-		</script>

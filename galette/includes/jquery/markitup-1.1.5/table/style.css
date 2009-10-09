@@ -1,0 +1,13 @@
+/* -------------------------------------------------------------------
+// markItUp!
+// By Jay Salvat - http://markitup.jaysalvat.com/
+// ------------------------------------------------------------------*/
+.markItUp .table a {
+	background-image:url(images/table.png);
+}
+.markItUp .table-col a {
+	background-image:url(images/table-col.png);
+}
+.markItUp .table-row a {
+	background-image:url(images/table-row.png);
+}

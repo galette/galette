@@ -38,6 +38,7 @@ define('LOG_VERSION', '1.11.4');
 define('TCPDF_VERSION', '4.4.007');
 define('JQUERY_VERSION', '1.3.2');
 define('JQUERY_UI_VERSION', '1.7.1');
+define('JQUERY_MARKITUP_VERSION', '1.1.5');
 //will be erased when completly obsoleted
 define('ADODB_VERSION', '492');
 ?>

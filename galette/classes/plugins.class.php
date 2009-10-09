@@ -125,6 +125,7 @@ class Plugins {
 				unset($r);
 			}*/
 			$this->loadModuleL10N($id,$lang,$id);
+			$this->loadSmarties($id);
 			/*if ($ns == 'admin') {
 				$this->loadModuleL10Nresources($id,$lang);
 			}
@@ -226,8 +227,10 @@ class Plugins {
 		if (!$language || !isset($this->modules[$id])) {
 			return;
 		}
-		
-	        include( $this->modules[$id]['root'] . '/lang' . '/lang_' . $language . '.php' );
+
+		$f = $this->modules[$id]['root'] . '/lang' . '/lang_' . $language . '.php';
+		if( file_exists($f) )
+	        	include( $f );
 
 		/*$lfile = $this->modules[$id]['root'].'/locales/%s/%s';
 		if (l10n::set(sprintf($lfile,$lang,$file)) === false && $lang != 'en') {
@@ -246,7 +249,21 @@ class Plugins {
 			$this->loadModuleFile($f);
 		}
 	}
-	
+
+	/**
+	Loads smarties specific (headers, assigments and so on)
+
+	@param	id		<b>string</b>		Module ID
+	*/
+	public function loadSmarties($id){
+		$f = $this->modules[$id]['root'] . '/_smarties.php';
+		if( file_exists($f) ){
+			require_once( $f );
+			if( isset($_tpl_assignments) )
+				$this->modules[$id]['tpl_assignments'] = $_tpl_assignments;
+		}
+	}
+
 	/**
 	Returns all modules associative array or only one module if <var>$id</var>
 	is present.
@@ -344,6 +361,36 @@ class Plugins {
 	public function getTemplatesPath($id){
 		global $preferences;
 		return $this->moduleRoot($id) . '/templates/' . $preferences->pref_theme;
+	}
+
+	/**
+	For each module, returns the headers.tpl full path, if present.
+	*/
+	public function getTplHeaders(){
+		$_headers = array();
+		foreach( $this->modules as $key=>$module ){
+			$headers_path = $this->getTemplatesPath($key) . '/headers.tpl';
+			if( file_exists( $headers_path ) )
+				$_headers[] = $headers_path;
+		}
+		return $_headers;
+	}
+
+	/**
+	For each module, gets templates assignements ; and replace some path variables
+	*/
+	public function getTplAssignments(){
+		global $preferences;
+		$_assign = array();
+		foreach( $this->modules as $key=>$module ){
+			if( isset($module['tpl_assignments']) )
+				foreach( $module['tpl_assignments'] as $k=>$v ){
+					$v = str_replace('__plugin_include_dir__', 'plugins/' . $key . '/includes/', $v);
+					$v = str_replace('__plugin_templates_dir__', 'plugins/' . $key . '/templates/' . $preferences->pref_theme . '/', $v);
+					$_assign[$k] = $v;
+				}
+		}
+		return $_assign;
 	}
 
 	/* SETTERS */
