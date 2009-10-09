@@ -40,7 +40,7 @@
 			</p>
 			<p>
 				<label for="mailing_corps" class="bline">{_T("Message:")}</label>
-				<textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15">{$data.mailing_corps}</textarea>
+				<textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15">{$data.mailing_corps|escape}</textarea>
 			</p>
 			<p class="center">
 				<input type="checkbox" name="mailing_html" id="mailing_html" value="1" {if $data.mailing_html eq 1}checked="checked"{/if}/><label for="mailing_html">{_T("Interpret HTML")}</label><br/>
