@@ -395,6 +395,12 @@ class Picture{
 					break;
 				case 'png':
 					$image = ImageCreateFromPng($source);
+					// Turn off alpha blending and set alpha flag
+					//That prevent alpha transparency to be saved as an arbitrary color (black in my tests)
+					imagealphablending($thumb, false);
+					imagealphablending($image, false);
+					imagesavealpha($thumb, true);
+					imagesavealpha($image, true);
 					imagecopyresized ($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
 					imagepng($thumb, $dest);
 					break;
