@@ -332,10 +332,12 @@ function beg_membership_after($date) {
 	$beg = "";
 	if (PREF_BEG_MEMBERSHIP != "") {
 		list($j, $m) = explode("/", PREF_BEG_MEMBERSHIP);
-		$y = strftime("%Y");
-		while (mktime(0, 0, 0, $m, $j, $y) <= $date)
+		$time = mktime(0, 0, 0, $m, $j, $y);
+		while ($time <= $date){
 			$y++;
-		$beg = $j."/".$m."/".$y;
+			$time = mktime(0, 0, 0, $m, $j, $y);
+		}
+		$beg = date('d/m/Y', strtotime('-1 day', $time)) . "\n";
 	}
 	return $beg;
 }
