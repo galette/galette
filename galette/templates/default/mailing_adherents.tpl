@@ -43,7 +43,7 @@
 			<p>
 				<span class="fright"><a href="javascript:toggleMailingEditor('mailing_corps');">{_T string="(De)Activate HTML editor"}</a></span>
 				<label for="mailing_corps" class="bline">{_T string="Message:"}</label>
-				<textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15">{$mailing->message}</textarea>
+				<textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15">{$mailing->message|escape}</textarea>
 				<input type="hidden" name="html_editor_active" id="html_editor_active" value="{if $html_editor_active}1{else}0{/if}"/>
 			</p>
 			<p class="center">
