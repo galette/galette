@@ -1,4 +1,4 @@
-		<h1 class="titre">{_T string="Automatic emails texts edition"}</h1>
+		<h1 id="titre">{_T string="Automatic emails texts edition"}</h1>
 		<form action="gestion_textes.php" method="post" enctype="multipart/form-data"> 
 {if $error_detected|@count != 0}
 		<div id="errorbox">

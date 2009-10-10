@@ -7,7 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="{$template_subdir}farbtastic.css"/>
 {/if}
 {* JQuery UI related *}
-{if $table_sorter || $require_calendar || $require_dialog}
+{if $table_sorter || $require_calendar || $require_dialog || $require_tabs}
 		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.core.min.js"></script>
 {/if}
 {if $table_sorter}
