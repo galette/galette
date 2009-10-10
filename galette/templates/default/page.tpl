@@ -39,9 +39,23 @@
 		<link rel="stylesheet" type="text/css" href="{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/style.css" />
 		<script language="javascript">
 			//<![CDATA[
+			function toggleMailingEditor(id) {ldelim}
+				if(!$('#mailing_html').attr('checked')){ldelim}
+					$('#mailing_html').attr('checked', true);
+				{rdelim}
+
+				$('input#html_editor_active').attr('value', '1');
+				{* While it is not possible to deactivate markItUp, we remove completly the functionnality *}
+				$('#toggle_editor').remove();
+				$('#mailing_corps').markItUp(galetteSettings);
+			{rdelim}
+		{if $html_editor_active eq 1}
 			$(document).ready(function(){ldelim}
+				{* While it is not possible to deactivate markItUp, we remove completly the functionnality *}
+				$('#toggle_editor').remove();
 				$('#mailing_corps').markItUp(galetteSettings);
 			{rdelim});
+		{/if}
 			//]]>
 		</script>
 	{/if}
