@@ -46,42 +46,42 @@ include(WEB_ROOT . 'classes/texts.class.php');
 $error_detected = array();
 $warning_detected = array();
 
-if (!isset($_SESSION['cur_lang'])) {
-	$_SESSION['cur_lang'] = PREF_LANG;
-}
+$cur_lang = PREF_LANG;
+$cur_ref = Texts::DEFAULT_REF;
 
-if (!isset($_SESSION['cur_ref'])) {
-	$_SESSION['cur_ref'] = 'sub';
-}
+$texts = new Texts();
 
-$texts = new texts();
+//set the language
+if( isset($_POST['sel_lang']) ){
+	$cur_lang = $_POST['sel_lang'];
+}
+//set the text entry
+if( isset($_POST['sel_ref']) ){
+	$cur_ref = $_POST['sel_ref'];
+}
 
 if (isset($_POST['valid']) && $_POST['valid'] == '1') {
-	// Formulaire validé
-	// we update texts only if Save button pushed
-	if (($_SESSION['cur_ref'] == $_POST['sel_ref']) && ($_SESSION['cur_lang'] == $_POST['sel_lang'])){
-		$res = $texts->setTexts(
-			$_SESSION['cur_ref'],
-			$_SESSION['cur_lang'],
-			$_POST['text_subject'],
-			$_POST['text_body']);
-		$mtxt = $texts->getTexts($_SESSION['cur_ref'], $_SESSION['cur_lang']);
+	//form was send normally, we try to store new values
+	$res = $texts->setTexts(
+		$cur_ref,
+		$cur_lang,
+		$_POST['text_subject'],
+		$_POST['text_body']
+	);
 
-		if( MDB2::isError($res)){
-			$error_detected[] = preg_replace('(%s)', $mtxt['tcomment'], _T("Email: '%s' has not been modified!"));
-		}else{
-			$warning_detected[] = preg_replace('(%s)', $mtxt['tcomment'], _T("Email: '%s' has been successfully modified."));
-		}
-	}
-	$_SESSION['cur_ref'] = $_POST['sel_ref'];
-	$_SESSION['cur_lang'] = $_POST['sel_lang'];
+	if( !$res ){
+		$error_detected[] = preg_replace('(%s)', $mtxt['tcomment'], _T("Email: '%s' has not been modified!"));
+	}else{
+		$warning_detected[] = preg_replace('(%s)', $mtxt['tcomment'], _T("Email: '%s' has been successfully modified."));
+ 	}
 }
 
-$tpl->assign('reflist', $texts->getRefs($_SESSION['cur_lang']));
+$mtxt = $texts->getTexts($cur_ref, $cur_lang);
+$tpl->assign('reflist', $texts->getRefs($cur_lang));
 $tpl->assign('langlist', $i18n->getList());
-$tpl->assign('cur_lang', $_SESSION['cur_lang']);
-$tpl->assign('cur_ref', $_SESSION['cur_ref']);
-$tpl->assign('mtxt', $texts->getTexts($_SESSION['cur_ref'], $_SESSION['cur_lang']));
+$tpl->assign('cur_lang', $cur_lang);
+$tpl->assign('cur_ref', $cur_ref);
+$tpl->assign('mtxt', $mtxt);
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('warning_detected', $warning_detected);
 $content = $tpl->fetch('gestion_textes.tpl');
