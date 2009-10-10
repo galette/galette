@@ -9,8 +9,8 @@
 	</p>
 	{* TODO: Dynamically generate required tabs entries *}
 	<ul id="tabs">
-		<li{if $current eq 'membership'} class="current_tab"{/if}><a href="?current=membership">{_T string="Membership"}</a></li>
-		<li{if $current eq 'members'} class="current_tab"{/if}><a href="?current=members">{_T string="Members"}</a></li>
+		<li{if $current eq 'membership'} class="current_tab"{/if}><a href="?table=membership">{_T string="Membership"}</a></li>
+		<li{if $current eq 'members'} class="current_tab"{/if}><a href="?table=members">{_T string="Members"}</a></li>
 	</ul>
 	<form action="config_fields.php" method="post">
 	<div class="tabbed" id="{$current}_tab">
@@ -36,11 +36,13 @@
 						<label for="{$value}_required_no">{_T string="No"}</label>
 						<input type="radio" name="{$value}_required" id="{$value}_required_no" value="0"{if !isset($requireds[$value])} checked="checked"{/if}/>
 					</span>
-					<span class="yesno">
+					<span class="yesnoadmin">
 						<label for="{$value}_visible_yes">{_T string="Yes"}</label>
-						<input type="radio" name="{$value}_visible" id="{$value}_visible_yes" value="1"{if isset($visibles[$value])} checked="checked"{/if}/>
+						<input type="radio" name="{$value}_visible" id="{$value}_visible_yes" value="{php}echo FieldsConfig::VISIBLE;{/php}"{if $visibles[$value] == constant('FieldsConfig::VISIBLE')} checked="checked"{/if}/>
 						<label for="{$value}_visible_no">{_T string="No"}</label>
-						<input type="radio" name="{$value}_visible" id="{$value}_visible_no" value="0"{if !isset($visibles[$value])} checked="checked"{/if}/>
+						<input type="radio" name="{$value}_visible" id="{$value}_visible_no" value="{php}echo FieldsConfig::HIDDEN{/php}"{if $visibles[$value] == constant('FieldsConfig::HIDDEN')} checked="checked"{/if}/>
+						<label for="{$value}_visible_admin">{_T string="Admin only"}</label>
+						<input type="radio" name="{$value}_visible" id="{$value}_visible_admin" value="{php}echo FieldsConfig::ADMIN{/php}"{if $visibles[$value] == constant('FieldsConfig::ADMIN')} checked="checked"{/if}/>
 					</span>
 				</li>
 	{/foreach}

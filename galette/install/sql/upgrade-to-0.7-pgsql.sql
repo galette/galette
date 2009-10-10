@@ -89,8 +89,8 @@ INSERT INTO galette_fields_categories (id_field_category, category, position) VA
 INSERT INTO galette_fields_categories (id_field_category, category, position) VALUES (3, 'Contact information:', 3);
 
 -- New table for fields configuration
-DROP TABLE galette_config_fields;
-CREATE TABLE galette_config_fields (
+DROP TABLE galette_fields_config;
+CREATE TABLE galette_fields_config (
   table_name character varying(30) NOT NULL,
   field_id character varying(30) NOT NULL,
   required character(1) NOT NULL,

@@ -39,6 +39,7 @@
 
 require_once('politeness.class.php');
 require_once('status.class.php');
+require_once('fields_config.class.php');
 require_once('fields_categories.class.php');
 require_once('picture.class.php');
 
@@ -105,42 +106,42 @@ class Adherent {
 		* I'd prefer a static private variable for this...
 		* But call to the _T function does not seems to be allowed there :/
 		*/
-		/** FIXME: all fields does not belongs to CATEGORY_IDENTITY... */
 		$this->fields = array(
-			"id_adh"		=>	array( 'label'=>_T("Identifiant:"), 'required'=>true, 'visible'=>false, 'position'=>0, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"id_statut"		=>	array( 'label'=>_T("Status:"), 'required'=>true, 'visible'=>true, 'position'=>1, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"nom_adh"		=>	array( 'label'=>_T("Name:"), 'required'=>true , 'visible'=>true, 'position'=>2, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"prenom_adh"		=>	array( 'label'=>_T("First name:"), 'required'=>false, 'visible'=>true, 'position'=>3, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"pseudo_adh"		=>	array( 'label'=>_T("Nickname:"), 'required'=>false, 'visible'=>true, 'position'=>4, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"titre_adh"		=>	array( 'label'=>_T("Title:"), 'required'=>true, 'visible'=>true, 'position'=>5, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"ddn_adh"		=>	array( 'label'=>_T("birth date:"), 'required'=>false, 'visible'=>true, 'position'=>6, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"adresse_adh"		=>	array( 'label'=>_T("Address:"), 'required'=>true, 'visible'=>true, 'position'=>7, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"adresse2_adh"		=>	array( 'label'=>_T("Address (continuation)"), 'required'=>false, 'visible'=>true, 'position'=>8, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"cp_adh"		=>	array( 'label'=>_T("Zip Code:"), 'required'=>true, 'visible'=>true, 'position'=>9, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"ville_adh"		=>	array( 'label'=>_T("City:"), 'required'=>true, 'visible'=>true, 'position'=>10, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"pays_adh"		=>	array( 'label'=>_T("Country:"), 'required'=>false, 'visible'=>true, 'position'=>11, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"tel_adh"		=>	array( 'label'=>_T("Phone:"), 'required'=>false, 'visible'=>true, 'position'=>12, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"gsm_adh"		=>	array( 'label'=>_T("Mobile phone:"), 'required'=>false, 'visible'=>true, 'position'=>13, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"email_adh"		=>	array( 'label'=>_T("E-Mail:"), 'required'=>false, 'visible'=>true, 'position'=>14, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"url_adh"		=>	array( 'label'=>_T("Website:"), 'required'=>false, 'visible'=>true, 'position'=>15, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"icq_adh"		=>	array( 'label'=>_T("ICQ:"), 'required'=>false, 'visible'=>true, 'position'=>16, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"msn_adh"		=>	array( 'label'=>_T("MSN:"), 'required'=>false, 'visible'=>true, 'position'=>17, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"jabber_adh"		=>	array( 'label'=>_T("Jabber:"), 'required'=>false, 'visible'=>true, 'position'=>18, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"info_adh"		=>	array( 'label'=>_T("Other informations (admin):"), 'required'=>false, 'visible'=>true, 'position'=>19, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"info_public_adh"	=>	array( 'label'=>_T("Other informations:"), 'required'=>false, 'visible'=>true, 'position'=>20, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"prof_adh"		=>	array( 'label'=>_T("Profession:"), 'required'=>false, 'visible'=>true, 'position'=>21, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"login_adh"		=>	array( 'label'=>_T("Username:"), 'required'=>true, 'visible'=>true, 'position'=>22, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"mdp_adh"		=>	array( 'label'=>_T("Password:"), 'required'=>true, 'visible'=>true, 'position'=>23, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"date_crea_adh"		=>	array( 'label'=>_T("Creation date:"), 'required'=>false, 'visible'=>true, 'position'=>24, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"activite_adh"		=>	array( 'label'=>_T("Account:"), 'required'=>false, 'visible'=>true, 'position'=>25, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"bool_admin_adh"	=>	array( 'label'=>_T("Galette Admin:"), 'required'=>false, 'visible'=>true, 'position'=>26, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"bool_exempt_adh"	=>	array( 'label'=>_T("Freed of dues:"), 'required'=>false, 'visible'=>true, 'position'=>27, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"bool_display_info"	=>	array( 'label'=>_T("Be visible in the<br /> members list:"), 'required'=>false, 'visible'=>true, 'position'=>28, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"date_echeance"		=>	array( 'label'=>_T("Due date:"), 'required'=>false, 'visible'=>true, 'position'=>29, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"pref_lang"		=>	array( 'label'=>_T("Language:"), 'required'=>false, 'visible'=>true, 'position'=>30, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"lieu_naissance"	=>	array( 'label'=>_T("Birthplace:"), 'required'=>false, 'visible'=>true, 'position'=>31, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"gpgid"			=>	array( 'label'=>_T("Id GNUpg (GPG):"), 'required'=>false, 'visible'=>true, 'position'=>32, 'category'=>FieldsCategories::CATEGORY_IDENTITY),
-			"fingerprint"		=>	array( 'label'=>_T("fingerprint:"), 'required'=>false, 'visible'=>true, 'position'=>33, 'category'=>FieldsCategories::CATEGORY_IDENTITY)
+			"id_adh"		=>	array( 'label'=>_T("Identifiant:"), 'required'=>true, 'visible'=>FieldsConfig::HIDDEN, 'position'=>0, 'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY),
+			"id_statut"		=>	array( 'label'=>_T("Status:"), 'required'=>true, 'visible'=>FieldsConfig::VISIBLE, 'position'=>1, 'category'=>FieldsCategories::ADH_CATEGORY_GALETTE),
+			"nom_adh"		=>	array( 'label'=>_T("Name:"), 'required'=>true , 'visible'=>FieldsConfig::VISIBLE, 'position'=>2, 'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY),
+			"prenom_adh"		=>	array( 'label'=>_T("First name:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>3, 'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY),
+			"pseudo_adh"		=>	array( 'label'=>_T("Nickname:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>4, 'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY),
+			"titre_adh"		=>	array( 'label'=>_T("Title:"), 'required'=>true, 'visible'=>FieldsConfig::VISIBLE, 'position'=>5, 'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY),
+			"ddn_adh"		=>	array( 'label'=>_T("birth date:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>6, 'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY),
+			"adresse_adh"		=>	array( 'label'=>_T("Address:"), 'required'=>true, 'visible'=>FieldsConfig::VISIBLE, 'position'=>7, 'category'=>FieldsCategories::ADH_CATEGORY_CONTACT),
+			/** TODO remove second adress... */
+			"adresse2_adh"		=>	array( 'label'=>_T("Address (continuation)"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>8, 'category'=>FieldsCategories::ADH_CATEGORY_CONTACT),
+			"cp_adh"		=>	array( 'label'=>_T("Zip Code:"), 'required'=>true, 'visible'=>FieldsConfig::VISIBLE, 'position'=>9, 'category'=>FieldsCategories::ADH_CATEGORY_CONTACT),
+			"ville_adh"		=>	array( 'label'=>_T("City:"), 'required'=>true, 'visible'=>FieldsConfig::VISIBLE, 'position'=>10, 'category'=>FieldsCategories::ADH_CATEGORY_CONTACT),
+			"pays_adh"		=>	array( 'label'=>_T("Country:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>11, 'category'=>FieldsCategories::ADH_CATEGORY_CONTACT),
+			"tel_adh"		=>	array( 'label'=>_T("Phone:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>12, 'category'=>FieldsCategories::ADH_CATEGORY_CONTACT),
+			"gsm_adh"		=>	array( 'label'=>_T("Mobile phone:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>13, 'category'=>FieldsCategories::ADH_CATEGORY_CONTACT),
+			"email_adh"		=>	array( 'label'=>_T("E-Mail:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>14, 'category'=>FieldsCategories::ADH_CATEGORY_CONTACT),
+			"url_adh"		=>	array( 'label'=>_T("Website:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>15, 'category'=>FieldsCategories::ADH_CATEGORY_CONTACT),
+			"icq_adh"		=>	array( 'label'=>_T("ICQ:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>16, 'category'=>FieldsCategories::ADH_CATEGORY_CONTACT),
+			"msn_adh"		=>	array( 'label'=>_T("MSN:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>17, 'category'=>FieldsCategories::ADH_CATEGORY_CONTACT),
+			"jabber_adh"		=>	array( 'label'=>_T("Jabber:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>18, 'category'=>FieldsCategories::ADH_CATEGORY_CONTACT),
+			"info_adh"		=>	array( 'label'=>_T("Other informations (admin):"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>19, 'category'=>FieldsCategories::ADH_CATEGORY_GALETTE),
+			"info_public_adh"	=>	array( 'label'=>_T("Other informations:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>20, 'category'=>FieldsCategories::ADH_CATEGORY_GALETTE),
+			"prof_adh"		=>	array( 'label'=>_T("Profession:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>21, 'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY),
+			"login_adh"		=>	array( 'label'=>_T("Username:"), 'required'=>true, 'visible'=>FieldsConfig::VISIBLE, 'position'=>22, 'category'=>FieldsCategories::ADH_CATEGORY_GALETTE),
+			"mdp_adh"		=>	array( 'label'=>_T("Password:"), 'required'=>true, 'visible'=>FieldsConfig::VISIBLE, 'position'=>23, 'category'=>FieldsCategories::ADH_CATEGORY_GALETTE),
+			"date_crea_adh"		=>	array( 'label'=>_T("Creation date:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>24, 'category'=>FieldsCategories::ADH_CATEGORY_GALETTE),
+			"activite_adh"		=>	array( 'label'=>_T("Account:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>25, 'category'=>FieldsCategories::ADH_CATEGORY_GALETTE),
+			"bool_admin_adh"	=>	array( 'label'=>_T("Galette Admin:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>26, 'category'=>FieldsCategories::ADH_CATEGORY_GALETTE),
+			"bool_exempt_adh"	=>	array( 'label'=>_T("Freed of dues:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>27, 'category'=>FieldsCategories::ADH_CATEGORY_GALETTE),
+			"bool_display_info"	=>	array( 'label'=>_T("Be visible in the<br /> members list:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>28, 'category'=>FieldsCategories::ADH_CATEGORY_GALETTE),
+			"date_echeance"		=>	array( 'label'=>_T("Due date:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>29, 'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY),
+			"pref_lang"		=>	array( 'label'=>_T("Language:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>30, 'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY),
+			"lieu_naissance"	=>	array( 'label'=>_T("Birthplace:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>31, 'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY),
+			"gpgid"			=>	array( 'label'=>_T("Id GNUpg (GPG):"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>32, 'category'=>FieldsCategories::ADH_CATEGORY_CONTACT),
+			"fingerprint"		=>	array( 'label'=>_T("fingerprint:"), 'required'=>false, 'visible'=>FieldsConfig::VISIBLE, 'position'=>33, 'category'=>FieldsCategories::ADH_CATEGORY_CONTACT)
 		);
 		if( $args == null || is_int($args) ) {
 			$this->active = true;

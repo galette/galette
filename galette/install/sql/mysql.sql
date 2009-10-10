@@ -196,15 +196,15 @@ CREATE TABLE galette_fields_categories (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
-DROP TABLE IF EXISTS galette_config_fields;
-CREATE TABLE galette_config_fields (
+DROP TABLE IF EXISTS galette_fields_config;
+CREATE TABLE galette_fields_config (
   table_name varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   field_id varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   required tinyint(1) NOT NULL,
   visible tinyint(1) NOT NULL,
   position int(2) NOT NULL,
   id_field_category int(2) NOT NULL,
-  CONSTRAINT galette_config_fields_categories
+  CONSTRAINT galette_fields_config_categories
     FOREIGN KEY (id_field_category)
     REFERENCES galette_fields_categories (id_field_category)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

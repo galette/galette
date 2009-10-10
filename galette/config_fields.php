@@ -20,7 +20,7 @@
 /**
  * Configure fields for relevant tables.
  * This page allows admins to choose which fields are 
- * required or not, and their order.
+ * required or not, their order and if they are visible or not.
  *
  * @package Galette
  * 
@@ -34,7 +34,7 @@
 require_once('includes/galette.inc.php');
 
 $authorized = array('members');
-$current = ( isset($_GET['current']) && in_array($_GET['current'], $authorized) ) ? $_GET['current'] : 'members';
+$current = ( isset($_GET['table']) && in_array($_GET['table'], $authorized) ) ? $_GET['table'] : 'members';
 
 if( !$login->isLogged() ){
 	header("location: index.php");
@@ -55,6 +55,9 @@ switch( $current ) {
 		require_once(WEB_ROOT . 'classes/adherent.class.php');
 		$a = new Adherent();
 		$fc = new FieldsConfig(Adherent::TABLE, $a->fields);
+		break;
+	default:
+		$log->log('Trying to configure fields on unknown table (' . $current . ')', PEAR_LOG_WARNING);
 		break;
 }
 
@@ -87,7 +90,7 @@ if(isset($_POST) && count($_POST)>1){
 
 $required = $requires->getRequired();*/
 
-$tpl->assign("time",time());
+$tpl->assign('time', time());
 //$tpl->assign('fields', $fields);
 //$tpl->assign('adh_fields', $adh_fields);
 //$tpl->assign('required', $required);
@@ -100,8 +103,8 @@ $tpl->assign('visibles', $fc->getVisibles());
 $tpl->assign('positions', $fc->getPositions());
 $tpl->assign('table_sorter', true);
 //$tpl->assign('require_tabs', true);
-$content = $tpl->fetch("config_fields.tpl");
-$tpl->assign("content",$content);
-$tpl->display("page.tpl");
+$content = $tpl->fetch('config_fields.tpl');
+$tpl->assign('content', $content);
+$tpl->display('page.tpl');
 
 ?>

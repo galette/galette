@@ -85,7 +85,7 @@ We have to use a template file, so Smrty will do its work (like replacing variab
 				<li><a href="{$galette_base_path}ajouter_transaction.php">{_T string="Add a transaction"}</a></li>
 				<li><a href="{$galette_base_path}history.php">{_T string="Logs"}</a></li>
 				<li><a href="{$galette_base_path}export.php">{_T string="Exports"}</a></li>
-				<li><a href="{$galette_base_path}config_fields.php">{_T string="Customize fields order"}</a></li>
+				<li><a href="{$galette_base_path}config_fields.php">{_T string="Customize fields"}</a></li>
 {else}
 				<li><a href="{$galette_base_path}subscription_form.php?id_adh={$data.id_adh}">Fiche adherent</a></li>
 				<li><a href="{$galette_base_path}voir_adherent.php">{_T string="My information"}</a></li>

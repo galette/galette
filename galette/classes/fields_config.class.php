@@ -31,8 +31,7 @@
 
 /**
  * Fields config class for galette :
- * defines which fields are mandatory and which are not, 
- * also define order and visibility
+ * defines fields mandatory, order and visibility
  *
  * @name FieldsConfig
  * @package Galette
@@ -43,6 +42,10 @@ require_once('adherent.class.php');
 require_once('fields_categories.class.php');
 
 class FieldsConfig{
+	const HIDDEN = 0;
+	const VISIBLE = 1;
+	const ADMIN = 2;
+
 	private $all_required;
 	private $all_visibles;
 	private $all_labels;
@@ -53,14 +56,13 @@ class FieldsConfig{
 	private $default = null;
 	private $all_categories;
 
-	const TABLE = 'config_fields';
+	const TABLE = 'fields_config';
 
-	/** TODO: reflect new table structure here*/
 	private $types = array(
 		'text',
 		'text',
 		'boolean',
-		'boolean',
+		'integer',
 		'integer',
 		'integer'
 	);
@@ -190,7 +192,7 @@ class FieldsConfig{
 			$log->log('An error occured trying to initialize required fields for table `' . $this->table . '`.' . $stmt->getMessage(), PEAR_LOG_ERR);
 		}else{
 			$log->log('Initialisation seems successfull, we reload the object', PEAR_LOG_DEBUG);
-			$log->log(str_replace('%s', $this->table,  _T("Fields configuration for table %s initialized successfully.")), PEAR_LOG_INFO);
+			$log->log(str_replace('%s', $this->table,  'Fields configuration for table %s initialized successfully.'), PEAR_LOG_INFO);
 			$this->checkUpdate(false);
 		}
 	}

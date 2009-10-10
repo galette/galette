@@ -42,9 +42,9 @@ class FieldsCategories{
 	private $category;
 	const TABLE = 'fields_categories';
 
-	const CATEGORY_IDENTITY = 1;
-	const CATEGORY_GALETTE = 2;
-	const CATEGORY_CONTACT = 3;
+	const ADH_CATEGORY_IDENTITY = 1;
+	const ADH_CATEGORY_GALETTE = 2;
+	const ADH_CATEGORY_CONTACT = 3;
 
 	/**
 	* Default constructor
