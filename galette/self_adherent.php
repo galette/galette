@@ -296,14 +296,10 @@ $tpl->assign("languages", $i18n->getList());
 if(isset($head_redirect)) $tpl->assign("head_redirect", $head_redirect);
 
 // pseudo random int
-$tpl->assign("time",time());
+$tpl->assign('time', time());
 
 // genre
-$tpl->assign('radio_titres', array(
-		3 => _T("Miss"),
-		2 => _T("Mrs"),
-		1 => _T("Mister"),
-		4 => _T("Society")));
+$tpl->assign('radio_titres', Politeness::getList());
 
 // display page
 $tpl->display("self_adherent.tpl");

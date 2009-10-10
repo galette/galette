@@ -48,6 +48,15 @@ class Politeness {
 	*/
 	public function __construct(){}
 
+	public static function getList(){
+		return array(
+			self::MR	=>	_T("Mister"),
+			self::MRS	=>	_T("Mrs"),
+			self::MISS	=>	_T("Miss"),
+			self::COMPANY	=>	_T("Society")
+		);
+	}
+
 	public static function getPoliteness($politeness){
 		switch( $politeness ){
 			case self::MR:

@@ -382,11 +382,7 @@ $tpl->assign('require_calendar', true);
 $tpl->assign("time",time());
 
 // genre
-$tpl->assign('radio_titres', array(
-		3 => _T("Miss"),
-		2 => _T("Mrs"),
-		1 => _T("Mister"),
-		4 => _T("Society")));
+$tpl->assign('radio_titres', Politeness::getList());
 
 //Status
 $statuts = Status::getList();
