@@ -61,48 +61,36 @@ switch( $current ) {
 		break;
 }
 
-/*include(WEB_ROOT."classes/required.class.php");
-include(WEB_ROOT.'champs_adherents.php');
-
-$requires = new Required();
-$fields = $requires->getFields();*/
-
-/* Fields that are not visible in the 
-* form should not be visible here.
-*/
-/*unset($fields[array_search('id_adh', $fields)]);
-unset($fields[array_search('date_echeance', $fields)]);
-unset($fields[array_search('bool_display_info', $fields)]);
-unset($fields[array_search('bool_display_in', $fields)]);
-unset($fields[array_search('bool_exempt_adh', $fields)]);
-unset($fields[array_search('bool_admin_adh', $fields)]);
-unset($fields[array_search('lieu_naissance', $fields)]); //this one does not appear on the form. TODO
-unset($fields[array_search('activite_adh', $fields)]);
-unset($fields[array_search('date_crea_adh', $fields)]);
-
-if(isset($_POST) && count($_POST)>1){
-	$values = array();
-	foreach($_POST as $field => $value)
-		if($value == 1) $values[] = $field;
-	//we update values
-	$requires->setRequired($values);
+if( isset($_POST) && count($_POST) > 0 ){
+	$pos = 0;
+	$current_cat = 0;
+	$res = array();
+	foreach($_POST['fields'] as $abs_pos=>$field){
+		if($current_cat != $_POST[$field . '_category']){
+			//reset position when category has changed
+			$pos = 0;
+			//set new current category
+			$current_cat = $_POST[$field . '_category'];
+		}
+		$res[$current_cat][] = array(
+			'field_id'	=>	$field,
+			'label'		=>	$_POST[$field . '_label'],
+			'category'	=>	$_POST[$field . '_category'],
+			'visible'	=>	$_POST[$field . '_visible'],
+			'required'	=>	$_POST[$field . '_required']
+		);
+		$pos++;
+	}
+	//okay, we've got the new array, we send it to the Object that will store it in the database
+	$fc->setFields($res);
+	
 }
 
-$required = $requires->getRequired();*/
-
 $tpl->assign('time', time());
-//$tpl->assign('fields', $fields);
-//$tpl->assign('adh_fields', $adh_fields);
-//$tpl->assign('required', $required);
 $tpl->assign('categories', FieldsCategories::getList());
+$tpl->assign('categorized_fields', $fc->getCategorizedFields());
 $tpl->assign('current', $current);
-$tpl->assign('fields', $fc->getFields());
-$tpl->assign('labels', $fc->getLabels());
-$tpl->assign('requireds', $fc->getRequired());
-$tpl->assign('visibles', $fc->getVisibles());
-$tpl->assign('positions', $fc->getPositions());
-$tpl->assign('table_sorter', true);
-//$tpl->assign('require_tabs', true);
+$tpl->assign('require_sorter', true);
 $content = $tpl->fetch('config_fields.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');

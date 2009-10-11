@@ -50,8 +50,7 @@ class FieldsConfig{
 	private $all_visibles;
 	private $all_labels;
 	private $error = array();
-	private $db;
-	private $fields = array();
+	private $categorized_fields = array();
 	private $table;
 	private $default = null;
 	private $all_categories;
@@ -84,6 +83,7 @@ class FieldsConfig{
 	*/
 	private function checkUpdate($try = true){
 		global $mdb, $log;
+		$class = get_class($this);
 		if ($mdb->getOption('result_buffering')){
 			$requete = 'SELECT * FROM ' . PREFIX_DB . $this->table;
 			$mdb->getDb()->setLimit(1);
@@ -92,7 +92,7 @@ class FieldsConfig{
 			if( MDB2::isError($result2) )
 				return -1;
 
-			$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE table_name=\'' . $this->table . '\' ORDER BY id_field_category, position ASC';
+			$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE table_name=\'' . $this->table . '\' ORDER BY ' . FieldsCategories::PK . ', position ASC';
 
 			$result = $mdb->query( $requete );
 			if( MDB2::isError($result) )
@@ -103,38 +103,37 @@ class FieldsConfig{
 			if($result->numRows() == 0 && $try){
 				$this->init();
 			}else{
-				$categories = FieldsCategories::getList();
-				foreach($categories as $c){
-					$this->fields[$c] = array();
-				}
 				$required = $result->fetchAll();
-				$this->fields = null;
+				$this->categorized_fields = null;
 				foreach($required as $k){
-					//$this->fields[] = $k->field_id;
-					$this->fields[$k->id_field_category][] = $k->field_id;
-					// categ1
-					//	champ1
-					//	champ2
-					// categ2
-					//	champ3
-					//	champ5
-					// categ3
-					//	champ4
+					$f = array(
+						'field_id'	=>	$k->field_id,
+						'label'		=>	$this->defaults[$k->field_id]['label'],
+						'category'	=>	$this->defaults[$k->field_id]['category'],
+						'visible'	=>	$k->visible,
+						'required'	=>	$k->required
+					);
+					$this->categorized_fields[$k->id_field_category][] = $f;
+
+					//array of all required fields
+					if($k->required == 1)
+						$this->all_required[$k->field_id] = $k->required;
+
+					//array of all fields visibility
+					$this->all_visibles[$k->field_id] = $k->visible;
+
+					//maybe we can delete these ones in the future
 					$this->all_labels[$k->field_id] = $this->defaults[$k->field_id]['label'];
 					$this->all_categories[$k->field_id] = $this->defaults[$k->field_id]['category'];
 					$this->all_positions[$k->field_id] = $k->position;
-					if($k->required == 1)
-						$this->all_required[$k->field_id] = $k->required;
-					if($k->visible == 1)
-						$this->all_visibles[$k->field_id] = $k->visible;
 				}
 				if($result2->numCols() != $result->numRows()){
-					$log->log('Count for `' . $this->table . '` columns does not match records. Is : ' . $result->numRows() . ' and should be ' . $result2->numCols() . '. Reinit.', PEAR_LOG_INFO);
+					$log->log('[' . $class . '] Count for `' . $this->table . '` columns does not match records. Is : ' . $result->numRows() . ' and should be ' . $result2->numCols() . '. Reinit.', PEAR_LOG_INFO);
 					$this->init(true);
 				}
 			}
 		}else{
-			$log->log('An error occured while checking for required fields update for table `' . $this->table . '`.', PEAR_LOG_ERROR);
+			$log->log('[' . $class . '] An error occured while checking update for fields configuration for table `' . $this->table . '`.', PEAR_LOG_ERROR);
 		}
 	}
 
@@ -146,9 +145,10 @@ class FieldsConfig{
 	*/
 	function init($reinit=false){
 		global $mdb, $log;
-		$log->log('Initializing fields configuration for table `' . $this->table . '`', PEAR_LOG_DEBUG);
+		$class = get_class($this);
+		$log->log('[' . $class . '] Initializing fields configuration for table `' . $this->table . '`', PEAR_LOG_DEBUG);
 		if($reinit){
-			$log->log('Reinit mode, we delete config content for table `' . $this->table . '`', PEAR_LOG_DEBUG);
+			$log->log('[' . $class . '] Reinit mode, we delete config content for table `' . $this->table . '`', PEAR_LOG_DEBUG);
 			//Delete all entries for current table. Existing entries are alreday stored, new ones will be added :)
 			$requetesup = 'DELETE FROM ' . PREFIX_DB . self::TABLE . ' WHERE table_name=\'' . $this->table . '\'';
 
@@ -165,34 +165,33 @@ class FieldsConfig{
 
 		$fields = $result->getColumnNames();
 
-		$f = array();
-		foreach($fields as $key=>$value){
-			$f[] = array(
- 				'table_name' => $this->table,
-				'id' => $key,
-				'required' => (($reinit)?array_key_exists($key, $this->all_required):$this->defaults[$key]['required']?true:false),
-				'visible' => (($reinit)?array_key_exists($key, $this->all_visible):$this->defaults[$key]['visible']?true:false),
-				'position' => (($reinit)?$this->all_positions[$key]:$this->defaults[$key]['position']),
-				'category' => (($reinit)?$this->all_categories[$key]:$this->defaults[$key]['category']),
-			);
-		}
-
 		$stmt = $mdb->prepare(
-				'INSERT INTO ' . PREFIX_DB . self::TABLE . ' (table_name, field_id, required, visible, position, id_field_category) VALUES(:table_name, :id, :required, :visible, :position, :category)',
-				$this->types,
-				MDB2_PREPARE_MANIP
-			);
+			'INSERT INTO ' . PREFIX_DB . self::TABLE . ' (table_name, field_id, required, visible, position, ' . FieldsCategories::PK . ') VALUES(:table_name, :field_id, :required, :visible, :position, :category)',
+			$this->types,
+			MDB2_PREPARE_MANIP
+		);
 
-		foreach ($f as $row){
-			$stmt->bindParamArray($row);
-			$stmt->execute();
+		$params = array();
+		foreach($fields as $key=>$value){
+			$params[] = array(
+				'field_id'	=>	$key,
+ 				'table_name'	=>	$this->table,
+				'required'	=>	(($reinit)?array_key_exists($key, $this->all_required):$this->defaults[$key]['required']?true:false),
+				'visible'	=>	(($reinit)?array_key_exists($key, $this->all_visible):$this->defaults[$key]['visible']?true:false),
+				'position'	=>	(($reinit)?$this->all_positions[$key]:$this->defaults[$key]['position']),
+				'category'	=>	(($reinit)?$this->all_categories[$key]:$this->defaults[$key]['category']),
+			);
 		}
+
+		$mdb->getDb()->loadModule('Extended', null, false);
+		$mdb->getDb()->extended->executeMultiple($stmt, $params);
 
 		if (MDB2::isError($stmt)) {
-			$log->log('An error occured trying to initialize required fields for table `' . $this->table . '`.' . $stmt->getMessage(), PEAR_LOG_ERR);
+			$log->log('[' . $class . '] An error occured trying to initialize fields configuration for table `' . $this->table . '`.' . $stmt->getMessage(), PEAR_LOG_ERR);
 		}else{
-			$log->log('Initialisation seems successfull, we reload the object', PEAR_LOG_DEBUG);
-			$log->log(str_replace('%s', $this->table,  'Fields configuration for table %s initialized successfully.'), PEAR_LOG_INFO);
+			$log->log('[' . $class . '] Initialisation seems successfull, we reload the object', PEAR_LOG_DEBUG);
+			$log->log(str_replace('%s', $this->table,  '[' . $class . '] Fields configuration for table %s initialized successfully.'), PEAR_LOG_INFO);
+			$stmt->free();
 			$this->checkUpdate(false);
 		}
 	}
@@ -203,46 +202,59 @@ class FieldsConfig{
 	* @return array of all required fields. Field names = keys
 	*/
 	public function getRequired(){ return $this->all_required; }
-	public function getLabels(){ return $this->all_labels; }
-	public function getCategories(){ return $this->all_categories; }
-	public function getPositions(){ return $this->all_positions; }
-	public function getPosition($field){ return $this->all_positions[$field]; }
-	public function getVisibles(){ return $this->all_visibles; }
+	/*public function getLabels(){ return $this->all_labels; }*/
+	/*public function getCategories(){ return $this->all_categories; }*/
+	/*public function getPositions(){ return $this->all_positions; }*/
+	/*public function getPosition($field){ return $this->all_positions[$field]; }*/
+	public function getVisibilities(){ return $this->all_visibles; }
+	public function getVisibility($field){ return $this->all_visibles[$field]; }
+	public function getCategorizedFields(){ return $this->categorized_fields; }
 	public function getFields(){ return $this->fields; }
 
 	/**
 	* SETTERS
-	* @param string: Field name to set to required state
-	* @return boolean: true = field set
+	* @param array fields categorized fields array
 	*/
-	public function setRequired($value){
+	public function setFields($fields){
+		$this->categorized_fields = $fields;
+		$this->store();
+	}
+
+	private function store(){
 		global $mdb, $log;
 
-		//set required fields
-		/** TODO: reflect new table structure here*/
-		$requete = 'UPDATE ' . PREFIX_DB . self::TABLE . ' SET required=' . $mdb->quote(true) . ' WHERE field_id=\'';
-		$requete .= implode('\' OR field_id=\'', $value);
-		$requete .= '\'';
-		$requete .= ' AND table_name=\'' . $this->table . '\'';
+		$stmt = $mdb->prepare(
+			'UPDATE ' . PREFIX_DB . self::TABLE . ' SET required=:required, visible=:visible, position=:position, ' . FieldsCategories::PK . '=:category WHERE table_name=\'' .$this->table .'\' AND field_id=:field_id',
+			$this->types,
+			MDB2_PREPARE_MANIP
+		);
 
-		/** TODO: what to do on error ? */
-		$result = $mdb->query( $requete );
-		if( MDB2::isError($result) )
-			return -1;
+		$params = array();
+		foreach($this->categorized_fields as $cat){
+			foreach($cat as $pos=>$field){
+				$params[] = array(
+					'field_id'	=>	$field['field_id'],
+					'required'	=>	$field['required'],
+					'visible'	=>	$field['visible'],
+					'position'	=>	$pos,
+					'category'	=>	$field['category']
+				);
+			}
+		}
 
-		//set not required fields (ie. all others...)
-		$not_required = array_diff($this->fields, $value);
-		/** TODO: reflect new table structure here*/
-		$requete2 = 'UPDATE ' . PREFIX_DB . self::TABLE . ' SET required=' . $mdb->quote(false) . ' WHERE field_id=\'';
-		$requete2 .= implode('\' OR field_id=\'', $not_required);
-		$requete2 .= '\'';
-		$requete .= ' AND table_name=\'' . $this->table . '\'';
+		$mdb->getDb()->loadModule('Extended', null, false);
+		$mdb->getDb()->extended->executeMultiple($stmt, $params);
 
-		$result = $mdb->query( $requete2 );
-		if( MDB2::isError($result) )
-			return -1;
-
-		$this->checkUpdate();
+		$class = get_class($this);
+		if (MDB2::isError($stmt)) {
+			$log->log('[' . $class . '] An error occured while storing fields configuration for table `' . $this->table . '`.' . $stmt->getMessage(), PEAR_LOG_ERR);
+			return false;
+		}else{
+			$log->log('[' . $class . '] Fields configuration stored successfully! ', PEAR_LOG_DEBUG);
+			$log->log(str_replace('%s', $this->table,  '[' . $class . '] Fields configuration for table %s stored successfully.'), PEAR_LOG_INFO);
+			$stmt->free();
+			return true;
+		}
 	}
 }
 ?>

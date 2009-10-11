@@ -41,6 +41,7 @@ class FieldsCategories{
 	private $id;
 	private $category;
 	const TABLE = 'fields_categories';
+	const PK = 'id_field_category';
 
 	const ADH_CATEGORY_IDENTITY = 1;
 	const ADH_CATEGORY_GALETTE = 2;

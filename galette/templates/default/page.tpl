@@ -7,10 +7,10 @@
 		<link rel="stylesheet" type="text/css" href="{$template_subdir}farbtastic.css"/>
 {/if}
 {* JQuery UI related *}
-{if $table_sorter || $require_calendar || $require_dialog || $require_tabs}
+{if $require_sorter || $require_calendar || $require_dialog || $require_tabs}
 		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.core.min.js"></script>
 {/if}
-{if $table_sorter}
+{if $require_sorter}
 		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.sortable.min.js"></script>
 
 {/if}
@@ -27,7 +27,7 @@
 {if $require_dialog}
 		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.dialog.min.js"></script>
 {/if}
-{if $table_sorter || $require_calendar || $require_tabs}
+{if $require_sorter || $require_calendar || $require_tabs}
 		<link rel="stylesheet" type="text/css" href="{$template_subdir}jquery-ui/jquery-ui-{$jquery_ui_version}.custom.css" />
 {/if}
 {* /JQuery UI related *}

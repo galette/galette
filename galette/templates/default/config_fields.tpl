@@ -1,7 +1,7 @@
 	<h1 id="titre">{_T string="Fields configuration"}</h1>
 	<div id="errorbox">
 		<h1>{_T string="- WARNING -"}</h1>
-		<p>{_T string="This page is under construction.<br/><strong>It does not store any data for now</strong><br/>It just show the future interface 	possibilities :-)"}</p>
+		<p>{_T string="This page is under construction.<br/>Data are all stored, but <strong>not used anywhere in Galette for now</strong> :-)"}</p>
 	</div>
 	<p id="collapse" class="ui-state-default ui-corner-all">
 		<span class="ui-icon ui-icon-circle-arrow-s"/>
@@ -18,6 +18,7 @@
 {foreach item=category from=$categories name=categories_list}
 		<fieldset class="cssform large" id="cat_{$smarty.foreach.categories_list.iteration}">
 	{assign var='catname' value=$category->category}
+			<input type="hidden" name="categories[]" id="category{$smarty.foreach.categories_list.iteration}" value="{$category->id_field_category}"/>
 			<legend>{_T string="$catname"}</legend>
 			<ul id="sortable_{$smarty.foreach.categories_list.iteration}" class="fields_list connectedSortable">
 				<li class="listing">
@@ -27,22 +28,28 @@
 				</li>
 
 	{assign var='fs' value=$category->id_field_category}
-	{foreach key=col item=value from=$fields[$fs] name=fields_list}
+	{foreach key=col item=field from=$categorized_fields[$fs] name=fields_list}
+		{assign var='fid' value=$field.field_id}
 				<li class="tbl_line_{if $smarty.foreach.fields_list.iteration % 2 eq 0}even{else}odd{/if}">
-					<span class="label">{if isset($labels[$value])}{$labels[$value]}{else}{$value}{/if}</span>
+					<span class="label">
+						<input type="hidden" name="fields[]" value="{$fid}"/>
+						<input type="hidden" name="{$fid}_category" value="{$category->id_field_category}"/>
+						<input type="hidden" name="{$fid}_label" value="{$field.label}"/>
+						{$field.label}
+					</span>
 					<span class="yesno">
-						<label for="{$value}_required_yes">{_T string="Yes"}</label>
-						<input type="radio" name="{$value}_required" id="{$value}_required_yes" value="1"{if isset($requireds[$value])} checked="checked"{/if}/>
-						<label for="{$value}_required_no">{_T string="No"}</label>
-						<input type="radio" name="{$value}_required" id="{$value}_required_no" value="0"{if !isset($requireds[$value])} checked="checked"{/if}/>
+						<label for="{$fid}_required_yes">{_T string="Yes"}</label>
+						<input type="radio" name="{$fid}_required" id="{$fid}_required_yes" value="1"{if $field.required} checked="checked"{/if}/>
+						<label for="{$fid}_required_no">{_T string="No"}</label>
+						<input type="radio" name="{$fid}_required" id="{$fid}_required_no" value="0"{if !$field.required} checked="checked"{/if}/>
 					</span>
 					<span class="yesnoadmin">
-						<label for="{$value}_visible_yes">{_T string="Yes"}</label>
-						<input type="radio" name="{$value}_visible" id="{$value}_visible_yes" value="{php}echo FieldsConfig::VISIBLE;{/php}"{if $visibles[$value] == constant('FieldsConfig::VISIBLE')} checked="checked"{/if}/>
-						<label for="{$value}_visible_no">{_T string="No"}</label>
-						<input type="radio" name="{$value}_visible" id="{$value}_visible_no" value="{php}echo FieldsConfig::HIDDEN{/php}"{if $visibles[$value] == constant('FieldsConfig::HIDDEN')} checked="checked"{/if}/>
-						<label for="{$value}_visible_admin">{_T string="Admin only"}</label>
-						<input type="radio" name="{$value}_visible" id="{$value}_visible_admin" value="{php}echo FieldsConfig::ADMIN{/php}"{if $visibles[$value] == constant('FieldsConfig::ADMIN')} checked="checked"{/if}/>
+						<label for="{$fid}_visible_yes">{_T string="Yes"}</label>
+						<input type="radio" name="{$fid}_visible" id="{$fid}_visible_yes" value="{php}echo FieldsConfig::VISIBLE;{/php}"{if $field.visible == constant('FieldsConfig::VISIBLE')} checked="checked"{/if}/>
+						<label for="{$fid}_visible_no">{_T string="No"}</label>
+						<input type="radio" name="{$fid}_visible" id="{$fid}_visible_no" value="{php}echo FieldsConfig::HIDDEN{/php}"{if $field.visible == constant('FieldsConfig::HIDDEN')} checked="checked"{/if}/>
+						<label for="{$fid}_visible_admin">{_T string="Admin only"}</label>
+						<input type="radio" name="{$fid}_visible" id="{$fid}_visible_admin" value="{php}echo FieldsConfig::ADMIN{/php}"{if $field.visible == constant('FieldsConfig::ADMIN')} checked="checked"{/if}/>
 					</span>
 				</li>
 	{/foreach}
@@ -63,7 +70,13 @@
 		var _initSortable = function(){ldelim}
 			$('.fields_list').sortable({ldelim}
 				items: 'li:not(.listing)',
-				connectWith: '.connectedSortable'
+				connectWith: '.connectedSortable',
+				update: function(event, ui) {ldelim}
+					{* When sort is updated, we must check for the newer category item belongs to *}
+					var _item = $(ui.item[0]);
+					var _category = _item.parent().prevAll('input[name^≃categories]').attr('value');
+					_item.find('input[name$=category]').attr('value', _category);
+				{rdelim}
 			{rdelim}).disableSelection();
 
 			$('#members_tab').sortable({ldelim}
@@ -121,7 +134,7 @@
 				var _legend = _fs.children('legend');
 				var _a = _legend.children('a');
 
-				_legend.html('<input type="text" name="toto" id="toto" value="New category #' + _cat_iter + '"/>');
+				_legend.html('<input type="text" name="categories[]" id="category' + _cat_iter + '" value="New category #' + _cat_iter + '"/>');
 				_legend.prepend(_a);
 				_a.spinDown();
 
