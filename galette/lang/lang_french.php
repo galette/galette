@@ -1,12 +1,12 @@
 <?php
-// This file was automatically generated on Sun Oct  4 13:26:39 2009 (GMT)
+// This file was automatically generated on Mon Oct 12 16:52:05 2009 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
 // ../includes/dynamic_fields.inc.php:74 
 $lang['all'] = 'tous';
 
-// ../templates/default/page.tpl:90 
+// ../templates/default/page.tpl:91 
 $lang['My transactions'] = 'Mes transactions';
 
 // ../templates/default/preferences.tpl:47 ../templates/default/preferences.tpl:255 
@@ -39,10 +39,10 @@ $lang['among:'] = 'parmi :';
 // ../templates/default/gestion_transactions.tpl:97 ../templates/default/gestion_transactions.tpl:99 
 $lang['no transaction'] = 'aucune transaction';
 
-// ../templates/default/preferences.tpl:61 ../templates/default/ajouter_adherent.tpl:157 ../templates/default/voir_adherent.tpl:113 ../templates/default/self_adherent.tpl:130 ../classes/adherent.class.php:119 
+// ../templates/default/preferences.tpl:61 ../templates/default/ajouter_adherent.tpl:157 ../templates/default/voir_adherent.tpl:113 ../templates/default/self_adherent.tpl:130 ../classes/adherent.class.php:120 
 $lang['Zip Code:'] = 'Code Postal&nbsp;:';
 
-// ../templates/default/ajouter_adherent.tpl:83 ../templates/default/voir_adherent.tpl:69 ../classes/adherent.class.php:135 
+// ../templates/default/ajouter_adherent.tpl:83 ../templates/default/voir_adherent.tpl:69 ../classes/adherent.class.php:136 
 $lang['Account:'] = 'Compte&nbsp;:';
 
 // ../install/index.php:346 
@@ -54,7 +54,7 @@ $lang['Strip Text Color:'] = 'Couleur du texte sur le bandeau&nbsp;:';
 // ../templates/default/editer_champ.tpl:57 
 $lang['Height:'] = 'Hauteur&nbsp;:';
 
-// ../classes/politeness.class.php:57 
+// ../classes/politeness.class.php:66 
 $lang['Mrs.'] = 'Mme.';
 
 // ../includes/dynamic_fields.inc.php:41 
@@ -66,8 +66,8 @@ $lang[' (continuation)'] = ' (suite)';
 // ../templates/default/gestion_contributions.tpl:76 ../templates/default/gestion_transactions.tpl:55 
 $lang['Amount'] = 'Montant';
 
-// ../preferences.php:245 ../preferences.php:288 
-$lang['An SQL error has occured.'] = 'Une erreur SQL est survenue.';
+// ../editer_intitules.php:82 
+$lang['- Cannot delete this label: it\'s still used'] = '- Ne peut supprimer cet intitulé&nbsp;: il est toujours utilisé';
 
 // ../templates/default/configurer_fiches.tpl:87 
 $lang['Send up \'%s\' field'] = 'Faire monter le champ « %s »';
@@ -75,10 +75,13 @@ $lang['Send up \'%s\' field'] = 'Faire monter le champ « %s »';
 // ../etiquettes_adherents.php:69 ../etiquettes_adherents.php:146 ../templates/default/preferences.tpl:29 
 $lang['Labels'] = 'Étiquettes';
 
+// ../templates/default/page.tpl:86 
+$lang['View application\'s logs'] = 'Voir les logs de l\'application';
+
 // ../templates/default/gestion_contributions.tpl:166 
 $lang['[ Add a contribution ]'] = '[ Ajouter une contribution ]';
 
-// ../templates/default/history.tpl:85 ../templates/default/gestion_transactions.tpl:40 
+// ../templates/default/history.tpl:85 ../templates/default/gestion_transactions.tpl:40 ../templates/default/export.tpl:18 
 $lang['Description'] = 'Description';
 
 // ../templates/default/preferences.tpl:277 
@@ -93,14 +96,17 @@ $lang['Ascendent'] = 'Croissant';
 // ../self_adherent.php:141 ../change_passwd.php:72 ../preferences.php:153 ../ajouter_adherent.php:185 
 $lang['- The password must be of at least 4 characters!'] = '- Le mot de passe doit être composé d\'au moins 4 caractères&nbsp;!';
 
-// ../templates/default/ajouter_adherent.tpl:60 ../templates/default/voir_adherent.tpl:48 ../templates/default/self_adherent.tpl:102 ../classes/adherent.class.php:131 
+// ../templates/default/ajouter_adherent.tpl:60 ../templates/default/voir_adherent.tpl:48 ../templates/default/self_adherent.tpl:102 ../classes/adherent.class.php:132 
 $lang['Profession:'] = 'Profession&nbsp;:';
 
-// ../templates/default/gestion_adherents.tpl:158 ../templates/default/page.tpl:191 ../templates/default/gestion_contributions.tpl:127 ../templates/default/gestion_transactions.tpl:90 
+// ../templates/default/gestion_adherents.tpl:158 ../templates/default/page.tpl:194 ../templates/default/gestion_contributions.tpl:127 ../templates/default/gestion_transactions.tpl:90 
 $lang['[mod]'] = '[mod]';
 
 // ../change_passwd.php:79 ../change_passwd.php:84 
 $lang['There was a database error'] = 'Une erreur de base de données à été rencontrée';
+
+// ../templates/default/page.tpl:89 
+$lang['View my member card'] = 'Voir ma fiche membre';
 
 // ../templates/default/ajouter_contribution.tpl:20 ../templates/default/ajouter_transaction.tpl:24 
 $lang['-- select a name --'] = '-- selectionner un nom --';
@@ -117,7 +123,7 @@ $lang['delete failed'] = 'La suppression a échoué';
 // ../includes/i18n.inc.php:221 
 $lang['donation in kind'] = 'don en nature';
 
-// ../classes/adherent.class.php:141 
+// ../classes/adherent.class.php:142 
 $lang['Birthplace:'] = 'Lieu de naissance&nbsp;:';
 
 // ../ajouter_contribution.php:149 
@@ -144,17 +150,20 @@ $lang['Default theme:'] = 'Thème par défaut&nbsp;:';
 // ../change_passwd.php:63 ../install/index.php:153 ../install/index.php:200 
 $lang['No password'] = 'Mot de passe vide';
 
-// ../templates/default/page.tpl:84 
+// ../templates/default/page.tpl:87 
 $lang['Exports'] = 'Exports';
 
-// ../includes/i18n.inc.php:214 
-$lang['french'] = 'français';
+// ../includes/i18n.inc.php:197 
+$lang['Graphics:'] = 'Graphisme&nbsp;:';
 
 // ../templates/default/ajouter_adherent.tpl:90 ../templates/default/voir_adherent.tpl:60 ../classes/adherent.class.php:111 
 $lang['Status:'] = 'Statut&nbsp;:';
 
 // ../templates/default/index.tpl:35 ../templates/default/self_adherent.tpl:40 
 $lang['Lost your password?'] = 'Mot de passe perdu&nbsp;?';
+
+// ../templates/default/page.tpl:92 
+$lang['PDF card'] = 'Fiche PDF';
 
 // ../templates/default/mailing_adherents.tpl:56 
 $lang['Message preview:'] = 'Prévisualisation du message&nbsp;:';
@@ -173,6 +182,9 @@ $lang['Management of transactions'] = 'Gestion des transactions';
 
 // ../templates/default/preferences.tpl:167 
 $lang['SMTP server:'] = 'Serveur SMTP&nbsp;:';
+
+// ../templates/default/page.tpl:81 
+$lang['View and filter contributions'] = 'Consulter et filtrer les contributions';
 
 // ../self_adherent.php:172 ../preferences.php:199 ../preferences.php:202 ../ajouter_contribution.php:173 ../ajouter_contribution.php:176 ../ajouter_adherent.php:231 ../ajouter_transaction.php:130 ../ajouter_transaction.php:133 ../editer_intitules.php:111 
 $lang['- Mandatory field empty.'] = '- Champ obligatoire non renseigné.';
@@ -195,7 +207,7 @@ $lang['Installation mode unknown'] = 'Type d\'installation inconnu';
 // ../templates/default/lostpasswd.tpl:41 ../templates/default/change_passwd.tpl:54 ../templates/default/self_adherent.tpl:39 
 $lang['Back to login page'] = 'Retour à la page d\'accueil';
 
-// ../templates/default/preferences.tpl:73 ../templates/default/ajouter_adherent.tpl:181 ../templates/default/voir_adherent.tpl:141 ../templates/default/self_adherent.tpl:154 ../classes/adherent.class.php:125 
+// ../templates/default/preferences.tpl:73 ../templates/default/ajouter_adherent.tpl:181 ../templates/default/voir_adherent.tpl:141 ../templates/default/self_adherent.tpl:154 ../classes/adherent.class.php:126 
 $lang['Website:'] = 'Site Web&nbsp;:';
 
 // ../ajouter_contribution.php:289 
@@ -215,6 +227,9 @@ $lang['Member'] = 'Adhérent';
 
 // ../templates/default/ajouter_adherent.tpl:25 ../templates/default/voir_adherent.tpl:33 ../templates/default/self_adherent.tpl:70 
 $lang['Identity:'] = 'Identité&nbsp;:';
+
+// ../templates/default/export.tpl:43 
+$lang['Table name'] = 'Nom de la table';
 
 // ../templates/default/gestion_adherents.tpl:84 
 $lang['Status'] = 'Statut';
@@ -243,9 +258,6 @@ $lang['until'] = 'au';
 // ../templates/default/ajouter_contribution.tpl:43 
 $lang['Transaction number:'] = 'Numéro de transaction&nbsp;:';
 
-// ../templates/default/page.tpl:101 
-$lang['Edit labels'] = 'Édition des intitulés';
-
 // ../templates/default/preferences.tpl:173 
 $lang['Label generation parameters:'] = 'Paramètres de génération d\'étiquettes&nbsp;:';
 
@@ -270,7 +282,7 @@ $lang['Passworg image'] = 'Image mot de passe';
 // ../templates/default/trombinoscope.tpl:8 ../templates/default/liste_membres.tpl:71 
 $lang['No member to show'] = 'Aucun adhérent à afficher';
 
-// ../templates/default/ajouter_adherent.tpl:64 ../templates/default/voir_adherent.tpl:52 ../templates/default/self_adherent.tpl:110 ../templates/default/gestion_textes.tpl:27 ../classes/adherent.class.php:140 
+// ../templates/default/ajouter_adherent.tpl:64 ../templates/default/voir_adherent.tpl:52 ../templates/default/self_adherent.tpl:110 ../templates/default/gestion_textes.tpl:27 ../classes/adherent.class.php:141 
 $lang['Language:'] = 'Langue&nbsp;:';
 
 // ../install/index.php:403 
@@ -279,13 +291,13 @@ $lang['Under Windows, check these files are not in Read-Only mode in their prope
 // ../templates/default/liste_membres.tpl:32 
 $lang['Informations'] = 'Informations';
 
-// ../templates/default/page.tpl:161 
+// ../templates/default/page.tpl:164 
 $lang['Active account'] = 'Compte actif';
 
 // ../preferences.php:162 
 $lang['- Invalid format of beginning of membership.'] = '- Mauvais format de date de début d\'exercice invalide';
 
-// ../templates/default/page.tpl:139 
+// ../templates/default/page.tpl:142 
 $lang['E-mail'] = 'Courriel';
 
 // ../install/index.php:394 
@@ -297,6 +309,9 @@ $lang['Association\'s short description:'] = 'Description de l\'association&nbsp
 // ../install/index.php:493 
 $lang['Check the parameters and the existence of the database'] = 'Vérification des paramètres et de l\'existence de la base';
 
+// ../templates/default/page.tpl:91 
+$lang['View and filter all my transactions'] = 'Consulter et filtrer toutes mes transactions';
+
 // ../classes/pdf.class.php:131 
 $lang['Unable to convert GIF file '] = 'Impossible de convertir le fichier GIF';
 
@@ -306,7 +321,7 @@ $lang['Please repeat in the field the password shown in the image.'] = 'Recopiez
 // ../preferences.php:118 ../preferences.php:137 
 $lang['- The numbers and measures have to be integers!'] = '- Les nombres et mesures doivent être des entiers&nbsp;!';
 
-// ../self_adherent.php:305 ../ajouter_adherent.php:388 ../templates/default/page.tpl:126 
+// ../templates/default/page.tpl:129 ../classes/politeness.class.php:53 
 $lang['Mister'] = 'Monsieur';
 
 // ../install/index.php:415 
@@ -315,8 +330,11 @@ $lang['Files permissions are OK!'] = 'Les permissions des fichiers sont correcte
 // ../ajouter_transaction.php:178 
 $lang['transaction updated'] = 'transaction mise à jour';
 
-// ../templates/default/page.tpl:77 
+// ../templates/default/page.tpl:80 
 $lang['List of members'] = 'Liste des adhérents';
+
+// ../templates/default/page.tpl:103 
+$lang['Manage additional fields for various forms'] = 'Gestion de champs additionnels pour différents formulaires';
 
 // ../gestion_contributions.php:308 ../gestion_adherents.php:378 
 $lang['remaining day'] = 'jour restant';
@@ -324,7 +342,7 @@ $lang['remaining day'] = 'jour restant';
 // ../templates/default/editer_champ.tpl:1 
 $lang['Edit field'] = 'Édition de champ';
 
-// ../classes/politeness.class.php:54 
+// ../classes/politeness.class.php:63 
 $lang['Mr.'] = 'M.';
 
 // ../install/index.php:301 
@@ -333,8 +351,17 @@ $lang['Please select your administration language'] = 'Veuillez sélectionner la
 // ../templates/default/preferences.tpl:148 
 $lang['Activate HTML editor ?'] = 'Activer l\'éditeur HTML ?';
 
+// ../templates/default/page.tpl:106 
+$lang['Manage emails texts and subjects'] = 'Gestion des textes et sujets des courriels';
+
 // ../classes/models.class.php:175 
 $lang['Generated by Galette '] = 'Généré par Galette';
+
+// ../templates/default/page.tpl:105 
+$lang['Manage lists'] = 'Gestion des listes';
+
+// ../templates/default/page.tpl:101 
+$lang['Customize fields'] = 'personnaliser les champs';
 
 // ../templates/default/ajouter_contribution.tpl:83 
 $lang['Comments:'] = 'Commentaire&nbsp;:';
@@ -356,6 +383,9 @@ $lang['Member\'s Cards'] = 'Cartes de Membres';
 
 // ../templates/default/preferences.tpl:133 ../templates/default/preferences.tpl:134 
 $lang['Leave empty to use Sender Email as reply address'] = 'Laisser vide pour utiliser le courriel expéditeur comme adresse de réponse';
+
+// ../templates/default/page.tpl:101 
+$lang['Customize fields order, set which are required, and for who they\'re visibles'] = 'Personnaliser l\'ordre des champs, définir lesquels sont requis, et pour qui ils sont visibles';
 
 // ../install/index.php:397 
 $lang['Files permissions are not OK!'] = 'Les permissions des fichiers ne sont pas correctes&nbsp;!';
@@ -381,7 +411,7 @@ $lang['Freed of dues'] = 'Exempt de cotisation';
 // ../gestion_adherents.php:353 
 $lang[' days ago (since '] = ' jours (depuis ';
 
-// ../templates/default/ajouter_contribution.tpl:94 ../templates/default/export.tpl:49 
+// ../templates/default/ajouter_contribution.tpl:94 ../templates/default/export.tpl:63 
 $lang['Continue'] = 'Continuer';
 
 // ../install/index.php:811 
@@ -390,7 +420,7 @@ $lang['(Errors on DROP and RENAME operations can be ignored)'] = '(Les erreurs s
 // ../templates/default/gestion_adherents.tpl:33 ../templates/default/gestion_contributions.tpl:14 ../templates/default/history.tpl:14 ../templates/default/gestion_transactions.tpl:7 
 $lang['Show:'] = 'Afficher&nbsp;:';
 
-// ../templates/default/ajouter_adherent.tpl:173 ../templates/default/voir_adherent.tpl:129 ../templates/default/self_adherent.tpl:146 ../classes/adherent.class.php:123 
+// ../templates/default/ajouter_adherent.tpl:173 ../templates/default/voir_adherent.tpl:129 ../templates/default/self_adherent.tpl:146 ../classes/adherent.class.php:124 
 $lang['Mobile phone:'] = 'GSM&nbsp;:';
 
 // ../templates/default/preferences.tpl:284 
@@ -408,7 +438,7 @@ $lang['All'] = 'Tout';
 // ../templates/default/preferences.tpl:24 
 $lang['Preferences has been saved.'] = 'Les préférences ont été sauvegardées.';
 
-// ../install/index.php:465 ../install/index.php:886 ../templates/default/index.tpl:27 ../templates/default/preferences.tpl:320 ../templates/default/ajouter_adherent.tpl:110 ../templates/default/change_passwd.tpl:38 ../templates/default/self_adherent.tpl:188 ../classes/adherent.class.php:133 
+// ../install/index.php:465 ../install/index.php:886 ../templates/default/index.tpl:27 ../templates/default/preferences.tpl:320 ../templates/default/ajouter_adherent.tpl:110 ../templates/default/change_passwd.tpl:38 ../templates/default/self_adherent.tpl:188 ../classes/adherent.class.php:134 
 $lang['Password:'] = 'Mot de passe&nbsp;:';
 
 // ../install/index.php:450 
@@ -423,7 +453,7 @@ $lang['Galette installation'] = 'Installation de Galette';
 // ../templates/default/preferences.tpl:180 ../templates/default/preferences.tpl:297 
 $lang['Horizontal margins:'] = 'Marges horizontales&nbsp;:';
 
-// ../templates/default/ajouter_adherent.tpl:100 ../templates/default/voir_adherent.tpl:77 ../classes/adherent.class.php:137 
+// ../templates/default/ajouter_adherent.tpl:100 ../templates/default/voir_adherent.tpl:77 ../classes/adherent.class.php:138 
 $lang['Freed of dues:'] = 'Exempt de cotisation&nbsp;:';
 
 // ../templates/default/preferences.tpl:225 
@@ -447,10 +477,13 @@ $lang['- You can\'t send a confirmation by email if the member hasn\'t got an ad
 // ../templates/default/liste_membres.tpl:1 
 $lang['Members list'] = 'Liste des membres';
 
+// ../templates/default/page.tpl:84 
+$lang['Add new contribution in database'] = 'Ajouter une nouvelle contribution à la base';
+
 // ../self_adherent.php:207 ../lostpasswd.php:111 ../ajouter_adherent.php:313 
 $lang['Password sent. Login:'] = 'Mot de passe envoyé. Identifiant&nbsp;:';
 
-// ../templates/default/page.tpl:149 ../templates/default/page.tpl:192 ../templates/default/voir_adherent.tpl:20 
+// ../templates/default/page.tpl:152 ../templates/default/page.tpl:195 ../templates/default/voir_adherent.tpl:20 
 $lang['Modification'] = 'Modification';
 
 // ../templates/default/gestion_contributions.tpl:128 
@@ -458,6 +491,9 @@ $lang['Do you really want to delete this contribution of the database ?'] = 'Vou
 
 // ../install/index.php:457 
 $lang['Host:'] = 'Hôte&nbsp;:';
+
+// ../templates/default/page.tpl:85 
+$lang['Add new transaction in database'] = 'Ajouter une nouvelle transaction à la base';
 
 // ../templates/default/gestion_adherents.tpl:31 ../templates/default/mailing_adherents.tpl:32 
 $lang['member'] = 'adhérent';
@@ -489,8 +525,8 @@ $lang['Admin account (independant of members):'] = 'Compte administrateur (indé
 // ../templates/default/ajouter_transaction.tpl:1 
 $lang['New transaction'] = 'Nouvelle transaction';
 
-// ../editer_intitules.php:82 
-$lang['- Cannot delete this label: it\'s still used'] = '- Ne peut supprimer cet intitulé&nbsp;: il est toujours utilisé';
+// ../templates/default/page.tpl:90 
+$lang['View and filter all my contributions'] = 'Consulter et filtrer toutes mes contributions';
 
 // ../includes/i18n.inc.php:208 
 $lang['Non-member'] = 'Non membre';
@@ -546,7 +582,7 @@ $lang['Retry'] = 'Réessayer';
 // ../templates/default/gestion_contributions.tpl:50 
 $lang['End'] = 'Fin';
 
-// ../templates/default/export.tpl:28 
+// ../templates/default/export.tpl:37 
 $lang['No parameted exports are available.'] = 'Aucun exporr paramétré disponible.';
 
 // ../templates/default/gestion_adherents.tpl:159 
@@ -555,7 +591,7 @@ $lang['[$]'] = '[$]';
 // ../self_adherent.php:212 
 $lang['Email sent is disabled in the preferences. Ask galette admin.'] = 'L\'envoi de courriel est désactivé. Contactez votre administrateur Galette.';
 
-// ../templates/default/export.tpl:14 
+// ../templates/default/export.tpl:13 
 $lang['Which parameted export(s) do you want to run?'] = 'Quels exports paramétrés souhaitez-vous lancer&nbsp;?';
 
 // ../templates/default/self_adherent.tpl:89 
@@ -567,7 +603,7 @@ $lang['Mail sent to :'] = 'Courriel envoyé à&nbsp;:';
 // ../includes/i18n.inc.php:205 
 $lang['Founder member'] = 'Membre fondateur';
 
-// ../templates/default/page.tpl:100 
+// ../templates/default/page.tpl:103 
 $lang['Configure member forms'] = 'Configurer les fiches';
 
 // ../templates/default/preferences.tpl:331 ../templates/default/ajouter_adherent.tpl:209 ../templates/default/ajouter_contribution.tpl:92 ../templates/default/traduire_libelles.tpl:33 ../templates/default/ajouter_transaction.tpl:41 ../templates/default/editer_champ.tpl:91 ../templates/default/self_adherent.tpl:202 ../templates/default/champ_requis.tpl:16 ../templates/default/gestion_textes.tpl:56 ../templates/default/editer_intitule.tpl:35 
@@ -576,7 +612,7 @@ $lang['Save'] = 'Enregistrer';
 // ../templates/default/configurer_fiches.tpl:25 ../templates/default/gestion_contributions.tpl:65 
 $lang['Type'] = 'Type';
 
-// ../templates/default/ajouter_adherent.tpl:197 ../templates/default/voir_adherent.tpl:165 ../templates/default/self_adherent.tpl:170 ../classes/adherent.class.php:142 
+// ../templates/default/ajouter_adherent.tpl:197 ../templates/default/voir_adherent.tpl:165 ../templates/default/self_adherent.tpl:170 ../classes/adherent.class.php:143 
 $lang['Id GNUpg (GPG):'] = 'Id GNUpg (GPG)&nbsp;:';
 
 // ../templates/default/ajouter_adherent.tpl:29 ../templates/default/voir_adherent.tpl:37 
@@ -612,7 +648,7 @@ $lang['Contribution updated'] = 'Contribution mise à jour';
 // ../self_adherent.php:115 ../preferences.php:106 ../ajouter_adherent.php:152 
 $lang['- Non-valid E-Mail address!'] = '- Adresse courriel non valide&nbsp;!';
 
-// ../install/index.php:882 ../templates/default/index.tpl:23 ../templates/default/preferences.tpl:316 ../templates/default/ajouter_adherent.tpl:105 ../templates/default/voir_adherent.tpl:82 ../templates/default/self_adherent.tpl:183 ../classes/adherent.class.php:132 
+// ../install/index.php:882 ../templates/default/index.tpl:23 ../templates/default/preferences.tpl:316 ../templates/default/ajouter_adherent.tpl:105 ../templates/default/voir_adherent.tpl:82 ../templates/default/self_adherent.tpl:183 ../classes/adherent.class.php:133 
 $lang['Username:'] = 'Identifiant&nbsp;:';
 
 // ../includes/i18n.inc.php:219 
@@ -630,13 +666,13 @@ $lang['Do you really want to delete this category?'] = 'Voulez vous vraiment eff
 // ../templates/default/gestion_adherents.tpl:31 ../templates/default/mailing_adherents.tpl:32 
 $lang['members'] = 'adhérents';
 
-// ../self_adherent.php:304 ../ajouter_adherent.php:387 ../templates/default/page.tpl:130 
+// ../templates/default/page.tpl:133 ../classes/politeness.class.php:54 
 $lang['Mrs'] = 'Madame';
 
 // ../install/index.php:1065 
 $lang['Galette has been successfully updated!'] = 'Galette a été mis à jour avec succès&nbsp;!';
 
-// ../templates/default/gestion_adherents.tpl:193 ../templates/default/page.tpl:156 
+// ../templates/default/gestion_adherents.tpl:193 ../templates/default/page.tpl:159 
 $lang['Delete'] = 'Supprimer';
 
 // ../install/index.php:348 
@@ -675,9 +711,6 @@ $lang['Strip Background colors:'] = 'Couleur du bandeau&nbsp;:';
 // ../templates/default/champ_requis.tpl:4 
 $lang['Select mandatory fields for new adherents:'] = 'Sélectionnez les champs requis pour les nouveaux adhérents :';
 
-// ../templates/default/page.tpl:103 
-$lang['Email contents'] = 'Contenu du courriel';
-
 // ../install/index.php:607 
 $lang['DELETE operation allowed'] = 'Opération DELETE autorisée';
 
@@ -687,13 +720,13 @@ $lang['Edit contribution type'] = 'Édition d\'un type de contribution';
 // ../classes/models.class.php:174 
 $lang['Field list for Pancake document model editor'] = '';
 
-// ../templates/default/page.tpl:157 ../templates/default/page.tpl:196 
+// ../templates/default/page.tpl:160 ../templates/default/page.tpl:199 
 $lang['Deletion'] = 'Suppression';
 
 // ../includes/i18n.inc.php:216 
 $lang['spanish'] = 'espagnol';
 
-// ../gestion_contributions.php:284 ../gestion_adherents.php:423 ../templates/default/page.tpl:169 
+// ../gestion_contributions.php:284 ../gestion_adherents.php:423 ../templates/default/page.tpl:172 
 $lang['Never contributed'] = 'N\'a jamais cotisé';
 
 // ../install/index.php:242 ../install/index.php:1084 
@@ -719,6 +752,9 @@ $lang['Username or email:'] = 'Identifiant ou adresse e-mail&nbsp;:';
 
 // ../templates/default/gestion_contributions.tpl:39 ../templates/default/history.tpl:37 ../templates/default/gestion_transactions.tpl:30 
 $lang['Date'] = 'Date';
+
+// ../templates/default/page.tpl:83 
+$lang['Add new member in database'] = 'Ajouter un nouveau membre à la base';
 
 // ../templates/default/change_passwd.tpl:46 
 $lang['Change my password'] = 'Modifier mon mot de passe';
@@ -753,7 +789,7 @@ $lang['Default status were successfully stored.'] = 'Les statuts par défaut ont
 // ../gestion_contributions.php:333 ../gestion_adherents.php:427 
 $lang['Inactive accounts'] = 'Comptes désactivés';
 
-// ../templates/default/page.tpl:173 
+// ../templates/default/page.tpl:176 
 $lang['Membership in order'] = 'Adhésion en règle';
 
 // ../ajouter_transaction.php:150 
@@ -767,6 +803,9 @@ $lang['Board Members Color:'] = 'Couleur pour les membres du bureau&nbsp;:';
 
 // ../gestion_contributions.php:306 ../gestion_adherents.php:376 
 $lang['remaining days'] = 'jours restants';
+
+// ../templates/default/page.tpl:80 
+$lang['View, search into and filter member\'s list'] = 'Consulter, rechercher dans et filtrer la liste des membres';
 
 // ../templates/default/gestion_adherents.tpl:72 ../templates/default/liste_membres.tpl:20 
 $lang['Nickname'] = 'Pseudo';
@@ -783,13 +822,13 @@ $lang['Default contributions types cannot be initialized.'] = 'Les types de cont
 // ../templates/default/ajouter_adherent.tpl:123 
 $lang['(the member will receive his username and password by email, if he has an address.)'] = '(l\'adhérent recevra son identifiant et son mot de passe par courriel, s\'il a une adresse.)';
 
-// ../templates/default/ajouter_adherent.tpl:86 ../classes/adherent.class.php:266 
+// ../templates/default/ajouter_adherent.tpl:86 ../classes/adherent.class.php:267 
 $lang['Inactive'] = 'Inactif';
 
 // ../self_adherent.php:139 
 $lang['Password misrepeated: '] = 'Erreur en recopiant le mot de passe&nbsp;: ';
 
-// ../classes/adherent.class.php:138 
+// ../classes/adherent.class.php:139 
 $lang['Be visible in the<br /> members list:'] = 'Apparaître dans la liste des membres&nbsp;:';
 
 // ../install/index.php:346 
@@ -798,7 +837,7 @@ $lang['and'] = 'et';
 // ../templates/default/traduire_libelles.tpl:23 
 $lang['Translation of \'%s\' label'] = 'Traduction du libellé « %s »';
 
-// ../templates/default/page.tpl:165 
+// ../templates/default/page.tpl:168 
 $lang['Inactive account'] = 'Compte désactivé';
 
 // ../templates/default/configurer_fiches.tpl:81 ../templates/default/gestion_intitules.tpl:76 
@@ -819,7 +858,7 @@ $lang['partnership'] = 'partenariat';
 // ../editer_intitules.php:73 ../editer_intitules.php:91 ../editer_intitules.php:151 ../editer_intitules.php:186 ../editer_intitules.php:245 
 $lang['- Label does not exist'] = '- Cet intitulé n\'existe pas';
 
-// ../templates/default/page.tpl:82 
+// ../templates/default/page.tpl:85 
 $lang['Add a transaction'] = 'Ajouter une transaction';
 
 // ../templates/default/preferences.tpl:200 
@@ -846,16 +885,22 @@ $lang['Database can\'t be reached. Please go back to enter the connection parame
 // ../templates/default/voir_adherent.tpl:16 
 $lang['Generate Member Card'] = 'Générer la carte de membre';
 
+// ../templates/default/page.tpl:82 
+$lang['View and filter transactions'] = 'Consulter et filtrer les transactions';
+
 // ../preferences.php:183 
 $lang['- You must indicate the SMTP server you want to use!'] = '- Vous devez indiquer le serveur SMTP à utiliser&nbsp;!';
 
 // ../templates/default/preferences.tpl:205 
 $lang['Number of label columns:'] = 'Nombre de colonnes d\'étiquettes&nbsp;:';
 
+// ../preferences.php:245 ../preferences.php:288 
+$lang['An SQL error has occured.'] = 'Une erreur SQL est survenue.';
+
 // ../ajouter_adherent.php:245 
 $lang['Member card added'] = 'Fiche adhérent ajoutée';
 
-// ../templates/default/page.tpl:79 
+// ../templates/default/page.tpl:82 
 $lang['List of transactions'] = 'Liste des transactions';
 
 // ../templates/default/mailing_adherents.tpl:34 
@@ -864,13 +909,13 @@ $lang['Please compose your mail.'] = 'Rédigez votre courriel.';
 // ../templates/default/preferences.tpl:268 
 $lang['Show title ?'] = 'Afficher le titre&nbsp;?';
 
-// ../gestion_adherents.php:413 ../templates/default/gestion_adherents.tpl:60 ../templates/default/page.tpl:160 ../templates/default/page.tpl:164 ../templates/default/configurer_fiches.tpl:23 ../templates/default/gestion_intitules.tpl:27 ../templates/default/liste_membres.tpl:8 
+// ../gestion_adherents.php:413 ../templates/default/gestion_adherents.tpl:60 ../templates/default/page.tpl:163 ../templates/default/page.tpl:167 ../templates/default/configurer_fiches.tpl:23 ../templates/default/gestion_intitules.tpl:27 ../templates/default/liste_membres.tpl:8 ../templates/default/export.tpl:17 
 $lang['Name'] = 'Nom';
 
 // ../templates/default/gestion_transactions.tpl:5 
 $lang['transactions'] = 'transactions';
 
-// ../templates/default/page.tpl:144 ../templates/default/page.tpl:145 ../templates/default/preferences.tpl:27 
+// ../templates/default/page.tpl:147 ../templates/default/page.tpl:148 ../templates/default/preferences.tpl:27 
 $lang['Admin'] = 'Administrateur';
 
 // ../install/index.php:320 
@@ -882,7 +927,7 @@ $lang['-  Sum of all contributions exceed corresponding transaction amount.'] = 
 // ../install/index.php:147 
 $lang['Database type unknown'] = 'Type de base inconnu';
 
-// ../templates/default/ajouter_adherent.tpl:189 ../templates/default/voir_adherent.tpl:153 ../templates/default/self_adherent.tpl:162 ../classes/adherent.class.php:128 
+// ../templates/default/ajouter_adherent.tpl:189 ../templates/default/voir_adherent.tpl:153 ../templates/default/self_adherent.tpl:162 ../classes/adherent.class.php:129 
 $lang['Jabber:'] = 'Jabber&nbsp;:';
 
 // ../templates/default/gestion_textes.tpl:49 
@@ -897,13 +942,13 @@ $lang['Contact information:'] = 'Informations de contact&nbsp;:';
 // ../templates/default/preferences.tpl:214 
 $lang['Font size:'] = 'Corps du texte&nbsp;:';
 
-// ../templates/default/page.tpl:78 
+// ../templates/default/page.tpl:81 
 $lang['List of contributions'] = 'Liste des contributions';
 
 // ../templates/default/gestion_contributions.tpl:49 
 $lang['Begin.'] = 'Début';
 
-// ../templates/default/ajouter_adherent.tpl:131 ../templates/default/voir_adherent.tpl:91 ../classes/adherent.class.php:129 
+// ../templates/default/ajouter_adherent.tpl:131 ../templates/default/voir_adherent.tpl:91 ../classes/adherent.class.php:130 
 $lang['Other informations (admin):'] = 'Autres informations (admin)&nbsp;:';
 
 // ../lostpasswd.php:121 ../lostpasswd.php:133 ../ajouter_adherent.php:323 ../ajouter_adherent.php:335 
@@ -945,25 +990,31 @@ $lang['Under UNIX/Linux, you can give the permissions using those commands'] = '
 // ../install/index.php:923 
 $lang['Save the parameters'] = 'Sauvegarde des paramètres';
 
+// ../templates/default/page.tpl:104 
+$lang['Translate additionnals fields labels'] = 'Traduction des étiquettes pour les champs additionnels';
+
 // ../templates/default/editer_champ.tpl:77 
 $lang['Number of values or zero if infinite.'] = 'Nombre de valeurs ou zéro pour une infinité.';
+
+// ../templates/default/page.tpl:87 
+$lang['Export some datas in various formats'] = 'Exportes des données dans divers formats';
 
 // ../templates/default/gestion_adherents.tpl:133 
 $lang['[M]'] = '[H]';
 
-// ../templates/default/page.tpl:104 
+// ../templates/default/page.tpl:107 
 $lang['Utilities'] = 'Utilitaires';
 
 // ../ajouter_contribution.php:132 
 $lang['- Select a valid member name!'] = '- Sélectionnez un nom d\'adhérent valide&nbsp;!';
 
-// ../templates/default/page.tpl:80 
+// ../templates/default/page.tpl:83 
 $lang['Add a member'] = 'Ajouter un adhérent';
 
 // ../install/index.php:149 
 $lang['No host'] = 'Aucun hôte';
 
-// ../templates/default/page.tpl:99 
+// ../templates/default/page.tpl:102 
 $lang['Required fields'] = 'Champs obligatoires';
 
 // ../templates/default/history.tpl:11 
@@ -972,16 +1023,16 @@ $lang['line'] = 'ligne';
 // ../install/index.php:584 
 $lang['INSERT operation not allowed'] = 'Opération INSERT non autorisée';
 
-// ../templates/default/export.tpl:6 
+// ../templates/default/export.tpl:5 
 $lang['The following files have been written on disk:'] = 'Les fichiers suivants ont été écrits sur le disque&nbsp:;';
 
-// ../templates/default/page.tpl:131 
+// ../templates/default/page.tpl:134 
 $lang['Woman'] = 'Femme';
 
 // ../install/index.php:507 
 $lang['Unable to connect to the database'] = 'Connexion à la base impossible';
 
-// ../templates/default/page.tpl:148 
+// ../templates/default/page.tpl:151 
 $lang['Modify'] = 'Modifier';
 
 // ../install/index.php:338 
@@ -999,10 +1050,10 @@ $lang['Parameters couldn\'t be saved.'] = 'Les paramètres n\'ont pas pu être s
 // ../install/index.php:300 
 $lang['Welcome to the Galette Install!'] = 'Bienvenue à l\'installation de Galette&nbsp;!';
 
-// ../templates/default/page.tpl:102 ../templates/default/traduire_libelles.tpl:1 
+// ../templates/default/page.tpl:104 ../templates/default/traduire_libelles.tpl:1 
 $lang['Translate labels'] = 'Traduction de libellés';
 
-// ../templates/default/page.tpl:123 ../templates/default/page.tpl:187 
+// ../templates/default/page.tpl:126 ../templates/default/page.tpl:190 
 $lang['Legend'] = 'Légende';
 
 // ../templates/default/preferences.tpl:138 
@@ -1074,25 +1125,28 @@ $lang['Priority'] = 'Priorité';
 // ../templates/default/editer_champ.tpl:74 
 $lang['Repeat:'] = 'Répétition&nbsp;:';
 
-// ../templates/default/page.tpl:88 
+// ../templates/default/page.tpl:89 
 $lang['My information'] = 'Mes informations';
 
-// ../templates/default/ajouter_adherent.tpl:96 ../templates/default/voir_adherent.tpl:73 ../classes/adherent.class.php:136 
+// ../templates/default/ajouter_adherent.tpl:96 ../templates/default/voir_adherent.tpl:73 ../classes/adherent.class.php:137 
 $lang['Galette Admin:'] = 'Administrateur Galette&nbsp;:';
 
 // ../install/index.php:443 
 $lang['If it hadn\'t been made, create a database and a user for Galette.'] = 'Si ce n\'est pas déjà fait, créez une base de données et un utilisateur pour Galette.';
 
-// ../templates/default/ajouter_adherent.tpl:169 ../templates/default/voir_adherent.tpl:125 ../templates/default/self_adherent.tpl:142 ../classes/adherent.class.php:122 
+// ../templates/default/ajouter_adherent.tpl:169 ../templates/default/voir_adherent.tpl:125 ../templates/default/self_adherent.tpl:142 ../classes/adherent.class.php:123 
 $lang['Phone:'] = 'Tél&nbsp;:';
 
-// ../templates/default/page.tpl:205 
+// ../templates/default/page.tpl:106 
+$lang['Emails content'] = 'Contenu des courriels';
+
+// ../templates/default/page.tpl:208 
 $lang['Gift'] = 'Don';
 
-// ../self_adherent.php:306 ../ajouter_adherent.php:389 ../templates/default/page.tpl:134 ../templates/default/page.tpl:135 ../classes/politeness.class.php:63 
+// ../templates/default/page.tpl:137 ../templates/default/page.tpl:138 ../classes/politeness.class.php:56 ../classes/politeness.class.php:72 
 $lang['Society'] = 'Personne morale';
 
-// ../templates/default/page.tpl:98 ../templates/default/preferences.tpl:1 
+// ../templates/default/page.tpl:100 ../templates/default/preferences.tpl:1 
 $lang['Settings'] = 'Préférences';
 
 // ../install/index.php:578 
@@ -1137,8 +1191,8 @@ $lang['Cancel'] = 'Annuler';
 // ../templates/default/preferences.tpl:233 ../templates/default/preferences.tpl:234 ../templates/default/preferences.tpl:239 ../templates/default/preferences.tpl:240 ../templates/default/preferences.tpl:244 ../templates/default/preferences.tpl:245 ../templates/default/preferences.tpl:249 ../templates/default/preferences.tpl:250 
 $lang['Hexadecimal color notation: #RRGGBB'] = 'Notation de couleur hexadécimale : #RRVVBB';
 
-// ../includes/i18n.inc.php:197 
-$lang['Graphics:'] = 'Graphisme&nbsp;:';
+// ../includes/i18n.inc.php:214 
+$lang['french'] = 'français';
 
 // ../templates/default/preferences.tpl:138 ../templates/default/preferences.tpl:139 
 $lang['Recipient of new online registation emails'] = 'Destinataire pour les courriels des nouvelles inscriptions en ligne';
@@ -1158,7 +1212,7 @@ $lang['Label width:'] = 'Largeur étiquette&nbsp;:';
 // ../install/index.php:254 ../install/index.php:1087 
 $lang['Admin parameters'] = 'paramètres administrateur';
 
-// ../templates/default/page.tpl:83 ../templates/default/history.tpl:1 
+// ../templates/default/page.tpl:86 ../templates/default/history.tpl:1 
 $lang['Logs'] = 'Historique';
 
 // ../templates/default/self_adherent.tpl:37 
@@ -1173,7 +1227,7 @@ $lang['ALTER Operation not allowed'] = 'Opération ALTER non autorisée';
 // ../classes/pdf.class.php:128 
 $lang['Error creating temporary png file from '] = 'Erreur lors de la création du fichier png depuis ';
 
-// ../gestion_textes.php:73 
+// ../gestion_textes.php:75 
 $lang['Email: \'%s\' has been successfully modified.'] = 'Le courriel « %s » a été modifié avec succès.';
 
 // ../editer_intitules.php:221 
@@ -1233,7 +1287,7 @@ $lang['Galette-related data:'] = 'Informations relatives à Galette&nbsp;:';
 // ../mailing_adherents.php:118 ../lostpasswd.php:125 ../ajouter_adherent.php:327 
 $lang['The mail server filled in the preferences cannot be reached. Ask Galette admin'] = 'Le serveur de mail indiqué dans les préférences n\'est pas joignable. Contactez votre administrateur Galette';
 
-// ../templates/default/ajouter_adherent.tpl:85 ../classes/adherent.class.php:266 
+// ../templates/default/ajouter_adherent.tpl:85 ../classes/adherent.class.php:267 
 $lang['Active'] = 'Actif';
 
 // ../templates/default/gestion_adherents.tpl:96 
@@ -1248,7 +1302,7 @@ $lang['Picture:'] = 'Image&nbsp;:';
 // ../templates/default/display_dynamic_fields.tpl:4 ../templates/default/display_dynamic_fields.tpl:8 
 $lang['Additionnal fields:'] = 'Champs supplémentaires&nbsp;:';
 
-// ../templates/default/page.tpl:113 
+// ../templates/default/page.tpl:116 
 $lang['Log off'] = 'Déconnexion';
 
 // ../templates/default/preferences.tpl:263 
@@ -1269,7 +1323,7 @@ $lang['your fee.'] = 'votre cotisation.';
 // ../templates/default/preferences.tpl:38 
 $lang['Name (corporate name) of the association:'] = 'Nom (raison sociale) de l\'association&nbsp;:';
 
-// ../templates/default/page.tpl:74 
+// ../templates/default/page.tpl:77 
 $lang['Navigation'] = 'Navigation';
 
 // ../templates/default/preferences.tpl:129 
@@ -1287,6 +1341,9 @@ $lang['(dd/mm/yyyy format)'] = '(format jj/mm/aaaa)';
 // ../templates/default/preferences.tpl:143 ../templates/default/preferences.tpl:144 
 $lang['Sends an email each time a new member registers online'] = 'Envoie un mail chaque fois qu\'un nouveau membre s\'inscrit en ligne';
 
+// ../templates/default/page.tpl:105 
+$lang['Manage various lists that are used in the application'] = 'Gestion de différentes listes qui sont utilisées dans l\'application';
+
 // ../install/index.php:476 
 $lang['Table prefix:'] = 'Préfixe de table&nbsp;:';
 
@@ -1299,7 +1356,7 @@ $lang['Sender name:'] = 'Nom expéditeur&nbsp;:';
 // ../editer_champ.php:83 
 $lang['- Field name already used.'] = '- Un champ de ce nom existe déjà.';
 
-// ../self_adherent.php:303 ../ajouter_adherent.php:386 ../templates/default/page.tpl:130 
+// ../templates/default/page.tpl:133 ../classes/politeness.class.php:55 
 $lang['Miss'] = 'Mademoiselle';
 
 // ../gestion_contributions.php:332 ../gestion_adherents.php:426 
@@ -1308,7 +1365,7 @@ $lang['Active accounts'] = 'Comptes actifs';
 // ../templates/default/preferences.tpl:159 
 $lang['PHP mail() function'] = 'Fonction PHP mail()';
 
-// ../templates/default/export.tpl:30 
+// ../templates/default/export.tpl:39 
 $lang['Additionnaly, which table(s) do you want to export?'] = 'Aditionnellement, quelle(s) table(s) souhaitez vous exporter ?';
 
 // ../mailing_adherents.php:81 
@@ -1319,9 +1376,6 @@ $lang['Default texts cannot be initialized.'] = 'Les textes par défaut n\'ont p
 
 // ../lostpasswd.php:43 
 $lang['empty login'] = 'login vide';
-
-// ../templates/default/history.tpl:125 
-$lang['logs are empty'] = 'historique vide';
 
 // ../gestion_contributions.php:300 
 $lang['Late of'] = 'En retard de';
@@ -1392,10 +1446,10 @@ $lang['IP'] = 'IP';
 // ../gestion_contributions.php:328 ../gestion_adherents.php:421 
 $lang['Close expiries'] = 'Les échéances proches';
 
-// ../classes/adherent.class.php:118 
+// ../classes/adherent.class.php:119 
 $lang['Address (continuation)'] = 'Adresse (suite)';
 
-// ../editer_intitules.php:273 ../templates/default/configurer_fiches.tpl:50 ../templates/default/configurer_fiches.tpl:70 ../templates/default/editer_champ.tpl:42 ../templates/default/champ_requis.tpl:8 ../templates/default/gestion_intitules.tpl:46 ../classes/adherent.class.php:263 
+// ../editer_intitules.php:273 ../templates/default/configurer_fiches.tpl:50 ../templates/default/configurer_fiches.tpl:70 ../templates/default/editer_champ.tpl:42 ../templates/default/champ_requis.tpl:8 ../templates/default/gestion_intitules.tpl:46 ../classes/adherent.class.php:264 
 $lang['Yes'] = 'Oui';
 
 // ../install/index.php:561 
@@ -1413,17 +1467,20 @@ $lang['transaction'] = 'transaction';
 // ../templates/default/ajouter_adherent.tpl:133 
 $lang['This comment is only displayed for admins.'] = 'Ce commentaire n\'est visible que par les administrateurs.';
 
-// ../templates/default/page.tpl:89 
+// ../templates/default/page.tpl:90 
 $lang['My contributions'] = 'Mes contributions';
 
-// ../templates/default/page.tpl:181 
+// ../templates/default/page.tpl:184 
 $lang['Lateness in fee'] = 'Retard de cotisation';
 
-// ../templates/default/page.tpl:81 ../templates/default/voir_adherent.tpl:27 
+// ../templates/default/page.tpl:84 ../templates/default/voir_adherent.tpl:27 
 $lang['Add a contribution'] = 'Ajouter une contribution';
 
 // ../install/index.php:847 
 $lang['The tables has been correctly updated.'] = 'Les tables ont été correctement mises à jour.';
+
+// ../templates/default/page.tpl:100 
+$lang['Set applications preferences (adress, website, member\'s cards configuration, ...)'] = 'Renseigner les préférences de l\'application (adresse, cartes de membres, configuration, ...)';
 
 // ../templates/default/preferences.tpl:230 
 $lang['(65 characters max)'] = '(65 caractères max)';
@@ -1467,7 +1524,7 @@ $lang['Old-timer'] = 'Ancien membre';
 // ../install/index.php:1029 
 $lang['Check above errors to know what went wrong.'] = 'Consultez les erreurs ci-dessous pour avoir ce qui n\'a pas été.';
 
-// ../templates/default/ajouter_adherent.tpl:201 ../templates/default/voir_adherent.tpl:169 ../templates/default/self_adherent.tpl:174 ../classes/adherent.class.php:143 
+// ../templates/default/ajouter_adherent.tpl:201 ../templates/default/voir_adherent.tpl:169 ../templates/default/self_adherent.tpl:174 ../classes/adherent.class.php:144 
 $lang['fingerprint:'] = 'fingerprint&nbsp;:';
 
 // ../install/index.php:678 
@@ -1479,7 +1536,7 @@ $lang['(Show or not title in front of name)'] = '(Afficher le titre devant le no
 // ../includes/i18n.inc.php:201 
 $lang['Treasurer'] = 'Trésorier';
 
-// ../templates/default/page.tpl:177 
+// ../templates/default/page.tpl:180 
 $lang['Membership will expire soon (&lt;30d)'] = 'Adhésion à échéance (&lt;30j)';
 
 // ../change_passwd.php:68 ../ajouter_adherent.php:190 
@@ -1503,7 +1560,7 @@ $lang['Do you really want to delete all selected accounts (and related contribut
 // ../ajouter_contribution.php:413 ../ajouter_transaction.php:241 
 $lang['You must first register a member'] = 'Vous devez d\'abord enregistrer un adhérent';
 
-// ../classes/politeness.class.php:60 
+// ../classes/politeness.class.php:69 
 $lang['Miss.'] = 'Mlle.';
 
 // ../mailing_adherents.php:110 ../lostpasswd.php:117 ../ajouter_adherent.php:319 
@@ -1518,7 +1575,7 @@ $lang['Latecomers'] = 'Les retardataires';
 // ../templates/default/configurer_fiches.tpl:27 
 $lang['Position'] = 'Position';
 
-// ../gestion_textes.php:71 
+// ../gestion_textes.php:73 
 $lang['Email: \'%s\' has not been modified!'] = 'Le courriel « %s » n\'as pas été modifié&nbsp;!';
 
 // ../templates/default/gestion_adherents.tpl:164 
@@ -1539,7 +1596,7 @@ $lang['Profession'] = 'Profession';
 // ../editer_intitules.php:55 ../editer_intitules.php:285 
 $lang['Contribution types'] = 'Types de contribution';
 
-// ../classes/adherent.class.php:139 
+// ../classes/adherent.class.php:140 
 $lang['Due date:'] = 'Date d\'échéance&nbsp;:';
 
 // ../templates/default/ajouter_contribution.tpl:15 
@@ -1563,7 +1620,7 @@ $lang['Never contributed: Registered '] = 'N\'a jamais cotisé&nbsp;: Inscrit de
 // ../install/index.php:395 
 $lang['In order to be updated, Galette needs the Write permission on these files.'] = 'Pour être mis à jour et fonctionner correctement, Galette a besoin d\'avoir les droits en écriture sur ces fichiers.';
 
-// ../templates/default/page.tpl:140 
+// ../templates/default/page.tpl:143 
 $lang['Send a mail'] = 'Envoyer un courriel';
 
 // ../editer_intitules.php:56 ../editer_intitules.php:283 
@@ -1584,10 +1641,10 @@ $lang['(the member will receive a confirmation by email, if he has an address.)'
 // ../templates/default/preferences.tpl:275 
 $lang['Email'] = 'Courriel';
 
-// ../templates/default/gestion_adherents.tpl:160 ../templates/default/page.tpl:195 ../templates/default/gestion_contributions.tpl:128 ../templates/default/gestion_transactions.tpl:91 
+// ../templates/default/gestion_adherents.tpl:160 ../templates/default/page.tpl:198 ../templates/default/gestion_contributions.tpl:128 ../templates/default/gestion_transactions.tpl:91 
 $lang['[del]'] = '[suppr]';
 
-// ../templates/default/ajouter_adherent.tpl:137 ../templates/default/voir_adherent.tpl:96 ../templates/default/self_adherent.tpl:195 ../classes/adherent.class.php:130 
+// ../templates/default/ajouter_adherent.tpl:137 ../templates/default/voir_adherent.tpl:96 ../templates/default/self_adherent.tpl:195 ../classes/adherent.class.php:131 
 $lang['Other informations:'] = 'Autres informations&nbsp;:';
 
 // ../install/index.php:590 
@@ -1602,7 +1659,7 @@ $lang['Nickname:'] = 'Pseudo&nbsp;:';
 // ../ajouter_adherent.php:290 
 $lang['- Only .jpg, .gif and .png files are allowed.'] = '- Seul les fichiers .jpg, .gif et .png sont acceptés.';
 
-// ../templates/default/page.tpl:96 
+// ../templates/default/page.tpl:98 
 $lang['Configuration'] = 'Configuration';
 
 // ../templates/default/ajouter_transaction.tpl:17 
@@ -1626,7 +1683,7 @@ $lang['Update Report'] = 'Compte rendu de mise à jour';
 // ../templates/default/mailing_adherents.tpl:79 
 $lang['unreachable member'] = 'membre qui n\'a pu être joint';
 
-// ../templates/default/preferences.tpl:69 ../templates/default/ajouter_adherent.tpl:165 ../templates/default/voir_adherent.tpl:121 ../templates/default/self_adherent.tpl:138 ../classes/adherent.class.php:121 
+// ../templates/default/preferences.tpl:69 ../templates/default/ajouter_adherent.tpl:165 ../templates/default/voir_adherent.tpl:121 ../templates/default/self_adherent.tpl:138 ../classes/adherent.class.php:122 
 $lang['Country:'] = 'Pays&nbsp;:';
 
 // ../templates/default/mailing_adherents.tpl:1 
@@ -1671,10 +1728,10 @@ $lang['Permissions to database are OK.'] = 'Les droits d\'accès à la base sont
 // ../install/index.php:445 
 $lang['The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT.'] = 'Les droits nécessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et INSERT.';
 
-// ../editer_intitules.php:273 ../templates/default/configurer_fiches.tpl:49 ../templates/default/configurer_fiches.tpl:70 ../templates/default/editer_champ.tpl:41 ../templates/default/champ_requis.tpl:10 ../templates/default/gestion_intitules.tpl:45 ../classes/adherent.class.php:263 
+// ../editer_intitules.php:273 ../templates/default/configurer_fiches.tpl:49 ../templates/default/configurer_fiches.tpl:70 ../templates/default/editer_champ.tpl:41 ../templates/default/champ_requis.tpl:10 ../templates/default/gestion_intitules.tpl:45 ../classes/adherent.class.php:264 
 $lang['No'] = 'Non';
 
-// ../templates/default/ajouter_adherent.tpl:193 ../templates/default/voir_adherent.tpl:157 ../templates/default/self_adherent.tpl:166 ../classes/adherent.class.php:127 
+// ../templates/default/ajouter_adherent.tpl:193 ../templates/default/voir_adherent.tpl:157 ../templates/default/self_adherent.tpl:166 ../classes/adherent.class.php:128 
 $lang['MSN:'] = 'MSN&nbsp;:';
 
 // ../preferences.php:166 
@@ -1722,7 +1779,7 @@ $lang['User'] = 'Utilisateur';
 // ../gestion_adherents.php:417 
 $lang['Infos'] = 'Informations';
 
-// ../templates/default/ajouter_adherent.tpl:126 ../templates/default/voir_adherent.tpl:87 ../classes/adherent.class.php:134 
+// ../templates/default/ajouter_adherent.tpl:126 ../templates/default/voir_adherent.tpl:87 ../classes/adherent.class.php:135 
 $lang['Creation date:'] = 'Date de création&nbsp;:';
 
 // ../templates/default/ajouter_contribution.tpl:62 
@@ -1752,10 +1809,10 @@ $lang['Filter'] = 'Filtrer';
 // ../templates/default/preferences.tpl:79 
 $lang['Galette\'s parameters:'] = 'Paramètres Galette&nbsp;:';
 
-// ../templates/default/ajouter_adherent.tpl:177 ../templates/default/voir_adherent.tpl:133 ../templates/default/self_adherent.tpl:150 ../classes/adherent.class.php:124 
+// ../templates/default/ajouter_adherent.tpl:177 ../templates/default/voir_adherent.tpl:133 ../templates/default/self_adherent.tpl:150 ../classes/adherent.class.php:125 
 $lang['E-Mail:'] = 'Courriel&nbsp;:';
 
-// ../templates/default/page.tpl:152 ../templates/default/page.tpl:201 
+// ../templates/default/page.tpl:155 ../templates/default/page.tpl:204 
 $lang['Contribution'] = 'Contribution';
 
 // ../ajouter_adherent.php:260 
@@ -1778,6 +1835,9 @@ $lang['End!'] = 'Fin&nbsp;!';
 
 // ../install/index.php:155 
 $lang['No database name'] = 'Nom de la base non précisé';
+
+// ../templates/default/page.tpl:92 
+$lang['My member card in PDF format'] = 'Ma fiche adhérent au format PDF';
 
 // ../self_adherent.php:134 ../preferences.php:113 ../ajouter_adherent.php:176 
 $lang['- This username is already used by another member !'] = '- Cet identifiant est déjà utilisé par un autre adhérent&nbsp;!';
@@ -1821,7 +1881,7 @@ $lang['Warning: Don\'t forget to backup your current database.'] = 'Attention&nb
 // ../preferences.php:207 ../install/index.php:202 
 $lang['Passwords mismatch'] = 'Les mots de passe ne correspondent pas&nbsp;: ';
 
-// ../templates/default/preferences.tpl:65 ../templates/default/ajouter_adherent.tpl:161 ../templates/default/voir_adherent.tpl:117 ../templates/default/self_adherent.tpl:134 ../classes/adherent.class.php:120 
+// ../templates/default/preferences.tpl:65 ../templates/default/ajouter_adherent.tpl:161 ../templates/default/voir_adherent.tpl:117 ../templates/default/self_adherent.tpl:134 ../classes/adherent.class.php:121 
 $lang['City:'] = 'Ville&nbsp;:';
 
 // ../lostpasswd.php:56 
@@ -1830,8 +1890,8 @@ $lang['This account doesn\'t have a valid email address. Please contact an admin
 // ../install/index.php:399 
 $lang['apache_user'] = 'utilisateur_apache';
 
-// ../templates/default/page.tpl:85 
-$lang['Customize fields order'] = 'Personnaliser l\'ordre des champs';
+// ../templates/default/history.tpl:125 
+$lang['logs are empty'] = 'historique vide';
 
 // ../templates/default/ajouter_adherent.tpl:36 ../templates/default/self_adherent.tpl:73 ../classes/adherent.class.php:115 
 $lang['Title:'] = 'Titre&nbsp;:';
@@ -1839,7 +1899,7 @@ $lang['Title:'] = 'Titre&nbsp;:';
 // ../install/index.php:537 
 $lang['Database exists and connection parameters are OK.'] = 'La base existe et les paramètres de connexion sont corrects.';
 
-// ../templates/default/page.tpl:127 
+// ../templates/default/page.tpl:130 
 $lang['Man'] = 'Homme';
 
 // ../templates/default/gestion_adherents.tpl:16 
@@ -1872,10 +1932,10 @@ $lang['Lines / Page:'] = 'Lignes / Page&nbsp;:';
 // ../templates/default/ajouter_transaction.tpl:15 
 $lang['Transaction details'] = 'Détails de la transaction';
 
-// ../templates/default/ajouter_adherent.tpl:185 ../templates/default/voir_adherent.tpl:149 ../templates/default/self_adherent.tpl:158 ../classes/adherent.class.php:126 
+// ../templates/default/ajouter_adherent.tpl:185 ../templates/default/voir_adherent.tpl:149 ../templates/default/self_adherent.tpl:158 ../classes/adherent.class.php:127 
 $lang['ICQ:'] = 'ICQ&nbsp;:';
 
-// ../includes/dynamic_fields.inc.php:85 ../templates/default/page.tpl:153 
+// ../includes/dynamic_fields.inc.php:85 ../templates/default/page.tpl:156 
 $lang['Contributions'] = 'Contributions';
 
 ?>

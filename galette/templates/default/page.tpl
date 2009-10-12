@@ -77,20 +77,19 @@ We have to use a template file, so Smrty will do its work (like replacing variab
 			<h1>{_T string="Navigation"}</h1>
 			<ul>
 {if $login->isAdmin()}
-				<li><a href="{$galette_base_path}gestion_adherents.php">{_T string="List of members"}</a></li>
-				<li><a href="{$galette_base_path}gestion_contributions.php?id_adh=all">{_T string="List of contributions"}</a></li>
-				<li><a href="{$galette_base_path}gestion_transactions.php">{_T string="List of transactions"}</a></li>
-				<li><a href="{$galette_base_path}ajouter_adherent.php">{_T string="Add a member"}</a></li>
-				<li><a href="{$galette_base_path}ajouter_contribution.php">{_T string="Add a contribution"}</a></li>
-				<li><a href="{$galette_base_path}ajouter_transaction.php">{_T string="Add a transaction"}</a></li>
-				<li><a href="{$galette_base_path}history.php">{_T string="Logs"}</a></li>
-				<li><a href="{$galette_base_path}export.php">{_T string="Exports"}</a></li>
-				<li><a href="{$galette_base_path}config_fields.php">{_T string="Customize fields"}</a></li>
+				<li><a href="{$galette_base_path}gestion_adherents.php" title="{_T string="View, search into and filter member's list"}">{_T string="List of members"}</a></li>
+				<li><a href="{$galette_base_path}gestion_contributions.php?id_adh=all" title="{_T string="View and filter contributions"}">{_T string="List of contributions"}</a></li>
+				<li><a href="{$galette_base_path}gestion_transactions.php" title="{_T string="View and filter transactions"}">{_T string="List of transactions"}</a></li>
+				<li><a href="{$galette_base_path}ajouter_adherent.php" title="{_T string="Add new member in database"}">{_T string="Add a member"}</a></li>
+				<li><a href="{$galette_base_path}ajouter_contribution.php" title="{_T string="Add new contribution in database"}">{_T string="Add a contribution"}</a></li>
+				<li><a href="{$galette_base_path}ajouter_transaction.php" title="{_T string="Add new transaction in database"}">{_T string="Add a transaction"}</a></li>
+				<li><a href="{$galette_base_path}history.php" title="{_T string="View application's logs"}">{_T string="Logs"}</a></li>
+				<li><a href="{$galette_base_path}export.php" title="{_T string="Export some datas in various formats"}">{_T string="Exports"}</a></li>
 {else}
-				<li><a href="{$galette_base_path}subscription_form.php?id_adh={$data.id_adh}">Fiche adherent</a></li>
-				<li><a href="{$galette_base_path}voir_adherent.php">{_T string="My information"}</a></li>
-				<li><a href="{$galette_base_path}gestion_contributions.php">{_T string="My contributions"}</a></li>
-				<li><a href="{$galette_base_path}gestion_transactions.php">{_T string="My transactions"}</a></li>
+				<li><a href="{$galette_base_path}voir_adherent.php" title="{_T string="View my member card"}">{_T string="My information"}</a></li>
+				<li><a href="{$galette_base_path}gestion_contributions.php" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a></li>
+				<li><a href="{$galette_base_path}gestion_transactions.php" title="{_T string="View and filter all my transactions"}">{_T string="My transactions"}</a></li>
+				<li><a href="{$galette_base_path}subscription_form.php?id_adh={$data.id_adh}" title="{_T string="My member card in PDF format"}">{_T string="PDF card"}</a></li>
 {/if}
 			</ul>
 		</div>
@@ -98,12 +97,13 @@ We have to use a template file, so Smrty will do its work (like replacing variab
 		<div class="nav1">
 			<h1>{_T string="Configuration"}</h1>
 			<ul>
-				<li><a href="{$galette_base_path}preferences.php">{_T string="Settings"}</a></li>
+				<li><a href="{$galette_base_path}preferences.php" title="{_T string="Set applications preferences (adress, website, member's cards configuration, ...)"}">{_T string="Settings"}</a></li>
+				<li><a href="{$galette_base_path}config_fields.php" title="{_T string="Customize fields order, set which are required, and for who they're visibles"}">{_T string="Customize fields"}</a></li>
 				<li><a href="{$galette_base_path}champs_requis.php">{_T string="Required fields"}</a></li>
-				<li><a href="{$galette_base_path}configurer_fiches.php">{_T string="Configure member forms"}</a></li>
-				<li><a href="{$galette_base_path}gestion_intitules.php">{_T string="Edit labels"}</a></li>
-				<li><a href="{$galette_base_path}traduire_libelles.php">{_T string="Translate labels"}</a></li>
-				<li><a href="{$galette_base_path}gestion_textes.php">{_T string="Email contents"}</a></li>
+				<li><a href="{$galette_base_path}configurer_fiches.php" title="{_T string="Manage additional fields for various forms"}">{_T string="Configure member forms"}</a></li>
+				<li><a href="{$galette_base_path}traduire_libelles.php" title="{_T string="Translate additionnals fields labels"}">{_T string="Translate labels"}</a></li>
+				<li><a href="{$galette_base_path}gestion_intitules.php" title="{_T string="Manage various lists that are used in the application"}">{_T string="Manage lists"}</a></li>
+				<li><a href="{$galette_base_path}gestion_textes.php" title="{_T string="Manage emails texts and subjects"}">{_T string="Emails content"}</a></li>
 				<li><a href="{$galette_base_path}utilitaires.php">{_T string="Utilities"}</a></li>
 			</ul>
 		</div>

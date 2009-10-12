@@ -10,7 +10,7 @@ msgstr ""
 msgid "Recipient of new online registation emails"
 msgstr ""
 
-#: ../templates/default/export.tpl:6
+#: ../templates/default/export.tpl:5
 msgid "The following files have been written on disk:"
 msgstr ""
 
@@ -19,7 +19,7 @@ msgid "This comment is only displayed for admins."
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:169 ../templates/default/voir_adherent.tpl:125
-#: ../templates/default/self_adherent.tpl:142 ../classes/adherent.class.php:122
+#: ../templates/default/self_adherent.tpl:142 ../classes/adherent.class.php:123
 msgid "Phone:"
 msgstr ""
 
@@ -44,13 +44,20 @@ msgstr ""
 msgid "- ID must be an integer!"
 msgstr ""
 
-#: ../self_adherent.php:304 ../ajouter_adherent.php:387
-#: ../templates/default/page.tpl:130
+#: ../templates/default/page.tpl:133 ../classes/politeness.class.php:54
 msgid "Mrs"
+msgstr ""
+
+#: ../templates/default/page.tpl:100
+msgid "Set applications preferences (adress, website, member's cards configuration, ...)"
 msgstr ""
 
 #: ../templates/default/editer_champ.tpl:92
 msgid "Cancel"
+msgstr ""
+
+#: ../templates/default/page.tpl:92
+msgid "My member card in PDF format"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:160
@@ -90,6 +97,10 @@ msgstr ""
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
 
+#: ../templates/default/page.tpl:92
+msgid "PDF card"
+msgstr ""
+
 #: ../includes/i18n.inc.php:213
 msgid "Partnership"
 msgstr ""
@@ -104,9 +115,9 @@ msgid "Your database is maybe not usable, try to restore the older version."
 msgstr ""
 
 #: ../gestion_adherents.php:413 ../templates/default/gestion_adherents.tpl:60
-#: ../templates/default/page.tpl:160 ../templates/default/page.tpl:164
+#: ../templates/default/page.tpl:163 ../templates/default/page.tpl:167
 #: ../templates/default/configurer_fiches.tpl:23 ../templates/default/gestion_intitules.tpl:27
-#: ../templates/default/liste_membres.tpl:8
+#: ../templates/default/liste_membres.tpl:8 ../templates/default/export.tpl:17
 msgid "Name"
 msgstr ""
 
@@ -147,7 +158,7 @@ msgstr ""
 msgid "Lost your password?"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:158 ../templates/default/page.tpl:191
+#: ../templates/default/gestion_adherents.tpl:158 ../templates/default/page.tpl:194
 #: ../templates/default/gestion_contributions.tpl:127 ../templates/default/gestion_transactions.tpl:90
 msgid "[mod]"
 msgstr ""
@@ -178,7 +189,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:73 ../templates/default/ajouter_adherent.tpl:181
 #: ../templates/default/voir_adherent.tpl:141 ../templates/default/self_adherent.tpl:154
-#: ../classes/adherent.class.php:125
+#: ../classes/adherent.class.php:126
 msgid "Website:"
 msgstr ""
 
@@ -200,7 +211,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:61 ../templates/default/ajouter_adherent.tpl:157
 #: ../templates/default/voir_adherent.tpl:113 ../templates/default/self_adherent.tpl:130
-#: ../classes/adherent.class.php:119
+#: ../classes/adherent.class.php:120
 msgid "Zip Code:"
 msgstr ""
 
@@ -215,7 +226,7 @@ msgstr ""
 #: ../install/index.php:465 ../install/index.php:886
 #: ../templates/default/index.tpl:27 ../templates/default/preferences.tpl:320
 #: ../templates/default/ajouter_adherent.tpl:110 ../templates/default/change_passwd.tpl:38
-#: ../templates/default/self_adherent.tpl:188 ../classes/adherent.class.php:133
+#: ../templates/default/self_adherent.tpl:188 ../classes/adherent.class.php:134
 msgid "Password:"
 msgstr ""
 
@@ -264,7 +275,7 @@ msgstr ""
 msgid "middle"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:160 ../templates/default/page.tpl:195
+#: ../templates/default/gestion_adherents.tpl:160 ../templates/default/page.tpl:198
 #: ../templates/default/gestion_contributions.tpl:128 ../templates/default/gestion_transactions.tpl:91
 msgid "[del]"
 msgstr ""
@@ -382,7 +393,7 @@ msgid "Horizontal spacing:"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:197 ../templates/default/voir_adherent.tpl:165
-#: ../templates/default/self_adherent.tpl:170 ../classes/adherent.class.php:142
+#: ../templates/default/self_adherent.tpl:170 ../classes/adherent.class.php:143
 msgid "Id GNUpg (GPG):"
 msgstr ""
 
@@ -407,7 +418,7 @@ msgstr ""
 msgid "Database can't be reached. Please go back to enter the connection parameters again."
 msgstr ""
 
-#: ../templates/default/ajouter_adherent.tpl:85 ../classes/adherent.class.php:266
+#: ../templates/default/ajouter_adherent.tpl:85 ../classes/adherent.class.php:267
 msgid "Active"
 msgstr ""
 
@@ -419,8 +430,13 @@ msgstr ""
 msgid "A problem happened while sending email to admin for user:"
 msgstr ""
 
-#: ../classes/pdf.class.php:111
-msgid "Missing or incorrect image file "
+#: ../templates/default/page.tpl:104
+msgid "Translate additionnals fields labels"
+msgstr ""
+
+#: ../templates/default/page.tpl:137 ../templates/default/page.tpl:138
+#: ../classes/politeness.class.php:56 ../classes/politeness.class.php:72
+msgid "Society"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:50 ../templates/default/preferences.tpl:258
@@ -436,7 +452,7 @@ msgstr ""
 msgid "Edit contribution type"
 msgstr ""
 
-#: ../templates/default/page.tpl:78
+#: ../templates/default/page.tpl:81
 msgid "List of contributions"
 msgstr ""
 
@@ -461,11 +477,6 @@ msgstr ""
 msgid "IP"
 msgstr ""
 
-#: ../gestion_contributions.php:284 ../gestion_adherents.php:423
-#: ../templates/default/page.tpl:169
-msgid "Never contributed"
-msgstr ""
-
 #: ../ajouter_contribution.php:203
 msgid "- Membership period overlaps period starting at "
 msgstr ""
@@ -488,8 +499,12 @@ msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:64 ../templates/default/voir_adherent.tpl:52
 #: ../templates/default/self_adherent.tpl:110 ../templates/default/gestion_textes.tpl:27
-#: ../classes/adherent.class.php:140
+#: ../classes/adherent.class.php:141
 msgid "Language:"
+msgstr ""
+
+#: ../templates/default/page.tpl:80
+msgid "View, search into and filter member's list"
 msgstr ""
 
 #: ../gestion_contributions.php:300 ../gestion_adherents.php:370
@@ -602,7 +617,7 @@ msgstr ""
 msgid " (continuation)"
 msgstr ""
 
-#: ../gestion_textes.php:73
+#: ../gestion_textes.php:75
 msgid "Email: '%s' has been successfully modified."
 msgstr ""
 
@@ -644,9 +659,8 @@ msgstr ""
 msgid "There was a database error"
 msgstr ""
 
-#: ../templates/default/ajouter_adherent.tpl:185 ../templates/default/voir_adherent.tpl:149
-#: ../templates/default/self_adherent.tpl:158 ../classes/adherent.class.php:126
-msgid "ICQ:"
+#: ../templates/default/page.tpl:83
+msgid "Add new member in database"
 msgstr ""
 
 #: ../install/index.php:450
@@ -661,7 +675,7 @@ msgstr ""
 msgid "Web Site"
 msgstr ""
 
-#: ../templates/default/ajouter_adherent.tpl:86 ../classes/adherent.class.php:266
+#: ../templates/default/ajouter_adherent.tpl:86 ../classes/adherent.class.php:267
 msgid "Inactive"
 msgstr ""
 
@@ -672,11 +686,11 @@ msgstr ""
 #: ../editer_intitules.php:273 ../templates/default/configurer_fiches.tpl:50
 #: ../templates/default/configurer_fiches.tpl:70 ../templates/default/editer_champ.tpl:42
 #: ../templates/default/champ_requis.tpl:8 ../templates/default/gestion_intitules.tpl:46
-#: ../classes/adherent.class.php:263
+#: ../classes/adherent.class.php:264
 msgid "Yes"
 msgstr ""
 
-#: ../templates/default/page.tpl:157 ../templates/default/page.tpl:196
+#: ../templates/default/page.tpl:160 ../templates/default/page.tpl:199
 msgid "Deletion"
 msgstr ""
 
@@ -702,6 +716,10 @@ msgstr ""
 
 #: ../lostpasswd.php:93
 msgid "delete failed"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:230
+msgid "(65 characters max)"
 msgstr ""
 
 #: ../templates/default/editer_champ.tpl:77
@@ -747,7 +765,7 @@ msgstr ""
 msgid "State of dues"
 msgstr ""
 
-#: ../templates/default/page.tpl:131
+#: ../templates/default/page.tpl:134
 msgid "Woman"
 msgstr ""
 
@@ -775,9 +793,8 @@ msgstr ""
 msgid "Passworg image"
 msgstr ""
 
-#: ../self_adherent.php:305 ../ajouter_adherent.php:388
-#: ../templates/default/page.tpl:126
-msgid "Mister"
+#: ../templates/default/mailing_adherents.tpl:50
+msgid "Interpret HTML"
 msgstr ""
 
 #: ../includes/dynamic_fields.inc.php:41
@@ -796,7 +813,7 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: ../classes/adherent.class.php:138
+#: ../classes/adherent.class.php:139
 msgid "Be visible in the<br /> members list:"
 msgstr ""
 
@@ -832,7 +849,7 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: ../gestion_textes.php:71
+#: ../gestion_textes.php:73
 msgid "Email: '%s' has not been modified!"
 msgstr ""
 
@@ -866,6 +883,10 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:275
 msgid "Email"
+msgstr ""
+
+#: ../templates/default/page.tpl:81
+msgid "View and filter contributions"
 msgstr ""
 
 #: ../templates/default/champ_requis.tpl:4
@@ -904,7 +925,7 @@ msgstr ""
 msgid "Number of label lines:"
 msgstr ""
 
-#: ../includes/dynamic_fields.inc.php:85 ../templates/default/page.tpl:153
+#: ../includes/dynamic_fields.inc.php:85 ../templates/default/page.tpl:156
 msgid "Contributions"
 msgstr ""
 
@@ -912,8 +933,8 @@ msgstr ""
 msgid "Homepage"
 msgstr ""
 
-#: ../templates/default/gestion_contributions.tpl:49
-msgid "Begin."
+#: ../templates/default/page.tpl:87
+msgid "Export some datas in various formats"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:263
@@ -935,7 +956,7 @@ msgstr ""
 msgid "Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail."
 msgstr ""
 
-#: ../templates/default/page.tpl:152 ../templates/default/page.tpl:201
+#: ../templates/default/page.tpl:155 ../templates/default/page.tpl:204
 msgid "Contribution"
 msgstr ""
 
@@ -967,7 +988,7 @@ msgstr ""
 msgid "Send email to administrators ?"
 msgstr ""
 
-#: ../templates/default/page.tpl:89
+#: ../templates/default/page.tpl:90
 msgid "My contributions"
 msgstr ""
 
@@ -1033,7 +1054,7 @@ msgstr ""
 msgid "Graphics:"
 msgstr ""
 
-#: ../templates/default/page.tpl:79
+#: ../templates/default/page.tpl:82
 msgid "List of transactions"
 msgstr ""
 
@@ -1062,7 +1083,7 @@ msgstr ""
 msgid "Please enter a message."
 msgstr ""
 
-#: ../templates/default/export.tpl:30
+#: ../templates/default/export.tpl:39
 msgid "Additionnaly, which table(s) do you want to export?"
 msgstr ""
 
@@ -1107,6 +1128,15 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:270
 msgid "(Show or not title in front of name)"
+msgstr ""
+
+#: ../templates/default/ajouter_adherent.tpl:185 ../templates/default/voir_adherent.tpl:149
+#: ../templates/default/self_adherent.tpl:158 ../classes/adherent.class.php:127
+msgid "ICQ:"
+msgstr ""
+
+#: ../templates/default/page.tpl:101
+msgid "Customize fields order, set which are required, and for who they're visibles"
 msgstr ""
 
 #: ../templates/default/ajouter_contribution.tpl:83
@@ -1154,7 +1184,7 @@ msgid "DROP operation allowed"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:193 ../templates/default/voir_adherent.tpl:157
-#: ../templates/default/self_adherent.tpl:166 ../classes/adherent.class.php:127
+#: ../templates/default/self_adherent.tpl:166 ../classes/adherent.class.php:128
 msgid "MSN:"
 msgstr ""
 
@@ -1183,7 +1213,7 @@ msgstr ""
 msgid "Subscribe"
 msgstr ""
 
-#: ../templates/default/ajouter_contribution.tpl:94 ../templates/default/export.tpl:49
+#: ../templates/default/ajouter_contribution.tpl:94 ../templates/default/export.tpl:63
 msgid "Continue"
 msgstr ""
 
@@ -1195,11 +1225,7 @@ msgstr ""
 msgid "- 'Extends membership?' field must be either 0 or 1! (current value:"
 msgstr ""
 
-#: ../templates/default/page.tpl:85
-msgid "Customize fields order"
-msgstr ""
-
-#: ../classes/politeness.class.php:54
+#: ../classes/politeness.class.php:63
 msgid "Mr."
 msgstr ""
 
@@ -1207,8 +1233,8 @@ msgstr ""
 msgid "Identifiant:"
 msgstr ""
 
-#: ../templates/default/page.tpl:90
-msgid "My transactions"
+#: ../install/index.php:507
+msgid "Unable to connect to the database"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:116
@@ -1242,7 +1268,7 @@ msgstr ""
 #: ../editer_intitules.php:273 ../templates/default/configurer_fiches.tpl:49
 #: ../templates/default/configurer_fiches.tpl:70 ../templates/default/editer_champ.tpl:41
 #: ../templates/default/champ_requis.tpl:10 ../templates/default/gestion_intitules.tpl:45
-#: ../classes/adherent.class.php:263
+#: ../classes/adherent.class.php:264
 msgid "No"
 msgstr ""
 
@@ -1270,15 +1296,15 @@ msgstr ""
 msgid "Reduced annual contribution"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:193 ../templates/default/page.tpl:156
+#: ../templates/default/gestion_adherents.tpl:193 ../templates/default/page.tpl:159
 msgid "Delete"
 msgstr ""
 
-#: ../templates/default/page.tpl:113
+#: ../templates/default/page.tpl:116
 msgid "Log off"
 msgstr ""
 
-#: ../templates/default/export.tpl:28
+#: ../templates/default/export.tpl:37
 msgid "No parameted exports are available."
 msgstr ""
 
@@ -1298,7 +1324,7 @@ msgstr ""
 msgid "Name (corporate name) of the association:"
 msgstr ""
 
-#: ../classes/politeness.class.php:57
+#: ../classes/politeness.class.php:66
 msgid "Mrs."
 msgstr ""
 
@@ -1315,7 +1341,7 @@ msgid "[Mail]"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:96 ../templates/default/voir_adherent.tpl:73
-#: ../classes/adherent.class.php:136
+#: ../classes/adherent.class.php:137
 msgid "Galette Admin:"
 msgstr ""
 
@@ -1421,8 +1447,16 @@ msgstr ""
 msgid "Vertical margins:"
 msgstr ""
 
+#: ../templates/default/export.tpl:43
+msgid "Table name"
+msgstr ""
+
 #: ../install/index.php:444
 msgid "Enter connection data for the existing database."
+msgstr ""
+
+#: ../templates/default/page.tpl:89
+msgid "My information"
 msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:30
@@ -1433,7 +1467,7 @@ msgstr ""
 msgid "The tables have not been totally created, it may be a permission problem."
 msgstr ""
 
-#: ../templates/default/page.tpl:81 ../templates/default/voir_adherent.tpl:27
+#: ../templates/default/page.tpl:84 ../templates/default/voir_adherent.tpl:27
 msgid "Add a contribution"
 msgstr ""
 
@@ -1478,11 +1512,15 @@ msgstr ""
 msgid "Generate Member Card"
 msgstr ""
 
+#: ../templates/default/page.tpl:89
+msgid "View my member card"
+msgstr ""
+
 #: ../templates/default/gestion_adherents.tpl:27 ../templates/default/gestion_contributions.tpl:8
 msgid "Filter"
 msgstr ""
 
-#: ../classes/adherent.class.php:141
+#: ../classes/adherent.class.php:142
 msgid "Birthplace:"
 msgstr ""
 
@@ -1494,7 +1532,7 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: ../templates/default/page.tpl:102 ../templates/default/traduire_libelles.tpl:1
+#: ../templates/default/page.tpl:104 ../templates/default/traduire_libelles.tpl:1
 msgid "Translate labels"
 msgstr ""
 
@@ -1518,7 +1556,7 @@ msgstr ""
 msgid "There was a database error when inserting data"
 msgstr ""
 
-#: ../templates/default/page.tpl:165
+#: ../templates/default/page.tpl:168
 msgid "Inactive account"
 msgstr ""
 
@@ -1526,7 +1564,7 @@ msgstr ""
 msgid "Access permissions to database"
 msgstr ""
 
-#: ../templates/default/page.tpl:104
+#: ../templates/default/page.tpl:107
 msgid "Utilities"
 msgstr ""
 
@@ -1534,16 +1572,15 @@ msgstr ""
 msgid "Association's short description:"
 msgstr ""
 
-#: ../templates/default/page.tpl:83 ../templates/default/history.tpl:1
+#: ../templates/default/page.tpl:86 ../templates/default/history.tpl:1
 msgid "Logs"
 msgstr ""
 
-#: ../templates/default/page.tpl:99
+#: ../templates/default/page.tpl:102
 msgid "Required fields"
 msgstr ""
 
-#: ../self_adherent.php:303 ../ajouter_adherent.php:386
-#: ../templates/default/page.tpl:130
+#: ../templates/default/page.tpl:133 ../classes/politeness.class.php:55
 msgid "Miss"
 msgstr ""
 
@@ -1551,11 +1588,11 @@ msgstr ""
 msgid "GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr ""
 
-#: ../templates/default/preferences.tpl:230
-msgid "(65 characters max)"
+#: ../templates/default/page.tpl:90
+msgid "View and filter all my contributions"
 msgstr ""
 
-#: ../templates/default/page.tpl:177
+#: ../templates/default/page.tpl:180
 msgid "Membership will expire soon (&lt;30d)"
 msgstr ""
 
@@ -1575,7 +1612,7 @@ msgstr ""
 #: ../install/index.php:882 ../templates/default/index.tpl:23
 #: ../templates/default/preferences.tpl:316 ../templates/default/ajouter_adherent.tpl:105
 #: ../templates/default/voir_adherent.tpl:82 ../templates/default/self_adherent.tpl:183
-#: ../classes/adherent.class.php:132
+#: ../classes/adherent.class.php:133
 msgid "Username:"
 msgstr ""
 
@@ -1600,8 +1637,8 @@ msgstr ""
 msgid "End"
 msgstr ""
 
-#: ../templates/default/mailing_adherents.tpl:50
-msgid "Interpret HTML"
+#: ../templates/default/page.tpl:129 ../classes/politeness.class.php:53
+msgid "Mister"
 msgstr ""
 
 #: ../ajouter_transaction.php:178
@@ -1738,7 +1775,7 @@ msgstr ""
 msgid "Password changed, you will be redirected to login page"
 msgstr ""
 
-#: ../templates/default/page.tpl:127
+#: ../templates/default/page.tpl:130
 msgid "Man"
 msgstr ""
 
@@ -1746,8 +1783,8 @@ msgstr ""
 msgid "- You must indicate a sender name for emails!"
 msgstr ""
 
-#: ../configurer_fiches.php:72
-msgid "- The name field cannot be void."
+#: ../gestion_contributions.php:300 ../gestion_adherents.php:370
+msgid "since"
 msgstr ""
 
 #: ../templates/default/index.tpl:12 ../templates/default/index.tpl:31
@@ -1758,8 +1795,9 @@ msgstr ""
 msgid "Latecomers"
 msgstr ""
 
-#: ../templates/default/page.tpl:88
-msgid "My information"
+#: ../gestion_contributions.php:284 ../gestion_adherents.php:423
+#: ../templates/default/page.tpl:172
+msgid "Never contributed"
 msgstr ""
 
 #: ../install/index.php:242 ../install/index.php:1084
@@ -1777,12 +1815,8 @@ msgid "(Integer)"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:137 ../templates/default/voir_adherent.tpl:96
-#: ../templates/default/self_adherent.tpl:195 ../classes/adherent.class.php:130
+#: ../templates/default/self_adherent.tpl:195 ../classes/adherent.class.php:131
 msgid "Other informations:"
-msgstr ""
-
-#: ../templates/default/page.tpl:101
-msgid "Edit labels"
 msgstr ""
 
 #: ../gestion_contributions.php:333 ../gestion_adherents.php:427
@@ -1793,16 +1827,16 @@ msgstr ""
 msgid "empty login"
 msgstr ""
 
-#: ../install/index.php:507
-msgid "Unable to connect to the database"
+#: ../templates/default/page.tpl:91
+msgid "My transactions"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:173 ../templates/default/voir_adherent.tpl:129
-#: ../templates/default/self_adherent.tpl:146 ../classes/adherent.class.php:123
+#: ../templates/default/self_adherent.tpl:146 ../classes/adherent.class.php:124
 msgid "Mobile phone:"
 msgstr ""
 
-#: ../templates/default/page.tpl:139
+#: ../templates/default/page.tpl:142
 msgid "E-mail"
 msgstr ""
 
@@ -1818,7 +1852,7 @@ msgstr ""
 msgid "Edit status"
 msgstr ""
 
-#: ../templates/default/export.tpl:14
+#: ../templates/default/export.tpl:13
 msgid "Which parameted export(s) do you want to run?"
 msgstr ""
 
@@ -1826,7 +1860,7 @@ msgstr ""
 msgid "Priority"
 msgstr ""
 
-#: ../templates/default/page.tpl:77
+#: ../templates/default/page.tpl:80
 msgid "List of members"
 msgstr ""
 
@@ -1859,7 +1893,7 @@ msgid "unreachable members:"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:189 ../templates/default/voir_adherent.tpl:153
-#: ../templates/default/self_adherent.tpl:162 ../classes/adherent.class.php:128
+#: ../templates/default/self_adherent.tpl:162 ../classes/adherent.class.php:129
 msgid "Jabber:"
 msgstr ""
 
@@ -1867,7 +1901,7 @@ msgstr ""
 msgid "no member"
 msgstr ""
 
-#: ../templates/default/page.tpl:123 ../templates/default/page.tpl:187
+#: ../templates/default/page.tpl:126 ../templates/default/page.tpl:190
 msgid "Legend"
 msgstr ""
 
@@ -1884,14 +1918,12 @@ msgid "The mail server filled in the preferences cannot be reached. Ask Galette 
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:177 ../templates/default/voir_adherent.tpl:133
-#: ../templates/default/self_adherent.tpl:150 ../classes/adherent.class.php:124
+#: ../templates/default/self_adherent.tpl:150 ../classes/adherent.class.php:125
 msgid "E-Mail:"
 msgstr ""
 
-#: ../self_adherent.php:306 ../ajouter_adherent.php:389
-#: ../templates/default/page.tpl:134 ../templates/default/page.tpl:135
-#: ../classes/politeness.class.php:63
-msgid "Society"
+#: ../templates/default/page.tpl:91
+msgid "View and filter all my transactions"
 msgstr ""
 
 #: ../gestion_contributions.php:300
@@ -1900,6 +1932,10 @@ msgstr ""
 
 #: ../mailing_adherents.php:114 ../mailing_adherents.php:126
 msgid "A problem happened while sending mail to :"
+msgstr ""
+
+#: ../templates/default/page.tpl:106
+msgid "Emails content"
 msgstr ""
 
 #: ../templates/default/ajouter_transaction.tpl:1
@@ -1952,7 +1988,7 @@ msgstr ""
 msgid "file_name"
 msgstr ""
 
-#: ../templates/default/page.tpl:82
+#: ../templates/default/page.tpl:85
 msgid "Add a transaction"
 msgstr ""
 
@@ -1970,6 +2006,10 @@ msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:68
 msgid "Send"
+msgstr ""
+
+#: ../templates/default/page.tpl:105
+msgid "Manage various lists that are used in the application"
 msgstr ""
 
 #: ../install/index.php:415
@@ -1992,7 +2032,7 @@ msgstr ""
 msgid "Not a GIF file "
 msgstr ""
 
-#: ../templates/default/page.tpl:140
+#: ../templates/default/page.tpl:143
 msgid "Send a mail"
 msgstr ""
 
@@ -2017,8 +2057,16 @@ msgstr ""
 msgid "Please repeat in the field the password shown in the image."
 msgstr ""
 
+#: ../templates/default/page.tpl:85
+msgid "Add new transaction in database"
+msgstr ""
+
 #: ../gestion_contributions.php:326 ../gestion_adherents.php:419
 msgid "All members"
+msgstr ""
+
+#: ../templates/default/page.tpl:101
+msgid "Customize fields"
 msgstr ""
 
 #: ../includes/i18n.inc.php:222
@@ -2054,6 +2102,7 @@ msgid "lines"
 msgstr ""
 
 #: ../templates/default/history.tpl:85 ../templates/default/gestion_transactions.tpl:40
+#: ../templates/default/export.tpl:18
 msgid "Description"
 msgstr ""
 
@@ -2070,17 +2119,17 @@ msgstr ""
 msgid "No member was selected, please check at least one name."
 msgstr ""
 
-#: ../templates/default/page.tpl:205
+#: ../templates/default/page.tpl:208
 msgid "Gift"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:100 ../templates/default/voir_adherent.tpl:77
-#: ../classes/adherent.class.php:137
+#: ../classes/adherent.class.php:138
 msgid "Freed of dues:"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:126 ../templates/default/voir_adherent.tpl:87
-#: ../classes/adherent.class.php:134
+#: ../classes/adherent.class.php:135
 msgid "Creation date:"
 msgstr ""
 
@@ -2102,7 +2151,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:69 ../templates/default/ajouter_adherent.tpl:165
 #: ../templates/default/voir_adherent.tpl:121 ../templates/default/self_adherent.tpl:138
-#: ../classes/adherent.class.php:121
+#: ../classes/adherent.class.php:122
 msgid "Country:"
 msgstr ""
 
@@ -2160,11 +2209,11 @@ msgstr ""
 msgid "Edit '%s' field"
 msgstr ""
 
-#: ../templates/default/page.tpl:80
+#: ../templates/default/page.tpl:83
 msgid "Add a member"
 msgstr ""
 
-#: ../templates/default/page.tpl:148
+#: ../templates/default/page.tpl:151
 msgid "Modify"
 msgstr ""
 
@@ -2176,20 +2225,24 @@ msgstr ""
 msgid "Message preview:"
 msgstr ""
 
-#: ../templates/default/page.tpl:74
+#: ../templates/default/page.tpl:77
 msgid "Navigation"
 msgstr ""
 
-#: ../templates/default/page.tpl:181
+#: ../templates/default/page.tpl:106
+msgid "Manage emails texts and subjects"
+msgstr ""
+
+#: ../templates/default/page.tpl:184
 msgid "Lateness in fee"
 msgstr ""
 
-#: ../templates/default/page.tpl:100
+#: ../templates/default/page.tpl:103
 msgid "Configure member forms"
 msgstr ""
 
-#: ../gestion_contributions.php:300 ../gestion_adherents.php:370
-msgid "since"
+#: ../configurer_fiches.php:72
+msgid "- The name field cannot be void."
 msgstr ""
 
 #: ../ajouter_adherent.php:260
@@ -2213,21 +2266,17 @@ msgstr ""
 msgid "birth date:"
 msgstr ""
 
-#: ../templates/default/traduire_libelles.tpl:16
-msgid "Choose label to translate"
+#: ../templates/default/page.tpl:86
+msgid "View application's logs"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:201 ../templates/default/voir_adherent.tpl:169
-#: ../templates/default/self_adherent.tpl:174 ../classes/adherent.class.php:143
+#: ../templates/default/self_adherent.tpl:174 ../classes/adherent.class.php:144
 msgid "fingerprint:"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:28
 msgid "Picture:"
-msgstr ""
-
-#: ../templates/default/page.tpl:103
-msgid "Email contents"
 msgstr ""
 
 #: ../templates/default/gestion_textes.tpl:46
@@ -2255,7 +2304,7 @@ msgid "Generate labels"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:131 ../templates/default/voir_adherent.tpl:91
-#: ../classes/adherent.class.php:129
+#: ../classes/adherent.class.php:130
 msgid "Other informations (admin):"
 msgstr ""
 
@@ -2288,7 +2337,7 @@ msgid "(Errors on DROP and RENAME operations can be ignored)"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:83 ../templates/default/voir_adherent.tpl:69
-#: ../classes/adherent.class.php:135
+#: ../classes/adherent.class.php:136
 msgid "Account:"
 msgstr ""
 
@@ -2330,7 +2379,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:65 ../templates/default/ajouter_adherent.tpl:161
 #: ../templates/default/voir_adherent.tpl:117 ../templates/default/self_adherent.tpl:134
-#: ../classes/adherent.class.php:120
+#: ../classes/adherent.class.php:121
 msgid "City:"
 msgstr ""
 
@@ -2342,12 +2391,12 @@ msgstr ""
 msgid "Founder member"
 msgstr ""
 
-#: ../templates/default/page.tpl:144 ../templates/default/page.tpl:145
+#: ../templates/default/page.tpl:147 ../templates/default/page.tpl:148
 #: ../templates/default/preferences.tpl:27
 msgid "Admin"
 msgstr ""
 
-#: ../templates/default/page.tpl:173
+#: ../templates/default/page.tpl:176
 msgid "Membership in order"
 msgstr ""
 
@@ -2401,6 +2450,10 @@ msgstr ""
 msgid "Default contributions types cannot be initialized."
 msgstr ""
 
+#: ../templates/default/page.tpl:103
+msgid "Manage additional fields for various forms"
+msgstr ""
+
 #: ../templates/default/preferences.tpl:118
 msgid "(dd/mm)"
 msgstr ""
@@ -2451,6 +2504,10 @@ msgstr ""
 msgid "NB : The mandatory fields are in"
 msgstr ""
 
+#: ../classes/pdf.class.php:111
+msgid "Missing or incorrect image file "
+msgstr ""
+
 #: ../includes/i18n.inc.php:216
 msgid "spanish"
 msgstr ""
@@ -2484,6 +2541,10 @@ msgstr ""
 msgid "Current logo"
 msgstr ""
 
+#: ../templates/default/page.tpl:82
+msgid "View and filter transactions"
+msgstr ""
+
 #: ../install/index.php:124 ../install/index.php:134
 msgid "Installation mode unknown"
 msgstr ""
@@ -2500,6 +2561,10 @@ msgstr ""
 msgid "Confirmation:"
 msgstr ""
 
+#: ../templates/default/traduire_libelles.tpl:16
+msgid "Choose label to translate"
+msgstr ""
+
 #: ../install/index.php:258 ../install/index.php:1088
 msgid "Saving the parameters"
 msgstr ""
@@ -2508,7 +2573,7 @@ msgstr ""
 msgid "Parameters couldn't be saved."
 msgstr ""
 
-#: ../templates/default/page.tpl:149 ../templates/default/page.tpl:192
+#: ../templates/default/page.tpl:152 ../templates/default/page.tpl:195
 #: ../templates/default/voir_adherent.tpl:20
 msgid "Modification"
 msgstr ""
@@ -2517,7 +2582,7 @@ msgstr ""
 msgid "Go back"
 msgstr ""
 
-#: ../classes/politeness.class.php:60
+#: ../classes/politeness.class.php:69
 msgid "Miss."
 msgstr ""
 
@@ -2530,7 +2595,7 @@ msgstr ""
 msgid "Zip - Town"
 msgstr ""
 
-#: ../classes/adherent.class.php:118
+#: ../classes/adherent.class.php:119
 msgid "Address (continuation)"
 msgstr ""
 
@@ -2546,7 +2611,7 @@ msgstr ""
 msgid "Default preferences cannot be initialized."
 msgstr ""
 
-#: ../templates/default/page.tpl:84
+#: ../templates/default/page.tpl:87
 msgid "Exports"
 msgstr ""
 
@@ -2558,12 +2623,12 @@ msgstr ""
 msgid "member"
 msgstr ""
 
-#: ../classes/adherent.class.php:139
+#: ../classes/adherent.class.php:140
 msgid "Due date:"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:60 ../templates/default/voir_adherent.tpl:48
-#: ../templates/default/self_adherent.tpl:102 ../classes/adherent.class.php:131
+#: ../templates/default/self_adherent.tpl:102 ../classes/adherent.class.php:132
 msgid "Profession:"
 msgstr ""
 
@@ -2577,6 +2642,10 @@ msgstr ""
 
 #: ../install/index.php:923
 msgid "Save the parameters"
+msgstr ""
+
+#: ../templates/default/page.tpl:84
+msgid "Add new contribution in database"
 msgstr ""
 
 #: ../templates/default/ajouter_adherent.tpl:29 ../templates/default/voir_adherent.tpl:37
@@ -2595,11 +2664,15 @@ msgstr ""
 msgid "Font size:"
 msgstr ""
 
-#: ../templates/default/page.tpl:161
+#: ../templates/default/page.tpl:164
 msgid "Active account"
 msgstr ""
 
-#: ../templates/default/page.tpl:98 ../templates/default/preferences.tpl:1
+#: ../templates/default/gestion_contributions.tpl:49
+msgid "Begin."
+msgstr ""
+
+#: ../templates/default/page.tpl:100 ../templates/default/preferences.tpl:1
 msgid "Settings"
 msgstr ""
 
@@ -2607,7 +2680,7 @@ msgstr ""
 msgid "no transaction"
 msgstr ""
 
-#: ../templates/default/page.tpl:96
+#: ../templates/default/page.tpl:98
 msgid "Configuration"
 msgstr ""
 
@@ -2625,6 +2698,10 @@ msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:193
 msgid "Do you really want to delete all selected accounts (and related contributions)?"
+msgstr ""
+
+#: ../templates/default/page.tpl:105
+msgid "Manage lists"
 msgstr ""
 
 #: ../templates/default/display_dynamic_fields.tpl:4 ../templates/default/display_dynamic_fields.tpl:8
