@@ -108,8 +108,7 @@
 			</thead>
 			<tfoot>
 				<tr>
-					<td colspan="6" class="right">
-						<a href="#" onclick="check();" class="fleft">{_T string="(Un)Check all"}</a>
+					<td colspan="6" class="right" id="table_footer">
 						{_T string="Pages:"}
 						<span class="pagelink">
 						{section name="pageLoop" start=1 loop=$nb_pages+1}
@@ -165,27 +164,30 @@
 {/foreach}
 			</tbody>
 		</table>
-{if $nb_members != 0}		
-		{literal}
+{if $nb_members != 0}
 		<script type="text/javascript">
-		//<![CDATA[ 
-		var checked = 1; 	
-		function check()
-		{
-			for (var i=0;i<document.forms.listform.elements.length;i++)
-			{
-				var e = document.forms.listform.elements[i];
-				if(e.type == "checkbox")
-				{
-					e.checked = checked;
-				}
-			}
-			checked = !checked;
-			return(false);
-		}
+		//<![CDATA[
+		var _is_checked = true;
+		var _bind_check = function(){ldelim}
+			$('#checkall').click(function(){ldelim}
+				$('#listing :checkbox[name=member_sel[]]').each(function(){ldelim}
+					this.checked = _is_checked; 
+				{rdelim});
+				_is_checked = !_is_checked;
+			{rdelim});
+			$('#checkinvert').click(function(){ldelim}
+				$('#listing :checkbox[name=member_sel[]]').each(function(){ldelim}
+					this.checked = !$(this).is(':checked'); 
+				{rdelim});
+			{rdelim});
+		{rdelim}
+		{* Use of Javascript to draw specifi elements that are not relevant is JS is inactive *}
+		$(function(){ldelim}
+			$('#table_footer').append('<span class="fleft"><a href="#" id="checkall">{_T string="(Un)Check all"}</a> | <a href="#" id="checkinvert">{_T string="Invert selection"}</a></span>');
+			_bind_check();
+		{rdelim});
 		//]]>
 		</script>
-		{/literal}
 {/if}
 {if $nb_members != 0}
 			<ul class="selection_menu">
