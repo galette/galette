@@ -38,6 +38,7 @@ PHP_SOURCES = ../index.php \
 ../templates/default/ajouter_adherent.tpl \
 ../templates/default/ajouter_contribution.tpl \
 ../templates/default/configurer_fiches.tpl \
+../templates/default/config_fields.tpl \
 ../templates/default/gestion_contributions.tpl \
 ../templates/default/traduire_libelles.tpl \
 ../templates/default/history.tpl \

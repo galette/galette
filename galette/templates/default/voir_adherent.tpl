@@ -1,14 +1,22 @@
 	<h1 id="titre">{_T string="Member Profile"}</h1>
-    {if $error_detected|@count != 0}
+{if $error_detected|@count != 0}
     		<div id="errorbox">
     			<h1>{_T string="- ERROR -"}</h1>
     			<ul>
-    {foreach from=$error_detected item=error}
+{foreach from=$error_detected item=error}
     				<li>{$error}</li>
-    {/foreach}
+{/foreach}
     			</ul>
     		</div>
-    {/if}
+{/if}
+{if $mail_warning}
+		<div id="warningbox">
+			<h1>{_T("- WARNING -")}</h1>
+			<ul>
+				<li>{$mail_warning}</li>
+			</ul>
+		</div>
+{/if}
 	<div class="bigtable">
 		<ul id="details_menu">
 {if ($pref_card_self eq 1) or ($login->isAdmin())}

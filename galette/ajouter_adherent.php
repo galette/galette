@@ -43,6 +43,7 @@ if ( !$login->isLogged() )
 
 require_once('classes/adherent.class.php');
 require_once('classes/status.class.php');
+require_once('classes/mailing.class.php');
 include("includes/dynamic_fields.inc.php");
 include(WEB_ROOT . 'classes/texts.class.php');
 
@@ -58,9 +59,13 @@ if ( $login->isAdmin() )
 	
 	// disable some fields
 	$disabled = array(
-			'id_adh' => 'disabled="disabled"',
-			'date_echeance' => 'disabled="disabled"'
-		);
+		'id_adh' => 'disabled="disabled"',
+		'date_echeance' => 'disabled="disabled"'
+	);
+	if( $preferences->pref_mail_method == Mailing::METHOD_DISABLED ){
+		$disabled['send_mail'] = 'disabled="disabled"';
+	}
+
 }
 else
 {
@@ -172,7 +177,7 @@ if (isset($_POST["id_adh"]))
 								if ($adherent['id_adh'] != '')
 									$requete .= " AND id_adh!=" . $DB->qstr($adherent['id_adh'], get_magic_quotes_gpc());
 								$result = &$DB->Execute($requete);
-								if (!$result->EOF || $value==PREF_ADMIN_LOGIN)
+								if (!$result->EOF || $value == $preferences->pref_admin_login)
 									$error_detected[] = _T("- This username is already used by another member !");
 							}
 						}
@@ -216,25 +221,20 @@ if (isset($_POST["id_adh"]))
 	}
 		
 	// missing relations
-	if (isset($adherent["mail_confirm"]))
-	{
-		if (!isset($adherent["email_adh"]))
-			$error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
-		elseif ($adherent["email_adh"]=="")
-			$error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
+	if (isset($adherent["mail_confirm"])) {
+		if( $preferences->pref_mail_method > Mailing::METHOD_DISABLED )
+			if (!isset($adherent["email_adh"]) || $adherent['email_adh'] == '')
+				$error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
 	}
 
 	// missing required fields?
-	while (list($key,$val) = each($required))
-	{
+	while (list($key,$val) = each($required)) {
 		if (!isset($disabled[$key]) && (!isset($adherent[$key]) || trim($adherent[$key])==''))
 			$error_detected[] = _T("- Mandatory field empty.")." ($key)";
 	}
 
-	if (count($error_detected)==0)
-	{
-		if ($adherent["id_adh"] == "")
-		{
+	if (count($error_detected)==0) {
+		if ($adherent["id_adh"] == "") {
 			$requete = "INSERT INTO ".PREFIX_DB."adherents
 			(" . substr($insert_string_fields,1) . ")
 			VALUES (" . substr($insert_string_values,1) . ")";
@@ -245,15 +245,15 @@ if (isset($_POST["id_adh"]))
 			$foo = _T("Member card added");
 
 			//Send email to admin if preference checked
-		   if (PREF_BOOL_MAILADH) {
+			if ($preferences->pref_bool_mailadh) {
 				$texts = new texts();
-				$mtxt = $texts->getTexts("newadh",PREF_LANG);
-				$mtxt[tsubject] = str_replace("{NAME_ADH}", custom_html_entity_decode($adherent['nom_adh']), $mtxt[tsubject]);
-				$mtxt[tsubject] = str_replace("{SURNAME_ADH}", custom_html_entity_decode($adherent['prenom_adh']), $mtxt[tsubject]);
-				$mtxt[tbody] = str_replace("{NAME_ADH}", custom_html_entity_decode($adherent['nom_adh']), $mtxt[tbody]);
-				$mtxt[tbody] = str_replace("{SURNAME_ADH}", custom_html_entity_decode($adherent['prenom_adh']), $mtxt[tbody]);
-				$mtxt[tbody] = str_replace("{LOGIN}", custom_html_entity_decode($adherent['login_adh']), $mtxt[tbody]);
-				$mail_result = custom_mail(PREF_EMAIL_NEWADH,$mtxt[tsubject],$mtxt[tbody]);
+				$mtxt = $texts->getTexts('newadh', $preferences->pref_lang);
+				$mtxt->tsubject = str_replace("{NAME_ADH}", custom_html_entity_decode($adherent['nom_adh']), $mtxt->tsubject);
+				$mtxt->tsubject = str_replace("{SURNAME_ADH}", custom_html_entity_decode($adherent['prenom_adh']), $mtxt->tsubject);
+				$mtxt->tbody = str_replace("{NAME_ADH}", custom_html_entity_decode($adherent['nom_adh']), $mtxt->tbody);
+				$mtxt->tbody = str_replace("{SURNAME_ADH}", custom_html_entity_decode($adherent['prenom_adh']), $mtxt->tbody);
+				$mtxt->tbody = str_replace("{LOGIN}", custom_html_entity_decode($adherent['login_adh']), $mtxt->tbody);
+				$mail_result = custom_mail($preferences->pref_email_newadh, $mtxt->tsubject,$mtxt->tbody);
 				unset ($texts);
 				if( $mail_result != 1) {
 					$hist->add("A problem happened while sending email to admin for account:"." \"" . $_POST["email_adh"] . "\"");
@@ -265,9 +265,7 @@ if (isset($_POST["id_adh"]))
 			//nom_adh and prenom_adh is not sent when form is used by a simple user
 			//$hist->add('Member card updated:',strtoupper($_POST["nom_adh"]).' '.$_POST["prenom_adh"], $requete);
 			$hist->add('Member card added:',strtoupper($_POST["login_adh"]),$requete);
-		}
-		else
-		{
+		} else {
 			$requete = "UPDATE ".PREFIX_DB."adherents
 				SET " . substr($update_string,1) . "
 				WHERE id_adh=" . $adherent['id_adh'];
@@ -286,26 +284,25 @@ if (isset($_POST["id_adh"]))
 		if (isset($_FILES['photo']))
 			if ($_FILES['photo']['tmp_name'] !='')
 				if (is_uploaded_file($_FILES['photo']['tmp_name']))
-					if (!Picture::store($adherent['id_adh'], $_FILES['photo']))
+					if (!$member->picture->store($adherent['id_adh'], $_FILES['photo']))
 						$error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
         
 		if (isset($_POST['del_photo']))
-			if (!Picture::delete($adherent['id_adh']))
+			if (!$member->picture->delete($adherent['id_adh']))
 				$error_detected[] = _T("Delete failed");
 
-		if (isset($_POST["mail_confirm"]))
-			if ($_POST["mail_confirm"]=="1")
-				if (isset($adherent['email_adh']) && $adherent['email_adh']!="")
-				{
+		if (isset($_POST["mail_confirm"])){
+			if ($_POST["mail_confirm"]=="1" && $preferences->pref_mail_method > Mailing::METHOD_DISABLED) {
+				if (isset($adherent['email_adh']) && $adherent['email_adh']!="") {
 					// Get email text in database
 					$texts = new texts();
-					$mtxt = $texts->getTexts("sub",PREF_LANG);
+					$mtxt = $texts->getTexts("sub", $preferences->pref_lang);
 					// Replace Tokens
-					$mtxt[tbody] = str_replace("{NAME}", PREF_NOM, $mtxt[tbody]);
-					$mtxt[tbody] = str_replace("{LOGIN_URI}", "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"]),$mtxt[tbody]);
-					$mtxt[tbody] = str_replace("{LOGIN}", custom_html_entity_decode($adherent['login_adh']), $mtxt[tbody]);
-					$mtxt[tbody] = str_replace("{PASSWORD}", custom_html_entity_decode($adherent['mdp_adh']),$mtxt[tbody]);
-					$mail_result = custom_mail($adherent['email_adh'],$mtxt[tsubject],$mtxt[tbody]);
+					$mtxt->tbody = str_replace("{NAME}", $preferences->pref_nom, $mtxt->tbody);
+					$mtxt->tbody = str_replace("{LOGIN_URI}", "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"]), $mtxt->tbody);
+					$mtxt->tbody = str_replace("{LOGIN}", custom_html_entity_decode($adherent['login_adh']), $mtxt->tbody);
+					$mtxt->tbody = str_replace("{PASSWORD}", custom_html_entity_decode($adherent['mdp_adh']), $mtxt->tbody);
+					$mail_result = custom_mail($adherent['email_adh'], $mtxt->tsubject, $mtxt->tbody);
 					//TODO: duplicate piece of code with mailing_adherent
 					unset ($texts);
 					if( $mail_result == 1) {
@@ -336,30 +333,35 @@ if (isset($_POST["id_adh"]))
 								break;
 						}
 					}
-				}else{
+				} else {
 					$error_detected[] = _T("Sent mail is checked but there is no email address")." \"" . $_POST["login_adh"] . "\"";
 				}
-
-				// dynamic fields
-				set_all_dynamic_fields($DB, 'adh', $adherent['id_adh'], $adherent['dyn']);
-
-				// deadline
-				$date_fin = get_echeance($DB, $adherent['id_adh']);
-				if ($date_fin!="")
-					$date_fin_update = $DB->DBDate($date_fin[2].'-'.$date_fin[1].'-'.$date_fin[0]);
-				else
-					$date_fin_update = "NULL";
-				$requete = "UPDATE ".PREFIX_DB."adherents
-						SET date_echeance=".$date_fin_update."
-						WHERE id_adh=" . $adherent['id_adh'];
-				$DB->Execute($requete);
-
-				if (!isset($_POST['id_adh']))
-					header('location: ajouter_contribution.php?id_adh='.$adherent['id_adh']);
-				elseif (!isset($_POST['del_photo']) && (count($error_detected)==0))
-					header('location: voir_adherent.php?id_adh='.$adherent['id_adh']);
+			} elseif($_POST["mail_confirm"] == '1' && $preferences->pref_mail_method == Mailing::METHOD_DISABLED){
+				//if mail has been disabled in the preferences, we should not be here ; we do not throw an error, just a simple warning that will be show later
+				$_SESSION['galette']['mail_warning'] = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
 			}
+		}
+
+		// dynamic fields
+		set_all_dynamic_fields($DB, 'adh', $adherent['id_adh'], $adherent['dyn']);
+
+		// deadline
+		$date_fin = get_echeance($DB, $adherent['id_adh']);
+		if ($date_fin!="")
+			$date_fin_update = $DB->DBDate($date_fin[2].'-'.$date_fin[1].'-'.$date_fin[0]);
+		else
+			$date_fin_update = "NULL";
+		$requete = "UPDATE ".PREFIX_DB."adherents
+				SET date_echeance=".$date_fin_update."
+				WHERE id_adh=" . $adherent['id_adh'];
+		$DB->Execute($requete);
+
+		if (!isset($_POST['id_adh']))
+			header('location: ajouter_contribution.php?id_adh='.$adherent['id_adh']);
+		elseif (!isset($_POST['del_photo']) && (count($error_detected)==0))
+			header('location: voir_adherent.php?id_adh='.$adherent['id_adh']);
 	}
+}
 
 // - declare dynamic fields for display
 $disabled['dyn'] = array();

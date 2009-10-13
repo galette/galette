@@ -60,7 +60,7 @@ class FieldsCategories{
 		$result = $mdb->query( $query );
 
 		if (MDB2::isError($result)) {
-			$log->log('Cannot get fields categories list | ' . $result->getMessage() . '(' . $result->getDebugInfo() . ')', PEAR_LOG_WARNING);
+			$log->log('[' . get_class($this) . '] Cannot get fields categories list | ' . $result->getMessage() . '(' . $result->getDebugInfo() . ')', PEAR_LOG_WARNING);
 			return false;
 		}
 

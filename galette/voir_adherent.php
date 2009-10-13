@@ -79,9 +79,14 @@ $tpl->assign('member', $member);
 $tpl->assign('pref_lang_img', $i18n->getFlagFromId($member->language));
 $tpl->assign('pref_lang', ucfirst($i18n->getNameFromId($member->language)));
 $tpl->assign('pref_card_self', $preferences->pref_card_self);
-$tpl->assign("dynamic_fields",$dynamic_fields);
-$tpl->assign("time",time());
-$content = $tpl->fetch("voir_adherent.tpl");
-$tpl->assign("content",$content);
-$tpl->display("page.tpl");
+$tpl->assign('dynamic_fields', $dynamic_fields);
+$tpl->assign('time', time());
+//if we got a mail warning when adding/editing a member, we show it and delete it from session
+if( isset($_SESSION['galette']['mail_warning']) ){
+	$tpl->assign('mail_warning', $_SESSION['galette']['mail_warning']);
+	unset($_SESSION['galette']['mail_warning']);
+}
+$content = $tpl->fetch('voir_adherent.tpl');
+$tpl->assign('content', $content);
+$tpl->display('page.tpl');
 ?>

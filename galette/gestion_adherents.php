@@ -55,6 +55,7 @@ if( isset($_SESSION['galette']['mailing']) ) {
 	unset($_SESSION['galette']['mailing']);
 }
 
+require_once('classes/adherent.class.php');
 require_once('classes/varslist.class.php');
 if( isset($_SESSION['galette']['varslist']) ){
 	$varslist = unserialize( $_SESSION['galette']['varslist'] );
@@ -151,6 +152,8 @@ if (isset($_GET["tri"]))
 			$resultat = $DB->Execute($requetesup);
 			if (!$resultat->EOF)
 			{
+				$member = new Adherent( (int)$supval );
+
 				// supression record adhérent
 				$requetesup = "DELETE FROM ".PREFIX_DB."adherents 
 						WHERE id_adh=".$DB->qstr($supval, get_magic_quotes_gpc()); 
@@ -172,7 +175,8 @@ if (isset($_GET["tri"]))
 				/*$requetesup = "DELETE FROM ".PREFIX_DB."pictures
 						WHERE id_adh=".$DB->qstr($supval, get_magic_quotes_gpc());
 				$DB->Execute($requetesup);*/
-				Picture::delete( $DB->qstr($supval, get_magic_quotes_gpc()) );
+				/** TODO: picture should be removed by object when member is deleted */
+				$member->picture->delete( $DB->qstr($supval, get_magic_quotes_gpc()) );
 			}
 			$resultat->Close();
 			/** FIXME: is that required to reload the page ? Members list should not be loaded yet */
