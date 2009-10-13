@@ -165,6 +165,16 @@
 			</tbody>
 		</table>
 {if $nb_members != 0}
+			<ul class="selection_menu">
+				<li>{_T string="Selection:"}</li>
+				<li><input type="submit" id="delete" class="submit" onclick="return confirm('{_T string="Do you really want to delete all selected accounts (and related contributions)?"|escape:"javascript"}');" name="delete" value="{_T string="Delete"}"/></li>
+				<li><input type="submit" id="sendmail" class="submit" name="mailing" value="{_T string="Mail"}"/></li>
+				<li><input type="submit" class="submit" name="labels" value="{_T string="Generate labels"}"/></li>
+				<li><input type="submit" class="submit" name="cards" value="{_T string="Generate Member Cards"}"/></li>
+			</ul>
+{/if}
+		</form>
+{if $nb_members != 0}
 		<script type="text/javascript">
 		//<![CDATA[
 		var _is_checked = true;
@@ -185,26 +195,10 @@
 		$(function(){ldelim}
 			$('#table_footer').append('<span class="fleft"><a href="#" id="checkall">{_T string="(Un)Check all"}</a> | <a href="#" id="checkinvert">{_T string="Invert selection"}</a></span>');
 			_bind_check();
+			$('#nbshow').change(function() {ldelim}
+				this.form.submit();
+			{rdelim});
 		{rdelim});
 		//]]>
 		</script>
 {/if}
-{if $nb_members != 0}
-			<ul class="selection_menu">
-				<li>{_T string="Selection:"}</li>
-				<li><input type="submit" id="delete" class="submit" onclick="return confirm('{_T string="Do you really want to delete all selected accounts (and related contributions)?"|escape:"javascript"}');" name="delete" value="{_T string="Delete"}"/></li>
-				<li><input type="submit" id="sendmail" class="submit" name="mailing" value="{_T string="Mail"}"/></li>
-				<li><input type="submit" class="submit" name="labels" value="{_T string="Generate labels"}"/></li>
-				<li><input type="submit" class="submit" name="cards" value="{_T string="Generate Member Cards"}"/></li>
-			</ul>
-{/if}
-		</form>
-		{literal}
-		<script type="text/javascript">
-			//<![CDATA[
-				$('#nbshow').change(function() {
-					this.form.submit();
-				});
-			//]]>
-		</script>
-		{/literal}
