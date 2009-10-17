@@ -30,7 +30,8 @@
  * @version    $Id$
  * @since      Disponible depuis la Release 0.62
  */
- 
+
+/** @ignore */
 require_once('includes/galette.inc.php');
 
 if( !$login->isLogged() )

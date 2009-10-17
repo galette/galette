@@ -29,6 +29,9 @@
  * @since      Disponible depuis la Release 0.7alpha
  */
 
+/** @ignore */
+require_once('i18n.class.php');
+
 /**
  * Preferences for galette
  *
@@ -36,9 +39,6 @@
  * @package Galette
  *
  */
-
-require_once('i18n.class.php');
-
 class Preferences{
 	private $prefs;
 	private $error;

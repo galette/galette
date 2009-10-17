@@ -30,6 +30,7 @@
  * @version    $Id$
  */
 
+/** @ignore */
 require_once('includes/galette.inc.php');
 //fo default, there is no login error
 $loginfault = false;

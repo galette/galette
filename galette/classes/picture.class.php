@@ -30,6 +30,10 @@
  * @version    $Id$
  */
 
+/**
+ * @name Picture
+ * @package Galette
+ */
 class Picture{
 	//constants that will not be overrided
 	const INVALID_FILE = -1;

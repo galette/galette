@@ -29,6 +29,9 @@
  * @since      Disponible depuis la Release 0.7alpha
  */
 
+/** @ignore */
+require_once('adherent.class.php');
+
 /**
  * Required class for galette :
  * defines which fields are mandatory and which are not.
@@ -37,9 +40,6 @@
  * @package Galette
  *
  */
-
-require_once('adherent.class.php');
-
 class Required{
 	private $all_required;
 	private $error = array();

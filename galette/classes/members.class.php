@@ -29,6 +29,10 @@
  * @since      Disponible depuis la Release 0.7alpha
  */
 
+/** @ignore */
+require_once('adherent.class.php');
+require_once('status.class.php');
+
 /**
  * Members class for galette
  *
@@ -36,10 +40,6 @@
  * @package Galette
  *
  */
-
-require_once('adherent.class.php');
-require_once('status.class.php');
-
 class Members {
 	const TABLE = Adherent::TABLE;
 	const PK = Adherent::PK;

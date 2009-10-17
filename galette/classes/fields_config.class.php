@@ -29,6 +29,11 @@
  * @since      Disponible depuis la Release 0.7alpha
  */
 
+
+/** @ignore */
+require_once('adherent.class.php');
+require_once('fields_categories.class.php');
+
 /**
  * Fields config class for galette :
  * defines fields mandatory, order and visibility
@@ -37,10 +42,6 @@
  * @package Galette
  *
  */
-
-require_once('adherent.class.php');
-require_once('fields_categories.class.php');
-
 class FieldsConfig{
 	const HIDDEN = 0;
 	const VISIBLE = 1;

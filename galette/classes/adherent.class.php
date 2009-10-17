@@ -29,6 +29,13 @@
  * @since      Disponible depuis la Release 0.7alpha
  */
 
+/** @ignore */
+require_once('politeness.class.php');
+require_once('status.class.php');
+require_once('fields_config.class.php');
+require_once('fields_categories.class.php');
+require_once('picture.class.php');
+
 /**
  * Member class for galette
  *
@@ -36,13 +43,6 @@
  * @package Galette
  *
  */
-
-require_once('politeness.class.php');
-require_once('status.class.php');
-require_once('fields_config.class.php');
-require_once('fields_categories.class.php');
-require_once('picture.class.php');
-
 class Adherent {
 	const TABLE = 'adherents';
 	const PK = 'id_adh';

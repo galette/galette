@@ -29,6 +29,9 @@
  * @since      Disponible depuis la Release 0.7alpha
  */
 
+/** @ignore */
+require_once('members.class.php');
+
 /**
  * Mailing class for galette
  *
@@ -36,9 +39,6 @@
  * @package Galette
  *
  */
-
-require_once('members.class.php');
-
 class Mailing{
 	const STEP_START = 0;
 	const STEP_PROGRESS = 1;

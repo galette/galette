@@ -25,11 +25,19 @@
  * @author     Johan Cwiklinski
  * @copyright  2009 Johan Cwiklinski
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version    $Id: logo.class.php 546 2009-03-05 06:09:00Z trashy $
+ * @version    $Id$
+ * @since      Disponible depuis la Release 0.7alpha
  */
 
+/** @ignore */
 require_once('picture.class.php');
 
+/**
+ * This class stores and serve the logo.
+ * If no custom logo is found, we take galette's default one.
+ * @name Logo
+ * @package Galette
+ */
 class Logo extends Picture{
 	protected $id = 'custom_logo';
 	//database wants a member id (integer), not a string. Will be used to query the correct id
@@ -43,7 +51,7 @@ class Logo extends Picture{
 	}
 
 	/**
-	* @override
+	* @see Picture::getDefaultPicture()
 	*/
 	protected function getDefaultPicture(){
 		$this->file_path = _current_template_path . 'images/galette.png';
@@ -53,7 +61,7 @@ class Logo extends Picture{
 	}
 
 	/**
-	* @override
+	* @see picture::getCheckFileQuery()
 	*/
 	protected function getCheckFileQuery(){
 		return 'SELECT picture, format FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=\'' . $this->db_id . '\'';

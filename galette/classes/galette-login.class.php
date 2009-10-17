@@ -29,6 +29,9 @@
  * @since      Disponible depuis la Release 0.7alpha
  */
 
+/** @ignore */
+require_once('authentication.class.php');
+
 /**
  * Default authentication class for galette
  *
@@ -36,9 +39,6 @@
  * @package Galette
  *
  */
-
-require_once('authentication.class.php');
-
 class GaletteLogin extends Authentication{
 	const TABLE = 'adherents';
 	const PK = 'login_adh';

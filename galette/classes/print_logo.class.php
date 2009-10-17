@@ -26,13 +26,17 @@
  * @copyright  2009 Johan Cwiklinski
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version    $Id: print_logo.class.php 546 2009-03-05 06:09:00Z trashy $
+ * @since      Disponible depuis la Release 0.7alpha
  */
 
+/** @ignore */
 require_once('logo.class.php');
 
 /**
 * This class stores a logo for printing that could be different from the default one.
 * If no print logo is found, we take the default Logo instead.
+* @name PrintLogo
+* @package Galette
 */
 class PrintLogo extends Logo{
 	protected $id = 'custom_print_logo';
@@ -40,7 +44,7 @@ class PrintLogo extends Logo{
 	protected $db_id = 999999;
 
 	/**
-	* @override
+	* @see Logo::getDefaultPicture()
 	*/
 	protected function getDefaultPicture(){
 		//if we are here, we want to serve default logo

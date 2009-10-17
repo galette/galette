@@ -37,7 +37,8 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version    $Id$
  */
- 
+
+/** @ignore */
 require_once('includes/galette.inc.php');
 
 if ( !$login->isLogged() )
