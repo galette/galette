@@ -122,7 +122,7 @@
 						<input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
 						<span class="exemple">
 	{if $disabled.send_mail}
-							{_T("Mail has been disabled in the preferences. This functionnality is disabled.")}
+							{_T string="Mail has been disabled in the preferences. This functionnality is disabled."}
 	{else}
 							{_T string="(the member will receive his username and password by email, if he has an address.)"}
 	{/if}
