@@ -98,4 +98,18 @@ $(function() {
 			return $(this).next().html();
 		}
 	});
+
+	$('#menu h1').each(function(){
+		$(this).html('<a href="#">' + $(this).text() + '</a>').removeClass('nojs');
+	});
+
+	$('#menu').accordion({
+		header: 'h1:not(#logo)',
+		icons: {
+			header: "ui-icon-circle-arrow-e",
+			headerSelected: "ui-icon-circle-arrow-s"
+		},
+		autoHeight: false
+	});
+
 });

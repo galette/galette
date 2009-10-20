@@ -406,6 +406,7 @@ if (isset($_GET["tri"]))
 $_SESSION['galette']['varslist'] = serialize($varslist);
 
 	$tpl->assign('page_title', _T("Management of members"));
+	$tpl->assign('require_dialog', true);
 	$tpl->assign("error_detected",$error_detected);
 	if(isset($warning_detected))
 		$tpl->assign("warning_detected",$warning_detected);

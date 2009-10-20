@@ -41,6 +41,7 @@ require_once('picture.class.php');
  *
  * @name Adherent
  * @package Galette
+ * @author     Johan Cwiklinski <johan@x-tnd.be>
  *
  */
 class Adherent {

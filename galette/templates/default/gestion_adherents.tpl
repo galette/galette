@@ -1,5 +1,5 @@
 		<form action="gestion_adherents.php" method="get" id="filtre">
-		<h1 id="titre">{_T string="Management of members"}</h1>
+		<h1 id="titre" class="ui-corner-all">{_T string="Management of members"}</h1>
 {if $error_detected|@count != 0}
 		<div id="errorbox">
 			<h1>{_T string="- ERROR -"}</h1>
@@ -135,17 +135,17 @@
 					{elseif $member.genre eq 4}
 						<img src="{$template_subdir}images/icon-company.png" alt="{_T string="[W]"}" width="16" height="16"/>
 					{else}
-						<img src="{$template_subdir}images/icon-empty.png" alt="" width="10" height="12"/>
+						<img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
 					{/if}
 					{if $member.email != ''}
 						<a href="mailto:{$member.email}"><img src="{$template_subdir}images/icon-mail.png" alt="{_T string="[Mail]"}" width="16" height="16"/></a>
 					{else}
-						<img src="{$template_subdir}images/icon-empty.png" alt="" width="14" height="10"/>
+						<img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
 					{/if}
 					{if $member.admin eq 1}
 						<img src="{$template_subdir}images/icon-star.png" alt="{_T string="[admin]"}" width="16" height="16"/>
 					{else}
-						<img src="{$template_subdir}images/icon-empty.png" alt="" width="12" height="13"/>
+						<img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
 					{/if}
 					<a href="voir_adherent.php?id_adh={$member.id_adh}">{$member.nom} {$member.prenom}</a>
 					</td>
@@ -174,6 +174,85 @@
 			</ul>
 {/if}
 		</form>
+		<div id="legende" title="{_T string="Legend"}">
+			<h1>{_T string="Legend"}</h1>
+			<table>
+				<tr>
+					<th><img src="{$template_subdir}images/icon-male.png" alt="{_T string="Mister"}" width="16" height="16"/></th>
+					<td class="back">{_T string="Man"}</td>
+					<th class="back">{_T string="Name"}</th>
+					<td class="back">{_T string="Active account"}</td>
+				</tr>
+				<tr>
+					<th><img src="{$template_subdir}images/icon-female.png" alt="{_T string="Miss"} / {_T string="Mrs"}" width="16" height="16"/></th>
+					<td class="back">{_T string="Woman"}</td>
+					<th class="inactif back">{_T string="Name"}</th>
+					<td class="back">{_T string="Inactive account"}</td>
+				</tr>
+				<tr>
+					<th><img src="{$template_subdir}images/icon-company.png" alt="{_T string="Society"}" width="16" height="16"/></th>
+					<td class="back">{_T string="Society"}</td>
+					<th class="cotis-never color-sample">&nbsp;</th>
+					<td class="back">{_T string="Never contributed"}</td>
+				</tr>
+				<tr>
+					<th><img src="{$template_subdir}images/icon-star.png" alt="{_T string="Admin"}" width="16" height="16"/></th>
+					<td class="back">{_T string="Admin"}</td>
+					<th class="cotis-ok color-sample">&nbsp;</th>
+					<td class="back">{_T string="Membership in order"}</td>
+				</tr>
+				<tr>
+					<th><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="Modify"}" width="16" height="16"/></th>
+					<td class="back">{_T string="Modification"}</td>
+					<th class="cotis-soon color-sample">&nbsp;</th>
+					<td class="back">{_T string="Membership will expire soon (&lt;30d)"}</td>
+				</tr>
+				<tr>
+					<th><img src="{$template_subdir}images/icon-money.png" alt="{_T string="Contribution"}" width="16" height="16"/></th>
+					<td class="back">{_T string="Contributions"}</td>
+					<th class="cotis-late color-sample">&nbsp;</th>
+					<td class="back">{_T string="Lateness in fee"}</td>
+				</tr>
+				<tr>
+					<th><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="Delete"}" width="16" height="16"/></th>
+					<td class="back">{_T string="Deletion"}</td>
+					<!--<th></th>
+					<td></td>-->
+				</tr>
+{if $PAGENAME eq "gestion_adherents.php"}
+				<tr>
+					<th><img src="{$template_subdir}images/icon-mail.png" alt="{_T string="E-mail"}" width="16" height="16"/></th>
+					<td class="back">{_T string="Send a mail"}</td>
+					<!--<th></th>
+					<td></td>-->
+				</tr>
+{/if}
+				{*<tr>
+					<th class="back">{_T string="Name"}</th>
+					<td class="back">{_T string="Active account"}</td>
+				</tr>
+				<tr>
+					<th class="inactif back">{_T string="Name"}</th>
+					<td class="back">{_T string="Inactive account"}</td>
+				</tr>
+				<tr>
+					<th class="cotis-never color-sample">&nbsp;</th>
+					<td class="back">{_T string="Never contributed"}</td>
+				</tr>
+				<tr>
+					<th class="cotis-ok color-sample">&nbsp;</th>
+					<td class="back">{_T string="Membership in order"}</td>
+				</tr>
+				<tr>
+					<th class="cotis-soon color-sample">&nbsp;</th>
+					<td class="back">{_T string="Membership will expire soon (&lt;30d)"}</td>
+				</tr>
+				<tr>
+					<th class="cotis-late color-sample">&nbsp;</th>
+					<td class="back">{_T string="Lateness in fee"}</td>
+				</tr>*}
+			</table>
+		</div>
 {if $nb_members != 0}
 		<script type="text/javascript">
 		//<![CDATA[
@@ -197,6 +276,19 @@
 			_bind_check();
 			$('#nbshow').change(function() {ldelim}
 				this.form.submit();
+			{rdelim});
+			$('#listing').after('<div class="center"><a href="#" id="show_legend">{_T string="Show legend"}</a></div>');
+			$('#legende h1').remove();
+			$('#legende').dialog({ldelim}
+				autoOpen: false,
+				modal: true,
+				hide: 'fold',
+				width: '40%'
+			{rdelim}).dialog('close');
+
+			$('#show_legend').click(function(){ldelim}
+				$('#legende').dialog('open');
+				return false;
 			{rdelim});
 		{rdelim});
 		//]]>
