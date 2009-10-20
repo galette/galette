@@ -92,7 +92,7 @@
 				<td valign="top" nowrap="nowrap">{$log.ip}</td>
 				<td valign="top" nowrap="nowrap">{$log.adh}</td>
 				<td valign="top" nowrap="nowrap">{$log.action}</td>
-				<td valign="top">{$log.desc}</td>
+				<td valign="top">{$log.login}<br/>{$log.desc|htmlspecialchars}</td>
 			</tr>
 {foreachelse}
 			<tr><td colspan="6" class="emptylist">{_T("logs are empty")}</td></tr>
