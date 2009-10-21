@@ -104,7 +104,7 @@
 			$member_id_string .= $id_adh.",";
 		$member_id_string = substr($member_id_string,0,-1);
 		// TODO : interpret cutom tags to include personal data in mails
-		$sql = "SELECT id_adh, email_adh, nom_adh, prenom_adh
+		$sql = "SELECT id_adh, email_adh, nom_adh, prenom_adh, login_adh
 						FROM ".PREFIX_DB."adherents
 						WHERE id_adh IN ($member_id_string)";
 		$result_members = &$DB->Execute($sql);
@@ -122,7 +122,7 @@
 																	$content_type);
 			if( $mail_result == 1) {
 				$email_adh = $result_members->fields[1];
-				dblog("Send mail to :"." \"" . $email_adh . "\"", $sql);
+				dblog("Send mail to :"." \"" . $email_adh . "\"");
 				$warning_detected[] = _T("Mail sent to :")." \"" . $email_adh . "\"";
 			} else {
       switch ($mail_result) {
