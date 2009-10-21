@@ -1178,14 +1178,17 @@ ul#paths{
 	margin:0;
 	padding:0;
 }
+/* .nojs class will be removed at runtime by a js script */
 #menu h1.nojs{
 	background: #FFB619 url(jquery-ui/images/ui-bg_glass_65_FFB619_1x400.png) repeat-x scroll 50% 50%;
+}
+#menu ul.nojs{
+	margin:0 0 .5em 0;	
 }
 
 #menu ul {
 	list-style-type: none;
 	padding: 0px;
-	margin:0 0 .5em 0;
 	text-align:left;
 	overflow:hidden; /*a:active under firefox makes a overflow*/
 }

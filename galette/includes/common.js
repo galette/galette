@@ -99,8 +99,9 @@ $(function() {
 		}
 	});
 
+	$('.nojs').removeClass('nojs');
 	$('#menu h1').each(function(){
-		$(this).html('<a href="#">' + $(this).text() + '</a>').removeClass('nojs');
+		$(this).html('<a href="#">' + $(this).text() + '</a>');
 	});
 
 	$('#menu').accordion({
