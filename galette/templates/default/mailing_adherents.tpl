@@ -36,7 +36,7 @@
 		<div>
 			<p>
 				<label for="mailing_object" class="bline">{_T("Object:")}</label>
-				<input type="text" name="mailing_objet" id="mailing_objet" value="{$data.mailing_objet}" size="80"/>
+				<input type="text" name="mailing_objet" id="mailing_objet" value="{$data.mailing_objet|htmlspecialchars}" size="80"/>
 			</p>
 			<p>
 				<label for="mailing_corps" class="bline">{_T("Message:")}</label>
@@ -49,7 +49,7 @@
 	{if $etape>0}
 			<div id="mail_preview">
 				<p>{_T("Message preview:")}</p>
-				<p><span class="bline">{_T("Object:")}</span>{$data.mailing_objet}</p>
+				<p><span class="bline">{_T("Object:")}</span>{$data.mailing_objet|htmlspecialchars}</p>
 				<p>
 					<span class="bline">{_T("Message:")}</span><br/>
 		{if $data.mailing_html eq 1}
