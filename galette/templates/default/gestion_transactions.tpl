@@ -66,13 +66,13 @@
 				<th class="listing actions_row">{_T string="Actions"}</th>
 {/if}
 			</tr>
-{foreach from=$transactions item=transaction}
+{foreach from=$transactions item=transaction name=transactions_list}
 			<tr>
-				<td class="cotis-ok center nowrap">{$transaction.trans_id}</td>
-				<td class="cotis-ok nowrap">{$transaction.trans_date}</td>
-				<td class="cotis-ok nowrap">{$transaction.trans_desc}</td>
+				<td class="tbl_line_{if $smarty.foreach.transactions_list.iteration % 2 eq 0}even{else}odd{/if} center nowrap">{$transaction.trans_id}</td>
+				<td class="tbl_line_{if $smarty.foreach.transactions_list.iteration % 2 eq 0}even{else}odd{/if} nowrap">{$transaction.trans_date}</td>
+				<td class="tbl_line_{if $smarty.foreach.transactions_list.iteration % 2 eq 0}even{else}odd{/if} nowrap">{$transaction.trans_desc}</td>
 {if $login->isAdmin()}
-				<td class="cotis-ok">
+				<td class="tbl_line_{if $smarty.foreach.transactions_list.iteration % 2 eq 0}even{else}odd{/if}">
 {if $smarty.session.id_adh eq ""}
 					<a href="gestion_transactions.php?id_adh={$transaction.id_adh}">
 						{$transaction.lastname} {$transaction.firstname}
@@ -84,20 +84,16 @@
 {/if}
 				</td>
 {/if}
-				<td class="cotis-ok nowrap">{$transaction.trans_amount}</td>
+				<td class="tbl_line_{if $smarty.foreach.transactions_list.iteration % 2 eq 0}even{else}odd{/if} nowrap">{$transaction.trans_amount}</td>
 {if $login->isAdmin()}
-				<td class="cotis-ok center nowrap">
+				<td class="tbl_line_{if $smarty.foreach.transactions_list.iteration % 2 eq 0}even{else}odd{/if} center nowrap">
 					<a href="ajouter_transaction.php?trans_id={$transaction.trans_id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></a>
 					<a onclick="return confirm('{_T string="Do you really want to delete this transaction of the database ?"|escape:"javascript"}')" href="gestion_transactions.php?sup={$transaction.trans_id}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/></a>
 				</td>
 {/if}
 			</tr>
 {foreachelse}
-{if $login->isAdmin()}
-			<tr><td colspan="6" class="emptylist">{_T string="no transaction"}</td></tr>
-{else}
-			<tr><td colspan="4" class="emptylist">{_T string="no transaction"}</td></tr>
-{/if}
+			<tr><td colspan="{if $login->isAdmin()}6{else}4{/if}" class="emptylist">{_T string="no transaction"}</td></tr>
 {/foreach}
 		</table>
 		<div class="infoline2 right">
