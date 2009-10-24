@@ -104,13 +104,15 @@ $(function() {
 		$(this).html('<a href="#">' + $(this).text() + '</a>');
 	});
 
-	$('#menu').accordion({
-		header: 'h1:not(#logo)',
-		icons: {
-			header: "ui-icon-circle-arrow-e",
-			headerSelected: "ui-icon-circle-arrow-s"
-		},
-		autoHeight: false
-	});
-
+	if( $('#menu').size() > 0 ) {
+		$('#menu').accordion({
+			header: 'h1:not(#logo)',
+			icons: {
+				header: "ui-icon-circle-arrow-e",
+				headerSelected: "ui-icon-circle-arrow-s"
+			},
+			autoHeight: false,
+			active: $('#menu ul li[class*="selected"]').parent('ul').prevAll('ul').size()
+		});
+	}
 });

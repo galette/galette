@@ -1,5 +1,5 @@
 		<form action="gestion_adherents.php" method="get" id="filtre">
-		<h1 id="titre" class="ui-corner-all">{_T string="Management of members"}</h1>
+		<h1 id="titre">{_T string="Management of members"}</h1>
 {if $error_detected|@count != 0}
 		<div id="errorbox">
 			<h1>{_T string="- ERROR -"}</h1>
@@ -151,7 +151,7 @@
 					</td>
 					<td class="{$member.class} nowrap">{$member.pseudo|htmlspecialchars}</td>
 					<td class="{$member.class} nowrap">{$member.statut}</td>
-					<td class="{$member.class} nowrap">{$member.statut_cotis}</td>
+					<td class="{$member.class}">{$member.statut_cotis}</td>
 					<td class="{$member.class} center nowrap actions_row">
 						<a href="subscription_form.php?id_adh={$member.id_adh}"><img src="{$template_subdir}images/icon-fiche.png" alt="Fiche adhérent" width="18" height="13"/></a>
 						<a href="ajouter_adherent.php?id_adh={$member.id_adh}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></a>
@@ -216,41 +216,11 @@
 				<tr>
 					<th><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="Delete"}" width="16" height="16"/></th>
 					<td class="back">{_T string="Deletion"}</td>
-					<!--<th></th>
-					<td></td>-->
 				</tr>
-{if $PAGENAME eq "gestion_adherents.php"}
 				<tr>
 					<th><img src="{$template_subdir}images/icon-mail.png" alt="{_T string="E-mail"}" width="16" height="16"/></th>
 					<td class="back">{_T string="Send a mail"}</td>
-					<!--<th></th>
-					<td></td>-->
 				</tr>
-{/if}
-				{*<tr>
-					<th class="back">{_T string="Name"}</th>
-					<td class="back">{_T string="Active account"}</td>
-				</tr>
-				<tr>
-					<th class="inactif back">{_T string="Name"}</th>
-					<td class="back">{_T string="Inactive account"}</td>
-				</tr>
-				<tr>
-					<th class="cotis-never color-sample">&nbsp;</th>
-					<td class="back">{_T string="Never contributed"}</td>
-				</tr>
-				<tr>
-					<th class="cotis-ok color-sample">&nbsp;</th>
-					<td class="back">{_T string="Membership in order"}</td>
-				</tr>
-				<tr>
-					<th class="cotis-soon color-sample">&nbsp;</th>
-					<td class="back">{_T string="Membership will expire soon (&lt;30d)"}</td>
-				</tr>
-				<tr>
-					<th class="cotis-late color-sample">&nbsp;</th>
-					<td class="back">{_T string="Lateness in fee"}</td>
-				</tr>*}
 			</table>
 		</div>
 {if $nb_members != 0}
@@ -270,7 +240,7 @@
 				{rdelim});
 			{rdelim});
 		{rdelim}
-		{* Use of Javascript to draw specifi elements that are not relevant is JS is inactive *}
+		{* Use of Javascript to draw specific elements that are not relevant is JS is inactive *}
 		$(function(){ldelim}
 			$('#table_footer').append('<span class="fleft"><a href="#" id="checkall">{_T string="(Un)Check all"}</a> | <a href="#" id="checkinvert">{_T string="Invert selection"}</a></span>');
 			_bind_check();

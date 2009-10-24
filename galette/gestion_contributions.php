@@ -319,6 +319,7 @@ if ( !$login->isLogged() )
 	}
 	
 
+	$tpl->assign('require_dialog', true);
 	$tpl->assign("contributions",$contributions);
 	$tpl->assign("nb_contributions",$nb_contributions);
 	$tpl->assign("nb_pages",$nbpages);

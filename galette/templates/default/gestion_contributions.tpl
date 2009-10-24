@@ -167,12 +167,49 @@
 {/if}
 		</div>
 {/if}
-		{literal}
+		<div id="legende" title="{_T string="Legend"}">
+			<h1>{_T string="Legend"}</h1>
+			<table>
+{if $login->isAdmin()}
+				<tr>
+					<th class="back"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></th>
+					<td class="back">{_T string="Modification"}</td>
+				</tr>
+				<tr>
+					<th class="back"><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/></th>
+					<td class="back">{_T string="Deletion"}</td>
+				</tr>
+{/if}
+				<tr>
+					<th class="cotis-normal color-sample">&nbsp;</th>
+					<td class="back">{_T string="Contribution"}</td>
+				</tr>
+				<tr>
+					<th class="cotis-give color-sample">&nbsp;</th>
+					<td class="back">{_T string="Gift"}</td>
+				</tr>
+			</table>
+		</div>
+
 		<script type="text/javascript">
 			//<![CDATA[
-				$('#nbshow').change(function() {
+			$(function(){ldelim}
+				$('#nbshow').change(function() {ldelim}
 					this.form.submit();
-				});
+				{rdelim});
+				$('#listing').after('<div class="center"><a href="#" id="show_legend">{_T string="Show legend"}</a></div>');
+				$('#legende h1').remove();
+				$('#legende').dialog({ldelim}
+					autoOpen: false,
+					modal: true,
+					hide: 'fold',
+					width: '40%'
+				{rdelim}).dialog('close');
+	
+				$('#show_legend').click(function(){ldelim}
+					$('#legende').dialog('open');
+					return false;
+				{rdelim});
+			{rdelim});
 			//]]>
 		</script>
-		{/literal}

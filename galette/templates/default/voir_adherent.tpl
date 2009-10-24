@@ -11,7 +11,7 @@
 {/if}
 {if $mail_warning}
 		<div id="warningbox">
-			<h1>{_T("- WARNING -")}</h1>
+			<h1>{_T string="- WARNING -")}</h1>
 			<ul>
 				<li>{$mail_warning}</li>
 			</ul>

@@ -311,13 +311,11 @@ html > * .nav1 li{
 
 #legende th{
 	text-align:center;
+	width:1%;
 }
 #legende td, #legende th {
 	padding-left: 2px;
 	background-color: #EEEEEE;
-}
-#legende td{
-	width:50%;
 }
 
 .ui-dialog > #legende {
@@ -1210,6 +1208,9 @@ ul#paths{
 #menu li a:hover{
 	background-color: #DDDDFF;
 	text-decoration:underline;
+}
+#menu li.selected a{
+	background-color: #DDDDFF;
 }
 
 #langs{
