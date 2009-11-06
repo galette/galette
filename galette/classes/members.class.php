@@ -85,7 +85,9 @@ class Members
         global $mdb, $log;
 
         /** TODO: Check if filter is valid ? */
-        if ( $filter != null && trim($filter) != '' ) $this->_filter = $filter;
+        if ( $filter != null && trim($filter) != '' ) {
+            $this->_filter = $filter;
+        }
 
         $fieldsList = ( $fields != null && !$as_members ) ? (( !is_array($fields) || count($fields) < 1 ) ? '*' : implode(', ', $fields)) : '*';
 
@@ -160,7 +162,9 @@ class Members
         $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=';
         $requete .= implode(' OR ' . self::PK . '=', $ids);
 
-        if ( $orderby != null && trim($orderby) != '' ) $requete .= ' ORDER BY ' . $orderby;
+        if ( $orderby != null && trim($orderby) != '' ) {
+            $requete .= ' ORDER BY ' . $orderby;
+        }
 
         $result = $mdb->query($requete);
 
