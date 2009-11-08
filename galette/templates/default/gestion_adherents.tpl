@@ -1,5 +1,5 @@
 		<form action="gestion_adherents.php" method="get" id="filtre">
-		<h1 id="titre">{_T string="Management of members"}</h1>
+		<h1 id="titre">{_T string="Members management"}</h1>
 {if $error_detected|@count != 0}
 		<div id="errorbox">
 			<h1>{_T string="- ERROR -"}</h1>
@@ -11,20 +11,21 @@
 		</div>
 {/if}
 		<div id="listfilter">
-			<label for="filtre_nom">{_T string="Search:"}&nbsp;</label>
-			<input type="text" name="filtre_nom" id="filtre_nom" value="{$smarty.session.filtre_adh_nom}"/>&nbsp;
+			<label for="filter_str">{_T string="Search:"}&nbsp;</label>
+			<input type="text" name="filter_str" id="filter_str" value="{$varslist->filter_str}"/>&nbsp;
 		 	{_T string="in:"}&nbsp;
-			<select name="filtre_fld">
-				{html_options options=$filtre_fld_options selected=$smarty.session.filtre_adh_fld}
+			<select name="filter_field">
+				{html_options options=$filter_field_options selected=$varslist->field_filter}
 			</select>
 		 	{_T string="among:"}&nbsp;
-			<select name="filtre" onchange="form.submit()">
-				{html_options options=$filtre_options selected=$smarty.session.filtre_adh}
+			<select name="filter_membership" onchange="form.submit()">
+				{html_options options=$filter_membership_options selected=$varslist->membership_filter}
 			</select>
-			<select name="filtre_2" onchange="form.submit()">
-				{html_options options=$filtre_2_options selected=$smarty.session.filtre_adh_2}
+			<select name="filter_account" onchange="form.submit()">
+				{html_options options=$filter_accounts_options selected=$varslist->account_status_filter}
 			</select>
 			<input type="submit" class="submit inline" value="{_T string="Filter"}"/>
+			<input type="submit" name="clear_filter" class="submit inline" value="{_T string="Clear filter"}"/>
 		</div>
 		<table class="infoline">
 			<tr>
@@ -53,57 +54,57 @@
 		<form action="gestion_adherents.php" method="post" id="listform">
 		<table id="listing">
 			<thead>
-				<tr> 
+				<tr>
 					<th class="listing" id="id_row">#</th>
-					<th class="listing left"> 
-						<a href="gestion_adherents.php?tri=0" class="listing">
+					<th class="listing left">
+						<a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_NAME;{/php}" class="listing">
 							{_T string="Name"}
-							{if $smarty.session.tri_adh eq 0}
-							{if $smarty.session.tri_adh_sens eq 0}
+							{if $varslist->orderby eq constant('Members::ORDERBY_NAME')}
+								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-							{else}
+								{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-							{/if}
+								{/if}
 							{/if}
 						</a>
 					</th>
 					<th class="listing left">
-						<a href="gestion_adherents.php?tri=1" class="listing">
+						<a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_NICKNAME;{/php}" class="listing">
 							{_T string="Nickname"}
-							{if $smarty.session.tri_adh eq 1}
-							{if $smarty.session.tri_adh_sens eq 0}
+							{if $varslist->orderby eq constant('Members::ORDERBY_NICKNAME')}
+								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-							{else}
+								{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-							{/if}
+								{/if}
 							{/if}
 						</a>
-					</th> 
-					<th class="listing left"> 
-						<a href="gestion_adherents.php?tri=2" class="listing">
+					</th>
+					<th class="listing left">
+						<a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_STATUS;{/php}" class="listing">
 							{_T string="Status"}
-							{if $smarty.session.tri_adh eq 2}
-							{if $smarty.session.tri_adh_sens eq 0}
+							{if $varslist->orderby eq constant('Members::ORDERBY_STATUS')}
+								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-							{else}
+								{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-							{/if}
+								{/if}
 							{/if}
 						</a>
-					</th> 
-					<th class="listing left"> 
-						<a href="gestion_adherents.php?tri=3" class="listing">
+					</th>
+					<th class="listing left">
+						<a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_FEE_STATUS;{/php}" class="listing">
 							{_T string="State of dues"}
-							{if $smarty.session.tri_adh eq 3}
-							{if $smarty.session.tri_adh_sens eq 0}
+							{if $varslist->orderby eq constant('Members::ORDERBY_FEE_STATUS')}
+								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-							{else}
+								{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-							{/if}
+								{/if}
 							{/if}
 						</a>
-					</th> 
-					<th class="listing">{_T string="Actions"}</th> 
+					</th>
+					<th class="listing">{_T string="Actions"}</th>
 				</tr>
 			</thead>
 			<tfoot>
@@ -125,38 +126,65 @@
 			<tbody>
 {foreach from=$members item=member key=ordre}
 				<tr>
-					<td class="{$member.class} right">{$ordre}</td>
-					<td class="{$member.class} nowrap username_row">
-						<input type="checkbox" name="member_sel[]" value="{$member.id_adh}"/>
-					{if $member.genre eq 1}
+					<td class="{$member->getRowClass()} right">{php}$ordre = $this->get_template_vars('ordre');echo $ordre+1+($varslist->current_page - 1)*$numrows{/php}</td>
+					<td class="{$member->getRowClass()} nowrap username_row">
+						<input type="checkbox" name="member_sel[]" value="{$member->id}"/>
+					{if $member->politeness eq constant('Politeness::MR')}
 						<img src="{$template_subdir}images/icon-male.png" alt="{_T string="[M]"}" width="16" height="16"/>
-					{elseif $member.genre eq 2 || $member.genre eq 3}
+					{elseif $member->politeness eq constant('Politeness::MRS') || $member->politeness eq constant('Politeness::MISS')}
 						<img src="{$template_subdir}images/icon-female.png" alt="{_T string="[W]"}" width="16" height="16"/>
-					{elseif $member.genre eq 4}
+					{elseif $member->politeness eq constant('Politeness::COMPANY')}
 						<img src="{$template_subdir}images/icon-company.png" alt="{_T string="[W]"}" width="16" height="16"/>
 					{else}
 						<img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
 					{/if}
-					{if $member.email != ''}
-						<a href="mailto:{$member.email}"><img src="{$template_subdir}images/icon-mail.png" alt="{_T string="[Mail]"}" width="16" height="16"/></a>
+					{if $member->email != ''}
+						<a href="mailto:{$member->email}"><img src="{$template_subdir}images/icon-mail.png" alt="{_T string="[Mail]"}" width="16" height="16"/></a>
 					{else}
 						<img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
 					{/if}
-					{if $member.admin eq 1}
+					{if $member->isAdmin()}
 						<img src="{$template_subdir}images/icon-star.png" alt="{_T string="[admin]"}" width="16" height="16"/>
 					{else}
 						<img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
 					{/if}
-					<a href="voir_adherent.php?id_adh={$member.id_adh}">{$member.nom} {$member.prenom}</a>
+					<a href="voir_adherent.php?id_adh={$member->id}">{$member->sname}</a>
 					</td>
-					<td class="{$member.class} nowrap">{$member.pseudo|htmlspecialchars}</td>
-					<td class="{$member.class} nowrap">{$member.statut}</td>
-					<td class="{$member.class}">{$member.statut_cotis}</td>
-					<td class="{$member.class} center nowrap actions_row">
-						<a href="subscription_form.php?id_adh={$member.id_adh}"><img src="{$template_subdir}images/icon-fiche.png" alt="Fiche adhérent" width="18" height="13"/></a>
-						<a href="ajouter_adherent.php?id_adh={$member.id_adh}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></a>
-						<a href="gestion_contributions.php?id_adh={$member.id_adh}"><img src="{$template_subdir}images/icon-money.png" alt="{_T string="[$]"}" width="16" height="16"/></a>
-						<a onclick="return confirm('{_T string="Do you really want to delete this member from the base? This will also delete the history of his fees. You could instead disable the account.\n\nDo you still want to delete this member ?"|escape:"javascript"}')" href="gestion_adherents.php?sup={$member.id_adh}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/></a>
+					<td class="{$member->getRowClass()} nowrap">{$member->nickname|htmlspecialchars}</td>
+					<td class="{$member->getRowClass()} nowrap">{$member->sstatus}</td>
+					<td class="{$member->getRowClass()}">
+					{if $member->isDueFree()}
+						{_T string="Freed of dues"}
+					{elseif $member->due_date eq ''}
+						{php}
+							$member = $this->get_template_vars('member');
+							$patterns = array('/%days/', '/%date/');
+							$replace = array($member->oldness, $member->creation_date);
+							echo preg_replace($patterns, $replace, _T("Never contributed: Registered %days days ago (since %date)"));
+						{/php}
+					{elseif $member->days_remaining eq 0}
+						{_T string="Last day!"}
+					{elseif $member->days_remaining < 0}
+						{php}
+							$member = $this->get_template_vars('member');
+							$patterns = array('/%days/', '/%date/');
+							$replace = array($member->days_remaining *-1, $member->due_date);
+							echo preg_replace($patterns, $replace, _T("Late of %days days (since %date)"));
+						{/php}
+					{else}
+						{php}
+							$member = $this->get_template_vars('member');
+							$patterns = array('/%days/', '/%date/');
+							$replace = array($member->days_remaining, $member->due_date);
+							echo preg_replace($patterns, $replace, _T("%days days remaining (ending on %date)"));
+						{/php}
+					{/if}
+					</td>
+					<td class="{$member->getRowClass()} center nowrap actions_row">
+						<a href="subscription_form.php?id_adh={$member->id}"><img src="{$template_subdir}images/icon-fiche.png" alt="Fiche adhérent" width="18" height="13"/></a>
+						<a href="ajouter_adherent.php?id_adh={$member->id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></a>
+						<a href="gestion_contributions.php?id_adh={$member->id}"><img src="{$template_subdir}images/icon-money.png" alt="{_T string="[$]"}" width="16" height="16"/></a>
+						<a onclick="return confirm('{_T string="Do you really want to delete this member from the base? This will also delete the history of his fees. You could instead disable the account.\n\nDo you still want to delete this member ?"|escape:"javascript"}')" href="gestion_adherents.php?sup={$member->id}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/></a>
 					</td>
 				</tr>
 {foreachelse}
@@ -174,6 +202,7 @@
 			</ul>
 {/if}
 		</form>
+{if $nb_members != 0}
 		<div id="legende" title="{_T string="Legend"}">
 			<h1>{_T string="Legend"}</h1>
 			<table>
@@ -223,21 +252,22 @@
 				</tr>
 			</table>
 		</div>
-{if $nb_members != 0}
 		<script type="text/javascript">
 		//<![CDATA[
 		var _is_checked = true;
 		var _bind_check = function(){ldelim}
 			$('#checkall').click(function(){ldelim}
 				$('#listing :checkbox[name=member_sel[]]').each(function(){ldelim}
-					this.checked = _is_checked; 
+					this.checked = _is_checked;
 				{rdelim});
 				_is_checked = !_is_checked;
+				return false;
 			{rdelim});
 			$('#checkinvert').click(function(){ldelim}
 				$('#listing :checkbox[name=member_sel[]]').each(function(){ldelim}
-					this.checked = !$(this).is(':checked'); 
+					this.checked = !$(this).is(':checked');
 				{rdelim});
+				return false;
 			{rdelim});
 		{rdelim}
 		{* Use of Javascript to draw specific elements that are not relevant is JS is inactive *}
