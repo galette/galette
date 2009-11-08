@@ -189,8 +189,8 @@ if ( isset($_POST["valid"]) ) {
 			$mail_text .= _T("Please login at this address:")."\n";
 			$mail_text .= "http://".$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."\n";
 			$mail_text .= "\n";
-			$mail_text .= _T("Username:")." ".custom_html_entity_decode($adherent['login_adh'])."\n";
-			$mail_text .= _T("Password:")." ".custom_html_entity_decode($adherent['mdp_adh_plain'])."\n";
+			$mail_text .= _T("Mail_Username:")." ".custom_html_entity_decode($adherent['login_adh'])."\n";
+			$mail_text .= _T("Mail_Password:")." ".custom_html_entity_decode($adherent['mdp_adh_plain'])."\n";
 			$mail_text .= "\n";
 			$mail_text .= _T("See you soon!")."\n";
 			$mail_text .= "\n";

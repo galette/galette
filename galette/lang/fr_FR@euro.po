@@ -207,14 +207,18 @@ msgstr "Code Postal&nbsp;:"
 msgid "Horizontal margins:"
 msgstr "Marges horizontales&nbsp;:"
 
-#: ../self_adherent.php:193 ../install/index.php:330 ../install/index.php:914
-#: ../ajouter_adherent.php:281 ../templates/default/index.tpl:25
+#: ../install/index.php:330 ../install/index.php:914
+#: ../templates/default/index.tpl:25
 #: ../templates/default/preferences.tpl:179
 #: ../templates/default/ajouter_adherent.tpl:103
 #: ../templates/default/change_passwd.tpl:36
 #: ../templates/default/self_adherent.tpl:162
 msgid "Password:"
 msgstr "Mot de passe&nbsp;:"
+
+#: ../ajouter_adherent.php:281 ../self_adherent.php:193
+msgid "Mail_Password:"
+msgstr "Mot de passe :"
 
 #: ../templates/default/ajouter_adherent.tpl:144
 #: ../templates/default/voir_adherent.tpl:89
@@ -1428,7 +1432,7 @@ msgstr "La connexion à la base est établie"
 msgid "logs are empty"
 msgstr "historique vide"
 
-#: ../self_adherent.php:192 ../lostpasswd.php:103 ../install/index.php:908
+#: ../lostpasswd.php:103 ../install/index.php:908
 #: ../ajouter_adherent.php:280 ../templates/default/index.tpl:21
 #: ../templates/default/preferences.tpl:175
 #: ../templates/default/ajouter_adherent.tpl:98
@@ -1436,6 +1440,10 @@ msgstr "historique vide"
 #: ../templates/default/self_adherent.tpl:157
 msgid "Username:"
 msgstr "Identifiant&nbsp;:"
+
+#: ../ajouter_adherent.php:280 ../self_adherent.php:192
+msgid "Mail_Username:"
+msgstr "Identifiant :"
 
 #: ../templates/default/ajouter_adherent.tpl:83
 #: ../templates/default/voir_adherent.tpl:53
@@ -2106,7 +2114,7 @@ msgstr "Visibilité&nbsp;:"
 
 #: ../self_adherent.php:195 ../lostpasswd.php:106 ../ajouter_adherent.php:283
 msgid "See you soon!"
-msgstr "A très bientôt&nbsp;!"
+msgstr "A très bientôt !"
 
 #: ../self_contribution.php:261 ../templates/default/preferences.tpl:192
 #: ../templates/default/ajouter_adherent.tpl:205
@@ -2398,7 +2406,7 @@ msgstr "Champs supplémentaires&nbsp;:"
 
 #: ../self_adherent.php:189 ../ajouter_adherent.php:277
 msgid "Please login at this address:"
-msgstr "Veuillez vous identifier à cette adresse&nbsp;:"
+msgstr "Veuillez vous identifier à cette adresse :"
 
 #: ../templates/default/gestion_contributions.tpl:172
 msgid "[ Add a contribution ]"

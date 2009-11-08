@@ -209,13 +209,16 @@ msgstr "Código postal:"
 msgid "Horizontal margins:"
 msgstr "Distancia horizontal:"
 
-#: ../self_adherent.php:193 ../install/index.php:330 ../install/index.php:914
-#: ../ajouter_adherent.php:281 ../templates/default/index.tpl:25
-#: ../templates/default/preferences.tpl:179
+#: ../install/index.php:330 ../install/index.php:914
+#: ../templates/default/index.tpl:25 ../templates/default/preferences.tpl:179
 #: ../templates/default/ajouter_adherent.tpl:103
 #: ../templates/default/change_passwd.tpl:36
 #: ../templates/default/self_adherent.tpl:162
 msgid "Password:"
+msgstr "Contraseña:"
+
+#: ../ajouter_adherent.php:281 ../self_adherent.php:193
+msgid "Mail_Password:"
 msgstr "Contraseña:"
 
 #: ../templates/default/ajouter_adherent.tpl:144
@@ -1281,6 +1284,10 @@ msgstr ""
 msgid "contributions"
 msgstr "contribuciones"
 
+#: ../ajouter_adherent.php:280 ../self_adherent.php:192
+msgid "Mail_Username:"
+msgstr "Nombre de usuario:"
+
 #: ../install/index.php:610
 msgid "Permissions to database are OK."
 msgstr "Los permisos sobre la base de datos son correctos."
@@ -1441,9 +1448,8 @@ msgstr "Éxito en la conexión a la base de datos"
 msgid "logs are empty"
 msgstr "historial vacío"
 
-#: ../self_adherent.php:192 ../lostpasswd.php:103 ../install/index.php:908
-#: ../ajouter_adherent.php:280 ../templates/default/index.tpl:21
-#: ../templates/default/preferences.tpl:175
+#: ../lostpasswd.php:103 ../install/index.php:908
+#: ../templates/default/index.tpl:21 ../templates/default/preferences.tpl:175
 #: ../templates/default/ajouter_adherent.tpl:98
 #: ../templates/default/voir_adherent.tpl:75
 #: ../templates/default/self_adherent.tpl:157
@@ -1524,7 +1530,7 @@ msgstr ""
 msgid "Disabled"
 msgstr "Deshabilitado"
 
-#: ../ajouter_contribution.php:362 ../ajouter_transaction.php:234
+#: ../ajouter_contribution.php:365 ../ajouter_transaction.php:234
 msgid "You must first register a member"
 msgstr "En primer lugar debe dar de alta a un socio"
 
@@ -1671,7 +1677,7 @@ msgstr ""
 "Para su actualización, Galette necesita tener permiso de escritura en estos "
 "ficheros."
 
-#: ../ajouter_contribution.php:223
+#: ../ajouter_contribution.php:226
 msgid "Contribution added"
 msgstr "Contribución añadida"
 
@@ -1859,7 +1865,7 @@ msgstr "Enviar un correo"
 msgid "Identity:"
 msgstr "Identidad:"
 
-#: ../ajouter_contribution.php:236
+#: ../ajouter_contribution.php:239
 msgid "Contribution updated"
 msgstr "Contribución actualizada"
 
