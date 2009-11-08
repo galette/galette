@@ -1,50 +1,62 @@
 <?php
 
-// Copyright © 2009 Johan Cwiklinski
-//
-// This file is part of Galette (http://galette.tuxfamily.org).
-//
-// Galette is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Galette is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Galette. If not, see <http://www.gnu.org/licenses/>.
-
-/**
- * adhrent.class.php, 28 février 2009
- *
- * @package Galette
- * 
- * @author     Johan Cwiklinski <johan@x-tnd.be>
- * @copyright  2009 Johan Cwiklinski
- * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version    $Id$
- * @since      Disponible depuis la Release 0.7alpha
- */
-
-/** @ignore */
-require_once('politeness.class.php');
-require_once('status.class.php');
-require_once('fields_config.class.php');
-require_once('fields_categories.class.php');
-require_once('picture.class.php');
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
  * Member class for galette
  *
- * @name Adherent
- * @package Galette
- * @author     Johan Cwiklinski <johan@x-tnd.be>
+ * PHP version 5
  *
+ * Copyright © 2009 The Galette Team
+ *
+ * This file is part of Galette (http://galette.tuxfamily.org).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @category  Classes
+ * @package   Galette
+ *
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2009 The Galette Team
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @version   SVN: $Id$
+ * @link      http://galette.tuxfamily.org
+ * @since     Available since 0.7dev - 02-06-2009
  */
-class Adherent {
+
+/** @ignore */
+require_once 'politeness.class.php';
+require_once 'status.class.php';
+require_once 'fields_config.class.php';
+require_once 'fields_categories.class.php';
+require_once 'picture.class.php';
+
+/**
+ * Member class for galette
+ *
+ * @category  Classes
+ * @name      Adherent
+ * @package   Galette
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2009 The Galette Team
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @version   SVN: $Id$
+ * @link      http://galette.tuxfamily.org
+ * @since     Available since 0.7dev - 02-06-2009
+ */
+class Adherent
+{
 	const TABLE = 'adherents';
 	const PK = 'id_adh';
 
@@ -80,9 +92,14 @@ class Adherent {
 	private $login;
 	private $password;
 	private $creation_date;
+	private $_due_date;
 	private $others_infos;
 	private $others_infos_admin;
 	private $picture;
+	private $_oldness;
+	private $_days_remaining;
+	//
+	private $_row_classes;
 	//fields list and their translation
 	private $fields;
 	private $requireds = array(
@@ -99,7 +116,8 @@ class Adherent {
 	/**
 	* Default constructor
 	*/
-	public function __construct($args = null){
+	public function __construct($args = null)
+	{
 		/**
 		* Fields configuration. Each field is an array and must reflect:
 		* array( (string)label, (boolean)required, (boolean)visible, (int)position, (int)category )
@@ -160,9 +178,13 @@ class Adherent {
 
 	/**
 	* Loads a member from its id
-	* @param id the identifiant for the member to load
+	*
+	* @param int $id the identifiant for the member to load
+	*
+	* @return boolean true if query succeed, false otherwise
 	*/
-	public function load($id){
+	public function load($id)
+	{
 		global $mdb, $log;
 
 		$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK . '=' . $id;
@@ -182,6 +204,8 @@ class Adherent {
 
 	/**
 	* Populate object from a resultset row
+	*
+	* @param ResultSet $r the resultset row
 	*/
 	private function loadFromRS($r){
 		$this->id = $r->id_adh;
@@ -216,9 +240,48 @@ class Adherent {
 		$this->login = $r->login_adh;
 		$this->password = $r->mdp_adh;
 		$this->creation_date = $r->date_crea_adh;
+		$this->_due_date = $r->date_echeance;
 		$this->others_infos = $r->info_public_adh;
 		$this->others_infos_admin = $r->info_adh;
 		$this->picture = new Picture($this->id);
+		$this->_checkDues();
+	}
+
+	/**
+	* Check for dues status
+	*/
+	private function _checkDues()
+	{
+		//how many days since our beloved member has been created
+		// PHP >= 5.3
+		$date_now = new DateTime();
+		$this->_oldness = $date_now->diff(new DateTime($this->creation_date))->days;
+
+		if ( $this->isDueFree() ) {
+			//no fee required, we don't care about dates
+			$this->_row_classes .= ' cotis-exempt';
+		} else {
+			//ok, fee is required. Let's check the dates
+			if ( $this->_due_date == '' ) {
+				$this->_row_classes .= ' cotis-never';
+			} else {
+				$date_end = new DateTime($this->_due_date);
+				$date_diff = $date_now->diff($date_end);
+				$this->_days_remaining = ( $date_diff->invert == 1 )
+					? $date_diff->days * -1
+					: $date_diff->days;
+
+				if( $this->_days_remaining == 0 ) {
+					$this->_row_classes .= ' cotis-lastday';
+				} else if ( $this->_days_remaining < 0 ) {
+					$this->_row_classes .= ' cotis-late';
+				} else if ( $this->_days_remaining < 30 ) {
+					$this->_row_classes .= ' cotis-soon';
+				} else {
+					$this->_row_classes .= ' cotis-ok';
+				}
+			}
+		}
 	}
 
 	/* GETTERS */
@@ -242,9 +305,21 @@ class Adherent {
 		return $this->picture->hasPicture();
 	}
 
+	/**
+	* Get row class related to current fee status
+	*
+	* @return string the class to apply
+	*/
+	public function getRowClass()
+	{
+		$strclass = ($this->isActive()) ? 'active' : 'inactive';
+		$strclass .= $this->_row_classes;
+		return $strclass;
+	}
+
 	public function __get($name){
-		$forbidden = array('admin', 'due_free', 'appears_in_list', 'active');
-		$virtuals = array('sadmin', 'sdue_free', 'sappears_in_list', 'sactive', 'spoliteness', 'sstatus', 'sfullname');
+		$forbidden = array('admin', 'due_free', 'appears_in_list', 'active',  'row_classes');
+		$virtuals = array('sadmin', 'sdue_free', 'sappears_in_list', 'sactive', 'spoliteness', 'sstatus', 'sfullname', 'sname', 'rowclass');
 		if( !in_array($name, $forbidden) && isset($this->$name)){
 			switch($name){
 				case 'birthdate':
@@ -275,6 +350,9 @@ class Adherent {
 					break;
 				case 'sfullname':
 					return Politeness::getPoliteness($this->politeness) . ' ' . $this->name . ' ' . $this->surname;
+					break;
+				case 'sname':
+					return mb_strtoupper($this->name, 'UTF-8') . ' ' . $this->surname;
 					break;
 			}
 		} else return false;
