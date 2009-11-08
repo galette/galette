@@ -56,10 +56,10 @@ class VarsList
     private $_show;
 
     //filters
-    private $_search_str;
+    private $_filter_str;
     private $_field_filter;
-    private $_state_filter;
-    private $_status_filter;
+    private $_membership_filter;
+    private $_account_status_filter;
 
     private $_selected;
     private $_unreachable;
@@ -81,15 +81,15 @@ class VarsList
     public function reinit()
     {
         global $preferences;
-        $this->_current_page = 1;
-        $this->_orderby = 'nom_adh';
-        $this->_ordered = self::ORDER_ASC;
-        $this->_show = $preferences->pref_numrows;
-        $this->_search_str = null;
+        $this->current_page = 1;
+        $this->orderby = 'nom_adh';
+        $this->ordered = self::ORDER_ASC;
+        $this->show = $preferences->pref_numrows;
+        $this->filter_str = null;
         $this->_field_filter = null;
-        $this->_state_filter = null;
-        $this->_status_filter = null;
-        $this->_selected = array();
+        $this->_membership_filter = null;
+        $this->_account_status_filter = null;
+        $this->selected = array();
     }
 
     /**
@@ -139,10 +139,10 @@ class VarsList
             'orderby',
             'ordered',
             'show',
-            'search_str',
+            'filter_str',
             'field_filter',
-            'state_filter',
-            'status_filter',
+            'membership_filter',
+            'account_status_filter',
             'selected',
             'unreachable',
         );
@@ -167,12 +167,13 @@ class VarsList
     {
         global $log;
 
+        $log->log(
+            '[varslist.class.php] Setting property `' . $name . '`',
+            PEAR_LOG_DEBUG
+        );
+
         switch($name) {
         case 'ordered':
-            $log->log(
-                '[varslist.class.php] Setting property `' . $name . '`',
-                PEAR_LOG_DEBUG
-            );
             if ( $value == self::ORDER_ASC || $value == self::ORDER_DESC ) {
                 $name = '_' . $name;
                 $this->$name = $value;
@@ -186,65 +187,66 @@ class VarsList
             }
             break;
         case 'orderby':
-            $log->log(
-                '[varslist.class.php] Setting property `' . $name . '`',
-                PEAR_LOG_DEBUG
-            );
             $name = '_' . $name;
             $this->$name = $value;
             break;
         case 'current_page':
-            $log->log(
-                '[varslist.class.php] Setting property `' . $name . '`',
-                PEAR_LOG_DEBUG
-            );
             if ( is_int($value) && $value > 0 ) {
-                    $name = '_' . $name;
-                    $this->$name = $value;
+                $name = '_' . $name;
+                $this->$name = $value;
             } else {
-                    $log->log(
-                        '[varslist.class.php] Value for field `' . $name .
-                        '` should be a positive integer - (' .
-                        gettype($value) . ')' . $value . ' given',
-                        PEAR_LOG_WARNING
-                    );
+                $log->log(
+                    '[varslist.class.php] Value for field `' . $name .
+                    '` should be a positive integer - (' .
+                    gettype($value) . ')' . $value . ' given',
+                    PEAR_LOG_WARNING
+                );
             }
             break;
         case 'show':
-            $log->log(
-                '[varslist.class.php] Setting property `' . $name . '`',
-                PEAR_LOG_DEBUG
-            );
             if (   $value == 'all'
                 || preg_match('/[[:digit:]]/', $value)
                 && $value > 0
             ) {
-                    $name = '_' . $name;
-                    $this->$name = (int)$value;
+                $name = '_' . $name;
+                $this->$name = (int)$value;
             } else {
-                    $log->log(
-                        '[varslist.class.php] Value for `' . $name .
-                        '` should be a positive integer or \'all\' - (' .
-                        gettype($value) . ')' . $value . ' given',
-                        PEAR_LOG_WARNING
-                    );
+                $log->log(
+                    '[varslist.class.php] Value for `' . $name .
+                    '` should be a positive integer or \'all\' - (' .
+                    gettype($value) . ')' . $value . ' given',
+                    PEAR_LOG_WARNING
+                );
             }
             break;
         case 'selected':
         case 'unreachable':
-            $log->log(
-                '[varslist.class.php] Setting property `' . $name . '`',
-                PEAR_LOG_DEBUG
-            );
             if (is_array($value)) {
-                    $name = '_' . $name;
-                    $this->$name = $value;
+                $name = '_' . $name;
+                $this->$name = $value;
             } else {
-                    $log->log(
-                        '[varslist.class.php] Value for property `' . $name .
-                        '` should be an array (' . gettype($value) . ' given)',
-                        PEAR_LOG_DEBUG
-                    );
+                $log->log(
+                    '[varslist.class.php] Value for property `' . $name .
+                    '` should be an array (' . gettype($value) . ' given)',
+                    PEAR_LOG_WARNING
+                );
+            }
+            break;
+        case 'filter_str':
+            $this->$name = $value;
+            break;
+        case 'field_filter':
+        case 'membership_filter':
+        case 'account_status_filter':
+            if ( is_numeric($value) ) {
+                $name = '_' . $name;
+                $this->$name = $value;
+            } else {
+                $log->log(
+                    '[varslist.class.php] Value for property `' . $name .
+                    '` should be an integer (' . gettype($value) . ' given)',
+                    PEAR_LOG_WARNING
+                );
             }
             break;
         default:
