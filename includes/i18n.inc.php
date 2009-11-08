@@ -2,7 +2,7 @@
 
 /* functions.inc.php
  * - Fonctions utilitaires
- * Copyright (c) 2003 Frï¿½dï¿½ric Jaqcuot
+ * Copyright (c) 2003 Frédéric Jaqcuot
  * Copyright (c) 2004 Georges Khaznadar (i18n using gettext)
  *
  * This program is free software; you can redistribute it and/or
@@ -28,6 +28,7 @@ $languages = array (
                     "english"   => "en_US",
                     "spanish"   => "es_ES@euro"
                     );
+$allowed_langs = array_keys($languages);
 
 if(
 	$_SESSION['logged_status'] === 0 || //si on est pas logué
@@ -37,9 +38,9 @@ if(
 	isset($_POST['pref_admin_login']) && $_SESSION['logged_id_adh'] ===0 		//le cas où on change dans les préférences de l'appli. si on est pas connecté en tant que super-utilisateur, on ne change pas la langue
 ) {
 	// I18N support information here
-	if (isset($_POST['pref_lang']) && in_array($_POST['pref_lang'], $languages) )
+	if (isset($_POST['pref_lang']) && in_array($_POST['pref_lang'], $allowed_langs) )
 		$_SESSION["pref_lang"]=$_POST['pref_lang'];
-	else if (isset($_GET['pref_lang']) && in_array($_GET['pref_lang'], $languages) )
+	else if (isset($_GET['pref_lang']) && in_array($_GET['pref_lang'], $allowed_langs) )
 		$_SESSION["pref_lang"]=$_GET['pref_lang'];
 }
 if (isset($_SESSION["pref_lang"]))
@@ -146,7 +147,7 @@ function get_dynamic_translation($DB, $text_orig, $text_locale)
 }
 
 /*FIXME : $loc undefined*/
-if ( ((isset($loc) && $loc!=$language) || $disable_gettext) && in_array($pref_lang, $languages) )
+if ( ((isset($loc) && $loc!=$language) || $disable_gettext) && in_array($pref_lang, $allowed_langs) )
 {
         include(WEB_ROOT."lang/lang_".$pref_lang.".php");
         //echo "<font color='red'>Warning:</font> locale $language is probably not intalled on the server.<br>";
