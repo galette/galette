@@ -23,7 +23,13 @@
 
 $disable_gettext=true;
 
-if( 
+$languages = array (
+                    "french"  => "fr_FR@euro",
+                    "english"   => "en_US",
+                    "spanish"   => "es_ES@euro"
+                    );
+
+if(
 	$_SESSION['logged_status'] === 0 || //si on est pas logué
 	$_SESSION['logged_status'] === 1 && // pour les autres cas, il faut être logué
 	isset($_GET['id_adh']) && $_GET['id_adh'] === $_SESSION['logged_id_adh'] || //on check si l'utilisateur en cours change sa langue
@@ -31,9 +37,9 @@ if(
 	isset($_POST['pref_admin_login']) && $_SESSION['logged_id_adh'] ===0 		//le cas où on change dans les préférences de l'appli. si on est pas connecté en tant que super-utilisateur, on ne change pas la langue
 ) {
 	// I18N support information here
-	if (isset($_POST['pref_lang']))
+	if (isset($_POST['pref_lang']) && in_array($_POST['pref_lang'], $languages) )
 		$_SESSION["pref_lang"]=$_POST['pref_lang'];
-	else if (isset($_GET['pref_lang']))
+	else if (isset($_GET['pref_lang']) && in_array($_GET['pref_lang'], $languages) )
 		$_SESSION["pref_lang"]=$_GET['pref_lang'];
 }
 if (isset($_SESSION["pref_lang"]))
@@ -41,11 +47,6 @@ if (isset($_SESSION["pref_lang"]))
 else
 	$pref_lang="english";
 
-$languages = array (
-                    "french"  => "fr_FR@euro",
-                    "english"   => "en_US",
-                    "spanish"   => "es_ES@euro"
-                    );
 $language=$languages[$pref_lang];
 
 setlocale(LC_CTYPE, $language);
@@ -94,7 +95,7 @@ function add_dynamic_translation($DB, $text_orig, $error_detected)
 			$query = "INSERT INTO $l10n_table
 					(text_orig, text_locale, text_trans)
 				  VALUES ($quoted_text_orig, $quoted_locale, $quoted_trans)";
-			
+
 			$result = parse_db_result($DB, $DB->Execute($query), $error_detected, $query);
 		}
 	}
@@ -145,7 +146,7 @@ function get_dynamic_translation($DB, $text_orig, $text_locale)
 }
 
 /*FIXME : $loc undefined*/
-if ( (isset($loc) && $loc!=$language) || $disable_gettext)
+if ( ((isset($loc) && $loc!=$language) || $disable_gettext) && in_array($pref_lang, $languages) )
 {
         include(WEB_ROOT."lang/lang_".$pref_lang.".php");
         //echo "<font color='red'>Warning:</font> locale $language is probably not intalled on the server.<br>";
