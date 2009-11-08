@@ -115,6 +115,16 @@ class VarsList
     }
 
     /**
+    * Get current sort direction
+    *
+    * @return self::ORDER_ASC|self::ORDER_DESC
+    */
+    public function getDirection()
+    {
+        return $this->_ordered;
+    }
+
+    /**
     * Global getter method
     *
     * @param string $name name of the property we want to retrive
