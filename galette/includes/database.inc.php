@@ -7,7 +7,7 @@
 	*@skill beginner
 	*@site www.deepcode.net
  	*/
- 
+
  	function utime ()
 
 	{
@@ -17,14 +17,17 @@
 		return $sec + $usec;
 	}
 	$start = utime();
-	
+
 	include(WEB_ROOT."/includes/adodb/adodb.inc.php");
 	$DB = ADONewConnection(TYPE_DB);
 	$DB->debug = false;
 	if(!@$DB->Connect(HOST_DB, USER_DB, PWD_DB, NAME_DB)) die("No database connection...");
 	//For Postgres, we have to hard specify charset to iso-8859-1 (LATIN1)
         $DB->SetCharSet('LATIN1');
-
+        // For mysql, we force LATIN1 as well
+        if ( TYPE_DB == 'mysql' ) {
+            $DB->Execute("SET NAMES 'latin1'");
+        }
 
 	if (!defined("PREFIX_DB"))
 	   define("PREFIX_DB","");
@@ -59,7 +62,7 @@
 
 	function get_echeance ($DB, $cotisant) {
 		$exempt = is_exempt($DB, $cotisant);
-		
+
 		$return_date = "";
 		// d�finition couleur pour adherent exempt de cotisation
 		if ($exempt != "1")
@@ -79,7 +82,7 @@
 					$return_date = explode("/", date("d/m/Y", mktime(0,0,0,$m,$j,$a)));
 				}
 			}
-		}	
+		}
 		return $return_date;
 	}
 
