@@ -214,6 +214,11 @@ class History
         return $return;
     }
 
+    /**
+    * Update or set pages count
+    *
+    * @return void
+    */
     private function _countPages()
     {
         if ($this->_counter % $this->_show == 0) {
