@@ -46,7 +46,7 @@
 					  'with_width' => true,
 					  'with_height' => false,
 					  'with_size' => true,
-					  'multi_valued' => true,
+					  'multi_valued' => false,
 					  'fixed_values' => false),
 		$field_type_choice => array('no_data' => false,
 					    'with_width' => false,
