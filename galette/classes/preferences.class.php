@@ -21,7 +21,7 @@
  * preferences.class.php, 14 octobre 2007
  *
  * @package Galette
- * 
+ *
  * @author     Johan Cwiklinski <johan@x-tnd.be>
  * @copyright  2007-2008 Johan Cwiklinski
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
@@ -60,7 +60,7 @@ class Preferences{
 		'pref_cp'		=>	'',
 		'pref_ville'		=>	'',
 		'pref_pays'		=>	'',
-		'pref_lang'		=>	i18n::DEFAULT_LANG,
+		'pref_lang'		=>	I18n::DEFAULT_LANG,
 		'pref_numrows'		=>	30,
 		'pref_log'		=>	2,
 		'pref_email_nom'	=>	'Galette',
@@ -124,7 +124,7 @@ class Preferences{
 		$result = $mdb->query( $requete );
 		if( MDB2::isError($result) )
 			return -1;
-		
+
 		if($result->numRows() == 0){
 			$log->log('Preferences cannot be loaded. Galette should not work without preferences. Exiting.', PEAR_LOG_EMERG);
 			return(-10);
@@ -193,7 +193,7 @@ class Preferences{
 	* Has an error occured ?
 	*/
 	public function inError(){
-		if( MDB2::isError($this->error) ) return true; 
+		if( MDB2::isError($this->error) ) return true;
 		else return false;
 	}
 

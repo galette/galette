@@ -377,7 +377,7 @@ class Adherent
         );
         if ( $args == null || is_int($args) ) {
             $this->_active = true;
-            $this->_language = i18n::DEFAULT_LANG;
+            $this->_language = I18n::DEFAULT_LANG;
             $this->_creation_date = date("Y-m-d");
             $this->_status = Status::DEFAULT_STATUS;
             $this->_politeness = Politeness::MR;

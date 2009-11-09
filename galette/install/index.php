@@ -22,7 +22,7 @@
  * index.php, 07 octobre 2007
  *
  * @package Galette
- * 
+ *
  * @author     Frédéric Jacquot
  * @author     Johan Cwiklinski <johan@x-tnd.be>
  * @copyright  2004 Frédéric Jaqcuot
@@ -74,7 +74,7 @@ PEAR_LOG_DEBUG		=>	Debug-level messages
 require_once('Log.php');
 /** FIXME: for stables versions, log level must not be DEBUG, most probably WARNING or NOTICE */
 define('_file_log', PEAR_LOG_DEBUG);				// ***** LOG : enregistrement des erreur dans un fichier de log
-define('_log_file', WEB_ROOT . '/logs/galette.log');		// ***** LOG : fichier de log 
+define('_log_file', WEB_ROOT . '/logs/galette.log');		// ***** LOG : fichier de log
 define('_screen_log', PEAR_LOG_ERR);				// ***** LOG : affichage des erreurs à l'écran
 
 $conf = array(
@@ -94,7 +94,7 @@ $log->addChild($file);
 require_once(WEB_ROOT . 'classes/i18n.class.php');
 
 if(isset($_POST['install_lang'])) $_SESSION['pref_lang'] = $_POST['install_lang'];
-$i18n = new i18n((isset($_SESSION['pref_lang']) && $_SESSION['pref_lang']!='')?$_SESSION['pref_lang']:i18n::DEFAULT_LANG);
+$i18n = new I18n((isset($_SESSION['pref_lang']) && $_SESSION['pref_lang']!='')?$_SESSION['pref_lang']:I18n::DEFAULT_LANG);
 
 /** FIXME: ... end fixme :-) */
 
@@ -177,10 +177,10 @@ $error_detected = false;
 					$step="i6";
 				elseif (substr($_POST["install_type"],0,7)=="upgrade")
 					$step="u6";
-					
+
 				if (isset($_POST["install_dbperms_ok"]))
 				if ($_POST["install_type"]=="install")
-					$step="i7";					
+					$step="i7";
 				elseif (substr($_POST["install_type"],0,7)=="upgrade")
 					$step="u7";
 
@@ -262,7 +262,7 @@ switch( $step ){
 		$step_title = _T("End!");
 		break;
 }
-header('Content-Type: text/html; charset=UTF-8');	
+header('Content-Type: text/html; charset=UTF-8');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $i18n->getAbbrev(); ?>">
@@ -291,7 +291,7 @@ header('Content-Type: text/html; charset=UTF-8');
 	<body>
 		<h1 id="titre"><?php echo _T("Galette installation") . ' - ' . $step_title ?></h1>
 		<div id="installpage">
-	
+
 <?php
 	switch ($step)
 	{
@@ -304,7 +304,7 @@ header('Content-Type: text/html; charset=UTF-8');
 					<select name="install_lang" id="install_lang">
 <?php
 			foreach($i18n->getList() as $langue){
-				echo "\t\t\t\t\t<option value=\"" . $langue->getID() . "\" style=\"background:url(../" . $langue->getFlag() . ") no-repeat;padding-left:30px;\"" . ((i18n::DEFAULT_LANG == $langue->getID())?" selected=\"selected\"":"") . ">" . ucwords($langue->getName()) . "</option>\n";
+				echo "\t\t\t\t\t<option value=\"" . $langue->getID() . "\" style=\"background:url(../" . $langue->getFlag() . ") no-repeat;padding-left:30px;\"" . ((I18n::DEFAULT_LANG == $langue->getID())?" selected=\"selected\"":"") . ">" . ucwords($langue->getName()) . "</option>\n";
 			}
 ?>
 					</select>
@@ -390,7 +390,7 @@ header('Content-Type: text/html; charset=UTF-8');
 			if (!$perms_ok)
 			{
 ?>
-			<p><?php 
+			<p><?php
 if ($step == 'i3') echo _T("For a correct functioning, Galette needs the Write permission on these files.");
 if ($step == 'u3') echo _T("In order to be updated, Galette needs the Write permission on these files.");
 			?></p>
@@ -682,7 +682,7 @@ if ($step == 'i7') echo _T("Installation Report");
 if ($step == 'u7') echo _T("Update Report"); ?></p>
 <ul>
 <?php
-			// begin : copyright (2002) the phpbb group (support@phpbb.com)	
+			// begin : copyright (2002) the phpbb group (support@phpbb.com)
 			// load in the sql parser
 			include('sql_parse.php');
 
@@ -792,8 +792,8 @@ echo "</ul>\n";
 							$new_start_date = localtime($c['start_date'], 1);
 							$c['end_date'] = mktime(0, 0, 0, $new_start_date['tm_mon'] + $c['duration'] + 1, $new_start_date['tm_mday'], $new_start_date['tm_year']);
 							$end_date = $DB->DBDate($c['end_date']);
-							$query = "update ".$table_prefix."cotisations 
-										 set date_debut_cotis = ".$start_date.", 
+							$query = "update ".$table_prefix."cotisations
+										 set date_debut_cotis = ".$start_date.",
 									 date_fin_cotis = ".$end_date."
 										 where id_cotis = ".$c['id_cotis'];
 							$result = $DB->Execute($query);
@@ -863,7 +863,7 @@ if ($step=="u7") echo _T("The tables has been correctly updated."); ?></p>
 			</form>
 	<?php
 			}
-?>	
+?>
 		</div>
 <?php
 			break; //ends 7th step
@@ -874,7 +874,7 @@ if ($step=="u7") echo _T("The tables has been correctly updated."); ?></p>
 <?php
 				if ($error_detected != '')
 					echo '<div id="errorbox"><h1>' . _T("- ERROR -") . '</h1><ul>' . $error_detected . '</ul></div>';
-?>	
+?>
 			<form action="index.php" method="post">
 				<fieldset class="cssform">
 					<legend><?php echo _T("Please chose the parameters of the admin account on Galette"); ?></legend>
@@ -1057,7 +1057,7 @@ foreach($oks as $o)
 		case "i10":
 		case "u10":
 ?>
-			<h2><?php 
+			<h2><?php
 if ($step=="i10") echo _T("Installation complete !");
 if ($step=="u10") echo _T("Update complete !"); ?></h2>
 			<p><?php

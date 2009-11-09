@@ -21,7 +21,7 @@
  * galette.inc.php
  *
  * @package Galette
- * 
+ *
  * @author     Johan Cwiklinski <johan@x-tnd.be>
  * @copyright  2007-2009 Johan Cwiklinski
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
@@ -68,7 +68,7 @@ PEAR_LOG_DEBUG		=>	Debug-level messages
 require_once('Log.php');
 /** FIXME: for stables versions, log level must not be DEBUG, most probably WARNING or NOTICE */
 define('_file_log', PEAR_LOG_INFO);				// ***** LOG : enregistrement des erreur dans un fichier de log
-define('_log_file', WEB_ROOT . '/logs/galette.log');		// ***** LOG : fichier de log 
+define('_log_file', WEB_ROOT . '/logs/galette.log');		// ***** LOG : fichier de log
 define('_screen_log', PEAR_LOG_EMERG);			// ***** LOG : affichage des erreurs à l'écran
 
 $conf = array(
@@ -114,7 +114,7 @@ require_once(WEB_ROOT . 'classes/i18n.class.php');
 if( isset($_SESSION['galette_lang']) ){
 	$i18n = unserialize($_SESSION['galette_lang']);
 }else{
-	$i18n = new i18n();
+	$i18n = new I18n();
 	$_SESSION['galette_lang'] = serialize($i18n);
 }
 
