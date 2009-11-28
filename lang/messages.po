@@ -64,7 +64,7 @@ msgstr ""
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
 
-#: ../includes/i18n.inc.php:217
+#: ../includes/i18n.inc.php:219
 msgid "Partnership"
 msgstr ""
 
@@ -163,8 +163,7 @@ msgstr ""
 msgid "Horizontal margins:"
 msgstr ""
 
-#: ../self_adherent.php:193 ../install/index.php:330
-#: ../install/index.php:914 ../ajouter_adherent.php:281
+#: ../install/index.php:330 ../install/index.php:914
 #: ../templates/default/index.tpl:25 ../templates/default/preferences.tpl:179
 #: ../templates/default/ajouter_adherent.tpl:103 ../templates/default/change_passwd.tpl:36
 #: ../templates/default/self_adherent.tpl:162
@@ -180,11 +179,11 @@ msgstr ""
 msgid "Show contributions since"
 msgstr ""
 
-#: ../includes/i18n.inc.php:214
+#: ../includes/i18n.inc.php:216
 msgid "Company cotisation"
 msgstr ""
 
-#: ../includes/i18n.inc.php:232
+#: ../includes/i18n.inc.php:234
 msgid "all"
 msgstr ""
 
@@ -196,7 +195,7 @@ msgstr ""
 msgid "Admin account (independant of members):"
 msgstr ""
 
-#: ../includes/i18n.inc.php:238
+#: ../includes/i18n.inc.php:240
 msgid "middle"
 msgstr ""
 
@@ -300,11 +299,11 @@ msgstr ""
 msgid "- Non-valid Website address! Maybe you've skipped the http:// ?"
 msgstr ""
 
-#: ../includes/i18n.inc.php:204
+#: ../includes/i18n.inc.php:206
 msgid "Vice-president"
 msgstr ""
 
-#: ../includes/i18n.inc.php:225
+#: ../includes/i18n.inc.php:227
 msgid "donation in kind"
 msgstr ""
 
@@ -411,7 +410,7 @@ msgstr ""
 msgid "transactions"
 msgstr ""
 
-#: ../includes/i18n.inc.php:205
+#: ../includes/i18n.inc.php:207
 msgid "Treasurer"
 msgstr ""
 
@@ -608,7 +607,7 @@ msgstr ""
 msgid "(dd/mm/yyyy format)"
 msgstr ""
 
-#: ../includes/i18n.inc.php:200
+#: ../includes/i18n.inc.php:202
 msgid "Realization:"
 msgstr ""
 
@@ -624,7 +623,7 @@ msgstr ""
 msgid "your fee."
 msgstr ""
 
-#: ../includes/i18n.inc.php:216
+#: ../includes/i18n.inc.php:218
 msgid "Donation in money"
 msgstr ""
 
@@ -640,7 +639,7 @@ msgstr ""
 msgid "Mister"
 msgstr ""
 
-#: ../includes/i18n.inc.php:231
+#: ../includes/i18n.inc.php:233
 msgid "Transactions"
 msgstr ""
 
@@ -703,7 +702,7 @@ msgstr ""
 msgid "Sender name:"
 msgstr ""
 
-#: ../includes/i18n.inc.php:211
+#: ../includes/i18n.inc.php:213
 msgid "Legal entity"
 msgstr ""
 
@@ -711,7 +710,7 @@ msgstr ""
 msgid "Please login at this address to set your new password :"
 msgstr ""
 
-#: ../includes/i18n.inc.php:222
+#: ../includes/i18n.inc.php:224
 msgid "annual fee"
 msgstr ""
 
@@ -731,7 +730,7 @@ msgstr ""
 msgid "Inscription sent to the administrator for approval"
 msgstr ""
 
-#: ../includes/i18n.inc.php:206
+#: ../includes/i18n.inc.php:208
 msgid "Secretary"
 msgstr ""
 
@@ -791,7 +790,7 @@ msgstr ""
 msgid "Temporary password:"
 msgstr ""
 
-#: ../includes/i18n.inc.php:203
+#: ../includes/i18n.inc.php:205
 msgid "President"
 msgstr ""
 
@@ -836,7 +835,7 @@ msgstr ""
 msgid "Step 10 - End of the update"
 msgstr ""
 
-#: ../includes/i18n.inc.php:233
+#: ../includes/i18n.inc.php:235
 msgid "admin"
 msgstr ""
 
@@ -861,7 +860,7 @@ msgstr ""
 msgid "Start date of membership:"
 msgstr ""
 
-#: ../includes/i18n.inc.php:201
+#: ../includes/i18n.inc.php:203
 msgid "Graphics:"
 msgstr ""
 
@@ -907,7 +906,7 @@ msgstr ""
 msgid "Date:"
 msgstr ""
 
-#: ../includes/i18n.inc.php:219
+#: ../includes/i18n.inc.php:221
 msgid "english"
 msgstr ""
 
@@ -927,7 +926,7 @@ msgstr ""
 msgid "Comments:"
 msgstr ""
 
-#: ../includes/i18n.inc.php:227
+#: ../includes/i18n.inc.php:229
 msgid "partnership"
 msgstr ""
 
@@ -1025,7 +1024,7 @@ msgstr ""
 msgid "The tables are not totally created, it's maybe a permission problem."
 msgstr ""
 
-#: ../includes/i18n.inc.php:234
+#: ../includes/i18n.inc.php:236
 msgid "separator"
 msgstr ""
 
@@ -1037,7 +1036,7 @@ msgstr ""
 msgid "Required:"
 msgstr ""
 
-#: ../includes/i18n.inc.php:213
+#: ../includes/i18n.inc.php:215
 msgid "Reduced annual contribution"
 msgstr ""
 
@@ -1124,6 +1123,10 @@ msgstr ""
 msgid "contributions"
 msgstr ""
 
+#: ../self_adherent.php:192 ../ajouter_adherent.php:280
+msgid "Mail_Username:"
+msgstr ""
+
 #: ../install/index.php:610
 msgid "Permissions to database are OK."
 msgstr ""
@@ -1136,7 +1139,7 @@ msgstr ""
 msgid "unreachable member"
 msgstr ""
 
-#: ../includes/i18n.inc.php:210
+#: ../includes/i18n.inc.php:212
 msgid "Old-timer"
 msgstr ""
 
@@ -1145,7 +1148,7 @@ msgstr ""
 msgid "Your Galette identifiers"
 msgstr ""
 
-#: ../includes/i18n.inc.php:215
+#: ../includes/i18n.inc.php:217
 msgid "Donation in kind"
 msgstr ""
 
@@ -1184,7 +1187,7 @@ msgstr ""
 msgid "Add a contribution"
 msgstr ""
 
-#: ../includes/i18n.inc.php:218
+#: ../includes/i18n.inc.php:220
 msgid "french"
 msgstr ""
 
@@ -1272,8 +1275,7 @@ msgstr ""
 msgid "logs are empty"
 msgstr ""
 
-#: ../self_adherent.php:192 ../lostpasswd.php:103
-#: ../install/index.php:908 ../ajouter_adherent.php:280
+#: ../lostpasswd.php:103 ../install/index.php:908
 #: ../templates/default/index.tpl:21 ../templates/default/preferences.tpl:175
 #: ../templates/default/ajouter_adherent.tpl:98 ../templates/default/voir_adherent.tpl:75
 #: ../templates/default/self_adherent.tpl:157
@@ -1309,7 +1311,7 @@ msgstr ""
 msgid "Database:"
 msgstr ""
 
-#: ../includes/i18n.inc.php:237
+#: ../includes/i18n.inc.php:239
 msgid "choice"
 msgstr ""
 
@@ -1341,11 +1343,11 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
-#: ../ajouter_contribution.php:362 ../ajouter_transaction.php:234
+#: ../ajouter_contribution.php:365 ../ajouter_transaction.php:234
 msgid "You must first register a member"
 msgstr ""
 
-#: ../includes/i18n.inc.php:228
+#: ../includes/i18n.inc.php:230
 msgid "reduced annual fee"
 msgstr ""
 
@@ -1455,7 +1457,7 @@ msgstr ""
 msgid "Do you really want to delete this transaction of the database ?"
 msgstr ""
 
-#: ../includes/i18n.inc.php:202
+#: ../includes/i18n.inc.php:204
 msgid "Publisher:"
 msgstr ""
 
@@ -1463,7 +1465,7 @@ msgstr ""
 msgid "List of members"
 msgstr ""
 
-#: ../includes/i18n.inc.php:240
+#: ../includes/i18n.inc.php:242
 msgid "right"
 msgstr ""
 
@@ -1475,7 +1477,7 @@ msgstr ""
 msgid "In order to be updated, Galette needs the Write permission on these files."
 msgstr ""
 
-#: ../ajouter_contribution.php:223
+#: ../ajouter_contribution.php:226
 msgid "Contribution added"
 msgstr ""
 
@@ -1567,7 +1569,7 @@ msgstr ""
 msgid "- Invalid format of beginning of membership."
 msgstr ""
 
-#: ../includes/i18n.inc.php:235
+#: ../includes/i18n.inc.php:237
 msgid "free text"
 msgstr ""
 
@@ -1578,7 +1580,7 @@ msgstr ""
 msgid "- WARNING -"
 msgstr ""
 
-#: ../includes/i18n.inc.php:223
+#: ../includes/i18n.inc.php:225
 msgid "annual fee (to be paid)"
 msgstr ""
 
@@ -1639,7 +1641,7 @@ msgstr ""
 msgid "Identity:"
 msgstr ""
 
-#: ../ajouter_contribution.php:236
+#: ../ajouter_contribution.php:239
 msgid "Contribution updated"
 msgstr ""
 
@@ -1651,7 +1653,7 @@ msgstr ""
 msgid "All members"
 msgstr ""
 
-#: ../includes/i18n.inc.php:226
+#: ../includes/i18n.inc.php:228
 msgid "donation in money"
 msgstr ""
 
@@ -1667,11 +1669,11 @@ msgstr ""
 msgid "Default language:"
 msgstr ""
 
-#: ../includes/i18n.inc.php:212
+#: ../includes/i18n.inc.php:214
 msgid "Non-member"
 msgstr ""
 
-#: ../includes/i18n.inc.php:207
+#: ../includes/i18n.inc.php:209
 msgid "Active member"
 msgstr ""
 
@@ -1841,7 +1843,7 @@ msgstr ""
 msgid "Other informations (admin):"
 msgstr ""
 
-#: ../includes/i18n.inc.php:224
+#: ../includes/i18n.inc.php:226
 msgid "company fee"
 msgstr ""
 
@@ -1867,7 +1869,7 @@ msgstr ""
 msgid "Account:"
 msgstr ""
 
-#: ../includes/i18n.inc.php:230
+#: ../includes/i18n.inc.php:232
 msgid "Members"
 msgstr ""
 
@@ -1912,7 +1914,7 @@ msgstr ""
 msgid "Normal"
 msgstr ""
 
-#: ../includes/i18n.inc.php:209
+#: ../includes/i18n.inc.php:211
 msgid "Founder member"
 msgstr ""
 
@@ -1989,7 +1991,7 @@ msgstr ""
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr ""
 
-#: ../includes/i18n.inc.php:208
+#: ../includes/i18n.inc.php:210
 msgid "Benefactor member"
 msgstr ""
 
@@ -2012,7 +2014,7 @@ msgstr ""
 msgid "Hello,"
 msgstr ""
 
-#: ../includes/i18n.inc.php:220
+#: ../includes/i18n.inc.php:222
 msgid "spanish"
 msgstr ""
 
@@ -2036,8 +2038,12 @@ msgstr ""
 msgid "Installation mode unknown"
 msgstr ""
 
-#: ../includes/i18n.inc.php:239
+#: ../includes/i18n.inc.php:241
 msgid "left"
+msgstr ""
+
+#: ../self_adherent.php:193 ../ajouter_adherent.php:281
+msgid "Mail_Password:"
 msgstr ""
 
 #: ../templates/default/configurer_fiches.tpl:61
@@ -2093,7 +2099,7 @@ msgstr ""
 msgid "Profession:"
 msgstr ""
 
-#: ../includes/i18n.inc.php:236
+#: ../includes/i18n.inc.php:238
 msgid "single line"
 msgstr ""
 
