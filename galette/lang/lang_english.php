@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Tue Oct  6 05:07:53 2009 (GMT)
+// This file was automatically generated on Sat Nov 28 07:40:49 2009 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -291,7 +291,7 @@ $lang['Email,URL,IM'] = 'Email,URL,IM';
 // ../includes/i18n.inc.php:204 
 $lang['Vice-president'] = 'Vice-president';
 
-// ../self_adherent.php:192 ../lostpasswd.php:103 ../install/index.php:908 ../ajouter_adherent.php:280 ../templates/default/index.tpl:21 ../templates/default/preferences.tpl:175 ../templates/default/ajouter_adherent.tpl:98 ../templates/default/voir_adherent.tpl:75 ../templates/default/self_adherent.tpl:157 
+// ../lostpasswd.php:103 ../install/index.php:908 ../templates/default/index.tpl:21 ../templates/default/preferences.tpl:175 ../templates/default/ajouter_adherent.tpl:98 ../templates/default/voir_adherent.tpl:75 ../templates/default/self_adherent.tpl:157 
 $lang['Username:'] = ' Username:';
 
 // ../gestion_contributions.php:265 ../gestion_adherents.php:316 
@@ -321,7 +321,7 @@ $lang['- The username cannot contain the @ character'] = '- The username cannot 
 // ../preferences.php:265 ../gestion_contributions.php:327 ../gestion_adherents.php:401 ../gestion_transactions.php:155 
 $lang['All'] = 'All';
 
-// ../self_adherent.php:193 ../install/index.php:330 ../install/index.php:914 ../ajouter_adherent.php:281 ../templates/default/index.tpl:25 ../templates/default/preferences.tpl:179 ../templates/default/ajouter_adherent.tpl:103 ../templates/default/change_passwd.tpl:36 ../templates/default/self_adherent.tpl:162 
+// ../install/index.php:330 ../install/index.php:914 ../templates/default/index.tpl:25 ../templates/default/preferences.tpl:179 ../templates/default/ajouter_adherent.tpl:103 ../templates/default/change_passwd.tpl:36 ../templates/default/self_adherent.tpl:162 
 $lang['Password:'] = 'Password:';
 
 // ../install/index.php:309 
@@ -486,7 +486,7 @@ $lang['Required:'] = ' Required:';
 // ../self_contribution.php:261 ../templates/default/preferences.tpl:192 ../templates/default/ajouter_adherent.tpl:205 ../templates/default/ajouter_contribution.tpl:91 ../templates/default/ajouter_transaction.tpl:47 ../templates/default/self_adherent.tpl:187 
 $lang['red'] = 'red';
 
-// ../ajouter_contribution.php:236 
+// ../ajouter_contribution.php:239 
 $lang['Contribution updated'] = 'Contribution updated';
 
 // ../self_adherent.php:107 ../preferences.php:90 ../ajouter_adherent.php:140 
@@ -563,6 +563,9 @@ $lang['spanish'] = 'spanish';
 
 // ../install/index.php:837 
 $lang['The tables are not totally created, it\'s maybe a permission problem.'] = ' The tables are not totally created, it\'s maybe a permission problem.';
+
+// ../self_contribution.php:146 ../ajouter_contribution.php:109 
+$lang['- The duration must be an integer!'] = '- The duration must be an integer!';
 
 // ../self_contribution.php:208 ../templates/default/ajouter_contribution.tpl:1 
 $lang['Contribution card'] = 'Contribution card';
@@ -855,11 +858,11 @@ $lang['No user name'] = ' No user name';
 // ../install/index.php:1149 
 $lang['This can come from the permissions on the file includes/config.inc.php or the impossibility to make an INSERT into the database.'] = 'This can come from the permissions on the file includes/config.inc.php or the impossibility to make an INSERT into the database.';
 
-// ../ajouter_contribution.php:223 
+// ../ajouter_contribution.php:226 
 $lang['Contribution added'] = ' Contribution card';
 
-// ../self_contribution.php:146 ../ajouter_contribution.php:109 
-$lang['- The duration must be an integer!'] = '- The duration must be an integer!';
+// ../ajouter_adherent.php:280 ../self_adherent.php:192 
+$lang['Mail_Username:'] = ' Username:';
 
 // ../install/index.php:1183 
 $lang['Installation complete !'] = 'Installation complete !';
@@ -1230,7 +1233,7 @@ $lang['Update complete !'] = 'Update complete !';
 // ../templates/default/gestion_adherents.tpl:173 
 $lang['Do you really want to delete all selected accounts (and related contributions)?'] = 'Do you really want to delete all selected accounts (and related contributions)?';
 
-// ../ajouter_contribution.php:362 ../ajouter_transaction.php:234 
+// ../ajouter_contribution.php:365 ../ajouter_transaction.php:234 
 $lang['You must first register a member'] = 'You must first register a member';
 
 // ../voir_adherent.php:95 ../etiquettes_adherents.php:96 
@@ -1340,6 +1343,9 @@ $lang['months'] = 'months';
 
 // ../templates/default/preferences.tpl:25 
 $lang['General information:'] = 'General information:';
+
+// ../ajouter_adherent.php:281 ../self_adherent.php:193 
+$lang['Mail_Password:'] = 'Password:';
 
 // ../install/index.php:304 
 $lang['Enter connection data for the existing database.'] = 'Enter connection data for the existing database.';
