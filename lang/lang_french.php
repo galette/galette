@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Tue Oct  6 05:07:53 2009 (GMT)
+// This file was automatically generated on Sat Nov 28 07:40:50 2009 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -291,7 +291,7 @@ $lang['Email,URL,IM'] = 'Email, URL, IM';
 // ../includes/i18n.inc.php:204 
 $lang['Vice-president'] = 'Vice-président';
 
-// ../self_adherent.php:192 ../lostpasswd.php:103 ../install/index.php:908 ../ajouter_adherent.php:280 ../templates/default/index.tpl:21 ../templates/default/preferences.tpl:175 ../templates/default/ajouter_adherent.tpl:98 ../templates/default/voir_adherent.tpl:75 ../templates/default/self_adherent.tpl:157 
+// ../lostpasswd.php:103 ../install/index.php:908 ../ajouter_adherent.php:280 ../templates/default/index.tpl:21 ../templates/default/preferences.tpl:175 ../templates/default/ajouter_adherent.tpl:98 ../templates/default/voir_adherent.tpl:75 ../templates/default/self_adherent.tpl:157 
 $lang['Username:'] = 'Identifiant&nbsp;:';
 
 // ../gestion_contributions.php:265 ../gestion_adherents.php:316 
@@ -321,7 +321,7 @@ $lang['- The username cannot contain the @ character'] = '- L\'identifiant ne pe
 // ../preferences.php:265 ../gestion_contributions.php:327 ../gestion_adherents.php:401 ../gestion_transactions.php:155 
 $lang['All'] = 'Tout';
 
-// ../self_adherent.php:193 ../install/index.php:330 ../install/index.php:914 ../ajouter_adherent.php:281 ../templates/default/index.tpl:25 ../templates/default/preferences.tpl:179 ../templates/default/ajouter_adherent.tpl:103 ../templates/default/change_passwd.tpl:36 ../templates/default/self_adherent.tpl:162 
+// ../install/index.php:330 ../install/index.php:914 ../templates/default/index.tpl:25 ../templates/default/preferences.tpl:179 ../templates/default/ajouter_adherent.tpl:103 ../templates/default/change_passwd.tpl:36 ../templates/default/self_adherent.tpl:162 
 $lang['Password:'] = 'Mot de passe&nbsp;:';
 
 // ../install/index.php:309 
@@ -553,7 +553,7 @@ $lang['transaction'] = 'transaction';
 $lang['DELETE operation allowed'] = 'Opération DELETE autorisée';
 
 // ../self_adherent.php:195 ../lostpasswd.php:106 ../ajouter_adherent.php:283 
-$lang['See you soon!'] = 'A très bientôt&nbsp;!';
+$lang['See you soon!'] = 'A très bientôt !';
 
 // ../footer.php:116 ../footer.php:162 ../templates/default/page.tpl:88 ../templates/default/page.tpl:127 
 $lang['Deletion'] = 'Suppression';
@@ -563,6 +563,9 @@ $lang['spanish'] = 'espagnol';
 
 // ../install/index.php:837 
 $lang['The tables are not totally created, it\'s maybe a permission problem.'] = 'Les tables n\'ont pas pu être totalement créées, il s\'agit peut-être d\'un problème de droits.';
+
+// ../self_contribution.php:146 ../ajouter_contribution.php:109 
+$lang['- The duration must be an integer!'] = '- La durée doit être un entier&nbsp;!';
 
 // ../self_contribution.php:208 ../templates/default/ajouter_contribution.tpl:1 
 $lang['Contribution card'] = 'Fiche contribution';
@@ -858,8 +861,8 @@ $lang['This can come from the permissions on the file includes/config.inc.php or
 // ../ajouter_contribution.php:223 
 $lang['Contribution added'] = 'Contribution ajoutée';
 
-// ../self_contribution.php:146 ../ajouter_contribution.php:109 
-$lang['- The duration must be an integer!'] = '- La durée doit être un entier&nbsp;!';
+// ../ajouter_adherent.php:280 ../self_adherent.php:192 
+$lang['Mail_Username:'] = 'Identifiant :';
 
 // ../install/index.php:1183 
 $lang['Installation complete !'] = 'Fin de l\'installation';
@@ -1123,7 +1126,7 @@ $lang['Amount:'] = 'Montant&nbsp;:';
 $lang['Configuration file created (includes/config.inc.php)'] = 'Fichier de configuration crée (includes/config.inc.php)';
 
 // ../self_adherent.php:189 ../ajouter_adherent.php:277 
-$lang['Please login at this address:'] = 'Veuillez vous identifier à cette adresse&nbsp;:';
+$lang['Please login at this address:'] = 'Veuillez vous identifier à cette adresse :';
 
 // ../install/index.php:1190 
 $lang['For securing the system, please delete the install directory'] = 'Pour sécuriser le système, veuillez supprimer le dossier install';
@@ -1340,6 +1343,9 @@ $lang['months'] = 'mois';
 
 // ../templates/default/preferences.tpl:25 
 $lang['General information:'] = 'Informations générales&nbsp;:';
+
+// ../ajouter_adherent.php:281 ../self_adherent.php:193 
+$lang['Mail_Password:'] = 'Mot de passe :';
 
 // ../install/index.php:304 
 $lang['Enter connection data for the existing database.'] = 'Veuillez entrer les paramètres de connexion à la base existante.';
