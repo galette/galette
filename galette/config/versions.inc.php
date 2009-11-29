@@ -32,6 +32,6 @@
  */
 
 define('SMARTY_VERSION', '2.6.22');
-//define('TCPDF_VERSION', '4.8.009');
-define('ADODB_VERSION', '492');
+define('TCPDF_VERSION', '4.8.017.php4');
+define('ADODB_VERSION', '4992');
 ?>
