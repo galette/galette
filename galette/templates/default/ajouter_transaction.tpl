@@ -1,8 +1,8 @@
-		<h1 class="titre">{_T("New transaction")}</h1>
+		<h1 class="titre">{_T string="New transaction"}</h1>
 		<form action="ajouter_transaction.php" method="post">
 {if $error_detected|@count != 0}
 		<div id="errorbox">
-			<h1>{_T("- ERROR -")}</h1>
+			<h1>{_T string="- ERROR -"}</h1>
 			<ul>
 {foreach from=$error_detected item=error}
 				<li>{$error}</li>
@@ -14,24 +14,24 @@
 		<div align="center">
 			<table border="0" id="input-table">
 				<tr>
-					<th {if $required.trans_desc eq 1}style="color: #FF0000;"{/if} class="libelle">{_T("Description:")}</th>
+					<th {if $required.trans_desc eq 1}style="color: #FF0000;"{/if} class="libelle">{_T string="Description:"}</th>
 					<td colspan="3"><input type="text" name="trans_desc" value="{$data.trans_desc}" maxlength="30" size="30"/></td>
 				</tr>
 				<tr>
-					<th {if $required.trans_date eq 1}style="color: #FF0000;"{/if} class="libelle">{_T("Date:")}</th>
+					<th {if $required.trans_date eq 1}style="color: #FF0000;"{/if} class="libelle">{_T string="Date:"}</th>
 					<td>
 						<input type="text" name="trans_date" value="{$data.trans_date}" maxlength="10"/><br/>
-						<div class="exemple">{_T("(dd/mm/yyyy format)")}</div>
+						<div class="exemple">{_T string="(dd/mm/yyyy format)"}</div>
 					</td>
-					<th {if $required.trans_amount eq 1}style="color: #FF0000;"{/if} class="libelle">{_T("Amount:")}</th>
+					<th {if $required.trans_amount eq 1}style="color: #FF0000;"{/if} class="libelle">{_T string="Amount:"}</th>
 					<td><input type="text" name="trans_amount" value="{$data.trans_amount}" maxlength="10"/></td>
 				</tr>
 				<tr>
-					<th {if $required.id_adh eq 1}style="color: #FF0000;"{/if} class="libelle">{_T("Originator:")}</th>
+					<th {if $required.id_adh eq 1}style="color: #FF0000;"{/if} class="libelle">{_T string="Originator:"}</th>
 					<td colspan="3">
 						<select name="id_adh">
 							{if $data.id_adh == 0}
-							<option>{_T("-- select a name --")}</option>
+							<option>{_T string="-- select a name --"}</option>
 							{/if}
 							{html_options options=$adh_options selected=$data.id_adh}
 						</select>
@@ -39,12 +39,12 @@
 				</tr>
 {include file="display_dynamic_fields.tpl" is_form=true}
 				<tr>
-					<th align="center" colspan="4"><br/><input type="submit" class="submit" value="{_T("Save")}"/></th>
+					<th align="center" colspan="4"><br/><input type="submit" class="submit" value="{_T string="Save"}"/></th>
 				</tr>
 			</table>
 		</div>
 		<br/>
-		{_T("NB : The mandatory fields are in")} <font style="color: #FF0000">{_T("red")}</font>.
+		{_T string="NB : The mandatory fields are in"} <font style="color: #FF0000">{_T string="red"}</font>.
 		</blockquote>
 		<input type="hidden" name="trans_id" value="{$data.trans_id}"/>
 		<input type="hidden" name="valid" value="1"/>

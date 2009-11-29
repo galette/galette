@@ -1,7 +1,7 @@
-	<h1 class="titre">{_T("Member Profile")}</h1>
+	<h1 class="titre">{_T string="Member Profile"}</h1>
     {if $error_detected|@count != 0}
     		<div id="errorbox">
-    			<h1>{_T("- ERROR -")}</h1>
+    			<h1>{_T string="- ERROR -"}</h1>
     			<ul>
     {foreach from=$error_detected item=error}
     				<li>{$error}</li>
@@ -11,7 +11,7 @@
     {/if}
 	{if $mail_warning}
 		<div id="warningbox">
-			<h1>{_T("- WARNING -")}</h1>
+			<h1>{_T string="- WARNING -"}</h1>
 			<ul>
 				<li>{$mail_warning}</li>
 			</ul>
@@ -20,159 +20,159 @@
 	<div class="bigtable">
 		<table>
 			<tr>
-				<th class="separator" colspan="2">{_T("Identity:")}</th>
+				<th class="separator" colspan="2">{_T string="Identity:"}</th>
 			</tr>
 			<tr>
-				<th>{_T("Picture:")}</th>
-				<td><img src="picture.php?id_adh={$data.id_adh}&amp;rand={$time}" class="picture" width="{$data.picture_width}" height="{$data.picture_height}" alt="{_T("Picture")}"/></td>
+				<th>{_T string="Picture:"}</th>
+				<td><img src="picture.php?id_adh={$data.id_adh}&amp;rand={$time}" class="picture" width="{$data.picture_width}" height="{$data.picture_height}" alt="{_T string="Picture"}"/></td>
 			</tr>
-			<tr> 
-				<th>{_T("Name:")}</th>
+			<tr>
+				<th>{_T string="Name:"}</th>
 				<td>{$data.titre_adh} {$data.nom_adh} {$data.prenom_adh}</td>
 			</tr>
-			<tr> 
-				<th>{_T("Nickname:")}</th> 
-				<td>{$data.pseudo_adh}&nbsp;</td> 
-			</tr> 
-			<tr> 
-				<th>{_T("birth date:")}</th> 
+			<tr>
+				<th>{_T string="Nickname:"}</th>
+				<td>{$data.pseudo_adh}&nbsp;</td>
+			</tr>
+			<tr>
+				<th>{_T string="birth date:"}</th>
 				<td>{$data.ddn_adh}&nbsp;</td>
 			</tr>
 			<tr>
-				<th>{_T("Profession:")}</th> 
-				<td>{$data.prof_adh}</td> 
-			</tr> 
+				<th>{_T string="Profession:"}</th>
+				<td>{$data.prof_adh}</td>
+			</tr>
 			<tr>
-				<th>{_T("Language:")}</th>
+				<th>{_T string="Language:"}</th>
 				<td><img SRC="{$data.pref_lang_img}" align="left"/>{$data.pref_lang}</td>
-			</tr> 
-			<tr>
-				<th class="separator">{_T("Galette-related data:")}</th>
-			</tr>
-			<tr> 
-				<th>{_T("Status:")}</th> 
-				<td>{$data.libelle_statut}&nbsp;</td> 
 			</tr>
 			<tr>
-				<th>{_T("Be visible in the<br /> members list :")}</th> 
+				<th class="separator">{_T string="Galette-related data:"}</th>
+			</tr>
+			<tr>
+				<th>{_T string="Status:"}</th>
+				<td>{$data.libelle_statut}&nbsp;</td>
+			</tr>
+			<tr>
+				<th>{_T string="Be visible in the<br /> members list :"}</th>
 				<td>{$data.bool_display_info}</td>
 			</tr>
 {if $smarty.session.admin_status eq 1}
 			<tr>
-				<th>{_T("Account:")}</th> 
+				<th>{_T string="Account:"}</th>
 				<td>{$data.activite_adh}</td>
 			</tr>
-			<tr> 
-				<th>{_T("Galette Admin:")}</th> 
-				<td>{$data.bool_admin_adh}</td> 
-			</tr> 
-			<tr> 
-				<th>{_T("Freed of dues:")}</th> 
+			<tr>
+				<th>{_T string="Galette Admin:"}</th>
+				<td>{$data.bool_admin_adh}</td>
+			</tr>
+			<tr>
+				<th>{_T string="Freed of dues:"}</th>
 				<td>{$data.bool_exempt_adh}</td>
 			</tr>
 {/if}
-			<tr> 
-				<th>{_T("Username:")}&nbsp;</th> 
-				<td>{$data.login_adh}</td> 
-			</tr> 
+			<tr>
+				<th>{_T string="Username:"}&nbsp;</th>
+				<td>{$data.login_adh}</td>
+			</tr>
 {if $smarty.session.admin_status eq 1}
-			<tr> 
-				<th>{_T("Creation date:")}&nbsp;</th> 
-				<td>{$data.date_crea_adh}</td> 
-			</tr> 
-			<tr> 
-				<th>{_T("Other informations (admin):")}</th> 
-				<td>{$data.info_adh}</td> 
+			<tr>
+				<th>{_T string="Creation date:"}&nbsp;</th>
+				<td>{$data.date_crea_adh}</td>
+			</tr>
+			<tr>
+				<th>{_T string="Other informations (admin):"}</th>
+				<td>{$data.info_adh}</td>
 			</tr>
 {/if}
 			<tr>
-				<th class="separator">{_T("Contact information:")}</th> 
+				<th class="separator">{_T string="Contact information:"}</th>
 			</tr>
-			<tr> 
-				<th>{_T("Address:")}</th> 
+			<tr>
+				<th>{_T string="Address:"}</th>
 				<td>
 					{$data.adresse_adh}&nbsp;
 {if $data.adresse2_adh ne ''}
 					<br/>{$data.adresse2_adh}&nbsp;
 {/if}
-				</td> 
-			</tr> 
-			<tr> 
-				<th>{_T("Zip Code:")}</th> 
+				</td>
+			</tr>
+			<tr>
+				<th>{_T string="Zip Code:"}</th>
 				<td>{$data.cp_adh}&nbsp;</td>
 			</tr>
-			<tr> 
-				<th>{_T("City:")}</th> 
-				<td>{$data.ville_adh}&nbsp;</td> 
-			</tr> 
-			<tr> 
-				<th>{_T("Country:")}</th> 
-				<td>{$data.pays_adh}&nbsp;</td> 
+			<tr>
+				<th>{_T string="City:"}</th>
+				<td>{$data.ville_adh}&nbsp;</td>
 			</tr>
 			<tr>
-				<th>{_T("Phone:")}</th> 
-				<td>{$data.tel_adh}&nbsp;</td> 
-			</tr> 
-			<tr> 
-				<th>{_T("Mobile phone:")}</th> 
-				<td>{$data.gsm_adh}&nbsp;</td> 
+				<th>{_T string="Country:"}</th>
+				<td>{$data.pays_adh}&nbsp;</td>
 			</tr>
 			<tr>
-				<th>{_T("E-Mail:")}</th> 
+				<th>{_T string="Phone:"}</th>
+				<td>{$data.tel_adh}&nbsp;</td>
+			</tr>
+			<tr>
+				<th>{_T string="Mobile phone:"}</th>
+				<td>{$data.gsm_adh}&nbsp;</td>
+			</tr>
+			<tr>
+				<th>{_T string="E-Mail:"}</th>
 				<td>
-{if $data.email_adh ne ''}					
+{if $data.email_adh ne ''}
 					<a href="mailto:{$data.email_adh}">{$data.email_adh}</a>
 {/if}
 					&nbsp;
 				</td>
-			</tr> 
-			<tr> 
-				<th>{_T("Website:")}</th> 
+			</tr>
+			<tr>
+				<th>{_T string="Website:"}</th>
 				<td>
 {if $data.url_adh ne ''}
 					<a href="{$data.url_adh}">{$data.url_adh}</a>
-{/if}						
+{/if}
 					&nbsp;
 				</td>
 			</tr>
 			<tr>
-				<th>{_T("ICQ:")}</th> 
-				<td>{$data.icq_adh}&nbsp;</td> 
-			</tr> 
-			<tr> 
-				<th>{_T("Jabber:")}</th> 
-				<td>{$data.jabber_adh}&nbsp;</td> 
+				<th>{_T string="ICQ:"}</th>
+				<td>{$data.icq_adh}&nbsp;</td>
 			</tr>
 			<tr>
-				<th>{_T("MSN:")}</th> 
+				<th>{_T string="Jabber:"}</th>
+				<td>{$data.jabber_adh}&nbsp;</td>
+			</tr>
+			<tr>
+				<th>{_T string="MSN:"}</th>
 				<td>
 {if $data.msn_adh ne ''}
 					<a href="mailto:{$data.msn_adh}">{$data.msn_adh}</a>
 {/if}
 					&nbsp;
 				</td>
-			</tr> 
-			<tr> 
-				<th>{_T("Id GNUpg (GPG):")}</th> 
-				<td>{$data.gpgid}&nbsp;</td> 
 			</tr>
 			<tr>
-				<th>{_T("fingerprint:")}</th> 
-				<td>{$data.fingerprint}&nbsp;</td> 
-			</tr> 
+				<th>{_T string="Id GNUpg (GPG):"}</th>
+				<td>{$data.gpgid}&nbsp;</td>
+			</tr>
+			<tr>
+				<th>{_T string="fingerprint:"}</th>
+				<td>{$data.fingerprint}&nbsp;</td>
+			</tr>
 {include file="display_dynamic_fields.tpl" is_form=false}
 		</table>
 	</div>
 	<div class="button-container">
 		<div class="button-link button-edit">
-			<a href="ajouter_adherent.php?id_adh={$data.id_adh}">{_T("Modification")}</a>
+			<a href="ajouter_adherent.php?id_adh={$data.id_adh}">{_T string="Modification"}</a>
 		</div>
 		<div class="button-link button-view-contributions">
-			<a href="gestion_contributions.php?id_adh={$data.id_adh}">{_T("View contributions")}</a>
+			<a href="gestion_contributions.php?id_adh={$data.id_adh}">{_T string="View contributions"}</a>
 		</div>
 {if $smarty.session.admin_status eq 1}
 		<div class="button-link button-add-contribution">
-			<a href="ajouter_contribution.php?id_adh={$data.id_adh}">{_T("Add a contribution")}</a>
+			<a href="ajouter_contribution.php?id_adh={$data.id_adh}">{_T string="Add a contribution"}</a>
 		</div>
 {/if}
 	</div>
