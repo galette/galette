@@ -1,141 +1,189 @@
 <?php
-/* etiquettes_adherents.php
- * - Generation d'un PDF d'étiquettes
- * Copyright (c) 2003 Frédéric Jaqcuot
+
+// Copyright © 2004 Frédéric Jaqcuot
+// Copyright © 2007-2009 Johan Cwiklinski
+//
+// This file is part of Galette (http://galette.tuxfamily.org).
+//
+// Galette is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 2 of the License, or
+// (at your option) any later version.
+//
+// Galette is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Galette. If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Generation d'un PDF d'étiquettes
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * La création des étiquettes au format pdf se fait
+ * depuis la page de gestion des adhérents en sélectionnant
+ * les adhérents  dans la liste
  *
+ * Le format des étiquettes et leur mise en page est définie
+ * dans l'écran des préférences
+ *
+ * @package    Galette
+ *
+ * @author     Frédéric Jaqcuot
+ * @copyright  2004 Frédéric Jaqcuot
+ * @copyright  2007-2009 Johan Cwiklinski
+ * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @version    $Id$
  */
 
-	include("includes/config.inc.php");
-	include(WEB_ROOT."includes/database.inc.php"); 
-	include(WEB_ROOT."includes/session.inc.php");
+include 'includes/config.inc.php';
+include WEB_ROOT . 'includes/database.inc.php';
+include WEB_ROOT . 'includes/session.inc.php';
 
-	if ($_SESSION["logged_status"]==0)
-	{
-		header("location: index.php");
-		die();
-	}
-	if ($_SESSION["admin_status"]==0)
-	{
-		header("location: voir_adherent.php");
-		die();
-	}
+if ( $_SESSION['logged_status'] == 0 ) {
+	header('location: index.php');
+	die();
+}
+if ( $_SESSION['admin_status'] == 0 ) {
+	header('location: voir_adherent.php');
+	die();
+}
 
-//	include(WEB_ROOT."includes/functions.inc.php"); 
-	include_once(WEB_ROOT."includes/i18n.inc.php");
-	include(WEB_ROOT."includes/phppdflib/phppdflib.class.php");
-	
-	$mailing_adh = array();
-	if (isset($_SESSION['galette']['labels']))
-	{
-		while (list($key,$value)=each($_SESSION['galette']['labels']))
+include_once WEB_ROOT . 'includes/i18n.inc.php';
+require_once WEB_ROOT . 'includes/tcpdf_' . TCPDF_VERSION . '/tcpdf.php';
+
+$mailing_adh = array();
+if ( isset($_SESSION['galette']['labels'])) {
+	while ( list($key, $value) = each($_SESSION['galette']['labels'])) {
 			$mailing_adh[]=$value;
 	}
-	else
-		die();
+} else {
+	die();
+}
 
-		$requete = "SELECT id_adh, nom_adh, prenom_adh, adresse_adh,
-									titre_adh, cp_adh, ville_adh, pays_adh, adresse2_adh
-									FROM ".PREFIX_DB."adherents
-			       				WHERE ";
-		$where_clause = "";
-		while(list($key,$value)=each($mailing_adh))
-		{
-			if ($where_clause!="")
-				$where_clause .= " OR ";
-			$where_clause .= "id_adh=".$DB->qstr($value, get_magic_quotes_gpc());
-		}
-		$requete .= $where_clause." ORDER by nom_adh, prenom_adh;";
-		// echo $requete;
-		$resultat = &$DB->Execute($requete);
-		
-		$pdf = new pdffile;
-		$pdf->set_default('margin', 0);
-		$param["height"] = PREF_ETIQ_CORPS;
-		$firstpage = $pdf->new_page("a4");
-		
-		$param["fillcolor"] = $pdf->get_color('#000000');
-		$param["align"] = "center";
-		$param["width"] = 1;
-		$param["color"] = $pdf->get_color('#DDDDDD');
+$requete = 'SELECT id_adh, nom_adh, prenom_adh, adresse_adh,
+		titre_adh, cp_adh, ville_adh, pays_adh, adresse2_adh
+		FROM ' . PREFIX_DB . 'adherents
+		WHERE ';
+$where_clause = "";
+while( list($key, $value) = each($mailing_adh) ) {
+	if ($where_clause!="") {
+		$where_clause .= ' OR ';
+	}
+	$where_clause .= 'id_adh=' . $DB->qstr($value, get_magic_quotes_gpc());
+}
 
-		if ($resultat->EOF)
-			die();
-			
-	   $yorigin=842-round(PREF_ETIQ_MARGES_V*2.835);
-	   $xorigin=round(PREF_ETIQ_MARGES_H*2.835);
-	   $col=1;
-	   $row=1;
-	   $nb_etiq=0;
-	   $concatname = "";
-		while (!$resultat->EOF)
-		{
-			$nom_adh_ext="";
-			switch($resultat->fields[4])
-			{
-				case "1" :
-					$nom_adh_ext .= _T("Mr.");
-					break;
-				case "2" :
-					$nom_adh_ext .= _T("Mrs.");
-					break;
-				case "3" :
-					$nom_adh_ext .= _T("Miss.");
-					break;
-				case "4" :
-					$nom_adh_ext .= _T("Society");
-					break;
-				default :
-					$nom_adh_ext .= "";
-			}
-			
-			$x1 = $xorigin + ($col-1)*(round(PREF_ETIQ_HSIZE*2.835)+round(PREF_ETIQ_HSPACE*2.835));
-			$x2 = $x1 + round(PREF_ETIQ_HSIZE*2.835);
-			$y1 = $yorigin-($row-1)*(round(PREF_ETIQ_VSIZE*2.835)+round(PREF_ETIQ_VSPACE*2.835));
-			$y2 = $y1 - round(PREF_ETIQ_VSIZE*2.835);
-												
-			$nom_adh_ext .= " ".strtoupper($resultat->fields[1])." ".ucfirst(strtolower($resultat->fields[2]));
-			$concatname = $concatname . " - " . $nom_adh_ext;
-			$param["font"] = "Helvetica-Bold";
-			$pdf->draw_paragraph($y1-10, $x1, $y1-10-(round(PREF_ETIQ_VSIZE*2.835)/5)+5, $x2, $nom_adh_ext, $firstpage, $param);
-			$param["font"] = "Helvetica";
-			$pdf->draw_paragraph ($y1-10-(round(PREF_ETIQ_VSIZE*2.835)/5), $x1, $y1-10-(round(PREF_ETIQ_VSIZE*2.835)/5)-(round(PREF_ETIQ_VSIZE*2.835)*4/5), $x2, $resultat->fields[3]."\n".$resultat->fields[8]."\n".$resultat->fields[5]."  -  ".$resultat->fields[6]."\n".$resultat->fields[7], $firstpage, $param);
-			$pdf->draw_rectangle ($y1, $x1, $y2, $x2, $firstpage, $param);
-			$resultat->MoveNext();
+$requete .= $where_clause." ORDER by nom_adh, prenom_adh;";
+$resultat = &$DB->Execute($requete);
 
-			$col++;
-			if ($col>PREF_ETIQ_COLS)
-			{
-				$col=1;
-				$row++;
-			}
-			if ($row>PREF_ETIQ_ROWS)
-			{
-				$col=1;
-				$row=1;
-				$firstpage = $pdf->new_page("a4");
-			}
-			$nb_etiq++;
-		}
-		$resultat->Close();
-		//dblog("Generation of "." ".$nb_etiq." "."label(s)",$concatname);
-		
-	header("Content-Disposition: attachment; filename=labels.pdf");
-	header("Content-Type: application/pdf");
-	$temp = $pdf->generate(0);
-	header('Content-Length: ' . strlen($temp));
-	echo $temp;
+$doc_title = 'Member\'s Labels';
+$doc_subject = 'Generated by Galette ' . GALETTE_VERSION;
+$doc_keywords = 'Labels';
+// Create new PDF document
+$pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8');
+
+// Set document information
+$pdf->SetCreator(PDF_CREATOR);
+$pdf->SetAuthor(PDF_AUTHOR);
+$pdf->SetTitle($doc_title);
+$pdf->SetSubject($doc_subject);
+$pdf->SetKeywords($doc_keywords);
+
+// No hearders and footers
+$pdf->SetPrintHeader(false);
+$pdf->SetPrintFooter(false);
+$pdf->setFooterMargin(0);
+$pdf->setHeaderMargin(0);
+
+// Show full page
+$pdf->SetDisplayMode('fullpage');
+
+// Disable Auto Page breaks
+$pdf->SetAutoPageBreak(false,0);
+
+// Set colors
+$pdf->SetDrawColor(160,160,160);
+$pdf->SetTextColor(0);
+
+// Set margins
+$pdf->SetMargins(PREF_ETIQ_MARGES_H, PREF_ETIQ_MARGES_V);
+
+if ($resultat->EOF) {
+	die();
+}
+
+// Set origin
+// Top left corner
+$yorigin=round(PREF_ETIQ_MARGES_V);
+$xorigin=round(PREF_ETIQ_MARGES_H);
+// Label width
+$w = round(PREF_ETIQ_HSIZE);
+// Label heigth
+$h = round(PREF_ETIQ_VSIZE);
+// Line heigth
+$line_h=round($h/5);
+$nb_etiq=0;
+
+while ( !$resultat->EOF ) {
+	// Detect page breaks
+	if ($nb_etiq % (PREF_ETIQ_COLS * PREF_ETIQ_ROWS)==0){
+		$pdf->AddPage();
+	}
+
+	$nom_adh_ext = '';
+	switch( $resultat->fields[4] ) {
+	case '1' :
+		$nom_adh_ext .= _T("Mr.");
+		break;
+	case '2' :
+		$nom_adh_ext .= _T("Mrs.");
+		break;
+	case '3' :
+		$nom_adh_ext .= _T("Miss.");
+		break;
+	case '4' :
+		$nom_adh_ext .= _T("Society");
+		break;
+	default :
+		$nom_adh_ext .= '';
+	}
+
+	// Set font
+	$pdf->SetFont('DejaVuSans', 'B', PREF_ETIQ_CORPS);
+
+	// Compute label position
+	$col=$nb_etiq % PREF_ETIQ_COLS;
+	$row=($nb_etiq/PREF_ETIQ_COLS) % PREF_ETIQ_ROWS;
+	// Set label origin
+	$x = $xorigin + $col*(round(PREF_ETIQ_HSIZE)+round(PREF_ETIQ_HSPACE));
+	$y = $yorigin + $row*(round(PREF_ETIQ_VSIZE)+round(PREF_ETIQ_VSPACE));
+	// Draw a frame around the label
+	$pdf->Rect($x,$y,$w,$h);
+	// Print full name
+	$pdf->SetXY($x,$y);
+	$nom_adh_ext .= ' ' . mb_strtoupper($resultat->fields[1]) . ' ' . ucfirst(strtolower($resultat->fields[2]));
+	$pdf->Cell($w, $line_h, $nom_adh_ext, 0, 0, 'L', 0);
+	// Print first line of adress
+	$pdf->SetFont('DejaVuSans', '', PREF_ETIQ_CORPS);
+	$pdf->SetXY($x, $y+$line_h);
+	$pdf->Cell($w, $line_h, $resultat->fields[3], 0, 0, 'L', 0);
+	// Print second line of adress
+	$pdf->SetXY($x, $y+$line_h*2);
+	$pdf->Cell($w, $line_h, $resultat->fields[8], 0, 0, 'L', 0);
+	// Print zip code and town
+	$pdf->SetFont('DejaVuSans', 'B', PREF_ETIQ_CORPS);
+	$pdf->SetXY($x, $y+$line_h*3);
+	$pdf->Cell($w, $line_h, $resultat->fields[5] . ' ' . mb_strtoupper($resultat->fields[6]), 0, 0, 'L', 0);
+	// Print country
+	$pdf->SetFont('DejaVuSans', 'I', PREF_ETIQ_CORPS);
+	$pdf->SetXY($x, $y+$line_h*4);
+	$pdf->Cell($w,$line_h, $resultat->fields[7], 0, 0, 'R', 0);
+	$nb_etiq++;
+
+	$resultat->MoveNext();
+}
+$resultat->Close();
+
+$pdf->Output('labels.pdf', 'D');
 ?>
