@@ -1,6 +1,36 @@
 Changes
 -------
 
+0.63.2 -> 0.63.3
+- fix a security flaw that allowed attacker to send arbitrary PHP files on some servers
+- when sendind invalid member form, line dynamic fields were repeated (bug #10187)
+- some encoding issues has been noticed on UFT-8 MySQL servers. Connection is now forced to LATIN1 (thanks to Cédric)
+- unbreakable spaces appears on non html email (thanks to Cédric)
+- using XML characters in mailing subjects causes XML analysis errors on preview (bug #14571)
+- needless data were stored into logs (and not at the right place) sending mailings (bug #14569)
+- XML analysis errors where thrown on logs page when a member card contains reserved characters (bug #14561)
+- html tags in mailing were not showed while previewing a mailing under Firefox (bug #14465)
+
+0.63.1 -> 0.63.2
+- membership's deadline was incorrect for a fiscal year (bug #13010)
+- donations didn't appear in the right color in the table (bug #13009)
+- history entries when adding or editing a contribution did not contains member's login - as when adding/editing a member (bug #13011)
+- on windows, some characters were incorrectly interpreted - ¿\n¿ for example (bug #14162)
+- when saving a picture (PNG format), alpha channel was not saved, causing image to get a default background color (bug #14327)
+- restrictions showing pictures (since 0.63.1) prevents custom logo to display correctly (bug #14442)
+- when editing member's language, current session was also translated (bug #14443)
+- some characters - like simple quotes - were badly encoded mailings subjects (bug #14449)
+- mail sending were always active, even if disabled in preferences (bug #14450)
+
+
+0.63 -> 0.63.1
+- some preferences were not updated at install time
+- on some web hosting services, exif functions are not available. In this case, we use GD (bug #12836)
+- XHTML was sometimes not well formed, due to PHP sessions (bug #13071)
+- fix PHP notices in the logs (patch #1133)
+- remove of posix functions which are deprecated in PHP 5.3
+- add of a .htaccess file to prevent read of uploaded photos from the web
+
 0.62 -> 0.63
 - Project leader change :-)
 - Added transactions managment
