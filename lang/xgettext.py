@@ -31,6 +31,7 @@ import re
 
 # pattern definition
 translatable= re.compile("_T\((\"[^\"]*\")\)")
+tpl_translatable= re.compile("_T\ string=(\"[^\"]*\")")
 
 # constants string
 startLoc = "#: "
@@ -59,6 +60,15 @@ for inputFileName in sys.argv[1:] :
               dico[match] += nextLoc + location() + "\n"
           else :
             dico[match] = startLoc + location()
+      tpl_matchs =  tpl_translatable.findall(line)
+      for tpl_match in tpl_matchs:
+          if dico.has_key(tpl_match):
+            if dico[tpl_match][-1:] == "\n":
+              dico[tpl_match] += startLoc + location()
+            else :
+              dico[tpl_match] += nextLoc + location() + "\n"
+          else :
+            dico[tpl_match] = startLoc + location()
 
 #
 outFile = open("messages.po",'w')

@@ -1,5 +1,5 @@
 <?php
-	define("GALETTE_VERSION", "v0.63.3");
+	define("GALETTE_VERSION", "v0.63.4");
 
 	/*
 	*@author steve gricci
@@ -18,7 +18,8 @@
 	}
 	$start = utime();
 
-	include(WEB_ROOT."/includes/adodb/adodb.inc.php");
+	require_once WEB_ROOT . '/config/versions.inc.php';
+	include(WEB_ROOT."/includes/adodb" . ADODB_VERSION . "/adodb.inc.php");
 	$DB = ADONewConnection(TYPE_DB);
 	$DB->debug = false;
 	if(!@$DB->Connect(HOST_DB, USER_DB, PWD_DB, NAME_DB)) die("No database connection...");

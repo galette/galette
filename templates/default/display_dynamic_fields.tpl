@@ -1,10 +1,10 @@
 {if !empty($dynamic_fields)}
 {if $is_form eq true}
 <fieldset class="cssform">
-	<legend>{_T("Additionnal fields:")}</legend>
+	<legend>{_T string="Additionnal fields:"}</legend>
 {else}
 <table class="details">
-	<caption>{_T("Additionnal fields:")}</caption>
+	<caption>{_T string="Additionnal fields:"}</caption>
 {/if}
 {foreach from=$dynamic_fields item=field}
 {if $field.field_perm ne 1 || $smarty.session.admin_status eq 1}

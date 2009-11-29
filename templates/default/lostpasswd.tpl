@@ -7,10 +7,10 @@
 </head>
 <body>
 	<div class="login-box">
-		<h1 class="titre">{_T("Password recovery")}</h1>
+		<h1 class="titre">{_T string="Password recovery"}</h1>
 {if $error_detected|@count != 0}
 		<div id="errorbox">
-			<h1>{_T("- ERROR -")}</h1>
+			<h1>{_T string="- ERROR -"}</h1>
 			<ul>
 {foreach from=$error_detected item=error}
 				<li>{$error}</li>
@@ -20,7 +20,7 @@
 {/if}
 {if $warning_detected|@count != 0}
 		<div id="warningbox">
-			<h1>{_T("- WARNING -")}</h1>
+			<h1>{_T string="- WARNING -"}</h1>
 			<ul>
 {foreach from=$warning_detected item=warning}
 				<li>{$warning}</li>
@@ -31,19 +31,19 @@
 		<form action="lostpasswd.php" method="post" enctype="multipart/form-data">
 		<table>
 			<tr>
-				<th>{_T("Username or email:")}</th>
+				<th>{_T string="Username or email:"}</th>
 				<td><input type="text" name="login" maxlength="50" /></td>
 			</tr>
 		</table>
 		<div>
-			<input type="submit" class="submit" name="lostpasswd" value="{_T("Send me my password")}" />
+			<input type="submit" class="submit" name="lostpasswd" value="{_T string="Send me my password"}" />
 			<input type="hidden" name="valid" value="1"/>
 		</div>
 		</form>
 	</div>
 	<div class="button-container">
 		<div class="button-link button-back">
-			<a href="index.php">{_T("Back to login page")}</a>
+			<a href="index.php">{_T string="Back to login page"}</a>
 		</div>
 	</div>
 </body>
