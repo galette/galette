@@ -35,7 +35,7 @@ define('SMARTY_VERSION', '2.6.22');
 define('PEAR_VERSION', '1.7.2');
 define('MDB2_VERSION', '2.4.1');
 define('LOG_VERSION', '1.11.4');
-define('TCPDF_VERSION', '4.8.009');
+define('TCPDF_VERSION', '4.8.017');
 define('JQUERY_VERSION', '1.3.2');
 define('JQUERY_UI_VERSION', '1.7.1');
 define('JQUERY_MARKITUP_VERSION', '1.1.5');
