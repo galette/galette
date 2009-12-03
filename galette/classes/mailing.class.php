@@ -287,16 +287,20 @@ class Mailing
     */
     public function __get($name)
     {
+        global $log;
         $forbidden = array('ordered');
+        $rname = '_' . $name;
+        $log->log('Trying to get ' . $name . ' renamed: ' . $rname, PEAR_LOG_INFO);
         if ( !in_array($name, $forbidden) ) {
             switch($name) {
             case 'message':
-                return ( !$this->_html )
-                    ? htmlspecialchars($this->$name, ENT_QUOTES)
-                    : $this->$name;
+                return $this->$rname;
+                break;
+            case 'step':
+                return $this->current_step;
                 break;
             default:
-                return $this->$name;
+                return $this->$rname;
                 break;
             }
         } else {
@@ -324,13 +328,13 @@ class Mailing
                 ? stripslashes($value)
                 : $value;
             break;
-        case 'step':
+        case 'current_step':
             if ( is_int($value)
                 && (   $value == self::STEP_START
                 || $value == self::STEP_PROGRESS
                 || $value == self::STEP_SEND )
             ) {
-                $this->$rname = (int)$value;
+                $this->_current_step = (int)$value;
             } else {
                 $log->log(
                     '[mailing.class.php] Value for field `' . $name .
@@ -342,7 +346,7 @@ class Mailing
             break;
         case 'html':
             $log->log(
-                '[varslist.class.php] Setting property `' . $name . '`',
+                '[mailing.class.php] Setting property `' . $name . '`',
                 PEAR_LOG_DEBUG
             );
             if ( is_bool($value) ) {
@@ -361,7 +365,7 @@ class Mailing
             break;
         default:
             $log->log(
-                '[varslist.class.php] Unable to set proprety `' . $name . '`',
+                '[mailing.class.php] Unable to set proprety `' . $name . '`',
                 PEAR_LOG_WARNING
             );
             break;

@@ -24,18 +24,18 @@
 {assign var='count' value=$mailing->recipients|@count}
 {if $count > 0}
 		<p>
-	{if $mailing->step == constant('Mailing::STEP_SEND')}
+	{if $mailing->current_step == constant('Mailing::STEP_SEND')}
 		{_T string="Your e-mail was sent to"}
 	{else}
 		{_T string="You are about to send an e-mail to"}
 	{/if}
 		{$count} {if $count != 1}{_T string="members"}{else}{_T string="member"}{/if}<br/>
-	{if $mailing->step == constant('Mailing::STEP_START')}
+	{if $mailing->current_step == constant('Mailing::STEP_START')}
 		{_T string="Please compose your mail."}
 	{/if}
 		</p>
 		<div>
-	{if $mailing->step lt constant('Mailing::STEP_SEND')}
+	{if $mailing->current_step lt constant('Mailing::STEP_SEND')}
 			<p>
 				<label for="mailing_objet" class="bline">{_T string="Object:"}</label>
 				<input type="text" name="mailing_objet" id="mailing_objet" value="{$mailing->subject}" size="80"/>
@@ -51,7 +51,7 @@
 				<input type="submit" class="submit" name="mailing_go" value="{_T string="Preview"}"/>
 			</p>
 	{/if}
-	{if $mailing->step > constant('Mailing::STEP_START')}
+	{if $mailing->current_step > constant('Mailing::STEP_START')}
 			<div id="mail_preview">
 				<p>{_T string="Message preview:"}</p>
 				<p><span class="bline">{_T string="Object:"}</span>{$mailing->subject}</p>

@@ -32,7 +32,7 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 02-06-2009
+ * @since     Available since 0.7dev - 2009-06-02
  */
 
 /** @ignore */
@@ -626,10 +626,11 @@ class Adherent
                 break;
             case 'sfullname':
                 return Politeness::getPoliteness($this->_politeness) . ' ' .
-                    $this->_name . ' ' . $this->_surname;
+                    mb_strtoupper($this->_name, 'UTF-8') . ' ' .
+                    ucwords(mb_strtolower($this->_surname, 'UTF-8'));
                 break;
             case 'sname':
-                return mb_strtoupper($this->_name, 'UTF-8') . ' ' . $this->_surname;
+                return mb_strtoupper($this->_name, 'UTF-8') . ' ' . ucfirst(mb_strtolower($this->_surname, 'UTF-8'));
                 break;
             }
         } else {

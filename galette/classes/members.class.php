@@ -204,7 +204,7 @@ class Members
             return false;
         }
 
-        $query = self::_buildSelect(self::SHOW_ARRAY_LIST, null, false);
+        $query = self::_buildSelect(self::SHOW_ARRAY_LIST, null, false, false);
         $query .= ' WHERE ' . self::PK . '=';
         $query .= implode(' OR ' . self::PK . '=', $ids);
 
