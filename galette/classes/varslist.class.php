@@ -77,6 +77,8 @@ class VarsList
 
     /**
     * Reinit default parameters
+    *
+    * @return void
     */
     public function reinit()
     {
@@ -94,6 +96,8 @@ class VarsList
 
     /**
     * Reset selected array
+    *
+    * @return void
     */
     public function clearSelected()
     {
@@ -102,6 +106,8 @@ class VarsList
 
     /**
     * Invert sort order
+    *
+    * @return void
     */
     public function invertorder()
     {
@@ -162,6 +168,8 @@ class VarsList
     *
     * @param string $name  name of the property we want to assign a value to
     * @param object $value a relevant value for the property
+    *
+    * @return void
     */
     public function __set($name, $value)
     {
