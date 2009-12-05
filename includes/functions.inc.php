@@ -21,6 +21,11 @@
  *
  */
 
+if (!function_exists('stripos')) {
+    function stripos($str,$needle,$offset=0){
+        return strpos(strtolower($str), strtolower($needle), $offset);
+    }
+}
 
 function makeRandomPassword($size){
   $pass = "";
@@ -184,7 +189,7 @@ function resizeimage($img,$img2,$w,$h)
 		}
 
 		list($cur_width, $cur_height, $cur_type, $curattr) = getimagesize($img);
-		
+
 		$ratio = $cur_width/$cur_height;
 		if ($cur_width > $cur_height)
 			$h = $w/$ratio;
@@ -281,7 +286,7 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
 
   // Add a Reply-To field in the mail headers.
   // Fix bug #6654.
-  
+
   if ( PREF_EMAIL_REPLY_TO )
     $reply_to = PREF_EMAIL_REPLY_TO;
   else
@@ -290,7 +295,7 @@ function custom_mail($email_adh,$mail_subject,$mail_text, $content_type="text/pl
   $headers = array("From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">",
                    "Message-ID: <".makeRandomPassword(16)."-galette@".$_SERVER['SERVER_NAME'].">",
                    "Reply-To: <".$reply_to.">",
-                   "X-Sender: <".PREF_EMAIL.">",                   
+                   "X-Sender: <".PREF_EMAIL.">",
                    "Return-Path: <".PREF_EMAIL.">",
                    "Errors-To: <".PREF_EMAIL.">",
                    "X-Mailer: Galette-".GALETTE_VERSION,
