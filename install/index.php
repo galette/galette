@@ -1,8 +1,25 @@
 <?php
+// Copyright © 2004-2009 The Galette Team
+//
+// This file is part of Galette (http://galette.tuxfamily.org).
+//
+// Galette is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 2 of the License, or
+// (at your option) any later version.
+//
+// Galette is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Galette. If not, see <http://www.gnu.org/licenses/>.
+
 	if (!isset($_POST["install_lang"])) $pref_lang="english";
 		else $pref_lang=$_POST["install_lang"];
 	define("WEB_ROOT", realpath(dirname(__FILE__)."/../")."/");
-	include_once("../includes/i18n.inc.php"); 
+	include_once("../includes/i18n.inc.php");
 
 // test if galette is already installed and redirect to index page if so
 $configfile = dirname( __FILE__).'/../includes/config.inc.php';
@@ -14,7 +31,7 @@ if ($installed) {
 	session_start();
 	$step="1";
 	$error_detected="";
-	
+
 	// traitement page 1 - language
 	if (isset($_POST["install_lang"]))
 	{
@@ -49,10 +66,10 @@ if ($installed) {
 	  		$error_detected .= "<li>"._T("Installation mode unknown")."</li>";
 	 }
 
-	if ($error_detected=="" && isset($_POST["install_dbtype"])  
-		&& isset($_POST["install_dbhost"]) 
-		&& isset($_POST["install_dbuser"]) 
-		&& isset($_POST["install_dbpass"]) 
+	if ($error_detected=="" && isset($_POST["install_dbtype"])
+		&& isset($_POST["install_dbhost"])
+		&& isset($_POST["install_dbuser"])
+		&& isset($_POST["install_dbpass"])
 		&& isset($_POST["install_dbname"])
 		&& isset($_POST["install_dbprefix"]))
 	{
@@ -77,10 +94,10 @@ if ($installed) {
 					$step="i6";
 				elseif (substr($_POST["install_type"],0,7)=="upgrade")
 					$step="u6";
-					
+
 				if (isset($_POST["install_dbperms_ok"]))
 				if ($_POST["install_type"]=="install")
-					$step="i7";					
+					$step="i7";
 				elseif (substr($_POST["install_type"],0,7)=="upgrade")
 					$step="u7";
 
@@ -118,19 +135,19 @@ if ($installed) {
 				$step="i5";
 		}
 	 }
-	header('Content-Type: text/html; charset=iso-8859-15');	
+	header('Content-Type: text/html; charset=iso-8859-15');
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> 
-<html> 
-<head> 
-	<title>Galette Installation</title> 
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15"> 
-	<link rel="stylesheet" type="text/css" href="../templates/default/galette.css" > 
-</head> 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<title>Galette Installation</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
+	<link rel="stylesheet" type="text/css" href="../templates/default/galette.css" >
+</head>
 <h1 class="titreinstall">Galette installation</h1>
 <div id="installpage" align="center">
 <br />
-	
+
 <?php
 	switch ($step)
 	{
@@ -266,7 +283,7 @@ if ($installed) {
 		</p>
 		<input type="hidden" name="install_lang" value="<?php echo $_POST["install_lang"]; ?>">
 		<input type="hidden" name="install_type" value="<?php echo $_POST["install_type"]; ?>">
-	</form>		
+	</form>
 <?php
 		}
 			else
@@ -299,7 +316,7 @@ if ($installed) {
 <?php
 				if ($error_detected!="")
 					echo "<table><tr><td><ul>".$error_detected."</ul></td></tr></table><br />";
-?>	
+?>
 		<?php if ($step=="i4") echo _T("If it hadn't been made, create a database and a user for Galette."); ?><br />
 		<?php if ($step=="u4") echo _T("Enter connection data for the existing database."); ?><br />
 		<?php echo _T("The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."); ?></p>
@@ -435,7 +452,7 @@ echo "</ul>";
 	<br />
 	</div>
 	<h1 class="footerinstall"><?php echo _T("Step 5 - Access to the database"); ?></h1>
-	
+
 
 <?php
 			break;
@@ -648,7 +665,7 @@ echo "</ul>";
 	<table><tr><td>
 <ul>
 <?php
-			// begin : copyright (2002) the phpbb group (support@phpbb.com)	
+			// begin : copyright (2002) the phpbb group (support@phpbb.com)
 			// load in the sql parser
 			include("sql_parse.php");
 
@@ -745,8 +762,8 @@ echo "</ul>\n";
 						$new_start_date = localtime($c['start_date'], 1);
 						$c['end_date'] = mktime(0, 0, 0, $new_start_date['tm_mon'] + $c['duration'] + 1, $new_start_date['tm_mday'], $new_start_date['tm_year']);
 						$end_date = $DB->DBDate($c['end_date']);
-						$query = "update ".$table_prefix."cotisations 
-							     set date_debut_cotis = ".$start_date.", 
+						$query = "update ".$table_prefix."cotisations
+							     set date_debut_cotis = ".$start_date.",
 								 date_fin_cotis = ".$end_date."
 							     where id_cotis = ".$c['id_cotis'];
 						$result = $DB->Execute($query);
@@ -811,8 +828,8 @@ echo "</ul>\n";
 							$new_start_date = localtime($c['start_date'], 1);
 							$c['end_date'] = mktime(0, 0, 0, $new_start_date['tm_mon'] + $c['duration'] + 1, $new_start_date['tm_mday'], $new_start_date['tm_year']);
 							$end_date = $DB->DBDate($c['end_date']);
-							$query = "update ".$table_prefix."cotisations 
-										 set date_debut_cotis = ".$start_date.", 
+							$query = "update ".$table_prefix."cotisations
+										 set date_debut_cotis = ".$start_date.",
 									 date_fin_cotis = ".$end_date."
 										 where id_cotis = ".$c['id_cotis'];
 							$result = $DB->Execute($query);
@@ -882,14 +899,14 @@ echo "</ul>\n";
 	</form>
 	<?php
 			}
-?>	
+?>
 	<br />
 	</div>
 	<h1 class="footerinstall">
 		<?php if ($step=="i7") echo _T("Step 7 - Tables Creation"); ?>
 		<?php if ($step=="u7") echo _T("Step 7 - Tables Update"); ?>
 	</h1>
-	
+
 <?php
 			break;
 		case "i8":
@@ -900,7 +917,7 @@ echo "</ul>\n";
 <?php
 				if ($error_detected!="")
 					echo "<p><table><tr><td><ul>".$error_detected."</ul></td></tr></table></p>";
-?>	
+?>
 	<p><?php echo _T("Please chose the parameters of the admin account on Galette"); ?></p>
 	<form action="index.php" method="POST">
 		<table>
@@ -945,7 +962,7 @@ echo "</ul>\n";
 	<br />
 	</div>
 	<h1 class="footerinstall"><?php echo _T("Step 8 - Admin parameters"); ?></h1>
-	
+
 <?php
 			break;
 		case "i9";
@@ -972,6 +989,7 @@ define(\"STOCK_FILES\", \"tempimages\");
 ?>";
 				fwrite($fd,$data);
 				fclose($fd);
+				chmod(WEB_ROOT ."includes/config.inc.php", 0600);
 				echo "<li class=\"install-ok\">"._T("Configuration file created (includes/config.inc.php)")."</li>";
 			}
 			else
@@ -1212,7 +1230,7 @@ define(\"STOCK_FILES\", \"tempimages\");
 
 <?php
 	}
-?>	
-	
+?>
+
 </body>
 </html>
