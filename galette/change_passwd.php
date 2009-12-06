@@ -41,7 +41,7 @@
 		}
 	}
 	if ( isset($hash) && !empty($hash) ) {
-		$query = "SELECT id_adh from ".PREFIX_DB."tmppasswds where tmp_passwd=".txt_sqls($hash);
+		$query = "SELECT id_adh from ".PREFIX_DB."tmppasswds where tmp_passwd=".$DB->qstr($hash, get_magic_quotes_gpc());
 		$result = &$DB->Execute($query);
 		if ($result->EOF) {
 			$warning_detected = _T("This link is no longer valid. You should <a href='lostpasswd.php'>ask to retrieve your password</a> again.");
@@ -72,7 +72,7 @@
 							$warning_detected = _T("There was a database error");
 						} else {
 							//delete temporary password from table
-							$query = "DELETE from ".PREFIX_DB."tmppasswds where tmp_passwd=".txt_sqls($hash);
+							$query = "DELETE from ".PREFIX_DB."tmppasswds where tmp_passwd=".$DB->qstr($hash, get_magic_quotes_gpc());
 							if (!$DB->Execute($query)) {
 								$warning_detected = _T("There was a database error");
 							}else{

@@ -37,7 +37,7 @@
 		} else {
 			$req = "SELECT email_adh
 				FROM ".PREFIX_DB."adherents
-				WHERE login_adh=".txt_sqls($login);
+				WHERE login_adh=".$DB->qstr($login, get_magic_quotes_gpc());
 			$result = &$GLOBALS["DB"]->Execute($req);
 
 			if ($result->EOF) {
@@ -59,7 +59,7 @@
 		$login_adh=$_POST['login'];
 		//if field contain the character @ we consider that is an email
 		if ( strpos($login_adh,'@') !== FALSE ) {
-			$query = "SELECT login_adh from ".PREFIX_DB."adherents where email_adh=".txt_sqls($login_adh);
+			$query = "SELECT login_adh from ".PREFIX_DB."adherents where email_adh=".$DB->qstr($login_adh, get_magic_quotes_gpc());
 			$result = &$DB->Execute($query);
 			$login_adh = $result->fields[0];
 		}
@@ -68,7 +68,7 @@
 		//send the password
 		if(	$email_adh!="" )
 		{
-			$query = "SELECT id_adh from ".PREFIX_DB."adherents where login_adh=".txt_sqls($login_adh);
+			$query = "SELECT id_adh from ".PREFIX_DB."adherents where login_adh=".$DB->qstr($login_adh, get_magic_quotes_gpc());
 			$result = &$DB->Execute($query);
 			if ($result->EOF) {
 				$warning_detected = _T("There is  no password for user :")." \"" . $login_adh . "\"";

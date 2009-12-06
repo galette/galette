@@ -113,10 +113,6 @@ function isChecked($champ1, $champ2) {
   }
 }
 
-function txt_sqls($champ) {
-  return "'".str_replace("'", "\'", str_replace('\\', '', $champ))."'";
-}
-
 function is_valid_web_url($url) {
   return (preg_match('#^http[s]?\\:\\/\\/[a-z0-9\-]+\.([a-z0-9\-]+\.)?[a-z]+#i', $url));
 }
