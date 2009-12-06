@@ -1,359 +1,478 @@
 <?php
 
-// Copyright © 2007-2008 Johan Cwiklinski
-//
-// This file is part of Galette (http://galette.tuxfamily.org).
-//
-// Galette is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Galette is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Galette. If not, see <http://www.gnu.org/licenses/>.
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
  * contributions_types.class.php, 27 octobre 2007
  *
- * @package Galette
- * 
- * @author     Johan Cwiklinski <johan@x-tnd.be>
- * @copyright  2007-2008 Johan Cwiklinski
- * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version    $Id$
- * @since      Disponible depuis la Release 0.7alpha
+ * PHP version 5
+ *
+ * Copyright © 2007-2009 The Galette Team
+ *
+ * This file is part of Galette (http://galette.tuxfamily.org).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @category  Classes
+ * @package   Galette
+ *
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2007-2009 The Galette Team
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @version   SVN: $Id$
+ * @link      http://galette.tuxfamily.org
+ * @since     Available since 0.7dev - 2007-10-27
  */
 
 /**
  * Contributions
  *
- * @name Preferences
- * @package Galette
- *
+ * @category  Classes
+ * @name      Preferences
+ * @package   Galette
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2007-2009 The Galette Team
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @link      http://galette.tuxfamily.org
+ * @since     Available since 0.7dev - 2007-10-27
  */
 
-class ContributionsTypes{
-	private $types;
-	private $error;
+class ContributionsTypes
+{
+    const TABLE = 'types_cotisation';
+    const PK = 'id_type_cotis';
 
-	const TABLE = 'types_cotisation';
-	const PK = 'id_type_cotis';
-	private static $fields = array(
-		'id_type_cotis',
-		'libelle_type_cotis',
-		'cotis_extension'
-	);
+    private $_error;
 
-	private static $defaults = array(
-		array('id' => 1, 'libelle' => 'annual fee', 'extension' => '1'),
-		array('id' => 2, 'libelle' => 'reduced annual fee', 'extension' => '1'),
-		array('id' => 3, 'libelle' => 'company fee', 'extension' => '1'),
-		array('id' => 4, 'libelle' => 'donation in kind', 'extension' => null),
-		array('id' => 5, 'libelle' => 'donation in money', 'extension' => null),
-		array('id' => 6, 'libelle' => 'partnership', 'extension' => null),
-		array('id' => 7, 'libelle' => 'annual fee (to be paid)', 'extension' => '1')
-	);
+    private static $_fields = array(
+        'id_type_cotis',
+        'libelle_type_cotis',
+        'cotis_extension'
+    );
 
-	/**
-	* Default constructor
-	*/
-	public function __construct($args = null){
-		if ( is_object($args) ){
-			$this->loadFromRS($args);
-		}
-	}
+    private static $_defaults = array(
+        array('id' => 1, 'libelle' => 'annual fee', 'extension' => '1'),
+        array('id' => 2, 'libelle' => 'reduced annual fee', 'extension' => '1'),
+        array('id' => 3, 'libelle' => 'company fee', 'extension' => '1'),
+        array('id' => 4, 'libelle' => 'donation in kind', 'extension' => null),
+        array('id' => 5, 'libelle' => 'donation in money', 'extension' => null),
+        array('id' => 6, 'libelle' => 'partnership', 'extension' => null),
+        array('id' => 7, 'libelle' => 'annual fee (to be paid)', 'extension' => '1')
+    );
 
-	/**
-	* Set default contribution types at install time
-	*/
-	public function installInit(){
-		global $mdb, $log;
+    /**
+    * Default constructor
+    *
+    * @param ResultSet $args Optionnal existing result set
+    */
+    public function __construct($args = null)
+    {
+        if ( is_object($args) ) {
+            $this->loadFromRS($args);
+        }
+    }
 
-		//first, we drop all values
-		$query = 'DELETE FROM '  . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE);
-		$result = $mdb->execute($query);
+    /**
+    * Set default contribution types at install time
+    *
+    * @return boolean
+    */
+    public function installInit()
+    {
+        global $mdb, $log;
 
-		if (MDB2::isError($result)) {
-			print_r($result);
-		}
+        //first, we drop all values
+        $query = 'DELETE FROM '  . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE);
+        $result = $mdb->execute($query);
 
-		$stmt = $mdb->prepare(
-				'INSERT INTO ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) . ' (' . $mdb->quoteIdentifier('id_type_cotis') . ', ' . $mdb->quoteIdentifier('libelle_type_cotis') . ', ' . $mdb->quoteIdentifier('cotis_extension') . ') VALUES(:id, :libelle, :extension)',
-				array('integer', 'text', 'text'),
-				MDB2_PREPARE_MANIP
-			);
+        if ( MDB2::isError($result) ) {
+            /** FIXME: we surely want to return sthing and print_r for debug. */
+            print_r($result);
+        }
 
-		$mdb->getDb()->loadModule('Extended', null, false);
-		$mdb->getDb()->extended->executeMultiple($stmt, self::$defaults);
+        $stmt = $mdb->prepare(
+            'INSERT INTO ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) .
+            ' (' . $mdb->quoteIdentifier('id_type_cotis') . ', ' .
+            $mdb->quoteIdentifier('libelle_type_cotis') . ', ' .
+            $mdb->quoteIdentifier('cotis_extension') .
+            ') VALUES(:id, :libelle, :extension)',
+            array('integer', 'text', 'text'),
+            MDB2_PREPARE_MANIP
+        );
 
-		if (MDB2::isError($stmt)) {
-			$this->error = $stmt;
-			$log->log('Unable to initialize default contributions types.' . $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')', PEAR_LOG_WARNING);
-			return false;
-		}
+        $mdb->getDb()->loadModule('Extended', null, false);
+        $mdb->getDb()->extended->executeMultiple($stmt, self::$_defaults);
 
-		$stmt->free();
-		$log->log('Default contributions types were successfully stored into database.', PEAR_LOG_INFO);
-		return true;
-	}
+        if ( MDB2::isError($stmt) ) {
+            $this->_error = $stmt;
+            $log->log(
+                'Unable to initialize default contributions types.' .
+                $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')',
+                PEAR_LOG_WARNING
+            );
+            return false;
+        }
 
-	/**
-	* Returns the list of statuses, in an array built as :
-	* $array[id] = label status
-	*/
-	public function getList(){
-		/** TODO */
-	}
+        $stmt->free();
+        $log->log(
+            'Default contributions types were successfully stored into database.',
+            PEAR_LOG_INFO
+        );
+        return true;
+    }
 
-	/**
-	* Returns the complete list of contributions types, as an array of ContributionsTypes objects
-	* TODO: replace with a static function ?
-	*/
-	public function getCompleteList(){
-		global $mdb, $log;
-		$list = array();
+    /**
+    * Returns the list of statuses, in an array built as :
+    * $array[id] = label status
+    */
+    /*public function getList()
+    {
+        // TODO
+    }*/
 
-		$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' ORDER BY id_type_cotis';
+    /** TODO: replace with a static function ? */
+    /**
+    * Complete list of contributions types
+    *
+    * @return array of alla contributions if succeed, false otherwise
+    */
+    public function getCompleteList()
+    {
+        global $mdb, $log;
+        $list = array();
 
-		$result = $mdb->query( $requete );
-		if (MDB2::isError($result))
-		  {
-		    $this->error = $result;
-		    return false;
-		  }
+        $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE .
+            ' ORDER BY id_type_cotis';
 
-		if($result->numRows() == 0){
-			$log->log('No contribution type defined in database.', PEAR_LOG_INFO);
-			return(-10);
-		}else{
-			/** TODO: an array of Objects would be more relevant here (see members and adherent class) */
-			/*foreach( $result->fetchAll() as $row ){
-				$list[] = new ContributionTypes($row);
-			}*/
-			$r = $result->fetchAll();
-			foreach($r as $contrib){
-				$list[$contrib->id_type_cotis] = array(
-					_T($contrib->libelle_type_cotis),
-					$contrib->cotis_extension
-				);
-			}
-			return $list;
-		}
-	}
+        $result = $mdb->query($requete);
+        if ( MDB2::isError($result) ) {
+            $this->_error = $result;
+            return false;
+        }
 
-	/* Get a status. Return values on error:
-	 * null : no such $id.
-	 * MDB2::Error object : DB error.
-	 */
-	public function get($id){
-		global $mdb, $log;
+        if ( $result->numRows() == 0 ) {
+            $log->log('No contribution type defined in database.', PEAR_LOG_INFO);
+            return(-10);
+        } else {
+            /** TODO: an array of Objects would be more relevant
+            here (see members and adherent class) */
+            /*foreach( $result->fetchAll() as $row ){
+                $list[] = new ContributionTypes($row);
+            }*/
+            $r = $result->fetchAll();
+            foreach ( $r as $contrib ) {
+                $list[$contrib->id_type_cotis] = array(
+                    _T($contrib->libelle_type_cotis),
+                    $contrib->cotis_extension
+                );
+            }
+            return $list;
+        }
+    }
 
-		$requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' . self::PK .'=' . $id;
+    /**
+    * Get a status.
+    *
+    * @param integer $id Contribution's id
+    *
+    * @return ResultSet Rwo if succeed ; null : no such $id ;
+    *   MDB2::Error object : DB error.
+    */
+    public function get($id)
+    {
+        global $mdb, $log;
 
-		$result = $mdb->query($requete);
-		if (MDB2::isError($result))
-		  {
-		    $this->error = $result;
-		    return $result;
-		  }
+        $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' .
+            self::PK .'=' . $id;
 
-		if ($result->numRows() == 0) {
-			$this->error = $result;
-			$log->log('Contribution type `' . $id . '` does not exist.', PEAR_LOG_WARNING);
-			return null;
-		}
+        $result = $mdb->query($requete);
+        if ( MDB2::isError($result) ) {
+            $this->_error = $result;
+            return $result;
+        }
 
-		return $result->fetchRow();
-	}
+        if ($result->numRows() == 0) {
+            $this->_error = $result;
+            $log->log(
+                'Contribution type `' . $id . '` does not exist.',
+                PEAR_LOG_WARNING
+            );
+            return null;
+        }
 
-	/* Get a label. Return values on error:
-	 * -2 : ID does not exist.
-	 * -1 : DB error.
-	 */
-	public function getLabel($id){
-		$res = $this->get($id);
-		if (!$res || MDB2::isError($res))
-			return $res;
-		return _T($res->libelle_type_cotis);
-	}
+        return $result->fetchRow();
+    }
 
-	/* Get a contribution type ID from a label. Return values on error:
-	 * -2 : ID does not exist.
-	 * -1 : DB error.
-	 */
-	public function getIdByLabel($label){
-		global $mdb, $log;
+    /**
+    * Get a label.
+    *
+    * @param integer $id Contribution's id
+    *
+    * @return integer translated label if succeed, -2 : ID does not exist ;
+    *   -1 : DB error.
+    */
+    public function getLabel($id)
+    {
+        $res = $this->get($id);
+        if (!$res || MDB2::isError($res)) {
+            return $res;
+        }
+        return _T($res->libelle_type_cotis);
+    }
 
-		$stmt = $mdb->prepare('SELECT '. self::PK .' FROM ' . PREFIX_DB . self::TABLE 
-				      . ' WHERE ' . $mdb->quoteIdentifier('libelle_type_cotis') . '= :libelle', 
-				      array('text'), MDB2_PREPARE_MANIP);
-		$result = $stmt->execute(array('libelle' => $label));
+    /**
+    * Get a contribution type ID from a label. Return values on error:
+    *
+    * @param string $label The label
+    *
+    * @return integer -2 : ID does not exist ; -1 : DB error
+    */
+    public function getIdByLabel($label)
+    {
+        global $mdb, $log;
 
-		if (MDB2::isError($result))
-		  {
-		    $this->error = $result;
-		    return -1;
-		  }
+        $stmt = $mdb->prepare(
+            'SELECT '. self::PK .' FROM ' . PREFIX_DB . self::TABLE .
+            ' WHERE ' . $mdb->quoteIdentifier('libelle_type_cotis') . '= :libelle',
+            array('text'),
+            MDB2_PREPARE_MANIP
+        );
+        $result = $stmt->execute(array('libelle' => $label));
 
-		if ($result == 0 || $result->numRows() == 0)
-			return null;
+        if ( MDB2::isError($result) ) {
+            $this->_error = $result;
+            return -1;
+        }
 
-		return $result->fetchOne();
-	}
+        if ( $result == 0 || $result->numRows() == 0 ) {
+            return null;
+        }
 
-	/* Add a new contribution type. Return id on success, else:
-	 * -1 : DB error.
-	 * -2 : label already exists.
-	*/
-	public function add($label, $extension){
-		global $mdb, $log;
+        return $result->fetchOne();
+    }
 
-		// Avoid duplicates.
-		$ret = $this->getidByLabel($label);
-		if (MDB2::isError($ret))
-			return -1;
-		if ($ret != null)
-			{
-				$log->log('Contribution type `' . $label . '` already exists', PEAR_LOG_WARNING);
-				return -2;
-			}
+    /**
+    * Add a new contribution type.
+    *
+    * @param string  $label     The label
+    * @param integer $extension Extension amount
+    *
+    * @return intager id if success ; -1 : DB error ; -2 : label already exists
+    */
+    public function add($label, $extension)
+    {
+        global $mdb, $log;
 
-		$stmt = $mdb->prepare('INSERT INTO ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) 
-				      . ' (' . $mdb->quoteIdentifier('libelle_type_cotis') 
-				      . ', ' . $mdb->quoteIdentifier('cotis_extension') 
-				      . ') VALUES(:libelle, :extension)',
-				      array('text', 'integer'),
-				      MDB2_PREPARE_MANIP);
-		$stmt->execute(array(
-				     'libelle'   => $mdb->escape($label),
-				     'extension' => $extension
-				     ));
+        // Avoid duplicates.
+        $ret = $this->getidByLabel($label);
+        if ( MDB2::isError($ret) ) {
+            return -1;
+        }
+        if ( $ret != null ) {
+            $log->log(
+                'Contribution type `' . $label . '` already exists',
+                PEAR_LOG_WARNING
+            );
+            return -2;
+        }
 
-		if (MDB2::isError($stmt)) {
-			$this->error = $stmt;
-			$log->log('Unable to add new contribution type `' . $label . '` | ' . $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')', PEAR_LOG_WARNING);
-			return -1;
-		}
+        $stmt = $mdb->prepare(
+            'INSERT INTO ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) .
+            ' (' . $mdb->quoteIdentifier('libelle_type_cotis') .
+            ', ' . $mdb->quoteIdentifier('cotis_extension') .
+            ') VALUES(:libelle, :extension)',
+            array('text', 'integer'),
+            MDB2_PREPARE_MANIP
+        );
+        $stmt->execute(
+            array(
+                'libelle'   => $mdb->escape($label),
+                'extension' => $extension
+            )
+        );
 
-		$stmt->free();
-		$log->log('New contribution type `' . $label . '` added successfully.', PEAR_LOG_INFO);
-		return $mdb->getDb()->lastInsertId(PREFIX_DB . self::TABLE,
-						   'libelle_type_cotis');
-	}
+        if ( MDB2::isError($stmt) ) {
+            $this->_error = $stmt;
+            $log->log(
+                'Unable to add new contribution type `' . $label . '` | ' .
+                $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')',
+                PEAR_LOG_WARNING
+            );
+            return -1;
+        }
 
-	/* Update a contribution type. Return values:
-	 * -2 : ID does not exist.
-	 * -1 : DB error.
-	 *  0 : success.
-	 */
-	public function update($id, $field, $value) {
-		global $mdb, $log;
+        $stmt->free();
+        $log->log(
+            'New contribution type `' . $label . '` added successfully.',
+            PEAR_LOG_INFO
+        );
+        return $mdb->getDb()->lastInsertId(
+            PREFIX_DB . self::TABLE,
+            'libelle_type_cotis'
+        );
+    }
 
-		$ret = $this->get($id);
-		if (!$ret || MDB2::isError($ret))
-			/* get() already logged and set $this->error. */
-			return ($ret ? -1 : -2);
+    /**
+    * Update a contribution type.
+    *
+    * @param integer $id    Contribution's id
+    * @param string  $field Field to update
+    * @param mixed   $value The value to set
+    *
+    * @return integer -2 : ID does not exist ; -1 : DB error ; 0 : success.
+    */
+    public function update($id, $field, $value)
+    {
+        global $mdb, $log;
 
-		$fieldtype = '';
-		# label.
-		if ($field == self::$fields[1]) { $fieldtype = 'text'; }
-		# membership extension.
-		elseif(self::$fields[2]) { $fieldtype = 'integer'; }
+        $ret = $this->get($id);
+        if ( !$ret || MDB2::isError($ret) ) {
+            /* get() already logged and set $this->error. */
+            return ($ret ? -1 : -2);
+        }
 
-		$log->log("Setting field $field to $value for ctype $id", PEAR_LOG_INFO);
+        $fieldtype = '';
+        if ( $field == self::$_fields[1] ) {
+            // label.
+            $fieldtype = 'text';
+        } elseif ( self::$_fields[2] ) {
+            // membership extension.
+            $fieldtype = 'integer';
+        }
 
-		$stmt = $mdb->prepare('UPDATE ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) . ' SET '
-				      . $mdb->quoteIdentifier($field) . ' = :field '
-				      . 'WHERE ' . self::PK . ' = '.$id,
-				      array($fieldtype),
-				      MDB2_PREPARE_MANIP);
-		$stmt->execute(array('field'  => $value));
+        $log->log("Setting field $field to $value for ctype $id", PEAR_LOG_INFO);
 
-		if (MDB2::isError($stmt)) {
-			$this->error = $stmt;
-			$log->log('Unable to update contribution type ' . $id . ' | ' . $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')', PEAR_LOG_WARNING);
-			return -1;
-		}
+        $stmt = $mdb->prepare(
+            'UPDATE ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) . ' SET ' .
+            $mdb->quoteIdentifier($field) . ' = :field ' .
+            'WHERE ' . self::PK . ' = '.$id,
+            array($fieldtype),
+            MDB2_PREPARE_MANIP
+        );
+        $stmt->execute(array('field'  => $value));
 
-		$stmt->free();
-		$log->log('Contribution type ' . $id . ' updated successfully.', PEAR_LOG_INFO);
-		return 0;
-	}
+        if ( MDB2::isError($stmt) ) {
+            $this->_error = $stmt;
+            $log->log(
+                'Unable to update contribution type ' . $id . ' | ' .
+                $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')',
+                PEAR_LOG_WARNING
+            );
+            return -1;
+        }
 
-	/* Delete a contribution type. Return values:
-	 * -2 : ID does not exist.
-	 * -1 : DB error.
-	 *  0 : success.
-	 */
-	public function delete($id)
-	{
-		global $mdb, $log;
+        $stmt->free();
+        $log->log(
+            'Contribution type ' . $id . ' updated successfully.',
+            PEAR_LOG_INFO
+        );
+        return 0;
+    }
 
-		$ret = $this->get($id);
-		if (!$ret || MDB2::isError($ret))
-			/* get() already logged and set $this->error. */
-			return ($ret ? -1 : -2);
+    /**
+    * Delete a contribution type.
+    *
+    * @param integer $id Contribution's id
+    *
+    * @return integer -2 : ID does not exist ; -1 : DB error ; 0 : success.
+    */
+    public function delete($id)
+    {
+        global $mdb, $log;
 
-		$query = 'DELETE FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE)
-			. ' WHERE ' . self::PK . ' = ' . $id;
-		$result = $mdb->execute($query);
+        $ret = $this->get($id);
+        if ( !$ret || MDB2::isError($ret) ) {
+            /* get() already logged and set $this->_error. */
+            return ($ret ? -1 : -2);
+        }
 
-		if (MDB2::isError($result)) {
-			$this->error = $result;
-			$log->log('Unable to delete contribution type ' . $id . ' | ' . $result->getMessage() . '(' . $result->getDebugInfo() . ')', PEAR_LOG_WARNING);
-			return -1;
-		}
+        $query = 'DELETE FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE)
+            . ' WHERE ' . self::PK . ' = ' . $id;
+        $result = $mdb->execute($query);
 
-		$log->log('Contribution type ' . $id . ' deleted successfully.', PEAR_LOG_INFO);
-		return 0;
-	}
+        if ( MDB2::isError($result) ) {
+            $this->_error = $result;
+            $log->log(
+                'Unable to delete contribution type ' . $id . ' | ' .
+                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
+                PEAR_LOG_WARNING
+            );
+            return -1;
+        }
 
-	/* Check whether this contribution type is used. Return values:
-	 * -1 : DB error.
-	 *  0 : not used.
-	 *  1 : used.
-	 */
-	public function isUsed($id){
-		global $mdb, $log;
+        $log->log(
+            'Contribution type ' . $id . ' deleted successfully.',
+            PEAR_LOG_INFO
+        );
+        return 0;
+    }
 
-		// Check if it's used.
-		$query = 'SELECT * FROM ' . $mdb->quoteIdentifier(PREFIX_DB . 'cotisations')
-			. ' WHERE ' . $mdb->quoteIdentifier('id_type_cotis') . ' = ' . $id;
-		$result = $mdb->query($query);
-		if (MDB2::isError($result))
-		  {
-		    $this->error = $result;
-		    return -1;
-		  }
+    /**
+    * Check whether this contribution type is used.
+    *
+    * @param integer $id Contribution's id
+    *
+    * @return integer -1 : DB error ; 0 : not used ; 1 : used.
+    */
+    public function isUsed($id)
+    {
+        global $mdb, $log;
 
-		return ($result->numRows() == 0) ? 0 : 1;
-	}
+        // Check if it's used.
+        $query = 'SELECT * FROM ' . $mdb->quoteIdentifier(PREFIX_DB . 'cotisations')
+            . ' WHERE ' . $mdb->quoteIdentifier('id_type_cotis') . ' = ' . $id;
+        $result = $mdb->query($query);
+        if ( MDB2::isError($result) ) {
+            $this->_error = $result;
+            return -1;
+        }
 
-	/**
-	* Has an error occured ?
-	*/
-	public function inError(){
-		if( MDB2::isError($this->error) ) return true; 
-		else return false;
-	}
+        return ($result->numRows() == 0) ? 0 : 1;
+    }
 
-	/**
-	* Get main MDB2 error message
-	*/
-	public function getErrorMessage(){
-		return $this->error->getMessage();
-	}
+    /**
+    * Has an error occured ?
+    *
+    * @return boolean
+    */
+    public function inError()
+    {
+        if ( MDB2::isError($this->_error) ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	/**
-	* Get additionnal informations about the error
-	*/
-	public function getErrorDetails(){
-		return $this->error->getDebugInfo();
-	}
+    /**
+    * Get main MDB2 error message
+    *
+    * @return string MDB2::Erro's message
+    */
+    public function getErrorMessage()
+    {
+        return $this->_error->getMessage();
+    }
+
+    /**
+    * Get additionnal informations about the error
+    *
+    * @return string MDB2::Error's debuginfos
+    */
+    public function getErrorDetails()
+    {
+        return $this->_error->getDebugInfo();
+    }
 }
 ?>
