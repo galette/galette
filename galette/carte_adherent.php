@@ -41,7 +41,7 @@
  */
 
 /**
- * 
+ *
  */
 require_once('includes/galette.inc.php');
 
@@ -142,10 +142,10 @@ $pdf->SetAutoPageBreak(false,0);
 // Set colors
 $pdf->SetDrawColor(160,160,160);
 $pdf->SetTextColor(0);
-$tcol=$pdf->ColorHex2Dec(PREF_CARD_TCOL);
-$scol=$pdf->ColorHex2Dec(PREF_CARD_SCOL);
-$bcol=$pdf->ColorHex2Dec(PREF_CARD_BCOL);
-$hcol=$pdf->ColorHex2Dec(PREF_CARD_HCOL);
+$tcol=$pdf->colorHex2Dec(PREF_CARD_TCOL);
+$scol=$pdf->colorHex2Dec(PREF_CARD_SCOL);
+$bcol=$pdf->colorHex2Dec(PREF_CARD_BCOL);
+$hcol=$pdf->colorHex2Dec(PREF_CARD_HCOL);
 
 // Set margins
 $pdf->SetMargins(PREF_CARD_MARGES_H, PREF_CARD_MARGES_V);
