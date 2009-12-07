@@ -93,15 +93,15 @@ class GaletteLogin extends Authentication
         } else {
             $log->log('User `' . $user . '` logged in.', PEAR_LOG_DEBUG);
             $row = $result->fetchRow();
-            $this->_id = $row->id_adh;
-            $this->_login = $row->login_adh;
-            $this->_passe = $row->mdp_adh;
-            $this->_admin = $row->bool_admin_adh;
-            $this->_name = $row->nom_adh;
-            $this->_surname = $row->prenom_adh;
-            $this->_lang = $row->pref_lang;
-            $this->_active = $row->activite_adh;
-            $this->_logged = true;
+            $this->id = $row->id_adh;
+            $this->login = $row->login_adh;
+            $this->passe = $row->mdp_adh;
+            $this->admin = $row->bool_admin_adh;
+            $this->name = $row->nom_adh;
+            $this->surname = $row->prenom_adh;
+            $this->lang = $row->pref_lang;
+            $this->active = $row->activite_adh;
+            $this->logged = true;
             //$this->upLastConn($this->login);
             return(1);
         }
