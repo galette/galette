@@ -129,7 +129,7 @@ class Required
                 $required = $result->fetchAll();
                 $this->_fields = null;
                 foreach ( $required as $k ) {
-                    $this->fields[] = $k->field_id;
+                    $this->_fields[] = $k->field_id;
                     if ($k->required == 1) {
                         $this->_all_required[$k->field_id] = $k->required;
                     }
