@@ -99,54 +99,57 @@ $pdf->SetDrawColor(160, 160, 160);
 $pdf->SetTextColor(0);
 
 // Set margins
-$pdf->SetMargins(PREF_ETIQ_MARGES_H, PREF_ETIQ_MARGES_V);
+$pdf->SetMargins(
+    $preferences->pref_etiq_marges_h,
+    $preferences->pref_etiq_marges_v
+);
 // Set font
 //$pdf->SetFont("FreeSerif","",PREF_ETIQ_CORPS);
 
 // Set origin
 // Top left corner
-$yorigin=round(PREF_ETIQ_MARGES_V);
-$xorigin=round(PREF_ETIQ_MARGES_H);
+$yorigin=round($preferences->pref_etiq_marges_v);
+$xorigin=round($preferences->pref_etiq_marges_h);
 // Label width
-$w = round(PREF_ETIQ_HSIZE);
+$w = round($preferences->pref_etiq_hsize);
 // Label heigth
-$h = round(PREF_ETIQ_VSIZE);
+$h = round($preferences->pref_etiq_vsize);
 // Line heigth
 $line_h=round($h/5);
 $nb_etiq=0;
 
 foreach ($members as $member) {
     // Detect page breaks
-    if ($nb_etiq % (PREF_ETIQ_COLS * PREF_ETIQ_ROWS) == 0) {
+    if ($nb_etiq % ($preferences->pref_etiq_cols * $preferences->pref_etiq_rows) == 0) {
         $pdf->AddPage();
     }
     // Set font
-    $pdf->SetFont('DejaVuSans', 'B', PREF_ETIQ_CORPS);
+    $pdf->SetFont('DejaVuSans', 'B', $preferences->pref_etiq_corps);
 
     // Compute label position
-    $col=$nb_etiq % PREF_ETIQ_COLS;
-    $row=($nb_etiq/PREF_ETIQ_COLS) % PREF_ETIQ_ROWS;
+    $col = $nb_etiq % $preferences->pref_etiq_cols;
+    $row = ($nb_etiq / $preferences->pref_etiq_cols) % $preferences->pref_etiq_rows;
     // Set label origin
-    $x = $xorigin + $col*(round(PREF_ETIQ_HSIZE)+round(PREF_ETIQ_HSPACE));
-    $y = $yorigin + $row*(round(PREF_ETIQ_VSIZE)+round(PREF_ETIQ_VSPACE));
+    $x = $xorigin + $col*(round($preferences->pref_etiq_hsize) + round($preferences->pref_etiq_hspace));
+    $y = $yorigin + $row*(round($preferences->pref_etiq_vsize) + round($preferences->pref_etiq_vspace));
     // Draw a frame around the label
     $pdf->Rect($x, $y, $w, $h);
     // Print full name
     $pdf->SetXY($x, $y);
     $pdf->Cell($w, $line_h, $member->sfullname, 0, 0, 'L', 0);
     // Print first line of adress
-    $pdf->SetFont('DejaVuSans', '', PREF_ETIQ_CORPS);
+    $pdf->SetFont('DejaVuSans', '', $preferences->pref_etiq_corps);
     $pdf->SetXY($x, $y+$line_h);
     $pdf->Cell($w, $line_h, $member->adress, 0, 0, 'L', 0);
     // Print second line of adress
     $pdf->SetXY($x, $y+$line_h*2);
     $pdf->Cell($w, $line_h, $member->adress2, 0, 0, 'L', 0);
     // Print zip code and town
-    $pdf->SetFont('DejaVuSans', 'B', PREF_ETIQ_CORPS);
+    $pdf->SetFont('DejaVuSans', 'B', $preferences->pref_etiq_corps);
     $pdf->SetXY($x, $y+$line_h*3);
     $pdf->Cell($w, $line_h, $member->zipcode . ' - ' . $member->town, 0, 0, 'L', 0);
     // Print country
-    $pdf->SetFont('DejaVuSans', 'I', PREF_ETIQ_CORPS);
+    $pdf->SetFont('DejaVuSans', 'I', $preferences->pref_etiq_corps);
     $pdf->SetXY($x, $y+$line_h*4);
     $pdf->Cell($w, $line_h, $member->country, 0, 0, 'R', 0);
     $nb_etiq++;

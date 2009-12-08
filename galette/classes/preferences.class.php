@@ -323,11 +323,16 @@ class Preferences
     */
     public function __get($name)
     {
+        global $log;
         $forbidden = array('logged', 'admin', 'active', 'defaults');
 
         if ( !in_array($name, $forbidden) && isset($this->_prefs[$name])) {
             return $this->_prefs[$name];
         } else {
+            $log->log(
+                'Preference `' . $name . '` is not set or is forbidden',
+                PEAR_LOG_INFO
+            );
             return false;
         }
     }
