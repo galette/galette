@@ -1946,7 +1946,7 @@ msgstr "- La durée doit être un entier&nbsp;!"
 
 #: ../gestion_contributions.php:294 ../gestion_adherents.php:349
 msgid "remaining days"
-msgstr "jour restant"
+msgstr "jours restants"
 
 #: ../self_adherent.php:126 ../preferences.php:103 ../ajouter_adherent.php:164
 msgid "- This username is already used by another member !"

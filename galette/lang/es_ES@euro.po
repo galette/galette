@@ -1967,7 +1967,7 @@ msgstr "- ¡La duración debe ser un entero!"
 #: ../gestion_contributions.php:294 ../gestion_adherents.php:349
 #, fuzzy
 msgid "remaining days"
-msgstr "día restante"
+msgstr "días restante"
 
 #: ../self_adherent.php:126 ../preferences.php:103 ../ajouter_adherent.php:164
 msgid "- This username is already used by another member !"

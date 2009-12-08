@@ -628,7 +628,7 @@ $lang['- No originator selected (register a non-member first if necessary).'] = 
 $lang['Galette has been successfully installed!'] = 'Galette has been successfully installed!';
 
 // ../gestion_contributions.php:294 ../gestion_adherents.php:349 
-$lang['remaining days'] = ' day remaining';
+$lang['remaining days'] = ' remaining days';
 
 // ../templates/default/preferences.tpl:98 
 $lang['Mail settings:'] = 'Mail settings:';

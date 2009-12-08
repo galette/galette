@@ -1909,7 +1909,7 @@ msgstr "- The duration must be an integer!"
 
 #: ../gestion_contributions.php:294 ../gestion_adherents.php:349
 msgid "remaining days"
-msgstr " day remaining"
+msgstr "remaining days"
 
 #: ../self_adherent.php:126 ../preferences.php:103 ../ajouter_adherent.php:164
 msgid "- This username is already used by another member !"
