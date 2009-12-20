@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * contributions_types.class.php, 27 octobre 2007
+ * Contributions types handling
  *
  * PHP version 5
  *
@@ -35,11 +35,15 @@
  * @since     Available since 0.7dev - 2007-10-27
  */
 
+/* TODO: Most of the code is duplicated in status.class.php. Should
+ * probably use a superclass for genericity.
+ */
+
 /**
  * Contributions
  *
  * @category  Classes
- * @name      Preferences
+ * @name      ContibutionTypes
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2007-2009 The Galette Team
@@ -182,11 +186,11 @@ class ContributionsTypes
     }
 
     /**
-    * Get a status.
+    * Get a contribution type.
     *
     * @param integer $id Contribution's id
     *
-    * @return ResultSet Rwo if succeed ; null : no such $id ;
+    * @return ResultSet Row if succeed ; null : no such $id ;
     *   MDB2::Error object : DB error.
     */
     public function get($id)
