@@ -149,7 +149,7 @@ class ContributionsTypes
     /**
     * Complete list of contributions types
     *
-    * @return array of alla contributions if succeed, false otherwise
+    * @return array of all contributions if succeed, false otherwise
     */
     public function getCompleteList()
     {
@@ -229,18 +229,19 @@ class ContributionsTypes
     public function getLabel($id)
     {
         $res = $this->get($id);
-        if (!$res || MDB2::isError($res)) {
+        if ( !$res || MDB2::isError($res) ) {
             return $res;
         }
         return _T($res->libelle_type_cotis);
     }
 
     /**
-    * Get a contribution type ID from a label. Return values on error:
+    * Get a contribution type ID from a label.
     *
     * @param string $label The label
     *
-    * @return integer -2 : ID does not exist ; -1 : DB error
+    * @return null : ID does not exist ; MDB2::Error : DB error ;
+    *   ResultSetRow on success
     */
     public function getIdByLabel($label)
     {
@@ -401,8 +402,8 @@ class ContributionsTypes
             return ($ret ? -1 : -2);
         }
 
-        $query = 'DELETE FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE)
-            . ' WHERE ' . self::PK . ' = ' . $id;
+        $query = 'DELETE FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) .
+            ' WHERE ' . self::PK . ' = ' . $id;
         $result = $mdb->execute($query);
 
         if ( MDB2::isError($result) ) {
@@ -434,8 +435,8 @@ class ContributionsTypes
         global $mdb, $log;
 
         // Check if it's used.
-        $query = 'SELECT * FROM ' . $mdb->quoteIdentifier(PREFIX_DB . 'cotisations')
-            . ' WHERE ' . $mdb->quoteIdentifier('id_type_cotis') . ' = ' . $id;
+        $query = 'SELECT * FROM ' . $mdb->quoteIdentifier(PREFIX_DB . 'cotisations') .
+            ' WHERE ' . $mdb->quoteIdentifier('id_type_cotis') . ' = ' . $id;
         $result = $mdb->query($query);
         if ( MDB2::isError($result) ) {
             $this->_error = $result;
@@ -462,7 +463,7 @@ class ContributionsTypes
     /**
     * Get main MDB2 error message
     *
-    * @return string MDB2::Erro's message
+    * @return string MDB2::Error's message
     */
     public function getErrorMessage()
     {
