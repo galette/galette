@@ -27,7 +27,8 @@ class ClassLogger
 {
 	function log($logger)
 	{
-		$logger->log("Class Logger");
+		$logger->log("Class Logger - log()");
+		$logger->info("Class Logger - info()");
 	}
 }
 
@@ -39,10 +40,19 @@ $classLogger->log($logger);
 $composite = &Log::singleton('composite');
 $composite->addChild($logger);
 
-$composite->log("Composite Logger");
+$composite->log("Composite Logger - log()");
+$composite->info("Composite Logger - info()");
+
+# Composite Logger via Class
+#
+$classLogger->log($composite);
 
 --EXPECT--
 10 [::(none)] Top-level Logger
 16 [::functionLog] Function Logger
-27 [ClassLogger::log] Class Logger
-39 [::(none)] Composite Logger
+27 [ClassLogger::log] Class Logger - log()
+28 [ClassLogger::log] Class Logger - info()
+40 [::(none)] Composite Logger - log()
+41 [::(none)] Composite Logger - info()
+27 [ClassLogger::log] Class Logger - log()
+28 [ClassLogger::log] Class Logger - info()

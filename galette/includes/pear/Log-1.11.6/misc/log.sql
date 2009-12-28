@@ -1,4 +1,4 @@
--- $Id: log.sql,v 1.1 2006/06/26 15:25:35 jon Exp $
+-- $Id: log.sql 215378 2006-06-26 15:25:35Z jon $
 
 CREATE TABLE log_table (
     id          INT NOT NULL,

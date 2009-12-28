@@ -1,9 +1,9 @@
 <?php
 /**
- * $Header: /repository/pear/Log/Log.php,v 1.74 2008/11/19 04:14:38 jon Exp $
+ * $Header$
  * $Horde: horde/lib/Log.php,v 1.15 2000/06/29 23:39:45 jon Exp $
  *
- * @version $Revision: 1.74 $
+ * @version $Revision: 284340 $
  * @package Log
  */
 
@@ -504,6 +504,7 @@ class Log
             $file = isset($bt[$depth + 1]) ? $bt[$depth + 1]['file'] : null;
             $line = isset($bt[$depth + 1]) ? $bt[$depth + 1]['line'] : 0;
             $func = isset($bt[$depth + 2]) ? $bt[$depth + 2]['function'] : null;
+            $class = isset($bt[$depth + 2]) ? $bt[$depth + 2]['class'] : null;
         }
 
         /*

@@ -8,8 +8,8 @@
 
 :Author:        Jon Parise
 :Contact:       jon@php.net
-:Date:          $Date: 2008/11/19 05:12:26 $
-:Revision:      $Revision: 1.41 $
+:Date:          $Date: 2009-12-06 13:03:55 -0800 (Sun, 06 Dec 2009) $
+:Revision:      $Revision: 291780 $
 
 .. contents:: Contents
 .. section-numbering::
@@ -483,7 +483,7 @@ Configuration
 |                   |           |               | creating directories that |
 |                   |           |               | do not already exist.     |
 +-------------------+-----------+---------------+---------------------------+
-| ``eol``           | String    | OS default    | The end-on-line character |
+| ``eol``           | String    | OS default    | The end-of-line character |
 |                   |           |               | sequence.                 |
 +-------------------+-----------+---------------+---------------------------+
 | ``lineFormat``    | String    | ``%1$s %2$s   | `Log line format`_        |
@@ -835,6 +835,13 @@ Configuration
 |                   |           |               | connection for this       |
 |                   |           |               | process, or start a new   |
 |                   |           |               | one via `openlog()`_?     |
++-------------------+-----------+---------------+---------------------------+
+| ``maxLength``     | Integer   | 500           | Maximum message length    |
+|                   |           |               | that will be sent to the  |
+|                   |           |               | `syslog()`_ function.     |
+|                   |           |               | Longer messages will be   |
+|                   |           |               | split across multiple     |
+|                   |           |               | `syslog()`_ calls.        |
 +-------------------+-----------+---------------+---------------------------+
 
 Facilities
