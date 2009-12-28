@@ -32,7 +32,7 @@
  */
 
 define('SMARTY_VERSION', '2.6.22');
-define('PEAR_VERSION', '1.7.2');
+define('PEAR_VERSION', '1.9.0');
 define('MDB2_VERSION', '2.4.1');
 define('LOG_VERSION', '1.11.6');
 define('TCPDF_VERSION', '4.8.017');
