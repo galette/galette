@@ -31,7 +31,7 @@
  * Defines various library versions, to avoid use of problematic symlinks under windows or via FTP.
  */
 
-define('SMARTY_VERSION', '2.6.22');
+define('SMARTY_VERSION', '2.6.26');
 define('PEAR_VERSION', '1.9.0');
 define('MDB2_VERSION', '2.4.1');
 define('LOG_VERSION', '1.11.6');
