@@ -1,3 +1,15 @@
+4.8.020 (2009-12-21)
+	- Bug item #2918545 "Display problem of the first row of a table with larger font" was fixed.
+	- A Bug relative to table rowspan mode was fixed.
+
+4.8.019 (2009-12-16)
+	- Bug item #2915684 "Image size" was fixed.
+	- Bug item #2914995 "Image jpeg quality" was fixed.
+	- The signature of the Image() method was changed (check the documentation for the $resize parameter).
+
+4.8.018 (2009-12-15)
+	- Bug item #2914352 "write error" was fixed.
+
 4.8.017 (2009-11-27)
 	- THEAD problem when table is used on header/footer was fixed.
 	- A first line alignment on HTML justification was fixed.
