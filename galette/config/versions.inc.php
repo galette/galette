@@ -21,7 +21,7 @@
  * versions.inc.php
  *
  * @package Galette
- * 
+ *
  * @author     Johan Cwiklinski <johan@x-tnd.be>
  * @copyright  2009 Johan Cwiklinski
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
@@ -39,6 +39,7 @@ define('TCPDF_VERSION', '4.8.020');
 define('JQUERY_VERSION', '1.3.2');
 define('JQUERY_UI_VERSION', '1.7.1');
 define('JQUERY_MARKITUP_VERSION', '1.1.5');
+define('PHP_MAILER_VERSION', '5.1');
 //will be erased when completly obsoleted
 define('ADODB_VERSION', '492');
 ?>

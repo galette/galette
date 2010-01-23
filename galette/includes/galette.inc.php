@@ -45,9 +45,16 @@ require_once( $base_path . 'config/versions.inc.php');
 //we start a php session
 session_start();
 
-define('GALETTE_VERSION', 'v0.7alpha');
-define('_templates_path', WEB_ROOT . 'templates/');
-set_include_path(get_include_path() . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/PEAR-' . PEAR_VERSION . '/' . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/MDB2-' . MDB2_VERSION . PATH_SEPARATOR . WEB_ROOT . 'includes/pear/Log-' . LOG_VERSION);
+define('GALETTE_VERSION', 'v0.7dev');
+define('TEMPLATES_PATH', WEB_ROOT . 'templates/');
+set_include_path(
+    get_include_path() . PATH_SEPARATOR .
+    WEB_ROOT . 'includes/pear/' . PATH_SEPARATOR .
+    WEB_ROOT . 'includes/pear/PEAR-' . PEAR_VERSION . '/' . PATH_SEPARATOR .
+    WEB_ROOT . 'includes/pear/MDB2-' . MDB2_VERSION . PATH_SEPARATOR .
+    WEB_ROOT . 'includes/pear/Log-' . LOG_VERSION . PATH_SEPARATOR .
+    WEB_ROOT . 'includes/phpMailer-' . PHP_MAILER_VERSION
+);
 
 /*--------------------------------------------------------------------------------------
 LOG and DEBUG
@@ -104,7 +111,7 @@ $preferences = new Preferences();
 /**
 * Set the path to the current theme templates
 */
-define('_current_template_path', _templates_path . $preferences->pref_theme . '/');
+define('_current_template_path', TEMPLATES_PATH . $preferences->pref_theme . '/');
 
 /**
 * Language instantiation
@@ -171,8 +178,9 @@ if( isset($_SESSION['galette']['logo']) ){
 * Now that all objects are correctly setted,
 * we can include files that need it
 */
-require_once(WEB_ROOT . 'includes/functions.inc.php');
-include_once(WEB_ROOT . 'includes/session.inc.php');
-require_once(WEB_ROOT . 'includes/i18n.inc.php');
-require_once(WEB_ROOT . 'includes/smarty.inc.php');
+require_once WEB_ROOT . 'classes/galette_mail.class.php';
+require_once WEB_ROOT . 'includes/functions.inc.php';
+include_once WEB_ROOT . 'includes/session.inc.php';
+require_once WEB_ROOT . 'includes/i18n.inc.php';
+require_once WEB_ROOT . 'includes/smarty.inc.php';
 ?>
