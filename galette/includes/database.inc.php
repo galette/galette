@@ -121,6 +121,7 @@ function get_last_auto_increment($DB, $table, $column)
 function parse_db_result($DB, $result, $error_detected, $query)
 {
     if ( $result == false ) {
+        /** FIXME will that work if $error_detected is not global ? */
         $error_detected[] = _T("- SQL error: ")."[$query]".$DB->ErrorMsg();
     }
     return $result;

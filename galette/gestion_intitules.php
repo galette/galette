@@ -1,343 +1,415 @@
-<?php 
+<?php
 
-// Copyright © 2009 Manuel Menal
-//
-// This file is part of Galette (http://galette.tuxfamily.org).
-//
-// Galette is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Galette is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Galette. If not, see <http://www.gnu.org/licenses/>.
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Configuration des fiches
+ * Lists configuration
  *
- * @package Galette
- * 
- * @author     Manuel Menal <mmenal@hurdfr.org>
- * @copyright  2009 Manuel Menal
- * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version    $Rev$
- * @since      
+ * PHP version 5
+ *
+ * Copyright © 2009-2010 The Galette Team
+ *
+ * This file is part of Galette (http://galette.tuxfamily.org).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @category  Classes
+ * @package   Galette
+ *
+ * @author    Manuel Menal <mmenal@hurdfr.org>
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2009-2010 The Galette Team
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @version   SVN: $Id$
+ * @link      http://galette.tuxfamily.org
+ * @since     Available since 0.7dev - 2009-07-19
  */
 
-require_once('includes/galette.inc.php');
-require_once('classes/status.class.php');
-require_once('classes/contributions_types.class.php');
+require_once 'includes/galette.inc.php';
+require_once 'classes/status.class.php';
+require_once 'classes/contributions_types.class.php';
 
-if (!$login->isLogged())
-{
-  header("location: index.php");
-  die();
+if ( !$login->isLogged() ) {
+    header("location: index.php");
+    die();
 }
-if (!$login->isAdmin())
-{
-  header("location: voir_adherent.php");
-  die();
+if ( !$login->isAdmin() ) {
+    header("location: voir_adherent.php");
+    die();
 }
 
 $error_detected = array();
 
-$fields = array('Status' => array('id' => 'id_statut',
-				  'name' => 'libelle_statut',
-				  'field' => 'priorite_statut'),
-		'ContributionsTypes' => array('id' => 'id_type_cotis',
-					    'name' => 'libelle_type_cotis',
-					    'field' => 'cotis_extension'));
-$forms = array('ContributionsTypes' => _T("Contribution types"),
-	       'Status' => _T("User statuses"));
+$fields = array(
+    'Status' => array(
+        'id'    => 'id_statut',
+        'name'  => 'libelle_statut',
+        'field' => 'priorite_statut'
+    ),
+    'ContributionsTypes' => array(
+        'id'    => 'id_type_cotis',
+        'name'  => 'libelle_type_cotis',
+        'field' => 'cotis_extension'
+    )
+);
+$forms = array(
+    'ContributionsTypes' => _T("Contribution types"),
+    'Status'             => _T("User statuses")
+);
 
-function del_entry ($id, $class)
+/**
+* Delete an entry
+*
+* @param integer $id    Entry's id
+* @param string  $class current class name
+*
+* @return void
+*/
+function delEntry ($id, $class)
 {
-  global $error_detected, $DB;
+    global $error_detected, $DB;
 
-  if (!is_numeric($id))
-    {
-      $error_detected[] = _T("- ID must be an integer!");
-      return;
+    if ( !is_numeric($id) ) {
+        $error_detected[] = _T("- ID must be an integer!");
+        return;
     }
 
-  /* Check if it exists. */
-  $label = $class->getLabel($id);
-  if (!$label || MDB2::isError($label))
-    {
-      if ($label) $error_detected[] = _T("- Database error: ").$class->getErrorMessage();
-      else $error_detected[] = _T("- Label does not exist");
-      return;
+    /* Check if it exists. */
+    $label = $class->getLabel($id);
+    if ( !$label || MDB2::isError($label) ) {
+        if ($label) {
+            $error_detected[] = _T("- Database error: ") . $class->getErrorMessage();
+        } else {
+            $error_detected[] = _T("- Label does not exist");
+        }
+        return;
     }
 
-  /* Check if it's used. */
-  $ret = $class->isUsed($id);
-  if ($ret != 0)
-    {
-      if ($ret == -1) { $error_detected[] = _T("- Database error: ").$class->getErrorMessage(); }
-      elseif ($ret == 1) { $error_detected[] = _T("- Cannot delete this label: it's still used"); }
-      return;
+    /* Check if it's used. */
+    $ret = $class->isUsed($id);
+    if ( $ret != 0 ) {
+        if ($ret == -1) {
+            $error_detected[] = _T("- Database error: ").$class->getErrorMessage();
+        } elseif ($ret == 1) {
+            $error_detected[] = _T("- Cannot delete this label: it's still used");
+        }
+        return;
     }
 
-  /* Delete. */
-  $ret = $class->delete($id);
+    /* Delete. */
+    $ret = $class->delete($id);
 
-  if ($ret != 0)
-    {
-      if ($ret == -2) $error_detected[] = _T("- Label does not exist");
-      elseif ($ret == -1) { $error_detected[] = _T("- Database error: ").$class->getErrorMessage(); }
-      return;
+    if ( $ret != 0 ) {
+        if ($ret == -2) {
+            $error_detected[] = _T("- Label does not exist");
+        } elseif ($ret == -1) {
+            $error_detected[] = _T("- Database error: ").$class->getErrorMessage();
+        }
+        return;
     }
 
-  delete_dynamic_translation($DB, $label, $error_detected);
-
-  return;
+    deleteDynamicTranslation($DB, $label, $error_detected);
+    return;
 }
 
 // Validate an input. Returns true or false.
-function check_field_value ($class, $key, $value)
+/**
+* Validate an input
+*
+* @param string $class current class name
+* @param string $key   field key
+* @param string $value field value
+*
+* @return boolean
+*/
+function checkFieldValue ($class, $key, $value)
 {
-  global $fields, $error_detected;
+    global $fields, $error_detected;
 
-  switch ($key)
-    {
+    switch ($key) {
     case ($fields[get_class($class)]['name']):
-      if (!is_string($value))
-	{
-	  $error_detected[] =_T("- Mandatory field empty.")." ($key)";
-	  return false;
-	}
-      break;
-
+        if ( !is_string($value) ) {
+            $error_detected[] =_T("- Mandatory field empty.")." ($key)";
+            return false;
+        }
+        break;
     case ($fields[get_class($class)]['field']):
-      if (get_class($class) == 'Status')
-	if (!is_numeric($value)) 
-	  {
-	    $error_detected[] = _T("- Priority must be an integer!");
-	    return false;
-	  }
-      elseif (get_class($class) == 'ContributionsTypes')
-	// Value must be either 0 or 1.
-	if (!is_numeric($value) || (($value != 0) && ($value != 1)))
-	  {
-	    $error_detected[] = _T("- 'Extends membership?' field must be either 0 or 1! (current value:").$value.")";
-	    return false;
-	  }
-      break;
+        if ( get_class($class) == 'Status' ) {
+            if ( !is_numeric($value) ) {
+                $error_detected[] = _T("- Priority must be an integer!");
+                return false;
+            }
+        } elseif ( get_class($class) == 'ContributionsTypes' ) {
+            // Value must be either 0 or 1.
+            if ( !is_numeric($value) || (($value != 0) && ($value != 1)) ) {
+                $error_detected[] = preg_replace(
+                    '/%s/',
+                    $value,
+                    _T("- 'Extends membership?' field must be either 0 or 1! (current value: %s)")
+                );
+                return false;
+            }
+        }
+        break;
     }
-
-  return true;
+    return true;
 }
 
-function modify_entry ($id, $class)
+/**
+* Modify an entry
+*
+* @param integer $id    Entry's id
+* @param string  $class current class name
+*
+* @return void
+*/
+function modifyEntry ($id, $class)
 {
-  global $error_detected, $fields,  $DB;
+    global $error_detected, $fields,  $DB;
 
-  if (!is_numeric($id))
-    {
-      $error_detected[] = _T("- ID must be an integer!");
-      return;
+    if (!is_numeric($id)) {
+        $error_detected[] = _T("- ID must be an integer!");
+        return;
     }
 
-  $label = '';
-  $oldlabel = $class->getLabel($id);
-  if (!$oldlabel || MDB2::isError($oldlabel))
-    {
-      if ($oldlabel) $error_detected[] = _T("- Database error: ").$class->getErrorMessage();
-      else $error_detected[] = _T("- Label does not exist");
-      return;
+    $label = '';
+    $oldlabel = $class->getLabel($id);
+    if ( !$oldlabel || MDB2::isError($oldlabel) ) {
+        if ($oldlabel) {
+            $error_detected[] = _T("- Database error: ").$class->getErrorMessage();
+        } else {
+            $error_detected[] = _T("- Label does not exist");
+        }
+        return;
     }
 
-  $toup = array();
-  /* Check field values. */
-  foreach ($fields[get_class($class)] as $field)
-    {
-      $value = null;
-      if (!isset($_POST[$field]))
-	{
-	  if ($field == $fields['ContributionsTypes']['field'])
-	    $value = 0;
-	  else
-	    continue;
-	}
-      else $value = $_POST[$field];
+    $toup = array();
+    /* Check field values. */
+    foreach ( $fields[get_class($class)] as $field ) {
+        $value = null;
+        if ( !isset($_POST[$field]) ) {
+            if ($field == $fields['ContributionsTypes']['field']) {
+                $value = 0;
+            } else {
+                continue;
+            }
+        } else {
+            $value = $_POST[$field];
+        }
 
-      if ($field == $fields[get_class($class)]['name'])
-	$label = $value;
+        if ( $field == $fields[get_class($class)]['name'] ) {
+            $label = $value;
+        }
 
-      check_field_value($class, $field, $value);
+        checkFieldValue($class, $field, $value);
 
-      $toup[$field] = trim($value);
+        $toup[$field] = trim($value);
     }
 
-  /* Update only if all fields are OK. */
-  if (count($error_detected))
+    /* Update only if all fields are OK. */
+    if ( count($error_detected) ) {
+        return;
+    }
+
+    foreach ( $toup as $field => $value ) {
+        $ret = $class->update($id, $field, $value);
+        if ( $ret != 0 ) {
+            if ($ret == -2) {
+                $error_detected[] = _T("- Label does not exist");
+            } elseif ($ret == -1) {
+                $error_detected[] = _T("- Database error: ") .
+                    $class->getErrorMessage();
+            }
+        }
+    }
+
+    if ( isset($label) && ($oldlabel != $label) ) {
+        deleteDynamicTranslation($DB, $oldlabel, $error_detected);
+        addDynamicTranslation($DB, $label, $error_detected);
+    }
+
     return;
-
-  foreach ($toup as $field => $value)
-    {
-      $ret = $class->update($id, $field, $value);
-      if ($ret != 0)
-	{
-	  if ($ret == -2) $error_detected[] = _T("- Label does not exist");
-	  elseif ($ret == -1) { $error_detected[] = _T("- Database error: ").$class->getErrorMessage(); }
-	}
-    }
-
-
-  if (isset($label) && ($oldlabel != $label))
-    {
-      delete_dynamic_translation($DB, $oldlabel, $error_detected);
-      add_dynamic_translation($DB, $label, $error_detected);
-    }
-
-  return;
 }
 
-
-function add_entry ($class)
+/**
+* Add a new entry
+*
+* @param string $class current class name
+*
+* @return void
+*/
+function addEntry ($class)
 {
-  global $error_detected, $fields, $DB;
+    global $error_detected, $fields, $DB;
 
-  $label = trim($_POST[$fields[get_class($class)]['name']]);
-  $field = trim($_POST[$fields[get_class($class)]['field']]);
+    $label = trim($_POST[$fields[get_class($class)]['name']]);
+    $field = trim($_POST[$fields[get_class($class)]['field']]);
 
-  check_field_value($class, $fields[get_class($class)]['name'],
-		    $label);
-  check_field_value($class, $fields[get_class($class)]['field'],
-		    $field);
+    checkFieldValue(
+        $class,
+        $fields[get_class($class)]['name'],
+        $label
+    );
+    checkFieldValue(
+        $class,
+        $fields[get_class($class)]['field'],
+        $field
+    );
 
-  if (count($error_detected))
+    if ( count($error_detected) ) {
+        return;
+    }
+
+    $ret = $class->add($label, $field);
+    if ( $ret < 0 ) {
+        if ($ret == -1) {
+            $error_detected[] = _T("- Database error: ").$class->getErrorMessage();
+        }
+        if ($ret == -2) {
+            $error_detected[] = _T("- This label is already used!");
+        }
+        return;
+    }
+
+    // User should be able to translate the new labels dynamically.
+    addDynamicTranslation($DB, $label, $error_detected);
+
     return;
-
-  $ret = $class->add($label, $field);
-  if ($ret < 0)
-    {
-      if ($ret == -1) { $error_detected[] = _T("- Database error: ").$class->getErrorMessage(); }
-      if ($ret == -2) { $error_detected[] = _T("- This label is already used!"); }
-      return;
-    }
-
-  // User should be able to translate the new labels dynamically.
-  add_dynamic_translation ($DB, $label, $error_detected);
-
-  return;
 }
 
-function edit_entry ($id, $class)
+/**
+* Edit an entry
+*
+* @param integer $id    Entry's id
+* @param string  $class current class name
+*
+* @return void
+*/
+function editEntry ($id, $class)
 {
-  global $fields, $tpl, $error_detected;
+    global $fields, $tpl, $error_detected;
 
-  if (!is_numeric($id))
-    {
-      $error_detected[] = _T("- ID must be an integer!");
-      return;
+    if ( !is_numeric($id) ) {
+        $error_detected[] = _T("- ID must be an integer!");
+        return;
     }
-  $entry = $class->get($id);
+    $entry = $class->get($id);
 
-  if (!$entry || MDB2::isError($entry))
-    {
-      if ($entry) $error_detected[] = _T("- Database error: ").$class->getErrorMessage();
-      else $error_detected[] = _T("- Label does not exist");
-      return;
+    if ( !$entry || MDB2::isError($entry) ) {
+        if ($entry) {
+            $error_detected[] = _T("- Database error: ").$class->getErrorMessage();
+        } else {
+            $error_detected[] = _T("- Label does not exist");
+        }
+        return;
     }
 
-  $entry->$fields[get_class($class)]['name'] = 
-    htmlentities($entry->$fields[get_class($class)]['name'], 
-		 ENT_QUOTES, 'UTF-8');
-  
-  $tpl->assign ('entry', get_object_vars($entry));
-  if (get_class($class) == 'Status')
-    $tpl->assign ('form_title', _T("Edit status"));
-  elseif (get_class($class) == 'ContributionsTypes')
-    $tpl->assign ('form_title', _T("Edit contribution type"));
+    $entry->$fields[get_class($class)]['name'] = htmlentities(
+        $entry->$fields[get_class($class)]['name'],
+        ENT_QUOTES,
+        'UTF-8'
+    );
+
+    $tpl->assign('entry', get_object_vars($entry));
+    if (get_class($class) == 'Status') {
+        $tpl->assign('form_title', _T("Edit status"));
+    } elseif ( get_class($class) == 'ContributionsTypes' ) {
+        $tpl->assign('form_title', _T("Edit contribution type"));
+    }
 }
 
-function list_entries ($class)
+/**
+* List entries
+*
+* @param string $class current class name
+*
+* @return void
+*/
+function listEntries ($class)
 {
-  global $fields, $tpl;
+    global $fields, $tpl;
 
-  $list = $class->getCompleteList();
+    $list = $class->getCompleteList();
 
-  $entries = array();
-  foreach ($list as $key=>$row)
-    {
-      $entry['id'] = $key;
-      $entry['name'] = $row[0];
-      
-      if (get_class($class) == 'ContributionsTypes')
-	$entry['extends'] = ($row[1] ? _T("Yes") : _T("No"));
-      elseif (get_class($class) == 'Status')
-	$entry['priority'] = $row[1];
-      
-      $entries[] = $entry;
+    $entries = array();
+    foreach ( $list as $key=>$row ) {
+        $entry['id'] = $key;
+        $entry['name'] = $row[0];
+
+        if ( get_class($class) == 'ContributionsTypes' ) {
+            $entry['extends'] = ($row[1] ? _T("Yes") : _T("No"));
+        } elseif ( get_class($class) == 'Status' ) {
+            $entry['priority'] = $row[1];
+        }
+        $entries[] = $entry;
     }
 
-  $tpl->assign('entries', $entries);
+    $tpl->assign('entries', $entries);
 
-  if (get_class($class) == 'Status')
-    $tpl->assign('form_title', _T("User statuses"));
-  elseif (get_class($class) == 'ContributionsTypes')
-    $tpl->assign('form_title', _T("Contribution types"));
+    if ( get_class($class) == 'Status' ) {
+        $tpl->assign('form_title', _T("User statuses"));
+    } elseif ( get_class($class) == 'ContributionsTypes' ) {
+        $tpl->assign('form_title', _T("Contribution types"));
+    }
 }
 
 // MAIN CODE.
+global $tpl;
+$className = null;
+$class = null;
 
-function main()
-{
-  global $tpl;
-  $className = null;
-  $class = null;
-
-  # Show statuses list by default, instead of an empty table.
-  if (!isset($_REQUEST['class']))
+//Show statuses list by default, instead of an empty table.
+if ( !isset($_REQUEST['class']) ) {
     $className = 'Status';
-  else
+} else {
     $className = $_REQUEST['class'];
-
-  $tpl->assign('class', $className);
-
-  if ($className == 'Status')
-    $class = new Status;
-  elseif ($className == 'ContributionsTypes')
-    $class = new ContributionsTypes;
-
-  // Display a specific form to edit a label.
-  // Otherwise, display a list of entries.
-  if (isset($_GET['id']))
-    edit_entry(trim($_GET['id']), $class);
-  else
-    {
-      if (isset($_GET['del']))
-	del_entry(trim($_GET['del']), $class);
-      elseif (isset($_POST['new']))
-	add_entry($class);
-      elseif (isset($_POST['mod']))
-	modify_entry(trim($_POST['mod']), $class);
-      // Show the list.
-      list_entries($class);
-    }
 }
 
-main();
+$tpl->assign('class', $className);
+
+if ( $className == 'Status' ) {
+    $class = new Status;
+} elseif ( $className == 'ContributionsTypes' ) {
+    $class = new ContributionsTypes;
+}
+
+// Display a specific form to edit a label.
+// Otherwise, display a list of entries.
+if ( isset($_GET['id']) ) {
+    editEntry(trim($_GET['id']), $class);
+} else {
+    if ( isset($_GET['del']) ) {
+        delEntry(trim($_GET['del']), $class);
+    } elseif ( isset($_POST['new']) ) {
+        addEntry($class);
+    } elseif ( isset($_POST['mod']) ) {
+        modifyEntry(trim($_POST['mod']), $class);
+    }
+    // Show the list.
+    listEntries($class);
+}
 
 /* Set template parameters and print. */
-
-$tpl->assign("fields", $fields);
-if (isset($_GET['id']))
-  $content = $tpl->fetch("editer_intitule.tpl");
-else
-{
-  $tpl->assign("all_forms", $forms);
-  $tpl->assign("error_detected", $error_detected);
-  $content = $tpl->fetch("gestion_intitules.tpl");
+$tpl->assign('fields', $fields);
+if ( isset($_GET['id']) ) {
+    $content = $tpl->fetch('editer_intitule.tpl');
+} else {
+    $tpl->assign('all_forms', $forms);
+    $tpl->assign('error_detected', $error_detected);
+    $content = $tpl->fetch('gestion_intitules.tpl');
 }
-$tpl->assign("content", $content);
-
-$tpl->display("page.tpl");
+$tpl->assign('content', $content);
+$tpl->display('page.tpl');
 
 ?>
