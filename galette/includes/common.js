@@ -1,35 +1,36 @@
-
-/*
- * common.js, 06 octobre 2007
- * 
- * This file is part of Galette.
+/**
+ * Copyright © 2007-2010 The Galette Team
  *
- * Copyright © 2007 Johan Cwiklinski
+ * This file is part of Galette (http://galette.tuxfamily.org).
  *
- * File :               	common.js
- * Author's email :     	johan@x-tnd.be
- * Author's Website :   	http://galette.tuxfamily.org
- * 
- * This program is free software; you can redistribute it and/or modify
+ * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * Galette is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @category  Javascript
+ * @package   Galette
+ *
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2007-2010 The Galette Team
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @version   SVN: $Id$
+ * @link      http://galette.tuxfamily.org
+ * @since     Available since 0.7dev - 2007-10-06
  */
 
 //set up fieldsets spindowns
 //the function will spin the element just after legend, and will update the icon
 $.fn.spinDown = function() {
-	
+
 	return this.click(function() {
 		var $this = $(this);
 
@@ -38,11 +39,11 @@ $.fn.spinDown = function() {
 
 		return false;
 	});
-	
+
 };
 
 //make fieldsets collapsibles. This requires a legend and all the following elements to be grouped (for example in a div element)
-//The function will 'hide' 
+//The function will 'hide'
 var _collapsibleFieldsets = function(){
 	$('legend').each(function(){
 		var _collapse = $('<a href="#" class="ui-icon ui-icon-circle-arrow-s collapsible">Collapse/Expand</a>');
@@ -91,7 +92,7 @@ $(function() {
 	$('.tooltip').tooltip({
 		//track: true,
 		delay: 0,
-		showURL: false, 
+		showURL: false,
 		showBody: ' - ',
 		extraClass: 'tt',
 		bodyHandler: function() {

@@ -16,7 +16,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2009 The Galette Team
+ * Copyright © 2007-2010 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -38,7 +38,7 @@
  *
  * @author    John Perr <johnperr@abul.org>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2009 The Galette Team
+ * @copyright 2007-2010 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
