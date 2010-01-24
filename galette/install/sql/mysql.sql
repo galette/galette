@@ -208,3 +208,13 @@ CREATE TABLE galette_fields_config (
     FOREIGN KEY (id_field_category)
     REFERENCES galette_fields_categories (id_field_category)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Table for mailing history storage;
+DROP TABLE IF EXISTS galette_mailing_history;
+CREATE TABLE galette_mailing_history (
+  mailing_id smallint(6) NOT NULL auto_increment,
+  mailing_subject varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  mailing_body text NOT NULL,
+  mailing_date date NOT NULL default '0000-00-00',
+  PRIMARY KEY (mailing_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

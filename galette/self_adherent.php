@@ -120,7 +120,7 @@ if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
                     break;
                 case 'email_adh':
                 case 'msn_adh':
-                    if ( !is_valid_email($value) ) {
+                    if ( !GaletteMail::isValidEmail($value) ) {
                         $error_detected[] = _T("- Non-valid E-Mail address!") .
                             ' (' . $key . ')';
                     }
@@ -227,25 +227,25 @@ if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
             $texts = new texts();
             $mtxt = $texts->getTexts('sub', $preferences->pref_lang);
             // Replace Tokens
-            $mtxt['tbody'] = str_replace('{NAME}', PREF_NOM, $mtxt['tbody']);
-            $mtxt['tbody'] = str_replace(
-                '{LOGIN_URI}',
+
+            $patterns = array(
+                '/{NAME}/',
+                '/{LOGIN_URI}/',
+                '/{LOGIN}/',
+                '/{PASSWORD}/'
+            );
+            $replace = array(
+                $preferences->pref_nom,
                 'http://' . $_SERVER['SERVER_NAME'] .
                 dirname($_SERVER['REQUEST_URI']),
-                $mtxt['tbody']
+                custom_html_entity_decode($adherent['login_adh']),
+                custom_html_entity_decode($adherent['mdp_adh_plain']),
             );
-            $mtxt['tbody'] = str_replace(
-                '{LOGIN}',
-                custom_html_entity_decode($adherent['login_adh']), $mtxt['tbody']
-            );
-            $mtxt['tbody'] = str_replace(
-                '{PASSWORD}',
-                custom_html_entity_decode($adherent['mdp_adh_plain']), $mtxt['tbody']
-            );
+
             $mail_result = custom_mail(
                 $adherent['email_adh'],
                 $mtxt['tsubject'],
-                $mtxt['tbody']
+                preg_replace($patterns, $replace, $mtxt['tbody'])
             );
 
             /** FIXME: why is the mail send twice ?? */

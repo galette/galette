@@ -1,4 +1,10 @@
 		<h1 id="titre">{_T string="Mailing"}</h1>
+{if $pref_mail_method == constant('Mailing::METHOD_DISABLED')}
+		<div id="errorbox">
+			<h1>{_T string="- ERROR -"}</h1>
+			<p>{_T string="Email sent is disabled in the preferences. Ask galette admin"}</p>
+		</div>
+{else}
 		<form action="mailing_adherents.php#mail_preview" id="listform" method="post">
 {if $error_detected|@count != 0}
 		<div id="errorbox">
@@ -50,8 +56,9 @@
 				<input type="checkbox" name="mailing_html" id="mailing_html" value="1" {if $mailing->html eq 1 or $pref_editor_enabled eq 1}checked="checked"{/if}/><label for="mailing_html">{_T string="Interpret HTML"}</label><br/>
 				<input type="submit" class="submit" name="mailing_go" value="{_T string="Preview"}"/>
 			</p>
+			<p><input type="submit" class="submit" name="mailing_confirm" value="{_T string="Send"}"/></p>
 	{/if}
-	{if $mailing->current_step > constant('Mailing::STEP_START')}
+	{if $mailing->current_step > constant('Mailing::STEP_START') && $mailing->current_step lt constant('Mailing::STEP_SEND')}
 			<div id="mail_preview">
 				<p>{_T string="Message preview:"}</p>
 				<p><span class="bline">{_T string="Object:"}</span>{$mailing->subject}</p>
@@ -64,8 +71,8 @@
 		{/if}
 				</p>
 			</div>
-	{/if}
 			<p><input type="submit" class="submit" name="mailing_confirm" value="{_T string="Send"}"/></p>
+	{/if}
 
 		</div>
 {else}
@@ -84,4 +91,5 @@
 				<a href="etiquettes_adherents.php">{_T string="Generate labels"}</a>
 			</div>
 		</div>
+{/if}
 {/if}

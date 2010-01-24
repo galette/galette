@@ -108,7 +108,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
         if ( $value != '' ) {
             switch ( $fieldname ) {
             case 'pref_email':
-                if ( !is_valid_email($value) ) {
+                if ( !GaletteMail::isValidEmail($value) ) {
                     $error_detected[] = _T("- Non-valid E-Mail address!");
                 }
                 break;
@@ -195,16 +195,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
 
     // missing relations
     if ( isset($insert_values['pref_mail_method']) ) {
-        if ( $insert_values['pref_mail_method']==2
-            || $insert_values['pref_mail_method'] == 1
-        ) {
-            if ( $insert_values['pref_mail_method'] == 2 ) {
-                if ( !isset($insert_values['pref_mail_smtp'])
-                    || $insert_values['pref_mail_smtp'] == ''
-                ) {
-                    $error_detected[] = _T("- You must indicate the SMTP server you want to use!");
-                }
-            }
+        if ( $insert_values['pref_mail_method'] > GaletteMail::METHOD_DISABLED ) {
             if ( !isset($insert_values['pref_email_nom'])
                 || $insert_values['pref_email_nom'] == ''
             ) {
@@ -214,6 +205,24 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 || $insert_values['pref_email'] == ''
             ) {
                 $error_detected[] = _T("- You must indicate an email address Galette should use to send emails!");
+            }
+            if ( $insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP ) {
+                if ( !isset($insert_values['pref_mail_smtp_host'])
+                    || $insert_values['pref_mail_smtp_host'] == ''
+                ) {
+                    $error_detected[] = _T("- You must indicate the SMTP server you want to use!");
+                }
+            }
+            if ( $insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
+                || ( $insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP
+                && $insert_values['pref_mail_smtp_auth'] )
+            ) {
+                if ( !isset($insert_values['pref_mail_smtp_user']) ) {
+                    $error_detected[] = _T("- You must provide a login for SMTP authentication.");
+                }
+                if ( !isset($insert_values['pref_mail_smtp_password']) ) {
+                    $error_detected[] = _T("- You must provide a password for SMTP authentication.");
+                }
             }
         }
     }
@@ -369,9 +378,9 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
 
 //List available themes
 $themes = array();
-$d = dir(_templates_path);
+$d = dir(TEMPLATES_PATH);
 while ( ($entry = $d->read()) !== false ) {
-    $full_entry = _templates_path . $entry;
+    $full_entry = TEMPLATES_PATH . $entry;
     if ($entry != '.'
         && $entry != '..'
         && is_dir($full_entry)

@@ -62,11 +62,11 @@
 					<input type="text" name="pref_cp" id="pref_cp" value="{$pref.pref_cp}" maxlength="10"/>
 				</p>
 				<p>
-					<label for="pref_ville" class="bline{if $required.pref_ville eq 1} required{/if}">{_T string="City:"}</label> 
+					<label for="pref_ville" class="bline{if $required.pref_ville eq 1} required{/if}">{_T string="City:"}</label>
 					<input type="text" name="pref_ville" id="pref_ville" value="{$pref.pref_ville}" maxlength="100"/>
 				</p>
 				<p>
-					<label for="pref_pays" class="bline{if $required.pref_pays eq 1} required{/if}">{_T string="Country:"}</label> 
+					<label for="pref_pays" class="bline{if $required.pref_pays eq 1} required{/if}">{_T string="Country:"}</label>
 					<input type="text" name="pref_pays" id="pref_pays" value="{$pref.pref_pays}" maxlength="50"/>
 				</p>
 				<p>
@@ -153,32 +153,64 @@
 					<span class="bline{if $required.pref_mail_method eq 1} required{/if}">{_T string="Emailing method:"}</span>
 					<ul>
 						<li>
-							<input type="radio" name="pref_mail_method" id="no" value="0" {if $pref.pref_mail_method eq 0}checked="checked"{/if}/><label for="no">{_T string="Emailing disabled"}</label>
+							<input type="radio" name="pref_mail_method" id="no" value="0" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_DISABLED')}checked="checked"{/if}/><label for="no">{_T string="Emailing disabled"}</label>
 						</li>
 						<li>
-							<input type="radio" name="pref_mail_method" id="php" value="1" {if $pref.pref_mail_method eq 1}checked="checked"{/if}/><label for="php">{_T string="PHP mail() function"}</label>
+							<input type="radio" name="pref_mail_method" id="php" value="1" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_SENDMAIL')}checked="checked"{/if}/><label for="php">{_T string="PHP mail() function"}</label>
 						</li>
 						<li>
-							<input type="radio" name="pref_mail_method" id="smtp" value="2" {if $pref.pref_mail_method eq 2}checked="checked"{/if}/><label for="smtp">{_T string="Using a SMTP server (slower)"}</label>
+							<input type="radio" name="pref_mail_method" id="smtp" value="2" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_SMTP')}checked="checked"{/if}/><label for="smtp">{_T string="Using a SMTP server (slower)"}</label>
+						</li>
+						<li>
+							<input type="radio" name="pref_mail_method" id="gmail" value="2" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_GMAIL')}checked="checked"{/if}/><label for="gmail">{_T string="Using GMAIL as SMTP server (slower)"}</label>
+						</li>
+						<li>
+							<input type="radio" name="pref_mail_method" id="qmail" value="1" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_QMAIL')}checked="checked"{/if}/><label for="qmail">{_T string="Using QMAIL server"}</label>
 						</li>
 					</ul>
 				</div>
-				<p>
-					<label for="pref_mail_smtp" class="bline{if $required.pref_mail_smtp eq 1} required{/if}">{_T string="SMTP server:"}</label>
-					<input type="text" name="pref_mail_smtp" id="pref_mail_smtp" value="{$pref.pref_mail_smtp}" maxlength="100" size="30"/>
-				</p>
+				<div id="smtp_parameters"{if $pref.pref_mail_method neq constant('GaletteMail::METHOD_SMTP')} style="display: none;"{/if}>
+					<p>
+						<label for="pref_mail_smtp_host" class="bline{if $required.pref_mail_smtp_host eq 1} required{/if}">{_T string="SMTP server:"}</label>
+						<input type="text" name="pref_mail_smtp_host" id="pref_mail_smtp_host" value="{$pref.pref_mail_smtp_host}" maxlength="100" size="30"/>
+					</p>
+					<p>
+						<label for="pref_mail_smtp_port" class="bline{if $required.pref_mail_smtp_port eq 1} required{/if}">{_T string="SMTP port:"}</label>
+						<input type="text" name="pref_mail_smtp_port" id="pref_mail_smtp_port" value="{$pref.pref_mail_smtp_port}" size="10"/>
+					</p>
+					<p>
+						<label for="pref_mail_smtp_auth" class="bline{if $required.pref_mail_smtp_auth eq 1} required{/if} tooltip" title="{_T string="Do you want to use SMTP authentication?"}">{_T string="Use SMTP authentication?"}</label>
+						<span class="tip">{_T string="Would emailing use any SMTP authentication? You'll have to provide username and passwrod below. For GMail, authentication will always be on."}</span>
+						<input type="checkbox" name="pref_mail_smtp_auth" id="pref_mail_smtp_auth" value="1" {if $pref.pref_mail_smtp_auth eq 1}checked="checked"{/if}/>
+					</p>
+					<p>
+						<label for="pref_mail_smtp_secure" class="bline{if $required.pref_mail_smtp_secure eq 1} required{/if} tooltip" title="{_T string="Do you want to use SMTP authentication?"}">{_T string="Use TLS for SMTP?"}</label>
+						<span class="tip">{_T string="Do you want to use server's TLS capabilities?<br/>For GMail, this will always be on."}</span>
+						<input type="checkbox" name="pref_mail_smtp_secure" id="pref_mail_smtp_secure" value="1" {if $pref.pref_mail_smtp_secure eq 1}checked="checked"{/if}/>
+					</p>
+				</div>
+				<div id="smtp_auth"{if $pref.pref_mail_method neq constant('GaletteMail::METHOD_SMTP') && $pref.pref_mail_method neq constant('GaletteMail::METHOD_GMAIL')} style="display: none;"{/if}>
+					<p>
+						<label for="pref_mail_smtp_user" class="bline{if $required.pref_mail_smtp_user eq 1} required{/if}">{_T string="SMTP (or GMail) user:"}</label>
+						<input type="text" name="pref_mail_smtp_user" id="pref_mail_smtp_user" value="{$pref.pref_mail_smtp_user}" maxlength="100" size="30"/>
+					</p>
+					<p>
+						<label for="pref_mail_smtp_password" class="bline{if $required.pref_mail_smtp_password eq 1} required{/if}">{_T string="SMTP (or GMail) password:"}</label>
+						<input type="text" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="{$pref.pref_mail_smtp_password}" maxlength="100" size="30"/>
+					</p>
+				</div>
 			</fieldset>
 
 			<fieldset class="cssform" id="labels">
 				<legend>{_T string="Label generation parameters:"}</legend>
 				<p>
 					<label for="pref_etiq_marges_v" class="bline{if $required.pref_etiq_marges_v eq 1} required{/if}">{_T string="Vertical margins:"}</label>
-					<input type="text" name="pref_etiq_marges_v" id="pref_etiq_marges_v" value="{$pref.pref_etiq_marges_v}" maxlength="4"/> mm 
+					<input type="text" name="pref_etiq_marges_v" id="pref_etiq_marges_v" value="{$pref.pref_etiq_marges_v}" maxlength="4"/> mm
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 				<p>
-					<label for="pref_etiq_marges_h" class="bline{if $required.pref_etiq_marges_h eq 1} required{/if}">{_T string="Horizontal margins:"}</label> 
-					<input type="text" name="pref_etiq_marges_h" id="pref_etiq_marges_h" value="{$pref.pref_etiq_marges_h}" maxlength="4"/> mm 
+					<label for="pref_etiq_marges_h" class="bline{if $required.pref_etiq_marges_h eq 1} required{/if}">{_T string="Horizontal margins:"}</label>
+					<input type="text" name="pref_etiq_marges_h" id="pref_etiq_marges_h" value="{$pref.pref_etiq_marges_h}" maxlength="4"/> mm
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 				<p>
@@ -219,12 +251,12 @@
 
 			<fieldset class="cssform" id="cards">
 				<legend>{_T string="Cards generation parameters:"}</legend>
-				<p> 
+				<p>
 					<label for="pref_card_abrev" class="bline{if $required.pref_card_abrev eq 1} required{/if}">{_T string="Short Text (Card Center):"}</label>
 					<input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{$pref.pref_card_abrev}" size="10" maxlength="10"/>
 					<span class="exemple">{_T string="(10 characters max)"}</span>
 				</p>
-				<p> 
+				<p>
 					<label for="pref_card_strip" class="bline{if $required.pref_card_strip eq 1} required{/if}">{_T string="Long Text (Bottom Line):"}</label>
 					<input type="text" name="pref_card_strip" id="pref_card_strip" value="{$pref.pref_card_strip}" size="40" maxlength="65"/>
 					<span class="exemple">{_T string="(65 characters max)"}</span>
@@ -289,13 +321,13 @@
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 				<p>
-					<label for="pref_card_marges_v" class="bline{if $required.pref_card_marges_v eq 1} required{/if}">{_T string="Vertical margins:"}</label> 
-					<input type="text" name="pref_card_marges_v" id="pref_card_marges_v" value="{$pref.pref_card_marges_v}" maxlength="4"/> mm 
+					<label for="pref_card_marges_v" class="bline{if $required.pref_card_marges_v eq 1} required{/if}">{_T string="Vertical margins:"}</label>
+					<input type="text" name="pref_card_marges_v" id="pref_card_marges_v" value="{$pref.pref_card_marges_v}" maxlength="4"/> mm
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 				<p>
 					<label for="pref_card_marges_h" class="bline{if $required.pref_card_marges_h eq 1} required{/if}">{_T string="Horizontal margins:"}</label>
-					<input type="text" name="pref_card_marges_h" id="pref_card_marges_h" value="{$pref.pref_card_marges_h}" maxlength="4"/> mm 
+					<input type="text" name="pref_card_marges_h" id="pref_card_marges_h" value="{$pref.pref_card_marges_h}" maxlength="4"/> mm
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 				<p>
@@ -351,6 +383,18 @@
 				$($(this).attr('href')).show();
 			{rdelim});
 
+			$('#no,#php,#qmail').click(function(){ldelim}
+				$('#smtp_parameters,#smtp_auth').hide();
+			{rdelim});
+			$('#smtp,#gmail').click(function(){ldelim}
+				$('#smtp_parameters,#smtp_auth').show();
+			{rdelim});
+			$('#gmail').click(function(){ldelim}
+				$('#smtp_parameters').hide();
+				$('#smtp_auth').show();
+			{rdelim});
+
+
 			//for color pickers
 			$(function(){ldelim}
 				// hex inputs
@@ -388,19 +432,19 @@
 
 			// validation for hex inputs
 			$.fn.validHex = function() {ldelim}
-				
+
 				return this.each(function() {ldelim}
-					
+
 					var value = $(this).val();
 					value = value.replace(/[^#a-fA-F0-9]/g, ''); // non [#a-f0-9]
 					if(value.match(/#/g) && value.match(/#/g).length > 1) value = value.replace(/#/g, ''); // ##
 					if(value.indexOf('#') == -1) value = '#'+value; // no #
 					if(value.length > 7) value = value.substr(0,7); // too many chars
-			
+
 					$(this).val(value);
-				
+
 				{rdelim});
-			
+
 			{rdelim};
 			//]]>
 		</script>

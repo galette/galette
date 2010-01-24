@@ -253,3 +253,13 @@ CREATE TABLE galette_fields_config (
   position integer NOT NULL,
   id_field_category integer REFERENCES galette_fields_categories ON DELETE RESTRICT
 );
+
+-- Table for mailing history storage
+DROP TABLE galette_mailing_history;
+CREATE TABLE galette_mailing_history (
+  mailing_id integer DEFAULT nextval('galette_mailing_history_id_seq'::text) NOT NULL,
+  mailing_subjectf character varying(255) NOT NULL,
+  mailing_body text NOT NULL,
+  mailing_date date DEFAULT '00000101' NOT NULL
+);
+CREATE UNIQUE INDEX galette_mailing_history_idx ON galette_mailing_history (mailing_id);

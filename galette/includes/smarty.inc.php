@@ -23,7 +23,7 @@
  * Smarty main initialisation
  *
  * @package Galette
- * 
+ *
  * @author     Frédéric Jaqcuot
  * @copyright  2007-2009 Johan Cwiklinski
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
@@ -70,4 +70,5 @@ $tpl->assign('plugins', $plugins);
 $tpl->assign('pref_slogan', $preferences->pref_slogan);
 $tpl->assign('pref_theme', $preferences->pref_theme);
 $tpl->assign('pref_editor_enabled', $preferences->pref_editor_enabled);
+$tpl->assign('pref_mail_method', $preferences->pref_mail_method);
 ?>

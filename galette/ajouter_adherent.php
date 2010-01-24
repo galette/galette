@@ -18,11 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Galette. If not, see <http://www.gnu.org/licenses/>.
 
-/** 
+/**
  * Saisie d'un adhérent
  *
  * Permet de saisir un nouvel adhérent ou d'en modifier un existant
- * 
+ *
  * @package    Galette
  *
  * @author     Frédéric Jaqcuot
@@ -57,7 +57,7 @@ if ( $login->isAdmin() )
 	$member = new Adherent();
 	if($id)
 		$member->load($adherent["id_adh"]);
-	
+
 	// disable some fields
 	$disabled = array(
 		'id_adh' => 'disabled="disabled"',
@@ -94,7 +94,7 @@ $confirm_detected = array();
 
 // flagging required fields
 require_once(WEB_ROOT . 'classes/required.class.php');
-	
+
 $requires = new Required();
 $required = $requires->getRequired();
 
@@ -154,7 +154,7 @@ if (isset($_POST["id_adh"]))
 						break;
 					case 'email_adh':
 					case 'msn_adh':
-						if (!is_valid_email($value))
+						if (!GaletteMail::isValidEmail($value))
 						        $error_detected[] = _T("- Non-valid E-Mail address!")." (".$key.")";
 						break;
 					case 'url_adh':
@@ -209,7 +209,7 @@ if (isset($_POST["id_adh"]))
 				}
 
 				if ($key=='mdp_adh' && $_POST['mdp_adh']=='')
-				{	
+				{
 					// don't update
 				}
 				else
@@ -220,7 +220,7 @@ if (isset($_POST["id_adh"]))
 				}
 		}
 	}
-		
+
 	// missing relations
 	if (isset($adherent["mail_confirm"])) {
 		if( $preferences->pref_mail_method > Mailing::METHOD_DISABLED )
@@ -261,7 +261,7 @@ if (isset($_POST["id_adh"]))
 					$error_detected[] = _T("A problem happened while sending email to admin for account:")." \"" . $_POST["email_adh"] . "\"";
 				}
 			}
-	
+
 			// logging
 			//nom_adh and prenom_adh is not sent when form is used by a simple user
 			//$hist->add('Member card updated:',strtoupper($_POST["nom_adh"]).' '.$_POST["prenom_adh"], $requete);
@@ -287,7 +287,7 @@ if (isset($_POST["id_adh"]))
 				if (is_uploaded_file($_FILES['photo']['tmp_name']))
 					if (!$member->picture->store($adherent['id_adh'], $_FILES['photo']))
 						$error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
-        
+
 		if (isset($_POST['del_photo']))
 			if (!$member->picture->delete($adherent['id_adh']))
 				$error_detected[] = _T("Delete failed");
