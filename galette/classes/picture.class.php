@@ -246,7 +246,7 @@ class Picture
     */
     protected function getDefaultPicture()
     {
-        $this->file_path = _current_template_path . 'images/default.png';
+        $this->file_path = _CURRENT_TEMPLATE_PATH . 'images/default.png';
         $this->format = 'png';
         $this->mime = 'image/png';
         $this->has_picture = false;
