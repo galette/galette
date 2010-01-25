@@ -1,0 +1,22 @@
+Galette 0.63.4 - 2010-??-??
+    - Handle 'stripos' missing function to keep 0.63.x php4
+    compliant
+    - Upgrade Adodb to 4992
+    - Upgrade to Smarty 2.6.22, and replace old hack for translations with
+    more elegant plugin
+    - Replace phppdflib with tcpdf
+    - Symlink to adodb has been removed, we now use a php file defining the
+    versions for the libraries
+
+Galette 0.63.3 - 2009-11-09
+    - Force Mysql to iso-8859-1 (LATIN1) (Thanks to Cédric OLIVIER)
+    - Check language validity before proceed (fix vulnerability encontered in
+    demo
+    - Removed some unbreakable spaces that appears in registration mails 
+    (thanks to Cédric OLIVIER).
+    - Encode XML characters for previewing mailings (fix bug #14571)
+    - Remove SQL query storage in logs while sending mail (fix bug #14569)
+    - Encode XML characters showing logs (fix bug #14561)
+    -Escape mailing text so that HTML special characters appears in the texarea
+    after preview (Fix bug #14465)
+
