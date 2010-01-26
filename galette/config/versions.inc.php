@@ -1,6 +1,6 @@
 <?php
 
-// Copyright © 2009 Johan Cwiklinski
+// Copyright © 2009-2010 Johan Cwiklinski
 //
 // This file is part of Galette (http://galette.tuxfamily.org).
 //

@@ -2,6 +2,7 @@
 /* header.php
  * - En-tete
  * Copyright (c) 2003 Frédéric Jaqcuot
+ * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,12 +20,12 @@
  *
  */
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> 
-<HTML> 
-<HEAD> 
-	<TITLE>Galette <? echo GALETTE_VERSION ?></TITLE> 
-	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1"> 
-	<LINK rel="stylesheet" type="text/css" href="galette.css" > 
-</HEAD> 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+	<TITLE>Galette <? echo GALETTE_VERSION ?></TITLE>
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+	<LINK rel="stylesheet" type="text/css" href="galette.css" >
+</HEAD>
 <BODY BGCOLOR="#FFFFFF">
 	<DIV id="content">

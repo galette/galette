@@ -2,6 +2,7 @@
 /* footer.php
  * - Pied de page
  * Copyright (c) 2003 Frédéric Jaqcuot
+ * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
-        include_once("includes/i18n.inc.php"); 
+        include_once("includes/i18n.inc.php");
 
 	$end = utime(); $run = $end - $start;
 ?>
@@ -29,12 +30,12 @@
 	<DIV id="menu">
 		<DIV id="logo">
 			<IMG src="images/galette.png" alt="[ Galette ]" width="129" height="60">
-		</DIV>	
+		</DIV>
 		<DIV id="nav1">
 			<H1><? echo _T("Navigation"); ?></H1>
 			<UL>
 <?
-	if ($_SESSION["admin_status"]==1) 
+	if ($_SESSION["admin_status"]==1)
 	{
 ?>
 				<LI><A href="gestion_adherents.php"><? echo _T("List of members"); ?></A></LI>
@@ -53,7 +54,7 @@
 				<LI><A href="gestion_contributions.php"><? echo _T("My contributions"); ?></A></LI>
 <?
 	}
-?>				
+?>
 			</UL>
 		</DIV>
 <?
@@ -73,8 +74,8 @@
 		<DIV id="logout">
 			<A href="index.php?logout=1"><? echo _T("Log off"); ?></A>
 		</DIV>
-<? 
-	if (basename($_SERVER["SCRIPT_NAME"])=="gestion_adherents.php" || basename($_SERVER["SCRIPT_NAME"])=="mailing_adherents.php") 
+<?
+	if (basename($_SERVER["SCRIPT_NAME"])=="gestion_adherents.php" || basename($_SERVER["SCRIPT_NAME"])=="mailing_adherents.php")
 	{
 ?>
 		<DIV id="legende">
@@ -143,14 +144,14 @@
 		</DIV>
 <?
 	}
-	elseif (basename($_SERVER["SCRIPT_NAME"])=="gestion_contributions.php") 
+	elseif (basename($_SERVER["SCRIPT_NAME"])=="gestion_contributions.php")
 	{
 ?>
 		<DIV id="legende">
 			<H1><? echo _T("Legend"); ?></H1>
 			<TABLE>
 <?
-		if ($_SESSION["admin_status"]==1) 
+		if ($_SESSION["admin_status"]==1)
 		{
 ?>
 				<TR>
@@ -178,5 +179,5 @@
 	}
 ?>
 	</DIV>
-</BODY> 
+</BODY>
 </HTML>

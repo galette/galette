@@ -2,6 +2,7 @@
 /* preferences.php
  * - Preferences Galette
  * Copyright (c) 2004 Frédéric Jaqcuot
+ * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,7 +34,7 @@ if ($_SESSION["admin_status"]==0)
     header("location: voir_adherent.php");
     die();
   }
-	
+
 include("includes/functions.inc.php");
 include("includes/i18n.inc.php");
 include("includes/smarty.inc.php");
@@ -218,7 +219,7 @@ if (isset($_POST['valid']) && $_POST['valid'] == "1")
 	      }
 
 	  }
-	
+
 	if (isset($_POST['del_logo']))
 	  if (!picture::delete(0))
 	    $error_detected[] = _T("Delete failed");

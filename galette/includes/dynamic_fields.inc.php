@@ -2,6 +2,7 @@
 /* categories.inc.php
  * - Categories configuration
  * Copyright (c) 2004 Laurent Pelecq <laurent.pelecq@soleil.org>
+ * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

@@ -1,7 +1,8 @@
 <?php
 /* picture.class.php
  * - Picture handling
- * Copyright (c) 2006 FrÃ©dÃ©ric Jaqcuot
+ * Copyright (c) 2006 Frédéric Jaqcuot
+ * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,9 +34,9 @@
 		var $FORMAT;
 		var $MIME;
 		var $HAS_PICTURE;
-		
+
 		// Constructor
-		
+
 		function picture($id_adh='')
 		{
 			// we first check if picture exists on filesystem
@@ -94,7 +95,7 @@
 					}
 				}
 			}
-			
+
 			// if we still have no picture, take the default one
 			if ($found_picture=='')
 			{
@@ -143,12 +144,12 @@
 		{
 			return $this->OPTIMAL_HEIGHT;
 		}
-		
+
 		function getOptimalWidth()
 		{
 			return $this->OPTIMAL_WIDTH;
 		}
-		
+
 		function hasPicture()
 		{
 			return $this->HAS_PICTURE;
@@ -187,9 +188,9 @@
 		{
 			// TODO : error codes
 			// TODO : check file size
-			
+
 			global $DB;
-			
+
 			$bad_chars = array('\.', '\\\\', "'", ' ', '\/', ':', '\*', '\?', '"', '<', '>', '|');
 			$allowed_extensions = array('jpeg', 'jpg', 'png', 'gif');
 			$allowed_mimes = array('image/jpeg', 'image/png', 'image/gif');
@@ -215,16 +216,16 @@
 			$sql = "DELETE FROM ".PREFIX_DB."pictures
 				WHERE id_adh='".$id."'";
 			$DB->Execute($sql);
-			
+
 			picture::delete($id);
-			
+
 			$new_file = dirname(__FILE__).'/../photos/'.$id.'.'.$extension;
 			move_uploaded_file($tmpfile, $new_file);
 
 			// resize (if gd available)
 			if(function_exists("gd_info"))
 				resizeimage($new_file, $new_file, 200, 200);
-			
+
 			$f = fopen($new_file,'r');
 			$picture = '';
 			while ($r=fread($f,8192))

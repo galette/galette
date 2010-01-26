@@ -1,18 +1,19 @@
 <?php
 /* self_adherent.php
- * - Saisie d'un adhï¿½rent par lui-mï¿½me
- * Copyright (c) 2004 Frï¿½dï¿½ric Jaqcuot, Georges Khaznadar
+ * - Saisie d'un adhérent par lui-même
+ * Copyright (c) 2004 Frédéric Jaqcuot, Georges Khaznadar
+ * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -20,9 +21,9 @@
  */
 
 include("includes/config.inc.php");
-include(WEB_ROOT."includes/database.inc.php"); 
-include(WEB_ROOT."includes/functions.inc.php"); 
-include(WEB_ROOT."includes/session.inc.php"); 
+include(WEB_ROOT."includes/database.inc.php");
+include(WEB_ROOT."includes/functions.inc.php");
+include(WEB_ROOT."includes/session.inc.php");
 include_once(WEB_ROOT."includes/i18n.inc.php");
 include_once(WEB_ROOT."includes/smarty.inc.php");
 include(WEB_ROOT."includes/dynamic_fields.inc.php");

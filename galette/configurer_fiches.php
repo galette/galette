@@ -1,26 +1,27 @@
-<?php 
+<?php
 /* configurer_fiches.php
  * - Configuration des fiches
  * Copyright (c) 2004 Laurent Pelecq <laurent.pelecq@soleil.org>
+ * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
- 
+
 	include("includes/config.inc.php");
-	include(WEB_ROOT."includes/database.inc.php"); 
+	include(WEB_ROOT."includes/database.inc.php");
 	include(WEB_ROOT."includes/session.inc.php");
 
 	if ($_SESSION["logged_status"]==0)
@@ -33,8 +34,8 @@
 		header("location: voir_adherent.php");
 		die();
 	}
-	
-	include(WEB_ROOT."includes/functions.inc.php"); 
+
+	include(WEB_ROOT."includes/functions.inc.php");
         include(WEB_ROOT."includes/i18n.inc.php");
 	include(WEB_ROOT."includes/smarty.inc.php");
         include(WEB_ROOT."includes/dynamic_fields.inc.php");
@@ -46,7 +47,7 @@
 		$form_name = '';
 
 	$form_not_set = ($form_name == '');
-	
+
 	if ($form_name == '') {
 
 		$form_title = '';
@@ -152,7 +153,7 @@
 				$DB->CompleteTrans();
 			}
 		}
-	
+
 		$query = "SELECT *
 			  FROM $field_types_table
 			  WHERE field_form=$quoted_form_name
@@ -178,9 +179,9 @@
 
 		$tpl->assign("perm_names", $perm_names);
 		$tpl->assign("field_type_names", $field_type_names);
-		
+
 		$tpl->assign("dyn_fields",$dyn_fields);
-	
+
 	} // $form_name == ''
 
 	$tpl->assign("error_detected",$error_detected);

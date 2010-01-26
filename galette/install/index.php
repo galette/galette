@@ -1,5 +1,5 @@
 <?php
-// Copyright © 2004-2009 The Galette Team
+// Copyright © 2004-2010 The Galette Team
 //
 // This file is part of Galette (http://galette.tuxfamily.org).
 //

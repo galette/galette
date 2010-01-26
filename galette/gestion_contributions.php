@@ -1,26 +1,27 @@
 <?php
- 
+
 /* gestion_contributions.php
- * - Rï¿½capitulatif des contributions
- * Copyright (c) 2004 Frï¿½dï¿½ric Jaqcuot
+ * - Récapitulatif des contributions
+ * Copyright (c) 2004 Frédéric Jaqcuot
+ * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
- 
-	include("includes/config.inc.php"); 
+
+	include("includes/config.inc.php");
 	include(WEB_ROOT."includes/database.inc.php");
 	include(WEB_ROOT."includes/session.inc.php");
 
@@ -30,13 +31,13 @@
 		die();
 	}
 
-	include(WEB_ROOT."includes/functions.inc.php"); 
+	include(WEB_ROOT."includes/functions.inc.php");
         include(WEB_ROOT."includes/i18n.inc.php");
 	include(WEB_ROOT."includes/smarty.inc.php");
-	
+
 	$filtre_id_adh = "";
-	
-	if ($_SESSION["admin_status"]==0) 
+
+	if ($_SESSION["admin_status"]==0)
 		$_SESSION["filtre_cotis_adh"] = $_SESSION["logged_id_adh"];
 	else
 	{
@@ -47,13 +48,13 @@
 			else
 				$_SESSION["filtre_cotis_adh"]="";
 		}
-	}		
+	}
 
         $numrows = PREF_NUMROWS;
 	if (isset($_GET["nbshow"]))
 		if (is_numeric($_GET["nbshow"]))
 			$numrows = $_GET["nbshow"];
-							
+
         if (isset($_GET["contrib_filter_1"]))
 	if (preg_match("@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@", $_GET["contrib_filter_1"], $array_jours))
 	{
@@ -88,7 +89,7 @@
 	if (isset($_GET["page"]))
 		$page = $_GET["page"];
 
-	// Tri	
+	// Tri
 	if (isset($_GET["tri"]))
 	{
 		if ($_SESSION["tri_cotis"]==$_GET["tri"])
@@ -100,55 +101,55 @@
 		}
 	}
 
-	if ($_SESSION["admin_status"]==1) 
+	if ($_SESSION["admin_status"]==1)
 	if (isset($_GET["sup"]))
 	{
 		// recherche adherent
 		$requetesel = "SELECT id_adh
-				FROM ".PREFIX_DB."cotisations 
-				WHERE id_cotis=".$DB->qstr($_GET["sup"], get_magic_quotes_gpc()); 
+				FROM ".PREFIX_DB."cotisations
+				WHERE id_cotis=".$DB->qstr($_GET["sup"], get_magic_quotes_gpc());
 		$result_adh = &$DB->Execute($requetesel);
 		if (!$result_adh->EOF)
-		{			
+		{
 			$id_adh = $result_adh->fields["id_adh"];
 
 			$requetesup = "SELECT nom_adh, prenom_adh FROM ".PREFIX_DB."adherents WHERE id_adh=".$DB->qstr($id_adh, get_magic_quotes_gpc());
 			$resultat = $DB->Execute($requetesup);
 			if (!$resultat->EOF)
-			{			
+			{
 				// supression record cotisation
-				$requetesup = "DELETE FROM ".PREFIX_DB."cotisations 
-				    	    WHERE id_cotis=".$DB->qstr($_GET["sup"], get_magic_quotes_gpc()); 
+				$requetesup = "DELETE FROM ".PREFIX_DB."cotisations
+				    	    WHERE id_cotis=".$DB->qstr($_GET["sup"], get_magic_quotes_gpc());
 				$DB->Execute($requetesup);
-			
+
 				// mise a jour de l'ï¿½chï¿½ance
 				$date_fin = get_echeance($DB, $id_adh);
 				if ($date_fin!=""){
 				  $date_fin_update = "'".$date_fin[2]."-".$date_fin[1]."-".$date_fin[0]."'";
 				} else {
-				  $date_fin_update = "NULL";	
+				  $date_fin_update = "NULL";
 				}
 				$requeteup = "UPDATE ".PREFIX_DB."adherents
 					    SET date_echeance=".$date_fin_update."
 					    WHERE id_adh=".$DB->qstr($id_adh, get_magic_quotes_gpc());
 				$DB->Execute($requeteup);
- 				dblog("Contribution deleted:",strtoupper($resultat->fields[0])." ".$resultat->fields[1],$requetesup);							
+ 				dblog("Contribution deleted:",strtoupper($resultat->fields[0])." ".$resultat->fields[1],$requetesup);
  			}
  			$resultat->Close();
  		}
  		$result_adh->Close();
 	}
-	
+
 	$date_enreg_format = $DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_enreg');
 	$date_debut_cotis_format = $DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_debut_cotis');
 	$date_fin_cotis_format = $DB->SQLDate('d/m/Y',PREFIX_DB.'cotisations.date_fin_cotis');
 	$requete[0] = "SELECT $date_enreg_format AS date_enreg,
 			$date_debut_cotis_format AS date_debut_cotis,
 			$date_fin_cotis_format AS date_fin_cotis,
-			".PREFIX_DB."cotisations.id_cotis, 
-			".PREFIX_DB."cotisations.id_adh, 
-			".PREFIX_DB."cotisations.montant_cotis, 
-			".PREFIX_DB."adherents.nom_adh, 
+			".PREFIX_DB."cotisations.id_cotis,
+			".PREFIX_DB."cotisations.id_adh,
+			".PREFIX_DB."cotisations.montant_cotis,
+			".PREFIX_DB."adherents.nom_adh,
 			".PREFIX_DB."adherents.prenom_adh,
 			".PREFIX_DB."types_cotisation.libelle_type_cotis,
 			".PREFIX_DB."types_cotisation.cotis_extension,
@@ -161,13 +162,13 @@
 			WHERE 1=1 ";
 
 	// phase filtre
-	
+
 	if ($_SESSION["filtre_cotis_adh"]!="")
 	{
 		$requete[0] .= "AND ".PREFIX_DB."cotisations.id_adh='" . $_SESSION["filtre_cotis_adh"] . "' ";
 		$requete[1] .= "AND ".PREFIX_DB."cotisations.id_adh='" . $_SESSION["filtre_cotis_adh"] . "' ";
 	}
-		
+
 	// date filter
 	if ($_SESSION["filtre_date_cotis_1"]!="")
 	{
@@ -185,22 +186,22 @@
 	}
 
 	// phase de tri
-	
+
 	if ($_SESSION["tri_cotis_sens"]=="0")
 		$tri_cotis_sens_txt="ASC";
 	else
-		$tri_cotis_sens_txt="DESC";	
-								
+		$tri_cotis_sens_txt="DESC";
+
 	$requete[0] .= "ORDER BY ";
 
 	// tri par adherent
 	if ($_SESSION["tri_cotis"]=="1")
 		$requete[0] .= "nom_adh ".$tri_cotis_sens_txt.", prenom_adh ".$tri_cotis_sens_txt.",";
-		
+
 	// tri par type
 	elseif ($_SESSION["tri_cotis"]=="2")
 		$requete[0] .= "libelle_type_cotis ".$tri_cotis_sens_txt.",";
-	
+
 	// tri par montant
 	elseif ($_SESSION["tri_cotis"]=="3")
 		$requete[0] .= "montant_cotis ".$tri_cotis_sens_txt.",";
@@ -210,27 +211,27 @@
 		$requete[0] .= "(date_fin_cotis - date_debut_cotis) ".$tri_cotis_sens_txt.",";
 
 	// defaut : tri par date
-	$requete[0] .= " ".PREFIX_DB."cotisations.date_debut_cotis ".$tri_cotis_sens_txt; 
+	$requete[0] .= " ".PREFIX_DB."cotisations.date_debut_cotis ".$tri_cotis_sens_txt;
 
 	if ($numrows==0)
 		$resultat = &$DB->Execute($requete[0]);
 	else
 		$resultat = &$DB->SelectLimit($requete[0],$numrows,($page-1)*$numrows);
-							
-	$nb_contributions = $DB->GetOne($requete[1]); 
+
+	$nb_contributions = $DB->GetOne($requete[1]);
 	$contributions = array();
 
 	if ($numrows==0)
 		$nbpages = 1;
-	else if ($nb_contributions%$numrows==0) 
+	else if ($nb_contributions%$numrows==0)
 		$nbpages = intval($nb_contributions/$numrows);
-	else 
+	else
 		$nbpages = intval($nb_contributions/$numrows)+1;
 	if ($nbpages==0)
 		$nbpages = 1;
-		
+
 	$compteur = 1+($page-1)*$numrows;
-	while(!$resultat->EOF) 
+	while(!$resultat->EOF)
 	{
 		if( $resultat->fields['id_type_cotis'] == 4 || $resultat->fields['id_type_cotis'] == 5 )
 			$row_class = "cotis-give";
@@ -252,7 +253,7 @@
 		$resultat->MoveNext();
 	}
 	$resultat->Close();
-	
+
 	// if viewing a member's contributions, show deadline
 	if ($_SESSION["filtre_cotis_adh"]!="")
 	{
@@ -270,7 +271,7 @@
 			if ($resultat->fields[0]=="")
 			{
 				$statut_cotis = _T("Never contributed");
-				$statut_class = 'cotis-never';			
+				$statut_class = 'cotis-never';
 			}
 			else
 			{
@@ -297,14 +298,14 @@
 					if ($difference < 30)
 						$statut_class = 'cotis-soon';
 					else
-						$statut_class = 'cotis-ok';	
-				}		
+						$statut_class = 'cotis-ok';
+				}
 			}
 		}
 		$tpl->assign("statut_cotis",$statut_cotis);
-		$tpl->assign("statut_class",$statut_class);		
+		$tpl->assign("statut_class",$statut_class);
 	}
-	
+
 
 	$tpl->assign("contributions",$contributions);
 	$tpl->assign("nb_contributions",$nb_contributions);

@@ -2,25 +2,26 @@
 /* editer_champ.php
  * - Edition of optional form fields.
  * Copyright (c) 2004 Laurent Pelecq <laurent.pelecq@soleil.org>
+ * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
- 
+
 	include("includes/config.inc.php");
-	include(WEB_ROOT."includes/database.inc.php"); 
+	include(WEB_ROOT."includes/database.inc.php");
 	include(WEB_ROOT."includes/session.inc.php");
 
 	if ($_SESSION["logged_status"]==0)
@@ -34,7 +35,7 @@
 		die();
 	}
 
-	include(WEB_ROOT."includes/functions.inc.php"); 
+	include(WEB_ROOT."includes/functions.inc.php");
         include(WEB_ROOT."includes/i18n.inc.php");
 	include(WEB_ROOT."includes/smarty.inc.php");
         include(WEB_ROOT."includes/dynamic_fields.inc.php");
@@ -50,7 +51,7 @@
 		header("location: configurer_fiches.php?form=$form_name");
 	$field_type = $DB->GetOne("SELECT field_type FROM $field_types_table WHERE field_id=$field_id");
 	$properties = $field_properties[$field_type];
-	
+
 	$data = array('id' => $field_id);
 
 	if (isset($_POST["valid"])) {
@@ -120,7 +121,7 @@
 						db_execute($DB, "INSERT INTO $contents_table VALUES ($i, $val)", $error_detected);
 					}
 				}
-			} 
+			}
 		}
 		if (count($error_detected)==0)
 			header("location: configurer_fiches.php?form=$form_name");
@@ -172,7 +173,7 @@
 	$tpl->assign("perm_names", $perm_names);
 
 	$tpl->assign("field_positions", $field_positions);
-	
+
 	$content = $tpl->fetch("editer_champ.tpl");
 	$tpl->assign("content",$content);
 	$tpl->display("page.tpl");

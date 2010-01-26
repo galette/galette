@@ -2,6 +2,7 @@
 /* ajouter_adherent.php
  * - Saisie d'un adhérent
  * Copyright (c) 2004 Frédéric Jaqcuot
+ * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -85,7 +86,7 @@
 	// password required if we create a new member
 	if ($adherent["id_adh"]=='')
 		$required['mdp_adh'] = 1;
-			
+
 	// flagging required fields invisible to members
 	if ($_SESSION["admin_status"]==1)
 	{
@@ -191,7 +192,7 @@
 				}
 
 				if ($key=='mdp_adh' && $_POST['mdp_adh']=='')
-				{	
+				{
 					// don't update
 				}
 				else
@@ -202,7 +203,7 @@
 				}
 			}
 		}
-		
+
 		// missing relations
 		if (isset($adherent["mail_confirm"]))
 		{
@@ -258,11 +259,11 @@
 					if (is_uploaded_file($_FILES['photo']['tmp_name']))
 						if (!picture::store($adherent['id_adh'], $_FILES['photo']['tmp_name'], $_FILES['photo']['name']))
 							$error_detected[] = _T("- Only .jpg, .gif and .png files are allowed.");
-        
+
 			if (isset($_POST['del_photo']))
 				if (!picture::delete($adherent['id_adh']))
 					$error_detected[] = _T("Delete failed");
-				
+
     if (isset($_POST["mail_confirm"]))
       if ($_POST["mail_confirm"]=="1" && PREF_MAIL_METHOD > 0){
         if (isset($adherent['email_adh']) && $adherent['email_adh']!="")
@@ -392,7 +393,7 @@
 	}
 
 	// picture data
-	if ($adherent["id_adh"]!='') 
+	if ($adherent["id_adh"]!='')
 		$picture = new picture($adherent["id_adh"]);
 	else
 		$picture = new picture();

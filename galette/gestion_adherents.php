@@ -3,24 +3,25 @@
 /* gestion_adherents.php
  * - Récapitulatif des adhérents
  * Copyright (c) 2003 Frédéric Jaqcuot
+ * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
- 
-	include("includes/config.inc.php"); 
+
+	include("includes/config.inc.php");
 	include(WEB_ROOT."includes/database.inc.php");
 	include(WEB_ROOT."includes/session.inc.php");
 
@@ -35,12 +36,12 @@
 		die();
 	}
 
-	include(WEB_ROOT."includes/functions.inc.php"); 
+	include(WEB_ROOT."includes/functions.inc.php");
 	include(WEB_ROOT."includes/i18n.inc.php");
 	include(WEB_ROOT."includes/smarty.inc.php");
-	
+
 	$error_detected = array();
-	
+
 	if (isset($_POST['labels']))
 	{
 		$qstring = 'etiquettes_adherents.php';
@@ -64,9 +65,9 @@
 		else
 			$error_detected[] = _T("No member was selected, please check at least one name.");
 	}
-	
+
 	$members = array();
-	
+
 	// Filters
 	$page = 1;
 	if (isset($_GET["page"]))
@@ -104,7 +105,7 @@
 				$_SESSION["tri_adh_sens"]=0;
 			}
 		}
-	
+
 	if (isset($_GET["sup"]) || isset($_POST["delete"]))
 	{
 		$array_sup = array();
@@ -120,7 +121,7 @@
 				if (is_numeric($supval))
 					$array_sup[] = $supval;
 		}
-		
+
 		foreach ($array_sup as $supval)
 		{
 			$requetesup = "SELECT nom_adh, prenom_adh FROM ".PREFIX_DB."adherents WHERE id_adh=".$DB->qstr($supval, get_magic_quotes_gpc());
@@ -128,14 +129,14 @@
 			if (!$resultat->EOF)
 			{
 				// supression record adhérent
-				$requetesup = "DELETE FROM ".PREFIX_DB."adherents 
-						WHERE id_adh=".$DB->qstr($supval, get_magic_quotes_gpc()); 
-				$DB->Execute($requetesup); 		
+				$requetesup = "DELETE FROM ".PREFIX_DB."adherents
+						WHERE id_adh=".$DB->qstr($supval, get_magic_quotes_gpc());
+				$DB->Execute($requetesup);
 				dblog("Delete the member card (and dues)",strtoupper($resultat->fields[0])." ".$resultat->fields[1],$requetesup);
 
 				// suppression records cotisations
-				$requetesup = "DELETE FROM ".PREFIX_DB."cotisations 
-						WHERE id_adh=" . $DB->qstr($supval, get_magic_quotes_gpc()); 
+				$requetesup = "DELETE FROM ".PREFIX_DB."cotisations
+						WHERE id_adh=" . $DB->qstr($supval, get_magic_quotes_gpc());
 				$DB->Execute($requetesup);
 
 				// erase custom fields
@@ -159,9 +160,9 @@
 		       FROM ".PREFIX_DB."adherents, ".PREFIX_DB."statuts
 		       WHERE ".PREFIX_DB."adherents.id_statut=".PREFIX_DB."statuts.id_statut ";
 	$requete[1] = "SELECT count(id_adh)
-		       FROM ".PREFIX_DB."adherents 
+		       FROM ".PREFIX_DB."adherents
 		       WHERE 1=1 ";
-	
+
 	// Advanced filter
 	if ($_SESSION["filtre_adh_nom"]!="")
 	{
@@ -258,19 +259,19 @@
 		$requete[1] .= "AND isnull(date_echeance)";
 	}
 
-	
-	// phase de tri	
+
+	// phase de tri
 	if ($_SESSION["tri_adh_sens"]=="0")
 		$tri_adh_sens_txt="ASC";
 	else
 		$tri_adh_sens_txt="DESC";
 
 	$requete[0] .= "ORDER BY ";
-	
+
 	// tri par pseudo
 	if ($_SESSION["tri_adh"]=="1")
 		$requete[0] .= "pseudo_adh ".$tri_adh_sens_txt.",";
-		
+
 	// tri par statut
 	elseif ($_SESSION["tri_adh"]=="2")
 		$requete[0] .= "priorite_statut ".$tri_adh_sens_txt.",";
@@ -282,10 +283,10 @@
     	} else {
     		$requete[0] .= "bool_exempt_adh ".$tri_adh_sens_txt.", date_echeance ".$tri_adh_sens_txt.",";
     	}
-    }	
+    }
 	// defaut : tri par nom, prenom
-	$requete[0] .= "nom_adh ".$tri_adh_sens_txt.", prenom_adh ".$tri_adh_sens_txt; 
-	
+	$requete[0] .= "nom_adh ".$tri_adh_sens_txt.", prenom_adh ".$tri_adh_sens_txt;
+
 	$nbadh = &$DB->Execute($requete[1]);
 	if ($numrows==0)
 		$resultat = &$DB->Execute($requete[0]);
@@ -294,22 +295,22 @@
 
 	if ($numrows==0)
 		$nbpages = 1;
-	else if ($nbadh->fields[0]%$numrows==0) 
+	else if ($nbadh->fields[0]%$numrows==0)
 		$nbpages = intval($nbadh->fields[0]/$numrows);
-	else 
+	else
 		$nbpages = intval($nbadh->fields[0]/$numrows)+1;
 	if ($nbpages==0)
 		$nbpages = 1;
 
 	$compteur = 1+($page-1)*$numrows;
-	while (!$resultat->EOF) 
-	{ 
+	while (!$resultat->EOF)
+	{
 		// définition CSS pour adherent désactivé
 		if ($resultat->fields[4]=="1")
 			$row_class = "actif";
 		else
 			$row_class = "inactif";
-			
+
 		// temps d'adhésion
 		if($resultat->fields[6] == "1")
 		{
@@ -331,7 +332,7 @@
 				$date_fin = explode("-",$resultat->fields[10]);
 				$ts_date_fin = mktime(0,0,0,$date_fin[1],$date_fin[2],$date_fin[0]);
 				$aujourdhui = time();
-				
+
 				$difference = intval(($ts_date_fin - $aujourdhui)/(3600*24));
 				if ($difference==0)
 				{
@@ -352,8 +353,8 @@
 					if ($difference < 30)
 						$row_class .= " cotis-soon";
 					else
-						$row_class .= " cotis-ok";	
-				}				
+						$row_class .= " cotis-ok";
+				}
 			}
 		}
 		$members[$compteur]["class"]=$row_class;
@@ -368,9 +369,9 @@
 		$members[$compteur]["statut_cotis"]=$statut_cotis;
 		$compteur++;
 		$resultat->MoveNext();
-	} 
+	}
 	$resultat->Close();
-	
+
 	$tpl->assign("error_detected",$error_detected);
 	$tpl->assign("members",$members);
 	$tpl->assign("nb_members",$nbadh->fields[0]);
