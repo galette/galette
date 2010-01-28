@@ -85,7 +85,8 @@ if ($installed) {
 		{
 			if (isset($_POST["install_dbconn_ok"]))
 			{
-				include(WEB_ROOT."/includes/adodb/adodb.inc.php");
+				require_once WEB_ROOT . '/config/versions.inc.php';
+				include(WEB_ROOT . '/includes/adodb' . ADODB_VERSION . '/adodb.inc.php');
 				$DB = ADONewConnection($_POST["install_dbtype"]);
 				$DB->debug = false;
 				$permsdb_ok = true;
