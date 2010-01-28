@@ -53,7 +53,12 @@
 				<legend>{_T string="Identity:"}</legend>
 				<p>
 					<span class="bline libelle{if $required.titre_adh eq 1} required{/if}">{_T string="Title:"}</span>
-					{html_radios name="titre_adh" options=$radio_titres checked=$data.titre_adh separator="&nbsp;&nbsp;" disabled=$disabled.titre_adh}
+					{if $disabled.titre_adh != ''}
+						{html_radios name="titre_adh" options=$radio_titres checked=$data.titre_adh separator="&nbsp;" disabled="disabled"}
+					{else}
+						{html_radios name="titre_adh" options=$radio_titres checked=$data.titre_adh separator="&nbsp;"}
+					{/if}
+
 				</p>
 				<p>
 					<label for="nom_adh" class="bline libelle{if $required.nom_adh eq 1} required{/if}">{_T string="Name:"}</label>
