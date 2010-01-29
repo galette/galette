@@ -73,12 +73,49 @@ $logs = array();
 $logs = $hist->getHistory();
 $_SESSION['galette']['history'] = serialize($hist);
 
+$paginate = null;
+$tabs = "\t\t\t\t\t\t";
+
+/** Pagination */
+if ( $hist->page < 11 ) {
+    $idepart=1;
+} else {
+    $idepart = $hist->page - 10;
+}
+if ( $hist->page + 10 < $hist->pages ) {
+    $ifin = $hist->page + 10;
+} else {
+    $ifin = $hist->pages;
+}
+
+$next = $hist->page + 1;
+$previous = $hist->page - 1;
+
+if ($hist->page != 1){
+    $paginate .= "\n" . $tabs . "<li><a href=\"index.php?page=1\" title=\"" .  _T("First page") . "\">&lt;&lt;</a></li>\n";
+    $paginate .= $tabs . "<li><a href=\"?page=" . $previous . "\" title=\"" . preg_replace("(%i)", $previous, _T("Previous page (%i)")) . "\">&lt;</a></li>\n";
+}
+
+for ( $i = $idepart ; $i <= $ifin ; $i++ ) {
+    if ( $i == $hist->page ) {
+        $paginate .= $tabs . "<li class=\"current\"><a href=\"#\" title=\"" . preg_replace("(%i)", $hist->page, _T("Current page (%i)")) . "\">-&nbsp;$i&nbsp;-</a></li>\n";
+    } else {
+        $paginate .= $tabs . "<li><a href=\"?page=" . $i . "\" title=\"" . preg_replace("(%i)", $i, _T("Page %i")) . "\">" . $i . "</a></li>\n";
+    }
+}
+if ($hist->page != $hist->pages ) {
+    $paginate .= $tabs . "<li><a href=\"?page=" . $next . "\" title=\"" . preg_replace("(%i)", $next, _T("Next page (%i)")) . "\">&gt;</a></li>\n";
+    $paginate .= $tabs . "<li><a href=\"?page=" . $hist->pages . "\" title=\"" . preg_replace("(%i)", $hist->pages, _T("Last page (%i)")) . "\">&gt;&gt;</a></li>\n";
+}
+/** /Pagination */
+
 $tpl->assign('logs', $logs);
 $tpl->assign('nb_lines', count($logs));
 $tpl->assign('nb_pages', $hist->pages);
 $tpl->assign('page', $hist->page);
 $tpl->assign('numrows', $hist->show);
 $tpl->assign('history', $hist);
+$tpl->assign('pagination', $paginate);
 $tpl->assign(
     'nbshow_options',
     array(

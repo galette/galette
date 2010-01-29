@@ -55,7 +55,7 @@ pre {
 .right {
 	text-align: right;
 }
-	
+
 .center {
 	text-align: center;
 }
@@ -79,12 +79,12 @@ pre {
 	background-color: #FFE9AB!important;
 	vertical-align: top;
 }
-		
+
 .cotis-late {
 	background-color: #FFDDDD!important;
 	vertical-align: top;
 }
-	
+
 .cotis-lastday {
 	background-color: #FFDDDD!important;
 	vertical-align: top;
@@ -192,13 +192,13 @@ td.listing {
 a.listing:hover {
 	color: #666;
 }
-	
+
 .emptylist {
 	background-color: #EEEEEE;
 	text-align: center;
 	font-style: italic;
 }
-	
+
 .actif {
 }
 
@@ -361,7 +361,7 @@ html > * .infoline {
 .infoline td {
         vertical-align: top;
 	width: 33%;
-}	
+}
 
 .infoline ul {
 	margin: 0px;
@@ -386,7 +386,7 @@ html > * .infoline {
 	margin-left: auto;
 	margin-right: auto;
 }
-	
+
 #mailing_preview th {
 	/*font-size: 10px;*/
 	font-weight: bold;
@@ -403,7 +403,7 @@ html > * .infoline {
 	width: 80%;
 	margin:0 auto 0.8em auto;
 }
-		
+
 #errorbox h1 {
 	font-size:1em;
 	font-weight: bold;
@@ -427,7 +427,7 @@ html > * .infoline {
 	display:block;
 	border:2px solid #FFB619;
 }
-		
+
 #warningbox h1 {
 	background-color: #FFB619;
 	text-align: center;
@@ -442,7 +442,7 @@ html > * .infoline {
 	margin: 2px;
 	padding: 0px;
 	border: none;
-}		
+}
 
 #infobox {
 	text-align:center;
@@ -453,7 +453,7 @@ html > * .infoline {
 	width: 80%;
 	margin:0 auto 0.8em auto;
 }
-		
+
 #infobox h1 {
 	font-size:1em;
 	font-weight: bold;
@@ -997,7 +997,7 @@ ul#tabs li{
 ul#paths{
 	width:10em!important;
 }
-	
+
 #installpage #retry_btn {
 	text-align: center;
 }
@@ -1181,7 +1181,7 @@ ul#paths{
 	background: #FFB619 url(jquery-ui/images/ui-bg_glass_65_FFB619_1x400.png) repeat-x scroll 50% 50%;
 }
 #menu ul.nojs{
-	margin:0 0 .5em 0;	
+	margin:0 0 .5em 0;
 }
 
 #menu ul {
@@ -1229,3 +1229,27 @@ ul#paths{
 	display:inline;
 }
 /** /MENUS */
+
+/** PAGINATION */
+.pages .current a{
+	color:#FFB619;
+	font-weight:bold;
+}
+.pages{
+	text-align:center;
+	margin:0;
+	padding:0;
+}
+.pages a{
+	padding:0 3px;
+}
+.pages a:hover{
+	background-color:#EEEEEE;
+	color:black;
+}
+.pages li{
+	display:inline;
+	padding:0;
+	margin:0;
+}
+/** /PAGINATION*/

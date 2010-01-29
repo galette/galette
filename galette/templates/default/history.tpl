@@ -11,23 +11,13 @@
 						<!--<span class="fleft">{$nb_lines} {if $nb_lines != 1}{_T string="lines"}{else}{_T string="line"}{/if}</span>-->
 						<form action="history.php" method="get" id="historyform">
 							<span class="fleft">
-								<label for="nbshow">{_T string="Show:"}</label>
+								<label for="nbshow">{_T string="Records per page:"}</label>
 								<select name="nbshow" id="nbshow">
 									{html_options options=$nbshow_options selected=$numrows}
 								</select>
 								<noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
 							</span>
 						</form>
-						{_T string="Pages:"}
-						<span class="pagelink">
-{section name="pageLoop" start=1 loop=$nb_pages+1}
-{if $smarty.section.pageLoop.index eq $page}
-						{$smarty.section.pageLoop.index}
-{else}
-						<a href="history.php?page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
-{/if}
-{/section}
-						</span>
 					</td>
 				</tr>
 				<tr>
@@ -96,17 +86,9 @@
 			</thead>
 			<tfoot>
 				<tr>
-					<td colspan="6" class="right">
-						{_T string="Pages:"}
-						<span class="pagelink">
-						{section name="pageLoop" start=1 loop=$nb_pages+1}
-						{if $smarty.section.pageLoop.index eq $page}
-						{$smarty.section.pageLoop.index}
-						{else}
-						<a href="history.php?page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
-						{/if}
-						{/section}
-						</span>
+					<td colspan="6" class="center">
+						{_T string="Pages:"}<br/>
+						<ul class="pages">{$pagination}</ul>
 					</td>
 				</tr>
 			</tfoot>
