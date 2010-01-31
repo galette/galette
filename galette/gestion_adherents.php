@@ -227,6 +227,51 @@ if ($nbpages == 0) {
 
 $_SESSION['galette']['varslist'] = serialize($varslist);
 
+$paginate = null;
+$tabs = "\t\t\t\t\t\t";
+
+/** Pagination */
+if ( $varslist->current_page < 11 ) {
+    $idepart=1;
+} else {
+    $idepart = $varslist->current_page - 10;
+}
+if ( $varslist->current_page + 10 < $nbpages ) {
+    $ifin = $varslist->current_page + 10;
+} else {
+    $ifin = $nbpages;
+}
+
+$next = $varslist->current_page + 1;
+$previous = $varslist->current_page - 1;
+
+if ( $varslist->current_page != 1 ) {
+    $paginate .= "\n" . $tabs . "<li><a href=\"index.php?page=1\" title=\"" .
+        _T("First page") . "\">&lt;&lt;</a></li>\n";
+    $paginate .= $tabs . "<li><a href=\"?page=" . $previous . "\" title=\"" .
+        preg_replace("(%i)", $previous, _T("Previous page (%i)")) .
+        "\">&lt;</a></li>\n";
+}
+
+for ( $i = $idepart ; $i <= $ifin ; $i++ ) {
+    if ( $i == $varslist->current_page ) {
+        $paginate .= $tabs . "<li class=\"current\"><a href=\"#\" title=\"" .
+            preg_replace("(%i)", $varslist->current_page, _T("Current page (%i)")) .
+            "\">-&nbsp;$i&nbsp;-</a></li>\n";
+    } else {
+        $paginate .= $tabs . "<li><a href=\"?page=" . $i . "\" title=\"" .
+            preg_replace("(%i)", $i, _T("Page %i")) . "\">" . $i . "</a></li>\n";
+    }
+}
+if ($varslist->current_page != $nbpages ) {
+    $paginate .= $tabs . "<li><a href=\"?page=" . $next . "\" title=\"" .
+        preg_replace("(%i)", $next, _T("Next page (%i)")) . "\">&gt;</a></li>\n";
+    $paginate .= $tabs . "<li><a href=\"?page=" . $nbpages . "\" title=\"" .
+        preg_replace("(%i)", $nbpages, _T("Last page (%i)")) .
+        "\">&gt;&gt;</a></li>\n";
+}
+/** /Pagination */
+
 $tpl->assign('page_title', _T("Members management"));
 $tpl->assign('require_dialog', true);
 $tpl->assign('error_detected', $error_detected);
@@ -239,6 +284,7 @@ $tpl->assign('nb_pages', $nbpages);
 $tpl->assign('varslist', $varslist);
 $tpl->assign('page', $varslist->current_page);
 $tpl->assign('numrows', $numrows);
+$tpl->assign('pagination', $paginate);
 $tpl->assign(
     'filter_field_options',
     array(

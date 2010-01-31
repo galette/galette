@@ -122,6 +122,12 @@
 						</span>
 					</td>
 				</tr>
+				<tr>
+					<td colspan="6" class="center">
+						{_T string="Pages:"}<br/>
+						<ul class="pages">{$pagination}</ul>
+					</td>
+				</tr>
 			</tfoot>
 			<tbody>
 {foreach from=$members item=member key=ordre}
