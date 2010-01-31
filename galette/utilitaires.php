@@ -77,8 +77,9 @@ if ( isset($_POST['xmlupload']) ) {
     }
 }
 
-
-$tpl->assign('loadxml', $_FILES['loadxml']['name']);
+if( isset($_FILES['loadxml']) ) {
+    $tpl->assign('loadxml', $_FILES['loadxml']['name']);
+}
 $tpl->assign(
     'exportfields', empty($_POST['exportfields']) ?
     'adh_fields.txt' :

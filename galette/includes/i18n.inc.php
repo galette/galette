@@ -97,9 +97,9 @@ if ( @putenv("LANG=$language")
 /**
 * Add a translation stored in the database
 *
-* @param AdoDBConnction $DB             AdoDB databasxe connection
-* @param string         $text_orig      Text to translate
-* @param array          $error_detected Pointer to errors array
+* @param AdoDBConnection $DB             AdoDB databasxe connection
+* @param string          $text_orig      Text to translate
+* @param array           $error_detected Pointer to errors array
 *
 * @return void
 */

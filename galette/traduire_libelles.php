@@ -96,7 +96,7 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
     $sorted_languages = array_keys($languages);
     sort($sorted_languages);
     foreach ( $languages as $locale => $l ) {
-        $text_trans = get_dynamic_translation($DB, $text_orig, $locale);
+        $text_trans = getDynamicTranslation($DB, $text_orig, $locale);
         $lang_name = _T($l);
         $trans[] = array('key'=>$l, 'name'=> $lang_name, 'text'=> $text_trans);
     }
