@@ -8,9 +8,8 @@
 			<thead>
 				<tr>
 					<td colspan="6" class="right">
-						<!--<span class="fleft">{$nb_lines} {if $nb_lines != 1}{_T string="lines"}{else}{_T string="line"}{/if}</span>-->
 						<form action="history.php" method="get" id="historyform">
-							<span class="fleft">
+							<span>
 								<label for="nbshow">{_T string="Records per page:"}</label>
 								<select name="nbshow" id="nbshow">
 									{html_options options=$nbshow_options selected=$numrows}
@@ -93,7 +92,6 @@
 				</tr>
 			</tfoot>
 			<tbody>
-
 {foreach from=$logs item=log name=eachlog}
 				<tr class="cotis-never">
 					<td width="15">{$smarty.foreach.eachlog.iteration}</td>

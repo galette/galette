@@ -31,7 +31,7 @@
 			<tr>
 				<td class="left">{$nb_members} {if $nb_members != 1}{_T string="members"}{else}{_T string="member"}{/if}</td>
 				<td class="right">
-					<label for="nbshow">{_T string="Show:"}</label>
+					<label for="nbshow">{_T string="Records per page:"}</label>
 					<select name="nbshow" id="nbshow">
 						{html_options options=$nbshow_options selected=$numrows}
 					</select>
