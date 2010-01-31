@@ -67,7 +67,7 @@ pre {
 .right {
 	text-align: right;
 }
-	
+
 .center {
 	text-align: center;
 }
@@ -91,12 +91,12 @@ pre {
 	background-color: #FFE9AB;
 	vertical-align: top;
 }
-		
+
 .cotis-late {
 	background-color: #FFDDDD;
 	vertical-align: top;
 }
-	
+
 .cotis-lastday {
 	background-color: #FFDDDD;
 	vertical-align: top;
@@ -178,13 +178,13 @@ td.listing {
 a.listing:hover {
 	color: #FF0000;
 }
-	
+
 .emptylist {
 	background-color: #EEEEEE;
 	text-align: center;
 	font-style: italic;
 }
-	
+
 .actif {
 }
 
@@ -345,7 +345,7 @@ html > * .nav1 li{
 .infoline td {
         vertical-align: top;
 	width: 33%;
-}	
+}
 
 .infoline ul {
 	margin: 0px;
@@ -366,7 +366,7 @@ html > * .nav1 li{
 	margin-left: auto;
 	margin-right: auto;
 }
-	
+
 #mailing_preview th {
 	font-size: 10px;
 	font-weight: bold;
@@ -381,7 +381,7 @@ html > * .nav1 li{
 	border-style: solid;
 	margin-bottom: 10px;
 }
-		
+
 #errorbox h1 {
 	background-color: #FFDDDD;
 	text-align: center;
@@ -405,7 +405,7 @@ html > * .nav1 li{
 	border-style: solid;
 	margin-bottom: 10px;
 }
-		
+
 #warningbox h1 {
 	background-color: #FFE8CC;
 	text-align: center;
@@ -420,7 +420,7 @@ html > * .nav1 li{
 	margin: 2px;
 	padding: 0px;
 	border: none;
-}		
+}
 
 #input-table .libelle {
 	font-size: 11px;
@@ -433,7 +433,7 @@ html > * .nav1 li{
 	text-align: left;
 	font-weight: bold;
 }
-	
+
 #installpage {
 	background-color: #DDDDFF;
 	padding-left: 20px;
@@ -444,23 +444,23 @@ html > * .nav1 li{
 	padding-left: 20px;
 	width: 80%;
 }
-	
+
 #installpage h1 {
 	text-align: left;
 	margin: 0px;
 	font-size: 12px;
 }
-	
+
 #installpage #submitbutton2 {
 	text-align: center;
 	padding-left: 20px;
 }
-	
+
 #installpage #submitbutton3 {
 	text-align: right;
 	padding-right: 20px;
 }
-		
+
 .titreinstall {
 	font-size: 15px;
 	text-align: center;
@@ -726,3 +726,27 @@ legend{
 .logo{
 	margin:0.3em 0;
 }
+
+/** PAGINATION */
+.pages .current a{
+	color:#FFB619;
+	font-weight:bold;
+}
+.pages{
+	text-align:center;
+	margin:.2em 0 0 0;
+	padding:0;
+}
+.pages a{
+	padding:0 3px;
+}
+.pages a:hover{
+	background-color:#EEEEEE;
+	color:black;
+}
+.pages li{
+	display:inline;
+	padding:0;
+	margin:0;
+}
+/** /PAGINATION*/

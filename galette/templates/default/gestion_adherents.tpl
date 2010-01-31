@@ -35,17 +35,6 @@
 						{html_options options=$nbshow_options selected=$numrows}
 					</select>
 				</td>
-				<td class="right">{_T string="Pages:"}
-					<span class="pagelink">
-					{section name="pageLoop" start=1 loop=$nb_pages+1}
-						{if $smarty.section.pageLoop.index eq $page}
-							{$smarty.section.pageLoop.index}
-						{else}
-							<a href="gestion_adherents.php?nbshow={$smarty.get.nbshow}&amp;page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
-						{/if}
-					{/section}
-					</span>
-				</td>
 			</tr>
 		</table>
 		</form>
@@ -166,26 +155,24 @@
 			<tr>
 {if $nb_members != 0}
 				<td class="left" nowrap="nowrap">
-					<a href="#" onclick="check();">{_T string="(Un)Check all"}</a><br/>
-					<br/>
+					<a href="#" onclick="check();">{_T string="(Un)Check all"}</a>
+				</td>
+{/if}
+			</tr>
+			<tr>
+				<td colspan="6" class="center" id="table_footer">
+					{_T string="Pages:"}<br/>
+					<ul class="pages">{$pagination}</ul>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="6">
 					<ul>
 						<li>{_T string="Selection:"}</li>
 						<li><input type="submit" class="submit" onclick="return confirm('{_T string="Do you really want to delete all selected accounts (and related contributions)?"|escape:"javascript"}');" name="delete" value="{_T string="Delete"}"/></li>
 						<li><input type="submit" class="submit" name="mailing" value="{_T string="Mail all"}"/></li>
 						<li><input type="submit" class="submit" name="labels" value="{_T string="Generate labels"}"/></li>
 					</ul>
-				</td>
-{/if}
-				<td class="right">{_T string="Pages:"}
-					<span class="pagelink">
-					{section name="pageLoop" start=1 loop=$nb_pages+1}
-						{if $smarty.section.pageLoop.index eq $page}
-							{$smarty.section.pageLoop.index}
-						{else}
-							<a href="gestion_adherents.php?nbshow={$smarty.get.nbshow}&amp;page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
-						{/if}
-					{/section}
-					</span>
 				</td>
 			</tr>
 		</table>
