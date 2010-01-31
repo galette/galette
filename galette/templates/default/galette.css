@@ -350,7 +350,7 @@ html > * .nav1 li{
 }
 
 .infoline{
-	vertical-align: top;
+    vertical-align: top;
 }
 
 /* IE6 does not handle properly 100% width */
@@ -1237,7 +1237,7 @@ ul#paths{
 }
 .pages{
 	text-align:center;
-	margin:0;
+	margin:.2em 0 0 0;
 	padding:0;
 }
 .pages a{

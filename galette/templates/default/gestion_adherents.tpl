@@ -30,23 +30,12 @@
 		<table class="infoline">
 			<tr>
 				<td class="left">{$nb_members} {if $nb_members != 1}{_T string="members"}{else}{_T string="member"}{/if}</td>
-				<td class="center">
+				<td class="right">
 					<label for="nbshow">{_T string="Show:"}</label>
 					<select name="nbshow" id="nbshow">
 						{html_options options=$nbshow_options selected=$numrows}
 					</select>
 					<noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
-				</td>
-				<td class="right">{_T string="Pages:"}
-					<span class="pagelink">
-					{section name="pageLoop" start=1 loop=$nb_pages+1}
-						{if $smarty.section.pageLoop.index eq $page}
-							{$smarty.section.pageLoop.index}
-						{else}
-							<a href="gestion_adherents.php?nbshow={$smarty.get.nbshow}&amp;page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
-						{/if}
-					{/section}
-					</span>
 				</td>
 			</tr>
 		</table>
@@ -109,21 +98,7 @@
 			</thead>
 			<tfoot>
 				<tr>
-					<td colspan="6" class="right" id="table_footer">
-						{_T string="Pages:"}
-						<span class="pagelink">
-						{section name="pageLoop" start=1 loop=$nb_pages+1}
-							{if $smarty.section.pageLoop.index eq $page}
-								{$smarty.section.pageLoop.index}
-							{else}
-								<a href="gestion_adherents.php?nbshow={$smarty.get.nbshow}&amp;page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
-							{/if}
-						{/section}
-						</span>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="6" class="center">
+					<td colspan="6" class="center" id="table_footer">
 						{_T string="Pages:"}<br/>
 						<ul class="pages">{$pagination}</ul>
 					</td>
@@ -278,12 +253,12 @@
 		{rdelim}
 		{* Use of Javascript to draw specific elements that are not relevant is JS is inactive *}
 		$(function(){ldelim}
-			$('#table_footer').append('<span class="fleft"><a href="#" id="checkall">{_T string="(Un)Check all"}</a> | <a href="#" id="checkinvert">{_T string="Invert selection"}</a></span>');
+			$('#table_footer').parent().before('<tr><td id="checkboxes" colspan="4"><span class="fleft"><a href="#" id="checkall">{_T string="(Un)Check all"}</a> | <a href="#" id="checkinvert">{_T string="Invert selection"}</a></span></td></tr>');
 			_bind_check();
 			$('#nbshow').change(function() {ldelim}
 				this.form.submit();
 			{rdelim});
-			$('#listing').after('<div class="center"><a href="#" id="show_legend">{_T string="Show legend"}</a></div>');
+			$('#checkboxes').after('<td class="right" colspan="2"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
 			$('#legende h1').remove();
 			$('#legende').dialog({ldelim}
 				autoOpen: false,
