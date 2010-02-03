@@ -10,22 +10,11 @@
 		<table class="infoline" width="100%">
 			<tr>
 				<td class="left">{$nb_contributions} {if $nb_contributions != 1}{_T string="contributions"}{else}{_T string="contribution"}{/if}</td>
-                                <td class="center">
+                                <td class="right">
 					{_T string="Show:"}
 					<select name="nbshow" onchange="form.submit()">
 						{html_options options=$nbshow_options selected=$numrows}
 					</select>
-				</td>
-				<td class="right">{_T string="Pages:"}
-					<span class="pagelink">
-					{section name="pageLoop" start=1 loop=$nb_pages+1}
-						{if $smarty.section.pageLoop.index eq $page}
-							{$smarty.section.pageLoop.index}
-						{else}
-							<a href="gestion_contributions.php?nbshow={$smarty.get.nbshow}&amp;page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
-						{/if}
-					{/section}
-					</span>
 				</td>
 			</tr>
 		</table>
@@ -143,19 +132,13 @@
 			<tr><td colspan="7" class="emptylist">{_T string="no contribution"}</td></tr>
 {/if}
 {/foreach}
+			<tr>
+				<td colspan="9" class="center" id="table_footer">
+					{_T string="Pages:"}<br/>
+					<ul class="pages">{$pagination}</ul>
+				</td>
+			</tr>
 		</table>
-		<div class="infoline2 right">
-			{_T string="Pages:"}
-			<span class="pagelink">
-			{section name="pageLoop" start=1 loop=$nb_pages+1}
-			{if $smarty.section.pageLoop.index eq $page}
-			{$smarty.section.pageLoop.index}
-			{else}
-			<a href="gestion_contributions.php?nbshow={$smarty.get.nbshow}&amp;page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
-			{/if}
-			{/section}
-			</span>
-		</div>
 {if $smarty.session.filtre_cotis_adh!=""}
 		<br/>
 		<div align="center">

@@ -306,11 +306,57 @@
 		$tpl->assign("statut_class",$statut_class);
 	}
 
+$paginate = null;
+$tabs = "\t\t\t\t\t\t";
+
+/** Pagination */
+if ( $page < 11 ) {
+    $idepart=1;
+} else {
+    $idepart = $page - 10;
+}
+if ( $page + 10 < $nbpages ) {
+    $ifin = $page + 10;
+} else {
+    $ifin = $nbpages;
+}
+
+$next = $page + 1;
+$previous = $page - 1;
+
+if ( $page != 1 ) {
+    $paginate .= "\n" . $tabs . "<li><a href=\"index.php?page=1\" title=\"" .
+        _T("First page") . "\">&lt;&lt;</a></li>\n";
+    $paginate .= $tabs . "<li><a href=\"?page=" . $previous . "\" title=\"" .
+        preg_replace("(%i)", $previous, _T("Previous page (%i)")) .
+        "\">&lt;</a></li>\n";
+}
+
+for ( $i = $idepart ; $i <= $ifin ; $i++ ) {
+    if ( $i == $page ) {
+        $paginate .= $tabs . "<li class=\"current\"><a href=\"#\" title=\"" .
+            preg_replace("(%i)", $page, _T("Current page (%i)")) .
+            "\">-&nbsp;$i&nbsp;-</a></li>\n";
+    } else {
+        $paginate .= $tabs . "<li><a href=\"?page=" . $i . "\" title=\"" .
+            preg_replace("(%i)", $i, _T("Page %i")) . "\">" . $i . "</a></li>\n";
+    }
+}
+if ($page != $nbpages ) {
+    $paginate .= $tabs . "<li><a href=\"?page=" . $next . "\" title=\"" .
+        preg_replace("(%i)", $next, _T("Next page (%i)")) . "\">&gt;</a></li>\n";
+    $paginate .= $tabs . "<li><a href=\"?page=" . $nbpages . "\" title=\"" .
+        preg_replace("(%i)", $nbpages, _T("Last page (%i)")) .
+        "\">&gt;&gt;</a></li>\n";
+}
+/** /Pagination */
+
 
 	$tpl->assign("contributions",$contributions);
 	$tpl->assign("nb_contributions",$nb_contributions);
 	$tpl->assign("nb_pages",$nbpages);
 	$tpl->assign("page",$page);
+	$tpl->assign('pagination', $paginate);
 	$tpl->assign('filtre_options', array(
 			0 => _T("All members"),
 			3 => _T("Members up to date"),
