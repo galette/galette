@@ -1,4 +1,4 @@
-Galette 0.63.4 - 2010-??-??
+Galette 0.64 - 2010-??-??
     - Handle 'stripos' missing function to keep 0.63.x php4
     compliant
     - Upgrade Adodb to 4992
