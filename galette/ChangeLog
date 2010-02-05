@@ -7,6 +7,8 @@ Galette 0.63.4 - 2010-??-??
     - Replace phppdflib with tcpdf
     - Symlink to adodb has been removed, we now use a php file defining the
     versions for the libraries
+    - Improved pagination: only 20 pages will appear now, instead of all pages
+    - Remove spanish language which has not been maintaned for ages
 
 Galette 0.63.3 - 2009-11-09
     - Force Mysql to iso-8859-1 (LATIN1) (Thanks to Cédric OLIVIER)

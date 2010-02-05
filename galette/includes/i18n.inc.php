@@ -26,8 +26,7 @@ $disable_gettext=true;
 
 $languages = array (
                     "french"  => "fr_FR@euro",
-                    "english"   => "en_US",
-                    "spanish"   => "es_ES@euro"
+                    "english"   => "en_US"
                     );
 $allowed_langs = array_keys($languages);
 
