@@ -52,11 +52,7 @@
 				<p><span class="bline">{_T string="Object:"}</span>{$data.mailing_objet|htmlspecialchars}</p>
 				<p>
 					<span class="bline">{_T string="Message:"}</span><br/>
-		{if $data.mailing_html === 1}
-					{$data.mailing_corps}
-		{else}
 					<pre>{$data.mailing_corps_display}</pre>
-		{/if}
 				</p>
 			</div>
 	{/if}
