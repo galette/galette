@@ -163,22 +163,22 @@ while ( !$resultat->EOF ) {
 	// Print full name
 	$pdf->SetXY($x,$y);
 	$nom_adh_ext .= ' ' . mb_strtoupper($resultat->fields[1]) . ' ' . ucfirst(strtolower($resultat->fields[2]));
-	$pdf->Cell($w, $line_h, $nom_adh_ext, 0, 0, 'L', 0);
+	$pdf->Cell($w, $line_h, utf8_encode($nom_adh_ext), 0, 0, 'L', 0);
 	// Print first line of adress
 	$pdf->SetFont('DejaVuSans', '', PREF_ETIQ_CORPS);
 	$pdf->SetXY($x, $y+$line_h);
-	$pdf->Cell($w, $line_h, $resultat->fields[3], 0, 0, 'L', 0);
+	$pdf->Cell($w, $line_h, utf8_encode($resultat->fields[3]), 0, 0, 'L', 0);
 	// Print second line of adress
 	$pdf->SetXY($x, $y+$line_h*2);
-	$pdf->Cell($w, $line_h, $resultat->fields[8], 0, 0, 'L', 0);
+	$pdf->Cell($w, $line_h, utf8_encode($resultat->fields[8]), 0, 0, 'L', 0);
 	// Print zip code and town
 	$pdf->SetFont('DejaVuSans', 'B', PREF_ETIQ_CORPS);
 	$pdf->SetXY($x, $y+$line_h*3);
-	$pdf->Cell($w, $line_h, $resultat->fields[5] . ' ' . mb_strtoupper($resultat->fields[6]), 0, 0, 'L', 0);
+	$pdf->Cell($w, $line_h, utf8_encode($resultat->fields[5] . ' ' . mb_strtoupper($resultat->fields[6])), 0, 0, 'L', 0);
 	// Print country
 	$pdf->SetFont('DejaVuSans', 'I', PREF_ETIQ_CORPS);
 	$pdf->SetXY($x, $y+$line_h*4);
-	$pdf->Cell($w,$line_h, $resultat->fields[7], 0, 0, 'R', 0);
+	$pdf->Cell($w,$line_h, utf8_encode($resultat->fields[7]), 0, 0, 'R', 0);
 	$nb_etiq++;
 
 	$resultat->MoveNext();
