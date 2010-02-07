@@ -35,10 +35,15 @@
  * @since     Available since 0.7-dev - 2007-10-07
  */
 
-// test if galette is already installed and redirect to install page if not
+//we'll only include relevant parts if we work from installer
+if ( !isset($installer) ) {
+    $installer = false;
+}
+// test if galette is already installed or if we're form installer
+// and redirect to install page if not
 $installed = file_exists(dirname(__FILE__) . '/../config/config.inc.php');
-if (! $installed) {
-    header("location: install/index.php");
+if ( !$installed && !$installer ) {
+    header('location: install/index.php');
 }
 
 /**
@@ -47,7 +52,10 @@ if (! $installed) {
 if ( !isset($base_path) ) {
     $base_path = './';
 }
-require_once $base_path . 'config/config.inc.php';
+
+if ( !$installer ) { //If we're not working from installer
+    require_once $base_path . 'config/config.inc.php';
+}
 require_once $base_path . 'config/versions.inc.php';
 
 //we start a php session
@@ -61,7 +69,8 @@ set_include_path(
     WEB_ROOT . 'includes/pear/PEAR-' . PEAR_VERSION . '/' . PATH_SEPARATOR .
     WEB_ROOT . 'includes/pear/MDB2-' . MDB2_VERSION . PATH_SEPARATOR .
     WEB_ROOT . 'includes/pear/Log-' . LOG_VERSION . PATH_SEPARATOR .
-    WEB_ROOT . 'includes/phpMailer-' . PHP_MAILER_VERSION
+    WEB_ROOT . 'includes/phpMailer-' . PHP_MAILER_VERSION . PATH_SEPARATOR .
+    WEB_ROOT . 'includes/Smarty-' . SMARTY_VERSION
 );
 
 /*------------------------------------------------------------------------------
@@ -101,30 +110,7 @@ $log = &Log::singleton('composite');
 $log->addChild($display);
 $log->addChild($file);
 
-/**
-* MDB2 instanciation
-*/
-require_once WEB_ROOT . '/classes/mdb2.class.php';
-/** FIXME: mdb2 object should be stored into the session.
-This causes a fatal error on __destruct */
-/*if( isset($_SESSION['galette']['db']) ){
-    $mdb = unserialize($_SESSION['galette']['db']);
-}else{
-    $mdb2 = new GaletteMdb2();
-    $_SESSION['galette']['db'] = serialize($mdb2);
-}*/
-$mdb = new GaletteMdb2();
-
-/**
-* Load preferences
-*/
-require_once WEB_ROOT . 'classes/preferences.class.php';
-$preferences = new Preferences();
-
-/**
-* Set the path to the current theme templates
-*/
-define('_CURRENT_TEMPLATE_PATH', TEMPLATES_PATH . $preferences->pref_theme . '/');
+require_once WEB_ROOT . 'includes/functions.inc.php';
 
 /**
 * Language instantiation
@@ -147,61 +133,89 @@ if ( isset($_GET['pref_lang']) ) {
     $i18n->changeLanguage($_GET['pref_lang']);
     $_SESSION['pref_lang'] = $_GET['pref_lang'];
 }
-
-/**
-* Plugins
-*/
-define('PLUGINS_PATH', WEB_ROOT . 'plugins');
-require_once WEB_ROOT . 'classes/plugins.class.php';
-$plugins = new plugins();
-$plugins->loadModules(PLUGINS_PATH, $i18n->getFileName());
-
-/**
-* Authentication
-*/
-require_once WEB_ROOT . 'classes/galette-login.class.php';
-if ( isset($_SESSION['galette']['login']) ) {
-    $login = unserialize($_SESSION['galette']['login']);
-} else {
-    $login = new GaletteLogin();
-}
-
-//required by Pictures object, so we put it there
-/** TODO: use Mdb instead of Adodb for Pictures */
-require_once WEB_ROOT . 'includes/database.inc.php';
-
-/**
-* Members, alos load Adherent and Picture objects
-*/
-require_once WEB_ROOT . 'classes/members.class.php';
-
-/**
-* Instanciate history object
-*/
-require_once WEB_ROOT . 'classes/history.class.php';
-if ( isset($_SESSION['galette']['history']) ) {
-    $hist = unserialize($_SESSION['galette']['history']);
-} else {
-    $hist = new History();
-}
-
-/**
-* Logo
-*/
-require_once WEB_ROOT . 'classes/logo.class.php';
-if ( isset($_SESSION['galette']['logo']) ) {
-    $logo = unserialize($_SESSION['galette']['logo']);
-} else {
-    $logo = new Logo();
-}
-
-/**
-* Now that all objects are correctly setted,
-* we can include files that need it
-*/
-require_once WEB_ROOT . 'classes/galette_mail.class.php';
-require_once WEB_ROOT . 'includes/functions.inc.php';
-require_once WEB_ROOT . 'includes/session.inc.php';
 require_once WEB_ROOT . 'includes/i18n.inc.php';
-require_once WEB_ROOT . 'includes/smarty.inc.php';
+
+if ( !$installer ) { //If we're not working from installer
+    require_once WEB_ROOT . 'config/config.inc.php';
+
+    /**
+    * MDB2 instanciation
+    */
+    require_once WEB_ROOT . '/classes/mdb2.class.php';
+    /** FIXME: mdb2 object should be stored into the session.
+    This causes a fatal error on __destruct */
+    /*if( isset($_SESSION['galette']['db']) ){
+        $mdb = unserialize($_SESSION['galette']['db']);
+    }else{
+        $mdb2 = new GaletteMdb2();
+        $_SESSION['galette']['db'] = serialize($mdb2);
+    }*/
+    $mdb = new GaletteMdb2();
+
+    /**
+    * Load preferences
+    */
+    require_once WEB_ROOT . 'classes/preferences.class.php';
+    $preferences = new Preferences();
+
+    /**
+    * Set the path to the current theme templates
+    */
+    define('_CURRENT_TEMPLATE_PATH', TEMPLATES_PATH . $preferences->pref_theme . '/');
+
+    /**
+    * Plugins
+    */
+    define('PLUGINS_PATH', WEB_ROOT . 'plugins');
+    require_once WEB_ROOT . 'classes/plugins.class.php';
+    $plugins = new plugins();
+    $plugins->loadModules(PLUGINS_PATH, $i18n->getFileName());
+
+    /**
+    * Authentication
+    */
+    require_once WEB_ROOT . 'classes/galette-login.class.php';
+    if ( isset($_SESSION['galette']['login']) ) {
+        $login = unserialize($_SESSION['galette']['login']);
+    } else {
+        $login = new GaletteLogin();
+    }
+
+    //required by Pictures object, so we put it there
+    /** TODO: use Mdb instead of Adodb for Pictures */
+    require_once WEB_ROOT . 'includes/database.inc.php';
+
+    /**
+    * Members, alos load Adherent and Picture objects
+    */
+    require_once WEB_ROOT . 'classes/members.class.php';
+
+    /**
+    * Instanciate history object
+    */
+    require_once WEB_ROOT . 'classes/history.class.php';
+    if ( isset($_SESSION['galette']['history']) ) {
+        $hist = unserialize($_SESSION['galette']['history']);
+    } else {
+        $hist = new History();
+    }
+
+    /**
+    * Logo
+    */
+    require_once WEB_ROOT . 'classes/logo.class.php';
+    if ( isset($_SESSION['galette']['logo']) ) {
+        $logo = unserialize($_SESSION['galette']['logo']);
+    } else {
+        $logo = new Logo();
+    }
+
+    /**
+    * Now that all objects are correctly setted,
+    * we can include files that need it
+    */
+    require_once WEB_ROOT . 'classes/galette_mail.class.php';
+    require_once WEB_ROOT . 'includes/session.inc.php';
+    require_once WEB_ROOT . 'includes/smarty.inc.php';
+}
 ?>
