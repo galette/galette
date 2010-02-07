@@ -1,6 +1,6 @@
 .SUFFIXES = .mo .po
 INSTALLDIR = .
-LANGUAGES = en_US fr_FR@euro es_ES@euro
+LANGUAGES = en_US fr_FR@euro
 PACKAGE = galette
 MKLANG = ./make_lang_l12n.py
 PHP_SOURCES = ../index.php \
@@ -103,18 +103,6 @@ lang :
 	else \
 	  echo "    lang_french.php mis à jour."; \
 	  mv lang_french.php.new lang_french.php; \
-	fi; 
-
-	@echo "  Mise à jour de lang_spanish.php"
-	@echo "    extraction des chaines..."
-	@${MKLANG} es_ES@euro.po lang_spanish.php.new
-
-	@if diff -qI 'This file was automatically generated.*' lang_spanish.php lang_spanish.php.new > /dev/null; then \
-	  echo "    lang_spanish.php non mis à jour."; \
-	  rm lang_spanish.php.new; \
-	else \
-	  echo "    lang_spanish.php mis à jour."; \
-	  mv lang_spanish.php.new lang_spanish.php; \
 	fi; 
 
 messages.po : ${PHP_SOURCES} Makefile xgettext.py
