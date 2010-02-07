@@ -7,18 +7,6 @@
 		<table class="infoline" width="100%" border="0">
 			<tr>
 				<td class="left">{$nb_lines} {if $nb_lines != 1}{_T string="lines"}{else}{_T string="line"}{/if}</td>
-				<td class="right">
-					{_T string="Pages:"}
-					<span class="pagelink">
-{section name="pageLoop" start=1 loop=$nb_pages+1}
-{if $smarty.section.pageLoop.index eq $page}
-					{$smarty.section.pageLoop.index}
-{else}
-					<a href="log.php?page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
-{/if}
-{/section}
-					</span>
-				</td>
 			</tr>
 		</table>
 		<table width="100%" border="0">
@@ -94,18 +82,14 @@
 				<td valign="top" nowrap="nowrap">{$log.action}</td>
 				<td valign="top">{$log.login}<br/>{$log.desc|htmlspecialchars}</td>
 			</tr>
+
 {foreachelse}
 			<tr><td colspan="6" class="emptylist">{_T string="logs are empty"}</td></tr>
 {/foreach}
+			<tr>
+				<td colspan="6" class="center" id="table_footer">
+					{_T string="Pages:"}<br/>
+					<ul class="pages">{$pagination}</ul>
+				</td>
+			</tr>
 		</table>
-		<div class="infoline2 right">{_T string="Pages:"}
-			<span class="pagelink">
-			{section name="pageLoop" start=1 loop=$nb_pages+1}
-			{if $smarty.section.pageLoop.index eq $page}
-			{$smarty.section.pageLoop.index}
-			{else}
-			<a href="log.php?page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
-			{/if}
-			{/section}
-			</span>
-		</div>
