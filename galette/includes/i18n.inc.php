@@ -39,18 +39,6 @@
 
 $disable_gettext=true;
 
-// I18N support information here
-if ( isset($_POST['pref_lang']) ) {
-    $_SESSION['pref_lang'] = $_POST['pref_lang'];
-} else if ( isset($_GET['pref_lang']) ) {
-    $_SESSION['pref_lang'] = $_GET['pref_lang'];
-}
-if ( isset($_SESSION['pref_lang']) ) {
-    $pref_lang=$_SESSION['pref_lang'];
-} else {
-    $pref_lang = 'english';
-}
-
 $languages = array(
     'fr_FR@euro' => 'french',
     'en_US'      => 'english',
@@ -276,7 +264,9 @@ $foo=_T("Publisher:");
 $foo=_T("President");
 $foo=_T("Vice-president");
 $foo=_T("Treasurer");
+$foo=_T("Vice-treasurer");
 $foo=_T("Secretary");
+$foo=_T("Vice-secretary");
 $foo=_T("Active member");
 $foo=_T("Benefactor member");
 $foo=_T("Founder member");
@@ -291,7 +281,6 @@ $foo=_T("Partnership");
 $foo=_T("french");
 $foo=_T("english");
 $foo=_T("spanish");
-//Added 07/10/2007
 $foo = _T("annual fee");
 $foo = _T("annual fee (to be paid)");
 $foo = _T("company fee");
