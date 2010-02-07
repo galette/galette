@@ -110,6 +110,16 @@ $log = &Log::singleton('composite');
 $log->addChild($display);
 $log->addChild($file);
 
+// check required PHP version...
+if( !preg_match('/^5.3/', phpversion()) ) {
+    $log->log(
+        'Galette is NOT compliant with your current PHP version. ' .
+        'Galette requires PHP 5.3.x, current version is ' . phpversion(),
+        PEAR_LOG_EMERG
+    );
+    die();
+}
+
 require_once WEB_ROOT . 'includes/functions.inc.php';
 
 /**
