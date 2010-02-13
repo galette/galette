@@ -398,7 +398,8 @@ if ($installed) {
 	<p><?php echo _T("Check the parameters and the existence of the database"); ?></p>
 <ul>
 <?php
-				include("../includes/adodb/adodb.inc.php");
+				require_once WEB_ROOT . '/config/versions.inc.php';
+				include(WEB_ROOT . '/includes/adodb' . ADODB_VERSION . '/adodb.inc.php');
 				$DB = adonewconnection($_POST["install_dbtype"]);
 				$DB->debug = false;
 				$permsdb_ok = true;
