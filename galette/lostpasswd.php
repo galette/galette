@@ -38,7 +38,7 @@
 		} else {
 			$req = "SELECT email_adh
 				FROM ".PREFIX_DB."adherents
-				WHERE login_adh=".$DB->qstr($login, get_magic_quotes_gpc());
+				WHERE login_adh=" . $GLOBALS['DB']->qstr($login, get_magic_quotes_gpc());
 			$result = &$GLOBALS["DB"]->Execute($req);
 
 			if ($result->EOF) {
