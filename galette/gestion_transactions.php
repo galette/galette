@@ -163,7 +163,7 @@ $next = $page + 1;
 $previous = $page - 1;
 
 if ( $page != 1 ) {
-    $paginate .= "\n" . $tabs . "<li><a href=\"index.php?page=1\" title=\"" .
+    $paginate .= "\n" . $tabs . "<li><a href=\"?page=1\" title=\"" .
         _T("First page") . "\">&lt;&lt;</a></li>\n";
     $paginate .= $tabs . "<li><a href=\"?page=" . $previous . "\" title=\"" .
         preg_replace("(%i)", $previous, _T("Previous page (%i)")) .
