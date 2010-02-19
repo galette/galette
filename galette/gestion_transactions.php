@@ -63,7 +63,7 @@
 			$query = "DELETE FROM ".PREFIX_DB."cotisations
 				  WHERE trans_id=".$trans_id;
 			if (db_execute($DB, $query, $error_detected))
-				dblog("Transactions deleted", "", $query);
+				dblog("Contributions for transaction deleted", "", $query);
 			$query = "DELETE FROM ".PREFIX_DB."transactions
 				  WHERE trans_id=".$trans_id;
 			if (db_execute($DB, $query, $error_detected))
