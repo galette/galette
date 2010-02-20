@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: en_US\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-12-20 16:44+0100\n"
-"PO-Revision-Date: 2010-02-05 08:08+0100\n"
+"PO-Revision-Date: 2010-02-20 17:28+0100\n"
 "Last-Translator: Johan \"Papa\" Cwiklinski\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "among:"
 msgstr "among:"
 
-#: ../install/index.php:549
+#: ../install/index.php:550
 msgid "SELECT operation allowed"
 msgstr "SELECT operation allowed"
 
@@ -89,9 +89,13 @@ msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
 "- You must indicate an email address Galette should use to send emails!"
 
-#: ../includes/i18n.inc.php:220
+#: ../includes/i18n.inc.php:219
 msgid "Partnership"
 msgstr "Partnership"
+
+#: ../ajouter_transaction.php:176
+msgid "Transaction updated"
+msgstr "Transaction updated"
 
 #: ../templates/default/ajouter_adherent.tpl:75
 #: ../templates/default/voir_adherent.tpl:57
@@ -99,7 +103,7 @@ msgstr "Partnership"
 msgid "Be visible in the<br /> members list :"
 msgstr "Be visible in the<br /> members list :"
 
-#: ../install/index.php:857
+#: ../install/index.php:858
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr "Your database is maybe not usable, try to restore the older version."
 
@@ -114,8 +118,8 @@ msgstr "Name"
 msgid "line"
 msgstr "line"
 
-#: ../gestion_contributions.php:331 ../gestion_adherents.php:397
-#: ../gestion_transactions.php:169
+#: ../log.php:147 ../gestion_contributions.php:331
+#: ../gestion_adherents.php:397 ../gestion_transactions.php:169
 msgid "Previous page (%i)"
 msgstr "Previous page (%i)"
 
@@ -123,20 +127,20 @@ msgstr "Previous page (%i)"
 msgid "Required"
 msgstr "Required"
 
-#: ../install/index.php:534
+#: ../install/index.php:535
 msgid "UPDATE operation allowed"
 msgstr "UPDATE operation allowed"
 
-#: ../install/index.php:917
+#: ../install/index.php:918
 msgid "Admin settings"
 msgstr "Admin settings"
 
-#: ../install/index.php:1202
+#: ../install/index.php:1203
 msgid "Installation complete !"
 msgstr "Installation complete !"
 
 #: ../templates/default/gestion_contributions.tpl:26
-#: ../templates/default/log.tpl:28
+#: ../templates/default/log.tpl:16
 #: ../templates/default/gestion_transactions.tpl:19
 msgid "Date"
 msgstr "Date"
@@ -206,7 +210,7 @@ msgstr "Zip Code:"
 msgid "Horizontal margins:"
 msgstr "Horizontal margins:"
 
-#: ../install/index.php:348 ../install/index.php:932
+#: ../install/index.php:348 ../install/index.php:933
 #: ../templates/default/index.tpl:25 ../templates/default/preferences.tpl:179
 #: ../templates/default/ajouter_adherent.tpl:107
 #: ../templates/default/change_passwd.tpl:36
@@ -224,11 +228,11 @@ msgstr "Contact information:"
 msgid "Show contributions since"
 msgstr "Show contributions since"
 
-#: ../includes/i18n.inc.php:217
+#: ../includes/i18n.inc.php:216
 msgid "Company cotisation"
 msgstr "Company cotisation"
 
-#: ../includes/i18n.inc.php:235
+#: ../includes/i18n.inc.php:234
 msgid "all"
 msgstr "all"
 
@@ -240,7 +244,7 @@ msgstr "Sent mail is checked but there is no email address"
 msgid "Admin account (independant of members):"
 msgstr "Admin account (independant of members):"
 
-#: ../includes/i18n.inc.php:241
+#: ../includes/i18n.inc.php:240
 msgid "middle"
 msgstr "middle"
 
@@ -270,7 +274,7 @@ msgstr "Freed of dues"
 msgid "Mail sent to :"
 msgstr "Mail sent to :"
 
-#: ../install/index.php:500
+#: ../install/index.php:501
 msgid "CREATE operation not allowed"
 msgstr "CREATE operation not allowed"
 
@@ -352,15 +356,15 @@ msgstr "Galette-related data:"
 msgid "- Non-valid Website address! Maybe you've skipped the http:// ?"
 msgstr "- Non-valid Website address! Maybe you've skipped the http:// ?"
 
-#: ../includes/i18n.inc.php:207
+#: ../includes/i18n.inc.php:206
 msgid "Vice-president"
 msgstr "Vice-president"
 
-#: ../includes/i18n.inc.php:228
+#: ../includes/i18n.inc.php:227
 msgid "donation in kind"
 msgstr "donation in kind"
 
-#: ../install/index.php:419
+#: ../install/index.php:420
 msgid ""
 "Database can't be reached. Please go back to enter the connection parameters "
 "again."
@@ -378,7 +382,7 @@ msgid ""
 msgstr ""
 "- You can't send a confirmation by email if the member hasn't got an address!"
 
-#: ../install/index.php:591
+#: ../install/index.php:592
 msgid "DROP OPeration not allowed"
 msgstr "DROP OPeration not allowed"
 
@@ -395,7 +399,7 @@ msgstr "Mail settings:"
 msgid "List of contributions"
 msgstr "List of contributions"
 
-#: ../install/index.php:1209
+#: ../install/index.php:1210
 msgid "For securing the system, please delete the install directory"
 msgstr "For securing the system, please delete the install directory"
 
@@ -407,11 +411,11 @@ msgstr "Choice list (one entry per line)."
 msgid "Password sent. Login:"
 msgstr "Password sent. Login:"
 
-#: ../templates/default/log.tpl:40
+#: ../templates/default/log.tpl:28
 msgid "IP"
 msgstr "IP"
 
-#: ../install/index.php:1168
+#: ../install/index.php:1169
 msgid ""
 "This can come from the permissions on the file includes/config.inc.php or "
 "the impossibility to make an INSERT into the database."
@@ -423,7 +427,7 @@ msgstr ""
 msgid "- Membership period overlaps period starting at "
 msgstr "- Membership period overlaps period starting at "
 
-#: ../install/index.php:545
+#: ../install/index.php:546
 msgid "SELECT operation not allowed"
 msgstr "SELECT operation not allowed"
 
@@ -441,7 +445,7 @@ msgstr "Membership extension:"
 msgid "Language:"
 msgstr "Language:"
 
-#: ../install/index.php:965
+#: ../install/index.php:966
 msgid "Step 8 - Admin parameters"
 msgstr "Step 8 - Admin parameters"
 
@@ -475,7 +479,7 @@ msgstr "direcory_name"
 msgid "transactions"
 msgstr "transactions"
 
-#: ../includes/i18n.inc.php:208
+#: ../includes/i18n.inc.php:207
 msgid "Treasurer"
 msgstr "Treasurer"
 
@@ -491,11 +495,11 @@ msgstr ""
 "Do you really want to delete this category ?\\n All associated data will be "
 "deleted as well."
 
-#: ../install/index.php:530
+#: ../install/index.php:531
 msgid "UPDATE operation not allowed"
 msgstr "UPDATE operation not allowed"
 
-#: ../install/index.php:564
+#: ../install/index.php:565
 msgid "ALTER Operation allowed"
 msgstr "ALTER Operation allowed"
 
@@ -515,10 +519,9 @@ msgstr "No password"
 msgid "Step 3 - Permissions"
 msgstr "Step 3 - Permissions"
 
-#: ../mailing_adherents.php:132 ../lostpasswd.php:120
-#: ../ajouter_adherent.php:297
-msgid "Email sent is disabled in the preferences. Ask galette admin"
-msgstr "Email sent is disabled in the preferences. Ask galette admin"
+#: ../ajouter_transaction.php:141
+msgid "- Transaction amount must be positive."
+msgstr "- Transaction amount must be positive."
 
 #: ../templates/default/gestion_contributions.tpl:6
 msgid "until"
@@ -532,11 +535,11 @@ msgstr "until"
 msgid "Address:"
 msgstr "Address:"
 
-#: ../install/index.php:465
+#: ../install/index.php:466
 msgid "Permissions on the base"
 msgstr "Permissions on the base"
 
-#: ../install/index.php:519
+#: ../install/index.php:520
 msgid "INSERT operation allowed"
 msgstr "INSERT operation allowed"
 
@@ -548,7 +551,7 @@ msgstr " (continuation)"
 msgid "Management of contributions"
 msgstr "Management of contributions"
 
-#: ../install/index.php:605
+#: ../install/index.php:606
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the "
 "installation."
@@ -576,7 +579,7 @@ msgstr "Passwords mismatch"
 msgid "in:"
 msgstr "in:"
 
-#: ../install/index.php:663
+#: ../install/index.php:664
 msgid "Installation Report"
 msgstr "Installation Report"
 
@@ -670,6 +673,10 @@ msgstr "Profile configuration"
 msgid "- Wrong date format (dd/mm/yyyy)!"
 msgstr "- Wrong date format (dd/mm/yyyy)!"
 
+#: ../ajouter_transaction.php:163
+msgid "Transaction added"
+msgstr "Transaction added"
+
 #: ../install/index.php:191
 msgid "Installation mode"
 msgstr "Installation mode"
@@ -691,7 +698,7 @@ msgstr "Username or email:"
 msgid "(dd/mm/yyyy format)"
 msgstr "(dd/mm/yyyy format)"
 
-#: ../includes/i18n.inc.php:203
+#: ../includes/i18n.inc.php:202
 msgid "Realization:"
 msgstr "Realization:"
 
@@ -707,7 +714,7 @@ msgstr "Woman"
 msgid "your fee."
 msgstr "your fee."
 
-#: ../includes/i18n.inc.php:219
+#: ../includes/i18n.inc.php:218
 msgid "Donation in money"
 msgstr "Donation in money"
 
@@ -723,7 +730,7 @@ msgstr "Passworg image"
 msgid "Mister"
 msgstr "Mister"
 
-#: ../includes/i18n.inc.php:234
+#: ../includes/i18n.inc.php:233
 msgid "Transactions"
 msgstr "Transactions"
 
@@ -731,7 +738,7 @@ msgstr "Transactions"
 msgid "Label generation parameters:"
 msgstr "Label generation parameters:"
 
-#: ../install/index.php:650
+#: ../install/index.php:651
 msgid "Step 6 - Access permissions to database"
 msgstr "Step 6 - Access permissions to database"
 
@@ -756,7 +763,7 @@ msgstr "A problem happened while sending password for account:"
 msgid "Late of "
 msgstr "Late of "
 
-#: ../templates/default/mailing_adherents.tpl:67
+#: ../templates/default/mailing_adherents.tpl:63
 msgid "None of the selected members has an email address."
 msgstr "None of the selected members has an email address."
 
@@ -787,7 +794,7 @@ msgstr "Actions"
 msgid "Sender name:"
 msgstr "Sender name:"
 
-#: ../includes/i18n.inc.php:214
+#: ../includes/i18n.inc.php:213
 msgid "Legal entity"
 msgstr "Legal entity"
 
@@ -795,7 +802,7 @@ msgstr "Legal entity"
 msgid "Please login at this address to set your new password :"
 msgstr "Please login at this address to set your new password :"
 
-#: ../includes/i18n.inc.php:225
+#: ../includes/i18n.inc.php:224
 msgid "annual fee"
 msgstr "annual fee"
 
@@ -803,7 +810,7 @@ msgstr "annual fee"
 msgid "- Empty transaction description!"
 msgstr "- Empty transaction description!"
 
-#: ../install/index.php:664
+#: ../install/index.php:665
 msgid "Update Report"
 msgstr "Update Report"
 
@@ -816,7 +823,7 @@ msgstr "months"
 msgid "Inscription sent to the administrator for approval"
 msgstr "Inscription sent to the administrator for approval"
 
-#: ../includes/i18n.inc.php:209
+#: ../includes/i18n.inc.php:208
 msgid "Secretary"
 msgstr "Secretary"
 
@@ -836,7 +843,7 @@ msgstr "Number of label lines:"
 msgid "Contributions"
 msgstr "Contributions"
 
-#: ../install/index.php:1212
+#: ../install/index.php:1213
 msgid "Homepage"
 msgstr "Homepage"
 
@@ -846,7 +853,7 @@ msgstr "Begin."
 
 #: ../templates/default/gestion_adherents.tpl:164
 #: ../templates/default/gestion_contributions.tpl:137
-#: ../templates/default/log.tpl:11 ../templates/default/log.tpl:101
+#: ../templates/default/log.tpl:91
 #: ../templates/default/gestion_transactions.tpl:100
 msgid "Pages:"
 msgstr "Pages:"
@@ -857,7 +864,7 @@ msgstr "Pages:"
 msgid "Amount:"
 msgstr "Amount:"
 
-#: ../templates/default/mailing_adherents.tpl:73
+#: ../templates/default/mailing_adherents.tpl:69
 msgid ""
 "Some members you have selected have no e-mail address. However, you can "
 "generate envelope labels to contact them by snail mail."
@@ -882,7 +889,7 @@ msgstr "members"
 msgid "Temporary password:"
 msgstr "Temporary password:"
 
-#: ../includes/i18n.inc.php:206
+#: ../includes/i18n.inc.php:205
 msgid "President"
 msgstr "President"
 
@@ -928,15 +935,11 @@ msgstr "Message:"
 msgid "Members up to date"
 msgstr "Members up to date"
 
-#: ../ajouter_transaction.php:160
-msgid "transaction added"
-msgstr "transaction added"
-
-#: ../install/index.php:1219
+#: ../install/index.php:1220
 msgid "Step 10 - End of the update"
 msgstr "Step 10 - End of the update"
 
-#: ../includes/i18n.inc.php:236
+#: ../includes/i18n.inc.php:235
 msgid "admin"
 msgstr "admin"
 
@@ -962,7 +965,7 @@ msgstr "Default membership extension:"
 msgid "Start date of membership:"
 msgstr "Start date of membership:"
 
-#: ../includes/i18n.inc.php:204
+#: ../includes/i18n.inc.php:203
 msgid "Graphics:"
 msgstr "Graphics:"
 
@@ -986,8 +989,8 @@ msgstr "this login doesn't exist"
 msgid "Host:"
 msgstr "Host:"
 
-#: ../gestion_contributions.php:329 ../gestion_adherents.php:395
-#: ../gestion_transactions.php:167
+#: ../log.php:145 ../gestion_contributions.php:329
+#: ../gestion_adherents.php:395 ../gestion_transactions.php:167
 msgid "First page"
 msgstr "First page"
 
@@ -1004,7 +1007,7 @@ msgstr "- The password must be of at least 4 characters!"
 msgid "Please enter a message."
 msgstr "Please enter a message."
 
-#: ../install/index.php:1207
+#: ../install/index.php:1208
 msgid "Galette has been successfully updated!"
 msgstr "Galette has been successfully updated!"
 
@@ -1018,7 +1021,7 @@ msgstr "Nickname:"
 msgid "Date:"
 msgstr "Date:"
 
-#: ../includes/i18n.inc.php:222
+#: ../includes/i18n.inc.php:221
 msgid "english"
 msgstr "english"
 
@@ -1030,7 +1033,7 @@ msgstr "You can prepare a picture to upload after sending"
 msgid "(Months)"
 msgstr "(Months)"
 
-#: ../install/index.php:515
+#: ../install/index.php:516
 msgid "INSERT operation not allowed"
 msgstr "INSERT operation not allowed"
 
@@ -1039,7 +1042,7 @@ msgstr "INSERT operation not allowed"
 msgid "Comments:"
 msgstr "Comments:"
 
-#: ../includes/i18n.inc.php:230
+#: ../includes/i18n.inc.php:229
 msgid "partnership"
 msgstr "partnership"
 
@@ -1047,11 +1050,11 @@ msgstr "partnership"
 msgid "- Field name already used."
 msgstr " - Field name already used."
 
-#: ../install/index.php:994
+#: ../install/index.php:995
 msgid "Configuration file created (includes/config.inc.php)"
 msgstr " Configuration file created (includes/config.inc.php)"
 
-#: ../install/index.php:941 ../templates/default/preferences.tpl:183
+#: ../install/index.php:942 ../templates/default/preferences.tpl:183
 msgid "Retype password:"
 msgstr "Retype password:"
 
@@ -1072,11 +1075,11 @@ msgstr "Member Profile"
 msgid "Member card added"
 msgstr " Member card added:"
 
-#: ../install/index.php:488
+#: ../install/index.php:489
 msgid "DROP operation allowed"
 msgstr " DROP operation allowed"
 
-#: ../install/index.php:1127
+#: ../install/index.php:1128
 msgid "Parameters saved into the database"
 msgstr " Parameters saved into the database"
 
@@ -1094,7 +1097,7 @@ msgstr "Step 2 - Installation mode"
 msgid "Active accounts"
 msgstr " Active accounts"
 
-#: ../install/index.php:606
+#: ../install/index.php:607
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr ""
@@ -1114,7 +1117,7 @@ msgstr "Mr."
 msgid "Someone (probably you) asked to recover your password."
 msgstr "Someone (probably you) asked to recover your password."
 
-#: ../install/index.php:408
+#: ../install/index.php:409
 msgid "Unable to connect to the database"
 msgstr "Unable to connect to the database"
 
@@ -1142,11 +1145,11 @@ msgstr "- The amount must be an integer!"
 msgid "No"
 msgstr "No"
 
-#: ../install/index.php:855
+#: ../install/index.php:856
 msgid "The tables are not totally created, it's maybe a permission problem."
 msgstr " The tables are not totally created, it's maybe a permission problem."
 
-#: ../includes/i18n.inc.php:237
+#: ../includes/i18n.inc.php:236
 msgid "separator"
 msgstr "separator"
 
@@ -1158,7 +1161,7 @@ msgstr "Close expiries"
 msgid "Required:"
 msgstr " Required:"
 
-#: ../includes/i18n.inc.php:216
+#: ../includes/i18n.inc.php:215
 msgid "Reduced annual contribution"
 msgstr " Reduced annual contribution"
 
@@ -1191,7 +1194,7 @@ msgstr " Mrs."
 msgid "Table prefix:"
 msgstr " Table prefix:"
 
-#: ../install/index.php:467
+#: ../install/index.php:468
 msgid ""
 "To run, Galette needs a number of rights on the database (CREATE, DROP, "
 "DELETE, UPDATE, SELECT and INSERT)"
@@ -1210,8 +1213,8 @@ msgid "Galette Admin:"
 msgstr "Galette Admin:"
 
 #: ../install/index.php:227 ../install/index.php:296 ../install/index.php:381
-#: ../install/index.php:436 ../install/index.php:631 ../install/index.php:886
-#: ../install/index.php:948 ../install/index.php:1142
+#: ../install/index.php:437 ../install/index.php:632 ../install/index.php:887
+#: ../install/index.php:949 ../install/index.php:1143
 msgid "Next step"
 msgstr "Next step"
 
@@ -1240,13 +1243,10 @@ msgstr "Picture"
 msgid "Date of contribution:"
 msgstr "Date of contribution:"
 
-#: ../change_passwd.php:48
-msgid ""
-"This link is no longer valid. You should <a href='lostpasswd.php'>ask to "
-"retrieve your password</a> again."
-msgstr ""
-"This link is no longer valid. You should <a href='lostpasswd.php'>ask to "
-"retrieve your password</a> again."
+#: ../footer.php:67 ../templates/default/page.tpl:47
+#: ../templates/default/preferences.tpl:1
+msgid "Settings"
+msgstr "Settings"
 
 #: ../install/index.php:196
 msgid ""
@@ -1264,7 +1264,7 @@ msgstr "contributions"
 msgid "Mail_Username:"
 msgstr " Username:"
 
-#: ../install/index.php:628
+#: ../install/index.php:629
 msgid "Permissions to database are OK."
 msgstr "Permissions to database are OK."
 
@@ -1272,11 +1272,11 @@ msgstr "Permissions to database are OK."
 msgid "Delete failed"
 msgstr "Delete failed"
 
-#: ../templates/default/mailing_adherents.tpl:72
+#: ../templates/default/mailing_adherents.tpl:68
 msgid "unreachable member"
 msgstr " Benefactor member"
 
-#: ../includes/i18n.inc.php:213
+#: ../includes/i18n.inc.php:212
 msgid "Old-timer"
 msgstr "Old-timer"
 
@@ -1284,7 +1284,7 @@ msgstr "Old-timer"
 msgid "Your Galette identifiers"
 msgstr "Your Galette identifiers"
 
-#: ../includes/i18n.inc.php:218
+#: ../includes/i18n.inc.php:217
 msgid "Donation in kind"
 msgstr "Donation in kind"
 
@@ -1316,7 +1316,7 @@ msgstr "Enter connection data for the existing database."
 msgid "You are about to send an e-mail to"
 msgstr "You are about to send an e-mail to"
 
-#: ../install/index.php:856
+#: ../install/index.php:857
 msgid ""
 "The tables have not been totally created, it may be a permission problem."
 msgstr " The tables are not totally created, it's maybe a permission problem."
@@ -1326,7 +1326,7 @@ msgstr " The tables are not totally created, it's maybe a permission problem."
 msgid "Add a contribution"
 msgstr "Add a contribution"
 
-#: ../includes/i18n.inc.php:221
+#: ../includes/i18n.inc.php:220
 msgid "french"
 msgstr "french"
 
@@ -1335,7 +1335,7 @@ msgstr "french"
 msgid "-- select a name --"
 msgstr "-- select a name --"
 
-#: ../install/index.php:998
+#: ../install/index.php:999
 msgid "Unable to create configuration file (includes/config.inc.php)"
 msgstr "Unable to create configuration file (includes/config.inc.php)"
 
@@ -1343,7 +1343,7 @@ msgstr "Unable to create configuration file (includes/config.inc.php)"
 msgid "Member"
 msgstr "Member"
 
-#: ../install/index.php:1206
+#: ../install/index.php:1207
 msgid "Galette has been successfully installed!"
 msgstr "Galette has been successfully installed!"
 
@@ -1369,7 +1369,7 @@ msgstr "[up]"
 msgid "[del]"
 msgstr "[del]"
 
-#: ../templates/default/log.tpl:64
+#: ../templates/default/log.tpl:52
 msgid "Action"
 msgstr " Actions"
 
@@ -1399,7 +1399,7 @@ msgstr "Inactive account"
 msgid "Logs"
 msgstr "Logs"
 
-#: ../install/index.php:595
+#: ../install/index.php:596
 msgid "DROP OPeration allowed"
 msgstr "DROP OPeration allowed"
 
@@ -1415,15 +1415,15 @@ msgstr "Subscribe"
 msgid "Membership will expire soon (&lt;30d)"
 msgstr "Membership will expire soon (&lt;30d)"
 
-#: ../install/index.php:412
+#: ../install/index.php:413
 msgid "Connection to database successfull"
 msgstr " Connection to database is OK"
 
-#: ../templates/default/log.tpl:98
+#: ../templates/default/log.tpl:87
 msgid "logs are empty"
 msgstr " logs are empty"
 
-#: ../lostpasswd.php:104 ../install/index.php:926
+#: ../lostpasswd.php:104 ../install/index.php:927
 #: ../templates/default/index.tpl:21 ../templates/default/preferences.tpl:175
 #: ../templates/default/ajouter_adherent.tpl:102
 #: ../templates/default/voir_adherent.tpl:75
@@ -1449,12 +1449,8 @@ msgstr " and"
 msgid "Interpret HTML"
 msgstr "Interpret HTML"
 
-#: ../ajouter_transaction.php:173
-msgid "transaction updated"
-msgstr " Contribution updated:"
-
-#: ../install/index.php:283 ../install/index.php:610 ../install/index.php:861
-#: ../install/index.php:1170
+#: ../install/index.php:283 ../install/index.php:611 ../install/index.php:862
+#: ../install/index.php:1171
 msgid "Retry"
 msgstr " Retry"
 
@@ -1462,7 +1458,7 @@ msgstr " Retry"
 msgid "Database:"
 msgstr " Database:"
 
-#: ../includes/i18n.inc.php:240
+#: ../includes/i18n.inc.php:239
 msgid "choice"
 msgstr "choice"
 
@@ -1479,7 +1475,7 @@ msgstr ""
 msgid "Title:"
 msgstr "Title:"
 
-#: ../install/index.php:1193
+#: ../install/index.php:1194
 msgid "Step 9 - Saving the parameters"
 msgstr " Step 9 - Saving of the parameters"
 
@@ -1503,11 +1499,11 @@ msgstr ""
 msgid "Disabled"
 msgstr "Disabled"
 
-#: ../ajouter_contribution.php:366 ../ajouter_transaction.php:235
+#: ../ajouter_contribution.php:366 ../ajouter_transaction.php:238
 msgid "You must first register a member"
 msgstr "You must first register a member"
 
-#: ../includes/i18n.inc.php:231
+#: ../includes/i18n.inc.php:230
 msgid "reduced annual fee"
 msgstr "reduced annual fee"
 
@@ -1515,7 +1511,7 @@ msgstr "reduced annual fee"
 msgid "Preview"
 msgstr "Preview"
 
-#: ../install/index.php:881
+#: ../install/index.php:882
 msgid "The tables has been correctly created."
 msgstr "The tables has been correctly created."
 
@@ -1537,7 +1533,7 @@ msgstr "Repeat:"
 msgid "ending on"
 msgstr "ending on"
 
-#: ../install/index.php:560
+#: ../install/index.php:561
 msgid "ALTER Operation not allowed"
 msgstr " ALTER operation not allowed"
 
@@ -1613,8 +1609,8 @@ msgstr "empty login"
 msgid "My transactions"
 msgstr " My contributions"
 
-#: ../gestion_contributions.php:342 ../gestion_adherents.php:408
-#: ../gestion_transactions.php:180
+#: ../log.php:158 ../gestion_contributions.php:342
+#: ../gestion_adherents.php:408 ../gestion_transactions.php:180
 msgid "Page %i"
 msgstr "Page %i"
 
@@ -1628,7 +1624,7 @@ msgstr "Mobile phone:"
 msgid "Do you really want to delete this transaction of the database ?"
 msgstr "Do you really want to delete this transaction of the database ?"
 
-#: ../includes/i18n.inc.php:205
+#: ../includes/i18n.inc.php:204
 msgid "Publisher:"
 msgstr "Publisher:"
 
@@ -1636,7 +1632,7 @@ msgstr "Publisher:"
 msgid "List of members"
 msgstr "List of members"
 
-#: ../includes/i18n.inc.php:243
+#: ../includes/i18n.inc.php:242
 msgid "right"
 msgstr "right"
 
@@ -1654,7 +1650,7 @@ msgstr ""
 msgid "Contribution added"
 msgstr " Contribution card"
 
-#: ../install/index.php:660
+#: ../install/index.php:661
 msgid "Update of the tables"
 msgstr "Update of the tables"
 
@@ -1664,7 +1660,7 @@ msgid ""
 msgstr ""
 "For a correct functioning, Galette needs the Write permission on these files."
 
-#: ../templates/default/mailing_adherents.tpl:72
+#: ../templates/default/mailing_adherents.tpl:68
 msgid "unreachable members:"
 msgstr "unreachable members:"
 
@@ -1751,15 +1747,15 @@ msgstr " - The username must be composed of at least 4 characters!"
 msgid "- Invalid format of beginning of membership."
 msgstr "- Invalid format of beginning of membership."
 
-#: ../includes/i18n.inc.php:238
+#: ../includes/i18n.inc.php:237
 msgid "free text"
 msgstr "free text"
 
-#: ../install/index.php:575
+#: ../install/index.php:576
 msgid "DELETE operation not allowed"
 msgstr "DELETE operation not allowed"
 
-#: ../includes/i18n.inc.php:226
+#: ../includes/i18n.inc.php:225
 msgid "annual fee (to be paid)"
 msgstr "annual fee (to be paid)"
 
@@ -1779,7 +1775,7 @@ msgstr "Files permissions"
 msgid "Originator:"
 msgstr "Originator:"
 
-#: ../install/index.php:908
+#: ../install/index.php:909
 msgid "Step 7 - Tables Update"
 msgstr "Step 7 - Tables Update"
 
@@ -1795,11 +1791,11 @@ msgid ""
 msgstr ""
 "It is now possible to follow in real time the state of your subscription"
 
-#: ../templates/default/mailing_adherents.tpl:63
+#: ../templates/default/mailing_adherents.tpl:59
 msgid "Send"
 msgstr "Send"
 
-#: ../install/index.php:1130
+#: ../install/index.php:1131
 msgid "Parameters couldn't be save into the database"
 msgstr "Parameters couldn't be save into the database"
 
@@ -1837,7 +1833,7 @@ msgstr "Please repeat in the field the password shown in the image."
 msgid "All members"
 msgstr "All members"
 
-#: ../includes/i18n.inc.php:229
+#: ../includes/i18n.inc.php:228
 msgid "donation in money"
 msgstr "donation in money"
 
@@ -1853,11 +1849,11 @@ msgstr "Sender Email:"
 msgid "Default language:"
 msgstr "Default language:"
 
-#: ../includes/i18n.inc.php:215
+#: ../includes/i18n.inc.php:214
 msgid "Non-member"
 msgstr "Non-member"
 
-#: ../includes/i18n.inc.php:210
+#: ../includes/i18n.inc.php:209
 msgid "Active member"
 msgstr "Active member"
 
@@ -1865,7 +1861,7 @@ msgstr "Active member"
 msgid "lines"
 msgstr "lines"
 
-#: ../templates/default/log.tpl:76
+#: ../templates/default/log.tpl:64
 #: ../templates/default/gestion_transactions.tpl:30
 msgid "Description"
 msgstr "Description"
@@ -1883,7 +1879,7 @@ msgstr "-  Sum of all contributions exceed corresponding transaction amount."
 msgid "No member was selected, please check at least one name."
 msgstr "No member was selected, please check at least one name."
 
-#: ../install/index.php:1218
+#: ../install/index.php:1219
 msgid "Step 10 - End of the installation"
 msgstr "Step 10 - End of the installation"
 
@@ -1960,7 +1956,7 @@ msgstr ""
 "You've just been subscribed on the members management system of the "
 "association."
 
-#: ../install/index.php:1203
+#: ../install/index.php:1204
 msgid "Update complete !"
 msgstr "Update complete !"
 
@@ -2039,7 +2035,7 @@ msgid "Description:"
 msgstr " Description"
 
 #: ../footer.php:46 ../templates/default/gestion_adherents.tpl:174
-#: ../templates/default/mailing_adherents.tpl:77
+#: ../templates/default/mailing_adherents.tpl:73
 msgid "Generate labels"
 msgstr "Generate labels"
 
@@ -2048,16 +2044,16 @@ msgstr "Generate labels"
 msgid "Other informations (admin):"
 msgstr "Other informations (admin):"
 
-#: ../includes/i18n.inc.php:227
+#: ../includes/i18n.inc.php:226
 msgid "company fee"
 msgstr "company fee"
 
-#: ../gestion_contributions.php:349 ../gestion_adherents.php:415
-#: ../gestion_transactions.php:187
+#: ../log.php:165 ../gestion_contributions.php:349
+#: ../gestion_adherents.php:415 ../gestion_transactions.php:187
 msgid "Last page (%i)"
 msgstr "Last page (%i)"
 
-#: ../install/index.php:455
+#: ../install/index.php:456
 msgid "Step 5 - Access to the database"
 msgstr "Step 5 - Access to the database"
 
@@ -2077,7 +2073,7 @@ msgstr "Step 5 - Access to the database"
 msgid "- ERROR -"
 msgstr "- ERROR -"
 
-#: ../install/index.php:849
+#: ../install/index.php:850
 msgid "(Errors on DROP and RENAME operations can be ignored)"
 msgstr "(Errors on DROP and RENAME operations can be ignored)"
 
@@ -2086,7 +2082,7 @@ msgstr "(Errors on DROP and RENAME operations can be ignored)"
 msgid "Account:"
 msgstr "Account:"
 
-#: ../includes/i18n.inc.php:233
+#: ../includes/i18n.inc.php:232
 msgid "Members"
 msgstr "Members"
 
@@ -2094,8 +2090,8 @@ msgstr "Members"
 msgid "Visibility:"
 msgstr "Visibility:"
 
-#: ../gestion_contributions.php:347 ../gestion_adherents.php:413
-#: ../gestion_transactions.php:185
+#: ../log.php:163 ../gestion_contributions.php:347
+#: ../gestion_adherents.php:413 ../gestion_transactions.php:185
 msgid "Next page (%i)"
 msgstr "Next page (%i)"
 
@@ -2122,13 +2118,14 @@ msgstr "and to update your preferences from the web interface."
 msgid "(at least 4 characters)"
 msgstr "(at least 4 characters)"
 
-#: ../install/index.php:504
+#: ../install/index.php:505
 msgid "CREATE operation allowed"
 msgstr "CREATE operation allowed"
 
-#: ../ajouter_transaction.php:141
-msgid "- Transaction amount must be positive."
-msgstr "- Transaction amount must be positive."
+#: ../mailing_adherents.php:132 ../lostpasswd.php:120
+#: ../ajouter_adherent.php:297
+msgid "Email sent is disabled in the preferences. Ask galette admin"
+msgstr "Email sent is disabled in the preferences. Ask galette admin"
 
 #: ../templates/default/preferences.tpl:48
 #: ../templates/default/ajouter_adherent.tpl:159
@@ -2141,7 +2138,7 @@ msgstr "City:"
 msgid "Normal"
 msgstr "Normal"
 
-#: ../includes/i18n.inc.php:212
+#: ../includes/i18n.inc.php:211
 msgid "Founder member"
 msgstr "Founder member"
 
@@ -2169,7 +2166,7 @@ msgstr "Update"
 msgid "[ See member profile ]"
 msgstr "[ See member profile ]"
 
-#: ../install/index.php:882
+#: ../install/index.php:883
 msgid "The tables has been correctly updated."
 msgstr "The tables has been correctly updated."
 
@@ -2200,7 +2197,7 @@ msgstr "(dd/mm)"
 msgid "- The username cannot contain the @ character"
 msgstr "- The username cannot contain the @ character"
 
-#: ../install/index.php:659
+#: ../install/index.php:660
 msgid "Creation of the tables"
 msgstr "Creation of the tables"
 
@@ -2216,11 +2213,11 @@ msgstr "- Mandatory field empty."
 msgid "[M]"
 msgstr "[M]"
 
-#: ../install/index.php:922
+#: ../install/index.php:923
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr "Please chose the parameters of the admin account on Galette"
 
-#: ../includes/i18n.inc.php:211
+#: ../includes/i18n.inc.php:210
 msgid "Benefactor member"
 msgstr "Benefactor member"
 
@@ -2244,11 +2241,11 @@ msgstr "Annual fee (to be paid)"
 msgid "Hello,"
 msgstr "Hello,"
 
-#: ../includes/i18n.inc.php:223
+#: ../includes/i18n.inc.php:222
 msgid "spanish"
 msgstr "spanish"
 
-#: ../install/index.php:433
+#: ../install/index.php:434
 msgid "Database exists and connection parameters are OK."
 msgstr "Database exists and connection parameters are OK."
 
@@ -2256,8 +2253,8 @@ msgstr "Database exists and connection parameters are OK."
 msgid "Database"
 msgstr "Database"
 
-#: ../gestion_contributions.php:338 ../gestion_adherents.php:404
-#: ../gestion_transactions.php:176
+#: ../log.php:154 ../gestion_contributions.php:338
+#: ../gestion_adherents.php:404 ../gestion_transactions.php:176
 msgid "Current page (%i)"
 msgstr "Current page (%i)"
 
@@ -2269,7 +2266,7 @@ msgstr "Logo:"
 msgid "Installation mode unknown"
 msgstr "Installation mode unknown"
 
-#: ../includes/i18n.inc.php:242
+#: ../includes/i18n.inc.php:241
 msgid "left"
 msgstr "left"
 
@@ -2281,7 +2278,7 @@ msgstr "Password:"
 msgid "[down]"
 msgstr "[down]"
 
-#: ../install/index.php:907
+#: ../install/index.php:908
 msgid "Step 7 - Tables Creation"
 msgstr "Step 7 - Tables Creation"
 
@@ -2290,7 +2287,7 @@ msgstr "Step 7 - Tables Creation"
 msgid "Never contributed"
 msgstr "Never contributed"
 
-#: ../install/index.php:1167
+#: ../install/index.php:1168
 msgid "Parameters couldn't be saved."
 msgstr "Parameters couldn't be saved."
 
@@ -2300,7 +2297,7 @@ msgstr "Parameters couldn't be saved."
 msgid "Modification"
 msgstr "Modification"
 
-#: ../install/index.php:422
+#: ../install/index.php:423
 msgid "Go back"
 msgstr "Go back"
 
@@ -2317,7 +2314,7 @@ msgstr "All"
 msgid "remaining day"
 msgstr "remaining day"
 
-#: ../install/index.php:579
+#: ../install/index.php:580
 msgid "DELETE operation allowed"
 msgstr "DELETE operation allowed"
 
@@ -2332,15 +2329,15 @@ msgstr "member"
 msgid "Profession:"
 msgstr "Profession:"
 
-#: ../includes/i18n.inc.php:239
+#: ../includes/i18n.inc.php:238
 msgid "single line"
 msgstr "single line"
 
-#: ../install/index.php:973
+#: ../install/index.php:974
 msgid "Save the parameters"
 msgstr "Save the parameters"
 
-#: ../templates/default/log.tpl:52
+#: ../templates/default/log.tpl:40
 msgid "User"
 msgstr "User"
 
@@ -2356,17 +2353,20 @@ msgstr "Font size:"
 msgid "Active account"
 msgstr "Active account"
 
-#: ../footer.php:67 ../templates/default/page.tpl:47
-#: ../templates/default/preferences.tpl:1
-msgid "Settings"
-msgstr "Settings"
+#: ../change_passwd.php:48
+msgid ""
+"This link is no longer valid. You should <a href='lostpasswd.php'>ask to "
+"retrieve your password</a> again."
+msgstr ""
+"This link is no longer valid. You should <a href='lostpasswd.php'>ask to "
+"retrieve your password</a> again."
 
 #: ../templates/default/gestion_transactions.tpl:93
 #: ../templates/default/gestion_transactions.tpl:95
 msgid "no transaction"
 msgstr "no transaction"
 
-#: ../install/index.php:485
+#: ../install/index.php:486
 msgid "DROP operation not allowed"
 msgstr "DROP operation not allowed"
 
@@ -2374,7 +2374,7 @@ msgstr "DROP operation not allowed"
 msgid "Visibility"
 msgstr "Visibility"
 
-#: ../install/index.php:468
+#: ../install/index.php:469
 msgid ""
 "In order to be updated, Galette needs a number of rights on the database "
 "(CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)"

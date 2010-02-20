@@ -3,8 +3,8 @@
 # Copyright (C) 2005, 2006, 2007, 2008 Free Software Foundation, Inc.
 #
 # Georges Khaznadar <gekhajofour@netinfo.fr>, 2004.
-# Stéphane Salès <ssales@tuxz.org>, 2005, 2006.
-# Loïs Taulelle <gruiick@gmail.com>, 2006.
+# StÃ©phane SalÃ¨s <ssales@tuxz.org>, 2005, 2006.
+# LoÃ¯s Taulelle <gruiick@gmail.com>, 2006.
 # Johan Cwiklinski <johan.cwiklinski@fedoraproject.org>, 2007.
 # Thomas Canniot <mrtom@fedoraproject.org>, 2007.
 # Johan Cwiklinski <johan@x-tnd.be>, 2007, 2008, 2009.
@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: fr_FR@euro\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-12-20 16:44+0100\n"
-"PO-Revision-Date: 2010-02-05 08:10+0100\n"
+"PO-Revision-Date: 2010-02-20 17:28+0100\n"
 "Last-Translator: Johan \"Papa\" Cwiklinski\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -27,9 +27,9 @@ msgstr ""
 msgid "among:"
 msgstr "parmi :"
 
-#: ../install/index.php:549
+#: ../install/index.php:550
 msgid "SELECT operation allowed"
-msgstr "Opération SELECT autorisée"
+msgstr "OpÃ©ration SELECT autorisÃ©e"
 
 #: ../self_contribution.php:209
 #: ../templates/default/ajouter_contribution.tpl:1
@@ -44,12 +44,12 @@ msgstr "Ce commentaire n'est visible que par les administrateurs."
 #: ../templates/default/voir_adherent.tpl:113
 #: ../templates/default/self_adherent.tpl:123
 msgid "Phone:"
-msgstr "Tél&nbsp;:"
+msgstr "TÃ©l&nbsp;:"
 
 #: ../templates/default/gestion_contributions.tpl:124
 msgid "Do you really want to delete this contribution of the database ?"
 msgstr ""
-"Voulez vous vraiment effacer cette contribution de la base de données&nbsp;?"
+"Voulez vous vraiment effacer cette contribution de la base de donnÃ©es&nbsp;?"
 
 #: ../install/index.php:276
 msgid "(for a directory)"
@@ -61,7 +61,7 @@ msgstr "Statut"
 
 #: ../templates/default/preferences.tpl:114
 msgid "Emailing disabled"
-msgstr "Envoi de courriel désactivé"
+msgstr "Envoi de courriel dÃ©sactivÃ©"
 
 #: ../self_adherent.php:302 ../ajouter_adherent.php:429
 msgid "Mrs"
@@ -73,11 +73,11 @@ msgstr "Position&nbsp;:"
 
 #: ../templates/default/ajouter_contribution.tpl:60
 msgid "End date of membership:"
-msgstr "Date de fin d'adhésion&nbsp;:"
+msgstr "Date de fin d'adhÃ©sion&nbsp;:"
 
 #: ../templates/default/editer_champ.tpl:1
 msgid "Edit field"
-msgstr "Édition de champ"
+msgstr "Ã‰dition de champ"
 
 #: ../self_adherent.php:108 ../preferences.php:91 ../ajouter_adherent.php:141
 msgid "- Non-valid E-Mail address!"
@@ -86,28 +86,32 @@ msgstr "- Adresse courriel non valide&nbsp;!"
 #: ../templates/default/preferences.tpl:110
 msgid "Leave empty to use Sender Email as reply address"
 msgstr ""
-"Laisser vide pour utiliser le courriel expéditeur comme adresse de réponse"
+"Laisser vide pour utiliser le courriel expÃ©diteur comme adresse de rÃ©ponse"
 
 #: ../preferences.php:167
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
-"- Vous devez indiquer l'adresse qu'utilisera Galette pour expédier des "
+"- Vous devez indiquer l'adresse qu'utilisera Galette pour expÃ©dier des "
 "courriels&nbsp;!"
 
-#: ../includes/i18n.inc.php:220
+#: ../includes/i18n.inc.php:219
 msgid "Partnership"
 msgstr "partenariat"
+
+#: ../ajouter_transaction.php:176
+msgid "Transaction updated"
+msgstr "Transaction mise Ã  jour"
 
 #: ../templates/default/ajouter_adherent.tpl:75
 #: ../templates/default/voir_adherent.tpl:57
 #: ../templates/default/self_adherent.tpl:89
 msgid "Be visible in the<br /> members list :"
-msgstr "Je souhaite apparaître dans la liste des membres&nbsp;:"
+msgstr "Je souhaite apparaÃ®tre dans la liste des membres&nbsp;:"
 
-#: ../install/index.php:857
+#: ../install/index.php:858
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr ""
-"Votre base est peut-être inutilisable, essayez de restaurer une ancienne "
+"Votre base est peut-Ãªtre inutilisable, essayez de restaurer une ancienne "
 "version."
 
 #: ../footer.php:120 ../footer.php:124 ../gestion_adherents.php:428
@@ -121,29 +125,29 @@ msgstr "Nom"
 msgid "line"
 msgstr "ligne"
 
-#: ../gestion_contributions.php:331 ../gestion_adherents.php:397
-#: ../gestion_transactions.php:169
+#: ../log.php:147 ../gestion_contributions.php:331
+#: ../gestion_adherents.php:397 ../gestion_transactions.php:169
 msgid "Previous page (%i)"
-msgstr "Page précédente (%i)"
+msgstr "Page prÃ©cÃ©dente (%i)"
 
 #: ../templates/default/configurer_fiches.tpl:25
 msgid "Required"
 msgstr "Obligatoire"
 
-#: ../install/index.php:534
+#: ../install/index.php:535
 msgid "UPDATE operation allowed"
-msgstr "Opération UPDATE autorisée"
+msgstr "OpÃ©ration UPDATE autorisÃ©e"
 
-#: ../install/index.php:917
+#: ../install/index.php:918
 msgid "Admin settings"
-msgstr "Paramètres administrateur"
+msgstr "ParamÃ¨tres administrateur"
 
-#: ../install/index.php:1202
+#: ../install/index.php:1203
 msgid "Installation complete !"
 msgstr "Fin de l'installation"
 
 #: ../templates/default/gestion_contributions.tpl:26
-#: ../templates/default/log.tpl:28
+#: ../templates/default/log.tpl:16
 #: ../templates/default/gestion_transactions.tpl:19
 msgid "Date"
 msgstr "Date"
@@ -200,7 +204,7 @@ msgstr "contribution"
 
 #: ../preferences.php:162
 msgid "- You must indicate the SMTP server you want to use!"
-msgstr "- Vous devez indiquer le serveur SMTP à utiliser&nbsp;!"
+msgstr "- Vous devez indiquer le serveur SMTP Ã  utiliser&nbsp;!"
 
 #: ../templates/default/preferences.tpl:44
 #: ../templates/default/ajouter_adherent.tpl:155
@@ -213,7 +217,7 @@ msgstr "Code Postal&nbsp;:"
 msgid "Horizontal margins:"
 msgstr "Marges horizontales&nbsp;:"
 
-#: ../install/index.php:348 ../install/index.php:932
+#: ../install/index.php:348 ../install/index.php:933
 #: ../templates/default/index.tpl:25 ../templates/default/preferences.tpl:179
 #: ../templates/default/ajouter_adherent.tpl:107
 #: ../templates/default/change_passwd.tpl:36
@@ -231,23 +235,23 @@ msgstr "Informations de contact&nbsp;:"
 msgid "Show contributions since"
 msgstr "Afficher les contributions du"
 
-#: ../includes/i18n.inc.php:217
+#: ../includes/i18n.inc.php:216
 msgid "Company cotisation"
 msgstr "Cotisation entreprise"
 
-#: ../includes/i18n.inc.php:235
+#: ../includes/i18n.inc.php:234
 msgid "all"
 msgstr "Tous"
 
 #: ../ajouter_adherent.php:318
 msgid "Sent mail is checked but there is no email address"
-msgstr "Aucun des destinataires sélectionnés n'a d'adresse de courriel."
+msgstr "Aucun des destinataires sÃ©lectionnÃ©s n'a d'adresse de courriel."
 
 #: ../templates/default/preferences.tpl:173
 msgid "Admin account (independant of members):"
-msgstr "Compte administrateur (indépendant des adhérents)&nbsp;:"
+msgstr "Compte administrateur (indÃ©pendant des adhÃ©rents)&nbsp;:"
 
-#: ../includes/i18n.inc.php:241
+#: ../includes/i18n.inc.php:240
 msgid "middle"
 msgstr "milieu"
 
@@ -267,7 +271,7 @@ msgstr "Sujet&nbsp;:"
 
 #: ../templates/default/preferences.tpl:113
 msgid "Emailing method:"
-msgstr "Méthode d'envoi des courriels&nbsp;:"
+msgstr "MÃ©thode d'envoi des courriels&nbsp;:"
 
 #: ../gestion_contributions.php:266 ../gestion_adherents.php:317
 msgid "Freed of dues"
@@ -275,15 +279,15 @@ msgstr "Exempt de cotisation"
 
 #: ../mailing_adherents.php:127
 msgid "Mail sent to :"
-msgstr "Courriel envoyé à&nbsp;:"
+msgstr "Courriel envoyÃ© Ã &nbsp;:"
 
-#: ../install/index.php:500
+#: ../install/index.php:501
 msgid "CREATE operation not allowed"
-msgstr "Opération CREATE non autorisée"
+msgstr "OpÃ©ration CREATE non autorisÃ©e"
 
 #: ../gestion_adherents.php:327
 msgid "Never contributed: Registered "
-msgstr "N'a jamais cotisé&nbsp;: Inscrit depuis "
+msgstr "N'a jamais cotisÃ©&nbsp;: Inscrit depuis "
 
 #: ../templates/default/gestion_transactions.tpl:1
 msgid "Management of transactions"
@@ -299,7 +303,7 @@ msgstr "- Date non valide&nbsp;!"
 #: ../self_adherent.php:215
 msgid "Email sent is disabled in the preferences. Ask galette admin."
 msgstr ""
-"L'envoi de courriel est désactivé. Contactez votre administrateur Galette."
+"L'envoi de courriel est dÃ©sactivÃ©. Contactez votre administrateur Galette."
 
 #: ../gestion_adherents.php:430
 msgid "Email,URL,IM"
@@ -307,7 +311,7 @@ msgstr "Email, URL, IM"
 
 #: ../templates/default/preferences.tpl:91
 msgid "Beginning of membership:"
-msgstr "Date de début d'exercice&nbsp;:"
+msgstr "Date de dÃ©but d'exercice&nbsp;:"
 
 #: ../self_contribution.php:257 ../templates/default/preferences.tpl:190
 #: ../templates/default/ajouter_adherent.tpl:206
@@ -325,16 +329,16 @@ msgstr "Effectuer un mailing"
 
 #: ../preferences.php:141
 msgid "- Invalid date for beginning of membership."
-msgstr "- Mauvais format de date de début d'exercice."
+msgstr "- Mauvais format de date de dÃ©but d'exercice."
 
 #: ../templates/default/gestion_adherents.tpl:171
 msgid "Selection:"
-msgstr "Sélection&nbsp;:"
+msgstr "SÃ©lection&nbsp;:"
 
 #: ../templates/default/lostpasswd.tpl:10
 #: ../templates/default/change_passwd.tpl:11
 msgid "Password recovery"
-msgstr "Récupération de mot de passe"
+msgstr "RÃ©cupÃ©ration de mot de passe"
 
 #: ../install/index.php:218
 msgid "Your current Galette version is"
@@ -354,28 +358,28 @@ msgstr "Id GNUpg (GPG)&nbsp;:"
 #: ../templates/default/voir_adherent.tpl:50
 #: ../templates/default/self_adherent.tpl:160
 msgid "Galette-related data:"
-msgstr "Informations relatives à Galette&nbsp;:"
+msgstr "Informations relatives Ã  Galette&nbsp;:"
 
 #: ../self_adherent.php:112 ../ajouter_adherent.php:145
 msgid "- Non-valid Website address! Maybe you've skipped the http:// ?"
 msgstr ""
-"- Adresse web non valide&nbsp;! Peut être avez vous oublié le http://&nbsp;?"
+"- Adresse web non valide&nbsp;! Peut Ãªtre avez vous oubliÃ© le http://&nbsp;?"
 
-#: ../includes/i18n.inc.php:207
+#: ../includes/i18n.inc.php:206
 msgid "Vice-president"
-msgstr "Vice-président"
+msgstr "Vice-prÃ©sident"
 
-#: ../includes/i18n.inc.php:228
+#: ../includes/i18n.inc.php:227
 msgid "donation in kind"
 msgstr "don en nature"
 
-#: ../install/index.php:419
+#: ../install/index.php:420
 msgid ""
 "Database can't be reached. Please go back to enter the connection parameters "
 "again."
 msgstr ""
-"La base n'est pas accessible. Veuillez revenir en arrière pour saisir à "
-"nouveau les paramètres de connexion."
+"La base n'est pas accessible. Veuillez revenir en arriÃ¨re pour saisir Ã  "
+"nouveau les paramÃ¨tres de connexion."
 
 #: ../voir_adherent.php:103 ../templates/default/ajouter_adherent.tpl:82
 msgid "Active"
@@ -385,12 +389,12 @@ msgstr "Actif"
 msgid ""
 "- You can't send a confirmation by email if the member hasn't got an address!"
 msgstr ""
-"- Vous ne pouvez pas envoyer de confirmation par courriel si l'adhérent n'a "
+"- Vous ne pouvez pas envoyer de confirmation par courriel si l'adhÃ©rent n'a "
 "pas d'adresse&nbsp;!"
 
-#: ../install/index.php:591
+#: ../install/index.php:592
 msgid "DROP OPeration not allowed"
-msgstr "Opération DROP non autorisée"
+msgstr "OpÃ©ration DROP non autorisÃ©e"
 
 #: ../templates/default/preferences.tpl:34
 #: ../templates/default/ajouter_adherent.tpl:30
@@ -399,43 +403,43 @@ msgstr "Supprimer l'image"
 
 #: ../templates/default/preferences.tpl:98
 msgid "Mail settings:"
-msgstr "Paramètres courriel&nbsp;:"
+msgstr "ParamÃ¨tres courriel&nbsp;:"
 
 #: ../footer.php:42 ../templates/default/page.tpl:30
 msgid "List of contributions"
 msgstr "Liste des contributions"
 
-#: ../install/index.php:1209
+#: ../install/index.php:1210
 msgid "For securing the system, please delete the install directory"
-msgstr "Pour sécuriser le système, veuillez supprimer le dossier install"
+msgstr "Pour sÃ©curiser le systÃ¨me, veuillez supprimer le dossier install"
 
 #: ../templates/default/editer_champ.tpl:87
 msgid "Choice list (one entry per line)."
-msgstr "Liste de choix (une entrée par ligne)."
+msgstr "Liste de choix (une entrÃ©e par ligne)."
 
 #: ../self_adherent.php:210 ../lostpasswd.php:114 ../ajouter_adherent.php:291
 msgid "Password sent. Login:"
-msgstr "Mot de passe envoyé. Identifiant&nbsp;:"
+msgstr "Mot de passe envoyÃ©. Identifiant&nbsp;:"
 
-#: ../templates/default/log.tpl:40
+#: ../templates/default/log.tpl:28
 msgid "IP"
 msgstr "IP"
 
-#: ../install/index.php:1168
+#: ../install/index.php:1169
 msgid ""
 "This can come from the permissions on the file includes/config.inc.php or "
 "the impossibility to make an INSERT into the database."
 msgstr ""
 "Ceci peut provenir des droits sur le fichier includes/config.inc.php ou de "
-"l'impossibilité de faire un INSERT dans la base."
+"l'impossibilitÃ© de faire un INSERT dans la base."
 
 #: ../ajouter_contribution.php:197
 msgid "- Membership period overlaps period starting at "
-msgstr "- La période d'adhésion chevauche la période commençant le "
+msgstr "- La pÃ©riode d'adhÃ©sion chevauche la pÃ©riode commenÃ§ant le "
 
-#: ../install/index.php:545
+#: ../install/index.php:546
 msgid "SELECT operation not allowed"
-msgstr "Opération SELECT non autorisée"
+msgstr "OpÃ©ration SELECT non autorisÃ©e"
 
 #: ../footer.php:65 ../templates/default/page.tpl:45
 msgid "Configuration"
@@ -443,7 +447,7 @@ msgstr "Configuration"
 
 #: ../templates/default/ajouter_contribution.tpl:58
 msgid "Membership extension:"
-msgstr "Extension d'adhésion&nbsp;:"
+msgstr "Extension d'adhÃ©sion&nbsp;:"
 
 #: ../templates/default/ajouter_adherent.tpl:63
 #: ../templates/default/voir_adherent.tpl:46
@@ -451,9 +455,9 @@ msgstr "Extension d'adhésion&nbsp;:"
 msgid "Language:"
 msgstr "Langue&nbsp;:"
 
-#: ../install/index.php:965
+#: ../install/index.php:966
 msgid "Step 8 - Admin parameters"
-msgstr "Étape 8 - Paramètres administrateur"
+msgstr "Ã‰tape 8 - ParamÃ¨tres administrateur"
 
 #: ../gestion_contributions.php:289 ../gestion_adherents.php:344
 msgid "days"
@@ -467,16 +471,16 @@ msgstr "(ce courriel est un envoi automatique)"
 msgid ""
 "Mail has been disabled in the preferences. This functionnality is disabled."
 msgstr ""
-"L'envoi de courriel a été désactivé dans les préférences. Cette "
-"fonctionnalité est désactivée."
+"L'envoi de courriel a Ã©tÃ© dÃ©sactivÃ© dans les prÃ©fÃ©rences. Cette "
+"fonctionnalitÃ© est dÃ©sactivÃ©e."
 
 #: ../templates/default/self_adherent.tpl:27
 msgid "Member profile"
-msgstr "Fiche adhérent"
+msgstr "Fiche adhÃ©rent"
 
 #: ../templates/default/preferences.tpl:157
 msgid "Number of label columns:"
-msgstr "Nombre de colonnes d'étiquettes&nbsp;:"
+msgstr "Nombre de colonnes d'Ã©tiquettes&nbsp;:"
 
 #: ../install/index.php:276
 msgid "direcory_name"
@@ -486,37 +490,37 @@ msgstr "nom_dossier"
 msgid "transactions"
 msgstr "transactions"
 
-#: ../includes/i18n.inc.php:208
+#: ../includes/i18n.inc.php:207
 msgid "Treasurer"
-msgstr "Trésorier"
+msgstr "TrÃ©sorier"
 
 #: ../preferences.php:109 ../preferences.php:124
 msgid "- The numbers and measures have to be integers!"
-msgstr "- Les nombres et mesures doivent être des entiers&nbsp;!"
+msgstr "- Les nombres et mesures doivent Ãªtre des entiers&nbsp;!"
 
 #: ../templates/default/configurer_fiches.tpl:47
 msgid ""
 "Do you really want to delete this category ?\\n All associated data will be "
 "deleted as well."
 msgstr ""
-"Voulez vous vraiment effacer cette catégorie&nbsp;? \n"
-" Toutes les données associées seront effacées."
+"Voulez vous vraiment effacer cette catÃ©gorie&nbsp;? \n"
+" Toutes les donnÃ©es associÃ©es seront effacÃ©es."
 
-#: ../install/index.php:530
+#: ../install/index.php:531
 msgid "UPDATE operation not allowed"
-msgstr "Opération UPDATE non autorisée"
+msgstr "OpÃ©ration UPDATE non autorisÃ©e"
 
-#: ../install/index.php:564
+#: ../install/index.php:565
 msgid "ALTER Operation allowed"
-msgstr "Opération ALTER autorisée"
+msgstr "OpÃ©ration ALTER autorisÃ©e"
 
 #: ../templates/default/gestion_adherents.tpl:1
 msgid "Management of members"
-msgstr "Gestion des adhérents"
+msgstr "Gestion des adhÃ©rents"
 
 #: ../templates/default/editer_champ.tpl:69
 msgid "Maximum number of characters."
-msgstr "Nombre maximal de caractères."
+msgstr "Nombre maximal de caractÃ¨res."
 
 #: ../change_passwd.php:57 ../install/index.php:81 ../install/index.php:118
 msgid "No password"
@@ -524,14 +528,11 @@ msgstr "Mot de passe vide"
 
 #: ../install/index.php:307
 msgid "Step 3 - Permissions"
-msgstr "Étape 3 - Permissions"
+msgstr "Ã‰tape 3 - Permissions"
 
-#: ../mailing_adherents.php:132 ../lostpasswd.php:120
-#: ../ajouter_adherent.php:297
-msgid "Email sent is disabled in the preferences. Ask galette admin"
-msgstr ""
-"L'envoi de courriel est désactivé dans les préférences. Contactez votre "
-"administrateur Galette."
+#: ../ajouter_transaction.php:141
+msgid "- Transaction amount must be positive."
+msgstr "- Le montant de la transaction doit Ãªtre positif."
 
 #: ../templates/default/gestion_contributions.tpl:6
 msgid "until"
@@ -545,13 +546,13 @@ msgstr "au"
 msgid "Address:"
 msgstr "Adresse&nbsp;:"
 
-#: ../install/index.php:465
+#: ../install/index.php:466
 msgid "Permissions on the base"
 msgstr "Permissions sur la base"
 
-#: ../install/index.php:519
+#: ../install/index.php:520
 msgid "INSERT operation allowed"
-msgstr "Opération INSERT autorisée"
+msgstr "OpÃ©ration INSERT autorisÃ©e"
 
 #: ../templates/default/self_adherent.tpl:107
 msgid " (continuation)"
@@ -561,12 +562,12 @@ msgstr " (suite)"
 msgid "Management of contributions"
 msgstr "Gestion des contributions"
 
-#: ../install/index.php:605
+#: ../install/index.php:606
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the "
 "installation."
 msgstr ""
-"Galette ne dispose pas de droits suffisants sur la base de données pour "
+"Galette ne dispose pas de droits suffisants sur la base de donnÃ©es pour "
 "poursuivre l'installation."
 
 #: ../templates/default/ajouter_adherent.tpl:117
@@ -575,7 +576,7 @@ msgstr "Envoi de courriel&nbsp;:"
 
 #: ../templates/default/mailing_adherents.tpl:27
 msgid "Your e-mail was sent to"
-msgstr "Votre courriel a été envoyé à"
+msgstr "Votre courriel a Ã©tÃ© envoyÃ© Ã "
 
 #: ../install/index.php:195
 msgid "New installation:"
@@ -589,7 +590,7 @@ msgstr "Les mots de passe ne correspondent pas&nbsp;: "
 msgid "in:"
 msgstr "dans&nbsp;:"
 
-#: ../install/index.php:663
+#: ../install/index.php:664
 msgid "Installation Report"
 msgstr "Compte rendu d'installation"
 
@@ -599,7 +600,7 @@ msgstr "Voir les contributions"
 
 #: ../change_passwd.php:73 ../change_passwd.php:78
 msgid "There was a database error"
-msgstr "La base de données a retourné une erreur"
+msgstr "La base de donnÃ©es a retournÃ© une erreur"
 
 #: ../templates/default/ajouter_adherent.tpl:183
 #: ../templates/default/voir_adherent.tpl:139
@@ -613,7 +614,7 @@ msgstr "Texte"
 
 #: ../install/index.php:327
 msgid "Database type:"
-msgstr "Type de base de données&nbsp;:"
+msgstr "Type de base de donnÃ©es&nbsp;:"
 
 #: ../gestion_adherents.php:431
 msgid "Job"
@@ -625,7 +626,7 @@ msgstr "Inactif"
 
 #: ../preferences.php:215 ../ajouter_adherent.php:261
 msgid "- Only .jpg, .gif and .png files are allowed."
-msgstr "- Seul les fichiers .jpg, .gif et .png sont acceptés."
+msgstr "- Seul les fichiers .jpg, .gif et .png sont acceptÃ©s."
 
 #: ../voir_adherent.php:77 ../templates/default/configurer_fiches.tpl:37
 #: ../templates/default/configurer_fiches.tpl:85
@@ -640,7 +641,7 @@ msgstr "Suppression"
 
 #: ../templates/default/ajouter_contribution.tpl:39
 msgid "Transaction number:"
-msgstr "Numéro de transaction&nbsp;:"
+msgstr "NumÃ©ro de transaction&nbsp;:"
 
 #: ../templates/default/traduire_libelles.tpl:16
 msgid "Language"
@@ -648,7 +649,7 @@ msgstr "Langue"
 
 #: ../templates/default/preferences.tpl:62
 msgid "Galette's parameters:"
-msgstr "Paramètres Galette&nbsp;:"
+msgstr "ParamÃ¨tres Galette&nbsp;:"
 
 #: ../templates/default/log.tpl:4
 msgid "Flush the logs"
@@ -656,11 +657,11 @@ msgstr "Effacer les logs"
 
 #: ../lostpasswd.php:87
 msgid "delete failed"
-msgstr "La suppression a échouée"
+msgstr "La suppression a Ã©chouÃ©e"
 
 #: ../templates/default/editer_champ.tpl:78
 msgid "Number of values or zero if infinite."
-msgstr "Nombre de valeurs ou zéro pour une infinité."
+msgstr "Nombre de valeurs ou zÃ©ro pour une infinitÃ©."
 
 #: ../templates/default/mailing_adherents.tpl:15
 #: ../templates/default/preferences.tpl:15
@@ -683,6 +684,10 @@ msgstr "Configuration des fiches"
 msgid "- Wrong date format (dd/mm/yyyy)!"
 msgstr "- Mauvais format de date (jj/mm/aaaa)&nbsp;!"
 
+#: ../ajouter_transaction.php:163
+msgid "Transaction added"
+msgstr "Transaction ajoutÃ©e"
+
 #: ../install/index.php:191
 msgid "Installation mode"
 msgstr "Type d'installation"
@@ -690,7 +695,7 @@ msgstr "Type d'installation"
 #: ../ajouter_transaction.php:145
 msgid "- No originator selected (register a non-member first if necessary)."
 msgstr ""
-"- Aucun emetteur sélectionné (enregistrez un non-membre si nécessaire)."
+"- Aucun emetteur sÃ©lectionnÃ© (enregistrez un non-membre si nÃ©cessaire)."
 
 #: ../templates/default/lostpasswd.tpl:34
 msgid "Username or email:"
@@ -705,13 +710,13 @@ msgstr "Identifiant ou adresse e-mail&nbsp;:"
 msgid "(dd/mm/yyyy format)"
 msgstr "(format jj/mm/aaaa)"
 
-#: ../includes/i18n.inc.php:203
+#: ../includes/i18n.inc.php:202
 msgid "Realization:"
-msgstr "Réalisation&nbsp;:"
+msgstr "RÃ©alisation&nbsp;:"
 
 #: ../templates/default/gestion_adherents.tpl:82
 msgid "State of dues"
-msgstr "État cotisations"
+msgstr "Ã‰tat cotisations"
 
 #: ../footer.php:90 ../templates/default/page.tpl:66
 msgid "Woman"
@@ -721,9 +726,9 @@ msgstr "Femme"
 msgid "your fee."
 msgstr "votre cotisation."
 
-#: ../includes/i18n.inc.php:219
+#: ../includes/i18n.inc.php:218
 msgid "Donation in money"
-msgstr "donation pécunière"
+msgstr "donation pÃ©cuniÃ¨re"
 
 #: ../install/index.php:342
 msgid "User:"
@@ -737,17 +742,17 @@ msgstr "Image mot de passe"
 msgid "Mister"
 msgstr "Monsieur"
 
-#: ../includes/i18n.inc.php:234
+#: ../includes/i18n.inc.php:233
 msgid "Transactions"
 msgstr "Transactions"
 
 #: ../templates/default/preferences.tpl:125
 msgid "Label generation parameters:"
-msgstr "Paramètres de génération d'étiquettes&nbsp;:"
+msgstr "ParamÃ¨tres de gÃ©nÃ©ration d'Ã©tiquettes&nbsp;:"
 
-#: ../install/index.php:650
+#: ../install/index.php:651
 msgid "Step 6 - Access permissions to database"
-msgstr "Étape 6 - Droits d'accès à la base"
+msgstr "Ã‰tape 6 - Droits d'accÃ¨s Ã  la base"
 
 #: ../footer.php:27
 msgid "seconds."
@@ -765,15 +770,15 @@ msgstr "Ajouter"
 #: ../ajouter_adherent.php:313
 msgid "A problem happened while sending password for account:"
 msgstr ""
-"Un problème est survenu dans l'envoi du mot de passe pour le compte&nbsp;:"
+"Un problÃ¨me est survenu dans l'envoi du mot de passe pour le compte&nbsp;:"
 
 #: ../gestion_adherents.php:344
 msgid "Late of "
 msgstr "En retard de "
 
-#: ../templates/default/mailing_adherents.tpl:67
+#: ../templates/default/mailing_adherents.tpl:63
 msgid "None of the selected members has an email address."
-msgstr "Aucun des destinataires sélectionnés n'a d'adresse de courriel."
+msgstr "Aucun des destinataires sÃ©lectionnÃ©s n'a d'adresse de courriel."
 
 #: ../templates/default/editer_champ.tpl:58
 msgid "Height:"
@@ -781,7 +786,7 @@ msgstr "Hauteur&nbsp;:"
 
 #: ../self_adherent.php:118 ../preferences.php:95 ../ajouter_adherent.php:151
 msgid "- The username must be composed of at least 4 characters!"
-msgstr "- L'identifiant doit être composé d'au moins 4 caractères&nbsp;!"
+msgstr "- L'identifiant doit Ãªtre composÃ© d'au moins 4 caractÃ¨res&nbsp;!"
 
 #: ../templates/default/editer_champ.tpl:66
 msgid "Size:"
@@ -789,7 +794,7 @@ msgstr "Taille&nbsp;:"
 
 #: ../footer.php:27
 msgid "Page displayed in"
-msgstr "Page affichée en"
+msgstr "Page affichÃ©e en"
 
 #: ../templates/default/gestion_adherents.tpl:93
 #: ../templates/default/configurer_fiches.tpl:27
@@ -800,19 +805,19 @@ msgstr "Actions"
 
 #: ../templates/default/preferences.tpl:100
 msgid "Sender name:"
-msgstr "Nom expéditeur&nbsp;:"
+msgstr "Nom expÃ©diteur&nbsp;:"
 
-#: ../includes/i18n.inc.php:214
+#: ../includes/i18n.inc.php:213
 msgid "Legal entity"
 msgstr "Personne morale"
 
 #: ../lostpasswd.php:101
 msgid "Please login at this address to set your new password :"
 msgstr ""
-"Veuillez vous identifier à cette adresse pour changer votre mot de "
+"Veuillez vous identifier Ã  cette adresse pour changer votre mot de "
 "passe&nbsp;:"
 
-#: ../includes/i18n.inc.php:225
+#: ../includes/i18n.inc.php:224
 msgid "annual fee"
 msgstr "cotisation annuelle"
 
@@ -820,9 +825,9 @@ msgstr "cotisation annuelle"
 msgid "- Empty transaction description!"
 msgstr "- La description de la transaction est vide&nbsp;!"
 
-#: ../install/index.php:664
+#: ../install/index.php:665
 msgid "Update Report"
-msgstr "Compte rendu de mise à jour"
+msgstr "Compte rendu de mise Ã  jour"
 
 #: ../self_contribution.php:246
 #: ../templates/default/ajouter_contribution.tpl:67
@@ -831,39 +836,39 @@ msgstr "mois"
 
 #: ../self_adherent.php:246
 msgid "Inscription sent to the administrator for approval"
-msgstr "Votre inscription a été envoyée pour validation à l'administrateur"
+msgstr "Votre inscription a Ã©tÃ© envoyÃ©e pour validation Ã  l'administrateur"
 
-#: ../includes/i18n.inc.php:209
+#: ../includes/i18n.inc.php:208
 msgid "Secretary"
-msgstr "Secrétaire"
+msgstr "SecrÃ©taire"
 
 #: ../templates/default/gestion_contributions.tpl:78
 msgid "Duration"
-msgstr "Durée"
+msgstr "DurÃ©e"
 
 #: ../install/index.php:83
 msgid "No database name"
-msgstr "Nom de la base non précisé"
+msgstr "Nom de la base non prÃ©cisÃ©"
 
 #: ../templates/default/preferences.tpl:162
 msgid "Number of label lines:"
-msgstr "Nombre de lignes d'étiquettes&nbsp;:"
+msgstr "Nombre de lignes d'Ã©tiquettes&nbsp;:"
 
 #: ../footer.php:113 ../templates/default/page.tpl:84
 msgid "Contributions"
 msgstr "Contributions"
 
-#: ../install/index.php:1212
+#: ../install/index.php:1213
 msgid "Homepage"
 msgstr "Page d'accueil"
 
 #: ../templates/default/gestion_contributions.tpl:37
 msgid "Begin."
-msgstr "Début"
+msgstr "DÃ©but"
 
 #: ../templates/default/gestion_adherents.tpl:164
 #: ../templates/default/gestion_contributions.tpl:137
-#: ../templates/default/log.tpl:11 ../templates/default/log.tpl:101
+#: ../templates/default/log.tpl:91
 #: ../templates/default/gestion_transactions.tpl:100
 msgid "Pages:"
 msgstr "Pages&nbsp;:"
@@ -874,13 +879,13 @@ msgstr "Pages&nbsp;:"
 msgid "Amount:"
 msgstr "Montant&nbsp;:"
 
-#: ../templates/default/mailing_adherents.tpl:73
+#: ../templates/default/mailing_adherents.tpl:69
 msgid ""
 "Some members you have selected have no e-mail address. However, you can "
 "generate envelope labels to contact them by snail mail."
 msgstr ""
-"Certains des membres que vous avez sélectionnés n'ont pas d'adresse de "
-"courriel. Cependant vous pouvez produire des étiquettes d'enveloppes pour "
+"Certains des membres que vous avez sÃ©lectionnÃ©s n'ont pas d'adresse de "
+"courriel. Cependant vous pouvez produire des Ã©tiquettes d'enveloppes pour "
 "les contacter par courrier postal."
 
 #: ../footer.php:170 ../templates/default/page.tpl:132
@@ -894,22 +899,22 @@ msgstr "utilisateur_apache"
 #: ../templates/default/gestion_adherents.tpl:31
 #: ../templates/default/mailing_adherents.tpl:31
 msgid "members"
-msgstr "adhérents"
+msgstr "adhÃ©rents"
 
 #: ../lostpasswd.php:105
 msgid "Temporary password:"
 msgstr "Mot de passe temporaire&nbsp;:"
 
-#: ../includes/i18n.inc.php:206
+#: ../includes/i18n.inc.php:205
 msgid "President"
-msgstr "Président"
+msgstr "PrÃ©sident"
 
 #: ../templates/default/ajouter_adherent.tpl:123
 msgid ""
 "(the member will receive his username and password by email, if he has an "
 "address.)"
 msgstr ""
-"(l'adhérent recevra son identifiant et son mot de passe par courriel, s'il a "
+"(l'adhÃ©rent recevra son identifiant et son mot de passe par courriel, s'il a "
 "une adresse.)"
 
 #: ../footer.php:54 ../templates/default/page.tpl:38
@@ -922,7 +927,7 @@ msgid ""
 "The mail server filled in the preferences cannot be reached. Ask Galette "
 "admin"
 msgstr ""
-"Le serveur de mail indiqué dans les préférences n'est pas joignable. "
+"Le serveur de mail indiquÃ© dans les prÃ©fÃ©rences n'est pas joignable. "
 "Contactez votre administrateur Galette"
 
 #: ../install/index.php:77
@@ -931,7 +936,7 @@ msgstr "Type de base inconnu"
 
 #: ../templates/default/mailing_adherents.tpl:33
 msgid "Please compose your mail."
-msgstr "Rédigez votre courriel."
+msgstr "RÃ©digez votre courriel."
 
 #: ../self_adherent.php:132
 msgid "Password misrepeated: "
@@ -944,17 +949,13 @@ msgstr "Message&nbsp;:"
 
 #: ../gestion_contributions.php:362 ../gestion_adherents.php:435
 msgid "Members up to date"
-msgstr "Les adhérents à jour"
+msgstr "Les adhÃ©rents Ã  jour"
 
-#: ../ajouter_transaction.php:160
-msgid "transaction added"
-msgstr "transaction ajoutée"
-
-#: ../install/index.php:1219
+#: ../install/index.php:1220
 msgid "Step 10 - End of the update"
-msgstr "Étape 10 - Fin de la mise à jour"
+msgstr "Ã‰tape 10 - Fin de la mise Ã  jour"
 
-#: ../includes/i18n.inc.php:236
+#: ../includes/i18n.inc.php:235
 msgid "admin"
 msgstr "admin"
 
@@ -964,23 +965,23 @@ msgstr "Tous  les comptes"
 
 #: ../install/index.php:192
 msgid "Select installation mode to launch"
-msgstr "Sélectionnez le type d'installation à lancer"
+msgstr "SÃ©lectionnez le type d'installation Ã  lancer"
 
 #: ../templates/default/lostpasswd.tpl:46
 #: ../templates/default/change_passwd.tpl:55
 #: ../templates/default/self_adherent.tpl:188
 msgid "Back to login page"
-msgstr "Retour à la page d'accueil"
+msgstr "Retour Ã  la page d'accueil"
 
 #: ../templates/default/preferences.tpl:86
 msgid "Default membership extension:"
-msgstr "Durée d'adhésion par défaut&nbsp;:"
+msgstr "DurÃ©e d'adhÃ©sion par dÃ©faut&nbsp;:"
 
 #: ../templates/default/ajouter_contribution.tpl:48
 msgid "Start date of membership:"
-msgstr "Date de début d'adhésion&nbsp;:"
+msgstr "Date de dÃ©but d'adhÃ©sion&nbsp;:"
 
-#: ../includes/i18n.inc.php:204
+#: ../includes/i18n.inc.php:203
 msgid "Graphics:"
 msgstr "Graphisme&nbsp;:"
 
@@ -993,8 +994,8 @@ msgid ""
 "You asked Galette to send a confirmation mail to the member, but mail has "
 "been disabled in the preferences."
 msgstr ""
-"Vous avez demandé à Galette d'envoyer une confirmation par mail à "
-"l'adhérent, mais l'envoi de mail a été désactivé dans les préférences."
+"Vous avez demandÃ© Ã  Galette d'envoyer une confirmation par mail Ã  "
+"l'adhÃ©rent, mais l'envoi de mail a Ã©tÃ© dÃ©sactivÃ© dans les prÃ©fÃ©rences."
 
 #: ../lostpasswd.php:45
 msgid "this login doesn't exist"
@@ -1002,12 +1003,12 @@ msgstr "Cet identifiant n'existe pas"
 
 #: ../install/index.php:336
 msgid "Host:"
-msgstr "Hôte&nbsp;:"
+msgstr "HÃ´te&nbsp;:"
 
-#: ../gestion_contributions.php:329 ../gestion_adherents.php:395
-#: ../gestion_transactions.php:167
+#: ../log.php:145 ../gestion_contributions.php:329
+#: ../gestion_adherents.php:395 ../gestion_transactions.php:167
 msgid "First page"
-msgstr "Première page"
+msgstr "PremiÃ¨re page"
 
 #: ../templates/default/gestion_transactions.tpl:33
 msgid "Originator"
@@ -1016,15 +1017,15 @@ msgstr "Emetteur"
 #: ../self_adherent.php:134 ../change_passwd.php:66 ../preferences.php:128
 #: ../ajouter_adherent.php:174
 msgid "- The password must be of at least 4 characters!"
-msgstr "- Le mot de passe doit être composé d'au moins 4 caractères&nbsp;!"
+msgstr "- Le mot de passe doit Ãªtre composÃ© d'au moins 4 caractÃ¨res&nbsp;!"
 
 #: ../mailing_adherents.php:85
 msgid "Please enter a message."
 msgstr "Veuillez saisir un message."
 
-#: ../install/index.php:1207
+#: ../install/index.php:1208
 msgid "Galette has been successfully updated!"
-msgstr "Galette a été mis à jour avec succès&nbsp;!"
+msgstr "Galette a Ã©tÃ© mis Ã  jour avec succÃ¨s&nbsp;!"
 
 #: ../templates/default/ajouter_adherent.tpl:51
 #: ../templates/default/voir_adherent.tpl:34
@@ -1036,40 +1037,40 @@ msgstr "Pseudo&nbsp;:"
 msgid "Date:"
 msgstr "Date&nbsp;:"
 
-#: ../includes/i18n.inc.php:222
+#: ../includes/i18n.inc.php:221
 msgid "english"
 msgstr "anglais"
 
 #: ../templates/default/self_adherent.tpl:72
 msgid "You can prepare a picture to upload after sending"
-msgstr "Vous pouvez préparer une photo à télécharger après avoir envoyé"
+msgstr "Vous pouvez prÃ©parer une photo Ã  tÃ©lÃ©charger aprÃ¨s avoir envoyÃ©"
 
 #: ../templates/default/preferences.tpl:88
 msgid "(Months)"
 msgstr "(Mois)"
 
-#: ../install/index.php:515
+#: ../install/index.php:516
 msgid "INSERT operation not allowed"
-msgstr "Opération INSERT non autorisée"
+msgstr "OpÃ©ration INSERT non autorisÃ©e"
 
 #: ../self_contribution.php:253
 #: ../templates/default/ajouter_contribution.tpl:76
 msgid "Comments:"
 msgstr "Commentaire&nbsp;:"
 
-#: ../includes/i18n.inc.php:230
+#: ../includes/i18n.inc.php:229
 msgid "partnership"
 msgstr "Partenariat"
 
 #: ../editer_champ.php:78
 msgid "- Field name already used."
-msgstr "- Un champ de ce nom existe déjà."
+msgstr "- Un champ de ce nom existe dÃ©jÃ ."
 
-#: ../install/index.php:994
+#: ../install/index.php:995
 msgid "Configuration file created (includes/config.inc.php)"
-msgstr "Fichier de configuration crée (includes/config.inc.php)"
+msgstr "Fichier de configuration crÃ©e (includes/config.inc.php)"
 
-#: ../install/index.php:941 ../templates/default/preferences.tpl:183
+#: ../install/index.php:942 ../templates/default/preferences.tpl:183
 msgid "Retype password:"
 msgstr "Confirmation&nbsp;:"
 
@@ -1084,19 +1085,19 @@ msgstr "- Les mots de passe ne correspondent pas&nbsp;!"
 #: ../templates/default/ajouter_adherent.tpl:1
 #: ../templates/default/voir_adherent.tpl:1
 msgid "Member Profile"
-msgstr "Fiche adhérent"
+msgstr "Fiche adhÃ©rent"
 
 #: ../ajouter_adherent.php:233
 msgid "Member card added"
-msgstr "Fiche adhérent ajoutée"
+msgstr "Fiche adhÃ©rent ajoutÃ©e"
 
-#: ../install/index.php:488
+#: ../install/index.php:489
 msgid "DROP operation allowed"
-msgstr "Opération DROP autorisée"
+msgstr "OpÃ©ration DROP autorisÃ©e"
 
-#: ../install/index.php:1127
+#: ../install/index.php:1128
 msgid "Parameters saved into the database"
-msgstr "Paramètres sauvegardés dans la base de données"
+msgstr "ParamÃ¨tres sauvegardÃ©s dans la base de donnÃ©es"
 
 #: ../templates/default/ajouter_adherent.tpl:191
 #: ../templates/default/voir_adherent.tpl:147
@@ -1106,18 +1107,18 @@ msgstr "MSN&nbsp;:"
 
 #: ../install/index.php:233
 msgid "Step 2 - Installation mode"
-msgstr "Étape 2 - Type d'installation"
+msgstr "Ã‰tape 2 - Type d'installation"
 
 #: ../gestion_contributions.php:367 ../gestion_adherents.php:441
 msgid "Active accounts"
 msgstr "Comptes actifs"
 
-#: ../install/index.php:606
+#: ../install/index.php:607
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr ""
-"Galette ne dispose pas de droits suffisants sur la base de données pour "
-"poursuivre la mise à jour."
+"Galette ne dispose pas de droits suffisants sur la base de donnÃ©es pour "
+"poursuivre la mise Ã  jour."
 
 #: ../templates/default/ajouter_contribution.tpl:85
 #: ../templates/default/configurer_fiches.tpl:17
@@ -1131,12 +1132,12 @@ msgstr "M."
 #: ../lostpasswd.php:99
 msgid "Someone (probably you) asked to recover your password."
 msgstr ""
-"Quelqu'un (sûrement vous) a demandé à ce que l'on vous renvoie votre mot de "
+"Quelqu'un (sÃ»rement vous) a demandÃ© Ã  ce que l'on vous renvoie votre mot de "
 "passe."
 
-#: ../install/index.php:408
+#: ../install/index.php:409
 msgid "Unable to connect to the database"
-msgstr "Connexion à la base impossible"
+msgstr "Connexion Ã  la base impossible"
 
 #: ../templates/default/ajouter_adherent.tpl:113
 #: ../templates/default/change_passwd.tpl:41
@@ -1150,11 +1151,11 @@ msgstr "Montant"
 
 #: ../templates/default/gestion_adherents.tpl:158
 msgid "(Un)Check all"
-msgstr "Tout (dé)cocher"
+msgstr "Tout (dÃ©)cocher"
 
 #: ../self_contribution.php:154 ../ajouter_contribution.php:143
 msgid "- The amount must be an integer!"
-msgstr "- Le montant doit être un nombre entier&nbsp;!"
+msgstr "- Le montant doit Ãªtre un nombre entier&nbsp;!"
 
 #: ../voir_adherent.php:79 ../templates/default/configurer_fiches.tpl:37
 #: ../templates/default/configurer_fiches.tpl:84
@@ -1162,27 +1163,27 @@ msgstr "- Le montant doit être un nombre entier&nbsp;!"
 msgid "No"
 msgstr "Non"
 
-#: ../install/index.php:855
+#: ../install/index.php:856
 msgid "The tables are not totally created, it's maybe a permission problem."
 msgstr ""
-"Les tables n'ont pas pu être totalement créées, il s'agit peut-être d'un "
-"problème de droits."
+"Les tables n'ont pas pu Ãªtre totalement crÃ©Ã©es, il s'agit peut-Ãªtre d'un "
+"problÃ¨me de droits."
 
-#: ../includes/i18n.inc.php:237
+#: ../includes/i18n.inc.php:236
 msgid "separator"
-msgstr "séparateur"
+msgstr "sÃ©parateur"
 
 #: ../gestion_contributions.php:363 ../gestion_adherents.php:436
 msgid "Close expiries"
-msgstr "Les échéances proches"
+msgstr "Les Ã©chÃ©ances proches"
 
 #: ../templates/default/editer_champ.tpl:39
 msgid "Required:"
 msgstr "Obligatoire&nbsp;:"
 
-#: ../includes/i18n.inc.php:216
+#: ../includes/i18n.inc.php:215
 msgid "Reduced annual contribution"
-msgstr "Cotisation annuelle réduite"
+msgstr "Cotisation annuelle rÃ©duite"
 
 #: ../templates/default/gestion_adherents.tpl:172
 msgid "Delete"
@@ -1190,7 +1191,7 @@ msgstr "Supprimer"
 
 #: ../footer.php:75 ../templates/default/page.tpl:54
 msgid "Log off"
-msgstr "Déconnexion"
+msgstr "DÃ©connexion"
 
 #: ../templates/default/preferences.tpl:116
 msgid "Using a SMTP server (slower)"
@@ -1211,15 +1212,15 @@ msgstr "Mme."
 
 #: ../install/index.php:361
 msgid "Table prefix:"
-msgstr "Préfixe de table&nbsp;:"
+msgstr "PrÃ©fixe de table&nbsp;:"
 
-#: ../install/index.php:467
+#: ../install/index.php:468
 msgid ""
 "To run, Galette needs a number of rights on the database (CREATE, DROP, "
 "DELETE, UPDATE, SELECT and INSERT)"
 msgstr ""
 "Pour fonctionner, Galette doit avoir un certain nombre de droits sur la base "
-"de données (CREATE, DROP, DELETE, UPDATE, SELECT et INSERT)"
+"de donnÃ©es (CREATE, DROP, DELETE, UPDATE, SELECT et INSERT)"
 
 #: ../footer.php:97 ../templates/default/gestion_adherents.tpl:108
 #: ../templates/default/page.tpl:70
@@ -1232,10 +1233,10 @@ msgid "Galette Admin:"
 msgstr "Administrateur Galette&nbsp;:"
 
 #: ../install/index.php:227 ../install/index.php:296 ../install/index.php:381
-#: ../install/index.php:436 ../install/index.php:631 ../install/index.php:886
-#: ../install/index.php:948 ../install/index.php:1142
+#: ../install/index.php:437 ../install/index.php:632 ../install/index.php:887
+#: ../install/index.php:949 ../install/index.php:1143
 msgid "Next step"
-msgstr "Étape suivante"
+msgstr "Ã‰tape suivante"
 
 #: ../templates/default/gestion_adherents.tpl:33
 #: ../templates/default/gestion_contributions.tpl:14
@@ -1262,21 +1263,18 @@ msgstr "Image"
 msgid "Date of contribution:"
 msgstr "Date contribution&nbsp;:"
 
-#: ../change_passwd.php:48
-msgid ""
-"This link is no longer valid. You should <a href='lostpasswd.php'>ask to "
-"retrieve your password</a> again."
-msgstr ""
-"Ce lien n'est plus valide. Vous devriez <a href='lostpasswd.php'>demander la "
-"récupération de votre mot de passe</a> à nouveau."
+#: ../footer.php:67 ../templates/default/page.tpl:47
+#: ../templates/default/preferences.tpl:1
+msgid "Settings"
+msgstr "PrÃ©fÃ©rences"
 
 #: ../install/index.php:196
 msgid ""
 "You're installing Galette for the first time, or you wish to erase an older "
 "version of Galette without keeping your data"
 msgstr ""
-"Vous installez Galette pour la première fois, ou vous souhaitez écraser une "
-"ancienne version de Galette sans conserver vos données"
+"Vous installez Galette pour la premiÃ¨re fois, ou vous souhaitez Ã©craser une "
+"ancienne version de Galette sans conserver vos donnÃ©es"
 
 #: ../templates/default/gestion_contributions.tpl:12
 msgid "contributions"
@@ -1286,19 +1284,19 @@ msgstr "contributions"
 msgid "Mail_Username:"
 msgstr "Identifiant :"
 
-#: ../install/index.php:628
+#: ../install/index.php:629
 msgid "Permissions to database are OK."
-msgstr "Les droits d'accès à la base sont corrects."
+msgstr "Les droits d'accÃ¨s Ã  la base sont corrects."
 
 #: ../preferences.php:225 ../ajouter_adherent.php:265
 msgid "Delete failed"
-msgstr "La suppression a échouée"
+msgstr "La suppression a Ã©chouÃ©e"
 
-#: ../templates/default/mailing_adherents.tpl:72
+#: ../templates/default/mailing_adherents.tpl:68
 msgid "unreachable member"
-msgstr "membre qui n'a pu être joint"
+msgstr "membre qui n'a pu Ãªtre joint"
 
-#: ../includes/i18n.inc.php:213
+#: ../includes/i18n.inc.php:212
 msgid "Old-timer"
 msgstr "Ancien"
 
@@ -1306,7 +1304,7 @@ msgstr "Ancien"
 msgid "Your Galette identifiers"
 msgstr "Vos identifiants Galette"
 
-#: ../includes/i18n.inc.php:218
+#: ../includes/i18n.inc.php:217
 msgid "Donation in kind"
 msgstr "Donation en nature"
 
@@ -1319,13 +1317,13 @@ msgstr "Veuillez indiquer un objet pour le message."
 msgid ""
 "**IMPORTANT** There was a probably breaking attempt when sending mail to :"
 msgstr ""
-"**IMPORTANT** Il est possible qu'une tentative d'atteinte au système ai eu "
-"lieu lors de l'envoi à&nbsp;:"
+"**IMPORTANT** Il est possible qu'une tentative d'atteinte au systÃ¨me ai eu "
+"lieu lors de l'envoi Ã &nbsp;:"
 
 #: ../self_contribution.php:209 ../templates/default/ajouter_adherent.tpl:1
 #: ../templates/default/ajouter_contribution.tpl:1
 msgid "creation"
-msgstr "création"
+msgstr "crÃ©ation"
 
 #: ../templates/default/preferences.tpl:127
 msgid "Vertical margins:"
@@ -1333,45 +1331,45 @@ msgstr "Marges verticales&nbsp;:"
 
 #: ../install/index.php:322
 msgid "Enter connection data for the existing database."
-msgstr "Veuillez entrer les paramètres de connexion à la base existante."
+msgstr "Veuillez entrer les paramÃ¨tres de connexion Ã  la base existante."
 
 #: ../templates/default/mailing_adherents.tpl:29
 msgid "You are about to send an e-mail to"
-msgstr "Vous êtes sur le point d'envoyer un courriel à"
+msgstr "Vous Ãªtes sur le point d'envoyer un courriel Ã "
 
-#: ../install/index.php:856
+#: ../install/index.php:857
 msgid ""
 "The tables have not been totally created, it may be a permission problem."
 msgstr ""
-"Les tables n'ont pas pu être totalement créées, il s'agit peut-être d'un "
-"problème de droits."
+"Les tables n'ont pas pu Ãªtre totalement crÃ©Ã©es, il s'agit peut-Ãªtre d'un "
+"problÃ¨me de droits."
 
 #: ../footer.php:44 ../templates/default/page.tpl:33
 #: ../templates/default/voir_adherent.tpl:175
 msgid "Add a contribution"
 msgstr "Ajouter une contribution"
 
-#: ../includes/i18n.inc.php:221
+#: ../includes/i18n.inc.php:220
 msgid "french"
-msgstr "français"
+msgstr "franÃ§ais"
 
 #: ../templates/default/ajouter_contribution.tpl:21
 #: ../templates/default/ajouter_transaction.tpl:34
 msgid "-- select a name --"
 msgstr "-- selectionner un nom --"
 
-#: ../install/index.php:998
+#: ../install/index.php:999
 msgid "Unable to create configuration file (includes/config.inc.php)"
 msgstr ""
-"Impossible de créer le fichier de configuration (includes/config.inc.php)"
+"Impossible de crÃ©er le fichier de configuration (includes/config.inc.php)"
 
 #: ../templates/default/gestion_contributions.tpl:41
 msgid "Member"
-msgstr "Adhérent"
+msgstr "AdhÃ©rent"
 
-#: ../install/index.php:1206
+#: ../install/index.php:1207
 msgid "Galette has been successfully installed!"
-msgstr "Galette a été installé avec succès&nbsp;!"
+msgstr "Galette a Ã©tÃ© installÃ© avec succÃ¨s&nbsp;!"
 
 #: ../templates/default/configurer_fiches.tpl:24
 #: ../templates/default/gestion_contributions.tpl:54
@@ -1380,7 +1378,7 @@ msgstr "Type"
 
 #: ../install/index.php:213
 msgid "Update:"
-msgstr "Mise à jour&nbsp;:"
+msgstr "Mise Ã  jour&nbsp;:"
 
 #: ../templates/default/configurer_fiches.tpl:54
 msgid "[up]"
@@ -1395,39 +1393,39 @@ msgstr "haut"
 msgid "[del]"
 msgstr "[suppr]"
 
-#: ../templates/default/log.tpl:64
+#: ../templates/default/log.tpl:52
 msgid "Action"
 msgstr "Action"
 
 #: ../self_contribution.php:245
 msgid "Duration:"
-msgstr "Durée&nbsp;:"
+msgstr "DurÃ©e&nbsp;:"
 
 #: ../templates/default/page.tpl:49
 #: ../templates/default/traduire_libelles.tpl:1
 msgid "Translate labels"
-msgstr "Traduction de libellés"
+msgstr "Traduction de libellÃ©s"
 
 #: ../templates/default/preferences.tpl:152
 msgid "Label height:"
-msgstr "Hauteur étiquette&nbsp;:"
+msgstr "Hauteur Ã©tiquette&nbsp;:"
 
 #: ../lostpasswd.php:93
 msgid "There was a database error when inserting data"
-msgstr "La base de données a retourné une erreur lors de l'insertion"
+msgstr "La base de donnÃ©es a retournÃ© une erreur lors de l'insertion"
 
 #: ../footer.php:125 ../templates/default/page.tpl:96
 msgid "Inactive account"
-msgstr "Compte désactivé"
+msgstr "Compte dÃ©sactivÃ©"
 
 #: ../footer.php:47 ../templates/default/page.tpl:35
 #: ../templates/default/log.tpl:1
 msgid "Logs"
 msgstr "Historique"
 
-#: ../install/index.php:595
+#: ../install/index.php:596
 msgid "DROP OPeration allowed"
-msgstr "Opération DROP autorisée"
+msgstr "OpÃ©ration DROP autorisÃ©e"
 
 #: ../self_adherent.php:301 ../ajouter_adherent.php:428
 msgid "Miss"
@@ -1439,17 +1437,17 @@ msgstr "S'inscrire"
 
 #: ../footer.php:137 ../templates/default/page.tpl:108
 msgid "Membership will expire soon (&lt;30d)"
-msgstr "Adhésion à échéance (&lt;30j)"
+msgstr "AdhÃ©sion Ã  Ã©chÃ©ance (&lt;30j)"
 
-#: ../install/index.php:412
+#: ../install/index.php:413
 msgid "Connection to database successfull"
-msgstr "La connexion à la base est établie"
+msgstr "La connexion Ã  la base est Ã©tablie"
 
-#: ../templates/default/log.tpl:98
+#: ../templates/default/log.tpl:87
 msgid "logs are empty"
 msgstr "historique vide"
 
-#: ../lostpasswd.php:104 ../install/index.php:926
+#: ../lostpasswd.php:104 ../install/index.php:927
 #: ../templates/default/index.tpl:21 ../templates/default/preferences.tpl:175
 #: ../templates/default/ajouter_adherent.tpl:102
 #: ../templates/default/voir_adherent.tpl:75
@@ -1473,22 +1471,18 @@ msgstr "Fin"
 
 #: ../templates/default/mailing_adherents.tpl:46
 msgid "Interpret HTML"
-msgstr "Interpréter les balises HTML"
+msgstr "InterprÃ©ter les balises HTML"
 
-#: ../ajouter_transaction.php:173
-msgid "transaction updated"
-msgstr "transaction mise à jour"
-
-#: ../install/index.php:283 ../install/index.php:610 ../install/index.php:861
-#: ../install/index.php:1170
+#: ../install/index.php:283 ../install/index.php:611 ../install/index.php:862
+#: ../install/index.php:1171
 msgid "Retry"
-msgstr "Réessayer"
+msgstr "RÃ©essayer"
 
 #: ../install/index.php:354
 msgid "Database:"
 msgstr "Nom de la base&nbsp;:"
 
-#: ../includes/i18n.inc.php:240
+#: ../includes/i18n.inc.php:239
 msgid "choice"
 msgstr "choix"
 
@@ -1497,17 +1491,17 @@ msgid ""
 "Under Windows, check these files are not in Read-Only mode in their property "
 "panel."
 msgstr ""
-"Sous Windows, vérifiez que les fichiers en question ne sont pas en lecture "
-"seule dans leurs propriétés."
+"Sous Windows, vÃ©rifiez que les fichiers en question ne sont pas en lecture "
+"seule dans leurs propriÃ©tÃ©s."
 
 #: ../templates/default/ajouter_adherent.tpl:35
 #: ../templates/default/self_adherent.tpl:55
 msgid "Title:"
 msgstr "Titre&nbsp;:"
 
-#: ../install/index.php:1193
+#: ../install/index.php:1194
 msgid "Step 9 - Saving the parameters"
-msgstr "Étape 9 - Sauvegarde des paramètres"
+msgstr "Ã‰tape 9 - Sauvegarde des paramÃ¨tres"
 
 #: ../gestion_contributions.php:284 ../gestion_adherents.php:339
 msgid "Last day!"
@@ -1522,28 +1516,28 @@ msgid ""
 "- Default membership extention and beginning of membership are mutually "
 "exclusive."
 msgstr ""
-"- Vous devez indiquer soit une durée d'adhésion par défaut, soit une date de "
-"début d'exercice (pas les deux)."
+"- Vous devez indiquer soit une durÃ©e d'adhÃ©sion par dÃ©faut, soit une date de "
+"dÃ©but d'exercice (pas les deux)."
 
 #: ../templates/default/preferences.tpl:80
 msgid "Disabled"
-msgstr "Désactivé"
+msgstr "DÃ©sactivÃ©"
 
-#: ../ajouter_contribution.php:366 ../ajouter_transaction.php:235
+#: ../ajouter_contribution.php:366 ../ajouter_transaction.php:238
 msgid "You must first register a member"
-msgstr "Vous devez d'abord enregistrer un adhérent"
+msgstr "Vous devez d'abord enregistrer un adhÃ©rent"
 
-#: ../includes/i18n.inc.php:231
+#: ../includes/i18n.inc.php:230
 msgid "reduced annual fee"
-msgstr "cotisation annuelle réduite"
+msgstr "cotisation annuelle rÃ©duite"
 
 #: ../templates/default/mailing_adherents.tpl:47
 msgid "Preview"
-msgstr "Prévisualisation"
+msgstr "PrÃ©visualisation"
 
-#: ../install/index.php:881
+#: ../install/index.php:882
 msgid "The tables has been correctly created."
-msgstr "Les tables ont été correctement créées."
+msgstr "Les tables ont Ã©tÃ© correctement crÃ©Ã©es."
 
 #: ../self_contribution.php:209 ../templates/default/ajouter_adherent.tpl:1
 #: ../templates/default/ajouter_contribution.tpl:1
@@ -1552,20 +1546,20 @@ msgstr "modification"
 
 #: ../templates/default/preferences.tpl:147
 msgid "Label width:"
-msgstr "Largeur étiquette&nbsp;:"
+msgstr "Largeur Ã©tiquette&nbsp;:"
 
 #: ../templates/default/editer_champ.tpl:75
 msgid "Repeat:"
-msgstr "Répétition&nbsp;:"
+msgstr "RÃ©pÃ©tition&nbsp;:"
 
 #: ../gestion_contributions.php:295 ../gestion_contributions.php:297
 #: ../gestion_adherents.php:350 ../gestion_adherents.php:352
 msgid "ending on"
 msgstr "fin le"
 
-#: ../install/index.php:560
+#: ../install/index.php:561
 msgid "ALTER Operation not allowed"
-msgstr "Opération ALTER non autorisée"
+msgstr "OpÃ©ration ALTER non autorisÃ©e"
 
 #: ../gestion_adherents.php:432
 msgid "Infos"
@@ -1577,7 +1571,7 @@ msgstr "Pseudo"
 
 #: ../install/index.php:373
 msgid "(Indicate the CURRENT prefix of your Galette tables)"
-msgstr "(Indiquez le préfixe ACTUEL de vos tables Galette)"
+msgstr "(Indiquez le prÃ©fixe ACTUEL de vos tables Galette)"
 
 #: ../templates/default/editer_champ.tpl:93
 msgid "Cancel"
@@ -1586,7 +1580,7 @@ msgstr "Effacer"
 #: ../change_passwd.php:81
 msgid "Password changed, you will be redirected to login page"
 msgstr ""
-"Le mot de passe a été changé. Vous allez être redirigé vers la page d'accueil"
+"Le mot de passe a Ã©tÃ© changÃ©. Vous allez Ãªtre redirigÃ© vers la page d'accueil"
 
 #: ../footer.php:86 ../templates/default/page.tpl:62
 msgid "Man"
@@ -1598,7 +1592,7 @@ msgstr "Retard de cotisation"
 
 #: ../configurer_fiches.php:65
 msgid "- The name field cannot be void."
-msgstr "- Le champ nom ne peut pas être vide."
+msgstr "- Le champ nom ne peut pas Ãªtre vide."
 
 #: ../templates/default/index.tpl:14 ../templates/default/index.tpl:30
 msgid "Login"
@@ -1630,7 +1624,7 @@ msgstr "Autres informations&nbsp;:"
 
 #: ../gestion_contributions.php:368 ../gestion_adherents.php:442
 msgid "Inactive accounts"
-msgstr "Comptes désactivés"
+msgstr "Comptes dÃ©sactivÃ©s"
 
 #: ../lostpasswd.php:37
 msgid "empty login"
@@ -1640,8 +1634,8 @@ msgstr "login vide"
 msgid "My transactions"
 msgstr "Mes transactions"
 
-#: ../gestion_contributions.php:342 ../gestion_adherents.php:408
-#: ../gestion_transactions.php:180
+#: ../log.php:158 ../gestion_contributions.php:342
+#: ../gestion_adherents.php:408 ../gestion_transactions.php:180
 msgid "Page %i"
 msgstr "Page %i"
 
@@ -1655,15 +1649,15 @@ msgstr "GSM&nbsp;:"
 msgid "Do you really want to delete this transaction of the database ?"
 msgstr "Voulez vous vraiment effacer cette transaction&nbsp;?"
 
-#: ../includes/i18n.inc.php:205
+#: ../includes/i18n.inc.php:204
 msgid "Publisher:"
-msgstr "Éditeur&nbsp;:"
+msgstr "Ã‰diteur&nbsp;:"
 
 #: ../footer.php:41 ../templates/default/page.tpl:29
 msgid "List of members"
-msgstr "Liste des adhérents"
+msgstr "Liste des adhÃ©rents"
 
-#: ../includes/i18n.inc.php:243
+#: ../includes/i18n.inc.php:242
 msgid "right"
 msgstr "droite"
 
@@ -1675,27 +1669,27 @@ msgstr "Il n'y a pas de mot de passe pour l'utilisateur&nbsp;:"
 msgid ""
 "In order to be updated, Galette needs the Write permission on these files."
 msgstr ""
-"Pour être mis à jour et fonctionner correctement, Galette a besoin d'avoir "
-"les droits en écriture sur ces fichiers."
+"Pour Ãªtre mis Ã  jour et fonctionner correctement, Galette a besoin d'avoir "
+"les droits en Ã©criture sur ces fichiers."
 
 #: ../ajouter_contribution.php:227
 msgid "Contribution added"
-msgstr "Contribution ajoutée"
+msgstr "Contribution ajoutÃ©e"
 
-#: ../install/index.php:660
+#: ../install/index.php:661
 msgid "Update of the tables"
-msgstr "Mise à jour des tables"
+msgstr "Mise Ã  jour des tables"
 
 #: ../install/index.php:269
 msgid ""
 "For a correct functioning, Galette needs the Write permission on these files."
 msgstr ""
 "Pour fonctionner correctement, Galette a besoin d'avoir les droits en "
-"écriture sur ces fichiers."
+"Ã©criture sur ces fichiers."
 
-#: ../templates/default/mailing_adherents.tpl:72
+#: ../templates/default/mailing_adherents.tpl:68
 msgid "unreachable members:"
-msgstr "membres qui n'ont pu être joints&nbsp;:"
+msgstr "membres qui n'ont pu Ãªtre joints&nbsp;:"
 
 #: ../templates/default/ajouter_adherent.tpl:187
 #: ../templates/default/voir_adherent.tpl:143
@@ -1705,16 +1699,16 @@ msgstr "Jabber&nbsp;:"
 
 #: ../templates/default/gestion_adherents.tpl:173
 msgid "Mail all"
-msgstr "Envoyer un courriel à tous"
+msgstr "Envoyer un courriel Ã  tous"
 
 #: ../templates/default/gestion_adherents.tpl:129
 msgid "no member"
-msgstr "aucun adhérent"
+msgstr "aucun adhÃ©rent"
 
 #: ../footer.php:82 ../footer.php:151 ../templates/default/page.tpl:58
 #: ../templates/default/page.tpl:118
 msgid "Legend"
-msgstr "Légende"
+msgstr "LÃ©gende"
 
 #: ../templates/default/preferences.tpl:78
 msgid "Logging level:"
@@ -1726,14 +1720,14 @@ msgstr "Envoyez-moi mon mot de passe"
 
 #: ../self_contribution.php:127
 msgid "- Check that all mandatory fields are filled in. ($fieldreq)"
-msgstr "Veuillez vérifier que tous les champs obligatoires sont bien remplis"
+msgstr "Veuillez vÃ©rifier que tous les champs obligatoires sont bien remplis"
 
 #: ../self_adherent.php:223
 msgid ""
 "The mail server filled in the preferences cannot be reached. Ask Galette "
 "admin."
 msgstr ""
-"Le serveur de mail indiqué dans les préférences ne peut pas être contacté. "
+"Le serveur de mail indiquÃ© dans les prÃ©fÃ©rences ne peut pas Ãªtre contactÃ©. "
 "Contactez votre administrateur Galette."
 
 #: ../templates/default/ajouter_adherent.tpl:175
@@ -1753,7 +1747,7 @@ msgstr "En retard de"
 
 #: ../mailing_adherents.php:136 ../mailing_adherents.php:148
 msgid "A problem happened while sending mail to :"
-msgstr "Un problème est survenu dans l'envoi du courriel pour le compte&nbsp;:"
+msgstr "Un problÃ¨me est survenu dans l'envoi du courriel pour le compte&nbsp;:"
 
 #: ../templates/default/ajouter_transaction.tpl:1
 msgid "New transaction"
@@ -1761,7 +1755,7 @@ msgstr "Nouvelle transaction"
 
 #: ../install/index.php:389
 msgid "Step 4 - Database"
-msgstr "Étape 4 - Base de données"
+msgstr "Ã‰tape 4 - Base de donnÃ©es"
 
 #: ../gestion_adherents.php:429
 msgid "Address"
@@ -1774,23 +1768,23 @@ msgstr "aucune contribution"
 
 #: ../install/index.php:116
 msgid "The username cannot contain the @ character"
-msgstr "L'identifiant ne peut pas contenir le caractère @&nbsp;!"
+msgstr "L'identifiant ne peut pas contenir le caractÃ¨re @&nbsp;!"
 
 #: ../preferences.php:137
 msgid "- Invalid format of beginning of membership."
-msgstr "- Mauvais format de date de début d'exercice invalide"
+msgstr "- Mauvais format de date de dÃ©but d'exercice invalide"
 
-#: ../includes/i18n.inc.php:238
+#: ../includes/i18n.inc.php:237
 msgid "free text"
 msgstr "texte libre"
 
-#: ../install/index.php:575
+#: ../install/index.php:576
 msgid "DELETE operation not allowed"
-msgstr "Opération DELETE non autorisée"
+msgstr "OpÃ©ration DELETE non autorisÃ©e"
 
-#: ../includes/i18n.inc.php:226
+#: ../includes/i18n.inc.php:225
 msgid "annual fee (to be paid)"
-msgstr "cotisation annuelle (dûe)"
+msgstr "cotisation annuelle (dÃ»e)"
 
 #: ../install/index.php:274 ../install/index.php:275
 msgid "file_name"
@@ -1806,32 +1800,32 @@ msgstr "Permissions de fichiers"
 
 #: ../templates/default/ajouter_transaction.tpl:30
 msgid "Originator:"
-msgstr "Émetteur&nbsp;:"
+msgstr "Ã‰metteur&nbsp;:"
 
-#: ../install/index.php:908
+#: ../install/index.php:909
 msgid "Step 7 - Tables Update"
-msgstr "Étape 7 - Mise à jour des tables"
+msgstr "Ã‰tape 7 - Mise Ã  jour des tables"
 
 #: ../install/index.php:323
 msgid ""
 "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 msgstr ""
-"Les droits nécessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et INSERT."
+"Les droits nÃ©cessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et INSERT."
 
 #: ../self_adherent.php:187 ../ajouter_adherent.php:275
 msgid ""
 "It is now possible to follow in real time the state of your subscription"
 msgstr ""
-"Il vous est désormais possible de suivre en temps réel l'état de votre "
-"adhésion"
+"Il vous est dÃ©sormais possible de suivre en temps rÃ©el l'Ã©tat de votre "
+"adhÃ©sion"
 
-#: ../templates/default/mailing_adherents.tpl:63
+#: ../templates/default/mailing_adherents.tpl:59
 msgid "Send"
 msgstr "Envoyer"
 
-#: ../install/index.php:1130
+#: ../install/index.php:1131
 msgid "Parameters couldn't be save into the database"
-msgstr "Les paramètres n'ont pas pu être sauvegardés dans la base de données"
+msgstr "Les paramÃ¨tres n'ont pas pu Ãªtre sauvegardÃ©s dans la base de donnÃ©es"
 
 #: ../install/index.php:293
 msgid "Files permissions are OK!"
@@ -1853,41 +1847,41 @@ msgstr "Envoyer un courriel"
 #: ../templates/default/voir_adherent.tpl:23
 #: ../templates/default/self_adherent.tpl:53
 msgid "Identity:"
-msgstr "Identité&nbsp;:"
+msgstr "IdentitÃ©&nbsp;:"
 
 #: ../ajouter_contribution.php:240
 msgid "Contribution updated"
-msgstr "Contribution mise à jour"
+msgstr "Contribution mise Ã  jour"
 
 #: ../templates/default/self_adherent.tpl:171
 msgid "Please repeat in the field the password shown in the image."
-msgstr "Recopiez dans le cadre le mot de passe présenté dans l'image."
+msgstr "Recopiez dans le cadre le mot de passe prÃ©sentÃ© dans l'image."
 
 #: ../gestion_contributions.php:361 ../gestion_adherents.php:434
 msgid "All members"
-msgstr "Tous les adhérents"
+msgstr "Tous les adhÃ©rents"
 
-#: ../includes/i18n.inc.php:229
+#: ../includes/i18n.inc.php:228
 msgid "donation in money"
-msgstr "Donation pécunière"
+msgstr "Donation pÃ©cuniÃ¨re"
 
 #: ../ajouter_contribution.php:126
 msgid "- Select a valid member name!"
-msgstr "- Sélectionnez un nom d'adhérent valide&nbsp;!"
+msgstr "- SÃ©lectionnez un nom d'adhÃ©rent valide&nbsp;!"
 
 #: ../templates/default/preferences.tpl:104
 msgid "Sender Email:"
-msgstr "Courriel expéditeur&nbsp;:"
+msgstr "Courriel expÃ©diteur&nbsp;:"
 
 #: ../templates/default/preferences.tpl:64
 msgid "Default language:"
-msgstr "Langue par défaut&nbsp;:"
+msgstr "Langue par dÃ©faut&nbsp;:"
 
-#: ../includes/i18n.inc.php:215
+#: ../includes/i18n.inc.php:214
 msgid "Non-member"
 msgstr "Non membre"
 
-#: ../includes/i18n.inc.php:210
+#: ../includes/i18n.inc.php:209
 msgid "Active member"
 msgstr "Membre actif"
 
@@ -1895,7 +1889,7 @@ msgstr "Membre actif"
 msgid "lines"
 msgstr "lignes"
 
-#: ../templates/default/log.tpl:76
+#: ../templates/default/log.tpl:64
 #: ../templates/default/gestion_transactions.tpl:30
 msgid "Description"
 msgstr "Description"
@@ -1903,20 +1897,20 @@ msgstr "Description"
 #: ../templates/default/ajouter_adherent.tpl:47
 #: ../templates/default/self_adherent.tpl:68
 msgid "First name:"
-msgstr "Prénom&nbsp;:"
+msgstr "PrÃ©nom&nbsp;:"
 
 #: ../ajouter_contribution.php:207 ../ajouter_transaction.php:143
 msgid "-  Sum of all contributions exceed corresponding transaction amount."
 msgstr ""
-"-  La somme de toutes les contributions dépasse le montant de la transaction."
+"-  La somme de toutes les contributions dÃ©passe le montant de la transaction."
 
 #: ../gestion_adherents.php:54 ../gestion_adherents.php:66
 msgid "No member was selected, please check at least one name."
-msgstr "Veuillez sélectionner au moins un adhérent."
+msgstr "Veuillez sÃ©lectionner au moins un adhÃ©rent."
 
-#: ../install/index.php:1218
+#: ../install/index.php:1219
 msgid "Step 10 - End of the installation"
-msgstr "Étape 10 - Fin de l'installation"
+msgstr "Ã‰tape 10 - Fin de l'installation"
 
 #: ../footer.php:174 ../templates/default/page.tpl:136
 msgid "Gift"
@@ -1930,11 +1924,11 @@ msgstr "Exempt de cotisation&nbsp;:"
 #: ../templates/default/ajouter_adherent.tpl:128
 #: ../templates/default/voir_adherent.tpl:80
 msgid "Creation date:"
-msgstr "Date de création&nbsp;:"
+msgstr "Date de crÃ©ation&nbsp;:"
 
 #: ../templates/default/preferences.tpl:82
 msgid "Detailed"
-msgstr "Détaillé"
+msgstr "DÃ©taillÃ©"
 
 #: ../install/index.php:79 ../install/index.php:114
 msgid "No user name"
@@ -1953,7 +1947,7 @@ msgstr "Pays&nbsp;:"
 
 #: ../self_contribution.php:147 ../ajouter_contribution.php:110
 msgid "- The duration must be an integer!"
-msgstr "- La durée doit être un entier&nbsp;!"
+msgstr "- La durÃ©e doit Ãªtre un entier&nbsp;!"
 
 #: ../gestion_contributions.php:295 ../gestion_adherents.php:350
 msgid "remaining days"
@@ -1961,11 +1955,11 @@ msgstr "jours restants"
 
 #: ../self_adherent.php:127 ../preferences.php:104 ../ajouter_adherent.php:165
 msgid "- This username is already used by another member !"
-msgstr "- Cet identifiant est déjà utilisé par un autre adhérent&nbsp;!"
+msgstr "- Cet identifiant est dÃ©jÃ  utilisÃ© par un autre adhÃ©rent&nbsp;!"
 
 #: ../templates/default/preferences.tpl:25
 msgid "General information:"
-msgstr "Informations générales&nbsp;:"
+msgstr "Informations gÃ©nÃ©rales&nbsp;:"
 
 #: ../templates/default/mailing_adherents.tpl:1
 msgid "Mailing"
@@ -1978,23 +1972,23 @@ msgid ""
 "\n"
 "Do you still want to delete this member ?"
 msgstr ""
-"Voulez vous vraiment effacer cet adhérent de la base&nbsp;? Cela effacera "
-"l'historique de ses contributions. Pour éviter cela vous pouvez simplement "
-"désactiver son compte.\n"
+"Voulez vous vraiment effacer cet adhÃ©rent de la base&nbsp;? Cela effacera "
+"l'historique de ses contributions. Pour Ã©viter cela vous pouvez simplement "
+"dÃ©sactiver son compte.\n"
 "\n"
-"Voulez vous toujours effacer cet adhérent&nbsp;?"
+"Voulez vous toujours effacer cet adhÃ©rent&nbsp;?"
 
 #: ../self_adherent.php:186 ../ajouter_adherent.php:274
 msgid ""
 "You've just been subscribed on the members management system of the "
 "association."
 msgstr ""
-"Vous venez d'être inscrit sur le système de gestion d'adhérents de "
+"Vous venez d'Ãªtre inscrit sur le systÃ¨me de gestion d'adhÃ©rents de "
 "l'association."
 
-#: ../install/index.php:1203
+#: ../install/index.php:1204
 msgid "Update complete !"
-msgstr "Fin de la mise à jour"
+msgstr "Fin de la mise Ã  jour"
 
 #: ../templates/default/preferences.tpl:115
 msgid "PHP mail() function"
@@ -2002,17 +1996,17 @@ msgstr "Fonction PHP mail()"
 
 #: ../install/index.php:397
 msgid "Check of the database"
-msgstr "Vérification de la base"
+msgstr "VÃ©rification de la base"
 
 #: ../install/index.php:321
 msgid "If it hadn't been made, create a database and a user for Galette."
 msgstr ""
-"Si ce n'est pas déjà fait, créez une base de données et un utilisateur pour "
+"Si ce n'est pas dÃ©jÃ  fait, crÃ©ez une base de donnÃ©es et un utilisateur pour "
 "Galette."
 
 #: ../footer.php:43 ../templates/default/page.tpl:32
 msgid "Add a member"
-msgstr "Ajouter un adhérent"
+msgstr "Ajouter un adhÃ©rent"
 
 #: ../install/index.php:216
 msgid "and"
@@ -2020,7 +2014,7 @@ msgstr "et"
 
 #: ../templates/default/mailing_adherents.tpl:51
 msgid "Message preview:"
-msgstr "Prévisualisation du message&nbsp;:"
+msgstr "PrÃ©visualisation du message&nbsp;:"
 
 #: ../footer.php:35 ../templates/default/page.tpl:26
 msgid "Navigation"
@@ -2028,7 +2022,7 @@ msgstr "Navigation"
 
 #: ../preferences.php:165
 msgid "- You must indicate a sender name for emails!"
-msgstr "- Vous devez indiquer un nom d'expéditeur pour les courriels&nbsp;!"
+msgstr "- Vous devez indiquer un nom d'expÃ©diteur pour les courriels&nbsp;!"
 
 #: ../footer.php:68 ../templates/default/page.tpl:48
 msgid "Configure member forms"
@@ -2044,7 +2038,7 @@ msgstr "Original"
 
 #: ../install/index.php:398
 msgid "Check the parameters and the existence of the database"
-msgstr "Vérification des paramètres et de l'existence de la base"
+msgstr "VÃ©rification des paramÃ¨tres et de l'existence de la base"
 
 #: ../footer.php:112 ../templates/default/gestion_adherents.tpl:124
 #: ../templates/default/page.tpl:83
@@ -2073,27 +2067,27 @@ msgid "Description:"
 msgstr "Description&nbsp;:"
 
 #: ../footer.php:46 ../templates/default/gestion_adherents.tpl:174
-#: ../templates/default/mailing_adherents.tpl:77
+#: ../templates/default/mailing_adherents.tpl:73
 msgid "Generate labels"
-msgstr "Générer les étiquettes"
+msgstr "GÃ©nÃ©rer les Ã©tiquettes"
 
 #: ../templates/default/ajouter_adherent.tpl:133
 #: ../templates/default/voir_adherent.tpl:84
 msgid "Other informations (admin):"
 msgstr "Autres informations (admin)&nbsp;:"
 
-#: ../includes/i18n.inc.php:227
+#: ../includes/i18n.inc.php:226
 msgid "company fee"
 msgstr "cotisation entreprise"
 
-#: ../gestion_contributions.php:349 ../gestion_adherents.php:415
-#: ../gestion_transactions.php:187
+#: ../log.php:165 ../gestion_contributions.php:349
+#: ../gestion_adherents.php:415 ../gestion_transactions.php:187
 msgid "Last page (%i)"
-msgstr "Dernière page (%i)"
+msgstr "DerniÃ¨re page (%i)"
 
-#: ../install/index.php:455
+#: ../install/index.php:456
 msgid "Step 5 - Access to the database"
-msgstr "Étape 5 - Accès à la base"
+msgstr "Ã‰tape 5 - AccÃ¨s Ã  la base"
 
 #: ../self_contribution.php:218 ../templates/default/gestion_adherents.tpl:5
 #: ../templates/default/mailing_adherents.tpl:5
@@ -2111,31 +2105,31 @@ msgstr "Étape 5 - Accès à la base"
 msgid "- ERROR -"
 msgstr "- ERREUR -"
 
-#: ../install/index.php:849
+#: ../install/index.php:850
 msgid "(Errors on DROP and RENAME operations can be ignored)"
-msgstr "(Les erreurs sur les opérations DROP et RENAME peuvent être ignorées)"
+msgstr "(Les erreurs sur les opÃ©rations DROP et RENAME peuvent Ãªtre ignorÃ©es)"
 
 #: ../templates/default/ajouter_adherent.tpl:80
 #: ../templates/default/voir_adherent.tpl:62
 msgid "Account:"
 msgstr "Compte&nbsp;:"
 
-#: ../includes/i18n.inc.php:233
+#: ../includes/i18n.inc.php:232
 msgid "Members"
-msgstr "Adhérents"
+msgstr "AdhÃ©rents"
 
 #: ../templates/default/editer_champ.tpl:23
 msgid "Visibility:"
-msgstr "Visibilité&nbsp;:"
+msgstr "VisibilitÃ©&nbsp;:"
 
-#: ../gestion_contributions.php:347 ../gestion_adherents.php:413
-#: ../gestion_transactions.php:185
+#: ../log.php:163 ../gestion_contributions.php:347
+#: ../gestion_adherents.php:413 ../gestion_transactions.php:185
 msgid "Next page (%i)"
 msgstr "Page suivante (%i)"
 
 #: ../self_adherent.php:196 ../lostpasswd.php:107 ../ajouter_adherent.php:284
 msgid "See you soon!"
-msgstr "A très bientôt !"
+msgstr "A trÃ¨s bientÃ´t !"
 
 #: ../self_contribution.php:262 ../templates/default/preferences.tpl:192
 #: ../templates/default/ajouter_adherent.tpl:209
@@ -2148,22 +2142,25 @@ msgstr "rouge"
 #: ../self_adherent.php:188 ../ajouter_adherent.php:276
 msgid "and to update your preferences from the web interface."
 msgstr ""
-"et de mettre à jour vos coordonnées par l'interface web prévue à cet effet."
+"et de mettre Ã  jour vos coordonnÃ©es par l'interface web prÃ©vue Ã  cet effet."
 
 #: ../templates/default/ajouter_adherent.tpl:104
 #: ../templates/default/ajouter_adherent.tpl:109
 #: ../templates/default/change_passwd.tpl:39
 #: ../templates/default/self_adherent.tpl:164
 msgid "(at least 4 characters)"
-msgstr "(au moins 4 caractères)"
+msgstr "(au moins 4 caractÃ¨res)"
 
-#: ../install/index.php:504
+#: ../install/index.php:505
 msgid "CREATE operation allowed"
-msgstr "Opération CREATE autorisée"
+msgstr "OpÃ©ration CREATE autorisÃ©e"
 
-#: ../ajouter_transaction.php:141
-msgid "- Transaction amount must be positive."
-msgstr "- Le montant de la transaction doit être positif."
+#: ../mailing_adherents.php:132 ../lostpasswd.php:120
+#: ../ajouter_adherent.php:297
+msgid "Email sent is disabled in the preferences. Ask galette admin"
+msgstr ""
+"L'envoi de courriel est dÃ©sactivÃ© dans les prÃ©fÃ©rences. Contactez votre "
+"administrateur Galette."
 
 #: ../templates/default/preferences.tpl:48
 #: ../templates/default/ajouter_adherent.tpl:159
@@ -2176,7 +2173,7 @@ msgstr "Ville&nbsp;:"
 msgid "Normal"
 msgstr "Normal"
 
-#: ../includes/i18n.inc.php:212
+#: ../includes/i18n.inc.php:211
 msgid "Founder member"
 msgstr "Membre fondateur"
 
@@ -2186,7 +2183,7 @@ msgstr "Administrateur"
 
 #: ../footer.php:133 ../templates/default/page.tpl:104
 msgid "Membership in order"
-msgstr "Adhésion en règle"
+msgstr "AdhÃ©sion en rÃ¨gle"
 
 #: ../gestion_adherents.php:327
 msgid " days ago (since "
@@ -2194,19 +2191,19 @@ msgstr " jours (depuis "
 
 #: ../templates/default/ajouter_adherent.tpl:142
 msgid "This comment is reserved to the member."
-msgstr "Ce commentaire est réservé à l'adhérent."
+msgstr "Ce commentaire est rÃ©servÃ© Ã  l'adhÃ©rent."
 
 #: ../templates/default/traduire_libelles.tpl:38
 msgid "Update"
-msgstr "Mise à jour&nbsp;:"
+msgstr "Mise Ã  jour&nbsp;:"
 
 #: ../templates/default/gestion_contributions.tpl:153
 msgid "[ See member profile ]"
-msgstr "[ Voir la fiche adhérent ]"
+msgstr "[ Voir la fiche adhÃ©rent ]"
 
-#: ../install/index.php:882
+#: ../install/index.php:883
 msgid "The tables has been correctly updated."
-msgstr "Les tables ont été correctement mises à jour."
+msgstr "Les tables ont Ã©tÃ© correctement mises Ã  jour."
 
 #: ../templates/default/ajouter_adherent.tpl:43
 #: ../templates/default/voir_adherent.tpl:30
@@ -2217,15 +2214,15 @@ msgstr "Nom&nbsp;:"
 
 #: ../ajouter_adherent.php:248
 msgid "Member card updated:"
-msgstr "Fiche adhérent mise à jour&nbsp;:"
+msgstr "Fiche adhÃ©rent mise Ã  jour&nbsp;:"
 
 #: ../preferences.php:132
 msgid "- Invalid number of months of membership extension."
-msgstr "- Durée d'extension d'adhésion invalide"
+msgstr "- DurÃ©e d'extension d'adhÃ©sion invalide"
 
 #: ../install/index.php:220
 msgid "Warning: Don't forget to backup your current database."
-msgstr "Attention&nbsp;: pensez à sauvegarder votre base existante."
+msgstr "Attention&nbsp;: pensez Ã  sauvegarder votre base existante."
 
 #: ../templates/default/preferences.tpl:93
 msgid "(dd/mm)"
@@ -2233,35 +2230,35 @@ msgstr "(jj/mm)"
 
 #: ../ajouter_adherent.php:155
 msgid "- The username cannot contain the @ character"
-msgstr "- L'identifiant ne peut pas contenir le caractère @&nbsp;!"
+msgstr "- L'identifiant ne peut pas contenir le caractÃ¨re @&nbsp;!"
 
-#: ../install/index.php:659
+#: ../install/index.php:660
 msgid "Creation of the tables"
-msgstr "Création des tables"
+msgstr "CrÃ©ation des tables"
 
 #: ../self_adherent.php:165 ../preferences.php:181 ../preferences.php:184
 #: ../ajouter_contribution.php:167 ../ajouter_contribution.php:170
 #: ../ajouter_adherent.php:219 ../ajouter_transaction.php:125
 #: ../ajouter_transaction.php:128
 msgid "- Mandatory field empty."
-msgstr "- Champ obligatoire non renseigné."
+msgstr "- Champ obligatoire non renseignÃ©."
 
 #: ../footer.php:85 ../templates/default/gestion_adherents.tpl:101
 #: ../templates/default/page.tpl:61
 msgid "[M]"
 msgstr "[H]"
 
-#: ../install/index.php:922
+#: ../install/index.php:923
 msgid "Please chose the parameters of the admin account on Galette"
-msgstr "Veuillez choisir les paramètres du compte administrateur Galette"
+msgstr "Veuillez choisir les paramÃ¨tres du compte administrateur Galette"
 
-#: ../includes/i18n.inc.php:211
+#: ../includes/i18n.inc.php:210
 msgid "Benefactor member"
 msgstr "Membre bienfaiteur"
 
 #: ../templates/default/preferences.tpl:108
 msgid "Reply-To Email:"
-msgstr "Courriel de réponse&nbsp;:"
+msgstr "Courriel de rÃ©ponse&nbsp;:"
 
 #: ../self_contribution.php:262 ../templates/default/preferences.tpl:192
 #: ../templates/default/ajouter_adherent.tpl:209
@@ -2273,26 +2270,26 @@ msgstr "NB&nbsp;: Les champs obligatoires apparaissent en"
 
 #: ../self_contribution.php:239
 msgid "Annual fee (to be paid)"
-msgstr "Cotisation annuelle (à payer)"
+msgstr "Cotisation annuelle (Ã  payer)"
 
 #: ../self_adherent.php:184 ../lostpasswd.php:97 ../ajouter_adherent.php:272
 msgid "Hello,"
 msgstr "Bonjour,"
 
-#: ../includes/i18n.inc.php:223
+#: ../includes/i18n.inc.php:222
 msgid "spanish"
 msgstr "espagnol"
 
-#: ../install/index.php:433
+#: ../install/index.php:434
 msgid "Database exists and connection parameters are OK."
-msgstr "La base existe et les paramètres de connexion sont corrects."
+msgstr "La base existe et les paramÃ¨tres de connexion sont corrects."
 
 #: ../install/index.php:315
 msgid "Database"
-msgstr "Base de données"
+msgstr "Base de donnÃ©es"
 
-#: ../gestion_contributions.php:338 ../gestion_adherents.php:404
-#: ../gestion_transactions.php:176
+#: ../log.php:154 ../gestion_contributions.php:338
+#: ../gestion_adherents.php:404 ../gestion_transactions.php:176
 msgid "Current page (%i)"
 msgstr "Page courante (%i)"
 
@@ -2304,7 +2301,7 @@ msgstr "Logo&nbsp;:"
 msgid "Installation mode unknown"
 msgstr "Type d'installation inconnu"
 
-#: ../includes/i18n.inc.php:242
+#: ../includes/i18n.inc.php:241
 msgid "left"
 msgstr "gauche"
 
@@ -2316,18 +2313,18 @@ msgstr "Mot de passe :"
 msgid "[down]"
 msgstr "[bas]"
 
-#: ../install/index.php:907
+#: ../install/index.php:908
 msgid "Step 7 - Tables Creation"
-msgstr "Étape 7 - Création des tables"
+msgstr "Ã‰tape 7 - CrÃ©ation des tables"
 
 #: ../footer.php:129 ../gestion_contributions.php:273
 #: ../gestion_adherents.php:438 ../templates/default/page.tpl:100
 msgid "Never contributed"
-msgstr "N'a jamais cotisé"
+msgstr "N'a jamais cotisÃ©"
 
-#: ../install/index.php:1167
+#: ../install/index.php:1168
 msgid "Parameters couldn't be saved."
-msgstr "Les paramètres n'ont pas pu être sauvegardés."
+msgstr "Les paramÃ¨tres n'ont pas pu Ãªtre sauvegardÃ©s."
 
 #: ../footer.php:109 ../footer.php:159 ../templates/default/page.tpl:80
 #: ../templates/default/page.tpl:123
@@ -2335,7 +2332,7 @@ msgstr "Les paramètres n'ont pas pu être sauvegardés."
 msgid "Modification"
 msgstr "Modification"
 
-#: ../install/index.php:422
+#: ../install/index.php:423
 msgid "Go back"
 msgstr "Retour"
 
@@ -2352,14 +2349,14 @@ msgstr "Tout"
 msgid "remaining day"
 msgstr "jour restant"
 
-#: ../install/index.php:579
+#: ../install/index.php:580
 msgid "DELETE operation allowed"
-msgstr "Opération DELETE autorisée"
+msgstr "OpÃ©ration DELETE autorisÃ©e"
 
 #: ../templates/default/gestion_adherents.tpl:31
 #: ../templates/default/mailing_adherents.tpl:31
 msgid "member"
-msgstr "adhérent"
+msgstr "adhÃ©rent"
 
 #: ../templates/default/ajouter_adherent.tpl:59
 #: ../templates/default/voir_adherent.tpl:42
@@ -2367,15 +2364,15 @@ msgstr "adhérent"
 msgid "Profession:"
 msgstr "Profession&nbsp;:"
 
-#: ../includes/i18n.inc.php:239
+#: ../includes/i18n.inc.php:238
 msgid "single line"
 msgstr "ligne simple"
 
-#: ../install/index.php:973
+#: ../install/index.php:974
 msgid "Save the parameters"
-msgstr "Sauvegarde des paramètres"
+msgstr "Sauvegarde des paramÃ¨tres"
 
-#: ../templates/default/log.tpl:52
+#: ../templates/default/log.tpl:40
 msgid "User"
 msgstr "Utilisateur"
 
@@ -2391,48 +2388,51 @@ msgstr "Corps du texte&nbsp;:"
 msgid "Active account"
 msgstr "Compte actif"
 
-#: ../footer.php:67 ../templates/default/page.tpl:47
-#: ../templates/default/preferences.tpl:1
-msgid "Settings"
-msgstr "Préférences"
+#: ../change_passwd.php:48
+msgid ""
+"This link is no longer valid. You should <a href='lostpasswd.php'>ask to "
+"retrieve your password</a> again."
+msgstr ""
+"Ce lien n'est plus valide. Vous devriez <a href='lostpasswd.php'>demander la "
+"rÃ©cupÃ©ration de votre mot de passe</a> Ã  nouveau."
 
 #: ../templates/default/gestion_transactions.tpl:93
 #: ../templates/default/gestion_transactions.tpl:95
 msgid "no transaction"
 msgstr "aucune transaction"
 
-#: ../install/index.php:485
+#: ../install/index.php:486
 msgid "DROP operation not allowed"
-msgstr "Opération DROP non autorisée"
+msgstr "OpÃ©ration DROP non autorisÃ©e"
 
 #: ../templates/default/configurer_fiches.tpl:23
 msgid "Visibility"
-msgstr "Visibilité"
+msgstr "VisibilitÃ©"
 
-#: ../install/index.php:468
+#: ../install/index.php:469
 msgid ""
 "In order to be updated, Galette needs a number of rights on the database "
 "(CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)"
 msgstr ""
-"Pour être mis à jour, Galette doit avoir un certain nombre de droits sur la "
-"base de données (CREATE, DROP, DELETE, UPDATE, SELECT, INSERT et ALTER)"
+"Pour Ãªtre mis Ã  jour, Galette doit avoir un certain nombre de droits sur la "
+"base de donnÃ©es (CREATE, DROP, DELETE, UPDATE, SELECT, INSERT et ALTER)"
 
 #: ../templates/default/gestion_adherents.tpl:172
 msgid ""
 "Do you really want to delete all selected accounts (and related "
 "contributions)?"
 msgstr ""
-"Voulez vous réellement effacer tous les comptes sélectionnés (ainsi que "
-"toutes les contributions associées)&nbsp;?"
+"Voulez vous rÃ©ellement effacer tous les comptes sÃ©lectionnÃ©s (ainsi que "
+"toutes les contributions associÃ©es)&nbsp;?"
 
 #: ../templates/default/display_dynamic_fields.tpl:4
 #: ../templates/default/display_dynamic_fields.tpl:7
 msgid "Additionnal fields:"
-msgstr "Champs supplémentaires&nbsp;:"
+msgstr "Champs supplÃ©mentaires&nbsp;:"
 
 #: ../self_adherent.php:190 ../ajouter_adherent.php:278
 msgid "Please login at this address:"
-msgstr "Veuillez vous identifier à cette adresse :"
+msgstr "Veuillez vous identifier Ã  cette adresse :"
 
 #: ../templates/default/gestion_contributions.tpl:155
 msgid "[ Add a contribution ]"

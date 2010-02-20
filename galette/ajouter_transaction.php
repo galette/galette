@@ -147,6 +147,9 @@ if (isset($_POST["valid"]))
 
 	if (count($error_detected) == 0)
 	{
+		//Get user's login to put it in the logs
+		$query = 'SELECT login_adh FROM ' . PREFIX_DB . 'adherents WHERE id_adh=' . $transaction['id_adh'];
+		$login = $DB->GetOne($query);
 		if ($transaction["trans_id"] == "")
 		{
 			$requete = "INSERT INTO ".PREFIX_DB."transactions
@@ -157,10 +160,10 @@ if (isset($_POST["valid"]))
 			$transaction['trans_id'] = get_last_auto_increment($DB, PREFIX_DB."transactions", "trans_id");
 
 			// to allow the string to be extracted for translation
-			$foo = _T("transaction added");
+			$foo = _T("Transaction added");
 
 			// logging
-			dblog('transaction added','',$requete);
+			dblog('Transaction added', strtoupper($login), $requete);
 		}
 		else
 		{
@@ -170,10 +173,10 @@ if (isset($_POST["valid"]))
 			$DB->Execute($requete);
 
 			// to allow the string to be extracted for translation
-			$foo = _T("transaction updated");
+			$foo = _T("Transaction updated");
 
 			// logging
-			dblog('transaction updated','',$requete);
+			dblog('Transaction updated', strtoupper($login), $requete);
 		}
 
 		// dynamic fields

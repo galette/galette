@@ -162,7 +162,7 @@ if ( ((isset($loc) && $loc!=$language) || $disable_gettext) && in_array($pref_la
                         {
 				$trans = $chaine;
                                 if (isset($GLOBALS["lang"][$chaine]) && $GLOBALS["lang"][$chaine]!="")
-                                        $trans = $GLOBALS["lang"][$chaine];
+                                        $trans = utf8_decode($GLOBALS["lang"][$chaine]);
 				else {
 					$trans = false;
 					if (isset($GLOBALS["DB"]))

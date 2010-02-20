@@ -49,44 +49,44 @@ PHP_SOURCES = ../index.php \
 
 
 all : messages.po lang
-	@echo "Génération des fichiers *.po :"
+	@echo "GÃ©nÃ©ration des fichiers *.po :"
 	@for l in ${LANGUAGES}; do \
-	  echo "  Mise à jour de $$l.po"; \
+	  echo "  Mise Ã  jour de $$l.po"; \
 	  msgmerge -U $$l.po messages.po >/dev/null 2>&1; \
 	  mkdir -p ${INSTALLDIR}/$$l/LC_MESSAGES; \
 	  echo "    formatage de ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo."; \
 	  msgfmt $$l.po -o ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo.new; \
 	  if diff -qI 'PO-Revision-Date:.*' ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo.new ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo > /dev/null; then \
-	    echo "    ${PACKAGE}.mo non mis à jour."; \
+	    echo "    ${PACKAGE}.mo non mis Ã  jour."; \
 	    rm ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo.new; \
 	  else \
-	    echo "    ${PACKAGE}.mo mis à jour."; \
+	    echo "    ${PACKAGE}.mo mis Ã  jour."; \
 	    mv ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo.new ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo; \
 	  fi; \
 	done
 
 
 lang :
-	@echo "Génération des fichiers lang_*.php"
-	@echo "  Mise à jour de lang_english.php"
+	@echo "GÃ©nÃ©ration des fichiers lang_*.php"
+	@echo "  Mise Ã  jour de lang_english.php"
 	@echo "    extraction des chaines..."
 	@${MKLANG} en_US.po lang_english.php.new
 	@if diff -qI 'This file was automatically generated.*' lang_english.php lang_english.php.new > /dev/null; then \
-	  echo "    lang_english.php non mis à jour."; \
+	  echo "    lang_english.php non mis Ã  jour."; \
 	  rm lang_english.php.new; \
 	else \
-	  echo "    lang_english.php mis à jour."; \
+	  echo "    lang_english.php mis Ã  jour."; \
 	  mv lang_english.php.new lang_english.php; \
 	fi; 
 
-	@echo "  Mise à jour de lang_french.php"
+	@echo "  Mise Ã  jour de lang_french.php"
 	@echo "    extraction des chaines..."
 	@${MKLANG} fr_FR@euro.po lang_french.php.new
 	@if diff -qI 'This file was automatically generated.*' lang_french.php lang_french.php.new > /dev/null; then \
-	  echo "    lang_french.php non mis à jour."; \
+	  echo "    lang_french.php non mis Ã  jour."; \
 	  rm lang_french.php.new; \
 	else \
-	  echo "    lang_french.php mis à jour."; \
+	  echo "    lang_french.php mis Ã  jour."; \
 	  mv lang_french.php.new lang_french.php; \
 	fi; 
 

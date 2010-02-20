@@ -9,6 +9,7 @@ Galette 0.64 - 2010-??-??
     versions for the libraries
     - Improved pagination: only 20 pages will appear now, instead of all pages
     - Remove spanish language which has not been maintaned for ages
+    - Use UTF-8 for translation files
 
 Galette 0.63.3 - 2009-11-09
     - Force Mysql to iso-8859-1 (LATIN1) (Thanks to Cédric OLIVIER)
