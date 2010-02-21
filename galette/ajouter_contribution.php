@@ -297,13 +297,13 @@
 				$beg_cotis = time();
 			$contribution['date_debut_cotis'] = date("d/m/Y", $beg_cotis);
 			// End date is the date of next period after this one
-			$contribution['date_fin_cotis'] = beg_membership_after($beg_cotis);
+			$contribution['date_fin_cotis'] = beg_membership_after(date("d/m/Y", $beg_cotis));
 			if (is_numeric($contribution['trans_id']))
 				$contribution['montant_cotis'] = missing_contrib_amount($DB, $contribution['trans_id'], $error_detected);
 		}
 		else
 		{
-			// initialize coontribution structure with database values
+			// initialize contribution structure with database values
 			$sql =  "SELECT * ".
 				"FROM ".PREFIX_DB."cotisations ".
 				"WHERE id_cotis=".$contribution["id_cotis"];

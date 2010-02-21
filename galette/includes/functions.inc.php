@@ -396,12 +396,12 @@ function beg_membership_after($date) {
 	$beg = "";
 	if (PREF_BEG_MEMBERSHIP != "") {
 		list($j, $m) = explode("/", PREF_BEG_MEMBERSHIP);
-		$time = mktime(0, 0, 0, $m, $j, $y);
+		$time = mktime(0, 0, 0, $m, $j);
 		while ($time <= $date){
 			$y++;
 			$time = mktime(0, 0, 0, $m, $j, $y);
 		}
-		$beg = date('d/m/Y', strtotime('-1 day', $time)) . "\n";
+		$beg = date('d/m/Y', strtotime('+1 year -1 day', $time)) . "\n";
 	}
 	return $beg;
 }
