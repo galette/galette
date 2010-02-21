@@ -47,6 +47,10 @@ msgstr ""
 msgid "End date of membership:"
 msgstr ""
 
+#: ../install/index.php:995
+msgid "Configuration file created (config/config.inc.php)"
+msgstr ""
+
 #: ../templates/default/editer_champ.tpl:1
 msgid "Edit field"
 msgstr ""
@@ -357,10 +361,6 @@ msgstr ""
 msgid "IP"
 msgstr ""
 
-#: ../install/index.php:1169
-msgid "This can come from the permissions on the file includes/config.inc.php or the impossibility to make an INSERT into the database."
-msgstr ""
-
 #: ../ajouter_contribution.php:197
 msgid "- Membership period overlaps period starting at "
 msgstr ""
@@ -484,10 +484,6 @@ msgstr ""
 
 #: ../install/index.php:606
 msgid "GALETTE hasn't got enough permissions on the database to continue the installation."
-msgstr ""
-
-#: ../templates/default/ajouter_adherent.tpl:117
-msgid "Send a mail:"
 msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:27
@@ -923,10 +919,6 @@ msgstr ""
 msgid "- Field name already used."
 msgstr ""
 
-#: ../install/index.php:995
-msgid "Configuration file created (includes/config.inc.php)"
-msgstr ""
-
 #: ../install/index.php:942 ../templates/default/preferences.tpl:183
 msgid "Retype password:"
 msgstr ""
@@ -1180,8 +1172,8 @@ msgstr ""
 msgid "-- select a name --"
 msgstr ""
 
-#: ../install/index.php:999
-msgid "Unable to create configuration file (includes/config.inc.php)"
+#: ../templates/default/ajouter_adherent.tpl:117
+msgid "Send a mail:"
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:41
@@ -1210,6 +1202,10 @@ msgstr ""
 #: ../templates/default/page.tpl:126 ../templates/default/configurer_fiches.tpl:48
 #: ../templates/default/gestion_contributions.tpl:124 ../templates/default/gestion_transactions.tpl:87
 msgid "[del]"
+msgstr ""
+
+#: ../install/index.php:999
+msgid "Unable to create configuration file (config/config.inc.php)"
 msgstr ""
 
 #: ../templates/default/log.tpl:52
@@ -1310,6 +1306,10 @@ msgstr ""
 
 #: ../gestion_contributions.php:284 ../gestion_adherents.php:339
 msgid "Last day!"
+msgstr ""
+
+#: ../install/index.php:1169
+msgid "This can come from the permissions on the file config/config.inc.php or the impossibility to make an INSERT into the database."
 msgstr ""
 
 #: ../install/index.php:275

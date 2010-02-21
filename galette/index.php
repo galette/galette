@@ -29,12 +29,12 @@
 	*/
 
 	// test if galette is already installed and redirect to install page if not
-	$installed = file_exists(dirname( __FILE__).'/includes/config.inc.php');
+	$installed = file_exists(dirname( __FILE__).'/config/config.inc.php');
 	if (! $installed) {
 		header("location: install/index.php");
 	}
 
-	include("includes/config.inc.php");
+	include("config/config.inc.php");
 	include(WEB_ROOT."includes/database.inc.php");
 	include(WEB_ROOT."includes/functions.inc.php");
 	include(WEB_ROOT."includes/session.inc.php");

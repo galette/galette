@@ -26,7 +26,7 @@ Vous devriez maintenant avoir des permissions optimales sur les fichiers, c'est 
   - droits en lecture sur tous les fichiers et dossier
   - droits en execution sur tous les dossiers
   - droits en écriture sur le dossier "photos" et les fichiers contenus ainsi
-    que sur le fichier "includes/config.inc.php"
+    que sur le fichier "config/config.inc.php"
 
 Vous pouvez à présent vous connecter à Galette. Vous serz automatiquement redirigé sur le repertoire "install" et pourrez procèder à la mise à jour.
 
@@ -34,7 +34,7 @@ Sélectionnez tout d'abord la langue désirée.
 
 Choisissez ensuite le type d'installation. Il s'agira dans notre cas d'une mise à jour. Sélectionnez IMPERATIVEMENT la mise à jour correspondant à votre ancienne version de Galette. Si vous ne vous en souvenez plus, vous pourrez le trouver en première ligne du fichier "includes/database.inc.php" dans votre ancien dossier Galette.
 
-L'assistant vérifie ensuite des droits sur les fichiers "photos" et "includes/config.inc.php", qui doivent être accessibles en écriture pour Apache.
+L'assistant vérifie ensuite des droits sur les fichiers "photos" et "config/config.inc.php", qui doivent être accessibles en écriture pour Apache.
 
 On vous demande ensuite de saisir les paramètres de connexion à votre base de données existante ainsi qu'un "préfixe de table" (optionnel) qui vous permet de préfixer les noms de toutes les tables de la base de données avec un terme. Celà est utile pour éviter les conflits lorsque vous ne disposez que d'une seule base pour plusieurs applications web.
 

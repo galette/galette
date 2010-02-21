@@ -20,7 +20,7 @@
  *
  */
 
-include("includes/config.inc.php");
+include("config/config.inc.php");
 include("includes/database.inc.php");
 include("includes/session.inc.php");
 

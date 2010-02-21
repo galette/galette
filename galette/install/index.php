@@ -22,7 +22,7 @@
 	include_once("../includes/i18n.inc.php");
 
 // test if galette is already installed and redirect to index page if so
-$configfile = dirname( __FILE__).'/../includes/config.inc.php';
+$configfile = dirname( __FILE__).'/../config/config.inc.php';
 $installed = file_exists($configfile);
 if ($installed) {
 	header("location: ../index.php");
@@ -250,7 +250,7 @@ if ($installed) {
 						'/photos',
 						'/cache',
 						'/tempimages',
-						'/includes');
+						'/config');
 			foreach ($files_need_rw as $file)
 			{
 				if (!is_writable(dirname(__FILE__).'/..'.$file))
@@ -977,7 +977,7 @@ echo "</ul>\n";
 <?php
 			// création du fichier de configuration
 
-			if($fd = @fopen (WEB_ROOT ."includes/config.inc.php", "w"))
+			if($fd = @fopen (WEB_ROOT ."config/config.inc.php", "w"))
 			{
 				$data = "<?php
 define(\"TYPE_DB\", \"".$_POST["install_dbtype"]."\");
@@ -991,12 +991,12 @@ define(\"STOCK_FILES\", \"tempimages\");
 ?>";
 				fwrite($fd,$data);
 				fclose($fd);
-				chmod(WEB_ROOT ."includes/config.inc.php", 0600);
-				echo "<li class=\"install-ok\">"._T("Configuration file created (includes/config.inc.php)")."</li>";
+				chmod(WEB_ROOT ."config/config.inc.php", 0600);
+				echo "<li class=\"install-ok\">"._T("Configuration file created (config/config.inc.php)")."</li>";
 			}
 			else
 			{
-				echo "<li class=\"install-bad\">"._T("Unable to create configuration file (includes/config.inc.php)")."</li>";
+				echo "<li class=\"install-bad\">"._T("Unable to create configuration file (config/config.inc.php)")."</li>";
 				$error = true;
 			}
 
@@ -1166,7 +1166,7 @@ define(\"STOCK_FILES\", \"tempimages\");
 ?>
 	<form action="index.php" method="POST">
 		<p><?php echo _T("Parameters couldn't be saved."); ?></p>
-		<p><?php echo _T("This can come from the permissions on the file includes/config.inc.php or the impossibility to make an INSERT into the database."); ?></p>
+		<p><?php echo _T("This can come from the permissions on the file config/config.inc.php or the impossibility to make an INSERT into the database."); ?></p>
 		<p id="submitbutton2">
 			<input type="submit" value="<?php echo _T("Retry"); ?>">
 		</p>

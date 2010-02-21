@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sun Feb 21 08:48:59 2010 (GMT)
+// This file was automatically generated on Sun Feb 21 15:16:50 2010 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -98,6 +98,9 @@ $lang['donation in kind'] = 'don en nature';
 
 // ../ajouter_contribution.php:143 
 $lang['- The amount must be an integer!'] = '- Le montant doit être un nombre entier&nbsp;!';
+
+// ../install/index.php:1169 
+$lang['This can come from the permissions on the file config/config.inc.php or the impossibility to make an INSERT into the database.'] = 'Ceci peut provenir des droits sur le fichier config/config.inc.php ou de l\'impossibilité de faire un INSERT dans la base.';
 
 // ../ajouter_adherent.php:248 
 $lang['Member card updated:'] = 'Fiche adhérent mise à jour&nbsp;:';
@@ -486,9 +489,6 @@ $lang['Contributor:'] = 'Contributeur&nbsp;:';
 // ../gestion_adherents.php:431 
 $lang['Job'] = 'Emploi';
 
-// ../templates/default/log.tpl:28 
-$lang['IP'] = 'IP';
-
 // ../templates/default/editer_champ.tpl:39 
 $lang['Required:'] = 'Obligatoire&nbsp;:';
 
@@ -828,6 +828,9 @@ $lang['Legend'] = 'Légende';
 // ../templates/default/gestion_adherents.tpl:173 
 $lang['Mail all'] = 'Envoyer un courriel à tous';
 
+// ../install/index.php:995 
+$lang['Configuration file created (config/config.inc.php)'] = 'Fichier de configuration crée (config/config.inc.php)';
+
 // ../includes/i18n.inc.php:210 
 $lang['Benefactor member'] = 'Membre bienfaiteur';
 
@@ -858,14 +861,14 @@ $lang['Disabled'] = 'Désactivé';
 // ../install/index.php:79 ../install/index.php:114 
 $lang['No user name'] = 'Nom d\'utilisateur vide';
 
-// ../install/index.php:1169 
-$lang['This can come from the permissions on the file includes/config.inc.php or the impossibility to make an INSERT into the database.'] = 'Ceci peut provenir des droits sur le fichier includes/config.inc.php ou de l\'impossibilité de faire un INSERT dans la base.';
-
 // ../ajouter_contribution.php:227 
 $lang['Contribution added'] = 'Contribution ajoutée';
 
 // ../log.php:165 ../gestion_contributions.php:349 ../gestion_adherents.php:415 ../gestion_transactions.php:187 
 $lang['Last page (%i)'] = 'Dernière page (%i)';
+
+// ../install/index.php:999 
+$lang['Unable to create configuration file (config/config.inc.php)'] = 'Impossible de créer le fichier de configuration (config/config.inc.php)';
 
 // ../self_adherent.php:193 ../ajouter_adherent.php:281 
 $lang['Mail_Username:'] = 'Identifiant :';
@@ -968,9 +971,6 @@ $lang['Delete failed'] = 'La suppression a échouée';
 
 // ../templates/default/preferences.tpl:88 
 $lang['(Months)'] = '(Mois)';
-
-// ../install/index.php:999 
-$lang['Unable to create configuration file (includes/config.inc.php)'] = 'Impossible de créer le fichier de configuration (includes/config.inc.php)';
 
 // ../install/index.php:413 
 $lang['Connection to database successfull'] = 'La connexion à la base est établie';
@@ -1128,8 +1128,8 @@ $lang['Name:'] = 'Nom&nbsp;:';
 // ../templates/default/ajouter_contribution.tpl:36 ../templates/default/ajouter_transaction.tpl:26 
 $lang['Amount:'] = 'Montant&nbsp;:';
 
-// ../install/index.php:995 
-$lang['Configuration file created (includes/config.inc.php)'] = 'Fichier de configuration crée (includes/config.inc.php)';
+// ../templates/default/log.tpl:28 
+$lang['IP'] = 'IP';
 
 // ../self_adherent.php:190 ../ajouter_adherent.php:278 
 $lang['Please login at this address:'] = 'Veuillez vous identifier à cette adresse :';

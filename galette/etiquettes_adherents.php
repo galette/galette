@@ -37,7 +37,7 @@
  * @version    $Id$
  */
 
-include 'includes/config.inc.php';
+include 'config/config.inc.php';
 include WEB_ROOT . 'includes/database.inc.php';
 include WEB_ROOT . 'includes/session.inc.php';
 

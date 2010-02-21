@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: fr_FR@euro\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-12-20 16:44+0100\n"
-"PO-Revision-Date: 2010-02-20 17:28+0100\n"
+"PO-Revision-Date: 2010-02-21 16:16+0100\n"
 "Last-Translator: Johan \"Papa\" Cwiklinski\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -73,6 +73,10 @@ msgstr "Position&nbsp;:"
 #: ../templates/default/ajouter_contribution.tpl:60
 msgid "End date of membership:"
 msgstr "Date de fin d'adhésion&nbsp;:"
+
+#: ../install/index.php:995
+msgid "Configuration file created (config/config.inc.php)"
+msgstr "Fichier de configuration crée (config/config.inc.php)"
 
 #: ../templates/default/editer_champ.tpl:1
 msgid "Edit field"
@@ -420,14 +424,6 @@ msgstr "Mot de passe envoyé. Identifiant&nbsp;:"
 msgid "IP"
 msgstr "IP"
 
-#: ../install/index.php:1169
-msgid ""
-"This can come from the permissions on the file includes/config.inc.php or "
-"the impossibility to make an INSERT into the database."
-msgstr ""
-"Ceci peut provenir des droits sur le fichier includes/config.inc.php ou de "
-"l'impossibilité de faire un INSERT dans la base."
-
 #: ../ajouter_contribution.php:197
 msgid "- Membership period overlaps period starting at "
 msgstr "- La période d'adhésion chevauche la période commençant le "
@@ -564,10 +560,6 @@ msgid ""
 msgstr ""
 "Galette ne dispose pas de droits suffisants sur la base de données pour "
 "poursuivre l'installation."
-
-#: ../templates/default/ajouter_adherent.tpl:117
-msgid "Send a mail:"
-msgstr "Envoi de courriel&nbsp;:"
 
 #: ../templates/default/mailing_adherents.tpl:27
 msgid "Your e-mail was sent to"
@@ -1036,10 +1028,6 @@ msgstr "Partenariat"
 msgid "- Field name already used."
 msgstr "- Un champ de ce nom existe déjà."
 
-#: ../install/index.php:995
-msgid "Configuration file created (includes/config.inc.php)"
-msgstr "Fichier de configuration crée (includes/config.inc.php)"
-
 #: ../install/index.php:942 ../templates/default/preferences.tpl:183
 msgid "Retype password:"
 msgstr "Confirmation&nbsp;:"
@@ -1321,10 +1309,9 @@ msgstr "français"
 msgid "-- select a name --"
 msgstr "-- selectionner un nom --"
 
-#: ../install/index.php:999
-msgid "Unable to create configuration file (includes/config.inc.php)"
-msgstr ""
-"Impossible de créer le fichier de configuration (includes/config.inc.php)"
+#: ../templates/default/ajouter_adherent.tpl:117
+msgid "Send a mail:"
+msgstr "Envoi de courriel&nbsp;:"
 
 #: ../templates/default/gestion_contributions.tpl:41
 msgid "Member"
@@ -1356,6 +1343,11 @@ msgstr "haut"
 #: ../templates/default/gestion_transactions.tpl:87
 msgid "[del]"
 msgstr "[suppr]"
+
+#: ../install/index.php:999
+msgid "Unable to create configuration file (config/config.inc.php)"
+msgstr ""
+"Impossible de créer le fichier de configuration (config/config.inc.php)"
 
 #: ../templates/default/log.tpl:52
 msgid "Action"
@@ -1464,6 +1456,14 @@ msgstr "Étape 9 - Sauvegarde des paramètres"
 #: ../gestion_contributions.php:284 ../gestion_adherents.php:339
 msgid "Last day!"
 msgstr "Dernier jour&nbsp;!"
+
+#: ../install/index.php:1169
+msgid ""
+"This can come from the permissions on the file config/config.inc.php or the "
+"impossibility to make an INSERT into the database."
+msgstr ""
+"Ceci peut provenir des droits sur le fichier config/config.inc.php ou de "
+"l'impossibilité de faire un INSERT dans la base."
 
 #: ../install/index.php:275
 msgid "(for a file)"

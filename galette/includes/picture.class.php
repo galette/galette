@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
-	require_once('includes/config.inc.php');
+	require_once('config/config.inc.php');
 	require_once('includes/database.inc.php');
 	require_once('includes/smarty.inc.php');
 	require_once('includes/functions.inc.php');
