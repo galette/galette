@@ -203,6 +203,8 @@ if ($installed) {
 				if (preg_match("/upgrade-to-(.*)-mysql.sql/",$file,$ver))
 					$update_scripts[] = $ver[1];
 			}
+			//no changes in the db for 0.64 ; but should be in the list anyways
+			$update_scripts[] = '0.64';
 			closedir($dh);
 			asort($update_scripts);
 			$last = "0.00";
@@ -1220,17 +1222,8 @@ define(\"STOCK_FILES\", \"tempimages\");
 		<?php if ($step=="u10") echo _T("Step 10 - End of the update"); ?>
 	</h1>
 
-
-
-
-
-
 <?php
 			break;
-?>
-
-
-<?php
 	}
 ?>
 
