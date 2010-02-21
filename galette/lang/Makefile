@@ -7,10 +7,8 @@ PHP_SOURCES = ../index.php \
 ../self_adherent.php \
 ../mailing_adherents.php \
 ../log.php \
-../self_contribution.php \
 ../lostpasswd.php \
 ../change_passwd.php \
-../footer.php \
 ../includes/session.inc.php \
 ../includes/i18n.inc.php \
 ../configurer_fiches.php \
