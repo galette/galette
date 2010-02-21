@@ -19,7 +19,7 @@
  *
  * $Id$
  */
-	define("GALETTE_VERSION", "v0.64 RC1");
+	define("GALETTE_VERSION", "v0.64 RC2");
 
 	/*
 	*@author steve gricci
@@ -85,7 +85,7 @@
 		$exempt = is_exempt($DB, $cotisant);
 
 		$return_date = "";
-		// d�finition couleur pour adherent exempt de cotisation
+		// définition couleur pour adherent exempt de cotisation
 		if ($exempt != "1")
 		{
 			$requete_cotis = "SELECT count(*)

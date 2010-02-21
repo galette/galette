@@ -1,7 +1,7 @@
 <?php
 /* self_adherent.php
- * - Saisie d'un adh�rent par lui-m�me
- * Copyright (c) 2004 Fr�d�ric Jaqcuot, Georges Khaznadar
+ * - Saisie d'un adhérent par lui-même
+ * Copyright (c) 2004 Frédéric Jaqcuot, Georges Khaznadar
  * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
@@ -256,7 +256,7 @@ if ( isset($_POST["valid"]) ) {
 			$adherent[$key] = '';
 	}
 } else {
-	// initialiser la structure adh�ent �vide (nouvelle fiche)
+	// initialiser la structure adhï¿½ent ï¿½vide (nouvelle fiche)
 	$adherent["id_statut"] = "4";
 	$adherent["titre_adh"] = "1";
 	$adherent["date_crea_adh"] =date("d/m/Y");

@@ -17,55 +17,55 @@ Dependencies
 [french]
   Requis :	- Serveur web supportant PHP :
   		  Apache est une bonne option
-		  Galette a été testé sur Apache 2.2
-		- PHP (Au moins la version 4.1, > 5 recommandée)
-		  Galette a été testé avec PHP 5.3.1
-		- Base de données (MySQL ou PostgreSQL)
-		  Galette a été testé sur MySQL 5.1.41 et PostgresSQL
+		  Galette a Ã©tÃ© testÃ© sur Apache 2.2
+		- PHP (Au moins la version 4.1, > 5 recommandÃ©e)
+		  Galette a Ã©tÃ© testÃ© avec PHP 5.3.1
+		- Base de donnÃ©es (MySQL ou PostgreSQL)
+		  Galette a Ã©tÃ© testÃ© sur MySQL 5.1.41 et PostgresSQL
 		  8.3.8
 
-  Recommandé :  - Extension GD pour PHP (intègré à PHP ou en module)
-  		  (Nécessaire pour la réduction des photos)
+  RecommandÃ© :  - Extension GD pour PHP (intÃ¨grÃ© Ã  PHP ou en module)
+  		  (NÃ©cessaire pour la rÃ©duction des photos)
 
 Installation :
 _____________
 
 [french]
-  Récupérez les fichiers depuis http://download.gna.org/galette/
-  Préférez prendre la dernière version en date (numéro de version le plus élevé).
+  RÃ©cupÃ©rez les fichiers depuis http://download.gna.org/galette/
+  PrÃ©fÃ©rez prendre la derniÃ¨re version en date (numÃ©ro de version le plus Ã©levÃ©).
   
-  Décompressez l'archive là où pointe le RootDirectory de votre serveur web 
+  DÃ©compressez l'archive lÃ  oÃ¹ pointe le RootDirectory de votre serveur web 
   (ici, dans /var/www/).
   
   $ cd /var/www
   $ wget http://download.gna.org/galette/_latest -O galette.tgz
   $ tar -xzvf galette.tgz 
 
-  Le répertoire galette-version/ sera automatiquement crée. Vous pouvez le renommer
-  à votre convenance.
+  Le rÃ©pertoire galette-version/ sera automatiquement crÃ©e. Vous pouvez le renommer
+  Ã  votre convenance.
 
-  Il faut attribuer à tous les fichiers de Galette les droits de l'utilisateur
+  Il faut attribuer Ã  tous les fichiers de Galette les droits de l'utilisateur
   du serveur web (ici, pour l'exemple, www-data et apache) :
   
   # chown -R www-data:www-data galette-version/
 
-  Il vous faut maintenant créer un utilisateur et une base pour Galette sur 
-  votre serveur SQL (MySQL ou PostgreSQL). L'utilisateur créé doit avoir 
-  tous les droits sur la base créée pour Galette.
+  Il vous faut maintenant crÃ©er un utilisateur et une base pour Galette sur 
+  votre serveur SQL (MySQL ou PostgreSQL). L'utilisateur crÃ©Ã© doit avoir 
+  tous les droits sur la base crÃ©Ã©e pour Galette.
   Les droits DROP et CREATE ne sont utiles que lors de l'installation initiale
-  ou éventuellement pour les mises à jour de Galette. Lors d'une utilisation 
-  en production, nous vous conseillons de retirer ces droits à l'utilisateur
-  de la base de données.
+  ou Ã©ventuellement pour les mises Ã  jour de Galette. Lors d'une utilisation 
+  en production, nous vous conseillons de retirer ces droits Ã  l'utilisateur
+  de la base de donnÃ©es.
 
-  Se reporter à la documentation de votre serveur SQL pour ce faire.
+  Se reporter Ã  la documentation de votre serveur SQL pour ce faire.
 
-  Connectez-vous ensuite au sous répertoire "install" avec votre navigateur web.
+  Connectez-vous ensuite au sous rÃ©pertoire "install" avec votre navigateur web.
   Dans notre exemple, il s'agit de http://serveur/galette-0.62/install.
 
-  Vous n'avez plus qu'à vous laissez guider par les 10 étapes de l'installeur 
+  Vous n'avez plus qu'Ã  vous laissez guider par les 10 Ã©tapes de l'installeur 
   Web.
 
-  Une fois le script d'installation terminé, et après avoir vérifié que tout
-  fonctionne, il est fortement conseillé de supprimer le dossier install/.
+  Une fois le script d'installation terminÃ©, et aprÃ¨s avoir vÃ©rifiÃ© que tout
+  fonctionne, il est fortement conseillÃ© de supprimer le dossier install/.
 
 

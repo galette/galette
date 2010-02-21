@@ -1,7 +1,7 @@
 <?php
 
-// Copyright © 2004 Frédéric Jaqcuot
-// Copyright © 2007-2010 Johan Cwiklinski
+// Copyright Â© 2004 FrÃ©dÃ©ric Jaqcuot
+// Copyright Â© 2007-2010 Johan Cwiklinski
 //
 // This file is part of Galette (http://galette.tuxfamily.org).
 //
@@ -19,19 +19,19 @@
 // along with Galette. If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Generation d'un PDF d'étiquettes
+ * Generation d'un PDF d'Ã©tiquettes
  *
- * La création des étiquettes au format pdf se fait
- * depuis la page de gestion des adhérents en sélectionnant
- * les adhérents  dans la liste
+ * La crÃ©ation des Ã©tiquettes au format pdf se fait
+ * depuis la page de gestion des adhÃ©rents en sÃ©lectionnant
+ * les adhÃ©rents  dans la liste
  *
- * Le format des étiquettes et leur mise en page est définie
- * dans l'écran des préférences
+ * Le format des Ã©tiquettes et leur mise en page est dÃ©finie
+ * dans l'Ã©cran des prÃ©fÃ©rences
  *
  * @package    Galette
  *
- * @author     Frédéric Jaqcuot
- * @copyright  2004 Frédéric Jaqcuot
+ * @author     FrÃ©dÃ©ric Jaqcuot
+ * @copyright  2004 FrÃ©dÃ©ric Jaqcuot
  * @copyright  2007-2009 Johan Cwiklinski
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version    $Id$

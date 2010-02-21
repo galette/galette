@@ -1,7 +1,7 @@
 <?php
 /* change_passwd.php
  * - Change passwd
- * Copyright (c) 2005 Stéphane Salès
+ * Copyright (c) 2005 StÃ©phane SalÃ¨s
  * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or

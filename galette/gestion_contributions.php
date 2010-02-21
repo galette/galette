@@ -1,8 +1,8 @@
 <?php
 
 /* gestion_contributions.php
- * - R�capitulatif des contributions
- * Copyright (c) 2004 Fr�d�ric Jaqcuot
+ * - Récapitulatif des contributions
+ * Copyright (c) 2004 Frédéric Jaqcuot
  * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
@@ -122,7 +122,7 @@
 				    	    WHERE id_cotis=".$DB->qstr($_GET["sup"], get_magic_quotes_gpc());
 				$DB->Execute($requetesup);
 
-				// mise a jour de l'�ch�ance
+				// mise a jour de l'ï¿½chï¿½ance
 				$date_fin = get_echeance($DB, $id_adh);
 				if ($date_fin!=""){
 				  $date_fin_update = "'".$date_fin[2]."-".$date_fin[1]."-".$date_fin[0]."'";

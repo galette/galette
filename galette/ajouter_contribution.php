@@ -2,7 +2,7 @@
 
 /* ajouter_contribution.php
  * - Saisie d'une contributions
- * Copyright (c) 2004 Frédéric Jaqcuot
+ * Copyright (c) 2004 FrÃ©dÃ©ric Jaqcuot
  * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
@@ -282,7 +282,7 @@
 	{
 		if ($contribution["id_cotis"] == "")
 		{
-			// initialiser la structure contribution à vide (nouvelle contribution)
+			// initialiser la structure contribution Ã  vide (nouvelle contribution)
 			$contribution['duree_mois_cotis']=PREF_MEMBERSHIP_EXT;
 			if ($cotis_extension && isset($contribution["id_adh"])) {
 				$curend = get_echeance($DB, $contribution["id_adh"]);

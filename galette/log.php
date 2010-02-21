@@ -1,7 +1,7 @@
 <?php
 /* log.php
  * - Historique
- * Copyright (c) 2003 Frédéric Jaqcuot
+ * Copyright (c) 2003 FrÃ©dÃ©ric Jaqcuot
  * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
@@ -83,7 +83,7 @@
 	elseif ($_SESSION["tri_log"]=="1")
 		$requete[0] .= "ip_log ".$tri_log_sens_txt.",";
 
-	// tri par adhérent
+	// tri par adhÃ©rent
 	elseif ($_SESSION["tri_log"]=="2")
 		$requete[0] .= "adh_log ".$tri_log_sens_txt.",";
 

@@ -196,7 +196,7 @@ else
 {
 	if ($transaction['trans_id'] == "")
 	{
-		// initialiser la structure transaction à vide (nouvelle transaction)
+		// initialiser la structure transaction Ã  vide (nouvelle transaction)
 		$transaction['trans_date'] = date("d/m/Y", time());
 	}
 	else

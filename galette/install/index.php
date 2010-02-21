@@ -1,5 +1,5 @@
 <?php
-// Copyright © 2004-2010 The Galette Team
+// Copyright Â© 2004-2010 The Galette Team
 //
 // This file is part of Galette (http://galette.tuxfamily.org).
 //
@@ -490,10 +490,10 @@ echo "</ul>";
 					}
 				}
 
-				// création de table
+				// crÃ©ation de table
 				if (!isset($error))
 				{
-					// à adapter selon le type de base
+					// Ã  adapter selon le type de base
 					$requete="create table galette_test (testcol text)";
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
@@ -505,10 +505,10 @@ echo "</ul>";
 						$result .= "<li class=\"install-ok\">"._T("CREATE operation allowed")."</li>";
 				}
 
-				// création d'enregistrement
+				// crÃ©ation d'enregistrement
 				if (!isset($error))
 				{
-					// à adapter selon le type de base
+					// Ã  adapter selon le type de base
 					$requete="INSERT into galette_test values (".$DB->qstr("test", get_magic_quotes_gpc()).")";
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
@@ -520,10 +520,10 @@ echo "</ul>";
 						$result .= "<li class=\"install-ok\">"._T("INSERT operation allowed")."</li>";
 				}
 
-				// mise à jour d'enregistrement
+				// mise Ã  jour d'enregistrement
 				if (!isset($error))
 				{
-					// à adapter selon le type de base
+					// Ã  adapter selon le type de base
 					$requete="update galette_test set testcol=".$DB->qstr("test", get_magic_quotes_gpc());
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
@@ -538,7 +538,7 @@ echo "</ul>";
 				// selection d'enregistrement
 				if (!isset($error))
 				{
-					// à adapter selon le type de base
+					// Ã  adapter selon le type de base
 					$requete="select * from galette_test";
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
@@ -550,10 +550,10 @@ echo "</ul>";
 						$result .= "<li class=\"install-ok\">"._T("SELECT operation allowed")."</li>";
 				}
 
-				// alter pour la mise à jour
+				// alter pour la mise Ã  jour
 				if (!isset($error) && $step=="u6")
 				{
-					// à adapter selon le type de base
+					// Ã  adapter selon le type de base
 					$requete="alter table galette_test add testalter text";
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
@@ -568,7 +568,7 @@ echo "</ul>";
 				// suppression d'enregistrement
 				if (!isset($error))
 				{
-					// à adapter selon le type de base
+					// Ã  adapter selon le type de base
 					$requete="delete from galette_test";
 					$DB->Execute($requete);
 					if($DB->ErrorNo())
@@ -583,7 +583,7 @@ echo "</ul>";
 				// suppression de table
 				if (!isset($error))
 				{
-					// à adapter selon le type de base
+					// Ã  adapter selon le type de base
 					$requete="drop table galette_test";
 					$DB->Execute($requete);
 					if (!isset($droptest))
@@ -975,7 +975,7 @@ echo "</ul>\n";
 	<p><table><tr><td>
 <ul>
 <?php
-			// création du fichier de configuration
+			// crÃ©ation du fichier de configuration
 
 			if($fd = @fopen (WEB_ROOT ."includes/config.inc.php", "w"))
 			{
@@ -1121,8 +1121,8 @@ define(\"STOCK_FILES\", \"tempimages\");
 			}
 
 
-			// NB: il faudrait améliorer cette partie car la détection
-			// d'erreur ne s'effectue que sur le dernier insert. prévoir une boucle.
+			// NB: il faudrait amÃ©liorer cette partie car la dÃ©tection
+			// d'erreur ne s'effectue que sur le dernier insert. prÃ©voir une boucle.
 
 			if (!$DB->ErrorNo())
 				echo "<li class=\"install-ok\">"._T("Parameters saved into the database")."</li>";

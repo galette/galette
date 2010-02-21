@@ -1,7 +1,7 @@
 <?php
 /* index.php
  * - Identification
- * Copyright (c) 2003 Frédéric Jacquot
+ * Copyright (c) 2003 FrÃ©dÃ©ric Jacquot
  * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or

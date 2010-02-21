@@ -1,7 +1,7 @@
 <?php
 /* mailing_adherents.php
  * - Mailing
- * Copyright (c) 2005 Frédéric Jaqcuot
+ * Copyright (c) 2005 FrÃ©dÃ©ric Jaqcuot
  * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or

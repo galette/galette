@@ -1,7 +1,7 @@
 <?php // -*- Mode: PHP; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 /* ajouter_adherent.php
- * - Saisie d'un adhérent
- * Copyright (c) 2004 Frédéric Jaqcuot
+ * - Saisie d'un adhÃ©rent
+ * Copyright (c) 2004 FrÃ©dÃ©ric Jaqcuot
  * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
@@ -346,7 +346,7 @@
 	{
 		if ($adherent["id_adh"] == "")
 		{
-			// initialiser la structure adhérent à vide (nouvelle fiche)
+			// initialiser la structure adhÃ©rent Ã  vide (nouvelle fiche)
 			$adherent["id_statut"] = "4";
 			$adherent["titre_adh"] = "1";
 			$adherent["date_crea_adh"] =date("d/m/Y");

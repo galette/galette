@@ -2,7 +2,7 @@
 
 /* functions.inc.php
  * - Fonctions utilitaires
- * Copyright (c) 2003 Frédéric Jaqcuot
+ * Copyright (c) 2003 FrÃ©dÃ©ric Jaqcuot
  * Copyright (c) 2004 Georges Khaznadar (i18n using gettext)
  * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
@@ -31,11 +31,11 @@ $languages = array (
 $allowed_langs = array_keys($languages);
 
 if(
-	$_SESSION['logged_status'] === 0 || //si on est pas logué
-	$_SESSION['logged_status'] === 1 && // pour les autres cas, il faut être logué
+	$_SESSION['logged_status'] === 0 || //si on est pas loguÃ©
+	$_SESSION['logged_status'] === 1 && // pour les autres cas, il faut Ãªtre loguÃ©
 	isset($_GET['id_adh']) && $_GET['id_adh'] === $_SESSION['logged_id_adh'] || //on check si l'utilisateur en cours change sa langue
 	isset($_POST['id_adh']) && $_POST['id_adh'] === $_SESSION['logged_id_adh'] || //on check si l'utilisateur en cours change sa langue
-	isset($_POST['pref_admin_login']) && $_SESSION['logged_id_adh'] ===0 		//le cas où on change dans les préférences de l'appli. si on est pas connecté en tant que super-utilisateur, on ne change pas la langue
+	isset($_POST['pref_admin_login']) && $_SESSION['logged_id_adh'] ===0 		//le cas oÃ¹ on change dans les prÃ©fÃ©rences de l'appli. si on est pas connectÃ© en tant que super-utilisateur, on ne change pas la langue
 ) {
 	// I18N support information here
 	if (isset($_POST['pref_lang']) && in_array($_POST['pref_lang'], $allowed_langs) )

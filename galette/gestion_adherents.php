@@ -1,8 +1,8 @@
 <?php
 
 /* gestion_adherents.php
- * - Récapitulatif des adhérents
- * Copyright (c) 2003 Frédéric Jaqcuot
+ * - RÃ©capitulatif des adhÃ©rents
+ * Copyright (c) 2003 FrÃ©dÃ©ric Jaqcuot
  * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
@@ -128,7 +128,7 @@
 			$resultat = $DB->Execute($requetesup);
 			if (!$resultat->EOF)
 			{
-				// supression record adhérent
+				// supression record adhÃ©rent
 				$requetesup = "DELETE FROM ".PREFIX_DB."adherents
 						WHERE id_adh=".$DB->qstr($supval, get_magic_quotes_gpc());
 				$DB->Execute($requetesup);
@@ -218,7 +218,7 @@
 			break;
 		}
 	}
-	// filtre d'affichage des adherents activés/desactivés
+	// filtre d'affichage des adherents activÃ©s/desactivÃ©s
 	if ($_SESSION["filtre_adh_2"]=="1")
 	{
 		$requete[0] .= "AND ".PREFIX_DB."adherents.activite_adh='1' ";
@@ -237,7 +237,7 @@
 		$requete[1] .= "AND date_echeance < ".$DB->DBDate(time())." ";
 	}
 
-	// filtre d'affichage des adherents à jour
+	// filtre d'affichage des adherents Ã  jour
 	if ($_SESSION["filtre_adh"]=="3")
 	{
 		$requete[0] .= "AND (date_echeance > ".$DB->DBDate(time())." OR bool_exempt_adh='1') ";
@@ -252,7 +252,7 @@
 		$requete[1] .= "AND date_echeance >= ".$DB->DBDate(time())."
 			        AND date_echeance < ".$DB->OffsetDate(30)." ";
 	}
-	// filtre d'affichage des adherents n'ayant jamais cotisé
+	// filtre d'affichage des adherents n'ayant jamais cotisÃ©
 	if ($_SESSION["filtre_adh"]=="4")
 	{
 		$requete[0] .= "AND isnull(date_echeance)";
@@ -305,13 +305,13 @@
 	$compteur = 1+($page-1)*$numrows;
 	while (!$resultat->EOF)
 	{
-		// définition CSS pour adherent désactivé
+		// dÃ©finition CSS pour adherent dÃ©sactivÃ©
 		if ($resultat->fields[4]=="1")
 			$row_class = "actif";
 		else
 			$row_class = "inactif";
 
-		// temps d'adhésion
+		// temps d'adhÃ©sion
 		if($resultat->fields[6] == "1")
 		{
 			$statut_cotis = _T("Freed of dues");

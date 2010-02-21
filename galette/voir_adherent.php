@@ -1,7 +1,7 @@
 <?php // -*- Mode: PHP; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 /* voir_adherent.php
- * - Visualisation d'une fiche adhérent
- * Copyright (c) 2004 Frédéric Jaqcuot
+ * - Visualisation d'une fiche adhÃ©rent
+ * Copyright (c) 2004 FrÃ©dÃ©ric Jaqcuot
  * Copyright (c) 2007-2010 Johan Cwiklinski <johan@x-tnd.be>
  *
  * This program is free software; you can redistribute it and/or
