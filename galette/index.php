@@ -81,6 +81,7 @@
 					$_SESSION["admin_status"]=1;
 				$_SESSION["logged_id_adh"]=$resultat->fields[0];
 				$_SESSION["logged_status"]=1;
+				$_SESSION["logged_username"]=$_POST["login"];
 				$_SESSION["logged_nom_adh"]=strtoupper($resultat->fields[2]) . " " . strtolower($resultat->fields[3]);
 				$pref_lang = $resultat->fields[5];
 				setcookie("pref_lang",$pref_lang);

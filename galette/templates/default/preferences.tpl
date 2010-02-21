@@ -168,7 +168,7 @@
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 			</fieldset>
-
+{if $is_super_admin eq true}
 			<fieldset class="cssform">
 				<legend>{_T string="Admin account (independant of members):"}</legend>
 				<p>
@@ -184,6 +184,7 @@
 					<input type="password" name="pref_admin_pass_check" id="pref_admin_pass_check" value="" maxlength="20"/>
 				</p>
 			</fieldset>
+{/if}
 			<input type="hidden" name="valid" value="1"/>
 		</div>
 		<div class="button-container">

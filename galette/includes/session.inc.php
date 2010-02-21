@@ -33,6 +33,7 @@
 		}
 		$_SESSION["admin_status"]=0;
 		$_SESSION["logged_status"]=0;
+		$_SESSION["logged_username"]=null;
 		$_SESSION["logged_id_adh"]=0;
 		$_SESSION["logged_nom_adh"]="";
 		$_SESSION["filtre_adh_nom"]="";
