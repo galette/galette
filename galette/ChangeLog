@@ -10,6 +10,11 @@ Galette 0.64 - 2010-??-??
     - Improved pagination: only 20 pages will appear now, instead of all pages
     - Remove spanish language which has not been maintaned for ages
     - Use UTF-8 for translation files
+    - Fix a bug calculating end membership date when using begining date for
+    membership in the preferences
+    - Remove not functionnal and not used "public" pages
+    - handle 'mb_strtoupper' to avoid error on labels generation when mb
+    extension is not present
 
 Galette 0.63.3 - 2009-11-09
     - Force Mysql to iso-8859-1 (LATIN1) (Thanks to Cédric OLIVIER)

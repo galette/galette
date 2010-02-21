@@ -22,9 +22,19 @@
  *
  */
 
-if (!function_exists('stripos')) {
-    function stripos($str,$needle,$offset=0){
+/* Fix for php4: stripos does not exists before php5 */
+if ( !function_exists('stripos') ) {
+    function stripos($str, $needle, $offset = 0)
+    {
         return strpos(strtolower($str), strtolower($needle), $offset);
+    }
+}
+
+/* Fix for unavailable mb functions */
+if ( !function_exists('mb_strtoupper') ) {
+    function mb_strtoupper($string, $encoding = '')
+    {
+        return strtoupper($string);
     }
 }
 
