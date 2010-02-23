@@ -13,6 +13,7 @@ Galette 0.64 - 2010-??-??
     - Fix a bug calculating end membership date when using begining date for
     membership in the preferences
     - Remove not functionnal and not used "public" pages
+    - Remove unused files
     - Handle 'mb_strtoupper' to avoid error on labels generation when mb
     extension is not present
     - Move config file from includes to config directory. Wrtie access on

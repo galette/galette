@@ -40,6 +40,7 @@
 include 'config/config.inc.php';
 include WEB_ROOT . 'includes/database.inc.php';
 include WEB_ROOT . 'includes/session.inc.php';
+include WEB_ROOT . 'includes/functions.inc.php';
 
 if ( $_SESSION['logged_status'] == 0 ) {
 	header('location: index.php');
