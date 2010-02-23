@@ -59,7 +59,7 @@
 		</script>
 	{/if}
 {/if}
-{* If some additionnals headers should be added from plugins, we load the relevant template file 
+{* If some additionnals headers should be added from plugins, we load the relevant template file
 We have to use a template file, so Smrty will do its work (like replacing variables). *}
 {if $headers|@count != 0}
 	{foreach from=$headers item=header}

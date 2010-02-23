@@ -174,9 +174,9 @@ abstract class Authentication
     public function __get($name)
     {
         $forbidden = array('logged', 'admin', 'active');
-        if ( !in_array($name, $forbidden) ) {
-            $name = '_' . $name;
-            return $this->$name;
+        $rname = '_' . $name;
+        if ( !in_array($name, $forbidden) && isset($this->$rname) ) {
+            return $this->$rname;
         } else {
             return false;
         }

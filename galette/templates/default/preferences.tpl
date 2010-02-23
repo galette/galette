@@ -24,7 +24,9 @@
 	<div id="infobox">{_T string="Preferences has been saved."}</div>
 {/if}
 		<ul id="tabs">
+{if $login->isSuperAdmin()}
 			<li><a href="#admin">{_T string="Admin"}</a></li>
+{/if}
 			<li><a href="#cards">{_T string="Cards"}</a></li>
 			<li><a href="#labels">{_T string="Labels"}</a></li>
 			<li><a href="#mail">{_T string="E-Mail"}</a></li>
@@ -342,6 +344,7 @@
 				</p>
 			</fieldset>
 
+{if $login->isSuperAdmin()}
 			<fieldset class="cssform" id="admin">
 				<legend>{_T string="Admin account (independant of members):"}</legend>
 				<p>
@@ -357,6 +360,7 @@
 					<input type="password" name="pref_admin_pass_check" id="pref_admin_pass_check" value="" maxlength="20"/>
 				</p>
 			</fieldset>
+{/if}
 			<input type="hidden" name="valid" value="1"/>
 		</div>
 		<div class="button-container">

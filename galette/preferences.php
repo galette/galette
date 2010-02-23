@@ -11,7 +11,7 @@
  * - Email: sender and responseto email adresses
  * - Labels: labels format (margins, sizes, etc.)
  * - Members cards: format for member cards
- * - Admin account: super-admin parameters
+ * - Admin account: super-admin parameters : only available for super-admin user
  *
  * PHP version 5
  *
@@ -85,9 +85,13 @@ $required = array(
     'pref_card_marges_v' => 1,
     'pref_card_marges_h' => 1,
     'pref_card_hspace' => 1,
-    'pref_card_vspace' => 1,
-    'pref_admin_login' => 1
+    'pref_card_vspace' => 1
 );
+
+if ( $login->isSuperAdmin() ) {
+    $required['pref_admin_login'] = 1;
+}
+
 
 $prefs_fields = $preferences->getFieldsNames();
 
@@ -254,10 +258,15 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
     if ( count($error_detected) == 0 ) {
         // update preferences
         while ( list($champ,$valeur) = each($insert_values) ) {
-            if ( ($champ == "pref_admin_pass" && $_POST['pref_admin_pass'] !=  '')
-                || ($champ != "pref_admin_pass")
+            if ( $login->isSuperAdmin
+                || (!$login->isSuperAdmin
+                && ($champ != 'pref_admin_pass' && $champ != 'pref_admin_login'))
             ) {
-                $preferences->$champ = $valeur;
+                if ( ($champ == "pref_admin_pass" && $_POST['pref_admin_pass'] !=  '')
+                    || ($champ != "pref_admin_pass")
+                ) {
+                    $preferences->$champ = $valeur;
+                }
             }
         }
         //once all values has been updated, we can store them
