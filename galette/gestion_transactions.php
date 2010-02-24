@@ -50,7 +50,7 @@ if ( !$login->isAdmin() ) {
     $id_adh = get_numeric_form_value('id_adh', '');
 }
 
-$numrows = get_numeric_form_value('nbshow', PREF_NUMROWS);
+$numrows = get_numeric_form_value('nbshow', $preferences->pref_numrows);
 
 $page = get_numeric_form_value('page', 1);
 
