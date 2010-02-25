@@ -50,12 +50,13 @@ require_once 'classes/mailing.class.php';
 require_once 'includes/dynamic_fields.inc.php';
 require_once 'classes/texts.class.php';
 
+$member = new Adherent();
+
 // new or edit
 $adherent['id_adh'] = '';
 if ( $login->isAdmin() ) {
     $adherent['id_adh'] = get_numeric_form_value('id_adh', '');
     $id = get_numeric_form_value('id_adh', '');
-    $member = new Adherent();
     if ( $id ) {
         $member->load($adherent['id_adh']);
     }
@@ -69,6 +70,7 @@ if ( $login->isAdmin() ) {
         $disabled['send_mail'] = 'disabled="disabled"';
     }
 } else {
+    $member->load($login->id);
     $adherent['id_adh'] = $login->id;
     // disable some fields
     $disabled = array(
