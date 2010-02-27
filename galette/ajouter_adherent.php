@@ -405,6 +405,8 @@ if ( isset($_POST['id_adh']) ) {
     }
 }
 
+$adherent['dyn'] = get_dynamic_fields($DB, 'adh', $adherent["id_adh"], false);
+
 // - declare dynamic fields for display
 $disabled['dyn'] = array();
 if ( !isset($adherent['dyn']) ) {
@@ -424,6 +426,7 @@ $tpl->assign('disabled', $disabled);
 $tpl->assign('data', $adherent);
 $tpl->assign('member', $member);
 $tpl->assign('dynamic_fields', $dynamic_fields);
+$tpl->assign('data', $adherent);
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('warning_detected', $warning_detected);
 $tpl->assign('languages', $i18n->getList());

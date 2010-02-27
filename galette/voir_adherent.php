@@ -92,6 +92,7 @@ $tpl->assign('pref_lang_img', $i18n->getFlagFromId($member->language));
 $tpl->assign('pref_lang', ucfirst($i18n->getNameFromId($member->language)));
 $tpl->assign('pref_card_self', $preferences->pref_card_self);
 $tpl->assign('dynamic_fields', $dynamic_fields);
+$tpl->assign('data', $adherent);
 $tpl->assign('time', time());
 //if we got a mail warning when adding/editing a member,
 //we show it and delete it from session
