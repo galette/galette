@@ -77,7 +77,7 @@ if ( isset($_GET[Adherent::PK])
 
 // Fill array $mailing_adh with selected ids
 $mailing_adh = array();
-if ( $unique ) {
+if ( isset($unique) && $unique ) {
     $mailing_adh[] = $unique;
 } else {
     $mailing_adh = $varslist->selected;

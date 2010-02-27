@@ -221,10 +221,14 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 || ( $insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP
                 && $insert_values['pref_mail_smtp_auth'] )
             ) {
-                if ( !isset($insert_values['pref_mail_smtp_user']) ) {
+                if ( !isset($insert_values['pref_mail_smtp_user'])
+                    || trim($insert_values['pref_mail_smtp_user']) == ''
+                ) {
                     $error_detected[] = _T("- You must provide a login for SMTP authentication.");
                 }
-                if ( !isset($insert_values['pref_mail_smtp_password']) ) {
+                if ( !isset($insert_values['pref_mail_smtp_password'])
+                    || ($insert_values['pref_mail_smtp_password']) == ''
+                ) {
                     $error_detected[] = _T("- You must provide a password for SMTP authentication.");
                 }
             }
