@@ -83,6 +83,12 @@ class Preferences
         /** FIXME: get constant value from mail class here ? */
         'pref_mail_method'    =>    0,
         'pref_mail_smtp'    =>    '',
+        'pref_mail_smtp_host'   => '',
+        'pref_mail_smtp_auth'   => false,
+        'pref_mail_smtp_secure' => false,
+        'pref_mail_smtp_port'   => '',
+        'pref_mail_smtp_user'   => '',
+        'pref_mail_smtp_password'   => '',
         'pref_membership_ext'    =>    12,
         'pref_beg_membership'    =>    '',
         'pref_email_reply_to'    =>    '',
