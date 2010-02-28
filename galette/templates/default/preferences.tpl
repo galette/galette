@@ -370,10 +370,6 @@
 		</form>
 		<script type="text/javascript">
 			//<![CDATA[
-			//let's round some corners
-			$('#tabs li').corner('top');
-			$('.tabbed').corner('bottom');
-
 			//if javascript active, hide tabs
 			$('fieldset.cssform').hide();
 			//and then, show only the default one

@@ -63,10 +63,6 @@
 	</form>
 	<script type="text/javascript">
 		//<![CDATA[
-		//let's round some corners
-		$('#tabs li').corner('top');
-		$('.tabbed').corner('bottom');
-
 		var _initSortable = function(){ldelim}
 			$('.fields_list').sortable({ldelim}
 				items: 'li:not(.listing)',

@@ -74,15 +74,6 @@ $(function() {
 		$('.debuginfos span').slideToggle('slow');
 	});
 
-	/**
-	* Let's round some corners !
-	*/
-	//should work for IE6 but... ?
-	$('#titre').corner();
-	$('#menu').corner();
-	$('#listfilter').corner();
-	$('.trombino').corner();
-
 	$('#login').focus();
 
 	//for tootltips

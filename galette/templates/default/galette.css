@@ -124,6 +124,8 @@ pre {
 	margin:0 1em 1em 1em;
 	color: #666;
 	text-align:center;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
 }
 .self_subscribe{
 	margin-top:0.5em!important;
@@ -343,6 +345,8 @@ html > * .nav1 li{
 	background-color: #DDDDFF;
 	padding: 10px;
 	margin:0 1em 1em 1em;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
 }
 
 #listfilter form {
@@ -468,11 +472,8 @@ html > * .infoline {
 }
 
 #input-table{
-	margin:0.4em 0 0 0;
-}
-
-html > * #input-table{
-	width:100%;
+	margin:0.5em 1em;
+	background-color:white;
 }
 
 #input-table .libelle {
@@ -917,6 +918,8 @@ ul#tabs li{
 	background-color:#DDDDFF;
 	margin:0 0 0 0.2em;
 	line-height:2em;
+	-moz-border-radius: 10px 10px 0px 0px;
+	-webkit-border-radius: 10px 10px 0px 0px;
 }
 
 #tabs a{
@@ -936,6 +939,8 @@ ul#tabs li{
 	clear:right;
 	padding-top:.5em;
 	padding-bottom:.5em;
+	-moz-border-radius: 10px 0 10px 10px;
+	-webkit-border-radius: 10px 0 10px 10px;
 }
 .tabbed table#listing{
 	width: 98%;
@@ -974,7 +979,7 @@ ul#tabs li{
 /*** Installation pages ***/
 #installpage{
 	text-align:center;
-	margin:0 1em 0.5em 1em;
+	margin:.5em 1em;
 	position:relative;
 }
 
@@ -1040,6 +1045,9 @@ ul#paths{
 	background-color:#DDDDFF;
 	text-align:right;
 	font-size: 0.85em;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	padding: .1em .5em;
 }
 #footerinstall p{
 	margin:0.5em 0.5em 0 0.5em;
@@ -1054,7 +1062,6 @@ ul#paths{
 #footerinstall li{
 	line-height:1.7em;
 	display:inline;
-	white-space:nowrap;
 }
 #footerinstall .current{
 	color:black;
@@ -1091,6 +1098,8 @@ ul#paths{
 	text-align:center;
 	width:240px;
 	height:240px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
 }
 
 .trombino img{
@@ -1167,6 +1176,8 @@ ul#paths{
 	margin-top:10px!ie;
  	width:14em;
 	text-align: center;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
 }
 
 #menu h1 {

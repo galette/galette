@@ -231,13 +231,25 @@ header('Content-Type: text/html; charset=UTF-8');
         <script type="text/javascript" src="../includes/jquery/jquery-<?php echo JQUERY_VERSION; ?>.min.js"></script>
         <script type="text/javascript" src="../includes/jquery/jquery.bgiframe.pack.js"></script>
         <script type="text/javascript" src="../includes/jquery/jquery.bgFade.js"></script>
+        <!--[if IE]>
         <script type="text/javascript" src="../includes/jquery/jquery.corner.js"></script>
+        <script type="text/javascript">
+            //<![CDATA[
+            $(function() {
+                /**
+                * Let's round some corners !
+                */
+                $('#titre').corner();
+                $('#footerinstall').corner();
+            });
+            //]]>
+        </script>
+        <![endif]-->
         <script type="text/javascript" src="../includes/jquery/chili-1.7.pack.js"></script>
         <script type="text/javascript" src="../includes/jquery/jquery.tooltip.pack.js"></script>
         <script type="text/javascript" src="../includes/common.js"></script>
         <script type="text/javascript">
             $(function() {
-                $('#footerinstall').corner();
 <?php
 if ($step == '1') { ?>
                 $('#pref_lang').change(function() {
@@ -250,9 +262,8 @@ if ($step == '1') { ?>
         </script>
     </head>
     <body>
-        <h1 id="titre"><?php echo _T("Galette installation") . ' - ' . $step_title ?></h1>
         <div id="installpage">
-
+            <h1 id="titre"><?php echo _T("Galette installation") . ' - ' . $step_title ?></h1>
 <?php
 switch ( $step ) {
 case '1':

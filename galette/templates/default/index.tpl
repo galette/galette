@@ -18,7 +18,7 @@
 					<li><a href="index.php?pref_lang={$langue->getID()}"><img src="{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}" class="flag"/></a></li>
 {/foreach}
 				</ul>
-				<table> 
+				<table>
 					<tr>
 						<th><label for="login">{_T string="Username:"}</label></th>
 						<td><input type="text" name="login" id="login" /></td>

@@ -23,7 +23,7 @@
   <table id="input-table">
     <thead>
       <tr>
-	<th class="listing" id="id_row">#</th> 
+	<th class="listing" id="id_row">#</th>
 	<th class="listing">{_T string="Name"}</th>
 	{if $class == 'ContributionsTypes'}
 	  <th class="listing">{_T string="Extends membership?"}</th>
@@ -35,7 +35,7 @@
     </thead>
     <tfoot>
       <tr>
-	<td class="listing">&nbsp;</td> 
+	<td class="listing">&nbsp;</td>
 	<td class="listing left">
 	  <input size="40" type="text" name="{$fields.$class.name}"/>
 	</td>
@@ -59,12 +59,12 @@
     <tbody>
       {foreach from=$entries item=entry}
         <tr>
-	  <td class="listing">{$entry.id}</td> 
+	  <td class="listing">{$entry.id}</td>
 	  <td class="listing left">{$entry.name|escape}</td>
 	  <td class="listing">
-	    {if $class == 'ContributionsTypes'} 
-	      {$entry.extends} 
-	    {elseif $class == 'Status'} 
+	    {if $class == 'ContributionsTypes'}
+	      {$entry.extends}
+	    {elseif $class == 'Status'}
 	      {$entry.priority}
 	    {/if}
 	  </td>
@@ -79,13 +79,6 @@
 	</tr>
       {/foreach}
     </tbody>
-  </table> 
+  </table>
 </div>
-</form> 
-		<script type="text/javascript">
-			//<![CDATA[
-			//let's round some corners
-			$('#tabs li').corner('top');
-			$('.tabbed').corner('bottom');
-			//]]>
-		</script>
+</form>

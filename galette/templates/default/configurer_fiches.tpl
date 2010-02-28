@@ -61,7 +61,7 @@
 			<tbody>
 {foreach from=$dyn_fields item=field}
 				<tr>
-					<td class="listing">{$field.index}</td> 
+					<td class="listing">{$field.index}</td>
 					<td class="listing left">{$field.name|escape}</td>
 					<td class="listing left">{$field.perm}</td>
 					<td class="listing left">{$field.type}</td>
@@ -102,11 +102,3 @@
 		<input type="hidden" name="form" value="{$form_name}"/>
 		</div>
 		</form>
-		{literal}
-		<script type="text/javascript">
-			//<![CDATA[
-			$('#tabs li').corner('top');
-			$('.tabbed').corner('bottom');
-			//]]>
-		</script>
-		{/literal}
