@@ -355,7 +355,8 @@ class Picture
             }
         } else {
             $log->log(
-                '[' . $class . '] Invalid filename or extension.',
+                '[' . $class . '] Invalid filename or extension. Filename was `' .
+                $name . '`.',
                 PEAR_LOG_ERR
             );
             return self::INVALID_FILE;
@@ -377,7 +378,10 @@ class Picture
         $current = getimagesize($tmpfile);
 
         if ( !in_array($current['mime'], $this->_allowed_mimes) ) {
-            $log->log('[' . $class . '] Mimetype not allowed', PEAR_LOG_ERR);
+            $log->log(
+                '[' . $class . '] Mimetype `' . $current['mime'] . '` not allowed',
+                PEAR_LOG_ERR
+            );
             return self::MIME_NOT_ALLOWED;
         } else {
             $log->log(
