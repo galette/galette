@@ -47,7 +47,7 @@ function isEmail($login)
 {
     global $error_detected, $DB;
     if ( empty($login) ) {
-            $$error_detected[] = _T("empty login");
+            $error_detected[] = _T("empty login");
     } else {
         $req = 'SELECT email_adh FROM ' . PREFIX_DB .
             'adherents WHERE login_adh=' . txt_sqls($login);
