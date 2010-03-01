@@ -718,14 +718,19 @@ case 'u7':
                 $extra = '...';
             }
             if ( MDB2::isError($result) ) {
-                echo '<li class="install-bad debuginfos">' . $w1 . ' ' . $w2 . ' ' . $w3 . ' ' . $extra . '<span>' . $mdb->getErrorMessage() . '<br/>(' . $mdb->getErrorDetails() . ')</span></li>';
+                echo '<li class="install-bad debuginfos">' . $w1 . ' ' . $w2 .
+                    ' ' . $w3 . ' ' . $extra . '<span>' . $result->getMessage() .
+                    '<br/>(' . $result->getDebugInfo() . ')</span></li>';
 
                 //if error are not on drop, DROP, rename or RENAME we can continue
-                if ( (strcasecmp(trim($w1), 'drop') != 0) && (strcasecmp(trim($w1), 'rename') != 0) ) {
+                if ( (strcasecmp(trim($w1), 'drop') != 0)
+                    && (strcasecmp(trim($w1), 'rename') != 0)
+                ) {
                     $error = true;
                 }
             } else {
-                echo "<li class=\"install-ok\">".$w1." ".$w2." ".$w3." ".$extra."</li>";
+                echo '<li class="install-ok">' . $w1 . ' ' . $w2 . ' ' . $w3 .
+                    ' ' . $extra . '</li>';
             }
         }
     }
