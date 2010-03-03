@@ -35,6 +35,8 @@
  * @since     march, 3rd 2009
  */
 
+require_once 'pagination.class.php';
+
 /**
  * Members list parameters class for galette
  *
@@ -48,24 +50,15 @@
  * @link      http://galette.tuxfamily.org
  */
 
-class VarsList
+class VarsList extends GalettePagination
 {
-    private $_current_page;
-    private $_orderby;
-    private $_ordered;
-    private $_show;
-
     //filters
     private $_filter_str;
     private $_field_filter;
     private $_membership_filter;
     private $_account_status_filter;
 
-    private $_selected;
     private $_unreachable;
-
-    const ORDER_ASC = 'ASC';
-    const ORDER_DESC = 'DESC';
 
     /**
     * Default constructor
@@ -76,6 +69,16 @@ class VarsList
     }
 
     /**
+    * Returns the field we want to default set order to
+    *
+    * @return string field name
+    */
+    protected function getDefaultOrder()
+    {
+        return 'nom_adh';
+    }
+
+    /**
     * Reinit default parameters
     *
     * @return void
@@ -83,51 +86,12 @@ class VarsList
     public function reinit()
     {
         global $preferences;
-        $this->current_page = 1;
-        $this->orderby = 'nom_adh';
-        $this->ordered = self::ORDER_ASC;
-        $this->show = $preferences->pref_numrows;
+        parent::reinit();
         $this->filter_str = null;
         $this->_field_filter = null;
         $this->_membership_filter = null;
         $this->_account_status_filter = null;
         $this->selected = array();
-    }
-
-    /**
-    * Reset selected array
-    *
-    * @return void
-    */
-    public function clearSelected()
-    {
-        $this->_selected = array();
-    }
-
-    /**
-    * Invert sort order
-    *
-    * @return void
-    */
-    public function invertorder()
-    {
-        $actual=$this->_ordered;
-        if ($actual == self::ORDER_ASC) {
-                $this->_ordered = self::ORDER_DESC;
-        }
-        if ($actual == self::ORDER_DESC) {
-                $this->_ordered = self::ORDER_ASC;
-        }
-    }
-
-    /**
-    * Get current sort direction
-    *
-    * @return self::ORDER_ASC|self::ORDER_DESC
-    */
-    public function getDirection()
-    {
-        return $this->_ordered;
     }
 
     /**
@@ -140,26 +104,28 @@ class VarsList
     public function __get($name)
     {
         global $log;
-        $return_ok = array(
-            'current_page',
-            'orderby',
-            'ordered',
-            'show',
-            'filter_str',
-            'field_filter',
-            'membership_filter',
-            'account_status_filter',
-            'selected',
-            'unreachable',
-        );
-        if (in_array($name, $return_ok)) {
-            $name = '_' . $name;
-            return $this->$name;
+
+        if ( in_array($name, $this->pagination_fields) ) {
+            return parent::__get($name);
         } else {
-            $log->log(
-                '[varslist.class.php] Unable to get proprety `' .$name . '`',
-                PEAR_LOG_WARNING
+
+            $return_ok = array(
+                'filter_str',
+                'field_filter',
+                'membership_filter',
+                'account_status_filter',
+                'selected',
+                'unreachable'
             );
+            if (in_array($name, $return_ok)) {
+                $name = '_' . $name;
+                return $this->$name;
+            } else {
+                $log->log(
+                    '[VarsList] Unable to get proprety `' .$name . '`',
+                    PEAR_LOG_WARNING
+                );
+            }
         }
     }
 
@@ -175,94 +141,52 @@ class VarsList
     {
         global $log;
 
-        $log->log(
-            '[varslist.class.php] Setting property `' . $name . '`',
-            PEAR_LOG_DEBUG
-        );
-
-        switch($name) {
-        case 'ordered':
-            if ( $value == self::ORDER_ASC || $value == self::ORDER_DESC ) {
-                $name = '_' . $name;
-                $this->$name = $value;
-            } else {
-                $log->log(
-                    '[varslist.class.php] Possibles values for field `' . $name .
-                    '` are: `' . self::ORDER_ASC . '` or `' .
-                    self::ORDER_DESC . '` - `' . $value . '` given',
-                    PEAR_LOG_WARNING
-                );
-            }
-            break;
-        case 'orderby':
-            $name = '_' . $name;
-            $this->$name = $value;
-            break;
-        case 'current_page':
-            if ( is_int($value) && $value > 0 ) {
-                $name = '_' . $name;
-                $this->$name = $value;
-            } else {
-                $log->log(
-                    '[varslist.class.php] Value for field `' . $name .
-                    '` should be a positive integer - (' .
-                    gettype($value) . ')' . $value . ' given',
-                    PEAR_LOG_WARNING
-                );
-            }
-            break;
-        case 'show':
-            if (   $value == 'all'
-                || preg_match('/[[:digit:]]/', $value)
-                && $value > 0
-            ) {
-                $name = '_' . $name;
-                $this->$name = (int)$value;
-            } else {
-                $log->log(
-                    '[varslist.class.php] Value for `' . $name .
-                    '` should be a positive integer or \'all\' - (' .
-                    gettype($value) . ')' . $value . ' given',
-                    PEAR_LOG_WARNING
-                );
-            }
-            break;
-        case 'selected':
-        case 'unreachable':
-            if (is_array($value)) {
-                $name = '_' . $name;
-                $this->$name = $value;
-            } else {
-                $log->log(
-                    '[varslist.class.php] Value for property `' . $name .
-                    '` should be an array (' . gettype($value) . ' given)',
-                    PEAR_LOG_WARNING
-                );
-            }
-            break;
-        case 'filter_str':
-            $this->$name = $value;
-            break;
-        case 'field_filter':
-        case 'membership_filter':
-        case 'account_status_filter':
-            if ( is_numeric($value) ) {
-                $name = '_' . $name;
-                $this->$name = $value;
-            } else {
-                $log->log(
-                    '[varslist.class.php] Value for property `' . $name .
-                    '` should be an integer (' . gettype($value) . ' given)',
-                    PEAR_LOG_WARNING
-                );
-            }
-            break;
-        default:
+        if ( in_array($name, $this->pagination_fields) ) {
+            parent::__set($name, $value);
+        } else {
             $log->log(
-                '[varslist.class.php] Unable to set proprety `' . $name . '`',
-                PEAR_LOG_WARNING
+                '[VarsList] Setting property `' . $name . '`',
+                PEAR_LOG_DEBUG
             );
-            break;
+
+            switch($name) {
+            case 'selected':
+            case 'unreachable':
+                if (is_array($value)) {
+                    $name = '_' . $name;
+                    $this->$name = $value;
+                } else {
+                    $log->log(
+                        '[VarsList] Value for property `' . $name .
+                        '` should be an array (' . gettype($value) . ' given)',
+                        PEAR_LOG_WARNING
+                    );
+                }
+                break;
+            case 'filter_str':
+                $this->$name = $value;
+                break;
+            case 'field_filter':
+            case 'membership_filter':
+            case 'account_status_filter':
+                if ( is_numeric($value) ) {
+                    $name = '_' . $name;
+                    $this->$name = $value;
+                } else {
+                    $log->log(
+                        '[VarsList] Value for property `' . $name .
+                        '` should be an integer (' . gettype($value) . ' given)',
+                        PEAR_LOG_WARNING
+                    );
+                }
+                break;
+            default:
+                $log->log(
+                    '[VarsList] Unable to set proprety `' . $name . '`',
+                    PEAR_LOG_WARNING
+                );
+                break;
+            }
         }
     }
 }
