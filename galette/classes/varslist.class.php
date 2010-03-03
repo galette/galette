@@ -91,7 +91,6 @@ class VarsList extends GalettePagination
         $this->_field_filter = null;
         $this->_membership_filter = null;
         $this->_account_status_filter = null;
-        $this->selected = array();
     }
 
     /**
@@ -114,7 +113,6 @@ class VarsList extends GalettePagination
                 'field_filter',
                 'membership_filter',
                 'account_status_filter',
-                'selected',
                 'unreachable'
             );
             if (in_array($name, $return_ok)) {
@@ -150,7 +148,6 @@ class VarsList extends GalettePagination
             );
 
             switch($name) {
-            case 'selected':
             case 'unreachable':
                 if (is_array($value)) {
                     $name = '_' . $name;
