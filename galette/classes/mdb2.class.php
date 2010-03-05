@@ -772,38 +772,5 @@ class GaletteMdb2
         return $this->_db;
     }
 
-    /**
-    * Has an error occured ?
-    *
-    * @return true if we have an error
-    */
-    public function inError()
-    {
-        if ( MDB2::isError($this->_error) ) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-    * Get main MDB2 error message
-    *
-    * @return error's message
-    */
-    public function getErrorMessage()
-    {
-        return $this->_error->getMessage();
-    }
-
-    /**
-    * Get additionnal informations about the error
-    *
-    * @return erro's debug infos
-    */
-    public function getErrorDetails()
-    {
-        return $this->_error->getDebugInfo();
-    }
 }
 ?>
