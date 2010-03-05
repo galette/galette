@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Classes
+ * @category  Main
  * @package   Galette
  *
  * @author    Laurent Pelecq <laurent.pelecq@soleil.org>
