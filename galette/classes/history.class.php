@@ -35,6 +35,8 @@
  * @since     Available since 0.7dev - 2009-02-09
  */
 
+require_once 'pagination.class.php';
+
 /**
  * History management
  *
@@ -48,13 +50,10 @@
  * @since     Available since 0.7dev - 2009-02-09
  */
 
-class History
+class History extends GalettePagination
 {
     const TABLE = 'logs';
     const PK = 'id_log';
-
-    const ORDER_ASC = 'ASC';
-    const ORDER_DESC = 'DESC';
 
     /** TODO: check for the date type */
     private $_types = array(
@@ -75,21 +74,22 @@ class History
         'sql_log'
     );
 
-    private $_page = 1;
-    private $_show = null;
-    private $_tri = 'date_log';
-    private $_ordered;
-    private $_counter = null;
-    private $_pages = 1;
-
     /**
     * Default constructor
     */
     public function __construct()
     {
-        global $preferences;
-        $this->_show = $preferences->pref_numrows;
-        $this->_ordered = self::ORDER_ASC;
+        parent::__construct();
+    }
+
+    /**
+    * Returns the field we want to default set order to
+    *
+    * @return string field name
+    */
+    protected function getDefaultOrder()
+    {
+        return 'date_log';
     }
 
     /**
@@ -125,12 +125,12 @@ class History
 
         $stmt->execute(
             array(
-                'date'        =>    MDB2_Date::mdbNow(),
-                'ip'        =>    $_SERVER["REMOTE_ADDR"],
-                'adh'        =>    $login->login,
-                'action'    =>    $action,
-                'text'        =>    $argument,
-                'sql'        =>    $query
+                'date'      => MDB2_Date::mdbNow(),
+                'ip'        => $_SERVER["REMOTE_ADDR"],
+                'adh'       => $login->login,
+                'action'    => $action,
+                'text'      => $argument,
+                'sql'       => $query
             )
         );
 
@@ -162,6 +162,15 @@ class History
 
         $result = $mdb->execute($requete);
 
+        if (MDB2::isError($stmt)) {
+            $log->log(
+                'An error occured cleaning history. ' . $result->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $this->add('Arror flushing logs');
+            return -1;
+        }
+
         $this->add('Logs flushed');
 
         return $result;
@@ -170,39 +179,28 @@ class History
     /**
     * Get the entire history list
     *
-    * @param int $start start history id
-    * @param int $count number of entries to show
-    *
     * @return array
     */
-    public function getHistory($start = 0, $count = 0)
+    public function getHistory()
     {
         global $mdb, $log;
 
-        if ($this->_counter == null) {
+        if ($this->counter == null) {
             $c = $this->_getCount();
 
             if ($c == 0) {
                 $log->log('No entry in history (yet?).', PEAR_LOG_DEBUG);
                 return;
             } else {
-                $this->_counter = $c;
-                $this->_countPages();
-                /*if ($this->_counter % $this->_show == 0) {
-                    $this->_pages = intval($this->_counter / $this->_show);
-                } else {
-                    $this->_pages = intval($this->_counter / $this->_show) + 1;
-                }
-                if ($this->_pages == 0) {
-                    $this->_pages = 1;
-                }*/
+                $this->counter = (int)$c;
+                $this->countPages();
             }
         }
 
         $requete = 'SELECT * FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE);
-        $requete .= 'ORDER BY ' . $this->_tri . ' ' . $this->_ordered;
+        $requete .= 'ORDER BY ' . $this->orderby . ' ' . $this->ordered;
 
-        $mdb->getDb()->setLimit($this->_show, ($this->_page - 1) * $this->_show);
+        $mdb->getDb()->setLimit($this->show, ($this->current_page - 1) * $this->show);
 
         $result = $mdb->query($requete);
         if ( MDB2::isError($result) ) {
@@ -214,23 +212,6 @@ class History
             $return[] = $row;
         }
         return $return;
-    }
-
-    /**
-    * Update or set pages count
-    *
-    * @return void
-    */
-    private function _countPages()
-    {
-        if ($this->_counter % $this->_show == 0) {
-            $this->_pages = intval($this->_counter / $this->_show);
-        } else {
-            $this->_pages = intval($this->_counter / $this->_show) + 1;
-        }
-        if ($this->_pages == 0) {
-            $this->_pages = 1;
-        }
     }
 
     /**
@@ -259,32 +240,6 @@ class History
     }
 
     /**
-    * Changes the sort order
-    *
-    * @return void
-    */
-    public function invertorder()
-    {
-        $actual=$this->_ordered;
-        if ($actual == self::ORDER_ASC) {
-            $this->_ordered = self::ORDER_DESC;
-        }
-        if ($actual == self::ORDER_DESC) {
-            $this->_ordered = self::ORDER_ASC;
-        }
-    }
-
-    /**
-    * Get actual sort direction
-    *
-    * @return string direction
-    */
-    public function getDirection()
-    {
-        return $this->_ordered;
-    }
-
-    /**
     * Global getter method
     *
     * @param string $name name of the property we want to retrive
@@ -293,25 +248,27 @@ class History
     */
     public function __get($name)
     {
-        $forbidden = array('ordered');
-        if ( !in_array($name, $forbidden) ) {
-            $name = '_' . $name;
-            return $this->$name;
-        } else {
-            return false;
-        }
-    }
+        global $log;
 
-    /**
-    * Set sort direction
-    *
-    * @param string $dir direction, either self::ORDER_ASC or self::ORDER_DESC
-    *
-    * @return void
-    */
-    public function setDirection($dir)
-    {
-        $this->_ordered = $dir;
+        $log->log(
+            '[History] Getting property `' . $name . '`',
+            PEAR_LOG_DEBUG
+        );
+
+        if ( in_array($name, $this->pagination_fields) ) {
+            return parent::__get($name);
+        } else {
+            $forbidden = array();
+            if ( !in_array($name, $forbidden) ) {
+                $name = '_' . $name;
+                return $this->$name;
+            } else {
+                $log->log(
+                    '[History] Unable to get proprety `' .$name . '`',
+                    PEAR_LOG_WARNING
+                );
+            }
+        }
     }
 
     /**
@@ -324,25 +281,37 @@ class History
     */
     public function __set($name, $value)
     {
-        $forbidden = array('ordered');
-        if ( !in_array($name, $forbidden) ) {
-            $rname = '_' . $name;
-            switch($name) {
-            case 'tri':
-                if (in_array($value, $this->_fields)) {
-                    $this->$rname = $value;
-                }
-                break;
-            case 'show':
-                $this->$rname = $value;
-                $this->_countPages();
-                break;
-            default:
-                $this->$rname = $value;
-                break;
-            }
+        if ( in_array($name, $this->pagination_fields) ) {
+            parent::__set($name, $value);
         } else {
-            return false;
+            $log->log(
+                '[History] Setting property `' . $name . '`',
+                PEAR_LOG_DEBUG
+            );
+
+            $forbidden = array();
+            if ( !in_array($name, $forbidden) ) {
+                $rname = '_' . $name;
+                switch($name) {
+                case 'tri':
+                    if (in_array($value, $this->_fields)) {
+                        $this->$rname = $value;
+                    }
+                    break;
+                case 'show':
+                    $this->$rname = $value;
+                    $this->countPages();
+                    break;
+                default:
+                    $this->$rname = $value;
+                    break;
+                }
+            } else {
+                $log->log(
+                    '[History] Unable to set proprety `' .$name . '`',
+                    PEAR_LOG_WARNING
+                );
+            }
         }
     }
 }

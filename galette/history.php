@@ -52,18 +52,19 @@ if ( isset($_GET['reset']) && $_GET['reset'] == 1 ) {
 
 
 if ( isset($_GET['page']) && is_numeric($_GET['page']) ) {
-    $hist->page = $_GET['page'];
+    $hist->current_page = (int)$_GET['page'];
 }
 
 if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
     $hist->show = $_GET['nbshow'];
 }
 
+/** FIXME: should be handled in GalettePagination */
 if ( isset($_GET['tri']) ) {
-    if ( $_GET['tri'] == $hist->tri ) {//ordre inverse
+    if ( $_GET['tri'] == $hist->orderby ) {//ordre inverse
         $hist->invertorder();
     } else {//ordre normal
-        $hist->tri = $_GET['tri'];
+        $hist->orderby = $_GET['tri'];
         $hist->setDirection(History::ORDER_ASC);
     }
 }
@@ -77,21 +78,21 @@ $paginate = null;
 $tabs = "\t\t\t\t\t\t";
 
 /** Pagination */
-if ( $hist->page < 11 ) {
+if ( $hist->current_page < 11 ) {
     $idepart=1;
 } else {
-    $idepart = $hist->page - 10;
+    $idepart = $hist->current_page - 10;
 }
-if ( $hist->page + 10 < $hist->pages ) {
-    $ifin = $hist->page + 10;
+if ( $hist->current_page + 10 < $hist->pages ) {
+    $ifin = $hist->current_page + 10;
 } else {
     $ifin = $hist->pages;
 }
 
-$next = $hist->page + 1;
-$previous = $hist->page - 1;
+$next = $hist->current_page + 1;
+$previous = $hist->current_page - 1;
 
-if ( $hist->page != 1 ) {
+if ( $hist->current_page != 1 ) {
     $paginate .= "\n" . $tabs . "<li><a href=\"index.php?page=1\" title=\"" .
          _T("First page") . "\">&lt;&lt;</a></li>\n";
     $paginate .= $tabs . "<li><a href=\"?page=" . $previous . "\" title=\"" .
@@ -100,16 +101,16 @@ if ( $hist->page != 1 ) {
 }
 
 for ( $i = $idepart ; $i <= $ifin ; $i++ ) {
-    if ( $i == $hist->page ) {
+    if ( $i == $hist->current_page ) {
         $paginate .= $tabs . "<li class=\"current\"><a href=\"#\" title=\"" .
-            preg_replace("(%i)", $hist->page, _T("Current page (%i)")) .
+            preg_replace("(%i)", $hist->current_page, _T("Current page (%i)")) .
             "\">-&nbsp;$i&nbsp;-</a></li>\n";
     } else {
         $paginate .= $tabs . "<li><a href=\"?page=" . $i . "\" title=\"" .
             preg_replace("(%i)", $i, _T("Page %i")) . "\">" . $i . "</a></li>\n";
     }
 }
-if ($hist->page != $hist->pages ) {
+if ($hist->current_page != $hist->pages ) {
     $paginate .= $tabs . "<li><a href=\"?page=" . $next . "\" title=\"" .
         preg_replace("(%i)", $next, _T("Next page (%i)")) . "\">&gt;</a></li>\n";
     $paginate .= $tabs . "<li><a href=\"?page=" . $hist->pages . "\" title=\"" .
@@ -121,7 +122,7 @@ if ($hist->page != $hist->pages ) {
 $tpl->assign('logs', $logs);
 $tpl->assign('nb_lines', count($logs));
 $tpl->assign('nb_pages', $hist->pages);
-$tpl->assign('page', $hist->page);
+$tpl->assign('page', $hist->current_page);
 $tpl->assign('numrows', $hist->show);
 $tpl->assign('history', $hist);
 $tpl->assign('pagination', $paginate);

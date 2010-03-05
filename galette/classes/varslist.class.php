@@ -104,10 +104,14 @@ class VarsList extends GalettePagination
     {
         global $log;
 
+        $log->log(
+            '[VarsList] Getting property `' . $name . '`',
+            PEAR_LOG_DEBUG
+        );
+
         if ( in_array($name, $this->pagination_fields) ) {
             return parent::__get($name);
         } else {
-
             $return_ok = array(
                 'filter_str',
                 'field_filter',

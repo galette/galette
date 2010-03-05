@@ -24,7 +24,7 @@
 					<th class="listing left">
 						<a href="history.php?tri=date_log" class="listing">
 							{_T string="Date"}
-							{if $history->tri eq "date_log"}
+							{if $history->orderby eq "date_log"}
 								{if $history->getDirection() eq "DESC"}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
 								{else}
@@ -36,7 +36,7 @@
 					<th class="listing left">
 						<a href="history.php?tri=ip_log" class="listing">
 							{_T string="IP"}
-							{if $history->tri eq "ip_log"}
+							{if $history->orderby eq "ip_log"}
 								{if $history->getDirection() eq "DESC"}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
 								{else}
@@ -48,7 +48,7 @@
 					<th class="listing left">
 						<a href="history.php?tri=adh_log" class="listing">
 							{_T string="User"}
-							{if $history->tri eq "adh_log"}
+							{if $history->orderby eq "adh_log"}
 								{if $history->getDirection() eq "DESC"}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
 								{else}
@@ -60,7 +60,7 @@
 					<th class="listing left">
 						<a href="history.php?tri=action_log" class="listing">
 							{_T string="Action"}
-							{if $history->tri eq "action_log"}
+							{if $history->orderby eq "action_log"}
 								{if $history->getDirection() eq "DESC"}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
 								{else}
@@ -72,7 +72,7 @@
 					<th class="listing left">
 						<a href="history.php?tri=text_log" class="listing">
 							{_T string="Description"}
-							{if $history->tri eq "text_log"}
+							{if $history->orderby eq "text_log"}
 								{if $history->getDirection() eq "DESC"}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
 								{else}

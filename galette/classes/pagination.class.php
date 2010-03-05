@@ -36,7 +36,7 @@
  */
 
 /**
- * Pagination facilities
+ * Pagination and ordering facilities
  *
  * @name      GalettePagination
  * @category  Classes
@@ -54,18 +54,19 @@ abstract class GalettePagination
     private $_orderby;
     private $_ordered;
     private $_show;
+    private $_pages = 1;
+    private $_counter = null;
 
     const ORDER_ASC = 'ASC';
     const ORDER_DESC = 'DESC';
-
-    //default order will be overriden by subclasses
-    const DEFAULT_ORDER = null;
 
     protected $pagination_fields = array(
         'current_page',
         'orderby',
         'ordered',
-        'show'
+        'show',
+        'pages',
+        'counter'
     );
 
     /**
@@ -125,6 +126,23 @@ abstract class GalettePagination
     }
 
     /**
+    * Update or set pages count
+    *
+    * @return void
+    */
+    protected function countPages()
+    {
+        if ($this->_counter % $this->_show == 0) {
+            $this->_pages = intval($this->_counter / $this->_show);
+        } else {
+            $this->_pages = intval($this->_counter / $this->_show) + 1;
+        }
+        if ($this->_pages == 0) {
+            $this->_pages = 1;
+        }
+    }
+
+    /**
     * Global getter method
     *
     * @param string $name name of the property we want to retrive
@@ -134,6 +152,13 @@ abstract class GalettePagination
     public function __get($name)
     {
         global $log;
+
+        $log->log(
+            '[' . get_class($this) .
+            '|GalettePagination] Getting property `' . $name . '`',
+            PEAR_LOG_DEBUG
+        );
+
         if ( in_array($name, $this->pagination_fields) ) {
             $name = '_' . $name;
             return $this->$name;
@@ -184,6 +209,8 @@ abstract class GalettePagination
             $this->$name = $value;
             break;
         case 'current_page':
+        case 'counter':
+        case 'pages':
             if ( is_int($value) && $value > 0 ) {
                 $name = '_' . $name;
                 $this->$name = $value;
@@ -200,7 +227,7 @@ abstract class GalettePagination
         case 'show':
             if (   $value == 'all'
                 || preg_match('/[[:digit:]]/', $value)
-                && $value > 0
+                && $value >= 0
             ) {
                 $name = '_' . $name;
                 $this->$name = (int)$value;
