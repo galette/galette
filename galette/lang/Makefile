@@ -28,7 +28,7 @@ PHP_SOURCES = ../index.php \
 ../champs_requis.php \
 ../traduire_libelles.php \
 ../gestion_textes.php \
-../editer_intitules.php \
+../gestion_intitules.php \
 ../includes/dynamic_fields.inc.php \
 ../templates/default/index.tpl \
 ../templates/default/gestion_adherents.tpl \
