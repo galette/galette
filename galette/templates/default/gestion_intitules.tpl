@@ -1,5 +1,5 @@
 <h1 id="titre">{$form_title}</h1>
-<form action="editer_intitules.php" method="post" enctype="multipart/form-data">
+<form action="gestion_intitules.php" method="post" enctype="multipart/form-data">
 {if $error_detected|@count != 0}
   <div id="errorbox">
     <h1>{_T string="- ERROR -"}</h1>
@@ -69,10 +69,10 @@
 	    {/if}
 	  </td>
 	  <td class="listing center actions_row">
-	    <a href="editer_intitules.php?class={$class}&amp;id={$entry.id}">
+	    <a href="gestion_intitules.php?class={$class}&amp;id={$entry.id}">
 	      <img src="{$template_subdir}images/icon-edit.png" alt="{php}$current_entry =  $this->get_template_vars('entry');echo preg_replace("/%s/", $current_entry['name'], _T("Edit '%s' field"));{/php}" title="{php}$current_entry =  $this->get_template_vars('entry');echo preg_replace("/%s/", $current_entry['name'], _T("Edit '%s' field"));{/php}" width="16" height="16"/>
 	    </a>
-	    <a onclick="return confirm('{_T string="Do you really want to delete this category?"|escape:"javascript"}')" href="editer_intitules.php?class={$class}&amp;del={$entry.id}">
+	    <a onclick="return confirm('{_T string="Do you really want to delete this category?"|escape:"javascript"}')" href="gestion_intitules.php?class={$class}&amp;del={$entry.id}">
 	      <img src="{$template_subdir}images/icon-trash.png" alt="{php}$current_entry =  $this->get_template_vars('entry');echo preg_replace("/%s/", $current_entry['name'], _T("Delete '%s' field"));{/php}" title="{php}$current_entry =  $this->get_template_vars('entry');echo preg_replace("/%s/", $current_entry['name'], _T("Delete '%s' field"));{/php}" width="16" height="16" />
 	    </a>
 	  </td>
