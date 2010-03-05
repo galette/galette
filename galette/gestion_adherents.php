@@ -136,6 +136,7 @@ if ( isset($_GET['clear_filter']) ) {
 }
 
 //numbers of rows to display
+/** FIXME: already handled in GalettePagination */
 $numrows = $preferences->pref_numrows;
 if (isset($_GET['nbshow'])) {
     if (is_numeric($_GET['nbshow'])) {
@@ -144,12 +145,13 @@ if (isset($_GET['nbshow'])) {
 }
 
 // Sorting
+/** FIXME: should be handled in GalettePagination */
 if ( isset($_GET['tri']) ) {
     if ( $_GET['tri'] == $varslist->orderby ) {//ordre inverse
         $varslist->invertorder();
     } else {//ordre normal
         $varslist->orderby = $_GET['tri'];
-        $varslist->ordered = VarsList::ORDER_ASC;
+        $varslist->setDirection(VarsList::ORDER_ASC);
     }
 }
 
