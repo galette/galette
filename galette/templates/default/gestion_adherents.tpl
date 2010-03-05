@@ -162,10 +162,10 @@
 					{/if}
 					</td>
 					<td class="{$member->getRowClass()} center nowrap actions_row">
-						<a href="subscription_form.php?id_adh={$member->id}"><img src="{$template_subdir}images/icon-fiche.png" alt="Fiche adhérent" width="18" height="13"/></a>
-						<a href="ajouter_adherent.php?id_adh={$member->id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></a>
-						<a href="gestion_contributions.php?id_adh={$member->id}"><img src="{$template_subdir}images/icon-money.png" alt="{_T string="[$]"}" width="16" height="16"/></a>
-						<a onclick="return confirm('{_T string="Do you really want to delete this member from the base? This will also delete the history of his fees. You could instead disable the account.\n\nDo you still want to delete this member ?"|escape:"javascript"}')" href="gestion_adherents.php?sup={$member->id}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/></a>
+						<a href="subscription_form.php?id_adh={$member->id}"><img src="{$template_subdir}images/icon-fiche.png" alt="Fiche adhérent" width="18" height="13" title="{php}$member = $this->get_template_vars('member'); echo preg_replace('/%membername/', $member->sname, _T("%membername: PDF member card"));{/php}"/></a>
+						<a href="ajouter_adherent.php?id_adh={$member->id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{php}$member = $this->get_template_vars('member'); echo preg_replace('/%membername/', $member->sname, _T("%membername: edit informations"));{/php}"/></a>
+						<a href="gestion_contributions.php?id_adh={$member->id}"><img src="{$template_subdir}images/icon-money.png" alt="{_T string="[$]"}" width="16" height="16" title="{php}$member = $this->get_template_vars('member'); echo preg_replace('/%membername/', $member->sname, _T("%membername: contributions"));{/php}"/></a>
+						<a onclick="return confirm('{_T string="Do you really want to delete this member from the base? This will also delete the history of his fees. You could instead disable the account.\n\nDo you still want to delete this member ?"|escape:"javascript"}')" href="gestion_adherents.php?sup={$member->id}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{php}$member = $this->get_template_vars('member'); echo preg_replace('/%membername/', $member->sname, _T("%membername: remove from database"));{/php}"/></a>
 					</td>
 				</tr>
 {foreachelse}
