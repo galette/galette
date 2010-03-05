@@ -201,9 +201,9 @@ CREATE UNIQUE INDEX galette_l10n_idx ON galette_l10n (text_orig, text_locale);
 DROP TABLE galette_tmppasswds;
 CREATE TABLE galette_tmppasswds (
     id_adh integer NOT NULL,
-		tmp_passwd character varying(40) NOT NULL,
-		date_crea_tmp_passwd timestamp NOT NULL
-		);
+    tmp_passwd character varying(40) NOT NULL,
+    date_crea_tmp_passwd timestamp NOT NULL
+);
 CREATE UNIQUE INDEX galette_tmppasswds_idx ON galette_tmppasswds (id_adh);
 
 -- Table for dynamic required fields 2007-07-10;
@@ -258,8 +258,17 @@ CREATE TABLE galette_fields_config (
 DROP TABLE galette_mailing_history;
 CREATE TABLE galette_mailing_history (
   mailing_id integer DEFAULT nextval('galette_mailing_history_id_seq'::text) NOT NULL,
+  mailing_sender integer REFERENCES galette_adherents ON DELETE RESTRICT ON UPDATE CASCADE,
   mailing_subjectf character varying(255) NOT NULL,
   mailing_body text NOT NULL,
   mailing_date date DEFAULT '00000101' NOT NULL
 );
 CREATE UNIQUE INDEX galette_mailing_history_idx ON galette_mailing_history (mailing_id);
+
+-- Table for mailing history recipients;
+DROP TABLE galette_mailing_history_recipients;
+CREATE TABLE galette_mailing_history_recipients (
+  mailing_id integer REFERENCES galette_mailing_history ON DELETE CASCADE ON UPDATE CASCADE,
+  id_adh integer REFERENCES galette_adherents ON DELETE CASCADE ON UPDATE CASCADE
+)
+CREATE UNIQUE INDEX galette_mailing_history_recipients_idx ON galette_mailing_history_recipients (mailing_id, id_adh);

@@ -38,7 +38,7 @@ CREATE TABLE galette_adherents (
   fingerprint varchar(50) DEFAULT NULL,
   PRIMARY KEY  (id_adh),
   UNIQUE (login_adh)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_cotisations;
 CREATE TABLE galette_cotisations (
@@ -213,8 +213,35 @@ CREATE TABLE galette_fields_config (
 DROP TABLE IF EXISTS galette_mailing_history;
 CREATE TABLE galette_mailing_history (
   mailing_id smallint(6) NOT NULL auto_increment,
+  mailing_sender int(10) unsigned NOT NULL,
   mailing_subject varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   mailing_body text NOT NULL,
   mailing_date date NOT NULL default '0000-00-00',
-  PRIMARY KEY (mailing_id)
+  PRIMARY KEY (mailing_id),
+  INDEX (mailing_sender)
+  CONSTRAINT galette_mailing_history_sender
+    FOREIGN KEY (mailing_sender)
+    REFERENCES galette_adherents (id_adh)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Table for mailing history recipients;
+DROP TABLE IF EXSTS galette_mailing_history_recipients;
+CREATE TABLE galette_mailing_history_recipients (
+  mailing_id smallint(6) NOT NULL,
+  id_adh int(10) unsigned NOT NULL,
+  PRIMARY KEY (mailing_id, id_adh),
+  INDEX (mailing_id),
+  INDEX (id_adh),
+  CONSTRAINT galette_mailing_history_recipients_mailing
+    FOREIGN KEY (mailing_id)
+    REFERENCES galette_mailing_history (mailing_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT galette_mailing_history_recipients_adh
+    FOREIGN KEY (id_adh)
+    REFERENCES galette_adherents (id_adh)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
