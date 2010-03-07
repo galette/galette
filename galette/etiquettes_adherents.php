@@ -135,13 +135,13 @@ while ( !$resultat->EOF ) {
 	$nom_adh_ext = '';
 	switch( $resultat->fields[4] ) {
 	case '1' :
-		$nom_adh_ext .= _T("Mr.");
+		$nom_adh_ext .= _T("Mr.") . ' ';
 		break;
 	case '2' :
-		$nom_adh_ext .= _T("Mrs.");
+		$nom_adh_ext .= _T("Mrs.") . ' ';
 		break;
 	case '3' :
-		$nom_adh_ext .= _T("Miss.");
+		$nom_adh_ext .= _T("Miss.") . ' ';
 		break;
 	default :
 		$nom_adh_ext .= '';
@@ -160,7 +160,7 @@ while ( !$resultat->EOF ) {
 	$pdf->Rect($x,$y,$w,$h);
 	// Print full name
 	$pdf->SetXY($x,$y);
-	$nom_adh_ext .= ' ' . mb_strtoupper($resultat->fields[1]) . ' ' . ucfirst(strtolower($resultat->fields[2]));
+	$nom_adh_ext .= mb_strtoupper($resultat->fields[1]) . ' ' . ucfirst(strtolower($resultat->fields[2]));
 	$pdf->Cell($w, $line_h, utf8_encode($nom_adh_ext), 0, 0, 'L', 0);
 	// Print first line of adress
 	$pdf->SetFont('DejaVuSans', '', PREF_ETIQ_CORPS);
