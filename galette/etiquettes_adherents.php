@@ -143,9 +143,6 @@ while ( !$resultat->EOF ) {
 	case '3' :
 		$nom_adh_ext .= _T("Miss.");
 		break;
-	case '4' :
-		$nom_adh_ext .= _T("Society");
-		break;
 	default :
 		$nom_adh_ext .= '';
 	}
