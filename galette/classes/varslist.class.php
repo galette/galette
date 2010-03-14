@@ -85,7 +85,6 @@ class VarsList extends GalettePagination
     */
     public function reinit()
     {
-        global $preferences;
         parent::reinit();
         $this->filter_str = null;
         $this->_field_filter = null;
