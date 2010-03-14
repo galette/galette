@@ -275,7 +275,7 @@ class Members
         }
 
         if ( $count ) {
-            $this->_count($join, $where);
+            $this->_proceedCount($join, $where);
         }
 
         return $query;
@@ -289,7 +289,7 @@ class Members
     *
     * @return void
     */
-    private function _count($join, $where)
+    private function _proceedCount($join, $where)
     {
         global $mdb, $log;
 
