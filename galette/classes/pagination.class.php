@@ -148,6 +148,20 @@ abstract class GalettePagination
     }
 
     /**
+    * Add limits so we retrieve only relavant rows
+    *
+    * @return void
+    */
+    protected function setLimits()
+    {
+        global $mdb;
+        $mdb->getDb()->setLimit(
+            $this->show,
+            ($this->current_page - 1) * $this->show
+        );
+    }
+
+    /**
     * Update or set pages count
     *
     * @return void
@@ -162,6 +176,76 @@ abstract class GalettePagination
         if ($this->_pages == 0) {
             $this->_pages = 1;
         }
+    }
+
+    /**
+    * Creates pagination links and assign some usefull variables to the
+    * Smarty template
+    *
+    * @param Smarty $tpl Smarty template
+    *
+    * @return void
+    */
+    public function setSmartyPagination($tpl) {
+        $paginate = null;
+        $tabs = "\t\t\t\t\t\t";
+
+        //Create pagination links
+        if ( $this->current_page < 11 ) {
+            $idepart=1;
+        } else {
+            $idepart = $this->current_page - 10;
+        }
+        if ( $this->current_page + 10 < $this->pages ) {
+            $ifin = $this->current_page + 10;
+        } else {
+            $ifin = $this->pages;
+        }
+
+        $next = $this->current_page + 1;
+        $previous = $this->current_page - 1;
+
+        if ( $this->current_page != 1 ) {
+            $paginate .= "\n" . $tabs . "<li><a href=\"index.php?page=1\" title=\"" .
+                _T("First page") . "\">&lt;&lt;</a></li>\n";
+            $paginate .= $tabs . "<li><a href=\"?page=" . $previous . "\" title=\"" .
+                preg_replace("(%i)", $previous, _T("Previous page (%i)")) .
+                "\">&lt;</a></li>\n";
+        }
+
+        for ( $i = $idepart ; $i <= $ifin ; $i++ ) {
+            if ( $i == $this->current_page ) {
+                $paginate .= $tabs . "<li class=\"current\"><a href=\"#\" title=\"" .
+                    preg_replace("(%i)", $this->current_page, _T("Current page (%i)")) .
+                    "\">-&nbsp;$i&nbsp;-</a></li>\n";
+            } else {
+                $paginate .= $tabs . "<li><a href=\"?page=" . $i . "\" title=\"" .
+                    preg_replace("(%i)", $i, _T("Page %i")) . "\">" . $i . "</a></li>\n";
+            }
+        }
+        if ($this->current_page != $this->pages ) {
+            $paginate .= $tabs . "<li><a href=\"?page=" . $next . "\" title=\"" .
+                preg_replace("(%i)", $next, _T("Next page (%i)")) . "\">&gt;</a></li>\n";
+            $paginate .= $tabs . "<li><a href=\"?page=" . $this->pages . "\" title=\"" .
+                preg_replace("(%i)", $this->pages, _T("Last page (%i)")) .
+                "\">&gt;&gt;</a></li>\n";
+        }
+
+        //Now, we assign common variables to Smarty template
+        $tpl->assign('nb_pages', $this->pages);
+        $tpl->assign('page', $this->current_page);
+        $tpl->assign('numrows', $this->show);
+        $tpl->assign('pagination', $paginate);
+        $tpl->assign(
+            'nbshow_options',
+            array(
+                10 => "10",
+                20 => "20",
+                50 => "50",
+                100 => "100",
+                0 => _T("All")
+            )
+        );
     }
 
     /**
@@ -228,7 +312,12 @@ abstract class GalettePagination
             break;
         case 'orderby':
             $name = '_' . $name;
-            $this->$name = $value;
+            if ( $this->$name == $value ) {
+                $this->invertorder();
+            } else {
+                $this->$name = $value;
+                $this->setDirection(self::ORDER_ASC);
+            }
             break;
         case 'current_page':
         case 'counter':

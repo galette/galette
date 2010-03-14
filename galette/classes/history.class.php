@@ -200,7 +200,8 @@ class History extends GalettePagination
         $requete = 'SELECT * FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE);
         $requete .= 'ORDER BY ' . $this->orderby . ' ' . $this->ordered;
 
-        $mdb->getDb()->setLimit($this->show, ($this->current_page - 1) * $this->show);
+        //add limits to retrieve only relavant rows
+        $this->setLimits();
 
         $result = $mdb->query($requete);
         if ( MDB2::isError($result) ) {
@@ -281,6 +282,7 @@ class History extends GalettePagination
     */
     public function __set($name, $value)
     {
+        global $log;
         if ( in_array($name, $this->pagination_fields) ) {
             parent::__set($name, $value);
         } else {
@@ -295,7 +297,7 @@ class History extends GalettePagination
                 switch($name) {
                 case 'tri':
                     if (in_array($value, $this->_fields)) {
-                        $this->$rname = $value;
+                        $this->orderby = $value;
                     }
                     break;
                 case 'show':
