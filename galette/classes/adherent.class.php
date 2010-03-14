@@ -579,6 +579,36 @@ class Adherent
     }
 
     /**
+    * Retrieve Full name and surname for the specified member id
+    *
+    * @param int $id member id
+    *
+    * @return string formatted Name and Surname
+    */
+    public static function getSName($id)
+    {
+        global $mdb, $log;
+        $query = 'SELECT nom_adh, prenom_adh  FROM ' . PREFIX_DB . self::TABLE .
+            ' WHERE ' . self::PK . '=' . $id;
+
+        $result = $mdb->query($query);
+
+        if (MDB2::isError($result)) {
+            $log->log(
+                'Cannot get formatted name for member form id `' . $id . '` | ' .
+                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
+                PEAR_LOG_WARNING
+            );
+            return false;
+        }
+
+        $row = $result->fetchRow();
+        $result->free();
+
+        return mb_strtoupper($row->nom_adh, 'UTF-8') . ' ' . ucfirst(mb_strtolower($row->prenom_adh, 'UTF-8'));
+    }
+
+    /**
     * Global getter method
     *
     * @param string $name name of the property we want to retrive
