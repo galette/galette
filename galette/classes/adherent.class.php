@@ -579,6 +579,34 @@ class Adherent
     }
 
     /**
+    * Get current member due status
+    *
+    * @return string i18n string representing state of due
+    */
+    public function getDues()
+    {
+        $ret = '';
+        if ( $this->isDueFree() ) {
+                $ret = _T("Freed of dues");
+        } else if ( $this->due_date == '') {
+            $patterns = array('/%days/', '/%date/');
+            $replace = array($this->oldness, $this->creation_date);
+            $ret = preg_replace($patterns, $replace, _T("Never contributed: Registered %days days ago (since %date)"));
+        } else if ( $this->days_remaining == 0 ) {
+            $ret = _T("Last day!");
+        } else if ( $this->days_remaining < 0 ) {
+            $patterns = array('/%days/', '/%date/');
+            $replace = array($this->days_remaining *-1, $this->due_date);
+            $ret = preg_replace($patterns, $replace, _T("Late of %days days (since %date)"));
+        } else {
+            $patterns = array('/%days/', '/%date/');
+            $replace = array($this->days_remaining, $this->due_date);
+            $ret = preg_replace($patterns, $replace, _T("%days days remaining (ending on %date)"));
+        }
+        return $ret;
+    }
+
+    /**
     * Retrieve Full name and surname for the specified member id
     *
     * @param int $id member id

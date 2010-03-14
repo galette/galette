@@ -133,34 +133,7 @@
 					</td>
 					<td class="{$member->getRowClass()} nowrap">{$member->nickname|htmlspecialchars}</td>
 					<td class="{$member->getRowClass()} nowrap">{$member->sstatus}</td>
-					<td class="{$member->getRowClass()}">
-					{if $member->isDueFree()}
-						{_T string="Freed of dues"}
-					{elseif $member->due_date eq ''}
-						{php}
-							$member = $this->get_template_vars('member');
-							$patterns = array('/%days/', '/%date/');
-							$replace = array($member->oldness, $member->creation_date);
-							echo preg_replace($patterns, $replace, _T("Never contributed: Registered %days days ago (since %date)"));
-						{/php}
-					{elseif $member->days_remaining eq 0}
-						{_T string="Last day!"}
-					{elseif $member->days_remaining < 0}
-						{php}
-							$member = $this->get_template_vars('member');
-							$patterns = array('/%days/', '/%date/');
-							$replace = array($member->days_remaining *-1, $member->due_date);
-							echo preg_replace($patterns, $replace, _T("Late of %days days (since %date)"));
-						{/php}
-					{else}
-						{php}
-							$member = $this->get_template_vars('member');
-							$patterns = array('/%days/', '/%date/');
-							$replace = array($member->days_remaining, $member->due_date);
-							echo preg_replace($patterns, $replace, _T("%days days remaining (ending on %date)"));
-						{/php}
-					{/if}
-					</td>
+					<td class="{$member->getRowClass()}">{$member->getDues()}</td>
 					<td class="{$member->getRowClass()} center nowrap actions_row">
 						<a href="subscription_form.php?id_adh={$member->id}"><img src="{$template_subdir}images/icon-fiche.png" alt="Fiche adhérent" width="18" height="13" title="{php}$member = $this->get_template_vars('member'); echo preg_replace('/%membername/', $member->sname, _T("%membername: PDF member card"));{/php}"/></a>
 						<a href="ajouter_adherent.php?id_adh={$member->id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{php}$member = $this->get_template_vars('member'); echo preg_replace('/%membername/', $member->sname, _T("%membername: edit informations"));{/php}"/></a>
