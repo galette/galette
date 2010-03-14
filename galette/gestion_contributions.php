@@ -46,6 +46,7 @@ if ( !$login->isLogged() ) {
 
 $filtre_id_adh = '';
 
+/** FIXME: BIGFIXME: REMOVE ALL THE OLD CODE... */
 if ( !$login->isAdmin() ) {
     $_SESSION['filtre_cotis_adh'] = $login->id;
 } else {
@@ -57,7 +58,51 @@ if ( !$login->isAdmin() ) {
         }
     }
 }
+/** /FIXME: BIGFIXME end */
 
+require_once 'classes/contributions.class.php';
+if ( $_SESSION['galette']['contributions'] ) {
+    $contribs = unserialize($_SESSION['galette']['contributions']);
+} else {
+    $contribs = new Contributions();
+}
+
+if ( isset($_GET['page']) && is_numeric($_GET['page']) ) {
+    $contribs->current_page = (int)$_GET['page'];
+}
+
+if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
+    $contribs->show = $_GET['nbshow'];
+}
+
+/** FIXME: should be handled in GalettePagination */
+if ( isset($_GET['tri']) ) {
+    if ( $_GET['tri'] == $contribs->orderby ) {//ordre inverse
+        $contribs->invertorder();
+    } else {//ordre normal
+        $contribs->orderby = $_GET['tri'];
+        $contribs->setDirection(Contributions::defaultOrder());
+    }
+}
+
+$_SESSION['galette']['contributions'] = serialize($contribs);
+$contributions2 = $contribs->getContributionsList(true);
+
+/**
+* Return member name. Smarty cannot directly use static functions
+*
+* @param array $params Parameters
+*
+* @return Adherent::getSName
+* @see Adherent::getSName
+*/
+function getMemberName($params)
+{
+    extract($params);
+    return Adherent::getSName($id);
+}
+
+/** FIXME: BIGFIXME: REMOVE ALL THE OLD CODE... */
 $numrows = $preferences->pref_numrows;
 
 if ( isset($_GET['nbshow']) ) {
@@ -295,78 +340,27 @@ while ( !$resultat->EOF ) {
     $resultat->MoveNext();
 }
 $resultat->Close();
+/** FIXME: BIGFIXME end */
 
-// if viewing a member's contributions, show deadline
-if ( $_SESSION['filtre_cotis_adh'] != '' ) {
-    $requete = 'SELECT date_echeance, bool_exempt_adh FROM ' . PREFIX_DB .
-        'adherents WHERE id_adh=\'' . $_SESSION['filtre_cotis_adh'] . '\'';
-    $resultat = $DB->Execute($requete);
-    if ( $resultat->fields[1] ) {
-        $statut_cotis = _T("Freed of dues");
-        $statut_class = 'cotis-exempt';
-    } else {
-        if ( $resultat->fields[0] == '' ) {
-            $statut_cotis = _T("Never contributed");
-            $statut_class = 'cotis-never';
-        } else {
-            $date_fin = explode('-', $resultat->fields[0]);
-            $ts_date_fin = mktime(0, 0, 0, $date_fin[1], $date_fin[2], $date_fin[0]);
-            $aujourdhui = time();
-            $difference = intval(($ts_date_fin - $aujourdhui)/(3600*24));
-            if ($difference==0) {
-                $statut_cotis = _T("Last day!");
-                $statut_class = 'cotis-lastday';
-            } elseif ($difference<0) {
-                $statut_cotis = _T("Late of") . ' ' . -$difference . ' ' .
-                    _T("days") . ' (' . _T("since") . ' ' . $date_fin[2] .
-                    '/' . $date_fin[1] . '/' . $date_fin[0] . ')';
-                $statut_class = 'cotis-late';
-            } else {
-                if ( $difference != 1 ) {
-                    $statut_cotis = $difference . ' ' . _T("remaining days") .
-                        ' (' . _T("ending on") . ' ' . $date_fin[2] . '/' .
-                        $date_fin[1] . '/' . $date_fin[0] . ')';
-                } else {
-                    $statut_cotis = $difference . ' ' . _T("remaining day") .
-                        ' (' . _T("ending on") . ' ' . $date_fin[2] . '/' .
-                        $date_fin[1] . '/' . $date_fin[0] . ')';
-                }
-                if ( $difference < 30 ) {
-                    $statut_class = 'cotis-soon';
-                } else {
-                    $statut_class = 'cotis-ok';
-                }
-            }
-        }
-    }
-    $tpl->assign('statut_cotis', $statut_cotis);
-    $tpl->assign('statut_class', $statut_class);
-}
+$tpl->register_function('memberName', 'getMemberName');
 
+//assign pagination variables to the template and add pagination links
+$contribs->setSmartyPagination($tpl);
 
 $tpl->assign('require_dialog', true);
+$tpl->assign('require_calendar', true);
 $tpl->assign('contributions', $contributions);
+$tpl->assign('contributions2', $contributions2);
+if ( $_SESSION['filtre_cotis_adh'] != '' ) {
+    $member = new Adherent();
+    $member->load($_SESSION['filtre_cotis_adh']);
+    $tpl->assign('member', $member);
+}
+
 $tpl->assign('nb_contributions', $nb_contributions);
-$tpl->assign('nb_pages', $nbpages);
-$tpl->assign('page', $page);
-$tpl->assign(
-    'filtre_options',
-    array(
-        0 => _T("All members"),
-        3 => _T("Members up to date"),
-        1 => _T("Close expiries"),
-        2 => _T("Latecomers")
-    )
-);
-$tpl->assign(
-    'filtre_2_options',
-    array(
-        0 => _T("All the accounts"),
-        1 => _T("Active accounts"),
-        2 => _T("Inactive accounts")
-    )
-);
-$tpl->assign(
+/*$tpl->assign('nb_pages', $nbpages);
+$tpl->assign('page', $page);*/
+/*$tpl->assign(
     'nbshow_options',
     array(
         10  => '10',
@@ -375,8 +369,8 @@ $tpl->assign(
         100 => '100',
         0   => _T("All")
     )
-);
-$tpl->assign('numrows', $numrows);
+);*/
+/*$tpl->assign('numrows', $numrows);*/
 $content = $tpl->fetch('gestion_contributions.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');

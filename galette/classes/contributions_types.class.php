@@ -40,7 +40,7 @@
  */
 
 /**
- * Contributions
+ * Contributions types handling
  *
  * @category  Classes
  * @name      ContibutionTypes
@@ -56,6 +56,10 @@ class ContributionsTypes
 {
     const TABLE = 'types_cotisation';
     const PK = 'id_type_cotis';
+
+    private $_id;
+    private $_libelle;
+    private $_extension;
 
     private $_error;
 
@@ -82,9 +86,56 @@ class ContributionsTypes
     */
     public function __construct($args = null)
     {
+        /** FIXME: method does not exists ! */
         if ( is_object($args) ) {
             $this->loadFromRS($args);
         }
+    }
+
+    /**
+    * Loads a contribution type from its id
+    *
+    * @param int $id the identifiant to load
+    *
+    * @return boolean true if query succeed, false otherwise
+    */
+    public function load($id)
+    {
+        global $mdb, $log;
+
+        $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' .
+            self::PK . '=' . $id;
+
+        $result = $mdb->query($requete);
+
+        if (MDB2::isError($result)) {
+            $log->log(
+                'Cannot load contribution type form id `' . $id . '` | ' .
+                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
+                PEAR_LOG_WARNING
+            );
+            return false;
+        }
+
+        $this->_loadFromRS($result->fetchRow());
+        $result->free();
+
+        return true;
+    }
+
+    /**
+    * Populate object from a resultset row
+    *
+    * @param ResultSet $r the resultset row
+    *
+    * @return void
+    */
+    private function _loadFromRS($r)
+    {
+        $pk = self::PK;
+        $this->_id = $r->$pk;
+        $this->_libelle = $r->libelle_type_cotis;
+        $this->_extension = $r->cotis_extension;
     }
 
     /**
@@ -479,5 +530,31 @@ class ContributionsTypes
     {
         return $this->_error->getDebugInfo();
     }
+
+    /**
+    * Global getter method
+    *
+    * @param string $name name of the property we want to retrive
+    *
+    * @return false|object the called property
+    */
+    public function __get($name)
+    {
+        $forbidden = array();
+        $rname = '_' . $name;
+        if ( !in_array($name, $forbidden) && isset($this->$rname)) {
+            switch($name) {
+            case 'libelle':
+                return _T($this->_libelle);
+                break;
+            default:
+                return $this->$rname;
+                break;
+            }
+        } else {
+            return false;
+        }
+    }
+
 }
 ?>

@@ -10,14 +10,14 @@
 		<table class="infoline">
 			<tr>
 				<td class="left">{$nb_contributions} {if $nb_contributions != 1}{_T string="contributions"}{else}{_T string="contribution"}{/if}</td>
-                                <td class="center">
+                                <td class="right">
 					<label for="nbshow">{_T string="Show:"}</label>
 					<select name="nbshow" id="nbshow">
 						{html_options options=$nbshow_options selected=$numrows}
 					</select>
 					<noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
 				</td>
-				<td class="right">{_T string="Pages:"}
+				{*<td class="right">{_T string="Pages:"}
 					<span class="pagelink">
 					{section name="pageLoop" start=1 loop=$nb_pages+1}
 						{if $smarty.section.pageLoop.index eq $page}
@@ -27,7 +27,7 @@
 						{/if}
 					{/section}
 					</span>
-				</td>
+				</td>*}
 			</tr>
 		</table>
 		</form>
@@ -99,68 +99,84 @@
 {/if}
 				</tr>
 			</thead>
+			<tfoot>
+				<tr>
+					<td colspan="{if $login->isAdmin()}9{else}7{/if}" class="center" id="table_footer">
+						{_T string="Pages:"}<br/>
+						<ul class="pages">{$pagination}</ul>
+					</td>
+				</tr>
+			</tfoot>
 			<tbody>
-{foreach from=$contributions item=contribution key=ordre}
+{foreach from=$contributions2 item=contribution2 key=ordre}
+	{assign var="mid" value=$contribution2->member}
+	{assign var="cclass" value=$contribution2->getRowClass()}
+				<tr>
+					<td class="{$cclass} center nowrap">{php}$ordre = $this->get_template_vars('ordre');echo $ordre+1{/php}</td>
+					<td class="{$cclass} center nowrap">{$contribution2->date}</td>
+					<td class="{$cclass} center nowrap">{$contribution2->begin_date}</td>
+					<td class="{$cclass} center nowrap">{$contribution2->end_date}</td>
+	{if $login->isAdmin()}
+					<td class="{$cclass}">
+		{if $smarty.session.filtre_cotis_adh eq ""}
+						<a href="gestion_contributions.php?id_adh={$mid}">{if $member}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
+		{else}
+						<a href="voir_adherent.php?id_adh={$mid}">{if $member}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
+		{/if}
+					</td>
+	{/if}
+					<td class="{$cclass}">{$contribution2->type->libelle}</td>
+					<td class="{$cclass} nowrap">{$contribution2->amount}</td>
+					<td class="{$cclass} nowrap">{$contribution2->duration}</td>
+	{if $login->isAdmin()}
+					<td class="{$cclass} center nowrap">
+						<a href="ajouter_contribution.php?id_cotis={$contribution2->id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="Edit the contribution"}"/></a>
+						<a onclick="return confirm('{_T string="Do you really want to delete this contribution of the database ?"|escape:"javascript"}')" href="gestion_contributions.php?sup={$contribution2->id}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{_T string="Delete the contribution"}"/></a>
+					</td>
+	{/if}
+				</tr>
+{foreachelse}
+				<tr><td colspan="{if $login->isAdmin()}9{else}7{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
+{/foreach}
+
+{*{foreach from=$contributions item=contribution key=ordre}
 				<tr>
 					<td class="{$contribution.class} center nowrap">{$ordre}</td>
 					<td class="{$contribution.class} nowrap">{$contribution.date_enreg}</td>
 					<td class="{$contribution.class} nowrap">{$contribution.date_debut}</td>
 					<td class="{$contribution.class} nowrap">{$contribution.date_fin}</td>
-{if $login->isAdmin()}
+	{if $login->isAdmin()}
 					<td class="{$contribution.class}">
-{if $smarty.session.filtre_cotis_adh eq ""}
+		{if $smarty.session.filtre_cotis_adh eq ""}
 						<a href="gestion_contributions.php?id_adh={$contribution.id_adh}">
 							{$contribution.nom} {$contribution.prenom}
 						</a>
-{else}
+		{else}
 						<a href="voir_adherent.php?id_adh={$contribution.id_adh}">
 							{$contribution.nom} {$contribution.prenom}
 						</a>
-{/if}
+		{/if}
 					</td>
-{/if}
+	{/if}
 					<td class="{$contribution.class}">{$contribution.libelle_type_cotis}</td>
 					<td class="{$contribution.class} nowrap">{$contribution.montant_cotis}</td>
 					<td class="{$contribution.class} nowrap">{$contribution.duree_mois_cotis}</td>
-{if $login->isAdmin()}
+	{if $login->isAdmin()}
 					<td class="{$contribution.class} center nowrap">
 						<a href="ajouter_contribution.php?id_cotis={$contribution.id_cotis}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></a>
 						<a onclick="return confirm('{_T string="Do you really want to delete this contribution of the database ?"|escape:"javascript"}')" href="gestion_contributions.php?sup={$contribution.id_cotis}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/></a>
 					</td>
-{/if}
+	{/if}
 				</tr>
 {foreachelse}
-{if $login->isAdmin()}
-				<tr><td colspan="9" class="emptylist">{_T string="no contribution"}</td></tr>
-{else}
-				<tr><td colspan="7" class="emptylist">{_T string="no contribution"}</td></tr>
-{/if}
-{/foreach}
+				<tr><td colspan="{if $login->isAdmin()}9{else}7{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
+{/foreach}*}
 			</tbody>
 		</table>
-		<div class="infoline2 right">
-			{_T string="Pages:"}
-			<span class="pagelink">
-			{section name="pageLoop" start=1 loop=$nb_pages+1}
-			{if $smarty.section.pageLoop.index eq $page}
-			{$smarty.section.pageLoop.index}
-			{else}
-			<a href="gestion_contributions.php?nbshow={$smarty.get.nbshow}&amp;page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
-			{/if}
-			{/section}
-			</span>
-		</div>
-{if $smarty.session.filtre_cotis_adh!=""}
-		<br/>
+{if $member}
 		<div align="center">
-			<table class="{$statut_class}">
-				<tr>
-					<td>{$statut_cotis}</td>
-				</tr>
-			</table>
-		<br/>
+                        <p class="{$member->getRowClass()}">{$member->getDues()}</p>
 {if $login->isAdmin()}
-		<br/>
 			<a href="voir_adherent.php?id_adh={$smarty.session.filtre_cotis_adh}">{_T string="[ See member profile ]"}</a>
 			&nbsp;&nbsp;&nbsp;
 			<a href="ajouter_contribution.php?&amp;id_adh={$smarty.session.filtre_cotis_adh}">{_T string="[ Add a contribution ]"}</a>
@@ -197,7 +213,8 @@
 				$('#nbshow').change(function() {ldelim}
 					this.form.submit();
 				{rdelim});
-				$('#listing').after('<div class="center"><a href="#" id="show_legend">{_T string="Show legend"}</a></div>');
+				//$('#listing').after('<div class="center"><a href="#" id="show_legend">{_T string="Show legend"}</a></div>');
+				$('#table_footer').parent().before('<td class="right" colspan="{if $login->isAdmin()}9{else}7{/if}"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
 				$('#legende h1').remove();
 				$('#legende').dialog({ldelim}
 					autoOpen: false,
@@ -205,10 +222,25 @@
 					hide: 'fold',
 					width: '40%'
 				{rdelim}).dialog('close');
-	
+
 				$('#show_legend').click(function(){ldelim}
 					$('#legende').dialog('open');
 					return false;
+				{rdelim});
+
+				$('#contrib_filter_1').datepicker({ldelim}
+					changeMonth: true,
+					changeYear: true,
+					showOn: 'button',
+					buttonImage: '{$template_subdir}images/calendar.png',
+					buttonImageOnly: true
+				{rdelim});
+				$('#contrib_filter_2').datepicker({ldelim}
+					changeMonth: true,
+					changeYear: true,
+					showOn: 'button',
+					buttonImage: '{$template_subdir}images/calendar.png',
+					buttonImageOnly: true
 				{rdelim});
 			{rdelim});
 			//]]>
