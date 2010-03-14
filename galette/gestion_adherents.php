@@ -136,23 +136,13 @@ if ( isset($_GET['clear_filter']) ) {
 }
 
 //numbers of rows to display
-/** FIXME: already handled in GalettePagination */
-$numrows = $preferences->pref_numrows;
-if (isset($_GET['nbshow'])) {
-    if (is_numeric($_GET['nbshow'])) {
-        $numrows = $_GET['nbshow'];
-    }
+if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
+    $hist->show = $_GET['nbshow'];
 }
 
 // Sorting
-/** FIXME: should be handled in GalettePagination */
 if ( isset($_GET['tri']) ) {
-    if ( $_GET['tri'] == $varslist->orderby ) {//ordre inverse
-        $varslist->invertorder();
-    } else {//ordre normal
-        $varslist->orderby = $_GET['tri'];
-        $varslist->setDirection(VarsList::ORDER_ASC);
-    }
+    $varslist->orderby = $_GET['tri'];
 }
 
 //delete members
@@ -215,64 +205,10 @@ if (isset($_GET['sup']) || isset($_POST['delete'])) {
 $members = new Members();
 $members_list = $members->getMembersList(true);
 
-//pages count
-if ( $numrows==0 ) {
-    $nbpages = 1;
-} else if ( $members->getCount() % $numrows == 0 ) {
-    $nbpages = intval($members->getCount() / $numrows);
-} else {
-    $nbpages = intval($members->getCount() / $numrows) + 1;
-}
-if ($nbpages == 0) {
-    $nbpages = 1;
-}
-
 $_SESSION['galette']['varslist'] = serialize($varslist);
 
-$paginate = null;
-$tabs = "\t\t\t\t\t\t";
-
-/** Pagination */
-if ( $varslist->current_page < 11 ) {
-    $idepart=1;
-} else {
-    $idepart = $varslist->current_page - 10;
-}
-if ( $varslist->current_page + 10 < $nbpages ) {
-    $ifin = $varslist->current_page + 10;
-} else {
-    $ifin = $nbpages;
-}
-
-$next = $varslist->current_page + 1;
-$previous = $varslist->current_page - 1;
-
-if ( $varslist->current_page != 1 ) {
-    $paginate .= "\n" . $tabs . "<li><a href=\"index.php?page=1\" title=\"" .
-        _T("First page") . "\">&lt;&lt;</a></li>\n";
-    $paginate .= $tabs . "<li><a href=\"?page=" . $previous . "\" title=\"" .
-        preg_replace("(%i)", $previous, _T("Previous page (%i)")) .
-        "\">&lt;</a></li>\n";
-}
-
-for ( $i = $idepart ; $i <= $ifin ; $i++ ) {
-    if ( $i == $varslist->current_page ) {
-        $paginate .= $tabs . "<li class=\"current\"><a href=\"#\" title=\"" .
-            preg_replace("(%i)", $varslist->current_page, _T("Current page (%i)")) .
-            "\">-&nbsp;$i&nbsp;-</a></li>\n";
-    } else {
-        $paginate .= $tabs . "<li><a href=\"?page=" . $i . "\" title=\"" .
-            preg_replace("(%i)", $i, _T("Page %i")) . "\">" . $i . "</a></li>\n";
-    }
-}
-if ($varslist->current_page != $nbpages ) {
-    $paginate .= $tabs . "<li><a href=\"?page=" . $next . "\" title=\"" .
-        preg_replace("(%i)", $next, _T("Next page (%i)")) . "\">&gt;</a></li>\n";
-    $paginate .= $tabs . "<li><a href=\"?page=" . $nbpages . "\" title=\"" .
-        preg_replace("(%i)", $nbpages, _T("Last page (%i)")) .
-        "\">&gt;&gt;</a></li>\n";
-}
-/** /Pagination */
+//assign pagination variables to the template and add pagination links
+$varslist->setSmartyPagination($tpl);
 
 $tpl->assign('page_title', _T("Members management"));
 $tpl->assign('require_dialog', true);
@@ -282,11 +218,7 @@ if (isset($warning_detected)) {
 }
 $tpl->assign('members', $members_list);
 $tpl->assign('nb_members', $members->getCount());
-$tpl->assign('nb_pages', $nbpages);
 $tpl->assign('varslist', $varslist);
-$tpl->assign('page', $varslist->current_page);
-$tpl->assign('numrows', $numrows);
-$tpl->assign('pagination', $paginate);
 $tpl->assign(
     'filter_field_options',
     array(
@@ -315,16 +247,7 @@ $tpl->assign(
         2 => _T("Inactive accounts")
     )
 );
-$tpl->assign(
-    'nbshow_options',
-    array(
-        10 => '10',
-        20 => '20',
-        50 => '50',
-        100 => '100',
-        0 => _T("All")
-    )
-);
+
 $content = $tpl->fetch('gestion_adherents.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
