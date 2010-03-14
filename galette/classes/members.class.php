@@ -91,10 +91,8 @@ class Members
     *                               returned
     * @param boolean $filter     proceed filter, defaults to true
     * @param boolean $count      true if we want to count members
-    *                               (not applicable from static calls)
     *
     * @return Adherent[]|ResultSet
-    * @static
     */
     public function getMembersList(
         $as_members=false, $fields=null, $filter=true, $count=true
@@ -363,7 +361,7 @@ class Members
             $token = ' like \'%' . $varslist->filter_str . '%\'';
             $mdb->getDb()->loadModule('Function');
             switch( $varslist->field_filter ) {
-            case 0: //Name
+            case self::FILTER_NAME:
                 $where .= $mdb->getDb()->concat(
                     'nom_adh', 'prenom_adh', 'pseudo_adh'
                 ) . $token;
@@ -372,24 +370,24 @@ class Members
                     'prenom_adh', 'nom_adh', 'pseudo_adh'
                 ) . $token;
                 break;
-            case 1: //Address
+            case self::FILTER_ADRESS:
                 $where .= 'adresse_adh' .$token;
                 $where .= ' OR adresse2_adh' .$token;
                 $where .= ' OR cp_adh' .$token;
                 $where .= ' OR ville_adh' .$token;
                 $where .= ' OR pays_adh' .$token;
                 break;
-            case 2: //Email,URL,IM
+            case self::FILTER_MAIL:
                 $where .= 'email_adh' . $token;
                 $where .= ' OR url_adh' . $token;
                 $where .= ' OR msn_adh' . $token;
                 $where .= ' OR icq_adh' . $token;
                 $where .= ' OR jabber_adh' . $token;
                 break;
-            case 3: //Job
+            case self::FILTER_JOB:
                 $where .= 'prof_adh' .$token;
                 break;
-            case 4: //Infos
+            case self::FILTER_INFOS:
                 $where .= 'info_public_adh' . $token;
                 $where .= ' OR info_adh' .$token;
                 break;
