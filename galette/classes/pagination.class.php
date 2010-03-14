@@ -126,6 +126,28 @@ abstract class GalettePagination
     }
 
     /**
+    * Set sort direction
+    *
+    * @param string self::ORDER_ASC|self::ORDER_DESC
+    *
+    * @return void
+    */
+    public function setDirection($direction)
+    {
+        global $log;
+        if ( $direction == self::ORDER_ASC || $direction == self::ORDER_DESC ) {
+            $this->_ordered = $direction;
+        } else {
+            $log->log(
+                'Trying to set a sort direction that is not know (`' .
+                $direction . '`). Reverting to default value.',
+                PEAR_LOG_WARNING
+            );
+            $this->_ordered == self::ORDER_ASC;
+        }
+    }
+
+    /**
     * Update or set pages count
     *
     * @return void
