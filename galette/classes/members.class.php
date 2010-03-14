@@ -99,10 +99,6 @@ class Members
     ) {
         global $mdb, $log;
 
-        $fieldsList = ( $fields != null && !$as_members )
-                        ? (( !is_array($fields) || count($fields) < 1 ) ? '*'
-                        : implode(', ', $fields)) : '*';
-
         $query = self::_buildSelect(
             self::SHOW_LIST, $fields, $filter, false, $count
         );
