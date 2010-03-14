@@ -473,10 +473,9 @@ $exval = $DB->GetOne($requete);
 $requete = 'SELECT id_type_cotis, libelle_type_cotis FROM ' . PREFIX_DB .
     'types_cotisation ';
 if ( $type_selected == 1 ) {
-    $requete .= 'WHERE cotis_extension IS ' . ($cotis_extension ? 'NOT ' : '') .
-        ' NULL ';
+    $requete .= 'WHERE cotis_extension=' . ($cotis_extension ? '1' : '0');
 }
-$requete .= 'ORDER BY libelle_type_cotis';
+$requete .= ' ORDER BY libelle_type_cotis';
 $result = &$DB->Execute($requete);
 if (!$result) {
     print $DB->ErrorMsg();
