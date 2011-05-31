@@ -11,4 +11,4 @@ CREATE TABLE logs (
   adh_log varchar(41) NOT NULL default '',
   text_log text,
   PRIMARY KEY  (id_log)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

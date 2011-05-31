@@ -4,4 +4,4 @@ CREATE TABLE galette_preferences (
   nom_pref varchar(100) NOT NULL default '',
   val_pref varchar(200) NOT NULL default '',
   PRIMARY KEY  (id_pref)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

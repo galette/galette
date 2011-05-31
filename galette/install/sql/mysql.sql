@@ -52,7 +52,7 @@ CREATE TABLE galette_cotisations (
   date_fin_cotis date NOT NULL default '0000-00-00',
   trans_id int(10) unsigned default NULL,
   PRIMARY KEY  (id_cotis)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_transactions;
 CREATE TABLE galette_transactions (
@@ -62,7 +62,7 @@ CREATE TABLE galette_transactions (
   trans_desc varchar(30) NOT NULL default '',
   id_adh int(10) unsigned default NULL,
   PRIMARY KEY  (trans_id)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_statuts;
 CREATE TABLE galette_statuts (
@@ -70,7 +70,7 @@ CREATE TABLE galette_statuts (
   libelle_statut varchar(20) NOT NULL default '',
   priorite_statut tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (id_statut)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_types_cotisation;
 CREATE TABLE galette_types_cotisation (
@@ -78,7 +78,7 @@ CREATE TABLE galette_types_cotisation (
   libelle_type_cotis varchar(30) NOT NULL default '',
   cotis_extension tinyint(1) NOT NULL default 0,
   PRIMARY KEY  (id_type_cotis)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_preferences;
 CREATE TABLE galette_preferences (
@@ -86,7 +86,7 @@ CREATE TABLE galette_preferences (
   nom_pref varchar(100) NOT NULL default '',
   val_pref varchar(200) NOT NULL default '',
   PRIMARY KEY  (id_pref)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_logs;
 CREATE TABLE galette_logs (
@@ -98,7 +98,7 @@ CREATE TABLE galette_logs (
   action_log text,
   sql_log text,
   PRIMARY KEY  (id_log)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Table for dynamic fields description;
 DROP TABLE IF EXISTS galette_field_types;
@@ -118,7 +118,7 @@ CREATE TABLE galette_field_types (
     field_layout int(10) default NULL,
     PRIMARY KEY (field_id),
     INDEX (field_form)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Table for dynamic fields data;
 DROP TABLE IF EXISTS galette_dynamic_fields;
@@ -129,7 +129,7 @@ CREATE TABLE galette_dynamic_fields (
     val_index int(10) NOT NULL default '0',
     field_val text DEFAULT '',
     PRIMARY KEY (item_id, field_id, field_form, val_index)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_pictures;
 CREATE TABLE galette_pictures (
@@ -137,7 +137,7 @@ CREATE TABLE galette_pictures (
     picture mediumblob NOT NULL,
     format varchar(10) NOT NULL default '',
     PRIMARY KEY  (id_adh)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Table for dynamic translation of strings;
 DROP TABLE IF EXISTS galette_l10n;
@@ -147,7 +147,7 @@ CREATE TABLE galette_l10n (
     text_nref int(10) NOT NULL default '1',
     text_trans varchar(100) NOT NULL default '',
     PRIMARY KEY (text_orig(20), text_locale(5))
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- new table for temporary passwords  2006-02-18;
 DROP TABLE IF EXISTS galette_tmppasswds;
@@ -156,7 +156,7 @@ CREATE TABLE galette_tmppasswds (
     tmp_passwd varchar(40) NOT NULL,
 		date_crea_tmp_passwd datetime NOT NULL,
     PRIMARY KEY (id_adh)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Table for dynamic required fields 2007-07-10;
 DROP TABLE IF EXISTS galette_required;
@@ -164,7 +164,7 @@ CREATE TABLE galette_required (
 	field_id varchar(15) NOT NULL,
 	required tinyint(1) NOT NULL,
 	PRIMARY KEY  (field_id)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Add new table for automatic mails and their translations;
 DROP TABLE IF EXISTS galette_texts;
@@ -176,7 +176,7 @@ CREATE TABLE galette_texts (
   tlang varchar(16) NOT NULL,
   tcomment varchar(64) NOT NULL,
   PRIMARY KEY  (tid)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- New table to store models descriptions for documents;
 DROP TABLE IF EXISTS galette_models;
@@ -185,7 +185,7 @@ CREATE TABLE galette_models (
   mod_name varchar(64)  NOT NULL,
   mod_xml text NOT NULL,
   PRIMARY KEY  (mod_id)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_fields_categories;
 CREATE TABLE galette_fields_categories (

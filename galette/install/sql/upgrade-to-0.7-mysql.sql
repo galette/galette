@@ -39,7 +39,7 @@ CREATE TABLE galette_required (
     field_id varchar(15) NOT NULL,
     required tinyint(1) NOT NULL,
     PRIMARY KEY  (field_id)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Add new table for automatic mails and their translations;
 DROP TABLE IF EXISTS galette_texts;
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS galette_texts (
   tlang varchar(16) NOT NULL,
   tcomment varchar(64) NOT NULL,
   PRIMARY KEY  (tid)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Modify table picture to allow for negative indexes;
 ALTER TABLE galette_pictures CHANGE id_adh id_adh INT( 10 ) NOT NULL DEFAULT '0';
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS galette_models (
   mod_name varchar(64)  NOT NULL,
   mod_xml text NOT NULL,
   PRIMARY KEY  (mod_id)
-) TYPE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 --
 -- Contenu de la table `galette_texts`;

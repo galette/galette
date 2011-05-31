@@ -30,7 +30,7 @@ CREATE TABLE galette_field_types (
     field_layout int(10) default NULL,
     PRIMARY KEY (field_id),
     INDEX (field_form)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 DROP TABLE galette_dynamic_fields;
 CREATE TABLE galette_dynamic_fields (
@@ -40,7 +40,7 @@ CREATE TABLE galette_dynamic_fields (
     val_index int(10) NOT NULL default '0',
     field_val text DEFAULT '',
     KEY  (item_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- Table for member photographs;
 DROP TABLE IF EXISTS galette_pictures;
@@ -49,7 +49,7 @@ CREATE TABLE `galette_pictures` (
     `picture` mediumblob NOT NULL,
     `format` varchar(10) NOT NULL default '',
     PRIMARY KEY  (`id_adh`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- Add two fileds for log;
 ALTER TABLE galette_logs ADD action_log text;
@@ -79,7 +79,7 @@ CREATE TABLE galette_l10n (
     text_nref int(10) NOT NULL default '1',
     text_trans varchar(100) NOT NULL default '',
     UNIQUE INDEX (text_orig(20), text_locale(5))
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- Table for transactions;
 DROP TABLE galette_transactions;
@@ -90,7 +90,7 @@ CREATE TABLE galette_transactions (
   trans_desc varchar(30) NOT NULL default '',
   id_adh int(10) unsigned default NULL,
   PRIMARY KEY  (trans_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 ALTER TABLE galette_cotisations ADD trans_id int(10) unsigned DEFAULT NULL;
 
@@ -101,4 +101,4 @@ CREATE TABLE galette_tmppasswds (
     tmp_passwd varchar(40) NOT NULL,
 		date_crea_tmp_passwd datetime NOT NULL,
     PRIMARY KEY (id_adh)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
