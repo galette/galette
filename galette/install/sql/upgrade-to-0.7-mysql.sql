@@ -35,7 +35,7 @@ INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_smtp_pas
 
 -- Table for dynamic required fields;
 DROP TABLE IF EXISTS galette_required;
-CREATE TABLE galette_required (
+CREATE TABLE IF NOT EXISTS galette_required (
     field_id varchar(15) NOT NULL,
     required tinyint(1) NOT NULL,
     PRIMARY KEY  (field_id)
@@ -77,7 +77,7 @@ INSERT INTO galette_texts (tid, tref, tsubject, tbody, tlang, tcomment) VALUES (
 ALTER TABLE `galette_dynamic_fields` ADD PRIMARY KEY ( `item_id` , `field_id` , `field_form` , `val_index` );
 ALTER TABLE `galette_l10n` DROP INDEX `text_orig`, ADD PRIMARY KEY (`text_orig` (20), `text_locale` (5));
 
--- that fiels was created in 0.63 under postgres... not mysql :(
+-- that field was created in 0.63 under postgres... not mysql :(
 ALTER TABLE `galette_adherents` ADD `lieu_naissance` `lieu_naissance` VARCHAR( 50 ) NULL DEFAULT NULL;
 
 -- Changes "boolean" fields to tinyint ; enum is not enough standard
@@ -91,7 +91,7 @@ ALTER TABLE `galette_field_types` CHANGE `field_required` `field_required` TINYI
 
 -- New table for fields categories
 DROP TABLE IF EXISTS galette_fields_categories;
-CREATE TABLE galette_fields_categories (
+CREATE TABLE IF NOT EXISTS galette_fields_categories (
   id_field_category int(2) NOT NULL AUTO_INCREMENT,
   category varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   position int(2) NOT NULL,
@@ -119,24 +119,23 @@ CREATE TABLE IF NOT EXISTS galette_fields_config (
 
 -- Table for mailing history storage;
 DROP TABLE IF EXISTS galette_mailing_history;
-CREATE TABLE galette_mailing_history (
+CREATE TABLE IF NOT EXISTS galette_mailing_history (
   mailing_id smallint(6) NOT NULL auto_increment,
   mailing_sender int(10) unsigned NOT NULL,
   mailing_subject varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   mailing_body text NOT NULL,
   mailing_date date NOT NULL default '0000-00-00',
-  PRIMARY KEY (mailing_id)
-  INDEX (mailing_sender)
+  PRIMARY KEY (mailing_id),
+  INDEX (mailing_sender),
   CONSTRAINT galette_mailing_history_sender
     FOREIGN KEY (mailing_sender)
     REFERENCES galette_adherents (id_adh)
     ON DELETE RESTRICT
     ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 -- Table for mailing history recipients;
-DROP TABLE IF EXSTS galette_mailing_history_recipients;
-CREATE TABLE galette_mailing_history_recipients (
+DROP TABLE IF EXISTS galette_mailing_history_recipients;
+CREATE TABLE IF NOT EXISTS galette_mailing_history_recipients (
   mailing_id smallint(6) NOT NULL,
   id_adh int(10) unsigned NOT NULL,
   PRIMARY KEY (mailing_id, id_adh),

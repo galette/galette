@@ -227,7 +227,7 @@ CREATE TABLE galette_mailing_history (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Table for mailing history recipients;
-DROP TABLE IF EXSTS galette_mailing_history_recipients;
+DROP TABLE IF EXISTS galette_mailing_history_recipients;
 CREATE TABLE galette_mailing_history_recipients (
   mailing_id smallint(6) NOT NULL,
   id_adh int(10) unsigned NOT NULL,

@@ -708,6 +708,7 @@ class Adherent
     {
         $forbidden = array('fields');
         /** TODO: What to do ? :-) */
+        /** TODO: When member account is activated, we should send a mail to the member (add an entry to deactivate thaht in the preferences */
     }
 }
 ?>
