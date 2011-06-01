@@ -43,6 +43,7 @@
  *  Require TCPDF class
  */
 require_once WEB_ROOT . 'includes/tcpdf_' . TCPDF_VERSION . '/tcpdf.php';
+require_once WEB_ROOT . 'classes/print_logo.class.php';
 
 /**
  * PDF class for galette
@@ -61,12 +62,29 @@ require_once WEB_ROOT . 'includes/tcpdf_' . TCPDF_VERSION . '/tcpdf.php';
 
 class PDF extends TCPDF
 {
+
+    const FONT='DejaVuSans';
+    const FONT_SIZE=10;
+
     /**
     * Constructeur de la classe PDF
     */
     public function __construct()
     {
+        global $preferences;
+
         parent::__construct();
+        //set some values
+        $this->SetCreator(PDF_CREATOR);
+        $name = preg_replace(
+            '/%s/',
+            $preferences->pref_nom,
+            _T("Association %s")
+        );
+        $this->SetAuthor(
+            $name . ' (using Galette ' . GALETTE_VERSION .
+            'and TCPDF ' . TCPDF_VERSION . ')'
+        );
     }
 
     /**
@@ -158,5 +176,78 @@ class PDF extends TCPDF
             $this->Error(_T("Unable to convert GIF file ").$file);
         }
     }
+
+    function Footer(){
+        global $preferences;
+
+        $this->SetY(-20);
+        $this->SetFont(self::FONT, '', 10);
+        $this->SetTextColor(0, 0, 0);
+
+        $name = preg_replace(
+            '/%s/',
+            $preferences->pref_nom,
+            _T("Association %s")
+        );
+
+        $coordonnees_line1 = $name . ' - ' . $preferences->pref_adresse;
+        /** FIXME: pref_adresse2 should be removed */
+        if ( trim($preferences->pref_adresse2) != '' ) {
+          $coordonnees_line1 .= ', ' . $preferences->pref_adresse2;
+        }
+        $coordonnees_line2 = $preferences->pref_cp . ' ' . $preferences->pref_ville;
+
+        $this->Cell(0, 4, $coordonnees_line1, 0, 1, 'C', 0, $preferences->pref_website);
+        $this->Cell(0, 4, $coordonnees_line2, 0, 0, 'C', 0, $preferences->pref_website);
+    }
+
+    function PageHeader(){
+        global $preferences;
+
+        $print_logo = new PrintLogo();
+        if ( $print_logo->hasPicture() ) {
+            $logofile = $print_logo->getPath();
+
+            // Set logo size to max width 30 mm or max height 25 mm
+            $ratio = $print_logo->getWidth()/$print_logo->getHeight();
+            if ( $ratio < 1 ) {
+                if ( $print_logo->getHeight() > 16 ) {
+                    $hlogo = 25;
+                } else {
+                    $hlogo = $print_logo->getHeight();
+                }
+                $wlogo = round($hlogo*$ratio);
+            } else {
+                if ( $print_logo->getWidth() > 16 ) {
+                    $wlogo = 30;
+                } else {
+                    $wlogo = $print_logo->getWidth();
+                }
+                $hlogo = round($wlogo/$ratio);
+            }
+        }
+
+        $this->SetFont(self::FONT, '', 14);
+        $this->SetTextColor(0, 0, 0);
+
+        $y = $this->GetY();
+        $this->Ln(4);
+
+        $name = preg_replace(
+            '/%s/',
+            $preferences->pref_nom,
+            _T("Association %s")
+        );
+        $this->Cell(0, 6, $name, 0, 1, 'L', 0, $preferences->website);
+        $this->SetFont(self::FONT,'',12);
+
+        $this->Cell(0, 6, _T("Adhesion form"), 0, 0, 'L', 0);
+
+        $this->setY($y);
+        $x = 190 - $wlogo; //right align
+        $this->Image($logofile, $x, $this->GetY(), $wlogo, $hlogo);
+        $this->y += $hlogo;
+    }
+
 }
 ?>

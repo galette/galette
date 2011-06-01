@@ -127,8 +127,6 @@ if ( $logo->hasPicture() ) {
 $pdf = new PDF('P', 'mm', 'A4', true, 'UTF-8');
 
 // Set document information
-$pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor(PDF_AUTHOR);
 $pdf->SetTitle($doc_title);
 $pdf->SetSubject($doc_subject);
 $pdf->SetKeywords($doc_keywords);
