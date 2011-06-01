@@ -76,8 +76,6 @@ $doc_keywords = _T("Labels");
 $pdf = new PDF('P', 'mm', 'A4', true, 'UTF-8');
 
 // Set document information
-$pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor(PDF_AUTHOR);
 $pdf->SetTitle($doc_title);
 $pdf->SetSubject($doc_subject);
 $pdf->SetKeywords($doc_keywords);
@@ -124,7 +122,7 @@ foreach ($members as $member) {
         $pdf->AddPage();
     }
     // Set font
-    $pdf->SetFont('DejaVuSans', 'B', $preferences->pref_etiq_corps);
+    $pdf->SetFont(PDF::FONT, 'B', $preferences->pref_etiq_corps);
 
     // Compute label position
     $col = $nb_etiq % $preferences->pref_etiq_cols;
@@ -138,18 +136,18 @@ foreach ($members as $member) {
     $pdf->SetXY($x, $y);
     $pdf->Cell($w, $line_h, $member->sfullname, 0, 0, 'L', 0);
     // Print first line of adress
-    $pdf->SetFont('DejaVuSans', '', $preferences->pref_etiq_corps);
+    $pdf->SetFont(PDF::FONT, '', $preferences->pref_etiq_corps);
     $pdf->SetXY($x, $y+$line_h);
     $pdf->Cell($w, $line_h, $member->adress, 0, 0, 'L', 0);
     // Print second line of adress
     $pdf->SetXY($x, $y+$line_h*2);
     $pdf->Cell($w, $line_h, $member->adress2, 0, 0, 'L', 0);
     // Print zip code and town
-    $pdf->SetFont('DejaVuSans', 'B', $preferences->pref_etiq_corps);
+    $pdf->SetFont(PDF::FONT, 'B', $preferences->pref_etiq_corps);
     $pdf->SetXY($x, $y+$line_h*3);
     $pdf->Cell($w, $line_h, $member->zipcode . ' - ' . $member->town, 0, 0, 'L', 0);
     // Print country
-    $pdf->SetFont('DejaVuSans', 'I', $preferences->pref_etiq_corps);
+    $pdf->SetFont(PDF::FONT, 'I', $preferences->pref_etiq_corps);
     $pdf->SetXY($x, $y+$line_h*4);
     $pdf->Cell($w, $line_h, $member->country, 0, 0, 'R', 0);
     $nb_etiq++;

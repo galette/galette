@@ -59,7 +59,6 @@ require_once WEB_ROOT . 'classes/varslist.class.php';
 require_once WEB_ROOT . 'classes/print_logo.class.php';
 
 if ( isset($_GET[Adherent::PK])
-    && is_int($_GET[Adherent::PK])
     && $_GET[Adherent::PK] > 0
 ) {
     // If we are called from "voir_adherent.php" get unique id value
@@ -68,7 +67,7 @@ if ( isset($_GET[Adherent::PK])
     $varslist = unserialize($_SESSION['galette']['varslist']);
 } else {
     $log->log('No member selected to generate members cards', PEAR_LOG_INFO);
-    if ( $login->isAdmin ) {
+    if ( $login->isAdmin() ) {
         header('location:gestion_adherent.php');
     } else {
         header('location:voir_adherent.php');
@@ -153,12 +152,12 @@ $hcol = $pdf->colorHex2Dec($preferences->pref_card_hcol);
 
 // Set margins
 $pdf->SetMargins(
-    $preferences->pred_card_marges_h,
-    $preferences->pred_card_marges_v
+    $preferences->pref_card_marges_h,
+    $preferences->pref_card_marges_v
 );
 
 // Set font
-$pdf->SetFont('DejaVuSans');
+$pdf->SetFont(PDF::FONT);
 
 // Set origin
 // Top left corner
@@ -200,7 +199,7 @@ foreach ( $members as $member ) {
     $xl = round($x0 + $w - $wlogo);
     // Get data
     $email = '<strong>';
-    switch ( $preferences->pref_card_adress ) {
+    switch ( $preferences->pref_card_address ) {
     case 0:
         $email .= $member->email;
         break;
@@ -306,7 +305,7 @@ foreach ( $members as $member ) {
     // Lower colored strip with long text
     $pdf->SetFillColor($fcol['R'], $fcol['G'], $fcol['B']);
     $pdf->SetTextColor($tcol['R'], $tcol['G'], $tcol['B']);
-    $pdf->SetFont('DejaVuSans', 'B', 6);
+    $pdf->SetFont(PDF::FONT, 'B', 6);
     $pdf->SetXY($x0, $y0 + 33);
     $pdf->Cell(75, 7, $preferences->pref_card_strip, 0, 0, 'C', 1);
 
