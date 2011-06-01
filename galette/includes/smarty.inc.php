@@ -63,6 +63,8 @@ foreach ( $plugins->getTplAssignments() as $k=>$v ) {
     $tpl->assign($k, $v);
 }
 $tpl->assign('headers', $plugins->getTplHeaders());
+$tpl->assign('plugin_actions', $plugins->getTplAdhActions());
+$tpl->assign('plugin_detailled_actions', $plugins->getTplAdhDetailledActions());
 $tpl->assign('jquery_dir', $base_path . 'includes/jquery/');
 $tpl->assign('jquery_version', JQUERY_VERSION);
 $tpl->assign('jquery_ui_version', JQUERY_UI_VERSION);

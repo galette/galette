@@ -451,6 +451,40 @@ class Plugins
     }
 
     /**
+    * For each module, return the adh_actions.tpl full path, if present.
+    *
+    * @return array of adherent actions to include on member list for all modules
+    */
+    public function getTplAdhActions()
+    {
+        $_actions = array();
+        foreach ( $this->modules as $key=>$module ) {
+            $actions_path = $this->getTemplatesPath($key) . '/adh_actions.tpl';
+            if ( file_exists($actions_path) ) {
+                $_actions[] = $actions_path;
+            }
+        }
+        return $_actions;
+    }
+
+    /**
+    * For each module, return the adh_fiche_action.tpl full path, if present.
+    *
+    * @return array of adherent actions to include on membre detailled view for all modules
+    */
+    public function getTplAdhDetailledActions()
+    {
+        $_actions = array();
+        foreach ( $this->modules as $key=>$module ) {
+            $actions_path = $this->getTemplatesPath($key) . '/adh_fiche_action.tpl';
+            if ( file_exists($actions_path) ) {
+                $_actions[] = $actions_path;
+            }
+        }
+        return $_actions;
+    }
+
+    /**
     * For each module, gets templates assignements ; and replace some path variables
     *
     * @return array of Smarty templates assignement for all modules
@@ -462,6 +496,11 @@ class Plugins
         foreach ( $this->modules as $key=>$module ) {
             if ( isset($module['tpl_assignments']) ) {
                 foreach ( $module['tpl_assignments'] as $k=>$v ) {
+                    $v = str_replace(
+                        '__plugin_dir__',
+                        'plugins/' . $key . '/',
+                        $v
+                    );
                     $v = str_replace(
                         '__plugin_include_dir__',
                         'plugins/' . $key . '/includes/',

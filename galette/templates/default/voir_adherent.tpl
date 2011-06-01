@@ -35,6 +35,14 @@
 				<a href="ajouter_contribution.php?id_adh={$member->id}" id="btn_addcontrib">{_T string="Add a contribution"}</a>
 			</li>
 {/if}
+{* If some additionnals actions should be added from plugins, we load the relevant template file
+We have to use a template file, so Smarty will do its work (like replacing variables). *}
+{if $plugin_detailled_actions|@count != 0}
+  {foreach from=$plugin_detailled_actions item=action}
+    {include file=$action}
+  {/foreach}
+{/if}
+
 		</ul>
 
 		<table class="details">
@@ -47,8 +55,8 @@
 			<tr>
 				<th>{_T string="Nickname:"}</th>
 				<td>{$member->nickname|htmlspecialchars}</td>
-			</tr> 
-			<tr> 
+			</tr>
+			<tr>
 				<th>{_T string="birth date:"}</th>
 				<td>{$member->birthdate}</td>
 			</tr>
@@ -109,7 +117,7 @@
 		<table class="details">
 			<caption>{_T string="Contact information:"}</caption>
 			<tr>
-				<th>{_T string="Address:"}</th> 
+				<th>{_T string="Address:"}</th>
 				<td>
 					{$member->adress|htmlspecialchars}
 {if $member->adresse2_adh ne ''}
@@ -140,7 +148,7 @@
 			<tr>
 				<th>{_T string="E-Mail:"}</th>
 				<td>
-{if $member->email ne ''}					
+{if $member->email ne ''}
 					<a href="mailto:{$member->email}">{$member->email}</a>
 {/if}
 				</td>
@@ -150,7 +158,7 @@
 				<td>
 {if $member->website ne ''}
 					<a href="{$member->website}">{$member->website}</a>
-{/if}						
+{/if}
 				</td>
 			</tr>
 			<tr>
