@@ -182,7 +182,7 @@ class PDF extends TCPDF
         global $preferences;
 
         $this->SetY(-20);
-        $this->SetFont(self::FONT, '', 10);
+        $this->SetFont(self::FONT, '', self::FONT_SIZE);
         $this->SetTextColor(0, 0, 0);
 
         $name = preg_replace(
@@ -228,7 +228,7 @@ class PDF extends TCPDF
             }
         }
 
-        $this->SetFont(self::FONT, '', 14);
+        $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 4);
         $this->SetTextColor(0, 0, 0);
 
         $y = $this->GetY();
@@ -240,7 +240,7 @@ class PDF extends TCPDF
             _T("Association %s")
         );
         $this->Cell(0, 6, $name, 0, 1, 'L', 0, $preferences->website);
-        $this->SetFont(self::FONT,'',12);
+        $this->SetFont(self::FONT,'B', self::FONT_SIZE + 2);
 
         $this->Cell(0, 6, _T("Adhesion form"), 0, 0, 'L', 0);
 
