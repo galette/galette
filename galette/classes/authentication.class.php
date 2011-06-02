@@ -55,8 +55,8 @@ abstract class Authentication
     private $_name;
     private $_surname;
     private $_admin = false;
-    private $_id;
-    private $_lang;
+    private $_id; /** FIXME: not used! */
+    private $_lang; /** FIXME: not used! */
     private $_logged = false;
     private $_active = false;
     private $_superadmin = false;
