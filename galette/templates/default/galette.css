@@ -1263,3 +1263,70 @@ ul#paths{
 	margin:0;
 }
 /** /PAGINATION*/
+
+/** Mobile devices */
+@media (max-width: 640px) {
+
+    /* Un message personnalisé */
+    body:before {
+        content: "BETA - Galette Version mobile - BETA";
+        display: block;
+        color: #777;
+        text-align: center;
+        font-style: italic;
+    }
+
+    /* passer tous les éléments de largeur fixe en largeur automatique */
+    body {
+        width: auto !important;
+        margin: auto !important;
+        padding: auto !important;
+    }
+
+    /* fixer une largeur maximale  de 100 % aux éléments potentiellement problématiques */
+    img, table, td, blockquote, code, pre, textarea, input, object, embed, video,
+    .login-box {
+        max-width: 100% !important;
+    }
+
+    /* gestion des mots longs */
+    textarea, table, td, th, code, pre, samp {
+        word-wrap: break-word; /* césure forcée */
+        white-space: pre-line; /* passage à la ligne spécifique pour les éléments à châsse fixe */
+    }
+
+    /* masquer les éléments superflus */
+    /*.mhide, #social {
+        display: none !important;
+    }*/
+
+    #login_frm {
+      margin-top:1em;
+    }
+
+    .login-box {
+      padding:1em 0;
+      border:none;
+    }
+
+    .login-box th, .login-box td {
+      display:block;
+      width:100%;
+      text-align:center;
+    }
+
+    .menu {
+      text-align:center;
+    }
+
+    #main_logo {
+        position:relative;
+        top:0;
+        right:0;
+    }
+}
+@media screen and (max-width:640px) and (orientation: landscape) {
+    body {
+        -webkit-text-size-adjust: 70%;
+    }
+}
