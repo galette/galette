@@ -242,7 +242,6 @@ a.listing:hover {
 	text-align: center;
 	font-weight: bold;
 	margin: 0.5em 0;
-	width: 14em;
 }
 
 #main_logo{
@@ -332,7 +331,7 @@ html > * .nav1 li{
 }
 
 #content {
-	margin-left:15em;
+	margin-left:17em;
 	padding-right: 0.5em;
 }
 
@@ -1174,7 +1173,7 @@ ul#paths{
 	margin:0 0 0.5em 0.4em;
 	padding:0 .2em;
 	margin-top:10px!ie;
- 	width:14em;
+ 	width:16em;
 	text-align: center;
 	-moz-border-radius: 10px 10px 10px 10px;
 	-webkit-border-radius: 10px 10px 10px 10px;
