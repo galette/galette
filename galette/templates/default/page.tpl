@@ -72,9 +72,10 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 		<div id="logo">
 			<img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
 		</div>
+{if $login->isLogged()}
 		<h1 class="nojs">{_T string="Navigation"}</h1>
 		<ul>
-{if $login->isAdmin()}
+  {if $login->isAdmin()}
 			<li{if $PAGENAME eq "gestion_adherents.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_adherents.php" title="{_T string="View, search into and filter member's list"}">{_T string="List of members"}</a></li>
 			<li{if $PAGENAME eq "gestion_contributions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_contributions.php?id_adh=all" title="{_T string="View and filter contributions"}">{_T string="List of contributions"}</a></li>
 			<li{if $PAGENAME eq "gestion_transactions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_transactions.php" title="{_T string="View and filter transactions"}">{_T string="List of transactions"}</a></li>
@@ -83,13 +84,14 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 			<li{if $PAGENAME eq "ajouter_transaction.php"} class="selected"{/if}><a href="{$galette_base_path}ajouter_transaction.php" title="{_T string="Add new transaction in database"}">{_T string="Add a transaction"}</a></li>
 			<li{if $PAGENAME eq "history.php"} class="selected"{/if}><a href="{$galette_base_path}history.php" title="{_T string="View application's logs"}">{_T string="Logs"}</a></li>
 			<li class="mnu_last{if $PAGENAME eq "ajouter_adherent.php"} selected{/if}"><a href="{$galette_base_path}export.php" title="{_T string="Export some datas in various formats"}">{_T string="Exports"}</a></li>
-{else}
+  {else}
 			<li {if $PAGENAME eq "voir_adherent.php"} class="selected"{/if}><a href="{$galette_base_path}voir_adherent.php" title="{_T string="View my member card"}">{_T string="My information"}</a></li>
 			<li{if $PAGENAME eq "gestion_contributions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_contributions.php" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a></li>
 			<li{if $PAGENAME eq "gestion_transactions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_transactions.php" title="{_T string="View and filter all my transactions"}">{_T string="My transactions"}</a></li>
 			<li class="mnu_last"><a href="{$galette_base_path}subscription_form.php?id_adh={$data.id_adh}" title="{_T string="My member card in PDF format"}">{_T string="PDF card"}</a></li>
-{/if}
+  {/if}
 		</ul>
+{/if}
 {if $login->isAdmin()}
 		<h1 class="nojs">{_T string="Configuration"}</h1>
 		<ul>
@@ -106,10 +108,11 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 
 {* Include plugins menu entries *}
 {$plugins->getMenus()}
-
+{if $login->isLogged()}
 		<div id="logout">
 			<a href="{$galette_base_path}index.php?logout=1">{_T string="Log off"}</a>
 		</div>
+{/if}
 		<ul id="langs">
 {foreach item=langue from=$languages}
 			<li><a href="?pref_lang={$langue->getID()}"><img src="{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}" class="flag"/></a></li>
