@@ -71,6 +71,21 @@
 					<label for="pref_pays" class="bline{if $required.pref_pays eq 1} required{/if}">{_T string="Country:"}</label>
 					<input type="text" name="pref_pays" id="pref_pays" value="{$pref.pref_pays}" maxlength="50"/>
 				</p>
+        <div class="p">
+          <span class="bline{if $required.pref_mail_method eq 1} required{/if} tooltip" title="{_T string="Use either the adress setted below or select user status to retrieve another adress."}">{_T string="Postal adress:"}</span>
+          <span class="tip">{_T string="Use either the adress setted below or select a staff member to retrieve he's adress."}</span>
+          <label for="pref_postal_adress_0">{_T string="from preferences"}</label>
+          <input type="radio" name="pref_postal_adress" id="pref_postal_adress_0" value="0" {if $pref.pref_postal_adress eq constant('Preferences::POSTAL_ADRESS_FROM_PREFS')}checked="checked"{/if}/>
+          <label for="pref_postal_adress_1">{_T string="from a staff user"}</label>
+          <input type="radio" name="pref_postal_adress" id="pref_postal_adress_1" value="1" {if $pref.pref_postal_adress eq constant('Preferences::POSTAL_ADRESS_FROM_STAFF')}checked="checked"{/if}/>
+          <br/><label for="pref_postal_staff_member">{_T string="Staff member"}</label>
+          <select name="pref_postal_staff_member" id="pref_postal_staff_member">
+            <option value="-1">{_T string="-- Choose a staff member --"}</option>
+          {foreach from=$staff_members item=staff}
+            <option value="{$staff->id}"{if $staff->id eq $pref.pref_postal_staff_member} selected="selected"{/if}>{$staff->sname} ({$staff->sstatus})</option>
+          {/foreach}
+          </select>
+        </div>
 				<p>
 					<label for="pref_website" class="bline{if $required.pref_website eq 1} required{/if}">{_T string="Website:"}</label>
 					<input type="text" name="pref_website" id="pref_website" value="{$pref.pref_website}" maxlength="100"/>

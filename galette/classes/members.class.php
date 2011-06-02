@@ -59,6 +59,7 @@ class Members
     const SHOW_LIST = 0;
     const SHOW_PUBLIC_LIST = 1;
     const SHOW_ARRAY_LIST = 2;
+    const SHOW_STAFF = 3;
 
     const FILTER_NAME = 0;
     const FILTER_ADRESS = 1;
@@ -71,6 +72,8 @@ class Members
     const ORDERBY_STATUS = 2;
     const ORDERBY_FEE_STATUS = 3;
 
+    const NON_STAFF_MEMBERS = 30;
+
     private $_filter = null;
     private $_count = null;
 
@@ -79,6 +82,32 @@ class Members
     */
     public function __construct()
     {
+    }
+
+
+    /**
+    * Get staff members list
+    *
+    * @param bool    $as_members return the results as an array of
+    *                               Member object.
+    * @param array   $fields     field(s) name(s) to get. Should be a string or
+    *                               an array. If null, all fields will be
+    *                               returned
+    * @param boolean $filter     proceed filter, defaults to true
+    * @param boolean $count      true if we want to count members
+    *
+    * @return Adherent[]|ResultSet
+    */
+    public function getStaffMembersList(
+        $as_members=false, $fields=null, $filter=true, $count=true
+    ) {
+      return $this->getMembersList(
+        $as_members,
+        $fields,
+        $filter,
+        $count,
+        true
+      );
     }
 
     /**
@@ -95,13 +124,21 @@ class Members
     * @return Adherent[]|ResultSet
     */
     public function getMembersList(
-        $as_members=false, $fields=null, $filter=true, $count=true
+        $as_members=false, $fields=null, $filter=true, $count=true, $staff=false
     ) {
         global $mdb, $log;
 
+        $_mode = self::SHOW_LIST;
+        if ( $staff !== false ) {
+          $_mode = self::SHOW_STAFF;
+        }
+
         $query = self::_buildSelect(
-            self::SHOW_LIST, $fields, $filter, false, $count
+            $_mode, $fields, $filter, false, $count
         );
+        if ( $staff !== false ) {
+          $query .= ' WHERE p.priorite_statut < ' . self::NON_STAFF_MEMBERS;
+        }
 
         $result = $mdb->query($query);
         if (MDB2::isError($result)) {
@@ -138,7 +175,7 @@ class Members
     */
     public static function getList($as_members=false, $fields=null, $filter=true)
     {
-        return self::getMembersList($as_members, $fields, $filter, false);
+        return self::getMembersList($as_members, $fields, $filter, false, false);
     }
 
     /**
@@ -251,6 +288,7 @@ class Members
         $join = '';
 
         switch($mode) {
+        case self::SHOW_STAFF:
         case self::SHOW_LIST:
             $join = ' a JOIN ' . PREFIX_DB . Status::TABLE .
                 ' p ON a.' . Status::PK . '=p.' . Status::PK;

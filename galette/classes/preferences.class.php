@@ -57,6 +57,12 @@ class Preferences
 
     const TABLE = 'preferences';
     const PK = 'nom_pref';
+
+    /** Postal adress will be the one given in the preferences */
+    const POSTAL_ADRESS_FROM_PREFS = 0;
+    /** Postal adress will be the one of the selected staff member */
+    const POSTAL_ADRESS_FROM_STAFF = 1;
+
     private static $_fields = array(
         'nom_pref',
         'val_pref'
@@ -72,6 +78,8 @@ class Preferences
         'pref_cp'        =>    '',
         'pref_ville'        =>    '',
         'pref_pays'        =>    '',
+        'pref_postal_adress'  => self::POSTAL_ADRESS_FROM_PREFS,
+        'pref_postal_staff_member' => '',
         'pref_lang'        =>    I18n::DEFAULT_LANG,
         'pref_numrows'        =>    30,
         'pref_log'        =>    2,
@@ -123,11 +131,70 @@ class Preferences
 
     /**
     * Default constructor
+    *
+    * @return void
     */
     public function __construct()
     {
         $error = null;
         $this->load();
+        $this->_checkUpdate();
+    }
+
+    /**
+    * Check if all fields referenced in the default array does exists,
+    * create them if not
+    *
+    * @return void
+    */
+    private function _checkUpdate()
+    {
+        global $log, $mdb;
+        $proceed = false;
+        $params = array();
+        foreach ( self::$_defaults as $k=>$v ) {
+            if ( !isset($this->_prefs[$k]) ) {
+              $this->_prefs[$k] = $v;
+              $log->log(
+                  'The field `' . $k . '` did not exists, Galette will attempt to create it.',
+                  PEAR_LOG_INFO
+              );
+              $proceed = true;
+              $params[] = array(
+                  'nom_pref'  => $k,
+                  'val_pref'  => $v
+              );
+            }
+        }
+        if ( $proceed !== false ) {
+          //store newly created values
+          $stmt = $mdb->prepare(
+              'INSERT INTO ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) .
+              ' (' . $mdb->quoteIdentifier('nom_pref') . ', ' .
+              $mdb->quoteIdentifier('val_pref') . ') VALUES(:nom_pref, :val_pref)',
+              array('text', 'text'),
+              MDB2_PREPARE_MANIP
+          );
+
+          $mdb->getDb()->loadModule('Extended', null, false);
+          $mdb->getDb()->extended->executeMultiple($stmt, $params);
+
+          if (MDB2::isError($stmt)) {
+              $this->_error = $stmt;
+              $log->log(
+                  'Unable to add missing preferences.' . $stmt->getMessage() .
+                  '(' . $stmt->getDebugInfo() . ')',
+                  PEAR_LOG_WARNING
+              );
+              return false;
+          }
+
+          $stmt->free();
+          $log->log(
+              'Missing preferences were successfully stored into database.',
+              PEAR_LOG_INFO
+          );
+        }
     }
 
     /**
@@ -317,6 +384,66 @@ class Preferences
             PEAR_LOG_INFO
         );
         return true;
+
+    }
+
+    /**
+    * Returns postal adress
+    */
+    public function getPostalAdress()
+    {
+        $regs = array(
+          '/%name/',
+          '/%complement/',
+          '/%adress/',
+          '/%zip/',
+          '/%town/',
+          '/%country/',
+        );
+
+        $replacements = null;
+
+        if ( $this->_prefs['pref_postal_adress'] == self::POSTAL_ADRESS_FROM_PREFS) {
+            $_adress = $this->_prefs['pref_adresse'];
+            if ( $this->_prefs['pref_adresse2'] && $this->_prefs['pref_adresse2'] != '' ) {
+                $_adress .= "\n" . $this->_prefs['pref_adresse2'];
+            }
+            $replacements = array(
+                $this->_prefs['pref_nom'],
+                '',
+                $_adress,
+                $this->_prefs['pref_cp'],
+                $this->_prefs['pref_ville'],
+                $this->_prefs['pref_pays']
+            );
+        } else {
+            //get selected staff member adress
+            $adh = new Adherent((int)$this->_prefs['pref_postal_staff_member']);
+            $_complement = preg_replace(
+                array('/%name/', '/%status/'),
+                array($this->_prefs['pref_nom'], $adh->sstatus),
+                _T("%name association's %status")
+            );
+            $_adress = $adh->adress;
+            if ( $adh->adress_continuation && $adh->adress_continuation != '' ) {
+                $_adress .= "\n" . $adh->adress_continuation;
+            }
+            $replacements = array(
+                $adh->sfullname,
+                $_complement,
+                $_adress,
+                $adh->zipcode,
+                $adh->town,
+                $adh->country
+            );
+        }
+
+        $r = preg_replace(
+            $regs,
+            $replacements,
+            _T("%name\n%complement\n%adress\n%zip %town - %country")
+        );
+        return $r;
 
     }
 

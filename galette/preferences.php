@@ -57,6 +57,7 @@ if ( !$login->isAdmin() ) {
 }
 
 require_once WEB_ROOT . 'classes/print_logo.class.php';
+require_once WEB_ROOT . 'classes/members.class.php';
 
 // initialize warnings
 $error_detected = array();
@@ -259,11 +260,25 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
         $error_detected[] = _T("Passwords mismatch");
     }
 
+    //postal adress
+    if ( isset($insert_values['pref_postal_adress']) ) {
+        $value = $insert_values['pref_postal_adress'];
+        if ( $value == Preferences::POSTAL_ADRESS_FROM_PREFS ) {
+            if ( isset($insert_values['pref_postal_staff_member']) ) {
+              unset($insert_values['pref_postal_staff_member']);
+            }
+        } else if ( $value == Preferences::POSTAL_ADRESS_FROM_STAFF ) {
+            if ( !isset($value) || $value < 1 ) {
+              $error_detected[] = _T("You have to select a staff member");
+            }
+        }
+    }
+
     if ( count($error_detected) == 0 ) {
         // update preferences
         while ( list($champ,$valeur) = each($insert_values) ) {
-            if ( $login->isSuperAdmin
-                || (!$login->isSuperAdmin
+            if ( $login->isSuperAdmin()
+                || (!$login->isSuperAdmin()
                 && ($champ != 'pref_admin_pass' && $champ != 'pref_admin_login'))
             ) {
                 if ( ($champ == "pref_admin_pass" && $_POST['pref_admin_pass'] !=  '')
@@ -403,6 +418,9 @@ while ( ($entry = $d->read()) !== false ) {
     }
 }
 $d->close();
+
+$m = new Members();
+$tpl->assign('staff_members', $m->getStaffMembersList(true));
 
 $tpl->assign('time', time());
 $tpl->assign('pref', $pref);
