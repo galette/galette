@@ -60,7 +60,8 @@ PHP_SOURCES = ../index.php \
 ../classes/adherent.class.php \
 ../classes/models.class.php \
 ../classes/pdf.class.php \
-../classes/politeness.class.php
+../classes/politeness.class.php \
+../classes/preferences.class.php
 
 
 all : messages.po lang
@@ -92,7 +93,7 @@ lang :
 	else \
 	  echo "    lang_english.php mis à jour."; \
 	  mv lang_english.php.new lang_english.php; \
-	fi; 
+	fi;
 
 	@echo "  Mise à jour de lang_french.php"
 	@echo "    extraction des chaines..."
@@ -103,7 +104,7 @@ lang :
 	else \
 	  echo "    lang_french.php mis à jour."; \
 	  mv lang_french.php.new lang_french.php; \
-	fi; 
+	fi;
 
 messages.po : ${PHP_SOURCES} Makefile xgettext.py
 	./xgettext.py ${PHP_SOURCES}
@@ -111,7 +112,7 @@ messages.po : ${PHP_SOURCES} Makefile xgettext.py
 check:
 	@for FILE in ${PHP_SOURCES}; do				\
 		test -f $$FILE || echo "Not found $$FILE";	\
-	done 
+	done
 	@for NFILE in ../*.php ../includes/*.php		\
 			../templates/default/*.tpl; do		\
 		for OFILE in ${PHP_SOURCES}; do			\

@@ -1045,6 +1045,10 @@ msgstr ""
 msgid "Do you want to use SMTP authentication?"
 msgstr ""
 
+#: ../classes/preferences.class.php:425
+msgid "%name association's %status"
+msgstr ""
+
 #: ../templates/default/preferences.tpl:160
 msgid "Send email to administrators ?"
 msgstr ""
@@ -1627,6 +1631,10 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:330
 msgid "Pseudo"
+msgstr ""
+
+#: ../classes/preferences.class.php:444
+msgid "%name\n%complement\n%adress\n%zip %town - %country"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:34

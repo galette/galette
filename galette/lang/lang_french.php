@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Thu Jun  2 17:06:58 2011 (GMT)
+// This file was automatically generated on Thu Jun  2 17:18:40 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -456,8 +456,8 @@ $lang['(Errors on DROP and RENAME operations can be ignored)'] = '(Les erreurs s
 // ../templates/default/gestion_contributions.tpl:14 ../templates/default/gestion_transactions.tpl:7 
 $lang['Show:'] = 'Afficher&nbsp;:';
 
-// ../templates/default/ajouter_adherent.tpl:179 ../templates/default/voir_adherent.tpl:145 ../templates/default/self_adherent.tpl:146 ../classes/adherent.class.php:231 
-$lang['Mobile phone:'] = 'GSM&nbsp;:';
+// ../editer_champ.php:93 
+$lang['- Field name already used.'] = '- Un champ de ce nom existe déjà.';
 
 // ../templates/default/preferences.tpl:333 
 $lang['(Choose address printed below name)'] = '(Choix de l\'adresse imprimée sous le nom)';
@@ -630,6 +630,9 @@ $lang['Amount:'] = 'Montant&nbsp;:';
 // ../self_adherent.php:270 
 $lang['Email sent is disabled in the preferences. Ask galette admin.'] = 'L\'envoi de courriel est désactivé. Contactez votre administrateur Galette.';
 
+// ../includes/i18n.inc.php:283 
+$lang['spanish'] = 'espagnol';
+
 // ../templates/default/export.tpl:13 
 $lang['Which parameted export(s) do you want to run?'] = 'Quels exports paramétrés souhaitez-vous lancer&nbsp;?';
 
@@ -768,8 +771,8 @@ $lang['Field list for Pancake document model editor'] = '';
 // ../templates/default/gestion_adherents.tpl:207 ../templates/default/gestion_contributions.tpl:196 
 $lang['Deletion'] = 'Suppression';
 
-// ../includes/i18n.inc.php:283 
-$lang['spanish'] = 'espagnol';
+// ../templates/default/ajouter_adherent.tpl:179 ../templates/default/voir_adherent.tpl:145 ../templates/default/self_adherent.tpl:146 ../classes/adherent.class.php:231 
+$lang['Mobile phone:'] = 'GSM&nbsp;:';
 
 // ../gestion_adherents.php:239 ../templates/default/gestion_adherents.tpl:185 
 $lang['Never contributed'] = 'N\'a jamais cotisé';
@@ -1434,8 +1437,8 @@ $lang['Change'] = 'Changer';
 // ../templates/default/preferences.tpl:142 
 $lang['Sender name:'] = 'Nom expéditeur&nbsp;:';
 
-// ../editer_champ.php:93 
-$lang['- Field name already used.'] = '- Un champ de ce nom existe déjà.';
+// ../classes/preferences.class.php:425 
+$lang['%name association\'s %status'] = '%status de l\'association %name';
 
 // ../templates/default/gestion_adherents.tpl:176 ../classes/politeness.class.php:68 
 $lang['Miss'] = 'Mademoiselle';
@@ -2042,6 +2045,9 @@ $lang['Add a new category'] = 'Ajouter une catégorie';
 
 // ../templates/default/preferences.tpl:114 
 $lang['Lines / Page:'] = 'Lignes / Page&nbsp;:';
+
+// ../classes/preferences.class.php:444 
+$lang['%name\n%complement\n%adress\n%zip %town - %country'] = '%name\n%complement\n%adress\n%zip %town - %country';
 
 // ../templates/default/ajouter_transaction.tpl:15 
 $lang['Transaction details'] = 'Détails de la transaction';
