@@ -441,7 +441,9 @@ class Preferences
         $r = preg_replace(
             $regs,
             $replacements,
-            _T("%name\n%complement\n%adress\n%zip %town - %country")
+            /*FIXME: i18n fails :/
+            _T("%name\n%complement\n%adress\n%zip %town - %country")*/
+            "%name\n%complement\n%adress\n%zip %town - %country"
         );
         return $r;
 
