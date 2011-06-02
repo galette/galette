@@ -239,7 +239,7 @@ class PDF extends TCPDF
             $preferences->pref_nom,
             _T("Association %s")
         );
-        $this->Cell(0, 6, $name, 0, 1, 'L', 0, $preferences->website);
+        $this->Cell(0, 6, $name, 0, 1, 'L', 0, $preferences->pref_website);
         $this->SetFont(self::FONT,'B', self::FONT_SIZE + 2);
 
         $this->Cell(0, 6, _T("Adhesion form"), 0, 0, 'L', 0);
