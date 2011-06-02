@@ -741,7 +741,7 @@ th.bline, td.bline{
 
 /* IE6 does not handle properly negative margins... */
 .cssform .bline{
-	float: left;
+	display: inline-block;
 	margin: 0 0 0 -10em;
 	width: 21em;
 }
