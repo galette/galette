@@ -31,7 +31,7 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2004-2011 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
+ * @version   SVN: $Id: picture.php 877 2011-06-01 06:08:18Z trashy $
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.62
  */
@@ -43,11 +43,6 @@ require_once 'includes/galette.inc.php';
 if (  isset($_GET['logo']) && $_GET['logo'] == 'true' ) {
     $logo->display();
 } else {
-    if ( !$login->isLogged() ) {
-        header("location: index.php");
-        die();
-    }
-
     if ( isset($_GET['print_logo'])
         && $_GET['print_logo'] == 'true'
     ) {//displays the logo for printing
@@ -55,16 +50,17 @@ if (  isset($_GET['logo']) && $_GET['logo'] == 'true' ) {
         $print_logo = new PrintLogo();
         $print_logo->display();
     } else { //displays the picture
-        if ( !$login->isAdmin() ) {
-            /** FIXME: these should not be fired when
-            accessing from public pages */
-            $id_adh = $login->id;
-        } else {
-            $id_adh = $_GET['id_adh'];
-        }
+        $id_adh = (int)$_GET['id_adh'];
+        $adh = new Adherent($id_adh);
 
-        $picture = new Picture($id_adh);
+        $picture = null;
+        if ( $login->isAdmin() || $adh->appearsInMembersList() || $login->login == $adh->login ) {
+          $picture = $adh->picture; //new Picture($id_adh);
+        } else {
+          $picture = new Picture();
+        }
         $picture->display();
+
     }
 }
 ?>
