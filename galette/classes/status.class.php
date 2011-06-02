@@ -233,7 +233,7 @@ class Status
 
         $result = $mdb->query($requete);
         if ( MDB2::isError($result) ) {
-            $this->_error = $result;
+            //$this->_error = $result;
             return $result;
         }
 
