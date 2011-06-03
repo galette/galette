@@ -1,4 +1,5 @@
 .project
+.settings/
 
 # /galette/
 /galette/build-stamp
