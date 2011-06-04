@@ -218,7 +218,7 @@ CREATE TABLE galette_mailing_history (
   mailing_body text NOT NULL,
   mailing_date date NOT NULL default '0000-00-00',
   PRIMARY KEY (mailing_id),
-  INDEX (mailing_sender)
+  INDEX (mailing_sender),
   CONSTRAINT galette_mailing_history_sender
     FOREIGN KEY (mailing_sender)
     REFERENCES galette_adherents (id_adh)

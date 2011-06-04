@@ -134,6 +134,7 @@ CREATE TABLE IF NOT EXISTS galette_mailing_history (
     ON DELETE RESTRICT
     ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Table for mailing history recipients;
 DROP TABLE IF EXISTS galette_mailing_history_recipients;
 CREATE TABLE IF NOT EXISTS galette_mailing_history_recipients (
