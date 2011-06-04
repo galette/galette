@@ -78,7 +78,7 @@ CREATE TABLE galette_types_cotisation (
   libelle_type_cotis varchar(30) NOT NULL default '',
   cotis_extension tinyint(1) NOT NULL default 0,
   PRIMARY KEY  (id_type_cotis)
-) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_preferences;
 CREATE TABLE galette_preferences (

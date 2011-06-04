@@ -1,5 +1,6 @@
--- Set adherents table type to InnoDB so  we can use foreign keys
+-- Set some tables type to InnoDB so we can use foreign keys
 ALTER TABLE galette_adherents ENGINE = InnoDB;
+ALTER TABLE `galette_types_cotisation` ENGINE = InnoDB;
 
 -- Add new or missing preferences;
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_slogan', '');

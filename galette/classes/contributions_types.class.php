@@ -86,9 +86,8 @@ class ContributionsTypes
     */
     public function __construct($args = null)
     {
-        /** FIXME: method does not exists ! */
         if ( is_object($args) ) {
-            $this->loadFromRS($args);
+            $this->_loadFromRS($args);
         }
     }
 
