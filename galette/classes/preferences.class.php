@@ -156,7 +156,7 @@ class Preferences
             if ( !isset($this->_prefs[$k]) ) {
               $this->_prefs[$k] = $v;
               $log->log(
-                  'The field `' . $k . '` did not exists, Galette will attempt to create it.',
+                  'The field `' . $k . '` does not exists, Galette will attempt to create it.',
                   PEAR_LOG_INFO
               );
               $proceed = true;
