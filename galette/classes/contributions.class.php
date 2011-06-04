@@ -151,8 +151,6 @@ class Contributions extends GalettePagination
                         : implode(', ', $fields)) : '*';
 
         $query = 'SELECT ' . $fieldsList . ' FROM ' . PREFIX_DB . self::TABLE;
-        $querycount = 'SELECT count(' . self::PK . ') FROM ' .
-            PREFIX_DB . self::TABLE;
 
         $join = ' a JOIN ' . PREFIX_DB . Adherent::TABLE .
             ' p ON a.' . Adherent::PK . '=p.' . Adherent::PK;
@@ -182,7 +180,7 @@ class Contributions extends GalettePagination
         global $mdb, $log;
 
         $query = 'SELECT count(' . self::PK . ') FROM ' .
-            PREFIX_DB . self::TABLE;
+            PREFIX_DB . self::TABLE . ' p';
         $query .= $where;
 
         $result = $mdb->query($query);

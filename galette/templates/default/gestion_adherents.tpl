@@ -45,6 +45,9 @@
 			<thead>
 				<tr>
 					<th class="listing" id="id_row">#</th>
+          <th class="listing" id="id_row">
+            <a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_ID;{/php}" class="listing">N°</a>
+          </th>
 					<th class="listing left">
 						<a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_NAME;{/php}" class="listing">
 							{_T string="Name"}
@@ -108,6 +111,7 @@
 {foreach from=$members item=member key=ordre}
 				<tr>
 					<td class="{$member->getRowClass()} right">{php}$ordre = $this->get_template_vars('ordre');echo $ordre+1+($varslist->current_page - 1)*$numrows{/php}</td>
+          <td class="{$member->getRowClass()} right">{$member->id}</td>
 					<td class="{$member->getRowClass()} nowrap username_row">
 						<input type="checkbox" name="member_sel[]" value="{$member->id}"/>
 					{if $member->politeness eq constant('Politeness::MR')}
