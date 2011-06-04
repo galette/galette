@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * database.inc.php
+ * ADODB instantiation and functions
  *
  * PHP version 5
  *
