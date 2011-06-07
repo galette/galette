@@ -126,6 +126,7 @@ pre {
 	text-align:center;
 	-moz-border-radius: 10px 10px 10px 10px;
 	-webkit-border-radius: 10px 10px 10px 10px;
+	border-radius: 10px 10px 10px 10px;
 }
 .self_subscribe{
 	margin-top:0.5em!important;
@@ -346,6 +347,7 @@ html > * .nav1 li{
 	margin:0 1em 1em 1em;
 	-moz-border-radius: 10px 10px 10px 10px;
 	-webkit-border-radius: 10px 10px 10px 10px;
+	border-radius: 10px 10px 10px 10px;
 }
 
 #listfilter form {
@@ -715,6 +717,11 @@ legend{
 	height: 1%;
 }
 
+/* no border on the first 'p' child */
+.cssform p:nth-child(2), .cssform div.p:nth-child(2){
+    border-top:none;
+}
+
 .cssform p.notform{
 	padding-left:0;
 	border:none;
@@ -919,6 +926,7 @@ ul#tabs li{
 	line-height:2em;
 	-moz-border-radius: 10px 10px 0px 0px;
 	-webkit-border-radius: 10px 10px 0px 0px;
+	border-radius: 10px 10px 0px 0px;
 }
 
 #tabs a{
@@ -940,6 +948,7 @@ ul#tabs li{
 	padding-bottom:.5em;
 	-moz-border-radius: 10px 0 10px 10px;
 	-webkit-border-radius: 10px 0 10px 10px;
+	border-radius: 10px 0 10px 10px;
 }
 .tabbed table#listing{
 	width: 98%;
@@ -1046,6 +1055,7 @@ ul#paths{
 	font-size: 0.85em;
 	-moz-border-radius: 10px 10px 10px 10px;
 	-webkit-border-radius: 10px 10px 10px 10px;
+	border-radius: 10px 10px 10px 10px;
 	padding: .1em .5em;
 }
 #footerinstall p{
@@ -1099,6 +1109,7 @@ ul#paths{
 	height:240px;
 	-moz-border-radius: 10px 10px 10px 10px;
 	-webkit-border-radius: 10px 10px 10px 10px;
+	border-radius: 10px 10px 10px 10px;
 }
 
 .trombino img{
@@ -1177,6 +1188,7 @@ ul#paths{
 	text-align: center;
 	-moz-border-radius: 10px 10px 10px 10px;
 	-webkit-border-radius: 10px 10px 10px 10px;
+	border-radius: 10px 10px 10px 10px;
 }
 
 #menu h1 {
@@ -1205,9 +1217,9 @@ ul#paths{
 	background-color: #fff;
 	border-bottom:1px #DDDDFF solid;
 }
-#menu li.mnu_last {
-	border-bottom:none;
 
+#menu li:last-child{
+	border-bottom:none;
 }
 
 #menu li a{
