@@ -39,11 +39,18 @@
  * @since     Available since 0.7dev - 2007-07-21
  */
 
+/*
+ * TCPDF configuration file for Galette
+ */
+require_once WEB_ROOT . 'config/galette_tcpdf_config.php';
+define("K_TCPDF_EXTERNAL_CONFIG", true);
+
 /**
  *  Require TCPDF class
  */
 require_once WEB_ROOT . 'includes/tcpdf_' . TCPDF_VERSION . '/tcpdf.php';
 require_once WEB_ROOT . 'classes/print_logo.class.php';
+
 
 /**
  * PDF class for galette
