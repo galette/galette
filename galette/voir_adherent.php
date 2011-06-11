@@ -57,8 +57,10 @@ if ( $id_adh == '' ) {
     header('location: index.php');
     die();
 }
-if ( isset($_SESSION['galette']['pdf_error']) ) {
+if (isset($_SESSION['galette']['pdf_error']) && $_SESSION['galette']['pdf_error']) {
     $error_detected[] = $_SESSION['galette']['pdf_error_msg'];
+    unset($_SESSION['galette']['pdf_error_msg']);
+    unset($_SESSION['galette']['pdf_error']);
 }
 
 require_once WEB_ROOT . 'classes/adherent.class.php';
