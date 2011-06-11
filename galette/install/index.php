@@ -350,8 +350,7 @@ case 'u3':
                 '/tempimages',
                 '/config',
                 '/exports',
-                '/logs',
-                '/includes/tcpdf_' . TCPDF_VERSION . '/cache');
+                '/logs');
     foreach ($files_need_rw as $file) {
         if ( !is_writable(dirname(__FILE__) . '/..' . $file) ) {
             $perms_ok = false;
