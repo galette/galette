@@ -75,6 +75,7 @@ $tpl->assign('galette_base_path', $base_path);
 /** FIXME: on certains pages PHP notice that GALETTE_VERSION does not exists
 although it appears correctly*/
 $tpl->assign('GALETTE_VERSION', GALETTE_VERSION);
+$tpl->assign('GALETTE_MODE', GALETTE_MODE);
 /** galette_lang should be removed and languages used instead */
 $tpl->assign('galette_lang', $i18n->getAbbrev());
 $tpl->assign('languages', $i18n->getList());

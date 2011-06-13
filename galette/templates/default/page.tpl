@@ -96,13 +96,17 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 		<h1 class="nojs">{_T string="Configuration"}</h1>
 		<ul>
 			<li{if $PAGENAME eq "preferences.php"} class="selected"{/if}><a href="{$galette_base_path}preferences.php" title="{_T string="Set applications preferences (adress, website, member's cards configuration, ...)"}">{_T string="Settings"}</a></li>
+    {if $GALETTE_MODE eq 'DEV'}
 			<li{if $PAGENAME eq "config_fields.php"} class="selected"{/if}><a href="{$galette_base_path}config_fields.php" title="{_T string="Customize fields order, set which are required, and for who they're visibles"}">{_T string="Customize fields"}</a></li>
+    {/if}
 			<li{if $PAGENAME eq "champs_requis.php"} class="selected"{/if}><a href="{$galette_base_path}champs_requis.php">{_T string="Required fields"}</a></li>
 			<li{if $PAGENAME eq "configurer_fiches.php"} class="selected"{/if}><a href="{$galette_base_path}configurer_fiches.php" title="{_T string="Manage additional fields for various forms"}">{_T string="Configure member forms"}</a></li>
 			<li{if $PAGENAME eq "traduire_libelles.php"} class="selected"{/if}><a href="{$galette_base_path}traduire_libelles.php" title="{_T string="Translate additionnals fields labels"}">{_T string="Translate labels"}</a></li>
 			<li{if $PAGENAME eq "gestion_intitules.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_intitules.php" title="{_T string="Manage various lists that are used in the application"}">{_T string="Manage lists"}</a></li>
 			<li{if $PAGENAME eq "gestion_textes.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_textes.php" title="{_T string="Manage emails texts and subjects"}">{_T string="Emails content"}</a></li>
+    {if $GALETTE_MODE eq 'DEV'}
 			<li class="mnu_last{if $PAGENAME eq "utilitaires.php"} selected{/if}"><a href="{$galette_base_path}utilitaires.php">{_T string="Utilities"}</a></li>
+    {/if}
 		</ul>
 {/if}
 
