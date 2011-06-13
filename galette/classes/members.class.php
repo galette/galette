@@ -102,13 +102,13 @@ class Members
     public function getStaffMembersList(
         $as_members=false, $fields=null, $filter=true, $count=true
     ) {
-      return $this->getMembersList(
-        $as_members,
-        $fields,
-        $filter,
-        $count,
-        true
-      );
+        return $this->getMembersList(
+            $as_members,
+            $fields,
+            $filter,
+            $count,
+            true
+        );
     }
 
     /**
@@ -121,6 +121,7 @@ class Members
     *                               returned
     * @param boolean $filter     proceed filter, defaults to true
     * @param boolean $count      true if we want to count members
+    * @param boolean $staff      true if we want only staff members
     *
     * @return Adherent[]|ResultSet
     */
@@ -131,14 +132,14 @@ class Members
 
         $_mode = self::SHOW_LIST;
         if ( $staff !== false ) {
-          $_mode = self::SHOW_STAFF;
+            $_mode = self::SHOW_STAFF;
         }
 
         $query = self::_buildSelect(
             $_mode, $fields, $filter, false, $count
         );
         if ( $staff !== false ) {
-          $query .= ' WHERE p.priorite_statut < ' . self::NON_STAFF_MEMBERS;
+            $query .= ' WHERE p.priorite_statut < ' . self::NON_STAFF_MEMBERS;
         }
 
         $result = $mdb->query($query);

@@ -153,7 +153,7 @@ class I18n
         $xml = simplexml_load_file($this->_file);
         foreach ( $xml->lang as $lang ) {
             if ( !$lang['inactive'] ) {
-                $result[] = new I18n( $lang['id'] );
+                $result[] = new I18n($lang['id']);
             }
         }
 

@@ -67,6 +67,15 @@ $required = array(
     'id_adh'        =>  1
 );
 
+/**
+ * TODO
+ *
+ * @param <type> $DB             TODO
+ * @param <type> $trans_id       TODO
+ * @param <type> $error_detected TODO
+ *
+ * @return <type>                TODO
+ */
 function currentContribAmount($DB, $trans_id, $error_detected)
 {
     if (is_numeric($trans_id)) {

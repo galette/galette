@@ -77,7 +77,7 @@ if ( isset($_POST['xmlupload']) ) {
     }
 }
 
-if( isset($_FILES['loadxml']) ) {
+if ( isset($_FILES['loadxml']) ) {
     $tpl->assign('loadxml', $_FILES['loadxml']['name']);
 }
 $tpl->assign(

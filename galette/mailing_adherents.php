@@ -111,7 +111,7 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
 
         $mailing->current_step = Mailing::STEP_SEND;
         //ok... let's go for fun
-        require_once 'includes/phpMailer-' . PHP_MAILER_VERSION . '/class.phpmailer.php';
+        include_once 'includes/phpMailer-' . PHP_MAILER_VERSION . '/class.phpmailer.php';
         $mail = new PHPMailer();
 
         if ( $preferences->pref_mail_method == Mailing::METHOD_SMTP ) {

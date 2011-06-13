@@ -154,46 +154,46 @@ class Preferences
         $params = array();
         foreach ( self::$_defaults as $k=>$v ) {
             if ( !isset($this->_prefs[$k]) ) {
-              $this->_prefs[$k] = $v;
-              $log->log(
-                  'The field `' . $k . '` does not exists, Galette will attempt to create it.',
-                  PEAR_LOG_INFO
-              );
-              $proceed = true;
-              $params[] = array(
-                  'nom_pref'  => $k,
-                  'val_pref'  => $v
-              );
+                $this->_prefs[$k] = $v;
+                $log->log(
+                    'The field `' . $k . '` does not exists, Galette will attempt to create it.',
+                    PEAR_LOG_INFO
+                );
+                $proceed = true;
+                $params[] = array(
+                    'nom_pref'  => $k,
+                    'val_pref'  => $v
+                );
             }
         }
         if ( $proceed !== false ) {
-          //store newly created values
-          $stmt = $mdb->prepare(
-              'INSERT INTO ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) .
-              ' (' . $mdb->quoteIdentifier('nom_pref') . ', ' .
-              $mdb->quoteIdentifier('val_pref') . ') VALUES(:nom_pref, :val_pref)',
-              array('text', 'text'),
-              MDB2_PREPARE_MANIP
-          );
+            //store newly created values
+            $stmt = $mdb->prepare(
+                'INSERT INTO ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) .
+                ' (' . $mdb->quoteIdentifier('nom_pref') . ', ' .
+                $mdb->quoteIdentifier('val_pref') . ') VALUES(:nom_pref, :val_pref)',
+                array('text', 'text'),
+                MDB2_PREPARE_MANIP
+            );
 
-          $mdb->getDb()->loadModule('Extended', null, false);
-          $mdb->getDb()->extended->executeMultiple($stmt, $params);
+            $mdb->getDb()->loadModule('Extended', null, false);
+            $mdb->getDb()->extended->executeMultiple($stmt, $params);
 
-          if (MDB2::isError($stmt)) {
-              $this->_error = $stmt;
-              $log->log(
-                  'Unable to add missing preferences.' . $stmt->getMessage() .
-                  '(' . $stmt->getDebugInfo() . ')',
-                  PEAR_LOG_WARNING
-              );
-              return false;
-          }
+            if (MDB2::isError($stmt)) {
+                $this->_error = $stmt;
+                $log->log(
+                    'Unable to add missing preferences.' . $stmt->getMessage() .
+                    '(' . $stmt->getDebugInfo() . ')',
+                    PEAR_LOG_WARNING
+                );
+                return false;
+            }
 
-          $stmt->free();
-          $log->log(
-              'Missing preferences were successfully stored into database.',
-              PEAR_LOG_INFO
-          );
+            $stmt->free();
+            $log->log(
+                'Missing preferences were successfully stored into database.',
+                PEAR_LOG_INFO
+            );
         }
     }
 
@@ -388,8 +388,10 @@ class Preferences
     }
 
     /**
-    * Returns postal adress
-    */
+     * Returns postal adress
+     *
+     * @return string postal adress
+     */
     public function getPostalAdress()
     {
         $regs = array(
@@ -438,11 +440,15 @@ class Preferences
             );
         }
 
+        /*FIXME: i18n fails :/ */
+        /*$r = preg_replace(
+            $regs,
+            $replacements,
+            _T("%name\n%complement\n%adress\n%zip %town - %country")
+        );*/
         $r = preg_replace(
             $regs,
             $replacements,
-            /*FIXME: i18n fails :/
-            _T("%name\n%complement\n%adress\n%zip %town - %country")*/
             "%name\n%complement\n%adress\n%zip %town - %country"
         );
         return $r;

@@ -168,7 +168,7 @@ if (isset($_GET['sup']) || isset($_POST['delete'])) {
             'adherents WHERE id_adh=' . $DB->qstr($supval, get_magic_quotes_gpc());
         $resultat = $DB->Execute($requetesup);
         if (!$resultat->EOF) {
-            $member = new Adherent( (int)$supval );
+            $member = new Adherent((int)$supval);
 
             // supression record adhérent
             $requetesup = 'DELETE FROM ' . PREFIX_DB . 'adherents WHERE id_adh=' .

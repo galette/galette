@@ -128,7 +128,7 @@ abstract class GalettePagination
     /**
     * Set sort direction
     *
-    * @param string self::ORDER_ASC|self::ORDER_DESC
+    * @param string $direction self::ORDER_ASC|self::ORDER_DESC
     *
     * @return void
     */
@@ -186,7 +186,8 @@ abstract class GalettePagination
     *
     * @return void
     */
-    public function setSmartyPagination($tpl) {
+    public function setSmartyPagination($tpl)
+    {
         $paginate = null;
         $tabs = "\t\t\t\t\t\t";
 

@@ -50,6 +50,15 @@ if ( !$login->isAdmin() ) {
 require_once 'classes/texts.class.php';
 require_once 'includes/dynamic_fields.inc.php';
 
+/**
+ * TODO
+ *
+ * @param <type> $DB             TODO
+ * @param <type> $trans_id       TODO
+ * @param <type> $error_detected TODO
+ *
+ * @return <type>                TODO
+ */
 function missingContribAmount($DB, $trans_id, $error_detected)
 {
     if (is_numeric($trans_id)) {

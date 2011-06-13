@@ -43,6 +43,14 @@ require_once 'classes/texts.class.php';
 $error_detected = array();
 $warning_detected = array();
 
+/** FIXME: Adherent object should handle that. */
+/**
+ * Does account have an email adress?
+ *
+ * @param string $login user login
+ *
+ * @return string
+ */
 function isEmail($login)
 {
     global $error_detected, $DB;

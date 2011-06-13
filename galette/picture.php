@@ -55,9 +55,9 @@ if (  isset($_GET['logo']) && $_GET['logo'] == 'true' ) {
 
         $picture = null;
         if ( $login->isAdmin() || $adh->appearsInMembersList() || $login->login == $adh->login ) {
-          $picture = $adh->picture; //new Picture($id_adh);
+            $picture = $adh->picture; //new Picture($id_adh);
         } else {
-          $picture = new Picture();
+            $picture = new Picture();
         }
         $picture->display();
 

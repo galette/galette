@@ -137,7 +137,9 @@ if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
                         $error_detected[] = _T("- The username must be composed of at least 4 characters!");
                     } else {
                         //check if login is already taken
-                        $requete = "SELECT id_adh FROM ".PREFIX_DB."adherents WHERE login_adh=". $DB->qstr($value, get_magic_quotes_gpc());
+                        $requete = "SELECT id_adh FROM " . PREFIX_DB .
+                        "adherents WHERE login_adh=" .
+                        $DB->qstr($value, get_magic_quotes_gpc());
                         if ( isset($adherent['id_adh']) && $adherent['id_adh'] != '' ) {
                             $requete .= ' AND id_adh!=' . $DB->qstr(
                                 $adherent['id_adh'],

@@ -265,11 +265,11 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
         $value = $insert_values['pref_postal_adress'];
         if ( $value == Preferences::POSTAL_ADRESS_FROM_PREFS ) {
             if ( isset($insert_values['pref_postal_staff_member']) ) {
-              unset($insert_values['pref_postal_staff_member']);
+                unset($insert_values['pref_postal_staff_member']);
             }
         } else if ( $value == Preferences::POSTAL_ADRESS_FROM_STAFF ) {
             if ( !isset($value) || $value < 1 ) {
-              $error_detected[] = _T("You have to select a staff member");
+                $error_detected[] = _T("You have to select a staff member");
             }
         }
     }

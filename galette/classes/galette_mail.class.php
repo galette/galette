@@ -232,7 +232,8 @@ class GaletteMail
         global $log;
         $valid = PHPMailer::ValidateAddress($address);
         if ( !$valid ) {
-            $log->log('[GaletteMail] Adresss `' . $address . '` is not valid ',
+            $log->log(
+                '[GaletteMail] Adresss `' . $address . '` is not valid ',
                 PEAR_LOG_INFO
             );
         }

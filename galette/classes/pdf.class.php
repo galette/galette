@@ -185,7 +185,13 @@ class PDF extends TCPDF
         }
     }
 
-    function Footer(){
+    /**
+     * Draws PDF page footer
+     *
+     * @return void
+     */
+    function Footer()
+    {
         global $preferences;
 
         $this->SetY(-20);
@@ -201,7 +207,7 @@ class PDF extends TCPDF
         $coordonnees_line1 = $name . ' - ' . $preferences->pref_adresse;
         /** FIXME: pref_adresse2 should be removed */
         if ( trim($preferences->pref_adresse2) != '' ) {
-          $coordonnees_line1 .= ', ' . $preferences->pref_adresse2;
+            $coordonnees_line1 .= ', ' . $preferences->pref_adresse2;
         }
         $coordonnees_line2 = $preferences->pref_cp . ' ' . $preferences->pref_ville;
 
@@ -209,7 +215,13 @@ class PDF extends TCPDF
         $this->Cell(0, 4, $coordonnees_line2, 0, 0, 'C', 0, $preferences->pref_website);
     }
 
-    function PageHeader(){
+    /**
+     * Draws PDF page header
+     *
+     * @return void
+     */
+    function PageHeader()
+    {
         global $preferences;
 
         $print_logo = new PrintLogo();
@@ -247,7 +259,7 @@ class PDF extends TCPDF
             _T("Association %s")
         );
         $this->Cell(0, 6, $name, 0, 1, 'L', 0, $preferences->pref_website);
-        $this->SetFont(self::FONT,'B', self::FONT_SIZE + 2);
+        $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
 
         $this->Cell(0, 6, _T("Adhesion form"), 0, 0, 'L', 0);
 

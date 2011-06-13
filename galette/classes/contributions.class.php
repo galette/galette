@@ -207,32 +207,32 @@ class Contributions extends GalettePagination
         $order = ' ORDER BY ';
 
         switch ( $this->orderby ) {
-            case self::ORDERBY_DATE:
-                $order .= 'date_enreg';
-                break;
-            case self::ORDERBY_BEGIN_DATE:
-                $order .= 'date_debut_cotis';
-                break;
-            case self::ORDERBY_END_DATE:
-                $order .= 'date_fin_cotis';
-                break;
-            case self::ORDERBY_MEMBER:
-                $order .= 'nom_adh, prenom_adh';
-                break;
-            case self::ORDERBY_TYPE:
-                $order .= ContributionsTypes::PK;
-                break;
-            case self::ORDERBY_AMOUNT:
-                $order .= 'montant_cotis';
-                break;
-            /*
-            Hum... I really do not know how to sort a query with a value that
-            is calculated code side :/
-            case self::ORDERBY_DURATION:
-                break;*/
-            default:
-                $order .= $this->orderby;
-                break;
+        case self::ORDERBY_DATE:
+            $order .= 'date_enreg';
+            break;
+        case self::ORDERBY_BEGIN_DATE:
+            $order .= 'date_debut_cotis';
+            break;
+        case self::ORDERBY_END_DATE:
+            $order .= 'date_fin_cotis';
+            break;
+        case self::ORDERBY_MEMBER:
+            $order .= 'nom_adh, prenom_adh';
+            break;
+        case self::ORDERBY_TYPE:
+            $order .= ContributionsTypes::PK;
+            break;
+        case self::ORDERBY_AMOUNT:
+            $order .= 'montant_cotis';
+            break;
+        /*
+        Hum... I really do not know how to sort a query with a value that
+        is calculated code side :/
+        case self::ORDERBY_DURATION:
+            break;*/
+        default:
+            $order .= $this->orderby;
+            break;
         }
 
         //set the direction, whatever the field was
