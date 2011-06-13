@@ -123,7 +123,7 @@
 					<p>
 						<label for="adresse_adh" class="bline libelle{if $required.adresse_adh eq 1} required{/if}">{_T string="Address:"}</label>
 						<input type="text" name="adresse_adh" id="adresse_adh" value="{$data.adresse_adh|htmlspecialchars}" maxlength="150" class="large" {$disabled.adresse_adh}/><br/>
-						<label for="adresse2_adh" class="bline libelle{if $required.adresse_adh eq 1} required{/if}">{_T string="Address:"} {_T string=" (continuation)"}</label>
+						<label for="adresse2_adh" class="bline libelle{if $required.adresse2_adh eq 1} required{/if}">{_T string="Address:"} {_T string=" (continuation)"}</label>
 						<input type="text" name="adresse2_adh" id="adresse2_adh" value="{$data.adresse2_adh|htmlspecialchars}" maxlength="150" class="large" {$disabled.adresse2_adh}/>
 					</p>
 					<p>
