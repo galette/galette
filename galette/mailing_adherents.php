@@ -146,10 +146,16 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
         $mail->WordWrap = 50;
 
         if ( !$mail->Send() ) {
-            echo 'Message was not sent.';
-            echo 'Mailer error: ' . $mail->ErrorInfo;
+            $log->log(
+                '[mailing_adherents.php] Message was not sent. Error: ' .
+                $mail->ErrorInfo,
+                PEAR_LOG_ERR
+            );
         } else {
-            echo 'Message has been sent.';
+            $log->log(
+                '[mailing_adherents.php] Message has been sent.',
+                PEAR_LOG_INFO
+            );
         }
     }
     if ( isset($_POST['mailing_confirm']) && count($error_detected) == 0 && !$new_mailer) {
