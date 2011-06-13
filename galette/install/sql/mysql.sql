@@ -146,7 +146,7 @@ CREATE TABLE galette_l10n (
     text_locale varchar(15) NOT NULL,
     text_nref int(10) NOT NULL default '1',
     text_trans varchar(100) NOT NULL default '',
-    PRIMARY KEY (text_orig(20), text_locale(5))
+    PRIMARY KEY (text_orig(30), text_locale(5))
 ) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- new table for temporary passwords  2006-02-18;

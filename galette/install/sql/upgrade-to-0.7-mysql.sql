@@ -76,7 +76,7 @@ INSERT INTO galette_texts (tid, tref, tsubject, tbody, tlang, tcomment) VALUES (
 
 -- Add missing primary keys
 ALTER TABLE `galette_dynamic_fields` ADD PRIMARY KEY ( `item_id` , `field_id` , `field_form` , `val_index` );
-ALTER TABLE `galette_l10n` DROP INDEX `text_orig`, ADD PRIMARY KEY (`text_orig` (20), `text_locale` (5));
+ALTER TABLE `galette_l10n` DROP INDEX `text_orig`, ADD PRIMARY KEY (`text_orig` (30), `text_locale` (5));
 
 -- that field was created in 0.63 under postgres... not mysql :(
 ALTER TABLE `galette_adherents` ADD `lieu_naissance` `lieu_naissance` VARCHAR( 50 ) NULL DEFAULT NULL;
