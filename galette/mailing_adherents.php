@@ -105,12 +105,12 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
         }
     }
 
-    $new_mailer = true;
-
-    if ( isset($_POST['mailing_confirm']) && count($error_detected) == 0 && $new_mailer ) {
+    if ( isset($_POST['mailing_confirm']) && count($error_detected) == 0 ) {
 
         $mailing->current_step = Mailing::STEP_SEND;
         //ok... let's go for fun
+        /** FIXME: I guess most of the following mailing code should be handled
+         * in GaletteMail so it can be reused; from self_adherent for example */
         include_once 'includes/phpMailer-' . PHP_MAILER_VERSION . '/class.phpmailer.php';
         $mail = new PHPMailer();
 
@@ -156,58 +156,6 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
                 '[mailing_adherents.php] Message has been sent.',
                 PEAR_LOG_INFO
             );
-        }
-    }
-    if ( isset($_POST['mailing_confirm']) && count($error_detected) == 0 && !$new_mailer) {
-        $mailing->current_step = Mailing::STEP_SEND;
-
-        foreach ( $mailing->recipients as $recipient ) {
-            $mail_result = $mailing->customMail($recipient->email);
-
-            if ( $mail_result == Mailing::MAIL_SENT) {
-                $hist->add("Sent mail to :"." \"" . $recipient->email . "\"");
-                $warning_detected[] = _T("Mail sent to :")." \"" . $recipient->email . "\"";
-            } else {
-                $error_detected[] = $mailing->checkError();
-
-                /** TODO: the Mailing class should be able to log and to return
-                the i18n message */
-                switch ($mail_result) {
-                case Mailing::MAIL_DISABLED:
-                    $hist->add("Email sent is disabled in the preferences. Ask galette admin.");
-                    $error_detected[] = _T("Email sent is disabled in the preferences. Ask galette admin");
-                    break;
-                case Mailing::MAIL_BAD_CONFIG:
-                    $hist->add(
-                        "A problem happened while sending mail to: \"" .
-                        $recipient->email . "\""
-                    );
-                    $error_detected[]
-                        = _T("A problem happened while sending mail to :")." \"" .
-                        $recipient->email . "\"";
-                    break;
-                case Mailing::MAIL_SERVER_NOT_REACHABLE:
-                    $hist->add("The mail server filled in the preferences cannot be reached. Ask Galette admin");
-                    $error_detected[] = _T("The mail server filled in the preferences cannot be reached. Ask Galette admin");
-                    break;
-                case Mailing::MAIL_BREAK_ATTEMPT:
-                    $hist->add(
-                        "**IMPORTANT** There was a probably breaking attempt when sending mail to: \"" .
-                        $recipient->email . "\""
-                    );
-                    $error_detected[] = _T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $recipient->email . "\"";
-                    break;
-                default :
-                    $hist->add(
-                        "A problem happened while sending mail to: \"" .
-                        $recipient->email . "\""
-                    );
-                    $error_detected[]
-                        = _T("A problem happened while sending mail to :")." \"" .
-                        $recipient->email . "\"";
-                    break;
-                }
-            }
         }
     }
 
