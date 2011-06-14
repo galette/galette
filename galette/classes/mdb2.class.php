@@ -472,7 +472,7 @@ class GaletteMdb2
                 'a simple text',
                 true,
                 12,
-                1.3,
+                '1.3',
                 '2007-05-29',
                 '12:12:00',
                 '1980-05-29 12:12:00'
@@ -497,7 +497,7 @@ class GaletteMdb2
             );
             $values = array(
                 'another simple text',
-                3.1,
+                '3.1',
                 '1979-11-27 11:30:05'
             );
             $result = $this->update('galette_test', $fields, $values);
