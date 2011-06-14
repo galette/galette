@@ -142,7 +142,6 @@ if ( isset($_POST['pref_lang'])
 }
 if ( isset($_GET['pref_lang']) ) {
     $i18n->changeLanguage($_GET['pref_lang']);
-    $_SESSION['pref_lang'] = $_GET['pref_lang'];
 }
 require_once WEB_ROOT . 'includes/i18n.inc.php';
 

@@ -55,8 +55,5 @@ if ( !$login->isLogged() || isset($_POST['logout']) || isset($_GET['logout']) ) 
     $_SESSION['tri_cotis'] = 0;
     $_SESSION['tri_cotis_sens'] = 1;
     $_SESSION['filtre_cotis_adh'] = '';
-    if ( !isset($_SESSION['pref_lang']) ) {
-        $_SESSION['pref_lang']=PREF_LANG;
-    }
 }
 ?>
