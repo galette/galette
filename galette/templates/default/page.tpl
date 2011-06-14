@@ -88,7 +88,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 			<li {if $PAGENAME eq "voir_adherent.php"} class="selected"{/if}><a href="{$galette_base_path}voir_adherent.php" title="{_T string="View my member card"}">{_T string="My information"}</a></li>
 			<li{if $PAGENAME eq "gestion_contributions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_contributions.php" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a></li>
 			<li{if $PAGENAME eq "gestion_transactions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_transactions.php" title="{_T string="View and filter all my transactions"}">{_T string="My transactions"}</a></li>
-			<li class="mnu_last"><a href="{$galette_base_path}subscription_form.php?id_adh={$data.id_adh}" title="{_T string="My member card in PDF format"}">{_T string="PDF card"}</a></li>
   {/if}
 		</ul>
 {/if}
