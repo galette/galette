@@ -156,7 +156,7 @@
 						<label for="adresse_adh" class="bline{if $required.adresse_adh eq 1} required{/if}">{_T string="Address:"}</label>
 						<input type="text" class="large" name="adresse_adh" id="adresse_adh" value="{$member->adress|htmlspecialchars}" maxlength="150" {$disabled.adresse_adh}/><br/>
 {* FIXME: A-t-on réellement besoin de deux lignes pour une adresse ? *}
-						<label for="adresse2_adh" class="bline libelle{if $required.adresse_adh eq 1} required{/if}">{_T string="Address:"} {_T string=" (continuation)"}</label>
+						<label for="adresse2_adh" class="bline libelle{if $required.adresse2_adh eq 1} required{/if}">{_T string="Address:"} {_T string=" (continuation)"}</label>
 						<input type="text" class="large" name="adresse2_adh" id="adresse2_adh" value="{$member->adress_continuation|htmlspecialchars}" maxlength="150" {$disabled.adresse2_adh}/>
 					</p>
 					<p>
