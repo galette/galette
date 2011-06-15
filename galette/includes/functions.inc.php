@@ -59,12 +59,12 @@ function PasswordImageName($c)
 function PasswordImageClean()
 {
     // cleans any password image file older than 1 minute
-    $dh = @opendir('photos');
+    $dh = @opendir(STOCK_FILES);
     while ( $file=readdir($dh) ) {
         if (substr($file,0,3) == 'pw_'
-            && time() - filemtime('photos/' . $file) > 60
+            && time() - filemtime(STOCK_FILES . '/' . $file) > 60
         ) {
-            unlink('photos/' . $file);
+            unlink(STOCK_FILES . '/' . $file);
         }
     }
 }
@@ -209,6 +209,8 @@ function sanityze_superglobals_arrays()
 *     3 - bad configuration ? -> MAIL_BAD_CONFIG
 *     4 - SMTP unreacheable -> MAIL_SERVER_NOT_REACHABLE
 *     5 - breaking attempt -> MAIL_BREAK_ATTEMPT
+*
+* @deprecated
 */
 function custom_mail($email_to,$mail_subject,$mail_text, $content_type="text/plain")
 {
