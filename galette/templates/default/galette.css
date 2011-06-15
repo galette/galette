@@ -205,7 +205,7 @@ a.listing:hover {
 .actif {
 }
 
-.inactif {
+.inactif, .inactive {
 	color: #777777;
 	font-style: italic;
 }
