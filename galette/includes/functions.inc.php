@@ -240,57 +240,53 @@ function custom_mail($email_to,$mail_subject,$mail_text, $content_type="text/pla
 
     // Add a Reply-To field in the mail headers.
     // Fix bug #6654.
-    if ( PREF_EMAIL_REPLY_TO ) {
-        $reply_to = PREF_EMAIL_REPLY_TO;
+    if ( $preferences->pref_email_reply_to ) {
+        $reply_to = $preferences->pref_email_reply_to;
     } else {
-        $reply_to = PREF_EMAIL;
+        $reply_to = $preferences->pref_email;
     }
 
     $headers = array(
-        "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.">",
-        "Message-ID: <".makeRandomPassword(16)."-galette@".$_SERVER['SERVER_NAME'].">",
-        "Reply-To: <".$reply_to.">",
-        "X-Sender: <".PREF_EMAIL.">",
-        "Return-Path: <".PREF_EMAIL.">",
-        "Errors-To: <".PREF_EMAIL.">",
-        "X-Mailer: Galette-".GALETTE_VERSION,
+        "From: " . $preferences->pref_email_nom . " <" . $preferences->pref_email . ">",
+        "Message-ID: <" . makeRandomPassword(16) . "-galette@" . $_SERVER['SERVER_NAME'] . ">",
+        "Reply-To: <" . $reply_to . ">",
+        "X-Sender: <" . $preferences->pref_email . ">",
+        "Return-Path: <" . $preferences->pref_email . ">",
+        "Errors-To: <" . $preferences->pref_email . ">",
+        "X-Mailer: Galette-" . GALETTE_VERSION,
         "X-Priority: 3",
         "Content-Type: $content_type; charset=utf-8"
     );
 
-    switch (PREF_MAIL_METHOD){
-        case 0:
+    switch ($preferences->pref_mail_method){
+        case GaletteMail::METHOD_DISABLED:
             $result = 2;
             break;
-        case 1:
+        case GaletteMail::METHOD_SENDMAIL:
             $mail_headers = "";
             foreach($headers as $oneheader)
                 $mail_headers .= $oneheader . "\r\n";
-            //-f .PREF_EMAIL is to set Return-Path
-            //if (!mail($email_to,$mail_subject,$mail_text, $mail_headers,"-f ".PREF_EMAIL))
-            //set Return-Path
-            //seems to does not work
-            ini_set('sendmail_from', PREF_EMAIL);
-            if (!mail($email_to,$mail_subject,$mail_text, $mail_headers)) {
+            ini_set('sendmail_from', $preferences->pref_email);
+            if ( !mail($email_to, $mail_subject, $mail_text, $mail_headers) ) {
                 $result = 0;
             } else {
                 $result = 1;
             }
             break;
-        case 2:
+        case GaletteMail::METHOD_SMTP:
             // $toArray format --> array("Name1" => "address1", "Name2" => "address2", ...)
 
             //set Return-Path
-            ini_set('sendmail_from', PREF_EMAIL);
+            ini_set('sendmail_from', $preferences->pref_email);
             $errno = "";
             $errstr = "";
-            if (!$connect = fsockopen (PREF_MAIL_SMTP, 25, $errno, $errstr, 30))
+            if (!$connect = fsockopen ($preferences->pref_mail_smtp, 25, $errno, $errstr, 30))
                 $result = 4;
             else{
                 $rcv = fgets($connect, 1024);
                 fputs($connect, "HELO {$_SERVER['SERVER_NAME']}\r\n");
                 $rcv = fgets($connect, 1024);
-                fputs($connect, "MAIL FROM:".PREF_EMAIL."\r\n");
+                fputs($connect, "MAIL FROM:" . $preferences->pref_email . "\r\n");
                 $rcv = fgets($connect, 1024);
                 fputs($connect, "RCPT TO:".$email_to."\r\n");
                 $rcv = fgets($connect, 1024);
@@ -350,8 +346,8 @@ function distance_months($beg, $end)
 function beg_membership_after($date)
 {
     $beg = "";
-    if ( PREF_BEG_MEMBERSHIP != '' ) {
-        list($j, $m) = explode('/', PREF_BEG_MEMBERSHIP);
+    if ( $preferences->pref_beg_membership != '' ) {
+        list($j, $m) = explode('/', $preferences->pref_beg_membership);
         $time = mktime(0, 0, 0, $m, $j, $y);
         while ($time <= $date){
             $y++;

@@ -196,7 +196,7 @@ if ( !$installer ) { //If we're not working from installer
     require_once WEB_ROOT . 'includes/database.inc.php';
 
     /**
-    * Members, alos load Adherent and Picture objects
+    * Members, also load Adherent and Picture objects
     */
     require_once WEB_ROOT . 'classes/members.class.php';
 

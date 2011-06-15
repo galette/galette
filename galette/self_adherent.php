@@ -222,9 +222,6 @@ if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
 
         // il est temps d'envoyer un mail
         if ( $adherent['email_adh'] != '' ) {
-            //$mail_headers = "From: ".PREF_EMAIL_NOM." <".PREF_EMAIL.
-            //">\nContent-Type: text/plain; charset=iso-8859-15\n";
-
             // Get email text in database
             $texts = new texts();
             $mtxt = $texts->getTexts('sub', $preferences->pref_lang);

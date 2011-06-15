@@ -52,7 +52,7 @@ require_once WEB_ROOT . 'classes/texts.class.php';
 $error_detected = array();
 $warning_detected = array();
 
-$cur_lang = PREF_LANG;
+$cur_lang = $preferences->pref_lang;
 $cur_ref = Texts::DEFAULT_REF;
 
 $texts = new Texts();

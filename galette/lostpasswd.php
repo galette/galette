@@ -119,7 +119,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
         }
         // Get email text in database
         $texts = new texts();
-        $mtxt = $texts->getTexts('pwd', PREF_LANG);
+        $mtxt = $texts->getTexts('pwd', $preferences->pref_lang);
         // Replace Tokens
         $mtxt['tbody'] = str_replace(
             '{CHG_PWD_URI}',

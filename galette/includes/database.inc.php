@@ -67,16 +67,6 @@ if ( isset($_SERVER['HTTPS']) ) {
     define('HTTP', 'http');
 }
 
-/** FIXME: preferences are now owned by a class. All PREF_ constants would
-be replaced soon, the following lines will dissapear too */
-// Chargement des preferences
-$result = $DB->Execute('SELECT * FROM ' . PREFIX_DB . 'preferences');
-while ( !$result->EOF ) {
-    define(strtoupper($result->fields["nom_pref"]), $result->fields["val_pref"]);
-    $result->MoveNext();
-}
-$result->Close();
-
 function is_exempt($DB, $cotisant)
 {
     $requete_cotis = 'SELECT bool_exempt_adh FROM ' . PREFIX_DB .

@@ -311,7 +311,7 @@ if ( isset($_POST['valid']) ) {
                 $mtxt = $texts->getTexts('contrib', $contribution['pref_lang']);
                 $mtxt['tbody'] = str_replace(
                     '{NAME}',
-                    PREF_NOM,
+                    $preferences->pref_nom,
                     $mtxt['tbody']
                 );
                 $mtxt['tbody'] = str_replace(
@@ -334,10 +334,10 @@ if ( isset($_POST['valid']) ) {
                 $error_detected[] = _T("A problem happened while sending contribution receipt to user:")." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"";
             }
             // Sent email to admin if pref checked
-            if ( PREF_BOOL_MAILADH ) {
+            if ( $preferences->pref_bool_mailadh ) {
                 // Get email text in database
                 $texts = new texts();
-                $mtxt = $texts->getTexts("newcont", PREF_LANG);
+                $mtxt = $texts->getTexts("newcont", $preferences->pref_lang);
                 $mtxt['tsubject'] = str_replace(
                     '{NAME_ADH}',
                     custom_html_entity_decode($contribution['nom_adh']),
@@ -369,7 +369,7 @@ if ( isset($_POST['valid']) ) {
                     $mtxt['tbody']
                 );
                 $mail_result = custom_mail(
-                    PREF_EMAIL_NEWADH,
+                    $preferences->pref_email_newadh,
                     $mtxt['tsubject'],
                     $mtxt['tbody']
                 );
@@ -401,13 +401,13 @@ if ( isset($_POST['valid']) ) {
         ) {
             $contribution['duree_mois_cotis'] = $_POST['duree_mois_cotis'];
         } else {
-            $contribution['duree_mois_cotis'] = PREF_MEMBERSHIP_EXT;
+            $contribution['duree_mois_cotis'] = $preferences->pref_membership_ext;
         }
     }
 } else {
     if ( $contribution['id_cotis'] == '') {
         // initialiser la structure contribution à vide (nouvelle contribution)
-        $contribution['duree_mois_cotis'] = PREF_MEMBERSHIP_EXT;
+        $contribution['duree_mois_cotis'] = $preferences->pref_membership_ext;
         if ( $cotis_extension && isset($contribution['id_adh']) ) {
             $curend = get_echeance($DB, $contribution['id_adh']);
             if ($curend == '') {
@@ -514,7 +514,7 @@ $result->Close();
 $tpl->assign('adh_options', $adh_options);
 $tpl->assign('require_calendar', true);
 
-$tpl->assign('pref_membership_ext', $cotis_extension ? PREF_MEMBERSHIP_EXT : '');
+$tpl->assign('pref_membership_ext', $cotis_extension ? $preferences->pref_membership_ext : '');
 $tpl->assign('cotis_extension', $cotis_extension);
 
 // - declare dynamic fields for display
