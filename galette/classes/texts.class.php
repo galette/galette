@@ -295,7 +295,7 @@ class Texts
     */
     public function inError()
     {
-        if ( MDB2::isError($this->error) ) {
+        if ( isset($this->error) && MDB2::isError($this->error) ) {
             return true;
         } else {
             return false;
