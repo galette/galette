@@ -40,6 +40,7 @@
 * for Galette to include embedded MDB2 and PEAR
 */
 require_once 'MDB2.php';
+require_once 'i18n.class.php';
 
 /**
  * PEAR::MDB2 wrapper
@@ -729,7 +730,7 @@ class GaletteMdb2
                     foreach ( $row as $key => $value ) {
                         $requete .= $key . '=';
                         $requete .= $this->_db->quote(
-                            (( !seems_utf8($value) ) ? utf8_encode($value) : $value),
+                            (( !I18n::seemsUtf8($value) ) ? utf8_encode($value) : $value),
                             $fields_types[$key]
                         );
                         $requete .= ', ';
