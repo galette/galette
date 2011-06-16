@@ -195,7 +195,6 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
         $pref[$fieldname] = stripslashes($value);
 
         $insert_values[$fieldname] = $value;
-        $result->MoveNext();
     }
 
     // missing relations
