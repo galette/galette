@@ -86,10 +86,6 @@ function PasswordImage()
     imagestring($png, 3, 5, 2, $mdp, imagecolorallocate($png, 0, 0, 0));
     $file = STOCK_FILES . '/' . PasswordImageName($c);
 
-    //TODO:2 lines below is useless but necessary by a bug in php-gd(http://bugs.php.net/bug.php?id=35246)
-    $fh=fopen($file, 'w');
-    fclose($fh);
-
     imagepng($png,$file);
     // The perms of the file can be wrong, correct it
     // WARN : chmod() can be desacivated (i.e. : Free/Online)
