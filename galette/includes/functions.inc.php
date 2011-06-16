@@ -36,6 +36,7 @@
  * @link      http://galette.tuxfamily.org
  */
 
+/** moved to GalettePassword */
 function makeRandomPassword($size)
 {
     $pass = '';
@@ -117,7 +118,7 @@ function print_img($img)
         return $file;
     }
 }
-
+/** /moved to GalettePassword */
 
 function isSelected($champ1, $champ2)
 {
@@ -214,6 +215,7 @@ function sanityze_superglobals_arrays()
 */
 function custom_mail($email_to,$mail_subject,$mail_text, $content_type="text/plain")
 {
+    global $preferences;
     $result = 0;
 
     //Strip slashes if magic_quotes_gpc is enabled
@@ -347,6 +349,7 @@ function distance_months($beg, $end)
 
 function beg_membership_after($date)
 {
+    global $preferences;
     $beg = "";
     if ( $preferences->pref_beg_membership != '' ) {
         list($j, $m) = explode('/', $preferences->pref_beg_membership);
