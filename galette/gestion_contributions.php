@@ -61,7 +61,7 @@ if ( !$login->isAdmin() ) {
 /** /FIXME: BIGFIXME end */
 
 require_once 'classes/contributions.class.php';
-if ( $_SESSION['galette']['contributions'] ) {
+if ( isset($_SESSION['galette']['contributions']) ) {
     $contribs = unserialize($_SESSION['galette']['contributions']);
 } else {
     $contribs = new Contributions();
