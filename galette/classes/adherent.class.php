@@ -388,6 +388,8 @@ class Adherent
             }
         } elseif ( is_object($args) ) {
             $this->_loadFromRS($args);
+        } elseif (is_string($args) ) {
+            $this->loadFromLoginOrMail($args);
         }
     }
 
@@ -410,6 +412,44 @@ class Adherent
         if (MDB2::isError($result)) {
             $log->log(
                 'Cannot load member form id `' . $id . '` | ' .
+                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
+                PEAR_LOG_WARNING
+            );
+            return false;
+        }
+
+        $this->_loadFromRS($result->fetchRow());
+        $result->free();
+
+        return true;
+    }
+
+    /**
+    * Loads a member from its login
+    *
+    * @param string $login login for the member to load
+    *
+    * @return bool true if query succeed, false otherwise
+    */
+    public function loadFromLoginOrMail($login)
+    {
+        global $mdb, $log;
+
+        $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE ';
+
+        if ( GaletteMail::isValidEmail($login) ) {
+            //we got a valid email adress, use it
+            $requete .= 'email_adh=\'' . $login . '\'';
+        } else {
+            ///we did not get an email adress, consider using login
+            $requete .= 'login_adh=\'' . $login . '\'';
+        }
+
+        $result = $mdb->query($requete);
+
+        if (MDB2::isError($result)) {
+            $log->log(
+                'Cannot load member form login `' . $login . '` | ' .
                 $result->getMessage() . '(' . $result->getDebugInfo() . ')',
                 PEAR_LOG_WARNING
             );
@@ -708,7 +748,7 @@ class Adherent
     {
         $forbidden = array('fields');
         /** TODO: What to do ? :-) */
-        /** TODO: When member account is activated, we should send a mail to the member (add an entry to deactivate thaht in the preferences */
+        /** TODO: When member account is activated, we should send a mail to the member (add an entry to deactivate that in the preferences */
     }
 }
 ?>
