@@ -7,7 +7,6 @@
 		<div id="main_logo">
 			<img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
 		</div>
-
 		<form action="lostpasswd.php" method="post" enctype="multipart/form-data" id="login_frm">
 			<div class="login-box">
 				<h1 id="titre">{_T string="Password recovery"}</h1>
@@ -31,6 +30,9 @@
 					</ul>
 				</div>
 {/if}
+{if $password_sent}
+                <div id="infobox">{_T string="A mail has been sent to your adress.<br/>Please check your inbox and follow the instructions."}</div>
+{else}
 				<div>
 					<label for="login" class="">{_T string="Username or email:"}</label>
 					<input type="text" name="login" id="login" maxlength="50" />
@@ -41,6 +43,7 @@
 						<li id="backhome"><a href="index.php">{_T string="Back to login page"}</a></li>
 					</ul>
 				</div>
+{/if}
 			</div>
 		</form>
 		<div id="copyright">

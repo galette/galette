@@ -37,135 +37,108 @@
  */
 
 require_once 'includes/galette.inc.php';
+require_once 'classes/adherent.class.php';
+require_once 'classes/galette_password.class.php';
 require_once 'classes/texts.class.php';
 
 // initialize warnings
 $error_detected = array();
 $warning_detected = array();
 
-/** FIXME: Adherent object should handle that. */
-/**
- * Does account have an email adress?
- *
- * @param string $login user login
- *
- * @return string
- */
-function isEmail($login)
-{
-    global $error_detected, $DB;
-    if ( empty($login) ) {
-            $error_detected[] = _T("empty login");
-    } else {
-        $req = 'SELECT email_adh FROM ' . PREFIX_DB .
-            'adherents WHERE login_adh=' . txt_sqls($login);
-        $result = &$DB->Execute($req);
-
-        if ($result->EOF) {
-            $error_detected[] = _T("this login doesn't exist");
-            $hist->add('Nonexistent login sent via the lost password form. Login: "' . $login .'"');
-        } else {
-            $email=$result->fields[0];
-            if ( empty($email) ) {
-                $error_detected = _T("This account doesn't have a valid email address. Please contact an administrator.");
-                $hist->add('Someone asked to recover his password but had no email. Login: "' . $login . '"');
-            } else {
-                return $email;
-            }
-        }
-    }
-}
-
 // Validation
 if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
     $login_adh = $_POST['login'];
-    //if field contain the character @ we consider that is an email
-    if ( strpos($login_adh, '@') !== false ) {
-        $query = 'SELECT login_adh from ' . PREFIX_DB .
-            'adherents where email_adh=' . txt_sqls($login_adh);
-        $result = &$DB->Execute($query);
-        $login_adh = $result->fields[0];
-    }
-    $email_adh = isEmail($login_adh);
+    $adh = new Adherent($login_adh);
 
-    //send the password
-    if ( $email_adh!='' ) {
-        $query = 'SELECT id_adh from ' . PREFIX_DB .
-            'adherents where login_adh=' . txt_sqls($login_adh);
-        $result = &$DB->Execute($query);
-        if ( $result->EOF ) {
-                $warning_detected = _T("There is  no password for user :") .
-                    ' "' . $login_adh . ' "';
-                //TODO need to clean die here
-        } else {
-                $id_adh = $result->fields[0];
-        }
-        //make temp password
-        $tmp_passwd = makeRandomPassword(7);
-        $hash = md5($tmp_passwd);
-        //delete old tmp_passwd
-        $query = 'DELETE FROM ' . PREFIX_DB . 'tmppasswds';
-        $query .= ' WHERE id_adh=' . $id_adh;
-        if ( !$DB->Execute($query) ) {
-            $warning_detected = _T("delete failed");
-        }
-        //insert temp passwd in database
-        $query = 'INSERT INTO ' . PREFIX_DB . 'tmppasswds';
-        $query .= ' (id_adh, tmp_passwd, date_crea_tmp_passwd)';
-        $query .= ' VALUES(' . $id_adh . ', \'' . $hash . '\', ' .
-            $DB->DBTimeStamp(time()) . ')';
-        if ( !$DB->Execute($query) ) {
-            $warning_detected = _T("There was a database error when inserting data");
-        }
-        // Get email text in database
-        $texts = new texts();
-        $mtxt = $texts->getTexts('pwd', $preferences->pref_lang);
-        // Replace Tokens
-        $mtxt['tbody'] = str_replace(
-            '{CHG_PWD_URI}',
-            'http://' . $_SERVER['SERVER_NAME'] .
-            dirname($_SERVER['REQUEST_URI']) . '/change_passwd.php?hash=' . $hash,
-            $mtxt['tbody']
-        );
-        $mtxt['tbody'] = str_replace(
-            '{LOGIN}',
-            custom_html_entity_decode($login_adh, ENT_QUOTES),
-            $mtxt['tbody']
-        );
-        $mtxt['tbody'] = str_replace(
-            '{PASSWORD}',
-            custom_html_entity_decode($tmp_passwd, ENT_QUOTES),
-            $mtxt['tbody']
-        );
-        $mail_result = custom_mail($email_adh, $mtxt['tsubject'], $mtxt['tbody']);
-        if ( $mail_result == 1 ) {
-            $hist->add("Password sent. Login:"." \"" . $login_adh . "\"");
-            $warning_detected = _T("Password sent. Login:")." \"" .
-                $login_adh . "\"";
-            //$password_sent = true;
-        } else {
-            switch ($mail_result) {
-            case 2 :
-                $hist->add("Email sent is disabled in the preferences");
-                $warning_detected = _T("Email sent is disabled in the preferences. Ask galette admin");
-                break;
-            case 3 :
-                $hist->add("A problem happened while sending password for account:"." \"" . $login_adh . "\"");
-                $warning_detected = _T("A problem happened while sending password for account:")." \"" . $login_adh . "\"";
-                break;
-            case 4 :
-                $hist->add("The mail server filled in the preferences cannot be reached");
-                $warning_detected = _T("The mail server filled in the preferences cannot be reached. Ask Galette admin");
-                break;
-            case 5 :
-                $hist->add("**IMPORTANT** There was a probably breaking attempt when sending mail to :"." \"" . $email_adh . "\"");
-                $error_detected[] = _T("**IMPORTANT** There was a probably breaking attempt when sending mail to :")." \"" . $email_adh . "\"";
-                break;
-            default :
-                $hist->add("A problem happened while sending password for account:"." \"" . $login_adh . "\"");
-                $warning_detected = _T("A problem happened while sending password for account:")." \"" . $login_adh . "\"";
-                break;
+    if ( $adh->id != '' ) {
+        //account has been found, proceed
+        if ( GaletteMail::isValidEmail($adh->email) ) {
+            $password = new GalettePassword();
+            $res = $password->generateNewPassword($adh->id);
+            if ( $res == true ) {
+                $texts = new texts();
+                $mtxt = $texts->getTexts('pwd', $preferences->pref_lang);
+
+                // Replace Tokens
+                $regs = array(
+                  '/{CHG_PWD_URI}/',
+                  '/{LOGIN}/',
+                  '/{PASSWORD}/'
+                );
+
+                $replacements = array(
+                    'http://' . $_SERVER['SERVER_NAME'] .
+                    dirname($_SERVER['REQUEST_URI']) .
+                    '/change_passwd.php?hash=' . $password->getHash(),
+                    custom_html_entity_decode($login_adh, ENT_QUOTES),
+                    custom_html_entity_decode($password->getNewPassword(), ENT_QUOTES),
+                );
+
+                $body = preg_replace(
+                    $regs,
+                    $replacements,
+                    $mtxt->tbody
+                );
+
+                $mail = new GaletteMail();
+                $mail->setSubject($mtxt->tsubject);
+                $mail->setRecipients(
+                    array(
+                        $adh->email => $adh->sname
+                    )
+                );
+
+                $mail->setMessage($body);
+                $sent = $mail->send();
+
+                if ( $sent == GaletteMail::MAIL_SENT ) {
+                    $tpl->assign('password_sent', true);
+                } else {
+                    $str = str_replace(
+                        '%s',
+                        $login_adh,
+                        _T('A problem happened while sending password for account "%s"')
+                    );
+                    $hist->add($str);
+                    $error_detected[] = $str;
+                }
+            } else {
+                $str = str_replace(
+                    '%s',
+                    $login_adh,
+                    _T('An error occured storing temporary password for %s. Please inform an admin.')
+                );
+                $hist->add($str);
+                $error_detected[] = $str;
             }
+            
+        } else {
+            $str = str_replace(
+                '%s',
+                $login_adh,
+                _T('Your account (%s) do not contain any valid mail adress')
+            );
+            $hist->add($str);
+            $error_detected[] = $str;
+        }
+    } else {
+        //account has not been found
+        if ( GaletteMail::isValidEmail($login_adh) ) {
+            $str = str_replace(
+                '%s',
+                $login_adh,
+                _T('Mails adress %s does not exist')
+            );
+            $hist->add($str);
+            $error_detected[] = $str;
+        } else {
+            $str = str_replace(
+                '%s',
+                $login_adh,
+                _T('Login %s does not exist')
+            );
+            $hist->add($str);
+            $error_detected[] = $str;
         }
     }
 }
