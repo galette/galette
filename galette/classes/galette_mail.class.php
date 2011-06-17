@@ -84,9 +84,9 @@ class GaletteMail
     *
     * @param array $args Unused for now
     */
-    public function __construct($args)
+    public function __construct($args=null)
     {
-        global $preferences, $log;
+        global $preferences, $log, $i18n;
 
         $this->_mail = new PHPMailer();
 
