@@ -211,6 +211,9 @@ class GaletteMail
             $this->_mail->IsHTML(false);
         }
 
+        $this->_mail->Subject = $this->_subject;
+        $this->_mail->Body = $this->_message;
+
         //let's send the mail
         if ( !$this->_mail->Send() ) {
             $this->_errors[] = $this->_mail->ErrorInfo;
