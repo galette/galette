@@ -37,11 +37,14 @@
  */
 
 require_once 'includes/galette.inc.php';
+require_once 'classes/galette_password.class.php';
 
 // initialize warnings
 $error_detected = array();
 $warning_detected = array();
 $hash = '';
+
+$password = new GalettePassword();
 
 //TODO need to sanityze superglobals, see sanityze_superglobals_arrays
 // get hash id, $_GET if passed by url, $_POST if passed by this form

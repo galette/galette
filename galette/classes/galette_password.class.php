@@ -70,6 +70,7 @@ class GalettePassword
     */
     public function __construct()
     {
+        $this->_cleanExpired();
     }
 
     /**
@@ -168,6 +169,32 @@ class GalettePassword
             );
             $this->_new_password = $password;
             $this->_hash = $hash;
+            return true;
+        }
+    }
+
+    private function _cleanExpired()
+    {
+        global $log, $mdb;
+
+        $date = new DateTime();
+        $date->sub(new DateInterval('PT24H'));
+
+        $requete = 'DELETE FROM ' . PREFIX_DB . self::TABLE .
+        ' WHERE date_crea_tmp_passwd < \'' . $date->format('Y-m-d H:i:s') . '\'';
+
+        $result = $mdb->query($requete);
+        if ( MDB2::isError($result) ) {
+            $log->log(
+                'An error occured deleting expired temporary passwords',
+                PEAR_LOG_WARNING
+            );
+            return false;
+        } else {
+            $log->log(
+                'Old Temporary passwords has been deleted.',
+                PEAR_LOG_DEBUG
+            );
             return true;
         }
     }
