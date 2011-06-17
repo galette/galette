@@ -108,7 +108,9 @@ if ( isset($hash) && !empty($hash) ) {
 
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('warning_detected', $warning_detected);
-$tpl->assign('head_redirect', $head_redirect);
+if( isset($head_redirect) ) {
+    $tpl->assign('head_redirect', $head_redirect);
+}
 $tpl->assign('hash', $hash);
 
 // display page

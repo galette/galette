@@ -9,51 +9,51 @@
 			<img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
 		</div>
 
-		<div class="login-box">
-			<h1 id="titre">{_T string="Password recovery"}</h1>
+        <form id="login_frm" action="change_passwd.php" method="post" enctype="multipart/form-data">
+            <div class="login-box">
+                <h1 id="titre">{_T string="Password recovery"}</h1>
 {if $error_detected|@count != 0}
-			<div id="errorbox">
-				<h1>{_T string="- ERROR -"}</h1>
-				<ul>
+                <div id="errorbox">
+                    <h1>{_T string="- ERROR -"}</h1>
+                    <ul>
 {foreach from=$error_detected item=error}
-					<li>{$error}</li>
+                        <li>{$error}</li>
 {/foreach}
-				</ul>
-			</div>
+                    </ul>
+                </div>
 {/if}
 {if $warning_detected|@count != 0}
-			<div id="warningbox">
-				<h1>{_T string="- WARNING -"}</h1>
-				<ul>
+                <div id="warningbox">
+                    <h1>{_T string="- WARNING -"}</h1>
+                    <ul>
 {foreach from=$warning_detected item=warning}
-					<li>{$warning}</li>
+                        <li>{$warning}</li>
 {/foreach}
-				</ul>
-			</div>
+                    </ul>
+                </div>
 {/if}
 {if !$head_redirect}
-			<form action="change_passwd.php" method="post" enctype="multipart/form-data">
-				<div class="cssform">
-					<p>
-						<label for="mdp_adh" class="bline required">{_T string="Password:"}</label>
-						<input type="password" name="mdp_adh" id="mdp_adh" value="" maxlength="20"/>
-					</p>
-					<p>
-						<label for="mdp_adh2" class="bline required">{_T string="Confirmation:"}</label>
-						<input type="password" name="mdp_adh2" id="mdp_adh2" value="" maxlength="20"/>
-					</p>
-					<p class="exemple">{_T string="(at least 4 characters)"}</p>
-					<input type="submit" class="submit" name="change_passwd" value="{_T string="Change my password"}"/>
-					<input type="hidden" name="valid" value="1"/>
-					<input type="hidden" name="hash" value="{$hash}"/>
-				</div>
-			</form>
+                <table>
+                    <tr>
+                        <th><label for="mdp_adh">{_T string="Password:"}</label></th>
+                        <td><input type="password" name="mdp_adh" id="mdp_adh" value="" maxlength="20"/></td>
+                    </tr>
+                    <tr>
+                        <th><label for="mdp_adh2">{_T string="Confirmation:"}</label></th>
+                        <td><input type="password" name="mdp_adh2" id="mdp_adh2" value="" maxlength="20"/></td>
+                    </tr>
+                </table>
+                <p class="exemple">{_T string="(at least 4 characters)"}</p>
+                <input type="submit" class="submit" name="change_passwd" value="{_T string="Change my password"}"/>
+                <input type="hidden" name="valid" value="1"/>
+                <input type="hidden" name="hash" value="{$hash}"/>
 {/if}
-			<ul class="menu">
-				<li id="subscribe"><a href="self_adherent.php">{_T string="Subscribe"}</a></li>
-				<li id="backhome"><a href="index.php">{_T string="Back to login page"}</a></li>
-			</ul>
-		</div>
+                <ul class="menu">
+                    <li id="subscribe"><a href="self_adherent.php">{_T string="Subscribe"}</a></li>
+                    <li id="backhome"><a href="index.php">{_T string="Back to login page"}</a></li>
+                </ul>
+            </div>
+        </form>
 		<div id="copyright">
 			<a href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
 		</div>
