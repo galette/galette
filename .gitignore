@@ -1,5 +1,6 @@
 .project
 .settings/
+nbproject
 
 # /galette/
 /galette/build-stamp
