@@ -43,7 +43,7 @@ require_once 'classes/galette_password.class.php';
 $error_detected = array();
 $warning_detected = array();
 $hash = '';
-
+$password_updated = false;
 $password = new GalettePassword();
 
 //TODO need to sanityze superglobals, see sanityze_superglobals_arrays
@@ -56,53 +56,41 @@ if ( isset($_GET['hash']) && !empty($_GET['hash']) ) {
     }
 }
 if ( isset($hash) && !empty($hash) ) {
-    $query = 'SELECT id_adh from ' . PREFIX_DB . 'tmppasswds where tmp_passwd=' .
-        txt_sqls($hash);
-    $result = &$DB->Execute($query);
-    if ( $result->EOF ) {
-        $warning_detected = _T("This link is no longer valid. You should <a href='lostpasswd.php'>ask to retrieve your password</a> again.");
-        $head_redirect = "<meta http-equiv=\"refresh\" content=\"30;url=index.php\" />";
-        //TODO need to clean die here
-    } else {
-        $id_adh = $result->fields[0];
-    }
-    // Validation
-    if ( isset($_POST['valid']) && $_POST['valid'] == '1') {
-        if ( $_POST['mdp_adh'] == '') {
-            $error_detected[] = _T("No password");
-        }
-        //if ($_POST['mdp_adh2']==$_POST['mdp_adh'])
-        if ( isset($_POST['mdp_adh2']) ) {
-            if ( strcmp($_POST['mdp_adh'], $_POST['mdp_adh2']) ) {
-                $error_detected[] = _T("- The passwords don't match!");
-            } else {
-                $passwd = $_POST['mdp_adh'];
-                if ( strlen($passwd) < 4 ) {
-                    $error_detected[] = _T("- The password must be of at least 4 characters!");
+    if ( $id_adh = $password->isHashValid($hash) ) {
+        // Validation
+        if ( isset($_POST['valid']) && $_POST['valid'] == '1') {
+            if ( $_POST['mdp_adh'] == '') {
+                $error_detected[] = _T("No password");
+            } else if ( isset($_POST['mdp_adh2']) ) {
+                if ( strcmp($_POST['mdp_adh'], $_POST['mdp_adh2']) ) {
+                    $error_detected[] = _T("- The passwords don't match!");
                 } else {
-                    $passwd = md5($passwd);
-                    $query = "UPDATE " . PREFIX_DB . "adherents";
-                    $query .= " SET mdp_adh = '$passwd'";
-                    $query .= " WHERE id_adh = '$id_adh'";
-                    if ( !$DB->Execute($query) ) {
-                        $warning_detected = _T("There was a database error");
+                    if ( strlen($_POST['mdp_adh']) < 4 ) {
+                        $error_detected[] = _T("- The password must be of at least 4 characters!");
                     } else {
-                        //delete temporary password from table
-                        $query = 'DELETE from ' . PREFIX_DB .
-                            'tmppasswds where tmp_passwd=' . txt_sqls($hash);
-                        if ( !$DB->Execute($query) ) {
-                            $warning_detected = _T("There was a database error");
+                        $res = Adherent::updatePassword(
+                            $id_adh,
+                            $_POST['mdp_adh']
+                        );
+                        if ( $res !== true ) {
+                            $error_detected[] = _T('An error occured while updating your password.');
                         } else {
                             $hist->add(
                                 '**Password changed**. id: "' . $id_adh . '"'
                             );
-                            $warning_detected = _T("Password changed, you will be redirected to login page");
+                            //once password has been changed, we can remove the
+                            //temporary password entry
+                            $password->removeHash($hash);
+                            $password_updated = true;
                             $head_redirect = "<meta http-equiv=\"refresh\" content=\"10;url=index.php\" />";
                         }
                     }
                 }
             }
         }
+    } else {
+        $warning_detected = _T("This link is no longer valid. You should <a href='lostpasswd.php'>ask to retrieve your password</a> again.");
+        $head_redirect = "<meta http-equiv=\"refresh\" content=\"30;url=index.php\" />";
     }
 } else {
     header('location: index.php');
@@ -111,7 +99,8 @@ if ( isset($hash) && !empty($hash) ) {
 
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('warning_detected', $warning_detected);
-if( isset($head_redirect) ) {
+$tpl->assign('password_updated', $password_updated);
+if ( isset($head_redirect) ) {
     $tpl->assign('head_redirect', $head_redirect);
 }
 $tpl->assign('hash', $hash);

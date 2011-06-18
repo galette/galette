@@ -173,6 +173,11 @@ class GalettePassword
         }
     }
 
+    /**
+     * Remove expired passwords queries (older than 24 hours)
+     *
+     * @return boolean
+     */
     private function _cleanExpired()
     {
         global $log, $mdb;
@@ -193,6 +198,62 @@ class GalettePassword
         } else {
             $log->log(
                 'Old Temporary passwords has been deleted.',
+                PEAR_LOG_DEBUG
+            );
+            return true;
+        }
+    }
+
+    /**
+     * Check if requested hash is valid
+     *
+     * @param string $hash the hash
+     *
+     * @return false if hash is not valid, member id otherwise
+     */
+    public function isHashValid($hash)
+    {
+        global $mdb, $log;
+
+        $requete = 'SELECT ' . self::PK . ' FROM ' . PREFIX_DB . self::TABLE .
+        ' WHERE tmp_passwd=\'' . $hash . '\'';
+
+        $result = $mdb->query($requete);
+        if ( MDB2::isError($result) ) {
+            $log->log(
+                'An error occured getting requested hash.',
+                PEAR_LOG_WARNING
+            );
+            return false;
+        } else {
+            return $result->fetchOne();
+        }
+    }
+
+    /**
+     * Remove a hash that has been used (ie. once password has been updated)
+     *
+     * @param string $hash hash
+     *
+     * @return boolean
+     */
+    public function removeHash($hash)
+    {
+        global $mdb, $log;
+
+        $requete = 'DELETE FROM ' . PREFIX_DB . self::TABLE .
+        ' WHERE tmp_passwd=\'' . $hash . '\'';
+
+        $result = $mdb->query($requete);
+        if ( MDB2::isError($result) ) {
+            $log->log(
+                'An error ocured attempting to delete used hash',
+                PEAR_LOG_WARNING
+            );
+            return false;
+        } else {
+            $log->log(
+                'Used hash has been successfully remove',
                 PEAR_LOG_DEBUG
             );
             return true;

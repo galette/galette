@@ -677,6 +677,37 @@ class Adherent
     }
 
     /**
+     * Change password for a given user
+     *
+     * @param string $id_adh Member identifier
+     * @param string $pass   New password
+     *
+     * @return boolean
+     */
+    public static function updatePassword($id_adh, $pass)
+    {
+        global $log, $mdb;
+
+        $query = 'UPDATE ' . PREFIX_DB . self::TABLE . ' SET mdp_adh=\'' .
+        md5($pass) . '\' WHERE ' . self::PK . '=' . $id_adh;
+
+        $result = $mdb->query($query);
+        if ( MDB2::isError($result) ) {
+            $log->log(
+                'An error occured while updating password for `' . $id_adh . '`',
+                PEAR_LOG_ERR
+            );
+            return false;
+        } else {
+            $log->log(
+                'Password for `' . $id_adh . '` has been updated.',
+                PEAR_LOG_DEBUG
+            );
+            return true;
+        }
+    }
+
+    /**
     * Global getter method
     *
     * @param string $name name of the property we want to retrive

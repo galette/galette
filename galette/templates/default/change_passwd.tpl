@@ -32,7 +32,10 @@
                     </ul>
                 </div>
 {/if}
-{if !$head_redirect}
+{if $password_updated}
+                <div id="infobox">{_T string="Password changed, you will be redirected to login page"}</div>
+{/if}
+{if !$head_redirect and !$password_updated}
                 <table>
                     <tr>
                         <th><label for="mdp_adh">{_T string="Password:"}</label></th>
