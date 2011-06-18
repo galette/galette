@@ -291,7 +291,7 @@ case '2':
             <p><?php echo _T("Select installation mode to launch"); ?></p>
             <form action="index.php" method="post">
                 <p>
-                    <input type="radio" name="install_type" value="install" checked="checked" id="install"> <label for="install"><?php echo _T("New installation:"); ?></label><br />
+                    <input type="radio" name="install_type" value="install" checked="checked" id="install"/> <label for="install"><?php echo _T("New installation:"); ?></label><br />
                     <?php echo _T("You're installing Galette for the first time, or you wish to erase an older version of Galette without keeping your data"); ?>
                 </p>
 <?php
@@ -312,7 +312,7 @@ case '2':
         //echo "\t\t\t\t\t<li>";
 ?>
                 <li>
-                    <input type="radio" name="install_type" value="upgrade-<?php echo $val; ?>" id="upgrade-<?php echo $val; ?>"> <label for="upgrade-<?php echo $val; ?>">
+                    <input type="radio" name="install_type" value="upgrade-<?php echo $val; ?>" id="upgrade-<?php echo $val; ?>"/> <label for="upgrade-<?php echo $val; ?>">
 <?php
         if ( $last != number_format($val - 0.01, 2) ) {
             echo _T("Your current Galette version is comprised between") . " " . $last . " " . _T("and") . " " . number_format($val - 0.01, 2) . "</label><br />";
@@ -330,7 +330,7 @@ case '2':
     }
 ?>
                 <p id="submit_btn">
-                    <input type="submit" value="<?php echo _T("Next step"); ?>">
+                    <input type="submit" value="<?php echo _T("Next step"); ?>"/>
                 </p>
             </form>
         </div>
@@ -375,8 +375,8 @@ case 'u3':
             <p><?php echo _T("Under Windows, check these files are not in Read-Only mode in their property panel."); ?></p>
             <form action="index.php" method="post">
                 <p id="retry_btn">
-                    <input type="submit" value="<?php echo _T("Retry"); ?>">
-                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
+                    <input type="submit" value="<?php echo _T("Retry"); ?>"/>
+                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                 </p>
             </form>
 <?php
@@ -385,9 +385,9 @@ case 'u3':
             <p id="infobox"><?php echo _T("Files permissions are OK!"); ?></p>
             <form action="index.php" method="POST">
                 <p id="submit_btn">
-                    <input type="submit" value="<?php echo _T("Next step"); ?>">
-                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
-                    <input type="hidden" name="install_permsok" value="1">
+                    <input type="submit" value="<?php echo _T("Next step"); ?>"/>
+                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
+                    <input type="hidden" name="install_permsok" value="1"/>
                 </p>
             </form>
 <?php
@@ -431,19 +431,19 @@ case 'u4':
                     </p>
                     <p>
                         <label class="bline" for="install_dbhost"><?php echo _T("Host:"); ?></label>
-                        <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo (isset($_POST['install_dbhost']))?$_POST['install_dbhost']:'localhost'; ?>">
+                        <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo (isset($_POST['install_dbhost']))?$_POST['install_dbhost']:'localhost'; ?>"/>
                     </p>
                     <p>
                         <label class="bline" for="install_dbuser"><?php echo _T("User:"); ?></label>
-                        <input type="text" name="install_dbuser" id="install_dbuser" value="<?php if(isset($_POST['install_dbuser'])) echo $_POST['install_dbuser']; ?>">
+                        <input type="text" name="install_dbuser" id="install_dbuser" value="<?php if(isset($_POST['install_dbuser'])) echo $_POST['install_dbuser']; ?>"/>
                     </p>
                     <p>
                         <label class="bline" for="install_dbpass"><?php echo _T("Password:"); ?></label>
-                        <input type="password" name="install_dbpass" id="install_dbpass" value="<?php if(isset($_POST['install_dbpass'])) echo $_POST['install_dbpass']; ?>">
+                        <input type="password" name="install_dbpass" id="install_dbpass" value="<?php if(isset($_POST['install_dbpass'])) echo $_POST['install_dbpass']; ?>"/>
                     </p>
                     <p>
                         <label class="bline" for="install_dbname"><?php echo _T("Database:"); ?></label>
-                        <input type="text" name="install_dbname" id="install_dbname" value="<?php if(isset($_POST['install_dbname'])) echo $_POST['install_dbname']; ?>">
+                        <input type="text" name="install_dbname" id="install_dbname" value="<?php if(isset($_POST['install_dbname'])) echo $_POST['install_dbname']; ?>"/>
                     </p>
                     <p>
 <?php
@@ -452,13 +452,13 @@ case 'u4':
         }
 ?>
                         <label class="bline" for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
-                        <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo (isset($_POST['install_dbprefix']))?$_POST['install_dbprefix']:'galette_'; ?>">
+                        <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo (isset($_POST['install_dbprefix']))?$_POST['install_dbprefix']:'galette_'; ?>"/>
                     </p>
                 </fieldset>
                 <p id="submit_btn">
-                    <input type="submit" value="<?php echo _T("Next step"); ?>">
-                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
-                    <input type="hidden" name="install_permsok" value="1">
+                    <input type="submit" value="<?php echo _T("Next step"); ?>"/>
+                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
+                    <input type="hidden" name="install_permsok" value="1"/>
                 </p>
             </form>
         </div>
@@ -494,16 +494,16 @@ case 'u5':
             <p><?php echo _T("Database can't be reached. Please go back to enter the connection parameters again."); ?></p>
             <form action="index.php" method="POST">
                 <p id="retry_btn">
-                    <input type="submit" value="<?php echo _T("Go back"); ?>">
-                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
-                    <input type="hidden" name="install_permsok" value="1">
-                    <input type="hidden" name="install_dbko" value="1">
-                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>">
-                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>">
-                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>">
-                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>">
-                    <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>">
-                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>">
+                    <input type="submit" value="<?php echo _T("Go back"); ?>"/>
+                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
+                    <input type="hidden" name="install_permsok" value="1"/>
+                    <input type="hidden" name="install_dbko" value="1"/>
+                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
+                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>"/>
+                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>"/>
+                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>"/>
+                    <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>"/>
+                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>"/>
                 </p>
             </form>
 <?php
@@ -512,16 +512,16 @@ case 'u5':
             <p><?php echo _T("Database exists and connection parameters are OK."); ?></p>
             <form action="index.php" method="POST">
                 <p id="submit_btn">
-                    <input type="submit" value="<?php echo _T("Next step"); ?>">
-                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
-                    <input type="hidden" name="install_permsok" value="1">
-                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>">
-                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>">
-                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>">
-                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>">
-                    <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>">
-                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>">
-                    <input type="hidden" name="install_dbconn_ok" value="1">
+                    <input type="submit" value="<?php echo _T("Next step"); ?>"/>
+                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
+                    <input type="hidden" name="install_permsok" value="1"/>
+                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
+                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>"/>
+                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>"/>
+                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>"/>
+                    <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>"/>
+                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>"/>
+                    <input type="hidden" name="install_dbconn_ok" value="1"/>
                 </p>
             </form>
 <?php
@@ -615,16 +615,16 @@ case 'u6':
 ?>
             <form action="index.php" method="post">
                 <p id="retry_btn">
-                    <input type="submit" value="<?php echo _T("Retry"); ?>">
-                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
-                    <input type="hidden" name="install_permsok" value="1">
-                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>">
-                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>">
-                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>">
-                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>">
-                    <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>">
-                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>">
-                    <input type="hidden" name="install_dbconn_ok" value="1">
+                    <input type="submit" value="<?php echo _T("Retry"); ?>"/>
+                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
+                    <input type="hidden" name="install_permsok" value="1"/>
+                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
+                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>"/>
+                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>"/>
+                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>"/>
+                    <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>"/>
+                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>"/>
+                    <input type="hidden" name="install_dbconn_ok" value="1"/>
                 </p>
             </form>
 <?php
@@ -634,17 +634,17 @@ case 'u6':
             <p id="infobox"><?php echo _T("Permissions to database are OK."); ?></p>
             <form action="index.php" method="POST">
                 <p id="submit_btn">
-                    <input type="submit" value="<?php echo _T("Next step"); ?>">
-                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
-                    <input type="hidden" name="install_permsok" value="1">
-                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>">
-                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>">
-                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>">
-                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>">
-                    <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>">
-                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>">
-                    <input type="hidden" name="install_dbconn_ok" value="1">
-                    <input type="hidden" name="install_dbperms_ok" value="1">
+                    <input type="submit" value="<?php echo _T("Next step"); ?>"/>
+                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
+                    <input type="hidden" name="install_permsok" value="1"/>
+                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
+                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>"/>
+                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>"/>
+                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>"/>
+                    <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>"/>
+                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>"/>
+                    <input type="hidden" name="install_dbconn_ok" value="1"/>
+                    <input type="hidden" name="install_dbperms_ok" value="1"/>
                 </p>
             </form>
 <?php
@@ -826,17 +826,17 @@ case 'u7':
             </p>
             <form action="index.php" method="POST">
                 <p id="retry_btn">
-                    <input type="submit" value="<?php echo _T("Retry"); ?>">
-                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
-                    <input type="hidden" name="install_permsok" value="1">
-                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>">
-                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>">
-                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>">
-                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>">
-                    <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>">
-                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>">
-                    <input type="hidden" name="install_dbconn_ok" value="1">
-                    <input type="hidden" name="install_dbperms_ok" value="1">
+                    <input type="submit" value="<?php echo _T("Retry"); ?>"/>
+                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
+                    <input type="hidden" name="install_permsok" value="1"/>
+                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
+                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>"/>
+                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>"/>
+                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>"/>
+                    <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>"/>
+                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>"/>
+                    <input type="hidden" name="install_dbconn_ok" value="1"/>
+                    <input type="hidden" name="install_dbperms_ok" value="1"/>
                 </p>
             </form>
 <?php
@@ -847,18 +847,18 @@ if ($step=="i7") echo _T("The tables has been correctly created.");
 if ($step=="u7") echo _T("The tables has been correctly updated."); ?></p>
             <form action="index.php" method="POST">
                 <p id="submit_btn">
-                    <input type="submit" value="<?php echo _T("Next step"); ?>">
-                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
-                    <input type="hidden" name="install_permsok" value="1">
-                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>">
-                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>">
-                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>">
-                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>">
-                    <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>">
-                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>">
-                    <input type="hidden" name="install_dbconn_ok" value="1">
-                    <input type="hidden" name="install_dbperms_ok" value="1">
-                    <input type="hidden" name="install_dbwrite_ok" value="1">
+                    <input type="submit" value="<?php echo _T("Next step"); ?>"/>
+                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
+                    <input type="hidden" name="install_permsok" value="1"/>
+                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
+                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>"/>
+                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>"/>
+                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>"/>
+                    <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>"/>
+                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>"/>
+                    <input type="hidden" name="install_dbconn_ok" value="1"/>
+                    <input type="hidden" name="install_dbperms_ok" value="1"/>
+                    <input type="hidden" name="install_dbwrite_ok" value="1"/>
                 </p>
             </form>
     <?php
@@ -881,30 +881,30 @@ case 'u8':
                     <legend><?php echo _T("Please chose the parameters of the admin account on Galette"); ?></legend>
                     <p>
                         <label for="install_adminlogin" class="bline"><?php echo _T("Username:"); ?></label>
-                        <input type="text" name="install_adminlogin" id="install_adminlogin" value="<?php if(isset($_POST['install_adminlogin'])) echo $_POST['install_adminlogin']; ?>">
+                        <input type="text" name="install_adminlogin" id="install_adminlogin" value="<?php if(isset($_POST['install_adminlogin'])) echo $_POST['install_adminlogin']; ?>"/>
                     </p>
                     <p>
                         <label for="install_adminpass" class="bline"><?php echo _T("Password:"); ?></label>
-                        <input type="password" name="install_adminpass" id="install_adminpass" value="">
+                        <input type="password" name="install_adminpass" id="install_adminpass" value=""/>
                     </p>
                     <p>
                         <label for="install_adminpass_verif" class="bline"><?php echo _T("Retype password:"); ?></label>
-                        <input type="password" name="install_adminpass_verif" id="install_adminpass_verif" value="">
+                        <input type="password" name="install_adminpass_verif" id="install_adminpass_verif" value=""/>
                     </p>
                 </fieldset>
                 <p id="submit_btn">
-                    <input type="submit" value="<?php echo _T("Next step"); ?>">
-                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
-                    <input type="hidden" name="install_permsok" value="1">
-                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>">
-                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>">
-                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>">
-                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>">
-                    <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>">
-                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>">
-                    <input type="hidden" name="install_dbconn_ok" value="1">
-                    <input type="hidden" name="install_dbperms_ok" value="1">
-                    <input type="hidden" name="install_dbwrite_ok" value="1">
+                    <input type="submit" value="<?php echo _T("Next step"); ?>"/>
+                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
+                    <input type="hidden" name="install_permsok" value="1"/>
+                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
+                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>"/>
+                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>"/>
+                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>"/>
+                    <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>"/>
+                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>"/>
+                    <input type="hidden" name="install_dbconn_ok" value="1"/>
+                    <input type="hidden" name="install_dbperms_ok" value="1"/>
+                    <input type="hidden" name="install_dbwrite_ok" value="1"/>
                 </p>
             </form>
         </div>
@@ -1002,22 +1002,22 @@ define("STOCK_FILES", "tempimages");
 ?>
             <form action="index.php" method="POST">
                 <p id="submit_btn">
-                    <input type="submit" value="<?php echo _T("Next step"); ?>">
-                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
-                    <input type="hidden" name="install_permsok" value="1">
-                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>">
-                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>">
-                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>">
-                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>">
-                    <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>">
-                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>">
-                    <input type="hidden" name="install_dbconn_ok" value="1">
-                    <input type="hidden" name="install_dbperms_ok" value="1">
-                    <input type="hidden" name="install_dbwrite_ok" value="1">
-                    <input type="hidden" name="install_adminlogin" value="<?php echo $_POST['install_adminlogin']; ?>">
-                    <input type="hidden" name="install_adminpass" value="<?php echo $_POST['install_adminpass']; ?>">
-                    <input type="hidden" name="install_passwdverified" value="1">
-                    <input type="hidden" name="install_prefs_ok" value="1">
+                    <input type="submit" value="<?php echo _T("Next step"); ?>"/>
+                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
+                    <input type="hidden" name="install_permsok" value="1"/>
+                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
+                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>"/>
+                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>"/>
+                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>"/>
+                    <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>"/>
+                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>"/>
+                    <input type="hidden" name="install_dbconn_ok" value="1"/>
+                    <input type="hidden" name="install_dbperms_ok" value="1"/>
+                    <input type="hidden" name="install_dbwrite_ok" value="1"/>
+                    <input type="hidden" name="install_adminlogin" value="<?php echo $_POST['install_adminlogin']; ?>"/>
+                    <input type="hidden" name="install_adminpass" value="<?php echo $_POST['install_adminpass']; ?>"/>
+                    <input type="hidden" name="install_passwdverified" value="1"/>
+                    <input type="hidden" name="install_prefs_ok" value="1"/>
                 </p>
             </form>
 <?php
@@ -1031,21 +1031,21 @@ define("STOCK_FILES", "tempimages");
             </div>
             <form action="index.php" method="POST">
                 <p id="retry_btn">
-                    <input type="submit" value="<?php echo _T("Retry"); ?>">
-                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>">
-                    <input type="hidden" name="install_permsok" value="1">
-                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST["install_dbtype"]; ?>">
-                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST["install_dbhost"]; ?>">
-                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST["install_dbuser"]; ?>">
-                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST["install_dbpass"]; ?>">
-                    <input type="hidden" name="install_dbname" value="<?php echo $_POST["install_dbname"]; ?>">
-                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST["install_dbprefix"]; ?>">
-                    <input type="hidden" name="install_dbconn_ok" value="1">
-                    <input type="hidden" name="install_dbperms_ok" value="1">
-                    <input type="hidden" name="install_dbwrite_ok" value="1">
-                    <input type="hidden" name="install_adminlogin" value="<?php echo $_POST['install_adminlogin']; ?>">
-                    <input type="hidden" name="install_adminpass" value="<?php echo $_POST['install_adminpass']; ?>">
-                    <input type="hidden" name="install_passwdverified" value="1">
+                    <input type="submit" value="<?php echo _T("Retry"); ?>"/>
+                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
+                    <input type="hidden" name="install_permsok" value="1"/>
+                    <input type="hidden" name="install_dbtype" value="<?php echo $_POST["install_dbtype"]; ?>"/>
+                    <input type="hidden" name="install_dbhost" value="<?php echo $_POST["install_dbhost"]; ?>"/>
+                    <input type="hidden" name="install_dbuser" value="<?php echo $_POST["install_dbuser"]; ?>"/>
+                    <input type="hidden" name="install_dbpass" value="<?php echo $_POST["install_dbpass"]; ?>"/>
+                    <input type="hidden" name="install_dbname" value="<?php echo $_POST["install_dbname"]; ?>"/>
+                    <input type="hidden" name="install_dbprefix" value="<?php echo $_POST["install_dbprefix"]; ?>"/>
+                    <input type="hidden" name="install_dbconn_ok" value="1"/>
+                    <input type="hidden" name="install_dbperms_ok" value="1"/>
+                    <input type="hidden" name="install_dbwrite_ok" value="1"/>
+                    <input type="hidden" name="install_adminlogin" value="<?php echo $_POST['install_adminlogin']; ?>"/>
+                    <input type="hidden" name="install_adminpass" value="<?php echo $_POST['install_adminpass']; ?>"/>
+                    <input type="hidden" name="install_passwdverified" value="1"/>
                 </p>
             </form>
 <?php
@@ -1076,7 +1076,7 @@ case 'u10':
             <p><?php echo _T("To secure the system, please delete the install directory"); ?></p>
             <form action="../index.php" method="get">
                 <p id="submit_btn">
-                    <input type="submit" value="<?php echo _T("Homepage"); ?>">
+                    <input type="submit" value="<?php echo _T("Homepage"); ?>"/>
                 </p>
             </form>
         </div>
