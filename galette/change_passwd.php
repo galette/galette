@@ -73,7 +73,7 @@ if ( isset($hash) && !empty($hash) ) {
                             $_POST['mdp_adh']
                         );
                         if ( $res !== true ) {
-                            $error_detected[] = _T('An error occured while updating your password.');
+                            $error_detected[] = _T("An error occured while updating your password.");
                         } else {
                             $hist->add(
                                 '**Password changed**. id: "' . $id_adh . '"'

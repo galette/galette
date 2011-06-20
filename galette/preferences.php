@@ -430,7 +430,7 @@ $tpl->assign(
         20 => '20',
         50 => '50',
         100 => '100',
-        0 => _T('All')
+        0 => _T("All")
     )
 );
 $tpl->assign('print_logo', $print_logo);

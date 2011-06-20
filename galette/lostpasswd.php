@@ -97,7 +97,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                     $str = str_replace(
                         '%s',
                         $login_adh,
-                        _T('A problem happened while sending password for account "%s"')
+                        _T("A problem happened while sending password for account '%s'")
                     );
                     $hist->add($str);
                     $error_detected[] = $str;
@@ -106,7 +106,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 $str = str_replace(
                     '%s',
                     $login_adh,
-                    _T('An error occured storing temporary password for %s. Please inform an admin.')
+                    _T("An error occured storing temporary password for %s. Please inform an admin.")
                 );
                 $hist->add($str);
                 $error_detected[] = $str;
@@ -116,7 +116,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             $str = str_replace(
                 '%s',
                 $login_adh,
-                _T('Your account (%s) do not contain any valid mail adress')
+                _T("Your account (%s) do not contain any valid mail adress")
             );
             $hist->add($str);
             $error_detected[] = $str;
@@ -127,7 +127,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             $str = str_replace(
                 '%s',
                 $login_adh,
-                _T('Mails adress %s does not exist')
+                _T("Mails adress %s does not exist")
             );
             $hist->add($str);
             $error_detected[] = $str;
@@ -135,7 +135,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             $str = str_replace(
                 '%s',
                 $login_adh,
-                _T('Login %s does not exist')
+                _T("Login %s does not exist")
             );
             $hist->add($str);
             $error_detected[] = $str;

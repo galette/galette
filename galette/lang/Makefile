@@ -61,7 +61,8 @@ PHP_SOURCES = ../index.php \
 ../classes/models.class.php \
 ../classes/pdf.class.php \
 ../classes/politeness.class.php \
-../classes/preferences.class.php
+../classes/preferences.class.php \
+../classes/plugins.class.php
 
 
 all : messages.po lang

@@ -476,7 +476,7 @@ class Adherent
         $this->_politeness = $r->titre_adh;
         $this->_name = $r->nom_adh;
         $this->_surname = $r->prenom_adh;
-        $this->_nickname = $r->pseudo_adh; //redundant with login ?
+        $this->_nickname = $r->pseudo_adh;
         $this->_birthdate = $r->ddn_adh;
         $this->_job = $r->prof_adh;
         $this->_language = $r->pref_lang;
@@ -729,8 +729,10 @@ class Adherent
             case 'birthdate':
             case 'creation_date':
             case 'due_date':
-                /** FIXME: date function from functions.inc.php does use adodb */
-                return date_db2text($this->$rname);
+                if ( $this->$rname != '' ) {
+                    $d = new DateTime($this->$rname);
+                    return $d->format(_T("Y-m-d"));
+                }
                 break;
             default:
                 return $this->$rname;

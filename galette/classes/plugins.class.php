@@ -207,15 +207,15 @@ class Plugins
     public function deactivateModule($id)
     {
         if (!isset($this->modules[$id])) {
-            throw new Exception(_T('No such module.'));
+            throw new Exception(_T("No such module."));
         }
 
         if (!$this->modules[$id]['root_writable']) {
-            throw new Exception(_T('Cannot deactivate plugin.'));
+            throw new Exception(_T("Cannot deactivate plugin."));
         }
 
         if ( @file_put_contents($this->modules[$id]['root'] . '/_disabled', '') ) {
-            throw new Exception(_T('Cannot deactivate plugin.'));
+            throw new Exception(_T("Cannot deactivate plugin."));
         }
     }
 
@@ -229,15 +229,15 @@ class Plugins
     public function activateModule($id)
     {
         if (!isset($this->disabled[$id])) {
-            throw new Exception(_T('No such module.'));
+            throw new Exception(_T("No such module."));
         }
 
         if (!$this->disabled[$id]['root_writable']) {
-            throw new Exception(_T('Cannot activate plugin.'));
+            throw new Exception(_T("Cannot activate plugin."));
         }
 
         if (@unlink($this->disabled[$id]['root'].'/_disabled') === false) {
-            throw new Exception(_T('Cannot activate plugin.'));
+            throw new Exception(_T("Cannot activate plugin."));
         }
     }
 

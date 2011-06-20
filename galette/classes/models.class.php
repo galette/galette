@@ -198,7 +198,7 @@ class Models
             return simplexml_load_string($xmlstring['mod_xml']);
         } else {
             return simplexml_load_string(
-                '<model><name>' . _T('ERROR LOADING MODEL') . '</name></model>'
+                '<model><name>' . _T("ERROR LOADING MODEL") . '</name></model>'
             );
         }
     }
