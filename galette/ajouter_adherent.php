@@ -133,6 +133,7 @@ if ( isset($_POST['id_adh']) ) {
         if ( !isset($disabled[$key]) ) {
             // fill up the adherent structure
             $adherent[$key] = stripslashes($value);
+            $member->$key = stripslashes($value);
 
             // now, check validity
             if ( $value != '' ) {

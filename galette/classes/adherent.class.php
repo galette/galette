@@ -80,6 +80,7 @@ class Adherent
     private $_gsm;
     private $_email;
     private $_website;
+    private $_msn; /** TODO: remove */
     private $_icq; /** TODO: remove */
     private $_jabber; /** TODO: remove */
     private $_gnupgid; /** TODO: remove */
@@ -494,6 +495,8 @@ class Adherent
         $this->_email = $r->email_adh;
         $this->_website = $r->url_adh;
         /** TODO: remove */
+        $this->_msn = $r->msn_adh;
+        /** TODO: remove */
         $this->_icq = $r->icq_adh;
         /** TODO: remove */
         $this->_jabber = $r->jabber_adh;
@@ -781,7 +784,104 @@ class Adherent
     {
         $forbidden = array('fields');
         /** TODO: What to do ? :-) */
-        /** TODO: When member account is activated, we should send a mail to the member (add an entry to deactivate that in the preferences */
+        switch ( $name ) {
+        case 'nom_adh':
+            $this->_name = $value;
+            break;
+        case 'prenom_adh':
+            $this->_surname = $value;
+            break;
+        case 'pseudo_adh':
+            $this->_nickname = $value;
+            break;
+        case 'ddn_adh':
+            /** TODO: check date validity */
+            $this->_birthdate = $value;
+            break;
+        case 'prof_adh':
+            $this->_job = $value;
+            break;
+        case 'pref_lang':
+            $this->_language = $value;
+            break;
+        case 'bool_display_info':
+            $this->_appears_in_list = $value;
+            break;
+        case 'activite_adh':
+            /** TODO: When member account is activated, we should send a mail to the member (add an entry to deactivate that in the preferences) */
+            $this->_active = $value;
+            break;
+        case 'id_statut':
+            $this->_status = $value;
+            break;
+        case 'bool_admin_adh':
+            $this->_admin = $value;
+            break;
+        case 'bool_exempt_adh':
+            $this->_due_free = $value;
+            break;
+        case 'login_adh':
+            $this->_login = $value;
+            break;
+        case 'mdp_adh':
+            $this->_password = md5($value);
+            break;
+        case 'date_crea_adh':
+            $this->_creation_date = $value;
+            break;
+        case 'info_adh':
+            $this->_others_infos_admin = $value;
+            break;
+        case 'info_public_adh':
+            $this->_others_infos = $value;
+            break;
+        case 'adresse_adh':
+            $this->_adress = $value;
+            break;
+        case 'adresse2_adh':
+            $this->_adress_continuation = $value;
+            break;
+        case 'cp_adh':
+            $this->_zipcode = $value;
+            break;
+        case 'ville_adh':
+            $this->_town = $value;
+            break;
+        case 'pays_adh':
+            $this->_country = $value;
+            break;
+        case 'tel_adh':
+            $this->_phone = $value;
+            break;
+        case 'gsm_adh':
+            $this->_gsm = $value;
+            break;
+        case 'email_adh':
+            /** TODO: check if mail  is valid */
+            $this->_email = $value;
+            break;
+        case 'url_adh':
+            /** TODO: check URL validity */
+            $this->_website = $value;
+            break;
+        case 'icq_adh':
+            $this->_icq = $value;
+            break;
+        case 'jabber_adh':
+            $this->_jabber = $value;
+            break;
+        case 'msn_adh':
+            $this->_msn = $value;
+            break;
+        case 'gpgid':
+            /** TODO: check validity */
+            $this->_gnupgid = $value;
+            break;
+        case 'fingerprint':
+            /** Check validity */
+            $this->_fingerprint = $value;
+            break;
+        }
     }
 }
 ?>
