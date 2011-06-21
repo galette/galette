@@ -59,7 +59,7 @@ if (isset($_POST["ident"])) {
         $_SESSION['logged_status'] = 1;
         $_SESSION['logged_username'] = $_POST['login'];
         //end backward compat
-        $hist->add('Login');
+        $hist->add(_T("Login"));
         header('location: gestion_adherents.php');
     } else {
         $login->logIn($_POST['login'], md5($_POST['password']));
@@ -73,12 +73,12 @@ if (isset($_POST["ident"])) {
             $pref_lang = $login->lang;
             setcookie('pref_lang', $pref_lang);
             //end backward compat
-            $hist->add('Login');
+            $hist->add(_T("Login"));
             /** FIXME: users should no try to go to admin interface */
             header('location: gestion_adherents.php');
         } else {
             $loginfault = true;
-            $hist->add('Authentication failed', $_POST['login']);
+            $hist->add(_T("Authentication failed"), $_POST['login']);
         }
     }
 }

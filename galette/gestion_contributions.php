@@ -193,7 +193,7 @@ if ( $login->isAdmin() ) {
                     $DB->qstr($id_adh, get_magic_quotes_gpc());
                 $DB->Execute($requeteup);
                 $hist-add(
-                    'Contribution deleted:',
+                    _T("Contribution deleted"),
                     strtoupper($resultat->fields[0]) . ' ' . $resultat->fields[1],
                     $requetesup
                 );

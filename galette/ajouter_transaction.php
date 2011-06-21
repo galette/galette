@@ -192,22 +192,16 @@ if ( isset($_POST['valid']) ) {
                 'trans_id'
             );
 
-            // to allow the string to be extracted for translation
-            $foo = _T("transaction added");
-
             // logging
-            $hist->add('transaction added', '', $requete);
+            $hist->add(_T("transaction added"), '', $requete);
         } else {
             $requete = 'UPDATE ' . PREFIX_DB . 'transactions SET ' .
                 substr($update_string, 1) . ' WHERE trans_id=' .
                 $transaction['trans_id'];
             $DB->Execute($requete);
 
-            // to allow the string to be extracted for translation
-            $foo = _T("transaction updated");
-
             // logging
-            $hist->add('transaction updated', '', $requete);
+            $hist->add(_T("transaction updated"), '', $requete);
         }
 
         // dynamic fields

@@ -71,12 +71,12 @@ if ( $login->isAdmin() ) {
         $query = 'DELETE FROM ' . PREFIX_DB . 'cotisations WHERE trans_id=' .
             $trans_id;
         if ( db_execute($DB, $query, $error_detected) ) {
-            $hist->add('Transactions deleted', '', $query);
+            $hist->add(_T("Transactions deleted"), '', $query);
         }
         $query = 'DELETE FROM ' . PREFIX_DB . 'transactions WHERE trans_id=' .
             $trans_id;
         if ( db_execute($DB, $query, $error_detected) ) {
-            $hist->add('Transaction deleted', '', $query);
+            $hist->add(_T("Transaction deleted"), '', $query);
         }
         $DB->CompleteTrans();
     }

@@ -183,7 +183,7 @@ if (isset($_GET['sup']) || isset($_POST['delete'])) {
                 $DB->qstr($supval, get_magic_quotes_gpc());
             $DB->Execute($requetesup);
             $hist->add(
-                "Delete the member card (and dues)",
+                _T("Delete the member card (and dues)"),
                 strtoupper($resultat->fields[0]) . ' ' . $resultat->fields[1],
                 $requetesup
             );

@@ -62,7 +62,7 @@ $warning_detected = array();
 $data = array();
 
 if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
-    $hist->add('Trying to load mailing while mail is disabled in preferences.');
+    $hist->add(_T("Trying to load mailing while mail is disabled in preferences."));
 } else {
     if ( isset($_SESSION['galette']['varslist']) ) {
         $varslist = unserialize($_SESSION['galette']['varslist']);

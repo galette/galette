@@ -210,7 +210,7 @@ if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
                 ': ' . $DB->ErrorMsg();
         }
         $hist->add(
-            'Self_subscription as a member: ' .
+            _T("Self_subscription as a member: ") .
             strtoupper($adherent['nom_adh']) . ' ' . $adherent['prenom_adh'],
             $requete
         );

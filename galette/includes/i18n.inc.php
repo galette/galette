@@ -37,7 +37,7 @@
  * @since     Available since 0.62
  */
 
-$disable_gettext=false;
+$disable_gettext=true;
 
 $languages = array(
     'fr_FR@euro' => 'french',

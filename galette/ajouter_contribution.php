@@ -257,20 +257,16 @@ if ( isset($_POST['valid']) ) {
                     PREFIX_DB . 'cotisations',
                     'id_cotis'
                 );
-                // to allow the string to be extracted for translation
-                $foo = _T("Contribution added");
                 // logging
-                $hist->add('Contribution added', '', $requete);
+                $hist->add(_T("Contribution added"), '', $requete);
             }
         } else {
             $requete = 'UPDATE ' . PREFIX_DB . 'cotisations SET ' .
                 substr($update_string, 1) . ' WHERE id_cotis=' .
                 $contribution['id_cotis'];
             if (db_execute($DB, $requete, $error_detected)) {
-                // to allow the string to be extracted for translation
-                $foo = _T("Contribution updated");
                 // logging
-                $hist->add('Contribution updated', '', $requete);
+                $hist->add(_T("Contribution updated"), '', $requete);
             }
         }
 
@@ -374,7 +370,7 @@ if ( isset($_POST['valid']) ) {
                     $mtxt['tbody']
                 );
                 if ( $mail_result != 1 ) {
-                    $hist->add("A problem happened while sending email to admin for user:"." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"");
+                    $hist->add(_T("A problem happened while sending email to admin for user:")." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"");
                     $error_detected[] = _T("A problem happened while sending email to admin for user:")." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"";
                 }
             }

@@ -13,6 +13,9 @@ Dependencies
 
   Recommended : - GD extension for PHP (built in PHP or as a module)
                   (needed for picture resizing)
+                - gettext support in PHP. This is disabled by default
+                  on Galette, but you'll symply have to set $disable_gettext
+                  to false in the includes/i18n.inc.php file
 
 [french]
   Requis :	- Serveur web supportant PHP :
@@ -25,7 +28,11 @@ Dependencies
 		  8.3.8
 
   Recommandé :  - Extension GD pour PHP (intégré à PHP ou en module)
-  		  (Nécessaire pour la réduction des photos)
+                  (Nécessaire pour la réduction des photos)
+                - Le support gettext dans PHP. Cette fonctionnalité est
+                  désactivée par dafaut dans Galette, mais vous pouvez
+                  l'activer simplement en passant à false $disable_gettext
+                  dans le fichier includes/i18n.inc.php
 
 Installation :
 _____________

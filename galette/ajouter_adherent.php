@@ -272,14 +272,24 @@ if ( isset($_POST['id_adh']) ) {
                 $mail_result = custom_mail($preferences->pref_email_newadh, $mtxt->tsubject, $mtxt->tbody);
                 unset ($texts);
                 if ( $mail_result != 1 ) {
-                    $hist->add("A problem happened while sending email to admin for account:"." \"" . $_POST["email_adh"] . "\"");
-                    $error_detected[] = _T("A problem happened while sending email to admin for account:")." \"" . $_POST["email_adh"] . "\"";
+                    $hist->add(
+                        str_replace(
+                            "%s",
+                            $_POST['email_adh'],
+                            _T("A problem happened while sending email to admin for account '%s'.")
+                        )
+                    );
+                    $error_detected[] = str_replace(
+                        "%s",
+                        $_POST['email_adh'],
+                        _T("A problem happened while sending email to admin for account '%s'.")
+                    );
                 }
             }
 
             // logging
             $hist->add(
-                'Member card added:',
+                _T("Member card added"),
                 strtoupper($_POST['login_adh']),
                 $requete
             );
@@ -288,12 +298,9 @@ if ( isset($_POST['id_adh']) ) {
                 substr($update_string, 1) . " WHERE id_adh=" . $adherent['id_adh'];
             $DB->Execute($requete);
 
-            // to allow the string to be extracted for translation
-            $foo = _T("Member card updated:");
-
             // logging
             $hist->add(
-                'Member card updated:',
+                _T("Member card updated"),
                 strtoupper($_POST['login_adh']),
                 $requete
             );
