@@ -196,9 +196,6 @@ if (isset($_GET['sup']) || isset($_POST['delete'])) {
             $member->picture->delete($DB->qstr($supval, get_magic_quotes_gpc()));
         }
         $resultat->Close();
-        /** FIXME: is that required to reload the page ?
-            Members list should not be loaded yet */
-        header('location: gestion_adherents.php');
     }
 }
 
