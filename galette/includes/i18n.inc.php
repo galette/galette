@@ -37,7 +37,7 @@
  * @since     Available since 0.62
  */
 
-$disable_gettext=true;
+$disable_gettext=false;
 
 $languages = array(
     'fr_FR@euro' => 'french',
@@ -78,6 +78,7 @@ if ( @putenv("LANG=$language")
     $textdomain = THIS_BASE_DIR . '/../lang';
     bindtextdomain($domain, $textdomain);
     textdomain($domain);
+    bind_textdomain_codeset($domain, 'UTF-8');
 } else {
     $loc='';
 }
@@ -225,8 +226,8 @@ if ( !function_exists('_T') ) {
     */
     function _T($chaine)
     {
-        global $language;
-        if ( isset($GLOBALS['lang']) ) {
+        global $language, $disable_gettext;
+        if ( $disable_gettext === true && isset($GLOBALS['lang']) ) {
             $trans = $chaine;
             if ( isset($GLOBALS['lang'][$chaine])
                 && $GLOBALS['lang'][$chaine] != ''
