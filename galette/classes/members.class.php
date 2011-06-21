@@ -163,6 +163,97 @@ class Members
     }
 
     /**
+     * Remove specified members
+     *
+     * @param interger|array $ids Members identifiers to delete
+     *
+     * @return boolean
+     */
+    public function removeMembers($ids)
+    {
+        global $log, $mdb;
+
+        $list = array();
+        if ( is_numeric($ids) ) {
+            //we've got only one identifier
+            $list[] = $ids;
+        } else {
+            $list = $ids;
+        }
+
+        if ( is_array($list) ) {
+            $qry_list = 'SELECT ' . Adherent::PK . ', nom_adh, prenom_adh FROM ' .
+            PREFIX_DB . Adherent::TABLE . ' WHERE ' . Adherent::PK . '=';
+            $qry_list .= implode(' or ' . Adherent::PK . '=', $list);
+
+            $result_list = $mdb->query($qry_list);
+            if (MDB2::isError($result_list)) {
+                $log->log(
+                    'Cannot list members to delete | ' .
+                    $result_list->getMessage() . '(' .
+                    $result_list->getDebugInfo() . ')', PEAR_LOG_WARNING
+                );
+                return false;
+            }
+
+            $qry_del = 'DELETE FROM ' . PREFIX_DB . Adherent::TABLE . ' WHERE ' .
+            Adherent::PK . '= ?';
+            $stmt = $mdb->prepare($qry_del, array('integer'), MDB2_PREPARE_MANIP);
+
+            if ( MDB2::isError($stmt) ) {
+                $log->log(
+                    'Unable to delete selected member(s) |' .
+                    $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')',
+                    PEAR_LOG_ERR
+                );
+                return false;
+            }
+
+            foreach ( $result_list->fetchAll() as $adh ) {
+                //remove adh
+                //$del = $stmt->execute($adh->id_adh);
+                $str_adh = $adh->id_adh . '(' . $adh->nom_adh . ' ' .
+                    $adh->prenom_adh . ')';
+                if ( MDB2::isError($del) ) {
+                    $log->log(
+                        'Unable to delete member ' . $str_adh . ' |' .
+                        $DEL->getMessage() . '(' . $DEL->getDebugInfo() . ')',
+                        PEAR_LOG_ERR
+                    );
+                } else {
+                    /** TODO: remove contributions */
+                    $p = new Picture($m->id_adh);
+                    if ( !$p->delete() ) {
+                        $log->log(
+                            'Unable to delete picture for member ' . $str_adh,
+                            PEAR_LOG_ERR
+                        );
+                    } else {
+                        $hist->add(
+                            "Member Picture deleted",
+                            $str_adh
+                        );
+                    }
+                    $hist->add(
+                        "Delete the member card (and dues)",
+                        $str_adh,
+                        str_replace('?', $adh->id_adh, $qry_del)
+                    );
+                }
+            }
+            $stmt->free();
+        } else {
+            //not numeric and not an array: incorrect.
+            $log->log(
+                'Asking to remove members, but without providing an array or a single numeric value.',
+                PEAR_LOG_WARNING
+            );
+            return false;
+        }
+
+    }
+
+    /**
     * Get members list
     *
     * @param bool    $as_members return the results as an array of

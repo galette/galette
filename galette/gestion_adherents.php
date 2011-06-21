@@ -148,6 +148,14 @@ if ( isset($_GET['tri']) ) {
 //delete members
 /** TODO: Members object must do that stuff */
 if (isset($_GET['sup']) || isset($_POST['delete'])) {
+    /** TODO: finalize the new function in Members class */
+    /*$m = new Members();
+    if ( isset($_GET['sup']) ) {
+        $m->removeMembers($_GET['sup']);
+    } else if ( isset($_POST['member_sel']) ) {
+        $m->removeMembers($_POST['member_sel']);
+    }*/
+
     $array_sup = array();
     if (isset($_GET['sup'])) {
         if (is_numeric($_GET['sup'])) {
