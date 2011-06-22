@@ -280,11 +280,6 @@ a.listing:hover {
 	background-color: #EEEEEE;
 	margin-bottom: 2px;
 	padding-left: 2px;
-	border:1px solid #EEEEEE; /* without this, IE6 will add spaces into menu :/ */
-}
-/* But we don't want any border here for others browsers*/
-html > * .nav1 li{
-	border:none;
 }
 
 #logout {
@@ -358,13 +353,8 @@ html > * .nav1 li{
     vertical-align: top;
 }
 
-/* IE6 does not handle properly 100% width */
-html > * .infoline {
-	width:100%;
-}
-
 .infoline td {
-        vertical-align: top;
+        vertical-align: bottom;
 	width: 33%;
 }
 
@@ -493,11 +483,6 @@ html > * .infoline {
 	width:25em;
 	margin-left:auto;
 	margin-right:auto;
-}
-
-/* IE6 does not handle properly 100% width */
-html > * #listing{
-	width:100%;
 }
 
 #listing td {
@@ -755,17 +740,11 @@ th.bline, td.bline{
 	text-align:left;
 }
 
-/* IE6 does not handle properly negative margins... */
 .cssform .bline{
 	display: inline-block;
 	margin: 0 0 0 -10em;
 	width: 21em;
 }
-/* ... so we made the following not readable to it */
-html > * .cssform .bline{
-	margin: 0 0 0 -21em;
-}
-
 
 .login-box .cssform .bline{
 	width:11em;
@@ -855,11 +834,6 @@ input.large{
 .details{
 	width:75%;
 	margin-bottom:1em;
-}
-
-/* IE6 does not handle properly 100% width */
-html > * .details{
-	width:100%;
 }
 
 .details caption{
