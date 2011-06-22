@@ -48,6 +48,8 @@ if ( !$login->isAdmin()) {
 
 if ( isset($_GET['reset']) && $_GET['reset'] == 1 ) {
     $hist->clean();
+    //reinitialize object after flush
+    $hist = new History();
 }
 
 if ( isset($_GET['page']) && is_numeric($_GET['page']) ) {
