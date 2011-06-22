@@ -512,6 +512,16 @@ html > * #listing{
         vertical-align: middle;
 }
 
+.sql_log {
+    border:1px dashed;
+    display:block;
+    margin:.2em .5em .5em;
+    padding:.2em .3em;
+    font-family: monospace;
+    font-size:1.2em;
+    background-color: rgba(221,221,255,0.5);
+}
+
 .mail_preview {
 	height: 230px;
 	vertical-align: top;
