@@ -1,11 +1,27 @@
 Changes
 -------
 
-0.63.2 -> 0.63.3
+0.63.3 -> 0.64 (2011-??-??)
+- Handle 'stripos' missing function to keep 0.63.x php4 compliant
+- Upgrade Adodb to 4992
+- Upgrade to Smarty 2.6.22, and replace old hack for translations with more elegant plugin
+- Replace phppdflib with tcpdf
+- Symlink to adodb has been removed, we now use a php file defining the versions for the libraries
+- Improved pagination: only 20 pages will appear now, instead of all pages
+- Remove spanish language which has not been maintaned for ages
+- Use UTF-8 for translation files
+- Fix a bug calculating end membership date when using begining date for membership in the preferences
+- Remove not functionnal and not used "public" pages
+- Remove unused files
+- Handle 'mb_strtoupper' to avoid error on labels generation when mb extension is not present
+- Move config file from includes to config directory. Wrtie access on includes directory will no longer be required at install
+- Only super-admin can change its login/password now. Standard admins can no longer do that
+
+0.63.2 -> 0.63.3 (2009-11-09)
 - fix a security flaw that allowed attacker to send arbitrary PHP files on some servers
 - when sendind invalid member form, line dynamic fields were repeated (bug #10187)
 - some encoding issues has been noticed on UFT-8 MySQL servers. Connection is now forced to LATIN1 (thanks to Cédric)
-- unbreakable spaces appears on non html email (thanks to Cédric)
+- unbreakable spaces appears on non html email (thanks to Cédric OLIVIER)
 - using XML characters in mailing subjects causes XML analysis errors on preview (bug #14571)
 - needless data were stored into logs (and not at the right place) sending mailings (bug #14569)
 - XML analysis errors where thrown on logs page when a member card contains reserved characters (bug #14561)
