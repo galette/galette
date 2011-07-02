@@ -70,7 +70,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                     'http://' . $_SERVER['SERVER_NAME'] .
                     dirname($_SERVER['REQUEST_URI']) .
                     '/change_passwd.php?hash=' . $password->getHash(),
-                    custom_html_entity_decode($login_adh, ENT_QUOTES),
+                    custom_html_entity_decode($adh->login, ENT_QUOTES),
                     custom_html_entity_decode($password->getNewPassword(), ENT_QUOTES),
                 );
 
