@@ -305,25 +305,26 @@ if ( isset($_POST['valid']) ) {
             if ( $contribution['email_adh'] != '' ) {
                 $texts = new texts();
                 $mtxt = $texts->getTexts('contrib', $contribution['pref_lang']);
-                $mtxt['tbody'] = str_replace(
+                $mtxt->tbody = str_replace(
                     '{NAME}',
                     $preferences->pref_nom,
-                    $mtxt['tbody']
+                    $mtxt->tbody
                 );
-                $mtxt['tbody'] = str_replace(
+                $mtxt->tbody = str_replace(
                     '{DEADLINE}',
                     custom_html_entity_decode($contribution['date_echeance']),
-                    $mtxt['tbody']
+                    $mtxt->tbody
                 );
-                $mtxt['tbody'] = str_replace(
+                $mtxt->tbody = str_replace(
                     '{COMMENT}',
                     custom_html_entity_decode($contribution['info_cotis']),
-                    $mtxt['tbody']
+                    $mtxt->tbody
                 );
+
                 $mail_result = custom_mail(
                     $contribution['email_adh'],
-                    $mtxt['tsubject'],
-                    $mtxt['tbody']
+                    $mtxt->tsubject,
+                    $mtxt->tbody
                 );
             } else {
                 $hist->add("A problem happened while sending contribution receipt to user:"." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"");
@@ -334,40 +335,40 @@ if ( isset($_POST['valid']) ) {
                 // Get email text in database
                 $texts = new texts();
                 $mtxt = $texts->getTexts("newcont", $preferences->pref_lang);
-                $mtxt['tsubject'] = str_replace(
+                $mtxt->tsubject = str_replace(
                     '{NAME_ADH}',
                     custom_html_entity_decode($contribution['nom_adh']),
-                    $mtxt['tsubject']
+                    $mtxt->tsubject
                 );
-                $mtxt['tsubject'] = str_replace(
+                $mtxt->tsubject = str_replace(
                     '{SURNAME_ADH}',
                     custom_html_entity_decode($contribution['prenom_adh']),
-                    $mtxt['tsubject']
+                    $mtxt->tsubject
                 );
-                $mtxt['tbody'] = str_replace(
+                $mtxt->tbody = str_replace(
                     '{NAME_ADH}',
                     custom_html_entity_decode($contribution['nom_adh']),
-                    $mtxt['tbody']
+                    $mtxt->tbody
                 );
-                $mtxt['tbody'] = str_replace(
+                $mtxt->tbody = str_replace(
                     '{SURNAME_ADH}',
                     custom_html_entity_decode($contribution['prenom_adh']),
-                    $mtxt['tbody']
+                    $mtxt->tbody
                 );
-                $mtxt['tbody'] = str_replace(
+                $mtxt->tbody = str_replace(
                     '{DEADLINE}',
                     custom_html_entity_decode($contribution['date_echeance']),
-                    $mtxt['tbody']
+                    $mtxt->tbody
                 );
-                $mtxt['tbody'] = str_replace(
+                $mtxt->tbody = str_replace(
                     '{COMMENT}',
                     custom_html_entity_decode($contribution['info_cotis']),
-                    $mtxt['tbody']
+                    $mtxt->tbody
                 );
                 $mail_result = custom_mail(
                     $preferences->pref_email_newadh,
-                    $mtxt['tsubject'],
-                    $mtxt['tbody']
+                    $mtxt->tsubject,
+                    $mtxt->tbody
                 );
                 if ( $mail_result != 1 ) {
                     $hist->add(_T("A problem happened while sending email to admin for user:")." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"");
