@@ -290,90 +290,142 @@ if ( isset($_POST['valid']) ) {
                 $date_fin_update . " WHERE id_adh=" . $contribution['id_adh'];
             $DB->Execute($requete);
         }
+
+        // Get member informations
+        $adh = new Adherent();
+        $adh->load($contribution['id_adh']);
+        $requete = 'SELECT nom_adh, prenom_adh, email_adh, date_echeance, pref_lang FROM ' . PREFIX_DB . 'adherents WHERE id_adh =\'' . $contribution['id_adh'] . '\'';
+        $result = &$DB->Execute($requete);
+        if (!$result->EOF) {
+            $contribution['nom_adh'] = $result->fields[0];
+            $contribution['prenom_adh'] = $result->fields[1];
+            $contribution['email_adh'] = $result->fields[2];
+            $contribution['date_echeance'] = date_db2text($result->fields[3]);
+            $contribution['pref_lang'] = $result->fields[4];
+        }
+        $result->Close();
+        $texts = new texts();
+
         if ( isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1' ) {
-            // Get member informations
-            $requete = 'SELECT nom_adh, prenom_adh, email_adh, date_echeance, pref_lang FROM ' . PREFIX_DB . 'adherents WHERE id_adh =\'' . $contribution['id_adh'] . '\'';
-            $result = &$DB->Execute($requete);
-            if (!$result->EOF) {
-                $contribution['nom_adh'] = $result->fields[0];
-                $contribution['prenom_adh'] = $result->fields[1];
-                $contribution['email_adh'] = $result->fields[2];
-                $contribution['date_echeance'] = date_db2text($result->fields[3]);
-                $contribution['pref_lang'] = $result->fields[4];
-            }
-            $result->Close();
-            if ( $contribution['email_adh'] != '' ) {
-                $texts = new texts();
-                $mtxt = $texts->getTexts('contrib', $contribution['pref_lang']);
-                $mtxt->tbody = str_replace(
-                    '{NAME}',
+            if ( GaletteMail::isValidEmail($adh->email) ) {
+                $mtxt = $texts->getTexts('contrib', $adh->language);
+
+                // Replace Tokens
+                $regs = array(
+                  '/{NAME}/',
+                  '/{DEADLINE}/',
+                  '/{COMMENT}/'
+                );
+
+                $replacements = array(
                     $preferences->pref_nom,
-                    $mtxt->tbody
-                );
-                $mtxt->tbody = str_replace(
-                    '{DEADLINE}',
                     custom_html_entity_decode($contribution['date_echeance']),
-                    $mtxt->tbody
+                    custom_html_entity_decode($contribution['info_cotis'])
                 );
-                $mtxt->tbody = str_replace(
-                    '{COMMENT}',
-                    custom_html_entity_decode($contribution['info_cotis']),
+
+                $body = preg_replace(
+                    $regs,
+                    $replacements,
                     $mtxt->tbody
                 );
 
-                $mail_result = custom_mail(
-                    $contribution['email_adh'],
-                    $mtxt->tsubject,
-                    $mtxt->tbody
+                $mail = new GaletteMail();
+                $mail->setSubject($mtxt->tsubject);
+                $mail->setRecipients(
+                    array(
+                        $adh->email => $adh->sname
+                    )
                 );
-            } else {
-                $hist->add("A problem happened while sending contribution receipt to user:"." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"");
-                $error_detected[] = _T("A problem happened while sending contribution receipt to user:")." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"";
-            }
-            // Sent email to admin if pref checked
-            if ( $preferences->pref_bool_mailadh ) {
-                // Get email text in database
-                $texts = new texts();
-                $mtxt = $texts->getTexts("newcont", $preferences->pref_lang);
-                $mtxt->tsubject = str_replace(
-                    '{NAME_ADH}',
-                    custom_html_entity_decode($contribution['nom_adh']),
-                    $mtxt->tsubject
-                );
-                $mtxt->tsubject = str_replace(
-                    '{SURNAME_ADH}',
-                    custom_html_entity_decode($contribution['prenom_adh']),
-                    $mtxt->tsubject
-                );
-                $mtxt->tbody = str_replace(
-                    '{NAME_ADH}',
-                    custom_html_entity_decode($contribution['nom_adh']),
-                    $mtxt->tbody
-                );
-                $mtxt->tbody = str_replace(
-                    '{SURNAME_ADH}',
-                    custom_html_entity_decode($contribution['prenom_adh']),
-                    $mtxt->tbody
-                );
-                $mtxt->tbody = str_replace(
-                    '{DEADLINE}',
-                    custom_html_entity_decode($contribution['date_echeance']),
-                    $mtxt->tbody
-                );
-                $mtxt->tbody = str_replace(
-                    '{COMMENT}',
-                    custom_html_entity_decode($contribution['info_cotis']),
-                    $mtxt->tbody
-                );
-                $mail_result = custom_mail(
-                    $preferences->pref_email_newadh,
-                    $mtxt->tsubject,
-                    $mtxt->tbody
-                );
-                if ( $mail_result != 1 ) {
-                    $hist->add(_T("A problem happened while sending email to admin for user:")." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"");
-                    $error_detected[] = _T("A problem happened while sending email to admin for user:")." \"" . $contribution['prenom_adh']." ".$contribution['nom_adh']."<".$contribution['email_adh'] . ">\"";
+
+                $mail->setMessage($body);
+                $sent = $mail->send();
+
+                if ( $sent ) {
+                    $hist->add(
+                        preg_replace(
+                            array('/%name/', '/%email/'),
+                            array($adh->sname, $adh->email),
+                            _T("Mail sent to user %name (%email)")
+                        )
+                    );
+                } else {
+                    $txt = preg_replace(
+                        array('/%name/', '/%email/'),
+                        array($adh->sname, $adh->email),
+                        _T("A problem happened while sending contribution receipt to user %name (%email)")
+                    );
+                    $hist->add($txt);
+                    $error_detected[] = $txt;
                 }
+            } else {
+                $txt = preg_replace(
+                    array('/%name/', '/%email/'),
+                    array($adh->sname, $adh->email),
+                    _T("Trying to send a mail to a member (%name) with an invalid adress: %email")
+                );
+                $hist->add($txt);
+                $warning_detected[] = $txt;
+            }
+        }
+
+        // Sent email to admin if pref checked
+        if ( $preferences->pref_bool_mailadh ) {
+            // Get email text in database
+            $mtxt = $texts->getTexts('newcont', $preferences->pref_lang);
+
+            $mtxt->tsubject = str_replace(
+                '{NAME_ADH}',
+                $adh->sname,
+                $mtxt->tsubject
+            );
+
+            // Replace Tokens
+            $regs = array(
+              '/{NAME_ADH}/',
+              '/{DEADLINE}/',
+              '/{COMMENT}/'
+            );
+
+            $replacements = array(
+                $adh->sname,
+                custom_html_entity_decode($contribution['date_echeance']),
+                custom_html_entity_decode($contribution['info_cotis'])
+            );
+
+            $body = preg_replace(
+                $regs,
+                $replacements,
+                $mtxt->tbody
+            );
+
+            $mail = new GaletteMail();
+            $mail->setSubject($mtxt->tsubject);
+            /** TODO: only super-admin is contacted here. We should send a message to all admins, or propose them a chekbox if they don't want to get bored */
+            $mail->setRecipients(
+                array(
+                    $preferences->pref_email_newadh => str_replace('%asso', $preferences->pref_name, _T("%asso Galette's admin"))
+                )
+            );
+
+            $mail->setMessage($body);
+            $sent = $mail->send();
+
+            if ( $sent ) {
+                    $hist->add(
+                        preg_replace(
+                            array('/%name/', '/%email/'),
+                            array($adh->sname, $adh->email),
+                            _T("Mail sent to admin for user %name (%email)")
+                        )
+                    );
+            } else {
+                $txt = preg_replace(
+                    array('/%name/', '/%email/'),
+                    array($adh->sname, $adh->email),
+                    _T("A problem happened while sending to admin notification for user %name (%email) contribution")
+                );
+                $hist->add($txt);
+                $error_detected[] = $txt;
             }
         }
 
