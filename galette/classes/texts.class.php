@@ -116,16 +116,16 @@ class Texts
         array(
             'tid' => 10,
             'tref' => 'newadh',
-            'tsubject' => 'New registration from  {SURNAME_ADH} {NAME_ADH}',
-            'tbody' =>"{SURNAME_ADH} {NAME_ADH} has registred on line with login: {LOGIN}",
+            'tsubject' => 'New registration from {NAME_ADH}',
+            'tbody' =>"{NAME_ADH} has registred on line with login: {LOGIN}",
             'tlang'=> 'en_US',
             'tcomment'=>'New registration (sent to admin)'
         ),
         array(
             'tid' => 11,
             'tref' => 'newadh',
-            'tsubject' => 'Nouvelle inscription de {SURNAME_ADH} {NAME_ADH}',
-            'tbody' =>"{SURNAME_ADH} {NAME_ADH} s'est inscrit via l'interface web avec le login {LOGIN}",
+            'tsubject' => 'Nouvelle inscription de {NAME_ADH}',
+            'tbody' =>"{NAME_ADH} s'est inscrit via l'interface web avec le login {LOGIN}",
             'tlang'=>'fr_FR',
             'tcomment'=>'Nouvelle inscription (envoyée a l\'admin)'
         ),
@@ -133,16 +133,16 @@ class Texts
         array(
             'tid' => 13,
             'tref' => 'newcont',
-            'tsubject' => 'New contribution for  {SURNAME_ADH} {NAME_ADH}',
-            'tbody' =>"The contribution from {SURNAME_ADH} {NAME_ADH} has been registered (new deadline: {DEADLINE})\r\n\r\n{COMMENT}",
+            'tsubject' => 'New contribution for {NAME_ADH}',
+            'tbody' =>"The contribution from {NAME_ADH} has been registered (new deadline: {DEADLINE})\r\n\r\n{COMMENT}",
             'tlang'=> 'en_US',
             'tcomment'=>'New contribution (sent to admin)'
         ),
         array(
             'tid' => 14,
             'tref' => 'newcont',
-            'tsubject' => 'Nouvelle contribution de {SURNAME_ADH} {NAME_ADH}',
-            'tbody' =>"La contribution de {SURNAME_ADH} {NAME_ADH} a été enregistrée (nouvelle échéance: {DEADLINE})\r\n\r\n{COMMENT}",
+            'tsubject' => 'Nouvelle contribution de {NAME_ADH}',
+            'tbody' =>"La contribution de {NAME_ADH} a été enregistrée (nouvelle échéance: {DEADLINE})\r\n\r\n{COMMENT}",
             'tlang'=>'fr_FR',
             'tcomment'=>'Nouvelle contribution (envoyée a l\'admin)'
         )
