@@ -76,6 +76,7 @@ class GaletteMail
 
     private $_result;
     private $_errors = array();
+    private $_recipients;
 
     private $_mail;
 
@@ -171,8 +172,10 @@ class GaletteMail
     {
         global $log;
         $res = true;
+        $this->_recupients = array();
         foreach ( $recipients as $mail => $name ) {
             if ( self::isValidEmail($mail) ) {
+                $this->_recipients[$mail] = $name;
                 $this->_mail->AddBCC($mail, $name);
             } else {
                 //one of adresses is not valid :
@@ -199,7 +202,7 @@ class GaletteMail
     */
     public function send()
     {
-        global $preferences;
+        global $preferences, $log;
 
         if ( $this->_html ) {
             //the mail is html :(
@@ -219,6 +222,14 @@ class GaletteMail
             $this->_errors[] = $this->_mail->ErrorInfo;
             return self::MAIL_ERROR;
         } else {
+            $txt = '';
+            foreach( $this->_recipients as $k=>$v ) {
+                $txt .= $v . ' (' . $k . '), ';
+            }
+            $log->log(
+                'A mail has been sent to: ' . $txt,
+                PEAR_LOG_INFO
+            );
             return self::MAIL_SENT;
         }
     }
