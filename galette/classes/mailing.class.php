@@ -128,6 +128,11 @@ class Mailing extends GaletteMail
                 break;
             }
         } else {
+            $log->log(
+                '[' . get_class($this) . 'Unable to get ' . $name .
+                ' renamed: ' . $rname,
+                PEAR_LOG_ERR
+            );
             return false;
         }
     }
