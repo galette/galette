@@ -83,12 +83,12 @@ class Preferences
         'pref_lang'        =>    I18n::DEFAULT_LANG,
         'pref_numrows'        =>    30,
         'pref_log'        =>    2,
+        /* Preferences for mails */
         'pref_email_nom'    =>    'Galette',
         'pref_email'        =>    'mail@domain.com',
         'pref_email_newadh'    =>    'mail@domain.com',
         'pref_bool_mailadh'    =>    false,
         'pref_editor_enabled'    =>    false,
-        /** FIXME: get constant value from mail class here ? */
         'pref_mail_method'    =>    0,
         'pref_mail_smtp'    =>    '',
         'pref_mail_smtp_host'   => '',

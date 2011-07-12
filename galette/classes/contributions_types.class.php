@@ -153,6 +153,12 @@ class ContributionsTypes
         if ( MDB2::isError($result) ) {
             /** FIXME: we surely want to return sthing and print_r for debug. */
             print_r($result);
+            $log->log(
+                'Cannot delete contribution type for install | ' .
+                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
+                PEAR_LOG_WARNING
+            );
+            return false;
         }
 
         $stmt = $mdb->prepare(

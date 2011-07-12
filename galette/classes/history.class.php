@@ -55,7 +55,6 @@ class History extends GalettePagination
     const TABLE = 'logs';
     const PK = 'id_log';
 
-    /** TODO: check for the date type */
     private $_types = array(
         'date',
         'text',

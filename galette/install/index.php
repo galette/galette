@@ -473,20 +473,21 @@ case 'u5':
     include_once '../classes/mdb2.class.php';
     $permsdb_ok = true;
 
-    if ( $test = GaletteMdb2::testConnectivity(
+    $test = GaletteMdb2::testConnectivity(
         $_POST['install_dbtype'],
         $_POST['install_dbuser'],
         $_POST['install_dbpass'],
         $_POST['install_dbhost'],
-        $_POST['install_dbname'])
-    ) {
+        $_POST['install_dbname']);
+
+    if ( $test === true ) {
+        echo '<p id="infobox">' . _T("Connection to database successfull") . '</p>';
+    } else {
         $permsdb_ok = false;
         echo '<div id="errorbox">';
         echo '<h1>' . _T("Unable to connect to the database") . '</h1>';
         echo '<p class="debuginfos">' . $test['main'] . '<span>(' . $test['debug'] . ')</span>' . '</p>';
         echo '</div>';
-    } else {
-        echo '<p id="infobox">' . _T("Connection to database successfull") . '</p>';
     }
 
     if ( !$permsdb_ok ) {
@@ -580,8 +581,6 @@ case 'u6':
         } elseif ( $results['select'] != '' ) {
             $result .= '<li class="install-ok">' . _T("SELECT operation allowed") . '</li>';
         }
-
-        /** TODO: check at upgrade time if Galette can ALTER */
 
         if ( MDB2::isError($results['delete']) ) {
             $result .= '<li class="install-bad debuginfos">' . _T("DELETE operation not allowed") . '<span>' . $results['delete']->getMessage() . '<br/>(' . $results['delete']->getDebugInfo() . ')</span></li>';

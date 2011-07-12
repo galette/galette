@@ -104,8 +104,7 @@ class Required
                     $result2->getDebugInfo() . ')',
                     PEAR_LOG_ERR
                 );
-                /** FIXME: should return false */
-                return -1;
+                return false;
             }
 
             $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE;
@@ -117,8 +116,7 @@ class Required
                     $result->getMessage() . '(' . $result->getDebugInfo() . ')',
                     PEAR_LOG_ERR
                 );
-                /** FIXME: should return false */
-                return -1;
+                return false;
             }
 
             $result->setResultTypes($this->_types);
@@ -217,7 +215,6 @@ class Required
 
         $mdb->getDb()->loadModule('Extended', null, false);
         $mdb->getDb()->extended->executeMultiple($stmt, $params);
-        /** /FIXME */
 
         if ( MDB2::isError($stmt) ) {
             $log->log(
@@ -225,7 +222,7 @@ class Required
                 $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')',
                 PEAR_LOG_ERR
             );
-            /** FIXME: do we want to return something? */
+            return false;
         } else {
             $log->log(
                 'Initialisation seems successfull, we reload the object',

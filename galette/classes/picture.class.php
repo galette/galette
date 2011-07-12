@@ -453,7 +453,7 @@ class Picture
     {
         global $log;
         $class = get_class($this);
-        /** FIXME: Can GD not be present ? Is there any another solution to test? */
+
         if (function_exists("gd_info")) {
             $gdinfo = gd_info();
             $h = $this->max_height;

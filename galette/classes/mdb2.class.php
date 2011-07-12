@@ -264,7 +264,6 @@ class GaletteMdb2
         return $this->_db->escape($value);
     }
 
-    /** FIXME: should we not return 'true' if connection is OK ??? */
     /**
     * Test if database can be contacted. Mostly used for installation
     *
@@ -274,7 +273,7 @@ class GaletteMdb2
     * @param stirng $host which host we want to connect to
     * @param string $db   database name
     *
-    * @return false|array false if connection was successfull
+    * @return true|array true if connection was successfull, an array with some infos otherwise
     */
     public static function testConnectivity($type, $user, $pass, $host, $db)
     {
@@ -296,7 +295,7 @@ class GaletteMdb2
             return $ret;
         } else {
             $db->disconnect();
-            return false;
+            return true;
         }
     }
 
