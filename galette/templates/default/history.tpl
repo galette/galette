@@ -117,10 +117,12 @@
 					this.form.submit();
 				{rdelim});
 
-                var _elt = $('<img src="templates/default/images/info.png" alt="" title="{_T string="Show associated query"}"/>');
-                _elt.click(function() {ldelim}
-                    $(this).next('.sql_log').show();
+                $(function() {ldelim}
+                    var _elt = $('<img src="templates/default/images/info.png" class="qryhide" alt="" title="{_T string="Show associated query"}"/>');
+                    $('.sql_log').hide().parent().prepend(_elt);
+                    $('.qryhide').click(function() {ldelim}
+                        $(this).next('.sql_log').show();
+                    {rdelim});
                 {rdelim});
-                $('.sql_log').hide().parent().prepend(_elt);
 			//]]>
 		</script>
