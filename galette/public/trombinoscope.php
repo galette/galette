@@ -43,7 +43,7 @@
 $base_path = '../';
 require_once $base_path . 'includes/galette.inc.php';
 
-$members = Members::getPublicList(true);
+$members = Members::getPublicList(true, null);
 
 $tpl->assign('page_title', _T("Trombinoscope"));
 $tpl->assign('members', $members);
