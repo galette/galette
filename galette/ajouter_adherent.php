@@ -272,18 +272,14 @@ if ( isset($_POST['id_adh']) ) {
                 $mail_result = custom_mail($preferences->pref_email_newadh, $mtxt->tsubject, $mtxt->tbody);
                 unset ($texts);
                 if ( $mail_result != 1 ) {
-                    $hist->add(
-                        str_replace(
-                            "%s",
-                            $_POST['email_adh'],
-                            _T("A problem happened while sending email to admin for account '%s'.")
-                        )
-                    );
-                    $error_detected[] = str_replace(
+                    $txt = str_replace(
                         "%s",
                         $_POST['email_adh'],
                         _T("A problem happened while sending email to admin for account '%s'.")
                     );
+
+                    $hist->add($txt);
+                    $error_detected[] = $txt;
                 }
             }
 
