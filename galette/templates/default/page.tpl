@@ -91,6 +91,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
   {/if}
 		</ul>
 {/if}
+        {* TODO: public pages links display should be configurable from galette preferences *}
         <h1 class="nojs">{_T string="Public pages"}</h1>
         <ul>
             <li><a href="{$galette_base_path}/public/liste_membres.php" title="{_T string="Members list"}">{_T string="Members list"}</a></li>
