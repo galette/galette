@@ -51,8 +51,8 @@
                 <input type="hidden" name="hash" value="{$hash}"/>
 {/if}
                 <ul class="menu">
-                    <li id="subscribe"><a href="self_adherent.php">{_T string="Subscribe"}</a></li>
                     <li id="backhome"><a href="index.php">{_T string="Back to login page"}</a></li>
+                    <li id="subscribe"><a href="self_adherent.php">{_T string="Subscribe"}</a></li>
                 </ul>
             </div>
         </form>
