@@ -173,13 +173,6 @@ if ( $error_detected == ''
     }
 }
 
-// test if galette is already installed and redirect to index page if so
-// we test after steps so we can pass step 10 :)
-if ($installed && $step != 'i10' && $step != 'u10') {
-        header('location: ' . $base_path . 'index.php');
-}
-
-
 //we set current step title
 switch ( $step ) {
 case '1':
