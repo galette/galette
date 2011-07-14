@@ -4,10 +4,10 @@
 		{include file='common_header.tpl'}
 	</head>
 	<body>
-		<div id="main_logo">
-			<img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
-		</div>
 		<form action="lostpasswd.php" method="post" enctype="multipart/form-data" id="login_frm">
+            <div id="main_logo">
+                <img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
+            </div>
 			<div class="login-box">
 				<h1 id="titre">{_T string="Password recovery"}</h1>
 {if $error_detected|@count != 0}

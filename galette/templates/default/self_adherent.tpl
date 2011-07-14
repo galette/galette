@@ -32,7 +32,6 @@
 	<body>
 		<div id="main_logo">
 			<img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
-
 		</div>
 		<h1 id="titre" class="self_subscribe">{_T string="Member profile"}</h1>
 		<ul class="menu m_subscribe">
@@ -65,7 +64,7 @@
 {/if}
 {if !$head_redirect}
 		<form action="self_adherent.php" method="post" enctype="multipart/form-data" id="subscribtion_form">
-			<p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
+			<p class="center">{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
 			<fieldset class="cssform">
 				<legend>{_T string="Identity:"}</legend>
 				<div>

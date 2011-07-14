@@ -5,11 +5,10 @@
 		{if $head_redirect}{$head_redirect}{/if}
 	</head>
 	<body>
-		<div id="main_logo">
-			<img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
-		</div>
-
         <form id="login_frm" action="change_passwd.php" method="post" enctype="multipart/form-data">
+            <div id="main_logo">
+                <img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
+            </div>
             <div class="login-box">
                 <h1 id="titre">{_T string="Password recovery"}</h1>
 {if $error_detected|@count != 0}

@@ -246,10 +246,8 @@ a.listing:hover {
 }
 
 #main_logo{
-	z-index:10;
-	position:absolute;
-	right:1em;
-	top:1em;
+    text-align: center;
+    margin-top:0.5em;
 }
 
 .nav1 {
@@ -792,8 +790,9 @@ th.bline, td.bline{
 
 .m_subscribe{
 	position:absolute;
-	right:150px;
-	top:2em;
+	right:.5em;
+	top:.5em;
+    margin:0;
 }
 
 .selection_menu{
