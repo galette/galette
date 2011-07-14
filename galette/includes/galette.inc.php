@@ -64,6 +64,9 @@ session_start();
 define('GALETTE_VERSION', 'v0.7dev');
 define('GALETTE_MODE', 'DEV'); //DEV or PROD
 define('TEMPLATES_PATH', WEB_ROOT . 'templates/');
+
+@ini_set('display_errors', 0);
+
 set_include_path(
     get_include_path() . PATH_SEPARATOR .
     WEB_ROOT . 'includes/pear/' . PATH_SEPARATOR .
