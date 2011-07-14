@@ -44,11 +44,6 @@ define('WEB_ROOT', realpath(dirname(__FILE__) . '/../') . '/');
 
 require_once $base_path . 'includes/galette.inc.php';
 
-// test if galette is already installed and redirect to index page if so
-if ($installed) {
-    header('location: ' . $base_path . 'index.php');
-}
-
 $template_subdir = 'templates/default/';
 $step = '1';
 $error_detected = false;
@@ -177,6 +172,13 @@ if ( $error_detected == ''
         }
     }
 }
+
+// test if galette is already installed and redirect to index page if so
+// we test after steps so we can pass step 10 :)
+if ($installed && $step != 'i10' && $step != 'u10') {
+        header('location: ' . $base_path . 'index.php');
+}
+
 
 //we set current step title
 switch ( $step ) {
@@ -1072,7 +1074,7 @@ case 'u10':
         echo _T("Galette has been successfully updated!");
     }
 ?></p>
-            <p><?php echo _T("To secure the system, please delete the install directory"); ?></p>
+            <div id="errorbox"><?php echo _T("To secure the system, please delete the install directory"); ?></div>
             <form action="../index.php" method="get">
                 <p id="submit_btn">
                     <input type="submit" value="<?php echo _T("Homepage"); ?>"/>
