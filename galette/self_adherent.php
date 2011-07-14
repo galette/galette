@@ -243,15 +243,15 @@ if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
 
             $mail_result = custom_mail(
                 $adherent['email_adh'],
-                $mtxt['tsubject'],
-                preg_replace($patterns, $replace, $mtxt['tbody'])
+                $mtxt->tsubject,
+                preg_replace($patterns, $replace, $mtxt->tbody)
             );
 
             /** FIXME: why is the mail send twice ?? */
             /*$mail_result = custom_mail(
                 $_POST['email_adh'],
-                $mtxt['tsubject'],
-                $mtxt['tbody']
+                $mtxt->tsubject,
+                $mtxt->tbody
             );*/
 
             if ( $mail_result == 1 ) { //check if mail was successfully send

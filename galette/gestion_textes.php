@@ -78,13 +78,13 @@ if (isset($_POST['valid']) && $_POST['valid'] == '1') {
     if ( !$res ) {
         $error_detected[] = preg_replace(
             '(%s)',
-            $mtxt['tcomment'],
+            $mtxt->tcomment,
             _T("Email: '%s' has not been modified!")
         );
     } else {
         $warning_detected[] = preg_replace(
             '(%s)',
-            $mtxt['tcomment'],
+            $mtxt->tcomment,
             _T("Email: '%s' has been successfully modified.")
         );
     }
