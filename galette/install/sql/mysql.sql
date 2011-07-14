@@ -1,5 +1,7 @@
 -- CREATE DATABASE `galette` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
+SET FOREIGN_KEY_CHECKS=0;
+
 DROP TABLE IF EXISTS galette_adherents;
 CREATE TABLE galette_adherents (
   id_adh int(10) unsigned NOT NULL auto_increment,
@@ -245,3 +247,5 @@ CREATE TABLE galette_mailing_history_recipients (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+SET FOREIGN_KEY_CHECKS=1;

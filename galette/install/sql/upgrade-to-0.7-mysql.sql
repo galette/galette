@@ -1,3 +1,6 @@
+-- Do not check foreign keys: will cause to fail on drop/create existent tables
+SET FOREIGN_KEY_CHECKS=0;
+
 -- Set some tables type to InnoDB so we can use foreign keys
 ALTER TABLE galette_adherents ENGINE = InnoDB;
 ALTER TABLE `galette_types_cotisation` ENGINE = InnoDB;
@@ -154,3 +157,6 @@ CREATE TABLE IF NOT EXISTS galette_mailing_history_recipients (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Put back foreign keys
+SET FOREIGN_KEY_CHECKS=1;
