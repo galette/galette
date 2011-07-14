@@ -209,6 +209,30 @@ if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
             print substr($insert_string_values, 1) .
                 ': ' . $DB->ErrorMsg();
         }
+
+        //Send email to admin if preference checked
+        if ( $preferences->pref_bool_mailadh ) {
+            $texts = new texts();
+            $mtxt = $texts->getTexts('newadh', $preferences->pref_lang);
+            $mtxt->tsubject = str_replace("{NAME_ADH}", custom_html_entity_decode($adherent['nom_adh']), $mtxt->tsubject);
+            $mtxt->tsubject = str_replace("{SURNAME_ADH}", custom_html_entity_decode($adherent['prenom_adh']), $mtxt->tsubject);
+            $mtxt->tbody = str_replace("{NAME_ADH}", custom_html_entity_decode($adherent['nom_adh']), $mtxt->tbody);
+            $mtxt->tbody = str_replace("{SURNAME_ADH}", custom_html_entity_decode($adherent['prenom_adh']), $mtxt->tbody);
+            $mtxt->tbody = str_replace("{LOGIN}", custom_html_entity_decode($adherent['login_adh']), $mtxt->tbody);
+            $mail_result = custom_mail($preferences->pref_email_newadh, $mtxt->tsubject, $mtxt->tbody);
+            unset ($texts);
+            if ( $mail_result != 1 ) {
+                $txt = str_replace(
+                    "%s",
+                    $_POST['email_adh'],
+                    _T("A problem happened while sending email to admin for account '%s'.")
+                );
+
+                $hist->add($txt);
+                $error_detected[] = $txt;
+            }
+        }
+
         $hist->add(
             _T("Self_subscription as a member: ") .
             strtoupper($adherent['nom_adh']) . ' ' . $adherent['prenom_adh'],
@@ -260,8 +284,6 @@ if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
                     $adherent['email_adh'],
                     $requete
                 );
-                $warning_detected[] = _T("Password sent. Login:") . ' "' .
-                    $adherent['login_adh'] . "\"";
             } else { //warn user if not
                 switch ( $mail_result ) {
                 case 2 :
