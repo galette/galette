@@ -33,7 +33,7 @@
 		<div id="main_logo">
 			<img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
 		</div>
-		<h1 id="titre" class="self_subscribe">{_T string="Member profile"}</h1>
+		<h1 id="titre" class="self_subscribe">{_T string="Member self subscription"}</h1>
 		<ul class="menu m_subscribe">
 			<li id="backhome"><a href="index.php">{_T string="Back to login page"}</a></li>
 		</ul>
