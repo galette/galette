@@ -550,10 +550,6 @@ a.listing:hover {
 	background-image: url(images/back.png);
 }
 
-#loginpage a {
-	background:url(images/login.png) right 50% no-repeat;
-}
-
 #memberslist a {
 	background:url(images/members-list.png) right 50% no-repeat;
 }

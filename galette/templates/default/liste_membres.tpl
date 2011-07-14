@@ -4,7 +4,6 @@
 		<h1 id="titre">{_T string="Members list"}</h1>
 		<ul class="menu m_subscribe">
 			<li id="backhome"><a href="../index.php">{_T string="Back to login page"}</a></li>
-			<li id="loginpage"><a href="../login.php">{_T string="Login"}</a></li>
 			<li id="trombino"><a href="trombinoscope.php">{_T string="Trombinoscope"}</a></li>
 		</ul>
 {if $members|@count > 0}

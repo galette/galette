@@ -4,7 +4,6 @@
 		<h1 id="titre">{_T string="Trombinoscope"}</h1>
 		<ul class="menu m_subscribe">
 			<li id="backhome"><a href="../index.php">{_T string="Back to login page"}</a></li>
-			<li id="loginpage"><a href="../login.php">{_T string="Login"}</a></li>
 			<li id="memberslist"><a href="liste_membres.php">{_T string="Members list"}</a></li>
 		</ul>
 {foreach from=$members item=member}
