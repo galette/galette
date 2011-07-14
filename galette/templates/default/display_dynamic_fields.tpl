@@ -5,14 +5,14 @@
 	<div>
 {else}
 <table class="details">
-	<caption>{_T string="Additionnal fields:"}</caption>
+	<caption class="ui-state-active ui-corner-top">{_T string="Additionnal fields:"}</caption>
 {/if}
 {foreach from=$dynamic_fields item=field}
 {if $field.field_perm ne 1 || $login->isAdmin()}
 	{if $field.field_type eq 0}
 		{if $is_form eq false}
 			<tr>
-				<th class="separator">{$field.field_name|escape}</th>
+				<th class="separator" colspan="2">{$field.field_name|escape}</th>
 			</tr>
 		{else}
 			<div class="separator">{$field.field_name|escape}</div>

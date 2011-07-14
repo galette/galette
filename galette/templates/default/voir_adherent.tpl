@@ -17,7 +17,6 @@
 			</ul>
 		</div>
 {/if}
-	<div class="bigtable">
 		<ul id="details_menu">
 {if ($pref_card_self eq 1) or ($login->isAdmin())}
 			<li>
@@ -44,9 +43,10 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {/if}
 
 		</ul>
+	<div class="bigtable wrmenu">
 
 		<table class="details">
-			<caption>{_T string="Identity:"}</caption>
+			<caption class="ui-state-active ui-corner-top">{_T string="Identity:"}</caption>
 			<tr>
 				<th>{_T string="Name:"}</th>
 				<td>{$member->spoliteness} {$member->name} {$member->surname}</td>
@@ -71,7 +71,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 		</table>
 
 		<table class="details">
-			<caption>{_T string="Galette-related data:"}</caption>
+			<caption class="ui-state-active ui-corner-top">{_T string="Galette-related data:"}</caption>
 			<tr>
 				<th>{_T string="Status:"}</th>
 				<td>{$member->sstatus}</td>
@@ -115,7 +115,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 		</table>
 
 		<table class="details">
-			<caption>{_T string="Contact information:"}</caption>
+			<caption class="ui-state-active ui-corner-top">{_T string="Contact information:"}</caption>
 			<tr>
 				<th>{_T string="Address:"}</th>
 				<td>
