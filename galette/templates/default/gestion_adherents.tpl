@@ -101,7 +101,7 @@
 			</thead>
 			<tfoot>
 				<tr>
-					<td colspan="6" class="center" id="table_footer">
+					<td colspan="7" class="center" id="table_footer">
 						{_T string="Pages:"}<br/>
 						<ul class="pages">{$pagination}</ul>
 					</td>
@@ -111,7 +111,7 @@
 {foreach from=$members item=member key=ordre}
 				<tr>
 					<td class="{$member->getRowClass()} right">{php}$ordre = $this->get_template_vars('ordre');echo $ordre+1+($varslist->current_page - 1)*$numrows{/php}</td>
-          <td class="{$member->getRowClass()} right">{$member->id}</td>
+                    <td class="{$member->getRowClass()} right">{$member->id}</td>
 					<td class="{$member->getRowClass()} nowrap username_row">
 						<input type="checkbox" name="member_sel[]" value="{$member->id}"/>
 					{if $member->politeness eq constant('Politeness::MR')}
@@ -152,7 +152,7 @@
 					</td>
 				</tr>
 {foreachelse}
-				<tr><td colspan="6" class="emptylist">{_T string="no member"}</td></tr>
+				<tr><td colspan="7" class="emptylist">{_T string="no member"}</td></tr>
 {/foreach}
 			</tbody>
 		</table>
