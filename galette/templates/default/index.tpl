@@ -34,8 +34,8 @@
 					<li id="subscribe"><a href="self_adherent.php">{_T string="Subscribe"}</a></li>
 					<li id="lostpassword"><a href="lostpasswd.php">{_T string="Lost your password?"}</a></li>
                     {* TODO: public pages links display should be configurable from galette preferences *}
-                    <li id="memberslist"><a href="{$galette_base_path}/public/liste_membres.php" title="{_T string="Members list"}">{_T string="Members list"}</a></li>
-                    <li id="trombino"><a href="{$galette_base_path}/public/trombinoscope.php" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a></li>
+                    <li id="memberslist"><a href="{$galette_base_path}public/liste_membres.php" title="{_T string="Members list"}">{_T string="Members list"}</a></li>
+                    <li id="trombino"><a href="{$galette_base_path}public/trombinoscope.php" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a></li>
 				</ul>
 			</div>
 		</form>
