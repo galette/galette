@@ -306,7 +306,7 @@ if ( isset($_POST['id_adh']) ) {
         if ( isset($_FILES['photo']) ) {
             if ( $_FILES['photo']['tmp_name'] !='' ) {
                 if ( is_uploaded_file($_FILES['photo']['tmp_name']) ) {
-                    if ( !$member->picture->store($adherent['id_adh'], $_FILES['photo']) ) {
+                    if ( !$member->picture->store($_FILES['photo']) ) {
                         $error_detected[]
                             = _T("- Only .jpg, .gif and .png files are allowed.");
                     }
