@@ -612,12 +612,16 @@ class Adherent
     /**
     * Get row class related to current fee status
     *
+    * @param boolean $public we want the class for public pages
+    *
     * @return string the class to apply
     */
-    public function getRowClass()
+    public function getRowClass($public = false)
     {
         $strclass = ($this->isActive()) ? 'active' : 'inactive';
-        $strclass .= $this->_row_classes;
+        if ( $public === false ) {
+            $strclass .= $this->_row_classes;
+        }
         return $strclass;
     }
 

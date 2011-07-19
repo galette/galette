@@ -51,7 +51,7 @@
 			<tbody>
 	{foreach from=$members item=member}
 				<tr>
-					<td class="nowrap username_row">
+					<td class="{$member->getRowClass(true)} nowrap username_row">
 					{if $member->politeness == constant('Politeness::MR')}
 						<img src="{$template_subdir}images/icon-male.png" alt="" width="16" height="16"/>
 					{elseif $member->politeness == constant('Politeness::MRS') || $member->politeness == constant('Politeness::MISS')}
@@ -68,8 +68,8 @@
 						{$member->sfullname}
 					{/if}
 					</td>
-					<td class="nowrap">{$member->nickname|htmlspecialchars}</td>
-					<td class="nowrap">{$member->others_infos}</td>
+					<td class="{$member->getRowClass(true)} nowrap">{$member->nickname|htmlspecialchars}</td>
+					<td class="{$member->getRowClass(true)} nowrap">{$member->others_infos}</td>
 				</tr>
 	{/foreach}
 			</tbody>
