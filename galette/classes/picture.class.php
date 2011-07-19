@@ -421,10 +421,13 @@ class Picture
             array('picture')
         );
 
-        $stmt->bindParam(0, $this->id);
-        $stmt->bindParam(1, $picture);
-        $stmt->bindParam(2, $extension);
-        $stmt->execute();
+        $stmt->execute(
+            array(
+                'id'        => $this->id,
+                'picture'   => $picture,
+                'extension' => $extension
+            )
+        );
 
         if ( MDB2::isError($stmt) ) {
             $log->log(
