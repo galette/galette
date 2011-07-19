@@ -141,7 +141,7 @@
 {/if}
 					<p>
 						<label for="info_public_adh" class="bline{if $required.info_public_adh eq 1} required{/if}">{_T string="Other informations:"}</label> 
-						<textarea name="info_public_adh" id="info_public_adh" cols="61" rows="6" {$disabled.info_public_adh}>{$member->other_infos|htmlspecialchars}</textarea>
+						<textarea name="info_public_adh" id="info_public_adh" cols="61" rows="6" {$disabled.info_public_adh}>{$member->others_infos|htmlspecialchars}</textarea>
 {if $login->isAdmin()}
 						<br/><span class="exemple labelalign">{_T string="This comment is reserved to the member."}</span>
 {/if}
