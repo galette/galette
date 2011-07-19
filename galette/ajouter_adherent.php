@@ -257,8 +257,8 @@ if ( isset($_POST['id_adh']) ) {
                 PREFIX_DB . 'adherents',
                 'id_adh'
             );
-            // to allow the string to be extracted for translation
-            $foo = _T("Member card added");
+            //load the newly added member
+            $member->load($adherent['id_adh']);
 
             //Send email to admin if preference checked
             if ( $preferences->pref_bool_mailadh ) {
