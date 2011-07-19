@@ -368,7 +368,7 @@
 				</p>
 				<p>
 					<label for="pref_admin_pass" class="bline{if $required.pref_admin_pass eq 1} required{/if}">{_T string="Password:"}</label>
-					<input type="password" name="pref_admin_pass" id="pref_admin_pass" value="" maxlength="20"/>
+					<input type="password" name="pref_admin_pass" id="pref_admin_pass" value="" maxlength="20" autocomplete="off"/>
 				</p>
 				<p>
 					<label for="pref_admin_pass_check" class="bline{if $required.pref_admin_pass_check eq 1} required{/if}">{_T string="Retype password:"}</label>
