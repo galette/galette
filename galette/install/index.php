@@ -939,7 +939,7 @@ define("STOCK_FILES", "tempimages");
     }
 
     if ( $step=='i9' ) {
-        $prefs = new Preferences();
+        $prefs = new Preferences(false);
         $ct = new ContributionsTypes();
         $status = new Status();
         $texts = new Texts();

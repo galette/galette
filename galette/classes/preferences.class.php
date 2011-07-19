@@ -134,11 +134,13 @@ class Preferences
     *
     * @return void
     */
-    public function __construct()
+    public function __construct($load = true)
     {
         $error = null;
-        $this->load();
-        $this->_checkUpdate();
+        if ( $load ) {
+            $this->load();
+            $this->_checkUpdate();
+        }
     }
 
     /**
