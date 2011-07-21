@@ -120,11 +120,11 @@ foreach($members as $m) {
 
         $y = $pdf->getY() + 1;
         $x = $pdf->getX() + 1;
-        $pdf->Cell($wlogo+2, 16, '', 'LT', 0);
+        $pdf->Cell($wlogo+2, 16, '', 'LTB', 0);
         $pdf->Image($p, $x, $y, $wlogo, $hlogo);
     } else {
         $x = $pdf->getX() + 1;
-        $pdf->Cell(1, 16, '', 'LT', 0);
+        $pdf->Cell(1, 16, '', 'LTB', 0);
     }
 
     $xs = $pdf->getX() - $x + 1;
