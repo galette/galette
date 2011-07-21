@@ -218,9 +218,11 @@ class PDF extends TCPDF
     /**
      * Draws PDF page header
      *
+     * @param string $title Additionnal title to display just after logo
+     *
      * @return void
      */
-    function PageHeader()
+    function PageHeader($title)
     {
         global $preferences;
 
@@ -261,12 +263,12 @@ class PDF extends TCPDF
         $this->Cell(0, 6, $name, 0, 1, 'L', 0, $preferences->pref_website);
         $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
 
-        $this->Cell(0, 6, _T("Adhesion form"), 0, 0, 'L', 0);
+        $this->Cell(0, 6, $title, 0, 0, 'L', 0);
 
         $this->setY($y);
         $x = 190 - $wlogo; //right align
         $this->Image($logofile, $x, $this->GetY(), $wlogo, $hlogo);
-        $this->y += $hlogo;
+        $this->y += $hlogo + 3;
     }
 
 }
