@@ -77,6 +77,7 @@ $_SESSION['galette']['caller'] = 'gestion_adherents.php';
 if (   isset($_POST['cards'])
     || isset($_POST['labels'])
     || isset($_POST['mailing'])
+    || isset($_POST['attendance_sheet'])
 ) {
     if (isset($_POST['member_sel'])) {
         $varslist->selected = $_POST['member_sel'];
@@ -90,6 +91,9 @@ if (   isset($_POST['cards'])
         }
         if (isset($_POST['mailing'])) {
             $qstring = 'mailing_adherents.php';
+        }
+        if (isset($_POST['attendance_sheet'])) {
+            $qstring = 'attendance_sheet.php';
         }
         header('location: '.$qstring);
     } else {
