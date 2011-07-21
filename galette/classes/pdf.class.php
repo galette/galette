@@ -254,6 +254,7 @@ class PDF extends TCPDF
 
         $y = $this->GetY();
         $this->Ln(4);
+        $ystart = $this->GetY();
 
         $name = preg_replace(
             '/%s/',
@@ -263,12 +264,19 @@ class PDF extends TCPDF
         $this->Cell(0, 6, $name, 0, 1, 'L', 0, $preferences->pref_website);
         $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
 
-        $this->Cell(0, 6, $title, 0, 0, 'L', 0);
+        if ( $title !== null ) {
+            $this->Cell(0, 6, $title, 0, 1, 'L', 0);
+        }
+        $yend = $this->getY();//store position at the end of the text
 
-        $this->setY($y);
+        $this->SetY($ystart);
         $x = 190 - $wlogo; //right align
         $this->Image($logofile, $x, $this->GetY(), $wlogo, $hlogo);
         $this->y += $hlogo + 3;
+        //if position after logo is < than position after text, we have to change y
+        if ( $this->getY() < $yend ) {
+            $this->setY($yend);
+        }
     }
 
 }

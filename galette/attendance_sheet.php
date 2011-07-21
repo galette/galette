@@ -117,12 +117,18 @@ foreach($members as $m) {
             }
             $hlogo = round($wlogo/$ratio);
         }
+
         $y = $pdf->getY() + 1;
         $x = $pdf->getX() + 1;
+        $pdf->Cell($wlogo+2, 16, '', 'LT', 0);
         $pdf->Image($p, $x, $y, $wlogo, $hlogo);
+    } else {
+        $x = $pdf->getX() + 1;
+        $pdf->Cell(1, 16, '', 'LT', 0);
     }
 
-    $pdf->Cell(110, 16, $m->sfullname, 1, 0, 'L');
+    $xs = $pdf->getX() - $x + 1;
+    $pdf->Cell(110 - $xs, 16, $m->sfullname, 'RTB', 0, 'L');
     $pdf->Cell(80, 16, '', 1, 1, 'L');
 }
 $pdf->Cell(190, 0, '', 'T');
