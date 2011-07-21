@@ -133,7 +133,6 @@ if ( isset($_POST['id_adh']) ) {
         if ( !isset($disabled[$key]) ) {
             // fill up the adherent structure
             $adherent[$key] = stripslashes($value);
-            $member->$key = stripslashes($value);
 
             // now, check validity
             if ( $value != '' ) {
@@ -144,6 +143,7 @@ if ( isset($_POST['id_adh']) ) {
                     if ( preg_match('@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@', $value, $array_jours) ) {
                         if ( checkdate($array_jours[2], $array_jours[1], $array_jours[3]) ) {
                             $value = $DB->DBDate($array_jours[3].'-'.$array_jours[2].'-'.$array_jours[1]);
+                            $member->$key = $array_jours[3].'-'.$array_jours[2].'-'.$array_jours[1];
                         } else {
                             $error_detected[] = _T("- Non valid date!");
                         }
@@ -155,6 +155,8 @@ if ( isset($_POST['id_adh']) ) {
                 case 'msn_adh':
                     if ( !GaletteMail::isValidEmail($value) ) {
                         $error_detected[] = _T("- Non-valid E-Mail address!") . ' (' . $key . ')';
+                    } else {
+                        $member->$key = stripslashes($value);
                     }
                     break;
                 case 'url_adh':
@@ -163,6 +165,7 @@ if ( isset($_POST['id_adh']) ) {
                     } elseif ( $value == 'http://' ) {
                         $value = '';
                     }
+                    $member->$key = stripslashes($value);
                     break;
                 case 'login_adh':
                     if ( strlen($value) < 4 ) {
@@ -185,6 +188,8 @@ if ( isset($_POST['id_adh']) ) {
                             $result = &$DB->Execute($requete);
                             if (!$result->EOF || $value == $preferences->pref_admin_login) {
                                 $error_detected[] = _T("- This username is already used by another member !");
+                            } else {
+                                $member->$key = stripslashes($value);
                             }
                         }
                     }
@@ -196,11 +201,15 @@ if ( isset($_POST['id_adh']) ) {
                                 $error_detected[] = _T("- The password must be of at least 4 characters!");
                             } else {
                                 $value = md5($value);
+                                $member->$key = stripslashes($value);
                             }
                         } else {
                             $error_detected[] = _T("- The passwords don't match!");
                         }
                     }
+                default:
+                    $member->$key = stripslashes($value);
+                    break;
                 }
             }
 
