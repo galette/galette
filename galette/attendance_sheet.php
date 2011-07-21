@@ -76,7 +76,7 @@ $doc_keywords = _T("Labels");
 $pdf=new PDF('P', 'mm', 'A4');
 $pdf->setMargins(10, 10);
 
-$pdf->SetAutoPageBreak(false, 20);
+$pdf->SetAutoPageBreak(true, 20);
 $pdf->AliasNbPages();
 $pdf->Open();
 
