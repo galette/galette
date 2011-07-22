@@ -43,8 +43,8 @@ $tpl = new Smarty;
 $template_subdir = 'templates/' . $preferences->pref_theme . '/';
 $tpl->plugins_dir[] = WEB_ROOT . 'includes/smarty_plugins';
 $tpl->template_dir = WEB_ROOT . $template_subdir;
-$tpl->compile_dir = WEB_ROOT . 'templates_c/';
-$tpl->cache_dir = WEB_ROOT . 'cache/';
+$tpl->compile_dir = GALETTE_COMPILE_DIR;
+$tpl->cache_dir = GALETTE_CACHE_DIR;
 $tpl->config_dir = WEB_ROOT . 'config/';
 
 $tpl->assign('login', $login);

@@ -405,9 +405,9 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
 
 //List available themes
 $themes = array();
-$d = dir(TEMPLATES_PATH);
+$d = dir(GALETTE_TEMPLATES_PATH);
 while ( ($entry = $d->read()) !== false ) {
-    $full_entry = TEMPLATES_PATH . $entry;
+    $full_entry = GALETTE_TEMPLATES_PATH . $entry;
     if ($entry != '.'
         && $entry != '..'
         && is_dir($full_entry)

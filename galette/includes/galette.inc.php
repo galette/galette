@@ -57,24 +57,23 @@ if ( !$installer ) { //If we're not working from installer
     require_once $base_path . 'config/config.inc.php';
 }
 require_once $base_path . 'config/versions.inc.php';
+require_once $base_path . 'config/paths.inc.php';
 
 //we start a php session
 session_start();
 
 define('GALETTE_VERSION', 'v0.7dev');
 define('GALETTE_MODE', 'DEV'); //DEV or PROD
-define('TEMPLATES_PATH', WEB_ROOT . 'templates/');
 
 @ini_set('display_errors', 0);
 
 set_include_path(
     get_include_path() . PATH_SEPARATOR .
-    WEB_ROOT . 'includes/pear/' . PATH_SEPARATOR .
-    WEB_ROOT . 'includes/pear/PEAR-' . PEAR_VERSION . '/' . PATH_SEPARATOR .
-    WEB_ROOT . 'includes/pear/MDB2-' . MDB2_VERSION . PATH_SEPARATOR .
-    WEB_ROOT . 'includes/pear/Log-' . LOG_VERSION . PATH_SEPARATOR .
-    WEB_ROOT . 'includes/phpMailer-' . PHP_MAILER_VERSION . PATH_SEPARATOR .
-    WEB_ROOT . 'includes/Smarty-' . SMARTY_VERSION
+    GALETTE_PEAR_PATH . PATH_SEPARATOR .
+    GALETTE_PEAR_MDB2_PATH . PATH_SEPARATOR .
+    GALETTE_PEAR_LOG_PATH . PATH_SEPARATOR .
+    GALETTE_PHP_MAILER_PATH . PATH_SEPARATOR .
+    GALETTE_SMARTY_PATH
 );
 
 /*------------------------------------------------------------------------------
@@ -174,15 +173,14 @@ if ( !$installer ) { //If we're not working from installer
     /**
     * Set the path to the current theme templates
     */
-    define('_CURRENT_TEMPLATE_PATH', TEMPLATES_PATH . $preferences->pref_theme . '/');
+    define('_CURRENT_TEMPLATE_PATH', GALETTE_TEMPLATES_PATH . $preferences->pref_theme . '/');
 
     /**
     * Plugins
     */
-    define('PLUGINS_PATH', WEB_ROOT . 'plugins');
     require_once WEB_ROOT . 'classes/plugins.class.php';
     $plugins = new plugins();
-    $plugins->loadModules(PLUGINS_PATH, $i18n->getFileName());
+    $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
 
     /**
     * Authentication
