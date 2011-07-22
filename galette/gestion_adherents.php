@@ -94,6 +94,9 @@ if (   isset($_POST['cards'])
         }
         if (isset($_POST['attendance_sheet'])) {
             $qstring = 'attendance_sheet.php';
+            if ( isset($_POST['wimages']) && $_POST['wimages'] == 1 ) {
+                $qstring .= '?wimages=1';
+            }
         }
         header('location: '.$qstring);
     } else {

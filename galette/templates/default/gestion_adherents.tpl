@@ -161,7 +161,10 @@
 				<li>{_T string="Selection:"}</li>
 				<li><input type="submit" id="delete" class="submit" onclick="return confirm('{_T string="Do you really want to delete all selected accounts (and related contributions)?"|escape:"javascript"}');" name="delete" value="{_T string="Delete"}"/></li>
 				<li><input type="submit" id="sendmail" class="submit" name="mailing" value="{_T string="Mail"}"/></li>
-				<li><input type="submit" id="attendance_sheet" class="submit" name="attendance_sheet" value="{_T string="Attendance sheet"}"/></li>
+				<li>
+                    <input type="submit" id="attendance_sheet" class="submit" name="attendance_sheet" value="{_T string="Attendance sheet"}"/>
+                    <span class="exemple">(<input type="checkbox" id="wimages" name="wimages" value="1"/> <label for="wimages">{_T string="Including photos?"}</label>)</span>
+                </li>
 				<li><input type="submit" class="submit" name="labels" value="{_T string="Generate labels"}"/></li>
 				<li><input type="submit" class="submit" name="cards" value="{_T string="Generate Member Cards"}"/></li>
 			</ul>

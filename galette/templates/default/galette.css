@@ -823,6 +823,11 @@ th.bline, td.bline{
 	text-align:left;
 }
 
+.selection_menu .exemple {
+    font-weight: normal;
+    font-size:0.9em;
+}
+
 #sendmail{ background:url(images/icon-mail.png) left 50% no-repeat; }
 #delete{ background:url(images/icon-trash.png) left 50% no-repeat; }
 

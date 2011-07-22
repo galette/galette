@@ -68,6 +68,12 @@ if ( !is_array($members) || count($members) < 1 ) {
     die();
 }
 
+//with or without images?
+$_wimages = false;
+if ( isset($_GET['wimages']) && $_GET['wimages'] === '1') {
+    $_wimages = true;
+}
+
 define('SHEET_FONT', PDF::FONT_SIZE-2);
 
 $doc_title = _T("Attendance sheet");
@@ -97,7 +103,7 @@ $pdf->Cell(80, 7, _T("Signature"), 1, 1, 'C', 1);
 $pdf->SetFont('');
 $fill = 0;
 foreach($members as $m) {
-    if ( $m->hasPicture() ) {
+    if ( $m->hasPicture() && $_wimages ) {
         $p = $m->picture->getPath();
 
         // Set logo size to max width 30 mm or max height 25 mm
