@@ -176,13 +176,23 @@ if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
                         $value = $DB->qstr($value, get_magic_quotes_gpc());
                     }
                 }
-
-                $update_string .= ", ".$key."=".$value;
-                $insert_string_fields .= ", ".$key;
-                $insert_string_values .= ($key == 'ddn_adh') ?
-                    ', ' . $value :
-                    ', ' . $DB->qstr($value, get_magic_quotes_gpc());
             }
+
+            switch( $key ) {
+            case 'date_crea_adh':
+            case 'ddn_adh':
+                // dates already quoted
+                if ( $value=='' ) {
+                    $value='null';
+                }
+                break;
+            default:
+                $value = $DB->qstr($value, get_magic_quotes_gpc());
+            }
+
+            $update_string .= ", ".$key."=".$value;
+            $insert_string_fields .= ", ".$key;
+            $insert_string_values .= ', ' . $value;
         }
     }
 
