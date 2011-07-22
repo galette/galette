@@ -35,16 +35,8 @@
  * @since     Available since 0.7dev - 2009-12-10
  */
 
-$galettePhpMailerPath = WEB_ROOT . 'includes/phpMailer-' . PHP_MAILER_VERSION . '/';
-if ( file_exists('/usr/share/PHPMailer/class.phpmailer.php') ) {
-    $galettePhpMailerPath = '/usr/share/PHPMailer/';
-}
-if ( file_exists('/usr/share/php/PHPMailer/class.phpmailer.php') ) {
-    $galettePhpMailerPath = '/usr/share/php/PHPMailer/';
-}
-
 /** @ignore */
-require_once $galettePhpMailerPath . 'class.phpmailer.php';
+require_once 'class.phpmailer.php';
 
 /**
  * Generic mail for Galette

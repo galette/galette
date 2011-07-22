@@ -37,16 +37,7 @@
  * @since     Available since 0.63
  */
 
-// smarty-light declaration
-$galetteSmartyPath = WEB_ROOT . 'includes/Smarty-' . SMARTY_VERSION . '/';
-if ( file_exists('/usr/share/Smarty/Smarty.class.php') ) {
-    $galetteSmartyPath = '/usr/share/Smarty/';
-}
-if ( file_exists('/usr/share/php/Smarty/Smarty.class.php') ) {
-    $galetteSmartyPath = '/usr/share/php/Smarty/';
-}
-
-require $galetteSmartyPath . 'Smarty.class.php';
+require 'Smarty.class.php';
 
 $tpl = new Smarty;
 $template_subdir = 'templates/' . $preferences->pref_theme . '/';
