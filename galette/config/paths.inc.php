@@ -45,10 +45,10 @@ if ( !defined('GALETTE_PEAR_PATH') ) {
     define('GALETTE_PEAR_PATH', WEB_ROOT . 'includes/pear/PEAR-' . PEAR_VERSION);
 }
 if ( !defined('GALETTE_PEAR_MDB2_PATH') ) {
-    define('GALETTE_PEAR_PATH', WEB_ROOT . 'includes/pear/MDB2-' . MDB2_VERSION);
+    define('GALETTE_PEAR_MDB2_PATH', WEB_ROOT . 'includes/pear/MDB2-' . MDB2_VERSION);
 }
 if ( !defined('GALETTE_PEAR_LOG_PATH') ) {
-    define('GALETTE_PEAR_PATH', WEB_ROOT . 'includes/pear/Log-' . LOG_VERSION);
+    define('GALETTE_PEAR_LOG_PATH', WEB_ROOT . 'includes/pear/Log-' . LOG_VERSION);
 }
 if ( !defined('GALETTE_PHP_MAILER_PATH') ) {
     define('GALETTE_PHP_MAILER_PATH', WEB_ROOT . 'includes/phpMailer-' . PHP_MAILER_VERSION);
