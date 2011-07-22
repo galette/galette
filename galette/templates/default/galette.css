@@ -343,12 +343,17 @@ a.listing:hover {
 	border-radius: 10px 10px 10px 10px;
 }
 
+#listing{
+    width: 100%;
+}
+
 #listfilter form {
 	margin-bottom: 0px;
 }
 
 .infoline{
     vertical-align: top;
+    width: 100%;
 }
 
 .infoline td {
