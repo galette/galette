@@ -1,5 +1,5 @@
-{html_doctype xhtml=true type=strict omitxml=false encoding=UTF-8}
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$galette_lang}" lang="{$galette_lang}">
+<!DOCTYPE html>
+<html lang="{$galette_lang}">
 	<head>
 		{include file='common_header.tpl'}
 {if $color_picker}
@@ -85,7 +85,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 			<li{if $PAGENAME eq "history.php"} class="selected"{/if}><a href="{$galette_base_path}history.php" title="{_T string="View application's logs"}">{_T string="Logs"}</a></li>
 			<li class="mnu_last{if $PAGENAME eq "ajouter_adherent.php"} selected{/if}"><a href="{$galette_base_path}export.php" title="{_T string="Export some datas in various formats"}">{_T string="Exports"}</a></li>
   {else}
-			<li {if $PAGENAME eq "voir_adherent.php"} class="selected"{/if}><a href="{$galette_base_path}voir_adherent.php" title="{_T string="View my member card"}">{_T string="My information"}</a></li>
+			<li{if $PAGENAME eq "voir_adherent.php"} class="selected"{/if}><a href="{$galette_base_path}voir_adherent.php" title="{_T string="View my member card"}">{_T string="My information"}</a></li>
 			<li{if $PAGENAME eq "gestion_contributions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_contributions.php" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a></li>
 			<li{if $PAGENAME eq "gestion_transactions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_transactions.php" title="{_T string="View and filter all my transactions"}">{_T string="My transactions"}</a></li>
   {/if}
@@ -132,9 +132,17 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 		<div class="content-box">
 			{$content}
 		</div>
-		<div id="copyright">
-			<a href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
-		</div>
 	</div>
+    <footer>
+        <a id="copyright" href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
+        <nav>
+            <h4>{_T string="The Galette project: "}</h4>
+            <ul>
+                <li><a href="http://galette.tuxfamily.org">{_T string="Website"}</a></li>
+                <li><a href="http://galette.tuxfamily.org/documentation/">{_T string="Documentation"}</a></li>
+                <li><a href="http://cv.ulysses.fr">{_T string="Main developper"}</a></li>
+            </ul>
+        </nav>
+    </footer>
 </body>
 </html>

@@ -1,7 +1,23 @@
+/*
+ * == Summary
+ *
+ * == Global main styles
+ * == Header
+ * == Footer
+ */
+
+/*
+ * == Global main styles
+ */
+form,
 body {
-	margin: 0px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size:0.8em;
+	margin: 0;
+    padding: 0;
+}
+
+body {
+	font-family: "Cantarell", Verdana, Arial, sans-serif;
+	font-size:0.85em;
 	background-color:white;
 	color:black;
 }
@@ -10,10 +26,108 @@ img{
 	border:none;
 }
 
-form {
-	margin: 0px;
+label, input[type="button"], input[type="submit"], button {
+    cursor: pointer;
 }
 
+/* == Forms elements */
+input, button, select {
+    font-size:100%;
+}
+
+input {
+    border: 1px solid #555555;
+    padding: 4px;
+}
+
+input[required] {
+    border:1px red solid;
+    border-left-width: 8px;
+}
+
+pre, code, kbd, samp {
+    font-family: monospace, monospace;
+}
+
+img, table, td, blockquote, code, pre, textarea, input {
+    max-width: 100%;
+}
+
+code, pre, samp, textarea {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+abbr[title] {
+    border-bottom: 1px dotted #555;
+    cursor: help;
+}
+
+th, cation {
+    text-align: left;
+}
+p#required {
+    font-size: .8em;
+    float:left;
+    margin:0;
+}
+/* =/ Global main styles */
+
+/*
+ * == Header
+ */
+/* =/ Header */
+
+/*
+ * == Main menu
+ */
+/* =/ Main menu */
+
+/*
+ * == Footer
+ */
+footer {
+	text-align: center;
+	padding-top: 10px;
+	margin-bottom: 10px;
+}
+
+footer h4{
+    font-size: 1em;
+    margin: 0em 0 .2em;
+    display:inline-block;
+}
+
+footer ul{
+    margin:0;
+}
+
+footer li {
+    display:inline-block;
+    padding: .1em .2em;
+    margin:0 .2em;
+}
+
+#copyright {
+	color: #CCCCCC;
+	font-style: italic;
+}
+
+#copyright:hover {
+	color: #FF0000;
+}
+/* =/ Footer */
+
+/*
+ * == Public pages
+ */
+/* =/ Public pages */
+
+/*
+ * == End
+ */
+
+/** OLD STYLES */
 input {
 	padding: 0px 2px 0px 2px;
 	margin-top: 1px;
@@ -175,6 +289,7 @@ th.small_head{
 }
 .actions_row{
 	width:1%;
+    white-space: nowrap;
 }
 
 .date_row{
@@ -219,7 +334,7 @@ a.listing:hover {
 	clear:both;
 }
 
-#copyright {
+/*#copyright {
 	color: #CCCCCC;
 	font-style: italic;
 	text-align: center;
@@ -233,7 +348,7 @@ a.listing:hover {
 
 #copyright a:hover {
 	color: #FF0000;
-}
+}*/
 
 .exemple {
 	color: #999999;
@@ -682,7 +797,7 @@ a.listing:hover {
 /** Accessibility **/
 fieldset{
 	border: 1px solid #BBBBBB;
-	margin:0 10% 1em 10%;
+	margin:0 1em 1em;
 	text-align:left;
 }
 fieldset.large{
@@ -717,8 +832,8 @@ legend{
 .cssform p, .cssform div.p{
 	clear: left;
 	margin: 0;
-	padding: 5px 0 8px 0;
-	padding-left: 21em; /*width of left column containing the label elements*/
+	padding: 5px 0;
+	padding-left: 22em; /*width of left column containing the label elements plus 1*/
 	border-top: 1px dashed gray;
 	height: 1%;
 }
@@ -753,7 +868,7 @@ th.bline, td.bline{
 
 .cssform .bline{
 	display: inline-block;
-	margin: 0 0 0 -21em;
+	margin: 0 0 0 -22em;
 	width: 21em;
 }
 
@@ -933,7 +1048,7 @@ ul#tabs{
 ul#tabs li{
 	float:right;
 	display:inline;
-	background-color:#DDDDFF;
+	background-color:#eea423;
 	margin:0 0 0 0.2em;
 	line-height:2em;
 	-moz-border-radius: 10px 10px 0px 0px;
@@ -943,8 +1058,7 @@ ul#tabs li{
 
 #tabs a{
 	text-decoration: none;
-	color: #666;
-	font-weight:bold;
+	color: #000;
 	padding:0 1em;
 	display:block;
 	z-index:10;
@@ -967,10 +1081,8 @@ ul#tabs li{
 	margin:.5em 1%;
 }
 .current_tab{
-	background-color:#eea423!important;
-}
-.current_tab a{
-	color:white!important;
+	background-color:#DDDDFF!important;
+    font-weight: bold;
 }
 /*** /Onglets ***/
 
