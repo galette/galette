@@ -215,7 +215,7 @@ if ( !$installer ) { //If we're not working from installer
     * Logo
     */
     require_once WEB_ROOT . 'classes/logo.class.php';
-    if ( isset($_SESSION['galette']['logo']) ) {
+    if ( isset($_SESSION['galette']['logo']) && !GALETTE_MODE == 'DEV') {
         $logo = unserialize($_SESSION['galette']['logo']);
     } else {
         $logo = new Logo();
