@@ -275,7 +275,7 @@ pre {
 }
 
 th.listing, li.listing {
-	background: #FFB619 url(jquery-ui/images/ui-bg_glass_65_FFB619_1x400.png) repeat-x scroll 50% 50%;
+	background: #FFB619 url(jquery-ui/images/ui-bg_glass_65_ffb619_1x400.png) repeat-x scroll 50% 50%;
 	color: #212121;
 	white-space: nowrap;
 	font-weight: normal;
@@ -1307,7 +1307,7 @@ ul#paths{
 }
 /* .nojs class will be removed at runtime by a js script */
 #menu h1.nojs{
-	background: #FFB619 url(jquery-ui/images/ui-bg_glass_65_FFB619_1x400.png) repeat-x scroll 50% 50%;
+	background: #FFB619 url(jquery-ui/images/ui-bg_glass_65_ffb619_1x400.png) repeat-x scroll 50% 50%;
 }
 #menu ul.nojs{
 	margin:0 0 .5em 0;
