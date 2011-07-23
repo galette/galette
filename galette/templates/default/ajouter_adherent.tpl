@@ -212,7 +212,7 @@
 {include file="display_dynamic_fields.tpl" is_form=true}
 		</div>
 		<div class="button-container">
-			<input type="submit" class="submit" name="valid" value="{_T string="Save"}"/>
+			<input type="submit" name="valid" value="{_T string="Save"}"/>
 			<input type="hidden" name="id_adh" value="{$member->id}"/>
 		</div>
 		<p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>

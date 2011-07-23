@@ -5,7 +5,7 @@
 			<input type="text" name="contrib_filter_1" id="contrib_filter_1" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_1}"/>
 			<label for="contrib_filter_2">{_T string="until"}</label>&nbsp;
 			<input type="text" name="contrib_filter_2" id="contrib_filter_2" maxlength="10" size="10" value="{$smarty.session.filtre_date_cotis_2}"/>
-			<input type="submit" class="submit inline" value="{_T string="Filter"}"/>
+			<input type="submit" class="inline" value="{_T string="Filter"}"/>
 		</div>
 		<table class="infoline">
 			<tr>

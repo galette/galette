@@ -28,7 +28,7 @@
 						<td><input type="password" name="password" id="password"/></td>
 					</tr>
 				</table>
-				<input type="submit" class="submit" value="{_T string="Login"}" />
+				<input type="submit" value="{_T string="Login"}" />
 				<input type="hidden" name="ident" value="1" />
 				<ul class="menu">
 					<li id="subscribe"><a href="self_adherent.php">{_T string="Subscribe"}</a></li>

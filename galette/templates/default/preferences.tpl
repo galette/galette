@@ -380,7 +380,7 @@
 			<input type="hidden" name="valid" value="1"/>
 		</div>
 		<div class="button-container">
-			<input type="submit" class="submit" value="{_T string="Save"}"/>
+			<input type="submit" value="{_T string="Save"}"/>
 		</div>
 		</form>
 		<script type="text/javascript">

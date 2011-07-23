@@ -197,7 +197,7 @@
 			</fieldset>
 			{include file="display_dynamic_fields.tpl" is_form=true}
 		<div>
-			<input type="submit" class="submit" value="{_T string="Save"}"/>
+			<input type="submit" value="{_T string="Save"}"/>
 			<input type="hidden" name="valid" id="valid" value="1"/>
 		</div>
 	</form>

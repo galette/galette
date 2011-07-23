@@ -55,7 +55,7 @@
 							{html_options options=$field_positions selected="0"}
 						</select>
 					</td>
-					<td class="listing center"><input type="submit" class="submit" name="valid" value="{_T string="Add"}"/></td>
+					<td class="listing center"><input type="submit" name="valid" value="{_T string="Add"}"/></td>
 				</tr>
 			</tfoot>
 			<tbody>

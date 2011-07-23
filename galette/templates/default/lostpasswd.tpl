@@ -36,7 +36,7 @@
 				<div>
 					<label for="login" class="">{_T string="Username or email:"}</label>
 					<input type="text" name="login" id="login" maxlength="50" />
-					<input type="submit" class="submit" name="lostpasswd" value="{_T string="Send me my password"}" />
+					<input type="submit" name="lostpasswd" value="{_T string="Send me my password"}" />
 					<input type="hidden" name="valid" value="1"/>
 					<ul class="menu">
 						<li id="backhome"><a href="index.php">{_T string="Back to login page"}</a></li>

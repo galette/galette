@@ -89,9 +89,9 @@
 		</div>
 		<div class="button-container">
 {if $type_selected eq 1}
-			<input type="submit" class="submit" value="{_T string="Save"}"/>
+			<input type="submit" value="{_T string="Save"}"/>
 {else} {* $type_selected ne 1 *}
-			<input type="submit" class="submit" value="{_T string="Continue"}"/>
+			<input type="submit" value="{_T string="Continue"}"/>
 {/if} {* $type_selected eq 1 *}
 			<input type="hidden" name="id_cotis" value="{$data.id_cotis}"/>
 			<input type="hidden" name="trans_id" value="{$data.trans_id}"/>

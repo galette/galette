@@ -27,7 +27,7 @@
 		</tr>
 		<tr>
 			<td class="listing left">
-				<input type="submit" class="submit" name="xmlupload" value="{_T string="Load Document Model"}"/>
+				<input type="submit" name="xmlupload" value="{_T string="Load Document Model"}"/>
 			</td>
 			<td class="listing left">
 				<input type="file" name="loadxml" id="xmlfile" value="{$loadxml}" maxlength="64" size="64"/>
@@ -35,7 +35,7 @@
 		</tr>
 		<tr>
 			<td class="listing left">
-				<input type="submit" class="submit" name="fieldsfile" value="{_T string="Generate Field List for Document Editor"}"/>
+				<input type="submit" name="fieldsfile" value="{_T string="Generate Field List for Document Editor"}"/>
 			</td>
 			<td class="listing left">
 				<input type="text" name="exportfields" value="{$exportfields}" maxlength="64" size="64"/>

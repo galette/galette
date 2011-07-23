@@ -60,6 +60,6 @@
 			</table>
 {/if}
 			<div class="button-container">
-				<input type="submit" class="submit" name="valid" value="{_T string="Continue"}"/>
+				<input type="submit" name="valid" value="{_T string="Continue"}"/>
 			</div>
 		</form>

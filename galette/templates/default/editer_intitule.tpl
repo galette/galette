@@ -32,7 +32,7 @@
     <input type="hidden" name="class" value="{$class}" />
 
     <div class="button-container">
-      <input type="submit" class="submit" value="{_T string="Save"}" />
+      <input type="submit" value="{_T string="Save"}" />
     </div>
   </div>
 </form> 

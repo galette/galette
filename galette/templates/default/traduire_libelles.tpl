@@ -30,7 +30,7 @@
 				</fieldset>
 			</div>
 			<div class="button-container">
-				<input type="submit" class="submit" name="trans" value="{_T string="Save"}"/>
+				<input type="submit" name="trans" value="{_T string="Save"}"/>
 			</div>
 		</form>
 {literal}

@@ -46,7 +46,7 @@
                     </tr>
                 </table>
                 <p class="exemple">{_T string="(at least 4 characters)"}</p>
-                <input type="submit" class="submit" name="change_passwd" value="{_T string="Change my password"}"/>
+                <input type="submit" name="change_passwd" value="{_T string="Change my password"}"/>
                 <input type="hidden" name="valid" value="1"/>
                 <input type="hidden" name="hash" value="{$hash}"/>
 {/if}

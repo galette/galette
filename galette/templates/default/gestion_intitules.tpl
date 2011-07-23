@@ -52,7 +52,7 @@
 	<td class="listing center">
 	  <input type="hidden" name="new" value="1" />
 	  <input type="hidden" name="class" value="{$class}" />
-	  <input type="submit" class="submit" name="valid" value="{_T string="Add"}"/>
+	  <input type="submit" name="valid" value="{_T string="Add"}"/>
 	</td>
       </tr>
     </tfoot>

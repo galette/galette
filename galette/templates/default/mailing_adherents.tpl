@@ -54,9 +54,9 @@
 			</p>
 			<p class="center">
 				<input type="checkbox" name="mailing_html" id="mailing_html" value="1" {if $mailing->html eq 1 or $pref_editor_enabled eq 1}checked="checked"{/if}/><label for="mailing_html">{_T string="Interpret HTML"}</label><br/>
-				<input type="submit" class="submit" name="mailing_go" value="{_T string="Preview"}"/>
+				<input type="submit" name="mailing_go" value="{_T string="Preview"}"/>
 			</p>
-			<p><input type="submit" class="submit" name="mailing_confirm" value="{_T string="Send"}"/></p>
+			<p><input type="submit" name="mailing_confirm" value="{_T string="Send"}"/></p>
 	{/if}
 	{if $mailing->current_step > constant('Mailing::STEP_START') && $mailing->current_step lt constant('Mailing::STEP_SEND')}
 			<div id="mail_preview">
@@ -71,7 +71,7 @@
 		{/if}
 				</p>
 			</div>
-			<p><input type="submit" class="submit" name="mailing_confirm" value="{_T string="Send"}"/></p>
+			<p><input type="submit" name="mailing_confirm" value="{_T string="Send"}"/></p>
 	{/if}
 
 		</div>

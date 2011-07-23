@@ -53,7 +53,7 @@
 		</div>
 		<div class="button-container">
 			<input type="hidden" name="valid" id="valid" value="1"/>
-			<input type="submit" class="submit" value="{_T string="Save"}"/>
+			<input type="submit" value="{_T string="Save"}"/>
 		</div>
 		</form>
 		{literal}
