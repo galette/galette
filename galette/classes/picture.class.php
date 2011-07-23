@@ -559,7 +559,7 @@ class Picture
     */
     public function getOptimalHeight()
     {
-        return $this->optimal_height;
+        return round($this->optimal_height);
     }
 
     /**

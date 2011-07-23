@@ -19,7 +19,7 @@
 		<table id="input-table">
 			<thead>
 				<tr>
-					<th class="listing" id="id_row">#</th>
+					<th class="listing" class="id_row">#</th>
 					<th class="listing">{_T string="Name"}</th>
 					<th class="listing date_row">{_T string="Visibility"}</th>
 					<th class="listing date_row">{_T string="Type"}</th>

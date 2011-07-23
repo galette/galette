@@ -34,7 +34,7 @@
 		<table id="listing">
 			<thead>
 				<tr>
-					<th class="listing" id="id_row">#</th>
+					<th class="listing" class="id_row">#</th>
 					<th class="listing left date_row">
 						<a href="gestion_contributions.php?tri=0" class="listing">{_T string="Date"}
 						{if $smarty.session.tri_cotis eq 0}

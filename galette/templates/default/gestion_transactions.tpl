@@ -25,7 +25,7 @@
 		</form>
 		<table id="listing">
 			<tr>
-				<th class="listing" id="id_row">#</th>
+				<th class="listing" class="id_row">#</th>
 				<th class="listing left date_row">
 					<a href="gestion_transactions.php?tri=0" class="listing">{_T string="Date"}
 					{if $smarty.session.sort_by eq 0}

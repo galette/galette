@@ -166,7 +166,7 @@ th.listing, li.listing {
 	white-space: nowrap;
 	font-weight: normal;
 }
-#id_row,
+.id_row,
 th.small_head{
 	width:1%;
 }

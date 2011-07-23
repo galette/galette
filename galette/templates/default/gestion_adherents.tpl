@@ -44,10 +44,10 @@
 		<table id="listing">
 			<thead>
 				<tr>
-					<th class="listing" id="id_row">#</th>
-          <th class="listing" id="id_row">
-            <a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_ID;{/php}" class="listing">N°</a>
-          </th>
+					<th class="listing" class="id_row">#</th>
+                    <th class="listing" class="id_row">
+                        <a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_ID;{/php}" class="listing">N°</a>
+                    </th>
 					<th class="listing left">
 						<a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_NAME;{/php}" class="listing">
 							{_T string="Name"}
