@@ -245,7 +245,7 @@
 			$('#nbshow').change(function() {ldelim}
 				this.form.submit();
 			{rdelim});
-			$('#checkboxes').after('<td class="right" colspan="2"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
+			$('#checkboxes').after('<td class="right" colspan="3"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
 			$('#legende h1').remove();
 			$('#legende').dialog({ldelim}
 				autoOpen: false,
