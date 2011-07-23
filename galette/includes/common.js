@@ -107,4 +107,6 @@ $(function() {
 			active: $('#menu ul li[class*="selected"]').parent('ul').prevAll('ul').size()
 		});
 	}
+
+    $('input:submit' ).button();
 });

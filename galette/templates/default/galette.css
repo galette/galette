@@ -2,8 +2,14 @@
  * == Summary
  *
  * == Global main styles
+ * == Forms elements
  * == Header
+ * == Main menu
  * == Footer
+ * == Main Galette styles
+ * == Public pages
+ * == Install page
+ * == Mobile devices
  */
 
 /*
@@ -66,6 +72,7 @@ abbr[title] {
 th, cation {
     text-align: left;
 }
+
 p#required {
     font-size: .8em;
     float:left;
@@ -118,6 +125,68 @@ footer li {
 }
 /* =/ Footer */
 
+/* == Main Galette styles */
+#listfilter {
+	text-align: center;
+	background-color: #DDDDFF;
+	padding: 10px;
+	margin:0 1em 1em 1em;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	border-radius: 10px 10px 10px 10px;
+}
+
+#listfilter input[type="text"]{
+    padding:0;
+}
+
+.selection_menu{
+	margin:0;
+	padding:0;
+}
+.selection_menu li{
+	margin:0.2em 0;
+    display: inline-block;
+}
+.selection_menu input.submit{
+	margin:0;
+	background:none;
+	display:inline;
+	cursor:pointer;
+	border:none;
+	font-weight:normal;
+	padding-left:20px;
+	text-align:left;
+}
+
+.selection_menu .exemple {
+    font-weight: normal;
+    font-size:0.9em;
+}
+
+/* == Buttons */
+#delete, #sendmail {
+    padding-left: 2em;
+    background-position: 10px 50%, 50% 50%;
+    background-repeat: no-repeat, repeat;
+}
+
+#sendmail{
+    background-image:url(images/icon-mail.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#sendmail.ui-state-hover {
+    background-image:url(images/icon-mail.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#delete{
+    background-image: url(images/icon-trash.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#delete.ui-state-hover {
+    background-image:url(images/icon-trash.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+/* =/ Main Galette styles */
+
 /*
  * == Public pages
  */
@@ -128,11 +197,11 @@ footer li {
  */
 
 /** OLD STYLES */
-input {
+/*input {
 	padding: 0px 2px 0px 2px;
 	margin-top: 1px;
 	margin-bottom: 1px;
-}
+}*/
 
 input.submit
 {
@@ -430,16 +499,6 @@ a.listing:hover {
 
 #full_content {
 	padding:0 0.5em;
-}
-
-#listfilter {
-	text-align: center;
-	background-color: #DDDDFF;
-	padding: 10px;
-	margin:0 1em 1em 1em;
-	-moz-border-radius: 10px 10px 10px 10px;
-	-webkit-border-radius: 10px 10px 10px 10px;
-	border-radius: 10px 10px 10px 10px;
 }
 
 #listing{
@@ -906,34 +965,6 @@ th.bline, td.bline{
 	top:.5em;
     margin:0;
 }
-
-.selection_menu{
-	margin:0;
-	padding:0;
-	font-weight:bold;
-}
-.selection_menu li{
-	margin:0.2em 0;
-	list-style-type:none;
-}
-.selection_menu input.submit{
-	margin:0;
-	background:none;
-	display:inline;
-	cursor:pointer;
-	border:none;
-	font-weight:normal;
-	padding-left:20px;
-	text-align:left;
-}
-
-.selection_menu .exemple {
-    font-weight: normal;
-    font-size:0.9em;
-}
-
-#sendmail{ background:url(images/icon-mail.png) left 50% no-repeat; }
-#delete{ background:url(images/icon-trash.png) left 50% no-repeat; }
 
 .fleft{float:left;}
 .fright{float:right;}

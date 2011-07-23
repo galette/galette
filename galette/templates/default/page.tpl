@@ -11,9 +11,10 @@
 		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.core.min.js"></script>
 		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.widget.min.js"></script>
 		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.accordion.min.js"></script>
+        {* Buttons can be used everywhere *}
+		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.button.min.js"></script>
 {if $require_sorter}
 		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.sortable.min.js"></script>
-
 {/if}
 {if $require_calendar}
 		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
@@ -25,6 +26,11 @@
 		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.tabs.min.js"></script>
 {/if}
 {if $require_dialog}
+        {* Drag component, only used for Dialog for the moment *}
+        <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.mouse.min.js"></script>
+        <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.draggable.min.js"></script>
+        {* So the dialog could be aligned in the middle of the screen *}
+        <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.position.min.js"></script>
 		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.dialog.min.js"></script>
 {/if}
 		{* UI accordion is used for main menu ; we need the CSS *}

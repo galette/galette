@@ -24,8 +24,8 @@
 			<select name="filter_account" onchange="form.submit()">
 				{html_options options=$filter_accounts_options selected=$varslist->account_status_filter}
 			</select>
-			<input type="submit" class="submit inline" value="{_T string="Filter"}"/>
-			<input type="submit" name="clear_filter" class="submit inline" value="{_T string="Clear filter"}"/>
+			<input type="submit" class="inline" value="{_T string="Filter"}"/>
+			<input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
 		</div>
 		<table class="infoline">
 			<tr>
@@ -99,14 +99,31 @@
 					<th class="listing">{_T string="Actions"}</th>
 				</tr>
 			</thead>
+{if $nb_members != 0}
 			<tfoot>
+                <tr>
+                    <td colspan="7" id="table_footer">
+                        <ul class="selection_menu">
+                            <li>{_T string="For the selection:"}</li>
+                            <li><input type="submit" id="delete" onclick="return confirm('{_T string="Do you really want to delete all selected accounts (and related contributions)?"|escape:"javascript"}');" name="delete" value="{_T string="Delete"}"/></li>
+                            <li><input type="submit" id="sendmail" name="mailing" value="{_T string="Mail"}"/></li>
+                            <li>
+                                <input type="submit" id="attendance_sheet" name="attendance_sheet" value="{_T string="Attendance sheet"}"/>
+                                <span class="exemple">(<input type="checkbox" id="wimages" name="wimages" value="1"/> <label for="wimages">{_T string="Including photos?"}</label>)</span>
+                            </li>
+                            <li><input type="submit" name="labels" value="{_T string="Generate labels"}"/></li>
+                            <li><input type="submit" name="cards" value="{_T string="Generate Member Cards"}"/></li>
+                        </ul>
+                    </td>
+                </tr>
 				<tr>
-					<td colspan="7" class="center" id="table_footer">
+					<td colspan="7" class="center">
 						{_T string="Pages:"}<br/>
 						<ul class="pages">{$pagination}</ul>
 					</td>
 				</tr>
 			</tfoot>
+{/if}
 			<tbody>
 {foreach from=$members item=member key=ordre}
 				<tr>
@@ -156,19 +173,6 @@
 {/foreach}
 			</tbody>
 		</table>
-{if $nb_members != 0}
-			<ul class="selection_menu">
-				<li>{_T string="Selection:"}</li>
-				<li><input type="submit" id="delete" class="submit" onclick="return confirm('{_T string="Do you really want to delete all selected accounts (and related contributions)?"|escape:"javascript"}');" name="delete" value="{_T string="Delete"}"/></li>
-				<li><input type="submit" id="sendmail" class="submit" name="mailing" value="{_T string="Mail"}"/></li>
-				<li>
-                    <input type="submit" id="attendance_sheet" class="submit" name="attendance_sheet" value="{_T string="Attendance sheet"}"/>
-                    <span class="exemple">(<input type="checkbox" id="wimages" name="wimages" value="1"/> <label for="wimages">{_T string="Including photos?"}</label>)</span>
-                </li>
-				<li><input type="submit" class="submit" name="labels" value="{_T string="Generate labels"}"/></li>
-				<li><input type="submit" class="submit" name="cards" value="{_T string="Generate Member Cards"}"/></li>
-			</ul>
-{/if}
 		</form>
 {if $nb_members != 0}
 		<div id="legende" title="{_T string="Legend"}">
