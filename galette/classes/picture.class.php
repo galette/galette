@@ -99,10 +99,9 @@ class Picture
     protected $format;
     protected $mime;
     protected $has_picture = true;
-    protected $store_path = '../photos/';
+    protected $store_path = GALETTE_PHOTOS_PATH;
     protected $max_width = 200;
     protected $max_height = 200;
-    protected $custom = true;
 
     /**
     * Default constructor.
@@ -165,7 +164,7 @@ class Picture
     */
     private function _checkFileOnFS()
     {
-        $file_wo_ext = dirname(__FILE__).'/' . $this->store_path . $this->id;
+        $file_wo_ext = $this->store_path . $this->id;
         if ( file_exists($file_wo_ext . '.jpg') ) {
             $this->file_path = $file_wo_ext . '.jpg';
             $this->format = 'jpg';
@@ -204,7 +203,7 @@ class Picture
         if ( $result->numRows() > 0 ) {
             // we must regenerate the picture file
             $pic = $result->fetchRow();
-            $file_wo_ext = dirname(__FILE__).'/' . $this->store_path . $this->id;
+            $file_wo_ext = $this->store_path . $this->id;
             $f = fopen($file_wo_ext . '.' . $pic->format, 'wb');
             fwrite($f, $pic->picture);
             fclose($f);
@@ -306,7 +305,7 @@ class Picture
         if ( MDB2::isError($result) ) {
             return false;
         } else {
-            $file_wo_ext = dirname(__FILE__).'/' . $this->store_path . $this->id;
+            $file_wo_ext = $this->store_path . $this->id;
             if ( file_exists($file_wo_ext . '.jpg') ) {
                 return unlink($file_wo_ext . '.jpg');
             } elseif ( file_exists($file_wo_ext . '.png') ) {
@@ -392,7 +391,7 @@ class Picture
 
         $this->delete();
 
-        $new_file = dirname(__FILE__).'/' . $this->store_path .
+        $new_file = $this->store_path .
             $this->id . '.' . $extension;
         move_uploaded_file($tmpfile, $new_file);
 
@@ -666,14 +665,5 @@ class Picture
         return $this->mime;
     }
 
-    /**
-    * Returns custom state
-    *
-    * @return string
-    */
-    public function isCustom()
-    {
-        return $this->custom;
-    }
 }
 ?>

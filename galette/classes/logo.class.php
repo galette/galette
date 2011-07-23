@@ -57,6 +57,7 @@ class Logo extends Picture
     //database wants a member id (integer), not a string.
     //  Will be used to query the correct id
     protected $db_id = 0;
+    protected $custom = true;
 
     /**
     * Default constructor.
@@ -92,6 +93,16 @@ class Logo extends Picture
     {
         return 'SELECT picture, format FROM ' . PREFIX_DB . self::TABLE .
             ' WHERE ' . self::PK . '=\'' . $this->db_id . '\'';
+    }
+
+    /**
+    * Returns custom state
+    *
+    * @return boolean
+    */
+    public function isCustom()
+    {
+        return $this->custom;
     }
 }
 ?>
