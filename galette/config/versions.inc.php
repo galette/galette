@@ -41,7 +41,7 @@ define('MDB2_VERSION', '2.5.0b3');
 define('LOG_VERSION', '1.12.6');
 define('TCPDF_VERSION', '5.9.088');
 define('JQUERY_VERSION', '1.6.2');
-define('JQUERY_UI_VERSION', '1.7.1');
+define('JQUERY_UI_VERSION', '1.8.14');
 define('JQUERY_MARKITUP_VERSION', '1.1.5');
 define('PHP_MAILER_VERSION', '5.1');
 //will be erased when completly obsoleted

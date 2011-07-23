@@ -8,24 +8,24 @@
 {/if}
 {* JQuery UI related *}
 		{* UI accordion is used for main menu ; we have to require it and UI core *}
-		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.core.min.js"></script>
-		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.accordion.min.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.core.min.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.widget.min.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.accordion.min.js"></script>
 {if $require_sorter}
-		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.sortable.min.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.sortable.min.js"></script>
 
 {/if}
 {if $require_calendar}
-		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.datepicker.min.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
 	{if $lang ne 'en'}
-		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/i18n/ui.datepicker-{$galette_lang}.min.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.min.js"></script>
 	{/if}
-		<link rel="stylesheet" type="text/css" href="{$template_subdir}jquery-ui/jquery-ui-{$jquery_ui_version}.custom.css" />
 {/if}
 {if $require_tabs}
-		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.tabs.min.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.tabs.min.js"></script>
 {/if}
 {if $require_dialog}
-		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.dialog.min.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.dialog.min.js"></script>
 {/if}
 		{* UI accordion is used for main menu ; we need the CSS *}
 		<link rel="stylesheet" type="text/css" href="{$template_subdir}jquery-ui/jquery-ui-{$jquery_ui_version}.custom.css" />
