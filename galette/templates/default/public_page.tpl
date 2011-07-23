@@ -1,4 +1,5 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$galette_lang}" lang="{$galette_lang}">
+<!DOCTYPE html>
+<html lang="{$galette_lang}">
 	<head>
 		{include file='common_header.tpl'}
 	</head>
@@ -7,9 +8,7 @@
 			<div class="full-content-box">
 				{$content}
 			</div>
-			<div id="copyright">
-				<a href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
-			</div>
 		</div>
+        {include file="footer.tpl"}
 	</body>
 </html>
