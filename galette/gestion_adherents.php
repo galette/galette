@@ -144,7 +144,7 @@ if ( isset($_GET['clear_filter']) ) {
 
 //numbers of rows to display
 if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
-    $hist->show = $_GET['nbshow'];
+    $varslist->show = $_GET['nbshow'];
 }
 
 // Sorting
