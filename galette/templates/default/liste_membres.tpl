@@ -1,4 +1,5 @@
 {if $members|@count > 0}
+        <p>{_T string="This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check « Be visible in the members list»"}</p>
 		<table id="listing">
 			<thead>
 				<tr>
