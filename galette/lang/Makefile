@@ -3,66 +3,12 @@ INSTALLDIR = .
 LANGUAGES = en_US fr_FR@euro
 PACKAGE = galette
 MKLANG = ./make_lang_l12n.py
-PHP_SOURCES = ../index.php \
-../self_adherent.php \
-../mailing_adherents.php \
-../history.php \
-../lostpasswd.php \
-../change_passwd.php \
-../includes/session.inc.php \
-../includes/i18n.inc.php \
-../configurer_fiches.php \
-../preferences.php \
-../voir_adherent.php \
-../gestion_contributions.php \
-../ajouter_contribution.php \
-../gestion_adherents.php \
-../carte_adherent.php \
-../etiquettes_adherents.php \
-../install/index.php \
-../ajouter_adherent.php \
-../ajouter_transaction.php \
-../editer_champ.php \
-../gestion_transactions.php \
-../picture.php \
-../champs_requis.php \
-../traduire_libelles.php \
-../gestion_textes.php \
-../gestion_intitules.php \
-../includes/dynamic_fields.inc.php \
-../templates/default/index.tpl \
-../templates/default/gestion_adherents.tpl \
-../templates/default/mailing_adherents.tpl \
-../templates/default/page.tpl \
-../templates/default/preferences.tpl \
-../templates/default/ajouter_adherent.tpl \
-../templates/default/ajouter_contribution.tpl \
-../templates/default/configurer_fiches.tpl \
-../templates/default/config_fields.tpl \
-../templates/default/gestion_contributions.tpl \
-../templates/default/traduire_libelles.tpl \
-../templates/default/history.tpl \
-../templates/default/voir_adherent.tpl \
-../templates/default/ajouter_transaction.tpl \
-../templates/default/display_dynamic_fields.tpl \
-../templates/default/editer_champ.tpl \
-../templates/default/gestion_transactions.tpl \
-../templates/default/lostpasswd.tpl \
-../templates/default/change_passwd.tpl \
-../templates/default/self_adherent.tpl \
-../templates/default/champ_requis.tpl \
-../templates/default/gestion_textes.tpl \
-../templates/default/gestion_intitules.tpl \
-../templates/default/editer_intitule.tpl \
-../templates/default/trombinoscope.tpl \
-../templates/default/liste_membres.tpl \
-../templates/default/export.tpl \
-../classes/adherent.class.php \
-../classes/models.class.php \
-../classes/pdf.class.php \
-../classes/politeness.class.php \
-../classes/preferences.class.php \
-../classes/plugins.class.php
+PHP_SOURCES = $(shell find ../ -maxdepth 1 -name \*.php) \
+              $(shell find ../classes -name \*.php) \
+              $(shell find ../includes -maxdepth 1 -name \*.php) \
+              $(shell find ../install -name \*.php) \
+              $(shell find ../public -name \*.php) \
+              $(shell find ../templates -name \*.tpl)
 
 
 all : messages.po lang
