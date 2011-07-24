@@ -108,7 +108,7 @@
 					</p>
 					<p>
 						<label for="mdp_adh" class="bline{if $required.mdp_adh eq 1} required{/if}">{_T string="Password:"}</label>
-						<input type="password" name="mdp_adh" id="mdp_adh" value="" maxlength="20" {$disabled.mdp_adh}/>
+						<input type="password" name="mdp_adh" id="mdp_adh" value="" maxlength="20" autocomplete="off" {$disabled.mdp_adh}/>
 						<span class="exemple">{_T string="(at least 4 characters)"}</span>
 					</p>
 					<p>
