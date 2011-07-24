@@ -1,7 +1,7 @@
 {if !empty($dynamic_fields)}
 {if $is_form eq true}
 <fieldset class="cssform">
-	<legend>{_T string="Additionnal fields:"}</legend>
+	<legend class="ui-state-active ui-corner-top">{_T string="Additionnal fields:"}</legend>
 	<div>
 {else}
 <table class="details">

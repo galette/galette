@@ -22,7 +22,7 @@
 {/if}
 		<div class="bigtable">
 			<fieldset class="cssform">
-				<legend>{_T string="Identity:"}</legend>
+				<legend class="ui-state-active ui-corner-top">{_T string="Identity:"}</legend>
 				<div>
 					<p>
 						<span class="bline">{_T string="Picture:"}</span>
@@ -72,7 +72,7 @@
 			</fieldset>
 
 			<fieldset class="cssform">
-				<legend>{_T string="Galette-related data:"}</legend>
+				<legend class="ui-state-active ui-corner-top">{_T string="Galette-related data:"}</legend>
 				<div>
 					<p>
 						<label for="bool_display_info" class="bline {if $required.bool_display_info eq 1} required{/if}">{_T string="Be visible in the<br /> members list :"}</label>
@@ -150,7 +150,7 @@
 			</fieldset>
 
 			<fieldset class="cssform">
-				<legend>{_T string="Contact information:"}</legend>
+				<legend class="ui-state-active ui-corner-top">{_T string="Contact information:"}</legend>
 				<div>
 					<p>
 						<label for="adresse_adh" class="bline{if $required.adresse_adh eq 1} required{/if}">{_T string="Address:"}</label>
