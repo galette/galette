@@ -1,10 +1,10 @@
 <?php
-// This file was automatically generated on Sun Jul 24 09:53:25 2011 (GMT)
+// This file was automatically generated on Sun Jul 24 20:48:03 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
 // ../templates/default/gestion_adherents.tpl:20 
-$lang[''] = 'Content-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nMime-Version: 1.0Last-Translator: \nPO-Revision-Date: 2011-07-24 11:53+0200\nProject-Id-Version: \nLanguage-Team: French <kde-i18n-doc@kde.org>\nLanguage: fr\nX-Generator: Lokalize 1.2\nMIME-Version: 1.0\nPlural-Forms: nplurals=2; plural=(n > 1);\n';
+$lang[''] = 'Content-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nMime-Version: 1.0Last-Translator: \nPO-Revision-Date: 2011-07-24 22:48+0200\nProject-Id-Version: \nLanguage-Team: French <kde-i18n-doc@kde.org>\nLanguage: fr\nX-Generator: Lokalize 1.2\nMIME-Version: 1.0\nPlural-Forms: nplurals=2; plural=(n > 1);\n';
 
 // ../classes/plugins.class.php:214 ../classes/plugins.class.php:218 
 $lang['Cannot deactivate plugin.'] = 'Impossible de désactiver le plugin.';
@@ -1981,7 +1981,7 @@ $lang['No parameted exports are available.'] = 'Aucun exporr paramétré disponi
 $lang['The tables has been correctly created.'] = 'Les tables ont été correctement créées.';
 
 // ../templates/default/preferences.tpl:34 ../templates/default/utilitaires.tpl:26 
-$lang['Parameters'] = 'paramètres';
+$lang['Parameters'] = 'Paramètres';
 
 // ../templates/default/preferences.tpl:33 
 $lang['E-Mail'] = 'Courriel';

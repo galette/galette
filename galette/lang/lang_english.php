@@ -1,10 +1,10 @@
 <?php
-// This file was automatically generated on Sun Jul 24 09:53:25 2011 (GMT)
+// This file was automatically generated on Sun Jul 24 20:48:03 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
-// ../templates/default/gestion_adherents.tpl:20 
-$lang[''] = 'Content-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nMime-Version: 1.0Last-Translator: \nPO-Revision-Date: 2011-07-24 11:51+0200\nProject-Id-Version: \nLanguage-Team: French <kde-i18n-doc@kde.org>\nLanguage: fr\nX-Generator: Lokalize 1.2\nMIME-Version: 1.0\nPlural-Forms: nplurals=2; plural=(n > 1);\n';
+// ../champs_adherents.php:47 ../champs_adherents.php:68 ../champs_adherents.php:70 
+$lang[''] = 'Project-Id-Version: \nPO-Revision-Date: 2011-07-24 11:51+0200\nLanguage-Team: French <kde-i18n-doc@kde.org>\nLanguage: fr\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nX-Generator: Lokalize 1.2\nPlural-Forms: nplurals=2; plural=(n > 1);\n';
 
 // ../classes/plugins.class.php:214 ../classes/plugins.class.php:218 
 $lang['Cannot deactivate plugin.'] = 'Cannot deactivate plugin.';
