@@ -85,7 +85,7 @@ if ( isset($_SESSION['galette']['varslist'])  ) {
                 'pos' => $k+1
             );
             if ( $k > 0 ) {
-                $navigate['prec'] = $ids[$k-1]->id_adh;
+                $navigate['prev'] = $ids[$k-1]->id_adh;
             }
             if ( $k < count($ids)-1 ) {
                 $navigate['next'] = $ids[$k+1]->id_adh;

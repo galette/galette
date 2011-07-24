@@ -1,7 +1,7 @@
 	<h1 id="titre">{_T string="Member Profile"}</h1>
 {if $navigate|@count != 0}
     <nav>
-        <a id="prev" href="?id_adh={$navigate.prec}" class="button">{_T string="Previous"}</a>
+        <a id="prev" href="{if $navigate.prev}?id_adh={$navigate.prev}{else}#{/if}" class="button{if !$navigate.prev} selected{/if}">{_T string="Previous"}</a>
         {$navigate.pos}/{$navigate.count}
         <a id="next" href="{if $navigate.next}?id_adh={$navigate.next}{else}#{/if}"class="button{if !$navigate.next} selected{/if}">{_T string="Next"}</a>
     </nav>
