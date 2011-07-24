@@ -143,7 +143,9 @@ class Members
         }
 
         //add limits to retrieve only relavant rows
-        $varslist->setLimit();
+        if ( isset($varslist) ){
+            $varslist->setLimit();
+        }
 
         $result = $mdb->query($query);
         if (MDB2::isError($result)) {
@@ -442,7 +444,9 @@ class Members
         }
 
         $this->_count = $result->fetchOne();
-        $varslist->setCounter($this->_count);
+        if ( isset($varslist) ) {
+            $varslist->setCounter($this->_count);
+        }
     }
 
     /**
