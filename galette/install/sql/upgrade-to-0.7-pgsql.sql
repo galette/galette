@@ -1,3 +1,6 @@
+-- Each preference must be unique
+CREATE UNIQUE INDEX galette_preferences_name ON galette_preferences (nom_pref);
+
 -- Add new or missing preferences;
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_slogan', '');
 UPDATE galette_preferences SET pref_lang='fr_FR' WHERE pref_lang='french';

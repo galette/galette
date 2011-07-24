@@ -117,6 +117,7 @@ CREATE TABLE galette_preferences (
   val_pref character varying(200) DEFAULT '' NOT NULL
 );
 CREATE UNIQUE INDEX galette_preferences_idx ON galette_preferences (id_pref);
+CREATE UNIQUE INDEX galette_preferences_name ON galette_preferences (nom_pref);
 
 DROP SEQUENCE galette_logs_id_seq;
 CREATE SEQUENCE galette_logs_id_seq
