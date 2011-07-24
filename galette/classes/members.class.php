@@ -128,7 +128,7 @@ class Members
     public function getMembersList(
         $as_members=false, $fields=null, $filter=true, $count=true, $staff=false
     ) {
-        global $mdb, $log;
+        global $mdb, $log, $varslist;
 
         $_mode = self::SHOW_LIST;
         if ( $staff !== false ) {
@@ -141,6 +141,9 @@ class Members
         if ( $staff !== false ) {
             $query .= ' WHERE p.priorite_statut < ' . self::NON_STAFF_MEMBERS;
         }
+
+        //add limits to retrieve only relavant rows
+        $varslist->setLimit();
 
         $result = $mdb->query($query);
         if (MDB2::isError($result)) {
@@ -557,18 +560,9 @@ class Members
                 break;
             }
         }
-        return $where;
-    }
 
-    /**
-    * Builds limit clause, for pagination
-    *
-    * @return string SQL LIMIT clause
-    */
-    private function _setLimits()
-    {
-        $limits = '';
-        return $limits;
+        $varslist->setLimit();
+        return $where;
     }
 
     /**

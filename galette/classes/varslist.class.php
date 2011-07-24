@@ -193,5 +193,9 @@ class VarsList extends GalettePagination
             }
         }
     }
+
+    public function setLimit() {
+        return $this->setLimits();
+    }
 }
 ?>
