@@ -143,7 +143,6 @@ class Members
         }
 
         //add limits to retrieve only relavant rows
-        $varslist->setLimit();
 
         $result = $mdb->query($query);
         if (MDB2::isError($result)) {
@@ -561,7 +560,6 @@ class Members
             }
         }
 
-        $varslist->setLimit();
         return $where;
     }
 
