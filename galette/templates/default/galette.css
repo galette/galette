@@ -969,7 +969,7 @@ legend{
 }
 
 /* no border on the first 'p' child */
-.cssform p:nth-child(2), .cssform div.p:nth-child(2){
+.cssform p:nth-child(2), .cssform div.p:nth-child(2), .cssform div p:nth-child(1){
     border-top:none;
 }
 
