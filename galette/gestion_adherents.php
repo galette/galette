@@ -62,7 +62,7 @@ if ( isset($_SESSION['galette']['mailing']) ) {
 
 require_once 'classes/varslist.class.php';
 
-if ( isset($_SESSION['galette']['varslist']) && !GALETTE_MODE == 'DEV'  ) {
+if ( isset($_SESSION['galette']['varslist'])  ) {
     $varslist = unserialize($_SESSION['galette']['varslist']);
 } else {
     $varslist = new VarsList();
@@ -199,12 +199,6 @@ if (isset($_GET['sup']) || isset($_POST['delete'])) {
             $requetesup = 'DELETE FROM ' . PREFIX_DB . 'cotisations WHERE id_adh=' .
                 $DB->qstr($supval, get_magic_quotes_gpc());
             $DB->Execute($requetesup);
-
-            // erase custom fields
-            /** FIXME: no table named 'adh_info'... */
-            /*$requetesup = "DELETE FROM ".PREFIX_DB."adh_info WHERE id_adh=".
-                $DB->qstr($supval, get_magic_quotes_gpc());
-            $DB->Execute($requetesup);*/
 
             // erase picture
             /** TODO: picture should be removed by object when member is deleted */

@@ -197,5 +197,11 @@ class VarsList extends GalettePagination
     public function setLimit() {
         return $this->setLimits();
     }
+
+    public function setCounter($c)
+    {
+        $this->counter = (int)$c;
+        $this->countPages();
+    }
 }
 ?>

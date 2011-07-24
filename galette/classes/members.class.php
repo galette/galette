@@ -143,6 +143,7 @@ class Members
         }
 
         //add limits to retrieve only relavant rows
+        $varslist->setLimit();
 
         $result = $mdb->query($query);
         if (MDB2::isError($result)) {
@@ -371,8 +372,6 @@ class Members
     */
     private function _buildSelect($mode, $fields, $filter, $photos, $count = false)
     {
-        global $varslist;
-
         $fieldsList = ( $fields != null && !$as_members )
                         ? (( !is_array($fields) || count($fields) < 1 ) ? '*'
                         : implode(', ', $fields)) : '*';
@@ -424,7 +423,7 @@ class Members
     */
     private function _proceedCount($join, $where)
     {
-        global $mdb, $log;
+        global $mdb, $log, $varslist;
 
         $query = 'SELECT count(' . self::PK . ') FROM ' .
             PREFIX_DB . self::TABLE;
@@ -443,6 +442,7 @@ class Members
         }
 
         $this->_count = $result->fetchOne();
+        $varslist->setCounter($this->_count);
     }
 
     /**
