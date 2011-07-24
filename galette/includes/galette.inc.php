@@ -68,12 +68,12 @@ define('GALETTE_MODE', 'DEV'); //DEV or PROD
 @ini_set('display_errors', 0);
 
 set_include_path(
-    get_include_path() . PATH_SEPARATOR .
     GALETTE_PEAR_PATH . PATH_SEPARATOR .
     GALETTE_PEAR_MDB2_PATH . PATH_SEPARATOR .
     GALETTE_PEAR_LOG_PATH . PATH_SEPARATOR .
     GALETTE_PHP_MAILER_PATH . PATH_SEPARATOR .
-    GALETTE_SMARTY_PATH
+    GALETTE_SMARTY_PATH . PATH_SEPARATOR .
+    get_include_path()
 );
 
 /*------------------------------------------------------------------------------
