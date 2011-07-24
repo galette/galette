@@ -39,8 +39,7 @@
 if ( !$login->isLogged() || isset($_POST['logout']) || isset($_GET['logout']) ) {
     if ( isset($_POST['logout']) || isset($_GET['logout']) ) {
         $hist->add(_("Log off"));
-        $_SESSION['galette']['db'] = null;
-        unset($_SESSION['galette']['db']);
+        unset($_SESSION['galette']);
     }
     $_SESSION['filtre_adh_nom'] = '';
     $_SESSION['filtre_adh'] = 0;
