@@ -109,7 +109,7 @@
                             <li><input type="submit" id="sendmail" name="mailing" value="{_T string="Mail"}"/></li>
                             <li>
                                 <input type="submit" id="attendance_sheet" name="attendance_sheet" value="{_T string="Attendance sheet"}"/>
-                                <span class="exemple">(<input type="checkbox" id="wimages" name="wimages" value="1"/> <label for="wimages">{_T string="Including photos?"}</label>)</span>
+                                {*<span class="exemple">(<input type="checkbox" id="wimages" name="wimages" value="1"/> <label for="wimages">{_T string="Including photos?"}</label>)</span>*}
                             </li>
                             <li><input type="submit" name="labels" value="{_T string="Generate labels"}"/></li>
                             <li><input type="submit" name="cards" value="{_T string="Generate Member Cards"}"/></li>
