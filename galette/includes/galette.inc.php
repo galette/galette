@@ -134,7 +134,6 @@ if ( isset($_SESSION['galette_lang']) ) {
     $i18n = unserialize($_SESSION['galette_lang']);
 } else {
     $i18n = new I18n();
-    $_SESSION['galette_lang'] = serialize($i18n);
 }
 
 if ( isset($_POST['pref_lang'])
@@ -145,6 +144,7 @@ if ( isset($_POST['pref_lang'])
 if ( isset($_GET['pref_lang']) ) {
     $i18n->changeLanguage($_GET['pref_lang']);
 }
+$_SESSION['galette_lang'] = serialize($i18n);
 require_once WEB_ROOT . 'includes/i18n.inc.php';
 
 if ( !$installer ) { //If we're not working from installer
@@ -205,7 +205,7 @@ if ( !$installer ) { //If we're not working from installer
     * Instanciate history object
     */
     require_once WEB_ROOT . 'classes/history.class.php';
-    if ( isset($_SESSION['galette']['history']) ) {
+    if ( isset($_SESSION['galette']['history']) && !GALETTE_MODE == 'DEV' ) {
         $hist = unserialize($_SESSION['galette']['history']);
     } else {
         $hist = new History();
