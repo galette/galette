@@ -54,7 +54,7 @@ CREATE TABLE galette_cotisations (
   date_fin_cotis date NOT NULL default '0000-00-00',
   trans_id int(10) unsigned default NULL,
   PRIMARY KEY  (id_cotis)
-) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_transactions;
 CREATE TABLE galette_transactions (
@@ -64,7 +64,7 @@ CREATE TABLE galette_transactions (
   trans_desc varchar(30) NOT NULL default '',
   id_adh int(10) unsigned default NULL,
   PRIMARY KEY  (trans_id)
-) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_statuts;
 CREATE TABLE galette_statuts (
@@ -72,7 +72,7 @@ CREATE TABLE galette_statuts (
   libelle_statut varchar(20) NOT NULL default '',
   priorite_statut tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (id_statut)
-) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_types_cotisation;
 CREATE TABLE galette_types_cotisation (
@@ -87,7 +87,8 @@ CREATE TABLE galette_preferences (
   id_pref int(10) unsigned NOT NULL auto_increment,
   nom_pref varchar(100) NOT NULL default '',
   val_pref varchar(200) NOT NULL default '',
-  PRIMARY KEY  (id_pref)
+  PRIMARY KEY (id_pref),
+  UNIQUE (nom_pref)
 ) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_logs;
@@ -139,7 +140,7 @@ CREATE TABLE galette_pictures (
     picture mediumblob NOT NULL,
     format varchar(10) NOT NULL default '',
     PRIMARY KEY  (id_adh)
-) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Table for dynamic translation of strings;
 DROP TABLE IF EXISTS galette_l10n;
@@ -158,7 +159,7 @@ CREATE TABLE galette_tmppasswds (
     tmp_passwd varchar(40) NOT NULL,
 		date_crea_tmp_passwd datetime NOT NULL,
     PRIMARY KEY (id_adh)
-) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Table for dynamic required fields 2007-07-10;
 DROP TABLE IF EXISTS galette_required;

@@ -3,7 +3,15 @@ SET FOREIGN_KEY_CHECKS=0;
 
 -- Set some tables type to InnoDB so we can use foreign keys
 ALTER TABLE galette_adherents ENGINE = InnoDB;
-ALTER TABLE `galette_types_cotisation` ENGINE = InnoDB;
+ALTER TABLE galette_types_cotisation ENGINE = InnoDB;
+ALTER TABLE galette_cotisations ENGINE = InnoDB;
+ALTER TABLE galette_transactions ENGINE = InnoDB;
+ALTER TABLE galette_statuts ENGINE = InnoDB;
+ALTER TABLE galette_pictures ENGINE = InnoDB;
+ALTER TABLE galette_tmppasswds ENGINE = InnoDB;
+
+-- Each preference must be unique
+ALTER TABLE galette_preferences ADD UNIQUE (nom_pref);
 
 -- Add new or missing preferences;
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_slogan', '');
