@@ -205,7 +205,7 @@ footer li {
 }
 
 /* == Buttons */
-#delete, #sendmail, .button {
+#delete, #sendmail, #btnsave, .button {
     padding-left: 2em!important;
     background-position: 10px 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;
@@ -258,6 +258,27 @@ footer li {
 }
 #backhome.ui-state-hover {
     background-image:url(images/home.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#logout {
+	background-image:url(images/icon-quit.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#logout.ui-state-hover {
+    background-image:url(images/icon-quit.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#btnsave {
+	background-image:url(images/icon-save.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#bntsave.ui-state-hover {
+    background-image:url(images/icon-save.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#histreset {
+	background-image:url(images/delete.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#bntsave.ui-state-hover {
+    background-image:url(images/delete.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 .left {

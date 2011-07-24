@@ -1,9 +1,5 @@
 		<h1 id="titre">{_T string="Logs"}</h1>
-		<div class="button-container">
-			<div class="button-link button-flush-logs">
-				<a href="history.php?reset=1">{_T string="Flush the logs"}</a>
-			</div>
-		</div>
+        <a id="histreset" class="button" href="history.php?reset=1">{_T string="Flush the logs"}</a>
 		<table id="listing">
 			<thead>
 				<tr>

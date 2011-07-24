@@ -116,9 +116,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {* Include plugins menu entries *}
 {$plugins->getMenus()}
 {if $login->isLogged()}
-		<div id="logout">
-			<a href="{$galette_base_path}index.php?logout=1">{_T string="Log off"}</a>
-		</div>
+        <a id="logout" class="button" href="{$galette_base_path}index.php?logout=1">{_T string="Log off"}</a>
 {/if}
 		<ul id="langs">
 {foreach item=langue from=$languages}

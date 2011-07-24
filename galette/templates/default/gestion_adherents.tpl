@@ -12,7 +12,7 @@
 {/if}
 		<div id="listfilter">
 			<label for="filter_str">{_T string="Search:"}&nbsp;</label>
-			<input type="text" name="filter_str" id="filter_str" value="{$varslist->filter_str}"/>&nbsp;
+			<input type="text" name="filter_str" id="filter_str" value="{$varslist->filter_str}" type="search" placeholder="{_T string="Enter a value"}"/>&nbsp;
 		 	{_T string="in:"}&nbsp;
 			<select name="filter_field">
 				{html_options options=$filter_field_options selected=$varslist->field_filter}
