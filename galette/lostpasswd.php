@@ -148,5 +148,8 @@ $tpl->assign('error_detected', $error_detected);
 $tpl->assign('warning_detected', $warning_detected);
 
 // display page
-$tpl->display('lostpasswd.tpl');
+$content = $tpl->fetch('lostpasswd.tpl');
+$tpl->assign('content', $content);
+$tpl->display('public_page.tpl');
+
 ?>

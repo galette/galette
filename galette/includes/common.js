@@ -108,5 +108,6 @@ $(function() {
 		});
 	}
 
-    $('input:submit' ).button();
+    $('input:submit, .button' ).button();
+    $('.selected').addClass('ui-state-disabled');
 });

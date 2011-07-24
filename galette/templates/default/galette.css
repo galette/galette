@@ -15,6 +15,19 @@
 /*
  * == Global main styles
  */
+a {
+	text-decoration: none;
+	color: #0000FF;
+}
+
+a:hover {
+	color: #eea423;
+}
+
+.ui-button:hover{
+    color:inherit;
+}
+
 form,
 body {
 	margin: 0;
@@ -55,6 +68,10 @@ pre, code, kbd, samp {
     font-family: monospace, monospace;
 }
 
+pre {
+	margin: 0px;
+}
+
 img, table, td, blockquote, code, pre, textarea, input {
     max-width: 100%;
 }
@@ -83,11 +100,34 @@ p#required {
 /*
  * == Header
  */
+ nav {
+     margin: .3em 0 .5em;
+     text-align: center;
+}
+
+nav a{
+     display: inline-block!important;
+}
 /* =/ Header */
 
 /*
  * == Main menu
  */
+#langs{
+	list-style-type:none;
+	margin:1em;
+	padding:0;
+	display:inline;
+}
+#langs li{
+	padding:0;
+	margin:0;
+	display:inline;
+	background-color:transparent;
+}
+#langs li a{
+	display:inline;
+}
 /* =/ Main menu */
 
 /*
@@ -165,10 +205,10 @@ footer li {
 }
 
 /* == Buttons */
-#delete, #sendmail {
-    padding-left: 2em;
-    background-position: 10px 50%, 50% 50%;
-    background-repeat: no-repeat, repeat;
+#delete, #sendmail, .button {
+    padding-left: 2em!important;
+    background-position: 10px 50%, 50% 50%!important;
+    background-repeat: no-repeat, repeat!important;
 }
 
 #sendmail{
@@ -185,50 +225,39 @@ footer li {
     background-image:url(images/icon-trash.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-/* =/ Main Galette styles */
-
-/*
- * == Public pages
- */
-/* =/ Public pages */
-
-/*
- * == End
- */
-
-/** OLD STYLES */
-/*input {
-	padding: 0px 2px 0px 2px;
-	margin-top: 1px;
-	margin-bottom: 1px;
-}*/
-
-input.submit
-{
-	display:block;
-	background-color: #FBFBFB;
-	font-weight: bold;
-	color: #666666;
-	border: 1px solid #BBBBBB;
-	margin: 0.5em auto 0 auto;
+#subscribe {
+	background-image:url(images/subscribe.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#subscribe.ui-state-hover {
+    background-image:url(images/subscribe.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-input.submit:hover
-{
-	color: #FF0000;
+#lostpassword {
+	background-image:url(images/lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#lostpassword.ui-state-hover {
+    background-image:url(images/lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-a {
-	text-decoration: none;
-	color: #0000FF;
+#memberslist {
+	background-image:url(images/members-list.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#memberslist.ui-state-hover {
+    background-image:url(images/members-list.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-a:hover {
-	color: #eea423;
+#trombino {
+	background-image:url(images/trombino.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#trombino.ui-state-hover {
+    background-image:url(images/trombino.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-pre {
-	margin: 0px;
+#backhome {
+	background:url(images/home.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#backhome.ui-state-hover {
+    background-image:url(images/home.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 .left {
@@ -281,6 +310,65 @@ pre {
 .cotis-give {
 	background-color: #FFDDDD!important;
 	vertical-align: top;
+}
+
+/* =/ Main Galette styles */
+
+/*
+ * == Public pages
+ */
+ .public_page footer{
+	clear:both;
+}
+
+.public_page header {
+     text-align: center;
+     margin-top:1em;
+}
+
+.public_page #listing {
+    margin: 0 auto;
+    width: 95%;
+}
+
+.public_page #langs {
+    display: block;
+    margin:0;
+}
+
+.public_page section {
+    text-align: center;
+}
+
+.public_page table {
+    margin:1em auto;
+}
+/* =/ Public pages */
+
+/*
+ * == End
+ */
+
+/** OLD STYLES */
+/*input {
+	padding: 0px 2px 0px 2px;
+	margin-top: 1px;
+	margin-bottom: 1px;
+}*/
+
+input.submit
+{
+	display:block;
+	background-color: #FBFBFB;
+	font-weight: bold;
+	color: #666666;
+	border: 1px solid #BBBBBB;
+	margin: 0.5em auto 0 auto;
+}
+
+input.submit:hover
+{
+	color: #FF0000;
 }
 
 .totalcount {
@@ -397,10 +485,6 @@ a.listing:hover {
 .acronyme {
 	color: #AAAAAA;
 	font-style: italic;
-}
-
-#full_content #copyright{
-	clear:both;
 }
 
 .exemple {
@@ -705,29 +789,11 @@ a.listing:hover {
 	color: #FF0000;
 }
 
-#backhome a{
-	background:url(images/home.png) right 50% no-repeat;
-}
 .button-back
 {
 	background-image: url(images/back.png);
 }
 
-#memberslist a {
-	background:url(images/members-list.png) right 50% no-repeat;
-}
-
-#trombino a {
-	background:url(images/trombino.png) right 50% no-repeat;
-}
-
-#lostpassword a{
-	background:url(images/lost_pass.png) right 50% no-repeat;
-}
-
-#subscribe a{
-	background:url(images/subscribe.png) right 50% no-repeat;
-}
 .button-subscribe
 {
 	background-image: url(images/add.png);
@@ -788,10 +854,10 @@ a.listing:hover {
 {
 	text-align: right;
 }
-.login-box input {
+/*.login-box input {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	padding: 0 2px;
-}
+}*/
 
 .bigtable
 {
@@ -953,7 +1019,6 @@ th.bline, td.bline{
 	color: #666666;
 	padding:0.3em 20px 0.3em 0;
 }
-.menu a:hover{color: #FF0000;}
 
 .inline{ display:inline!important; }
 
@@ -1366,28 +1431,13 @@ ul#paths{
 	color: #212121;
 }
 #menu li a:hover{
-	background-color: #DDDDFF;
+	background-color: #DDDDFF;*
 	text-decoration:underline;
 }
 #menu li.selected a{
 	background-color: #DDDDFF;
 }
 
-#langs{
-	list-style-type:none;
-	margin:1em;
-	padding:0;
-	display:inline;
-}
-#langs li{
-	padding:0;
-	margin:0;
-	display:inline;
-	background-color:transparent;
-}
-#langs li a{
-	display:inline;
-}
 /** /MENUS */
 
 /** PAGINATION */

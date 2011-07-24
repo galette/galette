@@ -86,7 +86,10 @@ if (isset($_POST["ident"])) {
 if ( !$login->isLogged() ) {
     // display page
     $tpl->assign('loginfault', $loginfault);
-    $tpl->display("index.tpl");
+    $content = $tpl->fetch('index.tpl');
+    $tpl->assign('page_title', _T("Login"));
+    $tpl->assign('content', $content);
+    $tpl->display('public_page.tpl');
 } else {
     if ( $login->isAdmin() ) {
         header('location: gestion_adherents.php');

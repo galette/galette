@@ -1,63 +1,4 @@
-<!DOCTYPE html>
-<html lang="{$galette_lang}">
-	<head>
-		{include file='common_header.tpl'}
-		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/ui.datepicker.min.js"></script>
-		{if $lang ne 'en'}
-		<script type="text/javascript" src="{$jquery_dir}ui-{$jquery_ui_version}/i18n/ui.datepicker-{$galette_lang}.min.js"></script>
-		{/if}
-		<link rel="stylesheet" type="text/css" href="{$template_subdir}jquery-ui/jquery-ui-{$jquery_ui_version}.custom.css" />
-{literal}
-		<script type="text/javascript">
-			$(function(){
-				_collapsibleFieldsets();
-
-				$('#pref_lang').change(function(){
-					$('#update_lang').attr('value', 1);
-					$('#valid').attr('value', 0);
-					$('#subscribtion_form').submit();
-				});
-				$('#ddn_adh').datepicker({
-					changeMonth: true,
-					changeYear: true,
-					showOn: 'button',
-					buttonImage: 'templates/default/images/calendar.png',
-					buttonImageOnly: true
-				});
-			});
-		</script>
-{/literal}
-{if $head_redirect}{$head_redirect}{/if}
-	</head>
-	<body>
-		<div id="main_logo">
-			<img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
-		</div>
-		<h1 id="titre" class="self_subscribe">{_T string="Member self subscription"}</h1>
-		<ul class="menu m_subscribe">
-			<li id="backhome"><a href="index.php">{_T string="Back to login page"}</a></li>
-		</ul>
 		<div>
-{if $error_detected|@count != 0}
-		<div id="errorbox">
-			<h1>{_T string="- ERROR -"}</h1>
-			<ul>
-{foreach from=$error_detected item=error}
-				<li>{$error}</li>
-{/foreach}
-			</ul>
-		</div>
-{/if}
-{if $warning_detected|@count != 0}
-		<div id="warningbox">
-			<h1>{_T string="- WARNING -"}</h1>
-			<ul>
-{foreach from=$warning_detected item=warning}
-				<li>{$warning}</li>
-{/foreach}
-			</ul>
-		</div>
-{/if}
 {if $has_register}
 		<p id="infobox">{_T string="Your account has been successfully created."}<br/>{_T string="Your browser should redirect you to the login page in a few seconds, if not, please go to: "} <a href="../index.php">{_T string="Homepage"}</a></p>
 {/if}
@@ -200,10 +141,26 @@
 			<input type="submit" value="{_T string="Save"}"/>
 			<input type="hidden" name="valid" id="valid" value="1"/>
 		</div>
-	</form>
+        </form>
 {/if}
 
-	</div>
-    {include file="footer.tpl"}
-</body>
-</html>
+{literal}
+		<script type="text/javascript">
+			$(function(){
+				_collapsibleFieldsets();
+
+				$('#pref_lang').change(function(){
+					$('#update_lang').attr('value', 1);
+					$('#valid').attr('value', 0);
+					$('#subscribtion_form').submit();
+				});
+				$('#ddn_adh').datepicker({
+					changeMonth: true,
+					changeYear: true,
+					showOn: 'button',
+					buttonImage: 'templates/default/images/calendar.png',
+					buttonImageOnly: true
+				});
+			});
+		</script>
+{/literal}

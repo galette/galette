@@ -1,14 +1,54 @@
 <!DOCTYPE html>
-<html lang="{$galette_lang}">
+<html lang="{$galette_lang}" class="public_page">
 	<head>
 		{include file='common_header.tpl'}
+{if $require_calendar}
+		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
+	{if $lang ne 'en'}
+		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.min.js"></script>
+	{/if}
+{/if}
+        {if $head_redirect}{$head_redirect}{/if}
 	</head>
 	<body>
-		<div id="full_content">
-			<div class="full-content-box">
-				{$content}
-			</div>
-		</div>
+        <header>
+            <img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
+            <ul id="langs">
+{foreach item=langue from=$languages}
+                <li><a href="?pref_lang={$langue->getID()}"><img src="{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}" class="flag"/></a></li>
+{/foreach}
+            </ul>
+        </header>
+		<h1 id="titre">{$page_title}</h1>
+        <nav>
+            <a id="backhome" class="button{if $PAGENAME eq "index.php"} selected{/if}" href="{$galette_base_path}index.php">{_T string="Home"}</a>
+            <a id="subscribe" class="button{if $PAGENAME eq "self_adherent.php"} selected{/if}" href="{$galette_base_path}self_adherent.php">{_T string="Subscribe"}</a>
+            <a id="lostpassword" class="button{if $PAGENAME eq "lostpasswd.php"} selected{/if}" href="{$galette_base_path}lostpasswd.php">{_T string="Lost your password?"}</a>
+            {* TODO: public pages links display should be configurable from galette preferences *}
+            <a id="memberslist" class="button{if $PAGENAME eq "liste_membres.php"} selected{/if}" href="{$galette_base_path}public/liste_membres.php" title="{_T string="Members list"}">{_T string="Members list"}</a>
+            <a id="trombino" class="button{if $PAGENAME eq "trombinoscope.php"} selected{/if}" href="{$galette_base_path}public/trombinoscope.php" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a>
+        </nav>
+{if $error_detected|@count != 0}
+				<div id="errorbox">
+					<h1>{_T string="- ERROR -"}</h1>
+					<ul>
+{foreach from=$error_detected item=error}
+						<li>{$error}</li>
+{/foreach}
+					</ul>
+				</div>
+{/if}
+{if $warning_detected|@count != 0}
+				<div id="warningbox">
+					<h1>{_T string="- WARNING -"}</h1>
+					<ul>
+{foreach from=$warning_detected item=warning}
+						<li>{$warning}</li>
+{/foreach}
+					</ul>
+				</div>
+{/if}
+        {$content}
         {include file="footer.tpl"}
 	</body>
 </html>

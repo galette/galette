@@ -399,7 +399,10 @@ $tpl->assign('time', time());
 
 // genre
 $tpl->assign('radio_titres', Politeness::getList());
+$tpl->assign('require_calendar', true);
 
 // display page
-$tpl->display('self_adherent.tpl');
+$content = $tpl->fetch('self_adherent.tpl');
+$tpl->assign('content', $content);
+$tpl->display('public_page.tpl');
 ?>
