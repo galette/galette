@@ -152,63 +152,17 @@ if ( isset($_GET['tri']) ) {
     $varslist->orderby = $_GET['tri'];
 }
 
+$members = new Members();
+
 //delete members
-/** TODO: Members object must do that stuff */
 if (isset($_GET['sup']) || isset($_POST['delete'])) {
-    /** TODO: finalize the new function in Members class */
-    /*$m = new Members();
     if ( isset($_GET['sup']) ) {
-        $m->removeMembers($_GET['sup']);
+        $members->removeMembers($_GET['sup']);
     } else if ( isset($_POST['member_sel']) ) {
-        $m->removeMembers($_POST['member_sel']);
-    }*/
-
-    $array_sup = array();
-    if (isset($_GET['sup'])) {
-        if (is_numeric($_GET['sup'])) {
-            $array_sup[] = $_GET['sup'];
-        }
-    } else {
-        if (isset($_POST['member_sel'])) {
-            foreach ($_POST['member_sel'] as $supval) {
-                if (is_numeric($supval)) {
-                    $array_sup[] = $supval;
-                }
-            }
-        }
-    }
-
-    foreach ($array_sup as $supval) {
-        $requetesup = 'SELECT nom_adh, prenom_adh FROM ' . PREFIX_DB .
-            'adherents WHERE id_adh=' . $DB->qstr($supval, get_magic_quotes_gpc());
-        $resultat = $DB->Execute($requetesup);
-        if (!$resultat->EOF) {
-            $member = new Adherent((int)$supval);
-
-            // supression record adhérent
-            $requetesup = 'DELETE FROM ' . PREFIX_DB . 'adherents WHERE id_adh=' .
-                $DB->qstr($supval, get_magic_quotes_gpc());
-            $DB->Execute($requetesup);
-            $hist->add(
-                _T("Delete the member card (and dues)"),
-                strtoupper($resultat->fields[0]) . ' ' . $resultat->fields[1],
-                $requetesup
-            );
-
-            // suppression records cotisations
-            $requetesup = 'DELETE FROM ' . PREFIX_DB . 'cotisations WHERE id_adh=' .
-                $DB->qstr($supval, get_magic_quotes_gpc());
-            $DB->Execute($requetesup);
-
-            // erase picture
-            /** TODO: picture should be removed by object when member is deleted */
-            $member->picture->delete($DB->qstr($supval, get_magic_quotes_gpc()));
-        }
-        $resultat->Close();
+        $members->removeMembers($_POST['member_sel']);
     }
 }
 
-$members = new Members();
 $members_list = $members->getMembersList(true);
 
 $_SESSION['galette']['varslist'] = serialize($varslist);

@@ -176,7 +176,7 @@ class Members
      */
     public function removeMembers($ids)
     {
-        global $log, $mdb;
+        global $log, $mdb, $hist;
 
         $list = array();
         if ( is_numeric($ids) ) {
@@ -187,6 +187,8 @@ class Members
         }
 
         if ( is_array($list) ) {
+            //FIXME: here, we should use database transactions to rollback the whole
+            //if something went wrong
             $qry_list = 'SELECT ' . Adherent::PK . ', nom_adh, prenom_adh FROM ' .
             PREFIX_DB . Adherent::TABLE . ' WHERE ' . Adherent::PK . '=';
             $qry_list .= implode(' or ' . Adherent::PK . '=', $list);
@@ -216,7 +218,7 @@ class Members
 
             foreach ( $result_list->fetchAll() as $adh ) {
                 //remove adh
-                //$del = $stmt->execute($adh->id_adh);
+                $del = $stmt->execute($adh->id_adh);
                 $str_adh = $adh->id_adh . '(' . $adh->nom_adh . ' ' .
                     $adh->prenom_adh . ')';
                 if ( MDB2::isError($del) ) {
@@ -226,7 +228,17 @@ class Members
                         PEAR_LOG_ERR
                     );
                 } else {
-                    /** TODO: remove contributions */
+                    /** FIXME: database integrity should take care of removing contributions */
+                    $qry_delc = 'DELETE FROM ' . PREFIX_DB . 'cotisations WHERE id_adh=' . $adh->id_adh;
+                    $result_del_contribs = $mdb->query($qry_delc);
+                    if ( MDB2::isError($result_del_contribs) ) {
+                        $log->log(
+                            'Unable to delete contributions from member ' . $str_adh . ' |' .
+                            $DEL->getMessage() . '(' . $DEL->getDebugInfo() . ')',
+                            PEAR_LOG_ERR
+                        );
+                    }
+
                     $p = new Picture($m->id_adh);
                     if ( !$p->delete() ) {
                         $log->log(
