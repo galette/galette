@@ -79,6 +79,7 @@ class History extends GalettePagination
     public function __construct()
     {
         parent::__construct();
+        $this->ordered = self::ORDER_DESC;
     }
 
     /**
@@ -298,10 +299,6 @@ class History extends GalettePagination
                     if (in_array($value, $this->_fields)) {
                         $this->orderby = $value;
                     }
-                    break;
-                case 'show':
-                    $this->$rname = $value;
-                    $this->countPages();
                     break;
                 default:
                     $this->$rname = $value;
