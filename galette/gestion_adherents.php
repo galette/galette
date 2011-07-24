@@ -62,7 +62,7 @@ if ( isset($_SESSION['galette']['mailing']) ) {
 
 require_once 'classes/varslist.class.php';
 
-if ( isset($_SESSION['galette']['varslist']) ) {
+if ( isset($_SESSION['galette']['varslist']) && !GALETTE_MODE == 'DEV'  ) {
     $varslist = unserialize($_SESSION['galette']['varslist']);
 } else {
     $varslist = new VarsList();
