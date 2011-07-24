@@ -296,11 +296,11 @@ abstract class GalettePagination
             PEAR_LOG_DEBUG
         );
 
+        $rname = '_' . $name;
         switch($name) {
         case 'ordered':
             if ( $value == self::ORDER_ASC || $value == self::ORDER_DESC ) {
-                $name = '_' . $name;
-                $this->$name = $value;
+                $this->$rname = $value;
             } else {
                 $log->log(
                     '[' . get_class($this) .
@@ -312,11 +312,10 @@ abstract class GalettePagination
             }
             break;
         case 'orderby':
-            $name = '_' . $name;
-            if ( $this->$name == $value ) {
+            if ( $this->$rname == $value ) {
                 $this->invertorder();
             } else {
-                $this->$name = $value;
+                $this->$rname = $value;
                 $this->setDirection(self::ORDER_ASC);
             }
             break;
@@ -324,8 +323,7 @@ abstract class GalettePagination
         case 'counter':
         case 'pages':
             if ( is_int($value) && $value > 0 ) {
-                $name = '_' . $name;
-                $this->$name = $value;
+                $this->$rname = $value;
             } else {
                 $log->log(
                     '[' . get_class($this) .
@@ -341,8 +339,7 @@ abstract class GalettePagination
                 || preg_match('/[[:digit:]]/', $value)
                 && $value >= 0
             ) {
-                $name = '_' . $name;
-                $this->$name = (int)$value;
+                $this->$rname = (int)$value;
             } else {
                 $log->log(
                     '[' . get_class($this) . '|GalettePagination] Value for `' .
