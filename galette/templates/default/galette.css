@@ -285,7 +285,7 @@ footer li {
 	background-image:url(images/next.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
     padding-left: 0!important;
     padding-right: 2em!important;
-    background-position: 95% 50%, 50% 50%!important;
+    background-position: 95bigtable% 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;
 }
 #next.ui-state-hover {
@@ -297,6 +297,13 @@ footer li {
 }
 #prev.ui-state-hover {
     background-image:url(images/prev.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#labels {
+    background-image:url(images/printer.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#labels.ui-state-hover {
+    background-image:url(images/printer.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 .left {
@@ -382,6 +389,14 @@ footer li {
 .public_page table {
     margin:1em auto;
 }
+
+.public_page form {
+    text-align: center;
+}
+
+.public_page .exemple {
+    margin-top:0;
+}
 /* =/ Public pages */
 
 /*
@@ -389,12 +404,6 @@ footer li {
  */
 
 /** OLD STYLES */
-/*input {
-	padding: 0px 2px 0px 2px;
-	margin-top: 1px;
-	margin-bottom: 1px;
-}*/
-
 input.submit
 {
 	display:block;
@@ -410,21 +419,8 @@ input.submit:hover
 	color: #FF0000;
 }
 
-.totalcount {
-	text-align: left;
-}
-
-.pageswitch {
-	text-align: center;
-	margin-top: 4px;
-}
-
 .pagelink {
 	font-weight: bold;
-}
-
-.filtermenus {
-	text-align: right;
 }
 
 #titre{
@@ -802,59 +798,6 @@ a.listing:hover {
 {
 	text-align: center;
 }
-.button-link
-{
-	text-align: left;
-	font-weight: bold;
-	border-style: solid;
-	border-width: 1px;
-	background-color: #FBFBFB;
-	border-color: #BBBBBB;
-	color: #000000;
-	padding: 10px 10px 10px 40px;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 10px;
-	width: 18em;
-	background-repeat: no-repeat;
-	background-position: 10px center;
-}
-.button-link a
-{
-	color: #666666;
-}
-.button-link a:hover
-{
-	color: #FF0000;
-}
-
-.button-subscribe
-{
-	background-image: url(images/add.png);
-}
-.button-labels
-{
-	background-image: url(images/labels.png);
-}
-.button-flush-logs
-{
-	background-image: url(images/delete.png);
-}
-
-#login_frm{
-	margin-top:60px;
-	text-align:center;
-}
-
-.login-box
-{
-	width: 27em;
-	border: 1px solid #BBBBBB;
-	margin-left: auto;
-	margin-right: auto;
-	padding: 1em;
-	text-align: center;
-}
 
 .content-box
 {
@@ -869,29 +812,10 @@ a.listing:hover {
 	padding: 0.5em 10px 10px 10px;
 }
 
-.login-box h1
-{
-	margin: 10px 0px 15px 0px;
-}
-
-.login-box table
-{
-	width: 100%;
-}
-
 .flag
 {
 	border: 1px solid black;
 }
-
-.login-box th
-{
-	text-align: right;
-}
-/*.login-box input {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	padding: 0 2px;
-}*/
 
 .bigtable
 {
@@ -1020,21 +944,6 @@ th.bline, td.bline{
 	display: inline-block;
 	margin: 0 0 0 -22em;
 	width: 21em;
-}
-
-.login-box .cssform .bline{
-	width:11em;
-	margin: 0 0 0 -11em;
-	text-align:left;
-}
-
-.login-box .cssform p{
-	padding-left:11em;
-}
-
-.login-box .cssform p.exemple{
-	text-align:center;
-	padding:0;
 }
 
 .cssform textarea{
@@ -1193,6 +1102,7 @@ ul#tabs li{
 	clear:right;
 	padding-top:.5em;
 	padding-bottom:.5em;
+    margin-bottom: .5em;
 	-moz-border-radius: 10px 0 10px 10px;
 	-webkit-border-radius: 10px 0 10px 10px;
 	border-radius: 10px 0 10px 10px;
@@ -1525,8 +1435,7 @@ ul#paths{
     }
 
     /* fixer une largeur maximale  de 100 % aux éléments potentiellement problématiques */
-    img, table, td, blockquote, code, pre, textarea, input, object, embed, video,
-    .login-box {
+    img, table, td, blockquote, code, pre, textarea, input, object, embed, video {
         max-width: 100% !important;
     }
 
@@ -1534,26 +1443,6 @@ ul#paths{
     textarea, table, td, th, code, pre, samp {
         word-wrap: break-word; /* césure forcée */
         white-space: pre-line; /* passage à la ligne spécifique pour les éléments à châsse fixe */
-    }
-
-    /* masquer les éléments superflus */
-    /*.mhide, #social {
-        display: none !important;
-    }*/
-
-    #login_frm {
-      margin-top:1em;
-    }
-
-    .login-box {
-      padding:1em 0;
-      border:none;
-    }
-
-    .login-box th, .login-box td {
-      display:block;
-      width:100%;
-      text-align:center;
     }
 
     .menu {

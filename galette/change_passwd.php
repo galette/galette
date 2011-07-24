@@ -97,6 +97,7 @@ if ( isset($hash) && !empty($hash) ) {
     die();
 }
 
+$tpl->assign('page_title', _T("Password recovery"));
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('warning_detected', $warning_detected);
 $tpl->assign('password_updated', $password_updated);
@@ -106,5 +107,7 @@ if ( isset($head_redirect) ) {
 $tpl->assign('hash', $hash);
 
 // display page
-$tpl->display('change_passwd.tpl');
+$content = $tpl->fetch('change_passwd.tpl');
+$tpl->assign('content', $content);
+$tpl->display('public_page.tpl');
 ?>
