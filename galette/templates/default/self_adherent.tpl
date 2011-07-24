@@ -1,4 +1,3 @@
-		<div>
 {if $has_register}
 		<p id="infobox">{_T string="Your account has been successfully created."}<br/>{_T string="Your browser should redirect you to the login page in a few seconds, if not, please go to: "} <a href="../index.php">{_T string="Homepage"}</a></p>
 {/if}
