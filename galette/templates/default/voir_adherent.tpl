@@ -1,4 +1,11 @@
 	<h1 id="titre">{_T string="Member Profile"}</h1>
+{if $navigate|@count != 0}
+    <nav>
+        <a id="prev" href="?id_adh={$navigate.prec}" class="button">{_T string="Previous"}</a>
+        {$navigate.pos}/{$navigate.count}
+        <a id="next" href="{if $navigate.next}?id_adh={$navigate.next}{else}#{/if}"class="button{if !$navigate.next} selected{/if}">{_T string="Next"}</a>
+    </nav>
+{/if}
 {if $error_detected|@count != 0}
     		<div id="errorbox">
     			<h1>{_T string="- ERROR -"}</h1>

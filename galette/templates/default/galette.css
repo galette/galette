@@ -277,8 +277,26 @@ footer li {
 #histreset {
 	background-image:url(images/delete.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
-#bntsave.ui-state-hover {
+#histreset.ui-state-hover {
     background-image:url(images/delete.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#next {
+	background-image:url(images/next.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+    padding-left: 0!important;
+    padding-right: 2em!important;
+    background-position: 95% 50%, 50% 50%!important;
+    background-repeat: no-repeat, repeat!important;
+}
+#next.ui-state-hover {
+    background-image:url(images/next.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#prev {
+	background-image:url(images/prev.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#prev.ui-state-hover {
+    background-image:url(images/prev.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 .left {
@@ -810,11 +828,6 @@ a.listing:hover {
 	color: #FF0000;
 }
 
-.button-back
-{
-	background-image: url(images/back.png);
-}
-
 .button-subscribe
 {
 	background-image: url(images/add.png);
@@ -929,6 +942,8 @@ fieldset{
 	border: 1px solid #BBBBBB;
 	margin:0 1em 1em;
 	text-align:left;
+    position:relative;
+    padding:.5em;
 }
 fieldset.large{
 	margin:0 1% 1em 1%;
@@ -943,12 +958,15 @@ fieldset li{
 	margin:0.1em 0;
 	clear:left;
 }
-legend{
+
+legend {
 	border: 1px solid #BBBBBB;
 	font-weight:bold;
-	padding:0.2em 2em 0.2em 0.3em;
+	padding:0.3em;
+    width:97%;
+    margin-left:1%;
+    margin-bottom: 1em;
 	background-color:white;
-	margin-bottom:0.2em;
 }
 
 .cssform{ background-color:white; }

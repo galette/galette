@@ -70,6 +70,31 @@ require_once WEB_ROOT . 'includes/dynamic_fields.inc.php';
 $member = new Adherent();
 $member->load($id_adh);
 
+$navigate = array();
+require_once 'classes/varslist.class.php';
+if ( isset($_SESSION['galette']['varslist'])  ) {
+    $varslist = unserialize($_SESSION['galette']['varslist']);
+    require_once 'classes/members.class.php';
+    $ids = Members::getList(false, array(Adherent::PK));
+    //print_r($ids);
+    foreach ( $ids as $k=>$m ) {
+        if ( $m->id_adh == $member->id ) {
+            $navigate = array(
+                'cur'  => $m->id_adh,
+                'count' => count($ids),
+                'pos' => $k+1
+            );
+            if ( $k > 0 ) {
+                $navigate['prec'] = $ids[$k-1]->id_adh;
+            }
+            if ( $k < count($ids)-1 ) {
+                $navigate['next'] = $ids[$k+1]->id_adh;
+            }
+            break;
+        }
+    }
+}
+
 // Set caller page ref for cards error reporting
 $_SESSION['galette']['caller']='voir_adherent.php?id_adh='.$id_adh;
 
@@ -90,6 +115,7 @@ if ( isset($error_detected) ) {
     $tpl->assign('error_detected', $error_detected);
 }
 $tpl->assign('member', $member);
+$tpl->assign('navigate', $navigate);
 $tpl->assign('pref_lang_img', $i18n->getFlagFromId($member->language));
 $tpl->assign('pref_lang', ucfirst($i18n->getNameFromId($member->language)));
 $tpl->assign('pref_card_self', $preferences->pref_card_self);
