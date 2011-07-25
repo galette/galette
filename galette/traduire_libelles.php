@@ -90,10 +90,7 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
         $text_orig = $orig[0];
     }
 
-    $lang_keys = array();
-    $lang_names = array();
     $trans = array();
-
     foreach ( $i18n->getList() as $l ) {
         $text_trans = getDynamicTranslation($DB, $text_orig, $l->getLongID());
         $lang_name = _T($l->getName());
@@ -103,20 +100,6 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
             'text' => $text_trans
         );
     }
-
-    /**
-    * Sort lang
-    *
-    * @param string $a One lang
-    * @param string $b Other lang
-    *
-    * @return sorted
-    */
-    function sortLang($a, $b)
-    {
-        return strcmp($a['name'], $b['name']);
-    }
-    usort($trans, 'sortLang');
 
     $tpl->assign('orig', $orig);
     $tpl->assign('trans', $trans);
