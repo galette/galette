@@ -113,19 +113,18 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 
 {* Include plugins menu entries *}
 {$plugins->getMenus()}
-{if $login->isLogged()}
-        <a id="logout" class="button" href="{$galette_base_path}index.php?logout=1">{_T string="Log off"}</a>
-{/if}
+
 		<ul id="langs">
 {foreach item=langue from=$languages}
 			<li><a href="?pref_lang={$langue->getID()}"><img src="{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}" class="flag"/></a></li>
 {/foreach}
 		</ul>
+{if $login->isLogged()}
+        <a id="logout" class="button" href="{$galette_base_path}index.php?logout=1">{_T string="Log off"}</a>
+{/if}
 	</div>
 	<div id="content">
-		<div class="content-box">
-			{$content}
-		</div>
+        {$content}
 	</div>
     <footer>
         <a id="copyright" href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
