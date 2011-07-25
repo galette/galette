@@ -87,7 +87,7 @@
 		{_T string="Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail."}
 		</p>
 		<div class="button-container">
-            <a id="labels" class="button" href="etiquettes_adherents.php">{_T string="Generate labels"}</a>
+            <a id="btnlabels" class="button" href="etiquettes_adherents.php">{_T string="Generate labels"}</a>
 		</div>
 {/if}
 {/if}

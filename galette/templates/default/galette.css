@@ -299,10 +299,10 @@ footer li {
     background-image:url(images/prev.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-#labels {
+#btnlabels {
     background-image:url(images/printer.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
-#labels.ui-state-hover {
+#btnlabels.ui-state-hover {
     background-image:url(images/printer.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
