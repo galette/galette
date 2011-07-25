@@ -183,7 +183,7 @@ function updateDynamicTranslation(
     $quoted_text_orig = $DB->qstr($text_orig, get_magic_quotes_gpc());
     $quoted_locale = $DB->qstr($text_locale, get_magic_quotes_gpc());
     $quoted_text_trans = $DB->qstr($text_trans, get_magic_quotes_gpc());
-    $query = 'UPDATE '. $l10n_table . 'SET text_trans=' . $quoted_text_trans .
+    $query = 'UPDATE '. $l10n_table . ' SET text_trans=' . $quoted_text_trans .
         ' WHERE text_orig=' . $quoted_text_orig . ' AND text_locale=' .
         $quoted_locale;
     $result = parse_db_result($DB, $DB->Execute($query), $error_detected, $query);

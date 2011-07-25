@@ -59,7 +59,7 @@ if ( isset($_POST['trans']) && isset($text_orig) ) {
             updateDynamicTranslation(
                 $DB,
                 $text_orig,
-                $languages[$trans_lang],
+                $trans_lang,
                 $value,
                 $error_detected
             );
@@ -93,13 +93,17 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
     $lang_keys = array();
     $lang_names = array();
     $trans = array();
-    $sorted_languages = array_keys($languages);
-    sort($sorted_languages);
-    foreach ( $languages as $locale => $l ) {
-        $text_trans = getDynamicTranslation($DB, $text_orig, $locale);
-        $lang_name = _T($l);
-        $trans[] = array('key'=>$l, 'name'=> $lang_name, 'text'=> $text_trans);
+
+    foreach ( $i18n->getList() as $l ) {
+        $text_trans = getDynamicTranslation($DB, $text_orig, $l->getLongID());
+        $lang_name = _T($l->getName());
+        $trans[] = array(
+            'key'  => $l->getID(),
+            'name' => $lang_name,
+            'text' => $text_trans
+        );
     }
+
     /**
     * Sort lang
     *
