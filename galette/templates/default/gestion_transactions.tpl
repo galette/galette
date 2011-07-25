@@ -110,10 +110,8 @@
 		</div>
 		{literal}
 		<script type="text/javascript">
-			//<![CDATA[
-				$('#nbshow').change(function() {
-					this.form.submit();
-				});
-			//]]>
+            $('#nbshow').change(function() {
+                this.form.submit();
+            });
 		</script>
 		{/literal}

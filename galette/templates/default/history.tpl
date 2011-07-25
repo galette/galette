@@ -108,17 +108,15 @@
 			</tbody>
 		</table>
 		<script type="text/javascript">
-			//<![CDATA[
-				$('#nbshow').change(function() {ldelim}
-					this.form.submit();
-				{rdelim});
+            $('#nbshow').change(function() {ldelim}
+                this.form.submit();
+            {rdelim});
 
-                $(function() {ldelim}
-                    var _elt = $('<img src="templates/default/images/info.png" class="qryhide" alt="" title="{_T string="Show associated query"}"/>');
-                    $('.sql_log').hide().parent().prepend(_elt);
-                    $('.qryhide').click(function() {ldelim}
-                        $(this).next('.sql_log').show();
-                    {rdelim});
+            $(function() {ldelim}
+                var _elt = $('<img src="templates/default/images/info.png" class="qryhide" alt="" title="{_T string="Show associated query"}"/>');
+                $('.sql_log').hide().parent().prepend(_elt);
+                $('.qryhide').click(function() {ldelim}
+                    $(this).next('.sql_log').show();
                 {rdelim});
-			//]]>
+            {rdelim});
 		</script>

@@ -35,7 +35,6 @@
 		<link rel="stylesheet" type="text/css" href="{$jquery_dir}markitup-{$jquery_markitup_version}/skins/galette/style.css" />
 		<link rel="stylesheet" type="text/css" href="{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/style.css" />
 		<script language="javascript">
-			//<![CDATA[
 			function toggleMailingEditor(id) {ldelim}
 				if(!$('#mailing_html').attr('checked')){ldelim}
 					$('#mailing_html').attr('checked', true);
@@ -53,7 +52,6 @@
 				$('#mailing_corps').markItUp(galetteSettings);
 			{rdelim});
 		{/if}
-			//]]>
 		</script>
 	{/if}
 {/if}

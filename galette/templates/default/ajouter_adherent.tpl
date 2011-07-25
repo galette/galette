@@ -218,23 +218,20 @@
 		<p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
 		</form> 
 		<script type="text/javascript">
-			//<![CDATA[
-				$(function() {ldelim}
-					_collapsibleFieldsets();
+            $(function() {ldelim}
+                _collapsibleFieldsets();
 
-					$('#ddn_adh').datepicker({ldelim}
-						changeMonth: true,
-						changeYear: true,
-						showOn: 'button',
-						buttonImage: '{$template_subdir}images/calendar.png',
-						buttonImageOnly: true
-					{rdelim});
-					$('#date_crea_adh').datepicker({ldelim}
-						showOn: 'button',
-						buttonImage: '{$template_subdir}images/calendar.png',
-						buttonImageOnly: true
-					{rdelim});
-				{rdelim});
-	
-			//]]>
+                $('#ddn_adh').datepicker({ldelim}
+                    changeMonth: true,
+                    changeYear: true,
+                    showOn: 'button',
+                    buttonImage: '{$template_subdir}images/calendar.png',
+                    buttonImageOnly: true
+                {rdelim});
+                $('#date_crea_adh').datepicker({ldelim}
+                    showOn: 'button',
+                    buttonImage: '{$template_subdir}images/calendar.png',
+                    buttonImageOnly: true
+                {rdelim});
+            {rdelim});
 		</script>

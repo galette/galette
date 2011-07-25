@@ -58,7 +58,6 @@
 		</form>
 		{literal}
 		<script type="text/javascript">
-			//<![CDATA[
 			$(function() {
 				$('#sel_ref, #sel_lang').change(function() {
 					$(':input[type="submit"]').attr('disabled', 'disabled');
@@ -67,6 +66,5 @@
 					this.form.submit();
 				});
 			});
-			//]]>
 		</script>
 		{/literal}

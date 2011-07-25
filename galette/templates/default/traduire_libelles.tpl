@@ -35,11 +35,9 @@
 		</form>
 {literal}
 		<script type="text/javascript">
-			<![CDATA[
-				$('#text_orig').change(function() {
-					this.form.submit();
-				});
-			]]>
+            $('#text_orig').change(function() {
+                this.form.submit();
+            });
 		</script>
 {/literal}
 {else}

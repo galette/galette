@@ -62,7 +62,6 @@
 		</div>
 	</form>
 	<script type="text/javascript">
-		//<![CDATA[
 		var _initSortable = function(){ldelim}
 			$('.fields_list').sortable({ldelim}
 				items: 'li:not(.listing)',
@@ -151,5 +150,4 @@
 				return false;
 			{rdelim});
 		{rdelim});
-		//]]>
 	</script>

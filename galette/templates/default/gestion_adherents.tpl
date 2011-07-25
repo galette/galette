@@ -225,7 +225,6 @@
 			</table>
 		</div>
 		<script type="text/javascript">
-		//<![CDATA[
 		var _is_checked = true;
 		var _bind_check = function(){ldelim}
 			$('#checkall').click(function(){ldelim}
@@ -263,6 +262,5 @@
 				return false;
 			{rdelim});
 		{rdelim});
-		//]]>
 		</script>
 {/if}

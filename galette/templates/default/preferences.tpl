@@ -384,7 +384,6 @@
 		</div>
 		</form>
 		<script type="text/javascript">
-			//<![CDATA[
 			//if javascript active, hide tabs
 			$('fieldset.cssform').hide();
 			//and then, show only the default one
@@ -461,5 +460,4 @@
 				{rdelim});
 
 			{rdelim};
-			//]]>
 		</script>

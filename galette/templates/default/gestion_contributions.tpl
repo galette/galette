@@ -208,7 +208,6 @@
 		</div>
 
 		<script type="text/javascript">
-			//<![CDATA[
 			$(function(){ldelim}
 				$('#nbshow').change(function() {ldelim}
 					this.form.submit();
@@ -243,5 +242,4 @@
 					buttonImageOnly: true
 				{rdelim});
 			{rdelim});
-			//]]>
 		</script>
