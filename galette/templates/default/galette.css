@@ -285,7 +285,7 @@ footer li {
 	background-image:url(images/next.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
     padding-left: 0!important;
     padding-right: 2em!important;
-    background-position: 95bigtable% 50%, 50% 50%!important;
+    background-position: 95% 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;
 }
 #next.ui-state-hover {
