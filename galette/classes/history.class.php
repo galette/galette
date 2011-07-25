@@ -55,7 +55,7 @@ class History extends GalettePagination
     const TABLE = 'logs';
     const PK = 'id_log';
 
-    private $_types = array(
+    protected $_types = array(
         'date',
         'text',
         'text',
@@ -64,7 +64,7 @@ class History extends GalettePagination
         'text'
     );
 
-    private $_fields = array(
+    protected $_fields = array(
         'date_log',
         'ip_log',
         'adh_log',
@@ -96,7 +96,7 @@ class History extends GalettePagination
     * Add a new entry
     *
     * @param string $action   the action to log
-    * @param string $argument the arguemnt
+    * @param string $argument the argument
     * @param string $query    the query (if relevant)
     *
     * @return bool true if entry was successfully added, false otherwise
