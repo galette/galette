@@ -763,9 +763,12 @@ class Adherent
                 return Status::getLabel($this->_status);
                 break;
             case 'sfullname':
-                return Politeness::getPoliteness($this->_politeness) . ' ' .
-                    mb_strtoupper($this->_name, 'UTF-8') . ' ' .
-                    ucwords(mb_strtolower($this->_surname, 'UTF-8'));
+                $sfn = mb_strtoupper($this->_name, 'UTF-8') . ' ' .
+                       ucwords(mb_strtolower($this->_surname, 'UTF-8'));
+                if( $this->_politeness != Politeness::COMPANY ) {
+                    $sfn = Politeness::getPoliteness($this->_politeness) . ' ' . $sfn;
+                }
+                return $sfn;
                 break;
             case 'sname':
                 return mb_strtoupper($this->_name, 'UTF-8') . ' ' . ucfirst(mb_strtolower($this->_surname, 'UTF-8'));
