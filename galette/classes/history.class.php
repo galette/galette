@@ -108,7 +108,7 @@ class History extends GalettePagination
         MDB2::loadFile('Date');
 
         $requete = 'INSERT INTO ' .
-            $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) . ' (';
+            $mdb->quoteIdentifier($this->getTableName()) . ' (';
         $requete .= implode(', ', $this->_fields);
         $requete .= ') VALUES (:date, :ip, :adh, :action, :text, :sql)';
 
@@ -158,7 +158,7 @@ class History extends GalettePagination
     {
         global $mdb, $log;
         $requete = 'TRUNCATE TABLE ' .
-            $mdb->quoteIdentifier(PREFIX_DB . self::TABLE);
+            $mdb->quoteIdentifier($this->getTableName());
 
         $result = $mdb->execute($requete);
 
@@ -197,7 +197,7 @@ class History extends GalettePagination
             }
         }
 
-        $requete = 'SELECT * FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE);
+        $requete = 'SELECT * FROM ' . $mdb->quoteIdentifier($this->getTableName());
         $requete .= 'ORDER BY ' . $this->orderby . ' ' . $this->ordered;
 
         //add limits to retrieve only relavant rows
@@ -223,8 +223,8 @@ class History extends GalettePagination
     private function _getCount()
     {
         global $mdb, $log;
-        $requete = 'SELECT count(' . self::PK . ') as counter FROM ' .
-            $mdb->quoteIdentifier(PREFIX_DB . self::TABLE);
+        $requete = 'SELECT count(' . $this->getPk() . ') as counter FROM ' .
+            $mdb->quoteIdentifier($this->getTableName());
 
         $result = $mdb->query($requete);
         if (MDB2::isError($result)) {
@@ -311,6 +311,26 @@ class History extends GalettePagination
                 );
             }
         }
+    }
+
+    /**
+     * Get table's name
+     *
+     * @return string
+     */
+    protected function getTableName()
+    {
+        return PREFIX_DB . self::TABLE;
+    }
+
+    /**
+     * Get table's PK
+     *
+     * @return string
+     */
+    protected function getPk()
+    {
+        return self::PK;
     }
 }
 ?>
