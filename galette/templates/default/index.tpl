@@ -6,7 +6,7 @@
                     <table>
                         <tr>
                             <th><label for="login">{_T string="Username:"}</label></th>
-                            <td><input type="text" name="login" id="login" /></td>
+                            <td><input type="text" name="login" id="login" autofocus/></td>
                         </tr>
                         <tr>
                             <th><label for="password">{_T string="Password:"}</label></th>
