@@ -120,6 +120,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {/foreach}
 		</ul>
 {if $login->isLogged()}
+        <div>{$login->loggedInAs()}</div>
         <a id="logout" class="button" href="{$galette_base_path}index.php?logout=1">{_T string="Log off"}</a>
 {/if}
 	</div>

@@ -165,6 +165,27 @@ abstract class Authentication
     }
 
     /**
+     * Display logged in member name
+     *
+     * @param boolean only_name
+     *
+     * @return String
+     */
+    public function loggedInAs($only_name=false)
+    {
+        $n = $this->_name . ' ' . $this->_surname . ' (' . $this->_login . ')';
+        if ( $only_name === false ) {
+            return str_replace(
+                '%login',
+                $n,
+                _T("Logged in as:<br/>%login")
+            );
+        } else {
+            return $n;
+        }
+    }
+
+    /**
     * Global getter method
     *
     * @param string $name name of the property we want to retrive

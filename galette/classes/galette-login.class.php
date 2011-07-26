@@ -94,7 +94,7 @@ class GaletteLogin extends Authentication
             $log->log('User `' . $user . '` logged in.', PEAR_LOG_DEBUG);
             $row = $result->fetchRow();
             $this->id = $row->id_adh;
-            $this->login = $row->login_adh;
+            $this->login = $user;
             $this->passe = $row->mdp_adh;
             $this->admin = $row->bool_admin_adh;
             $this->name = $row->nom_adh;

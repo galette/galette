@@ -453,6 +453,39 @@ footer li {
 .public_page .exemple {
     margin-top:0;
 }
+
+.public_page #user {
+    position: absolute;
+    top:0;
+    right:0;
+    display:inline-block;
+    border-bottom:1px solid #DDDDFF;
+    border-left:1px solid #DDDDFF;
+	-moz-border-bottom-left-radius: 10px;
+	-webkit-border-bottom-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+
+}
+.public_page #userlink {
+    color: #666666;
+    background: url(images/icon-user.png) 7px 50% no-repeat;
+    padding: .2em .2em .2em 25px;
+    display: inline-block;
+}
+
+.public_page #user a:hover {
+    color: #eea423;
+}
+
+.public_page #logout {
+    background-repeat: no-repeat;
+    text-indent: 25px;
+    width:16px;
+    margin: 0 .5em;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+}
 /* =/ Public pages */
 
 /*
