@@ -1,9 +1,11 @@
 		<h1 id="titre">{_T string="Logs"}</h1>
-        <a id="histreset" class="button" href="history.php?reset=1">{_T string="Flush the logs"}</a>
 		<table id="listing">
 			<thead>
 				<tr>
-					<td colspan="6" class="right">
+                    <td colspan="3">
+                        <a id="histreset" class="button" href="history.php?reset=1">{_T string="Flush the logs"}</a>
+                    </td>
+					<td colspan="3" class="right">
 						<form action="history.php" method="get" id="historyform">
 							<span>
 								<label for="nbshow">{_T string="Records per page:"}</label>
