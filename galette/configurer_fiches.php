@@ -129,7 +129,7 @@ if ( $form_name == '' ) {
         if ( $action != "" ) {
             $DB->StartTrans();
             $query = 'SELECT field_type, field_index FROM ' .
-                $field_types_table . 'WHERE field_id='. $field_id .
+                $field_types_table . ' WHERE field_id='. $field_id .
                 ' AND field_form=' . $quoted_form_name;
             $res = db_execute($DB, $query, $error_detected);
             if ( $res != false && !$res->EOF ) {
