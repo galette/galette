@@ -71,9 +71,9 @@ class MDB2_Driver_Function_mysql extends MDB2_Driver_Function_Common
      * @return mixed a result handle or MDB2_OK on success, a MDB2 error on failure
      * @access public
      */
-    function &executeStoredProc($name, $params = null, $types = null, $result_class = true, $result_wrap_class = false)
+    function executeStoredProc($name, $params = null, $types = null, $result_class = true, $result_wrap_class = false)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }

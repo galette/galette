@@ -264,7 +264,7 @@ $GLOBALS['_MDB2_dsninfo_default'] = array(
  */
 class MDB2
 {
-    // {{{ function setOptions(&$db, $options)
+    // {{{ function setOptions($db, $options)
 
     /**
      * set option array   in an exiting database object
@@ -276,7 +276,7 @@ class MDB2
      *
      * @access  public
      */
-    function setOptions(&$db, $options)
+    function setOptions($db, $options)
     {
         if (is_array($options)) {
             foreach ($options as $option => $value) {
@@ -337,7 +337,7 @@ class MDB2
                 } else {
                     $msg = "unable to load class '$class_name' from file '$file_name'";
                 }
-                $err =& MDB2::raiseError(MDB2_ERROR_NOT_FOUND, null, null, $msg);
+                $err = MDB2::raiseError(MDB2_ERROR_NOT_FOUND, null, null, $msg);
                 return $err;
             }
         }
@@ -345,7 +345,7 @@ class MDB2
     }
 
     // }}}
-    // {{{ function &factory($dsn, $options = false)
+    // {{{ function factory($dsn, $options = false)
 
     /**
      * Create a new MDB2 object for the specified database type
@@ -371,11 +371,11 @@ class MDB2
      *
      * @access  public
      */
-    function &factory($dsn, $options = false)
+    function factory($dsn, $options = false)
     {
         $dsninfo = MDB2::parseDSN($dsn);
         if (empty($dsninfo['phptype'])) {
-            $err =& MDB2::raiseError(MDB2_ERROR_NOT_FOUND,
+            $err = MDB2::raiseError(MDB2_ERROR_NOT_FOUND,
                 null, null, 'no RDBMS driver specified');
             return $err;
         }
@@ -387,7 +387,7 @@ class MDB2
             return $err;
         }
 
-        $db =& new $class_name();
+        $db = new $class_name();
         $db->setDSN($dsninfo);
         $err = MDB2::setOptions($db, $options);
         if (PEAR::isError($err)) {
@@ -398,7 +398,7 @@ class MDB2
     }
 
     // }}}
-    // {{{ function &connect($dsn, $options = false)
+    // {{{ function connect($dsn, $options = false)
 
     /**
      * Create a new MDB2 connection object and connect to the specified
@@ -428,9 +428,9 @@ class MDB2
      * @access  public
      * @see     MDB2::parseDSN
      */
-    function &connect($dsn, $options = false)
+    function connect($dsn, $options = false)
     {
-        $db =& MDB2::factory($dsn, $options);
+        $db = MDB2::factory($dsn, $options);
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -447,7 +447,7 @@ class MDB2
     }
 
     // }}}
-    // {{{ function &singleton($dsn = null, $options = false)
+    // {{{ function singleton($dsn = null, $options = false)
 
     /**
      * Returns a MDB2 connection with the requested DSN.
@@ -478,7 +478,7 @@ class MDB2
      * @access  public
      * @see     MDB2::parseDSN
      */
-    function &singleton($dsn = null, $options = false)
+    function singleton($dsn = null, $options = false)
     {
         if ($dsn) {
             $dsninfo = MDB2::parseDSN($dsn);
@@ -494,10 +494,10 @@ class MDB2
                 }
             }
         } elseif (is_array($GLOBALS['_MDB2_databases']) && reset($GLOBALS['_MDB2_databases'])) {
-            $db =& $GLOBALS['_MDB2_databases'][key($GLOBALS['_MDB2_databases'])];
+            $db = $GLOBALS['_MDB2_databases'][key($GLOBALS['_MDB2_databases'])];
             return $db;
         }
-        $db =& MDB2::factory($dsn, $options);
+        $db = MDB2::factory($dsn, $options);
         return $db;
     }
 
@@ -1439,10 +1439,10 @@ class MDB2_Driver_Common extends PEAR
             }
         }
 
-        $err =& PEAR::raiseError(null, $code, $mode, $options, $userinfo, 'MDB2_Error', true);
+        $err = PEAR::raiseError(null, $code, $mode, $options, $userinfo, 'MDB2_Error', true);
         if ($err->getMode() !== PEAR_ERROR_RETURN
             && isset($this->nested_transaction_counter) && !$this->has_transaction_error) {
-            $this->has_transaction_error =& $err;
+            $this->has_transaction_error = $err;
         }
         return $err;
     }
@@ -1821,7 +1821,7 @@ class MDB2_Driver_Common extends PEAR
     }
 
     // }}}
-    // {{{ function &loadModule($module, $property = null, $phptype_specific = null)
+    // {{{ function loadModule($module, $property = null, $phptype_specific = null)
 
     /**
      * loads a module
@@ -1837,7 +1837,7 @@ class MDB2_Driver_Common extends PEAR
      *
      * @access  public
      */
-    function &loadModule($module, $property = null, $phptype_specific = null)
+    function loadModule($module, $property = null, $phptype_specific = null)
     {
         if (!$property) {
             $property = strtolower($module);
@@ -1863,7 +1863,7 @@ class MDB2_Driver_Common extends PEAR
                 return $err;
             }
 
-            // load modul in a specific version
+            // load module in a specific version
             if ($version) {
                 if (method_exists($class_name, 'getClassName')) {
                     $class_name_new = call_user_func(array($class_name, 'getClassName'), $this->db_index);
@@ -1878,12 +1878,12 @@ class MDB2_Driver_Common extends PEAR
             }
 
             if (!MDB2::classExists($class_name)) {
-                $err =& $this->raiseError(MDB2_ERROR_LOADMODULE, null, null,
+                $err = $this->raiseError(MDB2_ERROR_LOADMODULE, null, null,
                     "unable to load module '$module' into property '$property'", __FUNCTION__);
                 return $err;
             }
-            $this->{$property} =& new $class_name($this->db_index);
-            $this->modules[$module] =& $this->{$property};
+            $this->{$property} = new $class_name($this->db_index);
+            $this->modules[$module] = $this->{$property};
             if ($version) {
                 // this will be used in the connect method to determine if the module
                 // needs to be loaded with a different version if the server
@@ -1915,7 +1915,7 @@ class MDB2_Driver_Common extends PEAR
             $module = $this->options['modules'][$match[1]];
             $method = strtolower($match[2]).$match[3];
             if (!isset($this->modules[$module]) || !is_object($this->modules[$module])) {
-                $result =& $this->loadModule($module);
+                $result = $this->loadModule($module);
                 if (PEAR::isError($result)) {
                     return $result;
                 }
@@ -2357,7 +2357,7 @@ class MDB2_Driver_Common extends PEAR
      *
      * @access  public
      */
-    function &standaloneQuery($query, $types = null, $is_manip = false)
+    function standaloneQuery($query, $types = null, $is_manip = false)
     {
         $offset = $this->offset;
         $limit = $this->limit;
@@ -2369,7 +2369,7 @@ class MDB2_Driver_Common extends PEAR
             return $connection;
         }
 
-        $result =& $this->_doQuery($query, $is_manip, $connection, false);
+        $result = $this->_doQuery($query, $is_manip, $connection, false);
         if (PEAR::isError($result)) {
             return $result;
         }
@@ -2378,7 +2378,7 @@ class MDB2_Driver_Common extends PEAR
             $affected_rows =  $this->_affectedRows($connection, $result);
             return $affected_rows;
         }
-        $result =& $this->_wrapResult($result, $types, true, false, $limit, $offset);
+        $result = $this->_wrapResult($result, $types, true, false, $limit, $offset);
         return $result;
     }
 
@@ -2416,7 +2416,7 @@ class MDB2_Driver_Common extends PEAR
      *
      * @access  protected
      */
-    function &_doQuery($query, $is_manip = false, $connection = null, $database_name = null)
+    function _doQuery($query, $is_manip = false, $connection = null, $database_name = null)
     {
         $this->last_query = $query;
         $result = $this->debug($query, 'query', array('is_manip' => $is_manip, 'when' => 'pre'));
@@ -2426,7 +2426,7 @@ class MDB2_Driver_Common extends PEAR
             }
             $query = $result;
         }
-        $err =& $this->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
+        $err = $this->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
             'method not implemented', __FUNCTION__);
         return $err;
     }
@@ -2462,7 +2462,7 @@ class MDB2_Driver_Common extends PEAR
      *
      * @access  public
      */
-    function &exec($query)
+    function exec($query)
     {
         $offset = $this->offset;
         $limit = $this->limit;
@@ -2474,7 +2474,7 @@ class MDB2_Driver_Common extends PEAR
             return $connection;
         }
 
-        $result =& $this->_doQuery($query, true, $connection, $this->database_name);
+        $result = $this->_doQuery($query, true, $connection, $this->database_name);
         if (PEAR::isError($result)) {
             return $result;
         }
@@ -2499,7 +2499,7 @@ class MDB2_Driver_Common extends PEAR
      *
      * @access  public
      */
-    function &query($query, $types = null, $result_class = true, $result_wrap_class = false)
+    function query($query, $types = null, $result_class = true, $result_wrap_class = false)
     {
         $offset = $this->offset;
         $limit = $this->limit;
@@ -2511,17 +2511,17 @@ class MDB2_Driver_Common extends PEAR
             return $connection;
         }
 
-        $result =& $this->_doQuery($query, false, $connection, $this->database_name);
+        $result = $this->_doQuery($query, false, $connection, $this->database_name);
         if (PEAR::isError($result)) {
             return $result;
         }
 
-        $result =& $this->_wrapResult($result, $types, $result_class, $result_wrap_class, $limit, $offset);
+        $result = $this->_wrapResult($result, $types, $result_class, $result_wrap_class, $limit, $offset);
         return $result;
     }
 
     // }}}
-    // {{{ function &_wrapResult($result, $types = array(), $result_class = true, $result_wrap_class = false, $limit = null, $offset = null)
+    // {{{ function _wrapResult($result, $types = array(), $result_class = true, $result_wrap_class = false, $limit = null, $offset = null)
 
     /**
      * wrap a result set into the correct class
@@ -2538,7 +2538,7 @@ class MDB2_Driver_Common extends PEAR
      *
      * @access  protected
      */
-    function &_wrapResult($result, $types = array(), $result_class = true,
+    function _wrapResult($result, $types = array(), $result_class = true,
         $result_wrap_class = false, $limit = null, $offset = null)
     {
         if ($types === true) {
@@ -2565,13 +2565,13 @@ class MDB2_Driver_Common extends PEAR
         if ($result_class) {
             $class_name = sprintf($result_class, $this->phptype);
             if (!MDB2::classExists($class_name)) {
-                $err =& $this->raiseError(MDB2_ERROR_NOT_FOUND, null, null,
+                $err = $this->raiseError(MDB2_ERROR_NOT_FOUND, null, null,
                     'result class does not exist '.$class_name, __FUNCTION__);
                 return $err;
             }
-            $result =& new $class_name($this, $result, $limit, $offset);
+            $result = new $class_name($this, $result, $limit, $offset);
             if (!MDB2::isResultCommon($result)) {
-                $err =& $this->raiseError(MDB2_ERROR_NOT_FOUND, null, null,
+                $err = $this->raiseError(MDB2_ERROR_NOT_FOUND, null, null,
                     'result class is not extended from MDB2_Result_Common', __FUNCTION__);
                 return $err;
             }
@@ -2588,11 +2588,11 @@ class MDB2_Driver_Common extends PEAR
         }
         if ($result_wrap_class) {
             if (!MDB2::classExists($result_wrap_class)) {
-                $err =& $this->raiseError(MDB2_ERROR_NOT_FOUND, null, null,
+                $err = $this->raiseError(MDB2_ERROR_NOT_FOUND, null, null,
                     'result wrap class does not exist '.$result_wrap_class, __FUNCTION__);
                 return $err;
             }
-            $result =& new $result_wrap_class($result, $this->fetchmode);
+            $result = new $result_wrap_class($result, $this->fetchmode);
         }
         return $result;
     }
@@ -2800,13 +2800,13 @@ class MDB2_Driver_Common extends PEAR
 
         $condition = ' WHERE '.implode(' AND ', $condition);
         $query = "DELETE FROM $table$condition";
-        $result =& $this->_doQuery($query, true, $connection);
+        $result = $this->_doQuery($query, true, $connection);
         if (!PEAR::isError($result)) {
             $affected_rows = $this->_affectedRows($connection, $result);
             $insert = implode(', ', array_keys($values));
             $values = implode(', ', $values);
             $query = "INSERT INTO $table ($insert) VALUES ($values)";
-            $result =& $this->_doQuery($query, true, $connection);
+            $result = $this->_doQuery($query, true, $connection);
             if (!PEAR::isError($result)) {
                 $affected_rows += $this->_affectedRows($connection, $result);;
             }
@@ -2852,7 +2852,7 @@ class MDB2_Driver_Common extends PEAR
      * @access  public
      * @see     bindParam, execute
      */
-    function &prepare($query, $types = null, $result_types = null, $lobs = array())
+    function prepare($query, $types = null, $result_types = null, $lobs = array())
     {
         $is_manip = ($result_types === MDB2_PREPARE_MANIP);
         $offset = $this->offset;
@@ -2937,7 +2937,7 @@ class MDB2_Driver_Common extends PEAR
         }
         $class_name = 'MDB2_Statement_'.$this->phptype;
         $statement = null;
-        $obj =& new $class_name($this, $statement, $positions, $query, $types, $result_types, $is_manip, $limit, $offset);
+        $obj = new $class_name($this, $statement, $positions, $query, $types, $result_types, $is_manip, $limit, $offset);
         $this->debug($query, __FUNCTION__, array('is_manip' => $is_manip, 'when' => 'post', 'result' => $obj));
         return $obj;
     }
@@ -2975,7 +2975,7 @@ class MDB2_Driver_Common extends PEAR
                             if ($ignore['end'] === "\n") {
                                 $end_quote = strlen($query) - 1;
                             } else {
-                                $err =& $this->raiseError(MDB2_ERROR_SYNTAX, null, null,
+                                $err = $this->raiseError(MDB2_ERROR_SYNTAX, null, null,
                                     'query with an unterminated text string specified', __FUNCTION__);
                                 return $err;
                             }
@@ -3355,15 +3355,15 @@ class MDB2_Result_Common extends MDB2_Result
     var $column_names;
 
     // }}}
-    // {{{ constructor: function __construct(&$db, &$result, $limit = 0, $offset = 0)
+    // {{{ constructor: function __construct($db, &$result, $limit = 0, $offset = 0)
 
     /**
      * Constructor
      */
-    function __construct(&$db, &$result, $limit = 0, $offset = 0)
+    function __construct($db, &$result, $limit = 0, $offset = 0)
     {
-        $this->db =& $db;
-        $this->result =& $result;
+        $this->db = $db;
+        $this->result = $result;
         $this->offset = $offset;
         $this->limit = max(0, $limit - 1);
     }
@@ -3374,7 +3374,7 @@ class MDB2_Result_Common extends MDB2_Result
     /**
      * PHP 4 Constructor
      */
-    function MDB2_Result_Common(&$db, &$result, $limit = 0, $offset = 0)
+    function MDB2_Result_Common($db, &$result, $limit = 0, $offset = 0)
     {
         $this->__construct($db, $result, $limit, $offset);
     }
@@ -3455,9 +3455,9 @@ class MDB2_Result_Common extends MDB2_Result
      *
      * @access  public
      */
-    function &fetchRow($fetchmode = MDB2_FETCHMODE_DEFAULT, $rownum = null)
+    function fetchRow($fetchmode = MDB2_FETCHMODE_DEFAULT, $rownum = null)
     {
-        $err =& $this->db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
+        $err = $this->db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
             'method not implemented', __FUNCTION__);
         return $err;
     }
@@ -3880,15 +3880,15 @@ class MDB2_Statement_Common
     var $is_manip;
 
     // }}}
-    // {{{ constructor: function __construct(&$db, &$statement, $positions, $query, $types, $result_types, $is_manip = false, $limit = null, $offset = null)
+    // {{{ constructor: function __construct($db, $statement, $positions, $query, $types, $result_types, $is_manip = false, $limit = null, $offset = null)
 
     /**
      * Constructor
      */
-    function __construct(&$db, &$statement, $positions, $query, $types, $result_types, $is_manip = false, $limit = null, $offset = null)
+    function __construct($db, $statement, $positions, $query, $types, $result_types, $is_manip = false, $limit = null, $offset = null)
     {
-        $this->db =& $db;
-        $this->statement =& $statement;
+        $this->db = $db;
+        $this->statement = $statement;
         $this->positions = $positions;
         $this->query = $query;
         $this->types = (array)$types;
@@ -4047,7 +4047,7 @@ class MDB2_Statement_Common
      *
      * @access  public
      */
-    function &execute($values = null, $result_class = true, $result_wrap_class = false)
+    function execute($values = null, $result_class = true, $result_wrap_class = false)
     {
         if (is_null($this->positions)) {
             return $this->db->raiseError(MDB2_ERROR, null, null,
@@ -4062,12 +4062,12 @@ class MDB2_Statement_Common
                                             'Binding Values failed with message: ' . $err->getMessage(), __FUNCTION__);
             }
         }
-        $result =& $this->_execute($result_class, $result_wrap_class);
+        $result = $this->_execute($result_class, $result_wrap_class);
         return $result;
     }
 
     // }}}
-    // {{{ function &_execute($result_class = true, $result_wrap_class = false)
+    // {{{ function _execute($result_class = true, $result_wrap_class = false)
 
     /**
      * Execute a prepared query statement helper method.
@@ -4079,7 +4079,7 @@ class MDB2_Statement_Common
      *
      * @access  private
      */
-    function &_execute($result_class = true, $result_wrap_class = false)
+    function _execute($result_class = true, $result_wrap_class = false)
     {
         $this->last_query = $this->query;
         $query = '';
@@ -4110,7 +4110,7 @@ class MDB2_Statement_Common
         if ($this->is_manip) {
             $result = $this->db->exec($query);
         } else {
-            $result =& $this->db->query($query, $this->result_types, $result_class, $result_wrap_class);
+            $result = $this->db->query($query, $this->result_types, $result_class, $result_wrap_class);
         }
         return $result;
     }
@@ -4203,12 +4203,12 @@ class MDB2_Module_Common
      *
      * @access  public
      */
-    function &getDBInstance()
+    function getDBInstance()
     {
         if (isset($GLOBALS['_MDB2_databases'][$this->db_index])) {
-            $result =& $GLOBALS['_MDB2_databases'][$this->db_index];
+            $result = $GLOBALS['_MDB2_databases'][$this->db_index];
         } else {
-            $result =& MDB2::raiseError(MDB2_ERROR_NOT_FOUND, null, null,
+            $result = MDB2::raiseError(MDB2_ERROR_NOT_FOUND, null, null,
                 'could not find MDB2 instance');
         }
         return $result;
