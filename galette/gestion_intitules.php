@@ -139,7 +139,7 @@ function checkFieldValue ($class, $key, $value)
 
     switch ($key) {
     case ($fields[get_class($class)]['name']):
-        if ( !is_string($value) ) {
+        if ( trim($value) == '' || !is_string($value) ) {
             $error_detected[] =_T("- Mandatory field empty.")." ($key)";
             return false;
         }
