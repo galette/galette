@@ -279,9 +279,13 @@ class Status
     {
         global $mdb, $log;
 
-        $query = 'SELECT '. self::PK .' FROM ' . PREFIX_DB . self::TABLE .
-            ' WHERE ' . $mdb->quoteIdentifier('libelle_statut') . '=' . $label;
-        $result = $mdb->query($query);
+        $stmt = $mdb->prepare(
+            'SELECT '. self::PK .' FROM ' . PREFIX_DB . self::TABLE .
+            ' WHERE ' . $mdb->quoteIdentifier('libelle_statut') . '= :libelle',
+            array('text'),
+            MDB2_PREPARE_MANIP
+        );
+        $result = $stmt->execute(array('libelle' => $label));
 
         if ( MDB2::isError($result) ) {
             $this->_error = $result;
