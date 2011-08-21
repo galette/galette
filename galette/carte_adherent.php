@@ -82,7 +82,7 @@ if ( isset($unique) && $unique ) {
     $mailing_adh = $varslist->selected;
 }
 
-$members = Members::getArrayList($mailing_adh, 'nom_adh, prenom_adh');
+$members = Members::getArrayList($mailing_adh, array('nom_adh', 'prenom_adh'));
 
 if ( !is_array($members) || count($members) < 1 ) {
     $log->log('An error has occured, unable to get members list.', PEAR_LOG_ERR);

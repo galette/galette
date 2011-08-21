@@ -38,6 +38,8 @@
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
+require_once 'classes/dynamic_fields.class.php';
+require_once 'classes/l10n.class.php';
 
 if ( !$login->isLogged() ) {
     header('location: index.php');
@@ -57,7 +59,6 @@ if ( isset($_POST['trans']) && isset($text_orig) ) {
         if ( substr($key, 0, 11) == 'text_trans_' ) {
             $trans_lang = substr($key, 11);
             updateDynamicTranslation(
-                $DB,
                 $text_orig,
                 $trans_lang,
                 $value,
@@ -73,36 +74,75 @@ if ( !isset($all_forms) ) {
 }
 $tpl->assign('all_forms', $all_forms);
 
-$l10n_table = PREFIX_DB . 'l10n';
-$nb_fields = $DB->GetOne('SELECT COUNT(text_orig) FROM ' . $l10n_table);
+$nb_fields = 0;
+try {
+    $select = new Zend_Db_Select($zdb->db);
+    $select->from(
+        PREFIX_DB . L10n::TABLE,
+        array('nb' => 'COUNT(text_orig)')
+    );
+    $nb_fields = $select->query()->fetch()->nb;
+} catch (Exception $e) {
+    /** TODO */
+    $log->log(
+        'An error occured counting l10n entries | ' .
+        $e->getMessage(),
+        PEAR_LOG_WARNING
+    );
+    $log->log(
+        'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+        PEAR_LOG_ERR
+    );
+}
 
 if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
-    $all_texts = db_get_all(
-        $DB,
-        'SELECT DISTINCT(text_orig) FROM ' . $l10n_table . ' ORDER BY text_orig',
-        $error_detected
-    );
-    $orig = array();
-    foreach ( $all_texts as $idx => $row ) {
-        $orig[] = $row['text_orig'];
-    }
-    if ( $text_orig == '' ) {
-        $text_orig = $orig[0];
-    }
+    try {
+        $select = new Zend_Db_Select($zdb->db);
+        $select->distinct()->from(
+            PREFIX_DB . L10n::TABLE,
+            'text_orig'
+        )->order('text_orig');
 
-    $trans = array();
-    foreach ( $i18n->getList() as $l ) {
-        $text_trans = getDynamicTranslation($DB, $text_orig, $l->getLongID());
-        $lang_name = _T($l->getName());
-        $trans[] = array(
-            'key'  => $l->getID(),
-            'name' => $lang_name,
-            'text' => $text_trans
+        $all_texts = $select->query()->fetchAll();
+
+        $orig = array();
+        foreach ( $all_texts as $idx => $row ) {
+            $orig[] = $row->text_orig;
+        }
+        if ( $text_orig == '' ) {
+            $text_orig = $orig[0];
+        }
+
+        $trans = array();
+        /**
+         * FIXME : it would be fatser to get all translations at once
+         * for a specific string
+         */
+        foreach ( $i18n->getList() as $l ) {
+            $text_trans = getDynamicTranslation($text_orig, $l->getLongID());
+            $lang_name = _T($l->getName());
+            $trans[] = array(
+                'key'  => $l->getID(),
+                'name' => $lang_name,
+                'text' => $text_trans
+            );
+        }
+
+        $tpl->assign('orig', $orig);
+        $tpl->assign('trans', $trans);
+    } catch (Exception $e) {
+        /** TODO */
+        $log->log(
+            'An error occured retrieving l10n entries | ' .
+            $e->getMessage(),
+            PEAR_LOG_WARNING
         );
+        $log->log(
+            'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+            PEAR_LOG_ERR
+        );
+        
     }
-
-    $tpl->assign('orig', $orig);
-    $tpl->assign('trans', $trans);
 }
 $tpl->assign('text_orig', $text_orig);
 $tpl->assign('error_detected', $error_detected);

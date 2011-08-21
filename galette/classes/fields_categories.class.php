@@ -35,6 +35,8 @@
  * @since     Available since 0.7dev - 2009-03-28
  */
 
+require_once 'adherent.class.php';
+
 /**
  * Fields categories class for galette
  *
@@ -59,6 +61,27 @@ class FieldsCategories
     const ADH_CATEGORY_GALETTE = 2;
     const ADH_CATEGORY_CONTACT = 3;
 
+    private static $_defaults = array(
+        array(
+            'id'         => 1,
+            'table_name' => Adherent::TABLE,
+            'category'   => 'Identity',
+            'position'   => 1
+        ),
+        array(
+            'id'         => 2,
+            'table_name' => Adherent::TABLE,
+            'category'   => 'Galette-related data',
+            'position'   => 2
+        ),
+        array(
+            'id'         => 3,
+            'table_name' => Adherent::TABLE,
+            'category'   => 'Contact information',
+            'position'   => 3
+        )
+    );
+
     /**
     * Default constructor
     */
@@ -73,23 +96,69 @@ class FieldsCategories
     */
     public static function getList()
     {
-        global $mdb, $log;
-        $query = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' ORDER BY position';
+        global $zdb, $log;
 
-        $result = $mdb->query($query);
-
-        if ( MDB2::isError($result) ) {
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . self::TABLE)
+                ->order('position');
+            return $select->query()->fetchAll();
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
                 '[' . get_class($this) . '] Cannot get fields categories list | ' .
-                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
+                $e->getMessage(),
                 PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
             );
             return false;
         }
-
-        return $result->fetchAll();
     }
 
+    /**
+    * Set default fields categories at install time
+    *
+    * @return boolean|Exception
+    */
+    public function installInit()
+    {
+        global $zdb, $log;
+
+        try {
+            //first, we drop all values
+            $zdb->db->delete(PREFIX_DB . self::TABLE);
+
+            $stmt = $zdb->db->prepare(
+                'INSERT INTO ' . PREFIX_DB . self::TABLE .
+                ' (' . self::PK . ', table_name, category, position) ' .
+                'VALUES(:id, :table_name, :category, :position)'
+            );
+
+            foreach ( self::$_defaults as $d ) {
+                $stmt->bindParam(':id', $d['id']);
+                $stmt->bindParam(':table_name', $d['table_name']);
+                $stmt->bindParam(':category', $d['category']);
+                $stmt->bindParam(':position', $d['position']);
+                $stmt->execute();
+            }
+
+            $log->log(
+                'Default fields configurations were successfully stored into database.',
+                PEAR_LOG_INFO
+            );
+            return true;
+        } catch (Exception $e) {
+            $log->log(
+                'Unable to initialize default fields configuration.' .
+                $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            return $e;
+        }
+    }
 
     /**
     * GETTERS

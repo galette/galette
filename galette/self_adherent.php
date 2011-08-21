@@ -44,7 +44,6 @@ require_once WEB_ROOT . 'includes/dynamic_fields.inc.php';
 // initialize warnings
 $error_detected = array();
 $warning_detected = array();
-//$confirm_detected = array();
 
 // flagging required fields
 require_once WEB_ROOT . 'classes/required.class.php';
@@ -52,6 +51,11 @@ $requires = new Required();
 $required = $requires->getRequired();
 
 require_once WEB_ROOT . 'classes/texts.class.php';
+require_once 'classes/adherent.class.php';
+
+$member = new Adherent();
+//mark as self membership
+$member->setSelfMembership();
 
 /**
 * TODO
@@ -81,264 +85,159 @@ $insert_string_values = '';
 $has_register = false;
 
 
-$adherent['dyn'] = extract_posted_dynamic_fields($DB, $_POST, $disabled);
-$fields = &$DB->MetaColumns(PREFIX_DB."adherents");
+$fields = Adherent::getDbFields();
 
 // checking posted values for 'regular' fields
-if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
-    //check fields goodness
-    while ( list($key, $properties) = each($fields) ) {
-        $key = strtolower($key);
-        if ( isset($_POST[$key]) ) {
-            $value = trim($_POST[$key]);
-        } else {
-            $value = '';
-        }
-        // if the field is enabled, check it
-        if ( !isset($disabled[$key]) ) {
-            // fill up the adherent structure
-            $adherent[$key] = stripslashes($value);
+if ( isset($_POST["nom_adh"]) ) {
+    $adherent['dyn'] = extract_posted_dynamic_fields($_POST, $disabled);
+    $valid = $member->check($_POST, $required, $disabled);
+    if ( $valid === true ) {
+        //all goes well, we can proceed
+        $store = $member->store();
+        if ( $store === true ) {
+            //member has been stored :)
+            //Send email to admin if preference checked
+            if ( $preferences->pref_bool_mailadh ) {
+                $texts = new texts();
+                $mtxt = $texts->getTexts('newadh', $preferences->pref_lang);
 
-            // now, check validity
-            if ( $value != '' ) {
-                switch ( $key ) {
-                // dates
-                case 'ddn_adh':
-                    if ( preg_match('@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@', $value, $array_jours)
-                    ) {
-                        if ( checkdate($array_jours[2], $array_jours[1], $array_jours[3]) ) {
-                            $value = $DB->DBDate(
-                                $array_jours[3] . '-' . $array_jours[2] .
-                                '-' . $array_jours[1]
+                $patterns = array(
+                    '/{NAME_ADH}/',
+                    '/{SURNAME_ADH}/'
+                );
+
+                $replace = array(
+                    custom_html_entity_decode($member->name),
+                    custom_html_entity_decode($member->surname)
+                );
+
+                $mtxt->tsubject = preg_replace(
+                    $patterns,
+                    $replace,
+                    $mtxt->tsubject
+                );
+
+                $patterns[] = '/{LOGIN}/';
+                $replace[] = custom_html_entity_decode($member->login);
+
+                $mtxt->tbody = preg_replace(
+                    $patterns,
+                    $replace,
+                    $mtxt->tbody
+                );
+
+                $mail = new GaletteMail();
+                $mail->setSubject($mtxt->tsubject);
+                $mail->setRecipients(
+                    array(
+                        $preferences->pref_email_newadh => 'Galette admin'
+                    )
+                );
+                $mail->setMessage($mtxt->tbody);
+                $sent = $mail->send();
+
+                if ( $sent == GaletteMail::MAIL_SENT ) {
+                    $hist->add(
+                        str_replace(
+                            '%s',
+                            $member->sname . ' (' . $member->email . ')',
+                            _T("New account mail sent to to admin for '%s'.")
+                        )
+                    );
+                } else {
+                    $str = str_replace(
+                        '%s',
+                        $member->sname . ' (' . $member->email . ')',
+                        _T("A problem happened while sending email to admin for account '%s'.")
+                    );
+                    $hist->add($str);
+                    $error_detected[] = $str;
+                }
+
+                unset ($texts);
+            }
+
+            // send mail to member
+            if ( isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1' ) {
+                if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED ) {
+                    if ( $member->email == '' ) {
+                        $error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
+                    } else {
+                        //send mail to member
+                        // Get email text in database
+                        $texts = new texts();
+                        $mtxt = $texts->getTexts('sub', $preferences->pref_lang);
+
+                        $patterns = array(
+                            '/{NAME}/',
+                            '/{LOGIN_URI}/',
+                            '/{LOGIN}/',
+                            '/{PASSWORD}/'
+                        );
+
+                        $replace = array(
+                            $preferences->pref_nom,
+                            'http://' . $_SERVER['SERVER_NAME'] .
+                            dirname($_SERVER['REQUEST_URI']),
+                            custom_html_entity_decode($member->login),
+                            custom_html_entity_decode($_POST['mdp_adh'])
+                        );
+
+                        // Replace Tokens
+                        $mtxt->tbody = preg_replace(
+                            $patterns,
+                            $replace,
+                            $mtxt->tbody
+                        );
+
+                        $mail = new GaletteMail();
+                        $mail->setSubject($mtxt->tsubject);
+                        $mail->setRecipients(
+                            array(
+                                $member->email => $member->sname
+                            )
+                        );
+                        $mail->setMessage($mtxt->tbody);
+                        $sent = $mail->send();
+
+                        if ( $sent == GaletteMail::MAIL_SENT ) {
+                            $hist->add(
+                                str_replace(
+                                    '%s',
+                                    $member->sname . ' (' . $member->email . ')',
+                                    _T("New account mail sent to '%s'.")
+                                )
                             );
                         } else {
-                            $error_detected[] = _T("- Non valid date!");
-                        }
-                    } else {
-                        $error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!");
-                    }
-                    break;
-                case 'email_adh':
-                case 'msn_adh':
-                    if ( !GaletteMail::isValidEmail($value) ) {
-                        $error_detected[] = _T("- Non-valid E-Mail address!") .
-                            ' (' . $key . ')';
-                    }
-                    break;
-                case 'url_adh':
-                    if ( !is_valid_web_url($value) ) {
-                        $error_detected[] = _T("- Non-valid Website address! Maybe you've skipped the http:// ?");
-                    } elseif ( $value == 'http://' ) {
-                        $value = '';
-                    }
-                    break;
-                case 'login_adh':
-                    if ( strlen($value)<4 ) {
-                        $error_detected[] = _T("- The username must be composed of at least 4 characters!");
-                    } else {
-                        //check if login is already taken
-                        $requete = "SELECT id_adh FROM " . PREFIX_DB .
-                        "adherents WHERE login_adh=" .
-                        $DB->qstr($value, get_magic_quotes_gpc());
-                        if ( isset($adherent['id_adh']) && $adherent['id_adh'] != '' ) {
-                            $requete .= ' AND id_adh!=' . $DB->qstr(
-                                $adherent['id_adh'],
-                                get_magic_quotes_gpc()
+                            $str = str_replace(
+                                '%s',
+                                $member->sname . ' (' . $member->email . ')',
+                                _T("A problem happened while sending new account mail to '%s'")
                             );
-                        }
-
-                        $result = &$DB->Execute($requete);
-                        if ( !$result->EOF || $value == $preferences->pref_admin_login ) {
-                            $error_detected[] = _T("- This username is already used by another member !");
+                            $hist->add($str);
+                            $error_detected[] = $str;
                         }
                     }
-                    break;
-                case 'mdp_adh':
-                    if ( !PasswordCheck($_POST["mdp_adh"], $_POST["mdp_crypt"]) ) {
-                        $error_detected[] = _T("Password misrepeated: ");
-                    } elseif ( strlen($value) < 4 ) {
-                        $error_detected[] = _T("- The password must be of at least 4 characters!");
-                    } else {
-                        // md5sum du mot de passe
-                        // On garde le mot en clair pour le mail et le template
-                        $adherent['mdp_adh_plain'] = $adherent['mdp_adh'];
-                        $adherent['mdp_adh'] = md5($adherent['mdp_adh']);
-                        $value = $adherent["mdp_adh"];
-                        break;
-                    }
-
-                    // dates already quoted
-                    if ( $key == 'date_crea_adh' || $key == 'ddn_adh') {
-                        if ($value=='') {
-                            $value='null';
-                        }
-                    } else {
-                        $value = $DB->qstr($value, get_magic_quotes_gpc());
-                    }
+                } else if ( $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
+                    //if mail has been disabled in the preferences, we should not be here ; we do not throw an error, just a simple warning that will be show later
+                    $_SESSION['galette']['mail_warning'] = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
                 }
             }
-
-            switch( $key ) {
-            case 'date_crea_adh':
-            case 'ddn_adh':
-                // dates already quoted
-                if ( $value=='' ) {
-                    $value='null';
-                }
-                break;
-            default:
-                $value = $DB->qstr($value, get_magic_quotes_gpc());
-            }
-
-            $update_string .= ", ".$key."=".$value;
-            $insert_string_fields .= ", ".$key;
-            $insert_string_values .= ', ' . $value;
-        }
-    }
-
-    // missing required fields?
-    while ( list($key,$val) = each($required) ) {
-        if ( !isset($disabled[$key])
-            && (!isset($adherent[$key])
-            || trim($adherent[$key])=='')
-        ) {
-            $error_detected[] = _T("- Mandatory field empty.") . ' (' . $key . ')';
-        }
-    }
-
-    if ( count($error_detected) == 0 ) {
-        $date_crea_adh = date('Y-m-d');
-        $insert_string_fields .= ',date_crea_adh';
-        $insert_string_values .= ', \'' . $date_crea_adh . '\'';
-        $requete = 'INSERT INTO ' . PREFIX_DB . 'adherents (' .
-            substr($insert_string_fields, 1) . ') VALUES (' .
-            substr($insert_string_values, 1) . ')';
-        /** For debug **/
-        //echo "query will be :<br />".$requete."<br />";
-        if ( !$DB->Execute($requete) ) {
-            print substr($insert_string_values, 1) .
-                ': ' . $DB->ErrorMsg();
-        }
-
-        //Send email to admin if preference checked
-        if ( $preferences->pref_bool_mailadh ) {
-            $texts = new texts();
-            $mtxt = $texts->getTexts('newadh', $preferences->pref_lang);
-            $mtxt->tsubject = str_replace("{NAME_ADH}", custom_html_entity_decode($adherent['nom_adh']), $mtxt->tsubject);
-            $mtxt->tsubject = str_replace("{SURNAME_ADH}", custom_html_entity_decode($adherent['prenom_adh']), $mtxt->tsubject);
-            $mtxt->tbody = str_replace("{NAME_ADH}", custom_html_entity_decode($adherent['nom_adh']), $mtxt->tbody);
-            $mtxt->tbody = str_replace("{SURNAME_ADH}", custom_html_entity_decode($adherent['prenom_adh']), $mtxt->tbody);
-            $mtxt->tbody = str_replace("{LOGIN}", custom_html_entity_decode($adherent['login_adh']), $mtxt->tbody);
-            $mail_result = custom_mail($preferences->pref_email_newadh, $mtxt->tsubject, $mtxt->tbody);
-            unset ($texts);
-            if ( $mail_result != 1 ) {
-                $txt = str_replace(
-                    "%s",
-                    $_POST['email_adh'],
-                    _T("A problem happened while sending email to admin for account '%s'.")
-                );
-
-                $hist->add($txt);
-                $error_detected[] = $txt;
-            }
-        }
-
-        $hist->add(
-            _T("Self_subscription as a member: ") .
-            strtoupper($adherent['nom_adh']) . ' ' . $adherent['prenom_adh'],
-            $requete
-        );
-        //$adherent['id_adh'] = get_last_auto_increment(
-        //    $DB,
-        //    PREFIX_DB."adherents",
-        //    "id_adh"
-        //);
-
-        // il est temps d'envoyer un mail
-        if ( $adherent['email_adh'] != '' ) {
-            // Get email text in database
-            $texts = new texts();
-            $mtxt = $texts->getTexts('sub', $preferences->pref_lang);
-            // Replace Tokens
-
-            $patterns = array(
-                '/{NAME}/',
-                '/{LOGIN_URI}/',
-                '/{LOGIN}/',
-                '/{PASSWORD}/'
+            $hist->add(
+                _T("Self_subscription as a member: ") .
+                strtoupper($adherent['nom_adh']) . ' ' . $adherent['prenom_adh'],
+                $requete
             );
-            $replace = array(
-                $preferences->pref_nom,
-                'http://' . $_SERVER['SERVER_NAME'] .
-                dirname($_SERVER['REQUEST_URI']),
-                custom_html_entity_decode($adherent['login_adh']),
-                custom_html_entity_decode($adherent['mdp_adh_plain']),
-            );
-
-            $mail_result = custom_mail(
-                $adherent['email_adh'],
-                $mtxt->tsubject,
-                preg_replace($patterns, $replace, $mtxt->tbody)
-            );
-
-            /** FIXME: why is the mail send twice ?? */
-            /*$mail_result = custom_mail(
-                $_POST['email_adh'],
-                $mtxt->tsubject,
-                $mtxt->tbody
-            );*/
-
-            if ( $mail_result == 1 ) { //check if mail was successfully send
-                $hist->add(
-                    'Self subscribe - Send subscription mail to:' .
-                    $adherent['email_adh'],
-                    $requete
-                );
-            } else { //warn user if not
-                switch ( $mail_result ) {
-                case 2 :
-                    $hist->add("Self subscribe - Email sent is disabled in the preferences. Ask galette admin.");
-                    $warning_detected[] = _T("Email sent is disabled in the preferences. Ask galette admin.");
-                    break;
-                case 3 :
-                    $hist->add("Self subscribe - A problem happened while sending password for account:"." \"" . $adherent["email_adh"] . "\"");
-                    $warning_detected[] = _T("A problem happened while sending password for account:"." \"" . $adherent["email_adh"] . "\".");
-                    break;
-                case 4 :
-                    $hist->add("Self subscribe - The mail server filled in the preferences cannot be reached. Ask Galette admin");
-                    $warning_detected[] = _T("The mail server filled in the preferences cannot be reached. Ask Galette admin.");
-                    break;
-                default :
-                    $hist->add("Self subscribe - A problem happened while sending password for account:"." \"" . $adherent["email_adh"] . "\"");
-                    $warning_detected[] = _T("A problem happened while sending password for account:"." \"" . $adherent["email_adh"] . "\"");
-                    break;
-                }
-            }
+            $head_redirect = '<meta http-equiv="refresh" content="10;url=index.php" />';
+            $has_register = true;
+        } else {
+            //something went wrong :'(
+            $error_detected[] = _T("An error occured while storing the member.");
         }
-        $head_redirect = '<meta http-equiv="refresh" content="10;url=index.php" />';
-        $has_register = true;
+    } else {
+        //hum... there are errors :'(
+        $error_detected = $valid;
     }
-
-
-    // dynamic fields
-    /*set_all_dynamic_fields($DB, 'adh', $adherent['id_adh'], $adherent['dyn']);
-
-    // deadline
-    $date_fin = get_echeance($DB, $adherent['id_adh']);
-    if ($date_fin!="")
-        $date_fin_update = $DB->DBDate(
-            $date_fin[2].'-'.$date_fin[1].'-'.$date_fin[0]
-        );
-    else
-        $date_fin_update = "NULL";
-    $requete = "UPDATE ".PREFIX_DB."adherents SET date_echeance=".
-    $date_fin_update." WHERE id_adh=" . $adherent['id_adh'];
-    if ( $DB->Execute($requete) ){
-        $warning_detected[] =
-            _T("Inscription sent to the administrator for approval");
-        $head_redirect =
-            "<meta http-equiv=\"refresh\" content=\"10;url=index.php\" />";
-    }*/
 } elseif ( isset($_POST["update_lang"]) && $_POST["update_lang"] == 1 ) {
     while ( list($key, $properties) = each($fields) ) {
         $key = strtolower($key);
@@ -348,17 +247,7 @@ if ( isset($_POST["valid"]) && $_POST['valid'] == 1 ) {
             $adherent[$key] = '';
         }
     }
-} else {
-    // initialiser la structure adhérent à vide (nouvelle fiche)
-    $adherent['id_statut'] = '4';
-    $adherent['titre_adh'] = '1';
-    $adherent['date_crea_adh'] =date('d/m/Y');
-    //annoying
-    //$adherent['url_adh'] = "http://";
-    $adherent['url_adh'] = "";
-    $adherent['pref_lang'] = $preferences->pref_lang;
 }
-
 
 // - declare dynamic fields for display
 $disabled['dyn'] = array();
@@ -372,37 +261,41 @@ $s = PasswordImageName($spam_pass);
 $spam_img = print_img($s);
 
 $dynamic_fields = prepare_dynamic_fields_for_display(
-    $DB, 'adh', $adherent['dyn'], $disabled['dyn'], 1
+    'adh', $adherent['dyn'], $disabled['dyn'], 1
 );
 
+// template variable declaration
 $tpl->assign('page_title', _T("Subscription"));
 // template variable declaration
-$tpl->assign('spam_pass', $spam_pass);
-$tpl->assign('spam_img', $spam_img);
 $tpl->assign('required', $required);
 $tpl->assign('disabled', $disabled);
-$tpl->assign('data', $adherent);
-$tpl->assign('time', time());
+$tpl->assign('member', $member);
+$tpl->assign('self_adh', true);
 $tpl->assign('dynamic_fields', $dynamic_fields);
+$error_detected[] = 'placebo';
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('warning_detected', $warning_detected);
+$tpl->assign('languages', $i18n->getList());
+$tpl->assign('require_calendar', true);
+// pseudo random int
+$tpl->assign('time', time());
+// genre
+$tpl->assign('radio_titres', Politeness::getList());
+
+//self_adh specific
+$tpl->assign('spam_pass', $spam_pass);
+$tpl->assign('spam_img', $spam_img);
+
 if ( $has_register ) {
     $tpl->assign('has_register', $has_register);
 }
-$tpl->assign("languages", $i18n->getList());
 if ( isset($head_redirect) ) {
     $tpl->assign('head_redirect', $head_redirect);
 }
-
-// pseudo random int
-$tpl->assign('time', time());
-
-// genre
-$tpl->assign('radio_titres', Politeness::getList());
-$tpl->assign('require_calendar', true);
+// /self_adh specific
 
 // display page
-$content = $tpl->fetch('self_adherent.tpl');
+$content = $tpl->fetch('member.tpl');
 $tpl->assign('content', $content);
 $tpl->display('public_page.tpl');
 ?>

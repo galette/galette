@@ -162,7 +162,7 @@ nav a{
 	color: #212121;
 }
 #menu li a:hover{
-	background-color: #DDDDFF;*
+	background-color: #DDDDFF;
 	text-decoration:underline;
 }
 #menu li.selected a{
@@ -260,6 +260,10 @@ footer li {
     font-size:0.9em;
 }
 
+.hasPicker{
+    display: inline;
+}
+
 /* == Buttons */
 #delete, #sendmail, #btnsave, .button {
     padding-left: 2em!important;
@@ -326,8 +330,15 @@ footer li {
 #btnsave {
 	background-image:url(images/icon-save.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
-#bntsave.ui-state-hover {
+#btnsave.ui-state-hover {
     background-image:url(images/icon-save.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#btnback {
+	background-image:url(images/prev.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#btnback.ui-state-hover {
+    background-image:url(images/prev.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 #histreset {
@@ -337,14 +348,14 @@ footer li {
     background-image:url(images/delete.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-#next {
+#next, #installpage input[type="submit"] {
 	background-image:url(images/next.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-    padding-left: 0!important;
+    padding-left: 0.4em!important;
     padding-right: 2em!important;
     background-position: 95% 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;
 }
-#next.ui-state-hover {
+#next.ui-state-hover, #installpage input[type="submit"]:hover {
     background-image:url(images/next.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
@@ -362,16 +373,55 @@ footer li {
     background-image:url(images/printer.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
+#btn_membercard, #btn_edit, #btn_contrib, #btn_addcontrib {
+    padding-top:30px!important;
+    padding-left: 0!important;
+    display: block;
+    background-position: 50% 5px, 50% 50%!important;
+    background-repeat: no-repeat, repeat!important;
+}
+#btn_membercard {
+	background-image:url(images/member_card.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#btn_membercard.ui-state-hover {
+	background-image: url(images/member_card.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#btn_edit {
+	background-image:url(images/edit.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#btn_edit.ui-state-hover {
+	background-image: url(images/edit.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#btn_contrib {
+	background-image:url(images/contribution.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#btn_contrib.ui-state-hover {
+	background-image: url(images/contribution.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#btn_addcontrib {
+	background-image:url(images/add_contribution.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#btn_addcontrib.ui-state-hover {
+	background-image: url(images/add_contribution.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
 .left {
-	text-align: left;
+	text-align: left!important;
 }
 
 .right {
-	text-align: right;
+	text-align: right!important;
 }
 
 .center {
 	text-align: center;
+}
+
+.center_table {
+    margin:0 auto;
 }
 
 .cotis-ok {
@@ -394,7 +444,7 @@ footer li {
 	vertical-align: top;
 }
 
-.cotis-late {
+.cotis-late, .transaction-uncomplete {
 	background-color: #FFDDDD!important;
 	vertical-align: top;
 }
@@ -404,7 +454,7 @@ footer li {
 	vertical-align: top;
 }
 
-.cotis-normal {
+.cotis-normal, .transaction-normal {
 	background-color: #DDFFDD!important;
 	vertical-align: top;
 }
@@ -414,6 +464,32 @@ footer li {
 	vertical-align: top;
 }
 
+#input-table tr:hover {
+    background-color: #EEEEEE;
+}
+
+#transaction_detail {
+    margin-bottom: 1em;
+}
+
+#transaction_detail caption {
+    font-weight: bold;
+    padding:.2em;
+}
+#clearfilter {
+    background: url(images/clearfilter.png) 0 50% no-repeat;
+    display:inline-block;
+    width:16px;
+    overflow: hidden;
+    text-indent: 20px;
+    vertical-align: bottom;
+}
+
+.debuginfos span{
+    display: block;
+    font-family: monospace;
+    font-size:1.1em;
+}
 /* =/ Main Galette styles */
 
 /*
@@ -609,6 +685,10 @@ a.listing:hover {
 .acronyme {
 	color: #AAAAAA;
 	font-style: italic;
+}
+
+.note {
+    margin:0;
 }
 
 .exemple {
@@ -988,7 +1068,15 @@ legend {
 }
 
 /* no border on the first 'p' child */
-.cssform p:nth-child(2), .cssform div.p:nth-child(2), .cssform div p:nth-child(1){
+.cssform p:nth-child(2)/*, .cssform div.p:nth-child(2), .cssform div p:nth-child(1)*/{
+    border-top:none;
+}
+/* If there is a div, the preceding rules does not apply to the correct element :( */
+.cssform div p:nth-child(2) {
+    border-top:1px dashed gray;
+}
+/* But w do not whant border on the first element thought :) */
+.cssform div p:nth-child(1) {
     border-top:none;
 }
 
@@ -1025,7 +1113,7 @@ th.bline, td.bline{
 
 .cssform textarea{
 	width:90%;
-	height: 280px;
+	height: 150px;
 }
 
 .logo{
@@ -1103,43 +1191,14 @@ td.photo img{
     list-style-type: none;
     width: 10em;
 }
-#details_menu li a{
-	border:1px #BBBBBB solid;
-	padding:30px 0.5em 0.2em 0.5em;
-	font-weight: bold;
-	color: #666666;
-    display: block;
-    margin-bottom:1em;
-    background-position: 50% 5px;
-    background-repeat: no-repeat;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-}
-#details_menu li a:hover{
-	color: #eea423;
-	background-color:#EEEEEE;
+#details_menu li {
+    margin-bottom:.5em;
 }
 
 .wrmenu {
     margin-right: 10em;
 }
 /*** /Voir adhérent ***/
-
-/*** Images buttons ***/
-#btn_membercard{
-	background-image: url(images/member_card.png);
-}
-#btn_edit{
-	background-image: url(images/edit.png);
-}
-#btn_contrib{
-	background-image: url(images/contribution.png);
-}
-#btn_addcontrib{
-	background-image: url(images/add_contribution.png);
-}
-/*** /Images buttons ***/
 
 /*** Onglets ***/
 #tabs, #tabs li{

@@ -103,48 +103,33 @@ class History extends GalettePagination
     */
     public function add($action, $argument = '', $query = '')
     {
-        global $mdb, $log, $login;
+        global $zdb, $log, $login;
 
-        MDB2::loadFile('Date');
+        try {
+            $values = array(
+                'date_log'   => date('Y-m-d H:i:s'),
+                'ip_log'     => $_SERVER["REMOTE_ADDR"],
+                'adh_log'    => $login->login,
+                'action_log' => $action,
+                'text_log'   => $argument,
+                'sql_log'    => $query
+            );
 
-        $requete = 'INSERT INTO ' .
-            $mdb->quoteIdentifier($this->getTableName()) . ' (';
-        $requete .= implode(', ', $this->_fields);
-        $requete .= ') VALUES (:date, :ip, :adh, :action, :text, :sql)';
-
-        $stmt = $mdb->prepare($requete, $this->_types, MDB2_PREPARE_MANIP);
-
-        if (MDB2::isError($stmt)) {
+            $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
+        } catch (Zend_Db_Adapter_Exception $e) {
             $log->log(
                 'Unable to initialize add log entry into database.' .
-                $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')',
+                $e->getMessage(),
                 PEAR_LOG_WARNING
             );
             return false;
-        }
-
-        $stmt->execute(
-            array(
-                'date'      => MDB2_Date::mdbNow(),
-                'ip'        => $_SERVER["REMOTE_ADDR"],
-                'adh'       => $login->login,
-                'action'    => $action,
-                'text'      => $argument,
-                'sql'       => $query
-            )
-        );
-
-        if (MDB2::isError($stmt)) {
+        } catch (Exception $e) {
             $log->log(
-                "An error occured trying to add log entry. " . $stmt->getMessage(),
+                "An error occured trying to add log entry. " . $e->getMessage(),
                 PEAR_LOG_ERR
             );
             return false;
-        } else {
-            $log->log('Log entry added', PEAR_LOG_DEBUG);
         }
-
-        $stmt->free();
 
         return true;
     }
@@ -156,24 +141,28 @@ class History extends GalettePagination
     */
     public function clean()
     {
-        global $mdb, $log;
-        $requete = 'TRUNCATE TABLE ' .
-            $mdb->quoteIdentifier($this->getTableName());
+        global $zdb, $log;
 
-        $result = $mdb->execute($requete);
+        try {
+            $result = $zdb->db->query('TRUNCATE TABLE ' . $this->getTableName());
 
-        if (MDB2::isError($stmt)) {
+            if ( !$result ) {
+                $log->log(
+                    'An error occured cleaning history. ',
+                    PEAR_LOG_WARNING
+                );
+                $this->add('Arror flushing logs');
+                return false;
+            }
+            $this->add('Logs flushed');
+            return true;
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
-                'An error occured cleaning history. ' . $result->getMessage(),
+                'Unable to flush logs. | ' . $e->getMessage(),
                 PEAR_LOG_WARNING
             );
-            $this->add('Arror flushing logs');
-            return -1;
         }
-
-        $this->add('Logs flushed');
-
-        return $result;
     }
 
     /**
@@ -183,7 +172,7 @@ class History extends GalettePagination
     */
     public function getHistory()
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
         if ($this->counter == null) {
             $c = $this->_getCount();
@@ -197,22 +186,25 @@ class History extends GalettePagination
             }
         }
 
-        $requete = 'SELECT * FROM ' . $mdb->quoteIdentifier($this->getTableName());
-        $requete .= 'ORDER BY ' . $this->orderby . ' ' . $this->ordered;
-
-        //add limits to retrieve only relavant rows
-        $this->setLimits();
-
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($result) ) {
-            return -1;
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from($this->getTableName())
+                ->order($this->orderby . ' ' . $this->ordered);
+            //add limits to retrieve only relavant rows
+            $this->setLimits($select);
+            return $select->query(Zend_Db::FETCH_ASSOC)->fetchAll();
+        } catch (Exception $e) {
+            /** TODO */
+            $log->log(
+                'Unable to get history. | ' . $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
+            );
+            return false;
         }
-
-        $return = array();
-        while ($row = $result->fetchRow(MDB2_FETCHMODE_ASSOC)) {
-            $return[] = $row;
-        }
-        return $return;
     }
 
     /**
@@ -222,22 +214,28 @@ class History extends GalettePagination
     */
     private function _getCount()
     {
-        global $mdb, $log;
-        $requete = 'SELECT count(' . $this->getPk() . ') as counter FROM ' .
-            $mdb->quoteIdentifier($this->getTableName());
+        global $zdb, $log;
 
-        $result = $mdb->query($requete);
-        if (MDB2::isError($result)) {
-            $this->error = $result;
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(
+                $this->getTableName(),
+                'COUNT(' . $this->getPk() . ') as counter'
+            );
+            $qry = $select->__toString();
+            return $select->query()->fetchObject()->counter;
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
-                'Unable to get history count.' . $result->getMessage() .
-                '(' . $result->getDebugInfo() . ')',
+                'Unable to get history count. | ' . $e->getMessage(),
                 PEAR_LOG_WARNING
             );
-            return -1;
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
+            );
+            return false;
         }
-
-        return $result->fetchOne();
     }
 
     /**

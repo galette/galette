@@ -58,6 +58,8 @@ class Status
     const PK = 'id_statut';
     const ORDER_FIELD = 'priorite_statut';
 
+    const ID_NOT_EXITS = -1;
+
     private $_error;
 
     private static $_fields = array(
@@ -94,83 +96,77 @@ class Status
     /**
     * Set default status at install time
     *
-    * @return boolean
+    * @return boolean|Exception
     */
     public function installInit()
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        //first, we drop all values
-        $query = 'DELETE FROM '  . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE);
-        $result = $mdb->execute($query);
+        try {
+            //first, we drop all values
+            $zdb->db->delete(PREFIX_DB . self::TABLE);
 
-        if ( MDB2::isError($result) ) {
-            /** FIXME: we surely want to return sthing and print_r for debug. */
-            print_r($result);
-        }
+            $stmt = $zdb->db->prepare(
+                'INSERT INTO ' . PREFIX_DB . self::TABLE .
+                ' (id_statut, libelle_statut, priorite_statut) ' .
+                'VALUES(:id, :libelle, :priority)'
+            );
 
-        $stmt = $mdb->prepare(
-            'INSERT INTO ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) .
-            ' (' . $mdb->quoteIdentifier('id_statut') . ', ' .
-            $mdb->quoteIdentifier('libelle_statut') . ', ' .
-            $mdb->quoteIdentifier('priorite_statut') .
-            ') VALUES(:id, :libelle, :priority)',
-            array('integer', 'text', 'integer'),
-            MDB2_PREPARE_MANIP
-        );
+            foreach ( self::$_defaults as $d ) {
+                $stmt->bindParam(':id', $d['id']);
+                $stmt->bindParam(':libelle', $d['libelle']);
+                $stmt->bindParam(':priority', $d['priority']);
+                $stmt->execute();
+            }
 
-        $mdb->getDb()->loadModule('Extended', null, false);
-        $mdb->getDb()->extended->executeMultiple($stmt, self::$_defaults);
-
-        if ( MDB2::isError($stmt) ) {
-            $this->error = $stmt;
             $log->log(
-                'Unable to initialize default status.' .
-                $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')',
+                'Default status were successfully stored into database.',
+                PEAR_LOG_INFO
+            );
+            return true;
+        } catch (Exception $e) {
+            $log->log(
+                'Unable to initialize default status.' . $e->getMessage(),
                 PEAR_LOG_WARNING
             );
-            return false;
+            return $e;
         }
-
-        $stmt->free();
-        $log->log(
-            'Default status were successfully stored into database.',
-            PEAR_LOG_INFO
-        );
-        return true;
     }
 
     /**
     * Get list of statuses
     *
-    * @return MDB2::Error or $array[id] = label status
+    * @return array $array[id] = label status
     */
     public function getList()
     {
-        global $mdb, $log;
+        global $zdb, $log;
         $list = array();
 
-        $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' ORDER BY ' .
-            self::ORDER_FIELD . ', ' . self::PK;
-
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($result) ) {
-            $this->_error = $result;
-            return false;
-        }
-
-        if ( $result->numRows() == 0 ) {
-            $log->log('No status defined in database.', PEAR_LOG_INFO);
-            return(-10);
-        } else {
-            $r = $result->fetchAll();
-            $array = array();
-            foreach ( $r as $status ) {
-                $list[$status->id_statut] = _T($status->libelle_statut);
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . self::TABLE)
+                ->order(self::ORDER_FIELD, self::PK);
+            $statuses = $select->query()->fetchAll();
+            if ( count($statuses) == 0 ) {
+                $log->log('No status defined in database.', PEAR_LOG_INFO);
+            } else {
+                foreach ( $statuses as $status ) {
+                    $list[$status->id_statut] = _T($status->libelle_statut);
+                }
             }
             return $list;
+        } catch (Exception $e) {
+            /** TODO */
+            $log->log(
+                __METHOD__ . ' | ' . $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
+            );
         }
-
     }
 
     /**
@@ -183,36 +179,38 @@ class Status
     */
     public function getCompleteList()
     {
-        global $mdb, $log;
+        global $zdb, $log;
         $list = array();
 
-        $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' ORDER BY ' .
-            self::ORDER_FIELD . ', ' . self::PK;
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . self::TABLE)
+                ->order(array(self::ORDER_FIELD, self::PK));
 
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($result) ) {
-            $this->error = $result;
-            return false;
-        }
+            $statuses = $select->query()->fetchAll();
 
-        if ( $result->numRows() == 0 ) {
-            $log->log('No status defined in database.', PEAR_LOG_INFO);
-            return(-10);
-        } else {
-            /** TODO: an array of Objects would be more relevant here
-            (see members and adherent class) */
-            /*foreach ( $result->fetchAll() as $row ) {
-                $list[] = new Status($row);
-            }*/
-            /** END TODO */
-            $r = $result->fetchAll();
-            foreach ( $r as $status ) {
-                $list[$status->id_statut] = array(
-                    _T($status->libelle_statut),
-                    $status->priorite_statut
-                );
+            if ( count($statuses) == 0 ) {
+                $log->log('No status defined in database.', PEAR_LOG_INFO);
+            } else {
+                foreach ( $statuses as $status ) {
+                    $list[$status->id_statut] = array(
+                        _T($status->libelle_statut),
+                        $status->priorite_statut
+                    );
+                }
             }
             return $list;
+        } catch (Exception $e) {
+            /** TODO */
+            $log->log(
+                'Cannot list statuses | ' . $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
+            );
+            return false;
         }
     }
 
@@ -221,50 +219,47 @@ class Status
     *
     * @param integer $id Status' id
     *
-    * @return ResultSet Row if succeed ; null : no such id
-    *   MDB2::Error object : DB error.
+    * @return mixed|false Row if succeed ; false : no such id
     */
     public function get($id)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' .
-            self::PK .'=' . $id;
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(array(PREFIX_DB . self::TABLE));
+            $select->where(self::PK . '=' . $id);
 
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($result) ) {
-            //$this->_error = $result;
+            $result = $select->query()->fetch();
+
             return $result;
-        }
-
-        if ($result->numRows() == 0) {
-            $this->_error = $result;
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
-                'Status `' . $id . '` does not exist.',
+                __METHOD__ . ' | ' . $e->getMessage(),
                 PEAR_LOG_WARNING
             );
-            return null;
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
+            );
+            return false;
         }
-
-        return $result->fetchRow();
     }
 
     /**
-    * Get a label.
-    *
-    * @param integer $id Status' id
-    *
-    * @return integer translated label if succeed, -2 : ID does not exist ;
-    *   -1 : DB error.
-    */
-    public static function getLabel($id)
+     * Get a label.
+     *
+     * @param integer $id         Status' id
+     * @param boolean $translated Do we want translated or original status?
+     *                            Defaults to true.
+     *
+     * @return string
+     */
+    public static function getLabel($id, $translated = true)
     {
         $res = self::get($id);
-        if ( !$res || MDB2::isError($res) ) {
-            return $res;
-        }
-
-        return _T($res->libelle_statut);
+        return ($translated) ? _T($res->libelle_statut) : $res->libelle_statut;
     }
 
     /**
@@ -272,31 +267,26 @@ class Status
     *
     * @param string $label The label
     *
-    * @return null : ID does not exist ; MDB2::Error : DB error ;
-    *   ResultSetRow on success
+    * @return int|false Return id if it exists false otherwise
     */
     public function getIdByLabel($label)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        $stmt = $mdb->prepare(
-            'SELECT '. self::PK .' FROM ' . PREFIX_DB . self::TABLE .
-            ' WHERE ' . $mdb->quoteIdentifier('libelle_statut') . '= :libelle',
-            array('text'),
-            MDB2_PREPARE_MANIP
-        );
-        $result = $stmt->execute(array('libelle' => $label));
-
-        if ( MDB2::isError($result) ) {
-            $this->_error = $result;
-            return $result;
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . self::TABLE, self::PK)
+                ->where('libelle_statut = ?', $label);
+            return $result = $select->query()->fetchColumn();
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log(
+                'Unable to retrieve status from label `' . $label . '` | ' .
+                $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            return false;
         }
-
-        if ( $result == 0 || $result->numRows() == 0 ) {
-            return null;
-        }
-
-        return $result->fetchOne();
     }
 
     /**
@@ -309,14 +299,12 @@ class Status
     */
     public function add($label, $priority)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
         // Avoid duplicates.
         $ret = $this->getidByLabel($label);
-        if ( MDB2::isError($ret) ) {
-            return -1;
-        }
-        if ( $ret != null ) {
+
+        if ( $ret !== false ) {
             $log->log(
                 'Status `' . $label . '` already exists',
                 PEAR_LOG_WARNING
@@ -324,40 +312,35 @@ class Status
             return -2;
         }
 
-        $stmt = $mdb->prepare(
-            'INSERT INTO ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) .
-            ' (' . $mdb->quoteIdentifier('libelle_statut') .
-            ', ' . $mdb->quoteIdentifier('priorite_statut') .
-            ') VALUES(:libelle, :priorite)',
-            array('text', 'integer'),
-            MDB2_PREPARE_MANIP
-        );
-        $stmt->execute(
-            array(
-                'libelle'  => $label,
-                'priorite' => $priority
-            )
-        );
+        try {
+            $values = array(
+                'libelle_statut'  => $label,
+                'priorite_statut' => $priority
+            );
 
-        if ( MDB2::isError($stmt) ) {
-            $this->error = $stmt;
+            $ret = $zdb->db->insert(
+                PREFIX_DB . self::TABLE,
+                $values
+            );
+
+            if ( $ret >  0) {
+                $log->log(
+                    'New status `' . $label . '` added successfully.',
+                    PEAR_LOG_INFO
+                );
+                return $zdb->db->lastInsertId();
+            } else {
+                throw new Exception('New status not added.');
+            }
+        } catch (Exception $e) {
+            /** FIXME */
             $log->log(
                 'Unable to add new status `' . $label . '` | ' .
-                $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')',
-                PEAR_LOG_WARNING
+                $e->getMessage(),
+                PEAR_LOG_ERR
             );
-            return -1;
+            return false;
         }
-
-        $stmt->free();
-        $log->log(
-            'New status `' . $label . '` added successfully.',
-            PEAR_LOG_INFO
-        );
-        return $mdb->getDb()->lastInsertId(
-            PREFIX_DB . self::TABLE,
-            'libelle_statut'
-        );
     }
 
     /**
@@ -371,12 +354,12 @@ class Status
     */
     public function update($id, $field, $value)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
         $ret = $this->get($id);
-        if ( !$ret || MDB2::isError($ret) ) {
+        if ( !$ret ) {
             /* get() already logged and set $this->error. */
-            return ($ret ? -1 : -2);
+            return self::ID_NOT_EXITS;
         }
 
         $fieldtype = '';
@@ -390,28 +373,27 @@ class Status
 
         $log->log("Setting field $field to $value for ctype $id", PEAR_LOG_INFO);
 
-        $stmt = $mdb->prepare(
-            'UPDATE ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) . ' SET ' .
-            $mdb->quoteIdentifier($field) . ' = :field ' .
-            'WHERE ' . self::PK . ' = '.$id,
-            array($fieldtype),
-            MDB2_PREPARE_MANIP
-        );
-        $stmt->execute(array('field'  => $value));
-
-        if (MDB2::isError($stmt)) {
-            $this->error = $stmt;
-            $log->log(
-                'Unable to update status ' . $id . ' | ' . $stmt->getMessage() .
-                '(' . $stmt->getDebugInfo() . ')',
-                PEAR_LOG_WARNING
+        try {
+            $values= array(
+                $field => $value
             );
-            return -1;
-        }
 
-        $stmt->free();
-        $log->log('Status ' . $id . ' updated successfully.', PEAR_LOG_INFO);
-        return 0;
+            $zdb->db->update(
+                PREFIX_DB . self::TABLE,
+                $values,
+                self::PK . ' = ' . $id
+            );
+
+            $log->log('Status ' . $id . ' updated successfully.', PEAR_LOG_INFO);
+            return true;
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log(
+                'Unable to update status ' . $id . ' | ' . $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
     }
 
     /**
@@ -423,87 +405,65 @@ class Status
     */
     public function delete($id)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
         $ret = $this->get($id);
-        if ( !$ret || MDB2::isError($ret) ) {
-            /* get() already logged and set $this->_error. */
-            return ($ret ? -1 : -2);
+        if ( !$ret ) {
+            /* get() already logged and set $this->error. */
+            return self::ID_NOT_EXITS;
         }
 
-        $query = 'DELETE FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) .
-            ' WHERE ' . self::PK . ' = ' . $id;
-        $result = $mdb->execute($query);
-
-        if ( MDB2::isError($result) ) {
-            $this->error = $result;
-            $log->log(
-                'Unable to delete status ' . $id . ' | ' . $result->getMessage() .
-                '(' . $result->getDebugInfo() . ')',
-                PEAR_LOG_WARNING
+        try {
+            $zdb->db->delete(
+                PREFIX_DB . self::TABLE,
+                self::PK . ' = ' . $id
             );
-            return -1;
-        }
-
-        $log->log('Status ' . $id . ' deleted successfully.', PEAR_LOG_INFO);
-        return 0;
-    }
-
-    /**
-    * Check whether this status is used.
-    *
-    * @param integer $id Contribution's id
-    *
-    * @return integer -1 : DB error ; 0 : not used ; 1 : used.
-    */
-    public function isUsed($id)
-    {
-        global $mdb, $log;
-
-        // Check if it's used.
-        $query = 'SELECT * FROM ' . $mdb->quoteIdentifier(PREFIX_DB . 'adherents') .
-            ' WHERE ' . $mdb->quoteIdentifier('id_statut') . ' = ' . $id;
-        $result = $mdb->query($query);
-        if ( MDB2::isError($result) ) {
-            $this->_error = $result;
-            return -1;
-        }
-
-        return ($result->numRows() == 0) ? 0 : 1;
-    }
-
-    /**
-    * Has an error occured ?
-    *
-    * @return boolean
-    */
-    public function inError()
-    {
-        if ( MDB2::isError($this->_error) ) {
+            $log->log(
+                'Status ' . $id . ' deleted successfully.',
+                PEAR_LOG_INFO
+            );
             return true;
-        } else {
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log(
+                'Unable to delete status ' . $id . ' | ' . $e->getMessage(),
+                PEAR_LOG_ERR
+            );
             return false;
         }
     }
 
     /**
-    * Get main MDB2 error message
+    * Check whether this status is used.
     *
-    * @return string MDB2::Error's message
+    * @param integer $id Status' id
+    *
+    * @return boolean
     */
-    public function getErrorMessage()
+    public function isUsed($id)
     {
-        return $this->_error->getMessage();
-    }
+        global $zdb, $log;
 
-    /**
-    * Get additionnal informations about the error
-    *
-    * @return string MDB2::Error's debuginfos
-    */
-    public function getErrorDetails()
-    {
-        return $this->_error->getDebugInfo();
+        // Check if it's used.
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . Adherent::TABLE)
+                ->where(self::PK . ' = ?', $id);
+            if ( $select->query()->fetch() !== false ) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log(
+                'Unable to check if status `' . $id . '` is used. | ' .
+                $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            //in case of error, we consider that status is used, to avoid errors
+            return true;
+        }
     }
 }
 ?>

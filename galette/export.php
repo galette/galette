@@ -52,20 +52,18 @@ require_once WEB_ROOT . 'classes/csv.class.php';
 $csv = new Csv();
 
 $written = array();
-$tables_list = $mdb->listTables();
+$tables_list = $zdb->db->listTables();
 
 if ( isset( $_POST['export_tables'] ) && $_POST['export_tables'] != '' ) {
     foreach ( $_POST['export_tables'] as $table) {
-        $requete = 'SELECT * FROM ' . $table;
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($requete) ) {
-            return -1;
-        }
+        $select = new Zend_Db_Select($zdb->db);
+        $select->from($table);
+        $result = $select->query()->fetchAll(Zend_Db::FETCH_ASSOC);
 
         $filename = Csv::DEFAULT_DIRECTORY . $table . '_full.csv';
         $fp = fopen($filename, 'w');
         if ( $fp ) {
-            $csv->export(
+            $res = $csv->export(
                 $result,
                 Csv::DEFAULT_SEPARATOR,
                 Csv::DEFAULT_QUOTE,
@@ -73,14 +71,48 @@ if ( isset( $_POST['export_tables'] ) && $_POST['export_tables'] != '' ) {
                 $fp
             );
             fclose($fp);
-            $written[] = $filename;
+            $written[] = array(
+                'name' => $table,
+                'file' => $filename
+            );
         }
     }
 }
 
 if ( isset( $_POST['export_parameted'] ) && $_POST['export_parameted'] != '' ) {
     foreach ( $_POST['export_parameted'] as $p) {
-        $written[] = $csv->runParametedExport($p);
+        $res = $csv->runParametedExport($p);
+        $pn = $csv->getParamedtedExportName($p);
+        switch ( $res ) {
+        case Csv::FILE_NOT_WRITABLE:
+            $error_detected[] = str_replace(
+                '%export',
+                $pn,
+                _T("Export file could not be write on disk for '%export'. Make sure web server can write in the exports directory.")
+            );
+            break;
+        case Csv::DB_ERROR:
+            $error_detected[] = str_replace(
+                '%export',
+                $pn,
+                _T("An error occured running parameted export '%export'.")
+            );
+            break;
+        case false:
+            $error_detected[] = str_replace(
+                '%export',
+                $pn,
+                _T("An error occured running parameted export '%export'. Please check the logs.")
+            );
+            break;
+        default:
+            //no error, file has been writted to disk
+            $written[] = array(
+                'name' => $pn,
+                'file' => $res
+            );
+            break;
+        }
     }
 }
 
@@ -88,6 +120,7 @@ $parameted = $csv->getParametedExports();
 
 $tpl->assign('tables_list', $tables_list);
 $tpl->assign('written', $written);
+$tpl->assign('error_detected', $error_detected);
 $tpl->assign('parameted', $parameted);
 $content = $tpl->fetch('export.tpl');
 $tpl->assign('content', $content);

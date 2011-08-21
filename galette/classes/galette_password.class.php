@@ -108,25 +108,30 @@ class GalettePassword
      */
     private function _removeOldEntries($id_adh)
     {
-        global $log, $mdb;
+        global $zdb, $log;
 
-        $requete = 'DELETE FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' .
-        self::PK . '=' . $id_adh;
-
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($result) ) {
+        try {
+            $del = $zdb->db->delete(
+                PREFIX_DB . self::TABLE,
+                $zdb->db->quoteInto(
+                    self::PK . ' = ?',
+                    $id_adh
+                )
+            );
+            if ( $del ) {
+                $log->log(
+                    'Temporary passwords for `' . $id_adh . '` has been removed.',
+                    PEAR_LOG_DEBUG
+                );
+            }
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
                 'An error has occured removing old tmppasswords ' .
-                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
+                $e->getMessage(),
                 PEAR_LOG_ERR
             );
             return false;
-        } else {
-            $log->log(
-                'Temporary passwords for `' . $id_adh . '` has been removed.',
-                PEAR_LOG_DEBUG
-            );
-            return true;
         }
     }
 
@@ -139,9 +144,7 @@ class GalettePassword
      */
     public function generateNewPassword($id_adh)
     {
-        global $log, $mdb;
-
-        MDB2::loadFile('Date');
+        global $zdb, $log;
 
         //first of all, we'll remove all existant entries for specified id
         $this->_removeOldEntries($id_adh);
@@ -150,26 +153,39 @@ class GalettePassword
         $password = $this->makeRandomPassword();
         $hash = md5($password);
 
-        $requete = 'INSERT INTO ' . PREFIX_DB . self::TABLE . ' (' . self::PK .
-        ', tmp_passwd, date_crea_tmp_passwd) VALUES (' . $id_adh . ', \'' .
-        $hash . '\', \'' . MDB2_Date::mdbNow() . '\')';
+        try {
+            $values = array(
+                self::PK               => $id_adh,
+                'tmp_passwd'           => $hash,
+                'date_crea_tmp_passwd' => date('Y-m-d H:i:s')
+            );
 
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($result) ) {
+            $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
+            if ( $add ) {
+                $log->log(
+                    'New passwords temporary set for `' . $id_adh . '`.',
+                    PEAR_LOG_DEBUG
+                );
+                $this->_new_password = $password;
+                $this->_hash = $hash;
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Zend_Db_Adapter_Exception $e) {
             $log->log(
-                'An error has occured storing new password' .
-                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
+                'Unable to add add new password entry into database.' .
+                $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            return false;
+        } catch (Exception $e) {
+            $log->log(
+                "An error occured trying to add temporary password entry. " .
+                $e->getMessage(),
                 PEAR_LOG_ERR
             );
             return false;
-        } else {
-            $log->log(
-                'New passwords temporary set for `' . $id_adh . '`.',
-                PEAR_LOG_DEBUG
-            );
-            $this->_new_password = $password;
-            $this->_hash = $hash;
-            return true;
         }
     }
 
@@ -180,27 +196,33 @@ class GalettePassword
      */
     private function _cleanExpired()
     {
-        global $log, $mdb;
+        global $zdb, $log;
 
         $date = new DateTime();
         $date->sub(new DateInterval('PT24H'));
 
-        $requete = 'DELETE FROM ' . PREFIX_DB . self::TABLE .
-        ' WHERE date_crea_tmp_passwd < \'' . $date->format('Y-m-d H:i:s') . '\'';
-
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($result) ) {
+        try {
+            $del = $zdb->db->delete(
+                PREFIX_DB . self::TABLE,
+                $zdb->db->quoteInto(
+                    'date_crea_tmp_passwd < ?',
+                    $date->format('Y-m-d H:i:s')
+                )
+            );
+            if ( $del ) {
+                $log->log(
+                    'Old Temporary passwords has been deleted.',
+                    PEAR_LOG_DEBUG
+                );
+            }
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
-                'An error occured deleting expired temporary passwords',
+                'An error occured deleting expired temporary passwords. ' .
+                $e->getMessage(),
                 PEAR_LOG_WARNING
             );
             return false;
-        } else {
-            $log->log(
-                'Old Temporary passwords has been deleted.',
-                PEAR_LOG_DEBUG
-            );
-            return true;
         }
     }
 
@@ -213,20 +235,22 @@ class GalettePassword
      */
     public function isHashValid($hash)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        $requete = 'SELECT ' . self::PK . ' FROM ' . PREFIX_DB . self::TABLE .
-        ' WHERE tmp_passwd=\'' . $hash . '\'';
-
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($result) ) {
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(
+                PREFIX_DB . self::TABLE,
+                self::PK
+            )->where('tmp_passwd = ?', $hash);
+            return $select->query()->fetchColumn();
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
-                'An error occured getting requested hash.',
+                'An error occured getting requested hash. ' . $e->getMessage(),
                 PEAR_LOG_WARNING
             );
             return false;
-        } else {
-            return $result->fetchOne();
         }
     }
 
@@ -239,24 +263,31 @@ class GalettePassword
      */
     public function removeHash($hash)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        $requete = 'DELETE FROM ' . PREFIX_DB . self::TABLE .
-        ' WHERE tmp_passwd=\'' . $hash . '\'';
-
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($result) ) {
+        try {
+            $del = $zdb->db->delete(
+                PREFIX_DB . self::TABLE,
+                $zdb->db->quoteInto(
+                    'tmp_passwd = ?',
+                    $hash
+                )
+            );
+            if ( $del ) {
+                $log->log(
+                    'Used hash has been successfully remove',
+                    PEAR_LOG_DEBUG
+                );
+                return true;
+            }
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
-                'An error ocured attempting to delete used hash',
+                'An error ocured attempting to delete used hash' .
+                $e->getMessage(),
                 PEAR_LOG_WARNING
             );
             return false;
-        } else {
-            $log->log(
-                'Used hash has been successfully remove',
-                PEAR_LOG_DEBUG
-            );
-            return true;
         }
     }
 

@@ -42,7 +42,40 @@
 $base_path = '../';
 require_once $base_path . 'includes/galette.inc.php';
 
+require_once $base_path . 'classes/varslist.class.php';
+
+if ( isset($_SESSION['galette']['public_varslist'])  ) {
+    $varslist = unserialize($_SESSION['galette']['public_varslist']);
+} else {
+    $varslist = new VarsList();
+}
+
+// Filters
+if (isset($_GET['page'])) {
+    $varslist->current_page = (int)$_GET['page'];
+}
+
+if ( isset($_GET['clear_filter']) ) {
+    $varslist->reinit();
+}
+
+//numbers of rows to display
+if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
+    $varslist->show = $_GET['nbshow'];
+}
+
+// Sorting
+if ( isset($_GET['tri']) ) {
+    $varslist->orderby = $_GET['tri'];
+}
+
 $members = Members::getPublicList(false, null);
+
+$_SESSION['galette']['public_varslist'] = serialize($varslist);
+
+//assign pagination variables to the template and add pagination links
+$varslist->setSmartyPagination($tpl);
+$tpl->assign('varslist', $varslist);
 
 $tpl->assign('page_title', _T("Members list"));
 $tpl->assign('members', $members);

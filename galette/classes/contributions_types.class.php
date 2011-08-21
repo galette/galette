@@ -57,6 +57,8 @@ class ContributionsTypes
     const TABLE = 'types_cotisation';
     const PK = 'id_type_cotis';
 
+    const ID_NOT_EXITS = -1;
+
     private $_id;
     private $_libelle;
     private $_extension;
@@ -73,9 +75,9 @@ class ContributionsTypes
         array('id' => 1, 'libelle' => 'annual fee', 'extension' => '1'),
         array('id' => 2, 'libelle' => 'reduced annual fee', 'extension' => '1'),
         array('id' => 3, 'libelle' => 'company fee', 'extension' => '1'),
-        array('id' => 4, 'libelle' => 'donation in kind', 'extension' => null),
-        array('id' => 5, 'libelle' => 'donation in money', 'extension' => null),
-        array('id' => 6, 'libelle' => 'partnership', 'extension' => null),
+        array('id' => 4, 'libelle' => 'donation in kind', 'extension' => 0),
+        array('id' => 5, 'libelle' => 'donation in money', 'extension' => 0),
+        array('id' => 6, 'libelle' => 'partnership', 'extension' => 0),
         array('id' => 7, 'libelle' => 'annual fee (to be paid)', 'extension' => '1')
     );
 
@@ -86,7 +88,9 @@ class ContributionsTypes
     */
     public function __construct($args = null)
     {
-        if ( is_object($args) ) {
+        if ( is_int($args) ) {
+            $this->load($args);
+        } else if ( is_object($args) ) {
             $this->_loadFromRS($args);
         }
     }
@@ -100,26 +104,30 @@ class ContributionsTypes
     */
     public function load($id)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' .
-            self::PK . '=' . $id;
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . self::TABLE)
+                ->where(self::PK . ' = ?', $id);
 
-        $result = $mdb->query($requete);
+            $result = $select->query();
+            $this->_loadFromRS($result->fetch());
 
-        if (MDB2::isError($result)) {
+            return true;
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
                 'Cannot load contribution type form id `' . $id . '` | ' .
-                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
+                $e->getMessage(),
                 PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
             );
             return false;
         }
-
-        $this->_loadFromRS($result->fetchRow());
-        $result->free();
-
-        return true;
     }
 
     /**
@@ -140,66 +148,76 @@ class ContributionsTypes
     /**
     * Set default contribution types at install time
     *
-    * @return boolean
+    * @return boolean|Exception
     */
     public function installInit()
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        //first, we drop all values
-        $query = 'DELETE FROM '  . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE);
-        $result = $mdb->execute($query);
+        try {
+            //first, we drop all values
+            $zdb->db->delete(PREFIX_DB . self::TABLE);
 
-        if ( MDB2::isError($result) ) {
-            /** FIXME: we surely want to return sthing and print_r for debug. */
-            print_r($result);
-            $log->log(
-                'Cannot delete contribution type for install | ' .
-                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
-                PEAR_LOG_WARNING
+            $stmt = $zdb->db->prepare(
+                'INSERT INTO ' . PREFIX_DB . self::TABLE .
+                ' (id_type_cotis, libelle_type_cotis, cotis_extension) ' .
+                'VALUES(:id, :libelle, :extension)'
             );
-            return false;
-        }
 
-        $stmt = $mdb->prepare(
-            'INSERT INTO ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) .
-            ' (' . $mdb->quoteIdentifier('id_type_cotis') . ', ' .
-            $mdb->quoteIdentifier('libelle_type_cotis') . ', ' .
-            $mdb->quoteIdentifier('cotis_extension') .
-            ') VALUES(:id, :libelle, :extension)',
-            array('integer', 'text', 'text'),
-            MDB2_PREPARE_MANIP
-        );
+            foreach ( self::$_defaults as $d ) {
+                $stmt->bindParam(':id', $d['id']);
+                $stmt->bindParam(':libelle', $d['libelle']);
+                $stmt->bindParam(':extension', $d['extension'], PDO::PARAM_INT);
+                $stmt->execute();
+            }
 
-        $mdb->getDb()->loadModule('Extended', null, false);
-        $mdb->getDb()->extended->executeMultiple($stmt, self::$_defaults);
-
-        if ( MDB2::isError($stmt) ) {
-            $this->_error = $stmt;
+            $log->log(
+                'Default contributions types were successfully stored into database.',
+                PEAR_LOG_INFO
+            );
+            return true;
+        } catch (Exception $e) {
             $log->log(
                 'Unable to initialize default contributions types.' .
-                $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')',
+                $e->getMessage(),
                 PEAR_LOG_WARNING
             );
-            return false;
+            return $e;
         }
-
-        $stmt->free();
-        $log->log(
-            'Default contributions types were successfully stored into database.',
-            PEAR_LOG_INFO
-        );
-        return true;
     }
 
     /**
-    * Returns the list of statuses, in an array built as :
-    * $array[id] = label status
-    */
-    /*public function getList()
+     * Returns the list of statuses, in an array built as :
+     * $array[id] = "translated label status"
+     *
+     * @param int $extent Filter on (non) cotisations types
+     *
+     * @return array|false
+     */
+    public static function getList($extent = null)
     {
-        // TODO
-    }*/
+        global $zdb, $log;
+
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->distinct()->from(
+                PREFIX_DB . self::TABLE,
+                array(self::PK, 'libelle_type_cotis')
+            )->order('libelle_type_cotis');
+            if ( $extent !== null ) {
+                $select->where('cotis_extension = ?', $extent);
+            }
+            $result = $select->query()->fetchAll();
+            foreach ( $result as $r ) {
+                $list[$r->id_type_cotis] = _T($r->libelle_type_cotis);
+            }
+            return $list;
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log('An error occured', PEAR_LOG_ERR);
+            return false;
+        }
+    }
 
     /** TODO: replace with a static function ? */
     /**
@@ -209,35 +227,41 @@ class ContributionsTypes
     */
     public function getCompleteList()
     {
-        global $mdb, $log;
+        global $zdb, $log;
         $list = array();
 
-        $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE .
-            ' ORDER BY id_type_cotis';
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . self::TABLE)
+                ->order(self::PK);
 
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($result) ) {
-            $this->_error = $result;
-            return false;
-        }
+            $types = $select->query()->fetchAll();
 
-        if ( $result->numRows() == 0 ) {
-            $log->log('No contribution type defined in database.', PEAR_LOG_INFO);
-            return(-10);
-        } else {
-            /** TODO: an array of Objects would be more relevant
-            here (see members and adherent class) */
-            /*foreach( $result->fetchAll() as $row ){
-                $list[] = new ContributionTypes($row);
-            }*/
-            $r = $result->fetchAll();
-            foreach ( $r as $contrib ) {
-                $list[$contrib->id_type_cotis] = array(
-                    _T($contrib->libelle_type_cotis),
-                    $contrib->cotis_extension
+            if ( count($types) == 0 ) {
+                $log->log(
+                    'No contributions types defined in database.',
+                    PEAR_LOG_INFO
                 );
+            } else {
+                foreach ( $types as $type ) {
+                    $list[$type->id_type_cotis] = array(
+                        _T($type->libelle_type_cotis),
+                        $type->cotis_extension
+                    );
+                }
             }
             return $list;
+        } catch (Exception $e) {
+            /** TODO */
+            $log->log(
+                'Cannot list contribution types | ' . $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
+            );
+            return false;
         }
     }
 
@@ -246,49 +270,47 @@ class ContributionsTypes
     *
     * @param integer $id Contribution's id
     *
-    * @return ResultSet Row if succeed ; null : no such $id ;
-    *   MDB2::Error object : DB error.
+    * @return mixed|false Row if succeed ; false : no such id
     */
     public function get($id)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' .
-            self::PK .'=' . $id;
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(array(PREFIX_DB . self::TABLE));
+            $select->where(self::PK . '=' . $id);
 
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($result) ) {
-            $this->_error = $result;
+            $result = $select->query()->fetch();
+
             return $result;
-        }
-
-        if ($result->numRows() == 0) {
-            $this->_error = $result;
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
-                'Contribution type `' . $id . '` does not exist.',
+                __METHOD__ . ' | ' . $e->getMessage(),
                 PEAR_LOG_WARNING
             );
-            return null;
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
+            );
+            return false;
         }
-
-        return $result->fetchRow();
     }
 
     /**
     * Get a label.
     *
-    * @param integer $id Contribution's id
-    *
-    * @return integer translated label if succeed, -2 : ID does not exist ;
-    *   -1 : DB error.
+     * @param integer $id         Status' id
+     * @param boolean $translated Do we want translated or original type?
+     *                            Defaults to true.
+     *
+     * @return string
     */
     public function getLabel($id)
     {
-        $res = $this->get($id);
-        if ( !$res || MDB2::isError($res) ) {
-            return $res;
-        }
-        return _T($res->libelle_type_cotis);
+        $res = self::get($id);
+        return ($translated) ? _T($res->libelle_type_cotis) : $res->libelle_type_cotis;
     }
 
     /**
@@ -296,31 +318,26 @@ class ContributionsTypes
     *
     * @param string $label The label
     *
-    * @return null : ID does not exist ; MDB2::Error : DB error ;
-    *   ResultSetRow on success
+    * @return int|false Return id if it exists false otherwise
     */
     public function getIdByLabel($label)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        $stmt = $mdb->prepare(
-            'SELECT '. self::PK .' FROM ' . PREFIX_DB . self::TABLE .
-            ' WHERE ' . $mdb->quoteIdentifier('libelle_type_cotis') . '= :libelle',
-            array('text'),
-            MDB2_PREPARE_MANIP
-        );
-        $result = $stmt->execute(array('libelle' => $label));
-
-        if ( MDB2::isError($result) ) {
-            $this->_error = $result;
-            return -1;
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . self::TABLE, self::PK)
+                ->where('libelle_type_cotis = ?', $label);
+            return $result = $select->query()->fetchColumn();
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log(
+                'Unable to retrieve contributions type from label `' .
+                $label . '` | ' . $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            return false;
         }
-
-        if ( $result == 0 || $result->numRows() == 0 ) {
-            return null;
-        }
-
-        return $result->fetchOne();
     }
 
     /**
@@ -333,14 +350,12 @@ class ContributionsTypes
     */
     public function add($label, $extension)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
         // Avoid duplicates.
         $ret = $this->getidByLabel($label);
-        if ( MDB2::isError($ret) ) {
-            return -1;
-        }
-        if ( $ret != null ) {
+
+        if ( $ret !== false ) {
             $log->log(
                 'Contribution type `' . $label . '` already exists',
                 PEAR_LOG_WARNING
@@ -348,40 +363,35 @@ class ContributionsTypes
             return -2;
         }
 
-        $stmt = $mdb->prepare(
-            'INSERT INTO ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) .
-            ' (' . $mdb->quoteIdentifier('libelle_type_cotis') .
-            ', ' . $mdb->quoteIdentifier('cotis_extension') .
-            ') VALUES(:libelle, :extension)',
-            array('text', 'integer'),
-            MDB2_PREPARE_MANIP
-        );
-        $stmt->execute(
-            array(
-                'libelle'   => $mdb->escape($label),
-                'extension' => $extension
-            )
-        );
-
-        if ( MDB2::isError($stmt) ) {
-            $this->_error = $stmt;
-            $log->log(
-                'Unable to add new contribution type `' . $label . '` | ' .
-                $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')',
-                PEAR_LOG_WARNING
+        try {
+            $values = array(
+                'libelle_type_cotis'  => $label,
+                'cotis_extension' => $extension
             );
-            return -1;
-        }
 
-        $stmt->free();
-        $log->log(
-            'New contribution type `' . $label . '` added successfully.',
-            PEAR_LOG_INFO
-        );
-        return $mdb->getDb()->lastInsertId(
-            PREFIX_DB . self::TABLE,
-            'libelle_type_cotis'
-        );
+            $ret = $zdb->db->insert(
+                PREFIX_DB . self::TABLE,
+                $values
+            );
+
+            if ( $ret >  0) {
+                $log->log(
+                    'New contributions type `' . $label . '` added successfully.',
+                    PEAR_LOG_INFO
+                );
+                return $zdb->db->lastInsertId();
+            } else {
+                throw new Exception('New contributions type not added.');
+            }
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log(
+                'Unable to add new contributions type `' . $label . '` | ' .
+                $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
     }
 
     /**
@@ -395,12 +405,12 @@ class ContributionsTypes
     */
     public function update($id, $field, $value)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
         $ret = $this->get($id);
-        if ( !$ret || MDB2::isError($ret) ) {
+        if ( !$ret ) {
             /* get() already logged and set $this->error. */
-            return ($ret ? -1 : -2);
+            return self::ID_NOT_EXITS;
         }
 
         $fieldtype = '';
@@ -414,31 +424,31 @@ class ContributionsTypes
 
         $log->log("Setting field $field to $value for ctype $id", PEAR_LOG_INFO);
 
-        $stmt = $mdb->prepare(
-            'UPDATE ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) . ' SET ' .
-            $mdb->quoteIdentifier($field) . ' = :field ' .
-            'WHERE ' . self::PK . ' = '.$id,
-            array($fieldtype),
-            MDB2_PREPARE_MANIP
-        );
-        $stmt->execute(array('field'  => $value));
-
-        if ( MDB2::isError($stmt) ) {
-            $this->_error = $stmt;
-            $log->log(
-                'Unable to update contribution type ' . $id . ' | ' .
-                $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')',
-                PEAR_LOG_WARNING
+        try {
+            $values= array(
+                $field => $value
             );
-            return -1;
-        }
 
-        $stmt->free();
-        $log->log(
-            'Contribution type ' . $id . ' updated successfully.',
-            PEAR_LOG_INFO
-        );
-        return 0;
+            $zdb->db->update(
+                PREFIX_DB . self::TABLE,
+                $values,
+                self::PK . ' = ' . $id
+            );
+
+            $log->log(
+                'Contributions type ' . $id . ' updated successfully.',
+                PEAR_LOG_INFO
+            );
+            return true;
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log(
+                'Unable to update contributions types ' . $id . ' | ' .
+                $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
     }
 
     /**
@@ -450,33 +460,33 @@ class ContributionsTypes
     */
     public function delete($id)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
         $ret = $this->get($id);
-        if ( !$ret || MDB2::isError($ret) ) {
+        if ( !$ret ) {
             /* get() already logged and set $this->_error. */
-            return ($ret ? -1 : -2);
+            return self::ID_NOT_EXITS;
         }
 
-        $query = 'DELETE FROM ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) .
-            ' WHERE ' . self::PK . ' = ' . $id;
-        $result = $mdb->execute($query);
-
-        if ( MDB2::isError($result) ) {
-            $this->_error = $result;
-            $log->log(
-                'Unable to delete contribution type ' . $id . ' | ' .
-                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
-                PEAR_LOG_WARNING
+        try {
+            $zdb->db->delete(
+                PREFIX_DB . self::TABLE,
+                self::PK . ' = ' . $id
             );
-            return -1;
+            $log->log(
+                'Contributions type ' . $id . ' deleted successfully.',
+                PEAR_LOG_INFO
+            );
+            return true;
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log(
+                'Unable to delete contributions type ' . $id . ' | ' .
+                $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            return false;
         }
-
-        $log->log(
-            'Contribution type ' . $id . ' deleted successfully.',
-            PEAR_LOG_INFO
-        );
-        return 0;
     }
 
     /**
@@ -488,52 +498,28 @@ class ContributionsTypes
     */
     public function isUsed($id)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
         // Check if it's used.
-        $query = 'SELECT * FROM ' . $mdb->quoteIdentifier(PREFIX_DB . 'cotisations') .
-            ' WHERE ' . $mdb->quoteIdentifier('id_type_cotis') . ' = ' . $id;
-        $result = $mdb->query($query);
-        if ( MDB2::isError($result) ) {
-            $this->_error = $result;
-            return -1;
-        }
-
-        return ($result->numRows() == 0) ? 0 : 1;
-    }
-
-    /**
-    * Has an error occured ?
-    *
-    * @return boolean
-    */
-    public function inError()
-    {
-        if ( MDB2::isError($this->_error) ) {
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . Contribution::TABLE)
+                ->where(self::PK . ' = ?', $id);
+            if ( $select->query()->fetch() !== false ) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log(
+                'Unable to check if contribution `' . $id . '` is used. | ' .
+                $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            //in case of error, we consider that type is used, to avoid errors
             return true;
-        } else {
-            return false;
         }
-    }
-
-    /**
-    * Get main MDB2 error message
-    *
-    * @return string MDB2::Error's message
-    */
-    public function getErrorMessage()
-    {
-        return $this->_error->getMessage();
-    }
-
-    /**
-    * Get additionnal informations about the error
-    *
-    * @return string MDB2::Error's debuginfos
-    */
-    public function getErrorDetails()
-    {
-        return $this->_error->getDebugInfo();
     }
 
     /**

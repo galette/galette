@@ -75,35 +75,60 @@ class GaletteLogin extends Authentication
     */
     public function logIn($user, $passe)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        $requete = 'SELECT id_adh, bool_admin_adh, nom_adh, prenom_adh, mdp_adh'.
-            ', pref_lang, activite_adh FROM ' . PREFIX_DB . self::TABLE .
-            ' WHERE ' . self::PK . '=\'' . $user. '\' AND mdp_adh=\'' .
-            $passe . '\'';
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(
+                array(PREFIX_DB . self::TABLE),
+                array(
+                    'id_adh',
+                    'bool_admin_adh',
+                    'nom_adh',
+                    'prenom_adh',
+                    'mdp_adh',
+                    'pref_lang',
+                    'activite_adh'
+                )
+            );
+            $select->where(self::PK . ' = ?', $user);
+            $select->where('mdp_adh = ?', $passe);
+            $test = $select->__toString();
+            $row = $zdb->db->fetchRow($select);
 
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($result) ) {
-            return -1;
-        }
-
-        if ($result->numRows() == 0) {
-            $log->log('No entry found for login `' . $user . '`', PEAR_LOG_WARNING);
-            return(-10);
-        } else {
-            $log->log('User `' . $user . '` logged in.', PEAR_LOG_DEBUG);
-            $row = $result->fetchRow();
-            $this->id = $row->id_adh;
-            $this->login = $user;
-            $this->passe = $row->mdp_adh;
-            $this->admin = $row->bool_admin_adh;
-            $this->name = $row->nom_adh;
-            $this->surname = $row->prenom_adh;
-            $this->lang = $row->pref_lang;
-            $this->active = $row->activite_adh;
-            $this->logged = true;
-            //$this->upLastConn($this->login);
-            return(1);
+            if ( $row === false ) {
+                $log->log(
+                    'No entry found for login `' . $user . '`',
+                    PEAR_LOG_WARNING
+                );
+                return false;
+            } else {
+                $log->log('User `' . $user . '` logged in.', PEAR_LOG_INFO);
+                $this->id = $row->id_adh;
+                $this->login = $user;
+                $this->passe = $row->mdp_adh;
+                $this->admin = $row->bool_admin_adh;
+                $this->name = $row->nom_adh;
+                $this->surname = $row->prenom_adh;
+                $this->lang = $row->pref_lang;
+                $this->active = $row->activite_adh;
+                $this->logged = true;
+                return true;
+            }
+        } catch (Zend_Db_Adapter_Exception $e) {
+            $log->log(
+                'An error occured: ' . $e->getChainedException()->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $log->log($e->getTrace(), PEAR_LOG_ERR);
+            return false;
+        } catch(Exception $e) {
+            $log->log(
+                'An error occured: ' . $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $log->log($e->getTrace(), PEAR_LOG_ERR);
+            return false;
         }
     }
 
@@ -117,24 +142,32 @@ class GaletteLogin extends Authentication
     */
     public function loginExists($user)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        $requete = 'SELECT ' . self::PK . ' FROM ' . PREFIX_DB . self::TABLE .
-            ' WHERE ' . self::PK . '=\'' . $user . '\'';
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . self::TABLE)
+                ->where(self::PK . ' = ?', $user);
+            $result = $select->query()->fetchAll();
 
-        /* If an error occurs, we consider that username already exists */
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($result) ) {
+            if ( count($result) > 0 ) {
+                /* We got results, user already exists */
+                return true;
+            } else {
+                /* No results, user does not exists yet :) */
+                return false;
+            }
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
-                'Unable to check if username `' . $user . '` already exists. ' .
-                $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')',
+                'Cannot check if login exists | ' . $e->getMessage(),
                 PEAR_LOG_WARNING
             );
-            return true;
-        }
-        if ($result->numRows() == 0) {
-            return false;
-        } else {
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
+            );
+            /* If an error occurs, we consider that username already exists */
             return true;
         }
     }

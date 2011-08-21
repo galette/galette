@@ -193,6 +193,7 @@ CREATE TABLE galette_models (
 DROP TABLE IF EXISTS galette_fields_categories;
 CREATE TABLE galette_fields_categories (
   id_field_category int(2) NOT NULL AUTO_INCREMENT,
+  table_name varchar(30) NOT NULL,
   category varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   position int(2) NOT NULL,
   PRIMARY KEY (id_field_category)

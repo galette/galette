@@ -20,7 +20,7 @@
 					<noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
 				</p>
 				<fieldset class="cssform">
-					<legend>{_T string="Translation of '%s' label" pattern="/%s/" replace=$text_orig}</legend>
+					<legend class="ui-state-active ui-corner-top">{_T string="Translation of '%s' label" pattern="/%s/" replace=$text_orig}</legend>
 {section name="lang" loop=$trans}
 					<p>
 						<label for="text_trans_{$trans[lang].key}" class="bline">{$trans[lang].name}</label>

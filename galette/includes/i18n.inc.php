@@ -37,6 +37,8 @@
  * @since     Available since 0.62
  */
 
+require_once WEB_ROOT . 'classes/l10n.class.php';
+
 $disable_gettext=true;
 
 $languages = array(
@@ -86,85 +88,104 @@ if ( @putenv("LANG=$language")
 /**
 * Add a translation stored in the database
 *
-* @param AdoDBConnection $DB             AdoDB databasxe connection
 * @param string          $text_orig      Text to translate
 * @param array           $error_detected Pointer to errors array
 *
 * @return void
 */
-function addDynamicTranslation($DB, $text_orig, $error_detected)
+function addDynamicTranslation($text_orig, $error_detected)
 {
-    global $languages, $language;
+    global $zdb, $log, $i18n;
     $l10n_table = PREFIX_DB . 'l10n';
-    $quoted_text_orig = $DB->qstr($text_orig, get_magic_quotes_gpc());
-    foreach ( array_keys($languages) as $text_locale ) {
-        $quoted_locale = $DB->qstr($text_locale, get_magic_quotes_gpc());
-        // User is supposed to use his own language as original text.
-        $quoted_trans = $DB->qstr($text_locale == $language ? $text_orig : '');
-        $where_cond = 'text_orig=' . $quoted_text_orig . ' AND text_locale=' .
-            $quoted_locale;
-        $nref = $DB->GetOne(
-            'SELECT text_nref FROM ' . $l10n_table . ' WHERE ' . $where_cond
-        );
-        if ( is_numeric($nref) && $nref > 0 ) {
-            $query = 'UPDATE ' . $l10n_table .
-                ' SET text_nref=text_nref+1 WHERE ' . $where_cond;
-            $result = $DB->Execute($query);
-        } else {
-            $query = 'INSERT INTO ' . $l10n_table .
-                ' (text_orig, text_locale, text_trans) VALUES (' .
-                $quoted_text_orig . ', ' . $quoted_locale . ', ' .
-                $quoted_trans . ')';
-            $result = parse_db_result(
-                $DB,
-                $DB->Execute($query),
-                $error_detected,
-                $query
-            );
+
+    try {
+        foreach( $i18n->getList() as $lang ) {
+            //check if translation already exists
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from($l10n_table, 'text_nref')
+                ->where('text_orig = ?', $text_orig)
+                ->where('text_locale = ?', $lang->getLongID());
+            $nref = $select->query()->fetch()->text_nref;
+
+            if ( is_numeric($nref) && $nref > 0 ) {
+                //already existing, update
+                $values = array(
+                    'text_nref' => new Zend_Db_Expr('text_nref+1')
+                );
+                $log->log(
+                    'Entry for `' . $text_orig .
+                    '` dynamic translation already exists.',
+                    PEAR_LOG_INFO
+                );
+                $zdb->db->update(
+                    $l10n_table,
+                    $values,
+                    $select->getPart(Zend_Db_Select::WHERE)
+                );
+            } else {
+                //add new entry
+                // User is supposed to use current language as original text.
+                $values = array(
+                    'text_orig' => $text_orig,
+                    'text_locale' => $lang->getLongID(),
+                    'text_trans' => ($lang->getLongID() == $i18n->getLongID()) ? $text_orig : ''
+                );
+                $zdb->db->insert($l10n_table, $values);
+            }
         }
+    } catch (Exception $e) {
+        /** FIXME */
+        $log->log(
+            'An error occured adding dynamic translation for `' .
+            $text_orig . '` | ' . $e->getMessage(),
+            PEAR_LOG_ERR
+        );
+        return false;
     }
 }
 
 /**
 * Delete a translation stored in the database
 *
-* @param AdoDBConnction $DB             AdoDB databasxe connection
 * @param string         $text_orig      Text to translate
 * @param array          $error_detected Pointer to errors array
 *
 * @return void
 */
-function deleteDynamicTranslation($DB, $text_orig, $error_detected)
+function deleteDynamicTranslation($text_orig, $error_detected)
 {
-    global $languages;
+    global $zdb, $log, $i18n;
     $l10n_table = PREFIX_DB . 'l10n';
-    $quoted_text_orig = $DB->qstr($text_orig, get_magic_quotes_gpc());
-    foreach ( array_keys($languages) as $text_locale ) {
-        $quoted_locale = $DB->qstr($text_locale, get_magic_quotes_gpc());
-        $query = 'UPDATE ' . $l10n_table .
-            ' SET text_nref=text_nref-1 WHERE text_orig=' . $quoted_text_orig .
-            ' AND text_locale=' . $quoted_locale;
-        $result = parse_db_result(
-            $DB,
-            $DB->Execute($query),
-            $error_detected,
-            $query
-        );
-        if ( $result ) {
-            $result->Close();
+
+    $t = $languages;
+    $tt = $i18n->getList();
+
+    try {
+        foreach ( $i18n->getList() as $lang ) {
+            $zdb->db->delete(
+                $l10n_table,
+                array(
+                    $zdb->db->quoteInto('text_orig = ?', $text_orig),
+                    $zdb->db->quoteInto('text_locale = ?', $lang->getLongID())
+                )
+            );
         }
-    }
-    $query = 'DELETE FROM ' . $l10n_table . ' WHERE text_nref=0';
-    $result = parse_db_result($DB, $DB->Execute($query), $error_detected, $query);
-    if ( $result ) {
-        $result->Close();
+        return true;
+    } catch (Exception $e) {
+        /** FIXME */
+        $log->log(
+            'An error occured deleting dynamic translation for `' .
+            $text_orig . '` (lang `' . $lang->getLongID() . '`) | ' .
+            $e->getMessage(),
+            PEAR_LOG_ERR
+        );
+        return false;
     }
 }
 
 /**
 * Update a translation stored in the database
 *
-* @param AdoDBConnction $DB             AdoDB databasxe connection
 * @param string         $text_orig      Text to translate
 * @param string         $text_locale    The locale
 * @param string         $text_trans     Translated text
@@ -173,42 +194,71 @@ function deleteDynamicTranslation($DB, $text_orig, $error_detected)
 * @return translated string
 */
 function updateDynamicTranslation(
-    $DB,
     $text_orig,
     $text_locale,
     $text_trans,
     $error_detected
 ) {
+    global $zdb, $log;
     $l10n_table = PREFIX_DB . 'l10n';
-    $quoted_text_orig = $DB->qstr($text_orig, get_magic_quotes_gpc());
-    $quoted_locale = $DB->qstr($text_locale, get_magic_quotes_gpc());
-    $quoted_text_trans = $DB->qstr($text_trans, get_magic_quotes_gpc());
-    $query = 'UPDATE '. $l10n_table . ' SET text_trans=' . $quoted_text_trans .
-        ' WHERE text_orig=' . $quoted_text_orig . ' AND text_locale=' .
-        $quoted_locale;
-    $result = parse_db_result($DB, $DB->Execute($query), $error_detected, $query);
-    if ( $result ) {
-        $result->Close();
+
+    try {
+        $values = array(
+            'text_trans' => $text_trans
+        );
+        $where = array(
+            $zdb->db->quoteInto('text_orig = ?', $text_orig),
+            $zdb->db->quoteInto('text_locale = ?', $text_locale)
+        );
+        $zdb->db->update(
+            $l10n_table,
+            $values,
+            $where
+        );
+    } catch (Exception $e) {
+        /** FIXME */
+        $log->log(
+            'An error occured updating dynamic translation for `' .
+            $text_orig . '` | ' . $e->getMessage(),
+            PEAR_LOG_ERR
+        );
+        return false;
     }
 }
 
+/** FIXME: should be a method in L10n class */
 /**
 * Get a translation stored in the database
 *
-* @param AdoDBConnction $DB          AdoDB databasxe connection
 * @param string         $text_orig   Text to translate
 * @param string         $text_locale The locale
 *
 * @return translated string
 */
-function getDynamicTranslation($DB, $text_orig, $text_locale)
+function getDynamicTranslation($text_orig, $text_locale)
 {
-    $l10n_table = PREFIX_DB . 'l10n';
-    $query = "SELECT text_trans
-                FROM $l10n_table WHERE text_orig=" .
-                $DB->qstr($text_orig, get_magic_quotes_gpc()) . " AND
-                text_locale=".$DB->qstr($text_locale, get_magic_quotes_gpc());
-    return $DB->GetOne($query);
+    global $zdb, $log;
+    try {
+        $select = new Zend_Db_Select($zdb->db);
+        $select->limit(1)->from(
+            PREFIX_DB . L10n::TABLE,
+            'text_trans'
+        )->where('text_orig = ?', $text_orig)
+        ->where('text_locale = ?', $text_locale);
+        return $select->query()->fetch()->text_trans;
+    } catch (Exception $e) {
+        /** TODO */
+        $log->log(
+            'An error occured retrieving l10n entry. text_orig=' . $text_orig .
+            ', text_locale=' . $text_locale . ' | ' . $e->getMessage(),
+            PEAR_LOG_WARNING
+        );
+        $log->log(
+            'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+            PEAR_LOG_ERR
+        );
+        return false;
+    }
 }
 
 /** FIXME : $loc undefined */
@@ -235,13 +285,10 @@ if ( !function_exists('_T') ) {
                 $trans = $GLOBALS['lang'][$chaine];
             } else {
                 $trans = false;
-                if (isset($GLOBALS['DB'])) {
-                    $trans = getDynamicTranslation(
-                        $GLOBALS['DB'],
-                        $chaine,
-                        $language
-                    );
-                }
+                $trans = getDynamicTranslation(
+                    $chaine,
+                    $language
+                );
                 if ($trans) {
                     $GLOBALS['lang'][$chaine] = $trans;
                 } else {

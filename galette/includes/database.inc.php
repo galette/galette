@@ -36,15 +36,6 @@
  * @site      http://www.deepcode.net
  */
 
-function utime ()
-{
-    $time = explode( " ", microtime());
-    $usec = (double)$time[0];
-    $sec = (double)$time[1];
-    return $sec + $usec;
-}
-$start = utime();
-
 include WEB_ROOT . '/includes/adodb' . ADODB_VERSION . '/adodb.inc.php';
 $DB = ADONewConnection(TYPE_DB);
 $DB->debug = false;
@@ -67,34 +58,22 @@ if ( isset($_SERVER['HTTPS']) ) {
     define('HTTP', 'http');
 }
 
-function is_exempt($DB, $cotisant)
-{
-    $requete_cotis = 'SELECT bool_exempt_adh FROM ' . PREFIX_DB .
-        'adherents WHERE id_adh=' . $cotisant;
-    return $DB->GetOne($requete_cotis);
-}
-
 function get_echeance($DB, $cotisant)
 {
-    $exempt = is_exempt($DB, $cotisant);
-
-    $return_date = '';
     // définition couleur pour adherent exempt de cotisation
-    if ( $exempt != '1' ) {
-        $requete_cotis = 'SELECT count(*) FROM ' . PREFIX_DB .
+    $requete_cotis = 'SELECT count(*) FROM ' . PREFIX_DB .
+        'cotisations WHERE id_adh=' . $cotisant;
+    $count = $DB->GetOne($requete_cotis);
+    if ( $count ) {
+        $requete_cotis = 'SELECT max(date_fin_cotis) FROM ' . PREFIX_DB .
             'cotisations WHERE id_adh=' . $cotisant;
-        $count = $DB->GetOne($requete_cotis);
-        if ( $count ) {
-            $requete_cotis = 'SELECT max(date_fin_cotis) FROM ' . PREFIX_DB .
-                'cotisations WHERE id_adh=' . $cotisant;
-            $max_date = $DB->GetOne($requete_cotis);
-            if ($max_date) {
-                list($a, $m, $j) = explode('-', $max_date);
-                $return_date = explode(
-                    "/",
-                    date('d/m/Y', mktime(0, 0, 0, $m, $j, $a))
-                );
-            }
+        $max_date = $DB->GetOne($requete_cotis);
+        if ($max_date) {
+            list($a, $m, $j) = explode('-', $max_date);
+            $return_date = explode(
+                "/",
+                date('d/m/Y', mktime(0, 0, 0, $m, $j, $a))
+            );
         }
     }
     return $return_date;

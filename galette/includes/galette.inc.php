@@ -68,8 +68,8 @@ define('GALETTE_MODE', 'DEV'); //DEV or PROD
 @ini_set('display_errors', 0);
 
 set_include_path(
+    GALETTE_ZEND_PATH . PATH_SEPARATOR .
     GALETTE_PEAR_PATH . PATH_SEPARATOR .
-    GALETTE_PEAR_MDB2_PATH . PATH_SEPARATOR .
     GALETTE_PEAR_LOG_PATH . PATH_SEPARATOR .
     GALETTE_PHP_MAILER_PATH . PATH_SEPARATOR .
     GALETTE_SMARTY_PATH . PATH_SEPARATOR .
@@ -89,16 +89,13 @@ PEAR_LOG_INFO    	=>	Informational
 PEAR_LOG_DEBUG    	=>	Debug-level messages
 
 ------------------------------------------------------------------------------*/
-/** TODO
-* - Set a database logger to replace actual one
-*/
 require_once 'Log.php';
-/** FIXME: for stables versions, log level must not be DEBUG,
+/** FIXME: for stables versions, log level must not be INFO,
 most probably WARNING or NOTICE */
 // ***** LOG : enregistrement des erreur dans un fichier de log
 define('_FILE_LOG', PEAR_LOG_INFO);
 // ***** LOG : fichier de log
-define('_LOG_FILE', WEB_ROOT . '/logs/galette.log');
+define('_LOG_FILE', GALETTE_LOGS_PATH . '/galette.log');
 // ***** LOG : affichage des erreurs à l'écran
 define('_SCREEN_LOG', PEAR_LOG_EMERG);
 
@@ -106,10 +103,10 @@ $conf = array(
     'error_prepend' => '<div id="error" class="error">',
     'error_append'  => '</div>'
 );
-$display = &Log::singleton('display', '', 'galette', $conf, _SCREEN_LOG);
-$file = &Log::singleton('file', _LOG_FILE, 'galette', '', _FILE_LOG);
+$display = Log::singleton('display', '', 'galette', $conf, _SCREEN_LOG);
+$file = Log::singleton('file', _LOG_FILE, 'galette', '', _FILE_LOG);
 
-$log = &Log::singleton('composite');
+$log = Log::singleton('composite');
 $log->addChild($display);
 $log->addChild($file);
 
@@ -151,18 +148,10 @@ if ( !$installer ) { //If we're not working from installer
     require_once WEB_ROOT . 'config/config.inc.php';
 
     /**
-    * MDB2 instanciation
-    */
-    require_once WEB_ROOT . '/classes/mdb2.class.php';
-    /** FIXME: mdb2 object should be stored into the session.
-    This causes a fatal error on __destruct */
-    /*if( isset($_SESSION['galette']['db']) ){
-        $mdb = unserialize($_SESSION['galette']['db']);
-    }else{
-        $mdb2 = new GaletteMdb2();
-        $_SESSION['galette']['db'] = serialize($mdb2);
-    }*/
-    $mdb = new GaletteMdb2();
+     * Database instanciation
+     */
+    require_once WEB_ROOT . '/classes/galette-zend_db.class.php';
+    $zdb = new GaletteZendDb();
 
     /**
     * Load preferences
@@ -191,10 +180,6 @@ if ( !$installer ) { //If we're not working from installer
     } else {
         $login = new GaletteLogin();
     }
-
-    //required by Pictures object, so we put it there
-    /** TODO: use Mdb instead of Adodb for Pictures */
-    require_once WEB_ROOT . 'includes/database.inc.php';
 
     /**
     * Members, also load Adherent and Picture objects

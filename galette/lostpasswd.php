@@ -92,6 +92,13 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 $sent = $mail->send();
 
                 if ( $sent == GaletteMail::MAIL_SENT ) {
+                    $hist->add(
+                        str_replace(
+                            '%s',
+                            $login_adh,
+                            _T("Mail sent to '%s' for password recovery.")
+                        )
+                    );
                     $tpl->assign('password_sent', true);
                 } else {
                     $str = str_replace(

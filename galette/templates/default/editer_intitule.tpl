@@ -1,5 +1,15 @@
 <h1 id="titre">{$form_title}</h1>
-<form action="editer_intitules.php" method="post" enctype="multipart/form-data">
+<form action="gestion_intitules.php" method="post" enctype="multipart/form-data">
+{if $error_detected|@count != 0}
+		<div id="errorbox">
+			<h1>{_T string="- ERROR -"}</h1>
+			<ul>
+{foreach from=$error_detected item=error}
+				<li>{$error}</li>
+{/foreach}
+			</ul>
+		</div>
+{/if}
 
   <div class="bigtable">
     <fieldset class="cssform" id="general">
@@ -21,6 +31,8 @@
         {assign var='field' value=$fields.$class.field}
 	{if $class == 'Status'}
 	  <input type="text" size="4" name="{$fields.$class.field}" id="{$fields.$class.field}" value="{$entry.$field}" />
+      <span class="exemple">{_T string="Note: members with a status priority lower than %priority are staff members." pattern="/%priority/" replace=$non_staff_priority}</span>
+
 	{elseif $class == 'ContributionsTypes'}
 	  <input type="checkbox" name="{$fields.$class.field}" id="{$fields.$class.field}" value="1"{if $entry.$field == 1} checked="checked"{/if} />
 	{/if}

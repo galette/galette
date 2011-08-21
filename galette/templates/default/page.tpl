@@ -13,7 +13,7 @@
 {if $require_calendar}
 		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
 	{if $lang ne 'en'}
-		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.min.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.js"></script>
 	{/if}
 {/if}
 {if $require_tabs}
@@ -79,11 +79,13 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 			<li{if $PAGENAME eq "ajouter_contribution.php"} class="selected"{/if}><a href="{$galette_base_path}ajouter_contribution.php" title="{_T string="Add new contribution in database"}">{_T string="Add a contribution"}</a></li>
 			<li{if $PAGENAME eq "ajouter_transaction.php"} class="selected"{/if}><a href="{$galette_base_path}ajouter_transaction.php" title="{_T string="Add new transaction in database"}">{_T string="Add a transaction"}</a></li>
 			<li{if $PAGENAME eq "history.php"} class="selected"{/if}><a href="{$galette_base_path}history.php" title="{_T string="View application's logs"}">{_T string="Logs"}</a></li>
-			<li class="mnu_last{if $PAGENAME eq "ajouter_adherent.php"} selected{/if}"><a href="{$galette_base_path}export.php" title="{_T string="Export some datas in various formats"}">{_T string="Exports"}</a></li>
+			<li class="mnu_last{if $PAGENAME eq "export.php"} selected{/if}"><a href="{$galette_base_path}export.php" title="{_T string="Export some datas in various formats"}">{_T string="Exports"}</a></li>
   {else}
-			<li{if $PAGENAME eq "voir_adherent.php"} class="selected"{/if}><a href="{$galette_base_path}voir_adherent.php" title="{_T string="View my member card"}">{_T string="My information"}</a></li>
 			<li{if $PAGENAME eq "gestion_contributions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_contributions.php" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a></li>
 			<li{if $PAGENAME eq "gestion_transactions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_transactions.php" title="{_T string="View and filter all my transactions"}">{_T string="My transactions"}</a></li>
+  {/if}
+  {if !$login->isSuperAdmin()}
+			<li{if $PAGENAME eq "voir_adherent.php"} class="selected"{/if}><a href="{$galette_base_path}voir_adherent.php" title="{_T string="View my member card"}">{_T string="My information"}</a></li>
   {/if}
 		</ul>
 {/if}
@@ -101,9 +103,11 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 			<li{if $PAGENAME eq "config_fields.php"} class="selected"{/if}><a href="{$galette_base_path}config_fields.php" title="{_T string="Customize fields order, set which are required, and for who they're visibles"}">{_T string="Customize fields"}</a></li>
     {/if}
 			<li{if $PAGENAME eq "champs_requis.php"} class="selected"{/if}><a href="{$galette_base_path}champs_requis.php">{_T string="Required fields"}</a></li>
-			<li{if $PAGENAME eq "configurer_fiches.php"} class="selected"{/if}><a href="{$galette_base_path}configurer_fiches.php" title="{_T string="Manage additional fields for various forms"}">{_T string="Configure member forms"}</a></li>
+			<li{if $PAGENAME eq "configurer_fiches.php" or $PAGENAME eq "editer_champ.php"} class="selected"{/if}><a href="{$galette_base_path}configurer_fiches.php" title="{_T string="Manage additional fields for various forms"}">{_T string="Configure member forms"}</a></li>
 			<li{if $PAGENAME eq "traduire_libelles.php"} class="selected"{/if}><a href="{$galette_base_path}traduire_libelles.php" title="{_T string="Translate additionnals fields labels"}">{_T string="Translate labels"}</a></li>
-			<li{if $PAGENAME eq "gestion_intitules.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_intitules.php" title="{_T string="Manage various lists that are used in the application"}">{_T string="Manage lists"}</a></li>
+			{*<li{if $PAGENAME eq "gestion_intitules.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_intitules.php" title="{_T string="Manage various lists that are used in the application"}">{_T string="Manage lists"}</a></li>*}
+			<li{if $PAGENAME eq "gestion_intitules.php" and $class eq 'Status'} class="selected"{/if}><a href="{$galette_base_path}gestion_intitules.php?class=Status" title="{_T string="Manage statuses"}">{_T string="Manage statuses"}</a></li>
+			<li{if $PAGENAME eq "gestion_intitules.php" and $class eq 'ContributionsTypes'} class="selected"{/if}><a href="{$galette_base_path}gestion_intitules.php?class=ContributionsTypes" title="{_T string="Manage contributions types"}">{_T string="Manage contributions types"}</a></li>
 			<li{if $PAGENAME eq "gestion_textes.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_textes.php" title="{_T string="Manage emails texts and subjects"}">{_T string="Emails content"}</a></li>
     {if $GALETTE_MODE eq 'DEV'}
 			<li class="mnu_last{if $PAGENAME eq "utilitaires.php"} selected{/if}"><a href="{$galette_base_path}utilitaires.php">{_T string="Utilities"}</a></li>
@@ -134,7 +138,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <ul>
                 <li><a href="http://galette.tuxfamily.org">{_T string="Website"}</a></li>
                 <li><a href="http://galette.tuxfamily.org/documentation/">{_T string="Documentation"}</a></li>
-                <li><a href="http://cv.ulysses.fr">{_T string="Main developper"}</a></li>
+                <li><a href="http://cv.ulysses.fr">{_T string="Project leader"}</a></li>
             </ul>
         </nav>
     </footer>

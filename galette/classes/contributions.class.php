@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010 The Galette Team
+ * Copyright © 2010-2011 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010 The Galette Team
+ * @copyright 2010-2011 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -36,8 +36,8 @@
  */
 
 /** @ignore */
+require_once 'pagination.class.php';
 require_once 'contribution.class.php';
-/*require_once 'status.class.php';*/
 
 /**
  * Contributions class for galette
@@ -68,6 +68,11 @@ class Contributions extends GalettePagination
     const ORDERBY_DURATION = 6;
 
     private $_count = null;
+    private $_start_date_filter = null;
+    private $_end_date_filter = null;
+    private $_filtre_cotis_adh = null;
+
+    private $_from_transaction = false;
 
     /**
     * Default constructor
@@ -98,7 +103,20 @@ class Contributions extends GalettePagination
     }
 
     /**
-    * Get members list
+     * Get contributions list for a specific transaction
+     *
+     * @param int $trans_id Transaction identifier
+     *
+     * @return Contribution[]
+     */
+    public function getListFromTransaction($trans_id)
+    {
+        $this->_from_transaction = $trans_id;
+        return $this->getContributionsList(true);
+    }
+
+    /**
+    * Get contributions list
     *
     * @param bool    $as_contrib return the results as an array of
     *                               Contribution object.
@@ -112,27 +130,36 @@ class Contributions extends GalettePagination
     public function getContributionsList(
         $as_contrib=false, $fields=null, $count=true
     ) {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        $query = $this->_buildSelect($fields, $count);
-        $result = $mdb->query($query);
-        if (MDB2::isError($result)) {
+        try {
+            $select = $this->_buildSelect(
+                $fields, $count
+            );
+
+            $this->setLimits($select);
+
+            $contributions = array();
+            if ( $as_contrib ) {
+                foreach ( $select->query()->fetchAll() as $row ) {
+                    $contributions[] = new Contribution($row);
+                }
+            } else {
+                $contributions = $select->query()->fetchAll();
+            }
+            return $contributions;
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
-                'Cannot list contributions | ' . $result->getMessage() . '(' .
-                $result->getDebugInfo() . ')', PEAR_LOG_ERROR
+                'Cannot list contributions | ' . $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
             );
             return false;
         }
-
-        $contributions = array();
-        if ( $as_contrib ) {
-            foreach ( $result->fetchAll() as $row ) {
-                $contributions[] = new Contribution($row);
-            }
-        } else {
-            $contributions = $result->fetchAll();
-        }
-        return $contributions;
     }
 
     /**
@@ -146,55 +173,83 @@ class Contributions extends GalettePagination
     */
     private function _buildSelect($fields, $count = false)
     {
-        $fieldsList = ( $fields != null && !$as_members )
-                        ? (( !is_array($fields) || count($fields) < 1 ) ? '*'
-                        : implode(', ', $fields)) : '*';
+        global $zdb;
 
-        $query = 'SELECT ' . $fieldsList . ' FROM ' . PREFIX_DB . self::TABLE;
+        try {
+            $fieldsList = ( $fields != null )
+                            ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
+                            : implode(', ', $fields)) : (array)'*';
 
-        $join = ' a JOIN ' . PREFIX_DB . Adherent::TABLE .
-            ' p ON a.' . Adherent::PK . '=p.' . Adherent::PK;
-        $query .= $join;
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(
+                array('a' => PREFIX_DB . self::TABLE),
+                $fieldsList
+            );
 
-        $where = $this->_buildWhereClause();
-        $query .= $where;
+            $select->join(
+                array('p' => PREFIX_DB . Adherent::TABLE, Adherent::PK),
+                'a.' . Adherent::PK . '=' . 'p.' . Adherent::PK
+            );
 
-        $query .= $this->_buildOrderClause();
+            $this->_buildWhereClause($select);
+            $select->order(self::_buildOrderClause());
 
-        if ( $count ) {
-            $this->_proceedCount($where);
+            if ( $count ) {
+                $this->_proceedCount($select);
+            }
+
+            return $select;
+        } catch (Exception $e) {
+            /** TODO */
+            $log->log(
+                'Cannot build SELECT clause for contributions | ' . $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
+            );
+            return false;
         }
-
-        return $query;
     }
 
     /**
     * Count contribtions from the query
     *
-    * @param string $where where clause
+    * @param Zend_Db_Select $select Original select
     *
     * @return void
     */
-    private function _proceedCount($where)
+    private function _proceedCount($select)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        $query = 'SELECT count(' . self::PK . ') FROM ' .
-            PREFIX_DB . self::TABLE . ' p';
-        $query .= $where;
+        try {
+            $countSelect = clone $select;
+            $countSelect->reset(Zend_Db_Select::COLUMNS);
+            $countSelect->reset(Zend_Db_Select::ORDER);
+            $countSelect->columns('count(' . self::PK . ') AS ' . self::PK);
 
-        $result = $mdb->query($query);
+            $result = $countSelect->query()->fetch();
 
-        if (MDB2::isError($result)) {
+            $k = self::PK;
+            $this->_count = $result->$k;
+            if ( $this->_count > 0 ) {
+                $this->counter = (int)$this->_count;
+                $this->countPages();
+            }
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
-                'Cannot count contribution | ' . $result->getMessage() .
-                '(' . $result->getDebugInfo() . ')',
+                'Cannot count contributions | ' . $e->getMessage(),
                 PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $countSelect->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
             );
             return false;
         }
-
-        $this->_count = $result->fetchOne();
     }
 
     /**
@@ -204,26 +259,27 @@ class Contributions extends GalettePagination
     */
     private function _buildOrderClause()
     {
-        $order = ' ORDER BY ';
+        $order = array();
 
         switch ( $this->orderby ) {
         case self::ORDERBY_DATE:
-            $order .= 'date_enreg';
+            $order[] = 'date_enreg' . ' ' . $this->ordered;
             break;
         case self::ORDERBY_BEGIN_DATE:
-            $order .= 'date_debut_cotis';
+            $order[] = 'date_debut_cotis' . ' ' . $this->ordered;
             break;
         case self::ORDERBY_END_DATE:
-            $order .= 'date_fin_cotis';
+            $order[] = 'date_fin_cotis' . ' ' . $this->ordered;
             break;
         case self::ORDERBY_MEMBER:
-            $order .= 'nom_adh, prenom_adh';
+            $order[] = 'nom_adh' . ' ' . $this->ordered;
+            $order[] = 'prenom_adh' . ' ' . $this->ordered;
             break;
         case self::ORDERBY_TYPE:
-            $order .= ContributionsTypes::PK;
+            $order[] = ContributionsTypes::PK;
             break;
         case self::ORDERBY_AMOUNT:
-            $order .= 'montant_cotis';
+            $order[] = 'montant_cotis' . ' ' . $this->ordered;
             break;
         /*
         Hum... I really do not know how to sort a query with a value that
@@ -231,118 +287,71 @@ class Contributions extends GalettePagination
         case self::ORDERBY_DURATION:
             break;*/
         default:
-            $order .= $this->orderby;
+            $order[] = $this->orderby . ' ' . $this->ordered;
             break;
         }
-
-        //set the direction, whatever the field was
-        $order .= ' ' . $this->ordered;
 
         return $order;
     }
 
     /**
-    * Builds where clause, for filtering on simple list mode
-    *
-    * @return string SQL WHERE clause
-    */
-    private function _buildWhereClause()
+     * Builds where clause, for filtering on simple list mode
+     *
+     * @param Zend_Db_Select $select Original select
+     *
+     * @return string SQL WHERE clause
+     */
+    private function _buildWhereClause($select)
     {
-        global $login, $mdb;
-        $where = '';
-        /*if ( $varslist->filter_str != '' ) {
-            $where = ' WHERE ';
-            $token = ' like \'%' . $varslist->filter_str . '%\'';
-            $mdb->getDb()->loadModule('Function');
-            switch( $varslist->field_filter ) {
-            case 0: //Name
-                $where .= $mdb->getDb()->concat(
-                    'nom_adh', 'prenom_adh', 'pseudo_adh'
-                ) . $token;
-                $where .= ' OR ';
-                $where .= $mdb->getDb()->concat(
-                    'prenom_adh', 'nom_adh', 'pseudo_adh'
-                ) . $token;
-                break;
-            case 1: //Address
-                $where .= 'adresse_adh' .$token;
-                $where .= ' OR adresse2_adh' .$token;
-                $where .= ' OR cp_adh' .$token;
-                $where .= ' OR ville_adh' .$token;
-                $where .= ' OR pays_adh' .$token;
-                break;
-            case 2: //Email,URL,IM
-                $where .= 'email_adh' . $token;
-                $where .= ' OR url_adh' . $token;
-                $where .= ' OR msn_adh' . $token;
-                $where .= ' OR icq_adh' . $token;
-                $where .= ' OR jabber_adh' . $token;
-                break;
-            case 3: //Job
-                $where .= 'prof_adh' .$token;
-                break;
-            case 4: //Infos
-                $where .= 'info_public_adh' . $token;
-                $where .= ' OR info_adh' .$token;
-                break;
+        global $zdb, $log, $login;
+
+        try {
+            if ( $this->_start_date_filter != null ) {
+                /** TODO: initial date format should be i18n
+                $d = DateTime::createFromFormat(
+                    _T("d/m/Y"),
+                    $this->_start_date_filter
+                );*/
+                $d = DateTime::createFromFormat(
+                    'd/m/Y',
+                    $this->_start_date_filter
+                );
+                $select->where('date_debut_cotis >= ?', $d->format('Y-m-d'));
             }
-        }
 
-        if ( $varslist->membership_filter ) {
-            $where .= ($where == '') ? ' WHERE ' : ' AND ';
-            switch($varslist->membership_filter) {
-            case 1:
-                $where .= 'date_echeance > \'' . date('Y-m-d', time()) .
-                    '\' AND date_echeance < \'' .
-                    date('Y-m-d', time() + (30 *24 * 60 * 60)) . '\'';
-                    //(30 *24 * 60 * 60) => 30 days
-                break;
-            case 2:
-                $where .= 'date_echeance < \'' . date('Y-m-d', time()) . '\'';
-                break;
-            case 3:
-                $where .= '(date_echeance > \'' . date('Y-m-d', time()) .
-                    '\' OR bool_exempt_adh=1)';
-                break;
-            case 4:
-                $where .= 'isnull(date_echeance)';
-                break;
+            if ( $this->_end_date_filter != null ) {
+                /** TODO: initial date format should be i18n
+                $d = DateTime::createFromFormat(
+                    _T("d/m/Y"),
+                    $this->_end_date_filter
+                );*/
+                $d = DateTime::createFromFormat(
+                    'd/m/Y',
+                    $this->_end_date_filter
+                );
+                $select->where('date_fin_cotis <= ?', $d->format('Y-m-d'));
             }
-        }
 
-        if ( $varslist->account_status_filter ) {
-            $where .= ($where == '') ? ' WHERE ' : ' AND ';
-            switch($varslist->account_status_filter) {
-            case 1:
-                $where .= 'activite_adh=1';
-                break;
-            case 2:
-                $where .= 'activite_adh=0';
-                break;
+            if ( $this->_from_transaction !== false ) {
+                $select->where(
+                    Transaction::PK . ' = ?',
+                    $this->_from_transaction
+                );
             }
-        }*/
 
-        if ( !$login->isAdmin() ) {
-            //members can only view their own contributions
-            $where .= ($where == '') ? ' WHERE ' : ' AND ';
-            $where .=  'p.' . Adherent::PK . '=' . $login->id;
-        } else if ( $_SESSION['filtre_cotis_adh'] != '' ) {
-            $where .= ($where == '') ? ' WHERE ' : ' AND ';
-            $where .=  'p.' . Adherent::PK . '=' . $_SESSION['filtre_cotis_adh'];
+            if ( !$login->isAdmin() ) {
+                //members can only view their own contributions
+                $select->where('p.' . Adherent::PK . ' = ?', $login->id);
+            } else if ( $this->_filtre_cotis_adh != null ) {
+                $select->where('p.' . Adherent::PK . ' = ?', $this->_filtre_cotis_adh);
+            }
+        } catch (Exception $e) {
+            /** TODO */
+            $log->log(
+                __METHOD__ . ' | ' . $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
         }
-
-        return $where;
-    }
-
-    /**
-    * Builds limit clause, for pagination
-    *
-    * @return string SQL LIMIT clause
-    */
-    private function _setLimits()
-    {
-        /*$limits = '';
-        return $limits;*/
     }
 
     /**
@@ -353,6 +362,119 @@ class Contributions extends GalettePagination
     public function getCount()
     {
         return $this->_count;
+    }
+
+    /**
+    * Reinit default parameters
+    *
+    * @return void
+    */
+    public function reinit()
+    {
+        parent::reinit();
+        $this->_start_date_filter = null;
+        $this->_end_date_filter = null;
+    }
+
+    /**
+     * Remove specified contributions
+     *
+     * @param interger|array $ids Contributions identifiers to delete
+     *
+     * @return boolean
+     */
+    public function removeContributions($ids, $transaction = true)
+    {
+        global $zdb, $log, $hist;
+
+        $list = array();
+        if ( is_numeric($ids) ) {
+            //we've got only one identifier
+            $list[] = $ids;
+        } else {
+            $list = $ids;
+        }
+
+        if ( is_array($list) ) {
+            $res = true;
+            try {
+                if ( $transaction ) {
+                    $zdb->db->beginTransaction();
+                }
+                $select = new Zend_Db_Select($zdb->db);
+                $select->from(PREFIX_DB . self::TABLE)
+                    ->where(self::PK . ' IN (?)', $list);
+                $contributions = $select->query()->fetchAll();
+                foreach ( $contributions as $contribution ) {
+                    $c = new Contribution($contribution);
+                    $res = $c->remove(false);
+                    if ( $res === false ) {
+                        throw new Exception;
+                    }
+                }
+                if ( $transaction ) {
+                    $zdb->db->commit();
+                }
+                $hist->add(
+                    "Contributions deleted (" . print_r($list, true) . ')'
+                );
+            } catch (Exception $e) {
+                /** FIXME */
+                if ( $transaction ) {
+                    $zdb->db->rollBack();
+                }
+                $log->log(
+                    'An error occured trying to remove contributions | ' .
+                    $e->getMessage(),
+                    PEAR_LOG_ERR
+                );
+                return false;
+            }
+        } else {
+            //not numeric and not an array: incorrect.
+            $log->log(
+                'Asking to remove contribution, but without providing an array or a single numeric value.',
+                PEAR_LOG_WARNING
+            );
+            return false;
+        }
+
+    }
+
+    /**
+    * Global getter method
+    *
+    * @param string $name name of the property we want to retrive
+    *
+    * @return object the called property
+    */
+    public function __get($name)
+    {
+        global $log;
+
+        $log->log(
+            '[Contributions] Getting property `' . $name . '`',
+            PEAR_LOG_DEBUG
+        );
+
+        if ( in_array($name, $this->pagination_fields) ) {
+            return parent::__get($name);
+        } else {
+            $return_ok = array(
+                'filtre_cotis_adh',
+                'start_date_filter',
+                'end_date_filter'
+            );
+            if (in_array($name, $return_ok)) {
+                $name = '_' . $name;
+                return $this->$name;
+            } else {
+                $log->log(
+                    '[Contributions] Unable to get proprety `' .$name . '`',
+                    PEAR_LOG_WARNING
+                );
+            }
+        }
     }
 
     /**

@@ -36,24 +36,21 @@
  * @since     Available since 0.63
  */
 
+require_once WEB_ROOT . 'classes/dynamic_fields.class.php';
+
 /** TODO: functions names are *not* PEAR Coding Standards compliant.
 Anyways, this file needs a rewrite as an object, we won't spend
 too much time on it. */
 
-$field_type_separator = 0;  // Field separator
-$field_type_text = 1;       // Multiline text
-$field_type_line = 2;       // Single line text
-$field_type_choice = 3;     // Fixed choices as combo-box
-
 $field_type_names = array(
-    $field_type_separator   => _T("separator"),
-    $field_type_text        => _T("free text"),
-    $field_type_line        => _T("single line"),
-    $field_type_choice      => _T("choice")
+    DynamicFields::SEPARATOR   => _T("separator"),
+    DynamicFields::TEXT        => _T("free text"),
+    DynamicFields::LINE        => _T("single line"),
+    DynamicFields::CHOICE      => _T("choice")
 );
 
 $field_properties = array(
-    $field_type_separator => array(
+    DynamicFields::SEPARATOR => array(
         'no_data'       => true,
         'with_width'    => false,
         'with_height'   => false,
@@ -61,7 +58,7 @@ $field_properties = array(
         'multi_valued'  => false,
         'fixed_values'  => false
     ),
-    $field_type_text => array(
+    DynamicFields::TEXT => array(
         'no_data'       => false,
         'with_width'    => true,
         'with_height'   => true,
@@ -69,7 +66,7 @@ $field_properties = array(
         'multi_valued'  => false,
         'fixed_values'  => false
     ),
-    $field_type_line => array(
+     DynamicFields::LINE => array(
         'no_data'       => false,
         'with_width'    => true,
         'with_height'   => false,
@@ -77,7 +74,7 @@ $field_properties = array(
         'multi_valued'  => true,
         'fixed_values'  => false
     ),
-    $field_type_choice => array(
+     DynamicFields::CHOICE => array(
         'no_data'       => false,
         'with_width'    => false,
         'with_height'   => false,
@@ -126,30 +123,44 @@ function fixed_values_table_name($field_id)
 /**
 * Returns an array of fixed valued for a field of type 'choice'.
 *
-* @param AdoDBConnection $DB       AdoDB databasxe connection
 * @param string          $field_id field id
 *
 * @return array
 */
-function get_fixed_values($DB, $field_id)
+function get_fixed_values($field_id)
 {
-    $contents_table = fixed_values_table_name($field_id);
-    $query = 'SELECT val FROM ' . $contents_table . ' ORDER BY id';
-    $fixed_values = array();
-    $result = $DB->Execute($query);
-    if ( $result != false ) {
-        while ( !$result->EOF ) {
-            $fixed_values[] = $result->fields[0];
-            $result->MoveNext();
+    global $zdb, $log;
+
+    try {
+        $val_select = new Zend_Db_Select($zdb->db);
+
+        $val_select->from(DynamicFields::getFixedValuesTableName($field_id), 'val')
+            ->order('id');
+
+        $results = $val_select->query()->fetchAll();
+        $fixed_values = array();
+        if ( $results ) {
+            foreach ( $results as $val ) {
+                $fixed_values[] = $val->val;
+            }
         }
+        return $fixed_values;
+    } catch (Exception $e) {
+        /** TODO */
+        $log->log(
+            'get_fixed_values | ' . $e->getMessage(),
+            PEAR_LOG_WARNING
+        );
+        $log->log(
+            'Query was: ' . $val_select->__toString() . ' ' . $e->__toString(),
+            PEAR_LOG_ERR
+        );
     }
-    return $fixed_values;
 }
 
 /**
 * Set dynamic fields for a given entry
 *
-* @param AdoDBConnection $DB        AdoDB databasxe connection
 * @param string          $form_name Form name in $all_forms
 * @param string          $item_id   Key to find entry values
 * @param string          $field_id  Id assign to the field on creation
@@ -160,52 +171,71 @@ function get_fixed_values($DB, $field_id)
 * @return boolean
 */
 function set_dynamic_field(
-    $DB, $form_name, $item_id, $field_id, $val_index, $field_val
+    $form_name, $item_id, $field_id, $val_index, $field_val
 ) {
-    global $fields_table;
+    global $zdb, $log, $fields_table;
     $ret = false;
-    $quoted_form_name = $DB->qstr($form_name, get_magic_quotes_gpc());
-    $DB->StartTrans();
-    $query = 'SELECT COUNT(*) FROM ' . $fields_table .
-        ' WHERE item_id=' . $item_id .
-        ' AND field_form=' . $quoted_form_name .
-        ' AND field_id=' . $field_id .
-        ' AND val_index=' . $val_index;
-    $count = $DB->GetOne($query);
-    if ( isset($count) ) {
-        if ( $field_val == '' ) {
-            $query = 'DELETE FROM '. $fields_table .
-                ' WHERE item_id=' . $item_id .
-                ' AND field_form=' . $quoted_form_name .
-                ' AND field_id=' . $field_id .
-                ' AND val_index=' . $val_index;
-        } else {
-            $value = $DB->qstr($field_val, get_magic_quotes_gpc());
-            if ( $count > 0 ) {
-                $query = 'UPDATE ' . $fields_table .
-                    ' SET field_val=' . $value .
-                    ' WHERE item_id=' . $item_id .
-                    ' AND field_form=' . $quoted_form_name .
-                    ' AND field_id=' . $field_id .
-                    ' AND val_index=' . $val_index;
+
+    try {
+        $zdb->db->beginTransaction();
+
+        $select = new Zend_Db_Select($zdb->db);
+        $select->from(
+            $fields_table,
+            array('cnt' => 'count(*)')
+        )->where('item_id = ?', $item_id)
+            ->where('field_form = ?', $form_name)
+            ->where('field_id = ?', $field_id)
+            ->where('val_index = ?', $val_index);
+
+        $count = $select->query()->fetchColumn();
+
+        if ( $count > 0 ) {
+            if ( trim($field_val) == '' ) {
+                $zdb->db->delete(
+                    $fields_table,
+                    $select->getPart(Zend_Db_Select::WHERE)
+                );
             } else {
-                $query = 'INSERT INTO ' . $fields_table .
-                    ' (item_id, field_form, field_id, val_index, field_val) VALUES (' .
-                    $item_id . ', ' . $quoted_form_name . ', ' . $field_id .
-                    ', ' . $val_index . ', ' . $value . ')';
+                $zdb->db->update(
+                    $fields_table,
+                    array('field_val' => $field_val),
+                    $select->getPart(Zend_Db_Select::WHERE)
+                );
             }
+        } else {
+            $values = array(
+                'item_id'    => $item_id,
+                'field_form' => $form_name,
+                'field_id'   => $field_id,
+                'val_index'  => $val_index,
+                'field_val'  => $field_val
+            );
+
+            $zdb->db->insert(
+                $fields_table,
+                $values
+            );
         }
-        $result = $DB->Execute($query);
-        $ret = ($result != false);
+
+        $zdb->db->commit();
+        return true;
+    } catch (Exception $e) {
+        /** FIXME */
+        $zdb->db->rollBack();
+        $log->log(
+            'An error occured storing dynamic field. Form name: ' . $form_name .
+            '; item_id:' . $item_id . '; field_id: ' . $field_id .
+            '; val_index: ' . $val_index . '; field_val:' . $field_val,
+            PEAR_LOG_ERR
+        );
+        return false;
     }
-    $DB->CompleteTrans();
-    return $ret;
 }
 
 /**
 * Set all dynamic fields for a given entry
 *
-* @param AdoDBConnection $DB         AdoDB databasxe connection
 * @param string          $form_name  Form name in $all_forms
 * @param string          $item_id    Key to find entry values
 * @param array           $all_values Values as returned by
@@ -213,12 +243,12 @@ function set_dynamic_field(
 *
 * @return boolean
 */
-function set_all_dynamic_fields($DB, $form_name, $item_id, $all_values)
+function set_all_dynamic_fields($form_name, $item_id, $all_values)
 {
     $ret = true;
     while ( list($field_id, $contents) = each($all_values) ) {
         while ( list($val_index, $field_val) = each($contents) ) {
-            if ( !set_dynamic_field($DB, $form_name, $item_id, $field_id, $val_index, $field_val) ) {
+            if ( !set_dynamic_field($form_name, $item_id, $field_id, $val_index, $field_val) ) {
                 $ret = false;
             }
         }
@@ -230,76 +260,92 @@ function set_all_dynamic_fields($DB, $form_name, $item_id, $all_values)
 * Get dynamic fields for one entry
 * It returns an 2d-array with field id as first key and value index as second key.
 *
-* @param AdoDBConnection $DB        AdoDB databasxe connection
 * @param string          $form_name Form name in $all_forms
 * @param string          $item_id   Key to find entry values
 * @param boolean         $quote     If true, values are quoted for HTML output
 *
 * @return 2d-array with field id as first key and value index as second key.
 */
-function get_dynamic_fields($DB, $form_name, $item_id, $quote)
+function get_dynamic_fields($form_name, $item_id, $quote)
 {
-    global $field_properties, $fields_table, $field_types_table;
-    $quoted_form_name = $DB->qstr($form_name, get_magic_quotes_gpc());
-    $DB->StartTrans();
-    $query =  'SELECT field_id, val_index, field_val FROM ' . $fields_table .
-        ' WHERE item_id=' . $item_id . ' AND field_form=' . $quoted_form_name;
-    $result = $DB->Execute($query);
-    if ( $result == false ) {
-        return false;
-    }
-    $dyn_fields = array();
-    while ( !$result->EOF ) {
-        $field_id = $result->fields['field_id'];
-        $value = $result->fields['field_val'];
-        if ( $quote ) {
-            $field_type = $DB->GetOne(
-                'SELECT field_type FROM ' . $field_types_table .
-                ' WHERE field_id=' . $field_id
-            );
-            if ($field_properties[$field_type]['fixed_values']) {
-                $choices = get_fixed_values($DB, $field_id);
-                $value = $choices[$value];
+    global $zdb, $log, $field_properties;
+
+    try {
+        $select = new Zend_Db_Select($zdb->db);
+
+        $select->from(PREFIX_DB . DynamicFields::TABLE)
+            ->where('item_id = ?', $item_id)
+            ->where('field_form = ?', $form_name);
+
+        $result = $select->query()->fetchAll();
+
+        if ( count($result) > 0 ) {
+            $dyn_fields = array();
+            $types_select = new Zend_Db_Select($zdb->db);
+            $types_select->from(PREFIX_DB . DynamicFields::TYPES_TABLE, 'field_type')
+                ->where(DynamicFields::TYPES_PK . ' = :fieldid');
+            $stmt = $zdb->db->prepare($types_select);
+            foreach ($result as $f) {
+                $value = $f->field_val;
+                if ( $quote ) {
+                    $stmt->bindValue(':fieldid', $f->field_id, PDO::PARAM_INT);
+                    if ( $stmt->execute() ) {
+                        $field_type = $stmt->fetch()->field_type;
+                        if ($field_properties[$field_type]['fixed_values']) {
+                            $choices = get_fixed_values($f->field_id);
+                            $value = $choices[$value];
+                        }
+                    }
+                }
+                $dyn_fields[$f->field_id][$f->val_index] = $value;
             }
+            return $dyn_fields;
+        } else {
+            return false;
         }
-        $dyn_fields[$field_id][$result->fields['val_index']] = $value;
-        $result->MoveNext();
+    } catch (Exception $e) {
+        /** TODO */
+        $log->log(
+            'get_dynamic_fields | ' . $e->getMessage(),
+            PEAR_LOG_WARNING
+        );
+        $log->log(
+            'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+            PEAR_LOG_ERR
+        );
     }
-    $result->Close();
-    $DB->CompleteTrans();
-    return $dyn_fields;
 }
 
 /**
 * Extract posted values for dynamic fields
 *
-* @param AdoDBConnection $DB       AdoDB databasxe connection
 * @param array           $post     Array containing the posted values
 * @param array           $disabled Array with fields that are discarded as key
 *
 * @return array
 */
-function extract_posted_dynamic_fields($DB, $post, $disabled)
+function extract_posted_dynamic_fields($post, $disabled)
 {
-    $dyn_fields = array();
-    while ( list($key, $value) = each($post) ) {
-        // if the field is enabled, check it
-        if ( !isset($disabled[$key]) ) {
-            if (substr($key, 0, 11) == 'info_field_') {
-                list($field_id, $val_index) = explode('_', substr($key, 11));
-                if ( is_numeric($field_id) && is_numeric($val_index) ) {
-                    $dyn_fields[$field_id][$val_index] = $value;
+    if ( $post != null ) {
+        $dyn_fields = array();
+        while ( list($key, $value) = each($post) ) {
+            // if the field is enabled, check it
+            if ( !isset($disabled[$key]) ) {
+                if (substr($key, 0, 11) == 'info_field_') {
+                    list($field_id, $val_index) = explode('_', substr($key, 11));
+                    if ( is_numeric($field_id) && is_numeric($val_index) ) {
+                        $dyn_fields[$field_id][$val_index] = $value;
+                    }
                 }
             }
         }
+        return $dyn_fields;
     }
-    return $dyn_fields;
 }
 
 /**
 * Returns an array of all kind of fields to display.
 *
-* @param AdoDBConnection $DB         AdoDB databasxe connection
 * @param string          $form_name  Form name in $all_forms
 * @param array           $all_values Values as returned by
                             extract_posted_dynamic_fields
@@ -310,52 +356,68 @@ function extract_posted_dynamic_fields($DB, $post, $disabled)
 * @return array
 */
 function prepare_dynamic_fields_for_display(
-    $DB, $form_name, $all_values, $disabled, $edit
+    $form_name, $all_values, $disabled, $edit
 ) {
-    global $field_properties, $field_types_table, $perm_admin, $login;
-    $quoted_form_name = $DB->qstr($form_name, get_magic_quotes_gpc());
-    $query = 'SELECT * FROM ' . $field_types_table . ' WHERE field_form=' .
-        $quoted_form_name . ' ORDER BY field_index';
-    $result = &$DB->Execute($query);
-    $dyn_fields = array();
-    $extra = $edit ? 1 : 0;
+    global $zdb, $log, $field_properties, $perm_admin, $login;
 
-    if ( !$result ) {
-        return false;
-    }
-    while ( !$result->EOF ) {
-        $field_id = $result->fields['field_id'];
-        // disable admin fields when logged as member
-        if ( !$login->isAdmin() && $result->fields['field_perm'] == $perm_admin ) {
-            $disabled[$field_id] = 'disabled';
-        }
-        $cur_fields = &$result->fields;
-        $cur_fields['field_name'] = _T($cur_fields['field_name']);
-        $properties = $field_properties[$result->fields['field_type']];
-        if ( $properties['multi_valued'] ) {
-            if ( $cur_fields['field_repeat'] == 0 ) { // Infinite multi-valued field
-                if ( isset($all_values[$cur_fields['field_id']]) ) {
-                    $nb_values = count($all_values[$cur_fields['field_id']]);
-                } else {
-                    $nb_values = 0;
-                }
-                if ( isset($all_values) ) {
-                    $cur_fields['field_repeat'] = $nb_values + $extra;
-                } else {
-                    $cur_fields['field_repeat'] = 1;
-                }
+    try {
+        $select = new Zend_Db_Select($zdb->db);
+
+        $select->from(PREFIX_DB . DynamicFields::TYPES_TABLE)
+            ->where('field_form = ?', $form_name)
+            ->order('field_index');
+
+        $qry = $select->__toString();
+        $result = $select->query(Zend_DB::FETCH_ASSOC)->fetchAll();
+
+        $dyn_fields = array();
+        if ( $result ) {
+            $extra = $edit ? 1 : 0;
+
+            if ( !$login->isAdmin() && $result->field_perm == $perm_admin ) {
+                $disabled[$field_id] = 'disabled';
             }
+
+            foreach ( $result as $r ) {
+                $field_id = $r['field_id'];
+                $r['field_name'] = _T($r['field_name']);
+                $properties = $field_properties[$r['field_type']];
+
+                if ( $properties['multi_valued'] ) {
+                    if ( $r['field_repeat'] == 0 ) { // Infinite multi-valued field
+                        if ( isset($all_values[$r['field_id']]) ) {
+                            $nb_values = count($all_values[$r['field_id']]);
+                        } else {
+                            $nb_values = 0;
+                        }
+                        if ( isset($all_values) ) {
+                            $r['field_repeat'] = $nb_values + $extra;
+                        } else {
+                            $r['field_repeat'] = 1;
+                        }
+                    }
+                } else {
+                    $r['field_repeat'] = 1;
+                    if ( $properties['fixed_values'] ) {
+                        $r['choices'] = get_fixed_values($field_id);
+                    }
+                }
+                $dyn_fields[] = $r;
+            }
+            return $dyn_fields;
         } else {
-            $cur_fields['field_repeat'] = 1;
-            if ( $properties['fixed_values'] ) {
-                $cur_fields['choices'] = get_fixed_values($DB, $field_id);
-            }
+            return false;
         }
-        $dyn_fields[] = $cur_fields;
-        $result->MoveNext();
+    } catch (Exception $e) {
+        /** TODO */
+        $log->log(
+            'get_dynamic_fields | ' . $e->getMessage(),
+            PEAR_LOG_WARNING
+        );
+        $log->log(
+            'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+            PEAR_LOG_ERR
+        );
     }
-    $result->Close();
-    return $dyn_fields;
 }
-
 ?>

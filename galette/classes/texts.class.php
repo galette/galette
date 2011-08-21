@@ -36,12 +36,6 @@
  * @since     Avaialble since 0.7dev - 2007-07-16
  */
 
-/** TODO
-* - all errors messages should be handled by pear::log
-*/
-
-require_once 'MDB2.php';
-
 /**
  * Texts class for galette
  *
@@ -59,6 +53,7 @@ class Texts
 {
     private $_all_texts;
     const TABLE = "texts";
+    const PK = 'tid';
     const DEFAULT_REF = 'sub';
 
     private static $_defaults = array(
@@ -158,53 +153,74 @@ class Texts
     */
     public function getTexts($ref,$lang)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-
-        $requete = 'SELECT * FROM ' .
-            $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) .
-            ' WHERE tref=' . $mdb->quote($ref) . ' AND tlang=' . $mdb->quote($lang);
-        $result = $mdb->query($requete);
-
-        if ( MDB2::isError($result) ) {
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . self::TABLE)
+                ->where('tref = ?', $ref)
+                ->where('tlang = ?', $lang);
+            $result = $select->query()->fetch();
+            if ( $result ) {
+                $this->_all_texts = $result;
+            }
+            return $this->_all_texts;
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
                 'Cannot get text `' . $ref . '` for lang `' . $lang . '` | ' .
-                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
+                $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
                 PEAR_LOG_ERR
             );
             return false;
-        } elseif ( $result->numRows() > 0 ) {
-            $this->_all_texts = $result->fetchRow();
         }
-        return $this->_all_texts;
     }
 
     /**
-    * Set text
-    *
-    * @param string $ref     Texte ref to locate
-    * @param string $lang    Texte language to locate
-    * @param string $subject Subject to set
-    * @param string $body    Body text to set
-    *
-    * @return result mdb2 error or integer
-    */
+     * Set text
+     *
+     * @param string $ref     Texte ref to locate
+     * @param string $lang    Texte language to locate
+     * @param string $subject Subject to set
+     * @param string $body    Body text to set
+     *
+     * @return integer|false affected rows (0 if record did not change)
+     *                       or false on error
+     */
     public function setTexts($ref, $lang, $subject, $body)
     {
-        global $mdb;
+        global $zdb, $log;
         //set texts
-        $requete = 'UPDATE ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE);
-        $requete .= ' SET ' . $mdb->quoteIdentifier('tsubject') . '=' .
-            $mdb->quote($subject) . ', ' . $mdb->quoteIdentifier('tbody') .
-            '=' . $mdb->quote($body);
-        $requete .= ' WHERE ' . $mdb->quoteIdentifier('tref') . '=' .
-            $mdb->quote($ref) . ' AND ' . $mdb->quoteIdentifier('tlang') .
-            '=' . $mdb->quote($lang);
 
-        $result = $mdb->execute($requete);
+        try {
+            /** FIXME: quote? */
+            $values = array(
+                'tsubject' => $subject,
+                'tbody'    => $body,
+            );
 
-        /** FIXME: what if we send here a mdb2 error object? */
-        return $result;
+            $edit = $zdb->db->update(
+                PREFIX_DB . self::TABLE,
+                $values,
+                array(
+                    'tref'  => $ref,
+                    'tlang' => $lang
+                )
+            );
+            return true;
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log(
+                'An error has occured while storing mail text. | ' .
+                $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
     }
 
     /**
@@ -216,76 +232,83 @@ class Texts
     */
     public function getRefs($lang)
     {
-        global $mdb;
-        $requete = 'SELECT ' . $mdb->quoteIdentifier('tref') . ', ' .
-            $mdb->quoteIdentifier('tcomment') . ' FROM ' .
-            $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) . ' WHERE ' .
-            $mdb->quoteIdentifier('tlang') . '=' . $mdb->quote($lang);
-        $result = $mdb->query($requete);
+        global $zdb, $log;
 
-        if ( MDB2::isError($result) ) {
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(
+                PREFIX_DB . self::TABLE,
+                array('tref', 'tcomment')
+            )->where('tlang = ?', $lang);
+
+            return $select->query(Zend_Db::FETCH_ASSOC)->fetchAll();
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
                 'Cannot get refs for lang `' . $lang . '` | ' .
-                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
+                $e->getMessage(),
                 PEAR_LOG_WARNING
             );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
+            );
             return false;
-        } elseif ( $result->numRows() > 0 ) {
-            $refs = $result->fetchAll(MDB2_FETCHMODE_ASSOC);
         }
-        return $refs;
+    }
+
+    /**
+     * Retrieve fields from database
+     *
+     * @return array
+     */
+    public static function getDbFields()
+    {
+        global $zdb;
+        return array_keys($zdb->db->describeTable(PREFIX_DB . self::TABLE));
     }
 
     /**
     * Initialize texts at install time
     *
-    * @return boolean
+    * @return boolean|Exception
     */
     public function installInit()
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        //first, we drop all values
-        $query = 'DELETE FROM '  . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE);
-        $result = $mdb->execute($query);
+        try {
+            //first, we drop all values
+            $zdb->db->delete(PREFIX_DB . self::TABLE);
 
-        if ( MDB2::isError($result) ) {
-            /** FIXME: we surely want to return sthing and print_r for debug. */
-            print_r($result);
-        }
+            $stmt = $zdb->db->prepare(
+                'INSERT INTO ' . PREFIX_DB . self::TABLE .
+                ' (tid, tref, tsubject, tbody, tlang, tcomment) ' .
+                'VALUES(:tid, :tref, :tsubject, :tbody, :tlang, :tcomment )'
+            );
 
-        $stmt = $mdb->prepare(
-            'INSERT INTO ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) .
-            ' (' . $mdb->quoteIdentifier('tid') . ', ' .
-            $mdb->quoteIdentifier('tref') . ', ' .
-            $mdb->quoteIdentifier('tsubject') . ', ' .
-            $mdb->quoteIdentifier('tbody') . ', ' .
-            $mdb->quoteIdentifier('tlang') . ', ' .
-            $mdb->quoteIdentifier('tcomment') .
-            ') VALUES(:tid, :tref, :tsubject, :tbody, :tlang, :tcomment )',
-            array('integer', 'text', 'text', 'text', 'text', 'text'),
-            MDB2_PREPARE_MANIP
-        );
+            foreach ( self::$_defaults as $d ) {
+                $stmt->bindParam(':tid', $d['tid']);
+                $stmt->bindParam(':tref', $d['tref']);
+                $stmt->bindParam(':tsubject', $d['tsubject']);
+                $stmt->bindParam(':tbody', $d['tbody']);
+                $stmt->bindParam(':tlang', $d['tlang']);
+                $stmt->bindParam(':tcomment', $d['tcomment']);
+                $stmt->execute();
+            }
 
-        $mdb->getDb()->loadModule('Extended', null, false);
-        $mdb->getDb()->extended->executeMultiple($stmt, self::$_defaults);
-
-        if ( MDB2::isError($stmt) ) {
-            $this->error = $stmt;
             $log->log(
-                'Unable to initialize default texts.' . $stmt->getMessage() .
-                '(' . $stmt->getDebugInfo() . ')',
+                'Default texts were successfully stored into database.',
+                PEAR_LOG_INFO
+            );
+            return true;
+        } catch (Exception $e) {
+            $log->log(
+                'Unable to initialize default texts.' . $e->getMessage(),
                 PEAR_LOG_WARNING
             );
-            return false;
+            return $e;
         }
-
-        $stmt->free();
-        $log->log(
-            'Default texts were successfully stored into database.',
-            PEAR_LOG_INFO
-        );
-        return true;
     }
 
     /**

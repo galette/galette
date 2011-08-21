@@ -5,7 +5,7 @@
 {if $require_calendar}
 		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
 	{if $lang ne 'en'}
-		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.min.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.js"></script>
 	{/if}
 {/if}
         {if $head_redirect}{$head_redirect}{/if}

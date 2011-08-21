@@ -78,7 +78,7 @@ $forms = array(
 */
 function delEntry ($id, $class)
 {
-    global $error_detected, $DB;
+    global $error_detected;
 
     if ( !is_numeric($id) ) {
         $error_detected[] = _T("- ID must be an integer!");
@@ -87,39 +87,27 @@ function delEntry ($id, $class)
 
     /* Check if it exists. */
     $label = $class->getLabel($id);
-    if ( !$label || MDB2::isError($label) ) {
-        if ($label) {
-            $error_detected[] = _T("- Database error: ") . $class->getErrorMessage();
-        } else {
-            $error_detected[] = _T("- Label does not exist");
-        }
+    if ( !$label ) {
+        $error_detected[] = _T("- Label does not exist");
         return;
     }
 
     /* Check if it's used. */
     $ret = $class->isUsed($id);
-    if ( $ret != 0 ) {
-        if ($ret == -1) {
-            $error_detected[] = _T("- Database error: ").$class->getErrorMessage();
-        } elseif ($ret == 1) {
-            $error_detected[] = _T("- Cannot delete this label: it's still used");
-        }
+    if ( $ret === true ) {
+        $error_detected[] = _T("- Cannot delete this label: it's still used");
         return;
     }
 
     /* Delete. */
     $ret = $class->delete($id);
 
-    if ( $ret != 0 ) {
-        if ($ret == -2) {
-            $error_detected[] = _T("- Label does not exist");
-        } elseif ($ret == -1) {
-            $error_detected[] = _T("- Database error: ").$class->getErrorMessage();
-        }
+    if ( $ret !== true ) {
+        $error_detected[] = _T("- Label does not exist");
         return;
     }
 
-    deleteDynamicTranslation($DB, $label, $error_detected);
+    deleteDynamicTranslation($label, $error_detected);
     return;
 }
 
@@ -176,7 +164,7 @@ function checkFieldValue ($class, $key, $value)
 */
 function modifyEntry ($id, $class)
 {
-    global $error_detected, $fields,  $DB;
+    global $zdb, $error_detected, $fields;
 
     if (!is_numeric($id)) {
         $error_detected[] = _T("- ID must be an integer!");
@@ -184,13 +172,9 @@ function modifyEntry ($id, $class)
     }
 
     $label = '';
-    $oldlabel = $class->getLabel($id);
-    if ( !$oldlabel || MDB2::isError($oldlabel) ) {
-        if ($oldlabel) {
-            $error_detected[] = _T("- Database error: ").$class->getErrorMessage();
-        } else {
-            $error_detected[] = _T("- Label does not exist");
-        }
+    $oldlabel = $class->getLabel($id, false);
+    if ( !$oldlabel ) {
+        $error_detected[] = _T("- Label does not exist");
         return;
     }
 
@@ -218,14 +202,14 @@ function modifyEntry ($id, $class)
     }
 
     /* Update only if all fields are OK. */
-    if ( count($error_detected) ) {
+    if ( count($error_detected) > 0 ) {
         return;
     }
 
     foreach ( $toup as $field => $value ) {
         $ret = $class->update($id, $field, $value);
-        if ( $ret != 0 ) {
-            if ($ret == -2) {
+        if ( $ret !== true ) {
+            if ( $ret == $class::ID_NOT_EXITS ) {
                 $error_detected[] = _T("- Label does not exist");
             } elseif ($ret == -1) {
                 $error_detected[] = _T("- Database error: ") .
@@ -235,8 +219,8 @@ function modifyEntry ($id, $class)
     }
 
     if ( isset($label) && ($oldlabel != $label) ) {
-        deleteDynamicTranslation($DB, $oldlabel, $error_detected);
-        addDynamicTranslation($DB, $label, $error_detected);
+        deleteDynamicTranslation($oldlabel, $error_detected);
+        addDynamicTranslation($label, $error_detected);
     }
 
     return;
@@ -251,7 +235,7 @@ function modifyEntry ($id, $class)
 */
 function addEntry ($class)
 {
-    global $error_detected, $fields, $DB;
+    global $error_detected, $fields;
 
     $label = trim($_POST[$fields[get_class($class)]['name']]);
     $field = trim($_POST[$fields[get_class($class)]['field']]);
@@ -283,7 +267,7 @@ function addEntry ($class)
     }
 
     // User should be able to translate the new labels dynamically.
-    addDynamicTranslation($DB, $label, $error_detected);
+    addDynamicTranslation($label, $error_detected);
 
     return;
 }
@@ -306,12 +290,8 @@ function editEntry ($id, $class)
     }
     $entry = $class->get($id);
 
-    if ( !$entry || MDB2::isError($entry) ) {
-        if ($entry) {
-            $error_detected[] = _T("- Database error: ").$class->getErrorMessage();
-        } else {
-            $error_detected[] = _T("- Label does not exist");
-        }
+    if ( !$entry ) {
+        $error_detected[] = _T("- Label does not exist");
         return;
     }
 
@@ -402,6 +382,10 @@ if ( isset($_GET['id']) ) {
 
 /* Set template parameters and print. */
 $tpl->assign('fields', $fields);
+$tpl->assign('error_detected', $error_detected);
+if ( $className == 'Status' ) {
+    $tpl->assign('non_staff_priority', Members::NON_STAFF_MEMBERS);
+}
 if ( isset($_GET['id']) ) {
     $content = $tpl->fetch('editer_intitule.tpl');
 } else {

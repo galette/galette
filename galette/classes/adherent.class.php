@@ -41,6 +41,8 @@ require_once 'status.class.php';
 require_once 'fields_config.class.php';
 require_once 'fields_categories.class.php';
 require_once 'picture.class.php';
+require_once 'contribution.class.php';
+require_once 'galette_password.class.php';
 
 /**
  * Member class for galette
@@ -66,6 +68,7 @@ class Adherent
     private $_surname;
     private $_nickname;
     private $_birthdate;
+    private $_birth_place;
     private $_job;
     private $_language;
     private $_active;
@@ -111,6 +114,27 @@ class Adherent
         'cp_adh',
         'ville_adh'
     );
+    private $_self_adh = false;
+
+    private $_disabled_fields = array(
+        'id_adh' => 'disabled="disabled"',
+        'date_crea_adh' => 'disabled="disabled"',
+        'id_statut' => 'disabled="disabled"',
+        'activite_adh' => 'disabled="disabled"',
+        'bool_exempt_adh' => 'disabled="disabled"',
+        'bool_admin_adh' => 'disabled="disabled"',
+        'date_echeance' => 'disabled="disabled"',
+        'info_adh' => 'disabled="disabled"'
+    );
+    private $_edit_disabled_fields = array(
+        'titre_adh' => 'disabled',
+        'nom_adh' => 'disabled="disabled"',
+        'prenom_adh' => 'disabled="disabled"',
+    );
+    private $_adm_edit_disabled_fields = array(
+        'id_adh' => 'disabled="disabled"',
+        'date_echeance' => 'disabled="disabled"'
+    );
 
 
     /**
@@ -122,10 +146,12 @@ class Adherent
     */
     public function __construct($args = null)
     {
+        global $i18n;
         /*
         * Fields configuration. Each field is an array and must reflect:
         * array(
         *   (string)label,
+        *   (string) propname,
         *   (boolean)required,
         *   (boolean)visible,
         *   (int)position,
@@ -137,256 +163,293 @@ class Adherent
         */
         $this->_fields = array(
             'id_adh' => array(
-                'label'=>_T("Identifiant:"),
-                'required'=>true,
-                'visible'=>FieldsConfig::HIDDEN,
-                'position'=>0,
-                'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY
+                'label'    => _T("Identifiant:"),
+                'propname' => 'id',
+                'required' => true,
+                'visible'  => FieldsConfig::HIDDEN,
+                'position' => 0,
+                'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
             ),
             'id_statut' => array(
-                'label'=>_T("Status:"),
-                'required'=>true,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>1,
-                'category'=>FieldsCategories::ADH_CATEGORY_GALETTE
+                'label'    => _T("Status:"),
+                'propname' => 'status',
+                'required' => true,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 1,
+                'category' => FieldsCategories::ADH_CATEGORY_GALETTE
             ),
             'nom_adh' => array(
-                'label'=>_T("Name:"),
-                'required'=>true ,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>2,
-                'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY
+                'label'    => _T("Name:"),
+                'propname' => 'name',
+                'required' => true ,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 2,
+                'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
             ),
             'prenom_adh' => array(
-                'label'=>_T("First name:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>3,
-                'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY
+                'label'    => _T("First name:"),
+                'propname' => 'surname',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 3,
+                'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
             ),
             'pseudo_adh' => array(
-                'label'=>_T("Nickname:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>4,
-                'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY
+                'label'    => _T("Nickname:"),
+                'propname' => 'nickname',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 4,
+                'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
             ),
             'titre_adh' => array(
-                'label'=>_T("Title:"),
-                'required'=>true,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>5,
-                'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY
+                'label'    => _T("Title:"),
+                'propname' => 'politeness',
+                'required' => true,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 5,
+                'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
             ),
             'ddn_adh' => array(
-                'label'=>_T("birth date:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>6,
-                'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY
+                'label'    => _T("birth date:"),
+                'propname' => 'birthdate',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 6,
+                'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
             ),
             'adresse_adh' => array(
-                'label'=>_T("Address:"),
-                'required'=>true,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>7,
-                'category'=>FieldsCategories::ADH_CATEGORY_CONTACT
+                'label'    => _T("Address:"),
+                'propname' => 'adress',
+                'required' => true,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 7,
+                'category' => FieldsCategories::ADH_CATEGORY_CONTACT
             ),
             /** TODO remove second adress... */
             'adresse2_adh' => array(
-                'label'=>_T("Address (continuation)"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>8,
-                'category'=>FieldsCategories::ADH_CATEGORY_CONTACT
+                'label'    => _T("Address (continuation)"),
+                'propname' => 'adress_continuation',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 8,
+                'category' => FieldsCategories::ADH_CATEGORY_CONTACT
             ),
             'cp_adh' => array(
-                'label'=>_T("Zip Code:"),
-                'required'=>true,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>9,
-                'category'=>FieldsCategories::ADH_CATEGORY_CONTACT
+                'label'    => _T("Zip Code:"),
+                'propname' => 'zipcode',
+                'required' => true,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 9,
+                'category' => FieldsCategories::ADH_CATEGORY_CONTACT
             ),
             'ville_adh' => array(
-                'label'=>_T("City:"),
-                'required'=>true,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>10,
-                'category'=>FieldsCategories::ADH_CATEGORY_CONTACT
+                'label'    => _T("City:"),
+                'propname' => 'town',
+                'required' => true,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 10,
+                'category' => FieldsCategories::ADH_CATEGORY_CONTACT
             ),
             'pays_adh' => array(
-                'label'=>_T("Country:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>11,
-                'category'=>FieldsCategories::ADH_CATEGORY_CONTACT
+                'label'    => _T("Country:"),
+                'propname' => 'country',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 11,
+                'category' => FieldsCategories::ADH_CATEGORY_CONTACT
             ),
             'tel_adh' => array(
-                'label'=>_T("Phone:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>12,
-                'category'=>FieldsCategories::ADH_CATEGORY_CONTACT
+                'label'    => _T("Phone:"),
+                'propname' => 'phone',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 12,
+                'category' => FieldsCategories::ADH_CATEGORY_CONTACT
             ),
             'gsm_adh' => array(
-                'label'=>_T("Mobile phone:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>13,
-                'category'=>FieldsCategories::ADH_CATEGORY_CONTACT
+                'label'    => _T("Mobile phone:"),
+                'propname' => 'gsm',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 13,
+                'category' => FieldsCategories::ADH_CATEGORY_CONTACT
             ),
             'email_adh' => array(
-                'label'=>_T("E-Mail:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>14,
-                'category'=>FieldsCategories::ADH_CATEGORY_CONTACT
+                'label'    => _T("E-Mail:"),
+                'propname' => 'email',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 14,
+                'category' => FieldsCategories::ADH_CATEGORY_CONTACT
             ),
             'url_adh' => array(
-                'label'=>_T("Website:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>15,
-                'category'=>FieldsCategories::ADH_CATEGORY_CONTACT
+                'label'    => _T("Website:"),
+                'propname' => 'website',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 15,
+                'category' => FieldsCategories::ADH_CATEGORY_CONTACT
             ),
             'icq_adh' => array(
-                'label'=>_T("ICQ:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>16,
-                'category'=>FieldsCategories::ADH_CATEGORY_CONTACT
+                'label'    => _T("ICQ:"),
+                'propname' => 'icq',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 16,
+                'category' => FieldsCategories::ADH_CATEGORY_CONTACT
             ),
             'msn_adh' => array(
-                'label'=>_T("MSN:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>17,
-                'category'=>FieldsCategories::ADH_CATEGORY_CONTACT
+                'label'    => _T("MSN:"),
+                'propname' => 'msn',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 17,
+                'category' => FieldsCategories::ADH_CATEGORY_CONTACT
             ),
             'jabber_adh' => array(
-                'label'=>_T("Jabber:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>18,
-                'category'=>FieldsCategories::ADH_CATEGORY_CONTACT
+                'label'    => _T("Jabber:"),
+                'propname' => 'jabber',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 18,
+                'category' => FieldsCategories::ADH_CATEGORY_CONTACT
             ),
             'info_adh' => array(
-                'label'=>_T("Other informations (admin):"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>19,
-                'category'=>FieldsCategories::ADH_CATEGORY_GALETTE
+                'label'    => _T("Other informations (admin):"),
+                'propname' => 'other_infos_admin',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 19,
+                'category' => FieldsCategories::ADH_CATEGORY_GALETTE
             ),
             'info_public_adh' => array(
-                'label'=>_T("Other informations:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>20,
-                'category'=>FieldsCategories::ADH_CATEGORY_GALETTE
+                'label'    => _T("Other informations:"),
+                'propname' => 'others_infos',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 20,
+                'category' => FieldsCategories::ADH_CATEGORY_GALETTE
             ),
             'prof_adh' => array(
-                'label'=>_T("Profession:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>21,
-                'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY
+                'label'    => _T("Profession:"),
+                'propname' => 'job',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 21,
+                'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
             ),
             'login_adh' => array(
-                'label'=>_T("Username:"),
-                'required'=>true,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>22,
-                'category'=>FieldsCategories::ADH_CATEGORY_GALETTE
+                'label'    => _T("Username:"),
+                'propname' => 'login',
+                'required' => true,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 22,
+                'category' => FieldsCategories::ADH_CATEGORY_GALETTE
             ),
             'mdp_adh' => array(
-                'label'=>_T("Password:"),
-                'required'=>true,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>23,
-                'category'=>FieldsCategories::ADH_CATEGORY_GALETTE
+                'label'    => _T("Password:"),
+                'propname' => 'password',
+                'required' => true,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 23,
+                'category' => FieldsCategories::ADH_CATEGORY_GALETTE
             ),
             'date_crea_adh' => array(
-                'label'=>_T("Creation date:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>24,
-                'category'=>FieldsCategories::ADH_CATEGORY_GALETTE
+                'label'    => _T("Creation date:"),
+                'propname' => 'creation_date',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 24,
+                'category' => FieldsCategories::ADH_CATEGORY_GALETTE
             ),
             'activite_adh' => array(
-                'label'=>_T("Account:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>25,
-                'category'=>FieldsCategories::ADH_CATEGORY_GALETTE
+                'label'    => _T("Account:"),
+                'propname' => 'active',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 25,
+                'category' => FieldsCategories::ADH_CATEGORY_GALETTE
             ),
             'bool_admin_adh' => array(
-                'label'=>_T("Galette Admin:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>26,
-                'category'=>FieldsCategories::ADH_CATEGORY_GALETTE
+                'label'    => _T("Galette Admin:"),
+                'propname' => 'admin',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 26,
+                'category' => FieldsCategories::ADH_CATEGORY_GALETTE
             ),
             'bool_exempt_adh' => array(
-                'label'=>_T("Freed of dues:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>27,
-                'category'=>FieldsCategories::ADH_CATEGORY_GALETTE
+                'label'    => _T("Freed of dues:"),
+                'propname' => 'due_free',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 27,
+                'category' => FieldsCategories::ADH_CATEGORY_GALETTE
             ),
             'bool_display_info' => array(
-                'label'=>_T("Be visible in the<br /> members list:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>28,
-                'category'=>FieldsCategories::ADH_CATEGORY_GALETTE
+                'label'    => _T("Be visible in the<br /> members list:"),
+                'propname' => 'appears_in_list',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 28,
+                'category' => FieldsCategories::ADH_CATEGORY_GALETTE
             ),
             'date_echeance' => array(
-                'label'=>_T("Due date:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>29,
-                'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY
+                'label'    => _T("Due date:"),
+                'propname' => 'due_date',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 29,
+                'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
             ),
             'pref_lang' => array(
-                'label'=>_T("Language:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>30,
-                'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY
+                'label'    => _T("Language:"),
+                'propname' => 'language',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 30,
+                'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
             ),
             'lieu_naissance' => array(
-                'label'=>_T("Birthplace:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>31,
-                'category'=>FieldsCategories::ADH_CATEGORY_IDENTITY
+                'label'    => _T("Birthplace:"),
+                'propname' => 'birth_place',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 31,
+                'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
             ),
             'gpgid' => array(
-                'label'=>_T("Id GNUpg (GPG):"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>32,
-                'category'=>FieldsCategories::ADH_CATEGORY_CONTACT
+                'label'    => _T("Id GNUpg (GPG):"),
+                'propname' => 'gnupgid',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 32,
+                'category' => FieldsCategories::ADH_CATEGORY_CONTACT
             ),
             'fingerprint' => array(
-                'label'=>_T("fingerprint:"),
-                'required'=>false,
-                'visible'=>FieldsConfig::VISIBLE,
-                'position'=>33,
-                'category'=>FieldsCategories::ADH_CATEGORY_CONTACT
+                'label'    => _T("fingerprint:"),
+                'propname' => 'fingerprint',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 33,
+                'category' => FieldsCategories::ADH_CATEGORY_CONTACT
             )
         );
         if ( $args == null || is_int($args) ) {
             $this->_active = true;
-            $this->_language = I18n::DEFAULT_LANG;
+            $this->_language = $i18n->getID();
             $this->_creation_date = date("Y-m-d");
             $this->_status = Status::DEFAULT_STATUS;
             $this->_politeness = Politeness::MR;
-            $this->_password = makeRandomPassword(7); //Usefull ?
+            $gp = new GalettePassword();
+            $this->_password = $gp->makeRandomPassword();
             $this->_picture = new Picture();
             if ( is_int($args) && $args > 0 ) {
                 $this->load($args);
             }
+            $this->_admin = false;
+            $this->_due_free = false;
         } elseif ( is_object($args) ) {
             $this->_loadFromRS($args);
         } elseif (is_string($args) ) {
@@ -403,26 +466,28 @@ class Adherent
     */
     public function load($id)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' .
-            self::PK . '=' . $id;
+        try {
+            $select = new Zend_Db_Select($zdb->db);
 
-        $result = $mdb->query($requete);
-
-        if (MDB2::isError($result)) {
+            $select->from(PREFIX_DB . self::TABLE)
+                ->where(self::PK . '=?', $id);
+            $result = $select->query()->fetchObject();
+            $this->_loadFromRS($result);
+            return true;
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
-                'Cannot load member form id `' . $id . '` | ' .
-                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
+                'Cannot load member form id `' . $id . '` | ' . $e->getMessage(),
                 PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
             );
             return false;
         }
-
-        $this->_loadFromRS($result->fetchRow());
-        $result->free();
-
-        return true;
     }
 
     /**
@@ -434,33 +499,34 @@ class Adherent
     */
     public function loadFromLoginOrMail($login)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE ';
-
-        if ( GaletteMail::isValidEmail($login) ) {
-            //we got a valid email adress, use it
-            $requete .= 'email_adh=\'' . $login . '\'';
-        } else {
-            ///we did not get an email adress, consider using login
-            $requete .= 'login_adh=\'' . $login . '\'';
-        }
-
-        $result = $mdb->query($requete);
-
-        if (MDB2::isError($result)) {
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . self::TABLE);
+            if ( GaletteMail::isValidEmail($login) ) {
+                //we got a valid email adress, use it
+                $select->whrere('email_adh = ?', $login);
+            } else {
+                ///we did not get an email adress, consider using login
+                $select->where('login_adh = ?', $login);
+            }
+            $qry = $select->__toString();
+            $result = $select->query()->fetchObject();
+            $this->_loadFromRS($result);
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
                 'Cannot load member form login `' . $login . '` | ' .
-                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
+                $e->getMessage(),
                 PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
             );
             return false;
         }
-
-        $this->_loadFromRS($result->fetchRow());
-        $result->free();
-
-        return true;
     }
 
     /**
@@ -472,6 +538,7 @@ class Adherent
     */
     private function _loadFromRS($r)
     {
+        $this->_self_adh = false;
         $this->_id = $r->id_adh;
         //Identity
         $this->_politeness = $r->titre_adh;
@@ -635,20 +702,32 @@ class Adherent
         $ret = '';
         if ( $this->isDueFree() ) {
                 $ret = _T("Freed of dues");
-        } else if ( $this->due_date == '') {
+        } else if ( $this->_due_date == '') {
             $patterns = array('/%days/', '/%date/');
-            $replace = array($this->oldness, $this->creation_date);
-            $ret = preg_replace($patterns, $replace, _T("Never contributed: Registered %days days ago (since %date)"));
-        } else if ( $this->days_remaining == 0 ) {
+            $replace = array($this->_oldness, $this->_creation_date);
+            $ret = preg_replace(
+                $patterns,
+                $replace,
+                _T("Never contributed: Registered %days days ago (since %date)")
+            );
+        } else if ( $this->_days_remaining == 0 ) {
             $ret = _T("Last day!");
-        } else if ( $this->days_remaining < 0 ) {
+        } else if ( $this->_days_remaining < 0 ) {
             $patterns = array('/%days/', '/%date/');
-            $replace = array($this->days_remaining *-1, $this->due_date);
-            $ret = preg_replace($patterns, $replace, _T("Late of %days days (since %date)"));
+            $replace = array($this->_days_remaining *-1, $this->_due_date);
+            $ret = preg_replace(
+                $patterns,
+                $replace,
+                _T("Late of %days days (since %date)")
+            );
         } else {
             $patterns = array('/%days/', '/%date/');
-            $replace = array($this->days_remaining, $this->due_date);
-            $ret = preg_replace($patterns, $replace, _T("%days days remaining (ending on %date)"));
+            $replace = array($this->_days_remaining, $this->_due_date);
+            $ret = preg_replace(
+                $patterns,
+                $replace,
+                _T("%days days remaining (ending on %date)")
+            );
         }
         return $ret;
     }
@@ -662,25 +741,29 @@ class Adherent
     */
     public static function getSName($id)
     {
-        global $mdb, $log;
-        $query = 'SELECT nom_adh, prenom_adh  FROM ' . PREFIX_DB . self::TABLE .
-            ' WHERE ' . self::PK . '=' . $id;
+        global $zdb, $log;
 
-        $result = $mdb->query($query);
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . self::TABLE)
+                ->where(self::PK . ' = ?', $id);
 
-        if (MDB2::isError($result)) {
+            $row = $select->query()->fetch();
+            return mb_strtoupper($row->nom_adh, 'UTF-8') . ' ' .
+                ucfirst(mb_strtolower($row->prenom_adh, 'UTF-8'));
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
                 'Cannot get formatted name for member form id `' . $id . '` | ' .
-                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
+                $e->getMessage(),
                 PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
             );
             return false;
         }
-
-        $row = $result->fetchRow();
-        $result->free();
-
-        return mb_strtoupper($row->nom_adh, 'UTF-8') . ' ' . ucfirst(mb_strtolower($row->prenom_adh, 'UTF-8'));
     }
 
     /**
@@ -693,24 +776,296 @@ class Adherent
      */
     public static function updatePassword($id_adh, $pass)
     {
-        global $log, $mdb;
+        global $zdb, $log;
 
-        $query = 'UPDATE ' . PREFIX_DB . self::TABLE . ' SET mdp_adh=\'' .
-        md5($pass) . '\' WHERE ' . self::PK . '=' . $id_adh;
-
-        $result = $mdb->query($query);
-        if ( MDB2::isError($result) ) {
-            $log->log(
-                'An error occured while updating password for `' . $id_adh . '`',
-                PEAR_LOG_ERR
+        try {
+            $zdb->db->update(
+                PREFIX_DB . self::TABLE,
+                array('mdp_adh' => md5($pass)),
+                $zdb->db->quoteInto(self::PK . ' = ?', $id_adh)
             );
-            return false;
-        } else {
             $log->log(
                 'Password for `' . $id_adh . '` has been updated.',
                 PEAR_LOG_DEBUG
             );
             return true;
+        } catch (Exception $e) {
+            /** TODO */
+            $log->log(
+                'An error occured while updating password for `' . $id_adh .
+                '` | ' . $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
+    }
+
+    /**
+     * Get field label
+     *
+     * @param string $field Field name
+     *
+     * @return string
+     */
+    public function getFieldName($field)
+    {
+        $label = $this->_fields[$field]['label'];
+        //remove trailing ':' and then nbsp (for french at least)
+        $label = trim(trim($label, ':'), '&nbsp;');
+        return $label;
+    }
+
+    /**
+     * Retrieve fields from database
+     *
+     * @return array
+     */
+    public static function getDbFields()
+    {
+        global $zdb;
+        return array_keys($zdb->db->describeTable(PREFIX_DB . self::TABLE));
+    }
+
+    /**
+     * Mark as self membership
+     *
+     * @return void
+     */
+    public function setSelfMembership()
+    {
+        $this->_self_adh = true;
+    }
+
+    /**
+     * Check posted values validity
+     *
+     * @param array $values   All values to check, basically the $_POST array
+     *                        after sending the form
+     * @param array $required Array of required fields
+     * @param array $disabled Array of disabled fields
+     *
+     * @return true|array
+     */
+    public function check($values, $required, $disabled)
+    {
+        global $zdb, $log;
+        $errors = array();
+
+        $fields = self::getDbFields();
+        foreach ( $fields as $key ) {
+            //first of all, let's sanitize values
+            $key = strtolower($key);
+            $prop = '_' . $this->_fields[$key]['propname'];
+
+            if ( isset($values[$key]) ) {
+                $value = trim($values[$key]);
+            } else {
+                $value = '';
+            }
+
+            // if the field is enabled, check it
+            if ( !isset($disabled[$key]) ) {
+                // fill up the adherent structure
+                $this->$prop = stripslashes($value);
+
+                // now, check validity
+                if ( $value != '' ) {
+                    switch ( $key ) {
+                    // dates
+                    case 'date_crea_adh':
+                    case 'ddn_adh':
+                        /** FIXME: only ok dates dd/mm/yyyy */
+                        if ( !preg_match(
+                            '@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@',
+                            $value,
+                            $date
+                        ) ) {
+                            $errors[] = _T("- Wrong date format (dd/mm/yyyy)!");
+                        } else {
+                            if ( !checkdate($date[2], $date[1], $date[3]) ) {
+                                $errors[] = _T("- Non valid date!");
+                            } else {
+                                $this->$prop = $date[3] . '-' . $date[2] . '-' .
+                                    $date[1];
+                            }
+                        }
+                        break;
+                    case 'email_adh':
+                    case 'msn_adh':
+                        if ( !GaletteMail::isValidEmail($value) ) {
+                            $errors[] = _T("- Non-valid E-Mail address!") .
+                                ' (' . $this->getFieldName($key) . ')';
+                        }
+                        break;
+                    case 'url_adh':
+                        if ( $value == 'http://' ) {
+                            $this->$prop = '';
+                        } elseif ( !is_valid_web_url($value) ) {
+                            $errors[] = _T("- Non-valid Website address! Maybe you've skipped the http:// ?");
+                        }
+                        break;
+                    case 'login_adh':
+                        if ( strlen($value) < 4 ) {
+                            $errors[] = _T("- The username must be composed of at least 4 characters!");
+                        } else {
+                            //check if login does not contain the @ character
+                            if ( strpos($value, '@') != false ) {
+                                $errors[] = _T("- The username cannot contain the @ character");
+                            } else {
+                                //check if login is already taken
+                                try {
+                                    $select = new Zend_Db_Select($zdb->db);
+                                    $select->from(
+                                        PREFIX_DB . self::TABLE,
+                                        self::PK
+                                    )->where('login_adh = ?', $value);
+                                    if ( $this->_id != '' && $this->_id != null ) {
+                                        $select->where(
+                                            self::PK . ' != ?',
+                                            $this->_id
+                                        );
+                                    }
+                                    $uniq = $select->query()->fetchAll();
+                                    if ( count($uniq) !==  0
+                                        || $value == $preferences->pref_admin_login
+                                    ) {
+                                        $errors[] = _T("- This username is already used by another member !");
+                                    }
+                                } catch (Exception $e) {
+                                    /** FIXME: log sthing */
+                                    $errors[] = _T("An error has occured while looking if login already exists.");
+                                }
+                            }
+                        }
+                        break;
+                    case 'mdp_adh':
+                        if ( strlen($value) < 4 ) {
+                            $errors[] = _T("- The password must be of at least 4 characters!");
+                        } else if ( $this->_self_adh !== true &&
+                            (!isset($values['mdp_adh2'])
+                            || $values['mdp_adh2'] != $value)
+                        ) {
+                            $errors[] = _T("- The passwords don't match!");
+                        } else if ( $this->_self_adh === true &&
+                            !crypt($value,$values['mdp_crypt'])==$values['mdp_crypt']
+                        ) {
+                            $errors[] = _T("Password misrepeated: ");
+                        } else {
+                            $this->$prop = md5($value);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        // missing required fields?
+        while ( list($key, $val) = each($required) ) {
+            $prop = '_' . $this->_fields[$key]['propname'];
+            if ( !isset($disabled[$key])
+                && (!isset($this->$prop) || trim($this->$prop) == '')
+            ) {
+                $errors[] = _T("- Mandatory field empty: ") .
+                ' <a href="#' . $key . '">' . $this->getFieldName($key) .'</a>';
+            }
+        }
+
+        if ( count($errors) > 0 ) {
+            $log->log(
+                'Some errors has been throwed attempting to edit/store a member' .
+                print_r($errors, true),
+                PEAR_LOG_DEBUG
+            );
+            return $errors;
+        } else {
+            $log->log(
+                'Member checked successfully.',
+                PEAR_LOG_DEBUG
+            );
+            return true;
+        }
+    }
+
+    /**
+     * Store the member
+     *
+     * @return boolean
+     */
+    public function store()
+    {
+        global $zdb, $log, $hist;
+
+        try {
+            $values = array();
+            $fields = self::getDbFields();
+            /** FIXME: quote? */
+            foreach ( $fields as $field ) {
+                $prop = '_' . $this->_fields[$field]['propname'];
+                $values[$field] = $this->$prop;
+            }
+
+            //an empty value will cause date to be set to 1901-01-01, a null
+            //will result in 0000-00-00. We want a database NULL value here.
+            if ( !$this->_birthdate ) {
+                $values['ddn_adh'] = new Zend_Db_Expr('NULL');
+            }
+
+            if ( !isset($this->_id) || $this->_id == '') {
+                //we're inserting a new member
+                $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
+                if ( $add > 0) {
+                    $this->_id = $zdb->db->lastInsertId();
+                    // logging
+                    $hist->add(
+                        _T("Member card added"),
+                        strtoupper($this->_login)
+                    );
+                    return true;
+                } else {
+                    $hist->add('Fail to add new member.');
+                    throw new Exception(
+                        'An error occured inserting new member!'
+                    );
+                }
+            } else {
+                //we're editing an existing member
+                if ( !$this->isDueFree() ) {
+                    // deadline
+                    $due_date = Contribution::getDueDate($this->_id);
+                    if ( $due_date ) {
+                        $values['date_echeance'] = $due_date;
+                    }
+                }
+
+                if ( !$this->_password ) {
+                    unset($values['mdp_adh']);
+                }
+
+                $edit = $zdb->db->update(
+                    PREFIX_DB . self::TABLE,
+                    $values,
+                    self::PK . '=' . $this->_id
+                );
+                //edit == 0 does not mean there were an error, but that there
+                //were nothing to change
+                if ( $edit > 0 ) {
+                    $hist->add(
+                        _T("Member card updated"),
+                        strtoupper($this->_login)
+                    );
+                }
+                return true;
+            }
+            //DEBUG
+            return false;
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log(
+                'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
+                $e->getTraceAsString(),
+                PEAR_LOG_ERR
+            );
+            return false;
         }
     }
 
@@ -723,6 +1078,7 @@ class Adherent
     */
     public function __get($name)
     {
+        global $log;
         $forbidden = array(
             'admin', 'due_free', 'appears_in_list', 'active',  'row_classes'
         );
@@ -737,8 +1093,18 @@ class Adherent
             case 'creation_date':
             case 'due_date':
                 if ( $this->$rname != '' ) {
-                    $d = new DateTime($this->$rname);
-                    return $d->format(_T("Y-m-d"));
+                    try {
+                        $d = new DateTime($this->$rname);
+                        return $d->format(_T("Y-m-d"));
+                    } catch (Exception $e) {
+                        //oops, we've got a bad date :/
+                        $log->log(
+                            'Bad date (' . $his->$rname . ') | ' .
+                            $e->getMessage(),
+                            PER_LOG_INFO
+                        );
+                        return $this->$rname;
+                    }
                 }
                 break;
             default:
@@ -765,129 +1131,19 @@ class Adherent
             case 'sfullname':
                 $sfn = mb_strtoupper($this->_name, 'UTF-8') . ' ' .
                        ucwords(mb_strtolower($this->_surname, 'UTF-8'));
-                if( $this->_politeness != Politeness::COMPANY ) {
-                    $sfn = Politeness::getPoliteness($this->_politeness) . ' ' . $sfn;
+                if ( $this->_politeness != Politeness::COMPANY ) {
+                    $sfn = Politeness::getPoliteness($this->_politeness) .
+                        ' ' . $sfn;
                 }
                 return $sfn;
                 break;
             case 'sname':
-                return mb_strtoupper($this->_name, 'UTF-8') . ' ' . ucfirst(mb_strtolower($this->_surname, 'UTF-8'));
+                return mb_strtoupper($this->_name, 'UTF-8') .
+                    ' ' . ucfirst(mb_strtolower($this->_surname, 'UTF-8'));
                 break;
             }
         } else {
             return false;
-        }
-    }
-
-    /**
-    * Global setter method
-    *
-    * @param string $name  name of the property we want to assign a value to
-    * @param object $value a relevant value for the property
-    *
-    * @return void
-    */
-    public function __set($name, $value)
-    {
-        $forbidden = array('fields');
-        /** TODO: What to do ? :-) */
-        switch ( $name ) {
-        case 'nom_adh':
-            $this->_name = $value;
-            break;
-        case 'prenom_adh':
-            $this->_surname = $value;
-            break;
-        case 'pseudo_adh':
-            $this->_nickname = $value;
-            break;
-        case 'ddn_adh':
-            /** TODO: check date validity */
-            $this->_birthdate = $value;
-            break;
-        case 'prof_adh':
-            $this->_job = $value;
-            break;
-        case 'pref_lang':
-            $this->_language = $value;
-            break;
-        case 'bool_display_info':
-            $this->_appears_in_list = $value;
-            break;
-        case 'activite_adh':
-            /** TODO: When member account is activated, we should send a mail to the member (add an entry to deactivate that in the preferences) */
-            $this->_active = $value;
-            break;
-        case 'id_statut':
-            $this->_status = $value;
-            break;
-        case 'bool_admin_adh':
-            $this->_admin = $value;
-            break;
-        case 'bool_exempt_adh':
-            $this->_due_free = $value;
-            break;
-        case 'login_adh':
-            $this->_login = $value;
-            break;
-        case 'mdp_adh':
-            $this->_password = md5($value);
-            break;
-        case 'date_crea_adh':
-            $this->_creation_date = $value;
-            break;
-        case 'info_adh':
-            $this->_others_infos_admin = $value;
-            break;
-        case 'info_public_adh':
-            $this->_others_infos = $value;
-            break;
-        case 'adresse_adh':
-            $this->_adress = $value;
-            break;
-        case 'adresse2_adh':
-            $this->_adress_continuation = $value;
-            break;
-        case 'cp_adh':
-            $this->_zipcode = $value;
-            break;
-        case 'ville_adh':
-            $this->_town = $value;
-            break;
-        case 'pays_adh':
-            $this->_country = $value;
-            break;
-        case 'tel_adh':
-            $this->_phone = $value;
-            break;
-        case 'gsm_adh':
-            $this->_gsm = $value;
-            break;
-        case 'email_adh':
-            /** TODO: check if mail  is valid */
-            $this->_email = $value;
-            break;
-        case 'url_adh':
-            /** TODO: check URL validity */
-            $this->_website = $value;
-            break;
-        case 'icq_adh':
-            $this->_icq = $value;
-            break;
-        case 'jabber_adh':
-            $this->_jabber = $value;
-            break;
-        case 'msn_adh':
-            $this->_msn = $value;
-            break;
-        case 'gpgid':
-            /** TODO: check validity */
-            $this->_gnupgid = $value;
-            break;
-        case 'fingerprint':
-            /** Check validity */
-            $this->_fingerprint = $value;
-            break;
         }
     }
 }

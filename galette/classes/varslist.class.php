@@ -87,7 +87,7 @@ class VarsList extends GalettePagination
     public function reinit()
     {
         parent::reinit();
-        $this->filter_str = null;
+        $this->_filter_str = null;
         $this->_field_filter = null;
         $this->_membership_filter = null;
         $this->_account_status_filter = null;
@@ -168,6 +168,7 @@ class VarsList extends GalettePagination
                 }
                 break;
             case 'filter_str':
+                $name = '_' . $name;
                 $this->$name = $value;
                 break;
             case 'field_filter':
@@ -194,10 +195,25 @@ class VarsList extends GalettePagination
         }
     }
 
-    public function setLimit() {
-        return $this->setLimits();
+    /**
+     * Add SQL limit
+     *
+     * @param Zend_Db_Select $select Original select
+     *
+     * @return <type>
+     */
+    public function setLimit($select)
+    {
+        return $this->setLimits($select);
     }
 
+    /**
+     * Set counter
+     *
+     * @param int $c Count
+     *
+     * @return void
+     */
     public function setCounter($c)
     {
         $this->counter = (int)$c;

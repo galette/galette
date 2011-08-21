@@ -53,7 +53,7 @@ require_once 'adherent.class.php';
  */
 class Required
 {
-    private $_all_required;
+    private $_all_required = array();
     private $_fields = array();
     const TABLE = 'required';
 
@@ -91,40 +91,17 @@ class Required
     */
     private function _checkUpdate($try = true)
     {
-        global $mdb, $log;
-        if ( $mdb->getOption('result_buffering') ) {
-            $requete = 'SELECT * FROM ' . PREFIX_DB . Adherent::TABLE;
-            $mdb->getDb()->setLimit(1);
+        global $zdb, $log;        
 
-            $result2 = $mdb->query($requete);
-            if ( MDB2::isError($result2) ) {
-                $log->log(
-                    'An error has occured retrieving members rows for required ' .
-                    'fields | ' . $result2->getMessage() . '(' .
-                    $result2->getDebugInfo() . ')',
-                    PEAR_LOG_ERR
-                );
-                return false;
-            }
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . self::TABLE);
 
-            $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE;
+            $required = $select->query()->fetchAll();
 
-            $result = $mdb->query($requete);
-            if ( MDB2::isError($result) ) {
-                $log->log(
-                    'An error has occured retrieving current required records | ' .
-                    $result->getMessage() . '(' . $result->getDebugInfo() . ')',
-                    PEAR_LOG_ERR
-                );
-                return false;
-            }
-
-            $result->setResultTypes($this->_types);
-
-            if ( $result->numRows() == 0 && $try ) {
+            if ( count($required) == 0 && $try ) {
                 $this->init();
             } else {
-                $required = $result->fetchAll();
                 $this->_fields = null;
                 foreach ( $required as $k ) {
                     $this->_fields[] = $k->field_id;
@@ -132,21 +109,29 @@ class Required
                         $this->_all_required[$k->field_id] = $k->required;
                     }
                 }
-                if ( $result2->numCols() != $result->numRows() ) {
+
+                $meta = Adherent::getDbFields();
+                if ( count($required) != count($meta) ) {
                     $log->log(
                         'Members columns count does not match required records.' .
-                        ' Is: ' . $result->numRows() . ' and should be ' .
-                        $result2->numCols() . '. Reinit.',
-                        PEAR_LOG_DEBUG
+                        ' Is: ' . count($required) . ' and should be ' .
+                        count($meta) . '. Reinit.',
+                        PEAR_LOG_WARNING
                     );
                     $this->init(true);
                 }
             }
-        } else {
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
-                'An error occured whule checking for required fields update.',
-                PEAR_LOG_ERROR
+                'Cannot check required fields update | ' . $e->getMessage(),
+                PEAR_LOG_WARNING
             );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
+            );
+            return false;
         }
     }
 
@@ -161,79 +146,76 @@ class Required
     */
     function init($reinit=false)
     {
-        global $mdb, $log;
+        global $zdb, $log;
         $log->log('Initializing required fiels', PEAR_LOG_DEBUG);
         if ( $reinit ) {
             $log->log('Reinit mode, we delete table\'s content', PEAR_LOG_DEBUG);
-            $requetesup = 'DELETE FROM ' . PREFIX_DB . self::TABLE;
-
-            $init_result = $mdb->execute($requetesup);
-            if ( MDB2::isError($init_result) ) {
+            try {
+                $zdb->db->query('TRUNCATE ' . PREFIX_DB . self::TABLE);
+            } catch (Exception $e) {
                 $log->log(
                     'An error has occured deleting current required records | ' .
-                    $init_result->getMessage() . '(' .
-                    $init_result->getDebugInfo() . ')',
+                    $e->getMessage(),
                     PEAR_LOG_ERR
                 );
-                /** FIXME: should return false */
-                return -1;
+                $log->log(
+                    $e->getTraceAsString(),
+                    PEAR_LOG_WARNING
+                );
+                return false;
             }
         }
 
-        $requete = 'SELECT * FROM ' . PREFIX_DB . Adherent::TABLE;
-        $mdb->getDb()->setLimit(1);
-
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($result) ) {
-            $log->log(
-                'An error occured retrieving members rows for required fields | ' .
-                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
-                PEAR_LOG_ERR
+        try {
+            $fields = Adherent::getDbFields();
+            $stmt = $zdb->db->prepare(
+                'INSERT INTO ' . PREFIX_DB . self::TABLE .
+                ' (' . $zdb->db->quoteIdentifier('field_id') . ', ' .
+                $zdb->db->quoteIdentifier('required') . ')' .
+                ' VALUES(:id, :required)'
             );
-            /** FIXME: should return false */
-            return -1;
-        }
 
-        $fields = $result->getColumnNames();
-
-        $stmt = $mdb->prepare(
-            'INSERT INTO ' . PREFIX_DB . self::TABLE .
-            ' (field_id, required) VALUES(:id, :required)',
-            $this->_types,
-            MDB2_PREPARE_MANIP
-        );
-
-        $params = array();
-        foreach ( $fields as $k=>$v ) {
-            $params[] = array(
-                'id'        =>    $k,
-                'required'    =>    (($reinit)?
-                                        array_key_exists($k, $this->_all_required)
-                                        : in_array($k, $this->_defaults)?true:false)
-            );
-        }
-
-        $mdb->getDb()->loadModule('Extended', null, false);
-        $mdb->getDb()->extended->executeMultiple($stmt, $params);
-
-        if ( MDB2::isError($stmt) ) {
-            $log->log(
-                'An error occured trying to initialize required fields | ' .
-                $stmt->getMessage() . '(' . $stmt->getDebugInfo() . ')',
-                PEAR_LOG_ERR
-            );
-            return false;
-        } else {
-            $log->log(
-                'Initialisation seems successfull, we reload the object',
-                PEAR_LOG_DEBUG
-            );
+            $params = array();
+            foreach ( $fields as $k ) {
+                $stmt->bindValue(':id', $k, PDO::PARAM_STR);
+                $req = (($reinit)?
+                            array_key_exists($k, $this->_all_required)
+                            : in_array($k, $this->_defaults)?true:false);
+                $stmt->bindValue(':required', $req, PDO::PARAM_BOOL);
+                if ( $stmt->execute() ) {
+                    $log->log(
+                        'Field ' . $k . ' processed.',
+                        PEAR_LOG_DEBUG
+                    );
+                } else {
+                    $log->log(
+                        'An error occured trying to initialize required fields',
+                        PEAR_LOG_ERR
+                    );
+                    return false;
+                }
+            }
             $log->log(
                 'Required adherents table updated successfully.',
                 PEAR_LOG_INFO
             );
-            $stmt->free();
+            $log->log(
+                'Initialisation seems successfull, we reload the object',
+                PEAR_LOG_DEBUG
+            );
             $this->_checkUpdate(false);
+        } catch (Exception $e) {
+            /** TODO */
+            $log->log(
+                'An error occured trying to initialize required fields | ' .
+                $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $log->log(
+                $e->__toString(),
+                PEAR_LOG_ERR
+            );
+            return false;
         }
     }
 
@@ -259,55 +241,45 @@ class Required
     }
 
     /**
-    * Set required fields
-    *
-    * @param string $value Field name to set to required state
-    *
-    * @return boolean
-    */
+     * Set required fields
+     *
+     * @param array $value Field names that are required. All others will be
+     *                     marked as not required.
+     *
+     * @return boolean
+     */
     public function setRequired($value)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        /** FIXME: use a statement and executeMultiple to avoid executing
-        * two queries here */
-
-        //set required fields
-        $requete = 'UPDATE ' . PREFIX_DB . self::TABLE . ' SET required=' .
-            $mdb->quote(true) . ' WHERE field_id=\'';
-        $requete .= implode('\' OR field_id=\'', $value);
-        $requete .= '\'';
-
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($result) ) {
+        try {
+            //set required fields
+            $zdb->db->update(
+                PREFIX_DB . self::TABLE,
+                array('required' => true),
+                $zdb->db->quoteInto('field_id IN (?)', $value)
+            );
+            //set not required fields
+            $zdb->db->update(
+                PREFIX_DB . self::TABLE,
+                array('required' => false),
+                $zdb->db->quoteInto('field_id NOT IN (?)', $value)
+            );
+            $this->_checkUpdate();
+            return true;
+        } catch (Exception $e) {
+            /** TODO */
             $log->log(
-                'An error has occured updating required=true fields | ' .
-                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
+                'An error has occured updating required fields | ' .
+                $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $log->log(
+                $e->getTraceAsString(),
                 PEAR_LOG_ERR
             );
-            /** FIXME: should return false */
-            return -1;
+            return false;
         }
-
-        //set not required fields (ie. all others...)
-        $not_required = array_diff($this->_fields, $value);
-        $requete2 = 'UPDATE ' . PREFIX_DB . self::TABLE . ' SET required=' .
-            $mdb->quote(false) . ' WHERE field_id=\'';
-        $requete2 .= implode('\' OR field_id=\'', $not_required);
-        $requete2 .= '\'';
-
-        $result = $mdb->query($requete2);
-        if ( MDB2::isError($result) ) {
-            $log->log(
-                'An error has occured updating required=false fields | ' .
-                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
-                PEAR_LOG_ERR
-            );
-            /** FIXME: should return false */
-            return -1;
-        }
-
-        $this->_checkUpdate();
     }
 }
 ?>

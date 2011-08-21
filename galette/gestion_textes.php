@@ -68,6 +68,8 @@ if ( isset($_POST['sel_ref']) ) {
 
 if (isset($_POST['valid']) && $_POST['valid'] == '1') {
     //form was send normally, we try to store new values
+    //load actual text for further reference
+    $mtxt = $texts->getTexts($cur_ref, $cur_lang);
     $res = $texts->setTexts(
         $cur_ref,
         $cur_lang,

@@ -46,20 +46,6 @@ if ( !$login->isLogged() ) {
 
 $filtre_id_adh = '';
 
-/** FIXME: BIGFIXME: REMOVE ALL THE OLD CODE... */
-if ( !$login->isAdmin() ) {
-    $_SESSION['filtre_cotis_adh'] = $login->id;
-} else {
-    if ( isset($_GET['id_adh']) ) {
-        if ( is_numeric($_GET['id_adh']) ) {
-            $_SESSION['filtre_cotis_adh'] = $_GET['id_adh'];
-        } else {
-            $_SESSION['filtre_cotis_adh'] = '';
-        }
-    }
-}
-/** /FIXME: BIGFIXME end */
-
 require_once 'classes/contributions.class.php';
 if ( isset($_SESSION['galette']['contributions']) ) {
     $contribs = unserialize($_SESSION['galette']['contributions']);
@@ -75,302 +61,99 @@ if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
     $contribs->show = $_GET['nbshow'];
 }
 
-/** FIXME: should be handled in GalettePagination */
 if ( isset($_GET['tri']) ) {
-    if ( $_GET['tri'] == $contribs->orderby ) {//ordre inverse
-        $contribs->invertorder();
-    } else {//ordre normal
-        $contribs->orderby = $_GET['tri'];
-        $contribs->setDirection(Contributions::defaultOrder());
-    }
+    $contribs->orderby = $_GET['tri'];
 }
 
-$_SESSION['galette']['contributions'] = serialize($contribs);
-$contributions2 = $contribs->getContributionsList(true);
-
-/**
-* Return member name. Smarty cannot directly use static functions
-*
-* @param array $params Parameters
-*
-* @return Adherent::getSName
-* @see Adherent::getSName
-*/
-function getMemberName($params)
-{
-    extract($params);
-    return Adherent::getSName($id);
-}
-
-/** FIXME: BIGFIXME: REMOVE ALL THE OLD CODE... */
-$numrows = $preferences->pref_numrows;
-
-if ( isset($_GET['nbshow']) ) {
-    if ( is_numeric($_GET['nbshow']) ) {
-        $numrows = $_GET['nbshow'];
-    }
-}
-
-if ( isset($_GET['contrib_filter_1']) ) {
-    if ( preg_match("@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@", $_GET['contrib_filter_1'], $array_jours) ) {
-        if ( checkdate($array_jours[2], $array_jours[1], $array_jours[3]) ) {
-            $_SESSION['filtre_date_cotis_1'] = $_GET['contrib_filter_1'];
+if ( isset($_GET['clear_filter']) ) {
+    $contribs->reinit();
+} else {
+    if ( isset($_GET['start_date_filter']) ) {
+        if ( preg_match(
+            "@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@",
+            $_GET['start_date_filter'],
+            $array_jours
+        ) ) {
+            if ( checkdate($array_jours[2], $array_jours[1], $array_jours[3]) ) {
+                $contribs->start_date_filter = $_GET['start_date_filter'];
+            } else {
+                $error_detected[] = _T("- Non valid date!");
+            }
+        } elseif (
+            preg_match("/^([0-9]{4})$/", $_GET['start_date_filter'], $array_jours)
+        ) {
+            $contribs->start_date_filter = "01/01/".$array_jours[1];
+        } elseif ( $_GET['start_date_filter'] == '' ) {
+            $contribs->start_date_filter = null;
         } else {
-            $error_detected[] = _T("- Non valid date!");
+            $error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!");
         }
-    } elseif ( preg_match("/^([0-9]{4})$/", $_GET['contrib_filter_1'], $array_jours) ) {
-        $_SESSION["filtre_date_cotis_1"]="01/01/".$array_jours[1];
-    } elseif ( $_GET['contrib_filter_1'] == '' ) {
-        $_SESSION['filtre_date_cotis_1'] = '';
-    } else {
-        $error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!");
     }
-}
 
-if ( isset($_GET['contrib_filter_2']) ) {
-    if ( preg_match("@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@", $_GET['contrib_filter_2'], $array_jours) ) {
-        if ( checkdate($array_jours[2], $array_jours[1], $array_jours[3]) ) {
-            $_SESSION['filtre_date_cotis_2'] = $_GET['contrib_filter_2'];
+    if ( isset($_GET['end_date_filter']) ) {
+        if ( preg_match(
+            "@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@",
+            $_GET['end_date_filter'],
+            $array_jours
+        ) ) {
+            if ( checkdate($array_jours[2], $array_jours[1], $array_jours[3]) ) {
+                $contribs->end_date_filter = $_GET['end_date_filter'];
+            } else {
+                $error_detected[] = _T("- Non valid date!");
+            }
+        } elseif (
+            preg_match("/^([0-9]{4})$/", $_GET['end_date_filter'], $array_jours)
+        ) {
+            $contribs->end_date_filter = "01/01/".$array_jours[1];
+        } elseif ( $_GET['end_date_filter'] == '' ) {
+            $contribs->end_date_filter = null;
         } else {
-            $error_detected[] = _T("- Non valid date!");
+            $error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!");
         }
-    } elseif ( preg_match("/^([0-9]{4})$/", $_GET['contrib_filter_2'], $array_jours) ) {
-        $_SESSION['filtre_date_cotis_2'] = '01/01/' . $array_jours[1];
-    } elseif ( $_GET['contrib_filter_2'] == '') {
-        $_SESSION['filtre_date_cotis_2'] = '';
-    } else {
-        $error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!");
     }
 }
 
-$page = 1;
-if ( isset($_GET['page']) ) {
-    $page = $_GET['page'];
-}
-
-// Tri
-if ( isset($_GET['tri']) ) {
-    if ( $_SESSION['tri_cotis'] == $_GET['tri'] ) {
-        $_SESSION['tri_cotis_sens'] = ($_SESSION['tri_cotis_sens'] + 1) % 2;
+if ( $login->isAdmin() && isset($_GET['id_adh']) && $_GET['id_adh'] != '' ) {
+    if ( $_GET['id_adh'] == 'all' ) {
+        $contribs->filtre_cotis_adh = null;
     } else {
-        $_SESSION["tri_cotis"]=$_GET["tri"];
-        $_SESSION["tri_cotis_sens"]=0;
+        $contribs->filtre_cotis_adh = $_GET['id_adh'];
     }
 }
 
 if ( $login->isAdmin() ) {
-    if ( isset($_GET['sup']) ) {
-        // recherche adherent
-        $requetesel = 'SELECT id_adh FROM ' . PREFIX_DB .
-            'cotisations WHERE id_cotis=' .
-            $DB->qstr($_GET['sup'], get_magic_quotes_gpc());
-        $result_adh = &$DB->Execute($requetesel);
-        if ( !$result_adh->EOF ) {
-            $id_adh = $result_adh->fields['id_adh'];
-
-            $requetesup = 'SELECT nom_adh, prenom_adh FROM ' . PREFIX_DB .
-                'adherents WHERE id_adh=' .
-                $DB->qstr($id_adh, get_magic_quotes_gpc());
-            $resultat = $DB->Execute($requetesup);
-            if ( !$resultat->EOF ) {
-                // supression record cotisation
-                $requetesup = 'DELETE FROM ' . PREFIX_DB .
-                    'cotisations WHERE id_cotis=' .
-                    $DB->qstr($_GET['sup'], get_magic_quotes_gpc());
-                $DB->Execute($requetesup);
-
-                // mise a jour de l'échéance
-                $date_fin = get_echeance($DB, $id_adh);
-                if ( $date_fin != '' ) {
-                    $date_fin_update = '\'' . $date_fin[2] . '-' .
-                        $date_fin[1] . '-' . $date_fin[0] . '\'';
-                } else {
-                    $date_fin_update = 'NULL';
-                }
-                $requeteup = 'UPDATE ' . PREFIX_DB .
-                    'adherents SET date_echeance=' . $date_fin_update .
-                    ' WHERE id_adh=' .
-                    $DB->qstr($id_adh, get_magic_quotes_gpc());
-                $DB->Execute($requeteup);
-                $hist-add(
-                    _T("Contribution deleted"),
-                    strtoupper($resultat->fields[0]) . ' ' . $resultat->fields[1],
-                    $requetesup
-                );
-            }
-            $resultat->Close();
+    //delete contributions
+    if (isset($_GET['sup']) || isset($_POST['delete'])) {
+        if ( isset($_GET['sup']) ) {
+            $contribs->removeContributions($_GET['sup']);
+        } else if ( isset($_POST['contrib_sel']) ) {
+            $contribs->removeContributions($_POST['contrib_sel']);
         }
-        $result_adh->Close();
     }
 }
 
-$date_enreg_format = $DB->SQLDate('d/m/Y', PREFIX_DB . 'cotisations.date_enreg');
-$date_debut_cotis_format = $DB->SQLDate(
-    'd/m/Y',
-    PREFIX_DB . 'cotisations.date_debut_cotis'
-);
-$date_fin_cotis_format = $DB->SQLDate(
-    'd/m/Y',
-    PREFIX_DB . 'cotisations.date_fin_cotis'
-);
-$requete[0] = "SELECT $date_enreg_format AS date_enreg,
-                $date_debut_cotis_format AS date_debut_cotis,
-                $date_fin_cotis_format AS date_fin_cotis,
-                " . PREFIX_DB . "cotisations.id_cotis,
-                " . PREFIX_DB . "cotisations.id_adh,
-                " . PREFIX_DB . "cotisations.montant_cotis,
-                " . PREFIX_DB . "adherents.nom_adh,
-                " . PREFIX_DB . "adherents.prenom_adh,
-                " . PREFIX_DB . "types_cotisation.libelle_type_cotis,
-                " . PREFIX_DB . "types_cotisation.cotis_extension
-                FROM " . PREFIX_DB . "cotisations," . PREFIX_DB . "adherents," . PREFIX_DB . "types_cotisation
-                WHERE " . PREFIX_DB . "cotisations.id_adh=" . PREFIX_DB . "adherents.id_adh
-                AND " . PREFIX_DB . "types_cotisation.id_type_cotis=" . PREFIX_DB . "cotisations.id_type_cotis ";
-$requete[1] = 'SELECT count(id_cotis) FROM ' . PREFIX_DB . 'cotisations WHERE 1=1 ';
-
-// phase filtre
-if ( $_SESSION['filtre_cotis_adh'] != '' ) {
-    $qry = 'AND ' . PREFIX_DB . 'cotisations.id_adh=\'' .
-        $_SESSION['filtre_cotis_adh'] . '\' ';
-    $requete[0] .= $qry;
-    $requete[1] .= $qry;
-}
-
-// date filter
-if ( $_SESSION['filtre_date_cotis_1'] != '') {
-    preg_match(
-        "@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@",
-        $_SESSION['filtre_date_cotis_1'],
-        $array_jours
-    );
-    $datemin = '\'' . $array_jours[3] . '-' . $array_jours[2] . '-' .
-        $array_jours[1] . '\'';
-    $qry = 'AND ' . PREFIX_DB . 'cotisations.date_debut_cotis >= ' .
-        $datemin . ' ';
-    $requete[0] .= $qry;
-    $requete[1] .= $qry;
-}
-if ( $_SESSION['filtre_date_cotis_2'] != '' ) {
-    preg_match(
-        "@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@",
-        $_SESSION['filtre_date_cotis_2'],
-        $array_jours
-    );
-    $datemax = '\'' . $array_jours[3] . '-' . $array_jours[2] . '-' .
-        $array_jours[1] . '\'';
-    $qry = 'AND ' . PREFIX_DB . 'cotisations.date_debut_cotis <= ' . $datemax . ' ';
-    $requete[0] .= $qry;
-    $requete[1] .= $qry;
-}
-
-// phase de tri
-if ( $_SESSION['tri_cotis_sens'] == '0') {
-    $tri_cotis_sens_txt = 'ASC';
-} else {
-    $tri_cotis_sens_txt = 'DESC';
-}
-
-$requete[0] .= 'ORDER BY ';
-
-// tri par adherent
-if ( $_SESSION['tri_cotis'] == '1' ) {
-    $requete[0] .= 'nom_adh ' . $tri_cotis_sens_txt . ', prenom_adh ' .
-        $tri_cotis_sens_txt . ',';
-} elseif ( $_SESSION['tri_cotis'] == '2' ) {// tri par type
-    $requete[0] .= 'libelle_type_cotis ' . $tri_cotis_sens_txt . ',';
-} elseif ( $_SESSION['tri_cotis'] == '3' ) {// tri par montant
-    $requete[0] .= 'montant_cotis ' . $tri_cotis_sens_txt . ',';
-} elseif ( $_SESSION['tri_cotis'] == '4' ) {// tri par duree
-    $requete[0] .= '(date_fin_cotis - date_debut_cotis) ' .
-        $tri_cotis_sens_txt . ',';
-}
-
-// defaut : tri par date
-$requete[0] .= ' ' . PREFIX_DB . 'cotisations.date_debut_cotis ' .
-    $tri_cotis_sens_txt;
-
-if ( $numrows==0 ) {
-    $resultat = &$DB->Execute($requete[0]);
-} else {
-    $resultat = &$DB->SelectLimit($requete[0], $numrows, ($page-1)*$numrows);
-}
-
-$nb_contributions = $DB->GetOne($requete[1]);
-$contributions = array();
-
-if ( $numrows==0 ) {
-    $nbpages = 1;
-} else if ( $nb_contributions % $numrows == 0 ) {
-    $nbpages = intval($nb_contributions/$numrows);
-} else {
-    $nbpages = intval($nb_contributions/$numrows)+1;
-}
-if ( $nbpages==0 ) {
-    $nbpages = 1;
-}
-
-$compteur = 1+($page-1)*$numrows;
-while ( !$resultat->EOF ) {
-    if ( $resultat->fields['date_fin_cotis'] != $resultat->fields['date_debut_cotis'] ) {
-        $row_class = "cotis-normal";
-    } else {
-        $row_class = "cotis-give";
-    }
-    $is_cotis = ($resultat->fields['cotis_extension'] == '1');
-    $contributions[$compteur]['class'] = $row_class;
-    $contributions[$compteur]['id_cotis'] = $resultat->fields['id_cotis'];
-    $contributions[$compteur]['date_enreg'] = $resultat->fields['date_enreg'];
-    $contributions[$compteur]['date_debut'] = $resultat->fields['date_debut_cotis'];
-    $contributions[$compteur]['date_fin'] = $is_cotis ?
-        $resultat->fields['date_fin_cotis']
-        : '';
-    $contributions[$compteur]['id_adh'] = $resultat->fields['id_adh'];
-    $contributions[$compteur]['nom'] = strtoupper($resultat->fields['nom_adh']);
-    $contributions[$compteur]['prenom'] = $resultat->fields['prenom_adh'];
-    $contributions[$compteur]['libelle_type_cotis']
-        = _T($resultat->fields['libelle_type_cotis']);
-    $contributions[$compteur]['montant_cotis'] = $resultat->fields['montant_cotis'];
-    $contributions[$compteur]['duree_mois_cotis'] = $is_cotis ?
-        distance_months(
-            $resultat->fields['date_debut_cotis'],
-            $resultat->fields['date_fin_cotis']
-        )
-        : "";
-    $compteur++;
-    $resultat->MoveNext();
-}
-$resultat->Close();
-/** FIXME: BIGFIXME end */
-
-$tpl->register_function('memberName', 'getMemberName');
+$_SESSION['galette']['contributions'] = serialize($contribs);
+$list_contribs = $contribs->getContributionsList(true);
 
 //assign pagination variables to the template and add pagination links
 $contribs->setSmartyPagination($tpl);
 
 $tpl->assign('require_dialog', true);
 $tpl->assign('require_calendar', true);
-$tpl->assign('contributions', $contributions);
-$tpl->assign('contributions2', $contributions2);
-if ( $_SESSION['filtre_cotis_adh'] != '' ) {
+if (isset($error_detected)) {
+    $tpl->assign('error_detected', $error_detected);
+}
+if (isset($warning_detected)) {
+    $tpl->assign('warning_detected', $warning_detected);
+}
+$tpl->assign('list_contribs', $list_contribs);
+$tpl->assign('contributions', $contribs);
+if ( $contribs->filtre_cotis_adh != null ) {
     $member = new Adherent();
-    $member->load($_SESSION['filtre_cotis_adh']);
+    $member->load($contribs->filtre_cotis_adh);
     $tpl->assign('member', $member);
 }
-
-$tpl->assign('nb_contributions', $nb_contributions);
-/*$tpl->assign('nb_pages', $nbpages);
-$tpl->assign('page', $page);*/
-/*$tpl->assign(
-    'nbshow_options',
-    array(
-        10  => '10',
-        20  => '20',
-        50  => '50',
-        100 => '100',
-        0   => _T("All")
-    )
-);*/
-/*$tpl->assign('numrows', $numrows);*/
+$tpl->assign('nb_contributions', $contribs->getCount());
 $content = $tpl->fetch('gestion_contributions.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');

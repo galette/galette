@@ -164,7 +164,7 @@ class GaletteMail
     {
         global $log;
         $res = true;
-        $this->_recupients = array();
+        $this->_recipients = array();
         foreach ( $recipients as $mail => $name ) {
             if ( self::isValidEmail($mail) ) {
                 $this->_recipients[$mail] = $name;
@@ -212,10 +212,14 @@ class GaletteMail
         //let's send the mail
         if ( !$this->_mail->Send() ) {
             $this->_errors[] = $this->_mail->ErrorInfo;
+            $log->log(
+                'An error occured sending mail to: ' . $txt,
+                PEAR_LOG_INFO
+            );
             return self::MAIL_ERROR;
         } else {
             $txt = '';
-            foreach( $this->_recipients as $k=>$v ) {
+            foreach ( $this->_recipients as $k=>$v ) {
                 $txt .= $v . ' (' . $k . '), ';
             }
             $log->log(

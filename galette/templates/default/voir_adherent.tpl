@@ -27,18 +27,18 @@
 		<ul id="details_menu">
 {if ($pref_card_self eq 1) or ($login->isAdmin())}
 			<li>
-				<a href="carte_adherent.php?id_adh={$member->id}" id="btn_membercard">{_T string="Generate Member Card"}</a>
+				<a class="button" href="carte_adherent.php?id_adh={$member->id}" id="btn_membercard">{_T string="Generate Member Card"}</a>
 			</li>
 {/if}
 			<li>
-				<a href="ajouter_adherent.php?id_adh={$member->id}" id="btn_edit">{_T string="Modification"}</a>
+				<a class="button" href="ajouter_adherent.php?id_adh={$member->id}" id="btn_edit">{_T string="Modification"}</a>
 			</li>
 			<li>
-				<a href="gestion_contributions.php?id_adh={$member->id}" id="btn_contrib">{_T string="View contributions"}</a>
+				<a class="button" href="gestion_contributions.php?id_adh={$member->id}" id="btn_contrib">{_T string="View contributions"}</a>
 			</li>
 {if $login->isAdmin()}
 			<li>
-				<a href="ajouter_contribution.php?id_adh={$member->id}" id="btn_addcontrib">{_T string="Add a contribution"}</a>
+				<a class="button" href="ajouter_contribution.php?id_adh={$member->id}" id="btn_addcontrib">{_T string="Add a contribution"}</a>
 			</li>
 {/if}
 {* If some additionnals actions should be added from plugins, we load the relevant template file

@@ -5,7 +5,7 @@
                 <ul>
                     <li><a href="http://galette.tuxfamily.org">{_T string="Website"}</a></li>
                     <li><a href="http://galette.tuxfamily.org/documentation/">{_T string="Documentation"}</a></li>
-                    <li><a href="http://cv.ulysses.fr">{_T string="Main developper"}</a></li>
+                    <li><a href="http://cv.ulysses.fr">{_T string="Project leader"}</a></li>
                 </ul>
             </nav>
         </footer>

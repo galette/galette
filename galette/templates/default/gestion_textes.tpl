@@ -22,7 +22,7 @@
 
 		<div class="bigtable">
 			<fieldset class="cssform" id="{$mtxt->tlang}">
-				<legend>{$mtxt->tcomment}</legend>
+				<legend class="ui-state-active ui-corner-top">{$mtxt->tcomment}</legend>
 				<p>
 					<label for="sel_lang" class="bline">{_T string="Language:"}</label>
 					<select name="sel_lang" id="sel_lang">

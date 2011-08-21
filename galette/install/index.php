@@ -98,7 +98,7 @@ if ( $error_detected == ''
     }
     if ($error_detected == '') {
         if ( isset($_POST['install_dbconn_ok']) ) {
-            include_once '../classes/mdb2.class.php';
+            include_once '../classes/galette-zend_db.class.php';
 
             define('TYPE_DB', $_POST['install_dbtype']);
             define('USER_DB', $_POST['install_dbuser']);
@@ -106,13 +106,7 @@ if ( $error_detected == ''
             define('HOST_DB', $_POST['install_dbhost']);
             define('NAME_DB', $_POST['install_dbname']);
 
-            $mdb = new GaletteMdb2();
-
-            include WEB_ROOT . '/includes/adodb' . ADODB_VERSION . '/adodb.inc.php';
-            $DB = ADONewConnection($_POST["install_dbtype"]);
-            $DB->debug = false;
-            $permsdb_ok = true;
-            @$DB->Connect($_POST["install_dbhost"], $_POST["install_dbuser"], $_POST["install_dbpass"], $_POST["install_dbname"]);
+            $zdb = new GaletteZendDb();
 
             if ( $_POST['install_type'] == 'install' ) {
                 $step = 'i6';
@@ -222,24 +216,12 @@ header('Content-Type: text/html; charset=UTF-8');
         <title><?php echo _T("Galette Installation") . ' - ' . $step_title; ?></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="stylesheet" type="text/css" href="../templates/default/galette.css"/>
-
+        <link rel="stylesheet" type="text/css" href="../templates/default/jquery-ui/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>.custom.css"/>
         <script type="text/javascript" src="../includes/jquery/jquery-<?php echo JQUERY_VERSION; ?>.min.js"></script>
+        <script type="text/javascript" src="../includes/jquery/jquery.ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
+        <script type="text/javascript" src="../includes/jquery/jquery.ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.button.min.js"></script>
         <script type="text/javascript" src="../includes/jquery/jquery.bgiframe.pack.js"></script>
         <script type="text/javascript" src="../includes/jquery/jquery.bgFade.js"></script>
-        <!--[if IE]>
-        <script type="text/javascript" src="../includes/jquery/jquery.corner.js"></script>
-        <script type="text/javascript">
-            //<![CDATA[
-            $(function() {
-                /**
-                * Let's round some corners !
-                */
-                $('#titre').corner();
-                $('#footerinstall').corner();
-            });
-            //]]>
-        </script>
-        <![endif]-->
         <script type="text/javascript" src="../includes/jquery/chili-1.7.pack.js"></script>
         <script type="text/javascript" src="../includes/jquery/jquery.tooltip.pack.js"></script>
         <script type="text/javascript" src="../includes/common.js"></script>
@@ -416,7 +398,7 @@ case 'u4':
             <?php echo _T("The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."); ?></p>
             <form action="index.php" method="post">
                 <fieldset class="cssform">
-                    <legend><?php echo _T("Database"); ?></legend>
+                    <legend class="ui-state-active ui-corner-top"><?php echo _T("Database"); ?></legend>
                     <p>
                         <label class="bline" for="install_dbtype"><?php echo _T("Database type:"); ?></label>
                         <select name="install_dbtype" id="install_dbtype">
@@ -465,10 +447,11 @@ case 'u5':
             <h2><?php echo _T("Check of the database"); ?></h2>
             <p><?php echo _T("Check the parameters and the existence of the database"); ?></p>
 <?php
-    include_once '../classes/mdb2.class.php';
+    /*include_once '../classes/mdb2.class.php';*/
+    require_once '../classes/galette-zend_db.class.php';
     $permsdb_ok = true;
 
-    $test = GaletteMdb2::testConnectivity(
+    $test = GaletteZendDb::testConnectivity(
         $_POST['install_dbtype'],
         $_POST['install_dbuser'],
         $_POST['install_dbpass'],
@@ -481,7 +464,7 @@ case 'u5':
         $permsdb_ok = false;
         echo '<div id="errorbox">';
         echo '<h1>' . _T("Unable to connect to the database") . '</h1>';
-        echo '<p class="debuginfos">' . $test['main'] . '<span>(' . $test['debug'] . ')</span>' . '</p>';
+        echo '<p class="debuginfos">' . $test->getMessage() . '<span>' . $test->getTraceAsString() . '</span></p>';
         echo '</div>';
     }
 
@@ -540,58 +523,58 @@ case 'u6':
 ?></p>
 <?php
         /** FIXME: when tables already exists and DROP not allowed at this time
-        the showd error is about CREATE, whenever CREATE is allowed */
+        the showed error is about CREATE, whenever CREATE is allowed */
         //We delete the table if exists, no error at this time
-        $mdb->testDropTable();
+        $zdb->dropTestTable();
 
-        $results = $mdb->grantCheck();
+        $results = $zdb->grantCheck(substr($step, 0, 1));
 
         $result = '';
         $error = false;
         //test returned values
-        if ( MDB2::isError($results['create']) ) {
+        if ( $results['create'] instanceof Exception ) {
             $result .= '<li class="install-bad debuginfos">' . _T("CREATE operation not allowed") . '<span>' . $results['create']->getMessage() . '</span></li>';
             $error = true;
         } elseif ( $results['create'] != '' ) {
             $result .= '<li class="install-ok">' . _T("CREATE operation allowed") . '</li>';
         }
 
-        if ( MDB2::isError($results['insert']) ) {
-            $result .= '<li class="install-bad debuginfos">' . _T("INSERT operation not allowed") . '<span>' . $results['insert']->getMessage() . '<br/>(' . $results['insert']->getDebugInfo() . ')</span></li>';
+        if ( $results['insert'] instanceof Exception ) {
+            $result .= '<li class="install-bad debuginfos">' . _T("INSERT operation not allowed") . '<span>' . $results['insert']->getMessage() . '</span></li>';
             $error = true;
         } elseif ( $results['insert'] != '' ) {
             $result .= '<li class="install-ok">' . _T("INSERT operation allowed") . '</li>';
         }
 
-        if ( MDB2::isError($results['update']) ) {
-            $result .= '<li class="install-bad debuginfos">' . _T("UPDATE operation not allowed") . '<span>' . $results['update']->getMessage() . '<br/>(' . $results['update']->getDebugInfo() . ')</span></li>';
+        if ( $results['update'] instanceof Exception ) {
+            $result .= '<li class="install-bad debuginfos">' . _T("UPDATE operation not allowed") . '<span>' . $results['update']->getMessage() . '</span></li>';
             $error = true;
         } elseif ( $results['update'] != '' ) {
             $result .= '<li class="install-ok">' . _T("UPDATE operation allowed") . '</li>';
         }
 
-        if ( MDB2::isError($results['select']) ) {
-            $result .= '<li class="install-bad debuginfos">' . _T("SELECT operation not allowed") . '<span>' . $results['select']->getMessage() . '<br/>(' . $results['select']->getDebugInfo() . ')</span></li>';
+        if ( $results['select'] instanceof Exception ) {
+            $result .= '<li class="install-bad debuginfos">' . _T("SELECT operation not allowed") . '<span>' . $results['select']->getMessage() . '</span></li>';
             $error = true;
         } elseif ( $results['select'] != '' ) {
             $result .= '<li class="install-ok">' . _T("SELECT operation allowed") . '</li>';
         }
 
-        if ( MDB2::isError($results['delete']) ) {
-            $result .= '<li class="install-bad debuginfos">' . _T("DELETE operation not allowed") . '<span>' . $results['delete']->getMessage() . '<br/>(' . $results['delete']->getDebugInfo() . ')</span></li>';
+        if ( $results['delete'] instanceof Exception ) {
+            $result .= '<li class="install-bad debuginfos">' . _T("DELETE operation not allowed") . '<span>' . $results['delete']->getMessage() . '</span></li>';
             $error = true;
         } elseif ( $results['delete'] != '' ) {
             $result .= '<li class="install-ok">' . _T("DELETE operation allowed") . '</li>';
         }
 
-        if ( MDB2::isError($results['drop']) ) {
-            $result .= '<li class="install-bad debuginfos">' . _T("DROP operation not allowed") . '<span>' . $results['drop']->getMessage() . '<br/>(' . $results['drop']->getDebugInfo() . ')</span></li>';
+        if ( $results['drop'] instanceof Exception ) {
+            $result .= '<li class="install-bad debuginfos">' . _T("DROP operation not allowed") . '<span>' . $results['drop']->getMessage() . '</span></li>';
             $error = true;
         } elseif ( $results['drop'] != '' ) {
             $result .= '<li class="install-ok">' . _T("DROP operation allowed") . '</li>';
         }
 
-        if ( MDB2::isError($results['alter']) ) {
+        if (  $results['alter'] instanceof Exception ) {
             $result .= '<li class="install-bad debuginfos">' . _T("ALTER Operation not allowed") . '<span>' . $results['alter']->getMessage() . '</span></li>';
             $error = true;
         } elseif ( $results['alter'] != '' ) {
@@ -707,25 +690,31 @@ case 'u7':
     for ( $i = 0; $i < sizeof($sql_query); $i++ ) {
         $query = trim($sql_query[$i]);
         if ( $query != '' && $query[0] != '-' ) {
-            $result = $mdb->query($query);
+            //some output infos
             @list($w1, $w2, $w3, $extra) = explode(' ', $query, 4);
             if ($extra != '') {
                 $extra = '...';
             }
-            if ( MDB2::isError($result) ) {
+            try {
+                $result = $zdb->db->getConnection()->exec($query);
+                echo '<li class="install-ok">' . $w1 . ' ' . $w2 . ' ' . $w3 .
+                    ' ' . $extra . '</li>';
+            } catch (Exception $e) {
+                $log->log(
+                    'Error executing query | ' . $e->getMessage() .
+                    ' | Query was: ' . $query,
+                    PEAR_LOG_WARNING
+                );
                 echo '<li class="install-bad debuginfos">' . $w1 . ' ' . $w2 .
                     ' ' . $w3 . ' ' . $extra . '<span>' . $result->getMessage() .
                     '<br/>(' . $result->getDebugInfo() . ')</span></li>';
 
-                //if error are not on drop, DROP, rename or RENAME we can continue
+                //if error are on drop, DROP, rename or RENAME we can continue
                 if ( (strcasecmp(trim($w1), 'drop') != 0)
                     && (strcasecmp(trim($w1), 'rename') != 0)
                 ) {
                     $error = true;
                 }
-            } else {
-                echo '<li class="install-ok">' . $w1 . ' ' . $w2 . ' ' . $w3 .
-                    ' ' . $extra . '</li>';
             }
         }
     }
@@ -735,8 +724,9 @@ case 'u7':
     * FIXME: is this code util ?
     * shouldn't overlapping fess catched when stored ?
     */
+    /** TODO !!!!!!!! */
     // begin: fix overlapping fees
-    $adh_list = array();
+    /*$adh_list = array();
     $query = 'SELECT id_adh from ' . $table_prefix . 'adherents';
     $result = $DB->Execute($query);
     if ( !$result ) {
@@ -800,7 +790,7 @@ case 'u7':
                 $cprev = $c;
             }
         }
-    }
+    }*/
 
 ?>
             <p><?php echo _T("(Errors on DROP and RENAME operations can be ignored)"); ?></p>
@@ -872,7 +862,7 @@ case 'u8':
 ?>
             <form action="index.php" method="post">
                 <fieldset class="cssform">
-                    <legend><?php echo _T("Please chose the parameters of the admin account on Galette"); ?></legend>
+                    <legend class="ui-state-active ui-corner-top"><?php echo _T("Please chose the parameters of the admin account on Galette"); ?></legend>
                     <p>
                         <label for="install_adminlogin" class="bline"><?php echo _T("Username:"); ?></label>
                         <input type="text" name="install_adminlogin" id="install_adminlogin" value="<?php if(isset($_POST['install_adminlogin'])) echo $_POST['install_adminlogin']; ?>"/>
@@ -911,6 +901,7 @@ case 'u9';
     include_once '../classes/contributions_types.class.php';
     include_once '../classes/status.class.php';
     include_once '../classes/texts.class.php';
+    include_once '../classes/fields_categories.class.php';
 
     $oks = array();
     $errs = array();
@@ -943,40 +934,47 @@ define("STOCK_FILES", "tempimages");
         $ct = new ContributionsTypes();
         $status = new Status();
         $texts = new Texts();
+        $fc = new FieldsCategories();
 
         //init default values
-        $prefs->installInit(
+        $res = $prefs->installInit(
             $i18n->getID(),
             $_POST['install_adminlogin'],
             md5($_POST['install_adminpass'])
         );
-        if ( $prefs->inError() ) {
-            $errs[] = '<li class="install-bad">' . _T("Default preferences cannot be initialized.") . '<span>' . $prefs->getErrorMessage() . '(' . $prefs->getErrorDetails() . ')</span></li>';
+        if ( $res !== true ) {
+            $errs[] = '<li class="install-bad">' . _T("Default preferences cannot be initialized.") . '<span>' . $res->getMessage() . '</span></li>';
         } else {
             $oks[] = '<li class="install-ok">' . _T("Default preferences were successfully stored.") . '</li>';
         }
 
-        $ct->installInit();
-        if ( $ct->inError() ) {
-            $errs[] = '<li class="install-bad">' . _T("Default contributions types cannot be initialized.") . '<span>' . $ct->getErrorMessage() . '(' . $ct->getErrorDetails() . ')</span></li>';
+        $res = $ct->installInit();
+        if ( $res !== true ) {
+            $errs[] = '<li class="install-bad">' . _T("Default contributions types cannot be initialized.") . '<span>' . $res->getMessage() . '</span></li>';
         } else {
             $oks[] = '<li class="install-ok">' . _T("Default contributions types were successfully stored.") . '</li>';
         }
 
-        $status->installInit();
-        if ( $status->inError() ) {
-            $errs[] = '<li class="install-bad">' . _T("Default status cannot be initialized.") . '<span>' . $status->getErrorMessage() . '(' . $status->getErrorDetails() . ')</span></li>';
+        $res = $status->installInit();
+        if ( $res !== true ) {
+            $errs[] = '<li class="install-bad">' . _T("Default status cannot be initialized.") . '<span>' . $res->getMessage() . '</span></li>';
         } else {
             $oks[] = '<li class="install-ok">' . _T("Default status were successfully stored.") . '</li>';
         }
 
-        $texts->installInit();
-        if ( $texts->inError() ) {
-            $errs[] = '<li class="install-bad">' . _T("Default texts cannot be initialized.") . '<span>' . $texts->getErrorMessage() . '(' . $texts->getErrorDetails() . ')</span></li>';
+        $res = $texts->installInit();
+        if ( $res !== true ) {
+            $errs[] = '<li class="install-bad">' . _T("Default texts cannot be initialized.") . '<span>' . $res->getMessage() . '</span></li>';
         } else {
             $oks[] = '<li class="install-ok">' . _T("Default texts were successfully stored.") . '</li>';
         }
 
+        $res = $fc->installInit();
+        if ( $res !== true ) {
+            $errs[] = '<li class="install-bad">' . _T("Default fields categories cannot be initialized.") . '<span>' . $res->getMessage() . '</span></li>';
+        } else {
+            $oks[] = '<li class="install-ok">' . _T("Default fields categories were successfully stored.") . '</li>';
+        }
     } else if ($step=='u9') {
         $prefs->pref_admin_login = $_POST['install_adminlogin'];
         $prefs->pref_admin_pass = $_POST['install_adminpass'];

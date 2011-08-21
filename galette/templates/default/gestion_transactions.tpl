@@ -1,117 +1,150 @@
 		<h1 id="titre">{_T string="Management of transactions"}</h1>
+{if $error_detected|@count != 0}
+		<div id="errorbox">
+			<h1>{_T string="- ERROR -"}</h1>
+			<ul>
+{foreach from=$error_detected item=error}
+				<li>{$error}</li>
+{/foreach}
+			</ul>
+		</div>
+{/if}
 		<form action="gestion_transactions.php" method="get" id="filtre">
 		<table class="infoline">
 			<tr>
 				<td class="left">{$nb_transactions} {if $nb_transactions > 1}{_T string="transactions"}{else}{_T string="transaction"}{/if}</td>
-				<td class="center">
+                <td class="right">
 					<label for="nbshow">{_T string="Show:"}</label>
 					<select name="nbshow" id="nbshow">
 						{html_options options=$nbshow_options selected=$numrows}
 					</select>
-				</td>
-				<td class="right">{_T string="Pages:"}
-					<span class="pagelink">
-					{section name="pageLoop" start=1 loop=$nb_pages+1}
-						{if $smarty.section.pageLoop.index eq $page}
-							{$smarty.section.pageLoop.index}
-						{else}
-							<a href="gestion_transactions.php?nbshow={$smarty.get.nbshow}&amp;page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
-						{/if}
-					{/section}
-					</span>
+					<noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
 				</td>
 			</tr>
 		</table>
 		</form>
 		<table id="listing">
-			<tr>
-				<th class="listing" class="id_row">#</th>
-				<th class="listing left date_row">
-					<a href="gestion_transactions.php?tri=0" class="listing">{_T string="Date"}
-					{if $smarty.session.sort_by eq 0}
-					{if $smarty.session.sort_direction eq 0}
-					<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-					{else}
-					<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-					{/if}
-					{/if}
-					</a>
-				</th>
-				<th class="listing left">{_T string="Description"}</th>
+            <thead>
+                <tr>
+                    <th class="listing id_row">#</th>
+                    <th class="listing left date_row">
+                        <a href="gestion_transactions.php?tri={php}echo Transactions::ORDERBY_DATE;{/php}" class="listing">{_T string="Date"}
+                        {if $smarty.session.sort_by eq constant('Transactions::ORDERBY_DATE')}
+                            {if $smarty.session.sort_direction eq constant('Transactions::ORDER_ASC')}
+                        <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                            {else}
+                        <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                            {/if}
+                        {/if}
+                        </a>
+                    </th>
+                    <th class="listing left">{_T string="Description"}</th>
 {if $login->isAdmin()}
-				<th class="listing left">
-					<a href="gestion_transactions.php?tri=1" class="listing">{_T string="Originator"}
-					{if $smarty.session.sort_by eq 1}
-					{if $smarty.session.sort_direction eq 0}
-					<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-					{else}
-					<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-					{/if}
-					{/if}
-					</a>
-				</th>
+                    <th class="listing left">
+                        <a href="gestion_transactions.php?tri={php}echo Transactions::ORDERBY_MEMBER;{/php}" class="listing">{_T string="Originator"}
+                        {if $smarty.session.sort_by eq constant('Transactions::ORDERBY_MEMBER')}
+                            {if $smarty.session.sort_direction eq constant('Transactions::ORDER_ASC')}
+                        <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                            {else}
+                        <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                            {/if}
+                        {/if}
+                        </a>
+                    </th>
 {/if}
-				<th class="listing left">
-					<a href="gestion_transactions.php?tri=2" class="listing">{_T string="Amount"}
-					{if $smarty.session.sort_by eq 3}
-					{if $smarty.session.sort_direction eq 0}
-					<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-					{else}
-					<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-					{/if}
-					{/if}
-					</a>
-				</th>
+                    <th class="listing left">
+                        <a href="gestion_transactions.php?tri={php}echo Transactions::ORDERBY_AMOUNT;{/php}" class="listing">{_T string="Amount"}
+                        {if $smarty.session.sort_by eq constant('Transactions::ORDERBY_AMOUNT')}
+                            {if $smarty.session.sort_direction eq constant('Transactions::ORDER_ASC')}
+                        <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                            {else}
+                        <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                            {/if}
+                        {/if}
+                        </a>
+                    </th>
 {if $login->isAdmin()}
-				<th class="listing actions_row">{_T string="Actions"}</th>
+                    <th class="listing actions_row">{_T string="Actions"}</th>
 {/if}
-			</tr>
+    			</tr>
+            </thead>
+			<tfoot>
+				<tr>
+					<td colspan="{if $login->isAdmin()}6{else}4{/if}" class="center" id="table_footer">
+						{_T string="Pages:"}<br/>
+						<ul class="pages">{$pagination}</ul>
+					</td>
+				</tr>
+			</tfoot>
+            <tbody>
 {foreach from=$transactions item=transaction name=transactions_list}
-			<tr>
-				<td class="tbl_line_{if $smarty.foreach.transactions_list.iteration % 2 eq 0}even{else}odd{/if} center nowrap">{$transaction.trans_id}</td>
-				<td class="tbl_line_{if $smarty.foreach.transactions_list.iteration % 2 eq 0}even{else}odd{/if} nowrap">{$transaction.trans_date}</td>
-				<td class="tbl_line_{if $smarty.foreach.transactions_list.iteration % 2 eq 0}even{else}odd{/if} nowrap">{$transaction.trans_desc}</td>
+    {assign var="mid" value=$transaction->member}
+    {assign var="cclass" value=$transaction->getRowClass()}
+                <tr>
+                    <td class="{$cclass} center nowrap">{$transaction->id}</td>
+                    <td class="{$cclass} nowrap">{$transaction->date}</td>
+                    <td class="{$cclass} nowrap">{$transaction->description}</td>
 {if $login->isAdmin()}
-				<td class="tbl_line_{if $smarty.foreach.transactions_list.iteration % 2 eq 0}even{else}odd{/if}">
-{if $smarty.session.id_adh eq ""}
-					<a href="gestion_transactions.php?id_adh={$transaction.id_adh}">
-						{$transaction.lastname} {$transaction.firstname}
-					</a>
-{else}
-					<a href="voir_adherent.php?id_adh={$transaction.id_adh}">
-						{$transaction.lastname} {$transaction.firstname}
-					</a>
+    				<td class="{$cclass}">
+    {if $transactions->filtre_cotis_adh eq ""}
+                        <a href="gestion_transactions.php?id_adh={$mid}">
+                            {if $member}{$member->sname}{else}{memberName id="$mid"}{/if}
+                        </a>
+    {else}
+                        <a href="voir_adherent.php?id_adh={$mid}">
+                            {if $member}{$member->sname}{else}{memberName id="$mid"}{/if}
+                        </a>
+    {/if}
+    				</td>
 {/if}
-				</td>
-{/if}
-				<td class="tbl_line_{if $smarty.foreach.transactions_list.iteration % 2 eq 0}even{else}odd{/if} nowrap">{$transaction.trans_amount}</td>
+    				<td class="{$cclass} nowrap">{$transaction->amount}</td>
 {if $login->isAdmin()}
-				<td class="tbl_line_{if $smarty.foreach.transactions_list.iteration % 2 eq 0}even{else}odd{/if} center nowrap">
-					<a href="ajouter_transaction.php?trans_id={$transaction.trans_id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></a>
-					<a onclick="return confirm('{_T string="Do you really want to delete this transaction of the database ?"|escape:"javascript"}')" href="gestion_transactions.php?sup={$transaction.trans_id}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/></a>
-				</td>
+        			<td class="{$cclass} center nowrap">
+                        <a href="ajouter_transaction.php?trans_id={$transaction->id}">
+                            <img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/>
+                        </a>
+                        <a onclick="return confirm('{_T string="Do you really want to delete this transaction of the database ?"|escape:"javascript"}')" href="gestion_transactions.php?sup={$transaction->id}">
+                            <img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/>
+                        </a>
+                    </td>
 {/if}
-			</tr>
+    			</tr>
 {foreachelse}
-			<tr><td colspan="{if $login->isAdmin()}6{else}4{/if}" class="emptylist">{_T string="no transaction"}</td></tr>
+        		<tr><td colspan="{if $login->isAdmin()}6{else}4{/if}" class="emptylist">{_T string="no transaction"}</td></tr>
 {/foreach}
+            </tbody>
 		</table>
-		<div class="infoline2 right">
-			{_T string="Pages:"}
-			<span class="pagelink">
-			{section name="pageLoop" start=1 loop=$nb_pages+1}
-			{if $smarty.section.pageLoop.index eq $page}
-			{$smarty.section.pageLoop.index}
-			{else}
-			<a href="gestion_transactions.php?nbshow={$smarty.get.nbshow}&amp;page={$smarty.section.pageLoop.index}">{$smarty.section.pageLoop.index}</a>
-			{/if}
-			{/section}
-			</span>
+		<div id="legende" title="{_T string="Legend"}">
+			<h1>{_T string="Legend"}</h1>
+			<table>
+				<tr>
+					<th class="transaction-normal color-sample"><img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/></th>
+					<td class="back">{_T string="Completely dispatched transaction"}</td>
+				</tr>
+				<tr>
+					<th class="transaction-uncomplete color-sample"><img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/></th>
+					<td class="back">{_T string="Uncomplete dispatched transaction"}</td>
+				</tr>
+			</table>
 		</div>
-		{literal}
 		<script type="text/javascript">
-            $('#nbshow').change(function() {
-                this.form.submit();
-            });
+			$(function(){ldelim}
+                $('#nbshow').change(function() {ldelim}
+                    this.form.submit();
+                {rdelim});
+
+				$('#table_footer').parent().before('<td class="right" colspan="{if $login->isAdmin() && !$member}9{elseif $login->isAdmin()}8{else}7{/if}"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
+				$('#legende h1').remove();
+				$('#legende').dialog({ldelim}
+					autoOpen: false,
+					modal: true,
+					hide: 'fold',
+					width: '40%'
+				{rdelim}).dialog('close');
+
+				$('#show_legend').click(function(){ldelim}
+					$('#legende').dialog('open');
+					return false;
+				{rdelim});
+			{rdelim});
 		</script>
-		{/literal}

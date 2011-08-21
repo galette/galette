@@ -36,22 +36,6 @@
  * @link      http://galette.tuxfamily.org
  */
 
-/** moved to GalettePassword */
-function makeRandomPassword($size)
-{
-    $pass = '';
-    $salt = 'abcdefghjkmnpqrstuvwxyz0123456789';
-    srand((double)microtime()*1000000);
-    $i = 0;
-    while ( $i <= $size-1 ) {
-        $num = rand() % 33;
-        $tmp = substr($salt, $num, 1);
-        $pass = $pass . $tmp;
-        $i++;
-    }
-    return $pass;
-}
-
 function PasswordImageName($c)
 {
   return 'pw_' . md5($c) . '.png';
@@ -79,7 +63,8 @@ function PasswordImage()
     // the retrun value is just the crypted password.
 
     PasswordImageClean(); // purges former passwords
-    $mdp = makeRandomPassword(7);
+    $gp = new GalettePassword();
+    $mdp = $gp->makeRandomPassword();
     $c = crypt($mdp);
     $png = imagecreate(10 + 7.5 * strlen($mdp), 18);
     $bg = imagecolorallocate($png, 160, 160, 160);
@@ -87,7 +72,7 @@ function PasswordImage()
     $file = STOCK_FILES . '/' . PasswordImageName($c);
 
     imagepng($png,$file);
-    // The perms of the file can be wrong, correct it
+    // The perms of the file can be wrong, try to correct it
     // WARN : chmod() can be desacivated (i.e. : Free/Online)
     @chmod($file, 0644);
     return $c;
@@ -135,6 +120,13 @@ function txt_sqls($champ)
   return "'" . str_replace("'", "\'", str_replace('\\', '', $champ)) . "'";
 }
 
+/**
+ * Check URL validity
+ *
+ * @param string $url
+ *
+ * @return boolean
+ */
 function is_valid_web_url($url)
 {
     return (preg_match(
@@ -246,9 +238,11 @@ function custom_mail($email_to,$mail_subject,$mail_text, $content_type="text/pla
         $reply_to = $preferences->pref_email;
     }
 
+    $gp = new GalettePassword();
+
     $headers = array(
         "From: " . $preferences->pref_email_nom . " <" . $preferences->pref_email . ">",
-        "Message-ID: <" . makeRandomPassword(16) . "-galette@" . $_SERVER['SERVER_NAME'] . ">",
+        "Message-ID: <" . $gp->makeRandomPassword(16) . "-galette@" . $_SERVER['SERVER_NAME'] . ">",
         "Reply-To: <" . $reply_to . ">",
         "X-Sender: <" . $preferences->pref_email . ">",
         "Return-Path: <" . $preferences->pref_email . ">",

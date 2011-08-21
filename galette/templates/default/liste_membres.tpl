@@ -4,40 +4,31 @@
 			<thead>
 				<tr>
 					<th class="listing left">
-						<a href="?tri=name" class="listing">
+						<a href="?tri={php}echo Members::ORDERBY_NAME;{/php}" class="listing">
 							{_T string="Name"}
-							{if $smarty.session.tri_adh eq 0}
-							{if $smarty.session.tri_adh_sens eq 0}
+							{if $varslist->orderby eq constant('Members::ORDERBY_NAME')}
+								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-							{else}
+    							{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-							{/if}
+        						{/if}
 							{/if}
 						</a>
 					</th>
 					<th class="listing left">
-						<a href="?tri=nickname" class="listing">
+						<a href="?tri={php}echo Members::ORDERBY_NICKNAME;{/php}" class="listing">
 							{_T string="Nickname"}
-							{if $smarty.session.tri_adh eq 1}
-							{if $smarty.session.tri_adh_sens eq 0}
+							{if $varslist->orderby eq constant('Members::ORDERBY_NICKNAME')}
+								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-							{else}
+    							{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-							{/if}
+        						{/if}
 							{/if}
 						</a>
 					</th> 
 					<th class="listing left"> 
-						<a href="?tri=infos" class="listing">
-							{_T string="Informations"}
-							{if $smarty.session.tri_adh eq 2}
-							{if $smarty.session.tri_adh_sens eq 0}
-							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-							{else}
-							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-							{/if}
-							{/if}
-						</a>
+						<a href="?tri=infos" class="listing">{_T string="Informations"}</a>
 					</th>
 				</tr>
 			</thead>

@@ -12,10 +12,4 @@
 		<flag>english.gif</flag>
 		<filename>english</filename>
 	</lang>
-	<lang id="es_ES" long="es_ES@euro" inactive="inactive">
-		<shortname>es</shortname>
-		<longname>español</longname>
-		<flag>spanish.gif</flag>
-		<filename>spanish</filename>
-	</lang>
 </translations>

@@ -118,11 +118,14 @@ if (isset($_GET['page'])) {
 
 if ( isset($_GET['clear_filter']) ) {
     $varslist->reinit();
-} else if ( isset($_GET['filter_str']) ) { //filter search string
-    $varslist->filter_str = stripslashes(
-        htmlspecialchars($_GET['filter_str'], ENT_QUOTES)
-    );
-    //filed for filter
+} else {
+    //string to filter
+    if ( isset($_GET['filter_str']) ) { //filter search string
+        $varslist->filter_str = stripslashes(
+            htmlspecialchars($_GET['filter_str'], ENT_QUOTES)
+        );
+    }
+    //field to filter
     if ( isset($_GET['filter_field']) ) {
         if ( is_numeric($_GET['filter_field']) ) {
             $varslist->field_filter = $_GET['filter_field'];

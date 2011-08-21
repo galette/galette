@@ -36,14 +36,12 @@
  * @since     Available since 0.7dev - 2009-03-13
  */
 define('SMARTY_VERSION', '2.6.26');
+define('ZEND_VERSION', '1.11.9');
 define('PEAR_VERSION', '1.9.4');
-define('MDB2_VERSION', '2.4.1');
 define('LOG_VERSION', '1.12.6');
 define('TCPDF_VERSION', '5.9.088');
 define('JQUERY_VERSION', '1.6.2');
 define('JQUERY_UI_VERSION', '1.8.14');
 define('JQUERY_MARKITUP_VERSION', '1.1.5');
 define('PHP_MAILER_VERSION', '5.1');
-//will be erased when completly obsoleted
-define('ADODB_VERSION', '492');
 ?>

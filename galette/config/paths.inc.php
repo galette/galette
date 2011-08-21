@@ -41,11 +41,11 @@ if ( file_exists(WEB_ROOT . 'config/local_paths.inc.php') ) {
 }
 
 //external libraries
+if ( !defined('GALETTE_ZEND_PATH') ) {
+    define('GALETTE_ZEND_PATH', WEB_ROOT . 'includes/Zend-' . ZEND_VERSION);
+}
 if ( !defined('GALETTE_PEAR_PATH') ) {
     define('GALETTE_PEAR_PATH', WEB_ROOT . 'includes/pear/PEAR-' . PEAR_VERSION);
-}
-if ( !defined('GALETTE_PEAR_MDB2_PATH') ) {
-    define('GALETTE_PEAR_MDB2_PATH', WEB_ROOT . 'includes/pear/MDB2-' . MDB2_VERSION);
 }
 if ( !defined('GALETTE_PEAR_LOG_PATH') ) {
     define('GALETTE_PEAR_LOG_PATH', WEB_ROOT . 'includes/pear/Log-' . LOG_VERSION);

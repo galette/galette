@@ -91,8 +91,18 @@ class Logo extends Picture
     */
     protected function getCheckFileQuery()
     {
-        return 'SELECT picture, format FROM ' . PREFIX_DB . self::TABLE .
-            ' WHERE ' . self::PK . '=\'' . $this->db_id . '\'';
+        global $zdb;
+
+        $select = new Zend_Db_Select($zdb->db);
+        $select->from(
+            array(PREFIX_DB . self::TABLE),
+            array(
+                'picture',
+                'format'
+            )
+        );
+        $select->where(self::PK . ' = ?', $this->db_id);
+        return $select;
     }
 
     /**

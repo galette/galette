@@ -57,6 +57,9 @@ class Csv
     const DEFAULT_QUOTE = '"';
     const DEFAULT_DIRECTORY = 'exports/';
 
+    const FILE_NOT_WRITABLE = -1;
+    const DB_ERROR = -2;
+
     private $_rs;
     private $_separator;
     private $_quote;
@@ -64,7 +67,6 @@ class Csv
     private $_file;
     private $_result;
     private $_current_line;
-    private $_fields;
 
     private $_parameted_dir = 'config/';
     private $_parameted_path;
@@ -92,20 +94,20 @@ class Csv
 
 
     /**
-    * Export MDB2 ResultSet to CSV
+    * Export Array result set to CSV
     *
-    * @param ResultSet &$rs       MDB2 ResultSet
-    * @param string    $separator The CSV separator (either '\t', ';' or ','
-    *                   are accepted)
-    * @param char      $quote     how does fields should be quoted
-    * @param bool      $titles    does export shows column titles or not.
-    *                   Defaults to false.
-    * @param object    $file      export to a file on disk. A file pointer
-    *                   should be passed here. Defaults to false.
+    * @param aray   $rs        Results as an array
+    * @param string $separator The CSV separator (either '\t', ';' or ','
+    *                          are accepted)
+    * @param char   $quote     how does fields should be quoted
+    * @param bool   $titles    does export shows column titles or not.
+    *                          Defaults to false.
+    * @param object $file      export to a file on disk. A file pointer
+    *                          should be passed here. Defaults to false.
     *
     * @return string CSV result
     */
-    function export(&$rs, $separator, $quote, $titles=false, $file=false)
+    function export($rs, $separator, $quote, $titles=false, $file=false)
     {
         if (!$rs) {
             return '';
@@ -121,7 +123,7 @@ class Csv
 
         $this->_result = '';
         $this->_rs = $rs;
-        $this->max = $this->_rs->NumRows();
+        $this->max = count($this->_rs);
         $this->_separator = $separator;
         $this->_quote = $quote;
         //dubbing quote for escaping
@@ -131,7 +133,7 @@ class Csv
 
         $fields = array();
         if ( $titles && !count($titles>1) ) {
-            foreach ( $rs->getColumnNames() as $field=>$position ) {
+            foreach ( array_key($this->_rs) as $field ) {
                 $fields[] = $this->_quote . str_replace(
                     $this->_quote, $this->_escaped, $field
                 ) . $this->_quote;
@@ -146,7 +148,7 @@ class Csv
             $this->_result .= implode($this->_separator, $fields) . self::NEWLINE;
         }
 
-        while ($row = $this->_rs->fetchRow(MDB2_FETCHMODE_ASSOC)) {
+        foreach ( $this->_rs as $row ) {
             $elts = array();
 
             foreach ($row as $k => $v) {
@@ -190,6 +192,22 @@ class Csv
     }
 
     /**
+     * Retrieve parameted export name
+     *
+     * @param string $id Parameted export identifier
+     *
+     * @return string
+     */
+    public function getParamedtedExportName($id)
+    {
+        $xml = simplexml_load_file($this->_parameted_file);
+        $xpath = $xml->xpath(
+            '/exports/export[@id=\'' . $id . '\'][1]/@name'
+        );
+        return (string)$xpath[0];
+    }
+
+    /**
     * Get al list of all parameted exports
     *
     * @return array
@@ -203,9 +221,9 @@ class Csv
         foreach ( $xml->export as $export) {
             if ( !($export['inactive'] == 'inactive') ) {
                 $parameted[] = array(
-                    'id'        =>    (string)$export['id'],
-                    'name'        =>    (string)$export['name'],
-                    'description'    =>    (string)$export['description']
+                    'id'          => (string)$export['id'],
+                    'name'        => (string)$export['name'],
+                    'description' => (string)$export['description']
                 );
             }
         }
@@ -221,7 +239,7 @@ class Csv
     */
     public function runParametedExport($id)
     {
-        global $mdb;
+        global $zdb, $log;
 
         $xml = simplexml_load_file($this->_parameted_file);
 
@@ -230,41 +248,53 @@ class Csv
         );
         $export = $xpath[0];
 
-        $result = $mdb->query($export->query);
-        if ( MDB2::isError($result) ) {
-            return -1;
-        }
+        try {
+            $result = $zdb->db->query($export->query)->fetchAll(
+                Zend_Db::FETCH_ASSOC
+            );
 
-        $filename=self::DEFAULT_DIRECTORY . $export['filename'];
+            $filename=self::DEFAULT_DIRECTORY . $export['filename'];
 
-        $fp = fopen($filename, 'w');
-        if ( $fp ) {
-            $separator = ( $export->separator )
-                ? $export->separator
-                : self::DEFAULT_SEPARATOR;
-            $quote = ( $export->quote ) ? $export->quote : self::DEFAULT_QUOTE;
-            if ( $export->headers->none ) {
-                //No title
-                $title = false;
-            } else {
-                $xpath = $export->xpath('headers/header');
-                if ( count($xpath) == 0 ) {
-                    //show titles
-                    $title = true;
+            $fp = fopen($filename, 'w');
+            if ( $fp ) {
+                $separator = ( $export->separator )
+                    ? $export->separator
+                    : self::DEFAULT_SEPARATOR;
+                $quote = ( $export->quote ) ? $export->quote : self::DEFAULT_QUOTE;
+                if ( $export->headers->none ) {
+                    //No title
+                    $title = false;
                 } else {
-                    //titles from array
-                    foreach ( $xpath as $header ) {
-                        $title[] = (string)$header;
+                    $xpath = $export->xpath('headers/header');
+                    if ( count($xpath) == 0 ) {
+                        //show titles
+                        $title = true;
+                    } else {
+                        //titles from array
+                        foreach ( $xpath as $header ) {
+                            $title[] = (string)$header;
+                        }
                     }
                 }
-            }
 
-            $this->export($result, $separator, $quote, $title, $fp);
-            fclose($fp);
-        } else {
-            return false;
+                $this->export($result, $separator, $quote, $title, $fp);
+                fclose($fp);
+            } else {
+                $log->log(
+                    'File ' . $filename . ' is not writeable.',
+                    PEAR_LOG_ERR
+                );
+                return self::FILE_NOT_WRITABLE;
+            }
+            return $filename;
+        } catch (Exeption $e) {
+            $log->log(
+                'An error occured while exporting | ' . $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            return self::DB_ERROR;
         }
-        return $filename;
+
     }
 
     /**

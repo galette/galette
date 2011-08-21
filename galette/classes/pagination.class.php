@@ -93,10 +93,10 @@ abstract class GalettePagination
     {
         global $preferences;
 
-        $this->current_page = 1;
-        $this->orderby = $this->getDefaultOrder();
-        $this->ordered = self::ORDER_ASC;
-        $this->show = $preferences->pref_numrows;
+        $this->_current_page = 1;
+        $this->_orderby = $this->getDefaultOrder();
+        $this->_ordered = self::ORDER_ASC;
+        $this->_show = $preferences->pref_numrows;
     }
 
     /**
@@ -148,14 +148,15 @@ abstract class GalettePagination
     }
 
     /**
-    * Add limits so we retrieve only relavant rows
-    *
-    * @return void
-    */
-    protected function setLimits()
+     * Add limits so we retrieve only relavant rows
+     *
+     * @param Zend_Db_Statement $select Original select
+     *
+     * @return void
+     */
+    protected function setLimits($select)
     {
-        global $mdb;
-        $mdb->getDb()->setLimit(
+        $select->limit(
             $this->show,
             ($this->current_page - 1) * $this->show
         );

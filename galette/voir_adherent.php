@@ -50,8 +50,10 @@ if ( !$login->isLogged() ) {
 
 $id_adh = get_numeric_form_value('id_adh', '');
 
-if ( !$login->isAdmin() ) {
-    $id_adh = $login->id;
+if ( !$login->isSuperAdmin() ) {
+    if ( !$login->isAdmin() || $login->isAdmin() && $id_adh == '' ) {
+        $id_adh = $login->id;
+    }
 }
 if ( $id_adh == '' ) {
     header('location: index.php');
@@ -99,12 +101,11 @@ if ( isset($_SESSION['galette']['varslist'])  ) {
 $_SESSION['galette']['caller']='voir_adherent.php?id_adh='.$id_adh;
 
 // declare dynamic field values
-$adherent['dyn'] = get_dynamic_fields($DB, 'adh', $id_adh, true);
+$adherent['dyn'] = get_dynamic_fields('adh', $id_adh, true);
 
 // - declare dynamic fields for display
 $disabled['dyn'] = array();
 $dynamic_fields = prepare_dynamic_fields_for_display(
-    $DB,
     'adh',
     $adherent['dyn'],
     $disabled['dyn'],

@@ -61,11 +61,28 @@ $field_id = get_numeric_form_value("id", '');
 if ( $field_id == '' ) {
     header('location: configurer_fiches.php?form=' . $form_name);
 }
-$field_type = $DB->GetOne(
-    'SELECT field_type FROM ' . $field_types_table .
-    ' WHERE field_id=' . $field_id
-);
-$properties = $field_properties[$field_type];
+
+try {
+    $select = new Zend_Db_Select($zdb->db);
+    $select->from(
+        $field_types_table,
+        'field_type'
+    )->where('field_id = ?', $field_id);
+    $field_type = $select->query()->fetchColumn();
+    if ( $field_type !== false ) {
+        $properties = $field_properties[$field_type];
+    } else {
+        $error_detected[] = _T("Unable to retrieve field informations.");
+    }
+} catch (Exception $e) {
+    /** FIXME */
+    $log->log(
+        'Unable to retrieve field `' . $field_id . '` informations | ' .
+        $e->getMessage(),
+        PEAR_LOG_ERR
+    );
+    $error_detected[] = _T("Unable to retrieve field informations.");
+}
 
 $data = array('id' => $field_id);
 
@@ -81,39 +98,69 @@ if ( isset($_POST['valid']) ) {
     $fixed_values = get_form_value('fixed_values', '');
 
     if ( $field_id != '' && $field_perm != '' ) {
-        $quoted_form_name = $DB->qstr($form_name, get_magic_quotes_gpc());
-        $quoted_field_name = $DB->qstr($field_name, get_magic_quotes_gpc());
-        $DB->StartTrans();
-        $query = "SELECT COUNT(field_id)
-                    FROM $field_types_table
-                    WHERE NOT field_id=$field_id AND field_form=$quoted_form_name AND
-                        field_name=$quoted_field_name";
-        $duplicate = $DB->GetOne($query);
-        if ( $duplicate != 0 ) {
+        //let's consider fielod is duplicated, in case of future errors
+        $duplicated = true;
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(
+                $field_types_table,
+                'COUNT(field_id)'
+            )->where('NOT field_id = ?', $field_id)
+                ->where('field_form = ?', $form_name)
+                ->where('field_name = ?', $field_name);
+            $dup = $select->query()->fetchColumn();
+            if ( !$dup > 0 ) {
+                $duplicated = false;
+            }
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log(
+                'An error occured checking field duplicity' . $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+        }
+
+        if ( $duplicated ) {
             $error_detected[] = _T("- Field name already used.");
+        } else {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(
+                $field_types_table,
+                'field_name'
+            )->where('field_id = ?', $field_id);
+            $old_field_name = $select->query()->fetchColumn();
+            if ( $old_field_name && $field_name != $old_field_name ) {
+                addDynamicTranslation($field_name, $error_detected);
+                deleteDynamicTranslation($old_field_name, $error_detected);
+            }
         }
-        $query = "SELECT field_name
-                    FROM $field_types_table
-                    WHERE field_id=$field_id";
-        $old_field_name = db_get_one($DB, $query, $error_detected);
-        if ( $old_field_name && $field_name != $old_field_name ) {
-            addDynamicTranslation($DB, $field_name, $error_detected);
-            deleteDynamicTranslation($DB, $old_field_name, $error_detected);
+
+        if ( count($error_detected) == 0 ) {
+            try {
+                $values = array(
+                    'field_name'     => $field_name,
+                    'field_perm'     => $field_perm,
+                    'field_pos'      => $field_pos,
+                    'field_required' => $field_required,
+                    'field_width'    => $field_width,
+                    'field_height'   => $field_height,
+                    'field_size'     => $field_size,
+                    'field_repeat'   => $field_repeat
+                );
+                $zdb->db->update(
+                    $field_types_table,
+                    $values,
+                    'field_id = ' . $field_id
+                );
+            } catch (Exception $e) {
+                /** FIXME */
+                $log->log(
+                    'An error occured storing field | ' . $e->getMessage(),
+                    PEAR_LOG_ERR
+                );
+            }
         }
-        if ( count($error_detected)==0 ) {
-            $query = "UPDATE $field_types_table
-                        SET field_name=$quoted_field_name,
-                            field_perm=$field_perm,
-                            field_pos=$field_pos,
-                            field_required=".db_boolean($field_required).",
-                            field_width=$field_width,
-                            field_height=$field_height,
-                            field_size=$field_size,
-                            field_repeat=$field_repeat
-                        WHERE field_id=$field_id";
-            db_execute($DB, $query, $error_detected);
-        }
-        $DB->CompleteTrans();
+
         if ( $properties['fixed_values'] ) {
             $values = array();
             $max_length = 1;
@@ -128,21 +175,50 @@ if ( isset($_POST['valid']) ) {
                 }
             }
             $contents_table = fixed_values_table_name($field_id);
-            $DB->Execute("DROP TABLE $contents_table");
-            db_execute(
-                $DB,
-                'CREATE TABLE ' . $contents_table .
-                ' (id INTEGER NOT NULL,val varchar(' . $max_length . ') NOT NULL)',
-                $error_detected
-            );
+
+            try {
+                $zdb->db->beginTransaction();
+                $zdb->db->getConnection()->exec('DROP TABLE IF EXISTS ' . $contents_table);
+                $zdb->db->query(
+                    'CREATE TABLE ' . $contents_table .
+                    ' (id INTEGER NOT NULL,val varchar(' . $max_length .
+                    ') NOT NULL)'
+                );
+                $zdb->db->commit();
+            } catch (Exception $e) {
+                /** FIXME */
+                $zdb->db->rollBack();
+                $log->log(
+                    'Unable to manage fields values table ' .
+                    $contents_table . ' | ' . $e->getMessage(),
+                    PEAR_LOG_ERR
+                );
+                $error_detected[] = _T("An error occured storing managing fields values table");
+            }
+
             if (count($error_detected) == 0) {
-                for ( $i = 0; $i < count($values); $i++ ) {
-                    $val = $DB->qstr($values[$i], get_magic_quotes_gpc());
-                    db_execute(
-                        $DB,
+
+                try {
+                    $zdb->db->beginTransaction();
+                    $stmt = $zdb->db->prepare(
                         'INSERT INTO ' . $contents_table .
-                        ' VALUES (' . $i . ', ' . $val . ')',
-                        $error_detected
+                        ' (' . $zdb->db->quoteIdentifier('id') . ', ' .
+                        $zdb->db->quoteIdentifier('val') . ')' .
+                        ' VALUES(:id, :val)'
+                    );
+
+                    for ( $i = 0; $i < count($values); $i++ ) {
+                        $stmt->bindValue(':id', $i, PDO::PARAM_INT);
+                        $stmt->bindValue(':val', $values[$i], PDO::PARAM_STR);
+                        $stmt->execute();
+                    }
+                    $zdb->db->commit();
+                }catch (Exception $e) {
+                    /** FIXME */
+                    $zdb->db->rollBack();
+                    $log->log(
+                        'Unable to store field ' . $field_id . ' values',
+                        PEAR_LOG_ERR
                     );
                 }
             }
@@ -154,28 +230,35 @@ if ( isset($_POST['valid']) ) {
 } elseif ( isset($_POST['cancel']) ) {
     header('location: configurer_fiches.php?form=' . $form_name);
 } else {
-    $query = "SELECT *
-                FROM $field_types_table
-                WHERE field_id=$field_id";
-    $result = db_execute($DB, $query, $error_detected);
-    if ($result != false) {
-        $field_name = $result->fields['field_name'];
-        $field_type = $result->fields['field_name'];
-        $field_perm = $result->fields['field_perm'];
-        $field_pos = $result->fields['field_pos'];
-        $field_required = $result->fields['field_required'];
-        $field_width = $result->fields['field_width'];
-        $field_height = $result->fields['field_height'];
-        $field_repeat = $result->fields['field_repeat'];
-        $field_size = $result->fields['field_size'];
-        $result->Close();
-        $fixed_values = '';
-        if ($properties['fixed_values']) {
-            foreach ( get_fixed_values($DB, $field_id) as $val ) {
-                $fixed_values .= $val . "\n";
+    try {
+        $select->columns();
+        $result = $select->query()->fetch();
+
+        if ($result !== false) {
+            $field_name = $result->field_name;
+            $field_type = $result->field_name;
+            $field_perm = $result->field_perm;
+            $field_pos = $result->field_pos;
+            $field_required = $result->field_required;
+            $field_width = $result->field_width;
+            $field_height = $result->field_height;
+            $field_repeat = $result->field_repeat;
+            $field_size = $result->field_size;
+            $fixed_values = '';
+            if ($properties['fixed_values']) {
+                foreach ( get_fixed_values($field_id) as $val ) {
+                    $fixed_values .= $val . "\n";
+                }
             }
-        }
-    } // $result != false
+        } // $result != false
+    } catch (Exception $e) {
+        /** FIXME */
+        $log->log(
+            'Unable to retrieve fields types for field ' . $field_id . ' | ' .
+            $e->getMessage(),
+            PEAR_LOG_ERR
+        );
+    }
 }
 
 $data['id'] = $field_id;

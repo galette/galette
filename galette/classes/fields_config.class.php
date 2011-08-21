@@ -97,40 +97,27 @@ class FieldsConfig
     * since it has not yet happened or the table
     * has been modified.
     *
-    * @param boolean $try TO DOCUMENT
+    * @param boolean $try Just check, when called from $this->init()
     *
     * @return void
     */
     private function _checkUpdate($try = true)
     {
-        global $mdb, $log;
+        global $zdb, $log;
         $class = get_class($this);
-        if ( $mdb->getOption('result_buffering') ) {
-            $requete = 'SELECT * FROM ' . PREFIX_DB . $this->_table;
-            $mdb->getDb()->setLimit(1);
 
-            $result2 = $mdb->query($requete);
-            if ( MDB2::isError($result2) ) {
-                return -1;
-            }
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . self::TABLE)
+                ->where('table_name = ?', $this->_table)
+                ->order(array(FieldsCategories::PK, 'position ASC'));
 
-            $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE .
-                ' WHERE table_name=\'' . $this->_table . '\' ORDER BY ' .
-                FieldsCategories::PK . ', position ASC';
-
-            $result = $mdb->query($requete);
-            if ( MDB2::isError($result) ) {
-                return -1;
-            }
-
-            $result->setResultTypes($this->_types);
-
-            if ( $result->numRows() == 0 && $try ) {
+            $result = $select->query()->fetchAll();
+            if ( count($result) == 0 && $try ) {
                 $this->init();
             } else {
-                $required = $result->fetchAll();
                 $this->_categorized_fields = null;
-                foreach ( $required as $k ) {
+                foreach ( $result as $k ) {
                     $f = array(
                         'field_id'  =>  $k->field_id,
                         'label'     =>  $this->_defaults[$k->field_id]['label'],
@@ -155,23 +142,32 @@ class FieldsConfig
                         = $this->_defaults[$k->field_id]['category'];
                     $this->all_positions[$k->field_id] = $k->position;
                 }
-                if ( $result2->numCols() != $result->numRows() ) {
+
+                $meta = Adherent::getDbFields();
+
+                if ( count($meta) != count($result) ) {
                     $log->log(
                         '[' . $class . '] Count for `' . $this->_table .
                         '` columns does not match records. Is : ' .
-                        $result->numRows() . ' and should be ' .
-                        $result2->numCols() . '. Reinit.',
+                        count($result) . ' and should be ' .
+                        count($meta) . '. Reinit.',
                         PEAR_LOG_INFO
                     );
                     $this->init(true);
                 }
             }
-        } else {
+        } catch (Exception $e) {
             $log->log(
                 '[' . $class . '] An error occured while checking update for ' .
-                'fields configuration for table `' . $this->_table . '`.',
-                PEAR_LOG_ERROR
+                'fields configuration for table `' . $this->_table . '`. ' .
+                $e->getMessage(),
+                PEAR_LOG_ERR
             );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
+            );
+            throw $e;
         }
     }
 
@@ -185,10 +181,13 @@ class FieldsConfig
     *
     * @return void
     */
-    function init($reinit=false)
+    public function init($reinit=false)
     {
-        global $mdb, $log;
+        global $zdb, $log;
         $class = get_class($this);
+        $t = new FieldsCategories();
+        $init = $t->installInit();
+
         $log->log(
             '[' . $class . '] Initializing fields configuration for table `' .
             $this->_table . '`',
@@ -201,41 +200,38 @@ class FieldsConfig
                 PEAR_LOG_DEBUG
             );
             //Delete all entries for current table. Existing entries are
-            //alkready stored, new ones will be added :)
-            $requetesup = 'DELETE FROM ' . PREFIX_DB . self::TABLE .
-                ' WHERE table_name=\'' . $this->_table . '\'';
-
-            if ( !$init_result = $mdb->execute($requetesup) ) {
-                return -1;
+            //already stored, new ones will be added :)
+            try {
+                $zdb->db->delete(
+                    PREFIX_DB . self::TABLE,
+                    array('table_name = ?', $this->_table)
+                );
+            } catch (Exception $e) {
+                $log->log(
+                    'Unable to delete fields configuration for reinitialization',
+                    PEAR_LOG_WARNING
+                );
+                return false;
             }
         }
 
-        $requete = 'SELECT * FROM ' . PREFIX_DB . $this->_table;
-        $mdb->getDb()->setLimit(1);
+        try {
+            $fields = array_keys($this->_defaults);
 
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($result) ) {
-            return -1;
-        }
+            $stmt = $zdb->db->prepare(
+                'INSERT INTO ' . PREFIX_DB . self::TABLE .
+                ' (table_name, field_id, required, visible, position, ' .
+                FieldsCategories::PK .
+                ') VALUES(:table_name, :field_id, :required, :visible, :position, ' .
+                ':category)'
+            );
 
-        $fields = $result->getColumnNames();
-
-        $stmt = $mdb->prepare(
-            'INSERT INTO ' . PREFIX_DB . self::TABLE .
-            ' (table_name, field_id, required, visible, position, ' .
-            FieldsCategories::PK .
-            ') VALUES(:table_name, :field_id, :required, :visible, :position, ' .
-            ':category)',
-            $this->_types,
-            MDB2_PREPARE_MANIP
-        );
-
-        $params = array();
-        foreach ( $fields as $key=>$value ) {
-            $params[] = array(
-                'field_id'      =>  $key,
-                 'table_name'   =>  $this->_table,
-                'required'      =>  (
+            $params = array();
+            foreach ( $fields as $key ) {
+                $params = array(
+                    ':field_id'    => $key,
+                    ':table_name'  => $this->_table,
+                    ':required'    => (
                                         ($reinit) ?
                                             array_key_exists(
                                                 $key,
@@ -244,8 +240,8 @@ class FieldsConfig
                                             $this->_defaults[$key]['required'] ?
                                                 true :
                                                 false
-                                    ),
-                'visible'       =>  (
+                                      ),
+                    ':visible'     => (
                                         ($reinit) ?
                                             array_key_exists(
                                                 $key,
@@ -254,31 +250,20 @@ class FieldsConfig
                                             $this->_defaults[$key]['visible'] ?
                                                 true :
                                                 false
-                                    ),
-                'position'      =>  (
+                                      ),
+                    ':position'    => (
                                         ($reinit) ?
                                             $this->all_positions[$key] :
                                             $this->_defaults[$key]['position']
-                                    ),
-                'category'      =>  (
+                                      ),
+                    ':category'    => (
                                         ($reinit) ?
                                             $this->_all_categories[$key] :
                                             $this->_defaults[$key]['category']
-                                    ),
-            );
-        }
-
-        $mdb->getDb()->loadModule('Extended', null, false);
-        $mdb->getDb()->extended->executeMultiple($stmt, $params);
-
-        if ( MDB2::isError($stmt) ) {
-            $log->log(
-                '[' . $class . '] An error occured trying to initialize fields ' .
-                'configuration for table `' . $this->_table . '`.' .
-                $stmt->getMessage(),
-                PEAR_LOG_ERR
-            );
-        } else {
+                                      ),
+                );
+                $stmt->execute($params);
+            }
             $log->log(
                 '[' . $class . '] Initialisation seems successfull, we reload ' .
                 'the object',
@@ -293,8 +278,16 @@ class FieldsConfig
                 ),
                 PEAR_LOG_INFO
             );
-            $stmt->free();
             $this->_checkUpdate(false);
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log(
+                '[' . $class . '] An error occured trying to initialize fields ' .
+                'configuration for table `' . $this->_table . '`.' .
+                $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            throw $e;
         }
     }
 

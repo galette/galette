@@ -167,7 +167,7 @@ abstract class Authentication
     /**
      * Display logged in member name
      *
-     * @param boolean only_name
+     * @param boolean $only_name If we want only the name without any additional text
      *
      * @return String
      */

@@ -300,36 +300,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 if ( is_uploaded_file($_FILES['logo']['tmp_name']) ) {
                     $res = $logo->store($_FILES['logo']);
                     if ( $res < 0 ) {
-                        switch( $res ) {
-                        case Logo::INVALID_FILE:
-                            $patterns = array('|%s|', '|%t|');
-                            $replacements = array(
-                                $logo->getAllowedExts(),
-                                htmlentities($logo->getBadChars())
-                            );
-                            $error_detected[] = preg_replace(
-                                $patterns,
-                                $replacements,
-                                _T("- Filename or extension is incorrect. Only %s files are allowed. File name should not contains any of: %t")
-                            );
-                            break;
-                        case Logo::FILE_TOO_BIG:
-                            $error_detected[] = preg_replace(
-                                '|%d|',
-                                Logo::MAX_FILE_SIZE,
-                                _T("File is too big. Maximum allowed size is %d")
-                            );
-                            break;
-                        case Logo::MIME_NOT_ALLOWED:
-                            /** FIXME: should be more descriptive */
-                            $error_detected[] = _T("Mime-Type not allowed");
-                            break;
-                        case Logo::SQL_ERROR:
-                        case Logo::SQL_BLOB_ERROR:
-                            $error_detected[] = _T("An SQL error has occured.");
-                            break;
-
-                        }
+                        $error_detected[] = Picture::getErrorMessage($res);
                     }
                     $logo = new Logo();
                     $_SESSION['galette']['logo'] = serialize($logo);
@@ -354,35 +325,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 if ( is_uploaded_file($_FILES['card_logo']['tmp_name']) ) {
                     $res = $print_logo->store($_FILES['card_logo']);
                     if ( $res < 0 ) {
-                        switch( $res ) {
-                        case PrintLogo::INVALID_FILE:
-                            $patterns = array('|%s|', '|%t|');
-                            $replacements = array(
-                                $print_logo->getAllowedExts(),
-                                htmlentities($print_logo->getBadChars())
-                            );
-                            $error_detected[] = preg_replace(
-                                $patterns,
-                                $replacements,
-                                _T("- Filename or extension is incorrect. Only %s files are allowed. File name should not contains any of: %t")
-                            );
-                            break;
-                        case PrintLogo::FILE_TOO_BIG:
-                            $error_detected[] = preg_replace(
-                                '|%d|',
-                                PrintLogo::MAX_FILE_SIZE,
-                                _T("File is too big. Maximum allowed size is %d")
-                            );
-                            break;
-                        case PrintLogo::MIME_NOT_ALLOWED:
-                            /** FIXME: should be more descriptive */
-                            $error_detected[] = _T("Mime-Type not allowed");
-                            break;
-                        case PrintLogo::SQL_ERROR:
-                        case PrintLogo::SQL_BLOB_ERROR:
-                            $error_detected[] = _T("An SQL error has occured.");
-                            break;
-                        }
+                        $error_detected[] = Picture::getErrorMessage($res);
                     }
                 }
             }

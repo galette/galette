@@ -50,129 +50,56 @@ if ( !$login->isAdmin() ) {
     $id_adh = get_numeric_form_value('id_adh', '');
 }
 
-$numrows = get_numeric_form_value('nbshow', $preferences->pref_numrows);
+$filtre_id_adh = '';
 
-$page = get_numeric_form_value('page', 1);
+require_once 'classes/transactions.class.php';
+if ( isset($_SESSION['galette']['transactions']) ) {
+    $trans = unserialize($_SESSION['galette']['transactions']);
+} else {
+    $trans = new Transactions();
+}
 
-// Tri
+if ( isset($_GET['page']) && is_numeric($_GET['page']) ) {
+    $trans->current_page = (int)$_GET['page'];
+}
+
+if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
+    $trans->show = $_GET['nbshow'];
+}
+
 if ( isset($_GET['tri']) ) {
-    if ($_SESSION['sort_by'] == $_GET['tri'] ) {
-        $_SESSION['sort_direction'] = ($_SESSION['sort_direction'] + 1) % 2;
+    $trans->orderby = $_GET['tri'];
+}
+
+if ( $login->isAdmin() && isset($_GET['id_adh']) && $_GET['id_adh'] != '' ) {
+    if ( $_GET['id_adh'] == 'all' ) {
+        $trans->filtre_cotis_adh = null;
     } else {
-        $_SESSION['sort_by'] = $_GET['tri'];
-        $_SESSION['sort_direction'] = 0;
+        $trans->filtre_cotis_adh = $_GET['id_adh'];
     }
 }
 
 if ( $login->isAdmin() ) {
     $trans_id = get_numeric_form_value('sup', '');
     if ($trans_id != '') {
-        $DB->StartTrans();
-        $query = 'DELETE FROM ' . PREFIX_DB . 'cotisations WHERE trans_id=' .
-            $trans_id;
-        if ( db_execute($DB, $query, $error_detected) ) {
-            $hist->add(_T("Transactions deleted"), '', $query);
-        }
-        $query = 'DELETE FROM ' . PREFIX_DB . 'transactions WHERE trans_id=' .
-            $trans_id;
-        if ( db_execute($DB, $query, $error_detected) ) {
-            $hist->add(_T("Transaction deleted"), '', $query);
-        }
-        $DB->CompleteTrans();
+        $trans->removeTransactions($trans_id);
     }
 }
 
-$trans_date_format = $DB->SQLDate('d/m/Y', PREFIX_DB . 'transactions.trans_date');
-$trans_table = PREFIX_DB . 'transactions';
-$member_table = PREFIX_DB . 'adherents';
-$query = "SELECT $trans_date_format AS trans_date,
-                    $trans_table.trans_id,
-                    $trans_table.trans_desc,
-                    $trans_table.id_adh,
-                    $trans_table.trans_amount,
-                    $member_table.nom_adh,
-                    $member_table.prenom_adh
-                    FROM $trans_table,$member_table
-                    WHERE $trans_table.id_adh=$member_table.id_adh";
-$nquery = "SELECT COUNT(trans_id) FROM $trans_table";
+$_SESSION['galette']['transactions'] = serialize($trans);
+$list_trans = $trans->getTransactionsList(true);
 
-// Filter
-if ( is_numeric($id_adh) ) {
-    $query .= ' AND ' . $trans_table . '.id_adh=' . $id_adh;
-    $nquery .= ' WHERE id_adh=' . $id_adh;
+//assign pagination variables to the template and add pagination links
+$trans->setSmartyPagination($tpl);
+
+$tpl->assign('require_dialog', true);
+$tpl->assign('transactions', $list_trans);
+$tpl->assign('nb_transactions', $trans->getCount());
+if ( $trans->filtre_cotis_adh != null ) {
+    $member = new Adherent();
+    $member->load($trans->filtre_cotis_adh);
+    $tpl->assign('member', $member);
 }
-
-// phase de tri
-if ( isset($_SESSION['sort_direction']) &&  $_SESSION['sort_direction'] == '0' ) {
-    $sort_direction_txt = 'ASC';
-} else {
-    $sort_direction_txt = 'DESC';
-}
-
-$query .= ' ORDER BY ';
-
-// tri par adherent
-if ( isset($_SESSION['sort_by']) && $_SESSION['sort_by'] == '1' ) {
-    $query .= 'nom_adh ' . $sort_direction_txt . ', prenom_adh ' .
-        $sort_direction_txt . ',';
-} else if ( isset($_SESSION['sort_by']) && $_SESSION['sort_by'] == '2' ) {
-    $query .= 'trans_amount ' . $sort_direction_txt . ',';
-}
-$query .= ' ' . PREFIX_DB . 'transactions.trans_date ' . $sort_direction_txt;
-
-if ( $numrows == 0 ) {
-    $result = $DB->Execute($query);
-} else {
-    $result = $DB->SelectLimit($query, $numrows, ($page-1)*$numrows);
-}
-
-$nb_transactions = $DB->GetOne($nquery);
-$transactions = array();
-
-if ( $numrows == 0 ) {
-    $nbpages = 1;
-} else if ( $nb_transactions%$numrows == 0 ) {
-    $nbpages = intval($nb_transactions/$numrows);
-} else {
-    $nbpages = intval($nb_transactions/$numrows)+1;
-}
-if ( $nbpages == 0 ) {
-    $nbpages = 1;
-}
-
-if ( $result ) {
-    while ( !$result->EOF ) {
-        $data = array(
-            'trans_id'      => $result->fields['trans_id'],
-            'trans_date'    => $result->fields['trans_date'],
-            'trans_desc'    => $result->fields['trans_desc'],
-            'trans_amount'  => $result->fields['trans_amount'],
-            'id_adh'        => $result->fields['id_adh'],
-            'lastname'      => strtoupper($result->fields['nom_adh']),
-            'firstname'     => $result->fields['prenom_adh']
-        );
-        $transactions[] = $data;
-        $result->MoveNext();
-    }
-    $result->Close();
-} else {
-    print $DB->ErrorMsg() . ' ' . $query;
-}
-
-$tpl->assign('transactions', $transactions);
-$tpl->assign('nb_transactions', $nb_transactions);
-$tpl->assign('nb_pages', $nbpages);
-$tpl->assign('page', $page);
-$tpl->assign(
-    'nbshow_options',
-    array(
-        10  => '10',
-        20  => '20',
-        50  => '50',
-        100 => '100',
-        0   => _T("All")
-    )
-);
 $tpl->assign('numrows', $numrows);
 $content = $tpl->fetch('gestion_transactions.tpl');
 $tpl->assign('content', $content);

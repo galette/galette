@@ -130,13 +130,14 @@ class Preferences
     );
 
     /**
-    * Default constructor
-    *
-    * @return void
-    */
+     * Default constructor
+     *
+     * @param boolean $load Automatically load preferences on load
+     *
+     * @return void
+     */
     public function __construct($load = true)
     {
-        $error = null;
         if ( $load ) {
             $this->load();
             $this->_checkUpdate();
@@ -151,7 +152,7 @@ class Preferences
     */
     private function _checkUpdate()
     {
-        global $log, $mdb;
+        global $zdb, $log;
         $proceed = false;
         $params = array();
         foreach ( self::$_defaults as $k=>$v ) {
@@ -169,29 +170,28 @@ class Preferences
             }
         }
         if ( $proceed !== false ) {
-            //store newly created values
-            $stmt = $mdb->prepare(
-                'INSERT INTO ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) .
-                ' (' . $mdb->quoteIdentifier('nom_pref') . ', ' .
-                $mdb->quoteIdentifier('val_pref') . ') VALUES(:nom_pref, :val_pref)',
-                array('text', 'text'),
-                MDB2_PREPARE_MANIP
-            );
+            $sql = 'INSERT INTO ' . PREFIX_DB . self::TABLE .
+                ' (nom_pref, val_pref VALUES(:nom_pref, :val_pref)';
 
-            $mdb->getDb()->loadModule('Extended', null, false);
-            $mdb->getDb()->extended->executeMultiple($stmt, $params);
+            try {
+                $stmt = $zdb->db->prepare($sql);
 
-            if (MDB2::isError($stmt)) {
-                $this->_error = $stmt;
+                foreach ( $params as $p ) {
+                    $stmt->execute(
+                        array(
+                            ':nom_pref' => $p['nom_pref'],
+                            ':val_pref' => $p['val_pref']
+                        )
+                    );
+                }
+            } catch (Exception $e) {
                 $log->log(
-                    'Unable to add missing preferences.' . $stmt->getMessage() .
-                    '(' . $stmt->getDebugInfo() . ')',
+                    'Unable to add missing preferences.' . $e->getMessage(),
                     PEAR_LOG_WARNING
                 );
                 return false;
             }
 
-            $stmt->free();
             $log->log(
                 'Missing preferences were successfully stored into database.',
                 PEAR_LOG_INFO
@@ -206,30 +206,24 @@ class Preferences
     */
     public function load()
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
         $this->_prefs = array();
 
-        $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE;
-
-        $result = $mdb->query($requete);
-        if ( MDB2::isError($result) ) {
-            return -1;
-        }
-
-        if ( $result->numRows() == 0 ) {
+        try {
+            $result = $zdb->selectAll(PREFIX_DB . self::TABLE);
+            $array = array();
+            foreach ( $result as $pref ) {
+                $this->_prefs[$pref->nom_pref] = $pref->val_pref;
+            }
+            return true;
+        } catch (Exception $e) {
             $log->log(
                 'Preferences cannot be loaded. Galette should not work without ' .
                 'preferences. Exiting.',
                 PEAR_LOG_EMERG
             );
-            return(-10);
-        } else {
-            $r = $result->fetchAll();
-            $array = array();
-            foreach ( $r as $pref ) {
-                $this->_prefs[$pref->nom_pref] = $pref->val_pref;
-            }
+            return false;
         }
     }
 
@@ -240,97 +234,46 @@ class Preferences
     * @param string $adm_login admin login entered at install time
     * @param string $adm_pass  admin password entered at install time
     *
-    * @return boolean
+    * @return boolean|Exception
     */
     public function installInit($lang, $adm_login, $adm_pass)
     {
-        global $mdb, $log;
+        global $zdb, $log;
 
-        //first, we drop all values
-        $query = 'DELETE FROM '  . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE);
-        $result = $mdb->execute($query);
+        try {
+            //first, we drop all values
+            $zdb->db->delete(PREFIX_DB . self::TABLE);
 
-        if (MDB2::isError($result)) {
-            /** FIXME: we surely want to return sthing and print_r for debug. */
-            print_r($result);
-        }
+            //we then replace default values with the ones user has selected
+            $values = self::$_defaults;
+            $values['pref_lang'] = $lang;
+            $values['pref_admin_login'] = $adm_login;
+            $values['pref_admin_pass'] = $adm_pass;
+            $values['pref_card_year'] = date('Y');
 
-        //we then replace default values with the ones user has selected
-        $values = self::$_defaults;
-        $values['pref_lang'] = $lang;
-        $values['pref_admin_login'] = $adm_login;
-        $values['pref_admin_pass'] = $adm_pass;
-        $values['pref_card_year'] = date('Y');
-
-        $stmt = $mdb->prepare(
-            'INSERT INTO ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) .
-            ' (' . $mdb->quoteIdentifier('nom_pref') . ', ' .
-            $mdb->quoteIdentifier('val_pref') . ') VALUES(:nom_pref, :val_pref)',
-            array('text', 'text'),
-            MDB2_PREPARE_MANIP
-        );
-
-        $params = array();
-        foreach ( $values as $k=>$v ) {
-            $params[] = array(
-                'nom_pref'    =>    $k,
-                'val_pref'    =>    $v
+            $stmt = $zdb->db->prepare(
+                'INSERT INTO ' . PREFIX_DB . self::TABLE .
+                ' (nom_pref, val_pref) VALUES(:nom_pref, :val_pref)'
             );
-        }
 
-        $mdb->getDb()->loadModule('Extended', null, false);
-        $mdb->getDb()->extended->executeMultiple($stmt, $params);
+            foreach ( $values as $k=>$v ) {
+                $stmt->bindParam(':nom_pref', $k);
+                $stmt->bindParam(':val_pref', $v);
+                $stmt->execute();
+            }
 
-        if (MDB2::isError($stmt)) {
-            $this->_error = $stmt;
             $log->log(
-                'Unable to initialize default preferences.' . $stmt->getMessage() .
-                '(' . $stmt->getDebugInfo() . ')',
+                'Default preferences were successfully stored into database.',
+                PEAR_LOG_INFO
+            );
+            return true;
+        } catch (Exception $e) {
+            $log->log(
+                'Unable to initialize default preferences.' . $e->getMessage(),
                 PEAR_LOG_WARNING
             );
-            return false;
+            return $e;
         }
-
-        $stmt->free();
-        $log->log(
-            'Default preferences were successfully stored into database.',
-            PEAR_LOG_INFO
-        );
-        return true;
-    }
-
-    /**
-    * Has an error occured ?
-    *
-    * @return boolean
-    */
-    public function inError()
-    {
-        if ( MDB2::isError($this->_error) ) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-    * Get main MDB2 error message
-    *
-    * @return string MDB2::Error's message
-    */
-    public function getErrorMessage()
-    {
-        return $this->_error->getMessage();
-    }
-
-    /**
-    * Get additionnal informations about the error
-    *
-    * @return string MDB2::Error's debug infos
-    */
-    public function getErrorDetails()
-    {
-        return $this->_error->getDebugInfo();
     }
 
     /**
@@ -350,43 +293,39 @@ class Preferences
     */
     public function store()
     {
-        global $mdb, $log;
-        $stmt = $mdb->prepare(
-            'UPDATE ' . $mdb->quoteIdentifier(PREFIX_DB . self::TABLE) .
-            ' SET ' . $mdb->quoteIdentifier('val_pref') . '=:value WHERE ' .
-            $mdb->quoteIdentifier('nom_pref') . '=:name',
-            array('text', 'text'),
-            MDB2_PREPARE_MANIP
-        );
+        global $zdb, $log;
 
-        $params = array();
-        foreach ( self::$_defaults as $k=>$v ) {
-            $params[] = array(
-                'value'    =>    $this->_prefs[$k],
-                'name'    =>    $k
+        try {
+            $stmt = $zdb->db->prepare(
+                'UPDATE ' . PREFIX_DB . self::TABLE . ' SET ' .
+                $zdb->db->quoteIdentifier('val_pref') . ' =  :value' .
+                ' WHERE ' . $zdb->db->quoteIdentifier('nom_pref') . ' = :name'
             );
-        }
 
-        $mdb->getDb()->loadModule('Extended', null, false);
-        $mdb->getDb()->extended->executeMultiple($stmt, $params);
+            foreach ( self::$_defaults as $k=>$v ) {
+                $log->log('Storing ' . $k, PEAR_LOG_DEBUG);
+                $stmt->bindValue(':value', $this->_prefs[$k], PDO::PARAM_STR);
+                $stmt->bindValue(':name', $k, PDO::PARAM_STR);
 
-        if (MDB2::isError($stmt)) {
-            $this->_error = $stmt;
+                $stmt->execute();
+            }
             $log->log(
-                'Unable to store preferences.' . $stmt->getMessage() .
-                '(' . $stmt->getDebugInfo() . ')',
+                'Preferences were successfully stored into database.',
+                PEAR_LOG_INFO
+            );
+            return true;
+        } catch (Exception $e) {
+            /** TODO */
+            $log->log(
+                'Unable to store preferences | ' . $e->getMessage(),
                 PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $countSelect->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
             );
             return false;
         }
-
-        $stmt->free();
-        $log->log(
-            'Preferences were successfully stored into database.',
-            PEAR_LOG_INFO
-        );
-        return true;
-
     }
 
     /**

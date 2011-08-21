@@ -239,6 +239,7 @@ CREATE UNIQUE INDEX galette_models_idx ON galette_models (mod_id);
 DROP TABLE galette_fields_categories;
 CREATE TABLE galette_fields_categories (
   id_field_category integer  DEFAULT nextval('galette_fields_categories_id_seq'::text) NOT NULL,
+  table_name character varying(30) NOT NULL,
   category character varying(50) NOT NULL,
   position integer NOT NULL,
   PRIMARY KEY (id_field_category)

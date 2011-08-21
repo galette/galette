@@ -192,37 +192,36 @@ class Picture
     */
     private function _checkFileInDB()
     {
-        global $mdb;
-        $sql = $this->getCheckFileQuery();
+        global $zdb;
 
-        $result = $mdb->query($sql);
-        if ( MDB2::isError($result) ) {
+        try {
+            $select = $this->getCheckFileQuery();
+            $pic = $zdb->db->fetchOne($select);
+            //what's $pic if no result?
+            if ( $pic !== false ) {
+                // we must regenerate the picture file
+                $file_wo_ext = $this->store_path . $this->id;
+                $f = fopen($file_wo_ext . '.' . $pic->format, 'wb');
+                fwrite($f, $pic->picture);
+                fclose($f);
+                $this->format = $pic->format;
+                switch($this->format) {
+                case 'jpg':
+                    $this->mime = 'image/jpeg';
+                    break;
+                case 'png':
+                    $this->mime = 'image/png';
+                    break;
+                case 'gif':
+                    $this->mime = 'image/gif';
+                    break;
+                }
+                $this->file_path = $file_wo_ext . '.' . $this->format;
+                return true;
+            }
+        } catch (Exception $e) {
             return false;
         }
-
-        if ( $result->numRows() > 0 ) {
-            // we must regenerate the picture file
-            $pic = $result->fetchRow();
-            $file_wo_ext = $this->store_path . $this->id;
-            $f = fopen($file_wo_ext . '.' . $pic->format, 'wb');
-            fwrite($f, $pic->picture);
-            fclose($f);
-            $this->format = $pic->format;
-            switch($this->format) {
-            case 'jpg':
-                $this->mime = 'image/jpeg';
-                break;
-            case 'png':
-                $this->mime = 'image/png';
-                break;
-            case 'gif':
-                $this->mime = 'image/gif';
-                break;
-            }
-            $this->file_path = $file_wo_ext . '.' . $this->format;
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -232,10 +231,19 @@ class Picture
     */
     protected function getCheckFileQuery()
     {
+        global $zdb;
         $class = get_class($this);
-        //echo static::PK . '|' . $class::PK . "\n";
-        return 'SELECT picture, format FROM ' . PREFIX_DB . $this->tbl_prefix .
-            $class::TABLE . ' WHERE ' . $class::PK . '=\'' . $this->id . '\'';
+
+        $select = new Zend_Db_Select($zdb->db);
+        $select->from(
+            array(PREFIX_DB . $this->tbl_prefix . $class::TABLE),
+            array(
+                'picture',
+                'format'
+            )
+        );
+        $select->where($class::PK . ' = ?', $this->id);
+        return $select;
     }
 
     /**
@@ -297,24 +305,41 @@ class Picture
     */
     public function delete()
     {
-        global $mdb;
+        global $zdb, $log;
         $class = get_class($this);
-        $sql = 'DELETE FROM ' . PREFIX_DB . $this->tbl_prefix . $class::TABLE .
-            ' WHERE ' . $class::PK . '=\'' . $this->id . '\'';
-        $result = $mdb->query($sql);
-        if ( MDB2::isError($result) ) {
-            return false;
-        } else {
-            $file_wo_ext = $this->store_path . $this->id;
-            if ( file_exists($file_wo_ext . '.jpg') ) {
-                return unlink($file_wo_ext . '.jpg');
-            } elseif ( file_exists($file_wo_ext . '.png') ) {
-                return unlink($file_wo_ext . '.png');
-            } elseif ( file_exists($file_wo_ext . '.gif') ) {
-                return unlink($file_wo_ext . '.gif');
+
+        try {
+            $del = $zdb->db->delete(
+                PREFIX_DB . $class::TABLE,
+                $class::PK . ' = ' . $this->id
+            );
+            if ( $del > 0 ) {
+                $file_wo_ext = $this->store_path . $this->id;
+
+                // take back default picture
+                $this->getDefaultPicture();
+                // fix sizes
+                $this->_setSizes();
+
+                if ( file_exists($file_wo_ext . '.jpg') ) {
+                    return unlink($file_wo_ext . '.jpg');
+                } elseif ( file_exists($file_wo_ext . '.png') ) {
+                    return unlink($file_wo_ext . '.png');
+                } elseif ( file_exists($file_wo_ext . '.gif') ) {
+                    return unlink($file_wo_ext . '.gif');
+                }
+            } else {
+                return false;
             }
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log(
+                'An error occured attempting to delete picture ' . $this->id .
+                'from database',
+                PEAR_LOG_ERR
+            );
+            return false;
         }
-        return true;
     }
 
     /**
@@ -327,11 +352,10 @@ class Picture
     public function store($file)
     {
         /** TODO:
-            - make upload dir configurable
             - fix max size (by preferences ?)
             - make possible to store images in database, filesystem or both
         */
-        global $mdb, $log;
+        global $zdb, $log;
 
         $class = get_class($this);
 
@@ -411,33 +435,28 @@ class Picture
         fclose($f);
 
         $class = get_class($this);
-        $stmt = $mdb->prepare(
-            'INSERT INTO ' . PREFIX_DB . $this->tbl_prefix . $class::TABLE .
-            ' (' . $class::PK .
-            ', picture, format) VALUES (:id, :picture, :extension)',
-            array('integer', 'blob', 'text'),
-            MDB2_PREPARE_MANIP,
-            array('picture')
-        );
 
-        $stmt->execute(
-            array(
-                'id'        => $this->id,
-                'picture'   => $picture,
-                'extension' => $extension
-            )
-        );
+        try {
+            $stmt = $zdb->db->prepare(
+                'INSERT INTO ' . PREFIX_DB .
+                $this->tbl_prefix . $class::TABLE . ' (' . $class::PK .
+                ', picture, format) VALUES (:id, :picture, :format)'
+            );
 
-        if ( MDB2::isError($stmt) ) {
+            $stmt->bindParam('id', $this->id);
+            $stmt->bindParam('picture', $picture, PDO::PARAM_LOB);
+            $stmt->bindParam('format', $extension);
+            $stmt->execute();
+        } catch (Exception $e) {
+            /** FIXME */
             $log->log(
-                '[' . $class . '] An error has occured inserting ' .
-                'picture in database | ' . $stmt->getMessage() .
-                '(' . $stmt->getDebugInfo() . ')',
+                'An error occured storing picture in database: ' .
+                $e->getMessage(),
                 PEAR_LOG_ERR
             );
             return self::SQL_ERROR;
         }
-        $stmt->free();
+
         return true;
     }
 
@@ -470,7 +489,7 @@ class Picture
                     $log->log(
                         '[' . $class . '] GD has no JPEG Support - ' .
                         'pictures could not be resized!',
-                        PEAR_LOG_ERROR
+                        PEAR_LOG_ERR
                     );
                     return false;
                 }
@@ -480,7 +499,7 @@ class Picture
                     $log->log(
                         '[' . $class . '] GD has no PNG Support - ' .
                         'pictures could not be resized!',
-                        PEAR_LOG_ERROR
+                        PEAR_LOG_ERR
                     );
                     return false;
                 }
@@ -490,7 +509,7 @@ class Picture
                     $log->log(
                         '[' . $class . '] GD has no GIF Support - ' .
                         'pictures could not be resized!',
-                        PEAR_LOG_ERROR
+                        PEAR_LOG_ERR
                     );
                     return false;
                 }
@@ -545,7 +564,7 @@ class Picture
             $log->log(
                 '[' . $class . '] GD is not present - ' .
                 'pictures could not be resized!',
-                PEAR_LOG_ERROR
+                PEAR_LOG_ERR
             );
         }
     }
@@ -665,5 +684,47 @@ class Picture
         return $this->mime;
     }
 
+    /**
+     * Return textual erro message
+     *
+     * @param int $code The error code
+     *
+     * @return string Localized message
+     */
+    public static function getErrorMessage($code)
+    {
+        $error = _T("An error occued.");
+        switch( $code ) {
+        case self::INVALID_FILE:
+            $patterns = array('|%s|', '|%t|');
+            $replacements = array(
+                $this->getAllowedExts(),
+                htmlentities($this->getBadChars())
+            );
+            $error = preg_replace(
+                $patterns,
+                $replacements,
+                _T("- Filename or extension is incorrect. Only %s files are allowed. File name should not contains any of: %t")
+            );
+            break;
+        case self::FILE_TOO_BIG:
+            $error = preg_replace(
+                '|%d|',
+                self::MAX_FILE_SIZE,
+                _T("File is too big. Maximum allowed size is %d")
+            );
+            break;
+        case self::MIME_NOT_ALLOWED:
+            /** FIXME: should be more descriptive */
+            $error = _T("Mime-Type not allowed");
+            break;
+        case self::SQL_ERROR:
+        case self::SQL_BLOB_ERROR:
+            $error = _T("An SQL error has occured.");
+            break;
+
+        }
+        return $error;
+    }
 }
 ?>

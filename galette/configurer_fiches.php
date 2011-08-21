@@ -48,7 +48,8 @@ if ( !$login->isAdmin() ) {
     die();
 }
 
-require WEB_ROOT . 'includes/dynamic_fields.inc.php';
+require_once WEB_ROOT . 'classes/dynamic_fields.class.php';
+require_once WEB_ROOT . 'includes/dynamic_fields.inc.php';
 
 $error_detected = array();
 
@@ -67,10 +68,8 @@ if ( $form_name == '' ) {
 } else {
     $form_title = $all_forms[$form_name];
 
-    $quoted_form_name = $DB->qstr($form_name, get_magic_quotes_gpc());
-
     if ( isset($_POST['valid']) ) {
-        if ($_POST['field_type'] != $field_type_separator
+        if ($_POST['field_type'] != DynamicFields::SEPARATOR
             && (!isset($_POST['field_name']) || $_POST['field_name'] == '')
         ) {
             $error_detected[] = _T("- The name field cannot be void.");
@@ -80,124 +79,176 @@ if ( $form_name == '' ) {
             $field_type = $_POST['field_type'];
             $field_required = $_POST['field_required'];
             $field_pos = $_POST['field_pos'];
-            $query = 'SELECT COUNT(*) + 1 AS idx FROM ' . $field_types_table .
-                ' WHERE field_form=' . $quoted_form_name;
-            $idx = db_get_one($DB, $query, $error_detected);
-            if ($idx != false) {
-                $DB->StartTrans();
-                $quoted_field_name = $DB->qstr(
-                    $field_name,
-                    get_magic_quotes_gpc()
-                );
-                $query = 'INSERT INTO '. $field_types_table . ' (field_index, ' .
-                    'field_form, field_name, field_perm, field_type, ' .
-                    'field_required, field_pos) VALUES (' . $idx. ', ' .
-                    $quoted_form_name . ', ' . $quoted_field_name . ', ' .
-                    $field_perm . ', ' . $field_type . ', ' . $field_required .
-                    ', ' . $field_pos . ')';
-                db_execute($DB, $query, $error_detected);
-                if ($field_type != $field_type_separator
-                    && count($error_detected) == 0
-                ) {
-                    $field_id = get_last_auto_increment(
-                        $DB,
-                        $field_types_table,
-                        'field_id',
-                        $error_detected
+
+            try {
+                $select = new Zend_Db_Select($zdb->db);
+                $select->from(
+                    PREFIX_DB . DynamicFields::TYPES_TABLE,
+                    'COUNT(*) + 1 AS idx'
+                )->where('field_form = ?', $form_name);
+                $str = $select->__toString();
+                $idx = $select->query()->fetchColumn();
+            } catch (Exception $e) {
+                /** FIXME */
+                throw $e;
+            }
+
+            if ($idx !== false) {
+                try {
+                    $values = array(
+                        'field_index'    => $idx,
+                        'field_form'     => $form_name,
+                        'field_name'     => $field_name,
+                        'field_perm'     => $field_perm,
+                        'field_type'     => $field_type,
+                        'field_required' => $field_required,
+                        'field_pos'      => $field_pos
                     );
-                    header(
-                        'location: editer_champ.php?form=' . $form_name .
-                        '&id=' . $field_id
+                    $zdb->db->insert(
+                        PREFIX_DB . DynamicFields::TYPES_TABLE,
+                        $values
+                    );
+
+                    if ($field_type != DynamicFields::SEPARATOR
+                        && count($error_detected) == 0
+                    ) {
+                        $field_id = $zdb->db->lastInsertId();
+                        header(
+                            'location: editer_champ.php?form=' . $form_name .
+                            '&id=' . $field_id
+                        );
+                    }
+                    if ( $field_name != '' ) {
+                        addDynamicTranslation($field_name, $error_detected);
+                    }
+                } catch (Exception $e) {
+                    /** FIXME */
+                    $log->log(
+                        'An error occured adding new dynamic field. | ' .
+                        $e->getMessage(),
+                        PEAR_LOG_ERR
                     );
                 }
-                if ( $field_name != '' ) {
-                    addDynamicTranslation($DB, $field_name, $error_detected);
-                }
-                $DB->CompleteTrans();
             }
         }
     } else {
-        $action = "";
-        $field_id = "";
-        foreach ( array("del", "up", "down") as $varname ) {
+        $action = '';
+        $field_id = '';
+        foreach ( array('del', 'up', 'down') as $varname ) {
             if ( isset($_GET[$varname]) && is_numeric($_GET[$varname]) ) {
                 $action = $varname;
                 $field_id = (integer)$_GET[$varname];
                 break;
             }
         }
-        if ( $action != "" ) {
-            $DB->StartTrans();
-            $query = 'SELECT field_type, field_index FROM ' .
-                $field_types_table . ' WHERE field_id='. $field_id .
-                ' AND field_form=' . $quoted_form_name;
-            $res = db_execute($DB, $query, $error_detected);
-            if ( $res != false && !$res->EOF ) {
-                $old_rank = $res->fields['field_index'];
-                $query_list = array();
-                if ( $action == 'del' ) {
-                    $query_list[] = 'UPDATE ' . $field_types_table .
-                        ' SET field_index=field_index-1 WHERE field_index > ' .
-                        $old_rank . ' AND field_form=' . $quoted_form_name;
-                    $query_list[] = 'DELETE FROM ' . $fields_table .
-                        ' WHERE field_id=' . $field_id . ' AND field_form=' .
-                        $quoted_form_name;
-                    $query_list[] = 'DELETE FROM ' . $field_types_table .
-                        ' WHERE field_id=' . $field_id . ' AND field_form=' .
-                        $quoted_form_name;
-                    $ftype = $res->fields['field_type'];
-                    if ($field_properties[$ftype]['fixed_values']) {
-                        $contents_table = fixed_values_table_name($field_id);
-                        $query_list[] = "DROP TABLE $contents_table";
+        if ( $action !== '' ) {
+            try {
+                $zdb->db->beginTransaction();
+                $select = new Zend_Db_Select($zdb->db);
+                $select->from(
+                    PREFIX_DB . DynamicFields::TYPES_TABLE,
+                    array('field_type', 'field_index', 'field_name')
+                )->where(DynamicFields::TYPES_PK . ' = ?', $field_id)
+                    ->where('field_form = ?', $form_name);
+                $res = $select->query()->fetch();
+                if ( $res !== false ) {
+                    $old_rank = $res->field_index;
+                    $query_list = array();
+
+                    if ( $action == 'del' ) {
+                        $up = $zdb->db->update(
+                            PREFIX_DB . DynamicFields::TYPES_TABLE,
+                            array(
+                                'field_index' => new Zend_Db_Expr('field_index-1')
+                            ),
+                            array(
+                                'field_index > ?' => $old_rank,
+                                'field_form = ?'  => $form_name
+                            )
+                        );
+
+                        $del1 = $zdb->db->delete(
+                            PREFIX_DB . DynamicFields::TABLE,
+                            array(
+                                'field_id = ?'   => $field_id,
+                                'field_form = ?' => $form_name
+                            )
+                        );
+
+                        $del2 = $zdb->db->delete(
+                            PREFIX_DB . DynamicFields::TYPES_TABLE,
+                            array(
+                                'field_id = ?'   => $field_id,
+                                'field_form = ?' => $form_name
+                            )
+                        );
+
+                        $ftype = $res->field_type;
+                        if ($field_properties[$ftype]['fixed_values']) {
+                            $contents_table = fixed_values_table_name($field_id);
+                            $zdb->db->getConnection()->exec('DROP TABLE ' . $contents_table);
+                        }
+                        deleteDynamicTranslation($res->field_name, $error_detected);
+                    } else {
+                        $direction = $action == "up" ? -1: 1;
+                        $new_rank = $old_rank + $direction;
+                        $zdb->db->update(
+                            PREFIX_DB . DynamicFields::TYPES_TABLE,
+                            array(
+                                'field_index' => $old_rank
+                            ),
+                            array(
+                                'field_index = ?' => $new_rank,
+                                'field_form = ?'  => $form_name
+                            )
+                        );
+
+                        $zdb->db->update(
+                            PREFIX_DB . DynamicFields::TYPES_TABLE,
+                            array(
+                                'field_index' => $new_rank
+                            ),
+                            array(
+                                'field_id = ?'   => $field_id,
+                                'field_form = ?' => $form_name
+                            )
+                        );
                     }
-                    $query = 'SELECT field_name FROM ' . $field_types_table .
-                        ' WHERE field_id=' . $field_id;
-                    $field_name = db_get_one($DB, $query, $error_detected);
-                    deleteDynamicTranslation($DB, $field_name, $error_detected);
-                } elseif ($action != "") {
-                    $direction = $action == "up" ? -1: 1;
-                    $new_rank = $old_rank + $direction;
-                    $query_list[] = "UPDATE $field_types_table
-                                SET field_index=$old_rank
-                                WHERE field_index=$new_rank AND
-                                    field_form=$quoted_form_name";
-                    $query_list[] = "UPDATE $field_types_table
-                                SET field_index=$new_rank
-                                WHERE field_id=$field_id AND
-                                    field_form=$quoted_form_name";
                 }
-                foreach ( $query_list as $query ) {
-                    db_execute($DB, $query, $error_detected);
-                }
+                $zdb->db->commit();
+            } catch(Exception $e) {
+                /** FIXME */
+                //this one does not seems to work :'(
+                $zdb->db->rollBack();
+                $log->log(
+                    'Unable to change field ' . $field_id . ' rank | ' .
+                    $e->getMessage(),
+                    PEAR_LOG_ERR
+                );
             }
-            $DB->CompleteTrans();
         }
     }
 
-    $query = "SELECT *
-            FROM $field_types_table
-            WHERE field_form=$quoted_form_name
-            ORDER BY field_index";
-    $result = db_execute($DB, $query, $error_detected);
-    if ($result != false) {
+    $select = new Zend_Db_Select($zdb->db);
+    $select->from(PREFIX_DB . DynamicFields::TYPES_TABLE)
+        ->where('field_form = ?', $form_name)
+        ->order('field_index');
+
+    $results = $select->query()->fetchAll();
+
+    if ( $results ) {
         $count = 0;
         $dyn_fields = array();
-        while ( !$result->EOF ) {
-            $dyn_fields[$count]['id'] = $result->fields['field_id'];
-            $dyn_fields[$count]['index'] = $result->fields['field_index'];
-            $dyn_fields[$count]['name'] = $result->fields['field_name'];
-            $dyn_fields[$count]['perm']
-                = $perm_names[$result->fields['field_perm']];
-            $dyn_fields[$count]['type']
-                = $field_type_names[$result->fields['field_type']];
-            $dyn_fields[$count]['required']
-                = ($result->fields['field_required'] == '1');
-            $dyn_fields[$count]['pos']
-                = $field_positions[$result->fields['field_pos']];
-            $result->MoveNext();
+        foreach ( $results as $r ) {
+            $dyn_fields[$count]['id'] = $r->field_id;
+            $dyn_fields[$count]['index'] = $r->field_index;
+            $dyn_fields[$count]['name'] = $r->field_name;
+            $dyn_fields[$count]['perm'] = $perm_names[$r->field_perm];
+            $dyn_fields[$count]['type'] = $field_type_names[$r->field_type];
+            $dyn_fields[$count]['required'] = ($r->field_required == '1');
+            $dyn_fields[$count]['pos'] = $field_positions[$r->field_pos];
             ++$count;
         }
-        $result->Close();
     } // $result != false
 
     $tpl->assign('perm_names', $perm_names);

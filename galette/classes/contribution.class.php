@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010 The Galette Team
+ * Copyright © 2010-2011 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010 The Galette Team
+ * @copyright 2010-2011 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,6 +38,7 @@
 /** @ignore */
 require_once 'adherent.class.php';
 require_once 'contributions_types.class.php';
+require_once 'transaction.class.php';
 
 /*require_once 'politeness.class.php';
 require_once 'status.class.php';
@@ -70,42 +71,141 @@ class Contribution
     private $_info;
     private $_begin_date;
     private $_end_date;
-    private $_transaction = null; /** FIXME: unused for now */
+    private $_transaction = null;
     private $_is_cotis;
+    private $_extension;
 
     //fields list and their translation
-    public static $fields = array(
-        'id_cotis',
-        'id_adh',
-        'id_type_cotis',
-        'montant_cotis',
-        'info_cotis',
-        'date_enreg',
-        'date_debut_cotis',
-        'date_fin_cotis',
-        'trans_id' /** FIXME: use Transaction class PK constant */
-    );
+    private $_fields;
 
     /**
     * Default constructor
     *
-    * @param null|int|ResultSet $args Either a ResultSet row or its id for to load
-    *                                   a specific contribution, or null to just
-    *                                   instanciate object
+    * @param null|int|ResultSet $args Either a ResultSet row to load
+    *                                   a specific contribution, or an type id
+    *                                   to just instanciate object
     */
     public function __construct($args = null)
     {
-        if ( $args == null || is_int($args) ) {
+        /*
+        * Fields configuration. Each field is an array and must reflect:
+        * array(
+        *   (string)label,
+        *   (string) propname
+        * )
+        *
+        * I'd prefer a static private variable for this...
+        * But call to the _T function does not seems to be allowed there :/
+        */
+        $this->_fields = array(
+            'id_cotis'            => array(
+                'label'    => null, //not a field in the form
+                'propname' => 'id'
+            ),
+            Adherent::PK          => array(
+                'label'    => _T("Contributor:"),
+                'propname' => 'member'
+            ),
+            ContributionsTypes::PK => array(
+                'label'    => _T("Contribution type:"),
+                'propname' => 'type'
+            ),
+            'montant_cotis'       => array(
+                'label'    => _T("Amount:"),
+                'propname' => 'amount'
+            ),
+            'info_cotis'          => array(
+                'label'    => _T("Comments:"),
+                'propname' => 'info'
+            ),
+            'date_enreg'          => array(
+                'label'    => null, //not a field in the form
+                'propname' => 'date'
+            ),
+            'date_debut_cotis'    => array(
+                'label'    => _T("Date of contribution:"),
+                'cotlabel' => _T("Start date of membership:"), //if contribution is a cotisation, label differs
+                'propname' => 'begin_date'
+            ),
+            'date_fin_cotis'      => array(
+                'label'    => _T("End date of membership:"),
+                'propname' => 'end_date'
+            ),
+            Transaction::PK       => array(
+                'label'    => null, //not a field in the form
+                'propname' => 'transaction'
+            ),
+            //this one is not really a field, but is required in some cases...
+            //adding it here make simplier to check required fields
+            'duree_mois_cotis'    => array(
+                'label'    => _T("Membership extension:"),
+                'propname' => 'extension'
+            )
+        );
+        if ( is_int($args) ) {
+            $this->load($args);
+        } else if ( is_array($args) ) {
             $this->_date = date("Y-m-d");
-            $this->_member = new Adherent();
-            $this->_type = new ContributionsTypes();
+            if ( isset($args['adh']) && $args['adh'] != '' ) {
+                $this->_member = (int)$args['adh'];
+            }
+            $this->_type = new ContributionsTypes((int)$args['type']);
+            $this->_is_cotis = (bool)$this->_type->extension;
+            //calculate begin date for cotisation
             $this->_begin_date = $this->_date;
-
-            if ( is_int($args) && $args > 0 ) {
-                $this->load($args);
+            if ( $this->_is_cotis ) {
+                $curend = self::getDueDate($args['adh']);
+                if ($curend != '') {
+                    $dend = new DateTime($curend);
+                    $now = date('Y-m-d');
+                    $dnow = new DateTime($now);
+                    if ( $dend < $dnow ) {
+                        // Member didn't renew on time
+                        $this->_begin_date = $now;
+                    } else {
+                        $this->_begin_date = $curend;
+                    }
+                }
+                if ( isset($args['ext']) ) {
+                    $this->_extension = $args['ext'];
+                }
+                $this->_retrieveEndDate();
+            }
+            if ( isset($args['trans']) ) {
+                $this->_transaction = new Transaction((int)$args['trans']);
+                if ( !isset($this->_member) ) {
+                    $this->_member = (int)$this->_transaction->member;
+                }
+                $this->_amount = $this->_transaction->getMissingAmount();
             }
         } elseif ( is_object($args) ) {
             $this->_loadFromRS($args);
+        }
+    }
+
+    /**
+     * Sets end contribution date
+     *
+     * @return void
+     */
+    private function _retrieveEndDate()
+    {
+        global $preferences;
+
+        $bdate = new DateTime($this->_begin_date);
+        if ( $preferences->pref_beg_membership != '' ) {
+            //case beginning of membership
+            list($j, $m) = explode('/', $preferences->pref_beg_membership);
+            $edate = new DateTime($bdate->format('Y') . '-' . $m . '-' . $j);
+            while ( $edate <= $bdate ) {
+                $edate->modify('+1 year');
+            }
+            $this->_end_date = $edate->format('Y-m-d');
+        } else if ( $preferences->pref_membership_ext != '' ) {
+            //case membership extension
+            $dext = new DateInterval('P' . $this->_extension . 'M');
+            $edate = $bdate->add($dext);
+            $this->_end_date = $edate->format('Y-m-d');
         }
     }
 
@@ -118,26 +218,34 @@ class Contribution
     */
     public function load($id)
     {
-        global $mdb, $log;
+        global $zdb, $log, $login;
 
-        $requete = 'SELECT * FROM ' . PREFIX_DB . self::TABLE . ' WHERE ' .
-            self::PK . '=' . $id;
-
-        $result = $mdb->query($requete);
-
-        if (MDB2::isError($result)) {
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . self::TABLE)
+                ->where(self::PK . ' = ?', $id);
+            //restrict query on current member id if he's not admin
+            if ( !$login->isAdmin() ) {
+                $select->where(Adherent::PK . ' = ?', $login->id);
+            }
+            $row = $select->query()->fetch();
+            if ( $row !== false ) {
+                $this->_loadFromRS($row);
+                return true;
+            } else {
+                throw new Exception(
+                    'No contribution #' . $id . ' (user ' .$login->id . ')'
+                );
+            }
+        } catch (Exception $e) {
+            /** FIXME */
             $log->log(
-                'Cannot load contribution form id `' . $id . '` | ' .
-                $result->getMessage() . '(' . $result->getDebugInfo() . ')',
-                PEAR_LOG_WARNING
+                'An error occured attempting to load contribution #' . $id .
+                $e->getMessage(),
+                PEAR_LOG_ERR
             );
             return false;
         }
-
-        $this->_loadFromRS($result->fetchRow());
-        $result->free();
-
-        return true;
     }
 
     /**
@@ -163,13 +271,388 @@ class Contribution
         $adhpk = Adherent::PK;
         $this->_member = (int)$r->$adhpk;
 
-        $this->_type = new ContributionsTypes();
-        $this->_type->load($r->id_type_cotis);
+        $transpk = Transaction::PK;
+        if ( $r->$transpk != '' ) {
+            $this->_transaction = new Transaction((int)$r->$transpk);
+        }
+
+        $this->_type = new ContributionsTypes((int)$r->id_type_cotis);
         if ( $this->_type->extension == 1 ) {
             $this->_is_cotis = true;
         } else {
             $this->_is_cotis = false;
         }
+    }
+
+    /**
+     * Check posted values validity
+     *
+     * @param array $values   All values to check, basically the $_POST array
+     *                        after sending the form
+     * @param array $required Array of required fields
+     * @param array $disabled Array of disabled fields
+     *
+     * @return true|array
+     */
+    public function check($values, $required, $disabled)
+    {
+        global $zdb, $log;
+        $errors = array();
+
+        $fields = array_keys($this->_fields);
+        foreach ( $fields as $key ) {
+            //first of all, let's sanitize values
+            $key = strtolower($key);
+            $prop = '_' . $this->_fields[$key]['propname'];
+
+            if ( isset($values[$key]) ) {
+                $value = trim($values[$key]);
+            } else {
+                $value = '';
+            }
+
+            // if the field is enabled, check it
+            if ( !isset($disabled[$key]) ) {
+                // fill up the adherent structure
+                //$this->$prop = stripslashes($value); //not relevant here!
+
+                // now, check validity
+                if ( $value != '' ) {
+                    switch ( $key ) {
+                    // dates
+                    case 'date_enreg':
+                    case 'date_debut_cotis':
+                    case 'date_fin_cotis':
+                        /** FIXME: only ok dates dd/mm/yyyy */
+                        if ( !preg_match(
+                            '@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@',
+                            $value,
+                            $date
+                        ) ) {
+                            $errors[] = _T("- Wrong date format (dd/mm/yyyy)!");
+                        } else {
+                            if ( !checkdate($date[2], $date[1], $date[3]) ) {
+                                $errors[] = _T("- Non valid date!");
+                            } else {
+                                $this->$prop = $date[3] . '-' . $date[2] . '-' .
+                                    $date[1];
+                            }
+                        }
+                        break;
+                    case Adherent::PK:
+                        $this->_member = $value;
+                        break;
+                    case ContributionsTypes::PK:
+                        $this->_type = new ContributionsTypes((int)$value);
+                        break;
+                    case 'montant_cotis':
+                        $this->_amount = $value;
+                        $us_value = strtr($value, ',', '.');
+                        if ( !is_numeric($value) ) {
+                            $errors[] = _T("- The amount must be an integer!");
+                        }
+                        break;
+                    case 'info_cotis':
+                        $this->_info = $value;
+                        break;
+                    case Transaction::PK:
+                        $this->_transaction = new Transaction((int)$value);
+                        break;
+                    case 'duree_mois_cotis':
+                        if ( !is_numeric($value) || $value<=0 ) {
+                            $errors[] = _T("- The duration must be a positive integer!");
+                        }
+                        $this->$prop = $value;
+                        $this->_retrieveEndDate();
+                        break;
+                    }
+                }
+            }
+        }
+
+        // missing required fields?
+        while ( list($key, $val) = each($required) ) {
+            if ( $val === 1) {
+                $prop = '_' . $this->_fields[$key]['propname'];
+                if ( !isset($disabled[$key])
+                    && (!isset($this->$prop)
+                        || (!is_object($this->$prop) && trim($this->$prop) == '')
+                        || (is_object($this->$prop) && trim($this->$prop->id) == '')
+                    )
+                ) {
+                    $errors[] = _T("- Mandatory field empty: ") .
+                    ' <a href="#' . $key . '">' . $this->getFieldName($key) .'</a>';
+                }
+            }
+        }
+
+        if ( $this->_transaction != null && $this->_amount != null) {
+            $missing = $this->_transaction->getMissingAmount();
+            if ( $missing < $this->_amount ) {
+                $errors[] = _T("- Sum of all contributions exceed corresponding transaction amount.");
+            }
+        }
+
+        if ( count($errors) > 0 ) {
+            $log->log(
+                'Some errors has been throwed attempting to edit/store a contribution' .
+                print_r($errors, true),
+                PEAR_LOG_DEBUG
+            );
+            return $errors;
+        } else {
+            $log->log(
+                'Contribution checked successfully.',
+                PEAR_LOG_DEBUG
+            );
+            return true;
+        }
+    }
+
+    /**
+     * Check that membership fees does not overlap
+     *
+     * @return boolean|string True if all is ok, false if error,
+     * error message if overlap
+     */
+    public function checkOverlap()
+    {
+        global $zdb, $log;
+
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(
+                array('c' => PREFIX_DB . self::TABLE),
+                array('date_debut_cotis', 'date_fin_cotis')
+            )->join(
+                array('ct' => PREFIX_DB . ContributionsTypes::TABLE),
+                'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
+                array()
+            )->where(Adherent::PK . ' = ?', $this->_member)
+                ->where('cotis_extension = ?', 1)
+                ->where(
+                    '((date_debut_cotis >= ' . $this->_begin_date .
+                    ' AND date_debut_cotis < ' . $this->_end_date .
+                    ') OR (date_fin_cotis > ' . $this->_begin_date .
+                    ' AND date_fin_cotis <= ' . $this->_end_date . '))'
+                );
+
+            if ( $this->id != '' ) {
+                $select->where(self::PK . ' != ?', $this->id);
+            }
+
+            $str = $select->__toString();
+            $result = $select->query()->fetch();
+            if ( $result !== false ) {
+                $d = new DateTime($result->date_debut_cotis);
+
+                return _T("- Membership period overlaps period starting at ") .
+                    $d->format(_T("Y-m-d"));
+            }
+            return true;
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log(
+                'An error occured checking overlaping fee',
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
+    }
+
+    /**
+     * Store the contribution
+     *
+     * @return boolean
+     */
+    public function store()
+    {
+        global $zdb, $log, $hist;
+
+        try {
+            $zdb->db->beginTransaction();
+            $values = array();
+            $fields = self::getDbFields();
+            /** FIXME: quote? */
+            foreach ( $fields as $field ) {
+                $prop = '_' . $this->_fields[$field]['propname'];
+                switch ( $field ) {
+                case ContributionsTypes::PK:
+                case Transaction::PK:
+                    $values[$field] = $this->$prop->id;
+                    break;
+                default:
+                    $values[$field] = $this->$prop;
+                    break;
+                }
+            }
+
+            //an empty value will cause date to be set to 1901-01-01, a null
+            //will result in 0000-00-00. We want a database NULL value here.
+            if ( !$this->isCotis() && !$this->_end_date ) {
+                $values['date_fin_cotis'] = '0000-00-00';
+            }
+
+            if ( !isset($this->_id) || $this->_id == '') {
+                //we're inserting a new contribution
+                $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
+                if ( $add > 0) {
+                    $this->_id = $zdb->db->lastInsertId();
+                    // logging
+                    $hist->add(
+                        _T("Contribution added"),
+                        Adherent::getSName($this->_member)
+                    );
+                } else {
+                    $hist->add('Fail to add new contribution.');
+                    throw new Exception(
+                        'An error occured inserting new contribution!'
+                    );
+                }
+            } else {
+                //we're editing an existing contribution
+                $edit = $zdb->db->update(
+                    PREFIX_DB . self::TABLE,
+                    $values,
+                    self::PK . '=' . $this->_id
+                );
+                //edit == 0 does not mean there were an error, but that there
+                //were nothing to change
+                if ( $edit > 0 ) {
+                    $hist->add(
+                        _T("Contribution updated"),
+                        Adherent::getSName($this->_member)
+                    );
+                } else {
+                    throw new Exception(
+                        'An error occured updating transaction # ' . $this->_id . '!'
+                    );
+                }
+            }
+            //update deadline
+            if ( $this->isCotis() ) {
+                $deadline = $this->_updateDeadline();
+                if ( $deadline !== true ) {
+                    //if something went wrong, we rollback transaction
+                    throw new Exception('An error occured updating member\'s deadline');
+                }
+            }
+            $zdb->db->commit();
+            return true;
+        } catch (Exception $e) {
+            /** FIXME */
+            $zdb->db->rollBack();
+            $log->log(
+                'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
+                $e->getTraceAsString(),
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
+    }
+
+    /**
+     * Update member dead line
+     *
+     * @return boolean
+     */
+    private function _updateDeadline()
+    {
+        global $zdb, $log;
+
+        try {
+            $due_date = self::getDueDate($this->_member);
+
+            if ( $due_date != '' ) {
+                $date_fin_update = $due_date;
+            } else {
+                $date_fin_update = 'NULL';
+            }
+
+            $edit = $zdb->db->update(
+                PREFIX_DB . Adherent::TABLE,
+                array('date_echeance' => $date_fin_update),
+                Adherent::PK . '=' . $this->_member
+            );
+            return true;
+        } catch (Exception $e) {
+            $log->log(
+                'An error occured updating member ' . $this->_member .
+                '\'s deadline |' .
+                $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
+    }
+
+    /**
+     * Remove contribution from database
+     *
+     * @param boolean $transaction Activate transaction mode (defaults to true)
+     *
+     * @return boolean
+     */
+    public function remove($transaction = true)
+    {
+        global $zdb, $log;
+
+        try {
+            if ( $transaction ) {
+                $zdb->db->beginTransaction();
+            }
+            $del = $zdb->db->delete(
+                PREFIX_DB . self::TABLE,
+                self::PK . ' = ' . $this->_id
+            );
+            if ( $del > 0 ) {
+                $this->_updateDeadline();
+            }
+            if ( $transaction ) {
+                $zdb->db->commit();
+            }
+            return true;
+        } catch (Exception $e) {
+            /** FIXME */
+            if ( $transaction ) {
+                $zdb->db->rollBack();
+            }
+            $log->log(
+                'An error occured trying to remove contribution #' .
+                $this->_id . ' | ' . $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
+    }
+
+    /**
+     * Get field label
+     *
+     * @param string $field Field name
+     *
+     * @return string
+     */
+    public function getFieldName($field)
+    {
+        $label = $this->_fields[$field]['label'];
+        if ( $this->isCotis() && $field == 'date_debut_cotis') {
+            $label = $this->_fields[$field]['cotlabel'];
+        }
+        //remove trailing ':' and then nbsp (for french at least)
+        $label = trim(trim($label, ':'), '&nbsp;');
+        return $label;
+    }
+
+    /**
+     * Retrieve fields from database
+     *
+     * @return array
+     */
+    public static function getDbFields()
+    {
+        global $zdb;
+        return array_keys($zdb->db->describeTable(PREFIX_DB . self::TABLE));
     }
 
     /**
@@ -185,66 +668,53 @@ class Contribution
     }
 
     /**
-    * Is member admin?
-    *
-    * @return bool
-    */
-    /*public function isAdmin()
+     * Retrieve member due date
+     *
+     * @param integer $member_id Member identifier
+     *
+     * @return date
+     */
+    public static function getDueDate($member_id)
     {
-        return $this->_admin;
-    }*/
+        global $zdb, $log;
+
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(
+                PREFIX_DB . self::TABLE,
+                'MAX(date_fin_cotis)'
+            )->where(Adherent::PK . ' = ?', $member_id);
+            $due_date = $select->query()->fetchColumn();
+            return $due_date;
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log(
+                'An error occured trying to retrieve member\'s due date',
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
+    }
 
     /**
-    * Is member freed of dues?
-    *
-    * @return bool
-    */
-    /*public function isDueFree()
+     * Is current contribution a cotisation
+     *
+     * @return boolean
+     */
+    public function isCotis()
     {
-        return $this->_due_free;
-    }*/
+        return $this->_is_cotis;
+    }
 
     /**
-    * Can member appears in public members list?
-    *
-    * @return bool
-    */
-    /*public function appearsInMembersList()
+     * Is current contribution part of transaction
+     *
+     * @return boolean
+     */
+    public function isTransactionPart()
     {
-        return $this->_appears_in_list;
-    }*/
-
-    /**
-    * Is member active?
-    *
-    * @return bool
-    */
-    /*public function isActive()
-    {
-        return $this->_active;
-    }*/
-
-    /**
-    * Does member have uploaded a picture?
-    *
-    * @return bool
-    */
-    /*public function hasPicture()
-    {
-        return $this->_picture->hasPicture();
-    }*/
-
-    /**
-    * Get row class related to current fee status
-    *
-    * @return string the class to apply
-    */
-    /*public function getRowClass()
-    {
-        $strclass = ($this->isActive()) ? 'active' : 'inactive';
-        $strclass .= $this->_row_classes;
-        return $strclass;
-    }*/
+        return $this->_transaction != null;
+    }
 
     /**
     * Global getter method
@@ -255,30 +725,39 @@ class Contribution
     */
     public function __get($name)
     {
-        $forbidden = array();
+        $forbidden = array('is_cotis');
         $virtuals = array('duration');
 
         $rname = '_' . $name;
-        if ( !in_array($name, $forbidden) && isset($this->$rname) || in_array($name, $virtuals) ) {
+        if ( !in_array($name, $forbidden)
+            && isset($this->$rname)
+            || in_array($name, $virtuals)
+        ) {
             switch($name) {
             case 'date':
             case 'begin_date':
-                return date_db2text($this->$rname);
-                break;
             case 'end_date':
-                if ( !$this->_end_date ) {
-                    return '';
-                } else {
-                    return date_db2text($this->$rname);
+                if ( $this->$rname != '' ) {
+                    try {
+                        $d = new DateTime($this->$rname);
+                        return $d->format(_T("Y-m-d"));
+                    } catch (Exception $e) {
+                        //oops, we've got a bad date :/
+                        $log->log(
+                            'Bad date (' . $his->$rname . ') | ' .
+                            $e->getMessage(),
+                            PER_LOG_INFO
+                        );
+                        return $this->$rname;
+                    }
                 }
                 break;
             case 'duration':
                 if ( $this->_is_cotis ) {
-                    /*$date_now = new DateTime($this->_end_date);
-                    return $date_now->diff(
-                        new DateTime($this->_begin_date)
-                    )->format('%d jours');*/
-                    return distance_months($this->begin_date, $this->end_date);
+                    $date_end = new DateTime($this->_end_date);
+                    $date_start = new DateTime($this->_begin_date);
+                    $diff = $date_end->diff($date_start);
+                    return $diff->format('%y') * 12 + $diff->format('%m');
                 } else {
                     return '';
                 }
@@ -302,8 +781,66 @@ class Contribution
     */
     public function __set($name, $value)
     {
-        /*$forbidden = array('fields');*/
-        /** TODO: What to do ? :-) */
+        global $log;
+        $forbidden = array('fields', 'is_cotis', 'end_date');
+
+        if ( !in_array($name, $forbidden) ) {
+            $rname = '_' . $name;
+            switch($name) {
+            case 'transaction':
+                if ( is_int($value) ) {
+                    $this->$rname = new Transaction($value);
+                } else {
+                    $log->log(
+                        'Trying to set a transaction from an id that is not an integer.',
+                        PEAR_LOG_WARNING
+                    );
+                }
+                break;
+            case 'type':
+                if ( is_int($value) ) {
+                    //set type
+                    $this->$rname = new ContributionsTypes($value);
+                    //set is_cotis according to type
+                    if ( $this->$rname->extension == 1 ) {
+                        $this->_is_cotis = true;
+                    } else {
+                        $this->_is_cotis = false;
+                    }
+                } else {
+                    $log->log(
+                        'Trying to set a type from an id that is not an integer.',
+                        PEAR_LOG_WARNING
+                    );
+                }
+                break;
+            case 'begin_date':
+                /** FIXME: only ok dates dd/mm/yyyy */
+                if ( !preg_match(
+                    '@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@',
+                    $value,
+                    $date
+                ) ) {
+                    $errors[] = _T("- Wrong date format (dd/mm/yyyy)!");
+                } else {
+                    if ( !checkdate($date[2], $date[1], $date[3]) ) {
+                        $errors[] = _T("- Non valid date!");
+                    } else {
+                        $this->_begin_date = $date[3] . '-' . $date[2] . '-' .
+                            $date[1];
+                    }
+                }
+                break;
+            default:
+                $log->log(
+                    '[' . __CLASS__ . ']: Trying to set an unknown property (' .
+                    $name . ')',
+                    PEAR_LOG_WARNING
+                );
+                break;
+            }
+        }
+
     }
 }
 ?>
