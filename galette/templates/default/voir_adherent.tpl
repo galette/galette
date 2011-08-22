@@ -64,8 +64,12 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 				<td>{$member->nickname|htmlspecialchars}</td>
 			</tr>
 			<tr>
-				<th>{_T string="birth date:"}</th>
+				<th>{_T string="Birth date:"}</th>
 				<td>{$member->birthdate}</td>
+			</tr>
+			<tr>
+				<th>{_T string="Birth place:"}</th>
+				<td>{$member->birth_place}</td>
 			</tr>
 			<tr>
 				<th>{_T string="Profession:"}</th>
