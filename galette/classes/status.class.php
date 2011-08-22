@@ -53,7 +53,7 @@
  */
 class Status
 {
-    const DEFAULT_STATUS = 4;
+    const DEFAULT_STATUS = 9;
     const TABLE = 'statuts';
     const PK = 'id_statut';
     const ORDER_FIELD = 'priorite_statut';
