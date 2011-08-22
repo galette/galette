@@ -250,15 +250,17 @@
                     showOn: 'button',
                     buttonImage: '{$template_subdir}images/calendar.png',
                     buttonImageOnly: true,
-                    changeMonth: true,
-                    changeYear: true,
                     maxDate: '-0d',
                     yearRange: 'c-100'
                 {rdelim});
                 $('#date_crea_adh').datepicker({ldelim}
+                    changeMonth: true,
+                    changeYear: true,
                     showOn: 'button',
                     buttonImage: '{$template_subdir}images/calendar.png',
-                    buttonImageOnly: true
+                    buttonImageOnly: true,
+                    maxDate: '-0d',
+                    yearRange: 'c-10'
                 {rdelim});
             {rdelim});
 		</script>
