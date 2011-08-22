@@ -272,7 +272,6 @@ $tpl->assign('disabled', $disabled);
 $tpl->assign('member', $member);
 $tpl->assign('self_adh', true);
 $tpl->assign('dynamic_fields', $dynamic_fields);
-$error_detected[] = 'placebo';
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('warning_detected', $warning_detected);
 $tpl->assign('languages', $i18n->getList());
