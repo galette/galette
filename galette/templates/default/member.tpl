@@ -25,19 +25,32 @@
 		</div>
 {/if}
 		<div class="bigtable">
+{if $self_adh and $head_redirect}
+            <div id="infobox">
+                <h1>{_T string="Account registered!"}</h1>
+                <p>
+    {if $pref_mail_method == constant('GaletteMail::METHOD_DISABLED') or $member->email eq ""}
+                    {_T string="Your subscription has been registered."}
+     {else}
+                    {_T string="Your subscription has been registered, you will receive a recapitulative email soon (remember to check your spam box ;) )."}
+     {/if}
+                    <br/>{_T string="You'll be redirected to the login page in a few seconds"}
+                </p>
+            </div>
+{else}
 			<fieldset class="cssform">
 				<legend class="ui-state-active ui-corner-top">{_T string="Identity:"}</legend>
 				<div>
-{if !$self_adh}
+    {if !$self_adh}
 					<p>
 						<span class="bline">{_T string="Picture:"}</span>
 						<img src="{$galette_base_path}picture.php?id_adh={$member->id}&amp;rand={$time}" class="picture" width="{$member->picture->getOptimalWidth()}" height="{$member->picture->getOptimalHeight()}" alt="{_T string="Picture"}"/><br/>
-	{if $member->hasPicture() eq 1 }
+        {if $member->hasPicture() eq 1 }
 						<span class="labelalign"><label for="del_photo">{_T string="Delete image"}</label></span><input type="checkbox" name="del_photo" id="del_photo" value="1"/><br/>
-	{/if}
+        {/if}
 						<input class="labelalign" type="file" name="photo"/>
 					</p>
-{/if}
+    {/if}
 					<p>
 						<span class="bline">{_T string="Title:"}</span>
 						{if $disabled.titre_adh != ''}
@@ -87,7 +100,7 @@
 					<p>
 						<label for="adresse_adh" class="bline">{_T string="Address:"}</label>
 						<input type="text" class="large" name="adresse_adh" id="adresse_adh" value="{$member->adress|htmlspecialchars}" maxlength="150" {$disabled.adresse_adh}{if $required.adresse_adh eq 1} required{/if}/><br/>
-{* FIXME: A-t-on réellement besoin de deux lignes pour une adresse ? *}
+                        {* FIXME: A-t-on réellement besoin de deux lignes pour une adresse ? *}
 						<label for="adresse2_adh" class="bline libelle">{_T string="Address:"} {_T string=" (continuation)"}</label>
 						<input type="text" class="large" name="adresse2_adh" id="adresse2_adh" value="{$member->adress_continuation|htmlspecialchars}" maxlength="150" {$disabled.adresse2_adh}{if $required.adresse2_adh eq 1} required{/if}/>
 					</p>
@@ -149,8 +162,8 @@
 						<label for="bool_display_info" class="bline">{_T string="Be visible in the<br /> members list :"}</label>
 						<input type="checkbox" name="bool_display_info" id="bool_display_info" value="1" {if $member->appearsInMembersList() eq 1}checked="checked"{/if} {$disabled.bool_display_info}{if $required.bool_display_info eq 1} required{/if}/>
 					</p>
-{if !$self_adh}
-    {if $login->isAdmin()}
+    {if !$self_adh}
+        {if $login->isAdmin()}
 					<p>
 						<label for="activite_adh" class="bline">{_T string="Account:"}</label>
 						<select name="activite_adh" id="activite_adh" {$disabled.activite_adh}{if $required.activite_adh eq 1} required{/if}>
@@ -172,14 +185,14 @@
 						<label for="bool_exempt_adh" class="bline">{_T string="Freed of dues:"}</label>
 						<input type="checkbox" name="bool_exempt_adh" id="bool_exempt_adh" value="1" {if $member->isDueFree() eq 1}checked="checked"{/if} {$disabled.bool_exempt_adh}{if $required.bool_exempt_adh eq 1} required{/if}/>
 					</p>
+        {/if}
     {/if}
-{/if}
 					<p>
 						<label for="login_adh" class="bline">{_T string="Username:"}</label>
 						<input type="text" name="login_adh" id="login_adh" value="{$member->login}" maxlength="20" {$disabled.login_adh}{if $required.login_adh eq 1} required{/if}/>
 						<span class="exemple">{_T string="(at least 4 characters)"}</span>
 					</p>
-{if !$self_adh}
+    {if !$self_adh}
 					<p>
 						<label for="mdp_adh" class="bline">{_T string="Password:"}</label>
 						<input type="password" name="mdp_adh" id="mdp_adh" value="" maxlength="20" autocomplete="off" {$disabled.mdp_adh}{if $required.mdp_adh eq 1} required{/if}/>
@@ -189,7 +202,7 @@
 						<input class="labelalign" type="password" name="mdp_adh2" value="" maxlength="20" {$disabled.mdp_adh}{if $required.mdp_adh eq 1} required{/if}/>
 						<span class="exemple">{_T string="(Confirmation)"}</span>
 					</p>
-{else}
+    {else}
 					<p>
 						<label for="mdp_adh" class="bline libelle">{_T string="Password:"}</label>
 						<input type="hidden" name="mdp_crypt" value="{$spam_pass}" />
@@ -197,18 +210,18 @@
 						<input type="text" name="mdp_adh" id="mdp_adh" value="" maxlength="20" {$disabled.mdp_adh}{if $required.mdp_adh eq 1} required{/if}/>
 						<span class="exemple">{_T string="Please repeat in the field the password shown in the image."}</span>
 					</p>
-{/if}
-{* FIXME: EN cas de modification, veut-on envoyer un mail ? *}
-{if !$self_adh and $login->isAdmin()}
+    {/if}
+    {* FIXME: EN cas de modification, veut-on envoyer un mail ? *}
+    {if !$self_adh and $login->isAdmin()}
 					<p>
 						<label for="mail_confirm" class="bline">{_T string="Send a mail:"}</label>
 						<input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
 						<span class="exemple">
-	{if $disabled.send_mail}
+        {if $disabled.send_mail}
 							{_T string="Mail has been disabled in the preferences. This functionnality is disabled."}
-	{else}
+        {else}
 							{_T string="(the member will receive his username and password by email, if he has an address.)"}
-	{/if}
+        {/if}
 						</span>
 					</p>
 					<p>
@@ -221,18 +234,18 @@
 						<textarea name="info_adh" id="info_adh" cols="50" rows="6" {$disabled.info_adh}{if $required.info_adh eq 1} required{/if}>{$member->others_infos_admin|htmlspecialchars}</textarea><br/>
 						<span class="exemple labelalign">{_T string="This comment is only displayed for admins."}</span>
 					</p>
-{/if}
+    {/if}
 					<p>
 						<label for="info_public_adh" class="bline">{_T string="Other informations:"}</label> 
 						<textarea name="info_public_adh" id="info_public_adh" cols="61" rows="6" {$disabled.info_public_adh}{if $required.info_public_adh eq 1} required{/if}>{$member->others_infos|htmlspecialchars}</textarea>
-{if $login->isAdmin()}
+    {if $login->isAdmin()}
 						<br/><span class="exemple labelalign">{_T string="This comment is reserved to the member."}</span>
-{/if}
+    {/if}
 					</p>
 				</div>
 			</fieldset>
 
-{include file="display_dynamic_fields.tpl" is_form=true}
+    {include file="display_dynamic_fields.tpl" is_form=true}
 		</div>
 		<div class="button-container">
 			<input type="submit" name="valid" id="btnsave" value="{_T string="Save"}"/>
@@ -264,3 +277,4 @@
                 {rdelim});
             {rdelim});
 		</script>
+{/if}
