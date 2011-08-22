@@ -74,8 +74,10 @@
 					<td class="listing center actions_row">
 {if $field.no_data}
 						<img src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="16" height="16"/>
+						<img src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="16" height="16"/>
 {else}
 						<a href="editer_champ.php?form={$form_name}&amp;id={$field.id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="Edit '%s' field" pattern="/%s/" replace=$field.name}" title="{_T string="Edit '%s' field" pattern="/%s/" replace=$field.name}" width="16" height="16"/></a>
+						<a href="traduire_libelles.php?text_orig={$field.name|escape}"><img src="{$template_subdir}images/icon-i18n.png" alt="{_T string="Edit '%s' field" pattern="/%s/" replace=$field.name}" title="{_T string="Translate '%s' field" pattern="/%s/" replace=$field.name}" width="16" height="16"/></a>
 {/if}
 						<a onclick="return confirm('{_T string="Do you really want to delete this field ?\n All associated data will be deleted as well."|escape:"javascript"}')" href="configurer_fiches.php?form={$form_name}&amp;del={$field.id}">
 							<img src="{$template_subdir}images/icon-trash.png" alt="{_T string="Delete '%s' field" pattern="/%s/" replace=$field.name}" title="{_T string="Delete '%s' field" pattern="/%s/" replace=$field.name}" width="16" height="16"/>
