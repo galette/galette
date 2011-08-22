@@ -158,71 +158,65 @@ if ( isset($_POST["nom_adh"]) ) {
             }
 
             // send mail to member
-            if ( isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1' ) {
-                if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED ) {
-                    if ( $member->email == '' ) {
-                        $error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
-                    } else {
-                        //send mail to member
-                        // Get email text in database
-                        $texts = new texts();
-                        $mtxt = $texts->getTexts('sub', $preferences->pref_lang);
+            if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+                && $member->email != ''
+            ) {
+                //send mail to member
+                // Get email text in database
+                $texts = new texts();
+                $mtxt = $texts->getTexts('sub', $preferences->pref_lang);
 
-                        $patterns = array(
-                            '/{NAME}/',
-                            '/{LOGIN_URI}/',
-                            '/{LOGIN}/',
-                            '/{PASSWORD}/'
-                        );
+                $patterns = array(
+                    '/{NAME}/',
+                    '/{LOGIN_URI}/',
+                    '/{LOGIN}/',
+                    '/{PASSWORD}/'
+                );
 
-                        $replace = array(
-                            $preferences->pref_nom,
-                            'http://' . $_SERVER['SERVER_NAME'] .
-                            dirname($_SERVER['REQUEST_URI']),
-                            custom_html_entity_decode($member->login),
-                            custom_html_entity_decode($_POST['mdp_adh'])
-                        );
+                $replace = array(
+                    $preferences->pref_nom,
+                    'http://' . $_SERVER['SERVER_NAME'] .
+                    dirname($_SERVER['REQUEST_URI']),
+                    custom_html_entity_decode($member->login),
+                    custom_html_entity_decode($_POST['mdp_adh'])
+                );
 
-                        // Replace Tokens
-                        $mtxt->tbody = preg_replace(
-                            $patterns,
-                            $replace,
-                            $mtxt->tbody
-                        );
+                // Replace Tokens
+                $mtxt->tbody = preg_replace(
+                    $patterns,
+                    $replace,
+                    $mtxt->tbody
+                );
 
-                        $mail = new GaletteMail();
-                        $mail->setSubject($mtxt->tsubject);
-                        $mail->setRecipients(
-                            array(
-                                $member->email => $member->sname
-                            )
-                        );
-                        $mail->setMessage($mtxt->tbody);
-                        $sent = $mail->send();
+                $mail = new GaletteMail();
+                $mail->setSubject($mtxt->tsubject);
+                $mail->setRecipients(
+                    array(
+                        $member->email => $member->sname
+                    )
+                );
+                $mail->setMessage($mtxt->tbody);
+                $sent = $mail->send();
 
-                        if ( $sent == GaletteMail::MAIL_SENT ) {
-                            $hist->add(
-                                str_replace(
-                                    '%s',
-                                    $member->sname . ' (' . $member->email . ')',
-                                    _T("New account mail sent to '%s'.")
-                                )
-                            );
-                        } else {
-                            $str = str_replace(
-                                '%s',
-                                $member->sname . ' (' . $member->email . ')',
-                                _T("A problem happened while sending new account mail to '%s'")
-                            );
-                            $hist->add($str);
-                            $error_detected[] = $str;
-                        }
-                    }
-                } else if ( $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
-                    //if mail has been disabled in the preferences, we should not be here ; we do not throw an error, just a simple warning that will be show later
-                    $_SESSION['galette']['mail_warning'] = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
+                if ( $sent == GaletteMail::MAIL_SENT ) {
+                    $hist->add(
+                        str_replace(
+                            '%s',
+                            $member->sname . ' (' . $member->email . ')',
+                            _T("New account mail sent to '%s'.")
+                        )
+                    );
+                } else {
+                    $str = str_replace(
+                        '%s',
+                        $member->sname . ' (' . $member->email . ')',
+                        _T("A problem happened while sending new account mail to '%s'")
+                    );
+                    $hist->add($str);
+                    $error_detected[] = $str;
                 }
             }
+
             $hist->add(
                 _T("Self_subscription as a member: ") .
                 strtoupper($adherent['nom_adh']) . ' ' . $adherent['prenom_adh'],
