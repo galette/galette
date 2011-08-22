@@ -141,7 +141,7 @@ if ( isset($_POST["nom_adh"]) ) {
                         str_replace(
                             '%s',
                             $member->sname . ' (' . $member->email . ')',
-                            _T("New account mail sent to to admin for '%s'.")
+                            _T("New account mail sent to admin for '%s'.")
                         )
                     );
                 } else {
