@@ -33,7 +33,7 @@
                     <strong>{$member->sname}</strong>
     {if $login->isAdmin()}
                     (<a href="voir_adherent.php?id_adh={$contribs->filtre_cotis_adh}">{_T string="See member profile"}</a> -
-                    <a href="ajouter_contribution.php?id_adh={$contribs->filtre_cotis_adh}">{_T string="Add a contribution"}</a>)
+                    <a href="ajouter_contribution.php?id_adh={$member->id}">{_T string="Add a contribution"}</a>)
     {/if}
                     &nbsp;:
 {/if}
