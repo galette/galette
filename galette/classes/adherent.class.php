@@ -506,7 +506,7 @@ class Adherent
             $select->from(PREFIX_DB . self::TABLE);
             if ( GaletteMail::isValidEmail($login) ) {
                 //we got a valid email adress, use it
-                $select->whrere('email_adh = ?', $login);
+                $select->where('email_adh = ?', $login);
             } else {
                 ///we did not get an email adress, consider using login
                 $select->where('login_adh = ?', $login);
