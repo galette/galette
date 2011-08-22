@@ -546,6 +546,7 @@ class Adherent
         $this->_surname = $r->prenom_adh;
         $this->_nickname = $r->pseudo_adh;
         $this->_birthdate = $r->ddn_adh;
+        $this->_birth_place = $r->lieu_naissance;
         $this->_job = $r->prof_adh;
         $this->_language = $r->pref_lang;
         $this->_active = $r->activite_adh;
