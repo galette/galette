@@ -174,7 +174,7 @@ if ( isset($_POST['valid']) ) {
         $adh->load($contrib->member);
         $texts = new texts();
 
-        if ( isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1' ) {
+        if ( $new && isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1' ) {
             if ( GaletteMail::isValidEmail($adh->email) ) {
                 $mtxt = $texts->getTexts('contrib', $adh->language);
 
@@ -237,7 +237,7 @@ if ( isset($_POST['valid']) ) {
         }
 
         // Sent email to admin if pref checked
-        if ( $preferences->pref_bool_mailadh ) {
+        if ( $new && $preferences->pref_bool_mailadh ) {
             // Get email text in database
             $mtxt = $texts->getTexts('newcont', $preferences->pref_lang);
 
