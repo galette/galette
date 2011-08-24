@@ -108,6 +108,6 @@ $(function() {
 		});
 	}
 
-    $('input:submit, .button' ).button();
+    $('input:submit, .button, input:reset' ).button();
     $('.selected').addClass('ui-state-disabled');
 });

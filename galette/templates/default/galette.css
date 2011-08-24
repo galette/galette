@@ -45,7 +45,7 @@ img{
 	border:none;
 }
 
-label, input[type="button"], input[type="submit"], button {
+label, input[type="button"], input[type="submit"], input[type="reset"], button {
     cursor: pointer;
 }
 
@@ -265,7 +265,7 @@ footer li {
 }
 
 /* == Buttons */
-#delete, #sendmail, #btnsave, .button {
+#delete, #sendmail, #btnsave, #btnadd, #btncancel, .button {
     padding-left: 2em!important;
     background-position: 10px 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;
@@ -325,6 +325,20 @@ footer li {
 }
 #logout.ui-state-hover {
     background-image:url(images/icon-quit.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#btnadd {
+	background-image:url(images/icon-add.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#btnadd.ui-state-hover {
+    background-image:url(images/icon-add.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#btncancel {
+	background-image:url(images/icon-cancel.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#btncancel.ui-state-hover {
+    background-image:url(images/icon-cancel.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 #btnsave {
