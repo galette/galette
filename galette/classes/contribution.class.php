@@ -523,9 +523,9 @@ class Contribution
                         _T("Contribution updated"),
                         Adherent::getSName($this->_member)
                     );
-                } else {
+                } else if ($edit === false) {
                     throw new Exception(
-                        'An error occured updating transaction # ' . $this->_id . '!'
+                        'An error occured updating contribution # ' . $this->_id . '!'
                     );
                 }
             }
