@@ -296,16 +296,26 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
 
         // picture upload
         if ( isset($_FILES['logo']) ) {
-            if ( $_FILES['logo']['tmp_name'] !='' ) {
-                if ( is_uploaded_file($_FILES['logo']['tmp_name']) ) {
-                    $res = $logo->store($_FILES['logo']);
-                    if ( $res < 0 ) {
-                        $error_detected[] = Picture::getErrorMessage($res);
+            if ( $_FILES['photo']['error'] === UPLOAD_ERR_OK ) {
+                if ( $_FILES['logo']['tmp_name'] !='' ) {
+                    if ( is_uploaded_file($_FILES['logo']['tmp_name']) ) {
+                        $res = $logo->store($_FILES['logo']);
+                        if ( $res < 0 ) {
+                            $error_detected[] = Picture::getErrorMessage($res);
+                        }
+                        $logo = new Logo();
+                        $_SESSION['galette']['logo'] = serialize($logo);
+                        $tpl->assign('logo', $logo);
                     }
-                    $logo = new Logo();
-                    $_SESSION['galette']['logo'] = serialize($logo);
-                    $tpl->assign('logo', $logo);
                 }
+            } else {
+                $log->log(
+                    $logo->getPhpErrorMessage($_FILES['photo']['error']),
+                    PEAR_LOG_WARNING
+                );
+                $error_detected[] = $logo->getPhpErrorMessage(
+                    $_FILES['photo']['error']
+                );
             }
         }
 
@@ -321,13 +331,23 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
 
         // Card logo upload
         if ( isset($_FILES['card_logo']) ) {
-            if ( $_FILES['card_logo']['tmp_name'] !='' ) {
-                if ( is_uploaded_file($_FILES['card_logo']['tmp_name']) ) {
-                    $res = $print_logo->store($_FILES['card_logo']);
-                    if ( $res < 0 ) {
-                        $error_detected[] = Picture::getErrorMessage($res);
+            if ( $_FILES['photo']['error'] === UPLOAD_ERR_OK ) {
+                if ( $_FILES['card_logo']['tmp_name'] !='' ) {
+                    if ( is_uploaded_file($_FILES['card_logo']['tmp_name']) ) {
+                        $res = $print_logo->store($_FILES['card_logo']);
+                        if ( $res < 0 ) {
+                            $error_detected[] = Picture::getErrorMessage($res);
+                        }
                     }
                 }
+            } else {
+                $log->log(
+                    $print_logo->getPhpErrorMessage($_FILES['photo']['error']),
+                    PEAR_LOG_WARNING
+                );
+                $error_detected[] = $print_logo->getPhpErrorMessage(
+                    $_FILES['photo']['error']
+                );
             }
         }
 
