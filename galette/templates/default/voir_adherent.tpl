@@ -116,12 +116,12 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 			</tr>
 			<tr>
 				<th>{_T string="Other informations (admin):"}</th>
-				<td>{$member->others_infos_admin|nl2br|htmlspecialchars}</td>
+				<td>{$member->others_infos_admin|htmlspecialchars|nl2br}</td>
 			</tr>
 {/if}
 			<tr>
 				<th>{_T string="Other informations:"}</th>
-				<td>{$member->others_infos|nl2br|htmlspecialchars}</td>
+				<td>{$member->others_infos|htmlspecialchars|nl2br}</td>
 			</tr>
 		</table>
 
