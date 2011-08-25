@@ -311,7 +311,7 @@ class Picture
         try {
             $del = $zdb->db->delete(
                 PREFIX_DB . $class::TABLE,
-                $class::PK . ' = ' . $this->id
+                $zdb->db->quoteInto($class::PK . ' = ?', $this->id)
             );
             if ( $del > 0 ) {
                 $file_wo_ext = $this->store_path . $this->id;
@@ -335,7 +335,7 @@ class Picture
             /** FIXME */
             $log->log(
                 'An error occured attempting to delete picture ' . $this->id .
-                'from database',
+                'from database | ' . $e->getMessage(),
                 PEAR_LOG_ERR
             );
             return false;
