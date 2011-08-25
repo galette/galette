@@ -69,7 +69,8 @@ class Required
         'mdp_adh',
         'adresse_adh',
         'cp_adh',
-        'ville_adh'
+        'ville_adh',
+        'email_adh'
     );
 
     /**
