@@ -283,7 +283,7 @@ class Transaction
                         $this->_description = $value;
                         if ( trim($value) == '' ) {
                             $errors[] = _T("- Empty transaction description!");
-                        } else if (strlen($value) > 30 ) {
+                        } else if (mb_strlen($value, 'UTF-8') > 30 ) {
                             $errors[] = _T("- Transaction description must be 30 characters long maximum.");
                         }
                         break;
