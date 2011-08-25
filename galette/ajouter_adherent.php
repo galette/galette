@@ -263,7 +263,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                         }
                     }
                 }
-            } else {
+            } else if ($_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
                 $log->log(
                     $member->picture->getPhpErrorMessage($_FILES['photo']['error']),
                     PEAR_LOG_WARNING

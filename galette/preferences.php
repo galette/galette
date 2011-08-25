@@ -308,7 +308,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                         $tpl->assign('logo', $logo);
                     }
                 }
-            } else {
+            } else if ($_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
                 $log->log(
                     $logo->getPhpErrorMessage($_FILES['photo']['error']),
                     PEAR_LOG_WARNING
@@ -340,7 +340,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                         }
                     }
                 }
-            } else {
+            } else if ($_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
                 $log->log(
                     $print_logo->getPhpErrorMessage($_FILES['photo']['error']),
                     PEAR_LOG_WARNING
