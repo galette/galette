@@ -254,13 +254,23 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
 
         // picture upload
         if ( isset($_FILES['photo']) ) {
-            if ( $_FILES['photo']['tmp_name'] !='' ) {
-                if ( is_uploaded_file($_FILES['photo']['tmp_name']) ) {
-                    $res = $member->picture->store($_FILES['photo']);
-                    if ( $res < 0 ) {
-                        $error_detected[] = Picture::getErrorMessage($res);
+            if ( $_FILES['photo']['error'] === UPLOAD_ERR_OK ) {
+                if ( $_FILES['photo']['tmp_name'] !='' ) {
+                    if ( is_uploaded_file($_FILES['photo']['tmp_name']) ) {
+                        $res = $member->picture->store($_FILES['photo']);
+                        if ( $res < 0 ) {
+                            $error_detected[] = Picture::getErrorMessage($res);
+                        }
                     }
                 }
+            } else {
+                $log->log(
+                    $member->picture->getPhpErrorMessage($_FILES['photo']['error']),
+                    PEAR_LOG_WARNING
+                );
+                $error_detected[] = $member->picture->getPhpErrorMessage(
+                    $_FILES['photo']['error']
+                );
             }
         }
 

@@ -685,7 +685,7 @@ class Picture
     }
 
     /**
-     * Return textual erro message
+     * Return textual error message
      *
      * @param int $code The error code
      *
@@ -725,6 +725,35 @@ class Picture
 
         }
         return $error;
+    }
+
+    /**
+     * Return textual erro rmessage send by PHP after upload attempt
+     *
+     * @param int $error_code The error code
+     *
+     * @return string Localized message
+     */
+    public function getPhpErrorMessage($error_code)
+    {
+        switch ($error_code) {
+        case UPLOAD_ERR_INI_SIZE:
+            return _T("The uploaded file exceeds the upload_max_filesize directive in php.ini");
+        case UPLOAD_ERR_FORM_SIZE:
+            return _T("The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form");
+        case UPLOAD_ERR_PARTIAL:
+            return _T("The uploaded file was only partially uploaded");
+        case UPLOAD_ERR_NO_FILE:
+            return _T("No file was uploaded");
+        case UPLOAD_ERR_NO_TMP_DIR:
+            return _T("Missing a temporary folder");
+        case UPLOAD_ERR_CANT_WRITE:
+            return _T("Failed to write file to disk");
+        case UPLOAD_ERR_EXTENSION:
+            return _T("File upload stopped by extension");
+        default:
+            return _T("Unknown upload error");
+        }
     }
 }
 ?>
