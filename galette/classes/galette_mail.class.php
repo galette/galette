@@ -198,7 +198,7 @@ class GaletteMail
 
         if ( $this->_html ) {
             //the mail is html :(
-            $this->_mail->AltBody = $this->_cleanedHTML();
+            $this->_mail->AltBody = $this->cleanedHTML();
             $this->_mail->IsHTML(true);
         } else {
             //the mail is plaintext :)
@@ -255,7 +255,7 @@ class GaletteMail
     *
     * @return current message in plaintext format
     */
-    private function _cleanedHtml()
+    protected function cleanedHtml()
     {
         $ret = $this->message;
         //First, let's work on some special replacements:
