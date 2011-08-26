@@ -196,7 +196,7 @@ class Picture
 
         try {
             $select = $this->getCheckFileQuery();
-            $pic = $zdb->db->fetchOne($select);
+            $pic = $zdb->db->fetchRow($select);
             //what's $pic if no result?
             if ( $pic !== false ) {
                 // we must regenerate the picture file
