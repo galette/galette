@@ -101,7 +101,7 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
         $mailing->html = ( isset($_POST['mailing_html']) ) ? true : false;
 
         if ( count($error_detected) == 0 && !isset($_POST['mailing_reset']) ) {
-            $mailing->current_step = Mailing::STEP_PROGRESS;
+            $mailing->current_step = Mailing::STEP_PREVIEW;
         }
     }
 

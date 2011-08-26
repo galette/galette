@@ -53,7 +53,7 @@ require_once 'members.class.php';
 class Mailing extends GaletteMail
 {
     const STEP_START = 0;
-    const STEP_PROGRESS = 1;
+    const STEP_PREVIEW = 1;
     const STEP_SEND = 2;
 
     const MIME_HTML = 'text/html';
@@ -178,7 +178,7 @@ class Mailing extends GaletteMail
         case 'current_step':
             if ( is_int($value)
                 && (   $value == self::STEP_START
-                || $value == self::STEP_PROGRESS
+                || $value == self::STEP_PREVIEW
                 || $value == self::STEP_SEND )
             ) {
                 $this->_current_step = (int)$value;
