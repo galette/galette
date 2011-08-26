@@ -113,6 +113,9 @@ class Picture
         // '!==' needed, otherwise ''==0
         if ($id_adh!=='') {
             $this->id = $id_adh;
+            if ( !isset ($this->db_id) ) {
+                $this->db_id = $id_adh;
+            }
 
             //if file does not exists on the FileSystem, check for it in the database
             if ( !$this->_checkFileOnFS() ) {
@@ -242,7 +245,7 @@ class Picture
                 'format'
             )
         );
-        $select->where($class::PK . ' = ?', $this->id);
+        $select->where($class::PK . ' = ?', $this->db_id);
         return $select;
     }
 
@@ -309,9 +312,10 @@ class Picture
         $class = get_class($this);
 
         try {
+            $zdb->db->beginTransaction();
             $del = $zdb->db->delete(
                 PREFIX_DB . $class::TABLE,
-                $zdb->db->quoteInto($class::PK . ' = ?', $this->id)
+                $zdb->db->quoteInto($class::PK . ' = ?', $this->db_id)
             );
             if ( $del > 0 ) {
                 $file_wo_ext = $this->store_path . $this->id;
@@ -321,20 +325,44 @@ class Picture
                 // fix sizes
                 $this->_setSizes();
 
+                $success = false;
+                $_file = null;
                 if ( file_exists($file_wo_ext . '.jpg') ) {
-                    return unlink($file_wo_ext . '.jpg');
+                    //return unlink($file_wo_ext . '.jpg');
+                    $_file = $file_wo_ext . '.jpg';
+                    $success = unlink($_file);
                 } elseif ( file_exists($file_wo_ext . '.png') ) {
-                    return unlink($file_wo_ext . '.png');
+                    //return unlink($file_wo_ext . '.png');
+                    $_file = $file_wo_ext . '.png';
+                    $success = unlink($_file);
                 } elseif ( file_exists($file_wo_ext . '.gif') ) {
-                    return unlink($file_wo_ext . '.gif');
+                    //return unlink($file_wo_ext . '.gif');
+                    $_file = $file_wo_ext . '.gif';
+                    $success = unlink($_file);
+                }
+
+                if ( $_file !== null && $success !== true ) {
+                    //unable to remove file that exists!
+                    $zdb->db->rollBack();
+                    $log->log(
+                        'The file ' . $_file . ' was found on the disk but cannot be removed.',
+                        PEAR_LOG_ERR
+                    );
+                    return false;
+                } else {
+                    $zdb->db->commit();
+                    return true;
                 }
             } else {
                 return false;
             }
+
+
         } catch (Exception $e) {
             /** FIXME */
+            $zdb->db->rollBack();
             $log->log(
-                'An error occured attempting to delete picture ' . $this->id .
+                'An error occured attempting to delete picture ' . $this->db_id .
                 'from database | ' . $e->getMessage(),
                 PEAR_LOG_ERR
             );
@@ -443,7 +471,7 @@ class Picture
                 ', picture, format) VALUES (:id, :picture, :format)'
             );
 
-            $stmt->bindParam('id', $this->id);
+            $stmt->bindParam('id', $this->db_id);
             $stmt->bindParam('picture', $picture, PDO::PARAM_LOB);
             $stmt->bindParam('format', $extension);
             $stmt->execute();

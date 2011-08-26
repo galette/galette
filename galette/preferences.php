@@ -302,8 +302,9 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                         $res = $logo->store($_FILES['logo']);
                         if ( $res < 0 ) {
                             $error_detected[] = Picture::getErrorMessage($res);
+                        } else {
+                            $logo = new Logo();
                         }
-                        $logo = new Logo();
                         $_SESSION['galette']['logo'] = serialize($logo);
                         $tpl->assign('logo', $logo);
                     }
@@ -337,6 +338,8 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                         $res = $print_logo->store($_FILES['card_logo']);
                         if ( $res < 0 ) {
                             $error_detected[] = Picture::getErrorMessage($res);
+                        } else {
+                            $print_logo = new PrintLogo();
                         }
                     }
                 }
