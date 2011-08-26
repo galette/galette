@@ -100,14 +100,15 @@ class Members
     * @return Adherent[]|ResultSet
     */
     public function getStaffMembersList(
-        $as_members=false, $fields=null, $filter=true, $count=true
+        $as_members=false, $fields=null, $filter=true, $count=true, $limit=true
     ) {
         return $this->getMembersList(
             $as_members,
             $fields,
             $filter,
             $count,
-            true
+            true,
+            $limit
         );
     }
 
@@ -122,11 +123,17 @@ class Members
     * @param boolean $filter     proceed filter, defaults to true
     * @param boolean $count      true if we want to count members
     * @param boolean $staff      true if we want only staff members
+    * @param boolean $limit      true if we want records pagination
     *
     * @return Adherent[]|ResultSet
     */
     public function getMembersList(
-        $as_members=false, $fields=null, $filter=true, $count=true, $staff=false
+        $as_members=false,
+        $fields=null,
+        $filter=true,
+        $count=true,
+        $staff=false,
+        $limit=true
     ) {
         global $zdb, $log, $varslist;
 
@@ -144,7 +151,7 @@ class Members
             }
 
             //add limits to retrieve only relavant rows
-            if ( isset($varslist) ) {
+            if ( $limit === true && isset($varslist) ) {
                 $varslist->setLimit($select);
             }
 
@@ -288,7 +295,15 @@ class Members
     */
     public static function getList($as_members=false, $fields=null, $filter=true)
     {
-        return self::getMembersList($as_members, $fields, $filter, false, false);
+        return self::getMembersList(
+            $as_members,
+            $fields,
+            $filter,
+            false,
+            false,
+            false,
+            false
+        );
     }
 
     /**
