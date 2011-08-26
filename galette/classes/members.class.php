@@ -205,7 +205,7 @@ class Members
                 $select->from(
                     PREFIX_DB . self::TABLE,
                     array(self::PK, 'nom_adh', 'prenom_adh')
-                )->where(self::PK . ' IN (?)', $ids);
+                )->where(self::PK . ' IN (?)', $list);
 
                 $members = $select->query()->fetchAll();
                 $infos = null;
@@ -235,19 +235,19 @@ class Members
                 //delete contributions
                 $del = $zdb->db->delete(
                     PREFIX_DB . Contribution::TABLE,
-                    self::PK . ' IN (' . implode(',', $ids) . ')'
+                    self::PK . ' IN (' . implode(',', $list) . ')'
                 );
 
                 //delete transactions
                 $del = $zdb->db->delete(
                     PREFIX_DB . Transaction::TABLE,
-                    self::PK . ' IN (' . implode(',', $ids) . ')'
+                    self::PK . ' IN (' . implode(',', $list) . ')'
                 );
 
                 //delete members
                 $del = $zdb->db->delete(
                     PREFIX_DB . self::TABLE,
-                    self::PK . ' IN (' . implode(',', $ids) . ')'
+                    self::PK . ' IN (' . implode(',', $list) . ')'
                 );
 
                 //commit all changes
