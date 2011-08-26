@@ -30,7 +30,7 @@
 {* /JQuery UI related *}
 {if $html_editor}
 	{if !$plugged_html_editor}
-		<script type="text/javascript" src="{$jquery_dir}markitup-{$jquery_markitup_version}/jquery.markitup.pack.js"></script>
+		<script type="text/javascript" src="{$jquery_dir}markitup-{$jquery_markitup_version}/jquery.markitup.js"></script>
 		<script type="text/javascript" src="{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/set-{$galette_lang}.js"></script>
 		<link rel="stylesheet" type="text/css" href="{$jquery_dir}markitup-{$jquery_markitup_version}/skins/galette/style.css" />
 		<link rel="stylesheet" type="text/css" href="{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/style.css" />
