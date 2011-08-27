@@ -1100,7 +1100,7 @@ class Adherent
                     } catch (Exception $e) {
                         //oops, we've got a bad date :/
                         $log->log(
-                            'Bad date (' . $his->$rname . ') | ' .
+                            'Bad date (' . $this->$rname . ') | ' .
                             $e->getMessage(),
                             PER_LOG_INFO
                         );
