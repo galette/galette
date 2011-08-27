@@ -66,8 +66,6 @@ class Mailing extends GaletteMail
 
     private $_mime_type;
 
-    private $_result;
-
     /**
     * Default constructor
     *
