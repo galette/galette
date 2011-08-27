@@ -109,8 +109,10 @@ CREATE TABLE galette_fields_config (
 DROP TABLE galette_mailing_history;
 CREATE TABLE galette_mailing_history (
   mailing_id integer DEFAULT nextval('galette_mailing_history_id_seq'::text) NOT NULL,
+  mailing_sender integer REFERENCES galette_adherents ON DELETE RESTRICT ON UPDATE CASCADE,
   mailing_subjectf character varying(255) NOT NULL,
   mailing_body text NOT NULL,
-  mailing_date date DEFAULT '00000101' NOT NULL
+  mailing_date timestamp NOT NULL,
+  mailing_recipients text NOT_NULL
 );
 CREATE UNIQUE INDEX galette_mailing_history_idx ON galette_mailing_history (mailing_id);

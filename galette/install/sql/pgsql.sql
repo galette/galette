@@ -263,14 +263,7 @@ CREATE TABLE galette_mailing_history (
   mailing_sender integer REFERENCES galette_adherents ON DELETE RESTRICT ON UPDATE CASCADE,
   mailing_subjectf character varying(255) NOT NULL,
   mailing_body text NOT NULL,
-  mailing_date date DEFAULT '00000101' NOT NULL
+  mailing_date timestamp NOT NULL,
+  mailing_recipients text NOT_NULL
 );
 CREATE UNIQUE INDEX galette_mailing_history_idx ON galette_mailing_history (mailing_id);
-
--- Table for mailing history recipients;
-DROP TABLE galette_mailing_history_recipients;
-CREATE TABLE galette_mailing_history_recipients (
-  mailing_id integer REFERENCES galette_mailing_history ON DELETE CASCADE ON UPDATE CASCADE,
-  id_adh integer REFERENCES galette_adherents ON DELETE CASCADE ON UPDATE CASCADE
-)
-CREATE UNIQUE INDEX galette_mailing_history_recipients_idx ON galette_mailing_history_recipients (mailing_id, id_adh);

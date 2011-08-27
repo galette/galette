@@ -152,6 +152,9 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
                 PEAR_LOG_ERR
             );
         } else {
+            require_once 'classes/mailing_history.class.php';
+            $mlh = new MailingHistory($mailing);
+            $mlh->storeMailing();
             $log->log(
                 '[mailing_adherents.php] Message has been sent.',
                 PEAR_LOG_INFO

@@ -76,7 +76,12 @@
     					<pre>{$mailing->message}</pre>
             {/if}
         			</p>
-            		<p><input type="button" class="button" id="btnback" onclick="javascript:back()" value="{_T string="Modifiy mailing"}"/><input type="submit" name="mailing_confirm" value="{_T string="Send"}"/></p>
+            		<p>
+                        <input type="button" class="button" id="btnback" onclick="javascript:back()" value="{_T string="Modifiy mailing"}"/>
+                        <input type="submit" name="mailing_confirm" value="{_T string="Send"}"/>
+                        <input type="hidden" name="mailing_objet" value="{$mailing->subject}"/>
+                        <input type="hidden" name="mailing_corps" value="{$mailing->message|escape}"/>
+                    </p>
                 </div>
         {/if}
 
