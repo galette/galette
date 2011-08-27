@@ -175,7 +175,7 @@ class History extends GalettePagination
         global $zdb, $log;
 
         if ($this->counter == null) {
-            $c = $this->_getCount();
+            $c = $this->getCount();
 
             if ($c == 0) {
                 $log->log('No entry in history (yet?).', PEAR_LOG_DEBUG);
@@ -212,7 +212,7 @@ class History extends GalettePagination
     *
     * @return int
     */
-    private function _getCount()
+    protected function getCount()
     {
         global $zdb, $log;
 
@@ -260,7 +260,26 @@ class History extends GalettePagination
             $forbidden = array();
             if ( !in_array($name, $forbidden) ) {
                 $name = '_' . $name;
-                return $this->$name;
+                switch ( $name ) {
+                case 'fdate':
+                    //return formatted datemime
+                     try {
+                        $d = new DateTime($this->$rname);
+                        return $d->format(_T("Y-m-d H:m:s"));
+                    } catch (Exception $e) {
+                        //oops, we've got a bad date :/
+                        $log->log(
+                            'Bad date (' . $this->$rname . ') | ' .
+                            $e->getMessage(),
+                            PER_LOG_INFO
+                        );
+                        return $this->$rname;
+                    }
+                    break;
+                default:
+                    return $this->$name;
+                    break;
+                }
             } else {
                 $log->log(
                     '[History] Unable to get proprety `' .$name . '`',
