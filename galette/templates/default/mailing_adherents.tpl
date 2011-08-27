@@ -32,16 +32,7 @@
         <div class="mailing">
             <section class="mailing_infos">
                 <header class="ui-state-default ui-state-active">{_T string="Mailing informations"}</header>
-                <p>
-        {if $mailing->current_step == constant('Mailing::STEP_SEND')}
-                {_T string="Your e-mail was sent to"}
-        {else}
-                {_T string="You are about to send an e-mail to <strong>%s members</strong>" pattern="/%s/" replace=$count}
-        {/if}
-        {if $mailing->current_step == constant('Mailing::STEP_START')}
-                <br/>{_T string="Please compose your mail."}
-        {/if}
-                </p>
+                <p>{_T string="You are about to send an e-mail to <strong>%s members</strong>" pattern="/%s/" replace=$count}</p>
         {assign var='count_unreachables' value=$mailing->unreachables|@count}
         {if $count_unreachables > 0}
                 <p>
@@ -56,18 +47,19 @@
                 <header class="ui-state-default ui-state-active">{_T string="Write your mailing"}</header>
                 <div>
                     <label for="mailing_objet" class="bline">{_T string="Object:"}</label>
-                    <input type="text" name="mailing_objet" id="mailing_objet" value="{$mailing->subject}" size="80"/>
+                    <input type="text" name="mailing_objet" id="mailing_objet" value="{$mailing->subject}" size="80" required/>
                 </div>
                 <div>
                     <span class="fright"><a href="javascript:toggleMailingEditor('mailing_corps');" id="toggle_editor">{_T string="(De)Activate HTML editor"}</a></span>
                     <label for="mailing_corps" class="bline">{_T string="Message:"}</label>
-                    <textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15">{$mailing->message|escape}</textarea>
+                    <textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15" required>{$mailing->message|escape}</textarea>
                     <input type="hidden" name="html_editor_active" id="html_editor_active" value="{if $html_editor_active}1{else}0{/if}"/>
                 </div>
                 <div class="center">
                     <input type="checkbox" name="mailing_html" id="mailing_html" value="1" {if $mailing->html eq 1 or $pref_editor_enabled eq 1}checked="checked"{/if}/><label for="mailing_html">{_T string="Interpret HTML"}</label><br/>
-                    <input type="submit" name="mailing_go" value="{_T string="Preview"}"/>
-                    <input type="submit" name="mailing_confirm" value="{_T string="Send"}"/>
+                    <input type="submit" id="btnpreview" name="mailing_go" value="{_T string="Preview"}"/>
+                    <input type="submit" id="btnsave" name="mailing_save" value="{_T string="Save"}"/>
+                    <input type="submit" id="btnsend" name="mailing_confirm" value="{_T string="Send"}"/>
                 </div>
             </section>
         {/if}

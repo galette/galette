@@ -59,9 +59,12 @@ input {
     padding: 4px;
 }
 
-input[required] {
+input:required {
     border:1px red solid;
     border-left-width: 8px;
+}
+input:required:valid {
+    border-color:green;
 }
 
 pre, code, kbd, samp {
@@ -265,7 +268,7 @@ footer li {
 }
 
 /* == Buttons */
-#delete, #sendmail, #btnsave, #btnadd, #btncancel, .button {
+#delete, #sendmail, #btnsave, #btnadd, #btncancel, #btnsend, #btnpreview, .button {
     padding-left: 2em!important;
     background-position: 10px 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;
@@ -353,6 +356,20 @@ footer li {
 }
 #btnback.ui-state-hover {
     background-image:url(images/prev.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#btnpreview {
+	background-image:url(images/icon-preview.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#btnpreview.ui-state-hover {
+    background-image:url(images/icon-preview.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#btnsend {
+	background-image:url(images/icon-mail-send.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#btnsend.ui-state-hover {
+    background-image:url(images/icon-mail-send.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 #histreset {
