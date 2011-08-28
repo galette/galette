@@ -134,6 +134,14 @@
 					<input type="text" name="pref_beg_membership" id="pref_beg_membership" value="{$pref.pref_beg_membership}" maxlength="5"/>
 					<span class="exemple">{_T string="(dd/mm)"}</span>
 				</p>
+                <p>
+                    <label for="pref_bool_publicpages" class="bline"{if $required.pref_bool_publicpages eq 1} required{/if}>{_T string="Public pages enabled?"}</label>
+                    <input type="checkbox" name="pref_bool_publicpages" id="pref_bool_publicpages" value="1" {if $pref.pref_bool_publicpages} checked="checked"{/if}/>
+                </p>
+                <p>
+                    <label for="pref_bool_selfsubscribe" class="bline"{if $required.pref_bool_selfsubscribe eq 1} required{/if}>{_T string="Self subscription enabled?"}</label>
+                    <input type="checkbox" name="pref_bool_selfsubscribe" id="pref_bool_selfsubscribe" value="1"{if $pref.pref_bool_selfsubscribe} checked="checked"{/if}"/>
+                </p>
 			</fieldset>
 
 			<fieldset class="cssform" id="mail">

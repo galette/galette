@@ -126,7 +126,9 @@ class Preferences
         'pref_card_vspace'    =>    5,
         'pref_card_hspace'    =>    10,
         'pref_card_self'    =>    1,
-        'pref_theme'        =>    'default'
+        'pref_theme'        =>    'default',
+        'pref_bool_publicpages' => true,
+        'pref_bool_selfsubscribe' => true
     );
 
     /**
@@ -171,7 +173,7 @@ class Preferences
         }
         if ( $proceed !== false ) {
             $sql = 'INSERT INTO ' . PREFIX_DB . self::TABLE .
-                ' (nom_pref, val_pref VALUES(:nom_pref, :val_pref)';
+                ' (nom_pref, val_pref) VALUES(:nom_pref, :val_pref)';
 
             try {
                 $stmt = $zdb->db->prepare($sql);
