@@ -90,12 +90,13 @@ We have to use a template file, so Smarty will do its work (like replacing varia
   {/if}
 		</ul>
 {/if}
-        {* TODO: public pages links display should be configurable from galette preferences *}
+{if $preferences->pref_bool_publicpages eq true}
         <h1 class="nojs">{_T string="Public pages"}</h1>
         <ul>
             <li><a href="{$galette_base_path}public/liste_membres.php" title="{_T string="Members list"}">{_T string="Members list"}</a></li>
             <li><a href="{$galette_base_path}public/trombinoscope.php" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a></li>
         </ul>
+{/if}
 {if $login->isAdmin()}
 		<h1 class="nojs">{_T string="Configuration"}</h1>
 		<ul>
