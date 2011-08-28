@@ -339,6 +339,14 @@ if ( isset($_POST['valid']) ) {
 }
 
 // template variable declaration
+$title = _T("Contribution card");
+if ( $contrib->id != '' ) {
+    $title .= ' (' . _T("modification") . ')';
+} else {
+    $title .= ' (' . _T("creation") . ')';
+}
+
+$tpl->assign('page_title', $title);
 $tpl->assign('required', $required);
 $tpl->assign('disabled', $disabled);
 $tpl->assign('data', $contribution); //TODO: remove

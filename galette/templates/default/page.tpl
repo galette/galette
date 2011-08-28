@@ -130,6 +130,14 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {/if}
 	</div>
 	<div id="content">
+        <h1 id="titre">
+            {$page_title}
+            {if $PAGENAME neq 'mailing_adherents.php' and $existing_mailing eq true}
+                <a class="button" id="sendmail" href="{$galette_base_path}mailing_adherents.php" title="{_T string="A mailing exists in the current session. Click here if you want to resume or cancel it."}">
+                    {_T string="Existing mailing"}
+                </a>
+            {/if}
+        </h1>
         {$content}
 	</div>
     {include file="footer.tpl"}

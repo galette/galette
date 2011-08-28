@@ -86,6 +86,7 @@ if ( isset($_POST) && count($_POST)>1 ) {
 
 $required = $requires->getRequired();
 
+$tpl->assign('page_title', _T("Required fields for adherents"));
 $tpl->assign('time', time());
 $tpl->assign('fields', $fields);
 $tpl->assign('adh_fields', $adh_fields);

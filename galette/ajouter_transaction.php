@@ -142,6 +142,14 @@ if ( isset($_POST['valid']) ) {
 }
 
 // template variable declaration
+$title = _T("Transaction");
+if ( $trans->id != '' ) {
+    $title .= ' (' . _T("modification") . ')';
+} else {
+    $title .= ' (' . _T("creation") . ')';
+}
+
+$tpl->assign('page_title', $title);
 $tpl->assign('required', $required);
 $tpl->assign('transaction', $trans);
 $tpl->assign('error_detected', $error_detected);

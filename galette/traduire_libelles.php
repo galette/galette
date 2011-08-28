@@ -144,6 +144,7 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
         
     }
 }
+$tpl->assign('page_title', _T("Translate labels"));
 $tpl->assign('text_orig', $text_orig);
 $tpl->assign('error_detected', $error_detected);
 $content = $tpl->fetch('traduire_libelles.tpl');

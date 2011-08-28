@@ -1,4 +1,3 @@
-		<h1 id="titre">{_T string="Mailings"}</h1>
 		<table id="listing">
 			<thead>
 				<tr>

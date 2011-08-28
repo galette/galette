@@ -92,6 +92,7 @@ if (isset($_POST['valid']) && $_POST['valid'] == '1') {
     }
 }
 
+$tpl->assign('page_title', _T("Automatic emails texts edition"));
 $mtxt = $texts->getTexts($cur_ref, $cur_lang);
 $tpl->assign('reflist', $texts->getRefs($cur_lang));
 $tpl->assign('langlist', $i18n->getList());

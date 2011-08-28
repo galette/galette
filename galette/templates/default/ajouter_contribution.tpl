@@ -1,4 +1,3 @@
-		<h1 id="titre">{_T string="Contribution card"} ({if $contribution->id != ""}{_T string="modification"}{else}{_T string="creation"}{/if})</h1>
 		<form action="ajouter_contribution.php" method="post">
 {if $error_detected|@count != 0}
 		<div id="errorbox">

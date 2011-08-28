@@ -1,7 +1,3 @@
-{* FIXME: a bad hack... Title will go to page.tpl in the future as well as error/warnings (see public_page.tpl) *}
-{if $login->isLogged()}
-		<h1 id="titre">{_T string="Member Profile"} {if $member->id != ""}#{$member->id} ({_T string="modification"}){else}({_T string="creation"}){/if}</h1>
-{/if}
 		<form action="{if $login->isLogged()}ajouter_adherent.php{else}self_adherent.php{/if}" method="post" enctype="multipart/form-data" id="form">
 {* FIXME: a bad hack... Title will go to page.tpl in the future as well as error/warnings (see public_page.tpl) *}
 {if $error_detected|@count != 0 and $login->isLogged()}

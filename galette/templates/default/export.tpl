@@ -1,4 +1,3 @@
-		<h1 id="titre">{_T string="CVS database Export"}</h1>
 		<form class="form" action="export.php" method="post" enctype="multipart/form-data">
 {if $error_detected|@count != 0}
 		<div id="errorbox">

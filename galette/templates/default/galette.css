@@ -268,7 +268,7 @@ footer li {
 }
 
 /* == Buttons */
-#delete, #sendmail, #btnsave, #btnadd, #btncancel, #btnsend, #btnpreview, .button {
+#delete, #sendmail, #btnsave, #btnadd, #btncancel, #btnsend, #btnpreview, #btnusers, .button {
     padding-left: 2em!important;
     background-position: 10px 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;
@@ -279,6 +279,22 @@ footer li {
 }
 #sendmail.ui-state-hover {
     background-image:url(images/icon-mail.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+h1 #sendmail {
+    display: inline-block;
+    height: 25px;
+    width: 35px;
+    position: absolute;
+    top:.1em;
+    right: .5em;
+    overflow: hidden;
+    text-indent: 50px;
+    padding:0!important;
+}
+
+h1 #sendmail .ui-button-text {
+    display: none;
 }
 
 #delete{
@@ -370,6 +386,13 @@ footer li {
 }
 #btnsend.ui-state-hover {
     background-image:url(images/icon-mail-send.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#btnusers {
+	background-image:url(images/icon-user.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#btnusers.ui-state-hover {
+    background-image:url(images/icon-user.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 #histreset {
@@ -626,6 +649,7 @@ input.submit:hover
 	margin:0 1em 1em 1em;
 	color: #666;
 	text-align:center;
+    position:relative;
 	-moz-border-radius: 10px 10px 10px 10px;
 	-webkit-border-radius: 10px 10px 10px 10px;
 	border-radius: 10px 10px 10px 10px;

@@ -97,6 +97,7 @@ if ( isset($_POST) && count($_POST) > 0 ) {
     $fc->setFields($res);
 }
 
+$tpl->assign('page_title', _T("Fields configuration"));
 $tpl->assign('time', time());
 $tpl->assign('categories', FieldsCategories::getList());
 $tpl->assign('categorized_fields', $fc->getCategorizedFields());

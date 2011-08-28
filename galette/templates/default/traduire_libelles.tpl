@@ -1,4 +1,3 @@
-		<h1 id="titre">{_T string="Translate labels"}</h1>
 {if $error_detected|@count != 0}
 		<div id="errorbox">
 			<h1>{_T string="- ERROR -"}</h1>

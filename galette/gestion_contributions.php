@@ -138,6 +138,7 @@ $list_contribs = $contribs->getContributionsList(true);
 //assign pagination variables to the template and add pagination links
 $contribs->setSmartyPagination($tpl);
 
+$tpl->assign('page_title', _T("Contributions managment"));
 $tpl->assign('require_dialog', true);
 $tpl->assign('require_calendar', true);
 if (isset($error_detected)) {

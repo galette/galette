@@ -303,9 +303,9 @@ function editEntry ($id, $class)
 
     $tpl->assign('entry', get_object_vars($entry));
     if (get_class($class) == 'Status') {
-        $tpl->assign('form_title', _T("Edit status"));
+        $tpl->assign('page_title', _T("Edit status"));
     } elseif ( get_class($class) == 'ContributionsTypes' ) {
-        $tpl->assign('form_title', _T("Edit contribution type"));
+        $tpl->assign('page_title', _T("Edit contribution type"));
     }
 }
 
@@ -338,9 +338,9 @@ function listEntries ($class)
     $tpl->assign('entries', $entries);
 
     if ( get_class($class) == 'Status' ) {
-        $tpl->assign('form_title', _T("User statuses"));
+        $tpl->assign('page_title', _T("User statuses"));
     } elseif ( get_class($class) == 'ContributionsTypes' ) {
-        $tpl->assign('form_title', _T("Contribution types"));
+        $tpl->assign('page_title', _T("Contribution types"));
     }
 }
 

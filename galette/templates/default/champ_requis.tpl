@@ -1,4 +1,3 @@
-	<h1 id="titre">{_T string="Required fields for adherents"}</h1>
 	<form action="champs_requis.php" method="post">
 {if $error_detected|@count != 0}
 		<div id="errorbox">

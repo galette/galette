@@ -399,6 +399,7 @@ $tpl->assign(
         0 => _T("All")
     )
 );
+$tpl->assign('page_title', _T("Settings"));
 $tpl->assign('print_logo', $print_logo);
 $tpl->assign('required', $required);
 $tpl->assign('languages', $i18n->getList());

@@ -1,4 +1,3 @@
-		<h1 id="titre">{_T string="Settings"}</h1>
 		<form action="preferences.php" method="post" enctype="multipart/form-data">
 {if $error_detected|@count != 0}
 		<div id="errorbox">

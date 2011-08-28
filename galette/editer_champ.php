@@ -272,6 +272,7 @@ $data['repeat'] = $field_repeat;
 $data['size'] = $field_size;
 $data['fixed_values'] = $fixed_values;
 
+$tpl->assign('page_title', _T("Edit field"));
 $tpl->assign('form_name', $form_name);
 $tpl->assign('properties', $properties);
 $tpl->assign('data', $data);

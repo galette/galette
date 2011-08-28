@@ -187,6 +187,7 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
     $tpl->assign('html_editor', true);
     $tpl->assign('html_editor_active', $_POST['html_editor_active']);
 }
+$tpl->assign('page_title', _T("Mailing"));
 $content = $tpl->fetch('mailing_adherents.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');

@@ -1,4 +1,3 @@
-		<h1 id="titre">{_T string="Edit field"}</h1>
 		<form action="editer_champ.php" method="post"> 						
 {if $error_detected|@count != 0}
 		<div id="errorbox">

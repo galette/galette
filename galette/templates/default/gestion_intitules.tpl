@@ -1,4 +1,3 @@
-<h1 id="titre">{$form_title}</h1>
 <form action="gestion_intitules.php" method="post" enctype="multipart/form-data">
 {if $error_detected|@count != 0}
   <div id="errorbox">

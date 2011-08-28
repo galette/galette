@@ -46,10 +46,6 @@ if ( !$login->isAdmin()) {
     die();
 }
 
-//cleanup
-$_SESSION['galette']['mailing'] = null;
-unset($_SESSION['galette']['mailing']);
-
 $mailhist = new MailingHistory();
 
 if ( isset($_GET['reset']) && $_GET['reset'] == 1 ) {
@@ -78,6 +74,7 @@ $_SESSION['galette']['history'] = serialize($hist);
 //assign pagination variables to the template and add pagination links
 $mailhist->setSmartyPagination($tpl);
 
+$tpl->assign('page_title', _T("Mailings"));
 $tpl->assign('logs', $logs);
 $tpl->assign('nb_lines', count($logs));
 $tpl->assign('history', $mailhist);

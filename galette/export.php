@@ -118,6 +118,7 @@ if ( isset( $_POST['export_parameted'] ) && $_POST['export_parameted'] != '' ) {
 
 $parameted = $csv->getParametedExports();
 
+$tpl->assign('page_title', _T("CVS database Export"));
 $tpl->assign('tables_list', $tables_list);
 $tpl->assign('written', $written);
 $tpl->assign('error_detected', $error_detected);

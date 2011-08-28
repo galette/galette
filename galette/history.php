@@ -72,6 +72,7 @@ $_SESSION['galette']['history'] = serialize($hist);
 //assign pagination variables to the template and add pagination links
 $hist->setSmartyPagination($tpl);
 
+$tpl->assign('page_title', _T("Logs"));
 $tpl->assign('logs', $logs);
 $tpl->assign('nb_lines', count($logs));
 $tpl->assign('history', $hist);

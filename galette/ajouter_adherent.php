@@ -308,6 +308,15 @@ $dynamic_fields = prepare_dynamic_fields_for_display(
     1
 );
 // template variable declaration
+//"Member Profile"
+    $title = _T("Member Profile");
+if ( $member->id != '' ) {
+    $title .= ' (' . _T("modification") . ')';
+} else {
+    $title .= ' (' . _T("creation") . ')';
+}
+
+$tpl->assign('page_title', $title);
 $tpl->assign('required', $required);
 $tpl->assign('disabled', $disabled);
 $tpl->assign('member', $member);

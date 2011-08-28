@@ -92,6 +92,7 @@ $list_trans = $trans->getTransactionsList(true);
 //assign pagination variables to the template and add pagination links
 $trans->setSmartyPagination($tpl);
 
+$tpl->assign('page_title', _T("Transactions managment"));
 $tpl->assign('require_dialog', true);
 $tpl->assign('transactions', $list_trans);
 $tpl->assign('nb_transactions', $trans->getCount());

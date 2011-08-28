@@ -1,4 +1,3 @@
-		<h1 id="titre">{_T string="New transaction"}</h1>
 		<form action="ajouter_transaction.php" method="post">
 {if $error_detected|@count != 0}
 		<div id="errorbox">

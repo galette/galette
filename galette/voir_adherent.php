@@ -115,6 +115,7 @@ $dynamic_fields = prepare_dynamic_fields_for_display(
 if ( isset($error_detected) ) {
     $tpl->assign('error_detected', $error_detected);
 }
+$tpl->assign('page_title', _T("Member Profile"));
 $tpl->assign('member', $member);
 $tpl->assign('navigate', $navigate);
 $tpl->assign('pref_lang_img', $i18n->getFlagFromId($member->language));

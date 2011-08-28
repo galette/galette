@@ -1,4 +1,3 @@
-		<h1 id="titre">{_T string="Profile configuration"}{if $form_title != ''} ({$form_title}){/if}</h1>
 		<form action="configurer_fiches.php" method="post" enctype="multipart/form-data">
 {if $error_detected|@count != 0}
 		<div id="errorbox">

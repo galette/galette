@@ -1,4 +1,3 @@
-	<h1 id="titre">{_T string="Member Profile"}</h1>
 {if $navigate|@count != 0}
     <nav>
         <a id="prev" href="{if $navigate.prev}?id_adh={$navigate.prev}{else}#{/if}" class="button{if !$navigate.prev} selected{/if}">{_T string="Previous"}</a>

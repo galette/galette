@@ -1,4 +1,3 @@
-	<h1 id="titre">{_T string="Fields configuration"}</h1>
 	<div id="errorbox">
 		<h1>{_T string="- WARNING -"}</h1>
 		<p>{_T string="This page is under construction.<br/>Data are all stored, but <strong>not used anywhere in Galette for now</strong> :-)"}</p>

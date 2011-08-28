@@ -1,4 +1,3 @@
-		<h1 id="titre">{_T string="Mailing"}</h1>
 {if $pref_mail_method == constant('Mailing::METHOD_DISABLED')}
 		<div id="errorbox">
 			<h1>{_T string="- ERROR -"}</h1>
