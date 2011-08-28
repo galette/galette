@@ -157,8 +157,14 @@ class MailingHistory extends History
             $select->from(PREFIX_DB . self::TABLE)
                 ->where('mailing_id = ?', $id);
             $res = $select->query()->fetch();
-            $recipients = unserialize($res->recipients);
-            $mailing->recipients = $recipients;
+            $orig_recipients = unserialize($res->mailing_recipients);
+
+            $_recipients = array();
+            foreach ( $orig_recipients as $k=>$v ) {
+                $m = new Adherent($k);
+                $_recipients[] = $m;
+            }
+            $mailing->setRecipients($_recipients);
             $mailing->subject = $res->mailing_subject;
             $mailing->message = $res->mailing_body;
             return true;

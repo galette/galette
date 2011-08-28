@@ -79,12 +79,24 @@ class Mailing extends GaletteMail
             then init it here */
         if ( $members !== null) {
             //Check which members have a valid email adress and which have not
-            foreach ($members as $member) {
-                if ( trim($member->email) != '' && self::isValidEmail($member->email) ) {
-                    $this->_recipients[] = $member;
-                } else {
-                    $this->_unreachables[] = $member;
-                }
+            $this->setRecipients($members);
+        }
+    }
+
+    /**
+     * Set mailing recipients
+     *
+     * @param <type> $members Aray of Adherent objects
+     *
+     * @return void
+     */
+    public function setRecipients($members)
+    {
+        foreach ($members as $member) {
+            if ( trim($member->email) != '' && self::isValidEmail($member->email) ) {
+                $this->_recipients[] = $member;
+            } else {
+                $this->_unreachables[] = $member;
             }
         }
     }

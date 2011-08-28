@@ -63,6 +63,7 @@
                     <input type="submit" id="btnpreview" name="mailing_go" value="{_T string="Preview"}"/>
                     <input type="submit" id="btnsave" name="mailing_save" value="{_T string="Save"}"/>
                     <input type="submit" id="btnsend" name="mailing_confirm" value="{_T string="Send"}"/>
+                    <input type="submit" id="btncancel" name="mailing_cancel" value="{_T string="Cancel mailing"}" formnovalidate/>
                 </div>
             </section>
         {/if}
@@ -79,9 +80,12 @@
     					<pre>{$mailing->message}</pre>
             {/if}
         			</p>
-            		<p>
-                        <input type="button" class="button" id="btnback" onclick="javascript:back()" value="{_T string="Modifiy mailing"}"/>
+                </div>
+                <div>
+                    <p>
+                        <input type="submit" name="mailing_reset" class="button" id="btnback" value="{_T string="Modifiy mailing"}"/>
                         <input type="submit" name="mailing_confirm" value="{_T string="Send"}"/>
+                        <input type="submit" id="btncancel" name="mailing_cancel" value="{_T string="Cancel mailing"}"/>
                         <input type="hidden" name="mailing_objet" value="{$mailing->subject}"/>
                         <input type="hidden" name="mailing_corps" value="{$mailing->message|escape}"/>
                     </p>
@@ -92,4 +96,53 @@
         </div>
 		</form>
 </section>
+<script type="text/javascript">
+    $(function() {ldelim}
+        {* Preview popup *}
+        $('#btnpreview').click(function(){ldelim}
+            var _subject = $('#mailing_objet').val();
+            var _body = $('#mailing_corps').val();
+            $.ajax({ldelim}
+                url: 'ajax_mailing_preview.php',
+                type: "POST",
+                data: {ldelim}ajax: true, subject: _subject, body: _body{rdelim},
+                success: function(res){ldelim}
+                    _preview_dialog(res);
+                {rdelim},
+                error: function() {ldelim}
+                    alert("{_T string="An error occured displaying preview :("}");
+                {rdelim}
+            });
+            return false;
+        {rdelim});
+
+        var _preview_dialog = function(res){ldelim}
+            var _el = $('<div id="ajax_preview" title="{_T string="Mailing preview"}"> </div>');
+            _el.appendTo('body').dialog({ldelim}
+                modal: true,
+                hide: 'fold',
+                width: '60%',
+                height: 400,
+                close: function(event, ui){ldelim}
+                    _el.remove();
+                {rdelim}
+            {rdelim});
+            $('#ajax_preview').append( res );
+        {rdelim}
+
+        var _members_dialog = function(res){ldelim}
+            var _el = $('<div id="members_list" title="{_T string="Members selection"}"> </div>');
+            _el.appendTo('body').dialog({ldelim}
+                modal: true,
+                hide: 'fold',
+                width: '60%',
+                height: 400,
+                close: function(event, ui){ldelim}
+                    _el.remove();
+                {rdelim}
+            {rdelim});
+            $('#members_list').append( res );
+        {rdelim}
+    {rdelim});
+</script>
 {/if}

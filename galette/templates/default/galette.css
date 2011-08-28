@@ -929,21 +929,24 @@ a.listing:hover {
 	width:99%;
 }
 
-#mailing_preview {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	width: 70%;
-	border-color: #DDDDDD;
-	border-width: 2px;
-	border-style: solid;
-	margin-left: auto;
-	margin-right: auto;
+.ajax_mailing_preview header {
+    padding:.2em 0;
+    font-weight: bold!important;
+    text-align: center;
 }
 
-#mailing_preview th {
-	font-weight: bold;
-	text-align: left;
-	background-color: #EEEEEE;
+#mailing_header dt,
+#mailing_header dd {
+    display: inline-block;
+    padding:0;
+    margin:0;
+}
+#mailing_header dt {
+    font-weight: bold;
+    width: 18%;
+}
+#mailing_header dd {
+    width: 80%;
 }
 
 #errorbox {
@@ -1072,6 +1075,11 @@ a.listing:hover {
 
 .mailing_write p {
     display:block!important;
+}
+
+#mail_preview div:nth-child(2) {
+    max-height: 20em;
+    overflow: auto;
 }
 
 .button-container

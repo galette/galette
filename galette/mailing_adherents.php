@@ -77,7 +77,10 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
 
     $members = Members::getArrayList($varslist->selected);
 
-    if ( isset($_SESSION['galette']['mailing']) ) {
+    if ( isset($_SESSION['galette']['mailing'])
+        && !isset($_POST['mailing_cancel'])
+        && !isset($_GET['from'])
+    ) {
         $mailing = unserialize($_SESSION['galette']['mailing']);
     } else if (isset($_GET['from']) && is_numeric($_GET['from'])) {
         $mailing = new Mailing(null);
@@ -106,6 +109,8 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
 
         if ( count($error_detected) == 0 && !isset($_POST['mailing_reset']) ) {
             $mailing->current_step = Mailing::STEP_PREVIEW;
+        } else {
+            $mailing->current_step = Mailing::STEP_START;
         }
     }
 
@@ -187,6 +192,7 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
     $tpl->assign('html_editor', true);
     $tpl->assign('html_editor_active', $_POST['html_editor_active']);
 }
+$tpl->assign('require_dialog', true);
 $tpl->assign('page_title', _T("Mailing"));
 $content = $tpl->fetch('mailing_adherents.tpl');
 $tpl->assign('content', $content);
