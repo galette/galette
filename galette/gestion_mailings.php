@@ -46,6 +46,10 @@ if ( !$login->isAdmin()) {
     die();
 }
 
+//cleanup
+$_SESSION['galette']['mailing'] = null;
+unset($_SESSION['galette']['mailing']);
+
 $mailhist = new MailingHistory();
 
 if ( isset($_GET['reset']) && $_GET['reset'] == 1 ) {

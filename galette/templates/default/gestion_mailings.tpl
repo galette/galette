@@ -55,7 +55,7 @@
 							{/if}
 						</a>
 					</th>
-                    <th></th>
+                    <th class="listing"></th>
 				</tr>
 			</thead>
 			<tfoot>
@@ -73,9 +73,34 @@
 					<td class="nowrap">{$log.mailing_date|date_format:"%a %d/%m/%Y - %R"}</td>
 					<td>{if $log.mailing_sender eq 0}Admin{else}{$log.mailing_sender}{/if}</td>
 					<td>{$log.mailing_subject}</td>
+					<td class="center nowrap actions_row">
+                        <a href="mailing_adherents.php?from={$log.mailing_id}">
+                            <img
+                                src="{$template_subdir}images/icon-mail.png"
+                                alt="{_T string="New mailing from %s" pattern="/%s/" replace=$log.mailing_id}"
+                                width="16"
+                                height="16"
+                                title="{_T string="Use mailing '%subject' as a template for a new one" pattern="/%subject/" replace=$log.mailing_subject}"
+                                />
+                        </a>
+						<a href="ajouter_adherent.php?id_adh={$mailing->id}">
+                            <img
+                                src="{$template_subdir}images/icon-edit.png"
+                                alt="{_T string="[mod]"}"
+                                width="16"
+                                height="16"
+                                title="{_T string="%membername: edit informations" pattern="/%membername/" replace=$member->sname}"
+                                />
+                        </a>
+						<a
+                            onclick="return confirm('{_T string="Do you really want to delete this member from the base? This will also delete the history of his fees. You could instead disable the account.\n\nDo you still want to delete this member ?"|escape:"javascript"}')"
+                            href="?sup={$mailling->id}">
+                            <img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/>
+                        </a>
+					</td>
 				</tr>
 {foreachelse}
-				<tr><td colspan="4" class="emptylist">{_T string="No sent mailing has been stored in the database yet."}</td></tr>
+				<tr><td colspan="5" class="emptylist">{_T string="No sent mailing has been stored in the database yet."}</td></tr>
 {/foreach}
 			</tbody>
 		</table>

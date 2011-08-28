@@ -159,6 +159,9 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
                 '[mailing_adherents.php] Message has been sent.',
                 PEAR_LOG_INFO
             );
+            //cleanup
+            $_SESSION['galette']['mailing'] = null;
+            unset($_SESSION['galette']['mailing']);
         }
     }
 
