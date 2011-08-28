@@ -64,6 +64,7 @@ class MailingHistory extends History
     private $_message;
     private $_recipients;
     private $_sender;
+    private $_sent = false;
     private $_no_longer_members;
 
     /**
@@ -163,6 +164,7 @@ class MailingHistory extends History
             $this->_subject = $this->_mailing->subject;
             $this->_message = $this->_mailing->message;
             $this->_recipients = $this->_mailing->recipients;
+            $this->_sent = true;
             $this->_date = date('Y-m-d H:m:s');
             $this->store();
         } else {
@@ -189,7 +191,8 @@ class MailingHistory extends History
                 'mailing_subject' => $this->_subject,
                 'mailing_body' => $this->_message,
                 'mailing_date' => $this->_date,
-                'mailing_recipients' => serialize($_recipients)
+                'mailing_recipients' => serialize($_recipients),
+                'mailing_sent' => $this->_sent
             );
 
             $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
