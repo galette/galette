@@ -29,12 +29,15 @@
         <nav>
             <a id="backhome" class="button{if $PAGENAME eq "index.php"} selected{/if}" href="{$galette_base_path}index.php">{_T string="Home"}</a>
     {if !$login->isLogged()}
+        {if $preferences->pref_bool_selfsubscribe eq true}
             <a id="subscribe" class="button{if $PAGENAME eq "self_adherent.php"} selected{/if}" href="{$galette_base_path}self_adherent.php">{_T string="Subscribe"}</a>
+        {/if}
             <a id="lostpassword" class="button{if $PAGENAME eq "lostpasswd.php"} selected{/if}" href="{$galette_base_path}lostpasswd.php">{_T string="Lost your password?"}</a>
     {/if}
-            {* TODO: public pages links display should be configurable from galette preferences *}
+    {if $preferences->pref_bool_publicpages eq true}
             <a id="memberslist" class="button{if $PAGENAME eq "liste_membres.php"} selected{/if}" href="{$galette_base_path}public/liste_membres.php" title="{_T string="Members list"}">{_T string="Members list"}</a>
             <a id="trombino" class="button{if $PAGENAME eq "trombinoscope.php"} selected{/if}" href="{$galette_base_path}public/trombinoscope.php" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a>
+    {/if}
         </nav>
 {if $error_detected|@count != 0}
 				<div id="errorbox">

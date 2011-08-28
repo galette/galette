@@ -39,6 +39,10 @@
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
+if ( !$preferences->pref_bool_selfsubscribe ) {
+    header('location:index.php');
+}
+
 require_once WEB_ROOT . 'includes/dynamic_fields.inc.php';
 
 // initialize warnings
