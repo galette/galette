@@ -138,6 +138,7 @@ CREATE TABLE IF NOT EXISTS galette_mailing_history (
   mailing_body text NOT NULL,
   mailing_date datetime NOT NULL,
   mailing_recipients text NOT NULL,
+  mailing_sent tinyint(1) NOT NULL,
   PRIMARY KEY (mailing_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

@@ -114,5 +114,6 @@ CREATE TABLE galette_mailing_history (
   mailing_body text NOT NULL,
   mailing_date timestamp NOT NULL,
   mailing_recipients text NOT_NULL
+  mailing sent character(1) DEFAULT NULL
 );
 CREATE UNIQUE INDEX galette_mailing_history_idx ON galette_mailing_history (mailing_id);
