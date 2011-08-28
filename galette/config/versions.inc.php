@@ -43,5 +43,5 @@ define('TCPDF_VERSION', '5.9.088');
 define('JQUERY_VERSION', '1.6.2');
 define('JQUERY_UI_VERSION', '1.8.14');
 define('JQUERY_MARKITUP_VERSION', '1.1.12');
-define('PHP_MAILER_VERSION', '5.1');
+define('PHP_MAILER_VERSION', '5.2.0');
 ?>
