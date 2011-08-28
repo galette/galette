@@ -56,6 +56,7 @@ if ( isset($_POST['mailing_done']) ) {
 require_once WEB_ROOT . 'classes/members.class.php';
 require_once WEB_ROOT . 'classes/varslist.class.php';
 require_once WEB_ROOT . 'classes/mailing.class.php';
+require_once WEB_ROOT . 'classes/mailing_history.class.php';
 
 $error_detected = array();
 $warning_detected = array();
@@ -78,6 +79,9 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
 
     if ( isset($_SESSION['galette']['mailing']) ) {
         $mailing = unserialize($_SESSION['galette']['mailing']);
+    } else if (isset($_GET['from']) && is_numeric($_GET['from'])) {
+        $mailing = new Mailing(null);
+        MailingHistory::loadFrom((int)$_GET['from'], $mailing);
     } else {
         $mailing = new Mailing($members);
     }
@@ -152,7 +156,6 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
                 PEAR_LOG_ERR
             );
         } else {
-            require_once 'classes/mailing_history.class.php';
             $mlh = new MailingHistory($mailing);
             $mlh->storeMailing();
             $log->log(
@@ -160,6 +163,8 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
                 PEAR_LOG_INFO
             );
             //cleanup
+            $varslist->selected = null;
+            $_SESSION['galette']['varslist'] = serialize($varslist);
             $_SESSION['galette']['mailing'] = null;
             unset($_SESSION['galette']['mailing']);
         }
