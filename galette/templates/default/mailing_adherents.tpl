@@ -27,11 +27,11 @@
 		</div>
     {/if}
 
-    {assign var='count' value=$mailing->recipients|@count}
-    {if $count > 0}
         <div class="mailing">
             <section class="mailing_infos">
                 <header class="ui-state-default ui-state-active">{_T string="Mailing informations"}</header>
+    {assign var='count' value=$mailing->recipients|@count}
+    {if $count > 0}
                 <p>{_T string="You are about to send an e-mail to <strong>%s members</strong>" pattern="/%s/" replace=$count}</p>
         {assign var='count_unreachables' value=$mailing->unreachables|@count}
         {if $count_unreachables > 0}
@@ -41,6 +41,10 @@
                     <br/><a id="btnlabels" class="button" href="etiquettes_adherents.php">{_T string="Generate labels"}</a>
                 </p>
         {/if}
+    {else}
+                <p><strong>{_T string="None of the selected members has an email address."}</strong></p>
+    {/if}
+                <div class="center"><a class="button" id="btnusers" href="gestion_adherents.php?nbshow=0&showChecked=true">{_T string="Manage selected members"}</a></div>
             </section>
         {if $mailing->current_step eq constant('Mailing::STEP_START')}
             <section class="mailing_write">
@@ -86,9 +90,6 @@
         {/if}
 
             </section>
-    {else}
-            <strong>{_T string="None of the selected members has an email address."}</strong>
-    {/if}
         </div>
 		</form>
 </section>
