@@ -54,12 +54,6 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-//Reset Mailing object
-if ( isset($_SESSION['galette']['mailing']) ) {
-    $_SESSION['galette']['mailing'] = null;
-    unset($_SESSION['galette']['mailing']);
-}
-
 require_once 'classes/varslist.class.php';
 
 if ( isset($_SESSION['galette']['varslist'])  ) {
