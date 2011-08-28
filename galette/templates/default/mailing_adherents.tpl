@@ -102,10 +102,11 @@
         $('#btnpreview').click(function(){ldelim}
             var _subject = $('#mailing_objet').val();
             var _body = $('#mailing_corps').val();
+            var _html = $('#mailing_html').is(':checked');
             $.ajax({ldelim}
                 url: 'ajax_mailing_preview.php',
                 type: "POST",
-                data: {ldelim}ajax: true, subject: _subject, body: _body{rdelim},
+                data: {ldelim}ajax: true, subject: _subject, body: _body, html: _html{rdelim},
                 success: function(res){ldelim}
                     _preview_dialog(res);
                 {rdelim},
@@ -122,13 +123,29 @@
                 modal: true,
                 hide: 'fold',
                 width: '60%',
-                height: 400,
+                height: 480,
                 close: function(event, ui){ldelim}
                     _el.remove();
                 {rdelim}
             {rdelim});
             $('#ajax_preview').append( res );
         {rdelim}
+
+        {* Members popup *}
+        $('#btnusers').click(function(){ldelim}
+            $.ajax({ldelim}
+                url: 'ajax_members.php',
+                type: "POST",
+                data: {ldelim}ajax: true{rdelim},
+                success: function(res){ldelim}
+                    _members_dialog(res);
+                {rdelim},
+                error: function() {ldelim}
+                    alert("{_T string="An error occured displaying members interface :("}");
+                {rdelim}
+            });
+            return false;
+        {rdelim});
 
         var _members_dialog = function(res){ldelim}
             var _el = $('<div id="members_list" title="{_T string="Members selection"}"> </div>');
