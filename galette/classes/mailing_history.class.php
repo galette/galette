@@ -148,6 +148,30 @@ class MailingHistory extends History
         }
     }
 
+    public static function loadFrom($id, $mailing)
+    {
+        global $zdb, $log;
+
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . self::TABLE)
+                ->where('mailing_id = ?', $id);
+            $res = $select->query()->fetch();
+            $recipients = unserialize($res->recipients);
+            $mailing->recipients = $recipients;
+            $mailing->subject = $res->mailing_subject;
+            $mailing->message = $res->mailing_body;
+            return true;
+        } catch (Exception $e) {
+            $log->log(
+                'Unable to load mailing model #' . $id . ' | ' .
+                $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            return false;
+        }
+    }
+
     /**
      * Store a mailing in the history
      *
