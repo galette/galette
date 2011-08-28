@@ -77,12 +77,14 @@ class Mailing extends GaletteMail
         $this->_mime_type = self::MIME_DEFAULT;
         /** TODO: add a preference that propose default mime-type to use,
             then init it here */
-        //Check which members have a valid email adress and which have not
-        foreach ($members as $member) {
-            if ( trim($member->email) != '' && self::isValidEmail($member->email) ) {
-                $this->_recipients[] = $member;
-            } else {
-                $this->_unreachables[] = $member;
+        if ( $members !== null) {
+            //Check which members have a valid email adress and which have not
+            foreach ($members as $member) {
+                if ( trim($member->email) != '' && self::isValidEmail($member->email) ) {
+                    $this->_recipients[] = $member;
+                } else {
+                    $this->_unreachables[] = $member;
+                }
             }
         }
     }
