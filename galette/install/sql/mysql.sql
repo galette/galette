@@ -181,15 +181,6 @@ CREATE TABLE galette_texts (
   PRIMARY KEY  (tid)
 ) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
--- New table to store models descriptions for documents;
-DROP TABLE IF EXISTS galette_models;
-CREATE TABLE galette_models (
-  mod_id int(11) NOT NULL,
-  mod_name varchar(64)  NOT NULL,
-  mod_xml text NOT NULL,
-  PRIMARY KEY  (mod_id)
-) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
 DROP TABLE IF EXISTS galette_fields_categories;
 CREATE TABLE galette_fields_categories (
   id_field_category int(2) NOT NULL AUTO_INCREMENT,

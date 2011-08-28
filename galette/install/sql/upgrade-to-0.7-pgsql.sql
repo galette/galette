@@ -57,16 +57,6 @@ CREATE UNIQUE INDEX galette_texts_idx ON galette_texts (tid);
 -- Nécéssaire ??
 -- ALTER TABLE galette_pictures ALTER id_adh id_adh INT( 10 ) NOT NULL DEFAULT '0'
 
--- Add a new table to store models descriptions for documents
-DROP TABLE galette_models;
-CREATE TABLE galette_models (
-  mod_id integer NOT NULL,
-  mod_name character varying(64)  NOT NULL,
-  mod_xml text collate NOT NULL,
-  PRIMARY KEY  (mod_id)
-);
-CREATE UNIQUE INDEX galette_models_idx ON galette_models (mod_id);
-
 --
 -- Contenu de la table `galette_texts`
 --

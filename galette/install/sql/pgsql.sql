@@ -227,15 +227,6 @@ CREATE TABLE galette_texts (
 );
 CREATE UNIQUE INDEX galette_texts_idx ON galette_texts (tid);
 
--- New table for documents models: table galette__models
-DROP TABLE galette_models;
-CREATE TABLE galette_models (
-  mod_id integer NOT NULL,
-  mod_name character varying(64) NOT NULL,
-  mod_xml text NOT NULL
-);
-CREATE UNIQUE INDEX galette_models_idx ON galette_models (mod_id);
-
 DROP TABLE galette_fields_categories;
 CREATE TABLE galette_fields_categories (
   id_field_category integer  DEFAULT nextval('galette_fields_categories_id_seq'::text) NOT NULL,

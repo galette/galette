@@ -68,15 +68,6 @@ CREATE TABLE IF NOT EXISTS galette_texts (
 -- Modify table picture to allow for negative indexes;
 ALTER TABLE galette_pictures CHANGE id_adh id_adh INT( 10 ) NOT NULL DEFAULT '0';
 
--- Add a new table to store models descriptions for documents
-DROP TABLE IF EXISTS galette_models;
-CREATE TABLE IF NOT EXISTS galette_models (
-  mod_id int(11) NOT NULL,
-  mod_name varchar(64)  NOT NULL,
-  mod_xml text NOT NULL,
-  PRIMARY KEY  (mod_id)
-) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
 --
 -- Contenu de la table `galette_texts`;
 --
