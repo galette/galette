@@ -47,7 +47,7 @@ if ( !$login->isAdmin() ) {
 }
 
 //We're done :-)
-if ( isset($_POST['mailing_done']) ) {
+if ( isset($_POST['mailing_done']) || isset($_POST['mailing_cancel']) ) {
     $_SESSION['galette']['mailing'] = null;
     unset($_SESSION['galette']['mailing']);
     header('location: gestion_adherents.php');

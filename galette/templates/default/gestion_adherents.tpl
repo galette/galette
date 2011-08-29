@@ -105,7 +105,9 @@
                         <ul class="selection_menu">
                             <li>{_T string="For the selection:"}</li>
                             <li><input type="submit" id="delete" onclick="return confirm('{_T string="Do you really want to delete all selected accounts (and related contributions)?"|escape:"javascript"}');" name="delete" value="{_T string="Delete"}"/></li>
+    {if $pref_mail_method neq constant('Mailing::METHOD_DISABLED')}
                             <li><input type="submit" id="sendmail" name="mailing" value="{_T string="Mail"}"/></li>
+    {/if}
                             <li>
                                 <input type="submit" id="attendance_sheet" name="attendance_sheet" value="{_T string="Attendance sheet"}"/>
                                 {*<span class="exemple">(<input type="checkbox" id="wimages" name="wimages" value="1"/> <label for="wimages">{_T string="Including photos?"}</label>)</span>*}
