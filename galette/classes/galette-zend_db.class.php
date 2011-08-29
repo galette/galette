@@ -88,7 +88,7 @@ class GaletteZendDb extends Zend_Db
             $this->_db->setFetchMode(Zend_Db::FETCH_OBJ);
             $log->log(
                 '[ZendDb] Database connection was successfull!',
-                PEAR_LOG_INFO
+                PEAR_LOG_DEBUG
             );
         } catch (Zend_Db_Adapter_Exception $e) {
             // perhaps a failed login credential, or perhaps the RDBMS is not running
@@ -169,7 +169,7 @@ class GaletteZendDb extends Zend_Db
             $_db->closeConnection();
             $log->log(
                 '[' . __METHOD__ . '] Database connection was successfull!',
-                PEAR_LOG_INFO
+                PEAR_LOG_DEBUG
             );
             return true;
         } catch (Zend_Db_Adapter_Exception $e) {
