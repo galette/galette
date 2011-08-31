@@ -127,6 +127,10 @@
                             $("#legende").remove();
                         {rdelim}
                     {rdelim});
+                    _contribs_ajax_mapper(res);
+                {rdelim}
+
+                var _contribs_ajax_mapper = function(res){ldelim}
                     $('#contributions_list').append( res );
 
                     //Deactivate contributions list links
@@ -139,9 +143,32 @@
                         return false;
                     {rdelim});
                     //Use JS to send form
-                    //FIXME: does not work :(
                     $('#filtre').submit(function(){ldelim}
+                        $.ajax({ldelim}
+                            url: this.action,
+                            type: "POST",
+                            data: $("#filtre").serialize(),
+                            beforeSend: function() {ldelim}
+                                var _img = $('<figure id="loading"><p><img src="{$template_subdir}images/loading.png" alt="{_T string="Loading..."}"/><br/>{_T string="Currently loading..."}</p></figure>');
+                                $('body').append(_img);
+                            {rdelim},
+                            success: function(res){ldelim}
+                                $('#contributions_list').empty();
+                                _contribs_ajax_mapper(res);
+                            {rdelim},
+                            error: function() {ldelim}
+                                alert("{_T string="An error occured displaying contributions :("}");
+                            {rdelim},
+                            complete: function() {ldelim}
+                                $('#loading').remove();
+                            {rdelim}
+                        });
                         return false;
+                    {rdelim});
+                    //Re-bind submit event on the correct element here
+                    $('#nbshow').unbind('change');
+                    $('#nbshow').change(function() {ldelim}
+                        $('form#filtre').submit();
                     {rdelim});
                     //Select a row
                     $('.contribution_row').click(function(){ldelim}

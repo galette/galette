@@ -52,7 +52,7 @@ if ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) {
 }
 
 require_once 'classes/contributions.class.php';
-if ( isset($_SESSION['galette']['contributions']) && !$ajax ) {
+if ( isset($_SESSION['galette']['contributions'])) {
     $contribs = unserialize($_SESSION['galette']['contributions']);
 } else {
     $contribs = new Contributions();
@@ -66,8 +66,14 @@ if ( isset($_GET['page']) && is_numeric($_GET['page']) ) {
     $contribs->current_page = (int)$_GET['page'];
 }
 
-if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
+if ( (isset($_GET['nbshow']) && is_numeric($_GET['nbshow']))
+) {
     $contribs->show = $_GET['nbshow'];
+}
+
+if ( (isset($_POST['nbshow']) && is_numeric($_POST['nbshow']))
+) {
+    $contribs->show = $_POST['nbshow'];
 }
 
 if ( isset($_GET['tri']) ) {

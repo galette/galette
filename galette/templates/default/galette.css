@@ -267,6 +267,33 @@ footer li {
     display: inline;
 }
 
+/* loading animation */
+#loading {
+    position:absolute;
+    top:0;
+    bottom:0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    text-align: center;
+    background-color:rgba(0, 0, 0, 0.5);
+    z-index: 100000;
+}
+#loading p {
+    position: absolute;
+    top:40%;
+    width: 20%;
+    margin-left: 40%;
+    background-color: rgba(255,255,255,.8);
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    padding: 1em 0;
+    -moz-box-shadow: 1px 1px 12px rgba(255, 255, 255, 0.4);
+    -webkitbox-shadow: 1px 1px 12px rgba(255, 255, 255, 0.4);
+    box-shadow: 1px 1px 12px rgba(255, 255, 255, 0.4);
+}
+
 /* == Buttons */
 #delete, #sendmail, #btnsave, #btnadd, #btncancel, #btnsend, #btnpreview, #btnusers, .button {
     padding-left: 2em!important;

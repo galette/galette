@@ -39,6 +39,7 @@
                     {$nb_contributions} {if $nb_contributions != 1}{_T string="contributions"}{else}{_T string="contribution"}{/if}
                 </td>
                 <td class="right">
+                    <input type="hidden" name="ajax" value="true"/>
 					<label for="nbshow">{_T string="Show:"}</label>
 					<select name="nbshow" id="nbshow">
 						{html_options options=$nbshow_options selected=$numrows}
