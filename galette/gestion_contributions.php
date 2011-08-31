@@ -47,7 +47,9 @@ if ( !$login->isLogged() ) {
 $filtre_id_adh = '';
 
 $ajax = false;
-if ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) {
+if ( isset($_POST['ajax']) && $_POST['ajax'] == 'true'
+    || isset($_GET['ajax']) && $_GET['ajax'] == 'true'
+) {
     $ajax = true;
 }
 

@@ -223,37 +223,40 @@
 
 		<script type="text/javascript">
 			$(function(){ldelim}
-				$('#nbshow').change(function() {ldelim}
-					this.form.submit();
-				{rdelim});
-				$('#table_footer').parent().before('<td class="right" colspan="{if $login->isAdmin() && !$member}9{elseif $login->isAdmin()}8{else}7{/if}"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
-				$('#legende h1').remove();
-				$('#legende').dialog({ldelim}
-					autoOpen: false,
-					modal: true,
-					hide: 'fold',
-					width: '40%'
-				{rdelim}).dialog('close');
+                var _init_contribs_page = function(res){ldelim}
+                    $('#nbshow').change(function() {ldelim}
+                        this.form.submit();
+                    {rdelim});
+                    $('#table_footer').parent().before('<td class="right" colspan="{if $login->isAdmin() && !$member}9{elseif $login->isAdmin()}8{else}7{/if}"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
+                    $('#legende h1').remove();
+                    $('#legende').dialog({ldelim}
+                        autoOpen: false,
+                        modal: true,
+                        hide: 'fold',
+                        width: '40%'
+                    {rdelim}).dialog('close');
 
-				$('#show_legend').click(function(){ldelim}
-					$('#legende').dialog('open');
-					return false;
-				{rdelim});
+                    $('#show_legend').click(function(){ldelim}
+                        $('#legende').dialog('open');
+                        return false;
+                    {rdelim});
 
-                $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
-				$('#start_date_filter').datepicker({ldelim}
-					changeMonth: true,
-					changeYear: true,
-					showOn: 'button',
-					buttonImage: '{$template_subdir}images/calendar.png',
-					buttonImageOnly: true
-				{rdelim});
-				$('#end_date_filter').datepicker({ldelim}
-					changeMonth: true,
-					changeYear: true,
-					showOn: 'button',
-					buttonImage: '{$template_subdir}images/calendar.png',
-					buttonImageOnly: true
-				{rdelim});
+                    $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
+                    $('#start_date_filter').datepicker({ldelim}
+                        changeMonth: true,
+                        changeYear: true,
+                        showOn: 'button',
+                        buttonImage: '{$template_subdir}images/calendar.png',
+                        buttonImageOnly: true
+                    {rdelim});
+                    $('#end_date_filter').datepicker({ldelim}
+                        changeMonth: true,
+                        changeYear: true,
+                        showOn: 'button',
+                        buttonImage: '{$template_subdir}images/calendar.png',
+                        buttonImageOnly: true
+                    {rdelim});
+                {rdelim}
+                _init_contribs_page();
 			{rdelim});
 		</script>
