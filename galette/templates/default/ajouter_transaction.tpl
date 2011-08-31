@@ -138,10 +138,6 @@
                         //for links in body (members links), we de nothing
                         return false;
                     {rdelim});
-                    $('#contributions_list tbody a').click(function(){ldelim}
-                        //for pagination links, we have to do something
-                        return false;
-                    {rdelim});
                     //Use JS to send form
                     $('#filtre').submit(function(){ldelim}
                         $.ajax({ldelim}
@@ -196,7 +192,8 @@
                     {rdelim});
                     //Select a row
                     $('.contribution_row').click(function(){ldelim}
-                        //DEBUG console.log('Row selected');
+                        //console.log('Row selected');
+                        $('#contributions_list').dialog( "close" );
                     {rdelim});
                 {rdelim}
 
