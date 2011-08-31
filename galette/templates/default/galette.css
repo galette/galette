@@ -273,6 +273,13 @@ footer li {
     background-position: 10px 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;
 }
+.button.notext {
+    width: .5em;
+    height: 2em;
+}
+.button.notext span {
+    display: none;
+}
 
 #sendmail{
     background-image:url(images/icon-mail.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");

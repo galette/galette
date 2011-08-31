@@ -184,6 +184,7 @@ $dynamic_fields = prepare_dynamic_fields_for_display(
 $tpl->assign('dynamic_fields', $dynamic_fields);
 
 // page generation
+$tpl->assign('require_dialog', true);
 $content = $tpl->fetch("ajouter_transaction.tpl");
 $tpl->assign("content", $content);
 $tpl->display("page.tpl");

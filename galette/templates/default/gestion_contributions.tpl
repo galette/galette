@@ -25,7 +25,7 @@
 		<table class="infoline">
 			<tr>
 				<td class="left nowrap">
-{if $member}
+{if $member && $mode neq 'ajax'}
     {if $login->isAdmin()}
                     <a id="clearfilter" href="?id_adh=all" title="{_T string="Show all members contributions"}">{_T string="Show all members contributions"}</a>
     {/if}
@@ -132,13 +132,13 @@
 						{/if}
 						</a>
 					</th>
-{if $login->isAdmin()}
+{if $login->isAdmin() and $mode neq 'ajax'}
 					<th class="listing nowrap actions_row">{_T string="Actions"}</th>
 {/if}
 				</tr>
 			</thead>
 			<tfoot>
-{if $login->isAdmin()}
+{if $login->isAdmin() && $mode neq 'ajax'}
                 <tr>
                     <td colspan="7" id="table_footer">
                         <ul class="selection_menu">
@@ -159,9 +159,9 @@
 {foreach from=$list_contribs item=contribution key=ordre}
 	{assign var="mid" value=$contribution->member}
 	{assign var="cclass" value=$contribution->getRowClass()}
-				<tr>
+				<tr{if $mode eq 'ajax'} class="contribution_row"{/if}>
 					<td class="{$cclass} center nowrap">
-                        <input type="checkbox" name="contrib_sel[]" value="{$contribution->id}"/>
+                        {if $mode neq 'ajax'}<input type="checkbox" name="contrib_sel[]" value="{$contribution->id}"/>{/if}
                         {php}$ordre = $this->get_template_vars('ordre');echo $ordre+1{/php}
                     </td>
 					<td class="{$cclass} center nowrap">{$contribution->date}</td>
@@ -179,7 +179,7 @@
 					<td class="{$cclass}">{$contribution->type->libelle}</td>
 					<td class="{$cclass} nowrap">{$contribution->amount}</td>
 					<td class="{$cclass} nowrap">{$contribution->duration}</td>
-	{if $login->isAdmin()}
+	{if $login->isAdmin() and $mode neq 'ajax'}
 					<td class="{$cclass} center nowrap">
 						<a href="ajouter_contribution.php?id_cotis={$contribution->id}">
                             <img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="Edit the contribution"}"/>
@@ -199,7 +199,7 @@
 		<div id="legende" title="{_T string="Legend"}">
 			<h1>{_T string="Legend"}</h1>
 			<table>
-{if $login->isAdmin()}
+{if $login->isAdmin() and $mode neq 'ajax'}
 				<tr>
 					<th class="back"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></th>
 					<td class="back">{_T string="Modification"}</td>

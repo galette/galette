@@ -46,11 +46,20 @@ if ( !$login->isLogged() ) {
 
 $filtre_id_adh = '';
 
+$ajax = false;
+if ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) {
+    $ajax = true;
+}
+
 require_once 'classes/contributions.class.php';
-if ( isset($_SESSION['galette']['contributions']) ) {
+if ( isset($_SESSION['galette']['contributions']) && !$ajax ) {
     $contribs = unserialize($_SESSION['galette']['contributions']);
 } else {
     $contribs = new Contributions();
+}
+
+if ( $ajax === true ) {
+    $contribs->filtre_transactions = true;
 }
 
 if ( isset($_GET['page']) && is_numeric($_GET['page']) ) {
@@ -147,15 +156,23 @@ if (isset($error_detected)) {
 if (isset($warning_detected)) {
     $tpl->assign('warning_detected', $warning_detected);
 }
+
 $tpl->assign('list_contribs', $list_contribs);
 $tpl->assign('contributions', $contribs);
-if ( $contribs->filtre_cotis_adh != null ) {
+if ( $contribs->filtre_cotis_adh != null && !$ajax ) {
     $member = new Adherent();
     $member->load($contribs->filtre_cotis_adh);
     $tpl->assign('member', $member);
 }
 $tpl->assign('nb_contributions', $contribs->getCount());
-$content = $tpl->fetch('gestion_contributions.tpl');
-$tpl->assign('content', $content);
-$tpl->display('page.tpl');
+
+$tpl->assign('mode', 'std');
+if ( $ajax ) {
+    $tpl->assign('mode', 'ajax');
+    $tpl->display('gestion_contributions.tpl');
+} else {
+    $content = $tpl->fetch('gestion_contributions.tpl');
+    $tpl->assign('content', $content);
+    $tpl->display('page.tpl');
+}
 ?>

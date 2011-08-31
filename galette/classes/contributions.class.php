@@ -71,6 +71,7 @@ class Contributions extends GalettePagination
     private $_start_date_filter = null;
     private $_end_date_filter = null;
     private $_filtre_cotis_adh = null;
+    private $_filtre_transactions = null;
 
     private $_from_transaction = false;
 
@@ -345,6 +346,10 @@ class Contributions extends GalettePagination
             } else if ( $this->_filtre_cotis_adh != null ) {
                 $select->where('p.' . Adherent::PK . ' = ?', $this->_filtre_cotis_adh);
             }
+            if ( $this->_filtre_transactions === true ) {
+                $select->where('a.trans_id ?', new Zend_Db_Expr('IS NULL'));
+            }
+            $qry = $select->__toString();
         } catch (Exception $e) {
             /** TODO */
             $log->log(

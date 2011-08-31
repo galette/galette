@@ -43,9 +43,14 @@
 		</div>
 		<p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
 		</form>
-{if $contribs}
 		<table class="center_table">
-            <caption>{_T string="Attached contributions"}</caption>
+            <caption>
+                {_T string="Attached contributions"}
+                {if $transaction->getMissingAmount() > 0}
+                    <a href="ajouter_contribution.php?trans_id={$transaction->id}" class="button notext fright" id="btnadd" title="{_T string="Create a new contribution that will be attached to the current transaction"}">{_T string="New attached contribution"}</a>
+                    <a href="#" class="button notext fright" id="memberslist" title="{_T string="Select an existing contribution in the database, and attach it to the current transaction"}">{_T string="Select existing contribution"}</a>
+                {/if}
+            </caption>
 			<thead>
 				<tr>
 					<th class="listing id_row">#</th>
@@ -53,9 +58,9 @@
 					<th class="listing left date_row">{_T string="Begin"}</th>
 					<th class="listing left date_row">{_T string="End"}</th>
 					<th class="listing left">{_T string="Duration"}</th>
-    {if $login->isAdmin()}
+{if $login->isAdmin()}
 					<th class="listing left">{_T string="Member"}</th>
-    {/if}
+{/if}
 					<th class="listing left">{_T string="Type"}</th>
 					<th class="listing left">{_T string="Amount"}</th>
 				</tr>
@@ -71,9 +76,9 @@
                 </tr>
             </tfoot>
 			<tbody>
-    {foreach from=$contribs item=contrib key=ordre}
-        {assign var="mid" value=$contrib->member}
-        {assign var="cclass" value=$contrib->getRowClass()}
+{foreach from=$contribs item=contrib key=ordre}
+    {assign var="mid" value=$contrib->member}
+    {assign var="cclass" value=$contrib->getRowClass()}
 				<tr>
 					<td class="{$cclass} center nowrap">
                         {php}$ordre = $this->get_template_vars('ordre');echo $ordre+1{/php}
@@ -82,15 +87,67 @@
 					<td class="{$cclass} center nowrap">{$contrib->begin_date}</td>
 					<td class="{$cclass} center nowrap">{$contrib->end_date}</td>
 					<td class="{$cclass} nowrap">{$contrib->duration}</td>
-        {if $login->isAdmin()}
+    {if $login->isAdmin()}
 					<td class="{$cclass}">{memberName id="$mid"}</td>
-        {/if}
+    {/if}
 					<td class="{$cclass}">{$contrib->type->libelle}</td>
 					<td class="{$cclass} nowrap right">{$contrib->amount}</td>
 				</tr>
-    {foreachelse}
+{foreachelse}
 				<tr><td colspan="{if $login->isAdmin()}8{else}7{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
-    {/foreach}
+{/foreach}
 			</tbody>
 		</table>
-{/if} {* $contribs *}
+        <script type="text/javascript">
+            $(function(){ldelim}
+                $('#memberslist').click(function(){ldelim}
+                    $.ajax({ldelim}
+                        url: 'gestion_contributions.php',
+                        type: "POST",
+                        data: {ldelim}ajax: true{rdelim},
+                        success: function(res){ldelim}
+                            _contribs_dialog(res);
+                        {rdelim},
+                        error: function() {ldelim}
+                            alert("{_T string="An error occured displaying members interface :("}");
+                        {rdelim}
+                    });
+                    return false;
+                {rdelim});
+
+                var _contribs_dialog = function(res){ldelim}
+                    var _el = $('<div id="contributions_list" title="{_T string="Contributions selection"}"> </div>');
+                    _el.appendTo('body').dialog({ldelim}
+                        modal: true,
+                        hide: 'fold',
+                        width: '80%',
+                        height: 400,
+                        close: function(event, ui){ldelim}
+                            _el.remove();
+                            $("#legende").remove();
+                        {rdelim}
+                    {rdelim});
+                    $('#contributions_list').append( res );
+
+                    //Deactivate contributions list links
+                    $('#contributions_list tbody a').click(function(){ldelim}
+                        //for links in body (members links), we de nothing
+                        return false;
+                    {rdelim});
+                    $('#contributions_list tbody a').click(function(){ldelim}
+                        //for pagination links, we have to do something
+                        return false;
+                    {rdelim});
+                    //Use JS to send form
+                    //FIXME: does not work :(
+                    $('#filtre').submit(function(){ldelim}
+                        return false;
+                    {rdelim});
+                    //Select a row
+                    $('.contribution_row').click(function(){ldelim}
+                        //DEBUG console.log('Row selected');
+                    {rdelim});
+                {rdelim}
+
+            {rdelim});
+        </script>
