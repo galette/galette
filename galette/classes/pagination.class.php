@@ -177,6 +177,9 @@ abstract class GalettePagination
         if ($this->_pages == 0) {
             $this->_pages = 1;
         }
+        if ( $this->_current_page > $this->_pages ) {
+            $this->_current_page = $this->_pages;
+        }
     }
 
     /**
