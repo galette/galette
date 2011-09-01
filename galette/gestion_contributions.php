@@ -67,6 +67,8 @@ if ( $ajax === true ) {
     } else if ( $_GET['max_amount'] ) {
         $contribs->max_amount = (int)$_GET['max_amount'];
     }
+} else {
+    $contribs->max_amount = null;
 }
 
 if ( isset($_GET['page']) && is_numeric($_GET['page']) ) {
