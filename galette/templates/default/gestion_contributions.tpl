@@ -163,9 +163,13 @@
 {foreach from=$list_contribs item=contribution key=ordre}
 	{assign var="mid" value=$contribution->member}
 	{assign var="cclass" value=$contribution->getRowClass()}
-				<tr{if $mode eq 'ajax'} class="contribution_row"{/if}>
+				<tr{if $mode eq 'ajax'} class="contribution_row" id="row_{$contribution->id}"{/if}>
 					<td class="{$cclass} center nowrap">
-                        {if $mode neq 'ajax'}<input type="checkbox" name="contrib_sel[]" value="{$contribution->id}"/>{/if}
+                        {if $mode neq 'ajax'}
+                            <input type="checkbox" name="contrib_sel[]" value="{$contribution->id}"/>
+                        {else}
+                            <input type="hidden" name="contrib_id" value="{$contribution->id}"/>
+                        {/if}
                         {php}$ordre = $this->get_template_vars('ordre');echo $ordre+1{/php}
                     </td>
 					<td class="{$cclass} center nowrap">{$contribution->date}</td>

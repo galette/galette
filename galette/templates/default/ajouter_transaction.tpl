@@ -9,6 +9,15 @@
 			</ul>
 		</div>
 {/if}
+{if $success_detected|@count != 0}
+		<div id="infobox">
+			<ul>
+{foreach from=$success_detected item=success}
+				<li>{$success}</li>
+{/foreach}
+			</ul>
+		</div>
+{/if}
 		<div class="bigtable">
 			<fieldset class="cssform">
 				<legend class="ui-state-active ui-corner-top">{_T string="Transaction details"}</legend>
@@ -104,7 +113,7 @@
                     $.ajax({ldelim}
                         url: 'gestion_contributions.php',
                         type: "POST",
-                        data: {ldelim}ajax: true, max_amount: {$transaction->getMissingAmount()}{rdelim},
+                        data: {ldelim}ajax: true, max_amount: '{$transaction->getMissingAmount()}'{rdelim},
                         success: function(res){ldelim}
                             _contribs_dialog(res);
                         {rdelim},
@@ -193,9 +202,10 @@
                     {rdelim});
                     //Select a row
                     $('.contribution_row').click(function(){ldelim}
-                        //console.log('Row selected');
                         $('#contributions_list').dialog("close");
-                    {rdelim});
+                        var _cid = $(this).find('input[name="contrib_id"]').val();
+                        window.location.href = window.location.href + '&cid=' + _cid;
+                    {rdelim}).css('cursor', 'pointer').attr('title', '{_T string="Click on a contribution row to attach it to the current transaction"}');
                 {rdelim}
             {rdelim});
         </script>

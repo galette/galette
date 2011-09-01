@@ -64,6 +64,7 @@ $transaction['id_adh'] = get_numeric_form_value("id_adh", '');
 
 // initialize warning
 $error_detected = array();
+$success_detected = array();
 
 // flagging required fields
 $required = array(
@@ -73,6 +74,15 @@ $required = array(
     'id_adh'        =>  1
 );
 $disabled = array();
+
+if ( isset($_GET['cid']) && $_GET['cid'] != null ) {
+    if ( !Contribution::setTransactionPart($trans_id, $_GET['cid']) ) {
+        $error_detected[] = _T("Unable to attach contribution to transaction");
+    } else {
+        $success_detected[] = _T("Contribution has been successfyully attached to current transaction");
+    }
+}
+
 
 if ( $trans_id != '' ) {
     // initialize transactions structure with database values
@@ -153,6 +163,7 @@ $tpl->assign('page_title', $title);
 $tpl->assign('required', $required);
 $tpl->assign('transaction', $trans);
 $tpl->assign('error_detected', $error_detected);
+$tpl->assign('success_detected', $success_detected);
 $tpl->assign('require_calendar', true);
 
 if ( $trans->id != '' ) {

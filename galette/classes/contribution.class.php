@@ -696,6 +696,27 @@ class Contribution
         }
     }
 
+    public static function setTransactionPart($trans_id, $contrib_id)
+    {
+        global $zdb, $log;
+
+        try {
+            $zdb->db->update(
+                PREFIX_DB . self::TABLE,
+                array(Transaction::PK => $trans_id),
+                self::PK . ' = ' . $contrib_id
+            );
+            return true;
+        } catch (Exception $e) {
+            $log->log(
+                'Unable to attach contribution #' . $cid .
+                ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
+    }
+
     /**
      * Is current contribution a cotisation
      *
