@@ -121,7 +121,7 @@
                         modal: true,
                         hide: 'fold',
                         width: '80%',
-                        height: 400,
+                        height: 500,
                         close: function(event, ui){ldelim}
                             _el.remove();
                             $("#legende").remove();
@@ -131,6 +131,7 @@
                 {rdelim}
 
                 var _contribs_ajax_mapper = function(res){ldelim}
+                    $("#legende").remove();
                     $('#contributions_list').append( res );
 
                     //Deactivate contributions list links
@@ -193,10 +194,8 @@
                     //Select a row
                     $('.contribution_row').click(function(){ldelim}
                         //console.log('Row selected');
-                        $('#contributions_list').dialog( "close" );
+                        $('#contributions_list').dialog("close");
                     {rdelim});
                 {rdelim}
-
-
             {rdelim});
         </script>
