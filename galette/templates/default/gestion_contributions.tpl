@@ -41,7 +41,7 @@
                 <td class="right">
                     {if $mode eq 'ajax'}
                         <input type="hidden" name="ajax" value="true"/>
-                        <input type="text" name="max_amount" value="{$max_amount}"/>
+                        <input type="hidden" name="max_amount" value="{$max_amount}"/>
                     {/if}
 					<label for="nbshow">{_T string="Show:"}</label>
 					<select name="nbshow" id="nbshow">
