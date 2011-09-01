@@ -62,6 +62,11 @@ if ( isset($_SESSION['galette']['contributions'])) {
 
 if ( $ajax === true ) {
     $contribs->filtre_transactions = true;
+    if ( isset($_POST['max_amount']) ) {
+        $contribs->max_amount = (int)$_POST['max_amount'];
+    } else if ( $_GET['max_amount'] ) {
+        $contribs->max_amount = (int)$_GET['max_amount'];
+    }
 }
 
 if ( isset($_GET['page']) && is_numeric($_GET['page']) ) {
@@ -156,6 +161,7 @@ $list_contribs = $contribs->getContributionsList(true);
 $contribs->setSmartyPagination($tpl);
 
 $tpl->assign('page_title', _T("Contributions managment"));
+$tpl->assign('max_amount', $contribs->max_amount);
 $tpl->assign('require_dialog', true);
 $tpl->assign('require_calendar', true);
 if (isset($error_detected)) {

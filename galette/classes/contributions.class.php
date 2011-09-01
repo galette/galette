@@ -74,6 +74,7 @@ class Contributions extends GalettePagination
     private $_filtre_transactions = null;
 
     private $_from_transaction = false;
+    private $_max_amount = null;
 
     /**
     * Default constructor
@@ -340,6 +341,14 @@ class Contributions extends GalettePagination
                 );
             }
 
+            if ( $this->_max_amount !== null && is_int($this->_max_amount)) {
+                $select->where(
+                    '(montant_cotis <= ' . $this->_max_amount .
+                    ' OR montant_cotis IS NULL)'
+                );
+            }
+            $sql = $select->__toString();
+
             if ( !$login->isAdmin() ) {
                 //members can only view their own contributions
                 $select->where('p.' . Adherent::PK . ' = ?', $login->id);
@@ -468,7 +477,8 @@ class Contributions extends GalettePagination
             $return_ok = array(
                 'filtre_cotis_adh',
                 'start_date_filter',
-                'end_date_filter'
+                'end_date_filter',
+                'max_amount'
             );
             if (in_array($name, $return_ok)) {
                 $name = '_' . $name;

@@ -104,7 +104,7 @@
                     $.ajax({ldelim}
                         url: 'gestion_contributions.php',
                         type: "POST",
-                        data: {ldelim}ajax: true{rdelim},
+                        data: {ldelim}ajax: true, max_amount: {$transaction->getMissingAmount()}{rdelim},
                         success: function(res){ldelim}
                             _contribs_dialog(res);
                         {rdelim},

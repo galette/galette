@@ -39,7 +39,10 @@
                     {$nb_contributions} {if $nb_contributions != 1}{_T string="contributions"}{else}{_T string="contribution"}{/if}
                 </td>
                 <td class="right">
-                    {if $mode eq 'ajax'}<input type="hidden" name="ajax" value="true"/>{/if}
+                    {if $mode eq 'ajax'}
+                        <input type="hidden" name="ajax" value="true"/>
+                        <input type="text" name="max_amount" value="{$max_amount}"/>
+                    {/if}
 					<label for="nbshow">{_T string="Show:"}</label>
 					<select name="nbshow" id="nbshow">
 						{html_options options=$nbshow_options selected=$numrows}
