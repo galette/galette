@@ -51,6 +51,7 @@ if ( isset($_POST['mailing_done']) || isset($_POST['mailing_cancel']) ) {
     $_SESSION['galette']['mailing'] = null;
     unset($_SESSION['galette']['mailing']);
     header('location: gestion_adherents.php');
+    exit(0);
 }
 
 require_once WEB_ROOT . 'classes/members.class.php';
