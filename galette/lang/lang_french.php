@@ -3,9 +3,6 @@
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
-// ../champs_adherents.php:47 ../champs_adherents.php:68 ../champs_adherents.php:70 
-$lang[''] = 'Project-Id-Version: \nPO-Revision-Date: 2011-08-30 22:42+0200\nLanguage-Team: French <>\nLanguage: fr\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nX-Generator: Lokalize 1.2\nPlural-Forms: nplurals=2; plural=(n > 1);\n';
-
 // ../classes/plugins.class.php:214 ../classes/plugins.class.php:218 
 $lang['Cannot deactivate plugin.'] = 'Impossible de désactiver le plugin.';
 
