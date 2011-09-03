@@ -55,6 +55,10 @@ function smarty_function__T($params, &$smarty)
     } else {
         $ret = _T($string);
     }
+    if ( isset($escape) ) {
+        //for the moment, only 'js' type is know
+        $ret = htmlspecialchars($ret, ENT_QUOTES, 'UTF-8');
+    }
     return $ret;
 }
 ?>

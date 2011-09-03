@@ -111,14 +111,14 @@
                     _preview_dialog(res);
                 {rdelim},
                 error: function() {ldelim}
-                    alert("{_T string="An error occured displaying preview :("}");
+                    alert("{_T string="An error occured displaying preview :(" escape="js"}");
                 {rdelim}
             });
             return false;
         {rdelim});
 
         var _preview_dialog = function(res){ldelim}
-            var _el = $('<div id="ajax_preview" title="{_T string="Mailing preview"}"> </div>');
+            var _el = $('<div id="ajax_preview" title="{_T string="Mailing preview" escape="js"}"> </div>');
             _el.appendTo('body').dialog({ldelim}
                 modal: true,
                 hide: 'fold',
@@ -141,14 +141,14 @@
                     _members_dialog(res);
                 {rdelim},
                 error: function() {ldelim}
-                    alert("{_T string="An error occured displaying members interface :("}");
+                    alert("{_T string="An error occured displaying members interface :(" escape="js"}");
                 {rdelim}
             });
             return false;
         {rdelim});
 
         var _members_dialog = function(res){ldelim}
-            var _el = $('<div id="members_list" title="{_T string="Members selection"}"> </div>');
+            var _el = $('<div id="members_list" title="{_T string="Members selection" escape="js"}"> </div>');
             _el.appendTo('body').dialog({ldelim}
                 modal: true,
                 hide: 'fold',
