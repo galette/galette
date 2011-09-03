@@ -133,7 +133,24 @@ class MailingHistory extends History
             //add limits to retrieve only relavant rows
             $sql = $select->__toString();
             $this->setLimits($select);
-            return $select->query(Zend_Db::FETCH_ASSOC)->fetchAll();
+            $ret = $select->query(Zend_Db::FETCH_ASSOC)->fetchAll();
+
+            foreach ( $ret as &$r ) {
+                $body_resume = $r['mailing_body'];
+                if ( strlen($body_resume) > 150 ) {
+                    $body_resume = substr($body_resume, 0, 150);
+                    $body_resume .= '[...]';
+                }
+                $tidy_config = array(
+                    'clean'             => true,
+                    'show-body-only'    => true,
+                    'wrap' => 0,
+                );
+                $tidy = tidy_parse_string($body_resume, $tidy_config, 'UTF8');
+                $tidy->cleanRepair();
+                $r['mailing_body_resume'] = tidy_get_output($tidy);
+            }
+            return $ret;
         } catch (Exception $e) {
             /** TODO */
             $log->log(

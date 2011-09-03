@@ -66,17 +66,17 @@ if ( isset($_GET['tri']) ) {
     $mailhist->tri = $_GET['tri'];
 }
 
-$logs = array();
+$history_list = array();
 
-$logs = $mailhist->getHistory();
+$history_list = $mailhist->getHistory();
 $_SESSION['galette']['history'] = serialize($hist);
 
 //assign pagination variables to the template and add pagination links
 $mailhist->setSmartyPagination($tpl);
 
 $tpl->assign('page_title', _T("Mailings"));
-$tpl->assign('logs', $logs);
-$tpl->assign('nb_lines', count($logs));
+$tpl->assign('logs', $history_list);
+$tpl->assign('nb_lines', count($history_list));
 $tpl->assign('history', $mailhist);
 $content = $tpl->fetch('gestion_mailings.tpl');
 $tpl->assign('content', $content);

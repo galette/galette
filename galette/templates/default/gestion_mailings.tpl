@@ -1,10 +1,7 @@
 		<table id="listing">
 			<thead>
 				<tr>
-                    <td colspan="3">
-                        {*<a id="histreset" class="button" href="?reset=1">{_T string="Flush the logs"}</a>*}
-                    </td>
-					<td colspan="3" class="right">
+					<td colspan="7" class="right">
 						<form action="gestion_mailings.php" method="get" id="historyform">
 							<span>
 								<label for="nbshow">{_T string="Records per page:"}</label>
@@ -42,6 +39,9 @@
 							{/if}
 						</a>
 					</th>
+                    <th class="listing left username_row">
+                        {_T string="Recipients"}
+                    </th>
 					<th class="listing left">
 						<a href="?tri=action_log" class="listing">
 							{_T string="Subject"}
@@ -54,6 +54,7 @@
 							{/if}
 						</a>
 					</th>
+                    {*<th class="listing">{_T string="Synopsis"}</th>*}
                     <th class="listing"></th>
 				</tr>
 			</thead>
@@ -67,11 +68,13 @@
 			</tfoot>
 			<tbody>
 {foreach from=$logs item=log name=eachlog}
-				<tr class="cotis-never">
+				<tr class="tbl_line_{if $smarty.foreach.eachlog.iteration % 2 eq 0}even{else}odd{/if}">
 					<td class="center">{$smarty.foreach.eachlog.iteration}</td>
 					<td class="nowrap">{$log.mailing_date|date_format:"%a %d/%m/%Y - %R"}</td>
 					<td>{if $log.mailing_sender eq 0}Admin{else}{$log.mailing_sender}{/if}</td>
+					<td>{$log.mailing_recipients|unserialize|@count}</td>
 					<td>{$log.mailing_subject}</td>
+					{*<td>{$log.mailing_body_resume}</td>*}
 					<td class="center nowrap actions_row">
                         <a href="mailing_adherents.php?from={$log.mailing_id}">
                             <img
