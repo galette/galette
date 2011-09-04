@@ -331,7 +331,7 @@ class Contributions extends GalettePagination
                     'd/m/Y',
                     $this->_end_date_filter
                 );
-                $select->where('date_fin_cotis <= ?', $d->format('Y-m-d'));
+                $select->where('date_debut_cotis <= ?', $d->format('Y-m-d'));
             }
 
             if ( $this->_from_transaction !== false ) {
