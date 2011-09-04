@@ -216,7 +216,7 @@ class Contributions extends GalettePagination
     }
 
     /**
-    * Count contribtions from the query
+    * Count contributions from the query
     *
     * @param Zend_Db_Select $select Original select
     *
