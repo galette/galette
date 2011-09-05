@@ -1016,6 +1016,7 @@ class Adherent
                 $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
                 if ( $add > 0) {
                     $this->_id = $zdb->db->lastInsertId();
+                    $this->_picture = new Picture($this->_id);
                     // logging
                     $hist->add(
                         _T("Member card added"),

@@ -111,7 +111,7 @@ class Picture
     public function __construct( $id_adh='' )
     {
         // '!==' needed, otherwise ''==0
-        if ($id_adh!=='') {
+        if ( $id_adh !== '' ) {
             $this->id = $id_adh;
             if ( !isset ($this->db_id) ) {
                 $this->db_id = $id_adh;
