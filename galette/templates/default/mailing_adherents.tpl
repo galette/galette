@@ -122,8 +122,8 @@
             _el.appendTo('body').dialog({ldelim}
                 modal: true,
                 hide: 'fold',
-                width: '60%',
-                height: 480,
+                width: '80%',
+                height: 500,
                 close: function(event, ui){ldelim}
                     _el.remove();
                 {rdelim}
@@ -152,13 +152,40 @@
             _el.appendTo('body').dialog({ldelim}
                 modal: true,
                 hide: 'fold',
-                width: '60%',
-                height: 400,
+                width: '80%',
+                height: 500,
                 close: function(event, ui){ldelim}
                     _el.remove();
                 {rdelim}
             {rdelim});
-            $('#members_list').append( res );
+            _members_ajax_mapper(res);
+
+        {rdelim}
+
+        var _members_ajax_mapper = function(res){ldelim}
+            $('#members_list').append(res);
+            $('#btnvalid').button().click(function(){ldelim}
+                $('#members_list').dialog("close");
+            {rdelim});
+            //Remap links
+            var _none = $('#none_selected').clone();
+            $('#listing a').click(function(){ldelim}
+                var _mid = this.href.substring(this.href.indexOf('?')+8);
+                var _mname = $(this).text();
+                $('#none_selected').remove()
+                if ( $('#member_' + _mid).length == 0 ) {ldelim}
+                    var _li = '<li id="member_' + _mid + '">' + _mname + '</li>';
+                    $('#selected_members ul').append(_li);
+                    $('#member_' + _mid).click(function(){ldelim}
+                        $(this).remove();
+                        if ( $('#selected_members ul li').length == 0 ) {ldelim}
+                            $('#selected_members ul').append(_none);
+                        {rdelim}
+                    {rdelim});
+                {rdelim}
+                return false;
+            {rdelim});
+
         {rdelim}
     {rdelim});
 </script>

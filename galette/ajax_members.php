@@ -57,12 +57,12 @@ if ( isset($_SESSION['galette']['varslist']) ) {
     $varslist = new VarsList();
 }
 
-$owners = Members::getList(true);
+$members_list = Members::getList(true);
 
 //Set the path to the current plugin's templates,
 //but backup main Galette's template path before
 $tpl->assign('ajax', $ajax);
-$tpl->assign('owners', $owners);
+$tpl->assign('members_list', $members_list);
 
 if ( $ajax ) {
     $tpl->assign('mode', 'ajax');

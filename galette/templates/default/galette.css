@@ -295,7 +295,7 @@ footer li {
 }
 
 /* == Buttons */
-#delete, #sendmail, #btnsave, #btnadd, #btncancel, #btnsend, #btnpreview, #btnusers, .button {
+#delete, #sendmail, #btnsave, #btnvalid, #btnadd, #btncancel, #btnsend, #btnpreview, #btnusers, .button {
     padding-left: 2em!important;
     background-position: 10px 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;
@@ -399,6 +399,13 @@ h1 #sendmail .ui-button-text {
 }
 #btnsave.ui-state-hover {
     background-image:url(images/icon-save.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#btnvalid {
+	background-image:url(images/icon-valid.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#btnvalid.ui-state-hover {
+    background-image:url(images/icon-valid.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 #btnback {
@@ -580,6 +587,55 @@ h1 #sendmail .ui-button-text {
 }
 /* =/ Main Galette styles */
 
+/* == Ajax member selection */
+#members_list {
+    padding-top: 1em;
+}
+
+.select_members {
+    padding-right: 1em;
+}
+.select_members,
+#selected_members {
+    display:table-cell;
+    vertical-align: top;
+}
+
+.select_members th.left {
+    width:50%;
+}
+
+#selected_members header {
+    padding-top: 0;
+    -moz-border-radius: 10px 10px 0 0;
+    -webkit-border-radius: 10px 10px 0 0;
+    border-radius: 10px 10px 0 0;
+}
+
+#selected_members {
+    min-width: 25em!important;
+    margin-left:.5em!important;
+    text-align: center;
+}
+
+#selected_members ul {
+    text-align: left;
+    list-style-image: url(images/clearfilter.png);
+    cursor: pointer;
+}
+
+#selected_members ul #none_selected {
+    list-style-type: none;
+    list-style-image: none;
+    cursor: auto;
+}
+
+/*#selected_members*/
+
+#selected_members h3 {
+    margin:0;
+    font-size: 1em;
+}
 /*
  * == Public pages
  */
@@ -906,7 +962,8 @@ a.listing:hover {
 	margin-top: 2px;
 }
 
-.mailing {
+.mailing,
+#selected_members{
     width: 60%;
     margin:0 auto;
     min-width: 50em;
@@ -922,7 +979,8 @@ a.listing:hover {
     box-shadow: 1px 1px 12px #555;
 }
 
-.mailing header {
+.mailing header,
+#selected_members header {
     padding: .2em 0;
     text-align: center;
     font-weight: bold;
