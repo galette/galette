@@ -203,13 +203,14 @@ class Texts
                 'tbody'    => $body,
             );
 
+            $where = array();
+            $where[] = $zdb->db->quoteInto('tref = ?', $ref);
+            $where[] = $zdb->db->quoteInto('tlang = ?', $lang);
+
             $edit = $zdb->db->update(
                 PREFIX_DB . self::TABLE,
                 $values,
-                array(
-                    'tref'  => $ref,
-                    'tlang' => $lang
-                )
+                $where
             );
             return true;
         } catch (Exception $e) {
