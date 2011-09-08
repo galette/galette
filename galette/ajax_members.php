@@ -50,6 +50,7 @@ $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 
 require_once WEB_ROOT . 'classes/members.class.php';
 require_once WEB_ROOT . 'classes/varslist.class.php';
+require_once WEB_ROOT . 'classes/mailing.class.php';
 
 if ( isset($_SESSION['galette']['varslist']) ) {
     $varslist = unserialize($_SESSION['galette']['varslist']);
@@ -58,11 +59,12 @@ if ( isset($_SESSION['galette']['varslist']) ) {
 }
 
 $members_list = Members::getList(true);
+$mailing = unserialize($_SESSION['galette']['mailing']);
+$selected_members = $mailing->recipients;
 
-//Set the path to the current plugin's templates,
-//but backup main Galette's template path before
 $tpl->assign('ajax', $ajax);
 $tpl->assign('members_list', $members_list);
+$tpl->assign('selected_members', $selected_members);
 
 if ( $ajax ) {
     $tpl->assign('mode', 'ajax');

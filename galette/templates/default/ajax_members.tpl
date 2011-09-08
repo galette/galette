@@ -41,7 +41,11 @@
         <section id="selected_members">
             <header class="ui-state-default ui-state-active"><h3>{_T string="Selected members"}</h3></header>
             <ul>
+{foreach from=$selected_members item=recipient}
+                <li id="member_{$recipient->id}">{$recipient->sfullname}</li>
+{foreachelse}
                 <li id="none_selected">{_T string="No members has been selected yet."}</li>
+{/foreach}
             </ul>
             <button class="button" id="btnvalid">Validate</button>
         </section>

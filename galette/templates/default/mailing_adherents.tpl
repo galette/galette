@@ -31,7 +31,7 @@
                 <header class="ui-state-default ui-state-active">{_T string="Mailing informations"}</header>
     {assign var='count' value=$mailing->recipients|@count}
     {if $count > 0}
-                <p>{_T string="You are about to send an e-mail to <strong>%s members</strong>" pattern="/%s/" replace=$count}</p>
+                <p id="recipients_count">{_T string="You are about to send an e-mail to <strong>%s members</strong>" pattern="/%s/" replace=$count}</p>
         {assign var='count_unreachables' value=$mailing->unreachables|@count}
         {if $count_unreachables > 0}
                 <p>
