@@ -462,8 +462,6 @@ class Picture
         }
         fclose($f);
 
-        $class = get_class($this);
-
         try {
             $stmt = $zdb->db->prepare(
                 'INSERT INTO ' . PREFIX_DB .
