@@ -225,6 +225,10 @@ footer li {
 /* =/ Footer */
 
 /* == Main Galette styles */
+#adresse2_adh {
+    border-top: 0;
+}
+
 #listfilter {
 	text-align: center;
 	background-color: #DDDDFF;
