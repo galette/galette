@@ -244,7 +244,8 @@ if ( $form_name == '' ) {
             $dyn_fields[$count]['index'] = $r->field_index;
             $dyn_fields[$count]['name'] = $r->field_name;
             $dyn_fields[$count]['perm'] = $perm_names[$r->field_perm];
-            $dyn_fields[$count]['type'] = $field_type_names[$r->field_type];
+            $dyn_fields[$count]['type'] = $r->field_type;
+            $dyn_fields[$count]['type_name'] = $field_type_names[$r->field_type];
             $dyn_fields[$count]['required'] = ($r->field_required == '1');
             $dyn_fields[$count]['pos'] = $field_positions[$r->field_pos];
             ++$count;
