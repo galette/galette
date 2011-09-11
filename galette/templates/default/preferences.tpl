@@ -72,7 +72,7 @@
 					<input{if $required.pref_pays eq 1} required{/if} type="text" name="pref_pays" id="pref_pays" value="{$pref.pref_pays}" maxlength="50"/>
 				</p>
         <div class="p">
-          <span class="bline tooltip{if $required.pref_mail_method eq 1} required{/if}" title="{_T string="Use either the adress setted below or select user status to retrieve another adress."}">{_T string="Postal adress:"}</span>
+          <span class="bline tooltip" title="{_T string="Use either the adress setted below or select user status to retrieve another adress."}">{_T string="Postal adress:"}</span>
           <span class="tip">{_T string="Use either the adress setted below or select a staff member to retrieve he's adress."}</span>
           <label for="pref_postal_adress_0">{_T string="from preferences"}</label>
           <input type="radio" name="pref_postal_adress" id="pref_postal_adress_0" value="0" {if $pref.pref_postal_adress eq constant('Preferences::POSTAL_ADRESS_FROM_PREFS')}checked="checked"{/if}/>
@@ -125,54 +125,54 @@
 					</select>
 				</p>
 				<p>
-					<label for="pref_membership_ext" class="bline"{if $required.pref_membership_ext eq 1} required{/if}>{_T string="Default membership extension:"}</label>
-					<input type="text" name="pref_membership_ext" id="pref_membership_ext" value="{$pref.pref_membership_ext}" maxlength="2"/>
+					<label for="pref_membership_ext" class="bline">{_T string="Default membership extension:"}</label>
+					<input type="text" name="pref_membership_ext" id="pref_membership_ext" value="{$pref.pref_membership_ext}" maxlength="2"{if $required.pref_membership_ext eq 1} required{/if}/>
 					<span class="exemple">{_T string="(Months)"}</span>
 				</p>
 				<p>
-					<label for="pref_beg_membership" class="bline"{if $required.pref_beg_membership eq 1} required{/if}>{_T string="Beginning of membership:"}</label>
-					<input type="text" name="pref_beg_membership" id="pref_beg_membership" value="{$pref.pref_beg_membership}" maxlength="5"/>
+					<label for="pref_beg_membership" class="bline">{_T string="Beginning of membership:"}</label>
+					<input type="text" name="pref_beg_membership" id="pref_beg_membership" value="{$pref.pref_beg_membership}" maxlength="5"{if $required.pref_beg_membership eq 1} required{/if}/>
 					<span class="exemple">{_T string="(dd/mm)"}</span>
 				</p>
                 <p>
-                    <label for="pref_bool_publicpages" class="bline"{if $required.pref_bool_publicpages eq 1} required{/if}>{_T string="Public pages enabled?"}</label>
-                    <input type="checkbox" name="pref_bool_publicpages" id="pref_bool_publicpages" value="1" {if $pref.pref_bool_publicpages} checked="checked"{/if}/>
+                    <label for="pref_bool_publicpages" class="bline">{_T string="Public pages enabled?"}</label>
+                    <input type="checkbox" name="pref_bool_publicpages" id="pref_bool_publicpages" value="1" {if $pref.pref_bool_publicpages} checked="checked"{/if}{if $required.pref_bool_publicpages eq 1} required{/if}/>
                 </p>
                 <p>
-                    <label for="pref_bool_selfsubscribe" class="bline"{if $required.pref_bool_selfsubscribe eq 1} required{/if}>{_T string="Self subscription enabled?"}</label>
-                    <input type="checkbox" name="pref_bool_selfsubscribe" id="pref_bool_selfsubscribe" value="1"{if $pref.pref_bool_selfsubscribe} checked="checked"{/if}"/>
+                    <label for="pref_bool_selfsubscribe" class="bline">{_T string="Self subscription enabled?"}</label>
+                    <input type="checkbox" name="pref_bool_selfsubscribe" id="pref_bool_selfsubscribe" value="1"{if $pref.pref_bool_selfsubscribe} checked="checked"{/if}"{if $required.pref_bool_selfsubscribe eq 1} required{/if}/>
                 </p>
 			</fieldset>
 
 			<fieldset class="cssform" id="mail">
 				<legend>{_T string="Mail settings:"}</legend>
 				<p>
-					<label for="pref_email_nom" class="bline"{if $required.pref_email_nom eq 1} required{/if}>{_T string="Sender name:"}</label>
-					<input type="text" name="pref_email_nom" id="pref_email_nom" value="{$pref.pref_email_nom}" maxlength="50"/>
+					<label for="pref_email_nom" class="bline">{_T string="Sender name:"}</label>
+					<input type="text" name="pref_email_nom" id="pref_email_nom" value="{$pref.pref_email_nom}" maxlength="50"{if $required.pref_email_nom eq 1} required{/if}/>
 				</p>
 				<p>
-					<label for="pref_email" class="bline"{if $required.pref_email eq 1} required{/if}>{_T string="Sender Email:"}</label>
-					<input type="text" name="pref_email" id="pref_email" value="{$pref.pref_email}" maxlength="100" size="30"/>
+					<label for="pref_email" class="bline">{_T string="Sender Email:"}</label>
+					<input type="text" name="pref_email" id="pref_email" value="{$pref.pref_email}" maxlength="100" size="30"{if $required.pref_email eq 1} required{/if}/>
 				</p>
 				<p>
-					<label for="pref_email_reply_to" class="bline tooltip"{if $required.pref_email_reply_to eq 1} required{/if} title="{_T string="Leave empty to use Sender Email as reply address"}">{_T string="Reply-To Email:"}</label>
+					<label for="pref_email_reply_to" class="bline tooltip" title="{_T string="Leave empty to use Sender Email as reply address"}">{_T string="Reply-To Email:"}</label>
 					<span class="tip">{_T string="Leave empty to use Sender Email as reply address"}</span>
-					<input type="text" name="pref_email_reply_to" id="pref_email_reply_to" value="{$pref.pref_email_reply_to}" maxlength="100" size="30"/>
+					<input type="text" name="pref_email_reply_to" id="pref_email_reply_to" value="{$pref.pref_email_reply_to}" maxlength="100" size="30"{if $required.pref_email_reply_to eq 1} required{/if}/>
 				</p>
 				<p>
-					<label for="pref_email_newadh" class="bline tooltip"{if $required.pref_email_newadh eq 1} required{/if} title="{_T string="Recipient of new online registation emails"}">{_T string="Members administrator's Email:"}</label>
+					<label for="pref_email_newadh" class="bline tooltip" title="{_T string="Recipient of new online registation emails"}">{_T string="Members administrator's Email:"}</label>
 					<span class="tip">{_T string="Recipient of new online registation emails"}</span>
-					<input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{$pref.pref_email_newadh}" maxlength="100" size="30"/>
+					<input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{$pref.pref_email_newadh}" maxlength="100" size="30"{if $required.pref_email_newadh eq 1} required{/if}/>
 				</p>
 				<p>
-					<label for="pref_bool_mailadh" class="bline tooltip"{if $required.pref_bool_mailadh eq 1} required{/if} title="{_T string="Sends an email each time a new member registers online"}">{_T string="Send email to administrators ?"}</label>
+					<label for="pref_bool_mailadh" class="bline tooltip" title="{_T string="Sends an email each time a new member registers online"}">{_T string="Send email to administrators ?"}</label>
 					<span class="tip">{_T string="Sends an email each time a new member registers online"}</span>
-					<input type="checkbox" name="pref_bool_mailadh" id="pref_bool_mailadh" value="1" {if $pref.pref_bool_mailadh eq 1}checked="checked"{/if}/>
+					<input type="checkbox" name="pref_bool_mailadh" id="pref_bool_mailadh" value="1" {if $pref.pref_bool_mailadh eq 1}checked="checked"{/if}{if $required.pref_bool_mailadh eq 1} required{/if}/>
 				</p>
 				<p>
-					<label for="pref_editor_enabled" class="bline tooltip"{if $required.pref_editor_enabled eq 1} required{/if} title="{_T string="Should HTML editor be activated on page load ?"}">{_T string="Activate HTML editor ?"}</label>
+					<label for="pref_editor_enabled" class="bline tooltip" title="{_T string="Should HTML editor be activated on page load ?"}">{_T string="Activate HTML editor ?"}</label>
 					<span class="tip">{_T string="Should HTML editor be activated on page load ?"}</span>
-					<input type="checkbox" name="pref_editor_enabled" id="pref_editor_enabled" value="1" {if $pref.pref_editor_enabled eq 1}checked="checked"{/if}/>
+					<input type="checkbox" name="pref_editor_enabled" id="pref_editor_enabled" value="1" {if $pref.pref_editor_enabled eq 1}checked="checked"{/if}{if $required.pref_editor_enabled eq 1} required{/if}/>
 				</p>
 				<div class="p">
 					<span class="bline"{if $required.pref_mail_method eq 1} required{/if}>{_T string="Emailing method:"}</span>
@@ -196,32 +196,32 @@
 				</div>
 				<div id="smtp_parameters"{if $pref.pref_mail_method neq constant('GaletteMail::METHOD_SMTP')} style="display: none;"{/if}>
 					<p>
-						<label for="pref_mail_smtp_host" class="bline"{if $required.pref_mail_smtp_host eq 1} required{/if}>{_T string="SMTP server:"}</label>
-						<input type="text" name="pref_mail_smtp_host" id="pref_mail_smtp_host" value="{$pref.pref_mail_smtp_host}" maxlength="100" size="30"/>
+						<label for="pref_mail_smtp_host" class="bline">{_T string="SMTP server:"}</label>
+						<input type="text" name="pref_mail_smtp_host" id="pref_mail_smtp_host" value="{$pref.pref_mail_smtp_host}" maxlength="100" size="30"/{if $required.pref_mail_smtp_host eq 1} required{/if}>
 					</p>
 					<p>
-						<label for="pref_mail_smtp_port" class="bline"{if $required.pref_mail_smtp_port eq 1} required{/if}>{_T string="SMTP port:"}</label>
-						<input type="text" name="pref_mail_smtp_port" id="pref_mail_smtp_port" value="{$pref.pref_mail_smtp_port}" size="10"/>
+						<label for="pref_mail_smtp_port" class="bline">{_T string="SMTP port:"}</label>
+						<input type="text" name="pref_mail_smtp_port" id="pref_mail_smtp_port" value="{$pref.pref_mail_smtp_port}" size="10"{if $required.pref_mail_smtp_port eq 1} required{/if}/>
 					</p>
 					<p>
-						<label for="pref_mail_smtp_auth" class="bline tooltip"{if $required.pref_mail_smtp_auth eq 1} required{/if} title="{_T string="Do you want to use SMTP authentication?"}">{_T string="Use SMTP authentication?"}</label>
+						<label for="pref_mail_smtp_auth" class="bline tooltip" title="{_T string="Do you want to use SMTP authentication?"}">{_T string="Use SMTP authentication?"}</label>
 						<span class="tip">{_T string="Would emailing use any SMTP authentication? You'll have to provide username and passwrod below. For GMail, authentication will always be on."}</span>
-						<input type="checkbox" name="pref_mail_smtp_auth" id="pref_mail_smtp_auth" value="1" {if $pref.pref_mail_smtp_auth eq 1}checked="checked"{/if}/>
+						<input type="checkbox" name="pref_mail_smtp_auth" id="pref_mail_smtp_auth" value="1" {if $pref.pref_mail_smtp_auth eq 1}checked="checked"{/if}{if $required.pref_mail_smtp_auth eq 1} required{/if}/>
 					</p>
 					<p>
-						<label for="pref_mail_smtp_secure" class="bline tooltip"{if $required.pref_mail_smtp_secure eq 1} required{/if} title="{_T string="Do you want to use SMTP authentication?"}">{_T string="Use TLS for SMTP?"}</label>
+						<label for="pref_mail_smtp_secure" class="bline tooltip" title="{_T string="Do you want to use SMTP authentication?"}">{_T string="Use TLS for SMTP?"}</label>
 						<span class="tip">{_T string="Do you want to use server's TLS capabilities?<br/>For GMail, this will always be on."}</span>
-						<input type="checkbox" name="pref_mail_smtp_secure" id="pref_mail_smtp_secure" value="1" {if $pref.pref_mail_smtp_secure eq 1}checked="checked"{/if}/>
+						<input type="checkbox" name="pref_mail_smtp_secure" id="pref_mail_smtp_secure" value="1" {if $pref.pref_mail_smtp_secure eq 1}checked="checked"{/if}{if $required.pref_mail_smtp_secure eq 1} required{/if}/>
 					</p>
 				</div>
 				<div id="smtp_auth"{if $pref.pref_mail_method neq constant('GaletteMail::METHOD_SMTP') && $pref.pref_mail_method neq constant('GaletteMail::METHOD_GMAIL')} style="display: none;"{/if}>
 					<p>
-						<label for="pref_mail_smtp_user" class="bline"{if $required.pref_mail_smtp_user eq 1} required{/if}>{_T string="SMTP (or GMail) user:"}</label>
-						<input type="text" name="pref_mail_smtp_user" id="pref_mail_smtp_user" value="{$pref.pref_mail_smtp_user}" maxlength="100" size="30"/>
+						<label for="pref_mail_smtp_user" class="bline">{_T string="SMTP (or GMail) user:"}</label>
+						<input type="text" name="pref_mail_smtp_user" id="pref_mail_smtp_user" value="{$pref.pref_mail_smtp_user}" maxlength="100" size="30"{if $required.pref_mail_smtp_user eq 1} required{/if}/>
 					</p>
 					<p>
-						<label for="pref_mail_smtp_password" class="bline"{if $required.pref_mail_smtp_password eq 1} required{/if}>{_T string="SMTP (or GMail) password:"}</label>
-						<input type="text" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="{$pref.pref_mail_smtp_password}" maxlength="100" size="30"/>
+						<label for="pref_mail_smtp_password" class="bline">{_T string="SMTP (or GMail) password:"}</label>
+						<input type="text" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="{$pref.pref_mail_smtp_password}" maxlength="100" size="30"{if $required.pref_mail_smtp_password eq 1} required{/if}/>
 					</p>
 				</div>
 			</fieldset>
@@ -229,47 +229,47 @@
 			<fieldset class="cssform" id="labels">
 				<legend>{_T string="Label generation parameters:"}</legend>
 				<p>
-					<label for="pref_etiq_marges_v" class="bline"{if $required.pref_etiq_marges_v eq 1} required{/if}>{_T string="Vertical margins:"}</label>
-					<input type="text" name="pref_etiq_marges_v" id="pref_etiq_marges_v" value="{$pref.pref_etiq_marges_v}" maxlength="4"/> mm
+					<label for="pref_etiq_marges_v" class="bline">{_T string="Vertical margins:"}</label>
+					<input type="text" name="pref_etiq_marges_v" id="pref_etiq_marges_v" value="{$pref.pref_etiq_marges_v}" maxlength="4"{if $required.pref_etiq_marges_v eq 1} required{/if}/> mm
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 				<p>
-					<label for="pref_etiq_marges_h" class="bline"{if $required.pref_etiq_marges_h eq 1} required{/if}>{_T string="Horizontal margins:"}</label>
-					<input type="text" name="pref_etiq_marges_h" id="pref_etiq_marges_h" value="{$pref.pref_etiq_marges_h}" maxlength="4"/> mm
+					<label for="pref_etiq_marges_h" class="bline">{_T string="Horizontal margins:"}</label>
+					<input type="text" name="pref_etiq_marges_h" id="pref_etiq_marges_h" value="{$pref.pref_etiq_marges_h}" maxlength="4"{if $required.pref_etiq_marges_h eq 1} required{/if}/> mm
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 				<p>
-					<label for="pref_etiq_hspace" class="bline"{if $required.pref_etiq_hspace eq 1} required{/if}>{_T string="Horizontal spacing:"}</label>
-					<input type="text" name="pref_etiq_hspace" id="pref_etiq_hspace" value="{$pref.pref_etiq_hspace}" maxlength="4"/> mm
+					<label for="pref_etiq_hspace" class="bline">{_T string="Horizontal spacing:"}</label>
+					<input type="text" name="pref_etiq_hspace" id="pref_etiq_hspace" value="{$pref.pref_etiq_hspace}" maxlength="4"{if $required.pref_etiq_hspace eq 1} required{/if}/> mm
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 				<p>
-					<label for="pref_etiq_vspace" class="bline"{if $required.pref_etiq_vspace eq 1} required{/if}>{_T string="Vertical spacing:"}</label>
-					<input type="text" name="pref_etiq_vspace" id="pref_etiq_vspace" value="{$pref.pref_etiq_vspace}" maxlength="4"/> mm
+					<label for="pref_etiq_vspace" class="bline">{_T string="Vertical spacing:"}</label>
+					<input type="text" name="pref_etiq_vspace" id="pref_etiq_vspace" value="{$pref.pref_etiq_vspace}" maxlength="4"{if $required.pref_etiq_vspace eq 1} required{/if}/> mm
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 				<p>
-					<label for="pref_etiq_hsize" class="bline"{if $required.pref_etiq_hsize eq 1} required{/if}>{_T string="Label width:"}</label>
-					<input type="text" name="pref_etiq_hsize" id="pref_etiq_hsize" value="{$pref.pref_etiq_hsize}" maxlength="4"/> mm
+					<label for="pref_etiq_hsize" class="bline">{_T string="Label width:"}</label>
+					<input type="text" name="pref_etiq_hsize" id="pref_etiq_hsize" value="{$pref.pref_etiq_hsize}" maxlength="4"{if $required.pref_etiq_hsize eq 1} required{/if}/> mm
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 				<p>
-					<label for="pref_etiq_vsize" class="bline"{if $required.pref_etiq_vsize eq 1} required{/if}>{_T string="Label height:"}</label>
-					<input type="text" name="pref_etiq_vsize" id="pref_etiq_vsize" value="{$pref.pref_etiq_vsize}" maxlength="4"/> mm
+					<label for="pref_etiq_vsize" class="bline">{_T string="Label height:"}</label>
+					<input type="text" name="pref_etiq_vsize" id="pref_etiq_vsize" value="{$pref.pref_etiq_vsize}" maxlength="4"{if $required.pref_etiq_vsize eq 1} required{/if}/> mm
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 				<p>
-					<label for="pref_etiq_cols" class="bline"{if $required.pref_etiq_cols eq 1} required{/if}>{_T string="Number of label columns:"}</label>
-					<input type="text" name="pref_etiq_cols" id="pref_etiq_cols" value="{$pref.pref_etiq_cols}" maxlength="4"/>
+					<label for="pref_etiq_cols" class="bline">{_T string="Number of label columns:"}</label>
+					<input type="text" name="pref_etiq_cols" id="pref_etiq_cols" value="{$pref.pref_etiq_cols}" maxlength="4"{if $required.pref_etiq_cols eq 1} required{/if}/>
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 				<p>
-					<label for="pref_etiq_rows" class="bline"{if $required.pref_etiq_rows eq 1} required{/if}>{_T string="Number of label lines:"}</label>
-					<input type="text" name="pref_etiq_rows" id="pref_etiq_rows" value="{$pref.pref_etiq_rows}" maxlength="4"/>
+					<label for="pref_etiq_rows" class="bline">{_T string="Number of label lines:"}</label>
+					<input type="text" name="pref_etiq_rows" id="pref_etiq_rows" value="{$pref.pref_etiq_rows}" maxlength="4"{if $required.pref_etiq_rows eq 1} required{/if}/>
 				</p>
 				<p>
-					<label for="pref_etiq_corps" class="bline"{if $required.pref_etiq_corps eq 1} required{/if}>{_T string="Font size:"}</label>
-					<input type="text" name="pref_etiq_corps" id="pref_etiq_corps" value="{$pref.pref_etiq_corps}" maxlength="4"/>
+					<label for="pref_etiq_corps" class="bline">{_T string="Font size:"}</label>
+					<input type="text" name="pref_etiq_corps" id="pref_etiq_corps" value="{$pref.pref_etiq_corps}" maxlength="4"{if $required.pref_etiq_corps eq 1} required{/if}/>
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 			</fieldset>
@@ -277,35 +277,35 @@
 			<fieldset class="cssform" id="cards">
 				<legend>{_T string="Cards generation parameters:"}</legend>
 				<p>
-					<label for="pref_card_abrev" class="bline"{if $required.pref_card_abrev eq 1} required{/if}>{_T string="Short Text (Card Center):"}</label>
-					<input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{$pref.pref_card_abrev}" size="10" maxlength="10"/>
+					<label for="pref_card_abrev" class="bline">{_T string="Short Text (Card Center):"}</label>
+					<input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{$pref.pref_card_abrev}" size="10" maxlength="10"{if $required.pref_card_abrev eq 1} required{/if}/>
 					<span class="exemple">{_T string="(10 characters max)"}</span>
 				</p>
 				<p>
-					<label for="pref_card_strip" class="bline"{if $required.pref_card_strip eq 1} required{/if}>{_T string="Long Text (Bottom Line):"}</label>
-					<input type="text" name="pref_card_strip" id="pref_card_strip" value="{$pref.pref_card_strip}" size="40" maxlength="65"/>
+					<label for="pref_card_strip" class="bline">{_T string="Long Text (Bottom Line):"}</label>
+					<input type="text" name="pref_card_strip" id="pref_card_strip" value="{$pref.pref_card_strip}" size="40" maxlength="65"{if $required.pref_card_strip eq 1} required{/if}/>
 					<span class="exemple">{_T string="(65 characters max)"}</span>
 				</p>
 				<p>
-					<label for="pref_card_tcol" class="bline tooltip"{if $required.pref_card_tcol eq 1} required{/if} title="{_T string="Hexadecimal color notation: #RRGGBB"}">{_T string="Strip Text Color:"}</label>
+					<label for="pref_card_tcol" class="bline tooltip" title="{_T string="Hexadecimal color notation: #RRGGBB"}">{_T string="Strip Text Color:"}</label>
 					<span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
-					<input type="text" name="pref_card_tcol" id="pref_card_tcol" value="{$pref.pref_card_tcol}" size="7" maxlength="7" class="hex" />
+					<input type="text" name="pref_card_tcol" id="pref_card_tcol" value="{$pref.pref_card_tcol}" size="7" maxlength="7" class="hex"{if $required.pref_card_tcol eq 1} required{/if}/>
 				</p>
 				<div class="subtitle">{_T string="Strip Background colors:"} <span class="exemple">{_T string="(Strip color will change according to member's status)"}</span></div>
 				<p>
-					<label for="pref_card_scol" class="bline tooltip"{if $required.pref_card_scol eq 1} required{/if} title="{_T string="Hexadecimal color notation: #RRGGBB"}">{_T string="Active Member Color:"}</label>
+					<label for="pref_card_scol" class="bline tooltip" title="{_T string="Hexadecimal color notation: #RRGGBB"}">{_T string="Active Member Color:"}</label>
 					<span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
-					<input type="text" name="pref_card_scol" id="pref_card_scol" value="{$pref.pref_card_scol}" size="7" maxlength="7" class="hex"/>
+					<input type="text" name="pref_card_scol" id="pref_card_scol" value="{$pref.pref_card_scol}" size="7" maxlength="7" class="hex"{if $required.pref_card_scol eq 1} required{/if}/>
 				</p>
 				<p>
-					<label for="pref_card_bcol" class="bline tooltip"{if $required.pref_card_bcol eq 1} required{/if} title="{_T string="Hexadecimal color notation: #RRGGBB"}">{_T string="Board Members Color:"}</label>
+					<label for="pref_card_bcol" class="bline tooltip" title="{_T string="Hexadecimal color notation: #RRGGBB"}">{_T string="Board Members Color:"}</label>
 					<span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
-					<input type="text" name="pref_card_bcol" id="pref_card_bcol" value="{$pref.pref_card_bcol}" size="7" maxlength="7" class="hex"/>
+					<input type="text" name="pref_card_bcol" id="pref_card_bcol" value="{$pref.pref_card_bcol}" size="7" maxlength="7" class="hex"{if $required.pref_card_bcol eq 1} required{/if}/>
 				</p>
 				<p>
-					<label for="pref_card_hcol" class="bline tooltip"{if $required.pref_card_hcol eq 1}required{/if} title="{_T string="Hexadecimal color notation: #RRGGBB"}">{_T string="Honor Members Color:"}</label>
+					<label for="pref_card_hcol" class="bline tooltip" title="{_T string="Hexadecimal color notation: #RRGGBB"}">{_T string="Honor Members Color:"}</label>
 					<span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
-					<input type="text" name="pref_card_hcol" id="pref_card_hcol" value="{$pref.pref_card_hcol}" size="7" maxlength="7" class="hex"/>
+					<input type="text" name="pref_card_hcol" id="pref_card_hcol" value="{$pref.pref_card_hcol}" size="7" maxlength="7" class="hex"{if $required.pref_card_hcol eq 1}required{/if}/>
 				</p>
 				<div class="subtitle">&nbsp;</div>
 				<p>
@@ -317,13 +317,13 @@
 					<input type="file" name="card_logo" id="card_logo"/>
 				</p>
 				<p>
-					<label for="pref_card_self" class="bline"{if $required.pref_bool_display_title eq 1} required{/if}>{_T string="Allow members to print card ?"}</label>
-					<input type="checkbox" name="pref_card_self" id="pref_card_self" value="1" {if $pref.pref_card_self eq 1}checked="checked"{/if}/>
+					<label for="pref_card_self" class="bline">{_T string="Allow members to print card ?"}</label>
+					<input type="checkbox" name="pref_card_self" id="pref_card_self" value="1" {if $pref.pref_card_self eq 1}checked="checked"{/if}{if $required.pref_bool_display_title eq 1} required{/if}/>
 					<span class="exemple">{_T string="(Members will be able to generate their own member card)"}</span>
 				</p>
 				<p>
-					<label for="pref_bool_display_title" class="bline"{if $required.pref_bool_display_title eq 1} required{/if}>{_T string="Show title ?"}</label>
-					<input type="checkbox" name="pref_bool_display_title" id="pref_bool_display_title" value="1" {if $pref.pref_bool_display_title eq 1}checked="checked"{/if}/>
+					<label for="pref_bool_display_title" class="bline">{_T string="Show title ?"}</label>
+					<input type="checkbox" name="pref_bool_display_title" id="pref_bool_display_title" value="1" {if $pref.pref_bool_display_title eq 1}checked="checked"{/if}{if $required.pref_bool_display_title eq 1} required{/if}/>
 					<span class="exemple">{_T string="(Show or not title in front of name)"}</span>
 				</p>
 				<p>
@@ -341,28 +341,28 @@
 					<span class="exemple">{_T string="(Choose address printed below name)"}</span>
 				</p>
 				<p>
-					<label for="pref_card_year" class="bline"{if $required.pref_card_year eq 1} required{/if}>{_T string="Year:"}</label>
-					<input type="text" name="pref_card_year" id="pref_card_year" value="{$pref.pref_card_year}" maxlength="4"/>
+					<label for="pref_card_year" class="bline">{_T string="Year:"}</label>
+					<input type="text" name="pref_card_year" id="pref_card_year" value="{$pref.pref_card_year}" maxlength="4"{if $required.pref_card_year eq 1} required{/if}/>
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 				<p>
-					<label for="pref_card_marges_v" class="bline"{if $required.pref_card_marges_v eq 1} required{/if}>{_T string="Vertical margins:"}</label>
-					<input type="text" name="pref_card_marges_v" id="pref_card_marges_v" value="{$pref.pref_card_marges_v}" maxlength="4"/> mm
+					<label for="pref_card_marges_v" class="bline">{_T string="Vertical margins:"}</label>
+					<input type="text" name="pref_card_marges_v" id="pref_card_marges_v" value="{$pref.pref_card_marges_v}" maxlength="4"{if $required.pref_card_marges_v eq 1} required{/if}/> mm
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 				<p>
-					<label for="pref_card_marges_h" class="bline"{if $required.pref_card_marges_h eq 1} required{/if}>{_T string="Horizontal margins:"}</label>
-					<input type="text" name="pref_card_marges_h" id="pref_card_marges_h" value="{$pref.pref_card_marges_h}" maxlength="4"/> mm
+					<label for="pref_card_marges_h" class="bline">{_T string="Horizontal margins:"}</label>
+					<input type="text" name="pref_card_marges_h" id="pref_card_marges_h" value="{$pref.pref_card_marges_h}" maxlength="4"{if $required.pref_card_marges_h eq 1} required{/if}/> mm
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 				<p>
-					<label for="pref_card_vspace" class="bline"{if $required.pref_card_vspace eq 1} required{/if}>{_T string="Vertical spacing:"}</label>
-					<input type="text" name="pref_card_vspace" id="pref_card_vspace" value="{$pref.pref_card_vspace}" maxlength="4"/> mm
+					<label for="pref_card_vspace" class="bline">{_T string="Vertical spacing:"}</label>
+					<input type="text" name="pref_card_vspace" id="pref_card_vspace" value="{$pref.pref_card_vspace}" maxlength="4"{if $required.pref_card_vspace eq 1} required{/if}/> mm
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 				<p>
-					<label for="pref_card_hspace" class="bline"{if $required.pref_card_hspace eq 1} required{/if}>{_T string="Horizontal spacing:"}</label>
-					<input type="text" name="pref_card_hspace" id="pref_card_hspace" value="{$pref.pref_card_hspace}" maxlength="4"/> mm
+					<label for="pref_card_hspace" class="bline">{_T string="Horizontal spacing:"}</label>
+					<input type="text" name="pref_card_hspace" id="pref_card_hspace" value="{$pref.pref_card_hspace}" maxlength="4"{if $required.pref_card_hspace eq 1} required{/if}/> mm
 					<span class="exemple">{_T string="(Integer)"}</span>
 				</p>
 			</fieldset>
@@ -371,16 +371,16 @@
 			<fieldset class="cssform" id="admin">
 				<legend>{_T string="Admin account (independant of members):"}</legend>
 				<p>
-					<label for="pref_admin_login" class="bline"{if $required.pref_admin_login eq 1} required{/if}>{_T string="Username:"}</label>
-					<input type="text" name="pref_admin_login" id="pref_admin_login" value="{$pref.pref_admin_login}" maxlength="20"/>
+					<label for="pref_admin_login" class="bline">{_T string="Username:"}</label>
+					<input type="text" name="pref_admin_login" id="pref_admin_login" value="{$pref.pref_admin_login}" maxlength="20"{if $required.pref_admin_login eq 1} required{/if}/>
 				</p>
 				<p>
-					<label for="pref_admin_pass" class="bline"{if $required.pref_admin_pass eq 1} required{/if}>{_T string="Password:"}</label>
-					<input type="password" name="pref_admin_pass" id="pref_admin_pass" value="" maxlength="20" autocomplete="off"/>
+					<label for="pref_admin_pass" class="bline">{_T string="Password:"}</label>
+					<input type="password" name="pref_admin_pass" id="pref_admin_pass" value="" maxlength="20" autocomplete="off"{if $required.pref_admin_pass eq 1} required{/if}/>
 				</p>
 				<p>
-					<label for="pref_admin_pass_check" class="bline"{if $required.pref_admin_pass_check eq 1} required{/if}>{_T string="Retype password:"}</label>
-					<input type="password" name="pref_admin_pass_check" id="pref_admin_pass_check" value="" maxlength="20"/>
+					<label for="pref_admin_pass_check" class="bline">{_T string="Retype password:"}</label>
+					<input type="password" name="pref_admin_pass_check" id="pref_admin_pass_check" value="" maxlength="20"{if $required.pref_admin_pass_check eq 1} required{/if}/>
 				</p>
 			</fieldset>
 {/if}
