@@ -55,6 +55,7 @@ class Mailing extends GaletteMail
     const STEP_START = 0;
     const STEP_PREVIEW = 1;
     const STEP_SEND = 2;
+    const STEP_SENT = 3;
 
     const MIME_HTML = 'text/html';
     const MIME_TEXT = 'text/plain';
@@ -191,7 +192,8 @@ class Mailing extends GaletteMail
             if ( is_int($value)
                 && (   $value == self::STEP_START
                 || $value == self::STEP_PREVIEW
-                || $value == self::STEP_SEND )
+                || $value == self::STEP_SEND
+                || $value == self::STEP_SENT )
             ) {
                 $this->_current_step = (int)$value;
             } else {

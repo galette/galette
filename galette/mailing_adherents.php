@@ -168,6 +168,7 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
                 '[mailing_adherents.php] Message has been sent.',
                 PEAR_LOG_INFO
             );
+            $mailing->current_step = Mailing::STEP_SENT;
             //cleanup
             $varslist->selected = null;
             $_SESSION['galette']['varslist'] = serialize($varslist);
@@ -176,7 +177,9 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
         }
     }
 
-    $_SESSION['galette']['mailing'] = serialize($mailing);
+    if ( $mailing->current_step !== Mailing::STEP_SENT ) {
+        $_SESSION['galette']['mailing'] = serialize($mailing);
+    }
 
     /** TODO: replace that... */
     $_SESSION['galette']['labels'] = $mailing->unreachables;

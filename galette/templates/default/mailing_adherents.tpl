@@ -31,7 +31,11 @@
                 <header class="ui-state-default ui-state-active">{_T string="Mailing informations"}</header>
     {assign var='count' value=$mailing->recipients|@count}
     {if $count > 0}
+        {if $mailing->current_step eq constant('Mailing::STEP_SENT')}
+                <p>{_T string="Your message has been sent to <strong>%s members</strong>" pattern="/%s/" replace=$count}</p>
+        {else}
                 <p id="recipients_count">{_T string="You are about to send an e-mail to <strong>%s members</strong>" pattern="/%s/" replace=$count}</p>
+        {/if}
         {assign var='count_unreachables' value=$mailing->unreachables|@count}
         {if $count_unreachables > 0}
                 <p>
@@ -43,7 +47,13 @@
     {else}
                 <p><strong>{_T string="None of the selected members has an email address."}</strong></p>
     {/if}
-                <div class="center"><a class="button" id="btnusers" href="gestion_adherents.php?nbshow=0&showChecked=true">{_T string="Manage selected members"}</a></div>
+                <div class="center">
+    {if $mailing->current_step eq constant('Mailing::STEP_SENT')}
+                    <a class="button" id="btnusers" href="gestion_adherents.php">{_T string="Go back to members list"}</a>
+    {else}
+                    <a class="button" id="btnusers" href="gestion_adherents.php?nbshow=0&showChecked=true">{_T string="Manage selected members"}</a>
+    {/if}
+                </div>
             </section>
         {if $mailing->current_step eq constant('Mailing::STEP_START')}
             <section class="mailing_write">
@@ -96,6 +106,7 @@
         </div>
 		</form>
 </section>
+    {if $mailing->current_step neq constant('Mailing::STEP_SENT')}
 <script type="text/javascript">
     $(function() {ldelim}
         {* Preview popup *}
@@ -169,6 +180,12 @@
             {rdelim});
             //Remap links
             var _none = $('#none_selected').clone();
+            $('li[id^="member_"]').click(function(){ldelim}
+                $(this).remove();
+                if ( $('#selected_members ul li').length == 0 ) {ldelim}
+                    $('#selected_members ul').append(_none);
+                {rdelim}
+            {rdelim});
             $('#listing a').click(function(){ldelim}
                 var _mid = this.href.substring(this.href.indexOf('?')+8);
                 var _mname = $(this).text();
@@ -189,4 +206,5 @@
         {rdelim}
     {rdelim});
 </script>
+    {/if}
 {/if}
