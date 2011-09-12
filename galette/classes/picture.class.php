@@ -354,6 +354,8 @@ class Picture
                     return true;
                 }
             } else {
+                //properly ends transaction
+                $zdb->db->rollBack();
                 return false;
             }
 
