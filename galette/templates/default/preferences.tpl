@@ -187,10 +187,10 @@
 							<input type="radio" name="pref_mail_method" id="smtp" value="2" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_SMTP')}checked="checked"{/if}/><label for="smtp">{_T string="Using a SMTP server (slower)"}</label>
 						</li>
 						<li>
-							<input type="radio" name="pref_mail_method" id="gmail" value="2" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_GMAIL')}checked="checked"{/if}/><label for="gmail">{_T string="Using GMAIL as SMTP server (slower)"}</label>
+							<input type="radio" name="pref_mail_method" id="gmail" value="4" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_GMAIL')}checked="checked"{/if}/><label for="gmail">{_T string="Using GMAIL as SMTP server (slower)"}</label>
 						</li>
 						<li>
-							<input type="radio" name="pref_mail_method" id="qmail" value="1" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_QMAIL')}checked="checked"{/if}/><label for="qmail">{_T string="Using QMAIL server"}</label>
+							<input type="radio" name="pref_mail_method" id="qmail" value="3" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_QMAIL')}checked="checked"{/if}/><label for="qmail">{_T string="Using QMAIL server"}</label>
 						</li>
 					</ul>
 				</div>
@@ -221,7 +221,7 @@
 					</p>
 					<p>
 						<label for="pref_mail_smtp_password" class="bline">{_T string="SMTP (or GMail) password:"}</label>
-						<input type="text" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="{$pref.pref_mail_smtp_password}" maxlength="100" size="30"{if $required.pref_mail_smtp_password eq 1} required{/if}/>
+                        <input type="password" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="{$pref.pref_mail_smtp_password}" maxlength="100" size="30"{if $required.pref_mail_smtp_password eq 1} required{/if}/>
 					</p>
 				</div>
 			</fieldset>
