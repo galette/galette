@@ -30,7 +30,7 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
  * @category  Plugins
- * @package   GaletteAuto
+ * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2011 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
