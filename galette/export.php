@@ -52,7 +52,15 @@ require_once WEB_ROOT . 'classes/csv.class.php';
 $csv = new Csv();
 
 $written = array();
-$tables_list = $zdb->db->listTables();
+$tmp_tables_list = $zdb->db->listTables();
+
+$tables_list = array();
+//filter table_list: we only want PREFIX_DB tables
+foreach ( $tmp_tables_list as $t ) {
+    if ( preg_match('/^' . PREFIX_DB . '/', $t) ) {
+        $tables_list[] = $t;
+    }
+}
 
 if ( isset( $_POST['export_tables'] ) && $_POST['export_tables'] != '' ) {
     foreach ( $_POST['export_tables'] as $table) {
