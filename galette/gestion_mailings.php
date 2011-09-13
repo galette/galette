@@ -54,6 +54,15 @@ if ( isset($_GET['reset']) && $_GET['reset'] == 1 ) {
     $mailhist = new MailingHistory();
 }
 
+//delete mailings
+if (isset($_GET['sup']) || isset($_POST['delete'])) {
+    if ( isset($_GET['sup']) ) {
+        $mailhist->removeEntries($_GET['sup']);
+    } else if ( isset($_POST['member_sel']) ) {
+        $mailhist->removeEntries($_POST['member_sel']);
+    }
+}
+
 if ( isset($_GET['page']) && is_numeric($_GET['page']) ) {
     $mailhist->current_page = (int)$_GET['page'];
 }

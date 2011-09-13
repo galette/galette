@@ -96,7 +96,7 @@
                         </a>
 						<a
                             onclick="return confirm('{_T string="Do you really want to delete this member from the base? This will also delete the history of his fees. You could instead disable the account.\n\nDo you still want to delete this member ?"|escape:"javascript"}')"
-                            href="?sup={$mailling->id}">
+                            href="?sup={$log.mailing_id}">
                             <img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/>
                         </a>
 					</td>
