@@ -87,7 +87,7 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
         $mailing = new Mailing(null);
         MailingHistory::loadFrom((int)$_GET['from'], $mailing);
     } else {
-        $mailing = new Mailing($members);
+        $mailing = new Mailing(($members !== false) ? $members : null);
     }
 
     if ( isset($_POST['mailing_go'])
@@ -119,48 +119,17 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
 
         $mailing->current_step = Mailing::STEP_SEND;
         //ok... let's go for fun
-        /** FIXME: I guess most of the following mailing code should be handled
-         * in GaletteMail so it can be reused; from self_adherent for example */
-        include_once 'includes/phpMailer-' . PHP_MAILER_VERSION . '/class.phpmailer.php';
-        $mail = new PHPMailer();
-
-        if ( $preferences->pref_mail_method == Mailing::METHOD_SMTP ) {
-            /** TODO: put phpMailer in php's path ? */
-            $mail->PluginDir = WEB_ROOT . '/includes/phpMailer-' . PHP_MAILER_VERSION . '/';
-            $mail->IsSMTP();  // telling the class to use SMTP
-            $mail->Host = $preferences->pref_mail_smtp; // SMTP server
-        }
-
-        $mail->SetFrom($preferences->pref_email, $preferences->pref_email_nom);
-        // Add a Reply-To field in the mail headers.
-        // Fix bug #6654.
-        if ( $preferences->pref_email_reply_to ) {
-            $mail->AddReplyTo($preferences->pref_email_reply_to);
-        } else {
-            $mail->AddReplyTo($preferences->pref_email);
-        }
-        $mail->CharSet = 'UTF-8';
-        $mail->SetLanguage($i18n->getAbbrev());
-
-        //loop on members...
-        foreach ( $mailing->recipients as $recipient ) {
-            $mail->AddBCC($recipient->email, $recipient->sname);
-        }
-
-        $mail->Subject = $mailing->subject;
-        $mail->Body = $mailing->message;
-        if ( $mailing->html ) {
-            $mail->AltBody = $mailing->alt_message;
-            $mail->IsHTML(true);
-        }
-        $mail->WordWrap = 50;
-
-        if ( !$mail->Send() ) {
+        $sent = $mailing->send();
+        if ( $sent == Mailing::MAIL_ERROR ) {
+            $mailing->current_step = Mailing::STEP_START;
             $log->log(
-                '[mailing_adherents.php] Message was not sent. Error: ' .
-                $mail->ErrorInfo,
+                '[mailing_adherents.php] Message was not sent. Errors: ' .
+                print_r($mailing->errors, true),
                 PEAR_LOG_ERR
             );
+            foreach ( $mailing->errors as $e ) {
+                $error_detected[] = $e;
+            }
         } else {
             $mlh = new MailingHistory($mailing);
             $mlh->storeMailing();

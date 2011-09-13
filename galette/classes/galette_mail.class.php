@@ -70,15 +70,14 @@ class GaletteMail
     private $_errors = array();
     private $_recipients;
 
-    private $_mail;
+    private $_mail = null;
 
     /**
-    * Default constructor
-    *
-    * @param array $args Unused for now
-    */
-    public function __construct($args=null)
-    {
+     * Initialize PHPMailer
+     *
+     * @return void
+     */
+    private function _initMailer() {
         global $preferences, $log, $i18n;
 
         $this->_mail = new PHPMailer();
@@ -89,7 +88,7 @@ class GaletteMail
             //if we want to send mails using a smtp server
             $this->_mail->IsSMTP();
             // enables SMTP debug information (for testing)
-            //$this->_mail->SMTPDebug = 2;
+            /*$this->_mail->SMTPDebug = 2;*/
 
             if ( $preferences->pref_mail_method == self::METHOD_GMAIL ) {
                 // sets GMAIL as the SMTP server
@@ -164,6 +163,11 @@ class GaletteMail
     {
         global $log;
         $res = true;
+
+        if ( $this->_mail === null ) {
+            $this->_initMailer();
+        }
+
         $this->_recipients = array();
         foreach ( $recipients as $mail => $name ) {
             if ( self::isValidEmail($mail) ) {
@@ -184,6 +188,7 @@ class GaletteMail
                 break;
             }
         }
+        $r = $this->_recipients;
         return $res;
     }
 
@@ -196,6 +201,10 @@ class GaletteMail
     {
         global $preferences, $log;
 
+        if ( $this->_mail === null ) {
+            $this->_initMailer();
+        }
+
         if ( $this->_html ) {
             //the mail is html :(
             $this->_mail->AltBody = $this->cleanedHTML();
@@ -203,30 +212,46 @@ class GaletteMail
         } else {
             //the mail is plaintext :)
             $this->_mail->AltBody = null;
+            $t = $this->_mail;
             $this->_mail->IsHTML(false);
         }
 
         $this->_mail->Subject = $this->_subject;
         $this->_mail->Body = $this->_message;
 
-        //let's send the mail
-        if ( !$this->_mail->Send() ) {
-            $this->_errors[] = $this->_mail->ErrorInfo;
-            $log->log(
-                'An error occured sending mail to: ' . $txt,
-                PEAR_LOG_INFO
-            );
-            return self::MAIL_ERROR;
-        } else {
-            $txt = '';
-            foreach ( $this->_recipients as $k=>$v ) {
-                $txt .= $v . ' (' . $k . '), ';
+        try {
+            //reinit errors array
+            $this->_errors = array();
+            //let's send the mail
+            if ( !$this->_mail->Send() ) {
+                $m = $this->_mail;
+                $this->_errors[] = $this->_mail->ErrorInfo;
+                $log->log(
+                    'An error occured sending mail to: ' . $txt,
+                    PEAR_LOG_INFO
+                );
+                $this->_mail = null;
+                return self::MAIL_ERROR;
+            } else {
+                $txt = '';
+                foreach ( $this->_recipients as $k=>$v ) {
+                    $txt .= $v . ' (' . $k . '), ';
+                }
+                $log->log(
+                    'A mail has been sent to: ' . $txt,
+                    PEAR_LOG_INFO
+                );
+                $this->_mail = null;
+                return self::MAIL_SENT;
             }
+        } catch (Exception $e) {
             $log->log(
-                'A mail has been sent to: ' . $txt,
-                PEAR_LOG_INFO
+                'Error sending message: ' . $e.getMessage(),
+                PEAR_LOG_ERR
             );
-            return self::MAIL_SENT;
+            $this->errors[] = $e->getMessage();
+            $this->_mail = null;
+            return self::MAIL_ERROR;
         }
     }
 
@@ -288,6 +313,15 @@ class GaletteMail
     }
 
     /**
+     * Retrieve PHPMailer main object
+     *
+     * @return PHPMailer object
+     */
+    protected function getPhpMailer() {
+        return $this->_mail;
+    }
+
+    /**
     * Is the mail HTML formatted?
     *
     * @param boolean $set The value to set
@@ -310,6 +344,16 @@ class GaletteMail
     public function getSubject()
     {
         return $this->_subject;
+    }
+
+    /**
+     * Retrieve array of errors
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->_errors;
     }
 
     /**

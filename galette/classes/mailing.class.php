@@ -62,7 +62,7 @@ class Mailing extends GaletteMail
     const MIME_DEFAULT = self::MIME_TEXT;
 
     private $_unreachables;
-    private $_recipients;
+    private $_mrecipients;
     private $_current_step;
 
     private $_mime_type;
@@ -85,21 +85,39 @@ class Mailing extends GaletteMail
     }
 
     /**
+    * Apply final header to mail and send it :-)
+    *
+    * @return GaletteMail::MAIL_ERROR|GaletteMail::MAIL_SENT
+    */
+    public function send()
+    {
+        $m = array();
+        foreach ( $this->_mrecipients as $member ) {
+            $m[$member->email] = $member->sname;
+        }
+        parent::setRecipients($m);
+        return parent::send();
+    }
+
+    /**
      * Set mailing recipients
      *
-     * @param <type> $members Aray of Adherent objects
+     * @param <type> $members Array of Adherent objects
      *
      * @return void
      */
     public function setRecipients($members)
     {
+        $m = array();
         foreach ($members as $member) {
             if ( trim($member->email) != '' && self::isValidEmail($member->email) ) {
-                $this->_recipients[] = $member;
+                $this->_mrecipients[] = $member;
+                $m[$member->email] = $member->sname;
             } else {
-                $this->_unreachables[] = $member;
+                $this->_unreachables = $member;
             }
         }
+        parent::setRecipients($m);
     }
 
     /**
@@ -129,6 +147,16 @@ class Mailing extends GaletteMail
                 break;
             case 'html':
                 return $this->isHTML();
+                break;
+            case 'mail':
+            case '_mail':
+                return $this->getPhpMailer();
+                break;
+            case 'errors':
+                return $this->getErrors();
+                break;
+            case 'recipients':
+                return $this->_mrecipients;
                 break;
             default:
                 $rname = '_' . $name;

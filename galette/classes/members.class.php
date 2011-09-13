@@ -180,7 +180,7 @@ class Members
     /**
      * Remove specified members
      *
-     * @param interger|array $ids Members identifiers to delete
+     * @param integer|array $ids Members identifiers to delete
      *
      * @return boolean
      */
@@ -277,7 +277,6 @@ class Members
             );
             return false;
         }
-
     }
 
     /**

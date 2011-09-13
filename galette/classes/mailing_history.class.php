@@ -253,6 +253,64 @@ class MailingHistory extends History
     }
 
     /**
+     * Remove specified entries
+     *
+     * @param integer|array $ids Mailing history entries identifiers
+     *
+     * @return boolean
+     */
+    public function removeEntries($ids)
+    {
+        global $zdb, $log, $hist;
+
+        $list = array();
+        if ( is_numeric($ids) ) {
+            //we've got only one identifier
+            $list[] = $ids;
+        } else {
+            $list = $ids;
+        }
+
+        if ( is_array($list) ) {
+            try {
+                $zdb->db->beginTransaction();
+
+                //delete members
+                $del = $zdb->db->delete(
+                    PREFIX_DB . self::TABLE,
+                    self::PK . ' IN (' . implode(',', $list) . ')'
+                );
+
+                //commit all changes
+                $zdb->db->commit();
+
+                //add an history entry
+                $hist->add(
+                    "Delete mailing entries",
+                    print_r($infos, true)
+                );
+
+                return true;
+            } catch (Exception $e) {
+                $zdb->db->rollBack();
+                $log->log(
+                    'Unable to delete selected mailing history entries |' .
+                    $e->getMessage(),
+                    PEAR_LOG_ERR
+                );
+                return false;
+            }
+        } else {
+            //not numeric and not an array: incorrect.
+            $log->log(
+                'Asking to remove members, but without providing an array or a single numeric value.',
+                PEAR_LOG_WARNING
+            );
+            return false;
+        }
+    }
+
+    /**
      * Get table's name
      *
      * @return string
