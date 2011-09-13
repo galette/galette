@@ -634,6 +634,11 @@ h1 #sendmail .ui-button-text {
     cursor: auto;
 }
 
+#selected_members .unreachables {
+    text-decoration: line-through;
+    color: red;
+}
+
 /*#selected_members*/
 
 #selected_members h3 {

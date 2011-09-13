@@ -38,8 +38,8 @@
         {/if}
         {assign var='count_unreachables' value=$mailing->unreachables|@count}
         {if $count_unreachables > 0}
-                <p>
-                    <strong>{$count_unreachables} {if $count_unreachables != 1}{_T string="unreachable members:"}{else}{_T string="unreachable member"}{/if}</strong><br/>
+                <p id="unreachables_count">
+                    <strong>{$count_unreachables} {if $count_unreachables != 1}{_T string="unreachable members:"}{else}{_T string="unreachable member:"}{/if}</strong><br/>
                     {_T string="Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail."}
                     <br/><a id="btnlabels" class="button" href="etiquettes_adherents.php">{_T string="Generate labels"}</a>
                 </p>
@@ -176,7 +176,27 @@
         var _members_ajax_mapper = function(res){ldelim}
             $('#members_list').append(res);
             $('#btnvalid').button().click(function(){ldelim}
-                $('#members_list').dialog("close");
+                //first, let's store new recipients in mailing object
+                var _recipients = new Array();
+                $('li[id^="member_"]').each(function(){ldelim}
+                    _recipients[_recipients.length] = this.id.substring(7, this.id.length);
+                {rdelim});
+                console.log(_recipients);
+                $.ajax({ldelim}
+                    url: 'ajax_recipients.php',
+                    type: "POST",
+                    data: {ldelim}recipients: _recipients{rdelim},
+                    success: function(res){ldelim}
+                        $('#unreachables_count').remove();
+                        $('#recipients_count').replaceWith(res);
+                        $('#members_list').dialog("close");
+                    {rdelim},
+                    error: function() {ldelim}
+                        alert("{_T string="An error occured displaying members interface :(" escape="js"}");
+                    {rdelim}
+                });
+
+                //$('#members_list').dialog("close");
             {rdelim});
             //Remap links
             var _none = $('#none_selected').clone();

@@ -109,12 +109,19 @@ class Mailing extends GaletteMail
     public function setRecipients($members)
     {
         $m = array();
+        $this->_mrecipients = array();
+        $this->_unreachables = array();
+
         foreach ($members as $member) {
             if ( trim($member->email) != '' && self::isValidEmail($member->email) ) {
-                $this->_mrecipients[] = $member;
+                if ( !in_array($member, $this->_mrecipients) ) {
+                    $this->_mrecipients[] = $member;
+                }
                 $m[$member->email] = $member->sname;
             } else {
-                $this->_unreachables = $member;
+                if ( !in_array($member, $this->_unreachables) ) {
+                    $this->_unreachables[] = $member;
+                }
             }
         }
         parent::setRecipients($m);

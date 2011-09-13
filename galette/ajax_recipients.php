@@ -3,12 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Members list
- * Make possible to search and select a member
- *
- * This page can be loaded directly, or via ajax.
- * Via ajax, we do not have a full html page, but only
- * that will be displayed using javascript on another page
+ * Manage mailing recipients from ajax
  *
  * PHP version 5
  *
@@ -34,46 +29,41 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2011 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id: owners.php 556 2009-03-13 06:48:49Z trashy $
+ * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2011-08-28
+ * @since     Available since 0.7dev - 2011-09-13
  */
 
 require_once 'includes/galette.inc.php';
-if ( !$login->isLogged() ) {
-    header('location: index.php');
+if ( !$login->isLogged() || !$login->isAdmin() ) {
     die();
 }
 
-// check for ajax mode
-$ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
-
 require_once WEB_ROOT . 'classes/members.class.php';
-require_once WEB_ROOT . 'classes/varslist.class.php';
 require_once WEB_ROOT . 'classes/mailing.class.php';
 
-if ( isset($_SESSION['galette']['varslist']) ) {
-    $varslist = unserialize($_SESSION['galette']['varslist']);
-} else {
-    $varslist = new VarsList();
-}
-
-$members_list = Members::getList(true);
 $mailing = unserialize($_SESSION['galette']['mailing']);
-$selected_members = $mailing->recipients;
-$unreachables_members = $mailing->unreachables;
 
-$tpl->assign('ajax', $ajax);
-$tpl->assign('members_list', $members_list);
-$tpl->assign('selected_members', $selected_members);
-$tpl->assign('unreachables_members', $unreachables_members);
+$members = Members::getArrayList($_POST['recipients']);
+$mailing->setRecipients($members);
 
-if ( $ajax ) {
-    $tpl->assign('mode', 'ajax');
-    $tpl->display('ajax_members.tpl');
-} else {
-    $content = $tpl->fetch('ajax_members.tpl');
-    $tpl->assign('content', $content);
-    $tpl->display('page.tpl');
+$_SESSION['galette']['mailing'] = serialize($mailing);
+
+//let's generate html for return
+$html = '<p id="recipients_count">' .
+    preg_replace(
+        '/%s/',
+        count($mailing->recipients),
+        _T("You are about to send an e-mail to <strong>%s members</strong>")
+    ) . '</p>';
+if ( count($mailing->unreachables) ) {
+    $html .= '<p id="unreachables_count"><strong>' . count($mailing->unreachables) . ' ' .
+        ((count($mailing->unreachables) !=1) ?
+            _T("unreachable members:")
+            : _T("unreachable member:")) . '</strong><br/>' .
+        _T("Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail.") .
+        '<br/><a id="btnlabels" class="button" href="etiquettes_adherents.php">' .
+        _T("Generate labels") . '</a></p>';
 }
+echo $html;
 ?>

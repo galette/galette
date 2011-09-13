@@ -46,6 +46,11 @@
 {foreachelse}
                 <li id="none_selected">{_T string="No members has been selected yet."}</li>
 {/foreach}
+{if $unreachables_members|@count gt 0}
+    {foreach from=$unreachables_members item=recipient}
+                <li id="member_{$recipient->id}" class="unreachables">{$recipient->sfullname}</li>
+    {/foreach}
+{/if}
             </ul>
             <button class="button" id="btnvalid">Validate</button>
         </section>
