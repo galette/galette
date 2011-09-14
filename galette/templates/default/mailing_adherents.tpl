@@ -181,7 +181,6 @@
                 $('li[id^="member_"]').each(function(){ldelim}
                     _recipients[_recipients.length] = this.id.substring(7, this.id.length);
                 {rdelim});
-                console.log(_recipients);
                 $.ajax({ldelim}
                     url: 'ajax_recipients.php',
                     type: "POST",
