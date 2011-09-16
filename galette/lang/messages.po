@@ -2423,11 +2423,6 @@ msgstr ""
 msgid "Translate '%s' field"
 msgstr ""
 
-#: ../champs_adherents.php:47 ../champs_adherents.php:68
-#: ../champs_adherents.php:70
-msgid ""
-msgstr ""
-
 #: ../templates/default/mailing_adherents.tpl:65 ../templates/default/mailing_adherents.tpl:87
 msgid "Send"
 msgstr ""
