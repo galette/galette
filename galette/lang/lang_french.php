@@ -1,7 +1,10 @@
 <?php
-// This file was automatically generated on Tue Aug 30 20:45:35 2011 (GMT)
+// This file was automatically generated on Fri Sep 16 17:13:19 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
+
+// ../templates/default/gestion_adherents.tpl:19 
+$lang[''] = 'Content-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nMime-Version: 1.0Last-Translator: \nPO-Revision-Date: 2011-09-16 19:12+0200\nProject-Id-Version: \nLanguage-Team: French <kde-i18n-doc@kde.org>\nLanguage: fr\nX-Generator: Lokalize 1.2\nMIME-Version: 1.0\nPlural-Forms: nplurals=2; plural=(n > 1);\n';
 
 // ../classes/plugins.class.php:214 ../classes/plugins.class.php:218 
 $lang['Cannot deactivate plugin.'] = 'Impossible de désactiver le plugin.';
@@ -93,8 +96,8 @@ $lang['Amount'] = 'Montant';
 // ../gestion_intitules.php:98 
 $lang['- Cannot delete this label: it\'s still used'] = '- Ne peut supprimer cet intitulé&nbsp;: il est toujours utilisé';
 
-// ../preferences.php:232 
-$lang['- You must provide a password for SMTP authentication.'] = '- Vous devez fournir un mot de passe pour l\'authentification SMTP.';
+// ../templates/default/page.tpl:101 
+$lang['Configuration'] = 'Configuration';
 
 // ../ajouter_adherent.php:241 
 $lang['You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.'] = 'Vous avez demandé à Galette d\'envoyer une confirmation par mail à l\'adhérent, mais l\'envoi de mail a été désactivé dans les préférences.';
@@ -1989,8 +1992,8 @@ $lang['Export file could not be write on disk for \'%export\'. Make sure web ser
 // ../champs_adherents.php:43 ../classes/adherent.class.php:198 ../templates/default/member.tpl:67 ../templates/default/self_adherent.tpl:32 ../templates/default/voir_adherent.tpl:62 
 $lang['Nickname:'] = 'Pseudo&nbsp;:';
 
-// ../templates/default/page.tpl:101 
-$lang['Configuration'] = 'Configuration';
+// ../preferences.php:232 
+$lang['- You must provide a password for SMTP authentication.'] = '- Vous devez fournir un mot de passe pour l\'authentification SMTP.';
 
 // ../classes/transaction.class.php:102 ../templates/default/ajouter_transaction.tpl:16 
 $lang['Description:'] = 'Description&nbsp;:';
