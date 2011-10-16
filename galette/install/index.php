@@ -706,8 +706,8 @@ case 'u7':
                     PEAR_LOG_WARNING
                 );
                 echo '<li class="install-bad debuginfos">' . $w1 . ' ' . $w2 .
-                    ' ' . $w3 . ' ' . $extra . '<span>' . $result->getMessage() .
-                    '<br/>(' . $result->getDebugInfo() . ')</span></li>';
+                    ' ' . $w3 . ' ' . $extra . '<span>' . $e->getMessage() .
+                    '<br/>(' . $query . ')</span></li>';
 
                 //if error are on drop, DROP, rename or RENAME we can continue
                 if ( (strcasecmp(trim($w1), 'drop') != 0)
