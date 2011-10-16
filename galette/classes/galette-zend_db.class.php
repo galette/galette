@@ -245,11 +245,9 @@ class GaletteZendDb extends Zend_Db
 
         //can Galette CREATE tables?
         try {
-            /** TODO: that one will probably won't work for PostgreSQL :'( */
             $sql = 'CREATE TABLE galette_test (
                 test_id INTEGER NOT NULL,
-                test_text VARCHAR(20),
-                test_boolean TINYINT(1)
+                test_text VARCHAR(20)
             )';
             $this->_db->getConnection()->exec($sql);
             $results['create'] = true;
@@ -280,8 +278,7 @@ class GaletteZendDb extends Zend_Db
             //can Galette INSERT records ?
             $values = array(
                 'test_id'      => 1,
-                'test_text'    => 'a simple text',
-                'test_boolean' => true
+                'test_text'    => 'a simple text'
             );
             try {
                 $res = $this->_db->insert(
@@ -307,8 +304,7 @@ class GaletteZendDb extends Zend_Db
             if ( !$stop ) {
                 //can Galette UPDATE records ?
                 $values = array(
-                    'test_text' => 'another simple text',
-                    'test_boolean' => false
+                    'test_text' => 'another simple text'
                 );
                 try {
                     $res = $this->_db->update(
