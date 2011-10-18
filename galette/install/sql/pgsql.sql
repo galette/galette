@@ -30,7 +30,7 @@ CREATE SEQUENCE galette_preferences_id_seq
     MINVALUE 1
     CACHE 1;
 
-DROP TABLE galette_adherents;
+DROP TABLE galette_adherents CASCADE;
 CREATE TABLE galette_adherents (
     id_adh integer DEFAULT nextval('galette_adherents_id_seq'::text) NOT NULL,
     id_statut integer DEFAULT '4' NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE galette_adherents (
     prof_adh character varying(150),
     login_adh character varying(20) DEFAULT '' NOT NULL,
     mdp_adh character varying(40) DEFAULT '' NOT NULL,
-    date_crea_adh date DEFAULT '00000101' NOT NULL,
+    date_crea_adh date DEFAULT '19010101' NOT NULL,
     activite_adh character(1) DEFAULT '0' NOT NULL,
     bool_admin_adh character(1) DEFAULT NULL,
     bool_exempt_adh character(1) DEFAULT NULL,
@@ -65,7 +65,8 @@ CREATE TABLE galette_adherents (
     pref_lang character varying(20) DEFAULT 'fr_FR',
     lieu_naissance text DEFAULT '',
     gpgid character varying(8) DEFAULT NULL,
-    fingerprint character varying(50) DEFAULT NULL
+    fingerprint character varying(50) DEFAULT NULL,
+    PRIMARY KEY (id_adh)
 );
 CREATE UNIQUE INDEX galette_adherents_idx ON galette_adherents (id_adh);
 CREATE UNIQUE INDEX galette_login_idx     ON galette_adherents (login_adh);
@@ -77,9 +78,9 @@ CREATE TABLE galette_cotisations (
     id_type_cotis integer DEFAULT '0' NOT NULL,
     montant_cotis real DEFAULT '0',
     info_cotis text,
-    date_enreg date DEFAULT '00000101' NOT NULL,
-    date_debut_cotis date DEFAULT '00000101' NOT NULL,
-    date_fin_cotis date DEFAULT '00000101' NOT NULL,
+    date_enreg date DEFAULT '19010101' NOT NULL,
+    date_debut_cotis date DEFAULT '19010101' NOT NULL,
+    date_fin_cotis date DEFAULT '19010101' NOT NULL,
     trans_id integer DEFAULT NULL
 );
 CREATE UNIQUE INDEX galette_cotisations_idx ON galette_cotisations (id_cotis);
@@ -87,7 +88,7 @@ CREATE UNIQUE INDEX galette_cotisations_idx ON galette_cotisations (id_cotis);
 DROP TABLE galette_transactions;
 CREATE TABLE galette_transactions (
     trans_id integer DEFAULT nextval('galette_transactions_id_seq'::text)  NOT NULL,
-    trans_date date DEFAULT '00000101' NOT NULL,
+    trans_date date DEFAULT '19010101' NOT NULL,
     trans_amount real DEFAULT '0',
     trans_desc character varying(30) NOT NULL DEFAULT '',
     id_adh integer DEFAULT NULL
@@ -227,7 +228,7 @@ CREATE TABLE galette_texts (
 );
 CREATE UNIQUE INDEX galette_texts_idx ON galette_texts (tid);
 
-DROP TABLE galette_fields_categories;
+DROP TABLE galette_fields_categories CASCADE;
 CREATE TABLE galette_fields_categories (
   id_field_category integer  DEFAULT nextval('galette_fields_categories_id_seq'::text) NOT NULL,
   table_name character varying(30) NOT NULL,
@@ -255,7 +256,7 @@ CREATE TABLE galette_mailing_history (
   mailing_subjectf character varying(255) NOT NULL,
   mailing_body text NOT NULL,
   mailing_date timestamp NOT NULL,
-  mailing_recipients text NOT_NULL,
-  mailing sent character(1) DEFAULT NULL
+  mailing_recipients text NOT NULL,
+  mailing_sent character(1) DEFAULT NULL
 );
 CREATE UNIQUE INDEX galette_mailing_history_idx ON galette_mailing_history (mailing_id);
