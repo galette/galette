@@ -70,7 +70,7 @@ INSERT INTO galette_texts (tid, tref, tsubject, tbody, tlang, tcomment) VALUES (
 CREATE UNIQUE INDEX galette_dynamic_fields_unique_idx ON galette_dynamic_fields (item_id, field_id, field_form, val_index);
 
 -- New table for fields categories
-DROP TABLE galette_fields_categories;
+DROP TABLE galette_fields_categories CASCADE;
 CREATE TABLE galette_fields_categories (
   id_field_category integer  DEFAULT nextval('galette_fields_categories_id_seq'::text) NOT NULL,
   category character varying(50) NOT NULL,
