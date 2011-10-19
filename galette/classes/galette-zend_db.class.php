@@ -79,6 +79,7 @@ class GaletteZendDb extends Zend_Db
                 $_type,
                 array(
                     'host'     => HOST_DB,
+                    'port'     => PORT_DB,
                     'username' => USER_DB,
                     'password' => PWD_DB,
                     'dbname'   => NAME_DB
@@ -135,13 +136,14 @@ class GaletteZendDb extends Zend_Db
     *
     * @param string $type db type
     * @param string $user database's user
-    * @param stirng $pass password for the user
-    * @param stirng $host which host we want to connect to
+    * @param string $pass password for the user
+    * @param string $host which host we want to connect to
+    * @param string $port which tcp port we want to connect to
     * @param string $db   database name
     *
     * @return true|array true if connection was successfull, an array with some infos otherwise
     */
-    public static function testConnectivity($type, $user, $pass, $host, $db)
+    public static function testConnectivity($type, $user, $pass, $host, $port, $db)
     {
         global $log;
 
@@ -159,6 +161,7 @@ class GaletteZendDb extends Zend_Db
                 $_type,
                 array(
                     'host'     => $host,
+                    'port'     => $port,
                     'username' => $user,
                     'password' => $pass,
                     'dbname'   => $db
@@ -258,7 +261,7 @@ class GaletteZendDb extends Zend_Db
             $results['create'] = $e;
         }
 
-        //all thosse tests need the table to exists
+        //all those tests need the table to exists
         if ( !$stop ) {
             if ( $mode == 'u' ) {
                 //can Galette ALTER tables? (only for update mode)
@@ -300,7 +303,7 @@ class GaletteZendDb extends Zend_Db
                 $results['insert'] = $e;
             }
 
-            //all thosse tests need that the first record exists
+            //all those tests need that the first record exists
             if ( !$stop ) {
                 //can Galette UPDATE records ?
                 $values = array(

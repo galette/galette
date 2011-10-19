@@ -39,7 +39,7 @@
 include WEB_ROOT . '/includes/adodb' . ADODB_VERSION . '/adodb.inc.php';
 $DB = ADONewConnection(TYPE_DB);
 $DB->debug = false;
-if ( !@$DB->Connect(HOST_DB, USER_DB, PWD_DB, NAME_DB) ) {
+if ( !@$DB->Connect(HOST_DB, PORT_DB, USER_DB, PWD_DB, NAME_DB) ) {
     die('No database connection...');
 }
 

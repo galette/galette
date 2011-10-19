@@ -76,6 +76,7 @@ if ( $error_detected == '' && isset($_POST['install_permsok']) ) {
 if ( $error_detected == ''
     && isset($_POST['install_dbtype'])
     && isset($_POST['install_dbhost'])
+    && isset($_POST['install_dbport'])
     && isset($_POST['install_dbuser'])
     && isset($_POST['install_dbpass'])
     && isset($_POST['install_dbname'])
@@ -86,6 +87,9 @@ if ( $error_detected == ''
     }
     if ( $_POST['install_dbhost'] == '' ) {
         $error_detected .= '<li>' . _T("No host") . '</li>';
+    }
+    if ( $_POST['install_dbport'] == '' ) {
+        $error_detected .= '<li>' . _T("No port") . '</li>';
     }
     if ( $_POST['install_dbuser'] == '' ) {
         $error_detected .= '<li>' . _T("No user name") . '</li>';
@@ -104,6 +108,7 @@ if ( $error_detected == ''
             define('USER_DB', $_POST['install_dbuser']);
             define('PWD_DB', $_POST['install_dbpass']);
             define('HOST_DB', $_POST['install_dbhost']);
+            define('PORT_DB', $_POST['install_dbport']);
             define('NAME_DB', $_POST['install_dbname']);
 
             $zdb = new GaletteZendDb();
@@ -402,14 +407,19 @@ case 'u4':
                     <p>
                         <label class="bline" for="install_dbtype"><?php echo _T("Database type:"); ?></label>
                         <select name="install_dbtype" id="install_dbtype">
-                            <option value="mysql"<?php if ( isset($_POST['install_dbtype']) && $_POST['install_dbtype'] == 'mysql' ) {echo ' selected="selected"';} ?>>Mysql</option>
-                            <option value="pgsql"<?php if ( isset($_POST['install_dbtype']) && $_POST['install_dbtype'] == 'pgsql' ) {echo ' selected="selected"';} ?>>Postgresql</option>
+                            <option value="mysql"<?php if ( isset($_POST['install_dbtype']) && $_POST['install_dbtype'] == 'mysql' ) {echo ' selected="selected"'; $default_dbport == '3306';} ?>>Mysql</option>
+                            <option value="pgsql"<?php if ( isset($_POST['install_dbtype']) && $_POST['install_dbtype'] == 'pgsql' ) {echo ' selected="selected"'; $default_dbport == '5432';} ?>>Postgresql</option>
                         </select>
                     </p>
                     <p>
                         <label class="bline" for="install_dbhost"><?php echo _T("Host:"); ?></label>
                         <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo (isset($_POST['install_dbhost']))?$_POST['install_dbhost']:'localhost'; ?>"/>
                     </p>
+                    <p>
+                        <label class="bline" for="install_dbport"><?php echo _T("Port:"); ?></label>
+                        <input type="text" name="install_dbport" id="install_dbport" value="<?php echo (isset($_POST['install_dbport']))?$_POST['install_dbport']:'$default_dbport'; ?>"/>
+                    </p>
+
                     <p>
                         <label class="bline" for="install_dbuser"><?php echo _T("User:"); ?></label>
                         <input type="text" name="install_dbuser" id="install_dbuser" value="<?php if(isset($_POST['install_dbuser'])) echo $_POST['install_dbuser']; ?>"/>
@@ -456,6 +466,7 @@ case 'u5':
         $_POST['install_dbuser'],
         $_POST['install_dbpass'],
         $_POST['install_dbhost'],
+        $_POST['install_dbport'],
         $_POST['install_dbname']);
 
     if ( $test === true ) {
@@ -479,6 +490,7 @@ case 'u5':
                     <input type="hidden" name="install_dbko" value="1"/>
                     <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
                     <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>"/>
+                    <input type="hidden" name="install_dbport" value="<?php echo $_POST['install_dbport']; ?>"/>
                     <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>"/>
                     <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>"/>
                     <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>"/>
@@ -496,6 +508,7 @@ case 'u5':
                     <input type="hidden" name="install_permsok" value="1"/>
                     <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
                     <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>"/>
+                    <input type="hidden" name="install_dbport" value="<?php echo $_POST['install_dbport']; ?>"/>
                     <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>"/>
                     <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>"/>
                     <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>"/>
@@ -597,6 +610,7 @@ case 'u6':
                     <input type="hidden" name="install_permsok" value="1"/>
                     <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
                     <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>"/>
+                    <input type="hidden" name="install_dbport" value="<?php echo $_POST['install_dbport']; ?>"/>
                     <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>"/>
                     <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>"/>
                     <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>"/>
@@ -616,6 +630,7 @@ case 'u6':
                     <input type="hidden" name="install_permsok" value="1"/>
                     <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
                     <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>"/>
+                    <input type="hidden" name="install_dbport" value="<?php echo $_POST['install_dbport']; ?>"/>
                     <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>"/>
                     <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>"/>
                     <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>"/>
@@ -815,6 +830,7 @@ case 'u7':
                     <input type="hidden" name="install_permsok" value="1"/>
                     <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
                     <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>"/>
+                    <input type="hidden" name="install_dbport" value="<?php echo $_POST['install_dbport']; ?>"/>
                     <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>"/>
                     <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>"/>
                     <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>"/>
@@ -836,6 +852,7 @@ if ($step=="u7") echo _T("The tables has been correctly updated."); ?></p>
                     <input type="hidden" name="install_permsok" value="1"/>
                     <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
                     <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>"/>
+                    <input type="hidden" name="install_dbport" value="<?php echo $_POST['install_dbport']; ?>"/>
                     <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>"/>
                     <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>"/>
                     <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>"/>
@@ -882,6 +899,7 @@ case 'u8':
                     <input type="hidden" name="install_permsok" value="1"/>
                     <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
                     <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>"/>
+                    <input type="hidden" name="install_dbport" value="<?php echo $_POST['install_dbport']; ?>"/>
                     <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>"/>
                     <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>"/>
                     <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>"/>
@@ -914,6 +932,7 @@ case 'u9';
         $data = '<?php
 define("TYPE_DB", "' . $_POST['install_dbtype'] . '");
 define("HOST_DB", "' . $_POST['install_dbhost'] . '");
+define("PORT_DB", "' . $_POST['install_dbport'] . '");
 define("USER_DB", "' . $_POST['install_dbuser'] . '");
 define("PWD_DB", "' . $_POST['install_dbpass'] . '");
 define("NAME_DB", "' . $_POST['install_dbname'] . '");
@@ -999,6 +1018,7 @@ define("STOCK_FILES", "tempimages");
                     <input type="hidden" name="install_permsok" value="1"/>
                     <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
                     <input type="hidden" name="install_dbhost" value="<?php echo $_POST['install_dbhost']; ?>"/>
+                    <input type="hidden" name="install_dbport" value="<?php echo $_POST['install_dbport']; ?>"/>
                     <input type="hidden" name="install_dbuser" value="<?php echo $_POST['install_dbuser']; ?>"/>
                     <input type="hidden" name="install_dbpass" value="<?php echo $_POST['install_dbpass']; ?>"/>
                     <input type="hidden" name="install_dbname" value="<?php echo $_POST['install_dbname']; ?>"/>
@@ -1028,6 +1048,7 @@ define("STOCK_FILES", "tempimages");
                     <input type="hidden" name="install_permsok" value="1"/>
                     <input type="hidden" name="install_dbtype" value="<?php echo $_POST["install_dbtype"]; ?>"/>
                     <input type="hidden" name="install_dbhost" value="<?php echo $_POST["install_dbhost"]; ?>"/>
+                    <input type="hidden" name="install_dbport" value="<?php echo $_POST["install_dbport"]; ?>"/>
                     <input type="hidden" name="install_dbuser" value="<?php echo $_POST["install_dbuser"]; ?>"/>
                     <input type="hidden" name="install_dbpass" value="<?php echo $_POST["install_dbpass"]; ?>"/>
                     <input type="hidden" name="install_dbname" value="<?php echo $_POST["install_dbname"]; ?>"/>

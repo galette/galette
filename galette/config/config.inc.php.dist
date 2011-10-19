@@ -10,6 +10,8 @@ $Id$
 define("TYPE_DB", "pgsql"); 
 /* hostname for the database */
 define("HOST_DB", "localhost"); 
+/* tcp port for the database */
+define("PORT_DB", "5432"); 
 /* the username for the database */
 define("USER_DB", "galette");
 /* password for the username define above */
