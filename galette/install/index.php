@@ -43,6 +43,7 @@ $installer = true;
 define('WEB_ROOT', realpath(dirname(__FILE__) . '/../') . '/');
 
 require_once $base_path . 'includes/galette.inc.php';
+include_once '../classes/galette-zend_db.class.php';
 
 $template_subdir = 'templates/default/';
 $step = '1';
@@ -102,7 +103,6 @@ if ( $error_detected == ''
     }
     if ($error_detected == '') {
         if ( isset($_POST['install_dbconn_ok']) ) {
-            include_once '../classes/galette-zend_db.class.php';
 
             define('TYPE_DB', $_POST['install_dbtype']);
             define('USER_DB', $_POST['install_dbuser']);
@@ -399,6 +399,14 @@ case 'u4':
         if ( $step == 'u4' ) {
             echo _T("Enter connection data for the existing database.");
         }
+
+        //define default database port
+        $default_dbport = GaletteZendDb::MYSQL_DEFAULT_PORT;
+        if ( $_POST['install_dbtype'] == 'mysql' ) {
+            $default_dbport = GaletteZendDb::MYSQL_DEFAULT_PORT;
+        } else if ( $_POST['install_dbtype'] == 'pgsql' ) {
+            $default_dbport = GaletteZendDb::PGSQL_DEFAULT_PORT;
+        }
 ?><br />
             <?php echo _T("The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."); ?></p>
             <form action="index.php" method="post">
@@ -407,8 +415,8 @@ case 'u4':
                     <p>
                         <label class="bline" for="install_dbtype"><?php echo _T("Database type:"); ?></label>
                         <select name="install_dbtype" id="install_dbtype">
-                            <option value="mysql"<?php if ( isset($_POST['install_dbtype']) && $_POST['install_dbtype'] == 'mysql' ) {echo ' selected="selected"'; $default_dbport == '3306';} ?>>Mysql</option>
-                            <option value="pgsql"<?php if ( isset($_POST['install_dbtype']) && $_POST['install_dbtype'] == 'pgsql' ) {echo ' selected="selected"'; $default_dbport == '5432';} ?>>Postgresql</option>
+                            <option value="mysql"<?php if ( isset($_POST['install_dbtype']) && $_POST['install_dbtype'] == 'mysql' ) {echo ' selected="selected"';} ?>>Mysql</option>
+                            <option value="pgsql"<?php if ( isset($_POST['install_dbtype']) && $_POST['install_dbtype'] == 'pgsql' ) {echo ' selected="selected"';} ?>>Postgresql</option>
                         </select>
                     </p>
                     <p>
@@ -417,9 +425,8 @@ case 'u4':
                     </p>
                     <p>
                         <label class="bline" for="install_dbport"><?php echo _T("Port:"); ?></label>
-                        <input type="text" name="install_dbport" id="install_dbport" value="<?php echo (isset($_POST['install_dbport']))?$_POST['install_dbport']:'$default_dbport'; ?>"/>
+                        <input type="text" name="install_dbport" id="install_dbport" value="<?php echo (isset($_POST['install_dbport']))?$_POST['install_dbport']:$default_dbport; ?>"/>
                     </p>
-
                     <p>
                         <label class="bline" for="install_dbuser"><?php echo _T("User:"); ?></label>
                         <input type="text" name="install_dbuser" id="install_dbuser" value="<?php if(isset($_POST['install_dbuser'])) echo $_POST['install_dbuser']; ?>"/>
@@ -448,6 +455,20 @@ case 'u4':
                     <input type="hidden" name="install_permsok" value="1"/>
                 </p>
             </form>
+            <script type="text/javascript">
+                $(function(){
+                    $('#install_dbtype').change(function(){
+                        var _db = $(this).val();
+                        var _port = null;
+                        if ( _db === 'pgsql' ) {
+                            _port = <?php echo GaletteZendDb::PGSQL_DEFAULT_PORT; ?>;
+                        } else if ( _db === 'mysql' ) {
+                            _port = <?php echo GaletteZendDb::MYSQL_DEFAULT_PORT; ?>;
+                        }
+                        $('#install_dbport').val(_port);
+                    });
+                });
+            </script>
         </div>
 <?php
     break; //ends fourth step

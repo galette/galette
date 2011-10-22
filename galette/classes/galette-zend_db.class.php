@@ -58,6 +58,9 @@ class GaletteZendDb extends Zend_Db
     private $_db;
     private $_error;
 
+    const MYSQL_DEFAULT_PORT = 3306;
+    const PGSQL_DEFAULT_PORT = 5432;
+
     /**
     * Main constructor
     */
