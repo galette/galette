@@ -291,7 +291,6 @@ case '2':
         echo "<p>" . _T("Update") . '<br/><span id="warningbox">' . _T("Warning: Don't forget to backup your current database.") . "</span></p>\n\t\t\t\t<ul class=\"list\">";
     }
     while ( list($key, $val) = each($update_scripts) ) {
-        //echo "\t\t\t\t\t<li>";
 ?>
                 <li>
                     <input type="radio" name="install_type" value="upgrade-<?php echo $val; ?>" id="upgrade-<?php echo $val; ?>"/> <label for="upgrade-<?php echo $val; ?>">
@@ -305,7 +304,6 @@ case '2':
 ?>
                 </li>
 <?php
-        //echo "\t\t\t\t\t</li>";
     }
     if ( count($update_scripts) > 0 ) {
         echo "\t\t\t\t</ul>";
@@ -478,7 +476,6 @@ case 'u5':
             <h2><?php echo _T("Check of the database"); ?></h2>
             <p><?php echo _T("Check the parameters and the existence of the database"); ?></p>
 <?php
-    /*include_once '../classes/mdb2.class.php';*/
     require_once '../classes/galette-zend_db.class.php';
     $permsdb_ok = true;
 
