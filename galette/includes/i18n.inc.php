@@ -276,7 +276,7 @@ if ( !function_exists('_T') ) {
     */
     function _T($chaine)
     {
-        global $language, $disable_gettext;
+        global $language, $disable_gettext, $installer;
         if ( $disable_gettext === true && isset($GLOBALS['lang']) ) {
             $trans = $chaine;
             if ( isset($GLOBALS['lang'][$chaine])
@@ -285,10 +285,12 @@ if ( !function_exists('_T') ) {
                 $trans = $GLOBALS['lang'][$chaine];
             } else {
                 $trans = false;
-                $trans = getDynamicTranslation(
-                    $chaine,
-                    $language
-                );
+                if ( !isset($installer) || $installer !== true ) {
+                    $trans = getDynamicTranslation(
+                        $chaine,
+                        $language
+                    );
+                }
                 if ($trans) {
                     $GLOBALS['lang'][$chaine] = $trans;
                 } else {
