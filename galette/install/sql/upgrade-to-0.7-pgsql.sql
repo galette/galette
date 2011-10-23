@@ -107,3 +107,7 @@ CREATE TABLE galette_mailing_history (
   mailing sent character(1) DEFAULT NULL
 );
 CREATE UNIQUE INDEX galette_mailing_history_idx ON galette_mailing_history (mailing_id);
+
+-- Missing primary keys
+ALTER TABLE galette_types_cotisation ADD CONSTRAINT galette_types_cotisation_pkey PRIMARY KEY (id_type_cotis);
+ALTER TABLE galette_adherents ADD CONSTRAINT galette_adherents_pkey PRIMARY KEY (id_adh);

@@ -108,6 +108,7 @@ CREATE TABLE galette_types_cotisation (
   id_type_cotis integer NOT NULL,
   libelle_type_cotis character varying(30) DEFAULT '' NOT NULL,
   cotis_extension character(1) DEFAULT NULL
+  PRIMARY KEY (id_type_cotis)
 );
 CREATE UNIQUE INDEX galette_types_cotisation_idx ON galette_types_cotisation (id_type_cotis);
 
