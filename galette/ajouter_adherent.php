@@ -115,7 +115,9 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
             //member has been stored :)
             if ( $new ) {
                 //Send email to admin if preference checked
-                if ( $preferences->pref_bool_mailadh ) {
+                if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+                    && $preferences->pref_bool_mailadh
+                ) {
                     $texts = new texts();
                     $mtxt = $texts->getTexts('newadh', $preferences->pref_lang);
 
