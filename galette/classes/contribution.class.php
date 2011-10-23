@@ -853,6 +853,17 @@ class Contribution
                     }
                 }
                 break;
+            case 'amount':
+                if (is_numeric($value) && $value > 0 ) {
+                    $this->$rname = $value;
+                } else {
+                    $log->log(
+                        'Trying to set an amount with a non numeric value, ' .
+                        'or with a zero value',
+                        PEAR_LOG_WARNING
+                    );
+                }
+                break;
             default:
                 $log->log(
                     '[' . __CLASS__ . ']: Trying to set an unknown property (' .
