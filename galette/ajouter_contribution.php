@@ -174,19 +174,89 @@ if ( isset($_POST['valid']) ) {
         $adh->load($contrib->member);
         $texts = new texts();
 
-        if ( $new && isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1' ) {
-            if ( GaletteMail::isValidEmail($adh->email) ) {
-                $mtxt = $texts->getTexts('contrib', $adh->language);
+        if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED ) {
+            if ( $new && isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1' ) {
+                if ( GaletteMail::isValidEmail($adh->email) ) {
+                    $mtxt = $texts->getTexts('contrib', $adh->language);
+
+                    // Replace Tokens
+                    $regs = array(
+                      '/{NAME}/',
+                      '/{DEADLINE}/',
+                      '/{COMMENT}/'
+                    );
+
+                    $replacements = array(
+                        $preferences->pref_nom,
+                        custom_html_entity_decode($contrib->end_date),
+                        custom_html_entity_decode($contrib->info)
+                    );
+
+                    $body = preg_replace(
+                        $regs,
+                        $replacements,
+                        $mtxt->tbody
+                    );
+
+                    $mail = new GaletteMail();
+                    $mail->setSubject($mtxt->tsubject);
+                    $mail->setRecipients(
+                        array(
+                            $adh->email => $adh->sname
+                        )
+                    );
+
+                    $mail->setMessage($body);
+                    $sent = $mail->send();
+
+                    if ( $sent ) {
+                        $hist->add(
+                            preg_replace(
+                                array('/%name/', '/%email/'),
+                                array($adh->sname, $adh->email),
+                                _T("Mail sent to user %name (%email)")
+                            )
+                        );
+                    } else {
+                        $txt = preg_replace(
+                            array('/%name/', '/%email/'),
+                            array($adh->sname, $adh->email),
+                            _T("A problem happened while sending contribution receipt to user %name (%email)")
+                        );
+                        $hist->add($txt);
+                        $error_detected[] = $txt;
+                    }
+                } else {
+                    $txt = preg_replace(
+                        array('/%name/', '/%email/'),
+                        array($adh->sname, $adh->email),
+                        _T("Trying to send a mail to a member (%name) with an invalid adress: %email")
+                    );
+                    $hist->add($txt);
+                    $warning_detected[] = $txt;
+                }
+            }
+
+            // Sent email to admin if pref checked
+            if ( $new && $preferences->pref_bool_mailadh ) {
+                // Get email text in database
+                $mtxt = $texts->getTexts('newcont', $preferences->pref_lang);
+
+                $mtxt->tsubject = str_replace(
+                    '{NAME_ADH}',
+                    $adh->sname,
+                    $mtxt->tsubject
+                );
 
                 // Replace Tokens
                 $regs = array(
-                  '/{NAME}/',
+                  '/{NAME_ADH}/',
                   '/{DEADLINE}/',
                   '/{COMMENT}/'
                 );
 
                 $replacements = array(
-                    $preferences->pref_nom,
+                    $adh->sname,
                     custom_html_entity_decode($contrib->end_date),
                     custom_html_entity_decode($contrib->info)
                 );
@@ -199,9 +269,10 @@ if ( isset($_POST['valid']) ) {
 
                 $mail = new GaletteMail();
                 $mail->setSubject($mtxt->tsubject);
+                /** TODO: only super-admin is contacted here. We should send a message to all admins, or propose them a chekbox if they don't want to get bored */
                 $mail->setRecipients(
                     array(
-                        $adh->email => $adh->sname
+                        $preferences->pref_email_newadh => str_replace('%asso', $preferences->pref_name, _T("%asso Galette's admin"))
                     )
                 );
 
@@ -209,91 +280,22 @@ if ( isset($_POST['valid']) ) {
                 $sent = $mail->send();
 
                 if ( $sent ) {
-                    $hist->add(
-                        preg_replace(
-                            array('/%name/', '/%email/'),
-                            array($adh->sname, $adh->email),
-                            _T("Mail sent to user %name (%email)")
-                        )
-                    );
+                        $hist->add(
+                            preg_replace(
+                                array('/%name/', '/%email/'),
+                                array($adh->sname, $adh->email),
+                                _T("Mail sent to admin for user %name (%email)")
+                            )
+                        );
                 } else {
                     $txt = preg_replace(
                         array('/%name/', '/%email/'),
                         array($adh->sname, $adh->email),
-                        _T("A problem happened while sending contribution receipt to user %name (%email)")
+                        _T("A problem happened while sending to admin notification for user %name (%email) contribution")
                     );
                     $hist->add($txt);
                     $error_detected[] = $txt;
                 }
-            } else {
-                $txt = preg_replace(
-                    array('/%name/', '/%email/'),
-                    array($adh->sname, $adh->email),
-                    _T("Trying to send a mail to a member (%name) with an invalid adress: %email")
-                );
-                $hist->add($txt);
-                $warning_detected[] = $txt;
-            }
-        }
-
-        // Sent email to admin if pref checked
-        if ( $new && $preferences->pref_bool_mailadh ) {
-            // Get email text in database
-            $mtxt = $texts->getTexts('newcont', $preferences->pref_lang);
-
-            $mtxt->tsubject = str_replace(
-                '{NAME_ADH}',
-                $adh->sname,
-                $mtxt->tsubject
-            );
-
-            // Replace Tokens
-            $regs = array(
-              '/{NAME_ADH}/',
-              '/{DEADLINE}/',
-              '/{COMMENT}/'
-            );
-
-            $replacements = array(
-                $adh->sname,
-                custom_html_entity_decode($contrib->end_date),
-                custom_html_entity_decode($contrib->info)
-            );
-
-            $body = preg_replace(
-                $regs,
-                $replacements,
-                $mtxt->tbody
-            );
-
-            $mail = new GaletteMail();
-            $mail->setSubject($mtxt->tsubject);
-            /** TODO: only super-admin is contacted here. We should send a message to all admins, or propose them a chekbox if they don't want to get bored */
-            $mail->setRecipients(
-                array(
-                    $preferences->pref_email_newadh => str_replace('%asso', $preferences->pref_name, _T("%asso Galette's admin"))
-                )
-            );
-
-            $mail->setMessage($body);
-            $sent = $mail->send();
-
-            if ( $sent ) {
-                    $hist->add(
-                        preg_replace(
-                            array('/%name/', '/%email/'),
-                            array($adh->sname, $adh->email),
-                            _T("Mail sent to admin for user %name (%email)")
-                        )
-                    );
-            } else {
-                $txt = preg_replace(
-                    array('/%name/', '/%email/'),
-                    array($adh->sname, $adh->email),
-                    _T("A problem happened while sending to admin notification for user %name (%email) contribution")
-                );
-                $hist->add($txt);
-                $error_detected[] = $txt;
             }
         }
 
