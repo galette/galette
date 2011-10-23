@@ -861,7 +861,15 @@ class Adherent
             if ( isset($values[$key]) ) {
                 $value = trim($values[$key]);
             } else {
-                $value = '';
+                switch ($key) {
+                case 'bool_admin_adh':
+                case 'bool_exempt_adh':
+                case 'bool_display_info':
+                    $value = 0;
+                    break;
+                default:
+                    $value = '';
+                }
             }
 
             // if the field is enabled, check it
