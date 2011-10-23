@@ -495,6 +495,7 @@ class Contribution
 
             if ( !isset($this->_id) || $this->_id == '') {
                 //we're inserting a new contribution
+                unset($values[self::PK]);
                 $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
                 if ( $add > 0) {
                     $this->_id = $zdb->db->lastInsertId();
