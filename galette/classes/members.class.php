@@ -545,7 +545,7 @@ class Members
      */
     private function _buildWhereClause($select)
     {
-        global $zdb, $varslist;
+        global $zdb, $varslist, $login;
 
         try {
             if ( $varslist->filter_str != '' ) {
@@ -579,8 +579,10 @@ class Members
                     $select->where('prof_adh LIKE ?', $token);
                     break;
                 case self::FILTER_INFOS:
-                    $select->where('info_public_adh LIKE ?', $token)
-                        ->orWhere('info_adh LIKE ?', $token);
+                    $select->where('info_public_adh LIKE ?', $token);
+                    if ( $login->isAdmin() ) {
+                        $select->orWhere('info_adh LIKE ?', $token);
+                    }
                     break;
                 }
             }
