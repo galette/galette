@@ -75,7 +75,12 @@ class Groups
                 'a.' . self::PK . '=b.' . self::USERSGROUPS_PK,
                 array('manager')
             )->where(Adherent::PK . ' = ?', $id);
-            $result = $select->query()->fetchObject();
+            $result = $select->query()->fetchAll();
+            $groups = array();
+            foreach ( $result as $r ) {
+                $groups[$r->group_name] = $r->manager;
+            }
+            return $groups;
         } catch (Exception $e) {
             $log->log(
                 'Cannot load member groups for id `' . $id . '` | ' .

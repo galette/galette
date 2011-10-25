@@ -1154,8 +1154,8 @@ a.listing:hover {
 	vertical-align: middle;
 }
 
-#listing img {
-        vertical-align: middle;
+td img {
+    vertical-align: middle;
 }
 
 .sql_log {

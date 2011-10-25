@@ -122,6 +122,18 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 				<th>{_T string="Other informations:"}</th>
 				<td>{$member->others_infos|htmlspecialchars|nl2br}</td>
 			</tr>
+{if $member->groups != false && $member->groups|@count != 0}
+			<tr>
+				<th>{_T string="Groups:"}</th>
+				<td>
+    {foreach from=$member->groups key=group item=manager}
+        {$group}
+        {if $manager == 1}<img src="{$template_subdir}images/icon-star.png" alt="{_T string="[manager]"}" width="16" height="16"/>{/if}
+        {if not $smarty.foreach.products.last}, {/if}
+    {/foreach}
+				</td>
+			</tr>
+{/if}
 		</table>
 
 		<table class="details">
