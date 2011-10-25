@@ -49,10 +49,46 @@
  */
 class Groups
 {
+    const TABLE = 'groups';
+    const USERSGROUPS_TABLE = 'groups_users';
+    const PK = 'id';
+    const USERSGROUPS_PK = 'id_group';
+
     private $_id;
     private $_group_name;
     private $_owner;
     private $_members;
+
+    public static function loadGroups($id)
+    {
+        global $zdb, $log;
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(
+                array(
+                    'a' => PREFIX_DB . self::TABLE
+                )
+            )->join(
+                array(
+                    'b' => PREFIX_DB . self::USERSGROUPS_TABLE
+                ),
+                'a.' . self::PK . '=b.' . self::USERSGROUPS_PK,
+                array('manager')
+            )->where(Adherent::PK . ' = ?', $id);
+            $result = $select->query()->fetchObject();
+        } catch (Exception $e) {
+            $log->log(
+                'Cannot load member groups for id `' . $id . '` | ' .
+                $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
+    }
 
     /**
      * Is current loggedin user owner of the group?

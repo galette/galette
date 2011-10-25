@@ -43,6 +43,7 @@ require_once 'fields_categories.class.php';
 require_once 'picture.class.php';
 require_once 'contribution.class.php';
 require_once 'galette_password.class.php';
+require_once 'groups.class.php';
 
 /**
  * Member class for galette
@@ -101,6 +102,7 @@ class Adherent
     private $_picture;
     private $_oldness;
     private $_days_remaining;
+    private $_groups;
     //
     private $_row_classes;
     //fields list and their translation
@@ -511,7 +513,6 @@ class Adherent
                 ///we did not get an email adress, consider using login
                 $select->where('login_adh = ?', $login);
             }
-            $qry = $select->__toString();
             $result = $select->query()->fetchObject();
             $this->_loadFromRS($result);
         } catch (Exception $e) {
@@ -583,6 +584,7 @@ class Adherent
         $this->_others_infos = $r->info_public_adh;
         $this->_others_infos_admin = $r->info_adh;
         $this->_picture = new Picture($this->_id);
+        $this->_groups = Groups::loadGroups($this->_id);
         $this->_checkDues();
     }
 
