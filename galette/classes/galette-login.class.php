@@ -80,7 +80,7 @@ class GaletteLogin extends Authentication
         try {
             $select = new Zend_Db_Select($zdb->db);
             $select->from(
-                array(PREFIX_DB . self::TABLE),
+                array('a' => PREFIX_DB . self::TABLE),
                 array(
                     'id_adh',
                     'bool_admin_adh',
@@ -90,10 +90,17 @@ class GaletteLogin extends Authentication
                     'pref_lang',
                     'activite_adh'
                 )
+            )->join(
+                array('b' => PREFIX_DB . Status::TABLE),
+                'a.' . Status::PK . '=b.' . Status::PK,
+                array('priorite_statut')
             );
             $select->where(self::PK . ' = ?', $user);
             $select->where('mdp_adh = ?', $passe);
-            $test = $select->__toString();
+            $log->log(
+                'Login query: ' . $select->__toString(),
+                PEAR_LOG_DEBUG
+            );
             $row = $zdb->db->fetchRow($select);
 
             if ( $row === false ) {
@@ -113,6 +120,9 @@ class GaletteLogin extends Authentication
                 $this->lang = $row->pref_lang;
                 $this->active = $row->activite_adh;
                 $this->logged = true;
+                if ( $row->priorite_statut < Members::NON_STAFF_MEMBERS ) {
+                    $this->staff = true;
+                }
                 return true;
             }
         } catch (Zend_Db_Adapter_Exception $e) {
@@ -158,7 +168,6 @@ class GaletteLogin extends Authentication
                 return false;
             }
         } catch (Exception $e) {
-            /** TODO */
             $log->log(
                 'Cannot check if login exists | ' . $e->getMessage(),
                 PEAR_LOG_WARNING

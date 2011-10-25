@@ -60,6 +60,7 @@ abstract class Authentication
     private $_logged = false;
     private $_active = false;
     private $_superadmin = false;
+    private $_staff = false;
 
     /**
     * Default constructor
@@ -105,6 +106,7 @@ abstract class Authentication
         $this->_login = $login;
         $this->_admin = true;
         $this->_active = true;
+        $this->_staff = false;
         //a flag for super admin only, since it's not a regular user
         $this->_superadmin = true;
     }
@@ -122,6 +124,7 @@ abstract class Authentication
         $this->_admin = false;
         $this->_active = false;
         $this->_superadmin = false;
+        $this->_staff = false;
     }
 
     /**
@@ -162,6 +165,16 @@ abstract class Authentication
     public function isActive()
     {
         return $this->_active;
+    }
+
+    /**
+     * Is user member of staff?
+     *
+     * @return bool
+     */
+    public function isStaff()
+    {
+        return $this->_staff;
     }
 
     /**
