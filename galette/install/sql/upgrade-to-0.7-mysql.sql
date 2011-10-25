@@ -68,9 +68,7 @@ CREATE TABLE IF NOT EXISTS galette_texts (
 -- Modify table picture to allow for negative indexes;
 ALTER TABLE galette_pictures CHANGE id_adh id_adh INT( 10 ) NOT NULL DEFAULT '0';
 
---
--- Contenu de la table `galette_texts`;
---
+-- galette_texts contents
 INSERT INTO galette_texts (tid, tref, tsubject, tbody, tlang, tcomment) VALUES (1, 'sub', 'Your identifiers', 'Hello,\r\n\r\nYou''ve just been subscribed on the members management system of {NAME}.\r\n\r\nIt is now possible to follow in real time the state of your subscription and to update your preferences from the web interface.\r\n\r\nPlease login at this address:\r\n{LOGIN_URI}\r\n\r\nUsername: {LOGIN}\r\nPassword: {PASSWORD}\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)', 'en_EN', 'New user registration');
 INSERT INTO galette_texts (tid, tref, tsubject, tbody, tlang, tcomment) VALUES (2, 'sub', 'Votre adhésion', 'Bonjour,\r\n\r\nVous venez d''adhérer à {NAME}.\r\n\r\nVous pouvez désormais accéder à vos coordonnées et souscriptions en vous connectant à l''adresse suivante:\r\n\r\n{LOGIN_URI} \r\n\r\nIdentifiant: {LOGIN}\r\nMot de passe: {PASSWORD}\r\n\r\nA bientôt!\r\n\r\n(Ce courriel est un envoi automatique)', 'fr_FR', 'Nouvelle adhésion');
 INSERT INTO galette_texts (tid, tref, tsubject, tbody, tlang, tcomment) VALUES (4, 'pwd', 'Your identifiers', 'Hello,\r\n\r\nSomeone (probably you) asked to recover your password.\r\n\r\nPlease login at this address to set your new password :\r\n{CHG_PWD_URI}\r\n\r\nUsername: {LOGIN}\r\nTemporary password: {PASSWORD}\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)', 'en_EN', 'Lost password email');
@@ -132,6 +130,48 @@ CREATE TABLE IF NOT EXISTS galette_mailing_history (
   mailing_sent tinyint(1) NOT NULL,
   PRIMARY KEY (mailing_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- table for groups
+CREATE TABLE IF NOT EXISTS galette_groups (
+  id int(10) NOT NULL AUTO_INCREMENT,
+  group_name varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  creation_date datetime NOT NULL,
+  `owner` int(10) unsigned NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY `name` (group_name),
+  KEY `owner` (`owner`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- table for groups roles
+CREATE TABLE IF NOT EXISTS galette_groups_roles (
+  id int(10) NOT NULL AUTO_INCREMENT,
+  role_name varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `comment` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (id),
+  UNIQUE KEY `name` (role_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- table for groups users
+CREATE TABLE IF NOT EXISTS galette_groups_users (
+  id_group int(10) NOT NULL,
+  id_adh int(10) unsigned NOT NULL,
+  id_role int(10) NOT NULL,
+  PRIMARY KEY (id_group,id_adh),
+  KEY id_role (id_role),
+  KEY id_adh (id_adh)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- constraints
+
+-- group owner
+ALTER TABLE galette_groups
+  ADD CONSTRAINT galette_groups_owner FOREIGN KEY (`owner`) REFERENCES galette_adherents (id_adh);
+
+-- groups users
+ALTER TABLE galette_groups_users
+  ADD CONSTRAINT galette_groups_users_adh FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh),
+  ADD CONSTRAINT galette_groups_users_role FOREIGN KEY (id_role) REFERENCES galette_groups_roles (id),
+  ADD CONSTRAINT galette_groups_users_group FOREIGN KEY (id_group) REFERENCES galette_groups (id);
 
 -- Put back foreign keys
 SET FOREIGN_KEY_CHECKS=1;
