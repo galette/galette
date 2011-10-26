@@ -303,7 +303,7 @@ class MailingHistory extends History
         } else {
             //not numeric and not an array: incorrect.
             $log->log(
-                'Asking to remove members, but without providing an array or a single numeric value.',
+                'Asking to remove mailing entries, but without providing an array or a single numeric value.',
                 PEAR_LOG_WARNING
             );
             return false;
