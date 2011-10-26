@@ -1,7 +1,7 @@
 		<table id="listing">
 			<thead>
 				<tr>
-					<td colspan="7" class="right">
+					<td colspan="6" class="right">
 						<form action="gestion_mailings.php" method="get" id="historyform">
 							<span>
 								<label for="nbshow">{_T string="Records per page:"}</label>
@@ -102,7 +102,7 @@
 					</td>
 				</tr>
 {foreachelse}
-				<tr><td colspan="5" class="emptylist">{_T string="No sent mailing has been stored in the database yet."}</td></tr>
+				<tr><td colspan="6" class="emptylist">{_T string="No sent mailing has been stored in the database yet."}</td></tr>
 {/foreach}
 			</tbody>
 		</table>
