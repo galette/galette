@@ -58,6 +58,119 @@ class Groups
     private $_group_name;
     private $_owner;
     private $_members;
+    private $_creation_date;
+
+    /**
+     * Default constructor
+     *
+     * @param null|int|ResultSet $args Either a ResultSet row or its id for to load
+     *                                 a specific group, or null to just
+     *                                 instanciate object
+     */
+    public function __construct($args = null)
+    {
+        if ( $args == null || is_int($args) ) {
+        } elseif ( is_object($args) ) {
+            $this->_loadFromRS($args);
+        }
+    }
+
+    /**
+     * Populate object from a resultset row
+     *
+     * @param ResultSet $r the resultset row
+     *
+     * @return void
+     */
+    private function _loadFromRS($r)
+    {
+        $this->_id = $r->id;
+        $this->_group_name = $r->group_name;
+        $this->_creation_date = $r->creation_date;
+        $this->_owner = new Adherent((int)$r->owner);
+    }
+
+    /**
+     * Get groups list
+     *
+     * @return Zend_Db_RowSet
+     */
+    public function getList()
+    {
+        global $zdb, $log;
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(
+                array('a' => PREFIX_DB . self::TABLE)
+            );
+            $groups = array();
+            foreach ( $select->query()->fetchAll() as $row ) {
+                $groups[] = new Groups($row);
+            }
+            return $groups;
+        } catch (Exception $e) {
+            $log->log(
+                'Cannot list groups | ' . $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
+            );
+        }
+    }
+
+    /**
+     * Remove specified groups
+     *
+     * @param integer|array $ids Group(s) identifier(s)
+     *
+     * @return boolean
+     */
+    public function removeEntries($ids)
+    {
+        global $zdb, $log;
+
+        $list = array();
+        if ( is_numeric($ids) ) {
+            //we've got only one identifier
+            $list[] = $ids;
+        } else {
+            $list = $ids;
+        }
+
+        if ( is_array($list) ) {
+            try {
+                $zdb->db->beginTransaction();
+
+                //delete members
+                $del = $zdb->db->delete(
+                    PREFIX_DB . self::TABLE,
+                    self::PK . ' IN (' . implode(',', $list) . ')'
+                );
+
+                //commit all changes
+                $zdb->db->commit();
+
+                return true;
+            } catch (Exception $e) {
+                $zdb->db->rollBack();
+                $log->log(
+                    'Unable to delete selected groups |' .
+                    $e->getMessage(),
+                    PEAR_LOG_ERR
+                );
+                return false;
+            }
+        } else {
+            //not numeric and not an array: incorrect.
+            $log->log(
+                'Asking to remove groups, but without providing an array or a single numeric value.',
+                PEAR_LOG_WARNING
+            );
+            return false;
+        }
+    }
 
     public static function loadGroups($id)
     {
@@ -165,6 +278,16 @@ class Groups
     public function getMembers()
     {
         return $this->_members;
+    }
+
+    /**
+     * Get group creation date
+     *
+     * @return string
+     */
+    public function getCreationDate()
+    {
+        return $this->_creation_date;
     }
 }
 
