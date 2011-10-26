@@ -1,4 +1,5 @@
 -- CREATE DATABASE `galette` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+-- $Id$
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -28,7 +29,7 @@ CREATE TABLE galette_adherents (
   prof_adh varchar(150) default NULL,
   login_adh varchar(20) NOT NULL default '',
   mdp_adh varchar(40) NOT NULL default '',
-  date_crea_adh date NOT NULL default '0000-00-00',
+  date_crea_adh date NOT NULL default '1901-01-01',
   activite_adh tinyint(1) NOT NULL default 0,
   bool_admin_adh tinyint(1) NOT NULL default 0,
   bool_exempt_adh tinyint(1) NOT NULL default 0,
@@ -49,9 +50,9 @@ CREATE TABLE galette_cotisations (
   id_type_cotis int(10) unsigned NOT NULL default '0',
   montant_cotis float unsigned default '0',
   info_cotis text,
-  date_enreg date NOT NULL default '0000-00-00',
-  date_debut_cotis date NOT NULL default '0000-00-00',
-  date_fin_cotis date NOT NULL default '0000-00-00',
+  date_enreg date NOT NULL default '1901-01-01',
+  date_debut_cotis date NOT NULL default '1901-01-01',
+  date_fin_cotis date NOT NULL default '1901-01-01',
   trans_id int(10) unsigned default NULL,
   PRIMARY KEY  (id_cotis)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -59,7 +60,7 @@ CREATE TABLE galette_cotisations (
 DROP TABLE IF EXISTS galette_transactions;
 CREATE TABLE galette_transactions (
   trans_id int(10) unsigned NOT NULL auto_increment,
-  trans_date date NOT NULL default '0000-00-00',
+  trans_date date NOT NULL default '1901-01-01',
   trans_amount float default '0',
   trans_desc varchar(30) NOT NULL default '',
   id_adh int(10) unsigned default NULL,
