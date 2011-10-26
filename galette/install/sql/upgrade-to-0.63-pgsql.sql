@@ -1,7 +1,8 @@
+-- $Id$
 ALTER TABLE galette_adherents ADD pref_lang character varying(20);
 ALTER TABLE galette_adherents ALTER pref_lang SET DEFAULT 'french';
 ALTER TABLE galette_adherents ALTER ddn_adh SET DEFAULT '19010101';
-ALTER TABLE galette_adherents ALTER date_crea_adh SET DEFAULT '00000101';
+ALTER TABLE galette_adherents ALTER date_crea_adh SET DEFAULT '19010101';
 ALTER TABLE galette_adherents ADD lieu_naissance character varying(20);
 ALTER TABLE galette_adherents ALTER lieu_naissance SET DEFAULT '';
 ALTER TABLE galette_adherents ADD gpgid character varying(8);
@@ -94,11 +95,11 @@ UPDATE galette_cotisations
 	    date_debut_cotis=date_cotis,
 	    date_fin_cotis=date_cotis +  to_char(duree_mois_cotis, '99" month"')::interval;
 ALTER TABLE galette_cotisations ALTER COLUMN date_enreg SET NOT NULL;
-ALTER TABLE galette_cotisations ALTER COLUMN date_enreg SET DEFAULT '00000101';
+ALTER TABLE galette_cotisations ALTER COLUMN date_enreg SET DEFAULT '19010101';
 ALTER TABLE galette_cotisations ALTER COLUMN date_debut_cotis SET NOT NULL;
-ALTER TABLE galette_cotisations ALTER COLUMN date_debut_cotis SET DEFAULT '00000101';
+ALTER TABLE galette_cotisations ALTER COLUMN date_debut_cotis SET DEFAULT '19010101';
 ALTER TABLE galette_cotisations ALTER COLUMN date_fin_cotis SET NOT NULL;
-ALTER TABLE galette_cotisations ALTER COLUMN date_fin_cotis SET DEFAULT '00000101';
+ALTER TABLE galette_cotisations ALTER COLUMN date_fin_cotis SET DEFAULT '19010101';
 ALTER TABLE galette_cotisations DROP duree_mois_cotis;
 ALTER TABLE galette_cotisations DROP date_cotis;
 
@@ -130,7 +131,7 @@ CREATE SEQUENCE galette_transactions_id_seq
 DROP TABLE galette_transactions;
 CREATE TABLE galette_transactions (
     trans_id integer DEFAULT nextval('galette_transactions_id_seq'::text)  NOT NULL,
-    trans_date date DEFAULT '00000101' NOT NULL,
+    trans_date date DEFAULT '19010101' NOT NULL,
     trans_amount real DEFAULT '0',
     trans_desc character varying(30) NOT NULL DEFAULT '',
     id_adh integer DEFAULT NULL
@@ -148,3 +149,4 @@ CREATE TABLE galette_tmppasswds (
 		date_crea_tmp_passwd timestamp NOT NULL
 		);
 CREATE UNIQUE INDEX galette_tmppasswds_idx ON galette_tmppasswds (id_adh);
+--
