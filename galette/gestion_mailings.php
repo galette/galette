@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2003-2011 The Galette Team
+ * Copyright © 2011 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
