@@ -142,9 +142,10 @@ class Adherent
     /**
     * Default constructor
     *
-    * @param null|int|ResultSet $args Either a ResultSet row or its id for to load
-    *                                   a specific member, or null to just
-    *                                   instanciate object
+    * @param null|int|ResultSet $args Either a ResultSet row, its id or its 
+    *                                 login or its mail for to load
+    *                                 a specific member, or null to just
+    *                                 instanciate object
     */
     public function __construct($args = null)
     {
