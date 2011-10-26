@@ -1,3 +1,4 @@
+-- $Id$
 DROP SEQUENCE galette_adherents_id_seq;
 CREATE SEQUENCE galette_adherents_id_seq
     START 1
@@ -68,22 +69,22 @@ CREATE TABLE galette_adherents (
     fingerprint character varying(50) DEFAULT NULL,
     PRIMARY KEY (id_adh)
 );
-CREATE UNIQUE INDEX galette_adherents_idx ON galette_adherents (id_adh);
-CREATE UNIQUE INDEX galette_login_idx     ON galette_adherents (login_adh);
+-- add index for faster search on login_adh (auth)
+CREATE UNIQUE INDEX galette_adherents_login_adh_idx ON galette_adherents (login_adh);
 
 DROP TABLE galette_cotisations;
 CREATE TABLE galette_cotisations (
     id_cotis integer DEFAULT nextval('galette_cotisations_id_seq'::text)  NOT NULL,
-    id_adh integer DEFAULT '0' NOT NULL,
-    id_type_cotis integer DEFAULT '0' NOT NULL,
+    id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
+    id_type_cotis integer REFERENCES galette_types_cotisation (id_type_cotis) ON DELETE RESTRICT ON UPDATE CASCADE,
     montant_cotis real DEFAULT '0',
     info_cotis text,
     date_enreg date DEFAULT '19010101' NOT NULL,
     date_debut_cotis date DEFAULT '19010101' NOT NULL,
     date_fin_cotis date DEFAULT '19010101' NOT NULL,
-    trans_id integer DEFAULT NULL
+    trans_id integer DEFAULT NULL REFERENCES galette_transactions (trans_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    PRIMARY KEY (id_cotis)
 );
-CREATE UNIQUE INDEX galette_cotisations_idx ON galette_cotisations (id_cotis);
 
 DROP TABLE galette_transactions;
 CREATE TABLE galette_transactions (
@@ -91,35 +92,35 @@ CREATE TABLE galette_transactions (
     trans_date date DEFAULT '19010101' NOT NULL,
     trans_amount real DEFAULT '0',
     trans_desc character varying(30) NOT NULL DEFAULT '',
-    id_adh integer DEFAULT NULL
+    id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
+    PRIMARY KEY (trans_id)
 );
-CREATE UNIQUE INDEX galette_transactions_idx ON galette_transactions (trans_id);
 
 DROP TABLE galette_statuts;
 CREATE TABLE galette_statuts (
   id_statut integer NOT NULL,
   libelle_statut  character varying(20) DEFAULT '' NOT NULL,
-  priorite_statut smallint DEFAULT '0' NOT NULL
+  priorite_statut smallint DEFAULT '0' NOT NULL,
+  PRIMARY KEY (id_statut)
 );
-CREATE UNIQUE INDEX galette_statuts_idx ON galette_statuts (id_statut);
 
-DROP TABLE galette_types_cotisation;
+DROP TABLE galette_types_cotisation CASCADE;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis integer NOT NULL,
   libelle_type_cotis character varying(30) DEFAULT '' NOT NULL,
-  cotis_extension character(1) DEFAULT NULL
+  cotis_extension character(1) DEFAULT NULL,
   PRIMARY KEY (id_type_cotis)
 );
-CREATE UNIQUE INDEX galette_types_cotisation_idx ON galette_types_cotisation (id_type_cotis);
 
 DROP TABLE galette_preferences;
 CREATE TABLE galette_preferences (
   id_pref integer DEFAULT nextval('galette_preferences_id_seq'::text) NOT NULL,
   nom_pref character varying(100) DEFAULT '' NOT NULL,
-  val_pref character varying(200) DEFAULT '' NOT NULL
+  val_pref character varying(200) DEFAULT '' NOT NULL,
+  PRIMARY KEY (id_pref)
 );
-CREATE UNIQUE INDEX galette_preferences_idx ON galette_preferences (id_pref);
-CREATE UNIQUE INDEX galette_preferences_name ON galette_preferences (nom_pref);
+-- add index, nom_pref is used as foreign key elsewhere
+CREATE UNIQUE INDEX galette_preferences_nom_pref_idx ON galette_preferences (nom_pref);
 
 DROP SEQUENCE galette_logs_id_seq;
 CREATE SEQUENCE galette_logs_id_seq
@@ -137,9 +138,9 @@ CREATE TABLE galette_logs (
   adh_log character varying(41) DEFAULT '' NOT NULL,
   text_log text,
   action_log text,
-  sql_log text
+  sql_log text,
+  PRIMARY KEY (id_log)
 );
-CREATE UNIQUE INDEX galette_logs_idx ON galette_logs (id_log);
 
 -- Sequence for dynamic fields description;
 DROP SEQUENCE galette_field_types_id_seq;
@@ -151,7 +152,7 @@ CREATE SEQUENCE galette_field_types_id_seq
     CACHE 1;
 
 -- Table for dynamic fields description;
-DROP TABLE galette_field_types;
+DROP TABLE galette_field_types CASCADE;
 CREATE TABLE galette_field_types (
   field_id integer DEFAULT nextval('galette_field_types_id_seq'::text) NOT NULL,
   field_form character varying(10) NOT NULL,
@@ -165,30 +166,30 @@ CREATE TABLE galette_field_types (
   field_height integer DEFAULT NULL,
   field_size integer DEFAULT NULL,
   field_repeat integer DEFAULT NULL,
-  field_layout integer DEFAULT NULL
+  field_layout integer DEFAULT NULL,
+  PRIMARY KEY (field_id)
 );
-CREATE UNIQUE INDEX galette_field_types_idx ON galette_field_types (field_id);
-CREATE INDEX galette_field_types_form_idx ON galette_field_types (field_form);
+-- add index, field_form is used as foreign key elsewhere
+CREATE INDEX galette_field_types_field_form_idx ON galette_field_types (field_form);
 
 -- Table for dynamic fields data;
 DROP TABLE galette_dynamic_fields;
 CREATE TABLE galette_dynamic_fields (
   item_id integer DEFAULT '0' NOT NULL,
-  field_id integer DEFAULT '0' NOT NULL,
-  field_form character varying(10) NOT NULL,
+  field_id integer REFERENCES galette_field_types (field_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  field_form character varying(10) REFERENCES galette_field_types (field_form) ON DELETE RESTRICT ON UPDATE CASCADE,
   val_index integer DEFAULT '0' NOT NULL,
-  field_val text DEFAULT ''
+  field_val text DEFAULT '',
+  PRIMARY KEY (item_id, field_id, field_form, val_index)
 );
-CREATE UNIQUE INDEX galette_dynamic_fields_unique_idx ON galette_dynamic_fields (item_id, field_id, field_form, val_index);
-CREATE INDEX galette_dynamic_fields_item_idx ON galette_dynamic_fields (item_id);
 
 DROP TABLE galette_pictures;
 CREATE TABLE galette_pictures (
-  id_adh integer DEFAULT '0' NOT NULL,
+  id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
   picture bytea NOT NULL,
-  format character varying(30) DEFAULT '' NOT NULL
+  format character varying(30) DEFAULT '' NOT NULL,
+  PRIMARY KEY (id_adh)
 );
-CREATE INDEX galette_pictures_idx ON galette_pictures (id_adh);
 
 -- Table for dynamic translation of strings;
 DROP TABLE galette_l10n;
@@ -196,26 +197,26 @@ CREATE TABLE galette_l10n (
   text_orig character varying(40) NOT NULL,
   text_locale character varying(15) NOT NULL,
   text_nref integer DEFAULT '1' NOT NULL,
-  text_trans character varying(40) DEFAULT '' NOT NULL
+  text_trans character varying(40) DEFAULT '' NOT NULL,
+  PRIMARY KEY (text_orig, text_locale)
 );
-CREATE UNIQUE INDEX galette_l10n_idx ON galette_l10n (text_orig, text_locale);
 
 -- new table for temporary passwords  2006-02-18;
 DROP TABLE galette_tmppasswds;
 CREATE TABLE galette_tmppasswds (
-    id_adh integer NOT NULL,
-    tmp_passwd character varying(40) NOT NULL,
-    date_crea_tmp_passwd timestamp NOT NULL
+  id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
+  tmp_passwd character varying(40) NOT NULL,
+  date_crea_tmp_passwd timestamp NOT NULL,
+  PRIMARY KEY (id_adh)
 );
-CREATE UNIQUE INDEX galette_tmppasswds_idx ON galette_tmppasswds (id_adh);
 
 -- Table for dynamic required fields 2007-07-10;
 DROP TABLE galette_required;
 CREATE TABLE galette_required (
-	field_id  character varying(20) NOT NULL,
-	required boolean DEFAULT false NOT NULL
+	field_id integer REFERENCES galette_field_types (field_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+	required boolean DEFAULT false NOT NULL,
+	PRIMARY KEY (field_id)
 );
-CREATE UNIQUE INDEX galette_required_idx ON galette_required (field_id);
 
 -- Table for automatic mails and their translations 2007-10-22;
 DROP TABLE galette_texts;
@@ -225,9 +226,9 @@ CREATE TABLE galette_texts (
   tsubject character varying(256) NOT NULL,
   tbody text NOT NULL,
   tlang character varying(16) NOT NULL,
-  tcomment character varying(64) NOT NULL
+  tcomment character varying(64) NOT NULL,
+  PRIMARY KEY (tid)
 );
-CREATE UNIQUE INDEX galette_texts_idx ON galette_texts (tid);
 
 DROP TABLE galette_fields_categories CASCADE;
 CREATE TABLE galette_fields_categories (
@@ -237,27 +238,29 @@ CREATE TABLE galette_fields_categories (
   position integer NOT NULL,
   PRIMARY KEY (id_field_category)
 );
-CREATE UNIQUE INDEX galette_fields_categories_idx ON galette_fields_categories (id_field_category);
 
 DROP TABLE galette_fields_config;
 CREATE TABLE galette_fields_config (
   table_name character varying(30) NOT NULL,
-  field_id character varying(30) NOT NULL,
-  required character(1) NOT NULL,
+  field_id integer REFERENCES galette_field_types (field_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  required character(1) NOT NULL, -- should replace later galette_required(required)
   visible character(1) NOT NULL,
   position integer NOT NULL,
-  id_field_category integer REFERENCES galette_fields_categories ON DELETE RESTRICT
+  id_field_category integer REFERENCES galette_fields_categories ON DELETE RESTRICT ON UPDATE CASCADE,
+  PRIMARY KEY (field_id, id_field_category)
 );
 
 -- Table for mailing history storage
 DROP TABLE galette_mailing_history;
 CREATE TABLE galette_mailing_history (
   mailing_id integer DEFAULT nextval('galette_mailing_history_id_seq'::text) NOT NULL,
-  mailing_sender integer REFERENCES galette_adherents ON DELETE RESTRICT ON UPDATE CASCADE,
+  mailing_sender integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
   mailing_subjectf character varying(255) NOT NULL,
   mailing_body text NOT NULL,
   mailing_date timestamp NOT NULL,
   mailing_recipients text NOT NULL,
-  mailing_sent character(1) DEFAULT NULL
+  mailing_sent character(1) DEFAULT NULL,
+  PRIMARY KEY (mailing_id)
 );
-CREATE UNIQUE INDEX galette_mailing_history_idx ON galette_mailing_history (mailing_id);
+
+--
