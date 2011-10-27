@@ -86,7 +86,7 @@ CREATE TABLE galette_cotisations (
     PRIMARY KEY (id_cotis)
 );
 
-DROP TABLE galette_transactions;
+DROP TABLE galette_transactions CASCADE;
 CREATE TABLE galette_transactions (
     trans_id integer DEFAULT nextval('galette_transactions_id_seq'::text)  NOT NULL,
     trans_date date DEFAULT '19010101' NOT NULL,
@@ -169,15 +169,15 @@ CREATE TABLE galette_field_types (
   field_layout integer DEFAULT NULL,
   PRIMARY KEY (field_id)
 );
--- add index, field_form is used as foreign key elsewhere
+-- add index, field_form is used elsewhere
 CREATE INDEX galette_field_types_field_form_idx ON galette_field_types (field_form);
 
 -- Table for dynamic fields data;
 DROP TABLE galette_dynamic_fields;
 CREATE TABLE galette_dynamic_fields (
-  item_id integer DEFAULT '0' NOT NULL,
+  item_id integer DEFAULT '0' NOT NULL, -- could be id_adh, trans_id, id_cotis
   field_id integer REFERENCES galette_field_types (field_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-  field_form character varying(10) REFERENCES galette_field_types (field_form) ON DELETE RESTRICT ON UPDATE CASCADE,
+  field_form character varying(10) NOT NULL, -- not an fkey!
   val_index integer DEFAULT '0' NOT NULL,
   field_val text DEFAULT '',
   PRIMARY KEY (item_id, field_id, field_form, val_index)
