@@ -115,7 +115,7 @@ class Groups
      */
     private function _loadFromRS($r)
     {
-        $this->_id = $r->id_groupe;
+        $this->_id = $r->id_group;
         $this->_group_name = $r->group_name;
         $this->_creation_date = $r->creation_date;
         $adhpk = Adherent::PK;
