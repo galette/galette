@@ -59,46 +59,7 @@ if (isset($_GET['sup']) || isset($_POST['delete'])) {
     }
 }
 
-/*$mailhist = new MailingHistory();
-
-if ( isset($_GET['reset']) && $_GET['reset'] == 1 ) {
-    $mailhist->clean();
-    //reinitialize object after flush
-    $mailhist = new MailingHistory();
-}
-
-//delete mailings
-if (isset($_GET['sup']) || isset($_POST['delete'])) {
-    if ( isset($_GET['sup']) ) {
-        $mailhist->removeEntries($_GET['sup']);
-    } else if ( isset($_POST['member_sel']) ) {
-        $mailhist->removeEntries($_POST['member_sel']);
-    }
-}
-
-if ( isset($_GET['page']) && is_numeric($_GET['page']) ) {
-    $mailhist->current_page = (int)$_GET['page'];
-}
-
-if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
-    $mailhist->show = $_GET['nbshow'];
-}
-
-if ( isset($_GET['tri']) ) {
-    $mailhist->tri = $_GET['tri'];
-}
-
-$history_list = array();
-
-$history_list = $mailhist->getHistory();
-$_SESSION['galette']['history'] = serialize($hist);
-
-//assign pagination variables to the template and add pagination links
-$mailhist->setSmartyPagination($tpl);
-*/
 $tpl->assign('page_title', _T("Groups"));
-/*$tpl->assign('logs', $history_list);
-$tpl->assign('nb_lines', count($history_list));*/
 $tpl->assign('groups', $groups_list);
 $content = $tpl->fetch('gestion_groupes.tpl');
 $tpl->assign('content', $content);
