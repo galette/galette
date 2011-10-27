@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Groups managment
+ * Add a new group or modify existing one
  *
  * PHP version 5
  *
@@ -32,36 +32,73 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
+ * @since     Available since 0.7-dev - 2011-10-26
  */
 
+/** @ignore */
 require_once 'includes/galette.inc.php';
-require_once 'classes/groups.class.php';
 
 if ( !$login->isLogged() ) {
     header('location: index.php');
     die();
 }
-if ( !$login->isAdmin()) {
+
+if ( !$login->isAdmin() ) {
     header('location: voir_adherent.php');
     die();
 }
 
-$groups = new Groups();
+require_once 'classes/groups.class.php';
 
-$groups_list = $groups->getList();
+$group = new Groups();
 
-//delete groups
-if (isset($_GET['sup']) || isset($_POST['delete'])) {
-    if ( isset($_GET['sup']) ) {
-        $groups->removeGroups($_GET['sup']);
-    } else if ( isset($_POST['groups_sel']) ) {
-        $groups->removeGroups($_POST['group_sel']);
-    }
+$id = get_numeric_form_value(Groups::PK, '');
+if ( $id ) {
+    $group->load($id);
 }
 
-$tpl->assign('page_title', _T("Groups"));
-$tpl->assign('groups', $groups_list);
-$content = $tpl->fetch('gestion_groupes.tpl');
+// initialize warnings
+$error_detected = array();
+$warning_detected = array();
+$confirm_detected = array();
+
+if ( isset($_POST['group_name']) ) {
+    $group->setName($_POST['group_name']);
+    $group->setOwner($_POST['group_owner']);
+    $new = false;
+    if ( $group->getId() == '' ) {
+        $new = true;
+    }
+    $store = $group->store();
+    if ( $store === true ) {
+
+    } else {
+        //something went wrong :'(
+        $error_detected[] = _T("An error occured while storing the group.");
+    }
+
+
+    if ( count($error_detected) == 0 ) {
+        header('location: gestion_groupes.php');
+    }
+}
+ 
+// template variable declaration
+$title = _T("Group");
+if ( $group->getId() != '' ) {
+    $title .= ' (' . _T("modification") . ')';
+} else {
+    $title .= ' (' . _T("creation") . ')';
+}
+
+$tpl->assign('page_title', $title);
+$tpl->assign('group', $group);
+
+$tpl->assign('error_detected', $error_detected);
+$tpl->assign('warning_detected', $warning_detected);
+$tpl->assign('languages', $i18n->getList());
+// page generation
+$content = $tpl->fetch('group.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
 ?>

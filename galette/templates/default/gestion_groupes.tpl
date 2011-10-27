@@ -44,3 +44,6 @@
 {/foreach}
 			</tbody>
 		</table>
+        <div class="center">
+            <a class="button" id="btnadd" href="ajouter_groupe.php">{_T string="Add new group"}</a>
+        </div>

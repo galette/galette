@@ -159,7 +159,7 @@ class Groups
      *
      * @return boolean
      */
-    public function removeEntries($ids)
+    public function removeGroups($ids)
     {
         global $zdb, $log;
 
@@ -247,6 +247,72 @@ class Groups
     }
 
     /**
+     * Store the group
+     *
+     * @return boolean
+     */
+    public function store()
+    {
+        global $zdb, $log, $hist;
+
+        try {
+            $values = array(
+                self::PK     => $this->_id,
+                'group_name' => $this->_group_name,
+                Adherent::PK => $this->_owner->id
+            );
+
+            if ( !isset($this->_id) || $this->_id == '') {
+                //we're inserting a new group
+                unset($values[self::PK]);
+                $this->_creation_date = date("Y-m-d H:i:s");
+                $values['creation_date'] = $this->_creation_date;
+                $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
+                if ( $add > 0) {
+                    $this->_id = $zdb->db->lastInsertId();
+                    // logging
+                    $hist->add(
+                        _T("Group added"),
+                        $this->_group_name
+                    );
+                    return true;
+                } else {
+                    $hist->add('Fail to add new group.');
+                    throw new Exception(
+                        'An error occured inserting new group!'
+                    );
+                }
+            } else {
+                //we're editing an existing group
+                $edit = $zdb->db->update(
+                    PREFIX_DB . self::TABLE,
+                    $values,
+                    self::PK . '=' . $this->_id
+                );
+                //edit == 0 does not mean there were an error, but that there
+                //were nothing to change
+                if ( $edit > 0 ) {
+                    $hist->add(
+                        _T("Group updated"),
+                        strtoupper($this->_group_name)
+                    );
+                }
+                return true;
+            }
+            //DEBUG
+            return false;
+        } catch (Exception $e) {
+            /** FIXME */
+            $log->log(
+                'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
+                $e->getTraceAsString(),
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
+    }
+
+    /**
      * Is current loggedin user owner of the group?
      *
      * @return boolean
@@ -326,6 +392,26 @@ class Groups
     public function getCreationDate()
     {
         return $this->_creation_date;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->_group_name = $name;
+    }
+
+    /**
+     * Set owner
+     *
+     * @param int $id Owner id
+     */
+    public function setOwner($id)
+    {
+        $this->_owner = new Adherent((int)$id);
     }
 }
 
