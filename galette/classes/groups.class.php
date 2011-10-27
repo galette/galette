@@ -76,6 +76,38 @@ class Groups
     }
 
     /**
+    * Loads a group from its id
+    *
+    * @param int $id the identifiant for the group to load
+    *
+    * @return bool true if query succeed, false otherwise
+    */
+    public function load($id)
+    {
+        global $zdb, $log;
+
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+
+            $select->from(PREFIX_DB . self::TABLE)
+                ->where(self::PK . '=?', $id);
+            $result = $select->query()->fetchObject();
+            $this->_loadFromRS($result);
+            return true;
+        } catch (Exception $e) {
+            $log->log(
+                'Cannot load group form id `' . $id . '` | ' . $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
+    }
+
+    /**
      * Populate object from a resultset row
      *
      * @param ResultSet $r the resultset row
@@ -172,6 +204,12 @@ class Groups
         }
     }
 
+    /**
+     * Loads groups for specific member
+     *
+     * @param int $id Memebr id
+     * @return array
+     */
     public static function loadGroups($id)
     {
         global $zdb, $log;
