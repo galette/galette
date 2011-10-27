@@ -133,13 +133,13 @@ CREATE TABLE IF NOT EXISTS galette_mailing_history (
 
 -- table for groups
 CREATE TABLE IF NOT EXISTS galette_groups (
-  id int(10) NOT NULL AUTO_INCREMENT,
+  id_group int(10) NOT NULL AUTO_INCREMENT,
   group_name varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   creation_date datetime NOT NULL,
-  `owner` int(10) unsigned NOT NULL,
+  id_adh int(10) unsigned NOT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY `name` (group_name),
-  KEY `owner` (`owner`)
+  FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- table for groups users
@@ -148,19 +148,9 @@ CREATE TABLE IF NOT EXISTS galette_groups_users (
   id_adh int(10) unsigned NOT NULL,
   manager tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (id_group,id_adh),
-  KEY id_adh (id_adh)
+  FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh),
+  FOREIGN KEY (id_group) REFERENCES galette_groups_owner (id_group)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- constraints
-
--- group owner
-ALTER TABLE galette_groups
-  ADD CONSTRAINT galette_groups_owner FOREIGN KEY (`owner`) REFERENCES galette_adherents (id_adh);
-
--- groups users
-ALTER TABLE galette_groups_users
-  ADD CONSTRAINT galette_groups_users_adh FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh),
-  ADD CONSTRAINT galette_groups_users_group FOREIGN KEY (id_group) REFERENCES galette_groups (id);
 
 -- Put back foreign keys
 SET FOREIGN_KEY_CHECKS=1;
