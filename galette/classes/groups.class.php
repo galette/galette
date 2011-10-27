@@ -51,8 +51,7 @@ class Groups
 {
     const TABLE = 'groups';
     const USERSGROUPS_TABLE = 'groups_users';
-    const PK = 'id';
-    const USERSGROUPS_PK = 'id_group';
+    const PK = 'id_group';
 
     private $_id;
     private $_group_name;
@@ -116,10 +115,11 @@ class Groups
      */
     private function _loadFromRS($r)
     {
-        $this->_id = $r->id;
+        $this->_id = $r->id_groupe;
         $this->_group_name = $r->group_name;
         $this->_creation_date = $r->creation_date;
-        $this->_owner = new Adherent((int)$r->owner);
+        $adhpk = Adherent::PK;
+        $this->_owner = new Adherent((int)$r->$adhpk);
     }
 
     /**
@@ -223,7 +223,7 @@ class Groups
                 array(
                     'b' => PREFIX_DB . self::USERSGROUPS_TABLE
                 ),
-                'a.' . self::PK . '=b.' . self::USERSGROUPS_PK,
+                'a.' . self::PK . '=b.' . self::PK,
                 array('manager')
             )->where(Adherent::PK . ' = ?', $id);
             $result = $select->query()->fetchAll();
