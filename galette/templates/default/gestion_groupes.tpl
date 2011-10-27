@@ -23,7 +23,7 @@
 					<td><a href="voir_adherent.php?id_adh={$owner->id}">{$owner->sname}</a></td>
 					<td class="nowrap">{$group->getCreationDate()|date_format:"%a %d/%m/%Y - %R"}</td>
 					<td class="center nowrap actions_row">
-						<a href="ajouter_groupe.php?id_adh={$group->getId()}">
+						<a href="ajouter_groupe.php?id={$group->getId()}">
                             <img
                                 src="{$template_subdir}images/icon-edit.png"
                                 alt="{_T string="[mod]"}"
