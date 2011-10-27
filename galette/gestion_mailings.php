@@ -78,7 +78,6 @@ if ( isset($_GET['tri']) ) {
 $history_list = array();
 
 $history_list = $mailhist->getHistory();
-$_SESSION['galette']['history'] = serialize($hist);
 
 //assign pagination variables to the template and add pagination links
 $mailhist->setSmartyPagination($tpl);
