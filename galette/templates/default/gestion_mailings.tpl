@@ -91,7 +91,7 @@
                                 alt="{_T string="[mod]"}"
                                 width="16"
                                 height="16"
-                                title="{_T string="%membername: edit informations" pattern="/%membername/" replace=$member->sname}"
+                                title="{_T string="%subject: edit informations" pattern="/%subject/" replace=$log.mailing_subject}"
                                 />
                         </a>
 						<a
