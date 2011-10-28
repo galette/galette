@@ -105,7 +105,6 @@
             </section>
         </div>
 		</form>
-</section>
     {if $mailing->current_step neq constant('Mailing::STEP_SENT')}
 <script type="text/javascript">
     $(function() {ldelim}
