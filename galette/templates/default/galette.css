@@ -605,6 +605,10 @@ h1 #sendmail .ui-button-text {
     vertical-align: top;
 }
 
+.select_members.single {
+    display: block;
+}
+
 .select_members th.left {
     width:50%;
 }

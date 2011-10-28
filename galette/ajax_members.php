@@ -47,6 +47,7 @@ if ( !$login->isLogged() ) {
 
 // check for ajax mode
 $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
+$multiple = ( isset($_POST['multiple']) && $_POST['multiple'] == 'false' ) ? false : true;
 
 require_once WEB_ROOT . 'classes/members.class.php';
 require_once WEB_ROOT . 'classes/varslist.class.php';
@@ -64,6 +65,7 @@ $selected_members = $mailing->recipients;
 $unreachables_members = $mailing->unreachables;
 
 $tpl->assign('ajax', $ajax);
+$tpl->assign('multiple', $multiple);
 $tpl->assign('members_list', $members_list);
 $tpl->assign('selected_members', $selected_members);
 $tpl->assign('unreachables_members', $unreachables_members);
