@@ -224,7 +224,7 @@ CREATE TABLE IF NOT EXISTS galette_groups (
   group_name varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   creation_date datetime NOT NULL,
   id_adh int(10) unsigned NOT NULL,
-  PRIMARY KEY (id),
+  PRIMARY KEY (id_group),
   UNIQUE KEY `name` (group_name),
   FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
