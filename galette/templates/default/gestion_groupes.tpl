@@ -35,7 +35,7 @@
 						<a
                             onclick="return confirm('{_T string="Do you really want to delete this group from the base?"|escape:"javascript"}')"
                             href="?sup={$group->getId()}">
-                            <img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/>
+                            <img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{_T string="Delete group '%groupname'" pattern="/groupname/" replace=$group->getName()}"/>
                         </a>
 					</td>
 				</tr>
