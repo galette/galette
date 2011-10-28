@@ -94,6 +94,7 @@ if ( $group->getId() != '' ) {
 $tpl->assign('page_title', $title);
 $tpl->assign('group', $group);
 
+$tpl->assign('require_dialog', true);
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('warning_detected', $warning_detected);
 $tpl->assign('languages', $i18n->getList());

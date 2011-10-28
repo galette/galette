@@ -31,7 +31,8 @@
 					<p>
                         {assign var="owner" value=$group->getOwner()}
 						<label for="group_owner" class="bline">{_T string="Owner:"}</label>
-						<input type="text" name="group_owner" id="group_owner" value="{$owner->id}" maxlength="20" required/> {if $owner->id != ''} ({$owner->sname}){/if}
+						<input type="text" name="group_owner" id="group_owner" value="{$owner->id}" maxlength="20" required/> <span id="owner_name">{if $owner->id != ''} - {$owner->sname}{/if}</span>
+                        <a class="button" id="btnusers" href="gestion_adherents.php?nbshow=0&showChecked=true">{_T string="Change owner"}</a>
 					</p>
 				</div>
 			</fieldset>
@@ -43,3 +44,54 @@
 		</div>
 		<p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
 		</form>
+<script type="text/javascript">
+    $(function() {ldelim}
+        {* Members popup *}
+        $('#btnusers').click(function(){ldelim}
+            $.ajax({ldelim}
+                url: 'ajax_members.php',
+                type: "POST",
+                data: {ldelim}ajax: true, multiple: false{rdelim},
+                success: function(res){ldelim}
+                    _members_dialog(res);
+                {rdelim},
+                error: function() {ldelim}
+                    alert("{_T string="An error occured displaying members interface :(" escape="js"}");
+                {rdelim}
+            });
+            return false;
+        {rdelim});
+
+        var _members_dialog = function(res){ldelim}
+            var _el = $('<div id="members_list" title="{_T string="Group owner selection" escape="js"}"> </div>');
+            _el.appendTo('body').dialog({ldelim}
+                modal: true,
+                hide: 'fold',
+                width: '80%',
+                height: 500,
+                close: function(event, ui){ldelim}
+                    _el.remove();
+                {rdelim}
+            {rdelim});
+            _members_ajax_mapper(res);
+
+        {rdelim}
+
+        var _members_ajax_mapper = function(res){ldelim}
+            $('#members_list').append(res);
+            //Remap links
+            var _none = $('#none_selected').clone();
+            $('#listing a').click(function(){ldelim}
+                var _mid = this.href.substring(this.href.indexOf('?')+8);
+                var _mname = $(this).text();
+
+                $('#group_owner').val(_mid);
+                $('#owner_name').html(' - ' + _mname);
+                $('#members_list').dialog("close");
+
+                return false;
+            {rdelim});
+
+        {rdelim}
+    {rdelim});
+</script>
