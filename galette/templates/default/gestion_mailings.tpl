@@ -106,6 +106,9 @@
 {/foreach}
 			</tbody>
 		</table>
+        <div class="center">
+            <a class="button" id="btnadd" href="mailing_adherents.php?mailing_new=true">{_T string="Create new mailing"}</a>
+        </div>
 		<script type="text/javascript">
             $('#nbshow').change(function() {ldelim}
                 this.form.submit();

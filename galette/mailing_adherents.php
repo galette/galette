@@ -47,11 +47,16 @@ if ( !$login->isAdmin() ) {
 }
 
 //We're done :-)
-if ( isset($_POST['mailing_done']) || isset($_POST['mailing_cancel']) ) {
+if ( isset($_POST['mailing_done']) 
+    || isset($_POST['mailing_cancel'])
+    || isset($_GET['mailing_new'])
+) {
     $_SESSION['galette']['mailing'] = null;
     unset($_SESSION['galette']['mailing']);
-    header('location: gestion_adherents.php');
-    exit(0);
+    if ( !isset($_GET['mailing_new']) ) {
+        header('location: gestion_adherents.php');
+        exit(0);
+    }
 }
 
 require_once WEB_ROOT . 'classes/members.class.php';
