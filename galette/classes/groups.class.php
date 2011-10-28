@@ -58,6 +58,7 @@ class Groups
     private $_owner;
     private $_members;
     private $_creation_date;
+    private $_count_members;
 
     /**
      * Default constructor
@@ -120,6 +121,9 @@ class Groups
         $this->_creation_date = $r->creation_date;
         $adhpk = Adherent::PK;
         $this->_owner = new Adherent((int)$r->$adhpk);
+        if ( isset($r->members) ) {
+            $this->_count_members = $r->members;
+        }
     }
 
     /**
@@ -134,8 +138,13 @@ class Groups
             $select = new Zend_Db_Select($zdb->db);
             $select->from(
                 array('a' => PREFIX_DB . self::TABLE)
+            )->joinLeft(
+                array('b' => PREFIX_DB . self::USERSGROUPS_TABLE),
+                'a.' . self::PK . '=b.' .self::PK,
+                array('members' => new Zend_Db_Expr('count(b.' . self::PK . ')'))
             );
             $groups = array();
+            $q = $select->__toString();
             foreach ( $select->query()->fetchAll() as $row ) {
                 $groups[] = new Groups($row);
             }
@@ -392,6 +401,17 @@ class Groups
     public function getCreationDate()
     {
         return $this->_creation_date;
+    }
+
+    public function getMemberCount()
+    {
+        if (isset($this->_members) && is_array($this->_members) ) {
+            return count($this->_members);
+        } else if ( isset($this->_count_members) ) {
+            return $this->_count_members;
+        } else {
+            return 0;
+        }
     }
 
     /**

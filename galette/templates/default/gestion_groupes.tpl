@@ -5,6 +5,7 @@
 					<th class="listing left username_row">
                         {_T string="Name"}
 					</th>
+					<th class="listing small_head">{_T string="Members"}</th>
                     <th class="listing left username_row">
                         {_T string="Owner"}
                     </th>
@@ -20,6 +21,7 @@
 				<tr class="tbl_line_{if $smarty.foreach.eachgroup.iteration % 2 eq 0}even{else}odd{/if}">
 					<td class="center">{$smarty.foreach.eachgroup.iteration}</td>
 					<td>{$group->getName()}</td>
+                    <td class="right">{$group->getMemberCount()}</td>
 					<td><a href="voir_adherent.php?id_adh={$owner->id}">{$owner->sname}</a></td>
 					<td class="nowrap">{$group->getCreationDate()|date_format:"%a %d/%m/%Y - %R"}</td>
 					<td class="center nowrap actions_row">
