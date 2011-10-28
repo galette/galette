@@ -1,5 +1,5 @@
 -- $Id$
-DROP SEQUENCE galette_adherents_id_seq;
+DROP SEQUENCE IF EXISTS galette_adherents_id_seq;
 CREATE SEQUENCE galette_adherents_id_seq
     START 1
     INCREMENT 1
@@ -7,7 +7,7 @@ CREATE SEQUENCE galette_adherents_id_seq
     MINVALUE 1
     CACHE 1;
 
-DROP SEQUENCE galette_cotisations_id_seq;
+DROP SEQUENCE IF EXISTS galette_cotisations_id_seq;
 CREATE SEQUENCE galette_cotisations_id_seq
     START 1
     INCREMENT 1
@@ -15,7 +15,7 @@ CREATE SEQUENCE galette_cotisations_id_seq
     MINVALUE 1
     CACHE 1;
 
-DROP SEQUENCE galette_transactions_id_seq;
+DROP SEQUENCE IF EXISTS galette_transactions_id_seq;
 CREATE SEQUENCE galette_transactions_id_seq
     START 1
     INCREMENT 1
@@ -23,7 +23,7 @@ CREATE SEQUENCE galette_transactions_id_seq
     MINVALUE 1
     CACHE 1;
 
-DROP SEQUENCE galette_preferences_id_seq;
+DROP SEQUENCE IF EXISTS galette_preferences_id_seq;
 CREATE SEQUENCE galette_preferences_id_seq
     START 1
     INCREMENT 1
@@ -31,7 +31,34 @@ CREATE SEQUENCE galette_preferences_id_seq
     MINVALUE 1
     CACHE 1;
 
-DROP TABLE galette_adherents CASCADE;
+DROP SEQUENCE IF EXISTS galette_logs_id_seq;
+CREATE SEQUENCE galette_logs_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+    
+-- Sequence for dynamic fields description;
+DROP SEQUENCE IF EXISTS galette_field_types_id_seq;
+CREATE SEQUENCE galette_field_types_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
+-- sequence for groups
+DROP SEQUENCE IF EXISTS galette_groups_id_seq;
+CREATE SEQUENCE galette_groups_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
+-- Schema
+DROP TABLE IF EXISTS galette_adherents CASCADE;
 CREATE TABLE galette_adherents (
     id_adh integer DEFAULT nextval('galette_adherents_id_seq'::text) NOT NULL,
     id_statut integer DEFAULT '4' NOT NULL,
@@ -72,7 +99,7 @@ CREATE TABLE galette_adherents (
 -- add index for faster search on login_adh (auth)
 CREATE UNIQUE INDEX galette_adherents_login_adh_idx ON galette_adherents (login_adh);
 
-DROP TABLE galette_cotisations;
+DROP TABLE IF EXISTS galette_cotisations;
 CREATE TABLE galette_cotisations (
     id_cotis integer DEFAULT nextval('galette_cotisations_id_seq'::text)  NOT NULL,
     id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -86,7 +113,7 @@ CREATE TABLE galette_cotisations (
     PRIMARY KEY (id_cotis)
 );
 
-DROP TABLE galette_transactions CASCADE;
+DROP TABLE IF EXISTS galette_transactions CASCADE;
 CREATE TABLE galette_transactions (
     trans_id integer DEFAULT nextval('galette_transactions_id_seq'::text)  NOT NULL,
     trans_date date DEFAULT '19010101' NOT NULL,
@@ -96,7 +123,7 @@ CREATE TABLE galette_transactions (
     PRIMARY KEY (trans_id)
 );
 
-DROP TABLE galette_statuts;
+DROP TABLE IF EXISTS galette_statuts;
 CREATE TABLE galette_statuts (
   id_statut integer NOT NULL,
   libelle_statut  character varying(20) DEFAULT '' NOT NULL,
@@ -104,7 +131,7 @@ CREATE TABLE galette_statuts (
   PRIMARY KEY (id_statut)
 );
 
-DROP TABLE galette_types_cotisation CASCADE;
+DROP TABLE IF EXISTS galette_types_cotisation CASCADE;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis integer NOT NULL,
   libelle_type_cotis character varying(30) DEFAULT '' NOT NULL,
@@ -112,7 +139,7 @@ CREATE TABLE galette_types_cotisation (
   PRIMARY KEY (id_type_cotis)
 );
 
-DROP TABLE galette_preferences;
+DROP TABLE IF EXISTS galette_preferences;
 CREATE TABLE galette_preferences (
   id_pref integer DEFAULT nextval('galette_preferences_id_seq'::text) NOT NULL,
   nom_pref character varying(100) DEFAULT '' NOT NULL,
@@ -122,15 +149,7 @@ CREATE TABLE galette_preferences (
 -- add index, nom_pref is used as foreign key elsewhere
 CREATE UNIQUE INDEX galette_preferences_nom_pref_idx ON galette_preferences (nom_pref);
 
-DROP SEQUENCE galette_logs_id_seq;
-CREATE SEQUENCE galette_logs_id_seq
-    START 1
-    INCREMENT 1
-    MAXVALUE 2147483647
-    MINVALUE 1
-    CACHE 1;
-
-DROP TABLE galette_logs;
+DROP TABLE IF EXISTS galette_logs;
 CREATE TABLE galette_logs (
   id_log integer DEFAULT nextval('galette_logs_id_seq'::text) NOT NULL,
   date_log timestamp NOT NULL,
@@ -142,17 +161,8 @@ CREATE TABLE galette_logs (
   PRIMARY KEY (id_log)
 );
 
--- Sequence for dynamic fields description;
-DROP SEQUENCE galette_field_types_id_seq;
-CREATE SEQUENCE galette_field_types_id_seq
-    START 1
-    INCREMENT 1
-    MAXVALUE 2147483647
-    MINVALUE 1
-    CACHE 1;
-
 -- Table for dynamic fields description;
-DROP TABLE galette_field_types CASCADE;
+DROP TABLE IF EXISTS galette_field_types CASCADE;
 CREATE TABLE galette_field_types (
   field_id integer DEFAULT nextval('galette_field_types_id_seq'::text) NOT NULL,
   field_form character varying(10) NOT NULL,
@@ -173,7 +183,7 @@ CREATE TABLE galette_field_types (
 CREATE INDEX galette_field_types_field_form_idx ON galette_field_types (field_form);
 
 -- Table for dynamic fields data;
-DROP TABLE galette_dynamic_fields;
+DROP TABLE IF EXISTS galette_dynamic_fields;
 CREATE TABLE galette_dynamic_fields (
   item_id integer DEFAULT '0' NOT NULL, -- could be id_adh, trans_id, id_cotis
   field_id integer REFERENCES galette_field_types (field_id) ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -183,7 +193,7 @@ CREATE TABLE galette_dynamic_fields (
   PRIMARY KEY (item_id, field_id, field_form, val_index)
 );
 
-DROP TABLE galette_pictures;
+DROP TABLE IF EXISTS galette_pictures;
 CREATE TABLE galette_pictures (
   id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
   picture bytea NOT NULL,
@@ -192,7 +202,7 @@ CREATE TABLE galette_pictures (
 );
 
 -- Table for dynamic translation of strings;
-DROP TABLE galette_l10n;
+DROP TABLE IF EXISTS galette_l10n;
 CREATE TABLE galette_l10n (
   text_orig character varying(40) NOT NULL,
   text_locale character varying(15) NOT NULL,
@@ -202,7 +212,7 @@ CREATE TABLE galette_l10n (
 );
 
 -- new table for temporary passwords  2006-02-18;
-DROP TABLE galette_tmppasswds;
+DROP TABLE IF EXISTS galette_tmppasswds;
 CREATE TABLE galette_tmppasswds (
   id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
   tmp_passwd character varying(40) NOT NULL,
@@ -211,7 +221,7 @@ CREATE TABLE galette_tmppasswds (
 );
 
 -- Table for dynamic required fields 2007-07-10;
-DROP TABLE galette_required;
+DROP TABLE IF EXISTS galette_required;
 CREATE TABLE galette_required (
 	field_id integer REFERENCES galette_field_types (field_id) ON DELETE RESTRICT ON UPDATE CASCADE,
 	required boolean DEFAULT false NOT NULL,
@@ -219,7 +229,7 @@ CREATE TABLE galette_required (
 );
 
 -- Table for automatic mails and their translations 2007-10-22;
-DROP TABLE galette_texts;
+DROP TABLE IF EXISTS galette_texts;
 CREATE TABLE galette_texts (
   tid integer DEFAULT nextval('galette_texts_id_seq'::text) NOT NULL,
   tref character varying(20) NOT NULL,
@@ -230,7 +240,7 @@ CREATE TABLE galette_texts (
   PRIMARY KEY (tid)
 );
 
-DROP TABLE galette_fields_categories CASCADE;
+DROP TABLE IF EXISTS galette_fields_categories CASCADE;
 CREATE TABLE galette_fields_categories (
   id_field_category integer  DEFAULT nextval('galette_fields_categories_id_seq'::text) NOT NULL,
   table_name character varying(30) NOT NULL,
@@ -239,7 +249,7 @@ CREATE TABLE galette_fields_categories (
   PRIMARY KEY (id_field_category)
 );
 
-DROP TABLE galette_fields_config;
+DROP TABLE IF EXISTS galette_fields_config;
 CREATE TABLE galette_fields_config (
   table_name character varying(30) NOT NULL,
   field_id integer REFERENCES galette_field_types (field_id) ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -251,7 +261,7 @@ CREATE TABLE galette_fields_config (
 );
 
 -- Table for mailing history storage
-DROP TABLE galette_mailing_history;
+DROP TABLE IF EXISTS galette_mailing_history;
 CREATE TABLE galette_mailing_history (
   mailing_id integer DEFAULT nextval('galette_mailing_history_id_seq'::text) NOT NULL,
   mailing_sender integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -261,6 +271,25 @@ CREATE TABLE galette_mailing_history (
   mailing_recipients text NOT NULL,
   mailing_sent character(1) DEFAULT NULL,
   PRIMARY KEY (mailing_id)
+);
+
+-- table for groups
+DROP TABLE IF EXISTS galette_groups CASCADE;
+CREATE TABLE galette_groups (
+  id_group integer DEFAULT nextval('galette_groups_id_seq'::text) NOT NULL,
+  group_name character varying(50) NOT NULL CONSTRAINT name UNIQUE,
+  creation_date timestamp NOT NULL,
+  id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
+  PRIMARY KEY (id_group)
+);
+
+-- table for groups users
+DROP TABLE IF EXISTS galette_groups_users;
+CREATE TABLE galette_groups_users (
+  id_group integer REFERENCES galette_groups(id_group) ON DELETE RESTRICT ON UPDATE CASCADE,
+  id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
+  manager character(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (id_group,id_adh)
 );
 
 --
