@@ -35,6 +35,9 @@
  * @since     Available since 0.7dev - 2011-10-25
  */
 
+/** @ignore */
+require_once 'adherent.class.php';
+
 /**
  * This class handles groups, their owners and members.
  *
@@ -59,6 +62,7 @@ class Groups
     private $_members;
     private $_creation_date;
     private $_count_members;
+    private $_managers;
 
     /**
      * Default constructor
@@ -70,6 +74,9 @@ class Groups
     public function __construct($args = null)
     {
         if ( $args == null || is_int($args) ) {
+            if ( is_int($args) && $args > 0 ) {
+                $this->load($args);
+            }
         } elseif ( is_object($args) ) {
             $this->_loadFromRS($args);
         }
@@ -122,7 +129,47 @@ class Groups
         $adhpk = Adherent::PK;
         $this->_owner = new Adherent((int)$r->$adhpk);
         if ( isset($r->members) ) {
+            //we're from a list, we just want members count
             $this->_count_members = $r->members;
+        } else {
+            //we're probably from a single group, let's load members list
+            $this->_loadMembers();
+        }
+    }
+
+    /**
+     * Loads members for the current group
+     */
+    private function _loadMembers()
+    {
+        global $zdb, $log;
+
+        try {
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(
+                PREFIX_DB . self::USERSGROUPS_TABLE,
+                array(Adherent::PK, 'manager')
+            )->where(self::PK . ' = ?', $this->_id);
+            $res = $select->query()->fetchAll();
+            $members = array();
+            $adhpk = Adherent::PK;
+            foreach ( $res as $m ) {
+                $members[] = new Adherent((int)$m->$adhpk);
+                //put managers in an array
+                if ( $m->manager == 1) {
+                    $this->_managers[] = (int)$m->$adhpk;
+                }
+            }
+            $this->_members = $members;
+        } catch (Exception $e) {
+            $log->log(
+                'Cannot get group members | ' . $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
+            );
         }
     }
 
@@ -234,7 +281,7 @@ class Groups
                 ),
                 'a.' . self::PK . '=b.' . self::PK,
                 array('manager')
-            )->where(Adherent::PK . ' = ?', $id);
+            )->where('a.' . Adherent::PK . ' = ?', $id);
             $result = $select->query()->fetchAll();
             $groups = array();
             foreach ( $result as $r ) {
@@ -432,6 +479,85 @@ class Groups
     public function setOwner($id)
     {
         $this->_owner = new Adherent((int)$id);
+    }
+
+    /**
+     * Set members
+     *
+     * @param Adherent[] $members
+     */
+    public function setMembers($members)
+    {
+        global $zdb, $log;
+
+        try {
+            $zdb->db->beginTransaction();
+
+            //first, remove current groups members (as we only have current members at this point)
+            $del = $zdb->db->delete(
+                PREFIX_DB . self::USERSGROUPS_TABLE,
+                self::PK . ' = ' . $this->_id
+            );
+            $log->log(
+                'Group members has been removed for `' . $this->_group_name .
+                ', we can now store new ones.',
+                PEAR_LOG_INFO
+            );
+
+            $stmt = $zdb->db->prepare(
+                'INSERT INTO ' . PREFIX_DB . self::USERSGROUPS_TABLE .
+                ' (' . $zdb->db->quoteIdentifier(self::PK) . ', ' .
+                $zdb->db->quoteIdentifier(Adherent::PK) . ', ' .
+                $zdb->db->quoteIdentifier('manager') . ')' .
+                ' VALUES(' . $this->_id . ', :adh, :manager)'
+            );
+
+            foreach ( $members as $m ) {
+                $stmt->bindValue(':adh', $m->id, PDO::PARAM_INT);
+                //at the moment, the interface does not permit to manage managers
+                //so we keep an eye on existing ones, and set them without changes
+                $stmt->bindValue(
+                    ':manager',
+                    (in_array($m->id, $this->_managers) ? true : false),
+                    PDO::PARAM_BOOL
+                );
+
+                if ( $stmt->execute() ) {
+                    $log->log(
+                        'Member `' . $m->sname . '` attached to group `' .
+                        $this->_group_name . '`.',
+                        PEAR_LOG_DEBUG
+                    );
+                } else {
+                    $log->log(
+                        'An error occured trying to attach member `' .
+                        $m->sname . '` to group `' . $this->_group_name . '`.',
+                        PEAR_LOG_ERR
+                    );
+                    throw new Exception(
+                        'Unable to attach `' . $m->sname . '` ' .
+                        'to ' . $this->_group_name
+                    );
+                }
+            }
+            //commit all changes
+            $zdb->db->commit();
+
+            $log->log(
+                'Required adherents table updated successfully.',
+                PEAR_LOG_INFO
+            );
+
+            return true;
+        } catch (Exception $e) {
+            $zdb->db->rollBack();
+            $log->log(
+                'Unable to delete selected groups |' .
+                $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
     }
 }
 

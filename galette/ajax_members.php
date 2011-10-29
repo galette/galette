@@ -52,6 +52,7 @@ $multiple = ( isset($_POST['multiple']) && $_POST['multiple'] == 'false' ) ? fal
 require_once WEB_ROOT . 'classes/members.class.php';
 require_once WEB_ROOT . 'classes/varslist.class.php';
 require_once WEB_ROOT . 'classes/mailing.class.php';
+require_once WEB_ROOT . 'classes/groups.class.php';
 
 if ( isset($_SESSION['galette']['varslist']) ) {
     $varslist = unserialize($_SESSION['galette']['varslist']);
@@ -61,8 +62,27 @@ if ( isset($_SESSION['galette']['varslist']) ) {
 
 $members_list = Members::getList(true);
 $mailing = unserialize($_SESSION['galette']['mailing']);
-$selected_members = $mailing->recipients;
-$unreachables_members = $mailing->unreachables;
+$selected_members = null;
+$unreachables_members = null;
+if ( !isset($_POST['from']) ) {
+    $selected_members = $mailing->recipients;
+    $unreachables_members = $mailing->unreachables;
+} else {
+    switch ( $_POST['from'] ) {
+    case 'groups':
+        if ( !isset($_POST['gid']) ) {
+            $log->log(
+                'Trying to list group members with no group id provided',
+                PEAR_LOG_ERR
+            );
+            throw new Exception('A group id is required.');
+            exit(0);
+        }
+        $group = new Groups((int)$_POST['gid']);
+        $selected_members = $group->getMembers();
+        break;
+    }
+}
 
 $tpl->assign('ajax', $ajax);
 $tpl->assign('multiple', $multiple);

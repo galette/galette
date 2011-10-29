@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Groups managment
+ * Manage groups members from ajax
  *
  * PHP version 5
  *
@@ -24,45 +24,29 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Main
+ * @category  Plugins
  * @package   Galette
- *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2011 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
+ * @since     Available since 0.7dev - 2011-10-29
  */
 
 require_once 'includes/galette.inc.php';
-require_once 'classes/groups.class.php';
-
-if ( !$login->isLogged() ) {
-    header('location: index.php');
-    die();
-}
-if ( !$login->isAdmin()) {
-    header('location: voir_adherent.php');
+if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-$groups = new Groups();
+require_once WEB_ROOT . 'classes/adherent.class.php';
+require_once WEB_ROOT . 'classes/groups.class.php';
 
-$groups_list = $groups->getList();
+$members = Members::getArrayList($_POST['members']);
 
-//delete groups
-if (isset($_GET['sup']) || isset($_POST['delete'])) {
-    if ( isset($_GET['sup']) ) {
-        $groups->removeGroups($_GET['sup']);
-    } else if ( isset($_POST['groups_sel']) ) {
-        $groups->removeGroups($_POST['group_sel']);
-    }
-}
+$group = new Groups((int)$_POST['gid']);
+$group->setMembers($members);
 
-$tpl->assign('require_dialog', true);
-$tpl->assign('page_title', _T("Groups"));
-$tpl->assign('groups', $groups_list);
-$content = $tpl->fetch('gestion_groupes.tpl');
-$tpl->assign('content', $content);
-$tpl->display('page.tpl');
+//let's, at leat count members for return
+echo count($members);
 ?>
