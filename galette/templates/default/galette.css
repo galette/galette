@@ -1056,6 +1056,8 @@ a.listing:hover {
 
 .membercount {
     cursor: pointer;
+    background: url(images/icon-user.png) 99% 50% no-repeat;
+    padding-right: 20px;
 }
 
 #errorbox {
