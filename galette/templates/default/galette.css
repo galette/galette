@@ -298,6 +298,21 @@ footer li {
     box-shadow: 1px 1px 12px rgba(255, 255, 255, 0.4);
 }
 
+#superadmin {
+    color: white;
+    font-weight: bold;
+    margin: 0 .5em .5em;
+    padding:.2em;
+    background-color: rgba(255, 0, 0, 0.4);
+    cursor: pointer;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    -moz-box-shadow: 1px 1px 13px rgba(255, 0, 0, 0.4);
+    -webkit-box-shadow: 1px 1px 13px rgba(255, 0, 0, 0.4);
+    box-shadow: 1px 1px 13px rgba(255, 0, 0, 0.4);
+}
+
 /* == Buttons */
 #delete, #sendmail, #btnsave, #btnvalid, #btnadd, #btncancel, #btnsend, #btnpreview, #btnusers, .button {
     padding-left: 2em!important;

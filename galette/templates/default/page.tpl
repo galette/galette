@@ -68,6 +68,11 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 		<div id="logo">
 			<img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
 		</div>
+{if $login->isSuperAdmin()}
+        <div id="superadmin" title="{_T string="You are actually logged-in as superadmin. Some functionnalities may not be available since this is *not* a regular member."}">
+            {_T string="Superadmin"}
+        </div>
+{/if}
 {if $login->isLogged()}
 		<h1 class="nojs">{_T string="Navigation"}</h1>
 		<ul>
