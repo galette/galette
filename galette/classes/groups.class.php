@@ -281,8 +281,12 @@ class Groups
                 ),
                 'a.' . self::PK . '=b.' . self::PK,
                 array('manager')
-            )->where('a.' . Adherent::PK . ' = ?', $id);
+            )->where('b.' . Adherent::PK . ' = ?', $id);
             $result = $select->query()->fetchAll();
+            $log->log(
+                'Exectued query: ' . $select->__toString(),
+                PEAR_LOG_DEBUG
+            );
             $groups = array();
             foreach ( $result as $r ) {
                 $groups[$r->group_name] = $r->manager;
