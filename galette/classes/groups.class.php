@@ -189,7 +189,7 @@ class Groups
                 array('b' => PREFIX_DB . self::USERSGROUPS_TABLE),
                 'a.' . self::PK . '=b.' .self::PK,
                 array('members' => new Zend_Db_Expr('count(b.' . self::PK . ')'))
-            );
+            )->group('b.' . self::PK);
             $groups = array();
             $q = $select->__toString();
             foreach ( $select->query()->fetchAll() as $row ) {
