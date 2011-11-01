@@ -227,7 +227,8 @@ class GaletteMail
                 $m = $this->_mail;
                 $this->_errors[] = $this->_mail->ErrorInfo;
                 $log->log(
-                    'An error occured sending mail to: ' . $txt,
+                    'An error occured sending mail to: ' .
+                    implode(', ', array_keys($this->_recipients)),
                     PEAR_LOG_INFO
                 );
                 $this->_mail = null;
