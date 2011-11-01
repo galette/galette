@@ -78,7 +78,7 @@ class Texts
             'tid' => 4,
             'tref' => 'pwd',
             'tsubject' => 'Your identifiers',
-            'tbody' =>"Hello,\r\n\r\nSomeone (probably you) asked to recover your password.\r\n\r\nPlease login at this address to set your new password :\r\n{CHG_PWD_URI}\r\n\r\nUsername: {LOGIN}\r\nTemporary password: {PASSWORD}\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+            'tbody' =>"Hello,\r\n\r\nSomeone (probably you) asked to recover your password.\r\n\r\nPlease login at this address to set your new password :\r\n{CHG_PWD_URI}\r\n\r\nUsername: {LOGIN}\r\nThe above link will be valid until {LINK_VALIDITY}.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
             'tlang'=> 'en_US',
             'tcomment'=>'Lost password email'
         ),
@@ -86,7 +86,7 @@ class Texts
             'tid' => 5,
             'tref' => 'pwd',
             'tsubject' => 'Vos Identifiants',
-            'tbody' =>"Bonjour,\r\n\r\nQuelqu'un (probablement vous) a demandé la récupération de votre mot de passe.\r\n\r\nConnectez vous à cette adresse pour valider le nouveau mot de passe :\r\n{CHG_PWD_URI}\r\n\r\nIdentifiant : {LOGIN}\r\nMot de passe Temporaire : {PASSWORD}\r\n\r\nA Bientôt!\r\n\r\n(Ce courriel est un envoi automatique)",
+            'tbody' =>"Bonjour,\r\n\r\nQuelqu'un (probablement vous) a demandé la récupération de votre mot de passe.\r\n\r\nConnectez vous à cette adresse pour valider le nouveau mot de passe :\r\n{CHG_PWD_URI}\r\n\r\nIdentifiant : {LOGIN}\r\nLe lien ci-dessus sera valide jusqu'au {LINK_VALIDITY}.\r\n\r\nA Bientôt!\r\n\r\n(Ce courriel est un envoi automatique)",
             'tlang'=>'fr_FR',
             'tcomment'=>'Récupération du mot de passe'
         ),

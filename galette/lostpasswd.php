@@ -61,17 +61,21 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
 
                 // Replace Tokens
                 $regs = array(
-                  '/{CHG_PWD_URI}/',
-                  '/{LOGIN}/',
-                  '/{PASSWORD}/'
+                    '/{CHG_PWD_URI}/',
+                    '/{LOGIN}/',
+                    '/{LINK_VALIDITY}/'
                 );
 
+                $link_validity = new DateTime();
+                $link_validity->add(new DateInterval('PT24H'));
+
+                $df = _T("Y-m-d H:i:s");
                 $replacements = array(
                     'http://' . $_SERVER['SERVER_NAME'] .
                     dirname($_SERVER['REQUEST_URI']) .
                     '/change_passwd.php?hash=' . $password->getHash(),
                     custom_html_entity_decode($adh->login, ENT_QUOTES),
-                    custom_html_entity_decode($password->getNewPassword(), ENT_QUOTES),
+                    $link_validity->format(_T("Y-m-d H:i:s"))
                 );
 
                 $body = preg_replace(
