@@ -265,7 +265,7 @@ class History extends GalettePagination
                     //return formatted datemime
                      try {
                         $d = new DateTime($this->$rname);
-                        return $d->format(_T("Y-m-d H:m:s"));
+                        return $d->format(_T("Y-m-d H:i:s"));
                     } catch (Exception $e) {
                         //oops, we've got a bad date :/
                         $log->log(
