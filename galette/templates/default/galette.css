@@ -461,6 +461,13 @@ h1 #sendmail .ui-button-text {
     background-image:url(images/icon-user.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
+#btngroups {
+	background-image:url(images/icon-user.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#btngroups.ui-state-hover {
+    background-image:url(images/icon-user.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
 #histreset {
 	background-image:url(images/delete.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
@@ -610,6 +617,10 @@ h1 #sendmail .ui-button-text {
     font-family: monospace;
     font-size:1.1em;
 }
+
+#usergroups {
+    display: block;
+}
 /* =/ Main Galette styles */
 
 /* == Ajax member selection */
@@ -621,7 +632,8 @@ h1 #sendmail .ui-button-text {
     padding-right: 1em;
 }
 .select_members,
-#selected_members {
+#selected_members,
+#selected_groups {
     display:table-cell;
     vertical-align: top;
 }
@@ -634,26 +646,30 @@ h1 #sendmail .ui-button-text {
     width:50%;
 }
 
-#selected_members header {
+#selected_members header,
+#selected_groups header {
     padding-top: 0;
     -moz-border-radius: 10px 10px 0 0;
     -webkit-border-radius: 10px 10px 0 0;
     border-radius: 10px 10px 0 0;
 }
 
-#selected_members {
+#selected_members,
+#selected_groups {
     min-width: 25em!important;
     margin-left:.5em!important;
     text-align: center;
 }
 
-#selected_members ul {
+#selected_members ul,
+#selected_groups ul {
     text-align: left;
     list-style-image: url(images/clearfilter.png);
     cursor: pointer;
 }
 
-#selected_members ul #none_selected {
+#selected_members ul #none_selected,
+#selected_groups ul #none_selected {
     list-style-type: none;
     list-style-image: none;
     cursor: auto;
@@ -664,9 +680,8 @@ h1 #sendmail .ui-button-text {
     color: red;
 }
 
-/*#selected_members*/
-
-#selected_members h3 {
+#selected_members h3,
+#selected_groups h3 {
     margin:0;
     font-size: 1em;
 }
@@ -997,7 +1012,8 @@ a.listing:hover {
 }
 
 .mailing,
-#selected_members{
+#selected_members,
+#selected_groups {
     width: 60%;
     margin:0 auto;
     min-width: 50em;
@@ -1014,7 +1030,8 @@ a.listing:hover {
 }
 
 .mailing header,
-#selected_members header {
+#selected_members header,
+#selected_groups header {
     padding: .2em 0;
     text-align: center;
     font-weight: bold;
@@ -1185,7 +1202,7 @@ a.listing:hover {
 	vertical-align: middle;
 }
 
-td img {
+td img, a img {
     vertical-align: middle;
 }
 

@@ -243,6 +243,23 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     $_SESSION['galette']['mail_warning'] = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
                 }
             }
+
+            //store requested groups
+            $add_groups = Groups::addMemberToGroups($member, $_POST['groups_adh']);
+            if ( $add_groups === true ) {
+                $log->log(
+                    'Member .' . $member->sname . ' has been added to groups ' .
+                    print_r($_POST['groups_adh'], true),
+                    PEAR_LOG_INFO
+                );
+            } else {
+                $log->log(
+                    'Member .' . $member->sname . ' has not been added to groups ' .
+                    print_r($_POST['groups_adh'], true),
+                    PEAR_LOG_ERR
+                );
+                $error_detected[] = _T("An error occured adding member to its groups.");
+            }
         } else {
             //something went wrong :'(
             $error_detected[] = _T("An error occured while storing the member.");
@@ -318,6 +335,7 @@ if ( $member->id != '' ) {
     $title .= ' (' . _T("creation") . ')';
 }
 
+$tpl->assign('require_dialog', true);
 $tpl->assign('page_title', $title);
 $tpl->assign('required', $required);
 $tpl->assign('disabled', $disabled);
@@ -337,6 +355,11 @@ $tpl->assign('radio_titres', Politeness::getList());
 //Status
 $statuts = Status::getList();
 $tpl->assign('statuts', $statuts);
+
+//Groups
+$groups = new Groups();
+$groups_list = $groups->getList();
+$tpl->assign('groups', $groups_list);
 
 // page generation
 $content = $tpl->fetch('member.tpl');

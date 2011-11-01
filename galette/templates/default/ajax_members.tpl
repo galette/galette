@@ -53,6 +53,6 @@
         {/foreach}
     {/if}
             </ul>
-            <button class="button" id="btnvalid">Validate</button>
+            <button class="button" id="btnvalid">{_T string="Validate"}</button>
         </section>
 {/if}

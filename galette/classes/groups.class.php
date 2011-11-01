@@ -486,6 +486,80 @@ class Groups
     }
 
     /**
+     * Add a member to specified groups
+     *
+     * @param Adherent $adh    Member
+     * @param array    $groups Groups Groups list. Each entry must contain
+     *                                the group id, name and 0 or 1 for manager
+     *                                each value separated by a pipe.
+     *
+     * @return boolean
+     */
+    public static function addMemberToGroups($adh, $groups)
+    {
+        global $zdb, $log;
+        try {
+            $zdb->db->beginTransaction();
+
+            //first, remove current groups members (as we only have current members at this point)
+            $del = $zdb->db->delete(
+                PREFIX_DB . self::USERSGROUPS_TABLE,
+                Adherent::PK . ' = ' . $adh->id
+            );
+            $log->log(
+                'Member `' . $adh->sname . '` has been detached of its groups' .
+                ', we can now store new ones.',
+                PEAR_LOG_INFO
+            );
+
+            $stmt = $zdb->db->prepare(
+                'INSERT INTO ' . PREFIX_DB . self::USERSGROUPS_TABLE .
+                ' (' . $zdb->db->quoteIdentifier(self::PK) . ', ' .
+                $zdb->db->quoteIdentifier(Adherent::PK) . ', ' .
+                $zdb->db->quoteIdentifier('manager') . ')' .
+                ' VALUES(:id, ' . $adh->id . ', :manager)'
+            );
+
+            foreach ( $groups as $group ) {
+                list($gid, $gname, $manager) = explode('|', $group);
+                $stmt->bindValue(':id', $gid, PDO::PARAM_INT);
+                $stmt->bindValue(':manager', $manager, PDO::PARAM_BOOL);
+
+                if ( $stmt->execute() ) {
+                    $log->log(
+                        'Member `' . $adh->sname . '` attached to group `' .
+                        $gname . '` (' . $gid . ').',
+                        PEAR_LOG_DEBUG
+                    );
+                } else {
+                    $log->log(
+                        'An error occured trying to attach member `' .
+                        $adh->sname . '` (' . $adh->id . ') to group `' .
+                        $gname . '` (' . $gid . ').',
+                        PEAR_LOG_ERR
+                    );
+                    throw new Exception(
+                        'Unable to attach `' . $adh->sname . '` (' . $adh->id .
+                        ') to `' . $gname . '` (' . $gid . ')'
+                    );
+                }
+            }
+            //commit all changes
+            $zdb->db->commit();
+            return true;
+        } catch (Exception $e) {
+            $zdb->db->rollBack();
+            $log->log(
+                'Unable to add member `' . $adh->sname . '` (' . $adh->id .
+                ') to specified groups |' .
+                $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
+    }
+
+    /**
      * Set members
      *
      * @param Adherent[] $members

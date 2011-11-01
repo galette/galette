@@ -133,7 +133,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                         <img src="{$template_subdir}images/icon-star.png" alt="{_T string="[manager]"}" width="16" height="16"/>
         {/if}
                     </a>
-        {if not $smarty.foreach.products.last}, {/if}
     {/foreach}
 				</td>
 			</tr>

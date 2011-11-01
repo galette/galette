@@ -651,6 +651,34 @@ class Adherent
     }
 
     /**
+     * Is member in specified group?
+     *
+     * @param type $group_name Group name
+     * @return boolean
+     */
+    public function isGroupMember($group_name)
+    {
+        $ak = array_keys($this->_groups);
+        $res = in_array($group_name, array_keys($this->_groups));
+        return in_array($group_name, array_keys($this->_groups));
+    }
+
+    /**
+     * Is member manager of specified group?
+     *
+     * @param type $group_name Group name
+     * @return boolean
+     */
+    public function isGroupManager($group_name)
+    {
+        if ( $this->isGroupMember($group_name) ) {
+            return $this->_groups[$group_name];
+        } else {
+            return false;
+        }
+    }
+
+    /**
     * Can member appears in public members list?
     *
     * @return bool

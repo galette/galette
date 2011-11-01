@@ -238,6 +238,31 @@
 						<br/><span class="exemple labelalign">{_T string="This comment is reserved to the member."}</span>
     {/if}
 					</p>
+    {if $groups|@count != 0}
+                    <p>
+                        <span class="bline">{_T string="Groups:"}</span>
+                        <a class="button" id="btngroups">{_T string="Manage user's groups"}</a>
+                        <span id="usergroups_form">
+    {foreach from=$groups item=group}
+        {if $member->isGroupMember($group->getName())}
+                            <input type="hidden" name="groups_adh[]" value="{$group->getId()}|{$group->getName()}|{$member->isGroupManager($group->getName())}"/>
+        {/if}
+    {/foreach}
+                        </span>
+                        <span id="usergroups">
+    {foreach from=$groups item=group name=groupsiterate}
+        {if $member->isGroupMember($group->getName())}
+            {if not $smarty.foreach.groupsiterate.first}, {/if}
+            {if $member->isGroupManager($group->getName())}
+                {_T string="Manager for '%groupname'" pattern="/%groupname/" replace=$group->getName()}
+            {else}
+                {_T string="Member of '%groupname'" pattern="/%groupname/" replace=$group->getName()}
+            {/if}
+        {/if}
+    {/foreach}
+                        </span>
+                    </p>
+    {/if}
 				</div>
 			</fieldset>
 
@@ -271,6 +296,108 @@
                     maxDate: '-0d',
                     yearRange: 'c-10'
                 {rdelim});
+
+                {* Groups popup *}
+                $('#btngroups').click(function(){ldelim}
+                    var _groups = [];
+                    $('#usergroups_form input').each(function(){ldelim}
+                        _group = $(this).val().split('|');
+                        _groups[_groups.length] = {ldelim}
+                            id: _group[0],
+                            name: _group[1],
+                            manager: _group[2]
+                        {rdelim};
+                    {rdelim});
+                    $.ajax({ldelim}
+                        url: 'ajax_groups.php',
+                        type: "POST",
+                        data: {ldelim}ajax: true, groups: _groups{rdelim},
+                        success: function(res){ldelim}
+                            _groups_dialog(res, _groups);
+                        {rdelim},
+                        error: function() {ldelim}
+                            alert("{_T string="An error occured displaying groups interface :(" escape="js"}");
+                        {rdelim}
+                    });
+                    return false;
+                {rdelim});
+
+                var _groups_dialog = function(res, _groups){ldelim}
+                    var _el = $('<div id="groups_list" title="{_T string="Groups selection" escape="js"}"> </div>');
+                    _el.appendTo('body').dialog({ldelim}
+                        modal: true,
+                        hide: 'fold',
+                        width: '80%',
+                        height: 500,
+                        close: function(event, ui){ldelim}
+                            _el.remove();
+                        {rdelim}
+                    {rdelim});
+                    _groups_ajax_mapper(res, _groups);
+                {rdelim}
+
+                var _groups_ajax_mapper = function(res, _groups){ldelim}
+                    $('#groups_list').append(res);
+                    $('#btnvalid').button().click(function(){ldelim}
+                        //remove actual groups
+                        $('#usergroups_form').empty();
+                        var _groups = new Array();
+                        var _groups_str = '';
+                        $('li[id^="group_"]').each(function(){ldelim}
+                            //get group values
+                            _gid = this.id.substring(6, this.id.length);
+                            _gname = $(this).text();
+                            _gmanager = $(this).find('input[type=checkbox]:checked').length;
+                            _groups[_groups.length] = this.id.substring(6, this.id.length);
+                            $('#usergroups_form').append(
+                                '<input type="hidden" value="' +
+                                _gid + '|' + _gname + '|' + _gmanager +
+                                '" name="groups_adh[]">'
+                            );
+                            if ( _groups_str != '' ) {ldelim}
+                                _groups_str += ', ';
+                            {rdelim}
+                            if ( _gmanager == 0 ) {ldelim}
+                                _groups_str += '{_T string="Member of '%groupname'" escape="js"}'.replace(/%groupname/, _gname);
+                            {rdelim} else {ldelim}
+                                _groups_str += '{_T string="Manager for '%groupname'" escape="js"}'.replace(/%groupname/, _gname);
+                            {rdelim}
+                        {rdelim});
+                        $('#usergroups').html(_groups_str);
+                        $('#groups_list').dialog("close");
+                    {rdelim});
+                    //Remap links
+                    var _none = $('#none_selected').clone();
+                    $('li input[type=checkbox]').click(function(e){ldelim}
+                        e.stopPropagation();
+                    {rdelim});
+                    $('li[id^="group_"]').click(function(){ldelim}
+                        $(this).remove();
+                        if ( $('#selected_groups ul li').length == 0 ) {ldelim}
+                            $('#selected_groups ul').append(_none);
+                        {rdelim}
+                    {rdelim});
+                    $('#listing a').click(function(){ldelim}
+                        var _gid = this.href.substring(this.href.indexOf('?')+10);
+                        var _gname = $(this).text();
+                        $('#none_selected').remove()
+                        if ( $('#group_' + _gid).length == 0 ) {ldelim}
+                            var _li = '<li id="group_' + _gid + '"><input type="checkbox" name="managers[]" id="manager_' + _gid + '"/><label for="manager_' + _gid + '">' + _gname + '</label></li>';
+                            $('#selected_groups ul').append(_li);
+                            $('#group_' + _gid).click(function(){ldelim}
+                                $(this).remove();
+                                if ( $('#selected_groups ul li').length == 0 ) {ldelim}
+                                    $('#selected_groups ul').append(_none);
+                                {rdelim}
+                            {rdelim});
+                            $('#manager_' + _gid).click(function(e){ldelim}
+                                e.stopPropagation();
+                            {rdelim});
+                        {rdelim}
+                        return false;
+                    {rdelim});
+
+                {rdelim}
             {rdelim});
 		</script>
 {/if}
