@@ -127,8 +127,12 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 				<th>{_T string="Groups:"}</th>
 				<td>
     {foreach from=$member->groups key=group item=manager}
-        {$group}
-        {if $manager == 1}<img src="{$template_subdir}images/icon-star.png" alt="{_T string="[manager]"}" width="16" height="16"/>{/if}
+                    <a href="#" class="button group-btn">
+                        {$group}
+        {if $manager == 1}
+                        <img src="{$template_subdir}images/icon-star.png" alt="{_T string="[manager]"}" width="16" height="16"/>
+        {/if}
+                    </a>
         {if not $smarty.foreach.products.last}, {/if}
     {/foreach}
 				</td>
