@@ -236,7 +236,7 @@ CREATE TABLE IF NOT EXISTS galette_groups_users (
   manager tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (id_group,id_adh),
   FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh),
-  FOREIGN KEY (id_group) REFERENCES galette_groups_owner (id_group)
+  FOREIGN KEY (id_group) REFERENCES galette_groups (id_group)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 SET FOREIGN_KEY_CHECKS=1;
