@@ -261,7 +261,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     if ( is_uploaded_file($_FILES['photo']['tmp_name']) ) {
                         $res = $member->picture->store($_FILES['photo']);
                         if ( $res < 0 ) {
-                            $error_detected[] = Picture::getErrorMessage($res);
+                            $error_detected[] = $member->picture->getErrorMessage($res);
                         }
                     }
                 }

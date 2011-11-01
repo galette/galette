@@ -301,7 +301,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                     if ( is_uploaded_file($_FILES['logo']['tmp_name']) ) {
                         $res = $logo->store($_FILES['logo']);
                         if ( $res < 0 ) {
-                            $error_detected[] = Picture::getErrorMessage($res);
+                            $error_detected[] = $logo->getErrorMessage($res);
                         } else {
                             $logo = new Logo();
                         }
@@ -337,7 +337,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                     if ( is_uploaded_file($_FILES['card_logo']['tmp_name']) ) {
                         $res = $print_logo->store($_FILES['card_logo']);
                         if ( $res < 0 ) {
-                            $error_detected[] = Picture::getErrorMessage($res);
+                            $error_detected[] = $print_logo->getErrorMessage($res);
                         } else {
                             $print_logo = new PrintLogo();
                         }

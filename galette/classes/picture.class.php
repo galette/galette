@@ -719,7 +719,7 @@ class Picture
      *
      * @return string Localized message
      */
-    public static function getErrorMessage($code)
+    public function getErrorMessage($code)
     {
         $error = _T("An error occued.");
         switch( $code ) {
