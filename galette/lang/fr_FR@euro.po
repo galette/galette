@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2011-11-01 18:52+0100\n"
+"PO-Revision-Date: 2011-11-01 21:17+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -469,7 +469,7 @@ msgstr "Sujet du courriel"
 msgid "Mail settings:"
 msgstr "Paramètres courriel&nbsp;:"
 
-#: ../lostpasswd.php:137
+#: ../lostpasswd.php:141
 msgid "Mails adress %s does not exist"
 msgstr "L'adresse mail %s n'existe pas"
 
@@ -534,7 +534,7 @@ msgid "You are about to send an e-mail to <strong>%s members</strong>"
 msgstr ""
 "Vous êtes sur le point d'envoyer un courriel à <strong>%s membres</strong>"
 
-#: ../change_passwd.php:100 ../lostpasswd.php:153
+#: ../change_passwd.php:100 ../lostpasswd.php:157
 msgid "Password recovery"
 msgstr "Récupération de mot de passe"
 
@@ -917,7 +917,7 @@ msgstr "Nouvelle installation&nbsp;:"
 msgid "Passwords mismatch"
 msgstr "Les mots de passe ne correspondent pas&nbsp;: "
 
-#: ../lostpasswd.php:126
+#: ../lostpasswd.php:130
 msgid "Your account (%s) do not contain any valid mail adress"
 msgstr "Votre compte (%s) ne contient pas d'adresse email valide"
 
@@ -1074,11 +1074,6 @@ msgstr ""
 #: ../classes/transaction.class.php:355
 msgid "Transaction added"
 msgstr "Transaction ajoutée"
-
-# http://fr2.php.net/manual/fr/function.date.php
-#: ../classes/history.class.php:268
-msgid "Y-m-d H:m:s"
-msgstr "d/m/Y H:m:s"
 
 #: ../install/index.php:181 ../install/index.php:272 ../install/index.php:1122
 msgid "Installation mode"
@@ -1651,7 +1646,7 @@ msgstr "Commentaire&nbsp;:"
 msgid "Board Members Color:"
 msgstr "Couleur pour les membres du bureau&nbsp;:"
 
-#: ../lostpasswd.php:116
+#: ../lostpasswd.php:120
 msgid ""
 "An error occured storing temporary password for %s. Please inform an admin."
 msgstr ""
@@ -3119,7 +3114,7 @@ msgstr "Mailing"
 msgid "Members administrator's Email:"
 msgstr "Courriel de l'administrateur des membres&nbsp;:"
 
-#: ../lostpasswd.php:99
+#: ../lostpasswd.php:103
 msgid "Mail sent to '%s' for password recovery."
 msgstr "Courriel envoyé à « %s » pour la récupération du mot de passe."
 
@@ -3258,6 +3253,11 @@ msgstr "(maximum 32 caractères)"
 msgid "Fields configuration"
 msgstr "Configuration des champs"
 
+# http://fr2.php.net/manual/fr/function.date.php
+#: ../lostpasswd.php:72 ../lostpasswd.php:78 ../classes/history.class.php:268
+msgid "Y-m-d H:i:s"
+msgstr "d/m/Y H:i:s"
+
 #: ../templates/default/preferences.tpl:290
 msgid "Strip Text Color:"
 msgstr "Couleur du texte sur le bandeau&nbsp;:"
@@ -3316,7 +3316,7 @@ msgstr "Une erreur SQL est survenue."
 msgid "Last page (%i)"
 msgstr "Dernière page (%i)"
 
-#: ../lostpasswd.php:107
+#: ../lostpasswd.php:111
 msgid "A problem happened while sending password for account '%s'"
 msgstr ""
 "Un problème est survenu dans l'envoi du mot de passe pour le compte « %s »"
@@ -3942,7 +3942,7 @@ msgstr "Faire monter le champ « %s »"
 msgid "Default contributions types were successfully stored."
 msgstr "Les types de contribution par défaut ont été sauvegardés avec succès."
 
-#: ../lostpasswd.php:145
+#: ../lostpasswd.php:149
 msgid "Login %s does not exist"
 msgstr "L'identifiant %s n'existe pas"
 

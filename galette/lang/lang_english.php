@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Tue Nov  1 17:53:01 2011 (GMT)
+// This file was automatically generated on Tue Nov  1 20:17:13 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -122,9 +122,6 @@ $lang['You asked Galette to send a confirmation mail to the member, but mail has
 
 // ../gestion_adherents.php:98 
 $lang['No member was selected, please check at least one name.'] = 'No member was selected, please check at least one name.';
-
-// ../champs_adherents.php:66 ../classes/adherent.class.php:386 ../templates/default/member.tpl:181 ../templates/default/voir_adherent.tpl:103 
-$lang['Freed of dues:'] = 'Freed of dues:';
 
 // ../templates/default/preferences.tpl:81 
 $lang['Staff member'] = 'Staff member';
@@ -330,7 +327,7 @@ $lang['Status'] = 'Status';
 // ../install/index.php:602 
 $lang['DROP operation not allowed'] = 'DROP operation not allowed';
 
-// ../lostpasswd.php:126 
+// ../lostpasswd.php:130 
 $lang['Your account (%s) do not contain any valid mail adress'] = 'Your account (%s) do not contain any valid mail adress';
 
 // ../templates/default/ajouter_transaction.tpl:128 
@@ -447,8 +444,8 @@ $lang['%subject: edit informations'] = '%subject: edit informations';
 // ../templates/default/page.tpl:88 
 $lang['Manage mailings that has been sent'] = 'Manage mailings that has been sent';
 
-// ../classes/history.class.php:268 
-$lang['Y-m-d H:m:s'] = 'Y-m-d H:m:s';
+// ../champs_adherents.php:66 ../classes/adherent.class.php:386 ../templates/default/member.tpl:181 ../templates/default/voir_adherent.tpl:103 
+$lang['Freed of dues:'] = 'Freed of dues:';
 
 // ../templates/default/preferences.tpl:142 
 $lang['Self subscription enabled?'] = 'Self subscription enabled?';
@@ -531,7 +528,7 @@ $lang['Check of the database'] = 'Check of the database';
 // ../templates/default/config_fields.tpl:21 
 $lang['$catname'] = '$catname';
 
-// ../lostpasswd.php:107 
+// ../lostpasswd.php:111 
 $lang['A problem happened while sending password for account \'%s\''] = 'A problem happened while sending password for account \'%s\'';
 
 // ../templates/default/preferences.tpl:158 ../templates/default/preferences.tpl:159 
@@ -735,7 +732,7 @@ $lang['Files permissions'] = 'Files permissions';
 // ../templates/default/preferences.tpl:203 
 $lang['SMTP port:'] = 'SMTP port:';
 
-// ../lostpasswd.php:137 
+// ../lostpasswd.php:141 
 $lang['Mails adress %s does not exist'] = 'Mails adress %s does not exist';
 
 // ../carte_adherent.php:95 ../carte_adherent.php:319 ../templates/default/preferences.tpl:30 
@@ -942,7 +939,7 @@ $lang['Strip Background colors:'] = 'Strip Background colors:';
 // ../templates/default/champ_requis.tpl:16 
 $lang['Select mandatory fields for new adherents:'] = 'Select mandatory fields for new adherents:';
 
-// ../lostpasswd.php:116 
+// ../lostpasswd.php:120 
 $lang['An error occured storing temporary password for %s. Please inform an admin.'] = 'An error occured storing temporary password for %s. Please inform an admin.';
 
 // ../install/index.php:598 
@@ -1167,7 +1164,7 @@ $lang['Number of label lines:'] = 'Number of label lines:';
 // ../templates/default/gestion_transactions.tpl:43 
 $lang['Originator'] = 'Originator';
 
-// ../change_passwd.php:100 ../lostpasswd.php:153 
+// ../change_passwd.php:100 ../lostpasswd.php:157 
 $lang['Password recovery'] = 'Password recovery';
 
 // ../install/index.php:502 
@@ -1461,7 +1458,7 @@ $lang['Unable to create configuration file (config/config.inc.php)'] = 'Unable t
 // ../ajouter_adherent.php:261 
 $lang['An error occured adding member to its groups.'] = 'An error occured adding member to its groups.';
 
-// ../lostpasswd.php:145 
+// ../lostpasswd.php:149 
 $lang['Login %s does not exist'] = 'Login %s does not exist';
 
 // ../install/index.php:1093 
@@ -1770,7 +1767,7 @@ $lang['Please type an object for the message.'] = 'Please type an object for the
 // ../install/index.php:1004 
 $lang['Default texts cannot be initialized.'] = 'Default texts cannot be initialized.';
 
-// ../lostpasswd.php:99 
+// ../lostpasswd.php:103 
 $lang['Mail sent to \'%s\' for password recovery.'] = 'Mail sent to \'%s\' for password recovery.';
 
 // ../templates/default/page.tpl:140 
@@ -2339,6 +2336,9 @@ $lang['Cancel mailing'] = 'Cancel mailing';
 
 // ../templates/default/mailing_adherents.tpl:154 ../templates/default/mailing_adherents.tpl:193 ../templates/default/gestion_groupes.tpl:65 ../templates/default/gestion_groupes.tpl:102 ../templates/default/ajouter_transaction.tpl:121 ../templates/default/group.tpl:59 
 $lang['An error occured displaying members interface :('] = 'An error occured displaying members interface :(';
+
+// ../lostpasswd.php:72 ../lostpasswd.php:78 ../classes/history.class.php:268 
+$lang['Y-m-d H:i:s'] = 'Y-m-d H:i:s';
 
 // ../classes/contribution.class.php:449 
 $lang['- Membership period overlaps period starting at '] = '- Membership period overlaps period starting at ';

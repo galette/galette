@@ -417,7 +417,7 @@ msgstr ""
 msgid "Mail settings:"
 msgstr ""
 
-#: ../lostpasswd.php:137
+#: ../lostpasswd.php:141
 msgid "Mails adress %s does not exist"
 msgstr ""
 
@@ -470,7 +470,7 @@ msgstr ""
 msgid "You are about to send an e-mail to <strong>%s members</strong>"
 msgstr ""
 
-#: ../change_passwd.php:100 ../lostpasswd.php:153
+#: ../change_passwd.php:100 ../lostpasswd.php:157
 msgid "Password recovery"
 msgstr ""
 
@@ -800,7 +800,7 @@ msgstr ""
 msgid "Passwords mismatch"
 msgstr ""
 
-#: ../lostpasswd.php:126
+#: ../lostpasswd.php:130
 msgid "Your account (%s) do not contain any valid mail adress"
 msgstr ""
 
@@ -933,10 +933,6 @@ msgstr ""
 
 #: ../classes/transaction.class.php:355
 msgid "Transaction added"
-msgstr ""
-
-#: ../classes/history.class.php:268
-msgid "Y-m-d H:m:s"
 msgstr ""
 
 #: ../install/index.php:181 ../install/index.php:272
@@ -1457,7 +1453,7 @@ msgstr ""
 msgid "Board Members Color:"
 msgstr ""
 
-#: ../lostpasswd.php:116
+#: ../lostpasswd.php:120
 msgid "An error occured storing temporary password for %s. Please inform an admin."
 msgstr ""
 
@@ -2769,7 +2765,7 @@ msgstr ""
 msgid "Members administrator's Email:"
 msgstr ""
 
-#: ../lostpasswd.php:99
+#: ../lostpasswd.php:103
 msgid "Mail sent to '%s' for password recovery."
 msgstr ""
 
@@ -2898,6 +2894,11 @@ msgstr ""
 msgid "Fields configuration"
 msgstr ""
 
+#: ../lostpasswd.php:72 ../lostpasswd.php:78
+#: ../classes/history.class.php:268
+msgid "Y-m-d H:i:s"
+msgstr ""
+
 #: ../templates/default/preferences.tpl:290
 msgid "Strip Text Color:"
 msgstr ""
@@ -2952,7 +2953,7 @@ msgstr ""
 msgid "Last page (%i)"
 msgstr ""
 
-#: ../lostpasswd.php:107
+#: ../lostpasswd.php:111
 msgid "A problem happened while sending password for account '%s'"
 msgstr ""
 
@@ -3501,7 +3502,7 @@ msgstr ""
 msgid "Default contributions types were successfully stored."
 msgstr ""
 
-#: ../lostpasswd.php:145
+#: ../lostpasswd.php:149
 msgid "Login %s does not exist"
 msgstr ""
 
