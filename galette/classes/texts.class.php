@@ -140,7 +140,25 @@ class Texts
             'tbody' =>"La contribution de {NAME_ADH} a été enregistrée (nouvelle échéance: {DEADLINE})\r\n\r\n{COMMENT}",
             'tlang'=>'fr_FR',
             'tcomment'=>'Nouvelle contribution (envoyée a l\'admin)'
-        )
+        ),
+
+        array(
+            'tid' => 16,
+            'tref' => 'newselfadh',
+            'tsubject' => 'New self registration from {NAME_ADH}',
+            'tbody' =>"{NAME_ADH} has self registred on line with login: {LOGIN}",
+            'tlang'=> 'en_US',
+            'tcomment'=>'New registration (sent to admin)'
+        ),
+        array(
+            'tid' => 17,
+            'tref' => 'newselfadh',
+            'tsubject' => 'Nouvelle auto inscription de {NAME_ADH}',
+            'tbody' =>"{NAME_ADH} s'est auto inscrit via l'interface web avec le login {LOGIN}",
+            'tlang'=>'fr_FR',
+            'tcomment'=>'Nouvelle inscription (envoyée a l\'admin)'
+        ),
+
     );
 
     /**

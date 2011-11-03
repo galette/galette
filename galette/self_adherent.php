@@ -105,7 +105,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 && $preferences->pref_bool_mailadh
             ) {
                 $texts = new texts();
-                $mtxt = $texts->getTexts('newadh', $preferences->pref_lang);
+                $mtxt = $texts->getTexts('newselfadh', $preferences->pref_lang);
 
                 $patterns = array(
                     '/{NAME_ADH}/',
