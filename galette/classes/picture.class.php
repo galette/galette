@@ -314,7 +314,7 @@ class Picture
         try {
             $zdb->db->beginTransaction();
             $del = $zdb->db->delete(
-                PREFIX_DB . $class::TABLE,
+                PREFIX_DB . $this->tbl_prefix . $class::TABLE,
                 $zdb->db->quoteInto($class::PK . ' = ?', $this->db_id)
             );
             if ( $del > 0 ) {
