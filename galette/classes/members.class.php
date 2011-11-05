@@ -373,7 +373,13 @@ class Members
             $select = self::_buildSelect(self::SHOW_ARRAY_LIST, null, false, false);
             $select->where(self::PK . ' IN (?)', $ids);
             if ( $orderby != null && count($orderby) > 0 ) {
-                $select->order($orderby);
+                if (is_array($orderby)) {
+                    foreach ( $orderby as $o ) {
+                        $select->order($o);
+                    }
+                } else {
+                    $select->order($orderby);
+                }
             }
             $result = $select->query();
             $members = array();

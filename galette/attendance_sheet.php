@@ -62,7 +62,10 @@ if ( isset($_SESSION['galette']['varslist']) ) {
     }
 }
 
-$members = Members::getArrayList($varslist->selected);
+$members = Members::getArrayList(
+    $varslist->selected,
+    array('nom_adh', 'prenom_adh')
+);
 
 if ( !is_array($members) || count($members) < 1 ) {
     die();
@@ -134,7 +137,7 @@ foreach($members as $m) {
     }
 
     $xs = $pdf->getX() - $x + 1;
-    $pdf->Cell(110 - $xs, 16, $m->sfullname, 'RTB', 0, 'L');
+    $pdf->Cell(110 - $xs, 16, $m->sname, 'RTB', 0, 'L');
     $pdf->Cell(80, 16, '', 1, 1, 'L');
 }
 $pdf->Cell(190, 0, '', 'T');
