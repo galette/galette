@@ -55,7 +55,7 @@ class Csv
 
     const DEFAULT_SEPARATOR = ',';
     const DEFAULT_QUOTE = '"';
-    const DEFAULT_DIRECTORY = 'exports/';
+    const DEFAULT_DIRECTORY = GALETTE_EXPORTS_PATH;
 
     const FILE_NOT_WRITABLE = -1;
     const DB_ERROR = -2;
@@ -286,7 +286,7 @@ class Csv
                 );
                 return self::FILE_NOT_WRITABLE;
             }
-            return $filename;
+            return $export['filename'];
         } catch (Exeption $e) {
             $log->log(
                 'An error occured while exporting | ' . $e->getMessage(),
