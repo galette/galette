@@ -309,7 +309,14 @@ if ( isset($_POST['valid']) ) {
             } else {
                 $url = 'gestion_contributions.php?id_adh=' . $contrib->member;
             }
-            header('location: ' . $url);
+            if ( count($warning_detected) == 0 ) {
+                header('location: ' . $url);
+            } else {
+                $head_redirect = array(
+                    'timeout'   => 30,
+                    'url'       => $url
+                );
+            }
         }
     }
 
@@ -354,8 +361,13 @@ $tpl->assign('disabled', $disabled);
 $tpl->assign('data', $contribution); //TODO: remove
 $tpl->assign('contribution', $contrib);
 $tpl->assign('error_detected', $error_detected);
+$tpl->assign('warning_detected', $warning_detected);
 $tpl->assign('type_selected', $type_selected);
 $tpl->assign('adh_selected', $id_adh);
+
+if ( isset($head_redirect) ) {
+    $tpl->assign('head_redirect', $head_redirect);
+}
 
 // contribution types
 $type_cotis_options = ContributionsTypes::getList(

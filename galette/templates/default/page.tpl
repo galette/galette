@@ -62,6 +62,9 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 		{include file=$header}
 	{/foreach}
 {/if}
+{if $head_redirect}
+    <meta http-equiv="refresh" content="{$head_redirect.timeout};url={$head_redirect.url}" />
+{/if}
 </head>
 <body>
 	<div id="menu">
@@ -142,6 +145,15 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 </a>
             {/if}
         </h1>
+
+    {* In case of a redirection, we inform the user, and propose a direct link *}
+    {if $head_redirect}
+        <div id="infobox">
+            {_T string="You will be redirected in %timeout seconds. If not, please click on the following link:" pattern="/%timeout/" replace=$head_redirect.timeout}
+            <br/><a href="{$head_redirect.url}">{_T string="Do not wait timeout and go to the next page now :)"}</a>
+        </div>
+    {/if}
+
         {$content}
 	</div>
     {include file="footer.tpl"}

@@ -9,9 +9,20 @@
 			</ul>
 		</div>
 {/if}
+{if $warning_detected|@count != 0}
+		<div id="warningbox">
+			<h1>{_T string="- WARNING -"}</h1>
+			<ul>
+    {foreach from=$warning_detected item=warning}
+                <li>{$warning}</li>
+    {/foreach}
+			</ul>
+		</div>
+{/if}
+{if !$head_redirect}
 		<div class="bigtable">
-{if $contribution->isTransactionPart()}
-    {assign var="mid" value=$contribution->transaction->member}
+    {if $contribution->isTransactionPart()}
+        {assign var="mid" value=$contribution->transaction->member}
             <table id="transaction_detail">
                 <caption>{_T string="Related transaction informations"}</caption>
                 <tr>
@@ -29,7 +40,7 @@
                     <td class="right">{$contribution->transaction->getMissingAmount()}</td>
                 </tr>
             </table>
-{/if}
+    {/if}
 			<fieldset class="cssform">
 				<legend class="ui-state-active ui-corner-top">{_T string="Select contributor and contribution type"}</legend>
 				<p>
@@ -47,14 +58,13 @@
 						{if $type_selected eq 0}onchange="form.submit()"{/if}{if $required.id_type_cotis eq 1} required{/if}>
 						{html_options options=$type_cotis_options selected=$contribution->type->id}
 					</select>
-{if $type_selected eq 1}
+    {if $type_selected eq 1}
                     <a class="button" id="btnback" href="javascript:back();" title="{_T string="Back to previous window, if you want to select a contribution type that is not listed here"}">{_T string="Back"}</a>
-{/if}
-
+    {/if}
 				</p>
 			</fieldset>
 
-{if $type_selected eq 1}
+    {if $type_selected eq 1}
 			<fieldset class="cssform">
 				<legend class="ui-state-active ui-corner-top">{_T string="Details of contribution"}</legend>
 				<p>
@@ -72,19 +82,19 @@
                     <input class="past-date-pick" type="text" name="date_debut_cotis" id="date_debut_cotis" value="{$contribution->begin_date}" maxlength="10"{if $required.date_debut_cotis eq 1} required{/if}/>
                     <span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
 				</p>
-    {if $contribution->isCotis()}
+        {if $contribution->isCotis()}
 				<p>
-        {if $pref_membership_ext != ""}
+            {if $pref_membership_ext != ""}
                     <label class="bline" for="duree_mois_cotis">{_T string="Membership extension:"}</label>
                     <input type="text" name="duree_mois_cotis" id="duree_mois_cotis" value="{$contribution->duration}" maxlength="3"{if $required.date_fin_cotis eq 1} required{/if}/>
                     <span class="exemple">{_T string="months"}</span>
-        {else}
+            {else}
                     <label class="bline" for="date_fin_cotis">{_T string="End date of membership:"}</label>
                     <input type="text" name="date_fin_cotis" id="date_fin_cotis" value="{$contribution->end_date}" maxlength="10"{if $required.date_fin_cotis eq 1} required{/if}/>
                     <span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
-        {/if}
+            {/if}
 				</p>
-    {/if}
+        {/if}
 				<p>
 					<label for="mail_confirm" class="bline">{_T string="Send a mail:"}</label>
 					<input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
@@ -95,23 +105,24 @@
 					<textarea name="info_cotis" id="info_cotis" cols="61" rows="6"{if $required.info_cotis eq 1} required{/if}>{$contribution->info}</textarea>
 				</p>
 			</fieldset>
-    {include file="display_dynamic_fields.tpl" is_form=true}
-{/if} {* $type_selected eq 1 *}
+        {include file="display_dynamic_fields.tpl" is_form=true}
+    {/if} {* $type_selected eq 1 *}
 		</div>
 		<div class="button-container">
-{if $type_selected eq 1}
+    {if $type_selected eq 1}
 			<input type="submit" id="btnsave" value="{_T string="Save"}"/>
 			<input type="hidden" name="id_cotis" value="{$contribution->id}"/>
             {* Second step validator *}
 			<input type="hidden" name="valid" value="1"/>
-{else} {* $type_selected ne 1 *}
+    {else} {* $type_selected ne 1 *}
 			<input type="submit" value="{_T string="Continue"}"/>
             {* At creation time, we can get an amount, that will be hidden on the first step *}
 			<input type="hidden" name="montant_cotis" value="{$contribution->amount}"/>
-{/if} {* $type_selected eq 1 *}
+    {/if} {* $type_selected eq 1 *}
 			<input type="hidden" name="trans_id" value="{$contribution->transaction->id}"/>
             {* First step validator *}
 			<input type="hidden" name="type_selected" value="1"/>
 		</div>
 		<p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
 		</form>
+{/if}
