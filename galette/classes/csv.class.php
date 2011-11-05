@@ -231,6 +231,39 @@ class Csv
     }
 
     /**
+     * Retrieve a list of already existing exports
+     *
+     * @return array
+     */
+    public static function getExistingExports()
+    {
+        $exports = array();
+        $files = glob(self::DEFAULT_DIRECTORY . '*.csv');
+        foreach ( $files as $file ) {
+            $mdate = date(_T("Y-m-d H:i:s"), filemtime($file));
+
+            $raw_size = filesize($file);
+            $size = 0;
+            if ($raw_size >= 1024*1024*1024) { // Go
+                $size = round(($raw_size / 1024)/1024/1024, 2) . ' Go';
+            } elseif ( $raw_size >= 1024*1024) { // Mo
+                $size = round(($raw_size / 1024)/1024, 2) . ' Mo';
+            } elseif ( $raw_size >= 1024) { // ko
+                $size = round(($raw_size / 1024), 2) . ' Ko';
+            } else { // octets
+                $size = $raw_size . ' octets';
+            }
+
+            $exports[] = array(
+                'name'  => str_replace(self::DEFAULT_DIRECTORY, '', $file),
+                'size'  => $size,
+                'date'  => $mdate
+            );
+        }
+        return $exports;
+    }
+
+    /**
     * Run selected export
     *
     * @param string $id export's id to run

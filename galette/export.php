@@ -125,10 +125,12 @@ if ( isset( $_POST['export_parameted'] ) && $_POST['export_parameted'] != '' ) {
 }
 
 $parameted = $csv->getParametedExports();
+$existing = Csv::getExistingExports();
 
 $tpl->assign('page_title', _T("CVS database Export"));
 $tpl->assign('tables_list', $tables_list);
 $tpl->assign('written', $written);
+$tpl->assign('existing', $existing);
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('parameted', $parameted);
 $content = $tpl->fetch('export.tpl');

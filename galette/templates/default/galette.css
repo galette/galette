@@ -984,7 +984,8 @@ a.listing:hover {
 	padding:0 0.5em;
 }
 
-#listing{
+#listing,
+table.listing {
     width: 100%;
 }
 
@@ -1194,11 +1195,13 @@ a.listing:hover {
 	margin-right:auto;
 }
 
-#listing td {
+#listing td,
+table.listing td{
 	vertical-align: middle;
 }
 
-#listing input {
+#listing input,
+table.listing input{
 	vertical-align: middle;
 }
 
