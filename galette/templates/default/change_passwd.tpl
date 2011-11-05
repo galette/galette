@@ -1,8 +1,8 @@
         <form action="change_passwd.php" method="post" enctype="multipart/form-data">
 {if $password_updated}
-                <div id="infobox">{_T string="Password changed, you will be redirected to login page"}</div>
+                <div id="infobox">{_T string="Your password has been changed. Please click on the 'home' button to go to the login page."}</div>
 {/if}
-{if !$head_redirect and !$password_updated}
+{if !$warning_detected and !$password_updated}
                 <table>
                     <tr>
                         <th><label for="mdp_adh">{_T string="Password:"}</label></th>

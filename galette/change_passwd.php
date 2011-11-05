@@ -82,7 +82,6 @@ if ( isset($hash) && !empty($hash) ) {
                             //temporary password entry
                             $password->removeHash($hash);
                             $password_updated = true;
-                            $head_redirect = "<meta http-equiv=\"refresh\" content=\"10;url=index.php\" />";
                         }
                     }
                 }
@@ -90,7 +89,6 @@ if ( isset($hash) && !empty($hash) ) {
         }
     } else {
         $warning_detected = _T("This link is no longer valid. You should <a href='lostpasswd.php'>ask to retrieve your password</a> again.");
-        $head_redirect = "<meta http-equiv=\"refresh\" content=\"30;url=index.php\" />";
     }
 } else {
     header('location: index.php');
@@ -101,9 +99,6 @@ $tpl->assign('page_title', _T("Password recovery"));
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('warning_detected', $warning_detected);
 $tpl->assign('password_updated', $password_updated);
-if ( isset($head_redirect) ) {
-    $tpl->assign('head_redirect', $head_redirect);
-}
 $tpl->assign('hash', $hash);
 
 // display page

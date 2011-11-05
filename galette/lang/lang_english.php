@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Tue Nov  1 20:17:13 2011 (GMT)
+// This file was automatically generated on Sat Nov  5 04:31:44 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -936,6 +936,9 @@ $lang['Beginning of membership:'] = 'Beginning of membership:';
 // ../templates/default/preferences.tpl:294 
 $lang['Strip Background colors:'] = 'Strip Background colors:';
 
+// ../templates/default/change_passwd.tpl:3 
+$lang['Your password has been changed. Please click on the \'home\' button to go to the login page.'] = 'Your password has been changed. Please click on the \'home\' button to go to the login page.';
+
 // ../templates/default/champ_requis.tpl:16 
 $lang['Select mandatory fields for new adherents:'] = 'Select mandatory fields for new adherents:';
 
@@ -1143,7 +1146,7 @@ $lang['- Label does not exist'] = '- Label does not exist';
 // ../templates/default/page.tpl:86 
 $lang['Add a transaction'] = 'Add a transaction';
 
-// ../change_passwd.php:92 
+// ../change_passwd.php:91 
 $lang['This link is no longer valid. You should <a href=\'lostpasswd.php\'>ask to retrieve your password</a> again.'] = 'This link is no longer valid. You should <a href=\'lostpasswd.php\'>ask to retrieve your password</a> again.';
 
 // ../templates/default/preferences.tpl:257 
@@ -1164,7 +1167,7 @@ $lang['Number of label lines:'] = 'Number of label lines:';
 // ../templates/default/gestion_transactions.tpl:43 
 $lang['Originator'] = 'Originator';
 
-// ../change_passwd.php:100 ../lostpasswd.php:157 
+// ../change_passwd.php:98 ../lostpasswd.php:157 
 $lang['Password recovery'] = 'Password recovery';
 
 // ../install/index.php:502 
@@ -1292,9 +1295,6 @@ $lang['Subscribe'] = 'Subscribe';
 
 // ../templates/default/config_fields.tpl:84 
 $lang['Expand all'] = 'Expand all';
-
-// ../templates/default/change_passwd.tpl:3 
-$lang['Password changed, you will be redirected to login page'] = 'Password changed, you will be redirected to login page';
 
 // ../preferences.php:211 
 $lang['- You must indicate an email address Galette should use to send emails!'] = '- You must indicate an email address Galette should use to send emails!';

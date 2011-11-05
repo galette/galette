@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Tue Nov  1 20:17:13 2011 (GMT)
+// This file was automatically generated on Sat Nov  5 04:31:44 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -936,6 +936,9 @@ $lang['Beginning of membership:'] = 'Date de début d\'exercice&nbsp;:';
 // ../templates/default/preferences.tpl:294 
 $lang['Strip Background colors:'] = 'Couleur du bandeau&nbsp;:';
 
+// ../templates/default/change_passwd.tpl:3 
+$lang['Your password has been changed. Please click on the \'home\' button to go to the login page.'] = 'Votre mot de passe a été changé. Veuillez cliquer sur le bouton « accueil » pour accéder à la page de connexion.';
+
 // ../templates/default/champ_requis.tpl:16 
 $lang['Select mandatory fields for new adherents:'] = 'Sélectionnez les champs requis pour les nouveaux adhérents :';
 
@@ -1143,7 +1146,7 @@ $lang['- Label does not exist'] = '- Cet intitulé n\'existe pas';
 // ../templates/default/page.tpl:86 
 $lang['Add a transaction'] = 'Ajouter une transaction';
 
-// ../change_passwd.php:92 
+// ../change_passwd.php:91 
 $lang['This link is no longer valid. You should <a href=\'lostpasswd.php\'>ask to retrieve your password</a> again.'] = 'Ce lien n\'est plus valide. Vous devriez <a href=\'lostpasswd.php\'>demander la récupération de votre mot de passe</a> à nouveau';
 
 // ../templates/default/preferences.tpl:257 
@@ -1164,7 +1167,7 @@ $lang['Number of label lines:'] = 'Nombre de lignes d\'étiquettes&nbsp;:';
 // ../templates/default/gestion_transactions.tpl:43 
 $lang['Originator'] = 'Emetteur';
 
-// ../change_passwd.php:100 ../lostpasswd.php:157 
+// ../change_passwd.php:98 ../lostpasswd.php:157 
 $lang['Password recovery'] = 'Récupération de mot de passe';
 
 // ../install/index.php:502 
@@ -1292,9 +1295,6 @@ $lang['Subscribe'] = 'S\'inscrire';
 
 // ../templates/default/config_fields.tpl:84 
 $lang['Expand all'] = 'Tout déplier';
-
-// ../templates/default/change_passwd.tpl:3 
-$lang['Password changed, you will be redirected to login page'] = 'Le mot de passe a été changé. Vous allez être redirigé vers la page d\'accueil';
 
 // ../preferences.php:211 
 $lang['- You must indicate an email address Galette should use to send emails!'] = '- Vous devez indiquer l\'adresse qu\'utilisera Galette pour expédier des courriels&nbsp;!';

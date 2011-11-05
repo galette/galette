@@ -470,7 +470,7 @@ msgstr ""
 msgid "You are about to send an e-mail to <strong>%s members</strong>"
 msgstr ""
 
-#: ../change_passwd.php:100 ../lostpasswd.php:157
+#: ../change_passwd.php:98 ../lostpasswd.php:157
 msgid "Password recovery"
 msgstr ""
 
@@ -2279,7 +2279,7 @@ msgid "Mail sent to admin for user %name (%email)"
 msgstr ""
 
 #: ../templates/default/change_passwd.tpl:3
-msgid "Password changed, you will be redirected to login page"
+msgid "Your password has been changed. Please click on the 'home' button to go to the login page."
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:184
@@ -3458,7 +3458,7 @@ msgstr ""
 msgid "Export some datas in various formats"
 msgstr ""
 
-#: ../change_passwd.php:92
+#: ../change_passwd.php:91
 msgid "This link is no longer valid. You should <a href='lostpasswd.php'>ask to retrieve your password</a> again."
 msgstr ""
 
