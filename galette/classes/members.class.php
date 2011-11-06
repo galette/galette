@@ -487,7 +487,15 @@ class Members
             $countSelect = clone $select;
             $countSelect->reset(Zend_Db_Select::COLUMNS);
             $countSelect->reset(Zend_Db_Select::ORDER);
+            $countSelect->reset(Zend_Db_Select::HAVING);
             $countSelect->columns('count(' . self::PK . ') AS ' . self::PK);
+
+            $have = $select->getPart(Zend_Db_Select::HAVING);
+            if ( is_array($have) && count($have) > 0 ) {
+                foreach ( $have as $h ) {
+                    $countSelect->where($h);
+                }
+            }
 
             $result = $countSelect->query()->fetch();
 
