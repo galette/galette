@@ -386,22 +386,166 @@ class GaletteZendDb extends Zend_Db
     /**
      * Get a list of Galette's tables
      *
+     * @param string $prefix Specified table prefix, PREFIX_DB if null
+     *
      * @return array
      */
-    public function getTables()
+    public function getTables($prefix = null)
     {
-        $tmp_tables_list = $this->db->listTables();
+        $tmp_tables_list = $this->_db->listTables();
+
+        if ( $prefix === null ) {
+            $prefix = PREFIX_DB;
+        }
 
         $tables_list = array();
         //filter table_list: we only want PREFIX_DB tables
         foreach ( $tmp_tables_list as $t ) {
-            if ( preg_match('/^' . PREFIX_DB . '/', $t) ) {
+            if ( preg_match('/^' . $prefix . '/', $t) ) {
                 $tables_list[] = $t;
             }
         }
         return $tables_list;
     }
 
+    /**
+    * Converts recursively database to UTF-8
+    *
+    * @param string $prefix Specified table prefix
+    *
+    * @return void
+    */
+    public function convertToUTF($prefix = null)
+    {
+        global $log;
+
+        try {
+            $this->_db->beginTransaction();
+
+            $tables = $this->getTables($prefix);
+
+            foreach ($tables as $table) {
+                //Change whole table charset
+                //CONVERT TO instruction will take care of each fields,
+                //but converting data stay our problem.
+                $query = 'ALTER TABLE ' . $table .
+                    ' CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci';
+
+                $this->_db->getConnection()->exec($query);
+                $log->log(
+                    'Charset successfully changed for table `' . $table .'`',
+                    PEAR_LOG_DEBUG
+                );
+
+                //Data conversion
+                if ( $table != PREFIX_DB . 'pictures' ) {
+                    $this->_convertContentToUTF($table);
+                }
+            }
+            $this->_db->commit();
+        } catch (Exception $e) {
+            $this->_db->rollBack();
+            $log->log(
+                'An error occured while converting to utf table ' .
+                $table . ' (' . $e->getMessage() . ')',
+                PEAR_LOG_ERR
+            );
+        }
+    }
+
+    /**
+    * Converts dtabase content to UTF-8
+    *
+    * @param string $table the table we want to convert datas from
+    *
+    * @return void
+    */
+    private function _convertContentToUTF($table)
+    {
+        global $log;
+
+        try {
+            $query = 'SET NAMES latin1';
+            $this->_db->getConnection()->exec($query);
+
+        }catch (Exception $e) {
+            $log->log(
+                'Cannot SET NAMES on table `' . $table . '`. ' .
+                $e->getMessage() ,
+                PEAR_LOG_ERR
+            );
+        }
+
+        try {
+            $select = new Zend_Db_Select($this->_db);
+            $select->from($table);
+
+            $result = $select->query();
+
+            $descr = $this->_db->describeTable($table);
+
+            $pkeys = array();
+            foreach ( $descr as $field ) {
+                if ( $field['PRIMARY'] == 1 ) {
+                    $pos = $field['PRIMARY_POSITION'];
+                    $pkeys[$pos] = $field['COLUMN_NAME'];
+                }
+            }
+
+            if ( count($pkeys) == 0 ) {
+                //no primary key! How to do an update without that?
+                if (preg_match('/' . PREFIX_DB . 'dynamic_fields/', $table) !== 0 ) {
+                    //well, the known case...
+                    $pkeys = array(
+                        'item_id',
+                        'field_id',
+                        'field_form',
+                        'val_index'
+                    );
+                } else {
+                    //not a know case, we do not perform any update.
+                    throw new Exception(
+                        'Cannot define primary key for table `' . $table .
+                        '`, aborting'
+                    );
+                }
+            }
+
+            $r = $result->fetchAll();
+            foreach ( $r as $row ) {
+                $data = array();
+                $where = array();
+
+                //build where
+                foreach ( $pkeys as $k ) {
+                    $where[] = $k . ' = ' . $this->_db->quote($row->$k);
+                }
+
+                //build data
+                foreach ( $row as $key => $value ) {
+                    if ( !I18n::seemsUtf8($value) ) {
+                        $value = utf8_encode($value);
+                    }
+                    $data[$key] = $value;
+                }
+
+                //finally, update data!
+                $this->_db->update(
+                    $table,
+                    $data,
+                    $where
+                );
+            }
+        } catch (Exception $e) {
+            $log->log(
+                'An error occured while converting contents to UTF-8 for table ' .
+                $table . ' (' . $e->getMessage() . ')',
+                PEAR_LOG_ERR
+            );
+        }
+    }
+
+    /**
     * Global getter method
     *
     * @param string $name name of the variable we want to retrieve

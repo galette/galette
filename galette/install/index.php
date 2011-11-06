@@ -685,12 +685,20 @@ case 'u7':
 ?></p>
 <ul>
 <?php
+    $table_prefix = $_POST['install_dbprefix'];
+
+    //before doing anything else, we'll have to convert data to UTF-8
+    //required since 0.7dev (if we're upgrading, 'f course)
+    if ( $step == 'u7' ) {
+        //FIXME: maybe we can do that only on 0.7 upgrades, to save time? (methods are safe if rerun)
+        $zdb->convertToUTF($table_prefix);
+    }
+
     // begin : copyright (2002) the phpbb group (support@phpbb.com)
     // load in the sql parser
     include 'sql_parse.php';
 
     $prefix = '';
-    $table_prefix = $_POST['install_dbprefix'];
     if ( $step == 'u7' ) {
         $prefix = 'upgrade-to-';
 
