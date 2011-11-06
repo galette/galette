@@ -57,7 +57,7 @@
 					</p>
 					<p>
 						<label for="nom_adh" class="bline">{_T string="Name:"}</label>
-						<input type="text" name="nom_adh" id="nom_adh" value="{$member->name}" maxlength="20" {$disabled.nom_adh}{if $required.nom_adh eq 1} required{/if}/>
+						<input type="text" name="nom_adh" id="nom_adh" value="{$member->name|escape}" maxlength="20" {$disabled.nom_adh}{if $required.nom_adh eq 1} required{/if}/>
 					</p>
 					<p>
 						<label for="prenom_adh" class="bline">{_T string="First name:"}</label>
