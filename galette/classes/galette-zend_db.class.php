@@ -384,6 +384,24 @@ class GaletteZendDb extends Zend_Db
     }
 
     /**
+     * Get a list of Galette's tables
+     *
+     * @return array
+     */
+    public function getTables()
+    {
+        $tmp_tables_list = $this->db->listTables();
+
+        $tables_list = array();
+        //filter table_list: we only want PREFIX_DB tables
+        foreach ( $tmp_tables_list as $t ) {
+            if ( preg_match('/^' . PREFIX_DB . '/', $t) ) {
+                $tables_list[] = $t;
+            }
+        }
+        return $tables_list;
+    }
+
     * Global getter method
     *
     * @param string $name name of the variable we want to retrieve
