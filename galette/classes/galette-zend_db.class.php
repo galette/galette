@@ -269,7 +269,7 @@ class GaletteZendDb extends Zend_Db
             if ( $mode == 'u' ) {
                 //can Galette ALTER tables? (only for update mode)
                 try {
-                    $sql = 'ALTER TABLE galette_test ADD add_test';
+                    $sql = 'ALTER TABLE galette_test ALTER test_text SET DEFAULT \'nothing\'';
                     $this->_db->getConnection()->exec($sql);
                     $results['alter'] = true;
                 } catch (Exception $e) {
