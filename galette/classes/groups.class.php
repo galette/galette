@@ -512,36 +512,39 @@ class Groups
                 PEAR_LOG_INFO
             );
 
-            $stmt = $zdb->db->prepare(
-                'INSERT INTO ' . PREFIX_DB . self::USERSGROUPS_TABLE .
-                ' (' . $zdb->db->quoteIdentifier(self::PK) . ', ' .
-                $zdb->db->quoteIdentifier(Adherent::PK) . ', ' .
-                $zdb->db->quoteIdentifier('manager') . ')' .
-                ' VALUES(:id, ' . $adh->id . ', :manager)'
-            );
+            //we proceed, if grousp has been specified
+            if ( is_array($groups) ) {
+                $stmt = $zdb->db->prepare(
+                    'INSERT INTO ' . PREFIX_DB . self::USERSGROUPS_TABLE .
+                    ' (' . $zdb->db->quoteIdentifier(self::PK) . ', ' .
+                    $zdb->db->quoteIdentifier(Adherent::PK) . ', ' .
+                    $zdb->db->quoteIdentifier('manager') . ')' .
+                    ' VALUES(:id, ' . $adh->id . ', :manager)'
+                );
 
-            foreach ( $groups as $group ) {
-                list($gid, $gname, $manager) = explode('|', $group);
-                $stmt->bindValue(':id', $gid, PDO::PARAM_INT);
-                $stmt->bindValue(':manager', $manager, PDO::PARAM_BOOL);
+                foreach ( $groups as $group ) {
+                    list($gid, $gname, $manager) = explode('|', $group);
+                    $stmt->bindValue(':id', $gid, PDO::PARAM_INT);
+                    $stmt->bindValue(':manager', $manager, PDO::PARAM_BOOL);
 
-                if ( $stmt->execute() ) {
-                    $log->log(
-                        'Member `' . $adh->sname . '` attached to group `' .
-                        $gname . '` (' . $gid . ').',
-                        PEAR_LOG_DEBUG
-                    );
-                } else {
-                    $log->log(
-                        'An error occured trying to attach member `' .
-                        $adh->sname . '` (' . $adh->id . ') to group `' .
-                        $gname . '` (' . $gid . ').',
-                        PEAR_LOG_ERR
-                    );
-                    throw new Exception(
-                        'Unable to attach `' . $adh->sname . '` (' . $adh->id .
-                        ') to `' . $gname . '` (' . $gid . ')'
-                    );
+                    if ( $stmt->execute() ) {
+                        $log->log(
+                            'Member `' . $adh->sname . '` attached to group `' .
+                            $gname . '` (' . $gid . ').',
+                            PEAR_LOG_DEBUG
+                        );
+                    } else {
+                        $log->log(
+                            'An error occured trying to attach member `' .
+                            $adh->sname . '` (' . $adh->id . ') to group `' .
+                            $gname . '` (' . $gid . ').',
+                            PEAR_LOG_ERR
+                        );
+                        throw new Exception(
+                            'Unable to attach `' . $adh->sname . '` (' . $adh->id .
+                            ') to `' . $gname . '` (' . $gid . ')'
+                        );
+                    }
                 }
             }
             //commit all changes
