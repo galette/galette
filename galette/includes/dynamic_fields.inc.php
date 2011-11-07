@@ -333,7 +333,10 @@ function extract_posted_dynamic_fields($post, $disabled)
             if ( !isset($disabled[$key]) ) {
                 if (substr($key, 0, 11) == 'info_field_') {
                     list($field_id, $val_index) = explode('_', substr($key, 11));
-                    if ( is_numeric($field_id) && is_numeric($val_index) ) {
+                    if ( is_numeric($field_id)
+                        && is_numeric($val_index)
+                        && trim($value) != ''
+                    ) {
                         $dyn_fields[$field_id][$val_index] = $value;
                     }
                 }
