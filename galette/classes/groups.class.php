@@ -189,7 +189,7 @@ class Groups
                 array('b' => PREFIX_DB . self::USERSGROUPS_TABLE),
                 'a.' . self::PK . '=b.' .self::PK,
                 array('members' => new Zend_Db_Expr('count(b.' . self::PK . ')'))
-            )->group('b.' . self::PK);
+            )->group('a.' . self::PK);
             $groups = array();
             $q = $select->__toString();
             foreach ( $select->query()->fetchAll() as $row ) {
@@ -202,7 +202,7 @@ class Groups
                 PEAR_LOG_WARNING
             );
             $log->log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                'Query was: ' . $select->__toString() . ' ' . $select->__toString(),
                 PEAR_LOG_ERR
             );
         }
