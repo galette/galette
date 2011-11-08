@@ -141,14 +141,20 @@ class MailingHistory extends History
                     $body_resume = substr($body_resume, 0, 150);
                     $body_resume .= '[...]';
                 }
-                $tidy_config = array(
-                    'clean'             => true,
-                    'show-body-only'    => true,
-                    'wrap' => 0,
-                );
-                $tidy = tidy_parse_string($body_resume, $tidy_config, 'UTF8');
-                $tidy->cleanRepair();
-                $r['mailing_body_resume'] = tidy_get_output($tidy);
+                if (function_exists('tidy_parse_string') ) {
+                    //if tidy extension is present, we use it to clean a bit
+                    $tidy_config = array(
+                        'clean'             => true,
+                        'show-body-only'    => true,
+                        'wrap' => 0,
+                    );
+                    $tidy = tidy_parse_string($body_resume, $tidy_config, 'UTF8');
+                    $tidy->cleanRepair();
+                    $r['mailing_body_resume'] = tidy_get_output($tidy);
+                } else {
+                    //if it is not... Well, let's serve the text as it.
+                    $r['mailing_body_resume'] = $body_resume;
+                }
             }
             return $ret;
         } catch (Exception $e) {
