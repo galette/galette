@@ -61,23 +61,8 @@ $member = new Adherent();
 //mark as self membership
 $member->setSelfMembership();
 
-/**
-* TODO
-* - export to a class so users can dynamicaly modify this
-*/
-$disabled = array(
-    //'titre_adh' => 'disabled',
-    'id_adh' => 'disabled',
-    //'nom_adh' => 'disabled',
-    //'prenom_adh' => 'disabled',
-    'date_crea_adh' => 'disabled',
-    'id_statut' => 'disabled',
-    'activite_adh' => 'disabled',
-    'bool_exempt_adh' => 'disabled',
-    'bool_admin_adh' => 'disabled',
-    'date_echeance' => 'disabled',
-    'info_adh' => 'disabled'
-);
+// disable some fields
+$disabled  = $member->disabled_fields;
 
 // DEBUT parametrage des champs
 // On recupere de la base la longueur et les flags des champs
