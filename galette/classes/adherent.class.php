@@ -107,15 +107,6 @@ class Adherent
     private $_row_classes;
     //fields list and their translation
     private $_fields;
-    private $_requireds = array(
-        'titre_adh',
-        'nom_adh',
-        'login_adh',
-        'mdp_adh',
-        'adresse_adh',
-        'cp_adh',
-        'ville_adh'
-    );
     private $_self_adh = false;
 
     private $_disabled_fields = array(
