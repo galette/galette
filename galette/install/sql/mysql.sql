@@ -10,6 +10,7 @@ CREATE TABLE galette_adherents (
   nom_adh varchar(20) NOT NULL default '',
   prenom_adh varchar(20) default NULL,
   pseudo_adh varchar(20) default NULL,
+  societe_adh varchar(20) default NULL,
   titre_adh tinyint(3) unsigned NOT NULL default '0',
   ddn_adh date default '1901-01-01',
   adresse_adh varchar(150) NOT NULL default '',

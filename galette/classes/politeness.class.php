@@ -53,7 +53,6 @@ class Politeness
     const MR = 1;
     const MRS = 2;
     const MISS = 3;
-    const COMPANY = 4;
 
     /**
     * Get the list of all politenesses
@@ -65,8 +64,7 @@ class Politeness
         return array(
             self::MR        =>  _T("Mister"),
             self::MRS       =>  _T("Mrs"),
-            self::MISS      =>  _T("Miss"),
-            self::COMPANY   =>  _T("Society")
+            self::MISS      =>  _T("Miss")
         );
     }
 
@@ -88,9 +86,6 @@ class Politeness
             break;
         case self::MISS:
             return _T("Miss.");
-            break;
-        case self::COMPANY:
-            return _T("Society");
             break;
         default:
             return '';

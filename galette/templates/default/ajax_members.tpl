@@ -15,12 +15,12 @@
 				<tr>
 					<td class="right">{$member->id}</td>
 					<td class="nowrap username_row">
-					{if $member->politeness == constant('Politeness::MR')}
+                    {if $member->isCompany()}
+						<img src="{$template_subdir}images/icon-company.png" alt="{_T string="[W]"}" width="16" height="16"/>
+					{elseif $member->politeness == constant('Politeness::MR')}
 						<img src="{$template_subdir}images/icon-male.png" alt="{_T string="[M]"}" width="16" height="16"/>
 					{elseif $member->politeness == constant('Politeness::MRS') || $member->politeness == constant('Politeness::MISS')}
 						<img src="{$template_subdir}images/icon-female.png" alt="{_T string="[W]"}" width="16" height="16"/>
-					{elseif $member->politeness == constant('Politeness::COMPANY')}
-						<img src="{$template_subdir}images/icon-company.png" alt="{_T string="[W]"}" width="16" height="16"/>
 					{else}
 						<img src="{$template_subdir}images/icon-empty.png" alt="" width="10" height="12"/>
 					{/if}

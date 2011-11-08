@@ -271,6 +271,9 @@ footer li {
     display: inline;
 }
 
+.hidden {
+    display: none;
+}
 /* loading animation */
 #loading {
     position:absolute;

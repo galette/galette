@@ -63,6 +63,14 @@
 						<label for="prenom_adh" class="bline">{_T string="First name:"}</label>
 						<input type="text" name="prenom_adh" id="prenom_adh" value="{$member->surname}" maxlength="20" {$disabled.prenom_adh}{if $required.prenom_adh eq 1} required{/if}/>
 					</p>
+                    <p>
+						<label for="is_company" class="bline">{_T string="Is company?"}</label>
+						<input type="checkbox" name="is_company" id="is_company" value="1"{if $member->isCompany()} checked="checked"{/if}/>
+                    </p>
+					<p id="company_field"{if !$member->isCompany()} class="hidden"{/if}>
+						<label for="societe_adh" class="bline">{_T string="Company:"}</label>
+						<input type="text" name="societe_adh" id="societe_adh" value="{$member->company_name}" maxlength="20" {$disabled.societe_adh}{if $required.societe_adh eq 1} required{/if}/>
+					</p>
 					<p>
 						<label for="pseudo_adh" class="bline">{_T string="Nickname:"}</label>
 						<input type="text" name="pseudo_adh" id="pseudo_adh" value="{$member->nickname|htmlspecialchars}" maxlength="20" {$disabled.pseudo_adh}{if $required.pseudo_adh eq 1} required{/if}/>
@@ -276,6 +284,11 @@
 		</form> 
 		<script type="text/javascript">
             $(function() {ldelim}
+                $('#is_company').change(function(){ldelim}
+                    //console.log(this.checked);
+                    $('#company_field').toggleClass('hidden');
+                {rdelim});
+
                 _collapsibleFieldsets();
 
                 $('#ddn_adh').datepicker({ldelim}

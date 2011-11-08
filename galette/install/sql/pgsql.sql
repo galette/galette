@@ -64,6 +64,7 @@ CREATE TABLE galette_adherents (
     id_statut integer DEFAULT '4' NOT NULL,
     nom_adh character varying(20) DEFAULT '' NOT NULL,
     prenom_adh character varying(20) DEFAULT NULL,
+    societe_adh character varying(20) DEFAULT NULL,
     pseudo_adh character varying(20) DEFAULT NULL,
     titre_adh smallint DEFAULT '0' NOT NULL,
     ddn_adh date DEFAULT '19010101',
