@@ -895,6 +895,13 @@ class Adherent
         $errors = array();
 
         $fields = self::getDbFields();
+
+        //reset company name if needeed
+        if ( !isset($values['is_company']) || $values['is_company'] != 1 ) {
+            unset($values['is_company']);
+            unset($values['societe_adh']);
+        }
+
         foreach ( $fields as $key ) {
             //first of all, let's sanitize values
             $key = strtolower($key);
