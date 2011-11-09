@@ -215,11 +215,11 @@ case 'u10':
 }
 header('Content-Type: text/html; charset=UTF-8');
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $i18n->getAbbrev(); ?>">
+<!DOCTYPE html>
+<html lang="<?php echo $i18n->getAbbrev(); ?>">
     <head>
         <title><?php echo _T("Galette Installation") . ' - ' . $step_title; ?></title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta charset="UTF-8"/>
         <link rel="stylesheet" type="text/css" href="../templates/default/galette.css"/>
         <link rel="stylesheet" type="text/css" href="../templates/default/jquery-ui/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>.custom.css"/>
         <script type="text/javascript" src="../includes/jquery/jquery-<?php echo JQUERY_VERSION; ?>.min.js"></script>
@@ -242,6 +242,9 @@ if ($step == '1') { ?>
 ?>
             });
         </script>
+        <!--[if lt IE9]>
+            <script type="text/javascript" src="{$scripts_dir}html5-ie.js"></script>
+        <!endif]-->
     </head>
     <body>
         <div id="installpage">
@@ -251,10 +254,10 @@ switch ( $step ) {
 case '1':
 ?>
             <h2><?php echo _T("Welcome to the Galette Install!"); ?></h2>
-            <p><label for="pref_lang"><?php echo _T("Please select your administration language"); ?></label></p>
             <form action="index.php" method="post">
+                <p><label for="pref_lang"><?php echo _T("Please select your administration language"); ?></label></p>
                 <p>
-                    <select name="pref_lang" id="pref_lang">
+                    <select name="pref_lang" id="pref_lang" required>
 <?php
     foreach ( $i18n->getList() as $langue ) {
         echo "\t\t\t\t\t<option value=\"" . $langue->getID() . "\" style=\"background:url(" . $langue->getFlag() . ") no-repeat;padding-left:30px;\"" . ((I18n::DEFAULT_LANG == $langue->getID())?" selected=\"selected\"":"") . ">" . ucwords($langue->getName()) . "</option>\n";
@@ -419,23 +422,23 @@ case 'u4':
                     </p>
                     <p>
                         <label class="bline" for="install_dbhost"><?php echo _T("Host:"); ?></label>
-                        <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo (isset($_POST['install_dbhost']))?$_POST['install_dbhost']:'localhost'; ?>"/>
+                        <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo (isset($_POST['install_dbhost']))?$_POST['install_dbhost']:'localhost'; ?>" required/>
                     </p>
                     <p>
                         <label class="bline" for="install_dbport"><?php echo _T("Port:"); ?></label>
-                        <input type="text" name="install_dbport" id="install_dbport" value="<?php echo (isset($_POST['install_dbport']))?$_POST['install_dbport']:$default_dbport; ?>"/>
+                        <input type="text" name="install_dbport" id="install_dbport" value="<?php echo (isset($_POST['install_dbport']))?$_POST['install_dbport']:$default_dbport; ?>" required/>
                     </p>
                     <p>
                         <label class="bline" for="install_dbuser"><?php echo _T("User:"); ?></label>
-                        <input type="text" name="install_dbuser" id="install_dbuser" value="<?php if(isset($_POST['install_dbuser'])) echo $_POST['install_dbuser']; ?>"/>
+                        <input type="text" name="install_dbuser" id="install_dbuser" value="<?php if(isset($_POST['install_dbuser'])) echo $_POST['install_dbuser']; ?>" required/>
                     </p>
                     <p>
                         <label class="bline" for="install_dbpass"><?php echo _T("Password:"); ?></label>
-                        <input type="password" name="install_dbpass" id="install_dbpass" value="<?php if(isset($_POST['install_dbpass'])) echo $_POST['install_dbpass']; ?>"/>
+                        <input type="password" name="install_dbpass" id="install_dbpass" value="<?php if(isset($_POST['install_dbpass'])) echo $_POST['install_dbpass']; ?>" required/>
                     </p>
                     <p>
                         <label class="bline" for="install_dbname"><?php echo _T("Database:"); ?></label>
-                        <input type="text" name="install_dbname" id="install_dbname" value="<?php if(isset($_POST['install_dbname'])) echo $_POST['install_dbname']; ?>"/>
+                        <input type="text" name="install_dbname" id="install_dbname" value="<?php if(isset($_POST['install_dbname'])) echo $_POST['install_dbname']; ?>" required/>
                     </p>
                     <p>
 <?php
@@ -444,7 +447,7 @@ case 'u4':
         }
 ?>
                         <label class="bline" for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
-                        <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo (isset($_POST['install_dbprefix']))?$_POST['install_dbprefix']:'galette_'; ?>"/>
+                        <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo (isset($_POST['install_dbprefix']))?$_POST['install_dbprefix']:'galette_'; ?>" required/>
                     </p>
                 </fieldset>
                 <p id="submit_btn">
@@ -908,15 +911,15 @@ case 'u8':
                     <legend class="ui-state-active ui-corner-top"><?php echo _T("Please chose the parameters of the admin account on Galette"); ?></legend>
                     <p>
                         <label for="install_adminlogin" class="bline"><?php echo _T("Username:"); ?></label>
-                        <input type="text" name="install_adminlogin" id="install_adminlogin" value="<?php if(isset($_POST['install_adminlogin'])) echo $_POST['install_adminlogin']; ?>"/>
+                        <input type="text" name="install_adminlogin" id="install_adminlogin" value="<?php if(isset($_POST['install_adminlogin'])) echo $_POST['install_adminlogin']; ?>" required/>
                     </p>
                     <p>
                         <label for="install_adminpass" class="bline"><?php echo _T("Password:"); ?></label>
-                        <input type="password" name="install_adminpass" id="install_adminpass" value=""/>
+                        <input type="password" name="install_adminpass" id="install_adminpass" value="" required/>
                     </p>
                     <p>
                         <label for="install_adminpass_verif" class="bline"><?php echo _T("Retype password:"); ?></label>
-                        <input type="password" name="install_adminpass_verif" id="install_adminpass_verif" value=""/>
+                        <input type="password" name="install_adminpass_verif" id="install_adminpass_verif" value="" required/>
                     </p>
                 </fieldset>
                 <p id="submit_btn">
