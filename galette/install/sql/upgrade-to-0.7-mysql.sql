@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS galette_groups_users (
   FOREIGN KEY (id_group) REFERENCES galette_groups (id_group)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-ALTER TABLE galette_adherents ADD societe_adh VARCHAR( 20 ) NULL AFTER prenom_adh
+ALTER TABLE galette_adherents ADD societe_adh VARCHAR( 20 ) NULL AFTER prenom_adh;
 
 -- Put back foreign keys
 SET FOREIGN_KEY_CHECKS=1;
