@@ -111,10 +111,10 @@ $log->addChild($display);
 $log->addChild($file);
 
 // check required PHP version...
-if ( !preg_match('/^5.3/', phpversion()) ) {
+if ( version_compare(PHP_VERSION, '5.0.0', '<') ) {
     $log->log(
         'Galette is NOT compliant with your current PHP version. ' .
-        'Galette requires PHP 5.3.x, current version is ' . phpversion(),
+        'Galette requires PHP 5.3 minimum, current version is ' . phpversion(),
         PEAR_LOG_EMERG
     );
     die();
