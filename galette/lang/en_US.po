@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2011-11-09 18:05+0100\n"
+"PO-Revision-Date: 2011-11-09 21:14+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -1333,6 +1333,10 @@ msgstr "View contributions"
 msgid "Never contributed: Registered %days days ago (since %date)"
 msgstr "Never contributed: Registered %days days ago (since %date)"
 
+#: ../templates/default/gestion_textes.tpl:45
+msgid "(Max 32 characters)"
+msgstr "(Max 32 characters)"
+
 #: ../templates/default/ajouter_transaction.tpl:69
 #: ../templates/default/gestion_contributions.tpl:129
 msgid "Duration"
@@ -1529,9 +1533,9 @@ msgid ""
 msgstr ""
 "Mail has been disabled in the preferences. This functionnality is disabled."
 
-#: ../install/index.php:424
-msgid "Host:"
-msgstr "Host:"
+#: ../install/index.php:294
+msgid "Warning: Don't forget to backup your current database."
+msgstr "Warning: Don't forget to backup your current database."
 
 #: ../classes/pagination.class.php:215
 msgid "First page"
@@ -2538,6 +2542,10 @@ msgstr "Repeat:"
 msgid "Originator:"
 msgstr "Originator:"
 
+#: ../templates/default/footer.tpl:15
+msgid "%s on Google+!"
+msgstr "%s on Google+!"
+
 #: ../gestion_adherents.php:186
 msgid "Infos"
 msgstr "Infos"
@@ -3244,9 +3252,9 @@ msgstr ""
 "Export file could not be write on disk for '%export'. Make sure web server "
 "can write in the exports directory."
 
-#: ../templates/default/gestion_textes.tpl:45
-msgid "(Max 32 characters)"
-msgstr "(Max 32 characters)"
+#: ../desktop.php:49
+msgid "Dashboard"
+msgstr "Dashboard"
 
 #: ../config_fields.php:100
 msgid "Fields configuration"
@@ -3297,6 +3305,10 @@ msgstr "Generate labels"
 #: ../templates/default/voir_adherent.tpl:123
 msgid "Other informations (admin):"
 msgstr "Other informations (admin):"
+
+#: ../templates/default/footer.tpl:12
+msgid "%s on Twitter!"
+msgstr "%s on Twitter!"
 
 #: ../includes/i18n.inc.php:336
 msgid "company fee"
@@ -3509,9 +3521,9 @@ msgstr ""
 msgid "- Invalid number of months of membership extension."
 msgstr "- Invalid number of months of membership extension."
 
-#: ../install/index.php:294
-msgid "Warning: Don't forget to backup your current database."
-msgstr "Warning: Don't forget to backup your current database."
+#: ../install/index.php:424
+msgid "Host:"
+msgstr "Host:"
 
 #: ../install/index.php:1001
 msgid "Default contributions types cannot be initialized."

@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Wed Nov  9 17:05:37 2011 (GMT)
+// This file was automatically generated on Wed Nov  9 20:14:34 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -410,6 +410,9 @@ $lang['No groups has been stored in the database yet.'] = 'Aucun groupe n\'a enc
 
 // ../preferences.php:271 
 $lang['You have to select a staff member'] = 'Vous devez sélectionner un membre du bureau';
+
+// ../templates/default/footer.tpl:15 
+$lang['%s on Google+!'] = '%s sur Google+&nbsp;!';
 
 // ../templates/default/gestion_groupes.tpl:34 
 $lang['%groupname: edit informations'] = '%groupname&nbsp;: modifier les informations';
@@ -1065,8 +1068,8 @@ $lang['This page is under construction.<br/>Data are all stored, but <strong>not
 // ../gestion_adherents.php:204 
 $lang['Inactive accounts'] = 'Comptes désactivés';
 
-// ../templates/default/gestion_adherents.tpl:204 
-$lang['Membership in order'] = 'Adhésion en règle';
+// ../desktop.php:49 
+$lang['Dashboard'] = 'Tableau de bord';
 
 // ../ajouter_transaction.php:80 
 $lang['Unable to attach contribution to transaction'] = 'Impossible d\'attacher la contribution à la transaction';
@@ -1136,6 +1139,9 @@ $lang['Translation of \'%s\' label'] = 'Traduction du libellé « %s »';
 
 // ../templates/default/gestion_adherents.tpl:192 
 $lang['Inactive account'] = 'Compte désactivé';
+
+// ../templates/default/footer.tpl:12 
+$lang['%s on Twitter!'] = '%s sur Twitter&nbsp;!';
 
 // ../templates/default/configurer_fiches.tpl:82 ../templates/default/gestion_intitules.tpl:77 
 $lang['Delete \'%s\' field'] = 'Supprimer le champ « %s »';
@@ -1414,7 +1420,7 @@ $lang['The uploaded file was only partially uploaded'] = 'Le fichier n\'a été 
 $lang['Authentication failed'] = 'Échec de l\'authentification';
 
 // ../templates/default/member.tpl:67 
-$lang['Is company?'] = 'Est une entriprise&nbsp;?';
+$lang['Is company?'] = 'Est une entreprise&nbsp;?';
 
 // ../templates/default/preferences.tpl:163 
 $lang['Members administrator\'s Email:'] = 'Courriel de l\'administrateur des membres&nbsp;:';
@@ -1518,8 +1524,8 @@ $lang['Gift'] = 'Don';
 // ../install/index.php:102 
 $lang['No database name'] = 'Nom de la base non précisé';
 
-// ../templates/default/gestion_textes.tpl:45 
-$lang['(Max 32 characters)'] = '(maximum 32 caractères)';
+// ../preferences.php:402 ../templates/default/page.tpl:112 
+$lang['Settings'] = 'Préférences';
 
 // ../install/index.php:570 
 $lang['CREATE operation not allowed'] = 'Opération CREATE non autorisée';
@@ -1545,8 +1551,8 @@ $lang['Manager for \'%groupname\''] = 'Responsable pour « %groupname »';
 // ../templates/default/footer.tpl:7 
 $lang['Documentation'] = 'Documentation';
 
-// ../preferences.php:402 ../templates/default/page.tpl:112 
-$lang['Settings'] = 'Préférences';
+// ../templates/default/gestion_textes.tpl:45 
+$lang['(Max 32 characters)'] = '(maximum 32 caractères)';
 
 // ../preferences.php:206 
 $lang['- You must indicate a sender name for emails!'] = '- Vous devez indiquer un nom d\'expéditeur pour les courriels&nbsp;!';
@@ -2117,6 +2123,9 @@ $lang['creation'] = 'création';
 
 // ../install/index.php:350 
 $lang['In order to be updated, Galette needs the Write permission on these files.'] = 'Pour être mis à jour et fonctionner correctement, Galette a besoin d\'avoir les droits en écriture sur ces fichiers.';
+
+// ../templates/default/gestion_adherents.tpl:204 
+$lang['Membership in order'] = 'Adhésion en règle';
 
 // ../templates/default/gestion_adherents.tpl:224 
 $lang['Send a mail'] = 'Envoyer un courriel';

@@ -1192,6 +1192,10 @@ msgstr ""
 msgid "Never contributed: Registered %days days ago (since %date)"
 msgstr ""
 
+#: ../templates/default/gestion_textes.tpl:45
+msgid "(Max 32 characters)"
+msgstr ""
+
 #: ../templates/default/ajouter_transaction.tpl:69 ../templates/default/gestion_contributions.tpl:129
 msgid "Duration"
 msgstr ""
@@ -1366,8 +1370,8 @@ msgstr ""
 msgid "Mail has been disabled in the preferences. This functionnality is disabled."
 msgstr ""
 
-#: ../install/index.php:424
-msgid "Host:"
+#: ../install/index.php:294
+msgid "Warning: Don't forget to backup your current database."
 msgstr ""
 
 #: ../classes/pagination.class.php:215
@@ -2279,6 +2283,10 @@ msgstr ""
 msgid "Originator:"
 msgstr ""
 
+#: ../templates/default/footer.tpl:15
+msgid "%s on Google+!"
+msgstr ""
+
 #: ../gestion_adherents.php:186
 msgid "Infos"
 msgstr ""
@@ -2923,8 +2931,8 @@ msgstr ""
 msgid "Export file could not be write on disk for '%export'. Make sure web server can write in the exports directory."
 msgstr ""
 
-#: ../templates/default/gestion_textes.tpl:45
-msgid "(Max 32 characters)"
+#: ../desktop.php:49
+msgid "Dashboard"
 msgstr ""
 
 #: ../config_fields.php:100
@@ -2972,6 +2980,10 @@ msgstr ""
 #: ../champs_adherents.php:58 ../classes/adherent.class.php:322
 #: ../templates/default/member.tpl:237 ../templates/default/voir_adherent.tpl:123
 msgid "Other informations (admin):"
+msgstr ""
+
+#: ../templates/default/footer.tpl:12
+msgid "%s on Twitter!"
 msgstr ""
 
 #: ../includes/i18n.inc.php:336
@@ -3160,8 +3172,8 @@ msgstr ""
 msgid "- Invalid number of months of membership extension."
 msgstr ""
 
-#: ../install/index.php:294
-msgid "Warning: Don't forget to backup your current database."
+#: ../install/index.php:424
+msgid "Host:"
 msgstr ""
 
 #: ../install/index.php:1001

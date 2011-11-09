@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2011-11-09 18:05+0100\n"
+"PO-Revision-Date: 2011-11-09 21:14+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -1358,6 +1358,10 @@ msgstr "Voir les contributions"
 msgid "Never contributed: Registered %days days ago (since %date)"
 msgstr "N'a jamais cotisé&nbsp;: Inscrit depuis %days jours (depuis le %date)"
 
+#: ../templates/default/gestion_textes.tpl:45
+msgid "(Max 32 characters)"
+msgstr "(maximum 32 caractères)"
+
 #: ../templates/default/ajouter_transaction.tpl:69
 #: ../templates/default/gestion_contributions.tpl:129
 msgid "Duration"
@@ -1558,9 +1562,9 @@ msgstr ""
 "L'envoi de courriel a été désactivé dans les préférences. Cette "
 "fonctionnalité est désactivée."
 
-#: ../install/index.php:424
-msgid "Host:"
-msgstr "Hôte&nbsp;:"
+#: ../install/index.php:294
+msgid "Warning: Don't forget to backup your current database."
+msgstr "Attention&nbsp;: pensez à sauvegarder votre base existante."
 
 #: ../classes/pagination.class.php:215
 msgid "First page"
@@ -2575,6 +2579,10 @@ msgstr "Répétition&nbsp;:"
 msgid "Originator:"
 msgstr "Émetteur&nbsp;:"
 
+#: ../templates/default/footer.tpl:15
+msgid "%s on Google+!"
+msgstr "%s sur Google+&nbsp;!"
+
 #: ../gestion_adherents.php:186
 msgid "Infos"
 msgstr "Informations"
@@ -3291,9 +3299,9 @@ msgstr ""
 "Le fichier d'export ne peut être écrit sur le disque pour « %export ». "
 "Assurez-vous que le serveur web puisse écrire dans le dossier des exports."
 
-#: ../templates/default/gestion_textes.tpl:45
-msgid "(Max 32 characters)"
-msgstr "(maximum 32 caractères)"
+#: ../desktop.php:49
+msgid "Dashboard"
+msgstr "Tableau de bord"
 
 #: ../config_fields.php:100
 msgid "Fields configuration"
@@ -3345,6 +3353,10 @@ msgstr "Générer les étiquettes"
 #: ../templates/default/voir_adherent.tpl:123
 msgid "Other informations (admin):"
 msgstr "Autres informations (admin)&nbsp;:"
+
+#: ../templates/default/footer.tpl:12
+msgid "%s on Twitter!"
+msgstr "%s sur Twitter&nbsp;!"
 
 #: ../includes/i18n.inc.php:336
 msgid "company fee"
@@ -3560,9 +3572,9 @@ msgstr ""
 msgid "- Invalid number of months of membership extension."
 msgstr "- Durée d'extension d'adhésion invalide"
 
-#: ../install/index.php:294
-msgid "Warning: Don't forget to backup your current database."
-msgstr "Attention&nbsp;: pensez à sauvegarder votre base existante."
+#: ../install/index.php:424
+msgid "Host:"
+msgstr "Hôte&nbsp;:"
 
 #: ../install/index.php:1001
 msgid "Default contributions types cannot be initialized."
@@ -3887,7 +3899,7 @@ msgstr "Afficher et gérer les groupes"
 
 #: ../templates/default/member.tpl:67
 msgid "Is company?"
-msgstr "Est une entriprise&nbsp;?"
+msgstr "Est une entreprise&nbsp;?"
 
 #: ../attendance_sheet.php:84 ../etiquettes_adherents.php:74
 #: ../etiquettes_adherents.php:157 ../templates/default/preferences.tpl:31

@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Wed Nov  9 17:05:37 2011 (GMT)
+// This file was automatically generated on Wed Nov  9 20:14:34 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -410,6 +410,9 @@ $lang['No groups has been stored in the database yet.'] = 'No groups has been st
 
 // ../preferences.php:271 
 $lang['You have to select a staff member'] = 'You have to select a staff member';
+
+// ../templates/default/footer.tpl:15 
+$lang['%s on Google+!'] = '%s on Google+!';
 
 // ../templates/default/gestion_groupes.tpl:34 
 $lang['%groupname: edit informations'] = '%groupname: edit informations';
@@ -1065,8 +1068,8 @@ $lang['This page is under construction.<br/>Data are all stored, but <strong>not
 // ../gestion_adherents.php:204 
 $lang['Inactive accounts'] = 'Inactive accounts';
 
-// ../templates/default/gestion_adherents.tpl:204 
-$lang['Membership in order'] = 'Membership in order';
+// ../desktop.php:49 
+$lang['Dashboard'] = 'Dashboard';
 
 // ../ajouter_transaction.php:80 
 $lang['Unable to attach contribution to transaction'] = 'Unable to attach contribution to transaction';
@@ -1136,6 +1139,9 @@ $lang['Translation of \'%s\' label'] = 'Translation of \'%s\' label';
 
 // ../templates/default/gestion_adherents.tpl:192 
 $lang['Inactive account'] = 'Inactive account';
+
+// ../templates/default/footer.tpl:12 
+$lang['%s on Twitter!'] = '%s on Twitter!';
 
 // ../templates/default/configurer_fiches.tpl:82 ../templates/default/gestion_intitules.tpl:77 
 $lang['Delete \'%s\' field'] = 'Delete \'%s\' field';
@@ -1518,8 +1524,8 @@ $lang['Gift'] = 'Gift';
 // ../install/index.php:102 
 $lang['No database name'] = 'No database name';
 
-// ../templates/default/gestion_textes.tpl:45 
-$lang['(Max 32 characters)'] = '(Max 32 characters)';
+// ../preferences.php:402 ../templates/default/page.tpl:112 
+$lang['Settings'] = 'Settings';
 
 // ../install/index.php:570 
 $lang['CREATE operation not allowed'] = 'CREATE operation not allowed';
@@ -1545,8 +1551,8 @@ $lang['Manager for \'%groupname\''] = 'Manager for \'%groupname\'';
 // ../templates/default/footer.tpl:7 
 $lang['Documentation'] = 'Documentation';
 
-// ../preferences.php:402 ../templates/default/page.tpl:112 
-$lang['Settings'] = 'Settings';
+// ../templates/default/gestion_textes.tpl:45 
+$lang['(Max 32 characters)'] = '(Max 32 characters)';
 
 // ../preferences.php:206 
 $lang['- You must indicate a sender name for emails!'] = '- You must indicate a sender name for emails!';
@@ -2117,6 +2123,9 @@ $lang['creation'] = 'creation';
 
 // ../install/index.php:350 
 $lang['In order to be updated, Galette needs the Write permission on these files.'] = 'In order to be updated, Galette needs the Write permission on these files.';
+
+// ../templates/default/gestion_adherents.tpl:204 
+$lang['Membership in order'] = 'Membership in order';
 
 // ../templates/default/gestion_adherents.tpl:224 
 $lang['Send a mail'] = 'Send a mail';
