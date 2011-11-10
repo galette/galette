@@ -85,15 +85,6 @@
                                 title="{_T string="Use mailing '%subject' as a template for a new one" pattern="/%subject/" replace=$log.mailing_subject}"
                                 />
                         </a>
-						<a href="ajouter_adherent.php?id_adh={$mailing->id}">
-                            <img
-                                src="{$template_subdir}images/icon-edit.png"
-                                alt="{_T string="[mod]"}"
-                                width="16"
-                                height="16"
-                                title="{_T string="%subject: edit informations" pattern="/%subject/" replace=$log.mailing_subject}"
-                                />
-                        </a>
 						<a
                             onclick="return confirm('{_T string="Do you really want to delete this mailing from the base?"|escape:"javascript"}')"
                             href="?sup={$log.mailing_id}">
