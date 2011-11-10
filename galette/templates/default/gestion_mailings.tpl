@@ -87,6 +87,7 @@
                         </a>
 						<a
                             onclick="return confirm('{_T string="Do you really want to delete this mailing from the base?"|escape:"javascript"}')"
+                            title="{_T string="Delete mailing '%subject'" pattern="/%subject/" replace=$log.mailing_subject}"
                             href="?sup={$log.mailing_id}">
                             <img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/>
                         </a>
