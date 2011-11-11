@@ -3,6 +3,10 @@
 			<h1>{_T string="- ERROR -"}</h1>
 			<p>{_T string="Email sent is disabled in the preferences. Ask galette admin"}</p>
 		</div>
+{elseif $mailing_saved}
+        <div id="infobox">
+            {_T string="Mailing has been successfully saved."}
+        </div>
 {else}
 		<form action="mailing_adherents.php#mail_preview" id="listform" method="post">
     {if $error_detected|@count != 0}

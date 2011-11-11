@@ -47,7 +47,7 @@ if ( !$login->isAdmin() ) {
 }
 
 //We're done :-)
-if ( isset($_POST['mailing_done']) 
+if ( isset($_POST['mailing_done'])
     || isset($_POST['mailing_cancel'])
     || isset($_GET['mailing_new'])
 ) {
@@ -98,6 +98,7 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
     if ( isset($_POST['mailing_go'])
         || isset($_POST['mailing_reset'])
         || isset($_POST['mailing_confirm'])
+        || isset($_POST['mailing_save'])
     ) {
         if ( trim($_POST['mailing_objet']) == '' ) {
             $error_detected[] = _T("Please type an object for the message.");
@@ -113,7 +114,10 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
 
         $mailing->html = ( isset($_POST['mailing_html']) ) ? true : false;
 
-        if ( count($error_detected) == 0 && !isset($_POST['mailing_reset']) ) {
+        if ( count($error_detected) == 0
+            && !isset($_POST['mailing_reset'])
+            && !isset($_POST['mailing_save'])
+        ) {
             $mailing->current_step = Mailing::STEP_PREVIEW;
         } else {
             $mailing->current_step = Mailing::STEP_START;
@@ -162,6 +166,21 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
         || trim($_POST['html_editor_active']) == ''
     ) {
         $_POST['html_editor_active'] = $preferences->pref_editor_enabled;
+    }
+
+    if ( isset($_POST['mailing_save']) ) {
+        //user requested to save the mailing
+        $histo = new MailingHistory($mailing);
+        if ( $histo->storeMailing() !== false ) {
+            $tpl->assign('mailing_saved', true);
+            $_SESSION['galette']['mailing'] = null;
+            unset($_SESSION['galette']['mailing']);
+            $head_redirect = array(
+                'timeout'   => 30,
+                'url'       => 'gestion_mailings.php'
+            );
+            $tpl->assign('head_redirect', $head_redirect);
+        }
     }
 
     $tpl->assign('warning_detected', $warning_detected);
