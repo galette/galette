@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2011-11-11 20:47+0100\n"
+"PO-Revision-Date: 2011-11-11 23:37+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -88,7 +88,7 @@ msgstr ""
 msgid "from preferences"
 msgstr "depuis les préférences"
 
-#: ../templates/default/gestion_mailings.tpl:85
+#: ../templates/default/gestion_mailings.tpl:93
 msgid "Use mailing '%subject' as a template for a new one"
 msgstr ""
 "Utiliser le mailing « %subject » comme template pour en créer un nouveau"
@@ -266,6 +266,10 @@ msgstr ""
 msgid "[mod]"
 msgstr "[mod]"
 
+#: ../templates/default/mailing_adherents.tpl:8
+msgid "Mailing has been successfully saved."
+msgstr "L'E-Mailing a été envoyé avec succès."
+
 #: ../classes/contribution.class.php:110
 #: ../templates/default/ajouter_contribution.tpl:56
 msgid "Contribution type:"
@@ -417,8 +421,8 @@ msgstr "Espacement vertical&nbsp;:"
 msgid "Default theme:"
 msgstr "Thème par défaut&nbsp;:"
 
-#: ../templates/default/mailing_adherents.tpl:66
-#: ../templates/default/mailing_adherents.tpl:88
+#: ../templates/default/mailing_adherents.tpl:70
+#: ../templates/default/mailing_adherents.tpl:92
 msgid "Object:"
 msgstr "Sujet&nbsp;:"
 
@@ -484,7 +488,7 @@ msgstr "Date de début d'exercice&nbsp;:"
 #: ../templates/default/member.tpl:280
 #: ../templates/default/editer_intitule.tpl:46
 #: ../templates/default/traduire_libelles.tpl:32
-#: ../templates/default/mailing_adherents.tpl:78
+#: ../templates/default/mailing_adherents.tpl:82
 #: ../templates/default/ajouter_transaction.tpl:49
 #: ../templates/default/group.tpl:42 ../templates/default/champ_requis.tpl:28
 #: ../templates/default/config_fields.tpl:60
@@ -530,7 +534,7 @@ msgstr "- Mauvais format de date de début d'exercice."
 msgid "Do not wait timeout and go to the next page now :)"
 msgstr "Ne pas attendre et passer à la page suivante immédiatement :)"
 
-#: ../ajax_recipients.php:59 ../templates/default/mailing_adherents.tpl:38
+#: ../ajax_recipients.php:59 ../templates/default/mailing_adherents.tpl:42
 msgid "You are about to send an e-mail to <strong>%s members</strong>"
 msgstr ""
 "Vous êtes sur le point d'envoyer un courriel à <strong>%s membres</strong>"
@@ -668,7 +672,7 @@ msgstr ""
 "Un problème est survenu lors de l'envoi du reçu pour la contribution de "
 "l'adhérent %name (%email)"
 
-#: ../ajax_recipients.php:72 ../templates/default/mailing_adherents.tpl:49
+#: ../ajax_recipients.php:72 ../templates/default/mailing_adherents.tpl:53
 msgid "None of the selected members has an email address."
 msgstr "Aucun des destinataires sélectionnés n'a d'adresse de courriel."
 
@@ -676,7 +680,7 @@ msgstr "Aucun des destinataires sélectionnés n'a d'adresse de courriel."
 msgid "Choice list (one entry per line)."
 msgstr "Liste de choix (une entrée par ligne)."
 
-#: ../templates/default/mailing_adherents.tpl:64
+#: ../templates/default/mailing_adherents.tpl:68
 msgid "Write your mailing"
 msgstr "Rédigez votre message"
 
@@ -702,6 +706,11 @@ msgid ""
 msgstr ""
 "Tentative d'envoi de courriel à un adhérent (%name) avec une adresse "
 "invalide : %email"
+
+#: ../templates/default/display_dynamic_fields.tpl:4
+#: ../templates/default/display_dynamic_fields.tpl:8
+msgid "Additionnal fields:"
+msgstr "Champs supplémentaires&nbsp;:"
 
 #: ../classes/contribution.class.php:449
 msgid "- Membership period overlaps period starting at "
@@ -1053,7 +1062,7 @@ msgid "Number of values or zero if infinite."
 msgstr "Nombre de valeurs ou zéro pour une infinité."
 
 #: ../templates/default/member.tpl:15
-#: ../templates/default/mailing_adherents.tpl:20
+#: ../templates/default/mailing_adherents.tpl:24
 #: ../templates/default/group.tpl:15 ../templates/default/config_fields.tpl:2
 #: ../templates/default/preferences.tpl:14
 #: ../templates/default/ajouter_contribution.tpl:14
@@ -1066,7 +1075,7 @@ msgstr "- AVERTISSEMENT -"
 msgid "Profile configuration"
 msgstr "Configuration des fiches"
 
-#: ../ajax_recipients.php:74 ../templates/default/mailing_adherents.tpl:51
+#: ../ajax_recipients.php:74 ../templates/default/mailing_adherents.tpl:55
 msgid "No member selected (yet)."
 msgstr "Aucun adhérent sélectionné (pour le moment)."
 
@@ -1119,6 +1128,10 @@ msgstr "(format jj/mm/aaaa)"
 msgid "Realization:"
 msgstr "Réalisation&nbsp;:"
 
+#: ../templates/default/gestion_mailings.tpl:32
+msgid "Sender"
+msgstr "Expéditeur"
+
 #: ../templates/default/gestion_adherents.tpl:88
 msgid "State of dues"
 msgstr "État cotisations"
@@ -1127,7 +1140,7 @@ msgstr "État cotisations"
 msgid "Woman"
 msgstr "Femme"
 
-#: ../templates/default/mailing_adherents.tpl:70
+#: ../templates/default/mailing_adherents.tpl:74
 msgid "(De)Activate HTML editor"
 msgstr "(Dés)Activer l'éditeur HTML"
 
@@ -1208,7 +1221,7 @@ msgstr ""
 msgid "- SQL error: "
 msgstr "- Erreur SQL&nbsp;:"
 
-#: ../templates/default/mailing_adherents.tpl:100
+#: ../templates/default/mailing_adherents.tpl:104
 msgid "Modifiy mailing"
 msgstr "Modification E-Mailing"
 
@@ -1321,7 +1334,7 @@ msgstr "Sélectionnez les champs requis pour les nouveaux adhérents :"
 msgid "From:"
 msgstr "De&nbsp;:"
 
-#: ../ajax_recipients.php:65 ../templates/default/mailing_adherents.tpl:42
+#: ../ajax_recipients.php:65 ../templates/default/mailing_adherents.tpl:46
 msgid "unreachable member:"
 msgstr "membre injoignable&nbsp;:"
 
@@ -1406,7 +1419,7 @@ msgid "Add new category"
 msgstr "Ajouter une catégorie"
 
 #: ../templates/default/gestion_adherents.tpl:122
-#: ../templates/default/gestion_mailings.tpl:64
+#: ../templates/default/gestion_mailings.tpl:65
 #: ../templates/default/history.tpl:86
 #: ../templates/default/gestion_contributions.tpl:157
 #: ../templates/default/gestion_transactions.tpl:73
@@ -1419,7 +1432,7 @@ msgstr "Pages&nbsp;:"
 msgid "Amount:"
 msgstr "Montant&nbsp;:"
 
-#: ../ajax_recipients.php:66 ../templates/default/mailing_adherents.tpl:43
+#: ../ajax_recipients.php:66 ../templates/default/mailing_adherents.tpl:47
 msgid ""
 "Some members you have selected have no e-mail address. However, you can "
 "generate envelope labels to contact them by snail mail."
@@ -1495,8 +1508,8 @@ msgstr "Une erreur est survenue lors de l'ajout des groupes du membre."
 msgid "(Months)"
 msgstr "(Mois)"
 
-#: ../templates/default/mailing_adherents.tpl:80
-#: ../templates/default/mailing_adherents.tpl:102
+#: ../templates/default/mailing_adherents.tpl:84
+#: ../templates/default/mailing_adherents.tpl:106
 msgid "Cancel mailing"
 msgstr "Annuler le mailing"
 
@@ -1580,7 +1593,7 @@ msgstr "- Le mot de passe doit être composé d'au moins 4 caractères&nbsp;!"
 msgid "Postal adress:"
 msgstr "Adresse postale :"
 
-#: ../mailing_adherents.php:109
+#: ../mailing_adherents.php:110
 msgid "Please enter a message."
 msgstr "Veuillez saisir un message."
 
@@ -1718,7 +1731,7 @@ msgstr "Fiche adhérent"
 msgid "Member card added"
 msgstr "Fiche adhérent ajoutée"
 
-#: ../templates/default/mailing_adherents.tpl:56
+#: ../templates/default/mailing_adherents.tpl:60
 msgid "Go back to members list"
 msgstr "Retour à la liste des membres"
 
@@ -1737,7 +1750,7 @@ msgstr "MSN&nbsp;:"
 msgid "Jabber"
 msgstr "Jabber&nbsp;:"
 
-#: ../templates/default/gestion_mailings.tpl:97
+#: ../templates/default/gestion_mailings.tpl:105
 msgid "No sent mailing has been stored in the database yet."
 msgstr "Aucun E-Mailing n'a encore été stocké."
 
@@ -2109,7 +2122,7 @@ msgstr "Abréviation (centre de la carte)&nbsp;:"
 msgid "Attendance sheet"
 msgstr "Liste d'émargement"
 
-#: ../mailing_adherents.php:103
+#: ../mailing_adherents.php:104
 msgid "Please type an object for the message."
 msgstr "Veuillez indiquer un objet pour le message."
 
@@ -2143,7 +2156,7 @@ msgstr "Veuillez entrer les paramètres de connexion à la base existante."
 msgid "My information"
 msgstr "Mes informations"
 
-#: ../templates/default/mailing_adherents.tpl:128
+#: ../templates/default/mailing_adherents.tpl:132
 msgid "An error occured displaying preview :("
 msgstr "Une erreur est survenue lors de l'affichage de l'aperçu :("
 
@@ -2219,7 +2232,7 @@ msgid "View my member card"
 msgstr "Voir ma fiche membre"
 
 #: ../templates/default/gestion_adherents.tpl:162
-#: ../templates/default/gestion_mailings.tpl:92
+#: ../templates/default/gestion_mailings.tpl:100
 #: ../templates/default/gestion_groupes.tpl:40
 #: ../templates/default/gestion_contributions.tpl:196
 #: ../templates/default/gestion_contributions.tpl:216
@@ -2315,8 +2328,8 @@ msgstr "Compte désactivé"
 msgid "Access permissions to database"
 msgstr "Droits d'accès à la base"
 
-#: ../templates/default/mailing_adherents.tpl:71
-#: ../templates/default/mailing_adherents.tpl:90
+#: ../templates/default/mailing_adherents.tpl:75
+#: ../templates/default/mailing_adherents.tpl:94
 msgid "Message:"
 msgstr "Message&nbsp;:"
 
@@ -2360,7 +2373,7 @@ msgstr "Logo actuel"
 msgid "Membership will expire soon (&lt;30d)"
 msgstr "Adhésion à échéance (&lt;30j)"
 
-#: ../templates/default/gestion_mailings.tpl:89
+#: ../templates/default/gestion_mailings.tpl:97
 msgid "Do you really want to delete this mailing from the base?"
 msgstr "Voulez vous vraiment effacer cet E-Mailing&nbsp;?"
 
@@ -2421,7 +2434,7 @@ msgstr "Contributeur&nbsp;:"
 msgid "End"
 msgstr "Fin"
 
-#: ../templates/default/mailing_adherents.tpl:76
+#: ../templates/default/mailing_adherents.tpl:80
 msgid "Interpret HTML"
 msgstr "Interpréter les balises HTML"
 
@@ -2543,7 +2556,7 @@ msgstr "cotisation annuelle réduite"
 msgid "Galette Installation"
 msgstr "Installation de Galette"
 
-#: ../templates/default/mailing_adherents.tpl:77
+#: ../templates/default/mailing_adherents.tpl:81
 msgid "Preview"
 msgstr "Prévisualisation"
 
@@ -2676,6 +2689,10 @@ msgstr "Accès à la base"
 msgid "(Integer)"
 msgstr "(Entier)"
 
+#: ../templates/default/gestion_mailings.tpl:81
+msgid "Mailing has been sent"
+msgstr "L'E-Mailing a été envoyé"
+
 #: ../templates/default/ajax_groups.tpl:38
 msgid "No groups has been selected yet."
 msgstr "Aucun groupe n'a encore été sélectionné."
@@ -2684,8 +2701,8 @@ msgstr "Aucun groupe n'a encore été sélectionné."
 msgid "Vice-treasurer"
 msgstr "Vice-trésorier"
 
-#: ../templates/default/mailing_adherents.tpl:158
-#: ../templates/default/mailing_adherents.tpl:197
+#: ../templates/default/mailing_adherents.tpl:162
+#: ../templates/default/mailing_adherents.tpl:201
 #: ../templates/default/gestion_groupes.tpl:65
 #: ../templates/default/gestion_groupes.tpl:102
 #: ../templates/default/ajouter_transaction.tpl:121
@@ -2702,7 +2719,7 @@ msgstr "La transaction n'est pas entièrement ventilée"
 msgid "Signature"
 msgstr "Signature"
 
-#: ../templates/default/mailing_adherents.tpl:36
+#: ../templates/default/mailing_adherents.tpl:40
 msgid "Your message has been sent to <strong>%s members</strong>"
 msgstr "Votre courriel a été envoyé à <strong>%s membres</strong>"
 
@@ -2763,6 +2780,11 @@ msgstr "Édition d'un statut"
 msgid "Which parameted export(s) do you want to run?"
 msgstr "Quels exports paramétrés souhaitez-vous lancer&nbsp;?"
 
+#: ../templates/default/gestion_mailings.tpl:58
+#: ../templates/default/gestion_mailings.tpl:81
+msgid "Sent"
+msgstr "Envoyé"
+
 #: ../templates/default/gestion_intitules.tpl:32
 msgid "Priority"
 msgstr "Priorité"
@@ -2805,7 +2827,7 @@ msgstr ""
 "Pour fonctionner correctement, Galette a besoin d'avoir les droits en "
 "écriture sur ces fichiers."
 
-#: ../ajax_recipients.php:64 ../templates/default/mailing_adherents.tpl:42
+#: ../ajax_recipients.php:64 ../templates/default/mailing_adherents.tpl:46
 msgid "unreachable members:"
 msgstr "membres qui n'ont pu être joints&nbsp;:"
 
@@ -2963,8 +2985,8 @@ msgstr ""
 msgid "Translate '%s' field"
 msgstr "Traduire le champ « %s »"
 
-#: ../templates/default/mailing_adherents.tpl:79
-#: ../templates/default/mailing_adherents.tpl:101
+#: ../templates/default/mailing_adherents.tpl:83
+#: ../templates/default/mailing_adherents.tpl:105
 msgid "Send"
 msgstr "Envoyer"
 
@@ -3017,7 +3039,7 @@ msgstr "Exports"
 msgid "Active accounts"
 msgstr "Comptes actifs"
 
-#: ../templates/default/mailing_adherents.tpl:135
+#: ../templates/default/mailing_adherents.tpl:139
 #: ../templates/default/ajax_mailing_preview.tpl:2
 msgid "Mailing preview"
 msgstr "Prévisualisation de l'E-Mailing"
@@ -3077,7 +3099,7 @@ msgstr "Non membre"
 msgid "Active member"
 msgstr "Membre actif"
 
-#: ../templates/default/gestion_mailings.tpl:90
+#: ../templates/default/gestion_mailings.tpl:98
 msgid "Delete mailing '%subject'"
 msgstr "Supprimer l'E-Mailing « %subject »"
 
@@ -3169,7 +3191,7 @@ msgstr "- Cet identifiant est déjà utilisé par un autre adhérent&nbsp;!"
 msgid "General information:"
 msgstr "Informations générales&nbsp;:"
 
-#: ../mailing_adherents.php:174
+#: ../mailing_adherents.php:193
 msgid "Mailing"
 msgstr "Mailing"
 
@@ -3180,6 +3202,10 @@ msgstr "Courriel de l'administrateur des membres&nbsp;:"
 #: ../lostpasswd.php:103
 msgid "Mail sent to '%s' for password recovery."
 msgstr "Courriel envoyé à « %s » pour la récupération du mot de passe."
+
+#: ../templates/default/gestion_mailings.tpl:83
+msgid "Mailing has not been sent yet"
+msgstr "L'E-Mailing n'as pas encore été envoyé"
 
 #: ../templates/default/preferences.tpl:278
 msgid "Cards generation parameters:"
@@ -3193,7 +3219,7 @@ msgstr "Fin de la mise à jour"
 msgid "PHP mail() function"
 msgstr "Fonction PHP mail()"
 
-#: ../templates/default/mailing_adherents.tpl:165
+#: ../templates/default/mailing_adherents.tpl:169
 #: ../templates/default/gestion_groupes.tpl:72
 msgid "Members selection"
 msgstr "Sélection d'adhérents"
@@ -3275,7 +3301,7 @@ msgstr "Vous devez sélectionner un membre du bureau"
 msgid "Delete the contribution"
 msgstr "Supprimer la contribution"
 
-#: ../templates/default/gestion_mailings.tpl:82
+#: ../templates/default/gestion_mailings.tpl:90
 msgid "New mailing from %s"
 msgstr "Nouvel E-Mailing depuis %s"
 
@@ -3357,7 +3383,7 @@ msgid "End!"
 msgstr "Fin&nbsp;!"
 
 #: ../ajax_recipients.php:68 ../templates/default/gestion_adherents.tpl:115
-#: ../templates/default/mailing_adherents.tpl:44
+#: ../templates/default/mailing_adherents.tpl:48
 msgid "Generate labels"
 msgstr "Générer les étiquettes"
 
@@ -3399,7 +3425,7 @@ msgstr ""
 #: ../templates/default/editer_intitule.tpl:4
 #: ../templates/default/traduire_libelles.tpl:3
 #: ../templates/default/mailing_adherents.tpl:3
-#: ../templates/default/mailing_adherents.tpl:10
+#: ../templates/default/mailing_adherents.tpl:14
 #: ../templates/default/ajouter_transaction.tpl:4
 #: ../templates/default/group.tpl:5 ../templates/default/champ_requis.tpl:4
 #: ../templates/default/gestion_contributions.tpl:3
@@ -3460,7 +3486,7 @@ msgstr "Un problème est survenu dans l'envoi du courriel pour le compte « %s �
 msgid "Manage user's groups"
 msgstr "Gestion des groupes de l'utilisateur"
 
-#: ../templates/default/gestion_mailings.tpl:102
+#: ../templates/default/gestion_mailings.tpl:110
 msgid "Create new mailing"
 msgstr "Créer un nouvel E-Mailing"
 
@@ -3768,7 +3794,7 @@ msgstr "Édition du champ %field"
 msgid "View application's logs"
 msgstr "Voir les logs de l'application"
 
-#: ../templates/default/mailing_adherents.tpl:31
+#: ../templates/default/mailing_adherents.tpl:35
 msgid "Mailing informations"
 msgstr "Informations sur le mailing"
 
@@ -3837,7 +3863,7 @@ msgstr ""
 msgid "News"
 msgstr "Nouvelles"
 
-#: ../templates/default/mailing_adherents.tpl:58
+#: ../templates/default/mailing_adherents.tpl:62
 msgid "Manage selected members"
 msgstr "Gestion des adhérents sélectionnés"
 
@@ -3878,10 +3904,9 @@ msgstr "Date d'échéance&nbsp;:"
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../templates/default/display_dynamic_fields.tpl:4
-#: ../templates/default/display_dynamic_fields.tpl:8
-msgid "Additionnal fields:"
-msgstr "Champs supplémentaires&nbsp;:"
+#: ../templates/default/gestion_mailings.tpl:83
+msgid "Not sent"
+msgstr "Pas envoyé"
 
 #: ../champs_adherents.php:60 ../classes/adherent.class.php:338
 #: ../templates/default/member.tpl:87
@@ -3907,7 +3932,7 @@ msgstr "Une erreur est survenue lors de l'enregistrement de la contribution."
 msgid "Save the parameters"
 msgstr "Sauvegarde des paramètres"
 
-#: ../templates/default/mailing_adherents.tpl:86
+#: ../templates/default/mailing_adherents.tpl:90
 msgid "Preview your mailing"
 msgstr "Aperçu de votre E-Mailing"
 
@@ -3932,7 +3957,6 @@ msgstr "Est une entreprise&nbsp;?"
 msgid "Labels"
 msgstr "Étiquettes"
 
-#: ../templates/default/gestion_mailings.tpl:32
 #: ../templates/default/history.tpl:47
 msgid "User"
 msgstr "Utilisateur"
