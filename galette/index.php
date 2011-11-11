@@ -55,10 +55,6 @@ if (isset($_POST["ident"])) {
     ) {
         $login->logAdmin($_POST['login']);
         $_SESSION['galette']['login'] = serialize($login);
-        //for pre 0.7 compat while under devel
-        $_SESSION['logged_status'] = 1;
-        $_SESSION['logged_username'] = $_POST['login'];
-        //end backward compat
         $hist->add(_T("Login"));
         header('location: gestion_adherents.php');
     } else {
@@ -66,13 +62,6 @@ if (isset($_POST["ident"])) {
 
         if ( $login->isLogged() ) {
             $_SESSION['galette']['login'] = serialize($login);
-            //for pre 0.7 compat while under devel
-            /** FIXME: be sure that session parameters are no
-            longer in use before deleting */
-            $_SESSION['logged_status'] = 1;
-            $pref_lang = $login->lang;
-            setcookie('pref_lang', $pref_lang);
-            //end backward compat
             $hist->add(_T("Login"));
             /** FIXME: users should no try to go to admin interface */
             header('location: gestion_adherents.php');
