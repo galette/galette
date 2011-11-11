@@ -136,7 +136,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <a id="logout" class="button" href="{$galette_base_path}index.php?logout=1">{_T string="Log off"}</a>
 {/if}
 	</div>
-	<div id="content">
+	<div id="content"{if $contentcls} class="{$contentcls}"{/if}>
         <h1 id="titre">
             {$page_title}
             {if $PAGENAME neq 'mailing_adherents.php' and $existing_mailing eq true}
