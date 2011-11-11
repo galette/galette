@@ -63,7 +63,7 @@ require_once $base_path . 'config/paths.inc.php';
 session_start();
 
 define('GALETTE_VERSION', 'v0.7dev');
-define('GALETTE_MODE', 'DEV'); //DEV or PROD
+define('GALETTE_MODE', 'PROD'); //DEV or PROD
 define('GALETTE_TWITTER', 'galette_soft');
 define('GALETTE_GPLUS', '116977415489200387309');
 define('GALETTE_GAPI_KEY', 'AIzaSyDT8Xkud_SdSHdvaagjePrpPoji2ySIZ7Q');
