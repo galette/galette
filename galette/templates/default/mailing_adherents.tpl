@@ -30,13 +30,13 @@
             <section class="mailing_infos">
                 <header class="ui-state-default ui-state-active">{_T string="Mailing informations"}</header>
     {assign var='count' value=$mailing->recipients|@count}
+    {assign var='count_unreachables' value=$mailing->unreachables|@count}
     {if $count > 0}
         {if $mailing->current_step eq constant('Mailing::STEP_SENT')}
                 <p>{_T string="Your message has been sent to <strong>%s members</strong>" pattern="/%s/" replace=$count}</p>
         {else}
                 <p id="recipients_count">{_T string="You are about to send an e-mail to <strong>%s members</strong>" pattern="/%s/" replace=$count}</p>
         {/if}
-        {assign var='count_unreachables' value=$mailing->unreachables|@count}
         {if $count_unreachables > 0}
                 <p id="unreachables_count">
                     <strong>{$count_unreachables} {if $count_unreachables != 1}{_T string="unreachable members:"}{else}{_T string="unreachable member:"}{/if}</strong><br/>
@@ -45,7 +45,11 @@
                 </p>
         {/if}
     {else}
-                <p><strong>{_T string="None of the selected members has an email address."}</strong></p>
+        {if $count_unreachables > 0}
+                <p id="recipients_count"><strong>{_T string="None of the selected members has an email address."}</strong></p>
+         {else}
+                <p id="recipients_count"><strong>{_T string="No member selected (yet)."}</strong></p>
+         {/if}
     {/if}
                 <div class="center">
     {if $mailing->current_step eq constant('Mailing::STEP_SENT')}

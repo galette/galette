@@ -50,20 +50,29 @@ $mailing->setRecipients($members);
 $_SESSION['galette']['mailing'] = serialize($mailing);
 
 //let's generate html for return
-$html = '<p id="recipients_count">' .
-    preg_replace(
-        '/%s/',
-        count($mailing->recipients),
-        _T("You are about to send an e-mail to <strong>%s members</strong>")
-    ) . '</p>';
-if ( count($mailing->unreachables) ) {
-    $html .= '<p id="unreachables_count"><strong>' . count($mailing->unreachables) . ' ' .
-        ((count($mailing->unreachables) !=1) ?
-            _T("unreachable members:")
-            : _T("unreachable member:")) . '</strong><br/>' .
-        _T("Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail.") .
-        '<br/><a id="btnlabels" class="button" href="etiquettes_adherents.php">' .
-        _T("Generate labels") . '</a></p>';
+$html = '';
+if ( count($mailing->recipients) > 0 ) {
+    $html = '<p id="recipients_count">' .
+        preg_replace(
+            '/%s/',
+            count($mailing->recipients),
+            _T("You are about to send an e-mail to <strong>%s members</strong>")
+        ) . '</p>';
+    if ( count($mailing->unreachables) ) {
+        $html .= '<p id="unreachables_count"><strong>' . count($mailing->unreachables) . ' ' .
+            ((count($mailing->unreachables) !=1) ?
+                _T("unreachable members:")
+                : _T("unreachable member:")) . '</strong><br/>' .
+            _T("Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail.") .
+            '<br/><a id="btnlabels" class="button" href="etiquettes_adherents.php">' .
+            _T("Generate labels") . '</a></p>';
+    }
+} else {
+    if ( count($mailing->unreachables) ) {
+        $html .= '<p id="recipients_count"><strong>' . _T("None of the selected members has an email address.") . '</strong></p>';
+    } else {
+        $html .= '<p id="recipients_count"><strong>' . _T("No member selected (yet).") . '</strong></p>';
+    }
 }
 echo $html;
 ?>
