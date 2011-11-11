@@ -64,6 +64,17 @@ session_start();
 
 define('GALETTE_VERSION', 'v0.7dev');
 define('GALETTE_MODE', 'DEV'); //DEV or PROD
+define('GALETTE_TWITTER', 'galette_soft');
+define('GALETTE_GPLUS', '116977415489200387309');
+define('GALETTE_GAPI_KEY', 'AIzaSyDT8Xkud_SdSHdvaagjePrpPoji2ySIZ7Q');
+
+if ( !isset($_COOKIE['show_galette_dashboard']) ) {
+    setcookie(
+        'show_galette_dashboard',
+        true,
+        time()+31536000 //valid for a year
+    );
+}
 
 @ini_set('display_errors', 0);
 

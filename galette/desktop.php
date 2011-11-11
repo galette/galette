@@ -3,12 +3,11 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * External libraries versions
- * Defines various library versions, to avoid use of problematic symlinks under windows or via FTP.
+ * Galette's desktop
  *
  * PHP version 5
  *
- * Copyright © 2009-2011 The Galette Team
+ * Copyright © 2011 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -25,24 +24,41 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Config
+ * @category  Main
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2011 The Galette Team
+ * @copyright 2011 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-03-13
+ * @since     Available since 0.7dev - 2011-11-09
  */
-define('SMARTY_VERSION', '2.6.26');
-define('ZEND_VERSION', '1.11.9');
-define('PEAR_VERSION', '1.9.4');
-define('LOG_VERSION', '1.12.6');
-define('TCPDF_VERSION', '5.9.088');
-define('JQUERY_VERSION', '1.6.2');
-define('JQUERY_UI_VERSION', '1.8.14');
-define('JQUERY_MARKITUP_VERSION', '1.1.12');
-define('PHP_MAILER_VERSION', '5.2.0');
-define('GAPI_VERSION', '0.4.6');
+
+/** @ignore */
+require_once 'includes/galette.inc.php';
+
+if ( !$login->isLogged() ) {
+    header('location: index.php');
+    die();
+} elseif ( !$login->isAdmin() ) {
+    header('location: voir_adherent.php');
+    die();
+}
+
+require_once 'classes/galette-news.class.php';
+
+$news = new GaletteNews();
+
+$tpl->assign('page_title', _T("Dashboard"));
+$tpl->assign('contentcls', 'desktop');
+$tpl->assign('tweets', $news->getTweets());
+$tpl->assign('gplus', $news->getPlusPosts());
+$tpl->assign('show_dashboard', $_COOKIE['show_galette_dashboard']);
+$tpl->assign('require_tabs', true);
+$tpl->assign('require_cookie', true);
+
+$content = $tpl->fetch('desktop.tpl');
+$tpl->assign('content', $content);
+$tpl->display('page.tpl');
 ?>

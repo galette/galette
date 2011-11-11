@@ -56,7 +56,15 @@ if (isset($_POST["ident"])) {
         $login->logAdmin($_POST['login']);
         $_SESSION['galette']['login'] = serialize($login);
         $hist->add(_T("Login"));
-        header('location: gestion_adherents.php');
+        if ( !isset($_COOKIE['show_galette_dashboard'])
+            || $_COOKIE['show_galette_dashboard'] == 1
+        ) {
+            header('location: desktop.php');
+            die();
+        } else {
+            header('location: gestion_adherents.php');
+            die();
+        }
     } else {
         $login->logIn($_POST['login'], md5($_POST['password']));
 
@@ -64,7 +72,20 @@ if (isset($_POST["ident"])) {
             $_SESSION['galette']['login'] = serialize($login);
             $hist->add(_T("Login"));
             /** FIXME: users should no try to go to admin interface */
-            header('location: gestion_adherents.php');
+            if ( $login->isAdmin() ) {
+                if ( !isset($_COOKIE['show_galette_dashboard'])
+                    || $_COOKIE['show_galette_dashboard'] == 1
+                ) {
+                    header('location: desktop.php');
+                    die();
+                } else {
+                    header('location: gestion_adherents.php');
+                    die();
+                }
+            } else {
+                header('location: voir_adherent.php');
+                die();
+            }
         } else {
             $loginfault = true;
             $hist->add(_T("Authentication failed"), $_POST['login']);

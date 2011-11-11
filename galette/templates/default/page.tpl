@@ -28,6 +28,9 @@
 		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.dialog.min.js"></script>
 {/if}
 {* /JQuery UI related *}
+{if $require_cookie}
+		<script type="text/javascript" src="{$jquery_dir}jquery.cookie.js"></script>
+{/if}
 {if $html_editor}
 	{if !$plugged_html_editor}
 		<script type="text/javascript" src="{$jquery_dir}markitup-{$jquery_markitup_version}/jquery.markitup.js"></script>
@@ -80,6 +83,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 		<h1 class="nojs">{_T string="Navigation"}</h1>
 		<ul>
   {if $login->isAdmin()}
+            <li{if $PAGENAME eq "desktop.php"} class="selected"{/if}><a href="desktop.php" title="{_T string="Go to Galette's dashboard"}">{_T string="Dashboard"}</a></li>
 			<li{if $PAGENAME eq "gestion_adherents.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_adherents.php" title="{_T string="View, search into and filter member's list"}">{_T string="List of members"}</a></li>
 			<li{if $PAGENAME eq "gestion_groupes.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_groupes.php" title="{_T string="View and manage groups"}">{_T string="Manage groups"}</a></li>
 			<li{if $PAGENAME eq "gestion_contributions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_contributions.php?id_adh=all" title="{_T string="View and filter contributions"}">{_T string="List of contributions"}</a></li>
