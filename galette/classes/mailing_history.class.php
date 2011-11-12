@@ -136,6 +136,7 @@ class MailingHistory extends History
             $ret = $select->query(Zend_Db::FETCH_ASSOC)->fetchAll();
 
             foreach ( $ret as &$r ) {
+                $r['mailing_sender_name'] = Adherent::getSName($r['mailing_sender']);
                 $body_resume = $r['mailing_body'];
                 if ( strlen($body_resume) > 150 ) {
                     $body_resume = substr($body_resume, 0, 150);

@@ -72,7 +72,7 @@
 				<tr class="tbl_line_{if $smarty.foreach.eachlog.iteration % 2 eq 0}even{else}odd{/if}">
 					<td class="center">{$smarty.foreach.eachlog.iteration}</td>
 					<td class="nowrap">{$log.mailing_date|date_format:"%a %d/%m/%Y - %R"}</td>
-					<td>{if $log.mailing_sender eq 0}Admin{else}{$log.mailing_sender}{/if}</td>
+					<td>{if $log.mailing_sender eq 0}{_T string="Superadmin"}{else}{$log.mailing_sender_name}{/if}</td>
 					<td>{$log.mailing_recipients|unserialize|@count}</td>
 					<td>{$log.mailing_subject}</td>
 					{*<td>{$log.mailing_body_resume}</td>*}
