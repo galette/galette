@@ -56,7 +56,13 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 			<tr>
 				<th>{_T string="Name:"}</th>
 				<td>{$member->spoliteness} {$member->name} {$member->surname}</td>
-				<td rowspan="{if $member->isCompany()}7{else}6{/if}" class="photo"><img src="{$galette_base_path}picture.php?id_adh={$member->id}&amp;rand={$time}" width="{$member->picture->getOptimalWidth()}" height="{$member->picture->getOptimalHeight()}" alt="{_T string="Picture"}"/></td>
+				<td rowspan="{if $member->isCompany()}7{else}6{/if}" style="width:{$member->picture->getOptimalWidth()}px;">
+                    <img
+                        src="{$galette_base_path}picture.php?id_adh={$member->id}&amp;rand={$time}"
+                        width="{$member->picture->getOptimalWidth()}"
+                        height="{$member->picture->getOptimalHeight()}"
+                        alt="{_T string="Picture"}"/>
+                </td>
 			</tr>
 {if $member->isCompany()}
             <tr>

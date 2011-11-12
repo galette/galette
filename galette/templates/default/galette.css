@@ -1588,9 +1588,7 @@ input.large{
 	vertical-align:middle;
 	padding:0.2em 0.1em;
 }
-.details td.photo{
-	width:1%;
-}
+
 td.photo img{
 	border: 1px solid black;
 	margin-top: 5px;
