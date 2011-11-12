@@ -68,7 +68,7 @@ if ( isset($_GET[Adherent::PK])
 } else {
     $log->log('No member selected to generate members cards', PEAR_LOG_INFO);
     if ( $login->isAdmin() ) {
-        header('location:gestion_adherent.php');
+        header('location:gestion_adherents.php');
     } else {
         header('location:voir_adherent.php');
     }

@@ -59,7 +59,7 @@ if ( isset($_SESSION['galette']['varslist']) ) {
 } else {
     $log->log('No member selected to generate labels', PEAR_LOG_INFO);
     if ( $login->isAdmin ) {
-        header('location:gestion_adherent.php');
+        header('location:gestion_adherents.php');
     }
 }
 

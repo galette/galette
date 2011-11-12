@@ -78,7 +78,7 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
             '[mailing_adherents.php] No member selected to generate members cards',
             PEAR_LOG_INFO
         );
-        header('location:gestion_adherent.php');
+        header('location:gestion_adherents.php');
     }
 
     $members = Members::getArrayList($varslist->selected);
