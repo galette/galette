@@ -204,11 +204,11 @@ class MailingHistory extends History
     /**
      * Store a mailing in the history
      *
-     * @param Mailing $mailing
+     * @param boolean $sent Defaults to false
      *
      * @returns boolean
      */
-    public function storeMailing()
+    public function storeMailing($sent = false)
     {
         global $log, $login;
 
@@ -217,7 +217,7 @@ class MailingHistory extends History
             $this->_subject = $this->_mailing->subject;
             $this->_message = $this->_mailing->message;
             $this->_recipients = $this->_mailing->recipients;
-            $this->_sent = true;
+            $this->_sent = $sent;
             $this->_date = date('Y-m-d H:m:s');
             $this->store();
         } else {

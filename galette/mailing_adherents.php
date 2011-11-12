@@ -141,7 +141,7 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
             }
         } else {
             $mlh = new MailingHistory($mailing);
-            $mlh->storeMailing();
+            $mlh->storeMailing(true);
             $log->log(
                 '[mailing_adherents.php] Message has been sent.',
                 PEAR_LOG_INFO
