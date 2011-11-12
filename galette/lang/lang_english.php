@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Fri Nov 11 22:38:04 2011 (GMT)
+// This file was automatically generated on Sat Nov 12 05:24:12 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -261,8 +261,8 @@ $lang['Use either the adress setted below or select user status to retrieve anot
 // ../install/index.php:268 
 $lang['Next Page'] = 'Next Page';
 
-// ../classes/plugins.class.php:236 ../classes/plugins.class.php:240 
-$lang['Cannot activate plugin.'] = 'Cannot activate plugin.';
+// ../etiquettes_adherents.php:157 
+$lang['labels_print_filename'] = 'Labels';
 
 // ../install/index.php:390 ../install/index.php:906 ../install/index.php:1068 ../templates/default/gestion_adherents.tpl:4 ../templates/default/member.tpl:5 ../templates/default/editer_intitule.tpl:4 ../templates/default/traduire_libelles.tpl:3 ../templates/default/mailing_adherents.tpl:3 ../templates/default/mailing_adherents.tpl:14 ../templates/default/ajouter_transaction.tpl:4 ../templates/default/group.tpl:5 ../templates/default/champ_requis.tpl:4 ../templates/default/gestion_contributions.tpl:3 ../templates/default/preferences.tpl:4 ../templates/default/editer_champ.tpl:4 ../templates/default/configurer_fiches.tpl:4 ../templates/default/ajouter_contribution.tpl:4 ../templates/default/export.tpl:4 ../templates/default/public_page.tpl:44 ../templates/default/gestion_textes.tpl:4 ../templates/default/gestion_intitules.tpl:4 ../templates/default/voir_adherent.tpl:10 ../templates/default/gestion_transactions.tpl:3 
 $lang['- ERROR -'] = '- ERROR -';
@@ -792,7 +792,7 @@ $lang['Trombinoscope'] = 'Trombinoscope';
 // ../templates/default/voir_adherent.tpl:3 
 $lang['Previous'] = 'Previous';
 
-// ../attendance_sheet.php:84 ../etiquettes_adherents.php:74 ../etiquettes_adherents.php:157 ../templates/default/preferences.tpl:31 
+// ../attendance_sheet.php:84 ../etiquettes_adherents.php:74 ../templates/default/preferences.tpl:31 
 $lang['Labels'] = 'Labels';
 
 // ../classes/pagination.class.php:228 
@@ -1721,6 +1721,9 @@ $lang['Log off'] = 'Log off';
 
 // ../templates/default/preferences.tpl:320 
 $lang['Allow members to print card ?'] = 'Allow members to print card ?';
+
+// ../classes/plugins.class.php:236 ../classes/plugins.class.php:240 
+$lang['Cannot activate plugin.'] = 'Cannot activate plugin.';
 
 // ../templates/default/preferences.tpl:138 
 $lang['Public pages enabled?'] = 'Public pages enabled?';

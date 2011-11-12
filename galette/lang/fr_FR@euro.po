@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2011-11-11 23:37+0100\n"
+"PO-Revision-Date: 2011-11-12 06:24+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -927,6 +927,11 @@ msgid ""
 msgstr ""
 "Galette ne dispose pas de droits suffisants sur la base de données pour "
 "poursuivre l'installation."
+
+# Attention ! C'est un nom de fichier, on ne veut pas de caractères spéciaux (ils sont supprimés)
+#: ../etiquettes_adherents.php:157
+msgid "labels_print_filename"
+msgstr "Etiquettes"
 
 #: ../install/index.php:279
 msgid "New installation:"
@@ -3953,7 +3958,7 @@ msgid "Is company?"
 msgstr "Est une entreprise&nbsp;?"
 
 #: ../attendance_sheet.php:84 ../etiquettes_adherents.php:74
-#: ../etiquettes_adherents.php:157 ../templates/default/preferences.tpl:31
+#: ../templates/default/preferences.tpl:31
 msgid "Labels"
 msgstr "Étiquettes"
 

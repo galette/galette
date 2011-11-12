@@ -141,7 +141,7 @@ foreach ($members as $member) {
     $pdf->Cell($w, $line_h, $member->adress, 0, 0, 'L', 0);
     // Print second line of adress
     $pdf->SetXY($x, $y+$line_h*2);
-    $pdf->Cell($w, $line_h, $member->adress2, 0, 0, 'L', 0);
+    $pdf->Cell($w, $line_h, $member->adress_continuation, 0, 0, 'L', 0);
     // Print zip code and town
     $pdf->SetFont(PDF::FONT, 'B', $preferences->pref_etiq_corps);
     $pdf->SetXY($x, $y+$line_h*3);
@@ -154,5 +154,5 @@ foreach ($members as $member) {
 }
 
 // Send PDF code to browser
-$pdf->Output(_T("Labels") . '.pdf', 'D');
+$pdf->Output(_T("labels_print_filename") . '.pdf', 'D');
 ?>

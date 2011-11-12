@@ -807,6 +807,10 @@ msgstr ""
 msgid "GALETTE hasn't got enough permissions on the database to continue the installation."
 msgstr ""
 
+#: ../etiquettes_adherents.php:157
+msgid "labels_print_filename"
+msgstr ""
+
 #: ../install/index.php:279
 msgid "New installation:"
 msgstr ""
@@ -3520,7 +3524,7 @@ msgid "Is company?"
 msgstr ""
 
 #: ../attendance_sheet.php:84 ../etiquettes_adherents.php:74
-#: ../etiquettes_adherents.php:157 ../templates/default/preferences.tpl:31
+#: ../templates/default/preferences.tpl:31
 msgid "Labels"
 msgstr ""
 
