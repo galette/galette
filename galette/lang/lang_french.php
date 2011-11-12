@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sat Nov 12 05:24:12 2011 (GMT)
+// This file was automatically generated on Sat Nov 12 10:32:48 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -961,7 +961,7 @@ $lang['Strip Background colors:'] = 'Couleur du bandeau&nbsp;:';
 $lang['Your password has been changed. Please click on the \'home\' button to go to the login page.'] = 'Votre mot de passe a été changé. Veuillez cliquer sur le bouton « accueil » pour accéder à la page de connexion.';
 
 // ../templates/default/mailing_adherents.tpl:8 
-$lang['Mailing has been successfully saved.'] = 'L\'E-Mailing a été envoyé avec succès.';
+$lang['Mailing has been successfully saved.'] = 'L\'E-Mailing a été enregistré avec succès.';
 
 // ../lostpasswd.php:120 
 $lang['An error occured storing temporary password for %s. Please inform an admin.'] = 'Une erreur est survenue durant l\'enregistrement du mot de passe temporaire pour %s. Veuillez en informer un administrateur.';
