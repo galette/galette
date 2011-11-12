@@ -219,7 +219,7 @@ class MailingHistory extends History
             $this->_message = $this->_mailing->message;
             $this->_recipients = $this->_mailing->recipients;
             $this->_sent = $sent;
-            $this->_date = date('Y-m-d H:m:s');
+            $this->_date = date('Y-m-d H:i:s');
             $this->store();
         } else {
             $log->log(
