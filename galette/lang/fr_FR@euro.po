@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2011-11-12 11:32+0100\n"
+"PO-Revision-Date: 2011-11-15 21:45+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -54,7 +54,7 @@ msgid "An error occured running parameted export '%export'."
 msgstr ""
 "Une erreur est survenue durant l'exécution de l'export paramétré « %export »."
 
-#: ../templates/default/gestion_adherents.tpl:76
+#: ../templates/default/gestion_adherents.tpl:85
 msgid "Status"
 msgstr "Statut"
 
@@ -72,7 +72,7 @@ msgid "Mail body"
 msgstr "Corps du message"
 
 #: ../classes/politeness.class.php:66
-#: ../templates/default/gestion_adherents.tpl:189
+#: ../templates/default/gestion_adherents.tpl:198
 msgid "Mrs"
 msgstr "Madame"
 
@@ -197,10 +197,10 @@ msgstr "-- Choisissez un membre du bureau --"
 msgid "Mailings"
 msgstr "E-Mailings"
 
-#: ../gestion_adherents.php:182 ../attendance_sheet.php:102
-#: ../templates/default/gestion_adherents.tpl:52
-#: ../templates/default/gestion_adherents.tpl:185
-#: ../templates/default/gestion_adherents.tpl:191
+#: ../gestion_adherents.php:186 ../attendance_sheet.php:102
+#: ../templates/default/gestion_adherents.tpl:61
+#: ../templates/default/gestion_adherents.tpl:194
+#: ../templates/default/gestion_adherents.tpl:200
 #: ../templates/default/ajax_groups.tpl:6
 #: ../templates/default/gestion_groupes.tpl:6
 #: ../templates/default/configurer_fiches.tpl:22
@@ -241,7 +241,7 @@ msgstr "Paramètres administrateur"
 msgid "Installation complete !"
 msgstr "Fin de l'installation"
 
-#: ../gestion_adherents.php:170
+#: ../gestion_adherents.php:174
 msgid "Members management"
 msgstr "Gestion des membres"
 
@@ -258,7 +258,7 @@ msgid "Do you really want to delete all selected contributions?"
 msgstr ""
 "Voulez vous réellement effacer toutes les contributions sélectionnées&nbsp;?"
 
-#: ../templates/default/gestion_adherents.tpl:160
+#: ../templates/default/gestion_adherents.tpl:169
 #: ../templates/default/gestion_groupes.tpl:31
 #: ../templates/default/gestion_contributions.tpl:193
 #: ../templates/default/gestion_contributions.tpl:212
@@ -287,7 +287,7 @@ msgstr "Une erreur est survenue."
 msgid "Values:"
 msgstr "Valeurs&nbsp;:"
 
-#: ../templates/default/gestion_adherents.tpl:150
+#: ../templates/default/gestion_adherents.tpl:159
 #: ../templates/default/ajax_members.tpl:28
 msgid "[admin]"
 msgstr "[admin]"
@@ -408,7 +408,7 @@ msgstr "Filtrer"
 msgid "Login failed."
 msgstr "Échec de l'identification."
 
-#: ../templates/default/gestion_adherents.tpl:109
+#: ../templates/default/gestion_adherents.tpl:118
 msgid "Mail"
 msgstr "Envoyer un courriel"
 
@@ -430,7 +430,7 @@ msgstr "Sujet&nbsp;:"
 msgid "Emailing method:"
 msgstr "Méthode d'envoi des courriels&nbsp;:"
 
-#: ../templates/default/gestion_adherents.tpl:37
+#: ../templates/default/gestion_adherents.tpl:46
 #: ../templates/default/gestion_mailings.tpl:11
 #: ../templates/default/traduire_libelles.tpl:19
 #: ../templates/default/history.tpl:14
@@ -477,7 +477,7 @@ msgstr "Paramètres courriel&nbsp;:"
 msgid "Mails adress %s does not exist"
 msgstr "L'adresse mail %s n'existe pas"
 
-#: ../gestion_adherents.php:184
+#: ../gestion_adherents.php:188
 msgid "Email,URL,IM"
 msgstr "Email, URL, IM"
 
@@ -628,8 +628,8 @@ msgstr "Retour"
 msgid "Translate additionnals fields labels"
 msgstr "Traduction des étiquettes pour les champs additionnels"
 
-#: ../templates/default/gestion_adherents.tpl:195
-#: ../templates/default/gestion_adherents.tpl:196
+#: ../templates/default/gestion_adherents.tpl:204
+#: ../templates/default/gestion_adherents.tpl:205
 msgid "Society"
 msgstr "Personne morale"
 
@@ -640,6 +640,10 @@ msgid ""
 msgstr ""
 "Un problème est survenu dans l'envoi du courriel à l'administrateur pour la "
 "contribution de l'adhérent %name (%email)"
+
+#: ../templates/default/gestion_adherents.tpl:33
+msgid "With"
+msgstr "Avec"
 
 #: ../templates/default/member.tpl:42
 msgid "Picture:"
@@ -929,7 +933,7 @@ msgstr ""
 "poursuivre l'installation."
 
 # Attention ! C'est un nom de fichier, on ne veut pas de caractères spéciaux (ils sont supprimés)
-#: ../etiquettes_adherents.php:157
+#: ../etiquettes_adherents.php:165
 msgid "labels_print_filename"
 msgstr "Etiquettes"
 
@@ -968,7 +972,7 @@ msgstr "Ajouter un groupe"
 msgid "Database type:"
 msgstr "Type de base de données&nbsp;:"
 
-#: ../gestion_adherents.php:185
+#: ../gestion_adherents.php:189
 msgid "Job"
 msgstr "Emploi"
 
@@ -999,7 +1003,7 @@ msgstr "Inactif"
 msgid "Yes"
 msgstr "Oui"
 
-#: ../templates/default/gestion_adherents.tpl:220
+#: ../templates/default/gestion_adherents.tpl:229
 #: ../templates/default/gestion_contributions.tpl:217
 msgid "Deletion"
 msgstr "Suppression"
@@ -1137,11 +1141,11 @@ msgstr "Réalisation&nbsp;:"
 msgid "Sender"
 msgstr "Expéditeur"
 
-#: ../templates/default/gestion_adherents.tpl:88
+#: ../templates/default/gestion_adherents.tpl:97
 msgid "State of dues"
 msgstr "État cotisations"
 
-#: ../templates/default/gestion_adherents.tpl:190
+#: ../templates/default/gestion_adherents.tpl:199
 msgid "Woman"
 msgstr "Femme"
 
@@ -1167,7 +1171,7 @@ msgid "Passworg image"
 msgstr "Image mot de passe"
 
 #: ../classes/politeness.class.php:65
-#: ../templates/default/gestion_adherents.tpl:183
+#: ../templates/default/gestion_adherents.tpl:192
 msgid "Mister"
 msgstr "Monsieur"
 
@@ -1179,7 +1183,7 @@ msgstr "choix"
 msgid "Add a new category"
 msgstr "Ajouter une catégorie"
 
-#: ../templates/default/gestion_adherents.tpl:160
+#: ../templates/default/gestion_adherents.tpl:169
 msgid "%membername: edit informations"
 msgstr "%membername&nbsp;: modifier les informations"
 
@@ -1282,7 +1286,7 @@ msgstr "Nom expéditeur&nbsp;:"
 msgid "Legal entity"
 msgstr "Personne morale"
 
-#: ../templates/default/gestion_adherents.tpl:162
+#: ../templates/default/gestion_adherents.tpl:171
 msgid ""
 "Do you really want to delete this member from the base? This will also "
 "delete the history of his fees. You could instead disable the account.\n"
@@ -1295,7 +1299,7 @@ msgstr ""
 "\n"
 "Voulez vous toujours effacer cet adhérent&nbsp;?"
 
-#: ../templates/default/gestion_adherents.tpl:162
+#: ../templates/default/gestion_adherents.tpl:171
 msgid "%membername: remove from database"
 msgstr "%membername&nbsp;:: supprimer de la base"
 
@@ -1394,7 +1398,7 @@ msgid "Number of label lines:"
 msgstr "Nombre de lignes d'étiquettes&nbsp;:"
 
 #: ../includes/dynamic_fields.inc.php:104
-#: ../templates/default/gestion_adherents.tpl:214
+#: ../templates/default/gestion_adherents.tpl:223
 #: ../templates/default/desktop.tpl:8
 msgid "Contributions"
 msgstr "Contributions"
@@ -1423,7 +1427,7 @@ msgstr "Permettre aux membres d'imprimer leur carte ?"
 msgid "Add new category"
 msgstr "Ajouter une catégorie"
 
-#: ../templates/default/gestion_adherents.tpl:122
+#: ../templates/default/gestion_adherents.tpl:131
 #: ../templates/default/gestion_mailings.tpl:65
 #: ../templates/default/history.tpl:86
 #: ../templates/default/gestion_contributions.tpl:157
@@ -1446,7 +1450,7 @@ msgstr ""
 "courriel. Cependant vous pouvez produire des étiquettes d'enveloppes pour "
 "les contacter par courrier postal."
 
-#: ../templates/default/gestion_adherents.tpl:213
+#: ../templates/default/gestion_adherents.tpl:222
 #: ../templates/default/gestion_contributions.tpl:222
 msgid "Contribution"
 msgstr "Contribution"
@@ -1455,7 +1459,7 @@ msgstr "Contribution"
 msgid "apache_user"
 msgstr "utilisateur_apache"
 
-#: ../templates/default/gestion_adherents.tpl:31
+#: ../templates/default/gestion_adherents.tpl:40
 msgid "members"
 msgstr "adhérents"
 
@@ -1509,6 +1513,10 @@ msgstr "Erreur en recopiant le mot de passe&nbsp;: "
 msgid "An error occured adding member to its groups."
 msgstr "Une erreur est survenue lors de l'ajout des groupes du membre."
 
+#: ../templates/default/desktop.tpl:24
+msgid "No tweets has been retrieved."
+msgstr "Aucun tweets n'a été récupéré."
+
 #: ../templates/default/preferences.tpl:130
 msgid "(Months)"
 msgstr "(Mois)"
@@ -1561,7 +1569,7 @@ msgstr "Les catégories de champs par défaut ont été sauvegardés avec succè
 msgid "$catname"
 msgstr "$catname"
 
-#: ../templates/default/gestion_adherents.tpl:106
+#: ../templates/default/gestion_adherents.tpl:115
 #: ../templates/default/gestion_contributions.tpl:149
 msgid "For the selection:"
 msgstr "Pour la sélection&nbsp;:"
@@ -1576,6 +1584,10 @@ msgid ""
 msgstr ""
 "L'envoi de courriel a été désactivé dans les préférences. Cette "
 "fonctionnalité est désactivée."
+
+#: ../templates/default/gestion_adherents.tpl:29
+msgid "Members that have an email adress:"
+msgstr "Les adhérents qui ont une adresse de courriel&nbsp;:"
 
 #: ../install/index.php:424
 msgid "Host:"
@@ -1720,7 +1732,7 @@ msgstr "Largeur&nbsp;:"
 msgid "Use TLS for SMTP?"
 msgstr "Utiliser TLS pour SMPT&nbsp;?"
 
-#: ../templates/default/gestion_adherents.tpl:161
+#: ../templates/default/gestion_adherents.tpl:170
 msgid "[$]"
 msgstr "[$]"
 
@@ -1801,7 +1813,7 @@ msgstr "Continuer"
 msgid "E-Mail"
 msgstr "Courriel"
 
-#: ../etiquettes_adherents.php:72
+#: ../etiquettes_adherents.php:80
 msgid "Member's Labels"
 msgstr "Étiquettes des membres"
 
@@ -1844,7 +1856,7 @@ msgstr "Montant"
 msgid "Contribution has been successfyully attached to current transaction"
 msgstr "La contribution a été attachée à la transaction courante"
 
-#: ../templates/default/gestion_adherents.tpl:247
+#: ../templates/default/gestion_adherents.tpl:256
 msgid "(Un)Check all"
 msgstr "Tout (dé)cocher"
 
@@ -1881,7 +1893,7 @@ msgstr "Durée d'adhésion par défaut&nbsp;:"
 msgid "To secure the system, please delete the install directory"
 msgstr "Pour sécuriser le système, veuillez supprimer le dossier « install »"
 
-#: ../templates/default/gestion_adherents.tpl:247
+#: ../templates/default/gestion_adherents.tpl:256
 msgid "Invert selection"
 msgstr "Inverser la sélection"
 
@@ -1893,7 +1905,7 @@ msgstr "séparateur"
 msgid "Benefactor member"
 msgstr "Membre bienfaiteur"
 
-#: ../gestion_adherents.php:194
+#: ../gestion_adherents.php:198
 msgid "Close expiries"
 msgstr "Les échéances proches"
 
@@ -1905,7 +1917,7 @@ msgstr "Afficher la requête associée"
 msgid "Required:"
 msgstr "Obligatoire&nbsp;:"
 
-#: ../templates/default/gestion_adherents.tpl:173
+#: ../templates/default/gestion_adherents.tpl:182
 msgid "No member has been found"
 msgstr "Aucun membre n'a été trouvé"
 
@@ -1913,8 +1925,8 @@ msgstr "Aucun membre n'a été trouvé"
 msgid "Reduced annual contribution"
 msgstr "Cotisation annuelle réduite"
 
-#: ../templates/default/gestion_adherents.tpl:107
-#: ../templates/default/gestion_adherents.tpl:219
+#: ../templates/default/gestion_adherents.tpl:116
+#: ../templates/default/gestion_adherents.tpl:228
 #: ../templates/default/gestion_contributions.tpl:150
 msgid "Delete"
 msgstr "Supprimer"
@@ -1971,8 +1983,8 @@ msgstr "Courriel de nouveau compte envoyé à l'administrateur pour « %s »."
 msgid "Using a SMTP server (slower)"
 msgstr "Utilisation d'un SMTP (plus lent)"
 
-#: ../templates/default/gestion_adherents.tpl:136
-#: ../templates/default/gestion_adherents.tpl:140
+#: ../templates/default/gestion_adherents.tpl:145
+#: ../templates/default/gestion_adherents.tpl:149
 #: ../templates/default/ajax_members.tpl:19
 #: ../templates/default/ajax_members.tpl:23
 msgid "[W]"
@@ -2002,7 +2014,7 @@ msgstr "Sujet&nbsp;:"
 msgid "Group"
 msgstr "Groupe"
 
-#: ../templates/default/gestion_adherents.tpl:145
+#: ../templates/default/gestion_adherents.tpl:154
 msgid "[Mail]"
 msgstr "[Courriel]"
 
@@ -2090,6 +2102,7 @@ msgstr "Voulez vous vraiment effacer cette transaction&nbsp;?"
 msgid "An error occured while updating your password."
 msgstr "Une erreur est survenue lors de la mise à jour de votre mot de passe."
 
+#: ../templates/default/gestion_mailings.tpl:75
 #: ../templates/default/page.tpl:79
 msgid "Superadmin"
 msgstr "Superadmin"
@@ -2110,7 +2123,7 @@ msgstr "Traduction du libellé « %s »"
 msgid "Old-timer"
 msgstr "Ancien membre"
 
-#: ../templates/default/desktop.tpl:37
+#: ../templates/default/desktop.tpl:45
 msgid "Show dashboard on login"
 msgstr "Afficher le tableau de bord à la connexion"
 
@@ -2123,7 +2136,7 @@ msgid "Short Text (Card Center):"
 msgstr "Abréviation (centre de la carte)&nbsp;:"
 
 #: ../attendance_sheet.php:82 ../attendance_sheet.php:97
-#: ../templates/default/gestion_adherents.tpl:112
+#: ../templates/default/gestion_adherents.tpl:121
 msgid "Attendance sheet"
 msgstr "Liste d'émargement"
 
@@ -2236,7 +2249,7 @@ msgstr "Générer la carte de membre"
 msgid "View my member card"
 msgstr "Voir ma fiche membre"
 
-#: ../templates/default/gestion_adherents.tpl:162
+#: ../templates/default/gestion_adherents.tpl:171
 #: ../templates/default/gestion_mailings.tpl:100
 #: ../templates/default/gestion_groupes.tpl:40
 #: ../templates/default/gestion_contributions.tpl:196
@@ -2325,7 +2338,7 @@ msgstr ""
 "Vous avez demandé à Galette d'envoyer une confirmation par mail à "
 "l'adhérent, mais l'envoi de mail a été désactivé dans les préférences."
 
-#: ../templates/default/gestion_adherents.tpl:192
+#: ../templates/default/gestion_adherents.tpl:201
 msgid "Inactive account"
 msgstr "Compte désactivé"
 
@@ -2337,6 +2350,10 @@ msgstr "Droits d'accès à la base"
 #: ../templates/default/mailing_adherents.tpl:94
 msgid "Message:"
 msgstr "Message&nbsp;:"
+
+#: ../templates/default/gestion_adherents.tpl:35
+msgid "Without"
+msgstr "Sans"
 
 #: ../templates/default/preferences.tpl:44
 msgid "Association's short description:"
@@ -2355,7 +2372,7 @@ msgid "Self subscription enabled?"
 msgstr "Auto-Enregistrement actif&nbsp;?"
 
 #: ../classes/politeness.class.php:67
-#: ../templates/default/gestion_adherents.tpl:189
+#: ../templates/default/gestion_adherents.tpl:198
 msgid "Miss"
 msgstr "Mademoiselle"
 
@@ -2374,7 +2391,7 @@ msgstr "(65 caractères max)"
 msgid "Current logo"
 msgstr "Logo actuel"
 
-#: ../templates/default/gestion_adherents.tpl:210
+#: ../templates/default/gestion_adherents.tpl:219
 msgid "Membership will expire soon (&lt;30d)"
 msgstr "Adhésion à échéance (&lt;30j)"
 
@@ -2385,6 +2402,10 @@ msgstr "Voulez vous vraiment effacer cet E-Mailing&nbsp;?"
 #: ../install/index.php:494
 msgid "Connection to database successfull"
 msgstr "La connexion à la base est établie"
+
+#: ../templates/default/desktop.tpl:33
+msgid "No Google+ posts has been retrieved."
+msgstr "Aucun billet Google+ n'a été récupéré."
 
 #: ../templates/default/history.tpl:107
 msgid "logs are empty"
@@ -2539,7 +2560,7 @@ msgstr ""
 "- Vous devez indiquer soit une durée d'adhésion par défaut, soit une date de "
 "début d'exercice (pas les deux)."
 
-#: ../templates/default/gestion_adherents.tpl:33
+#: ../templates/default/gestion_adherents.tpl:42
 #: ../templates/default/gestion_mailings.tpl:7
 #: ../templates/default/history.tpl:10
 msgid "Records per page:"
@@ -2603,7 +2624,7 @@ msgstr "Émetteur&nbsp;:"
 msgid "%s on Google+!"
 msgstr "%s sur Google+&nbsp;!"
 
-#: ../gestion_adherents.php:186
+#: ../gestion_adherents.php:190
 msgid "Infos"
 msgstr "Informations"
 
@@ -2615,7 +2636,7 @@ msgstr "Voulez vous vraiment effacer cette entrée&nbsp;?"
 msgid "from a staff user"
 msgstr "depuis un membre du bureau"
 
-#: ../templates/default/gestion_adherents.tpl:64
+#: ../templates/default/gestion_adherents.tpl:73
 #: ../templates/default/ajax_members.tpl:9
 #: ../templates/default/liste_membres.tpl:20
 msgid "Nickname"
@@ -2637,7 +2658,7 @@ msgstr ""
 "Votre mot de passe a été changé. Veuillez cliquer sur le bouton « accueil » "
 "pour accéder à la page de connexion."
 
-#: ../templates/default/gestion_adherents.tpl:184
+#: ../templates/default/gestion_adherents.tpl:193
 msgid "Man"
 msgstr "Homme"
 
@@ -2662,11 +2683,11 @@ msgstr "- Le champ nom ne peut pas être vide."
 msgid "Login"
 msgstr "Identification"
 
-#: ../gestion_adherents.php:195
+#: ../gestion_adherents.php:199
 msgid "Latecomers"
 msgstr "Les retardataires"
 
-#: ../gestion_adherents.php:196 ../templates/default/gestion_adherents.tpl:198
+#: ../gestion_adherents.php:200 ../templates/default/gestion_adherents.tpl:207
 msgid "Never contributed"
 msgstr "N'a jamais cotisé"
 
@@ -2694,6 +2715,10 @@ msgstr "Accès à la base"
 msgid "(Integer)"
 msgstr "(Entier)"
 
+#: ../templates/default/gestion_adherents.tpl:31
+msgid "Don't care"
+msgstr "Sans importance"
+
 #: ../templates/default/gestion_mailings.tpl:81
 msgid "Mailing has been sent"
 msgstr "L'E-Mailing a été envoyé"
@@ -2707,7 +2732,7 @@ msgid "Vice-treasurer"
 msgstr "Vice-trésorier"
 
 #: ../templates/default/mailing_adherents.tpl:162
-#: ../templates/default/mailing_adherents.tpl:201
+#: ../templates/default/mailing_adherents.tpl:202
 #: ../templates/default/gestion_groupes.tpl:65
 #: ../templates/default/gestion_groupes.tpl:102
 #: ../templates/default/ajouter_transaction.tpl:121
@@ -2728,7 +2753,7 @@ msgstr "Signature"
 msgid "Your message has been sent to <strong>%s members</strong>"
 msgstr "Votre courriel a été envoyé à <strong>%s membres</strong>"
 
-#: ../gestion_adherents.php:204
+#: ../gestion_adherents.php:208
 msgid "Inactive accounts"
 msgstr "Comptes désactivés"
 
@@ -2765,7 +2790,7 @@ msgstr "Page %i"
 msgid "Mobile phone:"
 msgstr "GSM&nbsp;:"
 
-#: ../templates/default/gestion_adherents.tpl:223
+#: ../templates/default/gestion_adherents.tpl:232
 msgid "E-mail"
 msgstr "Courriel"
 
@@ -2847,8 +2872,8 @@ msgstr "Jabber&nbsp;:"
 msgid "no member"
 msgstr "aucun adhérent"
 
-#: ../templates/default/gestion_adherents.tpl:179
-#: ../templates/default/gestion_adherents.tpl:180
+#: ../templates/default/gestion_adherents.tpl:188
+#: ../templates/default/gestion_adherents.tpl:189
 #: ../templates/default/gestion_contributions.tpl:207
 #: ../templates/default/gestion_contributions.tpl:208
 #: ../templates/default/gestion_transactions.tpl:116
@@ -2913,7 +2938,7 @@ msgstr "Les tables ont été correctement mises à jour."
 msgid "Show title ?"
 msgstr "Afficher le titre&nbsp;?"
 
-#: ../gestion_adherents.php:183
+#: ../gestion_adherents.php:187
 msgid "Address"
 msgstr "Adresse"
 
@@ -3019,7 +3044,7 @@ msgstr "Une erreur est survenue lors de l'enregistrement de la transaction."
 msgid "Send down '%s' field"
 msgstr "Faire descendre le champ « %s »"
 
-#: ../templates/default/gestion_adherents.tpl:224
+#: ../templates/default/gestion_adherents.tpl:233
 msgid "Send a mail"
 msgstr "Envoyer un courriel"
 
@@ -3032,7 +3057,7 @@ msgstr "MSN"
 msgid "Company:"
 msgstr "Raison sociale"
 
-#: ../templates/default/gestion_adherents.tpl:113
+#: ../templates/default/gestion_adherents.tpl:122
 msgid "Including photos?"
 msgstr "inclure les photos ?"
 
@@ -3040,7 +3065,7 @@ msgstr "inclure les photos ?"
 msgid "Exports"
 msgstr "Exports"
 
-#: ../gestion_adherents.php:203
+#: ../gestion_adherents.php:207
 msgid "Active accounts"
 msgstr "Comptes actifs"
 
@@ -3049,7 +3074,7 @@ msgstr "Comptes actifs"
 msgid "Mailing preview"
 msgstr "Prévisualisation de l'E-Mailing"
 
-#: ../templates/default/gestion_adherents.tpl:161
+#: ../templates/default/gestion_adherents.tpl:170
 msgid "%membername: contributions"
 msgstr "%membername&nbsp;: contributions"
 
@@ -3057,7 +3082,7 @@ msgstr "%membername&nbsp;: contributions"
 msgid "Parameted exports"
 msgstr "Exports paramétrés"
 
-#: ../gestion_adherents.php:192
+#: ../gestion_adherents.php:196
 msgid "All members"
 msgstr "Tous les adhérents"
 
@@ -3080,7 +3105,7 @@ msgid "Do you really want to delete this contribution of the database ?"
 msgstr ""
 "Voulez vous vraiment effacer cette contribution de la base de données&nbsp;?"
 
-#: ../templates/default/gestion_adherents.tpl:98
+#: ../templates/default/gestion_adherents.tpl:107
 #: ../templates/default/gestion_contributions.tpl:140
 #: ../templates/default/configurer_fiches.tpl:27
 #: ../templates/default/gestion_intitules.tpl:34
@@ -3092,7 +3117,7 @@ msgstr "Actions"
 msgid "Default language:"
 msgstr "Langue par défaut&nbsp;:"
 
-#: ../gestion_adherents.php:202
+#: ../gestion_adherents.php:206
 msgid "All accounts"
 msgstr "Tous  les comptes"
 
@@ -3229,7 +3254,7 @@ msgstr "Fonction PHP mail()"
 msgid "Members selection"
 msgstr "Sélection d'adhérents"
 
-#: ../templates/default/gestion_adherents.tpl:116
+#: ../templates/default/gestion_adherents.tpl:125
 msgid "Generate Member Cards"
 msgstr "Générer les Cartes de Membres"
 
@@ -3253,7 +3278,7 @@ msgstr "Modifier le champ « %s »"
 msgid "Add a member"
 msgstr "Ajouter un adhérent"
 
-#: ../templates/default/gestion_adherents.tpl:207
+#: ../templates/default/gestion_adherents.tpl:216
 msgid "Modify"
 msgstr "Modifier"
 
@@ -3286,7 +3311,7 @@ msgstr "Gestion de champs additionnels pour différents formulaires"
 msgid "Add new member in database"
 msgstr "Ajouter un nouveau membre à la base"
 
-#: ../templates/default/gestion_adherents.tpl:216
+#: ../templates/default/gestion_adherents.tpl:225
 msgid "Lateness in fee"
 msgstr "Retard de cotisation"
 
@@ -3379,7 +3404,7 @@ msgstr "L'éditeur HTML doit-il être activé au chargement de la page ?"
 msgid "Group added"
 msgstr "Groupe ajouté"
 
-#: ../gestion_adherents.php:193
+#: ../gestion_adherents.php:197
 msgid "Up to date members"
 msgstr "Adhérents à jour"
 
@@ -3387,7 +3412,7 @@ msgstr "Adhérents à jour"
 msgid "End!"
 msgstr "Fin&nbsp;!"
 
-#: ../ajax_recipients.php:68 ../templates/default/gestion_adherents.tpl:115
+#: ../ajax_recipients.php:68 ../templates/default/gestion_adherents.tpl:124
 #: ../templates/default/mailing_adherents.tpl:48
 msgid "Generate labels"
 msgstr "Générer les étiquettes"
@@ -3554,13 +3579,13 @@ msgstr "Normal"
 msgid "Founder member"
 msgstr "Membre fondateur"
 
-#: ../templates/default/gestion_adherents.tpl:201
-#: ../templates/default/gestion_adherents.tpl:202
+#: ../templates/default/gestion_adherents.tpl:210
+#: ../templates/default/gestion_adherents.tpl:211
 #: ../templates/default/preferences.tpl:28
 msgid "Admin"
 msgstr "Administrateur"
 
-#: ../templates/default/gestion_adherents.tpl:204
+#: ../templates/default/gestion_adherents.tpl:213
 msgid "Membership in order"
 msgstr "Adhésion en règle"
 
@@ -3584,7 +3609,7 @@ msgstr ""
 msgid "Member of '%groupname'"
 msgstr "Membre de « %groupname »"
 
-#: ../templates/default/desktop.tpl:30
+#: ../templates/default/desktop.tpl:37
 msgid "Read complete post"
 msgstr "Lire le billet complet"
 
@@ -3667,7 +3692,7 @@ msgstr "Lieu de naissance&nbsp;:"
 msgid "- Mandatory field empty."
 msgstr "- Champ obligatoire non renseigné."
 
-#: ../templates/default/gestion_adherents.tpl:138
+#: ../templates/default/gestion_adherents.tpl:147
 #: ../templates/default/ajax_members.tpl:21
 msgid "[M]"
 msgstr "[H]"
@@ -3815,7 +3840,7 @@ msgstr "Groupes sélectionnés"
 msgid "Parameters couldn't be saved."
 msgstr "Les paramètres n'ont pas pu être sauvegardés."
 
-#: ../templates/default/gestion_adherents.tpl:208
+#: ../templates/default/gestion_adherents.tpl:217
 #: ../templates/default/gestion_contributions.tpl:213
 #: ../templates/default/voir_adherent.tpl:33
 msgid "Modification"
@@ -3892,7 +3917,7 @@ msgstr "Impossible de convertir le fichier GIF"
 msgid "DELETE operation allowed"
 msgstr "Opération DELETE autorisée"
 
-#: ../templates/default/gestion_adherents.tpl:31
+#: ../templates/default/gestion_adherents.tpl:40
 msgid "member"
 msgstr "adhérent"
 
@@ -3921,7 +3946,7 @@ msgid "Profession:"
 msgstr "Profession&nbsp;:"
 
 #: ../carte_adherent.php:94 ../attendance_sheet.php:83
-#: ../etiquettes_adherents.php:73
+#: ../etiquettes_adherents.php:81
 msgid "Generated by Galette"
 msgstr "Générer par Galette"
 
@@ -3957,7 +3982,7 @@ msgstr "Afficher et gérer les groupes"
 msgid "Is company?"
 msgstr "Est une entreprise&nbsp;?"
 
-#: ../attendance_sheet.php:84 ../etiquettes_adherents.php:74
+#: ../attendance_sheet.php:84 ../etiquettes_adherents.php:82
 #: ../templates/default/preferences.tpl:31
 msgid "Labels"
 msgstr "Étiquettes"
@@ -3971,7 +3996,7 @@ msgstr "Utilisateur"
 msgid "Begin"
 msgstr "Début"
 
-#: ../templates/default/gestion_adherents.tpl:252
+#: ../templates/default/gestion_adherents.tpl:261
 #: ../templates/default/gestion_contributions.tpl:237
 #: ../templates/default/gestion_transactions.tpl:135
 msgid "Show legend"
@@ -3996,7 +4021,7 @@ msgstr ""
 msgid "Font size:"
 msgstr "Corps du texte&nbsp;:"
 
-#: ../templates/default/gestion_adherents.tpl:186
+#: ../templates/default/gestion_adherents.tpl:195
 msgid "Active account"
 msgstr "Compte actif"
 
@@ -4036,7 +4061,7 @@ msgstr ""
 "Pour être mis à jour, Galette doit avoir un certain nombre de droits sur la "
 "base de données (CREATE, DROP, DELETE, UPDATE, SELECT, INSERT et ALTER)"
 
-#: ../templates/default/gestion_adherents.tpl:107
+#: ../templates/default/gestion_adherents.tpl:116
 msgid ""
 "Do you really want to delete all selected accounts (and related "
 "contributions)?"
