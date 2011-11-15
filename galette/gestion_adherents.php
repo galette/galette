@@ -137,6 +137,10 @@ if ( isset($_GET['clear_filter']) ) {
             $varslist->account_status_filter = $_GET['filter_account'];
         }
     }
+    //email filter
+    if ( isset($_GET['email_filter']) ) {
+        $varslist->email_filter = (int)$_GET['email_filter'];
+    }
 }
 
 //numbers of rows to display

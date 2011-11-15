@@ -57,6 +57,7 @@ class VarsList extends GalettePagination
     private $_field_filter;
     private $_membership_filter;
     private $_account_status_filter;
+    private $_email_filter;
 
     private $_selected;
     private $_unreachable;
@@ -91,6 +92,7 @@ class VarsList extends GalettePagination
         $this->_field_filter = null;
         $this->_membership_filter = null;
         $this->_account_status_filter = null;
+        $this->_email_filter = Members::FILTER_DC_EMAIL;
         $this->_selected = array();
     }
 
@@ -118,6 +120,7 @@ class VarsList extends GalettePagination
                 'field_filter',
                 'membership_filter',
                 'account_status_filter',
+                'email_filter',
                 'selected',
                 'unreachable'
             );
@@ -183,6 +186,24 @@ class VarsList extends GalettePagination
                         '` should be an integer (' . gettype($value) . ' given)',
                         PEAR_LOG_WARNING
                     );
+                }
+                break;
+            case 'email_filter':
+                switch ($value) {
+                case Members::FILTER_DC_EMAIL:
+                case Members::FILTER_W_EMAIL:
+                case Members::FILTER_WO_EMAIL:
+                    $this->_email_filter = $value;
+                    break;
+                default:
+                    $log->log(
+                        '[VarsList] Value for email filter should be either ' .
+                        Members::FILTER_DC_EMAIL . ', ' .
+                        Members::FILTER_W_EMAIL . ' or ' .
+                        Members::FILTER_WO_EMAIL . ' (' . $value . ' given)',
+                        PEAR_LOG_WARNING
+                    );
+                    break;
                 }
                 break;
             default:

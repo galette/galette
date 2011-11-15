@@ -66,6 +66,9 @@ class Members
     const FILTER_MAIL = 2;
     const FILTER_JOB = 3;
     const FILTER_INFOS = 4;
+    const FILTER_DC_EMAIL = 5;
+    const FILTER_W_EMAIL = 6;
+    const FILTER_WO_EMAIL = 7;
 
     const ORDERBY_NAME = 0;
     const ORDERBY_NICKNAME = 1;
@@ -562,8 +565,14 @@ class Members
         global $zdb, $varslist, $login;
 
         try {
+            if ( $varslist->email_filter == Members::FILTER_W_EMAIL) {
+                $select->where('email_adh != ""');
+            }
+            if ( $varslist->email_filter == Members::FILTER_WO_EMAIL) {
+                $select->where('email_adh = ""');
+            }
+
             if ( $varslist->filter_str != '' ) {
-                //$where = ' WHERE ';
                 $token = '%' . $varslist->filter_str . '%';
                 switch( $varslist->field_filter ) {
                 case self::FILTER_NAME:

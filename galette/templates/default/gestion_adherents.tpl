@@ -25,6 +25,15 @@
 			</select>
 			<input type="submit" class="inline" value="{_T string="Filter"}"/>
 			<input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
+            <div>
+                {_T string="Members that have an email adress:"}
+                <input type="radio" name="email_filter" id="filter_dc_email" value="{php}echo Members::FILTER_DC_EMAIL;{/php}"{if $varslist->email_filter eq constant('Members::FILTER_DC_EMAIL')} checked="checked"{/if}>
+                <label for="filter_dc_email" >{_T string="Don't care"}</label>
+                <input type="radio" name="email_filter" id="filter_with_email" value="{php}echo Members::FILTER_W_EMAIL;{/php}"{if $varslist->email_filter eq constant('Members::FILTER_W_EMAIL')} checked="checked"{/if}>
+                <label for="filter_with_email" >{_T string="With"}</label>
+                <input type="radio" name="email_filter" id="filter_without_email" value="{php}echo Members::FILTER_WO_EMAIL;{/php}"{if $varslist->email_filter eq constant('Members::FILTER_WO_EMAIL')} checked="checked"{/if}>
+                <label for="filter_without_email" >{_T string="Without"}</label>
+            </div>
 		</div>
 		<table class="infoline">
 			<tr>
