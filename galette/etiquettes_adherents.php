@@ -54,16 +54,24 @@ require_once WEB_ROOT . 'classes/pdf.class.php';
 require_once WEB_ROOT . 'classes/members.class.php';
 require_once WEB_ROOT . 'classes/varslist.class.php';
 
-if ( isset($_SESSION['galette']['varslist']) ) {
-    $varslist = unserialize($_SESSION['galette']['varslist']);
+$members = null;
+if ( isset($_GET['from']) && $_GET['from'] === 'mailing' ) {
+    //if we're from mailing, we have to retrieve its unreachables members for labels
+    require_once 'classes/mailing.class.php';
+    $mailing = unserialize($_SESSION['galette']['mailing']);
+    $members = $mailing->unreachables;
 } else {
-    $log->log('No member selected to generate labels', PEAR_LOG_INFO);
-    if ( $login->isAdmin ) {
-        header('location:gestion_adherents.php');
+    if ( isset($_SESSION['galette']['varslist']) ) {
+        $varslist = unserialize($_SESSION['galette']['varslist']);
+    } else {
+        $log->log('No member selected to generate labels', PEAR_LOG_INFO);
+        if ( $login->isAdmin ) {
+            header('location:gestion_adherents.php');
+        }
     }
-}
 
-$members = Members::getArrayList($varslist->selected);
+    $members = Members::getArrayList($varslist->selected);
+}
 
 if ( !is_array($members) || count($members) < 1 ) {
     die();

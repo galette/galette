@@ -64,7 +64,7 @@ if ( count($mailing->recipients) > 0 ) {
                 _T("unreachable members:")
                 : _T("unreachable member:")) . '</strong><br/>' .
             _T("Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail.") .
-            '<br/><a id="btnlabels" class="button" href="etiquettes_adherents.php">' .
+            '<br/><a id="btnlabels" class="button" href="etiquettes_adherents.php?from=mailing">' .
             _T("Generate labels") . '</a></p>';
     }
 } else {

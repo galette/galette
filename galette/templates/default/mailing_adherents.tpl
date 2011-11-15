@@ -45,7 +45,7 @@
                 <p id="unreachables_count">
                     <strong>{$count_unreachables} {if $count_unreachables != 1}{_T string="unreachable members:"}{else}{_T string="unreachable member:"}{/if}</strong><br/>
                     {_T string="Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail."}
-                    <br/><a id="btnlabels" class="button" href="etiquettes_adherents.php">{_T string="Generate labels"}</a>
+                    <br/><a id="btnlabels" class="button" href="etiquettes_adherents.php?from=mailing">{_T string="Generate labels"}</a>
                 </p>
         {/if}
     {else}
