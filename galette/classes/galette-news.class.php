@@ -59,6 +59,8 @@ class GaletteNews
 
     private $_show = 5;
     private $_rt = 'false';
+    //number of hours until cache will be invalid
+    private $_cache_timeout = 24;
 
     private $_twitter_url = null;
 
@@ -109,7 +111,7 @@ class GaletteNews
                     filemtime($cfile)
                 )
             );
-            $expire = $mdate->add(new DateInterval('PT5H'));
+            $expire = $mdate->add(new DateInterval('PT' . $this->_cache_timeout . 'H'));
             $now = new DateTime();
             $has_expired = $now > $expire;
             return !$has_expired;
