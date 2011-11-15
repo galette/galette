@@ -20,16 +20,24 @@
                     <li><a href="#twitter">Twitter</a></li>
                     <li><a href="#googleplus">Google+</a></li>
                 </ul>
+{if $tweets|@count == 0}
+                <p id="twitter">{_T string="No tweets has been retrieved."}</p>
+{else}
                 <ul id="twitter">
-{foreach item=tweet from=$tweets}
+    {foreach item=tweet from=$tweets}
                     <li>{$tweet}</li>
-{/foreach}
+    {/foreach}
                 </ul>
+{/if}
+{if $gplus|@count == 0}
+                <p id="googleplus">{_T string="No Google+ posts has been retrieved."}</p>
+{else}
                 <ul id="googleplus">
-{foreach item=gp key=url from=$gplus}
+    {foreach item=gp key=url from=$gplus}
                     <li>{$gp} <a href="{$url}" class="googleplus_plus button small" title="{_T string="Read complete post"}">...</a></li>
-{/foreach}
+    {/foreach}
                 </ul>
+{/if}
             </div>
         </aside>
         <p class="center">
