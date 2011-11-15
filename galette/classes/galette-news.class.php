@@ -123,10 +123,12 @@ class GaletteNews
      *
      * @return boolean
      */
-    private function _makeCache()
+    private function _makeCache($load = true)
     {
-        $this->_parseTweets();
-        $this->_parseGplus();
+        if ( $load === true ) {
+            $this->_parseTweets();
+            $this->_parseGplus();
+        }
 
         $cfile = $this->_getCacheFilename();
         $stream = fopen($cfile, 'w+');
@@ -152,8 +154,25 @@ class GaletteNews
     {
         $cfile = $this->_getCacheFilename();
         $data = unserialize(file_get_contents($cfile));
+
+        $refresh_cache = false;
         $this->_tweets = $data['tweets'];
+        //check if tweets were cached
+        if ( !is_array($this->_tweets) || count($this->_tweets) == 0 ) {
+            $this->_parseTweets();
+            $refresh_cache = true;
+        }
+
         $this->_gplus = $data['gplus'];
+        //check if gplus posts were cached
+        if ( !is_array($this->_gplus) || count($this->_gplus) == 0 ) {
+            $this->_parseGplus();
+            $refresh_cache = true;
+        }
+
+        if ( $refresh_cache === true ) {
+            $this->_makeCache(false);
+        }
     }
 
     /**
@@ -173,7 +192,18 @@ class GaletteNews
      */
     private function _parseTweets()
     {
-        $xml = simplexml_load_file($this->_twitter_url) or die("could not connect");
+        global $log;
+
+        $xml = simplexml_load_file($this->_twitter_url);
+
+        if ( !$xml ) {
+            $log->log(
+                'An error occured trying to retrieve Tweets',
+                PEAR_LOG_ERR
+            );
+            $this->_tweets = array();
+            return false;
+        }
 
         //search and replace:
         //- urls,
