@@ -195,6 +195,7 @@
                     success: function(res){ldelim}
                         $('#unreachables_count').remove();
                         $('#recipients_count').replaceWith(res);
+                        $('.mailing_infos input:submit, .mailing_infos .button, .mailing_infos input:reset' ).button();
                         $('#members_list').dialog("close");
                     {rdelim},
                     error: function() {ldelim}
