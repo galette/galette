@@ -116,7 +116,7 @@ class apiCurlIO implements apiIO {
     curl_setopt($ch, CURLOPT_HEADER, true);
     /** A Galette's hack for those that use software under windows */
     if ( PHP_OS == 'WINNT' ) {
-        curl_setopt($ch, CURLOPT_CAPATH, WEB_ROOT . 'includes/ca/cacert.cert');
+        curl_setopt($ch, CURLOPT_CAINFO, WEB_ROOT . 'includes/ca/cacert.crt');
     }
     $respData = curl_exec($ch);
     $respHeaderSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
