@@ -603,7 +603,7 @@ class Members
                     break;
                 case self::FILTER_INFOS:
                     $select->where('info_public_adh LIKE ?', $token);
-                    if ( $login->isAdmin() ) {
+                    if ( $login->isAdmin() || $login->isStaff() ) {
                         $select->orWhere('info_adh LIKE ?', $token);
                     }
                     break;

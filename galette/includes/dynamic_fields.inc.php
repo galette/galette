@@ -377,7 +377,10 @@ function prepare_dynamic_fields_for_display(
         if ( $result ) {
             $extra = $edit ? 1 : 0;
 
-            if ( !$login->isAdmin() && $result->field_perm == $perm_admin ) {
+            if ( !$login->isAdmin()
+                && !$login->isStaff()
+                && $result->field_perm == $perm_admin
+            ) {
                 $disabled[$field_id] = 'disabled';
             }
 

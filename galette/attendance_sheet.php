@@ -44,7 +44,7 @@ if ( !$login->isLogged() ) {
     header("location: index.php");
     die();
 }
-if ( !$login->isAdmin() ) {
+if ( !$login->isAdmin() && !$login->isStaff() ) {
     header("location: voir_adherent.php");
     die();
 }
@@ -57,7 +57,7 @@ if ( isset($_SESSION['galette']['varslist']) ) {
     $varslist = unserialize($_SESSION['galette']['varslist']);
 } else {
     $log->log('No member selected to generate labels', PEAR_LOG_INFO);
-    if ( $login->isAdmin ) {
+    if ( $login->isAdmin || $login->isStaff() ) {
         header('location:gestion_adherents.php');
     }
 }

@@ -51,7 +51,10 @@ if ( !$login->isLogged() ) {
 $id_adh = get_numeric_form_value('id_adh', '');
 
 if ( !$login->isSuperAdmin() ) {
-    if ( !$login->isAdmin() || $login->isAdmin() && $id_adh == '' ) {
+    if ( !$login->isAdmin()
+        || $login->isAdmin() && $id_adh == ''
+        || $login->isStaff() && $id_adh == ''
+    ) {
         $id_adh = $login->id;
     }
 }

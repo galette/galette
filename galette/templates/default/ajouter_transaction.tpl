@@ -67,7 +67,7 @@
 					<th class="listing left date_row">{_T string="Begin"}</th>
 					<th class="listing left date_row">{_T string="End"}</th>
 					<th class="listing left">{_T string="Duration"}</th>
-{if $login->isAdmin()}
+{if $login->isAdmin() or $login->isStaff()}
 					<th class="listing left">{_T string="Member"}</th>
 {/if}
 					<th class="listing left">{_T string="Type"}</th>
@@ -76,11 +76,11 @@
 			</thead>
             <tfoot>
                 <tr>
-                    <th class="right" colspan="{if $login->isAdmin()}7{else}6{/if}">{_T string="Dispatched amount:"}</th>
+                    <th class="right" colspan="{if $login->isAdmin() or $login->isStaff()}7{else}6{/if}">{_T string="Dispatched amount:"}</th>
                     <th class="right">{$transaction->getDispatchedAmount()}</th>
                 </tr>
                 <tr>
-                    <th class="right" colspan="{if $login->isAdmin()}7{else}6{/if}">{_T string="Not dispatched amount:"}</th>
+                    <th class="right" colspan="{if $login->isAdmin() or $login->isStaff()}7{else}6{/if}">{_T string="Not dispatched amount:"}</th>
                     <th class="right">{$transaction->getMissingAmount()}</th>
                 </tr>
             </tfoot>
@@ -96,14 +96,14 @@
 					<td class="{$cclass} center nowrap">{$contrib->begin_date}</td>
 					<td class="{$cclass} center nowrap">{$contrib->end_date}</td>
 					<td class="{$cclass} nowrap">{$contrib->duration}</td>
-    {if $login->isAdmin()}
+    {if $login->isAdmin() or $login->isStaff()}
 					<td class="{$cclass}">{memberName id="$mid"}</td>
     {/if}
 					<td class="{$cclass}">{$contrib->type->libelle}</td>
 					<td class="{$cclass} nowrap right">{$contrib->amount}</td>
 				</tr>
 {foreachelse}
-				<tr><td colspan="{if $login->isAdmin()}8{else}7{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
+				<tr><td colspan="{if $login->isAdmin() or $login->isStaff()}8{else}7{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
 {/foreach}
 			</tbody>
 		</table>

@@ -24,7 +24,7 @@
 		</div>
 {/if}
 		<ul id="details_menu">
-{if ($pref_card_self eq 1) or ($login->isAdmin())}
+{if ($pref_card_self eq 1) or ($login->isAdmin() or $login->isStaff())}
 			<li>
 				<a class="button" href="carte_adherent.php?id_adh={$member->id}" id="btn_membercard">{_T string="Generate Member Card"}</a>
 			</li>
@@ -35,7 +35,7 @@
 			<li>
 				<a class="button" href="gestion_contributions.php?id_adh={$member->id}" id="btn_contrib">{_T string="View contributions"}</a>
 			</li>
-{if $login->isAdmin()}
+{if $login->isAdmin() or $login->isStaff()}
 			<li>
 				<a class="button" href="ajouter_contribution.php?id_adh={$member->id}" id="btn_addcontrib">{_T string="Add a contribution"}</a>
 			</li>
@@ -102,7 +102,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 				<th>{_T string="Be visible in the<br /> members list :"}</th>
 				<td>{$member->sappears_in_list}</td>
 			</tr>
-{if $login->isAdmin()}
+{if $login->isAdmin() or $login->isStaff()}
 			<tr>
 				<th>{_T string="Account:"}</th>
 				<td>{$member->sactive}</td>
@@ -120,7 +120,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 				<th>{_T string="Username:"}</th>
 				<td>{$member->login}</td>
 			</tr>
-{if $login->isAdmin()}
+{if $login->isAdmin() or $login->isStaff()}
 			<tr>
 				<th>{_T string="Creation date:"}</th>
 				<td>{$member->creation_date}</td>

@@ -40,7 +40,7 @@
  */
 
 require_once 'includes/galette.inc.php';
-if ( !$login->isLogged() ) {
+if ( !$login->isLogged() || !$login->isAdmin() || !$login->isStaff() ) {
     header('location: index.php');
     die();
 }

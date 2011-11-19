@@ -224,8 +224,8 @@ class Contribution
             $select = new Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . self::TABLE)
                 ->where(self::PK . ' = ?', $id);
-            //restrict query on current member id if he's not admin
-            if ( !$login->isAdmin() ) {
+            //restrict query on current member id if he's not admin nor staff member
+            if ( !$login->isAdmin() && !$login->isStaff() ) {
                 $select->where(Adherent::PK . ' = ?', $login->id);
             }
             $row = $select->query()->fetch();

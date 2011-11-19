@@ -157,6 +157,8 @@
 					{/if}
 					{if $member->isAdmin()}
 						<img src="{$template_subdir}images/icon-star.png" alt="{_T string="[admin]"}" width="16" height="16"/>
+                    {elseif $member->isStaff()}
+                        <img src="{$template_subdir}images/icon-staff.png" alt="{_T string="[staff]"}" width="16" height="16"/>
 					{else}
 						<img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
 					{/if}
@@ -207,22 +209,26 @@
 					<td class="back">{_T string="Never contributed"}</td>
 				</tr>
 				<tr>
-					<th><img src="{$template_subdir}images/icon-star.png" alt="{_T string="Admin"}" width="16" height="16"/></th>
-					<td class="back">{_T string="Admin"}</td>
+					<th><img src="{$template_subdir}images/icon-staff.png" alt="{_T string="[staff]"}" width="16" height="16"/></th>
+					<td class="back">{_T string="Staff member"}</td>
 					<th class="cotis-ok color-sample">&nbsp;</th>
 					<td class="back">{_T string="Membership in order"}</td>
 				</tr>
 				<tr>
-					<th><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="Modify"}" width="16" height="16"/></th>
-					<td class="back">{_T string="Modification"}</td>
+					<th><img src="{$template_subdir}images/icon-star.png" alt="{_T string="Admin"}" width="16" height="16"/></th>
+					<td class="back">{_T string="Admin"}</td>
 					<th class="cotis-soon color-sample">&nbsp;</th>
 					<td class="back">{_T string="Membership will expire soon (&lt;30d)"}</td>
 				</tr>
 				<tr>
-					<th><img src="{$template_subdir}images/icon-money.png" alt="{_T string="Contribution"}" width="16" height="16"/></th>
-					<td class="back">{_T string="Contributions"}</td>
+					<th><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="Modify"}" width="16" height="16"/></th>
+					<td class="back">{_T string="Modification"}</td>
 					<th class="cotis-late color-sample">&nbsp;</th>
 					<td class="back">{_T string="Lateness in fee"}</td>
+				</tr>
+				<tr>
+					<th><img src="{$template_subdir}images/icon-money.png" alt="{_T string="Contribution"}" width="16" height="16"/></th>
+					<td class="back">{_T string="Contributions"}</td>
 				</tr>
 				<tr>
 					<th><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="Delete"}" width="16" height="16"/></th>

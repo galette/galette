@@ -8,7 +8,9 @@
                 <a id="contribs" href="gestion_contributions.php?id_adh=all" title="{_T string="View and filter contributions"}">{_T string="Contributions"}</a><br/>
                 <a id="transactions" href="gestion_transactions.php" title="{_T string="View and filter transactions"}">{_T string="Transactions"}</a>
                 <a id="mailings" href="{$galette_base_path}gestion_mailings.php" title="{_T string="Manage mailings that has been sent"}">{_T string="Mailings"}</a>
+{if $login->isAdmin()}
                 <a id="prefs" href="{$galette_base_path}preferences.php" title="{_T string="Set applications preferences (adress, website, member's cards configuration, ...)"}">{_T string="Settings"}</a>
+{/if}
             </div>
         </section>
         <aside id="news">

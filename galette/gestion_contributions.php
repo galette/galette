@@ -137,7 +137,7 @@ if ( isset($_GET['clear_filter']) ) {
     }
 }
 
-if ( $login->isAdmin() && isset($_GET['id_adh']) && $_GET['id_adh'] != '' ) {
+if ( ($login->isAdmin() || $login->isStaff()) && isset($_GET['id_adh']) && $_GET['id_adh'] != '' ) {
     if ( $_GET['id_adh'] == 'all' ) {
         $contribs->filtre_cotis_adh = null;
     } else {
@@ -145,7 +145,7 @@ if ( $login->isAdmin() && isset($_GET['id_adh']) && $_GET['id_adh'] != '' ) {
     }
 }
 
-if ( $login->isAdmin() ) {
+if ( $login->isAdmin() || $login->isStaff() ) {
     //delete contributions
     if (isset($_GET['sup']) || isset($_POST['delete'])) {
         if ( isset($_GET['sup']) ) {

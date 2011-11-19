@@ -26,11 +26,11 @@
 			<tr>
 				<td class="left nowrap">
 {if $member && $mode neq 'ajax'}
-    {if $login->isAdmin()}
+    {if $login->isAdmin() or $login->isStaff()}
                     <a id="clearfilter" href="?id_adh=all" title="{_T string="Show all members contributions"}">{_T string="Show all members contributions"}</a>
     {/if}
                     <strong>{$member->sname}</strong>
-    {if $login->isAdmin()}
+    {if $login->isAdmin() or $login->isStaff()}
                     (<a href="voir_adherent.php?id_adh={$member->id}">{_T string="See member profile"}</a> -
                     <a href="ajouter_contribution.php?id_adh={$member->id}">{_T string="Add a contribution"}</a>)
     {/if}
@@ -90,7 +90,7 @@
 						{/if}
 						</a>
 					</th>
-{if $login->isAdmin() and !$member}
+{if ($login->isAdmin() or $login->isStaff()) and !$member}
 					<th class="listing left">
 						<a href="gestion_contributions.php?tri={php}echo Contributions::ORDERBY_MEMBER;{/php}" class="listing">{_T string="Member"}
                         {if $contributions->orderby eq constant('Contributions::ORDERBY_MEMBER')}
@@ -136,13 +136,13 @@
 						{/if}
 						</a>
 					</th>
-{if $login->isAdmin() and $mode neq 'ajax'}
+{if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
 					<th class="listing nowrap actions_row">{_T string="Actions"}</th>
 {/if}
 				</tr>
 			</thead>
 			<tfoot>
-{if $login->isAdmin() && $mode neq 'ajax'}
+{if ($login->isAdmin() or $login->isStaff()) && $mode neq 'ajax'}
                 <tr>
                     <td colspan="7" id="table_footer">
                         <ul class="selection_menu">
@@ -153,7 +153,7 @@
                 </tr>
 {/if}
 				<tr>
-					<td colspan="{if $login->isAdmin() && !$member}9{elseif $login->isAdmin()}8{else}7{/if}" class="center" id="table_footer">
+					<td colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}9{elseif $login->isAdmin() or $login->isStaff()}8{else}7{/if}" class="center" id="table_footer">
 						{_T string="Pages:"}<br/>
 						<ul class="pages">{$pagination}</ul>
 					</td>
@@ -175,7 +175,7 @@
 					<td class="{$cclass} center nowrap">{$contribution->date}</td>
 					<td class="{$cclass} center nowrap">{$contribution->begin_date}</td>
 					<td class="{$cclass} center nowrap">{$contribution->end_date}</td>
-	{if $login->isAdmin() && !$member}
+	{if ($login->isAdmin() or $login->isStaff()) && !$member}
 					<td class="{$cclass}">
 		{if $contribs->filtre_cotis_adh eq ""}
 						<a href="gestion_contributions.php?id_adh={$mid}">{if $member}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
@@ -187,7 +187,7 @@
 					<td class="{$cclass}">{$contribution->type->libelle}</td>
 					<td class="{$cclass} nowrap">{$contribution->amount}</td>
 					<td class="{$cclass} nowrap">{$contribution->duration}</td>
-	{if $login->isAdmin() and $mode neq 'ajax'}
+	{if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
 					<td class="{$cclass} center nowrap">
 						<a href="ajouter_contribution.php?id_cotis={$contribution->id}">
                             <img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="Edit the contribution"}"/>
@@ -199,7 +199,7 @@
 	{/if}
 				</tr>
 {foreachelse}
-				<tr><td colspan="{if $login->isAdmin() && !$member}9{elseif $login->isAdmin()}8{else}7{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
+				<tr><td colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}9{elseif $login->isAdmin() or $login->isStaff()}8{else}7{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
 {/foreach}
 			</tbody>
 		</table>
@@ -207,7 +207,7 @@
 		<div id="legende" title="{_T string="Legend"}">
 			<h1>{_T string="Legend"}</h1>
 			<table>
-{if $login->isAdmin() and $mode neq 'ajax'}
+{if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
 				<tr>
 					<th class="back"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></th>
 					<td class="back">{_T string="Modification"}</td>
@@ -234,7 +234,7 @@
                     $('#nbshow').change(function() {ldelim}
                         this.form.submit();
                     {rdelim});
-                    $('#table_footer').parent().before('<td class="right" colspan="{if $login->isAdmin() && !$member}9{elseif $login->isAdmin()}8{else}7{/if}"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
+                    $('#table_footer').parent().before('<td class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}9{elseif $login->isAdmin() or $login->isStaff()}8{else}7{/if}"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
                     $('#legende h1').remove();
                     $('#legende').dialog({ldelim}
                         autoOpen: false,

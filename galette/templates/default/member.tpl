@@ -167,7 +167,7 @@
 						<input type="checkbox" name="bool_display_info" id="bool_display_info" value="1" {if $member->appearsInMembersList() eq 1}checked="checked"{/if} {$disabled.bool_display_info}{if $required.bool_display_info eq 1} required{/if}/>
 					</p>
     {if !$self_adh}
-        {if $login->isAdmin()}
+        {if $login->isAdmin() or $login->isStaff()}
 					<p>
 						<label for="activite_adh" class="bline">{_T string="Account:"}</label>
 						<select name="activite_adh" id="activite_adh" {$disabled.activite_adh}{if $required.activite_adh eq 1} required{/if}>
@@ -183,7 +183,7 @@
 					</p>
 					<p>
 						<label for="bool_admin_adh" class="bline">{_T string="Galette Admin:"}</label>
-						<input type="checkbox" name="bool_admin_adh" id="bool_admin_adh" value="1" {if $member->isAdmin() eq 1}checked="checked"{/if} {$disabled.bool_admin_adh}{if $required.bool_admin_adh eq 1} required{/if}/>
+						<input type="checkbox" name="bool_admin_adh" id="bool_admin_adh" value="1" {if $member->isAdmin()}checked="checked"{/if} {$disabled.bool_admin_adh}{if $required.bool_admin_adh eq 1} required{/if}/>
 					</p>
 					<p>
 						<label for="bool_exempt_adh" class="bline">{_T string="Freed of dues:"}</label>
@@ -216,7 +216,7 @@
 					</p>
     {/if}
     {* FIXME: EN cas de modification, veut-on envoyer un mail ? *}
-    {if !$self_adh and $login->isAdmin()}
+    {if !$self_adh and ($login->isAdmin() or $login->isStaff())}
 					<p>
 						<label for="mail_confirm" class="bline">{_T string="Send a mail:"}</label>
 						<input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
@@ -236,13 +236,13 @@
 					<p>
 						<label for="info_adh" class="bline">{_T string="Other informations (admin):"}</label>
 						<textarea name="info_adh" id="info_adh" cols="50" rows="6" {$disabled.info_adh}{if $required.info_adh eq 1} required{/if}>{$member->others_infos_admin|htmlspecialchars}</textarea><br/>
-						<span class="exemple labelalign">{_T string="This comment is only displayed for admins."}</span>
+						<span class="exemple labelalign">{_T string="This comment is only displayed for admins and staff members."}</span>
 					</p>
     {/if}
 					<p>
 						<label for="info_public_adh" class="bline">{_T string="Other informations:"}</label> 
 						<textarea name="info_public_adh" id="info_public_adh" cols="61" rows="6" {$disabled.info_public_adh}{if $required.info_public_adh eq 1} required{/if}>{$member->others_infos|htmlspecialchars}</textarea>
-    {if $login->isAdmin()}
+    {if $login->isAdmin() or $login->isStaff()}
 						<br/><span class="exemple labelalign">{_T string="This comment is reserved to the member."}</span>
     {/if}
 					</p>

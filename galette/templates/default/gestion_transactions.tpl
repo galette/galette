@@ -38,7 +38,7 @@
                         </a>
                     </th>
                     <th class="listing left">{_T string="Description"}</th>
-{if $login->isAdmin()}
+{if $login->isAdmin() or $login->isStaff()}
                     <th class="listing left">
                         <a href="gestion_transactions.php?tri={php}echo Transactions::ORDERBY_MEMBER;{/php}" class="listing">{_T string="Originator"}
                         {if $smarty.session.sort_by eq constant('Transactions::ORDERBY_MEMBER')}
@@ -62,14 +62,14 @@
                         {/if}
                         </a>
                     </th>
-{if $login->isAdmin()}
+{if $login->isAdmin() or $login->isStaff()}
                     <th class="listing actions_row">{_T string="Actions"}</th>
 {/if}
     			</tr>
             </thead>
 			<tfoot>
 				<tr>
-					<td colspan="{if $login->isAdmin()}6{else}4{/if}" class="center" id="table_footer">
+					<td colspan="{if $login->isAdmin() or $login->isStaff()}6{else}4{/if}" class="center" id="table_footer">
 						{_T string="Pages:"}<br/>
 						<ul class="pages">{$pagination}</ul>
 					</td>
@@ -83,7 +83,7 @@
                     <td class="{$cclass} center nowrap">{$transaction->id}</td>
                     <td class="{$cclass} nowrap">{$transaction->date}</td>
                     <td class="{$cclass} nowrap">{$transaction->description}</td>
-{if $login->isAdmin()}
+{if $login->isAdmin() or $login->isStaff()}
     				<td class="{$cclass}">
     {if $transactions->filtre_cotis_adh eq ""}
                         <a href="gestion_transactions.php?id_adh={$mid}">
@@ -97,7 +97,7 @@
     				</td>
 {/if}
     				<td class="{$cclass} nowrap">{$transaction->amount}</td>
-{if $login->isAdmin()}
+{if $login->isAdmin() or $login->isStaff()}
         			<td class="{$cclass} center nowrap">
                         <a href="ajouter_transaction.php?trans_id={$transaction->id}">
                             <img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/>
@@ -109,7 +109,7 @@
 {/if}
     			</tr>
 {foreachelse}
-        		<tr><td colspan="{if $login->isAdmin()}6{else}4{/if}" class="emptylist">{_T string="no transaction"}</td></tr>
+        		<tr><td colspan="{if $login->isAdmin() or $login->isStaff()}6{else}4{/if}" class="emptylist">{_T string="no transaction"}</td></tr>
 {/foreach}
             </tbody>
 		</table>
@@ -132,7 +132,7 @@
                     this.form.submit();
                 {rdelim});
 
-				$('#table_footer').parent().before('<td class="right" colspan="{if $login->isAdmin() && !$member}9{elseif $login->isAdmin()}8{else}7{/if}"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
+				$('#table_footer').parent().before('<td class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}9{elseif $login->isAdmin() or $login->isStaff()}8{else}7{/if}"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
 				$('#legende h1').remove();
 				$('#legende').dialog({ldelim}
 					autoOpen: false,

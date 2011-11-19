@@ -452,6 +452,7 @@ class Adherent
                 $this->load($args);
             }
             $this->_admin = false;
+            $this->_staff = false;
             $this->_due_free = false;
         } elseif ( is_object($args) ) {
             $this->_loadFromRS($args);
@@ -474,8 +475,14 @@ class Adherent
         try {
             $select = new Zend_Db_Select($zdb->db);
 
-            $select->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . '=?', $id);
+            $select->from(
+                array('a' => PREFIX_DB . self::TABLE)
+            )->join(
+                array('b' => PREFIX_DB . Status::TABLE),
+                'a.' . Status::PK . '=b.' . Status::PK,
+                array('priorite_statut')
+            )->where(self::PK . '=?', $id);
+
             $result = $select->query()->fetchObject();
             $this->_loadFromRS($result);
             return true;
@@ -578,6 +585,9 @@ class Adherent
         //Galette relative informations
         $this->_appears_in_list = $r->bool_display_info;
         $this->_admin = $r->bool_admin_adh;
+        if ( $r->priorite_statut < Members::NON_STAFF_MEMBERS ) {
+            $this->_staff = true;
+        }
         $this->_due_free = $r->bool_exempt_adh;
         $this->_login = $r->login_adh;
         $this->_password = $r->mdp_adh;
@@ -639,6 +649,16 @@ class Adherent
     public function isAdmin()
     {
         return $this->_admin;
+    }
+
+    /**
+     * Is user member of staff?
+     *
+     * @return bool
+     */
+    public function isStaff()
+    {
+        return $this->_staff;
     }
 
     /**
@@ -1140,11 +1160,12 @@ class Adherent
     {
         global $log;
         $forbidden = array(
-            'admin', 'due_free', 'appears_in_list', 'active',  'row_classes'
+            'admin', 'staff', 'due_free', 'appears_in_list', 'active',
+            'row_classes'
         );
         $virtuals = array(
-            'sadmin', 'sdue_free', 'sappears_in_list', 'sactive', 'spoliteness',
-            'sstatus', 'sfullname', 'sname', 'rowclass'
+            'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
+            'spoliteness', 'sstatus', 'sfullname', 'sname', 'rowclass'
         );
         $rname = '_' . $name;
         if ( !in_array($name, $forbidden) && isset($this->$rname)) {
@@ -1177,6 +1198,7 @@ class Adherent
             case 'sadmin':
             case 'sdue_free':
             case 'sappears_in_list':
+            case 'sstaff':
                 return (($this->$real) ? _T("Yes") : _T("No"));
                 break;
             case 'sactive':

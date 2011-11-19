@@ -44,7 +44,7 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-if ( !$login->isAdmin() ) {
+if ( !$login->isAdmin() && !$login->isStaff() ) {
     $id_adh = $login->id;
 } else {
     $id_adh = get_numeric_form_value('id_adh', '');
@@ -71,7 +71,7 @@ if ( isset($_GET['tri']) ) {
     $trans->orderby = $_GET['tri'];
 }
 
-if ( $login->isAdmin() && isset($_GET['id_adh']) && $_GET['id_adh'] != '' ) {
+if ( ($login->isAdmin() || $login->isStaff()) && isset($_GET['id_adh']) && $_GET['id_adh'] != '' ) {
     if ( $_GET['id_adh'] == 'all' ) {
         $trans->filtre_cotis_adh = null;
     } else {
@@ -79,7 +79,7 @@ if ( $login->isAdmin() && isset($_GET['id_adh']) && $_GET['id_adh'] != '' ) {
     }
 }
 
-if ( $login->isAdmin() ) {
+if ( $login->isAdmin() || $login->isStaff() ) {
     $trans_id = get_numeric_form_value('sup', '');
     if ($trans_id != '') {
         $trans->removeTransactions($trans_id);

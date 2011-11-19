@@ -349,8 +349,8 @@ class Contributions extends GalettePagination
             }
             $sql = $select->__toString();
 
-            if ( !$login->isAdmin() ) {
-                //members can only view their own contributions
+            if ( !$login->isAdmin() && !$login->isStaff() ) {
+                //non staff members can only view their own contributions
                 $select->where('p.' . Adherent::PK . ' = ?', $login->id);
             } else if ( $this->_filtre_cotis_adh != null ) {
                 $select->where('p.' . Adherent::PK . ' = ?', $this->_filtre_cotis_adh);

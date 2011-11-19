@@ -35,7 +35,7 @@
  */
 
 require_once 'includes/galette.inc.php';
-if ( !$login->isLogged() || !$login->isAdmin() ) {
+if ( !$login->isLogged() || !$login->isAdmin() || !$login->isStaff() ) {
     die();
 }
 

@@ -54,7 +54,7 @@ $member = new Adherent();
 
 // new or edit
 $adherent['id_adh'] = '';
-if ( $login->isAdmin() ) {
+if ( $login->isAdmin() || $login->isStaff() ) {
     $adherent['id_adh'] = get_numeric_form_value('id_adh', '');
     $id = get_numeric_form_value('id_adh', '');
     if ( $id ) {
@@ -92,7 +92,7 @@ if ( $member->id == '' ) {
 }
 
 // flagging required fields invisible to members
-if ( $login->isAdmin() ) {
+if ( $login->isAdmin() || $login->isStaff() ) {
     $required['activite_adh'] = 1;
     $required['id_statut'] = 1;
 }

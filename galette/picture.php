@@ -55,7 +55,11 @@ if (  isset($_GET['logo']) && $_GET['logo'] == 'true' ) {
         $adh = new Adherent($id_adh);
 
         $picture = null;
-        if ( $login->isAdmin() || $adh->appearsInMembersList() || $login->login == $adh->login ) {
+        if ( $login->isAdmin()
+            || $login->isStaff()
+            || $adh->appearsInMembersList()
+            || $login->login == $adh->login
+        ) {
             $picture = $adh->picture; //new Picture($id_adh);
         } else {
             $picture = new Picture();

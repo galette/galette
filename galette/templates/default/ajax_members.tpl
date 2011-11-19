@@ -26,6 +26,8 @@
 					{/if}
 					{if $member->isAdmin()}
 						<img src="{$template_subdir}images/icon-star.png" alt="{_T string="[admin]"}" width="16" height="16"/>
+                    {elseif $member->isStaff()}
+                        <img src="{$template_subdir}images/icon-staff.png" alt="{_T string="[staff]"}" width="16" height="16"/>
 					{else}
 						<img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
 					{/if}

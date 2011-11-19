@@ -82,7 +82,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {if $login->isLogged()}
 		<h1 class="nojs">{_T string="Navigation"}</h1>
 		<ul>
-  {if $login->isAdmin()}
+  {if $login->isAdmin() or $login->isStaff()}
             <li{if $PAGENAME eq "desktop.php"} class="selected"{/if}><a href="{$galette_base_path}desktop.php" title="{_T string="Go to Galette's dashboard"}">{_T string="Dashboard"}</a></li>
 			<li{if $PAGENAME eq "gestion_adherents.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_adherents.php" title="{_T string="View, search into and filter member's list"}">{_T string="List of members"}</a></li>
 			<li{if $PAGENAME eq "gestion_groupes.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_groupes.php" title="{_T string="View and manage groups"}">{_T string="Manage groups"}</a></li>
@@ -120,7 +120,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 			<li{if $PAGENAME eq "champs_requis.php"} class="selected"{/if}><a href="{$galette_base_path}champs_requis.php">{_T string="Required fields"}</a></li>
 			<li{if $PAGENAME eq "configurer_fiches.php" or $PAGENAME eq "editer_champ.php"} class="selected"{/if}><a href="{$galette_base_path}configurer_fiches.php" title="{_T string="Manage additional fields for various forms"}">{_T string="Configure member forms"}</a></li>
 			<li{if $PAGENAME eq "traduire_libelles.php"} class="selected"{/if}><a href="{$galette_base_path}traduire_libelles.php" title="{_T string="Translate additionnals fields labels"}">{_T string="Translate labels"}</a></li>
-			{*<li{if $PAGENAME eq "gestion_intitules.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_intitules.php" title="{_T string="Manage various lists that are used in the application"}">{_T string="Manage lists"}</a></li>*}
 			<li{if $PAGENAME eq "gestion_intitules.php" and $class eq 'Status'} class="selected"{/if}><a href="{$galette_base_path}gestion_intitules.php?class=Status" title="{_T string="Manage statuses"}">{_T string="Manage statuses"}</a></li>
 			<li{if $PAGENAME eq "gestion_intitules.php" and $class eq 'ContributionsTypes'} class="selected"{/if}><a href="{$galette_base_path}gestion_intitules.php?class=ContributionsTypes" title="{_T string="Manage contributions types"}">{_T string="Manage contributions types"}</a></li>
 			<li{if $PAGENAME eq "gestion_textes.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_textes.php" title="{_T string="Manage emails texts and subjects"}">{_T string="Emails content"}</a></li>

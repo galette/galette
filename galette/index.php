@@ -72,7 +72,7 @@ if (isset($_POST["ident"])) {
             $_SESSION['galette']['login'] = serialize($login);
             $hist->add(_T("Login"));
             /** FIXME: users should no try to go to admin interface */
-            if ( $login->isAdmin() ) {
+            if ( $login->isAdmin() || $login->isStaff() ) {
                 if ( !isset($_COOKIE['show_galette_dashboard'])
                     || $_COOKIE['show_galette_dashboard'] == 1
                 ) {
@@ -101,7 +101,7 @@ if ( !$login->isLogged() ) {
     $tpl->assign('content', $content);
     $tpl->display('public_page.tpl');
 } else {
-    if ( $login->isAdmin() ) {
+    if ( $login->isAdmin() || $login->isStaff() ) {
         header('location: gestion_adherents.php');
     } else {
         header('location: voir_adherent.php');

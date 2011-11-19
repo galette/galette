@@ -298,8 +298,8 @@ class Transactions extends GalettePagination
                 $select->where('date_fin_cotis <= ?', $d->format('Y-m-d'));
             }*/
 
-            if ( !$login->isAdmin() ) {
-                //members can only view their own transactions
+            if ( !$login->isAdmin() && !$login->isStaff() ) {
+                //non staff members can only view their own transactions
                 $select->where('t.' . Adherent::PK . ' = ?', $login->id);
             } else if ( $this->_filtre_cotis_adh != null ) {
                 $select->where('t.' . Adherent::PK . ' = ?', $this->_filtre_cotis_adh);
