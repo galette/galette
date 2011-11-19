@@ -88,7 +88,9 @@ class GaletteLogin extends Authentication
                     'prenom_adh',
                     'mdp_adh',
                     'pref_lang',
-                    'activite_adh'
+                    'activite_adh',
+                    'bool_exempt_adh',
+                    'date_echeance'
                 )
             )->join(
                 array('b' => PREFIX_DB . Status::TABLE),
@@ -122,6 +124,21 @@ class GaletteLogin extends Authentication
                 $this->logged = true;
                 if ( $row->priorite_statut < Members::NON_STAFF_MEMBERS ) {
                     $this->staff = true;
+                }
+                //check if member is up to date
+                if( $row->bool_exempt_adh == true ) {
+                    //member is due free, he's up to date.
+                    $this->uptodate = true;
+                } else {
+                    //let's check from end date, if present
+                    if ( $row->date_echeance == null ) {
+                        $this->uptodate = false;
+                    } else {
+                        $ech = new DateTime($row->date_echeance);
+                        $now = new DateTime();
+                        $now->setTime(0, 0, 0);
+                        $this->uptodate = $ech >= $now;
+                    }
                 }
                 return true;
             }

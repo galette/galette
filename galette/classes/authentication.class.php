@@ -61,6 +61,7 @@ abstract class Authentication
     private $_active = false;
     private $_superadmin = false;
     private $_staff = false;
+    private $_uptodate = false;
 
     /**
     * Default constructor
@@ -107,6 +108,7 @@ abstract class Authentication
         $this->_admin = true;
         $this->_active = true;
         $this->_staff = false;
+        $this->_uptodate = false;
         //a flag for super admin only, since it's not a regular user
         $this->_superadmin = true;
     }
@@ -125,6 +127,7 @@ abstract class Authentication
         $this->_active = false;
         $this->_superadmin = false;
         $this->_staff = false;
+        $this->_uptodate = false;
     }
 
     /**
@@ -175,6 +178,18 @@ abstract class Authentication
     public function isStaff()
     {
         return $this->_staff;
+    }
+
+    /**
+     * Is user currently up to date?
+     * An up to date member is active and either due free, or with up to date
+     * subscription
+     *
+     * @return bool
+     */
+    public function isUp2Date()
+    {
+        return $this->_uptodate;
     }
 
     /**

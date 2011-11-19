@@ -34,7 +34,7 @@
         {/if}
             <a id="lostpassword" class="button{if $PAGENAME eq "lostpasswd.php"} selected{/if}" href="{$galette_base_path}lostpasswd.php">{_T string="Lost your password?"}</a>
     {/if}
-    {if $preferences->pref_bool_publicpages eq true}
+    {if $preferences->showPublicPages() eq true}
             <a id="memberslist" class="button{if $PAGENAME eq "liste_membres.php"} selected{/if}" href="{$galette_base_path}public/liste_membres.php" title="{_T string="Members list"}">{_T string="Members list"}</a>
             <a id="trombino" class="button{if $PAGENAME eq "trombinoscope.php"} selected{/if}" href="{$galette_base_path}public/trombinoscope.php" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a>
     {/if}

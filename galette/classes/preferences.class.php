@@ -408,7 +408,43 @@ class Preferences
 
     public function showPublicPages()
     {
-        return $this->_prefs['pref_bool_publicpages'];
+        global $login;
+
+        if ( $this->_prefs['pref_bool_publicpages'] ) {
+            //if public pages are actives, let's check if we
+            //display them for curent call
+            switch ( $this->_prefs['pref_publicpages_visibility'] ) {
+            case self::PUBLIC_PAGES_VISIBILITY_PUBLIC:
+                //pages are publically visibles
+                return true;
+                break;
+            case self::PUBLIC_PAGES_VISIBILITY_RESTRICTED:
+                //pages should be displayed only for up to date members
+                if ( $login->isUp2Date()
+                    || $login->isAdmin()
+                    || $login->isStaff()
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+                break;
+            case self::PUBLIC_PAGES_VISIBILITY_PRIVATE:
+                //pages should be displayed only for staff and admins
+                if ( $login->isAdmin() || $login->isStaff() ) {
+                    return true;
+                } else {
+                    return false;
+                }
+                break;
+            default:
+                //should never be there
+                return false;
+                break;
+            }
+        } else {
+            return false;
+        }
     }
 
     /**

@@ -42,7 +42,7 @@
 
 $base_path = '../';
 require_once $base_path . 'includes/galette.inc.php';
-if ( !$preferences->pref_bool_publicpages ) {
+if ( !$preferences->showPublicPages() ) {
     //public pages are not actives
     header('location:../index.php');
 }
