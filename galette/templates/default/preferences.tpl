@@ -138,6 +138,14 @@
                     <label for="pref_bool_publicpages" class="bline">{_T string="Public pages enabled?"}</label>
                     <input type="checkbox" name="pref_bool_publicpages" id="pref_bool_publicpages" value="1" {if $pref.pref_bool_publicpages} checked="checked"{/if}{if $required.pref_bool_publicpages eq 1} required{/if}/>
                 </p>
+                <p id="publicpages_visibility"{if !$pref.pref_bool_publicpages} class="hidden"{/if}>
+                    <label for="pref_publicpages_visibility" class="bline">{_T string="Show public pages for"}</label>
+                    <select name="pref_publicpages_visibility" id="pref_publicpages_visibility">
+                        <option value="{php}echo Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC;{/php}"{if $pref.pref_publicpages_visibility eq constant('Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC')} selected="selected"{/if}>{_T string="Everyone"}</option>
+                        <option value="{php}echo Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED;{/php}"{if $pref.pref_publicpages_visibility eq constant('Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED')} selected="selected"{/if}>{_T string="Up to date members"}</option>
+                        <option value="{php}echo Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE;{/php}"{if $pref.pref_publicpages_visibility eq constant('Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE')} selected="selected"{/if}>{_T string="Admin and staff only"}</option>
+                    </select>
+                </p>
                 <p>
                     <label for="pref_bool_selfsubscribe" class="bline">{_T string="Self subscription enabled?"}</label>
                     <input type="checkbox" name="pref_bool_selfsubscribe" id="pref_bool_selfsubscribe" value="1"{if $pref.pref_bool_selfsubscribe} checked="checked"{/if}"{if $required.pref_bool_selfsubscribe eq 1} required{/if}/>
@@ -416,8 +424,8 @@
 			{rdelim});
 
 
-			//for color pickers
 			$(function(){ldelim}
+                //for color pickers
 				// hex inputs
 				$('input.hex')
 					.validHex()
@@ -442,6 +450,9 @@
 					$('input.focus, select.focus').removeClass('focus');
 				{rdelim});
 
+                $('#pref_bool_publicpages').change(function(){ldelim}
+                    $('#publicpages_visibility').toggleClass('hidden');
+                {rdelim});
 			{rdelim});
 
 			//color pickers setup (sets bg color of inputs)

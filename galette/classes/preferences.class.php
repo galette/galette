@@ -63,6 +63,14 @@ class Preferences
     /** Postal adress will be the one of the selected staff member */
     const POSTAL_ADRESS_FROM_STAFF = 1;
 
+    /** Public pages stuff */
+    /** Public pages are publically visibles */
+    const PUBLIC_PAGES_VISIBILITY_PUBLIC = 0;
+    /** Public pages are visibles for up to date members only */
+    const PUBLIC_PAGES_VISIBILITY_RESTRICTED = 1;
+    /** Public pages are visibles for admin and staff members only */
+    const PUBLIC_PAGES_VISIBILITY_PRIVATE = 2;
+
     private static $_fields = array(
         'nom_pref',
         'val_pref'
@@ -128,6 +136,7 @@ class Preferences
         'pref_card_self'    =>    1,
         'pref_theme'        =>    'default',
         'pref_bool_publicpages' => true,
+        'pref_publicpages_visibility' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
         'pref_bool_selfsubscribe' => true
     );
 
@@ -395,7 +404,11 @@ class Preferences
             "%name\n%complement\n%adress\n%zip %town - %country"
         );
         return $r;
+    }
 
+    public function showPublicPages()
+    {
+        return $this->_prefs['pref_bool_publicpages'];
     }
 
     /**
