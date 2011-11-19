@@ -1466,7 +1466,7 @@ legend {
 
 .cssform{ background-color:white; }
 .cssform ul{
-	margin-left:1em;
+	display: inline-block;
 	padding:0;
 }
 .cssform li{
