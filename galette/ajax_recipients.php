@@ -35,7 +35,11 @@
  */
 
 require_once 'includes/galette.inc.php';
-if ( !$login->isLogged() || !$login->isAdmin() || !$login->isStaff() ) {
+if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
+    $log->log(
+        'Trying to display ajax_recipients.php without appropriate permissions',
+        PEAR_LOG_INFO
+    );
     die();
 }
 
