@@ -63,7 +63,7 @@ if ( isset($_SESSION['galette']['varslist']) ) {
     $varslist = new VarsList();
 }
 
-$members_list = Members::getList(true);
+$members_list = Members::getList(true, null, false);
 $mailing = unserialize($_SESSION['galette']['mailing']);
 $selected_members = null;
 $unreachables_members = null;
