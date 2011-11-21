@@ -1266,7 +1266,7 @@ table.listing {
 	border: none;
 }
 
-#warningbox {
+#warningbox, .warningbox {
 	text-align:center;
 	color:black;
 	padding : 0.5em 0.5em 0.5em 40px;
