@@ -41,18 +41,5 @@ if ( !$login->isLogged() || isset($_POST['logout']) || isset($_GET['logout']) ) 
         $hist->add(_("Log off"));
         unset($_SESSION['galette']);
     }
-    $_SESSION['filtre_adh_nom'] = '';
-    $_SESSION['filtre_adh'] = 0;
-    $_SESSION['filtre_adh_2'] = 1;
-    $_SESSION['filtre_date_cotis_1'] = '';
-    $_SESSION['filtre_date_cotis_2'] = '';
-    $_SESSION['tri_adh'] = 0;
-    $_SESSION['tri_adh_sens'] = 0;
-    $_SESSION['tri_log'] = 0;
-    $_SESSION['tri_log_sens'] = 0;
-    $_SESSION['filtre_cotis'] = 0;
-    $_SESSION['tri_cotis'] = 0;
-    $_SESSION['tri_cotis_sens'] = 1;
-    $_SESSION['filtre_cotis_adh'] = '';
 }
 ?>
