@@ -411,11 +411,12 @@ class GaletteZendDb extends Zend_Db
     /**
     * Converts recursively database to UTF-8
     *
-    * @param string $prefix Specified table prefix
+    * @param string  $prefix       Specified table prefix
+    * @param boolean $content_only Proceed only content (no table conversion)
     *
     * @return void
     */
-    public function convertToUTF($prefix = null)
+    public function convertToUTF($prefix = null, $content_only = false)
     {
         global $log;
 
@@ -425,17 +426,19 @@ class GaletteZendDb extends Zend_Db
             $tables = $this->getTables($prefix);
 
             foreach ($tables as $table) {
-                //Change whole table charset
-                //CONVERT TO instruction will take care of each fields,
-                //but converting data stay our problem.
-                $query = 'ALTER TABLE ' . $table .
-                    ' CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci';
+                if ( $content_only === false ) {
+                    //Change whole table charset
+                    //CONVERT TO instruction will take care of each fields,
+                    //but converting data stay our problem.
+                    $query = 'ALTER TABLE ' . $table .
+                        ' CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci';
 
-                $this->_db->getConnection()->exec($query);
-                $log->log(
-                    'Charset successfully changed for table `' . $table .'`',
-                    PEAR_LOG_DEBUG
-                );
+                    $this->_db->getConnection()->exec($query);
+                    $log->log(
+                        'Charset successfully changed for table `' . $table .'`',
+                        PEAR_LOG_DEBUG
+                    );
+                }
 
                 //Data conversion
                 if ( $table != PREFIX_DB . 'pictures' ) {
