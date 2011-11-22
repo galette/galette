@@ -38,7 +38,7 @@
 define('SMARTY_VERSION', '2.6.26');
 define('ZEND_VERSION', '1.11.9');
 define('PEAR_VERSION', '1.9.4');
-define('LOG_VERSION', '1.12.6');
+define('LOG_VERSION', '1.12.7');
 define('TCPDF_VERSION', '5.9.088');
 define('JQUERY_VERSION', '1.6.2');
 define('JQUERY_UI_VERSION', '1.8.14');

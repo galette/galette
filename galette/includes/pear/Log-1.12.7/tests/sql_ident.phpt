@@ -4,7 +4,7 @@ Log: SQL setIdent()
 <?php
 
 require_once 'PEAR/Registry.php';
-$registry = &new PEAR_Registry();
+$registry = new PEAR_Registry();
 
 if (!$registry->packageExists('DB')) die("skip\n");
 --INI--
