@@ -41,7 +41,8 @@ CREATE TABLE galette_adherents (
   gpgid varchar(8) DEFAULT NULL,
   fingerprint varchar(50) DEFAULT NULL,
   PRIMARY KEY  (id_adh),
-  UNIQUE (login_adh)
+  UNIQUE (login_adh),
+  FOREIGN KEY (id_statut) REFERENCES galette_statuts (id_statut)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_cotisations;
@@ -55,7 +56,9 @@ CREATE TABLE galette_cotisations (
   date_debut_cotis date NOT NULL default '1901-01-01',
   date_fin_cotis date NOT NULL default '1901-01-01',
   trans_id int(10) unsigned default NULL,
-  PRIMARY KEY  (id_cotis)
+  PRIMARY KEY  (id_cotis),
+  FOREIGN KEY (id_type_cotis) REFERENCES galette_types_cotisation (id_type_cotis),
+  FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_transactions;
@@ -65,7 +68,8 @@ CREATE TABLE galette_transactions (
   trans_amount float default '0',
   trans_desc varchar(30) NOT NULL default '',
   id_adh int(10) unsigned default NULL,
-  PRIMARY KEY  (trans_id)
+  PRIMARY KEY  (trans_id),
+  FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_statuts;
@@ -141,7 +145,8 @@ CREATE TABLE galette_pictures (
     id_adh int(10) unsigned NOT NULL default '0',
     picture mediumblob NOT NULL,
     format varchar(10) NOT NULL default '',
-    PRIMARY KEY  (id_adh)
+    PRIMARY KEY  (id_adh),
+    FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Table for dynamic translation of strings;
@@ -159,8 +164,9 @@ DROP TABLE IF EXISTS galette_tmppasswds;
 CREATE TABLE galette_tmppasswds (
     id_adh int(10) NOT NULL,
     tmp_passwd varchar(40) NOT NULL,
-		date_crea_tmp_passwd datetime NOT NULL,
-    PRIMARY KEY (id_adh)
+    date_crea_tmp_passwd datetime NOT NULL,
+    PRIMARY KEY (id_adh),
+    FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Table for dynamic required fields 2007-07-10;

@@ -151,5 +151,29 @@ CREATE TABLE IF NOT EXISTS galette_groups_users (
 
 ALTER TABLE galette_adherents ADD societe_adh VARCHAR( 20 ) NULL AFTER prenom_adh;
 
+ALTER TABLE galette_cotisations ADD FOREIGN KEY (id_type_cotis)
+  REFERENCES galette_types_cotisation (id_type_cotis)
+  ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE galette_cotisations ADD FOREIGN KEY (id_adh)
+  REFERENCES galette_adherents (id_adh)
+  ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE galette_transactions ADD FOREIGN KEY (id_adh)
+  REFERENCES galette_adherents (id_adh)
+  ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE galette_adherents ADD FOREIGN KEY (id_statut)
+  REFERENCES galette_statuts (id_statut)
+  ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE galette_pictures ADD FOREIGN KEY (id_adh)
+  REFERENCES galette_adherents (id_adh)
+  ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE galette_tmppasswds ADD FOREIGN KEY (id_adh)
+  REFERENCES galette_adherents (id_adh)
+  ON DELETE RESTRICT ON UPDATE RESTRICT;
+
 -- Put back foreign keys
 SET FOREIGN_KEY_CHECKS=1;
