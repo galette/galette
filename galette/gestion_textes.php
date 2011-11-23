@@ -44,7 +44,7 @@ if ( !$login->isLogged() ) {
 } elseif ( !$login->isAdmin() && !$login->isStaff() ) {
     header('location: voir_adherent.php');
     die();
-} else {
+} elseif ( !$login->isAdmin() ) {
     header('location: gestion_adherents.php');
     die();
 }
