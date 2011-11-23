@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS galette_texts (
 ) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Modify table picture to allow for negative indexes;
-ALTER TABLE galette_pictures CHANGE id_adh id_adh INT( 10 ) NOT NULL DEFAULT '0';
+ALTER TABLE galette_pictures CHANGE id_adh id_adh INT( 10 ) UNSIGNED NOT NULL DEFAULT '0';
 
 -- galette_texts contents
 INSERT INTO galette_texts (tid, tref, tsubject, tbody, tlang, tcomment) VALUES (1, 'sub', 'Your identifiers', 'Hello,\r\n\r\nYou''ve just been subscribed on the members management system of {NAME}.\r\n\r\nIt is now possible to follow in real time the state of your subscription and to update your preferences from the web interface.\r\n\r\nPlease login at this address:\r\n{LOGIN_URI}\r\n\r\nUsername: {LOGIN}\r\nPassword: {PASSWORD}\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)', 'en_EN', 'New user registration');
@@ -171,6 +171,7 @@ ALTER TABLE galette_pictures ADD FOREIGN KEY (id_adh)
   REFERENCES galette_adherents (id_adh)
   ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+ALTER TABLE galette_tmppasswds CHANGE id_adh id_adh INT( 10 ) UNSIGNED NOT NULL;
 ALTER TABLE galette_tmppasswds ADD FOREIGN KEY (id_adh)
   REFERENCES galette_adherents (id_adh)
   ON DELETE RESTRICT ON UPDATE RESTRICT;
