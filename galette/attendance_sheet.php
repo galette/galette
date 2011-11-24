@@ -105,8 +105,11 @@ $pdf->Cell(80, 7, _T("Signature"), 1, 1, 'C', 1);
 
 // Data
 $pdf->SetFont('');
-$fill = 0;
+$mcount = 0;
 foreach($members as $m) {
+    $mcount++;
+    $pdf->Cell(10, 16, $mcount, 'LTB', 0, 'R');
+
     if ( $m->hasPicture() && $_wimages ) {
         $p = $m->picture->getPath();
 
@@ -138,7 +141,7 @@ foreach($members as $m) {
     }
 
     $xs = $pdf->getX() - $x + 1;
-    $pdf->Cell(110 - $xs, 16, $m->sname, 'RTB', 0, 'L');
+    $pdf->Cell(100 - $xs, 16, $m->sname, 'RTB', 0, 'L');
     $pdf->Cell(80, 16, '', 1, 1, 'L');
 }
 $pdf->Cell(190, 0, '', 'T');
