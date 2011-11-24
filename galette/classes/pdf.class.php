@@ -73,6 +73,8 @@ class PDF extends TCPDF
     const FONT='DejaVuSans';
     const FONT_SIZE=10;
 
+    private $_paginated = false;
+
     /**
     * Constructeur de la classe PDF
     */
@@ -92,6 +94,11 @@ class PDF extends TCPDF
             $name . ' (using Galette ' . GALETTE_VERSION .
             'and TCPDF ' . TCPDF_VERSION . ')'
         );
+    }
+
+    public function showPagination()
+    {
+        $this->_paginated = true;
     }
 
     /**
@@ -213,6 +220,12 @@ class PDF extends TCPDF
 
         $this->Cell(0, 4, $coordonnees_line1, 0, 1, 'C', 0, $preferences->pref_website);
         $this->Cell(0, 4, $coordonnees_line2, 0, 0, 'C', 0, $preferences->pref_website);
+
+        if ( $this->_paginated ) {
+            $this->SetFont(self::FONT, '', self::FONT_SIZE - 3);
+            $this->Ln();
+            $this->Cell(0, 4, $this->getAliasRightShift().$this->PageNo() . '/' . $this->getAliasNbPages(), 0, 1, 'R');
+        }
     }
 
     /**
