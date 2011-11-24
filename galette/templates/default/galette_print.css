@@ -1,0 +1,16 @@
+/** Hidden elements */
+#content > nav,
+#details_menu,
+#filtre,
+tfoot,
+footer nav,
+#menu,
+#btnadd,
+#historyform {
+    display: none;
+}
+
+/** CSS adaptations for print */
+#content{
+        margin: 0em;
+}

@@ -6,7 +6,7 @@ Just put a {include file='common_header.tpl'} into the head tag.
 <title>{if $pref_slogan ne ""}{$pref_slogan} - {/if}{if $page_title ne ""}{$page_title} - {/if}Galette {$GALETTE_VERSION}</title>
 		<meta charset="UTF-8" />
 		<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css" />
-		<script type="text/javascript" src="{$jquery_dir}jquery-{$jquery_version}.min.js"></script>
+        <script type="text/javascript" src="{$jquery_dir}jquery-{$jquery_version}.min.js"></script>
         {* IE8 doe not know html5 tags *}
         <!--[if lt IE9]>
             <script type="text/javascript" src="{$scripts_dir}html5-ie.js"></script>
@@ -24,3 +24,4 @@ Just put a {include file='common_header.tpl'} into the head tag.
         <meta name="viewport" content="width=device-width" />
 		{* UI accordion is used for main menu ; we need the CSS *}
 		<link rel="stylesheet" type="text/css" href="{$template_subdir}jquery-ui/jquery-ui-{$jquery_ui_version}.custom.css" />
+        <link rel="stylesheet" type="text/css" href="{$template_subdir}galette_print.css" media="print" />
