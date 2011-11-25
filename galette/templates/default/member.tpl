@@ -181,10 +181,12 @@
 							{html_options options=$statuts selected=$member->status}
 						</select>
 					</p>
+            {if $login->isAdmin()}
 					<p>
 						<label for="bool_admin_adh" class="bline">{_T string="Galette Admin:"}</label>
 						<input type="checkbox" name="bool_admin_adh" id="bool_admin_adh" value="1" {if $member->isAdmin()}checked="checked"{/if} {$disabled.bool_admin_adh}{if $required.bool_admin_adh eq 1} required{/if}/>
 					</p>
+            {/if}
 					<p>
 						<label for="bool_exempt_adh" class="bline">{_T string="Freed of dues:"}</label>
 						<input type="checkbox" name="bool_exempt_adh" id="bool_exempt_adh" value="1" {if $member->isDueFree() eq 1}checked="checked"{/if} {$disabled.bool_exempt_adh}{if $required.bool_exempt_adh eq 1} required{/if}/>

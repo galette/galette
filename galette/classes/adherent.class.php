@@ -125,6 +125,9 @@ class Adherent
         'nom_adh' => 'disabled="disabled"',
         'prenom_adh' => 'disabled="disabled"',
     );
+    private $_staff_edit_disabled_fields = array(
+        'bool_admin_adh' => 'disabled="disabled"'
+    );
     private $_adm_edit_disabled_fields = array(
         'id_adh' => 'disabled="disabled"',
         'date_echeance' => 'disabled="disabled"'

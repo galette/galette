@@ -62,7 +62,12 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     }
 
     // disable some fields
-    $disabled = $member->adm_edit_disabled_fields;
+    if ( $login->isAdmin() ) {
+        $disabled = $member->adm_edit_disabled_fields;
+    } else {
+        $disabled = $member->adm_edit_disabled_fields + $member->staff_edit_disabled_fields;
+    }
+
     if ( $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED ) {
         $disabled['send_mail'] = 'disabled="disabled"';
     }
