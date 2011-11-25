@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Fri Nov 25 20:50:09 2011 (GMT)
+// This file was automatically generated on Fri Nov 25 21:09:10 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -1189,7 +1189,7 @@ $lang['This link is no longer valid. You should <a href=\'lostpasswd.php\'>ask t
 $lang['Label height:'] = 'Hauteur étiquette&nbsp;:';
 
 // ../templates/default/member.tpl:31 
-$lang['Your subscription has been registered, you will receive a recapitulative email soon (remember to check your spam box ;) ).'] = 'Votre souscription a été enregistrée. Vous recevrez un courrial récapitulatif sous peu (pensez à vérifier vos messages indésirables ;) ).';
+$lang['Your subscription has been registered, you will receive a recapitulative email soon (remember to check your spam box ;) ).'] = 'Votre inscription a été enregistrée. Vous allez recevoir un courriel récapitulatif (n\'oubliez pas vérifier vos messages indésirables ;) ).';
 
 // ../install/index.php:279 
 $lang['New installation:'] = 'Nouvelle installation&nbsp;:';
@@ -2182,7 +2182,7 @@ $lang['Send a mail'] = 'Envoyer un courriel';
 $lang['[$]'] = '[$]';
 
 // ../templates/default/member.tpl:33 
-$lang['You\'ll be redirected to the login page in a few seconds'] = 'Vous allez être redirigé vers la page de connexion dans quelques secondes';
+$lang['You\'ll be redirected to the login page in a few seconds'] = 'Vous allez être redirigé vers la page de connexion dans quelques secondes.';
 
 // ../gestion_intitules.php:71 ../gestion_intitules.php:344 
 $lang['User statuses'] = 'Statuts des utilisateurs';

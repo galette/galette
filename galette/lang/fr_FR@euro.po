@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2011-11-25 21:50+0100\n"
+"PO-Revision-Date: 2011-11-25 22:07+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -1097,8 +1097,8 @@ msgid ""
 "Your subscription has been registered, you will receive a recapitulative "
 "email soon (remember to check your spam box ;) )."
 msgstr ""
-"Votre souscription a été enregistrée. Vous recevrez un courrial "
-"récapitulatif sous peu (pensez à vérifier vos messages indésirables ;) )."
+"Votre inscription a été enregistrée. Vous allez recevoir un courriel "
+"récapitulatif (n'oubliez pas vérifier vos messages indésirables ;) )."
 
 #: ../classes/transaction.class.php:355
 msgid "Transaction added"
@@ -2069,7 +2069,7 @@ msgstr "- Erreur de base de données&nbsp;:"
 #: ../templates/default/member.tpl:33
 msgid "You'll be redirected to the login page in a few seconds"
 msgstr ""
-"Vous allez être redirigé vers la page de connexion dans quelques secondes"
+"Vous allez être redirigé vers la page de connexion dans quelques secondes."
 
 #: ../templates/default/ajouter_transaction.tpl:57
 msgid "Attached contributions"
