@@ -82,4 +82,7 @@ if ( !defined('GALETTE_EXPORTS_PATH') ) {
 if ( !defined('GALETTE_PHOTOS_PATH') ) {
     define('GALETTE_PHOTOS_PATH', WEB_ROOT . 'photos/');
 }
+if ( !defined('GALETTE_TEMPIMAGES_PATH') ) {
+    define('GALETTE_TEMPIMAGES_PATH', WEB_ROOT . 'tempimages/');
+}
 ?>

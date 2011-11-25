@@ -375,11 +375,12 @@ class Picture
     /**
     * Stores an image on the disk and in the database
     *
-    * @param object $file the uploaded file
+    * @param object  $file the uploaded file
+    * @param boolean $ajax If the image cames from an ajax call (dnd)
     *
     * @return true|false result of the storage process
     */
-    public function store($file)
+    public function store($file, $ajax = false)
     {
         /** TODO:
             - fix max size (by preferences ?)
@@ -447,7 +448,11 @@ class Picture
 
         $new_file = $this->store_path .
             $this->id . '.' . $extension;
-        move_uploaded_file($tmpfile, $new_file);
+        if ( $ajax === true ) {
+            rename($tmpfile, $new_file);
+        } else {
+            move_uploaded_file($tmpfile, $new_file);
+        }
 
         // current[0] gives width ; current[1] gives height
         if ( $current[0] > $this->max_width || $current[1] > $this->max_height ) {

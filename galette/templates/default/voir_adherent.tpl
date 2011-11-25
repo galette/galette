@@ -61,7 +61,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                         src="{$galette_base_path}picture.php?id_adh={$member->id}&amp;rand={$time}"
                         width="{$member->picture->getOptimalWidth()}"
                         height="{$member->picture->getOptimalHeight()}"
-                        alt="{_T string="Picture"}"/>
+                        alt="{_T string="Picture"}"
+                        id="photo_adh"/>
                 </td>
 			</tr>
 {if $member->isCompany()}
@@ -226,3 +227,10 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 
 {include file="display_dynamic_fields.tpl" is_form=false}
 	</div>
+{if $login->isAdmin() or $login->isStaff() or $login->login eq $member->login}
+    <script type="text/javascript">
+        $(function() {ldelim}
+            {include file="photo_dnd.tpl"}
+        {rdelim});
+    </script>
+{/if}

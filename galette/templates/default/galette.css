@@ -1596,6 +1596,10 @@ td.photo img{
 	margin-bottom: 5px;
 }
 
+.dndhover {
+    opacity:0.4;
+}
+
 #details_menu{
 	padding:0;
 	text-align:center;

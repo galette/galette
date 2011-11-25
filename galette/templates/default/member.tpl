@@ -40,7 +40,7 @@
     {if !$self_adh}
 					<p>
 						<span class="bline">{_T string="Picture:"}</span>
-						<img src="{$galette_base_path}picture.php?id_adh={$member->id}&amp;rand={$time}" class="picture" width="{$member->picture->getOptimalWidth()}" height="{$member->picture->getOptimalHeight()}" alt="{_T string="Picture"}"/><br/>
+						<img id="photo_adh" src="{$galette_base_path}picture.php?id_adh={$member->id}&amp;rand={$time}" class="picture" width="{$member->picture->getOptimalWidth()}" height="{$member->picture->getOptimalHeight()}" alt="{_T string="Picture"}"/><br/>
         {if $member->hasPicture() eq 1 }
 						<span class="labelalign"><label for="del_photo">{_T string="Delete image"}</label></span><input type="checkbox" name="del_photo" id="del_photo" value="1"/><br/>
         {/if}
@@ -411,6 +411,8 @@
                     {rdelim});
 
                 {rdelim}
+
+                {include file="photo_dnd.tpl"}
             {rdelim});
 		</script>
 {/if}
