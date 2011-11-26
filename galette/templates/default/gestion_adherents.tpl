@@ -277,6 +277,27 @@
 				$('#legende').dialog('open');
 				return false;
 			{rdelim});
+
+            $('.selection_menu input[type=submit], .selection_menu input[type=button], ').click(function(){ldelim}
+                var _checkeds = $('#listing').find('input[type=checkbox]:checked').length;
+                if ( _checkeds == 0 ) {ldelim}
+                    var _el = $('<div id="pleaseselect" title="{_T string="No member selected" escape="js"}">{_T string="Please make sure to select at least one member from the list to perform this action." escape="js"}</div>');
+                    _el.appendTo('body').dialog({ldelim}
+                        modal: true,
+                        buttons: {ldelim}
+                            Ok: function() {ldelim}
+                                $(this).dialog( "close" );
+                            {rdelim}
+                        {rdelim},
+                        close: function(event, ui){ldelim}
+                            _el.remove();
+                        {rdelim}
+                    {rdelim});
+                    return false;
+                {rdelim} else {ldelim}
+                    return true;
+                {rdelim}
+            {rdelim});
 		{rdelim});
 		</script>
 {/if}
