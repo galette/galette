@@ -1,4 +1,4 @@
-		<form action="preferences.php" method="post" enctype="multipart/form-data">
+		<form action="preferences.php" method="post" enctype="multipart/form-data" class="tabbed">
 {if $error_detected|@count != 0}
 		<div id="errorbox">
 			<h1>{_T string="- ERROR -"}</h1>
@@ -22,20 +22,19 @@
 {if $prefs_stored}
 	<div id="infobox">{_T string="Preferences has been saved."}</div>
 {/if}
-        <p id="required">{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
-		<ul id="tabs">
+        <div id="prefs_tabs">
+            <ul>
+                <li><a href="#general">{_T string="General"}</a></li>
+                <li><a href="#parameters">{_T string="Parameters"}</a></li>
+                <li><a href="#mail">{_T string="E-Mail"}</a></li>
+                <li><a href="#labels">{_T string="Labels"}</a></li>
+                <li><a href="#cards">{_T string="Cards"}</a></li>
 {if $login->isSuperAdmin()}
-			<li><a href="#admin">{_T string="Admin"}</a></li>
+    			<li><a href="#admin">{_T string="Admin"}</a></li>
 {/if}
-			<li><a href="#cards">{_T string="Cards"}</a></li>
-			<li><a href="#labels">{_T string="Labels"}</a></li>
-			<li><a href="#mail">{_T string="E-Mail"}</a></li>
-			<li><a href="#parameters">{_T string="Parameters"}</a></li>
-			<li class="current_tab"><a href="#general">{_T string="General"}</a></li>
-		</ul>
-		<div class="bigtable tabbed">
+    		</ul>
 			<fieldset class="cssform" id="general">
-				<legend>{_T string="General information:"}</legend>
+				<legend>{_T string="General information"}</legend>
 				<p>
 					<label for="pref_nom" class="bline">{_T string="Name (corporate name) of the association:"}</label>
 					<input{if $required.pref_nom eq 1} required{/if} type="text" name="pref_nom" id="pref_nom" value="{$pref.pref_nom}" maxlength="190"/>
@@ -93,7 +92,7 @@
 			</fieldset>
 
 			<fieldset class="cssform" id="parameters">
-				<legend>{_T string="Galette's parameters:"}</legend>
+				<legend>{_T string="Galette's parameters"}</legend>
 				<p>
 					<label for="pref_lang" class="bline">{_T string="Default language:"}</label>
 					<select name="pref_lang" id="pref_lang">
@@ -153,7 +152,7 @@
 			</fieldset>
 
 			<fieldset class="cssform" id="mail">
-				<legend>{_T string="Mail settings:"}</legend>
+				<legend>{_T string="Mail settings"}</legend>
 				<p>
 					<label for="pref_email_nom" class="bline">{_T string="Sender name:"}</label>
 					<input type="text" name="pref_email_nom" id="pref_email_nom" value="{$pref.pref_email_nom}" maxlength="50"{if $required.pref_email_nom eq 1} required{/if}/>
@@ -235,7 +234,7 @@
 			</fieldset>
 
 			<fieldset class="cssform" id="labels">
-				<legend>{_T string="Label generation parameters:"}</legend>
+				<legend>{_T string="Label generation parameters"}</legend>
 				<p>
 					<label for="pref_etiq_marges_v" class="bline">{_T string="Vertical margins:"}</label>
 					<input type="text" name="pref_etiq_marges_v" id="pref_etiq_marges_v" value="{$pref.pref_etiq_marges_v}" maxlength="4"{if $required.pref_etiq_marges_v eq 1} required{/if}/> mm
@@ -283,7 +282,7 @@
 			</fieldset>
 
 			<fieldset class="cssform" id="cards">
-				<legend>{_T string="Cards generation parameters:"}</legend>
+				<legend>{_T string="Cards generation parameters"}</legend>
 				<p>
 					<label for="pref_card_abrev" class="bline">{_T string="Short Text (Card Center):"}</label>
 					<input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{$pref.pref_card_abrev}" size="10" maxlength="10"{if $required.pref_card_abrev eq 1} required{/if}/>
@@ -377,7 +376,7 @@
 
 {if $login->isSuperAdmin()}
 			<fieldset class="cssform" id="admin">
-				<legend>{_T string="Admin account (independant of members):"}</legend>
+				<legend>{_T string="Admin account (independant of members)"}</legend>
 				<p>
 					<label for="pref_admin_login" class="bline">{_T string="Username:"}</label>
 					<input type="text" name="pref_admin_login" id="pref_admin_login" value="{$pref.pref_admin_login}" maxlength="20"{if $required.pref_admin_login eq 1} required{/if}/>
@@ -392,25 +391,15 @@
 				</p>
 			</fieldset>
 {/if}
-			<input type="hidden" name="valid" value="1"/>
 		</div>
 		<div class="button-container">
-			<input type="submit" value="{_T string="Save"}"/>
+			<input type="hidden" name="valid" value="1"/>
+			<input type="submit" id="btnsave" value="{_T string="Save"}"/>
 		</div>
+        <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
 		</form>
 		<script type="text/javascript">
-			//if javascript active, hide tabs
-			$('fieldset.cssform').hide();
-			//and then, show only the default one
-			$('fieldset.cssform:first-child').show();
-
-			//what to do when tab clicked
-			$('#tabs li a').click(function(){ldelim}
-				$('fieldset.cssform').hide();
-				$('.current_tab').removeClass();
-				$(this).parent().addClass('current_tab');
-				$($(this).attr('href')).show();
-			{rdelim});
+            $('#prefs_tabs').tabs();
 
 			$('#no,#php,#qmail').click(function(){ldelim}
 				$('#smtp_parameters,#smtp_auth').hide();

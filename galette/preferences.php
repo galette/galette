@@ -410,6 +410,7 @@ $tpl->assign('themes', $themes);
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('warning_detected', $warning_detected);
 $tpl->assign('prefs_stored', $prefs_stored);
+$tpl->assign('require_tabs', true);
 $tpl->assign('color_picker', true);
 // page generation
 $content = $tpl->fetch('preferences.tpl');
