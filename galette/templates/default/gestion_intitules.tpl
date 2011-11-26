@@ -28,5 +28,14 @@
         $(this).attr('href', $(this).attr('href')  + '&ajax=true');
     {rdelim});
 
-    $('#intitules_tabs').tabs();
+    $('#intitules_tabs').tabs({ldelim}
+        load: function(event, ui) {ldelim}
+            $('#intitules_tabs input:submit, #configfiches_tabs .button, #configfiches_tabs input:reset' ).button();
+        {rdelim},
+        ajaxOptions: {ldelim}
+            error: function( xhr, status, index, anchor ) {ldelim}
+                alert('{_T string="An error occured :("|escape:"js"}');
+            {rdelim}
+        {rdelim}
+    {rdelim});
 </script>
