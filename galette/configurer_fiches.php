@@ -261,6 +261,7 @@ if ( $form_name == '' ) {
     $tpl->assign('dyn_fields', $dyn_fields);
 } // $form_name == ''
 
+$tpl->assign('require_tabs', true);
 $tpl->assign('all_forms', $all_forms);
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('form_name', $form_name);
@@ -273,7 +274,11 @@ $tpl->assign('page_title', $title);
 $tpl->assign('perm_names', $perm_names);
 $tpl->assign('field_type_names', $field_type_names);
 $tpl->assign('field_positions', $field_positions);
-$content = $tpl->fetch('configurer_fiches.tpl');
-$tpl->assign('content', $content);
-$tpl->display('page.tpl');
+if ( isset($_GET['ajax']) && $_GET['ajax'] == 'true' ) {
+    $tpl->display('configurer_fiche_content.tpl');
+} else {
+    $content = $tpl->fetch('configurer_fiches.tpl');
+    $tpl->assign('content', $content);
+    $tpl->display('page.tpl');
+}
 ?>

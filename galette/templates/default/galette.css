@@ -1617,6 +1617,26 @@ td.photo img{
 /*** /Voir adhérent ***/
 
 /*** Onglets ***/
+.tabbed {
+    display: inline-block;
+    width: 100%;
+}
+
+.tabbed div {
+    margin-bottom: 1em;
+}
+
+.tabbed fieldset {
+    margin: 0;
+    padding: 0!important;
+}
+
+.tabbed legend {
+    border: none;
+    margin: 0;
+    text-align: center;
+    font-size: 1.2em;
+}
 #tabs, #tabs li{
 	list-style-type: none;
 	margin:0;
