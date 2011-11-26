@@ -104,7 +104,7 @@
 							{/if}
 						</a>
 					</th>
-					<th class="listing">{_T string="Actions"}</th>
+					<th class="listing actions_row">{_T string="Actions"}</th>
 				</tr>
 			</thead>
 {if $nb_members != 0}

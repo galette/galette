@@ -13,7 +13,9 @@ tfoot,
 footer nav,
 #menu > *,
 #btnadd,
-#historyform {
+#historyform,
+input[type=checkbox],
+.actions_row {
     display: none;
 }
 
@@ -30,6 +32,11 @@ a {
 h1, h2, h3, h4, h5, h6,
 footer {
     text-align: center;
+}
+
+#copyright {
+	color: #CCCCCC;
+	font-style: italic;
 }
 
 #listing {
