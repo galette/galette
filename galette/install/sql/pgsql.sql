@@ -196,7 +196,7 @@ CREATE TABLE galette_dynamic_fields (
 
 DROP TABLE IF EXISTS galette_pictures;
 CREATE TABLE galette_pictures (
-  id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
+  id_adh integer DEFAULT '0' NOT NULL,
   picture bytea NOT NULL,
   format character varying(30) DEFAULT '' NOT NULL,
   PRIMARY KEY (id_adh)

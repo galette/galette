@@ -167,10 +167,6 @@ ALTER TABLE galette_adherents ADD FOREIGN KEY (id_statut)
   REFERENCES galette_statuts (id_statut)
   ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE galette_pictures ADD FOREIGN KEY (id_adh)
-  REFERENCES galette_adherents (id_adh)
-  ON DELETE RESTRICT ON UPDATE RESTRICT;
-
 ALTER TABLE galette_tmppasswds CHANGE id_adh id_adh INT( 10 ) UNSIGNED NOT NULL;
 ALTER TABLE galette_tmppasswds ADD FOREIGN KEY (id_adh)
   REFERENCES galette_adherents (id_adh)

@@ -145,8 +145,7 @@ CREATE TABLE galette_pictures (
     id_adh int(10) unsigned NOT NULL default '0',
     picture mediumblob NOT NULL,
     format varchar(10) NOT NULL default '',
-    PRIMARY KEY  (id_adh),
-    FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)
+    PRIMARY KEY  (id_adh)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Table for dynamic translation of strings;
