@@ -384,19 +384,23 @@ if ( isset($_GET['id']) ) {
 }
 
 /* Set template parameters and print. */
+$tpl->assign('require_tabs', true);
 $tpl->assign('fields', $fields);
 $tpl->assign('error_detected', $error_detected);
 if ( $className == 'Status' ) {
     $tpl->assign('non_staff_priority', Members::NON_STAFF_MEMBERS);
 }
-if ( isset($_GET['id']) ) {
-    $content = $tpl->fetch('editer_intitule.tpl');
+if ( isset($_GET['ajax']) && $_GET['ajax'] == 'true' ) {
+    $tpl->display('gestion_intitule_content.tpl');
 } else {
-    $tpl->assign('all_forms', $forms);
-    $tpl->assign('error_detected', $error_detected);
-    $content = $tpl->fetch('gestion_intitules.tpl');
+    if ( isset($_GET['id']) ) {
+        $content = $tpl->fetch('editer_intitule.tpl');
+    } else {
+        $tpl->assign('all_forms', $forms);
+        $tpl->assign('error_detected', $error_detected);
+        $content = $tpl->fetch('gestion_intitules.tpl');
+    }
+    $tpl->assign('content', $content);
+    $tpl->display('page.tpl');
 }
-$tpl->assign('content', $content);
-$tpl->display('page.tpl');
-
 ?>
