@@ -1637,56 +1637,6 @@ td.photo img{
     text-align: center;
     font-size: 1.2em;
 }
-#tabs, #tabs li{
-	list-style-type: none;
-	margin:0;
-	padding:0;
-}
-
-ul#tabs{
-	width: 100%;
-}
-
-ul#tabs li{
-	float:right;
-	display:inline;
-	background-color:#eea423;
-	margin:0 0 0 0.2em;
-	line-height:2em;
-	-moz-border-radius: 10px 10px 0px 0px;
-	-webkit-border-radius: 10px 10px 0px 0px;
-	border-radius: 10px 10px 0px 0px;
-}
-
-#tabs a{
-	text-decoration: none;
-	color: #000;
-	padding:0 1em;
-	display:block;
-	z-index:10;
-}
-
-#tabs a:hover, .tabselected a {
-	text-decoration:underline;
-}
-.tabbed{
-	background-color:#DDDDFF;
-	clear:right;
-	padding-top:.5em;
-	padding-bottom:.5em;
-    margin-bottom: .5em;
-	-moz-border-radius: 10px 0 10px 10px;
-	-webkit-border-radius: 10px 0 10px 10px;
-	border-radius: 10px 0 10px 10px;
-}
-.tabbed table#listing{
-	width: 98%;
-	margin:.5em 1%;
-}
-.current_tab{
-	background-color:#DDDDFF!important;
-    font-weight: bold;
-}
 /*** /Onglets ***/
 
 /*** Tooltips ***/
