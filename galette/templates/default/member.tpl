@@ -333,7 +333,7 @@
                         error: function() {ldelim}
                             alert("{_T string="An error occured displaying groups interface :(" escape="js"}");
                         {rdelim}
-                    });
+                    {rdelim});
                     return false;
                 {rdelim});
 

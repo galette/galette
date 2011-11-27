@@ -43,7 +43,7 @@
                                             var _photo = $('#photo_adh');
                                             _photo.removeAttr('width').removeAttr('height');
                                             _photo.attr('src', $('#photo_adh')[0].src + '&' + d.getTime());
-                                            alert('{_T string="Member photo has been changed."}');
+                                            alert('{_T string="Member photo has been changed." escape="js}');
                                         {rdelim} else {ldelim}
                                             alert(res.message);
                                         {rdelim}
