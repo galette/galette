@@ -56,7 +56,7 @@ require_once WEB_ROOT . 'classes/varslist.class.php';
 if ( isset($_SESSION['galette']['varslist']) ) {
     $varslist = unserialize($_SESSION['galette']['varslist']);
 } else {
-    $log->log('No member selected to generate labels', PEAR_LOG_INFO);
+    $log->log('No member selected to generate attendance sheet', PEAR_LOG_INFO);
     if ( $login->isAdmin || $login->isStaff() ) {
         header('location:gestion_adherents.php');
     }
