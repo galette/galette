@@ -73,7 +73,7 @@ if ( !is_array($members) || count($members) < 1 ) {
 
 //with or without images?
 $_wimages = false;
-if ( isset($_GET['wimages']) && $_GET['wimages'] === '1') {
+if ( isset($_POST['sheet_photos']) && $_POST['sheet_photos'] === '1') {
     $_wimages = true;
 }
 
@@ -96,6 +96,21 @@ $pdf->SetTextColor(0, 0, 0);
 $pdf->AddPage();
 $picture = new picture(0);
 $pdf->PageHeader(_T("Attendance sheet"));
+
+if ( isset($_POST['sheet_title']) && trim($_POST['sheet_title']) != '' ) {
+    $pdf->Cell(190, 7, $_POST['sheet_title'], 0, 1, 'C');
+}
+if ( isset($_POST['sheet_date']) && trim($_POST['sheet_date']) != '' ) {
+    $dformat = _T("Y-m-d");
+    $date = DateTime::createFromFormat(
+        $dformat,
+        $_POST['sheet_date']
+    );
+    $format = _T("%A, %B %#d%O %Y");
+    $format = str_replace('%O', date('S', $date->getTimestamp()), $format);
+    $date_fmt = strftime($format, $date->getTimestamp());
+    $pdf->Cell(190, 7, utf8_encode($date_fmt), 0, 1, 'C');
+}
 
 // Header
 $pdf->SetFont('', 'B');

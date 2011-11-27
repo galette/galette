@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2011-11-27 10:00+0100\n"
+"PO-Revision-Date: 2011-11-27 11:06+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -197,7 +197,7 @@ msgstr "-- Choisissez un membre du bureau --"
 msgid "Mailings"
 msgstr "E-Mailings"
 
-#: ../gestion_adherents.php:187 ../attendance_sheet.php:103
+#: ../gestion_adherents.php:187 ../attendance_sheet.php:114
 #: ../templates/default/gestion_adherents.tpl:61
 #: ../templates/default/gestion_adherents.tpl:196
 #: ../templates/default/gestion_adherents.tpl:202
@@ -238,7 +238,6 @@ msgid "Admin settings"
 msgstr "Paramètres administrateur"
 
 #: ../templates/default/ajax_attendance_sheet_details.tpl:11
-#, fuzzy
 msgid "(yyyy-mm-dd format)"
 msgstr "(format jj/mm/aaaa)"
 
@@ -1120,9 +1119,8 @@ msgid "Clear filter"
 msgstr "Effacer le filtre"
 
 #: ../templates/default/gestion_adherents.tpl:318
-#, fuzzy
 msgid "Attendance sheet details"
-msgstr "Liste d'émargement"
+msgstr "Détails de la liste d'émargement"
 
 #: ../templates/default/lostpasswd.tpl:7
 msgid "Username or email:"
@@ -1807,9 +1805,8 @@ msgstr ""
 "bureau."
 
 #: ../templates/default/ajax_attendance_sheet_details.tpl:5
-#, fuzzy
 msgid "Title"
-msgstr "Titre&nbsp;:"
+msgstr "Titre"
 
 #: ../classes/adherent.class.php:196
 msgid "Company name:"
@@ -2660,7 +2657,7 @@ msgstr "Largeur étiquette&nbsp;:"
 msgid "The following exports already seems to exist on the disk:"
 msgstr "Les exports suivants semblent exister sur le disque&nbsp;:"
 
-#: ../attendance_sheet.php:149
+#: ../attendance_sheet.php:160
 msgid "attendance_sheet"
 msgstr "liste_emargement"
 
@@ -2770,7 +2767,7 @@ msgstr "(Entier)"
 
 #: ../templates/default/ajax_attendance_sheet_details.tpl:3
 msgid "Some details about your attendance sheet..."
-msgstr ""
+msgstr "Quelques détails à propos de votre liste d'émargement..."
 
 #: ../templates/default/preferences.tpl:95
 msgid "Galette's parameters"
@@ -2806,7 +2803,7 @@ msgstr ""
 msgid "Uncomplete dispatched transaction"
 msgstr "La transaction n'est pas entièrement ventilée"
 
-#: ../attendance_sheet.php:104
+#: ../attendance_sheet.php:115
 msgid "Signature"
 msgstr "Signature"
 
@@ -2893,9 +2890,8 @@ msgid "right"
 msgstr "droite"
 
 #: ../templates/default/gestion_adherents.tpl:284
-#, fuzzy
 msgid "No member selected"
-msgstr "Aucun adhérent sélectionné (pour le moment)."
+msgstr "Aucun adhérent sélectionné"
 
 #: ../templates/default/preferences.tpl:313
 msgid "Honor Members Color:"
@@ -3229,6 +3225,8 @@ msgid ""
 "Please make sure to select at least one member from the list to perform this "
 "action."
 msgstr ""
+"Assurez-vous de sélectionner au moins un adhérent dans la liste avant "
+"d'effectuer cette action."
 
 #: ../champs_adherents.php:66 ../classes/adherent.class.php:389
 #: ../templates/default/member.tpl:191
@@ -3288,6 +3286,10 @@ msgstr "Courriel de l'administrateur des membres&nbsp;:"
 #: ../lostpasswd.php:103
 msgid "Mail sent to '%s' for password recovery."
 msgstr "Courriel envoyé à « %s » pour la récupération du mot de passe."
+
+#: ../templates/default/ajax_attendance_sheet_details.tpl:14
+msgid "With photos?"
+msgstr "Avec photos&nbsp;?"
 
 #: ../templates/default/gestion_mailings.tpl:83
 msgid "Mailing has not been sent yet"
@@ -3440,7 +3442,7 @@ msgstr "Couleur du texte sur le bandeau&nbsp;:"
 
 #: ../templates/default/ajax_attendance_sheet_details.tpl:3
 msgid "%s attendees"
-msgstr ""
+msgstr "%s présents"
 
 #: ../classes/transaction.class.php:102
 #: ../templates/default/ajouter_transaction.tpl:25
@@ -4142,6 +4144,10 @@ msgstr "Voir ma fiche membre"
 #: ../templates/default/configurer_fiche_content.tpl:71
 msgid "Send up '%s' field"
 msgstr "Faire monter le champ « %s »"
+
+#: ../attendance_sheet.php:105
+msgid "%A, %B %#d%O %Y"
+msgstr "%A %#d %B %Y"
 
 #: ../install/index.php:1003
 msgid "Default contributions types were successfully stored."

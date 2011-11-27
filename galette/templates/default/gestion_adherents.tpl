@@ -295,9 +295,58 @@
                     {rdelim});
                     return false;
                 {rdelim} else {ldelim}
+                    if (this.id == 'attendance_sheet') {ldelim}
+                        _attendance_sheet_details();
+                        return false;
+                    {rdelim}
                     return true;
                 {rdelim}
             {rdelim});
 		{rdelim});
+
+        var _attendance_sheet_details = function(){ldelim}
+            var _selecteds = [];
+            $('#listing').find('input[type=checkbox]:checked').each(function(){ldelim}
+                _selecteds.push($(this).val());
+            {rdelim});
+            $.ajax({ldelim}
+                url: 'ajax_attendance_sheet_details.php',
+                type: "POST",
+                data: {ldelim}ajax: true, selection: _selecteds{rdelim},
+                dataType: 'html',
+                success: function(res){ldelim}
+                    var _el = $('<div id="attendance_sheet_details" title="{_T string="Attendance sheet details" escape="js"}"> </div>');
+                    _el.appendTo('body').dialog({ldelim}
+                        modal: true,
+                        hide: 'fold',
+                        width: '60%',
+                        height: 300,
+                        close: function(event, ui){ldelim}
+                            _el.remove();
+                        {rdelim},
+                        buttons: {ldelim}
+                            Ok: function() {ldelim}
+                                $('#sheet_details_form').submit();
+                                $(this).dialog( "close" );
+                            {rdelim},
+                            Cancel: function() {ldelim}
+                                $(this).dialog( "close" );
+                            {rdelim}
+                        {rdelim}
+                    {rdelim}).append(res);
+                    $('#sheet_date').datepicker({ldelim}
+                        changeMonth: true,
+                        changeYear: true,
+                        showOn: 'button',
+                        buttonImage: '{$template_subdir}images/calendar.png',
+                        buttonImageOnly: true,
+                        yearRange: 'c:c+5'
+                    {rdelim});
+                {rdelim},
+                error: function() {ldelim}
+                    alert("{_T string="An error occured displaying groups interface :(" escape="js"}");
+                {rdelim}
+            {rdelim});
+        {rdelim}
 		</script>
 {/if}

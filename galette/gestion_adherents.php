@@ -173,6 +173,7 @@ $varslist->setSmartyPagination($tpl);
 
 $tpl->assign('page_title', _T("Members management"));
 $tpl->assign('require_dialog', true);
+$tpl->assign('require_calendar', true);
 $tpl->assign('error_detected', $error_detected);
 if (isset($warning_detected)) {
     $tpl->assign('warning_detected', $warning_detected);
