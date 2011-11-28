@@ -68,6 +68,7 @@ class Contribution
     private $_member;
     private $_type;
     private $_amount;
+    private $_orig_amount;
     private $_info;
     private $_begin_date;
     private $_end_date;
@@ -261,6 +262,8 @@ class Contribution
         $this->_id = $r->$pk;
         $this->_date = $r->date_enreg;
         $this->_amount = $r->montant_cotis;
+        //save original amount, we need it for transactions parts calulations
+        $this->_orig_amount = $r->montant_cotis;
         $this->_info = $r->info_cotis;
         $this->_begin_date = $r->date_debut_cotis;
         $enddate = $r->date_fin_cotis;
@@ -388,7 +391,9 @@ class Contribution
 
         if ( $this->_transaction != null && $this->_amount != null) {
             $missing = $this->_transaction->getMissingAmount();
-            if ( $missing < $this->_amount ) {
+            //calculate new missing amount
+            $missing = $missing + $this->_orig_amount - $this->_amount;
+            if ( $missing <= 0 ) {
                 $errors[] = _T("- Sum of all contributions exceed corresponding transaction amount.");
             }
         }
@@ -539,6 +544,7 @@ class Contribution
                 }
             }
             $zdb->db->commit();
+            $this->_orig_amount = $this->_amount;
             return true;
         } catch (Exception $e) {
             /** FIXME */
