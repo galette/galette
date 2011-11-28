@@ -79,7 +79,19 @@ class I18n
         $this->_file = $this->_path . $this->_file;
 
         if ( !$lang ) {
-            $this->changeLanguage(self::DEFAULT_LANG);
+            //try to determine user language
+            $dlang = self::DEFAULT_LANG;
+            if ( isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ) {
+                $blang = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+                if ( substr($blang, 0, 2) == 'fr' ) {
+                    $dlang = 'fr_FR';
+                } else if( substr($blang, 0, 2) == 'en' ) {
+                    $dlang = 'en_US';
+                } else {
+                    $dlang = self::DEFAULT_LANG;
+                }
+            }
+            $this->changeLanguage($dlang);
         } else {
             $this->_load($lang);
         }

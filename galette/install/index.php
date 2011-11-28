@@ -260,7 +260,7 @@ case '1':
                     <select name="pref_lang" id="pref_lang" required>
 <?php
     foreach ( $i18n->getList() as $langue ) {
-        echo "\t\t\t\t\t<option value=\"" . $langue->getID() . "\" style=\"background:url(" . $langue->getFlag() . ") no-repeat;padding-left:30px;\"" . ((I18n::DEFAULT_LANG == $langue->getID())?" selected=\"selected\"":"") . ">" . ucwords($langue->getName()) . "</option>\n";
+        echo "\t\t\t\t\t<option value=\"" . $langue->getID() . "\" style=\"background:url(" . $langue->getFlag() . ") no-repeat;padding-left:30px;\"" . (($i18n->getID()  == $langue->getID())?" selected=\"selected\"":"") . ">" . ucwords($langue->getName()) . "</option>\n";
     }
 ?>
                     </select>
