@@ -25,3 +25,4 @@ Just put a {include file='common_header.tpl'} into the head tag.
 		{* UI accordion is used for main menu ; we need the CSS *}
 		<link rel="stylesheet" type="text/css" href="{$template_subdir}jquery-ui/jquery-ui-{$jquery_ui_version}.custom.css" />
         <link rel="stylesheet" type="text/css" href="{$template_subdir}galette_print.css" media="print" />
+        <link rel="shortcut icon" href="{$template_subdir}images/favicon.png" />
