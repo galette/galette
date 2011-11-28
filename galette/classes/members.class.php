@@ -589,7 +589,7 @@ class Members
                         ->orWhere('adresse2_adh LIKE ?', $token)
                         ->orWhere('cp_adh LIKE ?', $token)
                         ->orWhere('ville_adh LIKE ?', $token)
-                        ->orWhere('pays_adh LIKDE ?', $token);
+                        ->orWhere('pays_adh LIKE ?', $token);
                     break;
                 case self::FILTER_MAIL:
                     $select->where('email_adh LIKE ?', $token)
