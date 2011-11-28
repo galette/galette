@@ -8,9 +8,9 @@ Just put a {include file='common_header.tpl'} into the head tag.
 		<link rel="stylesheet" type="text/css" href="{$template_subdir}galette.css" />
         <script type="text/javascript" src="{$jquery_dir}jquery-{$jquery_version}.min.js"></script>
         {* IE8 doe not know html5 tags *}
-        <!--[if lt IE9]>
+        <!--[if lt IE 9]>
             <script type="text/javascript" src="{$scripts_dir}html5-ie.js"></script>
-        <!endif]-->
+        <![endif]-->
 		<script type="text/javascript" src="{$jquery_dir}jquery.bgFade.js"></script>
 		<script type="text/javascript" src="{$jquery_dir}chili-1.7.pack.js"></script>
 		<script type="text/javascript" src="{$jquery_dir}jquery.tooltip.pack.js"></script>
