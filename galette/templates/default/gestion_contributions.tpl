@@ -14,6 +14,15 @@
 			<input type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$contributions->start_date_filter}"/>
 			<label for="end_date_filter">{_T string="until"}</label>&nbsp;
 			<input type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$contributions->end_date_filter}"/>
+            <label for="payment_type_filter">{_T string="Payment type"}</label>
+            <select name="payment_type_filter" id="payment_type_filter">
+                <option value="{php}echo Contribution::PAYMENT_CASH;{/php}"{if $contributions->payment_type_filter eq constant('Contribution::PAYMENT_CASH')} selected="selected"{/if}>{_T string="Cash"}</option>
+                <option value="{php}echo Contribution::PAYMENT_CREDITCARD;{/php}"{if $contributions->payment_type_filter eq constant('Contribution::PAYMENT_CREDITCARD')} selected="selected"{/if}>{_T string="Credit card"}</option>
+                <option value="{php}echo Contribution::PAYMENT_CHECK;{/php}"{if $contributions->payment_type_filter eq constant('Contribution::PAYMENT_CHECK')} selected="selected"{/if}>{_T string="Check"}</option>
+                <option value="{php}echo Contribution::PAYMENT_TRANSFER;{/php}"{if $contributions->payment_type_filter eq constant('Contribution::PAYMENT_TRANSFER')} selected="selected"{/if}>{_T string="Transfer"}</option>
+                <option value="{php}echo Contribution::PAYMENT_PAYPAL;{/php}"{if $contributions->payment_type_filter eq constant('Contribution::PAYMENT_PAYPAL')} selected="selected"{/if}>{_T string="Paypal"}</option>
+                <option value="{php}echo Contribution::PAYMENT_OTHER;{/php}"{if $contributions->payment_type_filter eq constant('Contribution::PAYMENT_OTHER')} selected="selected"{/if}>{_T string="Other"}</option>
+            </select>
 			<input type="submit" class="inline" value="{_T string="Filter"}"/>
 			<input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
 		</div>

@@ -71,6 +71,7 @@ class Contributions extends GalettePagination
     private $_count = null;
     private $_start_date_filter = null;
     private $_end_date_filter = null;
+    private $_payment_type_filter = null;
     private $_filtre_cotis_adh = null;
     private $_filtre_transactions = null;
 
@@ -335,6 +336,10 @@ class Contributions extends GalettePagination
                 $select->where('date_debut_cotis <= ?', $d->format('Y-m-d'));
             }
 
+            if ( $this->_payment_type_filter != null ) {
+                $select->where('type_paiement_cotis = ?', $this->_payment_type_filter);
+            }
+
             if ( $this->_from_transaction !== false ) {
                 $select->where(
                     Transaction::PK . ' = ?',
@@ -389,6 +394,7 @@ class Contributions extends GalettePagination
         parent::reinit();
         $this->_start_date_filter = null;
         $this->_end_date_filter = null;
+        $this->_payment_type_filter = null;
     }
 
     /**

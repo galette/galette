@@ -135,6 +135,21 @@ if ( isset($_GET['clear_filter']) ) {
             $error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!");
         }
     }
+
+    if ( isset($_GET['payment_type_filter']) ) {
+        $ptf = $_GET['payment_type_filter'];
+        if ( $ptf == Contribution::PAYMENT_OTHER
+            || $ptf == Contribution::PAYMENT_CASH
+            || $ptf == Contribution::PAYMENT_CREDITCARD
+            || $ptf == Contribution::PAYMENT_CHECK
+            || $ptf == Contribution::PAYMENT_TRANSFER
+            || $ptf == Contribution::PAYMENT_PAYPAL
+        ) {
+            $contribs->payment_type_filter = $ptf;
+        } else {
+            $error_detected[] = _T("- Unknown payment type!");
+        }
+    }
 }
 
 if ( ($login->isAdmin() || $login->isStaff()) && isset($_GET['id_adh']) && $_GET['id_adh'] != '' ) {
