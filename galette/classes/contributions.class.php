@@ -485,6 +485,7 @@ class Contributions extends GalettePagination
                 'filtre_cotis_adh',
                 'start_date_filter',
                 'end_date_filter',
+                'payment_type_filter',
                 'max_amount'
             );
             if (in_array($name, $return_ok)) {
