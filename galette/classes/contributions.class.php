@@ -77,6 +77,7 @@ class Contributions extends GalettePagination
 
     private $_from_transaction = false;
     private $_max_amount = null;
+    private $_sum;
 
     /**
     * Default constructor
@@ -198,6 +199,8 @@ class Contributions extends GalettePagination
             $this->_buildWhereClause($select);
             $select->order(self::_buildOrderClause());
 
+            $this->_calculateSum($select);
+
             if ( $count ) {
                 $this->_proceedCount($select);
             }
@@ -246,6 +249,40 @@ class Contributions extends GalettePagination
             /** TODO */
             $log->log(
                 'Cannot count contributions | ' . $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $countSelect->__toString() . ' ' . $e->__toString(),
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
+    }
+
+    /**
+    * Calculate sum of all selected contributions
+    *
+    * @param Zend_Db_Select $select Original select
+    *
+    * @return void
+    */
+    private function _calculateSum($select)
+    {
+        global $zdb, $log;
+
+        try {
+            $sumSelect = clone $select;
+            $sumSelect->reset(Zend_Db_Select::COLUMNS);
+            $sumSelect->reset(Zend_Db_Select::ORDER);
+            $sumSelect->columns('SUM(montant_cotis) AS contribsum');
+
+            $result = $sumSelect->query()->fetch();
+
+            $this->_sum = round($result->contribsum, 2);
+        } catch (Exception $e) {
+            /** TODO */
+            $log->log(
+                'Cannot calculate contributions sum | ' . $e->getMessage(),
                 PEAR_LOG_WARNING
             );
             $log->log(
@@ -486,6 +523,7 @@ class Contributions extends GalettePagination
                 'start_date_filter',
                 'end_date_filter',
                 'payment_type_filter',
+                'sum',
                 'max_amount'
             );
             if (in_array($name, $return_ok)) {

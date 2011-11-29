@@ -146,6 +146,8 @@ if ( isset($_GET['clear_filter']) ) {
             || $ptf == Contribution::PAYMENT_PAYPAL
         ) {
             $contribs->payment_type_filter = $ptf;
+        } elseif ( $ptf == -1 ) {
+            $contribs->payment_type_filter = null;
         } else {
             $error_detected[] = _T("- Unknown payment type!");
         }

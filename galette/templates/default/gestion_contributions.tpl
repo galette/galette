@@ -16,6 +16,7 @@
 			<input type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$contributions->end_date_filter}"/>
             <label for="payment_type_filter">{_T string="Payment type"}</label>
             <select name="payment_type_filter" id="payment_type_filter">
+                <option value="-1">{_T string="Select"}</option>
                 <option value="{php}echo Contribution::PAYMENT_CASH;{/php}"{if $contributions->payment_type_filter eq constant('Contribution::PAYMENT_CASH')} selected="selected"{/if}>{_T string="Cash"}</option>
                 <option value="{php}echo Contribution::PAYMENT_CREDITCARD;{/php}"{if $contributions->payment_type_filter eq constant('Contribution::PAYMENT_CREDITCARD')} selected="selected"{/if}>{_T string="Credit card"}</option>
                 <option value="{php}echo Contribution::PAYMENT_CHECK;{/php}"{if $contributions->payment_type_filter eq constant('Contribution::PAYMENT_CHECK')} selected="selected"{/if}>{_T string="Check"}</option>
@@ -162,6 +163,11 @@
 				</tr>
 			</thead>
 			<tfoot>
+                <tr>
+                    <td class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}10{elseif $login->isAdmin() or $login->isStaff()}9{else}8{/if}">
+                        {_T string="Found contributions total %f" pattern="/%f/" replace=$contributions->sum}
+                    </td>
+                </tr>
 {if ($login->isAdmin() or $login->isStaff()) && $mode neq 'ajax'}
                 <tr>
                     <td colspan="8" id="table_footer">
