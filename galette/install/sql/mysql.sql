@@ -51,6 +51,7 @@ CREATE TABLE galette_cotisations (
   id_adh int(10) unsigned NOT NULL default '0',
   id_type_cotis int(10) unsigned NOT NULL default '0',
   montant_cotis float unsigned default '0',
+  type_paiement_cotis tinyint(3) unsigned NOT NULL default '0',
   info_cotis text,
   date_enreg date NOT NULL default '1901-01-01',
   date_debut_cotis date NOT NULL default '1901-01-01',

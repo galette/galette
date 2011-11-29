@@ -126,6 +126,17 @@
 						</a>
 					</th>
 					<th class="listing left">
+						<a href="gestion_contributions.php?tri={php}echo Contributions::ORDERBY_PAYMENT_TYPE;{/php}" class="listing">{_T string="Payment type"}
+                        {if $contributions->orderby eq constant('Contributions::ORDERBY_PAYMENT_TYPE')}
+                            {if $contributions->ordered eq constant('Contributions::ORDER_ASC')}
+						<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                            {else}
+						<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                            {/if}
+						{/if}
+						</a>
+					</th>
+					<th class="listing left">
 						<a href="gestion_contributions.php?tri={php}echo Contributions::ORDERBY_DURATION;{/php}" class="listing">{_T string="Duration"}
                         {if $contributions->orderby eq constant('Contributions::ORDERBY_DURATION')}
                             {if $contributions->ordered eq constant('Contributions::ORDER_ASC')}
@@ -144,7 +155,7 @@
 			<tfoot>
 {if ($login->isAdmin() or $login->isStaff()) && $mode neq 'ajax'}
                 <tr>
-                    <td colspan="7" id="table_footer">
+                    <td colspan="8" id="table_footer">
                         <ul class="selection_menu">
                             <li>{_T string="For the selection:"}</li>
                             <li><input type="submit" id="delete" onclick="return confirm('{_T string="Do you really want to delete all selected contributions?"|escape:"javascript"}');" name="delete" value="{_T string="Delete"}"/></li>
@@ -153,7 +164,7 @@
                 </tr>
 {/if}
 				<tr>
-					<td colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}9{elseif $login->isAdmin() or $login->isStaff()}8{else}7{/if}" class="center" id="table_footer">
+					<td colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}10{elseif $login->isAdmin() or $login->isStaff()}9{else}8{/if}" class="center" id="table_footer">
 						{_T string="Pages:"}<br/>
 						<ul class="pages">{$pagination}</ul>
 					</td>
@@ -186,6 +197,7 @@
 	{/if}
 					<td class="{$cclass}">{$contribution->type->libelle}</td>
 					<td class="{$cclass} nowrap">{$contribution->amount}</td>
+					<td class="{$cclass} nowrap">{$contribution->spayment_type}</td>
 					<td class="{$cclass} nowrap">{$contribution->duration}</td>
 	{if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
 					<td class="{$cclass} center nowrap">
@@ -199,7 +211,7 @@
 	{/if}
 				</tr>
 {foreachelse}
-				<tr><td colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}9{elseif $login->isAdmin() or $login->isStaff()}8{else}7{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
+				<tr><td colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}10{elseif $login->isAdmin() or $login->isStaff()}9{else}8{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
 {/foreach}
 			</tbody>
 		</table>
@@ -234,7 +246,7 @@
                     $('#nbshow').change(function() {ldelim}
                         this.form.submit();
                     {rdelim});
-                    $('#table_footer').parent().before('<td class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}9{elseif $login->isAdmin() or $login->isStaff()}8{else}7{/if}"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
+                    $('#table_footer').parent().before('<td class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}10{elseif $login->isAdmin() or $login->isStaff()}9{else}8{/if}"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
                     $('#legende h1').remove();
                     $('#legende').dialog({ldelim}
                         autoOpen: false,

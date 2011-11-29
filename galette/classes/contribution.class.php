@@ -63,11 +63,19 @@ class Contribution
     const TABLE = 'cotisations';
     const PK = 'id_cotis';
 
+    const PAYMENT_OTHER = 0;
+    const PAYMENT_CASH = 1;
+    const PAYMENT_CREDITCARD = 2;
+    const PAYMENT_CHECK = 3;
+    const PAYMENT_TRANSFER = 4;
+    const PAYMENT_PAYPAL = 5;
+
     private $_id;
     private $_date;
     private $_member;
     private $_type;
     private $_amount;
+    private $_payment_type;
     private $_orig_amount;
     private $_info;
     private $_begin_date;
@@ -114,6 +122,10 @@ class Contribution
             'montant_cotis'       => array(
                 'label'    => _T("Amount:"),
                 'propname' => 'amount'
+            ),
+            'type_paiement_cotis' => array(
+                'label'    => _T("Payment type:"),
+                'propname' => payment_type
             ),
             'info_cotis'          => array(
                 'label'    => _T("Comments:"),
@@ -264,6 +276,7 @@ class Contribution
         $this->_amount = $r->montant_cotis;
         //save original amount, we need it for transactions parts calulations
         $this->_orig_amount = $r->montant_cotis;
+        $this->_payment_type = $r->type_paiement_cotis;
         $this->_info = $r->info_cotis;
         $this->_begin_date = $r->date_debut_cotis;
         $enddate = $r->date_fin_cotis;
@@ -353,6 +366,19 @@ class Contribution
                         $us_value = strtr($value, ',', '.');
                         if ( !is_numeric($value) ) {
                             $errors[] = _T("- The amount must be an integer!");
+                        }
+                        break;
+                    case 'type_paiement_cotis':
+                        if ( $value == self::PAYMENT_OTHER
+                            || $value == self::PAYMENT_CASH
+                            || $value == self::PAYMENT_CREDITCARD
+                            || $value == self::PAYMENT_CHECK
+                            || $value == self::PAYMENT_TRANSFER
+                            || $value == self::PAYMENT_PAYPAL
+                        ) {
+                            $this->_payment_type = $value;
+                        } else {
+                            $errors[] = _T("- Unknown payment type");
                         }
                         break;
                     case 'info_cotis':
@@ -754,7 +780,7 @@ class Contribution
     public function __get($name)
     {
         $forbidden = array('is_cotis');
-        $virtuals = array('duration');
+        $virtuals = array('duration', 'spayment_type');
 
         $rname = '_' . $name;
         if ( !in_array($name, $forbidden)
@@ -790,6 +816,34 @@ class Contribution
                     return '';
                 }
                 break;
+            case 'spayment_type':
+                switch ( $this->_payment_type ) {
+                case self::PAYMENT_OTHER:
+                    return _T("Other");
+                    break;
+                case self::PAYMENT_CASH:
+                    return _T("Cash");
+                    break;
+                case self::PAYMENT_CREDITCARD:
+                    return _T("Credit card");
+                    break;
+                case self::PAYMENT_CHECK:
+                    return _T("Check");
+                    break;
+                case self::PAYMENT_TRANSFER:
+                    return _T("Tranfer");
+                    break;
+                case self::PAYMENT_PAYPAL:
+                    return _T("Paypal");
+                    break;
+                default:
+                    $log->log(
+                        'Unknown payment type ' . $this->_payment_type,
+                        PEAR_LOG_WARNING
+                    );
+                    return '-';
+                    break;
+                }
             default:
                 return $this->$rname;
                 break;

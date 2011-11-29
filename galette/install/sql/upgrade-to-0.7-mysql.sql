@@ -172,5 +172,7 @@ ALTER TABLE galette_tmppasswds ADD FOREIGN KEY (id_adh)
   REFERENCES galette_adherents (id_adh)
   ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+ALTER TABLE galette_cotisations ADD type_paiement_cotis TINYINT( 3 ) unsigned NOT NULL DEFAULT '0' AFTER montant_cotis;
+
 -- Put back foreign keys
 SET FOREIGN_KEY_CHECKS=1;

@@ -106,6 +106,7 @@ CREATE TABLE galette_cotisations (
     id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
     id_type_cotis integer REFERENCES galette_types_cotisation (id_type_cotis) ON DELETE RESTRICT ON UPDATE CASCADE,
     montant_cotis real DEFAULT '0',
+    type_paiement_cotis smallint DEFAULT '0' NOT NULL,
     info_cotis text,
     date_enreg date DEFAULT '19010101' NOT NULL,
     date_debut_cotis date DEFAULT '19010101' NOT NULL,

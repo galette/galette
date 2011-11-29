@@ -66,6 +66,7 @@ class Contributions extends GalettePagination
     const ORDERBY_TYPE = 4;
     const ORDERBY_AMOUNT = 5;
     const ORDERBY_DURATION = 6;
+    const ORDERBY_PAYMENT_TYPE = 7;
 
     private $_count = null;
     private $_start_date_filter = null;

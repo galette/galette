@@ -71,6 +71,17 @@
 					<label class="bline" for="montant_cotis">{_T string="Amount:"}</label>
 					<input type="text" name="montant_cotis" id="montant_cotis" value="{$contribution->amount}" maxlength="10"{if $required.montant_cotis eq 1} required{/if}/>
 				</p>
+                <p>
+                    <label class="bline" for="type_paiement_cotis">{_T string="Payment type:"}</label>
+                    <select name="type_paiement_cotis" id="type_paiement_cotis">
+                        <option value="{php}echo Contribution::PAYMENT_CASH;{/php}"{if $contribution->payment_type eq constant('Contribution::PAYMENT_CASH')} selected="selected"{/if}>{_T string="Cash"}</option>
+                        <option value="{php}echo Contribution::PAYMENT_CREDITCARD;{/php}"{if $contribution->payment_type eq constant('Contribution::PAYMENT_CREDITCARD')} selected="selected"{/if}>{_T string="Credit card"}</option>
+                        <option value="{php}echo Contribution::PAYMENT_CHECK;{/php}"{if $contribution->payment_type eq constant('Contribution::PAYMENT_CHECK')} selected="selected"{/if}>{_T string="Check"}</option>
+                        <option value="{php}echo Contribution::PAYMENT_TRANSFER;{/php}"{if $contribution->payment_type eq constant('Contribution::PAYMENT_TRANSFER')} selected="selected"{/if}>{_T string="Transfer"}</option>
+                        <option value="{php}echo Contribution::PAYMENT_PAYPAL;{/php}"{if $contribution->payment_type eq constant('Contribution::PAYMENT_PAYPAL')} selected="selected"{/if}>{_T string="Paypal"}</option>
+                        <option value="{php}echo Contribution::PAYMENT_OTHER;{/php}"{if $contribution->payment_type eq constant('Contribution::PAYMENT_OTHER')} selected="selected"{/if}>{_T string="Other"}</option>
+                    </select>
+                </p>
 				<p>
 					<label class="bline" for="date_debut_cotis">
                         {if $contribution->isCotis()}
