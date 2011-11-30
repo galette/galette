@@ -831,7 +831,7 @@ class Contribution
                     return _T("Check");
                     break;
                 case self::PAYMENT_TRANSFER:
-                    return _T("Tranfer");
+                    return _T("Transfer");
                     break;
                 case self::PAYMENT_PAYPAL:
                     return _T("Paypal");
