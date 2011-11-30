@@ -269,12 +269,16 @@ class PDF extends TCPDF
         $this->Ln(4);
         $ystart = $this->GetY();
 
-        $name = preg_replace(
-            '/%s/',
+        $this->Cell(
+            0,
+            6,
             $preferences->pref_nom,
-            _T("Association %s")
+            0,
+            1,
+            'L',
+            0,
+            $preferences->pref_website
         );
-        $this->Cell(0, 6, $name, 0, 1, 'L', 0, $preferences->pref_website);
         $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
 
         if ( $title !== null ) {
