@@ -266,7 +266,7 @@ class PDF extends TCPDF
         $this->SetTextColor(0, 0, 0);
 
         $y = $this->GetY();
-        $this->Ln(4);
+        $this->Ln(2);
         $ystart = $this->GetY();
 
         $this->Cell(

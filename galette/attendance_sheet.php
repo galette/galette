@@ -79,18 +79,61 @@ if ( isset($_POST['sheet_photos']) && $_POST['sheet_photos'] === '1') {
 
 define('SHEET_FONT', PDF::FONT_SIZE-2);
 
+class SheetPDF extends PDF {
+
+    public $doc_title = null;
+    public $sheet_title = null;
+    public $sheet_sub_title = null;
+    public $sheet_date = null;
+
+    /**
+     * Page header
+     */
+    public function Header() {
+        $this->SetFont(PDF::FONT, '', SHEET_FONT - 2);
+        $head_title = $this->doc_title;
+        if ( $this->sheet_title !== null ) {
+            $head_title .= ' - ' . $this->sheet_title;
+        }
+        if ( $this->sheet_sub_title !== null ) {
+            $head_title .= ' - ' . $this->sheet_sub_title;
+        }
+        if ( $this->sheet_date !== null ) {
+            $head_title .= ' - ' . $this->sheet_date->format(_T("Y-m-d"));
+        }
+        $this->Cell(0, 10, $head_title, 0, false, 'C', 0, '', 0, false, 'M', 'M');
+    }
+}
+
 $doc_title = _T("Attendance sheet");
 if ( isset($_POST['sheet_type']) && trim($_POST['sheet_type']) != '' ) {
     $doc_title = $_POST['sheet_type'];
 }
 
-$pdf=new PDF('P', 'mm', 'A4');
+$pdf=new SheetPDF('P', 'mm', 'A4');
+$pdf->doc_title = $doc_title;
+if ( isset($_POST['sheet_title']) && trim($_POST['sheet_title']) != '' ) {
+    $pdf->sheet_title = $_POST['sheet_title'];
+}
+if ( isset($_POST['sheet_sub_title']) && trim($_POST['sheet_sub_title']) != '' ) {
+    $pdf->sheet_sub_title = $_POST['sheet_title'];
+}
+if ( isset($_POST['sheet_date']) && trim($_POST['sheet_date']) != '' ) {
+    $dformat = _T("Y-m-d");
+    $date = DateTime::createFromFormat(
+        $dformat,
+        $_POST['sheet_date']
+    );
+    $pdf->sheet_date = $date;
+}
+
 
 // Set document information
 $pdf->SetTitle($doc_title);
 
 $pdf->showPagination();
-$pdf->setMargins(10, 10);
+$pdf->setMargins(10, 20);
+$pdf->setHeaderMargin(10);
 
 $pdf->SetAutoPageBreak(true, 20);
 $pdf->AliasNbPages();
@@ -103,21 +146,24 @@ $pdf->AddPage();
 $picture = new picture(0);
 $pdf->PageHeader($doc_title);
 
-if ( isset($_POST['sheet_title']) && trim($_POST['sheet_title']) != '' ) {
+if ( $pdf->sheet_title !== null ) {
     $pdf->Cell(190, 7, $_POST['sheet_title'], 0, 1, 'C');
 }
-if ( isset($_POST['sheet_sub_title']) && trim($_POST['sheet_sub_title']) != '' ) {
+if ( $pdf->sheet_sub_title ) {
     $pdf->Cell(190, 7, $_POST['sheet_sub_title'], 0, 1, 'C');
 }
-if ( isset($_POST['sheet_date']) && trim($_POST['sheet_date']) != '' ) {
-    $dformat = _T("Y-m-d");
-    $date = DateTime::createFromFormat(
-        $dformat,
-        $_POST['sheet_date']
-    );
+if ( $pdf->sheet_date ) {
     $format = _T("%A, %B %#d%O %Y");
-    $format = str_replace('%O', date('S', $date->getTimestamp()), $format);
-    $date_fmt = strftime($format, $date->getTimestamp());
+    $format = str_replace(
+        '%O',
+        date('S', $pdf->sheet_date->getTimestamp()),
+        $format
+    );
+    $date_fmt = strftime($format, $pdf->sheet_date->getTimestamp());
+    /**
+     * FIXME: utf8_encode should not be required here :( With fr_FR.utf8
+     * instead of fr_FR@euro (ISO-8859-15) passed to setlocale, all is OK
+     */
     $pdf->Cell(190, 7, utf8_encode($date_fmt), 0, 1, 'C');
 }
 
