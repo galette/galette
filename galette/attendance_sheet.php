@@ -100,6 +100,9 @@ $pdf->PageHeader(_T("Attendance sheet"));
 if ( isset($_POST['sheet_title']) && trim($_POST['sheet_title']) != '' ) {
     $pdf->Cell(190, 7, $_POST['sheet_title'], 0, 1, 'C');
 }
+if ( isset($_POST['sheet_sub_title']) && trim($_POST['sheet_sub_title']) != '' ) {
+    $pdf->Cell(190, 7, $_POST['sheet_sub_title'], 0, 1, 'C');
+}
 if ( isset($_POST['sheet_date']) && trim($_POST['sheet_date']) != '' ) {
     $dformat = _T("Y-m-d");
     $date = DateTime::createFromFormat(

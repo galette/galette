@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2011-11-30 06:14+0100\n"
+"PO-Revision-Date: 2011-11-30 19:47+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -22,9 +22,9 @@ msgstr "parmi :"
 msgid "SELECT operation allowed"
 msgstr "Opération SELECT autorisée"
 
-#: ../templates/default/desktop.tpl:6 ../templates/default/page.tpl:87
-msgid "View, search into and filter member's list"
-msgstr "Consulter, rechercher dans et filtrer la liste des membres"
+#: ../templates/default/js_loader.tpl:2
+msgid "Currently loading..."
+msgstr "Chargement en cours..."
 
 #: ../classes/picture.class.php:778
 msgid "The uploaded file was only partially uploaded"
@@ -68,7 +68,7 @@ msgid "Mail body"
 msgstr "Corps du message"
 
 #: ../classes/politeness.class.php:66
-#: ../templates/default/gestion_adherents.tpl:200
+#: ../templates/default/gestion_adherents.tpl:199
 msgid "Mrs"
 msgstr "Madame"
 
@@ -143,7 +143,7 @@ msgstr "Destinataire pour les courriels des nouvelles inscriptions en ligne"
 msgid "Edit field"
 msgstr "Édition de champ"
 
-#: ../preferences.php:120 ../classes/adherent.class.php:981
+#: ../preferences.php:120 ../classes/adherent.class.php:997
 msgid "- Non-valid E-Mail address!"
 msgstr "- Adresse courriel non valide&nbsp;!"
 
@@ -197,10 +197,10 @@ msgstr "-- Choisissez un membre du bureau --"
 msgid "Mailings"
 msgstr "E-Mailings"
 
-#: ../gestion_adherents.php:187 ../attendance_sheet.php:118
+#: ../gestion_adherents.php:187 ../attendance_sheet.php:121
 #: ../templates/default/gestion_adherents.tpl:61
-#: ../templates/default/gestion_adherents.tpl:196
-#: ../templates/default/gestion_adherents.tpl:202
+#: ../templates/default/gestion_adherents.tpl:195
+#: ../templates/default/gestion_adherents.tpl:201
 #: ../templates/default/ajax_groups.tpl:6
 #: ../templates/default/gestion_intitule_content.tpl:10
 #: ../templates/default/gestion_groupes.tpl:6
@@ -237,7 +237,7 @@ msgstr "Liste des membres"
 msgid "Admin settings"
 msgstr "Paramètres administrateur"
 
-#: ../templates/default/ajax_attendance_sheet_details.tpl:11
+#: ../templates/default/ajax_attendance_sheet_details.tpl:15
 msgid "(yyyy-mm-dd format)"
 msgstr "(format jj/mm/aaaa)"
 
@@ -262,7 +262,7 @@ msgid "Do you really want to delete all selected contributions?"
 msgstr ""
 "Voulez vous réellement effacer toutes les contributions sélectionnées&nbsp;?"
 
-#: ../templates/default/gestion_adherents.tpl:171
+#: ../templates/default/gestion_adherents.tpl:170
 #: ../templates/default/gestion_groupes.tpl:31
 #: ../templates/default/gestion_contributions.tpl:220
 #: ../templates/default/gestion_contributions.tpl:239
@@ -295,7 +295,7 @@ msgstr "Une erreur est survenue."
 msgid "Values:"
 msgstr "Valeurs&nbsp;:"
 
-#: ../templates/default/gestion_adherents.tpl:159
+#: ../templates/default/gestion_adherents.tpl:158
 #: ../templates/default/ajax_members.tpl:28
 msgid "[admin]"
 msgstr "[admin]"
@@ -451,7 +451,7 @@ msgstr "Méthode d'envoi des courriels&nbsp;:"
 msgid "Change"
 msgstr "Changer"
 
-#: ../classes/adherent.class.php:774
+#: ../classes/adherent.class.php:790
 msgid "Freed of dues"
 msgstr "Exempt de cotisation"
 
@@ -491,7 +491,7 @@ msgstr "Email, URL, IM"
 msgid "Beginning of membership:"
 msgstr "Date de début d'exercice&nbsp;:"
 
-#: ../templates/default/member.tpl:282
+#: ../templates/default/member.tpl:284
 #: ../templates/default/editer_intitule.tpl:46
 #: ../templates/default/traduire_libelles.tpl:32
 #: ../templates/default/mailing_adherents.tpl:82
@@ -583,7 +583,7 @@ msgstr "Id GNUpg (GPG)&nbsp;:"
 msgid "Galette-related data:"
 msgstr "Informations relatives à Galette&nbsp;:"
 
-#: ../classes/adherent.class.php:989
+#: ../classes/adherent.class.php:1005
 msgid "- Non-valid Website address! Maybe you've skipped the http:// ?"
 msgstr ""
 "- Adresse web non valide&nbsp;! Peut être avez vous oublié le http://&nbsp;?"
@@ -608,7 +608,7 @@ msgstr ""
 "La base n'est pas accessible. Veuillez revenir en arrière pour saisir à "
 "nouveau les paramètres de connexion."
 
-#: ../classes/adherent.class.php:1212 ../templates/default/member.tpl:174
+#: ../classes/adherent.class.php:1228 ../templates/default/member.tpl:174
 msgid "Active"
 msgstr "Actif"
 
@@ -635,8 +635,8 @@ msgstr "Retour"
 msgid "Translate additionnals fields labels"
 msgstr "Traduction des étiquettes pour les champs additionnels"
 
+#: ../templates/default/gestion_adherents.tpl:205
 #: ../templates/default/gestion_adherents.tpl:206
-#: ../templates/default/gestion_adherents.tpl:207
 msgid "Society"
 msgstr "Personne morale"
 
@@ -687,7 +687,7 @@ msgstr ""
 msgid "Visibility:"
 msgstr "Visibilité&nbsp;:"
 
-#: ../templates/default/member.tpl:254
+#: ../templates/default/member.tpl:255
 msgid "Manage user's groups"
 msgstr "Gestion des groupes de l'utilisateur"
 
@@ -780,13 +780,11 @@ msgstr "Extension d'adhésion&nbsp;:"
 msgid "Language:"
 msgstr "Langue&nbsp;:"
 
-#: ../templates/default/ajouter_transaction.tpl:158
-#: ../templates/default/ajouter_transaction.tpl:186
-msgid "Currently loading..."
-msgstr "Chargement en cours..."
+#: ../templates/default/desktop.tpl:6 ../templates/default/page.tpl:87
+msgid "View, search into and filter member's list"
+msgstr "Consulter, rechercher dans et filtrer la liste des membres"
 
-#: ../templates/default/gestion_adherents.tpl:347
-#: ../templates/default/member.tpl:334
+#: ../templates/default/member.tpl:337
 msgid "An error occured displaying groups interface :("
 msgstr ""
 "Une erreur est survenue lors de l'affichage de l'interface des groupes :("
@@ -834,7 +832,7 @@ msgstr "Transaction entièrement ventilée"
 msgid "all"
 msgstr "tous"
 
-#: ../templates/default/member.tpl:267 ../templates/default/member.tpl:378
+#: ../templates/default/member.tpl:269 ../templates/default/member.tpl:381
 msgid "Manager for '%groupname'"
 msgstr "Responsable pour « %groupname »"
 
@@ -986,7 +984,7 @@ msgstr "Compte rendu d'installation"
 msgid "Manage emails texts and subjects"
 msgstr "Gestion des textes et sujets des courriels"
 
-#: ../classes/adherent.class.php:1140
+#: ../classes/adherent.class.php:1156
 msgid "Member card updated"
 msgstr "Fiche adhérent mise à jour"
 
@@ -1021,11 +1019,11 @@ msgstr ""
 "Note&nbsp;: les membres qui possèdent un statut dont la priorité est "
 "inférieure à %priority sont membres du bureau."
 
-#: ../classes/adherent.class.php:1212 ../templates/default/member.tpl:175
+#: ../classes/adherent.class.php:1228 ../templates/default/member.tpl:175
 msgid "Inactive"
 msgstr "Inactif"
 
-#: ../gestion_intitules.php:334 ../classes/adherent.class.php:1209
+#: ../gestion_intitules.php:334 ../classes/adherent.class.php:1225
 #: ../templates/default/gestion_intitule_content.tpl:29
 #: ../templates/default/champ_requis.tpl:20
 #: ../templates/default/config_fields.tpl:40
@@ -1036,7 +1034,7 @@ msgstr "Inactif"
 msgid "Yes"
 msgstr "Oui"
 
-#: ../templates/default/gestion_adherents.tpl:235
+#: ../templates/default/gestion_adherents.tpl:234
 #: ../templates/default/gestion_contributions.tpl:244
 msgid "Deletion"
 msgstr "Suppression"
@@ -1058,7 +1056,7 @@ msgstr "Aucun groupe n'a encore été stocké."
 
 #: ../gestion_contributions.php:104 ../gestion_contributions.php:126
 #: ../classes/transaction.class.php:264 ../classes/contribution.class.php:351
-#: ../classes/contribution.class.php:909 ../classes/adherent.class.php:971
+#: ../classes/contribution.class.php:909 ../classes/adherent.class.php:987
 msgid "- Non valid date!"
 msgstr "- Date non valide&nbsp;!"
 
@@ -1146,7 +1144,7 @@ msgstr "Veuillez sélectionner la langue d'administration"
 msgid "Clear filter"
 msgstr "Effacer le filtre"
 
-#: ../templates/default/gestion_adherents.tpl:318
+#: ../templates/default/gestion_adherents.tpl:317
 msgid "Attendance sheet details"
 msgstr "Détails de la liste d'émargement"
 
@@ -1178,7 +1176,7 @@ msgstr "Expéditeur"
 msgid "State of dues"
 msgstr "État cotisations"
 
-#: ../templates/default/gestion_adherents.tpl:201
+#: ../templates/default/gestion_adherents.tpl:200
 msgid "Woman"
 msgstr "Femme"
 
@@ -1204,7 +1202,7 @@ msgid "Passworg image"
 msgstr "Image mot de passe"
 
 #: ../classes/politeness.class.php:65
-#: ../templates/default/gestion_adherents.tpl:194
+#: ../templates/default/gestion_adherents.tpl:193
 msgid "Mister"
 msgstr "Monsieur"
 
@@ -1216,12 +1214,12 @@ msgstr "choix"
 msgid "Add a new category"
 msgstr "Ajouter une catégorie"
 
-#: ../templates/default/gestion_adherents.tpl:171
+#: ../templates/default/gestion_adherents.tpl:170
 msgid "%membername: edit informations"
 msgstr "%membername&nbsp;: modifier les informations"
 
 #: ../classes/transaction.class.php:300 ../classes/contribution.class.php:412
-#: ../classes/adherent.class.php:1053
+#: ../classes/adherent.class.php:1069
 msgid "- Mandatory field empty: "
 msgstr "- Champ obligatoire non renseigné&nbsp;:"
 
@@ -1237,7 +1235,7 @@ msgstr "Logo actuel pour l'impression"
 msgid "Recipients"
 msgstr "Destinataires"
 
-#: ../templates/default/photo_dnd.tpl:46
+#: ../templates/default/photo_dnd.tpl:47
 msgid "Member photo has been changed."
 msgstr "La photo de l'adhérent a été changée."
 
@@ -1297,7 +1295,7 @@ msgstr "Administrateur Galette %asso"
 msgid "Height:"
 msgstr "Hauteur&nbsp;:"
 
-#: ../preferences.php:125 ../classes/adherent.class.php:994
+#: ../preferences.php:125 ../classes/adherent.class.php:1010
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- L'identifiant doit être composé d'au moins 4 caractères&nbsp;!"
 
@@ -1327,7 +1325,7 @@ msgstr "Nom expéditeur&nbsp;:"
 msgid "Legal entity"
 msgstr "Personne morale"
 
-#: ../templates/default/gestion_adherents.tpl:173
+#: ../templates/default/gestion_adherents.tpl:172
 msgid ""
 "Do you really want to delete this member from the base? This will also "
 "delete the history of his fees. You could instead disable the account.\n"
@@ -1340,7 +1338,7 @@ msgstr ""
 "\n"
 "Voulez vous toujours effacer cet adhérent&nbsp;?"
 
-#: ../templates/default/gestion_adherents.tpl:173
+#: ../templates/default/gestion_adherents.tpl:172
 msgid "%membername: remove from database"
 msgstr "%membername&nbsp;:: supprimer de la base"
 
@@ -1413,7 +1411,7 @@ msgstr "Sélectionnez le contributeur et le type de contribution"
 msgid "View contributions"
 msgstr "Voir les contributions"
 
-#: ../classes/adherent.class.php:781
+#: ../classes/adherent.class.php:797
 msgid "Never contributed: Registered %days days ago (since %date)"
 msgstr "N'a jamais cotisé&nbsp;: Inscrit depuis %days jours (depuis le %date)"
 
@@ -1439,7 +1437,7 @@ msgid "Number of label lines:"
 msgstr "Nombre de lignes d'étiquettes&nbsp;:"
 
 #: ../includes/dynamic_fields.inc.php:104
-#: ../templates/default/gestion_adherents.tpl:231
+#: ../templates/default/gestion_adherents.tpl:230
 #: ../templates/default/desktop.tpl:8
 msgid "Contributions"
 msgstr "Contributions"
@@ -1472,7 +1470,7 @@ msgstr "Permettre aux membres d'imprimer leur carte ?"
 msgid "Add new category"
 msgstr "Ajouter une catégorie"
 
-#: ../templates/default/gestion_adherents.tpl:131
+#: ../templates/default/gestion_adherents.tpl:130
 #: ../templates/default/gestion_mailings.tpl:65
 #: ../templates/default/history.tpl:86
 #: ../templates/default/gestion_contributions.tpl:183
@@ -1495,7 +1493,7 @@ msgstr ""
 "courriel. Cependant vous pouvez produire des étiquettes d'enveloppes pour "
 "les contacter par courrier postal."
 
-#: ../templates/default/gestion_adherents.tpl:230
+#: ../templates/default/gestion_adherents.tpl:229
 #: ../templates/default/gestion_contributions.tpl:249
 msgid "Contribution"
 msgstr "Contribution"
@@ -1525,7 +1523,7 @@ msgid "Recover password"
 msgstr "Récupérer le mot de passe"
 
 #: ../templates/default/gestion_mailings.tpl:20
-#: ../templates/default/ajax_attendance_sheet_details.tpl:9
+#: ../templates/default/ajax_attendance_sheet_details.tpl:13
 #: ../templates/default/ajouter_transaction.tpl:66
 #: ../templates/default/history.tpl:23
 #: ../templates/default/gestion_contributions.tpl:71
@@ -1551,7 +1549,7 @@ msgstr "Mes contributions"
 msgid "Database type unknown"
 msgstr "Type de base inconnu"
 
-#: ../classes/adherent.class.php:1037
+#: ../classes/adherent.class.php:1053
 msgid "Password misrepeated: "
 msgstr "Erreur en recopiant le mot de passe&nbsp;: "
 
@@ -1653,7 +1651,7 @@ msgid "Originator"
 msgstr "Emetteur"
 
 #: ../preferences.php:175 ../change_passwd.php:69
-#: ../classes/adherent.class.php:1028
+#: ../classes/adherent.class.php:1044
 msgid "- The password must be of at least 4 characters!"
 msgstr "- Le mot de passe doit être composé d'au moins 4 caractères&nbsp;!"
 
@@ -1689,7 +1687,7 @@ msgstr "Pseudo&nbsp;:"
 msgid "Date:"
 msgstr "Date&nbsp;:"
 
-#: ../classes/adherent.class.php:791
+#: ../classes/adherent.class.php:807
 msgid "Late of %days days (since %date)"
 msgstr "En retard de %days jours (depuis le %date)"
 
@@ -1711,7 +1709,7 @@ msgstr "Vous pouvez préparer une photo à télécharger après avoir envoyé"
 msgid "- Label does not exist"
 msgstr "- Cet intitulé n'existe pas"
 
-#: ../classes/adherent.class.php:1021
+#: ../classes/adherent.class.php:1037
 msgid "An error has occured while looking if login already exists."
 msgstr ""
 "Une erreur est survenue lors de la vérification d'unicité de l'identifiant."
@@ -1724,7 +1722,7 @@ msgstr "Opération INSERT non autorisée"
 msgid "(Show or not title in front of name)"
 msgstr "(Afficher le titre devant le nom)"
 
-#: ../templates/default/group.tpl:66
+#: ../templates/default/group.tpl:67
 msgid "Group owner selection"
 msgstr "Sélection du propriétaire du groupe"
 
@@ -1783,11 +1781,11 @@ msgstr "Largeur&nbsp;:"
 msgid "Use TLS for SMTP?"
 msgstr "Utiliser TLS pour SMPT&nbsp;?"
 
-#: ../templates/default/gestion_adherents.tpl:172
+#: ../templates/default/gestion_adherents.tpl:171
 msgid "[$]"
 msgstr "[$]"
 
-#: ../change_passwd.php:66 ../classes/adherent.class.php:1033
+#: ../change_passwd.php:66 ../classes/adherent.class.php:1049
 msgid "- The passwords don't match!"
 msgstr "- Les mots de passe ne correspondent pas&nbsp;!"
 
@@ -1795,7 +1793,7 @@ msgstr "- Les mots de passe ne correspondent pas&nbsp;!"
 msgid "Member Profile"
 msgstr "Fiche adhérent"
 
-#: ../classes/adherent.class.php:1107
+#: ../classes/adherent.class.php:1123
 msgid "Member card added"
 msgstr "Fiche adhérent ajoutée"
 
@@ -1874,11 +1872,15 @@ msgstr "Continuer"
 msgid "E-Mail"
 msgstr "Courriel"
 
+#: ../templates/default/ajax_attendance_sheet_details.tpl:9
+msgid "Subtitle"
+msgstr "Sous-titre"
+
 #: ../etiquettes_adherents.php:80
 msgid "Member's Labels"
 msgstr "Étiquettes des membres"
 
-#: ../templates/default/photo_dnd.tpl:52
+#: ../templates/default/photo_dnd.tpl:53
 msgid "An error occured sending photo :("
 msgstr "Une erreur est survenue lors de l'envoi de la photo :("
 
@@ -1925,7 +1927,7 @@ msgstr "Montant"
 msgid "Contribution has been successfyully attached to current transaction"
 msgstr "La contribution a été attachée à la transaction courante"
 
-#: ../templates/default/gestion_adherents.tpl:262
+#: ../templates/default/gestion_adherents.tpl:261
 msgid "(Un)Check all"
 msgstr "Tout (dé)cocher"
 
@@ -1934,7 +1936,7 @@ msgstr "Tout (dé)cocher"
 msgid "Extends membership?"
 msgstr "Extension d'adhésion&nbsp;?"
 
-#: ../templates/default/gestion_adherents.tpl:213
+#: ../templates/default/gestion_adherents.tpl:212
 #: ../templates/default/preferences.tpl:80
 msgid "Staff member"
 msgstr "Membre du bureau"
@@ -1963,7 +1965,7 @@ msgstr "Durée d'adhésion par défaut&nbsp;:"
 msgid "To secure the system, please delete the install directory"
 msgstr "Pour sécuriser le système, veuillez supprimer le dossier « install »"
 
-#: ../templates/default/gestion_adherents.tpl:262
+#: ../templates/default/gestion_adherents.tpl:261
 msgid "Invert selection"
 msgstr "Inverser la sélection"
 
@@ -1991,7 +1993,7 @@ msgstr "Afficher la requête associée"
 msgid "Required:"
 msgstr "Obligatoire&nbsp;:"
 
-#: ../templates/default/gestion_adherents.tpl:184
+#: ../templates/default/gestion_adherents.tpl:183
 msgid "No member has been found"
 msgstr "Aucun membre n'a été trouvé"
 
@@ -2000,12 +2002,12 @@ msgid "Reduced annual contribution"
 msgstr "Cotisation annuelle réduite"
 
 #: ../templates/default/gestion_adherents.tpl:116
-#: ../templates/default/gestion_adherents.tpl:234
+#: ../templates/default/gestion_adherents.tpl:233
 #: ../templates/default/gestion_contributions.tpl:176
 msgid "Delete"
 msgstr "Supprimer"
 
-#: ../gestion_intitules.php:334 ../classes/adherent.class.php:1209
+#: ../gestion_intitules.php:334 ../classes/adherent.class.php:1225
 #: ../templates/default/gestion_intitule_content.tpl:28
 #: ../templates/default/champ_requis.tpl:22
 #: ../templates/default/config_fields.tpl:42
@@ -2057,8 +2059,8 @@ msgstr "Courriel de nouveau compte envoyé à l'administrateur pour « %s »."
 msgid "Using a SMTP server (slower)"
 msgstr "Utilisation d'un SMTP (plus lent)"
 
-#: ../templates/default/gestion_adherents.tpl:145
-#: ../templates/default/gestion_adherents.tpl:149
+#: ../templates/default/gestion_adherents.tpl:144
+#: ../templates/default/gestion_adherents.tpl:148
 #: ../templates/default/ajax_members.tpl:19
 #: ../templates/default/ajax_members.tpl:23
 msgid "[W]"
@@ -2088,7 +2090,7 @@ msgstr "Sujet&nbsp;:"
 msgid "Group"
 msgstr "Groupe"
 
-#: ../templates/default/gestion_adherents.tpl:154
+#: ../templates/default/gestion_adherents.tpl:153
 msgid "[Mail]"
 msgstr "[Courriel]"
 
@@ -2153,7 +2155,7 @@ msgstr "Date contribution&nbsp;:"
 msgid "Settings"
 msgstr "Préférences"
 
-#: ../templates/default/member.tpl:341
+#: ../templates/default/member.tpl:344
 msgid "Groups selection"
 msgstr "Sélection ds groupes"
 
@@ -2257,7 +2259,7 @@ msgstr "Veuillez entrer les paramètres de connexion à la base existante."
 msgid "My information"
 msgstr "Mes informations"
 
-#: ../templates/default/mailing_adherents.tpl:132
+#: ../templates/default/mailing_adherents.tpl:133
 msgid "An error occured displaying preview :("
 msgstr "Une erreur est survenue lors de l'affichage de l'aperçu :("
 
@@ -2324,7 +2326,7 @@ msgstr "Compte administrateur (indépendant des adhérents)"
 
 #: ../gestion_contributions.php:113 ../gestion_contributions.php:135
 #: ../classes/transaction.class.php:261 ../classes/contribution.class.php:348
-#: ../classes/contribution.class.php:906 ../classes/adherent.class.php:968
+#: ../classes/contribution.class.php:906 ../classes/adherent.class.php:984
 msgid "- Wrong date format (dd/mm/yyyy)!"
 msgstr "- Mauvais format de date (jj/mm/aaaa)&nbsp;!"
 
@@ -2336,7 +2338,7 @@ msgstr "Générer la carte de membre"
 msgid "View my member card"
 msgstr "Voir ma fiche membre"
 
-#: ../templates/default/gestion_adherents.tpl:173
+#: ../templates/default/gestion_adherents.tpl:172
 #: ../templates/default/gestion_mailings.tpl:100
 #: ../templates/default/gestion_groupes.tpl:40
 #: ../templates/default/gestion_contributions.tpl:223
@@ -2399,8 +2401,8 @@ msgstr ""
 msgid "General"
 msgstr "Général"
 
-#: ../templates/default/ajouter_transaction.tpl:166
-#: ../templates/default/ajouter_transaction.tpl:194
+#: ../templates/default/ajouter_transaction.tpl:164
+#: ../templates/default/ajouter_transaction.tpl:186
 msgid "An error occured displaying contributions :("
 msgstr "Une erreur est survenue lors de l'affichage des contributions :("
 
@@ -2420,7 +2422,7 @@ msgstr ""
 "Vous avez demandé à Galette d'envoyer une confirmation par mail à "
 "l'adhérent, mais l'envoi de mail a été désactivé dans les préférences."
 
-#: ../templates/default/gestion_adherents.tpl:203
+#: ../templates/default/gestion_adherents.tpl:202
 msgid "Inactive account"
 msgstr "Compte désactivé"
 
@@ -2454,7 +2456,7 @@ msgid "Self subscription enabled?"
 msgstr "Auto-Enregistrement actif&nbsp;?"
 
 #: ../classes/politeness.class.php:67
-#: ../templates/default/gestion_adherents.tpl:200
+#: ../templates/default/gestion_adherents.tpl:199
 msgid "Miss"
 msgstr "Mademoiselle"
 
@@ -2473,7 +2475,7 @@ msgstr "(65 caractères max)"
 msgid "Current logo"
 msgstr "Logo actuel"
 
-#: ../templates/default/gestion_adherents.tpl:221
+#: ../templates/default/gestion_adherents.tpl:220
 msgid "Membership will expire soon (&lt;30d)"
 msgstr "Adhésion à échéance (&lt;30j)"
 
@@ -2505,8 +2507,7 @@ msgstr "Identifiant&nbsp;:"
 msgid "Reference:"
 msgstr "Référence&nbsp;:"
 
-#: ../templates/default/ajouter_transaction.tpl:158
-#: ../templates/default/ajouter_transaction.tpl:186
+#: ../templates/default/js_loader.tpl:2
 msgid "Loading..."
 msgstr "Chargement..."
 
@@ -2620,7 +2621,7 @@ msgstr "Croissant"
 msgid "Account registered!"
 msgstr "Compte enregistré&nbsp;!"
 
-#: ../classes/adherent.class.php:784
+#: ../classes/adherent.class.php:800
 msgid "Last day!"
 msgstr "Dernier jour&nbsp;!"
 
@@ -2703,7 +2704,7 @@ msgstr "Largeur étiquette&nbsp;:"
 msgid "The following exports already seems to exist on the disk:"
 msgstr "Les exports suivants semblent exister sur le disque&nbsp;:"
 
-#: ../attendance_sheet.php:164
+#: ../attendance_sheet.php:167
 msgid "attendance_sheet"
 msgstr "liste_emargement"
 
@@ -2754,7 +2755,7 @@ msgstr ""
 "Votre mot de passe a été changé. Veuillez cliquer sur le bouton « accueil » "
 "pour accéder à la page de connexion."
 
-#: ../templates/default/gestion_adherents.tpl:195
+#: ../templates/default/gestion_adherents.tpl:194
 msgid "Man"
 msgstr "Homme"
 
@@ -2783,7 +2784,7 @@ msgstr "Identification"
 msgid "Latecomers"
 msgstr "Les retardataires"
 
-#: ../gestion_adherents.php:201 ../templates/default/gestion_adherents.tpl:209
+#: ../gestion_adherents.php:201 ../templates/default/gestion_adherents.tpl:208
 msgid "Never contributed"
 msgstr "N'a jamais cotisé"
 
@@ -2835,12 +2836,12 @@ msgstr "Aucun groupe n'a encore été sélectionné."
 msgid "Vice-treasurer"
 msgstr "Vice-trésorier"
 
-#: ../templates/default/mailing_adherents.tpl:162
-#: ../templates/default/mailing_adherents.tpl:202
-#: ../templates/default/gestion_groupes.tpl:65
-#: ../templates/default/gestion_groupes.tpl:102
-#: ../templates/default/ajouter_transaction.tpl:121
-#: ../templates/default/group.tpl:59
+#: ../templates/default/mailing_adherents.tpl:164
+#: ../templates/default/mailing_adherents.tpl:205
+#: ../templates/default/gestion_groupes.tpl:66
+#: ../templates/default/gestion_groupes.tpl:104
+#: ../templates/default/ajouter_transaction.tpl:122
+#: ../templates/default/group.tpl:60
 msgid "An error occured displaying members interface :("
 msgstr ""
 "Une erreur est survenue lors de l'affichage de l'interface des membres :("
@@ -2849,7 +2850,7 @@ msgstr ""
 msgid "Uncomplete dispatched transaction"
 msgstr "La transaction n'est pas entièrement ventilée"
 
-#: ../attendance_sheet.php:119
+#: ../attendance_sheet.php:122
 msgid "Signature"
 msgstr "Signature"
 
@@ -2894,7 +2895,7 @@ msgstr "Page %i"
 msgid "Mobile phone:"
 msgstr "GSM&nbsp;:"
 
-#: ../templates/default/gestion_adherents.tpl:238
+#: ../templates/default/gestion_adherents.tpl:237
 msgid "E-mail"
 msgstr "Courriel"
 
@@ -2937,7 +2938,7 @@ msgstr ""
 msgid "right"
 msgstr "droite"
 
-#: ../templates/default/gestion_adherents.tpl:284
+#: ../templates/default/gestion_adherents.tpl:283
 msgid "No member selected"
 msgstr "Aucun adhérent sélectionné"
 
@@ -2955,6 +2956,12 @@ msgstr ""
 #: ../classes/contribution.class.php:535
 msgid "Contribution added"
 msgstr "Contribution ajoutée"
+
+#: ../templates/default/gestion_adherents.tpl:346
+msgid "An error occured displaying attendance sheet details interface :("
+msgstr ""
+"Une erreur est survenue lors de l'affichage de l'interface des étails de la "
+"liste d'émargement :("
 
 #: ../install/index.php:678
 msgid "Update of the tables"
@@ -2982,8 +2989,8 @@ msgstr "Jabber&nbsp;:"
 msgid "no member"
 msgstr "aucun adhérent"
 
+#: ../templates/default/gestion_adherents.tpl:189
 #: ../templates/default/gestion_adherents.tpl:190
-#: ../templates/default/gestion_adherents.tpl:191
 #: ../templates/default/gestion_contributions.tpl:234
 #: ../templates/default/gestion_contributions.tpl:235
 #: ../templates/default/gestion_transactions.tpl:116
@@ -3121,8 +3128,8 @@ msgstr ""
 msgid "Translate '%s' field"
 msgstr "Traduire le champ « %s »"
 
-#: ../templates/default/gestion_adherents.tpl:161
-#: ../templates/default/gestion_adherents.tpl:212
+#: ../templates/default/gestion_adherents.tpl:160
+#: ../templates/default/gestion_adherents.tpl:211
 #: ../templates/default/ajax_members.tpl:30
 msgid "[staff]"
 msgstr "[staff]"
@@ -3152,7 +3159,7 @@ msgstr "Une erreur est survenue lors de l'enregistrement de la transaction."
 msgid "Send down '%s' field"
 msgstr "Faire descendre le champ « %s »"
 
-#: ../templates/default/gestion_adherents.tpl:239
+#: ../templates/default/gestion_adherents.tpl:238
 msgid "Send a mail"
 msgstr "Envoyer un courriel"
 
@@ -3165,10 +3172,6 @@ msgstr "MSN"
 msgid "Company:"
 msgstr "Raison sociale"
 
-#: ../templates/default/gestion_adherents.tpl:122
-msgid "Including photos?"
-msgstr "inclure les photos ?"
-
 #: ../templates/default/page.tpl:96
 msgid "Exports"
 msgstr "Exports"
@@ -3177,12 +3180,12 @@ msgstr "Exports"
 msgid "Active accounts"
 msgstr "Comptes actifs"
 
-#: ../templates/default/mailing_adherents.tpl:139
+#: ../templates/default/mailing_adherents.tpl:140
 #: ../templates/default/ajax_mailing_preview.tpl:2
 msgid "Mailing preview"
 msgstr "Prévisualisation de l'E-Mailing"
 
-#: ../templates/default/gestion_adherents.tpl:172
+#: ../templates/default/gestion_adherents.tpl:171
 msgid "%membername: contributions"
 msgstr "%membername&nbsp;: contributions"
 
@@ -3203,8 +3206,8 @@ msgid "donation in money"
 msgstr "donation pécunière"
 
 # http://fr2.php.net/manual/fr/function.date.php
-#: ../attendance_sheet.php:104 ../classes/contribution.class.php:481
-#: ../classes/contribution.class.php:797 ../classes/adherent.class.php:1186
+#: ../attendance_sheet.php:107 ../classes/contribution.class.php:481
+#: ../classes/contribution.class.php:797 ../classes/adherent.class.php:1202
 msgid "Y-m-d"
 msgstr "d/m/Y"
 
@@ -3252,7 +3255,7 @@ msgstr "Description"
 msgid "First name:"
 msgstr "Prénom&nbsp;:"
 
-#: ../templates/default/ajouter_transaction.tpl:208
+#: ../templates/default/ajouter_transaction.tpl:197
 msgid "Click on a contribution row to attach it to the current transaction"
 msgstr ""
 "Cliquez sur une ligne de contribution pour l'attacher à la transaction "
@@ -3274,7 +3277,7 @@ msgstr "Don"
 msgid "Email: '%s' has not been modified!"
 msgstr "Le courriel « %s » n'as pas été modifié&nbsp;!"
 
-#: ../templates/default/gestion_adherents.tpl:284
+#: ../templates/default/gestion_adherents.tpl:283
 msgid ""
 "Please make sure to select at least one member from the list to perform this "
 "action."
@@ -3321,7 +3324,7 @@ msgstr "Position"
 msgid "Country:"
 msgstr "Pays&nbsp;:"
 
-#: ../preferences.php:129 ../classes/adherent.class.php:1017
+#: ../preferences.php:129 ../classes/adherent.class.php:1033
 msgid "- This username is already used by another member !"
 msgstr "- Cet identifiant est déjà utilisé par un autre adhérent&nbsp;!"
 
@@ -3341,7 +3344,7 @@ msgstr "Courriel de l'administrateur des membres&nbsp;:"
 msgid "Mail sent to '%s' for password recovery."
 msgstr "Courriel envoyé à « %s » pour la récupération du mot de passe."
 
-#: ../templates/default/ajax_attendance_sheet_details.tpl:14
+#: ../templates/default/ajax_attendance_sheet_details.tpl:18
 msgid "With photos?"
 msgstr "Avec photos&nbsp;?"
 
@@ -3357,12 +3360,12 @@ msgstr "Fin de la mise à jour"
 msgid "PHP mail() function"
 msgstr "Fonction PHP mail()"
 
-#: ../templates/default/mailing_adherents.tpl:169
-#: ../templates/default/gestion_groupes.tpl:72
+#: ../templates/default/mailing_adherents.tpl:171
+#: ../templates/default/gestion_groupes.tpl:73
 msgid "Members selection"
 msgstr "Sélection d'adhérents"
 
-#: ../templates/default/gestion_adherents.tpl:125
+#: ../templates/default/gestion_adherents.tpl:124
 msgid "Generate Member Cards"
 msgstr "Générer les Cartes de Membres"
 
@@ -3386,7 +3389,7 @@ msgstr "Modifier le champ « %s »"
 msgid "Add a member"
 msgstr "Ajouter un adhérent"
 
-#: ../templates/default/gestion_adherents.tpl:224
+#: ../templates/default/gestion_adherents.tpl:223
 msgid "Modify"
 msgstr "Modifier"
 
@@ -3425,11 +3428,11 @@ msgstr "Paypal"
 msgid "Add new member in database"
 msgstr "Ajouter un nouveau membre à la base"
 
-#: ../templates/default/gestion_adherents.tpl:227
+#: ../templates/default/gestion_adherents.tpl:226
 msgid "Lateness in fee"
 msgstr "Retard de cotisation"
 
-#: ../templates/default/ajouter_transaction.tpl:128
+#: ../templates/default/ajouter_transaction.tpl:129
 msgid "Contributions selection"
 msgstr "Sélection des contributions"
 
@@ -3530,7 +3533,7 @@ msgstr "Adhérents à jour"
 msgid "End!"
 msgstr "Fin&nbsp;!"
 
-#: ../ajax_recipients.php:72 ../templates/default/gestion_adherents.tpl:124
+#: ../ajax_recipients.php:72 ../templates/default/gestion_adherents.tpl:123
 #: ../templates/default/mailing_adherents.tpl:48
 msgid "Generate labels"
 msgstr "Générer les étiquettes"
@@ -3616,7 +3619,7 @@ msgstr "Configurer les fiches"
 msgid "Long Text (Bottom Line):"
 msgstr "Texte du bandeau&nbsp;:"
 
-#: ../templates/default/gestion_adherents.tpl:267
+#: ../templates/default/gestion_adherents.tpl:266
 #: ../templates/default/gestion_contributions.tpl:264
 #: ../templates/default/gestion_transactions.tpl:135
 msgid "Show legend"
@@ -3638,7 +3641,7 @@ msgstr "Un problème est survenu dans l'envoi du courriel pour le compte « %s �
 msgid "Create new mailing"
 msgstr "Créer un nouvel E-Mailing"
 
-#: ../templates/default/member.tpl:285
+#: ../templates/default/member.tpl:287
 #: ../templates/default/ajouter_transaction.tpl:53
 #: ../templates/default/group.tpl:45 ../templates/default/preferences.tpl:399
 #: ../templates/default/ajouter_contribution.tpl:137
@@ -3697,13 +3700,13 @@ msgstr "Normal"
 msgid "Founder member"
 msgstr "Membre fondateur"
 
+#: ../templates/default/gestion_adherents.tpl:217
 #: ../templates/default/gestion_adherents.tpl:218
-#: ../templates/default/gestion_adherents.tpl:219
 #: ../templates/default/preferences.tpl:33
 msgid "Admin"
 msgstr "Administrateur"
 
-#: ../templates/default/gestion_adherents.tpl:215
+#: ../templates/default/gestion_adherents.tpl:214
 msgid "Membership in order"
 msgstr "Adhésion en règle"
 
@@ -3723,7 +3726,7 @@ msgstr ""
 "Retour à la fenêtre précédente, si vous souhaitez sélectionnez un type de "
 "contribution qui n'est pas listé ici"
 
-#: ../templates/default/member.tpl:269 ../templates/default/member.tpl:376
+#: ../templates/default/member.tpl:271 ../templates/default/member.tpl:379
 msgid "Member of '%groupname'"
 msgstr "Membre de « %groupname »"
 
@@ -3735,7 +3738,7 @@ msgstr "Lire le billet complet"
 msgid "Error loading "
 msgstr "Erreur au chargement "
 
-#: ../classes/adherent.class.php:799
+#: ../classes/adherent.class.php:815
 msgid "%days days remaining (ending on %date)"
 msgstr "%days jours restants (fin le %date)"
 
@@ -3803,7 +3806,7 @@ msgstr ""
 msgid "(dd/mm)"
 msgstr "(jj/mm)"
 
-#: ../classes/adherent.class.php:998
+#: ../classes/adherent.class.php:1014
 msgid "- The username cannot contain the @ character"
 msgstr "- L'identifiant ne peut pas contenir le caractère @&nbsp;!"
 
@@ -3816,7 +3819,7 @@ msgstr "Lieu de naissance&nbsp;:"
 msgid "- Mandatory field empty."
 msgstr "- Champ obligatoire non renseigné."
 
-#: ../templates/default/gestion_adherents.tpl:147
+#: ../templates/default/gestion_adherents.tpl:146
 #: ../templates/default/ajax_members.tpl:21
 msgid "[M]"
 msgstr "[H]"
@@ -3841,7 +3844,7 @@ msgstr "Aucun fichier n'a été envoyé"
 msgid "Reply-To Email:"
 msgstr "Courriel de réponse&nbsp;:"
 
-#: ../templates/default/member.tpl:285
+#: ../templates/default/member.tpl:287
 #: ../templates/default/ajouter_transaction.tpl:53
 #: ../templates/default/group.tpl:45 ../templates/default/preferences.tpl:399
 #: ../templates/default/ajouter_contribution.tpl:137
@@ -3968,7 +3971,7 @@ msgstr "Groupes sélectionnés"
 msgid "Parameters couldn't be saved."
 msgstr "Les paramètres n'ont pas pu être sauvegardés."
 
-#: ../templates/default/gestion_adherents.tpl:225
+#: ../templates/default/gestion_adherents.tpl:224
 #: ../templates/default/gestion_contributions.tpl:240
 #: ../templates/default/voir_adherent.tpl:33
 msgid "Modification"
@@ -4102,7 +4105,7 @@ msgstr "Aperçu de votre E-Mailing"
 msgid "Public pages"
 msgstr "Pages publiques"
 
-#: ../classes/authentication.class.php:209
+#: ../classes/authentication.class.php:210
 msgid "Logged in as:<br/>%login"
 msgstr "Connecté en tant que&nbsp;:<br/>%login"
 
@@ -4151,7 +4154,7 @@ msgstr ""
 msgid "Font size:"
 msgstr "Corps du texte&nbsp;:"
 
-#: ../templates/default/gestion_adherents.tpl:197
+#: ../templates/default/gestion_adherents.tpl:196
 msgid "Active account"
 msgstr "Compte actif"
 
@@ -4207,7 +4210,7 @@ msgstr "Voir ma fiche membre"
 msgid "Send up '%s' field"
 msgstr "Faire monter le champ « %s »"
 
-#: ../attendance_sheet.php:109
+#: ../attendance_sheet.php:112
 msgid "%A, %B %#d%O %Y"
 msgstr "%A %#d %B %Y"
 
@@ -4218,6 +4221,9 @@ msgstr "Les types de contribution par défaut ont été sauvegardés avec succè
 #: ../lostpasswd.php:149
 msgid "Login %s does not exist"
 msgstr "L'identifiant %s n'existe pas"
+
+#~ msgid "Including photos?"
+#~ msgstr "inclure les photos ?"
 
 #~ msgid "Tranfer"
 #~ msgstr "Virement"

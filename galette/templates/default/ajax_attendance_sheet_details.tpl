@@ -6,6 +6,10 @@
                 <input type="text" name="sheet_title" id="sheet_title"/>
             </p>
             <p>
+                <label for="sheet_sub_title" class="bline">{_T string="Subtitle"}</label>
+                <input type="text" name="sheet_sub_title" id="sheet_sub_title"/>
+            </p>
+            <p>
                 <label for="sheet_date" class="bline">{_T string="Date"}</label>
                 <input type="text" name="sheet_date" id="sheet_date"/>
                 <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
