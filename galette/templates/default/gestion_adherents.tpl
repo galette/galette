@@ -319,7 +319,7 @@
                         modal: true,
                         hide: 'fold',
                         width: '60%',
-                        height: 300,
+                        height: 400,
                         close: function(event, ui){ldelim}
                             _el.remove();
                         {rdelim},

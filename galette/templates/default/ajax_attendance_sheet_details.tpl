@@ -2,6 +2,10 @@
         <fieldset class="cssform">
             <legend class="ui-state-active ui-corner-top">{_T string="Some details about your attendance sheet..."} - <span>{_T string="%s attendees" pattern="/%s/" replace=$selection|@count}</span></legend>
             <p>
+                <label for="sheet_type" class="bline">{_T string="Sheet type"}</label>
+                <input type="text" name="sheet_type" id="sheet_type" value="{_T string="Attendance sheet"}" required/>
+            </p>
+            <p>
                 <label for="sheet_title" class="bline">{_T string="Title"}</label>
                 <input type="text" name="sheet_title" id="sheet_title"/>
             </p>
