@@ -684,7 +684,6 @@ class Adherent
     {
         if ( is_array($this->_groups) ) {
             $ak = array_keys($this->_groups);
-            $res = in_array($group_name, array_keys($this->_groups));
             return in_array($group_name, array_keys($this->_groups));
         } else {
             return false;

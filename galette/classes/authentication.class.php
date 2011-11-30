@@ -55,7 +55,7 @@ abstract class Authentication
     private $_name;
     private $_surname;
     private $_admin = false;
-    private $_id; /** FIXME: not used! */
+    private $_id;
     private $_lang; /** FIXME: not used! */
     private $_logged = false;
     private $_active = false;
@@ -120,6 +120,7 @@ abstract class Authentication
     */
     public function logOut()
     {
+        $this->_id = null;
         $this->_logged = false;
         $this->_name = null;
         $this->_login = null;
