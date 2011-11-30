@@ -706,6 +706,23 @@ class Adherent
     }
 
     /**
+     * Is member manager of at least one group?
+     *
+     * @return boolean
+     */
+    public function isAGroupManager()
+    {
+        $ret = false;
+        foreach ( $this->_groups as $g ) {
+            if ( $g === 1 ) {
+                $ret = true;
+                break;
+            }
+        }
+        return $ret;
+    }
+
+    /**
      * Does current member represents a company?
      *
      * @return boolean

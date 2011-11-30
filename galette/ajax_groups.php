@@ -40,8 +40,17 @@
  */
 
 require_once 'includes/galette.inc.php';
-if ( !$login->isLogged() ) {
-    header('location: index.php');
+require_once 'classes/adherent.class.php';
+
+$m = new Adherent((int)$login->id);
+
+if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff()
+    && !$m->isAGroupManager()
+) {
+    $log->log(
+        'Trying to display ajax_groups.php without appropriate permissions',
+        PEAR_LOG_INFO
+    );
     die();
 }
 

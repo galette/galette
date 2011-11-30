@@ -251,7 +251,9 @@
     {if $groups|@count != 0}
                     <p>
                         <span class="bline">{_T string="Groups:"}</span>
+        {if $member->isAGroupManager()}
                         <a class="button" id="btngroups">{_T string="Manage user's groups"}</a>
+        {/if}
                         <span id="usergroups_form">
     {foreach from=$groups item=group}
         {if $member->isGroupMember($group->getName())}
