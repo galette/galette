@@ -114,6 +114,7 @@
                         url: 'gestion_contributions.php',
                         type: "POST",
                         data: {ldelim}ajax: true, max_amount: '{$transaction->getMissingAmount()}'{rdelim},
+                        {include file="js_loader.tpl"},
                         success: function(res){ldelim}
                             _contribs_dialog(res);
                         {rdelim},
@@ -154,19 +155,13 @@
                             url: this.action,
                             type: "POST",
                             data: $("#filtre").serialize(),
-                            beforeSend: function() {ldelim}
-                                var _img = $('<figure id="loading"><p><img src="{$template_subdir}images/loading.png" alt="{_T string="Loading..."}"/><br/>{_T string="Currently loading..."}</p></figure>');
-                                $('body').append(_img);
-                            {rdelim},
+                            {include file="js_loader.tpl"},
                             success: function(res){ldelim}
                                 $('#contributions_list').empty();
                                 _contribs_ajax_mapper(res);
                             {rdelim},
                             error: function() {ldelim}
                                 alert("{_T string="An error occured displaying contributions :("}");
-                            {rdelim},
-                            complete: function() {ldelim}
-                                $('#loading').remove();
                             {rdelim}
                         });
                         return false;
@@ -182,10 +177,7 @@
                             $.ajax({ldelim}
                                 url: 'gestion_contributions.php' + this.href.substring(this.href.indexOf('?')) + "&ajax=true",
                                 type: "GET",
-                                beforeSend: function() {ldelim}
-                                    var _img = $('<figure id="loading"><p><img src="{$template_subdir}images/loading.png" alt="{_T string="Loading..."}"/><br/>{_T string="Currently loading..."}</p></figure>');
-                                    $('body').append(_img);
-                                {rdelim},
+                                {include file="js_loader.tpl"},
                                 success: function(res){ldelim}
                                     $('#contributions_list').empty();
                                     _contribs_ajax_mapper(res);
@@ -193,9 +185,6 @@
                                 error: function() {ldelim}
                                     alert("{_T string="An error occured displaying contributions :("}");
                                 {rdelim},
-                                complete: function() {ldelim}
-                                    $('#loading').remove();
-                                {rdelim}
                             });
                             return false;
                         {rdelim}
@@ -205,7 +194,7 @@
                         $('#contributions_list').dialog("close");
                         var _cid = $(this).find('input[name="contrib_id"]').val();
                         window.location.href = window.location.href + '&cid=' + _cid;
-                    {rdelim}).css('cursor', 'pointer').attr('title', '{_T string="Click on a contribution row to attach it to the current transaction"}');
+                    {rdelim}).css('cursor', 'pointer').attr('title', '{_T string="Click on a contribution row to attach it to the current transaction" escape="js"}');
                 {rdelim}
             {rdelim});
         </script>

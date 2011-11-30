@@ -58,6 +58,7 @@
                 url: 'ajax_members.php',
                 type: "POST",
                 data: {ldelim}ajax: true, from: 'groups', gid: gid{rdelim},
+                {include file="js_loader.tpl"},
                 success: function(res){ldelim}
                     _members_dialog(res, gid);
                 {rdelim},
@@ -94,6 +95,7 @@
                     url: 'ajax_group_members.php',
                     type: "POST",
                     data: {ldelim}members: _members, gid: gid{rdelim},
+                    {include file="js_loader.tpl"},
                     success: function(res){ldelim}
                         $('#count_' + gid).text(res);
                         $('#members_list').dialog("close");

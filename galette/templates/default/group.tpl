@@ -52,6 +52,7 @@
                 url: 'ajax_members.php',
                 type: "POST",
                 data: {ldelim}ajax: true, multiple: false{rdelim},
+                {include file="js_loader.tpl"},
                 success: function(res){ldelim}
                     _members_dialog(res);
                 {rdelim},

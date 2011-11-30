@@ -329,6 +329,7 @@
                         url: 'ajax_groups.php',
                         type: "POST",
                         data: {ldelim}ajax: true, groups: _groups{rdelim},
+                        {include file="js_loader.tpl"},
                         success: function(res){ldelim}
                             _groups_dialog(res, _groups);
                         {rdelim},

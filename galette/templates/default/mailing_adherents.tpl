@@ -125,6 +125,7 @@
                 url: 'ajax_mailing_preview.php',
                 type: "POST",
                 data: {ldelim}ajax: true, subject: _subject, body: _body, html: _html{rdelim},
+                {include file="js_loader.tpl"},
                 success: function(res){ldelim}
                     _preview_dialog(res);
                 {rdelim},
@@ -155,6 +156,7 @@
                 url: 'ajax_members.php',
                 type: "POST",
                 data: {ldelim}ajax: true{rdelim},
+                {include file="js_loader.tpl"},
                 success: function(res){ldelim}
                     _members_dialog(res);
                 {rdelim},
@@ -192,6 +194,7 @@
                     url: 'ajax_recipients.php',
                     type: "POST",
                     data: {ldelim}recipients: _recipients{rdelim},
+                    {include file="js_loader.tpl"},
                     success: function(res){ldelim}
                         $('#unreachables_count').remove();
                         $('#recipients_count').replaceWith(res);

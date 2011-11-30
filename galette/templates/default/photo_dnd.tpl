@@ -37,6 +37,7 @@
                                         filesize: file.size,
                                         file: evt.target.result
                                     {rdelim},
+                                    {include file="js_loader.tpl"},
                                     success: function(res){ldelim}
                                         if ( res.result == true ) {ldelim}
                                             d = new Date();
