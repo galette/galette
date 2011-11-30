@@ -111,7 +111,7 @@
                     $('#selected_members ul').append(_none);
                 {rdelim}
             {rdelim});
-            $('#listing a').click(function(){ldelim}
+            $('#members_list #listing a').click(function(){ldelim}
                 var _mid = this.href.substring(this.href.indexOf('?')+8);
                 var _mname = $(this).text();
                 $('#none_selected').remove()
