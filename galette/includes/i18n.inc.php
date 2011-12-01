@@ -51,15 +51,6 @@ if ( @putenv("LANG=$language")
     or @putenv("LANGUAGE=$language")
     or @putenv("LC_ALL=$language")
 ) {
-    /*
-    putenv("LANG=$language");
-    putenv("LANGUAGE=$language");
-    putenv("LC_ALL=$language");
-    */
-    // PDF Generation fails with this :
-    // (I guess this is due to comma conversion in real numbers)
-    //$loc=setlocale(LC_ALL, $language);
-
     $domain = 'galette';
 
     @define('THIS_BASE_DIR', dirname(__FILE__));
