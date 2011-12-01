@@ -41,22 +41,8 @@ require_once WEB_ROOT . 'classes/l10n.class.php';
 
 $disable_gettext=true;
 
-$languages = array(
-    'fr_FR@euro' => 'french',
-    'en_US'      => 'english',
-    'es_ES@euro' => 'spanish'
-);
-
-$short_languages = array(
-    'french'    =>  'fr',
-    'english'   =>  'en',
-    'spanish'   =>  'es'
-);
-
 $language = $i18n->getLongID();
 $short_language = $i18n->getAbbrev();
-// $language=$languages[$pref_lang];
-// $short_language = $short_languages[$pref_lang];
 
 setlocale(LC_ALL, $language, $i18n->getAlternate());
 
@@ -156,9 +142,6 @@ function deleteDynamicTranslation($text_orig, $error_detected)
 {
     global $zdb, $log, $i18n;
     $l10n_table = PREFIX_DB . 'l10n';
-
-    $t = $languages;
-    $tt = $i18n->getList();
 
     try {
         foreach ( $i18n->getList() as $lang ) {
@@ -263,7 +246,7 @@ function getDynamicTranslation($text_orig, $text_locale)
 
 /** FIXME : $loc undefined */
 if ( (isset($loc) && $loc!=$language) || $disable_gettext) {
-    include WEB_ROOT . 'lang/lang_' . $languages[$language] . '.php';
+    include WEB_ROOT . 'lang/lang_' . $i18n->getFileName() . '.php';
 }
 
 if ( !function_exists('_T') ) {
