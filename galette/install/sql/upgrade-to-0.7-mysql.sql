@@ -174,5 +174,9 @@ ALTER TABLE galette_tmppasswds ADD FOREIGN KEY (id_adh)
 
 ALTER TABLE galette_cotisations ADD type_paiement_cotis TINYINT( 3 ) unsigned NOT NULL DEFAULT '0' AFTER montant_cotis;
 
+-- Fix round issues
+ALTER TABLE galette_cotisations CHANGE montant_cotis montant_cotis DECIMAL( 15, 2 ) UNSIGNED NULL DEFAULT '0'
+ALTER TABLE galette_transactions CHANGE trans_amount trans_amount DECIMAL( 15, 2 ) NULL DEFAULT '0' 
+
 -- Put back foreign keys
 SET FOREIGN_KEY_CHECKS=1;

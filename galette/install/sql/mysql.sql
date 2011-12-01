@@ -50,7 +50,7 @@ CREATE TABLE galette_cotisations (
   id_cotis int(10) unsigned NOT NULL auto_increment,
   id_adh int(10) unsigned NOT NULL default '0',
   id_type_cotis int(10) unsigned NOT NULL default '0',
-  montant_cotis float unsigned default '0',
+  montant_cotis decimal(15, 2) unsigned default '0',
   type_paiement_cotis tinyint(3) unsigned NOT NULL default '0',
   info_cotis text,
   date_enreg date NOT NULL default '1901-01-01',
@@ -66,7 +66,7 @@ DROP TABLE IF EXISTS galette_transactions;
 CREATE TABLE galette_transactions (
   trans_id int(10) unsigned NOT NULL auto_increment,
   trans_date date NOT NULL default '1901-01-01',
-  trans_amount float default '0',
+  trans_amount decimal(15, 2) default '0',
   trans_desc varchar(30) NOT NULL default '',
   id_adh int(10) unsigned default NULL,
   PRIMARY KEY  (trans_id),
