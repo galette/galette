@@ -160,11 +160,7 @@ if ( $pdf->sheet_date ) {
         $format
     );
     $date_fmt = strftime($format, $pdf->sheet_date->getTimestamp());
-    /**
-     * FIXME: utf8_encode should not be required here :( With fr_FR.utf8
-     * instead of fr_FR@euro (ISO-8859-15) passed to setlocale, all is OK
-     */
-    $pdf->Cell(190, 7, utf8_encode($date_fmt), 0, 1, 'C');
+    $pdf->Cell(190, 7, $date_fmt, 0, 1, 'C');
 }
 
 // Header
