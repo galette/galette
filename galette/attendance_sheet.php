@@ -116,7 +116,7 @@ if ( isset($_POST['sheet_title']) && trim($_POST['sheet_title']) != '' ) {
     $pdf->sheet_title = $_POST['sheet_title'];
 }
 if ( isset($_POST['sheet_sub_title']) && trim($_POST['sheet_sub_title']) != '' ) {
-    $pdf->sheet_sub_title = $_POST['sheet_title'];
+    $pdf->sheet_sub_title = $_POST['sheet_sub_title'];
 }
 if ( isset($_POST['sheet_date']) && trim($_POST['sheet_date']) != '' ) {
     $dformat = _T("Y-m-d");

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2011-11-30 19:47+0100\n"
+"PO-Revision-Date: 2011-12-01 05:42+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -189,15 +189,15 @@ msgstr "Je souhaite apparaître dans la liste des membres&nbsp;:"
 msgid "Contributions managment"
 msgstr "Gestion des contributions"
 
-#: ../templates/default/preferences.tpl:82
-msgid "-- Choose a staff member --"
-msgstr "-- Choisissez un membre du bureau --"
+#: ../templates/default/ajax_attendance_sheet_details.tpl:5
+msgid "Sheet type"
+msgstr "Type de liste"
 
 #: ../gestion_mailings.php:85 ../templates/default/desktop.tpl:10
 msgid "Mailings"
 msgstr "E-Mailings"
 
-#: ../gestion_adherents.php:187 ../attendance_sheet.php:121
+#: ../gestion_adherents.php:187 ../attendance_sheet.php:173
 #: ../templates/default/gestion_adherents.tpl:61
 #: ../templates/default/gestion_adherents.tpl:195
 #: ../templates/default/gestion_adherents.tpl:201
@@ -237,7 +237,7 @@ msgstr "Liste des membres"
 msgid "Admin settings"
 msgstr "Paramètres administrateur"
 
-#: ../templates/default/ajax_attendance_sheet_details.tpl:15
+#: ../templates/default/ajax_attendance_sheet_details.tpl:19
 msgid "(yyyy-mm-dd format)"
 msgstr "(format jj/mm/aaaa)"
 
@@ -1269,6 +1269,10 @@ msgstr "- Erreur SQL&nbsp;:"
 msgid "Modifiy mailing"
 msgstr "Modification E-Mailing"
 
+#: ../templates/default/preferences.tpl:82
+msgid "-- Choose a staff member --"
+msgstr "-- Choisissez un membre du bureau --"
+
 #: ../templates/default/config_fields.tpl:50
 msgid "Admin only"
 msgstr "Administrateurs uniquement"
@@ -1523,7 +1527,7 @@ msgid "Recover password"
 msgstr "Récupérer le mot de passe"
 
 #: ../templates/default/gestion_mailings.tpl:20
-#: ../templates/default/ajax_attendance_sheet_details.tpl:13
+#: ../templates/default/ajax_attendance_sheet_details.tpl:17
 #: ../templates/default/ajouter_transaction.tpl:66
 #: ../templates/default/history.tpl:23
 #: ../templates/default/gestion_contributions.tpl:71
@@ -1834,7 +1838,7 @@ msgstr ""
 "Ce commentaire n'est visible que par les administrateurs et les membres du "
 "bureau."
 
-#: ../templates/default/ajax_attendance_sheet_details.tpl:5
+#: ../templates/default/ajax_attendance_sheet_details.tpl:9
 msgid "Title"
 msgstr "Titre"
 
@@ -1872,7 +1876,7 @@ msgstr "Continuer"
 msgid "E-Mail"
 msgstr "Courriel"
 
-#: ../templates/default/ajax_attendance_sheet_details.tpl:9
+#: ../templates/default/ajax_attendance_sheet_details.tpl:13
 msgid "Subtitle"
 msgstr "Sous-titre"
 
@@ -2220,8 +2224,8 @@ msgstr "Donation en nature"
 msgid "Short Text (Card Center):"
 msgstr "Abréviation (centre de la carte)&nbsp;:"
 
-#: ../attendance_sheet.php:82 ../attendance_sheet.php:98
-#: ../templates/default/gestion_adherents.tpl:121
+#: ../attendance_sheet.php:108 ../templates/default/gestion_adherents.tpl:121
+#: ../templates/default/ajax_attendance_sheet_details.tpl:6
 msgid "Attendance sheet"
 msgstr "Liste d'émargement"
 
@@ -2704,7 +2708,7 @@ msgstr "Largeur étiquette&nbsp;:"
 msgid "The following exports already seems to exist on the disk:"
 msgstr "Les exports suivants semblent exister sur le disque&nbsp;:"
 
-#: ../attendance_sheet.php:167
+#: ../attendance_sheet.php:219
 msgid "attendance_sheet"
 msgstr "liste_emargement"
 
@@ -2850,7 +2854,7 @@ msgstr ""
 msgid "Uncomplete dispatched transaction"
 msgstr "La transaction n'est pas entièrement ventilée"
 
-#: ../attendance_sheet.php:122
+#: ../attendance_sheet.php:174
 msgid "Signature"
 msgstr "Signature"
 
@@ -3085,7 +3089,6 @@ msgid "Default fields categories cannot be initialized."
 msgstr "Les catégories de champs par défaut n'ont pas été initialisés."
 
 #: ../classes/pdf.class.php:91 ../classes/pdf.class.php:211
-#: ../classes/pdf.class.php:275
 msgid "Association %s"
 msgstr "Association %s"
 
@@ -3206,8 +3209,9 @@ msgid "donation in money"
 msgstr "donation pécunière"
 
 # http://fr2.php.net/manual/fr/function.date.php
-#: ../attendance_sheet.php:107 ../classes/contribution.class.php:481
-#: ../classes/contribution.class.php:797 ../classes/adherent.class.php:1202
+#: ../attendance_sheet.php:102 ../attendance_sheet.php:122
+#: ../classes/contribution.class.php:481 ../classes/contribution.class.php:797
+#: ../classes/adherent.class.php:1202
 msgid "Y-m-d"
 msgstr "d/m/Y"
 
@@ -3344,7 +3348,7 @@ msgstr "Courriel de l'administrateur des membres&nbsp;:"
 msgid "Mail sent to '%s' for password recovery."
 msgstr "Courriel envoyé à « %s » pour la récupération du mot de passe."
 
-#: ../templates/default/ajax_attendance_sheet_details.tpl:18
+#: ../templates/default/ajax_attendance_sheet_details.tpl:22
 msgid "With photos?"
 msgstr "Avec photos&nbsp;?"
 
@@ -4080,8 +4084,7 @@ msgstr "Pas envoyé"
 msgid "Profession:"
 msgstr "Profession&nbsp;:"
 
-#: ../carte_adherent.php:94 ../attendance_sheet.php:83
-#: ../etiquettes_adherents.php:81
+#: ../carte_adherent.php:94 ../etiquettes_adherents.php:81
 msgid "Generated by Galette"
 msgstr "Générer par Galette"
 
@@ -4117,8 +4120,7 @@ msgstr "Afficher et gérer les groupes"
 msgid "Is company?"
 msgstr "Est une entreprise&nbsp;?"
 
-#: ../attendance_sheet.php:84 ../etiquettes_adherents.php:82
-#: ../templates/default/preferences.tpl:30
+#: ../etiquettes_adherents.php:82 ../templates/default/preferences.tpl:30
 msgid "Labels"
 msgstr "Étiquettes"
 
@@ -4210,7 +4212,7 @@ msgstr "Voir ma fiche membre"
 msgid "Send up '%s' field"
 msgstr "Faire monter le champ « %s »"
 
-#: ../attendance_sheet.php:112
+#: ../attendance_sheet.php:156
 msgid "%A, %B %#d%O %Y"
 msgstr "%A %#d %B %Y"
 
