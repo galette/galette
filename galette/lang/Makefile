@@ -1,6 +1,6 @@
 .SUFFIXES = .mo .po
 INSTALLDIR = .
-LANGUAGES = en_US fr_FR@euro
+LANGUAGES = en_US fr_FR.utf8
 PACKAGE = galette
 MKLANG = ./make_lang_l12n.py
 PHP_SOURCES = $(shell find ../ -maxdepth 1 -name \*.php) \
@@ -44,7 +44,7 @@ lang :
 
 	@echo "  Mise à jour de lang_french.php"
 	@echo "    extraction des chaines..."
-	@${MKLANG} fr_FR@euro.po lang_french.php.new
+	@${MKLANG} fr_FR.utf8.po lang_french.php.new
 	@if diff -qI 'This file was automatically generated.*' lang_french.php lang_french.php.new > /dev/null; then \
 	  echo "    lang_french.php non mis à jour."; \
 	  rm lang_french.php.new; \

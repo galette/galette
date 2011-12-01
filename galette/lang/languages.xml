@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <translations>
-	<lang id="fr_FR" long="fr_FR@euro" alter="fra">
+	<lang id="fr_FR" long="fr_FR.utf8" alter="fra">
 		<shortname>fr</shortname>
 		<longname>français</longname>
 		<flag>french.gif</flag>
