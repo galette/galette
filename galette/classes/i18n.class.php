@@ -56,6 +56,7 @@ class I18n
     private $_abbrev;
     private $_flag;
     private $_filename;
+    private $_alternate;
 
     private $_langs;
 
@@ -132,6 +133,7 @@ class I18n
         $this->_abbrev = (string)$sxe->shortname;
         $this->_flag = (string)$sxe->flag;
         $this->_filename = (string)$sxe->filename;
+        $this->_alternate = (string)$sxe['alter'];
     }
 
     /**
@@ -152,6 +154,7 @@ class I18n
         $this->_abbrev = (string)$sxe->shortname;
         $this->_flag = (string)$sxe->flag;
         $this->_filename = (string)$sxe->filename;
+        $this->_alternate = (string)$sxe['alter'];
     }
 
     /**
@@ -221,6 +224,16 @@ class I18n
     public function getLongID()
     {
         return $this->_longid;
+    }
+
+    /**
+     * Return alternative identifier (mostly to fix Wind/Mac bugs!
+     *
+     * @return string current language alternative identifier
+     */
+    public function getAlternate()
+    {
+        return $this->_alternate;
     }
 
     /**
