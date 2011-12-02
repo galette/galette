@@ -153,13 +153,19 @@ if ( $pdf->sheet_sub_title ) {
     $pdf->Cell(190, 7, $_POST['sheet_sub_title'], 0, 1, 'C');
 }
 if ( $pdf->sheet_date ) {
-    $format = _T("%A, %B %#d%O %Y");
-    $format = str_replace(
-        '%O',
-        date('S', $pdf->sheet_date->getTimestamp()),
-        $format
-    );
-    $date_fmt = strftime($format, $pdf->sheet_date->getTimestamp());
+    $date_fmt = null;
+    if( PHP_OS === 'Linux' ) {
+        $format = _T("%A, %B %#d%O %Y");
+        $format = str_replace(
+            '%O',
+            date('S', $pdf->sheet_date->getTimestamp()),
+            $format
+        );
+        $date_fmt = strftime($format, $pdf->sheet_date->getTimestamp());
+    } else {
+        $format = _T("Y-m-d");
+        $date_fmt = $pdf->sheet_date->format($format);
+    }
     $pdf->Cell(190, 7, $date_fmt, 0, 1, 'C');
 }
 
