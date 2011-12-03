@@ -1,3 +1,4 @@
+    {if $member->id}
                 //Photo dnd
                 // Check if window.FileReader exists to make
                 // sure the browser supports file uploads
@@ -56,3 +57,4 @@
                         {rdelim}
                     {rdelim}
                 {rdelim}
+    {/if}
