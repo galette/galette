@@ -997,6 +997,36 @@ class Adherent
                             $errors[] = _T("- Non-valid E-Mail address!") .
                                 ' (' . $this->getFieldName($key) . ')';
                         }
+                        if ( $key == 'email_adh' ) {
+                            try {
+                                $select = new Zend_Db_Select($zdb->db);
+                                $select->from(
+                                    PREFIX_DB . self::TABLE,
+                                    self::PK
+                                )->where('email_adh = ?', $value);
+                                if ( $this->_id != '' && $this->_id != null ) {
+                                    $select->where(
+                                        self::PK . ' != ?',
+                                        $this->_id
+                                    );
+                                }
+                                $uniq = $select->query()->fetchAll();
+                                if ( count($uniq) !==  0 ) {
+                                    $errors[] = _T("- This E-Mail adress is already used by another member!");
+                                }
+                            } catch (Exception $e) {
+                                $log->log(
+                                    'An error occured checking member email unicity.',
+                                    PEAR_LOG_ERR
+                                );
+                                $log->log(
+                                    'Query was: ' . $select->__toString(),
+                                    PEAR_LOG_INFO
+                                );
+                                $errors[] = _T("An error has occured while looking if login already exists.");
+                            }
+
+                        }
                         break;
                     case 'url_adh':
                         if ( $value == 'http://' ) {
@@ -1030,10 +1060,17 @@ class Adherent
                                     if ( count($uniq) !==  0
                                         || $value == $preferences->pref_admin_login
                                     ) {
-                                        $errors[] = _T("- This username is already used by another member !");
+                                        $errors[] = _T("- This username is already used by another member!");
                                     }
                                 } catch (Exception $e) {
-                                    /** FIXME: log sthing */
+                                    $log->log(
+                                        'An error occured checking member login unicity.',
+                                        PEAR_LOG_ERR
+                                    );
+                                    $log->log(
+                                        'Query was: ' . $select->__toString(),
+                                        PEAR_LOG_INFO
+                                    );
                                     $errors[] = _T("An error has occured while looking if login already exists.");
                                 }
                             }
