@@ -37,42 +37,6 @@ Dependencies
 Installation :
 _____________
 
-[french]
-  Récupérez les fichiers depuis http://download.gna.org/galette/
-  Préférez prendre la dernière version en date (numéro de version le plus élevé).
-  
-  Décompressez l'archive là où pointe le RootDirectory de votre serveur web 
-  (ici, dans /var/www/).
-  
-  $ cd /var/www
-  $ wget http://download.gna.org/galette/_latest -O galette.tgz
-  $ tar -xzvf galette.tgz 
-
-  Le répertoire galette-version/ sera automatiquement crée. Vous pouvez le renommer
-  à votre convenance.
-
-  Il faut attribuer à tous les fichiers de Galette les droits de l'utilisateur
-  du serveur web (ici, pour l'exemple, www-data et apache) :
-  
-  # chown -R www-data:www-data galette-version/
-
-  Il vous faut maintenant créer un utilisateur et une base pour Galette sur 
-  votre serveur SQL (MySQL ou PostgreSQL). L'utilisateur créé doit avoir 
-  tous les droits sur la base créée pour Galette.
-  Les droits DROP et CREATE ne sont utiles que lors de l'installation initiale
-  ou éventuellement pour les mises à jour de Galette. Lors d'une utilisation 
-  en production, nous vous conseillons de retirer ces droits à l'utilisateur
-  de la base de données.
-
-  Se reporter à la documentation de votre serveur SQL pour ce faire.
-
-  Connectez-vous ensuite au sous répertoire "install" avec votre navigateur web.
-  Dans notre exemple, il s'agit de http://serveur/galette-0.62/install.
-
-  Vous n'avez plus qu'à vous laissez guider par les 10 étapes de l'installeur 
-  Web.
-
-  Une fois le script d'installation terminé, et après avoir vérifié que tout
-  fonctionne, il est fortement conseillé de supprimer le dossier install/.
-
+Consultez le manuel en ligne :
+http://galette.tuxfamily.org/documentation/fr/installation/
 
