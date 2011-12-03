@@ -191,7 +191,10 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                         //send mail to member
                         // Get email text in database
                         $texts = new texts();
-                        $mtxt = $texts->getTexts('sub', $preferences->pref_lang);
+                        $mtxt = $texts->getTexts(
+                            (($new) ? 'sub' : 'accountedited'),
+                            $preferences->pref_lang
+                        );
 
                         $patterns = array(
                             '/{NAME}/',
@@ -230,14 +233,14 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                                 str_replace(
                                     '%s',
                                     $member->sname . ' (' . $member->email . ')',
-                                    _T("New account mail sent to '%s'.")
+                                    _T("Account mail sent to '%s'.")
                                 )
                             );
                         } else {
                             $str = str_replace(
                                 '%s',
                                 $member->sname . ' (' . $member->email . ')',
-                                _T("A problem happened while sending new account mail to '%s'")
+                                _T("A problem happened while sending account mail to '%s'")
                             );
                             $hist->add($str);
                             $error_detected[] = $str;

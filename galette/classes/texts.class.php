@@ -159,6 +159,22 @@ class Texts
             'tcomment'  => 'Nouvelle inscription (envoyée a l\'admin)'
         ),
 
+        array(
+            'tid'       => 19,
+            'tref'      => 'accountedited',
+            'tsubject'  => 'Your account has been modified',
+            'tbody'     => "Hello!\r\n\r\nYour account on {NAME} (with the login '{LOGIN}') has been modified by an administrator or a staff member.\r\n\r\nYou can log into {LOGIN_URI} to review modifications and/or change it.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+            'tlang'     => 'en_US',
+            'tcomment'  => 'Informs user that his account has been modified'
+        ),
+        array(
+            'tid'       => 20,
+            'tref'      => 'accountedited',
+            'tsubject'  => 'Votre compte a été modifié',
+            'tbody'     => "Bonjour !\r\n\r\nVotre compte chez {NAME} (avec le login '{LOGIN}') a été modifié par un administrateur ou un membre du bureau.\r\n\r\nVous pouvez vous connecter à l'adresse {LOGIN_URI} pour vérifier ces informations ou les modifier.\r\n\r\nÀ bientôt !\r\n\r\n(ce courriel est un envoi automatique)",
+            'tlang'     => 'fr_FR',
+            'tcomment'  => 'Informe l\'utilisateur que son compte a été modifié'
+        ),
     );
 
     /**
