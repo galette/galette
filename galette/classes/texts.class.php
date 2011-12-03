@@ -329,39 +329,5 @@ class Texts
             return $e;
         }
     }
-
-    /**
-    * Has an error occured ?
-    *
-    * @return boolean
-    */
-    public function inError()
-    {
-        if ( isset($this->error) && MDB2::isError($this->error) ) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-    * Get main MDB2 error message
-    *
-    * @return MDB2::Error's message
-    */
-    public function getErrorMessage()
-    {
-        return $this->error->getMessage();
-    }
-
-    /**
-    * Get additionnal informations about the error
-    *
-    * @return MDB2::Error's debug infos
-    */
-    public function getErrorDetails()
-    {
-        return $this->error->getDebugInfo();
-    }
 }
 ?>
