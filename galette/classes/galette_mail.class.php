@@ -219,6 +219,38 @@ class GaletteMail
         $this->_mail->Subject = $this->_subject;
         $this->_mail->Body = $this->_message;
 
+        if ( trim($preferences->pref_mail_sign) != '' ) {
+            $sign = "\r\n-- \r\n";
+
+            $patterns = array(
+                '/{NAME}/',
+                '/{WEBSITE}/',
+                '/{FACEBOOK}/',
+                '/{GOOGLEPLUS}/',
+                '/{TWITTER}/',
+                '/{LINKEDIN}/',
+                '/{VIADEO}/'
+            );
+
+            $replaces = array(
+                $preferences->pref_nom,
+                $preferences->pref_website,
+                $preferences->pref_facebook,
+                $preferences->pref_googleplus,
+                $preferences->pref_twitter,
+                $preferences->pref_linkedin,
+                $preferences->pref_viadeo
+            );
+
+            $sign .= preg_replace(
+                $patterns,
+                $replaces,
+                $preferences->pref_mail_sign
+            );
+
+            $this->_mail->Body .= $sign;
+        }
+
         try {
             //reinit errors array
             $this->_errors = array();
