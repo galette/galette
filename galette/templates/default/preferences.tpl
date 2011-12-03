@@ -228,7 +228,7 @@
 					</p>
 					<p>
 						<label for="pref_mail_smtp_password" class="bline">{_T string="SMTP (or GMail) password:"}</label>
-                        <input type="password" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="{$pref.pref_mail_smtp_password}" maxlength="100" size="30"{if $required.pref_mail_smtp_password eq 1} required{/if}/>
+                        <input type="password" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="{$pref.pref_mail_smtp_password}" autocomplete="off" maxlength="100" size="30"{if $required.pref_mail_smtp_password eq 1} required{/if}/>
 					</p>
 				</div>
 			</fieldset>
