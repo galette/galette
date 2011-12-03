@@ -1,124 +1,0 @@
-<sect2 id="menupref"><mediaobject>
-  <imageobject>
-    <imagedata fileref="images/pref_menu.png" />
-  </imageobject>
-  <textobject>
-    <phrase>Menu des préférences</phrase>
-  </textobject>
-</mediaobject>
-</sect2>
-<sect2 id="asso"> <title>Préférences Générales</title>  <mediaobject>
-   <imageobject>
-     <imagedata fileref="images/pref_gen.png" />
-    </imageobject>
-    <textobject>
-     <phrase>Préférences Générales</phrase>
-    </textobject>
-</mediaobject>
-</sect2>
-<sect2 id="galette"> <title>Préférences de galette</title>  <mediaobject>
-   <imageobject>
-     <imagedata fileref="images/pref_galette.png" />
-    </imageobject>
-    <textobject>
-     <phrase>Préférences de galette</phrase>
-    </textobject>
-</mediaobject>
-</sect2>
-<sect2 id="mail"> <title>Préférences de courriel</title>  <mediaobject>
-   <imageobject>
-     <imagedata fileref="images/pref_courriel.png" />
-    </imageobject>
-    <textobject>
-     <phrase>Préférences de courriel</phrase>
-    </textobject>
- </mediaobject>
-</sect2>
-<sect2 id="etiquettes"> <title>Préférences liées aux étiquettes</title>  <mediaobject>
-   <imageobject>
-     <imagedata fileref="images/pref_etiq.png" />
-    </imageobject>
-    <textobject>
-     <phrase>Préférences liées aux étiquettes</phrase>
-    </textobject>
- </mediaobject>
-</sect2>
-<sect2 id="cartes"> <title>Préférences liées aux cartes</title>  <mediaobject>
-   <imageobject>
-     <imagedata fileref="images/pref_cartes.png" />
-    </imageobject>
-    <textobject>
-     <phrase>Préférences liées aux cartes</phrase>
-    </textobject>
- </mediaobject>
- <para>
-    Les préférences liées à la création des cartes au format
-    pdf permettent de choisir le logo, les textes propres à
-    l'association, un court et un long ainsi que les couleurs.
-    Le texte long apparaît sur un bandeau coloré en bas de page.
- </para>
- <para>
-    Les couleurs se choisissent parmi:
-    <itemizedlist>
-        <listitem><para>La couleur de texte du bandeau, blanche par défaut.
-            C'est la couleur du texte long qui sera écrit sur le bandeau
-            coloré au bas de la carte.</para>
-        </listitem>
-        <listitem><para>La couleur du bandeau pour les membres actifs,
-            bordeaux par défaut.</para>
-        </listitem>
-        <listitem><para>La couleur du bandeau pour les membres du bureau,
-            bleue par défaut.</para>
-        </listitem>
-        <listitem><para>La couleur du bandeau pour les membres honoraires,
-            verte par défaut.</para>
-        </listitem>
-    </itemizedlist>
-  </para>
-  <mediaobject>
-   <imageobject>
-      <imagedata fileref="images/carte.png" />
-    </imageobject>
-    <textobject>
-     <phrase>Modèle de carte</phrase>
-    </textobject>
-</mediaobject>
-  <para>
-    La couleur de fond du bandeau sera aussi celle utilisée pour
-    écrire le texte court, l'année sous le logo et le numéro
-    d'adhérent en bas à droite de la carte.
-  </para>
-  <para>
-    Le texte restant est choisi dans les préférences parmi une
-    des adresses, ou la profession de l'adherant. Il est écrit
-    en noir et sa taille varie en fonction de sa longueur.
-    Les couleurs sont définies dans l'écran des préférences
-    en utilisant des codes identiques à ceux utilisés en HTML.
-    3 groupes de deux caractères hexadécimaux définissent le 
-    niveau de chaque couleur dans l'ordre Rouge, Vert, Bleu.
-  </para>
-  <para>Par exemple:</para>
-   <informaltable frame="none">
-    <tgroup cols="2">
-        <colspec colwidth="5cm" />
-        <colspec colwidth="5cm" />
-        <tbody>
-            <row><entry>000000</entry><entry>Noir</entry></row>
-            <row><entry>FFFFFF</entry><entry>Blanc</entry></row>
-            <row><entry>FF0000</entry><entry>Rouge</entry></row>
-            <row><entry>00FF00</entry><entry>Vert</entry></row>
-            <row><entry>0000FF</entry><entry>Bleu</entry></row>
-            <row><entry>008080</entry><entry>Jaune moyen</entry></row>
-        </tbody>
-    </tgroup>
-   </informaltable>
-</sect2>
-<sect2 id="admin"> <title>Préférences du compte administrateur</title>  <mediaobject>
-   <imageobject>
-      <imagedata fileref="images/pref_admin.png" />
-    </imageobject>
-    <textobject>
-     <phrase>Menu des préférences</phrase>
-    </textobject>
-</mediaobject>
-</sect2>

@@ -1,78 +1,0 @@
- <sect2 id="wininstall">   <title>Installation windows</title>   <simplesect id="instwin0">
-    <para>     Cette page a pour objet de décrire les <emphasis role="underline">différentes étapes</emphasis> de l'installation
-     sous Windows de <emphasis>Galette version 0.62.2</emphasis> sur une solution de type
-     <ulink url="http://easyphp.org/">EasyPHP</ulink>
-     ou 
-     <ulink url="http://www.apachefriends.org/fr/xampp.html">Xampp</ulink>.<sbr />
-     Pour une installation complète chez un hébergeur, lire la page 
-     <xref linkend="webinstall" />.
-    </para>   </simplesect>   <sect3 id="instwin1">   <title>Télécharger</title>
-    <para>     Télécharger - si ce n'est pas encore fait ;-) - la dernière version stable de Galette :
-     <ulink url="http://download.gna.org/galette/galette-0.62.2.tgz">galette-0.62.2.tgz</ulink>.
-    </para>   </sect3>   <sect3 id="instwin2">   <title>Décompresser</title>
-    <para>    Décompresser le fichier <emphasis>galette-0.62.2.tgz</emphasis> sur votre disque dur,
-    dans un sous-répertoire créé pour l'occasion, à l'aide de Winzip ou de 7-zip,
-    logiciel libre disponible ici
-    <ulink url="http://www.7-zip.org/fr/">http://www.7-zip.org/fr/</ulink>. Dans un ultime
-    sous-répertoire "Galette", on obtient les dossiers et fichiers ci-dessous :
-    </para>    <mediaobject>
-     <imageobject>
-	  <imagedata fileref="images/tarlist.jpeg" format="jpg" />
-     </imageobject>
-     <textobject>
-      <phrase>dossiers et fichiers après décompression</phrase>
-     </textobject>
-    </mediaobject>
-    </sect3>   <sect3 id="instwin3">   <title>Uploader</title>
-    <para>    Avec <emphasis role="underline">Easyphp</emphasis>, créer un nouveau répertoire
-    dans /www. Ex : /www/galette
-    </para>
-    <mediaobject>
-     <imageobject>
-	  <imagedata fileref="images/easyphp.jpeg" format="jpg" />
-     </imageobject>
-     <textobject>
-      <phrase>avec EasyPhp</phrase>
-     </textobject>
-    </mediaobject>
-    <para>    et y déplacer (ou recopier) tous les sous-répertoires et fichiers de Galette
-    (Cf. <xref linkend="instwin2" /> ci-dessus).
-    </para>
-    <note>
-    <title>
-     <imageobject>
-	  <imagedata fileref="images/fixme.gif" format="gif" />
-     </imageobject>
-     </title>
-    <para role="note">
-     On installe directement dans une solution EasyPHP ou Xampp,
-     nul besoin d'upload : re-écrire cette partie pour en tenir compte
-    </para>
-    </note>
-    <para>
-     En attendant, l'attention du lecteur est portée sur les points suivants :
-    </para>
-    <itemizedlist>
-	 <listitem>
-     <para>      <emphasis role="bold">1er point</emphasis> : vérifier si le dossier <emphasis>photos</emphasis> (qui est vide)
-      a bien été créé. A défaut, le créer "à la main",
-      </para>
-      </listitem>
-	  <listitem>
-	  <para>
-      <emphasis role="bold">2ième point</emphasis> : <emphasis role="underline">accorder</emphasis> au dossier
-      <emphasis>photos</emphasis>  et au fichier
-      <emphasis>includes/config.inc.php</emphasis> les 
-      <emphasis role="underline">droits en écriture</emphasis> .
-      </para>      </listitem>
-    </itemizedlist>
-   </sect3>   <sect3 id="instwin4">   <title>Installer</title>
-    <para>    Voir la partie 4 de <xref linkend="webinstall" />.
-    </para>   </sect3>   <sect3 id="instwin5">   <title>Eventuellement, modifier les scripts</title>
-    <note>    <title>
-     <imageobject>
-	  <imagedata fileref="images/fixme.gif" format="gif" />
-     </imageobject>
-     </title>
-     <para role="note"> A-t-on besoin de cette partie ?</para>
-    </note>   </sect3> </sect2>

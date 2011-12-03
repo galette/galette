@@ -1,85 +1,0 @@
- <sect2 id="login">    <title>Connexion</title>    <para>Votre premier contact avec Galette va être le formulaire de login.
-      Loguez-vous donc :o)</para>
-    <para>Ensuite, c'est relativement simple. À gauche, le menu
-    (navigation) et la légende. Au centre, la liste soit des adhérents,
-    soit des contributions.</para>
-    <para>Si la légende ne suffit pas à comprendre, il va falloir vous accrocher
-    (ou contribuer à cette documentation succinte) :o)</para>
- </sect2>
- <sect2 id="ajadh">    <title>Ajouter un adhérent</title>    <note><title></title>
-     <para role="note">Les champs en rouge sont obligatoires</para>
-    </note>
-    <para>
-     Le champ <wordasword>statut</wordasword> est indicatif, il n'accorde aucun droit particulier.
-    </para>
-    <para>
-     La case <wordasword>admin galette</wordasword> octroit les droits d'administrateur
-     Galette à ce membre.
-    </para>
-    <para>
-     La case <wordasword>exempt de cotisation</wordasword> permet de ne plus afficher d'échéance
-     pour l'adhérent concerné. Il peut toujours cotiser mais cela n'aura
-     pas d'influence sur l'échéance de son adhésion (qui n'apparaitra plus).
-    </para>
-    <para>
-     Le règlage <wordasword>compte</wordasword> (Actif/Inactif) permet de désactiver un compte.
-     Ceci empêche simplement la personne concernée d'ouvrir une session
-     Galette avec son compte.
-    </para>
-    <para>
-     La <wordasword>date de création</wordasword> est un champ indicatif permettant de stocker
-     la date de création de la fiche. Vous pouvez cependant la modifier
-     pout y stocker une date plus parlante (surtout si vous saisissez de
-     vieux bulletins d'inscription et que vous voulez y stocker la date
-     de la première adhésion).
-    </para>
-    <para>
-     Le champ <wordasword>commentaire</wordasword> n'est accessible que pour les administrateurs et
-     vous permet d'annoter la fiche de l'adhérent (avant Galette v0.61).
-    </para>
- </sect2>
- <sect2 id="ajcontrib">    <title>Ajouter une contribution</title>    <note><title></title>
-     <para role="note">Les champs en rouge sont obligatoires</para></note>
-    <para>
-     Le membre doit exister pour cotiser.
-    </para>
-    <para>
-     Par defaut une contribution prolonge l'adhésion de 12 mois mais
-     il est tout à fait possible de saisir une autre durée.
-    </para>
- </sect2>
- <sect2 id="gestion">    <title>Règles de gestion</title>    <para>
-     Les échéances sont calculées au jour près. Si un adhérent cotise
-     avant la fin de son adhésion, la durée de cette adhésion sera
-     additionnée aux jours qu'il lui restait. Exemple :
-    </para>
-    <programlisting>
-      Roger s'est inscrit le 01/01/2004 pour un an.
-      S'il envoit une nouvelle cotisation pour un an le 13/12/2004, 
-      l'échance de son adhésion sera le 01/01/2006.
-      Aucun jour n'aura été oublié.
-    </programlisting>
-    <para>
-     A l'inverse, si un adhérent renouvelle son adhésion en retard,
-     on ne procède à aucune réévaluation de sa durée d'adhésion :
-    </para>
-    <programlisting>
-      Roger s'est inscrit le 01/01/2004 pour un an.
-      S'il envoit une nouvelle cotisation pour un an le 13/01/2005, 
-      l'échance de son adhésion sera le 13/01/2006.
-    </programlisting>
-    <para>
-      On considèrera qu'il n'était plus adhérent durant la période
-      du 01/01/2005 au 13/01/2005... Enfin, sur le papier :).
-    </para>
-    <para>
-     Ces règles de gestion sont cependant assouplies par le fait que
-     l'administrateur est totalement libre de choisir la date d'une
-     cotisation. On peut tout à fait imaginer le cas d'un association
-     qui enregistre toutes les cotisations au premier du mois suivant
-     (offrant ainsi un temps d'adhésion légèrement plus important).
-    </para>
- </sect2>
- <sect2 id="modadh">    <title>Ajouter ou modifier les dénominations de membres</title>
-    <note>TODO</note>
- </sect2>
