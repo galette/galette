@@ -34,6 +34,25 @@
                 </p>
             </div>
 {else}
+    {if (!$self_adh and ($login->isAdmin() or $login->isStaff())) and !$disabled.send_mail}
+					<p>
+						<label for="mail_confirm">
+        {if $member->id}
+                            {_T string="Notify member his account has been modified"}
+        {else}
+                            {_T string="Notify member his account has been created"}
+        {/if}
+                        </label>
+						<input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
+						<br/><span class="exemple">
+        {if $member->id}
+							{_T string="Member will be notified by mail his account has been modified."}
+        {else}
+							{_T string="Member will receive his username and password by email, if he has an address."}
+        {/if}
+						</span>
+					</p>
+    {/if}
 			<fieldset class="cssform">
 				<legend class="ui-state-active ui-corner-top">{_T string="Identity:"}</legend>
 				<div>
@@ -217,19 +236,8 @@
 						<span class="exemple">{_T string="Please repeat in the field the password shown in the image."}</span>
 					</p>
     {/if}
-    {* FIXME: EN cas de modification, veut-on envoyer un mail ? *}
+
     {if !$self_adh and ($login->isAdmin() or $login->isStaff())}
-					<p>
-						<label for="mail_confirm" class="bline">{_T string="Send a mail:"}</label>
-						<input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
-						<span class="exemple">
-        {if $disabled.send_mail}
-							{_T string="Mail has been disabled in the preferences. This functionnality is disabled."}
-        {else}
-							{_T string="(the member will receive his username and password by email, if he has an address.)"}
-        {/if}
-						</span>
-					</p>
 					<p>
 						<label for="date_crea_adh" class="bline">{_T string="Creation date:"}</label>
 						<input type="text" name="date_crea_adh" id="date_crea_adh" value="{$member->creation_date}" maxlength="10" {$disabled.date_crea_adh}{if $required.date_crea_adh eq 1} required{/if}/>
