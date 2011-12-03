@@ -9,6 +9,8 @@ ALTER TABLE galette_transactions ENGINE = InnoDB;
 ALTER TABLE galette_statuts ENGINE = InnoDB;
 ALTER TABLE galette_pictures ENGINE = InnoDB;
 ALTER TABLE galette_tmppasswds ENGINE = InnoDB;
+ALTER TABLE galette_dynamic_fields ENGINE = InnoDB;
+ALTER TABLE galette_field_types ENGINE = InnoDB;
 
 -- Each preference must be unique
 ALTER TABLE galette_preferences ADD UNIQUE (nom_pref);
@@ -170,6 +172,11 @@ ALTER TABLE galette_adherents ADD FOREIGN KEY (id_statut)
 ALTER TABLE galette_tmppasswds CHANGE id_adh id_adh INT( 10 ) UNSIGNED NOT NULL;
 ALTER TABLE galette_tmppasswds ADD FOREIGN KEY (id_adh)
   REFERENCES galette_adherents (id_adh)
+  ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE galette_dynamic_fields CHANGE field_id field_id INT( 10 ) UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE galette_dynamic_fields ADD FOREIGN KEY (field_id)
+  REFERENCES galette_field_types (field_id)
   ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE galette_cotisations ADD type_paiement_cotis TINYINT( 3 ) unsigned NOT NULL DEFAULT '0' AFTER montant_cotis;
