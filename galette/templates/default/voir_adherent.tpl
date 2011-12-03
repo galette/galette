@@ -94,65 +94,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 		</table>
 
 		<table class="details">
-			<caption class="ui-state-active ui-corner-top">{_T string="Galette-related data:"}</caption>
-			<tr>
-				<th>{_T string="Status:"}</th>
-				<td>{$member->sstatus}</td>
-			</tr>
-			<tr>
-				<th>{_T string="Be visible in the<br /> members list :"}</th>
-				<td>{$member->sappears_in_list}</td>
-			</tr>
-{if $login->isAdmin() or $login->isStaff()}
-			<tr>
-				<th>{_T string="Account:"}</th>
-				<td>{$member->sactive}</td>
-			</tr>
-			<tr>
-				<th>{_T string="Galette Admin:"}</th>
-				<td>{$member->sadmin}</td>
-			</tr>
-			<tr>
-				<th>{_T string="Freed of dues:"}</th>
-				<td>{$member->sdue_free}</td>
-			</tr>
-{/if}
-			<tr>
-				<th>{_T string="Username:"}</th>
-				<td>{$member->login}</td>
-			</tr>
-{if $login->isAdmin() or $login->isStaff()}
-			<tr>
-				<th>{_T string="Creation date:"}</th>
-				<td>{$member->creation_date}</td>
-			</tr>
-			<tr>
-				<th>{_T string="Other informations (admin):"}</th>
-				<td>{$member->others_infos_admin|htmlspecialchars|nl2br}</td>
-			</tr>
-{/if}
-			<tr>
-				<th>{_T string="Other informations:"}</th>
-				<td>{$member->others_infos|htmlspecialchars|nl2br}</td>
-			</tr>
-{if $member->groups != false && $member->groups|@count != 0}
-			<tr>
-				<th>{_T string="Groups:"}</th>
-				<td>
-    {foreach from=$member->groups key=group item=manager}
-                    <a href="#" class="button group-btn">
-                        {$group}
-        {if $manager == 1}
-                        <img src="{$template_subdir}images/icon-star.png" alt="{_T string="[manager]"}" width="16" height="16"/>
-        {/if}
-                    </a>
-    {/foreach}
-				</td>
-			</tr>
-{/if}
-		</table>
-
-		<table class="details">
 			<caption class="ui-state-active ui-corner-top">{_T string="Contact information:"}</caption>
 			<tr>
 				<th>{_T string="Address:"}</th>
@@ -223,6 +164,67 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 				<th>{_T string="fingerprint:"}</th>
 				<td>{$member->fingerprint}</td>
 			</tr>
+		</table>
+
+		<table class="details">
+			<caption class="ui-state-active ui-corner-top">{_T string="Galette-related data:"}</caption>
+			<tr>
+				<th>{_T string="Be visible in the<br /> members list :"}</th>
+				<td>{$member->sappears_in_list}</td>
+			</tr>
+{if $login->isAdmin() or $login->isStaff()}
+			<tr>
+				<th>{_T string="Account:"}</th>
+				<td>{$member->sactive}</td>
+			</tr>
+{/if}
+			<tr>
+				<th>{_T string="Status:"}</th>
+				<td>{$member->sstatus}</td>
+			</tr>
+{if $login->isAdmin() or $login->isStaff()}
+			<tr>
+				<th>{_T string="Galette Admin:"}</th>
+				<td>{$member->sadmin}</td>
+			</tr>
+			<tr>
+				<th>{_T string="Freed of dues:"}</th>
+				<td>{$member->sdue_free}</td>
+			</tr>
+{/if}
+			<tr>
+				<th>{_T string="Username:"}</th>
+				<td>{$member->login}</td>
+			</tr>
+{if $login->isAdmin() or $login->isStaff()}
+			<tr>
+				<th>{_T string="Creation date:"}</th>
+				<td>{$member->creation_date}</td>
+			</tr>
+			<tr>
+				<th>{_T string="Other informations (admin):"}</th>
+				<td>{$member->others_infos_admin|htmlspecialchars|nl2br}</td>
+			</tr>
+{/if}
+			<tr>
+				<th>{_T string="Other informations:"}</th>
+				<td>{$member->others_infos|htmlspecialchars|nl2br}</td>
+			</tr>
+{if $member->groups != false && $member->groups|@count != 0}
+			<tr>
+				<th>{_T string="Groups:"}</th>
+				<td>
+    {foreach from=$member->groups key=group item=manager}
+                    <a href="#" class="button group-btn">
+                        {$group}
+        {if $manager == 1}
+                        <img src="{$template_subdir}images/icon-star.png" alt="{_T string="[manager]"}" width="16" height="16"/>
+        {/if}
+                    </a>
+    {/foreach}
+				</td>
+			</tr>
+{/if}
 		</table>
 
 {include file="display_dynamic_fields.tpl" is_form=false}
