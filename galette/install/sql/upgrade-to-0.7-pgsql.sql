@@ -97,6 +97,8 @@ CREATE UNIQUE INDEX galette_mailing_history_idx ON galette_mailing_history (mail
 
 ALTER TABLE galette_adherents ADD type_paiement_cotis smallint DEFAULT '0' NOT NULL;
 
+ALTER TABLE galette_adherents ADD date_modif_adh date DEFAULT '1901-01-01' NOT NULL;
+
 -- Missing primary keys
 ALTER TABLE galette_types_cotisation ADD CONSTRAINT galette_types_cotisation_pkey PRIMARY KEY (id_type_cotis);
 ALTER TABLE galette_adherents ADD CONSTRAINT galette_adherents_pkey PRIMARY KEY (id_adh);

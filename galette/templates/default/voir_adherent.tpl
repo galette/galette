@@ -202,6 +202,10 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 				<td>{$member->creation_date}</td>
 			</tr>
 			<tr>
+				<th>{_T string="Last modification date:"}</th>
+				<td>{$member->modification_date}</td>
+			</tr>
+			<tr>
 				<th>{_T string="Other informations (admin):"}</th>
 				<td>{$member->others_infos_admin|htmlspecialchars|nl2br}</td>
 			</tr>

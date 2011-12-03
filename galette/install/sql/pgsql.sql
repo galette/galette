@@ -86,6 +86,7 @@ CREATE TABLE galette_adherents (
     login_adh character varying(20) DEFAULT '' NOT NULL,
     mdp_adh character varying(40) DEFAULT '' NOT NULL,
     date_crea_adh date DEFAULT '19010101' NOT NULL,
+    date_modif_adh date DEFAULT '19010101' NOT NULL,
     activite_adh character(1) DEFAULT '0' NOT NULL,
     bool_admin_adh character(1) DEFAULT NULL,
     bool_exempt_adh character(1) DEFAULT NULL,

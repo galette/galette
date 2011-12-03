@@ -97,6 +97,7 @@ class Adherent
     private $_login;
     private $_password;
     private $_creation_date;
+    private $_modification_date;
     private $_due_date;
     private $_others_infos;
     private $_others_infos_admin;
@@ -369,12 +370,20 @@ class Adherent
                 'position' => 25,
                 'category' => FieldsCategories::ADH_CATEGORY_GALETTE
             ),
+            'date_modif_adh' => array(
+                'label'    => _T("Modification date:"),
+                'propname' => 'modification_date',
+                'required' => false,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 26,
+                'category' => FieldsCategories::ADH_CATEGORY_GALETTE
+            ),
             'activite_adh' => array(
                 'label'    => _T("Account:"),
                 'propname' => 'active',
                 'required' => false,
                 'visible'  => FieldsConfig::VISIBLE,
-                'position' => 26,
+                'position' => 27,
                 'category' => FieldsCategories::ADH_CATEGORY_GALETTE
             ),
             'bool_admin_adh' => array(
@@ -382,7 +391,7 @@ class Adherent
                 'propname' => 'admin',
                 'required' => false,
                 'visible'  => FieldsConfig::VISIBLE,
-                'position' => 27,
+                'position' => 28,
                 'category' => FieldsCategories::ADH_CATEGORY_GALETTE
             ),
             'bool_exempt_adh' => array(
@@ -390,7 +399,7 @@ class Adherent
                 'propname' => 'due_free',
                 'required' => false,
                 'visible'  => FieldsConfig::VISIBLE,
-                'position' => 28,
+                'position' => 29,
                 'category' => FieldsCategories::ADH_CATEGORY_GALETTE
             ),
             'bool_display_info' => array(
@@ -398,7 +407,7 @@ class Adherent
                 'propname' => 'appears_in_list',
                 'required' => false,
                 'visible'  => FieldsConfig::VISIBLE,
-                'position' => 29,
+                'position' => 30,
                 'category' => FieldsCategories::ADH_CATEGORY_GALETTE
             ),
             'date_echeance' => array(
@@ -406,7 +415,7 @@ class Adherent
                 'propname' => 'due_date',
                 'required' => false,
                 'visible'  => FieldsConfig::VISIBLE,
-                'position' => 30,
+                'position' => 31,
                 'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
             ),
             'pref_lang' => array(
@@ -414,7 +423,7 @@ class Adherent
                 'propname' => 'language',
                 'required' => false,
                 'visible'  => FieldsConfig::VISIBLE,
-                'position' => 31,
+                'position' => 32,
                 'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
             ),
             'lieu_naissance' => array(
@@ -422,7 +431,7 @@ class Adherent
                 'propname' => 'birth_place',
                 'required' => false,
                 'visible'  => FieldsConfig::VISIBLE,
-                'position' => 32,
+                'position' => 33,
                 'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
             ),
             'gpgid' => array(
@@ -430,7 +439,7 @@ class Adherent
                 'propname' => 'gnupgid',
                 'required' => false,
                 'visible'  => FieldsConfig::VISIBLE,
-                'position' => 33,
+                'position' => 34,
                 'category' => FieldsCategories::ADH_CATEGORY_CONTACT
             ),
             'fingerprint' => array(
@@ -438,7 +447,7 @@ class Adherent
                 'propname' => 'fingerprint',
                 'required' => false,
                 'visible'  => FieldsConfig::VISIBLE,
-                'position' => 34,
+                'position' => 35,
                 'category' => FieldsCategories::ADH_CATEGORY_CONTACT
             )
         );
@@ -595,6 +604,11 @@ class Adherent
         $this->_login = $r->login_adh;
         $this->_password = $r->mdp_adh;
         $this->_creation_date = $r->date_crea_adh;
+        if ( $r->date_modif_adh != '1901-01-01' ) {
+            $this->_modification_date = $r->date_modif_adh;
+        } else {
+            $this->_modification_date = $this->_creation_date;
+        }
         $this->_due_date = $r->date_echeance;
         $this->_others_infos = $r->info_public_adh;
         $this->_others_infos_admin = $r->info_adh;
@@ -1138,8 +1152,13 @@ class Adherent
             $fields = self::getDbFields();
             /** FIXME: quote? */
             foreach ( $fields as $field ) {
-                $prop = '_' . $this->_fields[$field]['propname'];
-                $values[$field] = $this->$prop;
+                if ( $field !== 'date_modif_adh'
+                    || !isset($this->_id)
+                    || $this->_id == ''
+                ) {
+                    $prop = '_' . $this->_fields[$field]['propname'];
+                    $values[$field] = $this->$prop;
+                }
             }
 
             //an empty value will cause date to be set to 1901-01-01, a null
@@ -1189,6 +1208,7 @@ class Adherent
                 //edit == 0 does not mean there were an error, but that there
                 //were nothing to change
                 if ( $edit > 0 ) {
+                    $this->_updateModificationDate();
                     $hist->add(
                         _T("Member card updated"),
                         strtoupper($this->_login)
@@ -1206,6 +1226,25 @@ class Adherent
                 PEAR_LOG_ERR
             );
             return false;
+        }
+    }
+
+    private function _updateModificationDate()
+    {
+        global $zdb, $log;
+
+        try {
+            $edit = $zdb->db->update(
+                PREFIX_DB . self::TABLE,
+                array('date_modif_adh' => date('Y-m-d')),
+                self::PK . '=' . $this->_id
+            );
+        } catch (Exception $e) {
+            $log->log(
+                'Something went wrong updating modif date :\'( | ' . $e->getMessage() . "\n" .
+                $e->getTraceAsString(),
+                PEAR_LOG_ERR
+            );
         }
     }
 
@@ -1232,6 +1271,7 @@ class Adherent
             switch($name) {
             case 'birthdate':
             case 'creation_date':
+            case 'modification_date':
             case 'due_date':
                 if ( $this->$rname != '' ) {
                     try {

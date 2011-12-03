@@ -175,6 +175,8 @@ ALTER TABLE galette_dynamic_fields ADD FOREIGN KEY (field_id)
 
 ALTER TABLE galette_cotisations ADD type_paiement_cotis TINYINT( 3 ) unsigned NOT NULL DEFAULT '0' AFTER montant_cotis;
 
+ALTER TABLE galette_adherents ADD date_modif_adh date DEFAULT '1901-01-01' NOT NULL AFTER date_crea_adh;
+
 -- Fix round issues
 ALTER TABLE galette_cotisations CHANGE montant_cotis montant_cotis DECIMAL( 15, 2 ) UNSIGNED NULL DEFAULT '0';
 ALTER TABLE galette_transactions CHANGE trans_amount trans_amount DECIMAL( 15, 2 ) NULL DEFAULT '0' ;
