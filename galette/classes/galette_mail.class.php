@@ -147,7 +147,7 @@ class GaletteMail
         $this->_mail->CharSet = 'UTF-8';
         $this->_mail->SetLanguage($i18n->getAbbrev());
 
-        $this->_mail->WordWrap = 50;
+        $this->_mail->WordWrap = 70;
     }
 
     /**
