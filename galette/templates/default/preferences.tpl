@@ -25,6 +25,7 @@
         <div id="prefs_tabs">
             <ul>
                 <li><a href="#general">{_T string="General"}</a></li>
+                <li><a href="#social">{_T string="Social networks"}</a></li>
                 <li><a href="#parameters">{_T string="Parameters"}</a></li>
                 <li><a href="#mail">{_T string="E-Mail"}</a></li>
                 <li><a href="#labels">{_T string="Labels"}</a></li>
@@ -90,6 +91,30 @@
 					<input{if $required.pref_website eq 1} required{/if} type="text" name="pref_website" id="pref_website" value="{$pref.pref_website}" maxlength="100"/>
 				</p>
 			</fieldset>
+
+			<fieldset class="cssform" id="social">
+				<legend>{_T string="Social networks"}</legend>
+                <p>
+                    <label for="pref_googleplus" class="bline">{_T string="Google+"}</label>
+                    <input type="text" name="pref_googleplus" id="pref_googleplus" value="{$pref.pref_googleplus}" class="large"/>
+                </p>
+                <p>
+                    <label for="pref_facebook" class="bline">{_T string="Facebook"}</label>
+                    <input type="text" name="pref_facebook" id="pref_facebook" value="{$pref.pref_facebook}" class="large"/>
+                </p>
+                <p>
+                    <label for="pref_twitter" class="bline">{_T string="Twitter"}</label>
+                    <input type="text" name="pref_twitter" id="pref_twitter" value="{$pref.pref_twitter}" class="large"/>
+                </p>
+                <p>
+                    <label for="pref_linkedin" class="bline">{_T string="LinkedIn"}</label>
+                    <input type="text" name="pref_linkedin" id="pref_linkedin" value="{$pref.pref_linkedin}" class="large"/>
+                </p>
+                <p>
+                    <label for="pref_viadeo" class="bline">{_T string="Viadeo"}</label>
+                    <input type="text" name="pref_viadeo" id="pref_viadeo" value="{$pref.pref_viadeo}" class="large"/>
+                </p>
+            </fieldset>
 
 			<fieldset class="cssform" id="parameters">
 				<legend>{_T string="Galette's parameters"}</legend>
@@ -231,6 +256,11 @@
                         <input type="password" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="{$pref.pref_mail_smtp_password}" autocomplete="off" maxlength="100" size="30"{if $required.pref_mail_smtp_password eq 1} required{/if}/>
 					</p>
 				</div>
+                <p>
+                    <label for="pref_mail_sign" class="bline tooltip" title="{_T string="Enter here the text that will be automatically set as signature for all outgoing emails."}">{_T string="Mail signature"}</label>
+                    <span class="tip">{_T string="The text that will be automatically set as signature for all outgoing emails.<br/>Variables are quoted with braces, are upper case, and will be replaced automatically.<br/>Refer to the doc to know what variables ara available. "}</span>
+                    <textarea name="pref_mail_sign" id="pref_mail_sign">{$pref.pref_mail_sign}</textarea>
+                </p>
 			</fieldset>
 
 			<fieldset class="cssform" id="labels">

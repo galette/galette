@@ -137,7 +137,13 @@ class Preferences
         'pref_theme'        =>    'default',
         'pref_bool_publicpages' => true,
         'pref_publicpages_visibility' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-        'pref_bool_selfsubscribe' => true
+        'pref_bool_selfsubscribe' => true,
+        'pref_googleplus' => '',
+        'pref_facebook' => '',
+        'pref_twitter' => '',
+        'pref_viadeo' => '',
+        'pref_linkedin' => '',
+        'pref_mail_sign' => "{NAME}\r\n\r\n{WEBSITE}\r\n{GOOGLEPLUS}\r\n{FACEBOOK}\r\n{TWITTER}\r\n{LINKEDIN}\r\n{VIADEO}"
     );
 
     /**
