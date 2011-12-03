@@ -101,14 +101,14 @@
 {/foreach}
 					</select>
 				</p>
-				<p>
+				{*<p>
 					<label for="pref_theme" class="bline">{_T string="Default theme:"}</label>
 					<select name="pref_theme" id="pref_theme">
 {foreach item=theme from=$themes}
 						<option value="{$theme}" {if $pref.pref_theme eq $theme}selected="selected"{/if}>{$theme|ucfirst}</option>
 {/foreach}
 					</select>
-				</p>
+				</p>*}
 				<p>
 					<label for="pref_numrows" class="bline">{_T string="Lines / Page:"}</label>
 					<select name="pref_numrows" id="pref_numrows">
@@ -394,6 +394,7 @@
 		</div>
 		<div class="button-container">
 			<input type="hidden" name="valid" value="1"/>
+            <input type="hidden" name="pref_theme" value="default"/>
 			<input type="submit" id="btnsave" value="{_T string="Save"}"/>
 		</div>
         <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
