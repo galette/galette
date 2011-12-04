@@ -118,15 +118,15 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
 
         $trans = array();
         /**
-         * FIXME : it would be fatser to get all translations at once
+         * FIXME : it would be faster to get all translations at once
          * for a specific string
          */
         foreach ( $i18n->getList() as $l ) {
             $text_trans = getDynamicTranslation($text_orig, $l->getLongID());
-            $lang_name = _T($l->getName());
+            $lang_name = $l->getName();
             $trans[] = array(
                 'key'  => $l->getID(),
-                'name' => $lang_name,
+                'name' => ucwords($lang_name),
                 'text' => $text_trans
             );
         }
