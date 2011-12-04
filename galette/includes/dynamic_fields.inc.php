@@ -370,7 +370,6 @@ function prepare_dynamic_fields_for_display(
             ->where('field_form = ?', $form_name)
             ->order('field_index');
 
-        $qry = $select->__toString();
         $result = $select->query(Zend_DB::FETCH_ASSOC)->fetchAll();
 
         $dyn_fields = array();
