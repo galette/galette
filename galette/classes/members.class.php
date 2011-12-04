@@ -630,6 +630,12 @@ class Members
                 case 4:
                     $select->where('date_echeance IS NULL');
                     break;
+                case 5:
+                    $select->where('p.priorite_statut < ' . self::NON_STAFF_MEMBERS);
+                    break;
+                case 6:
+                    $select->where('bool_admin_adh = ?', 1);
+                    break;
                 }
             }
 
