@@ -81,7 +81,7 @@ function addDynamicTranslation($text_orig, $error_detected)
             $select = new Zend_Db_Select($zdb->db);
             $select->from($l10n_table, 'text_nref')
                 ->where('text_orig = ?', $text_orig)
-                ->where('text_locale = ?', $lang->getID());
+                ->where('text_locale = ?', $lang->getLongID());
             $nref = $select->query()->fetch()->text_nref;
 
             if ( is_numeric($nref) && $nref > 0 ) {
@@ -104,7 +104,7 @@ function addDynamicTranslation($text_orig, $error_detected)
                 // User is supposed to use current language as original text.
                 $values = array(
                     'text_orig' => $text_orig,
-                    'text_locale' => $lang->getID(),
+                    'text_locale' => $lang->getLongID(),
                     'text_trans' => ($lang->getLongID() == $i18n->getLongID()) ? $text_orig : ''
                 );
                 $zdb->db->insert($l10n_table, $values);
@@ -140,7 +140,7 @@ function deleteDynamicTranslation($text_orig, $error_detected)
                 $l10n_table,
                 array(
                     $zdb->db->quoteInto('text_orig = ?', $text_orig),
-                    $zdb->db->quoteInto('text_locale = ?', $lang->getID())
+                    $zdb->db->quoteInto('text_locale = ?', $lang->getLongID())
                 )
             );
         }
@@ -149,7 +149,7 @@ function deleteDynamicTranslation($text_orig, $error_detected)
         /** FIXME */
         $log->log(
             'An error occured deleting dynamic translation for `' .
-            $text_orig . '` (lang `' . $lang->getID() . '`) | ' .
+            $text_orig . '` (lang `' . $lang->getLongID() . '`) | ' .
             $e->getMessage(),
             PEAR_LOG_ERR
         );
