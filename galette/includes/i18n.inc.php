@@ -246,7 +246,7 @@ if ( !function_exists('_T') ) {
     *
     * @param string $chaine The string to translate
     *
-    * @return Translated string (if avaialable) ; $chaine otherwise
+    * @return Translated string (if available) ; $chaine otherwise
     */
     function _T($chaine)
     {
