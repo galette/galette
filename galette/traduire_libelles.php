@@ -122,7 +122,7 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
          * for a specific string
          */
         foreach ( $i18n->getList() as $l ) {
-            $text_trans = getDynamicTranslation($text_orig, $l->getLongID());
+            $text_trans = getDynamicTranslation($text_orig, $l->getID());
             $lang_name = $l->getName();
             $trans[] = array(
                 'key'  => $l->getID(),
