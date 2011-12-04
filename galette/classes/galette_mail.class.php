@@ -220,7 +220,6 @@ class GaletteMail
         $this->_mail->Body = $this->_message;
 
         if ( trim($preferences->pref_mail_sign) != '' ) {
-            $sign = "\r\n-- \r\n";
 
             $patterns = array(
                 '/{NAME}/',
@@ -248,7 +247,19 @@ class GaletteMail
                 $preferences->pref_mail_sign
             );
 
-            $this->_mail->Body .= $sign;
+            if ( $this->_html ) {
+                //we are sending html message
+                $tsign = "\r\n-- \r\n" . $sign;
+                //apply mail sign to text version
+                $this->_mail->AltBody .= $tsign;
+                //then apply mail sign to html version
+                $sign_style = 'color:grey;border-top:1px solid #ccc;margin-top:2em';
+                $hsign = '<div style="' . $sign_style. '">' . nl2br($sign) . '</div>';
+                $this->_mail->Body .= $hsign;
+            } else {
+                $sign = "\r\n-- \r\n" . $sign;
+                $this->_mail->Body .= $sign;
+            }
         }
 
         try {
