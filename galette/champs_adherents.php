@@ -42,7 +42,7 @@ $adh_fields = array(
     "prenom_adh"        =>  _T("First name:"),
     "pseudo_adh"        =>  _T("Nickname:"),
     "titre_adh"         =>  _T("Title:"),
-    "ddn_adh"           =>  _T("birth date:"),
+    "ddn_adh"           =>  _T("Birth date:"),
     "adresse_adh"       =>  _T("Address:"),
     "adresse2_adh"      =>  _T("Address (continuation):"),
     "cp_adh"            =>  _T("Zip Code:"),
@@ -67,7 +67,7 @@ $adh_fields = array(
     "bool_display_info" =>  _T("Be visible in the<br /> members list :"),
     "date_echeance"     =>  _T("Due date:"),
     "pref_lang"         =>  _T("Language:"),
-    "lieu_naissance"    =>  _T("Birth place:"),
+    "lieu_naissance"    =>  _T("Birthplace:"),
     "gpgid"             =>  _T("Id GNUpg (GPG):"),
     "fingerprint"       =>  _T("fingerprint:")
 );

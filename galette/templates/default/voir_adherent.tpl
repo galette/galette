@@ -80,7 +80,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 				<td>{$member->birthdate}</td>
 			</tr>
 			<tr>
-				<th>{_T string="Birth place:"}</th>
+				<th>{_T string="Birthplace:"}</th>
 				<td>{$member->birth_place}</td>
 			</tr>
 			<tr>

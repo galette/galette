@@ -218,7 +218,7 @@ class Adherent
                 'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
             ),
             'ddn_adh' => array(
-                'label'    => _T("birth date:"),
+                'label'    => _T("Birth date:"),
                 'propname' => 'birthdate',
                 'required' => false,
                 'visible'  => FieldsConfig::VISIBLE,

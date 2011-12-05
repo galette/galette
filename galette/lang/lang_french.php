@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Mon Dec  5 05:11:09 2011 (GMT)
+// This file was automatically generated on Mon Dec  5 05:33:41 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -1450,7 +1450,7 @@ $lang['Select an existing contribution in the database, and attach it to the cur
 $lang['Write your mailing'] = 'Rédigez votre message';
 
 // ../includes/i18n.inc.php:310 
-$lang['company fee'] = 'cotisation entreprise';
+$lang['company fee'] = 'cotisation personne morale';
 
 // ../install/index.php:577 
 $lang['INSERT operation not allowed'] = 'Opération INSERT non autorisée';
@@ -1504,7 +1504,7 @@ $lang['Authentication failed'] = 'Échec de l\'authentification';
 $lang['This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check \'Be visible in the members list\''] = 'Cette page ne montre que les membres qui ont choisi d\'être visibles sur la liste publique, et sont à jour de leurs cotisations. Si vous souhaitez que votre compte soit affiché ici, modifiez votre profil et cochez « Je souhaite apparaître dans la liste des membres ».';
 
 // ../templates/default/member.tpl:86 
-$lang['Is company?'] = 'Est une entreprise&nbsp;?';
+$lang['Is company?'] = 'Est une personne morale&nbsp;?';
 
 // ../templates/default/preferences.tpl:195 
 $lang['Members administrator\'s Email:'] = 'Courriel de l\'administrateur des membres&nbsp;:';
@@ -2587,7 +2587,7 @@ $lang['- This username is already used by another member !'] = '- Cet identifian
 $lang['Association %s'] = 'Association %s';
 
 // ../includes/i18n.inc.php:301 
-$lang['Company cotisation'] = 'Cotisation entreprise';
+$lang['Company cotisation'] = 'Cotisation personne morale';
 
 // ../templates/default/ajax_groups.tpl:25 
 $lang['%membercount members'] = '%membercount membres';

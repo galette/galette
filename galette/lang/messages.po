@@ -23,8 +23,7 @@ msgid "The following files have been written on disk:"
 msgstr ""
 
 #: ../champs_adherents.php:51 ../classes/adherent.class.php:270
-#: ../templates/default/member.tpl:143 ../templates/default/self_adherent.tpl:80
-#: ../templates/default/voir_adherent.tpl:120
+#: ../templates/default/member.tpl:143 ../templates/default/voir_adherent.tpl:120
 msgid "Phone:"
 msgstr ""
 
@@ -150,7 +149,7 @@ msgid "Transaction updated"
 msgstr ""
 
 #: ../champs_adherents.php:67 ../templates/default/member.tpl:185
-#: ../templates/default/self_adherent.tpl:44 ../templates/default/voir_adherent.tpl:172
+#: ../templates/default/voir_adherent.tpl:172
 msgid "Be visible in the<br /> members list :"
 msgstr ""
 
@@ -270,7 +269,7 @@ msgstr ""
 
 #: ../champs_adherents.php:54 ../classes/adherent.class.php:294
 #: ../templates/default/member.tpl:155 ../templates/default/preferences.tpl:90
-#: ../templates/default/self_adherent.tpl:92 ../templates/default/voir_adherent.tpl:136
+#: ../templates/default/voir_adherent.tpl:136
 msgid "Website:"
 msgstr ""
 
@@ -296,7 +295,7 @@ msgstr ""
 
 #: ../champs_adherents.php:48 ../classes/adherent.class.php:246
 #: ../templates/default/member.tpl:131 ../templates/default/preferences.tpl:63
-#: ../templates/default/self_adherent.tpl:68 ../templates/default/voir_adherent.tpl:108
+#: ../templates/default/voir_adherent.tpl:108
 msgid "Zip Code:"
 msgstr ""
 
@@ -314,12 +313,11 @@ msgstr ""
 #: ../install/index.php:436 ../install/index.php:917
 #: ../templates/default/member.tpl:222 ../templates/default/member.tpl:232
 #: ../templates/default/change_passwd.tpl:8 ../templates/default/preferences.tpl:415
-#: ../templates/default/index.tpl:12 ../templates/default/self_adherent.tpl:126
+#: ../templates/default/index.tpl:12
 msgid "Password:"
 msgstr ""
 
-#: ../templates/default/member.tpl:121 ../templates/default/self_adherent.tpl:59
-#: ../templates/default/voir_adherent.tpl:97
+#: ../templates/default/member.tpl:121 ../templates/default/voir_adherent.tpl:97
 msgid "Contact information:"
 msgstr ""
 
@@ -452,8 +450,7 @@ msgstr ""
 #: ../templates/default/ajouter_transaction.tpl:49 ../templates/default/group.tpl:42
 #: ../templates/default/champ_requis.tpl:28 ../templates/default/config_fields.tpl:60
 #: ../templates/default/preferences.tpl:428 ../templates/default/editer_champ.tpl:74
-#: ../templates/default/ajouter_contribution.tpl:124 ../templates/default/self_adherent.tpl:140
-#: ../templates/default/gestion_textes.tpl:55
+#: ../templates/default/ajouter_contribution.tpl:124 ../templates/default/gestion_textes.tpl:55
 msgid "Save"
 msgstr ""
 
@@ -506,18 +503,16 @@ msgstr ""
 msgid "transactions"
 msgstr ""
 
-#: ../templates/default/member.tpl:236 ../templates/default/self_adherent.tpl:130
+#: ../templates/default/member.tpl:236
 msgid "Please repeat in the field the password shown in the image."
 msgstr ""
 
 #: ../champs_adherents.php:71 ../classes/adherent.class.php:438
-#: ../templates/default/member.tpl:171 ../templates/default/self_adherent.tpl:108
-#: ../templates/default/voir_adherent.tpl:160
+#: ../templates/default/member.tpl:171 ../templates/default/voir_adherent.tpl:160
 msgid "Id GNUpg (GPG):"
 msgstr ""
 
-#: ../templates/default/member.tpl:182 ../templates/default/self_adherent.tpl:118
-#: ../templates/default/voir_adherent.tpl:170
+#: ../templates/default/member.tpl:182 ../templates/default/voir_adherent.tpl:170
 msgid "Galette-related data:"
 msgstr ""
 
@@ -527,10 +522,6 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:289
 msgid "Vice-president"
-msgstr ""
-
-#: ../templates/default/preferences.tpl:333
-msgid "Active Member Color:"
 msgstr ""
 
 #: ../includes/i18n.inc.php:311
@@ -686,8 +677,8 @@ msgid "Membership extension:"
 msgstr ""
 
 #: ../champs_adherents.php:69 ../classes/adherent.class.php:422
-#: ../templates/default/member.tpl:110 ../templates/default/self_adherent.tpl:48
-#: ../templates/default/gestion_textes.tpl:26 ../templates/default/voir_adherent.tpl:91
+#: ../templates/default/member.tpl:110 ../templates/default/gestion_textes.tpl:26
+#: ../templates/default/voir_adherent.tpl:91
 msgid "Language:"
 msgstr ""
 
@@ -787,8 +778,7 @@ msgid "No password"
 msgstr ""
 
 #: ../champs_adherents.php:59 ../classes/adherent.class.php:334
-#: ../templates/default/member.tpl:253 ../templates/default/self_adherent.tpl:133
-#: ../templates/default/voir_adherent.tpl:214
+#: ../templates/default/member.tpl:253 ../templates/default/voir_adherent.tpl:214
 msgid "Other informations:"
 msgstr ""
 
@@ -810,7 +800,6 @@ msgstr ""
 #: ../champs_adherents.php:46 ../classes/adherent.class.php:229
 #: ../templates/default/member.tpl:124 ../templates/default/member.tpl:127
 #: ../templates/default/preferences.tpl:57 ../templates/default/preferences.tpl:59
-#: ../templates/default/self_adherent.tpl:62 ../templates/default/self_adherent.tpl:64
 #: ../templates/default/voir_adherent.tpl:99
 msgid "Address:"
 msgstr ""
@@ -824,7 +813,6 @@ msgid "INSERT operation allowed"
 msgstr ""
 
 #: ../templates/default/member.tpl:127 ../templates/default/preferences.tpl:59
-#: ../templates/default/self_adherent.tpl:64
 msgid " (continuation)"
 msgstr ""
 
@@ -873,8 +861,7 @@ msgid "Member card updated"
 msgstr ""
 
 #: ../champs_adherents.php:55 ../classes/adherent.class.php:302
-#: ../templates/default/member.tpl:159 ../templates/default/self_adherent.tpl:96
-#: ../templates/default/voir_adherent.tpl:144
+#: ../templates/default/member.tpl:159 ../templates/default/voir_adherent.tpl:144
 msgid "ICQ:"
 msgstr ""
 
@@ -1018,7 +1005,7 @@ msgstr ""
 
 #: ../templates/default/member.tpl:99 ../templates/default/member.tpl:244
 #: ../templates/default/ajouter_transaction.tpl:39 ../templates/default/ajouter_contribution.tpl:94
-#: ../templates/default/ajouter_contribution.tpl:105 ../templates/default/self_adherent.tpl:37
+#: ../templates/default/ajouter_contribution.tpl:105
 msgid "(dd/mm/yyyy format)"
 msgstr ""
 
@@ -1042,10 +1029,6 @@ msgstr ""
 msgid "(De)Activate HTML editor"
 msgstr ""
 
-#: ../templates/default/self_adherent.tpl:28
-msgid "your fee."
-msgstr ""
-
 #: ../includes/i18n.inc.php:303
 msgid "Donation in money"
 msgstr ""
@@ -1054,7 +1037,7 @@ msgstr ""
 msgid "User:"
 msgstr ""
 
-#: ../templates/default/member.tpl:234 ../templates/default/self_adherent.tpl:128
+#: ../templates/default/member.tpl:234
 msgid "Passworg image"
 msgstr ""
 
@@ -1099,7 +1082,8 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
-#: ../templates/default/voir_adherent.tpl:79
+#: ../champs_adherents.php:45 ../classes/adherent.class.php:221
+#: ../templates/default/member.tpl:98 ../templates/default/voir_adherent.tpl:79
 msgid "Birth date:"
 msgstr ""
 
@@ -1292,7 +1276,7 @@ msgstr ""
 msgid "Admin and staff only"
 msgstr ""
 
-#: ../install/index.php:1121 ../templates/default/self_adherent.tpl:2
+#: ../install/index.php:1121
 msgid "Homepage"
 msgstr ""
 
@@ -1376,7 +1360,7 @@ msgstr ""
 
 #: ../champs_adherents.php:50 ../classes/adherent.class.php:262
 #: ../templates/default/member.tpl:139 ../templates/default/preferences.tpl:71
-#: ../templates/default/self_adherent.tpl:76 ../templates/default/voir_adherent.tpl:116
+#: ../templates/default/voir_adherent.tpl:116
 msgid "Country:"
 msgstr ""
 
@@ -1490,8 +1474,7 @@ msgid "Cannot activate plugin."
 msgstr ""
 
 #: ../champs_adherents.php:43 ../classes/adherent.class.php:205
-#: ../templates/default/member.tpl:94 ../templates/default/self_adherent.tpl:32
-#: ../templates/default/voir_adherent.tpl:75
+#: ../templates/default/member.tpl:94 ../templates/default/voir_adherent.tpl:75
 msgid "Nickname:"
 msgstr ""
 
@@ -1509,10 +1492,6 @@ msgstr ""
 
 #: ../classes/preferences.class.php:385
 msgid "%name association's %status"
-msgstr ""
-
-#: ../templates/default/self_adherent.tpl:27
-msgid "You can prepare a picture to upload after sending"
 msgstr ""
 
 #: ../gestion_intitules.php:94 ../gestion_intitules.php:109
@@ -1610,8 +1589,7 @@ msgid "DROP operation allowed"
 msgstr ""
 
 #: ../champs_adherents.php:56 ../classes/adherent.class.php:310
-#: ../templates/default/member.tpl:167 ../templates/default/self_adherent.tpl:104
-#: ../templates/default/voir_adherent.tpl:152
+#: ../templates/default/member.tpl:167 ../templates/default/voir_adherent.tpl:152
 msgid "MSN:"
 msgstr ""
 
@@ -1627,8 +1605,8 @@ msgstr ""
 msgid "No sent mailing has been stored in the database yet."
 msgstr ""
 
-#: ../install/index.php:675
-msgid "Creation of the tables"
+#: ../templates/default/preferences.tpl:333
+msgid "Active Member Color:"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:222
@@ -1659,8 +1637,7 @@ msgstr ""
 msgid "Existing mailing"
 msgstr ""
 
-#: ../templates/default/member.tpl:57 ../templates/default/self_adherent.tpl:8
-#: ../templates/default/voir_adherent.tpl:55
+#: ../templates/default/member.tpl:57 ../templates/default/voir_adherent.tpl:55
 msgid "Identity:"
 msgstr ""
 
@@ -2116,7 +2093,8 @@ msgstr ""
 msgid "[del]"
 msgstr ""
 
-#: ../classes/adherent.class.php:430
+#: ../champs_adherents.php:70 ../classes/adherent.class.php:430
+#: ../templates/default/member.tpl:102 ../templates/default/voir_adherent.tpl:83
 msgid "Birthplace:"
 msgstr ""
 
@@ -2239,7 +2217,7 @@ msgstr ""
 #: ../champs_adherents.php:61 ../classes/adherent.class.php:350
 #: ../install/index.php:913 ../templates/default/member.tpl:216
 #: ../templates/default/preferences.tpl:411 ../templates/default/index.tpl:8
-#: ../templates/default/self_adherent.tpl:121 ../templates/default/voir_adherent.tpl:196
+#: ../templates/default/voir_adherent.tpl:196
 msgid "Username:"
 msgstr ""
 
@@ -2315,7 +2293,7 @@ msgid "- Cannot delete this label: it's still used"
 msgstr ""
 
 #: ../champs_adherents.php:44 ../classes/adherent.class.php:213
-#: ../templates/default/member.tpl:70 ../templates/default/self_adherent.tpl:11
+#: ../templates/default/member.tpl:70
 msgid "Title:"
 msgstr ""
 
@@ -2583,8 +2561,7 @@ msgid "Page %i"
 msgstr ""
 
 #: ../champs_adherents.php:52 ../classes/adherent.class.php:278
-#: ../templates/default/member.tpl:147 ../templates/default/self_adherent.tpl:84
-#: ../templates/default/voir_adherent.tpl:124
+#: ../templates/default/member.tpl:147 ../templates/default/voir_adherent.tpl:124
 msgid "Mobile phone:"
 msgstr ""
 
@@ -2669,8 +2646,7 @@ msgid "unreachable members:"
 msgstr ""
 
 #: ../champs_adherents.php:57 ../classes/adherent.class.php:318
-#: ../templates/default/member.tpl:163 ../templates/default/self_adherent.tpl:100
-#: ../templates/default/voir_adherent.tpl:148
+#: ../templates/default/member.tpl:163 ../templates/default/voir_adherent.tpl:148
 msgid "Jabber:"
 msgstr ""
 
@@ -2689,8 +2665,7 @@ msgid "Your subscription has been registered."
 msgstr ""
 
 #: ../champs_adherents.php:53 ../classes/adherent.class.php:286
-#: ../templates/default/member.tpl:151 ../templates/default/self_adherent.tpl:88
-#: ../templates/default/voir_adherent.tpl:128
+#: ../templates/default/member.tpl:151 ../templates/default/voir_adherent.tpl:128
 msgid "E-Mail:"
 msgstr ""
 
@@ -2713,10 +2688,6 @@ msgstr ""
 
 #: ../templates/default/champ_requis.tpl:13
 msgid "Required fields has been saved."
-msgstr ""
-
-#: ../templates/default/self_adherent.tpl:2
-msgid "Your account has been successfully created."
 msgstr ""
 
 #: ../ajouter_adherent.php:236
@@ -2926,7 +2897,7 @@ msgid "Description"
 msgstr ""
 
 #: ../champs_adherents.php:42 ../classes/adherent.class.php:189
-#: ../templates/default/member.tpl:82 ../templates/default/self_adherent.tpl:23
+#: ../templates/default/member.tpl:82
 msgid "First name:"
 msgstr ""
 
@@ -3123,9 +3094,8 @@ msgstr ""
 msgid "Cannot deactivate plugin."
 msgstr ""
 
-#: ../champs_adherents.php:45 ../classes/adherent.class.php:221
-#: ../templates/default/member.tpl:98 ../templates/default/self_adherent.tpl:36
-msgid "birth date:"
+#: ../templates/default/config_fields.tpl:7 ../templates/default/config_fields.tpl:85
+msgid "Collapse all"
 msgstr ""
 
 #: ../templates/default/traduire_libelles.tpl:15
@@ -3133,8 +3103,7 @@ msgid "Choose label to translate"
 msgstr ""
 
 #: ../champs_adherents.php:72 ../classes/adherent.class.php:446
-#: ../templates/default/member.tpl:175 ../templates/default/self_adherent.tpl:112
-#: ../templates/default/voir_adherent.tpl:164
+#: ../templates/default/member.tpl:175 ../templates/default/voir_adherent.tpl:164
 msgid "fingerprint:"
 msgstr ""
 
@@ -3294,7 +3263,7 @@ msgstr ""
 
 #: ../templates/default/member.tpl:295 ../templates/default/ajouter_transaction.tpl:53
 #: ../templates/default/group.tpl:45 ../templates/default/preferences.tpl:430
-#: ../templates/default/ajouter_contribution.tpl:137 ../templates/default/self_adherent.tpl:6
+#: ../templates/default/ajouter_contribution.tpl:137
 msgid "red"
 msgstr ""
 
@@ -3307,7 +3276,7 @@ msgid "Email Body:"
 msgstr ""
 
 #: ../templates/default/member.tpl:218 ../templates/default/member.tpl:224
-#: ../templates/default/change_passwd.tpl:16 ../templates/default/self_adherent.tpl:123
+#: ../templates/default/change_passwd.tpl:16
 msgid "(at least 4 characters)"
 msgstr ""
 
@@ -3325,7 +3294,7 @@ msgstr ""
 
 #: ../champs_adherents.php:49 ../classes/adherent.class.php:254
 #: ../templates/default/member.tpl:135 ../templates/default/preferences.tpl:67
-#: ../templates/default/self_adherent.tpl:72 ../templates/default/voir_adherent.tpl:112
+#: ../templates/default/voir_adherent.tpl:112
 msgid "City:"
 msgstr ""
 
@@ -3389,7 +3358,7 @@ msgstr ""
 #: ../champs_adherents.php:41 ../classes/adherent.class.php:181
 #: ../templates/default/member.tpl:78 ../templates/default/editer_intitule.tpl:17
 #: ../templates/default/group.tpl:28 ../templates/default/editer_champ.tpl:15
-#: ../templates/default/self_adherent.tpl:19 ../templates/default/voir_adherent.tpl:57
+#: ../templates/default/voir_adherent.tpl:57
 msgid "Name:"
 msgstr ""
 
@@ -3446,9 +3415,8 @@ msgstr ""
 msgid "- The username cannot contain the @ character"
 msgstr ""
 
-#: ../champs_adherents.php:70 ../templates/default/member.tpl:102
-#: ../templates/default/voir_adherent.tpl:83
-msgid "Birth place:"
+#: ../install/index.php:675
+msgid "Creation of the tables"
 msgstr ""
 
 #: ../preferences.php:252 ../preferences.php:255
@@ -3482,7 +3450,7 @@ msgstr ""
 
 #: ../templates/default/member.tpl:295 ../templates/default/ajouter_transaction.tpl:53
 #: ../templates/default/group.tpl:45 ../templates/default/preferences.tpl:430
-#: ../templates/default/ajouter_contribution.tpl:137 ../templates/default/self_adherent.tpl:6
+#: ../templates/default/ajouter_contribution.tpl:137
 msgid "NB : The mandatory fields are in"
 msgstr ""
 
@@ -3500,10 +3468,6 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:307
 msgid "spanish"
-msgstr ""
-
-#: ../templates/default/self_adherent.tpl:2
-msgid "Your browser should redirect you to the login page in a few seconds, if not, please go to: "
 msgstr ""
 
 #: ../install/index.php:524
@@ -3537,10 +3501,6 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:49 ../templates/default/preferences.tpl:349
 msgid "Logo:"
-msgstr ""
-
-#: ../templates/default/config_fields.tpl:7 ../templates/default/config_fields.tpl:85
-msgid "Collapse all"
 msgstr ""
 
 #: ../templates/default/ajax_groups.tpl:28
@@ -3689,8 +3649,7 @@ msgid "Not sent"
 msgstr ""
 
 #: ../champs_adherents.php:60 ../classes/adherent.class.php:342
-#: ../templates/default/member.tpl:106 ../templates/default/self_adherent.tpl:40
-#: ../templates/default/voir_adherent.tpl:87
+#: ../templates/default/member.tpl:106 ../templates/default/voir_adherent.tpl:87
 msgid "Profession:"
 msgstr ""
 

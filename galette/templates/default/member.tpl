@@ -95,11 +95,11 @@
 						<input type="text" name="pseudo_adh" id="pseudo_adh" value="{$member->nickname|htmlspecialchars}" maxlength="20" {$disabled.pseudo_adh}{if $required.pseudo_adh eq 1} required{/if}/>
 					</p>
 					<p>
-						<label for="ddn_adh" class="bline">{_T string="birth date:"}</label>
+						<label for="ddn_adh" class="bline">{_T string="Birth date:"}</label>
 						<input type="text" name="ddn_adh" id="ddn_adh" value="{$member->birthdate}" maxlength="10" {$disabled.ddn_adh}{if $required.ddn_adh eq 1} required{/if}/> <span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
 					</p>
                     <p>
-                        <label for="lieu_naissance" class="bline">{_T string="Birth place:"}</label>
+                        <label for="lieu_naissance" class="bline">{_T string="Birthplace:"}</label>
                         <input type="text" name="lieu_naissance" id="lieu_naissance" value="{$member->birth_place}" {$disabled.lieu_naissance}{if $required.lieu_naissance eq 1} required{/if}/>
                     </p>
 					<p>
