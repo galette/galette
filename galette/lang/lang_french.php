@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Mon Dec  5 04:30:20 2011 (GMT)
+// This file was automatically generated on Mon Dec  5 05:11:09 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -1080,7 +1080,7 @@ $lang['Change owner'] = 'Changer le propriétaire';
 // ../templates/default/preferences.tpl:267 
 $lang['Label generation parameters'] = 'Paramètres de génération d\'étiquettes';
 
-// ../templates/default/gestion_adherents.tpl:73 ../templates/default/ajax_members.tpl:9 ../templates/default/liste_membres.tpl:20 
+// ../templates/default/gestion_adherents.tpl:73 ../templates/default/preferences.tpl:375 ../templates/default/ajax_members.tpl:9 ../templates/default/liste_membres.tpl:20 
 $lang['Nickname'] = 'Pseudo';
 
 // ../templates/default/gestion_textes.tpl:35 
@@ -1501,7 +1501,7 @@ $lang['The uploaded file was only partially uploaded'] = 'Le fichier n\'a été 
 $lang['Authentication failed'] = 'Échec de l\'authentification';
 
 // ../templates/default/liste_membres.tpl:2 
-$lang['This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check \'Be visible in the members list\''] = 'Cette page ne montre que les membres qui ont choisi d\'être visibles sur la liste publique, et sont à jour de leurs cotisations. Si vous souhaitez que votre compte soit affiché ici, modifiez votre profil et cochez « Je souhaite apparaître dans la liste des membes ».';
+$lang['This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check \'Be visible in the members list\''] = 'Cette page ne montre que les membres qui ont choisi d\'être visibles sur la liste publique, et sont à jour de leurs cotisations. Si vous souhaitez que votre compte soit affiché ici, modifiez votre profil et cochez « Je souhaite apparaître dans la liste des membres ».';
 
 // ../templates/default/member.tpl:86 
 $lang['Is company?'] = 'Est une entreprise&nbsp;?';
@@ -2110,7 +2110,7 @@ $lang['Show all members contributions'] = 'Voir les contributions de tous les me
 $lang['Using QMAIL server'] = 'Utilisation d\'un serveur QMAIL';
 
 // ../templates/default/member.tpl:51 
-$lang['Member will receive his username and password by email, if he has an address.'] = 'L\'adhérent recevra sesidentifiant et mot de passe par courriel, s\'il a une adresse.';
+$lang['Member will receive his username and password by email, if he has an address.'] = 'L\'adhérent recevra ses identifiant et mot de passe par courriel, s\'il a une adresse.';
 
 // ../templates/default/preferences.tpl:205 ../templates/default/preferences.tpl:206 
 $lang['Should HTML editor be activated on page load ?'] = 'L\'éditeur HTML doit-il être activé au chargement de la page ?';
@@ -2317,7 +2317,7 @@ $lang['Email'] = 'Courriel';
 $lang['[del]'] = '[suppr]';
 
 // ../classes/plugins.class.php:210 ../classes/plugins.class.php:232 
-$lang['No such module.'] = 'Modue inconnu.';
+$lang['No such module.'] = 'Module inconnu.';
 
 // ../templates/default/footer.tpl:8 
 $lang['Project leader'] = 'Leader du projet';
@@ -2401,7 +2401,7 @@ $lang['Transaction updated'] = 'Transaction mise à jour';
 $lang['Logged in as:<br/>%login'] = 'Connecté en tant que&nbsp;:<br/>%login';
 
 // ../templates/default/gestion_adherents.tpl:346 
-$lang['An error occured displaying attendance sheet details interface :('] = 'Une erreur est survenue lors de l\'affichage de l\'interface des étails de la liste d\'émargement :(';
+$lang['An error occured displaying attendance sheet details interface :('] = 'Une erreur est survenue lors de l\'affichage de l\'interface des détails de la liste d\'émargement :(';
 
 // ../champs_adherents.php:70 ../templates/default/member.tpl:102 ../templates/default/voir_adherent.tpl:83 
 $lang['Birth place:'] = 'Lieu de naissance&nbsp;:';
@@ -2482,7 +2482,7 @@ $lang['ICQ'] = 'ICQ';
 $lang['Details of contribution'] = 'Détail des contributions';
 
 // ../templates/default/export.tpl:83 
-$lang['No parameted exports are available.'] = 'Aucun exporr paramétré disponible.';
+$lang['No parameted exports are available.'] = 'Aucun export paramétré disponible.';
 
 // ../templates/default/mailing_adherents.tpl:90 
 $lang['Preview your mailing'] = 'Aperçu de votre E-Mailing';
@@ -2531,9 +2531,6 @@ $lang['None of the selected members has an email address.'] = 'Aucun des destina
 
 // ../templates/default/preferences.tpl:219 
 $lang['Using a SMTP server (slower)'] = 'Utilisation d\'un SMTP (plus lent)';
-
-// ../templates/default/preferences.tpl:375 
-$lang['Pseudo'] = 'Pseudo';
 
 // ../templates/default/gestion_adherents.tpl:26 ../templates/default/gestion_contributions.tpl:27 
 $lang['Filter'] = 'Filtrer';

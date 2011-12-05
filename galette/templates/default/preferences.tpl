@@ -372,7 +372,7 @@
 						<option value="3" {if $pref.pref_card_address eq 3}selected="selected"{/if}>{_T string="Web Site"}</option>
 						<option value="4" {if $pref.pref_card_address eq 4}selected="selected"{/if}>{_T string="ICQ"}</option>
 						<option value="5" {if $pref.pref_card_address eq 5}selected="selected"{/if}>{_T string="Zip - Town"}</option>
-						<option value="6" {if $pref.pref_card_address eq 6}selected="selected"{/if}>{_T string="Pseudo"}</option>
+						<option value="6" {if $pref.pref_card_address eq 6}selected="selected"{/if}>{_T string="Nickname"}</option>
 						<option value="7" {if $pref.pref_card_address eq 7}selected="selected"{/if}>{_T string="Profession"}</option>
 					</select>
 					<span class="exemple">{_T string="(Choose address printed below name)"}</span>

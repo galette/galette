@@ -2144,10 +2144,6 @@ msgstr ""
 msgid "An SQL error has occured while storing preferences. Please try again, and contact the administrator if the problem persists."
 msgstr ""
 
-#: ../templates/default/preferences.tpl:375
-msgid "Pseudo"
-msgstr ""
-
 #: ../classes/preferences.class.php:405
 msgid "%name\n%complement\n%adress\n%zip %town - %country"
 msgstr ""
@@ -2448,8 +2444,8 @@ msgstr ""
 msgid "from a staff user"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:73 ../templates/default/ajax_members.tpl:9
-#: ../templates/default/liste_membres.tpl:20
+#: ../templates/default/gestion_adherents.tpl:73 ../templates/default/preferences.tpl:375
+#: ../templates/default/ajax_members.tpl:9 ../templates/default/liste_membres.tpl:20
 msgid "Nickname"
 msgstr ""
 

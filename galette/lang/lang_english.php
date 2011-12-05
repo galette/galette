@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Mon Dec  5 04:30:20 2011 (GMT)
+// This file was automatically generated on Mon Dec  5 05:11:09 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -1080,7 +1080,7 @@ $lang['Change owner'] = 'Change owner';
 // ../templates/default/preferences.tpl:267 
 $lang['Label generation parameters'] = 'Label generation parameters';
 
-// ../templates/default/gestion_adherents.tpl:73 ../templates/default/ajax_members.tpl:9 ../templates/default/liste_membres.tpl:20 
+// ../templates/default/gestion_adherents.tpl:73 ../templates/default/preferences.tpl:375 ../templates/default/ajax_members.tpl:9 ../templates/default/liste_membres.tpl:20 
 $lang['Nickname'] = 'Nickname';
 
 // ../templates/default/gestion_textes.tpl:35 
@@ -2531,9 +2531,6 @@ $lang['None of the selected members has an email address.'] = 'None of the selec
 
 // ../templates/default/preferences.tpl:219 
 $lang['Using a SMTP server (slower)'] = 'Using a SMTP server (slower)';
-
-// ../templates/default/preferences.tpl:375 
-$lang['Pseudo'] = 'Pseudo';
 
 // ../templates/default/gestion_adherents.tpl:26 ../templates/default/gestion_contributions.tpl:27 
 $lang['Filter'] = 'Filter';

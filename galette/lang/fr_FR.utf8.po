@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2011-12-05 05:30+0100\n"
+"PO-Revision-Date: 2011-12-05 06:11+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -1070,7 +1070,7 @@ msgstr "- Vous devez fournir un identifiant pour l'authentification SMTP."
 
 #: ../classes/plugins.class.php:210 ../classes/plugins.class.php:232
 msgid "No such module."
-msgstr "Modue inconnu."
+msgstr "Module inconnu."
 
 #: ../install/index.php:178 ../install/index.php:1132
 msgid "Language"
@@ -2040,7 +2040,7 @@ msgstr "Déconnexion"
 
 #: ../templates/default/export.tpl:83
 msgid "No parameted exports are available."
-msgstr "Aucun exporr paramétré disponible."
+msgstr "Aucun export paramétré disponible."
 
 #: ../templates/default/preferences.tpl:44
 #: ../templates/default/preferences.tpl:45
@@ -2384,10 +2384,6 @@ msgstr ""
 "Une erreur SQL est survenue lors de l'enregistrement des préférences. "
 "Veuillez essayer à nouveau, et contacter l'administrateur si le problème "
 "persiste."
-
-#: ../templates/default/preferences.tpl:375
-msgid "Pseudo"
-msgstr "Pseudo"
 
 #: ../classes/preferences.class.php:405
 msgid ""
@@ -2738,6 +2734,7 @@ msgid "from a staff user"
 msgstr "depuis un membre du bureau"
 
 #: ../templates/default/gestion_adherents.tpl:73
+#: ../templates/default/preferences.tpl:375
 #: ../templates/default/ajax_members.tpl:9
 #: ../templates/default/liste_membres.tpl:20
 msgid "Nickname"
@@ -2990,7 +2987,7 @@ msgstr "Contribution ajoutée"
 #: ../templates/default/gestion_adherents.tpl:346
 msgid "An error occured displaying attendance sheet details interface :("
 msgstr ""
-"Une erreur est survenue lors de l'affichage de l'interface des étails de la "
+"Une erreur est survenue lors de l'affichage de l'interface des détails de la "
 "liste d'émargement :("
 
 #: ../install/index.php:678
@@ -3498,7 +3495,7 @@ msgstr ""
 "Cette page ne montre que les membres qui ont choisi d'être visibles sur la "
 "liste publique, et sont à jour de leurs cotisations. Si vous souhaitez que "
 "votre compte soit affiché ici, modifiez votre profil et cochez « Je souhaite "
-"apparaître dans la liste des membes »."
+"apparaître dans la liste des membres »."
 
 #: ../self_adherent.php:220 ../ajouter_adherent.php:281
 msgid "An error occured while storing the member."
@@ -3608,8 +3605,8 @@ msgstr "cotisation entreprise"
 msgid ""
 "Member will receive his username and password by email, if he has an address."
 msgstr ""
-"L'adhérent recevra sesidentifiant et mot de passe par courriel, s'il a "
-"une adresse."
+"L'adhérent recevra ses identifiant et mot de passe par courriel, s'il a une "
+"adresse."
 
 #: ../templates/default/ajouter_transaction.tpl:32
 #: ../templates/default/ajouter_contribution.tpl:50
@@ -4304,6 +4301,9 @@ msgstr "Les types de contribution par défaut ont été sauvegardés avec succè
 #: ../lostpasswd.php:149
 msgid "Login %s does not exist"
 msgstr "L'identifiant %s n'existe pas"
+
+#~ msgid "Pseudo"
+#~ msgstr "Pseudo"
 
 #~ msgid ""
 #~ "Mail has been disabled in the preferences. This functionnality is "

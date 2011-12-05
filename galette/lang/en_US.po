@@ -2346,10 +2346,6 @@ msgstr ""
 "An SQL error has occured while storing preferences. Please try again, and "
 "contact the administrator if the problem persists."
 
-#: ../templates/default/preferences.tpl:375
-msgid "Pseudo"
-msgstr "Pseudo"
-
 #: ../classes/preferences.class.php:405
 msgid ""
 "%name\n"
@@ -2699,6 +2695,7 @@ msgid "from a staff user"
 msgstr "from a staff user"
 
 #: ../templates/default/gestion_adherents.tpl:73
+#: ../templates/default/preferences.tpl:375
 #: ../templates/default/ajax_members.tpl:9
 #: ../templates/default/liste_membres.tpl:20
 msgid "Nickname"
@@ -4243,6 +4240,9 @@ msgstr "Default contributions types were successfully stored."
 #: ../lostpasswd.php:149
 msgid "Login %s does not exist"
 msgstr "Login %s does not exist"
+
+#~ msgid "Pseudo"
+#~ msgstr "Pseudo"
 
 #~ msgid ""
 #~ "Mail has been disabled in the preferences. This functionnality is "
