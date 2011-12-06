@@ -199,7 +199,7 @@ $tpl->assign(
         1 => _T("Close expiries"),
         2 => _T("Latecomers"),
         4 => _T("Never contributed"),
-        5 => _T ("Staff members"),
+        5 => _T("Staff members"),
         6 => _T("Administrators")
     )
 );

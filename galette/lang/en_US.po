@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2011-12-05 05:15+0100\n"
+"PO-Revision-Date: 2011-12-06 23:09+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -406,10 +406,13 @@ msgstr "Strip Background colors:"
 msgid "middle"
 msgstr "middle"
 
-#: ../templates/default/gestion_adherents.tpl:26
-#: ../templates/default/gestion_contributions.tpl:27
-msgid "Filter"
-msgstr "Filter"
+#: ../install/index.php:280
+msgid ""
+"You're installing Galette for the first time, or you wish to erase an older "
+"version of Galette without keeping your data"
+msgstr ""
+"You're installing Galette for the first time, or you wish to erase an older "
+"version of Galette without keeping your data"
 
 #: ../templates/default/index.tpl:2
 msgid "Login failed."
@@ -484,6 +487,10 @@ msgstr "Mails adress %s does not exist"
 msgid "Email,URL,IM"
 msgstr "Email,URL,IM"
 
+#: ../classes/transaction.class.php:359
+msgid "Fail to add new transaction."
+msgstr "Fail to add new transaction."
+
 #: ../templates/default/preferences.tpl:157
 msgid "Beginning of membership:"
 msgstr "Beginning of membership:"
@@ -539,7 +546,7 @@ msgstr "Do not wait timeout and go to the next page now :)"
 msgid "You are about to send an e-mail to <strong>%s members</strong>"
 msgstr "You are about to send an e-mail to <strong>%s members</strong>"
 
-#: ../change_passwd.php:98 ../lostpasswd.php:157
+#: ../change_passwd.php:102 ../lostpasswd.php:157
 msgid "Password recovery"
 msgstr "Password recovery"
 
@@ -594,7 +601,7 @@ msgstr ""
 "Database can't be reached. Please go back to enter the connection parameters "
 "again."
 
-#: ../classes/adherent.class.php:1307 ../templates/default/member.tpl:193
+#: ../classes/adherent.class.php:1311 ../templates/default/member.tpl:193
 msgid "Active"
 msgstr "Active"
 
@@ -678,10 +685,6 @@ msgstr "Manage user's groups"
 #: ../templates/default/editer_champ.tpl:70
 msgid "Choice list (one entry per line)."
 msgstr "Choice list (one entry per line)."
-
-#: ../templates/default/mailing_adherents.tpl:68
-msgid "Write your mailing"
-msgstr "Write your mailing"
 
 #: ../templates/default/preferences.tpl:186
 msgid "Sender Email:"
@@ -773,6 +776,10 @@ msgstr "An error occured displaying groups interface :("
 #: ../gestion_intitules.php:141
 msgid "- Priority must be an integer!"
 msgstr "- Priority must be an integer!"
+
+#: ../templates/default/ajouter_contribution.tpl:69
+msgid "Details of contribution"
+msgstr "Details of contribution"
 
 #: ../templates/default/preferences.tpl:239
 #: ../templates/default/preferences.tpl:244
@@ -952,7 +959,7 @@ msgstr "Installation Report"
 msgid "Manage emails texts and subjects"
 msgstr "Manage emails texts and subjects"
 
-#: ../classes/adherent.class.php:1215
+#: ../classes/adherent.class.php:1218
 msgid "Member card updated"
 msgstr "Member card updated"
 
@@ -985,11 +992,11 @@ msgid ""
 msgstr ""
 "Note: members with a status priority lower than %priority are staff members."
 
-#: ../classes/adherent.class.php:1307 ../templates/default/member.tpl:194
+#: ../classes/adherent.class.php:1311 ../templates/default/member.tpl:194
 msgid "Inactive"
 msgstr "Inactive"
 
-#: ../gestion_intitules.php:334 ../classes/adherent.class.php:1304
+#: ../gestion_intitules.php:334 ../classes/adherent.class.php:1308
 #: ../templates/default/gestion_intitule_content.tpl:29
 #: ../templates/default/champ_requis.tpl:20
 #: ../templates/default/config_fields.tpl:40
@@ -1095,6 +1102,10 @@ msgstr ""
 #: ../classes/transaction.class.php:355
 msgid "Transaction added"
 msgstr "Transaction added"
+
+#: ../templates/default/preferences.tpl:146
+msgid "Disabled"
+msgstr "Disabled"
 
 #: ../install/index.php:181 ../install/index.php:275 ../install/index.php:1133
 msgid "Installation mode"
@@ -1730,7 +1741,7 @@ msgstr "- The passwords don't match!"
 msgid "Member Profile"
 msgstr "Member Profile"
 
-#: ../classes/adherent.class.php:1181
+#: ../classes/adherent.class.php:1184
 msgid "Member card added"
 msgstr "Member card added"
 
@@ -1751,6 +1762,15 @@ msgstr "MSN:"
 #: ../templates/default/preferences.tpl:371
 msgid "Jabber"
 msgstr "Jabber"
+
+#: ../templates/default/gestion_adherents.tpl:172
+#: ../templates/default/gestion_mailings.tpl:100
+#: ../templates/default/gestion_groupes.tpl:40
+#: ../templates/default/gestion_contributions.tpl:223
+#: ../templates/default/gestion_contributions.tpl:243
+#: ../templates/default/gestion_transactions.tpl:106
+msgid "[del]"
+msgstr "[del]"
 
 #: ../gestion_adherents.php:203
 msgid "Administrators"
@@ -1883,6 +1903,10 @@ msgstr "Extends membership?"
 msgid "Staff member"
 msgstr "Staff member"
 
+#: ../templates/default/preferences.tpl:409
+msgid "Admin account (independant of members)"
+msgstr "Admin account (independant of members)"
+
 #: ../classes/transaction.class.php:278 ../classes/contribution.class.php:368
 msgid "- The amount must be an integer!"
 msgstr "- The amount must be an integer!"
@@ -1949,7 +1973,7 @@ msgstr "Reduced annual contribution"
 msgid "Delete"
 msgstr "Delete"
 
-#: ../gestion_intitules.php:334 ../classes/adherent.class.php:1304
+#: ../gestion_intitules.php:334 ../classes/adherent.class.php:1308
 #: ../templates/default/gestion_intitule_content.tpl:28
 #: ../templates/default/champ_requis.tpl:22
 #: ../templates/default/config_fields.tpl:42
@@ -2100,13 +2124,13 @@ msgstr "Settings"
 msgid "Groups selection"
 msgstr "Groups selection"
 
-#: ../install/index.php:280
+#: ../classes/picture.class.php:740
 msgid ""
-"You're installing Galette for the first time, or you wish to erase an older "
-"version of Galette without keeping your data"
+"- Filename or extension is incorrect. Only %s files are allowed. File name "
+"should not contains any of: %t"
 msgstr ""
-"You're installing Galette for the first time, or you wish to erase an older "
-"version of Galette without keeping your data"
+"- Filename or extension is incorrect. Only %s files are allowed. File name "
+"should not contains any of: %t"
 
 #: ../templates/default/gestion_contributions.tpl:49
 msgid "contributions"
@@ -2256,9 +2280,10 @@ msgstr "- The duration must be a positive integer!"
 msgid "Type"
 msgstr "Type"
 
-#: ../templates/default/preferences.tpl:409
-msgid "Admin account (independant of members)"
-msgstr "Admin account (independant of members)"
+#: ../install/index.php:189 ../install/index.php:385 ../install/index.php:415
+#: ../install/index.php:1135
+msgid "Database"
+msgstr "Database"
 
 #: ../gestion_contributions.php:113 ../gestion_contributions.php:135
 #: ../classes/transaction.class.php:261 ../classes/contribution.class.php:348
@@ -2274,14 +2299,10 @@ msgstr "Generate Member Card"
 msgid "View my member card"
 msgstr "View my member card"
 
-#: ../templates/default/gestion_adherents.tpl:172
-#: ../templates/default/gestion_mailings.tpl:100
-#: ../templates/default/gestion_groupes.tpl:40
-#: ../templates/default/gestion_contributions.tpl:223
-#: ../templates/default/gestion_contributions.tpl:243
-#: ../templates/default/gestion_transactions.tpl:106
-msgid "[del]"
-msgstr "[del]"
+#: ../templates/default/gestion_adherents.tpl:26
+#: ../templates/default/gestion_contributions.tpl:27
+msgid "Filter"
+msgstr "Filter"
 
 #: ../champs_adherents.php:70 ../classes/adherent.class.php:430
 #: ../templates/default/member.tpl:102
@@ -2585,9 +2606,9 @@ msgstr ""
 msgid "Records per page:"
 msgstr "Records per page:"
 
-#: ../templates/default/preferences.tpl:146
-msgid "Disabled"
-msgstr "Disabled"
+#: ../classes/mailing_history.class.php:296
+msgid "Delete mailing entries"
+msgstr "Delete mailing entries"
 
 #: ../ajouter_contribution.php:382 ../ajouter_transaction.php:178
 msgid "You must first register a member"
@@ -2746,6 +2767,10 @@ msgstr "(Integer)"
 #: ../templates/default/ajax_attendance_sheet_details.tpl:3
 msgid "Some details about your attendance sheet..."
 msgstr "Some details about your attendance sheet..."
+
+#: ../classes/members.class.php:261
+msgid "Delete members cards, transactions and dues"
+msgstr "Delete members cards, transactions and dues"
 
 #: ../templates/default/preferences.tpl:120
 msgid "Galette's parameters"
@@ -2938,6 +2963,10 @@ msgstr "Jabber:"
 msgid "no member"
 msgstr "no member"
 
+#: ../classes/adherent.class.php:1189
+msgid "Fail to add new member."
+msgstr "Fail to add new member."
+
 #: ../templates/default/gestion_adherents.tpl:189
 #: ../templates/default/gestion_adherents.tpl:190
 #: ../templates/default/gestion_contributions.tpl:234
@@ -2966,13 +2995,9 @@ msgstr "Missing or incorrect image file "
 msgid "Delete image"
 msgstr "Delete image"
 
-#: ../classes/picture.class.php:740
-msgid ""
-"- Filename or extension is incorrect. Only %s files are allowed. File name "
-"should not contains any of: %t"
-msgstr ""
-"- Filename or extension is incorrect. Only %s files are allowed. File name "
-"should not contains any of: %t"
+#: ../templates/default/mailing_adherents.tpl:68
+msgid "Write your mailing"
+msgstr "Write your mailing"
 
 #: ../templates/default/page.tpl:125
 msgid "Emails content"
@@ -3114,6 +3139,10 @@ msgstr "MSN"
 msgid "Company:"
 msgstr "Company:"
 
+#: ../change_passwd.php:82
+msgid "Password changed for member '%s'."
+msgstr "Password changed for member '%s'."
+
 #: ../templates/default/preferences.tpl:102
 msgid "Facebook"
 msgstr "Facebook"
@@ -3157,7 +3186,7 @@ msgstr "donation in money"
 
 #: ../attendance_sheet.php:102 ../attendance_sheet.php:122
 #: ../attendance_sheet.php:166 ../classes/contribution.class.php:481
-#: ../classes/contribution.class.php:797 ../classes/adherent.class.php:1281
+#: ../classes/contribution.class.php:797 ../classes/adherent.class.php:1285
 msgid "Y-m-d"
 msgstr "Y-m-d"
 
@@ -3255,9 +3284,9 @@ msgstr "Close expiries"
 msgid "Port:"
 msgstr "Port:"
 
-#: ../templates/default/ajouter_contribution.tpl:69
-msgid "Details of contribution"
-msgstr "Details of contribution"
+#: ../classes/members.class.php:230
+msgid "Member Picture deleted"
+msgstr "Member Picture deleted"
 
 #: ../templates/default/preferences.tpl:28
 #: ../templates/default/preferences.tpl:96
@@ -3423,6 +3452,10 @@ msgstr "Collapse all"
 msgid "Choose label to translate"
 msgstr "Choose label to translate"
 
+#: ../classes/groups.class.php:340
+msgid "Fail to add new group."
+msgstr "Fail to add new group."
+
 #: ../champs_adherents.php:72 ../classes/adherent.class.php:446
 #: ../templates/default/member.tpl:175
 #: ../templates/default/voir_adherent.tpl:164
@@ -3444,6 +3477,10 @@ msgstr "Dashboard"
 #: ../config_fields.php:100
 msgid "Fields configuration"
 msgstr "Fields configuration"
+
+#: ../gestion_adherents.php:202
+msgid "Staff members"
+msgstr "Staff members"
 
 #: ../lostpasswd.php:72 ../lostpasswd.php:78 ../classes/csv.class.php:243
 #: ../classes/history.class.php:268
@@ -3849,10 +3886,9 @@ msgstr "Do you really want to delete this group from the base?"
 msgid "No members has been selected yet."
 msgstr "No members has been selected yet."
 
-#: ../install/index.php:189 ../install/index.php:385 ../install/index.php:415
-#: ../install/index.php:1135
-msgid "Database"
-msgstr "Database"
+#: ../classes/contribution.class.php:539
+msgid "Fail to add new contribution."
+msgstr "Fail to add new contribution."
 
 #: ../templates/default/footer.tpl:8
 msgid "Project leader"
@@ -4120,7 +4156,7 @@ msgstr "Active account"
 msgid "Export some datas in various formats"
 msgstr "Export some datas in various formats"
 
-#: ../change_passwd.php:91
+#: ../change_passwd.php:95
 msgid ""
 "This link is no longer valid. You should <a href='lostpasswd.php'>ask to "
 "retrieve your password</a> again."
@@ -4333,9 +4369,6 @@ msgstr "Login %s does not exist"
 #~ "**IMPORTANT** There was a probably breaking attempt when sending mail to :"
 #~ msgstr ""
 #~ "**IMPORTANT** There was a probably breaking attempt when sending mail to :"
-
-#~ msgid "Delete the member card (and dues)"
-#~ msgstr "Delete the member card (and dues)"
 
 #~ msgid "Send me my password"
 #~ msgstr "Send me my password"
