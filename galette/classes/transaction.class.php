@@ -356,7 +356,7 @@ class Transaction
                         Adherent::getSName($this->_member)
                     );
                 } else {
-                    $hist->add('Fail to add new transaction.');
+                    $hist->add(_T("Fail to add new transaction."));
                     throw new Exception(
                         'An error occured inserting new transaction!'
                     );

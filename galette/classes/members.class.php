@@ -227,7 +227,7 @@ class Members
                             throw new Exception('Unable to delete picture for member ' . $str_adh);
                         } else {
                             $hist->add(
-                                "Member Picture deleted",
+                                _T("Member Picture deleted"),
                                 $str_adh
                             );
                         }
@@ -258,7 +258,7 @@ class Members
 
                 //add an history entry
                 $hist->add(
-                    "Delete members cards, transactions and dues",
+                    _T("Delete members cards, transactions and dues"),
                     $infos
                 );
 

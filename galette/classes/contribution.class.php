@@ -536,7 +536,7 @@ class Contribution
                         Adherent::getSName($this->_member)
                     );
                 } else {
-                    $hist->add('Fail to add new contribution.');
+                    $hist->add(_T("Fail to add new contribution."));
                     throw new Exception(
                         'An error occured inserting new contribution!'
                     );

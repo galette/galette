@@ -293,7 +293,7 @@ class MailingHistory extends History
 
                 //add an history entry
                 $hist->add(
-                    "Delete mailing entries",
+                    _T("Delete mailing entries"),
                     print_r($infos, true)
                 );
 

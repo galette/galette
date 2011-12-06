@@ -1183,7 +1183,7 @@ class Adherent
                     );
                     return true;
                 } else {
-                    $hist->add('Fail to add new member.');
+                    $hist->add(_T("Fail to add new member."));
                     throw new Exception(
                         'An error occured inserting new member!'
                     );

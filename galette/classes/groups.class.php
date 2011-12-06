@@ -337,7 +337,7 @@ class Groups
                     );
                     return true;
                 } else {
-                    $hist->add('Fail to add new group.');
+                    $hist->add(_T("Fail to add new group."));
                     throw new Exception(
                         'An error occured inserting new group!'
                     );

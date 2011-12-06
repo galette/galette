@@ -76,7 +76,11 @@ if ( isset($hash) && !empty($hash) ) {
                             $error_detected[] = _T("An error occured while updating your password.");
                         } else {
                             $hist->add(
-                                '**Password changed**. id: "' . $id_adh . '"'
+                                str_replace(
+                                    '%s',
+                                    $id_adh,
+                                    _T("Password changed for member '%s'.")
+                                )
                             );
                             //once password has been changed, we can remove the
                             //temporary password entry

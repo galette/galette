@@ -95,7 +95,7 @@
 					<td class="nowrap">{$log.date_log|date_format:"%a %d/%m/%Y - %R"}</td>
 					<td class="nowrap">{$log.ip_log}</td>
 					<td>{$log.adh_log}</td>
-					<td>{_T string=$log.action_log}</td>
+					<td>{$log.action_log}</td>
 					<td>
                         {$log.text_log}
     {if $log.sql_log}
