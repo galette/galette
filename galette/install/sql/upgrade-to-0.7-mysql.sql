@@ -19,10 +19,12 @@ ALTER TABLE galette_preferences ADD UNIQUE (nom_pref);
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_slogan', '');
 UPDATE galette_preferences SET val_pref='fr_FR' WHERE nom_pref='french';
 UPDATE galette_preferences SET val_pref='en_EN' WHERE nom_pref='english';
-UPDATE galette_preferences SET val_pref='es_ES' WHERE nom_pref='spanish';
+-- spanish no longer exists, fallback to english
+UPDATE galette_preferences SET val_pref='en_EN' WHERE nom_pref='spanish';
 UPDATE galette_adherents SET pref_lang='fr_FR' WHERE pref_lang='french';
 UPDATE galette_adherents SET pref_lang='en_EN' WHERE pref_lang='english';
-UPDATE galette_adherents SET pref_lang='es_ES' WHERE pref_lang='spanish';
+-- spanish no longer exists, fallback to english
+UPDATE galette_adherents SET pref_lang='es_EN' WHERE pref_lang='spanish';
 ALTER TABLE `galette_adherents` CHANGE `pref_lang` `pref_lang` VARCHAR( 20 ) NULL DEFAULT 'fr_FR';
 UPDATE galette_preferences SET nom_pref='pref_mail_smtp_host' WHERE nom_pref='pref_mail_smtp';
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_abrev', 'Galette');
