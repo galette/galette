@@ -779,6 +779,8 @@ class Contribution
     */
     public function __get($name)
     {
+        global $log;
+
         $forbidden = array('is_cotis');
         $virtuals = array('duration', 'spayment_type');
 
