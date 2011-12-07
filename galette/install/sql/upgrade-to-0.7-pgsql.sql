@@ -56,9 +56,6 @@ CREATE TABLE galette_texts (
   PRIMARY KEY (tid)
 );
 
--- Add missing primary keys
-CREATE UNIQUE INDEX galette_dynamic_fields_unique_idx ON galette_dynamic_fields (item_id, field_id, field_form, val_index);
-
 -- New table for fields categories
 DROP TABLE IF EXISTS galette_fields_categories CASCADE;
 CREATE TABLE galette_fields_categories (
@@ -124,3 +121,13 @@ ALTER TABLE galette_adherents ADD date_modif_adh date DEFAULT '1901-01-01' NOT N
 -- Missing primary keys
 ALTER TABLE galette_types_cotisation ADD CONSTRAINT galette_types_cotisation_pkey PRIMARY KEY (id_type_cotis);
 ALTER TABLE galette_adherents ADD CONSTRAINT galette_adherents_pkey PRIMARY KEY (id_adh);
+ALTER TABLE galette_dynamic_fields ADD CONSTRAINT galette_dynamic_fields_pkey PRIMARY KEY (item_id, field_id, field_form, val_index);
+ALTER TABLE galette_cotisations ADD CONSTRAINT galette_cotisation_pkey PRIMARY KEY (id_cotis);
+ALTER TABLE galette_transactions ADD CONSTRAINT galette_transactions_pkey PRIMARY KEY (trans_id);
+ALTER TABLE galette_statuts ADD CONSTRAINT galette_statuts_pkey PRIMARY KEY (id_statut);
+ALTER TABLE galette_preferences ADD CONSTRAINT galette_preferences_pkey PRIMARY KEY (id_pref);
+ALTER TABLE galette_logs ADD CONSTRAINT galette_logs_pkey PRIMARY KEY (id_log);
+ALTER TABLE galette_field_types ADD CONSTRAINT galette_field_types_pkey PRIMARY KEY (field_id);
+ALTER TABLE galette_pictures ADD CONSTRAINT galette_pictures_pkey PRIMARY KEY (id_adh);
+ALTER TABLE galette_l10n ADD CONSTRAINT galette_l10n_pkey PRIMARY KEY (text_orig, text_locale);
+ALTER TABLE galette_tmppasswds ADD CONSTRAINT galette_tmppasswds_pkey PRIMARY KEY (id_adh);
