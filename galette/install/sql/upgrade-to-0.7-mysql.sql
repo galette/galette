@@ -17,10 +17,10 @@ ALTER TABLE galette_preferences ADD UNIQUE (nom_pref);
 
 -- Add new or missing preferences;
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_slogan', '');
-UPDATE galette_preferences SET val_pref='fr_FR' WHERE nom_pref='french';
-UPDATE galette_preferences SET val_pref='en_EN' WHERE nom_pref='english';
+UPDATE galette_preferences SET val_pref='fr_FR' WHERE nom_pref='pref_lang' AND val_pref='french';
+UPDATE galette_preferences SET val_pref='en_EN' WHERE nom_pref='pref_lang' AND val_pref='english';
 -- spanish no longer exists, fallback to english
-UPDATE galette_preferences SET val_pref='en_EN' WHERE nom_pref='spanish';
+UPDATE galette_preferences SET val_pref='en_EN' WHERE nom_pref='pref_lang' AND val_pref='spanish';
 UPDATE galette_adherents SET pref_lang='fr_FR' WHERE pref_lang='french';
 UPDATE galette_adherents SET pref_lang='en_EN' WHERE pref_lang='english';
 -- spanish no longer exists, fallback to english
