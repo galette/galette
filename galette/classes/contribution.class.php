@@ -280,8 +280,13 @@ class Contribution
         $this->_info = $r->info_cotis;
         $this->_begin_date = $r->date_debut_cotis;
         $enddate = $r->date_fin_cotis;
-        if ( $enddate == '0000-00-00' ) {
-        } else {
+        //do not work with knows bad dates...
+        //the one with BC comes from 0.63/pgsl demo... Why the hell a so
+        //strange date? dont know :(
+        if ( $enddate !== '0000-00-00'
+            && $enddate !== '1901-01-01'
+            && $enddate !== '0001-01-01 BC'
+        ) {
             $this->_end_date = $r->date_fin_cotis;
         }
         $adhpk = Adherent::PK;
