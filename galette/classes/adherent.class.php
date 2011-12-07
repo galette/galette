@@ -597,12 +597,12 @@ class Adherent
         /** TODO: remove */
         $this->_fingerprint = $r->fingerprint;
         //Galette relative informations
-        $this->_appears_in_list = $r->bool_display_info;
-        $this->_admin = $r->bool_admin_adh;
+        $this->_appears_in_list = ($r->bool_display_info === 1) ? true : false;
+        $this->_admin = ($r->bool_admin_adh === 1) ? true : false;
         if ( $r->priorite_statut < Members::NON_STAFF_MEMBERS ) {
             $this->_staff = true;
         }
-        $this->_due_free = $r->bool_exempt_adh;
+        $this->_due_free = ($r->bool_exempt_adh === 1) ? true : false;
         $this->_login = $r->login_adh;
         $this->_password = $r->mdp_adh;
         $this->_creation_date = $r->date_crea_adh;
