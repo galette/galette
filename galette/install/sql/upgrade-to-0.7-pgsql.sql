@@ -118,6 +118,7 @@ CREATE TABLE galette_groups_users (
 
 ALTER TABLE galette_cotisations ADD type_paiement_cotis smallint DEFAULT '0' NOT NULL;
 
+ALTER TABLE galette_adherents ADD societe_adh character varying(20) DEFAULT NULL;
 ALTER TABLE galette_adherents ADD date_modif_adh date DEFAULT '1901-01-01' NOT NULL;
 
 -- Missing primary keys
