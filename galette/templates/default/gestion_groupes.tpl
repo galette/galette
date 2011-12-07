@@ -42,7 +42,7 @@
 					</td>
 				</tr>
 {foreachelse}
-				<tr><td colspan="5" class="emptylist">{_T string="No groups has been stored in the database yet."}</td></tr>
+				<tr><td colspan="6" class="emptylist">{_T string="No groups has been stored in the database yet."}</td></tr>
 {/foreach}
 			</tbody>
 		</table>
