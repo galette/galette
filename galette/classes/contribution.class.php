@@ -465,19 +465,18 @@ class Contribution
                 'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
                 array()
             )->where(Adherent::PK . ' = ?', $this->_member)
-                ->where('cotis_extension = ?', 1)
+                ->where('cotis_extension = ?', (string)1)
                 ->where(
-                    '((date_debut_cotis >= ' . $this->_begin_date .
-                    ' AND date_debut_cotis < ' . $this->_end_date .
-                    ') OR (date_fin_cotis > ' . $this->_begin_date .
-                    ' AND date_fin_cotis <= ' . $this->_end_date . '))'
+                    '((' . $zdb->db->quoteInto('date_debut_cotis >= ?', $this->_begin_date) .
+                    ' AND '. $zdb->db->quoteInto('date_debut_cotis < ?', $this->_end_date) .
+                    ') OR (' . $zdb->db->quoteInto('date_fin_cotis > ?', $this->_begin_date) .
+                    ' AND ' . $zdb->db->quoteInto('date_fin_cotis <= ?', $this->_end_date) . '))'
                 );
 
             if ( $this->id != '' ) {
                 $select->where(self::PK . ' != ?', $this->id);
             }
 
-            $str = $select->__toString();
             $result = $select->query()->fetch();
             if ( $result !== false ) {
                 $d = new DateTime($result->date_debut_cotis);
@@ -489,8 +488,12 @@ class Contribution
         } catch (Exception $e) {
             /** FIXME */
             $log->log(
-                'An error occured checking overlaping fee',
+                'An error occured checking overlaping fee. ' . $e->getMessage(),
                 PEAR_LOG_ERR
+            );
+            $log->log(
+                'Query was: ' . $select->__toString(),
+                PEAR_LOG_DEBUG
             );
             return false;
         }
