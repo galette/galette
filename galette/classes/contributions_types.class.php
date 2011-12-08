@@ -205,7 +205,11 @@ class ContributionsTypes
                 array(self::PK, 'libelle_type_cotis')
             )->order('libelle_type_cotis');
             if ( $extent !== null ) {
-                $select->where('cotis_extension = ?', $extent);
+                if ( $extent === true ) {
+                    $select->where('cotis_extension = ?', $extent);
+                } else if ( $extent === false ) {
+                    $select->where('cotis_extension = false');
+                }
             }
             $result = $select->query()->fetchAll();
             foreach ( $result as $r ) {
