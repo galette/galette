@@ -389,7 +389,10 @@ class ContributionsTypes
                     'New contributions type `' . $label . '` added successfully.',
                     PEAR_LOG_INFO
                 );
-                return $zdb->db->lastInsertId();
+                return $zdb->db->lastInsertId(
+                    PREFIX_DB . self::TABLE,
+                    'id'
+                );
             } else {
                 throw new Exception('New contributions type not added.');
             }

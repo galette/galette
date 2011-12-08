@@ -115,7 +115,10 @@ if ( $form_name == '' ) {
                     if ($field_type != DynamicFields::SEPARATOR
                         && count($error_detected) == 0
                     ) {
-                        $field_id = $zdb->db->lastInsertId();
+                        $field_id = $zdb->db->lastInsertId(
+                            PREFIX_DB . self::TABLE,
+                            'id'
+                        );
                         header(
                             'location: editer_champ.php?form=' . $form_name .
                             '&id=' . $field_id

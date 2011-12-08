@@ -329,7 +329,10 @@ class Groups
                 $values['creation_date'] = $this->_creation_date;
                 $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
                 if ( $add > 0) {
-                    $this->_id = $zdb->db->lastInsertId();
+                    $this->_id = $zdb->db->lastInsertId(
+                        PREFIX_DB . self::TABLE,
+                        'id'
+                    );
                     // logging
                     $hist->add(
                         _T("Group added"),

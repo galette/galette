@@ -328,7 +328,10 @@ class Status
                     'New status `' . $label . '` added successfully.',
                     PEAR_LOG_INFO
                 );
-                return $zdb->db->lastInsertId();
+                return $zdb->db->lastInsertId(
+                    PREFIX_DB . self::TABLE,
+                    'id'
+                );
             } else {
                 throw new Exception('New status not added.');
             }

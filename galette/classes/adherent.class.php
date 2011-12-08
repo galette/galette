@@ -1177,7 +1177,10 @@ class Adherent
                 $values['date_modif_adh'] = $this->_modification_date;
                 $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
                 if ( $add > 0) {
-                    $this->_id = $zdb->db->lastInsertId();
+                    $this->_id = $zdb->db->lastInsertId(
+                        PREFIX_DB . self::TABLE,
+                        'id'
+                    );
                     $this->_picture = new Picture($this->_id);
                     // logging
                     $hist->add(
