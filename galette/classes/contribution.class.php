@@ -526,10 +526,9 @@ class Contribution
                 }
             }
 
-            //an empty value will cause date to be set to 1901-01-01, a null
-            //will result in 0000-00-00. We want a database NULL value here.
+            //no end date,, let's take database defaults
             if ( !$this->isCotis() && !$this->_end_date ) {
-                $values['date_fin_cotis'] = '0000-00-00';
+                unset($values['date_fin_cotis']);
             }
 
             if ( !isset($this->_id) || $this->_id == '') {
