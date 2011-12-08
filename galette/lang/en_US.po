@@ -170,7 +170,7 @@ msgstr "To:"
 msgid "Partnership"
 msgstr "Partnership"
 
-#: ../classes/transaction.class.php:375
+#: ../classes/transaction.class.php:381
 msgid "Transaction updated"
 msgstr "Transaction updated"
 
@@ -392,7 +392,7 @@ msgstr "(Choose address printed below name)"
 msgid "Default preferences were successfully stored."
 msgstr "Default preferences were successfully stored."
 
-#: ../classes/contribution.class.php:831
+#: ../classes/contribution.class.php:844
 #: ../templates/default/gestion_contributions.tpl:22
 #: ../templates/default/ajouter_contribution.tpl:79
 msgid "Check"
@@ -487,7 +487,7 @@ msgstr "Mails adress %s does not exist"
 msgid "Email,URL,IM"
 msgstr "Email,URL,IM"
 
-#: ../classes/transaction.class.php:359
+#: ../classes/transaction.class.php:365
 msgid "Fail to add new transaction."
 msgstr "Fail to add new transaction."
 
@@ -601,7 +601,7 @@ msgstr ""
 "Database can't be reached. Please go back to enter the connection parameters "
 "again."
 
-#: ../classes/adherent.class.php:1311 ../templates/default/member.tpl:193
+#: ../classes/adherent.class.php:1314 ../templates/default/member.tpl:193
 msgid "Active"
 msgstr "Active"
 
@@ -717,7 +717,7 @@ msgstr ""
 msgid "Additionnal fields:"
 msgstr "Additionnal fields:"
 
-#: ../classes/contribution.class.php:480
+#: ../classes/contribution.class.php:484
 msgid "- Membership period overlaps period starting at "
 msgstr "- Membership period overlaps period starting at "
 
@@ -729,7 +729,7 @@ msgstr "You have to select a member."
 msgid "Not dispatched amount"
 msgstr "Not dispatched amount"
 
-#: ../classes/contribution.class.php:381
+#: ../classes/contribution.class.php:386
 msgid "- Unknown payment type"
 msgstr "- Unknown payment type"
 
@@ -878,7 +878,7 @@ msgstr "Other informations:"
 msgid "The tables are not totally created, it may be a permission problem."
 msgstr "The tables are not totally created, it may be a permission problem."
 
-#: ../templates/default/ajouter_transaction.tpl:60
+#: ../templates/default/ajouter_transaction.tpl:61
 msgid ""
 "Select an existing contribution in the database, and attach it to the "
 "current transaction"
@@ -959,7 +959,7 @@ msgstr "Installation Report"
 msgid "Manage emails texts and subjects"
 msgstr "Manage emails texts and subjects"
 
-#: ../classes/adherent.class.php:1218
+#: ../classes/adherent.class.php:1221
 msgid "Member card updated"
 msgstr "Member card updated"
 
@@ -992,11 +992,11 @@ msgid ""
 msgstr ""
 "Note: members with a status priority lower than %priority are staff members."
 
-#: ../classes/adherent.class.php:1311 ../templates/default/member.tpl:194
+#: ../classes/adherent.class.php:1314 ../templates/default/member.tpl:194
 msgid "Inactive"
 msgstr "Inactive"
 
-#: ../gestion_intitules.php:334 ../classes/adherent.class.php:1308
+#: ../gestion_intitules.php:334 ../classes/adherent.class.php:1311
 #: ../templates/default/gestion_intitule_content.tpl:29
 #: ../templates/default/champ_requis.tpl:20
 #: ../templates/default/config_fields.tpl:40
@@ -1027,8 +1027,8 @@ msgid "No groups has been stored in the database yet."
 msgstr "No groups has been stored in the database yet."
 
 #: ../gestion_contributions.php:104 ../gestion_contributions.php:126
-#: ../classes/transaction.class.php:264 ../classes/contribution.class.php:351
-#: ../classes/contribution.class.php:909 ../classes/adherent.class.php:1003
+#: ../classes/transaction.class.php:266 ../classes/contribution.class.php:356
+#: ../classes/contribution.class.php:922 ../classes/adherent.class.php:1003
 msgid "- Non valid date!"
 msgstr "- Non valid date!"
 
@@ -1044,7 +1044,7 @@ msgstr "No such module."
 msgid "Language"
 msgstr "Language"
 
-#: ../templates/default/ajouter_transaction.tpl:60
+#: ../templates/default/ajouter_transaction.tpl:61
 msgid "Select existing contribution"
 msgstr "Select existing contribution"
 
@@ -1079,7 +1079,7 @@ msgstr "Number of values or zero if infinite."
 msgid "- WARNING -"
 msgstr "- WARNING -"
 
-#: ../configurer_fiches.php:269
+#: ../configurer_fiches.php:272
 msgid "Profile configuration"
 msgstr "Profile configuration"
 
@@ -1099,7 +1099,7 @@ msgstr ""
 "Your subscription has been registered, you will receive a recapitulative "
 "email soon (remember to check your spam box ;) )."
 
-#: ../classes/transaction.class.php:355
+#: ../classes/transaction.class.php:361
 msgid "Transaction added"
 msgstr "Transaction added"
 
@@ -1188,7 +1188,7 @@ msgstr "Add a new category"
 msgid "%membername: edit informations"
 msgstr "%membername: edit informations"
 
-#: ../classes/transaction.class.php:300 ../classes/contribution.class.php:412
+#: ../classes/transaction.class.php:302 ../classes/contribution.class.php:417
 #: ../classes/adherent.class.php:1122
 msgid "- Mandatory field empty: "
 msgstr "- Mandatory field empty: "
@@ -1283,7 +1283,7 @@ msgstr "Tables Creation/Update"
 msgid "An error occured while storing the group."
 msgstr "An error occured while storing the group."
 
-#: ../classes/transaction.class.php:309 ../classes/contribution.class.php:423
+#: ../classes/transaction.class.php:311 ../classes/contribution.class.php:428
 msgid "- Sum of all contributions exceed corresponding transaction amount."
 msgstr "- Sum of all contributions exceed corresponding transaction amount."
 
@@ -1315,7 +1315,7 @@ msgstr "%membername: remove from database"
 msgid "annual fee"
 msgstr "annual fee"
 
-#: ../classes/transaction.class.php:285
+#: ../classes/transaction.class.php:287
 msgid "- Empty transaction description!"
 msgstr "- Empty transaction description!"
 
@@ -1359,7 +1359,7 @@ msgstr "From:"
 msgid "unreachable member:"
 msgstr "unreachable member:"
 
-#: ../classes/transaction.class.php:287
+#: ../classes/transaction.class.php:289
 msgid "- Transaction description must be 30 characters long maximum."
 msgstr "- Transaction description must be 30 characters long maximum."
 
@@ -1391,7 +1391,7 @@ msgstr "Never contributed: Registered %days days ago (since %date)"
 msgid "(Max 32 characters)"
 msgstr "(Max 32 characters)"
 
-#: ../templates/default/ajouter_transaction.tpl:69
+#: ../templates/default/ajouter_transaction.tpl:70
 #: ../templates/default/gestion_contributions.tpl:150
 msgid "Duration"
 msgstr "Duration"
@@ -1487,7 +1487,7 @@ msgstr "Recover password"
 
 #: ../templates/default/gestion_mailings.tpl:20
 #: ../templates/default/ajax_attendance_sheet_details.tpl:17
-#: ../templates/default/ajouter_transaction.tpl:66
+#: ../templates/default/ajouter_transaction.tpl:67
 #: ../templates/default/history.tpl:23
 #: ../templates/default/gestion_contributions.tpl:71
 #: ../templates/default/ajouter_contribution.tpl:30
@@ -1741,7 +1741,7 @@ msgstr "- The passwords don't match!"
 msgid "Member Profile"
 msgstr "Member Profile"
 
-#: ../classes/adherent.class.php:1184
+#: ../classes/adherent.class.php:1187
 msgid "Member card added"
 msgstr "Member card added"
 
@@ -1804,7 +1804,7 @@ msgstr "Company name:"
 msgid "Notify member his account has been created"
 msgstr "Notify member his account has been created"
 
-#: ../classes/contribution.class.php:555
+#: ../classes/contribution.class.php:566
 msgid "Contribution updated"
 msgstr "Contribution updated"
 
@@ -1878,7 +1878,7 @@ msgstr "Preferences has been saved."
 msgid "Next"
 msgstr "Next"
 
-#: ../templates/default/ajouter_transaction.tpl:74
+#: ../templates/default/ajouter_transaction.tpl:75
 #: ../templates/default/gestion_contributions.tpl:128
 #: ../templates/default/ajouter_contribution.tpl:32
 #: ../templates/default/gestion_transactions.tpl:55
@@ -1907,7 +1907,7 @@ msgstr "Staff member"
 msgid "Admin account (independant of members)"
 msgstr "Admin account (independant of members)"
 
-#: ../classes/transaction.class.php:278 ../classes/contribution.class.php:368
+#: ../classes/transaction.class.php:280 ../classes/contribution.class.php:373
 msgid "- The amount must be an integer!"
 msgstr "- The amount must be an integer!"
 
@@ -1973,7 +1973,7 @@ msgstr "Reduced annual contribution"
 msgid "Delete"
 msgstr "Delete"
 
-#: ../gestion_intitules.php:334 ../classes/adherent.class.php:1308
+#: ../gestion_intitules.php:334 ../classes/adherent.class.php:1311
 #: ../templates/default/gestion_intitule_content.tpl:28
 #: ../templates/default/champ_requis.tpl:22
 #: ../templates/default/config_fields.tpl:42
@@ -2086,7 +2086,7 @@ msgstr "- Database error: "
 msgid "You'll be redirected to the login page in a few seconds"
 msgstr "You'll be redirected to the login page in a few seconds"
 
-#: ../templates/default/ajouter_transaction.tpl:57
+#: ../templates/default/ajouter_transaction.tpl:58
 msgid "Attached contributions"
 msgstr "Attached contributions"
 
@@ -2260,7 +2260,7 @@ msgstr "Groups:"
 msgid "Send a mail:"
 msgstr "Send a mail:"
 
-#: ../templates/default/ajouter_transaction.tpl:71
+#: ../templates/default/ajouter_transaction.tpl:72
 #: ../templates/default/gestion_contributions.tpl:105
 #: ../templates/default/ajouter_contribution.tpl:31
 msgid "Member"
@@ -2270,11 +2270,11 @@ msgstr "Member"
 msgid "Galette has been successfully installed!"
 msgstr "Galette has been successfully installed!"
 
-#: ../classes/contribution.class.php:392
+#: ../classes/contribution.class.php:397
 msgid "- The duration must be a positive integer!"
 msgstr "- The duration must be a positive integer!"
 
-#: ../templates/default/ajouter_transaction.tpl:73
+#: ../templates/default/ajouter_transaction.tpl:74
 #: ../templates/default/gestion_contributions.tpl:117
 #: ../templates/default/configurer_fiche_content.tpl:7
 msgid "Type"
@@ -2286,8 +2286,8 @@ msgid "Database"
 msgstr "Database"
 
 #: ../gestion_contributions.php:113 ../gestion_contributions.php:135
-#: ../classes/transaction.class.php:261 ../classes/contribution.class.php:348
-#: ../classes/contribution.class.php:906 ../classes/adherent.class.php:1000
+#: ../classes/transaction.class.php:263 ../classes/contribution.class.php:353
+#: ../classes/contribution.class.php:919 ../classes/adherent.class.php:1000
 msgid "- Wrong date format (dd/mm/yyyy)!"
 msgstr "- Wrong date format (dd/mm/yyyy)!"
 
@@ -2354,8 +2354,8 @@ msgstr ""
 msgid "General"
 msgstr "General"
 
-#: ../templates/default/ajouter_transaction.tpl:164
-#: ../templates/default/ajouter_transaction.tpl:186
+#: ../templates/default/ajouter_transaction.tpl:165
+#: ../templates/default/ajouter_transaction.tpl:187
 msgid "An error occured displaying contributions :("
 msgstr "An error occured displaying contributions :("
 
@@ -2475,7 +2475,7 @@ msgstr ""
 "An error has occured while storing required fields. Please try again, and "
 "contact the administrator if the problem persists."
 
-#: ../classes/contribution.class.php:828
+#: ../classes/contribution.class.php:841
 #: ../templates/default/gestion_contributions.tpl:21
 #: ../templates/default/ajouter_contribution.tpl:78
 msgid "Credit card"
@@ -2496,7 +2496,7 @@ msgstr "%membercount members"
 msgid "Contributor:"
 msgstr "Contributor:"
 
-#: ../templates/default/ajouter_transaction.tpl:68
+#: ../templates/default/ajouter_transaction.tpl:69
 #: ../templates/default/gestion_contributions.tpl:93
 msgid "End"
 msgstr "End"
@@ -2505,7 +2505,7 @@ msgstr "End"
 msgid "Interpret HTML"
 msgstr "Interpret HTML"
 
-#: ../templates/default/ajouter_transaction.tpl:59
+#: ../templates/default/ajouter_transaction.tpl:60
 msgid "New attached contribution"
 msgstr "New attached contribution"
 
@@ -2796,7 +2796,7 @@ msgstr "Vice-treasurer"
 #: ../templates/default/mailing_adherents.tpl:205
 #: ../templates/default/gestion_groupes.tpl:66
 #: ../templates/default/gestion_groupes.tpl:104
-#: ../templates/default/ajouter_transaction.tpl:122
+#: ../templates/default/ajouter_transaction.tpl:123
 #: ../templates/default/group.tpl:60
 msgid "An error occured displaying members interface :("
 msgstr "An error occured displaying members interface :("
@@ -2817,7 +2817,7 @@ msgstr "Your message has been sent to <strong>%s members</strong>"
 msgid "Inactive accounts"
 msgstr "Inactive accounts"
 
-#: ../templates/default/ajouter_transaction.tpl:59
+#: ../templates/default/ajouter_transaction.tpl:60
 msgid ""
 "Create a new contribution that will be attached to the current transaction"
 msgstr ""
@@ -2861,7 +2861,7 @@ msgstr "E-mail"
 msgid "Publisher:"
 msgstr "Publisher:"
 
-#: ../classes/contribution.class.php:825
+#: ../classes/contribution.class.php:838
 #: ../templates/default/gestion_contributions.tpl:20
 #: ../templates/default/ajouter_contribution.tpl:77
 msgid "Cash"
@@ -2931,7 +2931,7 @@ msgid ""
 msgstr ""
 "In order to be updated, Galette needs the Write permission on these files."
 
-#: ../classes/contribution.class.php:535
+#: ../classes/contribution.class.php:546
 msgid "Contribution added"
 msgstr "Contribution added"
 
@@ -2963,7 +2963,7 @@ msgstr "Jabber:"
 msgid "no member"
 msgstr "no member"
 
-#: ../classes/adherent.class.php:1189
+#: ../classes/adherent.class.php:1192
 msgid "Fail to add new member."
 msgstr "Fail to add new member."
 
@@ -3023,7 +3023,7 @@ msgstr "Show title ?"
 msgid "Address"
 msgstr "Address"
 
-#: ../templates/default/ajouter_transaction.tpl:106
+#: ../templates/default/ajouter_transaction.tpl:107
 #: ../templates/default/gestion_contributions.tpl:229
 msgid "no contribution"
 msgstr "no contribution"
@@ -3185,8 +3185,8 @@ msgid "donation in money"
 msgstr "donation in money"
 
 #: ../attendance_sheet.php:102 ../attendance_sheet.php:122
-#: ../attendance_sheet.php:166 ../classes/contribution.class.php:481
-#: ../classes/contribution.class.php:797 ../classes/adherent.class.php:1285
+#: ../attendance_sheet.php:166 ../classes/contribution.class.php:485
+#: ../classes/contribution.class.php:810 ../classes/adherent.class.php:1288
 msgid "Y-m-d"
 msgstr "Y-m-d"
 
@@ -3232,7 +3232,7 @@ msgstr "Description"
 msgid "First name:"
 msgstr "First name:"
 
-#: ../templates/default/ajouter_transaction.tpl:197
+#: ../templates/default/ajouter_transaction.tpl:198
 msgid "Click on a contribution row to attach it to the current transaction"
 msgstr "Click on a contribution row to attach it to the current transaction"
 
@@ -3368,7 +3368,7 @@ msgstr "and"
 msgid "Label generation parameters"
 msgstr "Label generation parameters"
 
-#: ../templates/default/ajouter_transaction.tpl:79
+#: ../templates/default/ajouter_transaction.tpl:80
 msgid "Dispatched amount:"
 msgstr "Dispatched amount:"
 
@@ -3389,7 +3389,7 @@ msgstr "Creation date"
 msgid "Manage additional fields for various forms"
 msgstr "Manage additional fields for various forms"
 
-#: ../classes/contribution.class.php:837
+#: ../classes/contribution.class.php:850
 #: ../templates/default/gestion_contributions.tpl:24
 #: ../templates/default/ajouter_contribution.tpl:81
 msgid "Paypal"
@@ -3403,7 +3403,7 @@ msgstr "Add new member in database"
 msgid "Lateness in fee"
 msgstr "Lateness in fee"
 
-#: ../templates/default/ajouter_transaction.tpl:129
+#: ../templates/default/ajouter_transaction.tpl:130
 msgid "Contributions selection"
 msgstr "Contributions selection"
 
@@ -3452,7 +3452,7 @@ msgstr "Collapse all"
 msgid "Choose label to translate"
 msgstr "Choose label to translate"
 
-#: ../classes/groups.class.php:340
+#: ../classes/groups.class.php:343
 msgid "Fail to add new group."
 msgstr "Fail to add new group."
 
@@ -3513,7 +3513,7 @@ msgstr "LinkedIn"
 msgid "Should HTML editor be activated on page load ?"
 msgstr "Should HTML editor be activated on page load ?"
 
-#: ../classes/groups.class.php:335
+#: ../classes/groups.class.php:338
 msgid "Group added"
 msgstr "Group added"
 
@@ -3555,7 +3555,7 @@ msgstr ""
 msgid "-- select a name --"
 msgstr "-- select a name --"
 
-#: ../classes/contribution.class.php:822
+#: ../classes/contribution.class.php:835
 #: ../templates/default/gestion_contributions.tpl:25
 #: ../templates/default/ajouter_contribution.tpl:82
 msgid "Other"
@@ -3630,7 +3630,7 @@ msgstr "Show legend"
 msgid "Next page (%i)"
 msgstr "Next page (%i)"
 
-#: ../templates/default/ajouter_transaction.tpl:83
+#: ../templates/default/ajouter_transaction.tpl:84
 msgid "Not dispatched amount:"
 msgstr "Not dispatched amount:"
 
@@ -3762,7 +3762,7 @@ msgstr ""
 msgid "User statuses"
 msgstr "User statuses"
 
-#: ../classes/contribution.class.php:834
+#: ../classes/contribution.class.php:847
 #: ../templates/default/gestion_contributions.tpl:23
 #: ../templates/default/ajouter_contribution.tpl:80
 msgid "Transfer"
@@ -3886,7 +3886,7 @@ msgstr "Do you really want to delete this group from the base?"
 msgid "No members has been selected yet."
 msgstr "No members has been selected yet."
 
-#: ../classes/contribution.class.php:539
+#: ../classes/contribution.class.php:550
 msgid "Fail to add new contribution."
 msgstr "Fail to add new contribution."
 
@@ -4115,7 +4115,7 @@ msgstr "Labels"
 msgid "User"
 msgstr "User"
 
-#: ../templates/default/ajouter_transaction.tpl:67
+#: ../templates/default/ajouter_transaction.tpl:68
 #: ../templates/default/gestion_contributions.tpl:82
 msgid "Begin"
 msgstr "Begin"
@@ -4168,7 +4168,7 @@ msgstr ""
 msgid "no transaction"
 msgstr "no transaction"
 
-#: ../classes/groups.class.php:356
+#: ../classes/groups.class.php:359
 msgid "Group updated"
 msgstr "Group updated"
 

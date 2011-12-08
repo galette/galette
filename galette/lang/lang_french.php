@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Tue Dec  6 22:09:14 2011 (GMT)
+// This file was automatically generated on Thu Dec  8 19:05:42 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -1903,7 +1903,7 @@ $lang['Table prefix:'] = 'Préfixe de table&nbsp;:';
 $lang['A problem happened while sending to admin notification for user %name (%email) contribution'] = 'Un problème est survenu dans l\'envoi du courriel à l\'administrateur pour la contribution de l\'adhérent %name (%email)';
 
 // ../templates/default/ajouter_contribution.tpl:33 
-$lang['Not dispatched amount'] = 'Aucun montant ventilé';
+$lang['Not dispatched amount'] = 'Montant non ventilé';
 
 // ../classes/contribution.class.php:119 ../templates/default/ajouter_contribution.tpl:56 
 $lang['Contribution type:'] = 'Type de contribution&nbsp;:';
