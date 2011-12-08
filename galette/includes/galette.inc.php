@@ -104,7 +104,7 @@ require_once 'Log.php';
 /** FIXME: for stables versions, log level must not be INFO,
 most probably WARNING or NOTICE */
 // ***** LOG : enregistrement des erreur dans un fichier de log
-define('_FILE_LOG', PEAR_LOG_INFO);
+define('_FILE_LOG', (GALETTE_MODE === 'DEV')?PEAR_LOG_DEBUG : PEAR_LOG_INFO);
 // ***** LOG : fichier de log
 define('_LOG_FILE', GALETTE_LOGS_PATH . '/galette.log');
 // ***** LOG : affichage des erreurs à l'écran
