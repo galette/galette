@@ -217,8 +217,14 @@ class ContributionsTypes
             }
             return $list;
         } catch (Exception $e) {
-            /** FIXME */
-            $log->log('An error occured', PEAR_LOG_ERR);
+            $log->log(
+                'An error occured. ' . $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            $log->log(
+                'Query was: ' . $select->__toString(),
+                PEAR_LOG_DEBUG
+            );
             return false;
         }
     }
