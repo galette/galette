@@ -51,7 +51,8 @@
 			<input type="hidden" name="valid" value="1"/>
 		</div>
 		<p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
-		</form>
+		</form
+{if $transaction->id}
 		<table class="center_table">
             <caption>
                 {_T string="Attached contributions"}
@@ -198,3 +199,4 @@
                 {rdelim}
             {rdelim});
         </script>
+{/if}
