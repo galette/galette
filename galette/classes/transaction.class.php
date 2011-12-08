@@ -436,11 +436,14 @@ class Transaction
             $dispatched_amount = $select->query()->fetchColumn();
             return (double)$this->_amount - (double)$dispatched_amount;
         } catch (Exception $e) {
-            /** FIXME */
             $log->log(
                 'An error occured retrieving missing amounts | ' .
                 $e->getMessage(),
                 PEAR_LOG_ERR
+            );
+            $log->log(
+                'Query was: ' . $select->__toString(),
+                PEAR_LOG_DEBUG
             );
         }
     }
