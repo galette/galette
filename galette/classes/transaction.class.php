@@ -349,9 +349,13 @@ class Transaction
 
             if ( !isset($this->_id) || $this->_id == '') {
                 //we're inserting a new transaction
+                unset($values[self::PK]);
                 $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
                 if ( $add > 0) {
-                    $this->_id = $zdb->db->lastInsertId();
+                    $this->_id = $zdb->db->lastInsertId(
+                        PREFIX_DB . self::TABLE,
+                        'id'
+                    );
                     // logging
                     $hist->add(
                         _T("Transaction added"),
