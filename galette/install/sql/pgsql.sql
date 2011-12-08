@@ -88,9 +88,9 @@ CREATE TABLE galette_adherents (
     date_crea_adh date DEFAULT '19010101' NOT NULL,
     date_modif_adh date DEFAULT '19010101' NOT NULL,
     activite_adh character(1) DEFAULT '0' NOT NULL,
-    bool_admin_adh character(1) DEFAULT NULL,
-    bool_exempt_adh character(1) DEFAULT NULL,
-    bool_display_info character(1) DEFAULT NULL,
+    bool_admin_adh boolean DEFAULT FALSE,
+    bool_exempt_adh boolean DEFAULT FALSE,
+    bool_display_info boolean DEFAULT FALSE,
     date_echeance date,
     pref_lang character varying(20) DEFAULT 'fr_FR',
     lieu_naissance text DEFAULT '',
@@ -138,7 +138,7 @@ DROP TABLE IF EXISTS galette_types_cotisation CASCADE;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis integer NOT NULL,
   libelle_type_cotis character varying(30) DEFAULT '' NOT NULL,
-  cotis_extension character(1) DEFAULT NULL,
+  cotis_extension boolean DEFAULT FALSE,
   PRIMARY KEY (id_type_cotis)
 );
 
@@ -173,12 +173,12 @@ CREATE TABLE galette_field_types (
   field_name character varying(40) DEFAULT '' NOT NULL,
   field_perm integer DEFAULT '0' NOT NULL,
   field_type integer DEFAULT '0' NOT NULL,
-  field_required character(1) DEFAULT NULL,
+  field_required boolean DEFAULT FALSE,
   field_pos integer DEFAULT '0' NOT NULL,
   field_width integer DEFAULT NULL,
   field_height integer DEFAULT NULL,
   field_size integer DEFAULT NULL,
-  field_repeat integer DEFAULT NULL,
+  field_repeat boolean DEFAULT FALSE,
   field_layout integer DEFAULT NULL,
   PRIMARY KEY (field_id)
 );
@@ -256,8 +256,8 @@ DROP TABLE IF EXISTS galette_fields_config;
 CREATE TABLE galette_fields_config (
   table_name character varying(30) NOT NULL,
   field_id integer REFERENCES galette_field_types (field_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-  required character(1) NOT NULL, -- should replace later galette_required(required)
-  visible character(1) NOT NULL,
+  required boolean NOT NULL, -- should replace later galette_required(required)
+  visible boolean NOT NULL,
   position integer NOT NULL,
   id_field_category integer REFERENCES galette_fields_categories ON DELETE RESTRICT ON UPDATE CASCADE,
   PRIMARY KEY (field_id, id_field_category)
@@ -272,7 +272,7 @@ CREATE TABLE galette_mailing_history (
   mailing_body text NOT NULL,
   mailing_date timestamp NOT NULL,
   mailing_recipients text NOT NULL,
-  mailing_sent character(1) DEFAULT NULL,
+  mailing_sent boolean DEFAULT FALSE,
   PRIMARY KEY (mailing_id)
 );
 

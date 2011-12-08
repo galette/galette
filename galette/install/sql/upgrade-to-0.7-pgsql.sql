@@ -74,8 +74,8 @@ DROP TABLE IF EXISTS galette_fields_config;
 CREATE TABLE galette_fields_config (
   table_name character varying(30) NOT NULL,
   field_id integer REFERENCES galette_field_types (field_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-  required character(1) NOT NULL, -- should replace later galette_required(required)
-  visible character(1) NOT NULL,
+  required boolean NOT NULL, -- should replace later galette_required(required)
+  visible boolean NOT NULL,
   position integer NOT NULL,
   id_field_category integer REFERENCES galette_fields_categories ON DELETE RESTRICT ON UPDATE CASCADE,
   PRIMARY KEY (field_id, id_field_category)
@@ -90,7 +90,7 @@ CREATE TABLE galette_mailing_history (
   mailing_body text NOT NULL,
   mailing_date timestamp NOT NULL,
   mailing_recipients text NOT NULL,
-  mailing_sent character(1) DEFAULT NULL,
+  mailing_sent boolean DEFAULT FALSE,
   PRIMARY KEY (mailing_id)
 );
 
@@ -109,7 +109,7 @@ DROP TABLE IF EXISTS galette_groups_users;
 CREATE TABLE galette_groups_users (
   id_group integer REFERENCES galette_groups(id_group) ON DELETE RESTRICT ON UPDATE CASCADE,
   id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
-  manager character(1) NOT NULL DEFAULT '0',
+  manager boolean NOT NULL DEFAULT FALSE,
   PRIMARY KEY (id_group,id_adh)
 );
 
@@ -131,3 +131,25 @@ ALTER TABLE galette_field_types ADD CONSTRAINT galette_field_types_pkey PRIMARY 
 ALTER TABLE galette_pictures ADD CONSTRAINT galette_pictures_pkey PRIMARY KEY (id_adh);
 ALTER TABLE galette_l10n ADD CONSTRAINT galette_l10n_pkey PRIMARY KEY (text_orig, text_locale);
 ALTER TABLE galette_tmppasswds ADD CONSTRAINT galette_tmppasswds_pkey PRIMARY KEY (id_adh);
+
+-- change types
+ALTER TABLE galette_adherents ALTER COLUMN bool_admin_adh DROP DEFAULT;
+ALTER TABLE galette_adherents ALTER COLUMN bool_exempt_adh DROP DEFAULT;
+ALTER TABLE galette_adherents ALTER COLUMN bool_display_info DROP DEFAULT;
+ALTER TABLE galette_adherents ALTER bool_admin_adh TYPE boolean USING CASE WHEN bool_admin_adh='1' THEN TRUE ELSE FALSE END;
+ALTER TABLE galette_adherents ALTER bool_exempt_adh TYPE boolean USING CASE WHEN bool_exempt_adh='1' THEN TRUE ELSE FALSE END;
+ALTER TABLE galette_adherents ALTER bool_display_info TYPE boolean USING CASE WHEN bool_display_info='1' THEN TRUE ELSE FALSE END;
+ALTER TABLE galette_adherents ALTER COLUMN bool_admin_adh SET DEFAULT FALSE;
+ALTER TABLE galette_adherents ALTER COLUMN bool_exempt_adh SET DEFAULT FALSE;
+ALTER TABLE galette_adherents ALTER COLUMN bool_display_info SET DEFAULT FALSE;
+
+ALTER TABLE galette_types_cotisation ALTER COLUMN cotis_extension DROP DEFAULT;
+ALTER TABLE galette_types_cotisation ALTER cotis_extension TYPE boolean USING CASE WHEN cotis_extension='1' THEN TRUE ELSE FALSE END;
+ALTER TABLE galette_types_cotisation ALTER COLUMN cotis_extension SET DEFAULT FALSE;
+
+ALTER TABLE galette_field_types ALTER COLUMN field_required DROP DEFAULT;
+ALTER TABLE galette_field_types ALTER COLUMN field_repeat DROP DEFAULT;
+ALTER TABLE galette_field_types ALTER field_required TYPE boolean USING CASE WHEN field_required='1' THEN TRUE ELSE FALSE END;
+ALTER TABLE galette_field_types ALTER field_repeat TYPE boolean USING CASE WHEN field_repeat=1 THEN TRUE ELSE FALSE END;
+ALTER TABLE galette_field_types ALTER COLUMN field_required SET DEFAULT FALSE;
+ALTER TABLE galette_field_types ALTER COLUMN field_repeat SET DEFAULT FALSE;
