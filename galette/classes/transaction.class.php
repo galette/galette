@@ -167,14 +167,16 @@ class Transaction
                 $zdb->db->beginTransaction();
             }
 
-            //remove associated contributions
-            $c = new Contributions();
-            $clist = $c->getListFromTransaction($this->_id);
-            $cids = array();
-            foreach ( $clist as $cid) {
-                $cids[] = $cid->id;
+            //remove associated contributions if needeed
+            if ( $this->getDispatchedAmount() > 0 ) {
+                $c = new Contributions();
+                $clist = $c->getListFromTransaction($this->_id);
+                $cids = array();
+                foreach ( $clist as $cid) {
+                    $cids[] = $cid->id;
+                }
+                $rem = $c->removeContributions($cids, false);
             }
-            $rem = $c->removeContributions($cids, false);
 
             //remove transaction itself
             $del = $zdb->db->delete(
