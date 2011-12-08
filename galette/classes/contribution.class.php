@@ -424,7 +424,7 @@ class Contribution
             $missing = $this->_transaction->getMissingAmount();
             //calculate new missing amount
             $missing = $missing + $this->_orig_amount - $this->_amount;
-            if ( $missing <= 0 ) {
+            if ( $missing < 0 ) {
                 $errors[] = _T("- Sum of all contributions exceed corresponding transaction amount.");
             }
         }
