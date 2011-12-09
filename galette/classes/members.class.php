@@ -625,7 +625,7 @@ class Members
                     break;
                 case 3:
                     $select->where('date_echeance > ?', date('Y-m-d', time()))
-                        ->orWhere('bool_exempt_adh=1');
+                        ->orWhere('bool_exempt_adh=true');
                     break;
                 case 4:
                     $select->where('date_echeance IS NULL');
@@ -634,7 +634,7 @@ class Members
                     $select->where('p.priorite_statut < ' . self::NON_STAFF_MEMBERS);
                     break;
                 case 6:
-                    $select->where('bool_admin_adh = ?', 1);
+                    $select->where('bool_admin_adh = ?', true);
                     break;
                 }
             }
