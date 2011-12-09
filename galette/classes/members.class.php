@@ -633,7 +633,10 @@ class Members
                     );
                     break;
                 case self::FILTER_JOB:
-                    $select->where('prof_adh LIKE ?', $token);
+                    $select->where(
+                        'LOWER(prof_adh) LIKE ?',
+                        strtolower($token)
+                    );
                     break;
                 case self::FILTER_INFOS:
                     $select->where('info_public_adh LIKE ?', $token);
