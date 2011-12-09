@@ -158,6 +158,12 @@ class Members
                 $varslist->setLimit($select);
             }
 
+            $log->log(
+                "The following query will be executed: \n" .
+                $select->__toString(),
+                PEAR_LOG_DEBUG
+            );
+
             $members = array();
             if ( $as_members ) {
                 foreach ( $select->query()->fetchAll() as $row ) {
@@ -331,6 +337,13 @@ class Members
                     'date_echeance > ? OR bool_exempt_adh = true',
                     date('Y-m-d')
                 );
+
+            $log->log(
+                "The following query will be executed: \n" .
+                $select->__toString(),
+                PEAR_LOG_DEBUG
+            );
+
             if ( $varslist ) {
                 $select->order(self::_buildOrderClause());
             }
@@ -384,6 +397,13 @@ class Members
                     $select->order($orderby);
                 }
             }
+
+            $log->log(
+                "The following query will be executed: \n" .
+                $select->__toString(),
+                PEAR_LOG_DEBUG
+            );
+
             $result = $select->query();
             $members = array();
             foreach ( $result->fetchAll() as $o) {
