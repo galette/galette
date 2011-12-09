@@ -153,3 +153,5 @@ ALTER TABLE galette_field_types ALTER field_required TYPE boolean USING CASE WHE
 ALTER TABLE galette_field_types ALTER field_repeat TYPE boolean USING CASE WHEN field_repeat=1 THEN TRUE ELSE FALSE END;
 ALTER TABLE galette_field_types ALTER COLUMN field_required SET DEFAULT FALSE;
 ALTER TABLE galette_field_types ALTER COLUMN field_repeat SET DEFAULT FALSE;
+
+ALTER TABLE galette_adherents ADD CONSTRAINT galette_adherents_id_statut_fkey FOREIGN KEY (id_statut) REFERENCES galette_statuts(id_statut);

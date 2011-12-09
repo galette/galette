@@ -61,7 +61,7 @@ CREATE SEQUENCE galette_groups_id_seq
 DROP TABLE IF EXISTS galette_adherents CASCADE;
 CREATE TABLE galette_adherents (
     id_adh integer DEFAULT nextval('galette_adherents_id_seq'::text) NOT NULL,
-    id_statut integer DEFAULT '4' NOT NULL,
+    id_statut integer DEFAULT '4' REFERENCES galette_statuts(id_statut) ON DELETE RESTRICT ON UPDATE CASCADE,
     nom_adh character varying(20) DEFAULT '' NOT NULL,
     prenom_adh character varying(20) DEFAULT NULL,
     societe_adh character varying(20) DEFAULT NULL,
