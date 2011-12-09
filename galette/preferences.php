@@ -308,7 +308,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                         } else {
                             $logo = new Logo();
                         }
-                        $_SESSION['galette']['logo'] = serialize($logo);
+                        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo'] = serialize($logo);
                         $tpl->assign('logo', $logo);
                     }
                 }
@@ -328,7 +328,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 $error_detected[] = _T("Delete failed");
             } else {
                 $logo = new Logo(); //get default Logo
-                $_SESSION['galette']['logo'] = serialize($logo);
+                $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo'] = serialize($logo);
                 $tpl->assign('logo', $logo);
             }
         }

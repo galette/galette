@@ -51,8 +51,8 @@ if ( isset($_POST['mailing_done'])
     || isset($_POST['mailing_cancel'])
     || isset($_GET['mailing_new'])
 ) {
-    $_SESSION['galette']['mailing'] = null;
-    unset($_SESSION['galette']['mailing']);
+    $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing'] = null;
+    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
     if ( !isset($_GET['mailing_new']) ) {
         header('location: gestion_adherents.php');
         exit(0);
@@ -71,8 +71,8 @@ $data = array();
 if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
     $hist->add(_T("Trying to load mailing while mail is disabled in preferences."));
 } else {
-    if ( isset($_SESSION['galette']['varslist']) ) {
-        $varslist = unserialize($_SESSION['galette']['varslist']);
+    if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']) ) {
+        $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
     } else {
         $log->log(
             '[mailing_adherents.php] No member selected to generate members cards',
@@ -83,11 +83,11 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
 
     $members = Members::getArrayList($varslist->selected);
 
-    if ( isset($_SESSION['galette']['mailing'])
+    if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing'])
         && !isset($_POST['mailing_cancel'])
         && !isset($_GET['from'])
     ) {
-        $mailing = unserialize($_SESSION['galette']['mailing']);
+        $mailing = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
     } else if (isset($_GET['from']) && is_numeric($_GET['from'])) {
         $mailing = new Mailing(null);
         MailingHistory::loadFrom((int)$_GET['from'], $mailing);
@@ -149,18 +149,18 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
             $mailing->current_step = Mailing::STEP_SENT;
             //cleanup
             $varslist->selected = null;
-            $_SESSION['galette']['varslist'] = serialize($varslist);
-            $_SESSION['galette']['mailing'] = null;
-            unset($_SESSION['galette']['mailing']);
+            $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'] = serialize($varslist);
+            $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing'] = null;
+            unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
         }
     }
 
     if ( $mailing->current_step !== Mailing::STEP_SENT ) {
-        $_SESSION['galette']['mailing'] = serialize($mailing);
+        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing'] = serialize($mailing);
     }
 
     /** TODO: replace that... */
-    $_SESSION['galette']['labels'] = $mailing->unreachables;
+    $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['labels'] = $mailing->unreachables;
 
     if ( !isset($_POST['html_editor_active'])
         || trim($_POST['html_editor_active']) == ''
@@ -173,8 +173,8 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
         $histo = new MailingHistory($mailing);
         if ( $histo->storeMailing() !== false ) {
             $tpl->assign('mailing_saved', true);
-            $_SESSION['galette']['mailing'] = null;
-            unset($_SESSION['galette']['mailing']);
+            $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing'] = null;
+            unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
             $head_redirect = array(
                 'timeout'   => 30,
                 'url'       => 'gestion_mailings.php'

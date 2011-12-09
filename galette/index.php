@@ -42,10 +42,10 @@ $loginfault = false;
 
 if ( isset($_GET['logout']) ) {
     $login->logOut();
-    $_SESSION['galette']['login'] = null;
-    unset($_SESSION['galette']['login']);
-    $_SESSION['galette']['history'] = null;
-    unset($_SESSION['galette']['history']);
+    $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login'] = null;
+    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login']);
+    $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history'] = null;
+    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history']);
 }
 
 // Authentication procedure
@@ -54,7 +54,7 @@ if (isset($_POST["ident"])) {
         && md5($_POST['password']) == $preferences->pref_admin_pass
     ) {
         $login->logAdmin($_POST['login']);
-        $_SESSION['galette']['login'] = serialize($login);
+        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login'] = serialize($login);
         $hist->add(_T("Login"));
         if ( !isset($_COOKIE['show_galette_dashboard'])
             || $_COOKIE['show_galette_dashboard'] == 1
@@ -69,7 +69,7 @@ if (isset($_POST["ident"])) {
         $login->logIn($_POST['login'], md5($_POST['password']));
 
         if ( $login->isLogged() ) {
-            $_SESSION['galette']['login'] = serialize($login);
+            $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login'] = serialize($login);
             $hist->add(_T("Login"));
             /** FIXME: users should no try to go to admin interface */
             if ( $login->isAdmin() || $login->isStaff() ) {

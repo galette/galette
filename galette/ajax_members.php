@@ -57,14 +57,14 @@ require_once WEB_ROOT . 'classes/varslist.class.php';
 require_once WEB_ROOT . 'classes/mailing.class.php';
 require_once WEB_ROOT . 'classes/groups.class.php';
 
-if ( isset($_SESSION['galette']['varslist']) ) {
-    $varslist = unserialize($_SESSION['galette']['varslist']);
+if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']) ) {
+    $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
 } else {
     $varslist = new VarsList();
 }
 
 $members_list = Members::getList(true, null, false);
-$mailing = unserialize($_SESSION['galette']['mailing']);
+$mailing = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
 $selected_members = null;
 $unreachables_members = null;
 if ( !isset($_POST['from']) ) {

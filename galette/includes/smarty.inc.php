@@ -76,7 +76,7 @@ $tpl->assign('pref_slogan', $preferences->pref_slogan);
 $tpl->assign('pref_theme', $preferences->pref_theme);
 $tpl->assign('pref_editor_enabled', $preferences->pref_editor_enabled);
 $tpl->assign('pref_mail_method', $preferences->pref_mail_method);
-if ( isset($_SESSION['galette']['mailing']) ) {
+if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']) ) {
     $tpl->assign('existing_mailing', true);
 }
 /**

@@ -56,8 +56,8 @@ if ( !$login->isLogged() ) {
 
 require_once 'classes/varslist.class.php';
 
-if ( isset($_SESSION['galette']['varslist'])  ) {
-    $varslist = unserialize($_SESSION['galette']['varslist']);
+if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'])  ) {
+    $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
 } else {
     $varslist = new VarsList();
 }
@@ -66,7 +66,7 @@ require_once 'classes/members.class.php';
 
 $error_detected = array();
 // Set caller page ref for cards error reporting
-$_SESSION['galette']['caller'] = 'gestion_adherents.php';
+$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['caller'] = 'gestion_adherents.php';
 
 if (   isset($_POST['cards'])
     || isset($_POST['labels'])
@@ -75,7 +75,7 @@ if (   isset($_POST['cards'])
 ) {
     if (isset($_POST['member_sel'])) {
         $varslist->selected = $_POST['member_sel'];
-        $_SESSION['galette']['varslist'] = serialize($varslist);
+        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'] = serialize($varslist);
 
         if (isset($_POST['cards'])) {
             $qstring = 'carte_adherent.php';
@@ -99,10 +99,10 @@ if (   isset($_POST['cards'])
     }
 }
 
-if (isset($_SESSION['galette']['pdf_error']) && $_SESSION['galette']['pdf_error']) {
-    $error_detected[] = $_SESSION['galette']['pdf_error_msg'];
-    unset($_SESSION['galette']['pdf_error_msg']);
-    unset($_SESSION['galette']['pdf_error']);
+if (isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']) && $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']) {
+    $error_detected[] = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error_msg'];
+    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error_msg']);
+    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']);
 }
 
 // Filters
@@ -166,7 +166,7 @@ if (isset($_GET['sup']) || isset($_POST['delete'])) {
 
 $members_list = $members->getMembersList(true);
 
-$_SESSION['galette']['varslist'] = serialize($varslist);
+$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'] = serialize($varslist);
 
 //assign pagination variables to the template and add pagination links
 $varslist->setSmartyPagination($tpl);

@@ -67,7 +67,7 @@ if ( isset($_GET['tri']) ) {
 $logs = array();
 
 $logs = $hist->getHistory();
-$_SESSION['galette']['history'] = serialize($hist);
+$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history'] = serialize($hist);
 
 //assign pagination variables to the template and add pagination links
 $hist->setSmartyPagination($tpl);

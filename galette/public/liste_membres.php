@@ -48,8 +48,8 @@ if ( !$preferences->showPublicPages() ) {
 
 require_once $base_path . 'classes/varslist.class.php';
 
-if ( isset($_SESSION['galette']['public_varslist'])  ) {
-    $varslist = unserialize($_SESSION['galette']['public_varslist']);
+if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['public_varslist'])  ) {
+    $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['public_varslist']);
 } else {
     $varslist = new VarsList();
 }
@@ -75,7 +75,7 @@ if ( isset($_GET['tri']) ) {
 
 $members = Members::getPublicList(false, null);
 
-$_SESSION['galette']['public_varslist'] = serialize($varslist);
+$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['public_varslist'] = serialize($varslist);
 
 //assign pagination variables to the template and add pagination links
 $varslist->setSmartyPagination($tpl);

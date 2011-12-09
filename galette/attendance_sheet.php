@@ -53,8 +53,8 @@ require_once WEB_ROOT . 'classes/pdf.class.php';
 require_once WEB_ROOT . 'classes/members.class.php';
 require_once WEB_ROOT . 'classes/varslist.class.php';
 
-if ( isset($_SESSION['galette']['varslist']) ) {
-    $varslist = unserialize($_SESSION['galette']['varslist']);
+if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']) ) {
+    $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
 } else {
     $log->log('No member selected to generate attendance sheet', PEAR_LOG_INFO);
     if ( $login->isAdmin || $login->isStaff() ) {

@@ -53,8 +53,8 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 $filtre_id_adh = '';
 
 require_once 'classes/transactions.class.php';
-if ( isset($_SESSION['galette']['transactions']) ) {
-    $trans = unserialize($_SESSION['galette']['transactions']);
+if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['transactions']) ) {
+    $trans = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['transactions']);
 } else {
     $trans = new Transactions();
 }
@@ -86,7 +86,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     }
 }
 
-$_SESSION['galette']['transactions'] = serialize($trans);
+$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['transactions'] = serialize($trans);
 $list_trans = $trans->getTransactionsList(true);
 
 //assign pagination variables to the template and add pagination links

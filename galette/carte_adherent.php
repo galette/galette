@@ -63,8 +63,8 @@ if ( isset($_GET[Adherent::PK])
 ) {
     // If we are called from "voir_adherent.php" get unique id value
     $unique = $_GET[Adherent::PK];
-} else if ( isset($_SESSION['galette']['varslist']) ) {
-    $varslist = unserialize($_SESSION['galette']['varslist']);
+} else if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']) ) {
+    $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
 } else {
     $log->log('No member selected to generate members cards', PEAR_LOG_INFO);
     if ( $login->isAdmin() || $login->isStaff() ) {
@@ -315,6 +315,6 @@ foreach ( $members as $member ) {
 }
 
 // Send PDF code to browser
-$_SESSION['galette']['pdf_error'] = false;
+$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error'] = false;
 $pdf->Output(_T("Cards") . '.pdf', 'D');
 ?>

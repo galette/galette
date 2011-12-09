@@ -46,12 +46,12 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
 require_once WEB_ROOT . 'classes/members.class.php';
 require_once WEB_ROOT . 'classes/mailing.class.php';
 
-$mailing = unserialize($_SESSION['galette']['mailing']);
+$mailing = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
 
 $members = Members::getArrayList($_POST['recipients']);
 $mailing->setRecipients($members);
 
-$_SESSION['galette']['mailing'] = serialize($mailing);
+$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing'] = serialize($mailing);
 
 //let's generate html for return
 $html = '';

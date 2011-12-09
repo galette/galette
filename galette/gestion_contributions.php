@@ -54,8 +54,8 @@ if ( isset($_POST['ajax']) && $_POST['ajax'] == 'true'
 }
 
 require_once 'classes/contributions.class.php';
-if ( isset($_SESSION['galette']['contributions'])) {
-    $contribs = unserialize($_SESSION['galette']['contributions']);
+if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['contributions'])) {
+    $contribs = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['contributions']);
 } else {
     $contribs = new Contributions();
 }
@@ -173,7 +173,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     }
 }
 
-$_SESSION['galette']['contributions'] = serialize($contribs);
+$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['contributions'] = serialize($contribs);
 $list_contribs = $contribs->getContributionsList(true);
 
 //assign pagination variables to the template and add pagination links

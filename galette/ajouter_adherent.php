@@ -248,7 +248,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     }
                 } else if ( $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
                     //if mail has been disabled in the preferences, we should not be here ; we do not throw an error, just a simple warning that will be show later
-                    $_SESSION['galette']['mail_warning'] = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
+                    $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning'] = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
                 }
             }
 

@@ -138,8 +138,8 @@ require_once WEB_ROOT . 'includes/functions.inc.php';
 */
 require_once WEB_ROOT . 'classes/i18n.class.php';
 
-if ( isset($_SESSION['galette_lang']) ) {
-    $i18n = unserialize($_SESSION['galette_lang']);
+if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lang']) ) {
+    $i18n = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lang']);
 } else {
     $i18n = new I18n();
 }
@@ -152,7 +152,7 @@ if ( isset($_POST['pref_lang'])
 if ( isset($_GET['pref_lang']) ) {
     $i18n->changeLanguage($_GET['pref_lang']);
 }
-$_SESSION['galette_lang'] = serialize($i18n);
+$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lang'] = serialize($i18n);
 require_once WEB_ROOT . 'includes/i18n.inc.php';
 
 if ( !$installer ) { //If we're not working from installer
@@ -186,8 +186,8 @@ if ( !$installer ) { //If we're not working from installer
     * Authentication
     */
     require_once WEB_ROOT . 'classes/galette-login.class.php';
-    if ( isset($_SESSION['galette']['login']) ) {
-        $login = unserialize($_SESSION['galette']['login']);
+    if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login']) ) {
+        $login = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login']);
     } else {
         $login = new GaletteLogin();
     }
@@ -201,8 +201,8 @@ if ( !$installer ) { //If we're not working from installer
     * Instanciate history object
     */
     require_once WEB_ROOT . 'classes/history.class.php';
-    if ( isset($_SESSION['galette']['history']) && !GALETTE_MODE == 'DEV' ) {
-        $hist = unserialize($_SESSION['galette']['history']);
+    if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history']) && !GALETTE_MODE == 'DEV' ) {
+        $hist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history']);
     } else {
         $hist = new History();
     }
@@ -211,8 +211,8 @@ if ( !$installer ) { //If we're not working from installer
     * Logo
     */
     require_once WEB_ROOT . 'classes/logo.class.php';
-    if ( isset($_SESSION['galette']['logo']) && !GALETTE_MODE == 'DEV') {
-        $logo = unserialize($_SESSION['galette']['logo']);
+    if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo']) && !GALETTE_MODE == 'DEV') {
+        $logo = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo']);
     } else {
         $logo = new Logo();
     }

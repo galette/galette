@@ -58,11 +58,11 @@ $members = null;
 if ( isset($_GET['from']) && $_GET['from'] === 'mailing' ) {
     //if we're from mailing, we have to retrieve its unreachables members for labels
     require_once 'classes/mailing.class.php';
-    $mailing = unserialize($_SESSION['galette']['mailing']);
+    $mailing = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
     $members = $mailing->unreachables;
 } else {
-    if ( isset($_SESSION['galette']['varslist']) ) {
-        $varslist = unserialize($_SESSION['galette']['varslist']);
+    if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']) ) {
+        $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
     } else {
         $log->log('No member selected to generate labels', PEAR_LOG_INFO);
         if ( $login->isAdmin || $login->isStaff() ) {
