@@ -326,9 +326,9 @@ class Members
             $select = self::_buildSelect(
                 self::SHOW_PUBLIC_LIST, $fields, false, $with_photos
             );
-            $select->where('bool_display_info = ?', 1)
+            $select->where('bool_display_info = ?', true)
                 ->where(
-                    'date_echeance > ? OR bool_exempt_adh = 1',
+                    'date_echeance > ? OR bool_exempt_adh = true',
                     date('Y-m-d')
                 );
             if ( $varslist ) {
