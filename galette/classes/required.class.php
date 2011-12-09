@@ -263,7 +263,7 @@ class Required
             //set not required fields
             $zdb->db->update(
                 PREFIX_DB . self::TABLE,
-                array('required' => false),
+                array('required' => 'false'),
                 $zdb->db->quoteInto('field_id NOT IN (?)', $value)
             );
             $this->_checkUpdate();
