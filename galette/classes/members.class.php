@@ -613,11 +613,24 @@ class Members
                     );
                     break;
                 case self::FILTER_MAIL:
-                    $select->where('email_adh LIKE ?', $token)
-                        ->orWhere('url_adh LIKE ?', $token)
-                        ->orWhere('msn_adh LIKE ?', $token)
-                        ->orWhere('icq_adh LIKE ?', $token)
-                        ->orWhere('jabber_adh LIKE ?', $token);
+                    $select->where(
+                        '(' . $zdb->db->quoteInto(
+                            'LOWER(email_adh) LIKE ?',
+                            strtolower($token)
+                        ) . ' OR ' . $zdb->db->quoteInto(
+                            'LOWER(url_adh) LIKE ?',
+                            strtolower($token)
+                        ) . ' OR ' . $zdb->db->quoteInto(
+                            'LOWER(msn_adh) LIKE ?',
+                            strtolower($token)
+                        ) . ' OR ' . $zdb->db->quoteInto(
+                            'LOWER(icq_adh) LIKE ?',
+                            strtolower($token)
+                        ) . ' OR ' . $zdb->db->quoteInto(
+                            'LOWER(jabber_adh) LIKE ?',
+                            strtolower($token)
+                        ) . ')'
+                    );
                     break;
                 case self::FILTER_JOB:
                     $select->where('prof_adh LIKE ?', $token);
