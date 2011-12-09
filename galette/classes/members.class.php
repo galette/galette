@@ -593,11 +593,24 @@ class Members
                     );
                     break;
                 case self::FILTER_ADRESS:
-                    $select->where('adresse_adh LIKE ?', $token)
-                        ->orWhere('adresse2_adh LIKE ?', $token)
-                        ->orWhere('cp_adh LIKE ?', $token)
-                        ->orWhere('ville_adh LIKE ?', $token)
-                        ->orWhere('pays_adh LIKE ?', $token);
+                    $select->where(
+                        '(' . $zdb->db->quoteInto(
+                            'LOWER(adresse_adh) LIKE ?',
+                            strtolower($token)
+                        ) . ' OR ' . $zdb->db->quoteInto(
+                            'LOWER(adresse2_adh) LIKE ?',
+                            strtolower($token)
+                        ) . ' OR ' . $zdb->db->quoteInto(
+                            'cp_adh LIKE ?',
+                            $token
+                        ) . ' OR ' . $zdb->db->quoteInto(
+                            'LOWER(ville_adh) LIKE ?',
+                            strtolower($token)
+                        ) . ' OR ' . $zdb->db->quoteInto(
+                            'LOWER(pays_adh) LIKE ?',
+                            strtolower($token)
+                        ) . ')'
+                    );
                     break;
                 case self::FILTER_MAIL:
                     $select->where('email_adh LIKE ?', $token)
