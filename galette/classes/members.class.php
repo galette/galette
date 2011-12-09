@@ -639,10 +639,19 @@ class Members
                     );
                     break;
                 case self::FILTER_INFOS:
-                    $select->where('info_public_adh LIKE ?', $token);
+                    $more = '';
                     if ( $login->isAdmin() || $login->isStaff() ) {
-                        $select->orWhere('info_adh LIKE ?', $token);
+                        $more = ' OR ' . $zdb->db->quoteInto(
+                            'LOWER(info_adh) LIKE ?',
+                            $token
+                        );
                     }
+                    $select->where(
+                        '(' . $zdb->db->quoteInto(
+                            'LOWER(info_public_adh) LIKE ?',
+                            strtolower($token)
+                        ) . $more . ')'
+                    );
                     break;
                 }
             }
