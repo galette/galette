@@ -136,12 +136,15 @@ ALTER TABLE galette_tmppasswds ADD CONSTRAINT galette_tmppasswds_pkey PRIMARY KE
 ALTER TABLE galette_adherents ALTER COLUMN bool_admin_adh DROP DEFAULT;
 ALTER TABLE galette_adherents ALTER COLUMN bool_exempt_adh DROP DEFAULT;
 ALTER TABLE galette_adherents ALTER COLUMN bool_display_info DROP DEFAULT;
+ALTER TABLE galette_adherents ALTER COLUMN activite_adh DROP DEFAULT;
 ALTER TABLE galette_adherents ALTER bool_admin_adh TYPE boolean USING CASE WHEN bool_admin_adh='1' THEN TRUE ELSE FALSE END;
 ALTER TABLE galette_adherents ALTER bool_exempt_adh TYPE boolean USING CASE WHEN bool_exempt_adh='1' THEN TRUE ELSE FALSE END;
 ALTER TABLE galette_adherents ALTER bool_display_info TYPE boolean USING CASE WHEN bool_display_info='1' THEN TRUE ELSE FALSE END;
+ALTER TABLE galette_adherents ALTER activite_adh TYPE boolean USING CASE WHEN activite_adh='1' THEN TRUE ELSE FALSE END;
 ALTER TABLE galette_adherents ALTER COLUMN bool_admin_adh SET DEFAULT FALSE;
 ALTER TABLE galette_adherents ALTER COLUMN bool_exempt_adh SET DEFAULT FALSE;
 ALTER TABLE galette_adherents ALTER COLUMN bool_display_info SET DEFAULT FALSE;
+ALTER TABLE galette_adherents ALTER COLUMN activite_adh SET DEFAULT FALSE;
 
 ALTER TABLE galette_types_cotisation ALTER COLUMN cotis_extension DROP DEFAULT;
 ALTER TABLE galette_types_cotisation ALTER cotis_extension TYPE boolean USING CASE WHEN cotis_extension='1' THEN TRUE ELSE FALSE END;
