@@ -632,8 +632,12 @@ class Members
                     $select->where('date_echeance < ?', date('Y-m-d', time()));
                     break;
                 case 3:
-                    $select->where('date_echeance > ?', date('Y-m-d', time()))
-                        ->orWhere('bool_exempt_adh=true');
+                    $select->where(
+                        '(' . $zdb->db->quoteInto(
+                            'date_echeance > ?',
+                            date('Y-m-d', time())
+                        ) . ' OR bool_exempt_adh=true)'
+                    );
                     break;
                 case 4:
                     $select->where('date_echeance IS NULL');
