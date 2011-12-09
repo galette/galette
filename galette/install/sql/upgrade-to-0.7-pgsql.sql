@@ -39,7 +39,7 @@ INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_smtp_pas
 -- Table for dynamic required fields 2007-07-10;
 DROP TABLE IF EXISTS galette_required;
 CREATE TABLE galette_required (
-	field_id integer REFERENCES galette_field_types (field_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+	field_id character varying(20) NOT NULL,
 	required boolean DEFAULT false NOT NULL,
 	PRIMARY KEY (field_id)
 );
