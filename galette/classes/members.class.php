@@ -577,11 +577,14 @@ class Members
                 switch( $varslist->field_filter ) {
                 case self::FILTER_NAME:
                     $select->where(
-                        'CONCAT(nom_adh, " ", prenom_adh, " ", pseudo_adh) LIKE ?',
-                        $token
-                    )->orWhere(
-                        'CONCAT(prenom_adh, " ", nom_adh, " ", pseudo_adh) LIKE ?',
-                        $token
+                        '(' . $zdb->db->quoteInto(
+                            'CONCAT(nom_adh, " ", prenom_adh, " ", pseudo_adh) LIKE ?',
+                            $token
+                        ) . ' OR ' .
+                        $zdb->db->quoteInto(
+                            'CONCAT(prenom_adh, " ", nom_adh, " ", pseudo_adh) LIKE ?',
+                            $token
+                        ) . ')'
                     );
                     break;
                 case self::FILTER_ADRESS:
