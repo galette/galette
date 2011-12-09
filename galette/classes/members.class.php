@@ -712,10 +712,10 @@ class Members
             if ( $varslist->account_status_filter ) {
                 switch($varslist->account_status_filter) {
                 case 1:
-                    $select->having('activite_adh=1');
+                    $select->where('activite_adh=true');
                     break;
                 case 2:
-                    $select->having('activite_adh=0');
+                    $select->where('activite_adh=false');
                     break;
                 }
             }
