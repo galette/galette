@@ -576,14 +576,19 @@ class Members
                 $token = '%' . $varslist->filter_str . '%';
                 switch( $varslist->field_filter ) {
                 case self::FILTER_NAME:
+                    $sep = ( TYPE_DB === 'pgsql' ) ? " || ' ' || " : ', " ", ';
                     $select->where(
                         '(' . $zdb->db->quoteInto(
-                            'CONCAT(nom_adh, " ", prenom_adh, " ", pseudo_adh) LIKE ?',
-                            $token
+                            'CONCAT(LOWER(nom_adh)' . $sep .
+                            'LOWER(prenom_adh)' . $sep .
+                            'LOWER(pseudo_adh)) LIKE ?',
+                            strtolower($token)
                         ) . ' OR ' .
                         $zdb->db->quoteInto(
-                            'CONCAT(prenom_adh, " ", nom_adh, " ", pseudo_adh) LIKE ?',
-                            $token
+                            'CONCAT(LOWER(prenom_adh)' . $sep .
+                            'LOWER(nom_adh)' . $sep .
+                            'LOWER(pseudo_adh)) LIKE ?',
+                            strtolower($token)
                         ) . ')'
                     );
                     break;
