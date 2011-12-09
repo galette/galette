@@ -103,14 +103,6 @@ class Required
             if ( count($required) == 0 && $try ) {
                 $this->init();
             } else {
-                $this->_fields = null;
-                foreach ( $required as $k ) {
-                    $this->_fields[] = $k->field_id;
-                    if ($k->required == 1) {
-                        $this->_all_required[$k->field_id] = $k->required;
-                    }
-                }
-
                 $meta = Adherent::getDbFields();
                 if ( count($required) != count($meta) ) {
                     $log->log(
@@ -121,6 +113,18 @@ class Required
                     );
                     $this->init(true);
                 }
+
+                $this->_fields = null;
+                foreach ( $meta as $m ) {
+                    $this->_fields[] = $m;
+                }
+                foreach ( $required as $k ) {
+                    //$this->_fields[] = $k->field_id;
+                    if ($k->required == 1) {
+                        $this->_all_required[$k->field_id] = $k->required;
+                    }
+                }
+
             }
         } catch (Exception $e) {
             /** TODO */
