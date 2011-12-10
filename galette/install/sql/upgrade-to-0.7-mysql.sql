@@ -89,6 +89,7 @@ ALTER TABLE `galette_field_types` CHANGE `field_required` `field_required` TINYI
 DROP TABLE IF EXISTS galette_fields_categories;
 CREATE TABLE IF NOT EXISTS galette_fields_categories (
   id_field_category int(2) NOT NULL AUTO_INCREMENT,
+  table_name varchar(30) NOT NULL,
   category varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   position int(2) NOT NULL,
   PRIMARY KEY (id_field_category)
@@ -108,6 +109,7 @@ CREATE TABLE IF NOT EXISTS galette_fields_config (
   visible tinyint(1) NOT NULL,
   position int(2) NOT NULL,
   id_field_category int(2) NOT NULL,
+  PRIMARY KEY (table_name, field_id),
   CONSTRAINT galette_fields_config_categories
     FOREIGN KEY (id_field_category)
     REFERENCES galette_fields_categories (id_field_category)
