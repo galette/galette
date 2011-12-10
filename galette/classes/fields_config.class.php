@@ -190,13 +190,13 @@ class FieldsConfig
 
         $log->log(
             '[' . $class . '] Initializing fields configuration for table `' .
-            $this->_table . '`',
+            PREFIX_DB . $this->_table . '`',
             PEAR_LOG_DEBUG
         );
         if ( $reinit ) {
             $log->log(
                 '[' . $class . '] Reinit mode, we delete config content for ' .
-                'table `' . $this->_table . '`',
+                'table `' . PREFIX_DB . $this->_table . '`',
                 PEAR_LOG_DEBUG
             );
             //Delete all entries for current table. Existing entries are
@@ -204,11 +204,12 @@ class FieldsConfig
             try {
                 $zdb->db->delete(
                     PREFIX_DB . self::TABLE,
-                    array('table_name = ?', $this->_table)
+                    $zdb->db->quoteInto('table_name = ?', PREFIX_DB . $this->_table)
                 );
             } catch (Exception $e) {
                 $log->log(
-                    'Unable to delete fields configuration for reinitialization',
+                    'Unable to delete fields configuration for reinitialization' .
+                    $e->getMessage(),
                     PEAR_LOG_WARNING
                 );
                 return false;
@@ -272,7 +273,7 @@ class FieldsConfig
             $log->log(
                 str_replace(
                     '%s',
-                    $this->_table,
+                    PREFIX_DB . $this->_table,
                     '[' . $class . '] Fields configuration for table %s '.
                     'initialized successfully.'
                 ),
@@ -283,7 +284,7 @@ class FieldsConfig
             /** FIXME */
             $log->log(
                 '[' . $class . '] An error occured trying to initialize fields ' .
-                'configuration for table `' . $this->_table . '`.' .
+                'configuration for table `' . PREFIX_DB . $this->_table . '`.' .
                 $e->getMessage(),
                 PEAR_LOG_ERR
             );
