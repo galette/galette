@@ -306,37 +306,62 @@ class Texts
     /**
     * Initialize texts at install time
     *
-    * @return boolean|Exception
+    * @param boolean $check_first Check first if it seems initialized
+    *
+    * @return boolean|Exception false if no need to initialize, true if data
+    *                           has been initialized, Exception if error
     */
-    public function installInit()
+    public function installInit($check_first = true)
     {
         global $zdb, $log;
 
         try {
-            //first, we drop all values
-            $zdb->db->delete(PREFIX_DB . self::TABLE);
-
-            $stmt = $zdb->db->prepare(
-                'INSERT INTO ' . PREFIX_DB . self::TABLE .
-                ' (tid, tref, tsubject, tbody, tlang, tcomment) ' .
-                'VALUES(:tid, :tref, :tsubject, :tbody, :tlang, :tcomment )'
-            );
-
-            foreach ( self::$_defaults as $d ) {
-                $stmt->bindParam(':tid', $d['tid']);
-                $stmt->bindParam(':tref', $d['tref']);
-                $stmt->bindParam(':tsubject', $d['tsubject']);
-                $stmt->bindParam(':tbody', $d['tbody']);
-                $stmt->bindParam(':tlang', $d['tlang']);
-                $stmt->bindParam(':tcomment', $d['tcomment']);
-                $stmt->execute();
+            //first of all, let's check if data seems to have already
+            //been initialized
+            $proceed = false;
+            if ( $check_first === true ) {
+                $select = new Zend_Db_Select($zdb->db);
+                $select->from(
+                    PREFIX_DB . self::TABLE,
+                    'COUNT(' . self::PK . ') as counter'
+                );
+                $count = $select->query()->fetchObject()->counter;
+                if ( $count == 0 ) {
+                    //if we got no values in texts table, let's proceed
+                    $proceed = true;
+                } else {
+                    return false;
+                }
+            } else {
+                $proceed = true;
             }
+            
+            if ( $proceed === true ) {
+                //first, we drop all values
+                $zdb->db->delete(PREFIX_DB . self::TABLE);
 
-            $log->log(
-                'Default texts were successfully stored into database.',
-                PEAR_LOG_INFO
-            );
-            return true;
+                $stmt = $zdb->db->prepare(
+                    'INSERT INTO ' . PREFIX_DB . self::TABLE .
+                    ' (tid, tref, tsubject, tbody, tlang, tcomment) ' .
+                    'VALUES(:tid, :tref, :tsubject, :tbody, :tlang, :tcomment )'
+                );
+
+                foreach ( self::$_defaults as $d ) {
+                    $stmt->bindParam(':tid', $d['tid']);
+                    $stmt->bindParam(':tref', $d['tref']);
+                    $stmt->bindParam(':tsubject', $d['tsubject']);
+                    $stmt->bindParam(':tbody', $d['tbody']);
+                    $stmt->bindParam(':tlang', $d['tlang']);
+                    $stmt->bindParam(':tcomment', $d['tcomment']);
+                    $stmt->execute();
+                }
+
+                $log->log(
+                    'Default texts were successfully stored into database.',
+                    PEAR_LOG_INFO
+                );
+                return true;
+            }
         } catch (Exception $e) {
             $log->log(
                 'Unable to initialize default texts.' . $e->getMessage(),

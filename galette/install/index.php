@@ -977,11 +977,20 @@ define("STOCK_FILES", "tempimages");
         $error = true;
     }
 
+    $texts = new Texts();
+    $res = $texts->installInit();
+    if ( $res !== false ) {
+        if ( $res !== true ) {
+            $errs[] = '<li class="install-bad">' . _T("Default texts cannot be initialized.") . '<span>' . $res->getMessage() . '</span></li>';
+        } else {
+            $oks[] = '<li class="install-ok">' . _T("Default texts were successfully stored.") . '</li>';
+        }
+    }
+
     if ( $step=='i9' ) {
         $prefs = new Preferences(false);
         $ct = new ContributionsTypes();
         $status = new Status();
-        $texts = new Texts();
         $fc = new FieldsCategories();
 
         //init default values
@@ -1008,13 +1017,6 @@ define("STOCK_FILES", "tempimages");
             $errs[] = '<li class="install-bad">' . _T("Default status cannot be initialized.") . '<span>' . $res->getMessage() . '</span></li>';
         } else {
             $oks[] = '<li class="install-ok">' . _T("Default status were successfully stored.") . '</li>';
-        }
-
-        $res = $texts->installInit();
-        if ( $res !== true ) {
-            $errs[] = '<li class="install-bad">' . _T("Default texts cannot be initialized.") . '<span>' . $res->getMessage() . '</span></li>';
-        } else {
-            $oks[] = '<li class="install-ok">' . _T("Default texts were successfully stored.") . '</li>';
         }
 
         $res = $fc->installInit();
