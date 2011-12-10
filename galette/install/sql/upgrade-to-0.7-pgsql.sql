@@ -60,6 +60,7 @@ CREATE TABLE galette_texts (
 DROP TABLE IF EXISTS galette_fields_categories CASCADE;
 CREATE TABLE galette_fields_categories (
   id_field_category integer  DEFAULT nextval('galette_fields_categories_id_seq'::text) NOT NULL,
+  table_name character varying(30) NOT NULL,
   category character varying(50) NOT NULL,
   position integer NOT NULL,
   PRIMARY KEY (id_field_category)
@@ -73,12 +74,12 @@ INSERT INTO galette_fields_categories (id_field_category, category, position) VA
 DROP TABLE IF EXISTS galette_fields_config;
 CREATE TABLE galette_fields_config (
   table_name character varying(30) NOT NULL,
-  field_id integer REFERENCES galette_field_types (field_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  field_id character varying(30) NOT NULL,
   required boolean NOT NULL, -- should replace later galette_required(required)
   visible boolean NOT NULL,
   position integer NOT NULL,
   id_field_category integer REFERENCES galette_fields_categories ON DELETE RESTRICT ON UPDATE CASCADE,
-  PRIMARY KEY (field_id, id_field_category)
+  PRIMARY KEY (table_name, field_id)
 );
 
 -- Table for mailing history storage
