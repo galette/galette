@@ -64,7 +64,7 @@ $(function() {
 	$('#warningbox').backgroundFade({sColor:'#ffffff',eColor:'#FFB619',steps:50},function() {
 		$(this).backgroundFade({sColor:'#FFB619',eColor:'#ffffff'});
 	});
-	$('#infobox').backgroundFade({sColor:'#ffffff',eColor:'#99FF99',steps:50},function() {
+	$('#infobox, #successbox').backgroundFade({sColor:'#ffffff',eColor:'#99FF99',steps:50},function() {
 		$(this).backgroundFade({sColor:'#99FF99',eColor:'#ffffff'});
 	});
 	$('.debuginfos span').hide();

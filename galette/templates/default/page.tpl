@@ -158,8 +158,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     {/if}
 
     {* Let's see if there are success messages to show *}
-    {if $success_detected}
-        <div id="infobox">
+    {if $success_detected|@count > 0}
+        <div id="successbox">
                 <ul>
         {foreach from=$success_detected item=success}
                     <li>{$success}</li>

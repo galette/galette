@@ -1293,7 +1293,7 @@ table.listing {
 	border: none;
 }
 
-#infobox {
+#infobox, #successbox {
 	text-align:center;
 	color:black;
 	border : 2px solid #04CC65;
@@ -1309,7 +1309,8 @@ table.listing {
 	margin: 0;
 }
 
-#infobox ul {
+#infobox ul,
+#successbox ul {
 	list-style-type: none;
 	margin: 2px;
 	padding: 0px;
