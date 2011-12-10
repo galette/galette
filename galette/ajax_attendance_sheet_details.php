@@ -52,8 +52,8 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
 /** @ignore */
 require_once 'classes/varslist.class.php';
 
-if ( isset($_SESSION['galette']['varslist'])  ) {
-    $varslist = unserialize($_SESSION['galette']['varslist']);
+if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'])  ) {
+    $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
 } else {
     $varslist = new VarsList();
 }
@@ -64,7 +64,7 @@ $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 $selection = ( isset($_POST['selection']) ) ? $_POST['selection'] : array();
 
 $varslist->selected = $selection;
-$_SESSION['galette']['varslist'] = serialize($varslist);
+$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'] = serialize($varslist);
 
 $tpl->assign('ajax', $ajax);
 $tpl->assign('selection', $selection);
