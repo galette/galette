@@ -240,7 +240,7 @@ class FieldsConfig
                                             ) :
                                             $this->_defaults[$key]['required'] ?
                                                 true :
-                                                false
+                                                'false'
                                       ),
                     ':visible'     => (
                                         ($reinit) ?
@@ -250,7 +250,7 @@ class FieldsConfig
                                             ) :
                                             $this->_defaults[$key]['visible'] ?
                                                 true :
-                                                false
+                                                'false'
                                       ),
                     ':position'    => (
                                         ($reinit) ?
