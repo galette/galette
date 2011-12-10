@@ -63,8 +63,6 @@ class ContributionsTypes
     private $_libelle;
     private $_extension;
 
-    private $_error;
-
     private static $_fields = array(
         'id_type_cotis',
         'libelle_type_cotis',
@@ -477,7 +475,7 @@ class ContributionsTypes
 
         $ret = $this->get($id);
         if ( !$ret ) {
-            /* get() already logged and set $this->_error. */
+            /* get() already logged */
             return self::ID_NOT_EXITS;
         }
 

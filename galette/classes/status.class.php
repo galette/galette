@@ -60,8 +60,6 @@ class Status
 
     const ID_NOT_EXITS = -1;
 
-    private $_error;
-
     private static $_fields = array(
         'id_statut',
         'libelle_statut',
