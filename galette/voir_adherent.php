@@ -62,10 +62,10 @@ if ( $id_adh == '' ) {
     header('location: index.php');
     die();
 }
-if (isset($_SESSION['galette']['pdf_error']) && $_SESSION['galette']['pdf_error']) {
-    $error_detected[] = $_SESSION['galette']['pdf_error_msg'];
-    unset($_SESSION['galette']['pdf_error_msg']);
-    unset($_SESSION['galette']['pdf_error']);
+if (isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']) && $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']) {
+    $error_detected[] = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error_msg'];
+    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error_msg']);
+    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']);
 }
 
 require_once WEB_ROOT . 'classes/adherent.class.php';
@@ -77,8 +77,8 @@ $member->load($id_adh);
 
 $navigate = array();
 require_once 'classes/varslist.class.php';
-if ( isset($_SESSION['galette']['varslist'])  ) {
-    $varslist = unserialize($_SESSION['galette']['varslist']);
+if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'])  ) {
+    $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
     require_once 'classes/members.class.php';
     $ids = Members::getList(false, array(Adherent::PK));
     //print_r($ids);
@@ -101,7 +101,7 @@ if ( isset($_SESSION['galette']['varslist'])  ) {
 }
 
 // Set caller page ref for cards error reporting
-$_SESSION['galette']['caller']='voir_adherent.php?id_adh='.$id_adh;
+$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['caller']='voir_adherent.php?id_adh='.$id_adh;
 
 // declare dynamic field values
 $adherent['dyn'] = get_dynamic_fields('adh', $id_adh, true);
@@ -129,9 +129,9 @@ $tpl->assign('data', $adherent);
 $tpl->assign('time', time());
 //if we got a mail warning when adding/editing a member,
 //we show it and delete it from session
-if ( isset($_SESSION['galette']['mail_warning']) ) {
-    $tpl->assign('mail_warning', $_SESSION['galette']['mail_warning']);
-    unset($_SESSION['galette']['mail_warning']);
+if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning']) ) {
+    $tpl->assign('mail_warning', $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning']);
+    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning']);
 }
 $content = $tpl->fetch('voir_adherent.tpl');
 $tpl->assign('content', $content);
