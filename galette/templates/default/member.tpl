@@ -1,25 +1,4 @@
 		<form action="{if $login->isLogged()}ajouter_adherent.php{else}self_adherent.php{/if}" method="post" enctype="multipart/form-data" id="form">
-{* FIXME: a bad hack... Title will go to page.tpl in the future as well as error/warnings (see public_page.tpl) *}
-{if $error_detected|@count != 0 and $login->isLogged()}
-		<div id="errorbox">
-			<h1>{_T string="- ERROR -"}</h1>
-			<ul>
-{foreach from=$error_detected item=error}
-				<li>{$error}</li>
-{/foreach}
-			</ul>
-		</div>
-{/if}
-{if $warning_detected|@count != 0}
-		<div id="warningbox">
-			<h1>{_T string="- WARNING -"}</h1>
-			<ul>
-				{foreach from=$warning_detected item=warning}
-					<li>{$warning}</li>
-				{/foreach}
-			</ul>
-		</div>
-{/if}
 		<div class="bigtable">
 {if $self_adh and $head_redirect}
             <div id="infobox">

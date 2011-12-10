@@ -1,14 +1,4 @@
 		<form action="gestion_adherents.php" method="get" id="filtre">
-{if $error_detected|@count != 0}
-		<div id="errorbox">
-			<h1>{_T string="- ERROR -"}</h1>
-			<ul>
-{foreach from=$error_detected item=error}
-				<li>{$error}</li>
-{/foreach}
-			</ul>
-		</div>
-{/if}
 		<div id="listfilter">
 			<label for="filter_str">{_T string="Search:"}&nbsp;</label>
 			<input type="text" name="filter_str" id="filter_str" value="{$varslist->filter_str}" type="search" placeholder="{_T string="Enter a value"}"/>&nbsp;

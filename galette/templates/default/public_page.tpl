@@ -39,6 +39,8 @@
             <a id="trombino" class="button{if $PAGENAME eq "trombinoscope.php"} selected{/if}" href="{$galette_base_path}public/trombinoscope.php" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a>
     {/if}
         </nav>
+
+{* Let's see if there are error messages to show *}
 {if $error_detected|@count != 0}
 				<div id="errorbox">
 					<h1>{_T string="- ERROR -"}</h1>
@@ -49,6 +51,8 @@
 					</ul>
 				</div>
 {/if}
+
+{* Let's see if there are warning messages to show *}
 {if $warning_detected|@count != 0}
 				<div id="warningbox">
 					<h1>{_T string="- WARNING -"}</h1>
@@ -59,6 +63,18 @@
 					</ul>
 				</div>
 {/if}
+
+{* Let's see if there are success messages to show *}
+{if $success_detected|@count > 0}
+    <div id="successbox">
+            <ul>
+    {foreach from=$success_detected item=success}
+                <li>{$success}</li>
+    {/foreach}
+            </ul>
+    </div>
+{/if}
+
         {$content}
         {include file="footer.tpl"}
 	</body>

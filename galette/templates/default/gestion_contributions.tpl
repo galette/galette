@@ -1,13 +1,3 @@
-{if $error_detected|@count != 0}
-		<div id="errorbox">
-			<h1>{_T string="- ERROR -"}</h1>
-			<ul>
-{foreach from=$error_detected item=error}
-				<li>{$error}</li>
-{/foreach}
-			</ul>
-		</div>
-{/if}
 		<form action="gestion_contributions.php" method="get" id="filtre">
 		<div id="listfilter">
 			<label for="start_date_filter">{_T string="Show contributions since"}</label>&nbsp;

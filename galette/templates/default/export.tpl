@@ -1,14 +1,4 @@
 		<form class="form" action="export.php" method="post" enctype="multipart/form-data">
-{if $error_detected|@count != 0}
-		<div id="errorbox">
-			<h1>{_T string="- ERROR -"}</h1>
-			<ul>
-{foreach from=$error_detected item=error}
-				<li>{$error}</li>
-{/foreach}
-			</ul>
-		</div>
-{/if}
 		<p>{_T string="Each selected export will be stored into a separate file in the exports directory."}</p>
 {if $written|@count gt 0}
 			<p>{_T string="The following files have been written on disk:"}</p>

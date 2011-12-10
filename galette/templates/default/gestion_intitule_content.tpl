@@ -1,3 +1,13 @@
+{if $error_detected|@count != 0}
+  <div id="errorbox">
+    <h1>{_T string="- ERROR -"}</h1>
+    <ul>
+      {foreach from=$error_detected item=error}
+        <li>{$error}</li>
+      {/foreach}
+    </ul>
+  </div>
+{/if}
     <table id="input-table">
 {if $class eq 'Status'}
         <caption>

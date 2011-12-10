@@ -149,6 +149,30 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {/if}
         </h1>
 
+    {* Let's see if there are error messages to show *}
+    {if $error_detected|@count != 0}
+            <div id="errorbox">
+                <h1>{_T string="- ERROR -"}</h1>
+                <ul>
+        {foreach from=$error_detected item=error}
+                    <li>{$error}</li>
+        {/foreach}
+                </ul>
+            </div>
+    {/if}
+
+    {* Let's see if there are warning messages to show *}
+    {if $warning_detected|@count != 0}
+            <div id="warningbox">
+                <h1>{_T string="- WARNING -"}</h1>
+                <ul>
+        {foreach from=$warning_detected item=warning}
+                    <li>{$warning}</li>
+        {/foreach}
+                </ul>
+            </div>
+    {/if}
+
     {* In case of a redirection, we inform the user, and propose a direct link *}
     {if $head_redirect}
         <div id="infobox">

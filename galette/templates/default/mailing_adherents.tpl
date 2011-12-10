@@ -3,33 +3,8 @@
 			<h1>{_T string="- ERROR -"}</h1>
 			<p>{_T string="Email sent is disabled in the preferences. Ask galette admin"}</p>
 		</div>
-{elseif $mailing_saved}
-        <div id="infobox">
-            {_T string="Mailing has been successfully saved."}
-        </div>
-{else}
+{elseif !$mailing_saved}
 		<form action="mailing_adherents.php#mail_preview" id="listform" method="post">
-    {if $error_detected|@count != 0}
-		<div id="errorbox">
-			<h1>{_T string="- ERROR -"}</h1>
-			<ul>
-        {foreach from=$error_detected item=error}
-				<li>{$error}</li>
-        {/foreach}
-			</ul>
-		</div>
-    {/if}
-    {if $warning_detected|@count != 0}
-		<div id="warningbox">
-			<h1>{_T string="- WARNING -"}</h1>
-			<ul>
-        {foreach from=$warning_detected item=warning}
-                <li>{$warning}</li>
-        {/foreach}
-			</ul>
-		</div>
-    {/if}
-
         <div class="mailing">
             <section class="mailing_infos">
                 <header class="ui-state-default ui-state-active">{_T string="Mailing informations"}</header>

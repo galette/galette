@@ -55,7 +55,6 @@ require_once 'champs_adherents.php';
 
 $requires = new Required();
 $error_detected = array();
-$required_stored = false;
 $fields = $requires->getFields();
 
 /* Fields that are not visible in the
@@ -83,7 +82,7 @@ if ( isset($_POST) && count($_POST)>1 ) {
     if ( !$requires->setRequired($values) ) {
         $error_detected[] = _T("An error has occured while storing required fields. Please try again, and contact the administrator if the problem persists.");
     } else {
-        $required_stored = true;
+        $success_detected[] = _T("Required fields has been saved.");
     }
 }
 
@@ -95,7 +94,7 @@ $tpl->assign('fields', $fields);
 $tpl->assign('adh_fields', $adh_fields);
 $tpl->assign('required', $required);
 $tpl->assign('error_detected', $error_detected);
-$tpl->assign('required_stored', $required_stored);
+$tpl->assign('success_detected', $success_detected);
 $content = $tpl->fetch('champ_requis.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');

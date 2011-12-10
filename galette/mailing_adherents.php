@@ -172,6 +172,7 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
         //user requested to save the mailing
         $histo = new MailingHistory($mailing);
         if ( $histo->storeMailing() !== false ) {
+            $success_detected[] = _T("Mailing has been successfully saved.");
             $tpl->assign('mailing_saved', true);
             $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing'] = null;
             unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
@@ -183,6 +184,7 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
         }
     }
 
+    $tpl->assign('success_detected', $success_detected);
     $tpl->assign('warning_detected', $warning_detected);
     $tpl->assign('error_detected', $error_detected);
     $tpl->assign('mailing', $mailing);

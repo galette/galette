@@ -5,16 +5,6 @@
         <a id="next" href="{if $navigate.next}?id_adh={$navigate.next}{else}#{/if}"class="button{if !$navigate.next} selected{/if}">{_T string="Next"}</a>
     </nav>
 {/if}
-{if $error_detected|@count != 0}
-    		<div id="errorbox">
-    			<h1>{_T string="- ERROR -"}</h1>
-    			<ul>
-{foreach from=$error_detected item=error}
-    				<li>{$error}</li>
-{/foreach}
-    			</ul>
-    		</div>
-{/if}
 {if $mail_warning}
 		<div id="warningbox">
 			<h1>{_T string="- WARNING -")}</h1>

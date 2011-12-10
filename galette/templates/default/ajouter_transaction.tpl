@@ -1,23 +1,4 @@
 		<form action="ajouter_transaction.php" method="post">
-{if $error_detected|@count != 0}
-		<div id="errorbox">
-			<h1>{_T string="- ERROR -"}</h1>
-			<ul>
-{foreach from=$error_detected item=error}
-				<li>{$error}</li>
-{/foreach}
-			</ul>
-		</div>
-{/if}
-{if $success_detected|@count != 0}
-		<div id="infobox">
-			<ul>
-{foreach from=$success_detected item=success}
-				<li>{$success}</li>
-{/foreach}
-			</ul>
-		</div>
-{/if}
 		<div class="bigtable">
 			<fieldset class="cssform">
 				<legend class="ui-state-active ui-corner-top">{_T string="Transaction details"}</legend>

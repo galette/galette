@@ -66,7 +66,6 @@ require_once WEB_ROOT . 'classes/members.class.php';
 $error_detected = array();
 $warning_detected = array();
 $confirm_detected = array();
-$prefs_stored = false;
 $print_logo = new PrintLogo();
 
 // flagging required fields
@@ -294,7 +293,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
         if ( !$preferences->store() ) {
             $error_detected[] = _T("An SQL error has occured while storing preferences. Please try again, and contact the administrator if the problem persists.");
         } else {
-            $prefs_stored = true;
+            $success_detected[] = _T("Preferences has been saved.");
         }
 
         // picture upload
@@ -409,7 +408,7 @@ $tpl->assign('languages', $i18n->getList());
 $tpl->assign('themes', $themes);
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('warning_detected', $warning_detected);
-$tpl->assign('prefs_stored', $prefs_stored);
+$tpl->assign('success_detected', $success_detected);
 $tpl->assign('require_tabs', true);
 $tpl->assign('color_picker', true);
 // page generation

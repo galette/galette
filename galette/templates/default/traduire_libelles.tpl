@@ -1,13 +1,3 @@
-{if $error_detected|@count != 0}
-		<div id="errorbox">
-			<h1>{_T string="- ERROR -"}</h1>
-			<ul>
-{foreach from=$error_detected item=error}
-				<li>{$error}</li>
-{/foreach}
-			</ul>
-		</div>
-{/if}
 {if $text_orig != ''}
 		<form action="traduire_libelles.php" method="post" enctype="multipart/form-data">
 			<div class="bigtable">

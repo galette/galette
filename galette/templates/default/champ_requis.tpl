@@ -1,17 +1,4 @@
 	<form action="champs_requis.php" method="post">
-{if $error_detected|@count != 0}
-		<div id="errorbox">
-			<h1>{_T string="- ERROR -"}</h1>
-			<ul>
-{foreach from=$error_detected item=error}
-				<li>{$error}</li>
-{/foreach}
-			</ul>
-		</div>
-{/if}
-{if $required_stored}
-	<div id="infobox">{_T string="Required fields has been saved."}</div>
-{/if}
 		<fieldset class="cssform">
 			<legend class="ui-state-active ui-corner-top">{_T string="Select mandatory fields for new adherents:"}</legend>
 			{foreach key=col item=value from=$fields}

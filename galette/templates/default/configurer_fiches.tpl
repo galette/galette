@@ -1,14 +1,4 @@
 		<form action="configurer_fiches.php" method="post" enctype="multipart/form-data" class="tabbed">
-{if $error_detected|@count != 0}
-		<div id="errorbox">
-			<h1>{_T string="- ERROR -"}</h1>
-			<ul>
-{foreach from=$error_detected item=error}
-				<li>{$error}</li>
-{/foreach}
-			</ul>
-		</div>
-{/if}
 		<div id="configfiches_tabs">
 		<ul>
 {foreach from=$all_forms key=key item=form}

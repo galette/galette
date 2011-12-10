@@ -1,27 +1,4 @@
 		<form action="preferences.php" method="post" enctype="multipart/form-data" class="tabbed">
-{if $error_detected|@count != 0}
-		<div id="errorbox">
-			<h1>{_T string="- ERROR -"}</h1>
-			<ul>
-{foreach from=$error_detected item=error}
-				<li>{$error}</li>
-{/foreach}
-			</ul>
-		</div>
-{/if}
-{if $warning_detected|@count != 0}
-		<div id="warningbox">
-			<h1>{_T string="- WARNING -"}</h1>
-			<ul>
-{foreach from=$warning_detected item=warning}
-				<li>{$warning}</li>
-{/foreach}
-			</ul>
-		</div>
-{/if}
-{if $prefs_stored}
-	<div id="infobox">{_T string="Preferences has been saved."}</div>
-{/if}
         <div id="prefs_tabs">
             <ul>
                 <li><a href="#general">{_T string="General"}</a></li>
