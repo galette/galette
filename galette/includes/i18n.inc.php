@@ -189,6 +189,7 @@ function updateDynamicTranslation(
             $values,
             $where
         );
+        return true;
     } catch (Exception $e) {
         /** FIXME */
         $log->log(

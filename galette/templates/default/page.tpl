@@ -157,6 +157,17 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         </div>
     {/if}
 
+    {* Let's see if there are success messages to show *}
+    {if $success_detected}
+        <div id="infobox">
+                <ul>
+        {foreach from=$success_detected item=success}
+                    <li>{$success}</li>
+        {/foreach}
+                </ul>
+        </div>
+    {/if}
+
         {$content}
 	</div>
     {include file="footer.tpl"}

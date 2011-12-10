@@ -61,13 +61,29 @@ if ( isset($_POST['trans']) && isset($text_orig) ) {
     while ( list($key, $value) = each($_POST) ) {
         if ( substr($key, 0, 11) == 'text_trans_' ) {
             $trans_lang = substr($key, 11);
-            updateDynamicTranslation(
+            $res = updateDynamicTranslation(
                 $text_orig,
                 $trans_lang,
                 $value,
                 $error_detected
             );
+            if ( $res !== true ) {
+                $error_detected[] = preg_replace(
+                    array(
+                        '/%label/',
+                        '/%lang/'
+                    ),
+                    array(
+                        $text_orig,
+                        $trans_lang
+                    ),
+                    _T("An error occured saving label `%label` for language `%lang`")
+                );
+            }
         }
+    }
+    if ( count($error_detected) == 0 ) {
+        $success_detected[] = _T("Labels has been sucessfully translated!");
     }
 }
 
@@ -150,6 +166,7 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
 $tpl->assign('page_title', _T("Translate labels"));
 $tpl->assign('text_orig', $text_orig);
 $tpl->assign('error_detected', $error_detected);
+$tpl->assign('success_detected', $success_detected);
 $content = $tpl->fetch('traduire_libelles.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
