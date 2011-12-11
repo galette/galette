@@ -57,11 +57,6 @@ class Required
     private $_fields = array();
     const TABLE = 'required';
 
-    private $_types = array(
-        'text',
-        'boolean'
-    );
-
     private $_defaults = array(
         'titre_adh',
         'nom_adh',
@@ -125,6 +120,13 @@ class Required
                     }
                 }
 
+                //some fields should be ALWAYS required
+                if ( $this->_all_required['login_adh'] !== 1 ) {
+                    $this->_all_required['login_adh'] = 1;
+                }
+                if ( $this->_all_required['mdp_adh'] !== 1 ) {
+                    $this->_all_required['mdp_adh'] = 1;
+                }
             }
         } catch (Exception $e) {
             /** TODO */
