@@ -15,6 +15,15 @@ CREATE SEQUENCE galette_cotisations_id_seq
     MINVALUE 1
     CACHE 1;
 
+-- sequence for statuts
+DROP SEQUENCE IF EXISTS galette_statuts_id_seq;
+CREATE SEQUENCE galette_statuts_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
 DROP SEQUENCE IF EXISTS galette_transactions_id_seq;
 CREATE SEQUENCE galette_transactions_id_seq
     START 1
@@ -137,7 +146,7 @@ CREATE TABLE galette_transactions (
 
 DROP TABLE IF EXISTS galette_statuts;
 CREATE TABLE galette_statuts (
-  id_statut integer NOT NULL,
+  id_statut integer DEFAULT nextval('galette_statuts_id_seq'::text) NOT NULL,
   libelle_statut  character varying(20) DEFAULT '' NOT NULL,
   priorite_statut smallint DEFAULT '0' NOT NULL,
   PRIMARY KEY (id_statut)

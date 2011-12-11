@@ -9,6 +9,17 @@ CREATE SEQUENCE galette_types_cotisation_id_seq
 -- Set sequence value to handle existing data
 SELECT setval('galette_types_cotisation_id_seq', (SELECT max(id_type_cotis) FROM galette_types_cotisation));
 
+-- sequence for statuts
+DROP SEQUENCE IF EXISTS galette_statuts_id_seq;
+CREATE SEQUENCE galette_statuts_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+-- Set sequence value to handle existing data
+SELECT setval('galette_statuts_id_seq', (SELECT max(id_statut) FROM galette_statuts));
+
 -- sequence for groups
 DROP SEQUENCE IF EXISTS galette_groups_id_seq;
 CREATE SEQUENCE galette_groups_id_seq
@@ -141,6 +152,7 @@ ALTER TABLE galette_adherents ADD date_modif_adh date DEFAULT '1901-01-01' NOT N
 
 -- Missing auto increment
 ALTER TABLE galette_types_cotisation ALTER id_type_cotis SET DEFAULT nextval('galette_types_cotisation_id_seq'::text);
+ALTER TABLE galette_statuts ALTER id_statut SET DEFAULT nextval('galette_statuts_id_seq'::text);
 
 -- Missing primary keys
 ALTER TABLE galette_types_cotisation ADD CONSTRAINT galette_types_cotisation_pkey PRIMARY KEY (id_type_cotis);
