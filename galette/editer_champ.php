@@ -161,6 +161,7 @@ if ( isset($_POST['valid']) ) {
                     'An error occured storing field | ' . $e->getMessage(),
                     PEAR_LOG_ERR
                 );
+                $error_detected[] = _T("An error occured storing the field.");
             }
         }
 
