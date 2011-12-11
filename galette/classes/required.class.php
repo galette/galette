@@ -270,6 +270,7 @@ class Required
                 array('required' => 'false'),
                 $zdb->db->quoteInto('field_id NOT IN (?)', $value)
             );
+            $this->_all_required = null;
             $this->_checkUpdate();
             return true;
         } catch (Exception $e) {
