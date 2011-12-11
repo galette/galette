@@ -1,3 +1,23 @@
+-- sequence for contributions types
+DROP SEQUENCE IF EXISTS galette_types_cotisation_id_seq;
+CREATE SEQUENCE galette_types_cotisation_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+-- Set sequence value to handle existing data
+SELECT setval('galette_types_cotisation_id_seq', (SELECT max(id_type_cotis) FROM galette_types_cotisation));
+
+-- sequence for groups
+DROP SEQUENCE IF EXISTS galette_groups_id_seq;
+CREATE SEQUENCE galette_groups_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
 -- Each preference must be unique
 CREATE UNIQUE INDEX galette_preferences_name ON galette_preferences (nom_pref);
 
@@ -118,6 +138,9 @@ ALTER TABLE galette_cotisations ADD type_paiement_cotis smallint DEFAULT '0' NOT
 
 ALTER TABLE galette_adherents ADD societe_adh character varying(20) DEFAULT NULL;
 ALTER TABLE galette_adherents ADD date_modif_adh date DEFAULT '1901-01-01' NOT NULL;
+
+-- Missing auto increment
+ALTER TABLE galette_types_cotisation ALTER id_type_cotis SET DEFAULT nextval('galette_types_cotisation_id_seq'::text);
 
 -- Missing primary keys
 ALTER TABLE galette_types_cotisation ADD CONSTRAINT galette_types_cotisation_pkey PRIMARY KEY (id_type_cotis);

@@ -48,6 +48,15 @@ CREATE SEQUENCE galette_field_types_id_seq
     MINVALUE 1
     CACHE 1;
 
+-- sequence for contributions types
+DROP SEQUENCE IF EXISTS galette_types_cotisation_id_seq;
+CREATE SEQUENCE galette_types_cotisation_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
 -- sequence for groups
 DROP SEQUENCE IF EXISTS galette_groups_id_seq;
 CREATE SEQUENCE galette_groups_id_seq
@@ -136,7 +145,7 @@ CREATE TABLE galette_statuts (
 
 DROP TABLE IF EXISTS galette_types_cotisation CASCADE;
 CREATE TABLE galette_types_cotisation (
-  id_type_cotis integer NOT NULL,
+  id_type_cotis integer DEFAULT nextval('galette_types_cotisation_id_seq'::text) NOT NULL,
   libelle_type_cotis character varying(30) DEFAULT '' NOT NULL,
   cotis_extension boolean DEFAULT FALSE,
   PRIMARY KEY (id_type_cotis)
