@@ -326,9 +326,9 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
             header('location: voir_adherent.php?id_adh=' . $member->id);
         }
     }
+} else {
+    $adherent['dyn'] = get_dynamic_fields('adh', $member->id, false);
 }
-
-$adherent['dyn'] = get_dynamic_fields('adh', $member->id, false);
 
 // - declare dynamic fields for display
 $disabled['dyn'] = array();
