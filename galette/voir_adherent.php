@@ -130,9 +130,10 @@ $tpl->assign('time', time());
 //if we got a mail warning when adding/editing a member,
 //we show it and delete it from session
 if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning']) ) {
-    $tpl->assign('mail_warning', $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning']);
+    $warning_detected[] = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning'];
     unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning']);
 }
+$tpl->assign('warning_detected', $warning_detected);
 $content = $tpl->fetch('voir_adherent.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');

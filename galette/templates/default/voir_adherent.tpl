@@ -5,14 +5,6 @@
         <a id="next" href="{if $navigate.next}?id_adh={$navigate.next}{else}#{/if}"class="button{if !$navigate.next} selected{/if}">{_T string="Next"}</a>
     </nav>
 {/if}
-{if $mail_warning}
-		<div id="warningbox">
-			<h1>{_T string="- WARNING -")}</h1>
-			<ul>
-				<li>{$mail_warning}</li>
-			</ul>
-		</div>
-{/if}
 		<ul id="details_menu">
 {if ($pref_card_self eq 1) or ($login->isAdmin() or $login->isStaff())}
 			<li>
