@@ -94,10 +94,10 @@ if ( isset($_POST['valid']) ) {
     $field_perm = get_numeric_posted_value('field_perm', '');
     $field_pos = get_numeric_posted_value('field_pos', 0);
     $field_required = get_numeric_posted_value('field_required', '0');
-    $field_width = get_numeric_posted_value('field_width', 'NULL');
-    $field_height = get_numeric_posted_value('field_height', 'NULL');
-    $field_size = get_numeric_posted_value('field_size', 'NULL');
-    $field_repeat = get_numeric_posted_value('field_repeat', 'NULL');
+    $field_width = get_numeric_posted_value('field_width', NULL);
+    $field_height = get_numeric_posted_value('field_height', NULL);
+    $field_size = get_numeric_posted_value('field_size', NULL);
+    $field_repeat = get_numeric_posted_value('field_repeat', 'false');
     $fixed_values = get_form_value('fixed_values', '');
 
     if ( $field_id != '' && $field_perm != '' ) {
