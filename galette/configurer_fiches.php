@@ -116,7 +116,7 @@ if ( $form_name == '' ) {
                         && count($error_detected) == 0
                     ) {
                         $field_id = $zdb->db->lastInsertId(
-                            PREFIX_DB . self::TABLE,
+                            PREFIX_DB . DynamicFields::TABLE,
                             'id'
                         );
                         header(
