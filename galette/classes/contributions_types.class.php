@@ -352,9 +352,9 @@ class ContributionsTypes
     * Add a new contribution type.
     *
     * @param string  $label     The label
-    * @param integer $extension Extension amount
+    * @param boolean $extension Contribution extension
     *
-    * @return intager id if success ; -1 : DB error ; -2 : label already exists
+    * @return integer id if success ; -1 : DB error ; -2 : label already exists
     */
     public function add($label, $extension)
     {
@@ -374,7 +374,7 @@ class ContributionsTypes
         try {
             $values = array(
                 'libelle_type_cotis'  => $label,
-                'cotis_extension' => $extension
+                'cotis_extension' => ($extension == 1) ? true : 'false'
             );
 
             $ret = $zdb->db->insert(
