@@ -354,6 +354,13 @@ footer li {
 /* =/ Footer */
 
 /* == Main Galette styles */
+#asso_name {
+    text-align: center;
+    margin: 0 0 1em;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
 #adresse2_adh {
     border-top: 0;
 }
@@ -927,7 +934,7 @@ input.submit:hover
 	font-size:1.3em;
 	line-height:1.7em;
 	background-color:#DDDDFF;
-	margin:0 1em 1em 1em;
+	margin:0 1em 0em 1em;
 	color: #666;
 	text-align:center;
     position:relative;

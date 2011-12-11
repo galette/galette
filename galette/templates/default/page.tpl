@@ -148,6 +148,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 </a>
             {/if}
         </h1>
+        <p id="asso_name">{$preferences->pref_nom}{if $preferences->pref_slogan}&nbsp;: {$preferences->pref_slogan}{/if}</p>
 
     {* Let's see if there are error messages to show *}
     {if $error_detected|@count != 0}
