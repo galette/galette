@@ -1651,10 +1651,16 @@ td.photo img{
 #tooltip {
 	position: absolute;
 	z-index: 3000;
-	border: 1px solid #111;
-	background-color: #eee;
+	background-color: white;
 	padding: 5px;
 	opacity: 0.95;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    -moz-box-shadow: 1px 1px 12px #555;
+    -webkitbox-shadow: 1px 1px 12px #555;
+    box-shadow: 1px 1px 12px #555;
+
 }
 #tooltip h3, #tooltip div { margin: 0; }
 
