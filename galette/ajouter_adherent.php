@@ -119,6 +119,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
         if ( $store === true ) {
             //member has been stored :)
             if ( $new ) {
+                $success_detected[] = _T("New member has been successfully added.");
                 //Send email to admin if preference checked
                 if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
                     && $preferences->pref_bool_mailadh
@@ -180,6 +181,8 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     }
                     unset ($texts);
                 }
+            } else {
+                $success_detected[] = _T("Member account has been modified.");
             }
 
             // send mail to member
@@ -229,13 +232,15 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                         $sent = $mail->send();
 
                         if ( $sent == GaletteMail::MAIL_SENT ) {
-                            $hist->add(
-                                str_replace(
-                                    '%s',
-                                    $member->sname . ' (' . $member->email . ')',
-                                    _T("Account mail sent to '%s'.")
-                                )
+                            $msg = str_replace(
+                                '%s',
+                                $member->sname . ' (' . $member->email . ')',
+                                ($new) ?
+                                _T("New account mail sent to '%s'.") :
+                                _T("Account modification mail sent to '%s'.")
                             );
+                            $hist->add($msg);
+                            $success_detected[] = $msg;
                         } else {
                             $str = str_replace(
                                 '%s',
@@ -322,6 +327,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
     }
 
     if ( count($error_detected) == 0 ) {
+        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['account_success'] = serialize($success_detected);
         if ( !isset($_POST['id_adh']) ) {
             header(
                 'location: ajouter_contribution.php?id_adh=' . $member->id

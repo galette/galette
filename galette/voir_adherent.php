@@ -134,6 +134,13 @@ if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning']) ) {
     unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning']);
 }
 $tpl->assign('warning_detected', $warning_detected);
+if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['account_success']) ) {
+    $success_detected = unserialize(
+        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['account_success']
+    );
+    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['account_success']);
+}
+$tpl->assign('success_detected', $success_detected);
 $content = $tpl->fetch('voir_adherent.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
