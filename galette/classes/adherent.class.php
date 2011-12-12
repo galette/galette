@@ -1317,7 +1317,8 @@ class Adherent
                 return Politeness::getPoliteness($this->_politeness);
                 break;
             case 'sstatus':
-                return Status::getLabel($this->_status);
+                $status = new Status();
+                return $status->getLabel($this->_status);
                 break;
             case 'sfullname':
                 $sfn = mb_strtoupper($this->_name, 'UTF-8') . ' ' .

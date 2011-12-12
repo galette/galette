@@ -168,9 +168,6 @@ class Status
     }
 
     /**
-    * TODO: replace with a static function ?
-    */
-    /**
     * Complete list of statuses
     *
     * @return array of all statuses if succeed, false otherwise
@@ -254,9 +251,9 @@ class Status
      *
      * @return string
      */
-    public static function getLabel($id, $translated = true)
+    public function getLabel($id, $translated = true)
     {
-        $res = self::get($id);
+        $res = $this->get($id);
         return ($translated) ? _T($res->libelle_statut) : $res->libelle_statut;
     }
 
