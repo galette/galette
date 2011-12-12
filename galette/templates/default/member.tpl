@@ -13,25 +13,7 @@
                 </p>
             </div>
 {else}
-    {if (!$self_adh and ($login->isAdmin() or $login->isStaff())) and !$disabled.send_mail}
-					<p>
-						<label for="mail_confirm">
-        {if $member->id}
-                            {_T string="Notify member his account has been modified"}
-        {else}
-                            {_T string="Notify member his account has been created"}
-        {/if}
-                        </label>
-						<input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
-						<br/><span class="exemple">
-        {if $member->id}
-							{_T string="Member will be notified by mail his account has been modified."}
-        {else}
-							{_T string="Member will receive his username and password by email, if he has an address."}
-        {/if}
-						</span>
-					</p>
-    {/if}
+    		<p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
 			<fieldset class="cssform">
 				<legend class="ui-state-active ui-corner-top">{_T string="Identity:"}</legend>
 				<div>
@@ -267,12 +249,30 @@
 			</fieldset>
 
     {include file="display_dynamic_fields.tpl" is_form=true}
+    {if (!$self_adh and ($login->isAdmin() or $login->isStaff())) and !$disabled.send_mail}
+					<p>
+						<label for="mail_confirm">
+        {if $member->id}
+                            {_T string="Notify member his account has been modified"}
+        {else}
+                            {_T string="Notify member his account has been created"}
+        {/if}
+                        </label>
+						<input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
+						<br/><span class="exemple">
+        {if $member->id}
+							{_T string="Member will be notified by mail his account has been modified."}
+        {else}
+							{_T string="Member will receive his username and password by email, if he has an address."}
+        {/if}
+						</span>
+					</p>
+    {/if}
 		</div>
 		<div class="button-container">
 			<input type="submit" name="valid" id="btnsave" value="{_T string="Save"}"/>
 			<input type="hidden" name="id_adh" value="{$member->id}"/>
 		</div>
-		<p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
 		</form> 
 		<script type="text/javascript">
             $(function() {ldelim}
