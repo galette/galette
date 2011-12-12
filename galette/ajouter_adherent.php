@@ -248,7 +248,9 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     }
                 } else if ( $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
                     //if mail has been disabled in the preferences, we should not be here ; we do not throw an error, just a simple warning that will be show later
-                    $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning'] = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
+                    $msg = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
+                    $warning_detected[] = $msg;
+                    $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning'] = $msg;
                 }
             }
 
@@ -360,6 +362,10 @@ $tpl->assign('data', $adherent);
 $tpl->assign('self_adh', false);
 $tpl->assign('dynamic_fields', $dynamic_fields);
 $tpl->assign('error_detected', $error_detected);
+if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning']) ) {
+    //warning will be showed here, no need to keep it longer into session
+    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning']);
+}
 $tpl->assign('warning_detected', $warning_detected);
 $tpl->assign('languages', $i18n->getList());
 $tpl->assign('require_calendar', true);
