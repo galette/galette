@@ -10,6 +10,14 @@
 					</th>
 				</tr>
 			</thead>
+            <tfoot>
+				<tr>
+					<td colspan="3" class="center">
+						{_T string="Pages:"}<br/>
+						<ul class="pages">{$pagination}</ul>
+					</td>
+				</tr>
+            </tfoot>
 			<tbody>
 {foreach from=$members_list item=member}
 				<tr>
@@ -56,5 +64,8 @@
     {/if}
             </ul>
             <button class="button" id="btnvalid">{_T string="Validate"}</button>
+            {if $the_id}
+                <input type="hidden" name="the_id" id="the_id" value="{$the_id}"/>
+            {/if}
         </section>
 {/if}

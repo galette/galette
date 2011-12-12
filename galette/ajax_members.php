@@ -57,13 +57,27 @@ require_once WEB_ROOT . 'classes/varslist.class.php';
 require_once WEB_ROOT . 'classes/mailing.class.php';
 require_once WEB_ROOT . 'classes/groups.class.php';
 
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']) ) {
-    $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
-} else {
-    $varslist = new VarsList();
+$varslist = new VarsList();
+
+if (isset($_GET['page'])) {
+    $varslist->current_page = (int)$_GET['page'];
 }
 
-$members_list = Members::getList(true, null, false);
+if (isset($_POST['page'])) {
+    $varslist->current_page = (int)$_POST['page'];
+}
+
+//numbers of rows to display
+if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
+    $varslist->show = $_GET['nbshow'];
+}
+
+$members = new Members();
+$members_list = $members->getMembersList(true);
+
+//assign pagination variables to the template and add pagination links
+$varslist->setSmartyPagination($tpl);
+
 $mailing = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
 $selected_members = null;
 $unreachables_members = null;
@@ -81,8 +95,12 @@ if ( !isset($_POST['from']) ) {
             throw new Exception('A group id is required.');
             exit(0);
         }
-        $group = new Groups((int)$_POST['gid']);
-        $selected_members = $group->getMembers();
+        if ( !isset($_POST['members']) ) {
+            $group = new Groups((int)$_POST['gid']);
+            $selected_members = $group->getMembers();
+        } else {
+            $selected_members = Members::getArrayList($_POST['members']);
+        }
         break;
     }
 }
@@ -92,6 +110,8 @@ $tpl->assign('multiple', $multiple);
 $tpl->assign('members_list', $members_list);
 $tpl->assign('selected_members', $selected_members);
 $tpl->assign('unreachables_members', $unreachables_members);
+$tpl->assign('the_id', $_POST['gid']);
+$tpl->assign('varslist', $varslist);
 
 if ( $ajax ) {
     $tpl->assign('mode', 'ajax');

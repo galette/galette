@@ -85,6 +85,10 @@
 
         var _members_ajax_mapper = function(res, gid){ldelim}
             $('#members_list').append(res);
+            $('#selected_members ul').css(
+                'max-height',
+                $('#members_list').innerHeight() - $('#btnvalid').outerHeight() - $('#selected_members header').outerHeight() - 60 // -60 to fix display; do not know why
+            );
             $('#btnvalid').button().click(function(){ldelim}
                 //first, let's store new recipients in mailing object
                 var _members = new Array();
@@ -113,7 +117,7 @@
                     $('#selected_members ul').append(_none);
                 {rdelim}
             {rdelim});
-            $('#members_list #listing a').click(function(){ldelim}
+            $('#members_list #listing tbody a').click(function(){ldelim}
                 var _mid = this.href.substring(this.href.indexOf('?')+8);
                 var _mname = $(this).text();
                 $('#none_selected').remove()
@@ -130,6 +134,29 @@
                 return false;
             {rdelim});
 
+            $('#members_list .pages a').click(function(){ldelim}
+                var _page = this.href.substring(this.href.indexOf('?')+6);
+                var gid = $('#the_id').val();
+                var _members = new Array();
+                $('li[id^="member_"]').each(function(){ldelim}
+                    _members[_members.length] = this.id.substring(7, this.id.length);
+                {rdelim});
+
+                $.ajax({ldelim}
+                    url: 'ajax_members.php',
+                    type: "POST",
+                    data: {ldelim}ajax: true, from: 'groups', gid: gid, members: _members, page: _page{rdelim},
+                    {include file="js_loader.tpl"},
+                    success: function(res){ldelim}
+                        $('#members_list').empty();
+                        _members_ajax_mapper(res, gid);
+                    {rdelim},
+                    error: function() {ldelim}
+                        alert("{_T string="An error occured displaying members interface :(" escape="js"}");
+                    {rdelim}
+                });
+                return false;
+            {rdelim});
         {rdelim}
     {rdelim});
 </script>

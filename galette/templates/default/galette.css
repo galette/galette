@@ -815,6 +815,7 @@ h1 #sendmail .ui-button-text {
     text-align: left;
     list-style-image: url(images/clearfilter.png);
     cursor: pointer;
+    overflow: auto;
 }
 
 #selected_members ul #none_selected,
