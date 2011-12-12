@@ -41,10 +41,6 @@ require_once 'classes/adherent.class.php';
 require_once 'classes/galette_password.class.php';
 require_once 'classes/texts.class.php';
 
-// initialize warnings
-$error_detected = array();
-$warning_detected = array();
-
 // Validation
 if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
     $login_adh = $_POST['login'];

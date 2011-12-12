@@ -62,10 +62,6 @@ $transaction['trans_date'] = get_form_value("trans_date", '');
 $transaction['trans_desc'] = get_form_value("trans_desc", '');
 $transaction['id_adh'] = get_numeric_form_value("id_adh", '');
 
-// initialize warning
-$error_detected = array();
-$success_detected = array();
-
 // flagging required fields
 $required = array(
     'trans_amount'  =>  1,

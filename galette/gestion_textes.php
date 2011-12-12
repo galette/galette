@@ -51,10 +51,6 @@ if ( !$login->isLogged() ) {
 
 require_once WEB_ROOT . 'classes/texts.class.php';
 
-// initialize warnings
-$error_detected = array();
-$warning_detected = array();
-
 $cur_lang = $preferences->pref_lang;
 $cur_ref = Texts::DEFAULT_REF;
 

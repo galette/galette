@@ -54,8 +54,6 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 require_once WEB_ROOT . 'classes/dynamic_fields.class.php';
 require_once WEB_ROOT . 'includes/dynamic_fields.inc.php';
 
-$error_detected = array();
-
 $form_name = ( isset($_GET['form']) ) ? $_GET['form'] : 'adh';
 if ( isset($_POST['form']) && trim($_POST['form']) != '' ) {
     $form_name = $_POST['form'];

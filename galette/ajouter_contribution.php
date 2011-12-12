@@ -54,9 +54,6 @@ require_once 'classes/varslist.class.php';
 
 $contrib = new Contribution();
 
-// initialize warning
-$error_detected = array();
-
 $id_cotis = get_numeric_form_value('id_cotis', '');
 
 //first/second step: select member

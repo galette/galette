@@ -155,6 +155,11 @@ if ( isset($_GET['pref_lang']) ) {
 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lang'] = serialize($i18n);
 require_once WEB_ROOT . 'includes/i18n.inc.php';
 
+// initialize messages arrays
+$error_detected = array();
+$warning_detected = array();
+$success_detected = array();
+
 if ( !$installer ) { //If we're not working from installer
     require_once WEB_ROOT . 'config/config.inc.php';
 

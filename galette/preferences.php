@@ -62,10 +62,6 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 require_once WEB_ROOT . 'classes/print_logo.class.php';
 require_once WEB_ROOT . 'classes/members.class.php';
 
-// initialize warnings
-$error_detected = array();
-$warning_detected = array();
-$confirm_detected = array();
 $print_logo = new PrintLogo();
 
 // flagging required fields

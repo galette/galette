@@ -78,11 +78,6 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     $disabled  = $member->disabled_fields + $member->edit_disabled_fields;
 }
 
-// initialize warnings
-$error_detected = array();
-$warning_detected = array();
-$confirm_detected = array();
-
 // flagging required fields
 require_once WEB_ROOT . 'classes/required.class.php';
 

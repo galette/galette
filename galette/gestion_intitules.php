@@ -52,8 +52,6 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-$error_detected = array();
-
 $fields = array(
     'Status' => array(
         'id'    => 'id_statut',

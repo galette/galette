@@ -64,8 +64,6 @@ require_once WEB_ROOT . 'classes/varslist.class.php';
 require_once WEB_ROOT . 'classes/mailing.class.php';
 require_once WEB_ROOT . 'classes/mailing_history.class.php';
 
-$error_detected = array();
-$warning_detected = array();
 $data = array();
 
 if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {

@@ -64,7 +64,6 @@ if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'])  ) {
 
 require_once 'classes/members.class.php';
 
-$error_detected = array();
 // Set caller page ref for cards error reporting
 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['caller'] = 'gestion_adherents.php';
 

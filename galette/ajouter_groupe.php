@@ -57,11 +57,6 @@ if ( $id ) {
     $group->load($id);
 }
 
-// initialize warnings
-$error_detected = array();
-$warning_detected = array();
-$confirm_detected = array();
-
 if ( isset($_POST['group_name']) ) {
     $group->setName($_POST['group_name']);
     $group->setOwner($_POST['group_owner']);

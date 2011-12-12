@@ -40,8 +40,6 @@ require_once 'includes/galette.inc.php';
 require_once 'classes/galette_password.class.php';
 
 // initialize warnings
-$error_detected = array();
-$warning_detected = array();
 $hash = '';
 $password_updated = false;
 $password = new GalettePassword();

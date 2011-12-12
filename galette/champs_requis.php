@@ -54,7 +54,6 @@ require_once 'classes/required.class.php';
 require_once 'champs_adherents.php';
 
 $requires = new Required();
-$error_detected = array();
 $fields = $requires->getFields();
 
 /* Fields that are not visible in the

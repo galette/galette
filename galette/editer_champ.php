@@ -53,8 +53,6 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 
 require WEB_ROOT . 'includes/dynamic_fields.inc.php';
 
-$error_detected = array();
-
 $form_name = get_form_value('form', '');
 if ( !isset($all_forms[$form_name]) ) {
     header('location: configurer_fiches.php');

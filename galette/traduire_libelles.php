@@ -53,8 +53,6 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-$error_detected = array();
-
 $text_orig = get_form_value('text_orig', '');
 if ( isset($_POST['trans']) && isset($text_orig) ) {
     // Validate form
