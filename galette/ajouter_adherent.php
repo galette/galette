@@ -319,7 +319,9 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
 
         // dynamic fields
         set_all_dynamic_fields('adh', $member->id, $adherent['dyn']);
+    }
 
+    if ( count($error_detected) == 0 ) {
         if ( !isset($_POST['id_adh']) ) {
             header(
                 'location: ajouter_contribution.php?id_adh=' . $member->id
