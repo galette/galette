@@ -78,12 +78,16 @@ $members_list = $members->getMembersList(true);
 //assign pagination variables to the template and add pagination links
 $varslist->setSmartyPagination($tpl);
 
-$mailing = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
 $selected_members = null;
 $unreachables_members = null;
 if ( !isset($_POST['from']) ) {
-    $selected_members = $mailing->recipients;
-    $unreachables_members = $mailing->unreachables;
+    $mailing = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
+    if ( !isset($_POST['members']) ) {
+        $selected_members = $mailing->recipients;
+        $unreachables_members = $mailing->unreachables;
+    } else {
+        $selected_members = Members::getArrayList($_POST['members']);
+    }
 } else {
     switch ( $_POST['from'] ) {
     case 'groups':
