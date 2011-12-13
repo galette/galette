@@ -26,6 +26,7 @@
 {/if}
         </header>
 		<h1 id="titre">{$page_title}</h1>
+        <p id="asso_name">{$preferences->pref_nom}{if $preferences->pref_slogan}&nbsp;: {$preferences->pref_slogan}{/if}</p>
         <nav>
             <a id="backhome" class="button{if $PAGENAME eq "index.php"} selected{/if}" href="{$galette_base_path}index.php">{_T string="Home"}</a>
     {if !$login->isLogged()}
