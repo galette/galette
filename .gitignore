@@ -30,3 +30,5 @@ nbproject
 
 # /galette/templates_c/
 /galette/templates_c/*.tpl.php
+
+*~
