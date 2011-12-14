@@ -586,7 +586,7 @@ class Members
 
         try {
             if ( $varslist->email_filter == Members::FILTER_W_EMAIL) {
-                $select->where('email_adh != ""');
+                $select->where('email_adh != \'\'');
             }
             if ( $varslist->email_filter == Members::FILTER_WO_EMAIL) {
                 $select->where('email_adh = ""');
