@@ -56,6 +56,9 @@ class Texts
     const PK = 'tid';
     const DEFAULT_REF = 'sub';
 
+    private $_patterns;
+    private $_replaces;
+
     private static $_defaults = array(
         array(
             'tid'       => 1,
@@ -177,6 +180,45 @@ class Texts
         ),
     );
 
+    /**
+     * Main constructor
+     *
+     * @param array $replacments Data that will be used as replacments
+     */
+    public function __construct($replaces = null)
+    {
+        global $preferences;
+
+        $this->_patterns = array(
+            'asso_name'     => '/{ASSO_NAME}/',
+            'asso_slogan'   =>'/{ASSO_SLOGAN}/',
+            'name_adh'      => '/{NAME_ADH}/',
+            'surname_adh'   => '/{SURNAME_ADH}/',
+            'login_adh'     => '/{LOGIN}/',
+            'mail_adh'      => '/{MAIL_ADH}/',
+            'login_uri'     => '/{LOGIN_URI}/',
+            'password_adh'  => '/{PASSWORD}/'
+        );
+
+        $this->_replaces = array(
+            'asso_name'     => $preferences->pref_nom,
+            'asso_slogan'   => $preferences->pref_slogan,
+            'name_adh'      => null,
+            'surname_adh'   => null,
+            'login_adh'     => null,
+            'mail_adh'      => null,
+            'login_uri'     => 'http://' . $_SERVER['SERVER_NAME'] .
+                                dirname($_SERVER['REQUEST_URI']),
+            'password_adh'  => null
+        );
+
+        if ( $replaces != null && is_array($replaces) ) {
+            //let's populate replacement array with values provided
+            foreach ( $replaces as $k=>$v ) {
+                $this->_replaces[$k] = $v;
+            }
+        }
+    }
     /**
     * Get specific text
     *
@@ -369,6 +411,34 @@ class Texts
             );
             return $e;
         }
+    }
+
+    /**
+     * Get the subject, with all replacements done
+     *
+     * @return string
+     */
+    public function getSubject()
+    {
+        return preg_replace(
+            $this->_patterns,
+            $this->_replaces,
+            $this->_all_texts->tsubject
+        );
+    }
+
+    /**
+     * Get the body, with all replacements done
+     *
+     * @return string
+     */
+    public function getBody()
+    {
+        return preg_replace(
+            $this->_patterns,
+            $this->_replaces,
+            $this->_all_texts->tbody
+        );
     }
 }
 ?>
