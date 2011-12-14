@@ -950,7 +950,7 @@ class Adherent
      */
     public function check($values, $required, $disabled)
     {
-        global $zdb, $log;
+        global $zdb, $log, $preferences;
         $errors = array();
 
         $fields = self::getDbFields();

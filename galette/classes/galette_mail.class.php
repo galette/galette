@@ -241,7 +241,7 @@ class GaletteMail
                 $preferences->pref_viadeo
             );
 
-            $sign .= preg_replace(
+            $sign = preg_replace(
                 $patterns,
                 $replaces,
                 $preferences->pref_mail_sign

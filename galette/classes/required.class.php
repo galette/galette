@@ -124,7 +124,9 @@ class Required
                 if ( $this->_all_required['login_adh'] !== 1 ) {
                     $this->_all_required['login_adh'] = 1;
                 }
-                if ( $this->_all_required['mdp_adh'] !== 1 ) {
+                if ( !isset($this->_all_required['mdp_adh'])
+                    || $this->_all_required['mdp_adh'] !== 1
+                ) {
                     $this->_all_required['mdp_adh'] = 1;
                 }
             }
