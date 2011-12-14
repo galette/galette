@@ -85,7 +85,7 @@ if ( isset($_POST["nom_adh"]) ) {
             if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
                 && $preferences->pref_bool_mailadh
             ) {
-                $texts = new texts();
+                $texts = new Texts();
                 $mtxt = $texts->getTexts('newselfadh', $preferences->pref_lang);
 
                 $patterns = array(
@@ -150,7 +150,7 @@ if ( isset($_POST["nom_adh"]) ) {
             ) {
                 //send mail to member
                 // Get email text in database
-                $texts = new texts();
+                $texts = new Texts();
                 $mtxt = $texts->getTexts('sub', $preferences->pref_lang);
 
                 $patterns = array(

@@ -169,7 +169,7 @@ if ( isset($_POST['valid']) ) {
         // Get member informations
         $adh = new Adherent();
         $adh->load($contrib->member);
-        $texts = new texts();
+        $texts = new Texts();
 
         if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED ) {
             if ( $new && isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1' ) {

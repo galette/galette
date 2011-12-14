@@ -52,7 +52,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             $password = new GalettePassword();
             $res = $password->generateNewPassword($adh->id);
             if ( $res == true ) {
-                $texts = new texts();
+                $texts = new Texts();
                 $mtxt = $texts->getTexts('pwd', $preferences->pref_lang);
 
                 // Replace Tokens
