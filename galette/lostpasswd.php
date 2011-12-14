@@ -52,43 +52,30 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             $password = new GalettePassword();
             $res = $password->generateNewPassword($adh->id);
             if ( $res == true ) {
-                $texts = new Texts();
-                $mtxt = $texts->getTexts('pwd', $preferences->pref_lang);
-
-                // Replace Tokens
-                $regs = array(
-                    '/{CHG_PWD_URI}/',
-                    '/{LOGIN}/',
-                    '/{LINK_VALIDITY}/'
-                );
-
                 $link_validity = new DateTime();
                 $link_validity->add(new DateInterval('PT24H'));
 
                 $df = _T("Y-m-d H:i:s");
-                $replacements = array(
-                    'http://' . $_SERVER['SERVER_NAME'] .
-                    dirname($_SERVER['REQUEST_URI']) .
-                    '/change_passwd.php?hash=' . $password->getHash(),
-                    custom_html_entity_decode($adh->login, ENT_QUOTES),
-                    $link_validity->format(_T("Y-m-d H:i:s"))
+                $texts = new Texts(
+                    array(
+                        'change_pass_uri'   => 'http://' . $_SERVER['SERVER_NAME'] .
+                                              dirname($_SERVER['REQUEST_URI']) .
+                                              '/change_passwd.php?hash=' . $password->getHash(),
+                        'link_validity'     => $link_validity->format(_T("Y-m-d H:i:s")),
+                        'login_adh'         => custom_html_entity_decode($adh->login, ENT_QUOTES)
+                    )
                 );
-
-                $body = preg_replace(
-                    $regs,
-                    $replacements,
-                    $mtxt->tbody
-                );
+                $mtxt = $texts->getTexts('pwd', $preferences->pref_lang);
 
                 $mail = new GaletteMail();
-                $mail->setSubject($mtxt->tsubject);
+                $mail->setSubject($texts->getSubject());
                 $mail->setRecipients(
                     array(
                         $adh->email => $adh->sname
                     )
                 );
 
-                $mail->setMessage($body);
+                $mail->setMessage($texts->getBody());
                 $sent = $mail->send();
 
                 if ( $sent == GaletteMail::MAIL_SENT ) {

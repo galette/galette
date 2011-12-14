@@ -190,26 +190,31 @@ class Texts
         global $preferences;
 
         $this->_patterns = array(
-            'asso_name'     => '/{ASSO_NAME}/',
-            'asso_slogan'   =>'/{ASSO_SLOGAN}/',
-            'name_adh'      => '/{NAME_ADH}/',
-            'surname_adh'   => '/{SURNAME_ADH}/',
-            'login_adh'     => '/{LOGIN}/',
-            'mail_adh'      => '/{MAIL_ADH}/',
-            'login_uri'     => '/{LOGIN_URI}/',
-            'password_adh'  => '/{PASSWORD}/'
+            'asso_name'         => '/{ASSO_NAME}/',
+            'asso_slogan'       =>'/{ASSO_SLOGAN}/',
+            'name_adh'          => '/{NAME_ADH}/',
+            'surname_adh'       => '/{SURNAME_ADH}/',
+            'login_adh'         => '/{LOGIN}/',
+            'mail_adh'          => '/{MAIL_ADH}/',
+            'login_uri'         => '/{LOGIN_URI}/',
+            'password_adh'      => '/{PASSWORD}/',
+            'change_pass_uri'   => '/{CHG_PWD_URI}/',
+            'link_validity'     => '/{LINK_VALIDITY}/'
         );
 
         $this->_replaces = array(
-            'asso_name'     => $preferences->pref_nom,
-            'asso_slogan'   => $preferences->pref_slogan,
-            'name_adh'      => null,
-            'surname_adh'   => null,
-            'login_adh'     => null,
-            'mail_adh'      => null,
-            'login_uri'     => 'http://' . $_SERVER['SERVER_NAME'] .
-                                dirname($_SERVER['REQUEST_URI']),
-            'password_adh'  => null
+            'asso_name'         => $preferences->pref_nom,
+            'asso_slogan'       => $preferences->pref_slogan,
+            'name_adh'          => null,
+            'surname_adh'       => null,
+            'login_adh'         => null,
+            'mail_adh'          => null,
+            'login_uri'         => 'http://' . $_SERVER['SERVER_NAME'] .
+                                    dirname($_SERVER['REQUEST_URI']),
+            'password_adh'      => null,
+            'change_pass_uri'   => null,
+            'link_validity'     => null
+            
         );
 
         if ( $replaces != null && is_array($replaces) ) {
