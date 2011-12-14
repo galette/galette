@@ -85,42 +85,23 @@ if ( isset($_POST["nom_adh"]) ) {
             if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
                 && $preferences->pref_bool_mailadh
             ) {
-                $texts = new Texts();
+                $texts = new Texts(
+                    array(
+                        'name_adh'      => custom_html_entity_decode($member->name),
+                        'surname_adh'   => custom_html_entity_decode($member->surname),
+                        'login_adh'     => custom_html_entity_decode($member->login)
+                    )
+                );
                 $mtxt = $texts->getTexts('newselfadh', $preferences->pref_lang);
 
-                $patterns = array(
-                    '/{NAME_ADH}/',
-                    '/{SURNAME_ADH}/'
-                );
-
-                $replace = array(
-                    custom_html_entity_decode($member->name),
-                    custom_html_entity_decode($member->surname)
-                );
-
-                $mtxt->tsubject = preg_replace(
-                    $patterns,
-                    $replace,
-                    $mtxt->tsubject
-                );
-
-                $patterns[] = '/{LOGIN}/';
-                $replace[] = custom_html_entity_decode($member->login);
-
-                $mtxt->tbody = preg_replace(
-                    $patterns,
-                    $replace,
-                    $mtxt->tbody
-                );
-
                 $mail = new GaletteMail();
-                $mail->setSubject($mtxt->tsubject);
+                $mail->setSubject($texts->getSubject());
                 $mail->setRecipients(
                     array(
                         $preferences->pref_email_newadh => 'Galette admin'
                     )
                 );
-                $mail->setMessage($mtxt->tbody);
+                $mail->setMessage($texts->getBody());
                 $sent = $mail->send();
 
                 if ( $sent == GaletteMail::MAIL_SENT ) {
@@ -141,7 +122,7 @@ if ( isset($_POST["nom_adh"]) ) {
                     $error_detected[] = $str;
                 }
 
-                unset ($texts);
+                unset($texts);
             }
 
             // send mail to member
@@ -150,39 +131,22 @@ if ( isset($_POST["nom_adh"]) ) {
             ) {
                 //send mail to member
                 // Get email text in database
-                $texts = new Texts();
+                $texts = new Texts(
+                    array(
+                        'login_adh'     => custom_html_entity_decode($member->login),
+                        'password_adh'  => custom_html_entity_decode($_POST['mdp_adh'])
+                    )
+                );
                 $mtxt = $texts->getTexts('sub', $preferences->pref_lang);
 
-                $patterns = array(
-                    '/{NAME}/',
-                    '/{LOGIN_URI}/',
-                    '/{LOGIN}/',
-                    '/{PASSWORD}/'
-                );
-
-                $replace = array(
-                    $preferences->pref_nom,
-                    'http://' . $_SERVER['SERVER_NAME'] .
-                    dirname($_SERVER['REQUEST_URI']),
-                    custom_html_entity_decode($member->login),
-                    custom_html_entity_decode($_POST['mdp_adh'])
-                );
-
-                // Replace Tokens
-                $mtxt->tbody = preg_replace(
-                    $patterns,
-                    $replace,
-                    $mtxt->tbody
-                );
-
                 $mail = new GaletteMail();
-                $mail->setSubject($mtxt->tsubject);
+                $mail->setSubject($texts->getSubject());
                 $mail->setRecipients(
                     array(
                         $member->email => $member->sname
                     )
                 );
-                $mail->setMessage($mtxt->tbody);
+                $mail->setMessage($texts->getBody());
                 $sent = $mail->send();
 
                 if ( $sent == GaletteMail::MAIL_SENT ) {
