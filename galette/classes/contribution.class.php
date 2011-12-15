@@ -125,7 +125,7 @@ class Contribution
             ),
             'type_paiement_cotis' => array(
                 'label'    => _T("Payment type:"),
-                'propname' => payment_type
+                'propname' => 'payment_type'
             ),
             'info_cotis'          => array(
                 'label'    => _T("Comments:"),
