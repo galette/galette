@@ -198,7 +198,9 @@ class Texts
             'login_uri'         => '/{LOGIN_URI}/',
             'password_adh'      => '/{PASSWORD}/',
             'change_pass_uri'   => '/{CHG_PWD_URI}/',
-            'link_validity'     => '/{LINK_VALIDITY}/'
+            'link_validity'     => '/{LINK_VALIDITY}/',
+            'deadline'          => '/{DEADLINE}/',
+            'contrib_info'      => '/{CONTRIB_INFO}/'
         );
 
         $this->_replaces = array(
@@ -211,7 +213,9 @@ class Texts
                                     dirname($_SERVER['REQUEST_URI']),
             'password_adh'      => null,
             'change_pass_uri'   => null,
-            'link_validity'     => null
+            'link_validity'     => null,
+            'deadline'          => null,
+            'contrib_info'      => null
             
         );
 

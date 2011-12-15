@@ -169,41 +169,28 @@ if ( isset($_POST['valid']) ) {
         // Get member informations
         $adh = new Adherent();
         $adh->load($contrib->member);
-        $texts = new Texts();
 
         if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED ) {
+            $texts = new Texts(
+                array(
+                    'name_adh'      => custom_html_entity_decode($adh->sname),
+                    'deadline'      => custom_html_entity_decode($contrib->end_date),
+                    'contrib_info'  => custom_html_entity_decode($contrib->info)
+                )
+            );
             if ( $new && isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1' ) {
                 if ( GaletteMail::isValidEmail($adh->email) ) {
                     $mtxt = $texts->getTexts('contrib', $adh->language);
 
-                    // Replace Tokens
-                    $regs = array(
-                      '/{NAME}/',
-                      '/{DEADLINE}/',
-                      '/{COMMENT}/'
-                    );
-
-                    $replacements = array(
-                        $preferences->pref_nom,
-                        custom_html_entity_decode($contrib->end_date),
-                        custom_html_entity_decode($contrib->info)
-                    );
-
-                    $body = preg_replace(
-                        $regs,
-                        $replacements,
-                        $mtxt->tbody
-                    );
-
                     $mail = new GaletteMail();
-                    $mail->setSubject($mtxt->tsubject);
+                    $mail->setSubject($texts->getSubject());
                     $mail->setRecipients(
                         array(
                             $adh->email => $adh->sname
                         )
                     );
 
-                    $mail->setMessage($body);
+                    $mail->setMessage($texts->getBody());
                     $sent = $mail->send();
 
                     if ( $sent ) {
@@ -239,33 +226,8 @@ if ( isset($_POST['valid']) ) {
                 // Get email text in database
                 $mtxt = $texts->getTexts('newcont', $preferences->pref_lang);
 
-                $mtxt->tsubject = str_replace(
-                    '{NAME_ADH}',
-                    $adh->sname,
-                    $mtxt->tsubject
-                );
-
-                // Replace Tokens
-                $regs = array(
-                  '/{NAME_ADH}/',
-                  '/{DEADLINE}/',
-                  '/{COMMENT}/'
-                );
-
-                $replacements = array(
-                    $adh->sname,
-                    custom_html_entity_decode($contrib->end_date),
-                    custom_html_entity_decode($contrib->info)
-                );
-
-                $body = preg_replace(
-                    $regs,
-                    $replacements,
-                    $mtxt->tbody
-                );
-
                 $mail = new GaletteMail();
-                $mail->setSubject($mtxt->tsubject);
+                $mail->setSubject($texts->getSubject());
                 /** TODO: only super-admin is contacted here. We should send a message to all admins, or propose them a chekbox if they don't want to get bored */
                 $mail->setRecipients(
                     array(
@@ -273,7 +235,7 @@ if ( isset($_POST['valid']) ) {
                     )
                 );
 
-                $mail->setMessage($body);
+                $mail->setMessage($texts->getBody());
                 $sent = $mail->send();
 
                 if ( $sent ) {
