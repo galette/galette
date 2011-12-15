@@ -100,7 +100,7 @@ class Texts
             'tsubject'  => '[{ASSO_NAME} - {ASSO_SLOGAN}] Your contribution',
             'tbody'     => "Your contribution has succefully been taken into account by {ASSO_NAME}.\r\n\r\nIt is valid until {DEADLINE}.\r\n\r\nYou can now login and browse or modify your personnal data using your galette identifiers.\r\n\r\n{COMMENT}",
             'tlang'     => 'en_US',
-            'tcomment'  => 'Receipt send for every new contribution'
+            'tcomment'  => 'Receipt send for new contribution'
         ),
         array(
             'tid'       => 8,
@@ -117,7 +117,7 @@ class Texts
             'tsubject'  => '[{ASSO_NAME} - {ASSO_SLOGAN}] New registration from {NAME_ADH}',
             'tbody'     => "Hello dear Administrator,\r\n\r\nA new member has been registered with the following informations:\r\n* Name: {NAME_ADH}\r\n* Login: {LOGIN}\r\n* E-mail: {MAIL_ADH}\r\n\r\nYou can take a look at the complete card here: {MEMBER_LINK}.\r\n\r\nYours sincerly,\r\nGalette",
             'tlang'     => 'en_US',
-            'tcomment'  => 'New registration (sent to admin)'
+            'tcomment'  => 'New user registration (sent to admin)'
         ),
         array(
             'tid'       => 11,
@@ -125,7 +125,7 @@ class Texts
             'tsubject'  => '[{ASSO_NAME} - {ASSO_SLOGAN}] Nouvelle inscription de {NAME_ADH}',
             'tbody'     => "Bonjour cher Administrateur,\r\n\r\nUn nouveau membre a été enregistré avec les informations suivantes :\r\n* Nom : {NAME_ADH}\r\n* Login : {LOGIN}\r\n* Courriel : {MAIL_ADH}\r\n\r\nVous pouvez voir la fiche complète là : {MEMBER_LINK}.\r\n\r\nBien sincèrement,\r\nGalette",
             'tlang'     => 'fr_FR',
-            'tcomment'  => 'Nouvelle inscription (envoyée a l\'admin)'
+            'tcomment'  => 'Nouvelle adhésion (envoyée a l\'admin)'
         ),
 
         array(
@@ -151,7 +151,7 @@ class Texts
             'tsubject'  => '[{ASSO_NAME} - {ASSO_SLOGAN}] New self registration from {NAME_ADH}',
             'tbody'     => "{NAME_ADH} has self registred on line with login: {LOGIN}",
             'tlang'     => 'en_US',
-            'tcomment'  => 'New registration (sent to admin)'
+            'tcomment'  => 'New self registration (sent to admin)'
         ),
         array(
             'tid'       => 17,
@@ -159,7 +159,7 @@ class Texts
             'tsubject'  => '[{ASSO_NAME} - {ASSO_SLOGAN}] Nouvelle auto inscription de {NAME_ADH}',
             'tbody'     => "{NAME_ADH} s'est auto inscrit via l'interface web avec le login {LOGIN}",
             'tlang'     => 'fr_FR',
-            'tcomment'  => 'Nouvelle inscription (envoyée a l\'admin)'
+            'tcomment'  => 'Nouvelle auto-inscription (envoyée a l\'admin)'
         ),
 
         array(
