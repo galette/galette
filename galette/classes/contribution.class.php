@@ -739,6 +739,51 @@ class Contribution
         }
     }
 
+    /**
+     * Detach a contribution from a transaction
+     *
+     * @param int $trans_id
+     * @param int $contrib_id
+     */
+    public static function unsetTransactionPart($trans_id, $contrib_id)
+    {
+        global $zdb, $log;
+
+        try {
+            //first, we check if contribution is part of transaction
+            $c = new Contribution((int)$contrib_id);
+            if ( $c->isTransactionPartOf($trans_id)) {
+                $zdb->db->update(
+                    PREFIX_DB . self::TABLE,
+                    array(Transaction::PK => null),
+                    self::PK . ' = ' . $contrib_id
+                );
+                return true;
+            } else {
+                $log->log(
+                    'Contribution #' . $contrib_id .
+                    ' is not actually part of transaction #' . $trans_id,
+                    PEAR_LOG_WARNING
+                );
+                return false;
+            }
+        } catch (Exception $e) {
+            $log->log(
+                'Unable to detach contribution #' . $contrib_id .
+                ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
+    }
+
+    /**
+     * Set a contribution as a transaction part
+     *
+     * @param int $trans_id
+     * @param int $contrib_id
+     * @return boolean
+     */
     public static function setTransactionPart($trans_id, $contrib_id)
     {
         global $zdb, $log;
@@ -752,7 +797,7 @@ class Contribution
             return true;
         } catch (Exception $e) {
             $log->log(
-                'Unable to attach contribution #' . $cid .
+                'Unable to attach contribution #' . $contrib_id .
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
                 PEAR_LOG_ERR
             );
@@ -770,6 +815,22 @@ class Contribution
         return $this->_is_cotis;
     }
 
+    /**
+     * Is current contribution part of specified transaction
+     *
+     * @param int $id Transaction identifier
+     *
+     * @return boolean
+     */
+    public function isTransactionPartOf($id)
+    {
+        if ( $this->isTransactionPart() ) {
+            return $id == $this->_transaction->id;
+        } else {
+            return false;
+        }
+    }
+    
     /**
      * Is current contribution part of transaction
      *

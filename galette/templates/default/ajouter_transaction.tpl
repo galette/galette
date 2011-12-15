@@ -54,15 +54,18 @@
 {/if}
 					<th class="listing left">{_T string="Type"}</th>
 					<th class="listing left">{_T string="Amount"}</th>
+{if $login->isAdmin() or $login->isStaff()}
+                    <th class="listing actions_row"></th>
+{/if}
 				</tr>
 			</thead>
             <tfoot>
                 <tr>
-                    <th class="right" colspan="{if $login->isAdmin() or $login->isStaff()}7{else}6{/if}">{_T string="Dispatched amount:"}</th>
+                    <th class="right" colspan="{if $login->isAdmin() or $login->isStaff()}8{else}6{/if}">{_T string="Dispatched amount:"}</th>
                     <th class="right">{$transaction->getDispatchedAmount()}</th>
                 </tr>
                 <tr>
-                    <th class="right" colspan="{if $login->isAdmin() or $login->isStaff()}7{else}6{/if}">{_T string="Not dispatched amount:"}</th>
+                    <th class="right" colspan="{if $login->isAdmin() or $login->isStaff()}8{else}6{/if}">{_T string="Not dispatched amount:"}</th>
                     <th class="right">{$transaction->getMissingAmount()}</th>
                 </tr>
             </tfoot>
@@ -83,6 +86,13 @@
     {/if}
 					<td class="{$cclass}">{$contrib->type->libelle}</td>
 					<td class="{$cclass} nowrap right">{$contrib->amount}</td>
+    {if $login->isAdmin() or $login->isStaff()}
+                    <td class="{$cclass}">
+                        <a href="?trans_id={$transaction->id}&detach={$contrib->id}">
+                            <img src="{$template_subdir}images/delete.png" alt="{_T string="Detach"}" width="16" height="16" title="{_T string="Detach contribution from this transaction"}"/>
+                        </a>
+                    </td>
+    {/if}
 				</tr>
 {foreachelse}
 				<tr><td colspan="{if $login->isAdmin() or $login->isStaff()}8{else}7{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
