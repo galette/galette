@@ -246,6 +246,43 @@ class Texts
             $result = $select->query()->fetch();
             if ( $result ) {
                 $this->_all_texts = $result;
+            } else {
+                //hum... no result... That means text do not exist in the
+                //database, let's add it
+                $default = null;
+                foreach ( self::$_defaults as $d) {
+                    if ( $d['tref'] == $ref && $d['tlang'] == $lang ) {
+                            $default = $d;
+                            break;
+                    }
+                }
+                if ( $default !== null ) {
+                    $values = array(
+                        'tid'       => $default['tid'],
+                        'tref'      => $default['tref'],
+                        'tsubject'  => $default['tsubject'],
+                        'tbody'     => $default['tbody'],
+                        'tlang'     => $default['tlang'],
+                        'tcomment'  => $default['tcomment']
+                    );
+
+                    try {
+                        $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
+                        return $this->getTexts($ref, $lang);
+                    } catch( Exception $e ) {
+                        $log->log(
+                            'Unable to add missing requested text "' . $ref .
+                            ' (' . $lang . ') | ' . $e->getMessage(),
+                            PEAR_LOG_WARNING
+                        );
+                    }
+                } else {
+                    $log->log(
+                        'Unable to find missing requested text "' . $ref .
+                        ' (' . $lang . ')',
+                        PEAR_LOG_WARNING
+                    );
+                }
             }
             return $this->_all_texts;
         } catch (Exception $e) {
