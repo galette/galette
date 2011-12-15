@@ -132,7 +132,7 @@ class Texts
             'tid'       => 13,
             'tref'      => 'newcont',
             'tsubject'  => '[{ASSO_NAME} - {ASSO_SLOGAN}] New contribution for {NAME_ADH}',
-            'tbody'     => "The contribution from {NAME_ADH} has been registered (new deadline: {DEADLINE})\r\n\r\n{COMMENT}",
+            'tbody'     => "The contribution from {NAME_ADH} has been registered (new deadline: {DEADLINE})\r\n\r\n{CONTRIB_INFO}",
             'tlang'     => 'en_US',
             'tcomment'  => 'New contribution (sent to admin)'
         ),
@@ -140,7 +140,7 @@ class Texts
             'tid'       => 14,
             'tref'      => 'newcont',
             'tsubject'  => '[{ASSO_NAME} - {ASSO_SLOGAN}] Nouvelle contribution de {NAME_ADH}',
-            'tbody'     => "La contribution de {NAME_ADH} a été enregistrée (nouvelle échéance: {DEADLINE})\r\n\r\n{COMMENT}",
+            'tbody'     => "La contribution de {NAME_ADH} a été enregistrée (nouvelle échéance: {DEADLINE})\r\n\r\n{CONTRIB_INFO}",
             'tlang'     => 'fr_FR',
             'tcomment'  => 'Nouvelle contribution (envoyée a l\'admin)'
         ),
