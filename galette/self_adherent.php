@@ -87,8 +87,8 @@ if ( isset($_POST["nom_adh"]) ) {
             ) {
                 $texts = new Texts(
                     array(
-                        'name_adh'      => custom_html_entity_decode($member->name),
-                        'surname_adh'   => custom_html_entity_decode($member->surname),
+                        'name_adh'      => custom_html_entity_decode($member->sname),
+                        'mail_adh'      => custom_html_entity_decode($member->email),
                         'login_adh'     => custom_html_entity_decode($member->login)
                     )
                 );
@@ -133,6 +133,8 @@ if ( isset($_POST["nom_adh"]) ) {
                 // Get email text in database
                 $texts = new Texts(
                     array(
+                        'name_adh'      => custom_html_entity_decode($member->sname),
+                        'mail_adh'      => custom_html_entity_decode($member->email),
                         'login_adh'     => custom_html_entity_decode($member->login),
                         'password_adh'  => custom_html_entity_decode($_POST['mdp_adh'])
                     )

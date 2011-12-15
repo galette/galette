@@ -121,9 +121,9 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                 ) {
                     $texts = new Texts(
                         array(
-                            'name_adh'      => $member->sname,
-                            'login_adh'     => $member->login,
-                            'mail_adh'      => $member->email
+                            'name_adh'  => custom_html_entity_decode($member->sname),
+                            'mail_adh'  => custom_html_entity_decode($member->email),
+                            'login_adh' => custom_html_entity_decode($member->login)
                         )
                     );
                     $mtxt = $texts->getTexts('newadh', $preferences->pref_lang);
@@ -171,8 +171,10 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                         // Get email text in database
                         $texts = new Texts(
                             array(
-                                'login_adh'     => $member->login,
-                                'password_adh'  => $_POST['mdp_adh']
+                                'name_adh'      => custom_html_entity_decode($member->sname),
+                                'mail_adh'      => custom_html_entity_decode($member->email),
+                                'login_adh'     => custom_html_entity_decode($member->login),
+                                'password_adh'  => custom_html_entity_decode($_POST['mdp_adh'])
                             )
                         );
                         $mtxt = $texts->getTexts(
