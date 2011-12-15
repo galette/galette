@@ -121,8 +121,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                 ) {
                     $texts = new Texts(
                         array(
-                            'name_adh'      => $member->name,
-                            'surname_adh'   => $member->surname,
+                            'name_adh'      => $member->sname,
                             'login_adh'     => $member->login,
                             'mail_adh'      => $member->email
                         )

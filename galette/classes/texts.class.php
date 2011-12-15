@@ -193,7 +193,6 @@ class Texts
             'asso_name'         => '/{ASSO_NAME}/',
             'asso_slogan'       =>'/{ASSO_SLOGAN}/',
             'name_adh'          => '/{NAME_ADH}/',
-            'surname_adh'       => '/{SURNAME_ADH}/',
             'login_adh'         => '/{LOGIN}/',
             'mail_adh'          => '/{MAIL_ADH}/',
             'login_uri'         => '/{LOGIN_URI}/',
@@ -206,7 +205,6 @@ class Texts
             'asso_name'         => $preferences->pref_nom,
             'asso_slogan'       => $preferences->pref_slogan,
             'name_adh'          => null,
-            'surname_adh'       => null,
             'login_adh'         => null,
             'mail_adh'          => null,
             'login_uri'         => 'http://' . $_SERVER['SERVER_NAME'] .
