@@ -282,7 +282,9 @@ class Csv
         $export = $xpath[0];
 
         try {
-            $result = $zdb->db->query($export->query)->fetchAll(
+            $result = $zdb->db->query(
+                str_replace('galette_', PREFIX_DB, $export->query)
+            )->fetchAll(
                 Zend_Db::FETCH_ASSOC
             );
 
