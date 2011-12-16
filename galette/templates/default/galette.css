@@ -203,12 +203,27 @@ nav a{
 }
 
 #desktop,
-#news {
+#news,
+.plugin {
     display: table-cell;
     border:1px solid #AAAAAA;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
+}
+
+.plugin {
+    display: block;
+    margin-bottom: 1em;
+}
+
+.plugin article {
+    display: inline-block;
+    min-width: 49%;
+}
+
+.plugin article header {
+    border-bottom: 1px #DDDDFF solid;
 }
 
 #news-tabs {
@@ -219,7 +234,8 @@ nav a{
 }
 
 #desktop header,
-#news header {
+#news header,
+.plugin header {
     -moz-border-radius: 10px 10px 0 0;
     -webkit-border-radius: 10px 10px 0 0;
     border-radius: 10px 10px 0 0;
@@ -289,13 +305,20 @@ nav a{
     background-image: url(images/desktop/preferences.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
 }
 
+#desktop #plugins {
+    background-image: url(images/desktop/plugins.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
+}
+#desktop #plugins:hover {
+    background-image: url(images/desktop/plugins.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
+}
+
 #news {
     width: 20em;
     margin-left: 1em;
     vertical-align: top;
 }
 
-#twitter, #googleplus {
+#twitter, #googleplus, .plugin ul {
     list-style-type: none;
     padding:0;
     margin: 1em 0.5em 0.5em;
@@ -1182,6 +1205,7 @@ table.listing {
 
 #desktop header,
 #news header,
+.plugin header,
 .mailing header,
 #selected_members header,
 #selected_groups header {

@@ -9,7 +9,8 @@
                 <a id="transactions" href="gestion_transactions.php" title="{_T string="View and filter transactions"}">{_T string="Transactions"}</a>
                 <a id="mailings" href="{$galette_base_path}gestion_mailings.php" title="{_T string="Manage mailings that has been sent"}">{_T string="Mailings"}</a>
 {if $login->isAdmin()}
-                <a id="prefs" href="{$galette_base_path}preferences.php" title="{_T string="Set applications preferences (adress, website, member's cards configuration, ...)"}">{_T string="Settings"}</a>
+                <a id="prefs" href="{$galette_base_path}preferences.php" title="{_T string="Set applications preferences (adress, website, member's cards configuration, ...)"}">{_T string="Settings"}</a><br/>
+                <a id="plugins" href="{$galette_base_path}plugins.php" title="{_T string="Informations about available plugins"}">{_T string="Plugins"}</a>
 {/if}
             </div>
         </section>
