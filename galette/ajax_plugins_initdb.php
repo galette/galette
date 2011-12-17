@@ -163,16 +163,6 @@ case 'u2':
             $success_detected[] = _T("ALTER Operation allowed");
         }
     }
-
-    /*if ( $error ) {
-        echo "<ul>" . $result . "</ul>\n";
-        echo '<div id="errorbox">';
-        echo '<h1>';
-        if( $step == 'i6' ) echo _T("GALETTE hasn't got enough permissions on the database to continue the installation.");
-        if ($step == 'u6') echo _T("GALETTE hasn't got enough permissions on the database to continue the update.");
-        echo '</h1>';
-        echo '</div>';
-    }*/
     break;
 case 'i3':
 case 'u3':
