@@ -135,6 +135,29 @@ class GaletteZendDb extends Zend_Db
     }
 
     /**
+     * List updates scripts from given path
+     *
+     * @param string $path
+     *
+     * @return array
+     */
+    public static function getUpdateScripts($path)
+    {
+        $dh = opendir($path . '/sql');
+        $update_scripts = array();
+        if ( $dh !== false ) {
+            while ( ($file = readdir($dh)) !== false ) {
+                if ( preg_match("/upgrade-to-(.*)-mysql.sql/", $file, $ver) ) {
+                    $update_scripts[] = $ver[1];
+                }
+            }
+            closedir($dh);
+            asort($update_scripts);
+        }
+        return $update_scripts;
+    }
+
+    /**
     * Test if database can be contacted. Mostly used for installation
     *
     * @param string $type db type

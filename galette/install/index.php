@@ -280,15 +280,9 @@ case '2':
                     <?php echo _T("You're installing Galette for the first time, or you wish to erase an older version of Galette without keeping your data"); ?>
                 </p>
 <?php
+    $update_scripts = GaletteZendDb::getUpdateScripts('./');
+    
     $dh = opendir("sql");
-    $update_scripts = array();
-    while ( ($file = readdir($dh)) !== false ) {
-        if ( preg_match("/upgrade-to-(.*)-mysql.sql/", $file, $ver) ) {
-            $update_scripts[] = $ver[1];
-        }
-    }
-    closedir($dh);
-    asort($update_scripts);
     $last = "0.00";
     if ( count($update_scripts) > 0 ) {
         echo "<p>" . _T("Update") . '<br/><span id="warningbox">' . _T("Warning: Don't forget to backup your current database.") . "</span></p>\n\t\t\t\t<ul class=\"list\">";
