@@ -695,21 +695,12 @@ case 'u7':
     // load in the sql parser
     include 'sql_parse.php';
 
-    $prefix = '';
     if ( $step == 'u7' ) {
-        $prefix = 'upgrade-to-';
-
-        $dh = opendir('sql');
-        $update_scripts = array();
-        $first_file_found = false;
-        while ( ($filesql = readdir($dh)) !== false ) {
-            if ( preg_match('/upgrade-to-(.*)-' . $_POST['install_dbtype'] . '.sql/', $filesql, $ver) ) {
-                if ( substr($_POST['install_type'], 8)<=$ver[1] ) {
-                    $update_scripts[$ver[1]] = $filesql;
-                }
-            }
-        }
-        ksort($update_scripts);
+        $update_scripts = GaletteZendDb::getUpdateScripts(
+            '.',
+            $_POST['install_dbtype'],
+            substr($_POST['install_type'], 8)
+        );
     } else {
         $update_scripts['current'] = $_POST['install_dbtype'] . '.sql';
     }

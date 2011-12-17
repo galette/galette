@@ -138,21 +138,33 @@ class GaletteZendDb extends Zend_Db
      * List updates scripts from given path
      *
      * @param string $path
+     * @param string $db_type
+     * @param string $version
      *
      * @return array
      */
-    public static function getUpdateScripts($path)
+    public static function getUpdateScripts($path, $db_type = 'mysql', $version = null)
     {
         $dh = opendir($path . '/sql');
         $update_scripts = array();
         if ( $dh !== false ) {
             while ( ($file = readdir($dh)) !== false ) {
-                if ( preg_match("/upgrade-to-(.*)-mysql.sql/", $file, $ver) ) {
-                    $update_scripts[] = $ver[1];
+                if ( preg_match("/upgrade-to-(.*)-" . $db_type . ".sql/", $file, $ver) ) {
+                    if ( $version === null ) {
+                        $update_scripts[] = $ver[1];
+                    } else {
+                        if ( $version <= $ver[1] ) {
+                            $update_scripts[$ver[1]] = $file;
+                        }
+                    }
                 }
             }
             closedir($dh);
-            asort($update_scripts);
+            if ( $version === null ) {
+                asort($update_scripts);
+            } else {
+                ksort($update_scripts);
+            }
         }
         return $update_scripts;
     }
