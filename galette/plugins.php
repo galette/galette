@@ -93,6 +93,7 @@ if ( count($success_detected) > 0 ) {
 }
 
 $tpl->assign('page_title', _T("Plugins"));
+$tpl->assign('require_dialog', true);
 
 $content = $tpl->fetch('plugins.tpl');
 $tpl->assign('content', $content);

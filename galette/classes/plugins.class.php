@@ -518,5 +518,27 @@ class Plugins
         }
         return $_assign;
     }
+
+    /**
+     * Does module needs a database?
+     *
+     * @param string $id Module's ID
+     *
+     * @return boolean
+     */
+    public function needsDatabase($id)
+    {
+        if ( isset($this->modules[$id]) ) {
+            $d = $this->modules[$id]['root'] . '/sql/';
+            if ( file_exists($d) ) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            throw new Exception(_T("Module does not exists!"));
+        }
+    }
+
 }
 ?>

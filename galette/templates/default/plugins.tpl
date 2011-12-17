@@ -6,7 +6,7 @@
                 <th class="listing">{_T string="Description"}</th>
                 <th class="listing">{_T string="Author"}</th>
                 <th class="listing">{_T string="Version"}</th>
-                <th class="listing row_actions"></th>
+                <th class="listing actions_row"></th>
             </tr>
         </thead>
         <tbody>
@@ -19,10 +19,17 @@
                 <td>{$plugin.desc}</td>
                 <td>{$plugin.author}</td>
                 <td>{$plugin.version}</td>
-                <td>
+                <td class="nowrap">
                     <a href="?deactivate={$name}" title="{_T string="Click here to deactivate plugin '%name'" pattern="/%name/" replace=$plugin.name}">
                         <img src="{$template_subdir}images/icon-on.png" alt="{_T string="Disable plugin"}"/>
                     </a>
+    {if $plugins->needsDatabase($name)}
+                    <a href="#" class="initdb" id="initdb_{$name}" title="{_T string="Initialize '%name' database" pattern="/%name/" replace=$plugin.name}">
+                        <img src="{$template_subdir}images/icon-db.png" alt="{_T string="Initialize database"}" width="16" height="16"/>
+                    </a>
+    {else}
+                    <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
+    {/if}
                 </td>
             </tr>
 {foreachelse}
@@ -40,6 +47,7 @@
                     <a href="?activate={$name}" title="{_T string="Click here to activate plugin '%name'" pattern="/%name/" replace=$name}">
                         <img src="{$template_subdir}images/icon-off.png" alt="{_T string="Enable plugin"}"/>
                     </a>
+                    <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
                 </td>
             </tr>
 {foreachelse}
@@ -49,3 +57,41 @@
 {/foreach}
         </tbody>
     </table>
+
+    <script type="text/javascript">
+        $(function() {ldelim}
+            var _initdb_dialog = function(res, _plugin){ldelim}
+                var _title = '{_T string="Plugin database initialization: %name" escape="js"}';
+                var _el = $('<div id="initdb" title="' + _title.replace('%name', _plugin) + '"> </div>');
+                _el.appendTo('body').dialog({ldelim}
+                    modal: true,
+                    hide: 'fold',
+                    width: '80%',
+                    height: 500,
+                    close: function(event, ui){ldelim}
+                        _el.remove();
+                    {rdelim}
+                {rdelim});
+                _el.append(res);
+                $('#initdb input:submit, #initdb .button, #initdb input:reset' ).button();
+            {rdelim};
+
+            $('.initdb').click(function(){ldelim}
+                var _plugin = this.id.substring(7);
+
+                $.ajax({ldelim}
+                    url: 'ajax_plugins_initdb.php',
+                    type: "POST",
+                    data: {ldelim}ajax: true, plugid: _plugin{rdelim},
+                    {include file="js_loader.tpl"},
+                    success: function(res){ldelim}
+                        _initdb_dialog(res, _plugin);
+                    {rdelim},
+                    error: function() {ldelim}
+                        alert("{_T string="An error occured displaying plugin database initialization interface :(" escape="js"}");
+                    {rdelim}
+                });
+                return false;
+            {rdelim})
+        {rdelim});
+    </script>
