@@ -705,7 +705,6 @@ case 'u7':
         $update_scripts['current'] = $_POST['install_dbtype'] . '.sql';
     }
 
-    ksort($update_scripts);
     $sql_query = '';
     while (list($key, $val) = each($update_scripts) ) {
         $sql_query .= @fread(@fopen('sql/' . $val, 'r'), @filesize('sql/' . $val)) . "\n";

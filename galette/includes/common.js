@@ -54,7 +54,8 @@ var _collapsibleFieldsets = function(){
 
 /* On document ready
 -------------------------------------------------------- */
-$(function() {
+
+var _messagesEffects = function(){
 	/**
 	* Errorbox animation
 	*/
@@ -67,6 +68,10 @@ $(function() {
 	$('#infobox, #successbox').backgroundFade({sColor:'#ffffff',eColor:'#99FF99',steps:50},function() {
 		$(this).backgroundFade({sColor:'#99FF99',eColor:'#ffffff'});
 	});
+}
+
+$(function() {
+    _messagesEffects();
 	$('.debuginfos span').hide();
 	/** TODO: find a way to translate this message ==> ajax ? */
 	$('.debuginfos').attr('title', 'Click to get more details.');

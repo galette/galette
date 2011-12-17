@@ -24,7 +24,7 @@
                         <img src="{$template_subdir}images/icon-on.png" alt="{_T string="Disable plugin"}"/>
                     </a>
     {if $plugins->needsDatabase($name)}
-                    <a href="#" class="initdb" id="initdb_{$name}" title="{_T string="Initialize '%name' database" pattern="/%name/" replace=$plugin.name}">
+                    <a href="ajax_plugins_initdb.php?plugid={$name}" class="initdb" id="initdb_{$name}" title="{_T string="Initialize '%name' database" pattern="/%name/" replace=$plugin.name}">
                         <img src="{$template_subdir}images/icon-db.png" alt="{_T string="Initialize database"}" width="16" height="16"/>
                     </a>
     {else}
@@ -72,8 +72,38 @@
                         _el.remove();
                     {rdelim}
                 {rdelim});
-                _el.append(res);
+                _initdb_bindings(res);
+            {rdelim};
+            var _initdb_bindings = function(res){ldelim}
+                $('#initdb').empty().append(res);
                 $('#initdb input:submit, #initdb .button, #initdb input:reset' ).button();
+                _messagesEffects();
+                $('#btnback').click(function(){ldelim}
+                    $('#initdb').dialog('close');
+                {rdelim});
+                $("#plugins_initdb_form").submit(function(event) {ldelim}
+                    /* stop form from submitting normally */
+                    event.preventDefault();
+
+                    var $form = $(this);
+                    var _url = $form.attr('action');
+
+                    var _dataString = $form.serialize();
+                    _dataString += '&ajax=true';
+
+                    $.ajax({ldelim}
+                        url: _url,
+                        type: "POST",
+                        data: _dataString,
+                        {include file="js_loader.tpl"},
+                        success: function(res){ldelim}
+                            _initdb_bindings(res);
+                        {rdelim},
+                        error: function() {ldelim}
+                            alert("{_T string="An error occured displaying plugin database initialization interface :(" escape="js"}");
+                        {rdelim}
+                    {rdelim});
+                {rdelim});
             {rdelim};
 
             $('.initdb').click(function(){ldelim}
@@ -90,7 +120,7 @@
                     error: function() {ldelim}
                         alert("{_T string="An error occured displaying plugin database initialization interface :(" escape="js"}");
                     {rdelim}
-                });
+                {rdelim});
                 return false;
             {rdelim})
         {rdelim});

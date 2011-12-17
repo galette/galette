@@ -70,18 +70,196 @@ if ( $plugin === null ) {
 }
 
 $step = 1;
+$istep = 1;
 
-if ( $step === 1 ) {
+if ( count($error_detected) == 0 && isset($_POST['install_type']) ) {
+    $tpl->assign('install_type', $_POST['install_type']);
+    $istep = 2;
+}
+
+if ( count($error_detected) == 0 && isset($_POST['install_permsok']) ) {
+    $istep = 3;
+}
+
+if ( count($error_detected) == 0 && isset($_POST['install_dbwrite_ok']) ) {
+    $istep = 4;
+}
+
+if ( $_POST['install_type'] == 'install' && $istep > 1) {
+    $step = 'i' . $istep;
+} elseif ( substr($_POST['install_type'], 0, 7) == 'upgrade'  && $istep > 1) {
+    $step = 'u' . $istep;
+}
+
+switch ( $step ){
+case '1':
+    $title = _T("Installation mode");
     //let's look for updates scripts
-    $update_scripts = GaletteZendDb::getUpdateScripts($plugin['root']);
+    $update_scripts = GaletteZendDb::getUpdateScripts($plugin['root'], TYPE_DB);
     if ( count($update_scripts) > 0 ) {
         $tpl->assign('update_scripts', $update_scripts);
     }
+    break;
+case 'i2':
+case 'u2':
+    $title = _T("Permissions on the base");
+    /** FIXME: when tables already exists and DROP not allowed at this time
+    the showed error is about CREATE, whenever CREATE is allowed */
+    //We delete the table if exists, no error at this time
+    $zdb->dropTestTable();
+
+    $results = $zdb->grantCheck(substr($step, 0, 1));
+
+    $result = '';
+    $error = false;
+    //test returned values
+    if ( $results['create'] instanceof Exception ) {
+        $error_detected[] = _T("CREATE operation not allowed");
+        $error_detected[] = $results['create']->getMessage();
+    } elseif ( $results['create'] != '' ) {
+        $success_detected[] = _T("CREATE operation allowed");
+    }
+
+    if ( $results['insert'] instanceof Exception ) {
+        $error_detected[] = _T("INSERT operation not allowed");
+        $error_detected[] = $results['insert']->getMessage();
+    } elseif ( $results['insert'] != '' ) {
+        $success_detected[] = _T("INSERT operation allowed");
+    }
+
+    if ( $results['update'] instanceof Exception ) {
+        $error_detected[] = _T("UPDATE operation not allowed");
+        $error_detected[] = $results['update']->getMessage();
+    } elseif ( $results['update'] != '' ) {
+        $success_detected[] = _T("UPDATE operation allowed");
+    }
+
+    if ( $results['select'] instanceof Exception ) {
+        $error_detected[] = _T("SELECT operation not allowed");
+        $error_detected[] = $results['select']->getMessage();
+    } elseif ( $results['select'] != '' ) {
+        $success_detected[] = _T("SELECT operation allowed");
+    }
+
+    if ( $results['delete'] instanceof Exception ) {
+        $error_detected[] = _T("DELETE operation not allowed");
+        $error_detected[] = $results['delete']->getMessage();
+    } elseif ( $results['delete'] != '' ) {
+        $success_detected[] = _T("DELETE operation allowed");
+    }
+
+    if ( $results['drop'] instanceof Exception ) {
+        $error_detected[] = _T("DROP operation not allowed");
+        $error_detected[] = $results['drop']->getMessage();
+    } elseif ( $results['drop'] != '' ) {
+        $success_detected[] = _T("DROP operation allowed");
+    }
+
+    if ( $step == 'u2' ) {
+        if (  $results['alter'] instanceof Exception ) {
+            $error_detected[] = _T("ALTER Operation not allowed");
+            $error_detected[] = $results['alter']->getMessage();
+        } elseif ( $results['alter'] != '' ) {
+            $success_detected[] = _T("ALTER Operation allowed");
+        }
+    }
+
+    /*if ( $error ) {
+        echo "<ul>" . $result . "</ul>\n";
+        echo '<div id="errorbox">';
+        echo '<h1>';
+        if( $step == 'i6' ) echo _T("GALETTE hasn't got enough permissions on the database to continue the installation.");
+        if ($step == 'u6') echo _T("GALETTE hasn't got enough permissions on the database to continue the update.");
+        echo '</h1>';
+        echo '</div>';
+    }*/
+    break;
+case 'i3':
+case 'u3':
+    if ( $step == 'i3' ) {
+        $title = _T("Creation of the tables");
+    } else {
+        $title = _T("Update of the tables");
+    }
+    // begin : copyright (2002) the phpbb group (support@phpbb.com)
+    // load in the sql parser
+    include 'install/sql_parse.php';
+    if ( $step == 'u3' ) {
+        $update_scripts = GaletteZendDb::getUpdateScripts(
+            $plugin['root'],
+            TYPE_DB,
+            substr($_POST['install_type'], 8)
+        );
+    } else {
+        $update_scripts['current'] = TYPE_DB . '.sql';
+    }
+
+    $sql_query = '';
+    while (list($key, $val) = each($update_scripts) ) {
+        $sql_query .= @fread(
+            @fopen($plugin['root'] . '/sql/' . $val, 'r'),
+            @filesize($plugin['root'] . '/sql/' . $val)
+        );
+        $sql_query .= "\n";
+    }
+
+    $sql_query = preg_replace('/galette_/', PREFIX_DB, $sql_query);
+    $sql_query = remove_remarks($sql_query);
+
+    $sql_query = split_sql_file($sql_query, ';');
+
+    for ( $i = 0; $i < sizeof($sql_query); $i++ ) {
+        $query = trim($sql_query[$i]);
+        if ( $query != '' && $query[0] != '-' ) {
+            //some output infos
+            @list($w1, $w2, $w3, $extra) = explode(' ', $query, 4);
+            if ($extra != '') {
+                $extra = '...';
+            }
+            try {
+                $result = $zdb->db->getConnection()->exec($query);
+                $success_detected[] = $w1 . ' ' . $w2 . ' ' . $w3 .
+                    ' ' . $extra;
+            } catch (Exception $e) {
+                $log->log(
+                    'Error executing query | ' . $e->getMessage() .
+                    ' | Query was: ' . $query,
+                    PEAR_LOG_WARNING
+                );
+                if ( (strcasecmp(trim($w1), 'drop') != 0)
+                    && (strcasecmp(trim($w1), 'rename') != 0)
+                ) {
+                    $error_detected[] = $w1 . ' ' . $w2 . ' ' . $w3 . ' ' . $extra;
+                    $error_detected[] = $e->getMessage() . '<br/>(' . $query  . ')';
+                } else {
+                    //if error are on drop, DROP, rename or RENAME we can continue
+                    $warning_detected[] = $w1 . ' ' . $w2 . ' ' . $w3 . ' ' . $extra;
+                    $warning_detected[] = $e->getMessage() . '<br/>(' . $query  . ')';
+                }
+            }
+        }
+    }
+    break;
+case 'i4':
+case 'u4':
+    if ( $step == 'i4' ) {
+        $title = _T("Installation complete !");
+    } else {
+        $title = _T("Update complete !");
+    }
+    break;
 }
 
 $tpl->assign('ajax', $ajax);
 $tpl->assign('step', $step);
+$tpl->assign('istep', $istep);
+$tpl->assign('plugid', $plugid);
 $tpl->assign('plugin', $plugin);
+$tpl->assign('page_title', $title);
+
+
+$tpl->assign('error_detected', $error_detected);
+$tpl->assign('success_detected', $success_detected);
 
 if ( $ajax ) {
     $tpl->assign('mode', 'ajax');
