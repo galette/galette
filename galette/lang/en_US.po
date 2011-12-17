@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2011-12-17 17:51+0100\n"
+"PO-Revision-Date: 2011-12-17 20:55+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -1524,7 +1524,7 @@ msgstr "apache_user"
 msgid "members"
 msgstr "members"
 
-#: ../templates/default/plugins.tpl:37 ../templates/default/plugins.tpl:55
+#: ../templates/default/plugins.tpl:37
 msgid "No active plugin."
 msgstr "No active plugin."
 
@@ -3430,6 +3430,10 @@ msgstr "Member Picture deleted"
 #: ../templates/default/preferences.tpl:73
 msgid "Social networks"
 msgstr "Social networks"
+
+#: ../templates/default/plugins.tpl:55
+msgid "No inactive plugin."
+msgstr "No inactive plugin."
 
 #: ../preferences.php:124
 msgid "- This username is already used by another member !"

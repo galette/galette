@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sat Dec 17 16:57:31 2011 (GMT)
+// This file was automatically generated on Sat Dec 17 19:55:35 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -63,8 +63,8 @@ $lang['among:'] = 'among:';
 // ../templates/default/gestion_groupes.tpl:38 
 $lang['Do you really want to delete this group from the base?'] = 'Do you really want to delete this group from the base?';
 
-// ../templates/default/gestion_adherents.tpl:256 ../templates/default/gestion_contributions.tpl:254 ../templates/default/gestion_transactions.tpl:125 
-$lang['Show legend'] = 'Show legend';
+// ../templates/default/plugins.tpl:55 
+$lang['No inactive plugin.'] = 'No inactive plugin.';
 
 // ../templates/default/gestion_adherents.tpl:251 
 $lang['Invert selection'] = 'Invert selection';
@@ -1893,6 +1893,9 @@ $lang['Active'] = 'Active';
 // ../templates/default/gestion_adherents.tpl:87 
 $lang['State of dues'] = 'State of dues';
 
+// ../templates/default/gestion_adherents.tpl:256 ../templates/default/gestion_contributions.tpl:254 ../templates/default/gestion_transactions.tpl:125 
+$lang['Show legend'] = 'Show legend';
+
 // ../install/index.php:185 ../install/index.php:1120 
 $lang['Permissions'] = 'Permissions';
 
@@ -2340,7 +2343,7 @@ $lang['Self_subscription as a member: '] = 'Self_subscription as a member: ';
 // ../ajouter_adherent.php:161 
 $lang['Member account has been modified.'] = 'Member account has been modified.';
 
-// ../templates/default/plugins.tpl:37 ../templates/default/plugins.tpl:55 
+// ../templates/default/plugins.tpl:37 
 $lang['No active plugin.'] = 'No active plugin.';
 
 // ../gestion_intitules.php:68 ../gestion_intitules.php:344 

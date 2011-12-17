@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2011-12-17 17:57+0100\n"
+"PO-Revision-Date: 2011-12-17 20:55+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -147,8 +147,8 @@ msgid ""
 "Plugin '%name' requires a database to work. These screens will help you "
 "setup that one for the first time."
 msgstr ""
-"Le plugin « %name » requiert une base de données pour fonctionner. Ces écrans "
-"vous aideront à la mettre en place pour la première fois."
+"Le plugin « %name » requiert une base de données pour fonctionner. Ces "
+"écrans vous aideront à la mettre en place pour la première fois."
 
 #: ../templates/default/preferences.tpl:167
 #: ../templates/default/preferences.tpl:168
@@ -1554,7 +1554,7 @@ msgstr "utilisateur_apache"
 msgid "members"
 msgstr "adhérents"
 
-#: ../templates/default/plugins.tpl:37 ../templates/default/plugins.tpl:55
+#: ../templates/default/plugins.tpl:37
 msgid "No active plugin."
 msgstr "Aucun plugin actif."
 
@@ -3484,6 +3484,10 @@ msgstr "Phot de l'adhérent supprimée"
 msgid "Social networks"
 msgstr "Réseaux sociaux"
 
+#: ../templates/default/plugins.tpl:55
+msgid "No inactive plugin."
+msgstr "Aucun plugin inactif."
+
 #: ../preferences.php:124
 msgid "- This username is already used by another member !"
 msgstr "- Cet identifiant est déjà utilisé par un autre adhérent&nbsp;!"
@@ -4229,8 +4233,7 @@ msgid ""
 "older version of the plugin without keeping your data"
 msgstr ""
 "Vous installez le plugin « %name » pour la première fois, ou vous souhaitez "
-"écraser une "
-"ancienne version du plugin sans conserver vos données"
+"écraser une ancienne version du plugin sans conserver vos données"
 
 #: ../gestion_contributions.php:152
 msgid "- Unknown payment type!"

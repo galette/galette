@@ -1374,7 +1374,7 @@ msgstr ""
 msgid "members"
 msgstr ""
 
-#: ../templates/default/plugins.tpl:37 ../templates/default/plugins.tpl:55
+#: ../templates/default/plugins.tpl:37
 msgid "No active plugin."
 msgstr ""
 
@@ -3110,6 +3110,10 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:5 ../templates/default/preferences.tpl:73
 msgid "Social networks"
+msgstr ""
+
+#: ../templates/default/plugins.tpl:55
+msgid "No inactive plugin."
 msgstr ""
 
 #: ../preferences.php:124

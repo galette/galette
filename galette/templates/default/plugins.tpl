@@ -52,7 +52,7 @@
             </tr>
 {foreachelse}
             <tr>
-                <td colspan="4">{_T string="No active plugin."}</td>
+                <td colspan="4">{_T string="No inactive plugin."}</td>
             </tr>
 {/foreach}
         </tbody>

@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sat Dec 17 16:57:31 2011 (GMT)
+// This file was automatically generated on Sat Dec 17 19:55:35 2011 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -63,8 +63,8 @@ $lang['among:'] = 'parmi :';
 // ../templates/default/gestion_groupes.tpl:38 
 $lang['Do you really want to delete this group from the base?'] = 'Voulez vous vraiment effacer ce groupe&nbsp;?';
 
-// ../templates/default/gestion_adherents.tpl:256 ../templates/default/gestion_contributions.tpl:254 ../templates/default/gestion_transactions.tpl:125 
-$lang['Show legend'] = 'Afficher la légende';
+// ../templates/default/plugins.tpl:55 
+$lang['No inactive plugin.'] = 'Aucun plugin inactif.';
 
 // ../templates/default/gestion_adherents.tpl:251 
 $lang['Invert selection'] = 'Inverser la sélection';
@@ -1893,6 +1893,9 @@ $lang['Active'] = 'Actif';
 // ../templates/default/gestion_adherents.tpl:87 
 $lang['State of dues'] = 'État cotisations';
 
+// ../templates/default/gestion_adherents.tpl:256 ../templates/default/gestion_contributions.tpl:254 ../templates/default/gestion_transactions.tpl:125 
+$lang['Show legend'] = 'Afficher la légende';
+
 // ../install/index.php:185 ../install/index.php:1120 
 $lang['Permissions'] = 'Permissions';
 
@@ -2340,7 +2343,7 @@ $lang['Self_subscription as a member: '] = 'Enregistrement en ligne';
 // ../ajouter_adherent.php:161 
 $lang['Member account has been modified.'] = 'Le compte de l\'adhérent a été modifié avec succès.';
 
-// ../templates/default/plugins.tpl:37 ../templates/default/plugins.tpl:55 
+// ../templates/default/plugins.tpl:37 
 $lang['No active plugin.'] = 'Aucun plugin actif.';
 
 // ../gestion_intitules.php:68 ../gestion_intitules.php:344 
