@@ -286,7 +286,7 @@ class Contributions extends GalettePagination
                 PEAR_LOG_WARNING
             );
             $log->log(
-                'Query was: ' . $countSelect->__toString() . ' ' . $e->__toString(),
+                'Query was: ' . $sumSelect->__toString() . ' ' . $e->__toString(),
                 PEAR_LOG_ERR
             );
             return false;
