@@ -41,6 +41,13 @@ require_once 'classes/adherent.class.php';
 require_once 'classes/galette_password.class.php';
 require_once 'classes/texts.class.php';
 
+if ( $login->isLogged()
+    || $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED
+) {
+    header('location: index.php');
+    die();
+}
+
 // Validation
 if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
     $login_adh = $_POST['login'];
