@@ -1,6 +1,3 @@
-{if $password_sent}
-                <div id="infobox">{_T string="A mail has been sent to your adress.<br/>Please check your inbox and follow the instructions."}</div>
-{else}
                 <form action="lostpasswd.php" method="post" enctype="multipart/form-data">
                 <section>
                     <p>

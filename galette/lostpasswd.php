@@ -41,17 +41,32 @@ require_once 'classes/adherent.class.php';
 require_once 'classes/galette_password.class.php';
 require_once 'classes/texts.class.php';
 
-if ( $login->isLogged()
-    || $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED
+$from_admin = false;
+if ( (($login->isAdmin() || $login->isStaff()) && isset($_GET['id_adh'])) ) {
+    $from_admin = true;
+}
+
+if ( ($login->isLogged()
+    || $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED)
+    && !$from_admin
 ) {
     header('location: index.php');
     die();
 }
 
 // Validation
-if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
-    $login_adh = $_POST['login'];
-    $adh = new Adherent($login_adh);
+if ( isset($_POST['valid']) && $_POST['valid'] == '1'
+    || $from_admin
+) {
+    $adh = null;
+    $login_adh = null;
+    if ( ($login->isAdmin() || $login->isStaff()) && isset($_GET['id_adh']) ) {
+        $adh = new Adherent((int)$_GET['id_adh']);
+        $login_adh = $adh->login;
+    } else {
+        $login_adh = $_POST['login'];
+        $adh = new Adherent($login_adh);
+    }
 
     if ( $adh->id != '' ) {
         //account has been found, proceed
@@ -93,7 +108,12 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                             _T("Mail sent to '%s' for password recovery.")
                         )
                     );
-                    $tpl->assign('password_sent', true);
+                    if ( $from_admin === false ) {
+                        $success_detected[] = _T("A mail has been sent to your adress.<br/>Please check your inbox and follow the instructions.");
+                        $tpl->assign('success_detected', $success_detected);
+                    } else {
+                        $success_detected[] = _T("An mail has been sent to the member.");
+                    }
                 } else {
                     $str = str_replace(
                         '%s',
@@ -112,7 +132,6 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 $hist->add($str);
                 $error_detected[] = $str;
             }
-            
         } else {
             $str = str_replace(
                 '%s',
@@ -144,13 +163,23 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
     }
 }
 
-$tpl->assign('page_title', _T("Password recovery"));
-$tpl->assign('error_detected', $error_detected);
-$tpl->assign('warning_detected', $warning_detected);
+if ( $from_admin ) {
+    if ( count($error_detected) > 0 ) {
+        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_errors'] = serialize($error_detected);
+    }
+    if ( count($success_detected) > 0 ) {
+        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_success'] = serialize($success_detected);
+    }
+    header('location: voir_adherent.php?id_adh=' . $adh->id);
+    die();
+} else {
+    $tpl->assign('page_title', _T("Password recovery"));
+    $tpl->assign('error_detected', $error_detected);
+    $tpl->assign('warning_detected', $warning_detected);
 
-// display page
-$content = $tpl->fetch('lostpasswd.tpl');
-$tpl->assign('content', $content);
-$tpl->display('public_page.tpl');
-
+    // display page
+    $content = $tpl->fetch('lostpasswd.tpl');
+    $tpl->assign('content', $content);
+    $tpl->display('public_page.tpl');
+}
 ?>

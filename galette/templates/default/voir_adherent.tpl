@@ -10,6 +10,11 @@
 			<li>
 				<a class="button" href="carte_adherent.php?id_adh={$member->id}" id="btn_membercard">{_T string="Generate Member Card"}</a>
 			</li>
+    {if $pref_mail_method neq constant('GaletteMail::METHOD_DISABLED')}
+            <li>
+				<a class="button" href="lostpasswd.php?id_adh={$member->id}" id="btn_lostpassword" title="{_T string="Send member a link to generate a new passord, as if had used the 'lost password' functionnality."}">{_T string="New password"}</a>
+            </li>
+    {/if}
 {/if}
 			<li>
 				<a class="button" href="ajouter_adherent.php?id_adh={$member->id}" id="btn_edit">{_T string="Modification"}</a>

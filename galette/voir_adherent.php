@@ -62,10 +62,26 @@ if ( $id_adh == '' ) {
     header('location: index.php');
     die();
 }
-if (isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']) && $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']) {
+if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error'])
+    && $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']
+) {
     $error_detected[] = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error_msg'];
     unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error_msg']);
     unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']);
+}
+
+if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_errors']) ) {
+    $error_detected = unserialize(
+        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_errors']
+    );
+    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_errors']);
+}
+
+if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_success']) ) {
+    $success_detected = unserialize(
+        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_success']
+    );
+    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_success']);
 }
 
 require_once WEB_ROOT . 'classes/adherent.class.php';
