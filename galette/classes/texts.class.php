@@ -106,7 +106,7 @@ class Texts
             'tid'       => 8,
             'tref'      => 'contrib',
             'tsubject'  => '[{ASSO_NAME}] Votre cotisation',
-            'tbody'     => "Bonjour,\r\n\r\nVotre cotisation à {ASSO_NAME} a été enregistrée et validée par l'association {ASSO_NAME}.\r\n\r\nElle est valable jusqu'au {DEADLINE}\r\n\r\nVous pouvez désormais accéder à vos données personnelles à l'aide de vos identifiants galette à l'adresse suivante :\r\n{LOGIN_URI}.\r\n\r\n{CONTRIB_INFO}A Bientôt!\r\n\r\n(Ce courriel est un envoi automatique)",
+            'tbody'     => "Bonjour,\r\n\r\nVotre cotisation a été enregistrée et validée par l'association {ASSO_NAME}.\r\n\r\nElle est valable jusqu'au {DEADLINE}\r\n\r\nVous pouvez désormais accéder à vos données personnelles à l'aide de vos identifiants galette à l'adresse suivante :\r\n{LOGIN_URI}.\r\n\r\n{CONTRIB_INFO}\r\n\r\nA Bientôt!\r\n\r\n(Ce courriel est un envoi automatique)",
             'tlang'     => 'fr_FR',
             'tcomment'  => 'Accusé de réception de cotisation'
         ),
@@ -174,7 +174,7 @@ class Texts
             'tid'       => 20,
             'tref'      => 'accountedited',
             'tsubject'  => '[{ASSO_NAME}] Votre compte a été modifié',
-            'tbody'     => "Bonjour !\r\n\r\nVotre compte chez {ASSO_NAME} (avec le login '{LOGIN}') a été modifié par un administrateur ou un membre du bureau.\r\n\r\nVous pouvez vous connecter à l'adresse {LOGIN_URI} pour vérifier ces informations ou les modifier.\r\n\r\nÀ bientôt !\r\n\r\n(ce courriel est un envoi automatique)",
+            'tbody'     => "Bonjour !\r\n\r\nVotre compte chez {ASSO_NAME} (avec l'identifiant '{LOGIN}') a été modifié par un administrateur ou un membre du bureau.\r\n\r\nVous pouvez vous connecter à l'adresse {LOGIN_URI} pour vérifier ces informations ou les modifier.\r\n\r\nÀ bientôt !\r\n\r\n(ce courriel est un envoi automatique)",
             'tlang'     => 'fr_FR',
             'tcomment'  => 'Informe l\'utilisateur que son compte a été modifié'
         ),
