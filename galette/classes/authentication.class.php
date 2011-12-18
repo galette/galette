@@ -217,7 +217,7 @@ abstract class Authentication
     /**
     * Global getter method
     *
-    * @param string $name name of the property we want to retrive
+    * @param string $name name of the property we want to retrieve
     *
     * @return false|object the called property
     */
