@@ -10,36 +10,6 @@
 					<th class="listing">{_T string="Actions"}</th>
 				</tr>
 			</thead>
-			<tfoot>
-				<tr>
-					<td class="listing">&nbsp;</td>
-					<td class="listing left">
-						<input size="40" type="text" name="field_name"/>
-					</td>
-					<td class="listing left">
-						<select name="field_perm">
-							{html_options options=$perm_names selected="0"}
-						</select>
-					</td>
-					<td class="listing left">
-						<select name="field_type">
-							{html_options options=$field_type_names selected="0"}
-						</select>
-					</td>
-					<td class="listing">
-						<select name="field_required">
-							<option value="0">{_T string="No"}</option>
-							<option value="1">{_T string="Yes"}</option>
-						</select>
-					</td>
-					<td class="listing left">
-						<select name="field_pos">
-							{html_options options=$field_positions selected="0"}
-						</select>
-					</td>
-					<td class="listing center"><input type="submit" name="valid" id="btnadd" value="{_T string="Add"}"/></td>
-				</tr>
-			</tfoot>
 			<tbody>
 {foreach from=$dyn_fields item=field}
 				<tr>
@@ -80,7 +50,12 @@
 {/if}
 					</td>
 				</tr>
+{foreachelse}
+                <tr>
+                    <td colspan="7">
+                        {_T string="There is not yet any dynamic field configured for '%formname'" pattern="/%formname/" replace="$form_name}
+                    </td>
+                </tr>
 {/foreach}
 			</tbody>
 		</table>
-		<input type="hidden" name="form" value="{$form_name}"/>

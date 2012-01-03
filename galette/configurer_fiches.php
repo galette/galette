@@ -263,14 +263,12 @@ if ( $form_name == '' ) {
 } // $form_name == ''
 
 $tpl->assign('require_tabs', true);
+$tpl->assign('require_dialog', true);
 $tpl->assign('all_forms', $all_forms);
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('form_name', $form_name);
 //$tpl->assign('form_title', $form_title);
 $title = _T("Profile configuration");
-if ( $form_title != '' ) {
-    $title .= ' (' . $form_title . ')';
-}
 $tpl->assign('page_title', $title);
 $tpl->assign('perm_names', $perm_names);
 $tpl->assign('field_type_names', $field_type_names);

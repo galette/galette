@@ -577,11 +577,17 @@ h1 #sendmail .ui-button-text {
     background-image:url(images/icon-quit.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-#btnadd {
+#btnadd, #btnadd_small {
 	background-image:url(images/icon-add.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
-#btnadd.ui-state-hover {
+#btnadd.ui-state-hover, #btnadd_small.ui-state-hover{
     background-image:url(images/icon-add.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#btnadd_small{
+    position: absolute;
+    top: .5em;
+    right: .5em;
 }
 
 #btncancel {
@@ -1522,7 +1528,7 @@ legend {
 }
 
 /* no border on the first 'p' child */
-.cssform p:nth-child(2)/*, .cssform div.p:nth-child(2), .cssform div p:nth-child(1)*/{
+.cssform p:nth-child(2), #addfield p:first-child/*, .cssform div.p:nth-child(2), .cssform div p:nth-child(1)*/{
     border-top:none;
 }
 /* If there is a div, the preceding rules does not apply to the correct element :( */
