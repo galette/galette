@@ -20,6 +20,11 @@
                     $('#configfiches_tabs input:submit, #configfiches_tabs .button, #configfiches_tabs input:reset' ).button();
                 {rdelim},
                 ajaxOptions: {ldelim}
+                    beforeSend: function(xhr, settings){ldelim}
+                        if ( settings.url.match(/\?form={$form_name}.*/) ) {ldelim}
+                            return false; //avoid reloading first tab onload
+                        {rdelim}
+                    {rdelim},
                     error: function( xhr, status, index, anchor ) {ldelim}
                         alert('{_T string="An error occured :("|escape:"js"}');
                     {rdelim}
