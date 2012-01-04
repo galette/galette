@@ -248,7 +248,7 @@ class MailingHistory extends History
                 'mailing_body' => $this->_message,
                 'mailing_date' => $this->_date,
                 'mailing_recipients' => serialize($_recipients),
-                'mailing_sent' => $this->_sent
+                'mailing_sent' => ($this->_sent) ? true : 'false'
             );
 
             $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
