@@ -56,7 +56,7 @@ abstract class Authentication
     private $_surname;
     private $_admin = false;
     private $_id;
-    private $_lang; /** FIXME: not used! */
+    private $_lang;
     private $_logged = false;
     private $_active = false;
     private $_superadmin = false;
@@ -102,6 +102,8 @@ abstract class Authentication
     */
     public function logAdmin($login)
     {
+        global $preferences;
+
         $this->_logged = true;
         $this->_name = 'Admin';
         $this->_login = $login;
@@ -109,6 +111,8 @@ abstract class Authentication
         $this->_active = true;
         $this->_staff = false;
         $this->_uptodate = false;
+        $this->_id = 0;
+        $this->_lang = $preferences->pref_lang;
         //a flag for super admin only, since it's not a regular user
         $this->_superadmin = true;
     }
