@@ -237,8 +237,10 @@ class MailingHistory extends History
 
         try {
             $_recipients = array();
-            foreach ( $this->_recipients as $_r ) {
-                $_recipients[$_r->id] = $r->sname . ' <' . $_r->email . '>';
+            if ( $this->_recipients != null ) {
+                foreach ( $this->_recipients as $_r ) {
+                    $_recipients[$_r->id] = $r->sname . ' <' . $_r->email . '>';
+                }
             }
             $values = array(
                 'mailing_sender' => $this->_sender,
