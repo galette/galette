@@ -286,7 +286,7 @@ DROP TABLE IF EXISTS galette_mailing_history;
 CREATE TABLE galette_mailing_history (
   mailing_id integer DEFAULT nextval('galette_mailing_history_id_seq'::text) NOT NULL,
   mailing_sender integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
-  mailing_subjectf character varying(255) NOT NULL,
+  mailing_subject character varying(255) NOT NULL,
   mailing_body text NOT NULL,
   mailing_date timestamp NOT NULL,
   mailing_recipients text NOT NULL,
