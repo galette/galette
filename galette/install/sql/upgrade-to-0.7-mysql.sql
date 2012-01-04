@@ -110,22 +110,21 @@ CREATE TABLE IF NOT EXISTS galette_fields_config (
   position int(2) NOT NULL,
   id_field_category int(2) NOT NULL,
   PRIMARY KEY (table_name, field_id),
-  CONSTRAINT galette_fields_config_categories
-    FOREIGN KEY (id_field_category)
-    REFERENCES galette_fields_categories (id_field_category)
+  FOREIGN KEY (id_field_category) REFERENCES galette_fields_categories (id_field_category)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Table for mailing history storage;
 DROP TABLE IF EXISTS galette_mailing_history;
 CREATE TABLE IF NOT EXISTS galette_mailing_history (
   mailing_id smallint(6) NOT NULL auto_increment,
-  mailing_sender int(10) unsigned NOT NULL,
+  mailing_sender int(10) unsigned,
   mailing_subject varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   mailing_body text NOT NULL,
   mailing_date datetime NOT NULL,
   mailing_recipients text NOT NULL,
   mailing_sent tinyint(1) NOT NULL,
-  PRIMARY KEY (mailing_id)
+  PRIMARY KEY (mailing_id),
+  FOREIGN KEY (mailing_sender) REFERENCES galette_adherents (id_adh)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- table for groups
