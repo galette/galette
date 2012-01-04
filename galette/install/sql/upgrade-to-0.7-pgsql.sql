@@ -29,6 +29,15 @@ CREATE SEQUENCE galette_groups_id_seq
     MINVALUE 1
     CACHE 1;
 
+-- sequence for mailing history
+DROP SEQUENCE IF EXISTS galette_mailing_history_id_seq;
+CREATE SEQUENCE galette_mailing_history_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
 -- Each preference must be unique
 CREATE UNIQUE INDEX galette_preferences_name ON galette_preferences (nom_pref);
 
