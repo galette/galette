@@ -73,10 +73,11 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
         $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
     } else {
         $log->log(
-            '[mailing_adherents.php] No member selected to generate members cards',
+            '[mailing_adherents.php] No member selected for mailing',
             PEAR_LOG_INFO
         );
         header('location:gestion_adherents.php');
+        die();
     }
 
     $members = Members::getArrayList($varslist->selected);
