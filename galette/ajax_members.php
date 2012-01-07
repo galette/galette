@@ -114,7 +114,9 @@ $tpl->assign('multiple', $multiple);
 $tpl->assign('members_list', $members_list);
 $tpl->assign('selected_members', $selected_members);
 $tpl->assign('unreachables_members', $unreachables_members);
-$tpl->assign('the_id', $_POST['gid']);
+if ( isset($_POST['gid']) ) {
+    $tpl->assign('the_id', $_POST['gid']);
+}
 $tpl->assign('varslist', $varslist);
 
 if ( $ajax ) {
