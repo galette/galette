@@ -8,4 +8,3 @@
 					<input type="hidden" name="valid" value="1"/>
 				</section>
                 </form>
-{/if}
