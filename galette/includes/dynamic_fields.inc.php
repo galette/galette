@@ -221,12 +221,12 @@ function set_dynamic_field(
         $zdb->db->commit();
         return true;
     } catch (Exception $e) {
-        /** FIXME */
         $zdb->db->rollBack();
         $log->log(
             'An error occured storing dynamic field. Form name: ' . $form_name .
             '; item_id:' . $item_id . '; field_id: ' . $field_id .
-            '; val_index: ' . $val_index . '; field_val:' . $field_val,
+            '; val_index: ' . $val_index . '; field_val:' . $field_val .
+            ' | Error was: ' . $e->getMessage(),
             PEAR_LOG_ERR
         );
         return false;
