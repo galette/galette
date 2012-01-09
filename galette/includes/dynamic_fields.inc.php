@@ -191,16 +191,24 @@ function set_dynamic_field(
         $count = $select->query()->fetchColumn();
 
         if ( $count > 0 ) {
+            //cleanup WHERE array so it can be sent back to update
+            //and delete methods
+            $where = array();
+            $owhere = $select->getPart(Zend_Db_Select::WHERE);
+            foreach ( $owhere as $c ) {
+                $where[] = preg_replace('/^AND /', '', $c);
+            }
+            
             if ( trim($field_val) == '' ) {
                 $zdb->db->delete(
                     $fields_table,
-                    $select->getPart(Zend_Db_Select::WHERE)
+                    $where
                 );
             } else {
                 $zdb->db->update(
                     $fields_table,
                     array('field_val' => $field_val),
-                    $select->getPart(Zend_Db_Select::WHERE)
+                    $where
                 );
             }
         } else {
