@@ -7,6 +7,9 @@
 		<link rel="stylesheet" type="text/css" href="{$template_subdir}farbtastic.css"/>
 {/if}
 {* JQuery UI related *}
+{if $require_sorter or $require_dialog}
+        <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.mouse.min.js"></script>
+{/if}
 {if $require_sorter}
 		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.sortable.min.js"></script>
 {/if}
@@ -21,7 +24,6 @@
 {/if}
 {if $require_dialog}
         {* Drag component, only used for Dialog for the moment *}
-        <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.mouse.min.js"></script>
         <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.draggable.min.js"></script>
         {* So the dialog could be aligned in the middle of the screen *}
         <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.position.min.js"></script>
