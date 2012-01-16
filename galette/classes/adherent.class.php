@@ -627,7 +627,6 @@ class Adherent
     private function _checkDues()
     {
         //how many days since our beloved member has been created
-        // PHP >= 5.3
         $date_now = new DateTime();
         $this->_oldness = $date_now->diff(
             new DateTime($this->_creation_date)
@@ -806,7 +805,11 @@ class Adherent
                 $ret = _T("Freed of dues");
         } else if ( $this->_due_date == '') {
             $patterns = array('/%days/', '/%date/');
-            $replace = array($this->_oldness, $this->_creation_date);
+            $cdate = new DateTime($this->_creation_date);
+            $replace = array(
+                $this->_oldness,
+                $cdate->format(_T("Y-m-d"))
+            );
             $ret = preg_replace(
                 $patterns,
                 $replace,
@@ -816,7 +819,11 @@ class Adherent
             $ret = _T("Last day!");
         } else if ( $this->_days_remaining < 0 ) {
             $patterns = array('/%days/', '/%date/');
-            $replace = array($this->_days_remaining *-1, $this->_due_date);
+            $ddate = new DateTime($this->_due_date);
+            $replace = array(
+                $this->_days_remaining *-1,
+                $ddate->format(_T("Y-m-d"))
+            );
             $ret = preg_replace(
                 $patterns,
                 $replace,
@@ -824,7 +831,11 @@ class Adherent
             );
         } else {
             $patterns = array('/%days/', '/%date/');
-            $replace = array($this->_days_remaining, $this->_due_date);
+            $ddate = new DateTime($this->_due_date);
+            $replace = array(
+                $this->_days_remaining,
+                $ddate->format(_T("Y-m-d"))
+            );
             $ret = preg_replace(
                 $patterns,
                 $replace,
