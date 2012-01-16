@@ -212,18 +212,20 @@ function set_dynamic_field(
                 );
             }
         } else {
-            $values = array(
-                'item_id'    => $item_id,
-                'field_form' => $form_name,
-                'field_id'   => $field_id,
-                'val_index'  => $val_index,
-                'field_val'  => $field_val
-            );
+            if ( $field_val !== '' ) {
+                $values = array(
+                    'item_id'    => $item_id,
+                    'field_form' => $form_name,
+                    'field_id'   => $field_id,
+                    'val_index'  => $val_index,
+                    'field_val'  => $field_val
+                );
 
-            $zdb->db->insert(
-                $fields_table,
-                $values
-            );
+                $zdb->db->insert(
+                    $fields_table,
+                    $values
+                );
+            }
         }
 
         $zdb->db->commit();
@@ -343,7 +345,6 @@ function extract_posted_dynamic_fields($post, $disabled)
                     list($field_id, $val_index) = explode('_', substr($key, 11));
                     if ( is_numeric($field_id)
                         && is_numeric($val_index)
-                        && trim($value) != ''
                     ) {
                         $dyn_fields[$field_id][$val_index] = $value;
                     }
