@@ -936,10 +936,11 @@ h1 #sendmail .ui-button-text {
     background-repeat: no-repeat;
     text-indent: 25px;
     width:16px;
-    margin: 0 .5em;
+    margin: 0 .5em .2em;
     overflow: hidden;
     display: inline-block;
     vertical-align: bottom;
+    white-space: nowrap;
 }
 /* =/ Public pages */
 
