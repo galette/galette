@@ -1833,7 +1833,8 @@ ul#paths{
 	margin:.5em 0 0 .5em;
 	background-color: #DDDDFF;
 	padding-bottom:.2em;
-	float:left;
+	display: inline-block;
+    vertical-align: top;
 	text-align:center;
 	width:240px;
 	height:240px;
@@ -1844,6 +1845,10 @@ ul#paths{
 
 .trombino img{
 	margin:.5em .5em 0 .5em;
+}
+
+.trombinoscope {
+    text-align: center;
 }
 
 .tbl_line_even {

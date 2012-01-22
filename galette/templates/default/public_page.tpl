@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{$galette_lang}" class="public_page">
+<html lang="{$galette_lang}" class="public_page{if $additionnal_html_class} {$additionnal_html_class}{/if}">
 	<head>
 		{include file='common_header.tpl'}
 {if $require_calendar}

@@ -50,6 +50,7 @@ if ( !$preferences->showPublicPages() ) {
 $members = Members::getPublicList(true, null);
 
 $tpl->assign('page_title', _T("Trombinoscope"));
+$tpl->assign('additionnal_html_class', 'trombinoscope');
 $tpl->assign('members', $members);
 $content = $tpl->fetch('trombinoscope.tpl');
 $tpl->assign('content', $content);
