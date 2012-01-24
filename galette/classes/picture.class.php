@@ -557,7 +557,7 @@ class Picture
             $ratio = $cur_width / $cur_height;
 
             // calculate image size according to ratio
-            if ($cur_witdh>$cur_height) {
+            if ($cur_width>$cur_height) {
                 $h = $w/$ratio;
             } else {
                 $w = $h*$ratio;
