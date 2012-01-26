@@ -62,6 +62,7 @@ abstract class Authentication
     private $_superadmin = false;
     private $_staff = false;
     private $_uptodate = false;
+    private $_managed_groups;
 
     /**
     * Default constructor
@@ -183,6 +184,28 @@ abstract class Authentication
     public function isStaff()
     {
         return $this->_staff;
+    }
+
+    /**
+     * Is user a group manager?
+     * If no group id is specified, check if user is manager for at
+     * least one group.
+     *
+     * @param int $id_group Group identifier
+     *
+     * @return boolean
+     */
+    public function isGroupManager($id_group = null)
+    {
+        if ( $this->isAdmin() || $this->isStaff() ) {
+            return true;
+        } else {
+            if ( $id_group === null ) {
+                return count($this->_managed_groups) > 0;
+            } else {
+                return in_array($id_group, $this->_managed_groups);
+            }
+        }
     }
 
     /**

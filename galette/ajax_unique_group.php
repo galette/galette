@@ -3,8 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Groups list
- * Make possible to search and select a group
+ * Check for group name uniqueness
  *
  * This page can be loaded directly, or via ajax.
  * Via ajax, we do not have a full html page, but only
@@ -12,7 +11,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2012 The Galette Team
+ * Copyright © 2012 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -32,20 +31,27 @@
  * @category  Plugins
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2012 The Galette Team
+ * @copyright 2012 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id: owners.php 556 2009-03-13 06:48:49Z trashy $
+ * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2011-11-01
+ * @since     Available since 0.7dev - 2012-01-22
  */
 
 require_once 'includes/galette.inc.php';
 
-if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff()
-    && !$login->isGroupManager()
-) {
+$name = $_POST['gname'];
+if ( !$name ) {
     $log->log(
-        'Trying to display ajax_groups.php without appropriate permissions',
+        'Trying to check if group name is unique without name specified',
+        PEAR_LOG_INFO
+    );
+    die();
+}
+
+if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
+    $log->log(
+        'Trying to display ajax_group.php without appropriate permissions',
         PEAR_LOG_INFO
     );
     die();
@@ -55,20 +61,5 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff()
 $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 
 require_once WEB_ROOT . 'classes/groups.class.php';
-
-$groups = new Groups();
-$groups_list = $groups->getList();
-
-$tpl->assign('ajax', $ajax);
-$tpl->assign('groups_list', $groups_list);
-$tpl->assign('selected_groups', (isset($_POST['groups']) ? $_POST['groups'] : array()));
-
-if ( $ajax ) {
-    $tpl->assign('mode', 'ajax');
-    $tpl->display('ajax_groups.tpl');
-} else {
-    $content = $tpl->fetch('ajax_groups.tpl');
-    $tpl->assign('content', $content);
-    $tpl->display('page.tpl');
-}
+echo json_encode(array('success' => Groups::isUnique($name)));
 ?>

@@ -3,8 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Groups list
- * Make possible to search and select a group
+ * Load a group
  *
  * This page can be loaded directly, or via ajax.
  * Via ajax, we do not have a full html page, but only
@@ -32,20 +31,30 @@
  * @category  Plugins
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2012 The Galette Team
+ * @copyright 2012 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id: owners.php 556 2009-03-13 06:48:49Z trashy $
+ * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2011-11-01
+ * @since     Available since 0.7dev - 2012-01-19
  */
 
 require_once 'includes/galette.inc.php';
+require_once 'classes/adherent.class.php';
+
+$id = get_numeric_form_value(Group::PK, '');
+if ( !$id ) {
+    $log->log(
+        'Trying to display ajax_group.php without groups specified',
+        PEAR_LOG_INFO
+    );
+    die();
+}
 
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff()
-    && !$login->isGroupManager()
+    && !$login->isGroupManager($id)
 ) {
     $log->log(
-        'Trying to display ajax_groups.php without appropriate permissions',
+        'Trying to display ajax_group.php without appropriate permissions',
         PEAR_LOG_INFO
     );
     die();
@@ -54,21 +63,40 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff()
 // check for ajax mode
 $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 
+require_once WEB_ROOT . 'classes/group.class.php';
 require_once WEB_ROOT . 'classes/groups.class.php';
 
-$groups = new Groups();
-$groups_list = $groups->getList();
+$group = new Group((int)$id);
 
-$tpl->assign('ajax', $ajax);
-$tpl->assign('groups_list', $groups_list);
-$tpl->assign('selected_groups', (isset($_POST['groups']) ? $_POST['groups'] : array()));
+if ( !isset($_POST['reorder']) ) {
+    $groups = new Groups();
 
-if ( $ajax ) {
-    $tpl->assign('mode', 'ajax');
-    $tpl->display('ajax_groups.tpl');
+    $tpl->assign('ajax', $ajax);
+    $tpl->assign('group', $group);
+    $tpl->assign('groups', $groups->getList());
+
+    if ( $ajax ) {
+        $tpl->assign('mode', 'ajax');
+        $tpl->display('group.tpl');
+    } else {
+        $tpl->assign('require_tabs', true);
+        $content = $tpl->fetch('group.tpl');
+        $tpl->assign('content', $content);
+        $tpl->display('page.tpl');
+    }
 } else {
-    $content = $tpl->fetch('ajax_groups.tpl');
-    $tpl->assign('content', $content);
-    $tpl->display('page.tpl');
+    //asking to reorder
+    if ( isset($_POST['to']) ) {
+        $group->setParentGroup((int)$_POST['to']);
+        $group->store();
+        echo json_encode(array('success' => 'true'));
+    } else {
+        $log->log(
+            'Trying to reorder without target specified',
+            PEAR_LOG_INFO
+        );
+        echo json_encode(array('success' => false));
+        die();
+    }
 }
 ?>

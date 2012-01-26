@@ -49,7 +49,9 @@ require_once 'includes/galette.inc.php';
 if ( !$login->isLogged() ) {
     header('location: index.php');
     die();
-} elseif ( !$login->isAdmin() && !$login->isStaff() ) {
+} elseif ( !$login->isAdmin() && !$login->isStaff()
+    && !$login->isGroupManager()
+) {
     header('location: voir_adherent.php');
     die();
 }
@@ -163,7 +165,12 @@ if (isset($_GET['sup']) || isset($_POST['delete'])) {
     }
 }
 
-$members_list = $members->getMembersList(true);
+$members_list = array();
+if ( $login->isAdmin() || $login->isStaff() ) {
+    $members_list = $members->getMembersList(true);
+} else {
+    $members_list = $members->getManagedMembersList(true);
+}
 
 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'] = serialize($varslist);
 

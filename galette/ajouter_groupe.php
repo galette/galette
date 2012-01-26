@@ -48,18 +48,20 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once 'classes/groups.class.php';
+require_once 'classes/group.class.php';
 
-$group = new Groups();
+$group = new Group();
 
-$id = get_numeric_form_value(Groups::PK, '');
+$id = get_numeric_form_value(Group::PK, '');
 if ( $id ) {
     $group->load($id);
 }
 
 if ( isset($_POST['group_name']) ) {
     $group->setName($_POST['group_name']);
-    $group->setOwner($_POST['group_owner']);
+    if ( $_POST['parent_group'] !== '') {
+        $group->setParentGroup((int)$_POST['parent_group']);
+    }
     $new = false;
     if ( $group->getId() == '' ) {
         $new = true;
@@ -88,6 +90,7 @@ if ( $group->getId() != '' ) {
 
 $tpl->assign('page_title', $title);
 $tpl->assign('group', $group);
+$tpl->assign('groups', Groups::getSimpleList());
 
 $tpl->assign('require_dialog', true);
 $tpl->assign('error_detected', $error_detected);

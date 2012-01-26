@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2012-01-11 07:29+0100\n"
+"PO-Revision-Date: 2012-01-21 19:14+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -2233,7 +2233,7 @@ msgstr "Préférences"
 
 #: ../templates/default/member.tpl:332
 msgid "Groups selection"
-msgstr "Sélection ds groupes"
+msgstr "Sélection des groupes"
 
 #: ../classes/picture.class.php:740
 msgid ""

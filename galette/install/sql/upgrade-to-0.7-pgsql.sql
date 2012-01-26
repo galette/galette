@@ -141,16 +141,23 @@ CREATE TABLE galette_groups (
   id_group integer DEFAULT nextval('galette_groups_id_seq'::text) NOT NULL,
   group_name character varying(50) NOT NULL CONSTRAINT name UNIQUE,
   creation_date timestamp NOT NULL,
-  id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
+  parent_group integer DEFAULT NULL REFERENCES galette_groups(id_group) ON DELETE RESTRICT ON UPDATE CASCADE,
   PRIMARY KEY (id_group)
 );
 
--- table for groups users
-DROP TABLE IF EXISTS galette_groups_users;
-CREATE TABLE galette_groups_users (
+-- table for groups managers
+DROP TABLE IF EXISTS galette_groups_managers;
+CREATE TABLE galette_groups_managers (
   id_group integer REFERENCES galette_groups(id_group) ON DELETE RESTRICT ON UPDATE CASCADE,
   id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
-  manager boolean NOT NULL DEFAULT FALSE,
+  PRIMARY KEY (id_group,id_adh)
+);
+
+-- table for groups members
+DROP TABLE IF EXISTS galette_groups_members;
+CREATE TABLE galette_groups_members (
+  id_group integer REFERENCES galette_groups(id_group) ON DELETE RESTRICT ON UPDATE CASCADE,
+  id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
   PRIMARY KEY (id_group,id_adh)
 );
 

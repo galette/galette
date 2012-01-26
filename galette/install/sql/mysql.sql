@@ -228,21 +228,32 @@ CREATE TABLE galette_mailing_history (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- table for groups
-CREATE TABLE IF NOT EXISTS galette_groups (
+DROP TABLE IF EXISTS galette_groups;
+CREATE TABLE galette_groups (
   id_group int(10) NOT NULL AUTO_INCREMENT,
   group_name varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   creation_date datetime NOT NULL,
-  id_adh int(10) unsigned NOT NULL,
+  parent_group int(10) DEFAULT NULL,
   PRIMARY KEY (id_group),
   UNIQUE KEY `name` (group_name),
-  FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)
+  FOREIGN KEY (parent_group) REFERENCES galette_groups (id_group)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- table for groups users
-CREATE TABLE IF NOT EXISTS galette_groups_users (
+-- table for groups managers
+DROP TABLE IF EXISTS galette_groups_managers;
+CREATE TABLE galette_groups_managers (
   id_group int(10) NOT NULL,
   id_adh int(10) unsigned NOT NULL,
-  manager tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (id_group,id_adh),
+  FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh),
+  FOREIGN KEY (id_group) REFERENCES galette_groups (id_group)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- table for groups member
+DROP TABLE IF EXISTS galette_groups_members;
+CREATE TABLE galette_groups_members (
+  id_group int(10) NOT NULL,
+  id_adh int(10) unsigned NOT NULL,
   PRIMARY KEY (id_group,id_adh),
   FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh),
   FOREIGN KEY (id_group) REFERENCES galette_groups (id_group)

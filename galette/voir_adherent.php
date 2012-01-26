@@ -51,9 +51,10 @@ if ( !$login->isLogged() ) {
 $id_adh = get_numeric_form_value('id_adh', '');
 
 if ( !$login->isSuperAdmin() ) {
-    if ( !$login->isAdmin() && !$login->isStaff()
+    if ( !$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager()
         || $login->isAdmin() && $id_adh == ''
         || $login->isStaff() && $id_adh == ''
+        || $login->isGroupManager() && $id_adh == ''
     ) {
         $id_adh = $login->id;
     }
@@ -90,6 +91,23 @@ require_once WEB_ROOT . 'includes/dynamic_fields.inc.php';
 
 $member = new Adherent();
 $member->load($id_adh);
+
+if ( $login->id != $id_adh && !$login->isAdmin() && !$login->isStaff() ) {
+    //check if requested member is part of managed groups
+    $groups = $member->groups;
+    $is_managed = false;
+    foreach ( $groups as $g ) {
+        if ( $login->isGroupManager($g->getId()) ) {
+            $is_managed = true;
+            break;
+        }
+    }
+    if ( $is_managed !== true ) {
+        //requested member is not part of managed groups, fall back to logged
+        //in member
+        $member->load($login->id);
+    }
+}
 
 $navigate = array();
 require_once 'classes/varslist.class.php';
@@ -135,13 +153,14 @@ if ( isset($error_detected) ) {
     $tpl->assign('error_detected', $error_detected);
 }
 $tpl->assign('page_title', _T("Member Profile"));
+$tpl->assign('require_dialog', true);
 $tpl->assign('member', $member);
 $tpl->assign('navigate', $navigate);
 $tpl->assign('pref_lang_img', $i18n->getFlagFromId($member->language));
 $tpl->assign('pref_lang', ucfirst($i18n->getNameFromId($member->language)));
 $tpl->assign('pref_card_self', $preferences->pref_card_self);
 $tpl->assign('dynamic_fields', $dynamic_fields);
-$tpl->assign('data', $adherent);
+$tpl->assign('groups', Groups::getSimpleList());
 $tpl->assign('time', time());
 //if we got a mail warning when adding/editing a member,
 //we show it and delete it from session

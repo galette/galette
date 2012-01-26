@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Groups managment
+ * Groups entity
  *
  * PHP version 5
  *
@@ -36,10 +36,10 @@
  */
 
 /** @ignore */
-require_once 'adherent.class.php';
+require_once 'group.class.php';
 
 /**
- * This class handles groups, their owners and members.
+ * Groups entitiy
  *
  * @category  Classes
  * @name      Groups
@@ -52,148 +52,79 @@ require_once 'adherent.class.php';
  */
 class Groups
 {
-    const TABLE = 'groups';
-    const USERSGROUPS_TABLE = 'groups_users';
-    const PK = 'id_group';
-
-    private $_id;
-    private $_group_name;
-    private $_owner;
-    private $_members;
-    private $_creation_date;
-    private $_count_members;
-    private $_managers;
 
     /**
-     * Default constructor
+     * Get simple groups list (only id and names)
      *
-     * @param null|int|ResultSet $args Either a ResultSet row or its id for to load
-     *                                 a specific group, or null to just
-     *                                 instanciate object
+     * @return array
      */
-    public function __construct($args = null)
-    {
-        if ( $args == null || is_int($args) ) {
-            if ( is_int($args) && $args > 0 ) {
-                $this->load($args);
-            }
-        } elseif ( is_object($args) ) {
-            $this->_loadFromRS($args);
-        }
-    }
-
-    /**
-    * Loads a group from its id
-    *
-    * @param int $id the identifiant for the group to load
-    *
-    * @return bool true if query succeed, false otherwise
-    */
-    public function load($id)
-    {
-        global $zdb, $log;
-
-        try {
-            $select = new Zend_Db_Select($zdb->db);
-
-            $select->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . '=?', $id);
-            $result = $select->query()->fetchObject();
-            $this->_loadFromRS($result);
-            return true;
-        } catch (Exception $e) {
-            $log->log(
-                'Cannot load group form id `' . $id . '` | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
-            );
-            $log->log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
-            );
-            return false;
-        }
-    }
-
-    /**
-     * Populate object from a resultset row
-     *
-     * @param ResultSet $r the resultset row
-     *
-     * @return void
-     */
-    private function _loadFromRS($r)
-    {
-        $this->_id = $r->id_group;
-        $this->_group_name = $r->group_name;
-        $this->_creation_date = $r->creation_date;
-        $adhpk = Adherent::PK;
-        $this->_owner = new Adherent((int)$r->$adhpk);
-        if ( isset($r->members) ) {
-            //we're from a list, we just want members count
-            $this->_count_members = $r->members;
-        } else {
-            //we're probably from a single group, let's load members list
-            $this->_loadMembers();
-        }
-    }
-
-    /**
-     * Loads members for the current group
-     */
-    private function _loadMembers()
+    public static function getSimpleList()
     {
         global $zdb, $log;
 
         try {
             $select = new Zend_Db_Select($zdb->db);
             $select->from(
-                PREFIX_DB . self::USERSGROUPS_TABLE,
-                array(Adherent::PK, 'manager')
-            )->where(self::PK . ' = ?', $this->_id);
-            $res = $select->query()->fetchAll();
-            $members = array();
-            $adhpk = Adherent::PK;
-            foreach ( $res as $m ) {
-                $members[] = new Adherent((int)$m->$adhpk);
-                //put managers in an array
-                if ( $m->manager == 1) {
-                    $this->_managers[] = (int)$m->$adhpk;
-                }
+                PREFIX_DB . Group::TABLE,
+                array(Group::PK, 'group_name')
+            );
+            $groups = array();
+            $q = $select->__toString();
+            $gpk = Group::PK;
+            foreach ( $select->query()->fetchAll() as $row ) {
+                $groups[$row->$gpk] = $row->group_name;
             }
-            $this->_members = $members;
+            return $groups;
         } catch (Exception $e) {
             $log->log(
-                'Cannot get group members | ' . $e->getMessage(),
+                'Cannot list groups (simple) | ' . $e->getMessage(),
                 PEAR_LOG_WARNING
             );
             $log->log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
                 PEAR_LOG_ERR
             );
+
         }
     }
 
     /**
      * Get groups list
      *
+     * @param boolean $full Return full list or root only
+     *
      * @return Zend_Db_RowSet
      */
-    public function getList()
+    public function getList($full = true)
     {
-        global $zdb, $log;
+        global $zdb, $log, $login;
         try {
             $select = new Zend_Db_Select($zdb->db);
             $select->from(
-                array('a' => PREFIX_DB . self::TABLE)
+                array('a' => PREFIX_DB . Group::TABLE)
             )->joinLeft(
-                array('b' => PREFIX_DB . self::USERSGROUPS_TABLE),
-                'a.' . self::PK . '=b.' .self::PK,
-                array('members' => new Zend_Db_Expr('count(b.' . self::PK . ')'))
-            )->group('a.' . self::PK);
+                array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                'a.' . Group::PK . '=b.' . Group::PK,
+                array('members' => new Zend_Db_Expr('count(b.' . Group::PK . ')'))
+            );
+
+            if ( !$login->isAdmin() && !$login->isStaff() && $full === true ) {
+                $select->join(
+                    array('c' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
+                    'a.' . Group::PK . '=c.' . Group::PK,
+                    array()
+                )->where('c.' . Adherent::PK . ' = ?', $login->id);
+            }
+
+            if ( $full !== true ) {
+                $select->where('parent_group IS NULL');
+            }
+
+            $select->group('a.' . Group::PK)->order('group_name ASC');
+
             $groups = array();
-            $q = $select->__toString();
             foreach ( $select->query()->fetchAll() as $row ) {
-                $groups[] = new Groups($row);
+                $groups[] = new Group($row);
             }
             return $groups;
         } catch (Exception $e) {
@@ -202,7 +133,7 @@ class Groups
                 PEAR_LOG_WARNING
             );
             $log->log(
-                'Query was: ' . $select->__toString() . ' ' . $select->__toString(),
+                'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
                 PEAR_LOG_ERR
             );
         }
@@ -219,6 +150,13 @@ class Groups
     {
         global $zdb, $log;
 
+        /**
+         * FIXME: what to do with subgroups? Delete, orphan or fail to remove group?
+         * Maybe just ask user before...
+         *
+         * How to know here if there is a subgroup without load everything ?
+         */
+        
         $list = array();
         if ( is_numeric($ids) ) {
             //we've got only one identifier
@@ -233,8 +171,20 @@ class Groups
 
                 //delete members
                 $del = $zdb->db->delete(
-                    PREFIX_DB . self::TABLE,
-                    self::PK . ' IN (' . implode(',', $list) . ')'
+                    PREFIX_DB . Group::GROUPSUSERS_TABLE,
+                    Group::PK . ' IN (' . implode(',', $list) . ')'
+                );
+
+                //delete_managers
+                $del = $zdb->db->delete(
+                    PREFIX_DB . Group::GROUPSMANAGERS_TABLE,
+                    Group::PK . ' IN (' . implode(',', $list) . ')'
+                );
+
+                //delete members
+                $del = $zdb->db->delete(
+                    PREFIX_DB . Group::TABLE,
+                    Group::PK . ' IN (' . implode(',', $list) . ')'
                 );
 
                 //commit all changes
@@ -253,7 +203,8 @@ class Groups
         } else {
             //not numeric and not an array: incorrect.
             $log->log(
-                'Asking to remove groups, but without providing an array or a single numeric value.',
+                'Asking to remove groups, but without providing an array or ' .
+                'a single numeric value.',
                 PEAR_LOG_WARNING
             );
             return false;
@@ -261,26 +212,45 @@ class Groups
     }
 
     /**
-     * Loads groups for specific member
+     * Loads managed groups for specific member
      *
-     * @param int $id Memebr id
+     * @param int     $id       Memebr id
+     * @param boolean $as_group Retrieve Group[] or int[]
+     *
      * @return array
      */
-    public static function loadGroups($id)
+    public static function loadManagedGroups($id, $as_group = true)
+    {
+        return self::loadGroups($id, true, $as_group);
+    }
+
+    /**
+     * Loads groups for specific member
+     *
+     * @param int     $id       Memebr id
+     * @param boolean $managed  Retrieve managed groups (defaults to false)
+     * @param boolean $as_group Retrieve Group[] or int[]
+     *
+     * @return array
+     */
+    public static function loadGroups($id, $managed = false, $as_group = true)
     {
         global $zdb, $log;
         try {
+            $join_table = ($managed) ?
+                Group::GROUPSMANAGERS_TABLE :
+                Group::GROUPSUSERS_TABLE;
             $select = new Zend_Db_Select($zdb->db);
             $select->from(
                 array(
-                    'a' => PREFIX_DB . self::TABLE
+                    'a' => PREFIX_DB . Group::TABLE
                 )
             )->join(
                 array(
-                    'b' => PREFIX_DB . self::USERSGROUPS_TABLE
+                    'b' => PREFIX_DB . $join_table
                 ),
-                'a.' . self::PK . '=b.' . self::PK,
-                array('manager')
+                'a.' . Group::PK . '=b.' . Group::PK,
+                array()
             )->where('b.' . Adherent::PK . ' = ?', $id);
             $result = $select->query()->fetchAll();
             $log->log(
@@ -289,7 +259,12 @@ class Groups
             );
             $groups = array();
             foreach ( $result as $r ) {
-                $groups[$r->group_name] = $r->manager;
+                if ( $as_group === true ) {
+                    $groups[] = new Group($r);
+                } else {
+                    $gpk = Group::PK;
+                    $groups[] = $r->$gpk;
+                }
             }
             return $groups;
         } catch (Exception $e) {
@@ -307,194 +282,12 @@ class Groups
     }
 
     /**
-     * Store the group
-     *
-     * @return boolean
-     */
-    public function store()
-    {
-        global $zdb, $log, $hist;
-
-        try {
-            $values = array(
-                self::PK     => $this->_id,
-                'group_name' => $this->_group_name,
-                Adherent::PK => $this->_owner->id
-            );
-
-            if ( !isset($this->_id) || $this->_id == '') {
-                //we're inserting a new group
-                unset($values[self::PK]);
-                $this->_creation_date = date("Y-m-d H:i:s");
-                $values['creation_date'] = $this->_creation_date;
-                $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
-                if ( $add > 0) {
-                    $this->_id = $zdb->db->lastInsertId(
-                        PREFIX_DB . self::TABLE,
-                        'id'
-                    );
-                    // logging
-                    $hist->add(
-                        _T("Group added"),
-                        $this->_group_name
-                    );
-                    return true;
-                } else {
-                    $hist->add(_T("Fail to add new group."));
-                    throw new Exception(
-                        'An error occured inserting new group!'
-                    );
-                }
-            } else {
-                //we're editing an existing group
-                $edit = $zdb->db->update(
-                    PREFIX_DB . self::TABLE,
-                    $values,
-                    self::PK . '=' . $this->_id
-                );
-                //edit == 0 does not mean there were an error, but that there
-                //were nothing to change
-                if ( $edit > 0 ) {
-                    $hist->add(
-                        _T("Group updated"),
-                        strtoupper($this->_group_name)
-                    );
-                }
-                return true;
-            }
-            //DEBUG
-            return false;
-        } catch (Exception $e) {
-            /** FIXME */
-            $log->log(
-                'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
-                $e->getTraceAsString(),
-                PEAR_LOG_ERR
-            );
-            return false;
-        }
-    }
-
-    /**
-     * Is current loggedin user owner of the group?
-     *
-     * @return boolean
-     */
-    public function isOwner()
-    {
-        global $login;
-        if ( $login->isAdmin() || $login->isStaff() ) {
-            //admins are groups owners, as well as staff members!
-            return true;
-        } else {
-            //let's check if current uloggedin user is group owner
-            return $this->_owner->login == $login->login;
-        }
-    }
-
-    /**
-     * Can currently loggedin user manage group?
-     *
-     * @return boolean
-     */
-    public function canManage()
-    {
-        global $login;
-        if ( $this->isOwner() ) {
-            return true;
-        } else {
-            /** TODO: check if current loggedin member can manage group */
-        }
-    }
-
-    /**
-     * Get group id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->_id;
-    }
-
-    /**
-     * Get group name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->_group_name;
-    }
-
-    /**
-     * Get group owner
-     *
-     * @return Adherent
-     */
-    public function getOwner()
-    {
-        return $this->_owner;
-    }
-
-    /**
-     * Get group members
-     *
-     * @return Adherent[]
-     */
-    public function getMembers()
-    {
-        return $this->_members;
-    }
-
-    /**
-     * Get group creation date
-     *
-     * @return string
-     */
-    public function getCreationDate()
-    {
-        return $this->_creation_date;
-    }
-
-    public function getMemberCount()
-    {
-        if (isset($this->_members) && is_array($this->_members) ) {
-            return count($this->_members);
-        } else if ( isset($this->_count_members) ) {
-            return $this->_count_members;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->_group_name = $name;
-    }
-
-    /**
-     * Set owner
-     *
-     * @param int $id Owner id
-     */
-    public function setOwner($id)
-    {
-        $this->_owner = new Adherent((int)$id);
-    }
-
-    /**
      * Add a member to specified groups
      *
      * @param Adherent $adh    Member
      * @param array    $groups Groups Groups list. Each entry must contain
-     *                                the group id, name and 0 or 1 for manager
-     *                                each value separated by a pipe.
+     *                                the group id, name each value separated
+     *                                by a pipe.
      *
      * @return boolean
      */
@@ -504,9 +297,9 @@ class Groups
         try {
             $zdb->db->beginTransaction();
 
-            //first, remove current groups members (as we only have current members at this point)
+            //first, remove current groups members
             $del = $zdb->db->delete(
-                PREFIX_DB . self::USERSGROUPS_TABLE,
+                PREFIX_DB . Group::GROUPSUSERS_TABLE,
                 Adherent::PK . ' = ' . $adh->id
             );
             $log->log(
@@ -518,17 +311,15 @@ class Groups
             //we proceed, if grousp has been specified
             if ( is_array($groups) ) {
                 $stmt = $zdb->db->prepare(
-                    'INSERT INTO ' . PREFIX_DB . self::USERSGROUPS_TABLE .
-                    ' (' . $zdb->db->quoteIdentifier(self::PK) . ', ' .
-                    $zdb->db->quoteIdentifier(Adherent::PK) . ', ' .
-                    $zdb->db->quoteIdentifier('manager') . ')' .
-                    ' VALUES(:id, ' . $adh->id . ', :manager)'
+                    'INSERT INTO ' . PREFIX_DB . Group::GROUPSUSERS_TABLE .
+                    ' (' . $zdb->db->quoteIdentifier(Group::PK) . ', ' .
+                    $zdb->db->quoteIdentifier(Adherent::PK) . ')' .
+                    ' VALUES(:id, ' . $adh->id . ')'
                 );
 
                 foreach ( $groups as $group ) {
-                    list($gid, $gname, $manager) = explode('|', $group);
+                    list($gid, $gname) = explode('|', $group);
                     $stmt->bindValue(':id', $gid, PDO::PARAM_INT);
-                    $stmt->bindValue(':manager', $manager, PDO::PARAM_BOOL);
 
                     if ( $stmt->execute() ) {
                         $log->log(
@@ -566,81 +357,33 @@ class Groups
     }
 
     /**
-     * Set members
+     * Check if groupname is unique
      *
-     * @param Adherent[] $members
+     * @param string $name Requested name
+     *
+     * @return boolean
      */
-    public function setMembers($members)
+    public static function isUnique($name)
     {
         global $zdb, $log;
 
         try {
-            $zdb->db->beginTransaction();
-
-            //first, remove current groups members (as we only have current members at this point)
-            $del = $zdb->db->delete(
-                PREFIX_DB . self::USERSGROUPS_TABLE,
-                self::PK . ' = ' . $this->_id
-            );
-            $log->log(
-                'Group members has been removed for `' . $this->_group_name .
-                ', we can now store new ones.',
-                PEAR_LOG_INFO
-            );
-
-            $stmt = $zdb->db->prepare(
-                'INSERT INTO ' . PREFIX_DB . self::USERSGROUPS_TABLE .
-                ' (' . $zdb->db->quoteIdentifier(self::PK) . ', ' .
-                $zdb->db->quoteIdentifier(Adherent::PK) . ', ' .
-                $zdb->db->quoteIdentifier('manager') . ')' .
-                ' VALUES(' . $this->_id . ', :adh, :manager)'
-            );
-
-            foreach ( $members as $m ) {
-                $stmt->bindValue(':adh', $m->id, PDO::PARAM_INT);
-                //at the moment, the interface does not permit to manage managers
-                //so we keep an eye on existing ones, and set them without changes
-                $stmt->bindValue(
-                    ':manager',
-                    (in_array($m->id, $this->_managers) ? true : false),
-                    PDO::PARAM_BOOL
-                );
-
-                if ( $stmt->execute() ) {
-                    $log->log(
-                        'Member `' . $m->sname . '` attached to group `' .
-                        $this->_group_name . '`.',
-                        PEAR_LOG_DEBUG
-                    );
-                } else {
-                    $log->log(
-                        'An error occured trying to attach member `' .
-                        $m->sname . '` to group `' . $this->_group_name . '`.',
-                        PEAR_LOG_ERR
-                    );
-                    throw new Exception(
-                        'Unable to attach `' . $m->sname . '` ' .
-                        'to ' . $this->_group_name
-                    );
-                }
-            }
-            //commit all changes
-            $zdb->db->commit();
-
-            $log->log(
-                'Required adherents table updated successfully.',
-                PEAR_LOG_INFO
-            );
-
-            return true;
+            $select = new Zend_Db_Select($zdb->db);
+            $select->from(
+                PREFIX_DB . Group::TABLE,
+                array('group_name')
+            )->where('group_name = ?', $name);
+            $res = $select->query()->fetchAll();
+            return !(count($res) > 0);
         } catch (Exception $e) {
-            $zdb->db->rollBack();
             $log->log(
-                'Unable to delete selected groups |' .
-                $e->getMessage(),
+                'Cannot list groups (simple) | ' . $e->getMessage(),
+                PEAR_LOG_WARNING
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
                 PEAR_LOG_ERR
             );
-            return false;
         }
     }
 }

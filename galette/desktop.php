@@ -41,7 +41,9 @@ require_once 'includes/galette.inc.php';
 if ( !$login->isLogged() ) {
     header('location: index.php');
     die();
-} elseif ( !$login->isAdmin() && !$login->isStaff() ) {
+} elseif ( !$login->isAdmin() && !$login->isStaff()
+    && !$login->isGroupManager()
+) {
     header('location: voir_adherent.php');
     die();
 }

@@ -140,6 +140,17 @@ class GaletteLogin extends Authentication
                         $this->uptodate = $ech >= $now;
                     }
                 }
+                //staff members and admins are de facto groups managers. For all
+                //others, get managed groups
+                if ( !$this->isSuperAdmin()
+                    && !$this->isAdmin()
+                    && !$this->isStaff()
+                ) {
+                    $this->managed_groups = Groups::loadManagedGroups(
+                        $this->id,
+                        false
+                    );
+                }
                 return true;
             }
         } catch (Zend_Db_Adapter_Exception $e) {

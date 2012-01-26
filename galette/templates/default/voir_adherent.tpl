@@ -19,10 +19,10 @@
 			<li>
 				<a class="button" href="ajouter_adherent.php?id_adh={$member->id}" id="btn_edit">{_T string="Modification"}</a>
 			</li>
+{if $login->isAdmin() or $login->isStaff()}
 			<li>
 				<a class="button" href="gestion_contributions.php?id_adh={$member->id}" id="btn_contrib">{_T string="View contributions"}</a>
 			</li>
-{if $login->isAdmin() or $login->isStaff()}
 			<li>
 				<a class="button" href="ajouter_contribution.php?id_adh={$member->id}" id="btn_addcontrib">{_T string="Add a contribution"}</a>
 			</li>
@@ -205,13 +205,18 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 			<tr>
 				<th>{_T string="Groups:"}</th>
 				<td>
-    {foreach from=$member->groups key=group item=manager}
-                    <a href="#" class="button group-btn">
+    {foreach from=$groups item=group key=kgroup}
+        {if $member->isGroupMember($group) or $member->isGroupManager($group)}
+                    <a href="{if $login->isGroupManager($kgroup)}gestion_groupes.php?id_group={$kgroup}{else}#{/if}" class="button group-btn{if not $login->isGroupManager($kgroup)} notmanaged{/if}">
                         {$group}
-        {if $manager == 1}
+            {if $member->isGroupMember($group)}
+                        <img src="{$template_subdir}images/icon-user.png" alt="{_T string="[member]"}" width="16" height="16"/>
+            {/if}
+            {if $member->isGroupManager($group)}
                         <img src="{$template_subdir}images/icon-star.png" alt="{_T string="[manager]"}" width="16" height="16"/>
-        {/if}
+            {/if}
                     </a>
+        {/if}
     {/foreach}
 				</td>
 			</tr>
@@ -224,6 +229,22 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     <script type="text/javascript">
         $(function() {ldelim}
             {include file="photo_dnd.tpl"}
+
+            $('.notmanaged').click(function(){ldelim}
+                var _el = $('<div id="not_managed_group" title="{_T string="Not managed group" escape="js"}">{_T string="You are not part of managers for the requested group." escape="js"}</div>');
+                _el.appendTo('body').dialog({ldelim}
+                    modal: true,
+                    buttons: {ldelim}
+                        "{_T string="Ok" escape="js"}": function() {ldelim}
+                            $( this ).dialog( "close" );
+                        {rdelim}
+                    {rdelim},
+                    close: function(event, ui){ldelim}
+                        _el.remove();
+                    {rdelim}
+                {rdelim});
+                return false;
+            {rdelim});
         {rdelim});
     </script>
 {/if}

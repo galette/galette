@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Manage groups members from ajax
+ * Display groups members or managers from ajax
  *
  * PHP version 5
  *
@@ -35,6 +35,17 @@
  */
 
 require_once 'includes/galette.inc.php';
+
+$ids = $_POST['persons'];
+$mode = $_POST['person_mode'];
+if ( !$ids || !$mode ) {
+    $log->log(
+        'Trying to display ajax_group_members.php without persons or mode specified',
+        PEAR_LOG_INFO
+    );
+    die();
+}
+
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     $log->log(
         'Trying to display ajax_group_members.php without appropriate permissions',
@@ -44,13 +55,11 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
 }
 
 require_once WEB_ROOT . 'classes/adherent.class.php';
-require_once WEB_ROOT . 'classes/groups.class.php';
 
-$members = Members::getArrayList($_POST['members']);
+$persons = Members::getArrayList($ids);
 
-$group = new Groups((int)$_POST['gid']);
-$group->setMembers($members);
+$tpl->assign('persons', $persons);
+$tpl->assign('person_mode', $mode);
 
-//let's, at leat count members for return
-echo count($members);
+$tpl->display('group_persons.tpl');
 ?>

@@ -41,14 +41,12 @@ if ( !$login->isLogged() ) {
     header('location: index.php');
     die();
 }
-if ( !$login->isAdmin() && !$login->isStaff() ) {
+if ( !$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() ) {
     header('location: voir_adherent.php');
     die();
 }
 
 $groups = new Groups();
-
-$groups_list = $groups->getList();
 
 //delete groups
 if (isset($_GET['sup']) || isset($_POST['delete'])) {
@@ -59,9 +57,111 @@ if (isset($_GET['sup']) || isset($_POST['delete'])) {
     }
 }
 
+$group = new Group();
+$error_detected = array();
+$success_detected = array();
+
+$id = get_numeric_form_value(Group::PK, '');
+if ( $id ) {
+    if ( $login->isGroupManager($id) ) {
+        $group->load($id);
+    } else {
+        $log->log(
+            'Trying to display group ' . $id . ' without appropriate permissions',
+            PEAR_LOG_INFO
+        );
+        die();
+    }
+}
+
+if ( isset($_POST['group_name']) ) {
+    $group->setName($_POST['group_name']);
+    try {
+        if ( $_POST['parent_group'] !== '') {
+                $group->setParentGroup((int)$_POST['parent_group']);
+        } else if ( $_POST['parent_group'] === '' && $group->getId() != null ) {
+            $group->detach();
+        }
+    } catch ( Exception $e ) {
+        $error_detected[] = $e->getMessage();
+    }
+
+    $new = false;
+    if ( $group->getId() == '' ) {
+        $new = true;
+    }
+
+    $managers_id = array();
+    if ( isset($_POST['managers']) ) {
+        $managers_id = $_POST['managers'];
+    }
+    $managers = Members::getArrayList($managers_id);
+
+    $members_id = array();
+    if ( isset($_POST['members']) ) {
+        $members_id = $_POST['members'];
+    }
+    $members = Members::getArrayList($members_id);
+
+    $group->setManagers($managers);
+    $group->setMembers($members);
+
+    if ( count($error_detected) == 0 ) {
+        $store = $group->store();
+        if ( $store === true ) {
+            $success_detected[] = preg_replace(
+                '/%groupname/',
+                $group->getName(),
+                _T("Group `%groupname` has been successfully saved.")
+            );
+        } else {
+            //something went wrong :'(
+            $error_detected[] = _T("An error occured while storing the group.");
+        }
+    }
+}
+
+if ( isset($_GET['new']) ) {
+    $group = new Group();
+    $group->setName($_GET['group_name']);
+    if ( !$login->isSuperAdmin() ) {
+        $group->setManagers(new Adherent($login->id));
+    }
+    $group->store();
+    $id = $group->getId();
+}
+
+$groups_root = $groups->getList(false);
+$groups_list = $groups->getList();
+
+if ( count($error_detected) > 0 ) {
+    $tpl->assign('error_detected', $error_detected);
+}
+
+if ( count($success_detected) > 0 ) {
+    $tpl->assign('success_detected', $success_detected);
+}
+
 $tpl->assign('require_dialog', true);
+$tpl->assign('require_tabs', true);
+$tpl->assign('require_tree', true);
 $tpl->assign('page_title', _T("Groups"));
+$tpl->assign('groups_root', $groups_root);
 $tpl->assign('groups', $groups_list);
+
+if ( !$id ) {
+    $group = $groups_root[0];
+    if ( !$login->isGroupManager($group->getId()) ) {
+        foreach ( $groups_list as $g ) {
+            if ( $login->isGroupManager($g->getId()) ) {
+                $group = $g;
+                break;
+            }
+        }
+    }
+}
+
+$tpl->assign('group', $group);
 $content = $tpl->fetch('gestion_groupes.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');

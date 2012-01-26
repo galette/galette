@@ -82,6 +82,7 @@
 							{/if}
 						</a>
 					</th>
+{if $login->isAdmin() or $login->isStaff()}
 					<th class="listing left">
 						<a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_FEE_STATUS;{/php}" class="listing">
 							{_T string="State of dues"}
@@ -94,6 +95,7 @@
 							{/if}
 						</a>
 					</th>
+{/if}
 					<th class="listing actions_row">{_T string="Actions"}</th>
 				</tr>
 			</thead>
@@ -155,11 +157,15 @@
 					</td>
 					<td class="{$member->getRowClass()} nowrap">{$member->nickname|htmlspecialchars}</td>
 					<td class="{$member->getRowClass()} nowrap">{$member->sstatus}</td>
+{if $login->isAdmin() or $login->isStaff()}
 					<td class="{$member->getRowClass()}">{$member->getDues()}</td>
+{/if}
 					<td class="{$member->getRowClass()} center nowrap actions_row">
 						<a href="ajouter_adherent.php?id_adh={$member->id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="%membername: edit informations" pattern="/%membername/" replace=$member->sname}"/></a>
+{if $login->isAdmin() or $login->isStaff()}
 						<a href="gestion_contributions.php?id_adh={$member->id}"><img src="{$template_subdir}images/icon-money.png" alt="{_T string="[$]"}" width="16" height="16" title="{_T string="%membername: contributions" pattern="/%membername/" replace=$member->sname}"/></a>
 						<a onclick="return confirm('{_T string="Do you really want to delete this member from the base? This will also delete the history of his fees. You could instead disable the account.\n\nDo you still want to delete this member ?"|escape:"javascript"}')" href="gestion_adherents.php?sup={$member->id}"><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{_T string="%membername: remove from database" pattern="/%membername/" replace=$member->sname}"/></a>
+{/if}
             {* If some additionnals actions should be added from plugins, we load the relevant template file
             We have to use a template file, so Smarty will do its work (like replacing variables). *}
             {if $plugin_actions|@count != 0}

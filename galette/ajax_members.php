@@ -55,7 +55,7 @@ $multiple = ( isset($_POST['multiple']) && $_POST['multiple'] == 'false' ) ? fal
 require_once WEB_ROOT . 'classes/members.class.php';
 require_once WEB_ROOT . 'classes/varslist.class.php';
 require_once WEB_ROOT . 'classes/mailing.class.php';
-require_once WEB_ROOT . 'classes/groups.class.php';
+require_once WEB_ROOT . 'classes/group.class.php';
 
 $varslist = new VarsList();
 
@@ -100,8 +100,20 @@ if ( !isset($_POST['from']) ) {
             exit(0);
         }
         if ( !isset($_POST['members']) ) {
-            $group = new Groups((int)$_POST['gid']);
-            $selected_members = $group->getMembers();
+            $group = new Group((int)$_POST['gid']);
+            $selected_members = array();
+            if ( !isset($_POST['mode']) || $_POST['mode'] == 'members' ) {
+                $selected_members = $group->getMembers();
+            } else if ( $_POST['mode'] == 'managers' ) {
+                $selected_members = $group->getManagers();
+            } else {
+                $log->log(
+                    'Trying to list group members with unknown mode',
+                    PEAR_LOG_ERR
+                );
+                throw new Exception('Unknown mode.');
+                exit(0);
+            }
         } else {
             $selected_members = Members::getArrayList($_POST['members']);
         }

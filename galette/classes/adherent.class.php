@@ -105,6 +105,7 @@ class Adherent
     private $_oldness;
     private $_days_remaining;
     private $_groups;
+    private $_managed_groups;
     //
     private $_row_classes;
     //fields list and their translation
@@ -460,12 +461,12 @@ class Adherent
             $gp = new GalettePassword();
             $this->_password = $gp->makeRandomPassword();
             $this->_picture = new Picture();
-            if ( is_int($args) && $args > 0 ) {
-                $this->load($args);
-            }
             $this->_admin = false;
             $this->_staff = false;
             $this->_due_free = false;
+            if ( is_int($args) && $args > 0 ) {
+                $this->load($args);
+            }
         } elseif ( is_object($args) ) {
             $this->_loadFromRS($args);
         } elseif (is_string($args) ) {
@@ -616,6 +617,7 @@ class Adherent
         $this->_others_infos_admin = $r->info_adh;
         $this->_picture = new Picture($this->_id);
         $this->_groups = Groups::loadGroups($this->_id);
+        $this->_managed_groups = Groups::loadManagedGroups($this->_id);
         $this->_checkDues();
     }
 
@@ -698,8 +700,12 @@ class Adherent
     public function isGroupMember($group_name)
     {
         if ( is_array($this->_groups) ) {
-            $ak = array_keys($this->_groups);
-            return in_array($group_name, array_keys($this->_groups));
+            foreach ( $this->_groups as $g ) {
+                if ( $g->getName() == $group_name ) {
+                    return true;
+                    break;
+                }
+            }
         } else {
             return false;
         }
@@ -713,28 +719,16 @@ class Adherent
      */
     public function isGroupManager($group_name)
     {
-        if ( $this->isGroupMember($group_name) ) {
-            return $this->_groups[$group_name];
+        if ( is_array($this->_managed_groups) ) {
+            foreach ( $this->_managed_groups as $mg ) {
+                if ( $mg->getName() == $group_name ) {
+                    return true;
+                    break;
+                }
+            }
         } else {
             return false;
         }
-    }
-
-    /**
-     * Is member manager of at least one group?
-     *
-     * @return boolean
-     */
-    public function isAGroupManager()
-    {
-        $ret = false;
-        foreach ( $this->_groups as $g ) {
-            if ( $g === 1 ) {
-                $ret = true;
-                break;
-            }
-        }
-        return $ret;
     }
 
     /**

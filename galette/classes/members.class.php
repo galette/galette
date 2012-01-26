@@ -60,6 +60,7 @@ class Members
     const SHOW_PUBLIC_LIST = 1;
     const SHOW_ARRAY_LIST = 2;
     const SHOW_STAFF = 3;
+    const SHOW_MANAGED = 4;
 
     const FILTER_NAME = 0;
     const FILTER_ADRESS = 1;
@@ -111,10 +112,37 @@ class Members
             $filter,
             $count,
             true,
+            false,
             $limit
         );
     }
 
+    /**
+    * Get managed members list (for groups managers)
+    *
+    * @param bool    $as_members return the results as an array of
+    *                               Member object.
+    * @param array   $fields     field(s) name(s) to get. Should be a string or
+    *                               an array. If null, all fields will be
+    *                               returned
+    * @param boolean $filter     proceed filter, defaults to true
+    * @param boolean $count      true if we want to count members
+    *
+    * @return Adherent[]|ResultSet
+    */
+    public function getManagedMembersList(
+        $as_members=false, $fields=null, $filter=true, $count=true, $limit=true
+    ){
+        return $this->getMembersList(
+            $as_members,
+            $fields,
+            $filter,
+            $count,
+            false,
+            true,
+            $limit
+        );
+    }
     /**
     * Get members list
     *
@@ -126,6 +154,7 @@ class Members
     * @param boolean $filter     proceed filter, defaults to true
     * @param boolean $count      true if we want to count members
     * @param boolean $staff      true if we want only staff members
+    * @param boolean $managed    true if we want only managed groups
     * @param boolean $limit      true if we want records pagination
     *
     * @return Adherent[]|ResultSet
@@ -136,6 +165,7 @@ class Members
         $filter=true,
         $count=true,
         $staff=false,
+        $managed=false,
         $limit=true
     ) {
         global $zdb, $log, $varslist;
@@ -144,6 +174,9 @@ class Members
             $_mode = self::SHOW_LIST;
             if ( $staff !== false ) {
                 $_mode = self::SHOW_STAFF;
+            }
+            if ( $managed !== false ) {
+                $_mode = self::SHOW_MANAGED;
             }
 
             $select = self::_buildSelect(
@@ -310,6 +343,7 @@ class Members
             false,
             false,
             false,
+            false,
             false
         );
     }
@@ -348,6 +382,7 @@ class Members
                 $select->order(self::_buildOrderClause());
             }
             $result = $select->query()->fetchAll();
+            $members = array();
             foreach ( $result as $row ) {
                 $members[] = new Adherent($row);
             }
@@ -438,7 +473,7 @@ class Members
     */
     private function _buildSelect($mode, $fields, $filter, $photos, $count = false)
     {
-        global $zdb;
+        global $zdb, $log, $login;
 
         try {
             $fieldsList = ( $fields != null )
@@ -454,11 +489,25 @@ class Members
             switch($mode) {
             case self::SHOW_STAFF:
             case self::SHOW_LIST:
+            case self::SHOW_ARRAY_LIST:
                 $select->join(
                     array('p' => PREFIX_DB . Status::TABLE, Status::PK),
                     'a.' . Status::PK . '=' . 'p.' . Status::PK
                 );
                 break;
+            case self::SHOW_MANAGED:
+                $select->join(
+                    array('p' => PREFIX_DB . Status::TABLE, Status::PK),
+                    'a.' . Status::PK . '=' . 'p.' . Status::PK
+                )->join(
+                    array('g' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                    'a.' . Adherent::PK . '=g.' . Adherent::PK,
+                    array()
+                )->join(
+                    array('m' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
+                    'g.' . Group::PK . '=m.' . Group::PK,
+                    array()
+                )->where('m.' . Adherent::PK . ' = ?', $login->id);
             case self::SHOW_PUBLIC_LIST:
                 if ( $photos ) {
                     $select->join(
@@ -469,7 +518,7 @@ class Members
                 break;
             }
 
-            if ( $mode == self::SHOW_LIST ) {
+            if ( $mode == self::SHOW_LIST || $mode == self::SHOW_MANAGED ) {
                 if ( $filter ) {
                     self::_buildWhereClause($select);
                 }
@@ -511,7 +560,7 @@ class Members
             $countSelect->reset(Zend_Db_Select::COLUMNS);
             $countSelect->reset(Zend_Db_Select::ORDER);
             $countSelect->reset(Zend_Db_Select::HAVING);
-            $countSelect->columns('count(' . self::PK . ') AS ' . self::PK);
+            $countSelect->columns('count(a.' . self::PK . ') AS ' . self::PK);
 
             $have = $select->getPart(Zend_Db_Select::HAVING);
             if ( is_array($have) && count($have) > 0 ) {
