@@ -61,8 +61,8 @@ $group = new Group();
 $error_detected = array();
 $success_detected = array();
 
-$id = get_numeric_form_value(Group::PK, '');
-if ( $id ) {
+$id = get_numeric_form_value(Group::PK, null);
+if ( $id !== null ) {
     if ( $login->isGroupManager($id) ) {
         $group->load($id);
     } else {
@@ -149,7 +149,7 @@ $tpl->assign('page_title', _T("Groups"));
 $tpl->assign('groups_root', $groups_root);
 $tpl->assign('groups', $groups_list);
 
-if ( !$id ) {
+if ( $id === null && count($groups) > 0 ) {
     $group = $groups_root[0];
     if ( !$login->isGroupManager($group->getId()) ) {
         foreach ( $groups_list as $g ) {
