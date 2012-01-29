@@ -16,7 +16,7 @@
 {/if}
         <thead>
             <tr>
-                <th class="listing" class="id_row">#</th>
+                <th class="listing id_row">#</th>
             	<th class="listing">{_T string="Name"}</th>
 {if $class == 'ContributionsTypes'}
                 <th class="listing">{_T string="Extends membership?"}</th>
