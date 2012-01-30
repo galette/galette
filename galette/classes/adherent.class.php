@@ -1164,7 +1164,16 @@ class Adherent
                     || $this->_id == ''
                 ) {
                     $prop = '_' . $this->_fields[$field]['propname'];
-                    $values[$field] = $this->$prop;
+                    if ( ($field === 'bool_admin_adh'
+                        || $field === 'bool_exempt_adh'
+                        || $field === 'bool_display_info')
+                        && $this->$prop === false
+                    ) {
+                        //Handle booleans for postgres ; bugs #18899 and #19354
+                        $values[$field] = 'false';
+                    } else {
+                        $values[$field] = $this->$prop;
+                    }
                 }
             }
 
