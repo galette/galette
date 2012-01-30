@@ -51,6 +51,7 @@
       </div>
         <div class="button-container">
             <input type="submit" name="valid" id="btnsave" value="{_T string="Save"}"/>
+            <input type="submit" name="delete" id="delete" value="{_T string="Delete"}"/>
             <input type="hidden" name="id_group" id="id_group" value="{$group->getId()}"/>
         </div>
         <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>

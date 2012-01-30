@@ -250,37 +250,35 @@ class Group
     /**
      * Remove specified group
      *
-     * @param integer $id Group identifier
+     * @param boolean $cascade Also remove members and managers
      *
      * @return boolean
      */
-    public function removeGroup($id)
+    public function remove($cascade = false)
     {
         global $zdb, $log;
 
-        /**
-         * FIXME: what to do with subgroups? Delete, orphan or fail to remove group?
-         * Maybe just ask user before...
-         */
         try {
             $zdb->db->beginTransaction();
 
-            //delete members
-            $del = $zdb->db->delete(
-                PREFIX_DB . self::GROUPSUSERS_TABLE,
-                self::PK . ' = ' . $id
-            );
+            if ( $cascade === true ) {
+                //delete members
+                $del = $zdb->db->delete(
+                    PREFIX_DB . self::GROUPSUSERS_TABLE,
+                    self::PK . ' = ' . $id
+                );
 
-            //delete_managers
-            $del = $zdb->db->delete(
-                PREFIX_DB . self::GROUPSMANAGERS_TABLE,
-                self::PK . ' = ' . $id
-            );
+                //delete_managers
+                $del = $zdb->db->delete(
+                    PREFIX_DB . self::GROUPSMANAGERS_TABLE,
+                    self::PK . ' = ' . $id
+                );
+            }
 
             //delete group itself
             $del = $zdb->db->delete(
                 PREFIX_DB . self::TABLE,
-                self::PK . ' IN (' . implode(',', $list) . ')'
+                self::PK . ' = ' . $this->_id
             );
 
             //commit all changes
@@ -290,8 +288,8 @@ class Group
         } catch (Exception $e) {
             $zdb->db->rollBack();
             $log->log(
-                'Unable to delete selected groups |' .
-                $e->getMessage(),
+                'Unable to delete group ' . $this->_group_name .
+                ' (' . $this->_id  . ') |' . $e->getMessage(),
                 PEAR_LOG_ERR
             );
             return false;

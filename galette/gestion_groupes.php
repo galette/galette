@@ -48,15 +48,6 @@ if ( !$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() ) {
 
 $groups = new Groups();
 
-//delete groups
-if (isset($_GET['sup']) || isset($_POST['delete'])) {
-    if ( isset($_GET['sup']) ) {
-        $groups->removeGroups($_GET['sup']);
-    } else if ( isset($_POST['groups_sel']) ) {
-        $groups->removeGroups($_POST['group_sel']);
-    }
-}
-
 $group = new Group();
 $error_detected = array();
 $success_detected = array();
@@ -74,7 +65,22 @@ if ( $id !== null ) {
     }
 }
 
-if ( isset($_POST['group_name']) ) {
+if ( isset($_POST['delete']) ) {
+    //delete groups
+    $del = $group->remove();
+    if ( $del !== true ) {
+        $error_detected[] = _T("Unable to remove group. Maybe it's not empty?");
+    } else {
+        $success_detected[] = str_replace(
+            '%groupname',
+            $group->getName(),
+            _T("Group %groupname has been successfully deleted.")
+        );
+        //reinstanciate group
+        $id = null;
+        $group = new Group();
+    }
+} else if ( isset($_POST['group_name']) ) {
     $group->setName($_POST['group_name']);
     try {
         if ( $_POST['parent_group'] !== '') {
