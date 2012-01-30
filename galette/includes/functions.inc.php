@@ -257,7 +257,7 @@ function get_numeric_form_value($name, $defval)
             $val . '`)',
             PEAR_LOG_INFO
         );
-        $val = '';
+        $val = $defval;
     }
     return $val;
 }
