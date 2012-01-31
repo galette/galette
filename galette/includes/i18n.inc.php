@@ -242,6 +242,11 @@ function getDynamicTranslation($text_orig, $text_locale)
 /** FIXME : $loc undefined */
 if ( (isset($loc) && $loc!=$language) || $disable_gettext) {
     include WEB_ROOT . 'lang/lang_' . $i18n->getFileName() . '.php';
+    //check if a local lang file exists and load it
+    $locfile = WEB_ROOT . 'lang/lang_' . $i18n->getFileName() . '_local.php';
+    if ( file_exists($locfile) ) {
+        include $locfile;
+    }
 }
 
 if ( !function_exists('_T') ) {
