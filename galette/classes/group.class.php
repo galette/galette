@@ -618,26 +618,28 @@ class Group
                 ' VALUES(' . $this->_id . ', :adh)'
             );
 
-            foreach ( $members as $m ) {
-                $stmt->bindValue(':adh', $m->id, PDO::PARAM_INT);
+            if ( is_array($members) ) {
+                foreach ( $members as $m ) {
+                    $stmt->bindValue(':adh', $m->id, PDO::PARAM_INT);
 
-                if ( $stmt->execute() ) {
-                    $log->log(
-                        'Member `' . $m->sname . '` attached to group `' .
-                        $this->_group_name . '`.',
-                        PEAR_LOG_DEBUG
-                    );
-                } else {
-                    $log->log(
-                        'An error occured trying to attach member `' .
-                        $m->sname . '` to group `' . $this->_group_name .
-                        '` ('  . $this->_id . ').',
-                        PEAR_LOG_ERR
-                    );
-                    throw new Exception(
-                        'Unable to attach `' . $m->sname . '` ' .
-                        'to ' . $this->_group_name . '(' . $this->_id . ')'
-                    );
+                    if ( $stmt->execute() ) {
+                        $log->log(
+                            'Member `' . $m->sname . '` attached to group `' .
+                            $this->_group_name . '`.',
+                            PEAR_LOG_DEBUG
+                        );
+                    } else {
+                        $log->log(
+                            'An error occured trying to attach member `' .
+                            $m->sname . '` to group `' . $this->_group_name .
+                            '` ('  . $this->_id . ').',
+                            PEAR_LOG_ERR
+                        );
+                        throw new Exception(
+                            'Unable to attach `' . $m->sname . '` ' .
+                            'to ' . $this->_group_name . '(' . $this->_id . ')'
+                        );
+                    }
                 }
             }
             //commit all changes
