@@ -100,6 +100,7 @@ class Members
     *                               returned
     * @param boolean $filter     proceed filter, defaults to true
     * @param boolean $count      true if we want to count members
+    * @param boolean $limit      true to LIMIT query
     *
     * @return Adherent[]|ResultSet
     */
@@ -127,12 +128,13 @@ class Members
     *                               returned
     * @param boolean $filter     proceed filter, defaults to true
     * @param boolean $count      true if we want to count members
+    * @param boolean $limit      true to LIMIT query
     *
     * @return Adherent[]|ResultSet
     */
     public function getManagedMembersList(
         $as_members=false, $fields=null, $filter=true, $count=true, $limit=true
-    ){
+    ) {
         return $this->getMembersList(
             $as_members,
             $fields,
