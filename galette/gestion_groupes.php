@@ -155,7 +155,7 @@ $tpl->assign('page_title', _T("Groups"));
 $tpl->assign('groups_root', $groups_root);
 $tpl->assign('groups', $groups_list);
 
-if ( $id === null && count($groups) > 0 ) {
+if ( $id === null && count($groups_root) > 0 ) {
     $group = $groups_root[0];
     if ( !$login->isGroupManager($group->getId()) ) {
         foreach ( $groups_list as $g ) {
