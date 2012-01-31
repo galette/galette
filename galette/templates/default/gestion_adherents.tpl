@@ -43,9 +43,6 @@
 			<thead>
 				<tr>
 					<th class="listing" class="id_row">#</th>
-                    <th class="listing" class="id_row">
-                        <a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_ID;{/php}" class="listing">N°</a>
-                    </th>
 					<th class="listing left">
 						<a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_NAME;{/php}" class="listing">
 							{_T string="Name"}
@@ -95,6 +92,18 @@
 							{/if}
 						</a>
 					</th>
+                    <th class="listing left">
+                        <a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_MODIFDATE;{/php}" class="listing">
+                            {_T string="Modified"}
+							{if $varslist->orderby eq constant('Members::ORDERBY_MODIFDATE')}
+								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
+							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+								{else}
+							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+								{/if}
+							{/if}
+                        </a>
+                    </th>
 {/if}
 					<th class="listing actions_row">{_T string="Actions"}</th>
 				</tr>
@@ -129,7 +138,6 @@
 {foreach from=$members item=member key=ordre}
 				<tr>
 					<td class="{$member->getRowClass()} right">{php}$ordre = $this->get_template_vars('ordre');echo $ordre+1+($varslist->current_page - 1)*$numrows{/php}</td>
-                    <td class="{$member->getRowClass()} right">{$member->id}</td>
 					<td class="{$member->getRowClass()} nowrap username_row">
 						<input type="checkbox" name="member_sel[]" value="{$member->id}"/>
                     {if $member->isCompany()}
@@ -159,6 +167,7 @@
 					<td class="{$member->getRowClass()} nowrap">{$member->sstatus}</td>
 {if $login->isAdmin() or $login->isStaff()}
 					<td class="{$member->getRowClass()}">{$member->getDues()}</td>
+                    <td class="{$member->getRowClass()}">{$member->modification_date}</td>
 {/if}
 					<td class="{$member->getRowClass()} center nowrap actions_row">
 						<a href="ajouter_adherent.php?id_adh={$member->id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="%membername: edit informations" pattern="/%membername/" replace=$member->sname}"/></a>

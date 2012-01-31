@@ -75,7 +75,7 @@ class Members
     const ORDERBY_NICKNAME = 1;
     const ORDERBY_STATUS = 2;
     const ORDERBY_FEE_STATUS = 3;
-    const ORDERBY_ID = 4;
+    const ORDERBY_MODIFDATE = 4;
 
     const NON_STAFF_MEMBERS = 30;
 
@@ -606,8 +606,8 @@ class Members
         case self::ORDERBY_STATUS:
             $order[] = 'priorite_statut ' . $varslist->getDirection();
             break;
-        case self::ORDERBY_ID:
-            $order[] = 'id_adh ' . $varslist->getDirection();
+        case self::ORDERBY_MODIFDATE:
+            $order[] = 'date_modif_adh ' . $varslist->getDirection();
             break;
         case self::ORDERBY_FEE_STATUS:
             $order[] = 'date_crea_adh ' . $varslist->getDirection();
