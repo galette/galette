@@ -65,8 +65,8 @@ if ( @putenv("LANG=$language")
 /**
 * Add a translation stored in the database
 *
-* @param string          $text_orig      Text to translate
-* @param array           $error_detected Pointer to errors array
+* @param string $text_orig      Text to translate
+* @param array  $error_detected Pointer to errors array
 *
 * @return void
 */
@@ -76,7 +76,7 @@ function addDynamicTranslation($text_orig, $error_detected)
     $l10n_table = PREFIX_DB . 'l10n';
 
     try {
-        foreach( $i18n->getList() as $lang ) {
+        foreach (  $i18n->getList() as $lang ) {
             //check if translation already exists
             $select = new Zend_Db_Select($zdb->db);
             $select->from($l10n_table, 'text_nref')
@@ -102,10 +102,13 @@ function addDynamicTranslation($text_orig, $error_detected)
             } else {
                 //add new entry
                 // User is supposed to use current language as original text.
+                if ( $lang->getLongID() != $i18n->getLongID() ) {
+                    $text_orig = '';
+                }
                 $values = array(
                     'text_orig' => $text_orig,
                     'text_locale' => $lang->getLongID(),
-                    'text_trans' => ($lang->getLongID() == $i18n->getLongID()) ? $text_orig : ''
+                    'text_trans' => $text_orig
                 );
                 $zdb->db->insert($l10n_table, $values);
             }
@@ -124,8 +127,8 @@ function addDynamicTranslation($text_orig, $error_detected)
 /**
 * Delete a translation stored in the database
 *
-* @param string         $text_orig      Text to translate
-* @param array          $error_detected Pointer to errors array
+* @param string $text_orig      Text to translate
+* @param array  $error_detected Pointer to errors array
 *
 * @return void
 */
@@ -160,10 +163,10 @@ function deleteDynamicTranslation($text_orig, $error_detected)
 /**
 * Update a translation stored in the database
 *
-* @param string         $text_orig      Text to translate
-* @param string         $text_locale    The locale
-* @param string         $text_trans     Translated text
-* @param array          $error_detected Pointer to errors array
+* @param string $text_orig      Text to translate
+* @param string $text_locale    The locale
+* @param string $text_trans     Translated text
+* @param array  $error_detected Pointer to errors array
 *
 * @return translated string
 */
@@ -205,8 +208,8 @@ function updateDynamicTranslation(
 /**
 * Get a translation stored in the database
 *
-* @param string         $text_orig   Text to translate
-* @param string         $text_locale The locale
+* @param string $text_orig   Text to translate
+* @param string $text_locale The locale
 *
 * @return translated string
 */
@@ -219,7 +222,7 @@ function getDynamicTranslation($text_orig, $text_locale)
             PREFIX_DB . L10n::TABLE,
             'text_trans'
         )->where('text_orig = ?', $text_orig)
-        ->where('text_locale = ?', $text_locale);
+            ->where('text_locale = ?', $text_locale);
         return $select->query()->fetch()->text_trans;
     } catch (Exception $e) {
         /** TODO */
