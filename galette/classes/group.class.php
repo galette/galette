@@ -676,7 +676,7 @@ class Group
 
             //first, remove current groups managers
             $del = $zdb->db->delete(
-                PREFIX_DB . self::GROUPSUSERS_TABLE,
+                PREFIX_DB . self::GROUPSMANAGERS_TABLE,
                 self::PK . ' = ' . $this->_id
             );
             $log->log(
@@ -692,26 +692,28 @@ class Group
                 ' VALUES(' . $this->_id . ', :adh)'
             );
 
-            foreach ( $members as $m ) {
-                $stmt->bindValue(':adh', $m->id, PDO::PARAM_INT);
+            if ( is_array($members) ) {
+                foreach ( $members as $m ) {
+                    $stmt->bindValue(':adh', $m->id, PDO::PARAM_INT);
 
-                if ( $stmt->execute() ) {
-                    $log->log(
-                        'Manager `' . $m->sname . '` attached to group `' .
-                        $this->_group_name . '`.',
-                        PEAR_LOG_DEBUG
-                    );
-                } else {
-                    $log->log(
-                        'An error occured trying to attach manager `' .
-                        $m->sname . '` to group `' . $this->_group_name .
-                        '` ('  . $this->_id . ').',
-                        PEAR_LOG_ERR
-                    );
-                    throw new Exception(
-                        'Unable to attach `' . $m->sname . '` ' .
-                        'to ' . $this->_group_name . '(' . $this->_id . ')'
-                    );
+                    if ( $stmt->execute() ) {
+                        $log->log(
+                            'Manager `' . $m->sname . '` attached to group `' .
+                            $this->_group_name . '`.',
+                            PEAR_LOG_DEBUG
+                        );
+                    } else {
+                        $log->log(
+                            'An error occured trying to attach manager `' .
+                            $m->sname . '` to group `' . $this->_group_name .
+                            '` ('  . $this->_id . ').',
+                            PEAR_LOG_ERR
+                        );
+                        throw new Exception(
+                            'Unable to attach `' . $m->sname . '` ' .
+                            'to ' . $this->_group_name . '(' . $this->_id . ')'
+                        );
+                    }
                 }
             }
             //commit all changes
