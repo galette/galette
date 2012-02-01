@@ -77,7 +77,8 @@ class GaletteMail
      *
      * @return void
      */
-    private function _initMailer() {
+    private function _initMailer()
+    {
         global $preferences, $log, $i18n;
 
         $this->_mail = new PHPMailer();
@@ -361,7 +362,8 @@ class GaletteMail
      *
      * @return PHPMailer object
      */
-    protected function getPhpMailer() {
+    protected function getPhpMailer()
+    {
         return $this->_mail;
     }
 

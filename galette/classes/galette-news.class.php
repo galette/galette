@@ -123,6 +123,8 @@ class GaletteNews
     /**
      * Creates/update the cache
      *
+     * @param boolean $load Force load
+     *
      * @return boolean
      */
     private function _makeCache($load = true)

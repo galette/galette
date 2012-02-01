@@ -183,7 +183,7 @@ class Texts
     /**
      * Main constructor
      *
-     * @param array $replacments Data that will be used as replacments
+     * @param array $replaces Data that will be used as replacments
      */
     public function __construct($replaces = null)
     {
@@ -216,7 +216,6 @@ class Texts
             'link_validity'     => null,
             'deadline'          => null,
             'contrib_info'      => null
-            
         );
 
         if ( $replaces != null && is_array($replaces) ) {

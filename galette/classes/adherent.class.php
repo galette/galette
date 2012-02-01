@@ -694,7 +694,8 @@ class Adherent
     /**
      * Is member in specified group?
      *
-     * @param type $group_name Group name
+     * @param string $group_name Group name
+     *
      * @return boolean
      */
     public function isGroupMember($group_name)
@@ -714,7 +715,8 @@ class Adherent
     /**
      * Is member manager of specified group?
      *
-     * @param type $group_name Group name
+     * @param string $group_name Group name
+     *
      * @return boolean
      */
     public function isGroupManager($group_name)
@@ -1100,13 +1102,13 @@ class Adherent
                     case 'mdp_adh':
                         if ( strlen($value) < 4 ) {
                             $errors[] = _T("- The password must be of at least 4 characters!");
-                        } else if ( $this->_self_adh !== true &&
-                            (!isset($values['mdp_adh2'])
+                        } else if ( $this->_self_adh !== true
+                            && (!isset($values['mdp_adh2'])
                             || $values['mdp_adh2'] != $value)
                         ) {
                             $errors[] = _T("- The passwords don't match!");
-                        } else if ( $this->_self_adh === true &&
-                            !crypt($value,$values['mdp_crypt'])==$values['mdp_crypt']
+                        } else if ( $this->_self_adh === true
+                            && !crypt($value, $values['mdp_crypt'])==$values['mdp_crypt']
                         ) {
                             $errors[] = _T("Password misrepeated: ");
                         } else {
@@ -1251,6 +1253,11 @@ class Adherent
         }
     }
 
+    /**
+     * Update member modification date
+     *
+     * @return void
+     */
     private function _updateModificationDate()
     {
         global $zdb, $log;
@@ -1264,8 +1271,8 @@ class Adherent
             $this->_modification_date = date('Y-m-d');
         } catch (Exception $e) {
             $log->log(
-                'Something went wrong updating modif date :\'( | ' . $e->getMessage() . "\n" .
-                $e->getTraceAsString(),
+                'Something went wrong updating modif date :\'( | ' .
+                $e->getMessage() . "\n" . $e->getTraceAsString(),
                 PEAR_LOG_ERR
             );
         }

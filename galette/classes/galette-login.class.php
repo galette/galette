@@ -126,7 +126,7 @@ class GaletteLogin extends Authentication
                     $this->staff = true;
                 }
                 //check if member is up to date
-                if( $row->bool_exempt_adh == true ) {
+                if ( $row->bool_exempt_adh == true ) {
                     //member is due free, he's up to date.
                     $this->uptodate = true;
                 } else {

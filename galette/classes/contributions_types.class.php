@@ -309,11 +309,9 @@ class ContributionsTypes
     /**
     * Get a label.
     *
-     * @param integer $id         Status' id
-     * @param boolean $translated Do we want translated or original type?
-     *                            Defaults to true.
-     *
-     * @return string
+    * @param integer $id Status' id
+    *
+    * @return string
     */
     public function getLabel($id)
     {

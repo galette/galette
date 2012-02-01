@@ -437,7 +437,8 @@ class Contributions extends GalettePagination
     /**
      * Remove specified contributions
      *
-     * @param interger|array $ids Contributions identifiers to delete
+     * @param integer|array $ids         Contributions identifiers to delete
+     * @param boolean       $transaction True to begin a database transaction
      *
      * @return boolean
      */

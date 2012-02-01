@@ -410,9 +410,8 @@ class Contribution
                 $prop = '_' . $this->_fields[$key]['propname'];
                 if ( !isset($disabled[$key])
                     && (!isset($this->$prop)
-                        || (!is_object($this->$prop) && trim($this->$prop) == '')
-                        || (is_object($this->$prop) && trim($this->$prop->id) == '')
-                    )
+                    || (!is_object($this->$prop) && trim($this->$prop) == '')
+                    || (is_object($this->$prop) && trim($this->$prop->id) == ''))
                 ) {
                     $errors[] = _T("- Mandatory field empty: ") .
                     ' <a href="#' . $key . '">' . $this->getFieldName($key) .'</a>';
@@ -742,8 +741,10 @@ class Contribution
     /**
      * Detach a contribution from a transaction
      *
-     * @param int $trans_id
-     * @param int $contrib_id
+     * @param int $trans_id   Transaction identifier
+     * @param int $contrib_id Contribution identifier
+     *
+     * @return boolean
      */
     public static function unsetTransactionPart($trans_id, $contrib_id)
     {
@@ -780,8 +781,9 @@ class Contribution
     /**
      * Set a contribution as a transaction part
      *
-     * @param int $trans_id
-     * @param int $contrib_id
+     * @param int $trans_id   Transaction identifier
+     * @param int $contrib_id Contribution identifier
+     *
      * @return boolean
      */
     public static function setTransactionPart($trans_id, $contrib_id)
@@ -830,7 +832,7 @@ class Contribution
             return false;
         }
     }
-    
+
     /**
      * Is current contribution part of transaction
      *

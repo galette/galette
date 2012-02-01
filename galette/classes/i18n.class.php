@@ -86,7 +86,7 @@ class I18n
                 $blang = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
                 if ( substr($blang, 0, 2) == 'fr' ) {
                     $dlang = 'fr_FR';
-                } else if( substr($blang, 0, 2) == 'en' ) {
+                } else if ( substr($blang, 0, 2) == 'en' ) {
                     $dlang = 'en_US';
                 } else {
                     $dlang = self::DEFAULT_LANG;

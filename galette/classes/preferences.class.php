@@ -412,6 +412,11 @@ class Preferences
         return $r;
     }
 
+    /**
+     * Are public pages visibles?
+     *
+     * @return boolean
+     */
     public function showPublicPages()
     {
         global $login;

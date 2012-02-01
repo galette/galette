@@ -137,9 +137,9 @@ class GaletteZendDb extends Zend_Db
     /**
      * List updates scripts from given path
      *
-     * @param string $path
-     * @param string $db_type
-     * @param string $version
+     * @param string $path    Scripts path
+     * @param string $db_type Database type
+     * @param string $version Current version
      *
      * @return array
      */
@@ -509,7 +509,7 @@ class GaletteZendDb extends Zend_Db
         }catch (Exception $e) {
             $log->log(
                 'Cannot SET NAMES on table `' . $table . '`. ' .
-                $e->getMessage() ,
+                $e->getMessage(),
                 PEAR_LOG_ERR
             );
         }

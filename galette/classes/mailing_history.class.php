@@ -174,6 +174,14 @@ class MailingHistory extends History
         }
     }
 
+    /**
+     * Load mailing from an existing one
+     *
+     * @param integaer       $id      Model identifier
+     * @param GaletteMailing $mailing Mailing object
+     *
+     * @return boolean
+     */
     public static function loadFrom($id, $mailing)
     {
         global $zdb, $log;
@@ -209,7 +217,7 @@ class MailingHistory extends History
      *
      * @param boolean $sent Defaults to false
      *
-     * @returns boolean
+     * @return boolean
      */
     public function storeMailing($sent = false)
     {
@@ -233,6 +241,11 @@ class MailingHistory extends History
         }
     }
 
+    /**
+     * Store in the database
+     *
+     * @return boolean
+     */
     public function store()
     {
         global $zdb, $log;
@@ -254,6 +267,7 @@ class MailingHistory extends History
             );
 
             $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
+            return true;
         } catch (Exception $e) {
             $log->log(
                 'An error occurend storing Mailing | ' . $e->getMessage(),
@@ -341,7 +355,7 @@ class MailingHistory extends History
         return self::PK;
     }
 
-   /**
+    /**
     * Returns the field we want to default set order to
     *
     * @return string field name

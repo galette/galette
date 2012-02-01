@@ -96,6 +96,11 @@ class PDF extends TCPDF
         );
     }
 
+    /**
+     * Set show pagination
+     *
+     * @return void
+     */
     public function showPagination()
     {
         $this->_paginated = true;

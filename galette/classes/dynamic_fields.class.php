@@ -63,6 +63,13 @@ class DynamicFields
     /** Choice field (checkbox) */
     const CHOICE = 3;
 
+    /**
+     * Retrieve fixed values table name
+     *
+     * @param integer $id Field's id
+     *
+     * @return string
+     */
     public static function getFixedValuesTableName($id)
     {
         return PREFIX_DB . 'field_contents_' . $id;
