@@ -302,17 +302,21 @@ class Picture
     }
 
     /**
-    * Deletes a picture, from both database and filesystem
-    *
-    * @return boolean true if image was successfully deleted, false otherwise
-    */
-    public function delete()
+     * Deletes a picture, from both database and filesystem
+     *
+     * @param boolean $transaction Whether to use a transaction here or not
+     *
+     * @return boolean true if image was successfully deleted, false otherwise
+     */
+    public function delete($transaction = true)
     {
         global $zdb, $log;
         $class = get_class($this);
 
         try {
-            $zdb->db->beginTransaction();
+            if ( $transaction === true ) {
+                $zdb->db->beginTransaction();
+            }
             $del = $zdb->db->delete(
                 PREFIX_DB . $this->tbl_prefix . $class::TABLE,
                 $zdb->db->quoteInto($class::PK . ' = ?', $this->db_id)
@@ -343,26 +347,33 @@ class Picture
 
                 if ( $_file !== null && $success !== true ) {
                     //unable to remove file that exists!
-                    $zdb->db->rollBack();
+                    if ( $transaction === true ) {
+                        $zdb->db->rollBack();
+                    }
                     $log->log(
                         'The file ' . $_file . ' was found on the disk but cannot be removed.',
                         PEAR_LOG_ERR
                     );
                     return false;
                 } else {
-                    $zdb->db->commit();
+                    if ( $transaction === true ) {
+                        $zdb->db->commit();
+                    }
                     return true;
                 }
             } else {
-                //properly ends transaction
-                $zdb->db->rollBack();
+                if ( $transaction === true ) {
+                    //properly ends transaction
+                    $zdb->db->rollBack();
+                }
                 return false;
             }
 
 
         } catch (Exception $e) {
-            /** FIXME */
-            $zdb->db->rollBack();
+            if ( $transaction === true ) {
+                $zdb->db->rollBack();
+            }
             $log->log(
                 'An error occured attempting to delete picture ' . $this->db_id .
                 'from database | ' . $e->getMessage(),

@@ -260,7 +260,7 @@ class Members
 
                     $p = new Picture($member->id_adh);
                     if ( $p->hasPicture() ) {
-                        if ( !$p->delete() ) {
+                        if ( !$p->delete(false) ) {
                             $log->log(
                                 'Unable to delete picture for member ' . $str_adh,
                                 PEAR_LOG_ERR
