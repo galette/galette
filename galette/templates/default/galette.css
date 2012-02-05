@@ -1966,6 +1966,14 @@ ul#paths{
 }
 /** /PAGINATION*/
 
+.notup2date {
+    margin-top: 5em;
+}
+
+.notup2date #errorbox {
+    width: 30em;
+}
+
 /** Mobile devices */
 @media (max-width: 640px) {
 

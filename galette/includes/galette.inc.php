@@ -63,6 +63,7 @@ require_once $base_path . 'config/paths.inc.php';
 session_start();
 
 define('GALETTE_VERSION', 'v0.7dev');
+define('GALETTE_DB_VERSION', '0.700');
 define('GALETTE_MODE', 'PROD'); //DEV or PROD
 define('GALETTE_TWITTER', 'galette_soft');
 define('GALETTE_GPLUS', '116977415489200387309');
@@ -164,70 +165,89 @@ if ( !$installer ) { //If we're not working from installer
     require_once WEB_ROOT . 'config/config.inc.php';
 
     /**
-     * Database instanciation
-     */
+    * Database instanciation
+    */
     require_once WEB_ROOT . '/classes/galette-zend_db.class.php';
     $zdb = new GaletteZendDb();
 
-    /**
-    * Load preferences
-    */
-    require_once WEB_ROOT . 'classes/preferences.class.php';
-    $preferences = new Preferences();
+    if ( $zdb->checkDbVersion() ) {
 
-    /**
-    * Set the path to the current theme templates
-    */
-    define('_CURRENT_TEMPLATE_PATH', GALETTE_TEMPLATES_PATH . $preferences->pref_theme . '/');
+        /**
+        * Load preferences
+        */
+        require_once WEB_ROOT . 'classes/preferences.class.php';
+        $preferences = new Preferences();
 
-    /**
-    * Plugins
-    */
-    require_once WEB_ROOT . 'classes/plugins.class.php';
-    $plugins = new plugins();
-    $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
+        /**
+        * Set the path to the current theme templates
+        */
+        define(
+            '_CURRENT_TEMPLATE_PATH',
+            GALETTE_TEMPLATES_PATH . $preferences->pref_theme . '/'
+        );
 
-    /**
-    * Authentication
-    */
-    require_once WEB_ROOT . 'classes/galette-login.class.php';
-    if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login']) ) {
-        $login = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login']);
+        /**
+        * Plugins
+        */
+        require_once WEB_ROOT . 'classes/plugins.class.php';
+        $plugins = new plugins();
+        $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
+
+        /**
+        * Authentication
+        */
+        require_once WEB_ROOT . 'classes/galette-login.class.php';
+        if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login']) ) {
+            $login = unserialize(
+                $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login']
+            );
+        } else {
+            $login = new GaletteLogin();
+        }
+
+        /**
+        * Members, also load Adherent and Picture objects
+        */
+        require_once WEB_ROOT . 'classes/members.class.php';
+
+        /**
+        * Instanciate history object
+        */
+        require_once WEB_ROOT . 'classes/history.class.php';
+        if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history'])
+            && !GALETTE_MODE == 'DEV'
+        ) {
+            $hist = unserialize(
+                $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history']
+            );
+        } else {
+            $hist = new History();
+        }
+
+        /**
+        * Logo
+        */
+        require_once WEB_ROOT . 'classes/logo.class.php';
+        if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo'])
+            && !GALETTE_MODE == 'DEV'
+        ) {
+            $logo = unserialize(
+                $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo']
+            );
+        } else {
+            $logo = new Logo();
+        }
+
+        /**
+        * Now that all objects are correctly setted,
+        * we can include files that need it
+        */
+        require_once WEB_ROOT . 'classes/galette_mail.class.php';
+        require_once WEB_ROOT . 'includes/session.inc.php';
+        require_once WEB_ROOT . 'includes/smarty.inc.php';
     } else {
-        $login = new GaletteLogin();
+        header('location: needs_update.php');
+        die();
     }
-
-    /**
-    * Members, also load Adherent and Picture objects
-    */
-    require_once WEB_ROOT . 'classes/members.class.php';
-
-    /**
-    * Instanciate history object
-    */
-    require_once WEB_ROOT . 'classes/history.class.php';
-    if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history']) && !GALETTE_MODE == 'DEV' ) {
-        $hist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history']);
-    } else {
-        $hist = new History();
-    }
-
-    /**
-    * Logo
-    */
-    require_once WEB_ROOT . 'classes/logo.class.php';
-    if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo']) && !GALETTE_MODE == 'DEV') {
-        $logo = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo']);
-    } else {
-        $logo = new Logo();
-    }
-
-    /**
-    * Now that all objects are correctly setted,
-    * we can include files that need it
-    */
-    require_once WEB_ROOT . 'classes/galette_mail.class.php';
-    require_once WEB_ROOT . 'includes/session.inc.php';
-    require_once WEB_ROOT . 'includes/smarty.inc.php';
 }
 ?>

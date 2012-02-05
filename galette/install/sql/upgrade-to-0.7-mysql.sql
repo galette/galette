@@ -156,6 +156,12 @@ CREATE TABLE IF NOT EXISTS galette_groups_members (
   FOREIGN KEY (id_group) REFERENCES galette_groups (id_group)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+-- table for database version
+CREATE TABLE IF NOT EXISTS galette_database (
+  version DECIMAL(4,3) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+UPDATE galette_database SET version=0.700;
+
 ALTER TABLE galette_adherents ADD societe_adh VARCHAR( 20 ) NULL AFTER prenom_adh;
 
 ALTER TABLE galette_cotisations ADD FOREIGN KEY (id_type_cotis)

@@ -328,3 +328,10 @@ CREATE TABLE galette_groups_members (
   id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
   PRIMARY KEY (id_group,id_adh)
 );
+
+-- table for database version
+DROP TABLE IF EXISTS galette_database;
+CREATE TABLE galette_database (
+  version real NOT NULL
+);
+INSERT INTO galette_database (version) VALUES(0.700);

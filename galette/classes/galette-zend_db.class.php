@@ -123,6 +123,32 @@ class GaletteZendDb extends Zend_Db
     }
 
     /**
+     * Check if database version suits our needs
+     *
+     * @return boolean
+     */
+    public function checkDbVersion()
+    {
+        global $log;
+        try {
+            $select = new Zend_Db_Select($this->db);
+            $select->from(
+                PREFIX_DB . 'database',
+                array('version')
+            )->limit(1);
+            $sql = $select->__toString();
+            $res = $select->query()->fetch();
+            return $res->version === GALETTE_DB_VERSION;
+        } catch ( Exception $e ) {
+            $log->log(
+                'Cannot check database version: ' . $e->getMessage(),
+                PEAR_LOG_ERR
+            );
+            return false;
+        }
+    }
+
+    /**
      * Peform a select query on the whole table
      *
      * @param string $table Table name
@@ -455,6 +481,10 @@ class GaletteZendDb extends Zend_Db
     {
         global $log;
 
+        if ( $prefix === null ) {
+            $prefix = PREFIX_DB;
+        }
+
         try {
             $this->_db->beginTransaction();
 
@@ -476,8 +506,8 @@ class GaletteZendDb extends Zend_Db
                 }
 
                 //Data conversion
-                if ( $table != PREFIX_DB . 'pictures' ) {
-                    $this->_convertContentToUTF($table);
+                if ( $table != $prefix . 'pictures' ) {
+                    $this->_convertContentToUTF($prefix, $table);
                 }
             }
             $this->_db->commit();
@@ -494,11 +524,12 @@ class GaletteZendDb extends Zend_Db
     /**
     * Converts dtabase content to UTF-8
     *
-    * @param string $table the table we want to convert datas from
+    * @param string $prefix Specified table prefix
+    * @param string $table  the table we want to convert datas from
     *
     * @return void
     */
-    private function _convertContentToUTF($table)
+    private function _convertContentToUTF($prefix, $table)
     {
         global $log;
 
@@ -532,13 +563,21 @@ class GaletteZendDb extends Zend_Db
 
             if ( count($pkeys) == 0 ) {
                 //no primary key! How to do an update without that?
-                if (preg_match('/' . PREFIX_DB . 'dynamic_fields/', $table) !== 0 ) {
-                    //well, the known case...
+                //Prior to 0.7, l10n and dynamic_fields tables does not
+                //contains any primary key. Since encoding conversion is done
+                //_before_ the SQL upgrade, we'll have to manually
+                //check these ones
+                if (preg_match('/' . $prefix . 'dynamic_fields/', $table) !== 0 ) {
                     $pkeys = array(
                         'item_id',
                         'field_id',
                         'field_form',
                         'val_index'
+                    );
+                } else if ( preg_match('/' . $prefix . 'l10n/', $table) !== 0  ) {
+                    $pkeys = array(
+                        'text_orig',
+                        'text_locale'
                     );
                 } else {
                     //not a know case, we do not perform any update.

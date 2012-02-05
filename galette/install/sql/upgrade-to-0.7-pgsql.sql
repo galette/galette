@@ -161,6 +161,13 @@ CREATE TABLE galette_groups_members (
   PRIMARY KEY (id_group,id_adh)
 );
 
+-- table for database version
+DROP TABLE IF EXISTS galette_database;
+CREATE TABLE galette_database (
+  version real NOT NULL
+);
+UPDATE galette_database SET version=0.700;
+
 ALTER TABLE galette_cotisations ADD type_paiement_cotis smallint DEFAULT '0' NOT NULL;
 
 ALTER TABLE galette_adherents ADD societe_adh character varying(20) DEFAULT NULL;
