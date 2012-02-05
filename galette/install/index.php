@@ -397,7 +397,7 @@ case 'u4':
 
         //define default database port
         $default_dbport = GaletteZendDb::MYSQL_DEFAULT_PORT;
-        if ( $_POST['install_dbtype'] == 'mysql' ) {
+        if ( !isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql' ) {
             $default_dbport = GaletteZendDb::MYSQL_DEFAULT_PORT;
         } else if ( $_POST['install_dbtype'] == 'pgsql' ) {
             $default_dbport = GaletteZendDb::PGSQL_DEFAULT_PORT;
@@ -961,24 +961,15 @@ define("STOCK_FILES", "tempimages");
         $error = true;
     }
 
-    $texts = new Texts();
-    $res = $texts->installInit();
-    if ( $res !== false ) {
-        if ( $res !== true ) {
-            $errs[] = '<li class="install-bad">' . _T("Default texts cannot be initialized.") . '<span>' . $res->getMessage() . '</span></li>';
-        } else {
-            $oks[] = '<li class="install-ok">' . _T("Default texts were successfully stored.") . '</li>';
-        }
-    }
-
+    $preferences = null;
     if ( $step=='i9' ) {
-        $prefs = new Preferences(false);
+        $preferences = new Preferences(false);
         $ct = new ContributionsTypes();
         $status = new Status();
         $fc = new FieldsCategories();
 
         //init default values
-        $res = $prefs->installInit(
+        $res = $preferences->installInit(
             $i18n->getID(),
             $_POST['install_adminlogin'],
             md5($_POST['install_adminpass'])
@@ -1010,9 +1001,22 @@ define("STOCK_FILES", "tempimages");
             $oks[] = '<li class="install-ok">' . _T("Default fields categories were successfully stored.") . '</li>';
         }
     } else if ($step=='u9') {
-        $prefs->pref_admin_login = $_POST['install_adminlogin'];
-        $prefs->pref_admin_pass = $_POST['install_adminpass'];
+        $preferences = new Preferences();
+        $preferences->pref_admin_login = $_POST['install_adminlogin'];
+        $preferences->pref_admin_pass = $_POST['install_adminpass'];
+        $preferences->store();
     }
+
+    $texts = new Texts();
+    $res = $texts->installInit();
+    if ( $res !== false ) {
+        if ( $res !== true ) {
+            $errs[] = '<li class="install-bad">' . _T("Default texts cannot be initialized.") . '<span>' . $res->getMessage() . '</span></li>';
+        } else {
+            $oks[] = '<li class="install-ok">' . _T("Default texts were successfully stored.") . '</li>';
+        }
+    }
+
 ?>
             <div<?php if( count($errs) == 0) echo ' id="infobox"'; ?>>
                 <ul>
