@@ -332,6 +332,6 @@ CREATE TABLE galette_groups_members (
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
-  version real NOT NULL
+  version decimal NOT NULL
 );
 INSERT INTO galette_database (version) VALUES(0.700);
