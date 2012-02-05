@@ -30,7 +30,7 @@
 {else}
                 <ul id="twitter">
     {foreach item=tweet from=$tweets}
-                    <li>{$tweet}</li>
+                    <li><strong>{$tweet.date}</strong> {$tweet.content}</li>
     {/foreach}
                 </ul>
 {/if}
@@ -39,7 +39,7 @@
 {else}
                 <ul id="googleplus">
     {foreach item=gp key=url from=$gplus}
-                    <li>{$gp} <a href="{$url}" class="googleplus_plus button small" title="{_T string="Read complete post"}">...</a></li>
+                    <li><strong>{$gp.date}</strong> {$gp.content} <a href="{$gp.url}" class="googleplus_plus button small" title="{_T string="Read complete post"}">{_T string="Read on..."}</a></li>
     {/foreach}
                 </ul>
 {/if}

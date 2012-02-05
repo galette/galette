@@ -339,8 +339,18 @@ nav a{
     border: none;
 }
 
+#googleplus li {
+    position: relative;
+    padding-bottom: 1.5em;
+}
+
 .googleplus_plus {
-    float: right;
+    position: absolute!important;
+    bottom: 0;
+    right: 0;
+    /*float: right;*/
+    /*display: block;
+    text-align: right;*/
 }
 /* =/ Desktop */
 

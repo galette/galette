@@ -222,10 +222,14 @@ class GaletteNews
 
             $tweets = array();
             foreach ( $xml->status as $status ) {
-                $tweets[] = preg_replace(
-                    $patterns,
-                    $replacements,
-                    (string)$status->text
+                $tDate = new DateTime($status->created_at);
+                $tweets[] = array(
+                    'date'      => $tDate->format(_T("Y-m-d")),
+                    'content'   => preg_replace(
+                        $patterns,
+                        $replacements,
+                        (string)$status->text
+                    )
                 );
             }
 
@@ -262,7 +266,12 @@ class GaletteNews
 
             $gposts = array();
             foreach ($activities['items'] as $activity) {
-                $gposts[$activity['url']] = $activity['title'];
+                $tDate = new DateTime($activity['published']);
+                $gposts[] = array(
+                    'date'  => $tDate->format(_T("Y-m-d")),
+                    'url'   => $activity['url'],
+                    'content' => $activity['title']
+                );
             }
 
             $this->_gplus = $gposts;
