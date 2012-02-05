@@ -134,13 +134,22 @@ if ( version_compare(PHP_VERSION, '5.3.0', '<') ) {
 
 require_once WEB_ROOT . 'includes/functions.inc.php';
 
+$session_name = null;
+//since PREFIX_DB and NAME_DB are required to properly instanciate sessions,
+// we have to check here if they're assigned
+if ( $installer || !defined('PREFIX_DB') || !defined('NAME_DB') ) {
+    $session_name = 'galette_galette';
+} else {
+    $session_name = PREFIX_DB . '_' . NAME_DB;
+}
+
 /**
 * Language instantiation
 */
 require_once WEB_ROOT . 'classes/i18n.class.php';
 
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lang']) ) {
-    $i18n = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lang']);
+if ( isset($_SESSION['galette'][$session_name]['lang']) ) {
+    $i18n = unserialize($_SESSION['galette'][$session_name]['lang']);
 } else {
     $i18n = new I18n();
 }
@@ -153,7 +162,7 @@ if ( isset($_POST['pref_lang'])
 if ( isset($_GET['pref_lang']) ) {
     $i18n->changeLanguage($_GET['pref_lang']);
 }
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lang'] = serialize($i18n);
+$_SESSION['galette'][$session_name]['lang'] = serialize($i18n);
 require_once WEB_ROOT . 'includes/i18n.inc.php';
 
 // initialize messages arrays
