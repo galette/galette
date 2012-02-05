@@ -169,10 +169,14 @@ abstract class GalettePagination
     */
     protected function countPages()
     {
-        if ($this->_counter % $this->_show == 0) {
-            $this->_pages = intval($this->_counter / $this->_show);
+        if ( $this->_show !== 0 ) {
+            if ($this->_counter % $this->_show == 0) {
+                $this->_pages = intval($this->_counter / $this->_show);
+            } else {
+                $this->_pages = intval($this->_counter / $this->_show) + 1;
+            }
         } else {
-            $this->_pages = intval($this->_counter / $this->_show) + 1;
+            $this->_pages = 0;
         }
         if ($this->_pages == 0) {
             $this->_pages = 1;
