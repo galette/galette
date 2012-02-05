@@ -15,8 +15,7 @@ ALTER TABLE galette_field_types ENGINE = InnoDB;
 -- Each preference must be unique
 ALTER TABLE galette_preferences ADD UNIQUE (nom_pref);
 
--- Add new or missing preferences;
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_slogan', '');
+-- Update languages
 UPDATE galette_preferences SET val_pref='fr_FR' WHERE nom_pref='pref_lang' AND val_pref='french';
 UPDATE galette_preferences SET val_pref='en_EN' WHERE nom_pref='pref_lang' AND val_pref='english';
 -- spanish no longer exists, fallback to english
@@ -27,27 +26,6 @@ UPDATE galette_adherents SET pref_lang='en_EN' WHERE pref_lang='english';
 UPDATE galette_adherents SET pref_lang='es_EN' WHERE pref_lang='spanish';
 ALTER TABLE `galette_adherents` CHANGE `pref_lang` `pref_lang` VARCHAR( 20 ) NULL DEFAULT 'fr_FR';
 UPDATE galette_preferences SET nom_pref='pref_mail_smtp_host' WHERE nom_pref='pref_mail_smtp';
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_abrev', 'Galette');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_strip','Gestion d Adherents en Ligne Extrêmement Tarabiscoté');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_tcol', 'FFFFFF');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_scol', '8C2453');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_bcol', '53248C');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_hcol', '248C53');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_bool_display_title', '');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_address', '1');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_year', '2007');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_marges_v', '15');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_marges_h', '20');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_vspace', '5');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_hspace', '10');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_card_self', '1');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_editor_enabled', '');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_theme', 'default');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_smtp_auth', 'false');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_smtp_secure', 'false');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_smtp_port', '25');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_smtp_user', '');
-INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_mail_smtp_password', '');
 
 -- Table for dynamic required fields;
 DROP TABLE IF EXISTS galette_required;
