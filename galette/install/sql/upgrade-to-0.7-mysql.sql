@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS galette_groups_members (
 CREATE TABLE IF NOT EXISTS galette_database (
   version DECIMAL(4,3) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-UPDATE galette_database SET version=0.700;
+INSERT INTO galette_database(version) VALUES(0.700);
 
 ALTER TABLE galette_adherents ADD societe_adh VARCHAR( 20 ) NULL AFTER prenom_adh;
 

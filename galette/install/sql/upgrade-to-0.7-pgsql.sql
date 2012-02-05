@@ -143,7 +143,7 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version real NOT NULL
 );
-UPDATE galette_database SET version=0.700;
+INSERT INTO galette_database(version) VALUES(0.700);
 
 ALTER TABLE galette_cotisations ADD type_paiement_cotis smallint DEFAULT '0' NOT NULL;
 
