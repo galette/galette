@@ -123,7 +123,7 @@ class GaletteNews
     /**
      * Creates/update the cache
      *
-     * @param boolean $load Force load
+     * @param boolean $load Load cache from web
      *
      * @return boolean
      */
@@ -198,42 +198,45 @@ class GaletteNews
     {
         global $log;
 
-        $xml = simplexml_load_file($this->_twitter_url);
+        try {
+            $xml = simplexml_load_file($this->_twitter_url);
 
-        if ( !$xml ) {
+            if ( !$xml ) {
+                throw new Exception();
+            }
+
+            //search and replace:
+            //- urls,
+            //- @names,
+            //- #hashtags
+            $patterns = array(
+                '@(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))@',
+                '/@(\w+)/',
+                '/\s+#(\w+)/'
+            );
+            $replacements = array(
+                '<a href="$1">$1</a>',
+                '<a href="http://twitter.com/$1">@$1</a>',
+                ' <a href="http://search.twitter.com/search?q=%23$1">#$1</a>'
+            );
+
+            $tweets = array();
+            foreach ( $xml->status as $status ) {
+                $tweets[] = preg_replace(
+                    $patterns,
+                    $replacements,
+                    (string)$status->text
+                );
+            }
+
+            $this->_tweets = $tweets;
+        } catch (Exception $e) {
             $log->log(
-                'An error occured trying to retrieve Tweets',
+                'Unable to load Tweets :( (see system logs to get details)',
                 PEAR_LOG_ERR
             );
             $this->_tweets = array();
-            return false;
         }
-
-        //search and replace:
-        //- urls,
-        //- @names,
-        //- #hashtags
-        $patterns = array(
-            '@(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))@',
-            '/@(\w+)/',
-            '/\s+#(\w+)/'
-        );
-        $replacements = array(
-            '<a href="$1">$1</a>',
-            '<a href="http://twitter.com/$1">@$1</a>',
-            ' <a href="http://search.twitter.com/search?q=%23$1">#$1</a>'
-        );
-
-        $tweets = array();
-        foreach ( $xml->status as $status ) {
-            $tweets[] = preg_replace(
-                $patterns,
-                $replacements,
-                (string)$status->text
-            );
-        }
-
-        $this->_tweets = $tweets;
     }
 
     /**
@@ -243,24 +246,32 @@ class GaletteNews
      */
     private function _parseGplus()
     {
-        $gclient = new apiClient();
-        $gclient->setApplicationName("Galette's Google+");
-        $gclient->setDeveloperKey(GALETTE_GAPI_KEY);
-        $plus = new apiPlusService($gclient);
+        global $log;
+        try {
+            $gclient = new apiClient();
+            $gclient->setApplicationName("Galette's Google+");
+            $gclient->setDeveloperKey(GALETTE_GAPI_KEY);
+            $plus = new apiPlusService($gclient);
 
-        $optParams = array('maxResults' => $this->_show);
-        $activities = $plus->activities->listActivities(
-            GALETTE_GPLUS,
-            'public',
-            $optParams
-        );
+            $optParams = array('maxResults' => $this->_show);
+            $activities = $plus->activities->listActivities(
+                GALETTE_GPLUS,
+                'public',
+                $optParams
+            );
 
-        $gposts = array();
-        foreach ($activities['items'] as $activity) {
-            $gposts[$activity['url']] = $activity['title'];
+            $gposts = array();
+            foreach ($activities['items'] as $activity) {
+                $gposts[$activity['url']] = $activity['title'];
+            }
+
+            $this->_gplus = $gposts;
+        } catch ( Exception $e ) {
+            $log->log(
+                'Unable to load GooGlePlus posts :( | ' . $e->getMessage(),
+                PEAR_LOG_ERR
+            );
         }
-
-        $this->_gplus = $gposts;
     }
 
     /**
