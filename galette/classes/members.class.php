@@ -525,6 +525,8 @@ class Members
                     self::_buildWhereClause($select);
                 }
                 $select->order(self::_buildOrderClause());
+            } else if ( $mode == self::SHOW_PUBLIC_LIST )  {
+                $select->where('activite_adh=true');
             }
 
             if ( $count ) {
