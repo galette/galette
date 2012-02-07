@@ -403,7 +403,9 @@ case 'u4':
                             $conf,
                             $matches
                         );
-                        $_POST['install_dbtype'] = $matches[1];
+                        if ( $matches[1] ) {
+                            $_POST['install_dbtype'] = $matches[1];
+                        }
                     }
                     if ( !isset($_POST['install_dbhost']) ) {
                         $res = preg_match(
@@ -411,7 +413,9 @@ case 'u4':
                             $conf,
                             $matches
                         );
-                        $_POST['install_dbhost'] = $matches[1];
+                        if ( $matches[1] ) {
+                            $_POST['install_dbhost'] = $matches[1];
+                        }
                     }
                     if ( !isset($_POST['install_dbuser']) ) {
                         $res = preg_match(
@@ -427,7 +431,9 @@ case 'u4':
                             $conf,
                             $matches
                         );
-                        $_POST['install_dbname'] = $matches[1];
+                        if ( $matches[1] ) {
+                            $_POST['install_dbname'] = $matches[1];
+                        }
                     }
                     if ( !isset($_POST['install_dbprefix']) ) {
                         $res = preg_match(
@@ -435,7 +441,9 @@ case 'u4':
                             $conf,
                             $matches
                         );
-                        $_POST['install_dbprefix'] = $matches[1];
+                        if ( $matches[1] ) {
+                            $_POST['install_dbprefix'] = $matches[1];
+                        }
                     }
                 }
             }
