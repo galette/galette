@@ -393,7 +393,52 @@ case 'u4':
         }
         if ( $step == 'u4' ) {
             echo _T("Enter connection data for the existing database.");
-            /** TODO 0.7 : récupérer les valeurs existantes */
+
+            if ( file_exists( WEB_ROOT . 'config/config.inc.php') ) {
+                $conf = file_get_contents(WEB_ROOT . 'config/config.inc.php');
+                if ( $conf !== false ) {
+                    if ( !isset($_POST['install_dbtype']) ) {
+                        $res = preg_match(
+                            '/TYPE_DB", "(.*)"\);/',
+                            $conf,
+                            $matches
+                        );
+                        $_POST['install_dbtype'] = $matches[1];
+                    }
+                    if ( !isset($_POST['install_dbhost']) ) {
+                        $res = preg_match(
+                            '/HOST_DB", "(.*)"\);/',
+                            $conf,
+                            $matches
+                        );
+                        $_POST['install_dbhost'] = $matches[1];
+                    }
+                    if ( !isset($_POST['install_dbuser']) ) {
+                        $res = preg_match(
+                            '/USER_DB", "(.*)"\);/',
+                            $conf,
+                            $matches
+                        );
+                        $_POST['install_dbuser'] = $matches[1];
+                    }
+                    if ( !isset($_POST['install_dbname']) ) {
+                        $res = preg_match(
+                            '/NAME_DB", "(.*)"\);/',
+                            $conf,
+                            $matches
+                        );
+                        $_POST['install_dbname'] = $matches[1];
+                    }
+                    if ( !isset($_POST['install_dbprefix']) ) {
+                        $res = preg_match(
+                            '/PREFIX_DB", "(.*)"\);/',
+                            $conf,
+                            $matches
+                        );
+                        $_POST['install_dbprefix'] = $matches[1];
+                    }
+                }
+            }
         }
 
         //define default database port
