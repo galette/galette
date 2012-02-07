@@ -393,6 +393,7 @@ case 'u4':
         }
         if ( $step == 'u4' ) {
             echo _T("Enter connection data for the existing database.");
+            /** TODO 0.7 : récupérer les valeurs existantes */
         }
 
         //define default database port
