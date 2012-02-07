@@ -83,11 +83,6 @@ CREATE TABLE galette_fields_categories (
   PRIMARY KEY (id_field_category)
 );
 
--- Base fields categories
-INSERT INTO galette_fields_categories (id_field_category, category, position) VALUES (1, 'Identity:', 1);
-INSERT INTO galette_fields_categories (id_field_category, category, position) VALUES (2, 'Galette-related data:', 2);
-INSERT INTO galette_fields_categories (id_field_category, category, position) VALUES (3, 'Contact information:', 3);
-
 DROP TABLE IF EXISTS galette_fields_config;
 CREATE TABLE galette_fields_config (
   table_name character varying(30) NOT NULL,

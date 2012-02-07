@@ -73,11 +73,6 @@ CREATE TABLE IF NOT EXISTS galette_fields_categories (
   PRIMARY KEY (id_field_category)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Base fields categories
-INSERT INTO `galette_fields_categories` (`id_field_category`, `category`, `position`) VALUES (1, 'Identity:', 1);
-INSERT INTO `galette_fields_categories` (`id_field_category`, `category`, `position`) VALUES (2, 'Galette-related data:', 2);
-INSERT INTO `galette_fields_categories` (`id_field_category`, `category`, `position`) VALUES (3, 'Contact information:', 3);
-
 -- New table for fields configuration
 DROP TABLE IF EXISTS galette_fields_config;
 CREATE TABLE IF NOT EXISTS galette_fields_config (
