@@ -84,6 +84,11 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {_T string="Superadmin"}
         </div>
 {/if}
+{if $GALETTE_MODE eq 'DEMO'}
+        <div id="demo" title="{_T string="This application runs under DEMO mode, all features may not be available."}">
+            {_T string="Demonstration"}
+        </div>
+{/if}
 {if $login->isLogged()}
 		<h1 class="nojs">{_T string="Navigation"}</h1>
 		<ul>

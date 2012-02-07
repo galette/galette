@@ -37,6 +37,7 @@
 
 /** @ignore */
 require_once 'i18n.class.php';
+require_once 'galette_mail.class.php';
 
 /**
  * Preferences for galette
@@ -97,7 +98,7 @@ class Preferences
         'pref_email_newadh'    =>    'mail@domain.com',
         'pref_bool_mailadh'    =>    false,
         'pref_editor_enabled'    =>    false,
-        'pref_mail_method'    =>    0,
+        'pref_mail_method'    =>    GaletteMail::METHOD_DISABLED,
         'pref_mail_smtp'    =>    '',
         'pref_mail_smtp_host'   => '',
         'pref_mail_smtp_auth'   => false,
@@ -471,7 +472,13 @@ class Preferences
         $forbidden = array('logged', 'admin', 'active', 'defaults');
 
         if ( !in_array($name, $forbidden) && isset($this->_prefs[$name])) {
-            return $this->_prefs[$name];
+            if ( GALETTE_MODE === 'DEMO' &&
+                $name == 'pref_mail_method'
+            ) {
+                return GaletteMail::METHOD_DISABLED;
+            } else {
+                return $this->_prefs[$name];
+            }
         } else {
             $log->log(
                 'Preference `' . $name . '` is not set or is forbidden',

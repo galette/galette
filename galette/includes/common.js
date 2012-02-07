@@ -113,6 +113,12 @@ $(function() {
 		});
 	}
 
-    $('input:submit, .button, input:reset' ).button();
+    $('input:submit, .button, input:reset' ).button({
+        create: function(event, ui) {
+            if ( $(event.target).hasClass('disabled') ) {
+                $(event.target).button('disable');
+            }
+        }
+    });
     $('.selected').addClass('ui-state-disabled');
 });

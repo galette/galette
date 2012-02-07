@@ -91,6 +91,9 @@ if ( $login->isSuperAdmin() ) {
     $required['pref_admin_login'] = 1;
 }
 
+if ( GALETTE_MODE === 'DEMO' ) {
+    unset($required['pref_admin_login']);
+}
 
 $prefs_fields = $preferences->getFieldsNames();
 
@@ -111,17 +114,31 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
         if ( $value != '' ) {
             switch ( $fieldname ) {
             case 'pref_email':
-                if ( !GaletteMail::isValidEmail($value) ) {
-                    $error_detected[] = _T("- Non-valid E-Mail address!");
+                if ( GALETTE_MODE === 'DEMO' ) {
+                    $log->log(
+                        'Trying to set pref_email while in DEMO.',
+                        PEAR_LOG_WARNING
+                    );
+                } else {
+                    if ( !GaletteMail::isValidEmail($value) ) {
+                        $error_detected[] = _T("- Non-valid E-Mail address!");
+                    }
                 }
                 break;
             case 'pref_admin_login':
-                if ( strlen($value) < 4 ) {
-                    $error_detected[] = _T("- The username must be composed of at least 4 characters!");
+                if ( GALETTE_MODE === 'DEMO' ) {
+                    $log->log(
+                        'Trying to set superadmin login while in DEMO.',
+                        PEAR_LOG_WARNING
+                    );
                 } else {
-                    //check if login is already taken
-                    if ( $login->loginExists($value) ) {
-                        $error_detected[] = _T("- This username is already used by another member !");
+                    if ( strlen($value) < 4 ) {
+                        $error_detected[] = _T("- The username must be composed of at least 4 characters!");
+                    } else {
+                        //check if login is already taken
+                        if ( $login->loginExists($value) ) {
+                            $error_detected[] = _T("- This username is already used by another member !");
+                        }
                     }
                 }
                 break;
@@ -166,8 +183,15 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 }
                 break;
             case 'pref_admin_pass':
-                if ( strlen($value) < 4 ) {
-                    $error_detected[] = _T("- The password must be of at least 4 characters!");
+                if ( GALETTE_MODE == 'DEMO' ) {
+                    $log->log(
+                        'Trying to set superadmin pass while in DEMO.',
+                        PEAR_LOG_WARNING
+                    );
+                } else {
+                    if ( strlen($value) < 4 ) {
+                        $error_detected[] = _T("- The password must be of at least 4 characters!");
+                    }
                 }
                 break;
             case 'pref_membership_ext':
@@ -196,7 +220,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
     }
 
     // missing relations
-    if ( isset($insert_values['pref_mail_method']) ) {
+    if ( GALETTE_MODE !== 'DEMO' && isset($insert_values['pref_mail_method']) ) {
         if ( $insert_values['pref_mail_method'] > GaletteMail::METHOD_DISABLED ) {
             if ( !isset($insert_values['pref_email_nom'])
                 || $insert_values['pref_email_nom'] == ''
@@ -252,9 +276,11 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
         }
     }
 
-    // Check passwords. MD5 hash will be done into the Preferences class
-    if (strcmp($insert_values['pref_admin_pass'], $_POST['pref_admin_pass_check']) != 0) {
-        $error_detected[] = _T("Passwords mismatch");
+    if (GALETTE_MODE !== 'DEMO' ) {
+        // Check passwords. MD5 hash will be done into the Preferences class
+        if (strcmp($insert_values['pref_admin_pass'], $_POST['pref_admin_pass_check']) != 0) {
+            $error_detected[] = _T("Passwords mismatch");
+        }
     }
 
     //postal adress
@@ -293,7 +319,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
         }
 
         // picture upload
-        if ( isset($_FILES['logo']) ) {
+        if ( GALETTE_MODE !== 'DEMO' &&  isset($_FILES['logo']) ) {
             if ( $_FILES['logo']['error'] === UPLOAD_ERR_OK ) {
                 if ( $_FILES['logo']['tmp_name'] !='' ) {
                     if ( is_uploaded_file($_FILES['logo']['tmp_name']) ) {
@@ -318,7 +344,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             }
         }
 
-        if ( isset($_POST['del_logo']) ) {
+        if ( GALETTE_MODE !== 'DEMO' && isset($_POST['del_logo']) ) {
             if ( !$logo->delete() ) {
                 $error_detected[] = _T("Delete failed");
             } else {
@@ -329,7 +355,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
         }
 
         // Card logo upload
-        if ( isset($_FILES['card_logo']) ) {
+        if ( GALETTE_MODE !== 'DEMO' && isset($_FILES['card_logo']) ) {
             if ( $_FILES['card_logo']['error'] === UPLOAD_ERR_OK ) {
                 if ( $_FILES['card_logo']['tmp_name'] !='' ) {
                     if ( is_uploaded_file($_FILES['card_logo']['tmp_name']) ) {
@@ -352,7 +378,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             }
         }
 
-        if ( isset($_POST['del_card_logo']) ) {
+        if ( GALETTE_MODE !== 'DEMO' && isset($_POST['del_card_logo']) ) {
             if ( !$print_logo->delete() ) {
                 $error_detected[] = _T("Delete failed");
             } else {

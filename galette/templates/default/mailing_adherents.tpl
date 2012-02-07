@@ -1,4 +1,4 @@
-{if $pref_mail_method == constant('Mailing::METHOD_DISABLED')}
+{if $pref_mail_method == constant('Mailing::METHOD_DISABLED') and $GALETTE_MODE neq 'DEMO'}
 		<div id="errorbox">
 			<h1>{_T string="- ERROR -"}</h1>
 			<p>{_T string="Email sent is disabled in the preferences. Ask galette admin"}</p>
@@ -55,7 +55,7 @@
                     <input type="checkbox" name="mailing_html" id="mailing_html" value="1" {if $mailing->html eq 1 or $pref_editor_enabled eq 1}checked="checked"{/if}/><label for="mailing_html">{_T string="Interpret HTML"}</label><br/>
                     <input type="submit" id="btnpreview" name="mailing_go" value="{_T string="Preview"}"/>
                     <input type="submit" id="btnsave" name="mailing_save" value="{_T string="Save"}"/>
-                    <input type="submit" id="btnsend" name="mailing_confirm" value="{_T string="Send"}"/>
+                    <input type="submit" id="btnsend" name="mailing_confirm" value="{_T string="Send"}"{if $GALETTE_MODE eq 'DEMO'} class="disabled" disabled="disabled"{/if}/>
                     <input type="submit" id="btncancel" name="mailing_cancel" value="{_T string="Cancel mailing"}" formnovalidate/>
                 </div>
             </section>
@@ -77,7 +77,7 @@
                 <div>
                     <p>
                         <input type="submit" name="mailing_reset" class="button" id="btnback" value="{_T string="Modifiy mailing"}"/>
-                        <input type="submit" name="mailing_confirm" value="{_T string="Send"}"/>
+                        <input type="submit" name="mailing_confirm" value="{_T string="Send"}"{if $GALETTE_MODE eq 'DEMO'} class="disabled" disabled="disabled"{/if}/>
                         <input type="submit" id="btncancel" name="mailing_cancel" value="{_T string="Cancel mailing"}"/>
                         <input type="hidden" name="mailing_objet" value="{$mailing->subject}"/>
                         <input type="hidden" name="mailing_corps" value="{$mailing->message|escape}"/>

@@ -39,6 +39,13 @@
  */
 
 require_once 'includes/galette.inc.php';
+if ( GALETTE_MODE === 'DEMO' ) {
+    $log->log(
+        'Trying to access ajax_plugins_initdb.php in DEMO mode.',
+        PEAR_LOG_WARNING
+    );
+    die();
+}
 if ( !$login->isLogged() || !$login->isAdmin() ) {
     $log->log(
         'Trying to display ajax_members.php without appropriate permissions',

@@ -471,7 +471,7 @@ footer li {
     box-shadow: 1px 1px 12px rgba(255, 255, 255, 0.4);
 }
 
-#superadmin {
+#superadmin, #demo {
     color: white;
     font-weight: bold;
     margin: 0 .5em .5em;
@@ -484,6 +484,14 @@ footer li {
     -moz-box-shadow: 1px 1px 13px rgba(255, 0, 0, 0.4);
     -webkit-box-shadow: 1px 1px 13px rgba(255, 0, 0, 0.4);
     box-shadow: 1px 1px 13px rgba(255, 0, 0, 0.4);
+}
+
+#demo {
+    background-color:rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 1px 1px 13px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 1px 1px 13px rgba(0, 0, 0, 0.4);
+    box-shadow: 1px 1px 13px rgba(0, 0, 0, 0.4);
+
 }
 
 /* == Buttons */

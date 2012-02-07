@@ -20,7 +20,7 @@
                 <td>{$plugin.author}</td>
                 <td>{$plugin.version}</td>
                 <td class="nowrap">
-                    <a href="?deactivate={$name}" title="{_T string="Click here to deactivate plugin '%name'" pattern="/%name/" replace=$plugin.name}">
+                    <a class="toggleActivation" href="?deactivate={$name}" title="{_T string="Click here to deactivate plugin '%name'" pattern="/%name/" replace=$plugin.name}">
                         <img src="{$template_subdir}images/icon-on.png" alt="{_T string="Disable plugin"}"/>
                     </a>
     {if $plugins->needsDatabase($name)}
@@ -44,7 +44,7 @@
             <tr>
                 <td colspan="4">{$name}</td>
                 <td>
-                    <a href="?activate={$name}" title="{_T string="Click here to activate plugin '%name'" pattern="/%name/" replace=$name}">
+                    <a class="toggleActivation" href="?activate={$name}" title="{_T string="Click here to activate plugin '%name'" pattern="/%name/" replace=$name}">
                         <img src="{$template_subdir}images/icon-off.png" alt="{_T string="Enable plugin"}"/>
                     </a>
                     <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
@@ -60,6 +60,12 @@
 
     <script type="text/javascript">
         $(function() {ldelim}
+{if $GALETTE_MODE eq 'DEMO'}
+            $('.initdb, a.toggleActivation').click(function(){ldelim}
+                alert('{_T string="Application runs under demo mode. This functionnality is not enabled, sorry." escape="js"}');
+                return false;
+            {rdelim});
+{else}
             var _initdb_dialog = function(res, _plugin){ldelim}
                 var _title = '{_T string="Plugin database initialization: %name" escape="js"}';
                 var _el = $('<div id="initdb" title="' + _title.replace('%name', _plugin) + '"> </div>');
@@ -123,5 +129,6 @@
                 {rdelim});
                 return false;
             {rdelim})
+{/if}
         {rdelim});
     </script>

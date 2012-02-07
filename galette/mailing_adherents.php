@@ -66,7 +66,7 @@ require_once WEB_ROOT . 'classes/mailing_history.class.php';
 
 $data = array();
 
-if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED) {
+if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED && !GALETTE_MODE === 'DEMO') {
     $hist->add(_T("Trying to load mailing while mail is disabled in preferences."));
 } else {
     if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']) ) {

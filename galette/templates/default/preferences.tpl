@@ -28,7 +28,7 @@
 					<img src="{$galette_base_path}picture.php?logo=true&amp;rand={$time}" class="picture" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="{_T string="Current logo"}"/><br/>
 					<label for="del_logo">{_T string="Delete image"}</label><input type="checkbox" name="del_logo" id="del_logo" value="1" /><br />
 {/if}
-					<input type="file" name="logo" id="logo_picture"/>
+					<input type="file" name="logo" id="logo_picture"{if $GALETTE_MODE eq 'DEMO'} disabled="disabled"{/if}/>
 				</p>
 				<p>
 					<label for="pref_adresse" class="bline">{_T string="Address:"}</label>
@@ -155,7 +155,10 @@
 
 			<fieldset class="cssform" id="mail">
 				<legend>{_T string="Mail settings"}</legend>
-				<p>
+    {if $GALETTE_MODE eq 'DEMO'}
+                <div>{_T string="Application runs under demo mode. This functionnality is not enabled, sorry."}</div>
+    {else}
+    			<p>
 					<label for="pref_email_nom" class="bline">{_T string="Sender name:"}</label>
 					<input type="text" name="pref_email_nom" id="pref_email_nom" value="{$pref.pref_email_nom}" maxlength="50"{if $required.pref_email_nom eq 1} required{/if}/>
 				</p>
@@ -238,6 +241,7 @@
                     <span class="tip">{_T string="The text that will be automatically set as signature for all outgoing emails.<br/>Variables are quoted with braces, are upper case, and will be replaced automatically.<br/>Refer to the doc to know what variables ara available. "}</span>
                     <textarea name="pref_mail_sign" id="pref_mail_sign">{$pref.pref_mail_sign}</textarea>
                 </p>
+    {/if}
 			</fieldset>
 
 			<fieldset class="cssform" id="labels">
@@ -328,7 +332,7 @@
 					<img src="{$galette_base_path}picture.php?print_logo=true&amp;rand={$time}" class="picture" width="{$print_logo->getOptimalWidth()}" height="{$print_logo->getOptimalHeight()}" alt="{_T string="Current logo for printing"}"/><br/>
 					<label for="del_card_logo">{_T string="Delete image"}</label><input type="checkbox" name="del_card_logo" id="del_card_logo" value="1" /><br />
 {/if}
-					<input type="file" name="card_logo" id="card_logo"/>
+					<input type="file" name="card_logo" id="card_logo"{if $GALETTE_MODE eq 'DEMO'} disabled="disabled"{/if}/>
 				</p>
 				<p>
 					<label for="pref_card_self" class="bline">{_T string="Allow members to print card ?"}</label>
@@ -384,6 +388,9 @@
 {if $login->isSuperAdmin()}
 			<fieldset class="cssform" id="admin">
 				<legend>{_T string="Admin account (independant of members)"}</legend>
+    {if $GALETTE_MODE eq 'DEMO'}
+                <div>{_T string="Application runs under demo mode. This functionnality is not enabled, sorry."}</div>
+    {else}
 				<p>
 					<label for="pref_admin_login" class="bline">{_T string="Username:"}</label>
 					<input type="text" name="pref_admin_login" id="pref_admin_login" value="{$pref.pref_admin_login}" maxlength="20"{if $required.pref_admin_login eq 1} required{/if}/>
@@ -396,6 +403,7 @@
 					<label for="pref_admin_pass_check" class="bline">{_T string="Retype password:"}</label>
 					<input type="password" name="pref_admin_pass_check" id="pref_admin_pass_check" value="" maxlength="20"{if $required.pref_admin_pass_check eq 1} required{/if}/>
 				</p>
+    {/if}
 			</fieldset>
 {/if}
 		</div>

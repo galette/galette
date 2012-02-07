@@ -53,29 +53,31 @@ require_once 'classes/plugins.class.php';
 $success_detected = array();
 $error_detected = array();
 
-if ( isset($_GET['activate']) ) {
-    try {
-        $plugins->activateModule($_GET['activate']);
-        $success_detected[] = str_replace(
-            '%name',
-            $_GET['activate'],
-            _T("Plugin %name has been enabled")
-        );
-    } catch (Exception $e) {
-        $error_detected[] = $e->getMessage();
+if ( GALETTE_MODE !== 'DEMO' ) {
+    if ( isset($_GET['activate']) ) {
+        try {
+            $plugins->activateModule($_GET['activate']);
+            $success_detected[] = str_replace(
+                '%name',
+                $_GET['activate'],
+                _T("Plugin %name has been enabled")
+            );
+        } catch (Exception $e) {
+            $error_detected[] = $e->getMessage();
+        }
     }
-}
 
-if ( isset($_GET['deactivate']) ) {
-    try {
-        $plugins->deactivateModule($_GET['deactivate']);
-        $success_detected[] = str_replace(
-            '%name',
-            $_GET['deactivate'],
-            _T("Plugin %name has been disabled")
-        );
-    } catch (Exception $e) {
-        $error_detected[] = $e->getMessage();
+    if ( isset($_GET['deactivate']) ) {
+        try {
+            $plugins->deactivateModule($_GET['deactivate']);
+            $success_detected[] = str_replace(
+                '%name',
+                $_GET['deactivate'],
+                _T("Plugin %name has been disabled")
+            );
+        } catch (Exception $e) {
+            $error_detected[] = $e->getMessage();
+        }
     }
 }
 
