@@ -92,6 +92,7 @@ class Smarty extends \SmartyBC
         $this->assign('jquery_version', JQUERY_VERSION);
         $this->assign('jquery_ui_version', JQUERY_UI_VERSION);
         $this->assign('jquery_markitup_version', JQUERY_MARKITUP_VERSION);
+        $this->assign('jquery_jqplot_version', JQUERY_JQPLOT_VERSION);
         $this->assign('scripts_dir', GALETTE_BASE_PATH . 'includes/');
         $this->assign('PAGENAME', basename($_SERVER['SCRIPT_NAME']));
         $this->assign('galette_base_path', GALETTE_BASE_PATH);
@@ -128,5 +129,6 @@ class Smarty extends \SmartyBC
         $this->assign('require_tree', null);
         $this->assign('existing_mailing', null);
         $this->assign('html_editor', null);
+        $this->assign('require_charts', null);
     }
 }

@@ -3,12 +3,11 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * External libraries versions
- * Defines various library versions, to avoid use of problematic symlinks under windows or via FTP.
+ * Galette charts
  *
  * PHP version 5
  *
- * Copyright © 2009-2013 The Galette Team
+ * Copyright © 2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -25,24 +24,40 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Config
+ * @category  Main
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-03-13
+ * @since     Available since 0.7.4dev - 2013-02-02
  */
-define('SMARTY_VERSION', '3.1.12');
-define('ZEND_VERSION', '1.12.1');
-define('ANALOG_VERSION', '1.0.0.git876d8a3bb');
-define('TCPDF_VERSION', '5.9.202');
-define('JQUERY_VERSION', '1.6.2');
-define('JQUERY_UI_VERSION', '1.8.14');
-define('JQUERY_MARKITUP_VERSION', '1.1.12');
-define('JQUERY_JQPLOT_VERSION', '1.0.4r1121');
-define('PHP_MAILER_VERSION', '5.2.2');
-define('GAPI_VERSION', '0.6.0');
-define('PASSWORD_COMPAT_VERSION', '1.0.0');
+
+use Galette\IO\Charts;
+
+/** @ignore */
+require_once 'includes/galette.inc.php';
+
+if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
+    header('location: index.php');
+    die();
+}
+
+$charts = new Charts(
+    array(
+        Charts::MEMBERS_STATUS_PIE,
+        Charts::MEMBERS_STATEDUE_PIE,
+        Charts::CONTRIBS_TYPES_PIE,
+        Charts::CONTRIBS_ALLTIME
+    )
+);
+$data = array();
+
+$tpl->assign('page_title', _T("Charts"));
+$tpl->assign('charts', $charts->getCharts());
+$tpl->assign('require_charts', true);
+$content = $tpl->fetch('charts.tpl');
+$tpl->assign('content', $content);
+$tpl->display('page.tpl');

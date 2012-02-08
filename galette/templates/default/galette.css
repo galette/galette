@@ -1953,6 +1953,10 @@ td.photo img{
     background-position: center right;
 }
 
+.jqplot-target {
+    display: inline-block;
+}
+
 /** Mobile devices */
 @media (max-width: 640px) {
 
