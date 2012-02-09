@@ -74,10 +74,9 @@ if (isset($warning_detected)) {
     $tpl->assign('warning_detected', $warning_detected);
 }
 
-$a = new Adherent();
 //we want only visibles fields
-$fields = $a->fields;
-$fc = new FieldsConfig(Adherent::TABLE, $fields);
+$fields = $members_fields;
+$fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
 $visibles = $fc->getVisibilities();
 
 foreach ( $fields as $k=>$f ) {

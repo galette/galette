@@ -98,7 +98,7 @@ $member = new Adherent();
 $member->load($id_adh);
 
 // flagging fields visibility
-$fc = new FieldsConfig(Adherent::TABLE, $member->fields);
+$fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
 $visibles = $fc->getVisibilities();
 
 if ( $login->id != $id_adh && !$login->isAdmin() && !$login->isStaff() ) {

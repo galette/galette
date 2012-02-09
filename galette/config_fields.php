@@ -62,8 +62,7 @@ $fc = null;
 
 switch ( $current ) {
 case 'members':
-    $a = new Adherent();
-    $fc = new FieldsConfig(Adherent::TABLE, $a->fields);
+    $fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
     break;
 default:
     Analog::log(
@@ -104,6 +103,7 @@ if ( isset($_POST) && count($_POST) > 0 ) {
     //okay, we've got the new array, we send it to the
     //Object that will store it in the database
     $success = $fc->setFields($res);
+    FieldsCategories::setCategories($_POST['categories']);
     if ( $success === true ) {
         $success_detected[] = _T("Fields configuration has been successfully stored");
     } else {
@@ -118,6 +118,7 @@ $tpl->assign('categorized_fields', $fc->getCategorizedFields());
 $tpl->assign('non_required', $fc->getNonRequired());
 $tpl->assign('current', $current);
 $tpl->assign('require_dialog', true);
+$tpl->assign('require_sorter', true);
 $tpl->assign('success_detected', $success_detected);
 $tpl->assign('error_detected', $error_detected);
 //$tpl->assign('require_sorter', true);

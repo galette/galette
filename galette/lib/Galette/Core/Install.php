@@ -1087,6 +1087,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $ct = new \Galette\Entity\ContributionsTypes();
             $status = new \Galette\Entity\Status();
             include_once '../includes/fields_defs/members_fields.php';
+            include_once '../includes/fields_defs/members_fields_cats.php';
             $fc = new \Galette\Entity\FieldsConfig(
                 \Galette\Entity\Adherent::TABLE,
                 $members_fields,

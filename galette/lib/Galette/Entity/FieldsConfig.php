@@ -59,23 +59,42 @@ class FieldsConfig
     const VISIBLE = 1;
     const ADMIN = 2;
 
+    const TYPE_STR = 0;
+    const TYPE_HIDDEN = 1;
+    const TYPE_BOOL = 2;
+    const TYPE_INT = 3;
+    const TYPE_DEC = 4;
+    const TYPE_DATE = 5;
+    const TYPE_TXT = 6;
+    const TYPE_PASS = 7;
+    const TYPE_EMAIL = 8;
+    const TYPE_URL = 9;
+    const TYPE_RADIO = 10;
+    const TYPE_SELECT = 11;
+
     private $_all_required;
     private $_all_visibles;
     //private $error = array();
     private $_categorized_fields = array();
     private $_table;
     private $_defaults = null;
+    private $_cats_defaults = null;
+
+    private $_form_elements = array();
+    private $_hidden_elements = array();
+
+    private $_staff_fields = array(
+        'activite_adh',
+        'id_statut',
+        'bool_exempt_adh',
+        'date_crea_adh',
+        'info_adh'
+    );
+    private $_admin_fields = array(
+        'bool_admin_adh'
+    );
 
     const TABLE = 'fields_config';
-
-    private $_types = array(
-        'text',
-        'text',
-        'boolean',
-        'integer',
-        'integer',
-        'integer'
-    );
 
     /*
      * Fields that are not visible in the
@@ -97,17 +116,24 @@ class FieldsConfig
         'sexe_adh'
     );
 
+    private $_non_form_elements = array(
+        'date_echeance',
+        'date_modif_adh'
+    );
+
     /**
      * Default constructor
      *
-     * @param string  $table    the table for which to get fields configuration
-     * @param array   $defaults default values
-     * @param boolean $install  Are we calling from installer?
+     * @param string  $table         the table for which to get fields configuration
+     * @param array   $defaults      default values
+     * @param array   $cats_defaults default categories values
+     * @param boolean $install       Are we calling from installer?
      */
-    function __construct($table, $defaults, $install = false)
+    function __construct($table, $defaults, $cats_defaults, $install = false)
     {
         $this->_table = $table;
         $this->_defaults = $defaults;
+        $this->_cats_defaults = $cats_defaults;
         $this->_all_required = array();
         $this->_all_visibles = array();
         //prevent check at install time...
@@ -139,11 +165,12 @@ class FieldsConfig
             $this->_categorized_fields = null;
             foreach ( $results as $k ) {
                 $f = array(
-                    'field_id'  =>  $k->field_id,
-                    'label'     =>  $this->_defaults[$k->field_id]['label'],
-                    'category'  =>  $this->_defaults[$k->field_id]['category'],
-                    'visible'   =>  $k->visible,
-                    'required'  =>  $k->required
+                    'field_id'  => $k->field_id,
+                    'label'     => $this->_defaults[$k->field_id]['label'],
+                    'category'  => $k->id_field_category,
+                    'visible'   => $k->visible,
+                    'required'  => $k->required,
+                    'propname'  => $this->_defaults[$k->field_id]['propname']
                 );
                 $this->_categorized_fields[$k->id_field_category][] = $f;
 
@@ -162,6 +189,30 @@ class FieldsConfig
                 Analog::URGENT
             );
             return false;
+        }
+    }
+
+    /**
+     * Temporary set a field as not required
+     * (password for existing members for example)
+     *
+     * @param string $field Field name
+     *
+     * @return void
+     */
+    public function setNotRequired($field)
+    {
+        if ( isset($this->_all_required[$field]) ) {
+            unset($this->_all_required[$field]);
+        }
+
+        foreach ($this->_categorized_fields as &$cat) {
+            foreach ( $cat as &$f ) {
+                if ( $f['field_id'] === $field ) {
+                    $f['required'] = 0;
+                    return;
+                }
+            }
         }
     }
 
@@ -200,7 +251,7 @@ class FieldsConfig
 
                 if ( $results->count() == 0 ) {
                     //categories are missing, add them
-                    $categories = new FieldsCategories();
+                    $categories = new FieldsCategories($this->_cats_defaults);
                     $categories->installInit($zdb);
                 }
             }
@@ -264,7 +315,7 @@ class FieldsConfig
     {
         try {
             $fields = array_keys($this->_defaults);
-            $categories = new FieldsCategories();
+            $categories = new FieldsCategories($this->_cats_defaults);
 
             //first, we drop all values
             $delete = $zdb->delete(self::TABLE);
@@ -321,6 +372,109 @@ class FieldsConfig
     public function getNonRequired()
     {
         return $this->_non_required;
+    }
+
+    /**
+     * Retrieve form elements
+     *
+     * @param boolean $selfs True if we're called from self subscirption page
+     *
+     * @return array
+     */
+    public function getFormElements($selfs = false)
+    {
+        global $zdb, $log, $login, $members_fields_cats;
+
+        if ( !count($this->_form_elements) > 0 ) {
+            //get columns descriptions
+            $columns = $zdb->getColumns($this->_table);
+
+            $categories = FieldsCategories::getList();
+            try {
+                foreach ( $categories as $c ) {
+                    $cpk = FieldsCategories::PK;
+                    $cat_label = null;
+                    foreach ($members_fields_cats as $conf_cat) {
+                        if ( $conf_cat['id'] == $c->$cpk ) {
+                            $cat_label = $conf_cat['category'];
+                            break;
+                        }
+                    }
+                    if ( $cat_label === null ) {
+                        $cat_label = $c->category;
+                    }
+                    $cat = (object) array(
+                        'id' => $c->$cpk,
+                        'label' => $cat_label,
+                        'elements' => array()
+                    );
+
+                    $elements = $this->_categorized_fields[$c->$cpk];
+                    $cat->elements = array();
+
+                    foreach ( $elements as $elt ) {
+                        $o = (object)$elt;
+
+                        if ( in_array($o->field_id, $this->_non_form_elements)
+                            || $selfs && $this->isSelfExcluded($o->field_id)
+                        ) {
+                            continue;
+                        }
+
+                        if ( !($o->visible == self::ADMIN
+                            && (!$login->isAdmin() && !$login->isStaff()) )
+                        ) {
+                            if ( $o->visible == self::HIDDEN ) {
+                                $o->type = self::TYPE_HIDDEN;
+                            } else if (preg_match('/date/', $o->field_id) ) {
+                                $o->type = self::TYPE_DATE;
+                            } else if (preg_match('/bool/', $o->field_id) ) {
+                                $o->type = self::TYPE_BOOL;
+                            } else if ( $o->field_id == 'titre_adh'
+                                || $o->field_id == 'pref_lang'
+                                || $o->field_id == 'id_statut'
+                            ) {
+                                $o->type = self::TYPE_SELECT;
+                            } else if ( $o->field_id == 'sexe_adh' ) {
+                                $o->type = self::TYPE_RADIO;
+                            } else {
+                                $o->type = self::TYPE_STR;
+                            }
+
+                            //retrieve field informations from DB
+                            foreach ( $columns as $column ) {
+                                if ( $column->getName() === $o->field_id ) {
+                                    $o->max_length 
+                                        = $column->getCharacterMaximumLength();
+                                    $o->default = $column->getColumnDefault();
+                                    $o->datatype = $column->getDataType();
+                                    break;
+                                }
+                            }
+
+                            if ( $o->type === self::TYPE_HIDDEN ) {
+                                $this->_hidden_elements[] = $o;
+                            } else {
+                                $cat->elements[$o->field_id] = $o;
+                            }
+                        }
+                    }
+
+                    if ( count($cat->elements) > 0 ) {
+                        $this->_form_elements[] = $cat;
+                    }
+                }
+            } catch ( Exception $e ) {
+                $log->log(
+                    'An error occured getting form elements',
+                    Analog::ERROR
+                );
+            }
+        }
+        return array(
+            'fieldsets' => $this->_form_elements,
+            'hiddens'   => $this->_hidden_elements
+        );
     }
 
     /**
@@ -585,5 +739,23 @@ class FieldsConfig
                 )
             );
         }
+    }
+
+    /**
+     * Does field should be displayed in self subscription page
+     *
+     * @param string $name Field name
+     *
+     * @return boolean
+     */
+    public function isSelfExcluded($name)
+    {
+        return in_array(
+            $name,
+            array_merge(
+                $this->_staff_fields,
+                $this->_admin_fields
+            )
+        );
     }
 }

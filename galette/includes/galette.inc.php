@@ -359,6 +359,7 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
         include_once GALETTE_ROOT . 'includes/session.inc.php';
         include_once GALETTE_ROOT . 'includes/smarty.inc.php';
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
+        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
         include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
         include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
     } else {

@@ -59,7 +59,12 @@ $member = new Adherent();
 $member->setSelfMembership();
 
 // flagging required fields
-$fc = new FieldsConfig(Adherent::TABLE, $member->fields);
+$fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
+
+// flagging required fields invisible to members
+$fc->setNotRequired('activite_adh');
+$fc->setNotRequired('id_statut');
+
 $required = $fc->getRequired();
 // flagging fields visibility
 $visibles = $fc->getVisibilities();
@@ -80,7 +85,12 @@ $fields = Adherent::getDbFields();
 
 if ( isset($_POST["nom_adh"]) ) {
     // dynamic fields
-    $adherent['dyn'] = $dyn_fields->extractPosted($_POST, $_FILES, $disabled, $member->id);
+    $adherent['dyn'] = $dyn_fields->extractPosted(
+        $_POST,
+        $_FILES,
+        $disabled,
+        $member->id
+    );
     $dyn_fields_errors = $dyn_fields->getErrors();
     if ( count($dyn_fields_errors) > 0 ) {
         $error_detected = array_merge($error_detected, $dyn_fields_errors);
@@ -91,7 +101,7 @@ if ( isset($_POST["nom_adh"]) ) {
         $error_detected = array_merge($error_detected, $valid);
     }
 
-    if ( count($error_detected ) == 0) {
+    if ( count($error_detected) == 0) {
         //all goes well, we can proceed
         $store = $member->store();
         if ( $store === true ) {
@@ -104,11 +114,21 @@ if ( isset($_POST["nom_adh"]) ) {
                     $texts_fields,
                     $preferences,
                     array(
-                        'name_adh'      => custom_html_entity_decode($member->sname),
-                        'firstname_adh' => custom_html_entity_decode($member->surname),
-                        'lastname_adh'  => custom_html_entity_decode($member->name),
-                        'mail_adh'      => custom_html_entity_decode($member->email),
-                        'login_adh'     => custom_html_entity_decode($member->login)
+                        'name_adh'      => custom_html_entity_decode(
+                            $member->sname
+                        ),
+                        'firstname_adh' => custom_html_entity_decode(
+                            $member->surname
+                        ),
+                        'lastname_adh'  => custom_html_entity_decode(
+                            $member->name
+                        ),
+                        'mail_adh'      => custom_html_entity_decode(
+                            $member->email
+                        ),
+                        'login_adh'     => custom_html_entity_decode(
+                            $member->login
+                        )
                     )
                 );
                 $mtxt = $texts->getTexts('newselfadh', $preferences->pref_lang);
@@ -154,12 +174,24 @@ if ( isset($_POST["nom_adh"]) ) {
                     $texts_fields,
                     $preferences,
                     array(
-                        'name_adh'      => custom_html_entity_decode($member->sname),
-                        'firstname_adh' => custom_html_entity_decode($member->surname),
-                        'lastname_adh'  => custom_html_entity_decode($member->name),
-                        'mail_adh'      => custom_html_entity_decode($member->email),
-                        'login_adh'     => custom_html_entity_decode($member->login),
-                        'password_adh'  => custom_html_entity_decode($_POST['mdp_adh'])
+                        'name_adh'      => custom_html_entity_decode(
+                            $member->sname
+                        ),
+                        'firstname_adh' => custom_html_entity_decode(
+                            $member->surname
+                        ),
+                        'lastname_adh'  => custom_html_entity_decode(
+                            $member->name
+                        ),
+                        'mail_adh'      => custom_html_entity_decode(
+                            $member->email
+                        ),
+                        'login_adh'     => custom_html_entity_decode(
+                            $member->login
+                        ),
+                        'password_adh'  => custom_html_entity_decode(
+                            $_POST['mdp_adh']
+                        )
                     )
                 );
                 $mtxt = $texts->getTexts('sub', $member->language);
@@ -267,6 +299,12 @@ if ( isset($head_redirect) ) {
     $tpl->assign('head_redirect', $head_redirect);
 }
 // /self_adh specific
+
+$form_elements = $fc->getFormElements(true);
+
+$tpl->assign('fieldsets', $form_elements['fieldsets']);
+$tpl->assign('hidden_elements', $form_elements['hiddens']);
+
 
 // display page
 $content = $tpl->fetch('member.tpl');

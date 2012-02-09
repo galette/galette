@@ -77,11 +77,28 @@ class Titles
     );
 
     /**
-     * Get the list of all titles
+     * Get the list of all titles as an array
      *
      * @param Db $zdb Database instance
      *
      * @return array
+     */
+    public static function getArrayList($zdb)
+    {
+        $otitles = self::getList($zdb);
+        $titles = array();
+        foreach ( $otitles as $t ) {
+            $titles[$t->id] = $t->short;
+        }
+        return $titles;
+    }
+
+    /**
+     * Get the list of all titles
+     *
+     * @param Db $zdb Database instance
+     *
+     * @return Title[]
      */
     public static function getList($zdb)
     {
