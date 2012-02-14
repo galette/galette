@@ -338,7 +338,7 @@ class Preferences
                 PEAR_LOG_WARNING
             );
             $log->log(
-                'Query was: ' . $countSelect->__toString() . ' ' . $e->__toString(),
+                $e->__toString(),
                 PEAR_LOG_ERR
             );
             return false;
