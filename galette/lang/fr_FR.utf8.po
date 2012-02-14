@@ -1,11 +1,11 @@
 # Header entry was created by Lokalize.
 #
-# , 2012.
+# Alexandrine "Maman" Cwiklinski, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2012-01-27 00:42+0100\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2012-02-07 23:30+0100\n"
+"Last-Translator: Alexandrine \"Maman\" Cwiklinski\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -508,7 +508,7 @@ msgstr "Utiliser l'authentification SMTP&nbsp;?"
 
 #: ../gestion_intitules.php:265
 msgid "- This label is already used!"
-msgstr "- Cet intitulé est déj utilisé&nbsp;!"
+msgstr "- Cet intitulé est déjà utilisé&nbsp;!"
 
 #: ../templates/default/gestion_textes.tpl:24
 msgid "Email Subject"
@@ -633,7 +633,7 @@ msgstr "Informations relatives à Galette&nbsp;:"
 #: ../classes/adherent.class.php:1056
 msgid "- Non-valid Website address! Maybe you've skipped the http:// ?"
 msgstr ""
-"- Adresse web non valide&nbsp;! Peut être avez vous oublié le http://&nbsp;?"
+"- Adresse web non valide&nbsp;! Peut-être avez vous oublié le http://&nbsp;?"
 
 #: ../includes/i18n.inc.php:290
 msgid "Vice-president"
@@ -712,7 +712,7 @@ msgid ""
 "Do you really want to delete this field ?\n"
 " All associated data will be deleted as well."
 msgstr ""
-"Voulez vous vraiment effacer ce champ&nbsp;? \n"
+"Voulez-vous vraiment effacer ce champ&nbsp;? \n"
 " Toutes les données associées seront effacées."
 
 #: ../templates/default/page.tpl:96
@@ -948,7 +948,7 @@ msgstr "(Couleur du bandeau dépendant du statut des membres)"
 #: ../ajouter_contribution.php:132
 msgid "An eror occured checking overlaping fees :("
 msgstr ""
-"Une erreur est survenue lors de la vérification des chevauchemetns de "
+"Une erreur est survenue lors de la vérification des chevauchements de "
 "cotisations :("
 
 #: ../templates/default/voir_adherent.tpl:15
@@ -974,7 +974,7 @@ msgid ""
 "Select an existing contribution in the database, and attach it to the "
 "current transaction"
 msgstr ""
-"Sélectionner une contribution existante et l'attacher à al transaction "
+"Sélectionner une contribution existante et l'attacher à la transaction "
 "courante"
 
 #: ../templates/default/gestion_mailings.tpl:25
@@ -1293,7 +1293,7 @@ msgstr "Logo actuel pour l'impression"
 #: ../traduire_libelles.php:78
 msgid "An error occured saving label `%label` for language `%lang`"
 msgstr ""
-"Une erreur est survenue lors de l'enreistrement de l'étiquette « %label » "
+"Une erreur est survenue lors de l'enregistrement de l'étiquette « %label » "
 "pour la langue « %lang »"
 
 #: ../plugins.php:95 ../templates/default/desktop.tpl:15
@@ -1331,7 +1331,7 @@ msgstr ""
 
 #: ../classes/adherent.class.php:1197
 msgid "Fail to add new member."
-msgstr "Échec de l'ajout d'un nouvel ahdérent."
+msgstr "Échec de l'ajout d'un nouvel adhérent."
 
 #: ../templates/default/mailing_adherents.tpl:79
 msgid "Modifiy mailing"
@@ -1555,7 +1555,7 @@ msgstr "S'inscrire"
 
 #: ../templates/default/page.tpl:103
 msgid "Export some datas in various formats"
-msgstr "Exportes des données dans divers formats"
+msgstr "Exporte des données dans divers formats"
 
 #: ../templates/default/preferences.tpl:334
 msgid "Allow members to print card ?"
@@ -2260,7 +2260,7 @@ msgstr "Mlle."
 
 #: ../install/index.php:1056
 msgid "Check above errors to know what went wrong."
-msgstr "Consultez les erreurs ci-dessous pour avoir ce qui n'a pas été."
+msgstr "Consultez les erreurs ci-dessous pour savoir ce qui n'a pas été."
 
 #: ../classes/pdf.class.php:174
 msgid "Not a GIF file "
@@ -2307,7 +2307,7 @@ msgstr "Les droits d'accès à la base sont corrects."
 
 #: ../templates/default/gestion_transactions.tpl:95
 msgid "Do you really want to delete this transaction of the database ?"
-msgstr "Voulez vous vraiment effacer cette transaction&nbsp;?"
+msgstr "Voulez-vous vraiment effacer cette transaction&nbsp;?"
 
 #: ../classes/adherent.class.php:1084
 msgid "- This username is already used by another member!"
@@ -2995,7 +2995,7 @@ msgstr "Quelques détails à propos de votre liste d'émargement..."
 
 #: ../classes/members.class.php:300
 msgid "Delete members cards, transactions and dues"
-msgstr "Suppression des fiche adhérent, transactions et cotisations"
+msgstr "Suppression des fiches adhérent, transactions et cotisations"
 
 #: ../templates/default/preferences.tpl:97
 msgid "Galette's parameters"
@@ -3297,7 +3297,7 @@ msgstr "Taille"
 
 #: ../install/index.php:1008
 msgid "Default fields categories cannot be initialized."
-msgstr "Les catégories de champs par défaut n'ont pas été initialisés."
+msgstr "Les catégories de champs par défaut n'ont pas été initialisées."
 
 #: ../classes/pdf.class.php:91 ../classes/pdf.class.php:211
 msgid "Association %s"
@@ -3569,7 +3569,7 @@ msgstr "Port&nbsp;:"
 
 #: ../classes/members.class.php:269
 msgid "Member Picture deleted"
-msgstr "Phot de l'adhérent supprimée"
+msgstr "Photo de l'adhérent supprimée"
 
 #: ../templates/default/preferences.tpl:5
 #: ../templates/default/preferences.tpl:73
@@ -4364,7 +4364,7 @@ msgid ""
 "A mailing exists in the current session. Click here if you want to resume or "
 "cancel it."
 msgstr ""
-"Un E-Mailing existe dans la session courante. Clquez ici si vous souhaitez "
+"Un E-Mailing existe dans la session courante. Cliquez ici si vous souhaitez "
 "le reprendre ou l'annuler."
 
 #: ../install/index.php:987

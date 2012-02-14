@@ -193,7 +193,7 @@
 					<p>
 						<label for="mdp_adh" class="bline libelle">{_T string="Password:"}</label>
 						<input type="hidden" name="mdp_crypt" value="{$spam_pass}" />
-						<img src="{$spam_img}" alt="{_T string="Passworg image"}" />
+						<img src="{$spam_img}" alt="{_T string="Password image"}" />
 						<input type="text" name="mdp_adh" id="mdp_adh" value="" maxlength="20" {$disabled.mdp_adh}{if $required.mdp_adh eq 1} required{/if}/>
 						<span class="exemple">{_T string="Please repeat in the field the password shown in the image."}</span>
 					</p>

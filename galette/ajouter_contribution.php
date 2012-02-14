@@ -129,7 +129,7 @@ if ( isset($_POST['valid']) ) {
             $overlap = $contrib->checkOverlap();
             if ( $overlap !== true ) {
                 if ( $overlap === false ) {
-                    $error_detected[] = _T("An eror occured checking overlaping fees :(");
+                    $error_detected[] = _T("An error occured checking overlaping fees :(");
                 } else {
                     //method directly return erro message
                     $error_detected[] = $overlap;
