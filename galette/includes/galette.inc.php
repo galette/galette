@@ -62,7 +62,7 @@ require_once $base_path . 'config/paths.inc.php';
 //we start a php session
 session_start();
 
-define('GALETTE_VERSION', 'v0.7dev');
+define('GALETTE_VERSION', 'v0.7beta');
 define('GALETTE_DB_VERSION', '0.700');
 define('GALETTE_MODE', 'PROD'); //DEV or PROD
 define('GALETTE_TWITTER', 'galette_soft');

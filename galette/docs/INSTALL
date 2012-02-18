@@ -1,38 +1,15 @@
 Dependencies
 ------------
 
-[english]
-  Required:     - PHP Capable web server:
-                  Apache is fine
-		  Galette was tested on Apache 2.2
-                - PHP (At least 4.1, > 5 recomended)
-		  Galette was tested on PHP 5.3.1
-	        - Database (MySQL or PostgreSQL)
-		  Galette was tested on MySQL 5.1.41 and PostgresSQL
-		  8.3.8
-
-  Recommended : - GD extension for PHP (built in PHP or as a module)
-                  (needed for picture resizing)
-                - gettext support in PHP. This is disabled by default
-                  on Galette, but you'll symply have to set $disable_gettext
-                  to false in the includes/i18n.inc.php file
-
-[french]
-  Requis :	- Serveur web supportant PHP :
-  		  Apache est une bonne option
-		  Galette a été testé sur Apache 2.2
-		- PHP (Au moins la version 4.1, > 5 recommandée)
-		  Galette a été testé avec PHP 5.3.1
-		- Base de données (MySQL ou PostgreSQL)
-		  Galette a été testé sur MySQL 5.1.41 et PostgresSQL
-		  8.3.8
-
-  Recommandé :  - Extension GD pour PHP (intégré à PHP ou en module)
-                  (Nécessaire pour la réduction des photos)
-                - Le support gettext dans PHP. Cette fonctionnalité est
-                  désactivée par dafaut dans Galette, mais vous pouvez
-                  l'activer simplement en passant à false $disable_gettext
-                  dans le fichier includes/i18n.inc.php
+- Apache 2 Webserver,
+- PHP 5.3 minimum (also tested on php 5.4);,
+- MySQL 5 or Postgresl (tested on Mysql 5.5.20 and postgresql 9.2.1),
+  and its php driver,
+- php gd extension,
+- php curl extension,
+- SSL supported enabled,
+- php tidy extension (optionnal, but recommended),
+- php gettext extension (optionnal).
 
 Installation :
 _____________

@@ -1,7 +1,46 @@
 Changes
 -------
+0.64 -> 0.7.0 (2012-02-21)
 
-0.63.3 -> 0.64 (2011-??-??)
+Changes and additions
+^^^^^^^^^^^^^^^^^^^^^
+
+- full redisgn
+- interface written with HTML5 / CSS3
+- new history managment
+- mailings history and managment
+- groups managment
+- add a dashboard (which displays latests news from the project
+- public pages (members list en trombinoscope)
+- handle plugins (see available plugins at http://galette.tuxfamily.org/documentation/fr/plugins/index.html#plugins)
+- CSV export of selected tables and/or parameted requests (https://mail.gna.org/public/galette-devel/2009-02/msg00006.html)
+- required fields managment for members add/edition
+- multinlingual managment for subjects and messages automatically send from Galette (subscription, password lots, ...)
+- members statuses managment
+- contributions types managment
+- rewrite of transactions managment
+- rewrite maling interface
+- JQuery UI integration to enhance user experience (menus, tabs, date/color pickers, ...)
+- print membership cards
+- ...
+
+Removals
+^^^^^^^^
+
+- no longer IE6 and IE7 support
+- remove spanish translation (no longer maintained :'()
+
+Under the hood
+^^^^^^^^^^^^^^
+
+- PHP 5.3 and more recent support
+- code mainly rewritten OOP
+- use of PEAR::LOG
+- use of Zend_Db to manage database access instead of AdoDB
+- phpMailer for emails sending (https, gmail, etc. support)
+- make database relationnal
+
+0.63.3 -> 0.64rc2 (2010-02-22)
 - Handle 'stripos' missing function to keep 0.63.x php4 compliant
 - Upgrade Adodb to 4992
 - Upgrade to Smarty 2.6.22, and replace old hack for translations with more elegant plugin
