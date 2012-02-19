@@ -998,20 +998,26 @@ class Adherent
                     // dates
                     case 'date_crea_adh':
                     case 'ddn_adh':
-                        /** FIXME: only ok dates dd/mm/yyyy */
-                        if ( !preg_match(
-                            '@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@',
-                            $value,
-                            $date
-                        ) ) {
-                            $errors[] = _T("- Wrong date format (dd/mm/yyyy)!");
-                        } else {
-                            if ( !checkdate($date[2], $date[1], $date[3]) ) {
-                                $errors[] = _T("- Non valid date!");
-                            } else {
-                                $this->$prop = $date[3] . '-' . $date[2] . '-' .
-                                    $date[1];
-                            }
+                        try {
+                            $d = new DateTime($value);
+                            $this->$prop = $d->format(_T("Y-m-d"));
+                        } catch (Exception $e) {
+                            $log->log(
+                                'Wrong date format. field: ' . $key .
+                                ', value: ' . $value . ' | ' . $e->getMessage(),
+                                PEAR_LOG_INFO
+                            );
+                            $errors[] = str_replace(
+                                array(
+                                    '%date_format',
+                                    '%field'
+                                ),
+                                array(
+                                    _T("Y-m-d"),
+                                    $this->_fields[$key]['label']
+                                ),
+                                _T("- Wrong date format (%date_format) for %field!")
+                            );
                         }
                         break;
                     case 'email_adh':
