@@ -40,7 +40,7 @@ Under the hood
 - phpMailer for emails sending (https, gmail, etc. support)
 - make database relationnal
 
-0.63.3 -> 0.64rc2 (2010-02-22)
+0.63.3 -> 0.64rc1 (2010-02-22)
 - Handle 'stripos' missing function to keep 0.63.x php4 compliant
 - Upgrade Adodb to 4992
 - Upgrade to Smarty 2.6.22, and replace old hack for translations with more elegant plugin
