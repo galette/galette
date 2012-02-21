@@ -101,20 +101,30 @@ class GaletteNews
      */
     private function _checkCache()
     {
+        global $log;
+
         $cfile = $this->_getCacheFilename();
         if (file_exists($cfile) ) {
-            $dformat = 'Y-m-d H:i:s';
-            $mdate = DateTime::createFromFormat(
-                $dformat,
-                date(
+            try {
+                $dformat = 'Y-m-d H:i:s';
+                $mdate = DateTime::createFromFormat(
                     $dformat,
-                    filemtime($cfile)
-                )
-            );
-            $expire = $mdate->add(new DateInterval('PT' . $this->_cache_timeout . 'H'));
-            $now = new DateTime();
-            $has_expired = $now > $expire;
-            return !$has_expired;
+                    date(
+                        $dformat,
+                        filemtime($cfile)
+                    )
+                );
+                $expire = $mdate->add(new DateInterval('PT' . $this->_cache_timeout . 'H'));
+                $now = new DateTime();
+                $has_expired = $now > $expire;
+                return !$has_expired;
+            } catch ( Exception $e ) {
+                $log->log(
+                    'Unable chack cache expiracy. Are you sure you have ' .
+                    'properly configured PHP timezone settings on your server?',
+                    PEAR_LOG_WARNING
+                );
+            }
         } else {
             return false;
         }
