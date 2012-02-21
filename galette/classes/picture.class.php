@@ -578,7 +578,7 @@ class Picture
             switch($ext) {
             case 'jpg':
                 $image = ImageCreateFromJpeg($source);
-                imagecopyresized(
+                imagecopyresampled(
                     $thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height
                 );
                 imagejpeg($thumb, $dest);
@@ -591,14 +591,14 @@ class Picture
                 imagealphablending($image, false);
                 imagesavealpha($thumb, true);
                 imagesavealpha($image, true);
-                imagecopyresized(
+                imagecopyresampled(
                     $thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height
                 );
                 imagepng($thumb, $dest);
                 break;
             case 'gif':
                 $image = ImageCreateFromGif($source);
-                imagecopyresized(
+                imagecopyresampled(
                     $thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height
                 );
                 imagegif($thumb, $dest);
