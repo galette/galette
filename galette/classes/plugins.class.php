@@ -391,11 +391,15 @@ class Plugins
     public function getMenus()
     {
         global $tpl, $preferences;
+        $modules = $this->getModules();
         foreach ( array_keys($this->getModules()) as $r ) {
             $menu_path = $this->getTemplatesPath($r) . '/menu.tpl';
             if ( $tpl->template_exists($menu_path) ) {
+                $name2path = strtolower(
+                    str_replace(' ', '_', $modules[$r]['name'])
+                );
                 $tpl->assign(
-                    'galette_' . strtolower($r) . '_path',
+                    'galette_' . $name2path . '_path',
                     'plugins/' . $r . '/'
                 );
                 $tpl->display($menu_path);
