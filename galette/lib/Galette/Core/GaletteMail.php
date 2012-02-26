@@ -35,6 +35,8 @@
  * @since     Available since 0.7dev - 2009-12-10
  */
 
+namespace Galette\Core;
+
 /** @ignore */
 require_once 'class.phpmailer.php';
 
@@ -81,7 +83,7 @@ class GaletteMail
     {
         global $preferences, $log, $i18n;
 
-        $this->_mail = new PHPMailer();
+        $this->_mail = new \PHPMailer();
 
         switch ( $preferences->pref_mail_method ) {
         case self::METHOD_SMTP:
@@ -310,7 +312,7 @@ class GaletteMail
     public static function isValidEmail( $address )
     {
         global $log;
-        $valid = PHPMailer::ValidateAddress($address);
+        $valid = \PHPMailer::ValidateAddress($address);
         if ( !$valid ) {
             $log->log(
                 '[GaletteMail] Adresss `' . $address . '` is not valid ',

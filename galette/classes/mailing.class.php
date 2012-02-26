@@ -50,7 +50,7 @@ require_once 'members.class.php';
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-07
  */
-class Mailing extends GaletteMail
+class Mailing extends Galette\Core\GaletteMail
 {
     const STEP_START = 0;
     const STEP_PREVIEW = 1;

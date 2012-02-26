@@ -82,7 +82,7 @@ if ( isset($_POST["nom_adh"]) ) {
         if ( $store === true ) {
             //member has been stored :)
             //Send email to admin if preference checked
-            if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+            if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED
                 && $preferences->pref_bool_mailadh
             ) {
                 $texts = new Texts(
@@ -94,7 +94,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 );
                 $mtxt = $texts->getTexts('newselfadh', $preferences->pref_lang);
 
-                $mail = new GaletteMail();
+                $mail = new Galette\Core\GaletteMail();
                 $mail->setSubject($texts->getSubject());
                 $mail->setRecipients(
                     array(
@@ -104,7 +104,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 $mail->setMessage($texts->getBody());
                 $sent = $mail->send();
 
-                if ( $sent == GaletteMail::MAIL_SENT ) {
+                if ( $sent == Galette\Core\GaletteMail::MAIL_SENT ) {
                     $hist->add(
                         str_replace(
                             '%s',
@@ -126,7 +126,7 @@ if ( isset($_POST["nom_adh"]) ) {
             }
 
             // send mail to member
-            if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+            if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED
                 && $member->email != ''
             ) {
                 //send mail to member
@@ -141,7 +141,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 );
                 $mtxt = $texts->getTexts('sub', $preferences->pref_lang);
 
-                $mail = new GaletteMail();
+                $mail = new Galette\Core\GaletteMail();
                 $mail->setSubject($texts->getSubject());
                 $mail->setRecipients(
                     array(
@@ -151,7 +151,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 $mail->setMessage($texts->getBody());
                 $sent = $mail->send();
 
-                if ( $sent == GaletteMail::MAIL_SENT ) {
+                if ( $sent == Galette\Core\GaletteMail::MAIL_SENT ) {
                     $hist->add(
                         str_replace(
                             '%s',

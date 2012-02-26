@@ -33,7 +33,7 @@
         {if $preferences->pref_bool_selfsubscribe eq true}
             <a id="subscribe" class="button{if $PAGENAME eq "self_adherent.php"} selected{/if}" href="{$galette_base_path}self_adherent.php">{_T string="Subscribe"}</a>
         {/if}
-        {if $pref_mail_method neq constant('GaletteMail::METHOD_DISABLED')}
+        {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
             <a id="lostpassword" class="button{if $PAGENAME eq "lostpasswd.php"} selected{/if}" href="{$galette_base_path}lostpasswd.php">{_T string="Lost your password?"}</a>
         {/if}
     {/if}

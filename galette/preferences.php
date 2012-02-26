@@ -120,7 +120,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                         PEAR_LOG_WARNING
                     );
                 } else {
-                    if ( !GaletteMail::isValidEmail($value) ) {
+                    if ( !Galette\Core\GaletteMail::isValidEmail($value) ) {
                         $error_detected[] = _T("- Non-valid E-Mail address!");
                     }
                 }
@@ -221,7 +221,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
 
     // missing relations
     if ( GALETTE_MODE !== 'DEMO' && isset($insert_values['pref_mail_method']) ) {
-        if ( $insert_values['pref_mail_method'] > GaletteMail::METHOD_DISABLED ) {
+        if ( $insert_values['pref_mail_method'] > Galette\Core\GaletteMail::METHOD_DISABLED ) {
             if ( !isset($insert_values['pref_email_nom'])
                 || $insert_values['pref_email_nom'] == ''
             ) {
@@ -232,15 +232,15 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             ) {
                 $error_detected[] = _T("- You must indicate an email address Galette should use to send emails!");
             }
-            if ( $insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP ) {
+            if ( $insert_values['pref_mail_method'] == Galette\Core\GaletteMail::METHOD_SMTP ) {
                 if ( !isset($insert_values['pref_mail_smtp_host'])
                     || $insert_values['pref_mail_smtp_host'] == ''
                 ) {
                     $error_detected[] = _T("- You must indicate the SMTP server you want to use!");
                 }
             }
-            if ( $insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
-                || ( $insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP
+            if ( $insert_values['pref_mail_method'] == Galette\Core\GaletteMail::METHOD_GMAIL
+                || ( $insert_values['pref_mail_method'] == Galette\Core\GaletteMail::METHOD_SMTP
                 && $insert_values['pref_mail_smtp_auth'] )
             ) {
                 if ( !isset($insert_values['pref_mail_smtp_user'])

@@ -190,23 +190,23 @@
 					<span class="bline"{if $required.pref_mail_method eq 1} required{/if}>{_T string="Emailing method:"}</span>
 					<ul>
 						<li>
-							<input type="radio" name="pref_mail_method" id="no" value="{php}echo GaletteMail::METHOD_DISABLED;{/php}" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_DISABLED')}checked="checked"{/if}/><label for="no">{_T string="Emailing disabled"}</label>
+							<input type="radio" name="pref_mail_method" id="no" value="{php}echo Galette\Core\GaletteMail::METHOD_DISABLED;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}checked="checked"{/if}/><label for="no">{_T string="Emailing disabled"}</label>
 						</li>
 						<li>
-							<input type="radio" name="pref_mail_method" id="php" value="{php}echo GaletteMail::METHOD_SENDMAIL;{/php}" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_SENDMAIL')}checked="checked"{/if}/><label for="php">{_T string="PHP mail() function"}</label>
+							<input type="radio" name="pref_mail_method" id="php" value="{php}echo Galette\Core\GaletteMail::METHOD_SENDMAIL;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_SENDMAIL')}checked="checked"{/if}/><label for="php">{_T string="PHP mail() function"}</label>
 						</li>
 						<li>
-							<input type="radio" name="pref_mail_method" id="smtp" value="{php}echo GaletteMail::METHOD_SMTP;{/php}" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_SMTP')}checked="checked"{/if}/><label for="smtp">{_T string="Using a SMTP server (slower)"}</label>
+							<input type="radio" name="pref_mail_method" id="smtp" value="{php}echo Galette\Core\GaletteMail::METHOD_SMTP;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_SMTP')}checked="checked"{/if}/><label for="smtp">{_T string="Using a SMTP server (slower)"}</label>
 						</li>
 						<li>
-							<input type="radio" name="pref_mail_method" id="gmail" value="{php}echo GaletteMail::METHOD_GMAIL;{/php}" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_GMAIL')}checked="checked"{/if}/><label for="gmail">{_T string="Using GMAIL as SMTP server (slower)"}</label>
+							<input type="radio" name="pref_mail_method" id="gmail" value="{php}echo Galette\Core\GaletteMail::METHOD_GMAIL;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_GMAIL')}checked="checked"{/if}/><label for="gmail">{_T string="Using GMAIL as SMTP server (slower)"}</label>
 						</li>
 						<li>
-							<input type="radio" name="pref_mail_method" id="qmail" value="{php}echo GaletteMail::METHOD_QMAIL;{/php}" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_QMAIL')}checked="checked"{/if}/><label for="qmail">{_T string="Using QMAIL server"}</label>
+							<input type="radio" name="pref_mail_method" id="qmail" value="{php}echo Galette\Core\GaletteMail::METHOD_QMAIL;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_QMAIL')}checked="checked"{/if}/><label for="qmail">{_T string="Using QMAIL server"}</label>
 						</li>
 					</ul>
 				</div>
-				<div id="smtp_parameters"{if $pref.pref_mail_method neq constant('GaletteMail::METHOD_SMTP')} style="display: none;"{/if}>
+				<div id="smtp_parameters"{if $pref.pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_SMTP')} style="display: none;"{/if}>
 					<p>
 						<label for="pref_mail_smtp_host" class="bline">{_T string="SMTP server:"}</label>
 						<input type="text" name="pref_mail_smtp_host" id="pref_mail_smtp_host" value="{$pref.pref_mail_smtp_host}" maxlength="100" size="30"/{if $required.pref_mail_smtp_host eq 1} required{/if}>
@@ -226,7 +226,7 @@
 						<input type="checkbox" name="pref_mail_smtp_secure" id="pref_mail_smtp_secure" value="1" {if $pref.pref_mail_smtp_secure eq 1}checked="checked"{/if}{if $required.pref_mail_smtp_secure eq 1} required{/if}/>
 					</p>
 				</div>
-				<div id="smtp_auth"{if $pref.pref_mail_method neq constant('GaletteMail::METHOD_SMTP') && $pref.pref_mail_method neq constant('GaletteMail::METHOD_GMAIL')} style="display: none;"{/if}>
+				<div id="smtp_auth"{if $pref.pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_SMTP') && $pref.pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_GMAIL')} style="display: none;"{/if}>
 					<p>
 						<label for="pref_mail_smtp_user" class="bline">{_T string="SMTP (or GMail) user:"}</label>
 						<input type="text" name="pref_mail_smtp_user" id="pref_mail_smtp_user" value="{$pref.pref_mail_smtp_user}" maxlength="100" size="30"{if $required.pref_mail_smtp_user eq 1} required{/if}/>

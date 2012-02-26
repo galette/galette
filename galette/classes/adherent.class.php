@@ -527,7 +527,7 @@ class Adherent
         try {
             $select = new Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . self::TABLE);
-            if ( GaletteMail::isValidEmail($login) ) {
+            if ( Galette\Core\GaletteMail::isValidEmail($login) ) {
                 //we got a valid email adress, use it
                 $select->where('email_adh = ?', $login);
             } else {
@@ -1031,7 +1031,7 @@ class Adherent
                         break;
                     case 'email_adh':
                     case 'msn_adh':
-                        if ( !GaletteMail::isValidEmail($value) ) {
+                        if ( !Galette\Core\GaletteMail::isValidEmail($value) ) {
                             $errors[] = _T("- Non-valid E-Mail address!") .
                                 ' (' . $this->getFieldName($key) . ')';
                         }

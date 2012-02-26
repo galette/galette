@@ -170,7 +170,7 @@ if ( isset($_POST['valid']) ) {
         $adh = new Adherent();
         $adh->load($contrib->member);
 
-        if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED ) {
+        if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED ) {
             $texts = new Texts(
                 array(
                     'name_adh'      => custom_html_entity_decode($adh->sname),
@@ -181,10 +181,10 @@ if ( isset($_POST['valid']) ) {
                 )
             );
             if ( $new && isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1' ) {
-                if ( GaletteMail::isValidEmail($adh->email) ) {
+                if ( Galette\Core\GaletteMail::isValidEmail($adh->email) ) {
                     $mtxt = $texts->getTexts('contrib', $adh->language);
 
-                    $mail = new GaletteMail();
+                    $mail = new Galette\Core\GaletteMail();
                     $mail->setSubject($texts->getSubject());
                     $mail->setRecipients(
                         array(
@@ -228,7 +228,7 @@ if ( isset($_POST['valid']) ) {
                 // Get email text in database
                 $mtxt = $texts->getTexts('newcont', $preferences->pref_lang);
 
-                $mail = new GaletteMail();
+                $mail = new Galette\Core\GaletteMail();
                 $mail->setSubject($texts->getSubject());
                 /** TODO: only super-admin is contacted here. We should send a message to all admins, or propose them a chekbox if they don't want to get bored */
                 $mail->setRecipients(

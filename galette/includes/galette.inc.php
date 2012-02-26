@@ -255,7 +255,6 @@ if ( !$installer ) { //If we're not working from installer
         * Now that all objects are correctly setted,
         * we can include files that need it
         */
-        require_once WEB_ROOT . 'classes/galette_mail.class.php';
         require_once WEB_ROOT . 'includes/session.inc.php';
         require_once WEB_ROOT . 'includes/smarty.inc.php';
     } else {

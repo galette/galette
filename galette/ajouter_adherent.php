@@ -46,7 +46,6 @@ if ( !$login->isLogged() ) {
 
 require_once 'classes/adherent.class.php';
 require_once 'classes/status.class.php';
-require_once 'classes/galette_mail.class.php';
 require_once 'includes/dynamic_fields.inc.php';
 require_once 'classes/texts.class.php';
 
@@ -68,7 +67,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
         $disabled = $member->adm_edit_disabled_fields + $member->staff_edit_disabled_fields;
     }
 
-    if ( $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED ) {
+    if ( $preferences->pref_mail_method == Galette\Core\GaletteMail::METHOD_DISABLED ) {
         $disabled['send_mail'] = 'disabled="disabled"';
     }
 } else {
@@ -116,7 +115,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
             if ( $new ) {
                 $success_detected[] = _T("New member has been successfully added.");
                 //Send email to admin if preference checked
-                if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+                if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED
                     && $preferences->pref_bool_mailadh
                 ) {
                     $texts = new Texts(
@@ -128,7 +127,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     );
                     $mtxt = $texts->getTexts('newadh', $preferences->pref_lang);
 
-                    $mail = new GaletteMail();
+                    $mail = new Galette\Core\GaletteMail();
                     $mail->setSubject($texts->getSubject());
                     $mail->setRecipients(
                         array(
@@ -138,7 +137,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     $mail->setMessage($texts->getBody());
                     $sent = $mail->send();
 
-                    if ( $sent == GaletteMail::MAIL_SENT ) {
+                    if ( $sent == Galette\Core\GaletteMail::MAIL_SENT ) {
                         $hist->add(
                             str_replace(
                                 '%s',
@@ -163,7 +162,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
 
             // send mail to member
             if ( isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1' ) {
-                if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED ) {
+                if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED ) {
                     if ( $member->email == '' ) {
                         $error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
                     } else {
@@ -182,7 +181,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                             $preferences->pref_lang
                         );
 
-                        $mail = new GaletteMail();
+                        $mail = new Galette\Core\GaletteMail();
                         $mail->setSubject($texts->getSubject());
                         $mail->setRecipients(
                             array(
@@ -192,7 +191,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                         $mail->setMessage($texts->getBody());
                         $sent = $mail->send();
 
-                        if ( $sent == GaletteMail::MAIL_SENT ) {
+                        if ( $sent == Galette\Core\GaletteMail::MAIL_SENT ) {
                             $msg = str_replace(
                                 '%s',
                                 $member->sname . ' (' . $member->email . ')',
@@ -212,7 +211,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                             $error_detected[] = $str;
                         }
                     }
-                } else if ( $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
+                } else if ( $preferences->pref_mail_method == Galette\Core\GaletteMail::METHOD_DISABLED) {
                     //if mail has been disabled in the preferences, we should not be here ; we do not throw an error, just a simple warning that will be show later
                     $msg = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
                     $warning_detected[] = $msg;
