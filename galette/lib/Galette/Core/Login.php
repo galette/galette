@@ -35,14 +35,13 @@
  * @since     Available since 0.7dev - 2007-07-06
  */
 
-/** @ignore */
-require_once 'authentication.class.php';
+namespace Galette\Core;
 
 /**
  * Default authentication class for galette
  *
  * @category  Authentication
- * @name      GaletteLogin
+ * @name      Login
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2007-2012 The Galette Team
@@ -50,7 +49,7 @@ require_once 'authentication.class.php';
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-06
  */
-class GaletteLogin extends Authentication
+class Login extends Authentication
 {
     const TABLE = 'adherents';
     const PK = 'login_adh';
@@ -78,7 +77,7 @@ class GaletteLogin extends Authentication
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(
                 array('a' => PREFIX_DB . self::TABLE),
                 array(
@@ -183,7 +182,7 @@ class GaletteLogin extends Authentication
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . self::TABLE)
                 ->where(self::PK . ' = ?', $user);
             $result = $select->query()->fetchAll();

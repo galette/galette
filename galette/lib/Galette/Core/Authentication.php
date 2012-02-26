@@ -35,6 +35,8 @@
  * @since     Available since 0.7dev - 2009-02-28
  */
 
+namespace Galette\Core;
+
 /**
  * Abstract authentication class for galette
  *

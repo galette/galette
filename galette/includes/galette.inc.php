@@ -211,13 +211,12 @@ if ( !$installer ) { //If we're not working from installer
         /**
         * Authentication
         */
-        require_once WEB_ROOT . 'classes/galette-login.class.php';
         if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login']) ) {
             $login = unserialize(
                 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login']
             );
         } else {
-            $login = new GaletteLogin();
+            $login = new Galette\Core\Login();
         }
 
         /**
