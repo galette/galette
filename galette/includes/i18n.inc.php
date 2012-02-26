@@ -280,7 +280,7 @@ if ( !function_exists('_T') ) {
                     $trans = $chaine . ' (not translated)';
                 }
             }
-            return (I18n::seemsUtf8($trans)  ? $trans : utf8_encode($trans));
+            return (Galette\Core\I18n::seemsUtf8($trans)  ? $trans : utf8_encode($trans));
         } else {
             return _($chaine);
         }

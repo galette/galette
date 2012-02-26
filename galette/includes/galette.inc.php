@@ -155,12 +155,10 @@ if ( $installer || !defined('PREFIX_DB') || !defined('NAME_DB') ) {
 /**
 * Language instantiation
 */
-require_once WEB_ROOT . 'classes/i18n.class.php';
-
 if ( isset($_SESSION['galette'][$session_name]['lang']) ) {
     $i18n = unserialize($_SESSION['galette'][$session_name]['lang']);
 } else {
-    $i18n = new I18n();
+    $i18n = new Galette\Core\I18n();
 }
 
 if ( isset($_POST['pref_lang'])

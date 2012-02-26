@@ -36,7 +36,6 @@
  */
 
 /** @ignore */
-require_once 'i18n.class.php';
 require_once 'galette_mail.class.php';
 
 /**
@@ -89,7 +88,7 @@ class Preferences
         'pref_pays'        =>    '',
         'pref_postal_adress'  => self::POSTAL_ADRESS_FROM_PREFS,
         'pref_postal_staff_member' => '',
-        'pref_lang'        =>    I18n::DEFAULT_LANG,
+        'pref_lang'        =>    Galette\Core\I18n::DEFAULT_LANG,
         'pref_numrows'        =>    30,
         'pref_log'        =>    2,
         /* Preferences for mails */

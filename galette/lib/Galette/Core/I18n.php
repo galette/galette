@@ -35,6 +35,8 @@
  * @since     Available since 0.7dev - 2007-07-06
  */
 
+namespace Galette\Core;
+
 /**
  * i18n handling
  *
