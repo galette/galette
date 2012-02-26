@@ -34,13 +34,13 @@
  * @since     Available since 0.7dev - 2011-07-27
  */
 
-require_once 'i18n.class.php';
+namespace Galette\Core;
 
 /**
  * Zend_Db wrapper
  *
  * @category  Classes
- * @name      GaletteZendDb
+ * @name      Db
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2011-2012 The Galette Team
@@ -48,7 +48,7 @@ require_once 'i18n.class.php';
  * @link      http://framework.zend.com/apidoc/core/_Db.html#\Zend_Db
  * @since     Available since 0.7dev - 2011-07-27
  */
-class GaletteZendDb extends Zend_Db
+class Db extends \Zend_Db
 {
     private $_persistent;
     private $_dsn_array;
@@ -77,7 +77,7 @@ class GaletteZendDb extends Zend_Db
                 throw new Exception;
             }
 
-            $this->_db = Zend_Db::factory(
+            $this->_db = \Zend_Db::factory(
                 $_type,
                 array(
                     'host'     => HOST_DB,
@@ -88,12 +88,12 @@ class GaletteZendDb extends Zend_Db
                 )
             );
             $this->_db->getConnection();
-            $this->_db->setFetchMode(Zend_Db::FETCH_OBJ);
+            $this->_db->setFetchMode(\Zend_Db::FETCH_OBJ);
             $log->log(
                 '[ZendDb] Database connection was successfull!',
                 PEAR_LOG_DEBUG
             );
-        } catch (Zend_Db_Adapter_Exception $e) {
+        } catch (\Zend_Db_Adapter_Exception $e) {
             // perhaps a failed login credential, or perhaps the RDBMS is not running
             $ce = $e->getChainedException();
             $log->log(
@@ -130,7 +130,7 @@ class GaletteZendDb extends Zend_Db
     {
         global $log;
         try {
-            $select = new Zend_Db_Select($this->db);
+            $select = new \Zend_Db_Select($this->db);
             $select->from(
                 PREFIX_DB . 'database',
                 array('version')
@@ -220,7 +220,7 @@ class GaletteZendDb extends Zend_Db
                 throw new Exception;
             }
 
-            $_db = Zend_Db::factory(
+            $_db = \Zend_Db::factory(
                 $_type,
                 array(
                     'host'     => $host,
@@ -231,14 +231,14 @@ class GaletteZendDb extends Zend_Db
                 )
             );
             $_db->getConnection();
-            $_db->setFetchMode(Zend_Db::FETCH_OBJ);
+            $_db->setFetchMode(\Zend_Db::FETCH_OBJ);
             $_db->closeConnection();
             $log->log(
                 '[' . __METHOD__ . '] Database connection was successfull!',
                 PEAR_LOG_DEBUG
             );
             return true;
-        } catch (Zend_Db_Adapter_Exception $e) {
+        } catch (\Zend_Db_Adapter_Exception $e) {
             // perhaps a failed login credential, or perhaps the RDBMS is not running
             $ce = $e->getChainedException();
             $log->log(
@@ -393,7 +393,7 @@ class GaletteZendDb extends Zend_Db
 
                 //can Galette SELECT records ?
                 try {
-                    $select = new Zend_Db_Select($this->_db);
+                    $select = new \Zend_Db_Select($this->_db);
                     $select->from('galette_test')
                         ->where('test_id = ?', 1);
                     $res = $select->query()->fetchAll();
@@ -545,7 +545,7 @@ class GaletteZendDb extends Zend_Db
         }
 
         try {
-            $select = new Zend_Db_Select($this->_db);
+            $select = new \Zend_Db_Select($this->_db);
             $select->from($table);
 
             $result = $select->query();

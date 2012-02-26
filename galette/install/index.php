@@ -43,7 +43,6 @@ $installer = true;
 define('WEB_ROOT', realpath(dirname(__FILE__) . '/../') . '/');
 
 require_once $base_path . 'includes/galette.inc.php';
-include_once '../classes/galette-zend_db.class.php';
 
 $template_subdir = 'templates/default/';
 $step = '1';
@@ -111,7 +110,7 @@ if ( $error_detected == ''
             define('PORT_DB', $_POST['install_dbport']);
             define('NAME_DB', $_POST['install_dbname']);
 
-            $zdb = new GaletteZendDb();
+            $zdb = new Galette\Core\Db();
 
             if ( $_POST['install_type'] == 'install' ) {
                 $step = 'i6';
@@ -280,7 +279,7 @@ case '2':
                     <?php echo _T("You're installing Galette for the first time, or you wish to erase an older version of Galette without keeping your data"); ?>
                 </p>
 <?php
-    $update_scripts = GaletteZendDb::getUpdateScripts('./');
+    $update_scripts = Galette\Core\Db::getUpdateScripts('./');
     
     $dh = opendir("sql");
     $last = "0.00";
@@ -450,11 +449,11 @@ case 'u4':
         }
 
         //define default database port
-        $default_dbport = GaletteZendDb::MYSQL_DEFAULT_PORT;
+        $default_dbport = Galette\Core\Db::MYSQL_DEFAULT_PORT;
         if ( !isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql' ) {
-            $default_dbport = GaletteZendDb::MYSQL_DEFAULT_PORT;
+            $default_dbport = Galette\Core\Db::MYSQL_DEFAULT_PORT;
         } else if ( $_POST['install_dbtype'] == 'pgsql' ) {
-            $default_dbport = GaletteZendDb::PGSQL_DEFAULT_PORT;
+            $default_dbport = Galette\Core\Db::PGSQL_DEFAULT_PORT;
         }
 ?><br />
             <?php echo _T("The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."); ?></p>
@@ -510,9 +509,9 @@ case 'u4':
                         var _db = $(this).val();
                         var _port = null;
                         if ( _db === 'pgsql' ) {
-                            _port = <?php echo GaletteZendDb::PGSQL_DEFAULT_PORT; ?>;
+                            _port = <?php echo Galette\Core\Db::PGSQL_DEFAULT_PORT; ?>;
                         } else if ( _db === 'mysql' ) {
-                            _port = <?php echo GaletteZendDb::MYSQL_DEFAULT_PORT; ?>;
+                            _port = <?php echo Galette\Core\Db::MYSQL_DEFAULT_PORT; ?>;
                         }
                         $('#install_dbport').val(_port);
                     });
@@ -527,10 +526,9 @@ case 'u5':
             <h2><?php echo _T("Check of the database"); ?></h2>
             <p><?php echo _T("Check the parameters and the existence of the database"); ?></p>
 <?php
-    require_once '../classes/galette-zend_db.class.php';
     $permsdb_ok = true;
 
-    $test = GaletteZendDb::testConnectivity(
+    $test = Galette\Core\Db::testConnectivity(
         $_POST['install_dbtype'],
         $_POST['install_dbuser'],
         $_POST['install_dbpass'],
@@ -750,7 +748,7 @@ case 'u7':
     include 'sql_parse.php';
 
     if ( $step == 'u7' ) {
-        $update_scripts = GaletteZendDb::getUpdateScripts(
+        $update_scripts = Galette\Core\Db::getUpdateScripts(
             '.',
             $_POST['install_dbtype'],
             substr($_POST['install_type'], 8)

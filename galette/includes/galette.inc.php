@@ -185,8 +185,7 @@ if ( !$installer ) { //If we're not working from installer
     /**
     * Database instanciation
     */
-    require_once WEB_ROOT . '/classes/galette-zend_db.class.php';
-    $zdb = new GaletteZendDb();
+    $zdb = new Galette\Core\Db();
 
     if ( $zdb->checkDbVersion() ) {
 
