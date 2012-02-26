@@ -204,8 +204,7 @@ if ( !$installer ) { //If we're not working from installer
         /**
         * Plugins
         */
-        require_once WEB_ROOT . 'classes/plugins.class.php';
-        $plugins = new plugins();
+        $plugins = new Galette\Core\Plugins();
         $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
 
         /**

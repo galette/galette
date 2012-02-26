@@ -35,6 +35,8 @@
  * @since     Available since 0.7 - 2009-03-09
  */
 
+namespace Galette\Core;
+
 /**
  * Plugins class for galette
  *
@@ -474,7 +476,8 @@ class Plugins
     /**
     * For each module, return the adh_fiche_action.tpl full path, if present.
     *
-    * @return array of adherent actions to include on membre detailled view for all modules
+    * @return array of adherent actions to include on membre detailled view for
+    * all modules
     */
     public function getTplAdhDetailledActions()
     {
