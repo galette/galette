@@ -35,6 +35,8 @@
  * @since     Available since 0.7dev - 2007-10-14
  */
 
+namespace Galette\Core;
+
 /**
  * Preferences for galette
  *
@@ -85,7 +87,7 @@ class Preferences
         'pref_pays'        =>    '',
         'pref_postal_adress'  => self::POSTAL_ADRESS_FROM_PREFS,
         'pref_postal_staff_member' => '',
-        'pref_lang'        =>    Galette\Core\I18n::DEFAULT_LANG,
+        'pref_lang'        =>    I18n::DEFAULT_LANG,
         'pref_numrows'        =>    30,
         'pref_log'        =>    2,
         /* Preferences for mails */
@@ -94,7 +96,7 @@ class Preferences
         'pref_email_newadh'    =>    'mail@domain.com',
         'pref_bool_mailadh'    =>    false,
         'pref_editor_enabled'    =>    false,
-        'pref_mail_method'    =>    Galette\Core\GaletteMail::METHOD_DISABLED,
+        'pref_mail_method'    =>    GaletteMail::METHOD_DISABLED,
         'pref_mail_smtp'    =>    '',
         'pref_mail_smtp_host'   => '',
         'pref_mail_smtp_auth'   => false,
@@ -471,7 +473,7 @@ class Preferences
             if ( GALETTE_MODE === 'DEMO' &&
                 $name == 'pref_mail_method'
             ) {
-                return Galette\Core\GaletteMail::METHOD_DISABLED;
+                return GaletteMail::METHOD_DISABLED;
             } else {
                 return $this->_prefs[$name];
             }

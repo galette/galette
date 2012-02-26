@@ -60,6 +60,7 @@ require_once $base_path . 'config/versions.inc.php';
 require_once $base_path . 'config/paths.inc.php';
 
 use Galette\Common\ClassLoader;
+use Galette\Core;
 require_once $base_path . 'lib/Galette/Common/ClassLoader.php';
 $galetteLoader = new ClassLoader('Galette', $base_path . 'lib');
 $zendLoader = new ClassLoader('Zend', $base_path . 'includes/Zend-' . ZEND_VERSION . '/');
@@ -158,7 +159,7 @@ if ( $installer || !defined('PREFIX_DB') || !defined('NAME_DB') ) {
 if ( isset($_SESSION['galette'][$session_name]['lang']) ) {
     $i18n = unserialize($_SESSION['galette'][$session_name]['lang']);
 } else {
-    $i18n = new Galette\Core\I18n();
+    $i18n = new Core\I18n();
 }
 
 if ( isset($_POST['pref_lang'])
@@ -183,15 +184,14 @@ if ( !$installer ) { //If we're not working from installer
     /**
     * Database instanciation
     */
-    $zdb = new Galette\Core\Db();
+    $zdb = new Core\Db();
 
     if ( $zdb->checkDbVersion() ) {
 
         /**
         * Load preferences
         */
-        require_once WEB_ROOT . 'classes/preferences.class.php';
-        $preferences = new Preferences();
+        $preferences = new Core\Preferences();
 
         /**
         * Set the path to the current theme templates
@@ -204,7 +204,7 @@ if ( !$installer ) { //If we're not working from installer
         /**
         * Plugins
         */
-        $plugins = new Galette\Core\Plugins();
+        $plugins = new Core\Plugins();
         $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
 
         /**
@@ -215,7 +215,7 @@ if ( !$installer ) { //If we're not working from installer
                 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login']
             );
         } else {
-            $login = new Galette\Core\Login();
+            $login = new Core\Login();
         }
 
         /**
