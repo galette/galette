@@ -59,6 +59,15 @@ if ( !$installer ) { //If we're not working from installer
 require_once $base_path . 'config/versions.inc.php';
 require_once $base_path . 'config/paths.inc.php';
 
+use Galette\Common\ClassLoader;
+require_once $base_path . 'lib/Galette/Common/ClassLoader.php';
+$galetteLoader = new ClassLoader('Galette', $base_path . 'lib');
+$zendLoader = new ClassLoader('Zend', $base_path . 'includes/Zend-' . ZEND_VERSION . '/');
+$zendLoader->setNamespaceSeparator('_');
+//register loaders
+$galetteLoader->register();
+$zendLoader->register();
+
 //we start a php session
 session_start();
 

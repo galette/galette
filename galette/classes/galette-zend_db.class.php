@@ -34,7 +34,6 @@
  * @since     Available since 0.7dev - 2011-07-27
  */
 
-require_once 'Zend/Db.php';
 require_once 'i18n.class.php';
 
 /**
