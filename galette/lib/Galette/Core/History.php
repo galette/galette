@@ -35,7 +35,7 @@
  * @since     Available since 0.7dev - 2009-02-09
  */
 
-require_once 'pagination.class.php';
+namespace Galette\Core;
 
 /**
  * History management
@@ -50,7 +50,7 @@ require_once 'pagination.class.php';
  * @since     Available since 0.7dev - 2009-02-09
  */
 
-class History extends GalettePagination
+class History extends Pagination
 {
     const TABLE = 'logs';
     const PK = 'id_log';
@@ -116,14 +116,14 @@ class History extends GalettePagination
             );
 
             $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
-        } catch (Zend_Db_Adapter_Exception $e) {
+        } catch (\Zend_Db_Adapter_Exception $e) {
             $log->log(
                 'Unable to initialize add log entry into database.' .
                 $e->getMessage(),
                 PEAR_LOG_WARNING
             );
             return false;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 "An error occured trying to add log entry. " . $e->getMessage(),
                 PEAR_LOG_ERR
@@ -187,13 +187,13 @@ class History extends GalettePagination
         }
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from($this->getTableName())
                 ->order($this->orderby . ' ' . $this->ordered);
             //add limits to retrieve only relavant rows
             $this->setLimits($select);
-            return $select->query(Zend_Db::FETCH_ASSOC)->fetchAll();
-        } catch (Exception $e) {
+            return $select->query(\Zend_Db::FETCH_ASSOC)->fetchAll();
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Unable to get history. | ' . $e->getMessage(),
@@ -217,14 +217,14 @@ class History extends GalettePagination
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(
                 $this->getTableName(),
                 'COUNT(' . $this->getPk() . ') as counter'
             );
             $qry = $select->__toString();
             return $select->query()->fetchObject()->counter;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Unable to get history count. | ' . $e->getMessage(),
@@ -264,7 +264,7 @@ class History extends GalettePagination
                 case 'fdate':
                     //return formatted datemime
                     try {
-                        $d = new DateTime($this->$rname);
+                        $d = new \DateTime($this->$rname);
                         return $d->format(_T("Y-m-d H:i:s"));
                     } catch (Exception $e) {
                         //oops, we've got a bad date :/

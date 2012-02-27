@@ -35,8 +35,6 @@
  * @since     march, 3rd 2009
  */
 
-require_once 'pagination.class.php';
-
 /**
  * Members list parameters class for galette
  *
@@ -50,7 +48,7 @@ require_once 'pagination.class.php';
  * @link      http://galette.tuxfamily.org
  */
 
-class VarsList extends GalettePagination
+class VarsList extends Galette\Core\Pagination
 {
     //filters
     private $_filter_str;

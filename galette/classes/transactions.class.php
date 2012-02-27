@@ -50,7 +50,7 @@ require_once 'transaction.class.php';
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
-class Transactions extends GalettePagination
+class Transactions extends Galette\Core\Pagination
 {
     const TABLE = Transaction::TABLE;
     const PK = Transaction::PK;

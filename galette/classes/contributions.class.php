@@ -36,7 +36,6 @@
  */
 
 /** @ignore */
-require_once 'pagination.class.php';
 require_once 'contribution.class.php';
 
 /**
@@ -51,7 +50,7 @@ require_once 'contribution.class.php';
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
-class Contributions extends GalettePagination
+class Contributions extends Galette\Core\Pagination
 {
     const TABLE = Contribution::TABLE;
     const PK = Contribution::PK;

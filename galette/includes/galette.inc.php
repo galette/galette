@@ -226,7 +226,6 @@ if ( !$installer ) { //If we're not working from installer
         /**
         * Instanciate history object
         */
-        require_once WEB_ROOT . 'classes/history.class.php';
         if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history'])
             && !GALETTE_MODE == 'DEV'
         ) {
@@ -234,7 +233,7 @@ if ( !$installer ) { //If we're not working from installer
                 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history']
             );
         } else {
-            $hist = new History();
+            $hist = new Core\History();
         }
 
         /**

@@ -35,10 +35,12 @@
  * @since     Available since 0.7dev - 2010-03-03
  */
 
+namespace Galette\Core;
+
 /**
  * Pagination and ordering facilities
  *
- * @name      GalettePagination
+ * @name      Pagination
  * @category  Classes
  * @package   Galette
  *
@@ -48,7 +50,7 @@
  * @link      http://galette.tuxfamily.org
  */
 
-abstract class GalettePagination
+abstract class Pagination
 {
     private $_current_page;
     private $_orderby;
@@ -270,7 +272,7 @@ abstract class GalettePagination
 
         $log->log(
             '[' . get_class($this) .
-            '|GalettePagination] Getting property `' . $name . '`',
+            '|Pagination] Getting property `' . $name . '`',
             PEAR_LOG_DEBUG
         );
 
@@ -280,7 +282,7 @@ abstract class GalettePagination
         } else {
             $log->log(
                 '[' . get_class($this) .
-                '|GalettePagination] Unable to get proprety `' .$name . '`',
+                '|Pagination] Unable to get proprety `' .$name . '`',
                 PEAR_LOG_WARNING
             );
         }
@@ -299,7 +301,7 @@ abstract class GalettePagination
         global $log;
 
         $log->log(
-            '[' . get_class($this) . '|GalettePagination] Setting property `' .
+            '[' . get_class($this) . '|Pagination] Setting property `' .
             $name . '`',
             PEAR_LOG_DEBUG
         );
@@ -312,7 +314,7 @@ abstract class GalettePagination
             } else {
                 $log->log(
                     '[' . get_class($this) .
-                    '|GalettePagination] Possibles values for field `' .
+                    '|Pagination] Possibles values for field `' .
                     $name . '` are: `' . self::ORDER_ASC . '` or `' .
                     self::ORDER_DESC . '` - `' . $value . '` given',
                     PEAR_LOG_WARNING
@@ -335,7 +337,7 @@ abstract class GalettePagination
             } else {
                 $log->log(
                     '[' . get_class($this) .
-                    '|GalettePagination] Value for field `' .
+                    '|Pagination] Value for field `' .
                     $name . '` should be a positive integer - (' .
                     gettype($value) . ')' . $value . ' given',
                     PEAR_LOG_WARNING
@@ -350,7 +352,7 @@ abstract class GalettePagination
                 $this->$rname = (int)$value;
             } else {
                 $log->log(
-                    '[' . get_class($this) . '|GalettePagination] Value for `' .
+                    '[' . get_class($this) . '|Pagination] Value for `' .
                     $name . '` should be a positive integer or \'all\' - (' .
                     gettype($value) . ')' . $value . ' given',
                     PEAR_LOG_WARNING
@@ -360,7 +362,7 @@ abstract class GalettePagination
         default:
             $log->log(
                 '[' . get_class($this) .
-                '|GalettePagination] Unable to set proprety `' . $name . '`',
+                '|Pagination] Unable to set proprety `' . $name . '`',
                 PEAR_LOG_WARNING
             );
             break;
