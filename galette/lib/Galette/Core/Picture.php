@@ -35,6 +35,8 @@
  * @link      http://galette.tuxfamily.org
  */
 
+namespace Galette\Core;
+
 /**
  * Picture handling
  *
@@ -59,7 +61,7 @@ class Picture
     //(do not use self::CONSTANT, but get_class[$this]::CONSTANT)
     const MAX_FILE_SIZE = 1024;
     const TABLE = 'pictures';
-    const PK = Adherent::PK;
+    const PK = \Adherent::PK;
 
     /*private $_bad_chars = array(
         '\.', '\\\\', "'", ' ', '\/', ':', '\*', '\?', '"', '<', '>', '|'
@@ -222,7 +224,7 @@ class Picture
                 $this->file_path = $file_wo_ext . '.' . $this->format;
                 return true;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -237,7 +239,7 @@ class Picture
         global $zdb;
         $class = get_class($this);
 
-        $select = new Zend_Db_Select($zdb->db);
+        $select = new \Zend_Db_Select($zdb->db);
         $select->from(
             array(PREFIX_DB . $this->tbl_prefix . $class::TABLE),
             array(
@@ -370,7 +372,7 @@ class Picture
             }
 
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             if ( $transaction === true ) {
                 $zdb->db->rollBack();
             }
@@ -488,10 +490,10 @@ class Picture
             );
 
             $stmt->bindParam('id', $this->db_id);
-            $stmt->bindParam('picture', $picture, PDO::PARAM_LOB);
+            $stmt->bindParam('picture', $picture, \PDO::PARAM_LOB);
             $stmt->bindParam('format', $extension);
             $stmt->execute();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'An error occured storing picture in database: ' .

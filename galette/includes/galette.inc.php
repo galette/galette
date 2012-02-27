@@ -242,7 +242,6 @@ if ( !$installer ) { //If we're not working from installer
         /**
         * Logo
         */
-        require_once WEB_ROOT . 'classes/logo.class.php';
         if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo'])
             && !GALETTE_MODE == 'DEV'
         ) {
@@ -250,7 +249,7 @@ if ( !$installer ) { //If we're not working from installer
                 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo']
             );
         } else {
-            $logo = new Logo();
+            $logo = new Galette\Core\Logo();
         }
 
         /**

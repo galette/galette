@@ -40,7 +40,6 @@ require_once 'politeness.class.php';
 require_once 'status.class.php';
 require_once 'fields_config.class.php';
 require_once 'fields_categories.class.php';
-require_once 'picture.class.php';
 require_once 'contribution.class.php';
 require_once 'galette_password.class.php';
 require_once 'groups.class.php';
@@ -460,7 +459,7 @@ class Adherent
             $this->_politeness = Politeness::MR;
             $gp = new GalettePassword();
             $this->_password = $gp->makeRandomPassword();
-            $this->_picture = new Picture();
+            $this->_picture = new Galette\Core\Picture();
             $this->_admin = false;
             $this->_staff = false;
             $this->_due_free = false;
@@ -615,7 +614,7 @@ class Adherent
         $this->_due_date = $r->date_echeance;
         $this->_others_infos = $r->info_public_adh;
         $this->_others_infos_admin = $r->info_adh;
-        $this->_picture = new Picture($this->_id);
+        $this->_picture = new Galette\Core\Picture($this->_id);
         $this->_groups = Groups::loadGroups($this->_id);
         $this->_managed_groups = Groups::loadManagedGroups($this->_id);
         $this->_checkDues();
@@ -1212,7 +1211,7 @@ class Adherent
                         PREFIX_DB . self::TABLE,
                         'id'
                     );
-                    $this->_picture = new Picture($this->_id);
+                    $this->_picture = new Galette\Core\Picture($this->_id);
                     // logging
                     $hist->add(
                         _T("Member card added"),

@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Logo handling - for printing
+ * Logo handling
  *
  * PHP version 5
  *
@@ -30,52 +30,88 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2009-2012 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id: print_logo.class.php 546 2009-03-05 06:09:00Z trashy $
+ * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-09-20
+ * @since     Available since 0.7dev - 2009-09-13
  */
 
-/** @ignore */
-require_once 'logo.class.php';
+namespace Galette\Core;
 
 /**
- * This class stores a logo for printing that could be different
- * from the default one.
- * If no print logo is found, we take the default Logo instead.
+ * This class stores and serve the logo.
+ * If no custom logo is found, we take galette's default one.
  *
  * @category  Classes
- * @name      PrintLogo
+ * @name      Logo
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2009-2012 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-09-20
-*/
-class PrintLogo extends Logo
+ * @since     Available since 0.7dev - 2009-09-13
+ */
+class Logo extends Picture
 {
-    protected $id = 'custom_print_logo';
+    protected $id = 'custom_logo';
     //database wants a member id (integer), not a string.
-    //Will be used to query the correct id
-    protected $db_id = 999999;
+    //  Will be used to query the correct id
+    protected $db_id = 0;
+    protected $custom = true;
+
+    /**
+    * Default constructor.
+    */
+    public function __construct()
+    {
+        parent::__construct($this->id);
+    }
 
     /**
     * Gets the default picture to show, anyways
     *
-    * @see Logo::getDefaultPicture()
+    * @see Picture::getDefaultPicture()
     *
     * @return void
     */
     protected function getDefaultPicture()
     {
-        //if we are here, we want to serve default logo
-        $pic = new Logo();
-        $this->file_path = $pic->getPath();
-        $this->format = $pic->getFormat();
-        $this->mime = $pic->getMime();
-        //anyways, we have no custom print logo
+        $this->file_path = _CURRENT_TEMPLATE_PATH . 'images/galette.png';
+        $this->format = 'png';
+        $this->mime = 'image/png';
         $this->custom = false;
     }
 
+    /**
+    * Returns the relevant query to check if picture exists in database.
+    *
+    * @see picture::getCheckFileQuery()
+    *
+    * @return string SELECT query
+    */
+    protected function getCheckFileQuery()
+    {
+        global $zdb;
+
+        $select = new \Zend_Db_Select($zdb->db);
+        $select->from(
+            array(PREFIX_DB . self::TABLE),
+            array(
+                'picture',
+                'format'
+            )
+        );
+        $select->where(self::PK . ' = ?', $this->db_id);
+        return $select;
+    }
+
+    /**
+    * Returns custom state
+    *
+    * @return boolean
+    */
+    public function isCustom()
+    {
+        return $this->custom;
+    }
 }
 ?>
