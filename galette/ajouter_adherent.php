@@ -221,28 +221,30 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
             }
 
             //store requested groups
-            $add_groups = Groups::addMemberToGroups($member, $_POST['groups_adh']);
-            if ( $add_groups === true ) {
-                if ( isset ($_POST['groups_adh']) ) {
-                    $log->log(
-                        'Member .' . $member->sname . ' has been added to groups ' .
-                        print_r($_POST['groups_adh'], true),
-                        PEAR_LOG_INFO
-                    );
+            if ( isset($_POST['groups_adh']) ) {
+                $add_groups = Groups::addMemberToGroups($member, $_POST['groups_adh']);
+                if ( $add_groups === true ) {
+                    if ( isset ($_POST['groups_adh']) ) {
+                        $log->log(
+                            'Member .' . $member->sname . ' has been added to groups ' .
+                            print_r($_POST['groups_adh'], true),
+                            PEAR_LOG_INFO
+                        );
+                    } else {
+                        $log->log(
+                            'Member .' . $member->sname . ' has been detached of ' .
+                            'his groups.',
+                            PEAR_LOG_INFO
+                        );
+                    }
                 } else {
                     $log->log(
-                        'Member .' . $member->sname . ' has been detached of ' .
-                        'his groups.',
-                        PEAR_LOG_INFO
+                        'Member .' . $member->sname . ' has not been added to groups ' .
+                        print_r($_POST['groups_adh'], true),
+                        PEAR_LOG_ERR
                     );
+                    $error_detected[] = _T("An error occured adding member to its groups.");
                 }
-            } else {
-                $log->log(
-                    'Member .' . $member->sname . ' has not been added to groups ' .
-                    print_r($_POST['groups_adh'], true),
-                    PEAR_LOG_ERR
-                );
-                $error_detected[] = _T("An error occured adding member to its groups.");
             }
         } else {
             //something went wrong :'(
