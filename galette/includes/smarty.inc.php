@@ -37,9 +37,7 @@
  * @since     Available since 0.63
  */
 
-require 'Smarty.class.php';
-
-$tpl = new Smarty;
+$tpl = new \Smarty;
 $template_subdir = 'templates/' . $preferences->pref_theme . '/';
 $tpl->plugins_dir[] = WEB_ROOT . 'includes/smarty_plugins';
 $tpl->template_dir = WEB_ROOT . $template_subdir;
