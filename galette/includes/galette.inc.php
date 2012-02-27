@@ -63,7 +63,7 @@ use Galette\Common\ClassLoader;
 use Galette\Core;
 require_once $base_path . 'lib/Galette/Common/ClassLoader.php';
 $galetteLoader = new ClassLoader('Galette', $base_path . 'lib');
-$zendLoader = new ClassLoader('Zend', $base_path . 'includes/Zend-' . ZEND_VERSION . '/');
+$zendLoader = new ClassLoader('Zend', GALETTE_ZEND_PATH);
 $zendLoader->setNamespaceSeparator('_');
 //register loaders
 $galetteLoader->register();
