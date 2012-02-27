@@ -1015,7 +1015,7 @@ define("STOCK_FILES", "tempimages");
 
     $preferences = null;
     if ( $step=='i9' ) {
-        $preferences = new Preferences(false);
+        $preferences = new Galette\Core\Preferences(false);
         $ct = new ContributionsTypes();
         $status = new Status();
         $fc = new FieldsCategories();
@@ -1053,7 +1053,7 @@ define("STOCK_FILES", "tempimages");
             $oks[] = '<li class="install-ok">' . _T("Default fields categories were successfully stored.") . '</li>';
         }
     } else if ($step=='u9') {
-        $preferences = new Preferences();
+        $preferences = new Galette\Core\Preferences();
         $preferences->pref_admin_login = $_POST['install_adminlogin'];
         $preferences->pref_admin_pass = $_POST['install_adminpass'];
         $preferences->store();

@@ -49,7 +49,6 @@ define("K_TCPDF_EXTERNAL_CONFIG", true);
  *  Require TCPDF class
  */
 require_once WEB_ROOT . 'includes/tcpdf_' . TCPDF_VERSION . '/tcpdf.php';
-require_once WEB_ROOT . 'classes/print_logo.class.php';
 
 
 /**
@@ -244,7 +243,7 @@ class PDF extends TCPDF
     {
         global $preferences;
 
-        $print_logo = new PrintLogo();
+        $print_logo = new Galette\Core\PrintLogo();
         if ( $print_logo->hasPicture() ) {
             $logofile = $print_logo->getPath();
 

@@ -99,7 +99,7 @@ $doc_keywords = _T("Cards");
 $an_cot = '<strong>' . $preferences->pref_card_year . '</strong>';
 $abrev = '<strong>' . $preferences->pref_card_abrev . '</strong>';
 
-$print_logo = new PrintLogo();
+$print_logo = new Galette\Core\PrintLogo();
 if ( $logo->hasPicture() ) {
     $logofile = $print_logo->getPath();
 

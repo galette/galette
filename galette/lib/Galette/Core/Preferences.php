@@ -320,8 +320,8 @@ class Preferences
 
             foreach ( self::$_defaults as $k=>$v ) {
                 $log->log('Storing ' . $k, PEAR_LOG_DEBUG);
-                $stmt->bindValue(':value', $this->_prefs[$k], PDO::PARAM_STR);
-                $stmt->bindValue(':name', $k, PDO::PARAM_STR);
+                $stmt->bindValue(':value', $this->_prefs[$k], \PDO::PARAM_STR);
+                $stmt->bindValue(':name', $k, \PDO::PARAM_STR);
 
                 $stmt->execute();
             }
