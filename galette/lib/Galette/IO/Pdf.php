@@ -39,6 +39,8 @@
  * @since     Available since 0.7dev - 2007-07-21
  */
 
+namespace Galette\IO;
+
 /*
  * TCPDF configuration file for Galette
  */
@@ -66,7 +68,7 @@ require_once WEB_ROOT . 'includes/tcpdf_' . TCPDF_VERSION . '/tcpdf.php';
  * @since     Available since 0.7dev - 2007-07-21
  */
 
-class PDF extends TCPDF
+class Pdf extends \TCPDF
 {
 
     const FONT='DejaVuSans';
@@ -75,7 +77,7 @@ class PDF extends TCPDF
     private $_paginated = false;
 
     /**
-    * Constructeur de la classe PDF
+    * Main constructor, set creator and author
     */
     public function __construct()
     {

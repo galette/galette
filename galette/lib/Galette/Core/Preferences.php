@@ -470,8 +470,8 @@ class Preferences
         $forbidden = array('logged', 'admin', 'active', 'defaults');
 
         if ( !in_array($name, $forbidden) && isset($this->_prefs[$name])) {
-            if ( GALETTE_MODE === 'DEMO' &&
-                $name == 'pref_mail_method'
+            if ( GALETTE_MODE === 'DEMO'
+                && $name == 'pref_mail_method'
             ) {
                 return GaletteMail::METHOD_DISABLED;
             } else {

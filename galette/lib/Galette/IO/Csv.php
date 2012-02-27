@@ -35,6 +35,8 @@
  * @since     Disponible depuis la Release 0.7alpha - 2009-02-09
  */
 
+namespace Galette\IO;
+
 /**
  * CSV exports
  *
@@ -285,7 +287,7 @@ class Csv
             $result = $zdb->db->query(
                 str_replace('galette_', PREFIX_DB, $export->query)
             )->fetchAll(
-                Zend_Db::FETCH_ASSOC
+                \Zend_Db::FETCH_ASSOC
             );
 
             $filename=self::DEFAULT_DIRECTORY . $export['filename'];
@@ -322,7 +324,7 @@ class Csv
                 return self::FILE_NOT_WRITABLE;
             }
             return $export['filename'];
-        } catch (Exeption $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'An error occured while exporting | ' . $e->getMessage(),
                 PEAR_LOG_ERR

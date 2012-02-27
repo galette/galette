@@ -53,7 +53,8 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-require_once WEB_ROOT. 'classes/pdf.class.php';
+namespace Galette\IO\Pdf;
+
 require_once  WEB_ROOT . 'classes/members.class.php';
 require_once WEB_ROOT . 'classes/varslist.class.php';
 require_once WEB_ROOT . 'classes/print_logo.class.php';
@@ -123,7 +124,7 @@ if ( $logo->hasPicture() ) {
 }
 
 // Create new PDF document
-$pdf = new PDF('P', 'mm', 'A4', true, 'UTF-8');
+$pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8');
 
 // Set document information
 $pdf->SetTitle($doc_title);
@@ -157,7 +158,7 @@ $pdf->SetMargins(
 );
 
 // Set font
-$pdf->SetFont(PDF::FONT);
+$pdf->SetFont(Pdf::FONT);
 
 // Set origin
 // Top left corner
@@ -305,7 +306,7 @@ foreach ( $members as $member ) {
     // Lower colored strip with long text
     $pdf->SetFillColor($fcol['R'], $fcol['G'], $fcol['B']);
     $pdf->SetTextColor($tcol['R'], $tcol['G'], $tcol['B']);
-    $pdf->SetFont(PDF::FONT, 'B', 6);
+    $pdf->SetFont(Pdf::FONT, 'B', 6);
     $pdf->SetXY($x0, $y0 + 33);
     $pdf->Cell(75, 7, $preferences->pref_card_strip, 0, 0, 'C', 1);
 

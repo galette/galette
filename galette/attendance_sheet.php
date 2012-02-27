@@ -49,7 +49,8 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once WEB_ROOT . 'classes/pdf.class.php';
+use Galette\IO\Pdf;
+
 require_once WEB_ROOT . 'classes/members.class.php';
 require_once WEB_ROOT . 'classes/varslist.class.php';
 
@@ -77,9 +78,9 @@ if ( isset($_POST['sheet_photos']) && $_POST['sheet_photos'] === '1') {
     $_wimages = true;
 }
 
-define('SHEET_FONT', PDF::FONT_SIZE-2);
+define('SHEET_FONT', Pdf::FONT_SIZE-2);
 
-class SheetPDF extends PDF {
+class SheetPdf extends Pdf {
 
     public $doc_title = null;
     public $sheet_title = null;
@@ -90,7 +91,7 @@ class SheetPDF extends PDF {
      * Page header
      */
     public function Header() {
-        $this->SetFont(PDF::FONT, '', SHEET_FONT - 2);
+        $this->SetFont(Pdf::FONT, '', SHEET_FONT - 2);
         $head_title = $this->doc_title;
         if ( $this->sheet_title !== null ) {
             $head_title .= ' - ' . $this->sheet_title;
@@ -110,7 +111,7 @@ if ( isset($_POST['sheet_type']) && trim($_POST['sheet_type']) != '' ) {
     $doc_title = $_POST['sheet_type'];
 }
 
-$pdf=new SheetPDF('P', 'mm', 'A4');
+$pdf=new SheetPdf('P', 'mm', 'A4');
 $pdf->doc_title = $doc_title;
 if ( isset($_POST['sheet_title']) && trim($_POST['sheet_title']) != '' ) {
     $pdf->sheet_title = $_POST['sheet_title'];
@@ -139,7 +140,7 @@ $pdf->SetAutoPageBreak(true, 20);
 $pdf->AliasNbPages();
 $pdf->Open();
 
-$pdf->SetFont(PDF::FONT, '', SHEET_FONT);
+$pdf->SetFont(Pdf::FONT, '', SHEET_FONT);
 $pdf->SetTextColor(0, 0, 0);
 
 $pdf->AddPage();
