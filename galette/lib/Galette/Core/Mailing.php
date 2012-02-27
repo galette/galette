@@ -35,8 +35,7 @@
  * @since     Available since 0.7dev - 2009-03-07
  */
 
-/** @ignore */
-require_once 'members.class.php';
+namespace Galette\Core;
 
 /**
  * Mailing features
@@ -50,7 +49,7 @@ require_once 'members.class.php';
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-07
  */
-class Mailing extends Galette\Core\GaletteMail
+class Mailing extends GaletteMail
 {
     const STEP_START = 0;
     const STEP_PREVIEW = 1;

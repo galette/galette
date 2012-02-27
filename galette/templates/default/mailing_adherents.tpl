@@ -1,4 +1,4 @@
-{if $pref_mail_method == constant('Mailing::METHOD_DISABLED') and $GALETTE_MODE neq 'DEMO'}
+{if $pref_mail_method == constant('Galette\Core\Mailing::METHOD_DISABLED') and $GALETTE_MODE neq 'DEMO'}
 		<div id="errorbox">
 			<h1>{_T string="- ERROR -"}</h1>
 			<p>{_T string="Email sent is disabled in the preferences. Ask galette admin"}</p>
@@ -11,7 +11,7 @@
     {assign var='count' value=$mailing->recipients|@count}
     {assign var='count_unreachables' value=$mailing->unreachables|@count}
     {if $count > 0}
-        {if $mailing->current_step eq constant('Mailing::STEP_SENT')}
+        {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_SENT')}
                 <p>{_T string="Your message has been sent to <strong>%s members</strong>" pattern="/%s/" replace=$count}</p>
         {else}
                 <p id="recipients_count">{_T string="You are about to send an e-mail to <strong>%s members</strong>" pattern="/%s/" replace=$count}</p>
@@ -31,14 +31,14 @@
          {/if}
     {/if}
                 <div class="center">
-    {if $mailing->current_step eq constant('Mailing::STEP_SENT')}
+    {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_SENT')}
                     <a class="button" id="btnusers" href="gestion_adherents.php">{_T string="Go back to members list"}</a>
     {else}
                     <a class="button" id="btnusers" href="gestion_adherents.php?nbshow=0&showChecked=true">{_T string="Manage selected members"}</a>
     {/if}
                 </div>
             </section>
-        {if $mailing->current_step eq constant('Mailing::STEP_START')}
+        {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_START')}
             <section class="mailing_write">
                 <header class="ui-state-default ui-state-active">{_T string="Write your mailing"}</header>
                 <div>
@@ -60,7 +60,7 @@
                 </div>
             </section>
         {/if}
-        {if $mailing->current_step eq constant('Mailing::STEP_PREVIEW')}
+        {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_PREVIEW')}
             <section class="mailing_write" id="mail_preview">
                 <header class="ui-state-default ui-state-active">{_T string="Preview your mailing"}</header>
                 <div>
@@ -88,7 +88,7 @@
             </section>
         </div>
 		</form>
-    {if $mailing->current_step neq constant('Mailing::STEP_SENT')}
+    {if $mailing->current_step neq constant('Galette\Core\Mailing::STEP_SENT')}
 <script type="text/javascript">
     $(function() {ldelim}
         {* Preview popup *}

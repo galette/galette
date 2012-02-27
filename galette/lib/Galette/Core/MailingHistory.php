@@ -35,10 +35,7 @@
  * @since     Available since 0.7dev - 2011-08-27
  */
 
-/** @ignore */
-//require_once 'members.class.php';
-require_once 'history.class.php';
-require_once 'mailing.class.php';
+namespace Galette\Core;
 
 /**
  * Mailing features
@@ -122,22 +119,22 @@ class MailingHistory extends History
         }
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(
                 array('a' => $this->getTableName())
             )->joinLeft(
-                array('b' => PREFIX_DB . Adherent::TABLE),
-                'a.mailing_sender=b.' . Adherent::PK,
+                array('b' => PREFIX_DB . \Adherent::TABLE),
+                'a.mailing_sender=b.' . \Adherent::PK,
                 array('b.nom_adh', 'b.prenom_adh')
             )->order($this->orderby . ' ' . $this->ordered);
             //add limits to retrieve only relavant rows
             $sql = $select->__toString();
             $this->setLimits($select);
-            $ret = $select->query(Zend_Db::FETCH_ASSOC)->fetchAll();
+            $ret = $select->query(\Zend_Db::FETCH_ASSOC)->fetchAll();
 
             foreach ( $ret as &$r ) {
                 if ( $r['mailing_sender'] !== null ) {
-                    $r['mailing_sender_name'] = Adherent::getSName($r['mailing_sender']);
+                    $r['mailing_sender_name'] = \Adherent::getSName($r['mailing_sender']);
                 }
                 $body_resume = $r['mailing_body'];
                 if ( strlen($body_resume) > 150 ) {
@@ -187,7 +184,7 @@ class MailingHistory extends History
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . self::TABLE)
                 ->where('mailing_id = ?', $id);
             $res = $select->query()->fetch();
@@ -195,14 +192,14 @@ class MailingHistory extends History
 
             $_recipients = array();
             foreach ( $orig_recipients as $k=>$v ) {
-                $m = new Adherent($k);
+                $m = new \Adherent($k);
                 $_recipients[] = $m;
             }
             $mailing->setRecipients($_recipients);
             $mailing->subject = $res->mailing_subject;
             $mailing->message = $res->mailing_body;
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Unable to load mailing model #' . $id . ' | ' .
                 $e->getMessage(),
@@ -258,7 +255,7 @@ class MailingHistory extends History
                 }
             }
             $values = array(
-                'mailing_sender' => ($this->_sender === 0) ? new Zend_Db_Expr('NULL') : $this->_sender,
+                'mailing_sender' => ($this->_sender === 0) ? new \Zend_Db_Expr('NULL') : $this->_sender,
                 'mailing_subject' => $this->_subject,
                 'mailing_body' => $this->_message,
                 'mailing_date' => $this->_date,
@@ -268,7 +265,7 @@ class MailingHistory extends History
 
             $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'An error occurend storing Mailing | ' . $e->getMessage(),
                 PEAR_LOG_ERR
