@@ -41,7 +41,6 @@ require_once 'status.class.php';
 require_once 'fields_config.class.php';
 require_once 'fields_categories.class.php';
 require_once 'contribution.class.php';
-require_once 'galette_password.class.php';
 require_once 'groups.class.php';
 
 /**
@@ -457,7 +456,7 @@ class Adherent
             $this->_creation_date = date("Y-m-d");
             $this->_status = Status::DEFAULT_STATUS;
             $this->_politeness = Politeness::MR;
-            $gp = new GalettePassword();
+            $gp = new Galette\Core\Password();
             $this->_password = $gp->makeRandomPassword();
             $this->_picture = new Galette\Core\Picture();
             $this->_admin = false;

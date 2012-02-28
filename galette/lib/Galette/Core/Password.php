@@ -38,11 +38,13 @@
  * @since     Available since 0.7dev - 2009-02-28
  */
 
+namespace Galette\Core;
+
 /**
  * Abstract authentication class for galette
  *
  * @category  Classes
- * @name      Authentication
+ * @name      Password
  * @package   Galette
  * @author    Frédéric Jaqcuot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
@@ -53,12 +55,12 @@
  * @since     Available since 0.7dev - 2011-06-16
  */
 
-class GalettePassword
+class Password
 {
 
     const TABLE = 'tmppasswds';
-    const PK = Adherent::PK;
-    
+    const PK = \Adherent::PK;
+
     /** Default password size */
     private $_size = 8;
     private $_salt = 'abcdefghjkmnpqrstuvwxyz0123456789';
@@ -124,7 +126,7 @@ class GalettePassword
                     PEAR_LOG_DEBUG
                 );
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'An error has occured removing old tmppasswords ' .
@@ -172,14 +174,14 @@ class GalettePassword
             } else {
                 return false;
             }
-        } catch (Zend_Db_Adapter_Exception $e) {
+        } catch (\Zend_Db_Adapter_Exception $e) {
             $log->log(
                 'Unable to add add new password entry into database.' .
                 $e->getMessage(),
                 PEAR_LOG_WARNING
             );
             return false;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 "An error occured trying to add temporary password entry. " .
                 $e->getMessage(),
@@ -198,8 +200,8 @@ class GalettePassword
     {
         global $zdb, $log;
 
-        $date = new DateTime();
-        $date->sub(new DateInterval('PT24H'));
+        $date = new \DateTime();
+        $date->sub(new \DateInterval('PT24H'));
 
         try {
             $del = $zdb->db->delete(
@@ -215,7 +217,7 @@ class GalettePassword
                     PEAR_LOG_DEBUG
                 );
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'An error occured deleting expired temporary passwords. ' .
@@ -238,13 +240,13 @@ class GalettePassword
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(
                 PREFIX_DB . self::TABLE,
                 self::PK
             )->where('tmp_passwd = ?', $hash);
             return $select->query()->fetchColumn();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'An error occured getting requested hash. ' . $e->getMessage(),
@@ -280,7 +282,7 @@ class GalettePassword
                 );
                 return true;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'An error ocured attempting to delete used hash' .
