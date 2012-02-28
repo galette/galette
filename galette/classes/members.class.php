@@ -170,7 +170,9 @@ class Members
         $managed=false,
         $limit=true
     ) {
-        global $zdb, $log, $varslist;
+        global $zdb, $log;
+
+        $filters = self::getFilters();
 
         try {
             $_mode = self::SHOW_LIST;
@@ -189,8 +191,8 @@ class Members
             }
 
             //add limits to retrieve only relavant rows
-            if ( $limit === true && isset($varslist) ) {
-                $varslist->setLimit($select);
+            if ( $limit === true && isset($filters) ) {
+                $filters->setLimit($select);
             }
 
             $log->log(
@@ -218,6 +220,23 @@ class Members
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
                 PEAR_LOG_ERR
             );
+        }
+    }
+
+    /**
+     * Retrieve filters from session or create new ones
+     *
+     * @param string $session_prefix Session prefix (defaults to null)
+     *
+     * @return Galette\Filters\MembersList
+     */
+    public static function getFilters($session_prefix = null)
+    {
+        $session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+        if ( isset($session[$session_prefix . 'filters']['members']) ) {
+            return unserialize($session[$session_prefix . 'filters']['members']);
+        } else {
+            return new \Galette\Filters\MembersList();
         }
     }
 
@@ -265,7 +284,10 @@ class Members
                                 'Unable to delete picture for member ' . $str_adh,
                                 PEAR_LOG_ERR
                             );
-                            throw new Exception('Unable to delete picture for member ' . $str_adh);
+                            throw new Exception(
+                                'Unable to delete picture for member ' .
+                                $str_adh
+                            );
                         } else {
                             $hist->add(
                                 _T("Member Picture deleted"),
@@ -362,7 +384,9 @@ class Members
     */
     public static function getPublicList($with_photos, $fields)
     {
-        global $zdb, $log, $varslist;
+        global $zdb, $log;
+
+        $filters = self::getFilters();
 
         try {
             $select = self::_buildSelect(
@@ -380,7 +404,7 @@ class Members
                 PEAR_LOG_DEBUG
             );
 
-            if ( $varslist ) {
+            if ( $filters ) {
                 $select->order(self::_buildOrderClause());
             }
             $result = $select->query()->fetchAll();
@@ -525,7 +549,7 @@ class Members
                     self::_buildWhereClause($select);
                 }
                 $select->order(self::_buildOrderClause());
-            } else if ( $mode == self::SHOW_PUBLIC_LIST )  {
+            } else if ( $mode == self::SHOW_PUBLIC_LIST ) {
                 $select->where('activite_adh=true');
             }
 
@@ -557,7 +581,9 @@ class Members
     */
     private function _proceedCount($select)
     {
-        global $zdb, $log, $varslist;
+        global $zdb, $log;
+
+        $filters = self::getFilters();
 
         try {
             $countSelect = clone $select;
@@ -577,8 +603,8 @@ class Members
 
             $k = self::PK;
             $this->_count = $result->$k;
-            if ( isset($varslist) && $this->_count > 0 ) {
-                $varslist->setCounter($this->_count);
+            if ( isset($filters) && $this->_count > 0 ) {
+                $filters->setCounter($this->_count);
             }
         } catch (Exception $e) {
             /** TODO */
@@ -601,28 +627,29 @@ class Members
     */
     private function _buildOrderClause()
     {
-        global $varslist;
         $order = array();
-        switch($varslist->orderby) {
+        $filters = self::getFilters();
+
+        switch($filters->orderby) {
         case self::ORDERBY_NICKNAME:
-            $order[] = 'pseudo_adh ' . $varslist->getDirection();
+            $order[] = 'pseudo_adh ' . $filters->getDirection();
             break;
         case self::ORDERBY_STATUS:
-            $order[] = 'priorite_statut ' . $varslist->getDirection();
+            $order[] = 'priorite_statut ' . $filters->getDirection();
             break;
         case self::ORDERBY_MODIFDATE:
-            $order[] = 'date_modif_adh ' . $varslist->getDirection();
+            $order[] = 'date_modif_adh ' . $filters->getDirection();
             break;
         case self::ORDERBY_FEE_STATUS:
-            $order[] = 'date_crea_adh ' . $varslist->getDirection();
-            $order[] = 'bool_exempt_adh ' . $varslist->getDirection();
-            $order[] = 'date_echeance ' . $varslist->getDirection();
+            $order[] = 'date_crea_adh ' . $filters->getDirection();
+            $order[] = 'bool_exempt_adh ' . $filters->getDirection();
+            $order[] = 'date_echeance ' . $filters->getDirection();
             break;
         }
 
         //anyways, we want to order by firstname, lastname
-        $order[] = 'nom_adh ' . $varslist->getDirection();
-        $order[] = 'prenom_adh ' . $varslist->getDirection();
+        $order[] = 'nom_adh ' . $filters->getDirection();
+        $order[] = 'prenom_adh ' . $filters->getDirection();
         return $order;
     }
 
@@ -635,19 +662,21 @@ class Members
      */
     private function _buildWhereClause($select)
     {
-        global $zdb, $varslist, $login;
+        global $zdb, $login;
+
+        $filters = self::getFilters();
 
         try {
-            if ( $varslist->email_filter == Members::FILTER_W_EMAIL) {
+            if ( $filters->email_filter == Members::FILTER_W_EMAIL) {
                 $select->where('email_adh != \'\'');
             }
-            if ( $varslist->email_filter == Members::FILTER_WO_EMAIL) {
+            if ( $filters->email_filter == Members::FILTER_WO_EMAIL) {
                 $select->where('email_adh = ""');
             }
 
-            if ( $varslist->filter_str != '' ) {
-                $token = '%' . $varslist->filter_str . '%';
-                switch( $varslist->field_filter ) {
+            if ( $filters->filter_str != '' ) {
+                $token = '%' . $filters->filter_str . '%';
+                switch( $filters->field_filter ) {
                 case self::FILTER_NAME:
                     $sep = ( TYPE_DB === 'pgsql' ) ? " || ' ' || " : ', " ", ';
                     $select->where(
@@ -729,8 +758,8 @@ class Members
                 }
             }
 
-            if ( $varslist->membership_filter ) {
-                switch($varslist->membership_filter) {
+            if ( $filters->membership_filter ) {
+                switch($filters->membership_filter) {
                 case 1:
                     $select->where('date_echeance > ?', date('Y-m-d', time()))
                         ->where(
@@ -762,8 +791,8 @@ class Members
                 }
             }
 
-            if ( $varslist->account_status_filter ) {
-                switch($varslist->account_status_filter) {
+            if ( $filters->account_status_filter ) {
+                switch($filters->account_status_filter) {
                 case 1:
                     $select->where('activite_adh=true');
                     break;

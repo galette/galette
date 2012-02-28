@@ -1,27 +1,27 @@
 		<form action="gestion_adherents.php" method="get" id="filtre">
 		<div id="listfilter">
 			<label for="filter_str">{_T string="Search:"}&nbsp;</label>
-			<input type="text" name="filter_str" id="filter_str" value="{$varslist->filter_str}" type="search" placeholder="{_T string="Enter a value"}"/>&nbsp;
+			<input type="text" name="filter_str" id="filter_str" value="{$filters->filter_str}" type="search" placeholder="{_T string="Enter a value"}"/>&nbsp;
 		 	{_T string="in:"}&nbsp;
 			<select name="filter_field">
-				{html_options options=$filter_field_options selected=$varslist->field_filter}
+				{html_options options=$filter_field_options selected=$filters->field_filter}
 			</select>
 		 	{_T string="among:"}&nbsp;
 			<select name="filter_membership" onchange="form.submit()">
-				{html_options options=$filter_membership_options selected=$varslist->membership_filter}
+				{html_options options=$filter_membership_options selected=$filters->membership_filter}
 			</select>
 			<select name="filter_account" onchange="form.submit()">
-				{html_options options=$filter_accounts_options selected=$varslist->account_status_filter}
+				{html_options options=$filter_accounts_options selected=$filters->account_status_filter}
 			</select>
 			<input type="submit" class="inline" value="{_T string="Filter"}"/>
 			<input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
             <div>
                 {_T string="Members that have an email adress:"}
-                <input type="radio" name="email_filter" id="filter_dc_email" value="{php}echo Members::FILTER_DC_EMAIL;{/php}"{if $varslist->email_filter eq constant('Members::FILTER_DC_EMAIL')} checked="checked"{/if}>
+                <input type="radio" name="email_filter" id="filter_dc_email" value="{php}echo Members::FILTER_DC_EMAIL;{/php}"{if $filters->email_filter eq constant('Members::FILTER_DC_EMAIL')} checked="checked"{/if}>
                 <label for="filter_dc_email" >{_T string="Don't care"}</label>
-                <input type="radio" name="email_filter" id="filter_with_email" value="{php}echo Members::FILTER_W_EMAIL;{/php}"{if $varslist->email_filter eq constant('Members::FILTER_W_EMAIL')} checked="checked"{/if}>
+                <input type="radio" name="email_filter" id="filter_with_email" value="{php}echo Members::FILTER_W_EMAIL;{/php}"{if $filters->email_filter eq constant('Members::FILTER_W_EMAIL')} checked="checked"{/if}>
                 <label for="filter_with_email" >{_T string="With"}</label>
-                <input type="radio" name="email_filter" id="filter_without_email" value="{php}echo Members::FILTER_WO_EMAIL;{/php}"{if $varslist->email_filter eq constant('Members::FILTER_WO_EMAIL')} checked="checked"{/if}>
+                <input type="radio" name="email_filter" id="filter_without_email" value="{php}echo Members::FILTER_WO_EMAIL;{/php}"{if $filters->email_filter eq constant('Members::FILTER_WO_EMAIL')} checked="checked"{/if}>
                 <label for="filter_without_email" >{_T string="Without"}</label>
             </div>
 		</div>
@@ -46,8 +46,8 @@
 					<th class="listing left">
 						<a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_NAME;{/php}" class="listing">
 							{_T string="Name"}
-							{if $varslist->orderby eq constant('Members::ORDERBY_NAME')}
-								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
+							{if $filters->orderby eq constant('Members::ORDERBY_NAME')}
+								{if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
 								{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -58,8 +58,8 @@
 					<th class="listing left">
 						<a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_NICKNAME;{/php}" class="listing">
 							{_T string="Nickname"}
-							{if $varslist->orderby eq constant('Members::ORDERBY_NICKNAME')}
-								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
+							{if $filters->orderby eq constant('Members::ORDERBY_NICKNAME')}
+								{if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
 								{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -70,8 +70,8 @@
 					<th class="listing left">
 						<a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_STATUS;{/php}" class="listing">
 							{_T string="Status"}
-							{if $varslist->orderby eq constant('Members::ORDERBY_STATUS')}
-								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
+							{if $filters->orderby eq constant('Members::ORDERBY_STATUS')}
+								{if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
 								{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -83,8 +83,8 @@
 					<th class="listing left">
 						<a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_FEE_STATUS;{/php}" class="listing">
 							{_T string="State of dues"}
-							{if $varslist->orderby eq constant('Members::ORDERBY_FEE_STATUS')}
-								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
+							{if $filters->orderby eq constant('Members::ORDERBY_FEE_STATUS')}
+								{if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
 								{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -95,8 +95,8 @@
                     <th class="listing left">
                         <a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_MODIFDATE;{/php}" class="listing">
                             {_T string="Modified"}
-							{if $varslist->orderby eq constant('Members::ORDERBY_MODIFDATE')}
-								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
+							{if $filters->orderby eq constant('Members::ORDERBY_MODIFDATE')}
+								{if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
 								{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -137,7 +137,7 @@
 			<tbody>
 {foreach from=$members item=member key=ordre}
 				<tr>
-					<td class="{$member->getRowClass()} right">{php}$ordre = $this->get_template_vars('ordre');echo $ordre+1+($varslist->current_page - 1)*$numrows{/php}</td>
+					<td class="{$member->getRowClass()} right">{php}$ordre = $this->get_template_vars('ordre');echo $ordre+1+($filters->current_page - 1)*$numrows{/php}</td>
 					<td class="{$member->getRowClass()} nowrap username_row">
 						<input type="checkbox" name="member_sel[]" value="{$member->id}"/>
                     {if $member->isCompany()}

@@ -49,7 +49,6 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 
 require_once 'classes/transaction.class.php';
 require_once 'includes/dynamic_fields.inc.php';
-require_once 'classes/varslist.class.php';
 require_once 'classes/contributions.class.php';
 
 $trans = new Transaction();
@@ -176,7 +175,6 @@ if ( $trans->id != '' ) {
 }
 
 // members
-$varslist = new VarsList();
 $members = Members::getList();
 if ( count($members) == 0 ) {
     $adh_options = array('' => _T("You must first register a member"));

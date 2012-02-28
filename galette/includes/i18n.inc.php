@@ -37,8 +37,6 @@
  * @since     Available since 0.62
  */
 
-require_once WEB_ROOT . 'classes/l10n.class.php';
-
 $disable_gettext=true;
 
 $language = $i18n->getLongID();
@@ -219,7 +217,7 @@ function getDynamicTranslation($text_orig, $text_locale)
     try {
         $select = new Zend_Db_Select($zdb->db);
         $select->limit(1)->from(
-            PREFIX_DB . L10n::TABLE,
+            PREFIX_DB . Galette\Core\L10n::TABLE,
             'text_trans'
         )->where('text_orig = ?', $text_orig)
             ->where('text_locale = ?', $text_locale);

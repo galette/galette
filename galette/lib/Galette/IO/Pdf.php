@@ -245,7 +245,7 @@ class Pdf extends \TCPDF
     {
         global $preferences;
 
-        $print_logo = new Galette\Core\PrintLogo();
+        $print_logo = new \Galette\Core\PrintLogo();
         if ( $print_logo->hasPicture() ) {
             $logofile = $print_logo->getPath();
 

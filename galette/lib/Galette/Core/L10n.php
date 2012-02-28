@@ -35,6 +35,8 @@
  * @since     Available since 0.7dev - 2011-07-31
  */
 
+namespace Galette\Core;
+
 /**
  * l10n handling
  *

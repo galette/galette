@@ -45,6 +45,8 @@
  * @since     Available since 0.7dev - 2007-07-09
  */
 
+use Galette\IO\Pdf;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
@@ -53,25 +55,24 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-namespace Galette\IO\Pdf;
-
 require_once  WEB_ROOT . 'classes/members.class.php';
-require_once WEB_ROOT . 'classes/varslist.class.php';
-require_once WEB_ROOT . 'classes/print_logo.class.php';
+
+$filters = Members::getFilters();
 
 if ( isset($_GET[Adherent::PK])
     && $_GET[Adherent::PK] > 0
 ) {
     // If we are called from "voir_adherent.php" get unique id value
     $unique = $_GET[Adherent::PK];
-} else if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']) ) {
-    $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
 } else {
-    $log->log('No member selected to generate members cards', PEAR_LOG_INFO);
-    if ( $login->isAdmin() || $login->isStaff() ) {
-        header('location:gestion_adherents.php');
-    } else {
-        header('location:voir_adherent.php');
+    if ( count($filters->selected) == 0 ) {
+        $log->log('No member selected to generate members cards', PEAR_LOG_INFO);
+        if ( $login->isAdmin() || $login->isStaff() ) {
+            header('location:gestion_adherents.php');
+        } else {
+            header('location:voir_adherent.php');
+        }
+        die();
     }
 }
 
@@ -80,7 +81,7 @@ $mailing_adh = array();
 if ( isset($unique) && $unique ) {
     $mailing_adh[] = $unique;
 } else {
-    $mailing_adh = $varslist->selected;
+    $mailing_adh = $filters->selected;
 }
 
 $members = Members::getArrayList($mailing_adh, array('nom_adh', 'prenom_adh'));

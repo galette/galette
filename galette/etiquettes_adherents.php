@@ -38,6 +38,8 @@
  * @link      http://galette.tuxfamily.org
  */
 
+use Galette\IO\Pdf;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
@@ -50,27 +52,23 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-use Galette\IO\Pdf;
-
 require_once WEB_ROOT . 'classes/members.class.php';
-require_once WEB_ROOT . 'classes/varslist.class.php';
 
 $members = null;
+$filters = Members::getFilters();
+
 if ( isset($_GET['from']) && $_GET['from'] === 'mailing' ) {
     //if we're from mailing, we have to retrieve its unreachables members for labels
     $mailing = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
     $members = $mailing->unreachables;
 } else {
-    if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']) ) {
-        $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
-    } else {
+    if ( count($filters->selected) == 0 ) {
         $log->log('No member selected to generate labels', PEAR_LOG_INFO);
-        if ( $login->isAdmin || $login->isStaff() ) {
-            header('location:gestion_adherents.php');
-        }
+        header('location:gestion_adherents.php');
+        die();
     }
 
-    $members = Members::getArrayList($varslist->selected);
+    $members = Members::getArrayList($filters->selected);
 }
 
 if ( !is_array($members) || count($members) < 1 ) {

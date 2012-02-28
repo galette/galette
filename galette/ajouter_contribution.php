@@ -50,7 +50,6 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 require_once 'classes/texts.class.php';
 require_once 'classes/contributions_types.class.php';
 require_once 'includes/dynamic_fields.inc.php';
-require_once 'classes/varslist.class.php';
 
 $contrib = new Contribution();
 
@@ -337,7 +336,6 @@ $type_cotis_options = ContributionsTypes::getList(
 $tpl->assign('type_cotis_options', $type_cotis_options);
 
 // members
-$varslist = new VarsList();
 $members = Members::getList(true);
 if ( count($members) == 0 ) {
     $adh_options = array('' => _T("You must first register a member"));

@@ -37,6 +37,8 @@
  * @link      http://galette.tuxfamily.org
  */
 
+use Galette\IO\Pdf;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
@@ -49,22 +51,18 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-use Galette\IO\Pdf;
-
 require_once WEB_ROOT . 'classes/members.class.php';
-require_once WEB_ROOT . 'classes/varslist.class.php';
 
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']) ) {
-    $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
-} else {
+$filters = Members::getFilters();
+
+if ( count($filters->selected) == 0 ) {
     $log->log('No member selected to generate attendance sheet', PEAR_LOG_INFO);
-    if ( $login->isAdmin || $login->isStaff() ) {
-        header('location:gestion_adherents.php');
-    }
+    header('location:gestion_adherents.php');
+    die();
 }
 
 $members = Members::getArrayList(
-    $varslist->selected,
+    $filters->selected,
     array('nom_adh', 'prenom_adh')
 );
 
@@ -80,7 +78,20 @@ if ( isset($_POST['sheet_photos']) && $_POST['sheet_photos'] === '1') {
 
 define('SHEET_FONT', Pdf::FONT_SIZE-2);
 
-class SheetPdf extends Pdf {
+/**
+ * PDF attendence sheet list
+ *
+ * @name      SheetPdf
+ * @category  Classes
+ * @package   Galette
+ *
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2011-2012 The Galette Team
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @link      http://galette.tuxfamily.org
+ */
+class SheetPdf extends Pdf
+{
 
     public $doc_title = null;
     public $sheet_title = null;
@@ -89,8 +100,11 @@ class SheetPdf extends Pdf {
 
     /**
      * Page header
+     *
+     * @return void
      */
-    public function Header() {
+    public function Header()
+    {
         $this->SetFont(Pdf::FONT, '', SHEET_FONT - 2);
         $head_title = $this->doc_title;
         if ( $this->sheet_title !== null ) {
@@ -144,7 +158,6 @@ $pdf->SetFont(Pdf::FONT, '', SHEET_FONT);
 $pdf->SetTextColor(0, 0, 0);
 
 $pdf->AddPage();
-$picture = new picture(0);
 $pdf->PageHeader($doc_title);
 
 if ( $pdf->sheet_title !== null ) {
@@ -155,7 +168,7 @@ if ( $pdf->sheet_sub_title ) {
 }
 if ( $pdf->sheet_date ) {
     $date_fmt = null;
-    if( PHP_OS === 'Linux' ) {
+    if ( PHP_OS === 'Linux' ) {
         $format = _T("%A, %B %#d%O %Y");
         $format = str_replace(
             '%O',
@@ -179,7 +192,7 @@ $pdf->Cell(80, 7, _T("Signature"), 1, 1, 'C', 1);
 // Data
 $pdf->SetFont('');
 $mcount = 0;
-foreach($members as $m) {
+foreach ( $members as $m ) {
     $mcount++;
     $pdf->Cell(10, 16, $mcount, 'LTB', 0, 'R');
 

@@ -53,30 +53,28 @@ $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 $multiple = ( isset($_POST['multiple']) && $_POST['multiple'] == 'false' ) ? false : true;
 
 require_once WEB_ROOT . 'classes/members.class.php';
-require_once WEB_ROOT . 'classes/varslist.class.php';
-require_once WEB_ROOT . 'classes/mailing.class.php';
 require_once WEB_ROOT . 'classes/group.class.php';
 
-$varslist = new VarsList();
+$filters = new Galette\Filters\MembersList();
 
 if (isset($_GET['page'])) {
-    $varslist->current_page = (int)$_GET['page'];
+    $filters->current_page = (int)$_GET['page'];
 }
 
 if (isset($_POST['page'])) {
-    $varslist->current_page = (int)$_POST['page'];
+    $filters->current_page = (int)$_POST['page'];
 }
 
 //numbers of rows to display
 if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
-    $varslist->show = $_GET['nbshow'];
+    $filters->show = $_GET['nbshow'];
 }
 
 $members = new Members();
 $members_list = $members->getMembersList(true);
 
 //assign pagination variables to the template and add pagination links
-$varslist->setSmartyPagination($tpl);
+$filters->setSmartyPagination($tpl);
 
 $selected_members = null;
 $unreachables_members = null;
@@ -129,7 +127,7 @@ $tpl->assign('unreachables_members', $unreachables_members);
 if ( isset($_POST['gid']) ) {
     $tpl->assign('the_id', $_POST['gid']);
 }
-$tpl->assign('varslist', $varslist);
+$tpl->assign('filters', $filters);
 
 if ( $ajax ) {
     $tpl->assign('mode', 'ajax');

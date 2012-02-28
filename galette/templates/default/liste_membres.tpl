@@ -6,8 +6,8 @@
 					<th class="listing left">
 						<a href="?tri={php}echo Members::ORDERBY_NAME;{/php}" class="listing">
 							{_T string="Name"}
-							{if $varslist->orderby eq constant('Members::ORDERBY_NAME')}
-								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
+							{if $filters->orderby eq constant('Members::ORDERBY_NAME')}
+								{if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
     							{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -18,8 +18,8 @@
 					<th class="listing left">
 						<a href="?tri={php}echo Members::ORDERBY_NICKNAME;{/php}" class="listing">
 							{_T string="Nickname"}
-							{if $varslist->orderby eq constant('Members::ORDERBY_NICKNAME')}
-								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
+							{if $filters->orderby eq constant('Members::ORDERBY_NICKNAME')}
+								{if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
     							{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>

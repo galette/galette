@@ -62,16 +62,14 @@ if ( isset($_POST['mailing_done'])
 }
 
 require_once WEB_ROOT . 'classes/members.class.php';
-require_once WEB_ROOT . 'classes/varslist.class.php';
 
 $data = array();
 
 if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED && !GALETTE_MODE === 'DEMO') {
     $hist->add(_T("Trying to load mailing while mail is disabled in preferences."));
 } else {
-    if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']) ) {
-        $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
-    } else {
+    $filters = Members::getFilters();
+    if ( count($filters->selected) == 0 ) {
         $log->log(
             '[mailing_adherents.php] No member selected for mailing',
             PEAR_LOG_INFO
@@ -80,7 +78,7 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED && !GALETTE
         die();
     }
 
-    $members = Members::getArrayList($varslist->selected);
+    $members = Members::getArrayList($filters->selected);
 
     if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing'])
         && !isset($_POST['mailing_cancel'])
@@ -147,8 +145,8 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED && !GALETTE
             );
             $mailing->current_step = Core\Mailing::STEP_SENT;
             //cleanup
-            $varslist->selected = null;
-            $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'] = serialize($varslist);
+            $filters->selected = null;
+            $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members'] = serialize($filters);
             $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing'] = null;
             unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
         }

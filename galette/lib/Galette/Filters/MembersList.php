@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Members list parameters class for galette
+ * Members list filters and paginator
  *
  * PHP version 5
  *
@@ -35,10 +35,12 @@
  * @since     march, 3rd 2009
  */
 
+namespace Galette\Filters;
+
 /**
- * Members list parameters class for galette
+ * Members list filters and paginator
  *
- * @name      VarsList
+ * @name      MembersList
  * @category  Classes
  * @package   Galette
  *
@@ -48,7 +50,7 @@
  * @link      http://galette.tuxfamily.org
  */
 
-class VarsList extends Galette\Core\Pagination
+class MembersList extends \Galette\Core\Pagination
 {
     //filters
     private $_filter_str;
@@ -90,7 +92,7 @@ class VarsList extends Galette\Core\Pagination
         $this->_field_filter = null;
         $this->_membership_filter = null;
         $this->_account_status_filter = null;
-        $this->_email_filter = Members::FILTER_DC_EMAIL;
+        $this->_email_filter = \Members::FILTER_DC_EMAIL;
         $this->_selected = array();
     }
 
@@ -106,7 +108,7 @@ class VarsList extends Galette\Core\Pagination
         global $log;
 
         $log->log(
-            '[VarsList] Getting property `' . $name . '`',
+            '[MembersList] Getting property `' . $name . '`',
             PEAR_LOG_DEBUG
         );
 
@@ -127,7 +129,7 @@ class VarsList extends Galette\Core\Pagination
                 return $this->$name;
             } else {
                 $log->log(
-                    '[VarsList] Unable to get proprety `' .$name . '`',
+                    '[MembersList] Unable to get proprety `' .$name . '`',
                     PEAR_LOG_WARNING
                 );
             }
@@ -150,7 +152,7 @@ class VarsList extends Galette\Core\Pagination
             parent::__set($name, $value);
         } else {
             $log->log(
-                '[VarsList] Setting property `' . $name . '`',
+                '[MembersList] Setting property `' . $name . '`',
                 PEAR_LOG_DEBUG
             );
 
@@ -162,7 +164,7 @@ class VarsList extends Galette\Core\Pagination
                     $this->$name = $value;
                 } else {
                     $log->log(
-                        '[VarsList] Value for property `' . $name .
+                        '[MembersList] Value for property `' . $name .
                         '` should be an array (' . gettype($value) . ' given)',
                         PEAR_LOG_WARNING
                     );
@@ -180,7 +182,7 @@ class VarsList extends Galette\Core\Pagination
                     $this->$name = $value;
                 } else {
                     $log->log(
-                        '[VarsList] Value for property `' . $name .
+                        '[MembersList] Value for property `' . $name .
                         '` should be an integer (' . gettype($value) . ' given)',
                         PEAR_LOG_WARNING
                     );
@@ -188,17 +190,17 @@ class VarsList extends Galette\Core\Pagination
                 break;
             case 'email_filter':
                 switch ($value) {
-                case Members::FILTER_DC_EMAIL:
-                case Members::FILTER_W_EMAIL:
-                case Members::FILTER_WO_EMAIL:
+                case \Members::FILTER_DC_EMAIL:
+                case \Members::FILTER_W_EMAIL:
+                case \Members::FILTER_WO_EMAIL:
                     $this->_email_filter = $value;
                     break;
                 default:
                     $log->log(
-                        '[VarsList] Value for email filter should be either ' .
-                        Members::FILTER_DC_EMAIL . ', ' .
-                        Members::FILTER_W_EMAIL . ' or ' .
-                        Members::FILTER_WO_EMAIL . ' (' . $value . ' given)',
+                        '[MembersList] Value for email filter should be either ' .
+                        \Members::FILTER_DC_EMAIL . ', ' .
+                        \Members::FILTER_W_EMAIL . ' or ' .
+                        \Members::FILTER_WO_EMAIL . ' (' . $value . ' given)',
                         PEAR_LOG_WARNING
                     );
                     break;
@@ -206,7 +208,7 @@ class VarsList extends Galette\Core\Pagination
                 break;
             default:
                 $log->log(
-                    '[VarsList] Unable to set proprety `' . $name . '`',
+                    '[MembersList] Unable to set proprety `' . $name . '`',
                     PEAR_LOG_WARNING
                 );
                 break;
