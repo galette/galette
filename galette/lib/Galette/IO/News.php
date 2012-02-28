@@ -35,6 +35,8 @@
  * @since     Available since 0.7dev - 2011-11-11
  */
 
+namespace Galette\IO;
+
 /** @ignore */
 require_once GALETTE_GAPI_PATH . '/apiClient.php';
 require_once GALETTE_GAPI_PATH . '/contrib/apiPlusService.php';
@@ -43,7 +45,7 @@ require_once GALETTE_GAPI_PATH . '/contrib/apiPlusService.php';
  * News class for galette
  *
  * @category  News
- * @name      GaletteNews
+ * @name      News
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2011-2012 The Galette Team
@@ -51,7 +53,7 @@ require_once GALETTE_GAPI_PATH . '/contrib/apiPlusService.php';
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-11-11
  */
-class GaletteNews
+class News
 {
     const TWITTER_API_URL = 'https://api.twitter.com/1/statuses/user_timeline/%userid.xml?count=%count&include_rts=%rt';
 
@@ -107,15 +109,15 @@ class GaletteNews
         if (file_exists($cfile) ) {
             try {
                 $dformat = 'Y-m-d H:i:s';
-                $mdate = DateTime::createFromFormat(
+                $mdate = \DateTime::createFromFormat(
                     $dformat,
                     date(
                         $dformat,
                         filemtime($cfile)
                     )
                 );
-                $expire = $mdate->add(new DateInterval('PT' . $this->_cache_timeout . 'H'));
-                $now = new DateTime();
+                $expire = $mdate->add(new \DateInterval('PT' . $this->_cache_timeout . 'H'));
+                $now = new \DateTime();
                 $has_expired = $now > $expire;
                 return !$has_expired;
             } catch ( Exception $e ) {
@@ -212,7 +214,7 @@ class GaletteNews
             $xml = simplexml_load_file($this->_twitter_url);
 
             if ( !$xml ) {
-                throw new Exception();
+                throw new \Exception();
             }
 
             //search and replace:
@@ -232,7 +234,7 @@ class GaletteNews
 
             $tweets = array();
             foreach ( $xml->status as $status ) {
-                $tDate = new DateTime($status->created_at);
+                $tDate = new \DateTime($status->created_at);
                 $tweets[] = array(
                     'date'      => $tDate->format(_T("Y-m-d")),
                     'content'   => preg_replace(
@@ -262,10 +264,10 @@ class GaletteNews
     {
         global $log;
         try {
-            $gclient = new apiClient();
+            $gclient = new \apiClient();
             $gclient->setApplicationName("Galette's Google+");
             $gclient->setDeveloperKey(GALETTE_GAPI_KEY);
-            $plus = new apiPlusService($gclient);
+            $plus = new \apiPlusService($gclient);
 
             $optParams = array('maxResults' => $this->_show);
             $activities = $plus->activities->listActivities(
@@ -276,7 +278,7 @@ class GaletteNews
 
             $gposts = array();
             foreach ($activities['items'] as $activity) {
-                $tDate = new DateTime($activity['published']);
+                $tDate = new \DateTime($activity['published']);
                 $gposts[] = array(
                     'date'  => $tDate->format(_T("Y-m-d")),
                     'url'   => $activity['url'],
@@ -285,7 +287,7 @@ class GaletteNews
             }
 
             $this->_gplus = $gposts;
-        } catch ( Exception $e ) {
+        } catch ( \Exception $e ) {
             $log->log(
                 'Unable to load GooGlePlus posts :( | ' . $e->getMessage(),
                 PEAR_LOG_ERR
