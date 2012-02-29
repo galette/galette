@@ -81,6 +81,7 @@ if ( $type_selected && !($id_adh || $id_cotis) ) {
         if ( $contrib->id == '' ) {
             //not possible to load contribution, exit
             header('location: index.php');
+            die();
         }
     } else {
         $args = array(
@@ -160,7 +161,7 @@ if ( isset($_POST['valid']) ) {
         // dynamic fields
         set_all_dynamic_fields(
             'contrib',
-            $contribution['id_cotis'],
+            $id_cotis,
             $contribution['dyn']
         );
 
