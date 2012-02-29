@@ -87,6 +87,7 @@ if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_success']
 
 require_once WEB_ROOT . 'classes/adherent.class.php';
 require_once WEB_ROOT . 'includes/dynamic_fields.inc.php';
+require_once 'classes/members.class.php';
 
 $member = new Adherent();
 $member->load($id_adh);
@@ -109,10 +110,9 @@ if ( $login->id != $id_adh && !$login->isAdmin() && !$login->isStaff() ) {
 }
 
 $navigate = array();
-require_once 'classes/varslist.class.php';
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'])  ) {
-    $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
-    require_once 'classes/members.class.php';
+$filters = Members::getFilters();
+
+if ( count($filters) > 0 ) {
     $ids = Members::getList(false, array(Adherent::PK));
     //print_r($ids);
     foreach ( $ids as $k=>$m ) {
