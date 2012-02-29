@@ -40,12 +40,6 @@ require_once 'adherent.class.php';
 require_once 'contributions_types.class.php';
 require_once 'transaction.class.php';
 
-/*require_once 'politeness.class.php';
-require_once 'status.class.php';
-require_once 'fields_config.class.php';
-require_once 'fields_categories.class.php';
-require_once 'picture.class.php';*/
-
 /**
  * Contribution class for galette
  *

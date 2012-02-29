@@ -86,7 +86,6 @@ if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_success']
 }
 
 require_once WEB_ROOT . 'classes/adherent.class.php';
-require_once WEB_ROOT . 'classes/politeness.class.php';
 require_once WEB_ROOT . 'includes/dynamic_fields.inc.php';
 
 $member = new Adherent();

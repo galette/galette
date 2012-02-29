@@ -35,6 +35,8 @@
  * @since     Available since 0.7dev - 2009-03-04
  */
 
+namespace Galette\Entity;
+
 /**
  * Politeness class for galette
  *

@@ -249,7 +249,7 @@ if ( !$installer ) { //If we're not working from installer
                 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo']
             );
         } else {
-            $logo = new Galette\Core\Logo();
+            $logo = new Core\Logo();
         }
 
         /**

@@ -340,7 +340,7 @@ $tpl->assign('require_calendar', true);
 // pseudo random int
 $tpl->assign('time', time());
 // genre
-$tpl->assign('radio_titres', Politeness::getList());
+$tpl->assign('radio_titres', Galette\Entity\Politeness::getList());
 
 //Status
 $statuts = Status::getList();

@@ -36,7 +36,6 @@
  */
 
 /** @ignore */
-require_once 'politeness.class.php';
 require_once 'status.class.php';
 require_once 'fields_config.class.php';
 require_once 'fields_categories.class.php';
@@ -455,7 +454,7 @@ class Adherent
             $this->_language = $i18n->getID();
             $this->_creation_date = date("Y-m-d");
             $this->_status = Status::DEFAULT_STATUS;
-            $this->_politeness = Politeness::MR;
+            $this->_politeness = Galette\Entity\Politeness::MR;
             $gp = new Galette\Core\Password();
             $this->_password = $gp->makeRandomPassword();
             $this->_picture = new Galette\Core\Picture();
@@ -1348,7 +1347,7 @@ class Adherent
                 return (($this->$real) ? _T("Active") : _T("Inactive"));
                 break;
             case 'spoliteness':
-                return Politeness::getPoliteness($this->_politeness);
+                return Galette\Entity\Politeness::getPoliteness($this->_politeness);
                 break;
             case 'sstatus':
                 $status = new Status();
@@ -1357,7 +1356,7 @@ class Adherent
             case 'sfullname':
                 $sfn = mb_strtoupper($this->_name, 'UTF-8') . ' ' .
                        ucwords(mb_strtolower($this->_surname, 'UTF-8'));
-                    $sfn = Politeness::getPoliteness($this->_politeness) .
+                    $sfn = Galette\Entity\Politeness::getPoliteness($this->_politeness) .
                         ' ' . $sfn;
                 return $sfn;
                 break;
