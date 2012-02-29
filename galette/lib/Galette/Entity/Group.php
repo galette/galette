@@ -35,6 +35,8 @@
  * @since     Available since 0.7dev - 2012-01-17
  */
 
+namespace Galette\Entity;
+
 /**
  * Group entity
  *
@@ -97,14 +99,14 @@ class Group
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
 
             $select->from(PREFIX_DB . self::TABLE)
                 ->where(self::PK . '=?', $id);
             $result = $select->query()->fetchObject();
             $this->_loadFromRS($result);
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Cannot load group form id `' . $id . '` | ' . $e->getMessage(),
                 PEAR_LOG_WARNING
@@ -132,7 +134,7 @@ class Group
         if ( $r->parent_group ) {
             $this->_parent_group = new Group($r->parent_group);
         }
-        $adhpk = Galette\Entity\Adherent::PK;
+        $adhpk = Adherent::PK;
         if ( isset($r->members) ) {
             //we're from a list, we just want members count
             $this->_count_members = $r->members;
@@ -156,7 +158,7 @@ class Group
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
 
             $from = null;
             switch ( $type ) {
@@ -170,14 +172,14 @@ class Group
 
             $select->from(
                 PREFIX_DB . $from,
-                array(Galette\Entity\Adherent::PK)
+                array(Adherent::PK)
             )->where(self::PK . ' = ?', $this->_id);
 
             $res = $select->query()->fetchAll();
             $members = array();
-            $adhpk = Galette\Entity\Adherent::PK;
+            $adhpk = Adherent::PK;
             foreach ( $res as $m ) {
-                $members[] = new Galette\Entity\Adherent((int)$m->$adhpk);
+                $members[] = new Adherent((int)$m->$adhpk);
             }
 
             if ( $type === self::MEMBER_TYPE) {
@@ -185,7 +187,7 @@ class Group
             } else {
                 $this->_managers = $members;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Cannot get group persons | ' . $e->getMessage(),
                 PEAR_LOG_WARNING
@@ -207,7 +209,7 @@ class Group
         global $zdb, $log, $login;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
 
             $select->from(
                 array('a' => PREFIX_DB . self::TABLE)
@@ -218,7 +220,7 @@ class Group
                     array('b' => PREFIX_DB . self::GROUPSMANAGERS_TABLE),
                     'a.' . self::PK . '=b.' . self::PK,
                     array()
-                )->where('b.' . Galette\Entity\Adherent::PK . ' = ?', $login->id);
+                )->where('b.' . Adherent::PK . ' = ?', $login->id);
             }
 
             $select->where('parent_group = ?', $this->_id)
@@ -231,7 +233,7 @@ class Group
                 $groups[] = new Group((int)$m->$grppk);
             }
             $this->_groups = $groups;
-        } catch ( Exception $e ) {
+        } catch ( \Exception $e ) {
             $log->log(
                 'Cannot get subgroup for group ' . $this->_group_name .
                 ' (' . $this->_id . ')| ' . $e->getMessage(),
@@ -282,7 +284,7 @@ class Group
             $zdb->db->commit();
 
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $zdb->db->rollBack();
             $log->log(
                 'Unable to delete group ' . $this->_group_name .
@@ -305,7 +307,7 @@ class Group
         try {
             $edit = $zdb->db->update(
                 PREFIX_DB . self::TABLE,
-                array('parent_group' => new Zend_Db_Expr('NULL')),
+                array('parent_group' => new \Zend_Db_Expr('NULL')),
                 self::PK . '=' . $this->_id
             );
             //edit == 0 does not mean there were an error, but that there
@@ -319,7 +321,7 @@ class Group
             }
 
             return true;
-        } catch ( Exception $e ) {
+        } catch ( \Exception $e ) {
             $log->log(
                 'Something went wrong detaching group `' . $this->_group_name .
                 '` (' . $this->_id . ') from its parent:\'( | ' .
@@ -327,7 +329,7 @@ class Group
                 $e->getTraceAsString(),
                 PEAR_LOG_ERR
             );
-            throw new Exception(_T("Unable to detach group :("));
+            throw new \Exception(_T("Unable to detach group :("));
         }
     }
 
@@ -369,7 +371,7 @@ class Group
                     return true;
                 } else {
                     $hist->add(_T("Fail to add new group."));
-                    throw new Exception(
+                    throw new \Exception(
                         'An error occured inserting new group!'
                     );
                 }
@@ -391,7 +393,7 @@ class Group
                 return true;
             }
             /** FIXME: also store members and managers? */
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
@@ -567,11 +569,11 @@ class Group
     public function setParentGroup($id)
     {
         if ( $id == $this->_id ) {
-            throw new Exception(_T("A group cannot be set as its own parent!"));
+            throw new \Exception(_T("A group cannot be set as its own parent!"));
         }
         foreach ( $this->getGroups() as $g ) {
             if ( $id == $g->getId() ) {
-                throw new Exception(
+                throw new \Exception(
                     preg_replace(
                         array('/%subgroupname/', '/%groupname/'),
                         array($g->getName(), $this->getName()),
@@ -611,7 +613,7 @@ class Group
             $stmt = $zdb->db->prepare(
                 'INSERT INTO ' . PREFIX_DB . self::GROUPSUSERS_TABLE .
                 ' (' . $zdb->db->quoteIdentifier(self::PK) . ', ' .
-                $zdb->db->quoteIdentifier(Galette\Entity\Adherent::PK) . ')' .
+                $zdb->db->quoteIdentifier(Adherent::PK) . ')' .
                 ' VALUES(' . $this->_id . ', :adh)'
             );
 
@@ -632,7 +634,7 @@ class Group
                             '` ('  . $this->_id . ').',
                             PEAR_LOG_ERR
                         );
-                        throw new Exception(
+                        throw new \Exception(
                             'Unable to attach `' . $m->sname . '` ' .
                             'to ' . $this->_group_name . '(' . $this->_id . ')'
                         );
@@ -648,7 +650,7 @@ class Group
             );
 
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $zdb->db->rollBack();
             $log->log(
                 'Unable to attach members to group `' . $this->_group_name .
@@ -687,7 +689,7 @@ class Group
             $stmt = $zdb->db->prepare(
                 'INSERT INTO ' . PREFIX_DB . self::GROUPSMANAGERS_TABLE .
                 ' (' . $zdb->db->quoteIdentifier(self::PK) . ', ' .
-                $zdb->db->quoteIdentifier(Galette\Entity\Adherent::PK) . ')' .
+                $zdb->db->quoteIdentifier(Adherent::PK) . ')' .
                 ' VALUES(' . $this->_id . ', :adh)'
             );
 
@@ -708,7 +710,7 @@ class Group
                             '` ('  . $this->_id . ').',
                             PEAR_LOG_ERR
                         );
-                        throw new Exception(
+                        throw new \Exception(
                             'Unable to attach `' . $m->sname . '` ' .
                             'to ' . $this->_group_name . '(' . $this->_id . ')'
                         );
@@ -724,7 +726,7 @@ class Group
             );
 
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $zdb->db->rollBack();
             $log->log(
                 'Unable to attach managers to group `' . $this->_group_name .

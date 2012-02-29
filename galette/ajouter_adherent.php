@@ -216,7 +216,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
             }
 
             //store requested groups
-            $add_groups = Groups::addMemberToGroups($member, $_POST['groups_adh']);
+            $add_groups = Galette\Repository\Groups::addMemberToGroups($member, $_POST['groups_adh']);
             if ( $add_groups === true ) {
                 if ( isset ($_POST['groups_adh']) ) {
                     $log->log(
@@ -343,7 +343,7 @@ $statuts = Status::getList();
 $tpl->assign('statuts', $statuts);
 
 //Groups
-$groups = new Groups();
+$groups = new Galette\Repository\Groups();
 $groups_list = $groups->getList();
 $tpl->assign('groups', $groups_list);
 

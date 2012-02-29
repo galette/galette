@@ -48,11 +48,9 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once 'classes/group.class.php';
+$group = new Galette\Entity\Group();
 
-$group = new Group();
-
-$id = get_numeric_form_value(Group::PK, '');
+$id = get_numeric_form_value(Galette\Entity\Group::PK, '');
 if ( $id ) {
     $group->load($id);
 }
@@ -90,7 +88,7 @@ if ( $group->getId() != '' ) {
 
 $tpl->assign('page_title', $title);
 $tpl->assign('group', $group);
-$tpl->assign('groups', Groups::getSimpleList());
+$tpl->assign('groups', Galette\Repository\Groups::getSimpleList());
 
 $tpl->assign('require_dialog', true);
 $tpl->assign('error_detected', $error_detected);

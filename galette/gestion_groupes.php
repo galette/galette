@@ -35,7 +35,6 @@
  */
 
 require_once 'includes/galette.inc.php';
-require_once 'classes/groups.class.php';
 
 if ( !$login->isLogged() ) {
     header('location: index.php');
@@ -46,13 +45,13 @@ if ( !$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() ) {
     die();
 }
 
-$groups = new Groups();
+$groups = new Galette\Repository\Groups();
 
-$group = new Group();
+$group = new Galette\Entity\Group();
 $error_detected = array();
 $success_detected = array();
 
-$id = get_numeric_form_value(Group::PK, null);
+$id = get_numeric_form_value(Galette\Entity\Group::PK, null);
 if ( $id !== null ) {
     if ( $login->isGroupManager($id) ) {
         $group->load($id);
@@ -78,7 +77,7 @@ if ( isset($_POST['delete']) ) {
         );
         //reinstanciate group
         $id = null;
-        $group = new Group();
+        $group = new Galette\Entity\Group();
     }
 } else if ( isset($_POST['group_name']) ) {
     $group->setName($_POST['group_name']);
@@ -128,7 +127,7 @@ if ( isset($_POST['delete']) ) {
 }
 
 if ( isset($_GET['new']) ) {
-    $group = new Group();
+    $group = new Galette\Entity\Group();
     $group->setName($_GET['group_name']);
     if ( !$login->isSuperAdmin() ) {
         $group->setManagers(new Galette\Entity\Adherent($login->id));

@@ -37,12 +37,13 @@
 
 namespace Galette\Entity;
 
+use Galette\Repository\Groups as Groups;
+
 /** @ignore */
 require_once WEB_ROOT . 'classes/status.class.php';
 require_once WEB_ROOT . 'classes/fields_config.class.php';
 require_once WEB_ROOT . 'classes/fields_categories.class.php';
 require_once WEB_ROOT . 'classes/contribution.class.php';
-require_once WEB_ROOT . 'classes/groups.class.php';
 require_once WEB_ROOT . 'classes/members.class.php';
 
 /**
@@ -616,8 +617,8 @@ class Adherent
         $this->_others_infos = $r->info_public_adh;
         $this->_others_infos_admin = $r->info_adh;
         $this->_picture = new \Galette\Core\Picture($this->_id);
-        $this->_groups = \Groups::loadGroups($this->_id);
-        $this->_managed_groups = \Groups::loadManagedGroups($this->_id);
+        $this->_groups = Groups::loadGroups($this->_id);
+        $this->_managed_groups = Groups::loadManagedGroups($this->_id);
         $this->_checkDues();
     }
 

@@ -37,6 +37,8 @@
 
 namespace Galette\Core;
 
+use Galette\Repository\Groups as Groups;
+
 /**
  * Default authentication class for galette
  *

@@ -525,12 +525,12 @@ class Members
                     array('p' => PREFIX_DB . Status::TABLE, Status::PK),
                     'a.' . Status::PK . '=' . 'p.' . Status::PK
                 )->join(
-                    array('g' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                    array('g' => PREFIX_DB . Galette\Entity\Group::GROUPSUSERS_TABLE),
                     'a.' . Galette\Entity\Adherent::PK . '=g.' . Galette\Entity\Adherent::PK,
                     array()
                 )->join(
-                    array('m' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
-                    'g.' . Group::PK . '=m.' . Group::PK,
+                    array('m' => PREFIX_DB . Galette\Entity\Group::GROUPSMANAGERS_TABLE),
+                    'g.' . Galette\Entity\Group::PK . '=m.' . Galette\Entity\Group::PK,
                     array()
                 )->where('m.' . Galette\Entity\Adherent::PK . ' = ?', $login->id);
             case self::SHOW_PUBLIC_LIST:

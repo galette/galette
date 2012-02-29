@@ -53,7 +53,6 @@ $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 $multiple = ( isset($_POST['multiple']) && $_POST['multiple'] == 'false' ) ? false : true;
 
 require_once WEB_ROOT . 'classes/members.class.php';
-require_once WEB_ROOT . 'classes/group.class.php';
 
 $filters = new Galette\Filters\MembersList();
 
@@ -98,7 +97,7 @@ if ( !isset($_POST['from']) ) {
             exit(0);
         }
         if ( !isset($_POST['members']) ) {
-            $group = new Group((int)$_POST['gid']);
+            $group = new Galette\Entity\Group((int)$_POST['gid']);
             $selected_members = array();
             if ( !isset($_POST['mode']) || $_POST['mode'] == 'members' ) {
                 $selected_members = $group->getMembers();

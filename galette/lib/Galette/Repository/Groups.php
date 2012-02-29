@@ -35,8 +35,10 @@
  * @since     Available since 0.7dev - 2011-10-25
  */
 
-/** @ignore */
-require_once 'group.class.php';
+namespace Galette\Repository;
+
+use Galette\Entity\Group as Group;
+use Galette\Entity\Adherent as Adherent;
 
 /**
  * Groups entitiy
@@ -63,7 +65,7 @@ class Groups
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(
                 PREFIX_DB . Group::TABLE,
                 array(Group::PK, 'group_name')
@@ -75,7 +77,7 @@ class Groups
                 $groups[$row->$gpk] = $row->group_name;
             }
             return $groups;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Cannot list groups (simple) | ' . $e->getMessage(),
                 PEAR_LOG_WARNING
@@ -99,13 +101,13 @@ class Groups
     {
         global $zdb, $log, $login;
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(
                 array('a' => PREFIX_DB . Group::TABLE)
             )->joinLeft(
                 array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
                 'a.' . Group::PK . '=b.' . Group::PK,
-                array('members' => new Zend_Db_Expr('count(b.' . Group::PK . ')'))
+                array('members' => new \Zend_Db_Expr('count(b.' . Group::PK . ')'))
             );
 
             if ( !$login->isAdmin() && !$login->isStaff() && $full === true ) {
@@ -113,7 +115,7 @@ class Groups
                     array('c' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
                     'a.' . Group::PK . '=c.' . Group::PK,
                     array()
-                )->where('c.' . Galette\Entity\Adherent::PK . ' = ?', $login->id);
+                )->where('c.' . Adherent::PK . ' = ?', $login->id);
             }
 
             if ( $full !== true ) {
@@ -127,7 +129,7 @@ class Groups
                 $groups[] = new Group($row);
             }
             return $groups;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Cannot list groups | ' . $e->getMessage(),
                 PEAR_LOG_WARNING
@@ -168,7 +170,7 @@ class Groups
             $join_table = ($managed) ?
                 Group::GROUPSMANAGERS_TABLE :
                 Group::GROUPSUSERS_TABLE;
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(
                 array(
                     'a' => PREFIX_DB . Group::TABLE
@@ -179,7 +181,7 @@ class Groups
                 ),
                 'a.' . Group::PK . '=b.' . Group::PK,
                 array()
-            )->where('b.' . Galette\Entity\Adherent::PK . ' = ?', $id);
+            )->where('b.' . Adherent::PK . ' = ?', $id);
             $result = $select->query()->fetchAll();
             $log->log(
                 'Exectued query: ' . $select->__toString(),
@@ -195,7 +197,7 @@ class Groups
                 }
             }
             return $groups;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Cannot load member groups for id `' . $id . '` | ' .
                 $e->getMessage(),
@@ -228,7 +230,7 @@ class Groups
             //first, remove current groups members
             $del = $zdb->db->delete(
                 PREFIX_DB . Group::GROUPSUSERS_TABLE,
-                Galette\Entity\Adherent::PK . ' = ' . $adh->id
+                Adherent::PK . ' = ' . $adh->id
             );
             $log->log(
                 'Member `' . $adh->sname . '` has been detached of its groups' .
@@ -241,7 +243,7 @@ class Groups
                 $stmt = $zdb->db->prepare(
                     'INSERT INTO ' . PREFIX_DB . Group::GROUPSUSERS_TABLE .
                     ' (' . $zdb->db->quoteIdentifier(Group::PK) . ', ' .
-                    $zdb->db->quoteIdentifier(Galette\Entity\Adherent::PK) . ')' .
+                    $zdb->db->quoteIdentifier(Adherent::PK) . ')' .
                     ' VALUES(:id, ' . $adh->id . ')'
                 );
 
@@ -272,7 +274,7 @@ class Groups
             //commit all changes
             $zdb->db->commit();
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $zdb->db->rollBack();
             $log->log(
                 'Unable to add member `' . $adh->sname . '` (' . $adh->id .
@@ -296,14 +298,14 @@ class Groups
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(
                 PREFIX_DB . Group::TABLE,
                 array('group_name')
             )->where('group_name = ?', $name);
             $res = $select->query()->fetchAll();
             return !(count($res) > 0);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Cannot list groups (simple) | ' . $e->getMessage(),
                 PEAR_LOG_WARNING
