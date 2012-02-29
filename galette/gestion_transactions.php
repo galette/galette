@@ -97,7 +97,7 @@ $tpl->assign('require_dialog', true);
 $tpl->assign('transactions', $list_trans);
 $tpl->assign('nb_transactions', $trans->getCount());
 if ( $trans->filtre_cotis_adh != null ) {
-    $member = new Adherent();
+    $member = new Galette\Entity\Adherent();
     $member->load($trans->filtre_cotis_adh);
     $tpl->assign('member', $member);
 }

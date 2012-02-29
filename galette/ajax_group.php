@@ -39,7 +39,6 @@
  */
 
 require_once 'includes/galette.inc.php';
-require_once 'classes/adherent.class.php';
 
 $id = get_numeric_form_value(Group::PK, '');
 if ( !$id ) {

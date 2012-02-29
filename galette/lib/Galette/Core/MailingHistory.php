@@ -36,6 +36,7 @@
  */
 
 namespace Galette\Core;
+use Galette\Entity\Adherent;
 
 /**
  * Mailing features
@@ -84,7 +85,6 @@ class MailingHistory extends History
                 PEAR_LOG_ERR
             );
         }
-        
     }
 
     /**
@@ -123,8 +123,8 @@ class MailingHistory extends History
             $select->from(
                 array('a' => $this->getTableName())
             )->joinLeft(
-                array('b' => PREFIX_DB . \Adherent::TABLE),
-                'a.mailing_sender=b.' . \Adherent::PK,
+                array('b' => PREFIX_DB . Adherent::TABLE),
+                'a.mailing_sender=b.' . Adherent::PK,
                 array('b.nom_adh', 'b.prenom_adh')
             )->order($this->orderby . ' ' . $this->ordered);
             //add limits to retrieve only relavant rows
@@ -134,7 +134,7 @@ class MailingHistory extends History
 
             foreach ( $ret as &$r ) {
                 if ( $r['mailing_sender'] !== null ) {
-                    $r['mailing_sender_name'] = \Adherent::getSName($r['mailing_sender']);
+                    $r['mailing_sender_name'] = Adherent::getSName($r['mailing_sender']);
                 }
                 $body_resume = $r['mailing_body'];
                 if ( strlen($body_resume) > 150 ) {
@@ -192,7 +192,7 @@ class MailingHistory extends History
 
             $_recipients = array();
             foreach ( $orig_recipients as $k=>$v ) {
-                $m = new \Adherent($k);
+                $m = new Adherent($k);
                 $_recipients[] = $m;
             }
             $mailing->setRecipients($_recipients);

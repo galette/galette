@@ -37,7 +37,6 @@
  */
 
 require_once 'includes/galette.inc.php';
-require_once 'classes/adherent.class.php';
 
 $from_admin = false;
 if ( (($login->isAdmin() || $login->isStaff()) && isset($_GET['id_adh'])) ) {
@@ -45,6 +44,7 @@ if ( (($login->isAdmin() || $login->isStaff()) && isset($_GET['id_adh'])) ) {
 }
 
 use Galette\Core;
+use Galette\Entity\Adherent;
 
 if ( ($login->isLogged()
     || $preferences->pref_mail_method == Core\GaletteMail::METHOD_DISABLED)

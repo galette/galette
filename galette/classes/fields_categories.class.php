@@ -35,8 +35,6 @@
  * @since     Available since 0.7dev - 2009-03-28
  */
 
-require_once 'adherent.class.php';
-
 /**
  * Fields categories class for galette
  *
@@ -64,19 +62,19 @@ class FieldsCategories
     private static $_defaults = array(
         array(
             'id'         => 1,
-            'table_name' => Adherent::TABLE,
+            'table_name' => Galette\Entity\Adherent::TABLE,
             'category'   => 'Identity',
             'position'   => 1
         ),
         array(
             'id'         => 2,
-            'table_name' => Adherent::TABLE,
+            'table_name' => Galette\Entity\Adherent::TABLE,
             'category'   => 'Galette-related data',
             'position'   => 2
         ),
         array(
             'id'         => 3,
-            'table_name' => Adherent::TABLE,
+            'table_name' => Galette\Entity\Adherent::TABLE,
             'category'   => 'Contact information',
             'position'   => 3
         )

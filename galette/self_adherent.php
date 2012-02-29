@@ -50,9 +50,7 @@ require_once WEB_ROOT . 'classes/required.class.php';
 $requires = new Required();
 $required = $requires->getRequired();
 
-require_once 'classes/adherent.class.php';
-
-$member = new Adherent();
+$member = new Galette\Entity\Adherent();
 //mark as self membership
 $member->setSelfMembership();
 
@@ -69,7 +67,7 @@ $insert_string_values = '';
 $has_register = false;
 
 
-$fields = Adherent::getDbFields();
+$fields = Galette\Entity\Adherent::getDbFields();
 
 // checking posted values for 'regular' fields
 if ( isset($_POST["nom_adh"]) ) {

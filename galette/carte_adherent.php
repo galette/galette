@@ -59,11 +59,11 @@ require_once  WEB_ROOT . 'classes/members.class.php';
 
 $filters = Members::getFilters();
 
-if ( isset($_GET[Adherent::PK])
-    && $_GET[Adherent::PK] > 0
+if ( isset($_GET[Galette\Entity\Adherent::PK])
+    && $_GET[Galette\Entity\Adherent::PK] > 0
 ) {
     // If we are called from "voir_adherent.php" get unique id value
-    $unique = $_GET[Adherent::PK];
+    $unique = $_GET[Galette\Entity\Adherent::PK];
 } else {
     if ( count($filters->selected) == 0 ) {
         $log->log('No member selected to generate members cards', PEAR_LOG_INFO);

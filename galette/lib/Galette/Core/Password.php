@@ -39,6 +39,7 @@
  */
 
 namespace Galette\Core;
+use Galette\Entity\Adherent;
 
 /**
  * Abstract authentication class for galette
@@ -59,7 +60,7 @@ class Password
 {
 
     const TABLE = 'tmppasswds';
-    const PK = \Adherent::PK;
+    const PK = Adherent::PK;
 
     /** Default password size */
     private $_size = 8;

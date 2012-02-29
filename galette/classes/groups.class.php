@@ -113,7 +113,7 @@ class Groups
                     array('c' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
                     'a.' . Group::PK . '=c.' . Group::PK,
                     array()
-                )->where('c.' . Adherent::PK . ' = ?', $login->id);
+                )->where('c.' . Galette\Entity\Adherent::PK . ' = ?', $login->id);
             }
 
             if ( $full !== true ) {
@@ -179,7 +179,7 @@ class Groups
                 ),
                 'a.' . Group::PK . '=b.' . Group::PK,
                 array()
-            )->where('b.' . Adherent::PK . ' = ?', $id);
+            )->where('b.' . Galette\Entity\Adherent::PK . ' = ?', $id);
             $result = $select->query()->fetchAll();
             $log->log(
                 'Exectued query: ' . $select->__toString(),
@@ -228,7 +228,7 @@ class Groups
             //first, remove current groups members
             $del = $zdb->db->delete(
                 PREFIX_DB . Group::GROUPSUSERS_TABLE,
-                Adherent::PK . ' = ' . $adh->id
+                Galette\Entity\Adherent::PK . ' = ' . $adh->id
             );
             $log->log(
                 'Member `' . $adh->sname . '` has been detached of its groups' .
@@ -241,7 +241,7 @@ class Groups
                 $stmt = $zdb->db->prepare(
                     'INSERT INTO ' . PREFIX_DB . Group::GROUPSUSERS_TABLE .
                     ' (' . $zdb->db->quoteIdentifier(Group::PK) . ', ' .
-                    $zdb->db->quoteIdentifier(Adherent::PK) . ')' .
+                    $zdb->db->quoteIdentifier(Galette\Entity\Adherent::PK) . ')' .
                     ' VALUES(:id, ' . $adh->id . ')'
                 );
 

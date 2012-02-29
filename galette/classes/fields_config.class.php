@@ -37,7 +37,6 @@
 
 
 /** @ignore */
-require_once 'adherent.class.php';
 require_once 'fields_categories.class.php';
 
 /**
@@ -143,7 +142,7 @@ class FieldsConfig
                     $this->all_positions[$k->field_id] = $k->position;
                 }
 
-                $meta = Adherent::getDbFields();
+                $meta = Galette\Entity\Adherent::getDbFields();
 
                 if ( count($meta) != count($result) ) {
                     $log->log(

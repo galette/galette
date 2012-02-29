@@ -36,6 +36,7 @@
  */
 
 namespace Galette\Core;
+use Galette\Entity\Adherent;
 
 /**
  * Picture handling
@@ -61,7 +62,7 @@ class Picture
     //(do not use self::CONSTANT, but get_class[$this]::CONSTANT)
     const MAX_FILE_SIZE = 1024;
     const TABLE = 'pictures';
-    const PK = \Adherent::PK;
+    const PK = Adherent::PK;
 
     /*private $_bad_chars = array(
         '\.', '\\\\', "'", ' ', '\/', ':', '\*', '\?', '"', '<', '>', '|'

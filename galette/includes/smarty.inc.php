@@ -88,7 +88,7 @@ if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']) ) {
 function getMemberName($params)
 {
     extract($params);
-    return Adherent::getSName($id);
+    return Galette\Entity\Adherent::getSName($id);
 }
 $tpl->register_function('memberName', 'getMemberName');
 ?>

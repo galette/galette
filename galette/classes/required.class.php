@@ -35,9 +35,6 @@
  * @since     Available since 0.7dev - 2007-07-06
  */
 
-/** @ignore */
-require_once 'adherent.class.php';
-
 /**
  * Required class for galette :
  * defines which fields are mandatory and which are not.
@@ -98,7 +95,7 @@ class Required
             if ( count($required) == 0 && $try ) {
                 $this->init();
             } else {
-                $meta = Adherent::getDbFields();
+                $meta = Galette\Entity\Adherent::getDbFields();
                 if ( count($required) != count($meta) ) {
                     $log->log(
                         'Members columns count does not match required records.' .
@@ -176,7 +173,7 @@ class Required
         }
 
         try {
-            $fields = Adherent::getDbFields();
+            $fields = Galette\Entity\Adherent::getDbFields();
             $stmt = $zdb->db->prepare(
                 'INSERT INTO ' . PREFIX_DB . self::TABLE .
                 ' (' . $zdb->db->quoteIdentifier('field_id') . ', ' .

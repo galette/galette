@@ -36,7 +36,6 @@
  */
 
 /** @ignore */
-require_once 'adherent.class.php';
 require_once 'status.class.php';
 
 /**
@@ -53,8 +52,8 @@ require_once 'status.class.php';
  */
 class Members
 {
-    const TABLE = Adherent::TABLE;
-    const PK = Adherent::PK;
+    const TABLE = Galette\Entity\Adherent::TABLE;
+    const PK = Galette\Entity\Adherent::PK;
 
     const SHOW_LIST = 0;
     const SHOW_PUBLIC_LIST = 1;
@@ -170,7 +169,7 @@ class Members
         $managed=false,
         $limit=true
     ) {
-        global $zdb, $log;
+        global $zdb, $log, $galetteLoader;
 
         $filters = self::getFilters();
 
@@ -204,7 +203,7 @@ class Members
             $members = array();
             if ( $as_members ) {
                 foreach ( $select->query()->fetchAll() as $row ) {
-                    $members[] = new Adherent($row);
+                    $members[] = new Galette\Entity\Adherent($row);
                 }
             } else {
                 $members = $select->query()->fetchAll();
@@ -236,7 +235,7 @@ class Members
         if ( isset($session[$session_prefix . 'filters']['members']) ) {
             return unserialize($session[$session_prefix . 'filters']['members']);
         } else {
-            return new \Galette\Filters\MembersList();
+            return new Galette\Filters\MembersList();
         }
     }
 
@@ -277,7 +276,7 @@ class Members
                         $member->prenom_adh . ')';
                     $infos .=  $str_adh . "\n";
 
-                    $p = new Picture($member->id_adh);
+                    $p = new Galette\Core\Picture($member->id_adh);
                     if ( $p->hasPicture() ) {
                         if ( !$p->delete(false) ) {
                             $log->log(
@@ -410,7 +409,7 @@ class Members
             $result = $select->query()->fetchAll();
             $members = array();
             foreach ( $result as $row ) {
-                $members[] = new Adherent($row);
+                $members[] = new Galette\Entity\Adherent($row);
             }
             return $members;
         } catch (Exception $e) {
@@ -468,7 +467,7 @@ class Members
             $result = $select->query();
             $members = array();
             foreach ( $result->fetchAll() as $o) {
-                $members[] = new Adherent($o);
+                $members[] = new Galette\Entity\Adherent($o);
             }
             return $members;
         } catch (Exception $e) {
@@ -527,17 +526,17 @@ class Members
                     'a.' . Status::PK . '=' . 'p.' . Status::PK
                 )->join(
                     array('g' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
-                    'a.' . Adherent::PK . '=g.' . Adherent::PK,
+                    'a.' . Galette\Entity\Adherent::PK . '=g.' . Galette\Entity\Adherent::PK,
                     array()
                 )->join(
                     array('m' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
                     'g.' . Group::PK . '=m.' . Group::PK,
                     array()
-                )->where('m.' . Adherent::PK . ' = ?', $login->id);
+                )->where('m.' . Galette\Entity\Adherent::PK . ' = ?', $login->id);
             case self::SHOW_PUBLIC_LIST:
                 if ( $photos ) {
                     $select->join(
-                        array('p' => PREFIX_DB . Picture::TABLE),
+                        array('p' => PREFIX_DB . Galette\Core\Picture::TABLE),
                         'a.' . self::PK . '= p.' . self::PK
                     );
                 }

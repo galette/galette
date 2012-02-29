@@ -191,8 +191,8 @@ class Contributions extends Galette\Core\Pagination
             );
 
             $select->join(
-                array('p' => PREFIX_DB . Adherent::TABLE, Adherent::PK),
-                'a.' . Adherent::PK . '=' . 'p.' . Adherent::PK
+                array('p' => PREFIX_DB . Galette\Entity\Adherent::TABLE, Galette\Entity\Adherent::PK),
+                'a.' . Galette\Entity\Adherent::PK . '=' . 'p.' . Galette\Entity\Adherent::PK
             );
 
             $this->_buildWhereClause($select);
@@ -393,9 +393,9 @@ class Contributions extends Galette\Core\Pagination
 
             if ( !$login->isAdmin() && !$login->isStaff() ) {
                 //non staff members can only view their own contributions
-                $select->where('p.' . Adherent::PK . ' = ?', $login->id);
+                $select->where('p.' . Galette\Entity\Adherent::PK . ' = ?', $login->id);
             } else if ( $this->_filtre_cotis_adh != null ) {
-                $select->where('p.' . Adherent::PK . ' = ?', $this->_filtre_cotis_adh);
+                $select->where('p.' . Galette\Entity\Adherent::PK . ' = ?', $this->_filtre_cotis_adh);
             }
             if ( $this->_filtre_transactions === true ) {
                 $select->where('a.trans_id ?', new Zend_Db_Expr('IS NULL'));

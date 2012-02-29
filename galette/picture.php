@@ -52,7 +52,7 @@ if (  isset($_GET['logo']) && $_GET['logo'] == 'true' ) {
     } else { //displays the picture
         $id_adh = (int)$_GET['id_adh'];
         /** FIXME: we load entire member here... No need to do so! */
-        $adh = new Adherent($id_adh);
+        $adh = new Galette\Entity\Adherent($id_adh);
 
         $picture = null;
         if ( $login->isAdmin()

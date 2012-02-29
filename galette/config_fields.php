@@ -60,9 +60,8 @@ $fc = null;
 
 switch ( $current ) {
 case 'members':
-    include_once WEB_ROOT . 'classes/adherent.class.php';
-    $a = new Adherent();
-    $fc = new FieldsConfig(Adherent::TABLE, $a->fields);
+    $a = new Galette\Entity\Adherent();
+    $fc = new FieldsConfig(Galette\Entity\Adherent::TABLE, $a->fields);
     break;
 default:
     $log->log(

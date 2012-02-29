@@ -165,7 +165,7 @@ if ( isset($_POST['valid']) ) {
         );
 
         // Get member informations
-        $adh = new Adherent();
+        $adh = new Galette\Entity\Adherent();
         $adh->load($contrib->member);
 
         if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED ) {

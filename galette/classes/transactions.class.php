@@ -167,8 +167,8 @@ class Transactions extends Galette\Core\Pagination
                     'a.prenom_adh'
                 )
             )->join(
-                array('a' => PREFIX_DB . Adherent::TABLE, Adherent::PK),
-                't.' . Adherent::PK . '=' . 'a.' . Adherent::PK
+                array('a' => PREFIX_DB . Galette\Entity\Adherent::TABLE, Galette\Entity\Adherent::PK),
+                't.' . Galette\Entity\Adherent::PK . '=' . 'a.' . Galette\Entity\Adherent::PK
             );
 
             $this->_buildWhereClause($select);
@@ -300,9 +300,9 @@ class Transactions extends Galette\Core\Pagination
 
             if ( !$login->isAdmin() && !$login->isStaff() ) {
                 //non staff members can only view their own transactions
-                $select->where('t.' . Adherent::PK . ' = ?', $login->id);
+                $select->where('t.' . Galette\Entity\Adherent::PK . ' = ?', $login->id);
             } else if ( $this->_filtre_cotis_adh != null ) {
-                $select->where('t.' . Adherent::PK . ' = ?', $this->_filtre_cotis_adh);
+                $select->where('t.' . Galette\Entity\Adherent::PK . ' = ?', $this->_filtre_cotis_adh);
             }
         } catch (Exception $e) {
             /** TODO */

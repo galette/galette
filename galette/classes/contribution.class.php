@@ -36,7 +36,6 @@
  */
 
 /** @ignore */
-require_once 'adherent.class.php';
 require_once 'contributions_types.class.php';
 require_once 'transaction.class.php';
 
@@ -105,7 +104,7 @@ class Contribution
                 'label'    => null, //not a field in the form
                 'propname' => 'id'
             ),
-            Adherent::PK          => array(
+            Galette\Entity\Adherent::PK          => array(
                 'label'    => _T("Contributor:"),
                 'propname' => 'member'
             ),
@@ -233,7 +232,7 @@ class Contribution
                 ->where(self::PK . ' = ?', $id);
             //restrict query on current member id if he's not admin nor staff member
             if ( !$login->isAdmin() && !$login->isStaff() ) {
-                $select->where(Adherent::PK . ' = ?', $login->id);
+                $select->where(Galette\Entity\Adherent::PK . ' = ?', $login->id);
             }
             $row = $select->query()->fetch();
             if ( $row !== false ) {
@@ -283,7 +282,7 @@ class Contribution
         ) {
             $this->_end_date = $r->date_fin_cotis;
         }
-        $adhpk = Adherent::PK;
+        $adhpk = Galette\Entity\Adherent::PK;
         $this->_member = (int)$r->$adhpk;
 
         $transpk = Transaction::PK;
@@ -354,7 +353,7 @@ class Contribution
                             }
                         }
                         break;
-                    case Adherent::PK:
+                    case Galette\Entity\Adherent::PK:
                         $this->_member = $value;
                         break;
                     case ContributionsTypes::PK:
@@ -457,7 +456,7 @@ class Contribution
                 array('ct' => PREFIX_DB . ContributionsTypes::TABLE),
                 'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
                 array()
-            )->where(Adherent::PK . ' = ?', $this->_member)
+            )->where(Galette\Entity\Adherent::PK . ' = ?', $this->_member)
                 ->where('cotis_extension = ?', (string)1)
                 ->where(
                     '((' . $zdb->db->quoteInto('date_debut_cotis >= ?', $this->_begin_date) .
@@ -536,7 +535,7 @@ class Contribution
                     // logging
                     $hist->add(
                         _T("Contribution added"),
-                        Adherent::getSName($this->_member)
+                        Galette\Entity\Adherent::getSName($this->_member)
                     );
                 } else {
                     $hist->add(_T("Fail to add new contribution."));
@@ -556,7 +555,7 @@ class Contribution
                 if ( $edit > 0 ) {
                     $hist->add(
                         _T("Contribution updated"),
-                        Adherent::getSName($this->_member)
+                        Galette\Entity\Adherent::getSName($this->_member)
                     );
                 } else if ($edit === false) {
                     throw new Exception(
@@ -606,9 +605,9 @@ class Contribution
             }
 
             $edit = $zdb->db->update(
-                PREFIX_DB . Adherent::TABLE,
+                PREFIX_DB . Galette\Entity\Adherent::TABLE,
                 array('date_echeance' => $date_fin_update),
-                Adherent::PK . '=' . $this->_member
+                Galette\Entity\Adherent::PK . '=' . $this->_member
             );
             return true;
         } catch (Exception $e) {
@@ -719,7 +718,7 @@ class Contribution
             $select->from(
                 PREFIX_DB . self::TABLE,
                 'MAX(date_fin_cotis)'
-            )->where(Adherent::PK . ' = ?', $member_id);
+            )->where(Galette\Entity\Adherent::PK . ' = ?', $member_id);
             $due_date = $select->query()->fetchColumn();
             return $due_date;
         } catch (Exception $e) {

@@ -35,9 +35,6 @@
  * @since     Available since 0.7dev - 2012-01-17
  */
 
-/** @ignore */
-require_once 'adherent.class.php';
-
 /**
  * Group entity
  *
@@ -135,7 +132,7 @@ class Group
         if ( $r->parent_group ) {
             $this->_parent_group = new Group($r->parent_group);
         }
-        $adhpk = Adherent::PK;
+        $adhpk = Galette\Entity\Adherent::PK;
         if ( isset($r->members) ) {
             //we're from a list, we just want members count
             $this->_count_members = $r->members;
@@ -173,14 +170,14 @@ class Group
 
             $select->from(
                 PREFIX_DB . $from,
-                array(Adherent::PK)
+                array(Galette\Entity\Adherent::PK)
             )->where(self::PK . ' = ?', $this->_id);
 
             $res = $select->query()->fetchAll();
             $members = array();
-            $adhpk = Adherent::PK;
+            $adhpk = Galette\Entity\Adherent::PK;
             foreach ( $res as $m ) {
-                $members[] = new Adherent((int)$m->$adhpk);
+                $members[] = new Galette\Entity\Adherent((int)$m->$adhpk);
             }
 
             if ( $type === self::MEMBER_TYPE) {
@@ -221,7 +218,7 @@ class Group
                     array('b' => PREFIX_DB . self::GROUPSMANAGERS_TABLE),
                     'a.' . self::PK . '=b.' . self::PK,
                     array()
-                )->where('b.' . Adherent::PK . ' = ?', $login->id);
+                )->where('b.' . Galette\Entity\Adherent::PK . ' = ?', $login->id);
             }
 
             $select->where('parent_group = ?', $this->_id)
@@ -614,7 +611,7 @@ class Group
             $stmt = $zdb->db->prepare(
                 'INSERT INTO ' . PREFIX_DB . self::GROUPSUSERS_TABLE .
                 ' (' . $zdb->db->quoteIdentifier(self::PK) . ', ' .
-                $zdb->db->quoteIdentifier(Adherent::PK) . ')' .
+                $zdb->db->quoteIdentifier(Galette\Entity\Adherent::PK) . ')' .
                 ' VALUES(' . $this->_id . ', :adh)'
             );
 
@@ -690,7 +687,7 @@ class Group
             $stmt = $zdb->db->prepare(
                 'INSERT INTO ' . PREFIX_DB . self::GROUPSMANAGERS_TABLE .
                 ' (' . $zdb->db->quoteIdentifier(self::PK) . ', ' .
-                $zdb->db->quoteIdentifier(Adherent::PK) . ')' .
+                $zdb->db->quoteIdentifier(Galette\Entity\Adherent::PK) . ')' .
                 ' VALUES(' . $this->_id . ', :adh)'
             );
 

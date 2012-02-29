@@ -54,8 +54,6 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once WEB_ROOT . 'classes/adherent.class.php';
-
 $persons = Members::getArrayList($ids);
 
 $tpl->assign('persons', $persons);

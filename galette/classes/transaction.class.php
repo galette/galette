@@ -38,7 +38,6 @@
 /** @ignore */
 require_once 'contributions.class.php';
 require_once 'contribution.class.php';
-require_once 'adherent.class.php';
 
 /**
  * Transaction class for galette
@@ -102,7 +101,7 @@ class Transaction
                 'label'    => _T("Description:"),
                 'propname' => 'description'
             ),
-            Adherent::PK          => array(
+            Galette\Entity\Adherent::PK          => array(
                 'label'    => _T("Originator:"),
                 'propname' => 'member'
             )
@@ -216,7 +215,7 @@ class Transaction
         $this->_date = $r->trans_date;
         $this->_amount = $r->trans_amount;
         $this->_description = $r->trans_desc;
-        $adhpk = Adherent::PK;
+        $adhpk = Galette\Entity\Adherent::PK;
         $this->_member = (int)$r->$adhpk;
     }
 
@@ -270,7 +269,7 @@ class Transaction
                             }
                         }
                         break;
-                    case Adherent::PK:
+                    case Galette\Entity\Adherent::PK:
                         $this->_member = $value;
                         break;
                     case 'trans_amount':
@@ -359,7 +358,7 @@ class Transaction
                     // logging
                     $hist->add(
                         _T("Transaction added"),
-                        Adherent::getSName($this->_member)
+                        Galette\Entity\Adherent::getSName($this->_member)
                     );
                 } else {
                     $hist->add(_T("Fail to add new transaction."));
@@ -379,7 +378,7 @@ class Transaction
                 if ( $edit > 0 ) {
                     $hist->add(
                         _T("Transaction updated"),
-                        Adherent::getSName($this->_member)
+                        Galette\Entity\Adherent::getSName($this->_member)
                     );
                 }
             }

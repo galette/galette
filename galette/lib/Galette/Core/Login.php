@@ -51,7 +51,7 @@ namespace Galette\Core;
  */
 class Login extends Authentication
 {
-    const TABLE = 'adherents';
+    const TABLE = \Galette\Entity\Adherent::TABLE;
     const PK = 'login_adh';
 
     /**
@@ -152,7 +152,7 @@ class Login extends Authentication
                 }
                 return true;
             }
-        } catch (Zend_Db_Adapter_Exception $e) {
+        } catch (\Zend_Db_Adapter_Exception $e) {
             $log->log(
                 'An error occured: ' . $e->getChainedException()->getMessage(),
                 PEAR_LOG_WARNING
