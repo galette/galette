@@ -101,7 +101,6 @@ if ( $trans->filtre_cotis_adh != null ) {
     $member->load($trans->filtre_cotis_adh);
     $tpl->assign('member', $member);
 }
-$tpl->assign('numrows', $numrows);
 $content = $tpl->fetch('gestion_transactions.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
