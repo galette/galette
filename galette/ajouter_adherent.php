@@ -76,9 +76,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
 }
 
 // flagging required fields
-require_once WEB_ROOT . 'classes/required.class.php';
-
-$requires = new Required();
+$requires = new Galette\Entity\Required();
 $required = $requires->getRequired();
 
 // password required if we create a new member

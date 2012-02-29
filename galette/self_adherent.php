@@ -46,8 +46,7 @@ if ( !$preferences->pref_bool_selfsubscribe ) {
 require_once WEB_ROOT . 'includes/dynamic_fields.inc.php';
 
 // flagging required fields
-require_once WEB_ROOT . 'classes/required.class.php';
-$requires = new Required();
+$requires = new Galette\Entity\Required();
 $required = $requires->getRequired();
 
 $member = new Galette\Entity\Adherent();

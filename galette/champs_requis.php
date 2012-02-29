@@ -50,10 +50,9 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once 'classes/required.class.php';
 require_once 'champs_adherents.php';
 
-$requires = new Required();
+$requires = new Galette\Entity\Required();
 $fields = $requires->getFields();
 
 /* Fields that are not visible in the

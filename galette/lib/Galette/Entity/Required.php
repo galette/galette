@@ -35,6 +35,8 @@
  * @since     Available since 0.7dev - 2007-07-06
  */
 
+namespace Galette\Entity;
+
 /**
  * Required class for galette :
  * defines which fields are mandatory and which are not.
@@ -87,7 +89,7 @@ class Required
         global $zdb, $log;        
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . self::TABLE);
 
             $required = $select->query()->fetchAll();
@@ -95,7 +97,7 @@ class Required
             if ( count($required) == 0 && $try ) {
                 $this->init();
             } else {
-                $meta = Galette\Entity\Adherent::getDbFields();
+                $meta = Adherent::getDbFields();
                 if ( count($required) != count($meta) ) {
                     $log->log(
                         'Members columns count does not match required records.' .
@@ -127,7 +129,7 @@ class Required
                     $this->_all_required['mdp_adh'] = 1;
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot check required fields update | ' . $e->getMessage(),
@@ -173,7 +175,7 @@ class Required
         }
 
         try {
-            $fields = Galette\Entity\Adherent::getDbFields();
+            $fields = Adherent::getDbFields();
             $stmt = $zdb->db->prepare(
                 'INSERT INTO ' . PREFIX_DB . self::TABLE .
                 ' (' . $zdb->db->quoteIdentifier('field_id') . ', ' .
@@ -210,7 +212,7 @@ class Required
                 PEAR_LOG_DEBUG
             );
             $this->_checkUpdate(false);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'An error occured trying to initialize required fields | ' .
