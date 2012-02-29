@@ -38,7 +38,6 @@
 
 require_once 'includes/galette.inc.php';
 require_once 'classes/adherent.class.php';
-require_once 'classes/texts.class.php';
 
 $from_admin = false;
 if ( (($login->isAdmin() || $login->isStaff()) && isset($_GET['id_adh'])) ) {
@@ -79,7 +78,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
                 $link_validity->add(new DateInterval('PT24H'));
 
                 $df = _T("Y-m-d H:i:s");
-                $texts = new Texts(
+                $texts = new Galette\Entity\Texts(
                     array(
                         'change_pass_uri'   => 'http://' . $_SERVER['SERVER_NAME'] .
                                               dirname($_SERVER['REQUEST_URI']) .

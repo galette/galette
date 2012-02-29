@@ -50,7 +50,6 @@ require_once WEB_ROOT . 'classes/required.class.php';
 $requires = new Required();
 $required = $requires->getRequired();
 
-require_once WEB_ROOT . 'classes/texts.class.php';
 require_once 'classes/adherent.class.php';
 
 $member = new Adherent();
@@ -85,7 +84,7 @@ if ( isset($_POST["nom_adh"]) ) {
             if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED
                 && $preferences->pref_bool_mailadh
             ) {
-                $texts = new Texts(
+                $texts = new Galette\Entity\Texts(
                     array(
                         'name_adh'      => custom_html_entity_decode($member->sname),
                         'mail_adh'      => custom_html_entity_decode($member->email),
@@ -131,7 +130,7 @@ if ( isset($_POST["nom_adh"]) ) {
             ) {
                 //send mail to member
                 // Get email text in database
-                $texts = new Texts(
+                $texts = new Galette\Entity\Texts(
                     array(
                         'name_adh'      => custom_html_entity_decode($member->sname),
                         'mail_adh'      => custom_html_entity_decode($member->email),

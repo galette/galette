@@ -47,7 +47,6 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once 'classes/texts.class.php';
 require_once 'classes/contributions_types.class.php';
 require_once 'includes/dynamic_fields.inc.php';
 
@@ -170,7 +169,7 @@ if ( isset($_POST['valid']) ) {
         $adh->load($contrib->member);
 
         if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED ) {
-            $texts = new Texts(
+            $texts = new Galette\Entity\Texts(
                 array(
                     'name_adh'      => custom_html_entity_decode($adh->sname),
                     'mail_adh'      => custom_html_entity_decode($adh->email),

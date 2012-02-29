@@ -980,10 +980,8 @@ case 'u8':
 case 'i9';
 case 'u9';
     define('PREFIX_DB', $_POST['install_dbprefix']);
-    include_once '../classes/preferences.class.php';
     include_once '../classes/contributions_types.class.php';
     include_once '../classes/status.class.php';
-    include_once '../classes/texts.class.php';
     include_once '../classes/fields_categories.class.php';
 
     $oks = array();
@@ -1059,7 +1057,7 @@ define("STOCK_FILES", "tempimages");
         $preferences->store();
     }
 
-    $texts = new Texts();
+    $texts = new Galette\Entity\Texts();
     $res = $texts->installInit();
     if ( $res !== false ) {
         if ( $res !== true ) {

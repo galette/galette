@@ -36,6 +36,8 @@
  * @since     Avaialble since 0.7dev - 2007-07-16
  */
 
+namespace Galette\Entity;
+
 /**
  * Texts class for galette
  *
@@ -238,7 +240,7 @@ class Texts
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . self::TABLE)
                 ->where('tref = ?', $ref)
                 ->where('tlang = ?', $lang);
@@ -268,7 +270,7 @@ class Texts
                     try {
                         $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
                         return $this->getTexts($ref, $lang);
-                    } catch( Exception $e ) {
+                    } catch( \Exception $e ) {
                         $log->log(
                             'Unable to add missing requested text "' . $ref .
                             ' (' . $lang . ') | ' . $e->getMessage(),
@@ -284,7 +286,7 @@ class Texts
                 }
             }
             return $this->_all_texts;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot get text `' . $ref . '` for lang `' . $lang . '` | ' .
@@ -332,7 +334,7 @@ class Texts
                 $where
             );
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'An error has occured while storing mail text. | ' .
@@ -355,14 +357,14 @@ class Texts
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(
                 PREFIX_DB . self::TABLE,
                 array('tref', 'tcomment')
             )->where('tlang = ?', $lang);
 
-            return $select->query(Zend_Db::FETCH_ASSOC)->fetchAll();
-        } catch (Exception $e) {
+            return $select->query(\Zend_Db::FETCH_ASSOC)->fetchAll();
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot get refs for lang `' . $lang . '` | ' .
@@ -447,7 +449,7 @@ class Texts
                 );
                 return true;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Unable to initialize default texts.' . $e->getMessage(),
                 PEAR_LOG_WARNING

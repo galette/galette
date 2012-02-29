@@ -47,7 +47,6 @@ if ( !$login->isLogged() ) {
 require_once 'classes/adherent.class.php';
 require_once 'classes/status.class.php';
 require_once 'includes/dynamic_fields.inc.php';
-require_once 'classes/texts.class.php';
 
 $member = new Adherent();
 
@@ -118,7 +117,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                 if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED
                     && $preferences->pref_bool_mailadh
                 ) {
-                    $texts = new Texts(
+                    $texts = new Galette\Entity\Texts(
                         array(
                             'name_adh'  => custom_html_entity_decode($member->sname),
                             'mail_adh'  => custom_html_entity_decode($member->email),
@@ -168,7 +167,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     } else {
                         //send mail to member
                         // Get email text in database
-                        $texts = new Texts(
+                        $texts = new Galette\Entity\Texts(
                             array(
                                 'name_adh'      => custom_html_entity_decode($member->sname),
                                 'mail_adh'      => custom_html_entity_decode($member->email),
