@@ -175,7 +175,7 @@ if ( $trans->id != '' ) {
 }
 
 // members
-$members = Members::getList();
+$members = Galette\Repository\Members::getList();
 if ( count($members) == 0 ) {
     $adh_options = array('' => _T("You must first register a member"));
 } else {

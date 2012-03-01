@@ -86,7 +86,6 @@ if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_success']
 }
 
 require_once WEB_ROOT . 'includes/dynamic_fields.inc.php';
-require_once 'classes/members.class.php';
 
 $member = new Galette\Entity\Adherent();
 $member->load($id_adh);
@@ -109,10 +108,10 @@ if ( $login->id != $id_adh && !$login->isAdmin() && !$login->isStaff() ) {
 }
 
 $navigate = array();
-$filters = Members::getFilters();
+$filters = Galette\Repository\Members::getFilters();
 
 if ( count($filters) > 0 ) {
-    $ids = Members::getList(false, array(Galette\Entity\Adherent::PK));
+    $ids = Galette\Repository\Members::getList(false, array(Galette\Entity\Adherent::PK));
     //print_r($ids);
     foreach ( $ids as $k=>$m ) {
         if ( $m->id_adh == $member->id ) {

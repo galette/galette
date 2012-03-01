@@ -52,10 +52,8 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once WEB_ROOT . 'classes/members.class.php';
-
 $members = null;
-$filters = Members::getFilters();
+$filters = Galette\Repository\Members::getFilters();
 
 if ( isset($_GET['from']) && $_GET['from'] === 'mailing' ) {
     //if we're from mailing, we have to retrieve its unreachables members for labels
@@ -68,7 +66,7 @@ if ( isset($_GET['from']) && $_GET['from'] === 'mailing' ) {
         die();
     }
 
-    $members = Members::getArrayList($filters->selected);
+    $members = Galette\Repository\Members::getArrayList($filters->selected);
 }
 
 if ( !is_array($members) || count($members) < 1 ) {

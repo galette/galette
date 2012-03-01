@@ -61,8 +61,6 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 
 use Galette\Core;
 
-require_once WEB_ROOT . 'classes/members.class.php';
-
 $print_logo = new Core\PrintLogo();
 
 // flagging required fields
@@ -409,7 +407,7 @@ while ( ($entry = $d->read()) !== false ) {
 }
 $d->close();
 
-$m = new Members();
+$m = new Galette\Repository\Members();
 $tpl->assign('staff_members', $m->getStaffMembersList(true));
 
 $tpl->assign('time', time());

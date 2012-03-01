@@ -46,7 +46,7 @@ if ( !$preferences->showPublicPages() ) {
     header('location:../index.php');
 }
 
-$filters = Members::getFilters('public_');
+$filters = Galette\Repository\Members::getFilters('public_');
 
 // Filters
 if (isset($_GET['page'])) {
@@ -67,7 +67,7 @@ if ( isset($_GET['tri']) ) {
     $filters->orderby = $_GET['tri'];
 }
 
-$members = Members::getPublicList(false, null);
+$members = Galette\Repository\Members::getPublicList(false, null);
 
 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['public_filters']['members'] = serialize($filters);
 

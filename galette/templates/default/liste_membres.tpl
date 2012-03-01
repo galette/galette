@@ -4,9 +4,9 @@
 			<thead>
 				<tr>
 					<th class="listing left">
-						<a href="?tri={php}echo Members::ORDERBY_NAME;{/php}" class="listing">
+						<a href="?tri={php}echo Galette\Repository\Members::ORDERBY_NAME;{/php}" class="listing">
 							{_T string="Name"}
-							{if $filters->orderby eq constant('Members::ORDERBY_NAME')}
+							{if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NAME')}
 								{if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
     							{else}
@@ -16,9 +16,9 @@
 						</a>
 					</th>
 					<th class="listing left">
-						<a href="?tri={php}echo Members::ORDERBY_NICKNAME;{/php}" class="listing">
+						<a href="?tri={php}echo Galette\Repository\Members::ORDERBY_NICKNAME;{/php}" class="listing">
 							{_T string="Nickname"}
-							{if $filters->orderby eq constant('Members::ORDERBY_NICKNAME')}
+							{if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NICKNAME')}
 								{if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
     							{else}

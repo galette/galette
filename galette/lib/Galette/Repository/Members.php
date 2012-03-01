@@ -35,8 +35,15 @@
  * @since     Available since 0.7dev - 2009-02-28
  */
 
+namespace Galette\Repository;
+
+use Galette\Entity\Adherent as Adherent;
+use Galette\Filters\MembersList as MembersList;
+use Galette\Core\Picture as Picture;
+use Galette\Entity\Group as Group;
+
 /** @ignore */
-require_once 'status.class.php';
+require_once WEB_ROOT . 'classes/status.class.php';
 
 /**
  * Members class for galette
@@ -52,8 +59,8 @@ require_once 'status.class.php';
  */
 class Members
 {
-    const TABLE = Galette\Entity\Adherent::TABLE;
-    const PK = Galette\Entity\Adherent::PK;
+    const TABLE = Adherent::TABLE;
+    const PK = Adherent::PK;
 
     const SHOW_LIST = 0;
     const SHOW_PUBLIC_LIST = 1;
@@ -203,13 +210,13 @@ class Members
             $members = array();
             if ( $as_members ) {
                 foreach ( $select->query()->fetchAll() as $row ) {
-                    $members[] = new Galette\Entity\Adherent($row);
+                    $members[] = new Adherent($row);
                 }
             } else {
                 $members = $select->query()->fetchAll();
             }
             return $members;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot list members | ' . $e->getMessage(),
@@ -235,7 +242,7 @@ class Members
         if ( isset($session[$session_prefix . 'filters']['members']) ) {
             return unserialize($session[$session_prefix . 'filters']['members']);
         } else {
-            return new Galette\Filters\MembersList();
+            return new MembersList();
         }
     }
 
@@ -263,7 +270,7 @@ class Members
                 $zdb->db->beginTransaction();
 
                 //Retrieve some informations
-                $select = new Zend_Db_Select($zdb->db);
+                $select = new \Zend_Db_Select($zdb->db);
                 $select->from(
                     PREFIX_DB . self::TABLE,
                     array(self::PK, 'nom_adh', 'prenom_adh')
@@ -276,7 +283,7 @@ class Members
                         $member->prenom_adh . ')';
                     $infos .=  $str_adh . "\n";
 
-                    $p = new Galette\Core\Picture($member->id_adh);
+                    $p = new Picture($member->id_adh);
                     if ( $p->hasPicture() ) {
                         if ( !$p->delete(false) ) {
                             $log->log(
@@ -299,13 +306,13 @@ class Members
 
                 //delete contributions
                 $del = $zdb->db->delete(
-                    PREFIX_DB . Contribution::TABLE,
+                    PREFIX_DB . \Contribution::TABLE,
                     self::PK . ' IN (' . implode(',', $list) . ')'
                 );
 
                 //delete transactions
                 $del = $zdb->db->delete(
-                    PREFIX_DB . Transaction::TABLE,
+                    PREFIX_DB . \Transaction::TABLE,
                     self::PK . ' IN (' . implode(',', $list) . ')'
                 );
 
@@ -325,7 +332,7 @@ class Members
                 );
 
                 return true;
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $zdb->db->rollBack();
                 $log->log(
                     'Unable to delete selected member(s) |' .
@@ -409,10 +416,10 @@ class Members
             $result = $select->query()->fetchAll();
             $members = array();
             foreach ( $result as $row ) {
-                $members[] = new Galette\Entity\Adherent($row);
+                $members[] = new Adherent($row);
             }
             return $members;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot list members with public informations (photos: '
@@ -467,10 +474,10 @@ class Members
             $result = $select->query();
             $members = array();
             foreach ( $result->fetchAll() as $o) {
-                $members[] = new Galette\Entity\Adherent($o);
+                $members[] = new Adherent($o);
             }
             return $members;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot load members form ids array | ' . $e->getMessage(),
@@ -505,7 +512,7 @@ class Members
                             ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
                             : implode(', ', $fields)) : (array)'*';
 
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(
                 array('a' => PREFIX_DB . self::TABLE),
                 $fieldsList
@@ -516,27 +523,27 @@ class Members
             case self::SHOW_LIST:
             case self::SHOW_ARRAY_LIST:
                 $select->join(
-                    array('p' => PREFIX_DB . Status::TABLE, Status::PK),
-                    'a.' . Status::PK . '=' . 'p.' . Status::PK
+                    array('p' => PREFIX_DB . \Status::TABLE, \Status::PK),
+                    'a.' . \Status::PK . '=' . 'p.' . \Status::PK
                 );
                 break;
             case self::SHOW_MANAGED:
                 $select->join(
-                    array('p' => PREFIX_DB . Status::TABLE, Status::PK),
-                    'a.' . Status::PK . '=' . 'p.' . Status::PK
+                    array('p' => PREFIX_DB . \Status::TABLE, Status::PK),
+                    'a.' . \Status::PK . '=' . 'p.' . \Status::PK
                 )->join(
-                    array('g' => PREFIX_DB . Galette\Entity\Group::GROUPSUSERS_TABLE),
-                    'a.' . Galette\Entity\Adherent::PK . '=g.' . Galette\Entity\Adherent::PK,
+                    array('g' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                    'a.' . Adherent::PK . '=g.' . Adherent::PK,
                     array()
                 )->join(
-                    array('m' => PREFIX_DB . Galette\Entity\Group::GROUPSMANAGERS_TABLE),
-                    'g.' . Galette\Entity\Group::PK . '=m.' . Galette\Entity\Group::PK,
+                    array('m' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
+                    'g.' . Group::PK . '=m.' . Group::PK,
                     array()
-                )->where('m.' . Galette\Entity\Adherent::PK . ' = ?', $login->id);
+                )->where('m.' . Adherent::PK . ' = ?', $login->id);
             case self::SHOW_PUBLIC_LIST:
                 if ( $photos ) {
                     $select->join(
-                        array('p' => PREFIX_DB . Galette\Core\Picture::TABLE),
+                        array('p' => PREFIX_DB . Picture::TABLE),
                         'a.' . self::PK . '= p.' . self::PK
                     );
                 }
@@ -557,7 +564,7 @@ class Members
             }
 
             return $select;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot build SELECT clause for members | ' . $e->getMessage(),
@@ -586,12 +593,12 @@ class Members
 
         try {
             $countSelect = clone $select;
-            $countSelect->reset(Zend_Db_Select::COLUMNS);
-            $countSelect->reset(Zend_Db_Select::ORDER);
-            $countSelect->reset(Zend_Db_Select::HAVING);
+            $countSelect->reset(\Zend_Db_Select::COLUMNS);
+            $countSelect->reset(\Zend_Db_Select::ORDER);
+            $countSelect->reset(\Zend_Db_Select::HAVING);
             $countSelect->columns('count(a.' . self::PK . ') AS ' . self::PK);
 
-            $have = $select->getPart(Zend_Db_Select::HAVING);
+            $have = $select->getPart(\Zend_Db_Select::HAVING);
             if ( is_array($have) && count($have) > 0 ) {
                 foreach ( $have as $h ) {
                     $countSelect->where($h);
@@ -605,7 +612,7 @@ class Members
             if ( isset($filters) && $this->_count > 0 ) {
                 $filters->setCounter($this->_count);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot count members | ' . $e->getMessage(),

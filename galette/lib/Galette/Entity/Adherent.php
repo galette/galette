@@ -38,13 +38,13 @@
 namespace Galette\Entity;
 
 use Galette\Repository\Groups as Groups;
+use Galette\Repository\Members as Members;
 
 /** @ignore */
 require_once WEB_ROOT . 'classes/status.class.php';
 require_once WEB_ROOT . 'classes/fields_config.class.php';
 require_once WEB_ROOT . 'classes/fields_categories.class.php';
 require_once WEB_ROOT . 'classes/contribution.class.php';
-require_once WEB_ROOT . 'classes/members.class.php';
 
 /**
  * Member class for galette
@@ -601,7 +601,7 @@ class Adherent
         //Galette relative informations
         $this->_appears_in_list = ($r->bool_display_info == 1) ? true : false;
         $this->_admin = ($r->bool_admin_adh == 1) ? true : false;
-        if ( $r->priorite_statut < \Members::NON_STAFF_MEMBERS ) {
+        if ( $r->priorite_statut < Members::NON_STAFF_MEMBERS ) {
             $this->_staff = true;
         }
         $this->_due_free = ($r->bool_exempt_adh == 1) ? true : false;

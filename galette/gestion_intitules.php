@@ -386,7 +386,7 @@ $tpl->assign('require_tabs', true);
 $tpl->assign('fields', $fields);
 $tpl->assign('error_detected', $error_detected);
 if ( $className == 'Status' ) {
-    $tpl->assign('non_staff_priority', Members::NON_STAFF_MEMBERS);
+    $tpl->assign('non_staff_priority', Galette\Repository\Members::NON_STAFF_MEMBERS);
 }
 if ( isset($_GET['ajax']) && $_GET['ajax'] == 'true' ) {
     $tpl->display('gestion_intitule_content.tpl');

@@ -56,9 +56,7 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-$filters = Members::getFilters();
-
-require_once 'classes/members.class.php';
+$filters = Galette\Repository\Members::getFilters();
 
 // Set caller page ref for cards error reporting
 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['caller'] = 'gestion_adherents.php';
@@ -148,7 +146,7 @@ if ( isset($_GET['tri']) ) {
     $filters->orderby = $_GET['tri'];
 }
 
-$members = new Members();
+$members = new Galette\Repository\Members();
 
 //delete members
 if (isset($_GET['sup']) || isset($_POST['delete'])) {

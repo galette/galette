@@ -52,8 +52,6 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
 $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 $multiple = ( isset($_POST['multiple']) && $_POST['multiple'] == 'false' ) ? false : true;
 
-require_once WEB_ROOT . 'classes/members.class.php';
-
 $filters = new Galette\Filters\MembersList();
 
 if (isset($_GET['page'])) {
@@ -69,7 +67,7 @@ if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
     $filters->show = $_GET['nbshow'];
 }
 
-$members = new Members();
+$members = new Galette\Repository\Members();
 $members_list = $members->getMembersList(true);
 
 //assign pagination variables to the template and add pagination links
@@ -83,7 +81,7 @@ if ( !isset($_POST['from']) ) {
         $selected_members = $mailing->recipients;
         $unreachables_members = $mailing->unreachables;
     } else {
-        $selected_members = Members::getArrayList($_POST['members']);
+        $selected_members = Galette\Repository\Members::getArrayList($_POST['members']);
     }
 } else {
     switch ( $_POST['from'] ) {
@@ -112,7 +110,7 @@ if ( !isset($_POST['from']) ) {
                 exit(0);
             }
         } else {
-            $selected_members = Members::getArrayList($_POST['members']);
+            $selected_members = Galette\Repository\Members::getArrayList($_POST['members']);
         }
         break;
     }

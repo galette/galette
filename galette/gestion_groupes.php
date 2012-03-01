@@ -100,13 +100,13 @@ if ( isset($_POST['delete']) ) {
     if ( isset($_POST['managers']) ) {
         $managers_id = $_POST['managers'];
     }
-    $managers = Members::getArrayList($managers_id);
+    $managers = Galette\Repository\Members::getArrayList($managers_id);
 
     $members_id = array();
     if ( isset($_POST['members']) ) {
         $members_id = $_POST['members'];
     }
-    $members = Members::getArrayList($members_id);
+    $members = Galette\Repository\Members::getArrayList($members_id);
 
     $group->setManagers($managers);
     $group->setMembers($members);

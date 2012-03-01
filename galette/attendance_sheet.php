@@ -51,9 +51,7 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once WEB_ROOT . 'classes/members.class.php';
-
-$filters = Members::getFilters();
+$filters = Galette\Repository\Members::getFilters();
 
 if ( count($filters->selected) == 0 ) {
     $log->log('No member selected to generate attendance sheet', PEAR_LOG_INFO);
@@ -61,7 +59,7 @@ if ( count($filters->selected) == 0 ) {
     die();
 }
 
-$members = Members::getArrayList(
+$members = Galette\Repository\Members::getArrayList(
     $filters->selected,
     array('nom_adh', 'prenom_adh')
 );

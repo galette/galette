@@ -54,7 +54,7 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-$persons = Members::getArrayList($ids);
+$persons = Galette\Repository\Members::getArrayList($ids);
 
 $tpl->assign('persons', $persons);
 $tpl->assign('person_mode', $mode);

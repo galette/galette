@@ -43,12 +43,9 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once WEB_ROOT . 'classes/members.class.php';
-require_once WEB_ROOT . 'classes/mailing.class.php';
-
 $mailing = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
 
-$members = Members::getArrayList($_POST['recipients']);
+$members = Galette\Repository\Members::getArrayList($_POST['recipients']);
 $mailing->setRecipients($members);
 
 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing'] = serialize($mailing);

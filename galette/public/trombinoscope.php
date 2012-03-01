@@ -47,7 +47,7 @@ if ( !$preferences->showPublicPages() ) {
     header('location:../index.php');
 }
 
-$members = Members::getPublicList(true, null);
+$members = Galette\Repository\Members::getPublicList(true, null);
 
 $tpl->assign('page_title', _T("Trombinoscope"));
 $tpl->assign('additionnal_html_class', 'trombinoscope');

@@ -336,7 +336,7 @@ $type_cotis_options = ContributionsTypes::getList(
 $tpl->assign('type_cotis_options', $type_cotis_options);
 
 // members
-$members = Members::getList(true);
+$members = Galette\Repository\Members::getList(true);
 if ( count($members) == 0 ) {
     $adh_options = array('' => _T("You must first register a member"));
 } else {

@@ -55,9 +55,7 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-require_once  WEB_ROOT . 'classes/members.class.php';
-
-$filters = Members::getFilters();
+$filters = Galette\Repository\Members::getFilters();
 
 if ( isset($_GET[Galette\Entity\Adherent::PK])
     && $_GET[Galette\Entity\Adherent::PK] > 0
@@ -84,7 +82,7 @@ if ( isset($unique) && $unique ) {
     $mailing_adh = $filters->selected;
 }
 
-$members = Members::getArrayList($mailing_adh, array('nom_adh', 'prenom_adh'));
+$members = Galette\Repository\Members::getArrayList($mailing_adh, array('nom_adh', 'prenom_adh'));
 
 if ( !is_array($members) || count($members) < 1 ) {
     $log->log('An error has occured, unable to get members list.', PEAR_LOG_ERR);
