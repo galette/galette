@@ -49,7 +49,7 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 
 require_once 'includes/dynamic_fields.inc.php';
 
-$contrib = new Contribution();
+$contrib = new Galette\Entity\Contribution();
 
 $id_cotis = get_numeric_form_value('id_cotis', '');
 
@@ -76,7 +76,7 @@ if ( $type_selected && !($id_adh || $id_cotis) ) {
     $type_selected = false;
 } else if ( $id_cotis != '' || $type_selected || $trans_id || $id_adh) {
     if ( $id_cotis != '' ) {
-        $contrib = new Contribution((int)$id_cotis);
+        $contrib = new Galette\Entity\Contribution((int)$id_cotis);
         if ( $contrib->id == '' ) {
             //not possible to load contribution, exit
             header('location: index.php');
@@ -93,7 +93,7 @@ if ( $type_selected && !($id_adh || $id_cotis) ) {
         if ( $preferences->pref_membership_ext != '' ) {
             $args['ext'] = $preferences->pref_membership_ext;
         }
-        $contrib = new Contribution($args);
+        $contrib = new Galette\Entity\Contribution($args);
         if ( $contrib->isTransactionPart() ) {
             $id_adh = $contrib->member;
             //Should we disable contribution member selection if we're from

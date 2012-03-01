@@ -53,11 +53,10 @@ if ( isset($_POST['ajax']) && $_POST['ajax'] == 'true'
     $ajax = true;
 }
 
-require_once 'classes/contributions.class.php';
 if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['contributions'])) {
     $contribs = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['contributions']);
 } else {
-    $contribs = new Contributions();
+    $contribs = new Galette\Repository\Contributions();
 }
 
 if ( $ajax === true ) {
@@ -138,12 +137,12 @@ if ( isset($_GET['clear_filter']) ) {
 
     if ( isset($_GET['payment_type_filter']) ) {
         $ptf = $_GET['payment_type_filter'];
-        if ( $ptf == Contribution::PAYMENT_OTHER
-            || $ptf == Contribution::PAYMENT_CASH
-            || $ptf == Contribution::PAYMENT_CREDITCARD
-            || $ptf == Contribution::PAYMENT_CHECK
-            || $ptf == Contribution::PAYMENT_TRANSFER
-            || $ptf == Contribution::PAYMENT_PAYPAL
+        if ( $ptf == Galette\Entity\Contribution::PAYMENT_OTHER
+            || $ptf == Galette\Entity\Contribution::PAYMENT_CASH
+            || $ptf == Galette\Entity\Contribution::PAYMENT_CREDITCARD
+            || $ptf == Galette\Entity\Contribution::PAYMENT_CHECK
+            || $ptf == Galette\Entity\Contribution::PAYMENT_TRANSFER
+            || $ptf == Galette\Entity\Contribution::PAYMENT_PAYPAL
         ) {
             $contribs->payment_type_filter = $ptf;
         } elseif ( $ptf == -1 ) {

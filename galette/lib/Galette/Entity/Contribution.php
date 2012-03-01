@@ -35,10 +35,10 @@
  * @since     Available since 0.7dev - 2010-03-11
  */
 
-use Galette\Entity\ContributionsTypes as ContributionsTypes;
+namespace Galette\Entity;
 
 /** @ignore */
-require_once 'transaction.class.php';
+require_once WEB_ROOT . 'classes/transaction.class.php';
 
 /**
  * Contribution class for galette
@@ -105,7 +105,7 @@ class Contribution
                 'label'    => null, //not a field in the form
                 'propname' => 'id'
             ),
-            Galette\Entity\Adherent::PK          => array(
+            Adherent::PK          => array(
                 'label'    => _T("Contributor:"),
                 'propname' => 'member'
             ),
@@ -138,7 +138,7 @@ class Contribution
                 'label'    => _T("End date of membership:"),
                 'propname' => 'end_date'
             ),
-            Transaction::PK       => array(
+            \Transaction::PK       => array(
                 'label'    => null, //not a field in the form
                 'propname' => 'transaction'
             ),
@@ -163,9 +163,9 @@ class Contribution
             if ( $this->_is_cotis ) {
                 $curend = self::getDueDate($args['adh']);
                 if ($curend != '') {
-                    $dend = new DateTime($curend);
+                    $dend = new \DateTime($curend);
                     $now = date('Y-m-d');
-                    $dnow = new DateTime($now);
+                    $dnow = new \DateTime($now);
                     if ( $dend < $dnow ) {
                         // Member didn't renew on time
                         $this->_begin_date = $now;
@@ -179,7 +179,7 @@ class Contribution
                 $this->_retrieveEndDate();
             }
             if ( isset($args['trans']) ) {
-                $this->_transaction = new Transaction((int)$args['trans']);
+                $this->_transaction = new \Transaction((int)$args['trans']);
                 if ( !isset($this->_member) ) {
                     $this->_member = (int)$this->_transaction->member;
                 }
@@ -199,18 +199,18 @@ class Contribution
     {
         global $preferences;
 
-        $bdate = new DateTime($this->_begin_date);
+        $bdate = new \DateTime($this->_begin_date);
         if ( $preferences->pref_beg_membership != '' ) {
             //case beginning of membership
             list($j, $m) = explode('/', $preferences->pref_beg_membership);
-            $edate = new DateTime($bdate->format('Y') . '-' . $m . '-' . $j);
+            $edate = new \DateTime($bdate->format('Y') . '-' . $m . '-' . $j);
             while ( $edate <= $bdate ) {
                 $edate->modify('+1 year');
             }
             $this->_end_date = $edate->format('Y-m-d');
         } else if ( $preferences->pref_membership_ext != '' ) {
             //case membership extension
-            $dext = new DateInterval('P' . $this->_extension . 'M');
+            $dext = new \DateInterval('P' . $this->_extension . 'M');
             $edate = $bdate->add($dext);
             $this->_end_date = $edate->format('Y-m-d');
         }
@@ -228,12 +228,12 @@ class Contribution
         global $zdb, $log, $login;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . self::TABLE)
                 ->where(self::PK . ' = ?', $id);
             //restrict query on current member id if he's not admin nor staff member
             if ( !$login->isAdmin() && !$login->isStaff() ) {
-                $select->where(Galette\Entity\Adherent::PK . ' = ?', $login->id);
+                $select->where(Adherent::PK . ' = ?', $login->id);
             }
             $row = $select->query()->fetch();
             if ( $row !== false ) {
@@ -244,7 +244,7 @@ class Contribution
                     'No contribution #' . $id . ' (user ' .$login->id . ')'
                 );
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'An error occured attempting to load contribution #' . $id .
@@ -283,12 +283,12 @@ class Contribution
         ) {
             $this->_end_date = $r->date_fin_cotis;
         }
-        $adhpk = Galette\Entity\Adherent::PK;
+        $adhpk = Adherent::PK;
         $this->_member = (int)$r->$adhpk;
 
-        $transpk = Transaction::PK;
+        $transpk = \Transaction::PK;
         if ( $r->$transpk != '' ) {
-            $this->_transaction = new Transaction((int)$r->$transpk);
+            $this->_transaction = new \Transaction((int)$r->$transpk);
         }
 
         $this->_type = new ContributionsTypes((int)$r->id_type_cotis);
@@ -449,7 +449,7 @@ class Contribution
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(
                 array('c' => PREFIX_DB . self::TABLE),
                 array('date_debut_cotis', 'date_fin_cotis')
@@ -457,7 +457,7 @@ class Contribution
                 array('ct' => PREFIX_DB . ContributionsTypes::TABLE),
                 'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
                 array()
-            )->where(Galette\Entity\Adherent::PK . ' = ?', $this->_member)
+            )->where(Adherent::PK . ' = ?', $this->_member)
                 ->where('cotis_extension = ?', (string)1)
                 ->where(
                     '((' . $zdb->db->quoteInto('date_debut_cotis >= ?', $this->_begin_date) .
@@ -472,13 +472,13 @@ class Contribution
 
             $result = $select->query()->fetch();
             if ( $result !== false ) {
-                $d = new DateTime($result->date_debut_cotis);
+                $d = new \DateTime($result->date_debut_cotis);
 
                 return _T("- Membership period overlaps period starting at ") .
                     $d->format(_T("Y-m-d"));
             }
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'An error occured checking overlaping fee. ' . $e->getMessage(),
@@ -509,8 +509,8 @@ class Contribution
             foreach ( $fields as $field ) {
                 $prop = '_' . $this->_fields[$field]['propname'];
                 switch ( $field ) {
-                case Galette\Entity\ContributionsTypes::PK:
-                case Transaction::PK:
+                case ContributionsTypes::PK:
+                case \Transaction::PK:
                     $values[$field] = $this->$prop->id;
                     break;
                 default:
@@ -536,7 +536,7 @@ class Contribution
                     // logging
                     $hist->add(
                         _T("Contribution added"),
-                        Galette\Entity\Adherent::getSName($this->_member)
+                        Adherent::getSName($this->_member)
                     );
                 } else {
                     $hist->add(_T("Fail to add new contribution."));
@@ -559,7 +559,7 @@ class Contribution
                         Galette\Entity\Adherent::getSName($this->_member)
                     );
                 } else if ($edit === false) {
-                    throw new Exception(
+                    throw new \Exception(
                         'An error occured updating contribution # ' . $this->_id . '!'
                     );
                 }
@@ -569,13 +569,13 @@ class Contribution
                 $deadline = $this->_updateDeadline();
                 if ( $deadline !== true ) {
                     //if something went wrong, we rollback transaction
-                    throw new Exception('An error occured updating member\'s deadline');
+                    throw new \Exception('An error occured updating member\'s deadline');
                 }
             }
             $zdb->db->commit();
             $this->_orig_amount = $this->_amount;
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $zdb->db->rollBack();
             $log->log(
@@ -606,9 +606,9 @@ class Contribution
             }
 
             $edit = $zdb->db->update(
-                PREFIX_DB . Galette\Entity\Adherent::TABLE,
+                PREFIX_DB . Adherent::TABLE,
                 array('date_echeance' => $date_fin_update),
-                Galette\Entity\Adherent::PK . '=' . $this->_member
+                Adherent::PK . '=' . $this->_member
             );
             return true;
         } catch (Exception $e) {
@@ -648,7 +648,7 @@ class Contribution
                 $zdb->db->commit();
             }
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             if ( $transaction ) {
                 $zdb->db->rollBack();
@@ -715,14 +715,14 @@ class Contribution
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(
                 PREFIX_DB . self::TABLE,
                 'MAX(date_fin_cotis)'
-            )->where(Galette\Entity\Adherent::PK . ' = ?', $member_id);
+            )->where(Adherent::PK . ' = ?', $member_id);
             $due_date = $select->query()->fetchColumn();
             return $due_date;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'An error occured trying to retrieve member\'s due date',
@@ -862,7 +862,7 @@ class Contribution
             case 'end_date':
                 if ( $this->$rname != '' ) {
                     try {
-                        $d = new DateTime($this->$rname);
+                        $d = new \DateTime($this->$rname);
                         return $d->format(_T("Y-m-d"));
                     } catch (Exception $e) {
                         //oops, we've got a bad date :/
@@ -877,8 +877,8 @@ class Contribution
                 break;
             case 'duration':
                 if ( $this->_is_cotis ) {
-                    $date_end = new DateTime($this->_end_date);
-                    $date_start = new DateTime($this->_begin_date);
+                    $date_end = new \DateTime($this->_end_date);
+                    $date_start = new \DateTime($this->_begin_date);
                     $diff = $date_end->diff($date_start);
                     return $diff->format('%y') * 12 + $diff->format('%m');
                 } else {

@@ -35,9 +35,8 @@
  * @since     Available since 0.7dev - 2011-07-31
  */
 
-/** @ignore */
-require_once 'contributions.class.php';
-require_once 'contribution.class.php';
+use Galette\Entity\Contribution as Contribution;
+use Galette\Repository\Contributions as Contributions;
 
 /**
  * Transaction class for galette

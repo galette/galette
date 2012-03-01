@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-/* TODO: Most of the code is duplicated in contribution_types.class.php. Should
+/* TODO: Most of the code is duplicated in Galette\Entity\ContributionsTypes. Should
  * probably use a superclass for genericity.
  */
 

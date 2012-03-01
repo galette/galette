@@ -49,7 +49,6 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 
 require_once 'classes/transaction.class.php';
 require_once 'includes/dynamic_fields.inc.php';
-require_once 'classes/contributions.class.php';
 
 $trans = new Transaction();
 
@@ -71,7 +70,7 @@ $required = array(
 $disabled = array();
 
 if ( isset($_GET['detach']) ) {
-    if ( !Contribution::unsetTransactionPart($trans_id, $_GET['detach']) ) {
+    if ( !Galette\Entity\Contribution::unsetTransactionPart($trans_id, $_GET['detach']) ) {
         $error_detected[] = _T("Unable to detach contribution from transaction");
     } else {
         $success_detected[] = _T("Contribution has been successfyully detached from current transaction");
@@ -79,7 +78,7 @@ if ( isset($_GET['detach']) ) {
 }
 
 if ( isset($_GET['cid']) && $_GET['cid'] != null ) {
-    if ( !Contribution::setTransactionPart($trans_id, $_GET['cid']) ) {
+    if ( !Galette\Entity\Contribution::setTransactionPart($trans_id, $_GET['cid']) ) {
         $error_detected[] = _T("Unable to attach contribution to transaction");
     } else {
         $success_detected[] = _T("Contribution has been successfyully attached to current transaction");
@@ -170,7 +169,7 @@ $tpl->assign('success_detected', $success_detected);
 $tpl->assign('require_calendar', true);
 
 if ( $trans->id != '' ) {
-    $contribs = new Contributions();
+    $contribs = new Galette\Repository\Contributions();
     $tpl->assign('contribs', $contribs->getListFromTransaction($trans->id));
 }
 

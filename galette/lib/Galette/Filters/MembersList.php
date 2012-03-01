@@ -37,6 +37,9 @@
 
 namespace Galette\Filters;
 
+use Galette\Core\Pagination as Pagination;
+use Galette\Repository\Members as Members;
+
 /**
  * Members list filters and paginator
  *
@@ -50,7 +53,7 @@ namespace Galette\Filters;
  * @link      http://galette.tuxfamily.org
  */
 
-class MembersList extends \Galette\Core\Pagination
+class MembersList extends Pagination
 {
     //filters
     private $_filter_str;
@@ -92,7 +95,7 @@ class MembersList extends \Galette\Core\Pagination
         $this->_field_filter = null;
         $this->_membership_filter = null;
         $this->_account_status_filter = null;
-        $this->_email_filter = \Members::FILTER_DC_EMAIL;
+        $this->_email_filter = Members::FILTER_DC_EMAIL;
         $this->_selected = array();
     }
 
@@ -190,17 +193,17 @@ class MembersList extends \Galette\Core\Pagination
                 break;
             case 'email_filter':
                 switch ($value) {
-                case \Members::FILTER_DC_EMAIL:
-                case \Members::FILTER_W_EMAIL:
-                case \Members::FILTER_WO_EMAIL:
+                case Members::FILTER_DC_EMAIL:
+                case Members::FILTER_W_EMAIL:
+                case Members::FILTER_WO_EMAIL:
                     $this->_email_filter = $value;
                     break;
                 default:
                     $log->log(
                         '[MembersList] Value for email filter should be either ' .
-                        \Members::FILTER_DC_EMAIL . ', ' .
-                        \Members::FILTER_W_EMAIL . ' or ' .
-                        \Members::FILTER_WO_EMAIL . ' (' . $value . ' given)',
+                        Members::FILTER_DC_EMAIL . ', ' .
+                        Members::FILTER_W_EMAIL . ' or ' .
+                        Members::FILTER_WO_EMAIL . ' (' . $value . ' given)',
                         PEAR_LOG_WARNING
                     );
                     break;

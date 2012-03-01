@@ -35,8 +35,11 @@
  * @since     Available since 0.7dev - 2010-03-11
  */
 
-/** @ignore */
-require_once 'contribution.class.php';
+namespace Galette\Repository;
+
+use Galette\Core\Pagination as Pagination;
+use Galette\Entity\Contribution as Contribution;
+use Galette\Entity\Adherent as Adherent;
 
 /**
  * Contributions class for galette
@@ -50,7 +53,7 @@ require_once 'contribution.class.php';
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
-class Contributions extends Galette\Core\Pagination
+class Contributions extends Pagination
 {
     const TABLE = Contribution::TABLE;
     const PK = Contribution::PK;
@@ -152,7 +155,7 @@ class Contributions extends Galette\Core\Pagination
                 $contributions = $select->query()->fetchAll();
             }
             return $contributions;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot list contributions | ' . $e->getMessage(),
@@ -184,15 +187,15 @@ class Contributions extends Galette\Core\Pagination
                             ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
                             : implode(', ', $fields)) : (array)'*';
 
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(
                 array('a' => PREFIX_DB . self::TABLE),
                 $fieldsList
             );
 
             $select->join(
-                array('p' => PREFIX_DB . Galette\Entity\Adherent::TABLE, Galette\Entity\Adherent::PK),
-                'a.' . Galette\Entity\Adherent::PK . '=' . 'p.' . Galette\Entity\Adherent::PK
+                array('p' => PREFIX_DB . Adherent::TABLE, Adherent::PK),
+                'a.' . Adherent::PK . '=' . 'p.' . Adherent::PK
             );
 
             $this->_buildWhereClause($select);
@@ -205,7 +208,7 @@ class Contributions extends Galette\Core\Pagination
             }
 
             return $select;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot build SELECT clause for contributions | ' . $e->getMessage(),
@@ -232,8 +235,8 @@ class Contributions extends Galette\Core\Pagination
 
         try {
             $countSelect = clone $select;
-            $countSelect->reset(Zend_Db_Select::COLUMNS);
-            $countSelect->reset(Zend_Db_Select::ORDER);
+            $countSelect->reset(\Zend_Db_Select::COLUMNS);
+            $countSelect->reset(\Zend_Db_Select::ORDER);
             $countSelect->columns('count(' . self::PK . ') AS ' . self::PK);
 
             $result = $countSelect->query()->fetch();
@@ -244,7 +247,7 @@ class Contributions extends Galette\Core\Pagination
                 $this->counter = (int)$this->_count;
                 $this->countPages();
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot count contributions | ' . $e->getMessage(),
@@ -271,14 +274,14 @@ class Contributions extends Galette\Core\Pagination
 
         try {
             $sumSelect = clone $select;
-            $sumSelect->reset(Zend_Db_Select::COLUMNS);
-            $sumSelect->reset(Zend_Db_Select::ORDER);
+            $sumSelect->reset(\Zend_Db_Select::COLUMNS);
+            $sumSelect->reset(\Zend_Db_Select::ORDER);
             $sumSelect->columns('SUM(montant_cotis) AS contribsum');
 
             $result = $sumSelect->query()->fetch();
 
             $this->_sum = round($result->contribsum, 2);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot calculate contributions sum | ' . $e->getMessage(),
@@ -352,7 +355,7 @@ class Contributions extends Galette\Core\Pagination
                     _T("d/m/Y"),
                     $this->_start_date_filter
                 );*/
-                $d = DateTime::createFromFormat(
+                $d = \DateTime::createFromFormat(
                     'd/m/Y',
                     $this->_start_date_filter
                 );
@@ -365,7 +368,7 @@ class Contributions extends Galette\Core\Pagination
                     _T("d/m/Y"),
                     $this->_end_date_filter
                 );*/
-                $d = DateTime::createFromFormat(
+                $d = \DateTime::createFromFormat(
                     'd/m/Y',
                     $this->_end_date_filter
                 );
@@ -378,7 +381,7 @@ class Contributions extends Galette\Core\Pagination
 
             if ( $this->_from_transaction !== false ) {
                 $select->where(
-                    Transaction::PK . ' = ?',
+                    \Transaction::PK . ' = ?',
                     $this->_from_transaction
                 );
             }
@@ -393,9 +396,9 @@ class Contributions extends Galette\Core\Pagination
 
             if ( !$login->isAdmin() && !$login->isStaff() ) {
                 //non staff members can only view their own contributions
-                $select->where('p.' . Galette\Entity\Adherent::PK . ' = ?', $login->id);
+                $select->where('p.' . Adherent::PK . ' = ?', $login->id);
             } else if ( $this->_filtre_cotis_adh != null ) {
-                $select->where('p.' . Galette\Entity\Adherent::PK . ' = ?', $this->_filtre_cotis_adh);
+                $select->where('p.' . Adherent::PK . ' = ?', $this->_filtre_cotis_adh);
             }
             if ( $this->_filtre_transactions === true ) {
                 $select->where('a.trans_id ?', new Zend_Db_Expr('IS NULL'));
@@ -459,7 +462,7 @@ class Contributions extends Galette\Core\Pagination
                 if ( $transaction ) {
                     $zdb->db->beginTransaction();
                 }
-                $select = new Zend_Db_Select($zdb->db);
+                $select = new \Zend_Db_Select($zdb->db);
                 $select->from(PREFIX_DB . self::TABLE)
                     ->where(self::PK . ' IN (?)', $list);
                 $contributions = $select->query()->fetchAll();
@@ -476,7 +479,7 @@ class Contributions extends Galette\Core\Pagination
                 $hist->add(
                     "Contributions deleted (" . print_r($list, true) . ')'
                 );
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 /** FIXME */
                 if ( $transaction ) {
                     $zdb->db->rollBack();

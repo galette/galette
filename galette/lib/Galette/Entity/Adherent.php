@@ -43,7 +43,6 @@ use Galette\Repository\Members as Members;
 /** @ignore */
 require_once WEB_ROOT . 'classes/fields_config.class.php';
 require_once WEB_ROOT . 'classes/fields_categories.class.php';
-require_once WEB_ROOT . 'classes/contribution.class.php';
 
 /**
  * Member class for galette
