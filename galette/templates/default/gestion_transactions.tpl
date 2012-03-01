@@ -17,9 +17,9 @@
                 <tr>
                     <th class="listing id_row">#</th>
                     <th class="listing left date_row">
-                        <a href="gestion_transactions.php?tri={php}echo Transactions::ORDERBY_DATE;{/php}" class="listing">{_T string="Date"}
-                        {if $smarty.session.sort_by eq constant('Transactions::ORDERBY_DATE')}
-                            {if $smarty.session.sort_direction eq constant('Transactions::ORDER_ASC')}
+                        <a href="gestion_transactions.php?tri={php}echo Galette\Repository\Transactions::ORDERBY_DATE;{/php}" class="listing">{_T string="Date"}
+                        {if $smarty.session.sort_by eq constant('Galette\Repository\Transactions::ORDERBY_DATE')}
+                            {if $smarty.session.sort_direction eq constant('galette\Repository\Transactions::ORDER_ASC')}
                         <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
                         <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -30,9 +30,9 @@
                     <th class="listing left">{_T string="Description"}</th>
 {if $login->isAdmin() or $login->isStaff()}
                     <th class="listing left">
-                        <a href="gestion_transactions.php?tri={php}echo Transactions::ORDERBY_MEMBER;{/php}" class="listing">{_T string="Originator"}
-                        {if $smarty.session.sort_by eq constant('Transactions::ORDERBY_MEMBER')}
-                            {if $smarty.session.sort_direction eq constant('Transactions::ORDER_ASC')}
+                        <a href="gestion_transactions.php?tri={php}echo Galette\Repository\Transactions::ORDERBY_MEMBER;{/php}" class="listing">{_T string="Originator"}
+                        {if $smarty.session.sort_by eq constant('Galette\Repository\Transactions::ORDERBY_MEMBER')}
+                            {if $smarty.session.sort_direction eq constant('Galette\Repository\Transactions::ORDER_ASC')}
                         <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
                         <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -42,9 +42,9 @@
                     </th>
 {/if}
                     <th class="listing left">
-                        <a href="gestion_transactions.php?tri={php}echo Transactions::ORDERBY_AMOUNT;{/php}" class="listing">{_T string="Amount"}
-                        {if $smarty.session.sort_by eq constant('Transactions::ORDERBY_AMOUNT')}
-                            {if $smarty.session.sort_direction eq constant('Transactions::ORDER_ASC')}
+                        <a href="gestion_transactions.php?tri={php}echo Galette\Repository\Transactions::ORDERBY_AMOUNT;{/php}" class="listing">{_T string="Amount"}
+                        {if $smarty.session.sort_by eq constant('Galette\Repository\Transactions::ORDERBY_AMOUNT')}
+                            {if $smarty.session.sort_direction eq constant('Galette\Repository\Transactions::ORDER_ASC')}
                         <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
                         <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>

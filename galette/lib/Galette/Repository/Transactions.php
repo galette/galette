@@ -35,8 +35,11 @@
  * @since     Available since 0.7dev - 2011-07-31
  */
 
-/** @ignore */
-require_once 'transaction.class.php';
+namespace Galette\Repository;
+
+use Galette\Core\Pagination as Pagination;
+use Galette\Entity\Transaction as Transaction;
+use Galette\Entity\Adherent as Adherent;
 
 /**
  * Transactions class for galette
@@ -50,7 +53,7 @@ require_once 'transaction.class.php';
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
-class Transactions extends Galette\Core\Pagination
+class Transactions extends Pagination
 {
     const TABLE = Transaction::TABLE;
     const PK = Transaction::PK;
@@ -122,7 +125,7 @@ class Transactions extends Galette\Core\Pagination
                 $transactions = $select->query()->fetchAll();
             }
             return $transactions;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot list transactions | ' . $e->getMessage(),
@@ -154,7 +157,7 @@ class Transactions extends Galette\Core\Pagination
                             ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
                             : implode(', ', $fields)) : (array)'*';
 
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(
                 array('t' => PREFIX_DB . 'transactions'),
                 array(
@@ -167,8 +170,8 @@ class Transactions extends Galette\Core\Pagination
                     'a.prenom_adh'
                 )
             )->join(
-                array('a' => PREFIX_DB . Galette\Entity\Adherent::TABLE, Galette\Entity\Adherent::PK),
-                't.' . Galette\Entity\Adherent::PK . '=' . 'a.' . Galette\Entity\Adherent::PK
+                array('a' => PREFIX_DB . Adherent::TABLE, Adherent::PK),
+                't.' . Adherent::PK . '=' . 'a.' . Adherent::PK
             );
 
             $this->_buildWhereClause($select);
@@ -179,7 +182,7 @@ class Transactions extends Galette\Core\Pagination
             }
 
             return $select;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot build SELECT clause for transactions | ' . $e->getMessage(),
@@ -206,8 +209,8 @@ class Transactions extends Galette\Core\Pagination
 
         try {
             $countSelect = clone $select;
-            $countSelect->reset(Zend_Db_Select::COLUMNS);
-            $countSelect->reset(Zend_Db_Select::ORDER);
+            $countSelect->reset(\Zend_Db_Select::COLUMNS);
+            $countSelect->reset(\Zend_Db_Select::ORDER);
             $countSelect->columns('count(' . self::PK . ') AS ' . self::PK);
             $str = $select->__toString();
             $result = $countSelect->query()->fetch();
@@ -218,7 +221,7 @@ class Transactions extends Galette\Core\Pagination
                 $this->counter = (int)$this->_count;
                 $this->countPages();
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot count transactions | ' . $e->getMessage(),
@@ -300,9 +303,9 @@ class Transactions extends Galette\Core\Pagination
 
             if ( !$login->isAdmin() && !$login->isStaff() ) {
                 //non staff members can only view their own transactions
-                $select->where('t.' . Galette\Entity\Adherent::PK . ' = ?', $login->id);
+                $select->where('t.' . Adherent::PK . ' = ?', $login->id);
             } else if ( $this->_filtre_cotis_adh != null ) {
-                $select->where('t.' . Galette\Entity\Adherent::PK . ' = ?', $this->_filtre_cotis_adh);
+                $select->where('t.' . Adherent::PK . ' = ?', $this->_filtre_cotis_adh);
             }
         } catch (Exception $e) {
             /** TODO */
@@ -358,7 +361,7 @@ class Transactions extends Galette\Core\Pagination
             $res = true;
             try {
                 $zdb->db->beginTransaction();
-                $select = new Zend_Db_Select($zdb->db);
+                $select = new \Zend_Db_Select($zdb->db);
                 $select->from(PREFIX_DB . self::TABLE)
                     ->where(self::PK . ' IN (?)', $list);
                 $transactions = $select->query()->fetchAll();
@@ -373,7 +376,7 @@ class Transactions extends Galette\Core\Pagination
                 $hist->add(
                     "Transactions deleted (" . print_r($list, true) . ')'
                 );
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 /** FIXME */
                 $zdb->db->rollBack();
                 $log->log(

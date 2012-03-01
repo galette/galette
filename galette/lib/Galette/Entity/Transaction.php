@@ -35,7 +35,8 @@
  * @since     Available since 0.7dev - 2011-07-31
  */
 
-use Galette\Entity\Contribution as Contribution;
+namespace Galette\Entity;
+
 use Galette\Repository\Contributions as Contributions;
 
 /**
@@ -100,7 +101,7 @@ class Transaction
                 'label'    => _T("Description:"),
                 'propname' => 'description'
             ),
-            Galette\Entity\Adherent::PK          => array(
+            Adherent::PK          => array(
                 'label'    => _T("Originator:"),
                 'propname' => 'member'
             )
@@ -128,7 +129,7 @@ class Transaction
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . self::TABLE)
                 ->where(self::PK . ' = ?', $id);
             $result = $select->query()->fetch();
@@ -136,9 +137,9 @@ class Transaction
                 $this->_loadFromRS($result);
                 return true;
             } else {
-                throw new Exception;
+                throw new \Exception;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'Cannot load transaction form id `' . $id . '` | ' .
@@ -186,7 +187,7 @@ class Transaction
                 $zdb->db->commit();
             }
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             if ( $transaction ) {
                 $zdb->db->rollBack();
@@ -214,7 +215,7 @@ class Transaction
         $this->_date = $r->trans_date;
         $this->_amount = $r->trans_amount;
         $this->_description = $r->trans_desc;
-        $adhpk = Galette\Entity\Adherent::PK;
+        $adhpk = Adherent::PK;
         $this->_member = (int)$r->$adhpk;
     }
 
@@ -268,7 +269,7 @@ class Transaction
                             }
                         }
                         break;
-                    case Galette\Entity\Adherent::PK:
+                    case Adherent::PK:
                         $this->_member = $value;
                         break;
                     case 'trans_amount':
@@ -357,11 +358,11 @@ class Transaction
                     // logging
                     $hist->add(
                         _T("Transaction added"),
-                        Galette\Entity\Adherent::getSName($this->_member)
+                        Adherent::getSName($this->_member)
                     );
                 } else {
                     $hist->add(_T("Fail to add new transaction."));
-                    throw new Exception(
+                    throw new \Exception(
                         'An error occured inserting new transaction!'
                     );
                 }
@@ -377,13 +378,13 @@ class Transaction
                 if ( $edit > 0 ) {
                     $hist->add(
                         _T("Transaction updated"),
-                        Galette\Entity\Adherent::getSName($this->_member)
+                        Adherent::getSName($this->_member)
                     );
                 }
             }
             $zdb->db->commit();
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $zdb->db->rollBack();
             $log->log(
@@ -405,14 +406,14 @@ class Transaction
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(
                 PREFIX_DB . Contribution::TABLE,
                 'SUM(montant_cotis)'
             )->where(self::PK . ' = ?', $this->_id);
             $dispatched_amount = $select->query()->fetchColumn();
             return (double)$dispatched_amount;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'An error occured retrieving dispatched amounts | ' .
                 $e->getMessage(),
@@ -435,14 +436,14 @@ class Transaction
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(
                 PREFIX_DB . Contribution::TABLE,
                 'SUM(montant_cotis)'
             )->where(self::PK . ' = ?', $this->_id);
             $dispatched_amount = $select->query()->fetchColumn();
             return (double)$this->_amount - (double)$dispatched_amount;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'An error occured retrieving missing amounts | ' .
                 $e->getMessage(),

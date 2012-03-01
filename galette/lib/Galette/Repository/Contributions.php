@@ -40,6 +40,7 @@ namespace Galette\Repository;
 use Galette\Core\Pagination as Pagination;
 use Galette\Entity\Contribution as Contribution;
 use Galette\Entity\Adherent as Adherent;
+use Galette\Entity\Transaction as Transaction;
 
 /**
  * Contributions class for galette
@@ -381,7 +382,7 @@ class Contributions extends Pagination
 
             if ( $this->_from_transaction !== false ) {
                 $select->where(
-                    \Transaction::PK . ' = ?',
+                    Transaction::PK . ' = ?',
                     $this->_from_transaction
                 );
             }

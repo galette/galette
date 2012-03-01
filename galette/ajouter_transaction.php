@@ -47,10 +47,9 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once 'classes/transaction.class.php';
 require_once 'includes/dynamic_fields.inc.php';
 
-$trans = new Transaction();
+$trans = new Galette\Entity\Transaction();
 
 // new or edit
 $trans_id = get_numeric_form_value("trans_id", '');

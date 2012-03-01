@@ -52,11 +52,10 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 
 $filtre_id_adh = '';
 
-require_once 'classes/transactions.class.php';
 if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['transactions']) ) {
     $trans = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['transactions']);
 } else {
-    $trans = new Transactions();
+    $trans = new Galette\Repository\Transactions();
 }
 
 if ( isset($_GET['page']) && is_numeric($_GET['page']) ) {

@@ -37,9 +37,6 @@
 
 namespace Galette\Entity;
 
-/** @ignore */
-require_once WEB_ROOT . 'classes/transaction.class.php';
-
 /**
  * Contribution class for galette
  *
@@ -138,7 +135,7 @@ class Contribution
                 'label'    => _T("End date of membership:"),
                 'propname' => 'end_date'
             ),
-            \Transaction::PK       => array(
+            Transaction::PK       => array(
                 'label'    => null, //not a field in the form
                 'propname' => 'transaction'
             ),
@@ -179,7 +176,7 @@ class Contribution
                 $this->_retrieveEndDate();
             }
             if ( isset($args['trans']) ) {
-                $this->_transaction = new \Transaction((int)$args['trans']);
+                $this->_transaction = new Transaction((int)$args['trans']);
                 if ( !isset($this->_member) ) {
                     $this->_member = (int)$this->_transaction->member;
                 }
@@ -286,9 +283,9 @@ class Contribution
         $adhpk = Adherent::PK;
         $this->_member = (int)$r->$adhpk;
 
-        $transpk = \Transaction::PK;
+        $transpk = Transaction::PK;
         if ( $r->$transpk != '' ) {
-            $this->_transaction = new \Transaction((int)$r->$transpk);
+            $this->_transaction = new Transaction((int)$r->$transpk);
         }
 
         $this->_type = new ContributionsTypes((int)$r->id_type_cotis);
@@ -354,7 +351,7 @@ class Contribution
                             }
                         }
                         break;
-                    case Galette\Entity\Adherent::PK:
+                    case Adherent::PK:
                         $this->_member = $value;
                         break;
                     case ContributionsTypes::PK:
@@ -510,7 +507,7 @@ class Contribution
                 $prop = '_' . $this->_fields[$field]['propname'];
                 switch ( $field ) {
                 case ContributionsTypes::PK:
-                case \Transaction::PK:
+                case Transaction::PK:
                     $values[$field] = $this->$prop->id;
                     break;
                 default:
@@ -556,7 +553,7 @@ class Contribution
                 if ( $edit > 0 ) {
                     $hist->add(
                         _T("Contribution updated"),
-                        Galette\Entity\Adherent::getSName($this->_member)
+                        Adherent::getSName($this->_member)
                     );
                 } else if ($edit === false) {
                     throw new \Exception(
@@ -951,7 +948,7 @@ class Contribution
             case 'type':
                 if ( is_int($value) ) {
                     //set type
-                    $this->$rname = new Galette\Entity\ContributionsTypes($value);
+                    $this->$rname = new ContributionsTypes($value);
                     //set is_cotis according to type
                     if ( $this->$rname->extension == 1 ) {
                         $this->_is_cotis = true;
