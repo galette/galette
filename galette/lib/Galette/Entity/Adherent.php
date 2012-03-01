@@ -41,7 +41,6 @@ use Galette\Repository\Groups as Groups;
 use Galette\Repository\Members as Members;
 
 /** @ignore */
-require_once WEB_ROOT . 'classes/status.class.php';
 require_once WEB_ROOT . 'classes/fields_config.class.php';
 require_once WEB_ROOT . 'classes/fields_categories.class.php';
 require_once WEB_ROOT . 'classes/contribution.class.php';
@@ -457,7 +456,7 @@ class Adherent
             $this->_active = true;
             $this->_language = $i18n->getID();
             $this->_creation_date = date("Y-m-d");
-            $this->_status = \Status::DEFAULT_STATUS;
+            $this->_status = Status::DEFAULT_STATUS;
             $this->_politeness = Politeness::MR;
             $gp = new \Galette\Core\Password();
             $this->_password = $gp->makeRandomPassword();
@@ -492,8 +491,8 @@ class Adherent
             $select->from(
                 array('a' => PREFIX_DB . self::TABLE)
             )->join(
-                array('b' => PREFIX_DB . \Status::TABLE),
-                'a.' . \Status::PK . '=b.' . \Status::PK,
+                array('b' => PREFIX_DB . Status::TABLE),
+                'a.' . Status::PK . '=b.' . Status::PK,
                 array('priorite_statut')
             )->where(self::PK . '=?', $id);
 
@@ -1354,7 +1353,7 @@ class Adherent
                 return Politeness::getPoliteness($this->_politeness);
                 break;
             case 'sstatus':
-                $status = new \Status();
+                $status = new Status();
                 return $status->getLabel($this->_status);
                 break;
             case 'sfullname':

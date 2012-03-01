@@ -44,7 +44,6 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-require_once 'classes/status.class.php';
 require_once 'includes/dynamic_fields.inc.php';
 
 $member = new Galette\Entity\Adherent();
@@ -339,7 +338,7 @@ $tpl->assign('time', time());
 $tpl->assign('radio_titres', Galette\Entity\Politeness::getList());
 
 //Status
-$statuts = Status::getList();
+$statuts = Galette\Entity\Status::getList();
 $tpl->assign('statuts', $statuts);
 
 //Groups

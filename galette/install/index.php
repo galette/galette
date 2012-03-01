@@ -981,7 +981,6 @@ case 'i9';
 case 'u9';
     define('PREFIX_DB', $_POST['install_dbprefix']);
     include_once '../classes/contributions_types.class.php';
-    include_once '../classes/status.class.php';
     include_once '../classes/fields_categories.class.php';
 
     $oks = array();
@@ -1015,7 +1014,7 @@ define("STOCK_FILES", "tempimages");
     if ( $step=='i9' ) {
         $preferences = new Galette\Core\Preferences(false);
         $ct = new ContributionsTypes();
-        $status = new Status();
+        $status = new Galette\Entity\Status();
         $fc = new FieldsCategories();
 
         //init default values

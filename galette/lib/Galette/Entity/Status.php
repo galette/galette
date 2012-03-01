@@ -35,6 +35,8 @@
  * @since     Available since 0.7dev - 2007-10-27
  */
 
+namespace Galette\Entity;
+
 /* TODO: Most of the code is duplicated in contribution_types.class.php. Should
  * probably use a superclass for genericity.
  */
@@ -142,7 +144,7 @@ class Status
         $list = array();
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . self::TABLE)
                 ->order(self::ORDER_FIELD, self::PK);
             $statuses = $select->query()->fetchAll();
@@ -154,7 +156,7 @@ class Status
                 }
             }
             return $list;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 __METHOD__ . ' | ' . $e->getMessage(),
@@ -178,7 +180,7 @@ class Status
         $list = array();
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . self::TABLE)
                 ->order(array(self::ORDER_FIELD, self::PK));
 
@@ -195,7 +197,7 @@ class Status
                 }
             }
             return $list;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot list statuses | ' . $e->getMessage(),
@@ -221,14 +223,14 @@ class Status
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(array(PREFIX_DB . self::TABLE));
             $select->where(self::PK . '=' . $id);
 
             $result = $select->query()->fetch();
 
             return $result;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 __METHOD__ . ' | ' . $e->getMessage(),
@@ -269,11 +271,11 @@ class Status
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . self::TABLE, self::PK)
                 ->where('libelle_statut = ?', $label);
             return $result = $select->query()->fetchColumn();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'Unable to retrieve status from label `' . $label . '` | ' .
@@ -328,9 +330,9 @@ class Status
                     'id'
                 );
             } else {
-                throw new Exception('New status not added.');
+                throw new \Exception('New status not added.');
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'Unable to add new status `' . $label . '` | ' .
@@ -384,7 +386,7 @@ class Status
 
             $log->log('Status ' . $id . ' updated successfully.', PEAR_LOG_INFO);
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'Unable to update status ' . $id . ' | ' . $e->getMessage(),
@@ -421,7 +423,7 @@ class Status
                 PEAR_LOG_INFO
             );
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'Unable to delete status ' . $id . ' | ' . $e->getMessage(),
@@ -444,7 +446,7 @@ class Status
 
         // Check if it's used.
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . Adherent::TABLE)
                 ->where(self::PK . ' = ?', $id);
             if ( $select->query()->fetch() !== false ) {
@@ -452,7 +454,7 @@ class Status
             } else {
                 return false;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'Unable to check if status `' . $id . '` is used. | ' .

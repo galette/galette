@@ -35,7 +35,7 @@
  * @since     Available since 0.7dev - 2007-10-27
  */
 
-/* TODO: Most of the code is duplicated in status.class.php. Should
+/* TODO: Most of the code is duplicated in Galette\Entity\Status. Should
  * probably use a superclass for genericity.
  */
 

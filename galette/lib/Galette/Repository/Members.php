@@ -41,9 +41,7 @@ use Galette\Entity\Adherent as Adherent;
 use Galette\Filters\MembersList as MembersList;
 use Galette\Core\Picture as Picture;
 use Galette\Entity\Group as Group;
-
-/** @ignore */
-require_once WEB_ROOT . 'classes/status.class.php';
+use Galette\Entity\Status as Status;
 
 /**
  * Members class for galette
@@ -523,14 +521,14 @@ class Members
             case self::SHOW_LIST:
             case self::SHOW_ARRAY_LIST:
                 $select->join(
-                    array('p' => PREFIX_DB . \Status::TABLE, \Status::PK),
-                    'a.' . \Status::PK . '=' . 'p.' . \Status::PK
+                    array('p' => PREFIX_DB . Status::TABLE, Status::PK),
+                    'a.' . Status::PK . '=' . 'p.' . Status::PK
                 );
                 break;
             case self::SHOW_MANAGED:
                 $select->join(
-                    array('p' => PREFIX_DB . \Status::TABLE, Status::PK),
-                    'a.' . \Status::PK . '=' . 'p.' . \Status::PK
+                    array('p' => PREFIX_DB . Status::TABLE, Status::PK),
+                    'a.' . Status::PK . '=' . 'p.' . Status::PK
                 )->join(
                     array('g' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
                     'a.' . Adherent::PK . '=g.' . Adherent::PK,
