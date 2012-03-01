@@ -35,8 +35,9 @@
  * @since     Available since 0.7dev - 2010-03-11
  */
 
+use Galette\Entity\ContributionsTypes as ContributionsTypes;
+
 /** @ignore */
-require_once 'contributions_types.class.php';
 require_once 'transaction.class.php';
 
 /**
@@ -508,7 +509,7 @@ class Contribution
             foreach ( $fields as $field ) {
                 $prop = '_' . $this->_fields[$field]['propname'];
                 switch ( $field ) {
-                case ContributionsTypes::PK:
+                case Galette\Entity\ContributionsTypes::PK:
                 case Transaction::PK:
                     $values[$field] = $this->$prop->id;
                     break;
@@ -950,7 +951,7 @@ class Contribution
             case 'type':
                 if ( is_int($value) ) {
                     //set type
-                    $this->$rname = new ContributionsTypes($value);
+                    $this->$rname = new Galette\Entity\ContributionsTypes($value);
                     //set is_cotis according to type
                     if ( $this->$rname->extension == 1 ) {
                         $this->_is_cotis = true;

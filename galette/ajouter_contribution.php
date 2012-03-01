@@ -47,7 +47,6 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once 'classes/contributions_types.class.php';
 require_once 'includes/dynamic_fields.inc.php';
 
 $contrib = new Contribution();
@@ -330,7 +329,7 @@ if ( isset($head_redirect) ) {
 }
 
 // contribution types
-$type_cotis_options = ContributionsTypes::getList(
+$type_cotis_options = Galette\Entity\ContributionsTypes::getList(
     ($type_selected == 1 && $id_adh != '') ? $contrib->isCotis() : null
 );
 $tpl->assign('type_cotis_options', $type_cotis_options);

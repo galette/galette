@@ -37,7 +37,6 @@
  */
 
 require_once 'includes/galette.inc.php';
-require_once 'classes/contributions_types.class.php';
 
 if ( !$login->isLogged() ) {
     header("location: index.php");
@@ -361,7 +360,7 @@ $tpl->assign('class', $className);
 if ( $className == 'Status' ) {
     $class = new Galette\Entity\Status;
 } elseif ( $className == 'ContributionsTypes' ) {
-    $class = new ContributionsTypes;
+    $class = new Galette\Entity\ContributionsTypes;
 }
 
 // Display a specific form to edit a label.

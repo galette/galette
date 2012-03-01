@@ -35,6 +35,8 @@
  * @since     Available since 0.7dev - 2007-10-27
  */
 
+namespace Galette\Entity;
+
 /* TODO: Most of the code is duplicated in Galette\Entity\Status. Should
  * probably use a superclass for genericity.
  */
@@ -105,7 +107,7 @@ class ContributionsTypes
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . self::TABLE)
                 ->where(self::PK . ' = ?', $id);
 
@@ -113,7 +115,7 @@ class ContributionsTypes
             $this->_loadFromRS($result->fetch());
 
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot load contribution type form id `' . $id . '` | ' .
@@ -174,7 +176,7 @@ class ContributionsTypes
                 PEAR_LOG_INFO
             );
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Unable to initialize default contributions types.' .
                 $e->getMessage(),
@@ -197,7 +199,7 @@ class ContributionsTypes
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->distinct()->from(
                 PREFIX_DB . self::TABLE,
                 array(self::PK, 'libelle_type_cotis')
@@ -214,7 +216,7 @@ class ContributionsTypes
                 $list[$r->id_type_cotis] = _T($r->libelle_type_cotis);
             }
             return $list;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'An error occured. ' . $e->getMessage(),
                 PEAR_LOG_ERR
@@ -239,7 +241,7 @@ class ContributionsTypes
         $list = array();
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . self::TABLE)
                 ->order(self::PK);
 
@@ -259,7 +261,7 @@ class ContributionsTypes
                 }
             }
             return $list;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Cannot list contribution types | ' . $e->getMessage(),
@@ -285,14 +287,14 @@ class ContributionsTypes
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(array(PREFIX_DB . self::TABLE));
             $select->where(self::PK . '=' . $id);
 
             $result = $select->query()->fetch();
 
             return $result;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 __METHOD__ . ' | ' . $e->getMessage(),
@@ -331,11 +333,11 @@ class ContributionsTypes
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . self::TABLE, self::PK)
                 ->where('libelle_type_cotis = ?', $label);
             return $result = $select->query()->fetchColumn();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'Unable to retrieve contributions type from label `' .
@@ -390,9 +392,9 @@ class ContributionsTypes
                     'id'
                 );
             } else {
-                throw new Exception('New contributions type not added.');
+                throw new \Exception('New contributions type not added.');
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'Unable to add new contributions type `' . $label . '` | ' .
@@ -449,7 +451,7 @@ class ContributionsTypes
                 PEAR_LOG_INFO
             );
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'Unable to update contributions types ' . $id . ' | ' .
@@ -487,7 +489,7 @@ class ContributionsTypes
                 PEAR_LOG_INFO
             );
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'Unable to delete contributions type ' . $id . ' | ' .
@@ -511,15 +513,15 @@ class ContributionsTypes
 
         // Check if it's used.
         try {
-            $select = new Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . Contribution::TABLE)
+            $select = new \Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . \Contribution::TABLE)
                 ->where(self::PK . ' = ?', $id);
             if ( $select->query()->fetch() !== false ) {
                 return true;
             } else {
                 return false;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'Unable to check if contribution `' . $id . '` is used. | ' .
