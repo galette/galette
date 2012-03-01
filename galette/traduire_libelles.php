@@ -38,7 +38,6 @@
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
-require_once 'classes/dynamic_fields.class.php';
 
 if ( !$login->isLogged() ) {
     header('location: index.php');
@@ -157,7 +156,6 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
             'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
             PEAR_LOG_ERR
         );
-        
     }
 }
 $tpl->assign('page_title', _T("Translate labels"));

@@ -36,21 +36,19 @@
  * @since     Available since 0.63
  */
 
-require_once WEB_ROOT . 'classes/dynamic_fields.class.php';
-
 /** TODO: functions names are *not* PEAR Coding Standards compliant.
 Anyways, this file needs a rewrite as an object, we won't spend
 too much time on it. */
 
 $field_type_names = array(
-    DynamicFields::SEPARATOR   => _T("separator"),
-    DynamicFields::TEXT        => _T("free text"),
-    DynamicFields::LINE        => _T("single line"),
-    DynamicFields::CHOICE      => _T("choice")
+    Galette\Entity\DynamicFields::SEPARATOR   => _T("separator"),
+    Galette\Entity\DynamicFields::TEXT        => _T("free text"),
+    Galette\Entity\DynamicFields::LINE        => _T("single line"),
+    Galette\Entity\DynamicFields::CHOICE      => _T("choice")
 );
 
 $field_properties = array(
-    DynamicFields::SEPARATOR => array(
+    Galette\Entity\DynamicFields::SEPARATOR => array(
         'no_data'       => true,
         'with_width'    => false,
         'with_height'   => false,
@@ -58,7 +56,7 @@ $field_properties = array(
         'multi_valued'  => false,
         'fixed_values'  => false
     ),
-    DynamicFields::TEXT => array(
+    Galette\Entity\DynamicFields::TEXT => array(
         'no_data'       => false,
         'with_width'    => true,
         'with_height'   => true,
@@ -66,7 +64,7 @@ $field_properties = array(
         'multi_valued'  => false,
         'fixed_values'  => false
     ),
-     DynamicFields::LINE => array(
+     Galette\Entity\DynamicFields::LINE => array(
         'no_data'       => false,
         'with_width'    => true,
         'with_height'   => false,
@@ -74,7 +72,7 @@ $field_properties = array(
         'multi_valued'  => true,
         'fixed_values'  => false
     ),
-     DynamicFields::CHOICE => array(
+     Galette\Entity\DynamicFields::CHOICE => array(
         'no_data'       => false,
         'with_width'    => false,
         'with_height'   => false,
@@ -134,7 +132,7 @@ function get_fixed_values($field_id)
     try {
         $val_select = new Zend_Db_Select($zdb->db);
 
-        $val_select->from(DynamicFields::getFixedValuesTableName($field_id), 'val')
+        $val_select->from(Galette\Entity\DynamicFields::getFixedValuesTableName($field_id), 'val')
             ->order('id');
 
         $results = $val_select->query()->fetchAll();
@@ -283,7 +281,7 @@ function get_dynamic_fields($form_name, $item_id, $quote)
     try {
         $select = new Zend_Db_Select($zdb->db);
 
-        $select->from(PREFIX_DB . DynamicFields::TABLE)
+        $select->from(PREFIX_DB . Galette\Entity\DynamicFields::TABLE)
             ->where('item_id = ?', $item_id)
             ->where('field_form = ?', $form_name);
 
@@ -292,8 +290,8 @@ function get_dynamic_fields($form_name, $item_id, $quote)
         if ( count($result) > 0 ) {
             $dyn_fields = array();
             $types_select = new Zend_Db_Select($zdb->db);
-            $types_select->from(PREFIX_DB . DynamicFields::TYPES_TABLE, 'field_type')
-                ->where(DynamicFields::TYPES_PK . ' = :fieldid');
+            $types_select->from(PREFIX_DB . Galette\Entity\DynamicFields::TYPES_TABLE, 'field_type')
+                ->where(Galette\Entity\DynamicFields::TYPES_PK . ' = :fieldid');
             $stmt = $zdb->db->prepare($types_select);
             foreach ($result as $f) {
                 $value = $f->field_val;
@@ -375,7 +373,7 @@ function prepare_dynamic_fields_for_display(
     try {
         $select = new Zend_Db_Select($zdb->db);
 
-        $select->from(PREFIX_DB . DynamicFields::TYPES_TABLE)
+        $select->from(PREFIX_DB . Galette\Entity\DynamicFields::TYPES_TABLE)
             ->where('field_form = ?', $form_name)
             ->order('field_index');
 

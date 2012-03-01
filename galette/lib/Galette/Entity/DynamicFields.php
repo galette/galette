@@ -35,8 +35,10 @@
  * @since     Available since 0.7dev - 2011-06-20
  */
 
+namespace galette\Entity;
+
 /**
- * Dynamci fields handler for Galette
+ * Dynamic fields handler for Galette
  *
  * @name DynamicFields
  * @category  Classes
