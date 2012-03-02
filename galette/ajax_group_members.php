@@ -54,9 +54,7 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once WEB_ROOT . 'classes/adherent.class.php';
-
-$persons = Members::getArrayList($ids);
+$persons = Galette\Repository\Members::getArrayList($ids);
 
 $tpl->assign('persons', $persons);
 $tpl->assign('person_mode', $mode);

@@ -52,11 +52,10 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 
 $filtre_id_adh = '';
 
-require_once 'classes/transactions.class.php';
 if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['transactions']) ) {
     $trans = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['transactions']);
 } else {
-    $trans = new Transactions();
+    $trans = new Galette\Repository\Transactions();
 }
 
 if ( isset($_GET['page']) && is_numeric($_GET['page']) ) {
@@ -97,11 +96,10 @@ $tpl->assign('require_dialog', true);
 $tpl->assign('transactions', $list_trans);
 $tpl->assign('nb_transactions', $trans->getCount());
 if ( $trans->filtre_cotis_adh != null ) {
-    $member = new Adherent();
+    $member = new Galette\Entity\Adherent();
     $member->load($trans->filtre_cotis_adh);
     $tpl->assign('member', $member);
 }
-$tpl->assign('numrows', $numrows);
 $content = $tpl->fetch('gestion_transactions.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');

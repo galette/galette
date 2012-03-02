@@ -37,17 +37,17 @@
  */
 
 require_once 'includes/galette.inc.php';
-require_once 'classes/adherent.class.php';
-require_once 'classes/galette_password.class.php';
-require_once 'classes/texts.class.php';
 
 $from_admin = false;
 if ( (($login->isAdmin() || $login->isStaff()) && isset($_GET['id_adh'])) ) {
     $from_admin = true;
 }
 
+use Galette\Core;
+use Galette\Entity\Adherent;
+
 if ( ($login->isLogged()
-    || $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED)
+    || $preferences->pref_mail_method == Core\GaletteMail::METHOD_DISABLED)
     && !$from_admin
 ) {
     header('location: index.php');
@@ -70,15 +70,15 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
 
     if ( $adh->id != '' ) {
         //account has been found, proceed
-        if ( GaletteMail::isValidEmail($adh->email) ) {
-            $password = new GalettePassword();
+        if ( Core\GaletteMail::isValidEmail($adh->email) ) {
+            $password = new Core\Password();
             $res = $password->generateNewPassword($adh->id);
             if ( $res == true ) {
                 $link_validity = new DateTime();
                 $link_validity->add(new DateInterval('PT24H'));
 
                 $df = _T("Y-m-d H:i:s");
-                $texts = new Texts(
+                $texts = new Galette\Entity\Texts(
                     array(
                         'change_pass_uri'   => 'http://' . $_SERVER['SERVER_NAME'] .
                                               dirname($_SERVER['REQUEST_URI']) .
@@ -89,7 +89,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
                 );
                 $mtxt = $texts->getTexts('pwd', $preferences->pref_lang);
 
-                $mail = new GaletteMail();
+                $mail = new Core\GaletteMail();
                 $mail->setSubject($texts->getSubject());
                 $mail->setRecipients(
                     array(
@@ -100,7 +100,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
                 $mail->setMessage($texts->getBody());
                 $sent = $mail->send();
 
-                if ( $sent == GaletteMail::MAIL_SENT ) {
+                if ( $sent == Core\GaletteMail::MAIL_SENT ) {
                     $hist->add(
                         str_replace(
                             '%s',
@@ -143,7 +143,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
         }
     } else {
         //account has not been found
-        if ( GaletteMail::isValidEmail($login_adh) ) {
+        if ( Core\GaletteMail::isValidEmail($login_adh) ) {
             $str = str_replace(
                 '%s',
                 $login_adh,

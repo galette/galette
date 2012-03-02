@@ -37,7 +37,6 @@
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
-require_once 'classes/csv.class.php';
 
 if ( !isset($_GET['file']) ) {
     $log->log(
@@ -49,6 +48,8 @@ if ( !isset($_GET['file']) ) {
 }
 
 $filename = $_GET['file'];
+
+use Galette\IO\Csv;
 
 //Exports main contain user confidential data, they're accessible only for
 //admins or staff members

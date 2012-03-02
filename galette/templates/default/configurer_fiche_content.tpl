@@ -18,7 +18,7 @@
 					<td class="listing left">{$field.perm}</td>
 					<td class="listing left">{$field.type_name}</td>
 					<td class="listing">
-{if $field.type neq constant('DynamicFields::SEPARATOR')}
+{if $field.type neq constant('Galette\Entity\DynamicFields::SEPARATOR')}
 	{if $field.required}{_T string="Yes"}{else}{_T string="No"}{/if}
 {/if}
 					</td>

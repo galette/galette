@@ -59,6 +59,19 @@ if ( !$installer ) { //If we're not working from installer
 require_once $base_path . 'config/versions.inc.php';
 require_once $base_path . 'config/paths.inc.php';
 
+use Galette\Common\ClassLoader;
+use Galette\Core;
+require_once $base_path . 'lib/Galette/Common/ClassLoader.php';
+$galetteLoader = new ClassLoader('Galette', $base_path . 'lib');
+$zendLoader = new ClassLoader('Zend', GALETTE_ZEND_PATH);
+$zendLoader->setNamespaceSeparator('_');
+$smartyLoader = new ClassLoader(null, GALETTE_SMARTY_PATH);
+$smartyLoader->setFileExtension('.class.php');
+//register loaders
+$galetteLoader->register();
+$zendLoader->register();
+$smartyLoader->register();
+
 //we start a php session
 session_start();
 
@@ -146,12 +159,10 @@ if ( $installer || !defined('PREFIX_DB') || !defined('NAME_DB') ) {
 /**
 * Language instantiation
 */
-require_once WEB_ROOT . 'classes/i18n.class.php';
-
 if ( isset($_SESSION['galette'][$session_name]['lang']) ) {
     $i18n = unserialize($_SESSION['galette'][$session_name]['lang']);
 } else {
-    $i18n = new I18n();
+    $i18n = new Core\I18n();
 }
 
 if ( isset($_POST['pref_lang'])
@@ -176,16 +187,14 @@ if ( !$installer ) { //If we're not working from installer
     /**
     * Database instanciation
     */
-    require_once WEB_ROOT . '/classes/galette-zend_db.class.php';
-    $zdb = new GaletteZendDb();
+    $zdb = new Core\Db();
 
     if ( $zdb->checkDbVersion() ) {
 
         /**
         * Load preferences
         */
-        require_once WEB_ROOT . 'classes/preferences.class.php';
-        $preferences = new Preferences();
+        $preferences = new Core\Preferences();
 
         /**
         * Set the path to the current theme templates
@@ -198,31 +207,23 @@ if ( !$installer ) { //If we're not working from installer
         /**
         * Plugins
         */
-        require_once WEB_ROOT . 'classes/plugins.class.php';
-        $plugins = new plugins();
+        $plugins = new Core\Plugins();
         $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
 
         /**
         * Authentication
         */
-        require_once WEB_ROOT . 'classes/galette-login.class.php';
         if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login']) ) {
             $login = unserialize(
                 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login']
             );
         } else {
-            $login = new GaletteLogin();
+            $login = new Core\Login();
         }
-
-        /**
-        * Members, also load Adherent and Picture objects
-        */
-        require_once WEB_ROOT . 'classes/members.class.php';
 
         /**
         * Instanciate history object
         */
-        require_once WEB_ROOT . 'classes/history.class.php';
         if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history'])
             && !GALETTE_MODE == 'DEV'
         ) {
@@ -230,13 +231,12 @@ if ( !$installer ) { //If we're not working from installer
                 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history']
             );
         } else {
-            $hist = new History();
+            $hist = new Core\History();
         }
 
         /**
         * Logo
         */
-        require_once WEB_ROOT . 'classes/logo.class.php';
         if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo'])
             && !GALETTE_MODE == 'DEV'
         ) {
@@ -244,14 +244,13 @@ if ( !$installer ) { //If we're not working from installer
                 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo']
             );
         } else {
-            $logo = new Logo();
+            $logo = new Core\Logo();
         }
 
         /**
         * Now that all objects are correctly setted,
         * we can include files that need it
         */
-        require_once WEB_ROOT . 'classes/galette_mail.class.php';
         require_once WEB_ROOT . 'includes/session.inc.php';
         require_once WEB_ROOT . 'includes/smarty.inc.php';
     } else {

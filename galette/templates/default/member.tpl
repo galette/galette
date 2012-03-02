@@ -4,7 +4,7 @@
             <div id="infobox">
                 <h1>{_T string="Account registered!"}</h1>
                 <p>
-    {if $pref_mail_method == constant('GaletteMail::METHOD_DISABLED') or $member->email eq ""}
+    {if $pref_mail_method == constant('Galette\Core\GaletteMail::METHOD_DISABLED') or $member->email eq ""}
                     {_T string="Your subscription has been registered."}
      {else}
                     {_T string="Your subscription has been registered, you will receive a recapitulative email soon (remember to check your spam box ;) )."}

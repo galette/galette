@@ -56,15 +56,7 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-require_once 'classes/varslist.class.php';
-
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'])  ) {
-    $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
-} else {
-    $varslist = new VarsList();
-}
-
-require_once 'classes/members.class.php';
+$filters = Galette\Repository\Members::getFilters();
 
 // Set caller page ref for cards error reporting
 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['caller'] = 'gestion_adherents.php';
@@ -75,8 +67,8 @@ if (   isset($_POST['cards'])
     || isset($_POST['attendance_sheet'])
 ) {
     if (isset($_POST['member_sel'])) {
-        $varslist->selected = $_POST['member_sel'];
-        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'] = serialize($varslist);
+        $filters->selected = $_POST['member_sel'];
+        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members'] = serialize($filters);
 
         if (isset($_POST['cards'])) {
             $qstring = 'carte_adherent.php';
@@ -108,53 +100,53 @@ if (isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']) && $_SES
 
 // Filters
 if (isset($_GET['page'])) {
-    $varslist->current_page = (int)$_GET['page'];
+    $filters->current_page = (int)$_GET['page'];
 }
 
 if ( isset($_GET['clear_filter']) ) {
-    $varslist->reinit();
+    $filters->reinit();
 } else {
     //string to filter
     if ( isset($_GET['filter_str']) ) { //filter search string
-        $varslist->filter_str = stripslashes(
+        $filters->filter_str = stripslashes(
             htmlspecialchars($_GET['filter_str'], ENT_QUOTES)
         );
     }
     //field to filter
     if ( isset($_GET['filter_field']) ) {
         if ( is_numeric($_GET['filter_field']) ) {
-            $varslist->field_filter = $_GET['filter_field'];
+            $filters->field_filter = $_GET['filter_field'];
         }
     }
     //membership to filter
     if ( isset($_GET['filter_membership']) ) {
         if ( is_numeric($_GET['filter_membership']) ) {
-            $varslist->membership_filter = $_GET['filter_membership'];
+            $filters->membership_filter = $_GET['filter_membership'];
         }
     }
     //account status to filter
     if ( isset($_GET['filter_account']) ) {
         if ( is_numeric($_GET['filter_account']) ) {
-            $varslist->account_status_filter = $_GET['filter_account'];
+            $filters->account_status_filter = $_GET['filter_account'];
         }
     }
     //email filter
     if ( isset($_GET['email_filter']) ) {
-        $varslist->email_filter = (int)$_GET['email_filter'];
+        $filters->email_filter = (int)$_GET['email_filter'];
     }
 }
 
 //numbers of rows to display
 if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
-    $varslist->show = $_GET['nbshow'];
+    $filters->show = $_GET['nbshow'];
 }
 
 // Sorting
 if ( isset($_GET['tri']) ) {
-    $varslist->orderby = $_GET['tri'];
+    $filters->orderby = $_GET['tri'];
 }
 
-$members = new Members();
+$members = new Galette\Repository\Members();
 
 //delete members
 if (isset($_GET['sup']) || isset($_POST['delete'])) {
@@ -172,10 +164,10 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     $members_list = $members->getManagedMembersList(true);
 }
 
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'] = serialize($varslist);
+$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members'] = serialize($filters);
 
 //assign pagination variables to the template and add pagination links
-$varslist->setSmartyPagination($tpl);
+$filters->setSmartyPagination($tpl);
 
 $tpl->assign('page_title', _T("Members management"));
 $tpl->assign('require_dialog', true);
@@ -186,7 +178,7 @@ if (isset($warning_detected)) {
 }
 $tpl->assign('members', $members_list);
 $tpl->assign('nb_members', $members->getCount());
-$tpl->assign('varslist', $varslist);
+$tpl->assign('filters', $filters);
 $tpl->assign(
     'filter_field_options',
     array(

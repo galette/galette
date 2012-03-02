@@ -59,10 +59,9 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once WEB_ROOT . 'classes/print_logo.class.php';
-require_once WEB_ROOT . 'classes/members.class.php';
+use Galette\Core;
 
-$print_logo = new PrintLogo();
+$print_logo = new Core\PrintLogo();
 
 // flagging required fields
 $required = array(
@@ -120,7 +119,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                         PEAR_LOG_WARNING
                     );
                 } else {
-                    if ( !GaletteMail::isValidEmail($value) ) {
+                    if ( !Core\GaletteMail::isValidEmail($value) ) {
                         $error_detected[] = _T("- Non-valid E-Mail address!");
                     }
                 }
@@ -221,7 +220,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
 
     // missing relations
     if ( GALETTE_MODE !== 'DEMO' && isset($insert_values['pref_mail_method']) ) {
-        if ( $insert_values['pref_mail_method'] > GaletteMail::METHOD_DISABLED ) {
+        if ( $insert_values['pref_mail_method'] > Core\GaletteMail::METHOD_DISABLED ) {
             if ( !isset($insert_values['pref_email_nom'])
                 || $insert_values['pref_email_nom'] == ''
             ) {
@@ -232,15 +231,15 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             ) {
                 $error_detected[] = _T("- You must indicate an email address Galette should use to send emails!");
             }
-            if ( $insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP ) {
+            if ( $insert_values['pref_mail_method'] == Core\GaletteMail::METHOD_SMTP ) {
                 if ( !isset($insert_values['pref_mail_smtp_host'])
                     || $insert_values['pref_mail_smtp_host'] == ''
                 ) {
                     $error_detected[] = _T("- You must indicate the SMTP server you want to use!");
                 }
             }
-            if ( $insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
-                || ( $insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP
+            if ( $insert_values['pref_mail_method'] == Core\GaletteMail::METHOD_GMAIL
+                || ( $insert_values['pref_mail_method'] == Core\GaletteMail::METHOD_SMTP
                 && $insert_values['pref_mail_smtp_auth'] )
             ) {
                 if ( !isset($insert_values['pref_mail_smtp_user'])
@@ -286,11 +285,11 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
     //postal adress
     if ( isset($insert_values['pref_postal_adress']) ) {
         $value = $insert_values['pref_postal_adress'];
-        if ( $value == Preferences::POSTAL_ADRESS_FROM_PREFS ) {
+        if ( $value == Core\Preferences::POSTAL_ADRESS_FROM_PREFS ) {
             if ( isset($insert_values['pref_postal_staff_member']) ) {
                 unset($insert_values['pref_postal_staff_member']);
             }
-        } else if ( $value == Preferences::POSTAL_ADRESS_FROM_STAFF ) {
+        } else if ( $value == Core\Preferences::POSTAL_ADRESS_FROM_STAFF ) {
             if ( !isset($value) || $value < 1 ) {
                 $error_detected[] = _T("You have to select a staff member");
             }
@@ -327,7 +326,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                         if ( $res < 0 ) {
                             $error_detected[] = $logo->getErrorMessage($res);
                         } else {
-                            $logo = new Logo();
+                            $logo = new Core\Logo();
                         }
                         $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo'] = serialize($logo);
                         $tpl->assign('logo', $logo);
@@ -348,7 +347,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             if ( !$logo->delete() ) {
                 $error_detected[] = _T("Delete failed");
             } else {
-                $logo = new Logo(); //get default Logo
+                $logo = new Core\Logo(); //get default Logo
                 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo'] = serialize($logo);
                 $tpl->assign('logo', $logo);
             }
@@ -363,7 +362,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                         if ( $res < 0 ) {
                             $error_detected[] = $print_logo->getErrorMessage($res);
                         } else {
-                            $print_logo = new PrintLogo();
+                            $print_logo = new Core\PrintLogo();
                         }
                     }
                 }
@@ -382,7 +381,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             if ( !$print_logo->delete() ) {
                 $error_detected[] = _T("Delete failed");
             } else {
-                $print_logo = new PrintLogo();
+                $print_logo = new Core\PrintLogo();
             }
         }
     }
@@ -408,7 +407,7 @@ while ( ($entry = $d->read()) !== false ) {
 }
 $d->close();
 
-$m = new Members();
+$m = new Galette\Repository\Members();
 $tpl->assign('staff_members', $m->getStaffMembersList(true));
 
 $tpl->assign('time', time());

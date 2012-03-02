@@ -60,6 +60,5 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
 // check for ajax mode
 $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 
-require_once WEB_ROOT . 'classes/groups.class.php';
-echo json_encode(array('success' => Groups::isUnique($name)));
+echo json_encode(array('success' => Galette\Repository\Groups::isUnique($name)));
 ?>

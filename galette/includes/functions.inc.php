@@ -63,7 +63,7 @@ function PasswordImage()
     // the retrun value is just the crypted password.
 
     PasswordImageClean(); // purges former passwords
-    $gp = new GalettePassword();
+    $gp = new Galette\Core\Password();
     $mdp = $gp->makeRandomPassword();
     $c = crypt($mdp);
     $png = imagecreate(10 + 7.5 * strlen($mdp), 18);

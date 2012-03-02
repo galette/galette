@@ -38,8 +38,6 @@
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
-require_once 'classes/dynamic_fields.class.php';
-require_once 'classes/l10n.class.php';
 
 if ( !$login->isLogged() ) {
     header('location: index.php');
@@ -95,7 +93,7 @@ $nb_fields = 0;
 try {
     $select = new Zend_Db_Select($zdb->db);
     $select->from(
-        PREFIX_DB . L10n::TABLE,
+        PREFIX_DB . Galette\Core\L10n::TABLE,
         array('nb' => 'COUNT(text_orig)')
     );
     $nb_fields = $select->query()->fetch()->nb;
@@ -116,7 +114,7 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
     try {
         $select = new Zend_Db_Select($zdb->db);
         $select->distinct()->from(
-            PREFIX_DB . L10n::TABLE,
+            PREFIX_DB . Galette\Core\L10n::TABLE,
             'text_orig'
         )->order('text_orig');
 
@@ -158,7 +156,6 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
             'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
             PEAR_LOG_ERR
         );
-        
     }
 }
 $tpl->assign('page_title', _T("Translate labels"));

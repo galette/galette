@@ -49,12 +49,10 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-require_once WEB_ROOT . 'classes/texts.class.php';
-
 $cur_lang = $preferences->pref_lang;
-$cur_ref = Texts::DEFAULT_REF;
+$cur_ref = Galette\Entity\Texts::DEFAULT_REF;
 
-$texts = new Texts();
+$texts = new Galette\Entity\Texts();
 
 //set the language
 if ( isset($_POST['sel_lang']) ) {

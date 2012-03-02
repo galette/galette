@@ -47,8 +47,6 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once 'classes/adherent.class.php';
-
 if ( !isset($_POST)
     || !isset($_POST['member_id'])
     || !isset($_POST['file'])
@@ -72,7 +70,7 @@ $fp = fopen($tmpname, 'w');
 fwrite($fp, $raw_file);
 fclose($fp);
 
-$adh = new Adherent((int)$mid);
+$adh = new Galette\Entity\Adherent((int)$mid);
 
 $ret = array();
 $res = $adh->picture->store(

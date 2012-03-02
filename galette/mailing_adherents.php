@@ -46,6 +46,8 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
+use Galette\Core;
+
 //We're done :-)
 if ( isset($_POST['mailing_done'])
     || isset($_POST['mailing_cancel'])
@@ -59,19 +61,13 @@ if ( isset($_POST['mailing_done'])
     }
 }
 
-require_once WEB_ROOT . 'classes/members.class.php';
-require_once WEB_ROOT . 'classes/varslist.class.php';
-require_once WEB_ROOT . 'classes/mailing.class.php';
-require_once WEB_ROOT . 'classes/mailing_history.class.php';
-
 $data = array();
 
-if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED && !GALETTE_MODE === 'DEMO') {
+if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED && !GALETTE_MODE === 'DEMO') {
     $hist->add(_T("Trying to load mailing while mail is disabled in preferences."));
 } else {
-    if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']) ) {
-        $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
-    } else {
+    $filters = Galette\Repository\Members::getFilters();
+    if ( count($filters->selected) == 0 ) {
         $log->log(
             '[mailing_adherents.php] No member selected for mailing',
             PEAR_LOG_INFO
@@ -80,7 +76,7 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED && !GALETTE_MODE
         die();
     }
 
-    $members = Members::getArrayList($varslist->selected);
+    $members = Galette\Repository\Members::getArrayList($filters->selected);
 
     if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing'])
         && !isset($_POST['mailing_cancel'])
@@ -88,10 +84,10 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED && !GALETTE_MODE
     ) {
         $mailing = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
     } else if (isset($_GET['from']) && is_numeric($_GET['from'])) {
-        $mailing = new Mailing(null);
-        MailingHistory::loadFrom((int)$_GET['from'], $mailing);
+        $mailing = new Core\Mailing(null);
+        Core\MailingHistory::loadFrom((int)$_GET['from'], $mailing);
     } else {
-        $mailing = new Mailing(($members !== false) ? $members : null);
+        $mailing = new Core\Mailing(($members !== false) ? $members : null);
     }
 
     if ( isset($_POST['mailing_go'])
@@ -117,19 +113,19 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED && !GALETTE_MODE
             && !isset($_POST['mailing_reset'])
             && !isset($_POST['mailing_save'])
         ) {
-            $mailing->current_step = Mailing::STEP_PREVIEW;
+            $mailing->current_step = Core\Mailing::STEP_PREVIEW;
         } else {
-            $mailing->current_step = Mailing::STEP_START;
+            $mailing->current_step = Core\Mailing::STEP_START;
         }
     }
 
     if ( isset($_POST['mailing_confirm']) && count($error_detected) == 0 ) {
 
-        $mailing->current_step = Mailing::STEP_SEND;
+        $mailing->current_step = Core\Mailing::STEP_SEND;
         //ok... let's go for fun
         $sent = $mailing->send();
-        if ( $sent == Mailing::MAIL_ERROR ) {
-            $mailing->current_step = Mailing::STEP_START;
+        if ( $sent == Core\Mailing::MAIL_ERROR ) {
+            $mailing->current_step = Core\Mailing::STEP_START;
             $log->log(
                 '[mailing_adherents.php] Message was not sent. Errors: ' .
                 print_r($mailing->errors, true),
@@ -139,22 +135,22 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED && !GALETTE_MODE
                 $error_detected[] = $e;
             }
         } else {
-            $mlh = new MailingHistory($mailing);
+            $mlh = new Core\MailingHistory($mailing);
             $mlh->storeMailing(true);
             $log->log(
                 '[mailing_adherents.php] Message has been sent.',
                 PEAR_LOG_INFO
             );
-            $mailing->current_step = Mailing::STEP_SENT;
+            $mailing->current_step = Core\Mailing::STEP_SENT;
             //cleanup
-            $varslist->selected = null;
-            $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'] = serialize($varslist);
+            $filters->selected = null;
+            $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members'] = serialize($filters);
             $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing'] = null;
             unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
         }
     }
 
-    if ( $mailing->current_step !== Mailing::STEP_SENT ) {
+    if ( $mailing->current_step !== Core\Mailing::STEP_SENT ) {
         $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing'] = serialize($mailing);
     }
 
@@ -169,7 +165,7 @@ if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED && !GALETTE_MODE
 
     if ( isset($_POST['mailing_save']) ) {
         //user requested to save the mailing
-        $histo = new MailingHistory($mailing);
+        $histo = new Core\MailingHistory($mailing);
         if ( $histo->storeMailing() !== false ) {
             $success_detected[] = _T("Mailing has been successfully saved.");
             $tpl->assign('mailing_saved', true);

@@ -44,11 +44,11 @@
 					</span>
 					<span class="yesnoadmin">
 						<label for="{$fid}_visible_yes">{_T string="Yes"}</label>
-						<input type="radio" name="{$fid}_visible" id="{$fid}_visible_yes" value="{php}echo FieldsConfig::VISIBLE;{/php}"{if $field.visible == constant('FieldsConfig::VISIBLE')} checked="checked"{/if}/>
+						<input type="radio" name="{$fid}_visible" id="{$fid}_visible_yes" value="{php}echo Galette\Entity\FieldsConfig::VISIBLE;{/php}"{if $field.visible == constant('Galette\Entity\FieldsConfig::VISIBLE')} checked="checked"{/if}/>
 						<label for="{$fid}_visible_no">{_T string="No"}</label>
-						<input type="radio" name="{$fid}_visible" id="{$fid}_visible_no" value="{php}echo FieldsConfig::HIDDEN{/php}"{if $field.visible == constant('FieldsConfig::HIDDEN')} checked="checked"{/if}/>
+						<input type="radio" name="{$fid}_visible" id="{$fid}_visible_no" value="{php}echo Galette\Entity\FieldsConfig::HIDDEN{/php}"{if $field.visible == constant('Galette\Entity\FieldsConfig::HIDDEN')} checked="checked"{/if}/>
 						<label for="{$fid}_visible_admin">{_T string="Admin only"}</label>
-						<input type="radio" name="{$fid}_visible" id="{$fid}_visible_admin" value="{php}echo FieldsConfig::ADMIN{/php}"{if $field.visible == constant('FieldsConfig::ADMIN')} checked="checked"{/if}/>
+						<input type="radio" name="{$fid}_visible" id="{$fid}_visible_admin" value="{php}echo Galette\Entity\FieldsConfig::ADMIN{/php}"{if $field.visible == constant('Galette\Entity\FieldsConfig::ADMIN')} checked="checked"{/if}/>
 					</span>
 				</li>
 	{/foreach}

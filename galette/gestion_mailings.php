@@ -35,7 +35,6 @@
  */
 
 require_once 'includes/galette.inc.php';
-require_once 'classes/mailing_history.class.php';
 
 if ( !$login->isLogged() ) {
     header('location: index.php');
@@ -46,12 +45,14 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-$mailhist = new MailingHistory();
+use Galette\Core;
+
+$mailhist = new Core\MailingHistory();
 
 if ( isset($_GET['reset']) && $_GET['reset'] == 1 ) {
     $mailhist->clean();
     //reinitialize object after flush
-    $mailhist = new MailingHistory();
+    $mailhist = new Core\MailingHistory();
 }
 
 //delete mailings

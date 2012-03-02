@@ -46,14 +46,10 @@ if ( !$preferences->pref_bool_selfsubscribe ) {
 require_once WEB_ROOT . 'includes/dynamic_fields.inc.php';
 
 // flagging required fields
-require_once WEB_ROOT . 'classes/required.class.php';
-$requires = new Required();
+$requires = new Galette\Entity\Required();
 $required = $requires->getRequired();
 
-require_once WEB_ROOT . 'classes/texts.class.php';
-require_once 'classes/adherent.class.php';
-
-$member = new Adherent();
+$member = new Galette\Entity\Adherent();
 //mark as self membership
 $member->setSelfMembership();
 
@@ -70,7 +66,7 @@ $insert_string_values = '';
 $has_register = false;
 
 
-$fields = Adherent::getDbFields();
+$fields = Galette\Entity\Adherent::getDbFields();
 
 // checking posted values for 'regular' fields
 if ( isset($_POST["nom_adh"]) ) {
@@ -82,10 +78,10 @@ if ( isset($_POST["nom_adh"]) ) {
         if ( $store === true ) {
             //member has been stored :)
             //Send email to admin if preference checked
-            if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+            if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED
                 && $preferences->pref_bool_mailadh
             ) {
-                $texts = new Texts(
+                $texts = new Galette\Entity\Texts(
                     array(
                         'name_adh'      => custom_html_entity_decode($member->sname),
                         'mail_adh'      => custom_html_entity_decode($member->email),
@@ -94,7 +90,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 );
                 $mtxt = $texts->getTexts('newselfadh', $preferences->pref_lang);
 
-                $mail = new GaletteMail();
+                $mail = new Galette\Core\GaletteMail();
                 $mail->setSubject($texts->getSubject());
                 $mail->setRecipients(
                     array(
@@ -104,7 +100,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 $mail->setMessage($texts->getBody());
                 $sent = $mail->send();
 
-                if ( $sent == GaletteMail::MAIL_SENT ) {
+                if ( $sent == Galette\Core\GaletteMail::MAIL_SENT ) {
                     $hist->add(
                         str_replace(
                             '%s',
@@ -126,12 +122,12 @@ if ( isset($_POST["nom_adh"]) ) {
             }
 
             // send mail to member
-            if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+            if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED
                 && $member->email != ''
             ) {
                 //send mail to member
                 // Get email text in database
-                $texts = new Texts(
+                $texts = new Galette\Entity\Texts(
                     array(
                         'name_adh'      => custom_html_entity_decode($member->sname),
                         'mail_adh'      => custom_html_entity_decode($member->email),
@@ -141,7 +137,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 );
                 $mtxt = $texts->getTexts('sub', $preferences->pref_lang);
 
-                $mail = new GaletteMail();
+                $mail = new Galette\Core\GaletteMail();
                 $mail->setSubject($texts->getSubject());
                 $mail->setRecipients(
                     array(
@@ -151,7 +147,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 $mail->setMessage($texts->getBody());
                 $sent = $mail->send();
 
-                if ( $sent == GaletteMail::MAIL_SENT ) {
+                if ( $sent == Galette\Core\GaletteMail::MAIL_SENT ) {
                     $hist->add(
                         str_replace(
                             '%s',
@@ -226,7 +222,7 @@ $tpl->assign('require_calendar', true);
 // pseudo random int
 $tpl->assign('time', time());
 // genre
-$tpl->assign('radio_titres', Politeness::getList());
+$tpl->assign('radio_titres', Galette\Entity\Politeness::getList());
 
 //self_adh specific
 $tpl->assign('spam_pass', $spam_pass);

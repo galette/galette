@@ -37,8 +37,6 @@
  */
 
 require_once 'includes/galette.inc.php';
-require_once 'classes/status.class.php';
-require_once 'classes/contributions_types.class.php';
 
 if ( !$login->isLogged() ) {
     header("location: index.php");
@@ -124,22 +122,22 @@ function delEntry ($id, $class)
 */
 function checkFieldValue ($class, $key, $value)
 {
-    global $fields, $error_detected;
+    global $fields, $error_detected, $className;
 
     switch ($key) {
-    case ($fields[get_class($class)]['name']):
+    case ($fields[$className]['name']):
         if ( trim($value) == '' || !is_string($value) ) {
             $error_detected[] =_T("- Mandatory field empty.")." ($key)";
             return false;
         }
         break;
-    case ($fields[get_class($class)]['field']):
-        if ( get_class($class) == 'Status' ) {
+    case ($fields[$className]['field']):
+        if ( $className == 'Status' ) {
             if ( !is_numeric($value) ) {
                 $error_detected[] = _T("- Priority must be an integer!");
                 return false;
             }
-        } elseif ( get_class($class) == 'ContributionsTypes' ) {
+        } elseif ( $className == 'ContributionsTypes' ) {
             // Value must be either 0 or 1.
             if ( !is_numeric($value) || (($value != 0) && ($value != 1)) ) {
                 $error_detected[] = preg_replace(
@@ -165,7 +163,7 @@ function checkFieldValue ($class, $key, $value)
 */
 function modifyEntry ($id, $class)
 {
-    global $zdb, $error_detected, $fields;
+    global $zdb, $error_detected, $fields, $className;
 
     if (!is_numeric($id)) {
         $error_detected[] = _T("- ID must be an integer!");
@@ -181,7 +179,7 @@ function modifyEntry ($id, $class)
 
     $toup = array();
     /* Check field values. */
-    foreach ( $fields[get_class($class)] as $field ) {
+    foreach ( $fields[$className] as $field ) {
         $value = null;
         if ( !isset($_POST[$field]) ) {
             if ($field == $fields['ContributionsTypes']['field']) {
@@ -193,7 +191,7 @@ function modifyEntry ($id, $class)
             $value = $_POST[$field];
         }
 
-        if ( $field == $fields[get_class($class)]['name'] ) {
+        if ( $field == $fields[$className]['name'] ) {
             $label = $value;
         }
 
@@ -236,19 +234,19 @@ function modifyEntry ($id, $class)
 */
 function addEntry ($class)
 {
-    global $error_detected, $fields;
+    global $error_detected, $fields, $className;
 
-    $label = trim($_POST[$fields[get_class($class)]['name']]);
-    $field = trim($_POST[$fields[get_class($class)]['field']]);
+    $label = trim($_POST[$fields[$className]['name']]);
+    $field = trim($_POST[$fields[$className]['field']]);
 
     checkFieldValue(
         $class,
-        $fields[get_class($class)]['name'],
+        $fields[$className]['name'],
         $label
     );
     checkFieldValue(
         $class,
-        $fields[get_class($class)]['field'],
+        $fields[$className]['field'],
         $field
     );
 
@@ -283,7 +281,7 @@ function addEntry ($class)
 */
 function editEntry ($id, $class)
 {
-    global $fields, $tpl, $error_detected;
+    global $fields, $tpl, $error_detected, $className;
 
     if ( !is_numeric($id) ) {
         $error_detected[] = _T("- ID must be an integer!");
@@ -296,16 +294,16 @@ function editEntry ($id, $class)
         return;
     }
 
-    $entry->$fields[get_class($class)]['name'] = htmlentities(
-        $entry->$fields[get_class($class)]['name'],
+    $entry->$fields[$className]['name'] = htmlentities(
+        $entry->$fields[$className]['name'],
         ENT_QUOTES,
         'UTF-8'
     );
 
     $tpl->assign('entry', get_object_vars($entry));
-    if (get_class($class) == 'Status') {
+    if ($className == 'Status') {
         $tpl->assign('page_title', _T("Edit status"));
-    } elseif ( get_class($class) == 'ContributionsTypes' ) {
+    } elseif ( $className == 'ContributionsTypes' ) {
         $tpl->assign('page_title', _T("Edit contribution type"));
     }
 }
@@ -319,7 +317,7 @@ function editEntry ($id, $class)
 */
 function listEntries ($class)
 {
-    global $fields, $tpl;
+    global $fields, $tpl, $className;
 
     $list = $class->getCompleteList();
 
@@ -328,9 +326,9 @@ function listEntries ($class)
         $entry['id'] = $key;
         $entry['name'] = $row[0];
 
-        if ( get_class($class) == 'ContributionsTypes' ) {
+        if ( $className == 'ContributionsTypes' ) {
             $entry['extends'] = ($row[1] ? _T("Yes") : _T("No"));
-        } elseif ( get_class($class) == 'Status' ) {
+        } elseif ( $className == 'Status' ) {
             $entry['priority'] = $row[1];
         }
         $entries[] = $entry;
@@ -338,9 +336,9 @@ function listEntries ($class)
 
     $tpl->assign('entries', $entries);
 
-    if ( get_class($class) == 'Status' ) {
+    if ( $className == 'Status' ) {
         $tpl->assign('page_title', _T("User statuses"));
-    } elseif ( get_class($class) == 'ContributionsTypes' ) {
+    } elseif ( $className == 'ContributionsTypes' ) {
         $tpl->assign('page_title', _T("Contribution types"));
     }
 }
@@ -360,9 +358,9 @@ if ( !isset($_REQUEST['class']) ) {
 $tpl->assign('class', $className);
 
 if ( $className == 'Status' ) {
-    $class = new Status;
+    $class = new Galette\Entity\Status;
 } elseif ( $className == 'ContributionsTypes' ) {
-    $class = new ContributionsTypes;
+    $class = new Galette\Entity\ContributionsTypes;
 }
 
 // Display a specific form to edit a label.
@@ -386,7 +384,7 @@ $tpl->assign('require_tabs', true);
 $tpl->assign('fields', $fields);
 $tpl->assign('error_detected', $error_detected);
 if ( $className == 'Status' ) {
-    $tpl->assign('non_staff_priority', Members::NON_STAFF_MEMBERS);
+    $tpl->assign('non_staff_priority', Galette\Repository\Members::NON_STAFF_MEMBERS);
 }
 if ( isset($_GET['ajax']) && $_GET['ajax'] == 'true' ) {
     $tpl->display('gestion_intitule_content.tpl');

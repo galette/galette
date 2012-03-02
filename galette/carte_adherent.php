@@ -45,6 +45,8 @@
  * @since     Available since 0.7dev - 2007-07-09
  */
 
+use Galette\IO\Pdf;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
@@ -53,24 +55,22 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-require_once WEB_ROOT. 'classes/pdf.class.php';
-require_once  WEB_ROOT . 'classes/members.class.php';
-require_once WEB_ROOT . 'classes/varslist.class.php';
-require_once WEB_ROOT . 'classes/print_logo.class.php';
+$filters = Galette\Repository\Members::getFilters();
 
-if ( isset($_GET[Adherent::PK])
-    && $_GET[Adherent::PK] > 0
+if ( isset($_GET[Galette\Entity\Adherent::PK])
+    && $_GET[Galette\Entity\Adherent::PK] > 0
 ) {
     // If we are called from "voir_adherent.php" get unique id value
-    $unique = $_GET[Adherent::PK];
-} else if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']) ) {
-    $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
+    $unique = $_GET[Galette\Entity\Adherent::PK];
 } else {
-    $log->log('No member selected to generate members cards', PEAR_LOG_INFO);
-    if ( $login->isAdmin() || $login->isStaff() ) {
-        header('location:gestion_adherents.php');
-    } else {
-        header('location:voir_adherent.php');
+    if ( count($filters->selected) == 0 ) {
+        $log->log('No member selected to generate members cards', PEAR_LOG_INFO);
+        if ( $login->isAdmin() || $login->isStaff() ) {
+            header('location:gestion_adherents.php');
+        } else {
+            header('location:voir_adherent.php');
+        }
+        die();
     }
 }
 
@@ -79,10 +79,10 @@ $mailing_adh = array();
 if ( isset($unique) && $unique ) {
     $mailing_adh[] = $unique;
 } else {
-    $mailing_adh = $varslist->selected;
+    $mailing_adh = $filters->selected;
 }
 
-$members = Members::getArrayList($mailing_adh, array('nom_adh', 'prenom_adh'));
+$members = Galette\Repository\Members::getArrayList($mailing_adh, array('nom_adh', 'prenom_adh'));
 
 if ( !is_array($members) || count($members) < 1 ) {
     $log->log('An error has occured, unable to get members list.', PEAR_LOG_ERR);
@@ -99,7 +99,7 @@ $doc_keywords = _T("Cards");
 $an_cot = '<strong>' . $preferences->pref_card_year . '</strong>';
 $abrev = '<strong>' . $preferences->pref_card_abrev . '</strong>';
 
-$print_logo = new PrintLogo();
+$print_logo = new Galette\Core\PrintLogo();
 if ( $logo->hasPicture() ) {
     $logofile = $print_logo->getPath();
 
@@ -123,7 +123,7 @@ if ( $logo->hasPicture() ) {
 }
 
 // Create new PDF document
-$pdf = new PDF('P', 'mm', 'A4', true, 'UTF-8');
+$pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8');
 
 // Set document information
 $pdf->SetTitle($doc_title);
@@ -157,7 +157,7 @@ $pdf->SetMargins(
 );
 
 // Set font
-$pdf->SetFont(PDF::FONT);
+$pdf->SetFont(Pdf::FONT);
 
 // Set origin
 // Top left corner
@@ -305,7 +305,7 @@ foreach ( $members as $member ) {
     // Lower colored strip with long text
     $pdf->SetFillColor($fcol['R'], $fcol['G'], $fcol['B']);
     $pdf->SetTextColor($tcol['R'], $tcol['G'], $tcol['B']);
-    $pdf->SetFont(PDF::FONT, 'B', 6);
+    $pdf->SetFont(Pdf::FONT, 'B', 6);
     $pdf->SetXY($x0, $y0 + 33);
     $pdf->Cell(75, 7, $preferences->pref_card_strip, 0, 0, 'C', 1);
 

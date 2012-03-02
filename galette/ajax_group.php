@@ -39,9 +39,8 @@
  */
 
 require_once 'includes/galette.inc.php';
-require_once 'classes/adherent.class.php';
 
-$id = get_numeric_form_value(Group::PK, '');
+$id = get_numeric_form_value(Galette\Entity\Group::PK, '');
 if ( !$id ) {
     $log->log(
         'Trying to display ajax_group.php without groups specified',
@@ -63,13 +62,10 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff()
 // check for ajax mode
 $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 
-require_once WEB_ROOT . 'classes/group.class.php';
-require_once WEB_ROOT . 'classes/groups.class.php';
-
-$group = new Group((int)$id);
+$group = new Galette\Entity\Group((int)$id);
 
 if ( !isset($_POST['reorder']) ) {
-    $groups = new Groups();
+    $groups = new Galette\Repository\Groups();
 
     $tpl->assign('ajax', $ajax);
     $tpl->assign('group', $group);

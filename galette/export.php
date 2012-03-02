@@ -48,7 +48,8 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once WEB_ROOT . 'classes/csv.class.php';
+use Galette\IO\Csv;
+
 $csv = new Csv();
 
 $written = array();
@@ -57,12 +58,13 @@ $tables_list = $zdb->getTables();
 
 if ( isset( $_POST['export_tables'] ) && $_POST['export_tables'] != '' ) {
     foreach ( $_POST['export_tables'] as $table) {
-        $select = new Zend_Db_Select($zdb->db);
+        $select = new \Zend_Db_Select($zdb->db);
         $select->from($table);
         $result = $select->query()->fetchAll(Zend_Db::FETCH_ASSOC);
 
-        $filename = Csv::DEFAULT_DIRECTORY . $table . '_full.csv';
-        $fp = fopen($filename, 'w');
+        $filename = $table . '_full.csv';
+        $filepath = Csv::DEFAULT_DIRECTORY . $filename;
+        $fp = fopen($filepath, 'w');
         if ( $fp ) {
             $res = $csv->export(
                 $result,
@@ -73,8 +75,8 @@ if ( isset( $_POST['export_tables'] ) && $_POST['export_tables'] != '' ) {
             );
             fclose($fp);
             $written[] = array(
-                'name' => $table,
-                'file' => $filename
+                'name' => $filename,
+                'file' => $filepath
             );
         }
     }

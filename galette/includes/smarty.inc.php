@@ -37,9 +37,7 @@
  * @since     Available since 0.63
  */
 
-require 'Smarty.class.php';
-
-$tpl = new Smarty;
+$tpl = new \Smarty;
 $template_subdir = 'templates/' . $preferences->pref_theme . '/';
 $tpl->plugins_dir[] = WEB_ROOT . 'includes/smarty_plugins';
 $tpl->template_dir = WEB_ROOT . $template_subdir;
@@ -90,7 +88,7 @@ if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']) ) {
 function getMemberName($params)
 {
     extract($params);
-    return Adherent::getSName($id);
+    return Galette\Entity\Adherent::getSName($id);
 }
 $tpl->register_function('memberName', 'getMemberName');
 ?>

@@ -54,9 +54,7 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff()
 // check for ajax mode
 $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 
-require_once WEB_ROOT . 'classes/groups.class.php';
-
-$groups = new Groups();
+$groups = new Galette\Repository\Groups();
 $groups_list = $groups->getList();
 
 $tpl->assign('ajax', $ajax);
