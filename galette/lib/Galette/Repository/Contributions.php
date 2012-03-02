@@ -352,7 +352,7 @@ class Contributions extends Pagination
         try {
             if ( $this->_start_date_filter != null ) {
                 /** TODO: initial date format should be i18n
-                $d = DateTime::createFromFormat(
+                $d = \DateTime::createFromFormat(
                     _T("d/m/Y"),
                     $this->_start_date_filter
                 );*/
@@ -365,7 +365,7 @@ class Contributions extends Pagination
 
             if ( $this->_end_date_filter != null ) {
                 /** TODO: initial date format should be i18n
-                $d = DateTime::createFromFormat(
+                $d = \DateTime::createFromFormat(
                     _T("d/m/Y"),
                     $this->_end_date_filter
                 );*/
@@ -405,7 +405,7 @@ class Contributions extends Pagination
                 $select->where('a.trans_id ?', new Zend_Db_Expr('IS NULL'));
             }
             $qry = $select->__toString();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 __METHOD__ . ' | ' . $e->getMessage(),

@@ -805,7 +805,7 @@ class Members
                     break;
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 __METHOD__ . ' | ' . $e->getMessage(),

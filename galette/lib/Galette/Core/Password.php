@@ -39,6 +39,7 @@
  */
 
 namespace Galette\Core;
+
 use Galette\Entity\Adherent;
 
 /**

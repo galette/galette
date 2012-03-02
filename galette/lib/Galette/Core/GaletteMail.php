@@ -291,7 +291,7 @@ class GaletteMail
                 $this->_mail = null;
                 return self::MAIL_SENT;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Error sending message: ' . $e.getMessage(),
                 PEAR_LOG_ERR

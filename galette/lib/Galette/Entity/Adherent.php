@@ -39,6 +39,7 @@ namespace Galette\Entity;
 
 use Galette\Core\Picture as Picture;
 use Galette\Core\GaletteMail as GaletteMail;
+use Galette\Core\Password as Password;
 use Galette\Repository\Groups as Groups;
 use Galette\Repository\Members as Members;
 
@@ -455,7 +456,7 @@ class Adherent
             $this->_creation_date = date("Y-m-d");
             $this->_status = Status::DEFAULT_STATUS;
             $this->_politeness = Politeness::MR;
-            $gp = new \Galette\Core\Password();
+            $gp = new Password();
             $this->_password = $gp->makeRandomPassword();
             $this->_picture = new Picture();
             $this->_admin = false;

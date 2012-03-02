@@ -39,6 +39,7 @@ namespace Galette\Core;
 
 use Galette\Repository\Groups as Groups;
 use Galette\Repository\Members as Members;
+use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\Status as Status;
 
 /**
@@ -55,7 +56,7 @@ use Galette\Entity\Status as Status;
  */
 class Login extends Authentication
 {
-    const TABLE = \Galette\Entity\Adherent::TABLE;
+    const TABLE = Adherent::TABLE;
     const PK = 'login_adh';
 
     /**
@@ -137,8 +138,8 @@ class Login extends Authentication
                     if ( $row->date_echeance == null ) {
                         $this->uptodate = false;
                     } else {
-                        $ech = new DateTime($row->date_echeance);
-                        $now = new DateTime();
+                        $ech = new \DateTime($row->date_echeance);
+                        $now = new \DateTime();
                         $now->setTime(0, 0, 0);
                         $this->uptodate = $ech >= $now;
                     }
@@ -163,7 +164,7 @@ class Login extends Authentication
             );
             $log->log($e->getTrace(), PEAR_LOG_ERR);
             return false;
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             $log->log(
                 'An error occured: ' . $e->getMessage(),
                 PEAR_LOG_WARNING
@@ -198,7 +199,7 @@ class Login extends Authentication
                 /* No results, user does not exists yet :) */
                 return false;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Cannot check if login exists | ' . $e->getMessage(),
                 PEAR_LOG_WARNING

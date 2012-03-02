@@ -237,7 +237,7 @@ class Contribution
                 $this->_loadFromRS($row);
                 return true;
             } else {
-                throw new Exception(
+                throw new \Exception(
                     'No contribution #' . $id . ' (user ' .$login->id . ')'
                 );
             }
@@ -608,7 +608,7 @@ class Contribution
                 Adherent::PK . '=' . $this->_member
             );
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'An error occured updating member ' . $this->_member .
                 '\'s deadline |' .
@@ -866,7 +866,7 @@ class Contribution
                         $log->log(
                             'Bad date (' . $his->$rname . ') | ' .
                             $e->getMessage(),
-                            PER_LOG_INFO
+                            PEAR_LOG_INFO
                         );
                         return $this->$rname;
                     }

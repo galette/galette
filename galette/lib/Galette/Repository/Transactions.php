@@ -277,11 +277,11 @@ class Transactions extends Pagination
         try {
             /*if ( $this->_start_date_filter != null ) {*/
                 /** TODO: initial date format should be i18n
-                $d = DateTime::createFromFormat(
+                $d = \DateTime::createFromFormat(
                     _T("d/m/Y"),
                     $this->_start_date_filter
                 );*/
-                /*$d = DateTime::createFromFormat(
+                /*$d = \DateTime::createFromFormat(
                     'd/m/Y',
                     $this->_start_date_filter
                 );
@@ -290,11 +290,11 @@ class Transactions extends Pagination
 
             if ( $this->_end_date_filter != null ) {*/
                 /** TODO: initial date format should be i18n
-                $d = DateTime::createFromFormat(
+                $d = \DateTime::createFromFormat(
                     _T("d/m/Y"),
                     $this->_end_date_filter
                 );*/
-                /*$d = DateTime::createFromFormat(
+                /*$d = \DateTime::createFromFormat(
                     'd/m/Y',
                     $this->_end_date_filter
                 );
@@ -307,7 +307,7 @@ class Transactions extends Pagination
             } else if ( $this->_filtre_cotis_adh != null ) {
                 $select->where('t.' . Adherent::PK . ' = ?', $this->_filtre_cotis_adh);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 __METHOD__ . ' | ' . $e->getMessage(),

@@ -157,7 +157,7 @@ class MailingHistory extends History
                 }
             }
             return $ret;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Unable to get history. | ' . $e->getMessage(),
@@ -313,7 +313,7 @@ class MailingHistory extends History
                 );
 
                 return true;
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $zdb->db->rollBack();
                 $log->log(
                     'Unable to delete selected mailing history entries |' .

@@ -37,6 +37,8 @@
 
 namespace Galette\Core;
 
+use Galette\Entity\Adherent as Adherent;
+
 /**
  * Preferences for galette
  *

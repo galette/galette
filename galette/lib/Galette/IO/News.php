@@ -120,7 +120,7 @@ class News
                 $now = new \DateTime();
                 $has_expired = $now > $expire;
                 return !$has_expired;
-            } catch ( Exception $e ) {
+            } catch ( \Exception $e ) {
                 $log->log(
                     'Unable chack cache expiracy. Are you sure you have ' .
                     'properly configured PHP timezone settings on your server?',
@@ -246,7 +246,7 @@ class News
             }
 
             $this->_tweets = $tweets;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Unable to load Tweets :( (see system logs to get details)',
                 PEAR_LOG_ERR

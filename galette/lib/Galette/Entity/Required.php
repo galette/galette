@@ -86,7 +86,7 @@ class Required
     */
     private function _checkUpdate($try = true)
     {
-        global $zdb, $log;        
+        global $zdb, $log;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -160,7 +160,7 @@ class Required
             $log->log('Reinit mode, we delete table\'s content', PEAR_LOG_DEBUG);
             try {
                 $zdb->db->query('TRUNCATE ' . PREFIX_DB . self::TABLE);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $log->log(
                     'An error has occured deleting current required records | ' .
                     $e->getMessage(),
@@ -276,7 +276,7 @@ class Required
             $this->_all_required = null;
             $this->_checkUpdate();
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'An error has occured updating required fields | ' .

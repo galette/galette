@@ -506,7 +506,7 @@ class Group
     public function getCreationDate($formatted = true)
     {
         if ( $formatted === true ) {
-            $date = new DateTime($this->_creation_date);
+            $date = new \DateTime($this->_creation_date);
             return $date->format(_T("Y-m-d"));
         } else {
             return $this->_creation_date;

@@ -156,7 +156,7 @@ class History extends Pagination
             }
             $this->add('Logs flushed');
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Unable to flush logs. | ' . $e->getMessage(),
@@ -266,7 +266,7 @@ class History extends Pagination
                     try {
                         $d = new \DateTime($this->$rname);
                         return $d->format(_T("Y-m-d H:i:s"));
-                    } catch (Exception $e) {
+                    } catch (\Exception $e) {
                         //oops, we've got a bad date :/
                         $log->log(
                             'Bad date (' . $this->$rname . ') | ' .

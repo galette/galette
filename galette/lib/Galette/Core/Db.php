@@ -102,7 +102,7 @@ class Db extends \Zend_Db
                 PEAR_LOG_ALERT
             );
             throw $e;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // perhaps factory() failed to load the specified Adapter class
             $log->log(
                 '[ZendDb] Error (' . $e->getCode() . '|' .
@@ -138,7 +138,7 @@ class Db extends \Zend_Db
             $sql = $select->__toString();
             $res = $select->query()->fetch();
             return $res->version === GALETTE_DB_VERSION;
-        } catch ( Exception $e ) {
+        } catch ( \Exception $e ) {
             $log->log(
                 'Cannot check database version: ' . $e->getMessage(),
                 PEAR_LOG_ERR
@@ -247,7 +247,7 @@ class Db extends \Zend_Db
                 PEAR_LOG_ALERT
             );
             return $e;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // perhaps factory() failed to load the specified Adapter class
             $log->log(
                 '[' . __METHOD__ . '] Error (' . $e->getCode() . '|' .
@@ -271,7 +271,7 @@ class Db extends \Zend_Db
         try {
             $this->_db->query('DROP TABLE IF EXISTS galette_test');
             $log->log('Test table successfully dropped.', PEAR_LOG_DEBUG);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Cannot drop test table! ' . $e->getMessage(),
                 PEAR_LOG_WARNING
@@ -317,7 +317,7 @@ class Db extends \Zend_Db
             )';
             $this->_db->getConnection()->exec($sql);
             $results['create'] = true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log('Cannot CREATE TABLE', PEAR_LOG_WARNING);
             //if we cannot create tables, we cannot check other permissions
             $stop = true;
@@ -356,7 +356,7 @@ class Db extends \Zend_Db
                 } else {
                     throw new Exception('No row inserted!');
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $log->log(
                     'Cannot INSERT records | ' .$e->getMessage(),
                     PEAR_LOG_WARNING
@@ -381,9 +381,9 @@ class Db extends \Zend_Db
                     if ( $res === 1 ) {
                         $results['update'] = true;
                     } else {
-                        throw new Exception('No row updated!');
+                        throw new \Exception('No row updated!');
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $log->log(
                         'Cannot UPDATE records | ' .$e->getMessage(),
                         PEAR_LOG_WARNING
@@ -400,9 +400,9 @@ class Db extends \Zend_Db
                     if ( count($res) === 1 ) {
                         $results['select'] = true;
                     } else {
-                        throw new Exception('Select is empty!');
+                        throw new \Exception('Select is empty!');
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $log->log(
                         'Cannot SELECT records | ' . $e->getMessage(),
                         PEAR_LOG_WARNING
@@ -417,7 +417,7 @@ class Db extends \Zend_Db
                         array('test_id = ?' => 1)
                     );
                     $results['delete'] = true;
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $log->log(
                         'Cannot DELETE records | ' .$e->getMessage(),
                         PEAR_LOG_WARNING
@@ -431,7 +431,7 @@ class Db extends \Zend_Db
                 $sql = 'DROP TABLE galette_test';
                 $this->_db->getConnection()->exec($sql);
                 $results['drop'] = true;
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $log->log(
                     'Cannot DROP TABLE | ' . $e->getMessage(),
                     PEAR_LOG_WARNING
@@ -612,7 +612,7 @@ class Db extends \Zend_Db
                     $where
                 );
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'An error occured while converting contents to UTF-8 for table ' .
                 $table . ' (' . $e->getMessage() . ')',

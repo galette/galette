@@ -407,7 +407,7 @@ class Texts
             //been initialized
             $proceed = false;
             if ( $check_first === true ) {
-                $select = new Zend_Db_Select($zdb->db);
+                $select = new \Zend_Db_Select($zdb->db);
                 $select->from(
                     PREFIX_DB . self::TABLE,
                     'COUNT(' . self::PK . ') as counter'
@@ -422,7 +422,7 @@ class Texts
             } else {
                 $proceed = true;
             }
-            
+
             if ( $proceed === true ) {
                 //first, we drop all values
                 $zdb->db->delete(PREFIX_DB . self::TABLE);
