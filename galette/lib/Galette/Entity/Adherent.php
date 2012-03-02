@@ -37,6 +37,8 @@
 
 namespace Galette\Entity;
 
+use Galette\Core\Picture as Picture;
+use Galette\Core\GaletteMail as GaletteMail;
 use Galette\Repository\Groups as Groups;
 use Galette\Repository\Members as Members;
 
@@ -455,7 +457,7 @@ class Adherent
             $this->_politeness = Politeness::MR;
             $gp = new \Galette\Core\Password();
             $this->_password = $gp->makeRandomPassword();
-            $this->_picture = new \Galette\Core\Picture();
+            $this->_picture = new Picture();
             $this->_admin = false;
             $this->_staff = false;
             $this->_due_free = false;
@@ -522,7 +524,7 @@ class Adherent
         try {
             $select = new \Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . self::TABLE);
-            if ( Galette\Core\GaletteMail::isValidEmail($login) ) {
+            if ( GaletteMail::isValidEmail($login) ) {
                 //we got a valid email adress, use it
                 $select->where('email_adh = ?', $login);
             } else {
@@ -610,7 +612,7 @@ class Adherent
         $this->_due_date = $r->date_echeance;
         $this->_others_infos = $r->info_public_adh;
         $this->_others_infos_admin = $r->info_adh;
-        $this->_picture = new \Galette\Core\Picture($this->_id);
+        $this->_picture = new Picture($this->_id);
         $this->_groups = Groups::loadGroups($this->_id);
         $this->_managed_groups = Groups::loadManagedGroups($this->_id);
         $this->_checkDues();
@@ -1026,7 +1028,7 @@ class Adherent
                         break;
                     case 'email_adh':
                     case 'msn_adh':
-                        if ( !Galette\Core\GaletteMail::isValidEmail($value) ) {
+                        if ( !GaletteMail::isValidEmail($value) ) {
                             $errors[] = _T("- Non-valid E-Mail address!") .
                                 ' (' . $this->getFieldName($key) . ')';
                         }
@@ -1207,7 +1209,7 @@ class Adherent
                         PREFIX_DB . self::TABLE,
                         'id'
                     );
-                    $this->_picture = new \Galette\Core\Picture($this->_id);
+                    $this->_picture = new Picture($this->_id);
                     // logging
                     $hist->add(
                         _T("Member card added"),

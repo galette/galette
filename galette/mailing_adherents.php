@@ -61,8 +61,6 @@ if ( isset($_POST['mailing_done'])
     }
 }
 
-require_once WEB_ROOT . 'classes/members.class.php';
-
 $data = array();
 
 if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED && !GALETTE_MODE === 'DEMO') {

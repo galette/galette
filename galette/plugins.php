@@ -49,7 +49,6 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-require_once 'classes/plugins.class.php';
 $success_detected = array();
 $error_detected = array();
 
