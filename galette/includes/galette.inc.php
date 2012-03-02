@@ -62,7 +62,7 @@ require_once $base_path . 'config/paths.inc.php';
 use Galette\Common\ClassLoader;
 use Galette\Core;
 require_once $base_path . 'lib/Galette/Common/ClassLoader.php';
-$galetteLoader = new ClassLoader('Galette', $base_path . 'lib');
+$galetteLoader = new ClassLoader('Galette', WEB_ROOT . 'lib');
 $zendLoader = new ClassLoader('Zend', GALETTE_ZEND_PATH);
 $zendLoader->setNamespaceSeparator('_');
 $smartyLoader = new ClassLoader(null, GALETTE_SMARTY_PATH);
