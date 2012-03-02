@@ -53,15 +53,12 @@ if ( !$login->isAdmin() ) {
     die();
 }
 
-require_once WEB_ROOT . 'classes/fields_config.class.php';
-require_once WEB_ROOT . 'classes/fields_categories.class.php';
-
 $fc = null;
 
 switch ( $current ) {
 case 'members':
     $a = new Galette\Entity\Adherent();
-    $fc = new FieldsConfig(Galette\Entity\Adherent::TABLE, $a->fields);
+    $fc = new Galette\Entity\FieldsConfig(Galette\Entity\Adherent::TABLE, $a->fields);
     break;
 default:
     $log->log(
@@ -98,7 +95,7 @@ if ( isset($_POST) && count($_POST) > 0 ) {
 
 $tpl->assign('page_title', _T("Fields configuration"));
 $tpl->assign('time', time());
-$tpl->assign('categories', FieldsCategories::getList());
+$tpl->assign('categories', Galette\Entity\FieldsCategories::getList());
 $tpl->assign('categorized_fields', $fc->getCategorizedFields());
 $tpl->assign('current', $current);
 $tpl->assign('require_sorter', true);

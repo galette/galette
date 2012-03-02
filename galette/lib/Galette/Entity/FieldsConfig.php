@@ -35,9 +35,7 @@
  * @since     Available since 0.7dev - 2009-03-26
  */
 
-
-/** @ignore */
-require_once 'fields_categories.class.php';
+namespace Galette\Entity;
 
 /**
  * Fields config class for galette :
@@ -106,7 +104,7 @@ class FieldsConfig
         $class = get_class($this);
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . self::TABLE)
                 ->where('table_name = ?', $this->_table)
                 ->order(array(FieldsCategories::PK, 'position ASC'));
@@ -142,7 +140,7 @@ class FieldsConfig
                     $this->all_positions[$k->field_id] = $k->position;
                 }
 
-                $meta = Galette\Entity\Adherent::getDbFields();
+                $meta = Adherent::getDbFields();
 
                 if ( count($meta) != count($result) ) {
                     $log->log(
@@ -155,7 +153,7 @@ class FieldsConfig
                     $this->init(true);
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 '[' . $class . '] An error occured while checking update for ' .
                 'fields configuration for table `' . $this->_table . '`. ' .
@@ -205,7 +203,7 @@ class FieldsConfig
                     PREFIX_DB . self::TABLE,
                     $zdb->db->quoteInto('table_name = ?', PREFIX_DB . $this->_table)
                 );
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $log->log(
                     'Unable to delete fields configuration for reinitialization' .
                     $e->getMessage(),
@@ -279,7 +277,7 @@ class FieldsConfig
                 PEAR_LOG_INFO
             );
             $this->_checkUpdate(false);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 '[' . $class . '] An error occured trying to initialize fields ' .

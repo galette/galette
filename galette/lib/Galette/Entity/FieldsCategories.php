@@ -35,6 +35,8 @@
  * @since     Available since 0.7dev - 2009-03-28
  */
 
+namespace Galette\Entity;
+
 /**
  * Fields categories class for galette
  *
@@ -62,19 +64,19 @@ class FieldsCategories
     private static $_defaults = array(
         array(
             'id'         => 1,
-            'table_name' => Galette\Entity\Adherent::TABLE,
+            'table_name' => Adherent::TABLE,
             'category'   => 'Identity',
             'position'   => 1
         ),
         array(
             'id'         => 2,
-            'table_name' => Galette\Entity\Adherent::TABLE,
+            'table_name' => Adherent::TABLE,
             'category'   => 'Galette-related data',
             'position'   => 2
         ),
         array(
             'id'         => 3,
-            'table_name' => Galette\Entity\Adherent::TABLE,
+            'table_name' => Adherent::TABLE,
             'category'   => 'Contact information',
             'position'   => 3
         )
@@ -97,11 +99,11 @@ class FieldsCategories
         global $zdb, $log;
 
         try {
-            $select = new Zend_Db_Select($zdb->db);
+            $select = new \Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . self::TABLE)
                 ->order('position');
             return $select->query()->fetchAll();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 '[' . get_class($this) . '] Cannot get fields categories list | ' .
@@ -148,7 +150,7 @@ class FieldsCategories
                 PEAR_LOG_INFO
             );
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Unable to initialize default fields configuration.' .
                 $e->getMessage(),
