@@ -4,7 +4,7 @@ LANGUAGES = en_US fr_FR.utf8
 PACKAGE = galette
 MKLANG = ./make_lang_l12n.py
 PHP_SOURCES = $(shell find ../ -maxdepth 1 -name \*.php) \
-              $(shell find ../classes -name \*.php) \
+              $(shell find ../lib/Galette -name \*.php) \
               $(shell find ../includes -maxdepth 1 -name \*.php) \
               $(shell find ../install -name \*.php) \
               $(shell find ../public -name \*.php) \
