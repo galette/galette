@@ -55,10 +55,11 @@ class Picture
 {
     //constants that will not be overrided
     const INVALID_FILE = -1;
-    const FILE_TOO_BIG = -2;
-    const MIME_NOT_ALLOWED = -3;
-    const SQL_ERROR = -4;
-    const SQL_BLOB_ERROR = -5;
+    const INVALID_EXTENSION = -2;
+    const FILE_TOO_BIG = -3;
+    const MIME_NOT_ALLOWED = -4;
+    const SQL_ERROR = -5;
+    const SQL_BLOB_ERROR = -6;
     //constants that can be overrided
     //(do not use self::CONSTANT, but get_class[$this]::CONSTANT)
     const MAX_FILE_SIZE = 1024;
@@ -423,12 +424,29 @@ class Picture
                 $extension = 'jpg';
             }
         } else {
+            $erreg = "/^(.[^" . implode('', $this->_bad_chars) . "]+)\.(.*)/i";
+            $m = preg_match($erreg, $name, $errmatches);
+
+            $err_msg = '[' . $class . '] ';
+            if ( $m == 1 ) {
+                //ok, we got a good filename and an extension. Extension is bad :)
+                $err_msg .= 'Invalid extension for file ' . $name . '.';
+                $ret = self::INVALID_EXTENSION;
+            } else {
+                $err_msg = 'Invalid filename `' . $name  . '` (Tip: ';
+                $err_msg .= preg_replace(
+                    '|%s|',
+                    htmlentities($this->getbadChars()),
+                    "file name should not contain any of: %s). "
+                );
+                $ret = self::INVALID_FILE;
+            }
+
             $log->log(
-                '[' . $class . '] Invalid filename or extension. Filename was `' .
-                $name . '`.',
+                $err_msg,
                 PEAR_LOG_ERR
             );
-            return self::INVALID_FILE;
+            return $ret;
         }
 
         //Second, let's check file size
@@ -744,15 +762,13 @@ class Picture
         $error = _T("An error occued.");
         switch( $code ) {
         case self::INVALID_FILE:
-            $patterns = array('|%s|', '|%t|');
-            $replacements = array(
-                $this->getAllowedExts(),
-                htmlentities($this->getBadChars())
-            );
+            $error = _T("File name is invalid, it should not contain any special character or space.");
+            break;
+        case self::INVALID_EXTENSION:
             $error = preg_replace(
-                $patterns,
-                $replacements,
-                _T("- Filename or extension is incorrect. Only %s files are allowed. File name should not contains any of: %t")
+                '|%s|',
+                $this->getAllowedExts(),
+                _T("- File extension is not allowed, only %s files are.")
             );
             break;
         case self::FILE_TOO_BIG:
