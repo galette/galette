@@ -8,6 +8,7 @@ nbproject
 
 # /galette/config/
 /galette/config/config.inc.php
+/galette/config/local_*
 
 # /galette/exports/
 /galette/exports/*
