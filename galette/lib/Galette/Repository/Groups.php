@@ -264,7 +264,7 @@ class Groups
                             $gname . '` (' . $gid . ').',
                             PEAR_LOG_ERR
                         );
-                        throw new Exception(
+                        throw new \Exception(
                             'Unable to attach `' . $adh->sname . '` (' . $adh->id .
                             ') to `' . $gname . '` (' . $gid . ')'
                         );

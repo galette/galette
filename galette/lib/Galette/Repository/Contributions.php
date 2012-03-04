@@ -471,7 +471,7 @@ class Contributions extends Pagination
                     $c = new Contribution($contribution);
                     $res = $c->remove(false);
                     if ( $res === false ) {
-                        throw new Exception;
+                        throw new \Exception;
                     }
                 }
                 if ( $transaction ) {

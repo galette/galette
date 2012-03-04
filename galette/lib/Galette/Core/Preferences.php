@@ -202,7 +202,7 @@ class Preferences
                         )
                     );
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $log->log(
                     'Unable to add missing preferences.' . $e->getMessage(),
                     PEAR_LOG_WARNING
@@ -235,7 +235,7 @@ class Preferences
                 $this->_prefs[$pref->nom_pref] = $pref->val_pref;
             }
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Preferences cannot be loaded. Galette should not work without ' .
                 'preferences. Exiting.',
@@ -285,7 +285,7 @@ class Preferences
                 PEAR_LOG_INFO
             );
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Unable to initialize default preferences.' . $e->getMessage(),
                 PEAR_LOG_WARNING
@@ -332,7 +332,7 @@ class Preferences
                 PEAR_LOG_INFO
             );
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Unable to store preferences | ' . $e->getMessage(),

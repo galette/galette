@@ -288,7 +288,7 @@ class Members
                                 'Unable to delete picture for member ' . $str_adh,
                                 PEAR_LOG_ERR
                             );
-                            throw new Exception(
+                            throw new \Exception(
                                 'Unable to delete picture for member ' .
                                 $str_adh
                             );

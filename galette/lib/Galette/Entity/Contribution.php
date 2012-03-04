@@ -537,7 +537,7 @@ class Contribution
                     );
                 } else {
                     $hist->add(_T("Fail to add new contribution."));
-                    throw new Exception(
+                    throw new \Exception(
                         'An error occured inserting new contribution!'
                     );
                 }
@@ -759,7 +759,7 @@ class Contribution
                 );
                 return false;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Unable to detach contribution #' . $contrib_id .
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
@@ -788,7 +788,7 @@ class Contribution
                 self::PK . ' = ' . $contrib_id
             );
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Unable to attach contribution #' . $contrib_id .
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
@@ -861,7 +861,7 @@ class Contribution
                     try {
                         $d = new \DateTime($this->$rname);
                         return $d->format(_T("Y-m-d"));
-                    } catch (Exception $e) {
+                    } catch (\Exception $e) {
                         //oops, we've got a bad date :/
                         $log->log(
                             'Bad date (' . $his->$rname . ') | ' .

@@ -369,7 +369,7 @@ class Transactions extends Pagination
                     $c = new Transaction($transaction);
                     $res = $c->remove(false);
                     if ( $res === false ) {
-                        throw new Exception;
+                        throw new \Exception;
                     }
                 }
                 $zdb->db->commit();

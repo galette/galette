@@ -124,7 +124,7 @@ class Status
                 PEAR_LOG_INFO
             );
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 'Unable to initialize default status.' . $e->getMessage(),
                 PEAR_LOG_WARNING

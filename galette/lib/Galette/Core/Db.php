@@ -74,7 +74,7 @@ class Db extends \Zend_Db
             } else if ( TYPE_DB === 'pgsql' ) {
                 $_type = 'Pdo_Pgsql';
             } else {
-                throw new Exception;
+                throw new \Exception;
             }
 
             $this->_db = \Zend_Db::factory(
@@ -217,7 +217,7 @@ class Db extends \Zend_Db
             } else if ( $type === 'pgsql' ) {
                 $_type = 'Pdo_Pgsql';
             } else {
-                throw new Exception;
+                throw new \Exception;
             }
 
             $_db = \Zend_Db::factory(
@@ -332,7 +332,7 @@ class Db extends \Zend_Db
                     $sql = 'ALTER TABLE galette_test ALTER test_text SET DEFAULT \'nothing\'';
                     $this->_db->getConnection()->exec($sql);
                     $results['alter'] = true;
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $log->log(
                         'Cannot ALTER TABLE | ' . $e->getMessage(),
                         PEAR_LOG_WARNING
@@ -354,7 +354,7 @@ class Db extends \Zend_Db
                 if ( $res === 1 ) {
                     $results['insert'] = true;
                 } else {
-                    throw new Exception('No row inserted!');
+                    throw new \Exception('No row inserted!');
                 }
             } catch (\Exception $e) {
                 $log->log(
@@ -510,7 +510,7 @@ class Db extends \Zend_Db
                 }
             }
             $this->_db->commit();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_db->rollBack();
             $log->log(
                 'An error occured while converting to utf table ' .
@@ -536,7 +536,7 @@ class Db extends \Zend_Db
             $query = 'SET NAMES latin1';
             $this->_db->getConnection()->exec($query);
 
-        }catch (Exception $e) {
+        }catch (\Exception $e) {
             $log->log(
                 'Cannot SET NAMES on table `' . $table . '`. ' .
                 $e->getMessage(),
@@ -580,7 +580,7 @@ class Db extends \Zend_Db
                     );
                 } else {
                     //not a know case, we do not perform any update.
-                    throw new Exception(
+                    throw new \Exception(
                         'Cannot define primary key for table `' . $table .
                         '`, aborting'
                     );
