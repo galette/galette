@@ -193,13 +193,16 @@
 							<input type="radio" name="pref_mail_method" id="no" value="{php}echo Galette\Core\GaletteMail::METHOD_DISABLED;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}checked="checked"{/if}/><label for="no">{_T string="Emailing disabled"}</label>
 						</li>
 						<li>
-							<input type="radio" name="pref_mail_method" id="php" value="{php}echo Galette\Core\GaletteMail::METHOD_SENDMAIL;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_SENDMAIL')}checked="checked"{/if}/><label for="php">{_T string="PHP mail() function"}</label>
+							<input type="radio" name="pref_mail_method" id="php" value="{php}echo Galette\Core\GaletteMail::METHOD_PHPMAIL;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_PHPMAIL')}checked="checked"{/if}/><label for="php">{_T string="PHP mail() function"}</label>
 						</li>
 						<li>
 							<input type="radio" name="pref_mail_method" id="smtp" value="{php}echo Galette\Core\GaletteMail::METHOD_SMTP;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_SMTP')}checked="checked"{/if}/><label for="smtp">{_T string="Using a SMTP server (slower)"}</label>
 						</li>
 						<li>
 							<input type="radio" name="pref_mail_method" id="gmail" value="{php}echo Galette\Core\GaletteMail::METHOD_GMAIL;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_GMAIL')}checked="checked"{/if}/><label for="gmail">{_T string="Using GMAIL as SMTP server (slower)"}</label>
+						</li>
+						<li>
+							<input type="radio" name="pref_mail_method" id="qmail" value="{php}echo Galette\Core\GaletteMail::METHOD_SENDMAIL;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_SENDMAIL')}checked="checked"{/if}/><label for="qmail">{_T string="Using Sendmail server"}</label>
 						</li>
 						<li>
 							<input type="radio" name="pref_mail_method" id="qmail" value="{php}echo Galette\Core\GaletteMail::METHOD_QMAIL;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_QMAIL')}checked="checked"{/if}/><label for="qmail">{_T string="Using QMAIL server"}</label>

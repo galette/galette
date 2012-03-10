@@ -58,10 +58,11 @@ class GaletteMail
     const MAIL_SENT = 1;
 
     const METHOD_DISABLED = 0;
-    const METHOD_SENDMAIL = 1;
+    const METHOD_PHPMAIL = 1;
     const METHOD_SMTP = 2;
     const METHOD_QMAIL = 3;
     const METHOD_GMAIL = 4;
+    const METHOD_SENDMAIL = 5;
 
     private $_subject;
     private $_message;
