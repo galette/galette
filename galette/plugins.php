@@ -53,6 +53,7 @@ $success_detected = array();
 $error_detected = array();
 
 if ( GALETTE_MODE !== 'DEMO' ) {
+    $reload_plugins = false;
     if ( isset($_GET['activate']) ) {
         try {
             $plugins->activateModule($_GET['activate']);
@@ -61,6 +62,7 @@ if ( GALETTE_MODE !== 'DEMO' ) {
                 $_GET['activate'],
                 _T("Plugin %name has been enabled")
             );
+            $reload_plugins = true;
         } catch (Exception $e) {
             $error_detected[] = $e->getMessage();
         }
@@ -74,9 +76,15 @@ if ( GALETTE_MODE !== 'DEMO' ) {
                 $_GET['deactivate'],
                 _T("Plugin %name has been disabled")
             );
+            $reload_plugins = true;
         } catch (Exception $e) {
             $error_detected[] = $e->getMessage();
         }
+    }
+
+    //If some plugins have been (de)activated, we have to reload
+    if ( $reload_plugins === true ) {
+        $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
     }
 }
 
