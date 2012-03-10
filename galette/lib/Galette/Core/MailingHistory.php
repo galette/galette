@@ -251,7 +251,7 @@ class MailingHistory extends History
             $_recipients = array();
             if ( $this->_recipients != null ) {
                 foreach ( $this->_recipients as $_r ) {
-                    $_recipients[$_r->id] = $r->sname . ' <' . $_r->email . '>';
+                    $_recipients[$_r->id] = $_r->sname . ' <' . $_r->email . '>';
                 }
             }
             $values = array(
