@@ -43,6 +43,8 @@
  * @since     Disponible depuis la Release 0.62
  */
 
+use Galette\Filters\MembersList as MembersList;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
@@ -56,7 +58,12 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-$filters = Galette\Repository\Members::getFilters();
+$session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+if ( isset($session['filters']['members']) ) {
+    $filters = unserialize($session['filters']['members']);
+} else {
+    $filters = new MembersList();
+}
 
 // Set caller page ref for cards error reporting
 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['caller'] = 'gestion_adherents.php';

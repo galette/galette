@@ -66,7 +66,12 @@ $data = array();
 if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED && !GALETTE_MODE === 'DEMO') {
     $hist->add(_T("Trying to load mailing while mail is disabled in preferences."));
 } else {
-    $filters = Galette\Repository\Members::getFilters();
+    $session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+    if ( isset($session['filters']['members']) ) {
+        $filters =  unserialize($session['filters']['members']);
+    } else {
+        $filters = new MembersList();
+    }
     if ( count($filters->selected) == 0 ) {
         $log->log(
             '[mailing_adherents.php] No member selected for mailing',

@@ -91,6 +91,11 @@ class Members
     */
     public function __construct()
     {
+        global $filters;
+
+        if ( !isset($filters) ) {
+            $filters = new MembersList();
+        }
     }
 
 
@@ -174,9 +179,7 @@ class Members
         $managed=false,
         $limit=true
     ) {
-        global $zdb, $log, $galetteLoader;
-
-        $filters = self::getFilters();
+        global $zdb, $log, $galetteLoader, $filters;
 
         try {
             $_mode = self::SHOW_LIST;
@@ -224,23 +227,6 @@ class Members
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
                 PEAR_LOG_ERR
             );
-        }
-    }
-
-    /**
-     * Retrieve filters from session or create new ones
-     *
-     * @param string $session_prefix Session prefix (defaults to null)
-     *
-     * @return Galette\Filters\MembersList
-     */
-    public static function getFilters($session_prefix = null)
-    {
-        $session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
-        if ( isset($session[$session_prefix . 'filters']['members']) ) {
-            return unserialize($session[$session_prefix . 'filters']['members']);
-        } else {
-            return new MembersList();
         }
     }
 
@@ -362,7 +348,7 @@ class Members
     * @return Adherent[]|ResultSet
     * @static
     */
-    public static function getList($as_members=false, $fields=null, $filter=true)
+    public function getList($as_members=false, $fields=null, $filter=true)
     {
         return self::getMembersList(
             $as_members,
@@ -380,17 +366,15 @@ class Members
     * Get members list with public informations available
     *
     * @param boolean $with_photos get only members which have uploaded a
-    *                               photo (for trombinoscope)
+    *                             photo (for trombinoscope)
     * @param array   $fields      fields list
     *
     * @return Adherent[]
     * @static
     */
-    public static function getPublicList($with_photos, $fields)
+    public function getPublicList($with_photos, $fields)
     {
-        global $zdb, $log;
-
-        $filters = self::getFilters();
+        global $zdb, $log, $filters;
 
         try {
             $select = self::_buildSelect(
@@ -401,7 +385,6 @@ class Members
                     'date_echeance > ? OR bool_exempt_adh = true',
                     date('Y-m-d')
                 );
-
             $log->log(
                 "The following query will be executed: \n" .
                 $select->__toString(),
@@ -585,9 +568,7 @@ class Members
     */
     private function _proceedCount($select)
     {
-        global $zdb, $log;
-
-        $filters = self::getFilters();
+        global $zdb, $log, $filters;
 
         try {
             $countSelect = clone $select;
@@ -625,14 +606,15 @@ class Members
     }
 
     /**
-    * Builds the order clause
-    *
-    * @return string SQL ORDER clause
-    */
+     * Builds the order clause
+     *
+     * @return string SQL ORDER clause
+     */
     private function _buildOrderClause()
     {
+        global $filters;
+
         $order = array();
-        $filters = self::getFilters();
 
         switch($filters->orderby) {
         case self::ORDERBY_NICKNAME:
@@ -666,9 +648,7 @@ class Members
      */
     private function _buildWhereClause($select)
     {
-        global $zdb, $login;
-
-        $filters = self::getFilters();
+        global $zdb, $login, $filters;
 
         try {
             if ( $filters->email_filter == Members::FILTER_W_EMAIL) {

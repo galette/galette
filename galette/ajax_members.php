@@ -39,6 +39,8 @@
  * @since     Available since 0.7dev - 2011-08-28
  */
 
+use Galette\Filters\MembersList as MembersList;
+
 require_once 'includes/galette.inc.php';
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     $log->log(
@@ -52,7 +54,12 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
 $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 $multiple = ( isset($_POST['multiple']) && $_POST['multiple'] == 'false' ) ? false : true;
 
-$filters = new Galette\Filters\MembersList();
+$session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+if ( isset($session['ajax_members_filters']['members']) ) {
+    $filters = unserialize($session['ajax_members_filters']['members']);
+} else {
+    $filters = new MembersList();
+}
 
 if (isset($_GET['page'])) {
     $filters->current_page = (int)$_GET['page'];
@@ -72,6 +79,8 @@ $members_list = $members->getMembersList(true);
 
 //assign pagination variables to the template and add pagination links
 $filters->setSmartyPagination($tpl);
+
+$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['ajax_members_filters']['members'] = serialize($filters);
 
 $selected_members = null;
 $unreachables_members = null;

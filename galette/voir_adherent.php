@@ -108,10 +108,17 @@ if ( $login->id != $id_adh && !$login->isAdmin() && !$login->isStaff() ) {
 }
 
 $navigate = array();
-$filters = Galette\Repository\Members::getFilters();
+
+$session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+if ( isset($session['filters']['members']) ) {
+    $filters =  unserialize($session['filters']['members']);
+} else {
+    $filters = new MembersList();
+}
 
 if ( count($filters) > 0 ) {
-    $ids = Galette\Repository\Members::getList(false, array(Galette\Entity\Adherent::PK));
+    $m = new Galette\Repository\Members();
+    $ids = $m->getList(false, array(Galette\Entity\Adherent::PK));
     //print_r($ids);
     foreach ( $ids as $k=>$m ) {
         if ( $m->id_adh == $member->id ) {

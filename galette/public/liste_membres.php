@@ -39,6 +39,8 @@
  * @since     Available since 0.62
  */
 
+use Galette\Filters\MembersList as MembersList;
+
 $base_path = '../';
 require_once $base_path . 'includes/galette.inc.php';
 if ( !$preferences->showPublicPages() ) {
@@ -46,7 +48,12 @@ if ( !$preferences->showPublicPages() ) {
     header('location:../index.php');
 }
 
-$filters = Galette\Repository\Members::getFilters('public_');
+$session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+if ( isset($session['public_filters']['members']) ) {
+    $filters = unserialize($session['public_filters']['members']);
+} else {
+    $filters = new MembersList();
+}
 
 // Filters
 if (isset($_GET['page'])) {
@@ -67,13 +74,14 @@ if ( isset($_GET['tri']) ) {
     $filters->orderby = $_GET['tri'];
 }
 
-$members = Galette\Repository\Members::getPublicList(false, null);
 
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['public_filters']['members'] = serialize($filters);
+$m = new Galette\Repository\Members();
+$members = $m->getPublicList(false, null);
 
 //assign pagination variables to the template and add pagination links
 $filters->setSmartyPagination($tpl);
 $tpl->assign('filters', $filters);
+$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['public_filters']['members'] = serialize($filters);
 
 $tpl->assign('page_title', _T("Members list"));
 $tpl->assign('members', $members);
