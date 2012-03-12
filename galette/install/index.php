@@ -181,7 +181,7 @@ case '2':
     break;
 case 'i3':
 case 'u3':
-    $step_title = _T("Permissions");
+    $step_title = _T("Ckecks");
     break;
 case 'i4':
 case 'u4':
@@ -315,7 +315,13 @@ case '2':
 case 'i3':
 case 'u3':
 ?>
-
+            <h2><?php echo _T("PHP Modules"); ?></h2>
+<?php
+//check PHP modules
+$cm = new Galette\Core\CheckModules();
+echo $cm->toHtml();
+$modules_ok = $cm->isValid();
+?>
             <h2><?php echo _T("Files permissions"); ?></h2>
             <ul class="list" id="paths">
 <?php
@@ -338,23 +344,40 @@ case 'u3':
     echo '</ul>';
     if ( !$perms_ok ) {
 ?>
+<?php
+    }
+
+    if ( !$perms_ok || !$modules_ok ) {
+?>
+
+            <div id="errorbox">
+<?php
+if ( !$modules_ok ) {
+    echo '<h2>' . _T("PHP missing modules") . '</h2>';
+    echo '<p>' . _T("Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation.")  . '</p>';
+}
+
+if ( !$perms_ok ) {
+    echo '<h2>' . _T("Files permissions are not OK!") . '</h2>';
+}
+?>
             <p><?php
-    if ($step == 'i3') echo _T("For a correct functioning, Galette needs the Write permission on these files.");
-    if ($step == 'u3') echo _T("In order to be updated, Galette needs the Write permission on these files.");
-            ?></p>
-            <p id="errorbox"><?php echo _T("Files permissions are not OK!"); ?></p>
-            <p><?php echo _T("Under UNIX/Linux, you can give the permissions using those commands"); ?><br />
-                <code>chown <em><?php echo _T("apache_user"); ?></em> <em><?php echo _T("file_name"); ?></em><br />
-                chmod 600 <em><?php echo _T("file_name"); ?></em> <?php echo _T("(for a file)"); ?><br />
-                chmod 700 <em><?php echo _T("direcory_name"); ?></em> <?php echo _T("(for a directory)"); ?></code>
-            </p>
-            <p><?php echo _T("Under Windows, check these files are not in Read-Only mode in their property panel."); ?></p>
-            <form action="index.php" method="post">
-                <p id="retry_btn">
-                    <input type="submit" value="<?php echo _T("Retry"); ?>"/>
-                    <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
+    if ($step == 'i3') echo _T("To work as excpected, Galette needs write permission on files listed above.");
+    if ($step == 'u3') echo _T("In order to be updated, Galette needs write permission on files listed above."); ?></p>
+
+                <p><?php echo _T("Under UNIX/Linux, you can give the permissions using those commands"); ?><br />
+                    <code>chown <em><?php echo _T("apache_user"); ?></em> <em><?php echo _T("file_name"); ?></em><br />
+                    chmod 600 <em><?php echo _T("file_name"); ?></em> <?php echo _T("(for a file)"); ?><br />
+                    chmod 700 <em><?php echo _T("direcory_name"); ?></em> <?php echo _T("(for a directory)"); ?></code>
                 </p>
-            </form>
+                <p><?php echo _T("Under Windows, check these files are not in Read-Only mode in their property panel."); ?></p>
+                </div>
+                <form action="index.php" method="post">
+                    <p id="retry_btn">
+                        <input type="submit" value="<?php echo _T("Retry"); ?>"/>
+                        <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
+                    </p>
+                </form>
 <?php
     } else {
 ?>

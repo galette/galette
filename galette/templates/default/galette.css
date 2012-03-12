@@ -1771,6 +1771,17 @@ td.photo img{
     font-size:1.2em;
 }
 
+#installpage h3 {
+    font-size: 1.1em;
+    margin: .2em 0 0;
+    color: #666666;
+}
+
+#installpage ul {
+    margin: 0 auto .7em!important;
+}
+
+
 #installpage #submit_btn{
     text-align: right;
     margin:0;
@@ -1778,7 +1789,7 @@ td.photo img{
 
 #installpage ul.list{
     margin:0 auto;
-    width:40em;
+    width:20em!important;
     text-align:left;
     list-style-type:none;
 }
