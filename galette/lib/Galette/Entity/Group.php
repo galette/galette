@@ -619,7 +619,7 @@ class Group
 
             if ( is_array($members) ) {
                 foreach ( $members as $m ) {
-                    $stmt->bindValue(':adh', $m->id, PDO::PARAM_INT);
+                    $stmt->bindValue(':adh', $m->id, \PDO::PARAM_INT);
 
                     if ( $stmt->execute() ) {
                         $log->log(
@@ -695,7 +695,7 @@ class Group
 
             if ( is_array($members) ) {
                 foreach ( $members as $m ) {
-                    $stmt->bindValue(':adh', $m->id, PDO::PARAM_INT);
+                    $stmt->bindValue(':adh', $m->id, \PDO::PARAM_INT);
 
                     if ( $stmt->execute() ) {
                         $log->log(
