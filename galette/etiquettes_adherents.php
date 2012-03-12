@@ -53,7 +53,12 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 }
 
 $members = null;
-$filters = Galette\Repository\Members::getFilters();
+$session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+if ( isset($session['filters']['members']) ) {
+    $filters =  unserialize($session['filters']['members']);
+} else {
+    $filters = new MembersList();
+}
 
 if ( isset($_GET['from']) && $_GET['from'] === 'mailing' ) {
     //if we're from mailing, we have to retrieve its unreachables members for labels

@@ -55,7 +55,12 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-$filters = Galette\Repository\Members::getFilters();
+$session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+if ( isset($session['filters']['members']) ) {
+    $filters =  unserialize($session['filters']['members']);
+} else {
+    $filters = new MembersList();
+}
 
 if ( isset($_GET[Galette\Entity\Adherent::PK])
     && $_GET[Galette\Entity\Adherent::PK] > 0
