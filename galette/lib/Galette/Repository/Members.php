@@ -785,6 +785,13 @@ class Members
                     break;
                 }
             }
+
+            if ( $filters->group_filter ) {
+                $select->joinLeft(
+                    array('g' => PREFIX_DB . Group::GROUPSUSERS_TABLE, Adherent::PK),
+                    'a.' . Adherent::PK . '=' . 'g.' . Adherent::PK
+                )->where('g.' . Group::PK . ' = ?', $filters->group_filter);
+            }
         } catch (\Exception $e) {
             /** TODO */
             $log->log(

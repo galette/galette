@@ -38,6 +38,7 @@
 namespace Galette\Filters;
 
 use Galette\Core\Pagination as Pagination;
+use Galette\Entity\Group as Group;
 use Galette\Repository\Members as Members;
 
 /**
@@ -61,6 +62,7 @@ class MembersList extends Pagination
     private $_membership_filter;
     private $_account_status_filter;
     private $_email_filter;
+    private $_group_filter;
 
     private $_selected;
     private $_unreachable;
@@ -96,6 +98,7 @@ class MembersList extends Pagination
         $this->_membership_filter = null;
         $this->_account_status_filter = null;
         $this->_email_filter = Members::FILTER_DC_EMAIL;
+        $this->_group_filter = null;
         $this->_selected = array();
     }
 
@@ -124,6 +127,7 @@ class MembersList extends Pagination
                 'membership_filter',
                 'account_status_filter',
                 'email_filter',
+                'group_filter',
                 'selected',
                 'unreachable'
             );
@@ -207,6 +211,27 @@ class MembersList extends Pagination
                         PEAR_LOG_WARNING
                     );
                     break;
+                }
+                break;
+            case 'group_filter':
+                if ( is_numeric($value) ) {
+                    //check group existence
+                    $g = new Group();
+                    $res = $g->load($value);
+                    if ( $res === true ) {
+                        $this->_group_filter = $value;
+                    } else {
+                        $log->log(
+                            'Group #' . $value . ' does not exists!',
+                            PEAR_LOG_WARNING
+                        );
+                    }
+                } else {
+                    $log->log(
+                        '[MembersList] Value for group filter should be an '
+                        .'integer (' . gettype($value) . ' given',
+                        PEAR_LOG_WARNING
+                    );
                 }
                 break;
             default:

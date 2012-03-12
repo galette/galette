@@ -141,6 +141,10 @@ if ( isset($_GET['clear_filter']) ) {
     if ( isset($_GET['email_filter']) ) {
         $filters->email_filter = (int)$_GET['email_filter'];
     }
+    //group filter
+    if ( isset($_GET['group_filter']) ) {
+        $filters->group_filter = (int)$_GET['group_filter'];
+    }
 }
 
 //numbers of rows to display
@@ -171,6 +175,9 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     $members_list = $members->getManagedMembersList(true);
 }
 
+$groups = new Galette\Repository\Groups();
+$groups_list = $groups->getList();
+
 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members'] = serialize($filters);
 
 //assign pagination variables to the template and add pagination links
@@ -184,6 +191,7 @@ if (isset($warning_detected)) {
     $tpl->assign('warning_detected', $warning_detected);
 }
 $tpl->assign('members', $members_list);
+$tpl->assign('filter_groups_options', $groups_list);
 $tpl->assign('nb_members', $members->getCount());
 $tpl->assign('filters', $filters);
 $tpl->assign(

@@ -13,6 +13,12 @@
 			<select name="filter_account" onchange="form.submit()">
 				{html_options options=$filter_accounts_options selected=$filters->account_status_filter}
 			</select>
+            <select name="group_filter" onchange="form.submit()">
+                <option value="0">{_T string="Select a group"}</option>
+{foreach from=$filter_groups_options item=group}
+                <option value="{$group->getId()}"{if $filters->group_filter eq $group->getId()} selected="selected"{/if}>{$group->getName()}</option>
+{/foreach}
+            </select>
 			<input type="submit" class="inline" value="{_T string="Filter"}"/>
 			<input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
             <div>
