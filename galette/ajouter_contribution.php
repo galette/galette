@@ -259,8 +259,8 @@ if ( isset($_POST['valid']) ) {
         }
 
         if ( count($error_detected) == 0 ) {
-            if ( $contrib->isTransactionPart() &&
-                $contrib->transaction->getMissingAmount() > 0
+            if ( $contrib->isTransactionPart()
+                && $contrib->transaction->getMissingAmount() > 0
             ) {
                 $url = 'ajouter_contribution.php?trans_id=' .
                     $contrib->transaction->id . '&id_adh=' .
@@ -292,7 +292,7 @@ if ( isset($_POST['valid']) ) {
             $contribution['duree_mois_cotis'] = $preferences->pref_membership_ext;
         }
     }
-}  else { //$_POST['valid']
+} else { //$_POST['valid']
     if ( !isset($contrib->id) ) {
         // initialiser la structure contribution à vide (nouvelle contribution)
         $contribution['duree_mois_cotis'] = $preferences->pref_membership_ext;
