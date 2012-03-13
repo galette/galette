@@ -314,7 +314,18 @@ case '2':
     break; //ends second step
 case 'i3':
 case 'u3':
+    $php_ok = true;
+    // check required PHP version...
+    if ( version_compare(PHP_VERSION, '5.3.0', '<') ) {
+        $php_ok = false;
+    }
 ?>
+            <h2><?php echo _T("PHP Version"); ?></h2>
+            <ul>
+                <li class="install-<?php if ( $php_ok === true ) { echo 'ok'; } else { echo 'bad'; } ?>">
+                <?php echo str_replace('%version', PHP_VERSION, _T("PHP version %version"));  ?>
+                </li>
+            </ul>
             <h2><?php echo _T("PHP Modules"); ?></h2>
 <?php
 //check PHP modules
@@ -342,16 +353,16 @@ $modules_ok = $cm->isValid();
         }
     }
     echo '</ul>';
-    if ( !$perms_ok ) {
-?>
-<?php
-    }
 
-    if ( !$perms_ok || !$modules_ok ) {
+    if ( !$perms_ok || !$modules_ok || !$php_ok ) {
 ?>
 
             <div id="errorbox">
 <?php
+ if ( !$php_ok ) {
+    echo '<h2>' . _T("Php Version")  . '</h2>';
+    echo '<p>' . _T("Galette requires at least PHP version 5.3.") . '</p>';
+}
 if ( !$modules_ok ) {
     echo '<h2>' . _T("PHP missing modules") . '</h2>';
     echo '<p>' . _T("Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation.")  . '</p>';
