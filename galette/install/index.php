@@ -328,10 +328,10 @@ case 'u3':
             </ul>
             <h2><?php echo _T("PHP Modules"); ?></h2>
 <?php
-//check PHP modules
-$cm = new Galette\Core\CheckModules();
-echo $cm->toHtml();
-$modules_ok = $cm->isValid();
+    //check PHP modules
+    $cm = new Galette\Core\CheckModules();
+    echo $cm->toHtml();
+    $modules_ok = $cm->isValid();
 ?>
             <h2><?php echo _T("Files permissions"); ?></h2>
             <ul class="list" id="paths">
@@ -359,18 +359,18 @@ $modules_ok = $cm->isValid();
 
             <div id="errorbox">
 <?php
- if ( !$php_ok ) {
-    echo '<h2>' . _T("Php Version")  . '</h2>';
-    echo '<p>' . _T("Galette requires at least PHP version 5.3.") . '</p>';
-}
-if ( !$modules_ok ) {
-    echo '<h2>' . _T("PHP missing modules") . '</h2>';
-    echo '<p>' . _T("Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation.")  . '</p>';
-}
+        if ( !$php_ok ) {
+            echo '<h2>' . _T("Php Version")  . '</h2>';
+            echo '<p>' . _T("Galette requires at least PHP version 5.3.") . '</p>';
+        }
+        if ( !$modules_ok ) {
+            echo '<h2>' . _T("PHP missing modules") . '</h2>';
+            echo '<p>' . _T("Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation.")  . '</p>';
+        }
 
-if ( !$perms_ok ) {
-    echo '<h2>' . _T("Files permissions are not OK!") . '</h2>';
-}
+        if ( !$perms_ok ) {
+            echo '<h2>' . _T("Files permissions are not OK!") . '</h2>';
+        }
 ?>
             <p><?php
     if ($step == 'i3') echo _T("To work as excpected, Galette needs write permission on files listed above.");
