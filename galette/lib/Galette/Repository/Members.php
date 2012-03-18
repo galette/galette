@@ -38,6 +38,7 @@
 namespace Galette\Repository;
 
 use Galette\Entity\Adherent as Adherent;
+use Galette\Entity\Contribution as Contribution;
 use Galette\Filters\MembersList as MembersList;
 use Galette\Core\Picture as Picture;
 use Galette\Entity\Group as Group;
@@ -290,7 +291,7 @@ class Members
 
                 //delete contributions
                 $del = $zdb->db->delete(
-                    PREFIX_DB . \Contribution::TABLE,
+                    PREFIX_DB . Contribution::TABLE,
                     self::PK . ' IN (' . implode(',', $list) . ')'
                 );
 
