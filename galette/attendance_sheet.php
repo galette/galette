@@ -38,6 +38,8 @@
  */
 
 use Galette\IO\Pdf;
+use Galette\Repository\Members;
+use Galette\Filters\MembersList;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -51,7 +53,12 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-$filters = Galette\Repository\Members::getFilters();
+$session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+if ( isset($session['filters']['members']) ) {
+    $filters = unserialize($session['filters']['members']);
+} else {
+    $filters = new MembersList();
+}
 
 if ( count($filters->selected) == 0 ) {
     $log->log('No member selected to generate attendance sheet', PEAR_LOG_INFO);
@@ -59,7 +66,7 @@ if ( count($filters->selected) == 0 ) {
     die();
 }
 
-$members = Galette\Repository\Members::getArrayList(
+$members = Members::getArrayList(
     $filters->selected,
     array('nom_adh', 'prenom_adh')
 );
