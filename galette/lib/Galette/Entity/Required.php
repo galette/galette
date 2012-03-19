@@ -185,11 +185,11 @@ class Required
 
             $params = array();
             foreach ( $fields as $k ) {
-                $stmt->bindValue(':id', $k, PDO::PARAM_STR);
+                $stmt->bindValue(':id', $k, \PDO::PARAM_STR);
                 $req = (($reinit)?
                             array_key_exists($k, $this->_all_required)
                             : in_array($k, $this->_defaults)?true:false);
-                $stmt->bindValue(':required', $req, PDO::PARAM_BOOL);
+                $stmt->bindValue(':required', $req, \PDO::PARAM_BOOL);
                 if ( $stmt->execute() ) {
                     $log->log(
                         'Field ' . $k . ' processed.',

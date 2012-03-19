@@ -167,7 +167,7 @@ class ContributionsTypes
             foreach ( self::$_defaults as $d ) {
                 $stmt->bindParam(':id', $d['id']);
                 $stmt->bindParam(':libelle', $d['libelle']);
-                $stmt->bindParam(':extension', $d['extension'], PDO::PARAM_INT);
+                $stmt->bindParam(':extension', $d['extension'], \PDO::PARAM_INT);
                 $stmt->execute();
             }
 

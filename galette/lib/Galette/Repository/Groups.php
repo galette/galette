@@ -249,7 +249,7 @@ class Groups
 
                 foreach ( $groups as $group ) {
                     list($gid, $gname) = explode('|', $group);
-                    $stmt->bindValue(':id', $gid, PDO::PARAM_INT);
+                    $stmt->bindValue(':id', $gid, \PDO::PARAM_INT);
 
                     if ( $stmt->execute() ) {
                         $log->log(
