@@ -113,7 +113,7 @@ $session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 if ( isset($session['filters']['members']) ) {
     $filters =  unserialize($session['filters']['members']);
 } else {
-    $filters = new MembersList();
+    $filters = new Galette\Filters\MembersList();
 }
 
 if ( count($filters) > 0 ) {
