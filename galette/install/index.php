@@ -332,6 +332,16 @@ case 'u3':
     $cm = new Galette\Core\CheckModules();
     echo $cm->toHtml();
     $modules_ok = $cm->isValid();
+
+    $date_ok = false;
+    if ( !version_compare(PHP_VERSION, '5.2.0', '<') ) {
+        try {
+            $test_date = new DateTime();
+            $date_ok = true;
+        } catch ( Exception $e ) {
+            //do nothing
+        }
+    }
 ?>
             <h2><?php echo _T("Files permissions"); ?></h2>
             <ul class="list" id="paths">
@@ -354,7 +364,7 @@ case 'u3':
     }
     echo '</ul>';
 
-    if ( !$perms_ok || !$modules_ok || !$php_ok ) {
+    if ( !$perms_ok || !$modules_ok || !$php_ok || !$date_ok ) {
 ?>
 
             <div id="errorbox">
@@ -362,6 +372,10 @@ case 'u3':
         if ( !$php_ok ) {
             echo '<h2>' . _T("Php Version")  . '</h2>';
             echo '<p>' . _T("Galette requires at least PHP version 5.3.") . '</p>';
+        }
+        if ( !$date_ok ) {
+            echo '<h2>' . _T("Date settings") . '</h2>';
+            echo '<p>' . _T("Your PHP date settings are not correct. Maybe you've missed the timezone settings that is mandatory since PHP 5.3?") . '</p>';
         }
         if ( !$modules_ok ) {
             echo '<h2>' . _T("PHP missing modules") . '</h2>';
