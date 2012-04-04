@@ -384,11 +384,10 @@ case 'u3':
 
         if ( !$perms_ok ) {
             echo '<h2>' . _T("Files permissions are not OK!") . '</h2>';
-        }
 ?>
             <p><?php
-    if ($step == 'i3') echo _T("To work as excpected, Galette needs write permission on files listed above.");
-    if ($step == 'u3') echo _T("In order to be updated, Galette needs write permission on files listed above."); ?></p>
+            if ($step == 'i3') echo _T("To work as excpected, Galette needs write permission on files listed above.");
+            if ($step == 'u3') echo _T("In order to be updated, Galette needs write permission on files listed above."); ?></p>
 
                 <p><?php echo _T("Under UNIX/Linux, you can give the permissions using those commands"); ?><br />
                     <code>chown <em><?php echo _T("apache_user"); ?></em> <em><?php echo _T("file_name"); ?></em><br />
@@ -404,6 +403,7 @@ case 'u3':
                     </p>
                 </form>
 <?php
+        }
     } else {
 ?>
             <p id="infobox"><?php echo _T("Files permissions are OK!"); ?></p>
