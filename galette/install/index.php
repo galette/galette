@@ -333,6 +333,10 @@ case 'u3':
     echo $cm->toHtml();
     $modules_ok = $cm->isValid();
 
+    $news = new Galette\IO\News(true);
+    $twitter = $news->canReadTweets($cm);
+    $gplus = $news->canReadGplus($cm);
+
     $date_ok = false;
     if ( !version_compare(PHP_VERSION, '5.2.0', '<') ) {
         try {

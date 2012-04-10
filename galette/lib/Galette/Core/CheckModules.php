@@ -69,55 +69,67 @@ class CheckModules
         if ( !extension_loaded('SimpleXML') ) {
             $this->_missing[] = str_replace('%s', 'SimpleXML', _T("'%s' module"));
         } else {
-            //$this->_good[] = str_replace('%s', 'SimpleXML', _T("'%s' module"));
+            /*$this->_good['SimpleXML'] = str_replace(
+                '%s',
+                 'SimpleXML',
+                _T("'%s' module")
+            );*/
         }
 
         //gd module is required
         if (!extension_loaded('gd')) {
             $this->_missing[] = str_replace('%s', 'gd', _T("'%s' module"));
         } else {
-            $this->_good[] = str_replace('%s', 'gd', _T("'%s' module"));
+            $this->_good['gd'] = str_replace('%s', 'gd', _T("'%s' module"));
         }
 
         //one of mysql or pgsql driver must be present
         if ( !extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql') ) {
             $this->_missing[] = _T("either 'mysql' or 'pgsql' PDO driver");
         } else {
-            $this->_good[] = _T("either 'mysqli' or 'pgsql' PDO driver");
+            $this->_good['pdo_driver'] = _T("either 'mysqli' or 'pgsql' PDO driver");
         }
 
         //curl module is optionnal
         if ( !extension_loaded('curl') ) {
             $this->_should[] = str_replace('%s', 'curl', _T("'%s' module"));
         } else {
-            $this->_good[] = str_replace('%s', 'curl', _T("'%s' module"));
+            $this->_good['curl'] = str_replace('%s', 'curl', _T("'%s' module"));
         }
 
         //tidy module is optionnal
         if ( !extension_loaded('tidy') ) {
             $this->_may[] = str_replace('%s', 'tidy', _T("'%s' module"));
         } else {
-            $this->_good[] = str_replace('%s', 'tidy', _T("'%s' module"));
+            $this->_good['tidy'] = str_replace('%s', 'tidy', _T("'%s' module"));
         }
 
         //gettext module is optionnal
         if ( !extension_loaded('gettext') ) {
             $this->_may[] = str_replace('%s', 'gettext', _T("'%s' module"));
         } else {
-            $this->_good[] = str_replace('%s', 'gettext', _T("'%s' module"));
+            $this->_good['gettext'] = str_replace(
+                '%s',
+                'gettext',
+                _T("'%s' module")
+            );
         }
 
         if ( !extension_loaded('mbstring') ) {
             $this->_may[] = str_replace('%s', 'mbstring', _T("'%s' module"));
         } else {
-            $this->_good[] = str_replace('%s', 'mbstring', _T("'%s' module"));
+            $this->_good['mbstring'] = str_replace(
+                '%s',
+                'mbstring',
+                _T("'%s' module")
+            );
         }
 
         //ssl support is optionnal
         if ( !extension_loaded('openssl') ) {
             $this->_should[] = _T("'openssl' support");
         } else {
-            $this->_good[] = _T("'openssl' support");
+            $this->_good['ssl'] = _T("'openssl' support");
         }
     }
 
@@ -168,6 +180,18 @@ class CheckModules
     public function isValid()
     {
         return count($this->_missing) === 0;
+    }
+
+    /**
+     * Check if a specific module is OK for that instance
+     *
+     * @param string $module Module name to check
+     *
+     * @return boolean
+     */
+    public function isGood($module)
+    {
+        return isset($this->_good[$module]);
     }
 }
 ?>

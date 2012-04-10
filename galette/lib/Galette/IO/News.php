@@ -70,9 +70,11 @@ class News
     private $_gplus;
 
     /**
-    * Default constructor
-    */
-    public function __construct()
+     * Default constructor
+     *
+     * @param boolean $nocache Do not try to cache
+     */
+    public function __construct($nocache = false)
     {
         //let's build twitter api url with correct variables
         $this->_twitter_url = preg_replace(
@@ -89,10 +91,14 @@ class News
             self::TWITTER_API_URL
         );
         $url = $this->_twitter_url;
-        if ( GALETTE_MODE === 'DEV' || !$this->_checkCache() ) {
-            $this->_makeCache();
-        } else {
-            $this->_loadCache();
+
+        //only if cache should be used
+        if ( $nocache === false ) {
+            if ( GALETTE_MODE === 'DEV' || !$this->_checkCache() ) {
+                $this->_makeCache();
+            } else {
+                $this->_loadCache();
+            }
         }
     }
 
@@ -248,7 +254,7 @@ class News
             $this->_tweets = $tweets;
         } catch (\Exception $e) {
             $log->log(
-                'Unable to load Tweets :( (see system logs to get details)',
+                'Unable to load Tweets :( | ' . $e->getMessage(),
                 PEAR_LOG_ERR
             );
             $this->_tweets = array();
@@ -292,6 +298,107 @@ class News
                 'Unable to load GooGlePlus posts :( | ' . $e->getMessage(),
                 PEAR_LOG_ERR
             );
+        }
+    }
+
+    /**
+     * Whether Galette can read tweets
+     *
+     * @param CheckModules $cm @see Galette\Core\CheckModules
+     *
+     * @return boolean
+     */
+    public function canReadTweets(\Galette\Core\CheckModules $cm)
+    {
+        global $log;
+
+        //tweeter needs simplexml to load an https URI
+        if ( $cm->isGood('ssl') ) {
+            //use local error management
+            libxml_use_internal_errors(true);
+
+            //try to load twitter URI
+            $xml = simplexml_load_file($this->_twitter_url);
+
+            $errors = libxml_get_errors();
+
+            if ( count($errors) > 0 || $xml === false ) {
+                //something went wrong :/
+                $log->log(
+                    'Unable to load twitter URI ' . $this->_twitter_url,
+                    PEAR_LOG_WARNING
+                );
+
+                if ( count($errors) > 0 ) {
+                    $log->log(
+                        'XML errors has been throwed: ' . implode("\n", $errors),
+                        PEAR_LOG_INFO
+                    );
+                }
+                libxml_clear_errors();
+
+                return false;
+            }
+
+
+            return true;
+        } else {
+            $log->log(
+                'Required modules for Tweeter access are not present.',
+                PEAR_LOG_WARNING
+            );
+            return false;
+        }
+    }
+
+    /**
+     * Whether Galette can read Google+ posts
+     *
+     * @param CheckModules $cm @see Galette\Core\CheckModules
+     *
+     * @return boolean
+     */
+    public function canReadGplus(\Galette\Core\CheckModules $cm)
+    {
+        //googleplus needs curl to load an https URI
+        if ( $cm->isGood('ssl') && $cm->isGood('curl') ) {
+
+
+            try {
+                $gclient = new \apiClient();
+                $gclient->setApplicationName("Galette's Google+");
+                $gclient->setDeveloperKey(GALETTE_GAPI_KEY);
+                $plus = new \apiPlusService($gclient);
+
+                $optParams = array('maxResults' => 1);
+                $activities = $plus->activities->listActivities(
+                    GALETTE_GPLUS,
+                    'public',
+                    $optParams
+                );
+
+                if ( count($activities['items']) > 0 ) {
+                    return true;
+                } else {
+                    $log->log(
+                        'No Google+ posts has been loaded :(',
+                        PEAR_LOG_WARNING
+                    );
+                }
+            } catch ( \Exception $e ) {
+                $log->log(
+                    'Unable to load GooGlePlus posts :( | ' . $e->getMessage(),
+                    PEAR_LOG_ERR
+                );
+            }
+
+            return true;
+        } else {
+            $log->log(
+                'Required modules for Google+ access are not present.',
+                PEAR_LOG_WARNING
+            );
+            return false;
         }
     }
 
