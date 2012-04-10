@@ -116,7 +116,7 @@ if ( isset($session['filters']['members']) ) {
     $filters = new Galette\Filters\MembersList();
 }
 
-if ( count($filters) > 0 ) {
+if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
     $m = new Galette\Repository\Members();
     $ids = $m->getList(false, array(Galette\Entity\Adherent::PK));
     //print_r($ids);
@@ -139,7 +139,7 @@ if ( count($filters) > 0 ) {
 }
 
 // Set caller page ref for cards error reporting
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['caller']='voir_adherent.php?id_adh='.$id_adh;
+$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['caller'] = 'voir_adherent.php?id_adh='.$id_adh;
 
 // declare dynamic field values
 $adherent['dyn'] = get_dynamic_fields('adh', $id_adh, true);
