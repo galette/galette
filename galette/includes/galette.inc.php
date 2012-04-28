@@ -135,6 +135,14 @@ $log = Log::singleton('composite');
 $log->addChild($display);
 $log->addChild($file);
 
+//set custom error handler
+set_error_handler(
+    array(
+        "Galette\Core\Error",
+        "errorHandler"
+    )
+);
+
 // check required PHP version...
 if ( version_compare(PHP_VERSION, '5.3.0', '<') ) {
     $log->log(
