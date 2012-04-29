@@ -69,19 +69,41 @@ class Error
         $patterns = array('%type', '%str', '%file', '%line');
 
         switch ($errno) {
-        case E_NOTICE:
-        case E_USER_NOTICE:
-        case E_DEPRECATED:
-        case E_USER_DEPRECATED:
         case E_STRICT:
             $log->log(
                 str_replace(
                     $patterns,
-                    array('Notice', $errstr, $errfile, $errline),
+                    array('Strict standards', $errstr, $errfile, $errline),
                     $str
                 ),
                 PEAR_LOG_INFO
             );
+            break;
+        case E_DEPRECATED:
+        case E_USER_DEPRECATED:
+            $log->log(
+                str_replace(
+                    $patterns,
+                    array('Deprecated', $errstr, $errfile, $errline),
+                    $str
+                ),
+                PEAR_LOG_INFO
+            );
+            break;
+        case E_NOTICE:
+        case E_USER_NOTICE:
+            //do not log smarty's annonying 'undefined index' notices
+            if ( !preg_match('/^Undefined index/', $errstr)
+                && !preg_match('/\.tpl\.php$/', $errfile) ) {
+                $log->log(
+                    str_replace(
+                        $patterns,
+                        array('Notice', $errstr, $errfile, $errline),
+                        $str
+                    ),
+                    PEAR_LOG_INFO
+                );
+            }
             break;
         case E_WARNING:
         case E_USER_WARNING:
