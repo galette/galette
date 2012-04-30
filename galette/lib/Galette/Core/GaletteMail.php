@@ -39,6 +39,7 @@ namespace Galette\Core;
 
 /** @ignore */
 require_once 'class.phpmailer.php';
+require_once WEB_ROOT . 'includes/html2text.php';
 
 /**
  * Generic mail for Galette
@@ -330,34 +331,9 @@ class GaletteMail
     */
     protected function cleanedHtml()
     {
-        $ret = $this->message;
-        //First, let's work on some special replacements:
-        //- <head>, <style> and <script> replaced by nothing
-        //- <br/> and <hr/> replaced by: \n
-        //- </p> replaced by: \r\n\r\n
-        //- <a href="{url}">{link}</a> replaced by: {link} ({url})
-        //- <li>{content}</li> replaced by: - {content}
-        //- <strong>{content}</strong> replaced by: *{content}*
-        $patterns = array(
-            '@<(head|style|script)[^>]*?>.*?</(head|style|script)>@si',
-            '@<((br)|(hr))[^>]*?>@i',
-            '@</p>@i',
-            '@<a href="(.*)"[^>]*?>(.*?)</a>@si',
-            '@<li[^>]*?>(.*?)</li>@si',
-            '@<(b|strong)[^>]*?>(.*?)</(b|strong)>@si'
-        );
-        $replace = array(
-            "",
-            "\r\n",
-            "\r\n\r\n",
-            "$2 ($1)",
-            "- $1\n",
-            "*$2*"
-        );
-        $ret = preg_replace($patterns, $replace, $ret);
-        //Finally, we remove all tags, only content would be returned
-        $ret = preg_replace('@<[/]?[^>]+>@', '', $ret);
-        return $ret;
+        $html = $this->message;
+        $txt = convert_html_to_text($html);
+        return $txt;
     }
 
     /**
