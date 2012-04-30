@@ -211,7 +211,7 @@ class GaletteMail
 
         if ( $this->_html ) {
             //the mail is html :(
-            $this->_mail->AltBody = $this->cleanedHTML();
+            $this->_mail->AltBody = $this->cleanedHtml();
             $this->_mail->IsHTML(true);
         } else {
             //the mail is plaintext :)

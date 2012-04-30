@@ -140,7 +140,7 @@ class Mailing extends GaletteMail
         if ( !in_array($name, $forbidden) ) {
             switch($name) {
             case 'alt_message':
-                return $this->cleanedHTML();
+                return $this->cleanedHtml();
                 break;
             case 'step':
                 return $this->current_step;
