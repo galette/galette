@@ -63,7 +63,9 @@ if ( isset($_POST['mailing_done'])
 
 $data = array();
 
-if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED && !GALETTE_MODE === 'DEMO') {
+if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
+    && !GALETTE_MODE === 'DEMO'
+) {
     $hist->add(_T("Trying to load mailing while mail is disabled in preferences."));
 } else {
     $session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
