@@ -998,15 +998,17 @@ class Adherent
                     // dates
                     case 'date_crea_adh':
                     case 'ddn_adh':
-                        /** FIXME: only ok dates dd/mm/yyyy */
-                        if ( !preg_match(
-                            '@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@',
-                            $value,
-                            $date
-                        ) ) {
+                        try {
+                            $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
+                            if ( $d === false ) {
+                                throw new Exception('Incorrect format');
+                            }
+                            $this->$prop = $d->format('Y-m-d');
+                        } catch (Exception $e) {
                             $log->log(
                                 'Wrong date format. field: ' . $key .
-                                ', value: ' . $value . ' | ' . $e->getMessage(),
+                                ', value: ' . $value . ', expected fmt: ' .
+                                _T("Y-m-d") . ' | ' . $e->getMessage(),
                                 PEAR_LOG_INFO
                             );
                             $errors[] = str_replace(
@@ -1015,18 +1017,11 @@ class Adherent
                                     '%field'
                                 ),
                                 array(
-                                    /*_T("Y-m-d")*/'dd/mm/yyy',
+                                    _T("Y-m-d"),
                                     $this->_fields[$key]['label']
                                 ),
                                 _T("- Wrong date format (%date_format) for %field!")
                             );
-                        } else {
-                            if ( !checkdate($date[2], $date[1], $date[3]) ) {
-                                $errors[] = _T("- Non valid date!");
-                            } else {
-                                $this->$prop = $date[3] . '-' . $date[2] . '-' .
-                                    $date[1];
-                            }
                         }
                         break;
                     case 'email_adh':
