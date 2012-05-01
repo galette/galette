@@ -168,7 +168,7 @@ if ( $installer || !defined('PREFIX_DB') || !defined('NAME_DB') ) {
 * Language instantiation
 */
 if ( isset($_SESSION['galette'][$session_name]['lang'])
-    && !GALETTE_MODE == 'DEV'
+    && GALETTE_MODE !== 'DEV'
 ) {
     $i18n = unserialize($_SESSION['galette'][$session_name]['lang']);
 } else {
