@@ -91,47 +91,18 @@ if ( isset($_GET['tri']) ) {
 if ( isset($_GET['clear_filter']) ) {
     $contribs->reinit();
 } else {
-    if ( isset($_GET['start_date_filter']) ) {
-        if ( preg_match(
-            "@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@",
-            $_GET['start_date_filter'],
-            $array_jours
-        ) ) {
-            if ( checkdate($array_jours[2], $array_jours[1], $array_jours[3]) ) {
+    if ( isset($_GET['end_date_filter']) || isset($_GET['start_date_filter']) ) {
+        try {
+            if ( isset($_GET['start_date_filter']) ) {
+                $field = _T("start date filter");
                 $contribs->start_date_filter = $_GET['start_date_filter'];
-            } else {
-                $error_detected[] = _T("- Non valid date!");
             }
-        } elseif (
-            preg_match("/^([0-9]{4})$/", $_GET['start_date_filter'], $array_jours)
-        ) {
-            $contribs->start_date_filter = "01/01/".$array_jours[1];
-        } elseif ( $_GET['start_date_filter'] == '' ) {
-            $contribs->start_date_filter = null;
-        } else {
-            $error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!");
-        }
-    }
-
-    if ( isset($_GET['end_date_filter']) ) {
-        if ( preg_match(
-            "@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@",
-            $_GET['end_date_filter'],
-            $array_jours
-        ) ) {
-            if ( checkdate($array_jours[2], $array_jours[1], $array_jours[3]) ) {
+            if ( isset($_GET['end_date_filter']) ) {
+                $field = _T("end date filter");
                 $contribs->end_date_filter = $_GET['end_date_filter'];
-            } else {
-                $error_detected[] = _T("- Non valid date!");
             }
-        } elseif (
-            preg_match("/^([0-9]{4})$/", $_GET['end_date_filter'], $array_jours)
-        ) {
-            $contribs->end_date_filter = "01/01/".$array_jours[1];
-        } elseif ( $_GET['end_date_filter'] == '' ) {
-            $contribs->end_date_filter = null;
-        } else {
-            $error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!");
+        } catch (Exception $e) {
+            $error_detected[] = $e->getMessage();
         }
     }
 

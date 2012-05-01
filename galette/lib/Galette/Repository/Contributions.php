@@ -351,28 +351,12 @@ class Contributions extends Pagination
 
         try {
             if ( $this->_start_date_filter != null ) {
-                /** TODO: initial date format should be i18n
-                $d = \DateTime::createFromFormat(
-                    _T("d/m/Y"),
-                    $this->_start_date_filter
-                );*/
-                $d = \DateTime::createFromFormat(
-                    'd/m/Y',
-                    $this->_start_date_filter
-                );
+                $d = new \DateTime($this->_start_date_filter);
                 $select->where('date_debut_cotis >= ?', $d->format('Y-m-d'));
             }
 
             if ( $this->_end_date_filter != null ) {
-                /** TODO: initial date format should be i18n
-                $d = \DateTime::createFromFormat(
-                    _T("d/m/Y"),
-                    $this->_end_date_filter
-                );*/
-                $d = \DateTime::createFromFormat(
-                    'd/m/Y',
-                    $this->_end_date_filter
-                );
+                $d = new \DateTime($this->_end_date_filter);
                 $select->where('date_debut_cotis <= ?', $d->format('Y-m-d'));
             }
 
@@ -531,8 +515,22 @@ class Contributions extends Pagination
                 'max_amount'
             );
             if (in_array($name, $return_ok)) {
-                $name = '_' . $name;
-                return $this->$name;
+                $rname = '_' . $name;
+
+                switch ( $name ) {
+                case 'start_date_filter':
+                case 'end_date_filter':
+                    if ( $this->$rname !== null ) {
+                        $d = new \DateTime($this->$rname);
+                        return $d->format(_T("Y-m-d"));
+                    } else {
+                        return null;
+                    }
+                    break;
+                default:
+                    return $this->$rname;
+                    break;
+                }
             } else {
                 $log->log(
                     '[Contributions] Unable to get proprety `' .$name . '`',
@@ -577,6 +575,84 @@ class Contributions extends Pagination
                     );
                     if ( in_array($value, $allowed_orders) ) {
                         $this->orderby = $value;
+                    }
+                    break;
+                case 'start_date_filter':
+                case 'end_date_filter':
+                    try {
+                        if ( $value !== '' ) {
+                            $y = \DateTime::createFromFormat(_T("Y"), $value);
+                            if ( $y !== false ) {
+                                $month = 1;
+                                $day = 1;
+                                if ( $name === 'end_date_filter' ) {
+                                    $month = 12;
+                                    $day = 31;
+                                }
+                                $y->setDate(
+                                    $y->format('Y'),
+                                    $month,
+                                    $day
+                                );
+                                $this->$rname = $y->format('Y-m-d');
+                            }
+
+                            $ym = \DateTime::createFromFormat(_T("Y-m"), $value);
+                            if ( $y === false && $ym  !== false ) {
+                                $day = 1;
+                                if ( $name === 'end_date_filter' ) {
+                                    $day = $ym->format('t');
+                                }
+                                $ym->setDate(
+                                    $ym->format('Y'),
+                                    $ym->format('m'),
+                                    $day
+                                );
+                                $this->$rname = $ym->format('Y-m-d');
+                            }
+
+                            $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
+                            if ( $y === false && $ym  === false && $d !== false ) {
+                                $this->$rname = $d->format('Y-m-d');
+                            }
+
+                            if ( $y === false && $ym === false && $d === false ) {
+                                $formats = array(
+                                    _T("Y"),
+                                    _T("Y-m"),
+                                    _T("Y-m-d"),
+                                );
+
+                                $field = null;
+                                if ($name === 'start_date_filter' ) {
+                                    $field = _T("start date filter");
+                                }
+                                if ($name === 'end_date_filter' ) {
+                                    $field = _T("end date filter");
+                                }
+
+                                throw new \Exception(
+                                    str_replace(
+                                        array('%field', '%format'),
+                                        array(
+                                            $field,
+                                            implode(', ', $formats)
+                                        ),
+                                        _T("Unknown date format for %field.<br/>Know formats are: %formats")
+                                    )
+                                );
+                            }
+                        } else {
+                            $this->$rname = null;
+                        }
+                    } catch (\Exception $e) {
+                        $log->log(
+                            'Wrong date format. field: ' . $key .
+                            ', value: ' . $value . ', expected fmt: ' .
+                            _T("Y-m-d") . ' | ' . $e->getMessage(),
+                            PEAR_LOG_INFO
+                        );
+                        throw $e;
                     }
                     break;
                 default:
