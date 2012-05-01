@@ -181,7 +181,7 @@ msgstr "To:"
 msgid "Partnership"
 msgstr "Partnership"
 
-#: ../lib/Galette/Entity/Transaction.php:380
+#: ../lib/Galette/Entity/Transaction.php:390
 msgid "Transaction updated"
 msgstr "Transaction updated"
 
@@ -307,7 +307,7 @@ msgstr "Contribution type:"
 msgid "english"
 msgstr "english"
 
-#: ../lib/Galette/Entity/Contribution.php:888
+#: ../lib/Galette/Entity/Contribution.php:898
 #: ../templates/default/gestion_contributions.tpl:15
 #: ../templates/default/ajouter_contribution.tpl:62
 msgid "Other"
@@ -431,11 +431,14 @@ msgstr "(Choose address printed below name)"
 msgid "Default preferences were successfully stored."
 msgstr "Default preferences were successfully stored."
 
+#: ../lib/Galette/Entity/Transaction.php:278
 #: ../lib/Galette/Entity/Adherent.php:1023
+#: ../lib/Galette/Entity/Contribution.php:360
+#: ../lib/Galette/Entity/Contribution.php:998
 msgid "- Wrong date format (%date_format) for %field!"
 msgstr "- Wrong date format (%date_format) for %field!"
 
-#: ../lib/Galette/Entity/Contribution.php:897
+#: ../lib/Galette/Entity/Contribution.php:907
 #: ../templates/default/gestion_contributions.tpl:12
 #: ../templates/default/ajouter_contribution.tpl:59
 msgid "Check"
@@ -538,7 +541,7 @@ msgstr "Mails adress %s does not exist"
 msgid "Email,URL,IM"
 msgstr "Email,URL,IM"
 
-#: ../lib/Galette/Entity/Transaction.php:364
+#: ../lib/Galette/Entity/Transaction.php:374
 msgid "Fail to add new transaction."
 msgstr "Fail to add new transaction."
 
@@ -785,7 +788,7 @@ msgstr ""
 msgid "Additionnal fields:"
 msgstr "Additionnal fields:"
 
-#: ../lib/Galette/Entity/Contribution.php:474
+#: ../lib/Galette/Entity/Contribution.php:484
 msgid "- Membership period overlaps period starting at "
 msgstr "- Membership period overlaps period starting at "
 
@@ -802,7 +805,7 @@ msgstr "Not dispatched amount"
 msgid "Vertical spacing:"
 msgstr "Vertical spacing:"
 
-#: ../lib/Galette/Entity/Contribution.php:377
+#: ../lib/Galette/Entity/Contribution.php:387
 msgid "- Unknown payment type"
 msgstr "- Unknown payment type"
 
@@ -1156,12 +1159,6 @@ msgstr "Configuration"
 msgid "Files permissions are not OK!"
 msgstr "Files permissions are not OK!"
 
-#: ../lib/Galette/Entity/Transaction.php:265
-#: ../lib/Galette/Entity/Contribution.php:347
-#: ../lib/Galette/Entity/Contribution.php:975
-msgid "- Non valid date!"
-msgstr "- Non valid date!"
-
 #: ../preferences.php:248
 msgid "- You must provide a login for SMTP authentication."
 msgstr "- You must provide a login for SMTP authentication."
@@ -1224,7 +1221,7 @@ msgstr ""
 "Your subscription has been registered, you will receive a recapitulative "
 "email soon (remember to check your spam box ;) )."
 
-#: ../lib/Galette/Entity/Transaction.php:360
+#: ../lib/Galette/Entity/Transaction.php:370
 msgid "Transaction added"
 msgstr "Transaction added"
 
@@ -1308,9 +1305,9 @@ msgstr "Add a new category"
 msgid "%membername: edit informations"
 msgstr "%membername: edit informations"
 
-#: ../lib/Galette/Entity/Transaction.php:301
+#: ../lib/Galette/Entity/Transaction.php:311
 #: ../lib/Galette/Entity/Adherent.php:1139
-#: ../lib/Galette/Entity/Contribution.php:407
+#: ../lib/Galette/Entity/Contribution.php:417
 msgid "- Mandatory field empty: "
 msgstr "- Mandatory field empty: "
 
@@ -1415,8 +1412,8 @@ msgstr "Tables Creation/Update"
 msgid "An error occured while storing the group."
 msgstr "An error occured while storing the group."
 
-#: ../lib/Galette/Entity/Transaction.php:310
-#: ../lib/Galette/Entity/Contribution.php:418
+#: ../lib/Galette/Entity/Transaction.php:320
+#: ../lib/Galette/Entity/Contribution.php:428
 msgid "- Sum of all contributions exceed corresponding transaction amount."
 msgstr "- Sum of all contributions exceed corresponding transaction amount."
 
@@ -1448,7 +1445,7 @@ msgstr "%membername: remove from database"
 msgid "annual fee"
 msgstr "annual fee"
 
-#: ../lib/Galette/Entity/Transaction.php:286
+#: ../lib/Galette/Entity/Transaction.php:296
 msgid "- Empty transaction description!"
 msgstr "- Empty transaction description!"
 
@@ -1496,7 +1493,7 @@ msgstr "unreachable member:"
 msgid "The group name you have requested already exits in the database."
 msgstr "The group name you have requested already exits in the database."
 
-#: ../lib/Galette/Entity/Transaction.php:288
+#: ../lib/Galette/Entity/Transaction.php:298
 msgid "- Transaction description must be 30 characters long maximum."
 msgstr "- Transaction description must be 30 characters long maximum."
 
@@ -1504,7 +1501,7 @@ msgstr "- Transaction description must be 30 characters long maximum."
 msgid "Missing a temporary folder"
 msgstr "Missing a temporary folder"
 
-#: ../lib/Galette/Entity/Contribution.php:900
+#: ../lib/Galette/Entity/Contribution.php:910
 #: ../templates/default/gestion_contributions.tpl:13
 #: ../templates/default/ajouter_contribution.tpl:60
 msgid "Transfer"
@@ -1975,7 +1972,7 @@ msgstr "Company name:"
 msgid "french"
 msgstr "french"
 
-#: ../lib/Galette/Entity/Contribution.php:555
+#: ../lib/Galette/Entity/Contribution.php:565
 msgid "Contribution updated"
 msgstr "Contribution updated"
 
@@ -2087,8 +2084,8 @@ msgstr "Staff member"
 msgid "Admin account (independant of members)"
 msgstr "Admin account (independant of members)"
 
-#: ../lib/Galette/Entity/Transaction.php:279
-#: ../lib/Galette/Entity/Contribution.php:364
+#: ../lib/Galette/Entity/Transaction.php:289
+#: ../lib/Galette/Entity/Contribution.php:374
 msgid "- The amount must be an integer!"
 msgstr "- The amount must be an integer!"
 
@@ -2480,7 +2477,7 @@ msgstr "Member"
 msgid "Galette has been successfully installed!"
 msgstr "Galette has been successfully installed!"
 
-#: ../lib/Galette/Entity/Contribution.php:388
+#: ../lib/Galette/Entity/Contribution.php:398
 msgid "- The duration must be a positive integer!"
 msgstr "- The duration must be a positive integer!"
 
@@ -2495,12 +2492,6 @@ msgstr "Type"
 #: ../install/index.php:1224
 msgid "Database"
 msgstr "Database"
-
-#: ../lib/Galette/Entity/Transaction.php:262
-#: ../lib/Galette/Entity/Contribution.php:344
-#: ../lib/Galette/Entity/Contribution.php:972
-msgid "- Wrong date format (dd/mm/yyyy)!"
-msgstr "- Wrong date format (dd/mm/yyyy)!"
 
 #: ../install/index.php:405 ../install/index.php:727 ../install/index.php:945
 #: ../install/index.php:1164 ../templates/default/ajax_plugins_initdb.tpl:79
@@ -2726,7 +2717,7 @@ msgstr ""
 "An error has occured while storing required fields. Please try again, and "
 "contact the administrator if the problem persists."
 
-#: ../lib/Galette/Entity/Contribution.php:894
+#: ../lib/Galette/Entity/Contribution.php:904
 #: ../templates/default/gestion_contributions.tpl:11
 #: ../templates/default/ajouter_contribution.tpl:58
 msgid "Credit card"
@@ -3169,7 +3160,7 @@ msgstr "E-mail"
 msgid "Publisher:"
 msgstr "Publisher:"
 
-#: ../lib/Galette/Entity/Contribution.php:891
+#: ../lib/Galette/Entity/Contribution.php:901
 #: ../templates/default/gestion_contributions.tpl:10
 #: ../templates/default/ajouter_contribution.tpl:57
 msgid "Cash"
@@ -3242,7 +3233,7 @@ msgstr "Honor Members Color:"
 msgid "Sheet type"
 msgstr "Sheet type"
 
-#: ../lib/Galette/Entity/Contribution.php:535
+#: ../lib/Galette/Entity/Contribution.php:545
 msgid "Contribution added"
 msgstr "Contribution added"
 
@@ -3556,6 +3547,9 @@ msgstr "donation in money"
 #: ../lib/Galette/Repository/Contributions.php:614
 #: ../lib/Galette/Repository/Contributions.php:623
 #: ../lib/Galette/Repository/Contributions.php:652
+#: ../lib/Galette/Entity/Transaction.php:257
+#: ../lib/Galette/Entity/Transaction.php:266
+#: ../lib/Galette/Entity/Transaction.php:275
 #: ../lib/Galette/Entity/Adherent.php:807
 #: ../lib/Galette/Entity/Adherent.php:821
 #: ../lib/Galette/Entity/Adherent.php:833
@@ -3563,8 +3557,14 @@ msgstr "donation in money"
 #: ../lib/Galette/Entity/Adherent.php:1011
 #: ../lib/Galette/Entity/Adherent.php:1020
 #: ../lib/Galette/Entity/Adherent.php:1319
-#: ../lib/Galette/Entity/Contribution.php:475
-#: ../lib/Galette/Entity/Contribution.php:863
+#: ../lib/Galette/Entity/Contribution.php:339
+#: ../lib/Galette/Entity/Contribution.php:348
+#: ../lib/Galette/Entity/Contribution.php:357
+#: ../lib/Galette/Entity/Contribution.php:485
+#: ../lib/Galette/Entity/Contribution.php:873
+#: ../lib/Galette/Entity/Contribution.php:977
+#: ../lib/Galette/Entity/Contribution.php:986
+#: ../lib/Galette/Entity/Contribution.php:995
 #: ../lib/Galette/Entity/Group.php:510
 msgid "Y-m-d"
 msgstr "m/d/Y"
@@ -3791,7 +3791,7 @@ msgstr "Manage emails texts and subjects"
 msgid "Manage additional fields for various forms"
 msgstr "Manage additional fields for various forms"
 
-#: ../lib/Galette/Entity/Contribution.php:903
+#: ../lib/Galette/Entity/Contribution.php:913
 #: ../templates/default/gestion_contributions.tpl:14
 #: ../templates/default/ajouter_contribution.tpl:61
 msgid "Paypal"
@@ -4312,7 +4312,7 @@ msgstr "Plugin %name has been disabled"
 msgid "No members has been selected yet."
 msgstr "No members has been selected yet."
 
-#: ../lib/Galette/Entity/Contribution.php:539
+#: ../lib/Galette/Entity/Contribution.php:549
 msgid "Fail to add new contribution."
 msgstr "Fail to add new contribution."
 
@@ -4669,6 +4669,12 @@ msgstr "Default contributions types were successfully stored."
 #: ../lostpasswd.php:158
 msgid "Login %s does not exist"
 msgstr "Login %s does not exist"
+
+#~ msgid "- Non valid date!"
+#~ msgstr "- Non valid date!"
+
+#~ msgid "- Wrong date format (dd/mm/yyyy)!"
+#~ msgstr "- Wrong date format (dd/mm/yyyy)!"
 
 #~ msgid "(dd/mm/yyyy format)"
 #~ msgstr "(dd/mm/yyyy format)"
