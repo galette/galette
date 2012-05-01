@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2012-05-01 15:42+0200\n"
+"PO-Revision-Date: 2012-05-01 22:27+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -999,7 +999,7 @@ msgstr ""
 #: ../templates/default/ajouter_contribution.tpl:74
 #: ../templates/default/ajouter_contribution.tpl:85
 msgid "(yyyy-mm-dd format)"
-msgstr "(yyyy-mm-dd format)"
+msgstr "(mm/dd/yyyy format)"
 
 #: ../templates/default/gestion_mailings.tpl:25
 #: ../templates/default/gestion_mailings.tpl:37
@@ -2575,8 +2575,8 @@ msgstr "Notify member his account has been created"
 msgid "General"
 msgstr "General"
 
-#: ../templates/default/ajouter_transaction.tpl:156
-#: ../templates/default/ajouter_transaction.tpl:178
+#: ../templates/default/ajouter_transaction.tpl:158
+#: ../templates/default/ajouter_transaction.tpl:180
 msgid "An error occured displaying contributions :("
 msgstr "An error occured displaying contributions :("
 
@@ -3097,7 +3097,7 @@ msgstr "Vice-treasurer"
 #: ../templates/default/gestion_groupes.tpl:153
 #: ../templates/default/gestion_groupes.tpl:210
 #: ../templates/default/gestion_groupes.tpl:257
-#: ../templates/default/ajouter_transaction.tpl:114
+#: ../templates/default/ajouter_transaction.tpl:116
 msgid "An error occured displaying members interface :("
 msgstr "An error occured displaying members interface :("
 
@@ -3618,7 +3618,7 @@ msgstr "Description"
 msgid "First name:"
 msgstr "First name:"
 
-#: ../templates/default/ajouter_transaction.tpl:189
+#: ../templates/default/ajouter_transaction.tpl:191
 msgid "Click on a contribution row to attach it to the current transaction"
 msgstr "Click on a contribution row to attach it to the current transaction"
 
@@ -3813,7 +3813,7 @@ msgstr "New member has been successfully added."
 msgid "Modified"
 msgstr "Modified"
 
-#: ../templates/default/ajouter_transaction.tpl:121
+#: ../templates/default/ajouter_transaction.tpl:123
 msgid "Contributions selection"
 msgstr "Contributions selection"
 

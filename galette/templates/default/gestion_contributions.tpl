@@ -266,14 +266,7 @@
                     {rdelim});
 
                     $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
-                    $('#start_date_filter').datepicker({ldelim}
-                        changeMonth: true,
-                        changeYear: true,
-                        showOn: 'button',
-                        buttonImage: '{$template_subdir}images/calendar.png',
-                        buttonImageOnly: true
-                    {rdelim});
-                    $('#end_date_filter').datepicker({ldelim}
+                    $('#start_date_filter, #end_date_filter').datepicker({ldelim}
                         changeMonth: true,
                         changeYear: true,
                         showOn: 'button',

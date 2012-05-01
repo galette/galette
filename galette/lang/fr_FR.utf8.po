@@ -2623,8 +2623,8 @@ msgstr "Informer l'adhérent lorsque son compte a été créé"
 msgid "General"
 msgstr "Général"
 
-#: ../templates/default/ajouter_transaction.tpl:156
-#: ../templates/default/ajouter_transaction.tpl:178
+#: ../templates/default/ajouter_transaction.tpl:158
+#: ../templates/default/ajouter_transaction.tpl:180
 msgid "An error occured displaying contributions :("
 msgstr "Une erreur est survenue lors de l'affichage des contributions :("
 
@@ -3147,7 +3147,7 @@ msgstr "Vice-trésorier"
 #: ../templates/default/gestion_groupes.tpl:153
 #: ../templates/default/gestion_groupes.tpl:210
 #: ../templates/default/gestion_groupes.tpl:257
-#: ../templates/default/ajouter_transaction.tpl:114
+#: ../templates/default/ajouter_transaction.tpl:116
 msgid "An error occured displaying members interface :("
 msgstr ""
 "Une erreur est survenue lors de l'affichage de l'interface des membres :("
@@ -3677,7 +3677,7 @@ msgstr "Description"
 msgid "First name:"
 msgstr "Prénom&nbsp;:"
 
-#: ../templates/default/ajouter_transaction.tpl:189
+#: ../templates/default/ajouter_transaction.tpl:191
 msgid "Click on a contribution row to attach it to the current transaction"
 msgstr ""
 "Cliquez sur une ligne de contribution pour l'attacher à la transaction "
@@ -3876,7 +3876,7 @@ msgstr "Le nouvel adhérent a été ajouté avec succès."
 msgid "Modified"
 msgstr "Modifié"
 
-#: ../templates/default/ajouter_transaction.tpl:121
+#: ../templates/default/ajouter_transaction.tpl:123
 msgid "Contributions selection"
 msgstr "Sélection des contributions"
 

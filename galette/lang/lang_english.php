@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Tue May  1 13:42:37 2012 (GMT)
+// This file was automatically generated on Tue May  1 20:27:58 2012 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -48,7 +48,7 @@ $lang['A group cannot be set as its own parent!'] = 'A group cannot be set as it
 // ../ajax_plugins_initdb.php:170 ../install/index.php:713 
 $lang['ALTER Operation allowed'] = 'ALTER Operation allowed';
 
-// ../gestion_contributions.php:163 
+// ../gestion_contributions.php:152 
 $lang['Contributions managment'] = 'Contributions managment';
 
 // ../lib/Galette/Entity/Adherent.php:838 
@@ -84,7 +84,7 @@ $lang['Retype password:'] = 'Retype password:';
 // ../champs_adherents.php:64 ../lib/Galette/Entity/Adherent.php:381 ../templates/default/member.tpl:153 ../templates/default/voir_adherent.tpl:164 
 $lang['Account:'] = 'Account:';
 
-// ../gestion_contributions.php:101 ../lib/Galette/Repository/Contributions.php:607 
+// ../gestion_contributions.php:101 ../lib/Galette/Repository/Contributions.php:631 
 $lang['end date filter'] = 'end date filter';
 
 // ../install/index.php:295 
@@ -691,7 +691,7 @@ $lang['Username:'] = 'Username:';
 $lang['You are about to send an e-mail to <strong>%s members</strong>'] = 'You are about to send an e-mail to <strong>%s members</strong>';
 
 // ../templates/default/member.tpl:60 ../templates/default/member.tpl:206 ../templates/default/ajax_attendance_sheet_details.tpl:19 ../templates/default/ajouter_transaction.tpl:20 ../templates/default/ajouter_contribution.tpl:74 ../templates/default/ajouter_contribution.tpl:85 
-$lang['(yyyy-mm-dd format)'] = '(yyyy-mm-dd format)';
+$lang['(yyyy-mm-dd format)'] = '(mm/dd/yyyy format)';
 
 // ../templates/default/gestion_contributions.tpl:7 ../templates/default/gestion_contributions.tpl:129 
 $lang['Payment type'] = 'Payment type';
@@ -969,7 +969,7 @@ $lang['Picture'] = 'Picture';
 // ../templates/default/preferences.tpl:365 
 $lang['Year:'] = 'Year:';
 
-// ../gestion_contributions.php:115 ../lib/Galette/Entity/Adherent.php:1023 
+// ../lib/Galette/Entity/Adherent.php:1023 
 $lang['- Wrong date format (%date_format) for %field!'] = '- Wrong date format (%date_format) for %field!';
 
 // ../lib/Galette/Core/CheckModules.php:144 
@@ -1149,7 +1149,7 @@ $lang['Vice-secretary'] = 'Vice-secretary';
 // ../templates/default/configurer_fiche_content.tpl:41 
 $lang['Send up \'%s\' field'] = 'Send up \'%s\' field';
 
-// ../lib/Galette/Repository/Contributions.php:644 ../lib/Galette/Entity/Transaction.php:265 ../lib/Galette/Entity/Contribution.php:347 ../lib/Galette/Entity/Contribution.php:975 
+// ../lib/Galette/Entity/Transaction.php:265 ../lib/Galette/Entity/Contribution.php:347 ../lib/Galette/Entity/Contribution.php:975 
 $lang['- Non valid date!'] = '- Non valid date!';
 
 // ../lib/Galette/Entity/Adherent.php:1077 
@@ -1233,7 +1233,7 @@ $lang['Dashboard'] = 'Dashboard';
 // ../templates/default/gestion_adherents.tpl:328 
 $lang['Attendance sheet details'] = 'Attendance sheet details';
 
-// ../lib/Galette/Repository/Contributions.php:589 ../lib/Galette/Repository/Contributions.php:598 
+// ../lib/Galette/Repository/Contributions.php:600 ../lib/Galette/Repository/Contributions.php:622 
 $lang['Y-m'] = 'Y-m';
 
 // ../templates/default/gestion_adherents.tpl:25 
@@ -1662,7 +1662,7 @@ $lang['Default status cannot be initialized.'] = 'Default status cannot be initi
 // ../templates/default/preferences.tpl:322 
 $lang['Board Members Color:'] = 'Board Members Color:';
 
-// ../lib/Galette/Repository/Contributions.php:653 ../lib/Galette/Entity/Transaction.php:262 ../lib/Galette/Entity/Contribution.php:344 ../lib/Galette/Entity/Contribution.php:972 
+// ../lib/Galette/Entity/Transaction.php:262 ../lib/Galette/Entity/Contribution.php:344 ../lib/Galette/Entity/Contribution.php:972 
 $lang['- Wrong date format (dd/mm/yyyy)!'] = '- Wrong date format (dd/mm/yyyy)!';
 
 // ../templates/default/member.tpl:211 
@@ -1908,7 +1908,7 @@ $lang['Next page (%i)'] = 'Next page (%i)';
 // ../gestion_intitules.php:330 ../lib/Galette/Entity/Adherent.php:1342 ../templates/default/gestion_intitule_content.tpl:29 ../templates/default/champ_requis.tpl:8 ../templates/default/config_fields.tpl:40 ../templates/default/config_fields.tpl:46 ../templates/default/editer_champ.tpl:26 ../templates/default/configurer_fiches.tpl:23 ../templates/default/configurer_fiche_content.tpl:22 
 $lang['Yes'] = 'Yes';
 
-// ../gestion_contributions.php:133 
+// ../gestion_contributions.php:122 
 $lang['- Unknown payment type!'] = '- Unknown payment type!';
 
 // ../preferences.php:348 ../preferences.php:382 ../ajouter_adherent.php:278 
@@ -2244,7 +2244,7 @@ $lang['Plugin \'%name\' has been successfully installed!'] = 'Plugin \'%name\' h
 // ../install/index.php:196 ../install/index.php:1226 ../templates/default/ajax_plugins_initdb.tpl:97 
 $lang['Access permissions to database'] = 'Access permissions to database';
 
-// ../lib/Galette/Repository/Contributions.php:584 ../lib/Galette/Repository/Contributions.php:597 
+// ../lib/Galette/Repository/Contributions.php:584 ../lib/Galette/Repository/Contributions.php:621 
 $lang['Y'] = 'Y';
 
 // ../attendance_sheet.php:128 ../templates/default/gestion_adherents.tpl:128 ../templates/default/ajax_attendance_sheet_details.tpl:6 
@@ -2349,7 +2349,7 @@ $lang['fingerprint:'] = 'fingerprint:';
 // ../gestion_textes.php:81 
 $lang['Email: \'%s\' has not been modified!'] = 'Email: \'%s\' has not been modified!';
 
-// ../gestion_contributions.php:112 ../attendance_sheet.php:122 ../attendance_sheet.php:142 ../attendance_sheet.php:185 ../lib/Galette/IO/News.php:245 ../lib/Galette/IO/News.php:289 ../lib/Galette/Repository/Contributions.php:525 ../lib/Galette/Repository/Contributions.php:594 ../lib/Galette/Repository/Contributions.php:599 ../lib/Galette/Repository/Contributions.php:630 ../lib/Galette/Entity/Adherent.php:807 ../lib/Galette/Entity/Adherent.php:821 ../lib/Galette/Entity/Adherent.php:833 ../lib/Galette/Entity/Adherent.php:1002 ../lib/Galette/Entity/Adherent.php:1011 ../lib/Galette/Entity/Adherent.php:1020 ../lib/Galette/Entity/Adherent.php:1319 ../lib/Galette/Entity/Contribution.php:475 ../lib/Galette/Entity/Contribution.php:863 ../lib/Galette/Entity/Group.php:510 
+// ../attendance_sheet.php:122 ../attendance_sheet.php:142 ../attendance_sheet.php:185 ../lib/Galette/IO/News.php:245 ../lib/Galette/IO/News.php:289 ../lib/Galette/Repository/Contributions.php:525 ../lib/Galette/Repository/Contributions.php:614 ../lib/Galette/Repository/Contributions.php:623 ../lib/Galette/Repository/Contributions.php:652 ../lib/Galette/Entity/Adherent.php:807 ../lib/Galette/Entity/Adherent.php:821 ../lib/Galette/Entity/Adherent.php:833 ../lib/Galette/Entity/Adherent.php:1002 ../lib/Galette/Entity/Adherent.php:1011 ../lib/Galette/Entity/Adherent.php:1020 ../lib/Galette/Entity/Adherent.php:1319 ../lib/Galette/Entity/Contribution.php:475 ../lib/Galette/Entity/Contribution.php:863 ../lib/Galette/Entity/Group.php:510 
 $lang['Y-m-d'] = 'm/d/Y';
 
 // ../templates/default/plugins.tpl:7 
@@ -2589,7 +2589,7 @@ $lang['Nickname:'] = 'Nickname:';
 // ../templates/default/preferences.tpl:79 
 $lang['Facebook'] = 'Facebook';
 
-// ../gestion_contributions.php:97 ../lib/Galette/Repository/Contributions.php:604 
+// ../gestion_contributions.php:97 ../lib/Galette/Repository/Contributions.php:628 
 $lang['start date filter'] = 'start date filter';
 
 // ../install/index.php:386 
@@ -2706,7 +2706,7 @@ $lang['No'] = 'No';
 // ../champs_adherents.php:56 ../lib/Galette/Entity/Adherent.php:309 ../templates/default/member.tpl:128 ../templates/default/voir_adherent.tpl:139 
 $lang['MSN:'] = 'MSN:';
 
-// ../lib/Galette/Repository/Contributions.php:617 
+// ../lib/Galette/Repository/Contributions.php:641 
 $lang['Unknown date format for %field.<br/>Know formats are: %formats'] = 'Unknown date format for %field.<br/>Know formats are: %formats';
 
 // ../preferences.php:208 

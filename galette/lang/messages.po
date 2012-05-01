@@ -2336,7 +2336,7 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:156 ../templates/default/ajouter_transaction.tpl:178
+#: ../templates/default/ajouter_transaction.tpl:158 ../templates/default/ajouter_transaction.tpl:180
 msgid "An error occured displaying contributions :("
 msgstr ""
 
@@ -2801,7 +2801,7 @@ msgstr ""
 #: ../templates/default/mailing_adherents.tpl:139 ../templates/default/mailing_adherents.tpl:184
 #: ../templates/default/mailing_adherents.tpl:230 ../templates/default/gestion_groupes.tpl:153
 #: ../templates/default/gestion_groupes.tpl:210 ../templates/default/gestion_groupes.tpl:257
-#: ../templates/default/ajouter_transaction.tpl:114
+#: ../templates/default/ajouter_transaction.tpl:116
 msgid "An error occured displaying members interface :("
 msgstr ""
 
@@ -3258,7 +3258,7 @@ msgstr ""
 msgid "First name:"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:189
+#: ../templates/default/ajouter_transaction.tpl:191
 msgid "Click on a contribution row to attach it to the current transaction"
 msgstr ""
 
@@ -3445,7 +3445,7 @@ msgstr ""
 msgid "Modified"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:121
+#: ../templates/default/ajouter_transaction.tpl:123
 msgid "Contributions selection"
 msgstr ""
 

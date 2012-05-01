@@ -99,8 +99,10 @@
 {/foreach}
 			</tbody>
 		</table>
+{/if}
         <script type="text/javascript">
             $(function(){ldelim}
+{if $transaction->id}
                 $('#memberslist').click(function(){ldelim}
                     $.ajax({ldelim}
                         url: 'gestion_contributions.php',
@@ -188,6 +190,14 @@
                         window.location.href = window.location.href + '&cid=' + _cid;
                     {rdelim}).css('cursor', 'pointer').attr('title', '{_T string="Click on a contribution row to attach it to the current transaction" escape="js"}');
                 {rdelim}
-            {rdelim});
-        </script>
 {/if}
+                $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
+                $('#trans_date').datepicker({ldelim}
+                    changeMonth: true,
+                    changeYear: true,
+                    showOn: 'button',
+                    buttonImage: '{$template_subdir}images/calendar.png',
+                    buttonImageOnly: true
+                {rdelim});
+            {rdelim});
+        </script> 

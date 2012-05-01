@@ -1,5 +1,5 @@
-		<form action="ajouter_contribution.php" method="post">
 {if !$head_redirect}
+		<form action="ajouter_contribution.php" method="post">
 		<div class="bigtable">
     {if $contribution->isTransactionPart()}
         {assign var="mid" value=$contribution->transaction->member}
@@ -116,4 +116,16 @@
 		</div>
 		<p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
 		</form>
+    <script type="text/javascript">
+        $(function(){ldelim}
+            $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
+            $('#date_debut_cotis, #date_fin_cotis').datepicker({ldelim}
+                changeMonth: true,
+                changeYear: true,
+                showOn: 'button',
+                buttonImage: '{$template_subdir}images/calendar.png',
+                buttonImageOnly: true
+            {rdelim});
+        {rdelim});
+    </script>
 {/if}
