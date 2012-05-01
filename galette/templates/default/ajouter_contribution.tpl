@@ -71,7 +71,7 @@
 						{/if}
                     </label>
                     <input class="past-date-pick" type="text" name="date_debut_cotis" id="date_debut_cotis" value="{$contribution->begin_date}" maxlength="10"{if $required.date_debut_cotis eq 1} required{/if}/>
-                    <span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
+                    <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
 				</p>
         {if $contribution->isCotis()}
 				<p>
@@ -82,7 +82,7 @@
             {else}
                     <label class="bline" for="date_fin_cotis">{_T string="End date of membership:"}</label>
                     <input type="text" name="date_fin_cotis" id="date_fin_cotis" value="{$contribution->end_date}" maxlength="10"{if $required.date_fin_cotis eq 1} required{/if}/>
-                    <span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
+                    <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
             {/if}
 				</p>
         {/if}

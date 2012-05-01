@@ -17,7 +17,7 @@
 				</p>
 				<p>
 					<label for="trans_date" class="bline">{_T string="Date:"}</label>
-					<input type="text" class="date-pick" name="trans_date" id="trans_date" value="{$transaction->date}" maxlength="10"{if $required.trans_date eq 1} required{/if}/> <span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
+					<input type="text" class="date-pick" name="trans_date" id="trans_date" value="{$transaction->date}" maxlength="10"{if $required.trans_date eq 1} required{/if}/> <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
 				</p>
 				<p>
 					<label for="trans_amount" class="bline">{_T string="Amount:"}</label>

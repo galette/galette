@@ -57,7 +57,7 @@
 					</p>
 					<p>
 						<label for="ddn_adh" class="bline">{_T string="Birth date:"}</label>
-						<input type="text" name="ddn_adh" id="ddn_adh" value="{$member->birthdate}" maxlength="10" {$disabled.ddn_adh}{if $required.ddn_adh eq 1} required{/if}/> <span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
+						<input type="text" name="ddn_adh" id="ddn_adh" value="{$member->birthdate}" maxlength="10" {$disabled.ddn_adh}{if $required.ddn_adh eq 1} required{/if}/> <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
 					</p>
                     <p>
                         <label for="lieu_naissance" class="bline">{_T string="Birthplace:"}</label>
@@ -203,7 +203,7 @@
 					<p>
 						<label for="date_crea_adh" class="bline">{_T string="Creation date:"}</label>
 						<input type="text" name="date_crea_adh" id="date_crea_adh" value="{$member->creation_date}" maxlength="10" {$disabled.date_crea_adh}{if $required.date_crea_adh eq 1} required{/if}/>
-						<span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
+						<span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
 					</p>
 					<p>
 						<label for="info_adh" class="bline">{_T string="Other informations (admin):"}</label>
