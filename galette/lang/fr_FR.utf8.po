@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2012-05-01 10:56+0200\n"
+"PO-Revision-Date: 2012-05-01 15:19+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -70,10 +70,9 @@ msgstr "- L'identifiant doit être un nombre entier&nbsp;!"
 msgid "Mail body"
 msgstr "Corps du message"
 
-#: ../lib/Galette/Entity/Politeness.php:68
-#: ../templates/default/gestion_adherents.tpl:210
-msgid "Mrs"
-msgstr "Madame"
+#: ../includes/dynamic_fields.inc.php:97
+msgid "right"
+msgstr "droite"
 
 #: ../templates/default/ajax_plugins_initdb.tpl:87
 msgid "Back to plugins managment page"
@@ -203,7 +202,7 @@ msgstr ""
 "Renseigner les préférences de l'application (adresse, cartes de membres, "
 "configuration, ...)"
 
-#: ../gestion_contributions.php:181
+#: ../gestion_contributions.php:152
 msgid "Contributions managment"
 msgstr "Gestion des contributions"
 
@@ -441,7 +440,6 @@ msgid "Default preferences were successfully stored."
 msgstr "Les préférences par défaut ont été sauvegardées avec succès."
 
 #: ../lib/Galette/Entity/Adherent.php:1023
-#: ../lib/Galette/Entity/Adherent.php:1047
 msgid "- Wrong date format (%date_format) for %field!"
 msgstr "- Format de date incorrect (%date_format) pour %field&nbsp;!"
 
@@ -593,7 +591,7 @@ msgstr ""
 msgid "Default status cannot be initialized."
 msgstr "Les statuts par défaut n'ont pas été initialisés."
 
-#: ../lib/Galette/Entity/Adherent.php:1154
+#: ../lib/Galette/Entity/Adherent.php:1123
 msgid "Password misrepeated: "
 msgstr "Erreur en recopiant le mot de passe&nbsp;: "
 
@@ -657,7 +655,7 @@ msgstr "Id GNUpg (GPG)&nbsp;:"
 msgid "Galette-related data:"
 msgstr "Informations relatives à Galette&nbsp;:"
 
-#: ../lib/Galette/Entity/Adherent.php:1099
+#: ../lib/Galette/Entity/Adherent.php:1068
 msgid "- Non-valid Website address! Maybe you've skipped the http:// ?"
 msgstr ""
 "- Adresse web non valide&nbsp;! Peut-être avez vous oublié le http://&nbsp;?"
@@ -678,7 +676,7 @@ msgstr ""
 "La base n'est pas accessible. Veuillez revenir en arrière pour saisir à "
 "nouveau les paramètres de connexion."
 
-#: ../lib/Galette/Entity/Adherent.php:1376 ../templates/default/member.tpl:155
+#: ../lib/Galette/Entity/Adherent.php:1345 ../templates/default/member.tpl:155
 msgid "Active"
 msgstr "Actif"
 
@@ -947,8 +945,6 @@ msgstr "Aucun libellé à traduire"
 msgid "Profession"
 msgstr "Profession"
 
-#: ../lib/Galette/Repository/Contributions.php:356
-#: ../lib/Galette/Repository/Contributions.php:369
 #: ../lib/Galette/Repository/Transactions.php:281
 #: ../lib/Galette/Repository/Transactions.php:294
 msgid "d/m/Y"
@@ -1017,7 +1013,11 @@ msgstr ""
 "Sélectionner une contribution existante et l'attacher à la transaction "
 "courante"
 
+#: ../templates/default/member.tpl:60 ../templates/default/member.tpl:206
 #: ../templates/default/ajax_attendance_sheet_details.tpl:19
+#: ../templates/default/ajouter_transaction.tpl:20
+#: ../templates/default/ajouter_contribution.tpl:74
+#: ../templates/default/ajouter_contribution.tpl:85
 msgid "(yyyy-mm-dd format)"
 msgstr "(format jj/mm/aaaa)"
 
@@ -1038,7 +1038,7 @@ msgstr "Décroissant"
 msgid "Address:"
 msgstr "Adresse&nbsp;:"
 
-#: ../preferences.php:123 ../lib/Galette/Entity/Adherent.php:1061
+#: ../preferences.php:123 ../lib/Galette/Entity/Adherent.php:1030
 msgid "- Non-valid E-Mail address!"
 msgstr "- Adresse courriel non valide&nbsp;!"
 
@@ -1065,6 +1065,12 @@ msgid ""
 msgstr ""
 "Galette ne dispose pas de droits suffisants sur la base de données pour "
 "poursuivre l'installation."
+
+# http://fr2.php.net/manual/fr/function.date.php
+#: ../lib/Galette/Repository/Contributions.php:600
+#: ../lib/Galette/Repository/Contributions.php:622
+msgid "Y-m"
+msgstr "m/Y"
 
 #: ../templates/default/desktop.tpl:42
 msgid "Read on..."
@@ -1106,7 +1112,7 @@ msgstr ""
 "Cette application tourne en mode DEMO, toutes les fonctionnalités peuvent ne "
 "pas être disponibles."
 
-#: ../lib/Galette/Entity/Adherent.php:1278
+#: ../lib/Galette/Entity/Adherent.php:1247
 msgid "Member card updated"
 msgstr "Fiche adhérent mise à jour"
 
@@ -1140,11 +1146,11 @@ msgstr ""
 "Note&nbsp;: les membres qui possèdent un statut dont la priorité est "
 "inférieure à %priority sont membres du bureau."
 
-#: ../lib/Galette/Entity/Adherent.php:1376 ../templates/default/member.tpl:156
+#: ../lib/Galette/Entity/Adherent.php:1345 ../templates/default/member.tpl:156
 msgid "Inactive"
 msgstr "Inactif"
 
-#: ../gestion_intitules.php:330 ../lib/Galette/Entity/Adherent.php:1373
+#: ../gestion_intitules.php:330 ../lib/Galette/Entity/Adherent.php:1342
 #: ../templates/default/gestion_intitule_content.tpl:29
 #: ../templates/default/champ_requis.tpl:8
 #: ../templates/default/config_fields.tpl:40
@@ -1175,9 +1181,7 @@ msgstr "Configuration"
 msgid "Files permissions are not OK!"
 msgstr "Les permissions des fichiers ne sont pas correctes&nbsp;!"
 
-#: ../gestion_contributions.php:103 ../gestion_contributions.php:125
 #: ../lib/Galette/Entity/Transaction.php:265
-#: ../lib/Galette/Entity/Adherent.php:1051
 #: ../lib/Galette/Entity/Contribution.php:347
 #: ../lib/Galette/Entity/Contribution.php:975
 msgid "- Non valid date!"
@@ -1280,13 +1284,6 @@ msgstr "Identifiant ou adresse e-mail&nbsp;:"
 msgid "Date settings"
 msgstr "Paramètres de date"
 
-#: ../templates/default/member.tpl:60 ../templates/default/member.tpl:206
-#: ../templates/default/ajouter_transaction.tpl:20
-#: ../templates/default/ajouter_contribution.tpl:74
-#: ../templates/default/ajouter_contribution.tpl:85
-msgid "(dd/mm/yyyy format)"
-msgstr "(format jj/mm/aaaa)"
-
 #: ../includes/i18n.inc.php:292
 msgid "Realization:"
 msgstr "Réalisation&nbsp;:"
@@ -1337,7 +1334,7 @@ msgid "%membername: edit informations"
 msgstr "%membername&nbsp;: modifier les informations"
 
 #: ../lib/Galette/Entity/Transaction.php:301
-#: ../lib/Galette/Entity/Adherent.php:1170
+#: ../lib/Galette/Entity/Adherent.php:1139
 #: ../lib/Galette/Entity/Contribution.php:407
 msgid "- Mandatory field empty: "
 msgstr "- Champ obligatoire non renseigné&nbsp;:"
@@ -1390,7 +1387,7 @@ msgstr ""
 "Votre base est peut-être inutilisable, essayez de restaurer une ancienne "
 "version."
 
-#: ../lib/Galette/Entity/Adherent.php:1249
+#: ../lib/Galette/Entity/Adherent.php:1218
 msgid "Fail to add new member."
 msgstr "Échec de l'ajout d'un nouvel adhérent."
 
@@ -1430,7 +1427,7 @@ msgstr "Une erreur est survenue lors de la vérification de l'unicité du nom :(
 msgid "Missing destination group"
 msgstr "Groupe de destination manquant"
 
-#: ../preferences.php:135 ../lib/Galette/Entity/Adherent.php:1104
+#: ../preferences.php:135 ../lib/Galette/Entity/Adherent.php:1073
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- L'identifiant doit être composé d'au moins 4 caractères&nbsp;!"
 
@@ -1814,7 +1811,7 @@ msgid "Originator"
 msgstr "Emetteur"
 
 #: ../preferences.php:192 ../change_passwd.php:66
-#: ../lib/Galette/Entity/Adherent.php:1145
+#: ../lib/Galette/Entity/Adherent.php:1114
 msgid "- The password must be of at least 4 characters!"
 msgstr "- Le mot de passe doit être composé d'au moins 4 caractères&nbsp;!"
 
@@ -1867,8 +1864,8 @@ msgstr "%status de l'association %name"
 msgid "- Label does not exist"
 msgstr "- Cet intitulé n'existe pas"
 
-#: ../lib/Galette/Entity/Adherent.php:1090
-#: ../lib/Galette/Entity/Adherent.php:1138
+#: ../lib/Galette/Entity/Adherent.php:1059
+#: ../lib/Galette/Entity/Adherent.php:1107
 msgid "An error has occured while looking if login already exists."
 msgstr ""
 "Une erreur est survenue lors de la vérification d'unicité de l'identifiant."
@@ -1945,7 +1942,7 @@ msgstr "Détacher"
 msgid "[$]"
 msgstr "[$]"
 
-#: ../change_passwd.php:63 ../lib/Galette/Entity/Adherent.php:1150
+#: ../change_passwd.php:63 ../lib/Galette/Entity/Adherent.php:1119
 msgid "- The passwords don't match!"
 msgstr "- Les mots de passe ne correspondent pas&nbsp;!"
 
@@ -1957,7 +1954,7 @@ msgstr "Fiche adhérent"
 msgid "Contribution has been successfyully detached from current transaction"
 msgstr "La contribution a été détachée de la transaction courante"
 
-#: ../lib/Galette/Entity/Adherent.php:1244
+#: ../lib/Galette/Entity/Adherent.php:1213
 msgid "Member card added"
 msgstr "Fiche adhérent ajoutée"
 
@@ -1978,6 +1975,14 @@ msgstr "Opération DROP autorisée"
 #: ../templates/default/voir_adherent.tpl:139
 msgid "MSN:"
 msgstr "MSN&nbsp;:"
+
+#: ../templates/default/gestion_adherents.tpl:182
+#: ../templates/default/gestion_mailings.tpl:100
+#: ../templates/default/gestion_contributions.tpl:213
+#: ../templates/default/gestion_contributions.tpl:233
+#: ../templates/default/gestion_transactions.tpl:96
+msgid "[del]"
+msgstr "[suppr]"
 
 #: ../gestion_adherents.php:216
 msgid "Administrators"
@@ -2389,7 +2394,7 @@ msgstr "Les droits d'accès à la base sont corrects."
 msgid "Do you really want to delete this transaction of the database ?"
 msgstr "Voulez-vous vraiment effacer cette transaction&nbsp;?"
 
-#: ../lib/Galette/Entity/Adherent.php:1127
+#: ../lib/Galette/Entity/Adherent.php:1096
 msgid "- This username is already used by another member!"
 msgstr "- Ce nom d'utilisateur est déjà utilisé par un autre adhérent&nbsp;!"
 
@@ -2537,7 +2542,6 @@ msgstr "Type"
 msgid "Database"
 msgstr "Base de données"
 
-#: ../gestion_contributions.php:112 ../gestion_contributions.php:134
 #: ../lib/Galette/Entity/Transaction.php:262
 #: ../lib/Galette/Entity/Contribution.php:344
 #: ../lib/Galette/Entity/Contribution.php:972
@@ -2553,13 +2557,15 @@ msgstr "Réessayer"
 msgid "View my member card"
 msgstr "Voir ma fiche membre"
 
-#: ../templates/default/gestion_adherents.tpl:182
-#: ../templates/default/gestion_mailings.tpl:100
-#: ../templates/default/gestion_contributions.tpl:213
-#: ../templates/default/gestion_contributions.tpl:233
-#: ../templates/default/gestion_transactions.tpl:96
-msgid "[del]"
-msgstr "[suppr]"
+#: ../gestion_contributions.php:101
+#: ../lib/Galette/Repository/Contributions.php:631
+msgid "end date filter"
+msgstr "filtre date de fin"
+
+#: ../gestion_contributions.php:97
+#: ../lib/Galette/Repository/Contributions.php:628
+msgid "start date filter"
+msgstr "filtre date de début"
 
 #: ../champs_adherents.php:70 ../lib/Galette/Entity/Adherent.php:429
 #: ../templates/default/member.tpl:63
@@ -2798,6 +2804,11 @@ msgstr "Fin"
 #: ../templates/default/mailing_adherents.tpl:55
 msgid "Interpret HTML"
 msgstr "Interpréter les balises HTML"
+
+#: ../lib/Galette/Repository/Contributions.php:641
+msgid "Unknown date format for %field.<br/>Know formats are: %formats"
+msgstr ""
+"Format de date inconnu pour %field.<br/>Les formats connus sont : %formats"
 
 #: ../templates/default/ajouter_transaction.tpl:41
 msgid "New attached contribution"
@@ -3251,9 +3262,10 @@ msgstr ""
 "seront remplacées automatiquement.<br/>Référez-vous à la documentation pour "
 "savoir quelles variables sont actuellement disponilbes. "
 
-#: ../includes/dynamic_fields.inc.php:97
-msgid "right"
-msgstr "droite"
+#: ../lib/Galette/Entity/Politeness.php:68
+#: ../templates/default/gestion_adherents.tpl:210
+msgid "Mrs"
+msgstr "Madame"
 
 #: ../templates/default/preferences.tpl:311
 #: ../templates/default/preferences.tpl:312
@@ -3512,7 +3524,7 @@ msgstr "Le groupe %groupname a été supprimé avec succès."
 msgid "Search:"
 msgstr "Rechercher&nbsp;:"
 
-#: ../gestion_intitules.php:330 ../lib/Galette/Entity/Adherent.php:1373
+#: ../gestion_intitules.php:330 ../lib/Galette/Entity/Adherent.php:1342
 #: ../templates/default/gestion_intitule_content.tpl:28
 #: ../templates/default/champ_requis.tpl:10
 #: ../templates/default/config_fields.tpl:42
@@ -3596,14 +3608,18 @@ msgstr "donation pécunière"
 # http://fr2.php.net/manual/fr/function.date.php
 #: ../attendance_sheet.php:122 ../attendance_sheet.php:142
 #: ../attendance_sheet.php:185 ../lib/Galette/IO/News.php:245
-#: ../lib/Galette/IO/News.php:289 ../lib/Galette/Entity/Adherent.php:807
+#: ../lib/Galette/IO/News.php:289
+#: ../lib/Galette/Repository/Contributions.php:525
+#: ../lib/Galette/Repository/Contributions.php:614
+#: ../lib/Galette/Repository/Contributions.php:623
+#: ../lib/Galette/Repository/Contributions.php:652
+#: ../lib/Galette/Entity/Adherent.php:807
 #: ../lib/Galette/Entity/Adherent.php:821
 #: ../lib/Galette/Entity/Adherent.php:833
 #: ../lib/Galette/Entity/Adherent.php:1002
 #: ../lib/Galette/Entity/Adherent.php:1011
 #: ../lib/Galette/Entity/Adherent.php:1020
-#: ../lib/Galette/Entity/Adherent.php:1044
-#: ../lib/Galette/Entity/Adherent.php:1350
+#: ../lib/Galette/Entity/Adherent.php:1319
 #: ../lib/Galette/Entity/Contribution.php:475
 #: ../lib/Galette/Entity/Contribution.php:863
 #: ../lib/Galette/Entity/Group.php:510
@@ -4091,6 +4107,11 @@ msgstr "Texte du bandeau&nbsp;:"
 msgid "Show legend"
 msgstr "Afficher la légende"
 
+#: ../lib/Galette/Repository/Contributions.php:584
+#: ../lib/Galette/Repository/Contributions.php:621
+msgid "Y"
+msgstr "Y"
+
 #: ../lib/Galette/Core/Pagination.php:239
 msgid "Next page (%i)"
 msgstr "Page suivante (%i)"
@@ -4291,7 +4312,7 @@ msgstr ""
 msgid "(dd/mm)"
 msgstr "(jj/mm)"
 
-#: ../lib/Galette/Entity/Adherent.php:1108
+#: ../lib/Galette/Entity/Adherent.php:1077
 msgid "- The username cannot contain the @ character"
 msgstr "- L'identifiant ne peut pas contenir le caractère @&nbsp;!"
 
@@ -4510,7 +4531,7 @@ msgstr ""
 "Vous installez le plugin « %name » pour la première fois, ou vous souhaitez "
 "écraser une ancienne version du plugin sans conserver vos données"
 
-#: ../gestion_contributions.php:151
+#: ../gestion_contributions.php:122
 msgid "- Unknown payment type!"
 msgstr "- Type de paiement inconnu&nbsp;!"
 
@@ -4546,7 +4567,7 @@ msgstr "Votre version actuelle de %name est comprise entre"
 msgid "member"
 msgstr "adhérent"
 
-#: ../lib/Galette/Entity/Adherent.php:1079
+#: ../lib/Galette/Entity/Adherent.php:1048
 msgid "- This E-Mail adress is already used by another member!"
 msgstr ""
 "- Cet adresse de courriel est déjà utilisée par un autre adhérent&nbsp;!"
@@ -4722,6 +4743,9 @@ msgstr "Les types de contribution par défaut ont été sauvegardés avec succè
 #: ../lostpasswd.php:158
 msgid "Login %s does not exist"
 msgstr "L'identifiant %s n'existe pas"
+
+#~ msgid "(dd/mm/yyyy format)"
+#~ msgstr "(format jj/mm/aaaa)"
 
 #~ msgid "Ckecks"
 #~ msgstr "Vérifications"
