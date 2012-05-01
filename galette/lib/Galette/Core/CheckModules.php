@@ -87,7 +87,7 @@ class CheckModules
         if ( !extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql') ) {
             $this->_missing[] = _T("either 'mysql' or 'pgsql' PDO driver");
         } else {
-            $this->_good['pdo_driver'] = _T("either 'mysqli' or 'pgsql' PDO driver");
+            $this->_good['pdo_driver'] = _T("either 'mysql' or 'pgsql' PDO driver");
         }
 
         //curl module is optionnal
@@ -151,7 +151,7 @@ class CheckModules
 
         $html = '<h3>' . _T("Active used modules")  . '</h3>';
         if ( count($this->_good) === 0 ) {
-            $html .= "<p>" .  _T("Any required module loaded yat!") . "</p>";
+            $html .= "<p>" .  _T("Any required module loaded yet!") . "</p>";
         } else {
             $html .= '<ul class="list">';
             foreach ( $this->_good as $m ) {

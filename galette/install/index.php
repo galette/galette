@@ -181,7 +181,7 @@ case '2':
     break;
 case 'i3':
 case 'u3':
-    $step_title = _T("Ckecks");
+    $step_title = _T("Checks");
     break;
 case 'i4':
 case 'u4':
@@ -374,7 +374,7 @@ case 'u3':
             <div id="errorbox">
 <?php
         if ( !$php_ok ) {
-            echo '<h2>' . _T("Php Version")  . '</h2>';
+            echo '<h2>' . _T("PHP Version")  . '</h2>';
             echo '<p>' . _T("Galette requires at least PHP version 5.3.") . '</p>';
         }
         if ( !$date_ok ) {
