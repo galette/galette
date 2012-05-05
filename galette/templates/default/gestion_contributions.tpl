@@ -186,7 +186,7 @@
                         {else}
                             <input type="hidden" name="contrib_id" value="{$contribution->id}"/>
                         {/if}
-                        {php}$ordre = $this->get_template_vars('ordre');echo $ordre+1{/php}
+                        {$ordre+1}
                     </td>
 					<td class="{$cclass} center nowrap">{$contribution->date}</td>
 					<td class="{$cclass} center nowrap">{$contribution->begin_date}</td>

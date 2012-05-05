@@ -75,7 +75,7 @@
     {assign var="cclass" value=$contrib->getRowClass()}
 				<tr>
 					<td class="{$cclass} center nowrap">
-                        {php}$ordre = $this->get_template_vars('ordre');echo $ordre+1{/php}
+                        {$ordre+1}
                     </td>
 					<td class="{$cclass} center nowrap">{$contrib->date}</td>
 					<td class="{$cclass} center nowrap">{$contrib->begin_date}</td>

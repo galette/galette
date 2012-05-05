@@ -143,7 +143,7 @@
 			<tbody>
 {foreach from=$members item=member key=ordre}
 				<tr>
-					<td class="{$member->getRowClass()} right">{php}$ordre = $this->get_template_vars('ordre');echo $ordre+1+($filters->current_page - 1)*$numrows{/php}</td>
+					<td class="{$member->getRowClass()} right">{$ordre+1+($filters->current_page - 1)*$numrows}</td>
 					<td class="{$member->getRowClass()} nowrap username_row">
 						<input type="checkbox" name="member_sel[]" value="{$member->id}"/>
                     {if $member->isCompany()}
