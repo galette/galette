@@ -80,22 +80,22 @@
 
 		var _bindCollapse = function() {ldelim}
 			$('#collapse').click(function(){ldelim}
-				$this = $(this);
+				var _this = $(this);
 				var _expandTxt = '{_T string="Expand all"}';
 				var _collapseTxt = '{_T string="Collapse all"}';
 
-				var _span = $this.children('span');
+				var _span = _this.children('span');
 				var _isExpand = false;
 
-				var _child = $this.children('.ui-icon');
+				var _child = _this.children('.ui-icon');
 
 				if( _child.is('.ui-icon-circle-arrow-e') ) {ldelim}
-					$this.html(_collapseTxt);
+					_this.html(_collapseTxt);
 				{rdelim} else {ldelim}
 					_isExpand = true;
-					$this.html(_expandTxt);
+					_this.html(_expandTxt);
 				{rdelim}
-				$this.prepend(_span);
+				_this.prepend(_span);
 
 				_child.toggleClass('ui-icon-circle-arrow-e').toggleClass('ui-icon-circle-arrow-s');
 
