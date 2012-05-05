@@ -450,6 +450,28 @@ class Adherent
                 'category' => FieldsCategories::ADH_CATEGORY_CONTACT
             )
         );
+
+        //disabled fields override
+        $locfile = WEB_ROOT . 'config/disabled_fields.php';
+        if ( file_exists($locfile) ) {
+            include $locfile;
+            if ( isset($loc_disabled_fields)
+                && is_array($loc_disabled_fields)
+            ) {
+                $this->_disabled_fields = $loc_disabled_fields;
+            }
+            if ( isset($loc_edit_disabled_fields)
+                && is_array($loc_edit_disabled_fields)
+            ) {
+                $this->_edit_disabled_fields = $loc_edit_disabled_fields;
+            }
+            if ( isset($loc_adm_edit_disabled_fields)
+                && is_array($loc_adm_edit_disabled_fields)
+            ) {
+                $this->_adm_edit_disabled_fields = $loc_adm_edit_disabled_fields;
+            }
+        }
+
         if ( $args == null || is_int($args) ) {
             $this->_active = true;
             $this->_language = $i18n->getID();
