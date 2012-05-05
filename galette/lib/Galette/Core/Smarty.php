@@ -68,11 +68,11 @@ class Smarty extends \SmartyBC
         $this->setConfigDir(WEB_ROOT . 'config/');
         $this->setCacheDir(GALETTE_CACHE_DIR);
 
-        if ( GALETTE_MODE !== 'DEV' ) {
+        /*if ( GALETTE_MODE !== 'DEV' ) {
             //enable caching
             $this->caching = \Smarty::CACHING_LIFETIME_CURRENT;
             $this->setCompileCheck(false);
-        }
+        }*/
 
         $this->addPluginsDir(WEB_ROOT . 'includes/smarty_plugins');
 
