@@ -86,6 +86,11 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
             '[mailing_adherents.php] No member selected for mailing',
             KLogger::WARN
         );
+
+        if ( $profiler ) {
+            $profiler->stop();
+        }
+
         header('location:gestion_adherents.php');
         die();
     }
@@ -212,4 +217,8 @@ $tpl->assign('page_title', _T("Mailing"));
 $content = $tpl->fetch('mailing_adherents.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
+
+if ( $profiler ) {
+    $profiler->stop();
+}
 ?>

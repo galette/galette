@@ -184,4 +184,8 @@ $tpl->assign('success_detected', $success_detected);
 $content = $tpl->fetch('voir_adherent.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
+
+if ( $profiler ) {
+    $profiler->stop();
+}
 ?>

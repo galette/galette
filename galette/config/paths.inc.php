@@ -53,6 +53,9 @@ if ( !defined('GALETTE_SMARTY_PATH') ) {
 if ( !defined('GALETTE_GAPI_PATH') ) {
     define('GALETTE_GAPI_PATH', WEB_ROOT . 'includes/google-api-' . GAPI_VERSION);
 }
+/*if ( !defined('GALETTE_XHPROF_PATH') ) {
+    define('GALETTE_XHPROF_PATH', '/usr/share/xhprof/');
+}*/
 
 //galete's paths
 if ( !defined('GALETTE_TEMPLATES_PATH') ) {

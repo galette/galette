@@ -238,4 +238,7 @@ $tpl->assign(
 $content = $tpl->fetch('gestion_adherents.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
+if ( $profiler ) {
+    $profiler->stop();
+}
 ?>

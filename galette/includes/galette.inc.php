@@ -35,6 +35,8 @@
  * @since     Available since 0.7-dev - 2007-10-07
  */
 
+$time_start = microtime(true);
+
 //we'll only include relevant parts if we work from installer
 if ( !isset($installer) ) {
     $installer = false;
@@ -58,6 +60,15 @@ if ( !$installer ) { //If we're not working from installer
 }
 require_once $base_path . 'config/versions.inc.php';
 require_once $base_path . 'config/paths.inc.php';
+
+//start profiling
+if (defined('GALETTE_XHPROF_PATH')
+    && function_exists('xhprof_enable')
+) {
+    include_once __DIR__ . '/../lib/Galette/Common/XHProf.php';
+    $profiler = new Galette\Common\XHProf();
+    $profiler->start();
+}
 
 use Galette\Common\ClassLoader;
 use Galette\Common\KLogger;
@@ -252,4 +263,5 @@ if ( !$installer ) { //If we're not working from installer
         die();
     }
 }
+
 ?>

@@ -64,7 +64,10 @@ if (  isset($_GET['logo']) && $_GET['logo'] == 'true' ) {
             $picture = new Galette\Core\Picture();
         }
         $picture->display();
-
     }
+}
+
+if ( $profiler ) {
+    $profiler->stop();
 }
 ?>
