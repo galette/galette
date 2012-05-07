@@ -53,7 +53,7 @@
 {foreachelse}
                 <tr>
                     <td colspan="7">
-                        {_T string="There is not yet any dynamic field configured for '%formname'" pattern="/%formname/" replace="$form_name}
+                        {_T string="There is not yet any dynamic field configured for '%formname'" pattern="/%formname/" replace=$form_name}
                     </td>
                 </tr>
 {/foreach}
