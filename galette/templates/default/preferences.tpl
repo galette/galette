@@ -420,60 +420,60 @@
 		<script type="text/javascript">
             $('#prefs_tabs').tabs();
 
-			$('#no,#php,#qmail').click(function(){ldelim}
+			$('#no,#php,#qmail').click(function(){
 				$('#smtp_parameters,#smtp_auth').hide();
-			{rdelim});
-			$('#smtp,#gmail').click(function(){ldelim}
+			});
+			$('#smtp,#gmail').click(function(){
 				$('#smtp_parameters,#smtp_auth').show();
-			{rdelim});
-			$('#gmail').click(function(){ldelim}
+			});
+			$('#gmail').click(function(){
 				$('#smtp_parameters').hide();
 				$('#smtp_auth').show();
-			{rdelim});
+			});
 
 
-			$(function(){ldelim}
+			$(function(){
                 //for color pickers
 				// hex inputs
 				$('input.hex')
 					.validHex()
-					.keyup(function() {ldelim}
+					.keyup(function() {
 						$(this).validHex();
-					{rdelim})
-					.click(function(){ldelim}
+					})
+					.click(function(){
 						$(this).addClass('focus');
 						$('#picker').remove();
 						$('div.picker-on').removeClass('picker-on');
 						$(this).after('<div id="picker"></div>').parent().addClass('picker-on');
 						$('#picker').farbtastic(this);
 						return false;
-					{rdelim})
+					})
 					.wrap('<div class="hasPicker"></div>')
 					.applyFarbtastic();
 
 				//general app click cleanup
-				$('body').click(function() {ldelim}
+				$('body').click(function() {
 					$('div.picker-on').removeClass('picker-on');
 					$('#picker').remove();
 					$('input.focus, select.focus').removeClass('focus');
-				{rdelim});
+				});
 
-                $('#pref_bool_publicpages').change(function(){ldelim}
+                $('#pref_bool_publicpages').change(function(){
                     $('#publicpages_visibility').toggleClass('hidden');
-                {rdelim});
-			{rdelim});
+                });
+			});
 
 			//color pickers setup (sets bg color of inputs)
-			$.fn.applyFarbtastic = function() {ldelim}
-				return this.each(function() {ldelim}
+			$.fn.applyFarbtastic = function() {
+				return this.each(function() {
 					$('<div/>').farbtastic(this).remove();
-				{rdelim});
-			{rdelim};
+				});
+			};
 
 			// validation for hex inputs
-			$.fn.validHex = function() {ldelim}
+			$.fn.validHex = function() {
 
-				return this.each(function() {ldelim}
+				return this.each(function() {
 
 					var value = $(this).val();
 					value = value.replace(/[^#a-fA-F0-9]/g, ''); // non [#a-f0-9]
@@ -483,7 +483,7 @@
 
 					$(this).val(value);
 
-				{rdelim});
+				});
 
-			{rdelim};
+			};
 		</script>

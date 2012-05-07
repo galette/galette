@@ -61,25 +61,25 @@
 		</div>
 	</form>
 	<script type="text/javascript">
-		var _initSortable = function(){ldelim}
-			$('.fields_list').sortable({ldelim}
+		var _initSortable = function(){
+			$('.fields_list').sortable({
 				items: 'li:not(.listing)',
 				connectWith: '.connectedSortable',
-				update: function(event, ui) {ldelim}
+				update: function(event, ui) {
 					{* When sort is updated, we must check for the newer category item belongs to *}
 					var _item = $(ui.item[0]);
 					var _category = _item.parent().prevAll('input[name^≃categories]').attr('value');
 					_item.find('input[name$=category]').attr('value', _category);
-				{rdelim}
-			{rdelim}).disableSelection();
+				}
+			}).disableSelection();
 
-			$('#members_tab').sortable({ldelim}
+			$('#members_tab').sortable({
 				items: 'fieldset'
-			{rdelim});
-		{rdelim}
+			});
+		}
 
-		var _bindCollapse = function() {ldelim}
-			$('#collapse').click(function(){ldelim}
+		var _bindCollapse = function() {
+			$('#collapse').click(function(){
 				var _this = $(this);
 				var _expandTxt = '{_T string="Expand all"}';
 				var _collapseTxt = '{_T string="Collapse all"}';
@@ -89,35 +89,35 @@
 
 				var _child = _this.children('.ui-icon');
 
-				if( _child.is('.ui-icon-circle-arrow-e') ) {ldelim}
+				if( _child.is('.ui-icon-circle-arrow-e') ) {
 					_this.html(_collapseTxt);
-				{rdelim} else {ldelim}
+				} else {
 					_isExpand = true;
 					_this.html(_expandTxt);
-				{rdelim}
+				}
 				_this.prepend(_span);
 
 				_child.toggleClass('ui-icon-circle-arrow-e').toggleClass('ui-icon-circle-arrow-s');
 
-				$('legend a').each(function(){ldelim}
+				$('legend a').each(function(){
 					var _visible = $(this).parent('legend').parent('fieldset').children('ul').is(':visible');
-					if( _isExpand && _visible ) {ldelim}
+					if( _isExpand && _visible ) {
 						$(this).click();
-					{rdelim} else if( !_isExpand && !_visible){ldelim}
+					} else if( !_isExpand && !_visible){
 						$(this).click();
-					{rdelim}
-				{rdelim});
-			{rdelim});
-		{rdelim}
+					}
+				});
+			});
+		}
 
-		$(function() {ldelim}
+		$(function() {
 			_collapsibleFieldsets();
 
 			_bindCollapse();
 
 			_initSortable();
 
-			$('#add_category').click(function() {ldelim}
+			$('#add_category').click(function() {
 				var _fieldsets = $('fieldset[id^=cat_]');
 				var _cat_iter = _fieldsets.length + 1;
 
@@ -139,14 +139,14 @@
 				$(this).attr('href', '#cat_' + _cat_iter);
 				//Getting
 				var _url = document.location.toString();
-				if (_url.match('#')) {ldelim} // the URL contains an anchor
+				if (_url.match('#')) { // the URL contains an anchor
 					var _url = _url.split('#')[0];
-				{rdelim}
+				}
 				_url += '#cat_' + _cat_iter;
 
 				document.location = _url;
 				_legend.children(':input').focus();
 				return false;
-			{rdelim});
-		{rdelim});
+			});
+		});
 	</script>

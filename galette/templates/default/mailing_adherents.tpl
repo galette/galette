@@ -90,150 +90,163 @@
 		</form>
     {if $mailing->current_step neq constant('Galette\Core\Mailing::STEP_SENT')}
 <script type="text/javascript">
-    $(function() {ldelim}
+    $(function() {
         {* Preview popup *}
-        $('#btnpreview').click(function(){ldelim}
+        $('#btnpreview').click(function(){
             var _subject = $('#mailing_objet').val();
             var _body = $('#mailing_corps').val();
             var _html = $('#mailing_html').is(':checked');
-            $.ajax({ldelim}
+            $.ajax({
                 url: 'ajax_mailing_preview.php',
                 type: "POST",
-                data: {ldelim}ajax: true, subject: _subject, body: _body, html: _html{rdelim},
+                data: {
+                    ajax: true,
+                    subject: _subject,
+                    body: _body,
+                    html: _html
+                },
                 {include file="js_loader.tpl"},
-                success: function(res){ldelim}
+                success: function(res){
                     _preview_dialog(res);
-                {rdelim},
-                error: function() {ldelim}
+                },
+                error: function() {
                     alert("{_T string="An error occured displaying preview :(" escape="js"}");
-                {rdelim}
+                }
             });
             return false;
-        {rdelim});
+        });
 
-        var _preview_dialog = function(res){ldelim}
+        var _preview_dialog = function(res){
             var _el = $('<div id="ajax_preview" title="{_T string="Mailing preview" escape="js"}"> </div>');
-            _el.appendTo('body').dialog({ldelim}
+            _el.appendTo('body').dialog({
                 modal: true,
                 hide: 'fold',
                 width: '80%',
                 height: 500,
-                close: function(event, ui){ldelim}
+                close: function(event, ui){
                     _el.remove();
-                {rdelim}
-            {rdelim});
+                }
+            });
             $('#ajax_preview').append( res );
-        {rdelim}
+        }
 
         {* Members popup *}
-        $('#btnusers').click(function(){ldelim}
-            $.ajax({ldelim}
+        $('#btnusers').click(function(){
+            $.ajax({
                 url: 'ajax_members.php',
                 type: "POST",
-                data: {ldelim}ajax: true{rdelim},
+                data: {
+                    ajax: true
+                },
                 {include file="js_loader.tpl"},
-                success: function(res){ldelim}
+                success: function(res){
                     _members_dialog(res);
-                {rdelim},
-                error: function() {ldelim}
+                },
+                error: function() {
                     alert("{_T string="An error occured displaying members interface :(" escape="js"}");
-                {rdelim}
+                }
             });
             return false;
-        {rdelim});
+        });
 
-        var _members_dialog = function(res){ldelim}
+        var _members_dialog = function(res){
             var _el = $('<div id="members_list" title="{_T string="Members selection" escape="js"}"> </div>');
-            _el.appendTo('body').dialog({ldelim}
+            _el.appendTo('body').dialog({
                 modal: true,
                 hide: 'fold',
                 width: '80%',
                 height: 500,
-                close: function(event, ui){ldelim}
+                close: function(event, ui){
                     _el.remove();
-                {rdelim}
-            {rdelim});
+                }
+            });
             _members_ajax_mapper(res);
 
-        {rdelim}
+        }
 
-        var _members_ajax_mapper = function(res){ldelim}
+        var _members_ajax_mapper = function(res){
             $('#members_list').append(res);
             $('#selected_members ul').css(
                 'max-height',
                 $('#members_list').innerHeight() - $('#btnvalid').outerHeight() - $('#selected_members header').outerHeight() - 60 // -60 to fix display; do not know why
             );
-            $('#btnvalid').button().click(function(){ldelim}
+            $('#btnvalid').button().click(function(){
                 //first, let's store new recipients in mailing object
                 var _recipients = new Array();
-                $('li[id^="member_"]').each(function(){ldelim}
+                $('li[id^="member_"]').each(function(){
                     _recipients[_recipients.length] = this.id.substring(7, this.id.length);
-                {rdelim});
-                $.ajax({ldelim}
+                });
+                $.ajax({
                     url: 'ajax_recipients.php',
                     type: "POST",
-                    data: {ldelim}recipients: _recipients{rdelim},
+                    data: {
+                        recipients: _recipients
+                    },
                     {include file="js_loader.tpl"},
-                    success: function(res){ldelim}
+                    success: function(res){
                         $('#unreachables_count').remove();
                         $('#recipients_count').replaceWith(res);
                         $('.mailing_infos input:submit, .mailing_infos .button, .mailing_infos input:reset' ).button();
                         $('#members_list').dialog("close");
-                    {rdelim},
-                    error: function() {ldelim}
+                    },
+                    error: function() {
                         alert("{_T string="An error occured displaying members interface :(" escape="js"}");
-                    {rdelim}
+                    }
                 });
-            {rdelim});
+            });
             //Remap links
             var _none = $('#none_selected').clone();
-            $('li[id^="member_"]').click(function(){ldelim}
+            $('li[id^="member_"]').click(function(){
                 $(this).remove();
-                if ( $('#selected_members ul li').length == 0 ) {ldelim}
+                if ( $('#selected_members ul li').length == 0 ) {
                     $('#selected_members ul').append(_none);
-                {rdelim}
-            {rdelim});
-            $('#listing tbody a').click(function(){ldelim}
+                }
+            });
+            $('#listing tbody a').click(function(){
                 var _mid = this.href.substring(this.href.indexOf('?')+8);
                 var _mname = $(this).text();
                 $('#none_selected').remove()
-                if ( $('#member_' + _mid).length == 0 ) {ldelim}
+                if ( $('#member_' + _mid).length == 0 ) {
                     var _li = '<li id="member_' + _mid + '">' + _mname + '</li>';
                     $('#selected_members ul').append(_li);
-                    $('#member_' + _mid).click(function(){ldelim}
+                    $('#member_' + _mid).click(function(){
                         $(this).remove();
-                        if ( $('#selected_members ul li').length == 0 ) {ldelim}
+                        if ( $('#selected_members ul li').length == 0 ) {
                             $('#selected_members ul').append(_none);
-                        {rdelim}
-                    {rdelim});
-                {rdelim}
+                        }
+                    });
+                }
                 return false;
-            {rdelim});
+            });
 
-            $('#members_list .pages a').click(function(){ldelim}
+            $('#members_list .pages a').click(function(){
                 var _page = this.href.substring(this.href.indexOf('?')+6);
                 var _members = new Array();
-                $('li[id^="member_"]').each(function(){ldelim}
+                $('li[id^="member_"]').each(function(){
                     _members[_members.length] = this.id.substring(7, this.id.length);
-                {rdelim});
+                });
 
-                $.ajax({ldelim}
+                $.ajax({
                     url: 'ajax_members.php',
                     type: "POST",
-                    data: {ldelim}ajax: true, members: _members, page: _page{rdelim},
+                    data: {
+                        ajax: true,
+                        members: _members,
+                        page: _page
+                    },
                     {include file="js_loader.tpl"},
-                    success: function(res){ldelim}
+                    success: function(res){
                         $('#members_list').empty();
                         _members_ajax_mapper(res);
-                    {rdelim},
-                    error: function() {ldelim}
+                    },
+                    error: function() {
                         alert("{_T string="An error occured displaying members interface :(" escape="js"}");
-                    {rdelim}
+                    }
                 });
                 return false;
-            {rdelim});
-        {rdelim}
-    {rdelim});
+            });
+        }
+    });
 </script>
     {/if}
 {/if}

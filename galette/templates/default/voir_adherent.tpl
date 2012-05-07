@@ -227,24 +227,24 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 	</div>
 {if $login->isAdmin() or $login->isStaff() or $login->login eq $member->login}
     <script type="text/javascript">
-        $(function() {ldelim}
+        $(function() {
             {include file="photo_dnd.tpl"}
 
-            $('.notmanaged').click(function(){ldelim}
+            $('.notmanaged').click(function(){
                 var _el = $('<div id="not_managed_group" title="{_T string="Not managed group" escape="js"}">{_T string="You are not part of managers for the requested group." escape="js"}</div>');
-                _el.appendTo('body').dialog({ldelim}
+                _el.appendTo('body').dialog({
                     modal: true,
-                    buttons: {ldelim}
-                        "{_T string="Ok" escape="js"}": function() {ldelim}
+                    buttons: {
+                        "{_T string="Ok" escape="js"}": function() {
                             $( this ).dialog( "close" );
-                        {rdelim}
-                    {rdelim},
-                    close: function(event, ui){ldelim}
+                        }
+                    },
+                    close: function(event, ui){
                         _el.remove();
-                    {rdelim}
-                {rdelim});
+                    }
+                });
                 return false;
-            {rdelim});
-        {rdelim});
+            });
+        });
     </script>
 {/if}

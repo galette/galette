@@ -50,21 +50,21 @@
             <label for="show_dashboard">{_T string="Show dashboard on login"}</label>
         </p>
         <script>
-            $(function() {ldelim}
+            $(function() {
                 $( "#news-tabs" ).tabs();
-                $('#twitter a, #googleplus a').click(function(){ldelim}
+                $('#twitter a, #googleplus a').click(function(){
                     window.open(this.href);
                     return false;
-                {rdelim});
+                });
 
-                $('#show_dashboard').change(function(){ldelim}
+                $('#show_dashboard').change(function(){
                     var _checked = $(this).is(':checked');
                     $.cookie(
                         'show_galette_dashboard',
                         (_checked ? 1 : 0),
-                        {ldelim} expires: 365 {rdelim}
+                        { expires: 365 }
                     );
-                    if ( !_checked ) {ldelim}
+                    if ( !_checked ) {
                         var _url = window.location.href;
                         window.location.replace(
                             _url.replace(
@@ -72,7 +72,7 @@
                                 '/gestion_adherents.php'
                             )
                         );
-                    {rdelim}
-                {rdelim});
-            {rdelim});
+                    }
+                });
+            });
         </script>

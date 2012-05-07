@@ -59,35 +59,35 @@
     </table>
 
     <script type="text/javascript">
-        $(function() {ldelim}
+        $(function() {
 {if $GALETTE_MODE eq 'DEMO'}
-            $('.initdb, a.toggleActivation').click(function(){ldelim}
+            $('.initdb, a.toggleActivation').click(function(){
                 alert('{_T string="Application runs under demo mode. This functionnality is not enabled, sorry." escape="js"}');
                 return false;
-            {rdelim});
+            });
 {else}
-            var _initdb_dialog = function(res, _plugin){ldelim}
+            var _initdb_dialog = function(res, _plugin){
                 var _title = '{_T string="Plugin database initialization: %name" escape="js"}';
                 var _el = $('<div id="initdb" title="' + _title.replace('%name', _plugin) + '"> </div>');
-                _el.appendTo('body').dialog({ldelim}
+                _el.appendTo('body').dialog({
                     modal: true,
                     hide: 'fold',
                     width: '80%',
                     height: 500,
-                    close: function(event, ui){ldelim}
+                    close: function(event, ui){
                         _el.remove();
-                    {rdelim}
-                {rdelim});
+                    }
+                });
                 _initdb_bindings(res);
-            {rdelim};
-            var _initdb_bindings = function(res){ldelim}
+            };
+            var _initdb_bindings = function(res){
                 $('#initdb').empty().append(res);
                 $('#initdb input:submit, #initdb .button, #initdb input:reset' ).button();
                 _messagesEffects();
-                $('#btnback').click(function(){ldelim}
+                $('#btnback').click(function(){
                     $('#initdb').dialog('close');
-                {rdelim});
-                $("#plugins_initdb_form").submit(function(event) {ldelim}
+                });
+                $("#plugins_initdb_form").submit(function(event) {
                     /* stop form from submitting normally */
                     event.preventDefault();
 
@@ -97,38 +97,41 @@
                     var _dataString = $form.serialize();
                     _dataString += '&ajax=true';
 
-                    $.ajax({ldelim}
+                    $.ajax({
                         url: _url,
                         type: "POST",
                         data: _dataString,
                         {include file="js_loader.tpl"},
-                        success: function(res){ldelim}
+                        success: function(res){
                             _initdb_bindings(res);
-                        {rdelim},
-                        error: function() {ldelim}
+                        },
+                        error: function() {
                             alert("{_T string="An error occured displaying plugin database initialization interface :(" escape="js"}");
-                        {rdelim}
-                    {rdelim});
-                {rdelim});
-            {rdelim};
+                        }
+                    });
+                });
+            };
 
-            $('.initdb').click(function(){ldelim}
+            $('.initdb').click(function(){
                 var _plugin = this.id.substring(7);
 
-                $.ajax({ldelim}
+                $.ajax({
                     url: 'ajax_plugins_initdb.php',
                     type: "POST",
-                    data: {ldelim}ajax: true, plugid: _plugin{rdelim},
+                    data: {
+                        ajax: true,
+                        plugid: _plugin
+                    },
                     {include file="js_loader.tpl"},
-                    success: function(res){ldelim}
+                    success: function(res){
                         _initdb_dialog(res, _plugin);
-                    {rdelim},
-                    error: function() {ldelim}
+                    },
+                    error: function() {
                         alert("{_T string="An error occured displaying plugin database initialization interface :(" escape="js"}");
-                    {rdelim}
-                {rdelim});
+                    }
+                });
                 return false;
-            {rdelim})
+            })
 {/if}
-        {rdelim});
+        });
     </script>

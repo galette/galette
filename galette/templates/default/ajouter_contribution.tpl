@@ -117,15 +117,15 @@
 		<p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
 		</form>
     <script type="text/javascript">
-        $(function(){ldelim}
+        $(function(){
             $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
-            $('#date_debut_cotis, #date_fin_cotis').datepicker({ldelim}
+            $('#date_debut_cotis, #date_fin_cotis').datepicker({
                 changeMonth: true,
                 changeYear: true,
                 showOn: 'button',
                 buttonImage: '{$template_subdir}images/calendar.png',
                 buttonImageOnly: true
-            {rdelim});
-        {rdelim});
+            });
+        });
     </script>
 {/if}

@@ -22,13 +22,11 @@
 				<input type="submit" name="trans" value="{_T string="Save"}"/>
 			</div>
 		</form>
-{literal}
 		<script type="text/javascript">
             $('#text_orig').change(function() {
                 this.form.submit();
             });
 		</script>
-{/literal}
 {else}
 		<p>{_T string="No fields to translate."}</p>
 {/if}

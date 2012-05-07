@@ -117,23 +117,23 @@
 			</table>
 		</div>
 		<script type="text/javascript">
-			$(function(){ldelim}
-                $('#nbshow').change(function() {ldelim}
+			$(function(){
+                $('#nbshow').change(function() {
                     this.form.submit();
-                {rdelim});
+                });
 
 				$('#table_footer').parent().before('<td class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}9{elseif $login->isAdmin() or $login->isStaff()}8{else}7{/if}"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
 				$('#legende h1').remove();
-				$('#legende').dialog({ldelim}
+				$('#legende').dialog({
 					autoOpen: false,
 					modal: true,
 					hide: 'fold',
 					width: '40%'
-				{rdelim}).dialog('close');
+				}).dialog('close');
 
-				$('#show_legend').click(function(){ldelim}
+				$('#show_legend').click(function(){
 					$('#legende').dialog('open');
 					return false;
-				{rdelim});
-			{rdelim});
+				});
+			});
 		</script>

@@ -110,7 +110,7 @@
             <a class="button" id="btnadd" href="mailing_adherents.php?mailing_new=true">{_T string="Create new mailing"}</a>
         </div>
 		<script type="text/javascript">
-            $('#nbshow').change(function() {ldelim}
+            $('#nbshow').change(function() {
                 this.form.submit();
-            {rdelim});
+            });
 		</script>

@@ -24,241 +24,271 @@
     </section>
 </div>
 <script type="text/javascript">
-    $(function() {ldelim}
+    $(function() {
         var _mode;
         {* Tree stuff *}
-        $('#groups_tree').jstree({ldelim}
+        $('#groups_tree').jstree({
 {if $groups|@count > 0}
-            'core': {ldelim}
+            'core': {
                 'initially_open': [{foreach item=g from=$groups}'group_{$g->getId()}',{/foreach}]
-            {rdelim},
+            },
 {/if}
-            'themes': {ldelim}
+            'themes': {
                 'url': '{$template_subdir}/jstree/style.css'
-            {rdelim},
-            'unique' : {ldelim}
-                'error_callback': function (n, p, f) {ldelim}
+            },
+            'unique' : {
+                'error_callback': function (n, p, f) {
                     alert("Duplicate node `" + n + "` with function `" + f + "`!");
-                {rdelim}
-            {rdelim},
-            'ui': {ldelim}
+                }
+            },
+            'ui': {
                 'select_limit': 1,
                 'initially_select': 'group_{$group->getId()}'
-            {rdelim},
+            },
             'plugins': [ 'themes', 'html_data', 'dnd', 'ui' ]
-        {rdelim}).bind("move_node.jstree", function (e, data) {ldelim}
+        }).bind("move_node.jstree", function (e, data) {
             var _gid = data.rslt.o.attr('id').substring(6);
             var _to = data.rslt.np.attr('id').substring(6);
-            $.ajax({ldelim}
+            $.ajax({
                 url: 'ajax_group.php',
                 type: "POST",
-                data: {ldelim}id_group: _gid, ajax: true, reorder: true, to: _to{rdelim},
+                data: {
+                    id_group: _gid,
+                    ajax: true,
+                    reorder: true,
+                    to: _to
+                },
                 datatype: 'json',
                 {include file="js_loader.tpl"},
-                success: function(res){ldelim}
+                success: function(res){
                     var _res = jQuery.parseJSON(res);
-                    if ( _res.success == false ) {ldelim}
+                    if ( _res.success == false ) {
                         alert("{_T string="Missing destination group" escape="js"}");
                         {* TODO: revert preceding move so the tree is ok with database *}
-                    {rdelim}
-                {rdelim},
-                error: function() {ldelim}
+                    }
+                },
+                error: function() {
                     {* TODO: revert preceding move so the tree is ok with database *}
                     alert("{_T string="An error occured reordering groups :(" escape="js"}");
-                {rdelim}
-            {rdelim});
-        {rdelim}).delegate(
+                }
+            });
+        }).delegate(
             'a',
             'click',
-            function (event) {ldelim}
+            function (event) {
                 event.preventDefault();
-                if ( $('#errorbox') ) {ldelim}
+                if ( $('#errorbox') ) {
                     $('#errorbox').remove();
-                {rdelim}
-                if ( $(this).attr('href') != '#' ) {ldelim}
+                }
+                if ( $(this).attr('href') != '#' ) {
                     var _gid = $(this).parent('li').attr('id').substring(6);
-                    $.ajax({ldelim}
+                    $.ajax({
                         url: 'ajax_group.php',
                         type: "POST",
-                        data: {ldelim}id_group: _gid, ajax: true{rdelim},
+                        data: {
+                            id_group: _gid,
+                            ajax: true
+                        },
                         {include file="js_loader.tpl"},
-                        success: function(res){ldelim}
+                        success: function(res){
                             $('#group_infos_wrapper').empty().append(res);
                             $('#group_infos_wrapper input:submit, #group_infos_wrapper .button').button();
                             _btnuser_mapping();
-                        {rdelim},
-                        error: function() {ldelim}
+                        },
+                        error: function() {
                             alert("{_T string="An error occured loading selected group :(" escape="js"}");
-                        {rdelim}
-                    {rdelim});
-                {rdelim}
-            {rdelim}
+                        }
+                    });
+                }
+            }
         );
 
         {* New group *}
-        $('#btnadd').click(function(){ldelim}
+        $('#btnadd').click(function(){
         var _href = $(this).attr('href');
             var _el = $('<div id="add_group" class="center" title="{_T string="Add a new group"}"><label for="new_group_name">{_T string="Name:"}</label><input type="text" name="new_group_name" id="new_group_name" required/></div>');
-            _el.appendTo('body').dialog({ldelim}
+            _el.appendTo('body').dialog({
                 modal: true,
                 hide: 'fold',
-                buttons: {ldelim}
-                    "{_T string="Create" escape="js"}": function() {ldelim}
+                buttons: {
+                    "{_T string="Create" escape="js"}": function() {
                         var _name = $('#new_group_name').val();
-                        if ( _name != '' ) {ldelim}
+                        if ( _name != '' ) {
                             //check uniqueness
-                            $.ajax({ldelim}
+                            $.ajax({
                                 url: 'ajax_unique_group.php',
                                 type: "POST",
-                                data: {ldelim}ajax: true, gname: _name{rdelim},
+                                data: {
+                                    ajax: true,
+                                    gname: _name
+                                },
                                 {include file="js_loader.tpl"},
-                                success: function(res){ldelim}
+                                success: function(res){
                                     var _res = jQuery.parseJSON(res);
-                                    if ( _res.success == false ) {ldelim}
+                                    if ( _res.success == false ) {
                                         alert('{_T string="The group name you have requested already exits in the database."}');
-                                    {rdelim} else {ldelim}
+                                    } else {
                                         $(location).attr('href', _href + '&group_name=' + _name);
-                                    {rdelim}
-                                {rdelim},
-                                error: function() {ldelim}
+                                    }
+                                },
+                                error: function() {
                                     alert("{_T string="An error occured checking name uniqueness :(" escape="js"}");
-                                {rdelim}
+                                }
                             });
-                        {rdelim} else {ldelim}
+                        } else {
                             alert('{_T string="Pleade provide a group name" escape="js"}');
-                        {rdelim}
-                    {rdelim}
-                {rdelim},
-                close: function(event, ui){ldelim}
+                        }
+                    }
+                },
+                close: function(event, ui){
                     _el.remove();
-                {rdelim}
-            {rdelim});
+                }
+            });
             return false;
-        {rdelim});
+        });
 
         {* Members popup *}
-        var _btnuser_mapping = function(){ldelim}
-            $('#btnusers_small, #btnmanagers_small').click(function(){ldelim}
+        var _btnuser_mapping = function(){
+            $('#btnusers_small, #btnmanagers_small').click(function(){
                 _mode = ($(this).attr('id') == 'btnusers_small') ? 'members' : 'managers';
-                var _persons = $('input[name="' + _mode + '[]"]').map(function(){ldelim}return $(this).val();{rdelim}).get();
-                $.ajax({ldelim}
+                var _persons = $('input[name="' + _mode + '[]"]').map(function() {
+                    return $(this).val();
+                }).get();
+                $.ajax({
                     url: 'ajax_members.php',
                     type: "POST",
-                    data: {ldelim}ajax: true, multiple: true, from: 'groups', gid: $('#id_group').val(), mode: _mode, members: _persons{rdelim},
+                    data: {
+                        ajax: true,
+                        multiple: true,
+                        from: 'groups',
+                        gid: $('#id_group').val(),
+                        mode: _mode,
+                        members: _persons
+                    },
                     {include file="js_loader.tpl"},
-                    success: function(res){ldelim}
+                    success: function(res){
                         _members_dialog(res, _mode);
-                    {rdelim},
-                    error: function() {ldelim}
+                    },
+                    error: function() {
                         alert("{_T string="An error occured displaying members interface :(" escape="js"}");
-                    {rdelim}
+                    }
                 });
                 return false;
-            {rdelim});
-        {rdelim}
+            });
+        }
         _btnuser_mapping();
 
-        var _members_dialog = function(res, mode){ldelim}
+        var _members_dialog = function(res, mode){
             var _title = '{_T string="Group members selection" escape="js"}';
-            if ( mode == 'managers' ) {ldelim}
+            if ( mode == 'managers' ) {
                 _title = '{_T string="Group managers selection" escape="js"}';
-            {rdelim}
+            }
             var _el = $('<div id="members_list" title="' + _title  + '"> </div>');
-            _el.appendTo('body').dialog({ldelim}
+            _el.appendTo('body').dialog({
                 modal: true,
                 hide: 'fold',
                 width: '80%',
                 height: 500,
-                close: function(event, ui){ldelim}
+                close: function(event, ui){
                     _el.remove();
-                {rdelim}
-            {rdelim});
+                }
+            });
             _members_ajax_mapper(res, $('#group_id').val(), mode);
 
-        {rdelim}
+        }
 
-        var _members_ajax_mapper = function(res, gid, mode){ldelim}
+        var _members_ajax_mapper = function(res, gid, mode){
             $('#members_list').append(res);
             $('#selected_members ul').css(
                 'max-height',
                 $('#members_list').innerHeight() - $('#btnvalid').outerHeight() - $('#selected_members header').outerHeight() - 65 // -65 to fix display; do not know why
             );
-            $('#btnvalid').button().click(function(){ldelim}
+            $('#btnvalid').button().click(function(){
                 //store entities in the original page so they can be saved
                 var _container;
-                if ( mode == 'managers' ) {ldelim}
+                if ( mode == 'managers' ) {
                     _container = $('#group_managers');
-                {rdelim} else {ldelim}
+                } else {
                     _container = $('#group_members');
-                {rdelim}
+                }
                 var _persons = new Array();
-                $('li[id^="member_"]').each(function(){ldelim}
+                $('li[id^="member_"]').each(function(){
                     _persons[_persons.length] = this.id.substring(7, this.id.length);
-                {rdelim});
+                });
                 $('#members_list').dialog("close");
 
-                $.ajax({ldelim}
+                $.ajax({
                     url: 'ajax_group_members.php',
                     type: "POST",
-                    data: {ldelim}persons: _persons, person_mode: mode{rdelim},
+                    data: {
+                        persons: _persons,
+                        person_mode: mode
+                    },
                     {include file="js_loader.tpl"},
-                    success: function(res){ldelim}
+                    success: function(res){
                         _container.find('table.listing').remove();
                         _container.children('div').append(res);
-                    {rdelim},
-                    error: function() {ldelim}
+                    },
+                    error: function() {
                         alert("{_T string="An error occured displaying members interface :(" escape="js"}");
-                    {rdelim}
-                {rdelim});
-            {rdelim});
+                    }
+                });
+            });
             //Remap links
             var _none = $('#none_selected').clone();
-            $('li[id^="member_"]').click(function(){ldelim}
+            $('li[id^="member_"]').click(function(){
                 $(this).remove();
-                if ( $('#selected_members ul li').length == 0 ) {ldelim}
+                if ( $('#selected_members ul li').length == 0 ) {
                     $('#selected_members ul').append(_none);
-                {rdelim}
-            {rdelim});
-            $('#members_list #listing tbody a').click(function(){ldelim}
+                }
+            });
+            $('#members_list #listing tbody a').click(function(){
                 var _mid = this.href.substring(this.href.indexOf('?')+8);
                 var _mname = $(this).text();
                 $('#none_selected').remove()
-                if ( $('#member_' + _mid).length == 0 ) {ldelim}
+                if ( $('#member_' + _mid).length == 0 ) {
                     var _li = '<li id="member_' + _mid + '">' + _mname + '</li>';
                     $('#selected_members ul').append(_li);
-                    $('#member_' + _mid).click(function(){ldelim}
+                    $('#member_' + _mid).click(function(){
                         $(this).remove();
-                        if ( $('#selected_members ul li').length == 0 ) {ldelim}
+                        if ( $('#selected_members ul li').length == 0 ) {
                             $('#selected_members ul').append(_none);
-                        {rdelim}
-                    {rdelim});
-                {rdelim}
+                        }
+                    });
+                }
                 return false;
-            {rdelim});
+            });
 
-            $('#members_list .pages a').click(function(){ldelim}
+            $('#members_list .pages a').click(function(){
                 var _page = this.href.substring(this.href.indexOf('?')+6);
                 var gid = $('#the_id').val();
                 var _members = new Array();
-                $('li[id^="member_"]').each(function(){ldelim}
+                $('li[id^="member_"]').each(function(){
                     _members[_members.length] = this.id.substring(7, this.id.length);
-                {rdelim});
+                });
 
-                $.ajax({ldelim}
+                $.ajax({
                     url: 'ajax_members.php',
                     type: "POST",
-                    data: {ldelim}ajax: true, from: 'groups', gid: gid, members: _members, page: _page, mode: _mode{rdelim},
+                    data: {
+                        ajax: true,
+                        from: 'groups',
+                        gid: gid,
+                        members: _members,
+                        page: _page,
+                        mode: _mode
+                    },
                     {include file="js_loader.tpl"},
-                    success: function(res){ldelim}
+                    success: function(res){
                         $('#members_list').empty();
                         _members_ajax_mapper(res, gid, _mode);
-                    {rdelim},
-                    error: function() {ldelim}
+                    },
+                    error: function() {
                         alert("{_T string="An error occured displaying members interface :(" escape="js"}");
-                    {rdelim}
+                    }
                 });
                 return false;
-            {rdelim});
-        {rdelim}
-    {rdelim});
+            });
+        }
+    });
 </script>

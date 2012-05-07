@@ -110,7 +110,7 @@
 		</form>
 
 		<script type="text/javascript">
-            $(function() {ldelim}
+            $(function() {
                 _collapsibleFieldsets();
-            {rdelim});
+            });
 		</script>

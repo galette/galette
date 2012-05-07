@@ -252,111 +252,114 @@
 		</div>
 		<script type="text/javascript">
 		var _is_checked = true;
-		var _bind_check = function(){ldelim}
-			$('#checkall').click(function(){ldelim}
-				$('#listing :checkbox[name=member_sel[]]').each(function(){ldelim}
+		var _bind_check = function(){
+			$('#checkall').click(function(){
+				$('#listing :checkbox[name=member_sel[]]').each(function(){
 					this.checked = _is_checked;
-				{rdelim});
+				});
 				_is_checked = !_is_checked;
 				return false;
-			{rdelim});
-			$('#checkinvert').click(function(){ldelim}
-				$('#listing :checkbox[name=member_sel[]]').each(function(){ldelim}
+			});
+			$('#checkinvert').click(function(){
+				$('#listing :checkbox[name=member_sel[]]').each(function(){
 					this.checked = !$(this).is(':checked');
-				{rdelim});
+				});
 				return false;
-			{rdelim});
-		{rdelim}
+			});
+		}
 		{* Use of Javascript to draw specific elements that are not relevant is JS is inactive *}
-		$(function(){ldelim}
+		$(function(){
 			$('#table_footer').parent().before('<tr><td id="checkboxes" colspan="4"><span class="fleft"><a href="#" id="checkall">{_T string="(Un)Check all"}</a> | <a href="#" id="checkinvert">{_T string="Invert selection"}</a></span></td></tr>');
 			_bind_check();
-			$('#nbshow').change(function() {ldelim}
+			$('#nbshow').change(function() {
 				this.form.submit();
-			{rdelim});
+			});
 			$('#checkboxes').after('<td class="right" colspan="3"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
 			$('#legende h1').remove();
-			$('#legende').dialog({ldelim}
+			$('#legende').dialog({
 				autoOpen: false,
 				modal: true,
 				hide: 'fold',
 				width: '40%'
-			{rdelim}).dialog('close');
+			}).dialog('close');
 
-			$('#show_legend').click(function(){ldelim}
+			$('#show_legend').click(function(){
 				$('#legende').dialog('open');
 				return false;
-			{rdelim});
+			});
 
-            $('.selection_menu input[type=submit], .selection_menu input[type=button], ').click(function(){ldelim}
+            $('.selection_menu input[type=submit], .selection_menu input[type=button], ').click(function(){
                 var _checkeds = $('#listing').find('input[type=checkbox]:checked').length;
-                if ( _checkeds == 0 ) {ldelim}
+                if ( _checkeds == 0 ) {
                     var _el = $('<div id="pleaseselect" title="{_T string="No member selected" escape="js"}">{_T string="Please make sure to select at least one member from the list to perform this action." escape="js"}</div>');
-                    _el.appendTo('body').dialog({ldelim}
+                    _el.appendTo('body').dialog({
                         modal: true,
-                        buttons: {ldelim}
-                            Ok: function() {ldelim}
+                        buttons: {
+                            Ok: function() {
                                 $(this).dialog( "close" );
-                            {rdelim}
-                        {rdelim},
-                        close: function(event, ui){ldelim}
+                            }
+                        },
+                        close: function(event, ui){
                             _el.remove();
-                        {rdelim}
-                    {rdelim});
+                        }
+                    });
                     return false;
-                {rdelim} else {ldelim}
-                    if (this.id == 'attendance_sheet') {ldelim}
+                } else {
+                    if (this.id == 'attendance_sheet') {
                         _attendance_sheet_details();
                         return false;
-                    {rdelim}
+                    }
                     return true;
-                {rdelim}
-            {rdelim});
-		{rdelim});
+                }
+            });
+		});
 
-        var _attendance_sheet_details = function(){ldelim}
+        var _attendance_sheet_details = function(){
             var _selecteds = [];
-            $('#listing').find('input[type=checkbox]:checked').each(function(){ldelim}
+            $('#listing').find('input[type=checkbox]:checked').each(function(){
                 _selecteds.push($(this).val());
-            {rdelim});
-            $.ajax({ldelim}
+            });
+            $.ajax({
                 url: 'ajax_attendance_sheet_details.php',
                 type: "POST",
-                data: {ldelim}ajax: true, selection: _selecteds{rdelim},
+                data: {
+                    ajax: true,
+                    selection: _selecteds
+                },
                 dataType: 'html',
-                success: function(res){ldelim}
+                success: function(res){
                     var _el = $('<div id="attendance_sheet_details" title="{_T string="Attendance sheet details" escape="js"}"> </div>');
-                    _el.appendTo('body').dialog({ldelim}
+                    _el.appendTo('body').dialog({
                         modal: true,
                         hide: 'fold',
                         width: '60%',
                         height: 400,
-                        close: function(event, ui){ldelim}
+                        close: function(event, ui){
                             _el.remove();
-                        {rdelim},
-                        buttons: {ldelim}
-                            Ok: function() {ldelim}
+                        },
+                        buttons: {
+                            Ok: function() {
                                 $('#sheet_details_form').submit();
                                 $(this).dialog( "close" );
-                            {rdelim},
-                            Cancel: function() {ldelim}
+                            },
+                            Cancel: function() {
                                 $(this).dialog( "close" );
-                            {rdelim}
-                        {rdelim}
-                    {rdelim}).append(res);
-                    $('#sheet_date').datepicker({ldelim}
+                            }
+                        }
+                    }).append(res);
+                    $('#sheet_date').datepicker({
                         changeMonth: true,
                         changeYear: true,
                         showOn: 'button',
                         buttonImage: '{$template_subdir}images/calendar.png',
                         buttonImageOnly: true,
                         yearRange: 'c:c+5'
-                    {rdelim});
-                {rdelim},
-                error: function() {ldelim}
+                    });
+                },
+                error: function() {
                     alert("{_T string="An error occured displaying attendance sheet details interface :(" escape="js"}");
-                {rdelim}
-            {rdelim});
-        {rdelim}
+                }
+            });
+        }
 		</script>
 {/if}
