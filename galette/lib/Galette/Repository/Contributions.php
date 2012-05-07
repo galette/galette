@@ -386,7 +386,7 @@ class Contributions extends Pagination
                 $select->where('p.' . Adherent::PK . ' = ?', $this->_filtre_cotis_adh);
             }
             if ( $this->_filtre_transactions === true ) {
-                $select->where('a.trans_id ?', new Zend_Db_Expr('IS NULL'));
+                $select->where('a.trans_id ?', new \Zend_Db_Expr('IS NULL'));
             }
             $qry = $select->__toString();
         } catch (\Exception $e) {
