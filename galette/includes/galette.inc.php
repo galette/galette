@@ -60,6 +60,7 @@ require_once $base_path . 'config/versions.inc.php';
 require_once $base_path . 'config/paths.inc.php';
 
 use Galette\Common\ClassLoader;
+use Galette\Common\KLogger;
 use Galette\Core;
 require_once $base_path . 'lib/Galette/Common/ClassLoader.php';
 $galetteLoader = new ClassLoader('Galette', WEB_ROOT . 'lib');
@@ -102,38 +103,22 @@ set_include_path(
 );
 
 /*------------------------------------------------------------------------------
-LOG and DEBUG
-_file_log and _screen_log should take PEAR::LOG verbosity modes :
-PEAR_LOG_EMERG    	=>	System is unusable
-PEAR_LOG_ALERT    	=>	Immediate action required
-PEAR_LOG_CRIT    	=>	Critical conditions
-PEAR_LOG_ERR    	=>	Error conditions
-PEAR_LOG_WARNING    =>	Warning conditions
-PEAR_LOG_NOTICE    	=>	Normal but significant
-PEAR_LOG_INFO    	=>	Informational
-PEAR_LOG_DEBUG    	=>	Debug-level messages
+Error severity, from low to high. From BSD syslog RFC, secion 4.1.1
+@link http://www.faqs.org/rfcs/rfc3164.html
 
+KLogger::EMERG  => System is unusable
+KLogger::ALERT  => Immediate action required
+KLogger::CRIT   => Critical conditions
+KLogger::ERR    => Error conditions
+KLogger::WARN   => Warning conditions
+KLogger::NOTICE => Normal but significant
+KLogger::INFO   => Informational messages
+KLogger::DEBUG  => Debug-level messages
 ------------------------------------------------------------------------------*/
-require_once 'Log.php';
-/** FIXME: for stables versions, log level must not be INFO,
-most probably WARNING or NOTICE */
-// ***** LOG : enregistrement des erreur dans un fichier de log
-define('_FILE_LOG', (GALETTE_MODE === 'DEV')?PEAR_LOG_DEBUG : PEAR_LOG_INFO);
-// ***** LOG : fichier de log
-define('_LOG_FILE', GALETTE_LOGS_PATH . '/galette.log');
-// ***** LOG : affichage des erreurs à l'écran
-define('_SCREEN_LOG', PEAR_LOG_EMERG);
-
-$conf = array(
-    'error_prepend' => '<div id="error" class="error">',
-    'error_append'  => '</div>'
-);
-$display = Log::singleton('display', '', 'galette', $conf, _SCREEN_LOG);
-$file = Log::singleton('file', _LOG_FILE, 'galette', '', _FILE_LOG);
-
-$log = Log::singleton('composite');
-$log->addChild($display);
-$log->addChild($file);
+if ( !isset($logfile) ) {
+    $logfile = 'galette_run';
+}
+$log = new KLogger(GALETTE_LOGS_PATH, KLogger::INFO, $logfile);
 
 //set custom error handler
 set_error_handler(

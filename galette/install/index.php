@@ -40,6 +40,7 @@ $base_path = '../';
 //set a flag saying we work from installer
 //that way, in galette.inc.php, we'll only include relevant parts
 $installer = true;
+$logfile = 'galette_install';
 define('WEB_ROOT', realpath(dirname(__FILE__) . '/../') . '/');
 
 require_once $base_path . 'includes/galette.inc.php';
