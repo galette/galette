@@ -61,7 +61,7 @@ if ( isset($session['filters']['members']) ) {
 }
 
 if ( count($filters->selected) == 0 ) {
-    $log->log('No member selected to generate attendance sheet', PEAR_LOG_INFO);
+    $log->log('No member selected to generate attendance sheet', KLogger::INFO);
     header('location:gestion_adherents.php');
     die();
 }

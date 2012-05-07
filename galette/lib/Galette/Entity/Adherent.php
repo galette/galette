@@ -37,6 +37,7 @@
 
 namespace Galette\Entity;
 
+use Galette\Common\KLogger as KLogger;
 use Galette\Core\Picture as Picture;
 use Galette\Core\GaletteMail as GaletteMail;
 use Galette\Core\Password as Password;
@@ -523,11 +524,11 @@ class Adherent
             /** TODO */
             $log->log(
                 'Cannot load member form id `' . $id . '` | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -561,11 +562,11 @@ class Adherent
             $log->log(
                 'Cannot load member form login `' . $login . '` | ' .
                 $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -887,11 +888,11 @@ class Adherent
             $log->log(
                 'Cannot get formatted name for member form id `' . $id . '` | ' .
                 $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -917,7 +918,7 @@ class Adherent
             );
             $log->log(
                 'Password for `' . $id_adh . '` has been updated.',
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
             return true;
         } catch (\Exception $e) {
@@ -925,7 +926,7 @@ class Adherent
             $log->log(
                 'An error occured while updating password for `' . $id_adh .
                 '` | ' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -1031,7 +1032,7 @@ class Adherent
                                 'Wrong date format. field: ' . $key .
                                 ', value: ' . $value . ', expected fmt: ' .
                                 _T("Y-m-d") . ' | ' . $e->getMessage(),
-                                PEAR_LOG_INFO
+                                KLogger::INFO
                             );
                             $errors[] = str_replace(
                                 array(
@@ -1072,11 +1073,11 @@ class Adherent
                             } catch (\Exception $e) {
                                 $log->log(
                                     'An error occured checking member email unicity.',
-                                    PEAR_LOG_ERR
+                                    KLogger::ERR
                                 );
                                 $log->log(
                                     'Query was: ' . $select->__toString(),
-                                    PEAR_LOG_INFO
+                                    KLogger::INFO
                                 );
                                 $errors[] = _T("An error has occured while looking if login already exists.");
                             }
@@ -1120,11 +1121,11 @@ class Adherent
                                 } catch (\Exception $e) {
                                     $log->log(
                                         'An error occured checking member login unicity.',
-                                        PEAR_LOG_ERR
+                                        KLogger::ERR
                                     );
                                     $log->log(
                                         'Query was: ' . $select->__toString(),
-                                        PEAR_LOG_INFO
+                                        KLogger::INFO
                                     );
                                     $errors[] = _T("An error has occured while looking if login already exists.");
                                 }
@@ -1167,13 +1168,13 @@ class Adherent
             $log->log(
                 'Some errors has been throwed attempting to edit/store a member' .
                 print_r($errors, true),
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
             return $errors;
         } else {
             $log->log(
                 'Member checked successfully.',
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
             return true;
         }
@@ -1279,7 +1280,7 @@ class Adherent
             $log->log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -1305,7 +1306,7 @@ class Adherent
             $log->log(
                 'Something went wrong updating modif date :\'( | ' .
                 $e->getMessage() . "\n" . $e->getTraceAsString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
         }
     }

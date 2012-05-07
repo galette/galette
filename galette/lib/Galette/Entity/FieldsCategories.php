@@ -37,6 +37,8 @@
 
 namespace Galette\Entity;
 
+use Galette\Common\KLogger as KLogger;
+
 /**
  * Fields categories class for galette
  *
@@ -108,11 +110,11 @@ class FieldsCategories
             $log->log(
                 '[' . get_class($this) . '] Cannot get fields categories list | ' .
                 $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -147,14 +149,14 @@ class FieldsCategories
 
             $log->log(
                 'Default fields configurations were successfully stored into database.',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
             return true;
         } catch (\Exception $e) {
             $log->log(
                 'Unable to initialize default fields configuration.' .
                 $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return $e;
         }

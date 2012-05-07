@@ -77,7 +77,7 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
     if ( count($filters->selected) == 0 ) {
         $log->log(
             '[mailing_adherents.php] No member selected for mailing',
-            PEAR_LOG_INFO
+            KLogger::INFO
         );
         header('location:gestion_adherents.php');
         die();
@@ -136,7 +136,7 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
             $log->log(
                 '[mailing_adherents.php] Message was not sent. Errors: ' .
                 print_r($mailing->errors, true),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             foreach ( $mailing->errors as $e ) {
                 $error_detected[] = $e;
@@ -146,7 +146,7 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
             $mlh->storeMailing(true);
             $log->log(
                 '[mailing_adherents.php] Message has been sent.',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
             $mailing->current_step = Core\Mailing::STEP_SENT;
             //cleanup

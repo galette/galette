@@ -36,6 +36,8 @@
 
 namespace Galette\Core;
 
+use Galette\Common\Klogger as KLogger;
+
 /**
  * Zend_Db wrapper
  *
@@ -91,7 +93,7 @@ class Db extends \Zend_Db
             $this->_db->setFetchMode(\Zend_Db::FETCH_OBJ);
             $log->log(
                 '[ZendDb] Database connection was successfull!',
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
         } catch (\Zend_Db_Adapter_Exception $e) {
             // perhaps a failed login credential, or perhaps the RDBMS is not running
@@ -99,7 +101,7 @@ class Db extends \Zend_Db
             $log->log(
                 '[ZendDb] No connexion (' . $ce->getCode() . '|' .
                 $ce->getMessage() . ')',
-                PEAR_LOG_ALERT
+                KLogger::ALERT
             );
             throw $e;
         } catch (\Exception $e) {
@@ -107,7 +109,7 @@ class Db extends \Zend_Db
             $log->log(
                 '[ZendDb] Error (' . $e->getCode() . '|' .
                 $e->getMessage() . ')',
-                PEAR_LOG_ALERT
+                KLogger::ALERT
             );
             throw $e;
         }
@@ -141,7 +143,7 @@ class Db extends \Zend_Db
         } catch ( \Exception $e ) {
             $log->log(
                 'Cannot check database version: ' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -235,7 +237,7 @@ class Db extends \Zend_Db
             $_db->closeConnection();
             $log->log(
                 '[' . __METHOD__ . '] Database connection was successfull!',
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
             return true;
         } catch (\Zend_Db_Adapter_Exception $e) {
@@ -244,7 +246,7 @@ class Db extends \Zend_Db
             $log->log(
                 '[' . __METHOD__ . '] No connexion (' . $ce->getCode() . '|' .
                 $ce->getMessage() . ')',
-                PEAR_LOG_ALERT
+                KLogger::ALERT
             );
             return $e;
         } catch (\Exception $e) {
@@ -252,7 +254,7 @@ class Db extends \Zend_Db
             $log->log(
                 '[' . __METHOD__ . '] Error (' . $e->getCode() . '|' .
                 $e->getMessage() . ')',
-                PEAR_LOG_ALERT
+                KLogger::ALERT
             );
             return $e;
         }
@@ -270,11 +272,11 @@ class Db extends \Zend_Db
 
         try {
             $this->_db->query('DROP TABLE IF EXISTS galette_test');
-            $log->log('Test table successfully dropped.', PEAR_LOG_DEBUG);
+            $log->log('Test table successfully dropped.', KLogger::DEBUG);
         } catch (\Exception $e) {
             $log->log(
                 'Cannot drop test table! ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
         }
     }
@@ -294,7 +296,7 @@ class Db extends \Zend_Db
 
         $log->log(
             'Check for database rights (mode ' . $mode . ')',
-            PEAR_LOG_DEBUG
+            KLogger::DEBUG
         );
         $stop = false;
         $results = array(
@@ -318,7 +320,7 @@ class Db extends \Zend_Db
             $this->_db->getConnection()->exec($sql);
             $results['create'] = true;
         } catch (\Exception $e) {
-            $log->log('Cannot CREATE TABLE', PEAR_LOG_WARNING);
+            $log->log('Cannot CREATE TABLE', KLogger::WARN);
             //if we cannot create tables, we cannot check other permissions
             $stop = true;
             $results['create'] = $e;
@@ -335,7 +337,7 @@ class Db extends \Zend_Db
                 } catch (\Exception $e) {
                     $log->log(
                         'Cannot ALTER TABLE | ' . $e->getMessage(),
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                     $results['alter'] = $e;
                 }
@@ -359,7 +361,7 @@ class Db extends \Zend_Db
             } catch (\Exception $e) {
                 $log->log(
                     'Cannot INSERT records | ' .$e->getMessage(),
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
                 //if we cannot insert records, some others tests cannot be done
                 $stop = true;
@@ -386,7 +388,7 @@ class Db extends \Zend_Db
                 } catch (\Exception $e) {
                     $log->log(
                         'Cannot UPDATE records | ' .$e->getMessage(),
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                     $results['update'] = $e;
                 }
@@ -405,7 +407,7 @@ class Db extends \Zend_Db
                 } catch (\Exception $e) {
                     $log->log(
                         'Cannot SELECT records | ' . $e->getMessage(),
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                     $results['select'] = $e;
                 }
@@ -420,7 +422,7 @@ class Db extends \Zend_Db
                 } catch (\Exception $e) {
                     $log->log(
                         'Cannot DELETE records | ' .$e->getMessage(),
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                     $results['delete'] = $e;
                 }
@@ -434,7 +436,7 @@ class Db extends \Zend_Db
             } catch (\Exception $e) {
                 $log->log(
                     'Cannot DROP TABLE | ' . $e->getMessage(),
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
                 $results['drop'] = $e;
             }
@@ -500,7 +502,7 @@ class Db extends \Zend_Db
                     $this->_db->getConnection()->exec($query);
                     $log->log(
                         'Charset successfully changed for table `' . $table .'`',
-                        PEAR_LOG_DEBUG
+                        KLogger::DEBUG
                     );
                 }
 
@@ -515,7 +517,7 @@ class Db extends \Zend_Db
             $log->log(
                 'An error occured while converting to utf table ' .
                 $table . ' (' . $e->getMessage() . ')',
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
         }
     }
@@ -540,7 +542,7 @@ class Db extends \Zend_Db
             $log->log(
                 'Cannot SET NAMES on table `' . $table . '`. ' .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
         }
 
@@ -616,7 +618,7 @@ class Db extends \Zend_Db
             $log->log(
                 'An error occured while converting contents to UTF-8 for table ' .
                 $table . ' (' . $e->getMessage() . ')',
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
         }
     }

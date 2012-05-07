@@ -41,7 +41,7 @@ $mode = $_POST['person_mode'];
 if ( !$ids || !$mode ) {
     $log->log(
         'Trying to display ajax_group_members.php without persons or mode specified',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }
@@ -49,7 +49,7 @@ if ( !$ids || !$mode ) {
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     $log->log(
         'Trying to display ajax_group_members.php without appropriate permissions',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }

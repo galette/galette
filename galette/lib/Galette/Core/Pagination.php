@@ -37,6 +37,8 @@
 
 namespace Galette\Core;
 
+use Galette\Common\KLogger as KLogger;
+
 /**
  * Pagination and ordering facilities
  *
@@ -143,7 +145,7 @@ abstract class Pagination
             $log->log(
                 'Trying to set a sort direction that is not know (`' .
                 $direction . '`). Reverting to default value.',
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $this->_ordered == self::ORDER_ASC;
         }
@@ -273,7 +275,7 @@ abstract class Pagination
         $log->log(
             '[' . get_class($this) .
             '|Pagination] Getting property `' . $name . '`',
-            PEAR_LOG_DEBUG
+            KLogger::DEBUG
         );
 
         if ( in_array($name, $this->pagination_fields) ) {
@@ -283,7 +285,7 @@ abstract class Pagination
             $log->log(
                 '[' . get_class($this) .
                 '|Pagination] Unable to get proprety `' .$name . '`',
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
         }
     }
@@ -303,7 +305,7 @@ abstract class Pagination
         $log->log(
             '[' . get_class($this) . '|Pagination] Setting property `' .
             $name . '`',
-            PEAR_LOG_DEBUG
+            KLogger::DEBUG
         );
 
         $rname = '_' . $name;
@@ -317,7 +319,7 @@ abstract class Pagination
                     '|Pagination] Possibles values for field `' .
                     $name . '` are: `' . self::ORDER_ASC . '` or `' .
                     self::ORDER_DESC . '` - `' . $value . '` given',
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
             }
             break;
@@ -340,7 +342,7 @@ abstract class Pagination
                     '|Pagination] Value for field `' .
                     $name . '` should be a positive integer - (' .
                     gettype($value) . ')' . $value . ' given',
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
             }
             break;
@@ -355,7 +357,7 @@ abstract class Pagination
                     '[' . get_class($this) . '|Pagination] Value for `' .
                     $name . '` should be a positive integer or \'all\' - (' .
                     gettype($value) . ')' . $value . ' given',
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
             }
             break;
@@ -363,7 +365,7 @@ abstract class Pagination
             $log->log(
                 '[' . get_class($this) .
                 '|Pagination] Unable to set proprety `' . $name . '`',
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             break;
         }

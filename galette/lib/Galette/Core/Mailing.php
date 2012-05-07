@@ -37,6 +37,8 @@
 
 namespace Galette\Core;
 
+use Galette\Common\KLogger as KLogger;
+
 /**
  * Mailing features
  *
@@ -169,7 +171,7 @@ class Mailing extends GaletteMail
                 $log->log(
                     '[' . get_class($this) . 'Trying to get ' . $name .
                     ' renamed: ' . $rname,
-                    PEAR_LOG_DEBUG
+                    KLogger::DEBUG
                 );
                 return $this->$rname;
                 break;
@@ -178,7 +180,7 @@ class Mailing extends GaletteMail
             $log->log(
                 '[' . get_class($this) . 'Unable to get ' . $name .
                 ' renamed: ' . $rname,
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -212,7 +214,7 @@ class Mailing extends GaletteMail
                     '[' . get_class($this) . '] Value for field `' . $name .
                     '` should be boolean - (' . gettype($value) . ')' .
                     $value . ' given',
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
             }
             break;
@@ -235,14 +237,14 @@ class Mailing extends GaletteMail
                     '[' . get_class($this) . '] Value for field `' . $name .
                     '` should be integer and know - (' . gettype($value) . ')' .
                     $value . ' given',
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
             }
             break;
         default:
             $log->log(
                 '[' . get_class($this) . '] Unable to set proprety `' . $name . '`',
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             break;
         }

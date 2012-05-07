@@ -836,7 +836,7 @@ case 'u7':
                 $log->log(
                     'Error executing query | ' . $e->getMessage() .
                     ' | Query was: ' . $query,
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
                 echo '<li class="install-bad debuginfos">' . $w1 . ' ' . $w2 .
                     ' ' . $w3 . ' ' . $extra . '<span>' . $e->getMessage() .

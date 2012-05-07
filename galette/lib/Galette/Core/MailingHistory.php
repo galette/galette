@@ -36,6 +36,8 @@
  */
 
 namespace Galette\Core;
+
+use Galette\Common\KLogger as KLogger;
 use Galette\Entity\Adherent;
 
 /**
@@ -82,7 +84,7 @@ class MailingHistory extends History
             $log->log(
                 '[' . __METHOD__ .
                 '] Mailing should be either null or an instance of Mailing',
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
         }
     }
@@ -110,7 +112,7 @@ class MailingHistory extends History
             $c = $this->getCount();
 
             if ($c == 0) {
-                $log->log('No entry in history (yet?).', PEAR_LOG_DEBUG);
+                $log->log('No entry in history (yet?).', KLogger::DEBUG);
                 return;
             } else {
                 $this->counter = (int)$c;
@@ -161,11 +163,11 @@ class MailingHistory extends History
             /** TODO */
             $log->log(
                 'Unable to get history. | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -203,7 +205,7 @@ class MailingHistory extends History
             $log->log(
                 'Unable to load mailing model #' . $id . ' | ' .
                 $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return false;
         }
@@ -232,7 +234,7 @@ class MailingHistory extends History
             $log->log(
                 '[' . __METHOD__ .
                 '] Mailing should be either null or an instance of Mailing',
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -268,7 +270,7 @@ class MailingHistory extends History
         } catch (\Exception $e) {
             $log->log(
                 'An error occurend storing Mailing | ' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -318,7 +320,7 @@ class MailingHistory extends History
                 $log->log(
                     'Unable to delete selected mailing history entries |' .
                     $e->getMessage(),
-                    PEAR_LOG_ERR
+                    KLogger::ERR
                 );
                 return false;
             }
@@ -326,7 +328,7 @@ class MailingHistory extends History
             //not numeric and not an array: incorrect.
             $log->log(
                 'Asking to remove mailing entries, but without providing an array or a single numeric value.',
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return false;
         }

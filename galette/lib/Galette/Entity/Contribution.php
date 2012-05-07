@@ -37,6 +37,8 @@
 
 namespace Galette\Entity;
 
+use Galette\Common\KLogger as KLogger;
+
 /**
  * Contribution class for galette
  *
@@ -246,7 +248,7 @@ class Contribution
             $log->log(
                 'An error occured attempting to load contribution #' . $id .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -346,7 +348,7 @@ class Contribution
                                 'Wrong date format. field: ' . $key .
                                 ', value: ' . $value . ', expected fmt: ' .
                                 _T("Y-m-d") . ' | ' . $e->getMessage(),
-                                PEAR_LOG_INFO
+                                KLogger::INFO
                             );
                             $errors[] = str_replace(
                                 array(
@@ -433,13 +435,13 @@ class Contribution
             $log->log(
                 'Some errors has been throwed attempting to edit/store a contribution' .
                 print_r($errors, true),
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
             return $errors;
         } else {
             $log->log(
                 'Contribution checked successfully.',
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
             return true;
         }
@@ -489,11 +491,11 @@ class Contribution
             /** FIXME */
             $log->log(
                 'An error occured checking overlaping fee. ' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             $log->log(
                 'Query was: ' . $select->__toString(),
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
             return false;
         }
@@ -588,7 +590,7 @@ class Contribution
             $log->log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -623,7 +625,7 @@ class Contribution
                 'An error occured updating member ' . $this->_member .
                 '\'s deadline |' .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -663,7 +665,7 @@ class Contribution
             $log->log(
                 'An error occured trying to remove contribution #' .
                 $this->_id . ' | ' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -733,7 +735,7 @@ class Contribution
             /** FIXME */
             $log->log(
                 'An error occured trying to retrieve member\'s due date',
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -765,7 +767,7 @@ class Contribution
                 $log->log(
                     'Contribution #' . $contrib_id .
                     ' is not actually part of transaction #' . $trans_id,
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
                 return false;
             }
@@ -773,7 +775,7 @@ class Contribution
             $log->log(
                 'Unable to detach contribution #' . $contrib_id .
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -802,7 +804,7 @@ class Contribution
             $log->log(
                 'Unable to attach contribution #' . $contrib_id .
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -876,7 +878,7 @@ class Contribution
                         $log->log(
                             'Bad date (' . $his->$rname . ') | ' .
                             $e->getMessage(),
-                            PEAR_LOG_INFO
+                            KLogger::INFO
                         );
                         return $this->$rname;
                     }
@@ -915,7 +917,7 @@ class Contribution
                 default:
                     $log->log(
                         'Unknown payment type ' . $this->_payment_type,
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                     return '-';
                     break;
@@ -951,7 +953,7 @@ class Contribution
                 } else {
                     $log->log(
                         'Trying to set a transaction from an id that is not an integer.',
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                 }
                 break;
@@ -968,7 +970,7 @@ class Contribution
                 } else {
                     $log->log(
                         'Trying to set a type from an id that is not an integer.',
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                 }
                 break;
@@ -984,7 +986,7 @@ class Contribution
                         'Wrong date format. field: ' . $key .
                         ', value: ' . $value . ', expected fmt: ' .
                         _T("Y-m-d") . ' | ' . $e->getMessage(),
-                        PEAR_LOG_INFO
+                        KLogger::INFO
                     );
                     $errors[] = str_replace(
                         array(
@@ -1006,7 +1008,7 @@ class Contribution
                     $log->log(
                         'Trying to set an amount with a non numeric value, ' .
                         'or with a zero value',
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                 }
                 break;
@@ -1014,7 +1016,7 @@ class Contribution
                 $log->log(
                     '[' . __CLASS__ . ']: Trying to set an unknown property (' .
                     $name . ')',
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
                 break;
             }

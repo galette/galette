@@ -37,6 +37,8 @@
 
 namespace Galette\Core;
 
+use Galette\Common\KLogger as KLogger;
+
 /**
  * i18n handling
  *
@@ -110,7 +112,7 @@ class I18n
     public function changeLanguage($id)
     {
         global $log;
-        $log->log('Trying to set locale to ' . $id, PEAR_LOG_DEBUG);
+        $log->log('Trying to set locale to ' . $id, KLogger::DEBUG);
 
         $xml = simplexml_load_file($this->_file);
         $current = $xml->xpath(
@@ -121,7 +123,7 @@ class I18n
         if ( !isset($current[0]) ) {
             $log->log(
                 $id . ' does not exist in XML file, switching to default.',
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $id = self::DEFAULT_LANG;
             //do not forget to reload informations from the xml file

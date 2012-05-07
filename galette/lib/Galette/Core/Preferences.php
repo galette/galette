@@ -37,6 +37,7 @@
 
 namespace Galette\Core;
 
+use Galette\Common\KLogger as KLogger;
 use Galette\Entity\Adherent as Adherent;
 
 /**
@@ -178,7 +179,7 @@ class Preferences
                 $this->_prefs[$k] = $v;
                 $log->log(
                     'The field `' . $k . '` does not exists, Galette will attempt to create it.',
-                    PEAR_LOG_INFO
+                    KLogger::INFO
                 );
                 $proceed = true;
                 $params[] = array(
@@ -205,14 +206,14 @@ class Preferences
             } catch (\Exception $e) {
                 $log->log(
                     'Unable to add missing preferences.' . $e->getMessage(),
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
                 return false;
             }
 
             $log->log(
                 'Missing preferences were successfully stored into database.',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
         }
     }
@@ -239,7 +240,7 @@ class Preferences
             $log->log(
                 'Preferences cannot be loaded. Galette should not work without ' .
                 'preferences. Exiting.',
-                PEAR_LOG_EMERG
+                KLogger::EMERG
             );
             return false;
         }
@@ -282,13 +283,13 @@ class Preferences
 
             $log->log(
                 'Default preferences were successfully stored into database.',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
             return true;
         } catch (\Exception $e) {
             $log->log(
                 'Unable to initialize default preferences.' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return $e;
         }
@@ -321,7 +322,7 @@ class Preferences
             );
 
             foreach ( self::$_defaults as $k=>$v ) {
-                $log->log('Storing ' . $k, PEAR_LOG_DEBUG);
+                $log->log('Storing ' . $k, KLogger::DEBUG);
                 $stmt->bindValue(':value', $this->_prefs[$k], \PDO::PARAM_STR);
                 $stmt->bindValue(':name', $k, \PDO::PARAM_STR);
 
@@ -329,18 +330,18 @@ class Preferences
             }
             $log->log(
                 'Preferences were successfully stored into database.',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
             return true;
         } catch (\Exception $e) {
             /** TODO */
             $log->log(
                 'Unable to store preferences | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -482,7 +483,7 @@ class Preferences
         } else {
             $log->log(
                 'Preference `' . $name . '` is not set or is forbidden',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
             return false;
         }
@@ -505,7 +506,7 @@ class Preferences
             $log->log(
                 'Trying to set a preference value which does not seems to exist ('
                 . $name . ')',
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return false;
         }

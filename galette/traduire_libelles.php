@@ -102,11 +102,11 @@ try {
     $log->log(
         'An error occured counting l10n entries | ' .
         $e->getMessage(),
-        PEAR_LOG_WARNING
+        KLogger::WARN
     );
     $log->log(
         'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-        PEAR_LOG_ERR
+        KLogger::ERR
     );
 }
 
@@ -150,11 +150,11 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
         $log->log(
             'An error occured retrieving l10n entries | ' .
             $e->getMessage(),
-            PEAR_LOG_WARNING
+            KLogger::WARN
         );
         $log->log(
             'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
     }
 }

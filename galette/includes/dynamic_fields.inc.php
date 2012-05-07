@@ -36,6 +36,8 @@
  * @since     Available since 0.63
  */
 
+use Galette\Common\KLogger as KLogger;
+
 /** TODO: functions names are *not* PEAR Coding Standards compliant.
 Anyways, this file needs a rewrite as an object, we won't spend
 too much time on it. */
@@ -147,11 +149,11 @@ function get_fixed_values($field_id)
         /** TODO */
         $log->log(
             'get_fixed_values | ' . $e->getMessage(),
-            PEAR_LOG_WARNING
+            KLogger::WARN
         );
         $log->log(
             'Query was: ' . $val_select->__toString() . ' ' . $e->__toString(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
     }
 }
@@ -235,7 +237,7 @@ function set_dynamic_field(
             '; item_id:' . $item_id . '; field_id: ' . $field_id .
             '; val_index: ' . $val_index . '; field_val:' . $field_val .
             ' | Error was: ' . $e->getMessage(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
         return false;
     }
@@ -315,11 +317,11 @@ function get_dynamic_fields($form_name, $item_id, $quote)
         /** TODO */
         $log->log(
             'get_dynamic_fields | ' . $e->getMessage(),
-            PEAR_LOG_WARNING
+            KLogger::WARN
         );
         $log->log(
             'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
     }
 }
@@ -424,11 +426,11 @@ function prepare_dynamic_fields_for_display(
         /** TODO */
         $log->log(
             'get_dynamic_fields | ' . $e->getMessage(),
-            PEAR_LOG_WARNING
+            KLogger::WARN
         );
         $log->log(
             'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
     }
 }

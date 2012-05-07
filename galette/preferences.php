@@ -116,7 +116,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 if ( GALETTE_MODE === 'DEMO' ) {
                     $log->log(
                         'Trying to set pref_email while in DEMO.',
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                 } else {
                     if ( !Core\GaletteMail::isValidEmail($value) ) {
@@ -128,7 +128,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 if ( GALETTE_MODE === 'DEMO' ) {
                     $log->log(
                         'Trying to set superadmin login while in DEMO.',
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                 } else {
                     if ( strlen($value) < 4 ) {
@@ -185,7 +185,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 if ( GALETTE_MODE == 'DEMO' ) {
                     $log->log(
                         'Trying to set superadmin pass while in DEMO.',
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                 } else {
                     if ( strlen($value) < 4 ) {
@@ -335,7 +335,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             } else if ($_FILES['logo']['error'] !== UPLOAD_ERR_NO_FILE) {
                 $log->log(
                     $logo->getPhpErrorMessage($_FILES['logo']['error']),
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
                 $error_detected[] = $logo->getPhpErrorMessage(
                     $_FILES['logo']['error']
@@ -369,7 +369,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             } else if ($_FILES['card_logo']['error'] !== UPLOAD_ERR_NO_FILE) {
                 $log->log(
                     $print_logo->getPhpErrorMessage($_FILES['card_logo']['error']),
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
                 $error_detected[] = $print_logo->getPhpErrorMessage(
                     $_FILES['card_logo']['error']

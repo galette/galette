@@ -37,6 +37,8 @@
 
 namespace Galette\Entity;
 
+use Galette\Common\KLogger as KLogger;
+
 /**
  * Politeness class for galette
  *

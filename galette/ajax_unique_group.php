@@ -44,7 +44,7 @@ $name = $_POST['gname'];
 if ( !$name ) {
     $log->log(
         'Trying to check if group name is unique without name specified',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }
@@ -52,7 +52,7 @@ if ( !$name ) {
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     $log->log(
         'Trying to display ajax_group.php without appropriate permissions',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }

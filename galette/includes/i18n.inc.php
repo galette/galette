@@ -90,7 +90,7 @@ function addDynamicTranslation($text_orig, $error_detected)
                 $log->log(
                     'Entry for `' . $text_orig .
                     '` dynamic translation already exists.',
-                    PEAR_LOG_INFO
+                    KLogger::INFO
                 );
                 $zdb->db->update(
                     $l10n_table,
@@ -116,7 +116,7 @@ function addDynamicTranslation($text_orig, $error_detected)
         $log->log(
             'An error occured adding dynamic translation for `' .
             $text_orig . '` | ' . $e->getMessage(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
         return false;
     }
@@ -152,7 +152,7 @@ function deleteDynamicTranslation($text_orig, $error_detected)
             'An error occured deleting dynamic translation for `' .
             $text_orig . '` (lang `' . $lang->getLongID() . '`) | ' .
             $e->getMessage(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
         return false;
     }
@@ -196,7 +196,7 @@ function updateDynamicTranslation(
         $log->log(
             'An error occured updating dynamic translation for `' .
             $text_orig . '` | ' . $e->getMessage(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
         return false;
     }
@@ -227,11 +227,11 @@ function getDynamicTranslation($text_orig, $text_locale)
         $log->log(
             'An error occured retrieving l10n entry. text_orig=' . $text_orig .
             ', text_locale=' . $text_locale . ' | ' . $e->getMessage(),
-            PEAR_LOG_WARNING
+            KLogger::WARN
         );
         $log->log(
             'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
         return false;
     }

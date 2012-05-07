@@ -37,6 +37,8 @@
 
 namespace Galette\Entity;
 
+use Galette\Common\KLogger as KLogger;
+
 /**
  * Fields config class for galette :
  * defines fields mandatory, order and visibility
@@ -148,7 +150,7 @@ class FieldsConfig
                         '` columns does not match records. Is : ' .
                         count($result) . ' and should be ' .
                         count($meta) . '. Reinit.',
-                        PEAR_LOG_INFO
+                        KLogger::INFO
                     );
                     $this->init(true);
                 }
@@ -158,11 +160,11 @@ class FieldsConfig
                 '[' . $class . '] An error occured while checking update for ' .
                 'fields configuration for table `' . $this->_table . '`. ' .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             throw $e;
         }
@@ -188,13 +190,13 @@ class FieldsConfig
         $log->log(
             '[' . $class . '] Initializing fields configuration for table `' .
             PREFIX_DB . $this->_table . '`',
-            PEAR_LOG_DEBUG
+            KLogger::DEBUG
         );
         if ( $reinit ) {
             $log->log(
                 '[' . $class . '] Reinit mode, we delete config content for ' .
                 'table `' . PREFIX_DB . $this->_table . '`',
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
             //Delete all entries for current table. Existing entries are
             //already stored, new ones will be added :)
@@ -207,7 +209,7 @@ class FieldsConfig
                 $log->log(
                     'Unable to delete fields configuration for reinitialization' .
                     $e->getMessage(),
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
                 return false;
             }
@@ -265,7 +267,7 @@ class FieldsConfig
             $log->log(
                 '[' . $class . '] Initialisation seems successfull, we reload ' .
                 'the object',
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
             $log->log(
                 str_replace(
@@ -274,7 +276,7 @@ class FieldsConfig
                     '[' . $class . '] Fields configuration for table %s '.
                     'initialized successfully.'
                 ),
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
             $this->_checkUpdate(false);
         } catch (\Exception $e) {
@@ -283,7 +285,7 @@ class FieldsConfig
                 '[' . $class . '] An error occured trying to initialize fields ' .
                 'configuration for table `' . PREFIX_DB . $this->_table . '`.' .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             throw $e;
         }
@@ -401,13 +403,13 @@ class FieldsConfig
                 '[' . $class . '] An error occured while storing fields ' .
                 'configuration for table `' . $this->_table . '`.' .
                 $stmt->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         } else {
             $log->log(
                 '[' . $class . '] Fields configuration stored successfully! ',
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
             $log->log(
                 str_replace(
@@ -416,7 +418,7 @@ class FieldsConfig
                     '[' . $class . '] Fields configuration for table %s stored ' .
                     'successfully.'
                 ),
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
             $stmt->free();
             return true;

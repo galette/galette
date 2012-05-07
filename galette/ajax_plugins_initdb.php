@@ -42,14 +42,14 @@ require_once 'includes/galette.inc.php';
 if ( GALETTE_MODE === 'DEMO' ) {
     $log->log(
         'Trying to access ajax_plugins_initdb.php in DEMO mode.',
-        PEAR_LOG_WARNING
+        KLogger::WARN
     );
     die();
 }
 if ( !$login->isLogged() || !$login->isAdmin() ) {
     $log->log(
         'Trying to display ajax_members.php without appropriate permissions',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }
@@ -71,7 +71,7 @@ if ( $plugid !== null ) {
 if ( $plugin === null ) {
     $log->log(
         'Unable to load plugin `' . $plugid . '`!',
-        PEAR_LOG_EMERG
+        KLogger::EMERG
     );
     die();
 }
@@ -221,7 +221,7 @@ case 'u3':
                 $log->log(
                     'Error executing query | ' . $e->getMessage() .
                     ' | Query was: ' . $query,
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
                 if ( (strcasecmp(trim($w1), 'drop') != 0)
                     && (strcasecmp(trim($w1), 'rename') != 0)

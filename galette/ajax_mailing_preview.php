@@ -42,7 +42,7 @@ require_once 'includes/galette.inc.php';
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     $log->log(
         'Trying to display ajax_mailing_preview.php without appropriate permissions',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }

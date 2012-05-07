@@ -63,7 +63,7 @@ case 'members':
 default:
     $log->log(
         'Trying to configure fields on unknown table (' . $current . ')',
-        PEAR_LOG_WARNING
+        KLogger::WARN
     );
     break;
 }

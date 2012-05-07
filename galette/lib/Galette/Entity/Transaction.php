@@ -37,6 +37,7 @@
 
 namespace Galette\Entity;
 
+use Galette\Common\KLogger as KLogger;
 use Galette\Repository\Contributions as Contributions;
 
 /**
@@ -144,7 +145,7 @@ class Transaction
             $log->log(
                 'Cannot load transaction form id `' . $id . '` | ' .
                 $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return false;
         }
@@ -195,7 +196,7 @@ class Transaction
             $log->log(
                 'An error occured trying to remove transaction #' .
                 $this->_id . ' | ' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -264,7 +265,7 @@ class Transaction
                                 'Wrong date format. field: ' . $key .
                                 ', value: ' . $value . ', expected fmt: ' .
                                 _T("Y-m-d") . ' | ' . $e->getMessage(),
-                                PEAR_LOG_INFO
+                                KLogger::INFO
                             );
                             $errors[] = str_replace(
                                 array(
@@ -325,13 +326,13 @@ class Transaction
             $log->log(
                 'Some errors has been throwed attempting to edit/store a transaction' .
                 print_r($errors, true),
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
             return $errors;
         } else {
             $log->log(
                 'Transaction checked successfully.',
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
             return true;
         }
@@ -400,7 +401,7 @@ class Transaction
             $log->log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -427,11 +428,11 @@ class Transaction
             $log->log(
                 'An error occured retrieving dispatched amounts | ' .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             $log->log(
                 'Query was: ' . $select->__toString(),
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
         }
     }
@@ -457,11 +458,11 @@ class Transaction
             $log->log(
                 'An error occured retrieving missing amounts | ' .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             $log->log(
                 'Query was: ' . $select->__toString(),
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
         }
     }

@@ -37,6 +37,8 @@
 
 namespace Galette\Core;
 
+use Galette\Common\KLogger as KLogger;
+
 /**
  * This class stores and serve the logo.
  * If no custom logo is found, we take galette's default one.

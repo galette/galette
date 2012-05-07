@@ -37,6 +37,8 @@
 
 namespace Galette\Core;
 
+use Galette\Common\KLogger as KLogger;
+
 /**
  * Error handler
  *
@@ -76,7 +78,7 @@ class Error
                     array('Strict standards', $errstr, $errfile, $errline),
                     $str
                 ),
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
             break;
         case E_DEPRECATED:
@@ -87,7 +89,7 @@ class Error
                     array('Deprecated', $errstr, $errfile, $errline),
                     $str
                 ),
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
             break;
         case E_NOTICE:
@@ -101,7 +103,7 @@ class Error
                         array('Notice', $errstr, $errfile, $errline),
                         $str
                     ),
-                    PEAR_LOG_INFO
+                    KLogger::INFO
                 );
             }
             break;
@@ -113,7 +115,7 @@ class Error
                     array('Warning', $errstr, $errfile, $errline),
                     $str
                 ),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             break;
         case E_ERROR:
@@ -124,7 +126,7 @@ class Error
                     array('Fatal', $errstr, $errfile, $errline),
                     $str
                 ),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             exit("FATAL error $errstr at $errfile:$errline");
         default:
@@ -134,7 +136,7 @@ class Error
                     array('Unknown', $errstr, $errfile, $errline),
                     $str
                 ),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             exit("Unknown error at $errfile:$errline");
         }

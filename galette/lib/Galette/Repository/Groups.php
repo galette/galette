@@ -37,6 +37,7 @@
 
 namespace Galette\Repository;
 
+use Galette\Common\KLogger as KLogger;
 use Galette\Entity\Group as Group;
 use Galette\Entity\Adherent as Adherent;
 
@@ -80,11 +81,11 @@ class Groups
         } catch (\Exception $e) {
             $log->log(
                 'Cannot list groups (simple) | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
 
         }
@@ -132,11 +133,11 @@ class Groups
         } catch (\Exception $e) {
             $log->log(
                 'Cannot list groups | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
         }
     }
@@ -185,7 +186,7 @@ class Groups
             $result = $select->query()->fetchAll();
             $log->log(
                 'Exectued query: ' . $select->__toString(),
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
             $groups = array();
             foreach ( $result as $r ) {
@@ -201,11 +202,11 @@ class Groups
             $log->log(
                 'Cannot load member groups for id `' . $id . '` | ' .
                 $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -235,7 +236,7 @@ class Groups
             $log->log(
                 'Member `' . $adh->sname . '` has been detached of its groups' .
                 ', we can now store new ones.',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
 
             //we proceed, if grousp has been specified
@@ -255,14 +256,14 @@ class Groups
                         $log->log(
                             'Member `' . $adh->sname . '` attached to group `' .
                             $gname . '` (' . $gid . ').',
-                            PEAR_LOG_DEBUG
+                            KLogger::DEBUG
                         );
                     } else {
                         $log->log(
                             'An error occured trying to attach member `' .
                             $adh->sname . '` (' . $adh->id . ') to group `' .
                             $gname . '` (' . $gid . ').',
-                            PEAR_LOG_ERR
+                            KLogger::ERR
                         );
                         throw new \Exception(
                             'Unable to attach `' . $adh->sname . '` (' . $adh->id .
@@ -280,7 +281,7 @@ class Groups
                 'Unable to add member `' . $adh->sname . '` (' . $adh->id .
                 ') to specified groups |' .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -308,11 +309,11 @@ class Groups
         } catch (\Exception $e) {
             $log->log(
                 'Cannot list groups (simple) | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
         }
     }

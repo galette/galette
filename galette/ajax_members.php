@@ -45,7 +45,7 @@ require_once 'includes/galette.inc.php';
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     $log->log(
         'Trying to display ajax_members.php without appropriate permissions',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }
@@ -98,7 +98,7 @@ if ( !isset($_POST['from']) ) {
         if ( !isset($_POST['gid']) ) {
             $log->log(
                 'Trying to list group members with no group id provided',
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             throw new Exception('A group id is required.');
             exit(0);
@@ -113,7 +113,7 @@ if ( !isset($_POST['from']) ) {
             } else {
                 $log->log(
                     'Trying to list group members with unknown mode',
-                    PEAR_LOG_ERR
+                    KLogger::ERR
                 );
                 throw new Exception('Unknown mode.');
                 exit(0);

@@ -37,6 +37,8 @@
 
 namespace Galette\IO;
 
+use Galette\Common\KLogger as KLogger;
+
 /** @ignore */
 require_once GALETTE_GAPI_PATH . '/apiClient.php';
 require_once GALETTE_GAPI_PATH . '/contrib/apiPlusService.php';
@@ -130,7 +132,7 @@ class News
                 $log->log(
                     'Unable chack cache expiracy. Are you sure you have ' .
                     'properly configured PHP timezone settings on your server?',
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
             }
         } else {
@@ -255,7 +257,7 @@ class News
         } catch (\Exception $e) {
             $log->log(
                 'Unable to load Tweets :( | ' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             $this->_tweets = array();
         }
@@ -296,7 +298,7 @@ class News
         } catch ( \Exception $e ) {
             $log->log(
                 'Unable to load GooGlePlus posts :( | ' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
         }
     }
@@ -326,13 +328,13 @@ class News
                 //something went wrong :/
                 $log->log(
                     'Unable to load twitter URI ' . $this->_twitter_url,
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
 
                 if ( count($errors) > 0 ) {
                     $log->log(
                         'XML errors has been throwed: ' . implode("\n", $errors),
-                        PEAR_LOG_INFO
+                        KLogger::INFO
                     );
                 }
                 libxml_clear_errors();
@@ -345,7 +347,7 @@ class News
         } else {
             $log->log(
                 'Required modules for Tweeter access are not present.',
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return false;
         }
@@ -382,13 +384,13 @@ class News
                 } else {
                     $log->log(
                         'No Google+ posts has been loaded :(',
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                 }
             } catch ( \Exception $e ) {
                 $log->log(
                     'Unable to load GooGlePlus posts :( | ' . $e->getMessage(),
-                    PEAR_LOG_ERR
+                    KLogger::ERR
                 );
             }
 
@@ -396,7 +398,7 @@ class News
         } else {
             $log->log(
                 'Required modules for Google+ access are not present.',
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return false;
         }

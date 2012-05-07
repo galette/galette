@@ -37,6 +37,8 @@
 
 namespace Galette\IO;
 
+use Galette\Common\KLogger as KLogger;
+
 /**
  * CSV exports
  *
@@ -319,7 +321,7 @@ class Csv
             } else {
                 $log->log(
                     'File ' . $filename . ' is not writeable.',
-                    PEAR_LOG_ERR
+                    KLogger::ERR
                 );
                 return self::FILE_NOT_WRITABLE;
             }
@@ -327,7 +329,7 @@ class Csv
         } catch (\Exception $e) {
             $log->log(
                 'An error occured while exporting | ' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return self::DB_ERROR;
         }

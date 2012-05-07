@@ -37,6 +37,7 @@
 
 namespace Galette\Filters;
 
+use Galette\Common\KLogger as KLogger;
 use Galette\Core\Pagination as Pagination;
 use Galette\Entity\Group as Group;
 use Galette\Repository\Members as Members;
@@ -115,7 +116,7 @@ class MembersList extends Pagination
 
         $log->log(
             '[MembersList] Getting property `' . $name . '`',
-            PEAR_LOG_DEBUG
+            KLogger::DEBUG
         );
 
         if ( in_array($name, $this->pagination_fields) ) {
@@ -137,7 +138,7 @@ class MembersList extends Pagination
             } else {
                 $log->log(
                     '[MembersList] Unable to get proprety `' .$name . '`',
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
             }
         }
@@ -160,7 +161,7 @@ class MembersList extends Pagination
         } else {
             $log->log(
                 '[MembersList] Setting property `' . $name . '`',
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
 
             switch($name) {
@@ -173,7 +174,7 @@ class MembersList extends Pagination
                     $log->log(
                         '[MembersList] Value for property `' . $name .
                         '` should be an array (' . gettype($value) . ' given)',
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                 }
                 break;
@@ -191,7 +192,7 @@ class MembersList extends Pagination
                     $log->log(
                         '[MembersList] Value for property `' . $name .
                         '` should be an integer (' . gettype($value) . ' given)',
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                 }
                 break;
@@ -208,7 +209,7 @@ class MembersList extends Pagination
                         Members::FILTER_DC_EMAIL . ', ' .
                         Members::FILTER_W_EMAIL . ' or ' .
                         Members::FILTER_WO_EMAIL . ' (' . $value . ' given)',
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                     break;
                 }
@@ -223,21 +224,21 @@ class MembersList extends Pagination
                     } else {
                         $log->log(
                             'Group #' . $value . ' does not exists!',
-                            PEAR_LOG_WARNING
+                            KLogger::WARN
                         );
                     }
                 } else {
                     $log->log(
                         '[MembersList] Value for group filter should be an '
                         .'integer (' . gettype($value) . ' given',
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                 }
                 break;
             default:
                 $log->log(
                     '[MembersList] Unable to set proprety `' . $name . '`',
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
                 break;
             }

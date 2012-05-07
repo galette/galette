@@ -44,7 +44,7 @@ $id = get_numeric_form_value(Galette\Entity\Group::PK, '');
 if ( !$id ) {
     $log->log(
         'Trying to display ajax_group.php without groups specified',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }
@@ -54,7 +54,7 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff()
 ) {
     $log->log(
         'Trying to display ajax_group.php without appropriate permissions',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }
@@ -89,7 +89,7 @@ if ( !isset($_POST['reorder']) ) {
     } else {
         $log->log(
             'Trying to reorder without target specified',
-            PEAR_LOG_INFO
+            KLogger::INFO
         );
         echo json_encode(array('success' => false));
         die();

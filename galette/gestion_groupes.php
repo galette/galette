@@ -58,7 +58,7 @@ if ( $id !== null ) {
     } else {
         $log->log(
             'Trying to display group ' . $id . ' without appropriate permissions',
-            PEAR_LOG_INFO
+            KLogger::INFO
         );
         die();
     }

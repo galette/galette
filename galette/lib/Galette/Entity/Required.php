@@ -37,6 +37,8 @@
 
 namespace Galette\Entity;
 
+use Galette\Common\KLogger as KLogger;
+
 /**
  * Required class for galette :
  * defines which fields are mandatory and which are not.
@@ -103,7 +105,7 @@ class Required
                         'Members columns count does not match required records.' .
                         ' Is: ' . count($required) . ' and should be ' .
                         count($meta) . '. Reinit.',
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                     $this->init(true);
                 }
@@ -133,11 +135,11 @@ class Required
             /** TODO */
             $log->log(
                 'Cannot check required fields update | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -155,20 +157,20 @@ class Required
     function init($reinit=false)
     {
         global $zdb, $log;
-        $log->log('Initializing required fiels', PEAR_LOG_DEBUG);
+        $log->log('Initializing required fiels', KLogger::DEBUG);
         if ( $reinit ) {
-            $log->log('Reinit mode, we delete table\'s content', PEAR_LOG_DEBUG);
+            $log->log('Reinit mode, we delete table\'s content', KLogger::DEBUG);
             try {
                 $zdb->db->query('TRUNCATE ' . PREFIX_DB . self::TABLE);
             } catch (\Exception $e) {
                 $log->log(
                     'An error has occured deleting current required records | ' .
                     $e->getMessage(),
-                    PEAR_LOG_ERR
+                    KLogger::ERR
                 );
                 $log->log(
                     $e->getTraceAsString(),
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
                 return false;
             }
@@ -193,23 +195,23 @@ class Required
                 if ( $stmt->execute() ) {
                     $log->log(
                         'Field ' . $k . ' processed.',
-                        PEAR_LOG_DEBUG
+                        KLogger::DEBUG
                     );
                 } else {
                     $log->log(
                         'An error occured trying to initialize required fields',
-                        PEAR_LOG_ERR
+                        KLogger::ERR
                     );
                     return false;
                 }
             }
             $log->log(
                 'Required adherents table updated successfully.',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
             $log->log(
                 'Initialisation seems successfull, we reload the object',
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
             $this->_checkUpdate(false);
         } catch (\Exception $e) {
@@ -217,11 +219,11 @@ class Required
             $log->log(
                 'An error occured trying to initialize required fields | ' .
                 $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -281,11 +283,11 @@ class Required
             $log->log(
                 'An error has occured updating required fields | ' .
                 $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 $e->getTraceAsString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }

@@ -66,7 +66,7 @@ if ( isset($_GET['from']) && $_GET['from'] === 'mailing' ) {
     $members = $mailing->unreachables;
 } else {
     if ( count($filters->selected) == 0 ) {
-        $log->log('No member selected to generate labels', PEAR_LOG_INFO);
+        $log->log('No member selected to generate labels', KLogger::INFO);
         header('location:gestion_adherents.php');
         die();
     }

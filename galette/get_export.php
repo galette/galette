@@ -41,7 +41,7 @@ require_once 'includes/galette.inc.php';
 if ( !isset($_GET['file']) ) {
     $log->log(
         'No requested file',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     header("HTTP/1.1 500 Internal Server Error");
     die();
@@ -64,7 +64,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
         $log->log(
             'A request has been made to get an exported file named `' .
             $filename .'` that does not exists.',
-            PEAR_LOG_WARNING
+            KLogger::WARN
         );
         header('HTTP/1.0 404 Not Found');        
     }
@@ -72,7 +72,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     $log->log(
         'A non authorized person asked to retrieve exported file named `' .
         $filename . '`. Access ha not been granted.',
-        PEAR_LOG_WARNING
+        KLogger::WARN
     );
     header('HTTP/1.0 403 Forbidden');
 }

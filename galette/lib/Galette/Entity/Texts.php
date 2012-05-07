@@ -38,6 +38,8 @@
 
 namespace Galette\Entity;
 
+use Galette\Common\KLogger as KLogger;
+
 /**
  * Texts class for galette
  *
@@ -274,14 +276,14 @@ class Texts
                         $log->log(
                             'Unable to add missing requested text "' . $ref .
                             ' (' . $lang . ') | ' . $e->getMessage(),
-                            PEAR_LOG_WARNING
+                            KLogger::WARN
                         );
                     }
                 } else {
                     $log->log(
                         'Unable to find missing requested text "' . $ref .
                         ' (' . $lang . ')',
-                        PEAR_LOG_WARNING
+                        KLogger::WARN
                     );
                 }
             }
@@ -291,11 +293,11 @@ class Texts
             $log->log(
                 'Cannot get text `' . $ref . '` for lang `' . $lang . '` | ' .
                 $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -339,7 +341,7 @@ class Texts
             $log->log(
                 'An error has occured while storing mail text. | ' .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -369,11 +371,11 @@ class Texts
             $log->log(
                 'Cannot get refs for lang `' . $lang . '` | ' .
                 $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -445,14 +447,14 @@ class Texts
 
                 $log->log(
                     'Default texts were successfully stored into database.',
-                    PEAR_LOG_INFO
+                    KLogger::INFO
                 );
                 return true;
             }
         } catch (\Exception $e) {
             $log->log(
                 'Unable to initialize default texts.' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return $e;
         }

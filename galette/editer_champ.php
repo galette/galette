@@ -80,7 +80,7 @@ try {
     $log->log(
         'Unable to retrieve field `' . $field_id . '` informations | ' .
         $e->getMessage(),
-        PEAR_LOG_ERR
+        KLogger::ERR
     );
     $error_detected[] = _T("Unable to retrieve field informations.");
 }
@@ -117,7 +117,7 @@ if ( isset($_POST['valid']) ) {
             /** FIXME */
             $log->log(
                 'An error occured checking field duplicity' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
         }
 
@@ -157,7 +157,7 @@ if ( isset($_POST['valid']) ) {
                 /** FIXME */
                 $log->log(
                     'An error occured storing field | ' . $e->getMessage(),
-                    PEAR_LOG_ERR
+                    KLogger::ERR
                 );
                 $error_detected[] = _T("An error occured storing the field.");
             }
@@ -193,7 +193,7 @@ if ( isset($_POST['valid']) ) {
                 $log->log(
                     'Unable to manage fields values table ' .
                     $contents_table . ' | ' . $e->getMessage(),
-                    PEAR_LOG_ERR
+                    KLogger::ERR
                 );
                 $error_detected[] = _T("An error occured storing managing fields values table");
             }
@@ -220,7 +220,7 @@ if ( isset($_POST['valid']) ) {
                     $zdb->db->rollBack();
                     $log->log(
                         'Unable to store field ' . $field_id . ' values',
-                        PEAR_LOG_ERR
+                        KLogger::ERR
                     );
                 }
             }
@@ -258,7 +258,7 @@ if ( isset($_POST['valid']) ) {
         $log->log(
             'Unable to retrieve fields types for field ' . $field_id . ' | ' .
             $e->getMessage(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
     }
 }

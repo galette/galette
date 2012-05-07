@@ -38,6 +38,7 @@
 namespace Galette\Core;
 
 use Galette\Entity\Adherent;
+use Galette\Common\KLogger as KLogger;
 
 /**
  * Picture handling
@@ -360,7 +361,7 @@ class Picture
                     }
                     $log->log(
                         'The file ' . $_file . ' was found on the disk but cannot be removed.',
-                        PEAR_LOG_ERR
+                        KLogger::ERR
                     );
                     return false;
                 } else {
@@ -385,7 +386,7 @@ class Picture
             $log->log(
                 'An error occured attempting to delete picture ' . $this->db_id .
                 'from database | ' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -418,7 +419,7 @@ class Picture
         if ( preg_match($reg, $name, $matches) ) {
             $log->log(
                 '[' . $class . '] Filename and extension are OK, proceed.',
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
             $extension = $matches[2];
             if ( $extension == 'jpeg' ) {
@@ -447,7 +448,7 @@ class Picture
 
             $log->log(
                 $err_msg,
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return $ret;
         }
@@ -458,11 +459,11 @@ class Picture
                 '[' . $class . '] File is too big (' . ( $file['size'] * 1024 ) .
                 'Ko for maximum authorized ' . ( $class::MAX_FILE_SIZE * 1024 ) .
                 'Ko',
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return self::FILE_TOO_BIG;
         } else {
-            $log->log('[' . $class . '] Filesize is OK, proceed', PEAR_LOG_DEBUG);
+            $log->log('[' . $class . '] Filesize is OK, proceed', KLogger::DEBUG);
         }
 
         $current = getimagesize($tmpfile);
@@ -470,13 +471,13 @@ class Picture
         if ( !in_array($current['mime'], $this->_allowed_mimes) ) {
             $log->log(
                 '[' . $class . '] Mimetype `' . $current['mime'] . '` not allowed',
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return self::MIME_NOT_ALLOWED;
         } else {
             $log->log(
                 '[' . $class . '] Mimetype is allowed, proceed',
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
         }
 
@@ -521,7 +522,7 @@ class Picture
             $log->log(
                 'An error occured storing picture in database: ' .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return self::SQL_ERROR;
         }
@@ -558,7 +559,7 @@ class Picture
                     $log->log(
                         '[' . $class . '] GD has no JPEG Support - ' .
                         'pictures could not be resized!',
-                        PEAR_LOG_ERR
+                        KLogger::ERR
                     );
                     return false;
                 }
@@ -568,7 +569,7 @@ class Picture
                     $log->log(
                         '[' . $class . '] GD has no PNG Support - ' .
                         'pictures could not be resized!',
-                        PEAR_LOG_ERR
+                        KLogger::ERR
                     );
                     return false;
                 }
@@ -578,7 +579,7 @@ class Picture
                     $log->log(
                         '[' . $class . '] GD has no GIF Support - ' .
                         'pictures could not be resized!',
-                        PEAR_LOG_ERR
+                        KLogger::ERR
                     );
                     return false;
                 }
@@ -633,7 +634,7 @@ class Picture
             $log->log(
                 '[' . $class . '] GD is not present - ' .
                 'pictures could not be resized!',
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
         }
     }

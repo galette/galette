@@ -41,6 +41,7 @@ use Galette\Repository\Groups as Groups;
 use Galette\Repository\Members as Members;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\Status as Status;
+use Galette\Common\KLogger as KLogger;
 
 /**
  * Default authentication class for galette
@@ -105,18 +106,18 @@ class Login extends Authentication
             $select->where('mdp_adh = ?', $passe);
             $log->log(
                 'Login query: ' . $select->__toString(),
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
             $row = $zdb->db->fetchRow($select);
 
             if ( $row === false ) {
                 $log->log(
                     'No entry found for login `' . $user . '`',
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
                 return false;
             } else {
-                $log->log('User `' . $user . '` logged in.', PEAR_LOG_INFO);
+                $log->log('User `' . $user . '` logged in.', KLogger::INFO);
                 $this->id = $row->id_adh;
                 $this->login = $user;
                 $this->passe = $row->mdp_adh;
@@ -160,16 +161,16 @@ class Login extends Authentication
         } catch (\Zend_Db_Adapter_Exception $e) {
             $log->log(
                 'An error occured: ' . $e->getChainedException()->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
-            $log->log($e->getTrace(), PEAR_LOG_ERR);
+            $log->log($e->getTrace(), KLogger::ERR);
             return false;
         } catch(\Exception $e) {
             $log->log(
                 'An error occured: ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
-            $log->log($e->getTrace(), PEAR_LOG_ERR);
+            $log->log($e->getTrace(), KLogger::ERR);
             return false;
         }
     }
@@ -202,11 +203,11 @@ class Login extends Authentication
         } catch (\Exception $e) {
             $log->log(
                 'Cannot check if login exists | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             /* If an error occurs, we consider that username already exists */
             return true;

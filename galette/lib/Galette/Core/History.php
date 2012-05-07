@@ -37,6 +37,8 @@
 
 namespace Galette\Core;
 
+use Galette\Common\KLogger as KLogger;
+
 /**
  * History management
  *
@@ -120,13 +122,13 @@ class History extends Pagination
             $log->log(
                 'Unable to initialize add log entry into database.' .
                 $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return false;
         } catch (\Exception $e) {
             $log->log(
                 "An error occured trying to add log entry. " . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -149,7 +151,7 @@ class History extends Pagination
             if ( !$result ) {
                 $log->log(
                     'An error occured cleaning history. ',
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
                 $this->add('Arror flushing logs');
                 return false;
@@ -160,7 +162,7 @@ class History extends Pagination
             /** TODO */
             $log->log(
                 'Unable to flush logs. | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
         }
     }
@@ -178,7 +180,7 @@ class History extends Pagination
             $c = $this->getCount();
 
             if ($c == 0) {
-                $log->log('No entry in history (yet?).', PEAR_LOG_DEBUG);
+                $log->log('No entry in history (yet?).', KLogger::DEBUG);
                 return;
             } else {
                 $this->counter = (int)$c;
@@ -197,11 +199,11 @@ class History extends Pagination
             /** TODO */
             $log->log(
                 'Unable to get history. | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -228,11 +230,11 @@ class History extends Pagination
             /** TODO */
             $log->log(
                 'Unable to get history count. | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -251,7 +253,7 @@ class History extends Pagination
 
         $log->log(
             '[History] Getting property `' . $name . '`',
-            PEAR_LOG_DEBUG
+            KLogger::DEBUG
         );
 
         if ( in_array($name, $this->pagination_fields) ) {
@@ -283,7 +285,7 @@ class History extends Pagination
             } else {
                 $log->log(
                     '[History] Unable to get proprety `' .$name . '`',
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
             }
         }
@@ -305,7 +307,7 @@ class History extends Pagination
         } else {
             $log->log(
                 '[History] Setting property `' . $name . '`',
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
 
             $forbidden = array();
@@ -324,7 +326,7 @@ class History extends Pagination
             } else {
                 $log->log(
                     '[History] Unable to set proprety `' .$name . '`',
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
             }
         }

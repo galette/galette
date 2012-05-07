@@ -37,6 +37,8 @@
 
 namespace Galette\Core;
 
+use Galette\Common\KLogger as KLogger;
+
 /** @ignore */
 require_once 'class.phpmailer.php';
 require_once WEB_ROOT . 'includes/html2text.php';
@@ -117,7 +119,7 @@ class GaletteMail
                     $log->log(
                         '[' . get_class($this) .
                         ']No SMTP port provided. Switch to default (25).',
-                        PEAR_LOG_INFO
+                        KLogger::INFO
                     );
                     $this->_mail->Port = 25;
                 }
@@ -187,7 +189,7 @@ class GaletteMail
                 $log->log(
                     '[' . get_class($this) .
                     '] One of recipients adress is not valid.',
-                    PEAR_LOG_INFO
+                    KLogger::INFO
                 );
                 $this->_mail->ClearBCCs();
                 break;
@@ -277,7 +279,7 @@ class GaletteMail
                 $log->log(
                     'An error occured sending mail to: ' .
                     implode(', ', array_keys($this->_recipients)),
-                    PEAR_LOG_INFO
+                    KLogger::INFO
                 );
                 $this->_mail = null;
                 return self::MAIL_ERROR;
@@ -288,7 +290,7 @@ class GaletteMail
                 }
                 $log->log(
                     'A mail has been sent to: ' . $txt,
-                    PEAR_LOG_INFO
+                    KLogger::INFO
                 );
                 $this->_mail = null;
                 return self::MAIL_SENT;
@@ -296,7 +298,7 @@ class GaletteMail
         } catch (\Exception $e) {
             $log->log(
                 'Error sending message: ' . $e.getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             $this->errors[] = $e->getMessage();
             $this->_mail = null;
@@ -318,7 +320,7 @@ class GaletteMail
         if ( !$valid ) {
             $log->log(
                 '[GaletteMail] Adresss `' . $address . '` is not valid ',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
         }
         return $valid;

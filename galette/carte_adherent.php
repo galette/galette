@@ -69,7 +69,7 @@ if ( isset($_GET[Galette\Entity\Adherent::PK])
     $unique = $_GET[Galette\Entity\Adherent::PK];
 } else {
     if ( count($filters->selected) == 0 ) {
-        $log->log('No member selected to generate members cards', PEAR_LOG_INFO);
+        $log->log('No member selected to generate members cards', KLogger::INFO);
         if ( $login->isAdmin() || $login->isStaff() ) {
             header('location:gestion_adherents.php');
         } else {
@@ -90,7 +90,7 @@ if ( isset($unique) && $unique ) {
 $members = Galette\Repository\Members::getArrayList($mailing_adh, array('nom_adh', 'prenom_adh'));
 
 if ( !is_array($members) || count($members) < 1 ) {
-    $log->log('An error has occured, unable to get members list.', PEAR_LOG_ERR);
+    $log->log('An error has occured, unable to get members list.', KLogger::ERR);
     die();
 }
 

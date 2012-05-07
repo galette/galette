@@ -129,7 +129,7 @@ if ( $form_name == '' ) {
                     $log->log(
                         'An error occured adding new dynamic field. | ' .
                         $e->getMessage(),
-                        PEAR_LOG_ERR
+                        KLogger::ERR
                     );
                 }
             }
@@ -226,7 +226,7 @@ if ( $form_name == '' ) {
                 $log->log(
                     'Unable to change field ' . $field_id . ' rank | ' .
                     $e->getMessage(),
-                    PEAR_LOG_ERR
+                    KLogger::ERR
                 );
             }
         }

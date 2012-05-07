@@ -37,6 +37,7 @@
 
 namespace Galette\Repository;
 
+use Galette\Common\KLogger as KLogger;
 use Galette\Core\Pagination as Pagination;
 use Galette\Entity\Transaction as Transaction;
 use Galette\Entity\Adherent as Adherent;
@@ -129,11 +130,11 @@ class Transactions extends Pagination
             /** TODO */
             $log->log(
                 'Cannot list transactions | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -186,11 +187,11 @@ class Transactions extends Pagination
             /** TODO */
             $log->log(
                 'Cannot build SELECT clause for transactions | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -225,11 +226,11 @@ class Transactions extends Pagination
             /** TODO */
             $log->log(
                 'Cannot count transactions | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $countSelect->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -311,7 +312,7 @@ class Transactions extends Pagination
             /** TODO */
             $log->log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
         }
     }
@@ -382,7 +383,7 @@ class Transactions extends Pagination
                 $log->log(
                     'An error occured trying to remove transactions | ' .
                     $e->getMessage(),
-                    PEAR_LOG_ERR
+                    KLogger::ERR
                 );
                 return false;
             }
@@ -390,7 +391,7 @@ class Transactions extends Pagination
             //not numeric and not an array: incorrect.
             $log->log(
                 'Asking to remove transaction, but without providing an array or a single numeric value.',
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return false;
         }
@@ -409,7 +410,7 @@ class Transactions extends Pagination
 
         $log->log(
             '[Transactions] Getting property `' . $name . '`',
-            PEAR_LOG_DEBUG
+            KLogger::DEBUG
         );
 
         if ( in_array($name, $this->pagination_fields) ) {
@@ -426,7 +427,7 @@ class Transactions extends Pagination
             } else {
                 $log->log(
                     '[Transactions] Unable to get proprety `' .$name . '`',
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
             }
         }*/
@@ -448,7 +449,7 @@ class Transactions extends Pagination
         } else {
             $log->log(
                 '[Transactions] Setting property `' . $name . '`',
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
 
             $forbidden = array();
@@ -476,7 +477,7 @@ class Transactions extends Pagination
             } else {
                 $log->log(
                     '[Transactions] Unable to set proprety `' .$name . '`',
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
             }
         }

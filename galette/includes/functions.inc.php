@@ -36,6 +36,8 @@
  * @link      http://galette.tuxfamily.org
  */
 
+use Galette\Common\KLogger as KLogger;
+
 function PasswordImageName($c)
 {
   return 'pw_' . md5($c) . '.png';
@@ -255,7 +257,7 @@ function get_numeric_form_value($name, $defval)
         $log->log(
             '[get_numeric_form_value] not a numeric value! (value was: `' .
             $val . '`)',
-            PEAR_LOG_INFO
+            KLogger::INFO
         );
         $val = $defval;
     }

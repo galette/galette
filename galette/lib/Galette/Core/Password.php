@@ -40,6 +40,7 @@
 
 namespace Galette\Core;
 
+use Galette\Common\KLogger as KLogger;
 use Galette\Entity\Adherent;
 
 /**
@@ -125,7 +126,7 @@ class Password
             if ( $del ) {
                 $log->log(
                     'Temporary passwords for `' . $id_adh . '` has been removed.',
-                    PEAR_LOG_DEBUG
+                    KLogger::DEBUG
                 );
             }
         } catch (\Exception $e) {
@@ -133,7 +134,7 @@ class Password
             $log->log(
                 'An error has occured removing old tmppasswords ' .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -168,7 +169,7 @@ class Password
             if ( $add ) {
                 $log->log(
                     'New passwords temporary set for `' . $id_adh . '`.',
-                    PEAR_LOG_DEBUG
+                    KLogger::DEBUG
                 );
                 $this->_new_password = $password;
                 $this->_hash = $hash;
@@ -180,14 +181,14 @@ class Password
             $log->log(
                 'Unable to add add new password entry into database.' .
                 $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return false;
         } catch (\Exception $e) {
             $log->log(
                 "An error occured trying to add temporary password entry. " .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -216,7 +217,7 @@ class Password
             if ( $del ) {
                 $log->log(
                     'Old Temporary passwords has been deleted.',
-                    PEAR_LOG_DEBUG
+                    KLogger::DEBUG
                 );
             }
         } catch (\Exception $e) {
@@ -224,7 +225,7 @@ class Password
             $log->log(
                 'An error occured deleting expired temporary passwords. ' .
                 $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return false;
         }
@@ -252,7 +253,7 @@ class Password
             /** TODO */
             $log->log(
                 'An error occured getting requested hash. ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return false;
         }
@@ -280,7 +281,7 @@ class Password
             if ( $del ) {
                 $log->log(
                     'Used hash has been successfully remove',
-                    PEAR_LOG_DEBUG
+                    KLogger::DEBUG
                 );
                 return true;
             }
@@ -289,7 +290,7 @@ class Password
             $log->log(
                 'An error ocured attempting to delete used hash' .
                 $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return false;
         }

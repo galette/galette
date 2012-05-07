@@ -37,6 +37,8 @@
 
 namespace Galette\Entity;
 
+use Galette\Common\KLogger as KLogger;
+
 /* TODO: Most of the code is duplicated in Galette\Entity\ContributionsTypes. Should
  * probably use a superclass for genericity.
  */
@@ -121,13 +123,13 @@ class Status
 
             $log->log(
                 'Default status were successfully stored into database.',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
             return true;
         } catch (\Exception $e) {
             $log->log(
                 'Unable to initialize default status.' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return $e;
         }
@@ -149,7 +151,7 @@ class Status
                 ->order(self::ORDER_FIELD, self::PK);
             $statuses = $select->query()->fetchAll();
             if ( count($statuses) == 0 ) {
-                $log->log('No status defined in database.', PEAR_LOG_INFO);
+                $log->log('No status defined in database.', KLogger::INFO);
             } else {
                 foreach ( $statuses as $status ) {
                     $list[$status->id_statut] = _T($status->libelle_statut);
@@ -160,11 +162,11 @@ class Status
             /** TODO */
             $log->log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
         }
     }
@@ -187,7 +189,7 @@ class Status
             $statuses = $select->query()->fetchAll();
 
             if ( count($statuses) == 0 ) {
-                $log->log('No status defined in database.', PEAR_LOG_INFO);
+                $log->log('No status defined in database.', KLogger::INFO);
             } else {
                 foreach ( $statuses as $status ) {
                     $list[$status->id_statut] = array(
@@ -201,11 +203,11 @@ class Status
             /** TODO */
             $log->log(
                 'Cannot list statuses | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -234,11 +236,11 @@ class Status
             /** TODO */
             $log->log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -280,7 +282,7 @@ class Status
             $log->log(
                 'Unable to retrieve status from label `' . $label . '` | ' .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -304,7 +306,7 @@ class Status
         if ( $ret !== false ) {
             $log->log(
                 'Status `' . $label . '` already exists',
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return -2;
         }
@@ -323,7 +325,7 @@ class Status
             if ( $ret >  0) {
                 $log->log(
                     'New status `' . $label . '` added successfully.',
-                    PEAR_LOG_INFO
+                    KLogger::INFO
                 );
                 return $zdb->db->lastInsertId(
                     PREFIX_DB . self::TABLE,
@@ -337,7 +339,7 @@ class Status
             $log->log(
                 'Unable to add new status `' . $label . '` | ' .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -371,7 +373,7 @@ class Status
             $fieldtype = 'integer';
         }
 
-        $log->log("Setting field $field to $value for ctype $id", PEAR_LOG_INFO);
+        $log->log("Setting field $field to $value for ctype $id", KLogger::INFO);
 
         try {
             $values= array(
@@ -384,13 +386,13 @@ class Status
                 self::PK . ' = ' . $id
             );
 
-            $log->log('Status ' . $id . ' updated successfully.', PEAR_LOG_INFO);
+            $log->log('Status ' . $id . ' updated successfully.', KLogger::INFO);
             return true;
         } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'Unable to update status ' . $id . ' | ' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -420,14 +422,14 @@ class Status
             );
             $log->log(
                 'Status ' . $id . ' deleted successfully.',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
             return true;
         } catch (\Exception $e) {
             /** FIXME */
             $log->log(
                 'Unable to delete status ' . $id . ' | ' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -459,7 +461,7 @@ class Status
             $log->log(
                 'Unable to check if status `' . $id . '` is used. | ' .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             //in case of error, we consider that status is used, to avoid errors
             return true;

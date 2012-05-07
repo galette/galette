@@ -37,6 +37,8 @@
 
 namespace Galette\Entity;
 
+use Galette\Common\KLogger as KLogger;
+
 /* TODO: Most of the code is duplicated in Galette\Entity\Status. Should
  * probably use a superclass for genericity.
  */
@@ -120,11 +122,11 @@ class ContributionsTypes
             $log->log(
                 'Cannot load contribution type form id `' . $id . '` | ' .
                 $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -173,14 +175,14 @@ class ContributionsTypes
 
             $log->log(
                 'Default contributions types were successfully stored into database.',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
             return true;
         } catch (\Exception $e) {
             $log->log(
                 'Unable to initialize default contributions types.' .
                 $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return $e;
         }
@@ -219,11 +221,11 @@ class ContributionsTypes
         } catch (\Exception $e) {
             $log->log(
                 'An error occured. ' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             $log->log(
                 'Query was: ' . $select->__toString(),
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
             return false;
         }
@@ -250,7 +252,7 @@ class ContributionsTypes
             if ( count($types) == 0 ) {
                 $log->log(
                     'No contributions types defined in database.',
-                    PEAR_LOG_INFO
+                    KLogger::INFO
                 );
             } else {
                 foreach ( $types as $type ) {
@@ -265,11 +267,11 @@ class ContributionsTypes
             /** TODO */
             $log->log(
                 'Cannot list contribution types | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -298,11 +300,11 @@ class ContributionsTypes
             /** TODO */
             $log->log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -342,7 +344,7 @@ class ContributionsTypes
             $log->log(
                 'Unable to retrieve contributions type from label `' .
                 $label . '` | ' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -366,7 +368,7 @@ class ContributionsTypes
         if ( $ret !== false ) {
             $log->log(
                 'Contribution type `' . $label . '` already exists',
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return -2;
         }
@@ -385,7 +387,7 @@ class ContributionsTypes
             if ( $ret >  0) {
                 $log->log(
                     'New contributions type `' . $label . '` added successfully.',
-                    PEAR_LOG_INFO
+                    KLogger::INFO
                 );
                 return $zdb->db->lastInsertId(
                     PREFIX_DB . self::TABLE,
@@ -399,7 +401,7 @@ class ContributionsTypes
             $log->log(
                 'Unable to add new contributions type `' . $label . '` | ' .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -433,7 +435,7 @@ class ContributionsTypes
             $fieldtype = 'integer';
         }
 
-        $log->log("Setting field $field to $value for ctype $id", PEAR_LOG_INFO);
+        $log->log("Setting field $field to $value for ctype $id", KLogger::INFO);
 
         try {
             $values= array(
@@ -448,7 +450,7 @@ class ContributionsTypes
 
             $log->log(
                 'Contributions type ' . $id . ' updated successfully.',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
             return true;
         } catch (\Exception $e) {
@@ -456,7 +458,7 @@ class ContributionsTypes
             $log->log(
                 'Unable to update contributions types ' . $id . ' | ' .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -486,7 +488,7 @@ class ContributionsTypes
             );
             $log->log(
                 'Contributions type ' . $id . ' deleted successfully.',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
             return true;
         } catch (\Exception $e) {
@@ -494,7 +496,7 @@ class ContributionsTypes
             $log->log(
                 'Unable to delete contributions type ' . $id . ' | ' .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -526,7 +528,7 @@ class ContributionsTypes
             $log->log(
                 'Unable to check if contribution `' . $id . '` is used. | ' .
                 $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             //in case of error, we consider that type is used, to avoid errors
             return true;

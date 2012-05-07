@@ -37,6 +37,7 @@
 
 namespace Galette\Repository;
 
+use Galette\Common\KLogger as KLogger;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\Contribution as Contribution;
 use Galette\Entity\Transaction as Transaction;
@@ -207,7 +208,7 @@ class Members
             $log->log(
                 "The following query will be executed: \n" .
                 $select->__toString(),
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
 
             $members = array();
@@ -223,11 +224,11 @@ class Members
             /** TODO */
             $log->log(
                 'Cannot list members | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
         }
     }
@@ -274,7 +275,7 @@ class Members
                         if ( !$p->delete(false) ) {
                             $log->log(
                                 'Unable to delete picture for member ' . $str_adh,
-                                PEAR_LOG_ERR
+                                KLogger::ERR
                             );
                             throw new \Exception(
                                 'Unable to delete picture for member ' .
@@ -323,7 +324,7 @@ class Members
                 $log->log(
                     'Unable to delete selected member(s) |' .
                     $e->getMessage(),
-                    PEAR_LOG_ERR
+                    KLogger::ERR
                 );
                 return false;
             }
@@ -331,7 +332,7 @@ class Members
             //not numeric and not an array: incorrect.
             $log->log(
                 'Asking to remove members, but without providing an array or a single numeric value.',
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return false;
         }
@@ -390,7 +391,7 @@ class Members
             $log->log(
                 "The following query will be executed: \n" .
                 $select->__toString(),
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
 
             if ( $filters ) {
@@ -407,11 +408,11 @@ class Members
             $log->log(
                 'Cannot list members with public informations (photos: '
                 . $with_photos . ') | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -431,7 +432,7 @@ class Members
         global $zdb, $log;
 
         if ( !is_array($ids) || count($ids) < 1 ) {
-            $log->log('No member selected for labels.', PEAR_LOG_INFO);
+            $log->log('No member selected for labels.', KLogger::INFO);
             return false;
         }
 
@@ -451,7 +452,7 @@ class Members
             $log->log(
                 "The following query will be executed: \n" .
                 $select->__toString(),
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
 
             $result = $select->query();
@@ -464,11 +465,11 @@ class Members
             /** TODO */
             $log->log(
                 'Cannot load members form ids array | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
         }
     }
@@ -551,11 +552,11 @@ class Members
             /** TODO */
             $log->log(
                 'Cannot build SELECT clause for members | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -597,11 +598,11 @@ class Members
             /** TODO */
             $log->log(
                 'Cannot count members | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $countSelect->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -798,7 +799,7 @@ class Members
             /** TODO */
             $log->log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
         }
     }

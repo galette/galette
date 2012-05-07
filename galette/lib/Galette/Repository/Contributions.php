@@ -37,6 +37,7 @@
 
 namespace Galette\Repository;
 
+use Galette\Common\KLogger as KLogger;
 use Galette\Core\Pagination as Pagination;
 use Galette\Entity\Contribution as Contribution;
 use Galette\Entity\Adherent as Adherent;
@@ -160,11 +161,11 @@ class Contributions extends Pagination
             /** TODO */
             $log->log(
                 'Cannot list contributions | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -213,11 +214,11 @@ class Contributions extends Pagination
             /** TODO */
             $log->log(
                 'Cannot build SELECT clause for contributions | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -252,11 +253,11 @@ class Contributions extends Pagination
             /** TODO */
             $log->log(
                 'Cannot count contributions | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $countSelect->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -286,11 +287,11 @@ class Contributions extends Pagination
             /** TODO */
             $log->log(
                 'Cannot calculate contributions sum | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $sumSelect->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -393,7 +394,7 @@ class Contributions extends Pagination
             /** TODO */
             $log->log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
         }
     }
@@ -472,7 +473,7 @@ class Contributions extends Pagination
                 $log->log(
                     'An error occured trying to remove contributions | ' .
                     $e->getMessage(),
-                    PEAR_LOG_ERR
+                    KLogger::ERR
                 );
                 return false;
             }
@@ -480,7 +481,7 @@ class Contributions extends Pagination
             //not numeric and not an array: incorrect.
             $log->log(
                 'Asking to remove contribution, but without providing an array or a single numeric value.',
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             return false;
         }
@@ -500,7 +501,7 @@ class Contributions extends Pagination
 
         $log->log(
             '[Contributions] Getting property `' . $name . '`',
-            PEAR_LOG_DEBUG
+            KLogger::DEBUG
         );
 
         if ( in_array($name, $this->pagination_fields) ) {
@@ -534,7 +535,7 @@ class Contributions extends Pagination
             } else {
                 $log->log(
                     '[Contributions] Unable to get proprety `' .$name . '`',
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
             }
         }
@@ -556,7 +557,7 @@ class Contributions extends Pagination
         } else {
             $log->log(
                 '[Contributions] Setting property `' . $name . '`',
-                PEAR_LOG_DEBUG
+                KLogger::DEBUG
             );
 
             $forbidden = array();
@@ -650,7 +651,7 @@ class Contributions extends Pagination
                             'Wrong date format. field: ' . $key .
                             ', value: ' . $value . ', expected fmt: ' .
                             _T("Y-m-d") . ' | ' . $e->getMessage(),
-                            PEAR_LOG_INFO
+                            KLogger::INFO
                         );
                         throw $e;
                     }
@@ -662,7 +663,7 @@ class Contributions extends Pagination
             } else {
                 $log->log(
                     '[Contributions] Unable to set proprety `' .$name . '`',
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
             }
         }

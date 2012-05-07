@@ -37,6 +37,8 @@
 
 namespace Galette\Entity;
 
+use Galette\Common\KLogger as KLogger;
+
 /**
  * Group entity
  *
@@ -109,11 +111,11 @@ class Group
         } catch (\Exception $e) {
             $log->log(
                 'Cannot load group form id `' . $id . '` | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -190,11 +192,11 @@ class Group
         } catch (\Exception $e) {
             $log->log(
                 'Cannot get group persons | ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
         }
     }
@@ -237,11 +239,11 @@ class Group
             $log->log(
                 'Cannot get subgroup for group ' . $this->_group_name .
                 ' (' . $this->_id . ')| ' . $e->getMessage(),
-                PEAR_LOG_WARNING
+                KLogger::WARN
             );
             $log->log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
         }
     }
@@ -289,7 +291,7 @@ class Group
             $log->log(
                 'Unable to delete group ' . $this->_group_name .
                 ' (' . $this->_id  . ') |' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -327,7 +329,7 @@ class Group
                 '` (' . $this->_id . ') from its parent:\'( | ' .
                 $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             throw new \Exception(_T("Unable to detach group :("));
         }
@@ -398,7 +400,7 @@ class Group
             $log->log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -607,7 +609,7 @@ class Group
             $log->log(
                 'Group members has been removed for `' . $this->_group_name .
                 ', we can now store new ones.',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
 
             $stmt = $zdb->db->prepare(
@@ -625,14 +627,14 @@ class Group
                         $log->log(
                             'Member `' . $m->sname . '` attached to group `' .
                             $this->_group_name . '`.',
-                            PEAR_LOG_DEBUG
+                            KLogger::DEBUG
                         );
                     } else {
                         $log->log(
                             'An error occured trying to attach member `' .
                             $m->sname . '` to group `' . $this->_group_name .
                             '` ('  . $this->_id . ').',
-                            PEAR_LOG_ERR
+                            KLogger::ERR
                         );
                         throw new \Exception(
                             'Unable to attach `' . $m->sname . '` ' .
@@ -646,7 +648,7 @@ class Group
 
             $log->log(
                 'Group members updated successfully.',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
 
             return true;
@@ -655,7 +657,7 @@ class Group
             $log->log(
                 'Unable to attach members to group `' . $this->_group_name .
                 '` (' . $this->_id . ')|' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }
@@ -683,7 +685,7 @@ class Group
             $log->log(
                 'Group managers has been removed for `' . $this->_group_name .
                 ', we can now store new ones.',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
 
             $stmt = $zdb->db->prepare(
@@ -701,14 +703,14 @@ class Group
                         $log->log(
                             'Manager `' . $m->sname . '` attached to group `' .
                             $this->_group_name . '`.',
-                            PEAR_LOG_DEBUG
+                            KLogger::DEBUG
                         );
                     } else {
                         $log->log(
                             'An error occured trying to attach manager `' .
                             $m->sname . '` to group `' . $this->_group_name .
                             '` ('  . $this->_id . ').',
-                            PEAR_LOG_ERR
+                            KLogger::ERR
                         );
                         throw new \Exception(
                             'Unable to attach `' . $m->sname . '` ' .
@@ -722,7 +724,7 @@ class Group
 
             $log->log(
                 'Groups managers updated successfully.',
-                PEAR_LOG_INFO
+                KLogger::INFO
             );
 
             return true;
@@ -731,7 +733,7 @@ class Group
             $log->log(
                 'Unable to attach managers to group `' . $this->_group_name .
                 '` (' . $this->_id . ')|' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             return false;
         }

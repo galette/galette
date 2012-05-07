@@ -131,7 +131,7 @@ if ( version_compare(PHP_VERSION, '5.3.0', '<') ) {
     $log->log(
         'Galette is NOT compliant with your current PHP version. ' .
         'Galette requires PHP 5.3 minimum, current version is ' . phpversion(),
-        PEAR_LOG_EMERG
+        KLogger::EMERG
     );
     die();
 }
