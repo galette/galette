@@ -89,6 +89,11 @@ class KLogger
      */
     private $_logFilePath       = null;
     /**
+     * Log filename
+     * @var string
+     */
+    private $_logFileName       = 'log';
+    /**
      * Current minimum logging threshold
      * @var integer
      */
@@ -168,10 +173,11 @@ class KLogger
      *
      * @param string  $logDirectory File path to the logging directory
      * @param integer $severity     One of the pre-defined severity constants
+     * @param string  $logFileName  Log's filename
      *
      * @return void
      */
-    public function __construct($logDirectory, $severity)
+    public function __construct($logDirectory, $severity, $logFileName = null)
     {
         $logDirectory = rtrim($logDirectory, '\\/');
 
@@ -179,11 +185,14 @@ class KLogger
             return;
         }
 
+        if ( $logFileName !== null ) {
+            $this->_logFileName = $logFileName;
+        }
         $this->_logFilePath = $logDirectory
             . DIRECTORY_SEPARATOR
-            . 'log_'
+            . $this->_logFileName . '_'
             . date('Y-m-d')
-            . '.txt';
+            . '.log';
 
         $this->_severityThreshold = $severity;
         if (!file_exists($logDirectory)) {
