@@ -151,7 +151,7 @@ class Picture
         if ( !$this->_checkFileOnFS() ) {
             //if file does not exists on the FileSystem,
             //check for it in the database
-            $this->_checkFileInDB();
+            //$this->_checkFileInDB();
         }
 
         // if we still have no picture, take the default one
