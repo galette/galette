@@ -95,8 +95,6 @@ if ( !isset($_COOKIE['show_galette_dashboard']) ) {
 
 set_include_path(
     GALETTE_ZEND_PATH . PATH_SEPARATOR .
-    GALETTE_PEAR_PATH . PATH_SEPARATOR .
-    GALETTE_PEAR_LOG_PATH . PATH_SEPARATOR .
     GALETTE_PHP_MAILER_PATH . PATH_SEPARATOR .
     GALETTE_SMARTY_PATH . PATH_SEPARATOR .
     get_include_path()
