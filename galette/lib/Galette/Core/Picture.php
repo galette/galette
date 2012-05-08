@@ -303,7 +303,7 @@ class Picture
     public function display()
     {
         header('Content-type: '.$this->mime);
-        header('Content-Length: ' . filesize($file));
+        header('Content-Length: ' . filesize($this->file_path));
         ob_clean();
         flush();
         readfile($this->file_path);
