@@ -39,6 +39,7 @@
 
 $template_subdir = 'templates/' . $preferences->pref_theme . '/';
 $tpl = new Galette\Core\Smarty($base_path);
+$tpl->muteExpectedErrors();
 
 /**
 * Return member name. Smarty cannot directly use static functions

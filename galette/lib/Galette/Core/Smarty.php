@@ -60,8 +60,6 @@ class Smarty extends \SmartyBC
 
         parent::__construct();
 
-        $this->muteExpectedErrors();
-
         //paths configuration
         $this->setTemplateDir(WEB_ROOT . $template_subdir);
         $this->setCompileDir(GALETTE_COMPILE_DIR);
