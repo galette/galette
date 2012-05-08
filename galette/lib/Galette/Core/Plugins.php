@@ -37,6 +37,8 @@
 
 namespace Galette\Core;
 
+use Galette\Common\KLogger as KLogger;
+
 /**
  * Plugins class for galette
  *
@@ -156,36 +158,54 @@ class Plugins
     * @param string  $desc        Module description
     * @param string  $author      Module author name
     * @param string  $version     Module version
+    * @param string  $compver     Galette version compatibility
     * @param string  $permissions Module permissions
     * @param integer $priority    Module priority
     *
     * @return void
     */
     public function register(
-        $name, $desc, $author, $version, $permissions=null,
+        $name, $desc, $author, $version, $compver = null, $permissions=null,
         $priority=1000
     ) {
-        /*if ($this->ns == 'admin') {
-            if ($permissions == '' && !$this->core->auth->isSuperAdmin()) {
-                return;
-            } elseif (!$this->core->auth->check(
-                $permissions,$this->core->blog->id)
-                ) {
-                return;
-            }
-        }*/
+        global $log;
 
-        if ($this->id) {
-            $this->modules[$this->id] = array(
+        if ( $compver === null ) {
+            //plugin compatibility missing!
+            $log->log(
+                'Plugin ' . $name . ' does not contains mandatory version ' .
+                'compatiblity informations. Please contact the author.',
+                KLogger::ERR
+            );
+            $this->disabled[$this->id] = array(
                 'root' => $this->mroot,
-                'name' => $name,
-                'desc' => $desc,
-                'author' => $author,
-                'version' => $version,
-                'permissions' => $permissions,
-                'priority' => $priority === null ? 1000 : (integer) $priority,
                 'root_writable' => is_writable($this->mroot)
             );
+        } elseif ( version_compare($compver, GALETTE_COMPAT_VERSION, '<') ) {
+            //plugin is not compatible with that version of galette.
+            $log->log(
+                'Plugin ' . $name . ' is known to be compatible with Galette ' .
+                $compver . ' only, but you current installation require a ' .
+                'plugin compatible with at least ' . GALETTE_COMPAT_VERSION,
+                KLogger::WARN
+            );
+            $this->disabled[$this->id] = array(
+                'root' => $this->mroot,
+                'root_writable' => is_writable($this->mroot)
+            );
+        } else {
+            if ($this->id) {
+                $this->modules[$this->id] = array(
+                    'root' => $this->mroot,
+                    'name' => $name,
+                    'desc' => $desc,
+                    'author' => $author,
+                    'version' => $version,
+                    'permissions' => $permissions,
+                    'priority' => $priority === null ? 1000 : (integer) $priority,
+                    'root_writable' => is_writable($this->mroot)
+                );
+            }
         }
     }
 

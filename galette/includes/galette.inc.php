@@ -77,6 +77,7 @@ $smartyLoader->register();
 session_start();
 
 define('GALETTE_VERSION', 'v0.7.1-dev');
+define('GALETTE_COMPAT_VERSION', '0.7.1');
 define('GALETTE_DB_VERSION', '0.700');
 define('GALETTE_MODE', 'PROD'); //DEV or PROD
 define('GALETTE_TWITTER', 'galette_soft');
