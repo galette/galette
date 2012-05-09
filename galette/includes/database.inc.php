@@ -19,7 +19,7 @@
  *
  * $Id$
  */
-	define("GALETTE_VERSION", "v0.64 RC2");
+	define("GALETTE_VERSION", "v0.64 RC3");
 
 	/*
 	*@author steve gricci
