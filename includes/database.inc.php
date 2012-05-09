@@ -1,5 +1,5 @@
 <?php
-	define("GALETTE_VERSION", "v0.63.3");
+	define("GALETTE_VERSION", "v0.63.4");
 
 	/*
 	*@author steve gricci
