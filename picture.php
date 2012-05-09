@@ -32,7 +32,7 @@
 	if ($_SESSION["admin_status"]==0 && $_GET['id_adh'] != 0)
 		$id_adh = $_SESSION["logged_id_adh"];
 	else
-		$id_adh = $_GET['id_adh'];
+		$id_adh = (int)$_GET['id_adh'];
 
 	$picture = new picture($id_adh);
 	$picture->display();
