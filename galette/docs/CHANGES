@@ -1,7 +1,7 @@
 Changes
 -------
 
-0.63.3 -> 0.64 (2010-??-??)
+0.63.3 -> 0.64 (not released)
 - Handle 'stripos' missing function to keep 0.63.x php4 compliant
 - Upgrade Adodb to 4992
 - Upgrade to Smarty 2.6.22, and replace old hack for translations with more elegant plugin
@@ -16,6 +16,7 @@ Changes
 - Handle 'mb_strtoupper' to avoid error on labels generation when mb extension is not present
 - Move config file from includes to config directory. Wrtie access on includes directory will no longer be required at install
 - Only super-admin can change its login/password now. Standard admins can no longer do that
+- fix a sql injection vulnerability (CVE-2012-2338)
 
 0.63.2 -> 0.63.3 (2009-11-09)
 - fix a security flaw that allowed attacker to send arbitrary PHP files on some servers
