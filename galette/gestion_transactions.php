@@ -93,7 +93,8 @@ $trans->setSmartyPagination($tpl);
 
 $tpl->assign('page_title', _T("Transactions managment"));
 $tpl->assign('require_dialog', true);
-$tpl->assign('transactions', $list_trans);
+$tpl->assign('list_trans', $list_trans);
+$tpl->assign('transactions', $trans);
 $tpl->assign('nb_transactions', $trans->getCount());
 if ( $trans->filtre_cotis_adh != null ) {
     $member = new Galette\Entity\Adherent();
