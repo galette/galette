@@ -42,6 +42,7 @@ use Galette\Core\Pagination as Pagination;
 use Galette\Entity\Contribution as Contribution;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\Transaction as Transaction;
+use Galette\Entity\ContributionsTypes as ContributionsTypes;
 
 /**
  * Contributions class for galette
