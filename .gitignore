@@ -39,4 +39,7 @@ quick_gen_project_*
 # /galette/templates_c/
 /galette/templates_c/*.php
 
+galette/includes/tcpdf_*
+galette/includes/Zend*
+
 *~
