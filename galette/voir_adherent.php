@@ -159,6 +159,7 @@ if ( isset($error_detected) ) {
 $tpl->assign('page_title', _T("Member Profile"));
 $tpl->assign('require_dialog', true);
 $tpl->assign('member', $member);
+$tpl->assign('data', $adherent);
 $tpl->assign('navigate', $navigate);
 $tpl->assign('pref_lang_img', $i18n->getFlagFromId($member->language));
 $tpl->assign('pref_lang', ucfirst($i18n->getNameFromId($member->language)));
