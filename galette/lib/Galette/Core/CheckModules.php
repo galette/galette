@@ -193,5 +193,46 @@ class CheckModules
     {
         return isset($this->_good[$module]);
     }
+
+    /**
+     * Retrieve good modules
+     *
+     * @return array
+     */
+    public function getGoods()
+    {
+        return $this->_good;
+    }
+
+    /**
+     * Retrieve may modules
+     *
+     * @return array
+     */
+    public function getMays()
+    {
+        return $this->_may;
+    }
+
+    /**
+     * Retrieve should modules
+     *
+     * @return array
+     */
+    public function getShoulds()
+    {
+        return $this->_should;
+    }
+
+    /**
+     * Retrieve missing modules
+     *
+     * @return array
+     */
+    public function getMissings()
+    {
+        return $this->_missing;
+    }
+
 }
 ?>
