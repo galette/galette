@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Classes
+ * @category  Entity
  * @package   Galette
  *
  * @author    John Perr <johnperr@abul.org>
@@ -43,7 +43,7 @@ use Galette\Common\KLogger as KLogger;
 /**
  * Texts class for galette
  *
- * @category  Classes
+ * @category  Entity
  * @name      Texts
  * @package   Galette
  * @author    John Perr <johnperr@abul.org>

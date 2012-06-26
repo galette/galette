@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Classes
+ * @category  Repository
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -50,7 +50,7 @@ use Galette\Entity\Status as Status;
  * Members class for galette
  *
  * @name Members
- * @category  Classes
+ * @category  Repository
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>

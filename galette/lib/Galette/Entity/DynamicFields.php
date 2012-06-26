@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Classes
+ * @category  Entity
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -41,7 +41,7 @@ namespace Galette\Entity;
  * Dynamic fields handler for Galette
  *
  * @name DynamicFields
- * @category  Classes
+ * @category  Entity
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>

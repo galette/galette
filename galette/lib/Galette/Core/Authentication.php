@@ -40,7 +40,7 @@ namespace Galette\Core;
 /**
  * Abstract authentication class for galette
  *
- * @category  Classes
+ * @category  Authentication
  * @name      Authentication
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>

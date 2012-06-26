@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Classes
+ * @category  Filters
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -46,7 +46,7 @@ use Galette\Repository\Members as Members;
  * Members list filters and paginator
  *
  * @name      MembersList
- * @category  Classes
+ * @category  Filters
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>

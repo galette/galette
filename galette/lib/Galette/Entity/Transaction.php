@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Classes
+ * @category  Entity
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -43,7 +43,7 @@ use Galette\Repository\Contributions as Contributions;
 /**
  * Transaction class for galette
  *
- * @category  Classes
+ * @category  Entity
  * @name      Transaction
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>

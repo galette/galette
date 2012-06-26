@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  CoreLib
+ * @category  Core
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -40,8 +40,8 @@ namespace Galette\Core;
 /**
  * Required modules checking
  *
- * @category  CoreLib
- * @name      Login
+ * @category  Core
+ * @name      CheckModules
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2012 The Galette Team

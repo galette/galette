@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Classes
+ * @category  Core
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -42,7 +42,7 @@ namespace Galette\Core;
  * from the default one.
  * If no print logo is found, we take the default Logo instead.
  *
- * @category  Classes
+ * @category  Core
  * @name      PrintLogo
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>

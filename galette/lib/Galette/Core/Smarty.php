@@ -23,7 +23,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Classes
+ * @category  Core
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -37,9 +37,9 @@
 namespace Galette\Core;
 
 /**
- * Zend_Db wrapper
+ * Smarty wrapper
  *
- * @category  Classes
+ * @category  Core
  * @name      Smarty
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>

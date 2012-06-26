@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Classes
+ * @category  Core
  * @package   Galette
  *
  * @author    Frédéric Jaqcuot <unknown@unknow.com>
@@ -44,7 +44,7 @@ use Galette\Common\KLogger as KLogger;
  * Picture handling
  *
  * @name Picture
- * @category  Classes
+ * @category  Core
  * @package   Galette
  * @author    Frédéric Jaqcuot <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>

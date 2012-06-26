@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Classes
+ * @category  Core
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -46,7 +46,7 @@ require_once WEB_ROOT . 'includes/html2text.php';
 /**
  * Generic mail for Galette
  *
- * @category  Classes
+ * @category  Core
  * @name      GaletteMail
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>

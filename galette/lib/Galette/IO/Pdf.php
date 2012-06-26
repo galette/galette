@@ -27,7 +27,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Classes
+ * @category  IO
  * @package   Galette
  *
  * @author    John Perr <johnperr@abul.org>
@@ -56,7 +56,7 @@ require_once WEB_ROOT . 'includes/tcpdf_' . TCPDF_VERSION . '/tcpdf.php';
 /**
  * PDF class for galette
  *
- * @category  Classes
+ * @category  IO
  * @name      PDF
  * @package   Galette
  * @abstract  Class for expanding TCPDF.

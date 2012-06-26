@@ -25,7 +25,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Classes
+ * @category  Core
  * @package   Galette
  *
  * @author    Frédéric Jaqcuot <unknown@unknow.com>
@@ -44,9 +44,9 @@ use Galette\Common\KLogger as KLogger;
 use Galette\Entity\Adherent;
 
 /**
- * Abstract authentication class for galette
+ * Temporary password managment
  *
- * @category  Classes
+ * @category  Core
  * @name      Password
  * @package   Galette
  * @author    Frédéric Jaqcuot <unknown@unknow.com>

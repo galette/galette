@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Main
+ * @category  Core
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -42,7 +42,7 @@ use Galette\Common\KLogger as KLogger;
 /**
  * Error handler
  *
- * @category  Main
+ * @category  Core
  * @name      Error
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
