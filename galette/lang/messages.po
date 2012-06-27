@@ -595,7 +595,7 @@ msgstr ""
 msgid "Database can't be reached. Please go back to enter the connection parameters again."
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1368 ../templates/default/member.tpl:155
+#: ../lib/Galette/Entity/Adherent.php:1413 ../templates/default/member.tpl:155
 msgid "Active"
 msgstr ""
 
@@ -976,7 +976,7 @@ msgstr ""
 msgid "This application runs under DEMO mode, all features may not be available."
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1270
+#: ../lib/Galette/Entity/Adherent.php:1315
 msgid "Member card updated"
 msgstr ""
 
@@ -1005,11 +1005,11 @@ msgstr ""
 msgid "Note: members with a status priority lower than %priority are staff members."
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1368 ../templates/default/member.tpl:156
+#: ../lib/Galette/Entity/Adherent.php:1413 ../templates/default/member.tpl:156
 msgid "Inactive"
 msgstr ""
 
-#: ../gestion_intitules.php:330 ../lib/Galette/Entity/Adherent.php:1365
+#: ../gestion_intitules.php:330 ../lib/Galette/Entity/Adherent.php:1410
 #: ../templates/default/gestion_intitule_content.tpl:29 ../templates/default/champ_requis.tpl:8
 #: ../templates/default/config_fields.tpl:40 ../templates/default/config_fields.tpl:46
 #: ../templates/default/editer_champ.tpl:26 ../templates/default/configurer_fiches.tpl:23
@@ -1167,7 +1167,7 @@ msgstr ""
 msgid "%membername: edit informations"
 msgstr ""
 
-#: ../lib/Galette/Entity/Transaction.php:312 ../lib/Galette/Entity/Adherent.php:1162
+#: ../lib/Galette/Entity/Transaction.php:312 ../lib/Galette/Entity/Adherent.php:1207
 #: ../lib/Galette/Entity/Contribution.php:419
 msgid "- Mandatory field empty: "
 msgstr ""
@@ -1214,7 +1214,7 @@ msgstr ""
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1241
+#: ../lib/Galette/Entity/Adherent.php:1286
 msgid "Fail to add new member."
 msgstr ""
 
@@ -1733,7 +1733,7 @@ msgstr ""
 msgid "Contribution has been successfyully detached from current transaction"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1236
+#: ../lib/Galette/Entity/Adherent.php:1281
 msgid "Member card added"
 msgstr ""
 
@@ -2793,8 +2793,8 @@ msgstr ""
 msgid "No groups has been selected yet."
 msgstr ""
 
-#: ../includes/i18n.inc.php:298
-msgid "Vice-treasurer"
+#: ../lib/Galette/Entity/Adherent.php:1181
+msgid "Selected status (%s) is already in use in <a href='voir_adherent.php?id_adh=%i'>%n %m's profile</a>."
 msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:146 ../templates/default/mailing_adherents.tpl:193
@@ -3128,7 +3128,7 @@ msgstr ""
 msgid "Search:"
 msgstr ""
 
-#: ../gestion_intitules.php:330 ../lib/Galette/Entity/Adherent.php:1365
+#: ../gestion_intitules.php:330 ../lib/Galette/Entity/Adherent.php:1410
 #: ../templates/default/gestion_intitule_content.tpl:28 ../templates/default/champ_requis.tpl:10
 #: ../templates/default/config_fields.tpl:42 ../templates/default/config_fields.tpl:48
 #: ../templates/default/editer_champ.tpl:25 ../templates/default/configurer_fiches.tpl:22
@@ -3213,7 +3213,7 @@ msgstr ""
 #: ../lib/Galette/Entity/Adherent.php:830 ../lib/Galette/Entity/Adherent.php:844
 #: ../lib/Galette/Entity/Adherent.php:856 ../lib/Galette/Entity/Adherent.php:1025
 #: ../lib/Galette/Entity/Adherent.php:1034 ../lib/Galette/Entity/Adherent.php:1043
-#: ../lib/Galette/Entity/Adherent.php:1342 ../lib/Galette/Entity/Contribution.php:341
+#: ../lib/Galette/Entity/Adherent.php:1387 ../lib/Galette/Entity/Contribution.php:341
 #: ../lib/Galette/Entity/Contribution.php:350 ../lib/Galette/Entity/Contribution.php:359
 #: ../lib/Galette/Entity/Contribution.php:487 ../lib/Galette/Entity/Contribution.php:875
 #: ../lib/Galette/Entity/Contribution.php:979 ../lib/Galette/Entity/Contribution.php:988
@@ -3796,6 +3796,10 @@ msgstr ""
 msgid "If you check this box (and if you are up to date with your contributions), your full name, website adress ad other informations will be publically visilbe on the members list.<br/>If you've uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case."
 msgstr ""
 
+#: ../includes/i18n.inc.php:298
+msgid "Vice-treasurer"
+msgstr ""
+
 #: ../lib/Galette/Core/Picture.php:821
 msgid "File upload stopped by extension"
 msgstr ""
@@ -4216,6 +4220,10 @@ msgstr ""
 
 #: ../install/index.php:1087
 msgid "Default contributions types were successfully stored."
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1193
+msgid "An error has occured while looking if status is already in use."
 msgstr ""
 
 #: ../lostpasswd.php:158

@@ -1148,6 +1148,51 @@ class Adherent
                             $this->$prop = md5($value);
                         }
                         break;
+                    case 'id_statut':
+                        try {
+                            //check for status unicity
+                            $select = new \Zend_Db_Select($zdb->db);
+
+                            $select->from(
+                                array('a' => PREFIX_DB . self::TABLE)
+                            )->join(
+                                array('b' => PREFIX_DB . Status::TABLE),
+                                'a.' . Status::PK . '=b.' . Status::PK,
+                                array('libelle_statut')
+                            )->where('b.' . Status::PK . '=?', $value)
+                                ->where('b.priorite_statut < ' . Members::NON_STAFF_MEMBERS)
+                                ->limit(1);
+
+                            $result = $select->query()->fetchObject();
+                            if ( $result !== false ) {
+                                $errors[] = str_replace(
+                                    array(
+                                        '%s',
+                                        '%i',
+                                        '%n',
+                                        '%m'
+                                    ),
+                                    array(
+                                        $result->libelle_statut,
+                                        $result->id_adh,
+                                        $result->nom_adh,
+                                        $result->prenom_adh
+                                    ),
+                                    _T("Selected status (%s) is already in use in <a href='voir_adherent.php?id_adh=%i'>%n %m's profile</a>.")
+                                );
+                            }
+                        } catch ( \Exception $e ) {
+                            $log->log(
+                                'An error occured checking status unicity.',
+                                KLogger::ERR
+                            );
+                            $log->log(
+                                'Query was: ' . $select->__toString(),
+                                KLogger::INFO
+                            );
+                            $errors[] = _T("An error has occured while looking if status is already in use.");
+                        }
+                        break;
                     }
                 }
             }
