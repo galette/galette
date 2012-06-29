@@ -7,7 +7,15 @@
                 <caption>{_T string="Related transaction informations"}</caption>
                 <thead>
                     <tr>
-                        <td colspan="5">{$contribution->transaction->description}</td>
+                        <td colspan="5">
+                            {$contribution->transaction->description}
+                            <a href="{$galette_base_path}ajouter_transaction.php?trans_id={$contribution->transaction->id}" title="{_T string="View transaction"}">
+                                <img src="{$template_subdir}images/icon-money.png"
+                                    alt="{_T string="[view]"}"
+                                    width="16"
+                                    height="16"/>
+                            </a>
+                        </td>
                     </tr>
                 </thead>
                 <tbody>
