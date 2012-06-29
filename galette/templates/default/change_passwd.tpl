@@ -5,7 +5,7 @@
 {if !$warning_detected and !$password_updated}
                 <table>
                     <tr>
-                        <th><label for="mdp_adh">{_T string="Password:"}</label></th>
+                        <th><label for="mdp_adh">{_T string="New password:"}</label></th>
                         <td><input type="password" name="mdp_adh" id="mdp_adh" value="" maxlength="20"/></td>
                     </tr>
                     <tr>
