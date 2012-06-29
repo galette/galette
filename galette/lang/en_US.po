@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2012-06-27 22:43+0200\n"
+"PO-Revision-Date: 2012-06-29 22:48+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -768,9 +768,9 @@ msgstr "Sender Email:"
 msgid "Default status were successfully stored."
 msgstr "Default status were successfully stored."
 
-#: ../templates/default/history.tpl:35
-msgid "IP"
-msgstr "IP"
+#: ../lib/Galette/Entity/Transaction.php:299
+msgid "- Transaction description must be 150 characters long maximum."
+msgstr "- Transaction description must be 150 characters long maximum."
 
 #: ../templates/default/export.tpl:85
 msgid "Table name"
@@ -780,6 +780,10 @@ msgstr "Table name"
 #: ../templates/default/desktop.tpl:7
 msgid "Groups"
 msgstr "Groups"
+
+#: ../templates/default/history.tpl:35
+msgid "IP"
+msgstr "IP"
 
 #: ../ajouter_contribution.php:217
 msgid ""
@@ -1501,9 +1505,9 @@ msgstr "unreachable member:"
 msgid "The group name you have requested already exits in the database."
 msgstr "The group name you have requested already exits in the database."
 
-#: ../lib/Galette/Entity/Transaction.php:299
-msgid "- Transaction description must be 30 characters long maximum."
-msgstr "- Transaction description must be 30 characters long maximum."
+#: ../templates/default/ajouter_transaction.tpl:4
+msgid "Transaction details"
+msgstr "Transaction details"
 
 #: ../lib/Galette/Core/Picture.php:817
 msgid "Missing a temporary folder"
@@ -4109,10 +4113,6 @@ msgstr "CREATE operation allowed"
 #: ../templates/default/mailing_adherents.tpl:4
 msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgstr "Email sent is disabled in the preferences. Ask galette admin"
-
-#: ../templates/default/ajouter_transaction.tpl:4
-msgid "Transaction details"
-msgstr "Transaction details"
 
 #: ../champs_adherents.php:49 ../lib/Galette/Entity/Adherent.php:254
 #: ../templates/default/member.tpl:96 ../templates/default/preferences.tpl:44

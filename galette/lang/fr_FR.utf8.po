@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2012-06-27 22:44+0200\n"
+"PO-Revision-Date: 2012-06-29 22:48+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -782,9 +782,10 @@ msgstr "Courriel expéditeur&nbsp;:"
 msgid "Default status were successfully stored."
 msgstr "Les statuts par défaut ont été sauvegardés avec succès."
 
-#: ../templates/default/history.tpl:35
-msgid "IP"
-msgstr "IP"
+#: ../lib/Galette/Entity/Transaction.php:299
+msgid "- Transaction description must be 150 characters long maximum."
+msgstr ""
+"- La description pour la transaction ne doit pas excéder 150 caractères."
 
 #: ../templates/default/export.tpl:85
 msgid "Table name"
@@ -794,6 +795,10 @@ msgstr "Nom de la table"
 #: ../templates/default/desktop.tpl:7
 msgid "Groups"
 msgstr "Groupes"
+
+#: ../templates/default/history.tpl:35
+msgid "IP"
+msgstr "IP"
 
 #: ../ajouter_contribution.php:217
 msgid ""
@@ -1533,10 +1538,9 @@ msgstr "membre injoignable&nbsp;:"
 msgid "The group name you have requested already exits in the database."
 msgstr "Le nom de groupe que vous avez demandé existe déjà dans la base."
 
-#: ../lib/Galette/Entity/Transaction.php:299
-msgid "- Transaction description must be 30 characters long maximum."
-msgstr ""
-"- La description pour la transaction ne doit pas excéder 30 caractères."
+#: ../templates/default/ajouter_transaction.tpl:4
+msgid "Transaction details"
+msgstr "Détails de la transaction"
 
 #: ../lib/Galette/Core/Picture.php:817
 msgid "Missing a temporary folder"
@@ -3141,8 +3145,8 @@ msgid ""
 "Selected status (%s) is already in use in <a href='voir_adherent.php?id_adh="
 "%i'>%n %m's profile</a>."
 msgstr ""
-"Le statut sélectionné (%s) est déjà utilisé dans la <a "
-"href='voir_adherent.php?id_adh=%i'>fiche de l'adhérent %n %m</a>."
+"Le statut sélectionné (%s) est déjà utilisé dans la <a href='voir_adherent."
+"php?id_adh=%i'>fiche de l'adhérent %n %m</a>."
 
 #: ../templates/default/mailing_adherents.tpl:146
 #: ../templates/default/mailing_adherents.tpl:193
@@ -4178,10 +4182,6 @@ msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgstr ""
 "L'envoi de courriel est désactivé dans les préférences. Contactez votre "
 "administrateur Galette."
-
-#: ../templates/default/ajouter_transaction.tpl:4
-msgid "Transaction details"
-msgstr "Détails de la transaction"
 
 #: ../champs_adherents.php:49 ../lib/Galette/Entity/Adherent.php:254
 #: ../templates/default/member.tpl:96 ../templates/default/preferences.tpl:44

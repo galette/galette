@@ -37,11 +37,11 @@
 					</p>
 					<p>
 						<label for="nom_adh" class="bline">{_T string="Name:"}</label>
-						<input type="text" name="nom_adh" id="nom_adh" value="{$member->name|escape}" maxlength="20" {$disabled.nom_adh}{if $required.nom_adh eq 1} required{/if}/>
+						<input type="text" name="nom_adh" id="nom_adh" value="{$member->name|escape}" maxlength="50" {$disabled.nom_adh}{if $required.nom_adh eq 1} required{/if}/>
 					</p>
 					<p>
 						<label for="prenom_adh" class="bline">{_T string="First name:"}</label>
-						<input type="text" name="prenom_adh" id="prenom_adh" value="{$member->surname}" maxlength="20" {$disabled.prenom_adh}{if $required.prenom_adh eq 1} required{/if}/>
+						<input type="text" name="prenom_adh" id="prenom_adh" value="{$member->surname}" maxlength="50" {$disabled.prenom_adh}{if $required.prenom_adh eq 1} required{/if}/>
 					</p>
                     <p>
 						<label for="is_company" class="bline">{_T string="Is company?"}</label>
@@ -49,7 +49,7 @@
                     </p>
 					<p id="company_field"{if !$member->isCompany()} class="hidden"{/if}>
 						<label for="societe_adh" class="bline">{_T string="Company:"}</label>
-						<input type="text" name="societe_adh" id="societe_adh" value="{$member->company_name}" maxlength="20" {$disabled.societe_adh}{if $required.societe_adh eq 1} required{/if}/>
+						<input type="text" name="societe_adh" id="societe_adh" value="{$member->company_name}" maxlength="200" {$disabled.societe_adh}{if $required.societe_adh eq 1} required{/if}/>
 					</p>
 					<p>
 						<label for="pseudo_adh" class="bline">{_T string="Nickname:"}</label>

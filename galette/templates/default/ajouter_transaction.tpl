@@ -4,7 +4,7 @@
 				<legend class="ui-state-active ui-corner-top">{_T string="Transaction details"}</legend>
 				<p>
 					<label for="trans_desc" class="bline">{_T string="Description:"}</label>
-					<input type="text" name="trans_desc" id="trans_desc" value="{$transaction->description}" maxlength="30" size="30"{if $required.trans_desc eq 1} required{/if}/>
+					<input type="text" name="trans_desc" id="trans_desc" value="{$transaction->description}" maxlength="150" size="30"{if $required.trans_desc eq 1} required{/if}/>
 				</p>
 				<p>
 					<label for="id_adh" class="bline" >{_T string="Originator:"}</label>

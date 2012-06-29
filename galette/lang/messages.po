@@ -679,8 +679,8 @@ msgstr ""
 msgid "Default status were successfully stored."
 msgstr ""
 
-#: ../templates/default/history.tpl:35
-msgid "IP"
+#: ../lib/Galette/Entity/Transaction.php:299
+msgid "- Transaction description must be 150 characters long maximum."
 msgstr ""
 
 #: ../templates/default/export.tpl:85
@@ -690,6 +690,10 @@ msgstr ""
 #: ../gestion_groupes.php:153 ../templates/default/gestion_groupes.tpl:4
 #: ../templates/default/desktop.tpl:7
 msgid "Groups"
+msgstr ""
+
+#: ../templates/default/history.tpl:35
+msgid "IP"
 msgstr ""
 
 #: ../ajouter_contribution.php:217
@@ -1347,8 +1351,8 @@ msgstr ""
 msgid "The group name you have requested already exits in the database."
 msgstr ""
 
-#: ../lib/Galette/Entity/Transaction.php:299
-msgid "- Transaction description must be 30 characters long maximum."
+#: ../templates/default/ajouter_transaction.tpl:4
+msgid "Transaction details"
 msgstr ""
 
 #: ../lib/Galette/Core/Picture.php:817
@@ -3704,10 +3708,6 @@ msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:4
 msgid "Email sent is disabled in the preferences. Ask galette admin"
-msgstr ""
-
-#: ../templates/default/ajouter_transaction.tpl:4
-msgid "Transaction details"
 msgstr ""
 
 #: ../champs_adherents.php:49 ../lib/Galette/Entity/Adherent.php:254

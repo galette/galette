@@ -7,10 +7,10 @@ DROP TABLE IF EXISTS galette_adherents;
 CREATE TABLE galette_adherents (
   id_adh int(10) unsigned NOT NULL auto_increment,
   id_statut int(10) unsigned NOT NULL default '4',
-  nom_adh varchar(20) NOT NULL default '',
-  prenom_adh varchar(20) default NULL,
+  nom_adh varchar(50) NOT NULL default '',
+  prenom_adh varchar(50) default NULL,
   pseudo_adh varchar(20) default NULL,
-  societe_adh varchar(20) default NULL,
+  societe_adh varchar(200) default NULL,
   titre_adh tinyint(3) unsigned NOT NULL default '0',
   ddn_adh date default '1901-01-01',
   adresse_adh varchar(150) NOT NULL default '',
@@ -68,7 +68,7 @@ CREATE TABLE galette_transactions (
   trans_id int(10) unsigned NOT NULL auto_increment,
   trans_date date NOT NULL default '1901-01-01',
   trans_amount decimal(15, 2) default '0',
-  trans_desc varchar(30) NOT NULL default '',
+  trans_desc varchar(150) NOT NULL default '',
   id_adh int(10) unsigned default NULL,
   PRIMARY KEY  (trans_id),
   FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)
