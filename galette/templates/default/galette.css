@@ -814,6 +814,13 @@ h1 #sendmail .ui-button-text {
     font-weight: bold;
     padding:.2em;
 }
+
+#transaction_detail thead td {
+    text-align: center;
+    font-style: italic;
+    background-color: transparent;
+}
+
 #clearfilter {
     background: url(images/clearfilter.png) 0 50% no-repeat;
     display:inline-block;

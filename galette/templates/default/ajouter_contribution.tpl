@@ -5,20 +5,27 @@
         {assign var="mid" value=$contribution->transaction->member}
             <table id="transaction_detail">
                 <caption>{_T string="Related transaction informations"}</caption>
-                <tr>
-                    <th class="listing">#</th>
-                    <th class="listing">{_T string="Date"}</th>
-                    <th class="listing">{_T string="Member"}</th>
-                    <th class="listing">{_T string="Amount"}</th>
-                    <th class="listing">{_T string="Not dispatched amount"}</th>
-                </tr>
-                <tr>
-                    <td>{$contribution->transaction->id}</td>
-                    <td>{$contribution->transaction->date}</td>
-                    <td>{memberName id="$mid"}</td>
-                    <td class="right">{$contribution->transaction->amount}</td>
-                    <td class="right">{$contribution->transaction->getMissingAmount()}</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <td colspan="5">{$contribution->transaction->description}</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="listing">#</th>
+                        <th class="listing">{_T string="Date"}</th>
+                        <th class="listing">{_T string="Member"}</th>
+                        <th class="listing">{_T string="Amount"}</th>
+                        <th class="listing">{_T string="Not dispatched amount"}</th>
+                    </tr>
+                    <tr>
+                        <td>{$contribution->transaction->id}</td>
+                        <td>{$contribution->transaction->date}</td>
+                        <td>{memberName id="$mid"}</td>
+                        <td class="right">{$contribution->transaction->amount}</td>
+                        <td class="right">{$contribution->transaction->getMissingAmount()}</td>
+                    </tr>
+                </tbody>
             </table>
     {/if}
 			<fieldset class="cssform">
