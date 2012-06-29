@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2012-06-29 22:48+0200\n"
+"PO-Revision-Date: 2012-06-30 00:06+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -120,7 +120,7 @@ msgid "Position:"
 msgstr "Position&nbsp;:"
 
 #: ../lib/Galette/Entity/Contribution.php:137
-#: ../templates/default/ajouter_contribution.tpl:83
+#: ../templates/default/ajouter_contribution.tpl:98
 msgid "End date of membership:"
 msgstr "Date de fin d'adhésion&nbsp;:"
 
@@ -293,8 +293,8 @@ msgstr ""
 "Voulez vous réellement effacer toutes les contributions sélectionnées&nbsp;?"
 
 #: ../templates/default/gestion_adherents.tpl:179
-#: ../templates/default/gestion_contributions.tpl:210
-#: ../templates/default/gestion_contributions.tpl:229
+#: ../templates/default/gestion_contributions.tpl:223
+#: ../templates/default/gestion_contributions.tpl:242
 #: ../templates/default/gestion_transactions.tpl:93
 msgid "[mod]"
 msgstr "[mod]"
@@ -304,7 +304,7 @@ msgid "Mailing has been successfully saved."
 msgstr "L'E-Mailing a été enregistré avec succès."
 
 #: ../lib/Galette/Entity/Contribution.php:112
-#: ../templates/default/ajouter_contribution.tpl:36
+#: ../templates/default/ajouter_contribution.tpl:51
 msgid "Contribution type:"
 msgstr "Type de contribution&nbsp;:"
 
@@ -314,7 +314,7 @@ msgstr "anglais"
 
 #: ../lib/Galette/Entity/Contribution.php:900
 #: ../templates/default/gestion_contributions.tpl:15
-#: ../templates/default/ajouter_contribution.tpl:62
+#: ../templates/default/ajouter_contribution.tpl:77
 msgid "Other"
 msgstr "Autre"
 
@@ -383,7 +383,6 @@ msgstr ""
 #: ../champs_adherents.php:62 ../lib/Galette/Entity/Adherent.php:358
 #: ../install/index.php:536 ../install/index.php:1006
 #: ../templates/default/member.tpl:184 ../templates/default/member.tpl:194
-#: ../templates/default/change_passwd.tpl:8
 #: ../templates/default/preferences.tpl:402 ../templates/default/index.tpl:12
 msgid "Password:"
 msgstr "Mot de passe&nbsp;:"
@@ -452,7 +451,7 @@ msgstr "- Format de date incorrect (%date_format) pour %field&nbsp;!"
 
 #: ../lib/Galette/Entity/Contribution.php:909
 #: ../templates/default/gestion_contributions.tpl:12
-#: ../templates/default/ajouter_contribution.tpl:59
+#: ../templates/default/ajouter_contribution.tpl:74
 msgid "Check"
 msgstr "Chèque"
 
@@ -571,7 +570,7 @@ msgstr "Date de début d'exercice&nbsp;:"
 #: ../templates/default/config_fields.tpl:60
 #: ../templates/default/preferences.tpl:416
 #: ../templates/default/editer_champ.tpl:64
-#: ../templates/default/ajouter_contribution.tpl:104
+#: ../templates/default/ajouter_contribution.tpl:119
 #: ../templates/default/gestion_textes.tpl:35
 msgid "Save"
 msgstr "Enregistrer"
@@ -702,7 +701,7 @@ msgstr ""
 msgid "Transaction"
 msgstr "Transaction"
 
-#: ../templates/default/ajouter_contribution.tpl:42
+#: ../templates/default/ajouter_contribution.tpl:57
 msgid "Back"
 msgstr "Retour"
 
@@ -820,7 +819,7 @@ msgstr "- La période d'adhésion chevauche la période commençant le "
 msgid "You have to select a member."
 msgstr "Vous devez sélectionner un membre."
 
-#: ../templates/default/ajouter_contribution.tpl:13
+#: ../templates/default/ajouter_contribution.tpl:27
 msgid "Not dispatched amount"
 msgstr "Montant non ventilé"
 
@@ -856,7 +855,7 @@ msgid "DROP operation not allowed"
 msgstr "Opération DROP non autorisée"
 
 #: ../lib/Galette/Entity/Contribution.php:147
-#: ../templates/default/ajouter_contribution.tpl:79
+#: ../templates/default/ajouter_contribution.tpl:94
 msgid "Membership extension:"
 msgstr "Extension d'adhésion&nbsp;:"
 
@@ -889,7 +888,7 @@ msgstr ""
 "Vous allez être redirigé dans %timeout secondes. Si tel n'est pas le cas, "
 "cliquez sur le lien suivant :"
 
-#: ../templates/default/ajouter_contribution.tpl:49
+#: ../templates/default/ajouter_contribution.tpl:64
 msgid "Details of contribution"
 msgstr "Détail des contributions"
 
@@ -1028,8 +1027,8 @@ msgstr ""
 #: ../templates/default/member.tpl:60 ../templates/default/member.tpl:206
 #: ../templates/default/ajax_attendance_sheet_details.tpl:19
 #: ../templates/default/ajouter_transaction.tpl:20
-#: ../templates/default/ajouter_contribution.tpl:74
-#: ../templates/default/ajouter_contribution.tpl:85
+#: ../templates/default/ajouter_contribution.tpl:89
+#: ../templates/default/ajouter_contribution.tpl:100
 msgid "(yyyy-mm-dd format)"
 msgstr "(format jj/mm/aaaa)"
 
@@ -1128,7 +1127,7 @@ msgstr ""
 msgid "Member card updated"
 msgstr "Fiche adhérent mise à jour"
 
-#: ../templates/default/gestion_contributions.tpl:243
+#: ../templates/default/gestion_contributions.tpl:256
 msgid "Gift"
 msgstr "Don"
 
@@ -1174,7 +1173,7 @@ msgid "Yes"
 msgstr "Oui"
 
 #: ../templates/default/gestion_adherents.tpl:245
-#: ../templates/default/gestion_contributions.tpl:234
+#: ../templates/default/gestion_contributions.tpl:247
 msgid "Deletion"
 msgstr "Suppression"
 
@@ -1502,7 +1501,7 @@ msgstr "Compte rendu de mise à jour"
 msgid "Automatic emails texts edition"
 msgstr "Édition des courriels automatiques"
 
-#: ../templates/default/ajouter_contribution.tpl:81
+#: ../templates/default/ajouter_contribution.tpl:96
 msgid "months"
 msgstr "mois"
 
@@ -1548,7 +1547,7 @@ msgstr "Dossier temporaire manquant"
 
 #: ../lib/Galette/Entity/Contribution.php:912
 #: ../templates/default/gestion_contributions.tpl:13
-#: ../templates/default/ajouter_contribution.tpl:60
+#: ../templates/default/ajouter_contribution.tpl:75
 msgid "Transfer"
 msgstr "Virement"
 
@@ -1556,7 +1555,7 @@ msgstr "Virement"
 msgid "Year:"
 msgstr "Année&nbsp;:"
 
-#: ../templates/default/ajouter_contribution.tpl:25
+#: ../templates/default/ajouter_contribution.tpl:40
 msgid "Select contributor and contribution type"
 msgstr "Sélectionnez le contributeur et le type de contribution"
 
@@ -1632,7 +1631,7 @@ msgstr "Pages&nbsp;:"
 #: ../lib/Galette/Entity/Transaction.php:98
 #: ../lib/Galette/Entity/Contribution.php:116
 #: ../templates/default/ajouter_transaction.tpl:23
-#: ../templates/default/ajouter_contribution.tpl:51
+#: ../templates/default/ajouter_contribution.tpl:66
 msgid "Amount:"
 msgstr "Montant&nbsp;:"
 
@@ -1646,7 +1645,7 @@ msgstr ""
 "les contacter par courrier postal."
 
 #: ../templates/default/gestion_adherents.tpl:240
-#: ../templates/default/gestion_contributions.tpl:239
+#: ../templates/default/gestion_contributions.tpl:252
 msgid "Contribution"
 msgstr "Contribution"
 
@@ -1683,7 +1682,7 @@ msgstr "Récupérer le mot de passe"
 #: ../templates/default/ajouter_transaction.tpl:48
 #: ../templates/default/history.tpl:23
 #: ../templates/default/gestion_contributions.tpl:61
-#: ../templates/default/ajouter_contribution.tpl:10
+#: ../templates/default/ajouter_contribution.tpl:24
 #: ../templates/default/export.tpl:20
 #: ../templates/default/gestion_transactions.tpl:20
 msgid "Date"
@@ -1749,7 +1748,7 @@ msgid "Welcome to the Galette Install!"
 msgstr "Bienvenue à l'installation de Galette&nbsp;!"
 
 #: ../lib/Galette/Entity/Contribution.php:133
-#: ../templates/default/ajouter_contribution.tpl:70
+#: ../templates/default/ajouter_contribution.tpl:85
 msgid "Start date of membership:"
 msgstr "Date de début d'adhésion&nbsp;:"
 
@@ -1899,7 +1898,7 @@ msgstr ""
 "ils sont visibles"
 
 #: ../lib/Galette/Entity/Contribution.php:124
-#: ../templates/default/ajouter_contribution.tpl:95
+#: ../templates/default/ajouter_contribution.tpl:110
 msgid "Comments:"
 msgstr "Commentaire&nbsp;:"
 
@@ -1987,8 +1986,8 @@ msgstr "MSN&nbsp;:"
 
 #: ../templates/default/gestion_adherents.tpl:182
 #: ../templates/default/gestion_mailings.tpl:100
-#: ../templates/default/gestion_contributions.tpl:213
-#: ../templates/default/gestion_contributions.tpl:233
+#: ../templates/default/gestion_contributions.tpl:226
+#: ../templates/default/gestion_contributions.tpl:246
 #: ../templates/default/gestion_transactions.tpl:96
 msgid "[del]"
 msgstr "[suppr]"
@@ -2015,6 +2014,10 @@ msgstr ""
 "Ce commentaire n'est visible que par les administrateurs et les membres du "
 "bureau."
 
+#: ../templates/default/change_passwd.tpl:8
+msgid "New password:"
+msgstr "Nouveau mot de passe&nbsp;:"
+
 #: ../templates/default/ajax_attendance_sheet_details.tpl:9
 msgid "Title"
 msgstr "Titre"
@@ -2035,6 +2038,12 @@ msgstr "Contribution mise à jour"
 msgid "Parent group:"
 msgstr "Groupe parent&nbsp;:"
 
+#: ../templates/default/gestion_contributions.tpl:193
+#: ../templates/default/gestion_contributions.tpl:199
+#: ../templates/default/ajouter_contribution.tpl:14
+msgid "[view]"
+msgstr "[voir]"
+
 #: ../templates/default/page.tpl:160
 msgid "Existing mailing"
 msgstr "E-Mailings existants"
@@ -2052,7 +2061,7 @@ msgstr "Navigation"
 msgid "Show public pages for"
 msgstr "Afficher les pages publiques pour"
 
-#: ../templates/default/ajouter_contribution.tpl:109
+#: ../templates/default/ajouter_contribution.tpl:124
 #: ../templates/default/export.tpl:108
 msgid "Continue"
 msgstr "Continuer"
@@ -2112,7 +2121,7 @@ msgstr "Suivant"
 
 #: ../templates/default/ajouter_transaction.tpl:56
 #: ../templates/default/gestion_contributions.tpl:118
-#: ../templates/default/ajouter_contribution.tpl:12
+#: ../templates/default/ajouter_contribution.tpl:26
 #: ../templates/default/gestion_transactions.tpl:45
 msgid "Amount"
 msgstr "Montant"
@@ -2316,7 +2325,7 @@ msgid "Lines / Page:"
 msgstr "Lignes / Page&nbsp;:"
 
 #: ../lib/Galette/Entity/Contribution.php:120
-#: ../templates/default/ajouter_contribution.tpl:55
+#: ../templates/default/ajouter_contribution.tpl:70
 msgid "Payment type:"
 msgstr "Type de paiement&nbsp;:"
 
@@ -2349,9 +2358,9 @@ msgstr "Mlle."
 msgid "Check above errors to know what went wrong."
 msgstr "Consultez les erreurs ci-dessous pour savoir ce qui n'a pas été."
 
-#: ../templates/default/configurer_fiche_content.tpl:41
-msgid "Send up '%s' field"
-msgstr "Faire monter le champ « %s »"
+#: ../templates/default/ajouter_contribution.tpl:12
+msgid "View transaction"
+msgstr "Voir la transaction"
 
 #: ../install/index.php:327
 msgid "PHP version %version"
@@ -2362,7 +2371,7 @@ msgid "Not a GIF file "
 msgstr "Pas un fichier GIF"
 
 #: ../lib/Galette/Entity/Contribution.php:132
-#: ../templates/default/ajouter_contribution.tpl:68
+#: ../templates/default/ajouter_contribution.tpl:83
 msgid "Date of contribution:"
 msgstr "Date contribution&nbsp;:"
 
@@ -2521,13 +2530,13 @@ msgstr "Informer l'adhérent que son compte a été modifié"
 msgid "Groups:"
 msgstr "Groupes&nbsp;:"
 
-#: ../templates/default/ajouter_contribution.tpl:90
+#: ../templates/default/ajouter_contribution.tpl:105
 msgid "Send a mail:"
 msgstr "Envoi de courriel&nbsp;:"
 
 #: ../templates/default/ajouter_transaction.tpl:53
 #: ../templates/default/gestion_contributions.tpl:95
-#: ../templates/default/ajouter_contribution.tpl:11
+#: ../templates/default/ajouter_contribution.tpl:25
 msgid "Member"
 msgstr "Adhérent"
 
@@ -2737,6 +2746,10 @@ msgstr "La connexion à la base est établie"
 msgid "No Google+ posts has been retrieved."
 msgstr "Aucun billet Google+ n'a été récupéré."
 
+#: ../templates/default/gestion_contributions.tpl:191
+msgid "Transaction: %s"
+msgstr "Transaction&nbsp;: %s"
+
 #: ../templates/default/history.tpl:107
 msgid "logs are empty"
 msgstr "historique vide"
@@ -2780,7 +2793,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:906
 #: ../templates/default/gestion_contributions.tpl:11
-#: ../templates/default/ajouter_contribution.tpl:58
+#: ../templates/default/ajouter_contribution.tpl:73
 msgid "Credit card"
 msgstr "Carte de crédit"
 
@@ -2795,7 +2808,7 @@ msgid "%membercount members"
 msgstr "%membercount membres"
 
 #: ../lib/Galette/Entity/Contribution.php:108
-#: ../templates/default/ajouter_contribution.tpl:27
+#: ../templates/default/ajouter_contribution.tpl:42
 msgid "Contributor:"
 msgstr "Contributeur&nbsp;:"
 
@@ -3233,7 +3246,7 @@ msgstr "Éditeur&nbsp;:"
 
 #: ../lib/Galette/Entity/Contribution.php:903
 #: ../templates/default/gestion_contributions.tpl:10
-#: ../templates/default/ajouter_contribution.tpl:57
+#: ../templates/default/ajouter_contribution.tpl:72
 msgid "Cash"
 msgstr "Espèces"
 
@@ -3344,8 +3357,8 @@ msgstr "aucun adhérent"
 
 #: ../templates/default/gestion_adherents.tpl:200
 #: ../templates/default/gestion_adherents.tpl:201
-#: ../templates/default/gestion_contributions.tpl:224
-#: ../templates/default/gestion_contributions.tpl:225
+#: ../templates/default/gestion_contributions.tpl:237
+#: ../templates/default/gestion_contributions.tpl:238
 #: ../templates/default/gestion_transactions.tpl:106
 #: ../templates/default/gestion_transactions.tpl:107
 msgid "Legend"
@@ -3426,7 +3439,7 @@ msgid "Address"
 msgstr "Adresse"
 
 #: ../templates/default/ajouter_transaction.tpl:98
-#: ../templates/default/gestion_contributions.tpl:219
+#: ../templates/default/gestion_contributions.tpl:232
 msgid "no contribution"
 msgstr "aucune contribution"
 
@@ -3646,7 +3659,7 @@ msgstr "donation pécunière"
 msgid "Y-m-d"
 msgstr "d/m/Y"
 
-#: ../templates/default/gestion_contributions.tpl:212
+#: ../templates/default/gestion_contributions.tpl:225
 msgid "Do you really want to delete this contribution of the database ?"
 msgstr ""
 "Voulez vous vraiment effacer cette contribution de la base de données&nbsp;?"
@@ -3696,6 +3709,10 @@ msgstr "Description"
 #: ../templates/default/member.tpl:43
 msgid "First name:"
 msgstr "Prénom&nbsp;:"
+
+#: ../templates/default/configurer_fiche_content.tpl:41
+msgid "Send up '%s' field"
+msgstr "Faire monter le champ « %s »"
 
 #: ../templates/default/ajouter_transaction.tpl:194
 msgid "Click on a contribution row to attach it to the current transaction"
@@ -3880,7 +3897,7 @@ msgstr "Gestion de champs additionnels pour différents formulaires"
 
 #: ../lib/Galette/Entity/Contribution.php:915
 #: ../templates/default/gestion_contributions.tpl:14
-#: ../templates/default/ajouter_contribution.tpl:61
+#: ../templates/default/ajouter_contribution.tpl:76
 msgid "Paypal"
 msgstr "Paypal"
 
@@ -3912,7 +3929,7 @@ msgstr "Cotisations"
 msgid "You have to select a staff member"
 msgstr "Vous devez sélectionner un membre du bureau"
 
-#: ../templates/default/gestion_contributions.tpl:213
+#: ../templates/default/gestion_contributions.tpl:226
 msgid "Delete the contribution"
 msgstr "Supprimer la contribution"
 
@@ -4067,7 +4084,7 @@ msgstr ""
 "adresse."
 
 #: ../templates/default/ajouter_transaction.tpl:13
-#: ../templates/default/ajouter_contribution.tpl:30
+#: ../templates/default/ajouter_contribution.tpl:45
 msgid "-- select a name --"
 msgstr "-- selectionner un nom --"
 
@@ -4126,7 +4143,7 @@ msgid "Long Text (Bottom Line):"
 msgstr "Texte du bandeau&nbsp;:"
 
 #: ../templates/default/gestion_adherents.tpl:277
-#: ../templates/default/gestion_contributions.tpl:254
+#: ../templates/default/gestion_contributions.tpl:267
 #: ../templates/default/gestion_transactions.tpl:125
 msgid "Show legend"
 msgstr "Afficher la légende"
@@ -4155,7 +4172,7 @@ msgstr "Créer un nouvel E-Mailing"
 #: ../templates/default/member.tpl:16
 #: ../templates/default/ajouter_transaction.tpl:34
 #: ../templates/default/group.tpl:57 ../templates/default/preferences.tpl:418
-#: ../templates/default/ajouter_contribution.tpl:117
+#: ../templates/default/ajouter_contribution.tpl:132
 msgid "red"
 msgstr "rouge"
 
@@ -4227,7 +4244,7 @@ msgstr "Mise à jour"
 msgid "Google+"
 msgstr "Google+"
 
-#: ../templates/default/ajouter_contribution.tpl:42
+#: ../templates/default/ajouter_contribution.tpl:57
 msgid ""
 "Back to previous window, if you want to select a contribution type that is "
 "not listed here"
@@ -4315,7 +4332,7 @@ msgstr "Attention&nbsp;: pensez à sauvegarder votre base existante."
 msgid "Default contributions types cannot be initialized."
 msgstr "Les types de contribution par défaut n'ont pas été initialisés."
 
-#: ../templates/default/gestion_contributions.tpl:210
+#: ../templates/default/gestion_contributions.tpl:223
 msgid "Edit the contribution"
 msgstr "Éditer la contribution"
 
@@ -4377,7 +4394,7 @@ msgstr "Courriel de réponse&nbsp;:"
 #: ../templates/default/member.tpl:16
 #: ../templates/default/ajouter_transaction.tpl:34
 #: ../templates/default/group.tpl:57 ../templates/default/preferences.tpl:418
-#: ../templates/default/ajouter_contribution.tpl:117
+#: ../templates/default/ajouter_contribution.tpl:132
 msgid "NB : The mandatory fields are in"
 msgstr "NB&nbsp;: Les champs obligatoires apparaissent en"
 
@@ -4441,7 +4458,7 @@ msgstr "Informations sur la transaction liée"
 msgid "Missing required modules"
 msgstr "Modules requis manquants"
 
-#: ../templates/default/ajouter_contribution.tpl:92
+#: ../templates/default/ajouter_contribution.tpl:107
 msgid ""
 "(the member will receive a confirmation by email, if he has an address.)"
 msgstr "(l'adhérent recevra confirmation par courriel, s'il a une adresse.)"
@@ -4491,7 +4508,7 @@ msgid "Parameters couldn't be saved."
 msgstr "Les paramètres n'ont pas pu être sauvegardés."
 
 #: ../templates/default/gestion_adherents.tpl:235
-#: ../templates/default/gestion_contributions.tpl:230
+#: ../templates/default/gestion_contributions.tpl:243
 #: ../templates/default/voir_adherent.tpl:20
 msgid "Modification"
 msgstr "Modification"
@@ -4896,9 +4913,6 @@ msgstr "L'identifiant %s n'existe pas"
 
 #~ msgid "ERROR LOADING MODEL"
 #~ msgstr "ERREUR AU CHARGEMENT DU MODÈLE"
-
-#~ msgid "New transaction"
-#~ msgstr "Nouvelle transaction"
 
 #~ msgid " sucessfully read."
 #~ msgstr " lu avec succès."

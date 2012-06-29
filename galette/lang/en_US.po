@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2012-06-29 22:48+0200\n"
+"PO-Revision-Date: 2012-06-30 00:07+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -118,7 +118,7 @@ msgid "Position:"
 msgstr "Position:"
 
 #: ../lib/Galette/Entity/Contribution.php:137
-#: ../templates/default/ajouter_contribution.tpl:83
+#: ../templates/default/ajouter_contribution.tpl:98
 msgid "End date of membership:"
 msgstr "End date of membership:"
 
@@ -288,8 +288,8 @@ msgid "Do you really want to delete all selected contributions?"
 msgstr "Do you really want to delete all selected contributions?"
 
 #: ../templates/default/gestion_adherents.tpl:179
-#: ../templates/default/gestion_contributions.tpl:210
-#: ../templates/default/gestion_contributions.tpl:229
+#: ../templates/default/gestion_contributions.tpl:223
+#: ../templates/default/gestion_contributions.tpl:242
 #: ../templates/default/gestion_transactions.tpl:93
 msgid "[mod]"
 msgstr "[mod]"
@@ -299,7 +299,7 @@ msgid "Mailing has been successfully saved."
 msgstr "Mailing has been successfully saved."
 
 #: ../lib/Galette/Entity/Contribution.php:112
-#: ../templates/default/ajouter_contribution.tpl:36
+#: ../templates/default/ajouter_contribution.tpl:51
 msgid "Contribution type:"
 msgstr "Contribution type:"
 
@@ -309,7 +309,7 @@ msgstr "english"
 
 #: ../lib/Galette/Entity/Contribution.php:900
 #: ../templates/default/gestion_contributions.tpl:15
-#: ../templates/default/ajouter_contribution.tpl:62
+#: ../templates/default/ajouter_contribution.tpl:77
 msgid "Other"
 msgstr "Other"
 
@@ -377,7 +377,6 @@ msgstr ""
 #: ../champs_adherents.php:62 ../lib/Galette/Entity/Adherent.php:358
 #: ../install/index.php:536 ../install/index.php:1006
 #: ../templates/default/member.tpl:184 ../templates/default/member.tpl:194
-#: ../templates/default/change_passwd.tpl:8
 #: ../templates/default/preferences.tpl:402 ../templates/default/index.tpl:12
 msgid "Password:"
 msgstr "Password:"
@@ -444,7 +443,7 @@ msgstr "- Wrong date format (%date_format) for %field!"
 
 #: ../lib/Galette/Entity/Contribution.php:909
 #: ../templates/default/gestion_contributions.tpl:12
-#: ../templates/default/ajouter_contribution.tpl:59
+#: ../templates/default/ajouter_contribution.tpl:74
 msgid "Check"
 msgstr "Check"
 
@@ -562,7 +561,7 @@ msgstr "Beginning of membership:"
 #: ../templates/default/config_fields.tpl:60
 #: ../templates/default/preferences.tpl:416
 #: ../templates/default/editer_champ.tpl:64
-#: ../templates/default/ajouter_contribution.tpl:104
+#: ../templates/default/ajouter_contribution.tpl:119
 #: ../templates/default/gestion_textes.tpl:35
 msgid "Save"
 msgstr "Save"
@@ -689,7 +688,7 @@ msgstr ""
 msgid "Transaction"
 msgstr "Transaction"
 
-#: ../templates/default/ajouter_contribution.tpl:42
+#: ../templates/default/ajouter_contribution.tpl:57
 msgid "Back"
 msgstr "Back"
 
@@ -804,7 +803,7 @@ msgstr "- Membership period overlaps period starting at "
 msgid "You have to select a member."
 msgstr "You have to select a member."
 
-#: ../templates/default/ajouter_contribution.tpl:13
+#: ../templates/default/ajouter_contribution.tpl:27
 msgid "Not dispatched amount"
 msgstr "Not dispatched amount"
 
@@ -838,7 +837,7 @@ msgid "DROP operation not allowed"
 msgstr "DROP operation not allowed"
 
 #: ../lib/Galette/Entity/Contribution.php:147
-#: ../templates/default/ajouter_contribution.tpl:79
+#: ../templates/default/ajouter_contribution.tpl:94
 msgid "Membership extension:"
 msgstr "Membership extension:"
 
@@ -870,7 +869,7 @@ msgstr ""
 "You will be redirected in %timeout seconds. If not, please click on the "
 "following link:"
 
-#: ../templates/default/ajouter_contribution.tpl:49
+#: ../templates/default/ajouter_contribution.tpl:64
 msgid "Details of contribution"
 msgstr "Details of contribution"
 
@@ -1007,8 +1006,8 @@ msgstr ""
 #: ../templates/default/member.tpl:60 ../templates/default/member.tpl:206
 #: ../templates/default/ajax_attendance_sheet_details.tpl:19
 #: ../templates/default/ajouter_transaction.tpl:20
-#: ../templates/default/ajouter_contribution.tpl:74
-#: ../templates/default/ajouter_contribution.tpl:85
+#: ../templates/default/ajouter_contribution.tpl:89
+#: ../templates/default/ajouter_contribution.tpl:100
 msgid "(yyyy-mm-dd format)"
 msgstr "(mm/dd/yyyy format)"
 
@@ -1104,7 +1103,7 @@ msgstr ""
 msgid "Member card updated"
 msgstr "Member card updated"
 
-#: ../templates/default/gestion_contributions.tpl:243
+#: ../templates/default/gestion_contributions.tpl:256
 msgid "Gift"
 msgstr "Gift"
 
@@ -1149,7 +1148,7 @@ msgid "Yes"
 msgstr "Yes"
 
 #: ../templates/default/gestion_adherents.tpl:245
-#: ../templates/default/gestion_contributions.tpl:234
+#: ../templates/default/gestion_contributions.tpl:247
 msgid "Deletion"
 msgstr "Deletion"
 
@@ -1469,7 +1468,7 @@ msgstr "Update Report"
 msgid "Automatic emails texts edition"
 msgstr "Automatic emails texts edition"
 
-#: ../templates/default/ajouter_contribution.tpl:81
+#: ../templates/default/ajouter_contribution.tpl:96
 msgid "months"
 msgstr "months"
 
@@ -1515,7 +1514,7 @@ msgstr "Missing a temporary folder"
 
 #: ../lib/Galette/Entity/Contribution.php:912
 #: ../templates/default/gestion_contributions.tpl:13
-#: ../templates/default/ajouter_contribution.tpl:60
+#: ../templates/default/ajouter_contribution.tpl:75
 msgid "Transfer"
 msgstr "Transfer"
 
@@ -1523,7 +1522,7 @@ msgstr "Transfer"
 msgid "Year:"
 msgstr "Year:"
 
-#: ../templates/default/ajouter_contribution.tpl:25
+#: ../templates/default/ajouter_contribution.tpl:40
 msgid "Select contributor and contribution type"
 msgstr "Select contributor and contribution type"
 
@@ -1599,7 +1598,7 @@ msgstr "Pages:"
 #: ../lib/Galette/Entity/Transaction.php:98
 #: ../lib/Galette/Entity/Contribution.php:116
 #: ../templates/default/ajouter_transaction.tpl:23
-#: ../templates/default/ajouter_contribution.tpl:51
+#: ../templates/default/ajouter_contribution.tpl:66
 msgid "Amount:"
 msgstr "Amount:"
 
@@ -1612,7 +1611,7 @@ msgstr ""
 "generate envelope labels to contact them by snail mail."
 
 #: ../templates/default/gestion_adherents.tpl:240
-#: ../templates/default/gestion_contributions.tpl:239
+#: ../templates/default/gestion_contributions.tpl:252
 msgid "Contribution"
 msgstr "Contribution"
 
@@ -1649,7 +1648,7 @@ msgstr "Recover password"
 #: ../templates/default/ajouter_transaction.tpl:48
 #: ../templates/default/history.tpl:23
 #: ../templates/default/gestion_contributions.tpl:61
-#: ../templates/default/ajouter_contribution.tpl:10
+#: ../templates/default/ajouter_contribution.tpl:24
 #: ../templates/default/export.tpl:20
 #: ../templates/default/gestion_transactions.tpl:20
 msgid "Date"
@@ -1715,7 +1714,7 @@ msgid "Welcome to the Galette Install!"
 msgstr "Welcome to the Galette Install!"
 
 #: ../lib/Galette/Entity/Contribution.php:133
-#: ../templates/default/ajouter_contribution.tpl:70
+#: ../templates/default/ajouter_contribution.tpl:85
 msgid "Start date of membership:"
 msgstr "Start date of membership:"
 
@@ -1860,7 +1859,7 @@ msgstr ""
 "Customize fields order, set which are required, and for who they're visibles"
 
 #: ../lib/Galette/Entity/Contribution.php:124
-#: ../templates/default/ajouter_contribution.tpl:95
+#: ../templates/default/ajouter_contribution.tpl:110
 msgid "Comments:"
 msgstr "Comments:"
 
@@ -1946,8 +1945,8 @@ msgstr "MSN:"
 
 #: ../templates/default/gestion_adherents.tpl:182
 #: ../templates/default/gestion_mailings.tpl:100
-#: ../templates/default/gestion_contributions.tpl:213
-#: ../templates/default/gestion_contributions.tpl:233
+#: ../templates/default/gestion_contributions.tpl:226
+#: ../templates/default/gestion_contributions.tpl:246
 #: ../templates/default/gestion_transactions.tpl:96
 msgid "[del]"
 msgstr "[del]"
@@ -1972,6 +1971,10 @@ msgstr "Using GMAIL as SMTP server (slower)"
 msgid "This comment is only displayed for admins and staff members."
 msgstr "This comment is only displayed for admins and staff members."
 
+#: ../templates/default/change_passwd.tpl:8
+msgid "New password:"
+msgstr "New password:"
+
 #: ../templates/default/ajax_attendance_sheet_details.tpl:9
 msgid "Title"
 msgstr "Title"
@@ -1992,6 +1995,12 @@ msgstr "Contribution updated"
 msgid "Parent group:"
 msgstr "Parent group:"
 
+#: ../templates/default/gestion_contributions.tpl:193
+#: ../templates/default/gestion_contributions.tpl:199
+#: ../templates/default/ajouter_contribution.tpl:14
+msgid "[view]"
+msgstr "[view]"
+
 #: ../templates/default/page.tpl:160
 msgid "Existing mailing"
 msgstr "Existing mailing"
@@ -2009,7 +2018,7 @@ msgstr "Navigation"
 msgid "Show public pages for"
 msgstr "Show public pages for"
 
-#: ../templates/default/ajouter_contribution.tpl:109
+#: ../templates/default/ajouter_contribution.tpl:124
 #: ../templates/default/export.tpl:108
 msgid "Continue"
 msgstr "Continue"
@@ -2069,7 +2078,7 @@ msgstr "Next"
 
 #: ../templates/default/ajouter_transaction.tpl:56
 #: ../templates/default/gestion_contributions.tpl:118
-#: ../templates/default/ajouter_contribution.tpl:12
+#: ../templates/default/ajouter_contribution.tpl:26
 #: ../templates/default/gestion_transactions.tpl:45
 msgid "Amount"
 msgstr "Amount"
@@ -2273,7 +2282,7 @@ msgid "Lines / Page:"
 msgstr "Lines / Page:"
 
 #: ../lib/Galette/Entity/Contribution.php:120
-#: ../templates/default/ajouter_contribution.tpl:55
+#: ../templates/default/ajouter_contribution.tpl:70
 msgid "Payment type:"
 msgstr "Payment type:"
 
@@ -2305,9 +2314,9 @@ msgstr "Miss."
 msgid "Check above errors to know what went wrong."
 msgstr "Check above errors to know what went wrong."
 
-#: ../templates/default/configurer_fiche_content.tpl:41
-msgid "Send up '%s' field"
-msgstr "Send up '%s' field"
+#: ../templates/default/ajouter_contribution.tpl:12
+msgid "View transaction"
+msgstr "View transaction"
 
 #: ../install/index.php:327
 msgid "PHP version %version"
@@ -2318,7 +2327,7 @@ msgid "Not a GIF file "
 msgstr "Not a GIF file "
 
 #: ../lib/Galette/Entity/Contribution.php:132
-#: ../templates/default/ajouter_contribution.tpl:68
+#: ../templates/default/ajouter_contribution.tpl:83
 msgid "Date of contribution:"
 msgstr "Date of contribution:"
 
@@ -2475,13 +2484,13 @@ msgstr "Notify member his account has been modified"
 msgid "Groups:"
 msgstr "Groups:"
 
-#: ../templates/default/ajouter_contribution.tpl:90
+#: ../templates/default/ajouter_contribution.tpl:105
 msgid "Send a mail:"
 msgstr "Send a mail:"
 
 #: ../templates/default/ajouter_transaction.tpl:53
 #: ../templates/default/gestion_contributions.tpl:95
-#: ../templates/default/ajouter_contribution.tpl:11
+#: ../templates/default/ajouter_contribution.tpl:25
 msgid "Member"
 msgstr "Member"
 
@@ -2688,6 +2697,10 @@ msgstr "Connection to database successfull"
 msgid "No Google+ posts has been retrieved."
 msgstr "No Google+ posts has been retrieved."
 
+#: ../templates/default/gestion_contributions.tpl:191
+msgid "Transaction: %s"
+msgstr "Transaction: %s"
+
 #: ../templates/default/history.tpl:107
 msgid "logs are empty"
 msgstr "logs are empty"
@@ -2731,7 +2744,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:906
 #: ../templates/default/gestion_contributions.tpl:11
-#: ../templates/default/ajouter_contribution.tpl:58
+#: ../templates/default/ajouter_contribution.tpl:73
 msgid "Credit card"
 msgstr "Credit card"
 
@@ -2746,7 +2759,7 @@ msgid "%membercount members"
 msgstr "%membercount members"
 
 #: ../lib/Galette/Entity/Contribution.php:108
-#: ../templates/default/ajouter_contribution.tpl:27
+#: ../templates/default/ajouter_contribution.tpl:42
 msgid "Contributor:"
 msgstr "Contributor:"
 
@@ -3182,7 +3195,7 @@ msgstr "Publisher:"
 
 #: ../lib/Galette/Entity/Contribution.php:903
 #: ../templates/default/gestion_contributions.tpl:10
-#: ../templates/default/ajouter_contribution.tpl:57
+#: ../templates/default/ajouter_contribution.tpl:72
 msgid "Cash"
 msgstr "Cash"
 
@@ -3290,8 +3303,8 @@ msgstr "no member"
 
 #: ../templates/default/gestion_adherents.tpl:200
 #: ../templates/default/gestion_adherents.tpl:201
-#: ../templates/default/gestion_contributions.tpl:224
-#: ../templates/default/gestion_contributions.tpl:225
+#: ../templates/default/gestion_contributions.tpl:237
+#: ../templates/default/gestion_contributions.tpl:238
 #: ../templates/default/gestion_transactions.tpl:106
 #: ../templates/default/gestion_transactions.tpl:107
 msgid "Legend"
@@ -3372,7 +3385,7 @@ msgid "Address"
 msgstr "Address"
 
 #: ../templates/default/ajouter_transaction.tpl:98
-#: ../templates/default/gestion_contributions.tpl:219
+#: ../templates/default/gestion_contributions.tpl:232
 msgid "no contribution"
 msgstr "no contribution"
 
@@ -3589,7 +3602,7 @@ msgstr "donation in money"
 msgid "Y-m-d"
 msgstr "m/d/Y"
 
-#: ../templates/default/gestion_contributions.tpl:212
+#: ../templates/default/gestion_contributions.tpl:225
 msgid "Do you really want to delete this contribution of the database ?"
 msgstr "Do you really want to delete this contribution of the database ?"
 
@@ -3637,6 +3650,10 @@ msgstr "Description"
 #: ../templates/default/member.tpl:43
 msgid "First name:"
 msgstr "First name:"
+
+#: ../templates/default/configurer_fiche_content.tpl:41
+msgid "Send up '%s' field"
+msgstr "Send up '%s' field"
 
 #: ../templates/default/ajouter_transaction.tpl:194
 msgid "Click on a contribution row to attach it to the current transaction"
@@ -3817,7 +3834,7 @@ msgstr "Manage additional fields for various forms"
 
 #: ../lib/Galette/Entity/Contribution.php:915
 #: ../templates/default/gestion_contributions.tpl:14
-#: ../templates/default/ajouter_contribution.tpl:61
+#: ../templates/default/ajouter_contribution.tpl:76
 msgid "Paypal"
 msgstr "Paypal"
 
@@ -3849,7 +3866,7 @@ msgstr "Membership"
 msgid "You have to select a staff member"
 msgstr "You have to select a staff member"
 
-#: ../templates/default/gestion_contributions.tpl:213
+#: ../templates/default/gestion_contributions.tpl:226
 msgid "Delete the contribution"
 msgstr "Delete the contribution"
 
@@ -4002,7 +4019,7 @@ msgstr ""
 "Member will receive his username and password by email, if he has an address."
 
 #: ../templates/default/ajouter_transaction.tpl:13
-#: ../templates/default/ajouter_contribution.tpl:30
+#: ../templates/default/ajouter_contribution.tpl:45
 msgid "-- select a name --"
 msgstr "-- select a name --"
 
@@ -4059,7 +4076,7 @@ msgid "Long Text (Bottom Line):"
 msgstr "Long Text (Bottom Line):"
 
 #: ../templates/default/gestion_adherents.tpl:277
-#: ../templates/default/gestion_contributions.tpl:254
+#: ../templates/default/gestion_contributions.tpl:267
 #: ../templates/default/gestion_transactions.tpl:125
 msgid "Show legend"
 msgstr "Show legend"
@@ -4088,7 +4105,7 @@ msgstr "Create new mailing"
 #: ../templates/default/member.tpl:16
 #: ../templates/default/ajouter_transaction.tpl:34
 #: ../templates/default/group.tpl:57 ../templates/default/preferences.tpl:418
-#: ../templates/default/ajouter_contribution.tpl:117
+#: ../templates/default/ajouter_contribution.tpl:132
 msgid "red"
 msgstr "red"
 
@@ -4158,7 +4175,7 @@ msgstr "Update"
 msgid "Google+"
 msgstr "Google+"
 
-#: ../templates/default/ajouter_contribution.tpl:42
+#: ../templates/default/ajouter_contribution.tpl:57
 msgid ""
 "Back to previous window, if you want to select a contribution type that is "
 "not listed here"
@@ -4245,7 +4262,7 @@ msgstr "Warning: Don't forget to backup your current database."
 msgid "Default contributions types cannot be initialized."
 msgstr "Default contributions types cannot be initialized."
 
-#: ../templates/default/gestion_contributions.tpl:210
+#: ../templates/default/gestion_contributions.tpl:223
 msgid "Edit the contribution"
 msgstr "Edit the contribution"
 
@@ -4306,7 +4323,7 @@ msgstr "Reply-To Email:"
 #: ../templates/default/member.tpl:16
 #: ../templates/default/ajouter_transaction.tpl:34
 #: ../templates/default/group.tpl:57 ../templates/default/preferences.tpl:418
-#: ../templates/default/ajouter_contribution.tpl:117
+#: ../templates/default/ajouter_contribution.tpl:132
 msgid "NB : The mandatory fields are in"
 msgstr "NB : The mandatory fields are in"
 
@@ -4369,7 +4386,7 @@ msgstr "Related transaction informations"
 msgid "Missing required modules"
 msgstr "Missing required modules"
 
-#: ../templates/default/ajouter_contribution.tpl:92
+#: ../templates/default/ajouter_contribution.tpl:107
 msgid ""
 "(the member will receive a confirmation by email, if he has an address.)"
 msgstr ""
@@ -4420,7 +4437,7 @@ msgid "Parameters couldn't be saved."
 msgstr "Parameters couldn't be saved."
 
 #: ../templates/default/gestion_adherents.tpl:235
-#: ../templates/default/gestion_contributions.tpl:230
+#: ../templates/default/gestion_contributions.tpl:243
 #: ../templates/default/voir_adherent.tpl:20
 msgid "Modification"
 msgstr "Modification"
@@ -4821,9 +4838,6 @@ msgstr "Login %s does not exist"
 
 #~ msgid "ERROR LOADING MODEL"
 #~ msgstr "ERROR LOADING MODEL"
-
-#~ msgid "New transaction"
-#~ msgstr "New transaction"
 
 #~ msgid "Generate Field List for Document Editor"
 #~ msgstr "Generate Field List for Document Editor"
