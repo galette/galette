@@ -187,6 +187,19 @@
                             <input type="hidden" name="contrib_id" value="{$contribution->id}"/>
                         {/if}
                         {$ordre+1}
+        {if $contribution->isTransactionPart() }
+                        <a href="{$galette_base_path}ajouter_transaction.php?trans_id={$contribution->transaction->id}" title="{_T string="Transaction: %s" pattern="/%s/" replace=$contribution->transaction->description}">
+                            <img src="{$template_subdir}images/icon-money.png"
+                                alt="{_T string="[view]"}"
+                                width="16"
+                                height="16"/>
+                        </a>
+        {else}
+                        <img src="{$template_subdir}images/icon-empty.png"
+                            alt="{_T string="[view]"}"
+                            width="16"
+                            height="16"/>
+        {/if}
                     </td>
 					<td class="{$cclass} center nowrap">{$contribution->date}</td>
 					<td class="{$cclass} center nowrap">{$contribution->begin_date}</td>
