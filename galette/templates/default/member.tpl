@@ -130,7 +130,7 @@
 					</p>
 					<p>
 						<label for="gpgid" class="bline">{_T string="Id GNUpg (GPG):"}</label>
-						<input type="text" name="gpgid" id="gpgid" value="{$member->gpgid}" maxlength="8" size="8" {$disabled.gpgid}{if $required.gpgid eq 1} required{/if}/>
+						<input type="text" name="gpgid" id="gpgid" value="{$member->gnupgid}" maxlength="8" size="8" {$disabled.gpgid}{if $required.gpgid eq 1} required{/if}/>
 					</p>
 					<p>
 						<label for="fingerprint" class="bline">{_T string="fingerprint:"}</label>

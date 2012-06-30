@@ -145,7 +145,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 			</tr>
 			<tr>
 				<th>{_T string="Id GNUpg (GPG):"}</th>
-				<td>{$member->gpgid}</td>
+				<td>{$member->gnupgid}</td>
 			</tr>
 			<tr>
 				<th>{_T string="fingerprint:"}</th>
