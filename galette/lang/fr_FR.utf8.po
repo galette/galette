@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2012-07-02 07:44+0200\n"
+"PO-Revision-Date: 2012-07-02 14:18+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -941,7 +941,7 @@ msgstr "Responsable pour « %groupname »"
 
 #: ../needs_update.php:70
 msgid "Your Galette database is not present, or not up to date."
-msgstr "Votre base de données Galette n'est pas présente ou n'est pas à jour."
+msgstr "Votre base de données Galette n'existe pas ou n'est pas à jour."
 
 #: ../templates/default/gestion_contributions.tpl:7
 #: ../templates/default/gestion_contributions.tpl:129

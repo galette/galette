@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Mon Jul  2 05:44:26 2012 (GMT)
+// This file was automatically generated on Mon Jul  2 12:18:31 2012 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -1621,7 +1621,7 @@ $lang['Active Member Color:'] = 'Couleur pour les membres actifs&nbsp;:';
 $lang['Managed groups selection'] = 'Selection des groupes gérés';
 
 // ../needs_update.php:70 
-$lang['Your Galette database is not present, or not up to date.'] = 'Votre base de données Galette n\'est pas présente ou n\'est pas à jour.';
+$lang['Your Galette database is not present, or not up to date.'] = 'Votre base de données Galette n\'existe pas ou n\'est pas à jour.';
 
 // ../install/index.php:1159 
 $lang['Parameters couldn\'t be saved.'] = 'Les paramètres n\'ont pas pu être sauvegardés.';
