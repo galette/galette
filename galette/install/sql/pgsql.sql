@@ -334,4 +334,4 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(0.700);
+INSERT INTO galette_database (version) VALUES(0.701);
