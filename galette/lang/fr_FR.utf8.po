@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2012-07-02 14:18+0200\n"
+"PO-Revision-Date: 2012-07-03 14:24+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -47,6 +47,11 @@ msgstr "Tél&nbsp;:"
 #: ../lib/Galette/Core/CheckModules.php:152
 msgid "Active used modules"
 msgstr "Modules actifs utilisés"
+
+#: ../templates/default/gestion_contributions.tpl:225
+msgid "Do you really want to delete this contribution of the database ?"
+msgstr ""
+"Voulez vous vraiment effacer cette contribution de la base de données&nbsp;?"
 
 #: ../export.php:101
 msgid "An error occured running parameted export '%export'."
@@ -214,7 +219,7 @@ msgstr "-- Choisissez un membre du bureau --"
 msgid "Mailings"
 msgstr "E-Mailings"
 
-#: ../gestion_adherents.php:200 ../attendance_sheet.php:194
+#: ../gestion_adherents.php:206 ../attendance_sheet.php:194
 #: ../templates/default/gestion_adherents.tpl:54
 #: ../templates/default/gestion_adherents.tpl:206
 #: ../templates/default/gestion_adherents.tpl:212
@@ -275,7 +280,7 @@ msgstr "Modules qui peuvent être requis"
 msgid "Installation complete !"
 msgstr "Fin de l'installation"
 
-#: ../gestion_adherents.php:186
+#: ../gestion_adherents.php:192
 msgid "Members management"
 msgstr "Gestion des membres"
 
@@ -299,7 +304,7 @@ msgstr ""
 msgid "[mod]"
 msgstr "[mod]"
 
-#: ../mailing_adherents.php:177
+#: ../mailing_adherents.php:178
 msgid "Mailing has been successfully saved."
 msgstr "L'E-Mailing a été enregistré avec succès."
 
@@ -549,7 +554,7 @@ msgstr "Sujet du courriel"
 msgid "Mails adress %s does not exist"
 msgstr "L'adresse mail %s n'existe pas"
 
-#: ../gestion_adherents.php:202
+#: ../gestion_adherents.php:208
 msgid "Email,URL,IM"
 msgstr "Email, URL, IM"
 
@@ -1141,7 +1146,7 @@ msgstr "ICQ&nbsp;:"
 msgid "Database type:"
 msgstr "Type de base de données&nbsp;:"
 
-#: ../gestion_adherents.php:203
+#: ../gestion_adherents.php:209
 msgid "Job"
 msgstr "Emploi"
 
@@ -1277,7 +1282,7 @@ msgstr "Veuillez sélectionner la langue d'administration"
 msgid "Clear filter"
 msgstr "Effacer le filtre"
 
-#: ../templates/default/gestion_adherents.tpl:331
+#: ../templates/default/gestion_adherents.tpl:359
 msgid "Attendance sheet details"
 msgstr "Détails de la liste d'émargement"
 
@@ -1827,7 +1832,7 @@ msgstr "- Le mot de passe doit être composé d'au moins 4 caractères&nbsp;!"
 msgid "Postal adress:"
 msgstr "Adresse postale :"
 
-#: ../mailing_adherents.php:112
+#: ../mailing_adherents.php:113
 msgid "Please enter a message."
 msgstr "Veuillez saisir un message."
 
@@ -1992,7 +1997,7 @@ msgstr "MSN&nbsp;:"
 msgid "[del]"
 msgstr "[suppr]"
 
-#: ../gestion_adherents.php:216
+#: ../gestion_adherents.php:222
 msgid "Administrators"
 msgstr "Administrateurs"
 
@@ -2044,6 +2049,7 @@ msgstr "Groupe parent&nbsp;:"
 msgid "[view]"
 msgstr "[voir]"
 
+#: ../templates/default/gestion_adherents.tpl:309
 #: ../templates/default/page.tpl:160
 msgid "Existing mailing"
 msgstr "E-Mailings existants"
@@ -2193,7 +2199,7 @@ msgstr "séparateur"
 msgid "Benefactor member"
 msgstr "Membre bienfaiteur"
 
-#: ../gestion_adherents.php:212
+#: ../gestion_adherents.php:218
 msgid "Close expiries"
 msgstr "Les échéances proches"
 
@@ -2404,6 +2410,10 @@ msgstr "Paramètres de génération des cartes"
 msgid "Found contributions total %f"
 msgstr "Total des contributions trouvées&nbsp;: %f"
 
+#: ../templates/default/gestion_adherents.tpl:323
+msgid "New"
+msgstr "Nouveau"
+
 #: ../install/index.php:745
 msgid "Permissions to database are OK."
 msgstr "Les droits d'accès à la base sont corrects."
@@ -2458,7 +2468,7 @@ msgstr "Abréviation (centre de la carte)&nbsp;:"
 msgid "Attendance sheet"
 msgstr "Liste d'émargement"
 
-#: ../mailing_adherents.php:106
+#: ../mailing_adherents.php:107
 msgid "Please type an object for the message."
 msgstr "Veuillez indiquer un objet pour le message."
 
@@ -3014,7 +3024,7 @@ msgstr "Désactiver le plugin"
 msgid "Select"
 msgstr "Sélectionnez"
 
-#: ../gestion_adherents.php:204
+#: ../gestion_adherents.php:210
 msgid "Infos"
 msgstr "Informations"
 
@@ -3093,7 +3103,7 @@ msgstr "- Le champ nom ne peut pas être vide."
 msgid "Login"
 msgstr "Identification"
 
-#: ../gestion_adherents.php:213
+#: ../gestion_adherents.php:219
 msgid "Latecomers"
 msgstr "Les retardataires"
 
@@ -3188,7 +3198,7 @@ msgstr "Signature"
 msgid "Your message has been sent to <strong>%s members</strong>"
 msgstr "Votre courriel a été envoyé à <strong>%s membres</strong>"
 
-#: ../gestion_adherents.php:224
+#: ../gestion_adherents.php:230
 msgid "Inactive accounts"
 msgstr "Comptes désactivés"
 
@@ -3302,7 +3312,7 @@ msgstr "Madame"
 msgid "Hexadecimal color notation: #RRGGBB"
 msgstr "Notation de couleur hexadécimale : #RRVVBB"
 
-#: ../templates/default/gestion_adherents.tpl:294
+#: ../templates/default/gestion_adherents.tpl:293
 msgid "No member selected"
 msgstr "Aucun adhérent sélectionné"
 
@@ -3322,7 +3332,7 @@ msgstr "Type de liste"
 msgid "Contribution added"
 msgstr "Contribution ajoutée"
 
-#: ../templates/default/gestion_adherents.tpl:360
+#: ../templates/default/gestion_adherents.tpl:388
 msgid "An error occured displaying attendance sheet details interface :("
 msgstr ""
 "Une erreur est survenue lors de l'affichage de l'interface des détails de la "
@@ -3434,7 +3444,7 @@ msgstr "module \"%s\""
 msgid "Show title ?"
 msgstr "Afficher le titre&nbsp;?"
 
-#: ../gestion_adherents.php:201
+#: ../gestion_adherents.php:207
 msgid "Address"
 msgstr "Adresse"
 
@@ -3487,7 +3497,7 @@ msgstr "cotisation annuelle (dûe)"
 msgid "Manage selected members"
 msgstr "Gestion des adhérents sélectionnés"
 
-#: ../mailing_adherents.php:69
+#: ../mailing_adherents.php:71
 msgid "Trying to load mailing while mail is disabled in preferences."
 msgstr ""
 "Tentative de chargement du mailing alors que l'envoi de mails est désactivé "
@@ -3592,7 +3602,7 @@ msgstr "Opération ALTER non autorisée"
 msgid "Exports"
 msgstr "Exports"
 
-#: ../gestion_adherents.php:223
+#: ../gestion_adherents.php:229
 msgid "Active accounts"
 msgstr "Comptes actifs"
 
@@ -3617,7 +3627,7 @@ msgstr "Gestion des types de contribution"
 msgid "Parameted exports"
 msgstr "Exports paramétrés"
 
-#: ../gestion_adherents.php:210
+#: ../gestion_adherents.php:216
 msgid "All members"
 msgstr "Tous les adhérents"
 
@@ -3659,10 +3669,9 @@ msgstr "donation pécunière"
 msgid "Y-m-d"
 msgstr "d/m/Y"
 
-#: ../templates/default/gestion_contributions.tpl:225
-msgid "Do you really want to delete this contribution of the database ?"
-msgstr ""
-"Voulez vous vraiment effacer cette contribution de la base de données&nbsp;?"
+#: ../templates/default/gestion_adherents.tpl:319
+msgid "Resume"
+msgstr "Reprendre"
 
 #: ../templates/default/gestion_adherents.tpl:114
 #: ../templates/default/gestion_intitule_content.tpl:16
@@ -3676,7 +3685,7 @@ msgstr "Actions"
 msgid "Default language:"
 msgstr "Langue par défaut&nbsp;:"
 
-#: ../gestion_adherents.php:222
+#: ../gestion_adherents.php:228
 msgid "All accounts"
 msgstr "Tous  les comptes"
 
@@ -3720,7 +3729,7 @@ msgstr ""
 "Cliquez sur une ligne de contribution pour l'attacher à la transaction "
 "courante"
 
-#: ../gestion_adherents.php:98
+#: ../gestion_adherents.php:104
 msgid "No member was selected, please check at least one name."
 msgstr "Veuillez sélectionner au moins un adhérent."
 
@@ -3736,7 +3745,7 @@ msgstr "Impossible de détacher la contribution de la transaction"
 msgid "Email: '%s' has not been modified!"
 msgstr "Le courriel « %s » n'as pas été modifié&nbsp;!"
 
-#: ../templates/default/gestion_adherents.tpl:294
+#: ../templates/default/gestion_adherents.tpl:293
 msgid ""
 "Please make sure to select at least one member from the list to perform this "
 "action."
@@ -3793,7 +3802,7 @@ msgstr "- Cet identifiant est déjà utilisé par un autre adhérent&nbsp;!"
 msgid "Plugin database initialization: %name"
 msgstr "Initialisation de base de données des plugins&nbsp;: %name"
 
-#: ../mailing_adherents.php:197
+#: ../mailing_adherents.php:198
 msgid "Mailing"
 msgstr "Mailing"
 
@@ -4004,7 +4013,7 @@ msgstr "Tableau de bord"
 msgid "Fields configuration"
 msgstr "Configuration des champs"
 
-#: ../gestion_adherents.php:215
+#: ../gestion_adherents.php:221
 msgid "Staff members"
 msgstr "Membres du bureau"
 
@@ -4044,7 +4053,7 @@ msgstr "L'éditeur HTML doit-il être activé au chargement de la page ?"
 msgid "Group added"
 msgstr "Groupe ajouté"
 
-#: ../gestion_adherents.php:211 ../templates/default/preferences.tpl:146
+#: ../gestion_adherents.php:217 ../templates/default/preferences.tpl:146
 msgid "Up to date members"
 msgstr "Adhérents à jour"
 
@@ -4239,6 +4248,14 @@ msgstr "Ce commentaire est réservé à l'adhérent."
 #: ../install/index.php:288 ../templates/default/ajax_plugins_initdb.tpl:17
 msgid "Update"
 msgstr "Mise à jour"
+
+#: ../templates/default/gestion_adherents.tpl:309
+msgid ""
+"A mailing already exists. Do you want to create a new one or resume the "
+"existing?"
+msgstr ""
+"Un E-Mailing est déjà en cours. Souhaitez-vous en créer un nouveau ou "
+"reprendre l'existant ?"
 
 #: ../templates/default/preferences.tpl:75
 msgid "Google+"
@@ -4487,7 +4504,7 @@ msgstr "Voir les logs de l'application"
 msgid "Mailing informations"
 msgstr "Informations sur le mailing"
 
-#: ../gestion_adherents.php:214 ../templates/default/gestion_adherents.tpl:219
+#: ../gestion_adherents.php:220 ../templates/default/gestion_adherents.tpl:219
 msgid "Never contributed"
 msgstr "N'a jamais cotisé"
 

@@ -87,6 +87,7 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
     if ( isset($session['mailing'])
         && !isset($_POST['mailing_cancel'])
         && !isset($_GET['from'])
+        && !isset($_GET['reset'])
     ) {
         $mailing = unserialize($session['mailing']);
     } else if (isset($_GET['from']) && is_numeric($_GET['from'])) {

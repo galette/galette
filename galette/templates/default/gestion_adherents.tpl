@@ -287,7 +287,6 @@
 				$('#legende').dialog('open');
 				return false;
 			});
-
             $('.selection_menu input[type=submit], .selection_menu input[type=button], ').click(function(){
                 var _checkeds = $('#listing').find('input[type=checkbox]:checked').length;
                 if ( _checkeds == 0 ) {
@@ -305,6 +304,35 @@
                     });
                     return false;
                 } else {
+{if $existing_mailing eq true}
+                    if (this.id == 'sendmail') {
+                        var _el = $('<div id="existing_mailing" title="{_T string="Existing mailing"}">{_T string="A mailing already exists. Do you want to create a new one or resume the existing?"}</div>');
+                        _el.appendTo('body').dialog({
+                            modal: true,
+                            hide: 'fold',
+                            width: '25em',
+                            height: 150,
+                            close: function(event, ui){
+                                _el.remove();
+                            },
+                            buttons: {
+                                '{_T string="Resume"}': function() {
+                                    $(this).dialog( "close" );
+                                    location.href = 'mailing_adherents.php';
+                                },
+                                '{_T string="New"}': function() {
+                                    $(this).dialog( "close" );
+                                    //add required controls to the form, change its action URI, and send it.
+                                    var _form = $('#listform');
+                                    _form.append($('<input type="hidden" name="mailing_new" value="true"/>'));
+                                    _form.append($('<input type="hidden" name="mailing" value="true"/>'));
+                                    _form.submit();
+                                }
+                            }
+                        });
+                        return false;
+                    }
+{/if}
                     if (this.id == 'attendance_sheet') {
                         _attendance_sheet_details();
                         return false;
@@ -312,7 +340,7 @@
                     return true;
                 }
             });
-		});
+        });
 
         var _attendance_sheet_details = function(){
             var _selecteds = [];

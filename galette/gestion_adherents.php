@@ -59,7 +59,10 @@ if ( !$login->isLogged() ) {
 }
 
 $session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
-if ( isset($session['filters']['members']) ) {
+if ( isset($session['filters']['members'])
+    && !isset($_POST['mailing'])
+    && !isset($_POST['mailing_new'])
+) {
     $filters = unserialize($session['filters']['members']);
 } else {
     $filters = new MembersList();
@@ -85,6 +88,9 @@ if (   isset($_POST['cards'])
         }
         if (isset($_POST['mailing'])) {
             $qstring = 'mailing_adherents.php';
+            if ( isset($_POST['mailing_new']) ) {
+                $qstring .= '?reset=true';
+            }
         }
         if (isset($_POST['attendance_sheet'])) {
             $qstring = 'attendance_sheet.php';
