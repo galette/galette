@@ -66,7 +66,7 @@ if ( isset($session['filters']['members']) ) {
 }
 
 // Set caller page ref for cards error reporting
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['caller'] = 'gestion_adherents.php';
+$session['caller'] = 'gestion_adherents.php';
 
 if (   isset($_POST['cards'])
     || isset($_POST['labels'])
@@ -75,7 +75,7 @@ if (   isset($_POST['cards'])
 ) {
     if (isset($_POST['member_sel'])) {
         $filters->selected = $_POST['member_sel'];
-        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members'] = serialize($filters);
+        $session['filters']['members'] = serialize($filters);
 
         if (isset($_POST['cards'])) {
             $qstring = 'carte_adherent.php';
@@ -99,10 +99,10 @@ if (   isset($_POST['cards'])
     }
 }
 
-if (isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']) && $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']) {
-    $error_detected[] = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error_msg'];
-    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error_msg']);
-    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']);
+if (isset($session['pdf_error']) && $session['pdf_error']) {
+    $error_detected[] = $session['pdf_error_msg'];
+    unset($session['pdf_error_msg']);
+    unset($session['pdf_error']);
 }
 
 // Filters
@@ -178,7 +178,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
 $groups = new Galette\Repository\Groups();
 $groups_list = $groups->getList();
 
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members'] = serialize($filters);
+$session['filters']['members'] = serialize($filters);
 
 //assign pagination variables to the template and add pagination links
 $filters->setSmartyPagination($tpl);
