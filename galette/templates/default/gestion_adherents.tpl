@@ -167,7 +167,7 @@
 					{else}
 						<img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
 					{/if}
-					<a href="voir_adherent.php?id_adh={$member->id}">{$member->sname}</a>
+                        <a href="voir_adherent.php?id_adh={$member->id}">{$member->sname}{if $member->company_name} ({$member->company_name}){/if}</a>
 					</td>
 					<td class="{$member->getRowClass()} nowrap">{$member->nickname|htmlspecialchars}</td>
 					<td class="{$member->getRowClass()} nowrap">{$member->sstatus}</td>
