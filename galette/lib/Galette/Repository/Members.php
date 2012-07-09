@@ -670,6 +670,7 @@ class Members
                         '(' . $zdb->db->quoteInto(
                             'CONCAT(LOWER(nom_adh)' . $sep .
                             'LOWER(prenom_adh)' . $sep .
+                            'LOWER(societe_adh)' . $sep .
                             'LOWER(pseudo_adh)) LIKE ?',
                             strtolower($token)
                         ) . ' OR ' .
