@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Tue Jul  3 12:24:59 2012 (GMT)
+// This file was automatically generated on Mon Jul  9 21:05:34 2012 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -832,7 +832,7 @@ $lang['(Integer)'] = '(Entier)';
 $lang['Your message has been sent to <strong>%s members</strong>'] = 'Votre courriel a été envoyé à <strong>%s membres</strong>';
 
 // ../templates/default/gestion_adherents.tpl:309 
-$lang['A mailing already exists. Do you want to create a new one or resume the existing?'] = 'Un E-Mailing est déjà en cours. Souhaitez-vous en créer un nouveau ou reprendre l\'existant ?';
+$lang['A mailing already exists. Do you want to create a new one or resume the existing?'] = 'Un E-Mailing est déjà en cours. Souhaitez-vous en créer un nouveau ou reprendre l\\\'existant ?';
 
 // ../templates/default/index.tpl:2 
 $lang['Login failed.'] = 'Échec de l\'identification.';
