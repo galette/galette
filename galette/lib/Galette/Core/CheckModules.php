@@ -146,7 +146,7 @@ class CheckModules
             foreach ( $this->_missing as $m ) {
                 $html .= '<li class="install-bad">' . $m  . '</li>';
             }
-            $thml .= '</ul>';
+            $html .= '</ul>';
         }
 
         $html = '<h3>' . _T("Active used modules")  . '</h3>';
