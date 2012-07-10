@@ -78,7 +78,7 @@ if (   isset($_POST['cards'])
 ) {
     if (isset($_POST['member_sel'])) {
         $filters->selected = $_POST['member_sel'];
-        $session['filters']['members'] = serialize($filters);
+        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members'] = serialize($filters);
 
         if (isset($_POST['cards'])) {
             $qstring = 'carte_adherent.php';
@@ -184,7 +184,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
 $groups = new Galette\Repository\Groups();
 $groups_list = $groups->getList();
 
-$session['filters']['members'] = serialize($filters);
+$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members'] = serialize($filters);
 
 //assign pagination variables to the template and add pagination links
 $filters->setSmartyPagination($tpl);
