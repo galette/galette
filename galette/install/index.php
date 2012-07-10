@@ -83,7 +83,9 @@ if ( $error_detected == ''
     && isset($_POST['install_dbname'])
     && isset($_POST['install_dbprefix'])
 ) {
-    if ( $_POST['install_dbtype'] != 'mysql' && $_POST['install_dbtype'] != 'pgsql' ) {
+    if ( $_POST['install_dbtype'] != 'mysql'
+        && $_POST['install_dbtype'] != 'pgsql'
+    ) {
             $error_detected .= '<li>' . _T("Database type unknown") . '</li>';
     }
     if ( $_POST['install_dbhost'] == '' ) {
@@ -135,18 +137,29 @@ if ( $error_detected == ''
                 }
             }
 
-            if ( isset($_POST['install_adminlogin']) && isset($_POST['install_adminpass']) ) {
+            if ( isset($_POST['install_adminlogin'])
+                && isset($_POST['install_adminpass'])
+            ) {
                 if ( $_POST['install_adminlogin'] == '' ) {
-                    $error_detected .= "<li class=\"install-bad\">" . _T("No user name") . "</li>";
+                    $error_detected .= "<li class=\"install-bad\">" .
+                        _T("No user name") . "</li>";
                 }
                 if ( strpos($_POST['install_adminlogin'], '@') != false ) {
-                    $error_detected[] = "<li class=\"install-bad\">" . _T("The username cannot contain the @ character") . "</li>";
+                    $error_detected[] = "<li class=\"install-bad\">" .
+                        _T("The username cannot contain the @ character") . "</li>";
                 }
                 if ( $_POST['install_adminpass'] == '' ) {
-                    $error_detected .= "<li class=\"install-bad\">" . _T("No password") . "</li>";
+                    $error_detected .= "<li class=\"install-bad\">" .
+                        _T("No password") . "</li>";
                 }
-                if ( ! isset($_POST['install_passwdverified']) && strcmp($_POST['install_adminpass'], $_POST['install_adminpass_verif']) ) {
-                    $error_detected .= "<li class=\"install-bad\">" . _T("Passwords mismatch") . "</li>";
+                if ( ! isset($_POST['install_passwdverified'])
+                    && strcmp(
+                        $_POST['install_adminpass'],
+                        $_POST['install_adminpass_verif']
+                    )
+                ) {
+                    $error_detected .= "<li class=\"install-bad\">" .
+                        _T("Passwords mismatch") . "</li>";
                 }
                 if ( $error_detected == '') {
                     if ( $_POST['install_type'] == 'install' ) {
@@ -238,7 +251,7 @@ if ($step == '1') { ?>
                 $('#pref_lang').change(function() {
                     this.form.submit();
                 });
-<?php
+    <?php
 }
 ?>
             });
@@ -256,28 +269,33 @@ if ($step == '1') { ?>
                 </h1>
             </header>
             <div>
-<?php
+    <?php
 switch ( $step ) {
 case '1':
-?>
+    ?>
             <h2><?php echo _T("Welcome to the Galette Install!"); ?></h2>
             <form action="index.php" method="post">
                 <p><label for="pref_lang"><?php echo _T("Please select your administration language"); ?></label></p>
                 <p>
                     <select name="pref_lang" id="pref_lang" required>
-<?php
+                    <option value=""><?php echo _T("Choose language"); ?></option>
+    <?php
     foreach ( $i18n->getList() as $langue ) {
-        echo "\t\t\t\t\t<option value=\"" . $langue->getID() . "\" style=\"background:url(" . $langue->getFlag() . ") no-repeat;padding-left:30px;\"" . (($i18n->getID()  == $langue->getID())?" selected=\"selected\"":"") . ">" . ucwords($langue->getName()) . "</option>\n";
+        echo "\t\t\t\t\t<option value=\"" . $langue->getID() .
+            "\" style=\"background:url(" . $langue->getFlag() .
+            ") no-repeat;padding-left:30px;\"" .
+            (($i18n->getID()  == $langue->getID())?" selected=\"selected\"":"") .
+            ">" . ucwords($langue->getName()) . "</option>\n";
     }
-?>
+    ?>
                     </select>
                 </p>
-                <p id="btn_box"><input id="next_btn" type="submit" value="<?php echo _T("Next Page"); ?>"/></p>
+                <p id="btn_box"><input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/></p>
             </form>
-<?php
+    <?php
     break; //ends first step
 case '2':
-?>
+    ?>
             <h2><?php echo _T("Installation mode"); ?></h2>
             <p><?php echo _T("Select installation mode to launch"); ?></p>
             <form action="index.php" method="post">
@@ -285,55 +303,64 @@ case '2':
                     <input type="radio" name="install_type" value="install" checked="checked" id="install"/> <label for="install"><?php echo _T("New installation:"); ?></label><br />
                     <?php echo _T("You're installing Galette for the first time, or you wish to erase an older version of Galette without keeping your data"); ?>
                 </p>
-<?php
+    <?php
     $update_scripts = Galette\Core\Db::getUpdateScripts('./');
-    
+
     $dh = opendir("sql");
     $last = "0.00";
     if ( count($update_scripts) > 0 ) {
-        echo "<p>" . _T("Update") . '<br/><span id="warningbox">' . _T("Warning: Don't forget to backup your current database.") . "</span></p>\n\t\t\t\t<ul class=\"list\">";
+        echo "<p>" . _T("Update") . '<br/><span id="warningbox">' .
+            _T("Warning: Don't forget to backup your current database.") .
+            "</span></p>\n\t\t\t\t<ul class=\"list\">";
     }
     while ( list($key, $val) = each($update_scripts) ) {
-?>
+        ?>
                 <li>
                     <input type="radio" name="install_type" value="upgrade-<?php echo $val; ?>" id="upgrade-<?php echo $val; ?>"/> <label for="upgrade-<?php echo $val; ?>">
-<?php
+        <?php
         if ( $last != number_format($val - 0.01, 2) ) {
-            echo _T("Your current Galette version is comprised between") . " " . $last . " " . _T("and") . " " . number_format($val - 0.01, 2) . "</label><br />";
+            echo _T("Your current Galette version is comprised between") . " " .
+                $last . " " . _T("and") . " " . number_format($val - 0.01, 2) .
+                "</label><br />";
         } else {
-            echo _T("Your current Galette version is") . " " . number_format($val - 0.01, 2) . "</label>";
+            echo _T("Your current Galette version is") . " " .
+                number_format($val - 0.01, 2) . "</label>";
         }
         $last = $val;
-?>
+        ?>
                 </li>
-<?php
+    <?php
     }
     if ( count($update_scripts) > 0 ) {
         echo "\t\t\t\t</ul>";
     }
-?>
+    ?>
                 <p id="btn_box">
-                    <input type="submit" value="<?php echo _T("Next step"); ?>"/>
+                    <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
                 </p>
             </form>
-<?php
+    <?php
     break; //ends second step
 case 'i3':
 case 'u3':
     $php_ok = true;
+    $class = 'install-';
     // check required PHP version...
     if ( version_compare(PHP_VERSION, '5.3.0', '<') ) {
         $php_ok = false;
+        $class .= 'bad';
+    } else {
+        $class .= 'ok';
     }
-?>
+    ?>
             <h2><?php echo _T("PHP Version"); ?></h2>
             <ul>
-                <li class="install-<?php if ( $php_ok === true ) { echo 'ok'; } else { echo 'bad'; } ?>">
+                <li class="<?php echo $class; ?>">
                 <?php echo str_replace('%version', PHP_VERSION, _T("PHP version %version"));  ?>
                 </li>
             </ul>
             <h2><?php echo _T("PHP Modules"); ?></h2>
-<?php
+    <?php
     //check PHP modules
     $cm = new Galette\Core\CheckModules();
     echo $cm->toHtml();
@@ -352,10 +379,10 @@ case 'u3':
             //do nothing
         }
     }
-?>
+    ?>
             <h2><?php echo _T("Files permissions"); ?></h2>
             <ul class="list" id="paths">
-<?php
+    <?php
     $perms_ok = true;
     $files_need_rw = array ('/templates_c',
                 '/photos',
@@ -375,10 +402,10 @@ case 'u3':
     echo '</ul>';
 
     if ( !$perms_ok || !$modules_ok || !$php_ok || !$date_ok ) {
-?>
+        ?>
 
             <div id="errorbox">
-<?php
+        <?php
         if ( !$php_ok ) {
             echo '<h2>' . _T("PHP Version")  . '</h2>';
             echo '<p>' . _T("Galette requires at least PHP version 5.3.") . '</p>';
@@ -394,7 +421,7 @@ case 'u3':
 
         if ( !$perms_ok ) {
             echo '<h2>' . _T("Files permissions are not OK!") . '</h2>';
-?>
+            ?>
             <p><?php
             if ($step == 'i3') echo _T("To work as excpected, Galette needs write permission on files listed above.");
             if ($step == 'u3') echo _T("In order to be updated, Galette needs write permission on files listed above."); ?></p>
@@ -412,105 +439,105 @@ case 'u3':
                         <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     </p>
                 </form>
-<?php
+            <?php
         }
     } else {
-?>
+        ?>
             <p id="infobox"><?php echo _T("Files permissions are OK!"); ?></p>
             <form action="index.php" method="POST">
                 <p id="btn_box">
-                    <input type="submit" value="<?php echo _T("Next step"); ?>"/>
+                    <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
                 </p>
             </form>
-<?php
+        <?php
     }
     break; //ends third step
 case 'i4':
 case 'u4':
-?>
+    ?>
             <h2><?php echo _T("Database"); ?></h2>
-<?php
+    <?php
     if ( $error_detected != '' ) {
-?>
+        ?>
             <div id="errorbox">
                 <h1><?php echo _T("- ERROR -"); ?></h1>
                 <ul><?php echo $error_detected; ?></ul>
             </div>
-<?php
+        <?php
     }
-?>
+    ?>
             <p><?php
-        if ( $step == 'i4' ) {
-            echo _T("If it hadn't been made, create a database and a user for Galette.");
-        }
-        if ( $step == 'u4' ) {
-            echo _T("Enter connection data for the existing database.");
+    if ( $step == 'i4' ) {
+        echo _T("If it hadn't been made, create a database and a user for Galette.");
+    }
+    if ( $step == 'u4' ) {
+        echo _T("Enter connection data for the existing database.");
 
-            if ( file_exists( WEB_ROOT . 'config/config.inc.php') ) {
-                $conf = file_get_contents(WEB_ROOT . 'config/config.inc.php');
-                if ( $conf !== false ) {
-                    if ( !isset($_POST['install_dbtype']) ) {
-                        $res = preg_match(
-                            '/TYPE_DB", "(.*)"\);/',
-                            $conf,
-                            $matches
-                        );
-                        if ( $matches[1] ) {
-                            $_POST['install_dbtype'] = $matches[1];
-                        }
+        if ( file_exists(WEB_ROOT . 'config/config.inc.php') ) {
+            $conf = file_get_contents(WEB_ROOT . 'config/config.inc.php');
+            if ( $conf !== false ) {
+                if ( !isset($_POST['install_dbtype']) ) {
+                    $res = preg_match(
+                        '/TYPE_DB", "(.*)"\);/',
+                        $conf,
+                        $matches
+                    );
+                    if ( $matches[1] ) {
+                        $_POST['install_dbtype'] = $matches[1];
                     }
-                    if ( !isset($_POST['install_dbhost']) ) {
-                        $res = preg_match(
-                            '/HOST_DB", "(.*)"\);/',
-                            $conf,
-                            $matches
-                        );
-                        if ( $matches[1] ) {
-                            $_POST['install_dbhost'] = $matches[1];
-                        }
+                }
+                if ( !isset($_POST['install_dbhost']) ) {
+                    $res = preg_match(
+                        '/HOST_DB", "(.*)"\);/',
+                        $conf,
+                        $matches
+                    );
+                    if ( $matches[1] ) {
+                        $_POST['install_dbhost'] = $matches[1];
                     }
-                    if ( !isset($_POST['install_dbuser']) ) {
-                        $res = preg_match(
-                            '/USER_DB", "(.*)"\);/',
-                            $conf,
-                            $matches
-                        );
-                        $_POST['install_dbuser'] = $matches[1];
+                }
+                if ( !isset($_POST['install_dbuser']) ) {
+                    $res = preg_match(
+                        '/USER_DB", "(.*)"\);/',
+                        $conf,
+                        $matches
+                    );
+                    $_POST['install_dbuser'] = $matches[1];
+                }
+                if ( !isset($_POST['install_dbname']) ) {
+                    $res = preg_match(
+                        '/NAME_DB", "(.*)"\);/',
+                        $conf,
+                        $matches
+                    );
+                    if ( $matches[1] ) {
+                        $_POST['install_dbname'] = $matches[1];
                     }
-                    if ( !isset($_POST['install_dbname']) ) {
-                        $res = preg_match(
-                            '/NAME_DB", "(.*)"\);/',
-                            $conf,
-                            $matches
-                        );
-                        if ( $matches[1] ) {
-                            $_POST['install_dbname'] = $matches[1];
-                        }
-                    }
-                    if ( !isset($_POST['install_dbprefix']) ) {
-                        $res = preg_match(
-                            '/PREFIX_DB", "(.*)"\);/',
-                            $conf,
-                            $matches
-                        );
-                        if ( $matches[1] ) {
-                            $_POST['install_dbprefix'] = $matches[1];
-                        }
+                }
+                if ( !isset($_POST['install_dbprefix']) ) {
+                    $res = preg_match(
+                        '/PREFIX_DB", "(.*)"\);/',
+                        $conf,
+                        $matches
+                    );
+                    if ( $matches[1] ) {
+                        $_POST['install_dbprefix'] = $matches[1];
                     }
                 }
             }
         }
+    }
 
-        //define default database port
+    //define default database port
+    $default_dbport = Galette\Core\Db::MYSQL_DEFAULT_PORT;
+    if ( !isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql' ) {
         $default_dbport = Galette\Core\Db::MYSQL_DEFAULT_PORT;
-        if ( !isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql' ) {
-            $default_dbport = Galette\Core\Db::MYSQL_DEFAULT_PORT;
-        } else if ( $_POST['install_dbtype'] == 'pgsql' ) {
-            $default_dbport = Galette\Core\Db::PGSQL_DEFAULT_PORT;
-        }
-?><br />
+    } else if ( $_POST['install_dbtype'] == 'pgsql' ) {
+        $default_dbport = Galette\Core\Db::PGSQL_DEFAULT_PORT;
+    }
+    ?><br />
             <?php echo _T("The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."); ?></p>
             <form action="index.php" method="post">
                 <fieldset class="cssform">
@@ -543,17 +570,19 @@ case 'u4':
                         <input type="text" name="install_dbname" id="install_dbname" value="<?php if(isset($_POST['install_dbname'])) echo $_POST['install_dbname']; ?>" required/>
                     </p>
                     <p>
-<?php
-        if ( substr($_POST['install_type'], 0, 8) == 'upgrade-' ) {
-            echo '<span class="required">' .  _T("(Indicate the CURRENT prefix of your Galette tables)") . '</span><br/>';
-        }
-?>
+    <?php
+    if ( substr($_POST['install_type'], 0, 8) == 'upgrade-' ) {
+        echo '<span class="required">' .
+            _T("(Indicate the CURRENT prefix of your Galette tables)") .
+            '</span><br/>';
+    }
+    ?>
                         <label class="bline" for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
                         <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo (isset($_POST['install_dbprefix']))?$_POST['install_dbprefix']:'galette_'; ?>" required/>
                     </p>
                 </fieldset>
                 <p id="btn_box">
-                    <input type="submit" value="<?php echo _T("Next step"); ?>"/>
+                    <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
                 </p>
@@ -572,14 +601,14 @@ case 'u4':
                     });
                 });
             </script>
-<?php
+    <?php
     break; //ends fourth step
 case 'i5':
 case 'u5':
-?>
+    ?>
             <h2><?php echo _T("Check of the database"); ?></h2>
             <p><?php echo _T("Check the parameters and the existence of the database"); ?></p>
-<?php
+    <?php
     $permsdb_ok = true;
 
     $test = Galette\Core\Db::testConnectivity(
@@ -588,7 +617,8 @@ case 'u5':
         $_POST['install_dbpass'],
         $_POST['install_dbhost'],
         $_POST['install_dbport'],
-        $_POST['install_dbname']);
+        $_POST['install_dbname']
+    );
 
     if ( $test === true ) {
         echo '<p id="infobox">' . _T("Connection to database successfull") . '</p>';
@@ -601,7 +631,7 @@ case 'u5':
     }
 
     if ( !$permsdb_ok ) {
-?>
+        ?>
             <p><?php echo _T("Database can't be reached. Please go back to enter the connection parameters again."); ?></p>
             <form action="index.php" method="POST">
                 <p id="retry_btn">
@@ -618,13 +648,13 @@ case 'u5':
                     <input type="hidden" name="install_dbprefix" value="<?php echo $_POST['install_dbprefix']; ?>"/>
                 </p>
             </form>
-<?php
+        <?php
     } else {
-?>
+        ?>
             <p><?php echo _T("Database exists and connection parameters are OK."); ?></p>
             <form action="index.php" method="POST">
                 <p id="btn_box">
-                    <input type="submit" value="<?php echo _T("Next step"); ?>"/>
+                    <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
                     <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
@@ -637,90 +667,115 @@ case 'u5':
                     <input type="hidden" name="install_dbconn_ok" value="1"/>
                 </p>
             </form>
-<?php
+        <?php
     }
     break; //ends 5th step
 case 'i6':
 case 'u6':
-?>
+    ?>
             <h2><?php echo _T("Permissions on the base"); ?></h2>
             <p><?php
+    if ( $step == 'i6' ) {
+        echo _T("To run, Galette needs a number of rights on the database (CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)");
+    }
+    if ( $step == 'u6' ) {
+        echo _T("In order to be updated, Galette needs a number of rights on the database (CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)");
+    }
+    ?></p>
+    <?php
+    /** FIXME: when tables already exists and DROP not allowed at this time
+    the showed error is about CREATE, whenever CREATE is allowed */
+    //We delete the table if exists, no error at this time
+    $zdb->dropTestTable();
+
+    $results = $zdb->grantCheck(substr($step, 0, 1));
+
+    $result = '';
+    $error = false;
+    //test returned values
+    if ( $results['create'] instanceof Exception ) {
+        $result .= '<li class="install-bad debuginfos">' .
+            _T("CREATE operation not allowed") . '<span>' .
+            $results['create']->getMessage() . '</span></li>';
+        $error = true;
+    } elseif ( $results['create'] != '' ) {
+        $result .= '<li class="install-ok">' .
+            _T("CREATE operation allowed") . '</li>';
+    }
+
+    if ( $results['insert'] instanceof Exception ) {
+        $result .= '<li class="install-bad debuginfos">' .
+            _T("INSERT operation not allowed") . '<span>' .
+            $results['insert']->getMessage() . '</span></li>';
+        $error = true;
+    } elseif ( $results['insert'] != '' ) {
+        $result .= '<li class="install-ok">' .
+            _T("INSERT operation allowed") . '</li>';
+    }
+
+    if ( $results['update'] instanceof Exception ) {
+        $result .= '<li class="install-bad debuginfos">' .
+            _T("UPDATE operation not allowed") . '<span>' .
+            $results['update']->getMessage() . '</span></li>';
+        $error = true;
+    } elseif ( $results['update'] != '' ) {
+        $result .= '<li class="install-ok">' .
+            _T("UPDATE operation allowed") . '</li>';
+    }
+
+    if ( $results['select'] instanceof Exception ) {
+        $result .= '<li class="install-bad debuginfos">' .
+            _T("SELECT operation not allowed") . '<span>' .
+            $results['select']->getMessage() . '</span></li>';
+        $error = true;
+    } elseif ( $results['select'] != '' ) {
+        $result .= '<li class="install-ok">' .
+            _T("SELECT operation allowed") . '</li>';
+    }
+
+    if ( $results['delete'] instanceof Exception ) {
+        $result .= '<li class="install-bad debuginfos">' .
+            _T("DELETE operation not allowed") . '<span>' .
+            $results['delete']->getMessage() . '</span></li>';
+        $error = true;
+    } elseif ( $results['delete'] != '' ) {
+        $result .= '<li class="install-ok">' .
+            _T("DELETE operation allowed") . '</li>';
+    }
+
+    if ( $results['drop'] instanceof Exception ) {
+        $result .= '<li class="install-bad debuginfos">' .
+            _T("DROP operation not allowed") . '<span>' .
+            $results['drop']->getMessage() . '</span></li>';
+        $error = true;
+    } elseif ( $results['drop'] != '' ) {
+        $result .= '<li class="install-ok">' .
+            _T("DROP operation allowed") . '</li>';
+    }
+
+    if ( $results['alter'] instanceof Exception ) {
+        $result .= '<li class="install-bad debuginfos">' .
+            _T("ALTER Operation not allowed") . '<span>' .
+            $results['alter']->getMessage() . '</span></li>';
+        $error = true;
+    } elseif ( $results['alter'] != '' ) {
+        $result .= '<li class="install-ok">' .
+            _T("ALTER Operation allowed") . '</li>';
+    }
+
+    if ( $error ) {
+        echo "<ul>" . $result . "</ul>\n";
+        echo '<div id="errorbox">';
+        echo '<h1>';
         if ( $step == 'i6' ) {
-            echo _T("To run, Galette needs a number of rights on the database (CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)");
+            echo _T("GALETTE hasn't got enough permissions on the database to continue the installation.");
         }
-        if ( $step == 'u6' ) {
-            echo _T("In order to be updated, Galette needs a number of rights on the database (CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)");
+        if ($step == 'u6') {
+            echo _T("GALETTE hasn't got enough permissions on the database to continue the update.");
         }
-?></p>
-<?php
-        /** FIXME: when tables already exists and DROP not allowed at this time
-        the showed error is about CREATE, whenever CREATE is allowed */
-        //We delete the table if exists, no error at this time
-        $zdb->dropTestTable();
-
-        $results = $zdb->grantCheck(substr($step, 0, 1));
-
-        $result = '';
-        $error = false;
-        //test returned values
-        if ( $results['create'] instanceof Exception ) {
-            $result .= '<li class="install-bad debuginfos">' . _T("CREATE operation not allowed") . '<span>' . $results['create']->getMessage() . '</span></li>';
-            $error = true;
-        } elseif ( $results['create'] != '' ) {
-            $result .= '<li class="install-ok">' . _T("CREATE operation allowed") . '</li>';
-        }
-
-        if ( $results['insert'] instanceof Exception ) {
-            $result .= '<li class="install-bad debuginfos">' . _T("INSERT operation not allowed") . '<span>' . $results['insert']->getMessage() . '</span></li>';
-            $error = true;
-        } elseif ( $results['insert'] != '' ) {
-            $result .= '<li class="install-ok">' . _T("INSERT operation allowed") . '</li>';
-        }
-
-        if ( $results['update'] instanceof Exception ) {
-            $result .= '<li class="install-bad debuginfos">' . _T("UPDATE operation not allowed") . '<span>' . $results['update']->getMessage() . '</span></li>';
-            $error = true;
-        } elseif ( $results['update'] != '' ) {
-            $result .= '<li class="install-ok">' . _T("UPDATE operation allowed") . '</li>';
-        }
-
-        if ( $results['select'] instanceof Exception ) {
-            $result .= '<li class="install-bad debuginfos">' . _T("SELECT operation not allowed") . '<span>' . $results['select']->getMessage() . '</span></li>';
-            $error = true;
-        } elseif ( $results['select'] != '' ) {
-            $result .= '<li class="install-ok">' . _T("SELECT operation allowed") . '</li>';
-        }
-
-        if ( $results['delete'] instanceof Exception ) {
-            $result .= '<li class="install-bad debuginfos">' . _T("DELETE operation not allowed") . '<span>' . $results['delete']->getMessage() . '</span></li>';
-            $error = true;
-        } elseif ( $results['delete'] != '' ) {
-            $result .= '<li class="install-ok">' . _T("DELETE operation allowed") . '</li>';
-        }
-
-        if ( $results['drop'] instanceof Exception ) {
-            $result .= '<li class="install-bad debuginfos">' . _T("DROP operation not allowed") . '<span>' . $results['drop']->getMessage() . '</span></li>';
-            $error = true;
-        } elseif ( $results['drop'] != '' ) {
-            $result .= '<li class="install-ok">' . _T("DROP operation allowed") . '</li>';
-        }
-
-        if (  $results['alter'] instanceof Exception ) {
-            $result .= '<li class="install-bad debuginfos">' . _T("ALTER Operation not allowed") . '<span>' . $results['alter']->getMessage() . '</span></li>';
-            $error = true;
-        } elseif ( $results['alter'] != '' ) {
-            $result .= '<li class="install-ok">' . _T("ALTER Operation allowed") . '</li>';
-        }
-
-        if ( $error ) {
-            echo "<ul>" . $result . "</ul>\n";
-            echo '<div id="errorbox">';
-            echo '<h1>';
-            if( $step == 'i6' ) echo _T("GALETTE hasn't got enough permissions on the database to continue the installation.");
-            if ($step == 'u6') echo _T("GALETTE hasn't got enough permissions on the database to continue the update.");
-            echo '</h1>';
-            echo '</div>';
-?>
+        echo '</h1>';
+        echo '</div>';
+        ?>
             <form action="index.php" method="post">
                 <p id="retry_btn">
                     <input type="submit" value="<?php echo _T("Retry"); ?>"/>
@@ -736,14 +791,14 @@ case 'u6':
                     <input type="hidden" name="install_dbconn_ok" value="1"/>
                 </p>
             </form>
-<?php
-        } else {
-?>
+        <?php
+    } else {
+        ?>
             <ul><?php echo $result; ?></ul>
             <p id="infobox"><?php echo _T("Permissions to database are OK."); ?></p>
             <form action="index.php" method="POST">
                 <p id="btn_box">
-                    <input type="submit" value="<?php echo _T("Next step"); ?>"/>
+                    <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
                     <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
@@ -757,13 +812,12 @@ case 'u6':
                     <input type="hidden" name="install_dbperms_ok" value="1"/>
                 </p>
             </form>
-<?php
-        }
+        <?php
+    }
     break; //ends 6th step
 case 'i7':
 case 'u7':
-?>
-
+    ?>
             <h2><?php
     if ( $step == 'i7' ) {
         echo _T("Creation of the tables");
@@ -771,7 +825,7 @@ case 'u7':
     if ( $step == 'u7' ) {
         echo _T("Update of the tables");
     }
-?></h2>
+    ?></h2>
             <p><?php
     if ( $step == 'i7' ) {
         echo _T("Installation Report");
@@ -779,15 +833,16 @@ case 'u7':
     if ( $step == 'u7' ) {
         echo _T("Update Report");
     }
-?></p>
-<ul>
-<?php
+    ?></p>
+    <ul>
+    <?php
     $table_prefix = $_POST['install_dbprefix'];
 
     //before doing anything else, we'll have to convert data to UTF-8
     //required since 0.7dev (if we're upgrading, 'f course)
     if ( $step == 'u7' ) {
-        //FIXME: maybe we can do that only on 0.7 upgrades, to save time? (methods are safe if rerun)
+        //FIXME: maybe we can do that only on 0.7 upgrades,
+        //to save time? (methods are safe if rerun)
         $zdb->convertToUTF($table_prefix);
     }
 
@@ -919,12 +974,11 @@ case 'u7':
             }
         }
     }*/
-
-?>
+    ?>
             <p><?php echo _T("(Errors on DROP and RENAME operations can be ignored)"); ?></p>
-<?php
+    <?php
     if ( isset($error) ) {
-?>
+        ?>
             <p id="errorbox"><?php
         if ( $step == 'i7' ) {
             echo _T("The tables are not totally created, it may be a permission problem.");
@@ -934,7 +988,7 @@ case 'u7':
             echo '<br/>';
             echo _T("Your database is maybe not usable, try to restore the older version.");
         }
-?>
+        ?>
             </p>
             <form action="index.php" method="POST">
                 <p id="retry_btn">
@@ -952,15 +1006,19 @@ case 'u7':
                     <input type="hidden" name="install_dbperms_ok" value="1"/>
                 </p>
             </form>
-<?php
+    <?php
     } else {
-?>
+        ?>
             <p id="infobox"><?php
-if ($step=="i7") echo _T("The tables has been correctly created.");
-if ($step=="u7") echo _T("The tables has been correctly updated."); ?></p>
+        if ($step=="i7") {
+            echo _T("The tables has been correctly created.");
+        }
+        if ($step=="u7") {
+                echo _T("The tables has been correctly updated.");
+        } ?></p>
             <form action="index.php" method="POST">
                 <p id="btn_box">
-                    <input type="submit" value="<?php echo _T("Next step"); ?>"/>
+                    <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
                     <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
@@ -980,13 +1038,15 @@ if ($step=="u7") echo _T("The tables has been correctly updated."); ?></p>
     break; //ends 7th step
 case 'i8':
 case 'u8':
-?>
+    ?>
             <h2><?php echo _T("Admin settings"); ?></h2>
-<?php
+    <?php
     if ( $error_detected != '' ) {
-        echo '<div id="errorbox"><h1>' . _T("- ERROR -") . '</h1><ul>' . $error_detected . '</ul></div>';
+        echo '<div id="errorbox"><h1>' .
+            _T("- ERROR -") . '</h1><ul>' .
+            $error_detected . '</ul></div>';
     }
-?>
+    ?>
             <form action="index.php" method="post">
                 <fieldset class="cssform">
                     <legend class="ui-state-active ui-corner-top"><?php echo _T("Please chose the parameters of the admin account on Galette"); ?></legend>
@@ -1004,7 +1064,7 @@ case 'u8':
                     </p>
                 </fieldset>
                 <p id="btn_box">
-                    <input type="submit" value="<?php echo _T("Next step"); ?>"/>
+                    <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
                     <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
@@ -1019,7 +1079,7 @@ case 'u8':
                     <input type="hidden" name="install_dbwrite_ok" value="1"/>
                 </p>
             </form>
-<?php
+    <?php
     break; //ends 8th step
 case 'i9';
 case 'u9';
@@ -1027,9 +1087,9 @@ case 'u9';
 
     $oks = array();
     $errs = array();
-?>
+    ?>
             <h2><?php echo _T("Save the parameters"); ?></h2>
-<?php
+    <?php
             // création du fichier de configuration
 
     if ( $fd = @fopen(WEB_ROOT . 'config/config.inc.php', 'w') ) {
@@ -1046,9 +1106,12 @@ define("STOCK_FILES", "tempimages");
 ?>';
         fwrite($fd, $data);
         fclose($fd);
-        $oks[] =  '<li class="install-ok">' . _T("Configuration file created (config/config.inc.php)") . '</li>';
+        $oks[] =  '<li class="install-ok">' .
+            _T("Configuration file created (config/config.inc.php)") . '</li>';
     } else {
-        $errs[] =  '<li class="install-bad">' . _T("Unable to create configuration file (config/config.inc.php)") . '</li>';
+        $errs[] =  '<li class="install-bad">' .
+            _T("Unable to create configuration file (config/config.inc.php)") .
+            '</li>';
         $error = true;
     }
 
@@ -1066,30 +1129,44 @@ define("STOCK_FILES", "tempimages");
             md5($_POST['install_adminpass'])
         );
         if ( $res !== true ) {
-            $errs[] = '<li class="install-bad">' . _T("Default preferences cannot be initialized.") . '<span>' . $res->getMessage() . '</span></li>';
+            $errs[] = '<li class="install-bad">' .
+                _T("Default preferences cannot be initialized.") .
+                '<span>' . $res->getMessage() . '</span></li>';
         } else {
-            $oks[] = '<li class="install-ok">' . _T("Default preferences were successfully stored.") . '</li>';
+            $oks[] = '<li class="install-ok">' .
+                _T("Default preferences were successfully stored.") . '</li>';
         }
 
         $res = $ct->installInit();
         if ( $res !== true ) {
-            $errs[] = '<li class="install-bad">' . _T("Default contributions types cannot be initialized.") . '<span>' . $res->getMessage() . '</span></li>';
+            $errs[] = '<li class="install-bad">' .
+                _T("Default contributions types cannot be initialized.") .
+                '<span>' . $res->getMessage() . '</span></li>';
         } else {
-            $oks[] = '<li class="install-ok">' . _T("Default contributions types were successfully stored.") . '</li>';
+            $oks[] = '<li class="install-ok">' .
+                _T("Default contributions types were successfully stored.") .
+                '</li>';
         }
 
         $res = $status->installInit();
         if ( $res !== true ) {
-            $errs[] = '<li class="install-bad">' . _T("Default status cannot be initialized.") . '<span>' . $res->getMessage() . '</span></li>';
+            $errs[] = '<li class="install-bad">' .
+                _T("Default status cannot be initialized.") .
+                '<span>' . $res->getMessage() . '</span></li>';
         } else {
-            $oks[] = '<li class="install-ok">' . _T("Default status were successfully stored.") . '</li>';
+            $oks[] = '<li class="install-ok">' .
+                _T("Default status were successfully stored.") . '</li>';
         }
 
         $res = $fc->installInit();
         if ( $res !== true ) {
-            $errs[] = '<li class="install-bad">' . _T("Default fields categories cannot be initialized.") . '<span>' . $res->getMessage() . '</span></li>';
+            $errs[] = '<li class="install-bad">' .
+                _T("Default fields categories cannot be initialized.") .
+                '<span>' . $res->getMessage() . '</span></li>';
         } else {
-            $oks[] = '<li class="install-ok">' . _T("Default fields categories were successfully stored.") . '</li>';
+            $oks[] = '<li class="install-ok">' .
+                _T("Default fields categories were successfully stored.") .
+                '</li>';
         }
     } else if ($step=='u9') {
         $preferences = new Galette\Core\Preferences();
@@ -1102,28 +1179,31 @@ define("STOCK_FILES", "tempimages");
     $res = $texts->installInit();
     if ( $res !== false ) {
         if ( $res !== true ) {
-            $errs[] = '<li class="install-bad">' . _T("Default texts cannot be initialized.") . '<span>' . $res->getMessage() . '</span></li>';
+            $errs[] = '<li class="install-bad">' .
+                _T("Default texts cannot be initialized.") .
+                '<span>' . $res->getMessage() . '</span></li>';
         } else {
-            $oks[] = '<li class="install-ok">' . _T("Default texts were successfully stored.") . '</li>';
+            $oks[] = '<li class="install-ok">' .
+                _T("Default texts were successfully stored.") .
+                '</li>';
         }
     }
-
-?>
+    ?>
             <div<?php if( count($errs) == 0) echo ' id="infobox"'; ?>>
                 <ul>
-<?php
+    <?php
     foreach ( $oks as $o ) {
         echo "\t\t\t\t\t" . $o . "\n";
     }
-?>
+    ?>
                 </ul>
             </div>
-<?php
+    <?php
     if ( count($errs) ==0 ) {
-?>
+        ?>
             <form action="index.php" method="POST">
                 <p id="btn_box">
-                    <input type="submit" value="<?php echo _T("Next step"); ?>"/>
+                    <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
                     <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
@@ -1142,9 +1222,9 @@ define("STOCK_FILES", "tempimages");
                     <input type="hidden" name="install_prefs_ok" value="1"/>
                 </p>
             </form>
-<?php
+    <?php
     } else {
-?>
+        ?>
             <div id="errorbox">
                 <h1><?php echo _T("- ERROR -"); ?></h1>
                 <p><?php echo _T("Parameters couldn't be saved."); ?><br/><?php echo _T("This can come from the permissions on the file config/config.inc.php or the impossibility to make an INSERT into the database."); ?></p>
@@ -1171,12 +1251,12 @@ define("STOCK_FILES", "tempimages");
                     <input type="hidden" name="install_passwdverified" value="1"/>
                 </p>
             </form>
-<?php
+    <?php
     }
     break; //ends 9th step
 case 'i10':
 case 'u10':
-?>
+    ?>
             <h2><?php
     if ( $step == 'i10' ) {
         echo _T("Installation complete !");
@@ -1184,7 +1264,7 @@ case 'u10':
     if ( $step == 'u10' ) {
         echo _T("Update complete !");
     }
-?></h2>
+    ?></h2>
             <p><?php
     if ( $step == 'i10' ) {
         echo _T("Galette has been successfully installed!");
@@ -1192,14 +1272,14 @@ case 'u10':
     if ( $step == 'u10' ) {
         echo _T("Galette has been successfully updated!");
     }
-?></p>
+    ?></p>
             <div id="errorbox"><?php echo _T("To secure the system, please delete the install directory"); ?></div>
             <form action="../index.php" method="get">
                 <p id="btn_box">
                     <input type="submit" value="<?php echo _T("Homepage"); ?>"/>
                 </p>
             </form>
-<?php
+    <?php
     break; //ends 10th step and finish install
 } // switch
 ?>
