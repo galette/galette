@@ -345,31 +345,32 @@ case 'i3':
 case 'u3':
     $php_ok = true;
     $class = 'install-';
+    $php_class = '';
+    $php_modules_class = '';
+    $php_date_class = '';
+    $files_perms_class = '';
+
     // check required PHP version...
     if ( version_compare(PHP_VERSION, '5.3.0', '<') ) {
         $php_ok = false;
-        $class .= 'bad';
+        $php_class .= $class . 'bad';
     } else {
-        $class .= 'ok';
+        $php_class .= $class . 'ok';
     }
     ?>
-            <h2><?php echo _T("PHP Version"); ?></h2>
-            <ul>
-                <li class="<?php echo $class; ?>">
-                <?php echo str_replace('%version', PHP_VERSION, _T("PHP version %version"));  ?>
-                </li>
-            </ul>
-            <h2><?php echo _T("PHP Modules"); ?></h2>
+            <article id="php_version" class="<?php echo $php_class; ?>">
+                <header>
+                    <h2><?php echo _T("PHP Version"); ?></h2>
+                </header>
+                <?php
+    if ( $php_ok !== true ) {
+        echo '<p class="error">' . _T("Galette requires at least PHP version 5.3.") . '</p>';
+    }
+    echo str_replace('%version', PHP_VERSION, _T("PHP version %version"));
+                ?>
+            </article>
     <?php
-    //check PHP modules
-    $cm = new Galette\Core\CheckModules();
-    echo $cm->toHtml();
-    $modules_ok = $cm->isValid();
-
-    $news = new Galette\IO\News(true);
-    $twitter = $news->canReadTweets($cm);
-    $gplus = $news->canReadGplus($cm);
-
+    // check date settings
     $date_ok = false;
     if ( !version_compare(PHP_VERSION, '5.2.0', '<') ) {
         try {
@@ -378,72 +379,115 @@ case 'u3':
         } catch ( Exception $e ) {
             //do nothing
         }
+        if ( $date_ok !== true ) {
+            $php_date_class = $class . 'bad';
+        } else {
+            $php_date_class = $class . 'ok';
+        }
     }
     ?>
-            <h2><?php echo _T("Files permissions"); ?></h2>
-            <ul class="list" id="paths">
+            <article id="php_date" class="<?php echo $php_date_class; ?>">
+                <header>
+                    <h2><?php echo _T("Date settings"); ?></h2>
+                </header>
+                <div>
     <?php
+    if ( !$date_ok ) {
+        echo '<p class="error">' . _T("Your PHP date settings are not correct. Maybe you've missed the timezone settings that is mandatory since PHP 5.3?") . '</p>';
+    } else {
+        echo '<p>' . _T("Your PHP date settings seems correct.") . '</p>';
+    }
+    ?>
+                </div>
+            </article>
+    <?php
+    // check PHP modules
+    $cm = new Galette\Core\CheckModules();
+    $modules_ok = $cm->isValid();
+
+    if ( $modules_ok !== true ) {
+        $php_modules_class = $class . 'bad';
+    } else {
+        $php_modules_class = $class . 'ok';
+    }
+
+    $news = new Galette\IO\News(true);
+    $twitter = $news->canReadTweets($cm);
+    $gplus = $news->canReadGplus($cm);
+    ?>
+            <article id="php_modules" class="<?php echo $php_modules_class; ?>">
+                <header>
+                    <h2><?php echo _T("PHP Modules"); ?></h2>
+                </header>
+                <div>
+    <?php
+    if ( !$modules_ok ) {
+        echo '<p class="error">' . _T("Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation.")  . '</p>';
+    }
+    echo $cm->toHtml();
+    ?>
+                </div>
+           </article>
+    <?php
+    // check file permissions
     $perms_ok = true;
-    $files_need_rw = array ('/templates_c',
-                '/photos',
-                '/cache',
-                '/tempimages',
-                '/config',
-                '/exports',
-                '/logs');
+    $files_need_rw = array (
+        '/templates_c',
+        '/photos',
+        '/cache',
+        '/tempimages',
+        '/config',
+        '/exports',
+        '/logs'
+    );
+
+    $files_perms_class = $class . 'ok';
+    $files = '';
     foreach ($files_need_rw as $file) {
         if ( !is_writable(dirname(__FILE__) . '/..' . $file) ) {
             $perms_ok = false;
-            echo "<li class=\"install-bad\">" . $file . "</li>";
+            $files_perms_class = $class . 'bad';
+            $files .= '<li class="install-bad">' . $file . '</li>';
         } else {
-            echo "<li class=\"install-ok\">" . $file . "</li>";
+            $files .= '<li class="install-ok">' . $file . '</li>';
         }
     }
-    echo '</ul>';
-
+    ?>
+        <article id="files_perms" class="<?php echo $files_perms_class; ?>">
+            <header>
+                <h2><?php echo _T("Files permissions"); ?></h2>
+            </header>
+            <div>
+    <?php
+    if ( !$perms_ok ) {
+        ?>
+            <h3 class="error"><?php echo _T("Files permissions are not OK!"); ?></h3>
+            <p><?php
+        if ($step == 'i3') echo _T("To work as excpected, Galette needs write permission on files listed above.");
+        if ($step == 'u3') echo _T("In order to be updated, Galette needs write permission on files listed above."); 
+            ?></p>
+            <p><?php echo _T("Under UNIX/Linux, you can give the permissions using those commands"); ?><br />
+                <code>chown <em><?php echo _T("apache_user"); ?></em> <em><?php echo _T("file_name"); ?></em><br />chmod 700 <em><?php echo _T("directory_name"); ?></em></code>
+            </p>
+            <p><?php echo _T("Under Windows, check these directories are not in Read-Only mode in their property panel."); ?></p>
+       <?php
+    }
+    ?>
+                <ul class="list" id="paths"><?php echo $files; ?></ul>
+            </div>
+        </article>
+    <?php
     if ( !$perms_ok || !$modules_ok || !$php_ok || !$date_ok ) {
         ?>
-
-            <div id="errorbox">
-        <?php
-        if ( !$php_ok ) {
-            echo '<h2>' . _T("PHP Version")  . '</h2>';
-            echo '<p>' . _T("Galette requires at least PHP version 5.3.") . '</p>';
-        }
-        if ( !$date_ok ) {
-            echo '<h2>' . _T("Date settings") . '</h2>';
-            echo '<p>' . _T("Your PHP date settings are not correct. Maybe you've missed the timezone settings that is mandatory since PHP 5.3?") . '</p>';
-        }
-        if ( !$modules_ok ) {
-            echo '<h2>' . _T("PHP missing modules") . '</h2>';
-            echo '<p>' . _T("Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation.")  . '</p>';
-        }
-
-        if ( !$perms_ok ) {
-            echo '<h2>' . _T("Files permissions are not OK!") . '</h2>';
-            ?>
-            <p><?php
-            if ($step == 'i3') echo _T("To work as excpected, Galette needs write permission on files listed above.");
-            if ($step == 'u3') echo _T("In order to be updated, Galette needs write permission on files listed above."); ?></p>
-
-                <p><?php echo _T("Under UNIX/Linux, you can give the permissions using those commands"); ?><br />
-                    <code>chown <em><?php echo _T("apache_user"); ?></em> <em><?php echo _T("file_name"); ?></em><br />
-                    chmod 600 <em><?php echo _T("file_name"); ?></em> <?php echo _T("(for a file)"); ?><br />
-                    chmod 700 <em><?php echo _T("direcory_name"); ?></em> <?php echo _T("(for a directory)"); ?></code>
-                </p>
-                <p><?php echo _T("Under Windows, check these files are not in Read-Only mode in their property panel."); ?></p>
-                </div>
                 <form action="index.php" method="post">
-                    <p id="retry_btn">
-                        <input type="submit" value="<?php echo _T("Retry"); ?>"/>
+                    <p id="btn_box">
+                        <input type="submit" id="retry_btn" value="<?php echo _T("Retry"); ?>"/>
                         <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     </p>
                 </form>
-            <?php
-        }
+    <?php
     } else {
         ?>
-            <p id="infobox"><?php echo _T("Files permissions are OK!"); ?></p>
             <form action="index.php" method="POST">
                 <p id="btn_box">
                     <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
@@ -634,8 +678,8 @@ case 'u5':
         ?>
             <p><?php echo _T("Database can't be reached. Please go back to enter the connection parameters again."); ?></p>
             <form action="index.php" method="POST">
-                <p id="retry_btn">
-                    <input type="submit" value="<?php echo _T("Go back"); ?>"/>
+                <p id="btn_box">
+                    <input id="back_btn" type="submit" value="<?php echo _T("Go back"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
                     <input type="hidden" name="install_dbko" value="1"/>
@@ -777,8 +821,8 @@ case 'u6':
         echo '</div>';
         ?>
             <form action="index.php" method="post">
-                <p id="retry_btn">
-                    <input type="submit" value="<?php echo _T("Retry"); ?>"/>
+                <p id="btn_box">
+                    <input id="retry_btn" type="submit" value="<?php echo _T("Retry"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
                     <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
@@ -991,8 +1035,8 @@ case 'u7':
         ?>
             </p>
             <form action="index.php" method="POST">
-                <p id="retry_btn">
-                    <input type="submit" value="<?php echo _T("Retry"); ?>"/>
+                <p id="btn_box">
+                    <input id="retry_btn" type="submit" value="<?php echo _T("Retry"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
                     <input type="hidden" name="install_dbtype" value="<?php echo $_POST['install_dbtype']; ?>"/>
@@ -1232,8 +1276,8 @@ define("STOCK_FILES", "tempimages");
                 <ul><?php echo implode("\n", $errs); ?></ul>
             </div>
             <form action="index.php" method="POST">
-                <p id="retry_btn">
-                    <input type="submit" value="<?php echo _T("Retry"); ?>"/>
+                <p id="btn_box">
+                    <input id="retry_btn" type="submit" value="<?php echo _T("Retry"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
                     <input type="hidden" name="install_dbtype" value="<?php echo $_POST["install_dbtype"]; ?>"/>

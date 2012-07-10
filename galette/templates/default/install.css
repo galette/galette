@@ -1,6 +1,6 @@
 /*** Installation pages ***/
 
-section {
+body > section {
     width: 50%;
     min-width: 650px;
     text-align:center;
@@ -41,7 +41,6 @@ section ul {
     margin: 0 auto .7em!important;
 }
 
-
 #next_btn {
     padding-left: 1.8em;;
     background-image: url(images/next.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
@@ -52,6 +51,18 @@ section ul {
 #next_btn:hover {
     background-image: url(images/next.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
 }
+
+#retry_btn {
+    padding-left: 1.8em;;
+    background-image: url(images/icon-refresh.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
+    background-position: .5em 50%, 50% 50%;
+    background-repeat: no-repeat, repeat-x;
+}
+
+#retry_btn:hover {
+    background-image: url(images/icon-refresh.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
+}
+
 
 #btn_box{
     text-align: right;
@@ -67,10 +78,6 @@ section ul.list{
 
 ul#paths{
     width:15em!important;
-}
-
-section #retry_btn {
-    text-align: center;
 }
 
 #warningbox{
@@ -134,12 +141,21 @@ footer .current{
     font-weight:bold;
 }
 
-.install-ok {
+.install-ok header {
+    background: url(images/ok.png) 0 50% no-repeat;
+}
+
+.install-bad header {
+    background: url(images/error.png) 0 50% no-repeat;
+    background-color:#FF8A8A;
+}
+
+li.install-ok {
     list-style-image: url("../../install/yes.png");
     list-style-position:inside;
 }
 
-.install-bad {
+li.install-bad {
     list-style-image: url("../../install/no.png");
     background-color:#FF8A8A;
     list-style-position:inside;
