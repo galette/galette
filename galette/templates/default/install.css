@@ -1,0 +1,155 @@
+/*** Installation pages ***/
+
+section {
+    width: 50%;
+    min-width: 650px;
+    text-align:center;
+    margin:1em auto;
+    position:relative;
+    background-color: #DDDDFF;
+    border-radius: 6px;
+    padding: 1em;
+}
+
+header img {
+    vertical-align: middle;
+    margin-bottom: .2em;
+}
+
+p {
+    margin: .5em 0 .3em;
+}
+
+section > div {
+    padding: .2em;
+    background-color: white;
+    border-radius: 6px;
+}
+
+section h2{
+    margin: .5em 0 0;
+    font-size:1.2em;
+}
+
+section h3 {
+    font-size: 1.1em;
+    margin: .2em 0 0;
+    color: #666666;
+}
+
+section ul {
+    margin: 0 auto .7em!important;
+}
+
+
+#next_btn {
+    padding-left: 1.8em;;
+    background-image: url(images/next.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
+    background-position: .5em 50%, 50% 50%;
+    background-repeat: no-repeat, repeat-x;
+}
+
+#next_btn:hover {
+    background-image: url(images/next.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
+}
+
+#btn_box{
+    text-align: right;
+    margin:0;
+}
+
+section ul.list{
+    margin:0 auto;
+    width:35em!important;
+    text-align:left;
+    list-style-type:none;
+}
+
+ul#paths{
+    width:15em!important;
+}
+
+section #retry_btn {
+    text-align: center;
+}
+
+#warningbox{
+    text-align:center;
+    color:black;
+    padding : 0.5em 0.5em 0.5em 40px;
+    background : white url(images/warning.png) no-repeat 5px 50%;
+    width: 80%;
+    margin:0 auto 0.8em auto;
+    display:block;
+}
+
+.titreinstall {
+    font-size:1.3em;
+    text-align: center;
+    font-weight: bold;
+    border-style: solid;
+    border-width: 1px;
+    background-color: #FBFBFB;
+    border-color: #BBBBBB;
+    color: #000000;
+    left: 0px;
+    right: 0px;
+    padding: 10px 0px 10px 0px;
+    margin: 0px;
+}
+
+footer {
+    margin:.5em 0 0;
+    padding: .1em .5em;
+    text-align: center;
+    font-size: 0.85em;
+    border: 1px rgba(255, 255, 255, 0.5) solid;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border-radius: 10px 10px 10px 10px;
+}
+
+footer p{
+    margin:.5em .5em 0;
+    color: #666666;
+    font-size: 1.2em;
+    font-weight:bold;
+}
+
+footer ol{
+    color:#999;
+    padding:0;
+    margin:0 0.5em 0.5em 0.5em;
+    list-style-type:none;
+}
+footer li{
+    line-height:1.7em;
+    display:inline;
+    margin: .1em;
+    padding: 0;
+}
+
+footer .current{
+    color:black;
+    font-weight:bold;
+}
+
+.footerinstall {
+    text-align: right;
+    padding-right: 20px;
+    border:1px solid #BBBBBB;
+    background-color: #FBFBFB;
+    color: #000000;
+    margin: 0;
+}
+
+.install-ok {
+    list-style-image: url("../../install/yes.png");
+    list-style-position:inside;
+}
+
+.install-bad {
+    list-style-image: url("../../install/no.png");
+    background-color:#FF8A8A;
+    list-style-position:inside;
+}

@@ -221,6 +221,7 @@ header('Content-Type: text/html; charset=UTF-8');
         <title><?php echo _T("Galette Installation") . ' - ' . $step_title; ?></title>
         <meta charset="UTF-8"/>
         <link rel="stylesheet" type="text/css" href="../templates/default/galette.css"/>
+        <link rel="stylesheet" type="text/css" href="../templates/default/install.css"/>
         <link rel="stylesheet" type="text/css" href="../templates/default/jquery-ui/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>.custom.css"/>
         <script type="text/javascript" src="../includes/jquery/jquery-<?php echo JQUERY_VERSION; ?>.min.js"></script>
         <script type="text/javascript" src="../includes/jquery/jquery.ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
@@ -247,8 +248,14 @@ if ($step == '1') { ?>
         <!endif]-->
     </head>
     <body>
-        <div id="installpage">
-            <h1 id="titre"><?php echo _T("Galette installation") . ' - ' . $step_title ?></h1>
+        <section>
+            <header>
+                <h1 id="titre">
+                    <img src="<?php echo $base_path; ?>picture.php?logo=true" alt="[ Galette ]" />
+                    <?php echo _T("Galette installation") . ' - ' . $step_title ?>
+                </h1>
+            </header>
+            <div>
 <?php
 switch ( $step ) {
 case '1':
@@ -265,9 +272,8 @@ case '1':
 ?>
                     </select>
                 </p>
-                <p id="submit_btn"><input type="submit" value="<?php echo _T("Next Page"); ?>"/></p>
+                <p id="btn_box"><input id="next_btn" type="submit" value="<?php echo _T("Next Page"); ?>"/></p>
             </form>
-        </div>
 <?php
     break; //ends first step
 case '2':
@@ -306,11 +312,10 @@ case '2':
         echo "\t\t\t\t</ul>";
     }
 ?>
-                <p id="submit_btn">
+                <p id="btn_box">
                     <input type="submit" value="<?php echo _T("Next step"); ?>"/>
                 </p>
             </form>
-        </div>
 <?php
     break; //ends second step
 case 'i3':
@@ -413,7 +418,7 @@ case 'u3':
 ?>
             <p id="infobox"><?php echo _T("Files permissions are OK!"); ?></p>
             <form action="index.php" method="POST">
-                <p id="submit_btn">
+                <p id="btn_box">
                     <input type="submit" value="<?php echo _T("Next step"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
@@ -421,9 +426,6 @@ case 'u3':
             </form>
 <?php
     }
-?>
-        </div>
-<?php
     break; //ends third step
 case 'i4':
 case 'u4':
@@ -550,7 +552,7 @@ case 'u4':
                         <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo (isset($_POST['install_dbprefix']))?$_POST['install_dbprefix']:'galette_'; ?>" required/>
                     </p>
                 </fieldset>
-                <p id="submit_btn">
+                <p id="btn_box">
                     <input type="submit" value="<?php echo _T("Next step"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
@@ -570,7 +572,6 @@ case 'u4':
                     });
                 });
             </script>
-        </div>
 <?php
     break; //ends fourth step
 case 'i5':
@@ -622,7 +623,7 @@ case 'u5':
 ?>
             <p><?php echo _T("Database exists and connection parameters are OK."); ?></p>
             <form action="index.php" method="POST">
-                <p id="submit_btn">
+                <p id="btn_box">
                     <input type="submit" value="<?php echo _T("Next step"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
@@ -638,9 +639,6 @@ case 'u5':
             </form>
 <?php
     }
-?>
-        </div>
-<?php
     break; //ends 5th step
 case 'i6':
 case 'u6':
@@ -744,7 +742,7 @@ case 'u6':
             <ul><?php echo $result; ?></ul>
             <p id="infobox"><?php echo _T("Permissions to database are OK."); ?></p>
             <form action="index.php" method="POST">
-                <p id="submit_btn">
+                <p id="btn_box">
                     <input type="submit" value="<?php echo _T("Next step"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
@@ -761,9 +759,6 @@ case 'u6':
             </form>
 <?php
         }
-?>
-        </div>
-<?php
     break; //ends 6th step
 case 'i7':
 case 'u7':
@@ -964,7 +959,7 @@ case 'u7':
 if ($step=="i7") echo _T("The tables has been correctly created.");
 if ($step=="u7") echo _T("The tables has been correctly updated."); ?></p>
             <form action="index.php" method="POST">
-                <p id="submit_btn">
+                <p id="btn_box">
                     <input type="submit" value="<?php echo _T("Next step"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
@@ -982,9 +977,6 @@ if ($step=="u7") echo _T("The tables has been correctly updated."); ?></p>
             </form>
     <?php
     }
-?>
-        </div>
-<?php
     break; //ends 7th step
 case 'i8':
 case 'u8':
@@ -1011,7 +1003,7 @@ case 'u8':
                         <input type="password" name="install_adminpass_verif" id="install_adminpass_verif" value="" required/>
                     </p>
                 </fieldset>
-                <p id="submit_btn">
+                <p id="btn_box">
                     <input type="submit" value="<?php echo _T("Next step"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
@@ -1027,7 +1019,6 @@ case 'u8':
                     <input type="hidden" name="install_dbwrite_ok" value="1"/>
                 </p>
             </form>
-        </div>
 <?php
     break; //ends 8th step
 case 'i9';
@@ -1131,7 +1122,7 @@ define("STOCK_FILES", "tempimages");
     if ( count($errs) ==0 ) {
 ?>
             <form action="index.php" method="POST">
-                <p id="submit_btn">
+                <p id="btn_box">
                     <input type="submit" value="<?php echo _T("Next step"); ?>"/>
                     <input type="hidden" name="install_type" value="<?php echo $_POST['install_type']; ?>"/>
                     <input type="hidden" name="install_permsok" value="1"/>
@@ -1182,9 +1173,6 @@ define("STOCK_FILES", "tempimages");
             </form>
 <?php
     }
-?>
-        </div>
-<?php
     break; //ends 9th step
 case 'i10':
 case 'u10':
@@ -1207,29 +1195,30 @@ case 'u10':
 ?></p>
             <div id="errorbox"><?php echo _T("To secure the system, please delete the install directory"); ?></div>
             <form action="../index.php" method="get">
-                <p id="submit_btn">
+                <p id="btn_box">
                     <input type="submit" value="<?php echo _T("Homepage"); ?>"/>
                 </p>
             </form>
-        </div>
 <?php
     break; //ends 10th step and finish install
 } // switch
 ?>
-        <div id="footerinstall">
-            <p><?php echo _T("Steps:"); ?></p>
-            <ol>
-                <li<?php if( $step == '1') echo ' class="current"'; ?>><?php echo _T("Language"); ?> - </li>
-                <li<?php if( $step == '2') echo ' class="current"'; ?>><?php echo _T("Installation mode"); ?> - </li>
-                <li<?php if( $step == 'i3' || $step == 'u3' ) echo ' class="current"'; ?>><?php echo _T("Permissions"); ?> - </li>
-                <li<?php if( $step == 'i4' || $step == 'u4') echo ' class="current"'; ?>><?php echo _T("Database"); ?> - </li>
-                <li<?php if( $step == 'i5' || $step == 'u5' ) echo ' class="current"'; ?>><?php echo _T("Access to the database"); ?> - </li>
-                <li<?php if( $step == 'i6' || $step == 'u6' ) echo ' class="current"'; ?>><?php echo _T("Access permissions to database"); ?> - </li>
-                <li<?php if( $step == 'i7' || $step == 'u7' ) echo ' class="current"'; ?>><?php echo _T("Tables Creation/Update"); ?> - </li>
-                <li<?php if( $step == 'i8' || $step == 'u8' ) echo ' class="current"'; ?>><?php echo _T("Admin parameters"); ?> - </li>
-                <li<?php if( $step == 'i9' || $step == 'u9' ) echo ' class="current"'; ?>><?php echo _T("Saving the parameters"); ?> - </li>
-                <li<?php if( $step == 'i10' || $step == 'u10' ) echo ' class="current"'; ?>><?php echo _T("End!"); ?></li>
-            </ol>
-        </div>
+            </div>
+            <footer>
+                <p><?php echo _T("Steps:"); ?></p>
+                <ol>
+                    <li<?php if( $step == '1') echo ' class="current"'; ?>><?php echo _T("Language"); ?> - </li>
+                    <li<?php if( $step == '2') echo ' class="current"'; ?>><?php echo _T("Installation mode"); ?> - </li>
+                    <li<?php if( $step == 'i3' || $step == 'u3' ) echo ' class="current"'; ?>><?php echo _T("Permissions"); ?> - </li>
+                    <li<?php if( $step == 'i4' || $step == 'u4') echo ' class="current"'; ?>><?php echo _T("Database"); ?> - </li>
+                    <li<?php if( $step == 'i5' || $step == 'u5' ) echo ' class="current"'; ?>><?php echo _T("Access to the database"); ?> - </li>
+                    <li<?php if( $step == 'i6' || $step == 'u6' ) echo ' class="current"'; ?>><?php echo _T("Access permissions to database"); ?> - </li>
+                    <li<?php if( $step == 'i7' || $step == 'u7' ) echo ' class="current"'; ?>><?php echo _T("Tables Creation/Update"); ?> - </li>
+                    <li<?php if( $step == 'i8' || $step == 'u8' ) echo ' class="current"'; ?>><?php echo _T("Admin parameters"); ?> - </li>
+                    <li<?php if( $step == 'i9' || $step == 'u9' ) echo ' class="current"'; ?>><?php echo _T("Saving the parameters"); ?> - </li>
+                    <li<?php if( $step == 'i10' || $step == 'u10' ) echo ' class="current"'; ?>><?php echo _T("End!"); ?></li>
+                </ol>
+            </footer>
+        </section>
     </body>
 </html>
