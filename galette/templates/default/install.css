@@ -134,15 +134,6 @@ footer .current{
     font-weight:bold;
 }
 
-.footerinstall {
-    text-align: right;
-    padding-right: 20px;
-    border:1px solid #BBBBBB;
-    background-color: #FBFBFB;
-    color: #000000;
-    margin: 0;
-}
-
 .install-ok {
     list-style-image: url("../../install/yes.png");
     list-style-position:inside;
