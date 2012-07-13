@@ -332,8 +332,12 @@ class News
                 );
 
                 if ( count($errors) > 0 ) {
+                    $msg = 'XML errors has been throwed: ';
+                    foreach ( $errors as $e ) {
+                        $msg .= "\n" . $e->message;
+                    }
                     $log->log(
-                        'XML errors has been throwed: ' . implode("\n", $errors),
+                        $msg,
                         KLogger::INFO
                     );
                 }
@@ -341,8 +345,6 @@ class News
 
                 return false;
             }
-
-
             return true;
         } else {
             $log->log(
