@@ -183,7 +183,7 @@ if ( !$installer ) { //If we're not working from installer
     */
     $zdb = new Core\Db();
 
-    if ( $zdb->checkDbVersion() ) {
+    if ( $zdb->checkDbVersion() || strpos($_SERVER['PHP_SELF'], 'picture.php') !== false  ) {
 
         /**
         * Load preferences
