@@ -77,6 +77,7 @@ class Members
     const FILTER_DC_EMAIL = 5;
     const FILTER_W_EMAIL = 6;
     const FILTER_WO_EMAIL = 7;
+    const FILTER_COMPANY_NAME = 8;
 
     const ORDERBY_NAME = 0;
     const ORDERBY_NICKNAME = 1;
@@ -654,10 +655,10 @@ class Members
         global $zdb, $login, $filters;
 
         try {
-            if ( $filters->email_filter == Members::FILTER_W_EMAIL) {
+            if ( $filters->email_filter == self::FILTER_W_EMAIL) {
                 $select->where('email_adh != \'\'');
             }
-            if ( $filters->email_filter == Members::FILTER_WO_EMAIL) {
+            if ( $filters->email_filter == self::FILTER_WO_EMAIL) {
                 $select->where('email_adh = ""');
             }
 
@@ -680,6 +681,14 @@ class Members
                             'LOWER(pseudo_adh)) LIKE ?',
                             strtolower($token)
                         ) . ')'
+                    );
+                    break;
+                case self::FILTER_COMPANY_NAME:
+                    $select->where(
+                        $zdb->db->quoteInto(
+                            'LOWER(societe_adh) LIKE ?',
+                            strtolower($token)
+                        )
                     );
                     break;
                 case self::FILTER_ADRESS:

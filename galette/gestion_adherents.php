@@ -43,6 +43,7 @@
  * @since     Disponible depuis la Release 0.62
  */
 
+use Galette\Repository\Members as Members;
 use Galette\Filters\MembersList as MembersList;
 
 /** @ignore */
@@ -78,6 +79,7 @@ if (   isset($_POST['cards'])
 ) {
     if (isset($_POST['member_sel'])) {
         $filters->selected = $_POST['member_sel'];
+        //cannot use $session here :/
         $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members'] = serialize($filters);
 
         if (isset($_POST['cards'])) {
@@ -184,6 +186,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
 $groups = new Galette\Repository\Groups();
 $groups_list = $groups->getList();
 
+//cannot use $session here :/
 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members'] = serialize($filters);
 
 //assign pagination variables to the template and add pagination links
@@ -203,11 +206,12 @@ $tpl->assign('filters', $filters);
 $tpl->assign(
     'filter_field_options',
     array(
-        0 => _T("Name"),
-        1 => _T("Address"),
-        2 => _T("Email,URL,IM"),
-        3 => _T("Job"),
-        4 => _T("Infos")
+        Members::FILTER_NAME            => _T("Name"),
+        Members::FILTER_COMPANY_NAME    => _T("Company name"),
+        Members::FILTER_ADRESS          => _T("Address"),
+        Members::FILTER_MAIL            => _T("Email,URL,IM"),
+        Members::FILTER_JOB             => _T("Job"),
+        Members::FILTER_INFOS           => _T("Infos")
     )
 );
 $tpl->assign(
