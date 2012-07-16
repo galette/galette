@@ -631,7 +631,6 @@ class Members
             $order[] = 'date_modif_adh ' . $filters->getDirection();
             break;
         case self::ORDERBY_FEE_STATUS:
-            $order[] = 'date_crea_adh ' . $filters->getDirection();
             $order[] = 'bool_exempt_adh ' . $filters->getDirection();
             $order[] = 'date_echeance ' . $filters->getDirection();
             break;
