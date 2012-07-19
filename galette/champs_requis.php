@@ -68,6 +68,9 @@ unset($fields[array_search('bool_admin_adh', $fields)]);
 unset($fields[array_search('lieu_naissance', $fields)]);
 unset($fields[array_search('activite_adh', $fields)]);
 unset($fields[array_search('date_crea_adh', $fields)]);
+unset($fields[array_search('date_modif_adh', $fields)]);
+//Fields we do not want to be set as required
+unset($fields[array_search('societe_adh', $fields)]);
 
 if ( isset($_POST) && count($_POST)>1 ) {
     $values = array();
