@@ -162,7 +162,7 @@ if ( isset($_POST['valid']) ) {
         // dynamic fields
         set_all_dynamic_fields(
             'contrib',
-            $contribution['id_cotis'],
+            $contrib->id,
             $contribution['dyn']
         );
 
@@ -295,14 +295,14 @@ if ( isset($_POST['valid']) ) {
         }
     }
 }  else { //$_POST['valid']
-    if ( !isset($contrib->id) ) {
+    if ( !is_int($contrib->id) ) {
         // initialiser la structure contribution à vide (nouvelle contribution)
         $contribution['duree_mois_cotis'] = $preferences->pref_membership_ext;
     } else {
         // dynamic fields
         $contribution['dyn'] = get_dynamic_fields(
             'contrib',
-            $contribution["id_cotis"],
+            $contrib->id,
             false
         );
     }
