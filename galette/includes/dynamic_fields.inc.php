@@ -199,7 +199,7 @@ function set_dynamic_field(
             foreach ( $owhere as $c ) {
                 $where[] = preg_replace('/^AND /', '', $c);
             }
-            
+
             if ( trim($field_val) == '' ) {
                 $zdb->db->delete(
                     $fields_table,

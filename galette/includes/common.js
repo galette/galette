@@ -31,87 +31,87 @@
 //the function will spin the element just after legend, and will update the icon
 $.fn.spinDown = function() {
 
-	return this.click(function() {
-		var $this = $(this);
+    return this.click(function() {
+        var $this = $(this);
 
-		$this.parent('legend').next().slideToggle(100);
-		$this.toggleClass('ui-icon-circle-arrow-e').toggleClass('ui-icon-circle-arrow-s');
+        $this.parent('legend').next().slideToggle(100);
+        $this.toggleClass('ui-icon-circle-arrow-e').toggleClass('ui-icon-circle-arrow-s');
 
-		return false;
-	});
+        return false;
+    });
 
 };
 
 //make fieldsets collapsibles. This requires a legend and all the following elements to be grouped (for example in a div element)
 //The function will 'hide'
 var _collapsibleFieldsets = function(){
-	$('legend').each(function(){
-		var _collapse = $('<a href="#" class="ui-icon ui-icon-circle-arrow-s collapsible">Collapse/Expand</a>');
-		$(this).prepend(_collapse);
-		_collapse.spinDown();
-	});
+    $('legend').each(function(){
+        var _collapse = $('<a href="#" class="ui-icon ui-icon-circle-arrow-s collapsible">Collapse/Expand</a>');
+        $(this).prepend(_collapse);
+        _collapse.spinDown();
+    });
 }
 
 /* On document ready
 -------------------------------------------------------- */
 
 var _messagesEffects = function(){
-	/**
-	* Errorbox animation
-	*/
-	$('#errorbox').backgroundFade({sColor:'#ffffff',eColor:'#ff9999',steps:50},function() {
-		$(this).backgroundFade({sColor:'#ff9999',eColor:'#ffffff'});
-	});
-	$('#warningbox').backgroundFade({sColor:'#ffffff',eColor:'#FFB619',steps:50},function() {
-		$(this).backgroundFade({sColor:'#FFB619',eColor:'#ffffff'});
-	});
-	$('#infobox, #successbox').backgroundFade({sColor:'#ffffff',eColor:'#99FF99',steps:50},function() {
-		$(this).backgroundFade({sColor:'#99FF99',eColor:'#ffffff'});
-	});
+    /**
+    * Errorbox animation
+    */
+    $('#errorbox').backgroundFade({sColor:'#ffffff',eColor:'#ff9999',steps:50},function() {
+        $(this).backgroundFade({sColor:'#ff9999',eColor:'#ffffff'});
+    });
+    $('#warningbox').backgroundFade({sColor:'#ffffff',eColor:'#FFB619',steps:50},function() {
+        $(this).backgroundFade({sColor:'#FFB619',eColor:'#ffffff'});
+    });
+    $('#infobox, #successbox').backgroundFade({sColor:'#ffffff',eColor:'#99FF99',steps:50},function() {
+        $(this).backgroundFade({sColor:'#99FF99',eColor:'#ffffff'});
+    });
 }
 
 $(function() {
     _messagesEffects();
-	$('.debuginfos span').hide();
-	/** TODO: find a way to translate this message ==> ajax ? */
-	$('.debuginfos').attr('title', 'Click to get more details.');
-	$('.debuginfos').click(function(){
-		$('.debuginfos span').slideToggle('slow');
-	});
+    $('.debuginfos span').hide();
+    /** TODO: find a way to translate this message ==> ajax ? */
+    $('.debuginfos').attr('title', 'Click to get more details.');
+    $('.debuginfos').click(function(){
+        $('.debuginfos span').slideToggle('slow');
+    });
 
-	$('#login').focus();
+    $('#login').focus();
 
-	//for tootltips
-	//first, we hide tooltips in the page
-	$('.tip').hide();
-	//and then, we show them on rollover
-	$('.tooltip').tooltip({
-		//track: true,
-		delay: 0,
-		showURL: false,
-		showBody: ' - ',
-		extraClass: 'tt',
-		bodyHandler: function() {
-			return $(this).next().html();
-		}
-	});
+    //for tootltips
+    //first, we hide tooltips in the page
+    $('.tip').hide();
+    //and then, we show them on rollover
+    $('.tooltip').tooltip({
+        //track: true,
+        delay: 0,
+        showURL: false,
+        showBody: ' - ',
+        extraClass: 'tt',
+        bodyHandler: function() {
+            return $(this).next().html();
+        }
+    });
 
-	$('.nojs').removeClass('nojs');
-	$('#menu h1').each(function(){
-		$(this).html('<a href="#">' + $(this).text() + '</a>');
-	});
+    $('.nojs').removeClass('nojs');
+    $('#menu h1').each(function(){
+        $(this).html('<a href="#">' + $(this).text() + '</a>');
+    });
 
-	if( $('#menu').size() > 0 ) {
-		$('#menu').accordion({
-			header: 'h1:not(#logo)',
-			icons: {
-				header: "ui-icon-circle-arrow-e",
-				headerSelected: "ui-icon-circle-arrow-s"
-			},
-			autoHeight: false,
-			active: $('#menu ul li[class*="selected"]').parent('ul').prevAll('ul').size()
-		});
-	}
+    if( $('#menu').size() > 0 ) {
+        $('#menu').accordion({
+            header: 'h1:not(#logo)',
+            icons: {
+                header: "ui-icon-circle-arrow-e",
+                headerSelected: "ui-icon-circle-arrow-s"
+            },
+            autoHeight: false,
+            active: $('#menu ul li[class*="selected"]').parent('ul').prevAll('ul').size()
+        });
+    }
 
     $('input:submit, .button, input:reset' ).button({
         create: function(event, ui) {
