@@ -37,6 +37,8 @@
  * @since     Available since 0.62
  */
 
+use Galette\Common\KLogger as KLogger;
+
 $disable_gettext=true;
 
 $language = $i18n->getLongID();

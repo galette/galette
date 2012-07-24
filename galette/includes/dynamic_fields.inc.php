@@ -39,125 +39,20 @@
 use Galette\Common\KLogger as KLogger;
 use Galette\Entity\DynamicFields as DynamicFields;
 
-/** TODO: functions names are *not* PEAR Coding Standards compliant.
-Anyways, this file needs a rewrite as an object, we won't spend
-too much time on it. */
+$dyn_fields = new DynamicFields();
 
-$field_type_names = array(
-    DynamicFields::SEPARATOR   => _T("separator"),
-    DynamicFields::TEXT        => _T("free text"),
-    DynamicFields::LINE        => _T("single line"),
-    DynamicFields::CHOICE      => _T("choice")
-);
+$field_type_names = $dyn_fields->getFieldsTypesNames();
+$field_properties = $dyn_fields->getFieldsProperties();
 
-$field_properties = array(
-    DynamicFields::SEPARATOR => array(
-        'no_data'       => true,
-        'with_width'    => false,
-        'with_height'   => false,
-        'with_size'     => false,
-        'multi_valued'  => false,
-        'fixed_values'  => false
-    ),
-    DynamicFields::TEXT => array(
-        'no_data'       => false,
-        'with_width'    => true,
-        'with_height'   => true,
-        'with_size'     => false,
-        'multi_valued'  => false,
-        'fixed_values'  => false
-    ),
-     DynamicFields::LINE => array(
-        'no_data'       => false,
-        'with_width'    => true,
-        'with_height'   => false,
-        'with_size'     => true,
-        'multi_valued'  => true,
-        'fixed_values'  => false
-    ),
-     DynamicFields::CHOICE => array(
-        'no_data'       => false,
-        'with_width'    => false,
-        'with_height'   => false,
-        'with_size'     => false,
-        'multi_valued'  => false,
-        'fixed_values'  => true
-    )
-);
+$perm_all = DynamicFields::PERM_ALL; //TODO: remove
+$perm_admin = DynamicFields::PERM_ADM; //TODO: remove
 
+$field_pos_middle = DynamicFields::POS_MIDDLE; //TODO: remove
+$field_pos_left = DynamicFields::POS_LEFT; //TODO: remove
+$field_pos_right = DynamicFields::POS_RIGHT; //TODO: remove
+$field_positions = $dyn_fields->getPositionsNames();
 
-$perm_all = 0;
-$perm_admin = 1;
-
-$perm_names = array($perm_all => _T("all"), $perm_admin => _T("admin"));
-
-$field_pos_middle = 0;
-$field_pos_left = 1;
-$field_pos_right = 2;
-$field_positions = array(
-    $field_pos_middle   => _T("middle"),
-    $field_pos_left     => _T("left"),
-    $field_pos_right    => _T("right")
-);
-
-$all_forms = array(
-    'adh'       => _T("Members"),
-    'contrib'   => _T("Contributions"),
-    'trans'     => _T("Transactions")
-);
-
-$fields_table = PREFIX_DB . 'dynamic_fields';
-$field_types_table = PREFIX_DB . 'field_types';
-
-/**
-* Return the table where fixed values are stored
-*
-* @param string $field_id The field identifier
-*
-* @return string
-*/
-function fixed_values_table_name($field_id)
-{
-    return PREFIX_DB . 'field_contents_' . $field_id;
-}
-
-/**
-* Returns an array of fixed valued for a field of type 'choice'.
-*
-* @param string          $field_id field id
-*
-* @return array
-*/
-function get_fixed_values($field_id)
-{
-    global $zdb, $log;
-
-    try {
-        $val_select = new Zend_Db_Select($zdb->db);
-
-        $val_select->from(DynamicFields::getFixedValuesTableName($field_id), 'val')
-            ->order('id');
-
-        $results = $val_select->query()->fetchAll();
-        $fixed_values = array();
-        if ( $results ) {
-            foreach ( $results as $val ) {
-                $fixed_values[] = $val->val;
-            }
-        }
-        return $fixed_values;
-    } catch (Exception $e) {
-        /** TODO */
-        $log->log(
-            'get_fixed_values | ' . $e->getMessage(),
-            KLogger::WARN
-        );
-        $log->log(
-            'Query was: ' . $val_select->__toString() . ' ' . $e->__toString(),
-            KLogger::ERR
-        );
-    }
-}
+$all_forms = $dyn_fields->getFormsNames();
 
 /**
 * Set dynamic fields for a given entry
@@ -174,7 +69,7 @@ function get_fixed_values($field_id)
 function set_dynamic_field(
     $form_name, $item_id, $field_id, $val_index, $field_val
 ) {
-    global $zdb, $log, $fields_table;
+    global $zdb, $log;
     $ret = false;
 
     try {
@@ -182,7 +77,7 @@ function set_dynamic_field(
 
         $select = new Zend_Db_Select($zdb->db);
         $select->from(
-            $fields_table,
+            PREFIX_DB . DynamicFields::TABLE,
             array('cnt' => 'count(*)')
         )->where('item_id = ?', $item_id)
             ->where('field_form = ?', $form_name)
@@ -202,12 +97,12 @@ function set_dynamic_field(
 
             if ( trim($field_val) == '' ) {
                 $zdb->db->delete(
-                    $fields_table,
+                    PREFIX_DB . DynamicFields::TABLE,
                     $where
                 );
             } else {
                 $zdb->db->update(
-                    $fields_table,
+                    PREFIX_DB . DynamicFields::TABLE,
                     array('field_val' => $field_val),
                     $where
                 );
@@ -223,7 +118,7 @@ function set_dynamic_field(
                 );
 
                 $zdb->db->insert(
-                    $fields_table,
+                    PREFIX_DB . DynamicFields::TABLE,
                     $values
                 );
             }
@@ -279,7 +174,7 @@ function set_all_dynamic_fields($form_name, $item_id, $all_values)
 */
 function get_dynamic_fields($form_name, $item_id, $quote)
 {
-    global $zdb, $log, $field_properties;
+    global $zdb, $log, $field_properties, $dyn_fields;
 
     try {
         $select = new Zend_Db_Select($zdb->db);
@@ -303,7 +198,7 @@ function get_dynamic_fields($form_name, $item_id, $quote)
                     if ( $stmt->execute() ) {
                         $field_type = $stmt->fetch()->field_type;
                         if ($field_properties[$field_type]['fixed_values']) {
-                            $choices = get_fixed_values($f->field_id);
+                            $choices = $dyn_fields->getFixedValues($f->field_id);
                             $value = $choices[$value];
                         }
                     }
@@ -371,7 +266,7 @@ function extract_posted_dynamic_fields($post, $disabled)
 function prepare_dynamic_fields_for_display(
     $form_name, $all_values, $disabled, $edit
 ) {
-    global $zdb, $log, $field_properties, $perm_admin, $login;
+    global $zdb, $log, $field_properties, $perm_admin, $login, $dyn_fields;
 
     try {
         $select = new Zend_Db_Select($zdb->db);
@@ -414,7 +309,7 @@ function prepare_dynamic_fields_for_display(
                 } else {
                     $r['field_repeat'] = 1;
                     if ( $properties['fixed_values'] ) {
-                        $r['choices'] = get_fixed_values($field_id);
+                        $r['choices'] = $dyn_fields->getFixedValues($field_id);
                     }
                 }
                 $dyn_fields[] = $r;

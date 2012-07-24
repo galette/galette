@@ -60,10 +60,131 @@ class DynamicFields
     const SEPARATOR = 0;
     /** Simple text field */
     const TEXT = 1;
-    /** Line field ?? */
+    /** Line field */
     const LINE = 2;
     /** Choice field (checkbox) */
     const CHOICE = 3;
+
+    const PERM_ALL = 0;
+    const PERM_STAFF = 2;
+    const PERM_ADM = 1;
+
+    const POS_MIDDLE = 0;
+    const POS_LEFT = 1;
+    const POS_RIGHT = 2;
+
+    private $_id;
+    private $_index;
+    private $_name;
+    private $_permissions;
+    private $_type;
+    private $_type_name;
+    private $_required;
+    private $_position;
+
+    private $_fields_types_names;
+    private $_perms_names;
+    private $_forms_names;
+    private $_positions_names;
+    private $_fields_properties;
+
+    /**
+    * Default constructor
+    *
+    * @param null|int|ResultSet $args Either a ResultSet row, its id or its 
+    *                                 login or its mail for to load
+    *                                 a specific member, or null to just
+    *                                 instanciate object
+    */
+    public function __construct($args = null)
+    {
+        global $i18n;
+
+        $this->_fields_types_names = array(
+            self::SEPARATOR => _T("separator"),
+            self::TEXT      => _T("free text"),
+            self::LINE      => _T("single line"),
+            self::CHOICE    => _T("choice")
+        );
+
+        /*
+         * Permissions names
+         *
+         * I'd prefer a static private variable for this...
+         * But call to the _T function does not seems to be allowed there :/
+         */
+        $this->_perms_names = array (
+            self::PERM_ALL      => _T("all"),
+            self::PERM_STAFF    => _T("staff"),
+            self::PERM_ADM      => _T("admin")
+        );
+
+        $this->_positions_names = array(
+            self::POS_MIDDLE    =>  _T("middle"),
+            self::POS_LEFT      => _T("left"),
+            self::POS_RIGHT     => _T("right")
+        );
+
+        $this->_forms_names = array(
+            'adh'       => _T("Members"),
+            'contrib'   => _T("Contributions"),
+            'trans'     => _T("Transactions")
+        );
+
+        $this->_fields_properties = array(
+            self::SEPARATOR => array(
+                'no_data'       => true,
+                'with_width'    => false,
+                'with_height'   => false,
+                'with_size'     => false,
+                'multi_valued'  => false,
+                'fixed_values'  => false
+            ),
+            self::TEXT => array(
+                'no_data'       => false,
+                'with_width'    => true,
+                'with_height'   => true,
+                'with_size'     => false,
+                'multi_valued'  => false,
+                'fixed_values'  => false
+            ),
+            self::LINE => array(
+                'no_data'       => false,
+                'with_width'    => true,
+                'with_height'   => false,
+                'with_size'     => true,
+                'multi_valued'  => true,
+                'fixed_values'  => false
+            ),
+            self::CHOICE => array(
+                'no_data'       => false,
+                'with_width'    => false,
+                'with_height'   => false,
+                'with_size'     => false,
+                'multi_valued'  => false,
+                'fixed_values'  => true
+            )
+        );
+
+        $this->_fields = array(
+            'id_adh' => array(
+                'label'    => _T("Identifiant:"),
+                'propname' => 'id',
+                'required' => true,
+                'visible'  => FieldsConfig::HIDDEN,
+                'position' => 0,
+                'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
+            ),
+            'id_statut' => array(
+                'label'    => _T("Status:"),
+                'propname' => 'status',
+                'required' => true,
+                'visible'  => FieldsConfig::VISIBLE,
+                'position' => 1,
+                'category' => FieldsCategories::ADH_CATEGORY_GALETTE
+            )
+        );
+    }
 
     /**
      * Retrieve fixed values table name
@@ -75,6 +196,98 @@ class DynamicFields
     public static function getFixedValuesTableName($id)
     {
         return PREFIX_DB . 'field_contents_' . $id;
+    }
+
+    /**
+    * Returns an array of fixed valued for a field of type 'choice'.
+    *
+    * @param string $field_id field id
+    *
+    * @return array
+    */
+    public function getFixedValues($field_id)
+    {
+        global $zdb, $log;
+
+        try {
+            $val_select = new Zend_Db_Select($zdb->db);
+
+            $val_select->from(
+                self::getFixedValuesTableName($field_id),
+                'val'
+            )->order('id');
+
+            $results = $val_select->query()->fetchAll();
+            $fixed_values = array();
+            if ( $results ) {
+                foreach ( $results as $val ) {
+                    $fixed_values[] = $val->val;
+                }
+            }
+            return $fixed_values;
+        } catch (Exception $e) {
+            $log->log(
+                __METHOD__ . ' | ' . $e->getMessage(),
+                KLogger::WARN
+            );
+            $log->log(
+                'Query was: ' . $val_select->__toString() . ' ' . $e->__toString(),
+                KLogger::INFO
+            );
+        }
+    }
+
+    /**
+     * Retrieve permissions names for display
+     *
+     * @return array
+     */
+    public function getPermsNames()
+    {
+        return $this->_perms_names;
+    }
+
+
+    /**
+     * Get permission name
+     *
+     * @param int $i Array index
+     *
+     * @return string
+     */
+    public function getPermName($i)
+    {
+        return $this->_perms_names[$i];
+    }
+
+    /**
+     * Retrieve fields properties
+     *
+     * @return array
+     */
+    public function getFieldsProperties()
+    {
+        return $this->_fields_properties;
+    }
+
+    /**
+     * Retrieve forms names
+     *
+     * @return array
+     */
+    public function getFormsNames()
+    {
+        return $this->_forms_names;
+    }
+
+    /**
+     * Retrieve fields types names
+     *
+     * @return array
+     */
+    public function getFieldsTypesNames()
+    {
+        return $this->_fields_types_names;
     }
 
 }

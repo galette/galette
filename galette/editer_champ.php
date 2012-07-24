@@ -37,6 +37,8 @@
  */
 
 use Galette\Common\KLogger as KLogger;
+use Galette\Entity\DynamicFields as DynamicFields;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
@@ -67,7 +69,7 @@ if ( $field_id == '' ) {
 try {
     $select = new Zend_Db_Select($zdb->db);
     $select->from(
-        $field_types_table,
+        PREFIX_DB . DynamicFields::TYPES_TABLE,
         'field_type'
     )->where('field_id = ?', $field_id);
     $field_type = $select->query()->fetchColumn();
@@ -105,7 +107,7 @@ if ( isset($_POST['valid']) ) {
         try {
             $select = new Zend_Db_Select($zdb->db);
             $select->from(
-                $field_types_table,
+                PREFIX_DB . DynamicFields::TYPES_TABLE,
                 'COUNT(field_id)'
             )->where('NOT field_id = ?', $field_id)
                 ->where('field_form = ?', $form_name)
@@ -127,7 +129,7 @@ if ( isset($_POST['valid']) ) {
         } else {
             $select = new Zend_Db_Select($zdb->db);
             $select->from(
-                $field_types_table,
+                PREFIX_DB . DynamicFields::TYPES_TABLE,
                 'field_name'
             )->where('field_id = ?', $field_id);
             $old_field_name = $select->query()->fetchColumn();
@@ -150,7 +152,7 @@ if ( isset($_POST['valid']) ) {
                     'field_repeat'   => $field_repeat
                 );
                 $zdb->db->update(
-                    $field_types_table,
+                    PREFIX_DB . DynamicFields::TYPES_TABLE,
                     $values,
                     'field_id = ' . $field_id
                 );
@@ -177,7 +179,7 @@ if ( isset($_POST['valid']) ) {
                     }
                 }
             }
-            $contents_table = fixed_values_table_name($field_id);
+            $contents_table = DynamicFields::getFixedValuesTableName($field_id);
 
             try {
                 $zdb->db->beginTransaction();
@@ -249,7 +251,7 @@ if ( isset($_POST['valid']) ) {
             $field_size = $result->field_size;
             $fixed_values = '';
             if ($properties['fixed_values']) {
-                foreach ( get_fixed_values($field_id) as $val ) {
+                foreach ( $dyn_fields->getFixedValues($field_id) as $val ) {
                     $fixed_values .= $val . "\n";
                 }
             }
@@ -281,9 +283,9 @@ $tpl->assign('properties', $properties);
 $tpl->assign('data', $data);
 $tpl->assign('error_detected', $error_detected);
 
-$tpl->assign('perm_all', $perm_all);
-$tpl->assign('perm_admin', $perm_admin);
-$tpl->assign('perm_names', $perm_names);
+$tpl->assign('perm_all', DynamicFields::PERM_ALL);
+$tpl->assign('perm_admin', DynamicFields::PERM_ADM);
+$tpl->assign('perm_names', $dyn_fields->getPermsNames());
 
 $tpl->assign('field_positions', $field_positions);
 

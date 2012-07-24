@@ -61,8 +61,6 @@ if ( !isset($all_forms[$form_name]) ) {
     $form_name = '';
 }
 
-$form_not_set = ($form_name == '');
-
 if ( $form_name == '' ) {
     $form_title = '';
 } else {
@@ -188,7 +186,7 @@ if ( $form_name == '' ) {
 
                         $ftype = $res->field_type;
                         if ($field_properties[$ftype]['fixed_values']) {
-                            $contents_table = fixed_values_table_name($field_id);
+                            $contents_table = DynamicFields::getFixedValuesTableName($field_id);
                             $zdb->db->getConnection()->exec('DROP TABLE ' . $contents_table);
                         }
                         deleteDynamicTranslation($res->field_name, $error_detected);
@@ -241,37 +239,39 @@ if ( $form_name == '' ) {
 
     if ( $results ) {
         $count = 0;
-        $dyn_fields = array();
+        $dfields = array();
         foreach ( $results as $r ) {
-            $dyn_fields[$count]['id'] = $r->field_id;
-            $dyn_fields[$count]['index'] = $r->field_index;
-            $dyn_fields[$count]['name'] = $r->field_name;
-            $dyn_fields[$count]['perm'] = $perm_names[$r->field_perm];
-            $dyn_fields[$count]['type'] = $r->field_type;
-            $dyn_fields[$count]['type_name'] = $field_type_names[$r->field_type];
-            $dyn_fields[$count]['required'] = ($r->field_required == '1');
+            $dfields[$count]['id'] = $r->field_id;
+            $dfields[$count]['index'] = $r->field_index;
+            $dfields[$count]['name'] = $r->field_name;
+            $dfields[$count]['perm'] =  $dyn_fields->getPermName($r->field_perm);
+            $dfields[$count]['type'] = $r->field_type;
+            $dfields[$count]['type_name'] = $field_type_names[$r->field_type];
+            $dfields[$count]['required'] = ($r->field_required == '1');
             $dyn_fields[$count]['pos'] = $field_positions[$r->field_pos];
             ++$count;
         }
     } // $result != false
 
-    $tpl->assign('perm_names', $perm_names);
-    $tpl->assign('field_type_names', $field_type_names);
-
-    $tpl->assign('dyn_fields', $dyn_fields);
+    $tpl->assign('dyn_fields', $dfields);
 } // $form_name == ''
 
+//UI configuration
 $tpl->assign('require_tabs', true);
 $tpl->assign('require_dialog', true);
+
+//Populate template with data
 $tpl->assign('all_forms', $all_forms);
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('form_name', $form_name);
-//$tpl->assign('form_title', $form_title);
 $title = _T("Profile configuration");
 $tpl->assign('page_title', $title);
-$tpl->assign('perm_names', $perm_names);
+$tpl->assign('perm_names', $dyn_fields->getPermsNames());
 $tpl->assign('field_type_names', $field_type_names);
 $tpl->assign('field_positions', $field_positions);
+
+//Render directly template if we called from ajax,
+//render in a full page otherwise
 if ( isset($_GET['ajax']) && $_GET['ajax'] == 'true' ) {
     $tpl->display('configurer_fiche_content.tpl');
 } else {
