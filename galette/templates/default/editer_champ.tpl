@@ -1,4 +1,4 @@
-		<form action="editer_champ.php" method="post"> 						
+    <form action="editer_champ.php" method="post">
         <fieldset class="cssform">
             <legend class="ui-state-active ui-corner-top">{_T string="Edit field %field" pattern="/%field/" replace=$data.name}</legend>
             <p>
@@ -10,12 +10,6 @@
                 <select name="field_perm" id="field_perm">
                     <option value="{$perm_all}" {if $data.perm == $perm_all}selected="selected"{/if}>{$perm_names[$perm_all]}</option>
                     <option value="{$perm_admin}" {if $data.perm == $perm_admin}selected="selected"{/if}>{$perm_names[$perm_admin]}</option>
-                </select>
-            </p>
-            <p>
-                <label for="field_pos" class="bline">{_T string="Position:"}</label>
-                <select name="field_pos" id="field_pos">
-                    {html_options options=$field_positions selected=$data.pos}
                 </select>
             </p>
 {if !$properties.no_data}
@@ -67,4 +61,4 @@
                 <input type="hidden" name="id" value="{$data.id}"/>
             </div>
         </fieldset>
-		</form>
+     </form>

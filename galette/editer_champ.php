@@ -93,7 +93,6 @@ $data = array('id' => $field_id);
 if ( isset($_POST['valid']) ) {
     $field_name = $_POST['field_name'];
     $field_perm = get_numeric_posted_value('field_perm', '');
-    $field_pos = get_numeric_posted_value('field_pos', 0);
     $field_required = get_numeric_posted_value('field_required', '0');
     $field_width = get_numeric_posted_value('field_width', null);
     $field_height = get_numeric_posted_value('field_height', null);
@@ -144,7 +143,6 @@ if ( isset($_POST['valid']) ) {
                 $values = array(
                     'field_name'     => $field_name,
                     'field_perm'     => $field_perm,
-                    'field_pos'      => $field_pos,
                     'field_required' => $field_required,
                     'field_width'    => $field_width,
                     'field_height'   => $field_height,
@@ -243,7 +241,6 @@ if ( isset($_POST['valid']) ) {
             $field_name = $result->field_name;
             $field_type = $result->field_name;
             $field_perm = $result->field_perm;
-            $field_pos = $result->field_pos;
             $field_required = $result->field_required;
             $field_width = $result->field_width;
             $field_height = $result->field_height;
@@ -269,7 +266,6 @@ if ( isset($_POST['valid']) ) {
 $data['id'] = $field_id;
 $data['name'] = $field_name;
 $data['perm'] = $field_perm;
-$data['pos'] = $field_pos;
 $data['required'] = ($field_required == '1');
 $data['width'] = $field_width;
 $data['height'] = $field_height;
@@ -286,8 +282,6 @@ $tpl->assign('error_detected', $error_detected);
 $tpl->assign('perm_all', DynamicFields::PERM_ALL);
 $tpl->assign('perm_admin', DynamicFields::PERM_ADM);
 $tpl->assign('perm_names', $dyn_fields->getPermsNames());
-
-$tpl->assign('field_positions', $field_positions);
 
 $content = $tpl->fetch('editer_champ.tpl');
 $tpl->assign('content', $content);

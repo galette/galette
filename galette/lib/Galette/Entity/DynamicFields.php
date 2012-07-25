@@ -69,10 +69,6 @@ class DynamicFields
     const PERM_STAFF = 2;
     const PERM_ADM = 1;
 
-    const POS_MIDDLE = 0;
-    const POS_LEFT = 1;
-    const POS_RIGHT = 2;
-
     private $_id;
     private $_index;
     private $_name;
@@ -80,12 +76,10 @@ class DynamicFields
     private $_type;
     private $_type_name;
     private $_required;
-    private $_position;
 
     private $_fields_types_names;
     private $_perms_names;
     private $_forms_names;
-    private $_positions_names;
     private $_fields_properties;
 
     /**
@@ -100,6 +94,7 @@ class DynamicFields
     {
         global $i18n;
 
+        //Fields types names
         $this->_fields_types_names = array(
             self::SEPARATOR => _T("separator"),
             self::TEXT      => _T("free text"),
@@ -107,30 +102,21 @@ class DynamicFields
             self::CHOICE    => _T("choice")
         );
 
-        /*
-         * Permissions names
-         *
-         * I'd prefer a static private variable for this...
-         * But call to the _T function does not seems to be allowed there :/
-         */
+        //Permissions names
         $this->_perms_names = array (
             self::PERM_ALL      => _T("all"),
             self::PERM_STAFF    => _T("staff"),
             self::PERM_ADM      => _T("admin")
         );
 
-        $this->_positions_names = array(
-            self::POS_MIDDLE    =>  _T("middle"),
-            self::POS_LEFT      => _T("left"),
-            self::POS_RIGHT     => _T("right")
-        );
-
+        //Forms names
         $this->_forms_names = array(
             'adh'       => _T("Members"),
             'contrib'   => _T("Contributions"),
             'trans'     => _T("Transactions")
         );
 
+        //Properties or each field type
         $this->_fields_properties = array(
             self::SEPARATOR => array(
                 'no_data'       => true,
@@ -163,25 +149,6 @@ class DynamicFields
                 'with_size'     => false,
                 'multi_valued'  => false,
                 'fixed_values'  => true
-            )
-        );
-
-        $this->_fields = array(
-            'id_adh' => array(
-                'label'    => _T("Identifiant:"),
-                'propname' => 'id',
-                'required' => true,
-                'visible'  => FieldsConfig::HIDDEN,
-                'position' => 0,
-                'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
-            ),
-            'id_statut' => array(
-                'label'    => _T("Status:"),
-                'propname' => 'status',
-                'required' => true,
-                'visible'  => FieldsConfig::VISIBLE,
-                'position' => 1,
-                'category' => FieldsCategories::ADH_CATEGORY_GALETTE
             )
         );
     }

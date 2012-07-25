@@ -47,11 +47,6 @@ $field_properties = $dyn_fields->getFieldsProperties();
 $perm_all = DynamicFields::PERM_ALL; //TODO: remove
 $perm_admin = DynamicFields::PERM_ADM; //TODO: remove
 
-$field_pos_middle = DynamicFields::POS_MIDDLE; //TODO: remove
-$field_pos_left = DynamicFields::POS_LEFT; //TODO: remove
-$field_pos_right = DynamicFields::POS_RIGHT; //TODO: remove
-$field_positions = $dyn_fields->getPositionsNames();
-
 $all_forms = $dyn_fields->getFormsNames();
 
 /**

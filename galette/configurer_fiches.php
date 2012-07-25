@@ -76,7 +76,6 @@ if ( $form_name == '' ) {
             $field_perm = $_POST['field_perm'];
             $field_type = $_POST['field_type'];
             $field_required = $_POST['field_required'];
-            $field_pos = $_POST['field_pos'];
 
             try {
                 $select = new Zend_Db_Select($zdb->db);
@@ -99,8 +98,7 @@ if ( $form_name == '' ) {
                         'field_name'     => $field_name,
                         'field_perm'     => $field_perm,
                         'field_type'     => $field_type,
-                        'field_required' => $field_required,
-                        'field_pos'      => $field_pos
+                        'field_required' => $field_required
                     );
                     $zdb->db->insert(
                         PREFIX_DB . Galette\Entity\DynamicFields::TYPES_TABLE,
@@ -248,7 +246,6 @@ if ( $form_name == '' ) {
             $dfields[$count]['type'] = $r->field_type;
             $dfields[$count]['type_name'] = $field_type_names[$r->field_type];
             $dfields[$count]['required'] = ($r->field_required == '1');
-            $dyn_fields[$count]['pos'] = $field_positions[$r->field_pos];
             ++$count;
         }
     } // $result != false
@@ -268,7 +265,6 @@ $title = _T("Profile configuration");
 $tpl->assign('page_title', $title);
 $tpl->assign('perm_names', $dyn_fields->getPermsNames());
 $tpl->assign('field_type_names', $field_type_names);
-$tpl->assign('field_positions', $field_positions);
 
 //Render directly template if we called from ajax,
 //render in a full page otherwise
