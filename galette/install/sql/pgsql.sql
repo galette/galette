@@ -205,7 +205,7 @@ CREATE TABLE galette_field_types (
   field_width integer DEFAULT NULL,
   field_height integer DEFAULT NULL,
   field_size integer DEFAULT NULL,
-  field_repeat boolean DEFAULT FALSE,
+  field_repeat integer DEFAULT NULL,
   field_layout integer DEFAULT NULL,
   PRIMARY KEY (field_id)
 );
