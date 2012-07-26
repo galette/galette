@@ -272,7 +272,7 @@ class DynamicFields
     */
     function getFields($form_name, $item_id, $quote)
     {
-        global $zdb, $log, $field_properties, $dyn_fields;
+        global $zdb, $log;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -284,7 +284,7 @@ class DynamicFields
             $result = $select->query()->fetchAll();
 
             if ( count($result) > 0 ) {
-                $dyn_fields = array();
+                $dfields = array();
                 $types_select = new \Zend_Db_Select($zdb->db);
                 $types_select->from(PREFIX_DB . self::TYPES_TABLE, 'field_type')
                     ->where(self::TYPES_PK . ' = :fieldid');
@@ -295,19 +295,101 @@ class DynamicFields
                         $stmt->bindValue(':fieldid', $f->field_id, \PDO::PARAM_INT);
                         if ( $stmt->execute() ) {
                             $field_type = $stmt->fetch()->field_type;
-                            if ($field_properties[$field_type]['fixed_values']) {
-                                $choices = $dyn_fields->getFixedValues($f->field_id);
+                            if ($this->_field_properties[$field_type]['fixed_values']) {
+                                $choices = $this->getFixedValues($f->field_id);
                                 $value = $choices[$value];
                             }
                         }
                     }
-                    $dyn_fields[$f->field_id][$f->val_index] = $value;
+                    $dfields[$f->field_id][$f->val_index] = $value;
                 }
-                return $dyn_fields;
+                return $dfields;
             } else {
                 return false;
             }
         } catch (\Exception $e) {
+            $log->log(
+                __METHOD__ . ' | ' . $e->getMessage(),
+                KLogger::WARN
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                KLogger::INFO
+            );
+        }
+    }
+
+    /**
+     * Returns an array of all kind of fields to display.
+     *
+     * @param string  $form_name  Form name in $all_forms
+     * @param array   $all_values Values as returned by
+     *                            extract_posted_dynamic_fields
+     * @param array   $disabled   Array that will be filled with fields
+     *                            that are discarded as key
+     * @param boolean $edit       Must be true if prepared for edition
+     *
+     * @return array
+     */
+    public function prepareForDisplay(
+        $form_name, $all_values, $disabled, $edit
+    ) {
+        global $zdb, $log, $login;
+
+        try {
+            $select = new \Zend_Db_Select($zdb->db);
+
+            $select->from(PREFIX_DB . self::TYPES_TABLE)
+                ->where('field_form = ?', $form_name)
+                ->order('field_index');
+
+            $result = $select->query(\Zend_DB::FETCH_ASSOC)->fetchAll();
+
+            $dfields = array();
+            if ( $result ) {
+                $extra = $edit ? 1 : 0;
+
+                if ( !$login->isAdmin()
+                    && !$login->isStaff()
+                    && ($result->field_perm == self::PERM_ADM
+                    || $result->field_perm == self::PERM_STAFF)
+                ) {
+                    $disabled[$field_id] = 'disabled';
+                }
+
+                foreach ( $result as $r ) {
+                    $field_id = $r['field_id'];
+                    $r['field_name'] = _T($r['field_name']);
+                    $properties = $this->_field_properties[$r['field_type']];
+
+                    if ( $properties['multi_valued'] ) {
+                         // Infinite multi-valued field
+                        if ( $r['field_repeat'] == 0 ) {
+                            if ( isset($all_values[$r['field_id']]) ) {
+                                $nb_values = count($all_values[$r['field_id']]);
+                            } else {
+                                $nb_values = 0;
+                            }
+                            if ( isset($all_values) ) {
+                                $r['field_repeat'] = $nb_values + $extra;
+                            } else {
+                                $r['field_repeat'] = 1;
+                            }
+                        }
+                    } else {
+                        $r['field_repeat'] = 1;
+                        if ( $properties['fixed_values'] ) {
+                            $r['choices'] = $this->getFixedValues($field_id);
+                        }
+                    }
+                    $dfields[] = $r;
+                }
+                return $dfields;
+            } else {
+                return false;
+            }
+        } catch (\Exception $e) {
+            /** TODO */
             $log->log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 KLogger::WARN

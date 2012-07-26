@@ -203,7 +203,7 @@ $spam_pass = PasswordImage();
 $s = PasswordImageName($spam_pass);
 $spam_img = print_img($s);
 
-$dynamic_fields = prepare_dynamic_fields_for_display(
+$dynamic_fields = $dyn_fields->prepareForDisplay(
     'adh', $adherent['dyn'], $disabled['dyn'], 1
 );
 

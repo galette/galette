@@ -188,7 +188,7 @@ if ( count($members) == 0 ) {
 $tpl->assign('adh_options', $adh_options);
 
 // - declare dynamic fields for display
-$dynamic_fields = prepare_dynamic_fields_for_display(
+$dynamic_fields = $dyn_fields->prepareForDisplay(
     'trans', $transaction['dyn'],
     array(),
     1

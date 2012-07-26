@@ -146,7 +146,7 @@ $adherent['dyn'] = $dyn_fields->getFields('adh', $id_adh, true);
 
 // - declare dynamic fields for display
 $disabled['dyn'] = array();
-$dynamic_fields = prepare_dynamic_fields_for_display(
+$dynamic_fields = $dyn_fields->prepareForDisplay(
     'adh',
     $adherent['dyn'],
     $disabled['dyn'],

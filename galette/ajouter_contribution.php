@@ -351,7 +351,7 @@ $tpl->assign('require_calendar', true);
 $tpl->assign('pref_membership_ext', $cotis_extension ? $preferences->pref_membership_ext : '');  //TODO: remove and replace with $contrib specific property
 
 // - declare dynamic fields for display
-$dynamic_fields = prepare_dynamic_fields_for_display(
+$dynamic_fields = $dyn_fields->prepareForDisplay(
     'contrib',
     $contribution['dyn'],
     array(),
