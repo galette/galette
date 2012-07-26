@@ -298,7 +298,7 @@ if ( isset($_POST['valid']) ) {
         $contribution['duree_mois_cotis'] = $preferences->pref_membership_ext;
     } else {
         // dynamic fields
-        $contribution['dyn'] = get_dynamic_fields(
+        $contribution['dyn'] = $dyn_fields->getFields(
             'contrib',
             $id_cotis,
             false

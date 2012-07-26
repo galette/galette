@@ -142,7 +142,7 @@ if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['caller'] = 'voir_adherent.php?id_adh='.$id_adh;
 
 // declare dynamic field values
-$adherent['dyn'] = get_dynamic_fields('adh', $id_adh, true);
+$adherent['dyn'] = $dyn_fields->getFields('adh', $id_adh, true);
 
 // - declare dynamic fields for display
 $disabled['dyn'] = array();

@@ -37,6 +37,8 @@
 
 namespace Galette\Entity;
 
+use Galette\Common\KLogger as KLogger;
+
 /**
  * Dynamic fields handler for Galette
  *
@@ -257,5 +259,64 @@ class DynamicFields
         return $this->_fields_types_names;
     }
 
+    /**
+    * Get dynamic fields for one entry
+    * It returns an 2d-array with field id as first key
+    * and value index as second key.
+    *
+    * @param string  $form_name Form name in $all_forms
+    * @param string  $item_id   Key to find entry values
+    * @param boolean $quote     If true, values are quoted for HTML output
+    *
+    * @return 2d-array with field id as first key and value index as second key.
+    */
+    function getFields($form_name, $item_id, $quote)
+    {
+        global $zdb, $log, $field_properties, $dyn_fields;
+
+        try {
+            $select = new \Zend_Db_Select($zdb->db);
+
+            $select->from(PREFIX_DB . self::TABLE)
+                ->where('item_id = ?', $item_id)
+                ->where('field_form = ?', $form_name);
+
+            $result = $select->query()->fetchAll();
+
+            if ( count($result) > 0 ) {
+                $dyn_fields = array();
+                $types_select = new \Zend_Db_Select($zdb->db);
+                $types_select->from(PREFIX_DB . self::TYPES_TABLE, 'field_type')
+                    ->where(self::TYPES_PK . ' = :fieldid');
+                $stmt = $zdb->db->prepare($types_select);
+                foreach ($result as $f) {
+                    $value = $f->field_val;
+                    if ( $quote ) {
+                        $stmt->bindValue(':fieldid', $f->field_id, \PDO::PARAM_INT);
+                        if ( $stmt->execute() ) {
+                            $field_type = $stmt->fetch()->field_type;
+                            if ($field_properties[$field_type]['fixed_values']) {
+                                $choices = $dyn_fields->getFixedValues($f->field_id);
+                                $value = $choices[$value];
+                            }
+                        }
+                    }
+                    $dyn_fields[$f->field_id][$f->val_index] = $value;
+                }
+                return $dyn_fields;
+            } else {
+                return false;
+            }
+        } catch (\Exception $e) {
+            $log->log(
+                __METHOD__ . ' | ' . $e->getMessage(),
+                KLogger::WARN
+            );
+            $log->log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                KLogger::INFO
+            );
+        }
+    }
 }
 ?>

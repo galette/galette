@@ -144,7 +144,7 @@ if ( isset($_POST['valid']) ) {
 } else { //$_POST['valid']
     if ( $trans->id != '' ) {
         // dynamic fields
-        $transaction['dyn'] = get_dynamic_fields(
+        $transaction['dyn'] = $dyn_fields->getFields(
             'trans',
             $transaction["trans_id"],
             false

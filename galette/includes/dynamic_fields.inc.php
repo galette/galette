@@ -154,66 +154,6 @@ function set_all_dynamic_fields($form_name, $item_id, $all_values)
 }
 
 /**
-* Get dynamic fields for one entry
-* It returns an 2d-array with field id as first key and value index as second key.
-*
-* @param string          $form_name Form name in $all_forms
-* @param string          $item_id   Key to find entry values
-* @param boolean         $quote     If true, values are quoted for HTML output
-*
-* @return 2d-array with field id as first key and value index as second key.
-*/
-function get_dynamic_fields($form_name, $item_id, $quote)
-{
-    global $zdb, $log, $field_properties, $dyn_fields;
-
-    try {
-        $select = new Zend_Db_Select($zdb->db);
-
-        $select->from(PREFIX_DB . DynamicFields::TABLE)
-            ->where('item_id = ?', $item_id)
-            ->where('field_form = ?', $form_name);
-
-        $result = $select->query()->fetchAll();
-
-        if ( count($result) > 0 ) {
-            $dyn_fields = array();
-            $types_select = new Zend_Db_Select($zdb->db);
-            $types_select->from(PREFIX_DB . DynamicFields::TYPES_TABLE, 'field_type')
-                ->where(DynamicFields::TYPES_PK . ' = :fieldid');
-            $stmt = $zdb->db->prepare($types_select);
-            foreach ($result as $f) {
-                $value = $f->field_val;
-                if ( $quote ) {
-                    $stmt->bindValue(':fieldid', $f->field_id, PDO::PARAM_INT);
-                    if ( $stmt->execute() ) {
-                        $field_type = $stmt->fetch()->field_type;
-                        if ($field_properties[$field_type]['fixed_values']) {
-                            $choices = $dyn_fields->getFixedValues($f->field_id);
-                            $value = $choices[$value];
-                        }
-                    }
-                }
-                $dyn_fields[$f->field_id][$f->val_index] = $value;
-            }
-            return $dyn_fields;
-        } else {
-            return false;
-        }
-    } catch (Exception $e) {
-        /** TODO */
-        $log->log(
-            'get_dynamic_fields | ' . $e->getMessage(),
-            KLogger::WARN
-        );
-        $log->log(
-            'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-            KLogger::ERR
-        );
-    }
-}
-
-/**
 * Extract posted values for dynamic fields
 *
 * @param array           $post     Array containing the posted values
@@ -312,7 +252,7 @@ function prepare_dynamic_fields_for_display(
     } catch (Exception $e) {
         /** TODO */
         $log->log(
-            'get_dynamic_fields | ' . $e->getMessage(),
+            'prepare_dynamic_fields_for_display | ' . $e->getMessage(),
             KLogger::WARN
         );
         $log->log(

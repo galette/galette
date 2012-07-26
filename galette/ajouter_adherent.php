@@ -296,7 +296,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
         }
     }
 } else {
-    $adherent['dyn'] = get_dynamic_fields('adh', $member->id, false);
+    $adherent['dyn'] = $dyn_fields->getFields('adh', $member->id, false);
 }
 
 // - declare dynamic fields for display
