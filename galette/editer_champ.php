@@ -280,6 +280,7 @@ $tpl->assign('data', $data);
 $tpl->assign('error_detected', $error_detected);
 
 $tpl->assign('perm_all', DynamicFields::PERM_ALL);
+$tpl->assign('perm_staff', DynamicFields::PERM_STAFF);
 $tpl->assign('perm_admin', DynamicFields::PERM_ADM);
 $tpl->assign('perm_names', $dyn_fields->getPermsNames());
 

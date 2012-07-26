@@ -9,6 +9,7 @@
                 <label for="field_perm" class="bline">{_T string="Visibility:"}</label>
                 <select name="field_perm" id="field_perm">
                     <option value="{$perm_all}" {if $data.perm == $perm_all}selected="selected"{/if}>{$perm_names[$perm_all]}</option>
+                    <option value="{$perm_staff}" {if $data.perm == $perm_staff}selected="selected"{/if}>{$perm_names[$perm_staff]}</option>
                     <option value="{$perm_admin}" {if $data.perm == $perm_admin}selected="selected"{/if}>{$perm_names[$perm_admin]}</option>
                 </select>
             </p>
