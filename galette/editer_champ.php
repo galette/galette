@@ -74,6 +74,7 @@ try {
     )->where('field_id = ?', $field_id);
     $field_type = $select->query()->fetchColumn();
     if ( $field_type !== false ) {
+        $field_properties = $dyn_fields->getFieldsProperties();
         $properties = $field_properties[$field_type];
     } else {
         $error_detected[] = _T("Unable to retrieve field informations.");

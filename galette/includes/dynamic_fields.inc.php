@@ -42,10 +42,6 @@ use Galette\Entity\DynamicFields as DynamicFields;
 $dyn_fields = new DynamicFields();
 
 $field_type_names = $dyn_fields->getFieldsTypesNames();
-$field_properties = $dyn_fields->getFieldsProperties();
-
-$perm_all = DynamicFields::PERM_ALL; //TODO: remove
-$perm_admin = DynamicFields::PERM_ADM; //TODO: remove
 
 $all_forms = $dyn_fields->getFormsNames();
 
@@ -261,7 +257,7 @@ function extract_posted_dynamic_fields($post, $disabled)
 function prepare_dynamic_fields_for_display(
     $form_name, $all_values, $disabled, $edit
 ) {
-    global $zdb, $log, $field_properties, $perm_admin, $login, $dyn_fields;
+    global $zdb, $log, $field_properties, $login, $dyn_fields;
 
     try {
         $select = new Zend_Db_Select($zdb->db);
@@ -278,7 +274,7 @@ function prepare_dynamic_fields_for_display(
 
             if ( !$login->isAdmin()
                 && !$login->isStaff()
-                && $result->field_perm == $perm_admin
+                && $result->field_perm == DynamicFields::PERM_ADM
             ) {
                 $disabled[$field_id] = 'disabled';
             }

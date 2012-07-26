@@ -185,6 +185,7 @@ if ( $form_name == '' ) {
                         );
 
                         $ftype = $res->field_type;
+                        $field_properties = $dyn_fields->getFieldsProperties();
                         if ($field_properties[$ftype]['fixed_values']) {
                             $contents_table = DynamicFields::getFixedValuesTableName($field_id);
                             $zdb->db->getConnection()->exec('DROP TABLE ' . $contents_table);
