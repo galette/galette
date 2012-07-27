@@ -360,7 +360,7 @@ class DynamicFields
                 foreach ( $result as $r ) {
                     $field_id = $r['field_id'];
                     $r['field_name'] = _T($r['field_name']);
-                    $properties = $this->_field_properties[$r['field_type']];
+                    $properties = $this->_fields_properties[$r['field_type']];
 
                     if ( $properties['multi_valued'] ) {
                          // Infinite multi-valued field
