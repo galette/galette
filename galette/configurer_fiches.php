@@ -53,7 +53,8 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once WEB_ROOT . 'includes/dynamic_fields.inc.php';
+$dyn_fields = new DynamicFields();
+$all_forms = $dyn_fields->getFormsNames();
 
 $form_name = ( isset($_GET['form']) ) ? $_GET['form'] : 'adh';
 if ( isset($_POST['form']) && trim($_POST['form']) != '' ) {

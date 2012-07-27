@@ -43,7 +43,7 @@ if ( !$preferences->pref_bool_selfsubscribe ) {
     header('location:index.php');
 }
 
-require_once WEB_ROOT . 'includes/dynamic_fields.inc.php';
+$dyn_fields = new DynamicFields();
 
 // flagging required fields
 $requires = new Galette\Entity\Required();

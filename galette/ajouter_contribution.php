@@ -36,6 +36,8 @@
  * @since     Available since 0.62
  */
 
+use Galette\Entity\DynamicFields as DynamicFields;
+
 require_once 'includes/galette.inc.php';
 
 if ( !$login->isLogged() ) {
@@ -47,9 +49,9 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once 'includes/dynamic_fields.inc.php';
-
 $contrib = new Galette\Entity\Contribution();
+//TODO: dynamic fields should be handled by Contribution object
+$dyn_fields = new DynamicFields();
 
 $id_cotis = get_numeric_form_value('id_cotis', '');
 
@@ -157,7 +159,6 @@ if ( isset($_POST['valid']) ) {
     }
 
     if ( count($error_detected) == 0 ) {
-        // dynamic fields
         $dyn_fields->setAllFields(
             'contrib',
             $id_cotis,

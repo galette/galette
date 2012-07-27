@@ -40,6 +40,8 @@
  * @since     Available since 0.60
  */
 
+use Galette\Entity\DynamicFields as DynamicFields;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
@@ -85,7 +87,7 @@ if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_success']
     unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_success']);
 }
 
-require_once WEB_ROOT . 'includes/dynamic_fields.inc.php';
+$dyn_fields = new DynamicFields();
 
 $member = new Galette\Entity\Adherent();
 $member->load($id_adh);

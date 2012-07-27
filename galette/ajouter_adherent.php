@@ -37,6 +37,7 @@
  */
 
 use Galette\Common\KLogger as KLogger;
+use Galette\Entity\DynamicFields as DynamicFields;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -46,9 +47,9 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-require_once 'includes/dynamic_fields.inc.php';
-
 $member = new Galette\Entity\Adherent();
+//TODO: dynamic fields should be handled by Adherent object
+$dyn_fields = new DynamicFields();
 
 // new or edit
 $adherent['id_adh'] = '';
