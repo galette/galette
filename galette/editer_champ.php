@@ -96,7 +96,7 @@ if ( isset($_POST['valid']) ) {
     $field_width = get_numeric_posted_value('field_width', null);
     $field_height = get_numeric_posted_value('field_height', null);
     $field_size = get_numeric_posted_value('field_size', null);
-    $field_repeat = get_numeric_posted_value('field_repeat', 'false');
+    $field_repeat = get_numeric_posted_value('field_repeat', new Zend_Db_Expr('NULL'));
     $fixed_values = get_form_value('fixed_values', '');
 
     if ( $field_id != '' && $field_perm != '' ) {
