@@ -98,7 +98,7 @@ if ( $trans_id != '' ) {
 $transaction['dyn'] = array();
 
 if ( isset($_POST['valid']) ) {
-    $transaction['dyn'] = extract_posted_dynamic_fields($_POST, array());
+    $transaction['dyn'] = $dyn_fields->extractPosted($_POST, array());
 
     $valid = $trans->check($_POST, $required, $disabled);
     if ( $valid === true ) {

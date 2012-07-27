@@ -97,7 +97,7 @@ $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
 // Validation
 if ( isset($_POST[array_shift($real_requireds)]) ) {
-    $adherent['dyn'] = extract_posted_dynamic_fields($_POST, $disabled);
+    $adherent['dyn'] = $dyn_fields->extractPosted($_POST, $disabled);
     $valid = $member->check($_POST, $required, $disabled);
     if ( $valid === true ) {
         //all goes well, we can proceed

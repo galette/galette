@@ -41,8 +41,6 @@ use Galette\Entity\DynamicFields as DynamicFields;
 
 $dyn_fields = new DynamicFields();
 
-$field_type_names = $dyn_fields->getFieldsTypesNames();
-
 $all_forms = $dyn_fields->getFormsNames();
 
 /**
@@ -136,7 +134,7 @@ function set_dynamic_field(
 * @param string          $form_name  Form name in $all_forms
 * @param string          $item_id    Key to find entry values
 * @param array           $all_values Values as returned by
-                            extract_posted_dynamic_fields.
+                                     DynamicFields::extractPosted.
 *
 * @return boolean
 */
@@ -151,34 +149,5 @@ function set_all_dynamic_fields($form_name, $item_id, $all_values)
         }
     }
     return $ret;
-}
-
-/**
-* Extract posted values for dynamic fields
-*
-* @param array           $post     Array containing the posted values
-* @param array           $disabled Array with fields that are discarded as key
-*
-* @return array
-*/
-function extract_posted_dynamic_fields($post, $disabled)
-{
-    if ( $post != null ) {
-        $dyn_fields = array();
-        while ( list($key, $value) = each($post) ) {
-            // if the field is enabled, check it
-            if ( !isset($disabled[$key]) ) {
-                if (substr($key, 0, 11) == 'info_field_') {
-                    list($field_id, $val_index) = explode('_', substr($key, 11));
-                    if ( is_numeric($field_id)
-                        && is_numeric($val_index)
-                    ) {
-                        $dyn_fields[$field_id][$val_index] = $value;
-                    }
-                }
-            }
-        }
-        return $dyn_fields;
-    }
 }
 ?>

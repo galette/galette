@@ -63,6 +63,8 @@ if ( !isset($all_forms[$form_name]) ) {
     $form_name = '';
 }
 
+$field_type_names = $dyn_fields->getFieldsTypesNames();
+
 if ( $form_name == '' ) {
     $form_title = '';
 } else {

@@ -70,7 +70,7 @@ $fields = Galette\Entity\Adherent::getDbFields();
 
 // checking posted values for 'regular' fields
 if ( isset($_POST["nom_adh"]) ) {
-    $adherent['dyn'] = extract_posted_dynamic_fields($_POST, $disabled);
+    $adherent['dyn'] = $dyn_fields->extractPosted($_POST, $disabled);
     $valid = $member->check($_POST, $required, $disabled);
     if ( $valid === true ) {
         //all goes well, we can proceed

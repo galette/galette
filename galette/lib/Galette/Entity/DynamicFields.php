@@ -324,7 +324,7 @@ class DynamicFields
      *
      * @param string  $form_name  Form name in $all_forms
      * @param array   $all_values Values as returned by
-     *                            extract_posted_dynamic_fields
+     *                            self::extractPosted
      * @param array   $disabled   Array that will be filled with fields
      *                            that are discarded as key
      * @param boolean $edit       Must be true if prepared for edition
@@ -400,5 +400,35 @@ class DynamicFields
             );
         }
     }
+
+    /**
+     * Extract posted values for dynamic fields
+     *
+     * @param array $post     Array containing the posted values
+     * @param array $disabled Array with fields that are discarded as key
+     *
+     * @return array
+     */
+    function extractPosted($post, $disabled)
+    {
+        if ( $post != null ) {
+            $dfields = array();
+            while ( list($key, $value) = each($post) ) {
+                // if the field is enabled, check it
+                if ( !isset($disabled[$key]) ) {
+                    if (substr($key, 0, 11) == 'info_field_') {
+                        list($field_id, $val_index) = explode('_', substr($key, 11));
+                        if ( is_numeric($field_id)
+                            && is_numeric($val_index)
+                        ) {
+                            $dfields[$field_id][$val_index] = $value;
+                        }
+                    }
+                }
+            }
+            return $dfields;
+        }
+    }
+
 }
 ?>

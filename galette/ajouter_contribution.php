@@ -117,7 +117,7 @@ if ( $type_selected && !($id_adh || $id_cotis) ) {
 // Validation
 $contribution['dyn'] = array();
 if ( isset($_POST['valid']) ) {
-    $contribution['dyn'] = extract_posted_dynamic_fields($_POST, array());
+    $contribution['dyn'] = $dyn_fields->extractPosted($_POST, array());
 
     $valid = $contrib->check($_POST, $required, $disabled);
     if ( $valid === true ) {
