@@ -295,7 +295,7 @@ class DynamicFields
                         $stmt->bindValue(':fieldid', $f->field_id, \PDO::PARAM_INT);
                         if ( $stmt->execute() ) {
                             $field_type = $stmt->fetch()->field_type;
-                            if ($this->_field_properties[$field_type]['fixed_values']) {
+                            if ($this->_fields_properties[$field_type]['fixed_values']) {
                                 $choices = $this->getFixedValues($f->field_id);
                                 $value = $choices[$value];
                             }
