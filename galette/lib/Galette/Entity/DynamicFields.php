@@ -179,7 +179,7 @@ class DynamicFields
         global $zdb, $log;
 
         try {
-            $val_select = new Zend_Db_Select($zdb->db);
+            $val_select = new \Zend_Db_Select($zdb->db);
 
             $val_select->from(
                 self::getFixedValuesTableName($field_id),
@@ -194,7 +194,7 @@ class DynamicFields
                 }
             }
             return $fixed_values;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $log->log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 KLogger::WARN
