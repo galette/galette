@@ -158,7 +158,7 @@ if ( isset($_POST['valid']) ) {
 
     if ( count($error_detected) == 0 ) {
         // dynamic fields
-        set_all_dynamic_fields(
+        $dyn_fields->setAllFields(
             'contrib',
             $id_cotis,
             $contribution['dyn']

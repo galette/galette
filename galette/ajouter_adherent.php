@@ -282,7 +282,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
         }
 
         // dynamic fields
-        set_all_dynamic_fields('adh', $member->id, $adherent['dyn']);
+        $dyn_fields->setAllFields('adh', $member->id, $adherent['dyn']);
     }
 
     if ( count($error_detected) == 0 ) {
