@@ -55,8 +55,8 @@ use Galette\Common\KLogger as KLogger;
 class DynamicFields
 {
     const TABLE = 'dynamic_fields';
-    const TYPES_TABLE = 'field_types';
-    const TYPES_PK = 'field_id';
+    const TYPES_TABLE = 'field_types'; //moved to DynamicFieldType
+    const TYPES_PK = 'field_id'; //moved to DynamicFieldType
 
     /** Separator field */
     const SEPARATOR = 0;
@@ -82,12 +82,11 @@ class DynamicFields
     private $_fields_types_names;
     private $_perms_names;
     private $_forms_names;
-    private $_fields_properties;
 
     /**
     * Default constructor
     *
-    * @param null|int|ResultSet $args Either a ResultSet row, its id or its 
+    * @param null|int|ResultSet $args Either a ResultSet row, its id or its
     *                                 login or its mail for to load
     *                                 a specific member, or null to just
     *                                 instanciate object
@@ -117,42 +116,6 @@ class DynamicFields
             'contrib'   => _T("Contributions"),
             'trans'     => _T("Transactions")
         );
-
-        //Properties or each field type
-        $this->_fields_properties = array(
-            self::SEPARATOR => array(
-                'no_data'       => true,
-                'with_width'    => false,
-                'with_height'   => false,
-                'with_size'     => false,
-                'multi_valued'  => false,
-                'fixed_values'  => false
-            ),
-            self::TEXT => array(
-                'no_data'       => false,
-                'with_width'    => true,
-                'with_height'   => true,
-                'with_size'     => false,
-                'multi_valued'  => false,
-                'fixed_values'  => false
-            ),
-            self::LINE => array(
-                'no_data'       => false,
-                'with_width'    => true,
-                'with_height'   => false,
-                'with_size'     => true,
-                'multi_valued'  => true,
-                'fixed_values'  => false
-            ),
-            self::CHOICE => array(
-                'no_data'       => false,
-                'with_width'    => false,
-                'with_height'   => false,
-                'with_size'     => false,
-                'multi_valued'  => false,
-                'fixed_values'  => true
-            )
-        );
     }
 
     /**
@@ -168,12 +131,12 @@ class DynamicFields
     }
 
     /**
-    * Returns an array of fixed valued for a field of type 'choice'.
-    *
-    * @param string $field_id field id
-    *
-    * @return array
-    */
+     * Returns an array of fixed valued for a field of type 'choice'.
+     *
+     * @param string $field_id field id
+     *
+     * @return array
+     */
     public function getFixedValues($field_id)
     {
         global $zdb, $log;
@@ -216,7 +179,6 @@ class DynamicFields
         return $this->_perms_names;
     }
 
-
     /**
      * Get permission name
      *
@@ -227,16 +189,6 @@ class DynamicFields
     public function getPermName($i)
     {
         return $this->_perms_names[$i];
-    }
-
-    /**
-     * Retrieve fields properties
-     *
-     * @return array
-     */
-    public function getFieldsProperties()
-    {
-        return $this->_fields_properties;
     }
 
     /**
@@ -260,16 +212,16 @@ class DynamicFields
     }
 
     /**
-    * Get dynamic fields for one entry
-    * It returns an 2d-array with field id as first key
-    * and value index as second key.
-    *
-    * @param string  $form_name Form name in $all_forms
-    * @param string  $item_id   Key to find entry values
-    * @param boolean $quote     If true, values are quoted for HTML output
-    *
-    * @return 2d-array with field id as first key and value index as second key.
-    */
+     * Get dynamic fields for one entry
+     * It returns an 2d-array with field id as first key
+     * and value index as second key.
+     *
+     * @param string  $form_name Form name in $all_forms
+     * @param string  $item_id   Key to find entry values
+     * @param boolean $quote     If true, values are quoted for HTML output
+     *
+     * @return 2d-array with field id as first key and value index as second key.
+     */
     public function getFields($form_name, $item_id, $quote)
     {
         global $zdb, $log;
@@ -277,28 +229,29 @@ class DynamicFields
         try {
             $select = new \Zend_Db_Select($zdb->db);
 
-            $select->from(PREFIX_DB . self::TABLE)
+            $select->from(
+                array('a' => PREFIX_DB . self::TABLE)
+            )->join(
+                array('b' => PREFIX_DB . self::TYPES_TABLE),
+                'a.' . self::TYPES_PK . '=b.' . self::TYPES_PK,
+                array('field_type')
+            )
                 ->where('item_id = ?', $item_id)
-                ->where('field_form = ?', $form_name);
+                ->where('a.field_form = ?', $form_name);
 
             $result = $select->query()->fetchAll();
 
             if ( count($result) > 0 ) {
                 $dfields = array();
-                $types_select = new \Zend_Db_Select($zdb->db);
-                $types_select->from(PREFIX_DB . self::TYPES_TABLE, 'field_type')
-                    ->where(self::TYPES_PK . ' = :fieldid');
-                $stmt = $zdb->db->prepare($types_select);
+
                 foreach ($result as $f) {
+                    $df = $this->getFieldType($f->field_type);
+
                     $value = $f->field_val;
                     if ( $quote ) {
-                        $stmt->bindValue(':fieldid', $f->field_id, \PDO::PARAM_INT);
-                        if ( $stmt->execute() ) {
-                            $field_type = $stmt->fetch()->field_type;
-                            if ($this->_fields_properties[$field_type]['fixed_values']) {
-                                $choices = $this->getFixedValues($f->field_id);
-                                $value = $choices[$value];
-                            }
+                        if ( $df->hasFixedValues() ) {
+                            $choices = $this->getFixedValues($f->field_id);
+                            $value = $choices[$value];
                         }
                     }
                     $dfields[$f->field_id][$f->val_index] = $value;
@@ -349,6 +302,7 @@ class DynamicFields
             if ( $result ) {
                 $extra = $edit ? 1 : 0;
 
+                //Disable field depending on ACLs
                 if ( !$login->isAdmin()
                     && !$login->isStaff()
                     && ($result->field_perm == self::PERM_ADM
@@ -358,11 +312,11 @@ class DynamicFields
                 }
 
                 foreach ( $result as $r ) {
+                    $df = $this->getFieldType($r['field_type']);
                     $field_id = $r['field_id'];
                     $r['field_name'] = _T($r['field_name']);
-                    $properties = $this->_fields_properties[$r['field_type']];
 
-                    if ( $properties['multi_valued'] ) {
+                    if ( $df->isMultiValued() ) {
                          // Infinite multi-valued field
                         if ( $r['field_repeat'] == 0 ) {
                             if ( isset($all_values[$r['field_id']]) ) {
@@ -378,7 +332,7 @@ class DynamicFields
                         }
                     } else {
                         $r['field_repeat'] = 1;
-                        if ( $properties['fixed_values'] ) {
+                        if ( $df->hasFixedValues() ) {
                             $r['choices'] = $this->getFixedValues($field_id);
                         }
                     }
@@ -530,7 +484,7 @@ class DynamicFields
         $ret = true;
         while ( list($field_id, $contents) = each($all_values) ) {
             while ( list($val_index, $field_val) = each($contents) ) {
-                $res = $this->setField(
+                $res = $this->_setField(
                     $form_name,
                     $item_id,
                     $field_id,
@@ -545,6 +499,34 @@ class DynamicFields
         return $ret;
     }
 
-
+    /**
+     * Get correct field type instance
+     *
+     * @param int $t field type
+     *
+     * @return DynamicFieldType
+     */
+    public function getFieldType($t)
+    {
+        $df = null;
+        switch ( $t ) {
+        case self::SEPARATOR:
+            $df = new \Galette\DynamicFieldsTypes\Separator();
+            break;
+        case self::TEXT:
+            $df = new \Galette\DynamicFieldsTypes\Text();
+            break;
+        case self::LINE:
+            $df = new \Galette\DynamicFieldsTypes\Line();
+            break;
+        case self::CHOICE:
+            $df = new \Galette\DynamicFieldsTypes\Choice();
+            break;
+        default:
+            throw new \Exception('Unknow field type ' . $t . '!');
+            break;
+        }
+        return $df;
+    }
 }
 ?>

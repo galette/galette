@@ -75,8 +75,7 @@ try {
     )->where('field_id = ?', $field_id);
     $field_type = $select->query()->fetchColumn();
     if ( $field_type !== false ) {
-        $field_properties = $dyn_fields->getFieldsProperties();
-        $properties = $field_properties[$field_type];
+        $df = $dyn_fields->getFieldType($field_type);
     } else {
         $error_detected[] = _T("Unable to retrieve field informations.");
     }
@@ -166,7 +165,7 @@ if ( isset($_POST['valid']) ) {
             }
         }
 
-        if ( $properties['fixed_values'] ) {
+        if ( $df->hasFixedValues() ) {
             $values = array();
             $max_length = 1;
             foreach ( explode("\n", $fixed_values) as $val ) {
@@ -249,7 +248,7 @@ if ( isset($_POST['valid']) ) {
             $field_repeat = $result->field_repeat;
             $field_size = $result->field_size;
             $fixed_values = '';
-            if ($properties['fixed_values']) {
+            if ( $df->hasFixedValues() ) {
                 foreach ( $dyn_fields->getFixedValues($field_id) as $val ) {
                     $fixed_values .= $val . "\n";
                 }
@@ -277,7 +276,7 @@ $data['fixed_values'] = $fixed_values;
 
 $tpl->assign('page_title', _T("Edit field"));
 $tpl->assign('form_name', $form_name);
-$tpl->assign('properties', $properties);
+$tpl->assign('df', $df);
 $tpl->assign('data', $data);
 $tpl->assign('error_detected', $error_detected);
 

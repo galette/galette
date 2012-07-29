@@ -13,7 +13,7 @@
                     <option value="{$perm_admin}" {if $data.perm == $perm_admin}selected="selected"{/if}>{$perm_names[$perm_admin]}</option>
                 </select>
             </p>
-{if !$properties.no_data}
+{if $df->hasData()}
             <p>
                 <label for="field_required" class="bline">{_T string="Required:"}</label>
                 <select name="field_required" id="field_required">
@@ -22,33 +22,33 @@
                 </select>
             </p>
 {/if}
-{if $properties.with_width}
+{if $df->hasWidth()}
             <p>
                 <label for="field_width" class="bline">{_T string="Width:"}</label>
                 <input type="text" name="field_width" id="field_width" value="{$data.width}" size="3"/>
             </p>
 {/if}
-{if $properties.with_height}
+{if $df->hasHeight()}
             <p>
                 <label for="field_height" class="bline">{_T string="Height:"}</label>
                 <input type="text" name="field_height" id="field_height" value="{$data.height}" size="3"/>
             </p>
 {/if}
-{if $properties.with_size}
+{if $df->hasSize()}
             <p>
                 <label for="field_size" class="bline">{_T string="Size:"}</label>
                 <input type="text" name="field_size" id="field_size" value="{$data.size}" size="3"/>
                 <span class="exemple">{_T string="Maximum number of characters."}</span>
             </p>
 {/if}
-{if $properties.multi_valued}
+{if $df->isMultiValued()}
             <p>
                 <label for="field_repeat" class="bline">{_T string="Repeat:"}</label>
                 <input type="text" name="field_repeat" id="field_repeat" value="{$data.repeat}" size="3"/>
                 <span class="exemple">{_T string="Number of values or zero if infinite."}</span>
             </p>
 {/if}
-{if $properties.fixed_values}
+{if $df->hasFixedValues()}
             <p>
                 <label for="fixed_values" class="bline">{_T string="Values:"}</label>
                 <textarea name="fixed_values" id="fixed_values" cols="20" rows="6">{$data.fixed_values}</textarea>

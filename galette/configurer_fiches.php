@@ -187,11 +187,12 @@ if ( $form_name == '' ) {
                             )
                         );
 
-                        $ftype = $res->field_type;
-                        $field_properties = $dyn_fields->getFieldsProperties();
-                        if ($field_properties[$ftype]['fixed_values']) {
+                        $df = $dyn_fields->getFieldType($res->field_type);
+                        if ( $df->hasFixedValues() ) {
                             $contents_table = DynamicFields::getFixedValuesTableName($field_id);
-                            $zdb->db->getConnection()->exec('DROP TABLE ' . $contents_table);
+                            $zdb->db->getConnection()->exec(
+                                'DROP TABLE ' . $contents_table
+                            );
                         }
                         deleteDynamicTranslation($res->field_name, $error_detected);
                     } else {
