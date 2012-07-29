@@ -270,7 +270,7 @@ class DynamicFields
     *
     * @return 2d-array with field id as first key and value index as second key.
     */
-    function getFields($form_name, $item_id, $quote)
+    public function getFields($form_name, $item_id, $quote)
     {
         global $zdb, $log;
 
@@ -409,7 +409,7 @@ class DynamicFields
      *
      * @return array
      */
-    function extractPosted($post, $disabled)
+    public function extractPosted($post, $disabled)
     {
         if ( $post != null ) {
             $dfields = array();
@@ -442,7 +442,7 @@ class DynamicFields
      *
      * @return boolean
      */
-    function setField(
+    private function _setField(
         $form_name, $item_id, $field_id, $val_index, $field_val
     ) {
         global $zdb, $log;
@@ -525,7 +525,7 @@ class DynamicFields
      *
      * @return boolean
      */
-    function setAllFields($form_name, $item_id, $all_values)
+    public function setAllFields($form_name, $item_id, $all_values)
     {
         $ret = true;
         while ( list($field_id, $contents) = each($all_values) ) {
