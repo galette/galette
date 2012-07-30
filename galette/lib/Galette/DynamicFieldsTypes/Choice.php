@@ -56,9 +56,12 @@ class Choice extends DynamicFieldType
 {
     /**
      * Default constructor
+     *
+     * @param int $id Optionnal field id to load data
      */
-    public function __construct()
+    public function __construct($id)
     {
+        parent::__construct($id);
         $this->has_data = true;
         $this->fixed_values = true;
     }
@@ -68,7 +71,7 @@ class Choice extends DynamicFieldType
      *
      * @return String
      */
-    public static function getName()
+    public function getTypeName()
     {
         return _T("choice");
     }

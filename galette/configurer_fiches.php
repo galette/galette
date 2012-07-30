@@ -37,6 +37,7 @@
  */
 
 use Galette\Entity\DynamicFields as DynamicFields;
+use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -85,7 +86,7 @@ if ( $form_name == '' ) {
             try {
                 $select = new Zend_Db_Select($zdb->db);
                 $select->from(
-                    PREFIX_DB . DynamicFields::TYPES_TABLE,
+                    PREFIX_DB . DynamicFieldType::TABLE,
                     'COUNT(*) + 1 AS idx'
                 )->where('field_form = ?', $form_name);
                 $str = $select->__toString();
@@ -106,7 +107,7 @@ if ( $form_name == '' ) {
                         'field_required' => $field_required
                     );
                     $zdb->db->insert(
-                        PREFIX_DB . DynamicFields::TYPES_TABLE,
+                        PREFIX_DB . DynamicFieldType::TABLE,
                         $values
                     );
 
@@ -114,7 +115,7 @@ if ( $form_name == '' ) {
                         && count($error_detected) == 0
                     ) {
                         $field_id = $zdb->db->lastInsertId(
-                            PREFIX_DB . DynamicFields::TYPES_TABLE,
+                            PREFIX_DB . DynamicFieldType::TABLE,
                             'id'
                         );
                         header(
@@ -150,9 +151,9 @@ if ( $form_name == '' ) {
                 $zdb->db->beginTransaction();
                 $select = new Zend_Db_Select($zdb->db);
                 $select->from(
-                    PREFIX_DB . DynamicFields::TYPES_TABLE,
+                    PREFIX_DB . DynamicFieldType::TABLE,
                     array('field_type', 'field_index', 'field_name')
-                )->where(DynamicFields::TYPES_PK . ' = ?', $field_id)
+                )->where(DynamicFieldType::PK . ' = ?', $field_id)
                     ->where('field_form = ?', $form_name);
                 $res = $select->query()->fetch();
                 if ( $res !== false ) {
@@ -161,7 +162,7 @@ if ( $form_name == '' ) {
 
                     if ( $action == 'del' ) {
                         $up = $zdb->db->update(
-                            PREFIX_DB . DynamicFields::TYPES_TABLE,
+                            PREFIX_DB . DynamicFieldType::TABLE,
                             array(
                                 'field_index' => new Zend_Db_Expr('field_index-1')
                             ),
@@ -180,7 +181,7 @@ if ( $form_name == '' ) {
                         );
 
                         $del2 = $zdb->db->delete(
-                            PREFIX_DB . DynamicFields::TYPES_TABLE,
+                            PREFIX_DB . DynamicFieldType::TABLE,
                             array(
                                 'field_id = ?'   => $field_id,
                                 'field_form = ?' => $form_name
@@ -199,7 +200,7 @@ if ( $form_name == '' ) {
                         $direction = $action == "up" ? -1: 1;
                         $new_rank = $old_rank + $direction;
                         $zdb->db->update(
-                            PREFIX_DB . DynamicFields::TYPES_TABLE,
+                            PREFIX_DB . DynamicFieldType::TABLE,
                             array(
                                 'field_index' => $old_rank
                             ),
@@ -210,7 +211,7 @@ if ( $form_name == '' ) {
                         );
 
                         $zdb->db->update(
-                            PREFIX_DB . DynamicFields::TYPES_TABLE,
+                            PREFIX_DB . DynamicFieldType::TABLE,
                             array(
                                 'field_index' => $new_rank
                             ),
@@ -236,7 +237,7 @@ if ( $form_name == '' ) {
     }
 
     $select = new Zend_Db_Select($zdb->db);
-    $select->from(PREFIX_DB . DynamicFields::TYPES_TABLE)
+    $select->from(PREFIX_DB . DynamicFieldType::TABLE)
         ->where('field_form = ?', $form_name)
         ->order('field_index');
 

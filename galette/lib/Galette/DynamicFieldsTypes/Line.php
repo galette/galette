@@ -56,9 +56,12 @@ class Line extends DynamicFieldType
 {
     /**
      * Default constructor
+     *
+     * @param int $id Optionnal field id to load data
      */
-    public function __construct()
+    public function __construct($id)
     {
+        parent::__construct($id);
         $this->has_data = true;
         $this->has_width = true;
         $this->has_size = true;
@@ -70,7 +73,7 @@ class Line extends DynamicFieldType
      *
      * @return String
      */
-    public static function getName()
+    public function getTypeName()
     {
         return _T("line");
     }

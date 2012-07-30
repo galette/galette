@@ -38,6 +38,7 @@
 namespace Galette\DynamicFieldsTypes;
 
 use Galette\Common\KLogger as KLogger;
+use Galette\Entity\DynamicFields as DynamicFields;
 
 /**
  * Abstrac dynamic field type
@@ -64,11 +65,101 @@ abstract class DynamicFieldType
     protected $multi_valued = false;
     protected $fixed_values = false;
 
+    protected $id;
+    protected $name;
+    protected $perm;
+    protected $required;
+    protected $width;
+    protected $height;
+    protected $repeat;
+    protected $size;
+    protected $values;
+
     /**
      * Default constructor
+     *
+     * @param int $id Optionnal field id to load data
      */
-    public function __construct()
+    public function __construct($id = null)
     {
+        if ( $id !== null ) {
+            $this->id = $id;
+        }
+    }
+
+    /**
+     * Load field
+     *
+     * @return void
+     */
+    public function load()
+    {
+        global $zdb, $log;
+
+        try {
+            $select = new \Zend_Db_Select($zdb->db);
+            $select->from(
+                PREFIX_DB . self::TABLE
+            )->where('field_id = ?', $this->id);
+            $sql = $select->__toString();
+            $result = $select->query()->fetch();
+
+            if ($result !== false) {
+                $this->name = $result->field_name;
+                /*$this->type = $result->field_name;*/
+                $this->perm = $result->field_perm;
+                $this->required = $result->field_required;
+                $this->width = $result->field_width;
+                $this->height = $result->field_height;
+                $this->repeat = $result->field_repeat;
+                $this->size = $result->field_size;
+                if ( $this->hasFixedValues() ) {
+                    $this->_loadFixedValues();
+                }
+            } // $result != false
+        } catch (Exception $e) {
+            $log->log(
+                'Unable to retrieve fields types for field ' . $this->id . ' | ' .
+                $e->getMessage(),
+                KLogger::ERR
+            );
+        }
+    }
+
+    /**
+     * Returns an array of fixed valued for a field of type 'choice'.
+     *
+     * @return void
+     */
+    private function _loadFixedValues()
+    {
+        global $zdb, $log;
+
+        try {
+            $val_select = new \Zend_Db_Select($zdb->db);
+
+            $val_select->from(
+                DynamicFields::getFixedValuesTableName($this->id),
+                'val'
+            )->order('id');
+
+            $results = $val_select->query()->fetchAll();
+            $this->values = array();
+            if ( $results ) {
+                foreach ( $results as $val ) {
+                    $this->values[] = $val->val;
+                }
+            }
+        } catch (\Exception $e) {
+            $log->log(
+                __METHOD__ . ' | ' . $e->getMessage(),
+                KLogger::WARN
+            );
+            $log->log(
+                'Query was: ' . $val_select->__toString() . ' ' . $e->__toString(),
+                KLogger::INFO
+            );
+        }
     }
 
     /**
@@ -76,7 +167,7 @@ abstract class DynamicFieldType
      *
      * @return String
      */
-    public abstract static function getName();
+    public abstract function getTypeName();
 
     /**
      * Does the field handle data?
@@ -139,32 +230,102 @@ abstract class DynamicFieldType
     }
 
     /**
+     * Get field id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get field name
+     *
+     * @return String
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get field Permissions
+     *
+     * @return integer
+     */
+    public function getPerm()
+    {
+        return $this->perm;
+    }
+
+    /**
+     * Is field required?
+     *
+     * @return boolean
+     */
+    public function isRequired()
+    {
+        return $this->required;
+    }
+
+    /**
      * Get field width
      *
      * @return integer
      */
-    /*public function getWidth()
+    public function getWidth()
     {
         return $this->width;
-    }*/
+    }
 
     /**
      * Get field height
      *
      * @return integer
      */
-    /*public function getHeight()
+    public function getHeight()
     {
         return $this->height;
-    }*/
+    }
+
+    /**
+     * Get fields repetitions
+     *
+     * @return integer|boolean
+     */
+    public function getRepeat()
+    {
+        return $this->repeat;
+    }
 
     /**
      * Get field size
      *
      * @return integer
      */
-    /*public function getSize()
+    public function getSize()
     {
         return $this->size;
-    }*/
+    }
+
+    /**
+     * Get field values
+     *
+     * @return array
+     */
+    public function getValues()
+    {
+        global $log;
+
+        if ( $this->multi_valued ) {
+            return $this->values;
+        } else {
+            $log->log(
+                'Field is not multi valued, cannot retrieve values.',
+                KLogger::INFO
+            );
+            return false;
+        }
+    }
 }

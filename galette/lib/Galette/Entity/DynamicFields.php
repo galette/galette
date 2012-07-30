@@ -38,6 +38,11 @@
 namespace Galette\Entity;
 
 use Galette\Common\KLogger as KLogger;
+use Galette\DynamicFieldsTypes\Separator as Separator;
+use Galette\DynamicFieldsTypes\Text as Text;
+use Galette\DynamicFieldsTypes\Line as Line;
+use Galette\DynamicFieldsTypes\Choice as Choice;
+use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
 
 /**
  * Dynamic fields handler for Galette
@@ -55,8 +60,6 @@ use Galette\Common\KLogger as KLogger;
 class DynamicFields
 {
     const TABLE = 'dynamic_fields';
-    const TYPES_TABLE = 'field_types'; //moved to DynamicFieldType
-    const TYPES_PK = 'field_id'; //moved to DynamicFieldType
 
     /** Separator field */
     const SEPARATOR = 0;
@@ -232,8 +235,8 @@ class DynamicFields
             $select->from(
                 array('a' => PREFIX_DB . self::TABLE)
             )->join(
-                array('b' => PREFIX_DB . self::TYPES_TABLE),
-                'a.' . self::TYPES_PK . '=b.' . self::TYPES_PK,
+                array('b' => PREFIX_DB . DynamicFieldType::TABLE),
+                'a.' . DynamicFieldType::PK . '=b.' . DynamicFieldType::PK,
                 array('field_type')
             )
                 ->where('item_id = ?', $item_id)
@@ -292,7 +295,7 @@ class DynamicFields
         try {
             $select = new \Zend_Db_Select($zdb->db);
 
-            $select->from(PREFIX_DB . self::TYPES_TABLE)
+            $select->from(PREFIX_DB . DynamicFieldType::TABLE)
                 ->where('field_form = ?', $form_name)
                 ->order('field_index');
 
@@ -502,31 +505,65 @@ class DynamicFields
     /**
      * Get correct field type instance
      *
-     * @param int $t field type
+     * @param int $t  field type
+     * @param int $id optionnal dynamic field id (ot laod data)
      *
      * @return DynamicFieldType
      */
-    public function getFieldType($t)
+    public function getFieldType($t, $id = null)
     {
         $df = null;
         switch ( $t ) {
         case self::SEPARATOR:
-            $df = new \Galette\DynamicFieldsTypes\Separator();
+            $df = new \Galette\DynamicFieldsTypes\Separator($id);
             break;
         case self::TEXT:
-            $df = new \Galette\DynamicFieldsTypes\Text();
+            $df = new \Galette\DynamicFieldsTypes\Text($id);
             break;
         case self::LINE:
-            $df = new \Galette\DynamicFieldsTypes\Line();
+            $df = new \Galette\DynamicFieldsTypes\Line($id);
             break;
         case self::CHOICE:
-            $df = new \Galette\DynamicFieldsTypes\Choice();
+            $df = new \Galette\DynamicFieldsTypes\Choice($id);
             break;
         default:
             throw new \Exception('Unknow field type ' . $t . '!');
             break;
         }
         return $df;
+    }
+
+    /**
+     * Load field from its id
+     *
+     * @param int $id field id
+     *
+     * @return DynamicFieldType or false
+     */
+    public function loadFieldType($id)
+    {
+        global $zdb, $log;
+
+        try {
+            $select = new \Zend_Db_Select($zdb->db);
+            $select->from(
+                PREFIX_DB . DynamicFieldType::TABLE,
+                'field_type'
+            )->where('field_id = ?', $id);
+            $field_type = $select->query()->fetchColumn();
+            if ( $field_type !== false ) {
+                return $this->getFieldType($field_type, $id);
+            } else {
+                return false;
+            }
+        } catch (\Exception $e) {
+            $log->log(
+                __METHOD__ . ' | Unable to retrieve field `' . $id .
+                '` informations | ' . $e->getMessage(),
+                KLogger::ERR
+            );
+            return false;
+        }
     }
 }
 ?>

@@ -56,9 +56,12 @@ class Text extends DynamicFieldType
 {
     /**
      * Default constructor
+     *
+     * @param int $id Optionnal field id to load data
      */
-    public function __construct()
+    public function __construct($id = null)
     {
+        parent::__construct($id);
         $this->has_data = true;
         $this->has_width = true;
         $this->has_height = true;
@@ -69,7 +72,7 @@ class Text extends DynamicFieldType
      *
      * @return String
      */
-    public static function getName()
+    public function getTypeName()
     {
         return _T("text");
     }

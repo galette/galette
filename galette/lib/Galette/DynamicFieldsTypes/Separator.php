@@ -56,10 +56,12 @@ class Separator extends DynamicFieldType
 {
     /**
      * Default constructor
+     *
+     * @param int $id Optionnal field id to load data
      */
-    public function __construct()
+    public function __construct($id = null)
     {
-        //empty constructor
+        parent::__construct($id);
     }
 
     /**
@@ -67,7 +69,7 @@ class Separator extends DynamicFieldType
      *
      * @return String
      */
-    public static function getName()
+    public function getTypeName()
     {
         return _T("separator");
     }
