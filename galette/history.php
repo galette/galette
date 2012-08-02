@@ -35,6 +35,8 @@
  * @link      http://galette.tuxfamily.org
  */
 
+use Galette\Core\history as History;
+
 require_once 'includes/galette.inc.php';
 
 if ( !$login->isLogged() ) {

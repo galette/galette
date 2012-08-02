@@ -601,7 +601,7 @@ class Db extends \Zend_Db
 
                 //build data
                 foreach ( $row as $key => $value ) {
-                    if ( !I18n::seemsUtf8($value) ) {
+                    if ( !I18n::seemUtf8($value) ) {
                         $value = utf8_encode($value);
                     }
                     $data[$key] = $value;

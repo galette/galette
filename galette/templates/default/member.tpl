@@ -6,9 +6,9 @@
                 <p>
     {if $pref_mail_method == constant('Galette\Core\GaletteMail::METHOD_DISABLED') or $member->email eq ""}
                     {_T string="Your subscription has been registered."}
-     {else}
+    {else}
                     {_T string="Your subscription has been registered, you will receive a recapitulative email soon (remember to check your spam box ;) )."}
-     {/if}
+    {/if}
                     <br/>{_T string="You'll be redirected to the login page in a few seconds"}
                 </p>
             </div>

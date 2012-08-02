@@ -395,7 +395,7 @@ class Texts
     /**
     * Initialize texts at install time
     *
-    * @param boolean $check_first Check first if it seems initialized
+    * @param boolean $check_first Check first if it seem initialized
     *
     * @return boolean|Exception false if no need to initialize, true if data
     *                           has been initialized, Exception if error
@@ -405,7 +405,7 @@ class Texts
         global $zdb, $log;
 
         try {
-            //first of all, let's check if data seems to have already
+            //first of all, let's check if data seem to have already
             //been initialized
             $proceed = false;
             if ( $check_first === true ) {

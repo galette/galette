@@ -138,7 +138,7 @@ class Adherent
     /**
     * Default constructor
     *
-    * @param null|int|ResultSet $args Either a ResultSet row, its id or its 
+    * @param null|int|ResultSet $args Either a ResultSet row, its id or its
     *                                 login or its mail for to load
     *                                 a specific member, or null to just
     *                                 instanciate object
@@ -158,7 +158,7 @@ class Adherent
         * )
         *
         * I'd prefer a static private variable for this...
-        * But call to the _T function does not seems to be allowed there :/
+        * But call to the _T function does not seem to be allowed there :/
         */
         $this->_fields = array(
             'id_adh' => array(
@@ -1163,6 +1163,12 @@ class Adherent
                                 ->where('b.priorite_statut < ' . Members::NON_STAFF_MEMBERS)
                                 ->limit(1);
 
+                            if ( $this->_id != '' && $this->_id != null ) {
+                                $select->where(
+                                    'a.' . self::PK . ' != ' . $this->_id
+                                );
+                            }
+
                             $result = $select->query()->fetchObject();
                             if ( $result !== false ) {
                                 $errors[] = str_replace(
@@ -1183,7 +1189,7 @@ class Adherent
                             }
                         } catch ( \Exception $e ) {
                             $log->log(
-                                'An error occured checking status unicity.',
+                                'An error occured checking status unicity: ' . $e->getMessage(),
                                 KLogger::ERR
                             );
                             $log->log(
@@ -1428,7 +1434,7 @@ class Adherent
                 break;
             case 'sname':
                 return mb_strtoupper($this->_name, 'UTF-8') .
-                    ' ' . ucfirst(mb_strtolower($this->_surname, 'UTF-8'));
+                    ' ' . ucwords(mb_strtolower($this->_surname, 'UTF-8'));
                 break;
             }
         } else {

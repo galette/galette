@@ -244,6 +244,7 @@ header('Content-Type: text/html; charset=UTF-8');
         <script type="text/javascript" src="../includes/jquery/chili-1.7.pack.js"></script>
         <script type="text/javascript" src="../includes/jquery/jquery.tooltip.pack.js"></script>
         <script type="text/javascript" src="../includes/common.js"></script>
+        <link rel="shortcut icon" href="../templates/default/images/favicon.png" />
         <script type="text/javascript">
             $(function() {
 <?php
@@ -395,7 +396,7 @@ case 'u3':
     if ( !$date_ok ) {
         echo '<p class="error">' . _T("Your PHP date settings are not correct. Maybe you've missed the timezone settings that is mandatory since PHP 5.3?") . '</p>';
     } else {
-        echo '<p>' . _T("Your PHP date settings seems correct.") . '</p>';
+        echo '<p>' . _T("Your PHP date settings seem correct.") . '</p>';
     }
     ?>
                 </div>
@@ -1333,7 +1334,7 @@ case 'u10':
                 <ol>
                     <li<?php if( $step == '1') echo ' class="current"'; ?>><?php echo _T("Language"); ?> - </li>
                     <li<?php if( $step == '2') echo ' class="current"'; ?>><?php echo _T("Installation mode"); ?> - </li>
-                    <li<?php if( $step == 'i3' || $step == 'u3' ) echo ' class="current"'; ?>><?php echo _T("Permissions"); ?> - </li>
+                    <li<?php if( $step == 'i3' || $step == 'u3' ) echo ' class="current"'; ?>><?php echo _T("Checks"); ?> - </li>
                     <li<?php if( $step == 'i4' || $step == 'u4') echo ' class="current"'; ?>><?php echo _T("Database"); ?> - </li>
                     <li<?php if( $step == 'i5' || $step == 'u5' ) echo ' class="current"'; ?>><?php echo _T("Access to the database"); ?> - </li>
                     <li<?php if( $step == 'i6' || $step == 'u6' ) echo ' class="current"'; ?>><?php echo _T("Access permissions to database"); ?> - </li>
