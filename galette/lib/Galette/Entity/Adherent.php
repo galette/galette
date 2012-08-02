@@ -1161,6 +1161,7 @@ class Adherent
                                 array('libelle_statut')
                             )->where('b.' . Status::PK . '=?', $value)
                                 ->where('b.priorite_statut < ' . Members::NON_STAFF_MEMBERS)
+                                ->where('a.' . self::PK . ' != ' . $this->_id)
                                 ->limit(1);
 
                             $result = $select->query()->fetchObject();
