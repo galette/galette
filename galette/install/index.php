@@ -244,6 +244,7 @@ header('Content-Type: text/html; charset=UTF-8');
         <script type="text/javascript" src="../includes/jquery/chili-1.7.pack.js"></script>
         <script type="text/javascript" src="../includes/jquery/jquery.tooltip.pack.js"></script>
         <script type="text/javascript" src="../includes/common.js"></script>
+        <link rel="shortcut icon" href="../templates/default/images/favicon.png" />
         <script type="text/javascript">
             $(function() {
 <?php
