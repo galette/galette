@@ -138,7 +138,7 @@ class Adherent
     /**
     * Default constructor
     *
-    * @param null|int|ResultSet $args Either a ResultSet row, its id or its 
+    * @param null|int|ResultSet $args Either a ResultSet row, its id or its
     *                                 login or its mail for to load
     *                                 a specific member, or null to just
     *                                 instanciate object
@@ -1429,7 +1429,7 @@ class Adherent
                 break;
             case 'sname':
                 return mb_strtoupper($this->_name, 'UTF-8') .
-                    ' ' . ucfirst(mb_strtolower($this->_surname, 'UTF-8'));
+                    ' ' . ucwords(mb_strtolower($this->_surname, 'UTF-8'));
                 break;
             }
         } else {
