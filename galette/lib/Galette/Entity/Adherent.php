@@ -1161,8 +1161,13 @@ class Adherent
                                 array('libelle_statut')
                             )->where('b.' . Status::PK . '=?', $value)
                                 ->where('b.priorite_statut < ' . Members::NON_STAFF_MEMBERS)
-                                ->where('a.' . self::PK . ' != ' . $this->_id)
                                 ->limit(1);
+
+                            if ( $this->_id != '' && $this->_id != null ) {
+                                $select->where(
+                                    'a.' . self::PK . ' != ' . $this->_id
+                                );
+                            }
 
                             $result = $select->query()->fetchObject();
                             if ( $result !== false ) {
@@ -1184,7 +1189,7 @@ class Adherent
                             }
                         } catch ( \Exception $e ) {
                             $log->log(
-                                'An error occured checking status unicity.',
+                                'An error occured checking status unicity: ' . $e->getMessage(),
                                 KLogger::ERR
                             );
                             $log->log(
