@@ -210,7 +210,7 @@ class Required
                 KLogger::INFO
             );
             $log->log(
-                'Initialisation seems successfull, we reload the object',
+                'Initialisation seem successfull, we reload the object',
                 KLogger::DEBUG
             );
             $this->_checkUpdate(false);

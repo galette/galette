@@ -221,7 +221,7 @@ if ( $form_name == '' ) {
                 $zdb->db->commit();
             } catch(Exception $e) {
                 /** FIXME */
-                //this one does not seems to work :'(
+                //this one does not seem to work :'(
                 $zdb->db->rollBack();
                 $log->log(
                     'Unable to change field ' . $field_id . ' rank | ' .

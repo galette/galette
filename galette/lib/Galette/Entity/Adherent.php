@@ -158,7 +158,7 @@ class Adherent
         * )
         *
         * I'd prefer a static private variable for this...
-        * But call to the _T function does not seems to be allowed there :/
+        * But call to the _T function does not seem to be allowed there :/
         */
         $this->_fields = array(
             'id_adh' => array(

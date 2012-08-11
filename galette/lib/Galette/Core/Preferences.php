@@ -504,7 +504,7 @@ class Preferences
         //does this pref exists ?
         if ( !array_key_exists($name, self::$_defaults) ) {
             $log->log(
-                'Trying to set a preference value which does not seems to exist ('
+                'Trying to set a preference value which does not seem to exist ('
                 . $name . ')',
                 KLogger::WARN
             );

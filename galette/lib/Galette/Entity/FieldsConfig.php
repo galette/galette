@@ -265,7 +265,7 @@ class FieldsConfig
                 $stmt->execute($params);
             }
             $log->log(
-                '[' . $class . '] Initialisation seems successfull, we reload ' .
+                '[' . $class . '] Initialisation seem successfull, we reload ' .
                 'the object',
                 KLogger::DEBUG
             );

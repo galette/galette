@@ -396,7 +396,7 @@ case 'u3':
     if ( !$date_ok ) {
         echo '<p class="error">' . _T("Your PHP date settings are not correct. Maybe you've missed the timezone settings that is mandatory since PHP 5.3?") . '</p>';
     } else {
-        echo '<p>' . _T("Your PHP date settings seems correct.") . '</p>';
+        echo '<p>' . _T("Your PHP date settings seem correct.") . '</p>';
     }
     ?>
                 </div>

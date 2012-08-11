@@ -282,14 +282,14 @@ class I18n
     }
 
     /**
-    * Is a string seems to be UTF-8 one ?
+    * Is a string seem to be UTF-8 one ?
     *
     * @param string $Str string to analyze
     *
     * @return  boolean
     * @author GLPI
     */
-    public static function seemsUtf8($Str)
+    public static function seemUtf8($Str)
     {
         for ( $i=0; $i<strlen($Str); $i++ ) {
             if (ord($Str[$i]) < 0x80) {
