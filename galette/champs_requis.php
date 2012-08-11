@@ -71,6 +71,8 @@ unset($fields[array_search('date_modif_adh', $fields)]);
 //Fields we do not want to be set as required
 unset($fields[array_search('societe_adh', $fields)]);
 unset($fields[array_search('id_statut', $fields)]);
+unset($fields[array_search('titre_adh', $fields)]);
+unset($fields[array_search('pref_lang', $fields)]);
 
 if ( isset($_POST) && count($_POST)>1 ) {
     $values = array();
