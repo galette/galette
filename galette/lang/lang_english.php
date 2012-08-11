@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sat Aug 11 09:16:40 2012 (GMT)
+// This file was automatically generated on Sat Aug 11 11:21:32 2012 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -339,8 +339,8 @@ $lang['(Un)Check all'] = '(Un)Check all';
 // ../templates/default/preferences.tpl:52 
 $lang['Use either the adress setted below or select user status to retrieve another adress.'] = 'Use either the adress setted below or select user status to retrieve another adress.';
 
-// ../install/index.php:399 
-$lang['Your PHP date settings seems correct.'] = 'Your PHP date settings seems correct.';
+// ../install/index.php:468 
+$lang['In order to be updated, Galette needs write permission on files listed above.'] = 'In order to be updated, Galette needs write permission on files listed above.';
 
 // ../etiquettes_adherents.php:166 
 $lang['labels_print_filename'] = 'Labels';
@@ -1404,7 +1404,7 @@ $lang['- Sum of all contributions exceed corresponding transaction amount.'] = '
 // ../templates/default/preferences.tpl:283 
 $lang['Number of label columns:'] = 'Number of label columns:';
 
-// ../self_adherent.php:178 ../ajouter_adherent.php:247 
+// ../self_adherent.php:181 ../ajouter_adherent.php:247 
 $lang['An error occured while storing the member.'] = 'An error occured while storing the member.';
 
 // ../lib/Galette/Entity/Adherent.php:1287 
@@ -1731,7 +1731,7 @@ $lang['Contribution added'] = 'Contribution added';
 // ../install/index.php:364 
 $lang['PHP Version'] = 'PHP Version';
 
-// ../self_adherent.php:211 
+// ../self_adherent.php:214 
 $lang['Subscription'] = 'Subscription';
 
 // ../lib/Galette/Core/Authentication.php:239 
@@ -1971,7 +1971,7 @@ $lang['donation in money'] = 'donation in money';
 // ../lib/Galette/Core/CheckModules.php:164 
 $lang['Modules that may be required'] = 'Modules that may be required';
 
-// ../install/index.php:198 
+// ../install/index.php:198 ../install/index.php:1337 
 $lang['Checks'] = 'Checks';
 
 // ../templates/default/gestion_mailings.tpl:43 
@@ -2028,14 +2028,8 @@ $lang['State of dues'] = 'State of dues';
 // ../templates/default/gestion_adherents.tpl:277 ../templates/default/gestion_contributions.tpl:267 ../templates/default/gestion_transactions.tpl:125 
 $lang['Show legend'] = 'Show legend';
 
-// ../install/index.php:1337 
-$lang['Permissions'] = 'Permissions';
-
 // ../templates/default/member.tpl:22 
 $lang['Picture:'] = 'Picture:';
-
-// ../install/index.php:468 
-$lang['In order to be updated, Galette needs write permission on files listed above.'] = 'In order to be updated, Galette needs write permission on files listed above.';
 
 // ../templates/default/display_dynamic_fields.tpl:4 ../templates/default/display_dynamic_fields.tpl:8 
 $lang['Additionnal fields:'] = 'Additionnal fields:';
@@ -2444,6 +2438,9 @@ $lang['Missing a temporary folder'] = 'Missing a temporary folder';
 
 // ../templates/default/page.tpl:137 
 $lang['Manage contributions types'] = 'Manage contributions types';
+
+// ../install/index.php:399 
+$lang['Your PHP date settings seem correct.'] = 'Your PHP date settings seem correct.';
 
 // ../templates/default/gestion_adherents.tpl:293 
 $lang['No member selected'] = 'No member selected';

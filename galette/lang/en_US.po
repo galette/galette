@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2012-08-11 11:15+0200\n"
+"PO-Revision-Date: 2012-08-11 13:21+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -325,9 +325,9 @@ msgstr "Other"
 msgid "An error occued."
 msgstr "An error occued."
 
-#: ../install/index.php:399
-msgid "Your PHP date settings seems correct."
-msgstr "Your PHP date settings seems correct."
+#: ../templates/default/editer_champ.tpl:58
+msgid "Values:"
+msgstr "Values:"
 
 #: ../templates/default/gestion_adherents.tpl:164
 #: ../templates/default/group_persons.tpl:27
@@ -410,6 +410,12 @@ msgstr "Please run install or upgrade procedure (check the documentation)"
 msgid "Required fields for adherents"
 msgstr "Required fields for adherents"
 
+#: ../templates/default/page.tpl:131
+msgid ""
+"Customize fields order, set which are required, and for who they're visibles"
+msgstr ""
+"Customize fields order, set which are required, and for who they're visibles"
+
 #: ../includes/i18n.inc.php:310
 msgid "Company cotisation"
 msgstr "Company cotisation"
@@ -421,10 +427,6 @@ msgstr "HTML display is not yet available. Sorry."
 #: ../lib/Galette/Core/Picture.php:823
 msgid "Unknown upload error"
 msgstr "Unknown upload error"
-
-#: ../install/index.php:1337
-msgid "Permissions"
-msgstr "Permissions"
 
 #: ../templates/default/voir_adherent.tpl:234
 msgid "You are not part of managers for the requested group."
@@ -699,10 +701,6 @@ msgstr "Back"
 #: ../templates/default/page.tpl:135
 msgid "Translate additionnals fields labels"
 msgstr "Translate additionnals fields labels"
-
-#: ../templates/default/desktop.tpl:29
-msgid "No tweets has been retrieved."
-msgstr "No tweets has been retrieved."
 
 #: ../templates/default/gestion_adherents.tpl:216
 #: ../templates/default/gestion_adherents.tpl:217
@@ -1696,9 +1694,9 @@ msgstr "An error occured adding member to its groups."
 msgid "Group members selection"
 msgstr "Group members selection"
 
-#: ../templates/default/editer_champ.tpl:58
-msgid "Values:"
-msgstr "Values:"
+#: ../templates/default/desktop.tpl:29
+msgid "No tweets has been retrieved."
+msgstr "No tweets has been retrieved."
 
 #: ../templates/default/preferences.tpl:131
 msgid "(Months)"
@@ -1860,11 +1858,13 @@ msgstr "(Show or not title in front of name)"
 msgid "Authentication failed"
 msgstr "Authentication failed"
 
-#: ../templates/default/page.tpl:131
+#: ../templates/default/preferences.tpl:223
 msgid ""
-"Customize fields order, set which are required, and for who they're visibles"
+"Would emailing use any SMTP authentication? You'll have to provide username "
+"and passwrod below. For GMail, authentication will always be on."
 msgstr ""
-"Customize fields order, set which are required, and for who they're visibles"
+"Would emailing use any SMTP authentication? You'll have to provide username "
+"and passwrod below. For GMail, authentication will always be on."
 
 #: ../lib/Galette/Entity/Contribution.php:124
 #: ../templates/default/ajouter_contribution.tpl:110
@@ -2924,7 +2924,7 @@ msgstr "Preview"
 msgid "The tables has been correctly created."
 msgstr "The tables has been correctly created."
 
-#: ../self_adherent.php:211
+#: ../self_adherent.php:214
 msgid "Subscription"
 msgstr "Subscription"
 
@@ -3469,7 +3469,7 @@ msgid ""
 msgstr ""
 "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 
-#: ../install/index.php:198
+#: ../install/index.php:198 ../install/index.php:1337
 msgid "Checks"
 msgstr "Checks"
 
@@ -3903,7 +3903,7 @@ msgstr ""
 "account to be visible here, edit your profile and check 'Be visible in the "
 "members list'"
 
-#: ../self_adherent.php:178 ../ajouter_adherent.php:247
+#: ../self_adherent.php:181 ../ajouter_adherent.php:247
 msgid "An error occured while storing the member."
 msgstr "An error occured while storing the member."
 
@@ -4283,13 +4283,9 @@ msgstr "Edit the contribution"
 msgid "Check the parameters and the existence of the database"
 msgstr "Check the parameters and the existence of the database"
 
-#: ../templates/default/preferences.tpl:223
-msgid ""
-"Would emailing use any SMTP authentication? You'll have to provide username "
-"and passwrod below. For GMail, authentication will always be on."
-msgstr ""
-"Would emailing use any SMTP authentication? You'll have to provide username "
-"and passwrod below. For GMail, authentication will always be on."
+#: ../install/index.php:399
+msgid "Your PHP date settings seem correct."
+msgstr "Your PHP date settings seem correct."
 
 #: ../templates/default/preferences.tpl:136
 msgid "(dd/mm)"
@@ -4723,6 +4719,9 @@ msgstr "An error has occured while looking if status is already in use."
 #: ../lostpasswd.php:158
 msgid "Login %s does not exist"
 msgstr "Login %s does not exist"
+
+#~ msgid "Permissions"
+#~ msgstr "Permissions"
 
 #~ msgid "(for a directory)"
 #~ msgstr "(for a directory)"

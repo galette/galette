@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2012-08-11 11:16+0200\n"
+"PO-Revision-Date: 2012-08-11 13:21+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -331,9 +331,9 @@ msgstr "Autre"
 msgid "An error occued."
 msgstr "Une erreur est survenue."
 
-#: ../install/index.php:399
-msgid "Your PHP date settings seems correct."
-msgstr "Vos paramètres de date PHP semblent corrects."
+#: ../templates/default/editer_champ.tpl:58
+msgid "Values:"
+msgstr "Valeurs&nbsp;:"
 
 #: ../templates/default/gestion_adherents.tpl:164
 #: ../templates/default/group_persons.tpl:27
@@ -419,6 +419,13 @@ msgstr ""
 msgid "Required fields for adherents"
 msgstr "Champs obligatoires pour les adhérents"
 
+#: ../templates/default/page.tpl:131
+msgid ""
+"Customize fields order, set which are required, and for who they're visibles"
+msgstr ""
+"Personnaliser l'ordre des champs, définir lesquels sont requis, et pour qui "
+"ils sont visibles"
+
 #: ../includes/i18n.inc.php:310
 msgid "Company cotisation"
 msgstr "Cotisation personne morale"
@@ -430,10 +437,6 @@ msgstr "La vue HTML n'est pas encore disponible. Désolés."
 #: ../lib/Galette/Core/Picture.php:823
 msgid "Unknown upload error"
 msgstr "Erreur d'envoi inconnue"
-
-#: ../install/index.php:1337
-msgid "Permissions"
-msgstr "Permissions"
 
 #: ../templates/default/voir_adherent.tpl:234
 msgid "You are not part of managers for the requested group."
@@ -713,10 +716,6 @@ msgstr "Retour"
 #: ../templates/default/page.tpl:135
 msgid "Translate additionnals fields labels"
 msgstr "Traduction des étiquettes pour les champs additionnels"
-
-#: ../templates/default/desktop.tpl:29
-msgid "No tweets has been retrieved."
-msgstr "Aucun tweets n'a été récupéré."
 
 #: ../templates/default/gestion_adherents.tpl:216
 #: ../templates/default/gestion_adherents.tpl:217
@@ -1731,9 +1730,9 @@ msgstr "Une erreur est survenue lors de l'ajout des groupes du membre."
 msgid "Group members selection"
 msgstr "Sélection des membres du groupe"
 
-#: ../templates/default/editer_champ.tpl:58
-msgid "Values:"
-msgstr "Valeurs&nbsp;:"
+#: ../templates/default/desktop.tpl:29
+msgid "No tweets has been retrieved."
+msgstr "Aucun tweets n'a été récupéré."
 
 #: ../templates/default/preferences.tpl:131
 msgid "(Months)"
@@ -1899,12 +1898,14 @@ msgstr "(Afficher le titre devant le nom)"
 msgid "Authentication failed"
 msgstr "Échec de l'authentification"
 
-#: ../templates/default/page.tpl:131
+#: ../templates/default/preferences.tpl:223
 msgid ""
-"Customize fields order, set which are required, and for who they're visibles"
+"Would emailing use any SMTP authentication? You'll have to provide username "
+"and passwrod below. For GMail, authentication will always be on."
 msgstr ""
-"Personnaliser l'ordre des champs, définir lesquels sont requis, et pour qui "
-"ils sont visibles"
+"Est-ce que l'envoi de mails utilisera l'authentification SMTP&nbsp;:? Vous "
+"devrez fournir un nom d'utilisateur et un mot de passe ci-dessous. Pour "
+"GMail, l'authentification sera toujours activée."
 
 #: ../lib/Galette/Entity/Contribution.php:124
 #: ../templates/default/ajouter_contribution.tpl:110
@@ -2975,7 +2976,7 @@ msgstr "Prévisualisation"
 msgid "The tables has been correctly created."
 msgstr "Les tables ont été correctement créées."
 
-#: ../self_adherent.php:211
+#: ../self_adherent.php:214
 msgid "Subscription"
 msgstr "Inscription"
 
@@ -3526,7 +3527,7 @@ msgid ""
 msgstr ""
 "Les droits nécessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et INSERT."
 
-#: ../install/index.php:198
+#: ../install/index.php:198 ../install/index.php:1337
 msgid "Checks"
 msgstr "Vérifications"
 
@@ -3966,7 +3967,7 @@ msgstr ""
 "votre compte soit affiché ici, modifiez votre profil et cochez « Je souhaite "
 "apparaître dans la liste des membres »."
 
-#: ../self_adherent.php:178 ../ajouter_adherent.php:247
+#: ../self_adherent.php:181 ../ajouter_adherent.php:247
 msgid "An error occured while storing the member."
 msgstr "Une erreur est survenue lors de l'enregistrement de l'adhérent."
 
@@ -4353,14 +4354,9 @@ msgstr "Éditer la contribution"
 msgid "Check the parameters and the existence of the database"
 msgstr "Vérification des paramètres et de l'existence de la base"
 
-#: ../templates/default/preferences.tpl:223
-msgid ""
-"Would emailing use any SMTP authentication? You'll have to provide username "
-"and passwrod below. For GMail, authentication will always be on."
-msgstr ""
-"Est-ce que l'envoi de mails utilisera l'authentification SMTP&nbsp;:? Vous "
-"devrez fournir un nom d'utilisateur et un mot de passe ci-dessous. Pour "
-"GMail, l'authentification sera toujours activée."
+#: ../install/index.php:399
+msgid "Your PHP date settings seem correct."
+msgstr "Vos paramètres de date PHP semblent corrects."
 
 #: ../templates/default/preferences.tpl:136
 msgid "(dd/mm)"
@@ -4798,6 +4794,9 @@ msgstr ""
 #: ../lostpasswd.php:158
 msgid "Login %s does not exist"
 msgstr "L'identifiant %s n'existe pas"
+
+#~ msgid "Permissions"
+#~ msgstr "Permissions"
 
 #~ msgid "(for a directory)"
 #~ msgstr "(pour un dossier)"

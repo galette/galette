@@ -288,8 +288,8 @@ msgstr ""
 msgid "An error occued."
 msgstr ""
 
-#: ../install/index.php:399
-msgid "Your PHP date settings seems correct."
+#: ../templates/default/editer_champ.tpl:58
+msgid "Values:"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:164 ../templates/default/group_persons.tpl:27
@@ -370,6 +370,10 @@ msgstr ""
 msgid "Required fields for adherents"
 msgstr ""
 
+#: ../templates/default/page.tpl:131
+msgid "Customize fields order, set which are required, and for who they're visibles"
+msgstr ""
+
 #: ../includes/i18n.inc.php:310
 msgid "Company cotisation"
 msgstr ""
@@ -380,10 +384,6 @@ msgstr ""
 
 #: ../lib/Galette/Core/Picture.php:823
 msgid "Unknown upload error"
-msgstr ""
-
-#: ../install/index.php:1337
-msgid "Permissions"
 msgstr ""
 
 #: ../templates/default/voir_adherent.tpl:234
@@ -620,10 +620,6 @@ msgstr ""
 
 #: ../templates/default/page.tpl:135
 msgid "Translate additionnals fields labels"
-msgstr ""
-
-#: ../templates/default/desktop.tpl:29
-msgid "No tweets has been retrieved."
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:216 ../templates/default/gestion_adherents.tpl:217
@@ -1524,8 +1520,8 @@ msgstr ""
 msgid "Group members selection"
 msgstr ""
 
-#: ../templates/default/editer_champ.tpl:58
-msgid "Values:"
+#: ../templates/default/desktop.tpl:29
+msgid "No tweets has been retrieved."
 msgstr ""
 
 #: ../templates/default/preferences.tpl:131
@@ -1680,8 +1676,8 @@ msgstr ""
 msgid "Authentication failed"
 msgstr ""
 
-#: ../templates/default/page.tpl:131
-msgid "Customize fields order, set which are required, and for who they're visibles"
+#: ../templates/default/preferences.tpl:223
+msgid "Would emailing use any SMTP authentication? You'll have to provide username and passwrod below. For GMail, authentication will always be on."
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:124 ../templates/default/ajouter_contribution.tpl:110
@@ -2646,7 +2642,7 @@ msgstr ""
 msgid "The tables has been correctly created."
 msgstr ""
 
-#: ../self_adherent.php:211
+#: ../self_adherent.php:214
 msgid "Subscription"
 msgstr ""
 
@@ -3123,7 +3119,7 @@ msgstr ""
 msgid "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 msgstr ""
 
-#: ../install/index.php:198
+#: ../install/index.php:198 ../install/index.php:1337
 msgid "Checks"
 msgstr ""
 
@@ -3516,7 +3512,7 @@ msgstr ""
 msgid "This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'"
 msgstr ""
 
-#: ../self_adherent.php:178 ../ajouter_adherent.php:247
+#: ../self_adherent.php:181 ../ajouter_adherent.php:247
 msgid "An error occured while storing the member."
 msgstr ""
 
@@ -3852,8 +3848,8 @@ msgstr ""
 msgid "Check the parameters and the existence of the database"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:223
-msgid "Would emailing use any SMTP authentication? You'll have to provide username and passwrod below. For GMail, authentication will always be on."
+#: ../install/index.php:399
+msgid "Your PHP date settings seem correct."
 msgstr ""
 
 #: ../templates/default/preferences.tpl:136
