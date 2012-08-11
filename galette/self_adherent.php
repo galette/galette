@@ -171,7 +171,10 @@ if ( isset($_POST["nom_adh"]) ) {
                 strtoupper($adherent['nom_adh']) . ' ' . $adherent['prenom_adh'],
                 $requete
             );
-            $head_redirect = '<meta http-equiv="refresh" content="10;url=index.php" />';
+            $head_redirect = array(
+                'timeout'   => 10,
+                'url'       => 'index.php'
+            );
             $has_register = true;
         } else {
             //something went wrong :'(
