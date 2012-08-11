@@ -1334,7 +1334,7 @@ case 'u10':
                 <ol>
                     <li<?php if( $step == '1') echo ' class="current"'; ?>><?php echo _T("Language"); ?> - </li>
                     <li<?php if( $step == '2') echo ' class="current"'; ?>><?php echo _T("Installation mode"); ?> - </li>
-                    <li<?php if( $step == 'i3' || $step == 'u3' ) echo ' class="current"'; ?>><?php echo _T("Permissions"); ?> - </li>
+                    <li<?php if( $step == 'i3' || $step == 'u3' ) echo ' class="current"'; ?>><?php echo _T("Checks"); ?> - </li>
                     <li<?php if( $step == 'i4' || $step == 'u4') echo ' class="current"'; ?>><?php echo _T("Database"); ?> - </li>
                     <li<?php if( $step == 'i5' || $step == 'u5' ) echo ' class="current"'; ?>><?php echo _T("Access to the database"); ?> - </li>
                     <li<?php if( $step == 'i6' || $step == 'u6' ) echo ' class="current"'; ?>><?php echo _T("Access permissions to database"); ?> - </li>
