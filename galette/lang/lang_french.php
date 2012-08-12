@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sat Aug 11 11:21:32 2012 (GMT)
+// This file was automatically generated on Sun Aug 12 08:30:30 2012 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -1999,7 +1999,7 @@ $lang['CREATE operation allowed'] = 'Opération CREATE autorisée';
 $lang['Not a GIF file '] = 'Pas un fichier GIF';
 
 // ../install/index.php:1213 
-$lang['Default fields categories were successfully stored.'] = 'Les catégories de champs par défaut ont été sauvegardés avec succès.';
+$lang['Default fields categories were successfully stored.'] = 'Les catégories de champs par défaut ont été sauvegardées avec succès.';
 
 // ../templates/default/editer_champ.tpl:46 
 $lang['Maximum number of characters.'] = 'Nombre maximal de caractères.';

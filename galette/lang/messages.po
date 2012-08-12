@@ -366,7 +366,7 @@ msgstr ""
 msgid "Please run install or upgrade procedure (check the documentation)"
 msgstr ""
 
-#: ../champs_requis.php:92
+#: ../champs_requis.php:94
 msgid "Required fields for adherents"
 msgstr ""
 
@@ -2487,7 +2487,7 @@ msgstr ""
 msgid "View and filter transactions"
 msgstr ""
 
-#: ../champs_requis.php:84
+#: ../champs_requis.php:86
 msgid "An error has occured while storing required fields. Please try again, and contact the administrator if the problem persists."
 msgstr ""
 
@@ -3018,7 +3018,7 @@ msgstr ""
 msgid "Emails content"
 msgstr ""
 
-#: ../champs_requis.php:86
+#: ../champs_requis.php:88
 msgid "Required fields has been saved."
 msgstr ""
 

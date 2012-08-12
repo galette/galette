@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2012-08-11 13:21+0200\n"
+"PO-Revision-Date: 2012-08-12 10:30+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -415,7 +415,7 @@ msgstr ""
 "Veuillez lancer la procédure d'installation ou de mise à jour (consultez la "
 "documentation)"
 
-#: ../champs_requis.php:92
+#: ../champs_requis.php:94
 msgid "Required fields for adherents"
 msgstr "Champs obligatoires pour les adhérents"
 
@@ -1784,7 +1784,7 @@ msgstr "Liste des transactions"
 
 #: ../install/index.php:1213
 msgid "Default fields categories were successfully stored."
-msgstr "Les catégories de champs par défaut ont été sauvegardés avec succès."
+msgstr "Les catégories de champs par défaut ont été sauvegardées avec succès."
 
 #: ../templates/default/config_fields.tpl:21
 msgid "$catname"
@@ -2802,7 +2802,7 @@ msgstr "Chargement..."
 msgid "View and filter transactions"
 msgstr "Consulter et filtrer les transactions"
 
-#: ../champs_requis.php:84
+#: ../champs_requis.php:86
 msgid ""
 "An error has occured while storing required fields. Please try again, and "
 "contact the administrator if the problem persists."
@@ -3414,7 +3414,7 @@ msgstr "Rédigez votre message"
 msgid "Emails content"
 msgstr "Contenu des courriels"
 
-#: ../champs_requis.php:86
+#: ../champs_requis.php:88
 msgid "Required fields has been saved."
 msgstr "Les champs requis ont été sauvegardés."
 
