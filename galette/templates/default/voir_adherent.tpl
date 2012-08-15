@@ -156,7 +156,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 		<table class="details">
 			<caption class="ui-state-active ui-corner-top">{_T string="Galette-related data:"}</caption>
 			<tr>
-				<th>{_T string="Be visible in the<br /> members list :"}</th>
+				<th>{_T string="Be visible in the members list:"}</th>
 				<td>{$member->sappears_in_list}</td>
 			</tr>
 {if $login->isAdmin() or $login->isStaff()}

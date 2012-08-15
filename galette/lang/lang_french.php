@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Wed Aug 15 09:11:24 2012 (GMT)
+// This file was automatically generated on Wed Aug 15 15:19:50 2012 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -36,8 +36,8 @@ $lang['SMTP (or GMail) user:'] = 'Utilisateur SMTP (ou GMail)&nbsp;:';
 // ../templates/default/member.tpl:180 ../templates/default/member.tpl:186 ../templates/default/change_passwd.tpl:16 
 $lang['(at least 4 characters)'] = '(au moins 4 caractères)';
 
-// ../ajouter_adherent.php:157 
-$lang['Member account has been modified.'] = 'Le compte de l\'adhérent a été modifié avec succès.';
+// ../ajax_plugins_initdb.php:177 ../install/index.php:868 
+$lang['Creation of the tables'] = 'Création des tables';
 
 // ../templates/default/gestion_contributions.tpl:39 
 $lang['contributions'] = 'contributions';
@@ -780,6 +780,9 @@ $lang['- You can\'t send a confirmation by email if the member hasn\'t got an ad
 // ../public/liste_membres.php:86 ../templates/default/public_page.tpl:41 ../templates/default/page.tpl:121 
 $lang['Members list'] = 'Liste des membres';
 
+// ../templates/default/page.tpl:104 
+$lang['Add new contribution in database'] = 'Ajouter une nouvelle contribution à la base';
+
 // ../install/index.php:602 
 $lang['Port:'] = 'Port&nbsp;:';
 
@@ -942,8 +945,8 @@ $lang['Retry'] = 'Réessayer';
 // ../templates/default/gestion_mailings.tpl:75 ../templates/default/page.tpl:84 
 $lang['Superadmin'] = 'Superadmin';
 
-// ../templates/default/history.tpl:117 
-$lang['Show associated query'] = 'Afficher la requête associée';
+// ../templates/default/export.tpl:73 
+$lang['No parameted exports are available.'] = 'Aucun export paramétré disponible.';
 
 // ../templates/default/gestion_adherents.tpl:181 
 $lang['[$]'] = '[$]';
@@ -1301,9 +1304,6 @@ $lang['Admin only'] = 'Administrateurs uniquement';
 
 // ../lib/Galette/Entity/Adherent.php:1146 
 $lang['Password misrepeated: '] = 'Erreur en recopiant le mot de passe&nbsp;: ';
-
-// ../lib/Galette/Entity/Adherent.php:406 
-$lang['Be visible in the<br /> members list:'] = 'Apparaître dans la liste des membres&nbsp;:';
 
 // ../templates/default/page.tpl:89 
 $lang['Demonstration'] = 'Démonstration';
@@ -1890,7 +1890,7 @@ $lang['Admin parameters'] = 'paramètres administrateur';
 // ../templates/default/gestion_intitule_content.tpl:58 
 $lang['Do you really want to delete this entry?'] = 'Voulez vous vraiment effacer cette entrée&nbsp;?';
 
-// ../history.php:75 ../templates/default/page.tpl:106 
+// ../history.php:77 ../templates/default/page.tpl:106 
 $lang['Logs'] = 'Historique';
 
 // ../templates/default/desktop.tpl:15 ../templates/default/page.tpl:129 
@@ -1911,8 +1911,8 @@ $lang['Error creating temporary png file from '] = 'Erreur lors de la création 
 // ../gestion_textes.php:87 
 $lang['Email: \'%s\' has been successfully modified.'] = 'Le courriel « %s » a été modifié avec succès.';
 
-// ../ajax_plugins_initdb.php:177 ../install/index.php:868 
-$lang['Creation of the tables'] = 'Création des tables';
+// ../templates/default/history.tpl:117 
+$lang['Show associated query'] = 'Afficher la requête associée';
 
 // ../gestion_intitules.php:263 
 $lang['- This label is already used!'] = '- Cet intitulé est déjà utilisé&nbsp;!';
@@ -1959,8 +1959,8 @@ $lang['New account mail sent to admin for \'%s\'.'] = 'Courriel de nouveau compt
 // ../templates/default/ajouter_transaction.tpl:50 ../templates/default/gestion_contributions.tpl:83 
 $lang['End'] = 'Fin';
 
-// ../champs_adherents.php:67 ../templates/default/member.tpl:146 ../templates/default/voir_adherent.tpl:159 
-$lang['Be visible in the<br /> members list :'] = 'Je souhaite apparaître dans la liste des membres&nbsp;:';
+// ../gestion_groupes.php:120 
+$lang['Group `%groupname` has been successfully saved.'] = 'Le groupe `%groupname` a été enregistré avec succès.';
 
 // ../templates/default/gestion_adherents.tpl:137 ../templates/default/gestion_mailings.tpl:65 ../templates/default/history.tpl:86 ../templates/default/gestion_contributions.tpl:173 ../templates/default/ajax_members.tpl:16 ../templates/default/gestion_transactions.tpl:63 
 $lang['Pages:'] = 'Pages&nbsp;:';
@@ -2475,8 +2475,8 @@ $lang['Member'] = 'Adhérent';
 // ../ajax_plugins_initdb.php:179 ../install/index.php:871 
 $lang['Update of the tables'] = 'Mise à jour des tables';
 
-// ../templates/default/page.tpl:104 
-$lang['Add new contribution in database'] = 'Ajouter une nouvelle contribution à la base';
+// ../champs_adherents.php:67 ../lib/Galette/Entity/Adherent.php:406 ../templates/default/member.tpl:146 ../templates/default/voir_adherent.tpl:159 
+$lang['Be visible in the members list:'] = 'Apparaître dans la liste des membres&nbsp;:';
 
 // ../templates/default/plugins.tpl:41 
 $lang['Inactive plugins'] = 'Plugins inactifs';
@@ -2490,8 +2490,8 @@ $lang['An error occured while updating your password.'] = 'Une erreur est surven
 // ../self_adherent.php:170 
 $lang['Self_subscription as a member: '] = 'Enregistrement en ligne';
 
-// ../gestion_groupes.php:120 
-$lang['Group `%groupname` has been successfully saved.'] = 'Le groupe `%groupname` a été enregistré avec succès.';
+// ../ajouter_adherent.php:157 
+$lang['Member account has been modified.'] = 'Le compte de l\'adhérent a été modifié avec succès.';
 
 // ../templates/default/plugins.tpl:37 
 $lang['No active plugin.'] = 'Aucun plugin actif.';
@@ -2765,9 +2765,6 @@ $lang['ICQ'] = 'ICQ';
 
 // ../templates/default/ajouter_contribution.tpl:64 
 $lang['Details of contribution'] = 'Détail des contributions';
-
-// ../templates/default/export.tpl:73 
-$lang['No parameted exports are available.'] = 'Aucun export paramétré disponible.';
 
 // ../templates/default/mailing_adherents.tpl:65 
 $lang['Preview your mailing'] = 'Aperçu de votre E-Mailing';

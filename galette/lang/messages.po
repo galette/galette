@@ -168,11 +168,6 @@ msgstr ""
 msgid "Transaction updated"
 msgstr ""
 
-#: ../champs_adherents.php:67 ../templates/default/member.tpl:146
-#: ../templates/default/voir_adherent.tpl:159
-msgid "Be visible in the<br /> members list :"
-msgstr ""
-
 #: ../templates/default/desktop.tpl:14 ../templates/default/page.tpl:128
 msgid "Set applications preferences (adress, website, member's cards configuration, ...)"
 msgstr ""
@@ -1233,10 +1228,6 @@ msgstr ""
 msgid "Admin only"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:406
-msgid "Be visible in the<br /> members list:"
-msgstr ""
-
 #: ../ajax_recipients.php:73 ../templates/default/mailing_adherents.tpl:28
 msgid "None of the selected members has an email address."
 msgstr ""
@@ -1962,8 +1953,9 @@ msgstr ""
 msgid "Close expiries"
 msgstr ""
 
-#: ../templates/default/history.tpl:117
-msgid "Show associated query"
+#: ../champs_adherents.php:67 ../lib/Galette/Entity/Adherent.php:406
+#: ../templates/default/member.tpl:146 ../templates/default/voir_adherent.tpl:159
+msgid "Be visible in the members list:"
 msgstr ""
 
 #: ../templates/default/editer_champ.tpl:23
@@ -2795,6 +2787,10 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:97
 msgid "Galette's parameters"
+msgstr ""
+
+#: ../templates/default/history.tpl:117
+msgid "Show associated query"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:27
