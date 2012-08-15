@@ -318,6 +318,8 @@ class DynamicFields
                     $df = $this->getFieldType($r['field_type']);
                     $field_id = $r['field_id'];
                     $r['field_name'] = _T($r['field_name']);
+                    //store field repetition config as field_repeat may change
+                    $r['config_field_repeat'] = $r['field_repeat'];
 
                     if ( $df->isMultiValued() ) {
                          // Infinite multi-valued field
@@ -330,7 +332,7 @@ class DynamicFields
                             if ( isset($all_values) ) {
                                 $r['field_repeat'] = $nb_values + $extra;
                             } else {
-                                $r['field_repeat'] = 1;
+                                $r['field_repeat'] = 1 + $extra;
                             }
                         }
                     } else {

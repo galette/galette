@@ -25,7 +25,7 @@
 				</p>
 			</fieldset>
 		</div>
-{include file="display_dynamic_fields.tpl" is_form=true}
+{include file="edit_dynamic_fields.tpl"}
 		<div class="button-container">
 			<input id="btnsave" type="submit" value="{_T string="Save"}"/>
 			<input type="hidden" name="trans_id" value="{$transaction->id}"/>

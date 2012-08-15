@@ -264,7 +264,7 @@
 				</div>
 			</fieldset>
 
-    {include file="display_dynamic_fields.tpl" is_form=true}
+    {include file="edit_dynamic_fields.tpl"}
     {if (!$self_adh and ($login->isAdmin() or $login->isStaff())) and !$disabled.send_mail}
 					<p>
 						<label for="mail_confirm">

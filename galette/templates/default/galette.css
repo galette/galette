@@ -1592,6 +1592,10 @@ legend {
     border-top:none;
 }
 
+.cssform p.exemple {
+    border: none!important;
+}
+
 .cssform p.notform{
     padding-left:0;
     border:none;

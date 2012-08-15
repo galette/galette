@@ -111,7 +111,7 @@
 					<textarea name="info_cotis" id="info_cotis" cols="61" rows="6"{if $required.info_cotis eq 1} required{/if}>{$contribution->info}</textarea>
 				</p>
 			</fieldset>
-        {include file="display_dynamic_fields.tpl" is_form=true}
+        {include file="edit_dynamic_fields.tpl"}
     {/if} {* $type_selected eq 1 *}
 		</div>
 		<div class="button-container">
