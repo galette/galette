@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2012-08-15 11:11+0200\n"
+"PO-Revision-Date: 2012-08-15 17:19+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -197,11 +197,6 @@ msgstr "Partenariat"
 #: ../lib/Galette/Entity/Transaction.php:391
 msgid "Transaction updated"
 msgstr "Transaction mise à jour"
-
-#: ../champs_adherents.php:67 ../templates/default/member.tpl:146
-#: ../templates/default/voir_adherent.tpl:159
-msgid "Be visible in the<br /> members list :"
-msgstr "Je souhaite apparaître dans la liste des membres&nbsp;:"
 
 #: ../templates/default/desktop.tpl:14 ../templates/default/page.tpl:128
 msgid ""
@@ -1412,10 +1407,6 @@ msgstr "Modification E-Mailing"
 msgid "Admin only"
 msgstr "Administrateurs uniquement"
 
-#: ../lib/Galette/Entity/Adherent.php:406
-msgid "Be visible in the<br /> members list:"
-msgstr "Apparaître dans la liste des membres&nbsp;:"
-
 #: ../ajax_recipients.php:73 ../templates/default/mailing_adherents.tpl:28
 msgid "None of the selected members has an email address."
 msgstr "Aucun des destinataires sélectionnés n'a d'adresse de courriel."
@@ -2208,9 +2199,11 @@ msgstr "Membre bienfaiteur"
 msgid "Close expiries"
 msgstr "Les échéances proches"
 
-#: ../templates/default/history.tpl:117
-msgid "Show associated query"
-msgstr "Afficher la requête associée"
+#: ../champs_adherents.php:67 ../lib/Galette/Entity/Adherent.php:406
+#: ../templates/default/member.tpl:146
+#: ../templates/default/voir_adherent.tpl:159
+msgid "Be visible in the members list:"
+msgstr "Apparaître dans la liste des membres&nbsp;:"
 
 #: ../templates/default/editer_champ.tpl:23
 msgid "Required:"
@@ -3147,6 +3140,10 @@ msgstr "Suppression des fiches adhérent, transactions et cotisations"
 #: ../templates/default/preferences.tpl:97
 msgid "Galette's parameters"
 msgstr "Paramètres Galette"
+
+#: ../templates/default/history.tpl:117
+msgid "Show associated query"
+msgstr "Afficher la requête associée"
 
 #: ../templates/default/gestion_adherents.tpl:27
 msgid "Don't care"
@@ -4794,6 +4791,9 @@ msgstr ""
 #: ../lostpasswd.php:158
 msgid "Login %s does not exist"
 msgstr "L'identifiant %s n'existe pas"
+
+#~ msgid "Be visible in the<br /> members list :"
+#~ msgstr "Je souhaite apparaître dans la liste des membres&nbsp;:"
 
 #~ msgid "Permissions"
 #~ msgstr "Permissions"

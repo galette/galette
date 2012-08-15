@@ -403,7 +403,7 @@ class Adherent
                 'category' => FieldsCategories::ADH_CATEGORY_GALETTE
             ),
             'bool_display_info' => array(
-                'label'    => _T("Be visible in the<br /> members list:"),
+                'label'    => _T("Be visible in the members list:"),
                 'propname' => 'appears_in_list',
                 'required' => false,
                 'visible'  => FieldsConfig::VISIBLE,
