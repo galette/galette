@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sat Aug 11 11:21:32 2012 (GMT)
+// This file was automatically generated on Wed Aug 15 09:11:23 2012 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -465,7 +465,7 @@ $lang['Transaction added'] = 'Transaction added';
 // ../templates/default/ajax_mailing_preview.tpl:9 
 $lang['To:'] = 'To:';
 
-// ../champs_requis.php:84 
+// ../champs_requis.php:86 
 $lang['An error has occured while storing required fields. Please try again, and contact the administrator if the problem persists.'] = 'An error has occured while storing required fields. Please try again, and contact the administrator if the problem persists.';
 
 // ../templates/default/gestion_adherents.tpl:388 
@@ -1371,7 +1371,7 @@ $lang['Database:'] = 'Database:';
 // ../templates/default/preferences.tpl:288 
 $lang['Number of label lines:'] = 'Number of label lines:';
 
-// ../champs_requis.php:92 
+// ../champs_requis.php:94 
 $lang['Required fields for adherents'] = 'Required fields for adherents';
 
 // ../change_passwd.php:99 ../lostpasswd.php:176 
@@ -2085,7 +2085,7 @@ $lang['unreachable member:'] = 'unreachable member:';
 // ../templates/default/preferences.tpl:180 ../templates/default/preferences.tpl:181 
 $lang['Sends an email each time a new member registers online'] = 'Sends an email each time a new member registers online';
 
-// ../champs_requis.php:86 
+// ../champs_requis.php:88 
 $lang['Required fields has been saved.'] = 'Required fields has been saved.';
 
 // ../templates/default/ajouter_transaction.tpl:41 

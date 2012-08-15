@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sun Aug 12 08:30:30 2012 (GMT)
+// This file was automatically generated on Wed Aug 15 09:11:24 2012 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -465,7 +465,7 @@ $lang['Transaction added'] = 'Transaction ajoutée';
 // ../templates/default/ajax_mailing_preview.tpl:9 
 $lang['To:'] = 'À&nbsp:';
 
-// ../champs_requis.php:84 
+// ../champs_requis.php:86 
 $lang['An error has occured while storing required fields. Please try again, and contact the administrator if the problem persists.'] = 'Une erreur est survenue lors de l\'enregistrement des champs requis. Veuillez essayer à nouveau, et contacter l\'administrateur si le problème persiste.';
 
 // ../templates/default/gestion_adherents.tpl:388 
@@ -1147,7 +1147,7 @@ $lang['Legend'] = 'Légende';
 $lang['Edit contribution type'] = 'Édition d\'un type de contribution';
 
 // ../templates/default/member.tpl:147 
-$lang['If you check this box (and if you are up to date with your contributions), your full name, website adress ad other informations will be publically visilbe on the members list.<br/>If you\'ve uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case.'] = 'Si vous cochez cette case (et que vous êtes à jour de vos cotisations), votre nom comptet, l\'adresse de votre site web et les autres informations seront visiblemes publiquement dans la liste des membres.<br/>Si vous avez envoyé une photo, elle sera affichée sur la page trombinoscope.<br/>Notez que les administrateurs peuvent désactiver les pages publiques, dans ce cas, ce paramètre n\'aura aucun effet.';
+$lang['If you check this box (and if you are up to date with your contributions), your full name, website adress ad other informations will be publically visilbe on the members list.<br/>If you\'ve uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case.'] = 'Si vous cochez cette case (et que vous êtes à jour de vos cotisations), votre nom complet, l\'adresse de votre site web et les autres informations seront visibles publiquement dans la liste des membres.<br/>Si vous avez envoyé une photo, elle sera affichée sur la page trombinoscope.<br/>Notez que les administrateurs peuvent désactiver les pages publiques ; dans ce cas, ce paramètre n\'aura aucun effet.';
 
 // ../templates/default/gestion_adherents.tpl:245 ../templates/default/gestion_contributions.tpl:247 
 $lang['Deletion'] = 'Suppression';
@@ -1371,7 +1371,7 @@ $lang['Database:'] = 'Nom de la base&nbsp;:';
 // ../templates/default/preferences.tpl:288 
 $lang['Number of label lines:'] = 'Nombre de lignes d\'étiquettes&nbsp;:';
 
-// ../champs_requis.php:92 
+// ../champs_requis.php:94 
 $lang['Required fields for adherents'] = 'Champs obligatoires pour les adhérents';
 
 // ../change_passwd.php:99 ../lostpasswd.php:176 
@@ -2085,7 +2085,7 @@ $lang['unreachable member:'] = 'membre injoignable&nbsp;:';
 // ../templates/default/preferences.tpl:180 ../templates/default/preferences.tpl:181 
 $lang['Sends an email each time a new member registers online'] = 'Envoie un mail chaque fois qu\'un nouveau membre s\'inscrit en ligne';
 
-// ../champs_requis.php:86 
+// ../champs_requis.php:88 
 $lang['Required fields has been saved.'] = 'Les champs requis ont été sauvegardés.';
 
 // ../templates/default/ajouter_transaction.tpl:41 

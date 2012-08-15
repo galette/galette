@@ -2654,7 +2654,7 @@ msgstr "Association's short description:"
 msgid "Click here to activate plugin '%name'"
 msgstr "Click here to activate plugin '%name'"
 
-#: ../history.php:75 ../templates/default/page.tpl:106
+#: ../history.php:77 ../templates/default/page.tpl:106
 msgid "Logs"
 msgstr "Logs"
 
