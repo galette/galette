@@ -55,7 +55,7 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-$session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 if ( isset($session['filters']['members']) ) {
     $filters =  unserialize($session['filters']['members']);
 } else {
@@ -320,6 +320,6 @@ foreach ( $members as $member ) {
 }
 
 // Send PDF code to browser
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error'] = false;
+$session['pdf_error'] = false;
 $pdf->Output(_T("Cards") . '.pdf', 'D');
 ?>

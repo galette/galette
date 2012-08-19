@@ -53,7 +53,7 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-$session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 if ( isset($session['filters']['members']) ) {
     $filters = unserialize($session['filters']['members']);
 } else {
