@@ -38,6 +38,8 @@
  * @since     Available since 0.7dev - 2011-11-26
  */
 
+use Galette\Common\KLogger as KLogger;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 

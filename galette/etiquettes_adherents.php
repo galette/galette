@@ -39,6 +39,7 @@
  */
 
 use Galette\IO\Pdf;
+use Galette\Common\KLogger as KLogger;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';

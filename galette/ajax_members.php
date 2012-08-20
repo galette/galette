@@ -40,8 +40,10 @@
  */
 
 use Galette\Filters\MembersList as MembersList;
+use Galette\Common\KLogger as KLogger;
 
 require_once 'includes/galette.inc.php';
+
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     $log->log(
         'Trying to display ajax_members.php without appropriate permissions',

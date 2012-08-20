@@ -34,6 +34,8 @@
  * @link      http://galette.tuxfamily.org
  */
 
+use Galette\Common\KLogger as KLogger;
+
 require_once 'includes/galette.inc.php';
 
 if ( !$login->isLogged() ) {

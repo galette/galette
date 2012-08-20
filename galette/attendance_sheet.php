@@ -40,6 +40,7 @@
 use Galette\IO\Pdf;
 use Galette\Repository\Members;
 use Galette\Filters\MembersList;
+use Galette\Common\KLogger as KLogger;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';

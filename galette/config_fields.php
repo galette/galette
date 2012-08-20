@@ -37,6 +37,8 @@
  * @since     Availaible since 0.7dev - 2009-04-11
  */
 
+use Galette\Common\KLogger as KLogger;
+
 require_once 'includes/galette.inc.php';
 
 $authorized = array('members');

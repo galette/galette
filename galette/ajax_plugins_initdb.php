@@ -38,7 +38,10 @@
  * @since     Available since 0.7dev - 2012-12-17
  */
 
+use Galette\Common\KLogger as KLogger;
+
 require_once 'includes/galette.inc.php';
+
 if ( GALETTE_MODE === 'DEMO' ) {
     $log->log(
         'Trying to access ajax_plugins_initdb.php in DEMO mode.',

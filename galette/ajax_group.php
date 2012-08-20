@@ -38,6 +38,8 @@
  * @since     Available since 0.7dev - 2012-01-19
  */
 
+use Galette\Common\KLogger as KLogger;
+
 require_once 'includes/galette.inc.php';
 
 $id = get_numeric_form_value(Galette\Entity\Group::PK, '');

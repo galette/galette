@@ -39,6 +39,8 @@
  * @since     Available since 0.7dev - 2011-11-01
  */
 
+use Galette\Common\KLogger as KLogger;
+
 require_once 'includes/galette.inc.php';
 
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff()
