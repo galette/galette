@@ -1024,10 +1024,10 @@ class Adherent
                         try {
                             $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
                             if ( $d === false ) {
-                                throw new Exception('Incorrect format');
+                                throw new \Exception('Incorrect format');
                             }
                             $this->$prop = $d->format('Y-m-d');
-                        } catch (Exception $e) {
+                        } catch (\Exception $e) {
                             $log->log(
                                 'Wrong date format. field: ' . $key .
                                 ', value: ' . $value . ', expected fmt: ' .
