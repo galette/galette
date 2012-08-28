@@ -13,7 +13,11 @@
     {if $data.dyn[$field.field_id]|@count >= $field.field_repeat}
         {assign var="loops" value=$data.dyn[$field.field_id]|@count + 1}
     {elseif $field.field_repeat == 0 || $field.field_repeat > 1}
-        {assign var="loops" value="3"}
+        {if $data.dyn[$field.field_id]|@count > 2}
+            {assign var="loops" value=$data.dyn[$field.field_id]|@count + 1}
+        {else}
+            {assign var="loops" value="3"}
+        {/if}
     {else}
         {assign var="loops" value="2"}
     {/if}
@@ -42,9 +46,9 @@
     {/section}
         </p>
     {/if}
-    {if $field.field_repeat == 0 || $field.field_repeat > 1}
+    {if $field.config_field_repeat != 0 || $field.config_field_repeat > 1}
         <p class="exemple">{_T string="Enter up to %count occurences." pattern="/%count/" replace=$field.field_repeat}</p>
-    {elseif $field.field_repeat == 0}
+    {elseif $field.config_field_repeat == 0}
         <p class="exemple">{_T string="Enter as many occurences you want."}</p>
     {/if}
 {/if}
