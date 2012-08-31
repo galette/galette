@@ -39,6 +39,7 @@
  */
 
 use Galette\Common\KLogger as KLogger;
+use Galette\Core\Db as Db;
 
 require_once 'includes/galette.inc.php';
 
@@ -105,7 +106,7 @@ switch ( $step ){
 case '1':
     $title = _T("Installation mode");
     //let's look for updates scripts
-    $update_scripts = GaletteZendDb::getUpdateScripts($plugin['root'], TYPE_DB);
+    $update_scripts = Db::getUpdateScripts($plugin['root'], TYPE_DB);
     if ( count($update_scripts) > 0 ) {
         $tpl->assign('update_scripts', $update_scripts);
     }
@@ -185,7 +186,7 @@ case 'u3':
     // load in the sql parser
     include 'install/sql_parse.php';
     if ( $step == 'u3' ) {
-        $update_scripts = GaletteZendDb::getUpdateScripts(
+        $update_scripts = Db::getUpdateScripts(
             $plugin['root'],
             TYPE_DB,
             substr($_POST['install_type'], 8)
