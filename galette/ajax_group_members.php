@@ -34,6 +34,8 @@
  * @since     Available since 0.7dev - 2011-10-29
  */
 
+use Galette\Common\KLogger as KLogger;
+
 require_once 'includes/galette.inc.php';
 
 $ids = $_POST['persons'];

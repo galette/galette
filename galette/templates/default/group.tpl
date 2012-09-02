@@ -19,6 +19,10 @@
                         <input type="text" name="group_name" id="group_name" value="{$group->getName()}" maxlength="20" required/>
                     </p>
                     <p>
+{if !$login->isAdmin() && !$login->isStaff()}
+                        <span class="bline">{_T string="Parent group:"}</span>
+                        <span>{$group->getParentGroup()->getName()}</span>
+{else}
                         <label for="parent_group" class="bline">{_T string="Parent group:"}</label>
                         <select name="parent_group" id="parent_group">
                             <option value="">{_T string="None"}</option>
@@ -29,6 +33,7 @@
                             <option value="{$g->getId()}"{if $pgroup and $pgroup->getId() eq $g->getId()} selected="selected"{/if}>{$g->getName()}</option>
 {/foreach}
                         </select>
+{/if}
                     </p>
                 </div>
             </fieldset>

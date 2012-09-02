@@ -134,7 +134,7 @@ class Group
         $this->_group_name = $r->group_name;
         $this->_creation_date = $r->creation_date;
         if ( $r->parent_group ) {
-            $this->_parent_group = new Group($r->parent_group);
+            $this->_parent_group = new Group((int)$r->parent_group);
         }
         $adhpk = Adherent::PK;
         if ( isset($r->members) ) {
@@ -204,7 +204,7 @@ class Group
     /**
      * Load sub-groups
      *
-     * @return void 
+     * @return void
      */
     private function _loadSubGroups()
     {

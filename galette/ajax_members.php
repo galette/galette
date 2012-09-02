@@ -40,8 +40,10 @@
  */
 
 use Galette\Filters\MembersList as MembersList;
+use Galette\Common\KLogger as KLogger;
 
 require_once 'includes/galette.inc.php';
+
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     $log->log(
         'Trying to display ajax_members.php without appropriate permissions',
@@ -54,7 +56,7 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
 $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 $multiple = ( isset($_POST['multiple']) && $_POST['multiple'] == 'false' ) ? false : true;
 
-$session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 if ( isset($session['ajax_members_filters']['members']) ) {
     $filters = unserialize($session['ajax_members_filters']['members']);
 } else {
@@ -80,12 +82,12 @@ $members_list = $members->getMembersList(true);
 //assign pagination variables to the template and add pagination links
 $filters->setSmartyPagination($tpl);
 
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['ajax_members_filters']['members'] = serialize($filters);
+$session['ajax_members_filters']['members'] = serialize($filters);
 
 $selected_members = null;
 $unreachables_members = null;
 if ( !isset($_POST['from']) ) {
-    $mailing = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
+    $mailing = unserialize($session['mailing']);
     if ( !isset($_POST['members']) ) {
         $selected_members = $mailing->recipients;
         $unreachables_members = $mailing->unreachables;

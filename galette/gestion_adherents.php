@@ -59,7 +59,7 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-$session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 if ( isset($session['filters']['members'])
     && !isset($_POST['mailing'])
     && !isset($_POST['mailing_new'])
@@ -80,7 +80,7 @@ if (   isset($_POST['cards'])
     if (isset($_POST['member_sel'])) {
         $filters->selected = $_POST['member_sel'];
         //cannot use $session here :/
-        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members'] = serialize($filters);
+        $sessionn['filters']['members'] = serialize($filters);
 
         if (isset($_POST['cards'])) {
             $qstring = 'carte_adherent.php';
@@ -187,7 +187,7 @@ $groups = new Galette\Repository\Groups();
 $groups_list = $groups->getList();
 
 //cannot use $session here :/
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members'] = serialize($filters);
+$session['filters']['members'] = serialize($filters);
 
 //assign pagination variables to the template and add pagination links
 $filters->setSmartyPagination($tpl);

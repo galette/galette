@@ -65,26 +65,27 @@ if ( $id_adh == '' ) {
     header('location: index.php');
     die();
 }
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error'])
-    && $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']
+
+$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+if ( isset($session['pdf_error']) && $session['pdf_error']
 ) {
-    $error_detected[] = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error_msg'];
-    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error_msg']);
-    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']);
+    $error_detected[] = $session['pdf_error_msg'];
+    unset($session['pdf_error_msg']);
+    unset($session['pdf_error']);
 }
 
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_errors']) ) {
+if ( isset($session['lostpasswd_errors']) ) {
     $error_detected = unserialize(
-        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_errors']
+        $session['lostpasswd_errors']
     );
-    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_errors']);
+    unset($session['lostpasswd_errors']);
 }
 
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_success']) ) {
+if ( isset($session['lostpasswd_success']) ) {
     $success_detected = unserialize(
-        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_success']
+        $session['lostpasswd_success']
     );
-    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_success']);
+    unset($session['lostpasswd_success']);
 }
 
 $dyn_fields = new DynamicFields();
@@ -111,7 +112,6 @@ if ( $login->id != $id_adh && !$login->isAdmin() && !$login->isStaff() ) {
 
 $navigate = array();
 
-$session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 if ( isset($session['filters']['members']) ) {
     $filters =  unserialize($session['filters']['members']);
 } else {
@@ -141,7 +141,7 @@ if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
 }
 
 // Set caller page ref for cards error reporting
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['caller'] = 'voir_adherent.php?id_adh='.$id_adh;
+$session['caller'] = 'voir_adherent.php?id_adh='.$id_adh;
 
 // declare dynamic field values
 $adherent['dyn'] = $dyn_fields->getFields('adh', $id_adh, true);
@@ -171,16 +171,14 @@ $tpl->assign('groups', Galette\Repository\Groups::getSimpleList());
 $tpl->assign('time', time());
 //if we got a mail warning when adding/editing a member,
 //we show it and delete it from session
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning']) ) {
-    $warning_detected[] = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning'];
-    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning']);
+if ( isset($session['mail_warning']) ) {
+    $warning_detected[] = $session['mail_warning'];
+    unset($session['mail_warning']);
 }
 $tpl->assign('warning_detected', $warning_detected);
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['account_success']) ) {
-    $success_detected = unserialize(
-        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['account_success']
-    );
-    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['account_success']);
+if ( isset($session['account_success']) ) {
+    $success_detected = unserialize($session['account_success']);
+    unset($session['account_success']);
 }
 $tpl->assign('success_detected', $success_detected);
 $content = $tpl->fetch('voir_adherent.tpl');

@@ -48,7 +48,7 @@ if ( !$preferences->showPublicPages() ) {
     header('location:../index.php');
 }
 
-$session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 if ( isset($session['public_filters']['members']) ) {
     $filters = unserialize($session['public_filters']['members']);
 } else {
@@ -81,7 +81,7 @@ $members = $m->getPublicList(false, null);
 //assign pagination variables to the template and add pagination links
 $filters->setSmartyPagination($tpl);
 $tpl->assign('filters', $filters);
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['public_filters']['members'] = serialize($filters);
+$session['public_filters']['members'] = serialize($filters);
 
 $tpl->assign('page_title', _T("Members list"));
 $tpl->assign('members', $members);

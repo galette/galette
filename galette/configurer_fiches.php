@@ -38,6 +38,8 @@
 
 use Galette\Entity\DynamicFields as DynamicFields;
 use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
+use Galette\Common\KLogger as KLogger;
+
 
 /** @ignore */
 require_once 'includes/galette.inc.php';

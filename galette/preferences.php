@@ -44,6 +44,9 @@
  * @since     Available since 0.62
  */
 
+use Galette\Core;
+use Galette\Common\KLogger as KLogger;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
@@ -58,8 +61,6 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     header('location: gestion_adherents.php');
     die();
 }
-
-use Galette\Core;
 
 $print_logo = new Core\PrintLogo();
 

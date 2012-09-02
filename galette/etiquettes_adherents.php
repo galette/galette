@@ -39,6 +39,7 @@
  */
 
 use Galette\IO\Pdf;
+use Galette\Common\KLogger as KLogger;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -53,7 +54,7 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 }
 
 $members = null;
-$session = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 if ( isset($session['filters']['members']) ) {
     $filters =  unserialize($session['filters']['members']);
 } else {
@@ -62,7 +63,7 @@ if ( isset($session['filters']['members']) ) {
 
 if ( isset($_GET['from']) && $_GET['from'] === 'mailing' ) {
     //if we're from mailing, we have to retrieve its unreachables members for labels
-    $mailing = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
+    $mailing = unserialize($session['mailing']);
     $members = $mailing->unreachables;
 } else {
     if ( count($filters->selected) == 0 ) {

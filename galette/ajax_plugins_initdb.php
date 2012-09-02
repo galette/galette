@@ -38,7 +38,11 @@
  * @since     Available since 0.7dev - 2012-12-17
  */
 
+use Galette\Common\KLogger as KLogger;
+use Galette\Core\Db as Db;
+
 require_once 'includes/galette.inc.php';
+
 if ( GALETTE_MODE === 'DEMO' ) {
     $log->log(
         'Trying to access ajax_plugins_initdb.php in DEMO mode.',
@@ -102,7 +106,7 @@ switch ( $step ){
 case '1':
     $title = _T("Installation mode");
     //let's look for updates scripts
-    $update_scripts = GaletteZendDb::getUpdateScripts($plugin['root'], TYPE_DB);
+    $update_scripts = Db::getUpdateScripts($plugin['root'], TYPE_DB);
     if ( count($update_scripts) > 0 ) {
         $tpl->assign('update_scripts', $update_scripts);
     }
@@ -182,7 +186,7 @@ case 'u3':
     // load in the sql parser
     include 'install/sql_parse.php';
     if ( $step == 'u3' ) {
-        $update_scripts = GaletteZendDb::getUpdateScripts(
+        $update_scripts = Db::getUpdateScripts(
             $plugin['root'],
             TYPE_DB,
             substr($_POST['install_type'], 8)
