@@ -320,7 +320,30 @@ class GaletteMail
         if ( !$valid ) {
             $log->log(
                 '[GaletteMail] Adresss `' . $address . '` is not valid ',
-                KLogger::INFO
+                KLogger::DEBUG
+            );
+        }
+        return $valid;
+    }
+
+    /**
+    * Check if a string is an url
+    *
+    * @param string $url the url to check
+    *
+    * @return true if address is string is an url, false otherwise
+    */
+    public static function isUrl( $url )
+    {
+        global $log;
+        $valid = preg_match(
+            '|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i',
+            $url
+        );
+        if ( !$valid ) {
+            $log->log(
+                '[GaletteMail] `' . $url . '` is not an url',
+                KLogger::DEBUG
             );
         }
         return $valid;

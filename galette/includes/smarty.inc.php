@@ -41,6 +41,8 @@ $template_subdir = 'templates/' . $preferences->pref_theme . '/';
 $tpl = new Galette\Core\Smarty($base_path);
 $tpl->muteExpectedErrors();
 
+$tpl->registerClass('GaletteMail', '\Galette\Core\GaletteMail');
+
 /**
 * Return member name. Smarty cannot directly use static functions
 *

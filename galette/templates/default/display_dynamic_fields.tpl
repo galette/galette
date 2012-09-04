@@ -12,7 +12,15 @@
         <th>{$field.field_name|escape}</th>
         <td>
                 {section name="fieldLoop" start=1 loop=$field.field_repeat+1}
+            {if GaletteMail::isValidEmail($data.dyn[$field.field_id][$smarty.section.fieldLoop.index])}
+                {if $smarty.section.fieldLoop.index_prev > 0}<br />{/if}
+                <a href="mailto:{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}">{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}</a>
+            {else if GaletteMail::isUrl($data.dyn[$field.field_id][$smarty.section.fieldLoop.index])}
+                {if $smarty.section.fieldLoop.index_prev > 0}<br />{/if}
+                <a href="{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}" target="_blank" title="{_T string="Open '%s' in a new window" replace=$data.dyn[$field.field_id][$smarty.section.fieldLoop.index] pattern="/%s/"}">{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}</a>
+            {else}
             {$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|nl2br|default:"&nbsp;"}<br/>
+            {/if}
                 {/section}
         </td>
     </tr>
