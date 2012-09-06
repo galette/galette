@@ -48,6 +48,7 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 
 use Galette\Core;
 use Galette\Common\KLogger as KLogger;
+use Galette\Filters\MembersList as MembersList;
 
 $session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 
