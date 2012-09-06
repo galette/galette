@@ -460,6 +460,24 @@ class Plugins
     }
 
     /**
+    * Get the templates path for a specified module name
+    *
+    * @param string $name Module's name
+    *
+    * @return Concatenated templates path for requested module
+    */
+    public function getTemplatesPathFromName($name)
+    {
+        $id = null;
+        foreach ( array_keys($this->getModules()) as $r ) {
+            $mod = $this->getModules($r);
+            if ( $mod['name'] === $name ) {
+                return $this->getTemplatesPath($r);
+            }
+        }
+    }
+
+    /**
     * For each module, returns the headers.tpl full path, if present.
     *
     * @return array of headers to include for all modules
