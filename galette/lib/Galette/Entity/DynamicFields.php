@@ -431,11 +431,21 @@ class DynamicFields
                 }
 
                 if ( trim($field_val) == '' ) {
+                    $log->log(
+                        'Field ' . $field_id . ' is empty (index:' .
+                        $val_index . ')',
+                        KLogger::DEBUG
+                    );
                     $zdb->db->delete(
                         PREFIX_DB . self::TABLE,
                         $where
                     );
                 } else {
+                    $log->log(
+                        'Field ' . $field_id . ' will be set to value: ' .
+                        $field_val . ' (index: ' . $val_index . ')',
+                        KLogger::DEBUG
+                    );
                     $zdb->db->update(
                         PREFIX_DB . self::TABLE,
                         array('field_val' => $field_val),
