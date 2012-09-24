@@ -44,6 +44,7 @@ use Galette\Entity\Transaction as Transaction;
 use Galette\Filters\MembersList as MembersList;
 use Galette\Core\Picture as Picture;
 use Galette\Entity\Group as Group;
+use Galette\Repository\Groups as Groups;
 use Galette\Entity\Status as Status;
 
 /**
@@ -291,7 +292,6 @@ class Members
                     }
                 }
 
-
                 //delete contributions
                 $del = $zdb->db->delete(
                     PREFIX_DB . Contribution::TABLE,
@@ -302,6 +302,13 @@ class Members
                 $del = $zdb->db->delete(
                     PREFIX_DB . Transaction::TABLE,
                     self::PK . ' IN (' . implode(',', $list) . ')'
+                );
+
+                //delete groups membership/mamagmentship
+                $del = Groups::addMemberToGroups(
+                    new Adherent($member->id_adh),
+                    null,
+                    true
                 );
 
                 //delete members

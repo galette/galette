@@ -222,11 +222,13 @@ class Groups
      *
      * @return boolean
      */
-    public static function addMemberToGroups($adh, $groups)
+    public static function addMemberToGroups($adh, $groups, $transaction = false)
     {
         global $zdb, $log;
         try {
-            $zdb->db->beginTransaction();
+            if ( $transaction === false) {
+                $zdb->db->beginTransaction();
+            }
 
             //first, remove current groups members
             $del = $zdb->db->delete(
@@ -239,7 +241,7 @@ class Groups
                 KLogger::INFO
             );
 
-            //we proceed, if grousp has been specified
+            //we proceed, if groups has been specified
             if ( is_array($groups) ) {
                 $stmt = $zdb->db->prepare(
                     'INSERT INTO ' . PREFIX_DB . Group::GROUPSUSERS_TABLE .
@@ -272,11 +274,15 @@ class Groups
                     }
                 }
             }
-            //commit all changes
-            $zdb->db->commit();
+            if ( $transaction === false) {
+                //commit all changes
+                $zdb->db->commit();
+            }
             return true;
         } catch (\Exception $e) {
-            $zdb->db->rollBack();
+            if ( $transaction === false) {
+                $zdb->db->rollBack();
+            }
             $log->log(
                 'Unable to add member `' . $adh->sname . '` (' . $adh->id .
                 ') to specified groups |' .
