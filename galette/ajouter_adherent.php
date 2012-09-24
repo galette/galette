@@ -283,6 +283,11 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
         if ( isset($_POST['del_photo']) ) {
             if ( !$member->picture->delete($member->id) ) {
                 $error_detected[] = _T("Delete failed");
+                $str_adh = $member->id . ' (' . $member->sname  . ' ' . ')';
+                $log->log(
+                    'Unable to delete picture for member ' . $str_adh,
+                    KLogger::ERR
+                );
             }
         }
 

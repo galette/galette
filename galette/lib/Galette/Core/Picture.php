@@ -371,6 +371,10 @@ class Picture
                     return true;
                 }
             } else {
+                 $log->log(
+                    'Unable to remove picture database entry for ' . $this->db_id,
+                    KLogger::ERR
+                );
                 if ( $transaction === true ) {
                     //properly ends transaction
                     $zdb->db->rollBack();
