@@ -308,7 +308,8 @@ function get_dynamic_fields($form_name, $item_id, $quote)
                         }
                     }
                 }
-                $dyn_fields[$f->field_id][$f->val_index] = $value;
+                $array_index = count($dyn_fields[$f->field_id]) + 1;
+                $dyn_fields[$f->field_id][$array_index] = $value;
             }
             return $dyn_fields;
         } else {
