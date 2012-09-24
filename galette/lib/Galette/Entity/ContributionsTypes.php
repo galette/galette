@@ -516,7 +516,7 @@ class ContributionsTypes
         // Check if it's used.
         try {
             $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . \Contribution::TABLE)
+            $select->from(PREFIX_DB . Contribution::TABLE)
                 ->where(self::PK . ' = ?', $id);
             if ( $select->query()->fetch() !== false ) {
                 return true;
