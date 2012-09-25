@@ -11,6 +11,13 @@
         {if $head_redirect}{$head_redirect}{/if}
     </head>
     <body>
+        {* IE7 and above are no longer supported *}
+        <!--[if lt IE 8]>
+        <div id="oldie">
+            <p>{_T string="Your browser version is way too old and no longer supported in Galette for a while."}</p>
+            <p>{_T string="Please update your browser or use an alternative one, like <a href=\"http://mozilla.org\">Mozilla Firefox</a>."}</p>
+        </div>
+        <![endif]-->
         <header>
             <img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
             <ul id="langs">

@@ -53,11 +53,6 @@ input, button, select {
     font-size:100%;
 }
 
-input {
-    border: 1px solid #555555;
-    padding: 4px;
-}
-
 input:required {
     border:1px red solid;
     border-left-width: 8px;
@@ -1882,6 +1877,18 @@ td.photo img{
 
 .notup2date #errorbox {
     width: 30em;
+}
+
+#oldie {
+    /*position: absolute;
+    top: 0;*/
+    background-color: red;
+    text-align: center;
+    font-weight: bold;
+}
+
+#oldie p {
+    margin: 0;
 }
 
 /** Mobile devices */

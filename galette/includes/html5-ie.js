@@ -38,3 +38,10 @@ document.createElement("figure");
 document.createElement("figcaption");
 document.createElement("hgroup");
 document.createElement("time");
+
+//bad hack for galette's dashboard
+$(function(){
+    $('#desktop > div > a').each(function(){
+        $(this).append($('<span class="desktopimg"></span>'));
+    });
+});

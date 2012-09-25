@@ -1,0 +1,67 @@
+header, footer {
+    display: block;
+}
+
+#desktop #transactions,
+#desktop #members,
+#desktop #groups,
+#desktop #contribs,
+#desktop #mailings,
+#desktop #prefs,
+#desktop #plugins {
+    background-image: url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
+    position: relative;
+}
+
+#desktop #transactions:hover,
+#desktop #members:hover,
+#desktop #groups:hover,
+#desktop #contribs:hover,
+#desktop #mailings:hover,
+#desktop #prefs:hover,
+#desktop #plugins:hover {
+    background-image: url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
+}
+
+.desktopimg {
+    display: block;
+    position: absolute;
+    top: 0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background-position: 50% .5em;
+    background-repeat: no-repeat;
+}
+
+#desktop #transactions .desktopimg {
+    background-image: url(images/desktop/transactions.png);
+}
+
+#desktop #members .desktopimg {
+    background-image: url(images/desktop/members.png);
+}
+
+#desktop #groups .desktopimg {
+    background-image: url(images/desktop/groups.png);
+}
+
+#desktop #contribs .desktopimg {
+    background-image: url(images/desktop/contribs.png);
+}
+
+#desktop #mailings .desktopimg {
+    background-image: url(images/desktop/mailing.png);
+}
+
+#desktop #prefs .desktopimg {
+    background-image: url(images/desktop/preferences.png);
+}
+
+#desktop #plugins .desktopimg {
+    background-image: url(images/desktop/plugins.png);
+}
+
+#superadmin {
+    background-color: #eb8599;
+}
