@@ -37,6 +37,8 @@
  * @since     Available since 0.62
  */
 
+use Galette\Entity\DynamicFields as DynamicFields;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 if ( !$preferences->pref_bool_selfsubscribe ) {
