@@ -15,6 +15,7 @@ Just put a {include file='common_header.tpl'} into the head tag.
         {* IE8 doe not know html5 tags *}
         <!--[if lt IE 9]>
             <script type="text/javascript" src="{$scripts_dir}html5-ie.js"></script>
+            <link rel="stylesheet" type="text/css" href="{$template_subdir}ie.css" />
         <![endif]-->
 		<script type="text/javascript" src="{$jquery_dir}jquery.bgFade.js"></script>
 		<script type="text/javascript" src="{$jquery_dir}chili-1.7.pack.js"></script>
