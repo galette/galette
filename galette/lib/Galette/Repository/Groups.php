@@ -404,18 +404,30 @@ class Groups
     /**
      * Check if groupname is unique
      *
-     * @param Db     $zdb  Database instance
-     * @param string $name Requested name
+     * @param Db       $zdb     Database instance
+     * @param string   $name    Requested name
+     * @param int|null $parent  Parent groupe (defaults to null)
+     * @param int|null $current Current ID to be excluded (defaults to null)
      *
      * @return boolean
      */
-    public static function isUnique(Db $zdb, $name)
+    public static function isUnique(Db $zdb, string $name, int $parent = null, int $current = null)
     {
         try {
             $select = $zdb->select(Group::TABLE);
-            $select->columns(
-                array('group_name')
-            )->where(array('group_name' => $name));
+            $select->columns(['group_name'])
+                ->where(['group_name'    => $name]);
+
+            if ($parent === null) {
+                $select->where('parent_group IS NULL');
+            } else {
+                $select->where(['parent_group' => $parent]);
+            }
+
+            if ($current !== null) {
+                $select->where->notEqualTo(Group::PK, $current);
+            }
+
             $results = $zdb->execute($select);
             return !($results->count() > 0);
         } catch (Throwable $e) {

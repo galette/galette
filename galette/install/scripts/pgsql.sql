@@ -400,7 +400,7 @@ CREATE TABLE galette_mailing_history (
 DROP TABLE IF EXISTS galette_groups CASCADE;
 CREATE TABLE galette_groups (
   id_group integer DEFAULT nextval('galette_groups_id_seq'::text) NOT NULL,
-  group_name character varying(250) NOT NULL CONSTRAINT name UNIQUE,
+  group_name character varying(250) NOT NULL,
   creation_date timestamp NOT NULL,
   parent_group integer DEFAULT NULL REFERENCES galette_groups(id_group) ON DELETE RESTRICT ON UPDATE CASCADE,
   PRIMARY KEY (id_group)

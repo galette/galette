@@ -174,6 +174,10 @@ class Group extends GaletteTestCase
         $this->boolean($group->store())->isTrue();
         $group_id = $group->getId();
 
+        //update without changes should be ok
+        $group = new \Galette\Entity\Group($group_id);
+        $this->boolean($group->store())->isTrue();
+
         //Adding another group with same name throws an exception
         $group = new \Galette\Entity\Group();
         $group->setLogin($this->login);
@@ -184,7 +188,25 @@ class Group extends GaletteTestCase
                     $group->setName('A group');
                     $this->boolean($group->store())->isFalse();
                 }
-            )->hasMessage('Duplicate entry');
+            )->hasMessage('The group name you have requested already exists in the database.');
+
+        //update with changes should be ok
+        $group = new \Galette\Entity\Group($group_id);
+        $group->setName('A group - edited');
+        $this->boolean($group->store())->isTrue();
+
+        //
+        $group = new \Galette\Entity\Group();
+        $group->setName('Unique one');
+        $this->boolean($group->store())->isTrue();
+        //editing using an existing name is not ok
+        $this
+            ->exception(
+                function () use ($group) {
+                    $group->setName('A group - edited');
+                    $this->boolean($group->store())->isFalse();
+                }
+            )->hasMessage('The group name you have requested already exists in the database.');
     }
 
     /**

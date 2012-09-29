@@ -43,4 +43,7 @@ ALTER TABLE galette_adherents ADD COLUMN num_adh varchar(255) DEFAULT NULL;
 ALTER TABLE  galette_searches DROP INDEX form;
 ALTER TABLE galette_searches DROP COLUMN parameters_sum;
 
+-- drop groups unique name constraint
+ALTER TABLE galette_groups DROP INDEX `name`;
+
 UPDATE galette_database SET version = 0.960;

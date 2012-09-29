@@ -219,4 +219,40 @@ class Groups extends GaletteTestCase
         $children_list = $groups->getList(true, $europe);
         $this->array($children_list)->hasSize(4);
     }
+
+    /**
+     * Test group name unicity
+     *
+     * @return void
+     */
+    public function testUnicity()
+    {
+        $group = new \Galette\Entity\Group();
+        $group->setLogin($this->login);
+        $unique_name = 'One group to rule them all';
+        $group->setName($unique_name);
+        $this->boolean($group->store())->isTrue();
+        $group_id = $group->getId();
+
+        $select = $this->zdb->select(\Galette\Entity\Group::TABLE);
+        $select->where(['group_name' => 'Europe']);
+        $result = $this->zdb->execute($select)->current();
+        $europe = $result->{\Galette\Entity\Group::PK};
+
+        $select = $this->zdb->select(\Galette\Entity\Group::TABLE);
+        $select->where(['group_name' => 'France']);
+        $result = $this->zdb->execute($select)->current();
+        $france = $result->{\Galette\Entity\Group::PK};
+
+        //name already exists - not unique
+        $this->boolean(\Galette\Repository\Groups::isUnique($this->zdb, $unique_name))->isFalse();
+        //name does not exist on another level - unique
+        $this->boolean(\Galette\Repository\Groups::isUnique($this->zdb, $unique_name, $europe))->isTrue();
+        //name is the current one - unique
+        $this->boolean(\Galette\Repository\Groups::isUnique($this->zdb, $unique_name, null, $group_id))->isTrue();
+
+        //tests on another level
+        $this->boolean(\Galette\Repository\Groups::isUnique($this->zdb, 'Nord', $france))->isFalse();
+        $this->boolean(\Galette\Repository\Groups::isUnique($this->zdb, 'Creuse', $france))->isTrue();
+    }
 }

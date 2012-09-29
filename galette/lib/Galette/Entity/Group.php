@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Galette\Repository\Groups;
 use Throwable;
 use Galette\Core\Login;
 use Analog\Analog;
@@ -407,6 +408,20 @@ class Group
     {
         global $zdb, $hist;
 
+        $parent_group = null;
+        if ($this->parent_group) {
+            $parent_group = $this->parent_group->getId();
+        }
+        if (!Groups::isUnique($zdb, $this->getName(), $parent_group, $this->getId())) {
+            Analog::log(
+                'Group name is not unique at requested level',
+                Analog::WARNING
+            );
+            throw new \RuntimeException(
+                _T("The group name you have requested already exists in the database.")
+            );
+        }
+
         try {
             $values = array(
                 self::PK     => $this->id,
@@ -414,7 +429,7 @@ class Group
             );
 
             if ($this->parent_group) {
-                $values['parent_group'] = $this->parent_group->getId();
+                $values['parent_group'] = $parent_group;
             }
 
             if (!isset($this->id) || $this->id == '') {
