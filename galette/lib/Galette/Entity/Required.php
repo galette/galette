@@ -70,22 +70,22 @@ class Required
     );
 
     /**
-    * Default constructor
-    */
+     * Default constructor
+     */
     function __construct()
     {
         $this->_checkUpdate();
     }
 
     /**
-    * Checks if the required table should be updated
-    * since it has not yet appened or adherents table
-    * has been modified.
-    *
-    * @param boolean $try TO DOCUMENT
-    *
-    * @return void
-    */
+     * Checks if the required table should be updated
+     * since it has not yet appened or adherents table
+     * has been modified.
+     *
+     * @param boolean $try TO DOCUMENT
+     *
+     * @return void
+     */
     private function _checkUpdate($try = true)
     {
         global $zdb, $log;
@@ -120,16 +120,6 @@ class Required
                         $this->_all_required[$k->field_id] = $k->required;
                     }
                 }
-
-                //some fields should be ALWAYS required
-                if ( $this->_all_required['login_adh'] !== 1 ) {
-                    $this->_all_required['login_adh'] = 1;
-                }
-                if ( !isset($this->_all_required['mdp_adh'])
-                    || $this->_all_required['mdp_adh'] !== 1
-                ) {
-                    $this->_all_required['mdp_adh'] = 1;
-                }
             }
         } catch (\Exception $e) {
             /** TODO */
@@ -146,14 +136,14 @@ class Required
     }
 
     /**
-    * Init data into required table.
-    *
-    * @param boolean $reinit true if we must first delete all data on required table.
-    * This should occurs when adherents table has been updated. For the first
-    * initialisation, value should be off.
-    *
-    * @return false if error
-    */
+     * Init data into required table.
+     *
+     * @param boolean $reinit true if we must first delete all data on required table.
+     * This should occurs when adherents table has been updated. For the first
+     * initialisation, value should be off.
+     *
+     * @return false if error
+     */
     function init($reinit=false)
     {
         global $zdb, $log;
@@ -231,20 +221,20 @@ class Required
 
 
     /**
-    * Get required fields
-    *
-    * @return array all required fields. Field names = keys
-    */
+     * Get required fields
+     *
+     * @return array all required fields. Field names = keys
+     */
     public function getRequired()
     {
         return $this->_all_required;
     }
 
     /**
-    * Get fields
-    *
-    * @return array all fields
-    */
+     * Get fields
+     *
+     * @return array all fields
+     */
     public function getFields()
     {
         return $this->_fields;

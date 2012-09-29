@@ -839,6 +839,89 @@ class Members
     }
 
     /**
+     * Login and password field cannot be empty.
+     *
+     * If those ones are not required, or if a file has been importedi
+     * (from a CSV file for example), we fill here random values.
+     *
+     * @return boolean
+     */
+    public function emptyLogins()
+    {
+        global $zdb, $log;
+
+        try {
+            $zdb->db->beginTransaction();
+            $select = new \Zend_Db_Select($zdb->db);
+            $select->from(
+                PREFIX_DB . Adherent::TABLE,
+                array('id_adh', 'login_adh', 'mdp_adh')
+            )->where(
+                'login_adh = ?', new \Zend_Db_Expr('NULL')
+            )->orWhere(
+                'login_adh = ?', ''
+            )->orWhere(
+                'mdp_adh = ?', new \Zend_Db_Expr('NULL')
+            )->orWhere(
+                'mdp_adh = ?', ''
+            );
+
+            $res = $select->query()->fetchAll();
+
+            $processed = 0;
+            if ( count($res) > 0 ) {
+                $sql = 'UPDATE ' .  PREFIX_DB . Adherent::TABLE .
+                    ' SET login_adh = :login, mdp_adh = :pass WHERE ' .
+                    Adherent::PK . ' = :id';
+                $stmt = $zdb->db->prepare($sql);
+
+                $p = new \Galette\Core\Password();
+
+                foreach ($res as $m) {
+                    $dirty = false;
+                    if ($m->login_adh == ''
+                        || !isset($m->login_adh)
+                        || $m->login_adh == 'NULL'
+                    ) {
+                        $m->login_adh = $p->makeRandomPassword(15);
+                        $dirty = true;
+                    }
+
+                    if ($m->mdp_adh == ''
+                        || !isset($m->mdp_adh)
+                        || $m->mdp_adh == 'NULL'
+                    ) {
+                        $m->mdp_adh = md5($p->makeRandomPassword(15));
+                        $dirty = true;
+                    }
+
+                    if ( $dirty === true ) {
+                        $stmt->execute(
+                            array(
+                                'login' => $m->login_adh,
+                                'pass'  => $m->mdp_adh,
+                                'id'    => $m->id_adh
+                            )
+                        );
+                        $processed++;
+                    }
+                }
+            }
+            $zdb->db->commit();
+            $this->_count = $processed;
+            return true;
+        } catch ( Exception $e ) {
+            $zdb->db->rollBack();
+            $log->log(
+                'An error occured trying to retrieve members with ' .
+                'empty logins/passwords (' . $e->getMessage(),
+                KLogger::ERR
+            );
+            return false;
+        }
+    }
+
+    /**
     * Get count for current query
     *
     * @return int

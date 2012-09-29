@@ -82,9 +82,7 @@ $requires = new Galette\Entity\Required();
 $required = $requires->getRequired();
 
 // password required if we create a new member
-if ( $member->id == '' ) {
-    $required['mdp_adh'] = 1;
-} else {
+if ( $member->id != '' ) {
     unset($required['mdp_adh']);
 }
 

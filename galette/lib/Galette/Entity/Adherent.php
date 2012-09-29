@@ -1211,6 +1211,11 @@ class Adherent
                         }
                         break;
                     }
+                } else if ( ($key == 'login_adh' && !isset($required['login_adh']))
+                    || ($key == 'mdp_adh' && !isset($required['mdp_adh']))
+                ) {
+                    $p = new Password();
+                    $this->$prop = $p->makeRandomPassword(15);
                 }
             }
         }
