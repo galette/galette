@@ -78,12 +78,32 @@ class FieldsConfig
         'integer'
     );
 
-    /**
-    * Default constructor
-    *
-    * @param string $table    the table for which to get fields configuration
-    * @param array  $defaults default values
+    /*
+    * Fields that are not visible in the
+    * form should not be visible here.
     */
+    private $_non_required = array(
+        'id_adh',
+        'date_echeance',
+        'bool_display_info',
+        'bool_exempt_adh',
+        'bool_admin_adh',
+        'activite_adh',
+        'date_crea_adh',
+        'date_modif_adh',
+        //Fields we do not want to be set as required
+        'societe_adh',
+        'id_statut',
+        'titre_adh',
+        'pref_lang'
+    );
+
+    /**
+     * Default constructor
+     *
+     * @param string $table    the table for which to get fields configuration
+     * @param array  $defaults default values
+     */
     function __construct($table, $defaults)
     {
         $this->_table = $table;
@@ -92,14 +112,14 @@ class FieldsConfig
     }
 
     /**
-    * Checks if the required table should be updated
-    * since it has not yet happened or the table
-    * has been modified.
-    *
-    * @param boolean $try Just check, when called from $this->init()
-    *
-    * @return void
-    */
+     * Checks if the required table should be updated
+     * since it has not yet happened or the table
+     * has been modified.
+     *
+     * @param boolean $try Just check, when called from $this->init()
+     *
+     * @return void
+     */
     private function _checkUpdate($try = true)
     {
         global $zdb, $log;
@@ -115,6 +135,19 @@ class FieldsConfig
             if ( count($result) == 0 && $try ) {
                 $this->init();
             } else {
+                $meta = Adherent::getDbFields();
+
+                if ( count($meta) != count($result) ) {
+                    $log->log(
+                        '[' . $class . '] Count for `' . $this->_table .
+                        '` columns does not match records. Is : ' .
+                        count($result) . ' and should be ' .
+                        count($meta) . '. Reinit.',
+                        KLogger::INFO
+                    );
+                    $this->init(true);
+                }
+
                 $this->_categorized_fields = null;
                 foreach ( $result as $k ) {
                     $f = array(
@@ -142,18 +175,6 @@ class FieldsConfig
                     $this->all_positions[$k->field_id] = $k->position;
                 }
 
-                $meta = Adherent::getDbFields();
-
-                if ( count($meta) != count($result) ) {
-                    $log->log(
-                        '[' . $class . '] Count for `' . $this->_table .
-                        '` columns does not match records. Is : ' .
-                        count($result) . ' and should be ' .
-                        count($meta) . '. Reinit.',
-                        KLogger::INFO
-                    );
-                    $this->init(true);
-                }
             }
         } catch (\Exception $e) {
             $log->log(
@@ -171,15 +192,15 @@ class FieldsConfig
     }
 
     /**
-    * Init data into config table.
-    *
-    * @param boolean $reinit true if we must first delete all config data for
-    * current table.
-    * This should occurs when table has been updated. For the first
-    * initialisation, value should be false. Defaults to false.
-    *
-    * @return void
-    */
+     * Init data into config table.
+     *
+     * @param boolean $reinit true if we must first delete all config data for
+     * current table.
+     * This should occurs when table has been updated. For the first
+     * initialisation, value should be false. Defaults to false.
+     *
+     * @return void
+     */
     public function init($reinit=false)
     {
         global $zdb, $log;
@@ -247,9 +268,7 @@ class FieldsConfig
                                                 $key,
                                                 $this->all_visible
                                             ) :
-                                            $this->_defaults[$key]['visible'] ?
-                                                true :
-                                                'false'
+                                            $this->_defaults[$key]['visible']
                                       ),
                     ':position'    => (
                                         ($reinit) ?
@@ -291,12 +310,21 @@ class FieldsConfig
         }
     }
 
+    /**
+     * Get non required fields
+     *
+     * @return array
+     */
+    public function getNonRequired()
+    {
+        return $this->_non_required;
+    }
 
     /**
-    * Get required fields
-    *
-    * @return array of all required fields. Field names = keys
-    */
+     * Get required fields
+     *
+     * @return array of all required fields. Field names = keys
+     */
     public function getRequired()
     {
         return $this->_all_required;
@@ -308,42 +336,42 @@ class FieldsConfig
     /*public function getPosition($field){ return $this->all_positions[$field]; }*/
 
     /**
-    * Get visible fields
-    *
-    * @return array of all visibles fields
-    */
+     * Get visible fields
+     *
+     * @return array of all visibles fields
+     */
     public function getVisibilities()
     {
         return $this->_all_visibles;
     }
 
     /**
-    * Get visibility for specified field
-    *
-    * @param string $field The requested field
-    *
-    * @return boolean
-    */
+     * Get visibility for specified field
+     *
+     * @param string $field The requested field
+     *
+     * @return boolean
+     */
     public function getVisibility($field)
     {
         return $this->_all_visibles[$field];
     }
 
     /**
-    * Get all fields with their categories
-    *
-    * @return array
-    */
+     * Get all fields with their categories
+     *
+     * @return array
+     */
     public function getCategorizedFields()
     {
         return $this->_categorized_fields;
     }
 
     /**
-    * Get all fields
-    *
-    * @return array
-    */
+     * Get all fields
+     *
+     * @return array
+     */
     public function getFields()
     {
         return $this->fields;
@@ -351,12 +379,12 @@ class FieldsConfig
 
     /** FIXME: should return _store result */
     /**
-    * Set fields
-    *
-    * @param array $fields categorized fields array
-    *
-    * @return void
-    */
+     * Set fields
+     *
+     * @param array $fields categorized fields array
+     *
+     * @return void
+     */
     public function setFields($fields)
     {
         $this->_categorized_fields = $fields;
@@ -364,49 +392,41 @@ class FieldsConfig
     }
 
     /**
-    * Store config in database
-    *
-    * @return boolean
-    */
+     * Store config in database
+     *
+     * @return boolean
+     */
     private function _store()
     {
-        global $mdb, $log;
-
-        $stmt = $mdb->prepare(
-            'UPDATE ' . PREFIX_DB . self::TABLE .
-            ' SET required=:required, visible=:visible, position=:position, ' .
-            FieldsCategories::PK . '=:category WHERE table_name=\'' .
-            $this->_table .'\' AND field_id=:field_id',
-            $this->_types,
-            MDB2_PREPARE_MANIP
-        );
-
-        $params = array();
-        foreach ( $this->_categorized_fields as $cat ) {
-            foreach ( $cat as $pos=>$field ) {
-                $params[] = array(
-                    'field_id'    =>    $field['field_id'],
-                    'required'    =>    $field['required'],
-                    'visible'    =>    $field['visible'],
-                    'position'    =>    $pos,
-                    'category'    =>    $field['category']
-                );
-            }
-        }
-
-        $mdb->getDb()->loadModule('Extended', null, false);
-        $mdb->getDb()->extended->executeMultiple($stmt, $params);
+        global $zdb, $log;
 
         $class = get_class($this);
-        if (MDB2::isError($stmt)) {
-            $log->log(
-                '[' . $class . '] An error occured while storing fields ' .
-                'configuration for table `' . $this->_table . '`.' .
-                $stmt->getMessage(),
-                KLogger::ERR
-            );
-            return false;
-        } else {
+
+        try {
+            $zdb->db->beginTransaction();
+            $sql = 'UPDATE ' . PREFIX_DB . self::TABLE .
+                ' SET required=:required, visible=:visible, position=:position, ' .
+                FieldsCategories::PK . '=:category WHERE table_name=\'' .
+                $this->_table .'\' AND field_id=:field_id';
+            $stmt = $zdb->db->prepare($sql);
+
+            $params = null;
+            foreach ( $this->_categorized_fields as $cat ) {
+                foreach ( $cat as $pos=>$field ) {
+                    if ( in_array($field['field_id'], $this->_non_required) ) {
+                        $field['required'] = 'false';
+                    }
+                    $params = array(
+                        'field_id'  => $field['field_id'],
+                        'required'  => $field['required'],
+                        'visible'   => $field['visible'],
+                        'position'  => $pos,
+                        'category'  => $field['category']
+                    );
+                    $stmt->execute($params);
+                }
+            }
+
             $log->log(
                 '[' . $class . '] Fields configuration stored successfully! ',
                 KLogger::DEBUG
@@ -420,8 +440,22 @@ class FieldsConfig
                 ),
                 KLogger::INFO
             );
-            $stmt->free();
+
+            $zdb->db->commit();
             return true;
+        } catch (Exception $e) {
+            $zdb->db->rollBacak();
+            $log->log(
+                '[' . $class . '] An error occured while storing fields ' .
+                'configuration for table `' . $this->_table . '`.' .
+                $e->getMessage(),
+                KLogger::ERR
+            );
+            $log->log(
+                $e->getTraceAsString(),
+                KLogger::ERR
+            );
+            return false;
         }
     }
 }

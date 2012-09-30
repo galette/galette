@@ -285,7 +285,7 @@ CREATE TABLE galette_fields_config (
   table_name character varying(30) NOT NULL,
   field_id character varying(30) NOT NULL,
   required boolean NOT NULL, -- should replace later galette_required(required)
-  visible boolean NOT NULL,
+  visible integer NOT NULL,
   position integer NOT NULL,
   id_field_category integer REFERENCES galette_fields_categories ON DELETE RESTRICT ON UPDATE CASCADE,
   PRIMARY KEY (table_name, field_id)

@@ -37,7 +37,11 @@
  * @since     Available since 0.62
  */
 
+use Galette\Core\GaletteMail as GaletteMail;
 use Galette\Entity\DynamicFields as DynamicFields;
+use Galette\Entity\Adherent as Adherent;
+use Galette\Entity\FieldsConfig as FieldsConfig;
+use Galette\Entity\Texts as Texts;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -47,13 +51,15 @@ if ( !$preferences->pref_bool_selfsubscribe ) {
 
 $dyn_fields = new DynamicFields();
 
-// flagging required fields
-$requires = new Galette\Entity\Required();
-$required = $requires->getRequired();
-
-$member = new Galette\Entity\Adherent();
+$member = new Adherent();
 //mark as self membership
 $member->setSelfMembership();
+
+// flagging required fields
+$fc = new FieldsConfig(Adherent::TABLE, $member->fields);
+$required = $fc->getRequired();
+// flagging fields visibility
+$visibles = $fc->getVisibilities();
 
 // disable some fields
 $disabled  = $member->disabled_fields;
@@ -67,8 +73,7 @@ $insert_string_fields = '';
 $insert_string_values = '';
 $has_register = false;
 
-
-$fields = Galette\Entity\Adherent::getDbFields();
+$fields = Adherent::getDbFields();
 
 // checking posted values for 'regular' fields
 if ( isset($_POST["nom_adh"]) ) {
@@ -80,10 +85,10 @@ if ( isset($_POST["nom_adh"]) ) {
         if ( $store === true ) {
             //member has been stored :)
             //Send email to admin if preference checked
-            if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED
+            if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
                 && $preferences->pref_bool_mailadh
             ) {
-                $texts = new Galette\Entity\Texts(
+                $texts = new Texts(
                     array(
                         'name_adh'      => custom_html_entity_decode($member->sname),
                         'mail_adh'      => custom_html_entity_decode($member->email),
@@ -92,7 +97,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 );
                 $mtxt = $texts->getTexts('newselfadh', $preferences->pref_lang);
 
-                $mail = new Galette\Core\GaletteMail();
+                $mail = new GaletteMail();
                 $mail->setSubject($texts->getSubject());
                 $mail->setRecipients(
                     array(
@@ -102,7 +107,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 $mail->setMessage($texts->getBody());
                 $sent = $mail->send();
 
-                if ( $sent == Galette\Core\GaletteMail::MAIL_SENT ) {
+                if ( $sent == GaletteMail::MAIL_SENT ) {
                     $hist->add(
                         str_replace(
                             '%s',
@@ -124,12 +129,12 @@ if ( isset($_POST["nom_adh"]) ) {
             }
 
             // send mail to member
-            if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED
+            if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
                 && $member->email != ''
             ) {
                 //send mail to member
                 // Get email text in database
-                $texts = new Galette\Entity\Texts(
+                $texts = new Texts(
                     array(
                         'name_adh'      => custom_html_entity_decode($member->sname),
                         'mail_adh'      => custom_html_entity_decode($member->email),
@@ -139,7 +144,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 );
                 $mtxt = $texts->getTexts('sub', $preferences->pref_lang);
 
-                $mail = new Galette\Core\GaletteMail();
+                $mail = new GaletteMail();
                 $mail->setSubject($texts->getSubject());
                 $mail->setRecipients(
                     array(
@@ -149,7 +154,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 $mail->setMessage($texts->getBody());
                 $sent = $mail->send();
 
-                if ( $sent == Galette\Core\GaletteMail::MAIL_SENT ) {
+                if ( $sent == GaletteMail::MAIL_SENT ) {
                     $hist->add(
                         str_replace(
                             '%s',
@@ -216,6 +221,7 @@ $dynamic_fields = $dyn_fields->prepareForDisplay(
 $tpl->assign('page_title', _T("Subscription"));
 // template variable declaration
 $tpl->assign('required', $required);
+$tpl->assign('visibles', $visibles);
 $tpl->assign('disabled', $disabled);
 $tpl->assign('member', $member);
 $tpl->assign('self_adh', true);

@@ -1561,6 +1561,7 @@ legend {
 .cssform li{
     clear:none;
 }
+
 .cssform p, .cssform div.p{
     clear: left;
     margin: 0;
@@ -1792,32 +1793,47 @@ td.photo img{
     vertical-align: top;
 }
 
-.fields_list li{
-    height:1.5em;
-    margin-top:.5em;
-    clear:left;
-    padding-top:.2em;
+.cssform > .fields_list {
+    display: block;
 }
+.fields_list li{
+    line-height:1.5em;
+    margin-top:.3em;
+    padding:.1em .2em;
+    vertical-align: middle;
+}
+
+.yesno > input, .yesnoadmin > input {
+    margin: 0.2em;
+    vertical-align: bottom;
+}
+
+.fields_list label {
+    padding:0 .5em 0 .1em;
+}
+
+.fields_list li:hover {
+    background-color: #DDDDFF!important;
+}
+
 .fields_list li.listing{
     font-weight:bold;
 }
 .fields_list span.label{
-    display:block;
-    width:21em;
-    float:left;
+    display:inline-block;
+    width: 33%;
 }
 .fields_list span.yesno{
     margin-right:.2em;
-    width:15em;
-    display:block;
-    float:left;
+    display:inline-block;
     text-align:center;
+    width: 18%;
 }
 .fields_list span.yesnoadmin{
     margin-right:.2em;
-    width:25em;
-    display:block;
-    float:left;
+    min-width:25em;
+    width:33%;
+    display:inline-block;
     text-align:center;
 }
 
@@ -1885,6 +1901,12 @@ td.photo img{
 
 #oldie p {
     margin: 0;
+}
+
+.warnings {
+    background-image: url(images/icon-warning.png);
+    background-repeat: no-repeat;
+    background-position: center right;
 }
 
 /** Mobile devices */

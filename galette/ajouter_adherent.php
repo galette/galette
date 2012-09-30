@@ -37,7 +37,12 @@
  */
 
 use Galette\Common\KLogger as KLogger;
+use Galette\Core\GaletteMail as GaletteMail;
+use Galette\Entity\Adherent as Adherent;
+use Galette\Entity\FieldsConfig as FieldsConfig;
+use Galette\Entity\Texts as Texts;
 use Galette\Entity\DynamicFields as DynamicFields;
+use Galette\Repository\Groups as Groups;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -47,7 +52,7 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-$member = new Galette\Entity\Adherent();
+$member = new Adherent();
 //TODO: dynamic fields should be handled by Adherent object
 $dyn_fields = new DynamicFields();
 
@@ -67,7 +72,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
         $disabled = $member->adm_edit_disabled_fields + $member->staff_edit_disabled_fields;
     }
 
-    if ( $preferences->pref_mail_method == Galette\Core\GaletteMail::METHOD_DISABLED ) {
+    if ( $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED ) {
         $disabled['send_mail'] = 'disabled="disabled"';
     }
 } else {
@@ -78,8 +83,10 @@ if ( $login->isAdmin() || $login->isStaff() ) {
 }
 
 // flagging required fields
-$requires = new Galette\Entity\Required();
-$required = $requires->getRequired();
+$fc = new FieldsConfig(Adherent::TABLE, $member->fields);
+$required = $fc->getRequired();
+// flagging fields visibility
+$visibles = $fc->getVisibilities();
 
 // password required if we create a new member
 if ( $member->id != '' ) {
@@ -111,10 +118,10 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
             if ( $new ) {
                 $success_detected[] = _T("New member has been successfully added.");
                 //Send email to admin if preference checked
-                if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED
+                if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
                     && $preferences->pref_bool_mailadh
                 ) {
-                    $texts = new Galette\Entity\Texts(
+                    $texts = new Texts(
                         array(
                             'name_adh'  => custom_html_entity_decode($member->sname),
                             'mail_adh'  => custom_html_entity_decode($member->email),
@@ -123,7 +130,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     );
                     $mtxt = $texts->getTexts('newadh', $preferences->pref_lang);
 
-                    $mail = new Galette\Core\GaletteMail();
+                    $mail = new GaletteMail();
                     $mail->setSubject($texts->getSubject());
                     $mail->setRecipients(
                         array(
@@ -133,7 +140,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     $mail->setMessage($texts->getBody());
                     $sent = $mail->send();
 
-                    if ( $sent == Galette\Core\GaletteMail::MAIL_SENT ) {
+                    if ( $sent == GaletteMail::MAIL_SENT ) {
                         $hist->add(
                             str_replace(
                                 '%s',
@@ -158,13 +165,13 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
 
             // send mail to member
             if ( isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1' ) {
-                if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED ) {
+                if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED ) {
                     if ( $member->email == '' ) {
                         $error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
                     } else {
                         //send mail to member
                         // Get email text in database
-                        $texts = new Galette\Entity\Texts(
+                        $texts = new Texts(
                             array(
                                 'name_adh'      => custom_html_entity_decode($member->sname),
                                 'mail_adh'      => custom_html_entity_decode($member->email),
@@ -177,7 +184,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                             $preferences->pref_lang
                         );
 
-                        $mail = new Galette\Core\GaletteMail();
+                        $mail = new GaletteMail();
                         $mail->setSubject($texts->getSubject());
                         $mail->setRecipients(
                             array(
@@ -187,7 +194,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                         $mail->setMessage($texts->getBody());
                         $sent = $mail->send();
 
-                        if ( $sent == Galette\Core\GaletteMail::MAIL_SENT ) {
+                        if ( $sent == GaletteMail::MAIL_SENT ) {
                             $msg = str_replace(
                                 '%s',
                                 $member->sname . ' (' . $member->email . ')',
@@ -207,7 +214,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                             $error_detected[] = $str;
                         }
                     }
-                } else if ( $preferences->pref_mail_method == Galette\Core\GaletteMail::METHOD_DISABLED) {
+                } else if ( $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
                     //if mail has been disabled in the preferences, we should not be here ; we do not throw an error, just a simple warning that will be show later
                     $msg = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
                     $warning_detected[] = $msg;
@@ -218,7 +225,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
             //store requested groups
             $add_groups = null;
             if ( isset($_POST['groups_adh']) ) {
-                $add_groups = Galette\Repository\Groups::addMemberToGroups(
+                $add_groups = Groups::addMemberToGroups(
                     $member,
                     $_POST['groups_adh']
                 );
@@ -332,6 +339,7 @@ if ( $member->id != '' ) {
 $tpl->assign('require_dialog', true);
 $tpl->assign('page_title', $title);
 $tpl->assign('required', $required);
+$tpl->assign('visibles', $visibles);
 $tpl->assign('disabled', $disabled);
 $tpl->assign('member', $member);
 $tpl->assign('data', $adherent);
@@ -355,7 +363,7 @@ $statuts = new Galette\Entity\Status();
 $tpl->assign('statuts', $statuts->getList());
 
 //Groups
-$groups = new Galette\Repository\Groups();
+$groups = new Groups();
 $groups_list = $groups->getList();
 $tpl->assign('groups', $groups_list);
 
