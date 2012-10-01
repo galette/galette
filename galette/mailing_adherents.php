@@ -77,10 +77,10 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
     } else {
         $filters = new MembersList();
     }
-    if ( count($filters->selected) == 0 ) {
+    if ( count($filters->selected) == 0 && !isset($_GET['mailing_new']) ) {
         $log->log(
             '[mailing_adherents.php] No member selected for mailing',
-            KLogger::INFO
+            KLogger::WARN
         );
         header('location:gestion_adherents.php');
         die();
