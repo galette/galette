@@ -9,6 +9,7 @@ header, footer, nav {
 #desktop #mailings,
 #desktop #prefs,
 #desktop #plugins,
+#desktop #reminder,
 #delete,
 #subscribe,
 #lostpassword,
@@ -54,6 +55,7 @@ input#btnsave, input#delete, input#sendmail, input#btnadd {
 #desktop #mailings:hover,
 #desktop #prefs:hover,
 #desktop #plugins:hover,
+#desktop #reminder:hover,
 #delete.ui-state-hover,
 #subscribe.ui-state-hover,
 #lostpassword.ui-state-hover,
@@ -96,7 +98,6 @@ input#btnsave, input#delete, input#sendmail, input#btnadd {
     overflow: hidden;
 }
 
-
 .secondimg {
     display: block;
     position: absolute;
@@ -137,6 +138,10 @@ input#btnsave, input#delete, input#sendmail, input#btnadd {
 
 #desktop #plugins .secondimg {
     background-image: url(images/desktop/plugins.png);
+}
+
+#desktop #reminder .secondimg {
+    background-image: url(images/desktop/reminders.png);
 }
 
 #superadmin {

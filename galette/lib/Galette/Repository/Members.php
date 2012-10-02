@@ -80,6 +80,14 @@ class Members
     const FILTER_WO_EMAIL = 7;
     const FILTER_COMPANY_NAME = 8;
 
+    const MEMBERSHIP_ALL = 0;
+    const MEMBERSHIP_UP2DATE = 3;
+    const MEMBERSHIP_NEARLY = 1;
+    const MEMBERSHIP_LATE = 2;
+    const MEMBERSHIP_NEVER = 4;
+    const MEMBERSHIP_STAFF = 5;
+    const MEMBERSHIP_ADMIN = 6;
+
     const ORDERBY_NAME = 0;
     const ORDERBY_NICKNAME = 1;
     const ORDERBY_STATUS = 2;
@@ -762,7 +770,7 @@ class Members
 
             if ( $filters->membership_filter ) {
                 switch($filters->membership_filter) {
-                case 1:
+                case self::MEMBERSHIP_NEARLY:
                     $select->where('date_echeance > ?', date('Y-m-d', time()))
                         ->where(
                             'date_echeance < ?',
@@ -770,13 +778,13 @@ class Members
                         );
                         //(30 *24 * 60 * 60) => 30 days
                     break;
-                case 2:
+                case self::MEMBERSHIP_LATE:
                     $select->where(
                         'date_echeance < ?',
                         date('Y-m-d', time())
                     )->where('bool_exempt_adh = false');
                     break;
-                case 3:
+                case self::MEMBERSHIP_UP2DATE:
                     $select->where(
                         '(' . $zdb->db->quoteInto(
                             'date_echeance > ?',
@@ -784,14 +792,14 @@ class Members
                         ) . ' OR bool_exempt_adh=true)'
                     );
                     break;
-                case 4:
+                case self::MEMBERSHIP_NEVER:
                     $select->where('date_echeance IS NULL')
                         ->where('bool_exempt_adh = false');
                     break;
-                case 5:
+                case self::MEMBERSHIP_STAFF:
                     $select->where('p.priorite_statut < ' . self::NON_STAFF_MEMBERS);
                     break;
-                case 6:
+                case self::MEMBERSHIP_ADMIN:
                     $select->where('bool_admin_adh = ?', true);
                     break;
                 }

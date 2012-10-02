@@ -56,10 +56,11 @@ $session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 if ( isset($_POST['mailing_done'])
     || isset($_POST['mailing_cancel'])
     || isset($_GET['mailing_new'])
+    || isset($_GET['reminder'])
 ) {
     $session['mailing'] = null;
     unset($session['mailing']);
-    if ( !isset($_GET['mailing_new']) ) {
+    if ( !isset($_GET['mailing_new']) && !isset($_GET['reminder']) ) {
         header('location: gestion_adherents.php');
         exit(0);
     }
@@ -77,7 +78,10 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
     } else {
         $filters = new MembersList();
     }
-    if ( count($filters->selected) == 0 && !isset($_GET['mailing_new']) ) {
+    if ( count($filters->selected) == 0
+        && !isset($_GET['mailing_new'])
+        && !isset($_GET['reminder'])
+    ) {
         $log->log(
             '[mailing_adherents.php] No member selected for mailing',
             KLogger::WARN
@@ -95,6 +99,13 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
     } else if (isset($_GET['from']) && is_numeric($_GET['from'])) {
         $mailing = new Core\Mailing(null);
         Core\MailingHistory::loadFrom((int)$_GET['from'], $mailing);
+    } else if (isset($_GET['reminder'])) {
+        //FIXME: use a constant!
+        $filters->reinit();
+        $filters->membership_filter = Galette\Repository\Members::MEMBERSHIP_LATE;
+        $m = new Galette\Repository\Members();
+        $members = $m->getList(true);
+        $mailing = new Core\Mailing(($members !== false) ? $members : null);
     } else {
         $members = Galette\Repository\Members::getArrayList($filters->selected);
         $mailing = new Core\Mailing(($members !== false) ? $members : null);
