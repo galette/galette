@@ -10,11 +10,11 @@
         <p{if $field.config_field_repeat == 0 || $field.config_field_repeat > 1} class="repetable"{/if}>
             <label class="bline libelle" for="info_field_{$field.field_id}_1_{$field.field_repeat}">{$field.field_name|escape}</label>
     {assign var="count" value=$field.config_field_repeat}
-    {if $data.dyn[$field.field_id]|@count >= $field.field_repeat}
-        {assign var="loops" value=$data.dyn[$field.field_id]|@count + 1}
-    {elseif $field.field_repeat == 0 || $field.field_repeat > 1}
-        {if $data.dyn[$field.field_id]|@count > 2}
-            {assign var="loops" value=$data.dyn[$field.field_id]|@count + 1}
+    {if $data.dyn[$field.field_id]|@count > $field.config_field_repeat}
+        {assign var="loops" value=$data.dyn[$field.field_id]|@count + 2}
+    {elseif $field.config_field_repeat == 0 || $field.config_field_repeat > 1}
+        {if $data.dyn[$field.field_id]|@count >= 2}
+            {assign var="loops" value=$count + 1}
         {else}
             {assign var="loops" value="3"}
         {/if}
