@@ -9,6 +9,7 @@
     {else}
         <p{if $field.config_field_repeat == 0 || $field.config_field_repeat > 1} class="repetable"{/if}>
             <label class="bline libelle" for="info_field_{$field.field_id}_1_{$field.field_repeat}">{$field.field_name|escape}</label>
+    {* Number of configured occurences *}
     {assign var="count" value=$field.config_field_repeat}
     {if $data.dyn[$field.field_id]|@count > $field.config_field_repeat}
         {assign var="loops" value=$data.dyn[$field.field_id]|@count + 2}
@@ -46,10 +47,10 @@
     {/section}
         </p>
     {/if}
-    {if $field.config_field_repeat != 0 || $field.config_field_repeat > 1}
-        <p class="exemple">{_T string="Enter up to %count occurences." pattern="/%count/" replace=$field.field_repeat}</p>
-    {elseif $field.config_field_repeat == 0}
+    {if $field.config_field_repeat == 0}
         <p class="exemple">{_T string="Enter as many occurences you want."}</p>
+    {elseif $field.config_field_repeat > 1}
+        <p class="exemple">{_T string="Enter up to %count occurences." pattern="/%count/" replace=$field.field_repeat}</p>
     {/if}
 {/if}
 {/foreach}
