@@ -211,7 +211,13 @@ class Picture
                 // we must regenerate the picture file
                 $file_wo_ext = $this->store_path . $this->id;
                 $f = fopen($file_wo_ext . '.' . $pic->format, 'wb');
-                fwrite($f, $pic->picture);
+
+                $str_pic = '';
+                while ( $r=fread($pic->picture, 8192) ) {
+                    $str_pic .= $r;
+                }
+
+                fwrite($f, $str_pic);
                 fclose($f);
                 $this->format = $pic->format;
                 switch($this->format) {
