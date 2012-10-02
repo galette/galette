@@ -257,7 +257,10 @@ class DynamicFields
                             $value = $choices[$value];
                         }
                     }
-                    $array_index = count($dfields[$f->field_id]) + 1;
+                    $array_index = 1;
+                    if ( isset($dfields[$f->field_id]) ) {
+                        $array_index = count($dfields[$f->field_id]) + 1;
+                    }
                     $dfields[$f->field_id][$array_index] = $value;
                 }
                 return $dfields;
