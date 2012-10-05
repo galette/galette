@@ -8,6 +8,13 @@
         <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.js"></script>
     {/if}
 {/if}
+{* If some additionnals headers should be added from plugins, we load the relevant template file
+We have to use a template file, so Smarty will do its work (like replacing variables). *}
+{if $headers|@count != 0}
+    {foreach from=$headers item=header}
+        {include file=$header}
+    {/foreach}
+{/if}
         {if $head_redirect}{$head_redirect}{/if}
     </head>
     <body>
