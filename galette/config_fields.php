@@ -37,6 +37,8 @@
  * @since     Availaible since 0.7dev - 2009-04-11
  */
 
+use Galette\Common\KLogger as KLogger;
+
 require_once 'includes/galette.inc.php';
 
 $authorized = array('members');
@@ -53,21 +55,17 @@ if ( !$login->isAdmin() ) {
     die();
 }
 
-require_once WEB_ROOT . 'classes/fields_config.class.php';
-require_once WEB_ROOT . 'classes/fields_categories.class.php';
-
 $fc = null;
 
 switch ( $current ) {
 case 'members':
-    include_once WEB_ROOT . 'classes/adherent.class.php';
-    $a = new Adherent();
-    $fc = new FieldsConfig(Adherent::TABLE, $a->fields);
+    $a = new Galette\Entity\Adherent();
+    $fc = new Galette\Entity\FieldsConfig(Galette\Entity\Adherent::TABLE, $a->fields);
     break;
 default:
     $log->log(
         'Trying to configure fields on unknown table (' . $current . ')',
-        PEAR_LOG_WARNING
+        KLogger::WARN
     );
     break;
 }
@@ -99,7 +97,7 @@ if ( isset($_POST) && count($_POST) > 0 ) {
 
 $tpl->assign('page_title', _T("Fields configuration"));
 $tpl->assign('time', time());
-$tpl->assign('categories', FieldsCategories::getList());
+$tpl->assign('categories', Galette\Entity\FieldsCategories::getList());
 $tpl->assign('categorized_fields', $fc->getCategorizedFields());
 $tpl->assign('current', $current);
 $tpl->assign('require_sorter', true);

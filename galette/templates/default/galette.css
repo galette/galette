@@ -8,7 +8,6 @@
  * == Footer
  * == Main Galette styles
  * == Public pages
- * == Install page
  * == Mobile devices
  */
 
@@ -35,7 +34,7 @@ body {
 }
 
 body {
-    font-family: "Cantarell", Verdana, Arial, sans-serif;
+    font-family: "Cantarell", Verdana, sans-serif;
     font-size:0.85em;
     background-color:white;
     color:black;
@@ -52,11 +51,6 @@ label, input[type="button"], input[type="submit"], input[type="reset"], button {
 /* == Forms elements */
 input, button, select {
     font-size:100%;
-}
-
-input {
-    border: 1px solid #555555;
-    padding: 4px;
 }
 
 input:required {
@@ -471,7 +465,7 @@ footer li {
     box-shadow: 1px 1px 12px rgba(255, 255, 255, 0.4);
 }
 
-#superadmin {
+#superadmin, #demo {
     color: white;
     font-weight: bold;
     margin: 0 .5em .5em;
@@ -484,6 +478,14 @@ footer li {
     -moz-box-shadow: 1px 1px 13px rgba(255, 0, 0, 0.4);
     -webkit-box-shadow: 1px 1px 13px rgba(255, 0, 0, 0.4);
     box-shadow: 1px 1px 13px rgba(255, 0, 0, 0.4);
+}
+
+#demo {
+    background-color:rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 1px 1px 13px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 1px 1px 13px rgba(0, 0, 0, 0.4);
+    box-shadow: 1px 1px 13px rgba(0, 0, 0, 0.4);
+
 }
 
 /* == Buttons */
@@ -553,10 +555,10 @@ h1 #sendmail .ui-button-text {
     background-image:url(images/subscribe.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-#lostpassword {
+#lostpassword, #btn_lostpassword {
     background-image:url(images/icon-lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
-#lostpassword.ui-state-hover {
+#lostpassword.ui-state-hover, #btn_lostpassword.ui-state-hover {
     background-image:url(images/icon-lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
@@ -731,13 +733,6 @@ h1 #sendmail .ui-button-text {
     background-image: url(images/add_contribution.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-#btn_lostpassword {
-    background-image:url(images/lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btn_lostpassword.ui-state-hover {
-    background-image: url(images/lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
 .left {
     text-align: left!important;
 }
@@ -806,6 +801,13 @@ h1 #sendmail .ui-button-text {
     font-weight: bold;
     padding:.2em;
 }
+
+#transaction_detail thead td {
+    text-align: center;
+    font-style: italic;
+    background-color: transparent;
+}
+
 #clearfilter {
     background: url(images/clearfilter.png) 0 50% no-repeat;
     display:inline-block;
@@ -1715,7 +1717,7 @@ td.photo img{
     padding: 0!important;
 }
 
-.tabbed legend {
+.tabbed legend, .tabbed h3 {
     border: none;
     margin: 0;
     text-align: center;
@@ -1750,121 +1752,6 @@ td.photo img{
     background-repeat:no-repeat;
 }
 /*** /Tooltips ***/
-
-/*** Installation pages ***/
-#installpage{
-    text-align:center;
-    margin:.5em 1em;
-    position:relative;
-}
-
-#installpage h2{
-    margin: 0;
-    font-size:1.2em;
-}
-
-#installpage #submit_btn{
-    text-align: right;
-    margin:0;
-}
-
-#installpage ul.list{
-    margin:0 auto;
-    width:40em;
-    text-align:left;
-    list-style-type:none;
-}
-ul#paths{
-    width:15em!important;
-}
-
-#installpage #retry_btn {
-    text-align: center;
-}
-
-#submitbutton3 {
-    position:absolute;
-    right:0;
-    bottom:0;
-    text-align: right;
-    margin:0;
-}
-
-#installpage #warningbox{
-    text-align:center;
-    color:black;
-    padding : 0.5em 0.5em 0.5em 40px;
-    background : white url(images/warning.png) no-repeat 5px 50%;
-    width: 80%;
-    margin:0 auto 0.8em auto;
-    display:block;
-}
-
-.titreinstall {
-    font-size:1.3em;
-    text-align: center;
-    font-weight: bold;
-    border-style: solid;
-    border-width: 1px;
-    background-color: #FBFBFB;
-    border-color: #BBBBBB;
-    color: #000000;
-    left: 0px;
-    right: 0px;
-    padding: 10px 0px 10px 0px;
-    margin: 0px;
-}
-
-#footerinstall{
-    margin:0 1em;
-    background-color:#DDDDFF;
-    text-align:right;
-    font-size: 0.85em;
-    -moz-border-radius: 10px 10px 10px 10px;
-    -webkit-border-radius: 10px 10px 10px 10px;
-    border-radius: 10px 10px 10px 10px;
-    padding: .1em .5em;
-}
-#footerinstall p{
-    margin:0.5em 0.5em 0 0.5em;
-    font-weight:bold;
-}
-#footerinstall ol{
-    color:#999;
-    padding:0;
-    margin:0 0.5em 0.5em 0.5em;
-    list-style-type:none;
-}
-#footerinstall li{
-    line-height:1.7em;
-    display:inline;
-}
-#footerinstall .current{
-    color:black;
-    font-weight:bold;
-}
-
-.footerinstall {
-    text-align: right;
-    padding-right: 20px;
-    border:1px solid #BBBBBB;
-    background-color: #FBFBFB;
-    color: #000000;
-    margin: 0;
-}
-
-.install-ok {
-    list-style-image: url("../../install/yes.png");
-    list-style-position:inside;
-}
-
-.install-bad {
-    list-style-image: url("../../install/no.png");
-    background-color:#FF8A8A;
-    list-style-position:inside;
-}
-
-/*** /Installation pages ***/
 
 .trombino{
     margin:.5em 0 0 .5em;
@@ -1979,6 +1866,18 @@ ul#paths{
 
 .notup2date #errorbox {
     width: 30em;
+}
+
+#oldie {
+    /*position: absolute;
+    top: 0;*/
+    background-color: red;
+    text-align: center;
+    font-weight: bold;
+}
+
+#oldie p {
+    margin: 0;
 }
 
 /** Mobile devices */

@@ -46,13 +46,12 @@ if (  isset($_GET['logo']) && $_GET['logo'] == 'true' ) {
     if ( isset($_GET['print_logo'])
         && $_GET['print_logo'] == 'true'
     ) {//displays the logo for printing
-        include_once WEB_ROOT . 'classes/print_logo.class.php';
-        $print_logo = new PrintLogo();
+        $print_logo = new Galette\Core\PrintLogo();
         $print_logo->display();
     } else { //displays the picture
         $id_adh = (int)$_GET['id_adh'];
         /** FIXME: we load entire member here... No need to do so! */
-        $adh = new Adherent($id_adh);
+        $adh = new Galette\Entity\Adherent($id_adh);
 
         $picture = null;
         if ( $login->isAdmin()
@@ -62,7 +61,7 @@ if (  isset($_GET['logo']) && $_GET['logo'] == 'true' ) {
         ) {
             $picture = $adh->picture; //new Picture($id_adh);
         } else {
-            $picture = new Picture();
+            $picture = new Galette\Core\Picture();
         }
         $picture->display();
 

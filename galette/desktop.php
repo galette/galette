@@ -48,9 +48,7 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-require_once 'classes/galette-news.class.php';
-
-$news = new GaletteNews();
+$news = new Galette\IO\News();
 
 $tpl->assign('page_title', _T("Dashboard"));
 $tpl->assign('contentcls', 'desktop');

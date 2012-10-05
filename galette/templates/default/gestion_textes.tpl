@@ -35,7 +35,6 @@
 			<input type="submit" value="{_T string="Save"}"/>
 		</div>
 		</form>
-		{literal}
 		<script type="text/javascript">
 			$(function() {
 				$('#sel_ref, #sel_lang').change(function() {
@@ -46,4 +45,3 @@
 				});
 			});
 		</script>
-		{/literal}

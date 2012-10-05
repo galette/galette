@@ -4,7 +4,7 @@
 				<legend class="ui-state-active ui-corner-top">{_T string="Transaction details"}</legend>
 				<p>
 					<label for="trans_desc" class="bline">{_T string="Description:"}</label>
-					<input type="text" name="trans_desc" id="trans_desc" value="{$transaction->description}" maxlength="30" size="30"{if $required.trans_desc eq 1} required{/if}/>
+					<input type="text" name="trans_desc" id="trans_desc" value="{$transaction->description}" maxlength="150" size="30"{if $required.trans_desc eq 1} required{/if}/>
 				</p>
 				<p>
 					<label for="id_adh" class="bline" >{_T string="Originator:"}</label>
@@ -17,7 +17,7 @@
 				</p>
 				<p>
 					<label for="trans_date" class="bline">{_T string="Date:"}</label>
-					<input type="text" class="date-pick" name="trans_date" id="trans_date" value="{$transaction->date}" maxlength="10"{if $required.trans_date eq 1} required{/if}/> <span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
+					<input type="text" class="date-pick" name="trans_date" id="trans_date" value="{$transaction->date}" maxlength="10"{if $required.trans_date eq 1} required{/if}/> <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
 				</p>
 				<p>
 					<label for="trans_amount" class="bline">{_T string="Amount:"}</label>
@@ -75,7 +75,7 @@
     {assign var="cclass" value=$contrib->getRowClass()}
 				<tr>
 					<td class="{$cclass} center nowrap">
-                        {php}$ordre = $this->get_template_vars('ordre');echo $ordre+1{/php}
+                        {$ordre+1}
                     </td>
 					<td class="{$cclass} center nowrap">{$contrib->date}</td>
 					<td class="{$cclass} center nowrap">{$contrib->begin_date}</td>
@@ -99,95 +99,108 @@
 {/foreach}
 			</tbody>
 		</table>
+{/if}
         <script type="text/javascript">
-            $(function(){ldelim}
-                $('#memberslist').click(function(){ldelim}
-                    $.ajax({ldelim}
+            $(function(){
+{if $transaction->id}
+                $('#memberslist').click(function(){
+                    $.ajax({
                         url: 'gestion_contributions.php',
                         type: "POST",
-                        data: {ldelim}ajax: true, max_amount: '{$transaction->getMissingAmount()}'{rdelim},
+                        data: {
+                            ajax: true,
+                            max_amount: '{$transaction->getMissingAmount()}'
+                        },
                         {include file="js_loader.tpl"},
-                        success: function(res){ldelim}
+                        success: function(res){
                             _contribs_dialog(res);
-                        {rdelim},
-                        error: function() {ldelim}
+                        },
+                        error: function() {
                             alert("{_T string="An error occured displaying members interface :("}");
-                        {rdelim}
+                        }
                     });
                     return false;
-                {rdelim});
+                });
 
-                var _contribs_dialog = function(res){ldelim}
+                var _contribs_dialog = function(res){
                     var _el = $('<div id="contributions_list" title="{_T string="Contributions selection"}"> </div>');
-                    _el.appendTo('body').dialog({ldelim}
+                    _el.appendTo('body').dialog({
                         modal: true,
                         hide: 'fold',
                         width: '80%',
                         height: 500,
-                        close: function(event, ui){ldelim}
+                        close: function(event, ui){
                             _el.remove();
                             $("#legende").remove();
-                        {rdelim}
-                    {rdelim});
+                        }
+                    });
                     _contribs_ajax_mapper(res);
-                {rdelim}
+                }
 
-                var _contribs_ajax_mapper = function(res){ldelim}
+                var _contribs_ajax_mapper = function(res){
                     $("#legende").remove();
                     $('#contributions_list').append( res );
 
                     //Deactivate contributions list links
-                    $('#contributions_list tbody a').click(function(){ldelim}
+                    $('#contributions_list tbody a').click(function(){
                         //for links in body (members links), we de nothing
                         return false;
-                    {rdelim});
+                    });
                     //Use JS to send form
-                    $('#filtre').submit(function(){ldelim}
-                        $.ajax({ldelim}
+                    $('#filtre').submit(function(){
+                        $.ajax({
                             url: this.action,
                             type: "POST",
                             data: $("#filtre").serialize(),
                             {include file="js_loader.tpl"},
-                            success: function(res){ldelim}
+                            success: function(res){
                                 $('#contributions_list').empty();
                                 _contribs_ajax_mapper(res);
-                            {rdelim},
-                            error: function() {ldelim}
+                            },
+                            error: function() {
                                 alert("{_T string="An error occured displaying contributions :("}");
-                            {rdelim}
+                            }
                         });
                         return false;
-                    {rdelim});
+                    });
                     //Re-bind submit event on the correct element here
                     $('#nbshow').unbind('change');
-                    $('#nbshow').change(function() {ldelim}
+                    $('#nbshow').change(function() {
                         $('form#filtre').submit();
-                    {rdelim});
+                    });
                     //Bind pagination links
-                    $('.pages a').bind({ldelim}
-                        click: function(){ldelim}
-                            $.ajax({ldelim}
+                    $('.pages a').bind({
+                        click: function(){
+                            $.ajax({
                                 url: 'gestion_contributions.php' + this.href.substring(this.href.indexOf('?')) + "&ajax=true",
                                 type: "GET",
                                 {include file="js_loader.tpl"},
-                                success: function(res){ldelim}
+                                success: function(res){
                                     $('#contributions_list').empty();
                                     _contribs_ajax_mapper(res);
-                                {rdelim},
-                                error: function() {ldelim}
+                                },
+                                error: function() {
                                     alert("{_T string="An error occured displaying contributions :("}");
-                                {rdelim},
+                                },
                             });
                             return false;
-                        {rdelim}
-                    {rdelim});
+                        }
+                    });
                     //Select a row
-                    $('.contribution_row').click(function(){ldelim}
+                    $('.contribution_row').click(function(){
                         $('#contributions_list').dialog("close");
                         var _cid = $(this).find('input[name="contrib_id"]').val();
                         window.location.href = window.location.href + '&cid=' + _cid;
-                    {rdelim}).css('cursor', 'pointer').attr('title', '{_T string="Click on a contribution row to attach it to the current transaction" escape="js"}');
-                {rdelim}
-            {rdelim});
-        </script>
+                    }).css('cursor', 'pointer').attr('title', '{_T string="Click on a contribution row to attach it to the current transaction" escape="js"}');
+                }
 {/if}
+                $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
+                $('#trans_date').datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    showOn: 'button',
+                    buttonImage: '{$template_subdir}images/calendar.png',
+                    buttonImageOnly: true
+                });
+            });
+        </script> 

@@ -43,6 +43,9 @@
  * @since     Disponible depuis la Release 0.62
  */
 
+use Galette\Repository\Members as Members;
+use Galette\Filters\MembersList as MembersList;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
@@ -56,18 +59,18 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-require_once 'classes/varslist.class.php';
-
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'])  ) {
-    $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
+$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+if ( isset($session['filters']['members'])
+    && !isset($_POST['mailing'])
+    && !isset($_POST['mailing_new'])
+) {
+    $filters = unserialize($session['filters']['members']);
 } else {
-    $varslist = new VarsList();
+    $filters = new MembersList();
 }
 
-require_once 'classes/members.class.php';
-
 // Set caller page ref for cards error reporting
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['caller'] = 'gestion_adherents.php';
+$session['caller'] = 'gestion_adherents.php';
 
 if (   isset($_POST['cards'])
     || isset($_POST['labels'])
@@ -75,8 +78,9 @@ if (   isset($_POST['cards'])
     || isset($_POST['attendance_sheet'])
 ) {
     if (isset($_POST['member_sel'])) {
-        $varslist->selected = $_POST['member_sel'];
-        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'] = serialize($varslist);
+        $filters->selected = $_POST['member_sel'];
+        //cannot use $session here :/
+        $sessionn['filters']['members'] = serialize($filters);
 
         if (isset($_POST['cards'])) {
             $qstring = 'carte_adherent.php';
@@ -86,6 +90,9 @@ if (   isset($_POST['cards'])
         }
         if (isset($_POST['mailing'])) {
             $qstring = 'mailing_adherents.php';
+            if ( isset($_POST['mailing_new']) ) {
+                $qstring .= '?reset=true';
+            }
         }
         if (isset($_POST['attendance_sheet'])) {
             $qstring = 'attendance_sheet.php';
@@ -100,61 +107,65 @@ if (   isset($_POST['cards'])
     }
 }
 
-if (isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']) && $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']) {
-    $error_detected[] = $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error_msg'];
-    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error_msg']);
-    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error']);
+if (isset($session['pdf_error']) && $session['pdf_error']) {
+    $error_detected[] = $session['pdf_error_msg'];
+    unset($session['pdf_error_msg']);
+    unset($session['pdf_error']);
 }
 
 // Filters
 if (isset($_GET['page'])) {
-    $varslist->current_page = (int)$_GET['page'];
+    $filters->current_page = (int)$_GET['page'];
 }
 
 if ( isset($_GET['clear_filter']) ) {
-    $varslist->reinit();
+    $filters->reinit();
 } else {
     //string to filter
     if ( isset($_GET['filter_str']) ) { //filter search string
-        $varslist->filter_str = stripslashes(
+        $filters->filter_str = stripslashes(
             htmlspecialchars($_GET['filter_str'], ENT_QUOTES)
         );
     }
     //field to filter
     if ( isset($_GET['filter_field']) ) {
         if ( is_numeric($_GET['filter_field']) ) {
-            $varslist->field_filter = $_GET['filter_field'];
+            $filters->field_filter = $_GET['filter_field'];
         }
     }
     //membership to filter
     if ( isset($_GET['filter_membership']) ) {
         if ( is_numeric($_GET['filter_membership']) ) {
-            $varslist->membership_filter = $_GET['filter_membership'];
+            $filters->membership_filter = $_GET['filter_membership'];
         }
     }
     //account status to filter
     if ( isset($_GET['filter_account']) ) {
         if ( is_numeric($_GET['filter_account']) ) {
-            $varslist->account_status_filter = $_GET['filter_account'];
+            $filters->account_status_filter = $_GET['filter_account'];
         }
     }
     //email filter
     if ( isset($_GET['email_filter']) ) {
-        $varslist->email_filter = (int)$_GET['email_filter'];
+        $filters->email_filter = (int)$_GET['email_filter'];
+    }
+    //group filter
+    if ( isset($_GET['group_filter']) ) {
+        $filters->group_filter = (int)$_GET['group_filter'];
     }
 }
 
 //numbers of rows to display
 if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
-    $varslist->show = $_GET['nbshow'];
+    $filters->show = $_GET['nbshow'];
 }
 
 // Sorting
 if ( isset($_GET['tri']) ) {
-    $varslist->orderby = $_GET['tri'];
+    $filters->orderby = $_GET['tri'];
 }
 
-$members = new Members();
+$members = new Galette\Repository\Members();
 
 //delete members
 if (isset($_GET['sup']) || isset($_POST['delete'])) {
@@ -172,10 +183,14 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     $members_list = $members->getManagedMembersList(true);
 }
 
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'] = serialize($varslist);
+$groups = new Galette\Repository\Groups();
+$groups_list = $groups->getList();
+
+//cannot use $session here :/
+$session['filters']['members'] = serialize($filters);
 
 //assign pagination variables to the template and add pagination links
-$varslist->setSmartyPagination($tpl);
+$filters->setSmartyPagination($tpl);
 
 $tpl->assign('page_title', _T("Members management"));
 $tpl->assign('require_dialog', true);
@@ -185,16 +200,18 @@ if (isset($warning_detected)) {
     $tpl->assign('warning_detected', $warning_detected);
 }
 $tpl->assign('members', $members_list);
+$tpl->assign('filter_groups_options', $groups_list);
 $tpl->assign('nb_members', $members->getCount());
-$tpl->assign('varslist', $varslist);
+$tpl->assign('filters', $filters);
 $tpl->assign(
     'filter_field_options',
     array(
-        0 => _T("Name"),
-        1 => _T("Address"),
-        2 => _T("Email,URL,IM"),
-        3 => _T("Job"),
-        4 => _T("Infos")
+        Members::FILTER_NAME            => _T("Name"),
+        Members::FILTER_COMPANY_NAME    => _T("Company name"),
+        Members::FILTER_ADRESS          => _T("Address"),
+        Members::FILTER_MAIL            => _T("Email,URL,IM"),
+        Members::FILTER_JOB             => _T("Job"),
+        Members::FILTER_INFOS           => _T("Infos")
     )
 );
 $tpl->assign(

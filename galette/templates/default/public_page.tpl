@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html lang="{$galette_lang}" class="public_page{if $additionnal_html_class} {$additionnal_html_class}{/if}">
-	<head>
-		{include file='common_header.tpl'}
+    <head>
+        {include file='common_header.tpl'}
 {if $require_calendar}
-		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
-	{if $lang ne 'en'}
-		<script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.js"></script>
-	{/if}
+        <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
+    {if $lang ne 'en'}
+        <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.js"></script>
+    {/if}
 {/if}
         {if $head_redirect}{$head_redirect}{/if}
-	</head>
-	<body>
+    </head>
+    <body>
+        {* IE7 and above are no longer supported *}
+        <!--[if lt IE 8]>
+        <div id="oldie">
+            <p>{_T string="Your browser version is way too old and no longer supported in Galette for a while."}</p>
+            <p>{_T string="Please update your browser or use an alternative one, like <a href=\"http://mozilla.org\">Mozilla Firefox</a>."}</p>
+        </div>
+        <![endif]-->
         <header>
             <img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
             <ul id="langs">
@@ -25,7 +32,7 @@
             </div>
 {/if}
         </header>
-		<h1 id="titre">{$page_title}</h1>
+        <h1 id="titre">{$page_title}</h1>
         <p id="asso_name">{$preferences->pref_nom}{if $preferences->pref_slogan}&nbsp;: {$preferences->pref_slogan}{/if}</p>
         <nav>
             <a id="backhome" class="button{if $PAGENAME eq "index.php"} selected{/if}" href="{$galette_base_path}index.php">{_T string="Home"}</a>
@@ -33,7 +40,7 @@
         {if $preferences->pref_bool_selfsubscribe eq true}
             <a id="subscribe" class="button{if $PAGENAME eq "self_adherent.php"} selected{/if}" href="{$galette_base_path}self_adherent.php">{_T string="Subscribe"}</a>
         {/if}
-        {if $pref_mail_method neq constant('GaletteMail::METHOD_DISABLED')}
+        {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
             <a id="lostpassword" class="button{if $PAGENAME eq "lostpasswd.php"} selected{/if}" href="{$galette_base_path}lostpasswd.php">{_T string="Lost your password?"}</a>
         {/if}
     {/if}
@@ -42,43 +49,8 @@
             <a id="trombino" class="button{if $PAGENAME eq "trombinoscope.php"} selected{/if}" href="{$galette_base_path}public/trombinoscope.php" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a>
     {/if}
         </nav>
-
-{* Let's see if there are error messages to show *}
-{if $error_detected|@count != 0}
-				<div id="errorbox">
-					<h1>{_T string="- ERROR -"}</h1>
-					<ul>
-{foreach from=$error_detected item=error}
-						<li>{$error}</li>
-{/foreach}
-					</ul>
-				</div>
-{/if}
-
-{* Let's see if there are warning messages to show *}
-{if $warning_detected|@count != 0}
-				<div id="warningbox">
-					<h1>{_T string="- WARNING -"}</h1>
-					<ul>
-{foreach from=$warning_detected item=warning}
-						<li>{$warning}</li>
-{/foreach}
-					</ul>
-				</div>
-{/if}
-
-{* Let's see if there are success messages to show *}
-{if $success_detected|@count > 0}
-    <div id="successbox">
-            <ul>
-    {foreach from=$success_detected item=success}
-                <li>{$success}</li>
-    {/foreach}
-            </ul>
-    </div>
-{/if}
-
+        {include file="global_messages.tpl"}
         {$content}
         {include file="footer.tpl"}
-	</body>
+    </body>
 </html>

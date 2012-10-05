@@ -28,7 +28,7 @@
 					<img src="{$galette_base_path}picture.php?logo=true&amp;rand={$time}" class="picture" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="{_T string="Current logo"}"/><br/>
 					<label for="del_logo">{_T string="Delete image"}</label><input type="checkbox" name="del_logo" id="del_logo" value="1" /><br />
 {/if}
-					<input type="file" name="logo" id="logo_picture"/>
+					<input type="file" name="logo" id="logo_picture"{if $GALETTE_MODE eq 'DEMO'} disabled="disabled"{/if}/>
 				</p>
 				<p>
 					<label for="pref_adresse" class="bline">{_T string="Address:"}</label>
@@ -52,9 +52,9 @@
           <span class="bline tooltip" title="{_T string="Use either the adress setted below or select user status to retrieve another adress."}">{_T string="Postal adress:"}</span>
           <span class="tip">{_T string="Use either the adress setted below or select a staff member to retrieve he's adress."}</span>
           <label for="pref_postal_adress_0">{_T string="from preferences"}</label>
-          <input type="radio" name="pref_postal_adress" id="pref_postal_adress_0" value="{php}echo Preferences::POSTAL_ADRESS_FROM_PREFS;{/php}" {if $pref.pref_postal_adress eq constant('Preferences::POSTAL_ADRESS_FROM_PREFS')}checked="checked"{/if}/>
+          <input type="radio" name="pref_postal_adress" id="pref_postal_adress_0" value="{php}echo Galette\Core\Preferences::POSTAL_ADRESS_FROM_PREFS;{/php}" {if $pref.pref_postal_adress eq constant('Galette\Core\Preferences::POSTAL_ADRESS_FROM_PREFS')}checked="checked"{/if}/>
           <label for="pref_postal_adress_1">{_T string="from a staff user"}</label>
-          <input type="radio" name="pref_postal_adress" id="pref_postal_adress_1" value="{php}echo Preferences::POSTAL_ADRESS_FROM_STAFF;{/php}" {if $pref.pref_postal_adress eq constant('Preferences::POSTAL_ADRESS_FROM_STAFF')}checked="checked"{/if}/>
+          <input type="radio" name="pref_postal_adress" id="pref_postal_adress_1" value="{php}echo Galette\Core\Preferences::POSTAL_ADRESS_FROM_STAFF;{/php}" {if $pref.pref_postal_adress eq constant('Galette\Core\Preferences::POSTAL_ADRESS_FROM_STAFF')}checked="checked"{/if}/>
           <br/><label for="pref_postal_staff_member">{_T string="Staff member"}</label>
           <select name="pref_postal_staff_member" id="pref_postal_staff_member">
             <option value="-1">{_T string="-- Choose a staff member --"}</option>
@@ -142,9 +142,9 @@
                 <p id="publicpages_visibility"{if !$pref.pref_bool_publicpages} class="hidden"{/if}>
                     <label for="pref_publicpages_visibility" class="bline">{_T string="Show public pages for"}</label>
                     <select name="pref_publicpages_visibility" id="pref_publicpages_visibility">
-                        <option value="{php}echo Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC;{/php}"{if $pref.pref_publicpages_visibility eq constant('Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC')} selected="selected"{/if}>{_T string="Everyone"}</option>
-                        <option value="{php}echo Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED;{/php}"{if $pref.pref_publicpages_visibility eq constant('Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED')} selected="selected"{/if}>{_T string="Up to date members"}</option>
-                        <option value="{php}echo Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE;{/php}"{if $pref.pref_publicpages_visibility eq constant('Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE')} selected="selected"{/if}>{_T string="Admin and staff only"}</option>
+                        <option value="{php}echo Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC;{/php}"{if $pref.pref_publicpages_visibility eq constant('Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC')} selected="selected"{/if}>{_T string="Everyone"}</option>
+                        <option value="{php}echo Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED;{/php}"{if $pref.pref_publicpages_visibility eq constant('Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED')} selected="selected"{/if}>{_T string="Up to date members"}</option>
+                        <option value="{php}echo Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE;{/php}"{if $pref.pref_publicpages_visibility eq constant('Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE')} selected="selected"{/if}>{_T string="Admin and staff only"}</option>
                     </select>
                 </p>
                 <p>
@@ -155,7 +155,10 @@
 
 			<fieldset class="cssform" id="mail">
 				<legend>{_T string="Mail settings"}</legend>
-				<p>
+    {if $GALETTE_MODE eq 'DEMO'}
+                <div>{_T string="Application runs under demo mode. This functionnality is not enabled, sorry."}</div>
+    {else}
+    			<p>
 					<label for="pref_email_nom" class="bline">{_T string="Sender name:"}</label>
 					<input type="text" name="pref_email_nom" id="pref_email_nom" value="{$pref.pref_email_nom}" maxlength="50"{if $required.pref_email_nom eq 1} required{/if}/>
 				</p>
@@ -187,23 +190,26 @@
 					<span class="bline"{if $required.pref_mail_method eq 1} required{/if}>{_T string="Emailing method:"}</span>
 					<ul>
 						<li>
-							<input type="radio" name="pref_mail_method" id="no" value="{php}echo GaletteMail::METHOD_DISABLED;{/php}" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_DISABLED')}checked="checked"{/if}/><label for="no">{_T string="Emailing disabled"}</label>
+							<input type="radio" name="pref_mail_method" id="no" value="{php}echo Galette\Core\GaletteMail::METHOD_DISABLED;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}checked="checked"{/if}/><label for="no">{_T string="Emailing disabled"}</label>
 						</li>
 						<li>
-							<input type="radio" name="pref_mail_method" id="php" value="{php}echo GaletteMail::METHOD_SENDMAIL;{/php}" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_SENDMAIL')}checked="checked"{/if}/><label for="php">{_T string="PHP mail() function"}</label>
+							<input type="radio" name="pref_mail_method" id="php" value="{php}echo Galette\Core\GaletteMail::METHOD_PHPMAIL;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_PHPMAIL')}checked="checked"{/if}/><label for="php">{_T string="PHP mail() function"}</label>
 						</li>
 						<li>
-							<input type="radio" name="pref_mail_method" id="smtp" value="{php}echo GaletteMail::METHOD_SMTP;{/php}" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_SMTP')}checked="checked"{/if}/><label for="smtp">{_T string="Using a SMTP server (slower)"}</label>
+							<input type="radio" name="pref_mail_method" id="smtp" value="{php}echo Galette\Core\GaletteMail::METHOD_SMTP;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_SMTP')}checked="checked"{/if}/><label for="smtp">{_T string="Using a SMTP server (slower)"}</label>
 						</li>
 						<li>
-							<input type="radio" name="pref_mail_method" id="gmail" value="{php}echo GaletteMail::METHOD_GMAIL;{/php}" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_GMAIL')}checked="checked"{/if}/><label for="gmail">{_T string="Using GMAIL as SMTP server (slower)"}</label>
+							<input type="radio" name="pref_mail_method" id="gmail" value="{php}echo Galette\Core\GaletteMail::METHOD_GMAIL;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_GMAIL')}checked="checked"{/if}/><label for="gmail">{_T string="Using GMAIL as SMTP server (slower)"}</label>
 						</li>
 						<li>
-							<input type="radio" name="pref_mail_method" id="qmail" value="{php}echo GaletteMail::METHOD_QMAIL;{/php}" {if $pref.pref_mail_method eq constant('GaletteMail::METHOD_QMAIL')}checked="checked"{/if}/><label for="qmail">{_T string="Using QMAIL server"}</label>
+							<input type="radio" name="pref_mail_method" id="qmail" value="{php}echo Galette\Core\GaletteMail::METHOD_SENDMAIL;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_SENDMAIL')}checked="checked"{/if}/><label for="qmail">{_T string="Using Sendmail server"}</label>
+						</li>
+						<li>
+							<input type="radio" name="pref_mail_method" id="qmail" value="{php}echo Galette\Core\GaletteMail::METHOD_QMAIL;{/php}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_QMAIL')}checked="checked"{/if}/><label for="qmail">{_T string="Using QMAIL server"}</label>
 						</li>
 					</ul>
 				</div>
-				<div id="smtp_parameters"{if $pref.pref_mail_method neq constant('GaletteMail::METHOD_SMTP')} style="display: none;"{/if}>
+				<div id="smtp_parameters"{if $pref.pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_SMTP')} style="display: none;"{/if}>
 					<p>
 						<label for="pref_mail_smtp_host" class="bline">{_T string="SMTP server:"}</label>
 						<input type="text" name="pref_mail_smtp_host" id="pref_mail_smtp_host" value="{$pref.pref_mail_smtp_host}" maxlength="100" size="30"/{if $required.pref_mail_smtp_host eq 1} required{/if}>
@@ -223,7 +229,7 @@
 						<input type="checkbox" name="pref_mail_smtp_secure" id="pref_mail_smtp_secure" value="1" {if $pref.pref_mail_smtp_secure eq 1}checked="checked"{/if}{if $required.pref_mail_smtp_secure eq 1} required{/if}/>
 					</p>
 				</div>
-				<div id="smtp_auth"{if $pref.pref_mail_method neq constant('GaletteMail::METHOD_SMTP') && $pref.pref_mail_method neq constant('GaletteMail::METHOD_GMAIL')} style="display: none;"{/if}>
+				<div id="smtp_auth"{if $pref.pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_SMTP') && $pref.pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_GMAIL')} style="display: none;"{/if}>
 					<p>
 						<label for="pref_mail_smtp_user" class="bline">{_T string="SMTP (or GMail) user:"}</label>
 						<input type="text" name="pref_mail_smtp_user" id="pref_mail_smtp_user" value="{$pref.pref_mail_smtp_user}" maxlength="100" size="30"{if $required.pref_mail_smtp_user eq 1} required{/if}/>
@@ -238,6 +244,7 @@
                     <span class="tip">{_T string="The text that will be automatically set as signature for all outgoing emails.<br/>Variables are quoted with braces, are upper case, and will be replaced automatically.<br/>Refer to the doc to know what variables ara available. "}</span>
                     <textarea name="pref_mail_sign" id="pref_mail_sign">{$pref.pref_mail_sign}</textarea>
                 </p>
+    {/if}
 			</fieldset>
 
 			<fieldset class="cssform" id="labels">
@@ -328,7 +335,7 @@
 					<img src="{$galette_base_path}picture.php?print_logo=true&amp;rand={$time}" class="picture" width="{$print_logo->getOptimalWidth()}" height="{$print_logo->getOptimalHeight()}" alt="{_T string="Current logo for printing"}"/><br/>
 					<label for="del_card_logo">{_T string="Delete image"}</label><input type="checkbox" name="del_card_logo" id="del_card_logo" value="1" /><br />
 {/if}
-					<input type="file" name="card_logo" id="card_logo"/>
+					<input type="file" name="card_logo" id="card_logo"{if $GALETTE_MODE eq 'DEMO'} disabled="disabled"{/if}/>
 				</p>
 				<p>
 					<label for="pref_card_self" class="bline">{_T string="Allow members to print card ?"}</label>
@@ -384,6 +391,9 @@
 {if $login->isSuperAdmin()}
 			<fieldset class="cssform" id="admin">
 				<legend>{_T string="Admin account (independant of members)"}</legend>
+    {if $GALETTE_MODE eq 'DEMO'}
+                <div>{_T string="Application runs under demo mode. This functionnality is not enabled, sorry."}</div>
+    {else}
 				<p>
 					<label for="pref_admin_login" class="bline">{_T string="Username:"}</label>
 					<input type="text" name="pref_admin_login" id="pref_admin_login" value="{$pref.pref_admin_login}" maxlength="20"{if $required.pref_admin_login eq 1} required{/if}/>
@@ -396,6 +406,7 @@
 					<label for="pref_admin_pass_check" class="bline">{_T string="Retype password:"}</label>
 					<input type="password" name="pref_admin_pass_check" id="pref_admin_pass_check" value="" maxlength="20"{if $required.pref_admin_pass_check eq 1} required{/if}/>
 				</p>
+    {/if}
 			</fieldset>
 {/if}
 		</div>
@@ -409,60 +420,60 @@
 		<script type="text/javascript">
             $('#prefs_tabs').tabs();
 
-			$('#no,#php,#qmail').click(function(){ldelim}
+			$('#no,#php,#qmail').click(function(){
 				$('#smtp_parameters,#smtp_auth').hide();
-			{rdelim});
-			$('#smtp,#gmail').click(function(){ldelim}
+			});
+			$('#smtp,#gmail').click(function(){
 				$('#smtp_parameters,#smtp_auth').show();
-			{rdelim});
-			$('#gmail').click(function(){ldelim}
+			});
+			$('#gmail').click(function(){
 				$('#smtp_parameters').hide();
 				$('#smtp_auth').show();
-			{rdelim});
+			});
 
 
-			$(function(){ldelim}
+			$(function(){
                 //for color pickers
 				// hex inputs
 				$('input.hex')
 					.validHex()
-					.keyup(function() {ldelim}
+					.keyup(function() {
 						$(this).validHex();
-					{rdelim})
-					.click(function(){ldelim}
+					})
+					.click(function(){
 						$(this).addClass('focus');
 						$('#picker').remove();
 						$('div.picker-on').removeClass('picker-on');
 						$(this).after('<div id="picker"></div>').parent().addClass('picker-on');
 						$('#picker').farbtastic(this);
 						return false;
-					{rdelim})
+					})
 					.wrap('<div class="hasPicker"></div>')
 					.applyFarbtastic();
 
 				//general app click cleanup
-				$('body').click(function() {ldelim}
+				$('body').click(function() {
 					$('div.picker-on').removeClass('picker-on');
 					$('#picker').remove();
 					$('input.focus, select.focus').removeClass('focus');
-				{rdelim});
+				});
 
-                $('#pref_bool_publicpages').change(function(){ldelim}
+                $('#pref_bool_publicpages').change(function(){
                     $('#publicpages_visibility').toggleClass('hidden');
-                {rdelim});
-			{rdelim});
+                });
+			});
 
 			//color pickers setup (sets bg color of inputs)
-			$.fn.applyFarbtastic = function() {ldelim}
-				return this.each(function() {ldelim}
+			$.fn.applyFarbtastic = function() {
+				return this.each(function() {
 					$('<div/>').farbtastic(this).remove();
-				{rdelim});
-			{rdelim};
+				});
+			};
 
 			// validation for hex inputs
-			$.fn.validHex = function() {ldelim}
+			$.fn.validHex = function() {
 
-				return this.each(function() {ldelim}
+				return this.each(function() {
 
 					var value = $(this).val();
 					value = value.replace(/[^#a-fA-F0-9]/g, ''); // non [#a-f0-9]
@@ -472,7 +483,7 @@
 
 					$(this).val(value);
 
-				{rdelim});
+				});
 
-			{rdelim};
+			};
 		</script>

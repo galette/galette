@@ -38,24 +38,25 @@
  * @since     Available since 0.7dev - 2011-11-26
  */
 
+use Galette\Common\KLogger as KLogger;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     $log->log(
         'Trying to display ajax_attendance_sheet_details.php without appropriate permissions',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }
 
-/** @ignore */
-require_once 'classes/varslist.class.php';
-
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'])  ) {
-    $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist']);
+if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members']) ) {
+    $filters = unserialize(
+        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members']
+    );
 } else {
-    $varslist = new VarsList();
+    $filters = new Galette\Filters\MembersList();
 }
 
 // check for ajax mode
@@ -63,8 +64,10 @@ $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 //retrieve selected members
 $selection = ( isset($_POST['selection']) ) ? $_POST['selection'] : array();
 
-$varslist->selected = $selection;
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['varslist'] = serialize($varslist);
+$filters->selected = $selection;
+$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members'] = serialize(
+    $filters
+);
 
 $tpl->assign('ajax', $ajax);
 $tpl->assign('selection', $selection);

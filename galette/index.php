@@ -49,7 +49,7 @@ if ( isset($_GET['logout']) ) {
 }
 
 // Authentication procedure
-if (isset($_POST["ident"])) {
+if (isset($_POST['ident'])) {
     if ( $_POST['login'] == $preferences->pref_admin_login
         && md5($_POST['password']) == $preferences->pref_admin_pass
     ) {

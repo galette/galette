@@ -36,6 +36,8 @@
  * @since     Available since 0.62
  */
 
+use Galette\Common\KLogger as KLogger;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
@@ -51,7 +53,6 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once WEB_ROOT . 'classes/dynamic_fields.class.php';
 require_once WEB_ROOT . 'includes/dynamic_fields.inc.php';
 
 $form_name = ( isset($_GET['form']) ) ? $_GET['form'] : 'adh';
@@ -70,7 +71,7 @@ if ( $form_name == '' ) {
     $form_title = $all_forms[$form_name];
 
     if ( isset($_POST['valid']) ) {
-        if ($_POST['field_type'] != DynamicFields::SEPARATOR
+        if ($_POST['field_type'] != Galette\Entity\DynamicFields::SEPARATOR
             && (!isset($_POST['field_name']) || $_POST['field_name'] == '')
         ) {
             $error_detected[] = _T("- The name field cannot be void.");
@@ -84,7 +85,7 @@ if ( $form_name == '' ) {
             try {
                 $select = new Zend_Db_Select($zdb->db);
                 $select->from(
-                    PREFIX_DB . DynamicFields::TYPES_TABLE,
+                    PREFIX_DB . Galette\Entity\DynamicFields::TYPES_TABLE,
                     'COUNT(*) + 1 AS idx'
                 )->where('field_form = ?', $form_name);
                 $str = $select->__toString();
@@ -106,15 +107,15 @@ if ( $form_name == '' ) {
                         'field_pos'      => $field_pos
                     );
                     $zdb->db->insert(
-                        PREFIX_DB . DynamicFields::TYPES_TABLE,
+                        PREFIX_DB . Galette\Entity\DynamicFields::TYPES_TABLE,
                         $values
                     );
 
-                    if ($field_type != DynamicFields::SEPARATOR
+                    if ($field_type != Galette\Entity\DynamicFields::SEPARATOR
                         && count($error_detected) == 0
                     ) {
                         $field_id = $zdb->db->lastInsertId(
-                            PREFIX_DB . DynamicFields::TYPES_TABLE,
+                            PREFIX_DB . Galette\Entity\DynamicFields::TYPES_TABLE,
                             'id'
                         );
                         header(
@@ -130,7 +131,7 @@ if ( $form_name == '' ) {
                     $log->log(
                         'An error occured adding new dynamic field. | ' .
                         $e->getMessage(),
-                        PEAR_LOG_ERR
+                        KLogger::ERR
                     );
                 }
             }
@@ -150,9 +151,9 @@ if ( $form_name == '' ) {
                 $zdb->db->beginTransaction();
                 $select = new Zend_Db_Select($zdb->db);
                 $select->from(
-                    PREFIX_DB . DynamicFields::TYPES_TABLE,
+                    PREFIX_DB . Galette\Entity\DynamicFields::TYPES_TABLE,
                     array('field_type', 'field_index', 'field_name')
-                )->where(DynamicFields::TYPES_PK . ' = ?', $field_id)
+                )->where(Galette\Entity\DynamicFields::TYPES_PK . ' = ?', $field_id)
                     ->where('field_form = ?', $form_name);
                 $res = $select->query()->fetch();
                 if ( $res !== false ) {
@@ -161,7 +162,7 @@ if ( $form_name == '' ) {
 
                     if ( $action == 'del' ) {
                         $up = $zdb->db->update(
-                            PREFIX_DB . DynamicFields::TYPES_TABLE,
+                            PREFIX_DB . Galette\Entity\DynamicFields::TYPES_TABLE,
                             array(
                                 'field_index' => new Zend_Db_Expr('field_index-1')
                             ),
@@ -172,7 +173,7 @@ if ( $form_name == '' ) {
                         );
 
                         $del1 = $zdb->db->delete(
-                            PREFIX_DB . DynamicFields::TABLE,
+                            PREFIX_DB . Galette\Entity\DynamicFields::TABLE,
                             array(
                                 'field_id = ?'   => $field_id,
                                 'field_form = ?' => $form_name
@@ -180,7 +181,7 @@ if ( $form_name == '' ) {
                         );
 
                         $del2 = $zdb->db->delete(
-                            PREFIX_DB . DynamicFields::TYPES_TABLE,
+                            PREFIX_DB . Galette\Entity\DynamicFields::TYPES_TABLE,
                             array(
                                 'field_id = ?'   => $field_id,
                                 'field_form = ?' => $form_name
@@ -197,7 +198,7 @@ if ( $form_name == '' ) {
                         $direction = $action == "up" ? -1: 1;
                         $new_rank = $old_rank + $direction;
                         $zdb->db->update(
-                            PREFIX_DB . DynamicFields::TYPES_TABLE,
+                            PREFIX_DB . Galette\Entity\DynamicFields::TYPES_TABLE,
                             array(
                                 'field_index' => $old_rank
                             ),
@@ -208,7 +209,7 @@ if ( $form_name == '' ) {
                         );
 
                         $zdb->db->update(
-                            PREFIX_DB . DynamicFields::TYPES_TABLE,
+                            PREFIX_DB . Galette\Entity\DynamicFields::TYPES_TABLE,
                             array(
                                 'field_index' => $new_rank
                             ),
@@ -222,19 +223,19 @@ if ( $form_name == '' ) {
                 $zdb->db->commit();
             } catch(Exception $e) {
                 /** FIXME */
-                //this one does not seems to work :'(
+                //this one does not seem to work :'(
                 $zdb->db->rollBack();
                 $log->log(
                     'Unable to change field ' . $field_id . ' rank | ' .
                     $e->getMessage(),
-                    PEAR_LOG_ERR
+                    KLogger::ERR
                 );
             }
         }
     }
 
     $select = new Zend_Db_Select($zdb->db);
-    $select->from(PREFIX_DB . DynamicFields::TYPES_TABLE)
+    $select->from(PREFIX_DB . Galette\Entity\DynamicFields::TYPES_TABLE)
         ->where('field_form = ?', $form_name)
         ->order('field_index');
 

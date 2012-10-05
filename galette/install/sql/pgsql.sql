@@ -89,10 +89,10 @@ DROP TABLE IF EXISTS galette_adherents CASCADE;
 CREATE TABLE galette_adherents (
     id_adh integer DEFAULT nextval('galette_adherents_id_seq'::text) NOT NULL,
     id_statut integer DEFAULT '4' REFERENCES galette_statuts(id_statut) ON DELETE RESTRICT ON UPDATE CASCADE,
-    nom_adh character varying(20) DEFAULT '' NOT NULL,
-    prenom_adh character varying(20) DEFAULT NULL,
-    societe_adh character varying(20) DEFAULT NULL,
-    pseudo_adh character varying(20) DEFAULT NULL,
+    nom_adh character varying(50) DEFAULT '' NOT NULL,
+    prenom_adh character varying(50) DEFAULT '' NOT NULL,
+    societe_adh character varying(200) DEFAULT NULL,
+    pseudo_adh character varying(20) DEFAULT '' NOT NULL,
     titre_adh smallint DEFAULT '0' NOT NULL,
     ddn_adh date DEFAULT '19010101',
     adresse_adh character varying(150) DEFAULT '' NOT NULL,
@@ -148,7 +148,7 @@ CREATE TABLE galette_transactions (
     trans_id integer DEFAULT nextval('galette_transactions_id_seq'::text)  NOT NULL,
     trans_date date DEFAULT '19010101' NOT NULL,
     trans_amount real DEFAULT '0',
-    trans_desc character varying(30) NOT NULL DEFAULT '',
+    trans_desc character varying(150) NOT NULL DEFAULT '',
     id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (trans_id)
 );
@@ -205,7 +205,7 @@ CREATE TABLE galette_field_types (
   field_width integer DEFAULT NULL,
   field_height integer DEFAULT NULL,
   field_size integer DEFAULT NULL,
-  field_repeat boolean DEFAULT FALSE,
+  field_repeat integer DEFAULT NULL,
   field_layout integer DEFAULT NULL,
   PRIMARY KEY (field_id)
 );
@@ -334,4 +334,4 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(0.700);
+INSERT INTO galette_database (version) VALUES(0.701);

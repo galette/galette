@@ -35,20 +35,23 @@
  * @since     Available since 0.7dev - 2011-11-05
  */
 
+use Galette\Common\KLogger as KLogger;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
-require_once 'classes/csv.class.php';
 
 if ( !isset($_GET['file']) ) {
     $log->log(
         'No requested file',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     header("HTTP/1.1 500 Internal Server Error");
     die();
 }
 
 $filename = $_GET['file'];
+
+use Galette\IO\Csv;
 
 //Exports main contain user confidential data, they're accessible only for
 //admins or staff members
@@ -63,7 +66,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
         $log->log(
             'A request has been made to get an exported file named `' .
             $filename .'` that does not exists.',
-            PEAR_LOG_WARNING
+            KLogger::WARN
         );
         header('HTTP/1.0 404 Not Found');        
     }
@@ -71,7 +74,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     $log->log(
         'A non authorized person asked to retrieve exported file named `' .
         $filename . '`. Access ha not been granted.',
-        PEAR_LOG_WARNING
+        KLogger::WARN
     );
     header('HTTP/1.0 403 Forbidden');
 }

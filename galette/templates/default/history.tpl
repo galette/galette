@@ -109,15 +109,15 @@
 			</tbody>
 		</table>
 		<script type="text/javascript">
-            $('#nbshow').change(function() {ldelim}
+            $('#nbshow').change(function() {
                 this.form.submit();
-            {rdelim});
+            });
 
-            $(function() {ldelim}
+            $(function() {
                 var _elt = $('<img src="templates/default/images/info.png" class="qryhide" alt="" title="{_T string="Show associated query"}"/>');
                 $('.sql_log').hide().parent().prepend(_elt);
-                $('.qryhide').click(function() {ldelim}
+                $('.qryhide').click(function() {
                     $(this).next('.sql_log').show();
-                {rdelim});
-            {rdelim});
+                });
+            });
 		</script>

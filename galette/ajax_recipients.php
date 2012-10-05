@@ -34,21 +34,21 @@
  * @since     Available since 0.7dev - 2011-09-13
  */
 
+use Galette\Common\KLogger as KLogger;
+
 require_once 'includes/galette.inc.php';
+
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     $log->log(
         'Trying to display ajax_recipients.php without appropriate permissions',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }
 
-require_once WEB_ROOT . 'classes/members.class.php';
-require_once WEB_ROOT . 'classes/mailing.class.php';
-
 $mailing = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
 
-$members = Members::getArrayList($_POST['recipients']);
+$members = Galette\Repository\Members::getArrayList($_POST['recipients']);
 $mailing->setRecipients($members);
 
 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing'] = serialize($mailing);

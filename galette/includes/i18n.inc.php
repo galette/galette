@@ -37,7 +37,7 @@
  * @since     Available since 0.62
  */
 
-require_once WEB_ROOT . 'classes/l10n.class.php';
+use Galette\Common\KLogger as KLogger;
 
 $disable_gettext=true;
 
@@ -92,7 +92,7 @@ function addDynamicTranslation($text_orig, $error_detected)
                 $log->log(
                     'Entry for `' . $text_orig .
                     '` dynamic translation already exists.',
-                    PEAR_LOG_INFO
+                    KLogger::INFO
                 );
                 $zdb->db->update(
                     $l10n_table,
@@ -118,7 +118,7 @@ function addDynamicTranslation($text_orig, $error_detected)
         $log->log(
             'An error occured adding dynamic translation for `' .
             $text_orig . '` | ' . $e->getMessage(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
         return false;
     }
@@ -154,7 +154,7 @@ function deleteDynamicTranslation($text_orig, $error_detected)
             'An error occured deleting dynamic translation for `' .
             $text_orig . '` (lang `' . $lang->getLongID() . '`) | ' .
             $e->getMessage(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
         return false;
     }
@@ -198,7 +198,7 @@ function updateDynamicTranslation(
         $log->log(
             'An error occured updating dynamic translation for `' .
             $text_orig . '` | ' . $e->getMessage(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
         return false;
     }
@@ -219,7 +219,7 @@ function getDynamicTranslation($text_orig, $text_locale)
     try {
         $select = new Zend_Db_Select($zdb->db);
         $select->limit(1)->from(
-            PREFIX_DB . L10n::TABLE,
+            PREFIX_DB . Galette\Core\L10n::TABLE,
             'text_trans'
         )->where('text_orig = ?', $text_orig)
             ->where('text_locale = ?', $text_locale);
@@ -229,11 +229,11 @@ function getDynamicTranslation($text_orig, $text_locale)
         $log->log(
             'An error occured retrieving l10n entry. text_orig=' . $text_orig .
             ', text_locale=' . $text_locale . ' | ' . $e->getMessage(),
-            PEAR_LOG_WARNING
+            KLogger::WARN
         );
         $log->log(
             'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
         return false;
     }
@@ -280,7 +280,7 @@ if ( !function_exists('_T') ) {
                     $trans = $chaine . ' (not translated)';
                 }
             }
-            return (I18n::seemsUtf8($trans)  ? $trans : utf8_encode($trans));
+            return (Galette\Core\I18n::seemUtf8($trans)  ? $trans : utf8_encode($trans));
         } else {
             return _($chaine);
         }

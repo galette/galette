@@ -47,12 +47,9 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once 'classes/texts.class.php';
-require_once 'classes/contributions_types.class.php';
 require_once 'includes/dynamic_fields.inc.php';
-require_once 'classes/varslist.class.php';
 
-$contrib = new Contribution();
+$contrib = new Galette\Entity\Contribution();
 
 $id_cotis = get_numeric_form_value('id_cotis', '');
 
@@ -79,10 +76,11 @@ if ( $type_selected && !($id_adh || $id_cotis) ) {
     $type_selected = false;
 } else if ( $id_cotis != '' || $type_selected || $trans_id || $id_adh) {
     if ( $id_cotis != '' ) {
-        $contrib = new Contribution((int)$id_cotis);
+        $contrib = new Galette\Entity\Contribution((int)$id_cotis);
         if ( $contrib->id == '' ) {
             //not possible to load contribution, exit
             header('location: index.php');
+            die();
         }
     } else {
         $args = array(
@@ -95,7 +93,7 @@ if ( $type_selected && !($id_adh || $id_cotis) ) {
         if ( $preferences->pref_membership_ext != '' ) {
             $args['ext'] = $preferences->pref_membership_ext;
         }
-        $contrib = new Contribution($args);
+        $contrib = new Galette\Entity\Contribution($args);
         if ( $contrib->isTransactionPart() ) {
             $id_adh = $contrib->member;
             //Should we disable contribution member selection if we're from
@@ -162,16 +160,16 @@ if ( isset($_POST['valid']) ) {
         // dynamic fields
         set_all_dynamic_fields(
             'contrib',
-            $contrib->id,
+            $id_cotis,
             $contribution['dyn']
         );
 
         // Get member informations
-        $adh = new Adherent();
+        $adh = new Galette\Entity\Adherent();
         $adh->load($contrib->member);
 
-        if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED ) {
-            $texts = new Texts(
+        if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED ) {
+            $texts = new Galette\Entity\Texts(
                 array(
                     'name_adh'      => custom_html_entity_decode($adh->sname),
                     'mail_adh'      => custom_html_entity_decode($adh->email),
@@ -181,10 +179,10 @@ if ( isset($_POST['valid']) ) {
                 )
             );
             if ( $new && isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1' ) {
-                if ( GaletteMail::isValidEmail($adh->email) ) {
+                if ( Galette\Core\GaletteMail::isValidEmail($adh->email) ) {
                     $mtxt = $texts->getTexts('contrib', $adh->language);
 
-                    $mail = new GaletteMail();
+                    $mail = new Galette\Core\GaletteMail();
                     $mail->setSubject($texts->getSubject());
                     $mail->setRecipients(
                         array(
@@ -228,7 +226,7 @@ if ( isset($_POST['valid']) ) {
                 // Get email text in database
                 $mtxt = $texts->getTexts('newcont', $preferences->pref_lang);
 
-                $mail = new GaletteMail();
+                $mail = new Galette\Core\GaletteMail();
                 $mail->setSubject($texts->getSubject());
                 /** TODO: only super-admin is contacted here. We should send a message to all admins, or propose them a chekbox if they don't want to get bored */
                 $mail->setRecipients(
@@ -261,8 +259,8 @@ if ( isset($_POST['valid']) ) {
         }
 
         if ( count($error_detected) == 0 ) {
-            if ( $contrib->isTransactionPart() &&
-                $contrib->transaction->getMissingAmount() > 0
+            if ( $contrib->isTransactionPart()
+                && $contrib->transaction->getMissingAmount() > 0
             ) {
                 $url = 'ajouter_contribution.php?trans_id=' .
                     $contrib->transaction->id . '&id_adh=' .
@@ -294,7 +292,7 @@ if ( isset($_POST['valid']) ) {
             $contribution['duree_mois_cotis'] = $preferences->pref_membership_ext;
         }
     }
-}  else { //$_POST['valid']
+} else { //$_POST['valid']
     if ( !is_int($contrib->id) ) {
         // initialiser la structure contribution à vide (nouvelle contribution)
         $contribution['duree_mois_cotis'] = $preferences->pref_membership_ext;
@@ -302,7 +300,7 @@ if ( isset($_POST['valid']) ) {
         // dynamic fields
         $contribution['dyn'] = get_dynamic_fields(
             'contrib',
-            $contrib->id,
+            $id_cotis,
             false
         );
     }
@@ -331,14 +329,14 @@ if ( isset($head_redirect) ) {
 }
 
 // contribution types
-$type_cotis_options = ContributionsTypes::getList(
+$type_cotis_options = Galette\Entity\ContributionsTypes::getList(
     ($type_selected == 1 && $id_adh != '') ? $contrib->isCotis() : null
 );
 $tpl->assign('type_cotis_options', $type_cotis_options);
 
 // members
-$varslist = new VarsList();
-$members = Members::getList(true);
+$m = new Galette\Repository\Members();
+$members = $m->getList(true);
 if ( count($members) == 0 ) {
     $adh_options = array('' => _T("You must first register a member"));
 } else {

@@ -36,10 +36,10 @@
  * @since     Available since 0.62
  */
 
+use Galette\Common\KLogger as KLogger;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
-require_once 'classes/dynamic_fields.class.php';
-require_once 'classes/l10n.class.php';
 
 if ( !$login->isLogged() ) {
     header('location: index.php');
@@ -95,7 +95,7 @@ $nb_fields = 0;
 try {
     $select = new Zend_Db_Select($zdb->db);
     $select->from(
-        PREFIX_DB . L10n::TABLE,
+        PREFIX_DB . Galette\Core\L10n::TABLE,
         array('nb' => 'COUNT(text_orig)')
     );
     $nb_fields = $select->query()->fetch()->nb;
@@ -104,11 +104,11 @@ try {
     $log->log(
         'An error occured counting l10n entries | ' .
         $e->getMessage(),
-        PEAR_LOG_WARNING
+        KLogger::WARN
     );
     $log->log(
         'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-        PEAR_LOG_ERR
+        KLogger::ERR
     );
 }
 
@@ -116,7 +116,7 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
     try {
         $select = new Zend_Db_Select($zdb->db);
         $select->distinct()->from(
-            PREFIX_DB . L10n::TABLE,
+            PREFIX_DB . Galette\Core\L10n::TABLE,
             'text_orig'
         )->order('text_orig');
 
@@ -152,13 +152,12 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
         $log->log(
             'An error occured retrieving l10n entries | ' .
             $e->getMessage(),
-            PEAR_LOG_WARNING
+            KLogger::WARN
         );
         $log->log(
             'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
-        
     }
 }
 $tpl->assign('page_title', _T("Translate labels"));

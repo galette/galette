@@ -36,6 +36,7 @@
  * @since     Available since 0.62
  */
 
+use Galette\Common\KLogger as KLogger;
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
@@ -80,7 +81,7 @@ try {
     $log->log(
         'Unable to retrieve field `' . $field_id . '` informations | ' .
         $e->getMessage(),
-        PEAR_LOG_ERR
+        KLogger::ERR
     );
     $error_detected[] = _T("Unable to retrieve field informations.");
 }
@@ -92,10 +93,10 @@ if ( isset($_POST['valid']) ) {
     $field_perm = get_numeric_posted_value('field_perm', '');
     $field_pos = get_numeric_posted_value('field_pos', 0);
     $field_required = get_numeric_posted_value('field_required', '0');
-    $field_width = get_numeric_posted_value('field_width', NULL);
-    $field_height = get_numeric_posted_value('field_height', NULL);
-    $field_size = get_numeric_posted_value('field_size', NULL);
-    $field_repeat = get_numeric_posted_value('field_repeat', 'false');
+    $field_width = get_numeric_posted_value('field_width', null);
+    $field_height = get_numeric_posted_value('field_height', null);
+    $field_size = get_numeric_posted_value('field_size', null);
+    $field_repeat = get_numeric_posted_value('field_repeat', new Zend_Db_Expr('NULL'));
     $fixed_values = get_form_value('fixed_values', '');
 
     if ( $field_id != '' && $field_perm != '' ) {
@@ -117,7 +118,7 @@ if ( isset($_POST['valid']) ) {
             /** FIXME */
             $log->log(
                 'An error occured checking field duplicity' . $e->getMessage(),
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
         }
 
@@ -157,7 +158,7 @@ if ( isset($_POST['valid']) ) {
                 /** FIXME */
                 $log->log(
                     'An error occured storing field | ' . $e->getMessage(),
-                    PEAR_LOG_ERR
+                    KLogger::ERR
                 );
                 $error_detected[] = _T("An error occured storing the field.");
             }
@@ -193,7 +194,7 @@ if ( isset($_POST['valid']) ) {
                 $log->log(
                     'Unable to manage fields values table ' .
                     $contents_table . ' | ' . $e->getMessage(),
-                    PEAR_LOG_ERR
+                    KLogger::ERR
                 );
                 $error_detected[] = _T("An error occured storing managing fields values table");
             }
@@ -220,7 +221,7 @@ if ( isset($_POST['valid']) ) {
                     $zdb->db->rollBack();
                     $log->log(
                         'Unable to store field ' . $field_id . ' values',
-                        PEAR_LOG_ERR
+                        KLogger::ERR
                     );
                 }
             }
@@ -258,7 +259,7 @@ if ( isset($_POST['valid']) ) {
         $log->log(
             'Unable to retrieve fields types for field ' . $field_id . ' | ' .
             $e->getMessage(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
     }
 }

@@ -4,11 +4,11 @@
             <div id="infobox">
                 <h1>{_T string="Account registered!"}</h1>
                 <p>
-    {if $pref_mail_method == constant('GaletteMail::METHOD_DISABLED') or $member->email eq ""}
+    {if $pref_mail_method == constant('Galette\Core\GaletteMail::METHOD_DISABLED') or $member->email eq ""}
                     {_T string="Your subscription has been registered."}
-     {else}
+    {else}
                     {_T string="Your subscription has been registered, you will receive a recapitulative email soon (remember to check your spam box ;) )."}
-     {/if}
+    {/if}
                     <br/>{_T string="You'll be redirected to the login page in a few seconds"}
                 </p>
             </div>
@@ -37,11 +37,11 @@
 					</p>
 					<p>
 						<label for="nom_adh" class="bline">{_T string="Name:"}</label>
-						<input type="text" name="nom_adh" id="nom_adh" value="{$member->name|escape}" maxlength="20" {$disabled.nom_adh}{if $required.nom_adh eq 1} required{/if}/>
+						<input type="text" name="nom_adh" id="nom_adh" value="{$member->name|escape}" maxlength="50" {$disabled.nom_adh}{if $required.nom_adh eq 1} required{/if}/>
 					</p>
 					<p>
 						<label for="prenom_adh" class="bline">{_T string="First name:"}</label>
-						<input type="text" name="prenom_adh" id="prenom_adh" value="{$member->surname}" maxlength="20" {$disabled.prenom_adh}{if $required.prenom_adh eq 1} required{/if}/>
+						<input type="text" name="prenom_adh" id="prenom_adh" value="{$member->surname}" maxlength="50" {$disabled.prenom_adh}{if $required.prenom_adh eq 1} required{/if}/>
 					</p>
                     <p>
 						<label for="is_company" class="bline">{_T string="Is company?"}</label>
@@ -49,7 +49,7 @@
                     </p>
 					<p id="company_field"{if !$member->isCompany()} class="hidden"{/if}>
 						<label for="societe_adh" class="bline">{_T string="Company:"}</label>
-						<input type="text" name="societe_adh" id="societe_adh" value="{$member->company_name}" maxlength="20" {$disabled.societe_adh}{if $required.societe_adh eq 1} required{/if}/>
+						<input type="text" name="societe_adh" id="societe_adh" value="{$member->company_name}" maxlength="200" {$disabled.societe_adh}{if $required.societe_adh eq 1} required{/if}/>
 					</p>
 					<p>
 						<label for="pseudo_adh" class="bline">{_T string="Nickname:"}</label>
@@ -57,7 +57,7 @@
 					</p>
 					<p>
 						<label for="ddn_adh" class="bline">{_T string="Birth date:"}</label>
-						<input type="text" name="ddn_adh" id="ddn_adh" value="{$member->birthdate}" maxlength="10" {$disabled.ddn_adh}{if $required.ddn_adh eq 1} required{/if}/> <span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
+						<input type="text" name="ddn_adh" id="ddn_adh" value="{$member->birthdate}" maxlength="10" {$disabled.ddn_adh}{if $required.ddn_adh eq 1} required{/if}/> <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
 					</p>
                     <p>
                         <label for="lieu_naissance" class="bline">{_T string="Birthplace:"}</label>
@@ -130,7 +130,7 @@
 					</p>
 					<p>
 						<label for="gpgid" class="bline">{_T string="Id GNUpg (GPG):"}</label>
-						<input type="text" name="gpgid" id="gpgid" value="{$member->gpgid}" maxlength="8" size="8" {$disabled.gpgid}{if $required.gpgid eq 1} required{/if}/>
+						<input type="text" name="gpgid" id="gpgid" value="{$member->gnupgid}" maxlength="8" size="8" {$disabled.gpgid}{if $required.gpgid eq 1} required{/if}/>
 					</p>
 					<p>
 						<label for="fingerprint" class="bline">{_T string="fingerprint:"}</label>
@@ -143,7 +143,7 @@
 				<legend class="ui-state-active ui-corner-top">{_T string="Galette-related data:"}</legend>
 				<div>
 					<p>
-						<label for="bool_display_info" class="bline tooltip">{_T string="Be visible in the<br /> members list :"}</label>
+						<label for="bool_display_info" class="bline tooltip">{_T string="Be visible in the members list:"}</label>
                         <span class="tip">{_T string="If you check this box (and if you are up to date with your contributions), your full name, website adress ad other informations will be publically visilbe on the members list.<br/>If you've uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case."}</span>
 						<input type="checkbox" name="bool_display_info" id="bool_display_info" value="1" {if $member->appearsInMembersList() eq 1}checked="checked"{/if} {$disabled.bool_display_info}{if $required.bool_display_info eq 1} required{/if}/>
 					</p>
@@ -203,7 +203,7 @@
 					<p>
 						<label for="date_crea_adh" class="bline">{_T string="Creation date:"}</label>
 						<input type="text" name="date_crea_adh" id="date_crea_adh" value="{$member->creation_date}" maxlength="10" {$disabled.date_crea_adh}{if $required.date_crea_adh eq 1} required{/if}/>
-						<span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
+						<span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
 					</p>
 					<p>
 						<label for="info_adh" class="bline">{_T string="Other informations (admin):"}</label>
@@ -291,15 +291,15 @@
 		</div>
 		</form> 
 		<script type="text/javascript">
-            $(function() {ldelim}
-                $('#is_company').change(function(){ldelim}
+            $(function() {
+                $('#is_company').change(function(){
                     //console.log(this.checked);
                     $('#company_field').toggleClass('hidden');
-                {rdelim});
+                });
 
                 _collapsibleFieldsets();
 
-                $('#ddn_adh').datepicker({ldelim}
+                $('#ddn_adh').datepicker({
                     changeMonth: true,
                     changeYear: true,
                     showOn: 'button',
@@ -307,8 +307,8 @@
                     buttonImageOnly: true,
                     maxDate: '-0d',
                     yearRange: 'c-100'
-                {rdelim});
-                $('#date_crea_adh').datepicker({ldelim}
+                });
+                $('#date_crea_adh').datepicker({
                     changeMonth: true,
                     changeYear: true,
                     showOn: 'button',
@@ -316,65 +316,69 @@
                     buttonImageOnly: true,
                     maxDate: '-0d',
                     yearRange: 'c-10'
-                {rdelim});
+                });
 
                 {* Groups popup *}
-                $('#btngroups, #btnmanagedgroups').click(function(){ldelim}
+                $('#btngroups, #btnmanagedgroups').click(function(){
                     var _managed = false;
-                    if ( $(this).attr('id') == 'btnmanagedgroups' ) {ldelim}
+                    if ( $(this).attr('id') == 'btnmanagedgroups' ) {
                         _managed = true;
-                    {rdelim}
+                    }
                     var _groups = [];
                     var _form = (_managed) ? 'managed' : 'user';
-                    $('#' + _form + 'groups_form input').each(function(){ldelim}
+                    $('#' + _form + 'groups_form input').each(function(){
                         _group = $(this).val().split('|');
-                        _groups[_groups.length] = {ldelim}
+                        _groups[_groups.length] = {
                             id: _group[0],
                             name: _group[1]
-                        {rdelim};
-                    {rdelim});
-                    $.ajax({ldelim}
+                        };
+                    });
+                    $.ajax({
                         url: 'ajax_groups.php',
                         type: "POST",
-                        data: {ldelim}ajax: true, groups: _groups, managed: _managed{rdelim},
+                        data: {
+                            ajax: true,
+                            groups: _groups,
+                            managed: _managed
+                        },
                         {include file="js_loader.tpl"},
-                        success: function(res){ldelim}
+                        success: function(res){
                             _groups_dialog(res, _groups, _managed);
-                        {rdelim},
-                        error: function() {ldelim}
+                        },
+                        error: function() {
                             alert("{_T string="An error occured displaying groups interface :(" escape="js"}");
-                        {rdelim}
-                    {rdelim});
+                        }
+                    });
                     return false;
-                {rdelim});
+                });
 
-                var _groups_dialog = function(res, _groups, _managed){ldelim}
+                var _groups_dialog = function(res, _groups, _managed){
                     var _title = '{_T string="Groups selection" escape="js"}';
-                    if ( _managed ) {ldelim}
+                    if ( _managed ) {
                         _title = '{_T string="Managed groups selection" escape="js"}';
-                    {rdelim}
+                    }
                     var _el = $('<div id="ajax_groups_list" title="' + _title + '"> </div>');
-                    _el.appendTo('body').dialog({ldelim}
+                    _el.appendTo('body').dialog({
                         modal: true,
                         hide: 'fold',
                         width: '80%',
                         height: 500,
-                        close: function(event, ui){ldelim}
+                        close: function(event, ui){
                             _el.remove();
-                        {rdelim}
-                    {rdelim});
+                        }
+                    });
                     _groups_ajax_mapper(res, _groups, _managed);
-                {rdelim}
+                }
 
-                var _groups_ajax_mapper = function(res, _groups, _managed){ldelim}
+                var _groups_ajax_mapper = function(res, _groups, _managed){
                     $('#ajax_groups_list').append(res);
-                    $('#btnvalid').button().click(function(){ldelim}
+                    $('#btnvalid').button().click(function(){
                         //remove actual groups
                         var _form = (_managed) ? 'managed' : 'user';
                         $('#' + _form + 'groups_form').empty();
                         var _groups = new Array();
                         var _groups_str = '';
-                        $('li[id^="group_"]').each(function(){ldelim}
+                        $('li[id^="group_"]').each(function(){
                             //get group values
                             _gid = this.id.substring(6, this.id.length);
                             _gname = $(this).text();
@@ -385,49 +389,49 @@
                                 _gid + '|' + _gname + '|' +
                                 '" name="' + _iname + '[]">'
                             );
-                            if ( _groups_str != '' ) {ldelim}
+                            if ( _groups_str != '' ) {
                                 _groups_str += ', ';
-                            {rdelim}
-                            if ( _managed ) {ldelim}
+                            }
+                            if ( _managed ) {
                                 _groups_str += '{_T string="Manager for '%groupname'" escape="js"}'.replace(/%groupname/, _gname);
-                            {rdelim} else {ldelim}
+                            } else {
                                 _groups_str += '{_T string="Member of '%groupname'" escape="js"}'.replace(/%groupname/, _gname);
-                            {rdelim}
-                        {rdelim});
+                            }
+                        });
                         $('#' + _form + 'groups').html(_groups_str);
                         $('#ajax_groups_list').dialog("close");
-                    {rdelim});
+                    });
                     //Remap links
                     var _none = $('#none_selected').clone();
-                    $('li input[type=checkbox]').click(function(e){ldelim}
+                    $('li input[type=checkbox]').click(function(e){
                         e.stopPropagation();
-                    {rdelim});
-                    $('li[id^="group_"]').click(function(){ldelim}
+                    });
+                    $('li[id^="group_"]').click(function(){
                         $(this).remove();
-                        if ( $('#selected_groups ul li').length == 0 ) {ldelim}
+                        if ( $('#selected_groups ul li').length == 0 ) {
                             $('#selected_groups ul').append(_none);
-                        {rdelim}
-                    {rdelim});
-                    $('#listing a').click(function(){ldelim}
+                        }
+                    });
+                    $('#listing a').click(function(){
                         var _gid = this.href.substring(this.href.indexOf('?')+10);
                         var _gname = $(this).text();
                         $('#none_selected').remove()
-                        if ( $('#group_' + _gid).length == 0 ) {ldelim}
+                        if ( $('#group_' + _gid).length == 0 ) {
                             var _li = '<li id="group_' + _gid + '">' + _gname + '</li>';
                             $('#selected_groups ul').append(_li);
-                            $('#group_' + _gid).click(function(){ldelim}
+                            $('#group_' + _gid).click(function(){
                                 $(this).remove();
-                                if ( $('#selected_groups ul li').length == 0 ) {ldelim}
+                                if ( $('#selected_groups ul li').length == 0 ) {
                                     $('#selected_groups ul').append(_none);
-                                {rdelim}
-                            {rdelim});
-                        {rdelim}
+                                }
+                            });
+                        }
                         return false;
-                    {rdelim});
+                    });
 
-                {rdelim}
+                }
 
                 {include file="photo_dnd.tpl"}
-            {rdelim});
+            });
 		</script>
 {/if}

@@ -39,6 +39,8 @@
  * @since     Available since 0.7dev - 2011-11-01
  */
 
+use Galette\Common\KLogger as KLogger;
+
 require_once 'includes/galette.inc.php';
 
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff()
@@ -46,7 +48,7 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff()
 ) {
     $log->log(
         'Trying to display ajax_groups.php without appropriate permissions',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }
@@ -54,9 +56,7 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff()
 // check for ajax mode
 $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 
-require_once WEB_ROOT . 'classes/groups.class.php';
-
-$groups = new Groups();
+$groups = new Galette\Repository\Groups();
 $groups_list = $groups->getList();
 
 $tpl->assign('ajax', $ajax);

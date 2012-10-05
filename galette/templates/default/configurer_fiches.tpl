@@ -53,43 +53,43 @@
             $('#configfiches_tabs').append('<a class="button notext" id="btnadd_small">{_T string="Add"}</a>');
             var _dialogform = $('<form id="dialogform" action="configurer_fiches.php" method="post" title="{_T string="Add new dynamic field"}"">');
             _dialogform.append($('#addfield'));
-			_dialogform.dialog({ldelim}
+			_dialogform.dialog({
 				autoOpen: false,
 				modal: true,
 				hide: 'fold',
 				width: '40%'
-			{rdelim}).dialog('close');
+			}).dialog('close');
 
-			$('#btnadd_small').click(function(){ldelim}
+			$('#btnadd_small').click(function(){
 				$('#dialogform').dialog('open');
 				return false;
-			{rdelim});
+			});
 
-            $('#configfiches_tabs > ul > li > a').each(function(){ldelim}
+            $('#configfiches_tabs > ul > li > a').each(function(){
                 $(this).attr('href', $(this).attr('href')  + '&ajax=true');
-            {rdelim});
+            });
 
-            $('#configfiches_tabs').tabs({ldelim}
-                load: function(event, ui) {ldelim}
+            $('#configfiches_tabs').tabs({
+                load: function(event, ui) {
                     $('#configfiches_tabs input:submit, #configfiches_tabs .button, #configfiches_tabs input:reset' ).button();
-                {rdelim},
-                ajaxOptions: {ldelim}
+                },
+                ajaxOptions: {
                     {* Cannot include js_loader.tpl here because we need to use beforeSend specificaly... *}
-                    beforeSend: function(xhr, settings) {ldelim}
+                    beforeSend: function(xhr, settings) {
                         var _reg = /\?form=(.*)&ajax=true/g;
                         $('#formname').val(_reg.exec(settings.url)[1]);
-                        if ( settings.url.match(/\?form={$form_name}.*/) ) {ldelim}
+                        if ( settings.url.match(/\?form={$form_name}.*/) ) {
                             return false; //avoid reloading first tab onload
-                        {rdelim}
+                        }
                         var _img = $('<figure id="loading"><p><img src="{$template_subdir}images/loading.png" alt="{_T string="Loading..."}"/><br/>{_T string="Currently loading..."}</p></figure>');
                         $('body').append(_img);
-                    {rdelim},
-                    complete: function() {ldelim}
+                    },
+                    complete: function() {
                         $('#loading').remove();
-                    {rdelim},
-                    error: function( xhr, status, index, anchor ) {ldelim}
+                    },
+                    error: function( xhr, status, index, anchor ) {
                         alert('{_T string="An error occured :("|escape:"js"}');
-                    {rdelim}
-                {rdelim}
-            {rdelim});
+                    }
+                }
+            });
         </script>

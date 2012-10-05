@@ -1,24 +1,39 @@
-		<form action="ajouter_contribution.php" method="post">
 {if !$head_redirect}
+		<form action="ajouter_contribution.php" method="post">
 		<div class="bigtable">
     {if $contribution->isTransactionPart()}
         {assign var="mid" value=$contribution->transaction->member}
             <table id="transaction_detail">
                 <caption>{_T string="Related transaction informations"}</caption>
-                <tr>
-                    <th class="listing">#</th>
-                    <th class="listing">{_T string="Date"}</th>
-                    <th class="listing">{_T string="Member"}</th>
-                    <th class="listing">{_T string="Amount"}</th>
-                    <th class="listing">{_T string="Not dispatched amount"}</th>
-                </tr>
-                <tr>
-                    <td>{$contribution->transaction->id}</td>
-                    <td>{$contribution->transaction->date}</td>
-                    <td>{memberName id="$mid"}</td>
-                    <td class="right">{$contribution->transaction->amount}</td>
-                    <td class="right">{$contribution->transaction->getMissingAmount()}</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <td colspan="5">
+                            {$contribution->transaction->description}
+                            <a href="{$galette_base_path}ajouter_transaction.php?trans_id={$contribution->transaction->id}" title="{_T string="View transaction"}">
+                                <img src="{$template_subdir}images/icon-money.png"
+                                    alt="{_T string="[view]"}"
+                                    width="16"
+                                    height="16"/>
+                            </a>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="listing">#</th>
+                        <th class="listing">{_T string="Date"}</th>
+                        <th class="listing">{_T string="Member"}</th>
+                        <th class="listing">{_T string="Amount"}</th>
+                        <th class="listing">{_T string="Not dispatched amount"}</th>
+                    </tr>
+                    <tr>
+                        <td>{$contribution->transaction->id}</td>
+                        <td>{$contribution->transaction->date}</td>
+                        <td>{memberName id="$mid"}</td>
+                        <td class="right">{$contribution->transaction->amount}</td>
+                        <td class="right">{$contribution->transaction->getMissingAmount()}</td>
+                    </tr>
+                </tbody>
             </table>
     {/if}
 			<fieldset class="cssform">
@@ -54,12 +69,12 @@
                 <p>
                     <label class="bline" for="type_paiement_cotis">{_T string="Payment type:"}</label>
                     <select name="type_paiement_cotis" id="type_paiement_cotis">
-                        <option value="{php}echo Contribution::PAYMENT_CASH;{/php}"{if $contribution->payment_type eq constant('Contribution::PAYMENT_CASH')} selected="selected"{/if}>{_T string="Cash"}</option>
-                        <option value="{php}echo Contribution::PAYMENT_CREDITCARD;{/php}"{if $contribution->payment_type eq constant('Contribution::PAYMENT_CREDITCARD')} selected="selected"{/if}>{_T string="Credit card"}</option>
-                        <option value="{php}echo Contribution::PAYMENT_CHECK;{/php}"{if $contribution->payment_type eq constant('Contribution::PAYMENT_CHECK')} selected="selected"{/if}>{_T string="Check"}</option>
-                        <option value="{php}echo Contribution::PAYMENT_TRANSFER;{/php}"{if $contribution->payment_type eq constant('Contribution::PAYMENT_TRANSFER')} selected="selected"{/if}>{_T string="Transfer"}</option>
-                        <option value="{php}echo Contribution::PAYMENT_PAYPAL;{/php}"{if $contribution->payment_type eq constant('Contribution::PAYMENT_PAYPAL')} selected="selected"{/if}>{_T string="Paypal"}</option>
-                        <option value="{php}echo Contribution::PAYMENT_OTHER;{/php}"{if $contribution->payment_type eq constant('Contribution::PAYMENT_OTHER')} selected="selected"{/if}>{_T string="Other"}</option>
+                        <option value="{php}echo Galette\Entity\Contribution::PAYMENT_CASH;{/php}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_CASH')} selected="selected"{/if}>{_T string="Cash"}</option>
+                        <option value="{php}echo Galette\Entity\Contribution::PAYMENT_CREDITCARD;{/php}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_CREDITCARD')} selected="selected"{/if}>{_T string="Credit card"}</option>
+                        <option value="{php}echo Galette\Entity\Contribution::PAYMENT_CHECK;{/php}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_CHECK')} selected="selected"{/if}>{_T string="Check"}</option>
+                        <option value="{php}echo Galette\Entity\Contribution::PAYMENT_TRANSFER;{/php}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_TRANSFER')} selected="selected"{/if}>{_T string="Transfer"}</option>
+                        <option value="{php}echo Galette\Entity\Contribution::PAYMENT_PAYPAL;{/php}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_PAYPAL')} selected="selected"{/if}>{_T string="Paypal"}</option>
+                        <option value="{php}echo Galette\Entity\Contribution::PAYMENT_OTHER;{/php}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_OTHER')} selected="selected"{/if}>{_T string="Other"}</option>
                     </select>
                 </p>
 				<p>
@@ -71,7 +86,7 @@
 						{/if}
                     </label>
                     <input class="past-date-pick" type="text" name="date_debut_cotis" id="date_debut_cotis" value="{$contribution->begin_date}" maxlength="10"{if $required.date_debut_cotis eq 1} required{/if}/>
-                    <span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
+                    <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
 				</p>
         {if $contribution->isCotis()}
 				<p>
@@ -82,7 +97,7 @@
             {else}
                     <label class="bline" for="date_fin_cotis">{_T string="End date of membership:"}</label>
                     <input type="text" name="date_fin_cotis" id="date_fin_cotis" value="{$contribution->end_date}" maxlength="10"{if $required.date_fin_cotis eq 1} required{/if}/>
-                    <span class="exemple">{_T string="(dd/mm/yyyy format)"}</span>
+                    <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
             {/if}
 				</p>
         {/if}
@@ -116,4 +131,16 @@
 		</div>
 		<p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
 		</form>
+    <script type="text/javascript">
+        $(function(){
+            $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
+            $('#date_debut_cotis, #date_fin_cotis').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                showOn: 'button',
+                buttonImage: '{$template_subdir}images/calendar.png',
+                buttonImageOnly: true
+            });
+        });
+    </script>
 {/if}

@@ -39,11 +39,15 @@
  * @since     Available since 0.7dev - 2011-08-28
  */
 
+use Galette\Filters\MembersList as MembersList;
+use Galette\Common\KLogger as KLogger;
+
 require_once 'includes/galette.inc.php';
+
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     $log->log(
         'Trying to display ajax_members.php without appropriate permissions',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }
@@ -52,41 +56,43 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
 $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 $multiple = ( isset($_POST['multiple']) && $_POST['multiple'] == 'false' ) ? false : true;
 
-require_once WEB_ROOT . 'classes/members.class.php';
-require_once WEB_ROOT . 'classes/varslist.class.php';
-require_once WEB_ROOT . 'classes/mailing.class.php';
-require_once WEB_ROOT . 'classes/group.class.php';
-
-$varslist = new VarsList();
+$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+if ( isset($session['ajax_members_filters']['members']) ) {
+    $filters = unserialize($session['ajax_members_filters']['members']);
+} else {
+    $filters = new MembersList();
+}
 
 if (isset($_GET['page'])) {
-    $varslist->current_page = (int)$_GET['page'];
+    $filters->current_page = (int)$_GET['page'];
 }
 
 if (isset($_POST['page'])) {
-    $varslist->current_page = (int)$_POST['page'];
+    $filters->current_page = (int)$_POST['page'];
 }
 
 //numbers of rows to display
 if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
-    $varslist->show = $_GET['nbshow'];
+    $filters->show = $_GET['nbshow'];
 }
 
-$members = new Members();
+$members = new Galette\Repository\Members();
 $members_list = $members->getMembersList(true);
 
 //assign pagination variables to the template and add pagination links
-$varslist->setSmartyPagination($tpl);
+$filters->setSmartyPagination($tpl);
+
+$session['ajax_members_filters']['members'] = serialize($filters);
 
 $selected_members = null;
 $unreachables_members = null;
 if ( !isset($_POST['from']) ) {
-    $mailing = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
+    $mailing = unserialize($session['mailing']);
     if ( !isset($_POST['members']) ) {
         $selected_members = $mailing->recipients;
         $unreachables_members = $mailing->unreachables;
     } else {
-        $selected_members = Members::getArrayList($_POST['members']);
+        $selected_members = Galette\Repository\Members::getArrayList($_POST['members']);
     }
 } else {
     switch ( $_POST['from'] ) {
@@ -94,13 +100,13 @@ if ( !isset($_POST['from']) ) {
         if ( !isset($_POST['gid']) ) {
             $log->log(
                 'Trying to list group members with no group id provided',
-                PEAR_LOG_ERR
+                KLogger::ERR
             );
             throw new Exception('A group id is required.');
             exit(0);
         }
         if ( !isset($_POST['members']) ) {
-            $group = new Group((int)$_POST['gid']);
+            $group = new Galette\Entity\Group((int)$_POST['gid']);
             $selected_members = array();
             if ( !isset($_POST['mode']) || $_POST['mode'] == 'members' ) {
                 $selected_members = $group->getMembers();
@@ -109,13 +115,13 @@ if ( !isset($_POST['from']) ) {
             } else {
                 $log->log(
                     'Trying to list group members with unknown mode',
-                    PEAR_LOG_ERR
+                    KLogger::ERR
                 );
                 throw new Exception('Unknown mode.');
                 exit(0);
             }
         } else {
-            $selected_members = Members::getArrayList($_POST['members']);
+            $selected_members = Galette\Repository\Members::getArrayList($_POST['members']);
         }
         break;
     }
@@ -129,7 +135,7 @@ $tpl->assign('unreachables_members', $unreachables_members);
 if ( isset($_POST['gid']) ) {
     $tpl->assign('the_id', $_POST['gid']);
 }
-$tpl->assign('varslist', $varslist);
+$tpl->assign('filters', $filters);
 
 if ( $ajax ) {
     $tpl->assign('mode', 'ajax');

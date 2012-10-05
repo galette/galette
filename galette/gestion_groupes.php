@@ -34,8 +34,9 @@
  * @link      http://galette.tuxfamily.org
  */
 
+use Galette\Common\KLogger as KLogger;
+
 require_once 'includes/galette.inc.php';
-require_once 'classes/groups.class.php';
 
 if ( !$login->isLogged() ) {
     header('location: index.php');
@@ -46,20 +47,20 @@ if ( !$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() ) {
     die();
 }
 
-$groups = new Groups();
+$groups = new Galette\Repository\Groups();
 
-$group = new Group();
+$group = new Galette\Entity\Group();
 $error_detected = array();
 $success_detected = array();
 
-$id = get_numeric_form_value(Group::PK, null);
+$id = get_numeric_form_value(Galette\Entity\Group::PK, null);
 if ( $id !== null ) {
     if ( $login->isGroupManager($id) ) {
         $group->load($id);
     } else {
         $log->log(
             'Trying to display group ' . $id . ' without appropriate permissions',
-            PEAR_LOG_INFO
+            KLogger::INFO
         );
         die();
     }
@@ -78,7 +79,7 @@ if ( isset($_POST['delete']) ) {
         );
         //reinstanciate group
         $id = null;
-        $group = new Group();
+        $group = new Galette\Entity\Group();
     }
 } else if ( isset($_POST['group_name']) ) {
     $group->setName($_POST['group_name']);
@@ -101,13 +102,13 @@ if ( isset($_POST['delete']) ) {
     if ( isset($_POST['managers']) ) {
         $managers_id = $_POST['managers'];
     }
-    $managers = Members::getArrayList($managers_id);
+    $managers = Galette\Repository\Members::getArrayList($managers_id);
 
     $members_id = array();
     if ( isset($_POST['members']) ) {
         $members_id = $_POST['members'];
     }
-    $members = Members::getArrayList($members_id);
+    $members = Galette\Repository\Members::getArrayList($members_id);
 
     $group->setManagers($managers);
     $group->setMembers($members);
@@ -128,10 +129,10 @@ if ( isset($_POST['delete']) ) {
 }
 
 if ( isset($_GET['new']) ) {
-    $group = new Group();
+    $group = new Galette\Entity\Group();
     $group->setName($_GET['group_name']);
     if ( !$login->isSuperAdmin() ) {
-        $group->setManagers(new Adherent($login->id));
+        $group->setManagers(new Galette\Entity\Adherent($login->id));
     }
     $group->store();
     $id = $group->getId();

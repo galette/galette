@@ -36,18 +36,18 @@
  * @since     Available since 0.62
  */
 
+use Galette\Common\KLogger as KLogger;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     $log->log(
         'Trying to display ajax_members.php without appropriate permissions',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }
-
-require_once 'classes/adherent.class.php';
 
 if ( !isset($_POST)
     || !isset($_POST['member_id'])
@@ -72,7 +72,7 @@ $fp = fopen($tmpname, 'w');
 fwrite($fp, $raw_file);
 fclose($fp);
 
-$adh = new Adherent((int)$mid);
+$adh = new Galette\Entity\Adherent((int)$mid);
 
 $ret = array();
 $res = $adh->picture->store(

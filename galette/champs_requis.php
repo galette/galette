@@ -50,25 +50,29 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once 'classes/required.class.php';
 require_once 'champs_adherents.php';
 
-$requires = new Required();
+$requires = new Galette\Entity\Required();
 $fields = $requires->getFields();
 
-/* Fields that are not visible in the
-* form should not be visible here.
-*/
+/*
+ * Fields that are not visible in the
+ * form should not be visible here.
+ */
 unset($fields[array_search('id_adh', $fields)]);
 unset($fields[array_search('date_echeance', $fields)]);
 unset($fields[array_search('bool_display_info', $fields)]);
 unset($fields[array_search('bool_display_in', $fields)]);
 unset($fields[array_search('bool_exempt_adh', $fields)]);
 unset($fields[array_search('bool_admin_adh', $fields)]);
-/** TODO: the following does not appear on the form */
-unset($fields[array_search('lieu_naissance', $fields)]);
 unset($fields[array_search('activite_adh', $fields)]);
 unset($fields[array_search('date_crea_adh', $fields)]);
+unset($fields[array_search('date_modif_adh', $fields)]);
+//Fields we do not want to be set as required
+unset($fields[array_search('societe_adh', $fields)]);
+unset($fields[array_search('id_statut', $fields)]);
+unset($fields[array_search('titre_adh', $fields)]);
+unset($fields[array_search('pref_lang', $fields)]);
 
 if ( isset($_POST) && count($_POST)>1 ) {
     $values = array();

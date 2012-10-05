@@ -1,27 +1,33 @@
 		<form action="gestion_adherents.php" method="get" id="filtre">
 		<div id="listfilter">
 			<label for="filter_str">{_T string="Search:"}&nbsp;</label>
-			<input type="text" name="filter_str" id="filter_str" value="{$varslist->filter_str}" type="search" placeholder="{_T string="Enter a value"}"/>&nbsp;
+			<input type="text" name="filter_str" id="filter_str" value="{$filters->filter_str}" type="search" placeholder="{_T string="Enter a value"}"/>&nbsp;
 		 	{_T string="in:"}&nbsp;
 			<select name="filter_field">
-				{html_options options=$filter_field_options selected=$varslist->field_filter}
+				{html_options options=$filter_field_options selected=$filters->field_filter}
 			</select>
 		 	{_T string="among:"}&nbsp;
 			<select name="filter_membership" onchange="form.submit()">
-				{html_options options=$filter_membership_options selected=$varslist->membership_filter}
+				{html_options options=$filter_membership_options selected=$filters->membership_filter}
 			</select>
 			<select name="filter_account" onchange="form.submit()">
-				{html_options options=$filter_accounts_options selected=$varslist->account_status_filter}
+				{html_options options=$filter_accounts_options selected=$filters->account_status_filter}
 			</select>
+            <select name="group_filter" onchange="form.submit()">
+                <option value="0">{_T string="Select a group"}</option>
+{foreach from=$filter_groups_options item=group}
+                <option value="{$group->getId()}"{if $filters->group_filter eq $group->getId()} selected="selected"{/if}>{$group->getName()}</option>
+{/foreach}
+            </select>
 			<input type="submit" class="inline" value="{_T string="Filter"}"/>
 			<input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
             <div>
                 {_T string="Members that have an email adress:"}
-                <input type="radio" name="email_filter" id="filter_dc_email" value="{php}echo Members::FILTER_DC_EMAIL;{/php}"{if $varslist->email_filter eq constant('Members::FILTER_DC_EMAIL')} checked="checked"{/if}>
+                <input type="radio" name="email_filter" id="filter_dc_email" value="{php}echo Galette\Repository\Members::FILTER_DC_EMAIL;{/php}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_DC_EMAIL')} checked="checked"{/if}>
                 <label for="filter_dc_email" >{_T string="Don't care"}</label>
-                <input type="radio" name="email_filter" id="filter_with_email" value="{php}echo Members::FILTER_W_EMAIL;{/php}"{if $varslist->email_filter eq constant('Members::FILTER_W_EMAIL')} checked="checked"{/if}>
+                <input type="radio" name="email_filter" id="filter_with_email" value="{php}echo Galette\Repository\Members::FILTER_W_EMAIL;{/php}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_W_EMAIL')} checked="checked"{/if}>
                 <label for="filter_with_email" >{_T string="With"}</label>
-                <input type="radio" name="email_filter" id="filter_without_email" value="{php}echo Members::FILTER_WO_EMAIL;{/php}"{if $varslist->email_filter eq constant('Members::FILTER_WO_EMAIL')} checked="checked"{/if}>
+                <input type="radio" name="email_filter" id="filter_without_email" value="{php}echo Galette\Repository\Members::FILTER_WO_EMAIL;{/php}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_WO_EMAIL')} checked="checked"{/if}>
                 <label for="filter_without_email" >{_T string="Without"}</label>
             </div>
 		</div>
@@ -44,10 +50,10 @@
 				<tr>
 					<th class="listing" class="id_row">#</th>
 					<th class="listing left">
-						<a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_NAME;{/php}" class="listing">
+						<a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_NAME;{/php}" class="listing">
 							{_T string="Name"}
-							{if $varslist->orderby eq constant('Members::ORDERBY_NAME')}
-								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
+							{if $filters->orderby eq constant('galette\Repository\Members::ORDERBY_NAME')}
+								{if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
 								{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -56,10 +62,10 @@
 						</a>
 					</th>
 					<th class="listing left">
-						<a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_NICKNAME;{/php}" class="listing">
+						<a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_NICKNAME;{/php}" class="listing">
 							{_T string="Nickname"}
-							{if $varslist->orderby eq constant('Members::ORDERBY_NICKNAME')}
-								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
+							{if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NICKNAME')}
+								{if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
 								{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -68,10 +74,10 @@
 						</a>
 					</th>
 					<th class="listing left">
-						<a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_STATUS;{/php}" class="listing">
+						<a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_STATUS;{/php}" class="listing">
 							{_T string="Status"}
-							{if $varslist->orderby eq constant('Members::ORDERBY_STATUS')}
-								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
+							{if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_STATUS')}
+								{if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
 								{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -81,10 +87,10 @@
 					</th>
 {if $login->isAdmin() or $login->isStaff()}
 					<th class="listing left">
-						<a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_FEE_STATUS;{/php}" class="listing">
+						<a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_FEE_STATUS;{/php}" class="listing">
 							{_T string="State of dues"}
-							{if $varslist->orderby eq constant('Members::ORDERBY_FEE_STATUS')}
-								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
+							{if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_FEE_STATUS')}
+								{if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
 								{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -93,10 +99,10 @@
 						</a>
 					</th>
                     <th class="listing left">
-                        <a href="gestion_adherents.php?tri={php}echo Members::ORDERBY_MODIFDATE;{/php}" class="listing">
+                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_MODIFDATE;{/php}" class="listing">
                             {_T string="Modified"}
-							{if $varslist->orderby eq constant('Members::ORDERBY_MODIFDATE')}
-								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
+							{if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_MODIFDATE')}
+								{if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
 								{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -115,7 +121,7 @@
                         <ul class="selection_menu">
                             <li>{_T string="For the selection:"}</li>
                             <li><input type="submit" id="delete" onclick="return confirm('{_T string="Do you really want to delete all selected accounts (and related contributions)?"|escape:"javascript"}');" name="delete" value="{_T string="Delete"}"/></li>
-    {if $pref_mail_method neq constant('GaletteMail::METHOD_DISABLED')}
+    {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
                             <li><input type="submit" id="sendmail" name="mailing" value="{_T string="Mail"}"/></li>
     {/if}
                             <li>
@@ -137,14 +143,14 @@
 			<tbody>
 {foreach from=$members item=member key=ordre}
 				<tr>
-					<td class="{$member->getRowClass()} right">{php}$ordre = $this->get_template_vars('ordre');echo $ordre+1+($varslist->current_page - 1)*$numrows{/php}</td>
+					<td class="{$member->getRowClass()} right">{$ordre+1+($filters->current_page - 1)*$numrows}</td>
 					<td class="{$member->getRowClass()} nowrap username_row">
 						<input type="checkbox" name="member_sel[]" value="{$member->id}"/>
                     {if $member->isCompany()}
 						<img src="{$template_subdir}images/icon-company.png" alt="{_T string="[W]"}" width="16" height="16"/>
-					{elseif $member->politeness eq constant('Politeness::MR')}
+					{elseif $member->politeness eq constant('Galette\Entity\Politeness::MR')}
 						<img src="{$template_subdir}images/icon-male.png" alt="{_T string="[M]"}" width="16" height="16"/>
-					{elseif $member->politeness eq constant('Politeness::MRS') || $member->politeness eq constant('Politeness::MISS')}
+					{elseif $member->politeness eq constant('Galette\Entity\Politeness::MRS') || $member->politeness eq constant('Galette\Entity\Politeness::MISS')}
 						<img src="{$template_subdir}images/icon-female.png" alt="{_T string="[W]"}" width="16" height="16"/>
 					{else}
 						<img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
@@ -161,7 +167,7 @@
 					{else}
 						<img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
 					{/if}
-					<a href="voir_adherent.php?id_adh={$member->id}">{$member->sname}</a>
+                        <a href="voir_adherent.php?id_adh={$member->id}">{$member->sname}{if $member->company_name} ({$member->company_name}){/if}</a>
 					</td>
 					<td class="{$member->getRowClass()} nowrap">{$member->nickname|htmlspecialchars}</td>
 					<td class="{$member->getRowClass()} nowrap">{$member->sstatus}</td>
@@ -246,111 +252,142 @@
 		</div>
 		<script type="text/javascript">
 		var _is_checked = true;
-		var _bind_check = function(){ldelim}
-			$('#checkall').click(function(){ldelim}
-				$('#listing :checkbox[name=member_sel[]]').each(function(){ldelim}
+		var _bind_check = function(){
+			$('#checkall').click(function(){
+				$('#listing :checkbox[name=member_sel[]]').each(function(){
 					this.checked = _is_checked;
-				{rdelim});
+				});
 				_is_checked = !_is_checked;
 				return false;
-			{rdelim});
-			$('#checkinvert').click(function(){ldelim}
-				$('#listing :checkbox[name=member_sel[]]').each(function(){ldelim}
+			});
+			$('#checkinvert').click(function(){
+				$('#listing :checkbox[name=member_sel[]]').each(function(){
 					this.checked = !$(this).is(':checked');
-				{rdelim});
+				});
 				return false;
-			{rdelim});
-		{rdelim}
+			});
+		}
 		{* Use of Javascript to draw specific elements that are not relevant is JS is inactive *}
-		$(function(){ldelim}
+		$(function(){
 			$('#table_footer').parent().before('<tr><td id="checkboxes" colspan="4"><span class="fleft"><a href="#" id="checkall">{_T string="(Un)Check all"}</a> | <a href="#" id="checkinvert">{_T string="Invert selection"}</a></span></td></tr>');
 			_bind_check();
-			$('#nbshow').change(function() {ldelim}
+			$('#nbshow').change(function() {
 				this.form.submit();
-			{rdelim});
+			});
 			$('#checkboxes').after('<td class="right" colspan="3"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
 			$('#legende h1').remove();
-			$('#legende').dialog({ldelim}
+			$('#legende').dialog({
 				autoOpen: false,
 				modal: true,
 				hide: 'fold',
 				width: '40%'
-			{rdelim}).dialog('close');
+			}).dialog('close');
 
-			$('#show_legend').click(function(){ldelim}
+			$('#show_legend').click(function(){
 				$('#legende').dialog('open');
 				return false;
-			{rdelim});
-
-            $('.selection_menu input[type=submit], .selection_menu input[type=button], ').click(function(){ldelim}
+			});
+            $('.selection_menu input[type=submit], .selection_menu input[type=button], ').click(function(){
                 var _checkeds = $('#listing').find('input[type=checkbox]:checked').length;
-                if ( _checkeds == 0 ) {ldelim}
+                if ( _checkeds == 0 ) {
                     var _el = $('<div id="pleaseselect" title="{_T string="No member selected" escape="js"}">{_T string="Please make sure to select at least one member from the list to perform this action." escape="js"}</div>');
-                    _el.appendTo('body').dialog({ldelim}
+                    _el.appendTo('body').dialog({
                         modal: true,
-                        buttons: {ldelim}
-                            Ok: function() {ldelim}
+                        buttons: {
+                            Ok: function() {
                                 $(this).dialog( "close" );
-                            {rdelim}
-                        {rdelim},
-                        close: function(event, ui){ldelim}
+                            }
+                        },
+                        close: function(event, ui){
                             _el.remove();
-                        {rdelim}
-                    {rdelim});
+                        }
+                    });
                     return false;
-                {rdelim} else {ldelim}
-                    if (this.id == 'attendance_sheet') {ldelim}
+                } else {
+{if $existing_mailing eq true}
+                    if (this.id == 'sendmail') {
+                        var _el = $('<div id="existing_mailing" title="{_T string="Existing mailing"}">{_T string="A mailing already exists. Do you want to create a new one or resume the existing?"}</div>');
+                        _el.appendTo('body').dialog({
+                            modal: true,
+                            hide: 'fold',
+                            width: '25em',
+                            height: 150,
+                            close: function(event, ui){
+                                _el.remove();
+                            },
+                            buttons: {
+                                '{_T string="Resume"}': function() {
+                                    $(this).dialog( "close" );
+                                    location.href = 'mailing_adherents.php';
+                                },
+                                '{_T string="New"}': function() {
+                                    $(this).dialog( "close" );
+                                    //add required controls to the form, change its action URI, and send it.
+                                    var _form = $('#listform');
+                                    _form.append($('<input type="hidden" name="mailing_new" value="true"/>'));
+                                    _form.append($('<input type="hidden" name="mailing" value="true"/>'));
+                                    _form.submit();
+                                }
+                            }
+                        });
+                        return false;
+                    }
+{/if}
+                    if (this.id == 'attendance_sheet') {
                         _attendance_sheet_details();
                         return false;
-                    {rdelim}
+                    }
                     return true;
-                {rdelim}
-            {rdelim});
-		{rdelim});
+                }
+            });
+        });
 
-        var _attendance_sheet_details = function(){ldelim}
+        var _attendance_sheet_details = function(){
             var _selecteds = [];
-            $('#listing').find('input[type=checkbox]:checked').each(function(){ldelim}
+            $('#listing').find('input[type=checkbox]:checked').each(function(){
                 _selecteds.push($(this).val());
-            {rdelim});
-            $.ajax({ldelim}
+            });
+            $.ajax({
                 url: 'ajax_attendance_sheet_details.php',
                 type: "POST",
-                data: {ldelim}ajax: true, selection: _selecteds{rdelim},
+                data: {
+                    ajax: true,
+                    selection: _selecteds
+                },
                 dataType: 'html',
-                success: function(res){ldelim}
+                success: function(res){
                     var _el = $('<div id="attendance_sheet_details" title="{_T string="Attendance sheet details" escape="js"}"> </div>');
-                    _el.appendTo('body').dialog({ldelim}
+                    _el.appendTo('body').dialog({
                         modal: true,
                         hide: 'fold',
                         width: '60%',
                         height: 400,
-                        close: function(event, ui){ldelim}
+                        close: function(event, ui){
                             _el.remove();
-                        {rdelim},
-                        buttons: {ldelim}
-                            Ok: function() {ldelim}
+                        },
+                        buttons: {
+                            Ok: function() {
                                 $('#sheet_details_form').submit();
                                 $(this).dialog( "close" );
-                            {rdelim},
-                            Cancel: function() {ldelim}
+                            },
+                            Cancel: function() {
                                 $(this).dialog( "close" );
-                            {rdelim}
-                        {rdelim}
-                    {rdelim}).append(res);
-                    $('#sheet_date').datepicker({ldelim}
+                            }
+                        }
+                    }).append(res);
+                    $('#sheet_date').datepicker({
                         changeMonth: true,
                         changeYear: true,
                         showOn: 'button',
                         buttonImage: '{$template_subdir}images/calendar.png',
                         buttonImageOnly: true,
                         yearRange: 'c:c+5'
-                    {rdelim});
-                {rdelim},
-                error: function() {ldelim}
+                    });
+                },
+                error: function() {
                     alert("{_T string="An error occured displaying attendance sheet details interface :(" escape="js"}");
-                {rdelim}
-            {rdelim});
-        {rdelim}
+                }
+            });
+        }
 		</script>
 {/if}

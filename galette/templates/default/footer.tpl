@@ -1,5 +1,8 @@
         <footer>
             <a id="copyright" href="http://galette.tuxfamily.org/">Galette {$GALETTE_VERSION}</a>
+{if $login->isLogged() &&  ($login->isAdmin() or $login->isStaff())}
+            <br/><a id="sysinfos" href="{$galette_base_path}sysinfos.php">{_T string="System informations"}</a>
+{/if}
             <nav>
                 <h4>{_T string="The Galette project: "}</h4>
                 <ul>

@@ -4,10 +4,10 @@
 			<thead>
 				<tr>
 					<th class="listing left">
-						<a href="?tri={php}echo Members::ORDERBY_NAME;{/php}" class="listing">
+						<a href="?tri={php}echo Galette\Repository\Members::ORDERBY_NAME;{/php}" class="listing">
 							{_T string="Name"}
-							{if $varslist->orderby eq constant('Members::ORDERBY_NAME')}
-								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
+							{if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NAME')}
+								{if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
     							{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -16,10 +16,10 @@
 						</a>
 					</th>
 					<th class="listing left">
-						<a href="?tri={php}echo Members::ORDERBY_NICKNAME;{/php}" class="listing">
+						<a href="?tri={php}echo Galette\Repository\Members::ORDERBY_NICKNAME;{/php}" class="listing">
 							{_T string="Nickname"}
-							{if $varslist->orderby eq constant('Members::ORDERBY_NICKNAME')}
-								{if $varslist->ordered eq constant('VarsList::ORDER_ASC')}
+							{if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NICKNAME')}
+								{if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
 							<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
     							{else}
 							<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -38,9 +38,9 @@
 					<td class="{$member->getRowClass(true)} nowrap username_row">
                     {if $member->isCompany()}
 						<img src="{$template_subdir}images/icon-company.png" alt="" width="16" height="16"/>
-					{elseif $member->politeness == constant('Politeness::MR')}
+					{elseif $member->politeness == constant('Galette\Entity\Politeness::MR')}
 						<img src="{$template_subdir}images/icon-male.png" alt="" width="16" height="16"/>
-					{elseif $member->politeness == constant('Politeness::MRS') || $member->politeness == constant('Politeness::MISS')}
+					{elseif $member->politeness == constant('Galette\Entity\Politeness::MRS') || $member->politeness == constant('Galette\Entity\Politeness::MISS')}
 						<img src="{$template_subdir}images/icon-female.png" alt="" width="16" height="16"/>
 					{else}
 						<img src="{$template_subdir}images/icon-empty.png" alt="" width="10" height="12"/>

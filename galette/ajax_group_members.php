@@ -34,6 +34,8 @@
  * @since     Available since 0.7dev - 2011-10-29
  */
 
+use Galette\Common\KLogger as KLogger;
+
 require_once 'includes/galette.inc.php';
 
 $ids = $_POST['persons'];
@@ -41,7 +43,7 @@ $mode = $_POST['person_mode'];
 if ( !$ids || !$mode ) {
     $log->log(
         'Trying to display ajax_group_members.php without persons or mode specified',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }
@@ -49,14 +51,12 @@ if ( !$ids || !$mode ) {
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     $log->log(
         'Trying to display ajax_group_members.php without appropriate permissions',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }
 
-require_once WEB_ROOT . 'classes/adherent.class.php';
-
-$persons = Members::getArrayList($ids);
+$persons = Galette\Repository\Members::getArrayList($ids);
 
 $tpl->assign('persons', $persons);
 $tpl->assign('person_mode', $mode);

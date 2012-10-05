@@ -17,9 +17,9 @@
                 <tr>
                     <th class="listing id_row">#</th>
                     <th class="listing left date_row">
-                        <a href="gestion_transactions.php?tri={php}echo Transactions::ORDERBY_DATE;{/php}" class="listing">{_T string="Date"}
-                        {if $smarty.session.sort_by eq constant('Transactions::ORDERBY_DATE')}
-                            {if $smarty.session.sort_direction eq constant('Transactions::ORDER_ASC')}
+                        <a href="gestion_transactions.php?tri={php}echo Galette\Repository\Transactions::ORDERBY_DATE;{/php}" class="listing">{_T string="Date"}
+                        {if $transactions->orderby eq constant('Galette\Repository\Transactions::ORDERBY_DATE')}
+                            {if $transactions->ordered eq constant('galette\Repository\Transactions::ORDER_ASC')}
                         <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
                         <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -30,9 +30,9 @@
                     <th class="listing left">{_T string="Description"}</th>
 {if $login->isAdmin() or $login->isStaff()}
                     <th class="listing left">
-                        <a href="gestion_transactions.php?tri={php}echo Transactions::ORDERBY_MEMBER;{/php}" class="listing">{_T string="Originator"}
-                        {if $smarty.session.sort_by eq constant('Transactions::ORDERBY_MEMBER')}
-                            {if $smarty.session.sort_direction eq constant('Transactions::ORDER_ASC')}
+                        <a href="gestion_transactions.php?tri={php}echo Galette\Repository\Transactions::ORDERBY_MEMBER;{/php}" class="listing">{_T string="Originator"}
+                        {if $transactions->orderby eq constant('Galette\Repository\Transactions::ORDERBY_MEMBER')}
+                            {if $transactions->ordered eq constant('Galette\Repository\Transactions::ORDER_ASC')}
                         <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
                         <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -42,9 +42,9 @@
                     </th>
 {/if}
                     <th class="listing left">
-                        <a href="gestion_transactions.php?tri={php}echo Transactions::ORDERBY_AMOUNT;{/php}" class="listing">{_T string="Amount"}
-                        {if $smarty.session.sort_by eq constant('Transactions::ORDERBY_AMOUNT')}
-                            {if $smarty.session.sort_direction eq constant('Transactions::ORDER_ASC')}
+                        <a href="gestion_transactions.php?tri={php}echo Galette\Repository\Transactions::ORDERBY_AMOUNT;{/php}" class="listing">{_T string="Amount"}
+                        {if $transactions->orderby eq constant('Galette\Repository\Transactions::ORDERBY_AMOUNT')}
+                            {if $transactions->ordered eq constant('Galette\Repository\Transactions::ORDER_ASC')}
                         <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
                         <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -66,7 +66,7 @@
 				</tr>
 			</tfoot>
             <tbody>
-{foreach from=$transactions item=transaction name=transactions_list}
+{foreach from=$list_trans item=transaction name=transactions_list}
     {assign var="mid" value=$transaction->member}
     {assign var="cclass" value=$transaction->getRowClass()}
                 <tr>
@@ -117,23 +117,23 @@
 			</table>
 		</div>
 		<script type="text/javascript">
-			$(function(){ldelim}
-                $('#nbshow').change(function() {ldelim}
+			$(function(){
+                $('#nbshow').change(function() {
                     this.form.submit();
-                {rdelim});
+                });
 
 				$('#table_footer').parent().before('<td class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}9{elseif $login->isAdmin() or $login->isStaff()}8{else}7{/if}"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
 				$('#legende h1').remove();
-				$('#legende').dialog({ldelim}
+				$('#legende').dialog({
 					autoOpen: false,
 					modal: true,
 					hide: 'fold',
 					width: '40%'
-				{rdelim}).dialog('close');
+				}).dialog('close');
 
-				$('#show_legend').click(function(){ldelim}
+				$('#show_legend').click(function(){
 					$('#legende').dialog('open');
 					return false;
-				{rdelim});
-			{rdelim});
+				});
+			});
 		</script>

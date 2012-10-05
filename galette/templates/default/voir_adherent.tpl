@@ -10,7 +10,7 @@
 			<li>
 				<a class="button" href="carte_adherent.php?id_adh={$member->id}" id="btn_membercard">{_T string="Generate Member Card"}</a>
 			</li>
-    {if $pref_mail_method neq constant('GaletteMail::METHOD_DISABLED')}
+    {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
             <li>
 				<a class="button" href="lostpasswd.php?id_adh={$member->id}" id="btn_lostpassword" title="{_T string="Send member a link to generate a new passord, as if had used the 'lost password' functionnality."}">{_T string="New password"}</a>
             </li>
@@ -145,7 +145,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 			</tr>
 			<tr>
 				<th>{_T string="Id GNUpg (GPG):"}</th>
-				<td>{$member->gpgid}</td>
+				<td>{$member->gnupgid}</td>
 			</tr>
 			<tr>
 				<th>{_T string="fingerprint:"}</th>
@@ -156,7 +156,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 		<table class="details">
 			<caption class="ui-state-active ui-corner-top">{_T string="Galette-related data:"}</caption>
 			<tr>
-				<th>{_T string="Be visible in the<br /> members list :"}</th>
+				<th>{_T string="Be visible in the members list:"}</th>
 				<td>{$member->sappears_in_list}</td>
 			</tr>
 {if $login->isAdmin() or $login->isStaff()}
@@ -227,24 +227,24 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 	</div>
 {if $login->isAdmin() or $login->isStaff() or $login->login eq $member->login}
     <script type="text/javascript">
-        $(function() {ldelim}
+        $(function() {
             {include file="photo_dnd.tpl"}
 
-            $('.notmanaged').click(function(){ldelim}
+            $('.notmanaged').click(function(){
                 var _el = $('<div id="not_managed_group" title="{_T string="Not managed group" escape="js"}">{_T string="You are not part of managers for the requested group." escape="js"}</div>');
-                _el.appendTo('body').dialog({ldelim}
+                _el.appendTo('body').dialog({
                     modal: true,
-                    buttons: {ldelim}
-                        "{_T string="Ok" escape="js"}": function() {ldelim}
+                    buttons: {
+                        "{_T string="Ok" escape="js"}": function() {
                             $( this ).dialog( "close" );
-                        {rdelim}
-                    {rdelim},
-                    close: function(event, ui){ldelim}
+                        }
+                    },
+                    close: function(event, ui){
                         _el.remove();
-                    {rdelim}
-                {rdelim});
+                    }
+                });
                 return false;
-            {rdelim});
-        {rdelim});
+            });
+        });
     </script>
 {/if}

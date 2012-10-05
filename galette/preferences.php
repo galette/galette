@@ -44,6 +44,9 @@
  * @since     Available since 0.62
  */
 
+use Galette\Core;
+use Galette\Common\KLogger as KLogger;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
@@ -59,10 +62,7 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once WEB_ROOT . 'classes/print_logo.class.php';
-require_once WEB_ROOT . 'classes/members.class.php';
-
-$print_logo = new PrintLogo();
+$print_logo = new Core\PrintLogo();
 
 // flagging required fields
 $required = array(
@@ -91,6 +91,9 @@ if ( $login->isSuperAdmin() ) {
     $required['pref_admin_login'] = 1;
 }
 
+if ( GALETTE_MODE === 'DEMO' ) {
+    unset($required['pref_admin_login']);
+}
 
 $prefs_fields = $preferences->getFieldsNames();
 
@@ -111,17 +114,31 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
         if ( $value != '' ) {
             switch ( $fieldname ) {
             case 'pref_email':
-                if ( !GaletteMail::isValidEmail($value) ) {
-                    $error_detected[] = _T("- Non-valid E-Mail address!");
+                if ( GALETTE_MODE === 'DEMO' ) {
+                    $log->log(
+                        'Trying to set pref_email while in DEMO.',
+                        KLogger::WARN
+                    );
+                } else {
+                    if ( !Core\GaletteMail::isValidEmail($value) ) {
+                        $error_detected[] = _T("- Non-valid E-Mail address!");
+                    }
                 }
                 break;
             case 'pref_admin_login':
-                if ( strlen($value) < 4 ) {
-                    $error_detected[] = _T("- The username must be composed of at least 4 characters!");
+                if ( GALETTE_MODE === 'DEMO' ) {
+                    $log->log(
+                        'Trying to set superadmin login while in DEMO.',
+                        KLogger::WARN
+                    );
                 } else {
-                    //check if login is already taken
-                    if ( $login->loginExists($value) ) {
-                        $error_detected[] = _T("- This username is already used by another member !");
+                    if ( strlen($value) < 4 ) {
+                        $error_detected[] = _T("- The username must be composed of at least 4 characters!");
+                    } else {
+                        //check if login is already taken
+                        if ( $login->loginExists($value) ) {
+                            $error_detected[] = _T("- This username is already used by another member !");
+                        }
                     }
                 }
                 break;
@@ -166,8 +183,15 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 }
                 break;
             case 'pref_admin_pass':
-                if ( strlen($value) < 4 ) {
-                    $error_detected[] = _T("- The password must be of at least 4 characters!");
+                if ( GALETTE_MODE == 'DEMO' ) {
+                    $log->log(
+                        'Trying to set superadmin pass while in DEMO.',
+                        KLogger::WARN
+                    );
+                } else {
+                    if ( strlen($value) < 4 ) {
+                        $error_detected[] = _T("- The password must be of at least 4 characters!");
+                    }
                 }
                 break;
             case 'pref_membership_ext':
@@ -196,8 +220,8 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
     }
 
     // missing relations
-    if ( isset($insert_values['pref_mail_method']) ) {
-        if ( $insert_values['pref_mail_method'] > GaletteMail::METHOD_DISABLED ) {
+    if ( GALETTE_MODE !== 'DEMO' && isset($insert_values['pref_mail_method']) ) {
+        if ( $insert_values['pref_mail_method'] > Core\GaletteMail::METHOD_DISABLED ) {
             if ( !isset($insert_values['pref_email_nom'])
                 || $insert_values['pref_email_nom'] == ''
             ) {
@@ -208,15 +232,15 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             ) {
                 $error_detected[] = _T("- You must indicate an email address Galette should use to send emails!");
             }
-            if ( $insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP ) {
+            if ( $insert_values['pref_mail_method'] == Core\GaletteMail::METHOD_SMTP ) {
                 if ( !isset($insert_values['pref_mail_smtp_host'])
                     || $insert_values['pref_mail_smtp_host'] == ''
                 ) {
                     $error_detected[] = _T("- You must indicate the SMTP server you want to use!");
                 }
             }
-            if ( $insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
-                || ( $insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP
+            if ( $insert_values['pref_mail_method'] == Core\GaletteMail::METHOD_GMAIL
+                || ( $insert_values['pref_mail_method'] == Core\GaletteMail::METHOD_SMTP
                 && $insert_values['pref_mail_smtp_auth'] )
             ) {
                 if ( !isset($insert_values['pref_mail_smtp_user'])
@@ -252,19 +276,21 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
         }
     }
 
-    // Check passwords. MD5 hash will be done into the Preferences class
-    if (strcmp($insert_values['pref_admin_pass'], $_POST['pref_admin_pass_check']) != 0) {
-        $error_detected[] = _T("Passwords mismatch");
+    if (GALETTE_MODE !== 'DEMO' ) {
+        // Check passwords. MD5 hash will be done into the Preferences class
+        if (strcmp($insert_values['pref_admin_pass'], $_POST['pref_admin_pass_check']) != 0) {
+            $error_detected[] = _T("Passwords mismatch");
+        }
     }
 
     //postal adress
     if ( isset($insert_values['pref_postal_adress']) ) {
         $value = $insert_values['pref_postal_adress'];
-        if ( $value == Preferences::POSTAL_ADRESS_FROM_PREFS ) {
+        if ( $value == Core\Preferences::POSTAL_ADRESS_FROM_PREFS ) {
             if ( isset($insert_values['pref_postal_staff_member']) ) {
                 unset($insert_values['pref_postal_staff_member']);
             }
-        } else if ( $value == Preferences::POSTAL_ADRESS_FROM_STAFF ) {
+        } else if ( $value == Core\Preferences::POSTAL_ADRESS_FROM_STAFF ) {
             if ( !isset($value) || $value < 1 ) {
                 $error_detected[] = _T("You have to select a staff member");
             }
@@ -293,7 +319,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
         }
 
         // picture upload
-        if ( isset($_FILES['logo']) ) {
+        if ( GALETTE_MODE !== 'DEMO' &&  isset($_FILES['logo']) ) {
             if ( $_FILES['logo']['error'] === UPLOAD_ERR_OK ) {
                 if ( $_FILES['logo']['tmp_name'] !='' ) {
                     if ( is_uploaded_file($_FILES['logo']['tmp_name']) ) {
@@ -301,7 +327,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                         if ( $res < 0 ) {
                             $error_detected[] = $logo->getErrorMessage($res);
                         } else {
-                            $logo = new Logo();
+                            $logo = new Core\Logo();
                         }
                         $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo'] = serialize($logo);
                         $tpl->assign('logo', $logo);
@@ -310,7 +336,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             } else if ($_FILES['logo']['error'] !== UPLOAD_ERR_NO_FILE) {
                 $log->log(
                     $logo->getPhpErrorMessage($_FILES['logo']['error']),
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
                 $error_detected[] = $logo->getPhpErrorMessage(
                     $_FILES['logo']['error']
@@ -318,18 +344,18 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             }
         }
 
-        if ( isset($_POST['del_logo']) ) {
+        if ( GALETTE_MODE !== 'DEMO' && isset($_POST['del_logo']) ) {
             if ( !$logo->delete() ) {
                 $error_detected[] = _T("Delete failed");
             } else {
-                $logo = new Logo(); //get default Logo
+                $logo = new Core\Logo(); //get default Logo
                 $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo'] = serialize($logo);
                 $tpl->assign('logo', $logo);
             }
         }
 
         // Card logo upload
-        if ( isset($_FILES['card_logo']) ) {
+        if ( GALETTE_MODE !== 'DEMO' && isset($_FILES['card_logo']) ) {
             if ( $_FILES['card_logo']['error'] === UPLOAD_ERR_OK ) {
                 if ( $_FILES['card_logo']['tmp_name'] !='' ) {
                     if ( is_uploaded_file($_FILES['card_logo']['tmp_name']) ) {
@@ -337,14 +363,14 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                         if ( $res < 0 ) {
                             $error_detected[] = $print_logo->getErrorMessage($res);
                         } else {
-                            $print_logo = new PrintLogo();
+                            $print_logo = new Core\PrintLogo();
                         }
                     }
                 }
             } else if ($_FILES['card_logo']['error'] !== UPLOAD_ERR_NO_FILE) {
                 $log->log(
                     $print_logo->getPhpErrorMessage($_FILES['card_logo']['error']),
-                    PEAR_LOG_WARNING
+                    KLogger::WARN
                 );
                 $error_detected[] = $print_logo->getPhpErrorMessage(
                     $_FILES['card_logo']['error']
@@ -352,11 +378,11 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             }
         }
 
-        if ( isset($_POST['del_card_logo']) ) {
+        if ( GALETTE_MODE !== 'DEMO' && isset($_POST['del_card_logo']) ) {
             if ( !$print_logo->delete() ) {
                 $error_detected[] = _T("Delete failed");
             } else {
-                $print_logo = new PrintLogo();
+                $print_logo = new Core\PrintLogo();
             }
         }
     }
@@ -382,7 +408,7 @@ while ( ($entry = $d->read()) !== false ) {
 }
 $d->close();
 
-$m = new Members();
+$m = new Galette\Repository\Members();
 $tpl->assign('staff_members', $m->getStaffMembersList(true));
 
 $tpl->assign('time', time());

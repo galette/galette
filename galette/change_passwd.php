@@ -37,12 +37,11 @@
  */
 
 require_once 'includes/galette.inc.php';
-require_once 'classes/galette_password.class.php';
 
 // initialize warnings
 $hash = '';
 $password_updated = false;
-$password = new GalettePassword();
+$password = new Galette\Core\Password();
 
 //TODO need to sanityze superglobals, see sanityze_superglobals_arrays
 // get hash id, $_GET if passed by url, $_POST if passed by this form
@@ -66,7 +65,7 @@ if ( isset($hash) && !empty($hash) ) {
                     if ( strlen($_POST['mdp_adh']) < 4 ) {
                         $error_detected[] = _T("- The password must be of at least 4 characters!");
                     } else {
-                        $res = Adherent::updatePassword(
+                        $res = Galette\Entity\Adherent::updatePassword(
                             $id_adh,
                             $_POST['mdp_adh']
                         );

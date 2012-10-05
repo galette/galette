@@ -53,11 +53,10 @@ if ( isset($_POST['ajax']) && $_POST['ajax'] == 'true'
     $ajax = true;
 }
 
-require_once 'classes/contributions.class.php';
 if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['contributions'])) {
     $contribs = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['contributions']);
 } else {
-    $contribs = new Contributions();
+    $contribs = new Galette\Repository\Contributions();
 }
 
 if ( $ajax === true ) {
@@ -92,58 +91,29 @@ if ( isset($_GET['tri']) ) {
 if ( isset($_GET['clear_filter']) ) {
     $contribs->reinit();
 } else {
-    if ( isset($_GET['start_date_filter']) ) {
-        if ( preg_match(
-            "@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@",
-            $_GET['start_date_filter'],
-            $array_jours
-        ) ) {
-            if ( checkdate($array_jours[2], $array_jours[1], $array_jours[3]) ) {
+    if ( isset($_GET['end_date_filter']) || isset($_GET['start_date_filter']) ) {
+        try {
+            if ( isset($_GET['start_date_filter']) ) {
+                $field = _T("start date filter");
                 $contribs->start_date_filter = $_GET['start_date_filter'];
-            } else {
-                $error_detected[] = _T("- Non valid date!");
             }
-        } elseif (
-            preg_match("/^([0-9]{4})$/", $_GET['start_date_filter'], $array_jours)
-        ) {
-            $contribs->start_date_filter = "01/01/".$array_jours[1];
-        } elseif ( $_GET['start_date_filter'] == '' ) {
-            $contribs->start_date_filter = null;
-        } else {
-            $error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!");
-        }
-    }
-
-    if ( isset($_GET['end_date_filter']) ) {
-        if ( preg_match(
-            "@^([0-9]{2})/([0-9]{2})/([0-9]{4})$@",
-            $_GET['end_date_filter'],
-            $array_jours
-        ) ) {
-            if ( checkdate($array_jours[2], $array_jours[1], $array_jours[3]) ) {
+            if ( isset($_GET['end_date_filter']) ) {
+                $field = _T("end date filter");
                 $contribs->end_date_filter = $_GET['end_date_filter'];
-            } else {
-                $error_detected[] = _T("- Non valid date!");
             }
-        } elseif (
-            preg_match("/^([0-9]{4})$/", $_GET['end_date_filter'], $array_jours)
-        ) {
-            $contribs->end_date_filter = "01/01/".$array_jours[1];
-        } elseif ( $_GET['end_date_filter'] == '' ) {
-            $contribs->end_date_filter = null;
-        } else {
-            $error_detected[] = _T("- Wrong date format (dd/mm/yyyy)!");
+        } catch (Exception $e) {
+            $error_detected[] = $e->getMessage();
         }
     }
 
     if ( isset($_GET['payment_type_filter']) ) {
         $ptf = $_GET['payment_type_filter'];
-        if ( $ptf == Contribution::PAYMENT_OTHER
-            || $ptf == Contribution::PAYMENT_CASH
-            || $ptf == Contribution::PAYMENT_CREDITCARD
-            || $ptf == Contribution::PAYMENT_CHECK
-            || $ptf == Contribution::PAYMENT_TRANSFER
-            || $ptf == Contribution::PAYMENT_PAYPAL
+        if ( $ptf == Galette\Entity\Contribution::PAYMENT_OTHER
+            || $ptf == Galette\Entity\Contribution::PAYMENT_CASH
+            || $ptf == Galette\Entity\Contribution::PAYMENT_CREDITCARD
+            || $ptf == Galette\Entity\Contribution::PAYMENT_CHECK
+            || $ptf == Galette\Entity\Contribution::PAYMENT_TRANSFER
+            || $ptf == Galette\Entity\Contribution::PAYMENT_PAYPAL
         ) {
             $contribs->payment_type_filter = $ptf;
         } elseif ( $ptf == -1 ) {
@@ -193,7 +163,7 @@ if (isset($warning_detected)) {
 $tpl->assign('list_contribs', $list_contribs);
 $tpl->assign('contributions', $contribs);
 if ( $contribs->filtre_cotis_adh != null && !$ajax ) {
-    $member = new Adherent();
+    $member = new Galette\Entity\Adherent();
     $member->load($contribs->filtre_cotis_adh);
     $tpl->assign('member', $member);
 }

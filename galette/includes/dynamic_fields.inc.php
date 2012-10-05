@@ -36,7 +36,8 @@
  * @since     Available since 0.63
  */
 
-require_once WEB_ROOT . 'classes/dynamic_fields.class.php';
+use Galette\Common\KLogger as KLogger;
+use Galette\Entity\DynamicFields as DynamicFields;
 
 /** TODO: functions names are *not* PEAR Coding Standards compliant.
 Anyways, this file needs a rewrite as an object, we won't spend
@@ -149,11 +150,11 @@ function get_fixed_values($field_id)
         /** TODO */
         $log->log(
             'get_fixed_values | ' . $e->getMessage(),
-            PEAR_LOG_WARNING
+            KLogger::WARN
         );
         $log->log(
             'Query was: ' . $val_select->__toString() . ' ' . $e->__toString(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
     }
 }
@@ -198,7 +199,7 @@ function set_dynamic_field(
             foreach ( $owhere as $c ) {
                 $where[] = preg_replace('/^AND /', '', $c);
             }
-            
+
             if ( trim($field_val) == '' ) {
                 $zdb->db->delete(
                     $fields_table,
@@ -237,7 +238,7 @@ function set_dynamic_field(
             '; item_id:' . $item_id . '; field_id: ' . $field_id .
             '; val_index: ' . $val_index . '; field_val:' . $field_val .
             ' | Error was: ' . $e->getMessage(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
         return false;
     }
@@ -307,7 +308,8 @@ function get_dynamic_fields($form_name, $item_id, $quote)
                         }
                     }
                 }
-                $dyn_fields[$f->field_id][$f->val_index] = $value;
+                $array_index = count($dyn_fields[$f->field_id]) + 1;
+                $dyn_fields[$f->field_id][$array_index] = $value;
             }
             return $dyn_fields;
         } else {
@@ -317,11 +319,11 @@ function get_dynamic_fields($form_name, $item_id, $quote)
         /** TODO */
         $log->log(
             'get_dynamic_fields | ' . $e->getMessage(),
-            PEAR_LOG_WARNING
+            KLogger::WARN
         );
         $log->log(
             'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
     }
 }
@@ -426,11 +428,11 @@ function prepare_dynamic_fields_for_display(
         /** TODO */
         $log->log(
             'get_dynamic_fields | ' . $e->getMessage(),
-            PEAR_LOG_WARNING
+            KLogger::WARN
         );
         $log->log(
             'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-            PEAR_LOG_ERR
+            KLogger::ERR
         );
     }
 }

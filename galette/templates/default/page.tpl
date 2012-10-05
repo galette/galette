@@ -40,22 +40,22 @@
 		<link rel="stylesheet" type="text/css" href="{$jquery_dir}markitup-{$jquery_markitup_version}/skins/galette/style.css" />
 		<link rel="stylesheet" type="text/css" href="{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/style.css" />
 		<script language="javascript">
-			function toggleMailingEditor(id) {ldelim}
-				if(!$('#mailing_html').attr('checked')){ldelim}
+			function toggleMailingEditor(id) {
+				if(!$('#mailing_html').attr('checked')){
 					$('#mailing_html').attr('checked', true);
-				{rdelim}
+				}
 
 				$('input#html_editor_active').attr('value', '1');
 				{* While it is not possible to deactivate markItUp, we remove completly the functionnality *}
 				$('#toggle_editor').remove();
 				$('#mailing_corps').markItUp(galetteSettings);
-			{rdelim}
+			}
 		{if $html_editor_active eq 1}
-			$(document).ready(function(){ldelim}
+			$(document).ready(function(){
 				{* While it is not possible to deactivate markItUp, we remove completly the functionnality *}
 				$('#toggle_editor').remove();
 				$('#mailing_corps').markItUp(galetteSettings);
-			{rdelim});
+			});
 		{/if}
 		</script>
 	{/if}
@@ -75,6 +75,13 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {/if}
 </head>
 <body>
+        {* IE7 and above are no longer supported *}
+        <!--[if lt IE 8]>
+        <div id="oldie">
+            <p>{_T string="Your browser version is way too old and no longer supported in Galette for a while."}</p>
+            <p>{_T string="Please update your browser or use an alternative one, like <a href=\"http://mozilla.org\">Mozilla Firefox</a>."}</p>
+        </div>
+        <![endif]-->
 	<div id="menu">
 		<div id="logo">
 			<img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
@@ -82,6 +89,11 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {if $login->isSuperAdmin()}
         <div id="superadmin" title="{_T string="You are actually logged-in as superadmin. Some functionnalities may not be available since this is *not* a regular member."}">
             {_T string="Superadmin"}
+        </div>
+{/if}
+{if $GALETTE_MODE eq 'DEMO'}
+        <div id="demo" title="{_T string="This application runs under DEMO mode, all features may not be available."}">
+            {_T string="Demonstration"}
         </div>
 {/if}
 {if $login->isLogged()}
@@ -121,6 +133,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 		<h1 class="nojs">{_T string="Configuration"}</h1>
 		<ul>
 			<li{if $PAGENAME eq "preferences.php"} class="selected"{/if}><a href="{$galette_base_path}preferences.php" title="{_T string="Set applications preferences (adress, website, member's cards configuration, ...)"}">{_T string="Settings"}</a></li>
+            <li{if $PAGENAME eq "plugins.php"} class="selected"{/if}><a href="{$galette_base_path}plugins.php" title="{_T string="Informations about available plugins"}">{_T string="Plugins"}</a></li>
     {if $GALETTE_MODE eq 'DEV'}
 			<li{if $PAGENAME eq "config_fields.php"} class="selected"{/if}><a href="{$galette_base_path}config_fields.php" title="{_T string="Customize fields order, set which are required, and for who they're visibles"}">{_T string="Customize fields"}</a></li>
     {/if}

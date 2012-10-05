@@ -39,6 +39,8 @@
  * @since     Available since 0.62
  */
 
+use Galette\Filters\MembersList as MembersList;
+
 $base_path = '../';
 require_once $base_path . 'includes/galette.inc.php';
 if ( !$preferences->showPublicPages() ) {
@@ -46,40 +48,40 @@ if ( !$preferences->showPublicPages() ) {
     header('location:../index.php');
 }
 
-require_once $base_path . 'classes/varslist.class.php';
-
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['public_varslist'])  ) {
-    $varslist = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['public_varslist']);
+$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
+if ( isset($session['public_filters']['members']) ) {
+    $filters = unserialize($session['public_filters']['members']);
 } else {
-    $varslist = new VarsList();
+    $filters = new MembersList();
 }
 
 // Filters
 if (isset($_GET['page'])) {
-    $varslist->current_page = (int)$_GET['page'];
+    $filters->current_page = (int)$_GET['page'];
 }
 
 if ( isset($_GET['clear_filter']) ) {
-    $varslist->reinit();
+    $filters->reinit();
 }
 
 //numbers of rows to display
 if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
-    $varslist->show = $_GET['nbshow'];
+    $filters->show = $_GET['nbshow'];
 }
 
 // Sorting
 if ( isset($_GET['tri']) ) {
-    $varslist->orderby = $_GET['tri'];
+    $filters->orderby = $_GET['tri'];
 }
 
-$members = Members::getPublicList(false, null);
 
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['public_varslist'] = serialize($varslist);
+$m = new Galette\Repository\Members();
+$members = $m->getPublicList(false, null);
 
 //assign pagination variables to the template and add pagination links
-$varslist->setSmartyPagination($tpl);
-$tpl->assign('varslist', $varslist);
+$filters->setSmartyPagination($tpl);
+$tpl->assign('filters', $filters);
+$session['public_filters']['members'] = serialize($filters);
 
 $tpl->assign('page_title', _T("Members list"));
 $tpl->assign('members', $members);

@@ -19,6 +19,10 @@
                         <input type="text" name="group_name" id="group_name" value="{$group->getName()}" maxlength="20" required/>
                     </p>
                     <p>
+{if !$login->isAdmin() && !$login->isStaff()}
+                        <span class="bline">{_T string="Parent group:"}</span>
+                        <span>{$group->getParentGroup()->getName()}</span>
+{else}
                         <label for="parent_group" class="bline">{_T string="Parent group:"}</label>
                         <select name="parent_group" id="parent_group">
                             <option value="">{_T string="None"}</option>
@@ -29,6 +33,7 @@
                             <option value="{$g->getId()}"{if $pgroup and $pgroup->getId() eq $g->getId()} selected="selected"{/if}>{$g->getName()}</option>
 {/foreach}
                         </select>
+{/if}
                     </p>
                 </div>
             </fieldset>
@@ -57,32 +62,32 @@
         <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
         </form>
 <script type="text/javascript">
-    $(function() {ldelim}
+    $(function() {
         {* Tabs *}
-        $('#group').tabs({ldelim}
-            show: function(event, ui) {ldelim}
+        $('#group').tabs({
+            show: function(event, ui) {
                 var _id = ui.panel.id.substring(6);
                 var _btnuid = '#btnusers_small';
                 var _btnmid = '#btnmanagers_small';
-                if ( _id == 'managers'  ) {ldelim}
+                if ( _id == 'managers'  ) {
                     $(_btnmid).removeClass('hidden');
-                    if ( !$(_btnuid).hasClass('hidden') ) {ldelim}
+                    if ( !$(_btnuid).hasClass('hidden') ) {
                         $(_btnuid).addClass('hidden');
-                    {rdelim}
-                {rdelim} else if ( _id == 'members' ) {ldelim}
+                    }
+                } else if ( _id == 'members' ) {
                      $(_btnuid).removeClass('hidden');
-                    if ( !$(_btnmid).hasClass('hidden') ) {ldelim}
+                    if ( !$(_btnmid).hasClass('hidden') ) {
                         $(_btnmid).addClass('hidden');
-                    {rdelim}
-               {rdelim} else {ldelim}
-                    if ( !$(_btnuid).hasClass('hidden') ) {ldelim}
+                    }
+               } else {
+                    if ( !$(_btnuid).hasClass('hidden') ) {
                         $(_btnuid).addClass('hidden');
-                    {rdelim}
-                    if ( !$(_btnmid).hasClass('hidden') ) {ldelim}
+                    }
+                    if ( !$(_btnmid).hasClass('hidden') ) {
                         $(_btnmid).addClass('hidden');
-                    {rdelim}
-               {rdelim}
-            {rdelim}
-        {rdelim});
-    {rdelim});
+                    }
+               }
+            }
+        });
+    });
 </script>

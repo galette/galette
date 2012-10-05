@@ -38,13 +38,15 @@
  * @since     Available since 0.7dev - 2012-01-22
  */
 
+use Galette\Common\KLogger as KLogger;
+
 require_once 'includes/galette.inc.php';
 
 $name = $_POST['gname'];
 if ( !$name ) {
     $log->log(
         'Trying to check if group name is unique without name specified',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }
@@ -52,7 +54,7 @@ if ( !$name ) {
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     $log->log(
         'Trying to display ajax_group.php without appropriate permissions',
-        PEAR_LOG_INFO
+        KLogger::INFO
     );
     die();
 }
@@ -60,6 +62,5 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
 // check for ajax mode
 $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 
-require_once WEB_ROOT . 'classes/groups.class.php';
-echo json_encode(array('success' => Groups::isUnique($name)));
+echo json_encode(array('success' => Galette\Repository\Groups::isUnique($name)));
 ?>
