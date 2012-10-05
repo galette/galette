@@ -1,5 +1,42 @@
 Changes
 -------
+0.7.0 -> 0.7.1 (2012-10-06)
+
+Changes and additions
+^^^^^^^^^^^^^^^^^^^^^
+
+- groups filtering
+- improve installation tests
+- add a demo mode
+- fix html to text mailing conversion
+- possibility to override disabled fields
+- redesign installation pages
+- check plugin compatibility
+- improve transaction display
+- add system informations page
+- some fields were too short
+- filter on company name
+- limit staff statuses to only one member
+- fix entered dates i18n
+- improve IE8 display
+- fix transparent logo, and with unsupported format
+- fix plugins menu incorect path
+- fix plugins activation/desactivation refresh issue
+- now really uses mail() function
+- improve password reminder page
+- fix members list cotisations status ordering
+- fix dynamic fields display issues
+- some fields must not be marked as required
+- fix name filtering issues
+
+Under the hood
+^^^^^^^^^^^^^^
+
+- improve internal logger
+- autoload classes (and now uses php namespaces)
+- upgrade to phpMailer 5.2.1
+- Smarty 3
+
 0.64 -> 0.7.0 (2012-02-21)
 
 Changes and additions
