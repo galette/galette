@@ -1268,6 +1268,9 @@ class Adherent
             if ( !$this->_birthdate ) {
                 $values['ddn_adh'] = new \Zend_Db_Expr('NULL');
             }
+            if ( !$this->_due_date ) {
+                $values['date_echeance'] = new \Zend_Db_Expr('NULL');
+            }
 
             if ( !isset($this->_id) || $this->_id == '') {
                 //we're inserting a new member
