@@ -364,6 +364,8 @@ class News
      */
     public function canReadGplus(\Galette\Core\CheckModules $cm)
     {
+        global $log;
+
         //googleplus needs curl to load an https URI
         if ( $cm->isGood('ssl') && $cm->isGood('curl') ) {
 
