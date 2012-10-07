@@ -35,7 +35,7 @@
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-13
  */
-define('SMARTY_VERSION', '3.1.8');
+define('SMARTY_VERSION', '3.1.12');
 define('ZEND_VERSION', '1.11.11');
 define('TCPDF_VERSION', '5.9.165');
 define('JQUERY_VERSION', '1.6.2');
