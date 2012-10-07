@@ -771,7 +771,10 @@ class Members
                         //(30 *24 * 60 * 60) => 30 days
                     break;
                 case 2:
-                    $select->where('date_echeance < ?', date('Y-m-d', time()));
+                    $select->where(
+                        'date_echeance < ?',
+                        date('Y-m-d', time())
+                    )->where('bool_exempt_adh = false');
                     break;
                 case 3:
                     $select->where(
@@ -782,7 +785,8 @@ class Members
                     );
                     break;
                 case 4:
-                    $select->where('date_echeance IS NULL');
+                    $select->where('date_echeance IS NULL')
+                        ->where('bool_exempt_adh = false');
                     break;
                 case 5:
                     $select->where('p.priorite_statut < ' . self::NON_STAFF_MEMBERS);
