@@ -22,7 +22,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <!--[if lt IE 8]>
         <div id="oldie">
             <p>{_T string="Your browser version is way too old and no longer supported in Galette for a while."}</p>
-            <p>{_T string="Please update your browser or use an alternative one, like <a href=\"http://mozilla.org\">Mozilla Firefox</a>."}</p>
+            <p>{_T string="Please update your browser or use an alternative one, like Mozilla Firefox (http://mozilla.org)."}</p>
         </div>
         <![endif]-->
         <header>
