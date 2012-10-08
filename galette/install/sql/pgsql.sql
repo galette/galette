@@ -85,6 +85,15 @@ CREATE SEQUENCE galette_mailing_history_id_seq
     CACHE 1;
 
 -- Schema
+-- REMINDER: Create order IS important, dependencies first !!
+DROP TABLE IF EXISTS galette_statuts CASCADE;
+CREATE TABLE galette_statuts (
+  id_statut integer DEFAULT nextval('galette_statuts_id_seq'::text) NOT NULL,
+  libelle_statut  character varying(20) DEFAULT '' NOT NULL,
+  priorite_statut smallint DEFAULT '0' NOT NULL,
+  PRIMARY KEY (id_statut)
+);
+
 DROP TABLE IF EXISTS galette_adherents CASCADE;
 CREATE TABLE galette_adherents (
     id_adh integer DEFAULT nextval('galette_adherents_id_seq'::text) NOT NULL,
@@ -128,6 +137,24 @@ CREATE TABLE galette_adherents (
 -- add index for faster search on login_adh (auth)
 CREATE UNIQUE INDEX galette_adherents_login_adh_idx ON galette_adherents (login_adh);
 
+DROP TABLE IF EXISTS galette_types_cotisation CASCADE;
+CREATE TABLE galette_types_cotisation (
+  id_type_cotis integer DEFAULT nextval('galette_types_cotisation_id_seq'::text) NOT NULL,
+  libelle_type_cotis character varying(30) DEFAULT '' NOT NULL,
+  cotis_extension boolean DEFAULT FALSE,
+  PRIMARY KEY (id_type_cotis)
+);
+
+DROP TABLE IF EXISTS galette_transactions CASCADE;
+CREATE TABLE galette_transactions (
+    trans_id integer DEFAULT nextval('galette_transactions_id_seq'::text)  NOT NULL,
+    trans_date date DEFAULT '19010101' NOT NULL,
+    trans_amount real DEFAULT '0',
+    trans_desc character varying(150) NOT NULL DEFAULT '',
+    id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
+    PRIMARY KEY (trans_id)
+);
+
 DROP TABLE IF EXISTS galette_cotisations;
 CREATE TABLE galette_cotisations (
     id_cotis integer DEFAULT nextval('galette_cotisations_id_seq'::text)  NOT NULL,
@@ -141,32 +168,6 @@ CREATE TABLE galette_cotisations (
     date_fin_cotis date DEFAULT '19010101' NOT NULL,
     trans_id integer DEFAULT NULL REFERENCES galette_transactions (trans_id) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (id_cotis)
-);
-
-DROP TABLE IF EXISTS galette_transactions CASCADE;
-CREATE TABLE galette_transactions (
-    trans_id integer DEFAULT nextval('galette_transactions_id_seq'::text)  NOT NULL,
-    trans_date date DEFAULT '19010101' NOT NULL,
-    trans_amount real DEFAULT '0',
-    trans_desc character varying(150) NOT NULL DEFAULT '',
-    id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
-    PRIMARY KEY (trans_id)
-);
-
-DROP TABLE IF EXISTS galette_statuts;
-CREATE TABLE galette_statuts (
-  id_statut integer DEFAULT nextval('galette_statuts_id_seq'::text) NOT NULL,
-  libelle_statut  character varying(20) DEFAULT '' NOT NULL,
-  priorite_statut smallint DEFAULT '0' NOT NULL,
-  PRIMARY KEY (id_statut)
-);
-
-DROP TABLE IF EXISTS galette_types_cotisation CASCADE;
-CREATE TABLE galette_types_cotisation (
-  id_type_cotis integer DEFAULT nextval('galette_types_cotisation_id_seq'::text) NOT NULL,
-  libelle_type_cotis character varying(30) DEFAULT '' NOT NULL,
-  cotis_extension boolean DEFAULT FALSE,
-  PRIMARY KEY (id_type_cotis)
 );
 
 DROP TABLE IF EXISTS galette_preferences;
