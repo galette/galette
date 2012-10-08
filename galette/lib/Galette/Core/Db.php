@@ -242,10 +242,16 @@ class Db extends \Zend_Db
             return true;
         } catch (\Zend_Db_Adapter_Exception $e) {
             // perhaps a failed login credential, or perhaps the RDBMS is not running
+            $_code = $e->getCode();
+            $_msg = $e->getMessage();
             $ce = $e->getChainedException();
+            if ( $ce ) {
+                $_code = $ce->getCode();
+                $_msg = $ce->getMessage();
+            }
             $log->log(
-                '[' . __METHOD__ . '] No connexion (' . $ce->getCode() . '|' .
-                $ce->getMessage() . ')',
+                '[' . __METHOD__ . '] No connexion (' . $_code . '|' .
+                $_msg . ')',
                 KLogger::ALERT
             );
             return $e;
