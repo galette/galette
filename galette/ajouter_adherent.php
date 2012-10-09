@@ -351,8 +351,8 @@ $tpl->assign('time', time());
 $tpl->assign('radio_titres', Galette\Entity\Politeness::getList());
 
 //Status
-$statuts = Galette\Entity\Status::getList();
-$tpl->assign('statuts', $statuts);
+$statuts = new Galette\Entity\Status();
+$tpl->assign('statuts', $statuts->getList());
 
 //Groups
 $groups = new Galette\Repository\Groups();
