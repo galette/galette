@@ -186,7 +186,7 @@
 						<span class="exemple">{_T string="(at least 4 characters)"}</span>
 					</p>
 					<p>
-						<input class="labelalign" type="password" name="mdp_adh2" value="" maxlength="20" {$disabled.mdp_adh}{if $required.mdp_adh eq 1} required{/if}/>
+						<input class="labelalign" type="password" name="mdp_adh2" value="" maxlength="20" autocomplete="off" {$disabled.mdp_adh}{if $required.mdp_adh eq 1} required{/if}/>
 						<span class="exemple">{_T string="(Confirmation)"}</span>
 					</p>
     {else}
