@@ -45,6 +45,7 @@
 
 use Galette\Repository\Members as Members;
 use Galette\Filters\MembersList as MembersList;
+use Galette\Filters\AdvancedMembersList as AdvancedMembersList;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -63,6 +64,7 @@ if ( isset($session['filters']['members'])
     && !isset($_POST['mailing'])
     && !isset($_POST['mailing_new'])
 ) {
+    //CAUTION: this one may be simple or advanced, display must change
     $filters = unserialize($session['filters']['members']);
 } else {
     $filters = new MembersList();
@@ -75,6 +77,7 @@ if (   isset($_POST['cards'])
     || isset($_POST['labels'])
     || isset($_POST['mailing'])
     || isset($_POST['attendance_sheet'])
+    || isset($_GET['adv_criterias'])
 ) {
     if (isset($_POST['member_sel'])) {
         $filters->selected = $_POST['member_sel'];
@@ -100,9 +103,54 @@ if (   isset($_POST['cards'])
             }
         }
         header('location: '.$qstring);
+    } elseif ($_GET['adv_criterias']) {
+        header('location: advanced_search.php');
     } else {
         $error_detected[]
             = _T("No member was selected, please check at least one name.");
+    }
+} else if ( isset($_POST['advanced_filtering']) ) {
+    if ( !$filters instanceof AdvancedMembersList ) {
+        $filters = new AdvancedMembersList($filters);
+    }
+    //Advanced filters
+    $posted = $_POST;
+    $filters->reinit();
+    unset($posted['advanced_filtering']);
+    $freed = false;
+    foreach ( $posted as $k=>$v ) {
+        if ( strpos($k, 'free_', 0) === 0 ) {
+            if ( !$freed ) {
+                $i = 0;
+                foreach ( $posted['free_field'] as $f ) {
+                    if ( trim($f) !== '' && trim($posted['free_text'][$i]) !== '' ) {
+                        $fs = array(
+                            'idx'       => $i,
+                            'field'     => $f,
+                            'search'    => $posted['free_text'][$i],
+                            'log_op'    => (int)$posted['free_logical_operator'][$i],
+                            'qry_op'    => (int)$posted['free_query_operator'][$i]
+                        );
+                        $filters->free_search = $fs;
+                    }
+                    $i++;
+                }
+                $freed = true;
+            }
+        } else {
+            switch($k) {
+            case 'filter_field':
+                $k = 'field_filter';
+                break;
+            case 'filter_membership':
+                $k= 'membership_filter';
+                break;
+            case 'filter_account':
+                $k = 'account_status_filter';
+                break;
+            }
+            $filters->$k = $v;
+        }
     }
 }
 
@@ -112,13 +160,16 @@ if (isset($session['pdf_error']) && $session['pdf_error']) {
     unset($session['pdf_error']);
 }
 
-// Filters
+// Simple filters
 if (isset($_GET['page'])) {
     $filters->current_page = (int)$_GET['page'];
 }
 
 if ( isset($_GET['clear_filter']) ) {
     $filters->reinit();
+    if ($filters instanceof AdvancedMembersList) {
+        $filters = new MembersList();
+    }
 } else {
     //string to filter
     if ( isset($_GET['filter_str']) ) { //filter search string
@@ -185,7 +236,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
 $groups = new Galette\Repository\Groups();
 $groups_list = $groups->getList();
 
-//cannot use $session here :/
+//store current filters in session
 $session['filters']['members'] = serialize($filters);
 
 //assign pagination variables to the template and add pagination links
@@ -203,36 +254,11 @@ $tpl->assign('filter_groups_options', $groups_list);
 $tpl->assign('nb_members', $members->getCount());
 $tpl->assign('filters', $filters);
 $tpl->assign(
-    'filter_field_options',
-    array(
-        Members::FILTER_NAME            => _T("Name"),
-        Members::FILTER_COMPANY_NAME    => _T("Company name"),
-        Members::FILTER_ADRESS          => _T("Address"),
-        Members::FILTER_MAIL            => _T("Email,URL,IM"),
-        Members::FILTER_JOB             => _T("Job"),
-        Members::FILTER_INFOS           => _T("Infos")
-    )
+    'adv_filters',
+    ($filters instanceof AdvancedMembersList) ? true : false
 );
-$tpl->assign(
-    'filter_membership_options',
-    array(
-        0 => _T("All members"),
-        3 => _T("Up to date members"),
-        1 => _T("Close expiries"),
-        2 => _T("Latecomers"),
-        4 => _T("Never contributed"),
-        5 => _T("Staff members"),
-        6 => _T("Administrators")
-    )
-);
-$tpl->assign(
-    'filter_accounts_options',
-    array(
-        0 => _T("All accounts"),
-        1 => _T("Active accounts"),
-        2 => _T("Inactive accounts")
-    )
-);
+
+$filters->setTplCommonsFilters($tpl);
 
 $content = $tpl->fetch('gestion_adherents.tpl');
 $tpl->assign('content', $content);

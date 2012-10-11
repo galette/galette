@@ -1,5 +1,6 @@
 		<form action="gestion_adherents.php" method="get" id="filtre">
 		<div id="listfilter">
+{if !$adv_filters}
 			<label for="filter_str">{_T string="Search:"}&nbsp;</label>
 			<input type="text" name="filter_str" id="filter_str" value="{$filters->filter_str}" type="search" placeholder="{_T string="Enter a value"}"/>&nbsp;
 		 	{_T string="in:"}&nbsp;
@@ -30,6 +31,16 @@
                 <input type="radio" name="email_filter" id="filter_without_email" value="{php}echo Galette\Repository\Members::FILTER_WO_EMAIL;{/php}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_WO_EMAIL')} checked="checked"{/if}>
                 <label for="filter_without_email" >{_T string="Without"}</label>
             </div>
+{else}
+            <p>
+                <strong>{_T string="Advanced search mode"}</strong>
+                <input type="submit" name="adv_criterias" class="inline" value="{_T string="Change search criterias"}"/>
+                <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
+                <br/>
+                <a href="#" id="showhideqry">{_T string="Show/hide query"}</a>
+            </p>
+            <pre id="sql_qry" class="hidden">{$filters->query}</pre>
+{/if}
 		</div>
 		<table class="infoline">
 			<tr>
@@ -340,6 +351,13 @@
                     return true;
                 }
             });
+
+            if ( _shq = $('#showhideqry') ) {
+                _shq.click(function(){
+                    $('#sql_qry').toggleClass('hidden');
+                    return false;
+                });
+            }
         });
 
         var _attendance_sheet_details = function(){

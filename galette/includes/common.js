@@ -52,6 +52,28 @@ var _collapsibleFieldsets = function(){
     });
 }
 
+var _fieldsInSortable = function(){
+    //so our forms elements continue to work as expected
+    $('.fields_list input, .fields_list select').bind(
+        'click.sortable mousedown.sortable',
+        function(ev) {
+            ev.target.focus();
+        }
+    );
+}
+
+var _initSortable = function(){
+    $('.fields_list').sortable({
+        items: 'li:not(.listing)'
+    }).disableSelection();
+
+    _fieldsInSortable();
+
+    $('#members_tab').sortable({
+        items: 'fieldset'
+    });
+}
+
 /* On document ready
 -------------------------------------------------------- */
 

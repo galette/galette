@@ -290,7 +290,7 @@
                     <input type="hidden" name="login_adh" value="{$member->login}"/>
     {/if}
     {if !$self_adh}
-        {if $visibles.password_adh eq constant('Galette\Entity\FieldsConfig::VISIBLE') or ($visibles.password_adh eq constant('Galette\Entity\FieldsConfig::ADMIN') and ($login->isStaff() or $login->isAdmin() or $login->isSuperAdmin()))}
+        {if $visibles.mdp_adh eq constant('Galette\Entity\FieldsConfig::VISIBLE') or ($visibles.mdp_adh eq constant('Galette\Entity\FieldsConfig::ADMIN') and ($login->isStaff() or $login->isAdmin() or $login->isSuperAdmin()))}
                     <p>
                         <label for="mdp_adh" class="bline">{_T string="Password:"}</label>
                         <input type="password" name="mdp_adh" id="mdp_adh" value="" maxlength="20" autocomplete="off" {$disabled.mdp_adh}{if $required.mdp_adh eq 1} required{/if}/>

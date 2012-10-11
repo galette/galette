@@ -1390,7 +1390,8 @@ class Adherent
     */
     public function __get($name)
     {
-        global $log;
+        global $log, $login;
+
         $forbidden = array(
             'admin', 'staff', 'due_free', 'appears_in_list', 'active',
             'row_classes'
@@ -1421,6 +1422,24 @@ class Adherent
                     }
                 }
                 break;
+            case 'fields':
+                //filter according to logged user ACLs
+                $fc = new FieldsConfig(Adherent::TABLE, $member->fields);
+                // fields visibility
+                $visibles = $fc->getVisibilities();
+                $fields = array();
+                foreach ( $this->_fields as $k=>$f ) {
+                    if ( $visibles[$k] === FieldsConfig::VISIBLE ) {
+                        $fields[$k] = $f;
+                    } else if ( ($login->isAdmin()
+                        || $login->isStaff()
+                        || $login->isSuperAdmin())
+                        && $visibles[$k] === FieldsConfig::ADMIN
+                    ) {
+                        $fields[$k] = $f;
+                    }
+                }
+                return $this->_fields;
             default:
                 return $this->$rname;
                 break;

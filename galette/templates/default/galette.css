@@ -597,13 +597,16 @@ h1 #sendmail .ui-button-text {
     background-image:url(images/icon-add.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
 #btnadd.ui-state-hover, #btnadd_small.ui-state-hover{
-    background-image:url(images/icon-add.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+   background-image:url(images/icon-add.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 #btnadd_small, #btnusers_small, #btnmanagers_small {
     position: absolute;
     top: .5em;
     right: .5em;
+}
+legend #btnadd_small {
+    right: 2.5em;
 }
 
 #btncancel {
@@ -811,10 +814,11 @@ h1 #sendmail .ui-button-text {
     background-color: transparent;
 }
 
-#clearfilter {
+#clearfilter, .clearfilter {
     background: url(images/clearfilter.png) 0 50% no-repeat;
     display:inline-block;
     width:16px;
+    height:16px;
     overflow: hidden;
     text-indent: 20px;
     vertical-align: bottom;
@@ -1657,8 +1661,8 @@ th.bline, td.bline{
 .fleft{float:left;}
 .fright{float:right;}
 
-input.large{
-    width:90%;
+input.large, span.large {
+    width:90%!important;
 }
 
 .picker{
@@ -1823,6 +1827,7 @@ td.photo img{
     display:inline-block;
     width: 33%;
 }
+
 .fields_list span.yesno{
     margin-right:.2em;
     display:inline-block;

@@ -37,11 +37,14 @@
 
 namespace Galette\Repository;
 
+use Galette\Entity\DynamicFields;
+
 use Galette\Common\KLogger as KLogger;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\Contribution as Contribution;
 use Galette\Entity\Transaction as Transaction;
 use Galette\Filters\MembersList as MembersList;
+use Galette\Filters\AdvancedMembersList as AdvancedMembersList;
 use Galette\Core\Picture as Picture;
 use Galette\Entity\Group as Group;
 use Galette\Repository\Groups as Groups;
@@ -64,6 +67,10 @@ class Members
     const TABLE = Adherent::TABLE;
     const PK = Adherent::PK;
 
+    const ALL_ACCOUNTS = 0;
+    const ACTIVE_ACCOUNT = 1;
+    const INACTIVE_ACCOUNT = 2;
+
     const SHOW_LIST = 0;
     const SHOW_PUBLIC_LIST = 1;
     const SHOW_ARRAY_LIST = 2;
@@ -79,6 +86,9 @@ class Members
     const FILTER_W_EMAIL = 6;
     const FILTER_WO_EMAIL = 7;
     const FILTER_COMPANY_NAME = 8;
+    const FILTER_DC_PUBINFOS = 9;
+    const FILTER_W_PUBINFOS = 10;
+    const FILTER_WO_PUBINFOS = 11;
 
     const MEMBERSHIP_ALL = 0;
     const MEMBERSHIP_UP2DATE = 3;
@@ -215,9 +225,11 @@ class Members
                 $filters->setLimit($select);
             }
 
+            $filters->query = $select->__toString();
+
             $log->log(
                 "The following query will be executed: \n" .
-                $select->__toString(),
+                $filters->query,
                 KLogger::DEBUG
             );
 
@@ -505,7 +517,7 @@ class Members
     */
     private function _buildSelect($mode, $fields, $filter, $photos, $count = false)
     {
-        global $zdb, $log, $login;
+        global $zdb, $log, $login, $filters;
 
         try {
             $fieldsList = ( $fields != null )
@@ -548,6 +560,44 @@ class Members
                     );
                 }
                 break;
+            }
+
+            //check if there are dynamic fields in the filter
+            $hasDf = false;
+            $hasCdf = false;
+            $cdfs = array();
+            if ( count($filters->free_search) > 0
+                && !isset($filters->free_search['empty'])
+            ) {
+                foreach ( $filters->free_search as $fs ) {
+                    if ( strpos($fs['field'], 'dyn_') === 0 ) {
+                        $hasDf = true;
+                    }
+                    if ( strpos($fs['field'], 'dync_') === 0 ) {
+                        $hasCdf = true;
+                        $cdfs[] = str_replace('dync_', '', $fs['field']);
+                    }
+                }
+            }
+
+            if ( $hasDf === true || $hasCdf === true ) {
+                $select->joinLeft(
+                    array('df' => PREFIX_DB . DynamicFields::TABLE),
+                    'df.item_id=a.' . self::PK
+                );
+            }
+
+            if ( $hasCdf === true ) {
+                $cdf_field = 'cdf.id';
+                if ( TYPE_DB === 'pgsql' ) {
+                    $cdf_field .= '::text';
+                }
+                foreach ( $cdfs as $cdf ) {
+                    $select->joinLeft(
+                        array('cdf' => DynamicFields::getFixedValuesTableName($cdf)),
+                        $cdf_field . '=df.field_val'
+                    );
+                }
             }
 
             if ( $mode == self::SHOW_LIST || $mode == self::SHOW_MANAGED ) {
@@ -666,7 +716,7 @@ class Members
      */
     private function _buildWhereClause($select)
     {
-        global $zdb, $login, $filters;
+        global $zdb, $login, $filters, $log;
 
         try {
             if ( $filters->email_filter == self::FILTER_W_EMAIL) {
@@ -771,6 +821,7 @@ class Members
             if ( $filters->membership_filter ) {
                 switch($filters->membership_filter) {
                 case self::MEMBERSHIP_NEARLY:
+                    //TODO: use PHP Date objects
                     $select->where('date_echeance > ?', date('Y-m-d', time()))
                         ->where(
                             'date_echeance < ?',
@@ -807,10 +858,10 @@ class Members
 
             if ( $filters->account_status_filter ) {
                 switch($filters->account_status_filter) {
-                case 1:
+                case self::ACTIVE_ACCOUNT:
                     $select->where('activite_adh=true');
                     break;
-                case 2:
+                case self::INACTIVE_ACCOUNT:
                     $select->where('activite_adh=false');
                     break;
                 }
@@ -828,6 +879,123 @@ class Members
                     ' OR gs.parent_group = NULL OR gs.parent_group = ' .
                     $filters->group_filter
                 );
+            }
+
+            if ( $filters->rcreation_date_begin || $filters->rcreation_date_end ) {
+                if ( $filters->rcreation_date_begin ) {
+                    $d = new \DateTime($filters->rcreation_date_begin);
+                    $select->where('date_crea_adh >= ?', $d->format('Y-m-d'));
+                }
+                if ( $filters->rcreation_date_end ) {
+                    $d = new \DateTime($filters->rcreation_date_end);
+                    $select->where('date_crea_adh <= ?', $d->format('Y-m-d'));
+                }
+            }
+
+            if ( $filters->rmodif_date_begin || $filters->rmodif_date_end ) {
+                if ( $filters->rmodif_date_begin ) {
+                    $d = new \DateTime($filters->rmodif_date_begin);
+                    $select->where('date_modif_adh >= ?', $d->format('Y-m-d'));
+                }
+                if ( $filters->rmodif_date_end ) {
+                    $d = new \DateTime($filters->rmodif_date_end);
+                    $select->where('date_modif_adh <= ?', $d->format('Y-m-d'));
+                }
+            }
+
+            if ( $filters->rdue_date_begin || $filters->rdue_date_end ) {
+                if ( $filters->rdue_date_begin ) {
+                    $d = new \DateTime($filters->rdue_date_begin);
+                    $select->where('date_echeance >= ?', $d->format('Y-m-d'));
+                }
+                if ( $filters->rdue_date_end ) {
+                    $d = new \DateTime($filters->rdue_date_end);
+                    $select->where('date_echeance <= ?', $d->format('Y-m-d'));
+                }
+            }
+
+            if ( $filters->show_public_infos ) {
+                switch ( $filters->show_public_infos ) {
+                case self::FILTER_W_PUBINFOS:
+                    $select->where('bool_display_info = true');
+                    break;
+                case self::FILTER_WO_PUBINFOS:
+                    $select->where('bool_display_info = false');
+                    break;
+                case self::FILTER_DC_PUBINFOS:
+                    //nothing to do here.
+                    break;
+                }
+            }
+
+            if ( $filters->status ) {
+                $select->where(
+                    'a.id_statut IN (' . implode(',', $filters->status) . ')'
+                );
+            }
+
+            if ( count($filters->free_search) > 0
+                && !isset($filters->free_search['empty'])
+            ) {
+                foreach ( $filters->free_search as $fs ) {
+                    $fs['search'] = mb_strtolower($fs['search']);
+                    $qop = null;
+                    switch ( $fs['qry_op'] ) {
+                    case AdvancedMembersList::OP_EQUALS:
+                        $qop = '=';
+                        break;
+                    case AdvancedMembersList::OP_CONTAINS:
+                        $qop = 'LIKE';
+                        $fs['search'] = '%' . $fs['search'] . '%';
+                        break;
+                    case AdvancedMembersList::OP_NOT_EQUALS:
+                        $qop = '!=';
+                        break;
+                    case AdvancedMembersList::OP_NOT_CONTAINS:
+                        $qop = 'NOT LIKE';
+                        $fs['search'] = '%' . $fs['search'] . '%';
+                        break;
+                    case AdvancedMembersList::OP_STARTS_WITH:
+                        $qop = 'LIKE';
+                        $fs['search'] = $fs['search'] . '%';
+                        break;
+                    case AdvancedMembersList::OP_ENDS_WITH:
+                        $qop = 'LIKE';
+                        $fs['search'] = '%' . $fs['search'];
+                        break;
+                    default:
+                        $log->log(
+                            'Unknown query operator: ' . $fs['qry_op'] .
+                            ' (will fallback to equals)',
+                            KLogger::WARN
+                        );
+                        $qop = '=';
+                        break;
+                    }
+
+                    $qry = '';
+                    $prefix = '';
+                    if ( strpos($fs['field'], 'dync_') === 0 ) {
+                        //dynamic choice spotted!
+                        $prefix = 'cdf.';
+                        $qry = 'df.field_form = \'adh\' AND df.field_id = ' .
+                            str_replace('dync_', '', $fs['field']) . ' AND ';
+                        $fs['field'] = 'val';
+                    } elseif ( strpos($fs['field'], 'dyn_') === 0 ) {
+                        //dynamic field spotted!
+                        $prefix = 'df.';
+                        $qry = 'df.field_form = \'adh\' AND df.field_id = ' .
+                            str_replace('dyn_', '', $fs['field']) . ' AND ';
+                        $fs['field'] = 'field_val';
+                    }
+
+                    $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' . $qop  . ' ?' ;
+                    if ( $fs['log_op'] === AdvancedMembersList::OP_AND ) {
+                        $select->where($qry, $fs['search']);
+                    } elseif ( $fs['log_op'] === AdvancedMembersList::OP_OR ) {
+                        $select->orWhere($qry, $fs['search']);
+                    }
+                }
             }
         } catch (\Exception $e) {
             /** TODO */

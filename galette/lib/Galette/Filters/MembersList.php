@@ -68,6 +68,20 @@ class MembersList extends Pagination
     private $_selected;
     private $_unreachable;
 
+    protected $query;
+
+    protected $memberslist_fields = array(
+        'filter_str',
+        'field_filter',
+        'membership_filter',
+        'account_status_filter',
+        'email_filter',
+        'group_filter',
+        'selected',
+        'unreachable',
+        'query'
+    );
+
     /**
     * Default constructor
     */
@@ -122,19 +136,13 @@ class MembersList extends Pagination
         if ( in_array($name, $this->pagination_fields) ) {
             return parent::__get($name);
         } else {
-            $return_ok = array(
-                'filter_str',
-                'field_filter',
-                'membership_filter',
-                'account_status_filter',
-                'email_filter',
-                'group_filter',
-                'selected',
-                'unreachable'
-            );
-            if (in_array($name, $return_ok)) {
-                $name = '_' . $name;
-                return $this->$name;
+            if (in_array($name, $this->memberslist_fields)) {
+                if ( $name === 'query' ) {
+                    return $this->$name;
+                } else {
+                    $name = '_' . $name;
+                    return $this->$name;
+                }
             } else {
                 $log->log(
                     '[MembersList] Unable to get proprety `' .$name . '`',
@@ -235,6 +243,9 @@ class MembersList extends Pagination
                     );
                 }
                 break;
+            case 'query':
+                $this->$name = $value;
+                break;
             default:
                 $log->log(
                     '[MembersList] Unable to set proprety `' . $name . '`',
@@ -268,5 +279,51 @@ class MembersList extends Pagination
     {
         $this->counter = (int)$c;
         $this->countPages();
+    }
+
+    /**
+     * Set commons filters for templates
+     *
+     * @param Smarty $tpl Smarty template reference
+     *
+     * @return void
+     */
+    public function setTplCommonsFilters($tpl)
+    {
+        $tpl->assign(
+            'filter_field_options',
+            array(
+                Members::FILTER_NAME            => _T("Name"),
+                Members::FILTER_COMPANY_NAME    => _T("Company name"),
+                Members::FILTER_ADRESS          => _T("Address"),
+                Members::FILTER_MAIL            => _T("Email,URL,IM"),
+                Members::FILTER_JOB             => _T("Job"),
+                Members::FILTER_INFOS           => _T("Infos")
+            )
+        );
+
+        $tpl->assign(
+            'filter_membership_options',
+            array(
+                Members::MEMBERSHIP_ALL     => _T("All members"),
+                Members::MEMBERSHIP_UP2DATE => _T("Up to date members"),
+                Members::MEMBERSHIP_NEARLY  => _T("Close expiries"),
+                Members::MEMBERSHIP_LATE    => _T("Latecomers"),
+                Members::MEMBERSHIP_NEVER   => _T("Never contributed"),
+                Members::MEMBERSHIP_STAFF   => _T("Staff members"),
+                Members::MEMBERSHIP_ADMIN   => _T("Administrators")
+            )
+        );
+
+        $tpl->assign(
+            'filter_accounts_options',
+            array(
+                Members::ALL_ACCOUNTS       => _T("All accounts"),
+                Members::ACTIVE_ACCOUNT     => _T("Active accounts"),
+                Members::INACTIVE_ACCOUNT   => _T("Inactive accounts")
+            )
+        );
+
+
     }
 }
