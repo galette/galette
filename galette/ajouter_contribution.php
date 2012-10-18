@@ -36,6 +36,7 @@
  * @since     Available since 0.62
  */
 
+use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\DynamicFields as DynamicFields;
 
 require_once 'includes/galette.inc.php';
@@ -166,7 +167,7 @@ if ( isset($_POST['valid']) ) {
         );
 
         // Get member informations
-        $adh = new Galette\Entity\Adherent();
+        $adh = new Adherent();
         $adh->load($contrib->member);
 
         if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED ) {
@@ -337,12 +338,15 @@ $tpl->assign('type_cotis_options', $type_cotis_options);
 
 // members
 $m = new Galette\Repository\Members();
-$members = $m->getList(true);
+$members = $m->getList(false);
 if ( count($members) == 0 ) {
     $adh_options = array('' => _T("You must first register a member"));
 } else {
     foreach ( $members as $member ) {
-        $adh_options[$member->id] = $member->sname;
+        $pk = Adherent::PK;
+        $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
+            ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8'));
+        $adh_options[$member->$pk] = $sname;
     }
 }
 
