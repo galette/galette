@@ -621,7 +621,7 @@ class Adherent
         //Galette relative informations
         $this->_appears_in_list = ($r->bool_display_info == 1) ? true : false;
         $this->_admin = ($r->bool_admin_adh == 1) ? true : false;
-        if ( isset($this->priorite_statut)
+        if ( isset($r->priorite_statut)
             && $r->priorite_statut < Members::NON_STAFF_MEMBERS
         ) {
             $this->_staff = true;

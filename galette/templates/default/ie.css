@@ -109,6 +109,10 @@ input#btnsave, input#delete, input#sendmail, input#btnadd {
     background-repeat: no-repeat;
 }
 
+#details_menu .secondimg {
+    background-position: 50% 10px;
+}
+
 #desktop .secondimg {
     background-position: 50% .5em;
 }
