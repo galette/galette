@@ -265,7 +265,7 @@ if ($step == '1') { ?>
         <section>
             <header>
                 <h1 id="titre">
-                    <img src="<?php echo $base_path; ?>picture.php?logo=true" alt="[ Galette ]" />
+                    <img src="<?php echo $base_path; ?>templates/default/images/galette.png" alt="[ Galette ]" />
                     <?php echo _T("Galette installation") . ' - ' . $step_title ?>
                 </h1>
             </header>
