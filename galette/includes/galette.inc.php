@@ -76,7 +76,7 @@ $smartyLoader->register();
 //we start a php session
 session_start();
 
-define('GALETTE_VERSION', 'v0.7.1.6');
+define('GALETTE_VERSION', 'v0.7.1.7');
 define('GALETTE_COMPAT_VERSION', '0.7.1');
 define('GALETTE_DB_VERSION', '0.701');
 define('GALETTE_MODE', 'PROD'); //DEV or PROD
