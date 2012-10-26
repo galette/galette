@@ -39,10 +39,6 @@ namespace Galette\IO;
 
 use Galette\Common\KLogger as KLogger;
 
-/** @ignore */
-require_once GALETTE_GAPI_PATH . '/apiClient.php';
-require_once GALETTE_GAPI_PATH . '/contrib/apiPlusService.php';
-
 /**
  * News class for galette
  *
@@ -271,7 +267,11 @@ class News
     private function _parseGplus()
     {
         global $log;
+
         try {
+            include_once GALETTE_GAPI_PATH . '/apiClient.php';
+            include_once GALETTE_GAPI_PATH . '/contrib/apiPlusService.php';
+
             $gclient = new \apiClient();
             $gclient->setApplicationName("Galette's Google+");
             $gclient->setDeveloperKey(GALETTE_GAPI_KEY);
