@@ -55,7 +55,7 @@ if ( !isset($base_path) ) {
     $base_path = './';
 }
 
-if ( !$installer ) { //If we're not working from installer
+if ( !$installer || $installed ) { //If we're not working from installer
     require_once $base_path . 'config/config.inc.php';
 }
 require_once $base_path . 'config/versions.inc.php';
