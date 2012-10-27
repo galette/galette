@@ -194,7 +194,7 @@ if ( $form_name == '' ) {
                         if ( $df->hasFixedValues() ) {
                             $contents_table = DynamicFields::getFixedValuesTableName($field_id);
                             $zdb->db->getConnection()->exec(
-                                'DROP TABLE ' . $contents_table
+                                'DROP TABLE IF EXISTS ' . $contents_table
                             );
                         }
                         deleteDynamicTranslation($res->field_name, $error_detected);
