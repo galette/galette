@@ -318,11 +318,11 @@ abstract class DynamicFieldType
     {
         global $log;
 
-        if ( $this->multi_valued ) {
-            return $this->values;
+        if ( $this->fixed_values ) {
+            return implode("\n", $this->values);
         } else {
             $log->log(
-                'Field is not multi valued, cannot retrieve values.',
+                'Field do not have fixed values, cannot retrieve values.',
                 KLogger::INFO
             );
             return false;
