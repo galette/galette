@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2012-10-27 11:29+0200\n"
+"PO-Revision-Date: 2012-10-27 13:59+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -600,7 +600,7 @@ msgstr ""
 msgid "Default status cannot be initialized."
 msgstr "Default status cannot be initialized."
 
-#: ../lib/Galette/Entity/Adherent.php:1146
+#: ../lib/Galette/Entity/Adherent.php:1157
 msgid "Password misrepeated: "
 msgstr "Password misrepeated: "
 
@@ -683,7 +683,7 @@ msgstr ""
 "Database can't be reached. Please go back to enter the connection parameters "
 "again."
 
-#: ../lib/Galette/Entity/Adherent.php:1422 ../templates/default/member.tpl:155
+#: ../lib/Galette/Entity/Adherent.php:1433 ../templates/default/member.tpl:155
 msgid "Active"
 msgstr "Active"
 
@@ -1119,7 +1119,7 @@ msgid ""
 msgstr ""
 "This application runs under DEMO mode, all features may not be available."
 
-#: ../lib/Galette/Entity/Adherent.php:1324
+#: ../lib/Galette/Entity/Adherent.php:1335
 msgid "Member card updated"
 msgstr "Member card updated"
 
@@ -1132,6 +1132,10 @@ msgstr "Gift"
 #: ../templates/default/voir_adherent.tpl:131
 msgid "ICQ:"
 msgstr "ICQ:"
+
+#: ../lib/Galette/Entity/Adherent.php:1147
+msgid "- The password must be of at least %i characters!"
+msgstr "- The password must be of at least %i characters!"
 
 #: ../install/index.php:595
 msgid "Database type:"
@@ -1152,11 +1156,11 @@ msgid ""
 msgstr ""
 "Note: members with a status priority lower than %priority are staff members."
 
-#: ../lib/Galette/Entity/Adherent.php:1422 ../templates/default/member.tpl:156
+#: ../lib/Galette/Entity/Adherent.php:1433 ../templates/default/member.tpl:156
 msgid "Inactive"
 msgstr "Inactive"
 
-#: ../gestion_intitules.php:330 ../lib/Galette/Entity/Adherent.php:1419
+#: ../gestion_intitules.php:330 ../lib/Galette/Entity/Adherent.php:1430
 #: ../templates/default/gestion_intitule_content.tpl:29
 #: ../templates/default/champ_requis.tpl:8
 #: ../templates/default/config_fields.tpl:40
@@ -1334,7 +1338,7 @@ msgid "%membername: edit informations"
 msgstr "%membername: edit informations"
 
 #: ../lib/Galette/Entity/Transaction.php:312
-#: ../lib/Galette/Entity/Adherent.php:1213
+#: ../lib/Galette/Entity/Adherent.php:1224
 #: ../lib/Galette/Entity/Contribution.php:419
 msgid "- Mandatory field empty: "
 msgstr "- Mandatory field empty: "
@@ -1382,7 +1386,7 @@ msgstr "Under UNIX/Linux, you can give the permissions using those commands"
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr "Your database is maybe not usable, try to restore the older version."
 
-#: ../lib/Galette/Entity/Adherent.php:1295
+#: ../lib/Galette/Entity/Adherent.php:1306
 msgid "Fail to add new member."
 msgstr "Fail to add new member."
 
@@ -1418,7 +1422,7 @@ msgstr "An error occured checking name uniqueness :("
 msgid "Missing destination group"
 msgstr "Missing destination group"
 
-#: ../preferences.php:136 ../lib/Galette/Entity/Adherent.php:1096
+#: ../preferences.php:136
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- The username must be composed of at least 4 characters!"
 
@@ -1794,7 +1798,6 @@ msgid "Originator"
 msgstr "Originator"
 
 #: ../preferences.php:193 ../change_passwd.php:66
-#: ../lib/Galette/Entity/Adherent.php:1137
 msgid "- The password must be of at least 4 characters!"
 msgstr "- The password must be of at least 4 characters!"
 
@@ -1848,7 +1851,7 @@ msgid "- Label does not exist"
 msgstr "- Label does not exist"
 
 #: ../lib/Galette/Entity/Adherent.php:1082
-#: ../lib/Galette/Entity/Adherent.php:1130
+#: ../lib/Galette/Entity/Adherent.php:1135
 msgid "An error has occured while looking if login already exists."
 msgstr "An error has occured while looking if login already exists."
 
@@ -1923,7 +1926,7 @@ msgstr "Detach"
 msgid "[$]"
 msgstr "[$]"
 
-#: ../change_passwd.php:63 ../lib/Galette/Entity/Adherent.php:1142
+#: ../change_passwd.php:63 ../lib/Galette/Entity/Adherent.php:1153
 msgid "- The passwords don't match!"
 msgstr "- The passwords don't match!"
 
@@ -1935,7 +1938,7 @@ msgstr "Member Profile"
 msgid "Contribution has been successfyully detached from current transaction"
 msgstr "Contribution has been successfyully detached from current transaction"
 
-#: ../lib/Galette/Entity/Adherent.php:1290
+#: ../lib/Galette/Entity/Adherent.php:1301
 msgid "Member card added"
 msgstr "Member card added"
 
@@ -2394,7 +2397,7 @@ msgstr "Permissions to database are OK."
 msgid "Do you really want to delete this transaction of the database ?"
 msgstr "Do you really want to delete this transaction of the database ?"
 
-#: ../lib/Galette/Entity/Adherent.php:1119
+#: ../lib/Galette/Entity/Adherent.php:1124
 msgid "- This username is already used by another member!"
 msgstr "- This username is already used by another member!"
 
@@ -2666,6 +2669,10 @@ msgstr "Message:"
 #: ../templates/default/gestion_adherents.tpl:31
 msgid "Without"
 msgstr "Without"
+
+#: ../lib/Galette/Entity/Adherent.php:1100
+msgid "- The username must be composed of at least %i characters!"
+msgstr "- The username must be composed of at least %i characters!"
 
 #: ../templates/default/preferences.tpl:21
 msgid "Association's short description:"
@@ -3138,7 +3145,7 @@ msgstr "reduced annual fee"
 msgid "No groups has been selected yet."
 msgstr "No groups has been selected yet."
 
-#: ../lib/Galette/Entity/Adherent.php:1187
+#: ../lib/Galette/Entity/Adherent.php:1198
 msgid ""
 "Selected status (%s) is already in use in <a href='voir_adherent.php?id_adh="
 "%i'>%n %m's profile</a>."
@@ -3532,7 +3539,7 @@ msgstr "Group %groupname has been successfully deleted."
 msgid "Search:"
 msgstr "Search:"
 
-#: ../gestion_intitules.php:330 ../lib/Galette/Entity/Adherent.php:1419
+#: ../gestion_intitules.php:330 ../lib/Galette/Entity/Adherent.php:1430
 #: ../templates/default/gestion_intitule_content.tpl:28
 #: ../templates/default/champ_requis.tpl:10
 #: ../templates/default/config_fields.tpl:42
@@ -3633,7 +3640,7 @@ msgstr "donation in money"
 #: ../lib/Galette/Entity/Adherent.php:1025
 #: ../lib/Galette/Entity/Adherent.php:1034
 #: ../lib/Galette/Entity/Adherent.php:1043
-#: ../lib/Galette/Entity/Adherent.php:1396
+#: ../lib/Galette/Entity/Adherent.php:1407
 #: ../lib/Galette/Entity/Contribution.php:341
 #: ../lib/Galette/Entity/Contribution.php:350
 #: ../lib/Galette/Entity/Contribution.php:359
@@ -4327,7 +4334,7 @@ msgstr "Your PHP date settings seem correct."
 msgid "(dd/mm)"
 msgstr "(dd/mm)"
 
-#: ../lib/Galette/Entity/Adherent.php:1100
+#: ../lib/Galette/Entity/Adherent.php:1105
 msgid "- The username cannot contain the @ character"
 msgstr "- The username cannot contain the @ character"
 
@@ -4745,7 +4752,7 @@ msgstr "%A, %B %#d%O %Y"
 msgid "Default contributions types were successfully stored."
 msgstr "Default contributions types were successfully stored."
 
-#: ../lib/Galette/Entity/Adherent.php:1199
+#: ../lib/Galette/Entity/Adherent.php:1210
 msgid "An error has occured while looking if status is already in use."
 msgstr "An error has occured while looking if status is already in use."
 

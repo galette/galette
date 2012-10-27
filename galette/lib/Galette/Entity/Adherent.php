@@ -1092,8 +1092,13 @@ class Adherent
                         }
                         break;
                     case 'login_adh':
-                        if ( strlen($value) < 4 ) {
-                            $errors[] = _T("- The username must be composed of at least 4 characters!");
+                        /** FIXME: add a preference for login lenght */
+                        if ( strlen($value) < 2 ) {
+                            $errors[] = str_replace(
+                                '%i',
+                                2,
+                                _T("- The username must be composed of at least %i characters!")
+                            );
                         } else {
                             //check if login does not contain the @ character
                             if ( strpos($value, '@') != false ) {
@@ -1133,8 +1138,14 @@ class Adherent
                         }
                         break;
                     case 'mdp_adh':
-                        if ( strlen($value) < 4 ) {
-                            $errors[] = _T("- The password must be of at least 4 characters!");
+                        /** TODO: check password complexity, set by a preference */
+                        /** FIXME: add a preference for password lenght */
+                        if ( strlen($value) < 6 ) {
+                            $errors[] = str_replace(
+                                '%i',
+                                6,
+                                _T("- The password must be of at least %i characters!")
+                            );
                         } else if ( $this->_self_adh !== true
                             && (!isset($values['mdp_adh2'])
                             || $values['mdp_adh2'] != $value)
