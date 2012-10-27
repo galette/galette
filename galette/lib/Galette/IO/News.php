@@ -368,9 +368,10 @@ class News
 
         //googleplus needs curl to load an https URI
         if ( $cm->isGood('ssl') && $cm->isGood('curl') ) {
-
-
             try {
+                include_once GALETTE_GAPI_PATH . '/apiClient.php';
+                include_once GALETTE_GAPI_PATH . '/contrib/apiPlusService.php';
+
                 $gclient = new \apiClient();
                 $gclient->setApplicationName("Galette's Google+");
                 $gclient->setDeveloperKey(GALETTE_GAPI_KEY);
