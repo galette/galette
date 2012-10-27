@@ -101,6 +101,10 @@ if ( !$login->isLogged() ) {
     $tpl->assign('content', $content);
     $tpl->display('public_page.tpl');
 } else {
+    if ( $profiler ) {
+        $profiler->stop();
+    }
+
     if ( $login->isAdmin() || $login->isStaff() ) {
         header('location: gestion_adherents.php');
     } else {

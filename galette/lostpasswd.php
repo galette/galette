@@ -170,6 +170,11 @@ if ( $from_admin ) {
     if ( count($success_detected) > 0 ) {
         $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_success'] = serialize($success_detected);
     }
+
+    if ( $profiler ) {
+        $profiler->stop();
+    }
+
     header('location: voir_adherent.php?id_adh=' . $adh->id);
     die();
 } else {
@@ -181,5 +186,9 @@ if ( $from_admin ) {
     $content = $tpl->fetch('lostpasswd.tpl');
     $tpl->assign('content', $content);
     $tpl->display('public_page.tpl');
+
+    if ( $profiler ) {
+        $profiler->stop();
+    }
 }
 ?>

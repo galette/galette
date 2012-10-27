@@ -45,6 +45,10 @@ define('WEB_ROOT', realpath(dirname(__FILE__) . '/../') . '/');
 
 require_once $base_path . 'includes/galette.inc.php';
 
+if ( defined('PREFIX_DB') && defined('NAME_DB') ) {
+    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]);
+}
+
 $template_subdir = 'templates/default/';
 $step = '1';
 $error_detected = false;

@@ -37,6 +37,7 @@
  */
 
 use Galette\Common\KLogger as KLogger;
+use Galette\Entity\DynamicFields as DynamicFields;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -46,9 +47,9 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-require_once 'includes/dynamic_fields.inc.php';
-
 $member = new Galette\Entity\Adherent();
+//TODO: dynamic fields should be handled by Adherent object
+$dyn_fields = new DynamicFields();
 
 // new or edit
 $adherent['id_adh'] = '';
@@ -97,7 +98,7 @@ $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
 // Validation
 if ( isset($_POST[array_shift($real_requireds)]) ) {
-    $adherent['dyn'] = extract_posted_dynamic_fields($_POST, $disabled);
+    $adherent['dyn'] = $dyn_fields->extractPosted($_POST, $disabled);
     $valid = $member->check($_POST, $required, $disabled);
     if ( $valid === true ) {
         //all goes well, we can proceed
@@ -291,7 +292,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
         }
 
         // dynamic fields
-        set_all_dynamic_fields('adh', $member->id, $adherent['dyn']);
+        $dyn_fields->setAllFields('adh', $member->id, $adherent['dyn']);
     }
 
     if ( count($error_detected) == 0 ) {
@@ -305,7 +306,9 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
         }
     }
 } else {
-    $adherent['dyn'] = get_dynamic_fields('adh', $member->id, false);
+    if ( $member->id !== false &&  $member->id !== '' ) {
+        $adherent['dyn'] = $dyn_fields->getFields('adh', $member->id, false);
+    }
 }
 
 // - declare dynamic fields for display
@@ -314,15 +317,14 @@ if ( !isset($adherent['dyn']) ) {
     $adherent['dyn'] = array();
 }
 
-$dynamic_fields = prepare_dynamic_fields_for_display(
+$dynamic_fields = $dyn_fields->prepareForDisplay(
     'adh',
     $adherent['dyn'],
     $disabled['dyn'],
     1
 );
 // template variable declaration
-//"Member Profile"
-    $title = _T("Member Profile");
+$title = _T("Member Profile");
 if ( $member->id != '' ) {
     $title .= ' (' . _T("modification") . ')';
 } else {
@@ -351,8 +353,8 @@ $tpl->assign('time', time());
 $tpl->assign('radio_titres', Galette\Entity\Politeness::getList());
 
 //Status
-$statuts = Galette\Entity\Status::getList();
-$tpl->assign('statuts', $statuts);
+$statuts = new Galette\Entity\Status();
+$tpl->assign('statuts', $statuts->getList());
 
 //Groups
 $groups = new Galette\Repository\Groups();

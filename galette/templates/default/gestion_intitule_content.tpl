@@ -7,7 +7,7 @@
         <thead>
             <tr>
                 <th class="listing id_row">#</th>
-            	<th class="listing">{_T string="Name"}</th>
+                <th class="listing">{_T string="Name"}</th>
 {if $class == 'ContributionsTypes'}
                 <th class="listing">{_T string="Extends membership?"}</th>
 {elseif $class == 'Status'}
@@ -43,7 +43,17 @@
 {foreach from=$entries item=entry}
             <tr>
                 <td class="listing">{$entry.id}</td>
-                <td class="listing left">{$entry.name|escape}</td>
+                <td class="listing left">
+
+                    {if $class == 'Status'}
+                        {if $entry.priority < 30}
+                            <img src="{$template_subdir}images/icon-staff.png" alt="{_T string="[staff]"}" width="16" height="16"/>
+                        {else}
+                            <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
+                        {/if}
+                    {/if}
+                    {$entry.name|escape}
+                </td>
                 <td class="listing">
     {if $class == 'ContributionsTypes'}
                     {$entry.extends}

@@ -1068,7 +1068,7 @@ class Adherent
                                 }
                                 $uniq = $select->query()->fetchAll();
                                 if ( count($uniq) !==  0 ) {
-                                    $errors[] = _T("- This E-Mail adress is already used by another member!");
+                                    $errors[] = _T("- This E-Mail address is already used by another member!");
                                 }
                             } catch (\Exception $e) {
                                 $log->log(
@@ -1092,8 +1092,13 @@ class Adherent
                         }
                         break;
                     case 'login_adh':
-                        if ( strlen($value) < 4 ) {
-                            $errors[] = _T("- The username must be composed of at least 4 characters!");
+                        /** FIXME: add a preference for login lenght */
+                        if ( strlen($value) < 2 ) {
+                            $errors[] = str_replace(
+                                '%i',
+                                2,
+                                _T("- The username must be composed of at least %i characters!")
+                            );
                         } else {
                             //check if login does not contain the @ character
                             if ( strpos($value, '@') != false ) {
@@ -1133,8 +1138,14 @@ class Adherent
                         }
                         break;
                     case 'mdp_adh':
-                        if ( strlen($value) < 4 ) {
-                            $errors[] = _T("- The password must be of at least 4 characters!");
+                        /** TODO: check password complexity, set by a preference */
+                        /** FIXME: add a preference for password lenght */
+                        if ( strlen($value) < 6 ) {
+                            $errors[] = str_replace(
+                                '%i',
+                                6,
+                                _T("- The password must be of at least %i characters!")
+                            );
                         } else if ( $this->_self_adh !== true
                             && (!isset($values['mdp_adh2'])
                             || $values['mdp_adh2'] != $value)
@@ -1267,6 +1278,9 @@ class Adherent
             //will result in 0000-00-00. We want a database NULL value here.
             if ( !$this->_birthdate ) {
                 $values['ddn_adh'] = new \Zend_Db_Expr('NULL');
+            }
+            if ( !$this->_due_date ) {
+                $values['date_echeance'] = new \Zend_Db_Expr('NULL');
             }
 
             if ( !isset($this->_id) || $this->_id == '') {

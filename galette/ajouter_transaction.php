@@ -36,6 +36,8 @@
  * @since     Available since 0.62
  */
 
+use Galette\Entity\DynamicFields as DynamicFields;
+
 require_once 'includes/galette.inc.php';
 
 if ( !$login->isLogged() ) {
@@ -47,9 +49,9 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once 'includes/dynamic_fields.inc.php';
-
 $trans = new Galette\Entity\Transaction();
+//TODO: dynamic fields should be handled by Transaction object
+$dyn_fields = new DynamicFields();
 
 // new or edit
 $trans_id = get_numeric_form_value("trans_id", '');
@@ -98,7 +100,7 @@ if ( $trans_id != '' ) {
 $transaction['dyn'] = array();
 
 if ( isset($_POST['valid']) ) {
-    $transaction['dyn'] = extract_posted_dynamic_fields($_POST, array());
+    $transaction['dyn'] = $dyn_fields->extractPosted($_POST, array());
 
     $valid = $trans->check($_POST, $required, $disabled);
     if ( $valid === true ) {
@@ -125,7 +127,7 @@ if ( isset($_POST['valid']) ) {
 
     if ( count($error_detected) == 0 ) {
         // dynamic fields
-        set_all_dynamic_fields(
+        $dyn_fields->setAllFields(
             'trans',
             $transaction['trans_id'],
             $transaction['dyn']
@@ -144,7 +146,7 @@ if ( isset($_POST['valid']) ) {
 } else { //$_POST['valid']
     if ( $trans->id != '' ) {
         // dynamic fields
-        $transaction['dyn'] = get_dynamic_fields(
+        $transaction['dyn'] = $dyn_fields->getFields(
             'trans',
             $transaction["trans_id"],
             false
@@ -188,7 +190,7 @@ if ( count($members) == 0 ) {
 $tpl->assign('adh_options', $adh_options);
 
 // - declare dynamic fields for display
-$dynamic_fields = prepare_dynamic_fields_for_display(
+$dynamic_fields = $dyn_fields->prepareForDisplay(
     'trans', $transaction['dyn'],
     array(),
     1

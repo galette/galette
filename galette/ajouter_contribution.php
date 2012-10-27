@@ -37,6 +37,7 @@
  */
 
 use Galette\Entity\Adherent as Adherent;
+use Galette\Entity\DynamicFields as DynamicFields;
 
 require_once 'includes/galette.inc.php';
 
@@ -49,9 +50,9 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require_once 'includes/dynamic_fields.inc.php';
-
 $contrib = new Galette\Entity\Contribution();
+//TODO: dynamic fields should be handled by Contribution object
+$dyn_fields = new DynamicFields();
 
 $id_cotis = get_numeric_form_value('id_cotis', '');
 
@@ -119,7 +120,7 @@ if ( $type_selected && !($id_adh || $id_cotis) ) {
 // Validation
 $contribution['dyn'] = array();
 if ( isset($_POST['valid']) ) {
-    $contribution['dyn'] = extract_posted_dynamic_fields($_POST, array());
+    $contribution['dyn'] = $dyn_fields->extractPosted($_POST, array());
 
     $valid = $contrib->check($_POST, $required, $disabled);
     if ( $valid === true ) {
@@ -159,8 +160,7 @@ if ( isset($_POST['valid']) ) {
     }
 
     if ( count($error_detected) == 0 ) {
-        // dynamic fields
-        set_all_dynamic_fields(
+        $dyn_fields->setAllFields(
             'contrib',
             $id_cotis,
             $contribution['dyn']
@@ -300,7 +300,7 @@ if ( isset($_POST['valid']) ) {
         $contribution['duree_mois_cotis'] = $preferences->pref_membership_ext;
     } else {
         // dynamic fields
-        $contribution['dyn'] = get_dynamic_fields(
+        $contribution['dyn'] = $dyn_fields->getFields(
             'contrib',
             $id_cotis,
             false
@@ -356,7 +356,7 @@ $tpl->assign('require_calendar', true);
 $tpl->assign('pref_membership_ext', $cotis_extension ? $preferences->pref_membership_ext : '');  //TODO: remove and replace with $contrib specific property
 
 // - declare dynamic fields for display
-$dynamic_fields = prepare_dynamic_fields_for_display(
+$dynamic_fields = $dyn_fields->prepareForDisplay(
     'contrib',
     $contribution['dyn'],
     array(),

@@ -37,13 +37,15 @@
  * @since     Available since 0.62
  */
 
+use Galette\Entity\DynamicFields as DynamicFields;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 if ( !$preferences->pref_bool_selfsubscribe ) {
     header('location:index.php');
 }
 
-require_once WEB_ROOT . 'includes/dynamic_fields.inc.php';
+$dyn_fields = new DynamicFields();
 
 // flagging required fields
 $requires = new Galette\Entity\Required();
@@ -70,7 +72,7 @@ $fields = Galette\Entity\Adherent::getDbFields();
 
 // checking posted values for 'regular' fields
 if ( isset($_POST["nom_adh"]) ) {
-    $adherent['dyn'] = extract_posted_dynamic_fields($_POST, $disabled);
+    $adherent['dyn'] = $dyn_fields->extractPosted($_POST, $disabled);
     $valid = $member->check($_POST, $required, $disabled);
     if ( $valid === true ) {
         //all goes well, we can proceed
@@ -206,7 +208,7 @@ $spam_pass = PasswordImage();
 $s = PasswordImageName($spam_pass);
 $spam_img = print_img($s);
 
-$dynamic_fields = prepare_dynamic_fields_for_display(
+$dynamic_fields = $dyn_fields->prepareForDisplay(
     'adh', $adherent['dyn'], $disabled['dyn'], 1
 );
 
@@ -243,4 +245,8 @@ if ( isset($head_redirect) ) {
 $content = $tpl->fetch('member.tpl');
 $tpl->assign('content', $content);
 $tpl->display('public_page.tpl');
+
+if ( $profiler ) {
+    $profiler->stop();
+}
 ?>

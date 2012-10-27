@@ -437,4 +437,8 @@ $tpl->assign('color_picker', true);
 $content = $tpl->fetch('preferences.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
+
+if ( $profiler ) {
+    $profiler->stop();
+}
 ?>

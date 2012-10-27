@@ -40,6 +40,8 @@
  * @since     Available since 0.60
  */
 
+use Galette\Entity\DynamicFields as DynamicFields;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
@@ -86,7 +88,7 @@ if ( isset($session['lostpasswd_success']) ) {
     unset($session['lostpasswd_success']);
 }
 
-require_once WEB_ROOT . 'includes/dynamic_fields.inc.php';
+$dyn_fields = new DynamicFields();
 
 $member = new Galette\Entity\Adherent();
 $member->load($id_adh);
@@ -142,11 +144,11 @@ if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
 $session['caller'] = 'voir_adherent.php?id_adh='.$id_adh;
 
 // declare dynamic field values
-$adherent['dyn'] = get_dynamic_fields('adh', $id_adh, true);
+$adherent['dyn'] = $dyn_fields->getFields('adh', $id_adh, true);
 
 // - declare dynamic fields for display
 $disabled['dyn'] = array();
-$dynamic_fields = prepare_dynamic_fields_for_display(
+$dynamic_fields = $dyn_fields->prepareForDisplay(
     'adh',
     $adherent['dyn'],
     $disabled['dyn'],
@@ -182,4 +184,8 @@ $tpl->assign('success_detected', $success_detected);
 $content = $tpl->fetch('voir_adherent.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
+
+if ( $profiler ) {
+    $profiler->stop();
+}
 ?>

@@ -6,7 +6,6 @@
 					<th class="listing date_row">{_T string="Visibility"}</th>
 					<th class="listing date_row">{_T string="Type"}</th>
 					<th class="listing date_row">{_T string="Required"}</th>
-					<th class="listing date_row">{_T string="Position"}</th>
 					<th class="listing">{_T string="Actions"}</th>
 				</tr>
 			</thead>
@@ -22,7 +21,6 @@
         {if $field.required}{_T string="Yes"}{else}{_T string="No"}{/if}
     {/if}
 					</td>
-					<td class="listing left">{$field.pos}</td>
 					<td class="listing center actions_row">
     {if $field.no_data}
 						<img src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="16" height="16"/>

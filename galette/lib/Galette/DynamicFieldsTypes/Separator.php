@@ -3,11 +3,11 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Smarty main initialisation
+ * Separator field type
  *
  * PHP version 5
  *
- * Copyright © 2006-2012 The Galette Team
+ * Copyright © 2012 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -24,41 +24,54 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Main
+ * @category  DynamicFields
  * @package   Galette
  *
- * @author    Frédéric Jaqcuot <unknown@unknow.com>
- * @author    Georges Khaznadar (i18n using gettext) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2006-2012 The Galette Team
+ * @copyright 2012 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.63
+ * @since     Available since 0.7.1dev - 2012-07-28
  */
 
-$template_subdir = 'templates/' . $preferences->pref_theme . '/';
-$tpl = new Galette\Core\Smarty($base_path);
-$tpl->muteExpectedErrors();
+namespace Galette\DynamicFieldsTypes;
 
-$tpl->registerClass('GaletteMail', '\Galette\Core\GaletteMail');
+use Galette\Common\KLogger as KLogger;
 
 /**
-* Return member name. Smarty cannot directly use static functions
-*
-* @param array $params Parameters
-*
-* @return Adherent::getSName
-* @see Adherent::getSName
-*/
-function getMemberName($params)
+ * Separator field type
+ *
+ * @name      Separator
+ * @category  DynamicFields
+ * @package   Galette
+ *
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2012 The Galette Team
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @link      http://galette.tuxfamily.org
+ */
+
+class Separator extends DynamicFieldType
 {
-    extract($params);
-    return Galette\Entity\Adherent::getSName($id);
+    /**
+     * Default constructor
+     *
+     * @param int $id Optionnal field id to load data
+     */
+    public function __construct($id = null)
+    {
+        parent::__construct($id);
+    }
+
+    /**
+     * Get field type name
+     *
+     * @return String
+     */
+    public function getTypeName()
+    {
+        return _T("separator");
+    }
+
 }
-$tpl->registerPlugin(
-    'function',
-    'memberName',
-    'getMemberName'
-);
-?>

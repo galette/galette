@@ -23,12 +23,6 @@
                         <option value="1">{_T string="Yes"}</option>
                     </select>
                 </p>
-                <p>
-                    <label for="field_pos" class="bline">{_T string="Position"}</label>
-                    <select name="field_pos" id="field_pos">
-                        {html_options options=$field_positions selected="0"}
-                    </select>
-                </p>
                 <div class="center">
                     <input type="submit" name="valid" id="btnadd" value="{_T string="Add"}"/>
                     <input type="hidden" name="form" id="formname" value="{$form_name}"/>

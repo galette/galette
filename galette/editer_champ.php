@@ -37,6 +37,9 @@
  */
 
 use Galette\Common\KLogger as KLogger;
+use Galette\Entity\DynamicFields as DynamicFields;
+use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
@@ -52,7 +55,8 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-require WEB_ROOT . 'includes/dynamic_fields.inc.php';
+$dyn_fields = new DynamicFields();
+$all_forms = $dyn_fields->getFormsNames();
 
 $form_name = get_form_value('form', '');
 if ( !isset($all_forms[$form_name]) ) {
@@ -64,25 +68,8 @@ if ( $field_id == '' ) {
     header('location: configurer_fiches.php?form=' . $form_name);
 }
 
-try {
-    $select = new Zend_Db_Select($zdb->db);
-    $select->from(
-        $field_types_table,
-        'field_type'
-    )->where('field_id = ?', $field_id);
-    $field_type = $select->query()->fetchColumn();
-    if ( $field_type !== false ) {
-        $properties = $field_properties[$field_type];
-    } else {
-        $error_detected[] = _T("Unable to retrieve field informations.");
-    }
-} catch (Exception $e) {
-    /** FIXME */
-    $log->log(
-        'Unable to retrieve field `' . $field_id . '` informations | ' .
-        $e->getMessage(),
-        KLogger::ERR
-    );
+$df = $dyn_fields->loadFieldType($field_id);
+if ( $df === false ) {
     $error_detected[] = _T("Unable to retrieve field informations.");
 }
 
@@ -91,7 +78,6 @@ $data = array('id' => $field_id);
 if ( isset($_POST['valid']) ) {
     $field_name = $_POST['field_name'];
     $field_perm = get_numeric_posted_value('field_perm', '');
-    $field_pos = get_numeric_posted_value('field_pos', 0);
     $field_required = get_numeric_posted_value('field_required', '0');
     $field_width = get_numeric_posted_value('field_width', null);
     $field_height = get_numeric_posted_value('field_height', null);
@@ -105,7 +91,7 @@ if ( isset($_POST['valid']) ) {
         try {
             $select = new Zend_Db_Select($zdb->db);
             $select->from(
-                $field_types_table,
+                PREFIX_DB . DynamicFieldType::TABLE,
                 'COUNT(field_id)'
             )->where('NOT field_id = ?', $field_id)
                 ->where('field_form = ?', $form_name)
@@ -127,7 +113,7 @@ if ( isset($_POST['valid']) ) {
         } else {
             $select = new Zend_Db_Select($zdb->db);
             $select->from(
-                $field_types_table,
+                PREFIX_DB . DynamicFieldType::TABLE,
                 'field_name'
             )->where('field_id = ?', $field_id);
             $old_field_name = $select->query()->fetchColumn();
@@ -142,7 +128,6 @@ if ( isset($_POST['valid']) ) {
                 $values = array(
                     'field_name'     => $field_name,
                     'field_perm'     => $field_perm,
-                    'field_pos'      => $field_pos,
                     'field_required' => $field_required,
                     'field_width'    => $field_width,
                     'field_height'   => $field_height,
@@ -150,7 +135,7 @@ if ( isset($_POST['valid']) ) {
                     'field_repeat'   => $field_repeat
                 );
                 $zdb->db->update(
-                    $field_types_table,
+                    PREFIX_DB . DynamicFieldType::TABLE,
                     $values,
                     'field_id = ' . $field_id
                 );
@@ -164,7 +149,7 @@ if ( isset($_POST['valid']) ) {
             }
         }
 
-        if ( $properties['fixed_values'] ) {
+        if ( $df->hasFixedValues() ) {
             $values = array();
             $max_length = 1;
             foreach ( explode("\n", $fixed_values) as $val ) {
@@ -177,7 +162,7 @@ if ( isset($_POST['valid']) ) {
                     }
                 }
             }
-            $contents_table = fixed_values_table_name($field_id);
+            $contents_table = DynamicFields::getFixedValuesTableName($field_id);
 
             try {
                 $zdb->db->beginTransaction();
@@ -232,60 +217,20 @@ if ( isset($_POST['valid']) ) {
     }
 } elseif ( isset($_POST['cancel']) ) {
     header('location: configurer_fiches.php?form=' . $form_name);
-} else {
-    try {
-        $select->columns();
-        $result = $select->query()->fetch();
-
-        if ($result !== false) {
-            $field_name = $result->field_name;
-            $field_type = $result->field_name;
-            $field_perm = $result->field_perm;
-            $field_pos = $result->field_pos;
-            $field_required = $result->field_required;
-            $field_width = $result->field_width;
-            $field_height = $result->field_height;
-            $field_repeat = $result->field_repeat;
-            $field_size = $result->field_size;
-            $fixed_values = '';
-            if ($properties['fixed_values']) {
-                foreach ( get_fixed_values($field_id) as $val ) {
-                    $fixed_values .= $val . "\n";
-                }
-            }
-        } // $result != false
-    } catch (Exception $e) {
-        /** FIXME */
-        $log->log(
-            'Unable to retrieve fields types for field ' . $field_id . ' | ' .
-            $e->getMessage(),
-            KLogger::ERR
-        );
-    }
 }
 
-$data['id'] = $field_id;
-$data['name'] = $field_name;
-$data['perm'] = $field_perm;
-$data['pos'] = $field_pos;
-$data['required'] = ($field_required == '1');
-$data['width'] = $field_width;
-$data['height'] = $field_height;
-$data['repeat'] = $field_repeat;
-$data['size'] = $field_size;
-$data['fixed_values'] = $fixed_values;
+//We load values here, making sure all changes are stored in database
+$df->load();
 
 $tpl->assign('page_title', _T("Edit field"));
 $tpl->assign('form_name', $form_name);
-$tpl->assign('properties', $properties);
-$tpl->assign('data', $data);
+$tpl->assign('df', $df);
 $tpl->assign('error_detected', $error_detected);
 
-$tpl->assign('perm_all', $perm_all);
-$tpl->assign('perm_admin', $perm_admin);
-$tpl->assign('perm_names', $perm_names);
-
-$tpl->assign('field_positions', $field_positions);
+$tpl->assign('perm_all', DynamicFields::PERM_ALL);
+$tpl->assign('perm_staff', DynamicFields::PERM_STAFF);
+$tpl->assign('perm_admin', DynamicFields::PERM_ADM);
+$tpl->assign('perm_names', $dyn_fields->getPermsNames());
 
 $content = $tpl->fetch('editer_champ.tpl');
 $tpl->assign('content', $content);

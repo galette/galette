@@ -168,4 +168,7 @@ $content = $tpl->fetch('traduire_libelles.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
 
+if ( $profiler ) {
+    $profiler->stop();
+}
 ?>
