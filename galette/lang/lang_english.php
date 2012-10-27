@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sun Oct  7 10:14:42 2012 (GMT)
+// This file was automatically generated on Sat Oct 27 09:30:12 2012 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -36,7 +36,7 @@ $lang['SMTP (or GMail) user:'] = 'SMTP (or GMail) user:';
 // ../templates/default/member.tpl:180 ../templates/default/member.tpl:186 ../templates/default/change_passwd.tpl:16 
 $lang['(at least 4 characters)'] = '(at least 4 characters)';
 
-// ../ajax_plugins_initdb.php:181 ../install/index.php:868 
+// ../ajax_plugins_initdb.php:181 ../install/index.php:872 
 $lang['Creation of the tables'] = 'Creation of the tables';
 
 // ../templates/default/gestion_contributions.tpl:39 
@@ -48,7 +48,7 @@ $lang['Subject:'] = 'Subject:';
 // ../lib/Galette/Entity/Group.php:574 
 $lang['A group cannot be set as its own parent!'] = 'A group cannot be set as its own parent!';
 
-// ../ajax_plugins_initdb.php:174 ../install/index.php:808 
+// ../ajax_plugins_initdb.php:174 ../install/index.php:812 
 $lang['ALTER Operation allowed'] = 'ALTER Operation allowed';
 
 // ../gestion_contributions.php:152 
@@ -84,7 +84,7 @@ $lang['no transaction'] = 'no transaction';
 // ../includes/i18n.inc.php:301 
 $lang['Secretary'] = 'Secretary';
 
-// ../install/index.php:1107 ../templates/default/preferences.tpl:406 
+// ../install/index.php:1111 ../templates/default/preferences.tpl:406 
 $lang['Retype password:'] = 'Retype password:';
 
 // ../champs_adherents.php:64 ../lib/Galette/Entity/Adherent.php:382 ../templates/default/member.tpl:153 ../templates/default/voir_adherent.tpl:164 
@@ -93,7 +93,7 @@ $lang['Account:'] = 'Account:';
 // ../gestion_contributions.php:101 ../lib/Galette/Repository/Contributions.php:633 
 $lang['end date filter'] = 'end date filter';
 
-// ../install/index.php:323 
+// ../install/index.php:327 
 $lang['Your current Galette version is comprised between'] = 'Your current Galette version is comprised between';
 
 // ../templates/default/preferences.tpl:311 
@@ -177,7 +177,7 @@ $lang['A problem happened while sending email to admin for account \'%s\'.'] = '
 // ../templates/default/preferences.tpl:355 
 $lang['Jabber'] = 'Jabber';
 
-// ../install/index.php:92 
+// ../install/index.php:96 
 $lang['No host'] = 'No host';
 
 // ../templates/default/gestion_contributions.tpl:9 
@@ -213,7 +213,7 @@ $lang['None'] = 'None';
 // ../templates/default/gestion_adherents.tpl:179 
 $lang['%membername: edit informations'] = '%membername: edit informations';
 
-// ../install/index.php:368 
+// ../install/index.php:372 
 $lang['Galette requires at least PHP version 5.3.'] = 'Galette requires at least PHP version 5.3.';
 
 // ../templates/default/page.tpl:140 
@@ -246,25 +246,25 @@ $lang['Birthplace:'] = 'Birthplace:';
 // ../lib/Galette/Entity/Transaction.php:290 ../lib/Galette/Entity/Contribution.php:376 
 $lang['- The amount must be an integer!'] = '- The amount must be an integer!';
 
-// ../install/index.php:294 ../install/index.php:340 ../install/index.php:494 ../install/index.php:630 ../install/index.php:702 ../install/index.php:846 ../install/index.php:1066 ../install/index.php:1112 ../install/index.php:1251 ../templates/default/ajax_plugins_initdb.tpl:81 
+// ../install/index.php:298 ../install/index.php:344 ../install/index.php:498 ../install/index.php:634 ../install/index.php:706 ../install/index.php:850 ../install/index.php:1070 ../install/index.php:1116 ../install/index.php:1255 ../templates/default/ajax_plugins_initdb.tpl:81 
 $lang['Next step'] = 'Next step';
 
 // ../lib/Galette/IO/Pdf.php:197 
 $lang['Unable to convert GIF file '] = 'Unable to convert GIF file ';
 
-// ../install/index.php:95 
+// ../install/index.php:99 
 $lang['No port'] = 'No port';
 
 // ../editer_champ.php:184 
 $lang['An error occured storing managing fields values table'] = 'An error occured storing managing fields values table';
 
-// ../install/index.php:1029 ../templates/default/ajax_plugins_initdb.tpl:48 
+// ../install/index.php:1033 ../templates/default/ajax_plugins_initdb.tpl:48 
 $lang['The tables are not totally created, it may be a permission problem.'] = 'The tables are not totally created, it may be a permission problem.';
 
 // ../templates/default/mailing_adherents.tpl:10 
 $lang['Mailing informations'] = 'Mailing informations';
 
-// ../install/index.php:1275 
+// ../install/index.php:1279 
 $lang['This can come from the permissions on the file config/config.inc.php or the impossibility to make an INSERT into the database.'] = 'This can come from the permissions on the file config/config.inc.php or the impossibility to make an INSERT into the database.';
 
 // ../ajax_recipients.php:72 ../templates/default/gestion_adherents.tpl:130 ../templates/default/mailing_adherents.tpl:30 
@@ -300,7 +300,7 @@ $lang['[W]'] = '[W]';
 // ../templates/default/gestion_mailings.tpl:81 
 $lang['Mailing has been sent'] = 'Mailing has been sent';
 
-// ../change_passwd.php:60 ../install/index.php:101 ../install/index.php:153 
+// ../change_passwd.php:60 ../install/index.php:105 ../install/index.php:157 
 $lang['No password'] = 'No password';
 
 // ../traduire_libelles.php:78 
@@ -339,13 +339,13 @@ $lang['(Un)Check all'] = '(Un)Check all';
 // ../templates/default/preferences.tpl:52 
 $lang['Use either the adress setted below or select user status to retrieve another adress.'] = 'Use either the adress setted below or select user status to retrieve another adress.';
 
-// ../install/index.php:468 
+// ../install/index.php:472 
 $lang['In order to be updated, Galette needs write permission on files listed above.'] = 'In order to be updated, Galette needs write permission on files listed above.';
 
 // ../etiquettes_adherents.php:167 
 $lang['labels_print_filename'] = 'Labels';
 
-// ../install/index.php:510 ../install/index.php:1091 ../install/index.php:1274 ../templates/default/mailing_adherents.tpl:3 ../templates/default/global_messages.tpl:4 
+// ../install/index.php:514 ../install/index.php:1095 ../install/index.php:1278 ../templates/default/mailing_adherents.tpl:3 ../templates/default/global_messages.tpl:4 
 $lang['- ERROR -'] = '- ERROR -';
 
 // ../lib/Galette/Entity/Transaction.php:299 
@@ -354,13 +354,13 @@ $lang['- Transaction description must be 150 characters long maximum.'] = '- Tra
 // ../templates/default/ajouter_contribution.tpl:57 
 $lang['Back'] = 'Back';
 
-// ../install/index.php:301 ../templates/default/ajax_plugins_initdb.tpl:11 
+// ../install/index.php:305 ../templates/default/ajax_plugins_initdb.tpl:11 
 $lang['Select installation mode to launch'] = 'Select installation mode to launch';
 
 // ../gestion_adherents.php:233 
 $lang['Active accounts'] = 'Active accounts';
 
-// ../install/index.php:473 
+// ../install/index.php:477 
 $lang['Under Windows, check these directories are not in Read-Only mode in their property panel.'] = 'Under Windows, check these directories are not in Read-Only mode in their property panel.';
 
 // ../templates/default/preferences.tpl:214 
@@ -378,7 +378,7 @@ $lang['Home'] = 'Home';
 // ../templates/default/preferences.tpl:196 
 $lang['PHP mail() function'] = 'PHP mail() function';
 
-// ../templates/default/gestion_intitule_content.tpl:56 ../templates/default/configurer_fiche_content.tpl:29 ../templates/default/configurer_fiche_content.tpl:30 
+// ../templates/default/gestion_intitule_content.tpl:66 ../templates/default/configurer_fiche_content.tpl:29 ../templates/default/configurer_fiche_content.tpl:30 
 $lang['Edit \'%s\' field'] = 'Edit \'%s\' field';
 
 // ../templates/default/editer_champ.tpl:27 
@@ -402,7 +402,7 @@ $lang['New account mail sent to \'%s\'.'] = 'New account mail sent to \'%s\'.';
 // ../configurer_fiches.php:81 
 $lang['- The name field cannot be void.'] = '- The name field cannot be void.';
 
-// ../install/index.php:313 ../templates/default/ajax_plugins_initdb.tpl:17 
+// ../install/index.php:317 ../templates/default/ajax_plugins_initdb.tpl:17 
 $lang['Update'] = 'Update';
 
 // ../lostpasswd.php:115 
@@ -429,7 +429,7 @@ $lang['List of members'] = 'List of members';
 // ../templates/default/gestion_adherents.tpl:78 
 $lang['Status'] = 'Status';
 
-// ../ajax_plugins_initdb.php:163 ../install/index.php:793 
+// ../ajax_plugins_initdb.php:163 ../install/index.php:797 
 $lang['DROP operation not allowed'] = 'DROP operation not allowed';
 
 // ../lostpasswd.php:139 
@@ -534,7 +534,7 @@ $lang['- Invalid number of months of membership extension.'] = '- Invalid number
 // ../templates/default/preferences.tpl:21 
 $lang['Association\'s short description:'] = 'Association\'s short description:';
 
-// ../install/index.php:655 
+// ../install/index.php:659 
 $lang['Check the parameters and the existence of the database'] = 'Check the parameters and the existence of the database';
 
 // ../templates/default/page.tpl:118 
@@ -588,7 +588,7 @@ $lang['Mr.'] = 'Mr.';
 // ../lib/Galette/Entity/Adherent.php:1082 ../lib/Galette/Entity/Adherent.php:1130 
 $lang['An error has occured while looking if login already exists.'] = 'An error has occured while looking if login already exists.';
 
-// ../install/index.php:279 
+// ../install/index.php:283 
 $lang['Please select your administration language'] = 'Please select your administration language';
 
 // ../templates/default/gestion_adherents.tpl:123 
@@ -627,7 +627,7 @@ $lang['Do you really want to delete this transaction of the database ?'] = 'Do y
 // ../templates/default/gestion_groupes.tpl:135 
 $lang['An error occured checking name uniqueness :('] = 'An error occured checking name uniqueness :(';
 
-// ../install/index.php:1059 
+// ../install/index.php:1063 
 $lang['The tables has been correctly created.'] = 'The tables has been correctly created.';
 
 // ../templates/default/group.tpl:55 
@@ -636,7 +636,7 @@ $lang['Manage managers'] = 'Manage managers';
 // ../etiquettes_adherents.php:82 
 $lang['Member\'s Labels'] = 'Member\'s Labels';
 
-// ../install/index.php:654 
+// ../install/index.php:658 
 $lang['Check of the database'] = 'Check of the database';
 
 // ../templates/default/global_messages.tpl:28 
@@ -651,7 +651,7 @@ $lang['Leave empty to use Sender Email as reply address'] = 'Leave empty to use 
 // ../templates/default/page.tpl:138 
 $lang['Customize fields order, set which are required, and for who they\'re visibles'] = 'Customize fields order, set which are required, and for who they\'re visibles';
 
-// ../install/index.php:465 
+// ../install/index.php:469 
 $lang['Files permissions are not OK!'] = 'Files permissions are not OK!';
 
 // ../lib/Galette/Core/Picture.php:801 
@@ -660,7 +660,7 @@ $lang['An SQL error has occured.'] = 'An SQL error has occured.';
 // ../templates/default/voir_adherent.tpl:216 
 $lang['[manager]'] = '[manager]';
 
-// ../ajouter_contribution.php:247 
+// ../ajouter_contribution.php:248 
 $lang['Mail sent to admin for user %name (%email)'] = 'Mail sent to admin for user %name (%email)';
 
 // ../gestion_adherents.php:212 
@@ -684,7 +684,7 @@ $lang['Freed of dues'] = 'Freed of dues';
 // ../templates/default/ajouter_contribution.tpl:124 ../templates/default/export.tpl:108 
 $lang['Continue'] = 'Continue';
 
-// ../install/index.php:1023 ../templates/default/ajax_plugins_initdb.tpl:44 
+// ../install/index.php:1027 ../templates/default/ajax_plugins_initdb.tpl:44 
 $lang['(Errors on DROP and RENAME operations can be ignored)'] = '(Errors on DROP and RENAME operations can be ignored)';
 
 // ../templates/default/gestion_contributions.tpl:46 ../templates/default/gestion_transactions.tpl:6 
@@ -702,7 +702,7 @@ $lang['Application runs under demo mode. This functionnality is not enabled, sor
 // ../templates/default/change_passwd.tpl:12 
 $lang['Confirmation:'] = 'Confirmation:';
 
-// ../champs_adherents.php:61 ../lib/Galette/Entity/Adherent.php:350 ../install/index.php:1099 ../templates/default/member.tpl:178 ../templates/default/preferences.tpl:398 ../templates/default/index.tpl:8 ../templates/default/voir_adherent.tpl:183 
+// ../champs_adherents.php:61 ../lib/Galette/Entity/Adherent.php:350 ../install/index.php:1103 ../templates/default/member.tpl:178 ../templates/default/preferences.tpl:398 ../templates/default/index.tpl:8 ../templates/default/voir_adherent.tpl:183 
 $lang['Username:'] = 'Username:';
 
 // ../ajax_recipients.php:63 ../templates/default/mailing_adherents.tpl:17 
@@ -726,16 +726,16 @@ $lang['Preferences has been saved.'] = 'Preferences has been saved.';
 // ../templates/default/ajax_mailing_preview.tpl:5 
 $lang['Headers'] = 'Headers';
 
-// ../install/index.php:467 
+// ../install/index.php:471 
 $lang['To work as excpected, Galette needs write permission on files listed above.'] = 'To work as excpected, Galette needs write permission on files listed above.';
 
-// ../champs_adherents.php:62 ../lib/Galette/Entity/Adherent.php:358 ../install/index.php:610 ../install/index.php:1103 ../templates/default/member.tpl:184 ../templates/default/member.tpl:194 ../templates/default/preferences.tpl:402 ../templates/default/index.tpl:12 
+// ../champs_adherents.php:62 ../lib/Galette/Entity/Adherent.php:358 ../install/index.php:614 ../install/index.php:1107 ../templates/default/member.tpl:184 ../templates/default/member.tpl:194 ../templates/default/preferences.tpl:402 ../templates/default/index.tpl:12 
 $lang['Password:'] = 'Password:';
 
-// ../install/index.php:591 
+// ../install/index.php:595 
 $lang['Database type:'] = 'Database type:';
 
-// ../install/index.php:269 
+// ../install/index.php:273 
 $lang['Galette installation'] = 'Galette installation';
 
 // ../templates/default/preferences.tpl:258 ../templates/default/preferences.tpl:375 
@@ -756,7 +756,7 @@ $lang['Show public pages for'] = 'Show public pages for';
 // ../templates/default/preferences.tpl:303 
 $lang['(10 characters max)'] = '(10 characters max)';
 
-// ../ajax_plugins_initdb.php:107 ../install/index.php:194 ../install/index.php:300 ../install/index.php:1336 ../templates/default/ajax_plugins_initdb.tpl:96 
+// ../ajax_plugins_initdb.php:107 ../install/index.php:198 ../install/index.php:304 ../install/index.php:1340 ../templates/default/ajax_plugins_initdb.tpl:96 
 $lang['Installation mode'] = 'Installation mode';
 
 // ../templates/default/preferences.tpl:253 ../templates/default/preferences.tpl:370 
@@ -786,7 +786,7 @@ $lang['Members list'] = 'Members list';
 // ../templates/default/page.tpl:111 
 $lang['Add new contribution in database'] = 'Add new contribution in database';
 
-// ../install/index.php:602 
+// ../install/index.php:606 
 $lang['Port:'] = 'Port:';
 
 // ../templates/default/ajax_groups.tpl:41 
@@ -807,16 +807,16 @@ $lang['Active used modules'] = 'Active used modules';
 // ../templates/default/page.tpl:112 
 $lang['Add new transaction in database'] = 'Add new transaction in database';
 
-// ../ajouter_contribution.php:77 
+// ../ajouter_contribution.php:78 
 $lang['You have to select a member.'] = 'You have to select a member.';
 
-// ../install/index.php:816 
+// ../install/index.php:820 
 $lang['GALETTE hasn\'t got enough permissions on the database to continue the installation.'] = 'GALETTE hasn\'t got enough permissions on the database to continue the installation.';
 
-// ../install/index.php:1032 ../templates/default/ajax_plugins_initdb.tpl:50 
+// ../install/index.php:1036 ../templates/default/ajax_plugins_initdb.tpl:50 
 $lang['The tables have not been totally created, it may be a permission problem.'] = 'The tables have not been totally created, it may be a permission problem.';
 
-// ../ajax_plugins_initdb.php:159 ../install/index.php:788 
+// ../ajax_plugins_initdb.php:159 ../install/index.php:792 
 $lang['DELETE operation allowed'] = 'DELETE operation allowed';
 
 // ../templates/default/export.tpl:79 
@@ -840,7 +840,7 @@ $lang['A mailing already exists. Do you want to create a new one or resume the e
 // ../templates/default/index.tpl:2 
 $lang['Login failed.'] = 'Login failed.';
 
-// ../mailing_adherents.php:126 
+// ../mailing_adherents.php:131 
 $lang['Please enter a message.'] = 'Please enter a message.';
 
 // ../templates/default/gestion_adherents.tpl:103 
@@ -849,13 +849,13 @@ $lang['Modified'] = 'Modified';
 // ../templates/default/ajouter_transaction.tpl:161 ../templates/default/ajouter_transaction.tpl:183 
 $lang['An error occured displaying contributions :('] = 'An error occured displaying contributions :(';
 
-// ../ajax_plugins_initdb.php:156 ../install/index.php:783 
+// ../ajax_plugins_initdb.php:156 ../install/index.php:787 
 $lang['DELETE operation not allowed'] = 'DELETE operation not allowed';
 
 // ../templates/default/configurer_fiche_content.tpl:46 
 $lang['Send down \'%s\' field'] = 'Send down \'%s\' field';
 
-// ../install/index.php:699 
+// ../install/index.php:703 
 $lang['Database exists and connection parameters are OK.'] = 'Database exists and connection parameters are OK.';
 
 // ../templates/default/page.tpl:117 
@@ -873,16 +873,16 @@ $lang['Create a new contribution that will be attached to the current transactio
 // ../templates/default/gestion_mailings.tpl:32 
 $lang['Sender'] = 'Sender';
 
-// ../ajax_plugins_initdb.php:166 ../install/index.php:798 
+// ../ajax_plugins_initdb.php:166 ../install/index.php:802 
 $lang['DROP operation allowed'] = 'DROP operation allowed';
 
 // ../templates/default/history.tpl:5 
 $lang['Flush the logs'] = 'Flush the logs';
 
-// ../install/index.php:282 
+// ../install/index.php:286 
 $lang['Choose language'] = 'Choose language';
 
-// ../install/index.php:459 
+// ../install/index.php:463 
 $lang['Files permissions'] = 'Files permissions';
 
 // ../templates/default/preferences.tpl:218 
@@ -930,7 +930,7 @@ $lang['Current logo for printing'] = 'Current logo for printing';
 // ../ajouter_transaction.php:85 
 $lang['Contribution has been successfyully attached to current transaction'] = 'Contribution has been successfyully attached to current transaction';
 
-// ../install/index.php:1192 
+// ../install/index.php:1196 
 $lang['Default contributions types were successfully stored.'] = 'Default contributions types were successfully stored.';
 
 // ../public/trombinoscope.php:53 ../templates/default/public_page.tpl:56 ../templates/default/page.tpl:129 
@@ -942,7 +942,7 @@ $lang['Previous'] = 'Previous';
 // ../templates/default/edit_dynamic_fields.tpl:51 
 $lang['Enter as many occurences you want.'] = 'Enter as many occurences you want.';
 
-// ../install/index.php:485 ../install/index.php:826 ../install/index.php:1040 ../install/index.php:1281 ../templates/default/ajax_plugins_initdb.tpl:79 
+// ../install/index.php:489 ../install/index.php:830 ../install/index.php:1044 ../install/index.php:1285 ../templates/default/ajax_plugins_initdb.tpl:79 
 $lang['Retry'] = 'Retry';
 
 // ../templates/default/gestion_mailings.tpl:75 ../templates/default/page.tpl:91 
@@ -960,7 +960,7 @@ $lang['An error has occured while looking if status is already in use.'] = 'An e
 // ../export.php:101 
 $lang['An error occured running parameted export \'%export\'.'] = 'An error occured running parameted export \'%export\'.';
 
-// ../ajouter_contribution.php:235 
+// ../ajouter_contribution.php:236 
 $lang['%asso Galette\'s admin'] = '%asso Galette\'s admin';
 
 // ../templates/default/export.tpl:47 
@@ -1056,16 +1056,16 @@ $lang['Default theme:'] = 'Default theme:';
 // ../gestion_adherents.php:195 
 $lang['Members management'] = 'Members management';
 
-// ../ajouter_contribution.php:218 
+// ../ajouter_contribution.php:219 
 $lang['Trying to send a mail to a member (%name) with an invalid adress: %email'] = 'Trying to send a mail to a member (%name) with an invalid adress: %email';
 
-// ../install/index.php:397 
+// ../install/index.php:401 
 $lang['Your PHP date settings are not correct. Maybe you\'ve missed the timezone settings that is mandatory since PHP 5.3?'] = 'Your PHP date settings are not correct. Maybe you\'ve missed the timezone settings that is mandatory since PHP 5.3?';
 
 // ../templates/default/mailing_adherents.tpl:50 
 $lang['(De)Activate HTML editor'] = '(De)Activate HTML editor';
 
-// ../install/index.php:876 
+// ../install/index.php:880 
 $lang['Installation Report'] = 'Installation Report';
 
 // ../templates/default/gestion_adherents.tpl:36 
@@ -1077,7 +1077,7 @@ $lang['Manage user\'s groups'] = 'Manage user\'s groups';
 // ../lib/Galette/Entity/Politeness.php:70 ../templates/default/gestion_adherents.tpl:210 
 $lang['Mrs'] = 'Mrs';
 
-// ../install/index.php:1318 
+// ../install/index.php:1322 
 $lang['Galette has been successfully updated!'] = 'Galette has been successfully updated!';
 
 // ../templates/default/gestion_adherents.tpl:123 ../templates/default/gestion_adherents.tpl:244 ../templates/default/group.tpl:59 ../templates/default/gestion_contributions.tpl:166 
@@ -1086,7 +1086,7 @@ $lang['Delete'] = 'Delete';
 // ../templates/default/member.tpl:250 ../templates/default/member.tpl:398 
 $lang['Member of \'%groupname\''] = 'Member of \'%groupname\'';
 
-// ../install/index.php:327 
+// ../install/index.php:331 
 $lang['Your current Galette version is'] = 'Your current Galette version is';
 
 // ../lib/Galette/Core/Plugins.php:236 ../lib/Galette/Core/Plugins.php:240 
@@ -1095,7 +1095,7 @@ $lang['Cannot deactivate plugin.'] = 'Cannot deactivate plugin.';
 // ../templates/default/preferences.tpl:227 
 $lang['Use TLS for SMTP?'] = 'Use TLS for SMTP?';
 
-// ../install/index.php:1087 
+// ../install/index.php:1091 
 $lang['Admin settings'] = 'Admin settings';
 
 // ../lib/Galette/Entity/DynamicFields.php:105 
@@ -1134,7 +1134,7 @@ $lang['Strip Background colors:'] = 'Strip Background colors:';
 // ../templates/default/change_passwd.tpl:3 
 $lang['Your password has been changed. Please click on the \'home\' button to go to the login page.'] = 'Your password has been changed. Please click on the \'home\' button to go to the login page.';
 
-// ../mailing_adherents.php:191 
+// ../mailing_adherents.php:196 
 $lang['Mailing has been successfully saved.'] = 'Mailing has been successfully saved.';
 
 // ../lostpasswd.php:130 
@@ -1167,10 +1167,10 @@ $lang['logs are empty'] = 'logs are empty';
 // ../lib/Galette/Core/Picture.php:819 
 $lang['The uploaded file exceeds the upload_max_filesize directive in php.ini'] = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
 
-// ../install/index.php:206 ../install/index.php:1339 
+// ../install/index.php:210 ../install/index.php:1343 
 $lang['Access to the database'] = 'Access to the database';
 
-// ../ajouter_contribution.php:311 
+// ../ajouter_contribution.php:312 
 $lang['Contribution card'] = 'Contribution card';
 
 // ../templates/default/ajax_attendance_sheet_details.tpl:22 
@@ -1203,7 +1203,7 @@ $lang['Username or email:'] = 'Username or email:';
 // ../templates/default/gestion_adherents.tpl:17 
 $lang['Select a group'] = 'Select a group';
 
-// ../ajouter_contribution.php:202 
+// ../ajouter_contribution.php:203 
 $lang['Mail sent to user %name (%email)'] = 'Mail sent to user %name (%email)';
 
 // ../templates/default/gestion_mailings.tpl:20 ../templates/default/ajax_attendance_sheet_details.tpl:17 ../templates/default/ajouter_transaction.tpl:48 ../templates/default/history.tpl:23 ../templates/default/gestion_contributions.tpl:61 ../templates/default/ajouter_contribution.tpl:24 ../templates/default/export.tpl:20 ../templates/default/gestion_transactions.tpl:20 
@@ -1230,10 +1230,10 @@ $lang['Delete the contribution'] = 'Delete the contribution';
 // ../lib/Galette/Entity/DynamicFields.php:104 
 $lang['free text'] = 'free text';
 
-// ../install/index.php:191 ../install/index.php:1335 
+// ../install/index.php:195 ../install/index.php:1339 
 $lang['Language'] = 'Language';
 
-// ../install/index.php:202 ../install/index.php:505 ../install/index.php:589 ../install/index.php:1338 
+// ../install/index.php:206 ../install/index.php:509 ../install/index.php:593 ../install/index.php:1342 
 $lang['Database'] = 'Database';
 
 // ../includes/i18n.inc.php:309 
@@ -1245,7 +1245,7 @@ $lang['Selected members'] = 'Selected members';
 // ../templates/default/preferences.tpl:52 
 $lang['Postal adress:'] = 'Postal adress:';
 
-// ../install/index.php:1203 
+// ../install/index.php:1207 
 $lang['Default status were successfully stored.'] = 'Default status were successfully stored.';
 
 // ../preferences.php:423 ../lib/Galette/Core/Pagination.php:259 
@@ -1278,7 +1278,7 @@ $lang['An error occured displaying preview :('] = 'An error occured displaying p
 // ../templates/default/gestion_intitule_content.tpl:14 
 $lang['Priority'] = 'Priority';
 
-// ../install/index.php:1315 
+// ../install/index.php:1319 
 $lang['Galette has been successfully installed!'] = 'Galette has been successfully installed!';
 
 // ../templates/default/preferences.tpl:53 
@@ -1320,7 +1320,7 @@ $lang['- The duration must be a positive integer!'] = '- The duration must be a 
 // ../templates/default/ajouter_transaction.tpl:13 ../templates/default/ajouter_contribution.tpl:45 
 $lang['-- select a name --'] = '-- select a name --';
 
-// ../install/index.php:324 ../templates/default/ajax_plugins_initdb.tpl:24 
+// ../install/index.php:328 ../templates/default/ajax_plugins_initdb.tpl:24 
 $lang['and'] = 'and';
 
 // ../templates/default/traduire_libelles.tpl:12 
@@ -1332,16 +1332,16 @@ $lang['Inactive account'] = 'Inactive account';
 // ../templates/default/footer.tpl:15 
 $lang['%s on Twitter!'] = '%s on Twitter!';
 
-// ../templates/default/gestion_intitule_content.tpl:59 ../templates/default/configurer_fiche_content.tpl:33 
+// ../templates/default/gestion_intitule_content.tpl:69 ../templates/default/configurer_fiche_content.tpl:33 
 $lang['Delete \'%s\' field'] = 'Delete \'%s\' field';
 
-// ../install/index.php:819 
+// ../install/index.php:823 
 $lang['GALETTE hasn\'t got enough permissions on the database to continue the update.'] = ' Galette hasn\'t got enough permissions on the database to continue the update.';
 
 // ../gestion_adherents.php:232 
 $lang['All accounts'] = 'All accounts';
 
-// ../install/index.php:471 
+// ../install/index.php:475 
 $lang['file_name'] = 'file_name';
 
 // ../includes/i18n.inc.php:322 
@@ -1371,10 +1371,10 @@ $lang['Label height:'] = 'Label height:';
 // ../templates/default/member.tpl:10 
 $lang['Your subscription has been registered, you will receive a recapitulative email soon (remember to check your spam box ;) ).'] = 'Your subscription has been registered, you will receive a recapitulative email soon (remember to check your spam box ;) ).';
 
-// ../install/index.php:304 ../templates/default/ajax_plugins_initdb.tpl:13 
+// ../install/index.php:308 ../templates/default/ajax_plugins_initdb.tpl:13 
 $lang['New installation:'] = 'New installation:';
 
-// ../install/index.php:614 
+// ../install/index.php:618 
 $lang['Database:'] = 'Database:';
 
 // ../templates/default/preferences.tpl:288 
@@ -1383,10 +1383,10 @@ $lang['Number of label lines:'] = 'Number of label lines:';
 // ../champs_requis.php:94 
 $lang['Required fields for adherents'] = 'Required fields for adherents';
 
-// ../change_passwd.php:99 ../lostpasswd.php:176 
+// ../change_passwd.php:99 ../lostpasswd.php:181 
 $lang['Password recovery'] = 'Password recovery';
 
-// ../install/index.php:680 
+// ../install/index.php:684 
 $lang['Database can\'t be reached. Please go back to enter the connection parameters again.'] = 'Database can\'t be reached. Please go back to enter the connection parameters again.';
 
 // ../templates/default/voir_adherent.tpl:11 
@@ -1422,7 +1422,7 @@ $lang['Member card added'] = 'Member card added';
 // ../templates/default/gestion_contributions.tpl:158 
 $lang['Found contributions total %f'] = 'Found contributions total %f';
 
-// ../install/index.php:518 
+// ../install/index.php:522 
 $lang['If it hadn\'t been made, create a database and a user for Galette.'] = 'If it hadn\'t been made, create a database and a user for Galette.';
 
 // ../templates/default/plugins.tpl:28 
@@ -1443,7 +1443,7 @@ $lang['With'] = 'With';
 // ../traduire_libelles.php:84 
 $lang['Labels has been sucessfully translated!'] = 'Labels has been sucessfully translated!';
 
-// ../ajouter_contribution.php:154 
+// ../ajouter_contribution.php:155 
 $lang['An error occured while storing the contribution.'] = 'An error occured while storing the contribution.';
 
 // ../attendance_sheet.php:178 
@@ -1470,10 +1470,10 @@ $lang['Click on a contribution row to attach it to the current transaction'] = '
 // ../templates/default/gestion_contributions.tpl:166 
 $lang['Do you really want to delete all selected contributions?'] = 'Do you really want to delete all selected contributions?';
 
-// ../install/index.php:727 ../templates/default/ajax_plugins_initdb.tpl:39 
+// ../install/index.php:731 ../templates/default/ajax_plugins_initdb.tpl:39 
 $lang['In order to be updated, Galette needs a number of rights on the database (CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)'] = 'In order to be updated, Galette needs a number of rights on the database (CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)';
 
-// ../install/index.php:89 
+// ../install/index.php:93 
 $lang['Database type unknown'] = 'Database type unknown';
 
 // ../lib/Galette/Core/Picture.php:821 
@@ -1482,8 +1482,8 @@ $lang['The uploaded file exceeds the MAX_FILE_SIZE directive that was specified 
 // ../templates/default/preferences.tpl:238 
 $lang['SMTP (or GMail) password:'] = 'SMTP (or GMail) password:';
 
-// ../templates/default/ajax_plugins_initdb.tpl:14 
-$lang['You\'re installing \'%name\' plugin for the first time, or you wish to erase an older version of the plugin without keeping your data'] = 'You\'re installing \'%name\' plugin for the first time, or you wish to erase an older version of the plugin without keeping your data';
+// ../templates/default/configurer_fiche_content.tpl:54 
+$lang['There is not yet any dynamic field configured for \'%formname\''] = 'There is not yet any dynamic field configured for \'%formname\'';
 
 // ../templates/default/gestion_adherents.tpl:31 
 $lang['Without'] = 'Without';
@@ -1518,10 +1518,10 @@ $lang['no group'] = 'no group';
 // ../champs_adherents.php:58 ../lib/Galette/Entity/Adherent.php:326 ../templates/default/member.tpl:209 ../templates/default/voir_adherent.tpl:196 
 $lang['Other informations (admin):'] = 'Other informations (admin):';
 
-// ../install/index.php:305 
+// ../install/index.php:309 
 $lang['You\'re installing Galette for the first time, or you wish to erase an older version of Galette without keeping your data'] = 'You\'re installing Galette for the first time, or you wish to erase an older version of Galette without keeping your data';
 
-// ../install/index.php:606 
+// ../install/index.php:610 
 $lang['User:'] = 'User:';
 
 // ../templates/default/gestion_adherents.tpl:114 ../templates/default/gestion_intitule_content.tpl:16 ../templates/default/gestion_contributions.tpl:151 ../templates/default/configurer_fiche_content.tpl:9 ../templates/default/gestion_transactions.tpl:56 
@@ -1530,7 +1530,7 @@ $lang['Actions'] = 'Actions';
 // ../templates/default/preferences.tpl:351 
 $lang['Address type:'] = 'Address type:';
 
-// ../install/index.php:214 ../install/index.php:1341 ../templates/default/ajax_plugins_initdb.tpl:98 
+// ../install/index.php:218 ../install/index.php:1345 ../templates/default/ajax_plugins_initdb.tpl:98 
 $lang['Tables Creation/Update'] = 'Tables Creation/Update';
 
 // ../templates/default/public_page.tpl:48 
@@ -1545,7 +1545,7 @@ $lang['- You must indicate an email address Galette should use to send emails!']
 // ../templates/default/editer_intitule.tpl:14 
 $lang['Priority:'] = 'Priority:';
 
-// ../install/index.php:470 
+// ../install/index.php:474 
 $lang['Under UNIX/Linux, you can give the permissions using those commands'] = 'Under UNIX/Linux, you can give the permissions using those commands';
 
 // ../templates/default/export.tpl:13 
@@ -1554,7 +1554,7 @@ $lang['Existing exports'] = 'Existing exports';
 // ../templates/default/page.tpl:126 
 $lang['Public pages'] = 'Public pages';
 
-// ../install/index.php:1136 
+// ../install/index.php:1140 
 $lang['Save the parameters'] = 'Save the parameters';
 
 // ../templates/default/page.tpl:142 
@@ -1611,7 +1611,7 @@ $lang['Contribution'] = 'Contribution';
 // ../templates/default/group.tpl:54 
 $lang['Manage members'] = 'Manage members';
 
-// ../ajax_plugins_initdb.php:135 ../install/index.php:753 
+// ../ajax_plugins_initdb.php:135 ../install/index.php:757 
 $lang['INSERT operation not allowed'] = 'INSERT operation not allowed';
 
 // ../templates/default/export.tpl:4 
@@ -1620,7 +1620,7 @@ $lang['The following files have been written on disk:'] = 'The following files h
 // ../templates/default/gestion_adherents.tpl:211 
 $lang['Woman'] = 'Woman';
 
-// ../install/index.php:673 
+// ../install/index.php:677 
 $lang['Unable to connect to the database'] = 'Unable to connect to the database';
 
 // ../includes/i18n.inc.php:311 
@@ -1641,13 +1641,13 @@ $lang['Managed groups selection'] = 'Managed groups selection';
 // ../needs_update.php:70 
 $lang['Your Galette database is not present, or not up to date.'] = 'Your Galette database is not present, or not up to date.';
 
-// ../install/index.php:1275 
+// ../install/index.php:1279 
 $lang['Parameters couldn\'t be saved.'] = 'Parameters couldn\'t be saved.';
 
 // ../templates/default/gestion_groupes.tpl:66 
 $lang['Missing destination group'] = 'Missing destination group';
 
-// ../install/index.php:277 
+// ../install/index.php:281 
 $lang['Welcome to the Galette Install!'] = 'Welcome to the Galette Install!';
 
 // ../templates/default/ajax_groups.tpl:44 ../templates/default/ajax_members.tpl:66 
@@ -1683,13 +1683,13 @@ $lang['Long Text (Bottom Line):'] = 'Long Text (Bottom Line):';
 // ../gestion_intitules.php:305 
 $lang['Edit status'] = 'Edit status';
 
-// ../install/index.php:1155 
+// ../install/index.php:1159 
 $lang['Configuration file created (config/config.inc.php)'] = 'Configuration file created (config/config.inc.php)';
 
 // ../templates/default/member.tpl:218 
 $lang['This comment is reserved to the member.'] = 'This comment is reserved to the member.';
 
-// ../install/index.php:1199 
+// ../install/index.php:1203 
 $lang['Default status cannot be initialized.'] = 'Default status cannot be initialized.';
 
 // ../templates/default/preferences.tpl:322 
@@ -1704,7 +1704,7 @@ $lang['Mail settings'] = 'Mail settings';
 // ../templates/default/ajax_plugins_initdb.tpl:87 
 $lang['Back to plugins managment page'] = 'Back to plugins managment page';
 
-// ../ajouter_contribution.php:209 
+// ../ajouter_contribution.php:210 
 $lang['A problem happened while sending contribution receipt to user %name (%email)'] = 'A problem happened while sending contribution receipt to user %name (%email)';
 
 // ../champs_adherents.php:44 ../lib/Galette/Entity/Adherent.php:213 ../templates/default/member.tpl:31 
@@ -1716,7 +1716,7 @@ $lang['Fail to add new group.'] = 'Fail to add new group.';
 // ../templates/default/voir_adherent.tpl:234 
 $lang['Not managed group'] = 'Not managed group';
 
-// ../install/index.php:370 
+// ../install/index.php:374 
 $lang['PHP version %version'] = 'PHP version %version';
 
 // ../templates/default/ajax_attendance_sheet_details.tpl:13 
@@ -1734,13 +1734,13 @@ $lang['Admin account (independant of members)'] = 'Admin account (independant of
 // ../templates/default/preferences.tpl:123 
 $lang['Disabled'] = 'Disabled';
 
-// ../install/index.php:98 ../install/index.php:145 
+// ../install/index.php:102 ../install/index.php:149 
 $lang['No user name'] = 'No user name';
 
 // ../lib/Galette/Entity/Contribution.php:547 
 $lang['Contribution added'] = 'Contribution added';
 
-// ../install/index.php:364 
+// ../install/index.php:368 
 $lang['PHP Version'] = 'PHP Version';
 
 // ../self_adherent.php:216 
@@ -1761,7 +1761,7 @@ $lang['Selected status (%s) is already in use in <a href=\'voir_adherent.php?id_
 // ../templates/default/preferences.tpl:97 
 $lang['Galette\'s parameters'] = 'Galette\'s parameters';
 
-// ../install/index.php:1158 
+// ../install/index.php:1162 
 $lang['Unable to create configuration file (config/config.inc.php)'] = 'Unable to create configuration file (config/config.inc.php)';
 
 // ../ajouter_adherent.php:241 
@@ -1773,13 +1773,13 @@ $lang['Login %s does not exist'] = 'Login %s does not exist';
 // ../templates/default/gestion_groupes.tpl:114 
 $lang['Create'] = 'Create';
 
-// ../ajax_plugins_initdb.php:247 ../install/index.php:1307 
+// ../ajax_plugins_initdb.php:247 ../install/index.php:1311 
 $lang['Installation complete !'] = 'Installation complete !';
 
 // ../templates/default/mailing_adherents.tpl:59 ../templates/default/mailing_adherents.tpl:81 
 $lang['Send'] = 'Send';
 
-// ../install/index.php:1188 
+// ../install/index.php:1192 
 $lang['Default contributions types cannot be initialized.'] = 'Default contributions types cannot be initialized.';
 
 // ../templates/default/photo_dnd.tpl:48 
@@ -1800,7 +1800,7 @@ $lang['Sent'] = 'Sent';
 // ../champs_adherents.php:51 ../lib/Galette/Entity/Adherent.php:270 ../templates/default/member.tpl:104 ../templates/default/voir_adherent.tpl:107 
 $lang['Phone:'] = 'Phone:';
 
-// ../install/index.php:226 ../install/index.php:1344 ../templates/default/ajax_plugins_initdb.tpl:99 
+// ../install/index.php:230 ../install/index.php:1348 ../templates/default/ajax_plugins_initdb.tpl:99 
 $lang['End!'] = 'End!';
 
 // ../templates/default/page.tpl:145 
@@ -1818,19 +1818,19 @@ $lang['Group informations'] = 'Group informations';
 // ../preferences.php:426 ../templates/default/desktop.tpl:15 ../templates/default/page.tpl:135 
 $lang['Settings'] = 'Settings';
 
-// ../ajax_plugins_initdb.php:128 ../install/index.php:743 
+// ../ajax_plugins_initdb.php:128 ../install/index.php:747 
 $lang['CREATE operation not allowed'] = 'CREATE operation not allowed';
 
 // ../gestion_intitules.php:214 ../gestion_intitules.php:260 
 $lang['- Database error: '] = '- Database error: ';
 
-// ../install/index.php:598 
+// ../install/index.php:602 
 $lang['Host:'] = 'Host:';
 
 // ../gestion_adherents.php:226 
 $lang['Administrators'] = 'Administrators';
 
-// ../install/index.php:683 
+// ../install/index.php:687 
 $lang['Go back'] = 'Go back';
 
 // ../lib/Galette/Entity/DynamicFields.php:118 ../templates/default/group.tpl:6 ../templates/default/group.tpl:48 ../templates/default/config_fields.tpl:12 ../templates/default/desktop.tpl:6 
@@ -1893,10 +1893,10 @@ $lang['Label width:'] = 'Label width:';
 // ../gestion_textes.php:81 
 $lang['Email: \'%s\' has not been modified!'] = 'Email: \'%s\' has not been modified!';
 
-// ../install/index.php:218 ../install/index.php:1342 
+// ../install/index.php:222 ../install/index.php:1346 
 $lang['Admin parameters'] = 'Admin parameters';
 
-// ../templates/default/gestion_intitule_content.tpl:58 
+// ../templates/default/gestion_intitule_content.tpl:68 
 $lang['Do you really want to delete this entry?'] = 'Do you really want to delete this entry?';
 
 // ../history.php:77 ../templates/default/page.tpl:113 
@@ -1911,11 +1911,14 @@ $lang['admin'] = 'admin';
 // ../templates/default/configurer_fiches.tpl:78 ../templates/default/js_loader.tpl:2 
 $lang['Loading...'] = 'Loading...';
 
-// ../ajax_plugins_initdb.php:171 ../install/index.php:803 
+// ../ajax_plugins_initdb.php:171 ../install/index.php:807 
 $lang['ALTER Operation not allowed'] = 'ALTER Operation not allowed';
 
 // ../lib/Galette/IO/Pdf.php:194 
 $lang['Error creating temporary png file from '] = 'Error creating temporary png file from ';
+
+// ../lib/Galette/Entity/Adherent.php:1071 
+$lang['- This E-Mail address is already used by another member!'] = '- This E-Mail address is already used by another member!';
 
 // ../gestion_textes.php:87 
 $lang['Email: \'%s\' has been successfully modified.'] = 'Email: \'%s\' has been successfully modified.';
@@ -1944,13 +1947,10 @@ $lang['Delete failed'] = 'Delete failed';
 // ../templates/default/preferences.tpl:131 
 $lang['(Months)'] = '(Months)';
 
-// ../lib/Galette/Entity/Adherent.php:1071 
-$lang['- This E-Mail adress is already used by another member!'] = '- This E-Mail adress is already used by another member!';
-
 // ../templates/default/preferences.tpl:354 
 $lang['MSN'] = 'MSN';
 
-// ../install/index.php:669 
+// ../install/index.php:673 
 $lang['Connection to database successfull'] = 'Connection to database successfull';
 
 // ../templates/default/display_dynamic_fields.tpl:20 
@@ -1962,7 +1962,7 @@ $lang['%membername: remove from database'] = '%membername: remove from database'
 // ../templates/default/preferences.tpl:222 ../templates/default/preferences.tpl:227 
 $lang['Do you want to use SMTP authentication?'] = 'Do you want to use SMTP authentication?';
 
-// ../ajax_plugins_initdb.php:152 ../install/index.php:778 
+// ../ajax_plugins_initdb.php:152 ../install/index.php:782 
 $lang['SELECT operation allowed'] = 'SELECT operation allowed';
 
 // ../self_adherent.php:110 ../ajouter_adherent.php:143 
@@ -1983,7 +1983,7 @@ $lang['donation in money'] = 'donation in money';
 // ../lib/Galette/Core/CheckModules.php:164 
 $lang['Modules that may be required'] = 'Modules that may be required';
 
-// ../install/index.php:198 ../install/index.php:1337 
+// ../install/index.php:202 ../install/index.php:1341 
 $lang['Checks'] = 'Checks';
 
 // ../templates/default/gestion_mailings.tpl:43 
@@ -2007,13 +2007,13 @@ $lang['Unable to detach contribution from transaction'] = 'Unable to detach cont
 // ../templates/default/mailing_adherents.tpl:56 
 $lang['Interpret HTML'] = 'Interpret HTML';
 
-// ../ajax_plugins_initdb.php:131 ../install/index.php:748 
+// ../ajax_plugins_initdb.php:131 ../install/index.php:752 
 $lang['CREATE operation allowed'] = 'CREATE operation allowed';
 
 // ../lib/Galette/IO/Pdf.php:180 
 $lang['Not a GIF file '] = 'Not a GIF file ';
 
-// ../install/index.php:1213 
+// ../install/index.php:1217 
 $lang['Default fields categories were successfully stored.'] = 'Default fields categories were successfully stored.';
 
 // ../templates/default/editer_champ.tpl:41 
@@ -2109,10 +2109,10 @@ $lang['New attached contribution'] = 'New attached contribution';
 // ../templates/default/preferences.tpl:228 
 $lang['Do you want to use server\'s TLS capabilities?<br/>For GMail, this will always be on.'] = 'Do you want to use server\'s TLS capabilities?<br/>For GMail, this will always be on.';
 
-// ../install/index.php:625 
+// ../install/index.php:629 
 $lang['Table prefix:'] = 'Table prefix:';
 
-// ../ajouter_contribution.php:254 
+// ../ajouter_contribution.php:255 
 $lang['A problem happened while sending to admin notification for user %name (%email) contribution'] = 'A problem happened while sending to admin notification for user %name (%email) contribution';
 
 // ../templates/default/ajouter_contribution.tpl:27 
@@ -2124,7 +2124,7 @@ $lang['Contribution type:'] = 'Contribution type:';
 // ../templates/default/preferences.tpl:162 
 $lang['Sender name:'] = 'Sender name:';
 
-// ../install/index.php:421 
+// ../install/index.php:425 
 $lang['PHP Modules'] = 'PHP Modules';
 
 // ../lib/Galette/Core/Preferences.php:387 
@@ -2139,13 +2139,13 @@ $lang['Payment type:'] = 'Payment type:';
 // ../templates/default/export.tpl:21 
 $lang['Size'] = 'Size';
 
-// ../ajax_plugins_initdb.php:149 ../install/index.php:773 
+// ../ajax_plugins_initdb.php:149 ../install/index.php:777 
 $lang['SELECT operation not allowed'] = 'SELECT operation not allowed';
 
-// ../mailing_adherents.php:120 
+// ../mailing_adherents.php:125 
 $lang['Please type an object for the message.'] = 'Please type an object for the message.';
 
-// ../install/index.php:1228 
+// ../install/index.php:1232 
 $lang['Default texts cannot be initialized.'] = 'Default texts cannot be initialized.';
 
 // ../lostpasswd.php:108 
@@ -2178,7 +2178,7 @@ $lang['Detach contribution from this transaction'] = 'Detach contribution from t
 // ../templates/default/plugins.tpl:48 
 $lang['Enable plugin'] = 'Enable plugin';
 
-// ../ajax_plugins_initdb.php:138 ../install/index.php:758 
+// ../ajax_plugins_initdb.php:138 ../install/index.php:762 
 $lang['INSERT operation allowed'] = 'INSERT operation allowed';
 
 // ../carte_adherent.php:99 
@@ -2208,7 +2208,7 @@ $lang['General information'] = 'General information';
 // ../gestion_adherents.php:211 
 $lang['Address'] = 'Address';
 
-// ../ajouter_adherent.php:327 ../ajouter_contribution.php:313 ../ajouter_groupe.php:84 ../ajouter_transaction.php:160 
+// ../ajouter_adherent.php:329 ../ajouter_contribution.php:314 ../ajouter_groupe.php:84 ../ajouter_transaction.php:160 
 $lang['modification'] = 'modification';
 
 // ../includes/i18n.inc.php:297 
@@ -2268,7 +2268,7 @@ $lang['Close expiries'] = 'Close expiries';
 // ../templates/default/ajax_plugins_initdb.tpl:60 
 $lang['Plugin \'%name\' has been successfully installed!'] = 'Plugin \'%name\' has been successfully installed!';
 
-// ../install/index.php:210 ../install/index.php:1340 ../templates/default/ajax_plugins_initdb.tpl:97 
+// ../install/index.php:214 ../install/index.php:1344 ../templates/default/ajax_plugins_initdb.tpl:97 
 $lang['Access permissions to database'] = 'Access permissions to database';
 
 // ../lib/Galette/Repository/Contributions.php:586 ../lib/Galette/Repository/Contributions.php:623 
@@ -2280,7 +2280,7 @@ $lang['Attendance sheet'] = 'Attendance sheet';
 // ../templates/default/gestion_contributions.tpl:39 
 $lang['contribution'] = 'contribution';
 
-// ../ajax_plugins_initdb.php:116 ../install/index.php:721 
+// ../ajax_plugins_initdb.php:116 ../install/index.php:725 
 $lang['Permissions on the base'] = 'Permissions on the base';
 
 // ../templates/default/preferences.tpl:125 
@@ -2301,7 +2301,7 @@ $lang['Add a contribution'] = 'Add a contribution';
 // ../templates/default/desktop.tpl:51 
 $lang['Show dashboard on login'] = 'Show dashboard on login';
 
-// ../install/index.php:1062 
+// ../install/index.php:1066 
 $lang['The tables has been correctly updated.'] = 'The tables has been correctly updated.';
 
 // ../templates/default/desktop.tpl:15 ../templates/default/page.tpl:135 
@@ -2334,10 +2334,10 @@ $lang['Not dispatched amount:'] = 'Not dispatched amount:';
 // ../templates/default/mailing_adherents.tpl:51 ../templates/default/mailing_adherents.tpl:70 
 $lang['Message:'] = 'Message:';
 
-// ../install/index.php:1209 
+// ../install/index.php:1213 
 $lang['Default fields categories cannot be initialized.'] = 'Default fields categories cannot be initialized.';
 
-// ../ajouter_adherent.php:325 ../voir_adherent.php:161 
+// ../ajouter_adherent.php:327 ../voir_adherent.php:161 
 $lang['Member Profile'] = 'Member Profile';
 
 // ../templates/default/gestion_contributions.tpl:30 
@@ -2361,10 +2361,10 @@ $lang['Extends membership?'] = 'Extends membership?';
 // ../includes/i18n.inc.php:306 
 $lang['Old-timer'] = 'Old-timer';
 
-// ../install/index.php:471 
+// ../install/index.php:475 
 $lang['apache_user'] = 'apache_user';
 
-// ../install/index.php:1276 
+// ../install/index.php:1280 
 $lang['Check above errors to know what went wrong.'] = 'Check above errors to know what went wrong.';
 
 // ../champs_adherents.php:72 ../lib/Galette/Entity/Adherent.php:446 ../templates/default/member.tpl:136 ../templates/default/voir_adherent.tpl:151 
@@ -2376,7 +2376,7 @@ $lang['- WARNING -'] = '- WARNING -';
 // ../templates/default/sysinfos.tpl:4 ../templates/default/sysinfos.tpl:8 
 $lang['Raw data'] = 'Raw data';
 
-// ../attendance_sheet.php:123 ../attendance_sheet.php:143 ../attendance_sheet.php:186 ../lib/Galette/IO/News.php:247 ../lib/Galette/IO/News.php:291 ../lib/Galette/Repository/Contributions.php:527 ../lib/Galette/Repository/Contributions.php:616 ../lib/Galette/Repository/Contributions.php:625 ../lib/Galette/Repository/Contributions.php:654 ../lib/Galette/Entity/Transaction.php:258 ../lib/Galette/Entity/Transaction.php:267 ../lib/Galette/Entity/Transaction.php:276 ../lib/Galette/Entity/Adherent.php:830 ../lib/Galette/Entity/Adherent.php:844 ../lib/Galette/Entity/Adherent.php:856 ../lib/Galette/Entity/Adherent.php:1025 ../lib/Galette/Entity/Adherent.php:1034 ../lib/Galette/Entity/Adherent.php:1043 ../lib/Galette/Entity/Adherent.php:1396 ../lib/Galette/Entity/Contribution.php:341 ../lib/Galette/Entity/Contribution.php:350 ../lib/Galette/Entity/Contribution.php:359 ../lib/Galette/Entity/Contribution.php:487 ../lib/Galette/Entity/Contribution.php:875 ../lib/Galette/Entity/Contribution.php:979 ../lib/Galette/Entity/Contribution.php:988 ../lib/Galette/Entity/Contribution.php:997 ../lib/Galette/Entity/Group.php:512 
+// ../attendance_sheet.php:123 ../attendance_sheet.php:143 ../attendance_sheet.php:186 ../lib/Galette/IO/News.php:243 ../lib/Galette/IO/News.php:291 ../lib/Galette/Repository/Contributions.php:527 ../lib/Galette/Repository/Contributions.php:616 ../lib/Galette/Repository/Contributions.php:625 ../lib/Galette/Repository/Contributions.php:654 ../lib/Galette/Entity/Transaction.php:258 ../lib/Galette/Entity/Transaction.php:267 ../lib/Galette/Entity/Transaction.php:276 ../lib/Galette/Entity/Adherent.php:830 ../lib/Galette/Entity/Adherent.php:844 ../lib/Galette/Entity/Adherent.php:856 ../lib/Galette/Entity/Adherent.php:1025 ../lib/Galette/Entity/Adherent.php:1034 ../lib/Galette/Entity/Adherent.php:1043 ../lib/Galette/Entity/Adherent.php:1396 ../lib/Galette/Entity/Contribution.php:341 ../lib/Galette/Entity/Contribution.php:350 ../lib/Galette/Entity/Contribution.php:359 ../lib/Galette/Entity/Contribution.php:487 ../lib/Galette/Entity/Contribution.php:875 ../lib/Galette/Entity/Contribution.php:979 ../lib/Galette/Entity/Contribution.php:988 ../lib/Galette/Entity/Contribution.php:997 ../lib/Galette/Entity/Group.php:512 
 $lang['Y-m-d'] = 'm/d/Y';
 
 // ../templates/default/plugins.tpl:7 
@@ -2388,7 +2388,7 @@ $lang['Vice-treasurer'] = 'Vice-treasurer';
 // ../templates/default/preferences.tpl:348 
 $lang['(Show or not title in front of name)'] = '(Show or not title in front of name)';
 
-// ../install/index.php:149 
+// ../install/index.php:153 
 $lang['The username cannot contain the @ character'] = 'The username cannot contain the @ character';
 
 // ../includes/i18n.inc.php:299 
@@ -2418,13 +2418,13 @@ $lang['Change'] = 'Change';
 // ../editer_champ.php:112 
 $lang['- Field name already used.'] = '- Field name already used.';
 
-// ../ajax_plugins_initdb.php:249 ../install/index.php:1310 
+// ../ajax_plugins_initdb.php:249 ../install/index.php:1314 
 $lang['Update complete !'] = 'Update complete !';
 
 // ../lib/Galette/Entity/Group.php:391 
 $lang['Group updated'] = 'Group updated';
 
-// ../ajouter_contribution.php:342 ../ajouter_transaction.php:181 
+// ../ajouter_contribution.php:343 ../ajouter_transaction.php:181 
 $lang['You must first register a member'] = 'You must first register a member';
 
 // ../lib/Galette/Entity/Politeness.php:92 
@@ -2448,7 +2448,7 @@ $lang['Missing a temporary folder'] = 'Missing a temporary folder';
 // ../templates/default/page.tpl:144 
 $lang['Manage contributions types'] = 'Manage contributions types';
 
-// ../install/index.php:399 
+// ../install/index.php:403 
 $lang['Your PHP date settings seem correct.'] = 'Your PHP date settings seem correct.';
 
 // ../templates/default/gestion_adherents.tpl:293 
@@ -2469,7 +2469,7 @@ $lang['Clear filter'] = 'Clear filter';
 // ../lib/Galette/Repository/Members.php:333 
 $lang['Delete members cards, transactions and dues'] = 'Delete members cards, transactions and dues';
 
-// ../install/index.php:1333 ../templates/default/ajax_plugins_initdb.tpl:94 
+// ../install/index.php:1337 ../templates/default/ajax_plugins_initdb.tpl:94 
 $lang['Steps:'] = 'Steps:';
 
 // ../templates/default/gestion_adherents.tpl:122 ../templates/default/gestion_contributions.tpl:165 
@@ -2481,7 +2481,7 @@ $lang['no member'] = 'no member';
 // ../templates/default/ajouter_transaction.tpl:53 ../templates/default/gestion_contributions.tpl:95 ../templates/default/ajouter_contribution.tpl:25 
 $lang['Member'] = 'Member';
 
-// ../ajax_plugins_initdb.php:183 ../install/index.php:871 
+// ../ajax_plugins_initdb.php:183 ../install/index.php:875 
 $lang['Update of the tables'] = 'Update of the tables';
 
 // ../champs_adherents.php:67 ../lib/Galette/Entity/Adherent.php:406 ../templates/default/member.tpl:146 ../templates/default/voir_adherent.tpl:159 
@@ -2517,22 +2517,19 @@ $lang['Man'] = 'Man';
 // ../templates/default/ajouter_contribution.tpl:40 
 $lang['Select contributor and contribution type'] = 'Select contributor and contribution type';
 
-// ../templates/default/configurer_fiche_content.tpl:54 
-$lang['There is not yet any dynamic field configured for \'%formname\''] = 'There is not yet any dynamic field configured for \'%formname\'';
-
 // ../templates/default/preferences.tpl:6 
 $lang['Parameters'] = 'Parameters';
 
 // ../templates/default/voir_adherent.tpl:15 
 $lang['Send member a link to generate a new passord, as if had used the \'lost password\' functionnality.'] = 'Send member a link to generate a new passord, as if had used the \'lost password\' functionnality.';
 
-// ../install/index.php:222 ../install/index.php:1343 
+// ../install/index.php:226 ../install/index.php:1347 
 $lang['Saving the parameters'] = 'Saving the parameters';
 
 // ../lib/Galette/Entity/Contribution.php:147 ../templates/default/ajouter_contribution.tpl:94 
 $lang['Membership extension:'] = 'Membership extension:';
 
-// ../ajouter_adherent.php:329 ../ajouter_contribution.php:315 ../ajouter_groupe.php:86 ../ajouter_transaction.php:162 
+// ../ajouter_adherent.php:331 ../ajouter_contribution.php:316 ../ajouter_groupe.php:86 ../ajouter_transaction.php:162 
 $lang['creation'] = 'creation';
 
 // ../templates/default/preferences.tpl:346 
@@ -2556,10 +2553,10 @@ $lang['User statuses'] = 'User statuses';
 // ../champs_adherents.php:63 ../lib/Galette/Entity/Adherent.php:366 ../templates/default/member.tpl:204 ../templates/default/group.tpl:13 ../templates/default/voir_adherent.tpl:188 
 $lang['Creation date:'] = 'Creation date:';
 
-// ../install/index.php:1182 
+// ../install/index.php:1186 
 $lang['Default preferences were successfully stored.'] = 'Default preferences were successfully stored.';
 
-// ../ajax_plugins_initdb.php:145 ../install/index.php:768 
+// ../ajax_plugins_initdb.php:145 ../install/index.php:772 
 $lang['UPDATE operation allowed'] = 'UPDATE operation allowed';
 
 // ../templates/default/gestion_adherents.tpl:323 
@@ -2595,7 +2592,7 @@ $lang['Non-member'] = 'Non-member';
 // ../champs_adherents.php:59 ../lib/Galette/Entity/Adherent.php:334 ../templates/default/member.tpl:215 ../templates/default/voir_adherent.tpl:201 
 $lang['Other informations:'] = 'Other informations:';
 
-// ../ajax_plugins_initdb.php:142 ../install/index.php:763 
+// ../ajax_plugins_initdb.php:142 ../install/index.php:767 
 $lang['UPDATE operation not allowed'] = 'UPDATE operation not allowed';
 
 // ../templates/default/gestion_adherents.tpl:319 
@@ -2613,7 +2610,7 @@ $lang['Facebook'] = 'Facebook';
 // ../gestion_contributions.php:97 ../lib/Galette/Repository/Contributions.php:630 
 $lang['start date filter'] = 'start date filter';
 
-// ../install/index.php:426 
+// ../install/index.php:430 
 $lang['Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation.'] = 'Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation.';
 
 // ../preferences.php:254 
@@ -2643,13 +2640,13 @@ $lang['Fail to add new transaction.'] = 'Fail to add new transaction.';
 // ../templates/default/preferences.tpl:343 
 $lang['(Members will be able to generate their own member card)'] = '(Members will be able to generate their own member card)';
 
-// ../install/index.php:879 
+// ../install/index.php:883 
 $lang['Update Report'] = 'Update Report';
 
 // ../lib/Galette/Core/Picture.php:829 
 $lang['Failed to write file to disk'] = 'Failed to write file to disk';
 
-// ../install/index.php:63 ../install/index.php:73 
+// ../install/index.php:67 ../install/index.php:77 
 $lang['Installation mode unknown'] = 'Installation mode unknown';
 
 // ../attendance_sheet.php:196 
@@ -2664,7 +2661,7 @@ $lang['Use SMTP authentication?'] = 'Use SMTP authentication?';
 // ../lib/Galette/Entity/Adherent.php:1324 
 $lang['Member card updated'] = 'Member card updated';
 
-// ../mailing_adherents.php:211 
+// ../mailing_adherents.php:216 
 $lang['Mailing'] = 'Mailing';
 
 // ../lib/Galette/Entity/Transaction.php:391 
@@ -2691,13 +2688,13 @@ $lang['months'] = 'months';
 // ../lib/Galette/Entity/Contribution.php:909 ../templates/default/gestion_contributions.tpl:12 ../templates/default/ajouter_contribution.tpl:74 
 $lang['Check'] = 'Check';
 
-// ../install/index.php:234 
+// ../install/index.php:238 
 $lang['Galette Installation'] = 'Galette Installation';
 
 // ../champs_adherents.php:57 ../lib/Galette/Entity/Adherent.php:318 ../templates/default/member.tpl:124 ../templates/default/voir_adherent.tpl:135 
 $lang['Jabber:'] = 'Jabber:';
 
-// ../install/index.php:521 
+// ../install/index.php:525 
 $lang['Enter connection data for the existing database.'] = 'Enter connection data for the existing database.';
 
 // ../templates/default/preferences.tpl:136 
@@ -2718,10 +2715,10 @@ $lang['Profile configuration'] = 'Profile configuration';
 // ../lib/Galette/Entity/Contribution.php:132 ../templates/default/ajouter_contribution.tpl:83 
 $lang['Date of contribution:'] = 'Date of contribution:';
 
-// ../install/index.php:843 
+// ../install/index.php:847 
 $lang['Permissions to database are OK.'] = 'Permissions to database are OK.';
 
-// ../install/index.php:586 
+// ../install/index.php:590 
 $lang['The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT.'] = 'The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT.';
 
 // ../gestion_intitules.php:330 ../lib/Galette/Entity/Adherent.php:1419 ../templates/default/gestion_intitule_content.tpl:28 ../templates/default/champ_requis.tpl:10 ../templates/default/config_fields.tpl:42 ../templates/default/config_fields.tpl:48 ../templates/default/editer_champ.tpl:20 ../templates/default/configurer_fiches.tpl:22 ../templates/default/configurer_fiche_content.tpl:21 
@@ -2784,7 +2781,7 @@ $lang['Preview your mailing'] = 'Preview your mailing';
 // ../templates/default/page.tpl:95 
 $lang['This application runs under DEMO mode, all features may not be available.'] = 'This application runs under DEMO mode, all features may not be available.';
 
-// ../install/index.php:724 ../templates/default/ajax_plugins_initdb.tpl:36 
+// ../install/index.php:728 ../templates/default/ajax_plugins_initdb.tpl:36 
 $lang['To run, Galette needs a number of rights on the database (CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)'] = 'To run, Galette needs a number of rights on the database (CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)';
 
 // ../plugins.php:63 
@@ -2799,10 +2796,10 @@ $lang['A mail has been sent to your adress.<br/>Please check your inbox and foll
 // ../templates/default/desktop.tpl:43 
 $lang['Read complete post'] = 'Read complete post';
 
-// ../install/index.php:621 
+// ../install/index.php:625 
 $lang['(Indicate the CURRENT prefix of your Galette tables)'] = '(Indicate the CURRENT prefix of your Galette tables)';
 
-// ../install/index.php:471 
+// ../install/index.php:475 
 $lang['directory_name'] = 'directory_name';
 
 // ../templates/default/history.tpl:47 
@@ -2820,13 +2817,13 @@ $lang['List of contributions'] = 'List of contributions';
 // ../gestion_transactions.php:94 
 $lang['Transactions managment'] = 'Transactions managment';
 
-// ../install/index.php:1178 
+// ../install/index.php:1182 
 $lang['Default preferences cannot be initialized.'] = 'Default preferences cannot be initialized.';
 
 // ../templates/default/plugins.tpl:8 
 $lang['Version'] = 'Version';
 
-// ../install/index.php:1034 ../templates/default/ajax_plugins_initdb.tpl:52 
+// ../install/index.php:1038 ../templates/default/ajax_plugins_initdb.tpl:52 
 $lang['Your database is maybe not usable, try to restore the older version.'] = 'Your database is maybe not usable, try to restore the older version.';
 
 // ../ajax_recipients.php:76 ../templates/default/mailing_adherents.tpl:21 
@@ -2880,13 +2877,13 @@ $lang['My information'] = 'My information';
 // ../templates/default/member.tpl:25 ../templates/default/preferences.tpl:29 ../templates/default/preferences.tpl:336 
 $lang['Delete image'] = 'Delete image';
 
-// ../install/index.php:104 
+// ../install/index.php:108 
 $lang['No database name'] = 'No database name';
 
 // ../templates/default/public_page.tpl:24 ../templates/default/page.tpl:81 
 $lang['Your browser version is way too old and no longer supported in Galette for a while.'] = 'Your browser version is way too old and no longer supported in Galette for a while.';
 
-// ../templates/default/gestion_adherents.tpl:166 ../templates/default/gestion_adherents.tpl:222 ../templates/default/group_persons.tpl:29 ../templates/default/ajax_members.tpl:38 
+// ../templates/default/gestion_adherents.tpl:166 ../templates/default/gestion_adherents.tpl:222 ../templates/default/gestion_intitule_content.tpl:50 ../templates/default/group_persons.tpl:29 ../templates/default/ajax_members.tpl:38 
 $lang['[staff]'] = '[staff]';
 
 // ../templates/default/ajax_plugins_initdb.tpl:85 
@@ -2895,7 +2892,7 @@ $lang['Close'] = 'Close';
 // ../templates/default/preferences.tpl:147 
 $lang['Admin and staff only'] = 'Admin and staff only';
 
-// ../ajouter_contribution.php:132 
+// ../ajouter_contribution.php:133 
 $lang['An error occured checking overlaping fees :('] = 'An error occured checking overlaping fees :(';
 
 // ../lib/Galette/IO/Pdf.php:92 ../lib/Galette/IO/Pdf.php:217 
@@ -2907,7 +2904,10 @@ $lang['New member has been successfully added.'] = 'New member has been successf
 // ../includes/i18n.inc.php:310 
 $lang['Company cotisation'] = 'Company cotisation';
 
-// ../install/index.php:392 
+// ../templates/default/ajax_plugins_initdb.tpl:14 
+$lang['You\'re installing \'%name\' plugin for the first time, or you wish to erase an older version of the plugin without keeping your data'] = 'You\'re installing \'%name\' plugin for the first time, or you wish to erase an older version of the plugin without keeping your data';
+
+// ../install/index.php:396 
 $lang['Date settings'] = 'Date settings';
 
 // ../templates/default/ajax_groups.tpl:28 
@@ -2937,13 +2937,13 @@ $lang['Publisher:'] = 'Publisher:';
 // ../templates/default/gestion_adherents.tpl:164 ../templates/default/group_persons.tpl:27 ../templates/default/ajax_members.tpl:36 
 $lang['[admin]'] = '[admin]';
 
-// ../install/index.php:1324 
+// ../install/index.php:1328 
 $lang['Homepage'] = 'Homepage';
 
-// ../install/index.php:314 ../templates/default/ajax_plugins_initdb.tpl:9 
+// ../install/index.php:318 ../templates/default/ajax_plugins_initdb.tpl:9 
 $lang['Warning: Don\'t forget to backup your current database.'] = 'Warning: Don\'t forget to backup your current database.';
 
-// ../preferences.php:282 ../install/index.php:162 
+// ../preferences.php:282 ../install/index.php:166 
 $lang['Passwords mismatch'] = 'Passwords mismatch';
 
 // ../champs_adherents.php:49 ../lib/Galette/Entity/Adherent.php:254 ../templates/default/member.tpl:96 ../templates/default/preferences.tpl:44 ../templates/default/voir_adherent.tpl:99 
@@ -2976,7 +2976,7 @@ $lang['Fail to add new member.'] = 'Fail to add new member.';
 // ../gestion_adherents.php:210 
 $lang['Company name'] = 'Company name';
 
-// ../install/index.php:1097 
+// ../install/index.php:1101 
 $lang['Please chose the parameters of the admin account on Galette'] = 'Please chose the parameters of the admin account on Galette';
 
 // ../templates/default/plugins.tpl:47 
@@ -2994,10 +2994,10 @@ $lang['Disable plugin'] = 'Disable plugin';
 // ../templates/default/gestion_adherents.tpl:5 
 $lang['in:'] = 'in:';
 
-// ../install/index.php:1321 
+// ../install/index.php:1325 
 $lang['To secure the system, please delete the install directory'] = 'To secure the system, please delete the install directory';
 
-// ../install/index.php:1232 
+// ../install/index.php:1236 
 $lang['Default texts were successfully stored.'] = 'Default texts were successfully stored.';
 
 // ../includes/i18n.inc.php:319 

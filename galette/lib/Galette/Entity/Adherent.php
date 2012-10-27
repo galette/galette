@@ -1068,7 +1068,7 @@ class Adherent
                                 }
                                 $uniq = $select->query()->fetchAll();
                                 if ( count($uniq) !==  0 ) {
-                                    $errors[] = _T("- This E-Mail adress is already used by another member!");
+                                    $errors[] = _T("- This E-Mail address is already used by another member!");
                                 }
                             } catch (\Exception $e) {
                                 $log->log(
