@@ -76,4 +76,14 @@ class Choice extends DynamicFieldType
         return _T("choice");
     }
 
+    /**
+     * Load field
+     *
+     * @return void
+     */
+    public function load()
+    {
+        parent::load();
+        $this->repeat = 1;
+    }
 }

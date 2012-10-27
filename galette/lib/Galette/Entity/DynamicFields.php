@@ -320,6 +320,9 @@ class DynamicFields
 
                 foreach ( $result as $r ) {
                     $df = $this->getFieldType($r['field_type']);
+                    if ( $r['field_type'] === self::CHOICE ) {
+                        $r['field_repeat'] = 1;
+                    }
                     $field_id = $r['field_id'];
                     $r['field_name'] = _T($r['field_name']);
                     //store field repetition config as field_repeat may change
