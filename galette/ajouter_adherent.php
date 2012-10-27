@@ -306,7 +306,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
         }
     }
 } else {
-    if ( $member->id !== '' ) {
+    if ( $member->id !== false &&  $member->id !== '' ) {
         $adherent['dyn'] = $dyn_fields->getFields('adh', $member->id, false);
     }
 }
