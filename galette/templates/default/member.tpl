@@ -177,13 +177,15 @@
 					<p>
 						<label for="login_adh" class="bline">{_T string="Username:"}</label>
 						<input type="text" name="login_adh" id="login_adh" value="{$member->login}" maxlength="20" {$disabled.login_adh}{if $required.login_adh eq 1} required{/if}/>
-						<span class="exemple">{_T string="(at least 4 characters)"}</span>
+                        {* FIXME: use parameter in prefs *}
+						<span class="exemple">{_T string="(at least %i characters)" pattern="/%i/" replace=2}</span>
 					</p>
     {if !$self_adh}
 					<p>
 						<label for="mdp_adh" class="bline">{_T string="Password:"}</label>
 						<input type="password" name="mdp_adh" id="mdp_adh" value="" maxlength="20" autocomplete="off" {$disabled.mdp_adh}{if $required.mdp_adh eq 1} required{/if}/>
-						<span class="exemple">{_T string="(at least 4 characters)"}</span>
+                        {* FIXME: use parameter in prefs *}
+						<span class="exemple">{_T string="(at least %i characters)" pattern="/%i/" replace=6}</span>
 					</p>
 					<p>
 						<input class="labelalign" type="password" name="mdp_adh2" value="" maxlength="20" autocomplete="off" {$disabled.mdp_adh}{if $required.mdp_adh eq 1} required{/if}/>

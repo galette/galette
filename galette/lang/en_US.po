@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2012-10-27 13:59+0200\n"
+"PO-Revision-Date: 2012-10-27 14:12+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -383,7 +383,7 @@ msgstr ""
 
 #: ../champs_adherents.php:62 ../lib/Galette/Entity/Adherent.php:358
 #: ../install/index.php:614 ../install/index.php:1107
-#: ../templates/default/member.tpl:184 ../templates/default/member.tpl:194
+#: ../templates/default/member.tpl:185 ../templates/default/member.tpl:196
 #: ../templates/default/preferences.tpl:402 ../templates/default/index.tpl:12
 msgid "Password:"
 msgstr "Password:"
@@ -565,7 +565,7 @@ msgstr "Beginning of membership:"
 msgid "Label generation parameters"
 msgstr "Label generation parameters"
 
-#: ../templates/default/member.tpl:289
+#: ../templates/default/member.tpl:291
 #: ../templates/default/editer_intitule.tpl:35
 #: ../templates/default/traduire_libelles.tpl:22
 #: ../templates/default/mailing_adherents.tpl:58
@@ -648,7 +648,7 @@ msgstr ""
 msgid "transactions"
 msgstr "transactions"
 
-#: ../templates/default/member.tpl:198
+#: ../templates/default/member.tpl:200
 msgid "Please repeat in the field the password shown in the image."
 msgstr "Please repeat in the field the password shown in the image."
 
@@ -760,11 +760,11 @@ msgstr ""
 msgid "Visibility:"
 msgstr "Visibility:"
 
-#: ../templates/default/member.tpl:196
+#: ../templates/default/member.tpl:198
 msgid "Password image"
 msgstr "Password image"
 
-#: ../templates/default/member.tpl:225
+#: ../templates/default/member.tpl:227
 msgid "Manage user's groups"
 msgstr "Manage user's groups"
 
@@ -865,7 +865,7 @@ msgstr "Language:"
 msgid "Currently loading..."
 msgstr "Currently loading..."
 
-#: ../templates/default/member.tpl:349
+#: ../templates/default/member.tpl:351
 msgid "An error occured displaying groups interface :("
 msgstr "An error occured displaying groups interface :("
 
@@ -936,7 +936,7 @@ msgstr "Completely dispatched transaction"
 msgid "all"
 msgstr "all"
 
-#: ../templates/default/member.tpl:258 ../templates/default/member.tpl:396
+#: ../templates/default/member.tpl:260 ../templates/default/member.tpl:398
 msgid "Manager for '%groupname'"
 msgstr "Manager for '%groupname'"
 
@@ -1023,7 +1023,7 @@ msgstr ""
 "Select an existing contribution in the database, and attach it to the "
 "current transaction"
 
-#: ../templates/default/member.tpl:60 ../templates/default/member.tpl:206
+#: ../templates/default/member.tpl:60 ../templates/default/member.tpl:208
 #: ../templates/default/ajax_attendance_sheet_details.tpl:19
 #: ../templates/default/ajouter_transaction.tpl:20
 #: ../templates/default/ajouter_contribution.tpl:89
@@ -1307,7 +1307,7 @@ msgstr "Unable to remove group. Maybe it's not empty?"
 msgid "Woman"
 msgstr "Woman"
 
-#: ../templates/default/member.tpl:358
+#: ../templates/default/member.tpl:360
 msgid "Managed groups selection"
 msgstr "Managed groups selection"
 
@@ -1988,7 +1988,7 @@ msgstr "Using GMAIL as SMTP server (slower)"
 msgid "My information"
 msgstr "My information"
 
-#: ../templates/default/member.tpl:211
+#: ../templates/default/member.tpl:213
 msgid "This comment is only displayed for admins and staff members."
 msgstr "This comment is only displayed for admins and staff members."
 
@@ -2081,7 +2081,7 @@ msgstr "Unable to connect to the database"
 msgid "Close"
 msgstr "Close"
 
-#: ../templates/default/member.tpl:190
+#: ../templates/default/member.tpl:192
 msgid "(Confirmation)"
 msgstr "(Confirmation)"
 
@@ -2361,7 +2361,7 @@ msgstr "Date of contribution:"
 msgid "Settings"
 msgstr "Settings"
 
-#: ../templates/default/member.tpl:356
+#: ../templates/default/member.tpl:358
 msgid "Groups selection"
 msgstr "Groups selection"
 
@@ -2507,16 +2507,16 @@ msgid "Add a contribution"
 msgstr "Add a contribution"
 
 #: ../champs_adherents.php:59 ../lib/Galette/Entity/Adherent.php:334
-#: ../templates/default/member.tpl:215
+#: ../templates/default/member.tpl:217
 #: ../templates/default/voir_adherent.tpl:201
 msgid "Other informations:"
 msgstr "Other informations:"
 
-#: ../templates/default/member.tpl:272
+#: ../templates/default/member.tpl:274
 msgid "Notify member his account has been modified"
 msgstr "Notify member his account has been modified"
 
-#: ../templates/default/member.tpl:223
+#: ../templates/default/member.tpl:225
 #: ../templates/default/voir_adherent.tpl:206
 msgid "Groups:"
 msgstr "Groups:"
@@ -2620,7 +2620,7 @@ msgstr ""
 "%adress\n"
 "%zip %town - %country"
 
-#: ../templates/default/member.tpl:274
+#: ../templates/default/member.tpl:276
 msgid "Notify member his account has been created"
 msgstr "Notify member his account has been created"
 
@@ -3324,6 +3324,10 @@ msgstr "Contribution added"
 msgid "An error occured displaying attendance sheet details interface :("
 msgstr "An error occured displaying attendance sheet details interface :("
 
+#: ../templates/default/member.tpl:181 ../templates/default/member.tpl:188
+msgid "(at least %i characters)"
+msgstr "(at least %i characters)"
+
 #: ../ajax_plugins_initdb.php:183 ../install/index.php:875
 msgid "Update of the tables"
 msgstr "Update of the tables"
@@ -3741,7 +3745,7 @@ msgid "Raw data"
 msgstr "Raw data"
 
 #: ../champs_adherents.php:63 ../lib/Galette/Entity/Adherent.php:366
-#: ../templates/default/member.tpl:204 ../templates/default/group.tpl:13
+#: ../templates/default/member.tpl:206 ../templates/default/group.tpl:13
 #: ../templates/default/voir_adherent.tpl:188
 msgid "Creation date:"
 msgstr "Creation date:"
@@ -4042,7 +4046,7 @@ msgid "Generate labels"
 msgstr "Generate labels"
 
 #: ../champs_adherents.php:58 ../lib/Galette/Entity/Adherent.php:326
-#: ../templates/default/member.tpl:209
+#: ../templates/default/member.tpl:211
 #: ../templates/default/voir_adherent.tpl:196
 msgid "Other informations (admin):"
 msgstr "Other informations (admin):"
@@ -4051,7 +4055,7 @@ msgstr "Other informations (admin):"
 msgid "%s on Twitter!"
 msgstr "%s on Twitter!"
 
-#: ../templates/default/member.tpl:228
+#: ../templates/default/member.tpl:230
 msgid "Manage user's managed groups"
 msgstr "Manage user's managed groups"
 
@@ -4059,7 +4063,7 @@ msgstr "Manage user's managed groups"
 msgid "company fee"
 msgstr "company fee"
 
-#: ../templates/default/member.tpl:282
+#: ../templates/default/member.tpl:284
 msgid ""
 "Member will receive his username and password by email, if he has an address."
 msgstr ""
@@ -4084,7 +4088,7 @@ msgid ""
 msgstr ""
 "Group `%subgroupname` is a child of `%groupname`, cnanot be setted as parent!"
 
-#: ../templates/default/member.tpl:280
+#: ../templates/default/member.tpl:282
 msgid "Member will be notified by mail his account has been modified."
 msgstr "Member will be notified by mail his account has been modified."
 
@@ -4166,7 +4170,6 @@ msgstr "Author"
 msgid "either 'mysql' or 'pgsql' PDO driver"
 msgstr "either 'mysql' or 'pgsql' PDO driver"
 
-#: ../templates/default/member.tpl:180 ../templates/default/member.tpl:186
 #: ../templates/default/change_passwd.tpl:16
 msgid "(at least 4 characters)"
 msgstr "(at least 4 characters)"
@@ -4211,7 +4214,7 @@ msgstr "Admin"
 msgid "Membership in order"
 msgstr "Membership in order"
 
-#: ../templates/default/member.tpl:218
+#: ../templates/default/member.tpl:220
 msgid "This comment is reserved to the member."
 msgstr "This comment is reserved to the member."
 
@@ -4239,7 +4242,7 @@ msgstr ""
 "Back to previous window, if you want to select a contribution type that is "
 "not listed here"
 
-#: ../templates/default/member.tpl:250 ../templates/default/member.tpl:398
+#: ../templates/default/member.tpl:252 ../templates/default/member.tpl:400
 msgid "Member of '%groupname'"
 msgstr "Member of '%groupname'"
 
