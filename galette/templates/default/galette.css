@@ -23,7 +23,7 @@ a:hover {
     color: #eea423;
 }
 
-.ui-button:hover{
+.ui-button:hover {
     color:inherit;
 }
 
@@ -915,6 +915,21 @@ legend #btnadd_small {
     margin:0;
     font-size: 1em;
 }
+
+.texts_legend .back > span {
+    font-size: .9em;
+    text-align: right;
+    display: block;
+    color:#666;
+}
+
+.help {
+    background:url(images/help.png) 100% 50% no-repeat;
+    padding-right: 25px;
+    min-height: 25px;
+    display: inline-block;
+}
+
 /*
  * == Public pages
  */
@@ -1576,7 +1591,7 @@ legend {
 }
 
 /* no border on the first 'p' child */
-.cssform p:nth-child(2), #addfield p:first-child/*, .cssform div.p:nth-child(2), .cssform div p:nth-child(1)*/{
+.cssform p:nth-child(2), #addfield p:first-child, .cssform legend+p/*, .cssform div.p:nth-child(2), .cssform div p:nth-child(1)*/{
     border-top:none;
 }
 /* If there is a div, the preceding rules does not apply to the correct element :( */

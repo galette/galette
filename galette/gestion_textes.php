@@ -96,6 +96,7 @@ $tpl->assign('langlist', $i18n->getList());
 $tpl->assign('cur_lang', $cur_lang);
 $tpl->assign('cur_ref', $cur_ref);
 $tpl->assign('mtxt', $mtxt);
+$tpl->assign('require_dialog', true);
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('warning_detected', $warning_detected);
 $content = $tpl->fetch('gestion_textes.tpl');
