@@ -155,17 +155,19 @@ $session_name = null;
 // we have to check here if they're assigned
 if ( $installer || !defined('PREFIX_DB') || !defined('NAME_DB') ) {
     $session_name = 'galette_galette';
+    $session = &$_SESSION['galette']['galette_install'];
 } else {
     $session_name = PREFIX_DB . '_' . NAME_DB;
+    $session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 }
 
 /**
 * Language instantiation
 */
-if ( isset($_SESSION['galette'][$session_name]['lang'])
+if ( isset($session['lang'])
     && GALETTE_MODE !== 'DEV'
 ) {
-    $i18n = unserialize($_SESSION['galette'][$session_name]['lang']);
+    $i18n = unserialize($session['lang']);
 } else {
     $i18n = new Core\I18n();
 }
@@ -178,7 +180,7 @@ if ( isset($_POST['pref_lang'])
 if ( isset($_GET['pref_lang']) ) {
     $i18n->changeLanguage($_GET['pref_lang']);
 }
-$_SESSION['galette'][$session_name]['lang'] = serialize($i18n);
+$session['lang'] = serialize($i18n);
 require_once WEB_ROOT . 'includes/i18n.inc.php';
 
 // initialize messages arrays
@@ -218,9 +220,9 @@ if ( !$installer ) { //If we're not working from installer
         /**
         * Authentication
         */
-        if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login']) ) {
+        if ( isset($session['login']) ) {
             $login = unserialize(
-                $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login']
+                $session['login']
             );
         } else {
             $login = new Core\Login();
@@ -229,11 +231,11 @@ if ( !$installer ) { //If we're not working from installer
         /**
         * Instanciate history object
         */
-        if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history'])
+        if ( isset($session['history'])
             && !GALETTE_MODE == 'DEV'
         ) {
             $hist = unserialize(
-                $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history']
+                $session['history']
             );
         } else {
             $hist = new Core\History();
@@ -242,11 +244,11 @@ if ( !$installer ) { //If we're not working from installer
         /**
         * Logo
         */
-        if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo'])
+        if ( isset($session['logo'])
             && !GALETTE_MODE == 'DEV'
         ) {
             $logo = unserialize(
-                $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo']
+                $session['logo']
             );
         } else {
             $logo = new Core\Logo();

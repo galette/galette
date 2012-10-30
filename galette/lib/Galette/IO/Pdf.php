@@ -134,9 +134,9 @@ class Pdf extends \TCPDF
     public function Error($msg)
     {
         /** FIXME: I do not really like this, we should find sthing better */
-        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error'] = true;
-        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['pdf_error_msg'] = $msg;
-        header("location:" . $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['caller']);
+        $session['pdf_error'] = true;
+        $session['pdf_error_msg'] = $msg;
+        header("location:" . $session['caller']);
         die();
     }
 

@@ -50,8 +50,6 @@ use Galette\Core;
 use Galette\Common\KLogger as KLogger;
 use Galette\Filters\MembersList as MembersList;
 
-$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
-
 //We're done :-)
 if ( isset($_POST['mailing_done'])
     || isset($_POST['mailing_cancel'])

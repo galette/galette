@@ -59,7 +59,6 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 if ( isset($session['filters']['members'])
     && !isset($_POST['mailing'])
     && !isset($_POST['mailing_new'])

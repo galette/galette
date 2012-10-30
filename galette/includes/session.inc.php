@@ -39,7 +39,7 @@
 if ( !$login->isLogged() || isset($_POST['logout']) || isset($_GET['logout']) ) {
     if ( isset($_POST['logout']) || isset($_GET['logout']) ) {
         $hist->add(_("Log off"));
-        unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]);
+        unset($session);
     }
 }
 ?>

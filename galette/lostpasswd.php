@@ -165,10 +165,10 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
 
 if ( $from_admin ) {
     if ( count($error_detected) > 0 ) {
-        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_errors'] = serialize($error_detected);
+        $session['lostpasswd_errors'] = serialize($error_detected);
     }
     if ( count($success_detected) > 0 ) {
-        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_success'] = serialize($success_detected);
+        $session['lostpasswd_success'] = serialize($success_detected);
     }
 
     if ( $profiler ) {

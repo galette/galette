@@ -329,7 +329,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                         } else {
                             $logo = new Core\Logo();
                         }
-                        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo'] = serialize($logo);
+                        $session['logo'] = serialize($logo);
                         $tpl->assign('logo', $logo);
                     }
                 }
@@ -349,7 +349,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 $error_detected[] = _T("Delete failed");
             } else {
                 $logo = new Core\Logo(); //get default Logo
-                $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo'] = serialize($logo);
+                $session['logo'] = serialize($logo);
                 $tpl->assign('logo', $logo);
             }
         }

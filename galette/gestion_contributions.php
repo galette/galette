@@ -53,8 +53,8 @@ if ( isset($_POST['ajax']) && $_POST['ajax'] == 'true'
     $ajax = true;
 }
 
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['contributions'])) {
-    $contribs = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['contributions']);
+if ( isset($session['contributions'])) {
+    $contribs = unserialize($session['contributions']);
 } else {
     $contribs = new Galette\Repository\Contributions();
 }
@@ -143,7 +143,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     }
 }
 
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['contributions'] = serialize($contribs);
+$session['contributions'] = serialize($contribs);
 $list_contribs = $contribs->getContributionsList(true);
 
 //assign pagination variables to the template and add pagination links

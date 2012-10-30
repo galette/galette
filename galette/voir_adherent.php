@@ -66,7 +66,6 @@ if ( $id_adh == '' ) {
     die();
 }
 
-$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 if ( isset($session['pdf_error']) && $session['pdf_error']
 ) {
     $error_detected[] = $session['pdf_error_msg'];

@@ -103,7 +103,7 @@ class Smarty extends \SmartyBC
         $this->assign('pref_theme', $preferences->pref_theme);
         $this->assign('pref_editor_enabled', $preferences->pref_editor_enabled);
         $this->assign('pref_mail_method', $preferences->pref_mail_method);
-        if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']) ) {
+        if ( isset($session['mailing']) ) {
             $this->assign('existing_mailing', true);
         }
     }

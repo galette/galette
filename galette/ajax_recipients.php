@@ -46,12 +46,12 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-$mailing = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
+$mailing = unserialize($session['mailing']);
 
 $members = Galette\Repository\Members::getArrayList($_POST['recipients']);
 $mailing->setRecipients($members);
 
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing'] = serialize($mailing);
+$session['mailing'] = serialize($mailing);
 
 //let's generate html for return
 $html = '';

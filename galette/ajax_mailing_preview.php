@@ -53,7 +53,7 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
 // check for ajax mode
 $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 
-$mailing = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
+$mailing = unserialize($session['mailing']);
 
 $mailing->subject = $_POST['subject'];
 $mailing->message = $_POST['body'];

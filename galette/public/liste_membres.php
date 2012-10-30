@@ -48,7 +48,6 @@ if ( !$preferences->showPublicPages() ) {
     header('location:../index.php');
 }
 
-$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 if ( isset($session['public_filters']['members']) ) {
     $filters = unserialize($session['public_filters']['members']);
 } else {

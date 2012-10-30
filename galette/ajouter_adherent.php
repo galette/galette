@@ -213,7 +213,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     //if mail has been disabled in the preferences, we should not be here ; we do not throw an error, just a simple warning that will be show later
                     $msg = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
                     $warning_detected[] = $msg;
-                    $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning'] = $msg;
+                    $session['mail_warning'] = $msg;
                 }
             }
 
@@ -296,7 +296,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
     }
 
     if ( count($error_detected) == 0 ) {
-        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['account_success'] = serialize($success_detected);
+        $session['account_success'] = serialize($success_detected);
         if ( !isset($_POST['id_adh']) ) {
             header(
                 'location: ajouter_contribution.php?id_adh=' . $member->id
@@ -340,9 +340,9 @@ $tpl->assign('data', $adherent);
 $tpl->assign('self_adh', false);
 $tpl->assign('dynamic_fields', $dynamic_fields);
 $tpl->assign('error_detected', $error_detected);
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning']) ) {
+if ( isset($session['mail_warning']) ) {
     //warning will be showed here, no need to keep it longer into session
-    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning']);
+    unset($session['mail_warning']);
 }
 $tpl->assign('warning_detected', $warning_detected);
 $tpl->assign('languages', $i18n->getList());

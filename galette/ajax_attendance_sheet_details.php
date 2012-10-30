@@ -51,9 +51,9 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members']) ) {
+if ( isset($session['filters']['members']) ) {
     $filters = unserialize(
-        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members']
+        $session['filters']['members']
     );
 } else {
     $filters = new Galette\Filters\MembersList();
@@ -65,7 +65,7 @@ $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 $selection = ( isset($_POST['selection']) ) ? $_POST['selection'] : array();
 
 $filters->selected = $selection;
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['filters']['members'] = serialize(
+$session['filters']['members'] = serialize(
     $filters
 );
 

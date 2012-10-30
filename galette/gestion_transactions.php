@@ -52,8 +52,8 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 
 $filtre_id_adh = '';
 
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['transactions']) ) {
-    $trans = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['transactions']);
+if ( isset($session['transactions']) ) {
+    $trans = unserialize($session['transactions']);
 } else {
     $trans = new Galette\Repository\Transactions();
 }
@@ -85,7 +85,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     }
 }
 
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['transactions'] = serialize($trans);
+$session['transactions'] = serialize($trans);
 $list_trans = $trans->getTransactionsList(true);
 
 //assign pagination variables to the template and add pagination links
