@@ -39,7 +39,7 @@
 if ( !$login->isLogged() || isset($_POST['logout']) || isset($_GET['logout']) ) {
     if ( isset($_POST['logout']) || isset($_GET['logout']) ) {
         $hist->add(_("Log off"));
-        unset($session);
+        unset($_SESSION[$session_name]);
     }
 }
 ?>

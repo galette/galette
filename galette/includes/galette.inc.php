@@ -154,12 +154,12 @@ $session_name = null;
 //since PREFIX_DB and NAME_DB are required to properly instanciate sessions,
 // we have to check here if they're assigned
 if ( $installer || !defined('PREFIX_DB') || !defined('NAME_DB') ) {
-    $session_name = 'galette_galette';
-    $session = &$_SESSION['galette']['galette_install'];
+    $session_name = 'galette_install';
 } else {
     $session_name = PREFIX_DB . '_' . NAME_DB;
-    $session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 }
+$session = &$_SESSION['galette'][$session_name];
+
 
 /**
 * Language instantiation
