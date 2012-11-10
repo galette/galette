@@ -40,8 +40,7 @@
  */
 
 
-$base_path = '../';
-require_once $base_path . 'includes/galette.inc.php';
+require_once GALETTE_ROOT . 'includes/galette.inc.php';
 if ( !$preferences->showPublicPages() ) {
     //public pages are not actives
     header('location:../index.php');

@@ -41,7 +41,7 @@ use Galette\Common\KLogger as KLogger;
 
 /** @ignore */
 require_once 'class.phpmailer.php';
-require_once WEB_ROOT . 'includes/html2text.php';
+require_once GALETTE_ROOT . 'includes/html2text.php';
 
 /**
  * Generic mail for Galette

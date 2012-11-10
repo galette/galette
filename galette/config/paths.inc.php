@@ -36,50 +36,53 @@
  * @since     Available since 0.7dev - 2009-03-13
  */
 
-if ( file_exists(WEB_ROOT . 'config/local_paths.inc.php') ) {
-    include WEB_ROOT . 'config/local_paths.inc.php';
+if ( file_exists(GALETTE_ROOT . 'config/local_paths.inc.php') ) {
+    include GALETTE_ROOT . 'config/local_paths.inc.php';
 }
 
 //external libraries
 if ( !defined('GALETTE_ZEND_PATH') ) {
-    define('GALETTE_ZEND_PATH', WEB_ROOT . 'includes/Zend-' . ZEND_VERSION);
+    define('GALETTE_ZEND_PATH', GALETTE_ROOT . 'includes/Zend-' . ZEND_VERSION);
 }
 if ( !defined('GALETTE_PHP_MAILER_PATH') ) {
-    define('GALETTE_PHP_MAILER_PATH', WEB_ROOT . 'includes/phpMailer-' . PHP_MAILER_VERSION);
+    define('GALETTE_PHP_MAILER_PATH', GALETTE_ROOT . 'includes/phpMailer-' . PHP_MAILER_VERSION);
 }
 if ( !defined('GALETTE_SMARTY_PATH') ) {
-    define('GALETTE_SMARTY_PATH', WEB_ROOT . 'includes/Smarty-' . SMARTY_VERSION);
+    define('GALETTE_SMARTY_PATH', GALETTE_ROOT . 'includes/Smarty-' . SMARTY_VERSION);
 }
 if ( !defined('GALETTE_GAPI_PATH') ) {
-    define('GALETTE_GAPI_PATH', WEB_ROOT . 'includes/google-api-' . GAPI_VERSION);
+    define('GALETTE_GAPI_PATH', GALETTE_ROOT . 'includes/google-api-' . GAPI_VERSION);
 }
 /*if ( !defined('GALETTE_XHPROF_PATH') ) {
     define('GALETTE_XHPROF_PATH', '/usr/share/xhprof/');
 }*/
 
 //galete's paths
+if ( !defined('GALETTE_CONFIG_PATH') ) {
+    define('GALETTE_CONFIG_PATH', GALETTE_ROOT . 'config/');
+}
 if ( !defined('GALETTE_TEMPLATES_PATH') ) {
-    define('GALETTE_TEMPLATES_PATH', WEB_ROOT . 'templates/');
+    define('GALETTE_TEMPLATES_PATH', GALETTE_ROOT . 'templates/');
 }
 if ( !defined('GALETTE_LOGS_PATH') ) {
-    define('GALETTE_LOGS_PATH', WEB_ROOT . 'logs/');
+    define('GALETTE_LOGS_PATH', GALETTE_ROOT . 'logs/');
 }
 if ( !defined('GALETTE_COMPILE_DIR') ) {
-    define('GALETTE_COMPILE_DIR', WEB_ROOT . 'templates_c/');
+    define('GALETTE_COMPILE_DIR', GALETTE_ROOT . 'templates_c/');
 }
 if ( !defined('GALETTE_CACHE_DIR') ) {
-    define('GALETTE_CACHE_DIR', WEB_ROOT . 'cache/');
+    define('GALETTE_CACHE_DIR', GALETTE_ROOT . 'cache/');
 }
 if ( !defined('GALETTE_PLUGINS_PATH') ) {
-    define('GALETTE_PLUGINS_PATH', WEB_ROOT . 'plugins');
+    define('GALETTE_PLUGINS_PATH', GALETTE_ROOT . 'plugins/');
 }
 if ( !defined('GALETTE_EXPORTS_PATH') ) {
-    define('GALETTE_EXPORTS_PATH', WEB_ROOT . 'exports/');
+    define('GALETTE_EXPORTS_PATH', GALETTE_ROOT . 'exports/');
 }
 if ( !defined('GALETTE_PHOTOS_PATH') ) {
-    define('GALETTE_PHOTOS_PATH', WEB_ROOT . 'photos/');
+    define('GALETTE_PHOTOS_PATH', GALETTE_ROOT . 'photos/');
 }
 if ( !defined('GALETTE_TEMPIMAGES_PATH') ) {
-    define('GALETTE_TEMPIMAGES_PATH', WEB_ROOT . 'tempimages/');
+    define('GALETTE_TEMPIMAGES_PATH', GALETTE_ROOT . 'tempimages/');
 }
 ?>

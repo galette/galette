@@ -453,7 +453,7 @@ class Adherent
         );
 
         //disabled fields override
-        $locfile = WEB_ROOT . 'config/disabled_fields.php';
+        $locfile = GALETTE_CONFIG_PATH . 'disabled_fields.php';
         if ( file_exists($locfile) ) {
             include $locfile;
             if ( isset($loc_disabled_fields)

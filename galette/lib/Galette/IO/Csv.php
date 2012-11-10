@@ -72,7 +72,6 @@ class Csv
     private $_result;
     private $_current_line;
 
-    private $_parameted_dir = 'config/';
     private $_parameted_path;
     private $_parameted_file = 'exports.xml';
 
@@ -92,7 +91,7 @@ class Csv
     */
     public function __construct()
     {
-        $this->_parameted_path = WEB_ROOT . $this->_parameted_dir;
+        $this->_parameted_path = GALETTE_CONFIG_PATH;
         $this->_parameted_file = $this->_parameted_path . $this->_parameted_file;
     }
 

@@ -35,13 +35,14 @@
  * @since     Available since 0.7dev - 2012-02-05
  */
 
-$base_path = './';
 //set a flag saying we work from installer
 //that way, in galette.inc.php, we'll only include relevant parts
 $installer = true;
-define('WEB_ROOT', __DIR__ . '/');
+if ( !defined('GALETTE_ROOT') ) {
+    define('GALETTE_ROOT', __DIR__ . '/');
+}
 
-require_once $base_path . 'includes/galette.inc.php';
+require_once GALETTE_ROOT . 'includes/galette.inc.php';
 
 header('Content-Type: text/html; charset=UTF-8');
 ?>

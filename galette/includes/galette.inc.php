@@ -37,29 +37,33 @@
 
 $time_start = microtime(true);
 
+//define galette's root directory
+if ( !defined('GALETTE_ROOT') ) {
+    define('GALETTE_ROOT', __DIR__ . '/../');
+}
+
+// define relative base path templating can use
+if ( !defined('GALETTE_BASE_PATH') ) {
+    define('GALETTE_BASE_PATH', './');
+}
+
+require_once GALETTE_ROOT . 'config/versions.inc.php';
+require_once GALETTE_ROOT . 'config/paths.inc.php';
+
 //we'll only include relevant parts if we work from installer
 if ( !isset($installer) ) {
     $installer = false;
 }
 // test if galette is already installed or if we're form installer
 // and redirect to install page if not
-$installed = file_exists(dirname(__FILE__) . '/../config/config.inc.php');
+$installed = file_exists(GALETTE_CONFIG_PATH . 'config.inc.php');
 if ( !$installed && !$installer ) {
     header('location: install/index.php');
 }
 
-/**
-* Import configuration settings
-*/
-if ( !isset($base_path) ) {
-    $base_path = './';
-}
-
 if ( !$installer || $installed ) { //If we're not working from installer
-    require_once $base_path . 'config/config.inc.php';
+    require_once GALETTE_CONFIG_PATH . 'config.inc.php';
 }
-require_once $base_path . 'config/versions.inc.php';
-require_once $base_path . 'config/paths.inc.php';
 
 //start profiling
 if (defined('GALETTE_XHPROF_PATH')
@@ -73,8 +77,8 @@ if (defined('GALETTE_XHPROF_PATH')
 use Galette\Common\ClassLoader;
 use Galette\Common\KLogger;
 use Galette\Core;
-require_once $base_path . 'lib/Galette/Common/ClassLoader.php';
-$galetteLoader = new ClassLoader('Galette', WEB_ROOT . 'lib');
+require_once GALETTE_ROOT . 'lib/Galette/Common/ClassLoader.php';
+$galetteLoader = new ClassLoader('Galette', GALETTE_ROOT . 'lib');
 $zendLoader = new ClassLoader('Zend', GALETTE_ZEND_PATH);
 $zendLoader->setNamespaceSeparator('_');
 $smartyLoader = new ClassLoader(null, GALETTE_SMARTY_PATH);
@@ -148,7 +152,7 @@ if ( version_compare(PHP_VERSION, '5.3.0', '<') ) {
     die();
 }
 
-require_once WEB_ROOT . 'includes/functions.inc.php';
+require_once GALETTE_ROOT . 'includes/functions.inc.php';
 
 $session_name = null;
 //since PREFIX_DB and NAME_DB are required to properly instanciate sessions,
@@ -181,7 +185,7 @@ if ( isset($_GET['pref_lang']) ) {
     $i18n->changeLanguage($_GET['pref_lang']);
 }
 $session['lang'] = serialize($i18n);
-require_once WEB_ROOT . 'includes/i18n.inc.php';
+require_once GALETTE_ROOT . 'includes/i18n.inc.php';
 
 // initialize messages arrays
 $error_detected = array();
@@ -189,7 +193,7 @@ $warning_detected = array();
 $success_detected = array();
 
 if ( !$installer ) { //If we're not working from installer
-    require_once WEB_ROOT . 'config/config.inc.php';
+    require_once GALETTE_CONFIG_PATH . 'config.inc.php';
 
     /**
     * Database instanciation
@@ -258,8 +262,8 @@ if ( !$installer ) { //If we're not working from installer
         * Now that all objects are correctly setted,
         * we can include files that need it
         */
-        require_once WEB_ROOT . 'includes/session.inc.php';
-        require_once WEB_ROOT . 'includes/smarty.inc.php';
+        require_once GALETTE_ROOT . 'includes/session.inc.php';
+        require_once GALETTE_ROOT . 'includes/smarty.inc.php';
     } else {
         header('location: needs_update.php');
         die();

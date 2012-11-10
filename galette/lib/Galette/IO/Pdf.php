@@ -44,13 +44,13 @@ namespace Galette\IO;
 /*
  * TCPDF configuration file for Galette
  */
-require_once WEB_ROOT . 'config/galette_tcpdf_config.php';
+require_once GALETTE_CONFIG_PATH . 'galette_tcpdf_config.php';
 define("K_TCPDF_EXTERNAL_CONFIG", true);
 
 /**
  *  Require TCPDF class
  */
-require_once WEB_ROOT . 'includes/tcpdf_' . TCPDF_VERSION . '/tcpdf.php';
+require_once GALETTE_ROOT . 'includes/tcpdf_' . TCPDF_VERSION . '/tcpdf.php';
 
 
 /**
@@ -188,8 +188,8 @@ class Pdf extends \TCPDF
             if (!$data) {
                     $this->Error(_T("Error loading ").$file);
             }
-            if (Imagepng($data, WEB_ROOT . 'tempimages/gif2png.png') ) {
-                return $this->_parsepng(WEB_ROOT.'tempimages/gif2png.png');
+            if (Imagepng($data, GALETTE_ROOT . 'tempimages/gif2png.png') ) {
+                return $this->_parsepng(GALETTE_ROOT . 'tempimages/gif2png.png');
             } else {
                 $this->Error(_T("Error creating temporary png file from ").$file);
             }

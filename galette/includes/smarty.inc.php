@@ -37,8 +37,10 @@
  * @since     Available since 0.63
  */
 
-$template_subdir = 'templates/' . $preferences->pref_theme . '/';
-$tpl = new Galette\Core\Smarty($base_path);
+if ( !defined('GALETTE_TPL_SUBDIR') ) {
+    define('GALETTE_TPL_SUBDIR', 'templates/' . $preferences->pref_theme . '/');
+}
+$tpl = new Galette\Core\Smarty($plugins, $i18n, $preferences, $logo, $login);
 $tpl->muteExpectedErrors();
 
 $tpl->registerClass('GaletteMail', '\Galette\Core\GaletteMail');

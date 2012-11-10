@@ -80,7 +80,7 @@ class I18n
     */
     function __construct($lang = false)
     {
-        $this->_path = WEB_ROOT . $this->_dir;
+        $this->_path = GALETTE_ROOT . $this->_dir;
         $this->_file = $this->_path . $this->_file;
 
         if ( !$lang ) {
@@ -203,11 +203,10 @@ class I18n
     */
     public function getFlagFromId($id)
     {
-        global $base_path, $template_subdir;
         $xml = simplexml_load_file($this->_file);
         $current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');
         $sxe = $current[0];
-        return $base_path . $template_subdir . 'images/' . $sxe->flag;
+        return GALETTE_BASE_PATH . GALETTE_TPL_SUBDIR . 'images/' . $sxe->flag;
     }
 
     /**
@@ -267,8 +266,7 @@ class I18n
     */
     public function getFlag()
     {
-        global $base_path, $template_subdir;
-        return $base_path . $template_subdir . 'images/' . $this->_flag;
+        return GALETTE_BASE_PATH . GALETTE_TPL_SUBDIR . 'images/' . $this->_flag;
     }
 
     /**

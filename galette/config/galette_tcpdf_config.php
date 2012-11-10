@@ -39,8 +39,8 @@ if ((!isset($_SERVER['DOCUMENT_ROOT'])) OR (empty($_SERVER['DOCUMENT_ROOT']))) {
 }
 
 // Set K_PATH_MAIN constant
-$galette_k_path_main = WEB_ROOT;
-$k_path_main = WEB_ROOT . 'includes/tcpdf_' . TCPDF_VERSION . '/';
+$galette_k_path_main = GALETTE_ROOT;
+$k_path_main = GALETTE_ROOT . 'includes/tcpdf_' . TCPDF_VERSION . '/';
 
 /**
  * Installation path (/var/www/tcpdf/).

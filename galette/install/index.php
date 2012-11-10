@@ -36,14 +36,13 @@
  * @since     Available since 0.62
  */
 
-$base_path = '../';
 //set a flag saying we work from installer
 //that way, in galette.inc.php, we'll only include relevant parts
 $installer = true;
 $logfile = 'galette_install';
-define('WEB_ROOT', realpath(dirname(__FILE__) . '/../') . '/');
+define('GALETTE_BASE_PATH', '../');
 
-require_once $base_path . 'includes/galette.inc.php';
+require_once '../includes/galette.inc.php';
 
 if ( defined('PREFIX_DB') && defined('NAME_DB') ) {
     unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]);
@@ -51,7 +50,6 @@ if ( defined('PREFIX_DB') && defined('NAME_DB') ) {
 
 $session = array();
 
-$template_subdir = 'templates/default/';
 $step = '1';
 $error_detected = false;
 
@@ -194,7 +192,7 @@ if ( $error_detected == ''
 //we set current step title
 switch ( $step ) {
 case '1':
-        $step_title = _T("Language");
+    $step_title = _T("Language");
     break;
 case '2':
     $step_title = _T("Installation mode");
@@ -239,18 +237,18 @@ header('Content-Type: text/html; charset=UTF-8');
     <head>
         <title><?php echo _T("Galette Installation") . ' - ' . $step_title; ?></title>
         <meta charset="UTF-8"/>
-        <link rel="stylesheet" type="text/css" href="../templates/default/galette.css"/>
-        <link rel="stylesheet" type="text/css" href="../templates/default/install.css"/>
-        <link rel="stylesheet" type="text/css" href="../templates/default/jquery-ui/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>.custom.css"/>
-        <script type="text/javascript" src="../includes/jquery/jquery-<?php echo JQUERY_VERSION; ?>.min.js"></script>
-        <script type="text/javascript" src="../includes/jquery/jquery.ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
-        <script type="text/javascript" src="../includes/jquery/jquery.ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.button.min.js"></script>
-        <script type="text/javascript" src="../includes/jquery/jquery.bgiframe.pack.js"></script>
-        <script type="text/javascript" src="../includes/jquery/jquery.bgFade.js"></script>
-        <script type="text/javascript" src="../includes/jquery/chili-1.7.pack.js"></script>
-        <script type="text/javascript" src="../includes/jquery/jquery.tooltip.pack.js"></script>
-        <script type="text/javascript" src="../includes/common.js"></script>
-        <link rel="shortcut icon" href="../templates/default/images/favicon.png" />
+        <link rel="stylesheet" type="text/css" href="<?php echo GALETTE_BASE_PATH; ?>templates/default/galette.css"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo GALETTE_BASE_PATH; ?>templates/default/install.css"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo GALETTE_BASE_PATH; ?>templates/default/jquery-ui/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>.custom.css"/>
+        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-<?php echo JQUERY_VERSION; ?>.min.js"></script>
+        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
+        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.button.min.js"></script>
+        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.bgiframe.pack.js"></script>
+        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.bgFade.js"></script>
+        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/chili-1.7.pack.js"></script>
+        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.tooltip.pack.js"></script>
+        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/common.js"></script>
+        <link rel="shortcut icon" href="<?php echo GALETTE_BASE_PATH; ?>templates/default/images/favicon.png" />
         <script type="text/javascript">
             $(function() {
 <?php
@@ -271,7 +269,7 @@ if ($step == '1') { ?>
         <section>
             <header>
                 <h1 id="titre">
-                    <img src="<?php echo $base_path; ?>templates/default/images/galette.png" alt="[ Galette ]" />
+                    <img src="<?php echo GALETTE_BASE_PATH; ?>templates/default/images/galette.png" alt="[ Galette ]" />
                     <?php echo _T("Galette installation") . ' - ' . $step_title ?>
                 </h1>
             </header>
@@ -526,8 +524,8 @@ case 'u4':
     if ( $step == 'u4' ) {
         echo _T("Enter connection data for the existing database.");
 
-        if ( file_exists(WEB_ROOT . 'config/config.inc.php') ) {
-            $conf = file_get_contents(WEB_ROOT . 'config/config.inc.php');
+        if ( file_exists(GALETTE_CONFIG_PATH . 'config.inc.php') ) {
+            $conf = file_get_contents(GALETTE_CONFIG_PATH . 'config.inc.php');
             if ( $conf !== false ) {
                 if ( !isset($_POST['install_dbtype']) ) {
                     $res = preg_match(
@@ -1143,7 +1141,7 @@ case 'u9';
     <?php
             // création du fichier de configuration
 
-    if ( $fd = @fopen(WEB_ROOT . 'config/config.inc.php', 'w') ) {
+    if ( $fd = @fopen(GALETTE_CONFIG_PATH . 'config.inc.php', 'w') ) {
         $data = '<?php
 define("TYPE_DB", "' . $_POST['install_dbtype'] . '");
 define("HOST_DB", "' . $_POST['install_dbhost'] . '");
@@ -1151,18 +1149,20 @@ define("PORT_DB", "' . $_POST['install_dbport'] . '");
 define("USER_DB", "' . $_POST['install_dbuser'] . '");
 define("PWD_DB", "' . $_POST['install_dbpass'] . '");
 define("NAME_DB", "' . $_POST['install_dbname'] . '");
-define("WEB_ROOT", \'' . WEB_ROOT . '\');
 define("PREFIX_DB", "' . $_POST['install_dbprefix'] . '");
 define("STOCK_FILES", "tempimages");
 ?>';
         fwrite($fd, $data);
         fclose($fd);
         $oks[] =  '<li class="install-ok">' .
-            _T("Configuration file created (config/config.inc.php)") . '</li>';
+            _T("Configuration file created!") . '</li>';
     } else {
-        $errs[] =  '<li class="install-bad">' .
-            _T("Unable to create configuration file (config/config.inc.php)") .
-            '</li>';
+        $str = str_replace(
+            '%path',
+            GALETTE_CONFIG_PATH . 'config.inc.php',
+            _T("Unable to create configuration file (%path)")
+        );
+        $errs[] =  '<li class="install-bad">' . $str . '</li>';
         $error = true;
     }
 
@@ -1278,7 +1278,7 @@ define("STOCK_FILES", "tempimages");
         ?>
             <div id="errorbox">
                 <h1><?php echo _T("- ERROR -"); ?></h1>
-                <p><?php echo _T("Parameters couldn't be saved."); ?><br/><?php echo _T("This can come from the permissions on the file config/config.inc.php or the impossibility to make an INSERT into the database."); ?></p>
+                <p><?php echo _T("Parameters couldn't be saved."); ?><br/><?php echo _T("This can come from the permissions on the configuration file or the impossibility to make an INSERT into the database."); ?></p>
                 <p><?php echo _T("Check above errors to know what went wrong."); ?></p>
                 <ul><?php echo implode("\n", $errs); ?></ul>
             </div>
@@ -1325,7 +1325,7 @@ case 'u10':
     }
     ?></p>
             <div id="errorbox"><?php echo _T("To secure the system, please delete the install directory"); ?></div>
-            <form action="../index.php" method="get">
+            <form action="<?php echo GALETTE_BASE_PATH; ?>index.php" method="get">
                 <p id="btn_box">
                     <input type="submit" value="<?php echo _T("Homepage"); ?>"/>
                 </p>
