@@ -267,7 +267,7 @@
 			</fieldset>
 
     {include file="edit_dynamic_fields.tpl"}
-    {if (!$self_adh and ($login->isAdmin() or $login->isStaff())) and !$disabled.send_mail}
+    {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') and (!$self_adh and ($login->isAdmin() or $login->isStaff())) and !$disabled.send_mail}
 					<p>
 						<label for="mail_confirm">
         {if $member->id}

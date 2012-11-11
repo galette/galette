@@ -36,6 +36,7 @@
                 </tbody>
             </table>
     {/if}
+            <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
 			<fieldset class="cssform">
 				<legend class="ui-state-active ui-corner-top">{_T string="Select contributor and contribution type"}</legend>
 				<p>
@@ -102,17 +103,19 @@
 				</p>
         {/if}
 				<p>
-					<label for="mail_confirm" class="bline">{_T string="Send a mail:"}</label>
-					<input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
-					<span class="exemple">{_T string="(the member will receive a confirmation by email, if he has an address.)"}</span>
-				</p>
-				<p>
 					<label class="bline" for="info_cotis">{_T string="Comments:"}</label>
 					<textarea name="info_cotis" id="info_cotis" cols="61" rows="6"{if $required.info_cotis eq 1} required{/if}>{$contribution->info}</textarea>
 				</p>
 			</fieldset>
         {include file="edit_dynamic_fields.tpl"}
     {/if} {* $type_selected eq 1 *}
+    {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
+			<p>
+				<label for="mail_confirm">{_T string="Notify member"}</label>
+				<input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
+				<br/><span class="exemple">{_T string="Member will receive a notification by email, if he has an address."}</span>
+			</p>
+    {/if}
 		</div>
 		<div class="button-container">
     {if $type_selected eq 1}
@@ -129,7 +132,6 @@
             {* First step validator *}
 			<input type="hidden" name="type_selected" value="1"/>
 		</div>
-		<p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
 		</form>
     <script type="text/javascript">
         $(function(){
