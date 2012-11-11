@@ -37,6 +37,10 @@
  * @since     Available since 0.63
  */
 
+if (!defined('GALETTE_ROOT')) {
+       die("Sorry. You can't access directly to this file");
+}
+
 if ( !defined('GALETTE_TPL_SUBDIR') ) {
     define('GALETTE_TPL_SUBDIR', 'templates/' . $preferences->pref_theme . '/');
 }

@@ -36,6 +36,10 @@
  * @link      http://galette.tuxfamily.org
  */
 
+if (!defined('GALETTE_ROOT')) {
+       die("Sorry. You can't access directly to this file");
+}
+
 use Galette\Common\KLogger as KLogger;
 
 function PasswordImageName($c)

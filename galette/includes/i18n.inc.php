@@ -37,6 +37,10 @@
  * @since     Available since 0.62
  */
 
+if (!defined('GALETTE_ROOT')) {
+       die("Sorry. You can't access directly to this file");
+}
+
 use Galette\Common\KLogger as KLogger;
 
 $disable_gettext=true;

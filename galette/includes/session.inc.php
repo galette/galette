@@ -36,6 +36,10 @@
  * @since     Available since 0.62
  */
 
+if (!defined('GALETTE_ROOT')) {
+       die("Sorry. You can't access directly to this file");
+}
+
 if ( !$login->isLogged() || isset($_POST['logout']) || isset($_GET['logout']) ) {
     if ( isset($_POST['logout']) || isset($_GET['logout']) ) {
         $hist->add(_("Log off"));
