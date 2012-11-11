@@ -40,13 +40,13 @@
             </tr>
         </tfoot>
         <tbody>
-{foreach from=$entries item=entry name=allentries}
+{foreach from=$entries item=entry key=eid name=allentries}
             <tr class="{if $smarty.foreach.allentries.iteration % 2 eq 0}even{else}odd{/if}">
-                <td>{$entry.id}</td>
+                <td>{$eid}</td>
                 <td class="left">
 
                     {if $class == 'Status'}
-                        {if $entry.priority < 30}
+                        {if $entry.extra < 30}
                             <img src="{$template_subdir}images/icon-staff.png" alt="{_T string="[staff]"}" width="16" height="16"/>
                         {else}
                             <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
@@ -56,16 +56,20 @@
                 </td>
                 <td>
     {if $class == 'ContributionsTypes'}
-                    {$entry.extends}
+                    {if $entry.extra eq 1}
+                        {_T string="Yes"}
+                    {else}
+                        {_T string="No"}
+                    {/if}
     {elseif $class == 'Status'}
-                    {$entry.priority}
+                    {$entry.extra}
     {/if}
                 </td>
                 <td class="center actions_row">
-                    <a href="gestion_intitules.php?class={$class}&amp;id={$entry.id}">
+                    <a href="gestion_intitules.php?class={$class}&amp;id={$eid}">
                         <img src="{$template_subdir}images/icon-edit.png" alt="{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name}" title="{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name}" width="16" height="16"/>
                     </a>
-                    <a onclick="return confirm('{_T string="Do you really want to delete this entry?"|escape:"javascript"}')" href="gestion_intitules.php?class={$class}&amp;del={$entry.id}">
+                    <a onclick="return confirm('{_T string="Do you really want to delete this entry?"|escape:"javascript"}')" href="gestion_intitules.php?class={$class}&amp;del={$eid}">
                         <img src="{$template_subdir}images/icon-trash.png" alt="{_T string="Delete '%s' field" pattern="/%s/" replace=$entry.name}" title="{_T string="Delete '%s' field" pattern="/%s/" replace=$entry.name}" width="16" height="16" />
                     </a>
                 </td>
