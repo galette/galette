@@ -3,9 +3,9 @@
     <head>
         {include file='common_header.tpl'}
 {if $require_calendar}
-        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
     {if $galette_lang ne 'en'}
-        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.min.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery.ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.js"></script>
     {/if}
 {/if}
 {if $require_dialog}
@@ -36,10 +36,10 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         </div>
         <![endif]-->
         <header>
-            <img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
+            <img src="{urlFor name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
             <ul id="langs">
 {foreach item=langue from=$languages}
-                <li><a href="?pref_lang={$langue->getID()}"><img src="{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}" class="flag"/></a></li>
+                <li><a href="?pref_lang={$langue->getID()}"><img src="{$galette_base_path}{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}" class="flag"/></a></li>
 {/foreach}
             </ul>
 {if $login->isLogged()}
@@ -74,7 +74,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     {/if}
         </nav>
         {include file="global_messages.tpl"}
-        {$content}
+        {*$content*}
+        {block name="content"}{_T string="Public page content"}{/block}
         {include file="footer.tpl"}
     </body>
 </html>

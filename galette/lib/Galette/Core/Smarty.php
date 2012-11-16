@@ -48,8 +48,13 @@ namespace Galette\Core;
  * @link      http://www.smarty.net/docs/en/installing.smarty.extended.tpl
  * @since     Available since 0.7.1dev - 2012-05-05
  */
-class Smarty extends \SmartyBC
+class Smarty extends \Slim\Extras\Views\Smarty
 {
+
+    /**
+     * @var string Path to smatry configuration directory
+     */
+    public static $smartyConfigDir = null;
 
     /**
      * Main constructor
@@ -63,13 +68,20 @@ class Smarty extends \SmartyBC
      */
     function __construct($plugins, $i18n, $preferences, $logo, $login, $session)
     {
-        parent::__construct();
+        /*parent::__construct();
 
         //paths configuration
-        $this->setTemplateDir(GALETTE_ROOT . GALETTE_TPL_SUBDIR);
-        $this->setCompileDir(GALETTE_COMPILE_DIR);
-        $this->setConfigDir(GALETTE_CONFIG_PATH);
-        $this->setCacheDir(GALETTE_CACHE_DIR);
+        self::$smartyDirectory = GALETTE_SMARTY_PATH;
+        self::$smartyTemplatesDirectory = GALETTE_ROOT . GALETTE_TPL_SUBDIR;
+        self::$smartyCompileDirectory = GALETTE_COMPILE_DIR;
+        self::$smartyCacheDirectory = GALETTE_CACHE_DIR;
+        self::$smartyConfigDir = GALETTE_CONFIG_PATH;
+
+        self::$smartyExtensions = array(
+            GALETTE_SLIM_EXTRAS_PATH . 'Views/Extension/Smarty',
+            GALETTE_ROOT . 'includes/smarty_plugins'
+        );*/
+
 
         /*if ( GALETTE_MODE !== 'DEV' ) {
             //enable caching
@@ -77,56 +89,74 @@ class Smarty extends \SmartyBC
             $this->setCompileCheck(false);
         }*/
 
-        $this->addPluginsDir(GALETTE_ROOT . 'includes/smarty_plugins');
+        //$this->addPluginsDir(GALETTE_ROOT . 'includes/smarty_plugins');
+    }
 
-        $this->assign('login', $login);
-        $this->assign('logo', $logo);
-        $this->assign('template_subdir', GALETTE_BASE_PATH . GALETTE_TPL_SUBDIR);
-        foreach ( $plugins->getTplAssignments() as $k=>$v ) {
-            $this->assign($k, $v);
+    /**
+     * Creates new Smarty object instance if it doesn't already exist,
+     * and returns it.
+     *
+     * @throws RuntimeException If Smarty lib directory does not exist
+     * @return Smarty Instance
+     */
+    public static function getGaletteInstance($plugins, $i18n, $preferences, $logo, $login, $session)
+    {
+        $instance = parent::getInstance();
+
+        if (self::$smartyConfigDir) {
+            $instance->setConfigDir(self::$smartyConfigDir);
         }
-        $this->assign('tpl', $this);
-        $this->assign('headers', $plugins->getTplHeaders());
-        $this->assign('plugin_actions', $plugins->getTplAdhActions());
-        $this->assign('plugin_batch_actions', $plugins->getTplAdhBatchActions());
-        $this->assign('plugin_detailled_actions', $plugins->getTplAdhDetailledActions());
-        $this->assign('jquery_dir', GALETTE_BASE_PATH . 'includes/jquery/');
-        $this->assign('jquery_version', JQUERY_VERSION);
-        $this->assign('jquery_migrate_version', JQUERY_MIGRATE_VERSION);
-        $this->assign('jquery_ui_version', JQUERY_UI_VERSION);
-        $this->assign('jquery_markitup_version', JQUERY_MARKITUP_VERSION);
-        $this->assign('jquery_jqplot_version', JQUERY_JQPLOT_VERSION);
-        $this->assign('scripts_dir', GALETTE_BASE_PATH . 'includes/');
-        $this->assign('PAGENAME', basename($_SERVER['SCRIPT_NAME']));
-        $this->assign('galette_base_path', GALETTE_BASE_PATH);
-        $this->assign('GALETTE_VERSION', GALETTE_VERSION);
-        $this->assign('GALETTE_MODE', GALETTE_MODE);
+
+        $instance->assign('login', $login);
+        $instance->assign('logo', $logo);
+        $instance->assign('template_subdir', GALETTE_THEME);
+        foreach ( $plugins->getTplAssignments() as $k=>$v ) {
+            $instance->assign($k, $v);
+        }
+        $instance->assign('tpl', $instance);
+        $instance->assign('headers', $plugins->getTplHeaders());
+        $instance->assign('plugin_actions', $plugins->getTplAdhActions());
+        $instance->assign('plugin_batch_actions', $plugins->getTplAdhBatchActions());
+        $instance->assign('plugin_detailled_actions', $plugins->getTplAdhDetailledActions());
+        $instance->assign('jquery_dir', 'js/jquery/');
+        $instance->assign('jquery_version', JQUERY_VERSION);
+        $instance->assign('jquery_migrate_version', JQUERY_MIGRATE_VERSION);
+        $instance->assign('jquery_ui_version', JQUERY_UI_VERSION);
+        $instance->assign('jquery_markitup_version', JQUERY_MARKITUP_VERSION);
+        $instance->assign('jquery_jqplot_version', JQUERY_JQPLOT_VERSION);
+        $instance->assign('scripts_dir', 'js/');
+        $instance->assign('PAGENAME', basename($_SERVER['SCRIPT_NAME']));
+        $instance->assign('galette_base_path', './');
+        $instance->assign('GALETTE_VERSION', GALETTE_VERSION);
+        $instance->assign('GALETTE_MODE', GALETTE_MODE);
         /** galette_lang should be removed and languages used instead */
-        $this->assign('galette_lang', $i18n->getAbbrev());
-        $this->assign('languages', $i18n->getList());
-        $this->assign('plugins', $plugins);
-        $this->assign('preferences', $preferences);
-        $this->assign('pref_slogan', $preferences->pref_slogan);
-        $this->assign('pref_theme', $preferences->pref_theme);
-        $this->assign('pref_editor_enabled', $preferences->pref_editor_enabled);
-        $this->assign('pref_mail_method', $preferences->pref_mail_method);
-        $this->assign('existing_mailing', isset($session['mailing']));
-        $this->assign('require_tabs', null);
-        $this->assign('require_cookie', null);
-        $this->assign('contentcls', null);
-        $this->assign('require_tabs', null);
-        $this->assign('require_cookie', false);
-        $this->assign('additionnal_html_class', null);
-        $this->assign('require_calendar', null);
-        $this->assign('head_redirect', null);
-        $this->assign('error_detected', null);
-        $this->assign('warning_detected', null);
-        $this->assign('success_detected', null);
-        $this->assign('color_picker', null);
-        $this->assign('require_sorter', null);
-        $this->assign('require_dialog', null);
-        $this->assign('require_tree', null);
-        $this->assign('html_editor', null);
-        $this->assign('require_charts', null);
+        $instance->assign('galette_lang', $i18n->getAbbrev());
+        $instance->assign('languages', $i18n->getList());
+        $instance->assign('plugins', $plugins);
+        $instance->assign('preferences', $preferences);
+        $instance->assign('pref_slogan', $preferences->pref_slogan);
+        $instance->assign('pref_theme', $preferences->pref_theme);
+        $instance->assign('pref_editor_enabled', $preferences->pref_editor_enabled);
+        $instance->assign('pref_mail_method', $preferences->pref_mail_method);
+        $instance->assign('existing_mailing', isset($session['mailing']));
+        $instance->assign('require_tabs', null);
+        $instance->assign('require_cookie', null);
+        $instance->assign('contentcls', null);
+        $instance->assign('require_tabs', null);
+        $instance->assign('require_cookie', false);
+        $instance->assign('additionnal_html_class', null);
+        $instance->assign('require_calendar', null);
+        $instance->assign('head_redirect', null);
+        $instance->assign('error_detected', null);
+        $instance->assign('warning_detected', null);
+        $instance->assign('success_detected', null);
+        $instance->assign('color_picker', null);
+        $instance->assign('require_sorter', null);
+        $instance->assign('require_dialog', null);
+        $instance->assign('require_tree', null);
+        $instance->assign('html_editor', null);
+        $instance->assign('require_charts', null);
+
+        return $instance;
     }
 }
