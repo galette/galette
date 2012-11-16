@@ -111,4 +111,3 @@ $tpl->display('page.tpl');
 if ( $profiler ) {
     $profiler->stop();
 }
-?>

@@ -275,4 +275,3 @@ abstract class Authentication
         $this->$name = $value;
     }
 }
-?>

@@ -170,4 +170,3 @@ class FieldsCategories
     * SETTERS
     */
 }
-?>

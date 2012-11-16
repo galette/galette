@@ -90,4 +90,3 @@ $tpl->assign('history', $mailhist);
 $content = $tpl->fetch('gestion_mailings.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-?>

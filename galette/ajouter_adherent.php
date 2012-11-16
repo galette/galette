@@ -365,4 +365,3 @@ $tpl->assign('groups', $groups_list);
 $content = $tpl->fetch('member.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-?>

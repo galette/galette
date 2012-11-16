@@ -78,4 +78,3 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     );
     header('HTTP/1.0 403 Forbidden');
 }
-?>

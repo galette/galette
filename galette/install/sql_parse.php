@@ -189,5 +189,3 @@ function split_sql_file($sql, $delimiter)
 
 	return $output;
 }
-
-?>

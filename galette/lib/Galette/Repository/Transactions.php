@@ -484,4 +484,3 @@ class Transactions extends Pagination
     }
 
 }
-?>

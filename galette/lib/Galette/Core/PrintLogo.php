@@ -77,4 +77,3 @@ class PrintLogo extends Logo
     }
 
 }
-?>

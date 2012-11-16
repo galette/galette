@@ -81,4 +81,3 @@ $tpl->assign('history', $hist);
 $content = $tpl->fetch('history.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-?>

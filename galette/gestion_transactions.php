@@ -104,4 +104,3 @@ if ( $trans->filtre_cotis_adh != null ) {
 $content = $tpl->fetch('gestion_transactions.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-?>

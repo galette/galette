@@ -61,4 +61,3 @@ $tpl->assign('require_cookie', true);
 $content = $tpl->fetch('desktop.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-?>

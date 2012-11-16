@@ -440,4 +440,3 @@ class GaletteMail
         $this->_message = $m;
     }
 }
-?>

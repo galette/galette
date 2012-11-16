@@ -172,4 +172,3 @@ $tpl->assign('group', $group);
 $content = $tpl->fetch('gestion_groupes.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-?>

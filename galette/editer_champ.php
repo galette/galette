@@ -235,4 +235,3 @@ $tpl->assign('perm_names', $dyn_fields->getPermsNames());
 $content = $tpl->fetch('editer_champ.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-?>

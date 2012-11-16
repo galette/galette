@@ -645,4 +645,3 @@ class Db extends \Zend_Db
     }
 
 }
-?>

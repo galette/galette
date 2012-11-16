@@ -55,5 +55,3 @@ $tpl->assign('members', $members);
 $content = $tpl->fetch('trombinoscope.tpl');
 $tpl->assign('content', $content);
 $tpl->display('public_page.tpl');
-?>
-

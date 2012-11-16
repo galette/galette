@@ -202,4 +202,3 @@ $tpl->assign('require_dialog', true);
 $content = $tpl->fetch("ajouter_transaction.tpl");
 $tpl->assign("content", $content);
 $tpl->display("page.tpl");
-?>

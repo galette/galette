@@ -61,4 +61,3 @@ function smarty_function__T($params, &$smarty)
     }
     return $ret;
 }
-?>

@@ -285,4 +285,3 @@ if ( isset($_GET['ajax']) && $_GET['ajax'] == 'true' ) {
     $tpl->assign('content', $content);
     $tpl->display('page.tpl');
 }
-?>

@@ -101,4 +101,3 @@ $tpl->assign('warning_detected', $warning_detected);
 $content = $tpl->fetch('gestion_textes.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-?>

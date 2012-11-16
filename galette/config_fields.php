@@ -104,5 +104,3 @@ $tpl->assign('require_sorter', true);
 $content = $tpl->fetch('config_fields.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-
-?>

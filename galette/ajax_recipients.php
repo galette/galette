@@ -79,4 +79,3 @@ if ( count($mailing->recipients) > 0 ) {
     }
 }
 echo $html;
-?>

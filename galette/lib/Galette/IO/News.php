@@ -429,4 +429,3 @@ class News
         return $this->_gplus;
     }
 }
-?>

@@ -249,4 +249,3 @@ $tpl->display('public_page.tpl');
 if ( $profiler ) {
     $profiler->stop();
 }
-?>

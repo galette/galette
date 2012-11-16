@@ -368,4 +368,3 @@ $tpl->assign('dynamic_fields', $dynamic_fields);
 $content = $tpl->fetch('ajouter_contribution.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-?>

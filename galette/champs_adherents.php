@@ -71,5 +71,3 @@ $adh_fields = array(
     "gpgid"             =>  _T("Id GNUpg (GPG):"),
     "fingerprint"       =>  _T("fingerprint:")
 );
-
-?>

@@ -266,4 +266,3 @@ if ( !$installer ) { //If we're not working from installer
         die();
     }
 }
-?>

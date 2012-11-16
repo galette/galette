@@ -98,4 +98,3 @@ $tpl->assign('languages', $i18n->getList());
 $content = $tpl->fetch('group.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-?>

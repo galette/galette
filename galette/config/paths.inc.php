@@ -85,4 +85,3 @@ if ( !defined('GALETTE_PHOTOS_PATH') ) {
 if ( !defined('GALETTE_TEMPIMAGES_PATH') ) {
     define('GALETTE_TEMPIMAGES_PATH', GALETTE_ROOT . 'tempimages/');
 }
-?>

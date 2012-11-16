@@ -132,5 +132,3 @@ $content = $tpl->fetch('export.tpl');
 $tpl->assign('content', $content);
 
 $tpl->display('page.tpl');
-
-?>

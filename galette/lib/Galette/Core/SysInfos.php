@@ -129,4 +129,3 @@ class SysInfos
         return $str;
     }
 }
-?>

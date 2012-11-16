@@ -425,4 +425,3 @@ class FieldsConfig
         }
     }
 }
-?>

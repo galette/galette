@@ -238,4 +238,3 @@ foreach ( $members as $m ) {
 $pdf->Cell(190, 0, '', 'T');
 
 $pdf->Output(_T("attendance_sheet") . '.pdf', 'D');
-?>

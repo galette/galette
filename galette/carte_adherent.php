@@ -322,4 +322,3 @@ foreach ( $members as $member ) {
 // Send PDF code to browser
 $session['pdf_error'] = false;
 $pdf->Output(_T("Cards") . '.pdf', 'D');
-?>

@@ -54,4 +54,3 @@ $tpl->assign('require_tabs', true);
 $content = $tpl->fetch('sysinfos.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-?>

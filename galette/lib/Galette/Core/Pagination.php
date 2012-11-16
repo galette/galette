@@ -371,4 +371,3 @@ abstract class Pagination
         }
     }
 }
-?>

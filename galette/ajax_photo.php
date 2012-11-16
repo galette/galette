@@ -91,4 +91,3 @@ if ( $res < 0 ) {
 }
 
 echo json_encode($ret);
-?>

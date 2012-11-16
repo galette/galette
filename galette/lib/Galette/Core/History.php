@@ -352,4 +352,3 @@ class History extends Pagination
         return self::PK;
     }
 }
-?>

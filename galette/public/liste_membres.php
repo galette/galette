@@ -86,5 +86,3 @@ $tpl->assign('members', $members);
 $content = $tpl->fetch('liste_membres.tpl');
 $tpl->assign('content', $content);
 $tpl->display('public_page.tpl');
-?>
-

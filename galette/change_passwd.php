@@ -106,4 +106,3 @@ $tpl->assign('hash', $hash);
 $content = $tpl->fetch('change_passwd.tpl');
 $tpl->assign('content', $content);
 $tpl->display('public_page.tpl');
-?>

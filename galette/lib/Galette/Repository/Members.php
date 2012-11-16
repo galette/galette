@@ -841,4 +841,3 @@ class Members
         return $this->_count;
     }
 }
-?>

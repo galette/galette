@@ -71,4 +71,3 @@ if ( $ajax ) {
     $tpl->assign('content', $content);
     $tpl->display('page.tpl');
 }
-?>

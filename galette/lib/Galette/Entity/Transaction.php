@@ -530,4 +530,3 @@ class Transaction
         /** TODO: What to do ? :-) */
     }
 }
-?>

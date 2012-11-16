@@ -63,4 +63,3 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
 $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 
 echo json_encode(array('success' => Galette\Repository\Groups::isUnique($name)));
-?>

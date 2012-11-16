@@ -671,4 +671,3 @@ class Contributions extends Pagination
     }
 
 }
-?>

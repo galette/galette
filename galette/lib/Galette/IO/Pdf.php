@@ -303,4 +303,3 @@ class Pdf extends \TCPDF
     }
 
 }
-?>

@@ -111,4 +111,3 @@ if ( !$login->isLogged() ) {
         header('location: voir_adherent.php');
     }
 }
-?>

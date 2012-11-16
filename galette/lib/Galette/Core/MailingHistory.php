@@ -365,4 +365,3 @@ class MailingHistory extends History
     }
 
 }
-?>

@@ -316,4 +316,3 @@ class Password
         return $this->_hash;
     }
 }
-?>

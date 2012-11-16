@@ -67,4 +67,3 @@ $tpl->registerPlugin(
     'memberName',
     'getMemberName'
 );
-?>

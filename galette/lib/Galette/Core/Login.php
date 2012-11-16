@@ -215,4 +215,3 @@ class Login extends Authentication
     }
 
 }
-?>

@@ -288,5 +288,3 @@ function get_numeric_posted_value($name, $defval)
     }
     return $defval;
 }
-
-?>

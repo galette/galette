@@ -270,4 +270,3 @@ class MembersList extends Pagination
         $this->countPages();
     }
 }
-?>

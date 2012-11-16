@@ -101,5 +101,3 @@ $tpl->assign('success_detected', $success_detected);
 $content = $tpl->fetch('champ_requis.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-
-?>

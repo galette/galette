@@ -355,4 +355,3 @@ class Csv
         return $this->_accepted_quotes;
     }
 }
-?>

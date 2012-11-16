@@ -191,4 +191,3 @@ if ( $from_admin ) {
         $profiler->stop();
     }
 }
-?>

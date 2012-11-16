@@ -164,4 +164,3 @@ foreach ($members as $member) {
 
 // Send PDF code to browser
 $pdf->Output(_T("labels_print_filename") . '.pdf', 'D');
-?>

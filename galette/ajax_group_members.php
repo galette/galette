@@ -62,4 +62,3 @@ $tpl->assign('persons', $persons);
 $tpl->assign('person_mode', $mode);
 
 $tpl->display('group_persons.tpl');
-?>
