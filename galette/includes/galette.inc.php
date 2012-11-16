@@ -35,6 +35,13 @@
  * @since     Available since 0.7-dev - 2007-10-07
  */
 
+// check required PHP version...
+if ( version_compare(PHP_VERSION, '5.3.0', '<') ) {
+    echo 'Galette is NOT compliant with your current PHP version. ' .
+        'Galette requires PHP 5.3 minimum, current version is ' . phpversion();
+    die();
+}
+
 $time_start = microtime(true);
 
 //define galette's root directory
@@ -141,16 +148,6 @@ set_error_handler(
         "errorHandler"
     )
 );
-
-// check required PHP version...
-if ( version_compare(PHP_VERSION, '5.3.0', '<') ) {
-    $log->log(
-        'Galette is NOT compliant with your current PHP version. ' .
-        'Galette requires PHP 5.3 minimum, current version is ' . phpversion(),
-        KLogger::EMERG
-    );
-    die();
-}
 
 require_once GALETTE_ROOT . 'includes/functions.inc.php';
 
