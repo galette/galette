@@ -112,11 +112,32 @@ $baseRedirect = function ($app) use ($login, $session) {
 $app->hook(
     'slim.before.dispatch',
     function () use ($app) {
-        /*$user = null;
-        if (isset($_SESSION['user'])) {
-            $user = $_SESSION['user'];
-        }
-        $app->view()->setData('user', $user);*/
+        $curUri = str_replace(
+            'index.php',
+            '',
+            $app->request()->getRootUri()
+        );
+
+        $v = $app->view();
+        $v->setData('galette_base_path', $curUri);
+        $v->setData('cur_path', $app->request()->getPathInfo());
+        $v->setData('require_tabs', null);
+        $v->setData('require_cookie', null);
+        $v->setData('contentcls', null);
+        $v->setData('require_tabs', null);
+        $v->setData('require_cookie', false);
+        $v->setData('additionnal_html_class', null);
+        $v->setData('require_calendar', null);
+        $v->setData('head_redirect', null);
+        $v->setData('error_detected', null);
+        $v->setData('warning_detected', null);
+        $v->setData('success_detected', null);
+        $v->setData('color_picker', null);
+        $v->setData('require_sorter', null);
+        $v->setData('require_dialog', null);
+        $v->setData('require_tree', null);
+        $v->setData('existing_mailing', null);
+        $v->setData('html_editor', null);
     }
 );
 
@@ -141,17 +162,9 @@ $app->get(
 
         if ( !$login->isLogged() ) {
             // display page
-            $curUri = str_replace('index.php', '', $app->request()->getRootUri());
             $app->render(
                 'index.tpl',
                 array(
-                    'galette_base_path' => $curUri,
-                    'additionnal_html_class' => null,
-                    'require_calendar' => null,
-                    'head_redirect' => null,
-                    'error_detected' => null,
-                    'warning_detected' => null,
-                    'success_detected' => null,
                     'page_title'    => _T("Login"),
                 )
             );
@@ -222,11 +235,6 @@ $app->get(
     function () use ($logo, $app) {
         $res = $app->response();
         $path = $logo->getPath();
-        /*echo 'path: ' . $logo->getMime();*/
-        $res['Pragma'] = 'public';
-        $res['Content-Transfer-Encoding'] = 'binary';
-        $res['Expires'] = '0';
-        $res['Cache-Control'] = 'must-revalidate';
         $res['Content-Type'] = $logo->getMime();
         $res['Content-Length'] = filesize($path);
         readfile($path);
@@ -239,11 +247,28 @@ $app->get(
 $app->get(
     '/dashboard',
     $authenticate($app),
-    function () use ($app) {
-        //TODO
-        echo 'empty';
+    function () use ($app, $preferences) {
+        $news = new Galette\IO\News($preferences->pref_rss_url);
+
+        $app->render(
+            'desktop.tpl',
+            array(
+                'page_title'        => _T("Dashboard"),
+                'contentcls'        => 'desktop',
+                'news'              => $news->getPosts(),
+                'show_dashboard'    => $_COOKIE['show_galette_dashboard'],
+                'require_cookie'    => true
+            )
+        );
+
     }
 )->name('dashboard');
 
-$app->run();
+$app->get(
+    '/members',
+    function () use ($app) {
+        echo 'empty';
+    }
+)->name('members');
 
+$app->run();

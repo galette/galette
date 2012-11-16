@@ -3,35 +3,35 @@
     <head>
         {include file='common_header.tpl'}
 {if $color_picker}
-        <script type="text/javascript" src="{$jquery_dir}farbtastic.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}farbtastic.js"></script>
         <link rel="stylesheet" type="text/css" href="{$template_subdir}farbtastic.css"/>
 {/if}
 {* JQuery UI related *}
 {if $require_sorter or $require_dialog}
-        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.mouse.min.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.mouse.min.js"></script>
 {/if}
 {if $require_sorter}
-        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.sortable.min.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.sortable.min.js"></script>
 {/if}
 {if $require_calendar}
-        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
     {if $galette_lang ne 'en'}
-        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.min.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.js"></script>
     {/if}
 {/if}
 {if $require_tabs}
-        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.tabs.min.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.tabs.min.js"></script>
 {/if}
 {if $require_dialog}
         {* Drag component, only used for Dialog for the moment *}
-        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.draggable.min.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.draggable.min.js"></script>
         {* So the dialog could be aligned in the middle of the screen *}
-        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.position.min.js"></script>
-        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.dialog.min.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.position.min.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.dialog.min.js"></script>
 {/if}
 {* /JQuery UI related *}
 {if $require_cookie}
-        <script type="text/javascript" src="{$jquery_dir}jquery.cookie.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery.cookie.js"></script>
 {/if}
 {if $require_charts}
         <link rel="stylesheet" type="text/css" href="{$jquery_dir}jqplot-{$jquery_jqplot_version}/jquery.jqplot.css" />
@@ -43,10 +43,10 @@
 {/if}
 {if $html_editor}
     {if !isset($plugged_html_editor)}
-        <script type="text/javascript" src="{$jquery_dir}markitup-{$jquery_markitup_version}/jquery.markitup.js"></script>
-        <script type="text/javascript" src="{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/set-{$galette_lang}.js"></script>
-        <link rel="stylesheet" type="text/css" href="{$jquery_dir}markitup-{$jquery_markitup_version}/skins/galette/style.css" />
-        <link rel="stylesheet" type="text/css" href="{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/style.css" />
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}markitup-{$jquery_markitup_version}/jquery.markitup.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/set-{$galette_lang}.js"></script>
+        <link rel="stylesheet" type="text/css" href="{$galette_base_path}{$jquery_dir}markitup-{$jquery_markitup_version}/skins/galette/style.css" />
+        <link rel="stylesheet" type="text/css" href="{$galette_base_path}{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/style.css" />
         <script language="javascript">
             function toggleMailingEditor(id) {
                 if(!$('#mailing_html').attr('checked')){
@@ -69,7 +69,7 @@
     {/if}
 {/if}
 {if $require_tree}
-    <script type="text/javascript" src="{$jquery_dir}jquery.jstree.js"></script>
+    <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery.jstree.js"></script>
 {/if}
 {* If some additionnals headers should be added from plugins, we load the relevant template file
 We have to use a template file, so Smarty will do its work (like replacing variables). *}
@@ -92,7 +92,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <![endif]-->
     <div id="menu">
         <div id="logo">
-            <img src="{$galette_base_path}picture.php?logo=true" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
+            <img src="{urlFor name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
         </div>
 {if $login->isSuperAdmin()}
         <div id="superadmin" title="{_T string="You are actually logged-in as superadmin. Some functionnalities may not be available since this is *not* a regular member."}">
@@ -108,8 +108,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <h1 class="nojs">{_T string="Navigation"}</h1>
         <ul>
   {if $login->isAdmin() or $login->isStaff() or $login->isGroupManager()}
-            <li{if $PAGENAME eq "desktop.php"} class="selected"{/if}><a href="{$galette_base_path}desktop.php" title="{_T string="Go to Galette's dashboard"}">{_T string="Dashboard"}</a></li>
-            <li{if $PAGENAME eq "gestion_adherents.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_adherents.php" title="{_T string="View, search into and filter member's list"}">{_T string="List of members"}</a></li>
+            <li{if $cur_path eq "/dashboard"} class="selected"{/if}><a href="{urlFor name="dashboard"}" title="{_T string="Go to Galette's dashboard"}">{_T string="Dashboard"}</a></li>
+            <li{if $cur_path eq "/members"} class="selected"{/if}><a href="{urlFor name="members"}" title="{_T string="View, search into and filter member's list"}">{_T string="List of members"}</a></li>
             <li{if $PAGENAME eq "advanced_search.php"} class="selected"{/if}><a href="{$galette_base_path}advanced_search.php" title="{_T string="Perform advanced search into members list"}">{_T string="Advanced search"}</a></li>
             <li{if $PAGENAME eq "gestion_groupes.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_groupes.php" title="{_T string="View and manage groups"}">{_T string="Manage groups"}</a></li>
   {/if}
@@ -165,12 +165,12 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 
         <ul id="langs">
 {foreach item=langue from=$languages}
-            <li><a href="?pref_lang={$langue->getID()}"><img src="{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}" class="flag"/></a></li>
+            <li><a href="?pref_lang={$langue->getID()}"><img src="{$galette_base_path}{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}" class="flag"/></a></li>
 {/foreach}
         </ul>
 {if $login->isLogged()}
         <div>{$login->loggedInAs()}</div>
-        <a id="logout" class="button" href="{$galette_base_path}index.php?logout=1">{_T string="Log off"}</a>
+        <a id="logout" class="button" href="{urlFor name="logout"}">{_T string="Log off"}</a>
 {/if}
     </div>
     <div id="content"{if $contentcls} class="{$contentcls}"{/if}>
@@ -185,7 +185,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <p id="asso_name">{$preferences->pref_nom}{if $preferences->pref_slogan}&nbsp;: {$preferences->pref_slogan}{/if}</p>
 
     {include file="global_messages.tpl"}
-        {$content}
+        {*$content*}
+        {block name="content"}{_T string="Page content"}{/block}
     </div>
     {include file="footer.tpl"}
 </body>
