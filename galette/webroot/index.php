@@ -35,6 +35,13 @@
  * @since     0.7.3dev 2012-11-13
  */
 
+use Galette\Core\Picture as Picture;
+use Galette\Repository\Members as Members;
+use Galette\Entity\Adherent as Adherent;
+use Galette\Entity\Required as Required;
+use Galette\Entity\DynamicFields as DynamicFields;
+use Galette\Filters\MembersList as MembersList;
+use Galette\Repository\Groups as Groups;
 use \Slim\Extras\Views\Smarty as SmartyView;
 
 $time_start = microtime(true);
@@ -111,7 +118,7 @@ $baseRedirect = function ($app) use ($login, $session) {
 
 $app->hook(
     'slim.before.dispatch',
-    function () use ($app) {
+    function () use ($app, $error_detected, $warning_detected, $success_detected) {
         $curUri = str_replace(
             'index.php',
             '',
@@ -138,6 +145,14 @@ $app->hook(
         $v->setData('require_tree', null);
         $v->setData('existing_mailing', null);
         $v->setData('html_editor', null);
+
+        if ( isset($error_detected) ) {
+            $v->setData('error_detected', $error_detected);
+        }
+        if (isset($warning_detected)) {
+            $v->setData('warning_detected', $warning_detected);
+        }
+
     }
 );
 
@@ -232,14 +247,105 @@ $app->get(
 
 $app->get(
     '/logo',
-    function () use ($logo, $app) {
-        $res = $app->response();
-        $path = $logo->getPath();
-        $res['Content-Type'] = $logo->getMime();
-        $res['Content-Length'] = filesize($path);
-        readfile($path);
+    function () use ($logo) {
+        $logo->display();
     }
 )->name('logo');
+
+$app->get(
+    '/photo/:id',
+    $authenticate($app),
+    function ($id) use ($app, $login) {
+        /** FIXME: we load entire member here... No need to do so! */
+        $adh = new Adherent((int)$id);
+
+        $picture = null;
+        if ( $login->isAdmin()
+            || $login->isStaff()
+            || $adh->appearsInMembersList()
+            || $login->login == $adh->login
+        ) {
+            $picture = $adh->picture;
+        } else {
+            $picture = new Picture();
+        }
+        $picture->display();
+    }
+)->name('photo')->conditions(array('id' => '\d+'));
+
+$app->get(
+    '/subscribe',
+    function () use ($app, $preferences, $login, $i18n) {
+        if ( !$preferences->pref_bool_selfsubscribe || $login->isLogged() ) {
+            $app->redirect($app->urlFor('slash'));
+        }
+
+        $dyn_fields = new DynamicFields();
+
+        // flagging required fields
+        $requires = new Required();
+        $required = $requires->getRequired();
+
+        $member = new Adherent();
+        //mark as self membership
+        $member->setSelfMembership();
+
+        // disable some fields
+        $disabled  = $member->disabled_fields;
+
+        // DEBUT parametrage des champs
+        // On recupere de la base la longueur et les flags des champs
+        // et on initialise des valeurs par defaut
+
+        $fields = Adherent::getDbFields();
+
+        // - declare dynamic fields for display
+        $disabled['dyn'] = array();
+        if ( !isset($adherent['dyn']) ) {
+            $adherent['dyn'] = array();
+        }
+
+        //image to defeat mass filling forms
+        $spam_pass = PasswordImage();
+        $s = PasswordImageName($spam_pass);
+        $spam_img = print_img($s);
+
+        $dynamic_fields = $dyn_fields->prepareForDisplay(
+            'adh', $adherent['dyn'], $disabled['dyn'], 1
+        );
+
+        /*if ( $has_register ) {
+            $tpl->assign('has_register', $has_register);
+        }
+        if ( isset($head_redirect) ) {
+            $tpl->assign('head_redirect', $head_redirect);
+        }*/
+        // /self_adh specific
+
+        $app->render(
+            'member.tpl',
+            array(
+                'page_title'        => _T("Subscription"),
+                'parent_tpl'        => 'public_page.tpl',
+                'required'          => $required,
+                'disabled'          => $disabled,
+                'member'            => $member,
+                'self_adh'          => true,
+                'dynamic_fields'    => $dynamic_fields,
+                'languages'         => $i18n->getList(),
+                'require_calendar'  => true,
+                // pseudo random int
+                'time'              => time(),
+                // genre
+                'radio_titres'      => Galette\Entity\Politeness::getList(),
+                //self_adh specific
+                'spam_pass'         => $spam_pass,
+                'spam_img'          => $spam_img
+            )
+        );
+
+    }
+)->name('subscribe');
 
 //routes for authenticated users
 //routes for admins
@@ -260,15 +366,177 @@ $app->get(
                 'require_cookie'    => true
             )
         );
-
     }
 )->name('dashboard');
 
 $app->get(
     '/members',
-    function () use ($app) {
-        echo 'empty';
+    $authenticate($app),
+    function () use ($app, $login, &$session) {
+        /*if ( isset($session['filters']['members'])
+            && !isset($_POST['mailing'])
+            && !isset($_POST['mailing_new'])
+        ) {*/
+        if ( isset($session['filters']['members']) ) {
+            $filters = unserialize($session['filters']['members']);
+        } else {
+            $filters = new MembersList();
+        }
+
+        $members = new Galette\Repository\Members();
+
+        $members_list = array();
+        if ( $login->isAdmin() || $login->isStaff() ) {
+            $members_list = $members->getMembersList(true);
+        } else {
+            $members_list = $members->getManagedMembersList(true);
+        }
+
+        $groups = new Galette\Repository\Groups();
+        $groups_list = $groups->getList();
+
+        $session['filters']['members'] = serialize($filters);
+
+        $smarty = SmartyView::getInstance();
+
+        //assign pagination variables to the template and add pagination links
+        $filters->setSmartyPagination($smarty);
+
+        $app->render(
+            'gestion_adherents.tpl',
+            array(
+                'page_title'            => _T("Members management"),
+                'require_dialog'        => true,
+                'require_calendar'      => true,
+                'members'               => $members_list,
+                'filter_groups_options' => $groups_list,
+                'nb_members'            => $members->getCount(),
+                'filters'               => $filters,
+                'filter_field_options'  => array(
+                    Members::FILTER_NAME            => _T("Name"),
+                    Members::FILTER_COMPANY_NAME    => _T("Company name"),
+                    Members::FILTER_ADRESS          => _T("Address"),
+                    Members::FILTER_MAIL            => _T("Email,URL,IM"),
+                    Members::FILTER_JOB             => _T("Job"),
+                    Members::FILTER_INFOS           => _T("Infos")
+                ),
+                'filter_membership_options' => array(
+                    0 => _T("All members"),
+                    3 => _T("Up to date members"),
+                    1 => _T("Close expiries"),
+                    2 => _T("Latecomers"),
+                    4 => _T("Never contributed"),
+                    5 => _T("Staff members"),
+                    6 => _T("Administrators")
+                ),
+                'filter_accounts_options'   => array(
+                    0 => _T("All accounts"),
+                    1 => _T("Active accounts"),
+                    2 => _T("Inactive accounts")
+                )
+            )
+        );
     }
 )->name('members');
+
+$app->get(
+    '/member/:id',
+    $authenticate($app),
+    function ($id) use ($app, $login, $session, $i18n, $preferences) {
+        $dyn_fields = new DynamicFields();
+
+        $member = new Adherent();
+        $member->load($id);
+
+        if ( $login->id != $id && !$login->isAdmin() && !$login->isStaff() ) {
+            //check if requested member is part of managed groups
+            $groups = $member->groups;
+            $is_managed = false;
+            foreach ( $groups as $g ) {
+                if ( $login->isGroupManager($g->getId()) ) {
+                    $is_managed = true;
+                    break;
+                }
+            }
+            if ( $is_managed !== true ) {
+                //requested member is not part of managed groups, fall back to logged
+                //in member
+                $member->load($login->id);
+            }
+        }
+
+        $navigate = array();
+
+        if ( isset($session['filters']['members']) ) {
+            $filters =  unserialize($session['filters']['members']);
+        } else {
+            $filters = new MembersList();
+        }
+
+        if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
+            $m = new Members();
+            $ids = $m->getList(false, array(Adherent::PK));
+            //print_r($ids);
+            foreach ( $ids as $k=>$m ) {
+                if ( $m->id_adh == $member->id ) {
+                    $navigate = array(
+                        'cur'  => $m->id_adh,
+                        'count' => count($ids),
+                        'pos' => $k+1
+                    );
+                    if ( $k > 0 ) {
+                        $navigate['prev'] = $ids[$k-1]->id_adh;
+                    }
+                    if ( $k < count($ids)-1 ) {
+                        $navigate['next'] = $ids[$k+1]->id_adh;
+                    }
+                    break;
+                }
+            }
+        }
+
+        // declare dynamic field values
+        $adherent['dyn'] = $dyn_fields->getFields('adh', $id, true);
+
+        // - declare dynamic fields for display
+        $disabled['dyn'] = array();
+        $dynamic_fields = $dyn_fields->prepareForDisplay(
+            'adh',
+            $adherent['dyn'],
+            $disabled['dyn'],
+            0
+        );
+
+        //if we got a mail warning when adding/editing a member,
+        //we show it and delete it from session
+        /*if ( isset($session['mail_warning']) ) {
+            $warning_detected[] = $session['mail_warning'];
+            unset($session['mail_warning']);
+        }
+        $tpl->assign('warning_detected', $warning_detected);
+        if ( isset($session['account_success']) ) {
+            $success_detected = unserialize($session['account_success']);
+            unset($session['account_success']);
+        }*/
+
+        $app->render(
+            'voir_adherent.tpl',
+            array(
+                'page_title'        => _T("Member profile"),
+                'require_dialog'    => true,
+                'member'            => $member,
+                'data'              => $adherent,
+                'navigate'          => $navigate,
+                'pref_lang_img'     => $i18n->getFlagFromId($member->language),
+                'pref_lang'         => ucfirst($i18n->getNameFromId($member->language)),
+                'pref_card_self'    => $preferences->pref_card_self,
+                'dynamic_fields'    => $dynamic_fields,
+                'groups'            => Groups::getSimpleList(),
+                'time'              => time(),
+            )
+        );
+
+    }
+)->name('member');
 
 $app->run();

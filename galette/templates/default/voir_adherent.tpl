@@ -1,3 +1,5 @@
+{extends file="page.tpl"}
+{block name="content"}
 {if $navigate|@count != 0}
     <nav>
         <a id="prev" href="{if isset($navigate.prev)}?id_adh={$navigate.prev}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">{_T string="Previous"}</a>
@@ -174,3 +176,4 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         });
     </script>
 {/if}
+{/block}
