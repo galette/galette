@@ -1,5 +1,7 @@
+{extends file="public_page.tpl"}
+{block name="content"}
 {if $done neq true}
-                <form action="lostpasswd.php" method="post" enctype="multipart/form-data">
+                <form action="{urlFor name="retrieve-pass"}" method="post" enctype="multipart/form-data">
                 <section>
                     <p>
                         <label for="login" class="">{_T string="Username or email:"}</label>
@@ -10,3 +12,4 @@
                 </section>
                 </form>
 {/if}
+{/block}

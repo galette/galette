@@ -57,13 +57,13 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <h1 id="titre">{$page_title}</h1>
         <p id="asso_name">{$preferences->pref_nom}{if $preferences->pref_slogan}&nbsp;: {$preferences->pref_slogan}{/if}</p>
         <nav>
-            <a id="backhome" class="button{if $PAGENAME eq "index.php"} selected{/if}" href="{$galette_base_path}index.php">{_T string="Home"}</a>
+            <a id="backhome" class="button{if $cur_path eq "/" or $cur_path eq '/login'} selected{/if}" href="{$galette_base_path}index.php">{_T string="Home"}</a>
     {if !$login->isLogged()}
         {if $preferences->pref_bool_selfsubscribe eq true}
             <a id="subscribe" class="button{if $cur_path eq "/subscribe"} selected{/if}" href="{urlFor name="subscribe"}">{_T string="Subscribe"}</a>
         {/if}
         {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
-            <a id="lostpassword" class="button{if $PAGENAME eq "lostpasswd.php"} selected{/if}" href="{$galette_base_path}lostpasswd.php">{_T string="Lost your password?"}</a>
+            <a id="lostpassword" class="button{if $cur_path eq "/password-lost"} selected{/if}" href="{urlFor name="password-lost"}">{_T string="Lost your password?"}</a>
         {/if}
     {/if}
     {if $preferences->showPublicPages($login) eq true}

@@ -347,6 +347,25 @@ $app->get(
     }
 )->name('subscribe');
 
+$app->get(
+    '/password-lost',
+    function () use ($app) {
+        $app->render(
+            'lostpasswd.tpl',
+            array(
+                'page_title' => _T("Password recovery")
+            )
+        );
+    }
+)->name('password-lost');
+
+$app->post(
+    '/retrieve-pass',
+    function () use ($app) {
+        $app->redirect($app->urlFor('slash'));
+    }
+)->name('retrieve-pass');
+
 //routes for authenticated users
 //routes for admins
 //routes for admins/staff
