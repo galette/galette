@@ -50,12 +50,12 @@ function PasswordImageName($c)
 function PasswordImageClean()
 {
     // cleans any password image file older than 1 minute
-    $dh = @opendir(STOCK_FILES);
+    $dh = @opendir(GALETTE_TEMPIMAGES_PATH);
     while ( $file=readdir($dh) ) {
         if (substr($file,0,3) == 'pw_'
-            && time() - filemtime(STOCK_FILES . '/' . $file) > 60
+            && time() - filemtime(GALETTE_TEMPIMAGES_PATH . '/' . $file) > 60
         ) {
-            unlink(STOCK_FILES . '/' . $file);
+            unlink(GALETTE_TEMPIMAGES_PATH . '/' . $file);
         }
     }
 }
@@ -75,7 +75,7 @@ function PasswordImage()
     $png = imagecreate(10 + 7.5 * strlen($mdp), 18);
     $bg = imagecolorallocate($png, 160, 160, 160);
     imagestring($png, 3, 5, 2, $mdp, imagecolorallocate($png, 0, 0, 0));
-    $file = STOCK_FILES . '/' . PasswordImageName($c);
+    $file = GALETTE_TEMPIMAGES_PATH . '/' . PasswordImageName($c);
 
     imagepng($png,$file);
     // The perms of the file can be wrong, try to correct it
@@ -91,7 +91,7 @@ function PasswordCheck($pass,$crypt)
 
 function print_img($img)
 {
-    $file = STOCK_FILES . '/' . $img;
+    $file = GALETTE_TEMPIMAGES_PATH . '/' . $img;
     $image_type = false;
     if ( function_exists('exif_imagetype') ) {
         $image_type = exif_imagetype($file);
