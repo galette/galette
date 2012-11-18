@@ -83,7 +83,7 @@ $authenticate = function ($app) use (&$session) {
     };
 };
 
-$baseRedirect = function ($app) use ($login, $session) {
+$baseRedirect = function ($app) use ($login, &$session) {
     $urlRedirect = null;
     if (isset($session['urlRedirect'])) {
         $urlRedirect = $app->request()->getRootUri() . $session['urlRedirect'];
@@ -254,7 +254,6 @@ $app->get(
 
 $app->get(
     '/photo/:id',
-    $authenticate($app),
     function ($id) use ($app, $login) {
         /** FIXME: we load entire member here... No need to do so! */
         $adh = new Adherent((int)$id);
@@ -365,6 +364,74 @@ $app->post(
         $app->redirect($app->urlFor('slash'));
     }
 )->name('retrieve-pass');
+
+$app->get(
+    '/public/members',
+    function () use ($app, &$session) {
+        if ( isset($session['public_filters']['members']) ) {
+            $filters = unserialize($session['public_filters']['members']);
+        } else {
+            $filters = new MembersList();
+        }
+
+        /*// Filters
+        if (isset($_GET['page'])) {
+            $filters->current_page = (int)$_GET['page'];
+        }
+
+        if ( isset($_GET['clear_filter']) ) {
+            $filters->reinit();
+        }
+
+        //numbers of rows to display
+        if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
+            $filters->show = $_GET['nbshow'];
+        }
+
+        // Sorting
+        if ( isset($_GET['tri']) ) {
+            $filters->orderby = $_GET['tri'];
+        }*/
+
+
+        $m = new Members();
+        $members = $m->getPublicList(false, null);
+
+        $session['public_filters']['members'] = serialize($filters);
+
+        $smarty = SmartyView::getInstance();
+
+        //assign pagination variables to the template and add pagination links
+        $filters->setSmartyPagination($smarty);
+
+        $app->render(
+            'liste_membres.tpl',
+            array(
+                'page_title'    => _T("Members list"),
+                'members'       => $members,
+                'filters'       => $filters
+            )
+        );
+    }
+)->name('public_members');
+
+$app->get(
+    '/public/trombinoscope',
+    function () use ($app) {
+        $m = new Members('trombinoscope_');
+        $members = $m->getPublicList(true, null);
+
+        $app->render(
+            'trombinoscope.tpl',
+            array(
+                'page_title'                => _T("Trombinoscope"),
+                'additionnal_html_class'    => 'trombinoscope',
+                'members'                   => $members,
+                'time'                      => time()
+            )
+        );
+    }
+)->name('public_trombinoscope');
 
 //routes for authenticated users
 //routes for admins
