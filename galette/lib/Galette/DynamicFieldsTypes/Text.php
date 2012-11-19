@@ -77,4 +77,14 @@ class Text extends DynamicFieldType
         return _T("text");
     }
 
+    /**
+     * Load field
+     *
+     * @return void
+     */
+    public function load()
+    {
+        parent::load();
+        $this->repeat = 1;
+    }
 }
