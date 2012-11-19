@@ -320,8 +320,8 @@ class DynamicFields
 
                 foreach ( $result as $r ) {
                     $df = $this->getFieldType($r['field_type']);
-                    if ( $r['field_type'] === self::CHOICE
-                        || $r['field_type'] === self::TEXT
+                    if ( (int)$r['field_type'] === self::CHOICE
+                        || (int)$r['field_type'] === self::TEXT
                     ) {
                         $r['field_repeat'] = 1;
                     }
