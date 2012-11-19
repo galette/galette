@@ -99,19 +99,21 @@
             var _parent = $(this);
 
             var _input = $(this).find('input:last');
-            while ( $(this).find('input').length > 1 && _input.val() == '' ) {
-                _input.prev('br').remove();
-                _input.remove();
-                _input = $(this).find('input:last')
-            }
-            var _vals = _input[0].id.split(/_/);
-            var _total = _vals[_vals.length-1]; //max number of occurences
-            var _current = _vals[_vals.length-2]; //current occurrence
+            if ( _input.length > 0 ) {
+                while ( $(this).find('input').length > 1 && _input.val() == '' ) {
+                    _input.prev('br').remove();
+                    _input.remove();
+                    _input = $(this).find('input:last')
+                }
+                var _vals = _input[0].id.split(/_/);
+                var _total = _vals[_vals.length-1]; //max number of occurences
+                var _current = _vals[_vals.length-2]; //current occurrence
 
-            if ( _total === '0' || _current < _total ) {
-                var _a = _addLnk();
-                $(this).append(_a);
-                _lnkEvent(_a, _input, _parent);
+                if ( _total === '0' || _current < _total ) {
+                    var _a = _addLnk();
+                    $(this).append(_a);
+                    _lnkEvent(_a, _input, _parent);
+                }
             }
         });
     });
