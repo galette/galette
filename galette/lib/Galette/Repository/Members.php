@@ -524,13 +524,13 @@ class Members
             case self::SHOW_ARRAY_LIST:
                 $select->join(
                     array('p' => PREFIX_DB . Status::TABLE, Status::PK),
-                    'a.' . Status::PK . '=' . 'p.' . Status::PK
+                    'a.' . Status::PK . '=p.' . Status::PK
                 );
                 break;
             case self::SHOW_MANAGED:
                 $select->join(
                     array('p' => PREFIX_DB . Status::TABLE, Status::PK),
-                    'a.' . Status::PK . '=' . 'p.' . Status::PK
+                    'a.' . Status::PK . '=p.' . Status::PK
                 )->join(
                     array('g' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
                     'a.' . Adherent::PK . '=g.' . Adherent::PK,
@@ -819,8 +819,15 @@ class Members
             if ( $filters->group_filter ) {
                 $select->joinLeft(
                     array('g' => PREFIX_DB . Group::GROUPSUSERS_TABLE, Adherent::PK),
-                    'a.' . Adherent::PK . '=' . 'g.' . Adherent::PK
-                )->where('g.' . Group::PK . ' = ?', $filters->group_filter);
+                    'a.' . Adherent::PK . '=g.' . Adherent::PK
+                )->joinLeft(
+                    array('gs' => PREFIX_DB . Group::TABLE),
+                    'gs.' . Group::PK . '=g.' . Group::PK
+                )->where(
+                    'g.' . Group::PK . ' = ' . $filters->group_filter .
+                    ' OR gs.parent_group = NULL OR gs.parent_group = ' .
+                    $filters->group_filter
+                );
             }
         } catch (\Exception $e) {
             /** TODO */
