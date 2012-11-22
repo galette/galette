@@ -125,6 +125,14 @@ $app->hook(
             $app->request()->getRootUri()
         );
 
+        //add ending / if missing
+        if ( $curUri === ''
+            || $curUri !== '/'
+            && substr($curUri, -1) !== '/'
+        ) {
+            $curUri .= '/';
+        }
+
         $v = $app->view();
         $v->setData('galette_base_path', $curUri);
         $v->setData('cur_path', $app->request()->getPathInfo());
