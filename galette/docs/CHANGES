@@ -1,6 +1,15 @@
 Changes
 -------
 
+0.7.2.1 -> 0.7.2.2 (2012-11-21)
+
+- group filtering now search into first childs
+
+0.7.2 -> 0.7.2.1 (2012-11-19)
+
+- text dynamic fields were repeated undefinitely
+- choice dynamic fields were repeated undefinitely under MySQL
+
 0.7.1 -> 0.7.2 (2012-10-29)
 
 - rewrite dynamic fields in an object,
