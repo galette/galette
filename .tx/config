@@ -1,0 +1,8 @@
+[main]
+host = https://www.transifex.net
+
+[galette.core]
+source_file = galette/lang/en_US.po
+source_lang = en
+trans.fr_FR = galette/lang/fr_FR.utf8.po
+type = PO
