@@ -2,7 +2,7 @@
 {block name="content"}
         <form action="gestion_adherents.php" method="get" id="filtre">
         <div id="listfilter">
-{if !$adv_filters}
+{if !isset($adv_filters) || !$adv_filters}
             <label for="filter_str">{_T string="Search:"}&nbsp;</label>
             <input type="text" name="filter_str" id="filter_str" value="{$filters->filter_str}" type="search" placeholder="{_T string="Enter a value"}"/>&nbsp;
              {_T string="in:"}&nbsp;
