@@ -5,8 +5,8 @@
                 {_T string="Activities"}
             </header>
             <div>
-                <a id="members" href="{$galette_base_path}gestion_adherents.php" title="{_T string="View, search into and filter member's list"}">{_T string="Members"}</a>
-                <a id="groups" href="{$galette_base_path}gestion_groupes.php" title="{_T string="View and manage groups"}">{_T string="Groups"}</a>
+                <a id="members" href="{urlFor name="members"}" title="{_T string="View, search into and filter member's list"}">{_T string="Members"}</a>
+                <a id="groups" href="{urlFor name="groups"}" title="{_T string="View and manage groups"}">{_T string="Groups"}</a>
 {if $login->isAdmin() or $login->isStaff()}
                 <a id="contribs" href="{$galette_base_path}gestion_contributions.php?id_adh=all" title="{_T string="View and filter contributions"}">{_T string="Contributions"}</a>
                 <a id="transactions" href="{$galette_base_path}gestion_transactions.php" title="{_T string="View and filter transactions"}">{_T string="Transactions"}</a>

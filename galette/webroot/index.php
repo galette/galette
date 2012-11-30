@@ -633,4 +633,46 @@ $app->get(
     }
 )->name('member');
 
+$app->get(
+    '/groups',
+    $authenticate($app),
+    function () use ($app, $login, &$session) {
+
+        $groups = new Galette\Repository\Groups();
+        $group = new Galette\Entity\Group();
+
+        $groups_root = $groups->getList(false);
+        $groups_list = $groups->getList();
+
+        $id = $app->request()->get('id');
+
+        if ( $id === null && count($groups_root) > 0 ) {
+            $group = $groups_root[0];
+            if ( !$login->isGroupManager($group->getId()) ) {
+                foreach ( $groups_list as $g ) {
+                    if ( $login->isGroupManager($g->getId()) ) {
+                        $group = $g;
+                        break;
+                    }
+                }
+            }
+        }
+
+        $app->render(
+            'gestion_groupes.tpl',
+            array(
+                'page_title'            => _T("Groups"),
+                'require_dialog'        => true,
+                'require_tabs'          => true,
+                'require_tree'          => true,
+                'groups_root'           => $groups_root,
+                'groups'                => $groups_list,
+                'group'                 => $group
+            )
+        );
+    }
+)->name('groups');
+
+
+
 $app->run();
