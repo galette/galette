@@ -1424,7 +1424,7 @@ class Adherent
                 break;
             case 'fields':
                 //filter according to logged user ACLs
-                $fc = new FieldsConfig(Adherent::TABLE, $member->fields);
+                $fc = new FieldsConfig(Adherent::TABLE, $this->_fields);
                 // fields visibility
                 $visibles = $fc->getVisibilities();
                 $fields = array();
