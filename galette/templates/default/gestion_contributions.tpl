@@ -1,3 +1,5 @@
+{extends file="page.tpl"}
+{block name="content"}
         <form action="gestion_contributions.php" method="get" id="filtre">
         <div id="listfilter">
             <label for="date_field_filter">{_T string="Show contributions by"}</label>&nbsp;
@@ -293,3 +295,4 @@
                 _init_contribs_page();
             });
         </script>
+{/block}

@@ -673,6 +673,135 @@ $app->get(
     }
 )->name('groups');
 
+$app->get(
+    '/contributions',
+    $authenticate($app),
+    function () use ($app, $login, &$session) {
+
+        if ( isset($session['contributions'])) {
+            $contribs = unserialize($session['contributions']);
+        } else {
+            $contribs = new Galette\Repository\Contributions();
+        }
+
+        /*if ( $ajax === true ) {
+            $contribs->filtre_transactions = true;
+            if ( isset($_POST['max_amount']) ) {
+                $contribs->max_amount = (int)$_POST['max_amount'];
+            } else if ( $_GET['max_amount'] ) {
+                $contribs->max_amount = (int)$_GET['max_amount'];
+            }
+        } else {
+            $contribs->max_amount = null;
+        }*/
+        $contribs->max_amount = null;
+
+        /*if ( isset($_GET['page']) && is_numeric($_GET['page']) ) {
+            $contribs->current_page = (int)$_GET['page'];
+        }
+
+        if ( (isset($_GET['nbshow']) && is_numeric($_GET['nbshow']))
+        ) {
+            $contribs->show = $_GET['nbshow'];
+        }
+
+        if ( (isset($_POST['nbshow']) && is_numeric($_POST['nbshow']))
+        ) {
+            $contribs->show = $_POST['nbshow'];
+        }
+
+        if ( isset($_GET['tri']) ) {
+            $contribs->orderby = $_GET['tri'];
+        }
+
+        if ( isset($_GET['clear_filter']) ) {
+            $contribs->reinit();
+        } else {
+            if ( isset($_GET['end_date_filter']) || isset($_GET['start_date_filter']) ) {
+                try {
+                    if ( isset($_GET['start_date_filter']) ) {
+                        $field = _T("start date filter");
+                        $contribs->start_date_filter = $_GET['start_date_filter'];
+                    }
+                    if ( isset($_GET['end_date_filter']) ) {
+                        $field = _T("end date filter");
+                        $contribs->end_date_filter = $_GET['end_date_filter'];
+                    }
+                } catch (Exception $e) {
+                    $error_detected[] = $e->getMessage();
+                }
+            }
+
+            if ( isset($_GET['payment_type_filter']) ) {
+                $ptf = $_GET['payment_type_filter'];
+                if ( $ptf == Galette\Entity\Contribution::PAYMENT_OTHER
+                    || $ptf == Galette\Entity\Contribution::PAYMENT_CASH
+                    || $ptf == Galette\Entity\Contribution::PAYMENT_CREDITCARD
+                    || $ptf == Galette\Entity\Contribution::PAYMENT_CHECK
+                    || $ptf == Galette\Entity\Contribution::PAYMENT_TRANSFER
+                    || $ptf == Galette\Entity\Contribution::PAYMENT_PAYPAL
+                ) {
+                    $contribs->payment_type_filter = $ptf;
+                } elseif ( $ptf == -1 ) {
+                    $contribs->payment_type_filter = null;
+                } else {
+                    $error_detected[] = _T("- Unknown payment type!");
+                }
+            }
+        }*/
+
+        $id = $app->request()->get('id');
+        if ( ($login->isAdmin() || $login->isStaff())
+            && isset($id) && $id != ''
+        ) {
+            if ( $id == 'all' ) {
+                $contribs->filtre_cotis_adh = null;
+            } else {
+                $contribs->filtre_cotis_adh = $id;
+            }
+        }
+
+        /*if ( $login->isAdmin() || $login->isStaff() ) {
+            //delete contributions
+            if (isset($_GET['sup']) || isset($_POST['delete'])) {
+                if ( isset($_GET['sup']) ) {
+                    $contribs->removeContributions($_GET['sup']);
+                } else if ( isset($_POST['contrib_sel']) ) {
+                    $contribs->removeContributions($_POST['contrib_sel']);
+                }
+            }
+        }*/
+
+        $session['contributions'] = serialize($contribs);
+        $list_contribs = $contribs->getContributionsList(true);
+
+        $smarty = SmartyView::getInstance();
+
+        //assign pagination variables to the template and add pagination links
+        $contribs->setSmartyPagination($smarty);
+
+        /*if ( $contribs->filtre_cotis_adh != null && !$ajax ) {
+            $member = new Galette\Entity\Adherent();
+            $member->load($contribs->filtre_cotis_adh);
+            $tpl->assign('member', $member);
+        }*/
+
+        $app->render(
+            'gestion_contributions.tpl',
+            array(
+                'page_title'            => _T("Contributions management"),
+                'require_dialog'        => true,
+                'require_calendar'      => true,
+                'max_amount'            => $contribs->max_amount,
+                'list_contribs'         => $list_contribs,
+                'contributions'         => $contribs,
+                'nb_contributions'      => $contribs->getCount(),
+                'mode'                  => 'std'
+            )
+        );
+    }
+)->name('contributions');
+
 
 
 $app->run();
