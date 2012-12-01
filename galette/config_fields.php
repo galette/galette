@@ -37,7 +37,7 @@
  * @since     Availaible since 0.7dev - 2009-04-11
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\FieldsCategories as FieldsCategories;
 use Galette\Entity\FieldsConfig as FieldsConfig;
@@ -66,9 +66,9 @@ case 'members':
     $fc = new FieldsConfig(Adherent::TABLE, $a->fields);
     break;
 default:
-    $log->log(
+    Analog::log(
         'Trying to configure fields on unknown table (' . $current . ')',
-        KLogger::WARN
+        Analog::WARNING
     );
     break;
 }

@@ -37,7 +37,7 @@
 
 namespace Galette\Filters;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Entity\Status as Status;
 use Galette\Repository\Members as Members;
 
@@ -164,9 +164,9 @@ class AdvancedMembersList extends MembersList
     {
         global $log;
 
-        $log->log(
+        Analog::log(
             '[AdvancedMembersList] Getting property `' . $name . '`',
-            KLogger::DEBUG
+            Analog::DEBUG
         );
 
         if ( in_array($name, $this->pagination_fields)
@@ -192,10 +192,10 @@ class AdvancedMembersList extends MembersList
                         }
                     } catch (\Exception $e) {
                         //oops, we've got a bad date :/
-                        $log->log(
+                        Analog::log(
                             'Bad date (' . $this->$rname . ') | ' .
                             $e->getMessage(),
-                            KLogger::INFO
+                            Analog::INFO
                         );
                         return $this->$rname;
                     }
@@ -212,9 +212,9 @@ class AdvancedMembersList extends MembersList
                 }
                 return $this->$rname;
             } else {
-                $log->log(
+                Analog::log(
                     '[AdvancedMembersList] Unable to get proprety `' .$name . '`',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
         }
@@ -237,9 +237,9 @@ class AdvancedMembersList extends MembersList
         ) {
             parent::__set($name, $value);
         } else {
-            $log->log(
+            Analog::log(
                 '[AdvancedMembersList] Setting property `' . $name . '`',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
 
             $prop = '_' . $name;
@@ -258,9 +258,9 @@ class AdvancedMembersList extends MembersList
                     }
                     $this->$prop = $d->format('Y-m-d');
                 } catch ( \Exception $e ) {
-                    $log->log(
+                    Analog::log(
                         'Incorrect date format! was: ' . $value,
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 }
                 break;
@@ -268,10 +268,10 @@ class AdvancedMembersList extends MembersList
                 if ( is_numeric($value) ) {
                     $this->$prop = $value;
                 } else {
-                    $log->log(
+                    Analog::log(
                         '[AdvancedMembersList] Value for property `' . $name .
                         '` should be an integer (' . gettype($value) . ' given)',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 }
                 break;
@@ -288,16 +288,16 @@ class AdvancedMembersList extends MembersList
                         if ( $res !== false ) {
                             $this->_status[] = $v;
                         } else {
-                            $log->log(
+                            Analog::log(
                                 'Status #' . $v . ' does not exists!',
-                                KLogger::WARN
+                                Analog::WARNING
                             );
                         }
                     } else {
-                        $log->log(
+                        Analog::log(
                             '[AdvancedMembersList] Value for status filter should be an '
                             .'integer (' . gettype($v) . ' given',
-                            KLogger::WARN
+                            Analog::WARNING
                         );
                     }
                 }
@@ -317,23 +317,23 @@ class AdvancedMembersList extends MembersList
                         unset($value['idx']);
                         $this->_free_search[$id] = $value;
                     } else {
-                        $log->log(
+                        Analog::log(
                             '[AdvancedMembersList] bad construct for free filter',
-                            KLogger::WARN
+                            Analog::WARNING
                         );
                     }
                 } else {
-                    $log->log(
+                    Analog::log(
                         '[AdvancedMembersList] Value for free filter should be an '
                         .'array (' . gettype($value) . ' given',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 }
                 break;
             default:
-                $log->log(
+                Analog::log(
                     '[AdvancedMembersList] Unable to set proprety `' . $name . '`',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 break;
             }

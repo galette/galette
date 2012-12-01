@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Core\Picture as Picture;
 use Galette\Core\GaletteMail as GaletteMail;
 use Galette\Core\Password as Password;
@@ -158,9 +158,9 @@ class Adherent
                 $deps
             );
         } else if ( $deps !== null ) {
-            $log->log(
+            Analog::log(
                 '$deps shoud be an array, ' . gettype($deps) . ' given!',
-                KLogger::WARN
+                Analog::WARNING
             );
         }
 
@@ -247,13 +247,13 @@ class Adherent
             return true;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot load member form id `' . $id . '` | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -284,14 +284,14 @@ class Adherent
             $this->_loadFromRS($result);
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot load member form login `' . $login . '` | ' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -619,14 +619,14 @@ class Adherent
                 ucfirst(mb_strtolower($row->prenom_adh, 'UTF-8'));
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot get formatted name for member form id `' . $id . '` | ' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -650,17 +650,17 @@ class Adherent
                 array('mdp_adh' => md5($pass)),
                 $zdb->db->quoteInto(self::PK . ' = ?', $id_adh)
             );
-            $log->log(
+            Analog::log(
                 'Password for `' . $id_adh . '` has been updated.',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             return true;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'An error occured while updating password for `' . $id_adh .
                 '` | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -762,11 +762,11 @@ class Adherent
                             }
                             $this->$prop = $d->format('Y-m-d');
                         } catch (\Exception $e) {
-                            $log->log(
+                            Analog::log(
                                 'Wrong date format. field: ' . $key .
                                 ', value: ' . $value . ', expected fmt: ' .
                                 _T("Y-m-d") . ' | ' . $e->getMessage(),
-                                KLogger::INFO
+                                Analog::INFO
                             );
                             $errors[] = str_replace(
                                 array(
@@ -805,13 +805,13 @@ class Adherent
                                     $errors[] = _T("- This E-Mail address is already used by another member!");
                                 }
                             } catch (\Exception $e) {
-                                $log->log(
+                                Analog::log(
                                     'An error occured checking member email unicity.',
-                                    KLogger::ERR
+                                    Analog::ERROR
                                 );
-                                $log->log(
+                                Analog::log(
                                     'Query was: ' . $select->__toString(),
-                                    KLogger::INFO
+                                    Analog::INFO
                                 );
                                 $errors[] = _T("An error has occured while looking if login already exists.");
                             }
@@ -858,13 +858,13 @@ class Adherent
                                         $errors[] = _T("- This username is already used by another member!");
                                     }
                                 } catch (\Exception $e) {
-                                    $log->log(
+                                    Analog::log(
                                         'An error occured checking member login unicity.',
-                                        KLogger::ERR
+                                        Analog::ERROR
                                     );
-                                    $log->log(
+                                    Analog::log(
                                         'Query was: ' . $select->__toString(),
-                                        KLogger::INFO
+                                        Analog::INFO
                                     );
                                     $errors[] = _T("An error has occured while looking if login already exists.");
                                 }
@@ -933,13 +933,13 @@ class Adherent
                                 );
                             }
                         } catch ( \Exception $e ) {
-                            $log->log(
+                            Analog::log(
                                 'An error occured checking status unicity: ' . $e->getMessage(),
-                                KLogger::ERR
+                                Analog::ERROR
                             );
-                            $log->log(
+                            Analog::log(
                                 'Query was: ' . $select->__toString(),
-                                KLogger::INFO
+                                Analog::INFO
                             );
                             $errors[] = _T("An error has occured while looking if status is already in use.");
                         }
@@ -966,16 +966,16 @@ class Adherent
         }
 
         if ( count($errors) > 0 ) {
-            $log->log(
+            Analog::log(
                 'Some errors has been throwed attempting to edit/store a member' .
                 print_r($errors, true),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             return $errors;
         } else {
-            $log->log(
+            Analog::log(
                 'Member checked successfully.',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             return true;
         }
@@ -1081,10 +1081,10 @@ class Adherent
             return false;
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -1107,10 +1107,10 @@ class Adherent
             );
             $this->_modification_date = date('Y-m-d');
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Something went wrong updating modif date :\'( | ' .
                 $e->getMessage() . "\n" . $e->getTraceAsString(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }
@@ -1147,10 +1147,10 @@ class Adherent
                         return $d->format(_T("Y-m-d"));
                     } catch (\Exception $e) {
                         //oops, we've got a bad date :/
-                        $log->log(
+                        Analog::log(
                             'Bad date (' . $this->$rname . ') | ' .
                             $e->getMessage(),
-                            KLogger::INFO
+                            Analog::INFO
                         );
                         return $this->$rname;
                     }

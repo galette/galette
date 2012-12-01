@@ -37,7 +37,7 @@
 
 namespace Galette\IO;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * News class for galette
@@ -125,10 +125,10 @@ class News
                 $has_expired = $now > $expire;
                 return !$has_expired;
             } catch ( \Exception $e ) {
-                $log->log(
+                Analog::log(
                     'Unable chack cache expiracy. Are you sure you have ' .
                     'properly configured PHP timezone settings on your server?',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
         } else {
@@ -251,9 +251,9 @@ class News
 
             $this->_tweets = $tweets;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to load Tweets :( | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             $this->_tweets = array();
         }
@@ -296,9 +296,9 @@ class News
 
             $this->_gplus = $gposts;
         } catch ( \Exception $e ) {
-            $log->log(
+            Analog::log(
                 'Unable to load GooGlePlus posts :( | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }
@@ -326,9 +326,9 @@ class News
 
             if ( count($errors) > 0 || $xml === false ) {
                 //something went wrong :/
-                $log->log(
+                Analog::log(
                     'Unable to load twitter URI ' . $this->_twitter_url,
-                    KLogger::WARN
+                    Analog::WARNING
                 );
 
                 if ( count($errors) > 0 ) {
@@ -336,9 +336,9 @@ class News
                     foreach ( $errors as $e ) {
                         $msg .= "\n" . $e->message;
                     }
-                    $log->log(
+                    Analog::log(
                         $msg,
-                        KLogger::INFO
+                        Analog::INFO
                     );
                 }
                 libxml_clear_errors();
@@ -347,9 +347,9 @@ class News
             }
             return true;
         } else {
-            $log->log(
+            Analog::log(
                 'Required modules for Tweeter access are not present.',
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }
@@ -387,23 +387,23 @@ class News
                 if ( count($activities['items']) > 0 ) {
                     return true;
                 } else {
-                    $log->log(
+                    Analog::log(
                         'No Google+ posts has been loaded :(',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 }
             } catch ( \Exception $e ) {
-                $log->log(
+                Analog::log(
                     'Unable to load GooGlePlus posts :( | ' . $e->getMessage(),
-                    KLogger::ERR
+                    Analog::ERROR
                 );
             }
 
             return true;
         } else {
-            $log->log(
+            Analog::log(
                 'Required modules for Google+ access are not present.',
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }

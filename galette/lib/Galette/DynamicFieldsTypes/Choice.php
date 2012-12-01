@@ -37,7 +37,7 @@
 
 namespace Galette\DynamicFieldsTypes;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Choice field type

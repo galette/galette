@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /** @ignore */
 require_once 'class.phpmailer.php';
@@ -116,10 +116,10 @@ class GaletteMail
                     // set the SMTP port for the SMTP server
                     $this->_mail->Port = $preferences->pref_mail_smtp_port;
                 } else {
-                    $log->log(
+                    Analog::log(
                         '[' . get_class($this) .
                         ']No SMTP port provided. Switch to default (25).',
-                        KLogger::INFO
+                        Analog::INFO
                     );
                     $this->_mail->Port = 25;
                 }
@@ -186,10 +186,10 @@ class GaletteMail
                 //- clear BCCs
                 //- log an INFO
                 $res = false;
-                $log->log(
+                Analog::log(
                     '[' . get_class($this) .
                     '] One of recipients adress is not valid.',
-                    KLogger::INFO
+                    Analog::INFO
                 );
                 $this->_mail->ClearBCCs();
                 break;
@@ -275,10 +275,10 @@ class GaletteMail
             if ( !$this->_mail->Send() ) {
                 $m = $this->_mail;
                 $this->_errors[] = $this->_mail->ErrorInfo;
-                $log->log(
+                Analog::log(
                     'An error occured sending mail to: ' .
                     implode(', ', array_keys($this->_recipients)),
-                    KLogger::INFO
+                    Analog::INFO
                 );
                 $this->_mail = null;
                 return self::MAIL_ERROR;
@@ -287,17 +287,17 @@ class GaletteMail
                 foreach ( $this->_recipients as $k=>$v ) {
                     $txt .= $v . ' (' . $k . '), ';
                 }
-                $log->log(
+                Analog::log(
                     'A mail has been sent to: ' . $txt,
-                    KLogger::INFO
+                    Analog::INFO
                 );
                 $this->_mail = null;
                 return self::MAIL_SENT;
             }
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Error sending message: ' . $e.getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             $this->errors[] = $e->getMessage();
             $this->_mail = null;
@@ -317,9 +317,9 @@ class GaletteMail
         global $log;
         $valid = \PHPMailer::ValidateAddress($address);
         if ( !$valid ) {
-            $log->log(
+            Analog::log(
                 '[GaletteMail] Adresss `' . $address . '` is not valid ',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
         }
         return $valid;
@@ -340,9 +340,9 @@ class GaletteMail
             $url
         );
         if ( !$valid ) {
-            $log->log(
+            Analog::log(
                 '[GaletteMail] `' . $url . '` is not an url',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
         }
         return $valid;

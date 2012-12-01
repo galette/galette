@@ -40,14 +40,14 @@
  */
 
 use Galette\Filters\MembersList as MembersList;
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 require_once 'includes/galette.inc.php';
 
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
-    $log->log(
+    Analog::log(
         'Trying to display ajax_members.php without appropriate permissions',
-        KLogger::INFO
+        Analog::INFO
     );
     die();
 }
@@ -97,9 +97,9 @@ if ( !isset($_POST['from']) ) {
     switch ( $_POST['from'] ) {
     case 'groups':
         if ( !isset($_POST['gid']) ) {
-            $log->log(
+            Analog::log(
                 'Trying to list group members with no group id provided',
-                KLogger::ERR
+                Analog::ERROR
             );
             throw new Exception('A group id is required.');
             exit(0);
@@ -112,9 +112,9 @@ if ( !isset($_POST['from']) ) {
             } else if ( $_POST['mode'] == 'managers' ) {
                 $selected_members = $group->getManagers();
             } else {
-                $log->log(
+                Analog::log(
                     'Trying to list group members with unknown mode',
-                    KLogger::ERR
+                    Analog::ERROR
                 );
                 throw new Exception('Unknown mode.');
                 exit(0);

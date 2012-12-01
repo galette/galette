@@ -37,7 +37,7 @@
 
 namespace Galette\DynamicFieldsTypes;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Entity\DynamicFields as DynamicFields;
 
 /**
@@ -118,10 +118,10 @@ abstract class DynamicFieldType
                 }
             } // $result != false
         } catch (Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to retrieve fields types for field ' . $this->id . ' | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }
@@ -151,13 +151,13 @@ abstract class DynamicFieldType
                 }
             }
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $val_select->__toString() . ' ' . $e->__toString(),
-                KLogger::INFO
+                Analog::INFO
             );
         }
     }
@@ -321,9 +321,9 @@ abstract class DynamicFieldType
         if ( $this->fixed_values ) {
             return implode("\n", $this->values);
         } else {
-            $log->log(
+            Analog::log(
                 'Field do not have fixed values, cannot retrieve values.',
-                KLogger::INFO
+                Analog::INFO
             );
             return false;
         }

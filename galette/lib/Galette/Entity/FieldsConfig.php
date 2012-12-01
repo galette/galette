@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Fields config class for galette :
@@ -138,12 +138,12 @@ class FieldsConfig
                 $meta = Adherent::getDbFields();
 
                 if ( count($meta) != count($result) ) {
-                    $log->log(
+                    Analog::log(
                         '[' . $class . '] Count for `' . $this->_table .
                         '` columns does not match records. Is : ' .
                         count($result) . ' and should be ' .
                         count($meta) . '. Reinit.',
-                        KLogger::INFO
+                        Analog::INFO
                     );
                     $this->init(true);
                 }
@@ -177,15 +177,15 @@ class FieldsConfig
 
             }
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 '[' . $class . '] An error occured while checking update for ' .
                 'fields configuration for table `' . $this->_table . '`. ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             throw $e;
         }
@@ -207,16 +207,16 @@ class FieldsConfig
         $class = get_class($this);
         $t = new FieldsCategories();
 
-        $log->log(
+        Analog::log(
             '[' . $class . '] Initializing fields configuration for table `' .
             PREFIX_DB . $this->_table . '`',
-            KLogger::DEBUG
+            Analog::DEBUG
         );
         if ( $reinit ) {
-            $log->log(
+            Analog::log(
                 '[' . $class . '] Reinit mode, we delete config content for ' .
                 'table `' . PREFIX_DB . $this->_table . '`',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             //Delete all entries for current table. Existing entries are
             //already stored, new ones will be added :)
@@ -227,10 +227,10 @@ class FieldsConfig
                 );
                 $t->installInit();
             } catch (\Exception $e) {
-                $log->log(
+                Analog::log(
                     'Unable to delete fields configuration for reinitialization' .
                     $e->getMessage(),
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 return false;
             }
@@ -283,29 +283,29 @@ class FieldsConfig
                 );
                 $stmt->execute($params);
             }
-            $log->log(
+            Analog::log(
                 '[' . $class . '] Initialisation seem successfull, we reload ' .
                 'the object',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
-            $log->log(
+            Analog::log(
                 str_replace(
                     '%s',
                     PREFIX_DB . $this->_table,
                     '[' . $class . '] Fields configuration for table %s '.
                     'initialized successfully.'
                 ),
-                KLogger::INFO
+                Analog::INFO
             );
             $this->_checkUpdate(false);
             return true;
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 '[' . $class . '] An error occured trying to initialize fields ' .
                 'configuration for table `' . PREFIX_DB . $this->_table . '`.' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -428,33 +428,33 @@ class FieldsConfig
                 }
             }
 
-            $log->log(
+            Analog::log(
                 '[' . $class . '] Fields configuration stored successfully! ',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
-            $log->log(
+            Analog::log(
                 str_replace(
                     '%s',
                     $this->_table,
                     '[' . $class . '] Fields configuration for table %s stored ' .
                     'successfully.'
                 ),
-                KLogger::INFO
+                Analog::INFO
             );
 
             $zdb->db->commit();
             return true;
         } catch (Exception $e) {
             $zdb->db->rollBacak();
-            $log->log(
+            Analog::log(
                 '[' . $class . '] An error occured while storing fields ' .
                 'configuration for table `' . $this->_table . '`.' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
-            $log->log(
+            Analog::log(
                 $e->getTraceAsString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }

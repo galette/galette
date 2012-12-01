@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * History management
@@ -119,16 +119,16 @@ class History extends Pagination
 
             $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
         } catch (\Zend_Db_Adapter_Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to initialize add log entry into database.' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 "An error occured trying to add log entry. " . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -149,9 +149,9 @@ class History extends Pagination
             $result = $zdb->db->query('TRUNCATE TABLE ' . $this->getTableName());
 
             if ( !$result ) {
-                $log->log(
+                Analog::log(
                     'An error occured cleaning history. ',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 $this->add('Arror flushing logs');
                 return false;
@@ -160,9 +160,9 @@ class History extends Pagination
             return true;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Unable to flush logs. | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
         }
     }
@@ -180,7 +180,7 @@ class History extends Pagination
             $c = $this->getCount();
 
             if ($c == 0) {
-                $log->log('No entry in history (yet?).', KLogger::DEBUG);
+                Analog::log('No entry in history (yet?).', Analog::DEBUG);
                 return;
             } else {
                 $this->counter = (int)$c;
@@ -197,13 +197,13 @@ class History extends Pagination
             return $select->query(\Zend_Db::FETCH_ASSOC)->fetchAll();
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Unable to get history. | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -228,13 +228,13 @@ class History extends Pagination
             return $select->query()->fetchObject()->counter;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Unable to get history count. | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -251,9 +251,9 @@ class History extends Pagination
     {
         global $log;
 
-        $log->log(
+        Analog::log(
             '[History] Getting property `' . $name . '`',
-            KLogger::DEBUG
+            Analog::DEBUG
         );
 
         if ( in_array($name, $this->pagination_fields) ) {
@@ -270,10 +270,10 @@ class History extends Pagination
                         return $d->format(_T("Y-m-d H:i:s"));
                     } catch (\Exception $e) {
                         //oops, we've got a bad date :/
-                        $log->log(
+                        Analog::log(
                             'Bad date (' . $this->$rname . ') | ' .
                             $e->getMessage(),
-                            KLogger::INFO
+                            Analog::INFO
                         );
                         return $this->$rname;
                     }
@@ -283,9 +283,9 @@ class History extends Pagination
                     break;
                 }
             } else {
-                $log->log(
+                Analog::log(
                     '[History] Unable to get proprety `' .$name . '`',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
         }
@@ -305,9 +305,9 @@ class History extends Pagination
         if ( in_array($name, $this->pagination_fields) ) {
             parent::__set($name, $value);
         } else {
-            $log->log(
+            Analog::log(
                 '[History] Setting property `' . $name . '`',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
 
             $forbidden = array();
@@ -324,9 +324,9 @@ class History extends Pagination
                     break;
                 }
             } else {
-                $log->log(
+                Analog::log(
                     '[History] Unable to set proprety `' .$name . '`',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
         }

@@ -36,15 +36,15 @@
  * @since     Available since 0.62
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
-    $log->log(
+    Analog::log(
         'Trying to display ajax_members.php without appropriate permissions',
-        KLogger::INFO
+        Analog::INFO
     );
     die();
 }

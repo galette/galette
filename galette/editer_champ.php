@@ -36,7 +36,7 @@
  * @since     Available since 0.62
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Entity\DynamicFields as DynamicFields;
 use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
 
@@ -102,9 +102,9 @@ if ( isset($_POST['valid']) ) {
             }
         } catch (Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'An error occured checking field duplicity' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
 
@@ -141,9 +141,9 @@ if ( isset($_POST['valid']) ) {
                 );
             } catch (Exception $e) {
                 /** FIXME */
-                $log->log(
+                Analog::log(
                     'An error occured storing field | ' . $e->getMessage(),
-                    KLogger::ERR
+                    Analog::ERROR
                 );
                 $error_detected[] = _T("An error occured storing the field.");
             }
@@ -176,10 +176,10 @@ if ( isset($_POST['valid']) ) {
             } catch (Exception $e) {
                 /** FIXME */
                 $zdb->db->rollBack();
-                $log->log(
+                Analog::log(
                     'Unable to manage fields values table ' .
                     $contents_table . ' | ' . $e->getMessage(),
-                    KLogger::ERR
+                    Analog::ERROR
                 );
                 $error_detected[] = _T("An error occured storing managing fields values table");
             }
@@ -204,9 +204,9 @@ if ( isset($_POST['valid']) ) {
                 }catch (Exception $e) {
                     /** FIXME */
                     $zdb->db->rollBack();
-                    $log->log(
+                    Analog::log(
                         'Unable to store field ' . $field_id . ' values',
-                        KLogger::ERR
+                        Analog::ERROR
                     );
                 }
             }

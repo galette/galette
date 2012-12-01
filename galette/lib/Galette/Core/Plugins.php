@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Plugins class for galette
@@ -172,10 +172,10 @@ class Plugins
 
         if ( $compver === null ) {
             //plugin compatibility missing!
-            $log->log(
+            Analog::log(
                 'Plugin ' . $name . ' does not contains mandatory version ' .
                 'compatiblity informations. Please contact the author.',
-                KLogger::ERR
+                Analog::ERROR
             );
             $this->disabled[$this->id] = array(
                 'root' => $this->mroot,
@@ -183,11 +183,11 @@ class Plugins
             );
         } elseif ( version_compare($compver, GALETTE_COMPAT_VERSION, '<') ) {
             //plugin is not compatible with that version of galette.
-            $log->log(
+            Analog::log(
                 'Plugin ' . $name . ' is known to be compatible with Galette ' .
                 $compver . ' only, but you current installation require a ' .
                 'plugin compatible with at least ' . GALETTE_COMPAT_VERSION,
-                KLogger::WARN
+                Analog::WARNING
             );
             $this->disabled[$this->id] = array(
                 'root' => $this->mroot,

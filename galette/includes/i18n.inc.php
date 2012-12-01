@@ -41,7 +41,7 @@ if (!defined('GALETTE_ROOT')) {
        die("Sorry. You can't access directly to this file");
 }
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 $disable_gettext=true;
 
@@ -93,10 +93,10 @@ function addDynamicTranslation($text_orig, $error_detected)
                 $values = array(
                     'text_nref' => new Zend_Db_Expr('text_nref+1')
                 );
-                $log->log(
+                Analog::log(
                     'Entry for `' . $text_orig .
                     '` dynamic translation already exists.',
-                    KLogger::INFO
+                    Analog::INFO
                 );
                 $zdb->db->update(
                     $l10n_table,
@@ -119,10 +119,10 @@ function addDynamicTranslation($text_orig, $error_detected)
         }
     } catch (Exception $e) {
         /** FIXME */
-        $log->log(
+        Analog::log(
             'An error occured adding dynamic translation for `' .
             $text_orig . '` | ' . $e->getMessage(),
-            KLogger::ERR
+            Analog::ERROR
         );
         return false;
     }
@@ -154,11 +154,11 @@ function deleteDynamicTranslation($text_orig, $error_detected)
         return true;
     } catch (Exception $e) {
         /** FIXME */
-        $log->log(
+        Analog::log(
             'An error occured deleting dynamic translation for `' .
             $text_orig . '` (lang `' . $lang->getLongID() . '`) | ' .
             $e->getMessage(),
-            KLogger::ERR
+            Analog::ERROR
         );
         return false;
     }
@@ -199,10 +199,10 @@ function updateDynamicTranslation(
         return true;
     } catch (Exception $e) {
         /** FIXME */
-        $log->log(
+        Analog::log(
             'An error occured updating dynamic translation for `' .
             $text_orig . '` | ' . $e->getMessage(),
-            KLogger::ERR
+            Analog::ERROR
         );
         return false;
     }
@@ -230,14 +230,14 @@ function getDynamicTranslation($text_orig, $text_locale)
         return $select->query()->fetch()->text_trans;
     } catch (Exception $e) {
         /** TODO */
-        $log->log(
+        Analog::log(
             'An error occured retrieving l10n entry. text_orig=' . $text_orig .
             ', text_locale=' . $text_locale . ' | ' . $e->getMessage(),
-            KLogger::WARN
+            Analog::WARNING
         );
-        $log->log(
+        Analog::log(
             'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-            KLogger::ERR
+            Analog::ERROR
         );
         return false;
     }

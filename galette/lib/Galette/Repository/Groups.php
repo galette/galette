@@ -37,7 +37,7 @@
 
 namespace Galette\Repository;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Entity\Group as Group;
 use Galette\Entity\Adherent as Adherent;
 
@@ -80,13 +80,13 @@ class Groups
             }
             return $groups;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Cannot list groups (simple) | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
-                KLogger::ERR
+                Analog::ERROR
             );
 
         }
@@ -137,13 +137,13 @@ class Groups
             }
             return $groups;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Cannot list groups | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }
@@ -190,9 +190,9 @@ class Groups
                 array()
             )->where('b.' . Adherent::PK . ' = ?', $id);
             $result = $select->query()->fetchAll();
-            $log->log(
+            Analog::log(
                 'Exectued query: ' . $select->__toString(),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             $groups = array();
             foreach ( $result as $r ) {
@@ -205,14 +205,14 @@ class Groups
             }
             return $groups;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Cannot load member groups for id `' . $id . '` | ' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -241,10 +241,10 @@ class Groups
                 PREFIX_DB . Group::GROUPSUSERS_TABLE,
                 Adherent::PK . ' = ' . $adh->id
             );
-            $log->log(
+            Analog::log(
                 'Member `' . $adh->sname . '` has been detached of its groups' .
                 ', we can now store new ones.',
-                KLogger::INFO
+                Analog::INFO
             );
 
             //we proceed, if groups has been specified
@@ -261,17 +261,17 @@ class Groups
                     $stmt->bindValue(':id', $gid, \PDO::PARAM_INT);
 
                     if ( $stmt->execute() ) {
-                        $log->log(
+                        Analog::log(
                             'Member `' . $adh->sname . '` attached to group `' .
                             $gname . '` (' . $gid . ').',
-                            KLogger::DEBUG
+                            Analog::DEBUG
                         );
                     } else {
-                        $log->log(
+                        Analog::log(
                             'An error occured trying to attach member `' .
                             $adh->sname . '` (' . $adh->id . ') to group `' .
                             $gname . '` (' . $gid . ').',
-                            KLogger::ERR
+                            Analog::ERROR
                         );
                         throw new \Exception(
                             'Unable to attach `' . $adh->sname . '` (' . $adh->id .
@@ -289,11 +289,11 @@ class Groups
             if ( $transaction === false) {
                 $zdb->db->rollBack();
             }
-            $log->log(
+            Analog::log(
                 'Unable to add member `' . $adh->sname . '` (' . $adh->id .
                 ') to specified groups |' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -319,13 +319,13 @@ class Groups
             $res = $select->query()->fetchAll();
             return !(count($res) > 0);
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Cannot list groups (simple) | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }

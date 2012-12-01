@@ -68,6 +68,10 @@ if ( !$installed && !$installer ) {
     header('location: install/index.php');
 }
 
+if ( file_exists(GALETTE_CONFIG_PATH . 'behavior.inc.php') ) {
+    include_once GALETTE_CONFIG_PATH . 'behavior.inc.php';
+}
+
 if ( !$installer || $installed ) { //If we're not working from installer
     require_once GALETTE_CONFIG_PATH . 'config.inc.php';
 }
@@ -82,17 +86,19 @@ if (defined('GALETTE_XHPROF_PATH')
 }
 
 use Galette\Common\ClassLoader;
-use Galette\Common\KLogger;
+use Analog\Analog as Analog;
 use Galette\Core;
 require_once GALETTE_ROOT . 'lib/Galette/Common/ClassLoader.php';
 $galetteLoader = new ClassLoader('Galette', GALETTE_ROOT . 'lib');
 $zendLoader = new ClassLoader('Zend', GALETTE_ZEND_PATH);
 $zendLoader->setNamespaceSeparator('_');
+$analogLoader = new ClassLoader('Analog', GALETTE_ANALOG_PATH);
 $smartyLoader = new ClassLoader(null, GALETTE_SMARTY_PATH);
 $smartyLoader->setFileExtension('.class.php');
 //register loaders
 $galetteLoader->register();
 $zendLoader->register();
+$analogLoader->register();
 $smartyLoader->register();
 
 //we start a php session
@@ -101,7 +107,9 @@ session_start();
 define('GALETTE_VERSION', 'v0.7.3dev');
 define('GALETTE_COMPAT_VERSION', '0.7.3');
 define('GALETTE_DB_VERSION', '0.701');
-define('GALETTE_MODE', 'PROD'); //DEV or PROD
+if ( !defined('GALETTE_MODE') ) {
+    define('GALETTE_MODE', 'PROD'); //DEV, PROD or DEMO
+}
 define('GALETTE_TWITTER', 'galette_soft');
 define('GALETTE_GPLUS', '116977415489200387309');
 define('GALETTE_GAPI_KEY', 'AIzaSyDT8Xkud_SdSHdvaagjePrpPoji2ySIZ7Q');
@@ -114,7 +122,10 @@ if ( !isset($_COOKIE['show_galette_dashboard']) ) {
     );
 }
 
-@ini_set('display_errors', 0);
+if ( !defined('GALETTE_DISPLAY_ERRORS') ) {
+    define('GALETTE_DISPLAY_ERRORS', 0);
+}
+ini_set('display_errors', GALETTE_DISPLAY_ERRORS);
 
 set_include_path(
     GALETTE_ZEND_PATH . PATH_SEPARATOR .
@@ -124,28 +135,68 @@ set_include_path(
 );
 
 /*------------------------------------------------------------------------------
-Error severity, from low to high. From BSD syslog RFC, secion 4.1.1
-@link http://www.faqs.org/rfcs/rfc3164.html
-
-KLogger::EMERG  => System is unusable
-KLogger::ALERT  => Immediate action required
-KLogger::CRIT   => Critical conditions
-KLogger::ERR    => Error conditions
-KLogger::WARN   => Warning conditions
-KLogger::NOTICE => Normal but significant
-KLogger::INFO   => Informational messages
-KLogger::DEBUG  => Debug-level messages
+Logger stuff
 ------------------------------------------------------------------------------*/
-if ( !isset($logfile) ) {
-    $logfile = 'galette_run';
+if ( !defined('GALETTE_HANDLE_ERRORS')
+    || GALETTE_HANDLE_ERRORS === true
+) {
+    //set custom error handler
+    set_error_handler(
+        array(
+            "Galette\Core\Error",
+            "errorHandler"
+        )
+    );
 }
-$log = new KLogger(GALETTE_LOGS_PATH, KLogger::INFO, $logfile);
 
-//set custom error handler
-set_error_handler(
-    array(
-        "Galette\Core\Error",
-        "errorHandler"
+$now = new \DateTime();
+$galette_run_log = null;
+$galette_null_log = \Analog\Handler\Null::init();
+$dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
+    $now->format('Y-m-d')  . '.log';
+$galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
+
+if ( GALETTE_MODE === 'DEV'
+    || ( defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true )
+) {
+    //logs everything in PHP logs (per chance /var/log/http/error_log)
+    $galette_run_log = \Analog\Handler\Stderr::init();
+} else {
+    //logs everything in galette log file
+    if ( !isset($logfile) ) {
+        //if no filename has been setetd (ie. from install), set default one
+        $logfile = 'galette_run';
+    }
+    $log_path = GALETTE_LOGS_PATH . $logfile . '_' .
+        $now->format('Y-m-d')  . '.log';
+    $galette_run_log = \Analog\Handler\File::init($log_path);
+}
+
+//Log level cannot be <= 3, would be ignored.
+if ( !defined('GALETTE_LOG_LVL') ) {
+    if ( GALETTE_MODE === 'DEV' ) {
+        define('GALETTE_LOG_LVL', 10);
+    } else {
+        define('GALETTE_LOG_LVL', 5);
+    }
+}
+
+Analog::handler(
+    \Analog\Handler\Multi::init(
+        array (
+            Analog::URGENT      => $galette_run_log,
+            Analog::ALERT       => $galette_run_log,
+            Analog::CRITICAL    => $galette_run_log,
+            Analog::ERROR       => $galette_run_log,
+            Analog::WARNING     => (GALETTE_LOG_LVL >= Analog::WARNING)
+                                        ? $galette_run_log : $galette_null_log,
+            Analog::NOTICE      => (GALETTE_LOG_LVL >= Analog::NOTICE)
+                                        ? $galette_run_log : $galette_null_log,
+            Analog::INFO        => (GALETTE_LOG_LVL >= Analog::INFO)
+                                        ? $galette_run_log : $galette_null_log,
+            Analog::DEBUG       => (GALETTE_LOG_LVL >= Analog::DEBUG)
+                                        ? $galette_debug_log : $galette_null_log
+        )
     )
 );
 
@@ -198,7 +249,9 @@ if ( !$installer ) { //If we're not working from installer
     */
     $zdb = new Core\Db();
 
-    if ( $zdb->checkDbVersion() || strpos($_SERVER['PHP_SELF'], 'picture.php') !== false  ) {
+    if ( $zdb->checkDbVersion()
+        || strpos($_SERVER['PHP_SELF'], 'picture.php') !== false
+    ) {
 
         /**
         * Load preferences

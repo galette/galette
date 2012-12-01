@@ -36,7 +36,7 @@
  * @since     Available since 0.62
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -101,14 +101,14 @@ try {
     $nb_fields = $select->query()->fetch()->nb;
 } catch (Exception $e) {
     /** TODO */
-    $log->log(
+    Analog::log(
         'An error occured counting l10n entries | ' .
         $e->getMessage(),
-        KLogger::WARN
+        Analog::WARNING
     );
-    $log->log(
+    Analog::log(
         'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-        KLogger::ERR
+        Analog::ERROR
     );
 }
 
@@ -149,14 +149,14 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
         $tpl->assign('trans', $trans);
     } catch (Exception $e) {
         /** TODO */
-        $log->log(
+        Analog::log(
             'An error occured retrieving l10n entries | ' .
             $e->getMessage(),
-            KLogger::WARN
+            Analog::WARNING
         );
-        $log->log(
+        Analog::log(
             'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-            KLogger::ERR
+            Analog::ERROR
         );
     }
 }

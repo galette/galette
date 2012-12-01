@@ -40,7 +40,7 @@
 
 namespace Galette\Core;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Entity\Adherent;
 
 /**
@@ -124,17 +124,17 @@ class Password
                 )
             );
             if ( $del ) {
-                $log->log(
+                Analog::log(
                     'Temporary passwords for `' . $id_adh . '` has been removed.',
-                    KLogger::DEBUG
+                    Analog::DEBUG
                 );
             }
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'An error has occured removing old tmppasswords ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -167,9 +167,9 @@ class Password
 
             $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
             if ( $add ) {
-                $log->log(
+                Analog::log(
                     'New passwords temporary set for `' . $id_adh . '`.',
-                    KLogger::DEBUG
+                    Analog::DEBUG
                 );
                 $this->_new_password = $password;
                 $this->_hash = $hash;
@@ -178,17 +178,17 @@ class Password
                 return false;
             }
         } catch (\Zend_Db_Adapter_Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to add add new password entry into database.' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 "An error occured trying to add temporary password entry. " .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -215,17 +215,17 @@ class Password
                 )
             );
             if ( $del ) {
-                $log->log(
+                Analog::log(
                     'Old Temporary passwords has been deleted.',
-                    KLogger::DEBUG
+                    Analog::DEBUG
                 );
             }
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'An error occured deleting expired temporary passwords. ' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }
@@ -251,9 +251,9 @@ class Password
             return $select->query()->fetchColumn();
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'An error occured getting requested hash. ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }
@@ -279,18 +279,18 @@ class Password
                 )
             );
             if ( $del ) {
-                $log->log(
+                Analog::log(
                     'Used hash has been successfully remove',
-                    KLogger::DEBUG
+                    Analog::DEBUG
                 );
                 return true;
             }
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'An error ocured attempting to delete used hash' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }

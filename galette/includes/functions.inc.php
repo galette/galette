@@ -40,7 +40,7 @@ if (!defined('GALETTE_ROOT')) {
        die("Sorry. You can't access directly to this file");
 }
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 function PasswordImageName($c)
 {
@@ -258,10 +258,10 @@ function get_numeric_form_value($name, $defval)
     global $log;
     $val = get_form_value($name, $defval);
     if ( !is_numeric($val) ) {
-        $log->log(
+        Analog::log(
             '[get_numeric_form_value] not a numeric value! (value was: `' .
             $val . '`)',
-            KLogger::INFO
+            Analog::INFO
         );
         $val = $defval;
     }

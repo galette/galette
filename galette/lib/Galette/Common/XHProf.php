@@ -40,6 +40,8 @@
 
 namespace Galette\Common;
 
+use Analog\Analog as Analog;
+
 /**
  * class XHProf
  *
@@ -113,9 +115,9 @@ class XHProf
         ) {
             xhprof_enable(XHPROF_FLAGS_NO_BUILTINS | XHPROF_FLAGS_CPU | XHPROF_FLAGS_MEMORY);
             if ( $log ) {
-                $log->log(
+                Analog::log(
                     'Start profiling with XHProf ' . $msg,
-                    KLogger::INFO
+                    Analog::INFO
                 );
             }
             self::$_run = true;
@@ -145,9 +147,9 @@ class XHProf
             $host = (defined('XHPROF_HOST') ? XHPROF_HOST : $_SERVER['HTTP_HOST']);
             $link = 'http://' . $host .$url . '/index.php?run=' .
                 $id . '&source=galette-' . GALETTE_VERSION;
-            $log->log(
+            Analog::log(
                 'Stop profiling with XHProf, result URL: ' . $link,
-                KLogger::INFO
+                Analog::INFO
             );
 
             self::$_run = false;

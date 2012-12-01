@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Politeness class for galette

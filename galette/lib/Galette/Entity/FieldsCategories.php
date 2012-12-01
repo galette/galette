@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Fields categories class for galette
@@ -107,14 +107,14 @@ class FieldsCategories
             return $select->query()->fetchAll();
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 '[' . get_class($this) . '] Cannot get fields categories list | ' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -147,16 +147,16 @@ class FieldsCategories
                 $stmt->execute();
             }
 
-            $log->log(
+            Analog::log(
                 'Default fields configurations were successfully stored into database.',
-                KLogger::INFO
+                Analog::INFO
             );
             return true;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to initialize default fields configuration.' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return $e;
         }

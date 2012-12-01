@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Repository\Contributions as Contributions;
 
 /**
@@ -142,10 +142,10 @@ class Transaction
             }
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Cannot load transaction form id `' . $id . '` | ' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }
@@ -193,10 +193,10 @@ class Transaction
             if ( $transaction ) {
                 $zdb->db->rollBack();
             }
-            $log->log(
+            Analog::log(
                 'An error occured trying to remove transaction #' .
                 $this->_id . ' | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -261,11 +261,11 @@ class Transaction
                             }
                             $this->$prop = $d->format('Y-m-d');
                         } catch (Exception $e) {
-                            $log->log(
+                            Analog::log(
                                 'Wrong date format. field: ' . $key .
                                 ', value: ' . $value . ', expected fmt: ' .
                                 _T("Y-m-d") . ' | ' . $e->getMessage(),
-                                KLogger::INFO
+                                Analog::INFO
                             );
                             $errors[] = str_replace(
                                 array(
@@ -323,16 +323,16 @@ class Transaction
         }
 
         if ( count($errors) > 0 ) {
-            $log->log(
+            Analog::log(
                 'Some errors has been throwed attempting to edit/store a transaction' .
                 print_r($errors, true),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             return $errors;
         } else {
-            $log->log(
+            Analog::log(
                 'Transaction checked successfully.',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             return true;
         }
@@ -398,10 +398,10 @@ class Transaction
         } catch (\Exception $e) {
             /** FIXME */
             $zdb->db->rollBack();
-            $log->log(
+            Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -425,14 +425,14 @@ class Transaction
             $dispatched_amount = $select->query()->fetchColumn();
             return (double)$dispatched_amount;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'An error occured retrieving dispatched amounts | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString(),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
         }
     }
@@ -455,14 +455,14 @@ class Transaction
             $dispatched_amount = $select->query()->fetchColumn();
             return (double)$this->_amount - (double)$dispatched_amount;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'An error occured retrieving missing amounts | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString(),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
         }
     }

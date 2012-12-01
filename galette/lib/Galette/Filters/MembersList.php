@@ -37,7 +37,7 @@
 
 namespace Galette\Filters;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Core\Pagination as Pagination;
 use Galette\Entity\Group as Group;
 use Galette\Repository\Members as Members;
@@ -128,9 +128,9 @@ class MembersList extends Pagination
     {
         global $log;
 
-        $log->log(
+        Analog::log(
             '[MembersList] Getting property `' . $name . '`',
-            KLogger::DEBUG
+            Analog::DEBUG
         );
 
         if ( in_array($name, $this->pagination_fields) ) {
@@ -144,9 +144,9 @@ class MembersList extends Pagination
                     return $this->$name;
                 }
             } else {
-                $log->log(
+                Analog::log(
                     '[MembersList] Unable to get proprety `' .$name . '`',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
         }
@@ -167,9 +167,9 @@ class MembersList extends Pagination
         if ( in_array($name, $this->pagination_fields) ) {
             parent::__set($name, $value);
         } else {
-            $log->log(
+            Analog::log(
                 '[MembersList] Setting property `' . $name . '`',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
 
             switch($name) {
@@ -179,10 +179,10 @@ class MembersList extends Pagination
                     $name = '_' . $name;
                     $this->$name = $value;
                 } else {
-                    $log->log(
+                    Analog::log(
                         '[MembersList] Value for property `' . $name .
                         '` should be an array (' . gettype($value) . ' given)',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 }
                 break;
@@ -197,10 +197,10 @@ class MembersList extends Pagination
                     $name = '_' . $name;
                     $this->$name = $value;
                 } else {
-                    $log->log(
+                    Analog::log(
                         '[MembersList] Value for property `' . $name .
                         '` should be an integer (' . gettype($value) . ' given)',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 }
                 break;
@@ -212,12 +212,12 @@ class MembersList extends Pagination
                     $this->_email_filter = $value;
                     break;
                 default:
-                    $log->log(
+                    Analog::log(
                         '[MembersList] Value for email filter should be either ' .
                         Members::FILTER_DC_EMAIL . ', ' .
                         Members::FILTER_W_EMAIL . ' or ' .
                         Members::FILTER_WO_EMAIL . ' (' . $value . ' given)',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                     break;
                 }
@@ -230,16 +230,16 @@ class MembersList extends Pagination
                     if ( $res === true ) {
                         $this->_group_filter = $value;
                     } else {
-                        $log->log(
+                        Analog::log(
                             'Group #' . $value . ' does not exists!',
-                            KLogger::WARN
+                            Analog::WARNING
                         );
                     }
                 } else {
-                    $log->log(
+                    Analog::log(
                         '[MembersList] Value for group filter should be an '
                         .'integer (' . gettype($value) . ' given',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 }
                 break;
@@ -247,9 +247,9 @@ class MembersList extends Pagination
                 $this->$name = $value;
                 break;
             default:
-                $log->log(
+                Analog::log(
                     '[MembersList] Unable to set proprety `' . $name . '`',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 break;
             }

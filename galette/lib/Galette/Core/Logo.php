@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * This class stores and serve the logo.

@@ -37,7 +37,7 @@
 
 namespace Galette\IO;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * CSV exports
@@ -318,17 +318,17 @@ class Csv
                 $this->export($result, $separator, $quote, $title, $fp);
                 fclose($fp);
             } else {
-                $log->log(
+                Analog::log(
                     'File ' . $filename . ' is not writeable.',
-                    KLogger::ERR
+                    Analog::ERROR
                 );
                 return self::FILE_NOT_WRITABLE;
             }
             return $export['filename'];
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'An error occured while exporting | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return self::DB_ERROR;
         }

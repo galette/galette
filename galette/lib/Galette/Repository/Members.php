@@ -39,7 +39,7 @@ namespace Galette\Repository;
 
 use Galette\Entity\DynamicFields;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\Contribution as Contribution;
 use Galette\Entity\Transaction as Transaction;
@@ -227,10 +227,10 @@ class Members
 
             $filters->query = $select->__toString();
 
-            $log->log(
+            Analog::log(
                 "The following query will be executed: \n" .
                 $filters->query,
-                KLogger::DEBUG
+                Analog::DEBUG
             );
 
             $members = array();
@@ -250,13 +250,13 @@ class Members
             return $members;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot list members | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }
@@ -301,9 +301,9 @@ class Members
                     $p = new Picture($member->id_adh);
                     if ( $p->hasPicture() ) {
                         if ( !$p->delete(false) ) {
-                            $log->log(
+                            Analog::log(
                                 'Unable to delete picture for member ' . $str_adh,
-                                KLogger::ERR
+                                Analog::ERROR
                             );
                             throw new \Exception(
                                 'Unable to delete picture for member ' .
@@ -355,18 +355,18 @@ class Members
                 return true;
             } catch (\Exception $e) {
                 $zdb->db->rollBack();
-                $log->log(
+                Analog::log(
                     'Unable to delete selected member(s) |' .
                     $e->getMessage(),
-                    KLogger::ERR
+                    Analog::ERROR
                 );
                 return false;
             }
         } else {
             //not numeric and not an array: incorrect.
-            $log->log(
+            Analog::log(
                 'Asking to remove members, but without providing an array or a single numeric value.',
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }
@@ -422,10 +422,10 @@ class Members
                     'date_echeance > ? OR bool_exempt_adh = true',
                     date('Y-m-d')
                 );
-            $log->log(
+            Analog::log(
                 "The following query will be executed: \n" .
                 $select->__toString(),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
 
             if ( $filters ) {
@@ -444,14 +444,14 @@ class Members
             return $members;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot list members with public informations (photos: '
                 . $with_photos . ') | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -472,7 +472,7 @@ class Members
         global $zdb, $log;
 
         if ( !is_array($ids) || count($ids) < 1 ) {
-            $log->log('No member selected for labels.', KLogger::INFO);
+            Analog::log('No member selected for labels.', Analog::INFO);
             return false;
         }
 
@@ -489,10 +489,10 @@ class Members
                 }
             }
 
-            $log->log(
+            Analog::log(
                 "The following query will be executed: \n" .
                 $select->__toString(),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
 
             $result = $select->query();
@@ -509,13 +509,13 @@ class Members
             return $members;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot load members form ids array | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }
@@ -638,13 +638,13 @@ class Members
             return $select;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot build SELECT clause for members | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -684,13 +684,13 @@ class Members
             }
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot count members | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $countSelect->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -998,10 +998,10 @@ class Members
                             $fs['search'] = '%' . $fs['search'];
                             break;
                         default:
-                            $log->log(
+                        Analog::log(
                                 'Unknown query operator: ' . $fs['qry_op'] .
                                 ' (will fallback to equals)',
-                                KLogger::WARN
+                            Analog::WARNING
                             );
                             $qop = '=';
                             break;
@@ -1034,9 +1034,9 @@ class Members
             }
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
         }
     }
@@ -1115,10 +1115,10 @@ class Members
             return true;
         } catch ( Exception $e ) {
             $zdb->db->rollBack();
-            $log->log(
+            Analog::log(
                 'An error occured trying to retrieve members with ' .
                 'empty logins/passwords (' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }

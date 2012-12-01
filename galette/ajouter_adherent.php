@@ -36,7 +36,7 @@
  * @since     Available since 0.62
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Core\GaletteMail as GaletteMail;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\FieldsConfig as FieldsConfig;
@@ -236,24 +236,24 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
             }
             if ( $add_groups === true ) {
                 if ( isset ($_POST['groups_adh']) ) {
-                    $log->log(
+                    Analog::log(
                         'Member .' . $member->sname . ' has been added to groups ' .
                         print_r($_POST['groups_adh'], true),
-                        KLogger::INFO
+                        Analog::INFO
                     );
                 } else {
-                    $log->log(
+                    Analog::log(
                         'Member .' . $member->sname . ' has not been added to groups ' .
                         print_r($_POST['groups_adh'], true),
-                        KLogger::ERR
+                        Analog::ERROR
                     );
                     $error_detected[] = _T("An error occured adding member to its groups.");
                 }
             } else {
-                $log->log(
+                Analog::log(
                     'Member .' . $member->sname . ' has been detached of ' .
                     'his groups.',
-                    KLogger::INFO
+                    Analog::INFO
                 );
             }
         } else {
@@ -279,9 +279,9 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     }
                 }
             } else if ($_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
-                $log->log(
+                Analog::log(
                     $member->picture->getPhpErrorMessage($_FILES['photo']['error']),
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 $error_detected[] = $member->picture->getPhpErrorMessage(
                     $_FILES['photo']['error']
@@ -293,9 +293,9 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
             if ( !$member->picture->delete($member->id) ) {
                 $error_detected[] = _T("Delete failed");
                 $str_adh = $member->id . ' (' . $member->sname  . ' ' . ')';
-                $log->log(
+                Analog::log(
                     'Unable to delete picture for member ' . $str_adh,
-                    KLogger::ERR
+                    Analog::ERROR
                 );
             }
         }

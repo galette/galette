@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Mailing features
@@ -169,19 +169,19 @@ class Mailing extends GaletteMail
                 break;
             default:
                 $rname = '_' . $name;
-                $log->log(
+                Analog::log(
                     '[' . get_class($this) . 'Trying to get ' . $name .
                     ' renamed: ' . $rname,
-                    KLogger::DEBUG
+                    Analog::DEBUG
                 );
                 return $this->$rname;
                 break;
             }
         } else {
-            $log->log(
+            Analog::log(
                 '[' . get_class($this) . 'Unable to get ' . $name .
                 ' renamed: ' . $rname,
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -211,11 +211,11 @@ class Mailing extends GaletteMail
             if ( is_bool($value) ) {
                 $this->isHTML($value);
             } else {
-                $log->log(
+                Analog::log(
                     '[' . get_class($this) . '] Value for field `' . $name .
                     '` should be boolean - (' . gettype($value) . ')' .
                     $value . ' given',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
             break;
@@ -234,18 +234,18 @@ class Mailing extends GaletteMail
             ) {
                 $this->_current_step = (int)$value;
             } else {
-                $log->log(
+                Analog::log(
                     '[' . get_class($this) . '] Value for field `' . $name .
                     '` should be integer and know - (' . gettype($value) . ')' .
                     $value . ' given',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
             break;
         default:
-            $log->log(
+            Analog::log(
                 '[' . get_class($this) . '] Unable to set proprety `' . $name . '`',
-                KLogger::WARN
+                Analog::WARNING
             );
             break;
         }

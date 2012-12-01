@@ -38,7 +38,7 @@
 
 use Galette\Entity\DynamicFields as DynamicFields;
 use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 
 /** @ignore */
@@ -130,10 +130,10 @@ if ( $form_name == '' ) {
                     }
                 } catch (Exception $e) {
                     /** FIXME */
-                    $log->log(
+                    Analog::log(
                         'An error occured adding new dynamic field. | ' .
                         $e->getMessage(),
-                        KLogger::ERR
+                        Analog::ERROR
                     );
                 }
             }
@@ -229,10 +229,10 @@ if ( $form_name == '' ) {
                 /** FIXME */
                 //this one does not seem to work :'(
                 $zdb->db->rollBack();
-                $log->log(
+                Analog::log(
                     'Unable to change field ' . $field_id . ' rank | ' .
                     $e->getMessage(),
-                    KLogger::ERR
+                    Analog::ERROR
                 );
             }
         }

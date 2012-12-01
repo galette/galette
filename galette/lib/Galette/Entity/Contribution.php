@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Contribution class for galette
@@ -245,10 +245,10 @@ class Contribution
             }
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'An error occured attempting to load contribution #' . $id .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -344,11 +344,11 @@ class Contribution
                             }
                             $this->$prop = $d->format('Y-m-d');
                         } catch (Exception $e) {
-                            $log->log(
+                            Analog::log(
                                 'Wrong date format. field: ' . $key .
                                 ', value: ' . $value . ', expected fmt: ' .
                                 _T("Y-m-d") . ' | ' . $e->getMessage(),
-                                KLogger::INFO
+                                Analog::INFO
                             );
                             $errors[] = str_replace(
                                 array(
@@ -432,16 +432,16 @@ class Contribution
         }
 
         if ( count($errors) > 0 ) {
-            $log->log(
+            Analog::log(
                 'Some errors has been throwed attempting to edit/store a contribution' .
                 print_r($errors, true),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             return $errors;
         } else {
-            $log->log(
+            Analog::log(
                 'Contribution checked successfully.',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             return true;
         }
@@ -489,13 +489,13 @@ class Contribution
             return true;
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'An error occured checking overlaping fee. ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString(),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             return false;
         }
@@ -587,10 +587,10 @@ class Contribution
         } catch (\Exception $e) {
             /** FIXME */
             $zdb->db->rollBack();
-            $log->log(
+            Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -621,11 +621,11 @@ class Contribution
             );
             return true;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'An error occured updating member ' . $this->_member .
                 '\'s deadline |' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -662,10 +662,10 @@ class Contribution
             if ( $transaction ) {
                 $zdb->db->rollBack();
             }
-            $log->log(
+            Analog::log(
                 'An error occured trying to remove contribution #' .
                 $this->_id . ' | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -733,9 +733,9 @@ class Contribution
             return $due_date;
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'An error occured trying to retrieve member\'s due date',
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -764,18 +764,18 @@ class Contribution
                 );
                 return true;
             } else {
-                $log->log(
+                Analog::log(
                     'Contribution #' . $contrib_id .
                     ' is not actually part of transaction #' . $trans_id,
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 return false;
             }
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to detach contribution #' . $contrib_id .
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -801,10 +801,10 @@ class Contribution
             );
             return true;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to attach contribution #' . $contrib_id .
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -875,10 +875,10 @@ class Contribution
                         return $d->format(_T("Y-m-d"));
                     } catch (\Exception $e) {
                         //oops, we've got a bad date :/
-                        $log->log(
+                        Analog::log(
                             'Bad date (' . $his->$rname . ') | ' .
                             $e->getMessage(),
-                            KLogger::INFO
+                            Analog::INFO
                         );
                         return $this->$rname;
                     }
@@ -915,9 +915,9 @@ class Contribution
                     return _T("Paypal");
                     break;
                 default:
-                    $log->log(
+                    Analog::log(
                         'Unknown payment type ' . $this->_payment_type,
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                     return '-';
                     break;
@@ -951,9 +951,9 @@ class Contribution
                 if ( is_int($value) ) {
                     $this->$rname = new Transaction($value);
                 } else {
-                    $log->log(
+                    Analog::log(
                         'Trying to set a transaction from an id that is not an integer.',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 }
                 break;
@@ -968,9 +968,9 @@ class Contribution
                         $this->_is_cotis = false;
                     }
                 } else {
-                    $log->log(
+                    Analog::log(
                         'Trying to set a type from an id that is not an integer.',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 }
                 break;
@@ -982,11 +982,11 @@ class Contribution
                     }
                     $this->_begin_date = $d->format('Y-m-d');
                 } catch (Exception $e) {
-                    $log->log(
+                    Analog::log(
                         'Wrong date format. field: ' . $key .
                         ', value: ' . $value . ', expected fmt: ' .
                         _T("Y-m-d") . ' | ' . $e->getMessage(),
-                        KLogger::INFO
+                        Analog::INFO
                     );
                     $errors[] = str_replace(
                         array(
@@ -1005,18 +1005,18 @@ class Contribution
                 if (is_numeric($value) && $value > 0 ) {
                     $this->$rname = $value;
                 } else {
-                    $log->log(
+                    Analog::log(
                         'Trying to set an amount with a non numeric value, ' .
                         'or with a zero value',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 }
                 break;
             default:
-                $log->log(
+                Analog::log(
                     '[' . __CLASS__ . ']: Trying to set an unknown property (' .
                     $name . ')',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 break;
             }

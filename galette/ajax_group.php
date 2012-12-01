@@ -38,15 +38,15 @@
  * @since     Available since 0.7dev - 2012-01-19
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 require_once 'includes/galette.inc.php';
 
 $id = get_numeric_form_value(Galette\Entity\Group::PK, '');
 if ( !$id ) {
-    $log->log(
+    Analog::log(
         'Trying to display ajax_group.php without groups specified',
-        KLogger::INFO
+        Analog::INFO
     );
     die();
 }
@@ -54,9 +54,9 @@ if ( !$id ) {
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff()
     && !$login->isGroupManager($id)
 ) {
-    $log->log(
+    Analog::log(
         'Trying to display ajax_group.php without appropriate permissions',
-        KLogger::INFO
+        Analog::INFO
     );
     die();
 }
@@ -89,9 +89,9 @@ if ( !isset($_POST['reorder']) ) {
         $group->store();
         echo json_encode(array('success' => 'true'));
     } else {
-        $log->log(
+        Analog::log(
             'Trying to reorder without target specified',
-            KLogger::INFO
+            Analog::INFO
         );
         echo json_encode(array('success' => false));
         die();

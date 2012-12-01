@@ -40,7 +40,7 @@
 use Galette\IO\Pdf;
 use Galette\Repository\Members;
 use Galette\Filters\MembersList;
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -61,7 +61,7 @@ if ( isset($session['filters']['members']) ) {
 }
 
 if ( count($filters->selected) == 0 ) {
-    $log->log('No member selected to generate attendance sheet', KLogger::INFO);
+    Analog::log('No member selected to generate attendance sheet', Analog::INFO);
     header('location:gestion_adherents.php');
     die();
 }

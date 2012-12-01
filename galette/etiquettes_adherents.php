@@ -39,7 +39,7 @@
  */
 
 use Galette\IO\Pdf;
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -66,7 +66,7 @@ if ( isset($_GET['from']) && $_GET['from'] === 'mailing' ) {
     $members = $mailing->unreachables;
 } else {
     if ( count($filters->selected) == 0 ) {
-        $log->log('No member selected to generate labels', KLogger::INFO);
+        Analog::log('No member selected to generate labels', Analog::INFO);
         header('location:gestion_adherents.php');
         die();
     }

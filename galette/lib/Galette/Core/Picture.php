@@ -38,7 +38,7 @@
 namespace Galette\Core;
 
 use Galette\Entity\Adherent;
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Picture handling
@@ -361,9 +361,9 @@ class Picture
                     if ( $transaction === true ) {
                         $zdb->db->rollBack();
                     }
-                    $log->log(
+                    Analog::log(
                         'The file ' . $_file . ' was found on the disk but cannot be removed.',
-                        KLogger::ERR
+                        Analog::ERROR
                     );
                     return false;
                 } else {
@@ -373,9 +373,9 @@ class Picture
                     return true;
                 }
             } else {
-                 $log->log(
+                 Analog::log(
                     'Unable to remove picture database entry for ' . $this->db_id,
-                    KLogger::ERR
+                    Analog::ERROR
                 );
                 if ( $transaction === true ) {
                     //properly ends transaction
@@ -389,10 +389,10 @@ class Picture
             if ( $transaction === true ) {
                 $zdb->db->rollBack();
             }
-            $log->log(
+            Analog::log(
                 'An error occured attempting to delete picture ' . $this->db_id .
                 'from database | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -423,9 +423,9 @@ class Picture
         $reg = "/^(.[^" . implode('', $this->_bad_chars) . "]+)\.(" .
             implode('|', $this->_allowed_extensions) . ")$/i";
         if ( preg_match($reg, $name, $matches) ) {
-            $log->log(
+            Analog::log(
                 '[' . $class . '] Filename and extension are OK, proceed.',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             $extension = strtolower($matches[2]);
             if ( $extension == 'jpeg' ) {
@@ -452,38 +452,38 @@ class Picture
                 $ret = self::INVALID_FILE;
             }
 
-            $log->log(
+            Analog::log(
                 $err_msg,
-                KLogger::ERR
+                Analog::ERROR
             );
             return $ret;
         }
 
         //Second, let's check file size
         if ( $file['size'] > ( $class::MAX_FILE_SIZE * 1024 ) ) {
-            $log->log(
+            Analog::log(
                 '[' . $class . '] File is too big (' . ( $file['size'] * 1024 ) .
                 'Ko for maximum authorized ' . ( $class::MAX_FILE_SIZE * 1024 ) .
                 'Ko',
-                KLogger::ERR
+                Analog::ERROR
             );
             return self::FILE_TOO_BIG;
         } else {
-            $log->log('[' . $class . '] Filesize is OK, proceed', KLogger::DEBUG);
+            Analog::log('[' . $class . '] Filesize is OK, proceed', Analog::DEBUG);
         }
 
         $current = getimagesize($tmpfile);
 
         if ( !in_array($current['mime'], $this->_allowed_mimes) ) {
-            $log->log(
+            Analog::log(
                 '[' . $class . '] Mimetype `' . $current['mime'] . '` not allowed',
-                KLogger::ERR
+                Analog::ERROR
             );
             return self::MIME_NOT_ALLOWED;
         } else {
-            $log->log(
+            Analog::log(
                 '[' . $class . '] Mimetype is allowed, proceed',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
         }
 
@@ -525,10 +525,10 @@ class Picture
             $stmt->execute();
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'An error occured storing picture in database: ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return self::SQL_ERROR;
         }
@@ -562,30 +562,30 @@ class Picture
             switch(strtolower($ext)) {
             case 'jpg':
                 if (!$gdinfo['JPEG Support']) {
-                    $log->log(
+                    Analog::log(
                         '[' . $class . '] GD has no JPEG Support - ' .
                         'pictures could not be resized!',
-                        KLogger::ERR
+                        Analog::ERROR
                     );
                     return false;
                 }
                 break;
             case 'png':
                 if (!$gdinfo['PNG Support']) {
-                    $log->log(
+                    Analog::log(
                         '[' . $class . '] GD has no PNG Support - ' .
                         'pictures could not be resized!',
-                        KLogger::ERR
+                        Analog::ERROR
                     );
                     return false;
                 }
                 break;
             case 'gif':
                 if (!$gdinfo['GIF Create Support']) {
-                    $log->log(
+                    Analog::log(
                         '[' . $class . '] GD has no GIF Support - ' .
                         'pictures could not be resized!',
-                        KLogger::ERR
+                        Analog::ERROR
                     );
                     return false;
                 }
@@ -637,10 +637,10 @@ class Picture
                 break;
             }
         } else {
-            $log->log(
+            Analog::log(
                 '[' . $class . '] GD is not present - ' .
                 'pictures could not be resized!',
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }

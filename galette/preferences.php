@@ -45,7 +45,7 @@
  */
 
 use Galette\Core;
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -115,9 +115,9 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             switch ( $fieldname ) {
             case 'pref_email':
                 if ( GALETTE_MODE === 'DEMO' ) {
-                    $log->log(
+                    Analog::log(
                         'Trying to set pref_email while in DEMO.',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 } else {
                     if ( !Core\GaletteMail::isValidEmail($value) ) {
@@ -127,9 +127,9 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 break;
             case 'pref_admin_login':
                 if ( GALETTE_MODE === 'DEMO' ) {
-                    $log->log(
+                    Analog::log(
                         'Trying to set superadmin login while in DEMO.',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 } else {
                     if ( strlen($value) < 4 ) {
@@ -184,9 +184,9 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 break;
             case 'pref_admin_pass':
                 if ( GALETTE_MODE == 'DEMO' ) {
-                    $log->log(
+                    Analog::log(
                         'Trying to set superadmin pass while in DEMO.',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 } else {
                     if ( strlen($value) < 4 ) {
@@ -334,9 +334,9 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                     }
                 }
             } else if ($_FILES['logo']['error'] !== UPLOAD_ERR_NO_FILE) {
-                $log->log(
+                Analog::log(
                     $logo->getPhpErrorMessage($_FILES['logo']['error']),
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 $error_detected[] = $logo->getPhpErrorMessage(
                     $_FILES['logo']['error']
@@ -368,9 +368,9 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                     }
                 }
             } else if ($_FILES['card_logo']['error'] !== UPLOAD_ERR_NO_FILE) {
-                $log->log(
+                Analog::log(
                     $print_logo->getPhpErrorMessage($_FILES['card_logo']['error']),
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 $error_detected[] = $print_logo->getPhpErrorMessage(
                     $_FILES['card_logo']['error']

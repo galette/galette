@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\DynamicFieldsTypes\Separator as Separator;
 use Galette\DynamicFieldsTypes\Text as Text;
 use Galette\DynamicFieldsTypes\Line as Line;
@@ -161,13 +161,13 @@ class DynamicFields
             }
             return $fixed_values;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $val_select->__toString() . ' ' . $e->__toString(),
-                KLogger::INFO
+                Analog::INFO
             );
         }
     }
@@ -268,13 +268,13 @@ class DynamicFields
                 return false;
             }
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::INFO
+                Analog::INFO
             );
         }
     }
@@ -358,13 +358,13 @@ class DynamicFields
             }
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::INFO
+                Analog::INFO
             );
         }
     }
@@ -440,20 +440,20 @@ class DynamicFields
                 }
 
                 if ( trim($field_val) == '' ) {
-                    $log->log(
+                    Analog::log(
                         'Field ' . $field_id . ' is empty (index:' .
                         $val_index . ')',
-                        KLogger::DEBUG
+                        Analog::DEBUG
                     );
                     $zdb->db->delete(
                         PREFIX_DB . self::TABLE,
                         $where
                     );
                 } else {
-                    $log->log(
+                    Analog::log(
                         'Field ' . $field_id . ' will be set to value: ' .
                         $field_val . ' (index: ' . $val_index . ')',
-                        KLogger::DEBUG
+                        Analog::DEBUG
                     );
                     $zdb->db->update(
                         PREFIX_DB . self::TABLE,
@@ -482,12 +482,12 @@ class DynamicFields
             return true;
         } catch (\Exception $e) {
             $zdb->db->rollBack();
-            $log->log(
+            Analog::log(
                 'An error occured storing dynamic field. Form name: ' . $form_name .
                 '; item_id:' . $item_id . '; field_id: ' . $field_id .
                 '; val_index: ' . $val_index . '; field_val:' . $field_val .
                 ' | Error was: ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -578,10 +578,10 @@ class DynamicFields
                 return false;
             }
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | Unable to retrieve field `' . $id .
                 '` informations | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }

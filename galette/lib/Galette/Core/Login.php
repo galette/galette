@@ -41,7 +41,7 @@ use Galette\Repository\Groups as Groups;
 use Galette\Repository\Members as Members;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\Status as Status;
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Default authentication class for galette
@@ -80,7 +80,7 @@ class Login extends Authentication
     */
     public function logIn($user, $passe)
     {
-        global $zdb, $log, $i18n;
+        global $zdb, $i18n;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -104,20 +104,20 @@ class Login extends Authentication
             );
             $select->where(self::PK . ' = ?', $user);
             $select->where('mdp_adh = ?', $passe);
-            $log->log(
+            Analog::log(
                 'Login query: ' . $select->__toString(),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             $row = $zdb->db->fetchRow($select);
 
             if ( $row === false ) {
-                $log->log(
+                Analog::log(
                     'No entry found for login `' . $user . '`',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 return false;
             } else {
-                $log->log('User `' . $user . '` logged in.', KLogger::INFO);
+                Analog::log('User `' . $user . '` logged in.', Analog::INFO);
                 $this->id = $row->id_adh;
                 $this->login = $user;
                 $this->passe = $row->mdp_adh;
@@ -160,18 +160,18 @@ class Login extends Authentication
                 return true;
             }
         } catch (\Zend_Db_Adapter_Exception $e) {
-            $log->log(
+            Analog::log(
                 'An error occured: ' . $e->getChainedException()->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log($e->getTrace(), KLogger::ERR);
+            Analog::log($e->getTrace(), Analog::ERROR);
             return false;
         } catch(\Exception $e) {
-            $log->log(
+            Analog::log(
                 'An error occured: ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log($e->getTrace(), KLogger::ERR);
+            Analog::log($e->getTrace(), Analog::ERROR);
             return false;
         }
     }
@@ -186,7 +186,7 @@ class Login extends Authentication
     */
     public function loginExists($user)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -202,13 +202,13 @@ class Login extends Authentication
                 return false;
             }
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Cannot check if login exists | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             /* If an error occurs, we consider that username already exists */
             return true;

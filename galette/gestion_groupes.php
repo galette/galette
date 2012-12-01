@@ -34,7 +34,7 @@
  * @link      http://galette.tuxfamily.org
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 require_once 'includes/galette.inc.php';
 
@@ -58,9 +58,9 @@ if ( $id !== null ) {
     if ( $login->isGroupManager($id) ) {
         $group->load($id);
     } else {
-        $log->log(
+        Analog::log(
             'Trying to display group ' . $id . ' without appropriate permissions',
-            KLogger::INFO
+            Analog::INFO
         );
         die();
     }

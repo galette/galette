@@ -932,10 +932,10 @@ case 'u7':
                 echo '<li class="install-ok">' . $w1 . ' ' . $w2 . ' ' . $w3 .
                     ' ' . $extra . '</li>';
             } catch (Exception $e) {
-                $log->log(
+                Analog::log(
                     'Error executing query | ' . $e->getMessage() .
                     ' | Query was: ' . $query,
-                    Galette\Common\KLogger::WARN
+                    Galette\Common\Analog::WARNING
                 );
                 echo '<li class="install-bad debuginfos">' . $w1 . ' ' . $w2 .
                     ' ' . $w3 . ' ' . $extra . '<span>' . $e->getMessage() .

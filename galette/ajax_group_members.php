@@ -34,24 +34,24 @@
  * @since     Available since 0.7dev - 2011-10-29
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 require_once 'includes/galette.inc.php';
 
 $ids = $_POST['persons'];
 $mode = $_POST['person_mode'];
 if ( !$ids || !$mode ) {
-    $log->log(
+    Analog::log(
         'Trying to display ajax_group_members.php without persons or mode specified',
-        KLogger::INFO
+        Analog::INFO
     );
     die();
 }
 
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
-    $log->log(
+    Analog::log(
         'Trying to display ajax_group_members.php without appropriate permissions',
-        KLogger::INFO
+        Analog::INFO
     );
     die();
 }

@@ -46,7 +46,7 @@
  */
 
 use Galette\IO\Pdf;
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -69,7 +69,7 @@ if ( isset($_GET[Galette\Entity\Adherent::PK])
     $unique = $_GET[Galette\Entity\Adherent::PK];
 } else {
     if ( count($filters->selected) == 0 ) {
-        $log->log('No member selected to generate members cards', KLogger::INFO);
+        Analog::log('No member selected to generate members cards', Analog::INFO);
         if ( $login->isAdmin() || $login->isStaff() ) {
             header('location:gestion_adherents.php');
         } else {
@@ -94,7 +94,7 @@ $members = Galette\Repository\Members::getArrayList(
 );
 
 if ( !is_array($members) || count($members) < 1 ) {
-    $log->log('An error has occured, unable to get members list.', KLogger::ERR);
+    Analog::log('An error has occured, unable to get members list.', Analog::ERROR);
     die();
 }
 

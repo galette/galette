@@ -47,7 +47,7 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 }
 
 use Galette\Core;
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Filters\MembersList as MembersList;
 
 //We're done :-)
@@ -99,9 +99,9 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
             && !isset($_GET['mailing_new'])
             && !isset($_GET['reminder'])
         ) {
-            $log->log(
+            Analog::log(
                 '[mailing_adherents.php] No member selected for mailing',
-                KLogger::WARN
+                Analog::WARNING
             );
 
             if ( isset($profiler) ) {
@@ -151,10 +151,10 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
         $sent = $mailing->send();
         if ( $sent == Core\Mailing::MAIL_ERROR ) {
             $mailing->current_step = Core\Mailing::STEP_START;
-            $log->log(
+            Analog::log(
                 '[mailing_adherents.php] Message was not sent. Errors: ' .
                 print_r($mailing->errors, true),
-                KLogger::ERR
+                Analog::ERROR
             );
             foreach ( $mailing->errors as $e ) {
                 $error_detected[] = $e;
@@ -162,9 +162,9 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
         } else {
             $mlh = new Core\MailingHistory($mailing);
             $mlh->storeMailing(true);
-            $log->log(
+            Analog::log(
                 '[mailing_adherents.php] Message has been sent.',
-                KLogger::INFO
+                Analog::INFO
             );
             $mailing->current_step = Core\Mailing::STEP_SENT;
             //cleanup

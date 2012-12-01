@@ -38,22 +38,22 @@
  * @since     Available since 0.7dev - 2012-12-17
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Core\Db as Db;
 
 require_once 'includes/galette.inc.php';
 
 if ( GALETTE_MODE === 'DEMO' ) {
-    $log->log(
+    Analog::log(
         'Trying to access ajax_plugins_initdb.php in DEMO mode.',
-        KLogger::WARN
+        Analog::WARNING
     );
     die();
 }
 if ( !$login->isLogged() || !$login->isAdmin() ) {
-    $log->log(
+    Analog::log(
         'Trying to display ajax_members.php without appropriate permissions',
-        KLogger::INFO
+        Analog::INFO
     );
     die();
 }
@@ -73,9 +73,9 @@ if ( $plugid !== null ) {
 }
 
 if ( $plugin === null ) {
-    $log->log(
+    Analog::log(
         'Unable to load plugin `' . $plugid . '`!',
-        KLogger::EMERG
+        Analog::URGENT
     );
     die();
 }
@@ -222,10 +222,10 @@ case 'u3':
                 $success_detected[] = $w1 . ' ' . $w2 . ' ' . $w3 .
                     ' ' . $extra;
             } catch (Exception $e) {
-                $log->log(
+                Analog::log(
                     'Error executing query | ' . $e->getMessage() .
                     ' | Query was: ' . $query,
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 if ( (strcasecmp(trim($w1), 'drop') != 0)
                     && (strcasecmp(trim($w1), 'rename') != 0)

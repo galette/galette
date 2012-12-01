@@ -35,15 +35,15 @@
  * @since     Available since 0.7dev - 2011-11-05
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
 if ( !isset($_GET['file']) ) {
-    $log->log(
+    Analog::log(
         'No requested file',
-        KLogger::INFO
+        Analog::INFO
     );
     header("HTTP/1.1 500 Internal Server Error");
     die();
@@ -63,18 +63,18 @@ if ( $login->isAdmin() || $login->isStaff() ) {
         header('Pragma: no-cache');
         readfile(Csv::DEFAULT_DIRECTORY . $filename);
     } else {
-        $log->log(
+        Analog::log(
             'A request has been made to get an exported file named `' .
             $filename .'` that does not exists.',
-            KLogger::WARN
+            Analog::WARNING
         );
         header('HTTP/1.0 404 Not Found');        
     }
 } else {
-    $log->log(
+    Analog::log(
         'A non authorized person asked to retrieve exported file named `' .
         $filename . '`. Access ha not been granted.',
-        KLogger::WARN
+        Analog::WARNING
     );
     header('HTTP/1.0 403 Forbidden');
 }

@@ -44,6 +44,9 @@ if ( file_exists(GALETTE_ROOT . 'config/local_paths.inc.php') ) {
 if ( !defined('GALETTE_ZEND_PATH') ) {
     define('GALETTE_ZEND_PATH', GALETTE_ROOT . 'includes/Zend-' . ZEND_VERSION);
 }
+if ( !defined('GALETTE_ANALOG_PATH') ) {
+    define('GALETTE_ANALOG_PATH', GALETTE_ROOT . 'includes/Analog-' . ANALOG_VERSION);
+}
 if ( !defined('GALETTE_PHP_MAILER_PATH') ) {
     define('GALETTE_PHP_MAILER_PATH', GALETTE_ROOT . 'includes/phpMailer-' . PHP_MAILER_VERSION);
 }

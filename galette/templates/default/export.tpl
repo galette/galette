@@ -100,10 +100,6 @@
                         </tbody>
                     </table>
                 </fieldset>
-{if $show_fields eq 'true'}
-			<table id="fields_list">
-			</table>
-{/if}
 			<div class="button-container">
 				<input type="submit" name="valid" value="{_T string="Continue"}"/>
 			</div>

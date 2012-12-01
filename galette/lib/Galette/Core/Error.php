@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Error handler
@@ -72,73 +72,86 @@ class Error
 
         switch ($errno) {
         case E_STRICT:
-            $log->log(
+            Analog::log(
                 str_replace(
                     $patterns,
                     array('Strict standards', $errstr, $errfile, $errline),
                     $str
                 ),
-                KLogger::INFO
+                Analog::NOTICE
             );
             break;
         case E_DEPRECATED:
         case E_USER_DEPRECATED:
-            $log->log(
+            Analog::log(
                 str_replace(
                     $patterns,
                     array('Deprecated', $errstr, $errfile, $errline),
                     $str
                 ),
-                KLogger::INFO
+                Analog::NOTICE
             );
             break;
         case E_NOTICE:
         case E_USER_NOTICE:
             //do not log smarty's annonying 'undefined index' notices
             if ( !preg_match('/^Undefined index/', $errstr)
-                && !preg_match('/\.tpl\.php$/', $errfile) ) {
-                $log->log(
+                && !preg_match('/\.tpl\.php$/', $errfile)
+            ) {
+                Analog::log(
                     str_replace(
                         $patterns,
                         array('Notice', $errstr, $errfile, $errline),
                         $str
                     ),
-                    KLogger::INFO
+                    Analog::NOTICE
                 );
             }
             break;
         case E_WARNING:
         case E_USER_WARNING:
-            $log->log(
+            Analog::log(
                 str_replace(
                     $patterns,
                     array('Warning', $errstr, $errfile, $errline),
                     $str
                 ),
-                KLogger::WARN
+                Analog::WARNING
             );
             break;
         case E_ERROR:
         case E_USER_ERROR:
-            $log->log(
+            Analog::log(
                 str_replace(
                     $patterns,
                     array('Fatal', $errstr, $errfile, $errline),
                     $str
                 ),
-                KLogger::ERR
+                Analog::ERROR
             );
+            throw new ErrorException(
+                'Fatal error: ' . $errstr,
+                $errno,
+                $errfile,
+                $errline
+            );
+
             exit("FATAL error $errstr at $errfile:$errline");
         default:
-            $log->log(
+            Analog::log(
                 str_replace(
                     $patterns,
                     array('Unknown', $errstr, $errfile, $errline),
                     $str
                 ),
-                KLogger::ERR
+                Analog::ERROR
             );
-            exit("Unknown error at $errfile:$errline");
+            throw new ErrorException(
+                'Unknown error: ' . $errstr,
+                $errno,
+                $errfile,
+                $errline
+            );
         }
     }
 }

@@ -38,23 +38,23 @@
  * @since     Available since 0.7dev - 2012-01-22
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 require_once 'includes/galette.inc.php';
 
 $name = $_POST['gname'];
 if ( !$name ) {
-    $log->log(
+    Analog::log(
         'Trying to check if group name is unique without name specified',
-        KLogger::INFO
+        Analog::INFO
     );
     die();
 }
 
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
-    $log->log(
+    Analog::log(
         'Trying to display ajax_group.php without appropriate permissions',
-        KLogger::INFO
+        Analog::INFO
     );
     die();
 }

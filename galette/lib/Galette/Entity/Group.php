@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Group entity
@@ -109,13 +109,13 @@ class Group
             $this->_loadFromRS($result);
             return true;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Cannot load group form id `' . $id . '` | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -198,13 +198,13 @@ class Group
                     $this->_managers = $members;
                 }
             } catch (\Exception $e) {
-                $log->log(
+                Analog::log(
                     'Cannot get group persons | ' . $e->getMessage(),
-                    KLogger::WARN
+                    Analog::WARNING
                 );
-                $log->log(
+                Analog::log(
                     'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                    KLogger::ERR
+                    Analog::ERROR
                 );
             }
         }
@@ -245,14 +245,14 @@ class Group
             }
             $this->_groups = $groups;
         } catch ( \Exception $e ) {
-            $log->log(
+            Analog::log(
                 'Cannot get subgroup for group ' . $this->_group_name .
                 ' (' . $this->_id . ')| ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }
@@ -297,10 +297,10 @@ class Group
             return true;
         } catch (\Exception $e) {
             $zdb->db->rollBack();
-            $log->log(
+            Analog::log(
                 'Unable to delete group ' . $this->_group_name .
                 ' (' . $this->_id  . ') |' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -333,12 +333,12 @@ class Group
 
             return true;
         } catch ( \Exception $e ) {
-            $log->log(
+            Analog::log(
                 'Something went wrong detaching group `' . $this->_group_name .
                 '` (' . $this->_id . ') from its parent:\'( | ' .
                 $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             throw new \Exception(_T("Unable to detach group :("));
         }
@@ -406,10 +406,10 @@ class Group
             /** FIXME: also store members and managers? */
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -615,10 +615,10 @@ class Group
                 PREFIX_DB . self::GROUPSUSERS_TABLE,
                 self::PK . ' = ' . $this->_id
             );
-            $log->log(
+            Analog::log(
                 'Group members has been removed for `' . $this->_group_name .
                 ', we can now store new ones.',
-                KLogger::INFO
+                Analog::INFO
             );
 
             $stmt = $zdb->db->prepare(
@@ -633,17 +633,17 @@ class Group
                     $stmt->bindValue(':adh', $m->id, \PDO::PARAM_INT);
 
                     if ( $stmt->execute() ) {
-                        $log->log(
+                        Analog::log(
                             'Member `' . $m->sname . '` attached to group `' .
                             $this->_group_name . '`.',
-                            KLogger::DEBUG
+                            Analog::DEBUG
                         );
                     } else {
-                        $log->log(
+                        Analog::log(
                             'An error occured trying to attach member `' .
                             $m->sname . '` to group `' . $this->_group_name .
                             '` ('  . $this->_id . ').',
-                            KLogger::ERR
+                            Analog::ERROR
                         );
                         throw new \Exception(
                             'Unable to attach `' . $m->sname . '` ' .
@@ -655,18 +655,18 @@ class Group
             //commit all changes
             $zdb->db->commit();
 
-            $log->log(
+            Analog::log(
                 'Group members updated successfully.',
-                KLogger::INFO
+                Analog::INFO
             );
 
             return true;
         } catch (\Exception $e) {
             $zdb->db->rollBack();
-            $log->log(
+            Analog::log(
                 'Unable to attach members to group `' . $this->_group_name .
                 '` (' . $this->_id . ')|' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -691,10 +691,10 @@ class Group
                 PREFIX_DB . self::GROUPSMANAGERS_TABLE,
                 self::PK . ' = ' . $this->_id
             );
-            $log->log(
+            Analog::log(
                 'Group managers has been removed for `' . $this->_group_name .
                 ', we can now store new ones.',
-                KLogger::INFO
+                Analog::INFO
             );
 
             $stmt = $zdb->db->prepare(
@@ -709,17 +709,17 @@ class Group
                     $stmt->bindValue(':adh', $m->id, \PDO::PARAM_INT);
 
                     if ( $stmt->execute() ) {
-                        $log->log(
+                        Analog::log(
                             'Manager `' . $m->sname . '` attached to group `' .
                             $this->_group_name . '`.',
-                            KLogger::DEBUG
+                            Analog::DEBUG
                         );
                     } else {
-                        $log->log(
+                        Analog::log(
                             'An error occured trying to attach manager `' .
                             $m->sname . '` to group `' . $this->_group_name .
                             '` ('  . $this->_id . ').',
-                            KLogger::ERR
+                            Analog::ERROR
                         );
                         throw new \Exception(
                             'Unable to attach `' . $m->sname . '` ' .
@@ -731,18 +731,18 @@ class Group
             //commit all changes
             $zdb->db->commit();
 
-            $log->log(
+            Analog::log(
                 'Groups managers updated successfully.',
-                KLogger::INFO
+                Analog::INFO
             );
 
             return true;
         } catch (\Exception $e) {
             $zdb->db->rollBack();
-            $log->log(
+            Analog::log(
                 'Unable to attach managers to group `' . $this->_group_name .
                 '` (' . $this->_id . ')|' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }

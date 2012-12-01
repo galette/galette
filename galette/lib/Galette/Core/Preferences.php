@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Entity\Adherent as Adherent;
 
 /**
@@ -177,9 +177,9 @@ class Preferences
         foreach ( self::$_defaults as $k=>$v ) {
             if ( !isset($this->_prefs[$k]) ) {
                 $this->_prefs[$k] = $v;
-                $log->log(
+                Analog::log(
                     'The field `' . $k . '` does not exists, Galette will attempt to create it.',
-                    KLogger::INFO
+                    Analog::INFO
                 );
                 $proceed = true;
                 $params[] = array(
@@ -204,16 +204,16 @@ class Preferences
                     );
                 }
             } catch (\Exception $e) {
-                $log->log(
+                Analog::log(
                     'Unable to add missing preferences.' . $e->getMessage(),
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 return false;
             }
 
-            $log->log(
+            Analog::log(
                 'Missing preferences were successfully stored into database.',
-                KLogger::INFO
+                Analog::INFO
             );
         }
     }
@@ -237,10 +237,10 @@ class Preferences
             }
             return true;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Preferences cannot be loaded. Galette should not work without ' .
                 'preferences. Exiting.',
-                KLogger::EMERG
+                Analog::URGENT
             );
             return false;
         }
@@ -281,15 +281,15 @@ class Preferences
                 $stmt->execute();
             }
 
-            $log->log(
+            Analog::log(
                 'Default preferences were successfully stored into database.',
-                KLogger::INFO
+                Analog::INFO
             );
             return true;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to initialize default preferences.' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return $e;
         }
@@ -322,26 +322,26 @@ class Preferences
             );
 
             foreach ( self::$_defaults as $k=>$v ) {
-                $log->log('Storing ' . $k, KLogger::DEBUG);
+                Analog::log('Storing ' . $k, Analog::DEBUG);
                 $stmt->bindValue(':value', $this->_prefs[$k], \PDO::PARAM_STR);
                 $stmt->bindValue(':name', $k, \PDO::PARAM_STR);
 
                 $stmt->execute();
             }
-            $log->log(
+            Analog::log(
                 'Preferences were successfully stored into database.',
-                KLogger::INFO
+                Analog::INFO
             );
             return true;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Unable to store preferences | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -481,9 +481,9 @@ class Preferences
                 return $this->_prefs[$name];
             }
         } else {
-            $log->log(
+            Analog::log(
                 'Preference `' . $name . '` is not set or is forbidden',
-                KLogger::INFO
+                Analog::INFO
             );
             return false;
         }
@@ -503,10 +503,10 @@ class Preferences
 
         //does this pref exists ?
         if ( !array_key_exists($name, self::$_defaults) ) {
-            $log->log(
+            Analog::log(
                 'Trying to set a preference value which does not seem to exist ('
                 . $name . ')',
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }

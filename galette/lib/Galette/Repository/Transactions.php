@@ -37,7 +37,7 @@
 
 namespace Galette\Repository;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Core\Pagination as Pagination;
 use Galette\Entity\Transaction as Transaction;
 use Galette\Entity\Adherent as Adherent;
@@ -129,13 +129,13 @@ class Transactions extends Pagination
             return $transactions;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot list transactions | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -186,13 +186,13 @@ class Transactions extends Pagination
             return $select;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot build SELECT clause for transactions | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -225,13 +225,13 @@ class Transactions extends Pagination
             }
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot count transactions | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $countSelect->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -311,9 +311,9 @@ class Transactions extends Pagination
             }
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
         }
     }
@@ -381,18 +381,18 @@ class Transactions extends Pagination
             } catch (\Exception $e) {
                 /** FIXME */
                 $zdb->db->rollBack();
-                $log->log(
+                Analog::log(
                     'An error occured trying to remove transactions | ' .
                     $e->getMessage(),
-                    KLogger::ERR
+                    Analog::ERROR
                 );
                 return false;
             }
         } else {
             //not numeric and not an array: incorrect.
-            $log->log(
+            Analog::log(
                 'Asking to remove transaction, but without providing an array or a single numeric value.',
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }
@@ -409,9 +409,9 @@ class Transactions extends Pagination
     {
         global $log;
 
-        $log->log(
+        Analog::log(
             '[Transactions] Getting property `' . $name . '`',
-            KLogger::DEBUG
+            Analog::DEBUG
         );
 
         if ( in_array($name, $this->pagination_fields) ) {
@@ -426,9 +426,9 @@ class Transactions extends Pagination
                 $name = '_' . $name;
                 return $this->$name;
             } else {
-                $log->log(
+                Analog::log(
                     '[Transactions] Unable to get proprety `' .$name . '`',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
         }
@@ -448,9 +448,9 @@ class Transactions extends Pagination
         if ( in_array($name, $this->pagination_fields) ) {
             parent::__set($name, $value);
         } else {
-            $log->log(
+            Analog::log(
                 '[Transactions] Setting property `' . $name . '`',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
 
             $forbidden = array();
@@ -476,9 +476,9 @@ class Transactions extends Pagination
                     break;
                 }
             } else {
-                $log->log(
+                Analog::log(
                     '[Transactions] Unable to set proprety `' .$name . '`',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
         }

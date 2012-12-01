@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /* TODO: Most of the code is duplicated in Galette\Entity\Status. Should
  * probably use a superclass for genericity.
@@ -119,14 +119,14 @@ class ContributionsTypes
             return true;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot load contribution type form id `' . $id . '` | ' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -173,16 +173,16 @@ class ContributionsTypes
                 $stmt->execute();
             }
 
-            $log->log(
+            Analog::log(
                 'Default contributions types were successfully stored into database.',
-                KLogger::INFO
+                Analog::INFO
             );
             return true;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to initialize default contributions types.' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return $e;
         }
@@ -219,13 +219,13 @@ class ContributionsTypes
             }
             return $list;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'An error occured. ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString(),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             return false;
         }
@@ -250,9 +250,9 @@ class ContributionsTypes
             $types = $select->query()->fetchAll();
 
             if ( count($types) == 0 ) {
-                $log->log(
+                Analog::log(
                     'No contributions types defined in database.',
-                    KLogger::INFO
+                    Analog::INFO
                 );
             } else {
                 foreach ( $types as $type ) {
@@ -265,13 +265,13 @@ class ContributionsTypes
             return $list;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot list contribution types | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -298,13 +298,13 @@ class ContributionsTypes
             return $result;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -341,10 +341,10 @@ class ContributionsTypes
             return $result = $select->query()->fetchColumn();
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Unable to retrieve contributions type from label `' .
                 $label . '` | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -366,9 +366,9 @@ class ContributionsTypes
         $ret = $this->getidByLabel($label);
 
         if ( $ret !== false ) {
-            $log->log(
+            Analog::log(
                 'Contribution type `' . $label . '` already exists',
-                KLogger::WARN
+                Analog::WARNING
             );
             return -2;
         }
@@ -385,9 +385,9 @@ class ContributionsTypes
             );
 
             if ( $ret >  0) {
-                $log->log(
+                Analog::log(
                     'New contributions type `' . $label . '` added successfully.',
-                    KLogger::INFO
+                    Analog::INFO
                 );
                 return $zdb->db->lastInsertId(
                     PREFIX_DB . self::TABLE,
@@ -398,10 +398,10 @@ class ContributionsTypes
             }
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Unable to add new contributions type `' . $label . '` | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -435,7 +435,7 @@ class ContributionsTypes
             $fieldtype = 'integer';
         }
 
-        $log->log("Setting field $field to $value for ctype $id", KLogger::INFO);
+        Analog::log("Setting field $field to $value for ctype $id", Analog::INFO);
 
         try {
             $values= array(
@@ -448,17 +448,17 @@ class ContributionsTypes
                 self::PK . ' = ' . $id
             );
 
-            $log->log(
+            Analog::log(
                 'Contributions type ' . $id . ' updated successfully.',
-                KLogger::INFO
+                Analog::INFO
             );
             return true;
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Unable to update contributions types ' . $id . ' | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -486,17 +486,17 @@ class ContributionsTypes
                 PREFIX_DB . self::TABLE,
                 self::PK . ' = ' . $id
             );
-            $log->log(
+            Analog::log(
                 'Contributions type ' . $id . ' deleted successfully.',
-                KLogger::INFO
+                Analog::INFO
             );
             return true;
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Unable to delete contributions type ' . $id . ' | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -525,10 +525,10 @@ class ContributionsTypes
             }
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Unable to check if contribution `' . $id . '` is used. | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             //in case of error, we consider that type is used, to avoid errors
             return true;
