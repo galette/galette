@@ -40,7 +40,9 @@
             <fieldset class="cssform" id="group_managers">
                 <legend>{_T string="Managers"}</legend>
                 <div>
-                    {include file="group_persons.tpl" person_mode="managers" persons=$group->getManagers()}
+                    {if $group}
+                        {include file="group_persons.tpl" person_mode="managers" persons=$group->getManagers()}
+                    {/if}
                 </div>
            </fieldset>
             <fieldset class="cssform" id="group_members">
@@ -48,7 +50,9 @@
                     {_T string="Members"}
                </legend>
                 <div>
-                    {include file="group_persons.tpl" person_mode="members" persons=$group->getMembers()}
+                    {if $group}
+                        {include file="group_persons.tpl" person_mode="members" persons=$group->getMembers()}
+                    {/if}
                 </div>
             </fieldset>
             <a href="#" class="button notext hidden" id="btnusers_small">{_T string="Manage members"}</a>
