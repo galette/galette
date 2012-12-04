@@ -151,7 +151,8 @@ class Contributions extends Pagination
 
             $contributions = array();
             if ( $as_contrib ) {
-                foreach ( $select->query()->fetchAll() as $row ) {
+                $res = $select->query()->fetchAll();
+                foreach ( $res as $row ) {
                     $contributions[] = new Contribution($row);
                 }
             } else {

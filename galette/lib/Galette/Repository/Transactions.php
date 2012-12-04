@@ -119,7 +119,8 @@ class Transactions extends Pagination
 
             $transactions = array();
             if ( $as_trans ) {
-                foreach ( $select->query()->fetchAll() as $row ) {
+                $res = $select->query()->fetchAll();
+                foreach ( $res as $row ) {
                     $transactions[] = new Transaction($row);
                 }
             } else {

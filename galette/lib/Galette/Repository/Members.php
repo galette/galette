@@ -235,7 +235,8 @@ class Members
 
             $members = array();
             if ( $as_members ) {
-                foreach ( $select->query()->fetchAll() as $row ) {
+                $res = $select->query()->fetchAll();
+                foreach ( $res as $row ) {
                     $members[] = new Adherent($row);
                 }
             } else {
@@ -485,7 +486,8 @@ class Members
 
             $result = $select->query();
             $members = array();
-            foreach ( $result->fetchAll() as $o) {
+            $res = $result->fetchAll();
+            foreach ( $res as $o) {
                 $members[] = new Adherent($o);
             }
             return $members;

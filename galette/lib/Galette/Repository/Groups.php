@@ -74,7 +74,8 @@ class Groups
             $groups = array();
             $q = $select->__toString();
             $gpk = Group::PK;
-            foreach ( $select->query()->fetchAll() as $row ) {
+            $res = $select->query()->fetchAll();
+            foreach ( $res as $row ) {
                 $groups[$row->$gpk] = $row->group_name;
             }
             return $groups;
@@ -126,7 +127,8 @@ class Groups
             $select->group('a.' . Group::PK)->order('group_name ASC');
 
             $groups = array();
-            foreach ( $select->query()->fetchAll() as $row ) {
+            $res = $select->query()->fetchAll();
+            foreach ( $res as $row ) {
                 $groups[] = new Group($row);
             }
             return $groups;
