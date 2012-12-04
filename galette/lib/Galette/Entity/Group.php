@@ -159,45 +159,47 @@ class Group
     {
         global $zdb, $log;
 
-        try {
-            $select = new \Zend_Db_Select($zdb->db);
+        if ( $this->_id ) {
+            try {
+                $select = new \Zend_Db_Select($zdb->db);
 
-            $from = null;
-            switch ( $type ) {
-            case self::MEMBER_TYPE:
-                $from = self::GROUPSUSERS_TABLE;
-                break;
-            case self::MANAGER_TYPE:
-                $from = self::GROUPSMANAGERS_TABLE;
-                break;
+                $from = null;
+                switch ( $type ) {
+                case self::MEMBER_TYPE:
+                    $from = self::GROUPSUSERS_TABLE;
+                    break;
+                case self::MANAGER_TYPE:
+                    $from = self::GROUPSMANAGERS_TABLE;
+                    break;
+                }
+
+                $select->from(
+                    PREFIX_DB . $from,
+                    array(Adherent::PK)
+                )->where(self::PK . ' = ?', $this->_id);
+
+                $res = $select->query()->fetchAll();
+                $members = array();
+                $adhpk = Adherent::PK;
+                foreach ( $res as $m ) {
+                    $members[] = new Adherent((int)$m->$adhpk);
+                }
+
+                if ( $type === self::MEMBER_TYPE) {
+                    $this->_members = $members;
+                } else {
+                    $this->_managers = $members;
+                }
+            } catch (\Exception $e) {
+                $log->log(
+                    'Cannot get group persons | ' . $e->getMessage(),
+                    KLogger::WARN
+                );
+                $log->log(
+                    'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                    KLogger::ERR
+                );
             }
-
-            $select->from(
-                PREFIX_DB . $from,
-                array(Adherent::PK)
-            )->where(self::PK . ' = ?', $this->_id);
-
-            $res = $select->query()->fetchAll();
-            $members = array();
-            $adhpk = Adherent::PK;
-            foreach ( $res as $m ) {
-                $members[] = new Adherent((int)$m->$adhpk);
-            }
-
-            if ( $type === self::MEMBER_TYPE) {
-                $this->_members = $members;
-            } else {
-                $this->_managers = $members;
-            }
-        } catch (\Exception $e) {
-            $log->log(
-                'Cannot get group persons | ' . $e->getMessage(),
-                KLogger::WARN
-            );
-            $log->log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
-            );
         }
     }
 

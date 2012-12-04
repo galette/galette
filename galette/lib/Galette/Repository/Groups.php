@@ -124,7 +124,11 @@ class Groups
                 $select->where('parent_group IS NULL');
             }
 
-            $select->group('a.' . Group::PK)->order('group_name ASC');
+            $select->group('a.' . Group::PK)
+                ->group('a.group_name')
+                ->group('a.creation_date')
+                ->group('a.parent_group')
+                ->order('a.group_name ASC');
 
             $groups = array();
             $res = $select->query()->fetchAll();
