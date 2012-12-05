@@ -184,7 +184,7 @@ case 'u3':
     }
     // begin : copyright (2002) the phpbb group (support@phpbb.com)
     // load in the sql parser
-    include 'install/sql_parse.php';
+    include 'includes/sql_parse.php';
     if ( $step == 'u3' ) {
         $update_scripts = Db::getUpdateScripts(
             $plugin['root'],
