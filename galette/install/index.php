@@ -897,7 +897,7 @@ case 'u7':
 
     // begin : copyright (2002) the phpbb group (support@phpbb.com)
     // load in the sql parser
-    include 'sql_parse.php';
+    include '../includes/sql_parse.php';
 
     if ( $step == 'u7' ) {
         $update_scripts = Galette\Core\Db::getUpdateScripts(
