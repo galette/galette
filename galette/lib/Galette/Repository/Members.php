@@ -680,18 +680,27 @@ class Members
                 $token = '%' . $filters->filter_str . '%';
                 switch( $filters->field_filter ) {
                 case self::FILTER_NAME:
-                    $sep = ( TYPE_DB === 'pgsql' ) ? " || ' ' || " : ', " ", ';
+                    if ( TYPE_DB === 'pgsql' ) {
+                        $sep = " || ' ' || ";
+                        $pre = '';
+                        $post = '';
+                    } else {
+                        $sep = ', " ", ';
+                        $pre = 'CONCAT(';
+                        $post=')';
+                    }
+                    //$sep = ( TYPE_DB === 'pgsql' ) ? " || ' ' || " : ', " ", ';
                     $select->where(
                         '(' . $zdb->db->quoteInto(
-                            'CONCAT(LOWER(nom_adh)' . $sep .
+                            $pre . 'LOWER(nom_adh)' . $sep .
                             'LOWER(prenom_adh)' . $sep .
-                            'LOWER(pseudo_adh)) LIKE ?',
+                            'LOWER(pseudo_adh)' . $post  . ' LIKE ?',
                             strtolower($token)
                         ) . ' OR ' .
                         $zdb->db->quoteInto(
-                            'CONCAT(LOWER(prenom_adh)' . $sep .
+                            $pre . 'LOWER(prenom_adh)' . $sep .
                             'LOWER(nom_adh)' . $sep .
-                            'LOWER(pseudo_adh)) LIKE ?',
+                            'LOWER(pseudo_adh)' . $post  . ' LIKE ?',
                             strtolower($token)
                         ) . ')'
                     );
