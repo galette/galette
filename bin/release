@@ -1,7 +1,8 @@
 #!/usr/bin/python
 
 import os, sys, argparse, re, git, httplib, subprocess
-import urlgrabber.progress, tarfile, shutil
+import urlgrabber.progress, tarfile, shutil, gitdb, time
+from datetime import datetime
 from termcolor import colored
 from urlparse import urlparse
 
@@ -15,6 +16,8 @@ local_dl_repo = os.path.join(
 verbose = False
 tagrefs = None
 force = False
+commit = None
+extra = None
 
 def print_err(msg):
     """
@@ -125,15 +128,37 @@ def ask_user_confirm(msg):
                 "Invalid input. Please enter 'yes' or 'no' (or 'y' or 'n')."
             )
 
+def get_rel_name(buildver):
+    """
+    Build archive name from command line parameters
+    That would be used for git archiving prefix and archive name
+    """
+    archive_name = None
+
+    if commit and extra:
+        now = datetime.now()
+        archive_name = 'galette-%s-%s-%s-%s' % (
+            buildver,
+            extra,
+            now.strftime('%Y%m%d'),
+            commit
+        )
+    else:
+        archive_name = 'galette-%s' % buildver
+
+    return archive_name
+
 def _do_build(ver):
     """
     Proceed build
     """
     exists = False
     ascexists = False
+    rel_name = get_rel_name(ver)
+    archive_name = rel_name + '.tar.bz2'
     galette_archive = os.path.join(
         local_dl_repo,
-        'galette-%s.tar.bz2' % ver
+        archive_name
     )
 
     if not force:
@@ -141,7 +166,7 @@ def _do_build(ver):
         local = False
         ascLocal = False
 
-        url = '%sgalette-%s.tar.bz2' % (galette_dl_repo, ver)
+        url = galette_dl_repo + '/' + archive_name
         urlasc = '%s.asc' % url
         parsed = urlparse(url)
         ascparsed = urlparse(urlasc)
@@ -167,7 +192,7 @@ def _do_build(ver):
             ascexists = os.path.exists(
                 os.path.join(
                     local_dl_repo,
-                    'galette-%s.tar.bz2.asc' % ver
+                    archive_name + '.asc'
                 )
             )
             if ascexists:
@@ -179,7 +204,7 @@ def _do_build(ver):
             loctxt = ''
             if local:
                 loctxt = 'locally '
-            msg = 'Relase %s already %sexists' % (ver, loctxt)
+            msg = 'Relase %s already %sexists' % (rel_name, loctxt)
 
         if ascexists:
             loctxt = ''
@@ -193,29 +218,50 @@ def _do_build(ver):
         msg += '\n\nYou will *NOT* build another one :)'
         print_err(msg)
     else:
-        print 'Building %s' % ver
-        prefix = 'galette-%s' % ver
-        tag = ver
+        print 'Building %s...' % rel_name
 
-        archive_cmd = 'git archive --prefix=galette-%s/ %s | bzip2 > %s' % (
-            ver, ver, galette_archive
-        )
+        archive_cmd_pattern = 'git archive --prefix=%s/ %s | bzip2 > %s'
+        if commit and extra:
+            archive_cmd = archive_cmd_pattern % (
+                rel_name,
+                commit,
+                galette_archive
+            )
+        else:
+            archive_cmd = archive_cmd_pattern % (
+                rel_name,
+                ver,
+                galette_archive
+            )
 
         if verbose:
-            print 'Prefix: %s, Tag: %s, Dest: %s' % (
-                prefix, tag, galette_archive
-            )
-            print 'Archive command: %s\nBzip command: %s' % (
-                archive_cmd, bz_cmd
-            )
+            typestr = 'Tag'
+            typever = ver
 
-        print 'Archiving GIT tag %s' % tag
+            if commit and extra:
+                typestr = 'Commit'
+                typever = commit
+
+            print 'Release name: %s, %s: %s, Dest: %s' % (
+                rel_name,
+                typestr,
+                typever,
+                galette_archive
+            )
+            print 'Archive command: %s' % (archive_cmd)
+
+        if commit and extra:
+            print 'Archiving GIT commit %s' % commit
+        else:
+            print 'Archiving GIT tag %s' % ver
+
         p1 = subprocess.Popen(archive_cmd, shell=True)
         p1.communicate()
 
-        add_libs(ver, galette_archive)
+        print 'Adding vendor libraries'
+        add_libs(rel_name, galette_archive)
 
-def add_libs(ver, galette_archive):
+def add_libs(rel_name, galette_archive):
     """
     Add external libraries to the archive
     """
@@ -251,24 +297,53 @@ def add_libs(ver, galette_archive):
     for i in os.listdir(src_dir):
         galette.add(
             os.path.join(src_dir, i),
-            arcname=os.path.join('galette-%s' % ver)
+            arcname=rel_name
         )
 
     for lib in os.listdir(vendor_dir):
         galette.add(
             os.path.join(vendor_dir, lib),
-            arcname=os.path.join('galette-%s' % ver, 'galette', 'includes', lib)
+            arcname=os.path.join(rel_name, 'galette', 'includes', lib)
         )
 
     galette.close()
     shutil.rmtree(src_dir)
     shutil.rmtree(vendor_dir)
 
+def valid_commit(repo, c):
+    """
+    Validate commit existance in repository
+    """
+    global commit
+
+    try:
+        dformat = '%a, %d %b %Y %H:%M'
+        repo_commit = repo.commit(c)
+
+        commit = repo_commit.hexsha[:10]
+        print colored("""Commit informations:
+        Hash:          %s
+        Author:        %s
+        Authored date: %s
+        Commiter:      %s
+        Commit date:   %s
+        Message:       %s""" % (
+            commit,
+            repo_commit.author,
+            time.strftime(dformat, time.gmtime(repo_commit.authored_date)),
+            repo_commit.committer,
+            time.strftime(dformat, time.gmtime(repo_commit.committed_date)),
+            repo_commit.message
+        ), None, 'on_grey', attrs=['bold'])
+        return True
+    except gitdb.exc.BadObject:
+        return False
+
 def main():
     """
     Main method
     """
-    global verbose, tagrefs, force
+    global verbose, tagrefs, force, extra
 
     parser = argparse.ArgumentParser(description='Release Galette')
     group = parser.add_mutually_exclusive_group()
@@ -282,6 +357,16 @@ def main():
         '--propose',
         help='Calculate and propose next possible versions',
         action='store_true'
+    )
+    parser.add_argument(
+        '-c',
+        '--commit',
+        help='Specify commit to archive (-v required)'
+    )
+    parser.add_argument(
+        '-e',
+        '--extra',
+        help='Extra version informations (-c required)'
     )
     parser.add_argument(
         '-Y',
@@ -314,11 +399,24 @@ def main():
 
     build = False
     buildver = None
-    if args.version:
+    if (args.extra or args.commit) and (not args.extra or not args.commit or not args.version):
+        print_err('You have to specify --version --commit and --extra all together')
+        sys.exit(1)
+    elif args.commit and args.version and args.extra:
+        if valid_commit(repo, args.commit):
+            if verbose:
+                print 'Commit is valid'
+            build = True
+            buildver = args.version
+            extra = args.extra
+        else:
+            print_err('Invalid commit ref %s' % args.commit)
+    elif args.version:
         if not valid_version(args.version):
             print_err('%s is not a valid version number!' % args.version)
             sys.exit(1)
         else:
+            #check if specified version exists
             if not is_existing_version(args.version):
                 print_err('%s does not exist!' % args.version)
             else:
