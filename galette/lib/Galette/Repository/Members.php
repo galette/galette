@@ -568,7 +568,7 @@ class Members
             $hasDf = false;
             $hasCdf = false;
             $cdfs = array();
-            if ( count($filters->free_search) > 0
+            if ( $filters->free_search && count($filters->free_search) > 0
                 && !isset($filters->free_search['empty'])
             ) {
                 foreach ( $filters->free_search as $fs ) {
