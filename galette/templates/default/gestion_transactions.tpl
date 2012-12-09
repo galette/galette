@@ -1,7 +1,20 @@
 		<form action="gestion_transactions.php" method="get" id="filtre">
 		<table class="infoline">
 			<tr>
-				<td class="left">{$nb_transactions} {if $nb_transactions > 1}{_T string="transactions"}{else}{_T string="transaction"}{/if}</td>
+                <td class="left nowrap">
+{if $member}
+    {if $login->isAdmin() or $login->isStaff()}
+                    <a id="clearfilter" href="?id_adh=all" title="{_T string="Show all members transactions"}">{_T string="Show all members transactions"}</a>
+    {/if}
+                    <strong>{$member->sname}</strong>
+    {if $login->isAdmin() or $login->isStaff()}
+                    (<a href="voir_adherent.php?id_adh={$member->id}">{_T string="See member profile"}</a> -
+                    <a href="ajouter_transaction.php?id_adh={$member->id}">{_T string="Add a transaction"}</a>)
+    {/if}
+                    &nbsp;:
+{/if}
+                    {$nb_transactions} {if $nb_transactions > 1}{_T string="transactions"}{else}{_T string="transaction"}{/if}
+                </td>
                 <td class="right">
 					<label for="nbshow">{_T string="Show:"}</label>
 					<select name="nbshow" id="nbshow">
