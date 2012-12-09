@@ -108,6 +108,6 @@ $content = $tpl->fetch('plugins.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
 
-if ( $profiler ) {
+if ( isset($profiler) ) {
     $profiler->stop();
 }

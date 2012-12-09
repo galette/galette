@@ -67,7 +67,7 @@ if (  isset($_GET['logo']) && $_GET['logo'] == 'true' ) {
     }
 }
 
-if ( $profiler ) {
+if ( isset($profiler) ) {
     $profiler->stop();
 }
 ?>

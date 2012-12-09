@@ -171,7 +171,7 @@ if ( $from_admin ) {
         $session['lostpasswd_success'] = serialize($success_detected);
     }
 
-    if ( $profiler ) {
+    if ( isset($profiler) ) {
         $profiler->stop();
     }
 
@@ -187,7 +187,7 @@ if ( $from_admin ) {
     $tpl->assign('content', $content);
     $tpl->display('public_page.tpl');
 
-    if ( $profiler ) {
+    if ( isset($profiler) ) {
         $profiler->stop();
     }
 }

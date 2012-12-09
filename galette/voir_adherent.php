@@ -194,6 +194,6 @@ $content = $tpl->fetch('voir_adherent.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
 
-if ( $profiler ) {
+if ( isset($profiler) ) {
     $profiler->stop();
 }

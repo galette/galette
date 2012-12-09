@@ -263,6 +263,6 @@ $filters->setTplCommonsFilters($tpl);
 $content = $tpl->fetch('gestion_adherents.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-if ( $profiler ) {
+if ( isset($profiler) ) {
     $profiler->stop();
 }
