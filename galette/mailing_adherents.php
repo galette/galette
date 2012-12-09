@@ -78,22 +78,6 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
     } else {
         $filters = new MembersList();
     }
-    if ( count($filters->selected) == 0
-        && !isset($_GET['mailing_new'])
-        && !isset($_GET['reminder'])
-    ) {
-        $log->log(
-            '[mailing_adherents.php] No member selected for mailing',
-            KLogger::WARN
-        );
-
-        if ( $profiler ) {
-            $profiler->stop();
-        }
-
-        header('location:gestion_adherents.php');
-        die();
-    }
 
     if ( isset($session['mailing'])
         && !isset($_POST['mailing_cancel'])
@@ -112,6 +96,22 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
         $members = $m->getList(true);
         $mailing = new Core\Mailing(($members !== false) ? $members : null);
     } else {
+        if ( count($filters->selected) == 0
+            && !isset($_GET['mailing_new'])
+            && !isset($_GET['reminder'])
+        ) {
+            $log->log(
+                '[mailing_adherents.php] No member selected for mailing',
+                KLogger::WARN
+            );
+
+            if ( isset($profiler) ) {
+                $profiler->stop();
+            }
+
+            header('location:gestion_adherents.php');
+            die();
+        }
         $members = Galette\Repository\Members::getArrayList($filters->selected);
         $mailing = new Core\Mailing(($members !== false) ? $members : null);
     }
@@ -218,7 +218,7 @@ $content = $tpl->fetch('mailing_adherents.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
 
-if ( $profiler ) {
+if ( isset($profiler) ) {
     $profiler->stop();
 }
 ?>

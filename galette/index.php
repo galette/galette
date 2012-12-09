@@ -101,7 +101,7 @@ if ( !$login->isLogged() ) {
     $tpl->assign('content', $content);
     $tpl->display('public_page.tpl');
 } else {
-    if ( $profiler ) {
+    if ( isset($profiler) ) {
         $profiler->stop();
     }
 
