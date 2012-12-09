@@ -222,7 +222,7 @@ foreach ( $members as $member ) {
         $email .= $member->icq;
         break;
     case 5:
-        $email .= $member->cp . ' - ' . $member->town;
+        $email .= $member->zipcode . ' - ' . $member->town;
         break;
     case 6:
         $email .= $member->nickname;
