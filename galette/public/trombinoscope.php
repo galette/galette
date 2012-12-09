@@ -39,11 +39,11 @@
  * @since     Available since 0.62
  */
 
-
-require_once GALETTE_ROOT . 'includes/galette.inc.php';
+define('GALETTE_BASE_PATH', '../');
+require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';
 if ( !$preferences->showPublicPages() ) {
     //public pages are not actives
-    header('location:../index.php');
+    header('location:' . GALETTE_BASE_PATH  . 'index.php');
 }
 
 $m = new Galette\Repository\Members('trombinoscope_');

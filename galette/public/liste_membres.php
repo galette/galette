@@ -41,10 +41,11 @@
 
 use Galette\Filters\MembersList as MembersList;
 
-require_once GALETTE_ROOT . 'includes/galette.inc.php';
+define('GALETTE_BASE_PATH', '../');
+require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';
 if ( !$preferences->showPublicPages() ) {
     //public pages are not actives
-    header('location:../index.php');
+    header('location:'. GALETTE_BASE_PATH . 'index.php');
 }
 
 if ( isset($session['public_filters']['members']) ) {
