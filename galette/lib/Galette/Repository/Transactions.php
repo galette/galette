@@ -415,7 +415,7 @@ class Transactions extends Pagination
 
         if ( in_array($name, $this->pagination_fields) ) {
             return parent::__get($name);
-        }/* else {
+        } else {
             $return_ok = array(
                 'filtre_cotis_adh',
                 'start_date_filter',
@@ -430,7 +430,7 @@ class Transactions extends Pagination
                     KLogger::WARN
                 );
             }
-        }*/
+        }
     }
 
     /**
