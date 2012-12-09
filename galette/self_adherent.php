@@ -246,7 +246,7 @@ $content = $tpl->fetch('member.tpl');
 $tpl->assign('content', $content);
 $tpl->display('public_page.tpl');
 
-if ( $profiler ) {
+if ( isset($profiler) ) {
     $profiler->stop();
 }
 ?>

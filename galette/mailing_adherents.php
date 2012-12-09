@@ -87,7 +87,7 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
             KLogger::WARN
         );
 
-        if ( $profiler ) {
+        if ( isset($profiler) ) {
             $profiler->stop();
         }
 
@@ -218,7 +218,7 @@ $content = $tpl->fetch('mailing_adherents.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
 
-if ( $profiler ) {
+if ( isset($profiler) ) {
     $profiler->stop();
 }
 ?>
