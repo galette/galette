@@ -199,14 +199,13 @@ class FieldsConfig
      * This should occurs when table has been updated. For the first
      * initialisation, value should be false. Defaults to false.
      *
-     * @return void
+     * @return boolean
      */
     public function init($reinit=false)
     {
         global $zdb, $log;
         $class = get_class($this);
         $t = new FieldsCategories();
-        $init = $t->installInit();
 
         $log->log(
             '[' . $class . '] Initializing fields configuration for table `' .
@@ -224,8 +223,9 @@ class FieldsConfig
             try {
                 $zdb->db->delete(
                     PREFIX_DB . self::TABLE,
-                    $zdb->db->quoteInto('table_name = ?', PREFIX_DB . $this->_table)
+                    $zdb->db->quoteInto('table_name = ?', $this->_table)
                 );
+                $t->installInit();
             } catch (\Exception $e) {
                 $log->log(
                     'Unable to delete fields configuration for reinitialization' .
@@ -266,7 +266,7 @@ class FieldsConfig
                                         ($reinit) ?
                                             array_key_exists(
                                                 $key,
-                                                $this->all_visible
+                                                $this->_all_visibles
                                             ) :
                                             $this->_defaults[$key]['visible']
                                       ),
@@ -298,6 +298,7 @@ class FieldsConfig
                 KLogger::INFO
             );
             $this->_checkUpdate(false);
+            return true;
         } catch (\Exception $e) {
             /** FIXME */
             $log->log(
@@ -306,7 +307,7 @@ class FieldsConfig
                 $e->getMessage(),
                 KLogger::ERR
             );
-            throw $e;
+            return false;
         }
     }
 
