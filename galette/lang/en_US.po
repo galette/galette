@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2012-11-30 20:21+0100\n"
+"PO-Revision-Date: 2012-12-10 22:41+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -259,7 +259,7 @@ msgstr "Status"
 msgid "UPDATE operation allowed"
 msgstr "UPDATE operation allowed"
 
-#: ../public/liste_membres.php:84 ../templates/default/public_page.tpl:55
+#: ../public/liste_membres.php:85 ../templates/default/public_page.tpl:55
 #: ../templates/default/page.tpl:129
 msgid "Members list"
 msgstr "Members list"
@@ -299,7 +299,7 @@ msgstr "Do you really want to delete all selected contributions?"
 #: ../templates/default/gestion_adherents.tpl:190
 #: ../templates/default/gestion_contributions.tpl:223
 #: ../templates/default/gestion_contributions.tpl:242
-#: ../templates/default/gestion_transactions.tpl:93
+#: ../templates/default/gestion_transactions.tpl:106
 msgid "[mod]"
 msgstr "[mod]"
 
@@ -488,7 +488,7 @@ msgstr ""
 msgid "Mail"
 msgstr "Mail"
 
-#: ../lib/Galette/Entity/Group.php:320
+#: ../lib/Galette/Entity/Group.php:322
 msgid "Group has been detached from its parent"
 msgstr "Group has been detached from its parent"
 
@@ -512,7 +512,7 @@ msgstr "Emailing method:"
 #: ../templates/default/gestion_contributions.tpl:50
 #: ../templates/default/gestion_textes.tpl:12
 #: ../templates/default/gestion_textes.tpl:21
-#: ../templates/default/gestion_transactions.tpl:10
+#: ../templates/default/gestion_transactions.tpl:23
 msgid "Change"
 msgstr "Change"
 
@@ -523,6 +523,10 @@ msgstr "Freed of dues"
 #: ../templates/default/page.tpl:119
 msgid "View and filter all my transactions"
 msgstr "View and filter all my transactions"
+
+#: ../templates/default/gestion_textes.tpl:43
+msgid "Your organisation name"
+msgstr "Your organisation name"
 
 #: ../templates/default/public_page.tpl:45
 msgid "Home"
@@ -577,7 +581,7 @@ msgstr "Label generation parameters"
 #: ../templates/default/traduire_libelles.tpl:22
 #: ../templates/default/mailing_adherents.tpl:58
 #: ../templates/default/ajouter_transaction.tpl:30
-#: ../templates/default/group.tpl:58 ../templates/default/config_fields.tpl:59
+#: ../templates/default/group.tpl:62 ../templates/default/config_fields.tpl:59
 #: ../templates/default/preferences.tpl:416
 #: ../templates/default/editer_champ.tpl:59
 #: ../templates/default/ajouter_contribution.tpl:122
@@ -634,7 +638,7 @@ msgstr ""
 "This page is under construction.<br/>Data are all stored, but <strong>not "
 "used anywhere in Galette for now</strong> :-)"
 
-#: ../templates/default/group.tpl:54
+#: ../templates/default/group.tpl:58
 msgid "Manage members"
 msgstr "Manage members"
 
@@ -650,7 +654,7 @@ msgstr ""
 "Send member a link to generate a new passord, as if had used the 'lost "
 "password' functionnality."
 
-#: ../templates/default/gestion_transactions.tpl:4
+#: ../templates/default/gestion_transactions.tpl:16
 msgid "transactions"
 msgstr "transactions"
 
@@ -947,9 +951,13 @@ msgstr "Sends an email each time a new member registers online"
 msgid "Demonstration"
 msgstr "Demonstration"
 
-#: ../templates/default/gestion_transactions.tpl:111
+#: ../templates/default/gestion_transactions.tpl:124
 msgid "Completely dispatched transaction"
 msgstr "Completely dispatched transaction"
+
+#: ../templates/default/gestion_textes.tpl:55
+msgid "Member's login"
+msgstr "Member's login"
 
 #: ../lib/Galette/Entity/DynamicFields.php:111
 msgid "all"
@@ -976,8 +984,12 @@ msgstr "No fields to translate."
 msgid "Profession"
 msgstr "Profession"
 
-#: ../lib/Galette/Repository/Transactions.php:282
-#: ../lib/Galette/Repository/Transactions.php:295
+#: ../templates/default/gestion_textes.tpl:57
+msgid "Galette's login URI"
+msgstr "Galette's login URI"
+
+#: ../lib/Galette/Repository/Transactions.php:283
+#: ../lib/Galette/Repository/Transactions.php:296
 msgid "d/m/Y"
 msgstr "d/m/Y"
 
@@ -1095,8 +1107,8 @@ msgstr ""
 "GALETTE hasn't got enough permissions on the database to continue the "
 "installation."
 
-#: ../lib/Galette/Repository/Contributions.php:602
-#: ../lib/Galette/Repository/Contributions.php:624
+#: ../lib/Galette/Repository/Contributions.php:603
+#: ../lib/Galette/Repository/Contributions.php:625
 msgid "Y-m"
 msgstr "Y-m"
 
@@ -1164,6 +1176,13 @@ msgstr "- The password must be of at least %i characters!"
 #: ../install/index.php:595
 msgid "Database type:"
 msgstr "Database type:"
+
+#: ../templates/default/gestion_textes.tpl:43
+#: ../templates/default/gestion_textes.tpl:45
+#: ../templates/default/gestion_textes.tpl:57
+#: ../templates/default/gestion_textes.tpl:63
+msgid "globally available"
+msgstr "globally available"
 
 #: ../lib/Galette/Filters/MembersList.php:300
 msgid "Job"
@@ -1432,6 +1451,10 @@ msgstr "Fail to add new member."
 msgid "Modifiy mailing"
 msgstr "Modifiy mailing"
 
+#: ../templates/default/gestion_transactions.tpl:46
+msgid "Originator"
+msgstr "Originator"
+
 #: ../templates/default/config_fields.tpl:49
 msgid "Admin only"
 msgstr "Admin only"
@@ -1526,6 +1549,10 @@ msgstr "Perform advanced search into members list"
 msgid "- Empty transaction description!"
 msgstr "- Empty transaction description!"
 
+#: ../templates/default/gestion_textes.tpl:88
+msgid "Show existing variables"
+msgstr "Show existing variables"
+
 #: ../install/index.php:883
 msgid "Update Report"
 msgstr "Update Report"
@@ -1600,6 +1627,10 @@ msgstr "View contributions"
 msgid "Never contributed: Registered %days days ago (since %date)"
 msgstr "Never contributed: Registered %days days ago (since %date)"
 
+#: ../templates/default/gestion_textes.tpl:63
+msgid "Galette's change password URI"
+msgstr "Galette's change password URI"
+
 #: ../templates/default/gestion_textes.tpl:25
 msgid "(Max 32 characters)"
 msgstr "(Max 32 characters)"
@@ -1648,6 +1679,10 @@ msgstr "Subscribe"
 msgid "do not contains"
 msgstr "do not contains"
 
+#: ../templates/default/gestion_textes.tpl:69
+msgid "Member's deadline"
+msgstr "Member's deadline"
+
 #: ../templates/default/preferences.tpl:341
 msgid "Allow members to print card ?"
 msgstr "Allow members to print card ?"
@@ -1661,7 +1696,7 @@ msgstr "Galette needs update!"
 #: ../templates/default/history.tpl:86
 #: ../templates/default/gestion_contributions.tpl:173
 #: ../templates/default/ajax_members.tpl:16
-#: ../templates/default/gestion_transactions.tpl:63
+#: ../templates/default/gestion_transactions.tpl:76
 msgid "Pages:"
 msgstr "Pages:"
 
@@ -1724,7 +1759,7 @@ msgstr "Recover password"
 #: ../templates/default/gestion_contributions.tpl:61
 #: ../templates/default/ajouter_contribution.tpl:24
 #: ../templates/default/export.tpl:20
-#: ../templates/default/gestion_transactions.tpl:20
+#: ../templates/default/gestion_transactions.tpl:33
 msgid "Date"
 msgstr "Date"
 
@@ -1859,9 +1894,9 @@ msgstr "Host:"
 msgid "First page"
 msgstr "First page"
 
-#: ../templates/default/gestion_transactions.tpl:33
-msgid "Originator"
-msgstr "Originator"
+#: ../templates/default/gestion_textes.tpl:61
+msgid "Member's password"
+msgstr "Member's password"
 
 #: ../templates/default/advanced_search.tpl:123
 msgid "If the following is not empty, all others filters will be ignored."
@@ -1890,6 +1925,10 @@ msgstr "Galette has been successfully updated!"
 #: ../lib/Galette/Core/Plugins.php:258 ../lib/Galette/Core/Plugins.php:262
 msgid "Cannot activate plugin."
 msgstr "Cannot activate plugin."
+
+#: ../templates/default/gestion_textes.tpl:49
+msgid "Member's name"
+msgstr "Member's name"
 
 #: ../champs_adherents.php:43 ../lib/Galette/Entity/Adherent.php:205
 #: ../templates/default/member.tpl:68
@@ -2046,7 +2085,7 @@ msgstr "MSN:"
 #: ../templates/default/gestion_mailings.tpl:100
 #: ../templates/default/gestion_contributions.tpl:226
 #: ../templates/default/gestion_contributions.tpl:246
-#: ../templates/default/gestion_transactions.tpl:96
+#: ../templates/default/gestion_transactions.tpl:109
 msgid "[del]"
 msgstr "[del]"
 
@@ -2182,7 +2221,7 @@ msgstr "Next"
 #: ../templates/default/ajouter_transaction.tpl:56
 #: ../templates/default/gestion_contributions.tpl:118
 #: ../templates/default/ajouter_contribution.tpl:26
-#: ../templates/default/gestion_transactions.tpl:45
+#: ../templates/default/gestion_transactions.tpl:58
 msgid "Amount"
 msgstr "Amount"
 
@@ -2295,7 +2334,7 @@ msgstr "Reduced annual contribution"
 
 #: ../templates/default/gestion_adherents.tpl:134
 #: ../templates/default/gestion_adherents.tpl:255
-#: ../templates/default/group.tpl:59
+#: ../templates/default/group.tpl:63
 #: ../templates/default/gestion_contributions.tpl:166
 msgid "Delete"
 msgstr "Delete"
@@ -2374,6 +2413,10 @@ msgstr "Ok"
 msgid "Subject:"
 msgstr "Subject:"
 
+#: ../templates/default/gestion_textes.tpl:67
+msgid "available only for new password request"
+msgstr "available only for new password request"
+
 #: ../ajouter_groupe.php:82
 msgid "Group"
 msgstr "Group"
@@ -2396,7 +2439,7 @@ msgid "Next step"
 msgstr "Next step"
 
 #: ../templates/default/gestion_contributions.tpl:46
-#: ../templates/default/gestion_transactions.tpl:6
+#: ../templates/default/gestion_transactions.tpl:19
 msgid "Show:"
 msgstr "Show:"
 
@@ -2495,7 +2538,7 @@ msgstr "New"
 msgid "Permissions to database are OK."
 msgstr "Permissions to database are OK."
 
-#: ../templates/default/gestion_transactions.tpl:95
+#: ../templates/default/gestion_transactions.tpl:108
 msgid "Do you really want to delete this transaction of the database ?"
 msgstr "Do you really want to delete this transaction of the database ?"
 
@@ -2663,12 +2706,12 @@ msgid "View my member card"
 msgstr "View my member card"
 
 #: ../gestion_contributions.php:101
-#: ../lib/Galette/Repository/Contributions.php:633
+#: ../lib/Galette/Repository/Contributions.php:634
 msgid "end date filter"
 msgstr "end date filter"
 
 #: ../gestion_contributions.php:97
-#: ../lib/Galette/Repository/Contributions.php:630
+#: ../lib/Galette/Repository/Contributions.php:631
 msgid "start date filter"
 msgstr "start date filter"
 
@@ -2681,6 +2724,11 @@ msgstr "Birthplace:"
 #: ../self_adherent.php:177
 msgid "Self_subscription as a member: "
 msgstr "Self_subscription as a member: "
+
+#: ../templates/default/gestion_textes.tpl:69
+#: ../templates/default/gestion_textes.tpl:73
+msgid "available only for new contributions"
+msgstr "available only for new contributions"
 
 #: ../templates/default/history.tpl:59
 msgid "Action"
@@ -2695,6 +2743,7 @@ msgid "Member will receive a notification by email, if he has an address."
 msgstr "Member will receive a notification by email, if he has an address."
 
 #: ../templates/default/gestion_contributions.tpl:34
+#: ../templates/default/gestion_transactions.tpl:11
 msgid "See member profile"
 msgstr "See member profile"
 
@@ -2916,7 +2965,7 @@ msgstr "End"
 msgid "Interpret HTML"
 msgstr "Interpret HTML"
 
-#: ../lib/Galette/Repository/Contributions.php:643
+#: ../lib/Galette/Repository/Contributions.php:644
 msgid "Unknown date format for %field.<br/>Know formats are: %formats"
 msgstr "Unknown date format for %field.<br/>Know formats are: %formats"
 
@@ -3021,11 +3070,15 @@ msgstr "Delete mailing entries"
 msgid "You must first register a member"
 msgstr "You must first register a member"
 
+#: ../templates/default/gestion_textes.tpl:73
+msgid "Contribution informations"
+msgstr "Contribution informations"
+
 #: ../templates/default/page.tpl:109
 msgid "List of contributions"
 msgstr "List of contributions"
 
-#: ../lib/Galette/Entity/Group.php:334
+#: ../lib/Galette/Entity/Group.php:336
 msgid "Unable to detach group :("
 msgstr "Unable to detach group :("
 
@@ -3181,6 +3234,12 @@ msgstr "Login"
 msgid "Latecomers"
 msgstr "Latecomers"
 
+#: ../templates/default/gestion_textes.tpl:49
+#: ../templates/default/gestion_textes.tpl:51
+#: ../templates/default/gestion_textes.tpl:55
+msgid "available with reservations"
+msgstr "available with reservations"
+
 #: ../install/index.php:226 ../install/index.php:1349
 msgid "Saving the parameters"
 msgstr "Saving the parameters"
@@ -3217,7 +3276,7 @@ msgstr "Membership status"
 msgid "Some details about your attendance sheet..."
 msgstr "Some details about your attendance sheet..."
 
-#: ../lib/Galette/Repository/Members.php:345
+#: ../lib/Galette/Repository/Members.php:346
 msgid "Delete members cards, transactions and dues"
 msgstr "Delete members cards, transactions and dues"
 
@@ -3269,7 +3328,7 @@ msgstr "An error occured displaying members interface :("
 msgid "Show/hide query"
 msgstr "Show/hide query"
 
-#: ../templates/default/gestion_transactions.tpl:115
+#: ../templates/default/gestion_transactions.tpl:128
 msgid "Uncomplete dispatched transaction"
 msgstr "Uncomplete dispatched transaction"
 
@@ -3461,8 +3520,8 @@ msgstr "no member"
 #: ../templates/default/gestion_adherents.tpl:212
 #: ../templates/default/gestion_contributions.tpl:237
 #: ../templates/default/gestion_contributions.tpl:238
-#: ../templates/default/gestion_transactions.tpl:106
-#: ../templates/default/gestion_transactions.tpl:107
+#: ../templates/default/gestion_transactions.tpl:119
+#: ../templates/default/gestion_transactions.tpl:120
 msgid "Legend"
 msgstr "Legend"
 
@@ -3508,6 +3567,11 @@ msgstr "Emails content"
 #: ../gestion_intitules.php:137
 msgid "- Priority must be an integer!"
 msgstr "- Priority must be an integer!"
+
+#: ../templates/default/gestion_textes.tpl:38
+#: ../templates/default/gestion_textes.tpl:39
+msgid "Existing variables"
+msgstr "Existing variables"
 
 #: ../install/index.php:1066
 msgid "The tables has been correctly updated."
@@ -3564,6 +3628,10 @@ msgstr "Size"
 #: ../install/index.php:1215
 msgid "Default fields categories cannot be initialized."
 msgstr "Default fields categories cannot be initialized."
+
+#: ../templates/default/gestion_transactions.tpl:7
+msgid "Show all members transactions"
+msgstr "Show all members transactions"
 
 #: ../lib/Galette/IO/Pdf.php:92 ../lib/Galette/IO/Pdf.php:217
 msgid "Association %s"
@@ -3744,10 +3812,10 @@ msgstr "donation in money"
 #: ../lib/Galette/IO/News.php:291
 #: ../lib/Galette/Filters/AdvancedMembersList.php:191
 #: ../lib/Galette/Filters/AdvancedMembersList.php:255
-#: ../lib/Galette/Repository/Contributions.php:527
-#: ../lib/Galette/Repository/Contributions.php:616
-#: ../lib/Galette/Repository/Contributions.php:625
-#: ../lib/Galette/Repository/Contributions.php:654
+#: ../lib/Galette/Repository/Contributions.php:528
+#: ../lib/Galette/Repository/Contributions.php:617
+#: ../lib/Galette/Repository/Contributions.php:626
+#: ../lib/Galette/Repository/Contributions.php:655
 #: ../lib/Galette/Entity/Transaction.php:258
 #: ../lib/Galette/Entity/Transaction.php:267
 #: ../lib/Galette/Entity/Transaction.php:276
@@ -3766,7 +3834,7 @@ msgstr "donation in money"
 #: ../lib/Galette/Entity/Contribution.php:979
 #: ../lib/Galette/Entity/Contribution.php:988
 #: ../lib/Galette/Entity/Contribution.php:997
-#: ../lib/Galette/Entity/Group.php:512
+#: ../lib/Galette/Entity/Group.php:514
 msgid "Y-m-d"
 msgstr "m/d/Y"
 
@@ -3779,7 +3847,7 @@ msgstr "Advanced search"
 #: ../templates/default/gestion_intitule_content.tpl:16
 #: ../templates/default/gestion_contributions.tpl:151
 #: ../templates/default/configurer_fiche_content.tpl:9
-#: ../templates/default/gestion_transactions.tpl:56
+#: ../templates/default/gestion_transactions.tpl:69
 msgid "Actions"
 msgstr "Actions"
 
@@ -3809,9 +3877,13 @@ msgid ""
 msgstr ""
 "To work as excpected, Galette needs write permission on files listed above."
 
+#: ../templates/default/gestion_textes.tpl:67
+msgid "Link validity"
+msgstr "Link validity"
+
 #: ../templates/default/history.tpl:71 ../templates/default/plugins.tpl:6
 #: ../templates/default/export.tpl:52
-#: ../templates/default/gestion_transactions.tpl:30
+#: ../templates/default/gestion_transactions.tpl:43
 msgid "Description"
 msgstr "Description"
 
@@ -3840,6 +3912,10 @@ msgstr "Unable to detach contribution from transaction"
 msgid "Email: '%s' has not been modified!"
 msgstr "Email: '%s' has not been modified!"
 
+#: ../templates/default/gestion_textes.tpl:51
+msgid "Member's email address"
+msgstr "Member's email address"
+
 #: ../templates/default/gestion_adherents.tpl:304
 msgid ""
 "Please make sure to select at least one member from the list to perform this "
@@ -3864,6 +3940,10 @@ msgstr "Raw data"
 msgid "Creation date:"
 msgstr "Creation date:"
 
+#: ../templates/default/gestion_textes.tpl:61
+msgid "available only from self subscribe page"
+msgstr "available only from self subscribe page"
+
 #: ../templates/default/preferences.tpl:125
 msgid "Detailed"
 msgstr "Detailed"
@@ -3880,7 +3960,7 @@ msgstr "No user name"
 msgid "Port:"
 msgstr "Port:"
 
-#: ../lib/Galette/Repository/Members.php:308
+#: ../lib/Galette/Repository/Members.php:309
 msgid "Member Picture deleted"
 msgstr "Member Picture deleted"
 
@@ -4044,7 +4124,7 @@ msgstr "You have to select a staff member"
 msgid "Delete the contribution"
 msgstr "Delete the contribution"
 
-#: ../templates/default/group.tpl:55
+#: ../templates/default/group.tpl:59
 msgid "Manage managers"
 msgstr "Manage managers"
 
@@ -4093,7 +4173,7 @@ msgstr "Collapse all"
 msgid "Choose label to translate"
 msgstr "Choose label to translate"
 
-#: ../lib/Galette/Entity/Group.php:375
+#: ../lib/Galette/Entity/Group.php:377
 msgid "Fail to add new group."
 msgstr "Fail to add new group."
 
@@ -4154,7 +4234,7 @@ msgstr "LinkedIn"
 msgid "Should HTML editor be activated on page load ?"
 msgstr "Should HTML editor be activated on page load ?"
 
-#: ../lib/Galette/Entity/Group.php:370
+#: ../lib/Galette/Entity/Group.php:372
 msgid "Group added"
 msgstr "Group added"
 
@@ -4210,7 +4290,7 @@ msgstr "An SQL error has occured."
 msgid "Last page (%i)"
 msgstr "Last page (%i)"
 
-#: ../lib/Galette/Entity/Group.php:582
+#: ../lib/Galette/Entity/Group.php:584
 msgid ""
 "Group `%subgroupname` is a child of `%groupname`, cnanot be setted as parent!"
 msgstr ""
@@ -4241,7 +4321,7 @@ msgid "Account:"
 msgstr "Account:"
 
 #: ../lib/Galette/Entity/DynamicFields.php:118
-#: ../templates/default/group.tpl:6 ../templates/default/group.tpl:48
+#: ../templates/default/group.tpl:6 ../templates/default/group.tpl:50
 #: ../templates/default/config_fields.tpl:12
 #: ../templates/default/desktop.tpl:6
 msgid "Members"
@@ -4257,12 +4337,12 @@ msgstr "Long Text (Bottom Line):"
 
 #: ../templates/default/gestion_adherents.tpl:288
 #: ../templates/default/gestion_contributions.tpl:267
-#: ../templates/default/gestion_transactions.tpl:125
+#: ../templates/default/gestion_transactions.tpl:138
 msgid "Show legend"
 msgstr "Show legend"
 
-#: ../lib/Galette/Repository/Contributions.php:586
-#: ../lib/Galette/Repository/Contributions.php:623
+#: ../lib/Galette/Repository/Contributions.php:587
+#: ../lib/Galette/Repository/Contributions.php:624
 msgid "Y"
 msgstr "Y"
 
@@ -4284,7 +4364,7 @@ msgstr "Create new mailing"
 
 #: ../templates/default/member.tpl:16
 #: ../templates/default/ajouter_transaction.tpl:34
-#: ../templates/default/group.tpl:62 ../templates/default/preferences.tpl:418
+#: ../templates/default/group.tpl:66 ../templates/default/preferences.tpl:418
 #: ../templates/default/ajouter_contribution.tpl:39
 msgid "red"
 msgstr "red"
@@ -4407,6 +4487,7 @@ msgstr "Name:"
 msgid "User statuses"
 msgstr "User statuses"
 
+#: ../templates/default/gestion_transactions.tpl:12
 #: ../templates/default/page.tpl:113
 msgid "Add a transaction"
 msgstr "Add a transaction"
@@ -4517,7 +4598,7 @@ msgstr "Reply-To Email:"
 
 #: ../templates/default/member.tpl:16
 #: ../templates/default/ajouter_transaction.tpl:34
-#: ../templates/default/group.tpl:62 ../templates/default/preferences.tpl:418
+#: ../templates/default/group.tpl:66 ../templates/default/preferences.tpl:418
 #: ../templates/default/ajouter_contribution.tpl:39
 msgid "NB : The mandatory fields are in"
 msgstr "NB : The mandatory fields are in"
@@ -4649,7 +4730,7 @@ msgstr "Modification"
 msgid "Go back"
 msgstr "Go back"
 
-#: ../templates/default/gestion_transactions.tpl:4
+#: ../templates/default/gestion_transactions.tpl:16
 msgid "transaction"
 msgstr "transaction"
 
@@ -4756,7 +4837,7 @@ msgstr "Profession:"
 msgid "Generated by Galette"
 msgstr "Generated by Galette"
 
-#: ../lib/Galette/Entity/Group.php:574
+#: ../lib/Galette/Entity/Group.php:576
 msgid "A group cannot be set as its own parent!"
 msgstr "A group cannot be set as its own parent!"
 
@@ -4849,6 +4930,10 @@ msgstr "Active account"
 msgid "PHP Version"
 msgstr "PHP Version"
 
+#: ../templates/default/gestion_textes.tpl:45
+msgid "Your organisation slogan"
+msgstr "Your organisation slogan"
+
 #: ../change_passwd.php:92
 msgid ""
 "This link is no longer valid. You should <a href='lostpasswd.php'>ask to "
@@ -4857,11 +4942,11 @@ msgstr ""
 "This link is no longer valid. You should <a href='lostpasswd.php'>ask to "
 "retrieve your password</a> again."
 
-#: ../templates/default/gestion_transactions.tpl:102
+#: ../templates/default/gestion_transactions.tpl:115
 msgid "no transaction"
 msgstr "no transaction"
 
-#: ../lib/Galette/Entity/Group.php:391
+#: ../lib/Galette/Entity/Group.php:393
 msgid "Group updated"
 msgstr "Group updated"
 
@@ -5255,9 +5340,6 @@ msgstr "Login %s does not exist"
 
 #~ msgid "Show/Hide color selector"
 #~ msgstr "Show/Hide color selector"
-
-#~ msgid "%s Non profit organisation"
-#~ msgstr "%s Non profit organisation"
 
 #~ msgid "Required membership:"
 #~ msgstr "Required membership:"
