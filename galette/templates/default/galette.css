@@ -488,7 +488,15 @@ footer li {
     -moz-box-shadow: 1px 1px 13px rgba(0, 0, 0, 0.4);
     -webkit-box-shadow: 1px 1px 13px rgba(0, 0, 0, 0.4);
     box-shadow: 1px 1px 13px rgba(0, 0, 0, 0.4);
+}
 
+.public_page #demo {
+    position: absolute;
+    width: 16em;
+    top: 0;
+    left: 0;
+    margin:0;
+    border-radius: 0 0 6px 0;
 }
 
 /* == Buttons */

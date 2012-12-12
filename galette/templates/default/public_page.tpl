@@ -38,6 +38,11 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 <a id="logout" title="{_T string="Log off"}" href="{$galette_base_path}index.php?logout=1">{_T string="Log off"}</a>
             </div>
 {/if}
+{if $GALETTE_MODE eq 'DEMO'}
+        <div id="demo" title="{_T string="This application runs under DEMO mode, all features may not be available."}">
+            {_T string="Demonstration"}
+        </div>
+{/if}
         </header>
         <h1 id="titre">{$page_title}</h1>
         <p id="asso_name">{$preferences->pref_nom}{if $preferences->pref_slogan}&nbsp;: {$preferences->pref_slogan}{/if}</p>
