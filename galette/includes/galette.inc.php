@@ -171,7 +171,8 @@ if ( isset($_SESSION['galette'][$session_name]['lang'])
 }
 
 if ( isset($_POST['pref_lang'])
-    && strpos($_SERVER['PHP_SELF'], 'champs_requis.php') === false
+    && (strpos($_SERVER['PHP_SELF'], 'self_adherent.php') !== false
+    || strpos($_SERVER['PHP_SELF'], 'install/index.php') !== false)
 ) {
     $_GET['pref_lang'] = $_POST['pref_lang'];
 }
