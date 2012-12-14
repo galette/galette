@@ -195,7 +195,7 @@ class AdvancedMembersList extends MembersList
                         $log->log(
                             'Bad date (' . $this->$rname . ') | ' .
                             $e->getMessage(),
-                            PER_LOG_INFO
+                            KLogger::INFO
                         );
                         return $this->$rname;
                     }
