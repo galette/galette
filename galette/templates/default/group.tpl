@@ -18,17 +18,17 @@
                         <label for="group_name" class="bline">{_T string="Name:"}</label>
                         <input type="text" name="group_name" id="group_name" value="{$group->getName()}" maxlength="20" required/>
                     </p>
+{if $group->getParentGroup()}
+    {assign var='pgroup' value=$group->getParentGroup()}
+{/if}
                     <p>
 {if !$login->isAdmin() && !$login->isStaff()}
                         <span class="bline">{_T string="Parent group:"}</span>
-                        <span>{$group->getParentGroup()->getName()}</span>
+                        <span>{if $pgroup}{$pgroup->getName()}{/if}</span>
 {else}
                         <label for="parent_group" class="bline">{_T string="Parent group:"}</label>
                         <select name="parent_group" id="parent_group">
                             <option value="">{_T string="None"}</option>
-{if $group->getParentGroup()}
-    {assign var='pgroup' value=$group->getParentGroup()}
-{/if}
 {foreach item=g from=$groups}
                             <option value="{$g->getId()}"{if $pgroup and $pgroup->getId() eq $g->getId()} selected="selected"{/if}>{$g->getName()}</option>
 {/foreach}
