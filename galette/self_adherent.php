@@ -137,7 +137,7 @@ if ( isset($_POST["nom_adh"]) ) {
                         'password_adh'  => custom_html_entity_decode($_POST['mdp_adh'])
                     )
                 );
-                $mtxt = $texts->getTexts('sub', $preferences->pref_lang);
+                $mtxt = $texts->getTexts('sub', $member->language);
 
                 $mail = new Galette\Core\GaletteMail();
                 $mail->setSubject($texts->getSubject());

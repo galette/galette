@@ -174,9 +174,13 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                                 'password_adh'  => custom_html_entity_decode($_POST['mdp_adh'])
                             )
                         );
+                        $mlang = $preferences->pref_lang;
+                        if ( isset($_POST['pref_lang']) ) {
+                            $mlang = $_POST['pref_lang'];
+                        }
                         $mtxt = $texts->getTexts(
                             (($new) ? 'sub' : 'accountedited'),
-                            $preferences->pref_lang
+                            $mlang
                         );
 
                         $mail = new Galette\Core\GaletteMail();

@@ -87,7 +87,7 @@ $smartyLoader->register();
 //we start a php session
 session_start();
 
-define('GALETTE_VERSION', 'v0.7.2.6');
+define('GALETTE_VERSION', 'v0.7.2.7');
 define('GALETTE_COMPAT_VERSION', '0.7.1');
 define('GALETTE_DB_VERSION', '0.701');
 define('GALETTE_MODE', 'PROD'); //DEV or PROD
@@ -171,7 +171,8 @@ if ( isset($_SESSION['galette'][$session_name]['lang'])
 }
 
 if ( isset($_POST['pref_lang'])
-    && strpos($_SERVER['PHP_SELF'], 'champs_requis.php') === false
+    && (strpos($_SERVER['PHP_SELF'], 'self_adherent.php') !== false
+    || strpos($_SERVER['PHP_SELF'], 'install/index.php') !== false)
 ) {
     $_GET['pref_lang'] = $_POST['pref_lang'];
 }
