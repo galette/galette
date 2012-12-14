@@ -87,7 +87,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
                         'login_adh'         => custom_html_entity_decode($adh->login, ENT_QUOTES)
                     )
                 );
-                $mtxt = $texts->getTexts('pwd', $preferences->pref_lang);
+                $mtxt = $texts->getTexts('pwd', $adh->language);
 
                 $mail = new Core\GaletteMail();
                 $mail->setSubject($texts->getSubject());
