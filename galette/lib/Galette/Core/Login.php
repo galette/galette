@@ -80,7 +80,7 @@ class Login extends Authentication
     */
     public function logIn($user, $passe)
     {
-        global $zdb, $log;
+        global $zdb, $log, $i18n;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -125,6 +125,7 @@ class Login extends Authentication
                 $this->name = $row->nom_adh;
                 $this->surname = $row->prenom_adh;
                 $this->lang = $row->pref_lang;
+                $i18n->changeLanguage($this->lang);
                 $this->active = $row->activite_adh;
                 $this->logged = true;
                 if ( $row->priorite_statut < Members::NON_STAFF_MEMBERS ) {
