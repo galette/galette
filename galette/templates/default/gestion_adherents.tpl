@@ -171,7 +171,7 @@
                         <a href="voir_adherent.php?id_adh={$member->id}">{$member->sname}{if $member->company_name} ({$member->company_name}){/if}</a>
 					</td>
 					<td class="{$rclass} nowrap">{$member->nickname|htmlspecialchars}</td>
-					<td class="{$rclass} nowrap">{$member->sstatus}</td>
+					<td class="{$rclass} nowrap">{statusLabel id=$member->status}</td>
 {if $login->isAdmin() or $login->isStaff()}
 					<td class="{$rclass}">{$member->getDues()}</td>
                     <td class="{$rclass}">{$member->modification_date}</td>
