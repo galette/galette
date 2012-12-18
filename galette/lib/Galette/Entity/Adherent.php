@@ -112,6 +112,11 @@ class Adherent
     //fields list and their translation
     private $_fields;
     private $_self_adh = false;
+    private $_deps = array(
+        'picture'   => true,
+        'groups'    => true,
+        'dues'      => true
+    );
 
     private $_disabled_fields = array(
         'id_adh' => 'disabled="disabled"',
@@ -140,14 +145,27 @@ class Adherent
     /**
     * Default constructor
     *
-    * @param null|int|ResultSet $args Either a ResultSet row, its id or its
-    *                                 login or its mail for to load
-    *                                 a specific member, or null to just
-    *                                 instanciate object
+    * @param mixed   $args Either a ResultSet row, its id or its
+    *                      login or its mail for to load s specific
+    *                      member, or null to just instanciate object
+    * @param boolean $deps Dependencies configuration, see Adherent::$_deps
     */
-    public function __construct($args = null)
+    public function __construct($args = null, $deps = null)
     {
-        global $i18n, $members_fields;
+        global $i18n, $log, $members_fields;
+
+        if ( $deps !== null && is_array($deps) ) {
+            $this->_deps = array_merge(
+                $this->_deps,
+                $deps
+            );
+        } else if ( $deps !== null ) {
+            $log->log(
+                '$deps shoud be an array, ' . gettype($deps) . ' given!',
+                KLogger::WARN
+            );
+        }
+
         /*
         * Fields configuration. Each field is an array and must reflect:
         * array(
@@ -347,10 +365,19 @@ class Adherent
         $this->_due_date = $r->date_echeance;
         $this->_others_infos = $r->info_public_adh;
         $this->_others_infos_admin = $r->info_adh;
-        $this->_picture = new Picture($this->_id);
-        $this->_groups = Groups::loadGroups($this->_id);
-        $this->_managed_groups = Groups::loadManagedGroups($this->_id);
-        $this->_checkDues();
+
+        if ( $this->_deps['picture'] === true ) {
+            $this->_picture = new Picture($this->_id);
+        }
+
+        if ( $this->_deps['groups'] === true ) {
+            $this->_groups = Groups::loadGroups($this->_id);
+            $this->_managed_groups = Groups::loadManagedGroups($this->_id);
+        }
+
+        if ( $this->_deps['dues'] === true ) {
+            $this->_checkDues();
+        }
     }
 
     /**
