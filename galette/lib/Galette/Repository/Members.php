@@ -223,7 +223,8 @@ class Members
 
             $members = array();
             if ( $as_members ) {
-                foreach ( $select->query()->fetchAll() as $row ) {
+                $rows = $select->query()->fetchAll();
+                foreach ( $rows as $row ) {
                     $deps = array(
                         'picture'   => false,
                         'groups'    => false
@@ -231,7 +232,8 @@ class Members
                     $members[] = new Adherent($row, $deps);
                 }
             } else {
-                $members = $select->query()->fetchAll();
+                $rows = $select->query()->fetchAll();
+                $members = $rows;
             }
             return $members;
         } catch (\Exception $e) {
@@ -524,7 +526,7 @@ class Members
         try {
             $fieldsList = ( $fields != null )
                             ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
-                            : implode(', ', $fields)) : (array)'*';
+                            : $fields) : (array)'*';
 
             $select = new \Zend_Db_Select($zdb->db);
             $select->from(

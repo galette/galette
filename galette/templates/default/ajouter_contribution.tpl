@@ -44,7 +44,9 @@
 						{if $adh_selected eq 0}
 						<option value="">{_T string="-- select a name --"}</option>
 						{/if}
-						{html_options options=$adh_options selected=$contribution->member}
+                        {foreach $adh_options as $k=>$v}
+                            <option value="{$k}"{if $contribution->member == $k} selected="selected"{/if}>{$v}</option>
+                        {/foreach}
 					</select>
 				</p>
 				<p>
