@@ -142,9 +142,10 @@
 {/if}
 			<tbody>
 {foreach from=$members item=member key=ordre}
+    {assign var=rclass value=$member->getRowClass() }
 				<tr>
-					<td class="{$member->getRowClass()} right">{$ordre+1+($filters->current_page - 1)*$numrows}</td>
-					<td class="{$member->getRowClass()} nowrap username_row">
+					<td class="{$rclass} right">{$ordre+1+($filters->current_page - 1)*$numrows}</td>
+					<td class="{$rclass} nowrap username_row">
 						<input type="checkbox" name="member_sel[]" value="{$member->id}"/>
                     {if $member->isCompany()}
 						<img src="{$template_subdir}images/icon-company.png" alt="{_T string="[W]"}" width="16" height="16"/>
@@ -169,13 +170,13 @@
 					{/if}
                         <a href="voir_adherent.php?id_adh={$member->id}">{$member->sname}{if $member->company_name} ({$member->company_name}){/if}</a>
 					</td>
-					<td class="{$member->getRowClass()} nowrap">{$member->nickname|htmlspecialchars}</td>
-					<td class="{$member->getRowClass()} nowrap">{$member->sstatus}</td>
+					<td class="{$rclass} nowrap">{$member->nickname|htmlspecialchars}</td>
+					<td class="{$rclass} nowrap">{$member->sstatus}</td>
 {if $login->isAdmin() or $login->isStaff()}
-					<td class="{$member->getRowClass()}">{$member->getDues()}</td>
-                    <td class="{$member->getRowClass()}">{$member->modification_date}</td>
+					<td class="{$rclass}">{$member->getDues()}</td>
+                    <td class="{$rclass}">{$member->modification_date}</td>
 {/if}
-					<td class="{$member->getRowClass()} center nowrap actions_row">
+					<td class="{$rclass} center nowrap actions_row">
 						<a href="ajouter_adherent.php?id_adh={$member->id}"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="%membername: edit informations" pattern="/%membername/" replace=$member->sname}"/></a>
 {if $login->isAdmin() or $login->isStaff()}
 						<a href="gestion_contributions.php?id_adh={$member->id}"><img src="{$template_subdir}images/icon-money.png" alt="{_T string="[$]"}" width="16" height="16" title="{_T string="%membername: contributions" pattern="/%membername/" replace=$member->sname}"/></a>
