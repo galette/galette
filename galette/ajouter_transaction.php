@@ -36,6 +36,7 @@
  * @since     Available since 0.62
  */
 
+use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\DynamicFields as DynamicFields;
 
 require_once 'includes/galette.inc.php';
@@ -175,15 +176,21 @@ if ( $trans->id != '' ) {
 }
 
 // members
-$m = new Galette\Repository\Members();
-$members = $m->getList();
+$m = new Members();
+$required_fields = array(
+    'id_adh',
+    'nom_adh',
+    'prenom_adh'
+);
+$members = $m->getList(false, $required_fields);
 if ( count($members) == 0 ) {
     $adh_options = array('' => _T("You must first register a member"));
 } else {
     foreach ( $members as $member ) {
-        $adh_options[$member->id_adh] = stripslashes(
-            strtoupper($member->nom_adh) . ' ' . $member->prenom_adh
-        );
+        $pk = Adherent::PK;
+        $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
+            ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8'));
+        $adh_options[$member->$pk] = $sname;
     }
 }
 
