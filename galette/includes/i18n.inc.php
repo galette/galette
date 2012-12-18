@@ -284,7 +284,7 @@ if ( !function_exists('_T') ) {
                     $trans = $chaine . ' (not translated)';
                 }
             }
-            return (Galette\Core\I18n::seemUtf8($trans)  ? $trans : utf8_encode($trans));
+            return $trans;
         } else {
             return _($chaine);
         }
