@@ -181,8 +181,15 @@ class Group
                 $res = $select->query()->fetchAll();
                 $members = array();
                 $adhpk = Adherent::PK;
+
+                $deps = array(
+                    'picture'   => false,
+                    'groups'    => false,
+                    'dues'      => false
+                );
+
                 foreach ( $res as $m ) {
-                    $members[] = new Adherent((int)$m->$adhpk);
+                    $members[] = new Adherent((int)$m->$adhpk, $deps);
                 }
 
                 if ( $type === self::MEMBER_TYPE) {

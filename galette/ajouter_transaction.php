@@ -36,7 +36,11 @@
  * @since     Available since 0.62
  */
 
+use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\DynamicFields as DynamicFields;
+use Galette\Entity\Transaction as Transaction;
+use Galette\Repository\Contributions as Contributions;
+use Galette\Repository\Members as Members;
 
 require_once 'includes/galette.inc.php';
 
@@ -49,7 +53,7 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-$trans = new Galette\Entity\Transaction();
+$trans = new Transaction();
 //TODO: dynamic fields should be handled by Transaction object
 $dyn_fields = new DynamicFields();
 
@@ -71,7 +75,7 @@ $required = array(
 $disabled = array();
 
 if ( isset($_GET['detach']) ) {
-    if ( !Galette\Entity\Contribution::unsetTransactionPart($trans_id, $_GET['detach']) ) {
+    if ( !Contribution::unsetTransactionPart($trans_id, $_GET['detach']) ) {
         $error_detected[] = _T("Unable to detach contribution from transaction");
     } else {
         $success_detected[] = _T("Contribution has been successfyully detached from current transaction");
@@ -79,7 +83,7 @@ if ( isset($_GET['detach']) ) {
 }
 
 if ( isset($_GET['cid']) && $_GET['cid'] != null ) {
-    if ( !Galette\Entity\Contribution::setTransactionPart($trans_id, $_GET['cid']) ) {
+    if ( !Contribution::setTransactionPart($trans_id, $_GET['cid']) ) {
         $error_detected[] = _T("Unable to attach contribution to transaction");
     } else {
         $success_detected[] = _T("Contribution has been successfyully attached to current transaction");
@@ -170,20 +174,26 @@ $tpl->assign('success_detected', $success_detected);
 $tpl->assign('require_calendar', true);
 
 if ( $trans->id != '' ) {
-    $contribs = new Galette\Repository\Contributions();
+    $contribs = new Contributions();
     $tpl->assign('contribs', $contribs->getListFromTransaction($trans->id));
 }
 
 // members
-$m = new Galette\Repository\Members();
-$members = $m->getList();
+$m = new Members();
+$required_fields = array(
+    'id_adh',
+    'nom_adh',
+    'prenom_adh'
+);
+$members = $m->getList(false, $required_fields);
 if ( count($members) == 0 ) {
     $adh_options = array('' => _T("You must first register a member"));
 } else {
     foreach ( $members as $member ) {
-        $adh_options[$member->id_adh] = stripslashes(
-            strtoupper($member->nom_adh) . ' ' . $member->prenom_adh
-        );
+        $pk = Adherent::PK;
+        $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
+            ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8'));
+        $adh_options[$member->$pk] = $sname;
     }
 }
 
