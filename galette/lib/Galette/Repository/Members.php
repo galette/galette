@@ -586,7 +586,8 @@ class Members
             if ( $filters->free_search && count($filters->free_search) > 0
                 && !isset($filters->free_search['empty'])
             ) {
-                foreach ( $filters->free_search as $fs ) {
+                $free_searches = $filters->free_search;
+                foreach ( $free_searches as $fs ) {
                     if ( strpos($fs['field'], 'dyn_') === 0 ) {
                         $hasDf = true;
                     }
