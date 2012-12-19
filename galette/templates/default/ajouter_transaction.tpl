@@ -12,7 +12,9 @@
 {if !$transaction->member}
 						<option>{_T string="-- select a name --"}</option>
 {/if}
-{html_options options=$adh_options selected=$transaction->member}
+{foreach $adh_options as $k=>$v}
+                            <option value="{$k}"{if $transaction->member == $k} selected="selected"{/if}>{$v}</option>
+{/foreach}
 					</select>
 				</p>
 				<p>

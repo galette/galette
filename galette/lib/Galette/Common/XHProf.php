@@ -111,7 +111,7 @@ class XHProf
         if (!self::$_run
             && function_exists('xhprof_enable')
         ) {
-            xhprof_enable();
+            xhprof_enable(XHPROF_FLAGS_NO_BUILTINS | XHPROF_FLAGS_CPU | XHPROF_FLAGS_MEMORY);
             if ( $log ) {
                 $log->log(
                     'Start profiling with XHProf ' . $msg,

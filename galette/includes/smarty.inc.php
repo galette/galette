@@ -61,4 +61,27 @@ $tpl->registerPlugin(
     'memberName',
     'getMemberName'
 );
+
+$s = new Galette\Entity\Status();
+$statuses_list = $s->getList();
+
+/**
+ * Return status label
+ *
+ * @param array $params Parameters
+ *
+ * @return string
+ */
+function getStatusLabel($params)
+{
+    extract($params);
+    global $statuses_list;
+    return $statuses_list[$id];
+}
+$tpl->registerPlugin(
+    'function',
+    'statusLabel',
+    'getStatusLabel'
+);
+
 ?>
