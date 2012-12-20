@@ -427,7 +427,7 @@ class Picture
                 '[' . $class . '] Filename and extension are OK, proceed.',
                 KLogger::DEBUG
             );
-            $extension = $matches[2];
+            $extension = strtolower($matches[2]);
             if ( $extension == 'jpeg' ) {
                 //jpeg is an allowed extension,
                 //but we change it to jpg to reduce further tests :)
