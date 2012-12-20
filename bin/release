@@ -18,6 +18,8 @@ tagrefs = None
 force = False
 commit = None
 extra = None
+sign = True
+assume_yes = False
 
 def print_err(msg):
     """
@@ -116,17 +118,20 @@ def ask_user_confirm(msg):
     """
     Ask user his confirmation
     """
-    while True:
-        sys.stdout.write(msg)
-        choice = raw_input().lower()
-        if choice == 'y' or choice == 'yes':
-            return True
-        elif choice == 'n' or choice == 'no':
-            return False
-        else:
-            print_err(
-                "Invalid input. Please enter 'yes' or 'no' (or 'y' or 'n')."
-            )
+    if assume_yes:
+        return True
+    else:
+        while True:
+            sys.stdout.write(msg)
+            choice = raw_input().lower()
+            if choice == 'y' or choice == 'yes':
+                return True
+            elif choice == 'n' or choice == 'no':
+                return False
+            else:
+                print_err(
+                    "Invalid input. Please enter 'yes' or 'no' (or 'y' or 'n')."
+                )
 
 def get_rel_name(buildver):
     """
@@ -261,6 +266,30 @@ def _do_build(ver):
         print 'Adding vendor libraries'
         add_libs(rel_name, galette_archive)
 
+        if sign:
+            do_sign(galette_archive)
+
+        upload = ask_user_confirm(
+            'Do you want to upload archive %s? [yes/No] ' % galette_archive
+        )
+
+        if upload:
+            do_scp(galette_archive)
+
+def do_sign(archive):
+    sign_cmd = 'gpg --detach-sign --armor %s' % archive
+    p1 = subprocess.Popen(sign_cmd, shell=True)
+    p1.communicate()
+
+def do_scp(archive):
+    path = 'galette/galette-repository/'
+    if extra:
+        path += 'dev/'
+
+    scp_cmd = 'scp -r %s* ssh.tuxfamily.org:%s' % (archive, path)
+    p1 = subprocess.Popen(scp_cmd, shell=True)
+    p1.communicate()
+
 def add_libs(rel_name, galette_archive):
     """
     Add external libraries to the archive
@@ -343,7 +372,7 @@ def main():
     """
     Main method
     """
-    global verbose, tagrefs, force, extra
+    global verbose, tagrefs, force, extra, assume_yes
 
     parser = argparse.ArgumentParser(description='Release Galette')
     group = parser.add_mutually_exclusive_group()
@@ -396,6 +425,7 @@ def main():
         force = ask_user_confirm(
             'Are you *REALLY* sure you mean -f when you typed -f? [yes/No] '
         )
+    assume_yes=args.assume_yes
 
     build = False
     buildver = None
@@ -426,7 +456,7 @@ def main():
         propose_version()
     else:
         buildver = get_latest_version()
-        if args.assume_yes or force:
+        if force:
             build = True
         else:
             build = ask_user_confirm(
