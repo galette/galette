@@ -210,15 +210,11 @@ class Picture
             if ( $pic !== false ) {
                 // we must regenerate the picture file
                 $file_wo_ext = $this->store_path . $this->id;
-                $f = fopen($file_wo_ext . '.' . $pic->format, 'wb');
+                file_put_contents(
+                    $file_wo_ext . '.' . $pic->format,
+                    $pic->picture
+                );
 
-                $str_pic = '';
-                while ( $r=fread($pic->picture, 8192) ) {
-                    $str_pic .= $r;
-                }
-
-                fwrite($f, $str_pic);
-                fclose($f);
                 $this->format = $pic->format;
                 switch($this->format) {
                 case 'jpg':
