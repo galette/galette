@@ -583,7 +583,10 @@ class Members
             $hasDf = false;
             $hasCdf = false;
             $cdfs = array();
-            if ( $filters->free_search && count($filters->free_search) > 0
+
+            if ( $filters instanceof AdvancedMembersList
+                && $filters->free_search
+                && count($filters->free_search) > 0
                 && !isset($filters->free_search['empty'])
             ) {
                 $free_searches = $filters->free_search;
@@ -908,119 +911,123 @@ class Members
                 );
             }
 
-            if ( $filters->rcreation_date_begin || $filters->rcreation_date_end ) {
-                if ( $filters->rcreation_date_begin ) {
-                    $d = new \DateTime($filters->rcreation_date_begin);
-                    $select->where('date_crea_adh >= ?', $d->format('Y-m-d'));
+            if ( $filters instanceof AdvancedMembersList ) {
+                if ( $filters->rcreation_date_begin
+                    || $filters->rcreation_date_end
+                ) {
+                    if ( $filters->rcreation_date_begin ) {
+                        $d = new \DateTime($filters->rcreation_date_begin);
+                        $select->where('date_crea_adh >= ?', $d->format('Y-m-d'));
+                    }
+                    if ( $filters->rcreation_date_end ) {
+                        $d = new \DateTime($filters->rcreation_date_end);
+                        $select->where('date_crea_adh <= ?', $d->format('Y-m-d'));
+                    }
                 }
-                if ( $filters->rcreation_date_end ) {
-                    $d = new \DateTime($filters->rcreation_date_end);
-                    $select->where('date_crea_adh <= ?', $d->format('Y-m-d'));
-                }
-            }
 
-            if ( $filters->rmodif_date_begin || $filters->rmodif_date_end ) {
-                if ( $filters->rmodif_date_begin ) {
-                    $d = new \DateTime($filters->rmodif_date_begin);
-                    $select->where('date_modif_adh >= ?', $d->format('Y-m-d'));
+                if ( $filters->rmodif_date_begin || $filters->rmodif_date_end ) {
+                    if ( $filters->rmodif_date_begin ) {
+                        $d = new \DateTime($filters->rmodif_date_begin);
+                        $select->where('date_modif_adh >= ?', $d->format('Y-m-d'));
+                    }
+                    if ( $filters->rmodif_date_end ) {
+                        $d = new \DateTime($filters->rmodif_date_end);
+                        $select->where('date_modif_adh <= ?', $d->format('Y-m-d'));
+                    }
                 }
-                if ( $filters->rmodif_date_end ) {
-                    $d = new \DateTime($filters->rmodif_date_end);
-                    $select->where('date_modif_adh <= ?', $d->format('Y-m-d'));
-                }
-            }
 
-            if ( $filters->rdue_date_begin || $filters->rdue_date_end ) {
-                if ( $filters->rdue_date_begin ) {
-                    $d = new \DateTime($filters->rdue_date_begin);
-                    $select->where('date_echeance >= ?', $d->format('Y-m-d'));
+                if ( $filters->rdue_date_begin || $filters->rdue_date_end ) {
+                    if ( $filters->rdue_date_begin ) {
+                        $d = new \DateTime($filters->rdue_date_begin);
+                        $select->where('date_echeance >= ?', $d->format('Y-m-d'));
+                    }
+                    if ( $filters->rdue_date_end ) {
+                        $d = new \DateTime($filters->rdue_date_end);
+                        $select->where('date_echeance <= ?', $d->format('Y-m-d'));
+                    }
                 }
-                if ( $filters->rdue_date_end ) {
-                    $d = new \DateTime($filters->rdue_date_end);
-                    $select->where('date_echeance <= ?', $d->format('Y-m-d'));
-                }
-            }
 
-            if ( $filters->show_public_infos ) {
-                switch ( $filters->show_public_infos ) {
-                case self::FILTER_W_PUBINFOS:
-                    $select->where('bool_display_info = true');
-                    break;
-                case self::FILTER_WO_PUBINFOS:
-                    $select->where('bool_display_info = false');
-                    break;
-                case self::FILTER_DC_PUBINFOS:
-                    //nothing to do here.
-                    break;
-                }
-            }
-
-            if ( $filters->status ) {
-                $select->where(
-                    'a.id_statut IN (' . implode(',', $filters->status) . ')'
-                );
-            }
-
-            if ( count($filters->free_search) > 0
-                && !isset($filters->free_search['empty'])
-            ) {
-                foreach ( $filters->free_search as $fs ) {
-                    $fs['search'] = mb_strtolower($fs['search']);
-                    $qop = null;
-                    switch ( $fs['qry_op'] ) {
-                    case AdvancedMembersList::OP_EQUALS:
-                        $qop = '=';
+                if ( $filters->show_public_infos ) {
+                    switch ( $filters->show_public_infos ) {
+                    case self::FILTER_W_PUBINFOS:
+                        $select->where('bool_display_info = true');
                         break;
-                    case AdvancedMembersList::OP_CONTAINS:
-                        $qop = 'LIKE';
-                        $fs['search'] = '%' . $fs['search'] . '%';
+                    case self::FILTER_WO_PUBINFOS:
+                        $select->where('bool_display_info = false');
                         break;
-                    case AdvancedMembersList::OP_NOT_EQUALS:
-                        $qop = '!=';
-                        break;
-                    case AdvancedMembersList::OP_NOT_CONTAINS:
-                        $qop = 'NOT LIKE';
-                        $fs['search'] = '%' . $fs['search'] . '%';
-                        break;
-                    case AdvancedMembersList::OP_STARTS_WITH:
-                        $qop = 'LIKE';
-                        $fs['search'] = $fs['search'] . '%';
-                        break;
-                    case AdvancedMembersList::OP_ENDS_WITH:
-                        $qop = 'LIKE';
-                        $fs['search'] = '%' . $fs['search'];
-                        break;
-                    default:
-                        $log->log(
-                            'Unknown query operator: ' . $fs['qry_op'] .
-                            ' (will fallback to equals)',
-                            KLogger::WARN
-                        );
-                        $qop = '=';
+                    case self::FILTER_DC_PUBINFOS:
+                        //nothing to do here.
                         break;
                     }
+                }
 
-                    $qry = '';
-                    $prefix = '';
-                    if ( strpos($fs['field'], 'dync_') === 0 ) {
-                        //dynamic choice spotted!
-                        $prefix = 'cdf.';
-                        $qry = 'df.field_form = \'adh\' AND df.field_id = ' .
-                            str_replace('dync_', '', $fs['field']) . ' AND ';
-                        $fs['field'] = 'val';
-                    } elseif ( strpos($fs['field'], 'dyn_') === 0 ) {
-                        //dynamic field spotted!
-                        $prefix = 'df.';
-                        $qry = 'df.field_form = \'adh\' AND df.field_id = ' .
-                            str_replace('dyn_', '', $fs['field']) . ' AND ';
-                        $fs['field'] = 'field_val';
-                    }
+                if ( $filters->status ) {
+                    $select->where(
+                        'a.id_statut IN (' . implode(',', $filters->status) . ')'
+                    );
+                }
 
-                    $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' . $qop  . ' ?' ;
-                    if ( $fs['log_op'] === AdvancedMembersList::OP_AND ) {
-                        $select->where($qry, $fs['search']);
-                    } elseif ( $fs['log_op'] === AdvancedMembersList::OP_OR ) {
-                        $select->orWhere($qry, $fs['search']);
+                if ( count($filters->free_search) > 0
+                    && !isset($filters->free_search['empty'])
+                ) {
+                    foreach ( $filters->free_search as $fs ) {
+                        $fs['search'] = mb_strtolower($fs['search']);
+                        $qop = null;
+                        switch ( $fs['qry_op'] ) {
+                        case AdvancedMembersList::OP_EQUALS:
+                            $qop = '=';
+                            break;
+                        case AdvancedMembersList::OP_CONTAINS:
+                            $qop = 'LIKE';
+                            $fs['search'] = '%' . $fs['search'] . '%';
+                            break;
+                        case AdvancedMembersList::OP_NOT_EQUALS:
+                            $qop = '!=';
+                            break;
+                        case AdvancedMembersList::OP_NOT_CONTAINS:
+                            $qop = 'NOT LIKE';
+                            $fs['search'] = '%' . $fs['search'] . '%';
+                            break;
+                        case AdvancedMembersList::OP_STARTS_WITH:
+                            $qop = 'LIKE';
+                            $fs['search'] = $fs['search'] . '%';
+                            break;
+                        case AdvancedMembersList::OP_ENDS_WITH:
+                            $qop = 'LIKE';
+                            $fs['search'] = '%' . $fs['search'];
+                            break;
+                        default:
+                            $log->log(
+                                'Unknown query operator: ' . $fs['qry_op'] .
+                                ' (will fallback to equals)',
+                                KLogger::WARN
+                            );
+                            $qop = '=';
+                            break;
+                        }
+
+                        $qry = '';
+                        $prefix = '';
+                        if ( strpos($fs['field'], 'dync_') === 0 ) {
+                            //dynamic choice spotted!
+                            $prefix = 'cdf.';
+                            $qry = 'df.field_form = \'adh\' AND df.field_id = ' .
+                                str_replace('dync_', '', $fs['field']) . ' AND ';
+                            $fs['field'] = 'val';
+                        } elseif ( strpos($fs['field'], 'dyn_') === 0 ) {
+                            //dynamic field spotted!
+                            $prefix = 'df.';
+                            $qry = 'df.field_form = \'adh\' AND df.field_id = ' .
+                                str_replace('dyn_', '', $fs['field']) . ' AND ';
+                            $fs['field'] = 'field_val';
+                        }
+
+                        $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' . $qop  . ' ?' ;
+                        if ( $fs['log_op'] === AdvancedMembersList::OP_AND ) {
+                            $select->where($qry, $fs['search']);
+                        } elseif ( $fs['log_op'] === AdvancedMembersList::OP_OR ) {
+                            $select->orWhere($qry, $fs['search']);
+                        }
                     }
                 }
             }
