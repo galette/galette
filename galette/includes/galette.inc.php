@@ -259,6 +259,7 @@ if ( !$installer ) { //If we're not working from installer
         */
         require_once WEB_ROOT . 'includes/session.inc.php';
         require_once WEB_ROOT . 'includes/smarty.inc.php';
+        require_once WEB_ROOT . 'includes/members_fields.php';
     } else {
         header('location: needs_update.php');
         die();
