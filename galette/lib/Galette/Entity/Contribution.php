@@ -264,7 +264,7 @@ class Contribution
     private function _loadFromRS($r)
     {
         $pk = self::PK;
-        $this->_id = $r->$pk;
+        $this->_id = (int)$r->$pk;
         $this->_date = $r->date_enreg;
         $this->_amount = $r->montant_cotis;
         //save original amount, we need it for transactions parts calulations
@@ -538,7 +538,7 @@ class Contribution
                 unset($values[self::PK]);
                 $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
                 if ( $add > 0) {
-                    $this->_id = $zdb->db->lastInsertId(
+                    $this->_id = (int)$zdb->db->lastInsertId(
                         PREFIX_DB . self::TABLE,
                         'id'
                     );

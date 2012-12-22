@@ -162,7 +162,7 @@ if ( isset($_POST['valid']) ) {
     if ( count($error_detected) == 0 ) {
         $dyn_fields->setAllFields(
             'contrib',
-            $id_cotis,
+            $contrib->id,
             $contribution['dyn']
         );
 
