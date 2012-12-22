@@ -87,7 +87,7 @@ $smartyLoader->register();
 //we start a php session
 session_start();
 
-define('GALETTE_VERSION', 'v0.7.2.8');
+define('GALETTE_VERSION', 'v0.7.2.9');
 define('GALETTE_COMPAT_VERSION', '0.7.1');
 define('GALETTE_DB_VERSION', '0.701');
 define('GALETTE_MODE', 'PROD'); //DEV or PROD
@@ -259,6 +259,7 @@ if ( !$installer ) { //If we're not working from installer
         */
         require_once WEB_ROOT . 'includes/session.inc.php';
         require_once WEB_ROOT . 'includes/smarty.inc.php';
+        require_once WEB_ROOT . 'includes/members_fields.php';
     } else {
         header('location: needs_update.php');
         die();

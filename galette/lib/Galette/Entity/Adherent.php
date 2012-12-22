@@ -44,8 +44,6 @@ use Galette\Core\Password as Password;
 use Galette\Repository\Groups as Groups;
 use Galette\Repository\Members as Members;
 
-require_once WEB_ROOT . 'includes/members_fields.php';
-
 /**
  * Member class for galette
  *
