@@ -114,11 +114,12 @@ class Mailing extends GaletteMail
         $this->_unreachables = array();
 
         foreach ($members as $member) {
-            if ( trim($member->email) != '' && self::isValidEmail($member->email) ) {
+            $email = $member->email;
+            if ( trim($email) != '' && self::isValidEmail($email) ) {
                 if ( !in_array($member, $this->_mrecipients) ) {
                     $this->_mrecipients[] = $member;
                 }
-                $m[$member->email] = $member->sname;
+                $m[$email] = $member->sname;
             } else {
                 if ( !in_array($member, $this->_unreachables) ) {
                     $this->_unreachables[] = $member;

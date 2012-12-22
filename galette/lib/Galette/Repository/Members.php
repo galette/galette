@@ -460,13 +460,14 @@ class Members
     /**
     * Get list of members that has been selected
     *
-    * @param array $ids     an array of members id that has been selected
-    * @param array $orderby SQL order clause (optionnal)
+    * @param array   $ids         an array of members id that has been selected
+    * @param array   $orderby     SQL order clause (optionnal)
+    * @param boolean $with_photos Should photos be loaded?
     *
     * @return Adherent[]
     * @static
     */
-    public static function getArrayList($ids, $orderby = null)
+    public static function getArrayList($ids, $orderby = null, $with_photos = false)
     {
         global $zdb, $log;
 
@@ -499,7 +500,7 @@ class Members
             $res = $result->fetchAll();
             foreach ( $res as $o ) {
                 $deps = array(
-                    'picture'   => false,
+                    'picture'   => $with_photos,
                     'groups'    => false,
                     'dues'      => false
                 );

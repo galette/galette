@@ -90,6 +90,7 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
         //FIXME: use a constant!
         $filters->reinit();
         $filters->membership_filter = Galette\Repository\Members::MEMBERSHIP_LATE;
+        $filters->account_status_filter = 1;
         $m = new Galette\Repository\Members();
         $members = $m->getList(true);
         $mailing = new Core\Mailing(($members !== false) ? $members : null);

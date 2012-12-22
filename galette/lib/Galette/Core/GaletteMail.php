@@ -195,7 +195,6 @@ class GaletteMail
                 break;
             }
         }
-        $r = $this->_recipients;
         return $res;
     }
 
