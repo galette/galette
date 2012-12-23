@@ -116,4 +116,3 @@ class Logo extends Picture
         return $this->custom;
     }
 }
-?>

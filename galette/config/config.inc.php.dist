@@ -23,5 +23,3 @@ define("NAME_DB", "galette");
 define("PREFIX_DB", "galette_");
 /* FIXME will disappear soon */
 define("STOCK_FILES", "tempimages");
-
-?>
