@@ -303,7 +303,7 @@ def add_libs(rel_name, galette_archive):
         urlgrabber.urlgrab(
             url,
             os.path.join(local_dl_repo, file_name),
-            progress_obj=progres
+            progress_obj=prog
         )
 
     galette = tarfile.open(galette_archive, 'r|bz2')
