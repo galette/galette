@@ -37,7 +37,7 @@
  */
 define('SMARTY_VERSION', '3.1.12');
 define('ZEND_VERSION', '1.11.11');
-define('TCPDF_VERSION', '5.9.165');
+define('TCPDF_VERSION', '5.9.202');
 define('JQUERY_VERSION', '1.6.2');
 define('JQUERY_UI_VERSION', '1.8.14');
 define('JQUERY_MARKITUP_VERSION', '1.1.12');
