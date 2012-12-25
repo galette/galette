@@ -202,7 +202,7 @@ class Members
         $managed=false,
         $limit=true
     ) {
-        global $zdb, $log, $galetteLoader, $filters;
+        global $zdb, $galetteLoader, $filters;
 
         try {
             $_mode = self::SHOW_LIST;
@@ -270,7 +270,7 @@ class Members
      */
     public function removeMembers($ids)
     {
-        global $zdb, $log, $hist;
+        global $zdb, $hist;
 
         $list = array();
         if ( is_numeric($ids) ) {
@@ -411,7 +411,7 @@ class Members
     */
     public function getPublicList($with_photos, $fields)
     {
-        global $zdb, $log, $filters;
+        global $zdb, $filters;
 
         try {
             $select = self::_buildSelect(
@@ -469,7 +469,7 @@ class Members
     */
     public static function getArrayList($ids, $orderby = null, $with_photos = false)
     {
-        global $zdb, $log;
+        global $zdb;
 
         if ( !is_array($ids) || count($ids) < 1 ) {
             Analog::log('No member selected for labels.', Analog::INFO);
@@ -535,7 +535,7 @@ class Members
     */
     private function _buildSelect($mode, $fields, $filter, $photos, $count = false)
     {
-        global $zdb, $log, $login, $filters;
+        global $zdb, $login, $filters;
 
         try {
             $fieldsList = ( $fields != null )
@@ -659,7 +659,7 @@ class Members
     */
     private function _proceedCount($select)
     {
-        global $zdb, $log, $filters;
+        global $zdb, $filters;
 
         try {
             $countSelect = clone $select;
@@ -738,7 +738,7 @@ class Members
      */
     private function _buildWhereClause($select)
     {
-        global $zdb, $login, $filters, $log;
+        global $zdb, $login, $filters;
 
         try {
             if ( $filters->email_filter == self::FILTER_W_EMAIL) {
@@ -1051,7 +1051,7 @@ class Members
      */
     public function emptyLogins()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $zdb->db->beginTransaction();

@@ -106,7 +106,7 @@ class ContributionsTypes
     */
     public function load($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -154,7 +154,7 @@ class ContributionsTypes
     */
     public function installInit()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             //first, we drop all values
@@ -198,7 +198,7 @@ class ContributionsTypes
      */
     public static function getList($extent = null)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -239,7 +239,7 @@ class ContributionsTypes
     */
     public function getCompleteList()
     {
-        global $zdb, $log;
+        global $zdb;
         $list = array();
 
         try {
@@ -286,7 +286,7 @@ class ContributionsTypes
     */
     public function get($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -332,7 +332,7 @@ class ContributionsTypes
     */
     public function getIdByLabel($label)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -360,7 +360,7 @@ class ContributionsTypes
     */
     public function add($label, $extension)
     {
-        global $zdb, $log;
+        global $zdb;
 
         // Avoid duplicates.
         $ret = $this->getidByLabel($label);
@@ -418,7 +418,7 @@ class ContributionsTypes
     */
     public function update($id, $field, $value)
     {
-        global $zdb, $log;
+        global $zdb;
 
         $ret = $this->get($id);
         if ( !$ret ) {
@@ -473,7 +473,7 @@ class ContributionsTypes
     */
     public function delete($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         $ret = $this->get($id);
         if ( !$ret ) {
@@ -511,7 +511,7 @@ class ContributionsTypes
     */
     public function isUsed($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         // Check if it's used.
         try {

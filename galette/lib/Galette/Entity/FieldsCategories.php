@@ -98,7 +98,7 @@ class FieldsCategories
     */
     public static function getList()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -127,7 +127,7 @@ class FieldsCategories
     */
     public function installInit()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             //first, we drop all values

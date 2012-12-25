@@ -85,7 +85,7 @@ class GaletteMail
      */
     private function _initMailer()
     {
-        global $preferences, $log, $i18n;
+        global $preferences, $i18n;
 
         $this->_mail = new \PHPMailer();
 
@@ -205,7 +205,7 @@ class GaletteMail
     */
     public function send()
     {
-        global $preferences, $log;
+        global $preferences;
 
         if ( $this->_mail === null ) {
             $this->_initMailer();

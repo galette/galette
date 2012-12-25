@@ -171,7 +171,7 @@ class Preferences
     */
     private function _checkUpdate()
     {
-        global $zdb, $log;
+        global $zdb;
         $proceed = false;
         $params = array();
         foreach ( self::$_defaults as $k=>$v ) {
@@ -225,7 +225,7 @@ class Preferences
     */
     public function load()
     {
-        global $zdb, $log;
+        global $zdb;
 
         $this->_prefs = array();
 
@@ -257,7 +257,7 @@ class Preferences
     */
     public function installInit($lang, $adm_login, $adm_pass)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             //first, we drop all values
@@ -312,7 +312,7 @@ class Preferences
     */
     public function store()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $stmt = $zdb->db->prepare(

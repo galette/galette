@@ -76,7 +76,7 @@ if ( @putenv("LANG=$language")
 */
 function addDynamicTranslation($text_orig, $error_detected)
 {
-    global $zdb, $log, $i18n;
+    global $zdb, $i18n;
     $l10n_table = PREFIX_DB . 'l10n';
 
     try {
@@ -138,7 +138,7 @@ function addDynamicTranslation($text_orig, $error_detected)
 */
 function deleteDynamicTranslation($text_orig, $error_detected)
 {
-    global $zdb, $log, $i18n;
+    global $zdb, $i18n;
     $l10n_table = PREFIX_DB . 'l10n';
 
     try {
@@ -180,7 +180,7 @@ function updateDynamicTranslation(
     $text_trans,
     $error_detected
 ) {
-    global $zdb, $log;
+    global $zdb;
     $l10n_table = PREFIX_DB . 'l10n';
 
     try {
@@ -219,7 +219,7 @@ function updateDynamicTranslation(
 */
 function getDynamicTranslation($text_orig, $text_locale)
 {
-    global $zdb, $log;
+    global $zdb;
     try {
         $select = new Zend_Db_Select($zdb->db);
         $select->limit(1)->from(

@@ -113,7 +113,7 @@ class Password
      */
     private function _removeOldEntries($id_adh)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $del = $zdb->db->delete(
@@ -149,7 +149,7 @@ class Password
      */
     public function generateNewPassword($id_adh)
     {
-        global $zdb, $log;
+        global $zdb;
 
         //first of all, we'll remove all existant entries for specified id
         $this->_removeOldEntries($id_adh);
@@ -201,7 +201,7 @@ class Password
      */
     private function _cleanExpired()
     {
-        global $zdb, $log;
+        global $zdb;
 
         $date = new \DateTime();
         $date->sub(new \DateInterval('PT24H'));
@@ -240,7 +240,7 @@ class Password
      */
     public function isHashValid($hash)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -268,7 +268,7 @@ class Password
      */
     public function removeHash($hash)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $del = $zdb->db->delete(

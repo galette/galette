@@ -63,7 +63,7 @@ class Groups
      */
     public static function getSimpleList()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -101,7 +101,7 @@ class Groups
      */
     public function getList($full = true)
     {
-        global $zdb, $log, $login;
+        global $zdb, $login;
         try {
             $select = new \Zend_Db_Select($zdb->db);
             $select->from(
@@ -172,7 +172,7 @@ class Groups
      */
     public static function loadGroups($id, $managed = false, $as_group = true)
     {
-        global $zdb, $log;
+        global $zdb;
         try {
             $join_table = ($managed) ?
                 Group::GROUPSMANAGERS_TABLE :
@@ -230,7 +230,7 @@ class Groups
      */
     public static function addMemberToGroups($adh, $groups, $transaction = false)
     {
-        global $zdb, $log;
+        global $zdb;
         try {
             if ( $transaction === false) {
                 $zdb->db->beginTransaction();
@@ -308,7 +308,7 @@ class Groups
      */
     public static function isUnique($name)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);

@@ -122,7 +122,7 @@ class FieldsConfig
      */
     private function _checkUpdate($try = true)
     {
-        global $zdb, $log;
+        global $zdb;
         $class = get_class($this);
 
         try {
@@ -203,7 +203,7 @@ class FieldsConfig
      */
     public function init($reinit=false)
     {
-        global $zdb, $log;
+        global $zdb;
         $class = get_class($this);
         $t = new FieldsCategories();
 
@@ -399,7 +399,7 @@ class FieldsConfig
      */
     private function _store()
     {
-        global $zdb, $log;
+        global $zdb;
 
         $class = get_class($this);
 

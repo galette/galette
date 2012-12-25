@@ -106,7 +106,7 @@ class MailingHistory extends History
     */
     public function getMailingHistory()
     {
-        global $zdb, $log;
+        global $zdb;
 
         if ($this->counter == null) {
             $c = $this->getCount();
@@ -183,7 +183,7 @@ class MailingHistory extends History
      */
     public static function loadFrom($id, $mailing)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -247,7 +247,7 @@ class MailingHistory extends History
      */
     public function store()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $_recipients = array();
@@ -285,7 +285,7 @@ class MailingHistory extends History
      */
     public function removeEntries($ids)
     {
-        global $zdb, $log, $hist;
+        global $zdb, $hist;
 
         $list = array();
         if ( is_numeric($ids) ) {

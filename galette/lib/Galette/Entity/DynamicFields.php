@@ -142,7 +142,7 @@ class DynamicFields
      */
     public function getFixedValues($field_id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $val_select = new \Zend_Db_Select($zdb->db);
@@ -227,7 +227,7 @@ class DynamicFields
      */
     public function getFields($form_name, $item_id, $quote)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -294,7 +294,7 @@ class DynamicFields
     public function prepareForDisplay(
         $form_name, $all_values, $disabled, $edit
     ) {
-        global $zdb, $log, $login;
+        global $zdb, $login;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -413,7 +413,7 @@ class DynamicFields
     private function _setField(
         $form_name, $item_id, $field_id, $val_index, $field_val
     ) {
-        global $zdb, $log;
+        global $zdb;
         $ret = false;
 
         try {
@@ -563,7 +563,7 @@ class DynamicFields
      */
     public function loadFieldType($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);

@@ -239,7 +239,7 @@ class Texts
     */
     public function getTexts($ref,$lang)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -316,7 +316,7 @@ class Texts
      */
     public function setTexts($ref, $lang, $subject, $body)
     {
-        global $zdb, $log;
+        global $zdb;
         //set texts
 
         try {
@@ -356,7 +356,7 @@ class Texts
     */
     public function getRefs($lang)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -402,7 +402,7 @@ class Texts
     */
     public function installInit($check_first = true)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             //first of all, let's check if data seem to have already

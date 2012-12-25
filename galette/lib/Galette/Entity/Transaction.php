@@ -127,7 +127,7 @@ class Transaction
     */
     public function load($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -160,7 +160,7 @@ class Transaction
      */
     public function remove($transaction = true)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             if ( $transaction ) {
@@ -232,7 +232,7 @@ class Transaction
      */
     public function check($values, $required, $disabled)
     {
-        global $zdb, $log;
+        global $zdb;
         $errors = array();
 
         $fields = array_keys($this->_fields);
@@ -345,7 +345,7 @@ class Transaction
      */
     public function store()
     {
-        global $zdb, $log, $hist;
+        global $zdb, $hist;
 
         try {
             $zdb->db->beginTransaction();
@@ -414,7 +414,7 @@ class Transaction
      */
     public function getDispatchedAmount()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -444,7 +444,7 @@ class Transaction
      */
     public function getMissingAmount()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);

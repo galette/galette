@@ -275,7 +275,7 @@ class Csv
     */
     public function runParametedExport($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         $xml = simplexml_load_file($this->_parameted_file);
 

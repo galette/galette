@@ -94,7 +94,7 @@ abstract class DynamicFieldType
      */
     public function load()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -133,7 +133,7 @@ abstract class DynamicFieldType
      */
     private function _loadFixedValues()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $val_select = new \Zend_Db_Select($zdb->db);

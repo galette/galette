@@ -224,7 +224,7 @@ class Contribution
     */
     public function load($id)
     {
-        global $zdb, $log, $login;
+        global $zdb, $login;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -310,7 +310,7 @@ class Contribution
      */
     public function check($values, $required, $disabled)
     {
-        global $zdb, $log;
+        global $zdb;
         $errors = array();
 
         $fields = array_keys($this->_fields);
@@ -455,7 +455,7 @@ class Contribution
      */
     public function checkOverlap()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -508,7 +508,7 @@ class Contribution
      */
     public function store()
     {
-        global $zdb, $log, $hist;
+        global $zdb, $hist;
 
         try {
             $zdb->db->beginTransaction();
@@ -603,7 +603,7 @@ class Contribution
      */
     private function _updateDeadline()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $due_date = self::getDueDate($this->_member);
@@ -640,7 +640,7 @@ class Contribution
      */
     public function remove($transaction = true)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             if ( $transaction ) {
@@ -721,7 +721,7 @@ class Contribution
      */
     public static function getDueDate($member_id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -751,7 +751,7 @@ class Contribution
      */
     public static function unsetTransactionPart($trans_id, $contrib_id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             //first, we check if contribution is part of transaction
@@ -791,7 +791,7 @@ class Contribution
      */
     public static function setTransactionPart($trans_id, $contrib_id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $zdb->db->update(

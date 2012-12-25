@@ -102,7 +102,7 @@ class Status
     */
     public function installInit()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             //first, we drop all values
@@ -142,7 +142,7 @@ class Status
     */
     public function getList()
     {
-        global $zdb, $log;
+        global $zdb;
         $list = array();
 
         try {
@@ -178,7 +178,7 @@ class Status
     */
     public function getCompleteList()
     {
-        global $zdb, $log;
+        global $zdb;
         $list = array();
 
         try {
@@ -222,7 +222,7 @@ class Status
     */
     public function get($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -270,7 +270,7 @@ class Status
     */
     public function getIdByLabel($label)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -298,7 +298,7 @@ class Status
     */
     public function add($label, $priority)
     {
-        global $zdb, $log;
+        global $zdb;
 
         // Avoid duplicates.
         $ret = $this->getidByLabel($label);
@@ -356,7 +356,7 @@ class Status
     */
     public function update($id, $field, $value)
     {
-        global $zdb, $log;
+        global $zdb;
 
         $ret = $this->get($id);
         if ( !$ret ) {
@@ -407,7 +407,7 @@ class Status
     */
     public function delete($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         $ret = $this->get($id);
         if ( !$ret ) {
@@ -444,7 +444,7 @@ class Status
     */
     public function isUsed($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         // Check if it's used.
         try {

@@ -150,7 +150,7 @@ class Adherent
     */
     public function __construct($args = null, $deps = null)
     {
-        global $i18n, $log, $members_fields;
+        global $i18n, $members_fields;
 
         if ( $deps !== null && is_array($deps) ) {
             $this->_deps = array_merge(
@@ -229,7 +229,7 @@ class Adherent
     */
     public function load($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -268,7 +268,7 @@ class Adherent
     */
     public function loadFromLoginOrMail($login)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -607,7 +607,7 @@ class Adherent
     */
     public static function getSName($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -642,7 +642,7 @@ class Adherent
      */
     public static function updatePassword($id_adh, $pass)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $zdb->db->update(
@@ -714,7 +714,7 @@ class Adherent
      */
     public function check($values, $required, $disabled)
     {
-        global $zdb, $log, $preferences;
+        global $zdb, $preferences;
         $errors = array();
 
         $fields = self::getDbFields();
@@ -988,7 +988,7 @@ class Adherent
      */
     public function store()
     {
-        global $zdb, $log, $hist;
+        global $zdb, $hist;
 
         try {
             $values = array();
@@ -1097,7 +1097,7 @@ class Adherent
      */
     private function _updateModificationDate()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $edit = $zdb->db->update(

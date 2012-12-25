@@ -76,15 +76,6 @@ if ( !$installer || $installed ) { //If we're not working from installer
     require_once GALETTE_CONFIG_PATH . 'config.inc.php';
 }
 
-//start profiling
-if (defined('GALETTE_XHPROF_PATH')
-    && function_exists('xhprof_enable')
-) {
-    include_once __DIR__ . '/../lib/Galette/Common/XHProf.php';
-    $profiler = new Galette\Common\XHProf();
-    $profiler->start();
-}
-
 use Galette\Common\ClassLoader;
 use Analog\Analog as Analog;
 use Galette\Core;
@@ -100,6 +91,15 @@ $galetteLoader->register();
 $zendLoader->register();
 $analogLoader->register();
 $smartyLoader->register();
+
+//start profiling
+if (defined('GALETTE_XHPROF_PATH')
+    && function_exists('xhprof_enable')
+) {
+    include_once __DIR__ . '/../lib/Galette/Common/XHProf.php';
+    $profiler = new Galette\Common\XHProf();
+    $profiler->start();
+}
 
 //we start a php session
 session_start();

@@ -108,18 +108,18 @@ class XHProf
      */
     public function start($msg='')
     {
-        global $log;
-
         if (!self::$_run
             && function_exists('xhprof_enable')
         ) {
-            xhprof_enable(XHPROF_FLAGS_NO_BUILTINS | XHPROF_FLAGS_CPU | XHPROF_FLAGS_MEMORY);
-            if ( $log ) {
-                Analog::log(
-                    'Start profiling with XHProf ' . $msg,
-                    Analog::INFO
-                );
-            }
+            xhprof_enable(
+                XHPROF_FLAGS_NO_BUILTINS
+                | XHPROF_FLAGS_CPU
+                | XHPROF_FLAGS_MEMORY
+            );
+            Analog::log(
+                'Start profiling with XHProf ' . $msg,
+                Analog::INFO
+            );
             self::$_run = true;
         }
     }
@@ -131,8 +131,6 @@ class XHProf
      */
     public function stop()
     {
-        global $log;
-
         if (self::$_run) {
             $data = xhprof_disable();
 

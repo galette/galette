@@ -105,7 +105,7 @@ class History extends Pagination
     */
     public function add($action, $argument = '', $query = '')
     {
-        global $zdb, $log, $login;
+        global $zdb, $login;
 
         try {
             $values = array(
@@ -143,7 +143,7 @@ class History extends Pagination
     */
     public function clean()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $result = $zdb->db->query('TRUNCATE TABLE ' . $this->getTableName());
@@ -174,7 +174,7 @@ class History extends Pagination
     */
     public function getHistory()
     {
-        global $zdb, $log;
+        global $zdb;
 
         if ($this->counter == null) {
             $c = $this->getCount();
@@ -216,7 +216,7 @@ class History extends Pagination
     */
     protected function getCount()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);

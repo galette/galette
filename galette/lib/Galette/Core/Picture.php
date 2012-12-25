@@ -321,7 +321,7 @@ class Picture
      */
     public function delete($transaction = true)
     {
-        global $zdb, $log;
+        global $zdb;
         $class = get_class($this);
 
         try {
@@ -412,7 +412,7 @@ class Picture
             - fix max size (by preferences ?)
             - make possible to store images in database, filesystem or both
         */
-        global $zdb, $log;
+        global $zdb;
 
         $class = get_class($this);
 

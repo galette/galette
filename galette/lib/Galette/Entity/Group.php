@@ -98,7 +98,7 @@ class Group
     */
     public function load($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -157,7 +157,7 @@ class Group
      */
     private function _loadPersons($type)
     {
-        global $zdb, $log;
+        global $zdb;
 
         if ( $this->_id ) {
             try {
@@ -217,7 +217,7 @@ class Group
      */
     private function _loadSubGroups()
     {
-        global $zdb, $log, $login;
+        global $zdb, $login;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -266,7 +266,7 @@ class Group
      */
     public function remove($cascade = false)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $zdb->db->beginTransaction();
@@ -313,7 +313,7 @@ class Group
      */
     public function detach()
     {
-        global $zdb, $log, $hist;
+        global $zdb, $hist;
 
         try {
             $edit = $zdb->db->update(
@@ -351,7 +351,7 @@ class Group
      */
     public function store()
     {
-        global $zdb, $log, $hist;
+        global $zdb, $hist;
 
         try {
             $values = array(
@@ -605,7 +605,7 @@ class Group
      */
     public function setMembers($members)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $zdb->db->beginTransaction();
@@ -681,7 +681,7 @@ class Group
      */
     public function setManagers($members)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $zdb->db->beginTransaction();

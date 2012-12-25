@@ -108,7 +108,7 @@ class Transactions extends Pagination
     public function getTransactionsList(
         $as_trans=false, $fields=null, $count=true
     ) {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = $this->_buildSelect(
@@ -207,7 +207,7 @@ class Transactions extends Pagination
     */
     private function _proceedCount($select)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $countSelect = clone $select;
@@ -274,7 +274,7 @@ class Transactions extends Pagination
      */
     private function _buildWhereClause($select)
     {
-        global $zdb, $log, $login;
+        global $zdb, $login;
 
         try {
             /*if ( $this->_start_date_filter != null ) {*/
@@ -349,7 +349,7 @@ class Transactions extends Pagination
      */
     public function removeTransactions($ids)
     {
-        global $zdb, $log, $hist;
+        global $zdb, $hist;
 
         $list = array();
         if ( is_numeric($ids) ) {
