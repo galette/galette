@@ -98,10 +98,16 @@ function addDynamicTranslation($text_orig, $error_detected)
                     '` dynamic translation already exists.',
                     Analog::INFO
                 );
+
+                $where = array();
+                $owhere = $select->getPart(Zend_Db_Select::WHERE);
+                foreach ( $owhere as $c ) {
+                    $where[] = preg_replace('/^AND /', '', $c);
+                }
                 $zdb->db->update(
                     $l10n_table,
                     $values,
-                    $select->getPart(Zend_Db_Select::WHERE)
+                    $where
                 );
             } else {
                 //add new entry
@@ -184,18 +190,39 @@ function updateDynamicTranslation(
     $l10n_table = PREFIX_DB . 'l10n';
 
     try {
+        //check if translation already exists
+        $select = new Zend_Db_Select($zdb->db);
+        $select->from($l10n_table, 'text_nref')
+            ->where('text_orig = ?', $text_orig)
+            ->where('text_locale = ?', $text_locale);
+        $nref = $select->query()->fetch()->text_nref;
+
+        $exists = (is_numeric($nref) && $nref > 0);
+
         $values = array(
             'text_trans' => $text_trans
         );
-        $where = array(
-            $zdb->db->quoteInto('text_orig = ?', $text_orig),
-            $zdb->db->quoteInto('text_locale = ?', $text_locale)
-        );
-        $zdb->db->update(
-            $l10n_table,
-            $values,
-            $where
-        );
+
+        $res = false;
+        if ( $exists ) {
+            $where = array();
+            $owhere = $select->getPart(Zend_Db_Select::WHERE);
+            foreach ( $owhere as $c ) {
+                $where[] = preg_replace('/^AND /', '', $c);
+            }
+            $res = $zdb->db->update(
+                $l10n_table,
+                $values,
+                $where
+            );
+        } else {
+            $values['text_orig'] = $text_orig;
+            $values['text_locale'] = $text_locale;
+            $res = $zdb->db->insert(
+                $l10n_table,
+                $values
+            );
+        }
         return true;
     } catch (Exception $e) {
         /** FIXME */

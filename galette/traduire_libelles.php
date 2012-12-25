@@ -59,6 +59,7 @@ if ( isset($_POST['trans']) && isset($text_orig) ) {
     while ( list($key, $value) = each($_POST) ) {
         if ( substr($key, 0, 11) == 'text_trans_' ) {
             $trans_lang = substr($key, 11);
+            $trans_lang = str_replace('_utf8', '.utf8', $trans_lang);
             $res = updateDynamicTranslation(
                 $text_orig,
                 $trans_lang,
@@ -139,7 +140,7 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
             $text_trans = getDynamicTranslation($text_orig, $l->getLongID());
             $lang_name = $l->getName();
             $trans[] = array(
-                'key'  => $l->getID(),
+                'key'  => $l->getLongID(),
                 'name' => ucwords($lang_name),
                 'text' => $text_trans
             );
