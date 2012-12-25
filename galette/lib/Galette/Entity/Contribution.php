@@ -855,7 +855,6 @@ class Contribution
     */
     public function __get($name)
     {
-        global $log;
 
         $forbidden = array('is_cotis');
         $virtuals = array('duration', 'spayment_type');
@@ -941,7 +940,6 @@ class Contribution
     */
     public function __set($name, $value)
     {
-        global $log;
         $forbidden = array('fields', 'is_cotis', 'end_date');
 
         if ( !in_array($name, $forbidden) ) {

@@ -111,7 +111,6 @@ class I18n
     */
     public function changeLanguage($id)
     {
-        global $log;
         Analog::log('Trying to set locale to ' . $id, Analog::DEBUG);
 
         $xml = simplexml_load_file($this->_file);

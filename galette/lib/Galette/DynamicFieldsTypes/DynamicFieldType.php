@@ -316,7 +316,6 @@ abstract class DynamicFieldType
      */
     public function getValues()
     {
-        global $log;
 
         if ( $this->fixed_values ) {
             return implode("\n", $this->values);

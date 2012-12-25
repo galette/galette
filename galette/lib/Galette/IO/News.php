@@ -107,7 +107,6 @@ class News
      */
     private function _checkCache()
     {
-        global $log;
 
         $cfile = $this->_getCacheFilename();
         if (file_exists($cfile) ) {
@@ -212,7 +211,6 @@ class News
      */
     private function _parseTweets()
     {
-        global $log;
 
         try {
             $xml = simplexml_load_file($this->_twitter_url);
@@ -266,7 +264,6 @@ class News
      */
     private function _parseGplus()
     {
-        global $log;
 
         try {
             include_once GALETTE_GAPI_PATH . '/apiClient.php';
@@ -312,7 +309,6 @@ class News
      */
     public function canReadTweets(\Galette\Core\CheckModules $cm)
     {
-        global $log;
 
         //tweeter needs simplexml to load an https URI
         if ( $cm->isGood('ssl') ) {
@@ -364,7 +360,6 @@ class News
      */
     public function canReadGplus(\Galette\Core\CheckModules $cm)
     {
-        global $log;
 
         //googleplus needs curl to load an https URI
         if ( $cm->isGood('ssl') && $cm->isGood('curl') ) {

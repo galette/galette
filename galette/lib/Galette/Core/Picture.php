@@ -548,7 +548,6 @@ class Picture
     */
     private function _resizeImage($source, $ext, $dest = null)
     {
-        global $log;
         $class = get_class($this);
 
         if (function_exists("gd_info")) {

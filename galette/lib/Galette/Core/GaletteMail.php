@@ -168,7 +168,6 @@ class GaletteMail
     */
     public function setRecipients($recipients)
     {
-        global $log;
         $res = true;
 
         if ( $this->_mail === null ) {
@@ -314,7 +313,6 @@ class GaletteMail
     */
     public static function isValidEmail( $address )
     {
-        global $log;
         $valid = \PHPMailer::ValidateAddress($address);
         if ( !$valid ) {
             Analog::log(
@@ -334,7 +332,6 @@ class GaletteMail
     */
     public static function isUrl( $url )
     {
-        global $log;
         $valid = preg_match(
             '|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i',
             $url

@@ -168,7 +168,6 @@ class Plugins
         $name, $desc, $author, $version, $compver = null, $permissions=null,
         $priority=1000
     ) {
-        global $log;
 
         if ( $compver === null ) {
             //plugin compatibility missing!

@@ -74,7 +74,6 @@ class MailingHistory extends History
     */
     public function __construct($mailing = null)
     {
-        global $log;
 
         parent::__construct();
 

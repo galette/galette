@@ -66,7 +66,6 @@ class Error
      */
     public static function errorHandler($errno, $errstr, $errfile, $errline)
     {
-        global $log;
         $str = 'PHP %type: %str in %file on line %line';
         $patterns = array('%type', '%str', '%file', '%line');
 

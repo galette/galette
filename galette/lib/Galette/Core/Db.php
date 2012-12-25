@@ -477,7 +477,6 @@ class Db extends \Zend_Db
     */
     public function convertToUTF($prefix = null, $content_only = false)
     {
-        global $log;
 
         if ( $prefix === null ) {
             $prefix = PREFIX_DB;
@@ -529,7 +528,6 @@ class Db extends \Zend_Db
     */
     private function _convertContentToUTF($prefix, $table)
     {
-        global $log;
 
         try {
             $query = 'SET NAMES latin1';

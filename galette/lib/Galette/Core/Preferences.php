@@ -469,7 +469,6 @@ class Preferences
     */
     public function __get($name)
     {
-        global $log;
         $forbidden = array('logged', 'admin', 'active', 'defaults');
 
         if ( !in_array($name, $forbidden) && isset($this->_prefs[$name])) {
@@ -499,7 +498,6 @@ class Preferences
     */
     public function __set($name, $value)
     {
-        global $log;
 
         //does this pref exists ?
         if ( !array_key_exists($name, self::$_defaults) ) {

@@ -138,7 +138,6 @@ class Mailing extends GaletteMail
     */
     public function __get($name)
     {
-        global $log;
         $forbidden = array('ordered');
         if ( !in_array($name, $forbidden) ) {
             switch($name) {
@@ -197,7 +196,6 @@ class Mailing extends GaletteMail
     */
     public function __set($name, $value)
     {
-        global $log;
         $rname = '_' . $name;
 
         switch( $name ) {

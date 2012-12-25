@@ -499,7 +499,6 @@ class Contributions extends Pagination
     */
     public function __get($name)
     {
-        global $log;
 
         Analog::log(
             '[Contributions] Getting property `' . $name . '`',
@@ -553,7 +552,6 @@ class Contributions extends Pagination
     */
     public function __set($name, $value)
     {
-        global $log;
         if ( in_array($name, $this->pagination_fields) ) {
             parent::__set($name, $value);
         } else {

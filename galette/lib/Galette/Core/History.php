@@ -249,7 +249,6 @@ class History extends Pagination
     */
     public function __get($name)
     {
-        global $log;
 
         Analog::log(
             '[History] Getting property `' . $name . '`',
@@ -301,7 +300,6 @@ class History extends Pagination
     */
     public function __set($name, $value)
     {
-        global $log;
         if ( in_array($name, $this->pagination_fields) ) {
             parent::__set($name, $value);
         } else {

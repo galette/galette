@@ -138,7 +138,6 @@ abstract class Pagination
     */
     public function setDirection($direction)
     {
-        global $log;
         if ( $direction == self::ORDER_ASC || $direction == self::ORDER_DESC ) {
             $this->_ordered = $direction;
         } else {
@@ -270,7 +269,6 @@ abstract class Pagination
     */
     public function __get($name)
     {
-        global $log;
 
         Analog::log(
             '[' . get_class($this) .
@@ -300,7 +298,6 @@ abstract class Pagination
     */
     public function __set($name, $value)
     {
-        global $log;
 
         Analog::log(
             '[' . get_class($this) . '|Pagination] Setting property `' .

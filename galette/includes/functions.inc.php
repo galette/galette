@@ -255,7 +255,6 @@ function get_form_value($name, $defval)
 */
 function get_numeric_form_value($name, $defval)
 {
-    global $log;
     $val = get_form_value($name, $defval);
     if ( !is_numeric($val) ) {
         Analog::log(
