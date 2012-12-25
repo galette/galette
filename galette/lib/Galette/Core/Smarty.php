@@ -110,5 +110,22 @@ class Smarty extends \SmartyBC
         if ( isset($session['mailing']) ) {
             $this->assign('existing_mailing', true);
         }
+        $this->assign('require_tabs', null);
+        $this->assign('require_cookie', null);
+        $this->assign('contentcls', null);
+        $this->assign('require_tabs', null);
+        $this->assign('require_cookie', false);
+        $this->assign('additionnal_html_class', null);
+        $this->assign('require_calendar', null);
+        $this->assign('head_redirect', null);
+        $this->assign('error_detected', null);
+        $this->assign('warning_detected', null);
+        $this->assign('success_detected', null);
+        $this->assign('color_picker', null);
+        $this->assign('require_sorter', null);
+        $this->assign('require_dialog', null);
+        $this->assign('require_tree', null);
+        $this->assign('existing_mailing', null);
+        $this->assign('html_editor', null);
     }
 }
