@@ -1,5 +1,5 @@
 {if !$mode eq 'ajax'}
-		<h1 id="titre">{_T string="Mailing preview"}</h1>
+        <h1 id="titre">{_T string="Mailing preview"}</h1>
 {/if}
         <section id="mailing_header" class="ajax_mailing_preview">
             <header class="ui-state-active ui-corner-top">{_T string="Headers"}</header>
@@ -20,9 +20,9 @@
             <header class="ui-state-active ui-corner-top">{_T string="Mail body"}</header>
             <div>
             {if $mailing->html}
-					{$mailing->message}
+                    {$mailing->message}
             {else}
-    					<pre>{$mailing->message|escape}</pre>
+                        <pre>{$mailing->message|escape}</pre>
             {/if}
             </div>
         </section>

@@ -1,6 +1,6 @@
-		<form action="gestion_transactions.php" method="get" id="filtre">
-		<table class="infoline">
-			<tr>
+        <form action="gestion_transactions.php" method="get" id="filtre">
+        <table class="infoline">
+            <tr>
                 <td class="left nowrap">
 {if $member}
     {if $login->isAdmin() or $login->isStaff()}
@@ -16,16 +16,16 @@
                     {$nb_transactions} {if $nb_transactions > 1}{_T string="transactions"}{else}{_T string="transaction"}{/if}
                 </td>
                 <td class="right">
-					<label for="nbshow">{_T string="Show:"}</label>
-					<select name="nbshow" id="nbshow">
-						{html_options options=$nbshow_options selected=$numrows}
-					</select>
-					<noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
-				</td>
-			</tr>
-		</table>
-		</form>
-		<table id="listing">
+                    <label for="nbshow">{_T string="Show:"}</label>
+                    <select name="nbshow" id="nbshow">
+                        {html_options options=$nbshow_options selected=$numrows}
+                    </select>
+                    <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+                </td>
+            </tr>
+        </table>
+        </form>
+        <table id="listing">
             <thead>
                 <tr>
                     <th class="listing id_row">#</th>
@@ -68,16 +68,16 @@
 {if $login->isAdmin() or $login->isStaff()}
                     <th class="listing actions_row">{_T string="Actions"}</th>
 {/if}
-    			</tr>
+                </tr>
             </thead>
-			<tfoot>
-				<tr>
-					<td colspan="{if $login->isAdmin() or $login->isStaff()}6{else}4{/if}" class="center" id="table_footer">
-						{_T string="Pages:"}<br/>
-						<ul class="pages">{$pagination}</ul>
-					</td>
-				</tr>
-			</tfoot>
+            <tfoot>
+                <tr>
+                    <td colspan="{if $login->isAdmin() or $login->isStaff()}6{else}4{/if}" class="center" id="table_footer">
+                        {_T string="Pages:"}<br/>
+                        <ul class="pages">{$pagination}</ul>
+                    </td>
+                </tr>
+            </tfoot>
             <tbody>
 {foreach from=$list_trans item=transaction name=transactions_list}
     {assign var="mid" value=$transaction->member}
@@ -87,7 +87,7 @@
                     <td class="{$cclass} nowrap">{$transaction->date}</td>
                     <td class="{$cclass} nowrap">{$transaction->description}</td>
 {if $login->isAdmin() or $login->isStaff()}
-    				<td class="{$cclass}">
+                    <td class="{$cclass}">
     {if $transactions->filtre_cotis_adh eq ""}
                         <a href="gestion_transactions.php?id_adh={$mid}">
                             {if $member}{$member->sname}{else}{memberName id="$mid"}{/if}
@@ -97,11 +97,11 @@
                             {if $member}{$member->sname}{else}{memberName id="$mid"}{/if}
                         </a>
     {/if}
-    				</td>
+                    </td>
 {/if}
-    				<td class="{$cclass} nowrap">{$transaction->amount}</td>
+                    <td class="{$cclass} nowrap">{$transaction->amount}</td>
 {if $login->isAdmin() or $login->isStaff()}
-        			<td class="{$cclass} center nowrap">
+                    <td class="{$cclass} center nowrap">
                         <a href="ajouter_transaction.php?trans_id={$transaction->id}">
                             <img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/>
                         </a>
@@ -110,43 +110,43 @@
                         </a>
                     </td>
 {/if}
-    			</tr>
+                </tr>
 {foreachelse}
-        		<tr><td colspan="{if $login->isAdmin() or $login->isStaff()}6{else}4{/if}" class="emptylist">{_T string="no transaction"}</td></tr>
+                <tr><td colspan="{if $login->isAdmin() or $login->isStaff()}6{else}4{/if}" class="emptylist">{_T string="no transaction"}</td></tr>
 {/foreach}
             </tbody>
-		</table>
-		<div id="legende" title="{_T string="Legend"}">
-			<h1>{_T string="Legend"}</h1>
-			<table>
-				<tr>
-					<th class="transaction-normal color-sample"><img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/></th>
-					<td class="back">{_T string="Completely dispatched transaction"}</td>
-				</tr>
-				<tr>
-					<th class="transaction-uncomplete color-sample"><img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/></th>
-					<td class="back">{_T string="Uncomplete dispatched transaction"}</td>
-				</tr>
-			</table>
-		</div>
-		<script type="text/javascript">
-			$(function(){
+        </table>
+        <div id="legende" title="{_T string="Legend"}">
+            <h1>{_T string="Legend"}</h1>
+            <table>
+                <tr>
+                    <th class="transaction-normal color-sample"><img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/></th>
+                    <td class="back">{_T string="Completely dispatched transaction"}</td>
+                </tr>
+                <tr>
+                    <th class="transaction-uncomplete color-sample"><img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/></th>
+                    <td class="back">{_T string="Uncomplete dispatched transaction"}</td>
+                </tr>
+            </table>
+        </div>
+        <script type="text/javascript">
+            $(function(){
                 $('#nbshow').change(function() {
                     this.form.submit();
                 });
 
-				$('#table_footer').parent().before('<td class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}9{elseif $login->isAdmin() or $login->isStaff()}8{else}7{/if}"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
-				$('#legende h1').remove();
-				$('#legende').dialog({
-					autoOpen: false,
-					modal: true,
-					hide: 'fold',
-					width: '40%'
-				}).dialog('close');
+                $('#table_footer').parent().before('<td class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}9{elseif $login->isAdmin() or $login->isStaff()}8{else}7{/if}"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
+                $('#legende h1').remove();
+                $('#legende').dialog({
+                    autoOpen: false,
+                    modal: true,
+                    hide: 'fold',
+                    width: '40%'
+                }).dialog('close');
 
-				$('#show_legend').click(function(){
-					$('#legende').dialog('open');
-					return false;
-				});
-			});
-		</script>
+                $('#show_legend').click(function(){
+                    $('#legende').dialog('open');
+                    return false;
+                });
+            });
+        </script>

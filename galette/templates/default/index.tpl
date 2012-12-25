@@ -1,5 +1,5 @@
 {if $loginfault}
-				<div id="errorbox">{_T string="Login failed."}</div>
+                <div id="errorbox">{_T string="Login failed."}</div>
 {/if}
                 <form action="index.php" method="post">
                 <section>

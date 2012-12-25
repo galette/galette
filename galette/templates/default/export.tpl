@@ -1,12 +1,12 @@
-		<form class="form" action="export.php" method="post" enctype="multipart/form-data">
-		<p>{_T string="Each selected export will be stored into a separate file in the exports directory."}</p>
+        <form class="form" action="export.php" method="post" enctype="multipart/form-data">
+        <p>{_T string="Each selected export will be stored into a separate file in the exports directory."}</p>
 {if $written|@count gt 0}
-			<p>{_T string="The following files have been written on disk:"}</p>
-			<ul>
+            <p>{_T string="The following files have been written on disk:"}</p>
+            <ul>
 {foreach item=ex from=$written}
-				<li><a href="get_export.php?file={$ex.file}">{$ex.name} ({$ex.file})</a></li>
+                <li><a href="get_export.php?file={$ex.file}">{$ex.name} ({$ex.file})</a></li>
 {/foreach}
-			</ul>
+            </ul>
 {/if}
 {if $existing|@count gt 0}
             <fieldset>
@@ -40,8 +40,8 @@
                 </div>
             </fieldset>
 {/if}
-			<fieldset>
-				<legend class="ui-state-active ui-corner-top">{_T string="Parameted exports"}</legend>
+            <fieldset>
+                <legend class="ui-state-active ui-corner-top">{_T string="Parameted exports"}</legend>
                 <div>
 {if $parameted|@count gt 0}
                     <p>{_T string="Which parameted export(s) do you want to run?"}</p>
@@ -76,7 +76,7 @@
             </fieldset>
 
             <fieldset>
-				<legend class="ui-state-active ui-corner-top">{_T string="Galette tables exports"}</legend>
+                <legend class="ui-state-active ui-corner-top">{_T string="Galette tables exports"}</legend>
                 <div>
                     <p>{_T string="Additionnaly, which table(s) do you want to export?"}</p>
                     <table id="tables_list">
@@ -100,13 +100,13 @@
                         </tbody>
                     </table>
                 </fieldset>
-			<div class="button-container">
-				<input type="submit" name="valid" value="{_T string="Continue"}"/>
-			</div>
-		</form>
+            <div class="button-container">
+                <input type="submit" name="valid" value="{_T string="Continue"}"/>
+            </div>
+        </form>
 
-		<script type="text/javascript">
+        <script type="text/javascript">
             $(function() {
                 _collapsibleFieldsets();
             });
-		</script>
+        </script>

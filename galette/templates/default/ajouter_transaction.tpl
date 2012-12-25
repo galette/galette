@@ -1,42 +1,42 @@
-		<form action="ajouter_transaction.php" method="post">
-		<div class="bigtable">
-			<fieldset class="cssform">
-				<legend class="ui-state-active ui-corner-top">{_T string="Transaction details"}</legend>
-				<p>
-					<label for="trans_desc" class="bline">{_T string="Description:"}</label>
-					<input type="text" name="trans_desc" id="trans_desc" value="{$transaction->description}" maxlength="150" size="30"{if $required.trans_desc eq 1} required{/if}/>
-				</p>
-				<p>
-					<label for="id_adh" class="bline" >{_T string="Originator:"}</label>
-					<select name="id_adh" id="id_adh"{if $required.id_adh eq 1} required{/if}>
+        <form action="ajouter_transaction.php" method="post">
+        <div class="bigtable">
+            <fieldset class="cssform">
+                <legend class="ui-state-active ui-corner-top">{_T string="Transaction details"}</legend>
+                <p>
+                    <label for="trans_desc" class="bline">{_T string="Description:"}</label>
+                    <input type="text" name="trans_desc" id="trans_desc" value="{$transaction->description}" maxlength="150" size="30"{if $required.trans_desc eq 1} required{/if}/>
+                </p>
+                <p>
+                    <label for="id_adh" class="bline" >{_T string="Originator:"}</label>
+                    <select name="id_adh" id="id_adh"{if $required.id_adh eq 1} required{/if}>
 {if !$transaction->member}
-						<option>{_T string="-- select a name --"}</option>
+                        <option>{_T string="-- select a name --"}</option>
 {/if}
 {foreach $adh_options as $k=>$v}
                             <option value="{$k}"{if $transaction->member == $k} selected="selected"{/if}>{$v}</option>
 {/foreach}
-					</select>
-				</p>
-				<p>
-					<label for="trans_date" class="bline">{_T string="Date:"}</label>
-					<input type="text" class="date-pick" name="trans_date" id="trans_date" value="{$transaction->date}" maxlength="10"{if $required.trans_date eq 1} required{/if}/> <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
-				</p>
-				<p>
-					<label for="trans_amount" class="bline">{_T string="Amount:"}</label>
-					<input type="text" name="trans_amount" id="trans_amount" value="{$transaction->amount}" maxlength="10"{if $required.trans_amount eq 1} required{/if}/>
-				</p>
-			</fieldset>
-		</div>
+                    </select>
+                </p>
+                <p>
+                    <label for="trans_date" class="bline">{_T string="Date:"}</label>
+                    <input type="text" class="date-pick" name="trans_date" id="trans_date" value="{$transaction->date}" maxlength="10"{if $required.trans_date eq 1} required{/if}/> <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
+                </p>
+                <p>
+                    <label for="trans_amount" class="bline">{_T string="Amount:"}</label>
+                    <input type="text" name="trans_amount" id="trans_amount" value="{$transaction->amount}" maxlength="10"{if $required.trans_amount eq 1} required{/if}/>
+                </p>
+            </fieldset>
+        </div>
 {include file="edit_dynamic_fields.tpl"}
-		<div class="button-container">
-			<input id="btnsave" type="submit" value="{_T string="Save"}"/>
-			<input type="hidden" name="trans_id" value="{$transaction->id}"/>
-			<input type="hidden" name="valid" value="1"/>
-		</div>
-		<p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
+        <div class="button-container">
+            <input id="btnsave" type="submit" value="{_T string="Save"}"/>
+            <input type="hidden" name="trans_id" value="{$transaction->id}"/>
+            <input type="hidden" name="valid" value="1"/>
+        </div>
+        <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
 {if $transaction->id}
-		</form>
-		<table class="center_table">
+        </form>
+        <table class="center_table">
             <caption>
                 {_T string="Attached contributions"}
                 {if $transaction->getMissingAmount() > 0}
@@ -44,23 +44,23 @@
                     <a href="#" class="button notext fright" id="memberslist" title="{_T string="Select an existing contribution in the database, and attach it to the current transaction"}">{_T string="Select existing contribution"}</a>
                 {/if}
             </caption>
-			<thead>
-				<tr>
-					<th class="listing id_row">#</th>
-					<th class="listing left date_row">{_T string="Date"}</th>
-					<th class="listing left date_row">{_T string="Begin"}</th>
-					<th class="listing left date_row">{_T string="End"}</th>
-					<th class="listing left">{_T string="Duration"}</th>
+            <thead>
+                <tr>
+                    <th class="listing id_row">#</th>
+                    <th class="listing left date_row">{_T string="Date"}</th>
+                    <th class="listing left date_row">{_T string="Begin"}</th>
+                    <th class="listing left date_row">{_T string="End"}</th>
+                    <th class="listing left">{_T string="Duration"}</th>
 {if $login->isAdmin() or $login->isStaff()}
-					<th class="listing left">{_T string="Member"}</th>
+                    <th class="listing left">{_T string="Member"}</th>
 {/if}
-					<th class="listing left">{_T string="Type"}</th>
-					<th class="listing left">{_T string="Amount"}</th>
+                    <th class="listing left">{_T string="Type"}</th>
+                    <th class="listing left">{_T string="Amount"}</th>
 {if $login->isAdmin() or $login->isStaff()}
                     <th class="listing actions_row"></th>
 {/if}
-				</tr>
-			</thead>
+                </tr>
+            </thead>
             <tfoot>
                 <tr>
                     <th class="right" colspan="{if $login->isAdmin() or $login->isStaff()}8{else}6{/if}">{_T string="Dispatched amount:"}</th>
@@ -71,23 +71,23 @@
                     <th class="right">{$transaction->getMissingAmount()}</th>
                 </tr>
             </tfoot>
-			<tbody>
+            <tbody>
 {foreach from=$contribs item=contrib key=ordre}
     {assign var="mid" value=$contrib->member}
     {assign var="cclass" value=$contrib->getRowClass()}
-				<tr>
-					<td class="{$cclass} center nowrap">
+                <tr>
+                    <td class="{$cclass} center nowrap">
                         {$ordre+1}
                     </td>
-					<td class="{$cclass} center nowrap">{$contrib->date}</td>
-					<td class="{$cclass} center nowrap">{$contrib->begin_date}</td>
-					<td class="{$cclass} center nowrap">{$contrib->end_date}</td>
-					<td class="{$cclass} nowrap">{$contrib->duration}</td>
+                    <td class="{$cclass} center nowrap">{$contrib->date}</td>
+                    <td class="{$cclass} center nowrap">{$contrib->begin_date}</td>
+                    <td class="{$cclass} center nowrap">{$contrib->end_date}</td>
+                    <td class="{$cclass} nowrap">{$contrib->duration}</td>
     {if $login->isAdmin() or $login->isStaff()}
-					<td class="{$cclass}">{memberName id="$mid"}</td>
+                    <td class="{$cclass}">{memberName id="$mid"}</td>
     {/if}
-					<td class="{$cclass}">{$contrib->type->libelle}</td>
-					<td class="{$cclass} nowrap right">{$contrib->amount}</td>
+                    <td class="{$cclass}">{$contrib->type->libelle}</td>
+                    <td class="{$cclass} nowrap right">{$contrib->amount}</td>
     {if $login->isAdmin() or $login->isStaff()}
                     <td class="{$cclass}">
                         <a href="?trans_id={$transaction->id}&detach={$contrib->id}">
@@ -95,12 +95,12 @@
                         </a>
                     </td>
     {/if}
-				</tr>
+                </tr>
 {foreachelse}
-				<tr><td colspan="{if $login->isAdmin() or $login->isStaff()}8{else}7{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
+                <tr><td colspan="{if $login->isAdmin() or $login->isStaff()}8{else}7{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
 {/foreach}
-			</tbody>
-		</table>
+            </tbody>
+        </table>
 {/if}
         <script type="text/javascript">
             $(function(){

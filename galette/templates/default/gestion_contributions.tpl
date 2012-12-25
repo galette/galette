@@ -1,9 +1,9 @@
-		<form action="gestion_contributions.php" method="get" id="filtre">
-		<div id="listfilter">
-			<label for="start_date_filter">{_T string="Show contributions since"}</label>&nbsp;
-			<input type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$contributions->start_date_filter}"/>
-			<label for="end_date_filter">{_T string="until"}</label>&nbsp;
-			<input type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$contributions->end_date_filter}"/>
+        <form action="gestion_contributions.php" method="get" id="filtre">
+        <div id="listfilter">
+            <label for="start_date_filter">{_T string="Show contributions since"}</label>&nbsp;
+            <input type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$contributions->start_date_filter}"/>
+            <label for="end_date_filter">{_T string="until"}</label>&nbsp;
+            <input type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$contributions->end_date_filter}"/>
             <label for="payment_type_filter">{_T string="Payment type"}</label>
             <select name="payment_type_filter" id="payment_type_filter">
                 <option value="-1">{_T string="Select"}</option>
@@ -14,17 +14,17 @@
                 <option value="{php}echo Galette\Entity\Contribution::PAYMENT_PAYPAL;{/php}"{if $contributions->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_PAYPAL')} selected="selected"{/if}>{_T string="Paypal"}</option>
                 <option value="{php}echo Galette\Entity\Contribution::PAYMENT_OTHER;{/php}"{if $contributions->payment_type_filter === constant('Galette\Entity\Contribution::PAYMENT_OTHER')} selected="selected"{/if}>{_T string="Other"}</option>
             </select>
-			<input type="submit" class="inline" value="{_T string="Filter"}"/>
-			<input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
-		</div>
+            <input type="submit" class="inline" value="{_T string="Filter"}"/>
+            <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
+        </div>
 {if $member}
-		<div align="center">
+        <div align="center">
             <p class="{$member->getRowClass()}">{$member->getDues()}</p>
-		</div>
+        </div>
 {/if}
-		<table class="infoline">
-			<tr>
-				<td class="left nowrap">
+        <table class="infoline">
+            <tr>
+                <td class="left nowrap">
 {if $member && $mode neq 'ajax'}
     {if $login->isAdmin() or $login->isStaff()}
                     <a id="clearfilter" href="?id_adh=all" title="{_T string="Show all members contributions"}">{_T string="Show all members contributions"}</a>
@@ -43,116 +43,116 @@
                         <input type="hidden" name="ajax" value="true"/>
                         <input type="hidden" name="max_amount" value="{$max_amount}"/>
                     {/if}
-					<label for="nbshow">{_T string="Show:"}</label>
-					<select name="nbshow" id="nbshow">
-						{html_options options=$nbshow_options selected=$numrows}
-					</select>
-					<noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
-				</td>
-			</tr>
-		</table>
-		</form>
-		<form action="gestion_contributions.php" method="post" id="listform">
-		<table id="listing">
-			<thead>
-				<tr>
-					<th class="listing id_row">#</th>
-					<th class="listing left date_row">
-						<a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_DATE;{/php}" class="listing">{_T string="Date"}
+                    <label for="nbshow">{_T string="Show:"}</label>
+                    <select name="nbshow" id="nbshow">
+                        {html_options options=$nbshow_options selected=$numrows}
+                    </select>
+                    <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+                </td>
+            </tr>
+        </table>
+        </form>
+        <form action="gestion_contributions.php" method="post" id="listform">
+        <table id="listing">
+            <thead>
+                <tr>
+                    <th class="listing id_row">#</th>
+                    <th class="listing left date_row">
+                        <a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_DATE;{/php}" class="listing">{_T string="Date"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_DATE')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
-						<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-						<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
-						{/if}
-						</a>
-					</th>
-					<th class="listing left date_row">
-						<a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_BEGIN_DATE;{/php}" class="listing">{_T string="Begin"}
+                        {/if}
+                        </a>
+                    </th>
+                    <th class="listing left date_row">
+                        <a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_BEGIN_DATE;{/php}" class="listing">{_T string="Begin"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_BEGIN_DATE')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
-						<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-						<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
-						{/if}
-						</a>
-					</th>
-					<th class="listing left date_row">
-						<a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_END_DATE;{/php}" class="listing">{_T string="End"}
+                        {/if}
+                        </a>
+                    </th>
+                    <th class="listing left date_row">
+                        <a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_END_DATE;{/php}" class="listing">{_T string="End"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_END_DATE')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
-						<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-						<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
-						{/if}
-						</a>
-					</th>
+                        {/if}
+                        </a>
+                    </th>
 {if ($login->isAdmin() or $login->isStaff()) and !$member}
-					<th class="listing left">
-						<a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_MEMBER;{/php}" class="listing">{_T string="Member"}
+                    <th class="listing left">
+                        <a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_MEMBER;{/php}" class="listing">{_T string="Member"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_MEMBER')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
-						<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-						<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
-						{/if}
-						</a>
-					</th>
+                        {/if}
+                        </a>
+                    </th>
 {/if}
-					<th class="listing left">
-						<a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_TYPE;{/php}" class="listing">{_T string="Type"}
+                    <th class="listing left">
+                        <a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_TYPE;{/php}" class="listing">{_T string="Type"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_TYPE')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
-						<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-						<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
-						{/if}
-						</a>
-					</th>
-					<th class="listing left">
-						<a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_AMOUNT;{/php}" class="listing">{_T string="Amount"}
+                        {/if}
+                        </a>
+                    </th>
+                    <th class="listing left">
+                        <a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_AMOUNT;{/php}" class="listing">{_T string="Amount"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_AMOUNT')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
-						<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-						<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
-						{/if}
-						</a>
-					</th>
-					<th class="listing left">
-						<a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_PAYMENT_TYPE;{/php}" class="listing">{_T string="Payment type"}
+                        {/if}
+                        </a>
+                    </th>
+                    <th class="listing left">
+                        <a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_PAYMENT_TYPE;{/php}" class="listing">{_T string="Payment type"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_PAYMENT_TYPE')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
-						<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-						<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
-						{/if}
-						</a>
-					</th>
-					<th class="listing left">
-						<a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_DURATION;{/php}" class="listing">{_T string="Duration"}
+                        {/if}
+                        </a>
+                    </th>
+                    <th class="listing left">
+                        <a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_DURATION;{/php}" class="listing">{_T string="Duration"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_DURATION')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
-						<img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-						<img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
-						{/if}
-						</a>
-					</th>
+                        {/if}
+                        </a>
+                    </th>
 {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
-					<th class="listing nowrap actions_row">{_T string="Actions"}</th>
+                    <th class="listing nowrap actions_row">{_T string="Actions"}</th>
 {/if}
-				</tr>
-			</thead>
-			<tfoot>
+                </tr>
+            </thead>
+            <tfoot>
                 <tr>
                     <td class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}10{elseif $login->isAdmin() or $login->isStaff()}9{else}8{/if}">
                         {_T string="Found contributions total %f" pattern="/%f/" replace=$contributions->sum}
@@ -168,19 +168,19 @@
                     </td>
                 </tr>
 {/if}
-				<tr>
-					<td colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}10{elseif $login->isAdmin() or $login->isStaff()}9{else}8{/if}" class="center" id="table_footer">
-						{_T string="Pages:"}<br/>
-						<ul class="pages">{$pagination}</ul>
-					</td>
-				</tr>
-			</tfoot>
-			<tbody>
+                <tr>
+                    <td colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}10{elseif $login->isAdmin() or $login->isStaff()}9{else}8{/if}" class="center" id="table_footer">
+                        {_T string="Pages:"}<br/>
+                        <ul class="pages">{$pagination}</ul>
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody>
 {foreach from=$list_contribs item=contribution key=ordre}
-	{assign var="mid" value=$contribution->member}
-	{assign var="cclass" value=$contribution->getRowClass()}
-				<tr{if $mode eq 'ajax'} class="contribution_row" id="row_{$contribution->id}"{/if}>
-					<td class="{$cclass} center nowrap">
+    {assign var="mid" value=$contribution->member}
+    {assign var="cclass" value=$contribution->getRowClass()}
+                <tr{if $mode eq 'ajax'} class="contribution_row" id="row_{$contribution->id}"{/if}>
+                    <td class="{$cclass} center nowrap">
                         {if $mode neq 'ajax'}
                             <input type="checkbox" name="contrib_sel[]" value="{$contribution->id}"/>
                         {else}
@@ -201,65 +201,65 @@
                             height="16"/>
         {/if}
                     </td>
-					<td class="{$cclass} center nowrap">{$contribution->date}</td>
-					<td class="{$cclass} center nowrap">{$contribution->begin_date}</td>
-					<td class="{$cclass} center nowrap">{$contribution->end_date}</td>
-	{if ($login->isAdmin() or $login->isStaff()) && !$member}
-					<td class="{$cclass}">
-		{if $contribs->filtre_cotis_adh eq ""}
-						<a href="gestion_contributions.php?id_adh={$mid}">{if $member}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
-		{else}
-						<a href="voir_adherent.php?id_adh={$mid}">{if $member}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
-		{/if}
-					</td>
-	{/if}
-					<td class="{$cclass}">{$contribution->type->libelle}</td>
-					<td class="{$cclass} nowrap">{$contribution->amount}</td>
-					<td class="{$cclass} nowrap">{$contribution->spayment_type}</td>
-					<td class="{$cclass} nowrap">{$contribution->duration}</td>
-	{if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
-					<td class="{$cclass} center nowrap">
-						<a href="ajouter_contribution.php?id_cotis={$contribution->id}">
+                    <td class="{$cclass} center nowrap">{$contribution->date}</td>
+                    <td class="{$cclass} center nowrap">{$contribution->begin_date}</td>
+                    <td class="{$cclass} center nowrap">{$contribution->end_date}</td>
+    {if ($login->isAdmin() or $login->isStaff()) && !$member}
+                    <td class="{$cclass}">
+        {if $contribs->filtre_cotis_adh eq ""}
+                        <a href="gestion_contributions.php?id_adh={$mid}">{if $member}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
+        {else}
+                        <a href="voir_adherent.php?id_adh={$mid}">{if $member}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
+        {/if}
+                    </td>
+    {/if}
+                    <td class="{$cclass}">{$contribution->type->libelle}</td>
+                    <td class="{$cclass} nowrap">{$contribution->amount}</td>
+                    <td class="{$cclass} nowrap">{$contribution->spayment_type}</td>
+                    <td class="{$cclass} nowrap">{$contribution->duration}</td>
+    {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
+                    <td class="{$cclass} center nowrap">
+                        <a href="ajouter_contribution.php?id_cotis={$contribution->id}">
                             <img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="Edit the contribution"}"/>
                         </a>
-						<a onclick="return confirm('{_T string="Do you really want to delete this contribution of the database ?"|escape:"javascript"}')" href="gestion_contributions.php?sup={$contribution->id}">
+                        <a onclick="return confirm('{_T string="Do you really want to delete this contribution of the database ?"|escape:"javascript"}')" href="gestion_contributions.php?sup={$contribution->id}">
                             <img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{_T string="Delete the contribution"}"/>
                         </a>
-					</td>
-	{/if}
-				</tr>
+                    </td>
+    {/if}
+                </tr>
 {foreachelse}
-				<tr><td colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}10{elseif $login->isAdmin() or $login->isStaff()}9{else}8{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
+                <tr><td colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}10{elseif $login->isAdmin() or $login->isStaff()}9{else}8{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
 {/foreach}
-			</tbody>
-		</table>
+            </tbody>
+        </table>
         </form>
-		<div id="legende" title="{_T string="Legend"}">
-			<h1>{_T string="Legend"}</h1>
-			<table>
+        <div id="legende" title="{_T string="Legend"}">
+            <h1>{_T string="Legend"}</h1>
+            <table>
 {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
-				<tr>
-					<th class="back"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></th>
-					<td class="back">{_T string="Modification"}</td>
-				</tr>
-				<tr>
-					<th class="back"><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/></th>
-					<td class="back">{_T string="Deletion"}</td>
-				</tr>
+                <tr>
+                    <th class="back"><img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></th>
+                    <td class="back">{_T string="Modification"}</td>
+                </tr>
+                <tr>
+                    <th class="back"><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/></th>
+                    <td class="back">{_T string="Deletion"}</td>
+                </tr>
 {/if}
-				<tr>
-					<th class="cotis-normal color-sample">&nbsp;</th>
-					<td class="back">{_T string="Contribution"}</td>
-				</tr>
-				<tr>
-					<th class="cotis-give color-sample">&nbsp;</th>
-					<td class="back">{_T string="Gift"}</td>
-				</tr>
-			</table>
-		</div>
+                <tr>
+                    <th class="cotis-normal color-sample">&nbsp;</th>
+                    <td class="back">{_T string="Contribution"}</td>
+                </tr>
+                <tr>
+                    <th class="cotis-give color-sample">&nbsp;</th>
+                    <td class="back">{_T string="Gift"}</td>
+                </tr>
+            </table>
+        </div>
 
-		<script type="text/javascript">
-			$(function(){
+        <script type="text/javascript">
+            $(function(){
                 var _init_contribs_page = function(res){
                     $('#nbshow').change(function() {
                         this.form.submit();
@@ -288,5 +288,5 @@
                     });
                 }
                 _init_contribs_page();
-			});
-		</script>
+            });
+        </script>
