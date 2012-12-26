@@ -254,7 +254,12 @@ function getDynamicTranslation($text_orig, $text_locale)
             'text_trans'
         )->where('text_orig = ?', $text_orig)
             ->where('text_locale = ?', $text_locale);
-        return $select->query()->fetch()->text_trans;
+        $res = $select->query()->fetch();
+        if ( $res !== false ) {
+            return $res->text_trans;
+        } else {
+            return;
+        }
     } catch (Exception $e) {
         /** TODO */
         Analog::log(
