@@ -55,6 +55,14 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 
 $text_orig = get_form_value('text_orig', '');
 if ( isset($_POST['trans']) && isset($text_orig) ) {
+    if ( isset($_POST['new']) && $_POST['new'] == 'true' ) {
+        //create translation if it does not exists yet
+        $res = addDynamicTranslation(
+            $_POST['text_orig'],
+            $error_detected
+        );
+    }
+
     // Validate form
     while ( list($key, $value) = each($_POST) ) {
         if ( substr($key, 0, 11) == 'text_trans_' ) {
@@ -127,8 +135,16 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
         foreach ( $all_texts as $idx => $row ) {
             $orig[] = $row->text_orig;
         }
+        $exists = true;
         if ( $text_orig == '' ) {
             $text_orig = $orig[0];
+        } else if ( !in_array($text_orig, $orig) ) {
+            $exists = false;
+            $error_detected[] = str_replace(
+                '%s',
+                $text_orig,
+                _T("No translation for '%s'!<br/>Please fill and submit above form to create it.")
+            );
         }
 
         $trans = array();
@@ -146,6 +162,7 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
             );
         }
 
+        $tpl->assign('exists', $exists);
         $tpl->assign('orig', $orig);
         $tpl->assign('trans', $trans);
     } catch (Exception $e) {

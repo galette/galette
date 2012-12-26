@@ -1,12 +1,18 @@
-{if $text_orig != ''}
+{if $trans|@count > 0}
         <form action="traduire_libelles.php" method="post" enctype="multipart/form-data">
-            <div class="bigtable">
+            <div clasis="bigtable">
                 <p class="right">
+    {if $exists}
                     <label for="text_orig">{_T string="Choose label to translate"}</label>
                     <select name="text_orig" id="text_orig">
                         {html_options values=$orig output=$orig selected=$text_orig}
                     </select>
                     <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+    {else}
+                    <span>{_T string="Original text: '%s'" pattern='/%s/' replace=$text_orig}</span>
+                    <input type=hidden name="text_orig" value="{$text_orig}"/>
+                    <input type="hidden" name="new" value="true"/>
+    {/if}
                 </p>
                 <fieldset class="cssform">
                     <legend class="ui-state-active ui-corner-top">{_T string="Translation of '%s' label" pattern="/%s/" replace=$text_orig}</legend>
