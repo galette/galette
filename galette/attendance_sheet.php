@@ -68,7 +68,8 @@ if ( count($filters->selected) == 0 ) {
 
 $members = Members::getArrayList(
     $filters->selected,
-    array('nom_adh', 'prenom_adh')
+    array('nom_adh', 'prenom_adh'),
+    true
 );
 
 if ( !is_array($members) || count($members) < 1 ) {
