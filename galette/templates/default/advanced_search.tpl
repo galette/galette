@@ -97,7 +97,13 @@
                             <option value="{$field@key}"{if $fs.field eq $field@key} selected="selected"{/if}>{$field.label}</option>
     {/foreach}
     {foreach $dynamic_fields as $field}
-                            <option value="dyn{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}"{if $fs.field eq $field.field_id} selected="selected"{/if}>{$field.field_name}</option>
+        {assign var=fid value=$field.field_id}
+        {if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}
+            {assign var=rid value="dync_$fid"}
+        {else}
+            {assign var=rid value="dyn_$fid"}
+        {/if}
+                                    <option value="dyn{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}"{if $fs.field eq $rid} selected="selected"{/if}>{$field.field_name}</option>
     {/foreach}
                         </select>
                         <select name="free_query_operator[]">
