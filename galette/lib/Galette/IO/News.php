@@ -266,13 +266,13 @@ class News
     {
 
         try {
-            include_once GALETTE_GAPI_PATH . '/apiClient.php';
-            include_once GALETTE_GAPI_PATH . '/contrib/apiPlusService.php';
+            include_once GALETTE_GAPI_PATH . '/Google_Client.php';
+            include_once GALETTE_GAPI_PATH . '/contrib/Google_PlusService.php';
 
-            $gclient = new \apiClient();
+            $gclient = new \Google_Client();
             $gclient->setApplicationName("Galette's Google+");
             $gclient->setDeveloperKey(GALETTE_GAPI_KEY);
-            $plus = new \apiPlusService($gclient);
+            $plus = new \Google_PlusService($gclient);
 
             $optParams = array('maxResults' => $this->_show);
             $activities = $plus->activities->listActivities(
