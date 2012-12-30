@@ -216,9 +216,6 @@ class Members
             $select = self::_buildSelect(
                 $_mode, $fields, $filter, false, $count
             );
-            if ( $staff !== false ) {
-                $select->where('p.priorite_statut < ' . self::NON_STAFF_MEMBERS);
-            }
 
             //add limits to retrieve only relavant rows
             if ( $limit === true && isset($filters) ) {
@@ -629,6 +626,11 @@ class Members
                 $select->order(self::_buildOrderClause());
             } else if ( $mode == self::SHOW_PUBLIC_LIST ) {
                 $select->where('activite_adh=true');
+            }
+
+
+            if ( $mode === self::SHOW_STAFF ) {
+                $select->where('p.priorite_statut < ' . self::NON_STAFF_MEMBERS);
             }
 
             if ( $count ) {
