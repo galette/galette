@@ -188,7 +188,7 @@
                 modal: true,
                 hide: 'fold',
                 width: '80%',
-                height: 500,
+                height: 550,
                 close: function(event, ui){
                     _el.remove();
                 }
