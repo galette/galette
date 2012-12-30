@@ -240,7 +240,7 @@ $groups_list = $groups->getList();
 $session['filters']['members'] = serialize($filters);
 
 //assign pagination variables to the template and add pagination links
-$filters->setSmartyPagination($tpl);
+$filters->setSmartyPagination($tpl, false);
 
 $tpl->assign('page_title', _T("Members management"));
 $tpl->assign('require_dialog', true);

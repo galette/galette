@@ -193,11 +193,12 @@ abstract class Pagination
     * Creates pagination links and assign some usefull variables to the
     * Smarty template
     *
-    * @param Smarty $tpl Smarty template
+    * @param Smarty  $tpl        Smarty template
+    * @param boolean $restricted Do not permit to display all
     *
     * @return void
     */
-    public function setSmartyPagination($tpl)
+    public function setSmartyPagination($tpl, $restricted = true)
     {
         $paginate = null;
         $tabs = "\t\t\t\t\t\t";
@@ -248,15 +249,21 @@ abstract class Pagination
         $tpl->assign('page', $this->current_page);
         $tpl->assign('numrows', $this->show);
         $tpl->assign('pagination', $paginate);
+
+        $options = array(
+            10 => "10",
+            20 => "20",
+            50 => "50",
+            100 => "100"
+        );
+
+        if ( $restricted === false ) {
+            $options[0] = _T("All");
+        }
+
         $tpl->assign(
             'nbshow_options',
-            array(
-                10 => "10",
-                20 => "20",
-                50 => "50",
-                100 => "100",
-                0 => _T("All")
-            )
+            $options
         );
     }
 

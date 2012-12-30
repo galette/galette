@@ -47,7 +47,7 @@ if ( !$preferences->showPublicPages() ) {
 }
 
 $m = new Galette\Repository\Members('trombinoscope_');
-$members = $m->getPublicList(true, null);
+$members = $m->getPublicList(true, null, null);
 
 $tpl->assign('page_title', _T("Trombinoscope"));
 $tpl->assign('additionnal_html_class', 'trombinoscope');

@@ -399,35 +399,39 @@ class Members
     /**
     * Get members list with public informations available
     *
-    * @param boolean $with_photos get only members which have uploaded a
-    *                             photo (for trombinoscope)
-    * @param array   $fields      fields list
+    * @param boolean    $with_photos get only members which have uploaded a
+    *                                photo (for trombinoscope)
+    * @param array      $fields      fields list
+    * @param MemberList $filters     Filters
     *
     * @return Adherent[]
     * @static
     */
-    public function getPublicList($with_photos, $fields)
+    public function getPublicList($with_photos, $fields, $filters = null)
     {
-        global $zdb, $filters;
+        global $zdb;
 
         try {
             $select = self::_buildSelect(
                 self::SHOW_PUBLIC_LIST, $fields, false, $with_photos
             );
-            $select->where('bool_display_info = ?', true)
-                ->where(
-                    'date_echeance > ? OR bool_exempt_adh = true',
-                    date('Y-m-d')
-                );
+
+            if ( $filters ) {
+                $select->order(self::_buildOrderClause());
+            }
+
+            $this->_proceedCount($select, $filters);
+
+            if ( $filters ) {
+                $filters->setLimit($select);
+            }
+
             Analog::log(
                 "The following query will be executed: \n" .
                 $select->__toString(),
                 Analog::DEBUG
             );
 
-            if ( $filters ) {
-                $select->order(self::_buildOrderClause());
-            }
             $result = $select->query()->fetchAll();
             $members = array();
             foreach ( $result as $row ) {
@@ -625,7 +629,12 @@ class Members
                 }
                 $select->order(self::_buildOrderClause());
             } else if ( $mode == self::SHOW_PUBLIC_LIST ) {
-                $select->where('activite_adh=true');
+                $select->where('activite_adh=true')
+                    ->where('bool_display_info = ?', true)
+                    ->where(
+                        'date_echeance > ? OR bool_exempt_adh = true',
+                        date('Y-m-d')
+                    );
             }
 
 

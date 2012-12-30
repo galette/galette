@@ -75,7 +75,7 @@ if ( isset($_GET['tri']) ) {
 
 
 $m = new Galette\Repository\Members();
-$members = $m->getPublicList(false, null);
+$members = $m->getPublicList(false, null, $filters);
 
 //assign pagination variables to the template and add pagination links
 $filters->setSmartyPagination($tpl);
@@ -84,6 +84,7 @@ $session['public_filters']['members'] = serialize($filters);
 
 $tpl->assign('page_title', _T("Members list"));
 $tpl->assign('members', $members);
+$tpl->assign('nb_members', $m->getCount());
 $content = $tpl->fetch('liste_membres.tpl');
 $tpl->assign('content', $content);
 $tpl->display('public_page.tpl');
