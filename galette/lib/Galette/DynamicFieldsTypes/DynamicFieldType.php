@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012 The Galette Team
+ * Copyright © 2012-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012 The Galette Team
+ * @copyright 2012-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,7 @@
 
 namespace Galette\DynamicFieldsTypes;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Entity\DynamicFields as DynamicFields;
 
 /**
@@ -48,7 +48,7 @@ use Galette\Entity\DynamicFields as DynamicFields;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012 The Galette Team
+ * @copyright 2012-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -94,7 +94,7 @@ abstract class DynamicFieldType
      */
     public function load()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -118,10 +118,10 @@ abstract class DynamicFieldType
                 }
             } // $result != false
         } catch (Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to retrieve fields types for field ' . $this->id . ' | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }
@@ -133,7 +133,7 @@ abstract class DynamicFieldType
      */
     private function _loadFixedValues()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $val_select = new \Zend_Db_Select($zdb->db);
@@ -151,13 +151,13 @@ abstract class DynamicFieldType
                 }
             }
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $val_select->__toString() . ' ' . $e->__toString(),
-                KLogger::INFO
+                Analog::INFO
             );
         }
     }
@@ -316,14 +316,13 @@ abstract class DynamicFieldType
      */
     public function getValues()
     {
-        global $log;
 
         if ( $this->fixed_values ) {
             return implode("\n", $this->values);
         } else {
-            $log->log(
+            Analog::log(
                 'Field do not have fixed values, cannot retrieve values.',
-                KLogger::INFO
+                Analog::INFO
             );
             return false;
         }

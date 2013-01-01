@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2012 The Galette Team
+ * Copyright © 2009-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2012 The Galette Team
+ * @copyright 2009-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,7 @@
 
 namespace Galette\IO;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * CSV exports
@@ -46,7 +46,7 @@ use Galette\Common\KLogger as KLogger;
  * @name      Csv
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2012 The Galette Team
+ * @copyright 2009-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Disponible depuis la Release 0.7alpha - 2009-02-09
@@ -72,7 +72,6 @@ class Csv
     private $_result;
     private $_current_line;
 
-    private $_parameted_dir = 'config/';
     private $_parameted_path;
     private $_parameted_file = 'exports.xml';
 
@@ -92,7 +91,7 @@ class Csv
     */
     public function __construct()
     {
-        $this->_parameted_path = WEB_ROOT . $this->_parameted_dir;
+        $this->_parameted_path = GALETTE_CONFIG_PATH;
         $this->_parameted_file = $this->_parameted_path . $this->_parameted_file;
     }
 
@@ -276,7 +275,7 @@ class Csv
     */
     public function runParametedExport($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         $xml = simplexml_load_file($this->_parameted_file);
 
@@ -319,17 +318,17 @@ class Csv
                 $this->export($result, $separator, $quote, $title, $fp);
                 fclose($fp);
             } else {
-                $log->log(
+                Analog::log(
                     'File ' . $filename . ' is not writeable.',
-                    KLogger::ERR
+                    Analog::ERROR
                 );
                 return self::FILE_NOT_WRITABLE;
             }
             return $export['filename'];
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'An error occured while exporting | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return self::DB_ERROR;
         }
@@ -356,4 +355,3 @@ class Csv
         return $this->_accepted_quotes;
     }
 }
-?>

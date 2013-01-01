@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2012 The Galette Team
+ * Copyright © 2007-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2012 The Galette Team
+ * @copyright 2007-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /* TODO: Most of the code is duplicated in Galette\Entity\ContributionsTypes. Should
  * probably use a superclass for genericity.
@@ -50,7 +50,7 @@ use Galette\Common\KLogger as KLogger;
  * @name      Status
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2012 The Galette Team
+ * @copyright 2007-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-27
@@ -102,7 +102,7 @@ class Status
     */
     public function installInit()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             //first, we drop all values
@@ -121,15 +121,15 @@ class Status
                 $stmt->execute();
             }
 
-            $log->log(
+            Analog::log(
                 'Default status were successfully stored into database.',
-                KLogger::INFO
+                Analog::INFO
             );
             return true;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to initialize default status.' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return $e;
         }
@@ -142,7 +142,7 @@ class Status
     */
     public function getList()
     {
-        global $zdb, $log;
+        global $zdb;
         $list = array();
 
         try {
@@ -151,7 +151,7 @@ class Status
                 ->order(self::ORDER_FIELD, self::PK);
             $statuses = $select->query()->fetchAll();
             if ( count($statuses) == 0 ) {
-                $log->log('No status defined in database.', KLogger::INFO);
+                Analog::log('No status defined in database.', Analog::INFO);
             } else {
                 foreach ( $statuses as $status ) {
                     $list[$status->id_statut] = _T($status->libelle_statut);
@@ -160,13 +160,13 @@ class Status
             return $list;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }
@@ -178,7 +178,7 @@ class Status
     */
     public function getCompleteList()
     {
-        global $zdb, $log;
+        global $zdb;
         $list = array();
 
         try {
@@ -189,7 +189,7 @@ class Status
             $statuses = $select->query()->fetchAll();
 
             if ( count($statuses) == 0 ) {
-                $log->log('No status defined in database.', KLogger::INFO);
+                Analog::log('No status defined in database.', Analog::INFO);
             } else {
                 foreach ( $statuses as $status ) {
                     $list[$status->id_statut] = array(
@@ -201,13 +201,13 @@ class Status
             return $list;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot list statuses | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -222,7 +222,7 @@ class Status
     */
     public function get($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -234,13 +234,13 @@ class Status
             return $result;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -270,7 +270,7 @@ class Status
     */
     public function getIdByLabel($label)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -279,10 +279,10 @@ class Status
             return $result = $select->query()->fetchColumn();
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Unable to retrieve status from label `' . $label . '` | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -298,15 +298,15 @@ class Status
     */
     public function add($label, $priority)
     {
-        global $zdb, $log;
+        global $zdb;
 
         // Avoid duplicates.
         $ret = $this->getidByLabel($label);
 
         if ( $ret !== false ) {
-            $log->log(
+            Analog::log(
                 'Status `' . $label . '` already exists',
-                KLogger::WARN
+                Analog::WARNING
             );
             return -2;
         }
@@ -323,9 +323,9 @@ class Status
             );
 
             if ( $ret >  0) {
-                $log->log(
+                Analog::log(
                     'New status `' . $label . '` added successfully.',
-                    KLogger::INFO
+                    Analog::INFO
                 );
                 return $zdb->db->lastInsertId(
                     PREFIX_DB . self::TABLE,
@@ -336,10 +336,10 @@ class Status
             }
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Unable to add new status `' . $label . '` | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -356,7 +356,7 @@ class Status
     */
     public function update($id, $field, $value)
     {
-        global $zdb, $log;
+        global $zdb;
 
         $ret = $this->get($id);
         if ( !$ret ) {
@@ -373,7 +373,7 @@ class Status
             $fieldtype = 'integer';
         }
 
-        $log->log("Setting field $field to $value for ctype $id", KLogger::INFO);
+        Analog::log("Setting field $field to $value for ctype $id", Analog::INFO);
 
         try {
             $values= array(
@@ -386,13 +386,13 @@ class Status
                 self::PK . ' = ' . $id
             );
 
-            $log->log('Status ' . $id . ' updated successfully.', KLogger::INFO);
+            Analog::log('Status ' . $id . ' updated successfully.', Analog::INFO);
             return true;
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Unable to update status ' . $id . ' | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -407,7 +407,7 @@ class Status
     */
     public function delete($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         $ret = $this->get($id);
         if ( !$ret ) {
@@ -420,16 +420,16 @@ class Status
                 PREFIX_DB . self::TABLE,
                 self::PK . ' = ' . $id
             );
-            $log->log(
+            Analog::log(
                 'Status ' . $id . ' deleted successfully.',
-                KLogger::INFO
+                Analog::INFO
             );
             return true;
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Unable to delete status ' . $id . ' | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -444,7 +444,7 @@ class Status
     */
     public function isUsed($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         // Check if it's used.
         try {
@@ -458,14 +458,13 @@ class Status
             }
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Unable to check if status `' . $id . '` is used. | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             //in case of error, we consider that status is used, to avoid errors
             return true;
         }
     }
 }
-?>

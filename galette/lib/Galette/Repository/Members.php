@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2012 The Galette Team
+ * Copyright © 2009-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2012 The Galette Team
+ * @copyright 2009-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,11 +37,14 @@
 
 namespace Galette\Repository;
 
-use Galette\Common\KLogger as KLogger;
+use Galette\Entity\DynamicFields;
+
+use Analog\Analog as Analog;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\Contribution as Contribution;
 use Galette\Entity\Transaction as Transaction;
 use Galette\Filters\MembersList as MembersList;
+use Galette\Filters\AdvancedMembersList as AdvancedMembersList;
 use Galette\Core\Picture as Picture;
 use Galette\Entity\Group as Group;
 use Galette\Repository\Groups as Groups;
@@ -55,7 +58,7 @@ use Galette\Entity\Status as Status;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2012 The Galette Team
+ * @copyright 2009-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -63,6 +66,10 @@ class Members
 {
     const TABLE = Adherent::TABLE;
     const PK = Adherent::PK;
+
+    const ALL_ACCOUNTS = 0;
+    const ACTIVE_ACCOUNT = 1;
+    const INACTIVE_ACCOUNT = 2;
 
     const SHOW_LIST = 0;
     const SHOW_PUBLIC_LIST = 1;
@@ -79,6 +86,9 @@ class Members
     const FILTER_W_EMAIL = 6;
     const FILTER_WO_EMAIL = 7;
     const FILTER_COMPANY_NAME = 8;
+    const FILTER_DC_PUBINFOS = 9;
+    const FILTER_W_PUBINFOS = 10;
+    const FILTER_WO_PUBINFOS = 11;
 
     const MEMBERSHIP_ALL = 0;
     const MEMBERSHIP_UP2DATE = 3;
@@ -192,7 +202,7 @@ class Members
         $managed=false,
         $limit=true
     ) {
-        global $zdb, $log, $galetteLoader, $filters;
+        global $zdb, $galetteLoader, $filters;
 
         try {
             $_mode = self::SHOW_LIST;
@@ -206,19 +216,18 @@ class Members
             $select = self::_buildSelect(
                 $_mode, $fields, $filter, false, $count
             );
-            if ( $staff !== false ) {
-                $select->where('p.priorite_statut < ' . self::NON_STAFF_MEMBERS);
-            }
 
             //add limits to retrieve only relavant rows
             if ( $limit === true && isset($filters) ) {
                 $filters->setLimit($select);
             }
 
-            $log->log(
+            $filters->query = $select->__toString();
+
+            Analog::log(
                 "The following query will be executed: \n" .
-                $select->__toString(),
-                KLogger::DEBUG
+                $filters->query,
+                Analog::DEBUG
             );
 
             $members = array();
@@ -238,13 +247,13 @@ class Members
             return $members;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot list members | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }
@@ -258,7 +267,7 @@ class Members
      */
     public function removeMembers($ids)
     {
-        global $zdb, $log, $hist;
+        global $zdb, $hist;
 
         $list = array();
         if ( is_numeric($ids) ) {
@@ -289,9 +298,9 @@ class Members
                     $p = new Picture($member->id_adh);
                     if ( $p->hasPicture() ) {
                         if ( !$p->delete(false) ) {
-                            $log->log(
+                            Analog::log(
                                 'Unable to delete picture for member ' . $str_adh,
-                                KLogger::ERR
+                                Analog::ERROR
                             );
                             throw new \Exception(
                                 'Unable to delete picture for member ' .
@@ -343,18 +352,18 @@ class Members
                 return true;
             } catch (\Exception $e) {
                 $zdb->db->rollBack();
-                $log->log(
+                Analog::log(
                     'Unable to delete selected member(s) |' .
                     $e->getMessage(),
-                    KLogger::ERR
+                    Analog::ERROR
                 );
                 return false;
             }
         } else {
             //not numeric and not an array: incorrect.
-            $log->log(
+            Analog::log(
                 'Asking to remove members, but without providing an array or a single numeric value.',
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }
@@ -390,35 +399,39 @@ class Members
     /**
     * Get members list with public informations available
     *
-    * @param boolean $with_photos get only members which have uploaded a
-    *                             photo (for trombinoscope)
-    * @param array   $fields      fields list
+    * @param boolean    $with_photos get only members which have uploaded a
+    *                                photo (for trombinoscope)
+    * @param array      $fields      fields list
+    * @param MemberList $filters     Filters
     *
     * @return Adherent[]
     * @static
     */
-    public function getPublicList($with_photos, $fields)
+    public function getPublicList($with_photos, $fields, $filters = null)
     {
-        global $zdb, $log, $filters;
+        global $zdb;
 
         try {
             $select = self::_buildSelect(
                 self::SHOW_PUBLIC_LIST, $fields, false, $with_photos
             );
-            $select->where('bool_display_info = ?', true)
-                ->where(
-                    'date_echeance > ? OR bool_exempt_adh = true',
-                    date('Y-m-d')
-                );
-            $log->log(
-                "The following query will be executed: \n" .
-                $select->__toString(),
-                KLogger::DEBUG
-            );
 
             if ( $filters ) {
                 $select->order(self::_buildOrderClause());
             }
+
+            $this->_proceedCount($select, $filters);
+
+            if ( $filters ) {
+                $filters->setLimit($select);
+            }
+
+            Analog::log(
+                "The following query will be executed: \n" .
+                $select->__toString(),
+                Analog::DEBUG
+            );
+
             $result = $select->query()->fetchAll();
             $members = array();
             foreach ( $result as $row ) {
@@ -432,14 +445,14 @@ class Members
             return $members;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot list members with public informations (photos: '
                 . $with_photos . ') | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -457,10 +470,10 @@ class Members
     */
     public static function getArrayList($ids, $orderby = null, $with_photos = false)
     {
-        global $zdb, $log;
+        global $zdb;
 
         if ( !is_array($ids) || count($ids) < 1 ) {
-            $log->log('No member selected for labels.', KLogger::INFO);
+            Analog::log('No member selected for labels.', Analog::INFO);
             return false;
         }
 
@@ -477,15 +490,16 @@ class Members
                 }
             }
 
-            $log->log(
+            Analog::log(
                 "The following query will be executed: \n" .
                 $select->__toString(),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
 
             $result = $select->query();
             $members = array();
-            foreach ( $result->fetchAll() as $o) {
+            $res = $result->fetchAll();
+            foreach ( $res as $o ) {
                 $deps = array(
                     'picture'   => $with_photos,
                     'groups'    => false,
@@ -496,13 +510,13 @@ class Members
             return $members;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot load members form ids array | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }
@@ -522,7 +536,7 @@ class Members
     */
     private function _buildSelect($mode, $fields, $filter, $photos, $count = false)
     {
-        global $zdb, $log, $login;
+        global $zdb, $login, $filters;
 
         try {
             $fieldsList = ( $fields != null )
@@ -567,13 +581,65 @@ class Members
                 break;
             }
 
+            //check if there are dynamic fields in the filter
+            $hasDf = false;
+            $hasCdf = false;
+            $cdfs = array();
+
+            if ( $filters instanceof AdvancedMembersList
+                && $filters->free_search
+                && count($filters->free_search) > 0
+                && !isset($filters->free_search['empty'])
+            ) {
+                $free_searches = $filters->free_search;
+                foreach ( $free_searches as $fs ) {
+                    if ( strpos($fs['field'], 'dyn_') === 0 ) {
+                        $hasDf = true;
+                    }
+                    if ( strpos($fs['field'], 'dync_') === 0 ) {
+                        $hasCdf = true;
+                        $cdfs[] = str_replace('dync_', '', $fs['field']);
+                    }
+                }
+            }
+
+            if ( $hasDf === true || $hasCdf === true ) {
+                $select->joinLeft(
+                    array('df' => PREFIX_DB . DynamicFields::TABLE),
+                    'df.item_id=a.' . self::PK
+                );
+            }
+
+            if ( $hasCdf === true ) {
+                $cdf_field = 'cdf.id';
+                if ( TYPE_DB === 'pgsql' ) {
+                    $cdf_field .= '::text';
+                }
+                foreach ( $cdfs as $cdf ) {
+                    $select->joinLeft(
+                        array('cdf' => DynamicFields::getFixedValuesTableName($cdf)),
+                        $cdf_field . '=df.field_val'
+                    );
+                }
+            }
+
             if ( $mode == self::SHOW_LIST || $mode == self::SHOW_MANAGED ) {
                 if ( $filter ) {
                     self::_buildWhereClause($select);
                 }
                 $select->order(self::_buildOrderClause());
             } else if ( $mode == self::SHOW_PUBLIC_LIST ) {
-                $select->where('activite_adh=true');
+                $select->where('activite_adh=true')
+                    ->where('bool_display_info = ?', true)
+                    ->where(
+                        'date_echeance > ? OR bool_exempt_adh = true',
+                        date('Y-m-d')
+                    );
+            }
+
+
+            if ( $mode === self::SHOW_STAFF ) {
+                $select->where('p.priorite_statut < ' . self::NON_STAFF_MEMBERS);
             }
 
             if ( $count ) {
@@ -583,13 +649,13 @@ class Members
             return $select;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot build SELECT clause for members | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -604,7 +670,7 @@ class Members
     */
     private function _proceedCount($select)
     {
-        global $zdb, $log, $filters;
+        global $zdb, $filters;
 
         try {
             $countSelect = clone $select;
@@ -629,13 +695,13 @@ class Members
             }
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot count members | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $countSelect->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -797,6 +863,7 @@ class Members
             if ( $filters->membership_filter ) {
                 switch($filters->membership_filter) {
                 case self::MEMBERSHIP_NEARLY:
+                    //TODO: use PHP Date objects
                     $select->where('date_echeance > ?', date('Y-m-d', time()))
                         ->where(
                             'date_echeance < ?',
@@ -833,10 +900,10 @@ class Members
 
             if ( $filters->account_status_filter ) {
                 switch($filters->account_status_filter) {
-                case 1:
+                case self::ACTIVE_ACCOUNT:
                     $select->where('activite_adh=true');
                     break;
-                case 2:
+                case self::INACTIVE_ACCOUNT:
                     $select->where('activite_adh=false');
                     break;
                 }
@@ -855,12 +922,216 @@ class Members
                     $filters->group_filter
                 );
             }
+
+            if ( $filters instanceof AdvancedMembersList ) {
+                if ( $filters->rcreation_date_begin
+                    || $filters->rcreation_date_end
+                ) {
+                    if ( $filters->rcreation_date_begin ) {
+                        $d = new \DateTime($filters->rcreation_date_begin);
+                        $select->where('date_crea_adh >= ?', $d->format('Y-m-d'));
+                    }
+                    if ( $filters->rcreation_date_end ) {
+                        $d = new \DateTime($filters->rcreation_date_end);
+                        $select->where('date_crea_adh <= ?', $d->format('Y-m-d'));
+                    }
+                }
+
+                if ( $filters->rmodif_date_begin || $filters->rmodif_date_end ) {
+                    if ( $filters->rmodif_date_begin ) {
+                        $d = new \DateTime($filters->rmodif_date_begin);
+                        $select->where('date_modif_adh >= ?', $d->format('Y-m-d'));
+                    }
+                    if ( $filters->rmodif_date_end ) {
+                        $d = new \DateTime($filters->rmodif_date_end);
+                        $select->where('date_modif_adh <= ?', $d->format('Y-m-d'));
+                    }
+                }
+
+                if ( $filters->rdue_date_begin || $filters->rdue_date_end ) {
+                    if ( $filters->rdue_date_begin ) {
+                        $d = new \DateTime($filters->rdue_date_begin);
+                        $select->where('date_echeance >= ?', $d->format('Y-m-d'));
+                    }
+                    if ( $filters->rdue_date_end ) {
+                        $d = new \DateTime($filters->rdue_date_end);
+                        $select->where('date_echeance <= ?', $d->format('Y-m-d'));
+                    }
+                }
+
+                if ( $filters->show_public_infos ) {
+                    switch ( $filters->show_public_infos ) {
+                    case self::FILTER_W_PUBINFOS:
+                        $select->where('bool_display_info = true');
+                        break;
+                    case self::FILTER_WO_PUBINFOS:
+                        $select->where('bool_display_info = false');
+                        break;
+                    case self::FILTER_DC_PUBINFOS:
+                        //nothing to do here.
+                        break;
+                    }
+                }
+
+                if ( $filters->status ) {
+                    $select->where(
+                        'a.id_statut IN (' . implode(',', $filters->status) . ')'
+                    );
+                }
+
+                if ( count($filters->free_search) > 0
+                    && !isset($filters->free_search['empty'])
+                ) {
+                    foreach ( $filters->free_search as $fs ) {
+                        $fs['search'] = mb_strtolower($fs['search']);
+                        $qop = null;
+                        switch ( $fs['qry_op'] ) {
+                        case AdvancedMembersList::OP_EQUALS:
+                            $qop = '=';
+                            break;
+                        case AdvancedMembersList::OP_CONTAINS:
+                            $qop = 'LIKE';
+                            $fs['search'] = '%' . $fs['search'] . '%';
+                            break;
+                        case AdvancedMembersList::OP_NOT_EQUALS:
+                            $qop = '!=';
+                            break;
+                        case AdvancedMembersList::OP_NOT_CONTAINS:
+                            $qop = 'NOT LIKE';
+                            $fs['search'] = '%' . $fs['search'] . '%';
+                            break;
+                        case AdvancedMembersList::OP_STARTS_WITH:
+                            $qop = 'LIKE';
+                            $fs['search'] = $fs['search'] . '%';
+                            break;
+                        case AdvancedMembersList::OP_ENDS_WITH:
+                            $qop = 'LIKE';
+                            $fs['search'] = '%' . $fs['search'];
+                            break;
+                        default:
+                        Analog::log(
+                                'Unknown query operator: ' . $fs['qry_op'] .
+                                ' (will fallback to equals)',
+                            Analog::WARNING
+                            );
+                            $qop = '=';
+                            break;
+                        }
+
+                        $qry = '';
+                        $prefix = '';
+                        if ( strpos($fs['field'], 'dync_') === 0 ) {
+                            //dynamic choice spotted!
+                            $prefix = 'cdf.';
+                            $qry = 'df.field_form = \'adh\' AND df.field_id = ' .
+                                str_replace('dync_', '', $fs['field']) . ' AND ';
+                            $fs['field'] = 'val';
+                        } elseif ( strpos($fs['field'], 'dyn_') === 0 ) {
+                            //dynamic field spotted!
+                            $prefix = 'df.';
+                            $qry = 'df.field_form = \'adh\' AND df.field_id = ' .
+                                str_replace('dyn_', '', $fs['field']) . ' AND ';
+                            $fs['field'] = 'field_val';
+                        }
+
+                        $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' . $qop  . ' ?' ;
+                        if ( $fs['log_op'] === AdvancedMembersList::OP_AND ) {
+                            $select->where($qry, $fs['search']);
+                        } elseif ( $fs['log_op'] === AdvancedMembersList::OP_OR ) {
+                            $select->orWhere($qry, $fs['search']);
+                        }
+                    }
+                }
+            }
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
+        }
+    }
+
+    /**
+     * Login and password field cannot be empty.
+     *
+     * If those ones are not required, or if a file has been importedi
+     * (from a CSV file for example), we fill here random values.
+     *
+     * @return boolean
+     */
+    public function emptyLogins()
+    {
+        global $zdb;
+
+        try {
+            $zdb->db->beginTransaction();
+            $select = new \Zend_Db_Select($zdb->db);
+            $select->from(
+                PREFIX_DB . Adherent::TABLE,
+                array('id_adh', 'login_adh', 'mdp_adh')
+            )->where(
+                'login_adh = ?', new \Zend_Db_Expr('NULL')
+            )->orWhere(
+                'login_adh = ?', ''
+            )->orWhere(
+                'mdp_adh = ?', new \Zend_Db_Expr('NULL')
+            )->orWhere(
+                'mdp_adh = ?', ''
+            );
+
+            $res = $select->query()->fetchAll();
+
+            $processed = 0;
+            if ( count($res) > 0 ) {
+                $sql = 'UPDATE ' .  PREFIX_DB . Adherent::TABLE .
+                    ' SET login_adh = :login, mdp_adh = :pass WHERE ' .
+                    Adherent::PK . ' = :id';
+                $stmt = $zdb->db->prepare($sql);
+
+                $p = new \Galette\Core\Password();
+
+                foreach ($res as $m) {
+                    $dirty = false;
+                    if ($m->login_adh == ''
+                        || !isset($m->login_adh)
+                        || $m->login_adh == 'NULL'
+                    ) {
+                        $m->login_adh = $p->makeRandomPassword(15);
+                        $dirty = true;
+                    }
+
+                    if ($m->mdp_adh == ''
+                        || !isset($m->mdp_adh)
+                        || $m->mdp_adh == 'NULL'
+                    ) {
+                        $m->mdp_adh = md5($p->makeRandomPassword(15));
+                        $dirty = true;
+                    }
+
+                    if ( $dirty === true ) {
+                        $stmt->execute(
+                            array(
+                                'login' => $m->login_adh,
+                                'pass'  => $m->mdp_adh,
+                                'id'    => $m->id_adh
+                            )
+                        );
+                        $processed++;
+                    }
+                }
+            }
+            $zdb->db->commit();
+            $this->_count = $processed;
+            return true;
+        } catch ( Exception $e ) {
+            $zdb->db->rollBack();
+            Analog::log(
+                'An error occured trying to retrieve members with ' .
+                'empty logins/passwords (' . $e->getMessage(),
+                Analog::ERROR
+            );
+            return false;
         }
     }
 
@@ -874,4 +1145,3 @@ class Members
         return $this->_count;
     }
 }
-?>

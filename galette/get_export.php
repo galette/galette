@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2012 The Galette Team
+ * Copyright © 2011-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,22 +28,22 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2012 The Galette Team
+ * @copyright 2011-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-11-05
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
 if ( !isset($_GET['file']) ) {
-    $log->log(
+    Analog::log(
         'No requested file',
-        KLogger::INFO
+        Analog::INFO
     );
     header("HTTP/1.1 500 Internal Server Error");
     die();
@@ -63,19 +63,18 @@ if ( $login->isAdmin() || $login->isStaff() ) {
         header('Pragma: no-cache');
         readfile(Csv::DEFAULT_DIRECTORY . $filename);
     } else {
-        $log->log(
+        Analog::log(
             'A request has been made to get an exported file named `' .
             $filename .'` that does not exists.',
-            KLogger::WARN
+            Analog::WARNING
         );
         header('HTTP/1.0 404 Not Found');        
     }
 } else {
-    $log->log(
+    Analog::log(
         'A non authorized person asked to retrieve exported file named `' .
         $filename . '`. Access ha not been granted.',
-        KLogger::WARN
+        Analog::WARNING
     );
     header('HTTP/1.0 403 Forbidden');
 }
-?>

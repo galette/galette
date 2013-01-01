@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2012 The Galette Team
+ * Copyright © 2011-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2012 The Galette Team
+ * @copyright 2011-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\DynamicFieldsTypes\Separator as Separator;
 use Galette\DynamicFieldsTypes\Text as Text;
 use Galette\DynamicFieldsTypes\Line as Line;
@@ -52,7 +52,7 @@ use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2012 The Galette Team
+ * @copyright 2011-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -142,7 +142,7 @@ class DynamicFields
      */
     public function getFixedValues($field_id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $val_select = new \Zend_Db_Select($zdb->db);
@@ -161,13 +161,13 @@ class DynamicFields
             }
             return $fixed_values;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $val_select->__toString() . ' ' . $e->__toString(),
-                KLogger::INFO
+                Analog::INFO
             );
         }
     }
@@ -227,7 +227,7 @@ class DynamicFields
      */
     public function getFields($form_name, $item_id, $quote)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -268,13 +268,13 @@ class DynamicFields
                 return false;
             }
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::INFO
+                Analog::INFO
             );
         }
     }
@@ -294,7 +294,7 @@ class DynamicFields
     public function prepareForDisplay(
         $form_name, $all_values, $disabled, $edit
     ) {
-        global $zdb, $log, $login;
+        global $zdb, $login;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -358,13 +358,13 @@ class DynamicFields
             }
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::INFO
+                Analog::INFO
             );
         }
     }
@@ -413,7 +413,7 @@ class DynamicFields
     private function _setField(
         $form_name, $item_id, $field_id, $val_index, $field_val
     ) {
-        global $zdb, $log;
+        global $zdb;
         $ret = false;
 
         try {
@@ -440,20 +440,20 @@ class DynamicFields
                 }
 
                 if ( trim($field_val) == '' ) {
-                    $log->log(
+                    Analog::log(
                         'Field ' . $field_id . ' is empty (index:' .
                         $val_index . ')',
-                        KLogger::DEBUG
+                        Analog::DEBUG
                     );
                     $zdb->db->delete(
                         PREFIX_DB . self::TABLE,
                         $where
                     );
                 } else {
-                    $log->log(
+                    Analog::log(
                         'Field ' . $field_id . ' will be set to value: ' .
                         $field_val . ' (index: ' . $val_index . ')',
-                        KLogger::DEBUG
+                        Analog::DEBUG
                     );
                     $zdb->db->update(
                         PREFIX_DB . self::TABLE,
@@ -482,12 +482,12 @@ class DynamicFields
             return true;
         } catch (\Exception $e) {
             $zdb->db->rollBack();
-            $log->log(
+            Analog::log(
                 'An error occured storing dynamic field. Form name: ' . $form_name .
                 '; item_id:' . $item_id . '; field_id: ' . $field_id .
                 '; val_index: ' . $val_index . '; field_val:' . $field_val .
                 ' | Error was: ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -563,7 +563,7 @@ class DynamicFields
      */
     public function loadFieldType($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -578,13 +578,12 @@ class DynamicFields
                 return false;
             }
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | Unable to retrieve field `' . $id .
                 '` informations | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
     }
 }
-?>

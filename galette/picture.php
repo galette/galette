@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2004-2012 The Galette Team
+ * Copyright © 2004-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    Frédéric Jaqcuot <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2004-2012 The Galette Team
+ * @copyright 2004-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id: picture.php 877 2011-06-01 06:08:18Z trashy $
  * @link      http://galette.tuxfamily.org
@@ -50,8 +50,12 @@ if (  isset($_GET['logo']) && $_GET['logo'] == 'true' ) {
         $print_logo->display();
     } else { //displays the picture
         $id_adh = (int)$_GET['id_adh'];
-        /** FIXME: we load entire member here... No need to do so! */
-        $adh = new Galette\Entity\Adherent($id_adh);
+        $deps = array(
+            'picture'   => true,
+            'groups'    => false,
+            'dues'      => false
+        );
+        $adh = new Galette\Entity\Adherent($id_adh, $deps);
 
         $picture = null;
         if ( $login->isAdmin()
@@ -70,4 +74,3 @@ if (  isset($_GET['logo']) && $_GET['logo'] == 'true' ) {
 if ( isset($profiler) ) {
     $profiler->stop();
 }
-?>

@@ -8,7 +8,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2003-2012 The Galette Team
+ * Copyright © 2003-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -31,7 +31,7 @@
  * @author    Frédéric Jaqcuot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2003-2012 The Galette Team
+ * @copyright 2003-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -40,7 +40,7 @@
 
 namespace Galette\Core;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Entity\Adherent;
 
 /**
@@ -52,7 +52,7 @@ use Galette\Entity\Adherent;
  * @author    Frédéric Jaqcuot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2012 The Galette Team
+ * @copyright 2009-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-06-16
@@ -113,7 +113,7 @@ class Password
      */
     private function _removeOldEntries($id_adh)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $del = $zdb->db->delete(
@@ -124,17 +124,17 @@ class Password
                 )
             );
             if ( $del ) {
-                $log->log(
+                Analog::log(
                     'Temporary passwords for `' . $id_adh . '` has been removed.',
-                    KLogger::DEBUG
+                    Analog::DEBUG
                 );
             }
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'An error has occured removing old tmppasswords ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -149,7 +149,7 @@ class Password
      */
     public function generateNewPassword($id_adh)
     {
-        global $zdb, $log;
+        global $zdb;
 
         //first of all, we'll remove all existant entries for specified id
         $this->_removeOldEntries($id_adh);
@@ -167,9 +167,9 @@ class Password
 
             $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
             if ( $add ) {
-                $log->log(
+                Analog::log(
                     'New passwords temporary set for `' . $id_adh . '`.',
-                    KLogger::DEBUG
+                    Analog::DEBUG
                 );
                 $this->_new_password = $password;
                 $this->_hash = $hash;
@@ -178,17 +178,17 @@ class Password
                 return false;
             }
         } catch (\Zend_Db_Adapter_Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to add add new password entry into database.' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 "An error occured trying to add temporary password entry. " .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -201,7 +201,7 @@ class Password
      */
     private function _cleanExpired()
     {
-        global $zdb, $log;
+        global $zdb;
 
         $date = new \DateTime();
         $date->sub(new \DateInterval('PT24H'));
@@ -215,17 +215,17 @@ class Password
                 )
             );
             if ( $del ) {
-                $log->log(
+                Analog::log(
                     'Old Temporary passwords has been deleted.',
-                    KLogger::DEBUG
+                    Analog::DEBUG
                 );
             }
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'An error occured deleting expired temporary passwords. ' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }
@@ -240,7 +240,7 @@ class Password
      */
     public function isHashValid($hash)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -251,9 +251,9 @@ class Password
             return $select->query()->fetchColumn();
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'An error occured getting requested hash. ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }
@@ -268,7 +268,7 @@ class Password
      */
     public function removeHash($hash)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $del = $zdb->db->delete(
@@ -279,18 +279,18 @@ class Password
                 )
             );
             if ( $del ) {
-                $log->log(
+                Analog::log(
                     'Used hash has been successfully remove',
-                    KLogger::DEBUG
+                    Analog::DEBUG
                 );
                 return true;
             }
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'An error ocured attempting to delete used hash' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }
@@ -316,4 +316,3 @@ class Password
         return $this->_hash;
     }
 }
-?>

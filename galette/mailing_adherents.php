@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2005-2012 The Galette Team
+ * Copyright © 2005-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    Frédéric Jaqcuot <nobody@exemple.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2005-2012 The Galette Team
+ * @copyright 2005-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -47,10 +47,8 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 }
 
 use Galette\Core;
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Filters\MembersList as MembersList;
-
-$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 
 //We're done :-)
 if ( isset($_POST['mailing_done'])
@@ -92,7 +90,7 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
         //FIXME: use a constant!
         $filters->reinit();
         $filters->membership_filter = Galette\Repository\Members::MEMBERSHIP_LATE;
-        $filters->account_status_filter = 1;
+        $filters->account_status_filter = galette\Repository\Members::ACTIVE_ACCOUNT;
         $m = new Galette\Repository\Members();
         $members = $m->getList(true);
         $mailing = new Core\Mailing(($members !== false) ? $members : null);
@@ -101,9 +99,9 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
             && !isset($_GET['mailing_new'])
             && !isset($_GET['reminder'])
         ) {
-            $log->log(
+            Analog::log(
                 '[mailing_adherents.php] No member selected for mailing',
-                KLogger::WARN
+                Analog::WARNING
             );
 
             if ( isset($profiler) ) {
@@ -153,10 +151,10 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
         $sent = $mailing->send();
         if ( $sent == Core\Mailing::MAIL_ERROR ) {
             $mailing->current_step = Core\Mailing::STEP_START;
-            $log->log(
+            Analog::log(
                 '[mailing_adherents.php] Message was not sent. Errors: ' .
                 print_r($mailing->errors, true),
-                KLogger::ERR
+                Analog::ERROR
             );
             foreach ( $mailing->errors as $e ) {
                 $error_detected[] = $e;
@@ -164,9 +162,9 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
         } else {
             $mlh = new Core\MailingHistory($mailing);
             $mlh->storeMailing(true);
-            $log->log(
+            Analog::log(
                 '[mailing_adherents.php] Message has been sent.',
-                KLogger::INFO
+                Analog::INFO
             );
             $mailing->current_step = Core\Mailing::STEP_SENT;
             //cleanup
@@ -222,4 +220,3 @@ $tpl->display('page.tpl');
 if ( isset($profiler) ) {
     $profiler->stop();
 }
-?>

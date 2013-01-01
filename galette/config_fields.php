@@ -9,7 +9,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2012 The Galette Team
+ * Copyright © 2009-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -30,14 +30,17 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2012 The Galette Team
+ * @copyright 2009-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Availaible since 0.7dev - 2009-04-11
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
+use Galette\Entity\Adherent as Adherent;
+use Galette\Entity\FieldsCategories as FieldsCategories;
+use Galette\Entity\FieldsConfig as FieldsConfig;
 
 require_once 'includes/galette.inc.php';
 
@@ -59,13 +62,13 @@ $fc = null;
 
 switch ( $current ) {
 case 'members':
-    $a = new Galette\Entity\Adherent();
-    $fc = new Galette\Entity\FieldsConfig(Galette\Entity\Adherent::TABLE, $a->fields);
+    $a = new Adherent();
+    $fc = new FieldsConfig(Adherent::TABLE, $a->fields);
     break;
 default:
-    $log->log(
+    Analog::log(
         'Trying to configure fields on unknown table (' . $current . ')',
-        KLogger::WARN
+        Analog::WARNING
     );
     break;
 }
@@ -97,12 +100,12 @@ if ( isset($_POST) && count($_POST) > 0 ) {
 
 $tpl->assign('page_title', _T("Fields configuration"));
 $tpl->assign('time', time());
-$tpl->assign('categories', Galette\Entity\FieldsCategories::getList());
+$tpl->assign('categories', FieldsCategories::getList());
 $tpl->assign('categorized_fields', $fc->getCategorizedFields());
+$tpl->assign('non_required', $fc->getNonRequired());
 $tpl->assign('current', $current);
-$tpl->assign('require_sorter', true);
+$tpl->assign('require_dialog', true);
+//$tpl->assign('require_sorter', true);
 $content = $tpl->fetch('config_fields.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-
-?>

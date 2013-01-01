@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2004-2012 The Galette Team
+ * Copyright © 2004-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,22 +29,22 @@
  *
  * @author    Frédéric Jaqcuot <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2004-2012 The Galette Team
+ * @copyright 2004-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id: picture.php 877 2011-06-01 06:08:18Z trashy $
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.62
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
-    $log->log(
+    Analog::log(
         'Trying to display ajax_members.php without appropriate permissions',
-        KLogger::INFO
+        Analog::INFO
     );
     die();
 }
@@ -91,4 +91,3 @@ if ( $res < 0 ) {
 }
 
 echo json_encode($ret);
-?>

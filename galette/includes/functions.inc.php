@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2003-2012 The Galette Team
+ * Copyright © 2003-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -30,13 +30,17 @@
  * @author    Frédéric Jaqcuot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2003-2012 The Galette Team
+ * @copyright 2003-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  */
 
-use Galette\Common\KLogger as KLogger;
+if (!defined('GALETTE_ROOT')) {
+       die("Sorry. You can't access directly to this file");
+}
+
+use Analog\Analog as Analog;
 
 function PasswordImageName($c)
 {
@@ -46,12 +50,12 @@ function PasswordImageName($c)
 function PasswordImageClean()
 {
     // cleans any password image file older than 1 minute
-    $dh = @opendir(STOCK_FILES);
+    $dh = @opendir(GALETTE_TEMPIMAGES_PATH);
     while ( $file=readdir($dh) ) {
         if (substr($file,0,3) == 'pw_'
-            && time() - filemtime(STOCK_FILES . '/' . $file) > 60
+            && time() - filemtime(GALETTE_TEMPIMAGES_PATH . '/' . $file) > 60
         ) {
-            unlink(STOCK_FILES . '/' . $file);
+            unlink(GALETTE_TEMPIMAGES_PATH . '/' . $file);
         }
     }
 }
@@ -71,7 +75,7 @@ function PasswordImage()
     $png = imagecreate(10 + 7.5 * strlen($mdp), 18);
     $bg = imagecolorallocate($png, 160, 160, 160);
     imagestring($png, 3, 5, 2, $mdp, imagecolorallocate($png, 0, 0, 0));
-    $file = STOCK_FILES . '/' . PasswordImageName($c);
+    $file = GALETTE_TEMPIMAGES_PATH . '/' . PasswordImageName($c);
 
     imagepng($png,$file);
     // The perms of the file can be wrong, try to correct it
@@ -87,7 +91,7 @@ function PasswordCheck($pass,$crypt)
 
 function print_img($img)
 {
-    $file = STOCK_FILES . '/' . $img;
+    $file = GALETTE_TEMPIMAGES_PATH . '/' . $img;
     $image_type = false;
     if ( function_exists('exif_imagetype') ) {
         $image_type = exif_imagetype($file);
@@ -251,13 +255,12 @@ function get_form_value($name, $defval)
 */
 function get_numeric_form_value($name, $defval)
 {
-    global $log;
     $val = get_form_value($name, $defval);
     if ( !is_numeric($val) ) {
-        $log->log(
+        Analog::log(
             '[get_numeric_form_value] not a numeric value! (value was: `' .
             $val . '`)',
-            KLogger::INFO
+            Analog::INFO
         );
         $val = $defval;
     }
@@ -284,5 +287,3 @@ function get_numeric_posted_value($name, $defval)
     }
     return $defval;
 }
-
-?>

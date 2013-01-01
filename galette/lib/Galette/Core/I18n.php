@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2012 The Galette Team
+ * Copyright © 2007-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2012 The Galette Team
+ * @copyright 2007-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * i18n handling
@@ -46,7 +46,7 @@ use Galette\Common\KLogger as KLogger;
  * @name      i18n
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2012 The Galette Team
+ * @copyright 2007-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-06
@@ -80,7 +80,7 @@ class I18n
     */
     function __construct($lang = false)
     {
-        $this->_path = WEB_ROOT . $this->_dir;
+        $this->_path = GALETTE_ROOT . $this->_dir;
         $this->_file = $this->_path . $this->_file;
 
         if ( !$lang ) {
@@ -111,8 +111,7 @@ class I18n
     */
     public function changeLanguage($id)
     {
-        global $log;
-        $log->log('Trying to set locale to ' . $id, KLogger::DEBUG);
+        Analog::log('Trying to set locale to ' . $id, Analog::DEBUG);
 
         $xml = simplexml_load_file($this->_file);
         $current = $xml->xpath(
@@ -121,9 +120,9 @@ class I18n
 
         //if no match, switch to default
         if ( !isset($current[0]) ) {
-            $log->log(
+            Analog::log(
                 $id . ' does not exist in XML file, switching to default.',
-                KLogger::WARN
+                Analog::WARNING
             );
             $id = self::DEFAULT_LANG;
             //do not forget to reload informations from the xml file
@@ -203,11 +202,10 @@ class I18n
     */
     public function getFlagFromId($id)
     {
-        global $base_path, $template_subdir;
         $xml = simplexml_load_file($this->_file);
         $current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');
         $sxe = $current[0];
-        return $base_path . $template_subdir . 'images/' . $sxe->flag;
+        return GALETTE_BASE_PATH . GALETTE_TPL_SUBDIR . 'images/' . $sxe->flag;
     }
 
     /**
@@ -267,8 +265,7 @@ class I18n
     */
     public function getFlag()
     {
-        global $base_path, $template_subdir;
-        return $base_path . $template_subdir . 'images/' . $this->_flag;
+        return GALETTE_BASE_PATH . GALETTE_TPL_SUBDIR . 'images/' . $this->_flag;
     }
 
     /**
@@ -317,4 +314,3 @@ class I18n
     }
 
 }
-?>

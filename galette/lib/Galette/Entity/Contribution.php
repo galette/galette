@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010-2012 The Galette Team
+ * Copyright © 2010-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2012 The Galette Team
+ * @copyright 2010-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Contribution class for galette
@@ -224,7 +224,7 @@ class Contribution
     */
     public function load($id)
     {
-        global $zdb, $log, $login;
+        global $zdb, $login;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -245,10 +245,10 @@ class Contribution
             }
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'An error occured attempting to load contribution #' . $id .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -310,7 +310,7 @@ class Contribution
      */
     public function check($values, $required, $disabled)
     {
-        global $zdb, $log;
+        global $zdb;
         $errors = array();
 
         $fields = array_keys($this->_fields);
@@ -344,11 +344,11 @@ class Contribution
                             }
                             $this->$prop = $d->format('Y-m-d');
                         } catch (Exception $e) {
-                            $log->log(
+                            Analog::log(
                                 'Wrong date format. field: ' . $key .
                                 ', value: ' . $value . ', expected fmt: ' .
                                 _T("Y-m-d") . ' | ' . $e->getMessage(),
-                                KLogger::INFO
+                                Analog::INFO
                             );
                             $errors[] = str_replace(
                                 array(
@@ -432,16 +432,16 @@ class Contribution
         }
 
         if ( count($errors) > 0 ) {
-            $log->log(
+            Analog::log(
                 'Some errors has been throwed attempting to edit/store a contribution' .
                 print_r($errors, true),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             return $errors;
         } else {
-            $log->log(
+            Analog::log(
                 'Contribution checked successfully.',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             return true;
         }
@@ -455,7 +455,7 @@ class Contribution
      */
     public function checkOverlap()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -489,13 +489,13 @@ class Contribution
             return true;
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'An error occured checking overlaping fee. ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString(),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             return false;
         }
@@ -508,7 +508,7 @@ class Contribution
      */
     public function store()
     {
-        global $zdb, $log, $hist;
+        global $zdb, $hist;
 
         try {
             $zdb->db->beginTransaction();
@@ -587,10 +587,10 @@ class Contribution
         } catch (\Exception $e) {
             /** FIXME */
             $zdb->db->rollBack();
-            $log->log(
+            Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -603,7 +603,7 @@ class Contribution
      */
     private function _updateDeadline()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $due_date = self::getDueDate($this->_member);
@@ -621,11 +621,11 @@ class Contribution
             );
             return true;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'An error occured updating member ' . $this->_member .
                 '\'s deadline |' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -640,7 +640,7 @@ class Contribution
      */
     public function remove($transaction = true)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             if ( $transaction ) {
@@ -662,10 +662,10 @@ class Contribution
             if ( $transaction ) {
                 $zdb->db->rollBack();
             }
-            $log->log(
+            Analog::log(
                 'An error occured trying to remove contribution #' .
                 $this->_id . ' | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -721,7 +721,7 @@ class Contribution
      */
     public static function getDueDate($member_id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -733,9 +733,9 @@ class Contribution
             return $due_date;
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'An error occured trying to retrieve member\'s due date',
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -751,7 +751,7 @@ class Contribution
      */
     public static function unsetTransactionPart($trans_id, $contrib_id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             //first, we check if contribution is part of transaction
@@ -764,18 +764,18 @@ class Contribution
                 );
                 return true;
             } else {
-                $log->log(
+                Analog::log(
                     'Contribution #' . $contrib_id .
                     ' is not actually part of transaction #' . $trans_id,
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 return false;
             }
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to detach contribution #' . $contrib_id .
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -791,7 +791,7 @@ class Contribution
      */
     public static function setTransactionPart($trans_id, $contrib_id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $zdb->db->update(
@@ -801,10 +801,10 @@ class Contribution
             );
             return true;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to attach contribution #' . $contrib_id .
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -855,7 +855,6 @@ class Contribution
     */
     public function __get($name)
     {
-        global $log;
 
         $forbidden = array('is_cotis');
         $virtuals = array('duration', 'spayment_type');
@@ -875,10 +874,10 @@ class Contribution
                         return $d->format(_T("Y-m-d"));
                     } catch (\Exception $e) {
                         //oops, we've got a bad date :/
-                        $log->log(
+                        Analog::log(
                             'Bad date (' . $his->$rname . ') | ' .
                             $e->getMessage(),
-                            KLogger::INFO
+                            Analog::INFO
                         );
                         return $this->$rname;
                     }
@@ -915,9 +914,9 @@ class Contribution
                     return _T("Paypal");
                     break;
                 default:
-                    $log->log(
+                    Analog::log(
                         'Unknown payment type ' . $this->_payment_type,
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                     return '-';
                     break;
@@ -941,7 +940,6 @@ class Contribution
     */
     public function __set($name, $value)
     {
-        global $log;
         $forbidden = array('fields', 'is_cotis', 'end_date');
 
         if ( !in_array($name, $forbidden) ) {
@@ -951,9 +949,9 @@ class Contribution
                 if ( is_int($value) ) {
                     $this->$rname = new Transaction($value);
                 } else {
-                    $log->log(
+                    Analog::log(
                         'Trying to set a transaction from an id that is not an integer.',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 }
                 break;
@@ -968,9 +966,9 @@ class Contribution
                         $this->_is_cotis = false;
                     }
                 } else {
-                    $log->log(
+                    Analog::log(
                         'Trying to set a type from an id that is not an integer.',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 }
                 break;
@@ -982,11 +980,11 @@ class Contribution
                     }
                     $this->_begin_date = $d->format('Y-m-d');
                 } catch (Exception $e) {
-                    $log->log(
+                    Analog::log(
                         'Wrong date format. field: ' . $key .
                         ', value: ' . $value . ', expected fmt: ' .
                         _T("Y-m-d") . ' | ' . $e->getMessage(),
-                        KLogger::INFO
+                        Analog::INFO
                     );
                     $errors[] = str_replace(
                         array(
@@ -1005,18 +1003,18 @@ class Contribution
                 if (is_numeric($value) && $value > 0 ) {
                     $this->$rname = $value;
                 } else {
-                    $log->log(
+                    Analog::log(
                         'Trying to set an amount with a non numeric value, ' .
                         'or with a zero value',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 }
                 break;
             default:
-                $log->log(
+                Analog::log(
                     '[' . __CLASS__ . ']: Trying to set an unknown property (' .
                     $name . ')',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 break;
             }
@@ -1024,4 +1022,3 @@ class Contribution
 
     }
 }
-?>

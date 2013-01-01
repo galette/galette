@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2004-2012 The Galette Team
+ * Copyright © 2004-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    Frédéric Jaqcuot <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2004-2012 The Galette Team
+ * @copyright 2004-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -42,10 +42,10 @@ $loginfault = false;
 
 if ( isset($_GET['logout']) ) {
     $login->logOut();
-    $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login'] = null;
-    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login']);
-    $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history'] = null;
-    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history']);
+    $session['login'] = null;
+    unset($session['login']);
+    $session['history'] = null;
+    unset($session['history']);
 }
 
 // Authentication procedure
@@ -54,7 +54,7 @@ if (isset($_POST['ident'])) {
         && md5($_POST['password']) == $preferences->pref_admin_pass
     ) {
         $login->logAdmin($_POST['login']);
-        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login'] = serialize($login);
+        $session['login'] = serialize($login);
         $hist->add(_T("Login"));
         if ( !isset($_COOKIE['show_galette_dashboard'])
             || $_COOKIE['show_galette_dashboard'] == 1
@@ -69,7 +69,7 @@ if (isset($_POST['ident'])) {
         $login->logIn($_POST['login'], md5($_POST['password']));
 
         if ( $login->isLogged() ) {
-            $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['login'] = serialize($login);
+            $session['login'] = serialize($login);
             $hist->add(_T("Login"));
             /** FIXME: users should no try to go to admin interface */
             if ( $login->isAdmin() || $login->isStaff() ) {
@@ -111,4 +111,3 @@ if ( !$login->isLogged() ) {
         header('location: voir_adherent.php');
     }
 }
-?>

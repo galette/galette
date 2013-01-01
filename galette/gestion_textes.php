@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2012 The Galette Team
+ * Copyright © 2007-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    John Perr <johnperr@abul.org>
- * @copyright 2007-2012 The Galette Team
+ * @copyright 2007-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -96,9 +96,9 @@ $tpl->assign('langlist', $i18n->getList());
 $tpl->assign('cur_lang', $cur_lang);
 $tpl->assign('cur_ref', $cur_ref);
 $tpl->assign('mtxt', $mtxt);
+$tpl->assign('require_dialog', true);
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('warning_detected', $warning_detected);
 $content = $tpl->fetch('gestion_textes.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-?>

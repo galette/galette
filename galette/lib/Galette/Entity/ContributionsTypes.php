@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2012 The Galette Team
+ * Copyright © 2007-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2012 The Galette Team
+ * @copyright 2007-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /* TODO: Most of the code is duplicated in Galette\Entity\Status. Should
  * probably use a superclass for genericity.
@@ -50,7 +50,7 @@ use Galette\Common\KLogger as KLogger;
  * @name      ContibutionTypes
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2012 The Galette Team
+ * @copyright 2007-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-27
@@ -106,7 +106,7 @@ class ContributionsTypes
     */
     public function load($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -119,14 +119,14 @@ class ContributionsTypes
             return true;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot load contribution type form id `' . $id . '` | ' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -154,7 +154,7 @@ class ContributionsTypes
     */
     public function installInit()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             //first, we drop all values
@@ -173,16 +173,16 @@ class ContributionsTypes
                 $stmt->execute();
             }
 
-            $log->log(
+            Analog::log(
                 'Default contributions types were successfully stored into database.',
-                KLogger::INFO
+                Analog::INFO
             );
             return true;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to initialize default contributions types.' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return $e;
         }
@@ -198,7 +198,7 @@ class ContributionsTypes
      */
     public static function getList($extent = null)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -219,13 +219,13 @@ class ContributionsTypes
             }
             return $list;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'An error occured. ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString(),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             return false;
         }
@@ -239,7 +239,7 @@ class ContributionsTypes
     */
     public function getCompleteList()
     {
-        global $zdb, $log;
+        global $zdb;
         $list = array();
 
         try {
@@ -250,9 +250,9 @@ class ContributionsTypes
             $types = $select->query()->fetchAll();
 
             if ( count($types) == 0 ) {
-                $log->log(
+                Analog::log(
                     'No contributions types defined in database.',
-                    KLogger::INFO
+                    Analog::INFO
                 );
             } else {
                 foreach ( $types as $type ) {
@@ -265,13 +265,13 @@ class ContributionsTypes
             return $list;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot list contribution types | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -286,7 +286,7 @@ class ContributionsTypes
     */
     public function get($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -298,13 +298,13 @@ class ContributionsTypes
             return $result;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -332,7 +332,7 @@ class ContributionsTypes
     */
     public function getIdByLabel($label)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -341,10 +341,10 @@ class ContributionsTypes
             return $result = $select->query()->fetchColumn();
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Unable to retrieve contributions type from label `' .
                 $label . '` | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -360,15 +360,15 @@ class ContributionsTypes
     */
     public function add($label, $extension)
     {
-        global $zdb, $log;
+        global $zdb;
 
         // Avoid duplicates.
         $ret = $this->getidByLabel($label);
 
         if ( $ret !== false ) {
-            $log->log(
+            Analog::log(
                 'Contribution type `' . $label . '` already exists',
-                KLogger::WARN
+                Analog::WARNING
             );
             return -2;
         }
@@ -385,9 +385,9 @@ class ContributionsTypes
             );
 
             if ( $ret >  0) {
-                $log->log(
+                Analog::log(
                     'New contributions type `' . $label . '` added successfully.',
-                    KLogger::INFO
+                    Analog::INFO
                 );
                 return $zdb->db->lastInsertId(
                     PREFIX_DB . self::TABLE,
@@ -398,10 +398,10 @@ class ContributionsTypes
             }
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Unable to add new contributions type `' . $label . '` | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -418,7 +418,7 @@ class ContributionsTypes
     */
     public function update($id, $field, $value)
     {
-        global $zdb, $log;
+        global $zdb;
 
         $ret = $this->get($id);
         if ( !$ret ) {
@@ -435,7 +435,7 @@ class ContributionsTypes
             $fieldtype = 'integer';
         }
 
-        $log->log("Setting field $field to $value for ctype $id", KLogger::INFO);
+        Analog::log("Setting field $field to $value for ctype $id", Analog::INFO);
 
         try {
             $values= array(
@@ -448,17 +448,17 @@ class ContributionsTypes
                 self::PK . ' = ' . $id
             );
 
-            $log->log(
+            Analog::log(
                 'Contributions type ' . $id . ' updated successfully.',
-                KLogger::INFO
+                Analog::INFO
             );
             return true;
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Unable to update contributions types ' . $id . ' | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -473,7 +473,7 @@ class ContributionsTypes
     */
     public function delete($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         $ret = $this->get($id);
         if ( !$ret ) {
@@ -486,17 +486,17 @@ class ContributionsTypes
                 PREFIX_DB . self::TABLE,
                 self::PK . ' = ' . $id
             );
-            $log->log(
+            Analog::log(
                 'Contributions type ' . $id . ' deleted successfully.',
-                KLogger::INFO
+                Analog::INFO
             );
             return true;
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Unable to delete contributions type ' . $id . ' | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -511,7 +511,7 @@ class ContributionsTypes
     */
     public function isUsed($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         // Check if it's used.
         try {
@@ -525,10 +525,10 @@ class ContributionsTypes
             }
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Unable to check if contribution `' . $id . '` is used. | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             //in case of error, we consider that type is used, to avoid errors
             return true;
@@ -561,4 +561,3 @@ class ContributionsTypes
     }
 
 }
-?>

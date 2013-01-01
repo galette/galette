@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2003-2012 The Galette Team
+ * Copyright © 2003-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    Frédéric Jaqcuot <unknow@unknwow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2003-2012 The Galette Team
+ * @copyright 2003-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -69,7 +69,7 @@ if ( isset($_GET['tri']) ) {
 $logs = array();
 
 $logs = $hist->getHistory();
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['history'] = serialize($hist);
+$session['history'] = serialize($hist);
 
 //assign pagination variables to the template and add pagination links
 $hist->setSmartyPagination($tpl);
@@ -81,4 +81,3 @@ $tpl->assign('history', $hist);
 $content = $tpl->fetch('history.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-?>

@@ -8,7 +8,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2012 The Galette Team
+ * Copyright © 2009-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,18 +29,18 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2012 The Galette Team
+ * @copyright 2009-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-13
  */
 define('SMARTY_VERSION', '3.1.12');
-define('ZEND_VERSION', '1.11.11');
-define('TCPDF_VERSION', '5.9.165');
+define('ZEND_VERSION', '1.12.1');
+define('ANALOG_VERSION', '1.0.0.git876d8a3bb');
+define('TCPDF_VERSION', '5.9.202');
 define('JQUERY_VERSION', '1.6.2');
 define('JQUERY_UI_VERSION', '1.8.14');
 define('JQUERY_MARKITUP_VERSION', '1.1.12');
-define('PHP_MAILER_VERSION', '5.2.1');
-define('GAPI_VERSION', '0.4.6');
-?>
+define('PHP_MAILER_VERSION', '5.2.2');
+define('GAPI_VERSION', '0.6.0');

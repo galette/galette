@@ -28,19 +28,19 @@
 
 // DOCUMENT_ROOT fix for IIS Webserver
 if ((!isset($_SERVER['DOCUMENT_ROOT'])) OR (empty($_SERVER['DOCUMENT_ROOT']))) {
-	if(isset($_SERVER['SCRIPT_FILENAME'])) {
-		$_SERVER['DOCUMENT_ROOT'] = str_replace( '\\', '/', substr($_SERVER['SCRIPT_FILENAME'], 0, 0-strlen($_SERVER['PHP_SELF'])));
-	} elseif(isset($_SERVER['PATH_TRANSLATED'])) {
-		$_SERVER['DOCUMENT_ROOT'] = str_replace( '\\', '/', substr(str_replace('\\\\', '\\', $_SERVER['PATH_TRANSLATED']), 0, 0-strlen($_SERVER['PHP_SELF'])));
-	} else {
-		// define here your DOCUMENT_ROOT path if the previous fails (e.g. '/var/www')
-		$_SERVER['DOCUMENT_ROOT'] = '/';
-	}
+    if(isset($_SERVER['SCRIPT_FILENAME'])) {
+        $_SERVER['DOCUMENT_ROOT'] = str_replace( '\\', '/', substr($_SERVER['SCRIPT_FILENAME'], 0, 0-strlen($_SERVER['PHP_SELF'])));
+    } elseif(isset($_SERVER['PATH_TRANSLATED'])) {
+        $_SERVER['DOCUMENT_ROOT'] = str_replace( '\\', '/', substr(str_replace('\\\\', '\\', $_SERVER['PATH_TRANSLATED']), 0, 0-strlen($_SERVER['PHP_SELF'])));
+    } else {
+        // define here your DOCUMENT_ROOT path if the previous fails (e.g. '/var/www')
+        $_SERVER['DOCUMENT_ROOT'] = '/';
+    }
 }
 
 // Set K_PATH_MAIN constant
-$galette_k_path_main = WEB_ROOT;
-$k_path_main = WEB_ROOT . 'includes/tcpdf_' . TCPDF_VERSION . '/';
+$galette_k_path_main = GALETTE_ROOT;
+$k_path_main = GALETTE_ROOT . 'includes/tcpdf_' . TCPDF_VERSION . '/';
 
 /**
  * Installation path (/var/www/tcpdf/).
@@ -51,15 +51,15 @@ define ('K_PATH_MAIN', $k_path_main);
 
 // Automatic calculation for the following K_PATH_URL constant
 if (isset($_SERVER['HTTP_HOST']) AND (!empty($_SERVER['HTTP_HOST']))) {
-	if(isset($_SERVER['HTTPS']) AND (!empty($_SERVER['HTTPS'])) AND strtolower($_SERVER['HTTPS'])!='off') {
-		$k_path_url = 'https://';
-	} else {
-		$k_path_url = 'http://';
-	}
-	$k_path_url .= $_SERVER['HTTP_HOST'];
+    if(isset($_SERVER['HTTPS']) AND (!empty($_SERVER['HTTPS'])) AND strtolower($_SERVER['HTTPS'])!='off') {
+        $k_path_url = 'https://';
+    } else {
+        $k_path_url = 'http://';
+    }
+    $k_path_url .= $_SERVER['HTTP_HOST'];
     $galette_k_path_url = $k_path_url;
-	$k_path_url .= str_replace( '\\', '/', substr(K_PATH_MAIN, (strlen($_SERVER['DOCUMENT_ROOT']))));
-	$galette_k_path_url .= str_replace( '\\', '/', substr(GALETTE_K_PATH_MAIN, (strlen($_SERVER['DOCUMENT_ROOT']))));
+    $k_path_url .= str_replace( '\\', '/', substr(K_PATH_MAIN, (strlen($_SERVER['DOCUMENT_ROOT']))));
+    $galette_k_path_url .= str_replace( '\\', '/', substr(GALETTE_K_PATH_MAIN, (strlen($_SERVER['DOCUMENT_ROOT']))));
 }
 
 /**

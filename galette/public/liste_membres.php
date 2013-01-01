@@ -10,7 +10,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2006-2012 The Galette Team
+ * Copyright © 2006-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -32,7 +32,7 @@
  *
  * @author    Loïs 'GruiicK' Taulelle <gruiick@gmail.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2006-2012 The Galette Team
+ * @copyright 2006-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -41,14 +41,13 @@
 
 use Galette\Filters\MembersList as MembersList;
 
-$base_path = '../';
-require_once $base_path . 'includes/galette.inc.php';
+define('GALETTE_BASE_PATH', '../');
+require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';
 if ( !$preferences->showPublicPages() ) {
     //public pages are not actives
-    header('location:../index.php');
+    header('location:'. GALETTE_BASE_PATH . 'index.php');
 }
 
-$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 if ( isset($session['public_filters']['members']) ) {
     $filters = unserialize($session['public_filters']['members']);
 } else {
@@ -76,7 +75,7 @@ if ( isset($_GET['tri']) ) {
 
 
 $m = new Galette\Repository\Members();
-$members = $m->getPublicList(false, null);
+$members = $m->getPublicList(false, null, $filters);
 
 //assign pagination variables to the template and add pagination links
 $filters->setSmartyPagination($tpl);
@@ -85,8 +84,7 @@ $session['public_filters']['members'] = serialize($filters);
 
 $tpl->assign('page_title', _T("Members list"));
 $tpl->assign('members', $members);
+$tpl->assign('nb_members', $m->getCount());
 $content = $tpl->fetch('liste_membres.tpl');
 $tpl->assign('content', $content);
 $tpl->display('public_page.tpl');
-?>
-

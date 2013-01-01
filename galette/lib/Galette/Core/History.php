@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2012 The Galette Team
+ * Copyright © 2009-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2012 The Galette Team
+ * @copyright 2009-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * History management
@@ -46,7 +46,7 @@ use Galette\Common\KLogger as KLogger;
  * @name      History
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2012 The Galette Team
+ * @copyright 2009-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-09
@@ -105,7 +105,7 @@ class History extends Pagination
     */
     public function add($action, $argument = '', $query = '')
     {
-        global $zdb, $log, $login;
+        global $zdb, $login;
 
         try {
             $values = array(
@@ -119,16 +119,16 @@ class History extends Pagination
 
             $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
         } catch (\Zend_Db_Adapter_Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to initialize add log entry into database.' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 "An error occured trying to add log entry. " . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -143,15 +143,15 @@ class History extends Pagination
     */
     public function clean()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $result = $zdb->db->query('TRUNCATE TABLE ' . $this->getTableName());
 
             if ( !$result ) {
-                $log->log(
+                Analog::log(
                     'An error occured cleaning history. ',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 $this->add('Arror flushing logs');
                 return false;
@@ -160,9 +160,9 @@ class History extends Pagination
             return true;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Unable to flush logs. | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
         }
     }
@@ -174,13 +174,13 @@ class History extends Pagination
     */
     public function getHistory()
     {
-        global $zdb, $log;
+        global $zdb;
 
         if ($this->counter == null) {
             $c = $this->getCount();
 
             if ($c == 0) {
-                $log->log('No entry in history (yet?).', KLogger::DEBUG);
+                Analog::log('No entry in history (yet?).', Analog::DEBUG);
                 return;
             } else {
                 $this->counter = (int)$c;
@@ -197,13 +197,13 @@ class History extends Pagination
             return $select->query(\Zend_Db::FETCH_ASSOC)->fetchAll();
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Unable to get history. | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -216,7 +216,7 @@ class History extends Pagination
     */
     protected function getCount()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -228,13 +228,13 @@ class History extends Pagination
             return $select->query()->fetchObject()->counter;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Unable to get history count. | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -249,11 +249,10 @@ class History extends Pagination
     */
     public function __get($name)
     {
-        global $log;
 
-        $log->log(
+        Analog::log(
             '[History] Getting property `' . $name . '`',
-            KLogger::DEBUG
+            Analog::DEBUG
         );
 
         if ( in_array($name, $this->pagination_fields) ) {
@@ -270,10 +269,10 @@ class History extends Pagination
                         return $d->format(_T("Y-m-d H:i:s"));
                     } catch (\Exception $e) {
                         //oops, we've got a bad date :/
-                        $log->log(
+                        Analog::log(
                             'Bad date (' . $this->$rname . ') | ' .
                             $e->getMessage(),
-                            KLogger::INFO
+                            Analog::INFO
                         );
                         return $this->$rname;
                     }
@@ -283,9 +282,9 @@ class History extends Pagination
                     break;
                 }
             } else {
-                $log->log(
+                Analog::log(
                     '[History] Unable to get proprety `' .$name . '`',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
         }
@@ -301,13 +300,12 @@ class History extends Pagination
     */
     public function __set($name, $value)
     {
-        global $log;
         if ( in_array($name, $this->pagination_fields) ) {
             parent::__set($name, $value);
         } else {
-            $log->log(
+            Analog::log(
                 '[History] Setting property `' . $name . '`',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
 
             $forbidden = array();
@@ -324,9 +322,9 @@ class History extends Pagination
                     break;
                 }
             } else {
-                $log->log(
+                Analog::log(
                     '[History] Unable to set proprety `' .$name . '`',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
         }
@@ -352,4 +350,3 @@ class History extends Pagination
         return self::PK;
     }
 }
-?>

@@ -6,7 +6,7 @@
  *
  -------------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2012 by the INDEPNET Development Team.
+ Copyright (C) 2003-2013 by the INDEPNET Development Team.
 
  http://indepnet.net/   http://glpi-project.org
  -------------------------------------------------------------------------
@@ -39,6 +39,8 @@
  */
 
 namespace Galette\Common;
+
+use Analog\Analog as Analog;
 
 /**
  * class XHProf
@@ -106,18 +108,18 @@ class XHProf
      */
     public function start($msg='')
     {
-        global $log;
-
         if (!self::$_run
             && function_exists('xhprof_enable')
         ) {
-            xhprof_enable(XHPROF_FLAGS_NO_BUILTINS | XHPROF_FLAGS_CPU | XHPROF_FLAGS_MEMORY);
-            if ( $log ) {
-                $log->log(
-                    'Start profiling with XHProf ' . $msg,
-                    KLogger::INFO
-                );
-            }
+            xhprof_enable(
+                XHPROF_FLAGS_NO_BUILTINS
+                | XHPROF_FLAGS_CPU
+                | XHPROF_FLAGS_MEMORY
+            );
+            Analog::log(
+                'Start profiling with XHProf ' . $msg,
+                Analog::INFO
+            );
             self::$_run = true;
         }
     }
@@ -129,8 +131,6 @@ class XHProf
      */
     public function stop()
     {
-        global $log;
-
         if (self::$_run) {
             $data = xhprof_disable();
 
@@ -145,13 +145,12 @@ class XHProf
             $host = (defined('XHPROF_HOST') ? XHPROF_HOST : $_SERVER['HTTP_HOST']);
             $link = 'http://' . $host .$url . '/index.php?run=' .
                 $id . '&source=galette-' . GALETTE_VERSION;
-            $log->log(
+            Analog::log(
                 'Stop profiling with XHProf, result URL: ' . $link,
-                KLogger::INFO
+                Analog::INFO
             );
 
             self::$_run = false;
         }
     }
 }
-?>

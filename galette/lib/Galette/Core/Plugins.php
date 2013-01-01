@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2012 The Galette Team
+ * Copyright © 2009-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2012 The Galette Team
+ * @copyright 2009-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Plugins class for galette
@@ -46,7 +46,7 @@ use Galette\Common\KLogger as KLogger;
  * @name      Plugins
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2012 The Galette Team
+ * @copyright 2009-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7 - 2009-03-09
@@ -168,14 +168,13 @@ class Plugins
         $name, $desc, $author, $version, $compver = null, $permissions=null,
         $priority=1000
     ) {
-        global $log;
 
         if ( $compver === null ) {
             //plugin compatibility missing!
-            $log->log(
+            Analog::log(
                 'Plugin ' . $name . ' does not contains mandatory version ' .
                 'compatiblity informations. Please contact the author.',
-                KLogger::ERR
+                Analog::ERROR
             );
             $this->disabled[$this->id] = array(
                 'root' => $this->mroot,
@@ -183,11 +182,11 @@ class Plugins
             );
         } elseif ( version_compare($compver, GALETTE_COMPAT_VERSION, '<') ) {
             //plugin is not compatible with that version of galette.
-            $log->log(
+            Analog::log(
                 'Plugin ' . $name . ' is known to be compatible with Galette ' .
                 $compver . ' only, but you current installation require a ' .
                 'plugin compatible with at least ' . GALETTE_COMPAT_VERSION,
-                KLogger::WARN
+                Analog::WARNING
             );
             $this->disabled[$this->id] = array(
                 'root' => $this->mroot,
@@ -586,4 +585,3 @@ class Plugins
     }
 
 }
-?>

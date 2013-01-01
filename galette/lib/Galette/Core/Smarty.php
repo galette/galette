@@ -6,7 +6,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012 The Galette Team
+ * Copyright © 2012-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -27,7 +27,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012 The Galette Team
+ * @copyright 2012-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -43,7 +43,7 @@ namespace Galette\Core;
  * @name      Smarty
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012 The Galette Team
+ * @copyright 2012-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://www.smarty.net/docs/en/installing.smarty.extended.tpl
  * @since     Available since 0.7.1dev - 2012-05-05
@@ -52,18 +52,22 @@ class Smarty extends \SmartyBC
 {
 
     /**
-    * Main constructor
-    */
-    function __construct($base_path)
+     * Main constructor
+     *
+     * @param plugins     $plugins     Galette's plugins
+     * @param I18n        $i18n        Galette's I18n
+     * @param Preferences $preferences Galette's preferences
+     * @param Logo        $logo        Galette's logo
+     * @param Login       $login       Galette's login
+     */
+    function __construct($plugins, $i18n, $preferences, $logo, $login)
     {
-        global $plugins, $i18n, $preferences, $logo, $login, $template_subdir;
-
         parent::__construct();
 
         //paths configuration
-        $this->setTemplateDir(WEB_ROOT . $template_subdir);
+        $this->setTemplateDir(GALETTE_ROOT . GALETTE_TPL_SUBDIR);
         $this->setCompileDir(GALETTE_COMPILE_DIR);
-        $this->setConfigDir(WEB_ROOT . 'config/');
+        $this->setConfigDir(GALETTE_CONFIG_PATH);
         $this->setCacheDir(GALETTE_CACHE_DIR);
 
         /*if ( GALETTE_MODE !== 'DEV' ) {
@@ -72,24 +76,24 @@ class Smarty extends \SmartyBC
             $this->setCompileCheck(false);
         }*/
 
-        $this->addPluginsDir(WEB_ROOT . 'includes/smarty_plugins');
+        $this->addPluginsDir(GALETTE_ROOT . 'includes/smarty_plugins');
 
         $this->assign('login', $login);
         $this->assign('logo', $logo);
-        $this->assign('template_subdir', $base_path . $template_subdir);
+        $this->assign('template_subdir', GALETTE_BASE_PATH . GALETTE_TPL_SUBDIR);
         foreach ( $plugins->getTplAssignments() as $k=>$v ) {
             $this->assign($k, $v);
         }
         $this->assign('headers', $plugins->getTplHeaders());
         $this->assign('plugin_actions', $plugins->getTplAdhActions());
         $this->assign('plugin_detailled_actions', $plugins->getTplAdhDetailledActions());
-        $this->assign('jquery_dir', $base_path . 'includes/jquery/');
+        $this->assign('jquery_dir', GALETTE_BASE_PATH . 'includes/jquery/');
         $this->assign('jquery_version', JQUERY_VERSION);
         $this->assign('jquery_ui_version', JQUERY_UI_VERSION);
         $this->assign('jquery_markitup_version', JQUERY_MARKITUP_VERSION);
-        $this->assign('scripts_dir', $base_path . 'includes/');
+        $this->assign('scripts_dir', GALETTE_BASE_PATH . 'includes/');
         $this->assign('PAGENAME', basename($_SERVER['SCRIPT_NAME']));
-        $this->assign('galette_base_path', $base_path);
+        $this->assign('galette_base_path', GALETTE_BASE_PATH);
         /** FIXME: on certains pages PHP notice that GALETTE_VERSION does not exists
         although it appears correctly*/
         $this->assign('GALETTE_VERSION', GALETTE_VERSION);
@@ -103,9 +107,25 @@ class Smarty extends \SmartyBC
         $this->assign('pref_theme', $preferences->pref_theme);
         $this->assign('pref_editor_enabled', $preferences->pref_editor_enabled);
         $this->assign('pref_mail_method', $preferences->pref_mail_method);
-        if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']) ) {
+        if ( isset($session['mailing']) ) {
             $this->assign('existing_mailing', true);
         }
+        $this->assign('require_tabs', null);
+        $this->assign('require_cookie', null);
+        $this->assign('contentcls', null);
+        $this->assign('require_tabs', null);
+        $this->assign('require_cookie', false);
+        $this->assign('additionnal_html_class', null);
+        $this->assign('require_calendar', null);
+        $this->assign('head_redirect', null);
+        $this->assign('error_detected', null);
+        $this->assign('warning_detected', null);
+        $this->assign('success_detected', null);
+        $this->assign('color_picker', null);
+        $this->assign('require_sorter', null);
+        $this->assign('require_dialog', null);
+        $this->assign('require_tree', null);
+        $this->assign('existing_mailing', null);
+        $this->assign('html_editor', null);
     }
 }
-?>

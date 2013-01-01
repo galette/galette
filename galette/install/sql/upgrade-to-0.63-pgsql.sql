@@ -91,9 +91,9 @@ ALTER TABLE galette_cotisations ADD date_enreg date;
 ALTER TABLE galette_cotisations ADD date_debut_cotis date;
 ALTER TABLE galette_cotisations ADD date_fin_cotis date;
 UPDATE galette_cotisations
-	SET date_enreg=date_cotis,
-	    date_debut_cotis=date_cotis,
-	    date_fin_cotis=date_cotis +  to_char(duree_mois_cotis, '99" month"')::interval;
+    SET date_enreg=date_cotis,
+        date_debut_cotis=date_cotis,
+        date_fin_cotis=date_cotis +  to_char(duree_mois_cotis, '99" month"')::interval;
 ALTER TABLE galette_cotisations ALTER COLUMN date_enreg SET NOT NULL;
 ALTER TABLE galette_cotisations ALTER COLUMN date_enreg SET DEFAULT '19010101';
 ALTER TABLE galette_cotisations ALTER COLUMN date_debut_cotis SET NOT NULL;
@@ -107,7 +107,7 @@ ALTER TABLE galette_cotisations DROP date_cotis;
 ALTER TABLE galette_types_cotisation ADD cotis_extension character(1);
 ALTER TABLE galette_types_cotisation ALTER COLUMN cotis_extension SET DEFAULT NULL;
 UPDATE galette_types_cotisation SET cotis_extension=1 WHERE
-	id_type_cotis <= 3 OR id_type_cotis = 7;
+    id_type_cotis <= 3 OR id_type_cotis = 7;
 
 -- Table for dynamic translation of strings;
 DROP TABLE galette_l10n;
@@ -145,8 +145,12 @@ ALTER TABLE galette_cotisations ALTER COLUMN trans_id SET DEFAULT NULL;
 DROP TABLE galette_tmppasswds;
 CREATE TABLE galette_tmppasswds (
     id_adh integer NOT NULL,
-		tmp_passwd character varying(40) NOT NULL,
-		date_crea_tmp_passwd timestamp NOT NULL
-		);
+    tmp_passwd character varying(40) NOT NULL,
+    date_crea_tmp_passwd timestamp NOT NULL
+);
 CREATE UNIQUE INDEX galette_tmppasswds_idx ON galette_tmppasswds (id_adh);
+
+-- 0.63 now uses md5 hash for passwords
+UPDATE galette_adherents SET mdp_adh = md5(mdp_adh) WHERE length(mdp_adh) <> 32;
+
 --

@@ -1,5 +1,5 @@
-		<form action="configurer_fiches.php" method="post" enctype="multipart/form-data" class="tabbed">
-			<div id="addfield" class="cssform">
+        <form action="configurer_fiches.php" method="post" enctype="multipart/form-data" class="tabbed">
+            <div id="addfield" class="cssform">
                 <p>
                     <label for="field_name" class="bline">{_T string="Field name"}</label>
                     <input size="40" type="text" name="field_name" id="field_name"/>
@@ -27,37 +27,37 @@
                     <input type="submit" name="valid" id="btnadd" value="{_T string="Add"}"/>
                     <input type="hidden" name="form" id="formname" value="{$form_name}"/>
                 </div>
-			</div>
+            </div>
 
-		<div id="configfiches_tabs">
-		<ul>
+        <div id="configfiches_tabs">
+        <ul>
 {foreach from=$all_forms key=key item=form name=formseach}
     {if $form_name eq $key}
         {assign var='activetab' value=$smarty.foreach.formseach.iteration}
     {/if}
-			<li{if $form_name eq $key} class="ui-tabs-selected"{/if}><a href="?form={$key}">{$form}</a></li>
+            <li{if $form_name eq $key} class="ui-tabs-selected"{/if}><a href="?form={$key}">{$form}</a></li>
 {/foreach}
-		</ul>
+        </ul>
         <div id="ui-tabs-{$activetab}">
             {include file="configurer_fiche_content.tpl"}
         </div>
         </div>
-		</form>
+        </form>
         <script type="text/javascript">
             $('#configfiches_tabs').append('<a class="button notext" id="btnadd_small">{_T string="Add"}</a>');
             var _dialogform = $('<form id="dialogform" action="configurer_fiches.php" method="post" title="{_T string="Add new dynamic field"}"">');
             _dialogform.append($('#addfield'));
-			_dialogform.dialog({
-				autoOpen: false,
-				modal: true,
-				hide: 'fold',
-				width: '40%'
-			}).dialog('close');
+            _dialogform.dialog({
+                autoOpen: false,
+                modal: true,
+                hide: 'fold',
+                width: '40%'
+            }).dialog('close');
 
-			$('#btnadd_small').click(function(){
-				$('#dialogform').dialog('open');
-				return false;
-			});
+            $('#btnadd_small').click(function(){
+                $('#dialogform').dialog('open');
+                return false;
+            });
 
             $('#configfiches_tabs > ul > li > a').each(function(){
                 $(this).attr('href', $(this).attr('href')  + '&ajax=true');

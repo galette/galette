@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2012 The Galette Team
+ * Copyright © 2011-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -27,31 +27,31 @@
  * @category  Plugins
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2012 The Galette Team
+ * @copyright 2011-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-09-13
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 require_once 'includes/galette.inc.php';
 
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
-    $log->log(
+    Analog::log(
         'Trying to display ajax_recipients.php without appropriate permissions',
-        KLogger::INFO
+        Analog::INFO
     );
     die();
 }
 
-$mailing = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing']);
+$mailing = unserialize($session['mailing']);
 
 $members = Galette\Repository\Members::getArrayList($_POST['recipients']);
 $mailing->setRecipients($members);
 
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mailing'] = serialize($mailing);
+$session['mailing'] = serialize($mailing);
 
 //let's generate html for return
 $html = '';
@@ -79,4 +79,3 @@ if ( count($mailing->recipients) > 0 ) {
     }
 }
 echo $html;
-?>

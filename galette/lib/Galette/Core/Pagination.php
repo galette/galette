@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010-2012 The Galette Team
+ * Copyright © 2010-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2012 The Galette Team
+ * @copyright 2010-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Pagination and ordering facilities
@@ -47,7 +47,7 @@ use Galette\Common\KLogger as KLogger;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2012 The Galette Team
+ * @copyright 2010-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -138,14 +138,13 @@ abstract class Pagination
     */
     public function setDirection($direction)
     {
-        global $log;
         if ( $direction == self::ORDER_ASC || $direction == self::ORDER_DESC ) {
             $this->_ordered = $direction;
         } else {
-            $log->log(
+            Analog::log(
                 'Trying to set a sort direction that is not know (`' .
                 $direction . '`). Reverting to default value.',
-                KLogger::WARN
+                Analog::WARNING
             );
             $this->_ordered == self::ORDER_ASC;
         }
@@ -194,11 +193,12 @@ abstract class Pagination
     * Creates pagination links and assign some usefull variables to the
     * Smarty template
     *
-    * @param Smarty $tpl Smarty template
+    * @param Smarty  $tpl        Smarty template
+    * @param boolean $restricted Do not permit to display all
     *
     * @return void
     */
-    public function setSmartyPagination($tpl)
+    public function setSmartyPagination($tpl, $restricted = true)
     {
         $paginate = null;
         $tabs = "\t\t\t\t\t\t";
@@ -249,15 +249,21 @@ abstract class Pagination
         $tpl->assign('page', $this->current_page);
         $tpl->assign('numrows', $this->show);
         $tpl->assign('pagination', $paginate);
+
+        $options = array(
+            10 => "10",
+            20 => "20",
+            50 => "50",
+            100 => "100"
+        );
+
+        if ( $restricted === false ) {
+            $options[0] = _T("All");
+        }
+
         $tpl->assign(
             'nbshow_options',
-            array(
-                10 => "10",
-                20 => "20",
-                50 => "50",
-                100 => "100",
-                0 => _T("All")
-            )
+            $options
         );
     }
 
@@ -270,22 +276,21 @@ abstract class Pagination
     */
     public function __get($name)
     {
-        global $log;
 
-        $log->log(
+        Analog::log(
             '[' . get_class($this) .
             '|Pagination] Getting property `' . $name . '`',
-            KLogger::DEBUG
+            Analog::DEBUG
         );
 
         if ( in_array($name, $this->pagination_fields) ) {
             $name = '_' . $name;
             return $this->$name;
         } else {
-            $log->log(
+            Analog::log(
                 '[' . get_class($this) .
                 '|Pagination] Unable to get proprety `' .$name . '`',
-                KLogger::WARN
+                Analog::WARNING
             );
         }
     }
@@ -300,12 +305,11 @@ abstract class Pagination
     */
     public function __set($name, $value)
     {
-        global $log;
 
-        $log->log(
+        Analog::log(
             '[' . get_class($this) . '|Pagination] Setting property `' .
             $name . '`',
-            KLogger::DEBUG
+            Analog::DEBUG
         );
 
         $rname = '_' . $name;
@@ -314,12 +318,12 @@ abstract class Pagination
             if ( $value == self::ORDER_ASC || $value == self::ORDER_DESC ) {
                 $this->$rname = $value;
             } else {
-                $log->log(
+                Analog::log(
                     '[' . get_class($this) .
                     '|Pagination] Possibles values for field `' .
                     $name . '` are: `' . self::ORDER_ASC . '` or `' .
                     self::ORDER_DESC . '` - `' . $value . '` given',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
             break;
@@ -337,12 +341,12 @@ abstract class Pagination
             if ( is_int($value) && $value > 0 ) {
                 $this->$rname = $value;
             } else {
-                $log->log(
+                Analog::log(
                     '[' . get_class($this) .
                     '|Pagination] Value for field `' .
                     $name . '` should be a positive integer - (' .
                     gettype($value) . ')' . $value . ' given',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
             break;
@@ -353,22 +357,21 @@ abstract class Pagination
             ) {
                 $this->$rname = (int)$value;
             } else {
-                $log->log(
+                Analog::log(
                     '[' . get_class($this) . '|Pagination] Value for `' .
                     $name . '` should be a positive integer or \'all\' - (' .
                     gettype($value) . ')' . $value . ' given',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
             break;
         default:
-            $log->log(
+            Analog::log(
                 '[' . get_class($this) .
                 '|Pagination] Unable to set proprety `' . $name . '`',
-                KLogger::WARN
+                Analog::WARNING
             );
             break;
         }
     }
 }
-?>

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2004-2012 The Galette Team
+ * Copyright © 2004-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    Stéphane Salès <ssales@tuxz.org>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2004-2012 The Galette Team
+ * @copyright 2004-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -165,10 +165,10 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
 
 if ( $from_admin ) {
     if ( count($error_detected) > 0 ) {
-        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_errors'] = serialize($error_detected);
+        $session['lostpasswd_errors'] = serialize($error_detected);
     }
     if ( count($success_detected) > 0 ) {
-        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['lostpasswd_success'] = serialize($success_detected);
+        $session['lostpasswd_success'] = serialize($success_detected);
     }
 
     if ( isset($profiler) ) {
@@ -191,4 +191,3 @@ if ( $from_admin ) {
         $profiler->stop();
     }
 }
-?>

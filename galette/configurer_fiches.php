@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2004-2012 The Galette Team
+ * Copyright © 2004-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    Laurent Pelecq <laurent.pelecq@soleil.org>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2004-2012 The Galette Team
+ * @copyright 2004-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,7 +38,7 @@
 
 use Galette\Entity\DynamicFields as DynamicFields;
 use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 
 /** @ignore */
@@ -130,10 +130,10 @@ if ( $form_name == '' ) {
                     }
                 } catch (Exception $e) {
                     /** FIXME */
-                    $log->log(
+                    Analog::log(
                         'An error occured adding new dynamic field. | ' .
                         $e->getMessage(),
-                        KLogger::ERR
+                        Analog::ERROR
                     );
                 }
             }
@@ -229,10 +229,10 @@ if ( $form_name == '' ) {
                 /** FIXME */
                 //this one does not seem to work :'(
                 $zdb->db->rollBack();
-                $log->log(
+                Analog::log(
                     'Unable to change field ' . $field_id . ' rank | ' .
                     $e->getMessage(),
-                    KLogger::ERR
+                    Analog::ERROR
                 );
             }
         }
@@ -285,4 +285,3 @@ if ( isset($_GET['ajax']) && $_GET['ajax'] == 'true' ) {
     $tpl->assign('content', $content);
     $tpl->display('page.tpl');
 }
-?>

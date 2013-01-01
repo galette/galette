@@ -1,0 +1,470 @@
+#!/usr/bin/python
+
+import os, sys, argparse, re, git, httplib, subprocess
+import urlgrabber.progress, tarfile, shutil, gitdb, time
+from datetime import datetime
+from termcolor import colored
+from urlparse import urlparse
+
+galette_dl_repo = 'http://download.tuxfamily.org/galette/'
+local_dl_repo = os.path.join(
+    os.path.dirname(
+        os.path.dirname(os.path.abspath(__file__))
+    ),
+    'dist'
+)
+verbose = False
+tagrefs = None
+force = False
+commit = None
+extra = None
+sign = True
+assume_yes = False
+
+def print_err(msg):
+    """
+    Display colored error message
+    """
+    print colored(msg, 'red', attrs=['bold'])
+
+def get_numeric_version(ver):
+    """
+    Returns all numeric version
+    """
+    return re.findall(r'\d+', ver)
+
+def valid_version(ver):
+    """
+    Check if provided version is valid.
+
+    Takes all digits in passed version, then reassemble them with dots
+    to check if it is the same as original given one.
+    """
+    return '.'.join(get_numeric_version(ver)) == ver
+
+def incr_version(ver):
+    """
+    Increment version number
+    """
+    version = get_numeric_version(ver)
+    version[-1] = str(int(version[-1]) + 1)
+    return version
+
+def propose_version():
+    """
+    Propose new minor and major versions,
+    according to existing git tags
+    """
+    last_major = '0'
+    last_minor = '0'
+
+    for tagref in tagrefs:
+        tag = tagref.tag
+        if valid_version(tag.tag):
+            #last minor version is always the last one :)
+            if tag.tag > last_minor:
+                last_minor = tag.tag
+
+            #last major version
+            if len(tag.tag) == 5 and tag.tag > last_major:
+                last_major = tag.tag
+
+    if verbose:
+        print 'last minor: %s | last major %s' % (last_minor, last_major)
+
+    #no version provided. propose one
+    new_minor = None
+    new_major = None
+
+    if len(last_minor) == 5:
+        #if the latest is a major version
+        new_minor = last_minor.join('.1')
+    else:
+        new_minor = '.'.join(incr_version(last_minor))
+
+    new_major = '.'.join(incr_version(last_major))
+
+    print """Proposed versions:
+    minor: %s
+    major: %s
+    """ % (new_minor, new_major)
+
+def get_latest_version():
+    """
+    Look for latest version
+    """
+    last = None
+    for tagref in tagrefs:
+        tag = tagref.tag
+        if valid_version(tag.tag):
+            #last minor version is always the last one :)
+            if tag.tag > last:
+                last = tag.tag
+
+    return last
+
+def is_existing_version(ver):
+    """
+    Look specified version exists
+    """
+    for tagref in tagrefs:
+        tag = tagref.tag
+        if valid_version(tag.tag):
+            if tag.tag == ver:
+                return True
+    return False
+
+def ask_user_confirm(msg):
+    """
+    Ask user his confirmation
+    """
+    if assume_yes:
+        return True
+    else:
+        while True:
+            sys.stdout.write(msg)
+            choice = raw_input().lower()
+            if choice == 'y' or choice == 'yes':
+                return True
+            elif choice == 'n' or choice == 'no':
+                return False
+            else:
+                print_err(
+                    "Invalid input. Please enter 'yes' or 'no' (or 'y' or 'n')."
+                )
+
+def get_rel_name(buildver):
+    """
+    Build archive name from command line parameters
+    That would be used for git archiving prefix and archive name
+    """
+    archive_name = None
+
+    if commit and extra:
+        now = datetime.now()
+        archive_name = 'galette-%s-%s-%s-%s' % (
+            buildver,
+            extra,
+            now.strftime('%Y%m%d'),
+            commit
+        )
+    else:
+        archive_name = 'galette-%s' % buildver
+
+    return archive_name
+
+def _do_build(ver):
+    """
+    Proceed build
+    """
+    exists = False
+    ascexists = False
+    rel_name = get_rel_name(ver)
+    archive_name = rel_name + '.tar.bz2'
+    galette_archive = os.path.join(
+        local_dl_repo,
+        archive_name
+    )
+
+    if not force:
+        #first check if a version
+        local = False
+        ascLocal = False
+
+        url = galette_dl_repo + '/' + archive_name
+        urlasc = '%s.asc' % url
+        parsed = urlparse(url)
+        ascparsed = urlparse(urlasc)
+
+        connection = httplib.HTTPConnection(parsed[1], 80)
+        connection.request('HEAD', parsed[2])
+        response = connection.getresponse()
+        exists = response.status == 200
+
+        if not exists:
+            #also check from local repo
+            exists = os.path.exists(galette_archive)
+            if exists:
+                local = True
+
+        connection = httplib.HTTPConnection(ascparsed[1], 80)
+        connection.request('HEAD', ascparsed[2])
+        response = connection.getresponse()
+        ascexists = response.status == 200
+
+        if not ascexists:
+            #also check from local repo
+            ascexists = os.path.exists(
+                os.path.join(
+                    local_dl_repo,
+                    archive_name + '.asc'
+                )
+            )
+            if ascexists:
+                ascLocal = True
+
+    if exists or ascexists:
+        msg = None
+        if exists:
+            loctxt = ''
+            if local:
+                loctxt = 'locally '
+            msg = 'Relase %s already %sexists' % (rel_name, loctxt)
+
+        if ascexists:
+            loctxt = ''
+            if ascLocal:
+                loctxt = ' locally'
+            if msg is not None:
+                msg += ' and has been %ssigned!' % loctxt
+            else:
+                msg += 'Release has been %ssigned!' % loctxt
+
+        msg += '\n\nYou will *NOT* build another one :)'
+        print_err(msg)
+    else:
+        print 'Building %s...' % rel_name
+
+        archive_cmd_pattern = 'git archive --prefix=%s/ %s | bzip2 > %s'
+        if commit and extra:
+            archive_cmd = archive_cmd_pattern % (
+                rel_name,
+                commit,
+                galette_archive
+            )
+        else:
+            archive_cmd = archive_cmd_pattern % (
+                rel_name,
+                ver,
+                galette_archive
+            )
+
+        if verbose:
+            typestr = 'Tag'
+            typever = ver
+
+            if commit and extra:
+                typestr = 'Commit'
+                typever = commit
+
+            print 'Release name: %s, %s: %s, Dest: %s' % (
+                rel_name,
+                typestr,
+                typever,
+                galette_archive
+            )
+            print 'Archive command: %s' % (archive_cmd)
+
+        if commit and extra:
+            print 'Archiving GIT commit %s' % commit
+        else:
+            print 'Archiving GIT tag %s' % ver
+
+        p1 = subprocess.Popen(archive_cmd, shell=True)
+        p1.communicate()
+
+        print 'Adding vendor libraries'
+        add_libs(rel_name, galette_archive)
+
+        if sign:
+            do_sign(galette_archive)
+
+        upload = ask_user_confirm(
+            'Do you want to upload archive %s? [yes/No] ' % galette_archive
+        )
+
+        if upload:
+            do_scp(galette_archive)
+
+def do_sign(archive):
+    sign_cmd = 'gpg --detach-sign --armor %s' % archive
+    p1 = subprocess.Popen(sign_cmd, shell=True)
+    p1.communicate()
+
+def do_scp(archive):
+    path = 'galette/galette-repository/'
+    if extra:
+        path += 'dev/'
+
+    scp_cmd = 'scp -r %s* ssh.tuxfamily.org:%s' % (archive, path)
+    p1 = subprocess.Popen(scp_cmd, shell=True)
+    p1.communicate()
+
+def add_libs(rel_name, galette_archive):
+    """
+    Add external libraries to the archive
+    """
+    url = "http://download.tuxfamily.org/galette/dev/galette_dev_includes.tar.bz2"
+    file_name = url.split('/')[-1]
+    libs_archive = os.path.join(local_dl_repo, file_name)
+
+    if not os.path.exists(libs_archive):
+        prog = urlgrabber.progress.text_progress_meter()
+        urlgrabber.urlgrab(
+            url,
+            os.path.join(local_dl_repo, file_name),
+            progress_obj=prog
+        )
+
+    galette = tarfile.open(galette_archive, 'r|bz2')
+    src_dir = os.path.join(local_dl_repo, 'src')
+    if not os.path.exists(src_dir):
+        os.makedirs(src_dir)
+    galette.extractall(path=src_dir)
+    galette.close()
+
+    libs = tarfile.open(libs_archive, 'r|bz2')
+    vendor_dir = os.path.join(local_dl_repo, 'vendor')
+    #create directory if it does not exists
+    if not os.path.exists(vendor_dir):
+        os.makedirs(vendor_dir)
+    libs.extractall(path=vendor_dir)
+    libs.close()
+
+    galette = tarfile.open(galette_archive, 'w|bz2')
+
+    for i in os.listdir(src_dir):
+        galette.add(
+            os.path.join(src_dir, i),
+            arcname=rel_name
+        )
+
+    for lib in os.listdir(vendor_dir):
+        galette.add(
+            os.path.join(vendor_dir, lib),
+            arcname=os.path.join(rel_name, 'galette', 'includes', lib)
+        )
+
+    galette.close()
+    shutil.rmtree(src_dir)
+    shutil.rmtree(vendor_dir)
+
+def valid_commit(repo, c):
+    """
+    Validate commit existance in repository
+    """
+    global commit
+
+    try:
+        dformat = '%a, %d %b %Y %H:%M'
+        repo_commit = repo.commit(c)
+
+        commit = repo_commit.hexsha[:10]
+        print colored("""Commit informations:
+        Hash:          %s
+        Author:        %s
+        Authored date: %s
+        Commiter:      %s
+        Commit date:   %s
+        Message:       %s""" % (
+            commit,
+            repo_commit.author,
+            time.strftime(dformat, time.gmtime(repo_commit.authored_date)),
+            repo_commit.committer,
+            time.strftime(dformat, time.gmtime(repo_commit.committed_date)),
+            repo_commit.message
+        ), None, 'on_grey', attrs=['bold'])
+        return True
+    except gitdb.exc.BadObject:
+        return False
+
+def main():
+    """
+    Main method
+    """
+    global verbose, tagrefs, force, extra, assume_yes
+
+    parser = argparse.ArgumentParser(description='Release Galette')
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
+        '-v',
+        '--version',
+        help='Version to release'
+    )
+    group.add_argument(
+        '-p',
+        '--propose',
+        help='Calculate and propose next possible versions',
+        action='store_true'
+    )
+    parser.add_argument(
+        '-c',
+        '--commit',
+        help='Specify commit to archive (-v required)'
+    )
+    parser.add_argument(
+        '-e',
+        '--extra',
+        help='Extra version informations (-c required)'
+    )
+    parser.add_argument(
+        '-Y',
+        '--assume-yes',
+        help='Assume YES to all questions. Be sure to understand what you are doing!',
+        action='store_true'
+    )
+    parser.add_argument(
+        '-V',
+        '--verbose',
+        help='Be more verbose',
+        action="store_true"
+    )
+    parser.add_argument('-f', action='store_true')
+    args = parser.parse_args()
+
+    verbose=args.verbose
+
+    if verbose:
+        print args
+
+    galette_repo = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    repo = git.Repo(galette_repo)
+    tagrefs = repo.tags
+
+    if args.f == True:
+        force = ask_user_confirm(
+            'Are you *REALLY* sure you mean -f when you typed -f? [yes/No] '
+        )
+    assume_yes=args.assume_yes
+
+    build = False
+    buildver = None
+    if (args.extra or args.commit) and (not args.extra or not args.commit or not args.version):
+        print_err('You have to specify --version --commit and --extra all together')
+        sys.exit(1)
+    elif args.commit and args.version and args.extra:
+        if valid_commit(repo, args.commit):
+            if verbose:
+                print 'Commit is valid'
+            build = True
+            buildver = args.version
+            extra = args.extra
+        else:
+            print_err('Invalid commit ref %s' % args.commit)
+    elif args.version:
+        if not valid_version(args.version):
+            print_err('%s is not a valid version number!' % args.version)
+            sys.exit(1)
+        else:
+            #check if specified version exists
+            if not is_existing_version(args.version):
+                print_err('%s does not exist!' % args.version)
+            else:
+                build = True
+                buildver = args.version
+    elif args.propose:
+        propose_version()
+    else:
+        buildver = get_latest_version()
+        if force:
+            build = True
+        else:
+            build = ask_user_confirm(
+                'Do you want to build Galette version %s? [Yes/no] ' % buildver
+            )
+
+    if build:
+        _do_build(buildver)
+
+if __name__ == "__main__":
+    main()

@@ -1,5 +1,5 @@
 /**
- * Copyright © 2007-2012 The Galette Team
+ * Copyright © 2007-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -20,7 +20,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2012 The Galette Team
+ * @copyright 2007-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -49,6 +49,28 @@ var _collapsibleFieldsets = function(){
         var _collapse = $('<a href="#" class="ui-icon ui-icon-circle-arrow-s collapsible">Collapse/Expand</a>');
         $(this).prepend(_collapse);
         _collapse.spinDown();
+    });
+}
+
+var _fieldsInSortable = function(){
+    //so our forms elements continue to work as expected
+    $('.fields_list input, .fields_list select').bind(
+        'click.sortable mousedown.sortable',
+        function(ev) {
+            ev.target.focus();
+        }
+    );
+}
+
+var _initSortable = function(){
+    $('.fields_list').sortable({
+        items: 'li:not(.listing)'
+    }).disableSelection();
+
+    _fieldsInSortable();
+
+    $('#members_tab').sortable({
+        items: 'fieldset'
     });
 }
 

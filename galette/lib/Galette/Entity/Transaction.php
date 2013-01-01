@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2012 The Galette Team
+ * Copyright © 2011-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2012 The Galette Team
+ * @copyright 2011-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Repository\Contributions as Contributions;
 
 /**
@@ -127,7 +127,7 @@ class Transaction
     */
     public function load($id)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -142,10 +142,10 @@ class Transaction
             }
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'Cannot load transaction form id `' . $id . '` | ' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }
@@ -160,7 +160,7 @@ class Transaction
      */
     public function remove($transaction = true)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             if ( $transaction ) {
@@ -193,10 +193,10 @@ class Transaction
             if ( $transaction ) {
                 $zdb->db->rollBack();
             }
-            $log->log(
+            Analog::log(
                 'An error occured trying to remove transaction #' .
                 $this->_id . ' | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -232,7 +232,7 @@ class Transaction
      */
     public function check($values, $required, $disabled)
     {
-        global $zdb, $log;
+        global $zdb;
         $errors = array();
 
         $fields = array_keys($this->_fields);
@@ -261,11 +261,11 @@ class Transaction
                             }
                             $this->$prop = $d->format('Y-m-d');
                         } catch (Exception $e) {
-                            $log->log(
+                            Analog::log(
                                 'Wrong date format. field: ' . $key .
                                 ', value: ' . $value . ', expected fmt: ' .
                                 _T("Y-m-d") . ' | ' . $e->getMessage(),
-                                KLogger::INFO
+                                Analog::INFO
                             );
                             $errors[] = str_replace(
                                 array(
@@ -323,16 +323,16 @@ class Transaction
         }
 
         if ( count($errors) > 0 ) {
-            $log->log(
+            Analog::log(
                 'Some errors has been throwed attempting to edit/store a transaction' .
                 print_r($errors, true),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             return $errors;
         } else {
-            $log->log(
+            Analog::log(
                 'Transaction checked successfully.',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             return true;
         }
@@ -345,7 +345,7 @@ class Transaction
      */
     public function store()
     {
-        global $zdb, $log, $hist;
+        global $zdb, $hist;
 
         try {
             $zdb->db->beginTransaction();
@@ -398,10 +398,10 @@ class Transaction
         } catch (\Exception $e) {
             /** FIXME */
             $zdb->db->rollBack();
-            $log->log(
+            Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -414,7 +414,7 @@ class Transaction
      */
     public function getDispatchedAmount()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -425,14 +425,14 @@ class Transaction
             $dispatched_amount = $select->query()->fetchColumn();
             return (double)$dispatched_amount;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'An error occured retrieving dispatched amounts | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString(),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
         }
     }
@@ -444,7 +444,7 @@ class Transaction
      */
     public function getMissingAmount()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -455,14 +455,14 @@ class Transaction
             $dispatched_amount = $select->query()->fetchColumn();
             return (double)$this->_amount - (double)$dispatched_amount;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'An error occured retrieving missing amounts | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString(),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
         }
     }
@@ -530,4 +530,3 @@ class Transaction
         /** TODO: What to do ? :-) */
     }
 }
-?>

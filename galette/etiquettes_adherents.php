@@ -10,7 +10,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2004-2012 The Galette Team
+ * Copyright © 2004-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -32,14 +32,14 @@
  *
  * @author    Frédéric Jaqcuot <nobody@exemple.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2004-2012 The Galette Team
+ * @copyright 2004-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  */
 
 use Galette\IO\Pdf;
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -54,7 +54,6 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 }
 
 $members = null;
-$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 if ( isset($session['filters']['members']) ) {
     $filters =  unserialize($session['filters']['members']);
 } else {
@@ -67,7 +66,7 @@ if ( isset($_GET['from']) && $_GET['from'] === 'mailing' ) {
     $members = $mailing->unreachables;
 } else {
     if ( count($filters->selected) == 0 ) {
-        $log->log('No member selected to generate labels', KLogger::INFO);
+        Analog::log('No member selected to generate labels', Analog::INFO);
         header('location:gestion_adherents.php');
         die();
     }
@@ -165,4 +164,3 @@ foreach ($members as $member) {
 
 // Send PDF code to browser
 $pdf->Output(_T("labels_print_filename") . '.pdf', 'D');
-?>

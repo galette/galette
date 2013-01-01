@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2012 The Galette Team
+ * Copyright © 2007-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2012 The Galette Team
+ * @copyright 2007-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -41,7 +41,7 @@ use Galette\Repository\Groups as Groups;
 use Galette\Repository\Members as Members;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\Status as Status;
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Default authentication class for galette
@@ -50,7 +50,7 @@ use Galette\Common\KLogger as KLogger;
  * @name      Login
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2012 The Galette Team
+ * @copyright 2007-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-06
@@ -80,7 +80,7 @@ class Login extends Authentication
     */
     public function logIn($user, $passe)
     {
-        global $zdb, $log, $i18n;
+        global $zdb, $i18n;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -104,20 +104,20 @@ class Login extends Authentication
             );
             $select->where(self::PK . ' = ?', $user);
             $select->where('mdp_adh = ?', $passe);
-            $log->log(
+            Analog::log(
                 'Login query: ' . $select->__toString(),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             $row = $zdb->db->fetchRow($select);
 
             if ( $row === false ) {
-                $log->log(
+                Analog::log(
                     'No entry found for login `' . $user . '`',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 return false;
             } else {
-                $log->log('User `' . $user . '` logged in.', KLogger::INFO);
+                Analog::log('User `' . $user . '` logged in.', Analog::INFO);
                 $this->id = $row->id_adh;
                 $this->login = $user;
                 $this->passe = $row->mdp_adh;
@@ -160,18 +160,18 @@ class Login extends Authentication
                 return true;
             }
         } catch (\Zend_Db_Adapter_Exception $e) {
-            $log->log(
+            Analog::log(
                 'An error occured: ' . $e->getChainedException()->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log($e->getTrace(), KLogger::ERR);
+            Analog::log($e->getTrace(), Analog::ERROR);
             return false;
         } catch(\Exception $e) {
-            $log->log(
+            Analog::log(
                 'An error occured: ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log($e->getTrace(), KLogger::ERR);
+            Analog::log($e->getTrace(), Analog::ERROR);
             return false;
         }
     }
@@ -186,7 +186,7 @@ class Login extends Authentication
     */
     public function loginExists($user)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -202,13 +202,13 @@ class Login extends Authentication
                 return false;
             }
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Cannot check if login exists | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             /* If an error occurs, we consider that username already exists */
             return true;
@@ -216,4 +216,3 @@ class Login extends Authentication
     }
 
 }
-?>

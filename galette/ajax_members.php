@@ -12,7 +12,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2012 The Galette Team
+ * Copyright © 2011-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -32,7 +32,7 @@
  * @category  Plugins
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2012 The Galette Team
+ * @copyright 2011-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id: owners.php 556 2009-03-13 06:48:49Z trashy $
  * @link      http://galette.tuxfamily.org
@@ -40,14 +40,14 @@
  */
 
 use Galette\Filters\MembersList as MembersList;
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 require_once 'includes/galette.inc.php';
 
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
-    $log->log(
+    Analog::log(
         'Trying to display ajax_members.php without appropriate permissions',
-        KLogger::INFO
+        Analog::INFO
     );
     die();
 }
@@ -56,7 +56,6 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
 $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 $multiple = ( isset($_POST['multiple']) && $_POST['multiple'] == 'false' ) ? false : true;
 
-$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 if ( isset($session['ajax_members_filters']['members']) ) {
     $filters = unserialize($session['ajax_members_filters']['members']);
 } else {
@@ -98,9 +97,9 @@ if ( !isset($_POST['from']) ) {
     switch ( $_POST['from'] ) {
     case 'groups':
         if ( !isset($_POST['gid']) ) {
-            $log->log(
+            Analog::log(
                 'Trying to list group members with no group id provided',
-                KLogger::ERR
+                Analog::ERROR
             );
             throw new Exception('A group id is required.');
             exit(0);
@@ -113,9 +112,9 @@ if ( !isset($_POST['from']) ) {
             } else if ( $_POST['mode'] == 'managers' ) {
                 $selected_members = $group->getManagers();
             } else {
-                $log->log(
+                Analog::log(
                     'Trying to list group members with unknown mode',
-                    KLogger::ERR
+                    Analog::ERROR
                 );
                 throw new Exception('Unknown mode.');
                 exit(0);
@@ -145,4 +144,3 @@ if ( $ajax ) {
     $tpl->assign('content', $content);
     $tpl->display('page.tpl');
 }
-?>

@@ -16,7 +16,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2012 The Galette Team
+ * Copyright © 2007-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -38,7 +38,7 @@
  *
  * @author    John Perr <johnperr@abul.org>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2012 The Galette Team
+ * @copyright 2007-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -46,7 +46,7 @@
  */
 
 use Galette\IO\Pdf;
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -56,7 +56,6 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 if ( isset($session['filters']['members']) ) {
     $filters =  unserialize($session['filters']['members']);
 } else {
@@ -70,7 +69,7 @@ if ( isset($_GET[Galette\Entity\Adherent::PK])
     $unique = $_GET[Galette\Entity\Adherent::PK];
 } else {
     if ( count($filters->selected) == 0 ) {
-        $log->log('No member selected to generate members cards', KLogger::INFO);
+        Analog::log('No member selected to generate members cards', Analog::INFO);
         if ( $login->isAdmin() || $login->isStaff() ) {
             header('location:gestion_adherents.php');
         } else {
@@ -95,7 +94,7 @@ $members = Galette\Repository\Members::getArrayList(
 );
 
 if ( !is_array($members) || count($members) < 1 ) {
-    $log->log('An error has occured, unable to get members list.', KLogger::ERR);
+    Analog::log('An error has occured, unable to get members list.', Analog::ERROR);
     die();
 }
 
@@ -327,4 +326,3 @@ foreach ( $members as $member ) {
 // Send PDF code to browser
 $session['pdf_error'] = false;
 $pdf->Output(_T("Cards") . '.pdf', 'D');
-?>

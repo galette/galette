@@ -6,7 +6,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2012 The Galette Team
+ * Copyright © 2011-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -27,7 +27,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2012 The Galette Team
+ * @copyright 2011-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -36,7 +36,7 @@
 
 namespace Galette\Core;
 
-use Galette\Common\Klogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Zend_Db wrapper
@@ -45,7 +45,7 @@ use Galette\Common\Klogger as KLogger;
  * @name      Db
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2012 The Galette Team
+ * @copyright 2011-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://framework.zend.com/apidoc/core/_Db.html#\Zend_Db
  * @since     Available since 0.7dev - 2011-07-27
@@ -67,8 +67,6 @@ class Db extends \Zend_Db
     */
     function __construct()
     {
-        global $log;
-
         $_type = null;
         try {
             if ( TYPE_DB === 'mysql' ) {
@@ -91,25 +89,25 @@ class Db extends \Zend_Db
             );
             $this->_db->getConnection();
             $this->_db->setFetchMode(\Zend_Db::FETCH_OBJ);
-            $log->log(
-                '[ZendDb] Database connection was successfull!',
-                KLogger::DEBUG
+            Analog::log(
+                '[Db] Database connection was successfull!',
+                Analog::DEBUG
             );
         } catch (\Zend_Db_Adapter_Exception $e) {
             // perhaps a failed login credential, or perhaps the RDBMS is not running
             $ce = $e->getChainedException();
-            $log->log(
-                '[ZendDb] No connexion (' . $ce->getCode() . '|' .
+            Analog::log(
+                '[Db] No connexion (' . $ce->getCode() . '|' .
                 $ce->getMessage() . ')',
-                KLogger::ALERT
+                Analog::ALERT
             );
             throw $e;
         } catch (\Exception $e) {
             // perhaps factory() failed to load the specified Adapter class
-            $log->log(
-                '[ZendDb] Error (' . $e->getCode() . '|' .
+            Analog::log(
+                '[Db] Error (' . $e->getCode() . '|' .
                 $e->getMessage() . ')',
-                KLogger::ALERT
+                Analog::ALERT
             );
             throw $e;
         }
@@ -130,7 +128,6 @@ class Db extends \Zend_Db
      */
     public function checkDbVersion()
     {
-        global $log;
         try {
             $select = new \Zend_Db_Select($this->db);
             $select->from(
@@ -141,9 +138,9 @@ class Db extends \Zend_Db
             $res = $select->query()->fetch();
             return $res->version === GALETTE_DB_VERSION;
         } catch ( \Exception $e ) {
-            $log->log(
+            Analog::log(
                 'Cannot check database version: ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -210,8 +207,6 @@ class Db extends \Zend_Db
     */
     public static function testConnectivity($type, $user, $pass, $host, $port, $db)
     {
-        global $log;
-
         $_type = null;
         try {
             if ( $type === 'mysql' ) {
@@ -235,9 +230,9 @@ class Db extends \Zend_Db
             $_db->getConnection();
             $_db->setFetchMode(\Zend_Db::FETCH_OBJ);
             $_db->closeConnection();
-            $log->log(
+            Analog::log(
                 '[' . __METHOD__ . '] Database connection was successfull!',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             return true;
         } catch (\Zend_Db_Adapter_Exception $e) {
@@ -249,18 +244,18 @@ class Db extends \Zend_Db
                 $_code = $ce->getCode();
                 $_msg = $ce->getMessage();
             }
-            $log->log(
+            Analog::log(
                 '[' . __METHOD__ . '] No connexion (' . $_code . '|' .
                 $_msg . ')',
-                KLogger::ALERT
+                Analog::ALERT
             );
             return $e;
         } catch (\Exception $e) {
             // perhaps factory() failed to load the specified Adapter class
-            $log->log(
+            Analog::log(
                 '[' . __METHOD__ . '] Error (' . $e->getCode() . '|' .
                 $e->getMessage() . ')',
-                KLogger::ALERT
+                Analog::ALERT
             );
             return $e;
         }
@@ -274,15 +269,13 @@ class Db extends \Zend_Db
     */
     public function dropTestTable()
     {
-        global $log;
-
         try {
             $this->_db->query('DROP TABLE IF EXISTS galette_test');
-            $log->log('Test table successfully dropped.', KLogger::DEBUG);
+            Analog::log('Test table successfully dropped.', Analog::DEBUG);
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Cannot drop test table! ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
         }
     }
@@ -298,11 +291,9 @@ class Db extends \Zend_Db
     */
     public function grantCheck($mode = 'i')
     {
-        global $log;
-
-        $log->log(
+        Analog::log(
             'Check for database rights (mode ' . $mode . ')',
-            KLogger::DEBUG
+            Analog::DEBUG
         );
         $stop = false;
         $results = array(
@@ -326,7 +317,7 @@ class Db extends \Zend_Db
             $this->_db->getConnection()->exec($sql);
             $results['create'] = true;
         } catch (\Exception $e) {
-            $log->log('Cannot CREATE TABLE', KLogger::WARN);
+            Analog::log('Cannot CREATE TABLE', Analog::WARNING);
             //if we cannot create tables, we cannot check other permissions
             $stop = true;
             $results['create'] = $e;
@@ -341,9 +332,9 @@ class Db extends \Zend_Db
                     $this->_db->getConnection()->exec($sql);
                     $results['alter'] = true;
                 } catch (\Exception $e) {
-                    $log->log(
+                    Analog::log(
                         'Cannot ALTER TABLE | ' . $e->getMessage(),
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                     $results['alter'] = $e;
                 }
@@ -365,9 +356,9 @@ class Db extends \Zend_Db
                     throw new \Exception('No row inserted!');
                 }
             } catch (\Exception $e) {
-                $log->log(
+                Analog::log(
                     'Cannot INSERT records | ' .$e->getMessage(),
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 //if we cannot insert records, some others tests cannot be done
                 $stop = true;
@@ -392,9 +383,9 @@ class Db extends \Zend_Db
                         throw new \Exception('No row updated!');
                     }
                 } catch (\Exception $e) {
-                    $log->log(
+                    Analog::log(
                         'Cannot UPDATE records | ' .$e->getMessage(),
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                     $results['update'] = $e;
                 }
@@ -411,9 +402,9 @@ class Db extends \Zend_Db
                         throw new \Exception('Select is empty!');
                     }
                 } catch (\Exception $e) {
-                    $log->log(
+                    Analog::log(
                         'Cannot SELECT records | ' . $e->getMessage(),
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                     $results['select'] = $e;
                 }
@@ -426,9 +417,9 @@ class Db extends \Zend_Db
                     );
                     $results['delete'] = true;
                 } catch (\Exception $e) {
-                    $log->log(
+                    Analog::log(
                         'Cannot DELETE records | ' .$e->getMessage(),
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                     $results['delete'] = $e;
                 }
@@ -440,9 +431,9 @@ class Db extends \Zend_Db
                 $this->_db->getConnection()->exec($sql);
                 $results['drop'] = true;
             } catch (\Exception $e) {
-                $log->log(
+                Analog::log(
                     'Cannot DROP TABLE | ' . $e->getMessage(),
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 $results['drop'] = $e;
             }
@@ -486,7 +477,6 @@ class Db extends \Zend_Db
     */
     public function convertToUTF($prefix = null, $content_only = false)
     {
-        global $log;
 
         if ( $prefix === null ) {
             $prefix = PREFIX_DB;
@@ -506,9 +496,9 @@ class Db extends \Zend_Db
                         ' CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci';
 
                     $this->_db->getConnection()->exec($query);
-                    $log->log(
+                    Analog::log(
                         'Charset successfully changed for table `' . $table .'`',
-                        KLogger::DEBUG
+                        Analog::DEBUG
                     );
                 }
 
@@ -520,10 +510,10 @@ class Db extends \Zend_Db
             $this->_db->commit();
         } catch (\Exception $e) {
             $this->_db->rollBack();
-            $log->log(
+            Analog::log(
                 'An error occured while converting to utf table ' .
                 $table . ' (' . $e->getMessage() . ')',
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }
@@ -538,17 +528,16 @@ class Db extends \Zend_Db
     */
     private function _convertContentToUTF($prefix, $table)
     {
-        global $log;
 
         try {
             $query = 'SET NAMES latin1';
             $this->_db->getConnection()->exec($query);
 
         }catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Cannot SET NAMES on table `' . $table . '`. ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
 
@@ -618,10 +607,10 @@ class Db extends \Zend_Db
                 );
             }
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'An error occured while converting contents to UTF-8 for table ' .
                 $table . ' (' . $e->getMessage() . ')',
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }
@@ -642,4 +631,3 @@ class Db extends \Zend_Db
     }
 
 }
-?>

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2004-2012 The Galette Team
+ * Copyright © 2004-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,14 +29,14 @@
  *
  * @author    Laurent Pelecq <laurent.pelecq@soleil.org>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2004-2012 The Galette Team
+ * @copyright 2004-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.62
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Entity\DynamicFields as DynamicFields;
 use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
 
@@ -102,9 +102,9 @@ if ( isset($_POST['valid']) ) {
             }
         } catch (Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'An error occured checking field duplicity' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
 
@@ -141,9 +141,9 @@ if ( isset($_POST['valid']) ) {
                 );
             } catch (Exception $e) {
                 /** FIXME */
-                $log->log(
+                Analog::log(
                     'An error occured storing field | ' . $e->getMessage(),
-                    KLogger::ERR
+                    Analog::ERROR
                 );
                 $error_detected[] = _T("An error occured storing the field.");
             }
@@ -176,10 +176,10 @@ if ( isset($_POST['valid']) ) {
             } catch (Exception $e) {
                 /** FIXME */
                 $zdb->db->rollBack();
-                $log->log(
+                Analog::log(
                     'Unable to manage fields values table ' .
                     $contents_table . ' | ' . $e->getMessage(),
-                    KLogger::ERR
+                    Analog::ERROR
                 );
                 $error_detected[] = _T("An error occured storing managing fields values table");
             }
@@ -204,9 +204,9 @@ if ( isset($_POST['valid']) ) {
                 }catch (Exception $e) {
                     /** FIXME */
                     $zdb->db->rollBack();
-                    $log->log(
+                    Analog::log(
                         'Unable to store field ' . $field_id . ' values',
-                        KLogger::ERR
+                        Analog::ERROR
                     );
                 }
             }
@@ -235,4 +235,3 @@ $tpl->assign('perm_names', $dyn_fields->getPermsNames());
 $content = $tpl->fetch('editer_champ.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-?>

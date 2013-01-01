@@ -15,7 +15,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2004-2012 The Galette Team
+ * Copyright © 2004-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -37,7 +37,7 @@
  *
  * @author    Frédéric Jaqcuot <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2004-2012 The Galette Team
+ * @copyright 2004-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -45,7 +45,7 @@
  */
 
 use Galette\Core;
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -115,9 +115,9 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
             switch ( $fieldname ) {
             case 'pref_email':
                 if ( GALETTE_MODE === 'DEMO' ) {
-                    $log->log(
+                    Analog::log(
                         'Trying to set pref_email while in DEMO.',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 } else {
                     if ( !Core\GaletteMail::isValidEmail($value) ) {
@@ -127,9 +127,9 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 break;
             case 'pref_admin_login':
                 if ( GALETTE_MODE === 'DEMO' ) {
-                    $log->log(
+                    Analog::log(
                         'Trying to set superadmin login while in DEMO.',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 } else {
                     if ( strlen($value) < 4 ) {
@@ -184,9 +184,9 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 break;
             case 'pref_admin_pass':
                 if ( GALETTE_MODE == 'DEMO' ) {
-                    $log->log(
+                    Analog::log(
                         'Trying to set superadmin pass while in DEMO.',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 } else {
                     if ( strlen($value) < 4 ) {
@@ -329,14 +329,14 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                         } else {
                             $logo = new Core\Logo();
                         }
-                        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo'] = serialize($logo);
+                        $session['logo'] = serialize($logo);
                         $tpl->assign('logo', $logo);
                     }
                 }
             } else if ($_FILES['logo']['error'] !== UPLOAD_ERR_NO_FILE) {
-                $log->log(
+                Analog::log(
                     $logo->getPhpErrorMessage($_FILES['logo']['error']),
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 $error_detected[] = $logo->getPhpErrorMessage(
                     $_FILES['logo']['error']
@@ -349,7 +349,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                 $error_detected[] = _T("Delete failed");
             } else {
                 $logo = new Core\Logo(); //get default Logo
-                $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['logo'] = serialize($logo);
+                $session['logo'] = serialize($logo);
                 $tpl->assign('logo', $logo);
             }
         }
@@ -368,9 +368,9 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                     }
                 }
             } else if ($_FILES['card_logo']['error'] !== UPLOAD_ERR_NO_FILE) {
-                $log->log(
+                Analog::log(
                     $print_logo->getPhpErrorMessage($_FILES['card_logo']['error']),
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 $error_detected[] = $print_logo->getPhpErrorMessage(
                     $_FILES['card_logo']['error']
@@ -441,4 +441,3 @@ $tpl->display('page.tpl');
 if ( isset($profiler) ) {
     $profiler->stop();
 }
-?>

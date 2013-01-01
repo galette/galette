@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2012 The Galette Team
+ * Copyright © 2009-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2012 The Galette Team
+ * @copyright 2011-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Entity\Adherent;
 
 /**
@@ -47,7 +47,7 @@ use Galette\Entity\Adherent;
  * @name      MailingHistory
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2012 The Galette Team
+ * @copyright 2011-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-08-27
@@ -74,17 +74,16 @@ class MailingHistory extends History
     */
     public function __construct($mailing = null)
     {
-        global $log;
 
         parent::__construct();
 
         if ( $mailing instanceof Mailing ) {
             $this->_mailing = $mailing;
         } else if ( $mailing !== null ) {
-            $log->log(
+            Analog::log(
                 '[' . __METHOD__ .
                 '] Mailing should be either null or an instance of Mailing',
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }
@@ -106,13 +105,13 @@ class MailingHistory extends History
     */
     public function getMailingHistory()
     {
-        global $zdb, $log;
+        global $zdb;
 
         if ($this->counter == null) {
             $c = $this->getCount();
 
             if ($c == 0) {
-                $log->log('No entry in history (yet?).', KLogger::DEBUG);
+                Analog::log('No entry in history (yet?).', Analog::DEBUG);
                 return;
             } else {
                 $this->counter = (int)$c;
@@ -161,13 +160,13 @@ class MailingHistory extends History
             return $ret;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Unable to get history. | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -183,7 +182,7 @@ class MailingHistory extends History
      */
     public static function loadFrom($id, $mailing)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -202,10 +201,10 @@ class MailingHistory extends History
             $mailing->message = $res->mailing_body;
             return true;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to load mailing model #' . $id . ' | ' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }
@@ -231,10 +230,10 @@ class MailingHistory extends History
             $this->_date = date('Y-m-d H:i:s');
             $this->store();
         } else {
-            $log->log(
+            Analog::log(
                 '[' . __METHOD__ .
                 '] Mailing should be either null or an instance of Mailing',
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -247,7 +246,7 @@ class MailingHistory extends History
      */
     public function store()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $_recipients = array();
@@ -268,9 +267,9 @@ class MailingHistory extends History
             $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
             return true;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'An error occurend storing Mailing | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -285,7 +284,7 @@ class MailingHistory extends History
      */
     public function removeEntries($ids)
     {
-        global $zdb, $log, $hist;
+        global $zdb, $hist;
 
         $list = array();
         if ( is_numeric($ids) ) {
@@ -317,18 +316,18 @@ class MailingHistory extends History
                 return true;
             } catch (\Exception $e) {
                 $zdb->db->rollBack();
-                $log->log(
+                Analog::log(
                     'Unable to delete selected mailing history entries |' .
                     $e->getMessage(),
-                    KLogger::ERR
+                    Analog::ERROR
                 );
                 return false;
             }
         } else {
             //not numeric and not an array: incorrect.
-            $log->log(
+            Analog::log(
                 'Asking to remove mailing entries, but without providing an array or a single numeric value.',
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }
@@ -365,4 +364,3 @@ class MailingHistory extends History
     }
 
 }
-?>

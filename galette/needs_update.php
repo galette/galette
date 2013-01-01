@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012 The Galette Team
+ * Copyright © 2012-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,20 +28,21 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012 The Galette Team
+ * @copyright 2012-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2012-02-05
  */
 
-$base_path = './';
 //set a flag saying we work from installer
 //that way, in galette.inc.php, we'll only include relevant parts
 $installer = true;
-define('WEB_ROOT', __DIR__ . '/');
+if ( !defined('GALETTE_ROOT') ) {
+    define('GALETTE_ROOT', __DIR__ . '/');
+}
 
-require_once $base_path . 'includes/galette.inc.php';
+require_once GALETTE_ROOT . 'includes/galette.inc.php';
 
 header('Content-Type: text/html; charset=UTF-8');
 ?>

@@ -11,7 +11,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2012 The Galette Team
+ * Copyright © 2011-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -31,22 +31,22 @@
  * @category  Plugins
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012 The Galette Team
+ * @copyright 2012-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2012-01-19
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 require_once 'includes/galette.inc.php';
 
 $id = get_numeric_form_value(Galette\Entity\Group::PK, '');
 if ( !$id ) {
-    $log->log(
+    Analog::log(
         'Trying to display ajax_group.php without groups specified',
-        KLogger::INFO
+        Analog::INFO
     );
     die();
 }
@@ -54,9 +54,9 @@ if ( !$id ) {
 if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff()
     && !$login->isGroupManager($id)
 ) {
-    $log->log(
+    Analog::log(
         'Trying to display ajax_group.php without appropriate permissions',
-        KLogger::INFO
+        Analog::INFO
     );
     die();
 }
@@ -89,12 +89,11 @@ if ( !isset($_POST['reorder']) ) {
         $group->store();
         echo json_encode(array('success' => 'true'));
     } else {
-        $log->log(
+        Analog::log(
             'Trying to reorder without target specified',
-            KLogger::INFO
+            Analog::INFO
         );
         echo json_encode(array('success' => false));
         die();
     }
 }
-?>

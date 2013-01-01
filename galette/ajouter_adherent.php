@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2004-2012 The Galette Team
+ * Copyright © 2004-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,15 +29,20 @@
  *
  * @author    Frédéric Jacquot <unknown@unknwown.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2004-2012 The Galette Team
+ * @copyright 2004-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.62
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
+use Galette\Core\GaletteMail as GaletteMail;
+use Galette\Entity\Adherent as Adherent;
+use Galette\Entity\FieldsConfig as FieldsConfig;
+use Galette\Entity\Texts as Texts;
 use Galette\Entity\DynamicFields as DynamicFields;
+use Galette\Repository\Groups as Groups;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -47,7 +52,7 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-$member = new Galette\Entity\Adherent();
+$member = new Adherent();
 //TODO: dynamic fields should be handled by Adherent object
 $dyn_fields = new DynamicFields();
 
@@ -67,7 +72,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
         $disabled = $member->adm_edit_disabled_fields + $member->staff_edit_disabled_fields;
     }
 
-    if ( $preferences->pref_mail_method == Galette\Core\GaletteMail::METHOD_DISABLED ) {
+    if ( $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED ) {
         $disabled['send_mail'] = 'disabled="disabled"';
     }
 } else {
@@ -78,13 +83,13 @@ if ( $login->isAdmin() || $login->isStaff() ) {
 }
 
 // flagging required fields
-$requires = new Galette\Entity\Required();
-$required = $requires->getRequired();
+$fc = new FieldsConfig(Adherent::TABLE, $member->fields);
+$required = $fc->getRequired();
+// flagging fields visibility
+$visibles = $fc->getVisibilities();
 
 // password required if we create a new member
-if ( $member->id == '' ) {
-    $required['mdp_adh'] = 1;
-} else {
+if ( $member->id != '' ) {
     unset($required['mdp_adh']);
 }
 
@@ -113,10 +118,10 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
             if ( $new ) {
                 $success_detected[] = _T("New member has been successfully added.");
                 //Send email to admin if preference checked
-                if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED
+                if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
                     && $preferences->pref_bool_mailadh
                 ) {
-                    $texts = new Galette\Entity\Texts(
+                    $texts = new Texts(
                         array(
                             'name_adh'  => custom_html_entity_decode($member->sname),
                             'mail_adh'  => custom_html_entity_decode($member->email),
@@ -125,7 +130,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     );
                     $mtxt = $texts->getTexts('newadh', $preferences->pref_lang);
 
-                    $mail = new Galette\Core\GaletteMail();
+                    $mail = new GaletteMail();
                     $mail->setSubject($texts->getSubject());
                     $mail->setRecipients(
                         array(
@@ -135,7 +140,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     $mail->setMessage($texts->getBody());
                     $sent = $mail->send();
 
-                    if ( $sent == Galette\Core\GaletteMail::MAIL_SENT ) {
+                    if ( $sent == GaletteMail::MAIL_SENT ) {
                         $hist->add(
                             str_replace(
                                 '%s',
@@ -160,13 +165,13 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
 
             // send mail to member
             if ( isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1' ) {
-                if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED ) {
+                if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED ) {
                     if ( $member->email == '' ) {
                         $error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
                     } else {
                         //send mail to member
                         // Get email text in database
-                        $texts = new Galette\Entity\Texts(
+                        $texts = new Texts(
                             array(
                                 'name_adh'      => custom_html_entity_decode($member->sname),
                                 'mail_adh'      => custom_html_entity_decode($member->email),
@@ -183,7 +188,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                             $mlang
                         );
 
-                        $mail = new Galette\Core\GaletteMail();
+                        $mail = new GaletteMail();
                         $mail->setSubject($texts->getSubject());
                         $mail->setRecipients(
                             array(
@@ -193,7 +198,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                         $mail->setMessage($texts->getBody());
                         $sent = $mail->send();
 
-                        if ( $sent == Galette\Core\GaletteMail::MAIL_SENT ) {
+                        if ( $sent == GaletteMail::MAIL_SENT ) {
                             $msg = str_replace(
                                 '%s',
                                 $member->sname . ' (' . $member->email . ')',
@@ -213,42 +218,42 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                             $error_detected[] = $str;
                         }
                     }
-                } else if ( $preferences->pref_mail_method == Galette\Core\GaletteMail::METHOD_DISABLED) {
+                } else if ( $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
                     //if mail has been disabled in the preferences, we should not be here ; we do not throw an error, just a simple warning that will be show later
                     $msg = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
                     $warning_detected[] = $msg;
-                    $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning'] = $msg;
+                    $session['mail_warning'] = $msg;
                 }
             }
 
             //store requested groups
             $add_groups = null;
             if ( isset($_POST['groups_adh']) ) {
-                $add_groups = Galette\Repository\Groups::addMemberToGroups(
+                $add_groups = Groups::addMemberToGroups(
                     $member,
                     $_POST['groups_adh']
                 );
             }
             if ( $add_groups === true ) {
                 if ( isset ($_POST['groups_adh']) ) {
-                    $log->log(
+                    Analog::log(
                         'Member .' . $member->sname . ' has been added to groups ' .
                         print_r($_POST['groups_adh'], true),
-                        KLogger::INFO
+                        Analog::INFO
                     );
                 } else {
-                    $log->log(
+                    Analog::log(
                         'Member .' . $member->sname . ' has not been added to groups ' .
                         print_r($_POST['groups_adh'], true),
-                        KLogger::ERR
+                        Analog::ERROR
                     );
                     $error_detected[] = _T("An error occured adding member to its groups.");
                 }
             } else {
-                $log->log(
+                Analog::log(
                     'Member .' . $member->sname . ' has been detached of ' .
                     'his groups.',
-                    KLogger::INFO
+                    Analog::INFO
                 );
             }
         } else {
@@ -274,9 +279,9 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     }
                 }
             } else if ($_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
-                $log->log(
+                Analog::log(
                     $member->picture->getPhpErrorMessage($_FILES['photo']['error']),
-                    KLogger::WARN
+                    Analog::WARNING
                 );
                 $error_detected[] = $member->picture->getPhpErrorMessage(
                     $_FILES['photo']['error']
@@ -288,9 +293,9 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
             if ( !$member->picture->delete($member->id) ) {
                 $error_detected[] = _T("Delete failed");
                 $str_adh = $member->id . ' (' . $member->sname  . ' ' . ')';
-                $log->log(
+                Analog::log(
                     'Unable to delete picture for member ' . $str_adh,
-                    KLogger::ERR
+                    Analog::ERROR
                 );
             }
         }
@@ -300,7 +305,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
     }
 
     if ( count($error_detected) == 0 ) {
-        $_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['account_success'] = serialize($success_detected);
+        $session['account_success'] = serialize($success_detected);
         if ( !isset($_POST['id_adh']) ) {
             header(
                 'location: ajouter_contribution.php?id_adh=' . $member->id
@@ -338,15 +343,16 @@ if ( $member->id != '' ) {
 $tpl->assign('require_dialog', true);
 $tpl->assign('page_title', $title);
 $tpl->assign('required', $required);
+$tpl->assign('visibles', $visibles);
 $tpl->assign('disabled', $disabled);
 $tpl->assign('member', $member);
 $tpl->assign('data', $adherent);
 $tpl->assign('self_adh', false);
 $tpl->assign('dynamic_fields', $dynamic_fields);
 $tpl->assign('error_detected', $error_detected);
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning']) ) {
+if ( isset($session['mail_warning']) ) {
     //warning will be showed here, no need to keep it longer into session
-    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['mail_warning']);
+    unset($session['mail_warning']);
 }
 $tpl->assign('warning_detected', $warning_detected);
 $tpl->assign('languages', $i18n->getList());
@@ -361,7 +367,7 @@ $statuts = new Galette\Entity\Status();
 $tpl->assign('statuts', $statuts->getList());
 
 //Groups
-$groups = new Galette\Repository\Groups();
+$groups = new Groups();
 $groups_list = $groups->getList();
 $tpl->assign('groups', $groups_list);
 
@@ -369,4 +375,3 @@ $tpl->assign('groups', $groups_list);
 $content = $tpl->fetch('member.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
-?>

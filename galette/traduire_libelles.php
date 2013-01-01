@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2004-2010 The Galette Team
+ * Copyright © 2004-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,14 +29,14 @@
  *
  * @author    Laurent Pelecq <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2006-2010 The Galette Team
+ * @copyright 2004-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.62
  */
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -55,10 +55,19 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 
 $text_orig = get_form_value('text_orig', '');
 if ( isset($_POST['trans']) && isset($text_orig) ) {
+    if ( isset($_POST['new']) && $_POST['new'] == 'true' ) {
+        //create translation if it does not exists yet
+        $res = addDynamicTranslation(
+            $_POST['text_orig'],
+            $error_detected
+        );
+    }
+
     // Validate form
     while ( list($key, $value) = each($_POST) ) {
         if ( substr($key, 0, 11) == 'text_trans_' ) {
             $trans_lang = substr($key, 11);
+            $trans_lang = str_replace('_utf8', '.utf8', $trans_lang);
             $res = updateDynamicTranslation(
                 $text_orig,
                 $trans_lang,
@@ -101,14 +110,14 @@ try {
     $nb_fields = $select->query()->fetch()->nb;
 } catch (Exception $e) {
     /** TODO */
-    $log->log(
+    Analog::log(
         'An error occured counting l10n entries | ' .
         $e->getMessage(),
-        KLogger::WARN
+        Analog::WARNING
     );
-    $log->log(
+    Analog::log(
         'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-        KLogger::ERR
+        Analog::ERROR
     );
 }
 
@@ -126,8 +135,16 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
         foreach ( $all_texts as $idx => $row ) {
             $orig[] = $row->text_orig;
         }
+        $exists = true;
         if ( $text_orig == '' ) {
             $text_orig = $orig[0];
+        } else if ( !in_array($text_orig, $orig) ) {
+            $exists = false;
+            $error_detected[] = str_replace(
+                '%s',
+                $text_orig,
+                _T("No translation for '%s'!<br/>Please fill and submit above form to create it.")
+            );
         }
 
         $trans = array();
@@ -139,24 +156,25 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
             $text_trans = getDynamicTranslation($text_orig, $l->getLongID());
             $lang_name = $l->getName();
             $trans[] = array(
-                'key'  => $l->getID(),
+                'key'  => $l->getLongID(),
                 'name' => ucwords($lang_name),
                 'text' => $text_trans
             );
         }
 
+        $tpl->assign('exists', $exists);
         $tpl->assign('orig', $orig);
         $tpl->assign('trans', $trans);
     } catch (Exception $e) {
         /** TODO */
-        $log->log(
+        Analog::log(
             'An error occured retrieving l10n entries | ' .
             $e->getMessage(),
-            KLogger::WARN
+            Analog::WARNING
         );
-        $log->log(
+        Analog::log(
             'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-            KLogger::ERR
+            Analog::ERROR
         );
     }
 }
@@ -171,4 +189,3 @@ $tpl->display('page.tpl');
 if ( isset($profiler) ) {
     $profiler->stop();
 }
-?>

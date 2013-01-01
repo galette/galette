@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2004-2012 The Galette Team
+ * Copyright © 2004-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    Frédéric Jacquot <unknown@unknwown.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2004-2012 The Galette Team
+ * @copyright 2004-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -53,8 +53,8 @@ if ( isset($_POST['ajax']) && $_POST['ajax'] == 'true'
     $ajax = true;
 }
 
-if ( isset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['contributions'])) {
-    $contribs = unserialize($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['contributions']);
+if ( isset($session['contributions'])) {
+    $contribs = unserialize($session['contributions']);
 } else {
     $contribs = new Galette\Repository\Contributions();
 }
@@ -143,7 +143,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     }
 }
 
-$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]['contributions'] = serialize($contribs);
+$session['contributions'] = serialize($contribs);
 $list_contribs = $contribs->getContributionsList(true);
 
 //assign pagination variables to the template and add pagination links
@@ -178,4 +178,3 @@ if ( $ajax ) {
     $tpl->assign('content', $content);
     $tpl->display('page.tpl');
 }
-?>

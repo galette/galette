@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2006-2012 The Galette Team
+ * Copyright © 2006-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -30,15 +30,21 @@
  * @author    Frédéric Jaqcuot <unknown@unknow.com>
  * @author    Georges Khaznadar (i18n using gettext) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2006-2012 The Galette Team
+ * @copyright 2006-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.63
  */
 
-$template_subdir = 'templates/' . $preferences->pref_theme . '/';
-$tpl = new Galette\Core\Smarty($base_path);
+if (!defined('GALETTE_ROOT')) {
+       die("Sorry. You can't access directly to this file");
+}
+
+if ( !defined('GALETTE_TPL_SUBDIR') ) {
+    define('GALETTE_TPL_SUBDIR', 'templates/' . $preferences->pref_theme . '/');
+}
+$tpl = new Galette\Core\Smarty($plugins, $i18n, $preferences, $logo, $login);
 $tpl->muteExpectedErrors();
 
 $tpl->registerClass('GaletteMail', '\Galette\Core\GaletteMail');
@@ -84,4 +90,3 @@ $tpl->registerPlugin(
     'getStatusLabel'
 );
 
-?>

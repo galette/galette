@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2012 The Galette Team
+ * Copyright © 2007-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    John Perr <johnperr@abul.org>
  * @author    Johan Cwiklinski <joahn@x-tnd.be>
- * @copyright 2007-2012 The Galette Team
+ * @copyright 2007-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,7 +38,7 @@
 
 namespace Galette\Entity;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Texts class for galette
@@ -48,7 +48,7 @@ use Galette\Common\KLogger as KLogger;
  * @package   Galette
  * @author    John Perr <johnperr@abul.org>
  * @author    Johan Cwiklinski <joahn@x-tnd.be>
- * @copyright 2007-2012 The Galette Team
+ * @copyright 2007-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Avaialble since 0.7dev - 2007-07-16
@@ -239,7 +239,7 @@ class Texts
     */
     public function getTexts($ref,$lang)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -273,31 +273,31 @@ class Texts
                         $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
                         return $this->getTexts($ref, $lang);
                     } catch( \Exception $e ) {
-                        $log->log(
+                        Analog::log(
                             'Unable to add missing requested text "' . $ref .
                             ' (' . $lang . ') | ' . $e->getMessage(),
-                            KLogger::WARN
+                            Analog::WARNING
                         );
                     }
                 } else {
-                    $log->log(
+                    Analog::log(
                         'Unable to find missing requested text "' . $ref .
                         ' (' . $lang . ')',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 }
             }
             return $this->_all_texts;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot get text `' . $ref . '` for lang `' . $lang . '` | ' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -316,7 +316,7 @@ class Texts
      */
     public function setTexts($ref, $lang, $subject, $body)
     {
-        global $zdb, $log;
+        global $zdb;
         //set texts
 
         try {
@@ -338,10 +338,10 @@ class Texts
             return true;
         } catch (\Exception $e) {
             /** FIXME */
-            $log->log(
+            Analog::log(
                 'An error has occured while storing mail text. | ' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -356,7 +356,7 @@ class Texts
     */
     public function getRefs($lang)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -368,14 +368,14 @@ class Texts
             return $select->query(\Zend_Db::FETCH_ASSOC)->fetchAll();
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot get refs for lang `' . $lang . '` | ' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -402,7 +402,7 @@ class Texts
     */
     public function installInit($check_first = true)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             //first of all, let's check if data seem to have already
@@ -445,16 +445,16 @@ class Texts
                     $stmt->execute();
                 }
 
-                $log->log(
+                Analog::log(
                     'Default texts were successfully stored into database.',
-                    KLogger::INFO
+                    Analog::INFO
                 );
                 return true;
             }
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to initialize default texts.' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
             return $e;
         }
@@ -488,4 +488,3 @@ class Texts
         );
     }
 }
-?>

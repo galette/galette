@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2012 The Galette Team
+ * Copyright © 2011-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2012 The Galette Team
+ * @copyright 2011-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,7 @@
 
 namespace Galette\Repository;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Entity\Group as Group;
 use Galette\Entity\Adherent as Adherent;
 
@@ -48,7 +48,7 @@ use Galette\Entity\Adherent as Adherent;
  * @name      Groups
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2012 The Galette Team
+ * @copyright 2011-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-10-25
@@ -63,7 +63,7 @@ class Groups
      */
     public static function getSimpleList()
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -74,18 +74,19 @@ class Groups
             $groups = array();
             $q = $select->__toString();
             $gpk = Group::PK;
-            foreach ( $select->query()->fetchAll() as $row ) {
+            $res = $select->query()->fetchAll();
+            foreach ( $res as $row ) {
                 $groups[$row->$gpk] = $row->group_name;
             }
             return $groups;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Cannot list groups (simple) | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
-                KLogger::ERR
+                Analog::ERROR
             );
 
         }
@@ -100,7 +101,7 @@ class Groups
      */
     public function getList($full = true)
     {
-        global $zdb, $log, $login;
+        global $zdb, $login;
         try {
             $select = new \Zend_Db_Select($zdb->db);
             $select->from(
@@ -130,18 +131,19 @@ class Groups
                 ->order('a.group_name ASC');
 
             $groups = array();
-            foreach ( $select->query()->fetchAll() as $row ) {
+            $res = $select->query()->fetchAll();
+            foreach ( $res as $row ) {
                 $groups[] = new Group($row);
             }
             return $groups;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Cannot list groups | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }
@@ -170,7 +172,7 @@ class Groups
      */
     public static function loadGroups($id, $managed = false, $as_group = true)
     {
-        global $zdb, $log;
+        global $zdb;
         try {
             $join_table = ($managed) ?
                 Group::GROUPSMANAGERS_TABLE :
@@ -188,9 +190,9 @@ class Groups
                 array()
             )->where('b.' . Adherent::PK . ' = ?', $id);
             $result = $select->query()->fetchAll();
-            $log->log(
+            Analog::log(
                 'Exectued query: ' . $select->__toString(),
-                KLogger::DEBUG
+                Analog::DEBUG
             );
             $groups = array();
             foreach ( $result as $r ) {
@@ -203,14 +205,14 @@ class Groups
             }
             return $groups;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Cannot load member groups for id `' . $id . '` | ' .
                 $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -228,7 +230,7 @@ class Groups
      */
     public static function addMemberToGroups($adh, $groups, $transaction = false)
     {
-        global $zdb, $log;
+        global $zdb;
         try {
             if ( $transaction === false) {
                 $zdb->db->beginTransaction();
@@ -239,10 +241,10 @@ class Groups
                 PREFIX_DB . Group::GROUPSUSERS_TABLE,
                 Adherent::PK . ' = ' . $adh->id
             );
-            $log->log(
+            Analog::log(
                 'Member `' . $adh->sname . '` has been detached of its groups' .
                 ', we can now store new ones.',
-                KLogger::INFO
+                Analog::INFO
             );
 
             //we proceed, if groups has been specified
@@ -259,17 +261,17 @@ class Groups
                     $stmt->bindValue(':id', $gid, \PDO::PARAM_INT);
 
                     if ( $stmt->execute() ) {
-                        $log->log(
+                        Analog::log(
                             'Member `' . $adh->sname . '` attached to group `' .
                             $gname . '` (' . $gid . ').',
-                            KLogger::DEBUG
+                            Analog::DEBUG
                         );
                     } else {
-                        $log->log(
+                        Analog::log(
                             'An error occured trying to attach member `' .
                             $adh->sname . '` (' . $adh->id . ') to group `' .
                             $gname . '` (' . $gid . ').',
-                            KLogger::ERR
+                            Analog::ERROR
                         );
                         throw new \Exception(
                             'Unable to attach `' . $adh->sname . '` (' . $adh->id .
@@ -287,11 +289,11 @@ class Groups
             if ( $transaction === false) {
                 $zdb->db->rollBack();
             }
-            $log->log(
+            Analog::log(
                 'Unable to add member `' . $adh->sname . '` (' . $adh->id .
                 ') to specified groups |' .
                 $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -306,7 +308,7 @@ class Groups
      */
     public static function isUnique($name)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -317,16 +319,15 @@ class Groups
             $res = $select->query()->fetchAll();
             return !(count($res) > 0);
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Cannot list groups (simple) | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }
 }
 
-?>

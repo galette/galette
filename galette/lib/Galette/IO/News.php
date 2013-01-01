@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2012 The Galette Team
+ * Copyright © 2011-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2012 The Galette Team
+ * @copyright 2011-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,7 @@
 
 namespace Galette\IO;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * News class for galette
@@ -46,7 +46,7 @@ use Galette\Common\KLogger as KLogger;
  * @name      News
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2012 The Galette Team
+ * @copyright 2011-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-11-11
@@ -107,7 +107,6 @@ class News
      */
     private function _checkCache()
     {
-        global $log;
 
         $cfile = $this->_getCacheFilename();
         if (file_exists($cfile) ) {
@@ -125,10 +124,10 @@ class News
                 $has_expired = $now > $expire;
                 return !$has_expired;
             } catch ( \Exception $e ) {
-                $log->log(
+                Analog::log(
                     'Unable chack cache expiracy. Are you sure you have ' .
                     'properly configured PHP timezone settings on your server?',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
         } else {
@@ -212,7 +211,6 @@ class News
      */
     private function _parseTweets()
     {
-        global $log;
 
         try {
             $xml = simplexml_load_file($this->_twitter_url);
@@ -251,9 +249,9 @@ class News
 
             $this->_tweets = $tweets;
         } catch (\Exception $e) {
-            $log->log(
+            Analog::log(
                 'Unable to load Tweets :( | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
             $this->_tweets = array();
         }
@@ -266,16 +264,15 @@ class News
      */
     private function _parseGplus()
     {
-        global $log;
 
         try {
-            include_once GALETTE_GAPI_PATH . '/apiClient.php';
-            include_once GALETTE_GAPI_PATH . '/contrib/apiPlusService.php';
+            include_once GALETTE_GAPI_PATH . '/Google_Client.php';
+            include_once GALETTE_GAPI_PATH . '/contrib/Google_PlusService.php';
 
-            $gclient = new \apiClient();
+            $gclient = new \Google_Client();
             $gclient->setApplicationName("Galette's Google+");
             $gclient->setDeveloperKey(GALETTE_GAPI_KEY);
-            $plus = new \apiPlusService($gclient);
+            $plus = new \Google_PlusService($gclient);
 
             $optParams = array('maxResults' => $this->_show);
             $activities = $plus->activities->listActivities(
@@ -296,9 +293,9 @@ class News
 
             $this->_gplus = $gposts;
         } catch ( \Exception $e ) {
-            $log->log(
+            Analog::log(
                 'Unable to load GooGlePlus posts :( | ' . $e->getMessage(),
-                KLogger::ERR
+                Analog::ERROR
             );
         }
     }
@@ -312,7 +309,6 @@ class News
      */
     public function canReadTweets(\Galette\Core\CheckModules $cm)
     {
-        global $log;
 
         //tweeter needs simplexml to load an https URI
         if ( $cm->isGood('ssl') ) {
@@ -326,9 +322,9 @@ class News
 
             if ( count($errors) > 0 || $xml === false ) {
                 //something went wrong :/
-                $log->log(
+                Analog::log(
                     'Unable to load twitter URI ' . $this->_twitter_url,
-                    KLogger::WARN
+                    Analog::WARNING
                 );
 
                 if ( count($errors) > 0 ) {
@@ -336,9 +332,9 @@ class News
                     foreach ( $errors as $e ) {
                         $msg .= "\n" . $e->message;
                     }
-                    $log->log(
+                    Analog::log(
                         $msg,
-                        KLogger::INFO
+                        Analog::INFO
                     );
                 }
                 libxml_clear_errors();
@@ -347,9 +343,9 @@ class News
             }
             return true;
         } else {
-            $log->log(
+            Analog::log(
                 'Required modules for Tweeter access are not present.',
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }
@@ -364,7 +360,6 @@ class News
      */
     public function canReadGplus(\Galette\Core\CheckModules $cm)
     {
-        global $log;
 
         //googleplus needs curl to load an https URI
         if ( $cm->isGood('ssl') && $cm->isGood('curl') ) {
@@ -387,23 +382,23 @@ class News
                 if ( count($activities['items']) > 0 ) {
                     return true;
                 } else {
-                    $log->log(
+                    Analog::log(
                         'No Google+ posts has been loaded :(',
-                        KLogger::WARN
+                        Analog::WARNING
                     );
                 }
             } catch ( \Exception $e ) {
-                $log->log(
+                Analog::log(
                     'Unable to load GooGlePlus posts :( | ' . $e->getMessage(),
-                    KLogger::ERR
+                    Analog::ERROR
                 );
             }
 
             return true;
         } else {
-            $log->log(
+            Analog::log(
                 'Required modules for Google+ access are not present.',
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }
@@ -429,4 +424,3 @@ class News
         return $this->_gplus;
     }
 }
-?>

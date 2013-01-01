@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010-2012 The Galette Team
+ * Copyright © 2010-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2012 The Galette Team
+ * @copyright 2010-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,7 @@
 
 namespace Galette\Repository;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 use Galette\Core\Pagination as Pagination;
 use Galette\Entity\Contribution as Contribution;
 use Galette\Entity\Adherent as Adherent;
@@ -52,7 +52,7 @@ use Galette\Entity\ContributionsTypes as ContributionsTypes;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2012 The Galette Team
+ * @copyright 2009-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -140,7 +140,7 @@ class Contributions extends Pagination
     public function getContributionsList(
         $as_contrib=false, $fields=null, $count=true
     ) {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $select = $this->_buildSelect(
@@ -151,7 +151,8 @@ class Contributions extends Pagination
 
             $contributions = array();
             if ( $as_contrib ) {
-                foreach ( $select->query()->fetchAll() as $row ) {
+                $res = $select->query()->fetchAll();
+                foreach ( $res as $row ) {
                     $contributions[] = new Contribution($row);
                 }
             } else {
@@ -160,13 +161,13 @@ class Contributions extends Pagination
             return $contributions;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot list contributions | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -213,13 +214,13 @@ class Contributions extends Pagination
             return $select;
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot build SELECT clause for contributions | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -234,7 +235,7 @@ class Contributions extends Pagination
     */
     private function _proceedCount($select)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $countSelect = clone $select;
@@ -252,13 +253,13 @@ class Contributions extends Pagination
             }
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot count contributions | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $countSelect->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -273,7 +274,7 @@ class Contributions extends Pagination
     */
     private function _calculateSum($select)
     {
-        global $zdb, $log;
+        global $zdb;
 
         try {
             $sumSelect = clone $select;
@@ -286,13 +287,13 @@ class Contributions extends Pagination
             $this->_sum = round($result->contribsum, 2);
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 'Cannot calculate contributions sum | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
-            $log->log(
+            Analog::log(
                 'Query was: ' . $sumSelect->__toString() . ' ' . $e->__toString(),
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -349,7 +350,7 @@ class Contributions extends Pagination
      */
     private function _buildWhereClause($select)
     {
-        global $zdb, $log, $login;
+        global $zdb, $login;
 
         try {
             if ( $this->_start_date_filter != null ) {
@@ -393,9 +394,9 @@ class Contributions extends Pagination
             $qry = $select->__toString();
         } catch (\Exception $e) {
             /** TODO */
-            $log->log(
+            Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
-                KLogger::WARN
+                Analog::WARNING
             );
         }
     }
@@ -433,7 +434,7 @@ class Contributions extends Pagination
      */
     public function removeContributions($ids, $transaction = true)
     {
-        global $zdb, $log, $hist;
+        global $zdb, $hist;
 
         $list = array();
         if ( is_numeric($ids) ) {
@@ -471,18 +472,18 @@ class Contributions extends Pagination
                 if ( $transaction ) {
                     $zdb->db->rollBack();
                 }
-                $log->log(
+                Analog::log(
                     'An error occured trying to remove contributions | ' .
                     $e->getMessage(),
-                    KLogger::ERR
+                    Analog::ERROR
                 );
                 return false;
             }
         } else {
             //not numeric and not an array: incorrect.
-            $log->log(
+            Analog::log(
                 'Asking to remove contribution, but without providing an array or a single numeric value.',
-                KLogger::WARN
+                Analog::WARNING
             );
             return false;
         }
@@ -498,11 +499,10 @@ class Contributions extends Pagination
     */
     public function __get($name)
     {
-        global $log;
 
-        $log->log(
+        Analog::log(
             '[Contributions] Getting property `' . $name . '`',
-            KLogger::DEBUG
+            Analog::DEBUG
         );
 
         if ( in_array($name, $this->pagination_fields) ) {
@@ -534,9 +534,9 @@ class Contributions extends Pagination
                     break;
                 }
             } else {
-                $log->log(
+                Analog::log(
                     '[Contributions] Unable to get proprety `' .$name . '`',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
         }
@@ -552,13 +552,12 @@ class Contributions extends Pagination
     */
     public function __set($name, $value)
     {
-        global $log;
         if ( in_array($name, $this->pagination_fields) ) {
             parent::__set($name, $value);
         } else {
-            $log->log(
+            Analog::log(
                 '[Contributions] Setting property `' . $name . '`',
-                KLogger::DEBUG
+                Analog::DEBUG
             );
 
             $forbidden = array();
@@ -648,11 +647,11 @@ class Contributions extends Pagination
                             $this->$rname = null;
                         }
                     } catch (\Exception $e) {
-                        $log->log(
+                        Analog::log(
                             'Wrong date format. field: ' . $key .
                             ', value: ' . $value . ', expected fmt: ' .
                             _T("Y-m-d") . ' | ' . $e->getMessage(),
-                            KLogger::INFO
+                            Analog::INFO
                         );
                         throw $e;
                     }
@@ -662,13 +661,12 @@ class Contributions extends Pagination
                     break;
                 }
             } else {
-                $log->log(
+                Analog::log(
                     '[Contributions] Unable to set proprety `' .$name . '`',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
         }
     }
 
 }
-?>

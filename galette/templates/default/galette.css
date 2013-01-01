@@ -23,7 +23,7 @@ a:hover {
     color: #eea423;
 }
 
-.ui-button:hover{
+.ui-button:hover {
     color:inherit;
 }
 
@@ -488,7 +488,15 @@ footer li {
     -moz-box-shadow: 1px 1px 13px rgba(0, 0, 0, 0.4);
     -webkit-box-shadow: 1px 1px 13px rgba(0, 0, 0, 0.4);
     box-shadow: 1px 1px 13px rgba(0, 0, 0, 0.4);
+}
 
+.public_page #demo {
+    position: absolute;
+    width: 16em;
+    top: 0;
+    left: 0;
+    margin:0;
+    border-radius: 0 0 6px 0;
 }
 
 /* == Buttons */
@@ -597,13 +605,16 @@ h1 #sendmail .ui-button-text {
     background-image:url(images/icon-add.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
 #btnadd.ui-state-hover, #btnadd_small.ui-state-hover{
-    background-image:url(images/icon-add.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+   background-image:url(images/icon-add.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 #btnadd_small, #btnusers_small, #btnmanagers_small {
     position: absolute;
     top: .5em;
     right: .5em;
+}
+legend #btnadd_small {
+    right: 2.5em;
 }
 
 #btncancel {
@@ -811,10 +822,11 @@ h1 #sendmail .ui-button-text {
     background-color: transparent;
 }
 
-#clearfilter {
+#clearfilter, .clearfilter {
     background: url(images/clearfilter.png) 0 50% no-repeat;
     display:inline-block;
     width:16px;
+    height:16px;
     overflow: hidden;
     text-indent: 20px;
     vertical-align: bottom;
@@ -911,6 +923,21 @@ h1 #sendmail .ui-button-text {
     margin:0;
     font-size: 1em;
 }
+
+.texts_legend .back > span {
+    font-size: .9em;
+    text-align: right;
+    display: block;
+    color:#666;
+}
+
+.help {
+    background:url(images/help.png) 100% 50% no-repeat;
+    padding-right: 25px;
+    min-height: 25px;
+    display: inline-block;
+}
+
 /*
  * == Public pages
  */
@@ -1561,6 +1588,7 @@ legend {
 .cssform li{
     clear:none;
 }
+
 .cssform p, .cssform div.p{
     clear: left;
     margin: 0;
@@ -1571,7 +1599,7 @@ legend {
 }
 
 /* no border on the first 'p' child */
-.cssform p:nth-child(2), #addfield p:first-child/*, .cssform div.p:nth-child(2), .cssform div p:nth-child(1)*/{
+.cssform p:nth-child(2), #addfield p:first-child, .cssform legend+p/*, .cssform div.p:nth-child(2), .cssform div p:nth-child(1)*/{
     border-top:none;
 }
 /* If there is a div, the preceding rules does not apply to the correct element :( */
@@ -1656,8 +1684,8 @@ th.bline, td.bline{
 .fleft{float:left;}
 .fright{float:right;}
 
-input.large{
-    width:90%;
+input.large, span.large {
+    width:90%!important;
 }
 
 .picker{
@@ -1792,32 +1820,48 @@ td.photo img{
     vertical-align: top;
 }
 
-.fields_list li{
-    height:1.5em;
-    margin-top:.5em;
-    clear:left;
-    padding-top:.2em;
+.cssform > .fields_list {
+    display: block;
 }
+.fields_list li{
+    line-height:1.5em;
+    margin-top:.3em;
+    padding:.1em .2em;
+    vertical-align: middle;
+}
+
+.yesno > input, .yesnoadmin > input {
+    margin: 0.2em;
+    vertical-align: bottom;
+}
+
+.fields_list label {
+    padding:0 .5em 0 .1em;
+}
+
+.fields_list li:hover {
+    background-color: #DDDDFF!important;
+}
+
 .fields_list li.listing{
     font-weight:bold;
 }
 .fields_list span.label{
-    display:block;
-    width:21em;
-    float:left;
+    display:inline-block;
+    width: 33%;
 }
+
 .fields_list span.yesno{
     margin-right:.2em;
-    width:15em;
-    display:block;
-    float:left;
+    display:inline-block;
     text-align:center;
+    width: 18%;
 }
 .fields_list span.yesnoadmin{
     margin-right:.2em;
-    width:25em;
-    display:block;
-    float:left;
+    min-width:25em;
+    width:33%;
+    display:inline-block;
     text-align:center;
 }
 
@@ -1885,6 +1929,12 @@ td.photo img{
 
 #oldie p {
     margin: 0;
+}
+
+.warnings {
+    background-image: url(images/icon-warning.png);
+    background-repeat: no-repeat;
+    background-position: center right;
 }
 
 /** Mobile devices */

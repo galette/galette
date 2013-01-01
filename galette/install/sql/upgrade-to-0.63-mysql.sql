@@ -60,16 +60,16 @@ ALTER TABLE galette_cotisations ADD date_enreg date NOT NULL default '0000-00-00
 ALTER TABLE galette_cotisations ADD date_debut_cotis date NOT NULL default '0000-00-00';
 ALTER TABLE galette_cotisations ADD date_fin_cotis date NOT NULL default '0000-00-00';
 UPDATE galette_cotisations
-	SET date_enreg=date_cotis,
-	    date_debut_cotis=date_cotis,
-	    date_fin_cotis=DATE_ADD(date_cotis, INTERVAL duree_mois_cotis MONTH);
+    SET date_enreg=date_cotis,
+        date_debut_cotis=date_cotis,
+        date_fin_cotis=DATE_ADD(date_cotis, INTERVAL duree_mois_cotis MONTH);
 ALTER TABLE galette_cotisations DROP duree_mois_cotis;
 ALTER TABLE galette_cotisations DROP date_cotis;
 
 -- Add column to galette_types_cotisations;
 ALTER TABLE galette_types_cotisation ADD cotis_extension enum('1') default NULL;
 UPDATE galette_types_cotisation SET cotis_extension='1' WHERE
-	id_type_cotis <= 3 OR id_type_cotis = 7;
+    id_type_cotis <= 3 OR id_type_cotis = 7;
 
 -- Table for dynamic translation of strings;
 DROP TABLE galette_l10n;
@@ -99,6 +99,9 @@ DROP TABLE IF EXISTS galette_tmppasswds;
 CREATE TABLE galette_tmppasswds (
     id_adh int(10) NOT NULL,
     tmp_passwd varchar(40) NOT NULL,
-		date_crea_tmp_passwd datetime NOT NULL,
+    date_crea_tmp_passwd datetime NOT NULL,
     PRIMARY KEY (id_adh)
 ) ENGINE=MyISAM;
+
+-- 0.63 now uses md5 hash for passwords
+UPDATE galette_adherents SET mdp_adh = md5(mdp_adh) WHERE length(mdp_adh) <> 32;

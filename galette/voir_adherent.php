@@ -11,7 +11,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2003-2012 The Galette Team
+ * Copyright © 2003-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -33,7 +33,7 @@
  *
  * @author    Frédéric Jacquot <unknown@unknwown.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2003-2012 The Galette Team
+ * @copyright 2003-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -41,6 +41,11 @@
  */
 
 use Galette\Entity\DynamicFields as DynamicFields;
+use Galette\Entity\Adherent as Adherent;
+use Galette\Entity\FieldsConfig as FieldsConfig;
+use Galette\Repository\Groups as Groups;
+use Galette\Repository\Members as Members;
+use Galette\Filters\MembersList as MembersList;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -66,7 +71,6 @@ if ( $id_adh == '' ) {
     die();
 }
 
-$session = &$_SESSION['galette'][PREFIX_DB . '_' . NAME_DB];
 if ( isset($session['pdf_error']) && $session['pdf_error']
 ) {
     $error_detected[] = $session['pdf_error_msg'];
@@ -90,8 +94,12 @@ if ( isset($session['lostpasswd_success']) ) {
 
 $dyn_fields = new DynamicFields();
 
-$member = new Galette\Entity\Adherent();
+$member = new Adherent();
 $member->load($id_adh);
+
+// flagging fields visibility
+$fc = new FieldsConfig(Adherent::TABLE, $member->fields);
+$visibles = $fc->getVisibilities();
 
 if ( $login->id != $id_adh && !$login->isAdmin() && !$login->isStaff() ) {
     //check if requested member is part of managed groups
@@ -115,12 +123,12 @@ $navigate = array();
 if ( isset($session['filters']['members']) ) {
     $filters =  unserialize($session['filters']['members']);
 } else {
-    $filters = new Galette\Filters\MembersList();
+    $filters = new MembersList();
 }
 
 if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
-    $m = new Galette\Repository\Members();
-    $ids = $m->getList(false, array(Galette\Entity\Adherent::PK));
+    $m = new Members();
+    $ids = $m->getList(false, array(Adherent::PK));
     //print_r($ids);
     foreach ( $ids as $k=>$m ) {
         if ( $m->id_adh == $member->id ) {
@@ -167,7 +175,8 @@ $tpl->assign('pref_lang_img', $i18n->getFlagFromId($member->language));
 $tpl->assign('pref_lang', ucfirst($i18n->getNameFromId($member->language)));
 $tpl->assign('pref_card_self', $preferences->pref_card_self);
 $tpl->assign('dynamic_fields', $dynamic_fields);
-$tpl->assign('groups', Galette\Repository\Groups::getSimpleList());
+$tpl->assign('groups', Groups::getSimpleList());
+$tpl->assign('visibles', $visibles);
 $tpl->assign('time', time());
 //if we got a mail warning when adding/editing a member,
 //we show it and delete it from session
@@ -188,4 +197,3 @@ $tpl->display('page.tpl');
 if ( isset($profiler) ) {
     $profiler->stop();
 }
-?>

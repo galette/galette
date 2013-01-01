@@ -1,9 +1,10 @@
 <?php
-/* 
+/*
 This is an example for your configuration file,
 read comments and replace the "blanks".
+You can then copy the file in GALETTE_CONFIG_PATH/config.inc.php
 
-$Id$ 
+$Id$
 */
 
 /* choose your database engine, values : pgsql|mysql */
@@ -18,11 +19,7 @@ define("USER_DB", "galette");
 define("PWD_DB", "demo");
 /* the database name */
 define("NAME_DB", "galette");
-/* Galette root directory in webserver */
-define("WEB_ROOT", "/var/www/galette/");
 /* tables name prefix (default is galette_) */
 define("PREFIX_DB", "galette_");
 /* FIXME will disappear soon */
 define("STOCK_FILES", "tempimages");
-
-?>

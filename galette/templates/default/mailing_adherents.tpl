@@ -1,10 +1,10 @@
 {if $pref_mail_method == constant('Galette\Core\Mailing::METHOD_DISABLED') and $GALETTE_MODE neq 'DEMO'}
-		<div id="errorbox">
-			<h1>{_T string="- ERROR -"}</h1>
-			<p>{_T string="Email sent is disabled in the preferences. Ask galette admin"}</p>
-		</div>
+        <div id="errorbox">
+            <h1>{_T string="- ERROR -"}</h1>
+            <p>{_T string="Email sent is disabled in the preferences. Ask galette admin"}</p>
+        </div>
 {elseif !$mailing_saved}
-		<form action="mailing_adherents.php#mail_preview" id="listform" method="post">
+        <form action="mailing_adherents.php#mail_preview" id="listform" method="post">
         <div class="mailing">
             <section class="mailing_infos">
                 <header class="ui-state-default ui-state-active">{_T string="Mailing informations"}</header>
@@ -69,11 +69,11 @@
                     <p>
                         <span class="bline">{_T string="Message:"}</span><br/>
             {if $mailing->html}
-					{$mailing->message}
+                    {$mailing->message}
             {else}
-    					<pre>{$mailing->message}</pre>
+                        <pre>{$mailing->message}</pre>
             {/if}
-        			</p>
+                    </p>
                 </div>
                 <div>
                     <p>
@@ -88,7 +88,7 @@
 
             </section>
         </div>
-		</form>
+        </form>
     {if $mailing->current_step neq constant('Galette\Core\Mailing::STEP_SENT')}
 <script type="text/javascript">
     $(function() {

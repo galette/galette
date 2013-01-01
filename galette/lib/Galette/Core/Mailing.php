@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2012 The Galette Team
+ * Copyright © 2009-2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2012 The Galette Team
+ * @copyright 2009-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Galette\Common\KLogger as KLogger;
+use Analog\Analog as Analog;
 
 /**
  * Mailing features
@@ -46,7 +46,7 @@ use Galette\Common\KLogger as KLogger;
  * @name      Mailing
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2012 The Galette Team
+ * @copyright 2009-2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-07
@@ -138,7 +138,6 @@ class Mailing extends GaletteMail
     */
     public function __get($name)
     {
-        global $log;
         $forbidden = array('ordered');
         if ( !in_array($name, $forbidden) ) {
             switch($name) {
@@ -169,19 +168,19 @@ class Mailing extends GaletteMail
                 break;
             default:
                 $rname = '_' . $name;
-                $log->log(
+                Analog::log(
                     '[' . get_class($this) . 'Trying to get ' . $name .
                     ' renamed: ' . $rname,
-                    KLogger::DEBUG
+                    Analog::DEBUG
                 );
                 return $this->$rname;
                 break;
             }
         } else {
-            $log->log(
+            Analog::log(
                 '[' . get_class($this) . 'Unable to get ' . $name .
                 ' renamed: ' . $rname,
-                KLogger::ERR
+                Analog::ERROR
             );
             return false;
         }
@@ -197,7 +196,6 @@ class Mailing extends GaletteMail
     */
     public function __set($name, $value)
     {
-        global $log;
         $rname = '_' . $name;
 
         switch( $name ) {
@@ -211,11 +209,11 @@ class Mailing extends GaletteMail
             if ( is_bool($value) ) {
                 $this->isHTML($value);
             } else {
-                $log->log(
+                Analog::log(
                     '[' . get_class($this) . '] Value for field `' . $name .
                     '` should be boolean - (' . gettype($value) . ')' .
                     $value . ' given',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
             break;
@@ -234,21 +232,20 @@ class Mailing extends GaletteMail
             ) {
                 $this->_current_step = (int)$value;
             } else {
-                $log->log(
+                Analog::log(
                     '[' . get_class($this) . '] Value for field `' . $name .
                     '` should be integer and know - (' . gettype($value) . ')' .
                     $value . ' given',
-                    KLogger::WARN
+                    Analog::WARNING
                 );
             }
             break;
         default:
-            $log->log(
+            Analog::log(
                 '[' . get_class($this) . '] Unable to set proprety `' . $name . '`',
-                KLogger::WARN
+                Analog::WARNING
             );
             break;
         }
     }
 }
-?>
