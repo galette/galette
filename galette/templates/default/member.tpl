@@ -29,7 +29,7 @@
     {/if}
                     <p>
                         <span class="bline">{_T string="Title:"}</span>
-                        {if $disabled.titre_adh != ''}
+                        {if isset($disabled.titre_adh) and $disabled.titre_adh != ''}
                             {html_radios name="titre_adh" options=$radio_titres checked=$member->politeness separator="&nbsp;" disabled="disabled"}
                         {else}
                             {html_radios name="titre_adh" options=$radio_titres checked=$member->politeness separator="&nbsp;"}

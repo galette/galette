@@ -1,8 +1,8 @@
 {if $navigate|@count != 0}
     <nav>
-        <a id="prev" href="{if $navigate.prev}?id_adh={$navigate.prev}{else}#{/if}" class="button{if !$navigate.prev} selected{/if}">{_T string="Previous"}</a>
+        <a id="prev" href="{if isset($navigate.prev)}?id_adh={$navigate.prev}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">{_T string="Previous"}</a>
         {$navigate.pos}/{$navigate.count}
-        <a id="next" href="{if $navigate.next}?id_adh={$navigate.next}{else}#{/if}"class="button{if !$navigate.next} selected{/if}">{_T string="Next"}</a>
+        <a id="next" href="{if isset($navigate.next)}?id_adh={$navigate.next}{else}#{/if}"class="button{if !isset($navigate.next)} selected{/if}">{_T string="Next"}</a>
     </nav>
 {/if}
         <ul id="details_menu">
@@ -84,7 +84,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 <td>{$member->job|htmlspecialchars}</td>
             </tr>
 {/if}
-{if $visibles.perf_lang eq constant('Galette\Entity\FieldsConfig::VISIBLE') or ($visibles.pref_lang eq constant('Galette\Entity\FieldsConfig::ADMIN') and ($login->isStaff() or $login->isAdmin() or $login->isSuperAdmin()))}
+{if $visibles.pref_lang eq constant('Galette\Entity\FieldsConfig::VISIBLE') or ($visibles.pref_lang eq constant('Galette\Entity\FieldsConfig::ADMIN') and ($login->isStaff() or $login->isAdmin() or $login->isSuperAdmin()))}
             <tr>
                 <th>{_T string="Language:"}</th>
                 <td><img src="{$pref_lang_img}" alt=""/> {$pref_lang}</td>
