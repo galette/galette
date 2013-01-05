@@ -75,7 +75,7 @@ class Password
     */
     public function __construct()
     {
-        $this->_cleanExpired();
+        $this->cleanExpired();
     }
 
     /**
@@ -199,7 +199,7 @@ class Password
      *
      * @return boolean
      */
-    private function _cleanExpired()
+    protected function cleanExpired()
     {
         global $zdb;
 
@@ -314,5 +314,29 @@ class Password
     public function getHash()
     {
         return $this->_hash;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password Password
+     *
+     * @return void
+     */
+    protected function setPassword($password)
+    {
+        $this->_new_password = $password;
+    }
+
+    /**
+     * Set hash
+     *
+     * @param string $hash Hash
+     *
+     * @return void
+     */
+    protected function setHash($hash)
+    {
+        $this->_hash = $hash;
     }
 }

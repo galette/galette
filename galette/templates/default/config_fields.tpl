@@ -1,7 +1,3 @@
-    {*<div id="errorbox">
-        <h1>{_T string="- WARNING -"}</h1>
-        <p>{_T string="This page is under construction.<br/>Data are all stored, but <strong>not used anywhere in Galette for now</strong> :-)"}</p>
-    </div>*}
     {*<p id="collapse" class="ui-state-default ui-corner-all">
         <span class="ui-icon ui-icon-circle-arrow-s"></span>
         {_T string="Collapse all"}
@@ -113,12 +109,15 @@
         var _warnings = [];
         var _checkCoherence = function(index, elt){
             var _elt = $(elt);
-            var _required = parseInt(_elt.find('.yesno input:checked').val());
-            var _visible = parseInt(_elt.find('.yesnoadmin input:checked').val());
+            var _disabled = _elt.find('.yesno input:disabled, .yesnoadmin input:disabled');
+            if ( _disabled.length == 0 ) {
+                var _required = parseInt(_elt.find('.yesno input:checked').val());
+                var _visible = parseInt(_elt.find('.yesnoadmin input:checked').val());
 
-            if ( _required === 1 && _visible !== 1 ) {
-                _elt.find('.label').addClass('warnings');
-                _warnings[_warnings.length] = _elt;
+                if ( _required === 1 && _visible !== 1 ) {
+                    _elt.find('.label').addClass('warnings');
+                    _warnings[_warnings.length] = _elt;
+                }
             }
         }
 

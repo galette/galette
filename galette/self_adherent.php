@@ -42,6 +42,7 @@ use Galette\Entity\DynamicFields as DynamicFields;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\FieldsConfig as FieldsConfig;
 use Galette\Entity\Texts as Texts;
+use Galette\Core\PasswordImage as PasswordImage;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -209,9 +210,9 @@ if ( !isset($adherent['dyn']) ) {
 }
 
 //image to defeat mass filling forms
-$spam_pass = PasswordImage();
-$s = PasswordImageName($spam_pass);
-$spam_img = print_img($s);
+$spam = new PasswordImage();
+$spam_pass = $spam->newImage();
+$spam_img = $spam->getImage();
 
 $dynamic_fields = $dyn_fields->prepareForDisplay(
     'adh', $adherent['dyn'], $disabled['dyn'], 1

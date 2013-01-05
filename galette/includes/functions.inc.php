@@ -42,98 +42,14 @@ if (!defined('GALETTE_ROOT')) {
 
 use Analog\Analog as Analog;
 
-function PasswordImageName($c)
-{
-  return 'pw_' . md5($c) . '.png';
-}
-
-function PasswordImageClean()
-{
-    // cleans any password image file older than 1 minute
-    $dh = @opendir(GALETTE_TEMPIMAGES_PATH);
-    while ( $file=readdir($dh) ) {
-        if (substr($file,0,3) == 'pw_'
-            && time() - filemtime(GALETTE_TEMPIMAGES_PATH . '/' . $file) > 60
-        ) {
-            unlink(GALETTE_TEMPIMAGES_PATH . '/' . $file);
-        }
-    }
-}
-
-function PasswordImage()
-{
-    // outputs a png image for a random password
-    // and a crypted string for it. The filename
-    // for this image can be computed from the crypted
-    // string by PasswordImageName.
-    // the retrun value is just the crypted password.
-
-    PasswordImageClean(); // purges former passwords
-    $gp = new Galette\Core\Password();
-    $mdp = $gp->makeRandomPassword();
-    $c = crypt($mdp);
-    $png = imagecreate(10 + 7.5 * strlen($mdp), 18);
-    $bg = imagecolorallocate($png, 160, 160, 160);
-    imagestring($png, 3, 5, 2, $mdp, imagecolorallocate($png, 0, 0, 0));
-    $file = GALETTE_TEMPIMAGES_PATH . '/' . PasswordImageName($c);
-
-    imagepng($png,$file);
-    // The perms of the file can be wrong, try to correct it
-    // WARN : chmod() can be desacivated (i.e. : Free/Online)
-    @chmod($file, 0644);
-    return $c;
-}
-
-function PasswordCheck($pass,$crypt)
-{
-  return crypt($pass,$crypt)==$crypt;
-}
-
-function print_img($img)
-{
-    $file = GALETTE_TEMPIMAGES_PATH . '/' . $img;
-    $image_type = false;
-    if ( function_exists('exif_imagetype') ) {
-        $image_type = exif_imagetype($file);
-    } else {
-        $image_size = getimagesize($file);
-        if(is_array($image_size) && isset($image_size[2])) {
-            $image_type = $image_size[2];
-        }
-    }
-    if ( $image_type ) {
-        return $file;
-    }
-}
-/** /moved to GalettePassword */
-
-function isSelected($champ1, $champ2)
-{
-    if ($champ1 == $champ2) {
-        echo " selected";
-    }
-}
-
-function isChecked($champ1, $champ2)
-{
-    if ($champ1 == $champ2) {
-        echo " checked";
-    }
-}
-
-function txt_sqls($champ)
-{
-  return "'" . str_replace("'", "\'", str_replace('\\', '', $champ)) . "'";
-}
-
 /**
  * Check URL validity
  *
- * @param string $url
+ * @param string $url The URL to check
  *
  * @return boolean
  */
-function is_valid_web_url($url)
+function isValidWebUrl($url)
 {
     return (preg_match(
         '#^http[s]?\\:\\/\\/[a-z0-9\-]+\.([a-z0-9\-]+\.)?[a-z]+#i',
