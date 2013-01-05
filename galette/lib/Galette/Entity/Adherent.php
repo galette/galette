@@ -821,7 +821,7 @@ class Adherent
                     case 'url_adh':
                         if ( $value == 'http://' ) {
                             $this->$prop = '';
-                        } elseif ( !is_valid_web_url($value) ) {
+                        } elseif ( !isValidWebUrl($value) ) {
                             $errors[] = _T("- Non-valid Website address! Maybe you've skipped the http:// ?");
                         }
                         break;
