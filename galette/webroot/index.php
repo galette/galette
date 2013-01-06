@@ -290,13 +290,16 @@ $app->get(
 
         $dyn_fields = new DynamicFields();
 
-        // flagging required fields
-        $requires = new Required();
-        $required = $requires->getRequired();
-
         $member = new Adherent();
         //mark as self membership
         $member->setSelfMembership();
+
+        // flagging required fields
+        $fc = new FieldsConfig(Adherent::TABLE, $member->fields);
+        $required = $fc->getRequired();
+        // flagging fields visibility
+        $visibles = $fc->getVisibilities();
+
 
         // disable some fields
         $disabled  = $member->disabled_fields;
@@ -314,9 +317,9 @@ $app->get(
         }
 
         //image to defeat mass filling forms
-        $spam_pass = PasswordImage();
-        $s = PasswordImageName($spam_pass);
-        $spam_img = print_img($s);
+        $spam = new Galette\Core\PasswordImage();
+        $spam_pass = $spam->newImage();
+        $spam_img = $spam->getImage();
 
         $dynamic_fields = $dyn_fields->prepareForDisplay(
             'adh', $adherent['dyn'], $disabled['dyn'], 1
@@ -336,6 +339,7 @@ $app->get(
                 'page_title'        => _T("Subscription"),
                 'parent_tpl'        => 'public_page.tpl',
                 'required'          => $required,
+                'visibles'          => $visibles,
                 'disabled'          => $disabled,
                 'member'            => $member,
                 'self_adh'          => true,
