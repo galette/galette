@@ -437,19 +437,19 @@ case 'u3':
     // check file permissions
     $perms_ok = true;
     $files_need_rw = array (
-        '/templates_c',
-        '/photos',
-        '/cache',
-        '/tempimages',
-        '/config',
-        '/exports',
-        '/logs'
+        GALETTE_COMPILE_DIR,
+        GALETTE_PHOTOS_PATH,
+        GALETTE_CACHE_DIR,
+        GALETTE_TEMPIMAGES_PATH,
+        GALETTE_CONFIG_PATH,
+        GALETTE_EXPORTS_PATH,
+        GALETTE_LOGS_PATH
     );
 
     $files_perms_class = $class . 'ok';
     $files = '';
     foreach ($files_need_rw as $file) {
-        if ( !is_writable(dirname(__FILE__) . '/..' . $file) ) {
+        if ( !is_writable($file) ) {
             $perms_ok = false;
             $files_perms_class = $class . 'bad';
             $files .= '<li class="install-bad">' . $file . '</li>';
