@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Main page and login
+ * Simple redirection just in case
  *
  * PHP version 5
  *
@@ -35,21 +35,7 @@
  * @link      http://galette.tuxfamily.org
  */
 
-/** @ignore */
-require_once 'includes/galette.inc.php';
-//fo default, there is no login error
-$loginfault = false;
-
-if ( isset($_GET['logout']) ) {
-    $login->logOut();
-    $session['login'] = null;
-    unset($session['login']);
-    $session['history'] = null;
-    unset($session['history']);
-}
-
-// Authentication procedure
-if (isset($_POST['ident'])) {
+header('location:webroot/');
     $pw_superadmin = false;
     if ( $_POST['login'] == $preferences->pref_admin_login ) {
         $pw_superadmin = password_verify(
@@ -62,66 +48,6 @@ if (isset($_POST['ident'])) {
             );
         }
     }
-    if ( $_POST['login'] == $preferences->pref_admin_login
-        && $pw_superadmin
-    ) {
-        $login->logAdmin($_POST['login'], $preferences);
-        $session['login'] = serialize($login);
-        $hist->add(_T("Login"));
-        if ( !isset($_COOKIE['show_galette_dashboard'])
-            || $_COOKIE['show_galette_dashboard'] == 1
-        ) {
-            header('location: desktop.php');
-            die();
-        } else {
-            header('location: gestion_adherents.php');
-            die();
-        }
-    } else {
-        $login->logIn($_POST['login'], $_POST['password']);
 
-        if ( $login->isLogged() ) {
-            $session['login'] = serialize($login);
-            $hist->add(_T("Login"));
-            /** FIXME: users should no try to go to admin interface */
-            if ( $login->isAdmin() || $login->isStaff() ) {
-                if ( !isset($_COOKIE['show_galette_dashboard'])
-                    || $_COOKIE['show_galette_dashboard'] == 1
-                ) {
-                    header('location: desktop.php');
-                    die();
-                } else {
-                    header('location: gestion_adherents.php');
-                    die();
-                }
-            } else {
-                header('location: voir_adherent.php');
-                die();
-            }
-        } else {
-            $loginfault = true;
-            $hist->add(_T("Authentication failed"), $_POST['login']);
-        }
-    }
-}
-
-if ( !$login->isLogged() ) {
-    // display page
-    $tpl->assign('loginfault', $loginfault);
-    $content = $tpl->fetch('index.tpl');
-    $tpl->assign('page_title', _T("Login"));
-    $tpl->assign('content', $content);
-    $tpl->display('public_page.tpl');
-} else {
-    if ( isset($profiler) ) {
-        $profiler->stop();
-    }
-
-    if ( $login->isAdmin() || $login->isStaff() ) {
-        header('location: gestion_adherents.php');
         die();
-    } else {
-        header('location: voir_adherent.php');
         die();
-    }
-}
