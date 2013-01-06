@@ -1,4 +1,6 @@
-        <form action="preferences.php" method="post" enctype="multipart/form-data" class="tabbed">
+{extends file="page.tpl"}
+{block name="content"}
+        <form action="{urlFor name="store-preferences"}" method="post" enctype="multipart/form-data" class="tabbed">
         <div id="prefs_tabs">
             <ul>
                 <li><a href="#general">{_T string="General"}</a></li>
@@ -184,7 +186,7 @@
                 <p>
                     <label for="pref_email_reply_to" class="bline tooltip" title="{_T string="Leave empty to use Sender Email as reply address"}">{_T string="Reply-To Email:"}</label>
                     <span class="tip">{_T string="Leave empty to use Sender Email as reply address"}</span>
-                    <input type="text" name="pref_email_reply_to" id="pref_email_reply_to" value="{$pref.pref_email_reply_to}" maxlength="100" size="30"{if isset($reminder.pref_email_reply_to) and $required.pref_email_reply_to eq 1} required{/if}/>
+                    <input type="text" name="pref_email_reply_to" id="pref_email_reply_to" value="{$pref.pref_email_reply_to}" maxlength="100" size="30"{if isset($required.pref_email_reply_to) and $required.pref_email_reply_to eq 1} required{/if}/>
                 </p>
                 <p>
                     <label for="pref_email_newadh" class="bline tooltip" title="{_T string="Recipient of new online registation emails"}">{_T string="Members administrator's Email:"}</label>
@@ -508,3 +510,4 @@
 
             };
         </script>
+{/block}

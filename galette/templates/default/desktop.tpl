@@ -14,7 +14,7 @@
                 <a id="reminder" href="{$galette_base_path}reminder.php" title="{_T string="Send reminders to late members"}">{_T string="Reminders"}</a>
 {/if}
 {if $login->isAdmin()}
-                <a id="prefs" href="{$galette_base_path}preferences.php" title="{_T string="Set applications preferences (address, website, member's cards configuration, ...)"}">{_T string="Settings"}</a>
+                <a id="prefs" href="{urlFor name="preferences"}" title="{_T string="Set applications preferences (adress, website, member's cards configuration, ...)"}">{_T string="Settings"}</a>
                 <a id="plugins" href="{$galette_base_path}plugins.php" title="{_T string="Informations about available plugins"}">{_T string="Plugins"}</a>
 {/if}
             </div>
