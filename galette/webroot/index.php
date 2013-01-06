@@ -40,6 +40,7 @@ use Galette\Repository\Members as Members;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\Required as Required;
 use Galette\Entity\DynamicFields as DynamicFields;
+use Galette\Entity\FieldsConfig as FieldsConfig;
 use Galette\Filters\MembersList as MembersList;
 use Galette\Repository\Groups as Groups;
 use \Slim\Extras\Views\Smarty as SmartyView;
@@ -613,6 +614,10 @@ $app->get(
             unset($session['account_success']);
         }*/
 
+        // flagging fields visibility
+        $fc = new FieldsConfig(Adherent::TABLE, $member->fields);
+        $visibles = $fc->getVisibilities();
+
         $app->render(
             'voir_adherent.tpl',
             array(
@@ -627,6 +632,7 @@ $app->get(
                 'dynamic_fields'    => $dynamic_fields,
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
+                'visibles'          => $visibles
             )
         );
 
