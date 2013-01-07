@@ -43,6 +43,7 @@ use Galette\Entity\DynamicFields as DynamicFields;
 use Galette\Entity\FieldsConfig as FieldsConfig;
 use Galette\Filters\MembersList as MembersList;
 use Galette\Repository\Groups as Groups;
+use \Analog\Analog as Analog;
 use \Slim\Extras\Views\Smarty as SmartyView;
 
 $time_start = microtime(true);
@@ -1081,7 +1082,6 @@ $app->post(
                                     $logo = new Galette\Core\Logo();
                                 }
                                 $session['logo'] = serialize($logo);
-                                $tpl->assign('logo', $logo);
                             }
                         }
                     } else if ($_FILES['logo']['error'] !== UPLOAD_ERR_NO_FILE) {
@@ -1101,7 +1101,6 @@ $app->post(
                     } else {
                         $logo = new Galette\Core\Logo(); //get default Logo
                         $session['logo'] = serialize($logo);
-                        $tpl->assign('logo', $logo);
                     }
                 }
 
