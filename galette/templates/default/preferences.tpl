@@ -27,7 +27,7 @@
                 <p>
                     <label for="logo_picture" class="bline">{_T string="Logo:"}</label>
 {if $logo->isCustom()}
-                    <img src="{$galette_base_path}picture.php?logo=true&amp;rand={$time}" class="picture" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="{_T string="Current logo"}"/><br/>
+                    <img src="{urlFor name="logo"}" class="picture" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="{_T string="Current logo"}"/><br/>
                     <label for="del_logo">{_T string="Delete image"}</label><input type="checkbox" name="del_logo" id="del_logo" value="1" /><br />
 {/if}
                     <input type="file" name="logo" id="logo_picture"{if $GALETTE_MODE eq 'DEMO'} disabled="disabled"{/if}/>
