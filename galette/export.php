@@ -56,6 +56,23 @@ $written = array();
 
 $tables_list = $zdb->getTables();
 
+if ( isset($_GET['sup']) ) {
+    $res = $csv->removeExport($_GET['sup']);
+    if ( $res === true ) {
+        $success_detected[] = str_replace(
+            '%export',
+            $_GET['sup'],
+            _T("'%export' file has been removed from disk.")
+        );
+    } else {
+        $error_detected[] = str_replace(
+            '%export',
+            $_GET['sup'],
+            _T("Cannot remove '%export' from disk :/")
+        );
+    }
+}
+
 if ( isset( $_POST['export_tables'] ) && $_POST['export_tables'] != '' ) {
     foreach ( $_POST['export_tables'] as $table) {
         $select = new \Zend_Db_Select($zdb->db);
@@ -126,6 +143,7 @@ $tpl->assign('page_title', _T("CVS database Export"));
 $tpl->assign('tables_list', $tables_list);
 $tpl->assign('written', $written);
 $tpl->assign('existing', $existing);
+$tpl->assign('success_detected', $success_detected);
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('parameted', $parameted);
 $content = $tpl->fetch('export.tpl');

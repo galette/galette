@@ -19,6 +19,7 @@
                                 <th class="listing">{_T string="Name"}</th>
                                 <th class="listing">{_T string="Date"}</th>
                                 <th class="listing">{_T string="Size"}</th>
+                                <th class="listing actions_row"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -32,6 +33,9 @@
                                 </td>
                                 <td class="tbl_line_{if $smarty.foreach.existing_list.iteration % 2 eq 0}even{else}odd{/if}">
                                     {$export.size}
+                                </td>
+                                <td class="actions_row tbl_line_{if $smarty.foreach.existing_list.iteration % 2 eq 0}even{else}odd{/if}">
+                                    <a href="export.php?sup={$export.name}" title="{_T string="Remove '%export' from disk" pattern="/%export/" replace=$export.name}"><img src="{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
                                 </td>
                             </tr>
     {/foreach}

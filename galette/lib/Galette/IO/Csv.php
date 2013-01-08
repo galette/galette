@@ -267,6 +267,33 @@ class Csv
     }
 
     /**
+     * Remove existing export file
+     *
+     * @param string $name File name
+     *
+     * @return boolean
+     */
+    public function removeExport($name)
+    {
+        //let's ensure we do not have a path here
+        $name = basename($name);
+        $filename=self::DEFAULT_DIRECTORY . $name;
+
+        if ( file_exists($filename) ) {
+            $removed = unlink($filename);
+            return $removed;
+        } else {
+            Analog::log(
+                'Export file ' . $filename .
+                ' does not exists, no way to remove it!',
+                Analog::ERROR
+            );
+            return false;
+        }
+
+    }
+
+    /**
     * Run selected export
     *
     * @param string $id export's id to run
