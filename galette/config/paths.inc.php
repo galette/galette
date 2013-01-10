@@ -88,3 +88,9 @@ if ( !defined('GALETTE_PHOTOS_PATH') ) {
 if ( !defined('GALETTE_TEMPIMAGES_PATH') ) {
     define('GALETTE_TEMPIMAGES_PATH', GALETTE_ROOT . 'tempimages/');
 }
+if ( !defined('GALETTE_DATA_PATH') ) {
+    define('GALETTE_DATA_PATH', GALETTE_ROOT . 'data/');
+}
+if ( !defined('GALETTE_SQLITE_PATH') ) {
+    define('GALETTE_SQLITE_PATH', GALETTE_DATA_PATH . 'database.sqlite');
+}

@@ -73,20 +73,30 @@ class Db extends \Zend_Db
                 $_type = 'Pdo_Mysql';
             } else if ( TYPE_DB === 'pgsql' ) {
                 $_type = 'Pdo_Pgsql';
+            } else if ( TYPE_DB == 'sqlite' ) {
+                $_type = 'Pdo_Sqlite';
             } else {
                 throw new \Exception;
             }
 
+            if (TYPE_DB != 'sqlite') {
+                $_options = array(
+                        'host'     => HOST_DB,
+                        'port'     => PORT_DB,
+                        'username' => USER_DB,
+                        'password' => PWD_DB,
+                        'dbname'   => NAME_DB
+                    );
+            } else {
+                $_options = array(
+                        'dbname'   => GALETTE_SQLITE_PATH,
+                    );
+            }
+
             $this->_db = \Zend_Db::factory(
                 $_type,
-                array(
-                    'host'     => HOST_DB,
-                    'port'     => PORT_DB,
-                    'username' => USER_DB,
-                    'password' => PWD_DB,
-                    'dbname'   => NAME_DB
-                )
-            );
+                $_options
+                );
             $this->_db->getConnection();
             $this->_db->setFetchMode(\Zend_Db::FETCH_OBJ);
             Analog::log(
@@ -138,6 +148,8 @@ class Db extends \Zend_Db
             $res = $select->query()->fetch();
             return $res->version === GALETTE_DB_VERSION;
         } catch ( \Exception $e ) {
+            var_dump($e->getMessage());
+            exit;
             Analog::log(
                 'Cannot check database version: ' . $e->getMessage(),
                 Analog::ERROR
@@ -205,7 +217,7 @@ class Db extends \Zend_Db
     *
     * @return true|array true if connection was successfull, an array with some infos otherwise
     */
-    public static function testConnectivity($type, $user, $pass, $host, $port, $db)
+    public static function testConnectivity($type, $user = null, $pass = null, $host = null, $port = null, $db = null)
     {
         $_type = null;
         try {
@@ -213,20 +225,30 @@ class Db extends \Zend_Db
                 $_type = 'Pdo_Mysql';
             } else if ( $type === 'pgsql' ) {
                 $_type = 'Pdo_Pgsql';
+            } else if ( $type == 'sqlite' ) {
+                $_type = 'Pdo_Sqlite';
             } else {
                 throw new \Exception;
             }
 
+            if ($type != 'sqlite') {
+                $_options = array(
+                        'host'     => $host,
+                        'port'     => $port,
+                        'username' => $user,
+                        'password' => $pass,
+                        'dbname'   => $db
+                    );
+            } else {
+                $_options = array(
+                        'dbname'   => GALETTE_SQLITE_PATH,
+                    );
+            }
+
             $_db = \Zend_Db::factory(
                 $_type,
-                array(
-                    'host'     => $host,
-                    'port'     => $port,
-                    'username' => $user,
-                    'password' => $pass,
-                    'dbname'   => $db
-                )
-            );
+                $_options
+                );
             $_db->getConnection();
             $_db->setFetchMode(\Zend_Db::FETCH_OBJ);
             $_db->closeConnection();

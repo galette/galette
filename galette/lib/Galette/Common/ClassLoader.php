@@ -66,6 +66,11 @@ class ClassLoader
      */
     public function __construct($ns = null, $includePath = null)
     {
+        if (!file_exists($includePath))
+        {
+            throw new \RuntimeException('Include path "'.$includePath.'" doesn\'t exists');
+        }
+
         $this->namespace = $ns;
         $this->includePath = $includePath;
     }
