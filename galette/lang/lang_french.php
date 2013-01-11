@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Fri Jan 11 20:29:53 2013 (GMT)
+// This file was automatically generated on Fri Jan 11 20:32:07 2013 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -2341,7 +2341,7 @@ $lang['Manage statuses'] = 'Gestion des statuts';
 $lang['Choose label to translate'] = 'Choisissez le libellé à traduire';
 
 // ../lib/Galette/Core/CheckModules.php:130 ../lib/Galette/Core/CheckModules.php:132 
-$lang['\'openssl\' support'] = 'support \"openssl\"';
+$lang['\'openssl\' support'] = 'support « openssl »';
 
 // ../templates/default/desktop.tpl:3 
 $lang['Activities'] = 'Activités';
@@ -3178,7 +3178,7 @@ $lang['company fee'] = 'cotisation personne morale';
 $lang['Cash'] = 'Espèces';
 
 // ../lib/Galette/Core/CheckModules.php:88 ../lib/Galette/Core/CheckModules.php:90 
-$lang['either \'mysql\', \'pgsql\' or \'sqlite\' PDO driver'] = 'l\'un des pilotes PDO \"mysql\", \"pgsql\" ou \"sqlite\"';
+$lang['either \'mysql\', \'pgsql\' or \'sqlite\' PDO driver'] = 'l\'un des pilotes PDO « mysql », « pgsql » ou « sqlite »';
 
 // ../includes/i18n.inc.php:359 
 $lang['reduced annual fee'] = 'cotisation annuelle réduite';

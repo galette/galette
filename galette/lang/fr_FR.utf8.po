@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2013-01-11 21:29+0100\n"
+"PO-Revision-Date: 2013-01-11 21:31+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -2476,7 +2476,7 @@ msgstr "[Courriel]"
 #: ../lib/Galette/Core/CheckModules.php:88
 #: ../lib/Galette/Core/CheckModules.php:90
 msgid "either 'mysql', 'pgsql' or 'sqlite' PDO driver"
-msgstr "l'un des pilotes PDO \"mysql\", \"pgsql\" ou \"sqlite\""
+msgstr "l'un des pilotes PDO « mysql », « pgsql » ou « sqlite »"
 
 #: ../champs_adherents.php:65 ../includes/members_fields.php:270
 #: ../templates/default/member.tpl:265
@@ -2970,7 +2970,7 @@ msgstr "Identifiant&nbsp;:"
 #: ../lib/Galette/Core/CheckModules.php:130
 #: ../lib/Galette/Core/CheckModules.php:132
 msgid "'openssl' support"
-msgstr "support \"openssl\""
+msgstr "support « openssl »"
 
 #: ../templates/default/preferences.tpl:205
 msgid "Using Sendmail server"
