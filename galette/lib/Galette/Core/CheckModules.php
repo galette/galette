@@ -161,34 +161,29 @@ class CheckModules
      */
     public function toHtml()
     {
-        $html = '';
+        $html = null;
         if ( count($this->_missing) > 0 ) {
-            $html .= '<h3 >' . _T("Missing required modules")  . '</h3>';
-            $html .= '<ul class="list">';
             foreach ( $this->_missing as $m ) {
-                $html .= '<li class="install-bad">' . $m  . '</li>';
+                $html .= '<li><span>' . $m  . '</span><span><img src="' .
+                    GALETTE_TPL_SUBDIR  . 'images/icon-invalid.png" alt="' .
+                    _T("Ko") . '"/></span></li>';
             }
-            $html .= '</ul>';
         }
 
-        $html .= '<h3>' . _T("Active used modules")  . '</h3>';
-        if ( count($this->_good) === 0 ) {
-            $html .= "<p>" .  _T("Any required module loaded yet!") . "</p>";
-        } else {
-            $html .= '<ul class="list">';
+        if ( count($this->_good) > 0 ) {
             foreach ( $this->_good as $m ) {
-                $html .= '<li class="install-ok">' . $m  . '</li>';
+                $html .= '<li><span>' . $m  . '</span><span><img src="' .
+                    GALETTE_TPL_SUBDIR  . 'images/icon-valid.png" alt="' .
+                    _T("Ok") . '"/></span></li>';
             }
-            $html .= '</ul>';
         }
 
         if ( count($this->_should) > 0 ) {
-            $html .= '<h3 >' . _T("Modules that may be required")  . '</h3>';
-            $html .= '<ul class="list">';
             foreach ( $this->_should as $m ) {
-                $html .= '<li class="install-may">' . $m  . '</li>';
+                $html .= '<li><span>' . $m  . '</span><span><img src="' .
+                    GALETTE_TPL_SUBDIR  . 'images/icon-warning.png" alt=""' .
+                    '/></span></li>';
             }
-            $html .= '</ul>';
         }
 
         return $html;

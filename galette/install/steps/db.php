@@ -1,0 +1,174 @@
+
+<?php
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+
+/**
+ * Galette installation, database step
+ *
+ * PHP version 5
+ *
+ * Copyright © 2013 The Galette Team
+ *
+ * This file is part of Galette (http://galette.tuxfamily.org).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @category  Core
+ * @package   Galette
+ *
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2013 The Galette Team
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @version   SVN: $Id$
+ * @link      http://galette.tuxfamily.org
+ * @since     Available since 0.7.4dev - 2013-01-09
+ */
+
+use Galette\Core\Install as GaletteInstall;
+use Galette\Core\Db as GaletteDb;
+?>
+                <h2><?php echo _T("Database"); ?></h2>
+                <p><?php
+if ( $install->getMode() === GaletteInstall::INSTALL ) {
+    echo _T("If it hadn't been made, create a database and a user for Galette.");
+}
+if ( $install->isUpgrade() ) {
+    echo _T("Enter connection data for the existing database.");
+
+    if ( file_exists(GALETTE_CONFIG_PATH . 'config.inc.php') ) {
+        $conf = file_get_contents(GALETTE_CONFIG_PATH . 'config.inc.php');
+        if ( $conf !== false ) {
+            if ( !isset($_POST['install_dbtype']) ) {
+                $res = preg_match(
+                    '/TYPE_DB", "(.*)"\);/',
+                    $conf,
+                    $matches
+                );
+                if ( $matches[1] ) {
+                    $_POST['install_dbtype'] = $matches[1];
+                }
+            }
+            if ( !isset($_POST['install_dbhost']) ) {
+                $res = preg_match(
+                    '/HOST_DB", "(.*)"\);/',
+                    $conf,
+                    $matches
+                );
+                if ( $matches[1] ) {
+                    $_POST['install_dbhost'] = $matches[1];
+                }
+            }
+            if ( !isset($_POST['install_dbuser']) ) {
+                $res = preg_match(
+                    '/USER_DB", "(.*)"\);/',
+                    $conf,
+                    $matches
+                );
+                $_POST['install_dbuser'] = $matches[1];
+            }
+            if ( !isset($_POST['install_dbname']) ) {
+                $res = preg_match(
+                    '/NAME_DB", "(.*)"\);/',
+                    $conf,
+                    $matches
+                );
+                if ( $matches[1] ) {
+                    $_POST['install_dbname'] = $matches[1];
+                }
+            }
+            if ( !isset($_POST['install_dbprefix']) ) {
+                $res = preg_match(
+                    '/PREFIX_DB", "(.*)"\);/',
+                    $conf,
+                    $matches
+                );
+                if ( $matches[1] ) {
+                    $_POST['install_dbprefix'] = $matches[1];
+                }
+            }
+        }
+    }
+}
+
+//define default database port
+$default_dbport = GaletteDb::MYSQL_DEFAULT_PORT;
+if ( !isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql' ) {
+    $default_dbport = GaletteDb::MYSQL_DEFAULT_PORT;
+} else if ( $_POST['install_dbtype'] == 'pgsql' ) {
+    $default_dbport = GaletteDb::PGSQL_DEFAULT_PORT;
+}
+?><br />
+            <?php echo _T("The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."); ?></p>
+            <form action="installer.php" method="post">
+                <fieldset class="cssform">
+                    <legend class="ui-state-active ui-corner-top"><?php echo _T("Database"); ?></legend>
+                    <p>
+                        <label class="bline" for="install_dbtype"><?php echo _T("Database type:"); ?></label>
+                        <select name="install_dbtype" id="install_dbtype">
+                            <option value="mysql"<?php if ( isset($_POST['install_dbtype']) && $_POST['install_dbtype'] == 'mysql' ) {echo ' selected="selected"';} ?>>Mysql</option>
+                            <option value="pgsql"<?php if ( isset($_POST['install_dbtype']) && $_POST['install_dbtype'] == 'pgsql' ) {echo ' selected="selected"';} ?>>Postgresql</option>
+                        </select>
+                    </p>
+                    <p>
+                        <label class="bline" for="install_dbhost"><?php echo _T("Host:"); ?></label>
+                        <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo (isset($_POST['install_dbhost']))?$_POST['install_dbhost']:'localhost'; ?>" required/>
+                    </p>
+                    <p>
+                        <label class="bline" for="install_dbport"><?php echo _T("Port:"); ?></label>
+                        <input type="text" name="install_dbport" id="install_dbport" value="<?php echo (isset($_POST['install_dbport']))?$_POST['install_dbport']:$default_dbport; ?>" required/>
+                    </p>
+                    <p>
+                        <label class="bline" for="install_dbuser"><?php echo _T("User:"); ?></label>
+                        <input type="text" name="install_dbuser" id="install_dbuser" value="<?php if(isset($_POST['install_dbuser'])) echo $_POST['install_dbuser']; ?>" required/>
+                    </p>
+                    <p>
+                        <label class="bline" for="install_dbpass"><?php echo _T("Password:"); ?></label>
+                        <input type="password" name="install_dbpass" id="install_dbpass" value="<?php if(isset($_POST['install_dbpass'])) echo $_POST['install_dbpass']; ?>" required/>
+                    </p>
+                    <p>
+                        <label class="bline" for="install_dbname"><?php echo _T("Database:"); ?></label>
+                        <input type="text" name="install_dbname" id="install_dbname" value="<?php if(isset($_POST['install_dbname'])) echo $_POST['install_dbname']; ?>" required/>
+                    </p>
+                    <p>
+<?php
+if ( $install->isUpgrade() ) {
+    echo '<span class="required">' .
+        _T("(Indicate the CURRENT prefix of your Galette tables)") .
+        '</span><br/>';
+}
+?>
+                        <label class="bline" for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
+                        <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo (isset($_POST['install_dbprefix']))?$_POST['install_dbprefix']:'galette_'; ?>" required/>
+                    </p>
+                </fieldset>
+                <p id="btn_box">
+                    <input type="submit" id="stepback_btn" name="stepback_btn" value="<?php echo _T("Back"); ?>"/>
+                    <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
+                </p>
+            </form>
+            <script type="text/javascript">
+                $(function(){
+                    $('#install_dbtype').change(function(){
+                        var _db = $(this).val();
+                        var _port = null;
+                        if ( _db === 'pgsql' ) {
+                            _port = <?php echo GaletteDb::PGSQL_DEFAULT_PORT; ?>;
+                        } else if ( _db === 'mysql' ) {
+                            _port = <?php echo GaletteDb::MYSQL_DEFAULT_PORT; ?>;
+                        }
+                        $('#install_dbport').val(_port);
+                    });
+                });
+            </script>
