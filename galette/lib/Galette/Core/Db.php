@@ -148,8 +148,6 @@ class Db extends \Zend_Db
             $res = $select->query()->fetch();
             return $res->version === GALETTE_DB_VERSION;
         } catch ( \Exception $e ) {
-            var_dump($e->getMessage());
-            exit;
             Analog::log(
                 'Cannot check database version: ' . $e->getMessage(),
                 Analog::ERROR
