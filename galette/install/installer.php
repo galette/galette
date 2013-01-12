@@ -78,17 +78,8 @@ function initDbConstants($install)
         define('PWD_DB', $install->getDbPass());
         define('HOST_DB', $install->getDbHost());
         define('PORT_DB', $install->getDbPort());
-        define('NAME_DB', $install->getDbName);
-    }
-}
-
-if ( $install->postCheckDb() || $install->isDbCheckStep() ) {
-    //if we have passed database configuration, define required constants
-    initDbConstants($install);
-
-    if ( $install->postCheckDb() ) {
-        //while before check db, connection is not checked
-        $zdb = new GaletteDb();
+        define('NAME_DB', $install->getDbName());
+        define('PREFIX_DB', $install->getTablesPrefix());
     }
 }
 
@@ -139,7 +130,50 @@ if ( isset($_POST['stepback_btn']) ) {
     } elseif ( $install->isUpgrade() ) {
         $install->atVersionSelection();
     }
+} elseif ( isset($_POST['install_dbwrite_ok']) ) {
+    $install->atAdminStep();
+} elseif ( isset($_POST['install_adminlogin'])
+    && isset($_POST['install_adminpass'])
+) {
+
+    if ( $_POST['install_adminlogin'] == '' ) {
+        $error_detected[] = _T("No user name");
+    }
+    if ( strpos($_POST['install_adminlogin'], '@') != false ) {
+        $error_detected[] = _T("The username cannot contain the @ character");
+    }
+    if ( $_POST['install_adminpass'] == '' ) {
+        $error_detected[] = _T("No password");
+    }
+    if ( ! isset($_POST['install_passwdverified'])
+        && strcmp(
+            $_POST['install_adminpass'],
+            $_POST['install_adminpass_verif']
+        )
+    ) {
+        $error_detected[] = _T("Passwords mismatch");
+    }
+    if ( count($error_detected) == 0 ) {
+        $install->setAdminInfos(
+            $_POST['install_adminlogin'],
+            $_POST['install_adminpass']
+        );
+        $install->atGaletteInitStep();
+    }
+} elseif ( $_POST['install_prefs_ok'] ) {
+    $install->atEndStep();
 }
+
+if ( !$install->isEndStep() && ($install->postCheckDb() || $install->isDbCheckStep()) ) {
+    //if we have passed database configuration, define required constants
+    initDbConstants($install);
+
+    if ( $install->postCheckDb() ) {
+        //while before check db, connection is not checked
+        $zdb = new GaletteDb();
+    }
+}
+
 
 header('Content-Type: text/html; charset=UTF-8');
 ?>
@@ -214,6 +248,12 @@ if ( $install->isCheckStep() ) {
     //TODO
 } else if ( $install->isDbinstallStep() ) {
     include_once 'steps/db_install.php';
+} else if ( $install->isAdminStep() ) {
+    include_once 'steps/admin.php';
+} else if ( $install->isGaletteInitStep()  ) {
+    include_once 'steps/galette.php';
+} else if ( $install->isEndStep() ) {
+    include_once 'steps/end.php';
 }
 ?>
             </div>
@@ -224,12 +264,11 @@ if ( $install->isCheckStep() ) {
                     <li<?php if( $install->isCheckStep() ) echo ' class="current"'; ?>><?php echo _T("Checks"); ?> - </li>
                     <li<?php if( $install->isTypeStep() ) echo ' class="current"'; ?>><?php echo _T("Installation mode"); ?> - </li>
                     <li<?php if( $install->isDbStep() ) echo ' class="current"'; ?>><?php echo _T("Database"); ?> - </li>
-                    <?php /*<li<?php if( $step == 'i5' || $step == 'u5' ) echo ' class="current"'; ?>><?php echo _T("Access to the database"); ?> - </li>
-                    <li<?php if( $step == 'i6' || $step == 'u6' ) echo ' class="current"'; ?>><?php echo _T("Access permissions to database"); ?> - </li>
-                    <li<?php if( $step == 'i7' || $step == 'u7' ) echo ' class="current"'; ?>><?php echo _T("Tables Creation/Update"); ?> - </li>
-                    <li<?php if( $step == 'i8' || $step == 'u8' ) echo ' class="current"'; ?>><?php echo _T("Admin parameters"); ?> - </li>
-                    <li<?php if( $step == 'i9' || $step == 'u9' ) echo ' class="current"'; ?>><?php echo _T("Saving the parameters"); ?> - </li>
-                    <li<?php if( $step == 'i10' || $step == 'u10' ) echo ' class="current"'; ?>><?php echo _T("End!"); ?></li> */ ?>
+                    <li<?php if( $install->isDbCheckStep() ) echo ' class="current"'; ?>><?php echo _T("Database access/permissions"); ?> - </li>
+                    <li<?php if( $install->isDbinstallStep() ) echo ' class="current"'; ?>><?php echo _T("Database installation"); ?> - </li>
+                    <li<?php if( $install->isAdminStep() ) echo ' class="current"'; ?>><?php echo _T("Admin parameters"); ?> - </li>
+                    <li<?php if( $install->isGaletteInitStep() ) echo ' class="current"'; ?>><?php echo _T("Galette initialisation"); ?> - </li>
+                    <li<?php if( $install->isEndStep() ) echo ' class="current"'; ?>><?php echo _T("End!"); ?></li>
                 </ol>
             </footer>
         </section>
@@ -237,5 +276,7 @@ if ( $install->isCheckStep() ) {
     </body>
 </html>
 <?php
-$session[md5(GALETTE_ROOT)] = serialize($install);
+if ( !$install->isEndStep() ) {
+    $session[md5(GALETTE_ROOT)] = serialize($install);
+}
 ?>

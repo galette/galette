@@ -81,8 +81,9 @@ if ( file_exists(GALETTE_CONFIG_PATH . 'behavior.inc.php')
     include_once GALETTE_CONFIG_PATH . 'behavior.inc.php';
 }
 
-if ( !$installer || $installed ) { //If we're not working from installer
-    require_once GALETTE_CONFIG_PATH . 'config.inc.php';
+if ( isset($installer) && $installer !== true ) {
+    //If we're not working from installer
+    include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 }
 
 if ( !function_exists('password_hash') ) {

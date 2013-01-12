@@ -68,17 +68,12 @@ if ( $db_connected === true ) {
             'debug'     => $results['create']->getMessage(),
             'res'       => false
         );
-        /*$result .= '<li class="install-bad debuginfos">' .
-            _T("CREATE operation not allowed") . '<span>' .
-            $results['create']->getMessage() . '</span></li>';*/
         $error = true;
     } elseif ( $results['create'] != '' ) {
         $result[] = array(
             'message'   => _T("CREATE operation allowed"),
             'res'       => true
         );
-        /*$result .= '<li class="install-ok">' .
-            _T("CREATE operation allowed") . '</li>';*/
     }
 
     if ( $results['insert'] instanceof Exception ) {
@@ -87,17 +82,12 @@ if ( $db_connected === true ) {
             'debug'     => $results['insert']->getMessage(),
             'res'       => false
         );
-        /*$result .= '<li class="install-bad debuginfos">' .
-            _T("INSERT operation not allowed") . '<span>' .
-            $results['insert']->getMessage() . '</span></li>';*/
         $error = true;
     } elseif ( $results['insert'] != '' ) {
         $result[] = array(
             'message'   => _T("INSERT operation allowed"),
             'res'       => true
         );
-        /*$result .= '<li class="install-ok">' .
-            _T("INSERT operation allowed") . '</li>';*/
     }
 
     if ( $results['update'] instanceof Exception ) {
@@ -106,17 +96,12 @@ if ( $db_connected === true ) {
             'debug'     => $results['update']->getMessage(),
             'res'       => false
         );
-        /*$result .= '<li class="install-bad debuginfos">' .
-            _T("UPDATE operation not allowed") . '<span>' .
-            $results['update']->getMessage() . '</span></li>';*/
         $error = true;
     } elseif ( $results['update'] != '' ) {
         $result[] = array(
             'message'   => _T("UPDATE operation allowed"),
             'res'       => true
         );
-        /*$result .= '<li class="install-ok">' .
-            _T("UPDATE operation allowed") . '</li>';*/
     }
 
     if ( $results['select'] instanceof Exception ) {
@@ -125,17 +110,12 @@ if ( $db_connected === true ) {
             'debug'     => $results['select']->getMessage(),
             'res'       => false
         );
-        /*$result .= '<li class="install-bad debuginfos">' .
-            _T("SELECT operation not allowed") . '<span>' .
-            $results['select']->getMessage() . '</span></li>';*/
         $error = true;
     } elseif ( $results['select'] != '' ) {
         $result[] = array(
             'message'   => _T("SELECT operation allowed"),
             'res'       => true
         );
-        /*$result .= '<li class="install-ok">' .
-            _T("SELECT operation allowed") . '</li>';*/
     }
 
     if ( $results['delete'] instanceof Exception ) {
@@ -144,17 +124,12 @@ if ( $db_connected === true ) {
             'debug'     => $results['delete']->getMessage(),
             'res'       => false
         );
-        /*$result .= '<li class="install-bad debuginfos">' .
-            _T("DELETE operation not allowed") . '<span>' .
-            $results['delete']->getMessage() . '</span></li>';*/
         $error = true;
     } elseif ( $results['delete'] != '' ) {
         $result[] = array(
             'message'   => _T("DELETE operation allowed"),
             'res'       => true
         );
-        /*$result .= '<li class="install-ok">' .
-            _T("DELETE operation allowed") . '</li>';*/
     }
 
     if ( $results['drop'] instanceof Exception ) {
@@ -163,17 +138,12 @@ if ( $db_connected === true ) {
             'debug'     => $results['drop']->getMessage(),
             'res'       => false
         );
-        /*$result .= '<li class="install-bad debuginfos">' .
-            _T("DROP operation not allowed") . '<span>' .
-            $results['drop']->getMessage() . '</span></li>';*/
         $error = true;
     } elseif ( $results['drop'] != '' ) {
         $result[] = array(
             'message'   => _T("DROP operation allowed"),
             'res'       => true
         );
-        /*$result .= '<li class="install-ok">' .
-            _T("DROP operation allowed") . '</li>';*/
     }
 
     if ( $results['alter'] instanceof Exception ) {
@@ -182,17 +152,12 @@ if ( $db_connected === true ) {
             'debug'     => $results['alter']->getMessage(),
             'res'       => false
         );
-        /*$result .= '<li class="install-bad debuginfos">' .
-            _T("ALTER Operation not allowed") . '<span>' .
-            $results['alter']->getMessage() . '</span></li>';*/
         $error = true;
     } elseif ( $results['alter'] != '' ) {
         $result[] = array(
             'message'   => _T("ALTER operation allowed"),
             'res'       => true
         );
-        /*$result .= '<li class="install-ok">' .
-            _T("ALTER Operation allowed") . '</li>';*/
     }
 
     if ( $error ) {

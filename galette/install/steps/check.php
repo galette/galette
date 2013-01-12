@@ -97,7 +97,7 @@ if ( !$date_ok ) {
 ?>
                 <ul class="leaders">
                     <li>
-                        <span class="label"><?php echo _T("PHP version"); ?> (<?php echo PHP_VERSION . ' >= 5.3.0'; ?>)</span>
+                        <span><?php echo _T("PHP version"); ?> (<?php echo PHP_VERSION . ' >= 5.3.0'; ?>)</span>
                         <span><?php echo $install->getValidationImage($php_ok == true); ?></span>
                     </li>
                     <li>

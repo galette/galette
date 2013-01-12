@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Galette installation, database initialization
+ * Galette installation, Galette initialisation
  *
  * PHP version 5
  *
@@ -38,29 +38,27 @@
 use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
 
+$results = array();
+$oks = array();
+$errs = array();
+$install->reinitReport();
 
-//before doing anything else, we'll have to convert data to UTF-8
-//required since 0.7dev (if we're upgrading, 'f course)
-if ( $install->isUpgrade() ) {
-    //FIXME: maybe we can do that only on 0.7 upgrades,
-    //to save time? (methods are safe if rerun)
-    $zdb->convertToUTF($table_prefix);
-}
-
-//ok, let's run the scripts!
-$db_installed = $install->executeScripts($zdb);
+$config_file_ok = $install->writeConfFile();
+$objects_ok = $install->initObjects($i18n);
 ?>
                 <h2><?php echo $install->getStepTitle(); ?></h2>
 <?php
-if ( $db_installed === false ) {
-    echo '<p id="errorbox">' . _T("Database has not been installed!") . '</p>';
+
+if ( $config_file_ok === true && $objects_ok === true ) {
+    echo '<p id="infobox">' . _T("Configuration file created!") .
+        '<br/>' . _T("Data initialized.") . '</p>';
 } else {
-    echo '<p id="infobox">' . _T("Database has been installed :)")  . '</p>';
+    echo '<p id="errorbox">' . _T("An error occured :(") . '</p>';
 }
 ?>
                 <ul class="leaders">
 <?php
-foreach ( $install->getDbInstallReport() as $r  ) {
+foreach ( $install->getInitializationReport() as $r ) {
     ?>
                     <li>
                         <span><?php echo $r['message']; ?></span>
@@ -70,26 +68,25 @@ foreach ( $install->getDbInstallReport() as $r  ) {
 }
 ?>
                 </ul>
-
                 <form action="installer.php" method="POST">
                     <p id="btn_box">
 <?php
-if ( !$db_installed ) {
+if ( !$config_file_ok || !$objects_ok ) {
     ?>
                         <input type="submit" id="retry_btn" value="<?php echo _T("Retry"); ?>"/>
     <?php
 }
 ?>
 
-                        <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"<?php if ( !$db_installed ) { echo ' disabled="disabled"'; } ?>/>
+                        <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"<?php if ( !$config_file_ok || !$objects_ok ) { echo ' disabled="disabled"'; } ?>/>
 <?php
-if ( $db_installed ) {
+if ( $config_file_ok && $objects_ok ) {
     ?>
-                        <input type="hidden" name="install_dbwrite_ok" value="1"/>
+                        <input type="hidden" name="install_prefs_ok" value="1"/>
     <?php
 }
 
-if ( !$db_installed ) {
+if ( !$config_file_ok || !$objects_ok ) {
     //once DB is installed, that does not make sense to go back
     ?>
                         <input type="submit" id="btnback" name="stepback_btn" value="<?php echo _T("Back"); ?>"/>
