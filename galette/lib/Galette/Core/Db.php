@@ -121,12 +121,12 @@ class Db
                         'username' => $_user_db,
                         'password' => $_pwd_db,
                         'database' => $_name_db
-                    );
+                );
             } else {
                 $_options = array(
                         'driver'   => $_type,
                         'database' => GALETTE_SQLITE_PATH,
-                    );
+                );
             }
 
             $this->_db = new Adapter($_options);

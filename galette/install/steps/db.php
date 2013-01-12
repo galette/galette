@@ -1,4 +1,3 @@
-
 <?php
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
@@ -117,31 +116,33 @@ if ( !isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql' ) {
                     <p>
                         <label class="bline" for="install_dbtype"><?php echo _T("Database type:"); ?></label>
                         <select name="install_dbtype" id="install_dbtype">
-                            <option value="mysql"<?php if ( isset($_POST['install_dbtype']) && $_POST['install_dbtype'] == 'mysql' ) {echo ' selected="selected"';} ?>>Mysql</option>
-                            <option value="pgsql"<?php if ( isset($_POST['install_dbtype']) && $_POST['install_dbtype'] == 'pgsql' ) {echo ' selected="selected"';} ?>>Postgresql</option>
+                            <option value="mysql"<?php if ( $install->getDbType() === GaletteDb::MYSQL ) {echo ' selected="selected"';} ?>>Mysql</option>
+                            <option value="pgsql"<?php if ( $install->getDbType() === GaletteDb::PGSQL ) {echo ' selected="selected"';} ?>>Postgresql</option>
+                            <option value="sqlite"<?php if ( $install->getDbType() === GaletteDb::SQLITE ) {echo ' selected="selected"';} ?>>SQLite</option>
                         </select>
                     </p>
-                    <p>
-                        <label class="bline" for="install_dbhost"><?php echo _T("Host:"); ?></label>
-                        <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo (isset($_POST['install_dbhost']))?$_POST['install_dbhost']:'localhost'; ?>" required/>
-                    </p>
-                    <p>
-                        <label class="bline" for="install_dbport"><?php echo _T("Port:"); ?></label>
-                        <input type="text" name="install_dbport" id="install_dbport" value="<?php echo (isset($_POST['install_dbport']))?$_POST['install_dbport']:$default_dbport; ?>" required/>
-                    </p>
-                    <p>
-                        <label class="bline" for="install_dbuser"><?php echo _T("User:"); ?></label>
-                        <input type="text" name="install_dbuser" id="install_dbuser" value="<?php if(isset($_POST['install_dbuser'])) echo $_POST['install_dbuser']; ?>" required/>
-                    </p>
-                    <p>
-                        <label class="bline" for="install_dbpass"><?php echo _T("Password:"); ?></label>
-                        <input type="password" name="install_dbpass" id="install_dbpass" value="<?php if(isset($_POST['install_dbpass'])) echo $_POST['install_dbpass']; ?>" required/>
-                    </p>
-                    <p>
-                        <label class="bline" for="install_dbname"><?php echo _T("Database:"); ?></label>
-                        <input type="text" name="install_dbname" id="install_dbname" value="<?php if(isset($_POST['install_dbname'])) echo $_POST['install_dbname']; ?>" required/>
-                    </p>
-                    <p>
+                    <div id="install_dbconfig">
+                        <p>
+                            <label class="bline" for="install_dbhost"><?php echo _T("Host:"); ?></label>
+                            <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo ($install->getDbHost() !== null)?$install->getDbHost():'localhost'; ?>" required/>
+                        </p>
+                        <p>
+                            <label class="bline" for="install_dbport"><?php echo _T("Port:"); ?></label>
+                            <input type="text" name="install_dbport" id="install_dbport" value="<?php echo ($install->getDbPort() !== null)?$install->getDbPort():$default_dbport; ?>" required/>
+                        </p>
+                        <p>
+                            <label class="bline" for="install_dbuser"><?php echo _T("User:"); ?></label>
+                            <input type="text" name="install_dbuser" id="install_dbuser" value="<?php echo $install->getDbUser(); ?>" required/>
+                        </p>
+                        <p>
+                            <label class="bline" for="install_dbpass"><?php echo _T("Password:"); ?></label>
+                            <input type="password" name="install_dbpass" id="install_dbpass" value="" required/>
+                        </p>
+                        <p>
+                            <label class="bline" for="install_dbname"><?php echo _T("Database:"); ?></label>
+                            <input type="text" name="install_dbname" id="install_dbname" value="<?php echo $install->getDbName(); ?>" required/>
+                        </p>
+                        <p>
 <?php
 if ( $install->isUpgrade() ) {
     echo '<span class="required">' .
@@ -149,16 +150,31 @@ if ( $install->isUpgrade() ) {
         '</span><br/>';
 }
 ?>
-                        <label class="bline" for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
-                        <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo (isset($_POST['install_dbprefix']))?$_POST['install_dbprefix']:'galette_'; ?>" required/>
-                    </p>
+                            <label class="bline" for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
+                            <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo ($install->getTablesPrefix() !== null)?$install->getTablesPrefix():'galette_'; ?>" required/>
+                        </p>
+                    </div>
                 </fieldset>
                 <p id="btn_box">
-                    <input type="submit" id="stepback_btn" name="stepback_btn" value="<?php echo _T("Back"); ?>"/>
                     <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
+                    <input type="submit" id="btnback" name="stepback_btn" value="<?php echo _T("Back"); ?>"/>
                 </p>
             </form>
             <script type="text/javascript">
+                var _changeDbType = function(type) {
+                    if (type == 'sqlite') {
+                        $('#install_dbconfig input').each(function () {
+                            $(this).removeAttr('required');
+                        });
+                        $('#install_dbconfig').hide();
+                    } else {
+                        $('#install_dbconfig input').each(function () {
+                            $(this).attr('required', 'required');
+                        });
+                        $('#install_dbconfig').show();
+                    }
+                };
+
                 $(function(){
                     $('#install_dbtype').change(function(){
                         var _db = $(this).val();
@@ -169,6 +185,8 @@ if ( $install->isUpgrade() ) {
                             _port = <?php echo GaletteDb::MYSQL_DEFAULT_PORT; ?>;
                         }
                         $('#install_dbport').val(_port);
+                        _changeDbType(_db);
                     });
+                    _changeDbType($('#install_dbtype').val());
                 });
             </script>

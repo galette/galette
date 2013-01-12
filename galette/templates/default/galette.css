@@ -462,7 +462,7 @@ footer li {
 }
 
 /* == Buttons */
-#delete, #sendmail, #btnsave, #btnvalid, #btnadd, #btncancel, #btnsend, #btnpreview, #btnusers, .button {
+#delete, #sendmail, #btnsave, #btnvalid, #btnadd, #btncancel, #btnsend, #btnpreview, #btnusers, #btnback, .button {
     padding-left: 2em!important;
     background-position: 10px 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;

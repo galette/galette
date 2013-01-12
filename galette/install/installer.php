@@ -36,6 +36,7 @@
  */
 
 use Galette\Core\Install as GaletteInstall;
+use Galette\Core\Db as GaletteDb;
 
 //set a flag saying we work from installer
 //that way, in galette.inc.php, we'll only include relevant parts
@@ -53,10 +54,42 @@ if ( defined('PREFIX_DB') && defined('NAME_DB') ) {
 }
 
 $install = null;
-if ( isset($session[md5(GALETTE_ROOT)]) ) {
+if ( isset($session[md5(GALETTE_ROOT)]) && !isset($_GET['raz']) ) {
     $install = unserialize($session[md5(GALETTE_ROOT)]);
 } else {
     $install = new GaletteInstall();
+}
+
+$error_detected = array();
+
+/**
+ * Initialize database constants to connect
+ *
+ * @param Install $install Installer
+ *
+ * @return void
+ */
+function initDbConstants($install)
+{
+    define('TYPE_DB', $install->getDbType());
+
+    if (TYPE_DB != 'sqlite') {
+        define('USER_DB', $install->getDbUser());
+        define('PWD_DB', $install->getDbPass());
+        define('HOST_DB', $install->getDbHost());
+        define('PORT_DB', $install->getDbPort());
+        define('NAME_DB', $install->getDbName);
+    }
+}
+
+if ( $install->postCheckDb() || $install->isDbCheckStep() ) {
+    //if we have passed database configuration, define required constants
+    initDbConstants($install);
+
+    if ( $install->postCheckDb() ) {
+        //while before check db, connection is not checked
+        $zdb = new GaletteDb();
+    }
 }
 
 if ( isset($_POST['stepback_btn']) ) {
@@ -66,9 +99,47 @@ if ( isset($_POST['stepback_btn']) ) {
 } else if ( isset($_POST['install_type']) ) {
     $install->setMode($_POST['install_type']);
     $install->atDbStep();
-}
+} elseif ( isset($_POST['install_dbtype'])  ) {
+    $install->setDbType($_POST['install_dbtype'], $error_detected);
 
-$error_detected = false;
+    if ( $install->getDbType() != GaletteDb::SQLITE ) {
+        if ( empty($_POST['install_dbhost']) ) {
+            $error_detected[] = _T("No host");
+        }
+        if ( empty($_POST['install_dbport']) ) {
+            $error_detected[] = _T("No port");
+        }
+        if ( empty($_POST['install_dbuser']) ) {
+            $error_detected[] = _T("No user name");
+        }
+        if ( empty($_POST['install_dbpass']) ) {
+            $error_detected[] = _T("No password");
+        }
+        if ( empty($_POST['install_dbname']) ) {
+                $error_detected[] = _T("No database name");
+        }
+    }
+
+    if (count($error_detected) == 0) {
+        $install->setDsn(
+            $_POST['install_dbhost'],
+            $_POST['install_dbport'],
+            $_POST['install_dbname'],
+            $_POST['install_dbuser'],
+            $_POST['install_dbpass']
+        );
+        $install->setTablesPrefix(
+            $_POST['install_dbprefix']
+        );
+        $install->atDbCheckStep();
+    }
+} elseif ( isset($_POST['install_dbperms_ok']) ) {
+    if ( $install->isInstall() ) {
+        $install->atDbInstallStep();
+    } elseif ( $install->isUpgrade() ) {
+        $install->atVersionSelection();
+    }
+}
 
 header('Content-Type: text/html; charset=UTF-8');
 ?>
@@ -89,18 +160,6 @@ header('Content-Type: text/html; charset=UTF-8');
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.tooltip.pack.js"></script>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/common.js"></script>
         <link rel="shortcut icon" href="<?php echo GALETTE_TPL_SUBDIR; ?>images/favicon.png" />
-<?php /*<script type="text/javascript">
-            $(function() {
-<?php
-if ($step == '1') { ?>
-                $('#pref_lang').change(function() {
-                    this.form.submit();
-                });
-    <?php
-}
-?>
-            });
-        </script>*/ ?>
         <!--[if lt IE9]>
             <script type="text/javascript" src="{$scripts_dir}html5-ie.js"></script>
         <!endif]-->
@@ -122,6 +181,25 @@ foreach ( $i18n->getList() as $langue ) {
 ?>
                 </ul>
             </header>
+<?php
+if ( count($error_detected) > 0 ) {
+    ?>
+
+            <div id="errorbox">
+                <h1><?php echo _T("- ERROR -"); ?></h1>
+                <ul>
+    <?php
+    foreach ( $error_detected as $error ) {
+        ?>
+                    <li><?php echo $error; ?></li>
+        <?php
+    }
+    ?>
+                </ul>
+            </div>
+    <?php
+}
+?>
             <div>
 <?php
 if ( $install->isCheckStep() ) {
@@ -130,6 +208,12 @@ if ( $install->isCheckStep() ) {
     include_once 'steps/type.php';
 } else if ( $install->isDbStep() ) {
     include_once 'steps/db.php';
+} else if ( $install->isDbCheckStep() ) {
+    include_once 'steps/db_checks.php';
+} else if ( $install->isVersionSelectionStep() ) {
+    //TODO
+} else if ( $install->isDbinstallStep() ) {
+    include_once 'steps/db_install.php';
 }
 ?>
             </div>

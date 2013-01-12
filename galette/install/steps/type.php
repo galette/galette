@@ -64,7 +64,7 @@ use Galette\Core\Install as GaletteInstall;
                     </div>
 
                     <p id="btn_box">
-                        <input type="submit" id="stepback_btn" name="stepback_btn" value="<?php echo _T("Back"); ?>"/>
                         <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
+                        <input type="submit" id="btnback" name="stepback_btn" value="<?php echo _T("Back"); ?>"/>
                     </p>
                 </form>

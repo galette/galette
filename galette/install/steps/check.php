@@ -79,22 +79,16 @@ $files_need_rw = array (
 );
 
 $files_perms_class = $class . 'ok';
-$non_rw_files = array();
 
-/**
-* HTML validation image
-*
-* @param boolean $arg Argument
-*
-* @return html string
-*/
-function getValidationImage($arg)
-{
-    $img_name = ($arg === true) ? 'valid' : '';
-    $src = GALETTE_TPL_SUBDIR . 'images/icon-' . $img_name . '.png';
-    $alt = ($arg === true) ? _T("Ok") : _T("Ko");
-    $img = '<img src="' . $src  . '" alt="' . $alt  . '"/>';
-    return $img;
+foreach ($files_need_rw as $label=>$file) {
+    $writable = is_writable($file);
+    if ( !$writable ) {
+        $perms_ok = false;
+    }
+}
+
+if ( $perms_ok && $modules_ok && $php_ok && $date_ok ) {
+    echo '<p id="infobox">' . _T("Galette requirements are met :)") . '</p>';
 }
 
 if ( !$date_ok ) {
@@ -104,11 +98,11 @@ if ( !$date_ok ) {
                 <ul class="leaders">
                     <li>
                         <span class="label"><?php echo _T("PHP version"); ?> (<?php echo PHP_VERSION . ' >= 5.3.0'; ?>)</span>
-                        <span><?php echo getValidationImage($php_ok == true); ?></span>
+                        <span><?php echo $install->getValidationImage($php_ok == true); ?></span>
                     </li>
                     <li>
                         <span><?php echo _T("Date settings"); ?></span>
-                        <span><?php echo getValidationImage($date_ok == true); ?></span>
+                        <span><?php echo $install->getValidationImage($date_ok == true); ?></span>
                     </li>
                 </ul>
 
@@ -127,15 +121,10 @@ if ( !$modules_ok ) {
 <?php
 foreach ($files_need_rw as $label=>$file) {
     $writable = is_writable($file);
-    if ( !$writable ) {
-        $perms_ok = false;
-        $non_rw_files[] = $label . ' (' . $file . ')';
-    }
-
     ?>
                     <li>
                         <span><?php echo $label ?></span>
-                        <span><?php echo getValidationImage($writable); ?></span>
+                        <span><?php echo $install->getValidationImage(is_writable($file)); ?></span>
                     </li>
     <?php
 }
@@ -148,8 +137,11 @@ if ( !$perms_ok ) {
             <div>
         <h4 class="error"><?php echo _T("Files permissions are not OK!"); ?></h4>
         <p><?php
-    if ($step == 'i3') echo _T("To work as excpected, Galette needs write permission on files listed above.");
-    if ($step == 'u3') echo _T("In order to be updated, Galette needs write permission on files listed above."); 
+    if ( $install->isInstall() ) {
+        echo _T("To work as excpected, Galette needs write permission on files listed above.");
+    } else if ( $install->isUpgrade() ) {
+        echo _T("In order to be updated, Galette needs write permission on files listed above.");
+    }
         ?></p>
         <p><?php echo _T("Under UNIX/Linux, you can give the permissions using those commands"); ?><br />
             <code>chown <em><?php echo _T("apache_user"); ?></em> <em><?php echo _T("file_name"); ?></em><br />chmod 700 <em><?php echo _T("directory_name"); ?></em></code>

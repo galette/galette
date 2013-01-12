@@ -54,6 +54,9 @@ class Install
     const STEP_CHECK = 0;
     const STEP_TYPE = 1;
     const STEP_DB = 2;
+    const STEP_DB_CHECKS = 3;
+    const STEP_VERSION = 4; //only for update
+    const STEP_DB_INSTALL = 5;
 
     const INSTALL = 'i';
     const UPDATE = 'u';
@@ -63,6 +66,15 @@ class Install
     private $_version;
     private $_installed_version;
 
+    private $_db_type;
+    private $_db_host;
+    private $_db_port;
+    private $_db_name;
+    private $_db_user;
+    private $_db_pass;
+
+    private $_db_connected;
+
     /**
      * Main constructor
      */
@@ -71,6 +83,7 @@ class Install
         $this->_step = self::STEP_CHECK;
         $this->mode = null;
         $this->_version = str_replace('v', '', GALETTE_VERSION);
+        $this->_db_connected = false;
     }
 
     /**
@@ -91,8 +104,34 @@ class Install
         case self::STEP_DB:
             $step_title = _T("Database");
             break;
+        case self::STEP_DB_CHECKS:
+            $step_title = _T("Database access and permissions");
+            break;
+        case self::STEP_VERSION:
+            //TODO
+            $step_title = 'TODO';
+            break;
+        case self::STEP_DB_INSTALL:
+            $step_title = _T("Tables Creation/Update");
+            break;
         }
         return $step_title;
+    }
+
+    /**
+    * HTML validation image
+    *
+    * @param boolean $arg Argument
+    *
+    * @return html string
+    */
+    public function getValidationImage($arg)
+    {
+        $img_name = ($arg === true) ? 'valid' : '';
+        $src = GALETTE_TPL_SUBDIR . 'images/icon-' . $img_name . '.png';
+        $alt = ($arg === true) ? _T("Ok") : _T("Ko");
+        $img = '<img src="' . $src  . '" alt="' . $alt  . '"/>';
+        return $img;
     }
 
     /**
@@ -202,4 +241,231 @@ class Install
     {
         return $this->_step === self::STEP_DB;
     }
+
+    /**
+     * Is DB step passed?
+     *
+     * @return boolean
+     */
+    public function postCheckDb()
+    {
+        return $this->_step > self::STEP_DB_CHECKS;
+    }
+
+    /**
+     * Set database type
+     *
+     * @param string $type  Database type
+     * @param array  &$errs Errors array
+     *
+     * @return boolean
+     */
+    public function setDbType($type, &$errs)
+    {
+        switch ( $type ) {
+        case Db::MYSQL:
+        case Db::PGSQL:
+        case Db::SQLITE:
+            $this->_db_type = $type;
+            break;
+        default:
+            $errs[] = _T("Database type unknown");
+        }
+    }
+
+    /**
+     * Get database type
+     *
+     * @return string
+     */
+    public function getDbType()
+    {
+        return $this->_db_type;
+    }
+
+    /**
+     * Set connection informations
+     *
+     * @param string $host Database host
+     * @param string $port Database port
+     * @param string $name Database name
+     * @param string $user Database user name
+     * @param string $pass Database user's password
+     *
+     * @return void
+     */
+    public function setDsn($host, $port, $name, $user, $pass)
+    {
+        $this->_db_host = $host;
+        $this->_db_port = $port;
+        $this->_db_name = $name;
+        $this->_db_user = $user;
+        $this->_db_pass = $pass;
+    }
+
+    /**
+     * Set tables prefix
+     *
+     * @param string $prefix Prefix
+     *
+     * @return void
+     */
+    public function setTablesPrefix($prefix)
+    {
+        $this->_db_prefix = $prefix;
+    }
+
+    /**
+     * Retrieve database host
+     *
+     * @return string
+     */
+    public function getDbHost()
+    {
+        return $this->_db_host;
+    }
+
+    /**
+     * Retrieve database port
+     *
+     * @return string
+     */
+    public function getDbPort()
+    {
+        return $this->_db_port;
+    }
+
+    /**
+     * Retrieve database name
+     *
+     * @return string
+     */
+    public function getDbName()
+    {
+        return $this->_db_name;
+    }
+
+    /**
+     * Retrieve database user
+     *
+     * @return string
+     */
+    public function getDbUser()
+    {
+        return $this->_db_user;
+    }
+
+    /**
+     * Retrieve database password
+     *
+     * @return string
+     */
+    public function getDbPass()
+    {
+        return $this->_db_pass;
+    }
+
+    /**
+     * Retrieve tables prefix
+     *
+     * @return string
+     */
+    public function getTablesPrefix()
+    {
+        return $this->_db_prefix;
+    }
+
+    /**
+     * Set step to database checks
+     *
+     * @return void
+     */
+    public function atDbCheckStep()
+    {
+        $this->_step = self::STEP_DB_CHECKS;
+    }
+
+    /**
+     * Are we at database check step?
+     *
+     * @return boolean
+     */
+    public function isDbCheckStep()
+    {
+        return $this->_step === self::STEP_DB_CHECKS;
+    }
+
+    /**
+     * Test database connection
+     *
+     * @return true|array true if connection was successfull, an array with some infos otherwise
+     */
+    public function testDbConnexion()
+    {
+        if ( $this->_db_type === Db::SQLITE ) {
+            return Db::testConnectivity(
+                $this->_db_type
+            );
+        } else {
+            return Db::testConnectivity(
+                $this->_db_type,
+                $this->_db_user,
+                $this->_db_pass,
+                $this->_db_host,
+                $this->_db_port,
+                $this->_db_name
+            );
+        }
+    }
+
+    /**
+     * Is database connexion ok?
+     *
+     * @return boolean
+     */
+    public function isDbConnected()
+    {
+        return $this->_db_connected;
+    }
+
+    /**
+     * Set step to version selection
+     *
+     * @return void
+     */
+    public function atVersionSelection()
+    {
+        $this->_step = self::STEP_VERSION;
+    }
+
+    /**
+     * Are we at version selection step?
+     *
+     * @return boolean
+     */
+    public function isVersionSelectionStep()
+    {
+        return $this->_step === self::STEP_VERSION;
+    }
+
+    /**
+     * Set step to database installation
+     *
+     * @return void
+     */
+    public function atDbInstallStep()
+    {
+        $this->_step = self::STEP_DB_INSTALL;
+    }
+
+    /**
+     * Are we at db installation step?
+     *
+     * @return boolean
+     */
+    public function isDbinstallStep()
+    {
+        return $this->_step === self::STEP_DB_INSTALL;
+    }
+
 }
