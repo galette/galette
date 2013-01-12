@@ -187,12 +187,11 @@ class Texts
     /**
      * Main constructor
      *
-     * @param array $replaces Data that will be used as replacments
+     * @param Preferences $preferences Galette's preferences
+     * @param array       $replaces    Data that will be used as replacments
      */
-    public function __construct($replaces = null)
+    public function __construct($preferences, $replaces = null)
     {
-        global $preferences;
-
         $this->_patterns = array(
             'asso_name'         => '/{ASSO_NAME}/',
             'asso_slogan'       => '/{ASSO_SLOGAN}/',

@@ -35,6 +35,8 @@
  * @since     Availaible since 0.7dev - 2007-10-16
  */
 
+use galette\Entity\Texts as Texts;
+
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
@@ -50,9 +52,9 @@ if ( !$login->isLogged() ) {
 }
 
 $cur_lang = $preferences->pref_lang;
-$cur_ref = Galette\Entity\Texts::DEFAULT_REF;
+$cur_ref = Texts::DEFAULT_REF;
 
-$texts = new Galette\Entity\Texts();
+$texts = new Texts($preferences);
 
 //set the language
 if ( isset($_POST['sel_lang']) ) {

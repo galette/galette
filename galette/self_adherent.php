@@ -90,6 +90,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 && $preferences->pref_bool_mailadh
             ) {
                 $texts = new Texts(
+                    $preferences,
                     array(
                         'name_adh'      => custom_html_entity_decode($member->sname),
                         'mail_adh'      => custom_html_entity_decode($member->email),
@@ -136,6 +137,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 //send mail to member
                 // Get email text in database
                 $texts = new Texts(
+                    $preferences,
                     array(
                         'name_adh'      => custom_html_entity_decode($member->sname),
                         'mail_adh'      => custom_html_entity_decode($member->email),
