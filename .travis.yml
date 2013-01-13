@@ -1,13 +1,19 @@
 before_script:
   - ./bin/install_deps
+  - sh -c "if [ '$DB' = 'pgsql' ]; then psql -c 'DROP DATABASE IF EXISTS galette_tests;' -U postgres; fi"
+  - sh -c "if [ '$DB' = 'pgsql' ]; then psql -c 'create database galette_tests;' -U postgres; fi"
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database IF NOT EXISTS galette_tests;'; fi"
+  - sh -c "cp tests/config/$DB-config.inc.php galette/config/config.inc.php"
   - wget http://downloads.atoum.org/nightly/mageekguy.atoum.phar
-script: php mageekguy.atoum.phar -d tests/Galette/
+script: php mageekguy.atoum.phar -bf tests/TestsBootstrap.php -d tests/Galette/
 language: php
 php:
   - 5.3
   - 5.4
+env:
+  - DB=pgsql
 notifications:
   irc: "irc.oftc.net#galette"
 branches:
   only:
-    - feature/atoum
+    - develop

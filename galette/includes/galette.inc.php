@@ -68,7 +68,9 @@ if ( !$installed && !$installer ) {
     header('location: install/index.php');
 }
 
-if ( file_exists(GALETTE_CONFIG_PATH . 'behavior.inc.php') ) {
+if ( file_exists(GALETTE_CONFIG_PATH . 'behavior.inc.php')
+    && !defined('GALETTE_TESTS')
+) {
     include_once GALETTE_CONFIG_PATH . 'behavior.inc.php';
 }
 
@@ -241,8 +243,9 @@ $error_detected = array();
 $warning_detected = array();
 $success_detected = array();
 
-if ( !$installer ) { //If we're not working from installer
-    require_once GALETTE_CONFIG_PATH . 'config.inc.php';
+if ( !$installer and !defined('GALETTE_TESTS') ) {
+    //If we're not working from installer nor from tests
+    include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 
     /**
     * Database instanciation

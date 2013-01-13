@@ -1,0 +1,5 @@
+#!/bin/bash
+tests_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../tests" && pwd )"
+pushd $tests_dir > /dev/null
+atoum -bf TestsBootstrap.php -c coverage.php -d Galette
+popd > /dev/null

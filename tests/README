@@ -1,0 +1,19 @@
+Galette's unit tests
+====================
+
+/!\ This is a work in progress... Many classes are missing yet. /!\
+
+Galette unit tests has been written on the top of atoum (http://atoum.org/).
+
+If atoum executable is in your path, you can run ../bin/tests script.
+Alternatively, you can download atoum and run it locally:
+$ http://downloads.atoum.org/nightly/mageekguy.atoum.phar
+$ php mageekguy.atoum.phar -bf TestsBootstrap.php -c coverage.php -d Galette
+
+This will execute all tests; and generate relevant coverage report.
+Please read atoum documentation at http://docs.atoum.org/ if you want
+to learn more.
+
+Note that tests respects Galette's path model under lib directory,
+but in an additionnal tests/units/ directory. For example, Plugins
+(\Galette\Core\Plugins) test class will be \Galette\Core\tests\units\Plugins.

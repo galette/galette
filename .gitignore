@@ -39,7 +39,13 @@ quick_gen_project_*
 # /galette/templates_c/
 /galette/templates_c/*.php
 
+# Test stuff
+tests/coverage/
+tests/mageekguy.atoum.phar
+
+# Bundled libs
 galette/includes/tcpdf_*
 galette/includes/Zend*
+galette/includes/Analog*
 
 *~
