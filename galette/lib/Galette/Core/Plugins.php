@@ -55,7 +55,6 @@ use Analog\Analog as Analog;
 class Plugins
 {
     protected $path;
-    //protected $ns;
     protected $modules = array();
     protected $disabled = array();
 
@@ -65,12 +64,6 @@ class Plugins
     /**
     * Loads modules.
     *
-    * <var>$ns</var> indicates if an additionnal file needs to be loaded on plugin
-    * load, value could be:
-    * - admin (loads module's _admin.php)
-    * - public (loads module's _public.php)
-    * - xmlrpc (loads module's _xmlrpc.php)
-    *
     * @param string $path could be a separated list of paths
     * (path separator depends on your OS).
     * @param string $lang Indicates if we need to load a lang file on plugin
@@ -78,10 +71,9 @@ class Plugins
     *
     * @return void
     */
-    public function loadModules($path, /*$ns=null,*/ $lang=null)
+    public function loadModules($path, $lang=null)
     {
         $this->path = explode(PATH_SEPARATOR, $path);
-        //$this->ns = $ns;
 
         foreach ($this->path as $root) {
             if (!is_dir($root) || !is_readable($root)) {
@@ -124,22 +116,8 @@ class Plugins
 
         // Load translation, _prepend and ns_file
         foreach ($this->modules as $id => $m) {
-            /*if (file_exists($m['root'].'/_prepend.php')) {
-                $r = require $m['root'].'/_prepend.php';
-
-                # If _prepend.php file returns null
-                (ie. it has a void return statement)
-                if (is_null($r)) {
-                    continue;
-                }
-                unset($r);
-            }*/
-            $this->loadModuleL10N($id, $lang, $id);
+            $this->loadModuleL10N($id, $lang);
             $this->loadSmarties($id);
-            /*if ($ns == 'admin') {
-                $this->loadModuleL10Nresources($id,$lang);
-            }
-            $this->loadNsFile($id,$ns);*/
         }
     }
 
@@ -269,13 +247,11 @@ class Plugins
     *
     * @param string $id       Module ID
     * @param string $language Language code
-    * @param string $file     File name (without extension)
     *
     * @return void
     */
-    public function loadModuleL10N($id,$language,$file)
+    public function loadModuleL10N($id, $language)
     {
-        global $lang;
         if (!$language || !isset($this->modules[$id])) {
             return;
         }
@@ -283,35 +259,6 @@ class Plugins
         $f = $this->modules[$id]['root'] . '/lang' . '/lang_' . $language . '.php';
         if ( file_exists($f) ) {
             include_once $f;
-        }
-
-        /*$lfile = $this->modules[$id]['root'].'/locales/%s/%s';
-        if (l10n::set(sprintf($lfile,$lang,$file)) === false && $lang != 'en') {
-            l10n::set(sprintf($lfile,'en',$file));
-        }*/
-    }
-
-    /**
-    * Load module's locale files
-    *
-    * @param string $id   Module's ID
-    * @param string $lang The local we want
-    *
-    * @return void
-    */
-    public function loadModuleL10Nresources($id, $lang)
-    {
-        if (!$lang || !isset($this->modules[$id])) {
-            return;
-        }
-
-        $f = l10n::getFilePath(
-            $this->modules[$id]['root'].'/locales',
-            'resources.php',
-            $lang
-        );
-        if ($f) {
-            $this->loadModuleFile($f);
         }
     }
 
