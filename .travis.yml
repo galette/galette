@@ -1,0 +1,13 @@
+before_script:
+  - ./bin/install_deps
+  - wget http://downloads.atoum.org/nightly/mageekguy.atoum.phar
+script: php mageekguy.atoum.phar -d tests/Galette/
+language: php
+php:
+  - 5.3
+  - 5.4
+notifications:
+  irc: "irc.oftc.net#galette"
+branches:
+  only:
+    - feature/atoum
