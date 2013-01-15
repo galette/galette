@@ -194,13 +194,17 @@ class Plugins extends atoum
 
         $this->exception(
             function () {
-                $this->_plugins->deactivateModule('nonexistant');
+                $plugins = new \Galette\Core\Plugins();
+                $plugins->loadModules(GALETTE_PLUGINS_PATH);
+                $plugins->deactivateModule('nonexistant');
             }
         )->hasMessage(_T('No such module.'));
 
         $this->exception(
             function () {
-                $this->_plugins->activateModule('nonexistant');
+                $plugins = new \Galette\Core\Plugins();
+                $plugins->loadModules(GALETTE_PLUGINS_PATH);
+                $plugins->activateModule('nonexistant');
             }
         )->hasMessage(_T('No such module.'));
     }
@@ -219,7 +223,9 @@ class Plugins extends atoum
 
         $this->exception(
             function () {
-                $this->_plugins->needsDatabase('nonexistant');
+                $plugins = new \Galette\Core\Plugins();
+                $plugins->loadModules(GALETTE_PLUGINS_PATH);
+                $plugins->needsDatabase('nonexistant');
             }
         )->hasMessage(_T('Module does not exists!'));
     }
