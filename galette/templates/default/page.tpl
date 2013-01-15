@@ -145,7 +145,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {/if}
 
 {* Include plugins menu entries *}
-{$plugins->getMenus()}
+{$plugins->getMenus($tpl, $preferences)}
 
         <ul id="langs">
 {foreach item=langue from=$languages}

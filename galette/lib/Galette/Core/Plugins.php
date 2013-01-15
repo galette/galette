@@ -354,11 +354,13 @@ class Plugins
     * Search and load menu templates from plugins.
     * Also sets the web path to the plugin with the var "galette_[plugin-name]_path"
     *
+    * @param Smarty      $tpl         Smarty template
+    * @param Preferences $preferences Galette's preferences
+    *
     * @return void
     */
-    public function getMenus()
+    public function getMenus($tpl, $preferences)
     {
-        global $tpl, $preferences;
         $modules = $this->getModules();
         foreach ( array_keys($this->getModules()) as $r ) {
             $menu_path = $this->getTemplatesPath($r) . '/menu.tpl';

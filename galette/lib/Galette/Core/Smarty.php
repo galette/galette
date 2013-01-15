@@ -84,6 +84,7 @@ class Smarty extends \SmartyBC
         foreach ( $plugins->getTplAssignments() as $k=>$v ) {
             $this->assign($k, $v);
         }
+        $this->assign('tpl', $this);
         $this->assign('headers', $plugins->getTplHeaders());
         $this->assign('plugin_actions', $plugins->getTplAdhActions());
         $this->assign('plugin_detailled_actions', $plugins->getTplAdhDetailledActions());
