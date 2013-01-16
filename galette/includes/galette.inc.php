@@ -218,9 +218,7 @@ $session = &$_SESSION['galette'][$session_name];
 /**
 * Language instantiation
 */
-if ( isset($session['lang'])
-    && GALETTE_MODE !== 'DEV'
-) {
+if ( isset($session['lang']) ) {
     $i18n = unserialize($session['lang']);
 } else {
     $i18n = new Core\I18n();
