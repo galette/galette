@@ -119,10 +119,8 @@ class I18n
 
         //if no match, switch to default
         if ( !isset($current[0]) ) {
-            Analog::log(
-                $id . ' does not exist in XML file, switching to default.',
-                Analog::WARNING
-            );
+            $msg = $id . ' does not exist in XML file, switching to default.';
+            Analog::log($msg, Analog::WARNING);
             $id = self::DEFAULT_LANG;
             //do not forget to reload informations from the xml file
             $current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');

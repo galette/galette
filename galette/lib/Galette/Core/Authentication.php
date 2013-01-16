@@ -77,12 +77,9 @@ abstract class Authentication
     * Logs in user.
     *
     * @param string $user  user's login
-    * @param string $passe md5 hashed password
+    * @param string $passe user's password
     *
-    * @return integer state :
-    *     '-1' if there were an error
-    *    '-10' if user cannot login (mistake or user doesn't exists)
-    *    '1' if user were logged in successfully
+    * @return boolean
     */
     abstract public function logIn($user, $passe);
 

@@ -41,20 +41,38 @@ if ( file_exists(GALETTE_ROOT . 'config/local_paths.inc.php') ) {
 }
 
 //external libraries
+if ( !defined('GALETTE_PASSWORD_COMPAT_PATH') ) {
+    define(
+        'GALETTE_PASSWORD_COMPAT_PATH',
+        GALETTE_ROOT . 'includes/password_compat-' . PASSWORD_COMPAT_VERSION
+    );
+}
 if ( !defined('GALETTE_ZEND_PATH') ) {
     define('GALETTE_ZEND_PATH', GALETTE_ROOT . 'includes/Zend-' . ZEND_VERSION);
 }
 if ( !defined('GALETTE_ANALOG_PATH') ) {
-    define('GALETTE_ANALOG_PATH', GALETTE_ROOT . 'includes/Analog-' . ANALOG_VERSION);
+    define(
+        'GALETTE_ANALOG_PATH',
+        GALETTE_ROOT . 'includes/Analog-' . ANALOG_VERSION
+    );
 }
 if ( !defined('GALETTE_PHP_MAILER_PATH') ) {
-    define('GALETTE_PHP_MAILER_PATH', GALETTE_ROOT . 'includes/phpMailer-' . PHP_MAILER_VERSION);
+    define(
+        'GALETTE_PHP_MAILER_PATH',
+        GALETTE_ROOT . 'includes/phpMailer-' . PHP_MAILER_VERSION
+    );
 }
 if ( !defined('GALETTE_SMARTY_PATH') ) {
-    define('GALETTE_SMARTY_PATH', GALETTE_ROOT . 'includes/Smarty-' . SMARTY_VERSION);
+    define(
+        'GALETTE_SMARTY_PATH',
+        GALETTE_ROOT . 'includes/Smarty-' . SMARTY_VERSION
+    );
 }
 if ( !defined('GALETTE_GAPI_PATH') ) {
-    define('GALETTE_GAPI_PATH', GALETTE_ROOT . 'includes/google-api-' . GAPI_VERSION);
+    define(
+        'GALETTE_GAPI_PATH',
+        GALETTE_ROOT . 'includes/google-api-' . GAPI_VERSION
+    );
 }
 /*if ( !defined('GALETTE_XHPROF_PATH') ) {
     define('GALETTE_XHPROF_PATH', '/usr/share/xhprof/');

@@ -66,7 +66,7 @@ if (isset($_POST['ident'])) {
             die();
         }
     } else {
-        $login->logIn($_POST['login'], md5($_POST['password']));
+        $login->logIn($_POST['login'], $_POST['password']);
 
         if ( $login->isLogged() ) {
             $session['login'] = serialize($login);

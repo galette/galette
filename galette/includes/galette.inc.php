@@ -78,6 +78,10 @@ if ( !$installer || $installed ) { //If we're not working from installer
     require_once GALETTE_CONFIG_PATH . 'config.inc.php';
 }
 
+if ( !function_exists('password_hash') ) {
+    include_once GALETTE_PASSWORD_COMPAT_PATH . 'password.php';
+}
+
 use Galette\Common\ClassLoader;
 use Analog\Analog as Analog;
 use Galette\Core;
@@ -106,9 +110,9 @@ if (defined('GALETTE_XHPROF_PATH')
 //we start a php session
 session_start();
 
-define('GALETTE_VERSION', 'v0.7.3.1');
+define('GALETTE_VERSION', 'v0.7.4dev');
 define('GALETTE_COMPAT_VERSION', '0.7.3');
-define('GALETTE_DB_VERSION', '0.701');
+define('GALETTE_DB_VERSION', '0.702');
 if ( !defined('GALETTE_MODE') ) {
     define('GALETTE_MODE', 'PROD'); //DEV, PROD or DEMO
 }

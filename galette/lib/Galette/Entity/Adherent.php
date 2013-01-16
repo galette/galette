@@ -647,7 +647,7 @@ class Adherent
         try {
             $zdb->db->update(
                 PREFIX_DB . self::TABLE,
-                array('mdp_adh' => md5($pass)),
+                array('mdp_adh' => password_hash($pass)),
                 $zdb->db->quoteInto(self::PK . ' = ?', $id_adh)
             );
             Analog::log(
@@ -656,7 +656,6 @@ class Adherent
             );
             return true;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'An error occured while updating password for `' . $id_adh .
                 '` | ' . $e->getMessage(),
@@ -890,7 +889,7 @@ class Adherent
                         ) {
                             $errors[] = _T("Password misrepeated: ");
                         } else {
-                            $this->$prop = md5($value);
+                            $this->$prop = password_hash($value, PASSWORD_BCRYPT);
                         }
                         break;
                     case 'id_statut':
