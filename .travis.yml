@@ -13,7 +13,11 @@ php:
 env:
   - DB=pgsql
 notifications:
-  irc: "irc.oftc.net#galette"
+  channels:
+    - irc: "irc.oftc.net#galette"
+  template:
+    - "%{build_number} by %{author} on %{branch}: %{message} "
+    - "Build details: %{build_url}"
 branches:
   only:
     - develop
