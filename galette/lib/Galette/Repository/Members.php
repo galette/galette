@@ -106,21 +106,22 @@ class Members
 
     const NON_STAFF_MEMBERS = 30;
 
-    private $_filter = null;
+    private $_filters = false;
     private $_count = null;
 
     /**
-    * Default constructor
+     * Default constructor
+     *
+     * @param MembersList $filters Filtering
     */
-    public function __construct()
+    public function __construct($filters = null)
     {
-        global $filters;
-
-        if ( !isset($filters) ) {
-            $filters = new MembersList();
+        if ( $filters === null ) {
+            $this->_filters = new MembersList();
+        } else {
+            $this->_filters = $filters;
         }
     }
-
 
     /**
     * Get staff members list
@@ -130,19 +131,17 @@ class Members
     * @param array   $fields     field(s) name(s) to get. Should be a string or
     *                               an array. If null, all fields will be
     *                               returned
-    * @param boolean $filter     proceed filter, defaults to true
     * @param boolean $count      true if we want to count members
     * @param boolean $limit      true to LIMIT query
     *
     * @return Adherent[]|ResultSet
     */
     public function getStaffMembersList(
-        $as_members=false, $fields=null, $filter=true, $count=true, $limit=true
+        $as_members=false, $fields=null, $count=true, $limit=true
     ) {
         return $this->getMembersList(
             $as_members,
             $fields,
-            $filter,
             $count,
             true,
             false,
@@ -158,19 +157,17 @@ class Members
     * @param array   $fields     field(s) name(s) to get. Should be a string or
     *                               an array. If null, all fields will be
     *                               returned
-    * @param boolean $filter     proceed filter, defaults to true
     * @param boolean $count      true if we want to count members
     * @param boolean $limit      true to LIMIT query
     *
     * @return Adherent[]|ResultSet
     */
     public function getManagedMembersList(
-        $as_members=false, $fields=null, $filter=true, $count=true, $limit=true
+        $as_members=false, $fields=null, $count=true, $limit=true
     ) {
         return $this->getMembersList(
             $as_members,
             $fields,
-            $filter,
             $count,
             false,
             true,
@@ -185,7 +182,6 @@ class Members
     * @param array   $fields     field(s) name(s) to get. Should be a string or
     *                               an array. If null, all fields will be
     *                               returned
-    * @param boolean $filter     proceed filter, defaults to true
     * @param boolean $count      true if we want to count members
     * @param boolean $staff      true if we want only staff members
     * @param boolean $managed    true if we want only managed groups
@@ -196,13 +192,12 @@ class Members
     public function getMembersList(
         $as_members=false,
         $fields=null,
-        $filter=true,
         $count=true,
         $staff=false,
         $managed=false,
         $limit=true
     ) {
-        global $zdb, $galetteLoader, $filters;
+        global $zdb;
 
         try {
             $_mode = self::SHOW_LIST;
@@ -214,19 +209,18 @@ class Members
             }
 
             $select = self::_buildSelect(
-                $_mode, $fields, $filter, false, $count
+                $_mode, $fields, false, $count
             );
 
             //add limits to retrieve only relavant rows
-            if ( $limit === true && isset($filters) ) {
-                $filters->setLimit($select);
+            if ( $limit === true ) {
+                $this->_filters->setLimit($select);
             }
-
-            $filters->query = $select->__toString();
+            $this->_filters->query = $select->__toString();
 
             Analog::log(
                 "The following query will be executed: \n" .
-                $filters->query,
+                $this->_filters->query,
                 Analog::DEBUG
             );
 
@@ -246,7 +240,6 @@ class Members
             }
             return $members;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot list members | ' . $e->getMessage(),
                 Analog::WARNING
@@ -372,22 +365,20 @@ class Members
     /**
     * Get members list
     *
-    * @param bool    $as_members return the results as an array of
-    *                               Member object.
-    * @param array   $fields     field(s) name(s) to get. Should be a string or
-    *                               an array. If null, all fields will be
-    *                               returned
-    * @param boolean $filter     proceed filter, defaults to true
+    * @param bool  $as_members return the results as an array of
+    *                          Member object.
+    * @param array $fields     field(s) name(s) to get. Should be a string or
+    *                          an array. If null, all fields will be
+    *                          returned
     *
     * @return Adherent[]|ResultSet
     * @static
     */
-    public function getList($as_members=false, $fields=null, $filter=true)
+    public function getList($as_members=false, $fields=null)
     {
         return self::getMembersList(
             $as_members,
             $fields,
-            $filter,
             false,
             false,
             false,
@@ -399,15 +390,14 @@ class Members
     /**
     * Get members list with public informations available
     *
-    * @param boolean    $with_photos get only members which have uploaded a
+    * @param boolean $with_photos get only members which have uploaded a
     *                                photo (for trombinoscope)
-    * @param array      $fields      fields list
-    * @param MemberList $filters     Filters
+    * @param array   $fields      fields list
     *
     * @return Adherent[]
     * @static
     */
-    public function getPublicList($with_photos, $fields, $filters = null)
+    public function getPublicList($with_photos, $fields)
     {
         global $zdb;
 
@@ -416,15 +406,13 @@ class Members
                 self::SHOW_PUBLIC_LIST, $fields, false, $with_photos
             );
 
-            if ( $filters ) {
+            if ( $this->_filters ) {
                 $select->order(self::_buildOrderClause());
             }
 
-            $this->_proceedCount($select, $filters);
+            $this->_proceedCount($select);
 
-            if ( $filters ) {
-                $filters->setLimit($select);
-            }
+            $this->_filters->setLimit($select);
 
             Analog::log(
                 "The following query will be executed: \n" .
@@ -444,7 +432,6 @@ class Members
             }
             return $members;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot list members with public informations (photos: '
                 . $with_photos . ') | ' . $e->getMessage(),
@@ -509,7 +496,6 @@ class Members
             }
             return $members;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot load members form ids array | ' . $e->getMessage(),
                 Analog::WARNING
@@ -526,17 +512,16 @@ class Members
     *
     * @param int   $mode   the current mode (see self::SHOW_*)
     * @param array $fields fields list to retrieve
-    * @param bool  $filter true if filter is on, false otherwise
     * @param bool  $photos true if we want to get only members with photos
-    *                       Default to false, only relevant for SHOW_PUBLIC_LIST
+    *                      Default to false, only relevant for SHOW_PUBLIC_LIST
     * @param bool  $count  true if we want to count members
-                            (not applicable from static calls), defaults to false
+                           (not applicable from static calls), defaults to false
     *
     * @return Zend_Db_Select SELECT statement
     */
-    private function _buildSelect($mode, $fields, $filter, $photos, $count = false)
+    private function _buildSelect($mode, $fields, $photos, $count = false)
     {
-        global $zdb, $login, $filters;
+        global $zdb, $login;
 
         try {
             $fieldsList = ( $fields != null )
@@ -586,12 +571,12 @@ class Members
             $hasCdf = false;
             $cdfs = array();
 
-            if ( $filters instanceof AdvancedMembersList
-                && $filters->free_search
-                && count($filters->free_search) > 0
-                && !isset($filters->free_search['empty'])
+            if ( $this->_filters instanceof AdvancedMembersList
+                && $this->_filters->free_search
+                && count($this->_filters->free_search) > 0
+                && !isset($this->_filters->free_search['empty'])
             ) {
-                $free_searches = $filters->free_search;
+                $free_searches = $this->_filters->free_search;
                 foreach ( $free_searches as $fs ) {
                     if ( strpos($fs['field'], 'dyn_') === 0 ) {
                         $hasDf = true;
@@ -624,7 +609,7 @@ class Members
             }
 
             if ( $mode == self::SHOW_LIST || $mode == self::SHOW_MANAGED ) {
-                if ( $filter ) {
+                if ( $this->_filters !== false ) {
                     self::_buildWhereClause($select);
                 }
                 $select->order(self::_buildOrderClause());
@@ -648,7 +633,6 @@ class Members
 
             return $select;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot build SELECT clause for members | ' . $e->getMessage(),
                 Analog::WARNING
@@ -670,7 +654,7 @@ class Members
     */
     private function _proceedCount($select)
     {
-        global $zdb, $filters;
+        global $zdb;
 
         try {
             $countSelect = clone $select;
@@ -690,11 +674,10 @@ class Members
 
             $k = self::PK;
             $this->_count = $result->$k;
-            if ( isset($filters) && $this->_count > 0 ) {
-                $filters->setCounter($this->_count);
+            if ( isset($this->_filters) && $this->_count > 0 ) {
+                $this->_filters->setCounter($this->_count);
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot count members | ' . $e->getMessage(),
                 Analog::WARNING
@@ -714,29 +697,27 @@ class Members
      */
     private function _buildOrderClause()
     {
-        global $filters;
-
         $order = array();
 
-        switch($filters->orderby) {
+        switch($this->_filters->orderby) {
         case self::ORDERBY_NICKNAME:
-            $order[] = 'pseudo_adh ' . $filters->getDirection();
+            $order[] = 'pseudo_adh ' . $this->_filters->getDirection();
             break;
         case self::ORDERBY_STATUS:
-            $order[] = 'priorite_statut ' . $filters->getDirection();
+            $order[] = 'priorite_statut ' . $this->_filters->getDirection();
             break;
         case self::ORDERBY_MODIFDATE:
-            $order[] = 'date_modif_adh ' . $filters->getDirection();
+            $order[] = 'date_modif_adh ' . $this->_filters->getDirection();
             break;
         case self::ORDERBY_FEE_STATUS:
-            $order[] = 'bool_exempt_adh ' . $filters->getDirection();
-            $order[] = 'date_echeance ' . $filters->getDirection();
+            $order[] = 'bool_exempt_adh ' . $this->_filters->getDirection();
+            $order[] = 'date_echeance ' . $this->_filters->getDirection();
             break;
         }
 
         //anyways, we want to order by firstname, lastname
-        $order[] = 'nom_adh ' . $filters->getDirection();
-        $order[] = 'prenom_adh ' . $filters->getDirection();
+        $order[] = 'nom_adh ' . $this->_filters->getDirection();
+        $order[] = 'prenom_adh ' . $this->_filters->getDirection();
         return $order;
     }
 
@@ -749,19 +730,19 @@ class Members
      */
     private function _buildWhereClause($select)
     {
-        global $zdb, $login, $filters;
+        global $zdb, $login;
 
         try {
-            if ( $filters->email_filter == self::FILTER_W_EMAIL) {
+            if ( $this->_filters->email_filter == self::FILTER_W_EMAIL) {
                 $select->where('email_adh != \'\'');
             }
-            if ( $filters->email_filter == self::FILTER_WO_EMAIL) {
+            if ( $this->_filters->email_filter == self::FILTER_WO_EMAIL) {
                 $select->where('email_adh = ""');
             }
 
-            if ( $filters->filter_str != '' ) {
-                $token = '%' . $filters->filter_str . '%';
-                switch( $filters->field_filter ) {
+            if ( $this->_filters->filter_str != '' ) {
+                $token = '%' . $this->_filters->filter_str . '%';
+                switch( $this->_filters->field_filter ) {
                 case self::FILTER_NAME:
                     if ( TYPE_DB === 'pgsql' ) {
                         $sep = " || ' ' || ";
@@ -860,8 +841,8 @@ class Members
                 }
             }
 
-            if ( $filters->membership_filter ) {
-                switch($filters->membership_filter) {
+            if ( $this->_filters->membership_filter ) {
+                switch($this->_filters->membership_filter) {
                 case self::MEMBERSHIP_NEARLY:
                     //TODO: use PHP Date objects
                     $select->where('date_echeance > ?', date('Y-m-d', time()))
@@ -898,8 +879,8 @@ class Members
                 }
             }
 
-            if ( $filters->account_status_filter ) {
-                switch($filters->account_status_filter) {
+            if ( $this->_filters->account_status_filter ) {
+                switch($this->_filters->account_status_filter) {
                 case self::ACTIVE_ACCOUNT:
                     $select->where('activite_adh=true');
                     break;
@@ -909,7 +890,7 @@ class Members
                 }
             }
 
-            if ( $filters->group_filter ) {
+            if ( $this->_filters->group_filter ) {
                 $select->joinLeft(
                     array('g' => PREFIX_DB . Group::GROUPSUSERS_TABLE, Adherent::PK),
                     'a.' . Adherent::PK . '=g.' . Adherent::PK
@@ -917,50 +898,50 @@ class Members
                     array('gs' => PREFIX_DB . Group::TABLE),
                     'gs.' . Group::PK . '=g.' . Group::PK
                 )->where(
-                    'g.' . Group::PK . ' = ' . $filters->group_filter .
+                    'g.' . Group::PK . ' = ' . $this->_filters->group_filter .
                     ' OR gs.parent_group = NULL OR gs.parent_group = ' .
-                    $filters->group_filter
+                    $this->_filters->group_filter
                 );
             }
 
-            if ( $filters instanceof AdvancedMembersList ) {
-                if ( $filters->rcreation_date_begin
-                    || $filters->rcreation_date_end
+            if ( $this->_filters instanceof AdvancedMembersList ) {
+                if ( $this->_filters->rcreation_date_begin
+                    || $this->_filters->rcreation_date_end
                 ) {
-                    if ( $filters->rcreation_date_begin ) {
-                        $d = new \DateTime($filters->rcreation_date_begin);
+                    if ( $this->_filters->rcreation_date_begin ) {
+                        $d = new \DateTime($this->_filters->rcreation_date_begin);
                         $select->where('date_crea_adh >= ?', $d->format('Y-m-d'));
                     }
-                    if ( $filters->rcreation_date_end ) {
-                        $d = new \DateTime($filters->rcreation_date_end);
+                    if ( $this->_filters->rcreation_date_end ) {
+                        $d = new \DateTime($this->_filters->rcreation_date_end);
                         $select->where('date_crea_adh <= ?', $d->format('Y-m-d'));
                     }
                 }
 
-                if ( $filters->rmodif_date_begin || $filters->rmodif_date_end ) {
-                    if ( $filters->rmodif_date_begin ) {
-                        $d = new \DateTime($filters->rmodif_date_begin);
+                if ( $this->_filters->rmodif_date_begin || $this->_filters->rmodif_date_end ) {
+                    if ( $this->_filters->rmodif_date_begin ) {
+                        $d = new \DateTime($this->_filters->rmodif_date_begin);
                         $select->where('date_modif_adh >= ?', $d->format('Y-m-d'));
                     }
-                    if ( $filters->rmodif_date_end ) {
-                        $d = new \DateTime($filters->rmodif_date_end);
+                    if ( $this->_filters->rmodif_date_end ) {
+                        $d = new \DateTime($this->_filters->rmodif_date_end);
                         $select->where('date_modif_adh <= ?', $d->format('Y-m-d'));
                     }
                 }
 
-                if ( $filters->rdue_date_begin || $filters->rdue_date_end ) {
-                    if ( $filters->rdue_date_begin ) {
-                        $d = new \DateTime($filters->rdue_date_begin);
+                if ( $this->_filters->rdue_date_begin || $this->_filters->rdue_date_end ) {
+                    if ( $this->_filters->rdue_date_begin ) {
+                        $d = new \DateTime($this->_filters->rdue_date_begin);
                         $select->where('date_echeance >= ?', $d->format('Y-m-d'));
                     }
-                    if ( $filters->rdue_date_end ) {
-                        $d = new \DateTime($filters->rdue_date_end);
+                    if ( $this->_filters->rdue_date_end ) {
+                        $d = new \DateTime($this->_filters->rdue_date_end);
                         $select->where('date_echeance <= ?', $d->format('Y-m-d'));
                     }
                 }
 
-                if ( $filters->show_public_infos ) {
-                    switch ( $filters->show_public_infos ) {
+                if ( $this->_filters->show_public_infos ) {
+                    switch ( $this->_filters->show_public_infos ) {
                     case self::FILTER_W_PUBINFOS:
                         $select->where('bool_display_info = true');
                         break;
@@ -973,16 +954,16 @@ class Members
                     }
                 }
 
-                if ( $filters->status ) {
+                if ( $this->_filters->status ) {
                     $select->where(
-                        'a.id_statut IN (' . implode(',', $filters->status) . ')'
+                        'a.id_statut IN (' . implode(',', $this->_filters->status) . ')'
                     );
                 }
 
-                if ( count($filters->free_search) > 0
-                    && !isset($filters->free_search['empty'])
+                if ( count($this->_filters->free_search) > 0
+                    && !isset($this->_filters->free_search['empty'])
                 ) {
-                    foreach ( $filters->free_search as $fs ) {
+                    foreach ( $this->_filters->free_search as $fs ) {
                         $fs['search'] = mb_strtolower($fs['search']);
                         $qop = null;
                         switch ( $fs['qry_op'] ) {
@@ -1009,10 +990,10 @@ class Members
                             $fs['search'] = '%' . $fs['search'];
                             break;
                         default:
-                        Analog::log(
+                            Analog::log(
                                 'Unknown query operator: ' . $fs['qry_op'] .
                                 ' (will fallback to equals)',
-                            Analog::WARNING
+                                Analog::WARNING
                             );
                             $qop = '=';
                             break;
@@ -1034,7 +1015,8 @@ class Members
                             $fs['field'] = 'field_val';
                         }
 
-                        $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' . $qop  . ' ?' ;
+                        $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' .
+                            $qop  . ' ?' ;
                         if ( $fs['log_op'] === AdvancedMembersList::OP_AND ) {
                             $select->where($qry, $fs['search']);
                         } elseif ( $fs['log_op'] === AdvancedMembersList::OP_OR ) {
@@ -1044,7 +1026,6 @@ class Members
                 }
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
@@ -1124,7 +1105,7 @@ class Members
             $zdb->db->commit();
             $this->_count = $processed;
             return true;
-        } catch ( Exception $e ) {
+        } catch ( \Exception $e ) {
             $zdb->db->rollBack();
             Analog::log(
                 'An error occured trying to retrieve members with ' .

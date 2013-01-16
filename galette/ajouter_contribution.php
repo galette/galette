@@ -38,6 +38,8 @@
 
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\DynamicFields as DynamicFields;
+use Galette\Entity\ContributionsTypes as ContributionsTypes;
+use Galette\Repository\Members as Members;
 
 require_once 'includes/galette.inc.php';
 
@@ -331,13 +333,13 @@ if ( isset($head_redirect) ) {
 }
 
 // contribution types
-$type_cotis_options = Galette\Entity\ContributionsTypes::getList(
+$type_cotis_options = ContributionsTypes::getList(
     ($type_selected == 1 && $id_adh != '') ? $contrib->isCotis() : null
 );
 $tpl->assign('type_cotis_options', $type_cotis_options);
 
 // members
-$m = new Galette\Repository\Members();
+$m = new Members();
 $required_fields = array(
     'id_adh',
     'nom_adh',

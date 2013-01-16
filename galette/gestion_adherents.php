@@ -215,7 +215,7 @@ if ( isset($_GET['tri']) ) {
     $filters->orderby = $_GET['tri'];
 }
 
-$members = new Galette\Repository\Members();
+$members = new Members($filters);
 
 //delete members
 if (isset($_GET['sup']) || isset($_POST['delete'])) {
