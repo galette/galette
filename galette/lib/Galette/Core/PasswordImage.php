@@ -85,7 +85,7 @@ class PasswordImage extends Password
         //second, generate a new password and store it in the database
         $password = $this->makeRandomPassword();
         $this->setPassword($password);
-        $this->setHash(md5($password));
+        $this->setHash(password_hash($password, PASSWORD_BCRYPT));
         return true;
     }
 

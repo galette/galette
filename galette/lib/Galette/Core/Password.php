@@ -156,7 +156,7 @@ class Password
 
         //second, generate a new password and store it in the database
         $password = $this->makeRandomPassword();
-        $hash = md5($password);
+        $hash = password_hash($password, PASSWORD_BCRYPT);
 
         try {
             $values = array(
