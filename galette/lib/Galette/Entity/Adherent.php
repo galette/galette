@@ -647,7 +647,7 @@ class Adherent
         try {
             $zdb->db->update(
                 PREFIX_DB . self::TABLE,
-                array('mdp_adh' => password_hash($pass)),
+                array('mdp_adh' => password_hash($pass, PASSWORD_BCRYPT)),
                 $zdb->db->quoteInto(self::PK . ' = ?', $id_adh)
             );
             Analog::log(

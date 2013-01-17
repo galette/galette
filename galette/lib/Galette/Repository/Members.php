@@ -1086,7 +1086,10 @@ class Members
                         || !isset($m->mdp_adh)
                         || $m->mdp_adh == 'NULL'
                     ) {
-                        $m->mdp_adh = md5($p->makeRandomPassword(15));
+                        $m->mdp_adh = password_hash(
+                            $p->makeRandomPassword(15),
+                            PASSWORD_BCRYPT
+                        );
                         $dirty = true;
                     }
 

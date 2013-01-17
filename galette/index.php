@@ -50,8 +50,20 @@ if ( isset($_GET['logout']) ) {
 
 // Authentication procedure
 if (isset($_POST['ident'])) {
+    $pw_superadmin = false;
+    if ( $_POST['login'] == $preferences->pref_admin_login ) {
+        $pw_superadmin = password_verify(
+            $_POST['password'],
+            $preferences->pref_admin_pass
+        );
+        if ( !$pw_superadmin ) {
+            $pw_superadmin = (
+                md5($_POST['password']) === $preferences->pref_admin_pass
+            );
+        }
+    }
     if ( $_POST['login'] == $preferences->pref_admin_login
-        && md5($_POST['password']) == $preferences->pref_admin_pass
+        && $pw_superadmin
     ) {
         $login->logAdmin($_POST['login']);
         $session['login'] = serialize($login);

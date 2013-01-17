@@ -1219,7 +1219,7 @@ define("STOCK_FILES", "tempimages");
         $res = $preferences->installInit(
             $i18n->getID(),
             $_POST['install_adminlogin'],
-            md5($_POST['install_adminpass'])
+            password_hash($_POST['install_adminpass'], PASSWORD_BCRYPT)
         );
         if ( $res !== true ) {
             $errs[] = '<li class="install-bad">' .

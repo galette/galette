@@ -509,9 +509,9 @@ class Preferences
             return false;
         }
 
-        //some values need to be changed (eg. md5 passwords)
+        //some values need to be changed (eg. passwords)
         if ($name == 'pref_admin_pass') {
-            $value = md5($value);
+            $value = password_hash($value, PASSWORD_BCRYPT);
         }
 
         //okay, let's update value
