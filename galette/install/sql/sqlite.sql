@@ -252,6 +252,6 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version REAL NOT NULL
 );
-INSERT INTO galette_database(version) VALUES(0.701);
+INSERT INTO galette_database(version) VALUES(0.702);
 
 PRAGMA foreign_keys = ON;

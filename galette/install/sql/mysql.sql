@@ -264,6 +264,6 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-INSERT INTO galette_database(version) VALUES(0.701);
+INSERT INTO galette_database(version) VALUES(0.702);
 
 SET FOREIGN_KEY_CHECKS=1;
