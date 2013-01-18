@@ -655,7 +655,7 @@ class Install
     public function setAdminInfos($login, $pass)
     {
         $this->_admin_login = $login;
-        $this->_admin_pass = md5($pass);
+        $this->_admin_pass = password_hash($pass, PASSWORD_BCRYPT);
     }
 
     /**
