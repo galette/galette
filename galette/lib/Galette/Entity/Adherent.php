@@ -947,9 +947,10 @@ class Adherent
                     }
                 } else if ( ($key == 'login_adh' && !isset($required['login_adh']))
                     || ($key == 'mdp_adh' && !isset($required['mdp_adh']))
+                    && !isset($this->_id)
                 ) {
                     $p = new Password();
-                    $this->$prop = $p->makeRandomPassword(15);
+                    $this->$key = $p->makeRandomPassword(15);
                 }
             }
         }
