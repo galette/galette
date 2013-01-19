@@ -252,6 +252,8 @@ class Plugins
     */
     public function loadModuleL10N($id, $language)
     {
+        global $lang;
+
         if (!$language || !isset($this->modules[$id])) {
             return;
         }
