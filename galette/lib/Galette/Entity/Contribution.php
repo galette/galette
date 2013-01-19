@@ -184,6 +184,9 @@ class Contribution
                 }
                 $this->_amount = $this->_transaction->getMissingAmount();
             }
+            if ( isset($args['payment_type']) ) {
+                $this->_payment_type = $args['payment_type'];
+            }
         } elseif ( is_object($args) ) {
             $this->_loadFromRS($args);
         }
