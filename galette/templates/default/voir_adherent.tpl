@@ -259,7 +259,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 <td>{$member->others_infos|htmlspecialchars|nl2br}</td>
             </tr>
 {/if}
-{if $member->groups != false && $member->groups|@count != 0}
+{if $member->groups != false && $member->groups|@count != 0 || $member->managed_groups != false && $member->managed_groups|@count != 0}
             <tr>
                 <th>{_T string="Groups:"}</th>
                 <td>
