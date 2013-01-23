@@ -62,10 +62,6 @@ if ( !version_compare(PHP_VERSION, '5.2.0', '<') ) {
 $cm = new Galette\Core\CheckModules();
 $modules_ok = $cm->isValid();
 
-$news = new Galette\IO\News(true);
-$twitter = $news->canReadTweets($cm);
-$gplus = $news->canReadGplus($cm);
-
 // check file permissions
 $perms_ok = true;
 $files_need_rw = array (
