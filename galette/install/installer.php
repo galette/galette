@@ -160,7 +160,7 @@ if ( isset($_POST['stepback_btn']) ) {
         );
         $install->atGaletteInitStep();
     }
-} elseif ( $_POST['install_prefs_ok'] ) {
+} elseif ( isset($_POST['install_prefs_ok']) ) {
     $install->atEndStep();
 }
 
