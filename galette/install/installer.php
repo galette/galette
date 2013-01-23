@@ -279,4 +279,8 @@ if ( $install->isCheckStep() ) {
 if ( !$install->isEndStep() ) {
     $session[md5(GALETTE_ROOT)] = serialize($install);
 }
+
+if ( isset($profiler) ) {
+    $profiler->stop();
+}
 ?>
