@@ -157,11 +157,13 @@ class Db
     }
 
     /**
-     * Check if database version suits our needs
+     * Retrieve current database version
      *
-     * @return boolean
+     * @return float
+     *
+     * @throw LogicException
      */
-    public function checkDbVersion()
+    public function getDbVersion()
     {
         if ( GALETTE_MODE === 'DEV' ) {
             Analog::log(
@@ -178,12 +180,27 @@ class Db
 
             $results = $this->execute($select);
             $result = $results->current();
-            return $result->version === GALETTE_DB_VERSION;
+            return $result;
         } catch ( \Exception $e ) {
             Analog::log(
                 'Cannot check database version: ' . $e->getMessage(),
                 Analog::ERROR
             );
+            throw new \LogicException('Cannot check database version');
+        }
+
+    }
+
+    /**
+     * Check if database version suits our needs
+     *
+     * @return boolean
+     */
+    public function checkDbVersion()
+    {
+        try {
+            return $this->getDbVersion() === GALETTE_DB_VERSION;
+        } catch ( \LogicException $e ) {
             return false;
         }
     }
