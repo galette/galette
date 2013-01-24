@@ -529,7 +529,7 @@ class Members
                             : $fields) : (array)'*';
 
             $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
+            $select->distinct()->from(
                 array('a' => PREFIX_DB . self::TABLE),
                 $fieldsList
             );
@@ -608,6 +608,16 @@ class Members
                 }
             }
 
+            if ( $this->_filters instanceof AdvancedMembersList
+                && $this->_filters->withinContributions()
+            ) {
+                $select->joinLeft(
+                    array('ct' => PREFIX_DB . Contribution::TABLE),
+                    'ct.' . self::PK . '=a.' . self::PK,
+                    array()
+                );
+            }
+
             if ( $mode == self::SHOW_LIST || $mode == self::SHOW_MANAGED ) {
                 if ( $this->_filters !== false ) {
                     self::_buildWhereClause($select);
@@ -621,7 +631,6 @@ class Members
                         date('Y-m-d')
                     );
             }
-
 
             if ( $mode === self::SHOW_STAFF ) {
                 $select->where('p.priorite_statut < ' . self::NON_STAFF_MEMBERS);
@@ -661,7 +670,7 @@ class Members
             $countSelect->reset(\Zend_Db_Select::COLUMNS);
             $countSelect->reset(\Zend_Db_Select::ORDER);
             $countSelect->reset(\Zend_Db_Select::HAVING);
-            $countSelect->columns('count(a.' . self::PK . ') AS ' . self::PK);
+            $countSelect->columns('count(DISTINCT a.' . self::PK . ') AS ' . self::PK);
 
             $have = $select->getPart(\Zend_Db_Select::HAVING);
             if ( is_array($have) && count($have) > 0 ) {
@@ -683,7 +692,8 @@ class Members
                 Analog::WARNING
             );
             Analog::log(
-                'Query was: ' . $countSelect->__toString() . ' ' . $e->__toString(),
+                'Count members query was: ' . $countSelect->__toString() .
+                ' ' . $e->__toString(),
                 Analog::ERROR
             );
             return false;
@@ -956,7 +966,108 @@ class Members
 
                 if ( $this->_filters->status ) {
                     $select->where(
-                        'a.id_statut IN (' . implode(',', $this->_filters->status) . ')'
+                        'a.id_statut IN (' . implode(
+                            ',',
+                            $this->_filters->Status
+                        ) . ')'
+                    );
+                }
+
+                if ( $this->_filters->rcontrib_creation_date_begin
+                    || $this->_filters->rcontrib_creation_date_end
+                ) {
+                    if ( $this->_filters->rcontrib_creation_date_begin ) {
+                        $d = new \DateTime(
+                            $this->_filters->rcontrib_creation_date_begin
+                        );
+                        $select->where('ct.date_enreg >= ?', $d->format('Y-m-d'));
+                    }
+                    if ( $this->_filters->rcontrib_creation_date_end ) {
+                        $d = new \DateTime(
+                            $this->_filters->rcontrib_creation_date_end
+                        );
+                        $select->where('ct.date_enreg <= ?', $d->format('Y-m-d'));
+                    }
+                }
+
+                if ( $this->_filters->rcontrib_begin_date_begin
+                    || $this->_filters->rcontrib_begin_date_end
+                ) {
+                    if ( $this->_filters->rcontrib_begin_date_begin ) {
+                        $d = new \DateTime(
+                            $this->_filters->rcontrib_begin_date_begin
+                        );
+                        $select->where(
+                            'ct.date_debut_cotis >= ?',
+                            $d->format('Y-m-d')
+                        );
+                    }
+                    if ( $this->_filters->rcontrib_begin_date_end ) {
+                        $d = new \DateTime(
+                            $this->_filters->rcontrib_begin_date_end
+                        );
+                        $select->where(
+                            'ct.date_debut_cotis <= ?',
+                            $d->format('Y-m-d')
+                        );
+                    }
+                }
+
+                if ( $this->_filters->rcontrib_end_date_begin
+                    || $this->_filters->rcontrib_end_date_end
+                ) {
+                    if ( $this->_filters->rcontrib_end_date_begin ) {
+                        $d = new \DateTime(
+                            $this->_filters->rcontrib_end_date_begin
+                        );
+                        $select->where(
+                            'ct.date_fin_cotis >= ?',
+                            $d->format('Y-m-d')
+                        );
+                    }
+                    if ( $this->_filters->rcontrib_begin_date_end ) {
+                        $d = new \DateTime(
+                            $this->_filters->rcontrib_end_date_end
+                        );
+                        $select->where(
+                            'ct.date_fin_cotis <= ?',
+                            $d->format('Y-m-d')
+                        );
+                    }
+                }
+
+                if ( $this->_filters->contrib_min_amount
+                    || $this->_filters->contrib_max_amount
+                ) {
+                    if ( $this->_filters->contrib_min_amount ) {
+                        $select->where(
+                            'ct.montant_cotis >= ?',
+                            $this->_filters->contrib_min_amount
+                        );
+                    }
+                    if ( $this->_filters->contrib_max_amount ) {
+                        $select->where(
+                            'ct.montant_cotis <= ?',
+                            $this->_filters->contrib_max_amount
+                        );
+                    }
+                }
+
+                if ( $this->_filters->contributions_types ) {
+                    $select->where(
+                        'ct.id_type_cotis IN (' . implode(
+                            ',',
+                            $this->_filters->contributions_types
+                        ) . ')'
+                    );
+                }
+
+                if ( $this->_filters->payments_types ) {
+                    $select->where(
+                        'ct.type_paiement_cotis IN (' . implode(
+                            ',',
+                            $this->_filters->payments_types
+                        ) . ')'
                     );
                 }
 

@@ -40,6 +40,7 @@ use Galette\Filters\AdvancedMembersList as AdvancedMembersList;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\DynamicFields as DynamicFields;
 use Galette\Entity\FieldsConfig as FieldsConfig;
+use Galette\Entity\Contribution as Contribution;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -80,7 +81,7 @@ $fc = new FieldsConfig(Adherent::TABLE, $fields);
 $visibles = $fc->getVisibilities();
 
 foreach ( $fields as $k=>$f ) {
-    if ( !in_array($vf, $visibles)
+    if ( !in_array($f, $visibles)
         || $visibles[$k] === 0
     ) {
         unset($fields[$k]);
@@ -101,6 +102,21 @@ $tpl->assign('dynamic_fields', $dynamic_fields);
 //Status
 $statuts = new Galette\Entity\Status();
 $tpl->assign('statuts', $statuts->getList());
+
+//Contributions types
+$ct = new Galette\Entity\ContributionsTypes();
+$tpl->assign('contributions_types', $ct->getList());
+
+//Payments types
+$pt = array(
+    Contribution::PAYMENT_OTHER         => _T("Other"),
+    Contribution::PAYMENT_CASH          => _T("Cash"),
+    Contribution::PAYMENT_CREDITCARD    => _T("Credit card"),
+    Contribution::PAYMENT_CHECK         => _T("Check"),
+    Contribution::PAYMENT_TRANSFER      => _T("Transfer"),
+    Contribution::PAYMENT_PAYPAL        => _T("Paypal")
+);
+$tpl->assign('payments_types', $pt);
 
 $tpl->assign('filters', $filters);
 

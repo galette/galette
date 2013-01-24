@@ -148,6 +148,10 @@ if (   isset($_POST['cards'])
             case 'filter_account':
                 $k = 'account_status_filter';
                 break;
+            case 'contrib_min_amount':
+            case 'contrib_max_amount':
+                $v = (float)$v;
+                break;
             }
             $filters->$k = $v;
         }
