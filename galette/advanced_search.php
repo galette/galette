@@ -39,6 +39,7 @@ use Galette\Filters\MembersList as MembersList;
 use Galette\Filters\AdvancedMembersList as AdvancedMembersList;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\DynamicFields as DynamicFields;
+use Galette\Entity\FieldsConfig as FieldsConfig;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -72,9 +73,20 @@ if (isset($warning_detected)) {
     $tpl->assign('warning_detected', $warning_detected);
 }
 
-//TODO: filter that? Only visibles?
 $a = new Adherent();
-$tpl->assign('search_fields', $a->fields);
+//we want only visibles fields
+$fields = $a->fields;
+$fc = new FieldsConfig(Adherent::TABLE, $fields);
+$visibles = $fc->getVisibilities();
+
+foreach ( $fields as $k=>$f ) {
+    if ( !in_array($vf, $visibles)
+        || $visibles[$k] === 0
+    ) {
+        unset($fields[$k]);
+    }
+}
+$tpl->assign('search_fields', $fields);
 
 //dynamic fields
 $df = new DynamicFields();
