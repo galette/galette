@@ -1810,12 +1810,14 @@ td.photo img{
     text-align: center;
 }
 
-.tbl_line_even {
+.tbl_line_even,
+.even > td {
     background-color: #EEEEEE!important;
     vertical-align: top;
 }
 
-.tbl_line_odd {
+.tbl_line_odd,
+.odd > td {
     background-color: #E2E5EE!important;
     vertical-align: top;
 }

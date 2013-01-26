@@ -254,7 +254,7 @@ foreach ( $members as $member ) {
 
     $id = '<strong>' . $member->id . '</strong>';
     $nom_adh_ext = '<strong>' .
-        (( $preferences->pref_bool_display_title ) ? $member->spoliteness . ' ' : '') .
+        (( $preferences->pref_bool_display_title ) ? $member->stitle . ' ' : '') .
         $member->sname . '</strong>';
     $photo = $member->picture;
     $photofile = $photo->getPath();

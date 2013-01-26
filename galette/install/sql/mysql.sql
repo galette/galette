@@ -11,8 +11,9 @@ CREATE TABLE galette_adherents (
   prenom_adh varchar(50) NOT NULL default '',
   pseudo_adh varchar(20) NOT NULL default '',
   societe_adh varchar(200) default NULL,
-  titre_adh tinyint(3) unsigned NOT NULL default '0',
+  titre_adh int(10) unsigned NOT NULL default '0',
   ddn_adh date default '1901-01-01',
+  sexe_adh tinyint(1) NOT NULL default '0',
   adresse_adh varchar(150) NOT NULL default '',
   adresse2_adh varchar(150) default NULL,
   cp_adh varchar(10) NOT NULL default '',
@@ -43,7 +44,8 @@ CREATE TABLE galette_adherents (
   fingerprint varchar(50) DEFAULT NULL,
   PRIMARY KEY  (id_adh),
   UNIQUE (login_adh),
-  FOREIGN KEY (id_statut) REFERENCES galette_statuts (id_statut)
+  FOREIGN KEY (id_statut) REFERENCES galette_statuts (id_statut),
+  FOREIGN KEY (titre_adh) REFERENCES galette_title (id_title)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_cotisations;
@@ -80,6 +82,14 @@ CREATE TABLE galette_statuts (
   libelle_statut varchar(20) NOT NULL default '',
   priorite_statut tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (id_statut)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+DROP TABLE IF EXISTS galette_title;
+CREATE TABLE galette_title (
+  id_title int(10) unsigned NOT NULL auto_increment,
+  short_label_label varchar(10) NOT NULL default '',
+  long_label varchar(30) default '',
+  PRIMARY KEY  (id_title)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_types_cotisation;

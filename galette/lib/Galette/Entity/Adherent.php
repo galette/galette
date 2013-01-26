@@ -61,15 +61,20 @@ class Adherent
     const TABLE = 'adherents';
     const PK = 'id_adh';
 
+    const NC = 0;
+    const MAN = 1;
+    const WOMAN = 2;
+
     private $_id;
     //Identity
-    private $_politeness;
+    private $_title;
     private $_company_name;
     private $_name;
     private $_surname;
     private $_nickname;
     private $_birthdate;
     private $_birth_place;
+    private $_gender;
     private $_job;
     private $_language;
     private $_active;
@@ -130,6 +135,7 @@ class Adherent
         'titre_adh' => 'disabled',
         'nom_adh' => 'disabled="disabled"',
         'prenom_adh' => 'disabled="disabled"',
+        'sexe_adh' => 'disabled="disabled"'
     );
     private $_staff_edit_disabled_fields = array(
         'bool_admin_adh' => 'disabled="disabled"'
@@ -199,19 +205,21 @@ class Adherent
         }
 
         if ( $args == null || is_int($args) ) {
-            $this->_active = true;
-            $this->_language = $i18n->getID();
-            $this->_creation_date = date("Y-m-d");
-            $this->_status = Status::DEFAULT_STATUS;
-            $this->_politeness = Politeness::MR;
-            $gp = new Password();
-            $this->_password = $gp->makeRandomPassword();
-            $this->_picture = new Picture();
-            $this->_admin = false;
-            $this->_staff = false;
-            $this->_due_free = false;
             if ( is_int($args) && $args > 0 ) {
                 $this->load($args);
+            } else {
+                $this->_active = true;
+                $this->_language = $i18n->getID();
+                $this->_creation_date = date("Y-m-d");
+                $this->_status = Status::DEFAULT_STATUS;
+                $this->_title = new Title(1);
+                $this->_gender = self::NC;
+                $gp = new Password();
+                $this->_password = $gp->makeRandomPassword();
+                $this->_picture = new Picture();
+                $this->_admin = false;
+                $this->_staff = false;
+                $this->_due_free = false;
             }
         } elseif ( is_object($args) ) {
             $this->_loadFromRS($args);
@@ -309,7 +317,7 @@ class Adherent
         $this->_self_adh = false;
         $this->_id = $r->id_adh;
         //Identity
-        $this->_politeness = $r->titre_adh;
+        $this->_title = new Title($r->titre_adh);
         $this->_company_name = $r->societe_adh;
         $this->_name = $r->nom_adh;
         $this->_surname = $r->prenom_adh;
@@ -318,6 +326,7 @@ class Adherent
             $this->_birthdate = $r->ddn_adh;
         }
         $this->_birth_place = $r->lieu_naissance;
+        $this->_gender = $r->sexe_adh;
         $this->_job = $r->prof_adh;
         $this->_language = $r->pref_lang;
         $this->_active = $r->activite_adh;
@@ -499,6 +508,27 @@ class Adherent
     {
         return trim($this->_company_name != '');
     }
+
+    /**
+     * Is current member a man?
+     *
+     * @return boolean
+     */
+    public function isMan()
+    {
+        return $this->_gender === self::MAN;
+    }
+
+    /**
+     * Is current member a woman?
+     *
+     * @return boolean
+     */
+    public function isWoman()
+    {
+        return $this->_gender === self::WOMAN;
+    }
+
 
     /**
     * Can member appears in public members list?
@@ -1132,7 +1162,7 @@ class Adherent
         );
         $virtuals = array(
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
-            'spoliteness', 'sstatus', 'sfullname', 'sname', 'rowclass'
+            'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass'
         );
         $rname = '_' . $name;
         if ( !in_array($name, $forbidden) && isset($this->$rname)) {
@@ -1190,8 +1220,8 @@ class Adherent
             case 'sactive':
                 return (($this->$real) ? _T("Active") : _T("Inactive"));
                 break;
-            case 'spoliteness':
-                return Politeness::getPoliteness($this->_politeness);
+            case 'stitle':
+                return $this->_title->tshort;
                 break;
             case 'sstatus':
                 $status = new Status();
@@ -1199,9 +1229,9 @@ class Adherent
                 break;
             case 'sfullname':
                 $sfn = mb_strtoupper($this->_name, 'UTF-8') . ' ' .
-                       ucwords(mb_strtolower($this->_surname, 'UTF-8'));
-                    $sfn = Politeness::getPoliteness($this->_politeness) .
-                        ' ' . $sfn;
+                    ucwords(mb_strtolower($this->_surname, 'UTF-8'));
+                $sfn = $this->_title->tshort .
+                    ' ' . $sfn;
                 return $sfn;
                 break;
             case 'sname':

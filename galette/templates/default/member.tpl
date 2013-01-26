@@ -28,13 +28,24 @@
                     </p>
     {/if}
                     <p>
-                        <span class="bline">{_T string="Title:"}</span>
-                        {if isset($disabled.titre_adh) and $disabled.titre_adh != ''}
-                            {html_radios name="titre_adh" options=$radio_titres checked=$member->politeness separator="&nbsp;" disabled="disabled"}
-                        {else}
-                            {html_radios name="titre_adh" options=$radio_titres checked=$member->politeness separator="&nbsp;"}
-                        {/if}
+                        <label for="titre_adh" class="bline">{_T string="Title:"}</label>
+                        <select name="titre_adh" id="titre_adh">
+    {foreach item=title from=$titles_list}
+                            <option value="{$title->id}"{if isset($disabled.titre_adh) and $disabled.titre_adh != ''} disabled="disabled"{/if}{if $member->title->id eq $title->id} selected="selected"{/if}>{$title->long}</option>
+    {/foreach}
+                        </select>
                     </p>
+    {if $visibles.sexe_adh eq constant('Galette\Entity\FieldsConfig::VISIBLE') or ($visibles.sexe_adh eq constant('Galette\Entity\FieldsConfig::ADMIN') and ($login->isStaff() or $login->isAdmin() or $login->isSuperAdmin()))}
+                    <p>
+                        <span class="bline">{_T string="Gender:"}</span>
+                        <input type="radio" name="sexe_adh" id="gender_nc" value="{php}echo Galette\Entity\Adherent::NC;{/php}"{if !$member->isMan() and !$member->isWoman()} checked="checked"{/if}/>
+                        <label for="gender_nc">{_T string="Unspecified"}</label>
+                        <input type="radio" name="sexe_adh" id="gender_man" value="{php}echo Galette\Entity\Adherent::MAN;{/php}"{if $member->isMan()} checked="checked"{/if}/>
+                        <label for="gender_man">{_T string="Man"}</label>
+                        <input type="radio" name="sexe_adh" id="gender_woman" value="{php}echo Galette\Entity\Adherent::WOMAN;{/php}"{if $member->isWoman()} checked="checked"{/if}/>
+                        <label for="gender_woman">{_T string="Woman"}</label>
+                    </p>
+    {/if}
     {if $visibles.nom_adh eq constant('Galette\Entity\FieldsConfig::VISIBLE') or ($visibles.nom_adh eq constant('Galette\Entity\FieldsConfig::ADMIN') and ($login->isStaff() or $login->isAdmin() or $login->isSuperAdmin()))}
                     <p>
                         <label for="nom_adh" class="bline">{_T string="Name:"}</label>

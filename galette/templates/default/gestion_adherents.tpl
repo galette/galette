@@ -160,9 +160,9 @@
                         <input type="checkbox" name="member_sel[]" value="{$member->id}"/>
                     {if $member->isCompany()}
                         <img src="{$template_subdir}images/icon-company.png" alt="{_T string="[W]"}" width="16" height="16"/>
-                    {elseif $member->politeness eq constant('Galette\Entity\Politeness::MR')}
+                    {elseif $member->isMan()}
                         <img src="{$template_subdir}images/icon-male.png" alt="{_T string="[M]"}" width="16" height="16"/>
-                    {elseif $member->politeness eq constant('Galette\Entity\Politeness::MRS') || $member->politeness eq constant('Galette\Entity\Politeness::MISS')}
+                    {elseif $member->isWoman()}
                         <img src="{$template_subdir}images/icon-female.png" alt="{_T string="[W]"}" width="16" height="16"/>
                     {else}
                         <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>

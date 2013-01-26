@@ -84,6 +84,15 @@ CREATE SEQUENCE galette_mailing_history_id_seq
     MINVALUE 1
     CACHE 1;
 
+-- sequence for title
+DROP SEQUENCE IF EXISTS galette_title_id_seq;
+CREATE SEQUENCE galette_title_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
 -- Schema
 -- REMINDER: Create order IS important, dependencies first !!
 DROP TABLE IF EXISTS galette_statuts CASCADE;
@@ -94,6 +103,14 @@ CREATE TABLE galette_statuts (
   PRIMARY KEY (id_statut)
 );
 
+DROP TABLE IF EXISTS galette_title CASCADE;
+CREATE TABLE galette_title (
+  id_title integer DEFAULT nextval('galette_title_id_seq'::text) NOT NULL,
+  short_label character varying(10) DEFAULT '' NOT NULL,
+  long_label character varying(30) DEFAULT '',
+  PRIMARY KEY (id_title)
+);
+
 DROP TABLE IF EXISTS galette_adherents CASCADE;
 CREATE TABLE galette_adherents (
     id_adh integer DEFAULT nextval('galette_adherents_id_seq'::text) NOT NULL,
@@ -102,8 +119,9 @@ CREATE TABLE galette_adherents (
     prenom_adh character varying(50) DEFAULT '' NOT NULL,
     societe_adh character varying(200) DEFAULT NULL,
     pseudo_adh character varying(20) DEFAULT '' NOT NULL,
-    titre_adh smallint DEFAULT '0' NOT NULL,
+    titre_adh integer DEFAULT '0' REFERENCES galette_title(id_title) ON DELETE RESTRICT ON UPDATE CASCADE,
     ddn_adh date DEFAULT '19010101',
+    sexe_adh smallint DEFAULT '0' NOT NULL,
     adresse_adh character varying(150) DEFAULT '' NOT NULL,
     adresse2_adh character varying(150) DEFAULT NULL,
     cp_adh character varying(10) DEFAULT '' NOT NULL,

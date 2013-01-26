@@ -9,8 +9,9 @@ CREATE TABLE galette_adherents (
   prenom_adh TEXT NOT NULL default '',
   pseudo_adh TEXT NOT NULL default '',
   societe_adh TEXT default NULL,
-  titre_adh INTEGER unsigned NOT NULL default '0',
+  titre_adh INTEGER NOT NULL default '0',
   ddn_adh TEXT default '1901-01-01',
+  sexe_adh INTEGER NOT NULL default '0',
   adresse_adh TEXT NOT NULL default '',
   adresse2_adh TEXT default NULL,
   cp_adh TEXT NOT NULL default '',
@@ -40,7 +41,8 @@ CREATE TABLE galette_adherents (
   gpgid TEXT DEFAULT NULL,
   fingerprint TEXT DEFAULT NULL,
   UNIQUE (login_adh),
-  FOREIGN KEY (id_statut) REFERENCES galette_statuts (id_statut)
+  FOREIGN KEY (id_statut) REFERENCES galette_statuts (id_statut),
+  FOREIGN KEY (titre_adh) REFERENCES galette_title (id_title)
 );
 
 DROP TABLE IF EXISTS galette_cotisations;
@@ -74,6 +76,13 @@ CREATE TABLE galette_statuts (
   id_statut INTEGER NOT NULL PRIMARY KEY,
   libelle_statut TEXT NOT NULL default '',
   priorite_statut INTEGER NOT NULL default '0'
+);
+
+DROP TABLE IF EXISTS galette_title;
+CREATE TABLE galette_title (
+  id_title INTEGER NOT NULL PRIMARY KEY,
+  short_label TEXT NOT NULL default '',
+  long_label TEXT NULL default ''
 );
 
 DROP TABLE IF EXISTS galette_types_cotisation;

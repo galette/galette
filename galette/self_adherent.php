@@ -42,6 +42,7 @@ use Galette\Entity\DynamicFields as DynamicFields;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\FieldsConfig as FieldsConfig;
 use Galette\Entity\Texts as Texts;
+use Galette\Repository\Titles as Titles;
 use Galette\Core\PasswordImage as PasswordImage;
 
 /** @ignore */
@@ -236,7 +237,7 @@ $tpl->assign('require_calendar', true);
 // pseudo random int
 $tpl->assign('time', time());
 // genre
-$tpl->assign('radio_titres', Galette\Entity\Politeness::getList());
+$tpl->assign('titles_list', Titles::getList($zdb));
 
 //self_adh specific
 $tpl->assign('spam_pass', $spam_pass);
