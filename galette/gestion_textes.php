@@ -83,7 +83,7 @@ if (isset($_POST['valid']) && $_POST['valid'] == '1') {
             _T("Email: '%s' has not been modified!")
         );
     } else {
-        $warning_detected[] = preg_replace(
+        $success_detected[] = preg_replace(
             '(%s)',
             $mtxt->tcomment,
             _T("Email: '%s' has been successfully modified.")
@@ -100,7 +100,7 @@ $tpl->assign('cur_ref', $cur_ref);
 $tpl->assign('mtxt', $mtxt);
 $tpl->assign('require_dialog', true);
 $tpl->assign('error_detected', $error_detected);
-$tpl->assign('warning_detected', $warning_detected);
+$tpl->assign('success_detected', $success_detected);
 $content = $tpl->fetch('gestion_textes.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');
