@@ -42,7 +42,7 @@ CREATE TABLE galette_adherents (
   fingerprint TEXT DEFAULT NULL,
   UNIQUE (login_adh),
   FOREIGN KEY (id_statut) REFERENCES galette_statuts (id_statut),
-  FOREIGN KEY (titre_adh) REFERENCES galette_title (id_title)
+  FOREIGN KEY (titre_adh) REFERENCES galette_titles (id_title)
 );
 
 DROP TABLE IF EXISTS galette_cotisations;
@@ -78,8 +78,8 @@ CREATE TABLE galette_statuts (
   priorite_statut INTEGER NOT NULL default '0'
 );
 
-DROP TABLE IF EXISTS galette_title;
-CREATE TABLE galette_title (
+DROP TABLE IF EXISTS galette_titles;
+CREATE TABLE galette_titles (
   id_title INTEGER NOT NULL PRIMARY KEY,
   short_label TEXT NOT NULL default '',
   long_label TEXT NULL default ''
