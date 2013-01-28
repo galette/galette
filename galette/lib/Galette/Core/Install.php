@@ -93,6 +93,7 @@ class Install
         $this->mode = null;
         $this->_version = str_replace('v', '', GALETTE_VERSION);
         $this->_db_connected = false;
+        $this->_db_prefix = null;
     }
 
     /**

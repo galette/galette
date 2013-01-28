@@ -146,18 +146,20 @@ if ( $db_connected === true ) {
         );
     }
 
-    if ( $results['alter'] instanceof Exception ) {
-        $result = array(
-            'message'   => _T("ALTER operation not allowed"),
-            'debug'     => $results['alter']->getMessage(),
-            'res'       => false
-        );
-        $error = true;
-    } elseif ( $results['alter'] != '' ) {
-        $result[] = array(
-            'message'   => _T("ALTER operation allowed"),
-            'res'       => true
-        );
+    if ( $install->isUpgrade() ) {
+        if ( $results['alter'] instanceof Exception ) {
+            $result = array(
+                'message'   => _T("ALTER operation not allowed"),
+                'debug'     => $results['alter']->getMessage(),
+                'res'       => false
+            );
+            $error = true;
+        } elseif ( $results['alter'] != '' ) {
+            $result[] = array(
+                'message'   => _T("ALTER operation allowed"),
+                'res'       => true
+            );
+        }
     }
 
     if ( $error ) {
