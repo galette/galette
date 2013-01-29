@@ -82,7 +82,7 @@ if (   isset($_POST['cards'])
     if (isset($_POST['member_sel'])) {
         $filters->selected = $_POST['member_sel'];
         //cannot use $session here :/
-        $sessionn['filters']['members'] = serialize($filters);
+        $session['filters']['members'] = serialize($filters);
 
         if (isset($_POST['cards'])) {
             $qstring = 'carte_adherent.php';
