@@ -42,6 +42,7 @@ use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\FieldsConfig as FieldsConfig;
 use Galette\Entity\Texts as Texts;
 use Galette\Entity\DynamicFields as DynamicFields;
+use Galette\Repository\Members as Members;
 use Galette\Repository\Titles as Titles;
 use Galette\Repository\Groups as Groups;
 
@@ -343,6 +344,37 @@ if ( $member->id != '' ) {
     $title .= ' (' . _T("creation") . ')';
 }
 
+$navigate = array();
+
+if ( isset($session['filters']['members']) ) {
+    $filters =  unserialize($session['filters']['members']);
+} else {
+    $filters = new MembersList();
+}
+
+if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
+    $m = new Members();
+    $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
+    //print_r($ids);
+    foreach ( $ids as $k=>$m ) {
+        if ( $m->id_adh == $member->id ) {
+            $navigate = array(
+                'cur'  => $m->id_adh,
+                'count' => count($ids),
+                'pos' => $k+1
+            );
+            if ( $k > 0 ) {
+                $navigate['prev'] = $ids[$k-1]->id_adh;
+            }
+            if ( $k < count($ids)-1 ) {
+                $navigate['next'] = $ids[$k+1]->id_adh;
+            }
+            break;
+        }
+    }
+}
+
+$tpl->assign('navigate', $navigate);
 $tpl->assign('require_dialog', true);
 $tpl->assign('page_title', $title);
 $tpl->assign('required', $required);
