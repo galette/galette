@@ -1,12 +1,14 @@
         <form class="form" action="export.php" method="post" enctype="multipart/form-data">
         <p>{_T string="Each selected export will be stored into a separate file in the exports directory."}</p>
 {if $written|@count gt 0}
+        <div id="successbox">
             <p>{_T string="The following files have been written on disk:"}</p>
             <ul>
 {foreach item=ex from=$written}
-                <li><a href="get_export.php?file={$ex.file}">{$ex.name} ({$ex.file})</a></li>
+                <li><a href="get_export.php?file={$ex.name}">{$ex.name} ({$ex.file})</a></li>
 {/foreach}
             </ul>
+        </div>
 {/if}
 {if $existing|@count gt 0}
             <fieldset>

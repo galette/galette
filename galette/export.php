@@ -49,6 +49,9 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 }
 
 use Galette\IO\Csv;
+use Galette\Entity\Adherent;
+use Galette\Entity\FieldsConfig;
+use Galette\Repository\Members;
 
 $csv = new Csv();
 
@@ -133,6 +136,66 @@ if ( isset( $_POST['export_parameted'] ) && $_POST['export_parameted'] != '' ) {
             );
             break;
         }
+    }
+}
+
+if ( isset($_GET['current_filter']) ) {
+
+    if ( isset($session['filters']['members'])
+        && !isset($_POST['mailing'])
+        && !isset($_POST['mailing_new'])
+    ) {
+        //CAUTION: this one may be simple or advanced, display must change
+        $filters = unserialize($session['filters']['members']);
+    } else {
+        $filters = new MembersList();
+    }
+
+    /*$fields_list = Adherent::getDbFields();
+    //fields we do not want to export.
+    unset($fields_list['mdp_adh']);*/
+
+    $fc = new FieldsConfig(Adherent::TABLE, null);
+    // fields visibility
+    $visibles = $fc->getVisibilities();
+    $fields = array();
+    $headers = array();
+    include_once 'galette/includes/members_fields.php';
+    foreach ( $members_fields as $k=>$f ) {
+        if ( $k !== 'mdp_adh' ) {
+            if ( $visibles[$k] === FieldsConfig::VISIBLE ) {
+                $fields[] = $k;
+                $labels[] = $f['label'];
+            } else if ( ($login->isAdmin()
+                || $login->isStaff()
+                || $login->isSuperAdmin())
+                && $visibles[$k] === FieldsConfig::ADMIN
+            ) {
+                $fields[] = $k;
+                $labels[] = $f['label'];
+            }
+        }
+    }
+
+    $members = new Members($filters);
+    $members_list = $members->getMembersList(false, $fields);
+
+    $filename = 'filtered_memberslist.csv';
+    $filepath = Csv::DEFAULT_DIRECTORY . $filename;
+    $fp = fopen($filepath, 'w');
+    if ( $fp ) {
+        $res = $csv->export(
+            $members_list,
+            Csv::DEFAULT_SEPARATOR,
+            Csv::DEFAULT_QUOTE,
+            $labels,
+            $fp
+        );
+        fclose($fp);
+        $written[] = array(
+            'name' => $filename,
+            'file' => $filepath
+        );
     }
 }
 

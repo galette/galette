@@ -77,6 +77,7 @@ if (   isset($_POST['cards'])
     || isset($_POST['labels'])
     || isset($_POST['mailing'])
     || isset($_POST['attendance_sheet'])
+    || isset($_POST['csv'])
     || isset($_GET['adv_criterias'])
 ) {
     if (isset($_POST['member_sel'])) {
@@ -101,6 +102,9 @@ if (   isset($_POST['cards'])
             if ( isset($_POST['wimages']) && $_POST['wimages'] == 1 ) {
                 $qstring .= '?wimages=1';
             }
+        }
+        if ( isset($_POST['csv']) ) {
+            $qstring = 'export.php?current_filter=true';
         }
         header('location: '.$qstring);
     } elseif ($_GET['adv_criterias']) {

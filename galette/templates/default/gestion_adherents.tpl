@@ -140,6 +140,7 @@
                             </li>
                             <li><input type="submit" name="labels" value="{_T string="Generate labels"}"/></li>
                             <li><input type="submit" name="cards" value="{_T string="Generate Member Cards"}"/></li>
+                            <li><input type="submit" name="csv" value="{_T string="Export as CSV"}"/></li>
                         </ul>
                     </td>
                 </tr>
