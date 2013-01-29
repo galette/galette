@@ -272,14 +272,8 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
         );
 
         /**
-        * Plugins
-        */
-        $plugins = new Core\Plugins();
-        $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
-
-        /**
-        * Authentication
-        */
+         * Authentication
+         */
         if ( isset($session['login']) ) {
             $login = unserialize(
                 $session['login']
@@ -289,8 +283,14 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
         }
 
         /**
-        * Instanciate history object
-        */
+         * Plugins
+         */
+        $plugins = new Core\Plugins();
+        $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
+
+        /**
+         * Instanciate history object
+         */
         if ( isset($session['history'])
             && !GALETTE_MODE == 'DEV'
         ) {
