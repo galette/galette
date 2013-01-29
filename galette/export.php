@@ -151,18 +151,23 @@ if ( isset($_GET['current_filter']) ) {
         $filters = new MembersList();
     }
 
-    /*$fields_list = Adherent::getDbFields();
-    //fields we do not want to export.
-    unset($fields_list['mdp_adh']);*/
+    $export_fields = null;
+    if ( file_exists(GALETTE_CONFIG_PATH  . 'local_export_fields.inc.php') ) {
+        include_once GALETTE_CONFIG_PATH  . 'local_export_fields.inc.php';
+        $export_fields = $fields;
+    }
 
-    $fc = new FieldsConfig(Adherent::TABLE, null);
     // fields visibility
+    $fc = new FieldsConfig(Adherent::TABLE, null);
     $visibles = $fc->getVisibilities();
     $fields = array();
     $headers = array();
     include_once 'galette/includes/members_fields.php';
     foreach ( $members_fields as $k=>$f ) {
-        if ( $k !== 'mdp_adh' ) {
+        if ( $k !== 'mdp_adh'
+            && $export_fields === null
+            || in_array($k, $export_fields)
+        ) {
             if ( $visibles[$k] === FieldsConfig::VISIBLE ) {
                 $fields[] = $k;
                 $labels[] = $f['label'];
