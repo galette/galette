@@ -48,7 +48,8 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 
 use Galette\Core;
 use Analog\Analog as Analog;
-use Galette\Filters\MembersList as MembersList;
+use Galette\Repository\Members;
+use Galette\Filters\MembersList;
 
 //We're done :-)
 if ( isset($_POST['mailing_done'])
@@ -111,7 +112,8 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
             header('location:gestion_adherents.php');
             die();
         }
-        $members = Galette\Repository\Members::getArrayList($filters->selected);
+        $m = new Members();
+        $members = $m->getArrayList($filters->selected);
         $mailing = new Core\Mailing(($members !== false) ? $members : null);
     }
 

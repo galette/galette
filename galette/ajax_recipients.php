@@ -35,6 +35,7 @@
  */
 
 use Analog\Analog as Analog;
+use Galette\Repository\Members as Members;
 
 require_once 'includes/galette.inc.php';
 
@@ -48,7 +49,8 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
 
 $mailing = unserialize($session['mailing']);
 
-$members = Galette\Repository\Members::getArrayList($_POST['recipients']);
+$m = new Members();
+$members = $m->getArrayList($_POST['recipients']);
 $mailing->setRecipients($members);
 
 $session['mailing'] = serialize($mailing);

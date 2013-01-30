@@ -35,6 +35,10 @@
  */
 
 use Analog\Analog as Analog;
+use Galette\Entity\Group;
+use Galette\Entity\Adherent;
+use Galette\Repository\Members;
+use Galette\Repository\Groups;
 
 require_once 'includes/galette.inc.php';
 
@@ -47,13 +51,13 @@ if ( !$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() ) {
     die();
 }
 
-$groups = new Galette\Repository\Groups();
+$groups = new Groups();
 
-$group = new Galette\Entity\Group();
+$group = new Group();
 $error_detected = array();
 $success_detected = array();
 
-$id = get_numeric_form_value(Galette\Entity\Group::PK, null);
+$id = get_numeric_form_value(Group::PK, null);
 if ( $id !== null ) {
     if ( $login->isGroupManager($id) ) {
         $group->load($id);
@@ -79,7 +83,7 @@ if ( isset($_POST['delete']) ) {
         );
         //reinstanciate group
         $id = null;
-        $group = new Galette\Entity\Group();
+        $group = new Group();
     }
 } else if ( isset($_POST['group_name']) ) {
     $group->setName($_POST['group_name']);
@@ -102,13 +106,14 @@ if ( isset($_POST['delete']) ) {
     if ( isset($_POST['managers']) ) {
         $managers_id = $_POST['managers'];
     }
-    $managers = Galette\Repository\Members::getArrayList($managers_id);
+    $m = new Members();
+    $managers = $m->getArrayList($managers_id);
 
     $members_id = array();
     if ( isset($_POST['members']) ) {
         $members_id = $_POST['members'];
     }
-    $members = Galette\Repository\Members::getArrayList($members_id);
+    $members = $m->getArrayList($members_id);
 
     $group->setManagers($managers);
     $group->setMembers($members);
@@ -129,10 +134,10 @@ if ( isset($_POST['delete']) ) {
 }
 
 if ( isset($_GET['new']) ) {
-    $group = new Galette\Entity\Group();
+    $group = new Group();
     $group->setName($_GET['group_name']);
     if ( !$login->isSuperAdmin() ) {
-        $group->setManagers(new Galette\Entity\Adherent($login->id));
+        $group->setManagers(new Adherent($login->id));
     }
     $group->store();
     $id = $group->getId();

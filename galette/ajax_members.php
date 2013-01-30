@@ -93,7 +93,8 @@ if ( !isset($_POST['from']) ) {
         $selected_members = $mailing->recipients;
         $unreachables_members = $mailing->unreachables;
     } else {
-        $selected_members = Members::getArrayList($_POST['members']);
+        $m = new Members();
+        $selected_members = $m->getArrayList($_POST['members']);
     }
 } else {
     switch ( $_POST['from'] ) {
@@ -122,7 +123,8 @@ if ( !isset($_POST['from']) ) {
                 exit(0);
             }
         } else {
-            $selected_members = Members::getArrayList($_POST['members']);
+            $m = new Members();
+            $selected_members = $m->getArrayList($_POST['members']);
         }
         break;
     }

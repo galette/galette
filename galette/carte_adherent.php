@@ -47,6 +47,7 @@
 
 use Galette\IO\Pdf;
 use Analog\Analog as Analog;
+use Galette\Repository\Members;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -87,7 +88,8 @@ if ( isset($unique) && $unique ) {
     $mailing_adh = $filters->selected;
 }
 
-$members = Galette\Repository\Members::getArrayList(
+$m = new Members();
+$members = $m->getArrayList(
     $mailing_adh,
     array('nom_adh', 'prenom_adh'),
     true

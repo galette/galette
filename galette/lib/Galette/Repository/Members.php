@@ -455,7 +455,7 @@ class Members
     * @return Adherent[]
     * @static
     */
-    public static function getArrayList($ids, $orderby = null, $with_photos = false)
+    public function getArrayList($ids, $orderby = null, $with_photos = false)
     {
         global $zdb;
 
