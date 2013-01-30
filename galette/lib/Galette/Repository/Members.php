@@ -372,7 +372,6 @@ class Members
     *                          returned
     *
     * @return Adherent[]|ResultSet
-    * @static
     */
     public function getList($as_members=false, $fields=null)
     {
@@ -395,7 +394,6 @@ class Members
     * @param array   $fields      fields list
     *
     * @return Adherent[]
-    * @static
     */
     public function getPublicList($with_photos, $fields)
     {
@@ -453,7 +451,6 @@ class Members
     * @param boolean $with_photos Should photos be loaded?
     *
     * @return Adherent[]
-    * @static
     */
     public function getArrayList($ids, $orderby = null, $with_photos = false)
     {
@@ -514,8 +511,7 @@ class Members
     * @param array $fields fields list to retrieve
     * @param bool  $photos true if we want to get only members with photos
     *                      Default to false, only relevant for SHOW_PUBLIC_LIST
-    * @param bool  $count  true if we want to count members
-                           (not applicable from static calls), defaults to false
+    * @param bool  $count  true if we want to count members, defaults to false
     *
     * @return Zend_Db_Select SELECT statement
     */
