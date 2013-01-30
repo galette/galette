@@ -13,8 +13,8 @@
             <tr>
                 <th colspan="5" class="center"><strong>{_T string="Active plugins"}</strong></th>
             </tr>
-{foreach from=$plugins_list key=name item=plugin}
-            <tr>
+{foreach from=$plugins_list key=name item=plugin name=allplugins}
+            <tr class="{if $smarty.foreach.allplugins.iteration % 2 eq 0}even{else}odd{/if}">
                 <td>{$plugin.name} ({$name})</td>
                 <td>{$plugin.desc}</td>
                 <td>{$plugin.author}</td>

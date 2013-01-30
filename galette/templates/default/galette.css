@@ -1841,7 +1841,9 @@ td.photo img{
     padding:0 .5em 0 .1em;
 }
 
-.fields_list li:hover {
+.fields_list li:hover,
+.odd:hover > td,
+.even:hover > td {
     background-color: #DDDDFF!important;
 }
 
