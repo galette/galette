@@ -701,32 +701,75 @@ class Members
     /**
      * Builds the order clause
      *
+     * @param array $fields Fields list to ensure ORDER clause
+     *                      references selected fields. Optionnal.
+     *
      * @return string SQL ORDER clause
      */
-    private function _buildOrderClause()
+    private function _buildOrderClause($fields = null)
     {
         $order = array();
 
         switch($this->_filters->orderby) {
         case self::ORDERBY_NICKNAME:
-            $order[] = 'pseudo_adh ' . $this->_filters->getDirection();
+            if ( $this->_canOrderBy('pseudo_adh', $fields) ) {
+                $order[] = 'pseudo_adh ' . $this->_filters->getDirection();
+            }
             break;
         case self::ORDERBY_STATUS:
-            $order[] = 'priorite_statut ' . $this->_filters->getDirection();
+            if ( $this->_canOrderBy('priorite_statut', $fields) ) {
+                $order[] = 'priorite_statut ' . $this->_filters->getDirection();
+            }
             break;
         case self::ORDERBY_MODIFDATE:
-            $order[] = 'date_modif_adh ' . $this->_filters->getDirection();
+            if ( $this->_canOrderBy('date_modif_adh', $fields) ) {
+                $order[] = 'date_modif_adh ' . $this->_filters->getDirection();
+            }
             break;
         case self::ORDERBY_FEE_STATUS:
-            $order[] = 'bool_exempt_adh ' . $this->_filters->getDirection();
-            $order[] = 'date_echeance ' . $this->_filters->getDirection();
+            if ( $this->_canOrderBy('bool_exempt_adh', $fields) ) {
+                $order[] = 'bool_exempt_adh ' . $this->_filters->getDirection();
+            }
+
+            if ( $this->_canOrderBy('date_echeance', $fields) ) {
+                $order[] = 'date_echeance ' . $this->_filters->getDirection();
+            }
             break;
         }
 
         //anyways, we want to order by firstname, lastname
-        $order[] = 'nom_adh ' . $this->_filters->getDirection();
-        $order[] = 'prenom_adh ' . $this->_filters->getDirection();
+        if ( $this->_canOrderBy('nom_adh', $fields) ) {
+            $order[] = 'nom_adh ' . $this->_filters->getDirection();
+        }
+        if ( $this->_canOrderBy('prenom_adh', $fields) ) {
+            $order[] = 'prenom_adh ' . $this->_filters->getDirection();
+        }
         return $order;
+    }
+
+    /**
+     * Is field allowed to order? it shoulsd be present in
+     * provided fields list (those that are SELECT'ed).
+     *
+     * @param string $field_name Field name to order by
+     * @param array  $fields     SELECTE'ed fields
+     *
+     * @return boolean
+     */
+    private function _canOrderBy($field_name, $fields)
+    {
+        if ( !is_array($fields) ) {
+            return true;
+        } else if ( in_array($field_name, $fields) ) {
+            return true;
+        } else {
+            Analog::log(
+                'Trying to order by ' . $field_name  . ' while it is not in ' .
+                'selected fields.',
+                Analog::WARNING
+            );
+            return false;
+        }
     }
 
     /**
