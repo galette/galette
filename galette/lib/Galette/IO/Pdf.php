@@ -41,6 +41,8 @@
 
 namespace Galette\IO;
 
+use Analog\Analog;
+
 /*
  * TCPDF configuration file for Galette
  */
@@ -133,9 +135,14 @@ class Pdf extends \TCPDF
     */
     public function Error($msg)
     {
+        global $session;
         /** FIXME: I do not really like this, we should find sthing better */
         $session['pdf_error'] = true;
         $session['pdf_error_msg'] = $msg;
+        Analog::log(
+            'PDF error: ' .$msg,
+            Analog::ERROR
+        );
         header("location:" . $session['caller']);
         die();
     }
