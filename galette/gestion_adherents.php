@@ -104,7 +104,7 @@ if (   isset($_POST['cards'])
             }
         }
         if ( isset($_POST['csv']) ) {
-            $qstring = 'export.php?current_filter=true';
+            $qstring = 'doandget_export.php';
         }
         header('location: '.$qstring);
     } elseif ($_GET['adv_criterias']) {
