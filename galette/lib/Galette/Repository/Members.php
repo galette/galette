@@ -208,7 +208,7 @@ class Members
                 $_mode = self::SHOW_MANAGED;
             }
 
-            $select = self::_buildSelect(
+            $select = $this->_buildSelect(
                 $_mode, $fields, false, $count
             );
 
@@ -375,7 +375,7 @@ class Members
     */
     public function getList($as_members=false, $fields=null)
     {
-        return self::getMembersList(
+        return $this->getMembersList(
             $as_members,
             $fields,
             false,
@@ -400,12 +400,12 @@ class Members
         global $zdb;
 
         try {
-            $select = self::_buildSelect(
+            $select = $this->_buildSelect(
                 self::SHOW_PUBLIC_LIST, $fields, false, $with_photos
             );
 
             if ( $this->_filters ) {
-                $select->order(self::_buildOrderClause());
+                $select->order($this->_buildOrderClause($fields));
             }
 
             $this->_proceedCount($select);
@@ -462,7 +462,7 @@ class Members
         }
 
         try {
-            $select = self::_buildSelect(self::SHOW_ARRAY_LIST, null, false, false);
+            $select = $this->_buildSelect(self::SHOW_ARRAY_LIST, null, false, false);
             $select->where(self::PK . ' IN (?)', $ids);
             if ( $orderby != null && count($orderby) > 0 ) {
                 if (is_array($orderby)) {
@@ -616,9 +616,9 @@ class Members
 
             if ( $mode == self::SHOW_LIST || $mode == self::SHOW_MANAGED ) {
                 if ( $this->_filters !== false ) {
-                    self::_buildWhereClause($select);
+                    $this->_buildWhereClause($select);
                 }
-                $select->order(self::_buildOrderClause());
+                $select->order($this->_buildOrderClause($fields));
             } else if ( $mode == self::SHOW_PUBLIC_LIST ) {
                 $select->where('activite_adh=true')
                     ->where('bool_display_info = ?', true)
@@ -666,7 +666,9 @@ class Members
             $countSelect->reset(\Zend_Db_Select::COLUMNS);
             $countSelect->reset(\Zend_Db_Select::ORDER);
             $countSelect->reset(\Zend_Db_Select::HAVING);
-            $countSelect->columns('count(DISTINCT a.' . self::PK . ') AS ' . self::PK);
+            $countSelect->columns(
+                'count(DISTINCT a.' . self::PK . ') AS ' . self::PK
+            );
 
             $have = $select->getPart(\Zend_Db_Select::HAVING);
             if ( is_array($have) && count($have) > 0 ) {
