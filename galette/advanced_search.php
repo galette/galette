@@ -81,9 +81,7 @@ $fc = new FieldsConfig(Adherent::TABLE, $fields);
 $visibles = $fc->getVisibilities();
 
 foreach ( $fields as $k=>$f ) {
-    if ( !in_array($f, $visibles)
-        || $visibles[$k] === 0
-    ) {
+    if ( $visibles[$k] === 0 ) {
         unset($fields[$k]);
     }
 }
