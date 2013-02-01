@@ -11,10 +11,10 @@
             <label class="bline libelle" for="info_field_{$field.field_id}_1_{$field.field_repeat}">{$field.field_name|escape}</label>
     {* Number of configured occurences *}
     {assign var="count" value=$field.config_field_repeat}
-    {if $data.dyn[$field.field_id]|@count > $field.config_field_repeat}
+    {if isset($data.dyn[$field.field_id]) and $data.dyn[$field.field_id]|@count > $field.config_field_repeat}
         {assign var="loops" value=$data.dyn[$field.field_id]|@count + 2}
     {elseif $field.config_field_repeat == 0 || $field.config_field_repeat > 1}
-        {if $data.dyn[$field.field_id]|@count >= 2}
+        {if isset($data.dyn[$field.field_id]) and $data.dyn[$field.field_id]|@count >= 2}
             {assign var="loops" value=$count + 1}
         {else}
             {assign var="loops" value="3"}
@@ -27,21 +27,30 @@
         {if $smarty.section.fieldLoop.index gt 1}<br/>{/if}
         {if $field.field_type eq 1}
             <textarea name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}"
-            cols="{if $field.field_width > 0}{$field.field_width}{else}61{/if}"
-            rows="{if $field.field_height > 0}{$field.field_height}{else}6{/if}"
-            {$disabled.dyn[$field.field_id]}{if $field.field_required eq 1} required{/if}>{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|escape}</textarea>
+                cols="{if $field.field_width > 0}{$field.field_width}{else}61{/if}"
+                rows="{if $field.field_height > 0}{$field.field_height}{else}6{/if}"
+                {if isset($disabled.dyn[$field.field_id])} {$disabled.dyn[$field.field_id]}{/if}
+                {if $field.field_required eq 1} required{/if}>
+                {if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index])}{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|escape}{/if}
+            </textarea>
         {elseif $field.field_type eq 2}
             <input type="text" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}"
                 {if $field.field_width > 0}size="{$field.field_width}"{/if}
                 {if $field.field_size > 0}maxlength="{$field.field_size}"{/if}
-                value="{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|escape}" {$disabled.dyn[$field.field_id]}
+                value="{if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index])}{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|escape}{/if}"
+                {if isset($disabled.dyn[$field.field_id])} {$disabled.dyn[$field.field_id]}{/if}
                 {if $field.field_required eq 1} required{/if}
             />
         {elseif $field.field_type eq 3}
             <select name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}"{if $field.field_required eq 1} required{/if}>
                 <!-- If no option is present, page is not XHTML compliant -->
                 {if $field.choices|@count eq 0}<option value=""></option>{/if}
-                {html_options options=$field.choices selected=$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}
+                {if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index])}
+                    {assign var="selectdata" value=$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}
+                {else}
+                    {assign var="selectdata" value=null}
+                {/if}
+                {html_options options=$field.choices selected=$selectdata}
             </select>
         {/if}
     {/section}
