@@ -3,7 +3,7 @@
             <h1>{_T string="- ERROR -"}</h1>
             <p>{_T string="Email sent is disabled in the preferences. Ask galette admin"}</p>
         </div>
-{elseif !$mailing_saved}
+{elseif !isset($mailing_saved)}
         <form action="mailing_adherents.php#mail_preview" id="listform" method="post">
         <div class="mailing">
             <section class="mailing_infos">

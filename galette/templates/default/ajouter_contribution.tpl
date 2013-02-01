@@ -41,7 +41,7 @@
                 <legend class="ui-state-active ui-corner-top">{_T string="Select contributor and contribution type"}</legend>
                 <p>
                     <label for="id_adh" class="bline">{_T string="Contributor:"}</label>
-                    <select name="id_adh" id="id_adh"{$disabled.id_adh}>
+                    <select name="id_adh" id="id_adh"{if isset($disabled.id_adh)} {$disabled.id_adh}{/if}>
                         {if $adh_selected eq 0}
                         <option value="">{_T string="-- select a name --"}</option>
                         {/if}
@@ -54,7 +54,12 @@
                     <label for="id_type_cotis" class="bline">{_T string="Contribution type:"}</label>
                     <select name="id_type_cotis" id="id_type_cotis"
                         {if $type_selected eq 0}onchange="form.submit()"{/if}{if $required.id_type_cotis eq 1} required{/if}>
-                        {html_options options=$type_cotis_options selected=$contribution->type->id}
+                        {if isset($contribution->type)}
+                            {assign var="selectedid" value=$contribution->type->id}
+                        {else}
+                            {assign var="selectedid" value=null}
+                        {/if}
+                        {html_options options=$type_cotis_options selected=$selectedid}
                     </select>
     {if $type_selected eq 1}
                     <a class="button" id="btnback" href="javascript:back();" title="{_T string="Back to previous window, if you want to select a contribution type that is not listed here"}">{_T string="Back"}</a>
@@ -106,7 +111,7 @@
         {/if}
                 <p>
                     <label class="bline" for="info_cotis">{_T string="Comments:"}</label>
-                    <textarea name="info_cotis" id="info_cotis" cols="61" rows="6"{if $required.info_cotis eq 1} required{/if}>{$contribution->info}</textarea>
+                    <textarea name="info_cotis" id="info_cotis" cols="61" rows="6"{if isset($required.info_cotis) and $required.info_cotis eq 1} required{/if}>{$contribution->info}</textarea>
                 </p>
             </fieldset>
         {include file="edit_dynamic_fields.tpl"}
@@ -114,7 +119,7 @@
     {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
             <p>
                 <label for="mail_confirm">{_T string="Notify member"}</label>
-                <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
+                <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if isset($smarty.post.mail_confirm) and $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
                 <br/><span class="exemple">{_T string="Member will receive a notification by email, if he has an address."}</span>
             </p>
     {/if}
@@ -130,7 +135,7 @@
             {* At creation time, we can get an amount, that will be hidden on the first step *}
             <input type="hidden" name="montant_cotis" value="{$contribution->amount}"/>
     {/if} {* $type_selected eq 1 *}
-            <input type="hidden" name="trans_id" value="{$contribution->transaction->id}"/>
+            <input type="hidden" name="trans_id" value="{if isset($contribution->transaction)}{$contribution->transaction->id}{/if}"/>
             {* First step validator *}
             <input type="hidden" name="type_selected" value="1"/>
         </div>

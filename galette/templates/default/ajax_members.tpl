@@ -64,7 +64,7 @@
     {/if}
             </ul>
             <button class="button" id="btnvalid">{_T string="Validate"}</button>
-            {if $the_id}
+            {if isset($the_id)}
                 <input type="hidden" name="the_id" id="the_id" value="{$the_id}"/>
             {/if}
         </section>
