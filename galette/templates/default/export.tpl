@@ -18,25 +18,25 @@
                     <table class="listing">
                         <thead>
                             <tr>
-                                <th class="listing">{_T string="Name"}</th>
-                                <th class="listing">{_T string="Date"}</th>
-                                <th class="listing">{_T string="Size"}</th>
-                                <th class="listing actions_row"></th>
+                                <th>{_T string="Name"}</th>
+                                <th>{_T string="Date"}</th>
+                                <th>{_T string="Size"}</th>
+                                <th class="actions_row"></th>
                             </tr>
                         </thead>
                         <tbody>
     {foreach item=export from=$existing name=existing_list}
-                            <tr>
-                                <td class="tbl_line_{if $smarty.foreach.existing_list.iteration % 2 eq 0}even{else}odd{/if}">
+                            <tr class="{if $smarty.foreach.existing_list.iteration % 2 eq 0}even{else}odd{/if}">
+                                <td >
                                     <a href="get_export.php?file={$export.name}">{$export.name}</a>
                                 </td>
-                                <td class="tbl_line_{if $smarty.foreach.existing_list.iteration % 2 eq 0}even{else}odd{/if}">
+                                <td>
                                     {$export.date}
                                 </td>
-                                <td class="tbl_line_{if $smarty.foreach.existing_list.iteration % 2 eq 0}even{else}odd{/if}">
+                                <td>
                                     {$export.size}
                                 </td>
-                                <td class="actions_row tbl_line_{if $smarty.foreach.existing_list.iteration % 2 eq 0}even{else}odd{/if}">
+                                <td class="actions_row">
                                     <a href="export.php?sup={$export.name}" title="{_T string="Remove '%export' from disk" pattern="/%export/" replace=$export.name}"><img src="{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
                                 </td>
                             </tr>
@@ -54,21 +54,21 @@
                     <table class="listing">
                         <thead>
                             <tr>
-                                <th class="listing">{_T string="Name"}</th>
-                                <th class="listing">{_T string="Description"}</th>
-                                <th class="listing small_head"/>
+                                <th>{_T string="Name"}</th>
+                                <th>{_T string="Description"}</th>
+                                <th class="small_head"/>
                             </tr>
                         </thead>
                         <tbody>
     {foreach item=param from=$parameted name=parameted_list}
-                            <tr>
-                                <td class="tbl_line_{if $smarty.foreach.parameted_list.iteration % 2 eq 0}even{else}odd{/if}">
+                            <tr class="{if $smarty.foreach.parameted_list.iteration % 2 eq 0}even{else}odd{/if}">
+                                <td>
                                     <label for="{$param.id}">{$param.name}</label>
                                 </td>
-                                <td class="tbl_line_{if $smarty.foreach.parameted_list.iteration % 2 eq 0}even{else}odd{/if}">
+                                <td>
                                     <label for="{$param.id}">{$param.description}</label>
                                 </td>
-                                <td class="tbl_line_{if $smarty.foreach.parameted_list.iteration % 2 eq 0}even{else}odd{/if}">
+                                <td>
                                     <input type="checkbox" name="export_parameted[]" id="{$param.id}" value="{$param.id}"/>
                                 </td>
                             </tr>
@@ -85,20 +85,20 @@
                 <legend class="ui-state-active ui-corner-top">{_T string="Galette tables exports"}</legend>
                 <div>
                     <p>{_T string="Additionnaly, which table(s) do you want to export?"}</p>
-                    <table id="tables_list">
+                    <table class="listing">
                         <thead>
                             <tr>
-                                <th class="listing">{_T string="Table name"}</th>
-                                <th class="listing small_head"/>
+                                <th>{_T string="Table name"}</th>
+                                <th class="small_head"/>
                             </tr>
                         </thead>
                         <tbody>
 {foreach item=table from=$tables_list name=tables_list}
-                            <tr>
-                                <th class="tbl_line_{if $smarty.foreach.tables_list.iteration % 2 eq 0}even{else}odd{/if} left">
+                            <tr class="{if $smarty.foreach.tables_list.iteration % 2 eq 0}even{else}odd{/if}">
+                                <td class="left">
                                     <label for="{$table}">{$table}</label>
-                                </th>
-                                <td class="tbl_line_{if $smarty.foreach.tables_list.iteration % 2 eq 0}even{else}odd{/if}">
+                                </td>
+                                <td>
                                     <input type="checkbox" name="export_tables[]" id="{$table}" value="{$table}"/>
                                 </td>
                             </tr>

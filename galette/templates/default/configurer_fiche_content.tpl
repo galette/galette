@@ -1,27 +1,27 @@
-        <table id="input-table">
+        <table class="listing">
             <thead>
                 <tr>
-                    <th class="listing" class="id_row">#</th>
-                    <th class="listing">{_T string="Name"}</th>
-                    <th class="listing date_row">{_T string="Visibility"}</th>
-                    <th class="listing date_row">{_T string="Type"}</th>
-                    <th class="listing date_row">{_T string="Required"}</th>
-                    <th class="listing">{_T string="Actions"}</th>
+                    <th class="id_row">#</th>
+                    <th>{_T string="Name"}</th>
+                    <th class="date_row">{_T string="Visibility"}</th>
+                    <th class="date_row">{_T string="Type"}</th>
+                    <th class="date_row">{_T string="Required"}</th>
+                    <th>{_T string="Actions"}</th>
                 </tr>
             </thead>
             <tbody>
-{foreach from=$dyn_fields item=field}
-                <tr>
-                    <td class="listing">{$field.index}</td>
-                    <td class="listing left">{$field.name|escape}</td>
-                    <td class="listing left">{$field.perm}</td>
-                    <td class="listing left">{$field.type_name}</td>
-                    <td class="listing">
+{foreach from=$dyn_fields item=field name=alldyn}
+                <tr class="{if $smarty.foreach.alldyn.iteration % 2 eq 0}even{else}odd{/if}">
+                    <td>{$field.index}</td>
+                    <td class="left">{$field.name|escape}</td>
+                    <td class="left">{$field.perm}</td>
+                    <td class="left">{$field.type_name}</td>
+                    <td>
     {if $field.type neq constant('Galette\Entity\DynamicFields::SEPARATOR')}
         {if $field.required}{_T string="Yes"}{else}{_T string="No"}{/if}
     {/if}
                     </td>
-                    <td class="listing center actions_row">
+                    <td class="center actions_row">
     {if $field.no_data}
                         <img src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="16" height="16"/>
                         <img src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="16" height="16"/>

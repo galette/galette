@@ -11,7 +11,7 @@
         </thead>
         <tbody>
             <tr>
-                <th colspan="5" class="center"><strong>{_T string="Active plugins"}</strong></th>
+                <th colspan="5" class="bgfree center"><strong>{_T string="Active plugins"}</strong></th>
             </tr>
 {foreach from=$plugins_list key=name item=plugin name=allplugins}
             <tr class="{if $smarty.foreach.allplugins.iteration % 2 eq 0}even{else}odd{/if}">
@@ -38,7 +38,7 @@
             </tr>
 {/foreach}
             <tr>
-                <th colspan="5" class="center"><strong>{_T string="Inactive plugins"}</strong></th>
+                <th colspan="5" class="bgfree center"><strong>{_T string="Inactive plugins"}</strong></th>
             </tr>
 {foreach from=$plugins_disabled_list key=name item=plugin}
             <tr>

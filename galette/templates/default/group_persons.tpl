@@ -1,17 +1,17 @@
                      <table class="listing">
                         <thead>
                             <tr>
-                                <th class="listing left">
+                                <th class="left">
                                     {_T string="Name"}
                                 </th>
-                                <th class="listing left">
+                                <th class="left">
                                     {_T string="Nickname"}
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-{foreach from=$persons item=person}
-                            <tr>
+{foreach from=$persons item=person name=allpersons}
+                            <tr class="{if $smarty.foreach.allpersons.iteration % 2 eq 0}even{else}odd{/if}">
                                 <td class="nowrap username_row">
                                 <input type="hidden" name="{$person_mode}[]" value="{$person->id}"/>
                                 {if $person->isCompany()}

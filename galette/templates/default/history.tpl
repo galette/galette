@@ -1,4 +1,4 @@
-        <table id="listing">
+        <table class="listing">
             <thead>
                 <tr>
                     <td colspan="3">
@@ -17,9 +17,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="listing small_head">#</th>
-                    <th class="listing left date_row">
-                        <a href="history.php?tri=date_log" class="listing">
+                    <th class="small_head">#</th>
+                    <th class="left date_row">
+                        <a href="history.php?tri=date_log">
                             {_T string="Date"}
                             {if $history->orderby eq "date_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -30,8 +30,8 @@
                             {/if}
                         </a>
                     </th>
-                    <th class="listing left date_row">
-                        <a href="history.php?tri=ip_log" class="listing">
+                    <th class="left date_row">
+                        <a href="history.php?tri=ip_log">
                             {_T string="IP"}
                             {if $history->orderby eq "ip_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -42,8 +42,8 @@
                             {/if}
                         </a>
                     </th>
-                    <th class="listing left date_row">
-                        <a href="history.php?tri=adh_log" class="listing">
+                    <th class="left date_row">
+                        <a href="history.php?tri=adh_log">
                             {_T string="User"}
                             {if $history->orderby eq "adh_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -54,8 +54,8 @@
                             {/if}
                         </a>
                     </th>
-                    <th class="listing left username_row">
-                        <a href="history.php?tri=action_log" class="listing">
+                    <th class="left username_row">
+                        <a href="history.php?tri=action_log">
                             {_T string="Action"}
                             {if $history->orderby eq "action_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -66,8 +66,8 @@
                             {/if}
                         </a>
                     </th>
-                    <th class="listing left">
-                        <a href="history.php?tri=text_log" class="listing">
+                    <th class="left">
+                        <a href="history.php?tri=text_log">
                             {_T string="Description"}
                             {if $history->orderby eq "text_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -90,7 +90,7 @@
             </tfoot>
             <tbody>
 {foreach from=$logs item=log name=eachlog}
-                <tr class="cotis-never">
+                <tr class="{if $smarty.foreach.eachlog.iteration % 2 eq 0}even{else}odd{/if}">
                     <td class="center">{$smarty.foreach.eachlog.iteration}</td>
                     <td class="nowrap">{$log.date_log|date_format:"%a %d/%m/%Y - %R"}</td>
                     <td class="nowrap">{$log.ip_log}</td>

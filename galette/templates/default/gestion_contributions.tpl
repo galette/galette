@@ -53,7 +53,7 @@
         </table>
         </form>
         <form action="gestion_contributions.php" method="post" id="listform">
-        <table id="listing">
+        <table class="listing">
             <thead>
                 <tr>
                     <th class="listing id_row">#</th>

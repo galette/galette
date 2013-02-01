@@ -25,7 +25,7 @@
             </tr>
         </table>
         </form>
-        <table id="listing">
+        <table class="listing">
             <thead>
                 <tr>
                     <th class="listing id_row">#</th>

@@ -803,10 +803,6 @@ legend #btnadd_small {
     vertical-align: top;
 }
 
-#input-table tr:hover {
-    background-color: #EEEEEE;
-}
-
 #transaction_detail {
     margin-bottom: 1em;
 }
@@ -950,7 +946,8 @@ legend #btnadd_small {
      margin-top:1em;
 }
 
-.public_page #listing {
+.public_page table.listing,
+table.infoline {
     margin: 0 auto;
     width: 95%;
 }
@@ -1079,12 +1076,21 @@ input.submit:hover
     width: 100%;
 }
 
-th.listing, li.listing {
+table.listing th, li.listing {
     background: #FFB619 url(jquery-ui/images/ui-bg_glass_65_ffb619_1x400.png) repeat-x scroll 50% 50%;
     color: #212121;
     white-space: nowrap;
     font-weight: normal;
+    font-weight: bold;
+    margin-top: .3em;
+    padding: .1em .2em;
+    vertical-align: middle;
 }
+
+.bgfree {
+    background: none!important;
+}
+
 .id_row,
 th.small_head{
     width:1%;
@@ -1101,19 +1107,22 @@ th.small_head{
     width:6em;
 }
 
+table.listing th a,
 a.listing {
     color: #212121;
-    font-weight: normal;
-    vertical-align: middle;
-
-}
-
-td.listing {
     vertical-align: middle;
 }
 
+table.listing td {
+    line-height:1.5em;
+    margin-top:.3em;
+    padding:.1em .2em;
+    vertical-align: middle;
+}
+
+table.listing th a:hover,
 a.listing:hover {
-    color: #666;
+    color: #666!important;
 }
 
 .emptylist {
@@ -1449,6 +1458,10 @@ table.listing {
     font-weight: bold;
 }
 
+#input-table tr:hover {
+    background-color: #EEEEEE;
+}
+
 #tables_list{
     width:25em;
     margin-left:auto;
@@ -1456,10 +1469,7 @@ table.listing {
 }
 
 #listing td,
-table.listing td{
-    vertical-align: middle;
-}
-
+table.listing td,
 #listing input,
 table.listing input{
     vertical-align: middle;
@@ -1841,15 +1851,17 @@ td.photo img{
     padding:0 .5em 0 .1em;
 }
 
+.listing tr:hover td,
 .fields_list li:hover,
 .odd:hover > td,
 .even:hover > td {
     background-color: #DDDDFF!important;
 }
 
-.fields_list li.listing{
-    font-weight:bold;
+.listing tfoot tr:hover td {
+    background-color: transparent!important;
 }
+
 .fields_list span.label{
     display:inline-block;
     width: 33%;
