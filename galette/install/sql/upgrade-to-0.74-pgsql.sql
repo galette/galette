@@ -24,6 +24,7 @@ ALTER TABLE galette_adherents ALTER COLUMN titre_adh TYPE integer;
 ALTER TABLE galette_adherents ADD CONSTRAINT galette_adherents_titre_adh_fkey FOREIGN KEY (titre_adh) REFERENCES galette_titles(id_title);
 
 ALTER TABLE galette_adherents ALTER COLUMN mdp_adh TYPE character varying(60);
+ALTER TABLE galette_tmppasswds ALTER COLUMN tmp_passwd TYPE character varying(60);
 
 ALTER TABLE galette_adherents ADD sexe_adh smallint DEFAULT 0;
 UPDATE galette_adherents SET sexe_adh = titre_adh;
