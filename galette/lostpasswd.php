@@ -84,7 +84,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
                     array(
                         'change_pass_uri'   => 'http://' . $_SERVER['SERVER_NAME'] .
                                               dirname($_SERVER['REQUEST_URI']) .
-                                              '/change_passwd.php?hash=' . $password->getHash(),
+                                              '/change_passwd.php?hash=' . urlencode($password->getHash()),
                         'link_validity'     => $link_validity->format(_T("Y-m-d H:i:s")),
                         'login_adh'         => custom_html_entity_decode($adh->login, ENT_QUOTES)
                     )
