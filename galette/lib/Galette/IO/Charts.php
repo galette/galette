@@ -62,6 +62,7 @@ class Charts
     const MEMBERS_STATUS_PIE = 'MembersStatusPie';
     const MEMBERS_STATEDUE_PIE = 'MembersStateDuePie';
     const CONTRIBS_TYPES_PIE = 'ContribsTypesPie';
+    const COMPANIES_OR_NOT = 'CompaniesOrNot';
     const CONTRIBS_ALLTIME = 'ContribsAllTime';
 
     private $_types;
@@ -246,6 +247,60 @@ class Charts
     }
 
     /**
+     * Loads data to produce a pie chart based on company/not company members
+     *
+     * @return void
+     */
+    private function _getChartCompaniesOrNot()
+    {
+        global $zdb;
+
+        //non companies
+        $select1 = new \Zend_Db_Select($zdb->db);
+        $select1->from(
+            PREFIX_DB . Adherent::TABLE,
+            array(
+                'cnt' => 'count(' . Adherent::PK . ')'
+            )
+        )
+            ->where('societe_adh ?', new \Zend_Db_Expr('IS NULL'))
+            ->orWhere('societe_adh = ?', '');
+
+        $select2 = new \Zend_Db_Select($zdb->db);
+        $select2->from(
+            PREFIX_DB . Adherent::TABLE,
+            array(
+                'cnt' => 'count(' . Adherent::PK . ')'
+            )
+        )
+            ->where('societe_adh ?', new \Zend_Db_Expr('IS NOT NULL'))
+            ->Where('societe_adh != ?', '');
+
+        //companies
+        $select = new \Zend_Db_Select($zdb->db);
+        $select->union(array($select1, $select2), \Zend_Db_Select::SQL_UNION_ALL);
+
+        Analog::log(
+            $select->__toString(),
+            Analog::DEBUG
+        );
+
+        $res = $select->query()->fetchAll();
+
+        $chart = array(
+            array(
+                _T('Individuals'),
+                $res[0]->cnt
+            ),
+            array(
+                _T("Companies"),
+                $res[1]->cnt
+            )
+        );
+        $this->_charts[self::COMPANIES_OR_NOT] = json_encode($chart);
+    }
+
+    /**
      * Loads data to produce a Pie chart based on contributions types
      *
      * @return void
@@ -331,5 +386,4 @@ class Charts
         }
         $this->_charts[self::CONTRIBS_ALLTIME] = json_encode($chart);
     }
-
 }

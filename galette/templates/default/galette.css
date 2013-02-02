@@ -1957,6 +1957,10 @@ td.photo img{
     display: inline-block;
 }
 
+#ContribsAllTime {
+    width: 800px;
+}
+
 /** Mobile devices */
 @media (max-width: 640px) {
 

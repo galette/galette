@@ -50,6 +50,7 @@ $charts = new Charts(
         Charts::MEMBERS_STATUS_PIE,
         Charts::MEMBERS_STATEDUE_PIE,
         Charts::CONTRIBS_TYPES_PIE,
+        Charts::COMPANIES_OR_NOT,
         Charts::CONTRIBS_ALLTIME
     )
 );
