@@ -70,6 +70,14 @@ if ( $id !== null ) {
     }
 }
 
+if ( isset($_POST['pdf']) ) {
+    $qstring = 'groups_list.php';
+    if ( isset($_POST['gid']) ) {
+        $qstring .= '?gid=' . $_POST['gid'];
+    }
+    header('location: '.$qstring);
+}
+
 if ( isset($_POST['delete']) ) {
     //delete groups
     $del = $group->remove();
