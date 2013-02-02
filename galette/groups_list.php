@@ -142,10 +142,8 @@ foreach ( $groups_list as $group ) {
     $pdf->SetFillColor(255, 255, 255);
     $pdf->Cell(80, 7, _T("Name"), 1, 0, 'C', 1);
     $pdf->Cell(50, 7, _T("Email"), 1, 0, 'C', 1);
-    $pdf->Cell(30, 7, "Téléphone", 1, 0, 'C', 1);
-    /*$pdf->Cell(30, 7, _T("Phone"), 1, 0, 'C', 1);*/
-    $pdf->Cell(30, 7, "GSM", 1, 1, 'C', 1);
-    /*$pdf->Cell(30, 7, _T("GSM"), 1, 1, 'C', 1);*/
+    $pdf->Cell(30, 7, _T("Phone"), 1, 0, 'C', 1);
+    $pdf->Cell(30, 7, _T("GSM"), 1, 1, 'C', 1);
 
     $pdf->SetFont('', 'B');
 

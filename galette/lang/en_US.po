@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2013-02-02 17:27+0100\n"
+"PO-Revision-Date: 2013-02-02 21:55+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -42,7 +42,7 @@ msgstr "Contribution card"
 msgid "The following files have been written on disk:"
 msgstr "The following files have been written on disk:"
 
-#: ../templates/default/charts.tpl:39
+#: ../templates/default/charts.tpl:41
 msgid "Contributions types repartition"
 msgstr "Contributions types repartition"
 
@@ -85,7 +85,7 @@ msgstr "Mail body"
 msgid "Edit title"
 msgstr "Edit title"
 
-#: ../templates/default/preferences.tpl:353
+#: ../groups_list.php:144 ../templates/default/preferences.tpl:353
 msgid "Email"
 msgstr "Email"
 
@@ -166,6 +166,10 @@ msgstr "Recipient of new online registation emails"
 msgid "Edit field"
 msgstr "Edit field"
 
+#: ../templates/default/charts.tpl:54
+msgid "Individuals and Companies"
+msgstr "Individuals and Companies"
+
 #: ../ajax_plugins_initdb.php:116 ../install/index.php:755
 msgid "Permissions on the base"
 msgstr "Permissions on the base"
@@ -228,7 +232,8 @@ msgstr "-- Choose a staff member --"
 msgid "Mailings"
 msgstr "Mailings"
 
-#: ../attendance_sheet.php:196 ../lib/Galette/Filters/MembersList.php:294
+#: ../attendance_sheet.php:196 ../groups_list.php:143
+#: ../lib/Galette/Filters/MembersList.php:294
 #: ../templates/default/gestion_adherents.tpl:65
 #: ../templates/default/gestion_adherents.tpl:219
 #: ../templates/default/gestion_adherents.tpl:225
@@ -281,7 +286,7 @@ msgstr "Members list"
 msgid "Admin settings"
 msgstr "Admin settings"
 
-#: ../charts.php:58 ../templates/default/page.tpl:125
+#: ../charts.php:59 ../templates/default/page.tpl:125
 msgid "Charts"
 msgstr "Charts"
 
@@ -552,7 +557,7 @@ msgstr "Your organisation name"
 msgid "Home"
 msgstr "Home"
 
-#: ../templates/default/gestion_groupes.tpl:184
+#: ../templates/default/gestion_groupes.tpl:189
 msgid "Group managers selection"
 msgstr "Group managers selection"
 
@@ -698,7 +703,7 @@ msgstr "Galette-related data:"
 msgid "- Non-valid Website address! Maybe you've skipped the http:// ?"
 msgstr "- Non-valid Website address! Maybe you've skipped the http:// ?"
 
-#: ../templates/default/charts.tpl:52
+#: ../templates/default/charts.tpl:67
 msgid "Contributions over time"
 msgstr "Contributions over time"
 
@@ -832,7 +837,7 @@ msgstr "- Transaction description must be 150 characters long maximum."
 msgid "Table name"
 msgstr "Table name"
 
-#: ../gestion_groupes.php:160 ../templates/default/gestion_groupes.tpl:4
+#: ../gestion_groupes.php:168 ../templates/default/gestion_groupes.tpl:4
 #: ../templates/default/desktop.tpl:7
 msgid "Groups"
 msgstr "Groups"
@@ -1175,11 +1180,9 @@ msgstr "Installation Report"
 msgid "Plugin '%name' has been successfully installed!"
 msgstr "Plugin '%name' has been successfully installed!"
 
-#: ../templates/default/public_page.tpl:42 ../templates/default/page.tpl:103
-msgid ""
-"This application runs under DEMO mode, all features may not be available."
-msgstr ""
-"This application runs under DEMO mode, all features may not be available."
+#: ../templates/default/gestion_groupes.tpl:28
+msgid "Export all groups and their members as PDF"
+msgstr "Export all groups and their members as PDF"
 
 #: ../lib/Galette/Entity/Adherent.php:1104
 msgid "Member card updated"
@@ -1377,7 +1380,7 @@ msgstr "Sender"
 msgid "State of dues"
 msgstr "State of dues"
 
-#: ../gestion_groupes.php:77
+#: ../gestion_groupes.php:85
 msgid "Unable to remove group. Maybe it's not empty?"
 msgstr "Unable to remove group. Maybe it's not empty?"
 
@@ -1508,11 +1511,11 @@ msgstr "%asso Galette's admin"
 msgid "Height:"
 msgstr "Height:"
 
-#: ../templates/default/gestion_groupes.tpl:135
+#: ../templates/default/gestion_groupes.tpl:140
 msgid "An error occured checking name uniqueness :("
 msgstr "An error occured checking name uniqueness :("
 
-#: ../templates/default/gestion_groupes.tpl:66
+#: ../templates/default/gestion_groupes.tpl:71
 msgid "Missing destination group"
 msgstr "Missing destination group"
 
@@ -1520,7 +1523,7 @@ msgstr "Missing destination group"
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- The username must be composed of at least 4 characters!"
 
-#: ../templates/default/gestion_groupes.tpl:139
+#: ../templates/default/gestion_groupes.tpl:144
 msgid "Pleade provide a group name"
 msgstr "Pleade provide a group name"
 
@@ -1533,7 +1536,7 @@ msgstr "System informations"
 msgid "Tables Creation/Update"
 msgstr "Tables Creation/Update"
 
-#: ../gestion_groupes.php:131 ../ajouter_groupe.php:72
+#: ../gestion_groupes.php:139 ../ajouter_groupe.php:72
 msgid "An error occured while storing the group."
 msgstr "An error occured while storing the group."
 
@@ -1622,7 +1625,7 @@ msgstr "unreachable member:"
 msgid "is not"
 msgstr "is not"
 
-#: ../templates/default/gestion_groupes.tpl:129
+#: ../templates/default/gestion_groupes.tpl:134
 msgid "The group name you have requested already exits in the database."
 msgstr "The group name you have requested already exits in the database."
 
@@ -1643,6 +1646,12 @@ msgstr "Transfer"
 #: ../templates/default/preferences.tpl:365
 msgid "Year:"
 msgstr "Year:"
+
+#: ../templates/default/public_page.tpl:42 ../templates/default/page.tpl:103
+msgid ""
+"This application runs under DEMO mode, all features may not be available."
+msgstr ""
+"This application runs under DEMO mode, all features may not be available."
 
 #: ../templates/default/ajouter_contribution.tpl:41
 msgid "Select contributor and contribution type"
@@ -1806,7 +1815,7 @@ msgstr "Various charts"
 msgid "%name association's %status"
 msgstr "%name association's %status"
 
-#: ../lib/Galette/IO/Charts.php:180
+#: ../lib/Galette/IO/Charts.php:181
 msgid "Due free"
 msgstr "Due free"
 
@@ -1832,7 +1841,7 @@ msgstr "Country:"
 msgid "An error occured adding member to its groups."
 msgstr "An error occured adding member to its groups."
 
-#: ../templates/default/gestion_groupes.tpl:182
+#: ../templates/default/gestion_groupes.tpl:187
 msgid "Group members selection"
 msgstr "Group members selection"
 
@@ -1843,6 +1852,10 @@ msgstr "No tweets has been retrieved."
 #: ../templates/default/config_fields.tpl:34
 msgid "Field '%field' cannot be set as required."
 msgstr "Field '%field' cannot be set as required."
+
+#: ../templates/default/gestion_groupes.tpl:28
+msgid "Export as PDF"
+msgstr "Export as PDF"
 
 #: ../templates/default/mailing_adherents.tpl:60
 #: ../templates/default/mailing_adherents.tpl:82
@@ -1886,7 +1899,7 @@ msgstr "Parameters"
 msgid "Graphics:"
 msgstr "Graphics:"
 
-#: ../lib/Galette/IO/Charts.php:194
+#: ../lib/Galette/IO/Charts.php:195
 msgid "Never contribute"
 msgstr "Never contribute"
 
@@ -2354,6 +2367,10 @@ msgstr "Benefactor member"
 msgid "Close expiries"
 msgstr "Close expiries"
 
+#: ../groups_list.php:163
+msgid "groups_list"
+msgstr "groups_list"
+
 #: ../champs_adherents.php:67 ../includes/members_fields.php:294
 #: ../templates/default/member.tpl:250
 #: ../templates/default/voir_adherent.tpl:198
@@ -2441,11 +2458,11 @@ msgstr "Ok"
 msgid "Subject:"
 msgstr "Subject:"
 
-#: ../lib/Galette/IO/Charts.php:227
+#: ../lib/Galette/IO/Charts.php:228
 msgid "Up to date"
 msgstr "Up to date"
 
-#: ../lib/Galette/IO/Charts.php:213
+#: ../lib/Galette/IO/Charts.php:214
 msgid "Impending due dates"
 msgstr "Impending due dates"
 
@@ -2493,9 +2510,9 @@ msgstr "Lines / Page:"
 msgid "Payment type:"
 msgstr "Payment type:"
 
-#: ../gestion_intitules.php:214 ../gestion_intitules.php:260
-msgid "- Database error: "
-msgstr "- Database error: "
+#: ../lib/Galette/IO/Charts.php:296
+msgid "Companies"
+msgstr "Companies"
 
 #: ../templates/default/advanced_search.tpl:156
 msgid "is"
@@ -2566,6 +2583,10 @@ msgstr "Choose language"
 msgid "Cards generation parameters"
 msgstr "Cards generation parameters"
 
+#: ../groups_list.php:146
+msgid "GSM"
+msgstr "GSM"
+
 #: ../templates/default/gestion_contributions.tpl:158
 msgid "Found contributions total %f"
 msgstr "Found contributions total %f"
@@ -2619,7 +2640,7 @@ msgstr "Old-timer"
 msgid "Title '%s' has not been modified!"
 msgstr "Title '%s' has not been modified!"
 
-#: ../templates/default/charts.tpl:26
+#: ../templates/default/charts.tpl:28
 msgid "Members by state of dues"
 msgstr "Members by state of dues"
 
@@ -2826,9 +2847,9 @@ msgstr ""
 msgid "Notify member his account has been created"
 msgstr "Notify member his account has been created"
 
-#: ../templates/default/page.tpl:153
-msgid "Titles"
-msgstr "Titles"
+#: ../groups_list.php:83 ../groups_list.php:87
+msgid "Members by groups"
+msgstr "Members by groups"
 
 #: ../templates/default/preferences.tpl:4
 msgid "General"
@@ -2985,13 +3006,17 @@ msgstr "Loading..."
 msgid "View and filter transactions"
 msgstr "View and filter transactions"
 
-#: ../templates/default/gestion_groupes.tpl:99
+#: ../templates/default/gestion_groupes.tpl:104
 msgid "An error occured loading selected group :("
 msgstr "An error occured loading selected group :("
 
 #: ../templates/default/gestion_textes.tpl:67
 msgid "available only for new password request"
 msgstr "available only for new password request"
+
+#: ../install/index.php:1380 ../templates/default/ajax_plugins_initdb.tpl:94
+msgid "Steps:"
+msgstr "Steps:"
 
 #: ../advanced_search.php:112 ../lib/Galette/Entity/Contribution.php:910
 #: ../templates/default/gestion_contributions.tpl:11
@@ -3031,7 +3056,7 @@ msgstr "Unknown date format for %field.<br/>Know formats are: %formats"
 msgid "New attached contribution"
 msgstr "New attached contribution"
 
-#: ../gestion_groupes.php:127
+#: ../gestion_groupes.php:135
 msgid "Group `%groupname` has been successfully saved."
 msgstr "Group `%groupname` has been successfully saved."
 
@@ -3070,9 +3095,9 @@ msgstr "Transactions managment"
 msgid "Vice-secretary"
 msgstr "Vice-secretary"
 
-#: ../install/index.php:1380 ../templates/default/ajax_plugins_initdb.tpl:94
-msgid "Steps:"
-msgstr "Steps:"
+#: ../groups_list.php:137
+msgid "Managers:"
+msgstr "Managers:"
 
 #: ../templates/default/ajouter_contribution.tpl:134
 #: ../templates/default/export.tpl:110
@@ -3266,7 +3291,11 @@ msgstr "Open '%s' in a new window"
 msgid "Man"
 msgstr "Man"
 
-#: ../templates/default/gestion_groupes.tpl:109
+#: ../templates/default/page.tpl:153
+msgid "Titles"
+msgstr "Titles"
+
+#: ../templates/default/gestion_groupes.tpl:114
 msgid "Add a new group"
 msgstr "Add a new group"
 
@@ -3378,9 +3407,9 @@ msgstr ""
 #: ../templates/default/mailing_adherents.tpl:147
 #: ../templates/default/mailing_adherents.tpl:194
 #: ../templates/default/mailing_adherents.tpl:244
-#: ../templates/default/gestion_groupes.tpl:173
-#: ../templates/default/gestion_groupes.tpl:233
-#: ../templates/default/gestion_groupes.tpl:287
+#: ../templates/default/gestion_groupes.tpl:178
+#: ../templates/default/gestion_groupes.tpl:238
+#: ../templates/default/gestion_groupes.tpl:292
 #: ../templates/default/ajouter_transaction.tpl:121
 msgid "An error occured displaying members interface :("
 msgstr "An error occured displaying members interface :("
@@ -3701,7 +3730,7 @@ msgstr "Show all members transactions"
 msgid "Association %s"
 msgstr "Association %s"
 
-#: ../templates/default/gestion_groupes.tpl:114
+#: ../templates/default/gestion_groupes.tpl:119
 msgid "Create"
 msgstr "Create"
 
@@ -3774,7 +3803,7 @@ msgstr "Send"
 msgid "Module does not exists!"
 msgstr "Module does not exists!"
 
-#: ../gestion_groupes.php:82
+#: ../gestion_groupes.php:90
 msgid "Group %groupname has been successfully deleted."
 msgstr "Group %groupname has been successfully deleted."
 
@@ -3906,7 +3935,7 @@ msgstr "donation in money"
 msgid "Y-m-d"
 msgstr "m/d/Y"
 
-#: ../lib/Galette/IO/Charts.php:241
+#: ../lib/Galette/IO/Charts.php:242
 msgid "Late"
 msgstr "Late"
 
@@ -4280,7 +4309,7 @@ msgstr "Dashboard"
 msgid "Fields configuration"
 msgstr "Fields configuration"
 
-#: ../lib/Galette/IO/Charts.php:145 ../lib/Galette/Filters/MembersList.php:311
+#: ../lib/Galette/IO/Charts.php:146 ../lib/Galette/Filters/MembersList.php:311
 msgid "Staff members"
 msgstr "Staff members"
 
@@ -4292,6 +4321,10 @@ msgstr "m/d/Y H:i:s"
 #: ../templates/default/preferences.tpl:311
 msgid "Strip Text Color:"
 msgstr "Strip Text Color:"
+
+#: ../templates/default/desktop.tpl:43
+msgid "Read complete post"
+msgstr "Read complete post"
 
 #: ../templates/default/ajax_attendance_sheet_details.tpl:3
 msgid "%s attendees"
@@ -4558,9 +4591,9 @@ msgstr "Member of '%groupname'"
 msgid "Short form"
 msgstr "Short form"
 
-#: ../templates/default/desktop.tpl:43
-msgid "Read complete post"
-msgstr "Read complete post"
+#: ../groups_list.php:145
+msgid "Phone"
+msgstr "Phone"
 
 #: ../lib/Galette/IO/Pdf.php:196
 msgid "Error loading "
@@ -4573,7 +4606,7 @@ msgstr "%days days remaining (ending on %date)"
 #: ../champs_adherents.php:41 ../includes/members_fields.php:61
 #: ../templates/default/member.tpl:58
 #: ../templates/default/editer_intitule.tpl:6
-#: ../templates/default/gestion_groupes.tpl:109
+#: ../templates/default/gestion_groupes.tpl:114
 #: ../templates/default/group.tpl:18 ../templates/default/editer_champ.tpl:5
 #: ../templates/default/voir_adherent.tpl:44
 msgid "Name:"
@@ -4642,7 +4675,7 @@ msgstr "Warning: Don't forget to backup your current database."
 msgid "Default contributions types cannot be initialized."
 msgstr "Default contributions types cannot be initialized."
 
-#: ../templates/default/charts.tpl:13
+#: ../templates/default/charts.tpl:15
 msgid "Members by status"
 msgstr "Members by status"
 
@@ -4782,9 +4815,9 @@ msgstr "End date"
 msgid "Cannot remove '%export' from disk :/"
 msgstr "Cannot remove '%export' from disk :/"
 
-#: ../templates/default/ajouter_contribution.tpl:7
-msgid "Related transaction informations"
-msgstr "Related transaction informations"
+#: ../gestion_intitules.php:214 ../gestion_intitules.php:260
+msgid "- Database error: "
+msgstr "- Database error: "
 
 #: ../lib/Galette/Core/CheckModules.php:144
 msgid "Missing required modules"
@@ -4836,7 +4869,7 @@ msgstr "Selected groups"
 msgid "Subject"
 msgstr "Subject"
 
-#: ../templates/default/gestion_groupes.tpl:72
+#: ../templates/default/gestion_groupes.tpl:77
 msgid "An error occured reordering groups :("
 msgstr "An error occured reordering groups :("
 
@@ -4857,6 +4890,10 @@ msgstr "Go back"
 #: ../preferences.php:423 ../lib/Galette/Core/Pagination.php:261
 msgid "All"
 msgstr "All"
+
+#: ../templates/default/ajouter_contribution.tpl:7
+msgid "Related transaction informations"
+msgstr "Related transaction informations"
 
 #: ../templates/default/preferences.tpl:358
 msgid "Zip - Town"
