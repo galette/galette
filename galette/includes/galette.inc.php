@@ -79,7 +79,7 @@ if ( !$installer || $installed ) { //If we're not working from installer
 }
 
 if ( !function_exists('password_hash') ) {
-    include_once GALETTE_PASSWORD_COMPAT_PATH . 'password.php';
+    include_once GALETTE_PASSWORD_COMPAT_PATH . '/password.php';
 }
 
 use Galette\Common\ClassLoader;
