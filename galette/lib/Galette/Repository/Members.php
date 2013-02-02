@@ -562,10 +562,22 @@ class Members
                 break;
             }
 
+            //check for contributions filtering
+            if ( $this->_filters instanceof AdvancedMembersList
+                && $this->_filters->withinContributions()
+            ) {
+                $select->joinLeft(
+                    array('ct' => PREFIX_DB . Contribution::TABLE),
+                    'ct.' . self::PK . '=a.' . self::PK,
+                    array()
+                );
+            }
+
             //check if there are dynamic fields in the filter
             $hasDf = false;
             $hasCdf = false;
             $cdfs = array();
+            $cdfcs = array();
 
             if ( $this->_filters instanceof AdvancedMembersList
                 && $this->_filters->free_search
@@ -584,6 +596,27 @@ class Members
                 }
             }
 
+
+            //check if tehre are dynamic fields for contributions in filter
+            $hasDfc = false;
+            $hasCdfc = false;
+            if ( $this->_filters instanceof AdvancedMembersList
+                && $this->_filters->withinContributions()
+            ) {
+                if ( count($this->_filters->contrib_dynamic) > 0 ) {
+                    $hasDfc = true;
+
+                    //check if there are dynamic fields in the filter
+                    foreach ( $this->_filters->contrib_dynamic as $k=>$cd ) {
+                        if ( is_array($cd) ) {
+                            $hasCdfc = true;
+                            $cdfcs[] = $k;
+                        }
+                    }
+                }
+
+            }
+
             if ( $hasDf === true || $hasCdf === true ) {
                 $select->joinLeft(
                     array('df' => PREFIX_DB . DynamicFields::TABLE),
@@ -591,7 +624,14 @@ class Members
                 );
             }
 
-            if ( $hasCdf === true ) {
+            if ( $hasDfc === true || $hasCdfc === true ) {
+                $select->joinLeft(
+                    array('dfc' => PREFIX_DB . DynamicFields::TABLE),
+                    'dfc.item_id=ct.' . Contribution::PK
+                );
+            }
+
+            if ( $hasCdf === true || $hasCdfc === true ) {
                 $cdf_field = 'cdf.id';
                 if ( TYPE_DB === 'pgsql' ) {
                     $cdf_field .= '::text';
@@ -602,16 +642,17 @@ class Members
                         $cdf_field . '=df.field_val'
                     );
                 }
-            }
 
-            if ( $this->_filters instanceof AdvancedMembersList
-                && $this->_filters->withinContributions()
-            ) {
-                $select->joinLeft(
-                    array('ct' => PREFIX_DB . Contribution::TABLE),
-                    'ct.' . self::PK . '=a.' . self::PK,
-                    array()
-                );
+                $cdf_field = 'cdfc.id';
+                if ( TYPE_DB === 'pgsql' ) {
+                    $cdf_field .= '::text';
+                }
+                foreach ( $cdfcs as $cdf ) {
+                    $select->joinLeft(
+                        array('cdfc' => DynamicFields::getFixedValuesTableName($cdf)),
+                        $cdf_field . '=dfc.field_val'
+                    );
+                }
             }
 
             if ( $mode == self::SHOW_LIST || $mode == self::SHOW_MANAGED ) {
@@ -1110,6 +1151,43 @@ class Members
                             $this->_filters->payments_types
                         ) . ')'
                     );
+                }
+
+                if ( count($this->_filters->contrib_dynamic) > 0
+                    && !isset($this->_filters->contrib_dynamic['empty'])
+                ) {
+                    foreach ( $this->_filters->contrib_dynamic as $k=>$cd ) {
+                        $qry = '';
+                        $prefix = '';
+                        $field = null;
+                        $qop = ' LIKE ';
+
+                        if ( is_array($cd) ) {
+                            //dynamic choice spotted!
+                            $prefix = 'cdfc.';
+                            $qry = 'dfc.field_form = \'contrib\' AND ' .
+                                'dfc.field_id = ' . $k . ' AND ';
+                            $field = 'id';
+                        } else {
+                            //dynamic field spotted!
+                            $prefix = 'dfc.';
+                            $qry = 'dfc.field_form = \'contrib\' AND ' .
+                                'dfc.field_id = ' . $k . ' AND ';
+                            $field = 'field_val';
+                        }
+
+                        if ( is_array($cd) ) {
+                            $qry .= $prefix . $field . ' IN (\'' . implode(
+                                '\', \'',
+                                $cd
+                            ) . '\')';
+                            $select->where($qry);
+                        } else {
+                            $qry .= 'LOWER(' . $prefix . $field . ') ' .
+                                $qop  . ' ?' ;
+                            $select->where($qry, '%' .strtolower($cd) . '%');
+                        }
+                    }
                 }
 
                 if ( count($this->_filters->free_search) > 0

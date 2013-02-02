@@ -125,8 +125,30 @@
                             {html_options options=$payments_types selected=$filters->payments_types}
                         </select>
                     </p>
+{foreach $cdynamic_fields as $field}
+    {assign var=fid value=$field.field_id}
+    {if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}
+        {assign var=rid value="cdsc_$fid"}
+    {else}
+        {assign var=rid value="cds_$fid"}
+    {/if}
+                    <p>
+                        <label class="bline" for="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}">{$field.field_name}</label>
+    {if $field.field_type eq constant('Galette\Entity\DynamicFields::LINE')}
+                        <input type="text" name="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}" id="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}" value="{$filters->contrib_dynamic.$rid}" />
+    {elseif $field.field_type eq constant('Galette\Entity\DynamicFields::TEXT')}
+                        <textarea name="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}" id="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}">{$filters->contrib_dynamic.$rid}</textarea>
+    {elseif $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}
+                        <select name="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}[]" id="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}" multiple="multiple">
+                            <option value="">{_T string="Select"}</option>
+        {foreach $field.choices item=choice key=k}
+                            <option value="{$k}"{if $cds.field eq $rid} selected="selected"{/if}>{$choice}</option>
+        {/foreach}
+                        </select>
+    {/if}
+                    </p>
+{/foreach}
                 </div>
-
             </fieldset>
             <fieldset class="cssform large">
                 <legend class="ui-state-active ui-corner-top">{_T string="Free search"}<a class="clearfilter" href="#" title="{_T string="Add new free search criteria"}" id="btnadd_small">{_T string="Add"}</a></legend>

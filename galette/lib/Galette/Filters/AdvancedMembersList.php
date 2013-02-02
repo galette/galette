@@ -107,6 +107,7 @@ class AdvancedMembersList extends MembersList
         'payments_types',
         'contrib_min_amount',
         'contrib_max_amount',
+        'contrib_dynamic',
         'free_search'
     );
 
@@ -127,6 +128,16 @@ class AdvancedMembersList extends MembersList
 
     //an empty free search criteria to begin
     private $_free_search = array(
+        'empty' => array(
+            'field'     => '',
+            'search'    => '',
+            'log_op'    => self::OP_AND,
+            'qry_op'    => self::OP_EQUALS
+        )
+    );
+
+    //an empty contributions dynamic field criteria to begin
+    private $_contrib_dynamic = array(
         'empty' => array(
             'field'     => '',
             'search'    => '',
@@ -168,6 +179,7 @@ class AdvancedMembersList extends MembersList
             || $this->_contrib_begin_date_end != null
             || $this->_contrib_min_amount != null
             || $this->_contrib_max_amount != null
+            || count($this->_contrib_dynamic) > 0
             || count($this->_contributions_types) > 0
             || count($this->_payments_types) > 0
         ) {
@@ -212,6 +224,16 @@ class AdvancedMembersList extends MembersList
                 'qry_op'    => self::OP_EQUALS
             )
         );
+
+        $this->_contrib_dynamic = array(
+            'empty' => array(
+                'field'     => '',
+                'search'    => '',
+                'log_op'    => self::OP_AND,
+                'qry_op'    => self::OP_EQUALS
+            )
+        );
+
     }
 
     /**
@@ -449,7 +471,6 @@ class AdvancedMembersList extends MembersList
                     }
                 }
                 break;
-
             case 'free_search':
                 if ( isset($this->_free_search['empty']) ) {
                     unset($this->_free_search['empty']);
@@ -479,10 +500,29 @@ class AdvancedMembersList extends MembersList
                 }
                 break;
             default:
-                Analog::log(
-                    '[AdvancedMembersList] Unable to set proprety `' . $name . '`',
-                    Analog::WARNING
-                );
+                if ( substr($name, 0, 4) === 'cds_'
+                    || substr($name, 0, 5) === 'cdsc_'
+                ) {
+                    if (is_array($value) || trim($value) !== '' ) {
+                        if ( isset($this->_contrib_dynamic['empty']) ) {
+                            unset($this->_contrib_dynamic['empty']);
+                        }
+
+                        $id = null;
+                        if ( substr($name, 0, 5) === 'cdsc_' ) {
+                            $id = substr($name, 5, strlen($name));
+                        } else {
+                            $id = substr($name, 4, strlen($name));
+                        }
+                        $this->_contrib_dynamic[$id] = $value;
+                    }
+                } else {
+                    Analog::log(
+                        '[AdvancedMembersList] Unable to set proprety `' .
+                        $name . '`',
+                        Analog::WARNING
+                    );
+                }
                 break;
             }
         }

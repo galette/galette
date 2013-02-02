@@ -97,6 +97,14 @@ $dynamic_fields = $df->prepareForDisplay(
 );
 $tpl->assign('dynamic_fields', $dynamic_fields);
 
+$cdynamic_fields = $df->prepareForDisplay(
+    'contrib',
+    array(),
+    array(),
+    0
+);
+$tpl->assign('cdynamic_fields', $cdynamic_fields);
+
 //Status
 $statuts = new Galette\Entity\Status();
 $tpl->assign('statuts', $statuts->getList());
