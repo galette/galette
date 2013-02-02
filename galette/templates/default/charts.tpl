@@ -10,7 +10,7 @@
             $(function(){
                 var _members_status_pie = jQuery.jqplot ('{php}echo \Galette\IO\Charts::MEMBERS_STATUS_PIE;{/php}', [{$charts.MembersStatusPie}],
                     {
-                        title: '{_T string="Members by status"}',
+                        title: '{_T string="Members by status" escape="js"}',
                         seriesDefaults: {
                             renderer: jQuery.jqplot.PieRenderer,
                             rendererOptions: {
@@ -23,7 +23,7 @@
 
                 var _members_statedue_pie = jQuery.jqplot ('{php}echo \Galette\IO\Charts::MEMBERS_STATEDUE_PIE;{/php}', [{$charts.MembersStateDuePie}],
                     {
-                        title: '{_T string="Members by state of dues"}',
+                        title: '{_T string="Members by state of dues" escape="js"}',
                         seriesDefaults: {
                             renderer: jQuery.jqplot.PieRenderer,
                             rendererOptions: {
@@ -36,7 +36,7 @@
 
                 var _contribs_types_pie = jQuery.jqplot ('{php}echo \Galette\IO\Charts::CONTRIBS_TYPES_PIE;{/php}', [{$charts.ContribsTypesPie}],
                     {
-                        title: '{_T string="Contributions types repartition"}',
+                        title: '{_T string="Contributions types repartition" escape="js"}',
                         seriesDefaults: {
                             renderer: jQuery.jqplot.PieRenderer,
                             rendererOptions: {
@@ -49,7 +49,7 @@
 
                 var _contribs_alltime = jQuery.jqplot ('{php}echo \Galette\IO\Charts::CONTRIBS_ALLTIME;{/php}', [{$charts.ContribsAllTime}],
                     {
-                        title: '{_T string="Contributions over time"}',
+                        title: '{_T string="Contributions over time" escape="js"}',
                         seriesDefaults: {
                             renderer:$.jqplot.BarRenderer,
                             renderOptions:{
