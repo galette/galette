@@ -332,59 +332,56 @@ class Picture
                 PREFIX_DB . $this->tbl_prefix . $class::TABLE,
                 $zdb->db->quoteInto($class::PK . ' = ?', $this->db_id)
             );
-            if ( $del > 0 ) {
-                $file_wo_ext = $this->store_path . $this->id;
 
-                // take back default picture
-                $this->getDefaultPicture();
-                // fix sizes
-                $this->_setSizes();
-
-                $success = false;
-                $_file = null;
-                if ( file_exists($file_wo_ext . '.jpg') ) {
-                    //return unlink($file_wo_ext . '.jpg');
-                    $_file = $file_wo_ext . '.jpg';
-                    $success = unlink($_file);
-                } elseif ( file_exists($file_wo_ext . '.png') ) {
-                    //return unlink($file_wo_ext . '.png');
-                    $_file = $file_wo_ext . '.png';
-                    $success = unlink($_file);
-                } elseif ( file_exists($file_wo_ext . '.gif') ) {
-                    //return unlink($file_wo_ext . '.gif');
-                    $_file = $file_wo_ext . '.gif';
-                    $success = unlink($_file);
-                }
-
-                if ( $_file !== null && $success !== true ) {
-                    //unable to remove file that exists!
-                    if ( $transaction === true ) {
-                        $zdb->db->rollBack();
-                    }
-                    Analog::log(
-                        'The file ' . $_file . ' was found on the disk but cannot be removed.',
-                        Analog::ERROR
-                    );
-                    return false;
-                } else {
-                    if ( $transaction === true ) {
-                        $zdb->db->commit();
-                    }
-                    return true;
-                }
-            } else {
-                 Analog::log(
+            if ( !$del > 0 ) {
+                Analog::log(
                     'Unable to remove picture database entry for ' . $this->db_id,
                     Analog::ERROR
                 );
-                if ( $transaction === true ) {
-                    //properly ends transaction
-                    $zdb->db->rollBack();
-                }
-                return false;
+                //it may be possible image is missing in the database.
+                //let's try to remove file anyway.
             }
 
+            $file_wo_ext = $this->store_path . $this->id;
 
+            // take back default picture
+            $this->getDefaultPicture();
+            // fix sizes
+            $this->_setSizes();
+
+            $success = false;
+            $_file = null;
+            if ( file_exists($file_wo_ext . '.jpg') ) {
+                //return unlink($file_wo_ext . '.jpg');
+                $_file = $file_wo_ext . '.jpg';
+                $success = unlink($_file);
+            } elseif ( file_exists($file_wo_ext . '.png') ) {
+                //return unlink($file_wo_ext . '.png');
+                $_file = $file_wo_ext . '.png';
+                $success = unlink($_file);
+            } elseif ( file_exists($file_wo_ext . '.gif') ) {
+                //return unlink($file_wo_ext . '.gif');
+                $_file = $file_wo_ext . '.gif';
+                $success = unlink($_file);
+            }
+
+            if ( $_file !== null && $success !== true ) {
+                //unable to remove file that exists!
+                if ( $transaction === true ) {
+                    $zdb->db->rollBack();
+                }
+                Analog::log(
+                    'The file ' . $_file .
+                    ' was found on the disk but cannot be removed.',
+                    Analog::ERROR
+                );
+                return false;
+            } else {
+                if ( $transaction === true ) {
+                    $zdb->db->commit();
+                }
+                return true;
+            }
         } catch (\Exception $e) {
             if ( $transaction === true ) {
                 $zdb->db->rollBack();
