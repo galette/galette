@@ -292,7 +292,7 @@ class MembersList extends Pagination
             'filter_field_options',
             array(
                 Members::FILTER_NAME            => _T("Name"),
-                Members::FILTER_COMPANY_NAME    => _T("Company name"),
+                Members::FILTER_COMPANY_NAME    => _T("Company"),
                 Members::FILTER_ADRESS          => _T("Address"),
                 Members::FILTER_MAIL            => _T("Email,URL,IM"),
                 Members::FILTER_JOB             => _T("Job"),

@@ -74,7 +74,7 @@ $members_fields = array(
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),
     'societe_adh' => array(
-        'label'    => _T("Company name:"),
+        'label'    => _T("Company:"),
         'propname' => 'company_name',
         'required' => false ,
         'visible'  => FieldsConfig::VISIBLE,

@@ -14,7 +14,7 @@
             <fieldset class="cssform" id="general">
                 <legend>{_T string="General information"}</legend>
                 <p>
-                    <label for="pref_nom" class="bline">{_T string="Name (corporate name) of the association:"}</label>
+                    <label for="pref_nom" class="bline">{_T string="Name of the association:"}</label>
                     <input{if $required.pref_nom eq 1} required{/if} type="text" name="pref_nom" id="pref_nom" value="{$pref.pref_nom}" maxlength="190"/>
                 </p>
                 <p>
