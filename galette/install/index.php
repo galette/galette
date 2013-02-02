@@ -919,9 +919,8 @@ case 'u7':
 
     //before doing anything else, we'll have to convert data to UTF-8
     //required since 0.7dev (if we're upgrading, 'f course)
-    if ( $step == 'u7' ) {
-        //FIXME: maybe we can do that only on 0.7 upgrades,
-        //to save time? (methods are safe if rerun)
+    $_to_ver = substr($_POST['install_type'], 8, strlen($_POST['install_type']));
+    if ( $step == 'u7' && (float)$_to_ver <= 0.70) {
         $zdb->convertToUTF($table_prefix);
     }
 
