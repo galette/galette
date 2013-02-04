@@ -60,6 +60,13 @@ if ( !$login->isLogged() ) {
     die();
 }
 
+if ( isset($_POST['clear_adv_filter']) ) {
+    $session['filters']['members'] = null;
+    unset($session['filters']['members']);
+    header('location: advanced_search.php');
+    die();
+}
+
 if ( isset($session['filters']['members'])
     && !isset($_POST['mailing'])
     && !isset($_POST['mailing_new'])
