@@ -76,6 +76,7 @@ class Members
     const SHOW_ARRAY_LIST = 2;
     const SHOW_STAFF = 3;
     const SHOW_MANAGED = 4;
+    const SHOW_EXPORT = 5;
 
     const FILTER_NAME = 0;
     const FILTER_ADRESS = 1;
@@ -186,6 +187,7 @@ class Members
     * @param boolean $staff      true if we want only staff members
     * @param boolean $managed    true if we want only managed groups
     * @param boolean $limit      true if we want records pagination
+    * @param boolean $export     true if we are exporting
     *
     * @return Adherent[]|ResultSet
     */
@@ -195,7 +197,8 @@ class Members
         $count=true,
         $staff=false,
         $managed=false,
-        $limit=true
+        $limit=true,
+        $export=false
     ) {
         global $zdb;
 
@@ -206,6 +209,9 @@ class Members
             }
             if ( $managed !== false ) {
                 $_mode = self::SHOW_MANAGED;
+            }
+            if ( $export !== false ) {
+                $_mode = self::SHOW_EXPORT;
             }
 
             $select = $this->_buildSelect(
@@ -537,6 +543,14 @@ class Members
                 $select->join(
                     array('p' => PREFIX_DB . Status::TABLE, Status::PK),
                     'a.' . Status::PK . '=p.' . Status::PK
+                );
+                break;
+            case self::SHOW_EXPORT:
+                //basically the same as above, but without any fields
+                $select->join(
+                    array('p' => PREFIX_DB . Status::TABLE, Status::PK),
+                    'a.' . Status::PK . '=p.' . Status::PK,
+                    array()
                 );
                 break;
             case self::SHOW_MANAGED:

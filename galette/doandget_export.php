@@ -92,7 +92,15 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     }
 
     $members = new Members($filters);
-    $members_list = $members->getMembersList(false, $fields);
+    $members_list = $members->getMembersList(
+        false,
+        $fields,
+        true,
+        false,
+        false,
+        true,
+        true
+    );
 
     $filename = 'filtered_memberslist.csv';
     $filepath = Csv::DEFAULT_DIRECTORY . $filename;
