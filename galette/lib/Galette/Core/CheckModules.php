@@ -51,10 +51,10 @@ namespace Galette\Core;
  */
 class CheckModules
 {
-    private $_good;
-    private $_may;
-    private $_should;
-    private $_missing;
+    private $_good = array();
+    private $_may = array();
+    private $_should = array();
+    private $_missing = array();
 
     /**
      * Check various modules and dispatch them beetween:
