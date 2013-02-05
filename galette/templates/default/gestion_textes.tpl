@@ -51,6 +51,12 @@
                     <td class="back">{_T string="Member's email address"}<br/><span>{_T string="available with reservations"})</span></td>
                 </tr>
                 <tr>
+                    <th><tt>{ldelim}SURNAME_ADH{rdelim}</tt></th>
+                    <td class="back">{_T string="Member's surname"}<br/><span>{_T string="available with reservations"})</span></td>
+                    <th><tt>{ldelim}LASTNAME_ADH{rdelim}</tt></th>
+                    <td class="back">{_T string="Member's last name"}<br/><span>{_T string="available with reservations"})</span></td>
+                </tr>
+                <tr>
                     <th><tt>{ldelim}LOGIN{rdelim}</tt></th>
                     <td class="back">{_T string="Member's login"}<br/><span>{_T string="available with reservations"})</span></td>
                     <th class="back"><tt>{ldelim}LOGIN_URI{rdelim}</tt></th>
