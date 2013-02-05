@@ -624,11 +624,11 @@ case 'u4':
                         </p>
                         <p>
         <?php
-        if ( substr($_POST['install_type'], 0, 8) == 'upgrade-' ) {
-            echo '<span class="required">' .
-                _T("(Indicate the CURRENT prefix of your Galette tables)") .
-                '</span><br/>';
-        }
+    if ( substr($_POST['install_type'], 0, 8) == 'upgrade-' ) {
+        echo '<span class="required">' .
+            _T("(Indicate the CURRENT prefix of your Galette tables)") .
+            '</span><br/>';
+    }
         ?>
                             <label class="bline" for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
                             <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo (isset($_POST['install_dbprefix']))?$_POST['install_dbprefix']:'galette_'; ?>" required/>
@@ -917,11 +917,13 @@ case 'u7':
     <?php
     $table_prefix = $_POST['install_dbprefix'];
 
-    //before doing anything else, we'll have to convert data to UTF-8
-    //required since 0.7dev (if we're upgrading, 'f course)
-    $_to_ver = substr($_POST['install_type'], 8, strlen($_POST['install_type']));
-    if ( $step == 'u7' && (float)$_to_ver <= 0.70) {
-        $zdb->convertToUTF($table_prefix);
+    if ( $step == 'u7' ) {
+        //before doing anything else, we'll have to convert data to UTF-8
+        //required since 0.7dev (if we're upgrading, 'f course)
+        $_to_ver = substr($_POST['install_type'], 8);
+        if ( (float)$_to_ver <= 0.70 ) {
+            $zdb->convertToUTF($table_prefix);
+        }
     }
 
     // begin : copyright (2002) the phpbb group (support@phpbb.com)
@@ -983,12 +985,9 @@ case 'u7':
         }
     }
 
-    if (!empty($error))
-    {
+    if (!empty($error)) {
         $db->rollBack();
-    }
-    else
-    {
+    } else {
         $db->commit();
     }
 
