@@ -616,7 +616,7 @@ class Contribution
             if ( $due_date != '' ) {
                 $date_fin_update = $due_date;
             } else {
-                $date_fin_update = 'NULL';
+                $date_fin_update = new \Zend_Db_Expr('NULL');
             }
 
             $edit = $zdb->db->update(
