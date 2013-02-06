@@ -444,8 +444,8 @@ class FieldsConfig
 
             $zdb->db->commit();
             return true;
-        } catch (Exception $e) {
-            $zdb->db->rollBacak();
+        } catch (\Exception $e) {
+            $zdb->db->rollBack();
             Analog::log(
                 '[' . $class . '] An error occured while storing fields ' .
                 'configuration for table `' . $this->_table . '`.' .
