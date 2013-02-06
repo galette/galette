@@ -407,7 +407,7 @@ class Members
 
         try {
             $select = $this->_buildSelect(
-                self::SHOW_PUBLIC_LIST, $fields, false, $with_photos
+                self::SHOW_PUBLIC_LIST, $fields, $with_photos
             );
 
             if ( $this->_filters ) {
