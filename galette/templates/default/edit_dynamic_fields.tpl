@@ -30,9 +30,7 @@
                 cols="{if $field.field_width > 0}{$field.field_width}{else}61{/if}"
                 rows="{if $field.field_height > 0}{$field.field_height}{else}6{/if}"
                 {if isset($disabled.dyn[$field.field_id])} {$disabled.dyn[$field.field_id]}{/if}
-                {if $field.field_required eq 1} required{/if}>
-                {if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index])}{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|escape}{/if}
-            </textarea>
+                {if $field.field_required eq 1} required{/if}>{if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index])}{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|escape}{/if}</textarea>
         {elseif $field.field_type eq 2}
             <input type="text" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}"
                 {if $field.field_width > 0}size="{$field.field_width}"{/if}
