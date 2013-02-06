@@ -459,4 +459,62 @@ class FieldsConfig
             return false;
         }
     }
+
+    /**
+     * Migrate old required fields configuration
+     * Only needeed for 0.7.4 upgrade
+     * (should have been 0.7.3 - but I missed that.)
+     *
+     * @param Db $zdb Database instance
+     *
+     * @return boolean
+     */
+    public function migrateRequired($zdb)
+    {
+        try {
+            $select = new \Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . 'required');
+
+            $old_required = $select->query()->fetchAll();
+
+            $zdb->db->beginTransaction();
+            $sql = 'UPDATE ' . PREFIX_DB . self::TABLE .
+                ' SET required=:required WHERE table_name=\'' .
+                $this->_table .'\' AND field_id=:field_id';
+            $stmt = $zdb->db->prepare($sql);
+
+            foreach ( $old_required as $or ) {
+                $params = array(
+                    'field_id'  => $or->field_id,
+                    'required'  => ($or->required === false) ?  'false' : true
+                );
+                $stmt->execute($params);
+            }
+
+            $class = get_class($this);
+            Analog::log(
+                str_replace(
+                    '%s',
+                    $this->_table,
+                    '[' . $class . '] Required fields for table %s upgraded ' .
+                    'successfully.'
+                ),
+                Analog::INFO
+            );
+
+            $zdb->db->query('DROP TABLE ' . PREFIX_DB . 'required;');
+
+            $zdb->db->commit();
+            return true;
+        } catch ( \Exception $e ) {
+            $zdb->db->rollBack();
+            Analog::log(
+                'An error occured migrating old required fields. | ' .
+                $e->getMessage(),
+                Analog::ERROR
+            );
+            throw $e;
+            return false;
+        }
+    }
 }
