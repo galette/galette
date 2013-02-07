@@ -87,7 +87,7 @@ CREATE TABLE galette_statuts (
 DROP TABLE IF EXISTS galette_titles;
 CREATE TABLE galette_titles (
   id_title int(10) unsigned NOT NULL auto_increment,
-  short_label_label varchar(10) NOT NULL default '',
+  short_label varchar(10) NOT NULL default '',
   long_label varchar(30) default '',
   PRIMARY KEY  (id_title)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
