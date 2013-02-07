@@ -66,6 +66,7 @@ class FieldsConfig
     private $_table;
     private $_defaults = null;
     private $_all_categories;
+    private $_all_positions;
 
     const TABLE = 'fields_config';
 
@@ -108,6 +109,11 @@ class FieldsConfig
     {
         $this->_table = $table;
         $this->_defaults = $defaults;
+        $this->_all_required = array();
+        $this->_all_visibles = array();
+        $this->_all_labels = array();
+        $this->_all_categories = array();
+        $this->_all_positions = array();
         $this->_checkUpdate();
     }
 
@@ -172,7 +178,7 @@ class FieldsConfig
                         = $this->_defaults[$k->field_id]['label'];
                     $this->_all_categories[$k->field_id]
                         = $this->_defaults[$k->field_id]['category'];
-                    $this->all_positions[$k->field_id] = $k->position;
+                    $this->_all_positions[$k->field_id] = $k->position;
                 }
 
             }
@@ -198,10 +204,13 @@ class FieldsConfig
      * current table.
      * This should occurs when table has been updated. For the first
      * initialisation, value should be false. Defaults to false.
+     * @param boolean $raz    true if we must delete all config data for
+     * current table.
+     * This should occurs at install/upgrade time.
      *
      * @return boolean
      */
-    public function init($reinit=false)
+    public function init($reinit=false, $raz = false)
     {
         global $zdb;
         $class = get_class($this);
@@ -212,7 +221,7 @@ class FieldsConfig
             PREFIX_DB . $this->_table . '`',
             Analog::DEBUG
         );
-        if ( $reinit ) {
+        if ( $reinit || $raz ) {
             Analog::log(
                 '[' . $class . '] Reinit mode, we delete config content for ' .
                 'table `' . PREFIX_DB . $this->_table . '`',
@@ -272,7 +281,7 @@ class FieldsConfig
                                       ),
                     ':position'    => (
                                         ($reinit) ?
-                                            $this->all_positions[$key] :
+                                            $this->_all_positions[$key] :
                                             $this->_defaults[$key]['position']
                                       ),
                     ':category'    => (
@@ -333,8 +342,8 @@ class FieldsConfig
 
     /*public function getLabels(){ return $this->_all_labels; }*/
     /*public function getCategories(){ return $this->_all_categories; }*/
-    /*public function getPositions(){ return $this->all_positions; }*/
-    /*public function getPosition($field){ return $this->all_positions[$field]; }*/
+    /*public function getPositions(){ return $this->_all_positions; }*/
+    /*public function getPosition($field){ return $this->_all_positions[$field]; }*/
 
     /**
      * Get visible fields
@@ -471,13 +480,24 @@ class FieldsConfig
      */
     public function migrateRequired($zdb)
     {
+        $old_required = null;
+
         try {
             $select = new \Zend_Db_Select($zdb->db);
             $select->from(PREFIX_DB . 'required');
 
             $old_required = $select->query()->fetchAll();
+        } catch ( \Exception $pe ) {
+            Analog::log(
+                'Unable to retrieve required fields_config. Maybe the table does not exists?',
+                Analog::WARNING
+            );
+            //not a blocker
+            return true;
+        }
 
-            $zdb->db->beginTransaction();
+        $zdb->db->beginTransaction();
+        try {
             $sql = 'UPDATE ' . PREFIX_DB . self::TABLE .
                 ' SET required=:required WHERE table_name=\'' .
                 $this->_table .'\' AND field_id=:field_id';
@@ -513,7 +533,6 @@ class FieldsConfig
                 $e->getMessage(),
                 Analog::ERROR
             );
-            throw $e;
             return false;
         }
     }

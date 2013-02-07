@@ -1211,9 +1211,8 @@ define("STOCK_FILES", "tempimages");
         $preferences = new Galette\Core\Preferences(false);
         $ct = new Galette\Entity\ContributionsTypes();
         $status = new Galette\Entity\Status();
-        $fcat = new Galette\Entity\FieldsCategories();
-        $a = new Galette\Entity\Adherent();
-        $fc = new Galette\Entity\FieldsConfig(Adherent::TABLE, $a->fields);
+        include_once '../includes/members_fields.php';
+        $fc = new Galette\Entity\FieldsConfig(Galette\Entity\Adherent::TABLE, $members_fields);
 
         //init default values
         $res = $preferences->installInit(
@@ -1251,23 +1250,12 @@ define("STOCK_FILES", "tempimages");
                 _T("Default status were successfully stored.") . '</li>';
         }
 
-        $res = $fcat->installInit();
-        if ( $res !== true ) {
-            $errs[] = '<li class="install-bad">' .
-                _T("Default fields categories cannot be initialized.") .
-                '<span>' . $res->getMessage() . '</span></li>';
-        } else {
-            $oks[] = '<li class="install-ok">' .
-                _T("Default fields categories were successfully stored.") .
-                '</li>';
-        }
-
         //proceed fields configuration reinitialization
         $res = $fc->init(true);
         if ( $res !== true ) {
             $errs[] = '<li class="install-bad">' .
                 _T("Default fields configuration cannot be initialized.") .
-                '<span>' . $res->getMessage() . '</span></li>';
+                '</li>';
         } else {
             $oks[] = '<li class="install-ok">' .
                 _T("Default fields configuration was successfully stored.") .
@@ -1276,44 +1264,34 @@ define("STOCK_FILES", "tempimages");
     } else if ($step=='u9') {
         $_to_ver = substr($_POST['install_type'], 8);
         if ( (float)$_to_ver <= 0.74 ) {
-            $fcat = new Galette\Entity\FieldsCategories();
-            $a = new Galette\Entity\Adherent();
-            $fc = new Galette\Entity\FieldsConfig(Galette\Entity\Adherent::TABLE, $a->fields);
-
-            $res = $fcat->installInit();
-            if ( $res !== true ) {
-                $errs[] = '<li class="install-bad">' .
-                    _T("Default fields categories cannot be initialized.") .
-                    '<span>' . $res->getMessage() . '</span></li>';
-            } else {
-                $oks[] = '<li class="install-ok">' .
-                    _T("Default fields categories were successfully stored.") .
-                    '</li>';
-            }
+            include_once '../includes/members_fields.php';
+            $fc = new Galette\Entity\FieldsConfig(Galette\Entity\Adherent::TABLE, $members_fields);
 
             //proceed fields configuration reinitialization
-            $res = $fc->init(true);
+            $res = $fc->init(false, true);
             if ( $res !== true ) {
                 $errs[] = '<li class="install-bad">' .
                     _T("Default fields configuration cannot be initialized.") .
-                    '<span>' . $res->getMessage() . '</span></li>';
+                    '</li>';
             } else {
                 $oks[] = '<li class="install-ok">' .
                     _T("Default fields configuration was successfully stored.") .
                     '</li>';
             }
 
-            //once fields configuration defaults has been stored, we'll
-            //report galette_required values, and we remove that table
-            $res = $fc->migrateRequired($zdb);
-            if ( $res !== true ) {
-                $errs[] = '<li class="install-bad">' .
-                    _T("Required fields upgrade has failed :(") .
-                    '<span>' . $res->getMessage() . '</span></li>';
-            } else {
-                $oks[] = '<li class="install-ok">' .
-                    _T("Required fields have been upgraded successfully.") .
-                    '</li>';
+            if ( (float)$_to_ver >= 0.70 ) {
+                //once fields configuration defaults has been stored, we'll
+                //report galette_required values, and we remove that table
+                $res = $fc->migrateRequired($zdb);
+                if ( $res !== true ) {
+                    $errs[] = '<li class="install-bad">' .
+                        _T("Required fields upgrade has failed :(") .
+                        '<span>' . $res->getMessage() . '</span></li>';
+                } else {
+                    $oks[] = '<li class="install-ok">' .
+                        _T("Required fields have been upgraded successfully.") .
+                        '</li>';
+                }
             }
         }
 
