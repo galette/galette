@@ -1323,7 +1323,7 @@ define("STOCK_FILES", "tempimages");
         $preferences->store();
     }
 
-    $texts = new Galette\Entity\Texts();
+    $texts = new Galette\Entity\Texts($preferences);
     $res = $texts->installInit();
     if ( $res !== false ) {
         if ( $res !== true ) {
