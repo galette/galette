@@ -48,6 +48,10 @@ if ( defined('PREFIX_DB') && defined('NAME_DB') ) {
     unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]);
 }
 
+if ( !defined('GALETTE_TPL_SUBDIR') ) {
+    define('GALETTE_TPL_SUBDIR', 'templates/default/');
+}
+
 $session = array();
 
 $step = '1';
@@ -832,14 +836,16 @@ case 'u6':
             _T("DROP operation allowed") . '</li>';
     }
 
-    if ( $results['alter'] instanceof Exception ) {
-        $result .= '<li class="install-bad debuginfos">' .
-            _T("ALTER Operation not allowed") . '<span>' .
-            $results['alter']->getMessage() . '</span></li>';
-        $error = true;
-    } elseif ( $results['alter'] != '' ) {
-        $result .= '<li class="install-ok">' .
-            _T("ALTER Operation allowed") . '</li>';
+    if ($step == 'u6') {
+        if ( $results['alter'] instanceof Exception ) {
+            $result .= '<li class="install-bad debuginfos">' .
+                _T("ALTER Operation not allowed") . '<span>' .
+                $results['alter']->getMessage() . '</span></li>';
+            $error = true;
+        } elseif ( $results['alter'] != '' ) {
+            $result .= '<li class="install-ok">' .
+                _T("ALTER Operation allowed") . '</li>';
+        }
     }
 
     if ( $error ) {
