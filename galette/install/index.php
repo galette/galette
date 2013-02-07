@@ -1213,6 +1213,7 @@ define("STOCK_FILES", "tempimages");
         $status = new Galette\Entity\Status();
         include_once '../includes/members_fields.php';
         $fc = new Galette\Entity\FieldsConfig(Galette\Entity\Adherent::TABLE, $members_fields);
+        $titles = new Galette\Repository\Titles();
 
         //init default values
         $res = $preferences->installInit(
@@ -1259,6 +1260,17 @@ define("STOCK_FILES", "tempimages");
         } else {
             $oks[] = '<li class="install-ok">' .
                 _T("Default fields configuration was successfully stored.") .
+                '</li>';
+        }
+
+        $res = $titles->installInit($zdb);
+        if ( $res !== true ) {
+            $errs[] = '<li class="install-bad">' .
+                _T("Titles cannot be initialized.") .
+                '<span>' . $res->getMessage() . '</span></li>';
+        } else {
+            $oks[] = '<li class="install-ok">' .
+                _T("Titles were successfully stored.") .
                 '</li>';
         }
     } else if ($step=='u9') {
