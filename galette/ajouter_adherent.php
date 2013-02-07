@@ -45,6 +45,7 @@ use Galette\Entity\DynamicFields as DynamicFields;
 use Galette\Repository\Members as Members;
 use Galette\Repository\Titles as Titles;
 use Galette\Repository\Groups as Groups;
+use Galette\Filters\MembersList as MembersList;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
