@@ -1218,7 +1218,10 @@ define("STOCK_FILES", "tempimages");
         $ct = new Galette\Entity\ContributionsTypes();
         $status = new Galette\Entity\Status();
         include_once '../includes/members_fields.php';
-        $fc = new Galette\Entity\FieldsConfig(Galette\Entity\Adherent::TABLE, $members_fields);
+        $fc = new Galette\Entity\FieldsConfig(
+            Galette\Entity\Adherent::TABLE,
+            $members_fields
+        );
         $titles = new Galette\Repository\Titles();
 
         //init default values
@@ -1258,7 +1261,7 @@ define("STOCK_FILES", "tempimages");
         }
 
         //proceed fields configuration reinitialization
-        $res = $fc->init(true);
+        $res = $fc->init(false, true);
         if ( $res !== true ) {
             $errs[] = '<li class="install-bad">' .
                 _T("Default fields configuration cannot be initialized.") .
@@ -1283,7 +1286,10 @@ define("STOCK_FILES", "tempimages");
         $_to_ver = substr($_POST['install_type'], 8);
         if ( (float)$_to_ver <= 0.74 ) {
             include_once '../includes/members_fields.php';
-            $fc = new Galette\Entity\FieldsConfig(Galette\Entity\Adherent::TABLE, $members_fields);
+            $fc = new Galette\Entity\FieldsConfig(
+                Galette\Entity\Adherent::TABLE,
+                $members_fields
+            );
 
             //proceed fields configuration reinitialization
             $res = $fc->init(false, true);
