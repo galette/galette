@@ -190,7 +190,7 @@ $members_fields = array(
         'label'    => _T("ICQ:"),
         'propname' => 'icq',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::HIDDEN,
         'position' => 18,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
@@ -198,7 +198,7 @@ $members_fields = array(
         'label'    => _T("MSN:"),
         'propname' => 'msn',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::HIDDEN,
         'position' => 19,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
@@ -334,7 +334,7 @@ $members_fields = array(
         'label'    => _T("fingerprint:"),
         'propname' => 'fingerprint',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::HIDDEN,
         'position' => 36,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     )
