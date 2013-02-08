@@ -1148,7 +1148,7 @@ a.listing:hover {
     margin:0;
 }
 
-.exemple {
+.exemple, .disabled, .disabled a {
     color: #999999;
 }
 

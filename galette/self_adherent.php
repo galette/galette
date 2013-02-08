@@ -92,6 +92,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 && $preferences->pref_bool_mailadh
             ) {
                 $texts = new Texts(
+                    $texts_fields,
                     $preferences,
                     array(
                         'name_adh'      => custom_html_entity_decode($member->sname),

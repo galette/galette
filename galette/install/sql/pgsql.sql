@@ -93,6 +93,15 @@ CREATE SEQUENCE galette_titles_id_seq
     MINVALUE 1
     CACHE 1;
 
+-- sequence for reminders
+DROP SEQUENCE IF EXISTS galette_reminders_id_seq;
+CREATE SEQUENCE galette_reminders_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
 -- Schema
 -- REMINDER: Create order IS important, dependencies first !!
 DROP TABLE IF EXISTS galette_statuts CASCADE;
@@ -340,9 +349,22 @@ CREATE TABLE galette_groups_members (
   PRIMARY KEY (id_group,id_adh)
 );
 
+-- Table for reminders
+DROP TABLE IF EXISTS galette_reminders;
+CREATE TABLE galette_reminders (
+  reminder_id integer DEFAULT nextval('galette_reminders_id_seq'::text) NOT NULL,
+  reminder_type integer NOT NULL,
+  reminder_dest integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
+  reminder_date timestamp NOT NULL,
+  reminder_success boolean DEFAULT FALSE,
+  reminder_nomail boolan DEFAULT TRUE,
+  reminder_comment text,
+  PRIMARY KEY (reminder_id)
+);
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(0.702);
+INSERT INTO galette_database (version) VALUES(0.703);

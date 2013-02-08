@@ -56,7 +56,10 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 }
 
 $members = null;
-if ( isset($session['filters']['members']) ) {
+if ( isset ($session['filters']['reminders_labels']) ) {
+    $filters =  unserialize($session['filters']['reminders_labels']);
+    unset($session['filters']['reminders_labels']);
+} elseif ( isset($session['filters']['members']) ) {
     $filters =  unserialize($session['filters']['members']);
 } else {
     $filters = new MembersList();

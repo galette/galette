@@ -1397,6 +1397,64 @@ class Members
     }
 
     /**
+     * Loads data to produce a Pie chart based on members state of dues
+     *
+     * @return void
+     */
+    public function getRemindersCount()
+    {
+        global $zdb;
+
+        $reminders = array();
+
+        $soon_date = new \DateTime();
+        $soon_date->modify('+30 day');
+
+        $select = new \Zend_Db_Select($zdb->db);
+        $select->from(
+            array('a' => PREFIX_DB . Adherent::TABLE),
+            array(
+                'cnt' => 'count(a.' . Adherent::PK . ')'
+            )
+        )
+            ->where('date_echeance < ?', $soon_date->format('Y-m-d'))
+            ->where('date_echeance >= ?', new \Zend_Db_Expr('NOW()'));
+
+        $select_wo_mail = clone $select;
+
+        $select->where('email_adh != \'\'');
+        $select_wo_mail->where('email_adh = \'\'');
+
+        $res = $select->query()->fetchColumn();
+        $reminders['impending'] = $res;
+
+        $res_wo_mail = $select_wo_mail->query()->fetchColumn();
+        $reminders['nomail']['impending'] = $res_wo_mail;
+
+        $select = new \Zend_Db_Select($zdb->db);
+        $select->from(
+            array('a' => PREFIX_DB . Adherent::TABLE),
+            array(
+                'cnt'       => 'count(a.' . Adherent::PK . ')'
+            )
+        )->where('date_echeance < ?', new \Zend_Db_Expr('NOW()'));
+
+        $select_wo_mail = clone $select;
+
+        $select->where('email_adh != \'\'');
+        $select_wo_mail->where('email_adh = \'\'');
+
+        $res = $select->query()->fetchColumn();
+        $reminders['late'] = $res;
+
+        $res_wo_mail = $select_wo_mail->query()->fetchColumn();
+        $reminders['nomail']['late'] = $res_wo_mail;
+
+        return $reminders;
+    }
+
+
+    /**
     * Get count for current query
     *
     * @return int

@@ -48,6 +48,7 @@ if ( version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<') ) {
 }
 
 $time_start = microtime(true);
+$cron = (PHP_SAPI === 'cli');
 
 //define galette's root directory
 if ( !defined('GALETTE_ROOT') ) {
@@ -75,7 +76,7 @@ if ( !$installed && !$installer ) {
 }
 
 if ( file_exists(GALETTE_CONFIG_PATH . 'behavior.inc.php')
-    && !defined('GALETTE_TESTS')
+    && !defined('GALETTE_TESTS') && !$cron
 ) {
     include_once GALETTE_CONFIG_PATH . 'behavior.inc.php';
 }
@@ -149,8 +150,8 @@ set_include_path(
 /*------------------------------------------------------------------------------
 Logger stuff
 ------------------------------------------------------------------------------*/
-if ( !defined('GALETTE_HANDLE_ERRORS')
-    || GALETTE_HANDLE_ERRORS === true
+if ( !$cron && (!defined('GALETTE_HANDLE_ERRORS')
+    || GALETTE_HANDLE_ERRORS === true)
 ) {
     //set custom error handler
     set_error_handler(
@@ -165,7 +166,7 @@ $now = new \DateTime();
 $galette_run_log = null;
 $galette_null_log = \Analog\Handler\Null::init();
 $galette_debug_log = $galette_null_log;
-if ( !$installer ) {
+if ( !$installer && !$cron ) {
     $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
         $now->format('Y-m-d')  . '.log';
     $galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
@@ -173,7 +174,7 @@ if ( !$installer ) {
 $galette_run_log = null;
 $galette_log_var = null;
 
-if ( GALETTE_MODE === 'DEV'
+if ( GALETTE_MODE === 'DEV' || $cron
     || ( defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true )
 ) {
     //logs everything in PHP logs (per chance /var/log/http/error_log)
@@ -235,7 +236,7 @@ $session = &$_SESSION['galette'][$session_name];
 
 /**
 * Language instantiation
-*/
+ */
 if ( isset($session['lang']) ) {
     $i18n = unserialize($session['lang']);
 } else {
@@ -311,6 +312,10 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
             $login = new Core\Login();
         }
 
+        if ( $cron ) {
+            $login->logCron(basename($argv[0], '.php'));
+        }
+
         /**
          * Plugins
          */
@@ -347,9 +352,10 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
         * Now that all objects are correctly setted,
         * we can include files that need it
         */
-        require_once GALETTE_ROOT . 'includes/session.inc.php';
-        require_once GALETTE_ROOT . 'includes/smarty.inc.php';
-        require_once GALETTE_ROOT . 'includes/members_fields.php';
+        include_once GALETTE_ROOT . 'includes/session.inc.php';
+        include_once GALETTE_ROOT . 'includes/smarty.inc.php';
+        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
+        include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
     } else {
         header('location: needs_update.php');
         die();

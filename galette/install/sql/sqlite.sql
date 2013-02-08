@@ -248,11 +248,24 @@ CREATE TABLE galette_groups_members (
   FOREIGN KEY (id_group) REFERENCES galette_groups (id_group)
 );
 
+-- Table for reminders;
+DROP TABLE IF EXISTS reminders;
+CREATE TABLE reminders (
+  reminder_id INTEGER NOT NULL PRIMARY KEY,
+  reminder_type INTEGER NOT NULL,
+  reminder_dest INTEGER,
+  reminder_date TEXT NOT NULL,
+  reminder_success INTEGER NOT NULL default 0,
+  reminder_nomail INTEGER NOT NULL default 1,
+  reminder_comment TEXT,
+  FOREIGN KEY (reminder_dest) REFERENCES galette_adherents (id_adh)
+);
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version REAL NOT NULL
 );
-INSERT INTO galette_database(version) VALUES(0.702);
+INSERT INTO galette_database(version) VALUES(0.703);
 
 PRAGMA foreign_keys = ON;

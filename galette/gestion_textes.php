@@ -54,7 +54,7 @@ if ( !$login->isLogged() ) {
 $cur_lang = $preferences->pref_lang;
 $cur_ref = Texts::DEFAULT_REF;
 
-$texts = new Texts($preferences);
+$texts = new Texts($texts_fields, $preferences);
 
 //set the language
 if ( isset($_POST['sel_lang']) ) {

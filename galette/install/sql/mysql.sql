@@ -261,11 +261,25 @@ CREATE TABLE galette_groups_members (
   FOREIGN KEY (id_group) REFERENCES galette_groups (id_group)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+-- Table for reminders
+DROP TABLE IF EXISTS galette_reminders;
+CREATE TABLE galette_reminders (
+  reminder_id smallint(6) NOT NULL auto_increment,
+  reminder_type int(10) NOT NULL,
+  reminder_dest int(10) unsigned,
+  reminder_date datetime NOT NULL,
+  reminder_success tinyint(1) NOT NULL DEFAULT 0,
+  reminder_nomail tinyint(1) NOT NULL DEFAULT 1,
+  reminder_comment text,
+  PRIMARY KEY (mailing_id),
+  FOREIGN KEY (reminders_dest) REFERENCES galette_adherents (id_adh)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-INSERT INTO galette_database(version) VALUES(0.702);
+INSERT INTO galette_database(version) VALUES(0.703);
 
 SET FOREIGN_KEY_CHECKS=1;

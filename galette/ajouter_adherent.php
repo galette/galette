@@ -125,6 +125,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     && $preferences->pref_bool_mailadh
                 ) {
                     $texts = new Texts(
+                        $texts_fields,
                         $preferences,
                         array(
                             'name_adh'  => custom_html_entity_decode($member->sname),
@@ -176,6 +177,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                         //send mail to member
                         // Get email text in database
                         $texts = new Texts(
+                            $texts_fields,
                             $preferences,
                             array(
                                 'name_adh'      => custom_html_entity_decode($member->sname),

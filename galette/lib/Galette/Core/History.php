@@ -107,10 +107,17 @@ class History extends Pagination
     {
         global $zdb, $login;
 
+        $ip = null;
+        if ( PHP_SAPI === 'cli' ) {
+            $ip = '127.0.0.1';
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+
         try {
             $values = array(
                 'date_log'   => date('Y-m-d H:i:s'),
-                'ip_log'     => $_SERVER["REMOTE_ADDR"],
+                'ip_log'     => $ip,
                 'adh_log'    => $login->login,
                 'action_log' => $action,
                 'text_log'   => $argument,

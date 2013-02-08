@@ -163,7 +163,6 @@ if ( isset($_GET['current_filter']) ) {
     $visibles = $fc->getVisibilities();
     $fields = array();
     $headers = array();
-    include_once 'galette/includes/members_fields.php';
     foreach ( $members_fields as $k=>$f ) {
         if ( $k !== 'mdp_adh'
             && $export_fields === null

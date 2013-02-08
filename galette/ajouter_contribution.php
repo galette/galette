@@ -176,6 +176,7 @@ if ( isset($_POST['valid']) ) {
 
         if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED ) {
             $texts = new Texts(
+                $texts_fields,
                 $preferences,
                 array(
                     'name_adh'      => custom_html_entity_decode($adh->sname),

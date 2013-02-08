@@ -84,6 +84,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
                     $proto = 'https';
                 }
                 $texts = new Texts(
+                    $texts_fields,
                     $preferences,
                     array(
                         'change_pass_uri'   => $proto . '://' . $_SERVER['SERVER_NAME'] .
