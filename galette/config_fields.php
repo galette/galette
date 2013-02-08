@@ -84,12 +84,20 @@ if ( isset($_POST) && count($_POST) > 0 ) {
             //set new current category
             $current_cat = $_POST[$field . '_category'];
         }
+
+        $required = null;
+        if ( isset($_POST[$field . '_required']) ) {
+            $required = $_POST[$field . '_required'];
+        } else {
+            $required = false;
+        }
+
         $res[$current_cat][] = array(
             'field_id'  =>  $field,
             'label'     =>  $_POST[$field . '_label'],
             'category'  =>  $_POST[$field . '_category'],
             'visible'   =>  $_POST[$field . '_visible'],
-            'required'  =>  $_POST[$field . '_required']
+            'required'  =>  $required
         );
         $pos++;
     }
