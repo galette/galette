@@ -152,13 +152,14 @@
 {/if}
                 </tr>
             </thead>
+{if $nb_contributions != 0}
             <tfoot>
                 <tr>
                     <td class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}10{elseif $login->isAdmin() or $login->isStaff()}9{else}8{/if}">
                         {_T string="Found contributions total %f" pattern="/%f/" replace=$contributions->sum}
                     </td>
                 </tr>
-{if ($login->isAdmin() or $login->isStaff()) && $mode neq 'ajax'}
+    {if ($login->isAdmin() or $login->isStaff()) && $mode neq 'ajax'}
                 <tr>
                     <td colspan="8" id="table_footer">
                         <ul class="selection_menu">
@@ -167,7 +168,7 @@
                         </ul>
                     </td>
                 </tr>
-{/if}
+    {/if}
                 <tr>
                     <td colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}10{elseif $login->isAdmin() or $login->isStaff()}9{else}8{/if}" class="center" id="table_footer">
                         {_T string="Pages:"}<br/>
@@ -175,6 +176,7 @@
                     </td>
                 </tr>
             </tfoot>
+{/if}
             <tbody>
 {foreach from=$list_contribs item=contribution key=ordre}
     {assign var="mid" value=$contribution->member}
