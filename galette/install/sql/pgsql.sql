@@ -269,14 +269,6 @@ CREATE TABLE galette_tmppasswds (
   PRIMARY KEY (id_adh)
 );
 
--- Table for dynamic required fields 2007-07-10;
-DROP TABLE IF EXISTS galette_required;
-CREATE TABLE galette_required (
-	field_id character varying(20) NOT NULL,
-	required boolean DEFAULT false NOT NULL,
-	PRIMARY KEY (field_id)
-);
-
 -- Table for automatic mails and their translations 2007-10-22;
 DROP TABLE IF EXISTS galette_texts;
 CREATE TABLE galette_texts (
@@ -302,7 +294,7 @@ DROP TABLE IF EXISTS galette_fields_config;
 CREATE TABLE galette_fields_config (
   table_name character varying(30) NOT NULL,
   field_id character varying(30) NOT NULL,
-  required boolean NOT NULL, -- should replace later galette_required(required)
+  required boolean NOT NULL,
   visible integer NOT NULL,
   position integer NOT NULL,
   id_field_category integer REFERENCES galette_fields_categories ON DELETE RESTRICT ON UPDATE CASCADE,

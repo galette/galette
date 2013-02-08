@@ -171,14 +171,6 @@ CREATE TABLE galette_tmppasswds (
     FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)
 );
 
--- Table for dynamic required fields 2007-07-10;
-DROP TABLE IF EXISTS galette_required;
-CREATE TABLE galette_required (
-	field_id TEXT NOT NULL,
-	required INTEGER NOT NULL,
-	PRIMARY KEY  (field_id)
-);
-
 -- Add new table for automatic mails and their translations;
 DROP TABLE IF EXISTS galette_texts;
 CREATE TABLE galette_texts (
