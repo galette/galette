@@ -113,17 +113,17 @@ if ( $error_detected == ''
     if ($error_detected == '') {
         if ( isset($_POST['install_dbconn_ok']) ) {
 
-            define('TYPE_DB', $_POST['install_dbtype']);
+            $dsn['TYPE_DB'] = $_POST['install_dbtype'];
 
-            if (TYPE_DB != 'sqlite') {
-                define('USER_DB', $_POST['install_dbuser']);
-                define('PWD_DB', $_POST['install_dbpass']);
-                define('HOST_DB', $_POST['install_dbhost']);
-                define('PORT_DB', $_POST['install_dbport']);
-                define('NAME_DB', $_POST['install_dbname']);
+            if ($dsn['TYPE_DB'] != 'sqlite') {
+                $dsn['USER_DB'] = $_POST['install_dbuser'];
+                $dsn['PWD_DB'] = $_POST['install_dbpass'];
+                $dsn['HOST_DB'] = $_POST['install_dbhost'];
+                $dsn['PORT_DB'] = $_POST['install_dbport'];
+                $dsn['NAME_DB'] = $_POST['install_dbname'];
             }
 
-            $zdb = new Galette\Core\Db();
+            $zdb = new Galette\Core\Db($dsn);
 
             if ( $_POST['install_type'] == 'install' ) {
                 $step = 'i6';
