@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2013-02-09 12:42+0100\n"
+"PO-Revision-Date: 2013-02-09 12:51+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -333,7 +333,7 @@ msgstr "texte"
 
 #: ../gestion_titres.php:73
 msgid "Title '%s' has not been added!"
-msgstr "Le titre « %s » n'as pas été ajouté&nbsp;!"
+msgstr "Le titre « %s » n'a pas été ajouté&nbsp;!"
 
 #: ../mailing_adherents.php:197
 msgid "Mailing has been successfully saved."
@@ -2702,7 +2702,7 @@ msgstr "Ancien membre"
 
 #: ../edit_title.php:75
 msgid "Title '%s' has not been modified!"
-msgstr "Le titre « %s » n'as pas été modifié&nbsp;!"
+msgstr "Le titre « %s » n'a pas été modifié&nbsp;!"
 
 #: ../templates/default/charts.tpl:28
 msgid "Members by state of dues"
@@ -4106,7 +4106,7 @@ msgstr "Impossible de détacher la contribution de la transaction"
 
 #: ../gestion_textes.php:83
 msgid "Email: '%s' has not been modified!"
-msgstr "Le courriel « %s » n'as pas été modifié&nbsp;!"
+msgstr "Le courriel « %s » n'a pas été modifié&nbsp;!"
 
 #: ../templates/default/gestion_textes.tpl:51
 msgid "Member's email address"
@@ -4199,7 +4199,7 @@ msgstr "Aucun adhérent attaché "
 
 #: ../templates/default/gestion_mailings.tpl:81
 msgid "Mailing has not been sent yet"
-msgstr "L'E-Mailing n'as pas encore été envoyé"
+msgstr "L'E-Mailing n'a pas encore été envoyé"
 
 #: ../lib/Galette/Entity/DynamicFields.php:105
 msgid "single line"

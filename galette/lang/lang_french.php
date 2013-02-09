@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sat Feb  9 11:43:13 2013 (GMT)
+// This file was automatically generated on Sat Feb  9 11:52:03 2013 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -403,7 +403,7 @@ $lang['Select installation mode to launch'] = 'Sélectionnez le type d\'installa
 $lang['Active accounts'] = 'Comptes actifs';
 
 // ../gestion_titres.php:73 
-$lang['Title \'%s\' has not been added!'] = 'Le titre « %s » n\'as pas été ajouté&nbsp;!';
+$lang['Title \'%s\' has not been added!'] = 'Le titre « %s » n\'a pas été ajouté&nbsp;!';
 
 // ../templates/default/edit_title.tpl:5 
 $lang['Short form:'] = 'Forme courte&nbsp;:';
@@ -559,7 +559,7 @@ $lang['Required'] = 'Obligatoire';
 $lang['Short Text (Card Center):'] = 'Abréviation (centre de la carte)&nbsp;:';
 
 // ../templates/default/gestion_mailings.tpl:81 
-$lang['Mailing has not been sent yet'] = 'L\'E-Mailing n\'as pas encore été envoyé';
+$lang['Mailing has not been sent yet'] = 'L\'E-Mailing n\'a pas encore été envoyé';
 
 // ../templates/default/lostpasswd.tpl:7 
 $lang['Recover password'] = 'Récupérer le mot de passe';
@@ -2035,7 +2035,7 @@ $lang['You are not part of managers for the requested group.'] = 'Vous ne faites
 $lang['Label width:'] = 'Largeur étiquette&nbsp;:';
 
 // ../gestion_textes.php:83 
-$lang['Email: \'%s\' has not been modified!'] = 'Le courriel « %s » n\'as pas été modifié&nbsp;!';
+$lang['Email: \'%s\' has not been modified!'] = 'Le courriel « %s » n\'a pas été modifié&nbsp;!';
 
 // ../install/index.php:228 ../install/index.php:1462 
 $lang['Admin parameters'] = 'paramètres administrateur';
@@ -2434,7 +2434,7 @@ $lang['\'openssl\' support'] = 'support « openssl »';
 $lang['Activities'] = 'Activités';
 
 // ../edit_title.php:75 
-$lang['Title \'%s\' has not been modified!'] = 'Le titre « %s » n\'as pas été modifié&nbsp;!';
+$lang['Title \'%s\' has not been modified!'] = 'Le titre « %s » n\'a pas été modifié&nbsp;!';
 
 // ../templates/default/history.tpl:35 
 $lang['IP'] = 'IP';
