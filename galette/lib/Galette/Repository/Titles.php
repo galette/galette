@@ -118,9 +118,11 @@ class Titles
             );
 
             foreach ( self::$_defaults as $d ) {
+                $short = _T($d['short_label']);
+                $long = _T($d['long_label']);
                 $stmt->bindParam(':id', $d['id_title']);
-                $stmt->bindParam(':short', $d['short_label']);
-                $stmt->bindParam(':long', $d['long_label']);
+                $stmt->bindParam(':short', $short);
+                $stmt->bindParam(':long', $long);
                 $stmt->execute();
             }
 
