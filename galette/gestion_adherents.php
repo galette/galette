@@ -215,7 +215,7 @@ if ( isset($_GET['clear_filter']) ) {
         $filters->email_filter = (int)$_GET['email_filter'];
     }
     //group filter
-    if ( isset($_GET['group_filter']) ) {
+    if ( isset($_GET['group_filter']) && $_GET['group_filter'] > 0 ) {
         $filters->group_filter = (int)$_GET['group_filter'];
     }
 }
