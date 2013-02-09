@@ -309,15 +309,6 @@ class DynamicFields
             if ( $result ) {
                 $extra = $edit ? 1 : 0;
 
-                //Disable field depending on ACLs
-                if ( !$login->isAdmin()
-                    && !$login->isStaff()
-                    && ($result->field_perm == self::PERM_ADM
-                    || $result->field_perm == self::PERM_STAFF)
-                ) {
-                    $disabled[$field_id] = 'disabled';
-                }
-
                 foreach ( $result as $r ) {
                     $df = $this->getFieldType($r['field_type']);
                     if ( (int)$r['field_type'] === self::CHOICE
@@ -350,6 +341,16 @@ class DynamicFields
                             $r['choices'] = $this->getFixedValues($field_id);
                         }
                     }
+
+                    //Disable field depending on ACLs
+                    if ( !$login->isAdmin()
+                        && !$login->isStaff()
+                        && ($r['field_perm'] == self::PERM_ADM
+                        || $r['field_perm'] == self::PERM_STAFF)
+                    ) {
+                        $disabled[$field_id] = 'disabled';
+                    }
+
                     $dfields[] = $r;
                 }
                 return $dfields;
