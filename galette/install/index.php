@@ -963,8 +963,21 @@ case 'u7':
         $query = trim($sql_query[$i]);
         if ( $query != '' && $query[0] != '-' ) {
             //some output infos
-            @list($w1, $w2, $w3, $extra) = explode(' ', $query, 4);
-            if ($extra != '') {
+            $ws = explode(' ', $query, 4);
+            $w1 = $ws[0];
+            $w2 = '';
+            $w3 = '';
+            $extra = '';
+            if ( isset($ws[1]) ) {
+                $w2 = $ws[1];
+            }
+            if ( isset($ws[2]) ) {
+                $w3 = $ws[2];
+            }
+            if ( isset($ws[3]) ) {
+                $extra = $ws[3];
+            }
+            if ( $extra != '') {
                 $extra = '...';
             }
             try {
@@ -1220,7 +1233,8 @@ define("STOCK_FILES", "tempimages");
         include_once '../includes/members_fields.php';
         $fc = new Galette\Entity\FieldsConfig(
             Galette\Entity\Adherent::TABLE,
-            $members_fields
+            $members_fields,
+            true
         );
         $titles = new Galette\Repository\Titles();
 
@@ -1288,7 +1302,8 @@ define("STOCK_FILES", "tempimages");
             include_once '../includes/members_fields.php';
             $fc = new Galette\Entity\FieldsConfig(
                 Galette\Entity\Adherent::TABLE,
-                $members_fields
+                $members_fields,
+                true
             );
 
             //proceed fields configuration reinitialization

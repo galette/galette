@@ -102,10 +102,11 @@ class FieldsConfig
     /**
      * Default constructor
      *
-     * @param string $table    the table for which to get fields configuration
-     * @param array  $defaults default values
+     * @param string  $table    the table for which to get fields configuration
+     * @param array   $defaults default values
+     * @param boolean $install  Are we calling from installer?
      */
-    function __construct($table, $defaults)
+    function __construct($table, $defaults, $install = false)
     {
         $this->_table = $table;
         $this->_defaults = $defaults;
@@ -114,7 +115,10 @@ class FieldsConfig
         $this->_all_labels = array();
         $this->_all_categories = array();
         $this->_all_positions = array();
-        $this->_checkUpdate();
+        //prevent check at install time...
+        if ( !$install ) {
+            $this->_checkUpdate(false);
+        }
     }
 
     /**
