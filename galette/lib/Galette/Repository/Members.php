@@ -327,11 +327,7 @@ class Members
                 );
 
                 //delete groups membership/mamagmentship
-                $del = Groups::addMemberToGroups(
-                    new Adherent($member->id_adh),
-                    null,
-                    true
-                );
+                $del = Groups::removeMemberFromGroups((int)$member->id_adh);
 
                 //delete members
                 $del = $zdb->db->delete(

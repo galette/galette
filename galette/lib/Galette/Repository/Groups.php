@@ -300,6 +300,38 @@ class Groups
     }
 
     /**
+     * Remove member from all his groups
+     *
+     * @param int $id Member's id
+     *
+     * @return void
+     */
+    public static function removeMemberFromGroups($id)
+    {
+        global $zdb;
+        try {
+            //first, remove current groups members
+            $del = $zdb->db->delete(
+                PREFIX_DB . Group::GROUPSUSERS_TABLE,
+                Adherent::PK . ' = ' . $id
+            );
+
+            //first, remove current groups members
+            $del = $zdb->db->delete(
+                PREFIX_DB . Group::GROUPSMANAGERS_TABLE,
+                Adherent::PK . ' = ' . $id
+            );
+        } catch ( \Exception $e) {
+            Analog::log(
+                'Unable to remove member #' . $id . ' from his groups: ' .
+                $e->getMessage(),
+                Analog::ERROR
+            );
+            throw $e;
+        }
+    }
+
+    /**
      * Check if groupname is unique
      *
      * @param string $name Requested name
