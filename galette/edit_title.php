@@ -63,8 +63,8 @@ if (isset($_POST['id']) && !isset($_GET['id']) ) {
 $title = new Title((int)$_GET['id']);
 
 if ( isset($_POST['id']) ) {
-    $title->short = $_POST['long_label'];
-    $title->long = $_POST['short_label'];
+    $title->short = $_POST['short_label'];
+    $title->long = $_POST['long_label'];
 
     $res = $title->store($zdb);
 
