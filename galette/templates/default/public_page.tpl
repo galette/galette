@@ -4,7 +4,7 @@
         {include file='common_header.tpl'}
 {if $require_calendar}
         <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
-    {if $lang ne 'en'}
+    {if $galette_lang ne 'en'}
         <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.js"></script>
     {/if}
 {/if}

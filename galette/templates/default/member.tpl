@@ -1,4 +1,4 @@
-{if $navigate|@count != 0}
+{if isset($navigate) and $navigate|@count != 0}
     <nav>
         <a id="prev" href="{if isset($navigate.prev)}?id_adh={$navigate.prev}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">{_T string="Previous"}</a>
         {$navigate.pos}/{$navigate.count}
@@ -361,7 +361,7 @@
     {else}
                     <input type="hidden" name="info_public_adh" value="{$member->others_infos|htmlspecialchars}"/>
     {/if}
-    {if $groups|@count != 0}
+    {if isset($groups) and $groups|@count != 0}
                     <p>
                         <span class="bline">{_T string="Groups:"}</span>
         {if $login->isGroupManager()}
