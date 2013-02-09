@@ -218,7 +218,6 @@ if ( $installer || !defined('PREFIX_DB') || !defined('NAME_DB') ) {
 }
 $session = &$_SESSION['galette'][$session_name];
 
-
 /**
 * Language instantiation
 */
@@ -244,6 +243,21 @@ require_once GALETTE_ROOT . 'includes/i18n.inc.php';
 $error_detected = array();
 $warning_detected = array();
 $success_detected = array();
+/**
+ * "Flash" messages management
+ */
+if ( isset($session['error_detected']) ) {
+    $error_detected = unserialize($session['error_detected']);
+    unset($session['error_detected']);
+}
+if ( isset($session['warning_detected']) ) {
+    $warning_detected = unserialize($session['warning_detected']);
+    unset($session['warning_detected']);
+}
+if ( isset($session['success_detected']) ) {
+    $success_detected = unserialize($session['success_detected']);
+    unset($session['success_detected']);
+}
 
 if ( !$installer and !defined('GALETTE_TESTS') ) {
     //If we're not working from installer nor from tests

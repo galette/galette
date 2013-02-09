@@ -80,6 +80,8 @@ if ( isset($_POST['id']) ) {
             $title->short,
             _T("Title '%s' has been successfully modified.")
         );
+        $session['success_detected'] = serialize($success_detected);
+        header('location: gestion_titres.php');
     }
 }
 
