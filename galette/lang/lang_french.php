@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sat Feb  9 11:52:03 2013 (GMT)
+// This file was automatically generated on Sat Feb  9 15:08:38 2013 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -1117,7 +1117,7 @@ $lang['Modification date:'] = 'Date de modification&nbsp;:';
 $lang['Save'] = 'Enregistrer';
 
 // ../templates/default/edit_title.tpl:9 
-$lang['Long form:'] = 'Forme longe&nbsp;:';
+$lang['Long form:'] = 'Forme longue&nbsp;:';
 
 // ../champs_adherents.php:71 ../includes/members_fields.php:326 ../templates/default/member.tpl:228 ../templates/default/voir_adherent.tpl:182 
 $lang['Id GNUpg (GPG):'] = 'Id GNUpg (GPG)&nbsp;:';

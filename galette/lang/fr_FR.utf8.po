@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2013-02-09 12:51+0100\n"
+"PO-Revision-Date: 2013-02-09 16:08+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -1535,7 +1535,7 @@ msgstr "Aucun des destinataires sélectionnés n'a d'adresse de courriel."
 
 #: ../templates/default/edit_title.tpl:9
 msgid "Long form:"
-msgstr "Forme longe&nbsp;:"
+msgstr "Forme longue&nbsp;:"
 
 #: ../install/index.php:481
 msgid "file_name"
