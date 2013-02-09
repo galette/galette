@@ -156,7 +156,7 @@ class Adherent
     */
     public function __construct($args = null, $deps = null)
     {
-        global $members_fields;
+        global $i18n, $members_fields;
 
         if ( $deps !== null && is_array($deps) ) {
             $this->_deps = array_merge(
