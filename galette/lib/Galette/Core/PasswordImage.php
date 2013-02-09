@@ -96,7 +96,7 @@ class PasswordImage extends Password
      */
     public function getImageName()
     {
-        return 'pw_' . $this->getHash() . '.png';
+        return 'pw_' . md5($this->getHash()) . '.png';
     }
 
     /**
