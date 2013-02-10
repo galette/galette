@@ -186,18 +186,16 @@ $required_fields = array(
     'prenom_adh'
 );
 $members = $m->getList(false, $required_fields);
-if ( count($members) == 0 ) {
-    $adh_options = array('' => _T("You must first register a member"));
-} else {
+if ( count($members) > 0 ) {
     foreach ( $members as $member ) {
         $pk = Adherent::PK;
         $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
             ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8'));
         $adh_options[$member->$pk] = $sname;
     }
+    $tpl->assign('adh_options', $adh_options);
 }
 
-$tpl->assign('adh_options', $adh_options);
 
 // - declare dynamic fields for display
 $dynamic_fields = $dyn_fields->prepareForDisplay(

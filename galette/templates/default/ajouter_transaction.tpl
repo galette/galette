@@ -1,3 +1,4 @@
+{if isset($adh_options)}
         <form action="ajouter_transaction.php" method="post">
         <div class="bigtable">
             <fieldset class="cssform">
@@ -205,4 +206,14 @@
                     buttonImageOnly: true
                 });
             });
-        </script> 
+        </script>
+{else} {* No members *}
+    <div class="center" id="warningbox">
+        <h3>{_T string="No member registered!"}</h3>
+        <p>
+            {_T string="Unfortunately, there is no member in your database yet,"}
+            <br/>
+            <a href="ajouter_adherent.php">{_T string="please create a member"}</a>
+        </p>
+    </div>
+{/if}
