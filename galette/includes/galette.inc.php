@@ -158,9 +158,14 @@ if ( !defined('GALETTE_HANDLE_ERRORS')
 $now = new \DateTime();
 $galette_run_log = null;
 $galette_null_log = \Analog\Handler\Null::init();
-$dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
-    $now->format('Y-m-d')  . '.log';
-$galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
+$galette_debug_log = $galette_null_log;
+if ( !$installer ) {
+    $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
+        $now->format('Y-m-d')  . '.log';
+    $galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
+}
+$galette_run_log = null;
+$galette_log_var = null;
 
 if ( GALETTE_MODE === 'DEV'
     || ( defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true )
@@ -168,14 +173,18 @@ if ( GALETTE_MODE === 'DEV'
     //logs everything in PHP logs (per chance /var/log/http/error_log)
     $galette_run_log = \Analog\Handler\Stderr::init();
 } else {
-    //logs everything in galette log file
-    if ( !isset($logfile) ) {
-        //if no filename has been setetd (ie. from install), set default one
-        $logfile = 'galette_run';
+    if ( !$installer || ($installer && defined('GALETTE_LOGGER_CHECKED')) ) {
+        //logs everything in galette log file
+        if ( !isset($logfile) ) {
+            //if no filename has been setetd (ie. from install), set default one
+            $logfile = 'galette_run';
+        }
+        $log_path = GALETTE_LOGS_PATH . $logfile . '_' .
+            $now->format('Y-m-d')  . '.log';
+        $galette_run_log = \Analog\Handler\File::init($log_path);
+    } else {
+        $galette_run_log = \Analog\Handler\Variable::init($galette_log_var);
     }
-    $log_path = GALETTE_LOGS_PATH . $logfile . '_' .
-        $now->format('Y-m-d')  . '.log';
-    $galette_run_log = \Analog\Handler\File::init($log_path);
 }
 
 //Log level cannot be <= 3, would be ignored.

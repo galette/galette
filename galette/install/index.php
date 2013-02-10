@@ -73,6 +73,7 @@ if ( $error_detected == '' && isset($_POST['install_type']) ) {
 }
 
 if ( $error_detected == '' && isset($_POST['install_permsok']) ) {
+    define('GALETTE_LOGGER_CHECKED', true);
     if ( $_POST['install_type'] == 'install' ) {
         $step = 'i4';
     } elseif ( substr($_POST['install_type'], 0, 7) == 'upgrade' ) {
