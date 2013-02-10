@@ -979,7 +979,7 @@ class Adherent
                     && !isset($this->_id)
                 ) {
                     $p = new Password();
-                    $this->$key = $p->makeRandomPassword(15);
+                    $this->$prop = $p->makeRandomPassword(15);
                 }
             }
         }
