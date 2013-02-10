@@ -15,7 +15,9 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {include file=$header}
     {/foreach}
 {/if}
-        {if $head_redirect}{$head_redirect}{/if}
+{if $head_redirect}
+    <meta http-equiv="refresh" content="{$head_redirect.timeout};url={$head_redirect.url}" />
+{/if}
     </head>
     <body>
         {* IE7 and above are no longer supported *}
