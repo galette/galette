@@ -187,6 +187,9 @@ if ( isset($_POST["nom_adh"]) ) {
                 'url'       => 'index.php'
             );
             $has_register = true;
+
+            // dynamic fields
+            $dyn_fields->setAllFields('adh', $member->id, $adherent['dyn']);
         } else {
             //something went wrong :'(
             $error_detected[] = _T("An error occured while storing the member.");
