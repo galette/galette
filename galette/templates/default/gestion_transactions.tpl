@@ -70,6 +70,7 @@
 {/if}
                 </tr>
             </thead>
+{if $nb_transactions != 0}
             <tfoot>
                 <tr>
                     <td colspan="{if $login->isAdmin() or $login->isStaff()}6{else}4{/if}" class="center" id="table_footer">
@@ -78,6 +79,7 @@
                     </td>
                 </tr>
             </tfoot>
+{/if}
             <tbody>
 {foreach from=$list_trans item=transaction name=transactions_list}
     {assign var="mid" value=$transaction->member}
