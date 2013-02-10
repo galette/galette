@@ -96,7 +96,8 @@ class FieldsConfig
         'societe_adh',
         'id_statut',
         'titre_adh',
-        'pref_lang'
+        'pref_lang',
+        'sexe_adh'
     );
 
     /**
