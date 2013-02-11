@@ -103,6 +103,16 @@ class Contributions extends Pagination
     }
 
     /**
+     * Return the default direction for ordering
+     *
+     * @return string ASC or DESC
+     */
+    protected function getDefaultDirection()
+    {
+        return self::ORDER_DESC;
+    }
+
+    /**
     * Returns the field we want to default set order to (public method)
     *
     * @return string field name
