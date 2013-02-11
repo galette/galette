@@ -77,7 +77,7 @@ $forms = array(
 */
 function delEntry ($id, $class)
 {
-    global $error_detected;
+    global $error_detected, $success_detected;
 
     if ( !is_numeric($id) ) {
         $error_detected[] = _T("- ID must be an integer!");
@@ -99,14 +99,23 @@ function delEntry ($id, $class)
     }
 
     /* Delete. */
-    $ret = $class->delete($id);
+    try {
+        $ret = $class->delete((int)$id);
 
-    if ( $ret !== true ) {
-        $error_detected[] = _T("- Label does not exist");
-        return;
+        if ( $ret !== true ) {
+            $error_detected[] = _T("- Label does not exist");
+            return;
+        }
+
+        deleteDynamicTranslation($label, $error_detected);
+        $success_detected[] = str_replace(
+            '%label',
+            $label,
+            _T("Status %label was successfully removed")
+        );
+    } catch (RuntimeException $re) {
+        $error_detected[] = $re->getMessage();
     }
-
-    deleteDynamicTranslation($label, $error_detected);
     return;
 }
 
@@ -344,7 +353,6 @@ function listEntries ($class)
 }
 
 // MAIN CODE.
-global $tpl;
 $className = null;
 $class = null;
 
@@ -383,6 +391,7 @@ if ( isset($_GET['id']) ) {
 $tpl->assign('require_tabs', true);
 $tpl->assign('fields', $fields);
 $tpl->assign('error_detected', $error_detected);
+$tpl->assign('success_detected', $success_detected);
 if ( $className == 'Status' ) {
     $tpl->assign('non_staff_priority', Galette\Repository\Members::NON_STAFF_MEMBERS);
 }
@@ -393,7 +402,6 @@ if ( isset($_GET['ajax']) && $_GET['ajax'] == 'true' ) {
         $content = $tpl->fetch('editer_intitule.tpl');
     } else {
         $tpl->assign('all_forms', $forms);
-        $tpl->assign('error_detected', $error_detected);
         $content = $tpl->fetch('gestion_intitules.tpl');
     }
     $tpl->assign('content', $content);
