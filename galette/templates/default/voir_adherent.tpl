@@ -37,7 +37,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 
         </ul>
     <div class="bigtable wrmenu">
-
+        <div id="member_stateofdue" class="{$member->getRowClass()}">{$member->getDues()}</div>
         <table class="details">
             <caption class="ui-state-active ui-corner-top">{_T string="Identity:"}</caption>
             <tr>

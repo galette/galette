@@ -1947,6 +1947,14 @@ td.photo img{
     margin: 0;
 }
 
+#member_stateofdue {
+    margin: 0 auto .5em;
+    width: 85%;
+    padding: .1em 0;
+    border-radius: 6px;
+    text-align: center;
+}
+
 .warnings {
     background-image: url(images/icon-warning.png);
     background-repeat: no-repeat;

@@ -18,9 +18,7 @@
             <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
         </div>
 {if $member}
-        <div align="center">
-            <p class="{$member->getRowClass()}">{$member->getDues()}</p>
-        </div>
+        <div id="member_stateofdue" class="{$member->getRowClass()}">{$member->getDues()}</div>
 {/if}
         <table class="infoline">
             <tr>
