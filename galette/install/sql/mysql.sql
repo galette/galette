@@ -30,7 +30,7 @@ CREATE TABLE galette_adherents (
   info_public_adh text,
   prof_adh varchar(150) default NULL,
   login_adh varchar(20) NOT NULL default '',
-  mdp_adh varchar(40) NOT NULL default '',
+  mdp_adh varchar(60) NOT NULL default '',
   date_crea_adh date NOT NULL default '1901-01-01',
   date_modif_adh date NOT NULL default '1901-01-01',
   activite_adh tinyint(1) NOT NULL default 0,
