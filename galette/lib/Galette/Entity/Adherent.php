@@ -317,7 +317,7 @@ class Adherent
         $this->_self_adh = false;
         $this->_id = $r->id_adh;
         //Identity
-        $this->_title = new Title($r->titre_adh);
+        $this->_title = new Title((int)$r->titre_adh);
         $this->_company_name = $r->societe_adh;
         $this->_name = $r->nom_adh;
         $this->_surname = $r->prenom_adh;
