@@ -2,7 +2,7 @@
         <table class="infoline">
             <tr>
                 <td class="left nowrap">
-{if $member}
+{if isset($member)}
     {if $login->isAdmin() or $login->isStaff()}
                     <a id="clearfilter" href="?id_adh=all" title="{_T string="Show all members transactions"}">{_T string="Show all members transactions"}</a>
     {/if}
@@ -92,11 +92,11 @@
                     <td class="{$cclass}">
     {if $transactions->filtre_cotis_adh eq ""}
                         <a href="gestion_transactions.php?id_adh={$mid}">
-                            {if $member}{$member->sname}{else}{memberName id="$mid"}{/if}
+                            {if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}
                         </a>
     {else}
                         <a href="voir_adherent.php?id_adh={$mid}">
-                            {if $member}{$member->sname}{else}{memberName id="$mid"}{/if}
+                            {if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}
                         </a>
     {/if}
                     </td>
@@ -137,7 +137,7 @@
                     this.form.submit();
                 });
 
-                $('#table_footer').parent().before('<td class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !$member}9{elseif $login->isAdmin() or $login->isStaff()}8{else}7{/if}"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
+                $('#table_footer').parent().before('<td class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !isset($member)}9{elseif $login->isAdmin() or $login->isStaff()}8{else}7{/if}"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
                 $('#legende h1').remove();
                 $('#legende').dialog({
                     autoOpen: false,
