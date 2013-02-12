@@ -372,7 +372,7 @@ class Charts
         $select->from(
             PREFIX_DB . Contribution::TABLE,
             $cols
-        )->group($groupby);
+        )->group($groupby)->order('date ASC');
 
         $res = $select->query()->fetchAll();
 
