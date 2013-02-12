@@ -402,6 +402,10 @@ class Contributions extends Pagination
                 $select->where('a.trans_id ?', new \Zend_Db_Expr('IS NULL'));
             }
             $qry = $select->__toString();
+            Analog::log(
+                "Query was:\n" . $qry,
+                Analog::DEBUG
+            );
         } catch (\Exception $e) {
             /** TODO */
             Analog::log(
