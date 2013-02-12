@@ -136,7 +136,7 @@
             {* At creation time, we can get an amount, that will be hidden on the first step *}
             <input type="hidden" name="montant_cotis" value="{$contribution->amount}"/>
     {/if} {* $type_selected eq 1 *}
-            <input type="hidden" name="trans_id" value="{if isset($contribution->transaction)}{$contribution->transaction->id}{/if}"/>
+            <input type="hidden" name="trans_id" value="{if $contribution->transaction neq NULL}{$contribution->transaction->id}{/if}"/>
             {* First step validator *}
             <input type="hidden" name="type_selected" value="1"/>
         </div>
