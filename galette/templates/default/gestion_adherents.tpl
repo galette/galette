@@ -160,7 +160,7 @@
                     <td class="{$rclass} nowrap username_row">
                         <input type="checkbox" name="member_sel[]" value="{$member->id}"/>
                     {if $member->isCompany()}
-                        <img src="{$template_subdir}images/icon-company.png" alt="{_T string="[W]"}" width="16" height="16"/>
+                        <img src="{$template_subdir}images/icon-company.png" alt="{_T string="[C]"}" width="16" height="16"/>
                     {elseif $member->isMan()}
                         <img src="{$template_subdir}images/icon-male.png" alt="{_T string="[M]"}" width="16" height="16"/>
                     {elseif $member->isWoman()}

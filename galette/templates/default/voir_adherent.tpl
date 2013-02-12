@@ -42,7 +42,18 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <caption class="ui-state-active ui-corner-top">{_T string="Identity:"}</caption>
             <tr>
                 <th>{_T string="Name:"}</th>
-                <td>{$member->sfullname}</td>
+                <td>
+                    {if $member->isCompany()}
+                        <img src="{$template_subdir}images/icon-company.png" alt="{_T string="[C]"}" width="16" height="16"/>
+                    {elseif $member->isMan()}
+                        <img src="{$template_subdir}images/icon-male.png" alt="{_T string="[M]"}" width="16" height="16"/>
+                    {elseif $member->isWoman()}
+                        <img src="{$template_subdir}images/icon-female.png" alt="{_T string="[W]"}" width="16" height="16"/>
+                    {else}
+                        <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
+                    {/if}
+                    {$member->sfullname}
+                </td>
                 <td rowspan="{if $member->isCompany()}7{else}6{/if}" style="width:{$member->picture->getOptimalWidth()}px;">
                     <img
                         src="{$galette_base_path}picture.php?id_adh={$member->id}&amp;rand={$time}"
