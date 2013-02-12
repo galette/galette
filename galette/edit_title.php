@@ -55,6 +55,7 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 
 if ( isset($_POST['cancel']) ) {
     header('location: gestion_titres.php');
+    die();
 }
 
 if (isset($_POST['id']) && !isset($_GET['id']) ) {
@@ -82,6 +83,7 @@ if ( isset($_POST['id']) ) {
         );
         $session['success_detected'] = serialize($success_detected);
         header('location: gestion_titres.php');
+        die();
     }
 }
 

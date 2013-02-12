@@ -49,6 +49,7 @@ use Galette\Core\PasswordImage as PasswordImage;
 require_once 'includes/galette.inc.php';
 if ( !$preferences->pref_bool_selfsubscribe ) {
     header('location:index.php');
+    die();
 }
 
 $dyn_fields = new DynamicFields();

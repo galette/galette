@@ -315,8 +315,10 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
             header(
                 'location: ajouter_contribution.php?id_adh=' . $member->id
             );
+            die();
         } elseif ( count($error_detected) == 0 ) {
             header('location: voir_adherent.php?id_adh=' . $member->id);
+            die();
         }
     }
 } else {

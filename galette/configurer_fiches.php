@@ -124,6 +124,7 @@ if ( $form_name == '' ) {
                             'location: editer_champ.php?form=' . $form_name .
                             '&id=' . $field_id
                         );
+                        die();
                     }
                     if ( $field_name != '' ) {
                         addDynamicTranslation($field_name, $error_detected);

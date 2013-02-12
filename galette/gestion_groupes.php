@@ -76,6 +76,7 @@ if ( isset($_POST['pdf']) ) {
         $qstring .= '?gid=' . $_POST['gid'];
     }
     header('location: '.$qstring);
+    die();
 }
 
 if ( isset($_POST['delete']) ) {

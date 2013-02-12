@@ -44,6 +44,7 @@ require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';
 if ( !$preferences->showPublicPages() ) {
     //public pages are not actives
     header('location:' . GALETTE_BASE_PATH  . 'index.php');
+    die();
 }
 
 $m = new Galette\Repository\Members();

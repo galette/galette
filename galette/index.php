@@ -119,7 +119,9 @@ if ( !$login->isLogged() ) {
 
     if ( $login->isAdmin() || $login->isStaff() ) {
         header('location: gestion_adherents.php');
+        die();
     } else {
         header('location: voir_adherent.php');
+        die();
     }
 }

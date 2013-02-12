@@ -73,8 +73,10 @@ if ( isset($_GET[Galette\Entity\Adherent::PK])
         Analog::log('No member selected to generate members cards', Analog::INFO);
         if ( $login->isAdmin() || $login->isStaff() ) {
             header('location:gestion_adherents.php');
+            die();
         } else {
             header('location:voir_adherent.php');
+            die();
         }
         die();
     }

@@ -98,6 +98,7 @@ if ( $trans_id != '' ) {
     if ( $trans->id == '' ) {
         //not possible to load transaction, exit
         header('location: index.php');
+        die();
     }
 }
 
@@ -147,6 +148,7 @@ if ( isset($_POST['valid']) ) {
             $url = 'gestion_transactions.php';
         }
         header('location: '.$url);
+        die();
     }
 } else { //$_POST['valid']
     if ( $trans->id != '' ) {

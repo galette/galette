@@ -75,6 +75,7 @@ if ( isset($_POST['group_name']) ) {
 
     if ( count($error_detected) == 0 ) {
         header('location: gestion_groupes.php');
+        die();
     }
 }
  

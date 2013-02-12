@@ -114,8 +114,10 @@ if (   isset($_POST['cards'])
             $qstring = 'doandget_export.php';
         }
         header('location: '.$qstring);
+        die();
     } elseif ($_GET['adv_criterias']) {
         header('location: advanced_search.php');
+        die();
     } else {
         $error_detected[]
             = _T("No member was selected, please check at least one name.");

@@ -66,6 +66,7 @@ if ( !isset($installer) ) {
 $installed = file_exists(GALETTE_CONFIG_PATH . 'config.inc.php');
 if ( !$installed && !$installer ) {
     header('location: install/index.php');
+    die();
 }
 
 if ( file_exists(GALETTE_CONFIG_PATH . 'behavior.inc.php')

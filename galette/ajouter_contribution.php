@@ -286,6 +286,7 @@ if ( isset($_POST['valid']) ) {
             }
             if ( count($warning_detected) == 0 ) {
                 header('location: ' . $url);
+                die();
             } else {
                 $head_redirect = array(
                     'timeout'   => 30,
