@@ -326,7 +326,7 @@ class Adherent
             $this->_birthdate = $r->ddn_adh;
         }
         $this->_birth_place = $r->lieu_naissance;
-        $this->_gender = $r->sexe_adh;
+        $this->_gender = (int)$r->sexe_adh;
         $this->_job = $r->prof_adh;
         $this->_language = $r->pref_lang;
         $this->_active = $r->activite_adh;
