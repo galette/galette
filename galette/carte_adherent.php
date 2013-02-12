@@ -320,7 +320,7 @@ foreach ( $members as $member ) {
     $pdf->SetTextColor($tcol['R'], $tcol['G'], $tcol['B']);
     $pdf->SetFont(Pdf::FONT, 'B', 6);
     $pdf->SetXY($x0, $y0 + 33);
-    $pdf->Cell(75, 7, $preferences->pref_card_strip, 0, 0, 'C', 1);
+    $pdf->Cell($w, 7, $preferences->pref_card_strip, 0, 0, 'C', 1);
 
     // Draw a gray frame around the card
     $pdf->Rect($x0, $y0, $w, $h);
