@@ -839,7 +839,7 @@ class Members
                 $select->where('email_adh != \'\'');
             }
             if ( $this->_filters->email_filter == self::FILTER_WO_EMAIL) {
-                $select->where('email_adh = ""');
+                $select->where('email_adh = \'\'');
             }
 
             if ( $this->_filters->filter_str != '' ) {
