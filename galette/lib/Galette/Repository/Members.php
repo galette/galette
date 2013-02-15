@@ -947,10 +947,13 @@ class Members
                 switch($this->_filters->membership_filter) {
                 case self::MEMBERSHIP_NEARLY:
                     //TODO: use PHP Date objects
-                    $select->where('date_echeance > ?', date('Y-m-d', time()))
+                    $now = new \DateTime();
+                    $duedate = new \DateTime();
+                    $duedate->modify('+1 month');
+                    $select->where('date_echeance > ?', $now->format('Y-m-d'))
                         ->where(
                             'date_echeance < ?',
-                            date('Y-m-d', time() + (30 *24 * 60 * 60))
+                            $duedate->format('Y-m-d')
                         );
                         //(30 *24 * 60 * 60) => 30 days
                     break;
