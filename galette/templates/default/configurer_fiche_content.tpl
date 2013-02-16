@@ -22,7 +22,7 @@
     {/if}
                     </td>
                     <td class="center actions_row">
-    {if $field.no_data}
+    {if isset($field.no_data)}
                         <img src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="16" height="16"/>
                         <img src="{$template_subdir}images/icon-empty.png" alt="" border="0" width="16" height="16"/>
     {else}

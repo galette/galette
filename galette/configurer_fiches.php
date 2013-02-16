@@ -246,9 +246,9 @@ if ( $form_name == '' ) {
 
     $results = $select->query()->fetchAll();
 
+    $dfields = array();
     if ( $results ) {
         $count = 0;
-        $dfields = array();
         foreach ( $results as $r ) {
             $dfields[$count]['id'] = $r->field_id;
             $dfields[$count]['index'] = $r->field_index;
