@@ -135,14 +135,14 @@
                     <p>
                         <label class="bline" for="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}">{$field.field_name}</label>
     {if $field.field_type eq constant('Galette\Entity\DynamicFields::LINE')}
-                        <input type="text" name="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}" id="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}" value="{$filters->contrib_dynamic.$rid}" />
+                        <input type="text" name="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}" id="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}" value="{if isset($filters->contrib_dynamic.$rid)}{$filters->contrib_dynamic.$rid}{/if}" />
     {elseif $field.field_type eq constant('Galette\Entity\DynamicFields::TEXT')}
-                        <textarea name="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}" id="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}">{$filters->contrib_dynamic.$rid}</textarea>
+                        <textarea name="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}" id="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}">{if isset($filters->contrib_dynamic.$rid)}{$filters->contrib_dynamic.$rid}{/if}</textarea>
     {elseif $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}
                         <select name="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}[]" id="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}" multiple="multiple">
                             <option value="">{_T string="Select"}</option>
         {foreach $field.choices item=choice key=k}
-                            <option value="{$k}"{if $cds.field eq $rid} selected="selected"{/if}>{$choice}</option>
+                            <option value="{$k}"{if isset($cds.field) and  $cds.field eq $rid} selected="selected"{/if}>{$choice}</option>
         {/foreach}
                         </select>
     {/if}

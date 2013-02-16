@@ -289,7 +289,9 @@ class Adherent
                 $select->where('login_adh = ?', $login);
             }
             $result = $select->query()->fetchObject();
-            $this->_loadFromRS($result);
+            if ( $result ) {
+                $this->_loadFromRS($result);
+            }
         } catch (\Exception $e) {
             /** TODO */
             Analog::log(
