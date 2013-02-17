@@ -613,7 +613,10 @@ class Members
             if ( $this->_filters instanceof AdvancedMembersList
                 && $this->_filters->withinContributions()
             ) {
-                if ( count($this->_filters->contrib_dynamic) > 0 ) {
+                if ( $this->_filters->contrib_dynamic
+                    && count($this->_filters->contrib_dynamic) > 0
+                    && !isset($this->_filters->contrib_dynamic['empty'])
+                ) {
                     $hasDfc = true;
 
                     //check if there are dynamic fields in the filter
@@ -946,7 +949,6 @@ class Members
             if ( $this->_filters->membership_filter ) {
                 switch($this->_filters->membership_filter) {
                 case self::MEMBERSHIP_NEARLY:
-                    //TODO: use PHP Date objects
                     $now = new \DateTime();
                     $duedate = new \DateTime();
                     $duedate->modify('+1 month');
@@ -955,7 +957,6 @@ class Members
                             'date_echeance < ?',
                             $duedate->format('Y-m-d')
                         );
-                        //(30 *24 * 60 * 60) => 30 days
                     break;
                 case self::MEMBERSHIP_LATE:
                     $select->where(
