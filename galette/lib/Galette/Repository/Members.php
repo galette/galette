@@ -1259,8 +1259,13 @@ class Members
                             $fs['field'] = 'field_val';
                         }
 
-                        $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' .
-                            $qop  . ' ?' ;
+                        if ( !strncmp($fs['field'], 'bool_', strlen('bool_')) ) {
+                            $qry .= $prefix . $fs['field'] . $qop  . ' ?' ;
+                        } else {
+                            $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' .
+                                $qop  . ' ?' ;
+                        }
+
                         if ( $fs['log_op'] === AdvancedMembersList::OP_AND ) {
                             $select->where($qry, $fs['search']);
                         } elseif ( $fs['log_op'] === AdvancedMembersList::OP_OR ) {
