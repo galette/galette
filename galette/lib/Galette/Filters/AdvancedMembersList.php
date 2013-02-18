@@ -368,11 +368,13 @@ class AdvancedMembersList extends MembersList
                 if ( is_float($value) ) {
                     $this->$prop = $value;
                 } else {
-                    Analog::log(
-                        'Incorrect amount for ' . $name  . '! ' .
-                        'Should be a float (' . gettype($value) . ' given)',
-                        Analog::WARNING
-                    );
+                    if ( $value !== null ) {
+                        Analog::log(
+                            'Incorrect amount for ' . $name  . '! ' .
+                            'Should be a float (' . gettype($value) . ' given)',
+                            Analog::WARNING
+                        );
+                    }
                 }
                 break;
             case 'show_public_infos':

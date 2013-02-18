@@ -163,7 +163,11 @@ if (   isset($_POST['cards'])
                 break;
             case 'contrib_min_amount':
             case 'contrib_max_amount':
-                $v = (float)$v;
+                if ( trim($v) !== '' ) {
+                    $v = (float)$v;
+                } else {
+                    $v = null;
+                }
                 break;
             }
             $filters->$k = $v;
