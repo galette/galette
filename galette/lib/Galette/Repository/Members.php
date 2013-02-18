@@ -1064,7 +1064,7 @@ class Members
                     $select->where(
                         'a.id_statut IN (' . implode(
                             ',',
-                            $this->_filters->Status
+                            $this->_filters->status
                         ) . ')'
                     );
                 }
