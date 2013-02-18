@@ -79,10 +79,14 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
                 $link_validity->add(new DateInterval('PT24H'));
 
                 $df = _T("Y-m-d H:i:s");
+                $proto = 'http';
+                if ( isset($_SERVER['HTTPS']) ) {
+                    $proto = 'https';
+                }
                 $texts = new Texts(
                     $preferences,
                     array(
-                        'change_pass_uri'   => 'http://' . $_SERVER['SERVER_NAME'] .
+                        'change_pass_uri'   => $proto . '://' . $_SERVER['SERVER_NAME'] .
                                               dirname($_SERVER['REQUEST_URI']) .
                                               '/change_passwd.php?hash=' . urlencode($password->getHash()),
                         'link_validity'     => $link_validity->format(_T("Y-m-d H:i:s")),
