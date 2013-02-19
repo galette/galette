@@ -380,13 +380,23 @@ class Adherent
         }
 
         if ( $this->_deps['groups'] === true ) {
-            $this->_groups = Groups::loadGroups($this->_id);
-            $this->_managed_groups = Groups::loadManagedGroups($this->_id);
+            $this->loadGroups();
         }
 
         if ( $this->_deps['dues'] === true ) {
             $this->_checkDues();
         }
+    }
+
+    /**
+     * Load member groups
+     *
+     * @return void
+     */
+    public function loadGroups()
+    {
+        $this->_groups = Groups::loadGroups($this->_id);
+        $this->_managed_groups = Groups::loadManagedGroups($this->_id);
     }
 
     /**

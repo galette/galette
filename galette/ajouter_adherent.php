@@ -238,6 +238,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     $member,
                     $_POST['groups_adh']
                 );
+                $member->loadGroups();
             }
             if ( $add_groups === true ) {
                 if ( isset ($_POST['groups_adh']) ) {
