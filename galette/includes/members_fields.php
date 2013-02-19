@@ -107,7 +107,7 @@ $members_fields = array(
     ),
     'sexe_adh' => array(
         'label'    => _T("Gender:"),
-        'propname' => 'sex',
+        'propname' => 'gender',
         'required' => false,
         'visible'  => FieldsConfig::VISIBLE,
         'position' => 8,
