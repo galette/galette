@@ -812,6 +812,9 @@ class Adherent
                             );
                         }
                         break;
+                    case 'titre_adh':
+                        $this->$prop = new Title((int)$value);
+                        break;
                     case 'email_adh':
                     case 'msn_adh':
                         if ( !GaletteMail::isValidEmail($value) ) {
@@ -1053,6 +1056,8 @@ class Adherent
             if ( !$this->_due_date ) {
                 $values['date_echeance'] = new \Zend_Db_Expr('NULL');
             }
+
+            $values['titre_adh'] = $this->_title->id;
 
             if ( !isset($this->_id) || $this->_id == '') {
                 //we're inserting a new member
