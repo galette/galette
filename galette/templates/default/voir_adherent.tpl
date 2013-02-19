@@ -49,8 +49,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                         <img src="{$template_subdir}images/icon-male.png" alt="{_T string="[M]"}" width="16" height="16"/>
                     {elseif $member->isWoman()}
                         <img src="{$template_subdir}images/icon-female.png" alt="{_T string="[W]"}" width="16" height="16"/>
-                    {else}
-                        <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
                     {/if}
                     {$member->sfullname}
                 </td>
