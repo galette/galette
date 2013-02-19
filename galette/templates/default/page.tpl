@@ -151,6 +151,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $PAGENAME eq "gestion_intitules.php" and $class eq 'ContributionsTypes'} class="selected"{/if}><a href="{$galette_base_path}gestion_intitules.php?class=ContributionsTypes" title="{_T string="Manage contributions types"}">{_T string="Manage contributions types"}</a></li>
             <li{if $PAGENAME eq "gestion_textes.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_textes.php" title="{_T string="Manage emails texts and subjects"}">{_T string="Emails content"}</a></li>
             <li{if $PAGENAME eq "gestion_titres.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_titres.php" title="{_T string="Manage titles"}">{_T string="Titles"}</a></li>
+            <li{if $PAGENAME eq "gestion_pdf.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_pdf.php" title="{_T string="Manage PDF models"}">{_T string="PDF models"}</a></li>
         </ul>
 {/if}
 

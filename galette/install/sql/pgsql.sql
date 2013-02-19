@@ -102,6 +102,15 @@ CREATE SEQUENCE galette_reminders_id_seq
     MINVALUE 1
     CACHE 1;
 
+-- sequence for pdf models
+DROP SEQUENCE IF EXISTS galette_pdfmodels_id_seq;
+CREATE SEQUENCE galette_pdfmodels_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
 -- Schema
 -- REMINDER: Create order IS important, dependencies first !!
 DROP TABLE IF EXISTS galette_statuts CASCADE;
@@ -360,6 +369,21 @@ CREATE TABLE galette_reminders (
   reminder_nomail boolean DEFAULT TRUE,
   reminder_comment text,
   PRIMARY KEY (reminder_id)
+);
+
+DROP TABLE IF EXISTS galette_pdfmodels CASCADE;
+CREATE TABLE galette_pdfmodels (
+  model_id integer DEFAULT nextval('galette_pdfmodels_id_seq'::text) NOT NULL,
+  model_name character varying(50) NOT NULL,
+  model_type integer NOT NULL,
+  model_header text,
+  model_footer text,
+  model_body text,
+  model_styles text,
+  model_title character varying(100),
+  model_subtitle character varying(100),
+  model_parent integer DEFAULT NULL REFERENCES galette_pdfmodels (model_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  PRIMARY KEY (model_id)
 );
 
 -- table for database version

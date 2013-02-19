@@ -11,4 +11,20 @@ CREATE TABLE galette_reminders (
   FOREIGN KEY (reminder_dest) REFERENCES galette_adherents (id_adh)
 );
 
+-- Table for PDF models
+DROP TABLE IF EXISTS galette_pdfmodels;
+CREATE TABLE galette_pdfmodels (
+  model_id INTEGER NOT NULL PRIMARY KEY,
+  model_name TEXT NOT NULL,
+  model_type INTEGER NOT NULL,
+  model_header TEXT,
+  model_footer TEXT,
+  model_body TEXT,
+  model_styles TEXT,
+  model_title TEXT,
+  model_subtitle TEXT,
+  model_parent INTEGER DEFAULT NULL,
+  FOREIGN KEY (model_parent) REFERENCES galette_pdfmodels (model_id),
+);
+
 UPDATE galette_database SET version = 0.703;

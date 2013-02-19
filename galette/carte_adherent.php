@@ -136,7 +136,7 @@ if ( $logo->hasPicture() ) {
 }
 
 // Create new PDF document
-$pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8');
+$pdf = new Pdf();
 
 // Set document information
 $pdf->SetTitle($doc_title);

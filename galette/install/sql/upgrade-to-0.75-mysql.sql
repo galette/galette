@@ -11,5 +11,20 @@ CREATE TABLE galette_reminders (
   PRIMARY KEY (reminder_id),
   FOREIGN KEY (reminder_dest) REFERENCES galette_adherents (id_adh)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+DROP TABLE IF EXISTS galette_pdfmodels;
+
+CREATE TABLE galette_pdfmodels (
+  model_id int(10) unsigned NOT NULL auto_increment,
+  model_name varchar(50) NOT NULL,
+  model_type tinyint(2) NOT NULL,
+  model_header text,
+  model_footer text,
+  model_body text,
+  model_styles text,
+  model_title varchar(100),
+  model_subtitle varchar(100),
+  model_parent int(10) unsigned DEFAULT NULL REFERENCES galette_pdfmodels (model_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  PRIMARY KEY (model_id)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 UPDATE galette_database SET version = 0.703;

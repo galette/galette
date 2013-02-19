@@ -219,6 +219,9 @@
                     <td class="{$cclass} nowrap">{$contribution->duration}</td>
     {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
                     <td class="{$cclass} center nowrap">
+                        <a href="pdf_contribution.php?id_cotis={$contribution->id}">
+                            <img src="{$template_subdir}images/icon-pdf.png" alt="{_T string="[pdf]"}" width="16" height="16" title="{_T string="Print an invoice or a receipt (depending on contribution type)"}"/>
+                        </a>
                         <a href="ajouter_contribution.php?id_cotis={$contribution->id}">
                             <img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="Edit the contribution"}"/>
                         </a>

@@ -119,7 +119,7 @@ session_start();
 
 define('GALETTE_VERSION', 'v0.7.4.2');
 define('GALETTE_COMPAT_VERSION', '0.7.4');
-define('GALETTE_DB_VERSION', '0.702');
+define('GALETTE_DB_VERSION', '0.703');
 if ( !defined('GALETTE_MODE') ) {
     define('GALETTE_MODE', 'PROD'); //DEV, PROD or DEMO
 }
@@ -356,6 +356,7 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
         include_once GALETTE_ROOT . 'includes/smarty.inc.php';
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
+        include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
     } else {
         header('location: needs_update.php');
         die();

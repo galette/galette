@@ -1760,6 +1760,7 @@ td.photo img{
 .tabbed fieldset {
     margin: 0;
     padding: 0!important;
+    border: none;
 }
 
 .tabbed legend, .tabbed h3 {
@@ -1767,6 +1768,11 @@ td.photo img{
     margin: 0;
     text-align: center;
     font-size: 1.2em;
+}
+
+#tabs > div {
+    margin: 0;
+    padding: 0;
 }
 /*** /Onglets ***/
 

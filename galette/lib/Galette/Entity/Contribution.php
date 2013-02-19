@@ -862,7 +862,7 @@ class Contribution
     {
 
         $forbidden = array('is_cotis');
-        $virtuals = array('duration', 'spayment_type');
+        $virtuals = array('duration', 'spayment_type', 'model', 'raw_date', 'raw_begin_date', 'raw_end_date');
 
         $rname = '_' . $name;
         if ( !in_array($name, $forbidden)
@@ -870,6 +870,24 @@ class Contribution
             || in_array($name, $virtuals)
         ) {
             switch($name) {
+            case 'raw_date':
+            case 'raw_begin_date':
+            case 'raw_end_date':
+                $rname = '_' . substr($name, 4);
+                if ( $this->$rname != '' ) {
+                    try {
+                        $d = new \DateTime($this->$rname);
+                        return $d;
+                    } catch (\Exception $e) {
+                        //oops, we've got a bad date :/
+                        Analog::log(
+                            'Bad date (' . $his->$rname . ') | ' .
+                            $e->getMessage(),
+                            Analog::INFO
+                        );
+                        throw $e;
+                    }
+                }
             case 'date':
             case 'begin_date':
             case 'end_date':
@@ -926,6 +944,11 @@ class Contribution
                     return '-';
                     break;
                 }
+            case 'model':
+                return ($this->isCotis()) ?
+                    PdfModel::INVOICE_MODEL :
+                    PdfModel::RECEIPT_MODEL;
+                break;
             default:
                 return $this->$rname;
                 break;
