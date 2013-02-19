@@ -388,6 +388,7 @@ $tpl->assign('data', $adherent);
 $tpl->assign('self_adh', false);
 $tpl->assign('dynamic_fields', $dynamic_fields);
 $tpl->assign('error_detected', $error_detected);
+$tpl->assign('success_detected', $success_detected);
 if ( isset($session['mail_warning']) ) {
     //warning will be showed here, no need to keep it longer into session
     unset($session['mail_warning']);
