@@ -518,7 +518,7 @@ class Adherent
      */
     public function isMan()
     {
-        return $this->_gender === self::MAN;
+        return (int)$this->_gender === self::MAN;
     }
 
     /**
@@ -528,7 +528,7 @@ class Adherent
      */
     public function isWoman()
     {
-        return $this->_gender === self::WOMAN;
+        return (int)$this->_gender === self::WOMAN;
     }
 
 
