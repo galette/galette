@@ -34,6 +34,7 @@
                         <input class="labelalign" type="file" name="photo"/>
                     </p>
     {/if}
+    {if $visibles.titre_adh eq constant('Galette\Entity\FieldsConfig::VISIBLE') or ($visibles.titre_adh eq constant('Galette\Entity\FieldsConfig::ADMIN') and ($login->isStaff() or $login->isAdmin() or $login->isSuperAdmin()))}
                     <p>
                         <label for="titre_adh" class="bline">{_T string="Title:"}</label>
                         <select name="titre_adh" id="titre_adh">
@@ -42,6 +43,7 @@
     {/foreach}
                         </select>
                     </p>
+    {/if}
     {if $visibles.sexe_adh eq constant('Galette\Entity\FieldsConfig::VISIBLE') or ($visibles.sexe_adh eq constant('Galette\Entity\FieldsConfig::ADMIN') and ($login->isStaff() or $login->isAdmin() or $login->isSuperAdmin()))}
                     <p>
                         <span class="bline">{_T string="Gender:"}</span>
