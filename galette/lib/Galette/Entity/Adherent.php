@@ -1012,12 +1012,21 @@ class Adherent
         // missing required fields?
         while ( list($key, $val) = each($required) ) {
             $prop = '_' . $this->_fields[$key]['propname'];
-            if ( !isset($disabled[$key])
-                && (($key === 'titre_adh' && $this->$prop == '-1'
-                || trim($this->$prop) == '') && !isset($this->$prop))
-            ) {
-                $errors[] = _T("- Mandatory field empty: ") .
-                ' <a href="#' . $key . '">' . $this->getFieldName($key) .'</a>';
+
+            if ( isset($disabled[$key]) ) {
+                $mandatory_missing = false;
+                if ( !isset($this->$prop) ) {
+                    $mandatory_missing = true;
+                } else if ( $key === 'titre_adh' && $this->$prop == '-1' ) {
+                    $mandatory_missing = true;
+                } else if (is_string($value) && trim($value) !== '') {
+                    $mandatory_missing = true;
+                }
+
+                if ( $mandatory_missing === true ) {
+                    $errors[] = _T("- Mandatory field empty: ") .
+                    ' <a href="#' . $key . '">' . $this->getFieldName($key) .'</a>';
+                }
             }
         }
 
