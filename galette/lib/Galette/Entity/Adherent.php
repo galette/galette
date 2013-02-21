@@ -319,7 +319,7 @@ class Adherent
         $this->_self_adh = false;
         $this->_id = $r->id_adh;
         //Identity
-        if ( $r->titre_adh !== null && is_int($r->titre_adh) ) {
+        if ( $r->titre_adh !== null ) {
             $this->_title = new Title((int)$r->titre_adh);
         }
         $this->_company_name = $r->societe_adh;
