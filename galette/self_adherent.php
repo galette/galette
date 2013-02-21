@@ -178,10 +178,11 @@ if ( isset($_POST["nom_adh"]) ) {
                 }
             }
 
+            /** FIXME: query was previously passed as second argument,
+             * but it not no longer available from here :/ */
             $hist->add(
                 _T("Self_subscription as a member: ") .
-                strtoupper($adherent['nom_adh']) . ' ' . $adherent['prenom_adh'],
-                $requete
+                strtoupper($adherent['nom_adh']) . ' ' . $adherent['prenom_adh']
             );
             $head_redirect = array(
                 'timeout'   => 10,
