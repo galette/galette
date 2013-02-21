@@ -95,7 +95,6 @@ class FieldsConfig
         //Fields we do not want to be set as required
         'societe_adh',
         'id_statut',
-        'titre_adh',
         'pref_lang',
         'sexe_adh'
     );

@@ -212,7 +212,7 @@ class Adherent
                 $this->_language = $i18n->getID();
                 $this->_creation_date = date("Y-m-d");
                 $this->_status = Status::DEFAULT_STATUS;
-                $this->_title = new Title(1);
+                $this->_title = null;
                 $this->_gender = self::NC;
                 $gp = new Password();
                 $this->_password = $gp->makeRandomPassword();
@@ -319,7 +319,9 @@ class Adherent
         $this->_self_adh = false;
         $this->_id = $r->id_adh;
         //Identity
-        $this->_title = new Title((int)$r->titre_adh);
+        if ( $r->titre_adh !== null && is_int($r->titre_adh) ) {
+            $this->_title = new Title((int)$r->titre_adh);
+        }
         $this->_company_name = $r->societe_adh;
         $this->_name = $r->nom_adh;
         $this->_surname = $r->prenom_adh;
@@ -823,7 +825,15 @@ class Adherent
                         }
                         break;
                     case 'titre_adh':
-                        $this->$prop = new Title((int)$value);
+                        if ( $value !== null && $value !== '' ) {
+                            if ( $value == '-1' ) {
+                                $errors[] = _T("- title is mandatory!");
+                            } else {
+                                $this->$prop = new Title((int)$value);
+                            }
+                        } else {
+                            $this->$prop = null;
+                        }
                         break;
                     case 'email_adh':
                     case 'msn_adh':
@@ -1067,7 +1077,11 @@ class Adherent
                 $values['date_echeance'] = new \Zend_Db_Expr('NULL');
             }
 
-            $values['titre_adh'] = $this->_title->id;
+            if ( $this->_title instanceof Title ) {
+                $values['titre_adh'] = $this->_title->id;
+            } else {
+                $values['titre_adh'] = new \Zend_Db_Expr('NULL');
+            }
 
             if ( !isset($this->_id) || $this->_id == '') {
                 //we're inserting a new member
@@ -1238,7 +1252,11 @@ class Adherent
                 return (($this->$real) ? _T("Active") : _T("Inactive"));
                 break;
             case 'stitle':
-                return $this->_title->tshort;
+                if ( isset($this->_title) ) {
+                    return $this->_title->tshort;
+                } else {
+                    return null;
+                }
                 break;
             case 'sstatus':
                 $status = new Status();
@@ -1247,8 +1265,9 @@ class Adherent
             case 'sfullname':
                 $sfn = mb_strtoupper($this->_name, 'UTF-8') . ' ' .
                     ucwords(mb_strtolower($this->_surname, 'UTF-8'));
-                $sfn = $this->_title->tshort .
-                    ' ' . $sfn;
+                if ( isset($this->_title) ) {
+                    $sfn = $this->_title->tshort . ' ' . $sfn;
+                }
                 return $sfn;
                 break;
             case 'sname':
