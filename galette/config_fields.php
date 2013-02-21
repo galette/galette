@@ -103,7 +103,12 @@ if ( isset($_POST) && count($_POST) > 0 ) {
     }
     //okay, we've got the new array, we send it to the
     //Object that will store it in the database
-    $fc->setFields($res);
+    $success = $fc->setFields($res);
+    if ( $success === true ) {
+        $success_detected[] = _T("Fields configuration has been successfully stored");
+    } else {
+        $error_detected[] = _T("An error occured while storing fields configuration :(");
+    }
 }
 
 $tpl->assign('page_title', _T("Fields configuration"));
@@ -113,6 +118,8 @@ $tpl->assign('categorized_fields', $fc->getCategorizedFields());
 $tpl->assign('non_required', $fc->getNonRequired());
 $tpl->assign('current', $current);
 $tpl->assign('require_dialog', true);
+$tpl->assign('success_detected', $success_detected);
+$tpl->assign('error_detected', $error_detected);
 //$tpl->assign('require_sorter', true);
 $content = $tpl->fetch('config_fields.tpl');
 $tpl->assign('content', $content);

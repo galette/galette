@@ -391,18 +391,17 @@ class FieldsConfig
         return $this->fields;
     }
 
-    /** FIXME: should return _store result */
     /**
      * Set fields
      *
      * @param array $fields categorized fields array
      *
-     * @return void
+     * @return boolean
      */
     public function setFields($fields)
     {
         $this->_categorized_fields = $fields;
-        $this->_store();
+        return $this->_store();
     }
 
     /**
