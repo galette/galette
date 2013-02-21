@@ -363,7 +363,7 @@ case 'u3':
     $files_perms_class = '';
 
     // check required PHP version...
-    if ( version_compare(PHP_VERSION, '5.3.0', '<') ) {
+    if ( version_compare(PHP_VERSION, '5.3.7', '<') ) {
         $php_ok = false;
         $php_class .= $class . 'bad';
     } else {

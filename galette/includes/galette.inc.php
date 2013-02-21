@@ -36,7 +36,7 @@
  */
 
 // check required PHP version...
-if ( version_compare(PHP_VERSION, '5.3.0', '<') ) {
+if ( version_compare(PHP_VERSION, '5.3.7', '<') ) {
     echo 'Galette is NOT compliant with your current PHP version. ' .
         'Galette requires PHP 5.3 minimum, current version is ' . phpversion();
     die();
