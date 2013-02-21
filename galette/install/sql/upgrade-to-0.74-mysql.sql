@@ -11,7 +11,7 @@ INSERT INTO galette_titles(short_label, long_label) VALUES ('Mr.', 'Mister');
 INSERT INTO galette_titles(short_label, long_label) VALUES ('Mrs.', 'Mrs.');
 INSERT INTO galette_titles(short_label, long_label) VALUES ('Miss', 'Miss');
 
-ALTER TABLE galette_adherents CHANGE titre_adh titre_adh int(10) unsigned NOT NULL DEFAULT 0;
+ALTER TABLE galette_adherents CHANGE titre_adh titre_adh int(10) unsigned DEFAULT NULL;
 ALTER TABLE galette_adherents ADD FOREIGN KEY (titre_adh) REFERENCES galette_titles (id_title) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE galette_adherents CHANGE mdp_adh mdp_adh VARCHAR( 60 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '';

@@ -119,7 +119,7 @@ CREATE TABLE galette_adherents (
     prenom_adh character varying(50) DEFAULT '' NOT NULL,
     societe_adh character varying(200) DEFAULT NULL,
     pseudo_adh character varying(20) DEFAULT '' NOT NULL,
-    titre_adh integer DEFAULT '0' REFERENCES galette_titles(id_title) ON DELETE RESTRICT ON UPDATE CASCADE,
+    titre_adh integer DEFAULT NULL REFERENCES galette_titles(id_title) ON DELETE RESTRICT ON UPDATE CASCADE,
     ddn_adh date DEFAULT '19010101',
     sexe_adh smallint DEFAULT '0' NOT NULL,
     adresse_adh character varying(150) DEFAULT '' NOT NULL,

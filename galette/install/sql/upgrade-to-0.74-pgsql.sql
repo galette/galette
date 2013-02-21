@@ -21,6 +21,7 @@ INSERT INTO galette_titles(short_label, long_label) VALUES ('Mrs.', 'Mrs.');
 INSERT INTO galette_titles(short_label, long_label) VALUES ('Miss', 'Miss');
 
 ALTER TABLE galette_adherents ALTER COLUMN titre_adh TYPE integer;
+ALTER TABLE galette_adherents ALTER COLUMN titre_adh SET DEFAULT NULL;
 ALTER TABLE galette_adherents ADD CONSTRAINT galette_adherents_titre_adh_fkey FOREIGN KEY (titre_adh) REFERENCES galette_titles(id_title);
 
 ALTER TABLE galette_adherents ALTER COLUMN mdp_adh TYPE character varying(60);

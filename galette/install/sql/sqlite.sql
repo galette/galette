@@ -9,7 +9,7 @@ CREATE TABLE galette_adherents (
   prenom_adh TEXT NOT NULL default '',
   pseudo_adh TEXT NOT NULL default '',
   societe_adh TEXT default NULL,
-  titre_adh INTEGER NOT NULL default '0',
+  titre_adh INTEGER default NULL,
   ddn_adh TEXT default '1901-01-01',
   sexe_adh INTEGER NOT NULL default '0',
   adresse_adh TEXT NOT NULL default '',
