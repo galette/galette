@@ -827,7 +827,7 @@ class Adherent
                     case 'titre_adh':
                         if ( $value !== null && $value !== '' ) {
                             if ( $value == '-1' ) {
-                                $errors[] = _T("- title is mandatory!");
+                                $this->$prop = null;
                             } else {
                                 $this->$prop = new Title((int)$value);
                             }
@@ -1013,7 +1013,8 @@ class Adherent
         while ( list($key, $val) = each($required) ) {
             $prop = '_' . $this->_fields[$key]['propname'];
             if ( !isset($disabled[$key])
-                && (!isset($this->$prop) || trim($this->$prop) == '')
+                && (($key === 'titre_adh' && $this->$prop == '-1'
+                || trim($this->$prop) == '') && !isset($this->$prop))
             ) {
                 $errors[] = _T("- Mandatory field empty: ") .
                 ' <a href="#' . $key . '">' . $this->getFieldName($key) .'</a>';
