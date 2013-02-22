@@ -220,7 +220,7 @@
                     <td class="back">{_T string="Active account"}</td>
                 </tr>
                 <tr>
-                    <th><img src="{$template_subdir}images/icon-female.png" alt="{_T string="Miss"} / {_T string="Mrs"}" width="16" height="16"/></th>
+                    <th><img src="{$template_subdir}images/icon-female.png" alt="{_T string="Miss"} / {_T string="Mrs."}" width="16" height="16"/></th>
                     <td class="back">{_T string="Woman"}</td>
                     <th class="inactif back">{_T string="Name"}</th>
                     <td class="back">{_T string="Inactive account"}</td>

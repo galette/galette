@@ -1320,7 +1320,6 @@ define("STOCK_FILES", "tempimages");
                         switch ( $title->short ) {
                         case 'Mr.':
                             $title->short = _T("Mr.");
-                            $title->long = _T("Mister");
                             break;
                         case 'Mrs.':
                             $title->short = _T("Mrs.");

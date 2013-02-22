@@ -66,7 +66,7 @@ class Titles
         array(
             'id_title'      => 1,
             'short_label'   => 'Mr.',
-            'long_label'    => 'Mister'
+            'long_label'    => null
         ),
         array(
             'id_title'      => 2,

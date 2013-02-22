@@ -257,7 +257,7 @@ msgstr ""
 msgid "Modules that may be required"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:247 ../install/index.php:1470
+#: ../ajax_plugins_initdb.php:247 ../install/index.php:1469
 msgid "Installation complete !"
 msgstr ""
 
@@ -804,7 +804,7 @@ msgstr ""
 msgid "My transactions"
 msgstr ""
 
-#: ../install/index.php:1391
+#: ../install/index.php:1390
 msgid "Default texts cannot be initialized."
 msgstr ""
 
@@ -1143,7 +1143,7 @@ msgstr ""
 msgid "No such module."
 msgstr ""
 
-#: ../install/index.php:202 ../install/index.php:1498
+#: ../install/index.php:202 ../install/index.php:1497
 msgid "Language"
 msgstr ""
 
@@ -1204,7 +1204,7 @@ msgid "Disabled"
 msgstr ""
 
 #: ../ajax_plugins_initdb.php:107 ../install/index.php:205
-#: ../install/index.php:311 ../install/index.php:1499
+#: ../install/index.php:311 ../install/index.php:1498
 #: ../templates/default/ajax_plugins_initdb.tpl:96
 msgid "Installation mode"
 msgstr ""
@@ -1266,7 +1266,6 @@ msgstr ""
 msgid "or"
 msgstr ""
 
-#: ../includes/i18n.inc.php:361 ../install/index.php:1323
 #: ../templates/default/gestion_adherents.tpl:217
 msgid "Mister"
 msgstr ""
@@ -1394,7 +1393,7 @@ msgstr ""
 msgid "System informations"
 msgstr ""
 
-#: ../install/index.php:225 ../install/index.php:1504
+#: ../install/index.php:225 ../install/index.php:1503
 #: ../templates/default/ajax_plugins_initdb.tpl:98
 msgid "Tables Creation/Update"
 msgstr ""
@@ -1553,7 +1552,7 @@ msgstr ""
 msgid "Admin and staff only"
 msgstr ""
 
-#: ../install/index.php:1487
+#: ../install/index.php:1486
 msgid "Homepage"
 msgstr ""
 
@@ -1770,7 +1769,7 @@ msgstr ""
 msgid "Members that have an email adress:"
 msgstr ""
 
-#: ../includes/i18n.inc.php:365
+#: ../includes/i18n.inc.php:362
 msgid "Contact information"
 msgstr ""
 
@@ -1802,7 +1801,7 @@ msgstr ""
 msgid "Additionnaly, which table(s) do you want to export?"
 msgstr ""
 
-#: ../install/index.php:1481
+#: ../install/index.php:1480
 msgid "Galette has been successfully updated!"
 msgstr ""
 
@@ -1857,7 +1856,7 @@ msgstr ""
 msgid "(Show or not title in front of name)"
 msgstr ""
 
-#: ../install/index.php:1438
+#: ../install/index.php:1437
 msgid "This can come from the permissions on the configuration file or the impossibility to make an INSERT into the database."
 msgstr ""
 
@@ -2004,7 +2003,7 @@ msgstr ""
 msgid "Parent group:"
 msgstr ""
 
-#: ../install/index.php:1370
+#: ../install/index.php:1369
 msgid "Required fields upgrade has failed :("
 msgstr ""
 
@@ -2044,7 +2043,7 @@ msgstr ""
 msgid "An error occured sending photo :("
 msgstr ""
 
-#: ../includes/i18n.inc.php:360 ../install/index.php:1322
+#: ../install/index.php:1322
 msgid "Mr."
 msgstr ""
 
@@ -2155,7 +2154,7 @@ msgstr ""
 msgid "New occurence"
 msgstr ""
 
-#: ../install/index.php:1484
+#: ../install/index.php:1483
 msgid "To secure the system, please delete the install directory"
 msgstr ""
 
@@ -2163,7 +2162,7 @@ msgstr ""
 msgid "Invert selection"
 msgstr ""
 
-#: ../includes/i18n.inc.php:364
+#: ../includes/i18n.inc.php:361
 msgid "Galette-related data"
 msgstr ""
 
@@ -2259,7 +2258,7 @@ msgstr ""
 msgid "Visible"
 msgstr ""
 
-#: ../includes/i18n.inc.php:362 ../install/index.php:1326
+#: ../install/index.php:1325 ../templates/default/gestion_adherents.tpl:223
 msgid "Mrs."
 msgstr ""
 
@@ -2308,7 +2307,7 @@ msgstr ""
 #: ../install/index.php:505 ../install/index.php:644
 #: ../install/index.php:741 ../install/index.php:887
 #: ../install/index.php:1130 ../install/index.php:1176
-#: ../install/index.php:1414 ../templates/default/ajax_plugins_initdb.tpl:81
+#: ../install/index.php:1413 ../templates/default/ajax_plugins_initdb.tpl:81
 msgid "Next step"
 msgstr ""
 
@@ -2348,7 +2347,7 @@ msgstr ""
 msgid "transaction"
 msgstr ""
 
-#: ../install/index.php:1439
+#: ../install/index.php:1438
 msgid "Check above errors to know what went wrong."
 msgstr ""
 
@@ -2535,7 +2534,7 @@ msgstr ""
 msgid "Member"
 msgstr ""
 
-#: ../install/index.php:1478
+#: ../install/index.php:1477
 msgid "Galette has been successfully installed!"
 msgstr ""
 
@@ -2554,12 +2553,12 @@ msgid "Type"
 msgstr ""
 
 #: ../install/index.php:213 ../install/index.php:516
-#: ../install/index.php:600 ../install/index.php:1501
+#: ../install/index.php:600 ../install/index.php:1500
 msgid "Database"
 msgstr ""
 
 #: ../install/index.php:496 ../install/index.php:867
-#: ../install/index.php:1104 ../install/index.php:1444
+#: ../install/index.php:1104 ../install/index.php:1443
 #: ../templates/default/ajax_plugins_initdb.tpl:79
 msgid "Retry"
 msgstr ""
@@ -2633,7 +2632,7 @@ msgstr ""
 msgid "An error occured displaying contributions :("
 msgstr ""
 
-#: ../install/index.php:1282 ../install/index.php:1356
+#: ../install/index.php:1282 ../install/index.php:1355
 msgid "Default fields configuration cannot be initialized."
 msgstr ""
 
@@ -2702,7 +2701,7 @@ msgstr ""
 msgid "Application runs under demo mode. This functionnality is not enabled, sorry."
 msgstr ""
 
-#: ../install/index.php:1329 ../templates/default/gestion_adherents.tpl:223
+#: ../install/index.php:1328 ../templates/default/gestion_adherents.tpl:223
 msgid "Miss"
 msgstr ""
 
@@ -2781,7 +2780,7 @@ msgstr ""
 msgid "available only for new password request"
 msgstr ""
 
-#: ../install/index.php:1496 ../templates/default/ajax_plugins_initdb.tpl:94
+#: ../install/index.php:1495 ../templates/default/ajax_plugins_initdb.tpl:94
 msgid "Steps:"
 msgstr ""
 
@@ -2835,7 +2834,7 @@ msgstr ""
 msgid "No port"
 msgstr ""
 
-#: ../install/index.php:221 ../install/index.php:1503
+#: ../install/index.php:221 ../install/index.php:1502
 #: ../templates/default/ajax_plugins_initdb.tpl:97
 msgid "Access permissions to database"
 msgstr ""
@@ -2945,7 +2944,7 @@ msgstr ""
 msgid "Use either the adress setted below or select a staff member to retrieve he's adress."
 msgstr ""
 
-#: ../install/index.php:1374
+#: ../install/index.php:1373
 msgid "Required fields have been upgraded successfully."
 msgstr ""
 
@@ -3065,13 +3064,7 @@ msgstr ""
 msgid "Latecomers"
 msgstr ""
 
-#: ../templates/default/gestion_textes.tpl:49 ../templates/default/gestion_textes.tpl:51
-#: ../templates/default/gestion_textes.tpl:55 ../templates/default/gestion_textes.tpl:57
-#: ../templates/default/gestion_textes.tpl:61
-msgid "available with reservations"
-msgstr ""
-
-#: ../install/index.php:233 ../install/index.php:1506
+#: ../install/index.php:233 ../install/index.php:1505
 msgid "Saving the parameters"
 msgstr ""
 
@@ -3079,7 +3072,7 @@ msgstr ""
 msgid "SMTP (or GMail) user:"
 msgstr ""
 
-#: ../install/index.php:217 ../install/index.php:1502
+#: ../install/index.php:217 ../install/index.php:1501
 msgid "Access to the database"
 msgstr ""
 
@@ -3231,8 +3224,10 @@ msgstr ""
 msgid "The text that will be automatically set as signature for all outgoing emails.<br/>Variables are quoted with braces, are upper case, and will be replaced automatically.<br/>Refer to the doc to know what variables ara available. "
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:223
-msgid "Mrs"
+#: ../templates/default/gestion_textes.tpl:49 ../templates/default/gestion_textes.tpl:51
+#: ../templates/default/gestion_textes.tpl:55 ../templates/default/gestion_textes.tpl:57
+#: ../templates/default/gestion_textes.tpl:61
+msgid "available with reservations"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:311 ../templates/default/preferences.tpl:312
@@ -3428,7 +3423,7 @@ msgstr ""
 msgid "annual fee (to be paid)"
 msgstr ""
 
-#: ../includes/i18n.inc.php:363
+#: ../includes/i18n.inc.php:360
 msgid "Identity"
 msgstr ""
 
@@ -3468,7 +3463,7 @@ msgstr ""
 msgid "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 msgstr ""
 
-#: ../install/index.php:209 ../install/index.php:1500
+#: ../install/index.php:209 ../install/index.php:1499
 msgid "Checks"
 msgstr ""
 
@@ -3765,7 +3760,7 @@ msgstr ""
 msgid "single line"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:249 ../install/index.php:1473
+#: ../ajax_plugins_initdb.php:249 ../install/index.php:1472
 msgid "Update complete !"
 msgstr ""
 
@@ -3984,7 +3979,7 @@ msgstr ""
 msgid "Up to date members"
 msgstr ""
 
-#: ../install/index.php:237 ../install/index.php:1507
+#: ../install/index.php:237 ../install/index.php:1506
 #: ../templates/default/ajax_plugins_initdb.tpl:99
 msgid "End!"
 msgstr ""
@@ -4040,7 +4035,7 @@ msgid "A problem happened while sending password for account '%s'"
 msgstr ""
 
 #: ../install/index.php:521 ../install/index.php:1155
-#: ../install/index.php:1437 ../templates/default/mailing_adherents.tpl:3
+#: ../install/index.php:1436 ../templates/default/mailing_adherents.tpl:3
 #: ../templates/default/global_messages.tpl:4
 msgid "- ERROR -"
 msgstr ""
@@ -4383,7 +4378,7 @@ msgstr ""
 msgid "Project leader"
 msgstr ""
 
-#: ../install/index.php:229 ../install/index.php:1505
+#: ../install/index.php:229 ../install/index.php:1504
 msgid "Admin parameters"
 msgstr ""
 
@@ -4427,7 +4422,7 @@ msgstr ""
 msgid "PHP version %version"
 msgstr ""
 
-#: ../install/index.php:1286 ../install/index.php:1360
+#: ../install/index.php:1286 ../install/index.php:1359
 msgid "Default fields configuration was successfully stored."
 msgstr ""
 
@@ -4467,7 +4462,7 @@ msgstr ""
 msgid "An error occured reordering groups :("
 msgstr ""
 
-#: ../install/index.php:1438
+#: ../install/index.php:1437
 msgid "Parameters couldn't be saved."
 msgstr ""
 
@@ -4488,7 +4483,7 @@ msgstr ""
 msgid "Related transaction informations"
 msgstr ""
 
-#: ../install/index.php:1297 ../install/index.php:1348
+#: ../install/index.php:1297 ../install/index.php:1347
 msgid "Titles were successfully stored."
 msgstr ""
 
@@ -4552,7 +4547,7 @@ msgstr ""
 msgid "member"
 msgstr ""
 
-#: ../install/index.php:1293 ../install/index.php:1344
+#: ../install/index.php:1293 ../install/index.php:1343
 msgid "Titles cannot be initialized."
 msgstr ""
 
@@ -4629,7 +4624,7 @@ msgstr ""
 msgid "Begin"
 msgstr ""
 
-#: ../install/index.php:1395
+#: ../install/index.php:1394
 msgid "Default texts were successfully stored."
 msgstr ""
 
