@@ -71,7 +71,7 @@ class Titles
         array(
             'id_title'      => 2,
             'short_label'   => 'Mrs.',
-            'long_label'    => 'Mrs.'
+            'long_label'    => null
         )
     );
 
@@ -119,7 +119,12 @@ class Titles
 
             foreach ( self::$_defaults as $d ) {
                 $short = _T($d['short_label']);
-                $long = _T($d['long_label']);
+                $long = null;
+                if ( $d['long_label'] !== null ) {
+                    $long = _T($d['long_label']);
+                } else {
+                    $long = new \Zend_Db_Expr('NULL');
+                }
                 $stmt->bindParam(':id', $d['id_title']);
                 $stmt->bindParam(':short', $short);
                 $stmt->bindParam(':long', $long);

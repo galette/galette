@@ -181,6 +181,11 @@ class Title
             break;
         case 'short':
         case 'long':
+            if ( $name === 'long'
+                && ($this->_long == null || trim($this->_long) === '')
+            ) {
+                $rname = '_short';
+            }
             return $this->$rname;
             break;
         case 'tshort':
@@ -189,7 +194,12 @@ class Title
             if ( $name === 'tshort' ) {
                 $rname = '_short';
             } else {
-                $rname = '_long';
+                if ( $this->_long !== null && trim($this->_long) !== '' ) {
+                    $rname = '_long';
+                } else {
+                    //switch back to short version if long does not exists
+                    $rname = '_short';
+                }
             }
             if ( isset($lang) && isset($lang[$this->$rname])) {
                 return _T($this->$rname);

@@ -1307,6 +1307,48 @@ define("STOCK_FILES", "tempimages");
                 true
             );
 
+            //titles has been initialized by SQL upgrade script
+            //but in english. If install language is not english,
+            //we have to translate those values.
+            $titles = new Galette\Repository\Titles();
+            if ( $i18n->getID() != 'en_US' ) {
+                $titles_list = $titles->getList($zdb);
+                $res = true;
+                $zdb->db->beginTransaction();
+                foreach ( $titles_list as $title ) {
+                    if ( $res == true ) {
+                        switch ( $title->short ) {
+                        case 'Mr.':
+                            $title->short = _T("Mr.");
+                            $title->long = _T("Mister");
+                            break;
+                        case 'Mrs.':
+                            $title->short = _T("Mrs.");
+                            break;
+                        case 'Miss':
+                            $title->short = _T("Miss");
+                            break;
+                        }
+                        $res = $title->store($zdb);
+                    }
+                }
+                if ( $res == true ) {
+                    $zdb->db->commit();
+                } else {
+                    $zdb->db->rollBack();
+                }
+            }
+
+            if ( $res !== true ) {
+                $errs[] = '<li class="install-bad">' .
+                    _T("Titles cannot be initialized.") .
+                    '<span>' . $res->getMessage() . '</span></li>';
+            } else {
+                $oks[] = '<li class="install-ok">' .
+                    _T("Titles were successfully stored.") .
+                    '</li>';
+            }
+
             //proceed fields configuration reinitialization
             $res = $fc->init(false, true);
             if ( $res !== true ) {
