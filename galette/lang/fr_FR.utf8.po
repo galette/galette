@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2013-02-22 10:07+0100\n"
+"PO-Revision-Date: 2013-02-22 19:08+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -299,7 +299,7 @@ msgstr "Graphiques"
 msgid "Modules that may be required"
 msgstr "Modules qui peuvent être requis"
 
-#: ../ajax_plugins_initdb.php:247 ../install/index.php:1428
+#: ../ajax_plugins_initdb.php:247 ../install/index.php:1470
 msgid "Installation complete !"
 msgstr "Fin de l'installation"
 
@@ -918,7 +918,7 @@ msgstr "Aucun adhérent enregistré&nbsp;!"
 msgid "My transactions"
 msgstr "Mes transactions"
 
-#: ../install/index.php:1349
+#: ../install/index.php:1391
 msgid "Default texts cannot be initialized."
 msgstr "Les textes par défaut n'ont pas été initialisés."
 
@@ -1306,7 +1306,7 @@ msgstr "- Vous devez fournir un identifiant pour l'authentification SMTP."
 msgid "No such module."
 msgstr "Module inconnu."
 
-#: ../install/index.php:202 ../install/index.php:1456
+#: ../install/index.php:202 ../install/index.php:1498
 msgid "Language"
 msgstr "Langue"
 
@@ -1376,7 +1376,7 @@ msgid "Disabled"
 msgstr "Désactivé"
 
 #: ../ajax_plugins_initdb.php:107 ../install/index.php:205
-#: ../install/index.php:311 ../install/index.php:1457
+#: ../install/index.php:311 ../install/index.php:1499
 #: ../templates/default/ajax_plugins_initdb.tpl:96
 msgid "Installation mode"
 msgstr "Type d'installation"
@@ -1441,7 +1441,8 @@ msgstr "Utilisateur&nbsp;:"
 msgid "or"
 msgstr "ou"
 
-#: ../includes/i18n.inc.php:361 ../templates/default/gestion_adherents.tpl:217
+#: ../includes/i18n.inc.php:361 ../install/index.php:1323
+#: ../templates/default/gestion_adherents.tpl:217
 msgid "Mister"
 msgstr "Monsieur"
 
@@ -1575,7 +1576,7 @@ msgstr "Veuillez spécifier un nom de groupe"
 msgid "System informations"
 msgstr "Informations système"
 
-#: ../install/index.php:225 ../install/index.php:1462
+#: ../install/index.php:225 ../install/index.php:1504
 #: ../templates/default/ajax_plugins_initdb.tpl:98
 msgid "Tables Creation/Update"
 msgstr "Création/Mise à jour des tables"
@@ -1752,7 +1753,7 @@ msgstr "Contributions"
 msgid "Admin and staff only"
 msgstr "Administrateurs et membres du bureau uniquement"
 
-#: ../install/index.php:1445
+#: ../install/index.php:1487
 msgid "Homepage"
 msgstr "Page d'accueil"
 
@@ -2025,7 +2026,7 @@ msgstr "Veuillez saisir un message."
 msgid "Additionnaly, which table(s) do you want to export?"
 msgstr "Aditionnellement, quelle(s) table(s) souhaitez vous exporter ?"
 
-#: ../install/index.php:1439
+#: ../install/index.php:1481
 msgid "Galette has been successfully updated!"
 msgstr "Galette a été mis à jour avec succès&nbsp;!"
 
@@ -2084,7 +2085,7 @@ msgstr "Opération INSERT non autorisée"
 msgid "(Show or not title in front of name)"
 msgstr "(Afficher le titre devant le nom)"
 
-#: ../install/index.php:1396
+#: ../install/index.php:1438
 msgid ""
 "This can come from the permissions on the configuration file or the "
 "impossibility to make an INSERT into the database."
@@ -2252,7 +2253,7 @@ msgstr "Contribution mise à jour"
 msgid "Parent group:"
 msgstr "Groupe parent&nbsp;:"
 
-#: ../install/index.php:1328
+#: ../install/index.php:1370
 msgid "Required fields upgrade has failed :("
 msgstr "La mise à jour des champs requis a échoué :("
 
@@ -2294,7 +2295,7 @@ msgstr "Étiquettes des membres"
 msgid "An error occured sending photo :("
 msgstr "Une erreur est survenue lors de l'envoi de la photo :("
 
-#: ../includes/i18n.inc.php:360
+#: ../includes/i18n.inc.php:360 ../install/index.php:1322
 msgid "Mr."
 msgstr "M."
 
@@ -2412,7 +2413,7 @@ msgstr "Gestion des textes et sujets des courriels"
 msgid "New occurence"
 msgstr "Nouvelle occurrence"
 
-#: ../install/index.php:1442
+#: ../install/index.php:1484
 msgid "To secure the system, please delete the install directory"
 msgstr "Pour sécuriser le système, veuillez supprimer le dossier « install »"
 
@@ -2524,7 +2525,7 @@ msgstr "Le titre « %s » a été modifié avec succès."
 msgid "Visible"
 msgstr "Visibilité"
 
-#: ../includes/i18n.inc.php:362
+#: ../includes/i18n.inc.php:362 ../install/index.php:1326
 msgid "Mrs."
 msgstr "Mme."
 
@@ -2574,7 +2575,7 @@ msgstr "Administrateur Galette&nbsp;:"
 #: ../install/index.php:305 ../install/index.php:351 ../install/index.php:505
 #: ../install/index.php:644 ../install/index.php:741 ../install/index.php:887
 #: ../install/index.php:1130 ../install/index.php:1176
-#: ../install/index.php:1372 ../templates/default/ajax_plugins_initdb.tpl:81
+#: ../install/index.php:1414 ../templates/default/ajax_plugins_initdb.tpl:81
 msgid "Next step"
 msgstr "Étape suivante"
 
@@ -2621,7 +2622,7 @@ msgstr ""
 msgid "transaction"
 msgstr "transaction"
 
-#: ../install/index.php:1397
+#: ../install/index.php:1439
 msgid "Check above errors to know what went wrong."
 msgstr "Consultez les erreurs ci-dessous pour savoir ce qui n'a pas été."
 
@@ -2833,7 +2834,7 @@ msgstr "Groupes&nbsp;:"
 msgid "Member"
 msgstr "Adhérent"
 
-#: ../install/index.php:1436
+#: ../install/index.php:1478
 msgid "Galette has been successfully installed!"
 msgstr "Galette a été installé avec succès&nbsp;!"
 
@@ -2854,12 +2855,12 @@ msgid "Type"
 msgstr "Type"
 
 #: ../install/index.php:213 ../install/index.php:516 ../install/index.php:600
-#: ../install/index.php:1459
+#: ../install/index.php:1501
 msgid "Database"
 msgstr "Base de données"
 
 #: ../install/index.php:496 ../install/index.php:867 ../install/index.php:1104
-#: ../install/index.php:1402 ../templates/default/ajax_plugins_initdb.tpl:79
+#: ../install/index.php:1444 ../templates/default/ajax_plugins_initdb.tpl:79
 msgid "Retry"
 msgstr "Réessayer"
 
@@ -2951,7 +2952,7 @@ msgstr "Général"
 msgid "An error occured displaying contributions :("
 msgstr "Une erreur est survenue lors de l'affichage des contributions :("
 
-#: ../install/index.php:1282 ../install/index.php:1314
+#: ../install/index.php:1282 ../install/index.php:1356
 msgid "Default fields configuration cannot be initialized."
 msgstr "La configuration des champs par défaut n'a pas été initialisée."
 
@@ -3030,9 +3031,9 @@ msgstr ""
 "L'application tourne en mode démonstration. Cette fonctionnalité n'est pas "
 "activée, désolés."
 
-#: ../templates/default/gestion_adherents.tpl:223
+#: ../install/index.php:1329 ../templates/default/gestion_adherents.tpl:223
 msgid "Miss"
-msgstr "Mademoiselle"
+msgstr "Mlle"
 
 #: ../install/index.php:860
 msgid ""
@@ -3114,7 +3115,7 @@ msgstr "Une erreur est survenue lors du chargement du groupe sélectionné :("
 msgid "available only for new password request"
 msgstr "disponible uniquement lors de la réinitialisation du mot de passe"
 
-#: ../install/index.php:1454 ../templates/default/ajax_plugins_initdb.tpl:94
+#: ../install/index.php:1496 ../templates/default/ajax_plugins_initdb.tpl:94
 msgid "Steps:"
 msgstr "Étapes&nbsp;:"
 
@@ -3174,7 +3175,7 @@ msgstr "Transactions"
 msgid "No port"
 msgstr "Pas de port"
 
-#: ../install/index.php:221 ../install/index.php:1461
+#: ../install/index.php:221 ../install/index.php:1503
 #: ../templates/default/ajax_plugins_initdb.tpl:97
 msgid "Access permissions to database"
 msgstr "Droits d'accès à la base"
@@ -3295,7 +3296,7 @@ msgstr ""
 "Utiliser l'adresse renseignée ci-dessus ou choisissez un membre du bureau "
 "pour utiliser la sienne."
 
-#: ../install/index.php:1332
+#: ../install/index.php:1374
 msgid "Required fields have been upgraded successfully."
 msgstr "Les champs requis ont été mis à jour avec succès."
 
@@ -3436,7 +3437,7 @@ msgstr "Les retardataires"
 msgid "available with reservations"
 msgstr "disponible sous réserves"
 
-#: ../install/index.php:233 ../install/index.php:1464
+#: ../install/index.php:233 ../install/index.php:1506
 msgid "Saving the parameters"
 msgstr "Sauvegarde des paramètres"
 
@@ -3444,7 +3445,7 @@ msgstr "Sauvegarde des paramètres"
 msgid "SMTP (or GMail) user:"
 msgstr "Utilisateur SMTP (ou GMail)&nbsp;:"
 
-#: ../install/index.php:217 ../install/index.php:1460
+#: ../install/index.php:217 ../install/index.php:1502
 msgid "Access to the database"
 msgstr "Accès à la base"
 
@@ -3903,7 +3904,7 @@ msgid ""
 msgstr ""
 "Les droits nécessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et INSERT."
 
-#: ../install/index.php:209 ../install/index.php:1458
+#: ../install/index.php:209 ../install/index.php:1500
 msgid "Checks"
 msgstr "Vérifications"
 
@@ -4244,7 +4245,7 @@ msgstr "L'E-Mailing n'a pas encore été envoyé"
 msgid "single line"
 msgstr "ligne simple"
 
-#: ../ajax_plugins_initdb.php:249 ../install/index.php:1431
+#: ../ajax_plugins_initdb.php:249 ../install/index.php:1473
 msgid "Update complete !"
 msgstr "Fin de la mise à jour"
 
@@ -4491,7 +4492,7 @@ msgstr "Groupe ajouté"
 msgid "Up to date members"
 msgstr "Adhérents à jour"
 
-#: ../install/index.php:237 ../install/index.php:1465
+#: ../install/index.php:237 ../install/index.php:1507
 #: ../templates/default/ajax_plugins_initdb.tpl:99
 msgid "End!"
 msgstr "Fin&nbsp;!"
@@ -4556,7 +4557,7 @@ msgstr ""
 "Un problème est survenu dans l'envoi du mot de passe pour le compte « %s »"
 
 #: ../install/index.php:521 ../install/index.php:1155
-#: ../install/index.php:1395 ../templates/default/mailing_adherents.tpl:3
+#: ../install/index.php:1437 ../templates/default/mailing_adherents.tpl:3
 #: ../templates/default/global_messages.tpl:4
 msgid "- ERROR -"
 msgstr "- ERREUR -"
@@ -4940,7 +4941,7 @@ msgstr "Traduction des étiquettes pour les champs additionnels"
 msgid "Project leader"
 msgstr "Leader du projet"
 
-#: ../install/index.php:229 ../install/index.php:1463
+#: ../install/index.php:229 ../install/index.php:1505
 msgid "Admin parameters"
 msgstr "paramètres administrateur"
 
@@ -4985,7 +4986,7 @@ msgstr "Entreprise"
 msgid "PHP version %version"
 msgstr "PHP version %version"
 
-#: ../install/index.php:1286 ../install/index.php:1318
+#: ../install/index.php:1286 ../install/index.php:1360
 msgid "Default fields configuration was successfully stored."
 msgstr "La configuration par défaut des champs a été sauvegardée avec succès."
 
@@ -5027,7 +5028,7 @@ msgstr "Sujet"
 msgid "An error occured reordering groups :("
 msgstr "Une erreur est survenue lors de la réorganisation des groupes :("
 
-#: ../install/index.php:1396
+#: ../install/index.php:1438
 msgid "Parameters couldn't be saved."
 msgstr "Les paramètres n'ont pas pu être sauvegardés."
 
@@ -5049,7 +5050,7 @@ msgstr "Tout"
 msgid "Related transaction informations"
 msgstr "Informations sur la transaction liée"
 
-#: ../install/index.php:1297
+#: ../install/index.php:1297 ../install/index.php:1348
 msgid "Titles were successfully stored."
 msgstr "Les titres ont été sauvegardés avec succès."
 
@@ -5130,7 +5131,7 @@ msgstr "Votre version actuelle de %name est comprise entre"
 msgid "member"
 msgstr "adhérent"
 
-#: ../install/index.php:1293
+#: ../install/index.php:1293 ../install/index.php:1344
 msgid "Titles cannot be initialized."
 msgstr "Les titres n'ont pas été initialisés."
 
@@ -5209,7 +5210,7 @@ msgstr "Utilisateur"
 msgid "Begin"
 msgstr "Début"
 
-#: ../install/index.php:1353
+#: ../install/index.php:1395
 msgid "Default texts were successfully stored."
 msgstr "Les textes par défaut ont été sauvegardés avec succès."
 
