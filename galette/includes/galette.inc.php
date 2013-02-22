@@ -35,10 +35,15 @@
  * @since     Available since 0.7-dev - 2007-10-07
  */
 
+if ( !defined('GALETTE_PHP_MIN') ) {
+    define('GALETTE_PHP_MIN', '5.3.7');
+}
+
 // check required PHP version...
-if ( version_compare(PHP_VERSION, '5.3.7', '<') ) {
+if ( version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<') ) {
     echo 'Galette is NOT compliant with your current PHP version. ' .
-        'Galette requires PHP 5.3 minimum, current version is ' . phpversion();
+        'Galette requires PHP ' . GALETTE_PHP_MIN  .
+        ' minimum and current version is ' . phpversion();
     die();
 }
 

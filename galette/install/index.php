@@ -363,7 +363,7 @@ case 'u3':
     $files_perms_class = '';
 
     // check required PHP version...
-    if ( version_compare(PHP_VERSION, '5.3.7', '<') ) {
+    if ( version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<') ) {
         $php_ok = false;
         $php_class .= $class . 'bad';
     } else {
@@ -376,7 +376,14 @@ case 'u3':
                 </header>
                 <?php
     if ( $php_ok !== true ) {
-        echo '<p class="error">' . _T("Galette requires at least PHP version 5.3.") . '</p>';
+        $msg = '<p class="error">';
+        $msg .= str_replace(
+            '%ver',
+            GALETTE_PHP_MIN,
+            _T("Galette requires at least PHP version %ver!")
+        );
+        $msg .= '</p>';
+        echo $msg;
     }
     echo str_replace('%version', PHP_VERSION, _T("PHP version %version"));
                 ?>
