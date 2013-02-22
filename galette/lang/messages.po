@@ -788,6 +788,10 @@ msgstr ""
 msgid "SELECT operation not allowed"
 msgstr ""
 
+#: ../templates/default/configurer_fiche_content.tpl:54
+msgid "There is not yet any dynamic field configured for '%formname'"
+msgstr ""
+
 #: ../ajouter_contribution.php:137
 msgid "An error occured checking overlaping fees :("
 msgstr ""
@@ -1987,6 +1991,10 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
+#: ../templates/default/member.tpl:81
+msgid "Company name:"
+msgstr ""
+
 #: ../includes/i18n.inc.php:350
 msgid "french"
 msgstr ""
@@ -2351,8 +2359,8 @@ msgstr ""
 msgid "Not a GIF file "
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:859
-msgid "- This E-Mail address is already used by another member!"
+#: ../lib/Galette/Filters/MembersList.php:295
+msgid "Company name"
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:132 ../templates/default/ajouter_contribution.tpl:92
@@ -3505,8 +3513,7 @@ msgstr ""
 msgid "MSN"
 msgstr ""
 
-#: ../includes/members_fields.php:77 ../templates/default/member.tpl:81
-#: ../templates/default/voir_adherent.tpl:67
+#: ../includes/members_fields.php:77 ../templates/default/voir_adherent.tpl:67
 msgid "Company:"
 msgstr ""
 
@@ -4414,10 +4421,6 @@ msgstr ""
 msgid "Remove criteria"
 msgstr ""
 
-#: ../lib/Galette/Filters/MembersList.php:295
-msgid "Company"
-msgstr ""
-
 #: ../install/index.php:388
 msgid "PHP version %version"
 msgstr ""
@@ -4632,8 +4635,8 @@ msgstr ""
 msgid "Unable to attach contribution to transaction"
 msgstr ""
 
-#: ../templates/default/configurer_fiche_content.tpl:54
-msgid "There is not yet any dynamic field configured for '%formname'"
+#: ../lib/Galette/Entity/Adherent.php:859
+msgid "- This E-Mail address is already used by another member!"
 msgstr ""
 
 #: ../templates/default/change_passwd.tpl:19

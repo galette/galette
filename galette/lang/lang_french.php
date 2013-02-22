@@ -1,10 +1,10 @@
 <?php
-// This file was automatically generated on Fri Feb 22 21:40:24 2013 (GMT)
+// This file was automatically generated on Fri Feb 22 21:58:42 2013 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
-// ../lib/Galette/Core/Plugins.php:213 ../lib/Galette/Core/Plugins.php:217 
-$lang['Cannot deactivate plugin.'] = 'Impossible de désactiver le plugin.';
+// ../templates/default/member.tpl:81 
+$lang['Company name:'] = 'Raison sociale :';
 
 // ../lib/Galette/Entity/DynamicFields.php:111 
 $lang['all'] = 'tous';
@@ -693,6 +693,9 @@ $lang['Account activity'] = 'Activité du compte';
 // ../templates/default/voir_adherent.tpl:254 
 $lang['Last modification date:'] = 'Date de dernière modification&nbsp;:';
 
+// ../lib/Galette/Filters/MembersList.php:295 
+$lang['Company name'] = 'Raison sociale';
+
 // ../lib/Galette/IO/Pdf.php:184 
 $lang['Missing or incorrect image file '] = 'Fichier d\'image manquant ou incorrect ';
 
@@ -1152,8 +1155,8 @@ $lang['-- Choose a staff member --'] = '-- Choisissez un membre du bureau --';
 // ../templates/default/editer_champ.tpl:18 
 $lang['Required:'] = 'Obligatoire&nbsp;:';
 
-// ../includes/members_fields.php:77 ../templates/default/member.tpl:81 ../templates/default/voir_adherent.tpl:67 
-$lang['Company:'] = 'Raison sociale';
+// ../includes/members_fields.php:77 ../templates/default/voir_adherent.tpl:67 
+$lang['Company:'] = 'Personne morale&nbsp;:';
 
 // ../templates/default/advanced_search.tpl:182 
 $lang['starts with'] = 'commence par';
@@ -1220,6 +1223,9 @@ $lang['Member of \'%groupname\''] = 'Membre de « %groupname »';
 
 // ../install/index.php:338 
 $lang['Your current Galette version is'] = 'Votre version actuelle de Galette est la';
+
+// ../lib/Galette/Core/Plugins.php:213 ../lib/Galette/Core/Plugins.php:217 
+$lang['Cannot deactivate plugin.'] = 'Impossible de désactiver le plugin.';
 
 // ../templates/default/preferences.tpl:227 
 $lang['Use TLS for SMTP?'] = 'Utiliser TLS pour SMPT&nbsp;?';
@@ -1629,8 +1635,8 @@ $lang['The uploaded file exceeds the MAX_FILE_SIZE directive that was specified 
 // ../templates/default/preferences.tpl:238 
 $lang['SMTP (or GMail) password:'] = 'Mot de passe SMTP (ou GMail)&nbsp;:';
 
-// ../templates/default/ajax_plugins_initdb.tpl:14 
-$lang['You\'re installing \'%name\' plugin for the first time, or you wish to erase an older version of the plugin without keeping your data'] = 'Vous installez le plugin « %name » pour la première fois, ou vous souhaitez écraser une ancienne version du plugin sans conserver vos données';
+// ../templates/default/ajouter_transaction.tpl:54 ../templates/default/gestion_contributions.tpl:138 
+$lang['Duration'] = 'Durée';
 
 // ../templates/default/gestion_adherents.tpl:32 ../templates/default/advanced_search.tpl:40 
 $lang['Without'] = 'Sans';
@@ -2019,8 +2025,8 @@ $lang['Galette requires at least PHP version %ver!'] = 'Galette requiert PHP en 
 // ../templates/default/voir_adherent.tpl:15 
 $lang['New password'] = 'Nouveau Mot de passe';
 
-// ../lib/Galette/Entity/Adherent.php:859 
-$lang['- This E-Mail address is already used by another member!'] = '- Cette adresse de courriel est déjà utilisée par un autre adhérent&nbsp;!';
+// ../templates/default/preferences.tpl:311 ../templates/default/preferences.tpl:312 ../templates/default/preferences.tpl:317 ../templates/default/preferences.tpl:318 ../templates/default/preferences.tpl:322 ../templates/default/preferences.tpl:323 ../templates/default/preferences.tpl:327 ../templates/default/preferences.tpl:328 
+$lang['Hexadecimal color notation: #RRGGBB'] = 'Notation de couleur hexadécimale : #RRVVBB';
 
 // ../includes/i18n.inc.php:350 
 $lang['french'] = 'français';
@@ -2073,8 +2079,8 @@ $lang['Transactions'] = 'Transactions';
 // ../lib/Galette/IO/Charts.php:228 
 $lang['Up to date'] = 'À jour';
 
-// ../templates/default/preferences.tpl:311 ../templates/default/preferences.tpl:312 ../templates/default/preferences.tpl:317 ../templates/default/preferences.tpl:318 ../templates/default/preferences.tpl:322 ../templates/default/preferences.tpl:323 ../templates/default/preferences.tpl:327 ../templates/default/preferences.tpl:328 
-$lang['Hexadecimal color notation: #RRGGBB'] = 'Notation de couleur hexadécimale : #RRVVBB';
+// ../lib/Galette/Entity/Adherent.php:859 
+$lang['- This E-Mail address is already used by another member!'] = '- Cette adresse de courriel est déjà utilisée par un autre adhérent&nbsp;!';
 
 // ../gestion_textes.php:89 
 $lang['Email: \'%s\' has been successfully modified.'] = 'Le courriel « %s » a été modifié avec succès.';
@@ -2544,8 +2550,8 @@ $lang['File upload stopped by extension'] = 'L\'envoi du fichier a été stoppé
 // ../includes/i18n.inc.php:351 
 $lang['english'] = 'anglais';
 
-// ../templates/default/ajouter_transaction.tpl:54 ../templates/default/gestion_contributions.tpl:138 
-$lang['Duration'] = 'Durée';
+// ../templates/default/configurer_fiche_content.tpl:54 
+$lang['There is not yet any dynamic field configured for \'%formname\''] = 'Il n\'y a pas encore de champ dynamique configuré pour « %formname »';
 
 // ../templates/default/page.tpl:113 
 $lang['Perform advanced search into members list'] = 'Effectuer une recherche avancée dans la liste des membres';
@@ -2774,9 +2780,6 @@ $lang['Select contributor and contribution type'] = 'Sélectionnez le contribute
 
 // ../templates/default/preferences.tpl:151 
 $lang['Self subscription enabled?'] = 'Auto-Enregistrement actif&nbsp;?';
-
-// ../templates/default/configurer_fiche_content.tpl:54 
-$lang['There is not yet any dynamic field configured for \'%formname\''] = 'Il n\'y a pas encore de champ dynamique configuré pour « %formname »';
 
 // ../templates/default/preferences.tpl:6 
 $lang['Parameters'] = 'Paramètres';
@@ -3093,9 +3096,6 @@ $lang['directory_name'] = 'nom_dossier';
 // ../templates/default/history.tpl:47 
 $lang['User'] = 'Utilisateur';
 
-// ../lib/Galette/Filters/MembersList.php:295 
-$lang['Company'] = 'Entreprise';
-
 // ../templates/default/gestion_mailings.tpl:91 
 $lang['Use mailing \'%subject\' as a template for a new one'] = 'Utiliser le mailing « %subject » comme template pour en créer un nouveau';
 
@@ -3212,6 +3212,9 @@ $lang['New member has been successfully added.'] = 'Le nouvel adhérent a été 
 
 // ../includes/i18n.inc.php:346 
 $lang['Company cotisation'] = 'Cotisation personne morale';
+
+// ../templates/default/ajax_plugins_initdb.tpl:14 
+$lang['You\'re installing \'%name\' plugin for the first time, or you wish to erase an older version of the plugin without keeping your data'] = 'Vous installez le plugin « %name » pour la première fois, ou vous souhaitez écraser une ancienne version du plugin sans conserver vos données';
 
 // ../install/index.php:410 
 $lang['Date settings'] = 'Paramètres de date';

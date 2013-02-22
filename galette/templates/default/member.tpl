@@ -78,7 +78,7 @@
                         <input type="checkbox" name="is_company" id="is_company" value="1"{if $member->isCompany()} checked="checked"{/if}/>
                     </p>
                     <p id="company_field"{if !$member->isCompany()} class="hidden"{/if}>
-                        <label for="societe_adh" class="bline">{_T string="Company:"}</label>
+                        <label for="societe_adh" class="bline">{_T string="Company name:"}</label>
                         <input type="text" name="societe_adh" id="societe_adh" value="{$member->company_name}" maxlength="200"{if isset($disabled.societe_adh)} {$disabled.societe_adh}{/if}{if isset($required.societe_adh) and $required.societe_adh eq 1} required{/if}/>
                     </p>
     {else}

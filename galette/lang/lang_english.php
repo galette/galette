@@ -1,10 +1,10 @@
 <?php
-// This file was automatically generated on Fri Feb 22 21:40:23 2013 (GMT)
+// This file was automatically generated on Fri Feb 22 21:58:41 2013 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
-// ../lib/Galette/Core/Plugins.php:213 ../lib/Galette/Core/Plugins.php:217 
-$lang['Cannot deactivate plugin.'] = 'Cannot deactivate plugin.';
+// ../templates/default/member.tpl:81 
+$lang['Company name:'] = 'Company name:';
 
 // ../lib/Galette/Entity/DynamicFields.php:111 
 $lang['all'] = 'all';
@@ -693,6 +693,9 @@ $lang['Account activity'] = 'Account activity';
 // ../templates/default/voir_adherent.tpl:254 
 $lang['Last modification date:'] = 'Last modification date:';
 
+// ../lib/Galette/Filters/MembersList.php:295 
+$lang['Company name'] = 'Company name';
+
 // ../lib/Galette/IO/Pdf.php:184 
 $lang['Missing or incorrect image file '] = 'Missing or incorrect image file ';
 
@@ -1152,7 +1155,7 @@ $lang['-- Choose a staff member --'] = '-- Choose a staff member --';
 // ../templates/default/editer_champ.tpl:18 
 $lang['Required:'] = 'Required:';
 
-// ../includes/members_fields.php:77 ../templates/default/member.tpl:81 ../templates/default/voir_adherent.tpl:67 
+// ../includes/members_fields.php:77 ../templates/default/voir_adherent.tpl:67 
 $lang['Company:'] = 'Company:';
 
 // ../templates/default/advanced_search.tpl:182 
@@ -1220,6 +1223,9 @@ $lang['Member of \'%groupname\''] = 'Member of \'%groupname\'';
 
 // ../install/index.php:338 
 $lang['Your current Galette version is'] = 'Your current Galette version is';
+
+// ../lib/Galette/Core/Plugins.php:213 ../lib/Galette/Core/Plugins.php:217 
+$lang['Cannot deactivate plugin.'] = 'Cannot deactivate plugin.';
 
 // ../templates/default/preferences.tpl:227 
 $lang['Use TLS for SMTP?'] = 'Use TLS for SMTP?';
@@ -1629,8 +1635,8 @@ $lang['The uploaded file exceeds the MAX_FILE_SIZE directive that was specified 
 // ../templates/default/preferences.tpl:238 
 $lang['SMTP (or GMail) password:'] = 'SMTP (or GMail) password:';
 
-// ../templates/default/ajax_plugins_initdb.tpl:14 
-$lang['You\'re installing \'%name\' plugin for the first time, or you wish to erase an older version of the plugin without keeping your data'] = 'You\'re installing \'%name\' plugin for the first time, or you wish to erase an older version of the plugin without keeping your data';
+// ../templates/default/ajouter_transaction.tpl:54 ../templates/default/gestion_contributions.tpl:138 
+$lang['Duration'] = 'Duration';
 
 // ../templates/default/gestion_adherents.tpl:32 ../templates/default/advanced_search.tpl:40 
 $lang['Without'] = 'Without';
@@ -2019,8 +2025,8 @@ $lang['Galette requires at least PHP version %ver!'] = 'Galette requires at leas
 // ../templates/default/voir_adherent.tpl:15 
 $lang['New password'] = 'New password';
 
-// ../lib/Galette/Entity/Adherent.php:859 
-$lang['- This E-Mail address is already used by another member!'] = '- This E-Mail address is already used by another member!';
+// ../templates/default/preferences.tpl:311 ../templates/default/preferences.tpl:312 ../templates/default/preferences.tpl:317 ../templates/default/preferences.tpl:318 ../templates/default/preferences.tpl:322 ../templates/default/preferences.tpl:323 ../templates/default/preferences.tpl:327 ../templates/default/preferences.tpl:328 
+$lang['Hexadecimal color notation: #RRGGBB'] = 'Hexadecimal color notation: #RRGGBB';
 
 // ../includes/i18n.inc.php:350 
 $lang['french'] = 'french';
@@ -2073,8 +2079,8 @@ $lang['Transactions'] = 'Transactions';
 // ../lib/Galette/IO/Charts.php:228 
 $lang['Up to date'] = 'Up to date';
 
-// ../templates/default/preferences.tpl:311 ../templates/default/preferences.tpl:312 ../templates/default/preferences.tpl:317 ../templates/default/preferences.tpl:318 ../templates/default/preferences.tpl:322 ../templates/default/preferences.tpl:323 ../templates/default/preferences.tpl:327 ../templates/default/preferences.tpl:328 
-$lang['Hexadecimal color notation: #RRGGBB'] = 'Hexadecimal color notation: #RRGGBB';
+// ../lib/Galette/Entity/Adherent.php:859 
+$lang['- This E-Mail address is already used by another member!'] = '- This E-Mail address is already used by another member!';
 
 // ../gestion_textes.php:89 
 $lang['Email: \'%s\' has been successfully modified.'] = 'Email: \'%s\' has been successfully modified.';
@@ -2544,8 +2550,8 @@ $lang['File upload stopped by extension'] = 'File upload stopped by extension';
 // ../includes/i18n.inc.php:351 
 $lang['english'] = 'english';
 
-// ../templates/default/ajouter_transaction.tpl:54 ../templates/default/gestion_contributions.tpl:138 
-$lang['Duration'] = 'Duration';
+// ../templates/default/configurer_fiche_content.tpl:54 
+$lang['There is not yet any dynamic field configured for \'%formname\''] = 'There is not yet any dynamic field configured for \'%formname\'';
 
 // ../templates/default/page.tpl:113 
 $lang['Perform advanced search into members list'] = 'Perform advanced search into members list';
@@ -2774,9 +2780,6 @@ $lang['Select contributor and contribution type'] = 'Select contributor and cont
 
 // ../templates/default/preferences.tpl:151 
 $lang['Self subscription enabled?'] = 'Self subscription enabled?';
-
-// ../templates/default/configurer_fiche_content.tpl:54 
-$lang['There is not yet any dynamic field configured for \'%formname\''] = 'There is not yet any dynamic field configured for \'%formname\'';
 
 // ../templates/default/preferences.tpl:6 
 $lang['Parameters'] = 'Parameters';
@@ -3093,9 +3096,6 @@ $lang['directory_name'] = 'directory_name';
 // ../templates/default/history.tpl:47 
 $lang['User'] = 'User';
 
-// ../lib/Galette/Filters/MembersList.php:295 
-$lang['Company'] = 'Company';
-
 // ../templates/default/gestion_mailings.tpl:91 
 $lang['Use mailing \'%subject\' as a template for a new one'] = 'Use mailing \'%subject\' as a template for a new one';
 
@@ -3212,6 +3212,9 @@ $lang['New member has been successfully added.'] = 'New member has been successf
 
 // ../includes/i18n.inc.php:346 
 $lang['Company cotisation'] = 'Company cotisation';
+
+// ../templates/default/ajax_plugins_initdb.tpl:14 
+$lang['You\'re installing \'%name\' plugin for the first time, or you wish to erase an older version of the plugin without keeping your data'] = 'You\'re installing \'%name\' plugin for the first time, or you wish to erase an older version of the plugin without keeping your data';
 
 // ../install/index.php:410 
 $lang['Date settings'] = 'Date settings';

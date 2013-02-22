@@ -882,6 +882,10 @@ msgstr "- Unknown payment type"
 msgid "SELECT operation not allowed"
 msgstr "SELECT operation not allowed"
 
+#: ../templates/default/configurer_fiche_content.tpl:54
+msgid "There is not yet any dynamic field configured for '%formname'"
+msgstr "There is not yet any dynamic field configured for '%formname'"
+
 #: ../ajouter_contribution.php:137
 msgid "An error occured checking overlaping fees :("
 msgstr "An error occured checking overlaping fees :("
@@ -2190,6 +2194,10 @@ msgstr "New password:"
 msgid "Title"
 msgstr "Title"
 
+#: ../templates/default/member.tpl:81
+msgid "Company name:"
+msgstr "Company name:"
+
 #: ../includes/i18n.inc.php:350
 msgid "french"
 msgstr "french"
@@ -2578,9 +2586,9 @@ msgstr "Check above errors to know what went wrong."
 msgid "Not a GIF file "
 msgstr "Not a GIF file "
 
-#: ../lib/Galette/Entity/Adherent.php:859
-msgid "- This E-Mail address is already used by another member!"
-msgstr "- This E-Mail address is already used by another member!"
+#: ../lib/Galette/Filters/MembersList.php:295
+msgid "Company name"
+msgstr "Company name"
 
 #: ../lib/Galette/Entity/Contribution.php:132
 #: ../templates/default/ajouter_contribution.tpl:92
@@ -3888,8 +3896,7 @@ msgstr "Send a mail"
 msgid "MSN"
 msgstr "MSN"
 
-#: ../includes/members_fields.php:77 ../templates/default/member.tpl:81
-#: ../templates/default/voir_adherent.tpl:67
+#: ../includes/members_fields.php:77 ../templates/default/voir_adherent.tpl:67
 msgid "Company:"
 msgstr "Company:"
 
@@ -4898,10 +4905,6 @@ msgstr "Missing required modules"
 msgid "Remove criteria"
 msgstr "Remove criteria"
 
-#: ../lib/Galette/Filters/MembersList.php:295
-msgid "Company"
-msgstr "Company"
-
 #: ../install/index.php:388
 msgid "PHP version %version"
 msgstr "PHP version %version"
@@ -5136,9 +5139,9 @@ msgstr "Default texts were successfully stored."
 msgid "Unable to attach contribution to transaction"
 msgstr "Unable to attach contribution to transaction"
 
-#: ../templates/default/configurer_fiche_content.tpl:54
-msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr "There is not yet any dynamic field configured for '%formname'"
+#: ../lib/Galette/Entity/Adherent.php:859
+msgid "- This E-Mail address is already used by another member!"
+msgstr "- This E-Mail address is already used by another member!"
 
 #: ../templates/default/change_passwd.tpl:19
 msgid "Change my password"
@@ -5243,6 +5246,9 @@ msgstr "An error has occured while looking if status is already in use."
 msgid "Login %s does not exist"
 msgstr "Login %s does not exist"
 
+#~ msgid "Company"
+#~ msgstr "Company"
+
 #~ msgid "Mrs"
 #~ msgstr "Mrs"
 
@@ -5267,14 +5273,8 @@ msgstr "Login %s does not exist"
 #~ msgid "HTML display is not yet available. Sorry."
 #~ msgstr "HTML display is not yet available. Sorry."
 
-#~ msgid "Company name:"
-#~ msgstr "Company name:"
-
 #~ msgid "Miss."
 #~ msgstr "Miss."
-
-#~ msgid "Company name"
-#~ msgstr "Company name"
 
 #~ msgid "HTML display"
 #~ msgstr "HTML display"
