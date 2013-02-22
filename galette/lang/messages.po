@@ -31,7 +31,7 @@ msgid "Contributions types repartition"
 msgstr ""
 
 #: ../champs_adherents.php:51 ../includes/members_fields.php:158
-#: ../templates/default/member.tpl:175 ../templates/default/voir_adherent.tpl:137
+#: ../templates/default/member.tpl:176 ../templates/default/voir_adherent.tpl:137
 msgid "Phone:"
 msgstr ""
 
@@ -317,7 +317,7 @@ msgid "[admin]"
 msgstr ""
 
 #: ../champs_adherents.php:54 ../includes/members_fields.php:182
-#: ../templates/default/member.tpl:199 ../templates/default/preferences.tpl:67
+#: ../templates/default/member.tpl:200 ../templates/default/preferences.tpl:67
 #: ../templates/default/voir_adherent.tpl:159
 msgid "Website:"
 msgstr ""
@@ -343,7 +343,7 @@ msgid "- You must indicate the SMTP server you want to use!"
 msgstr ""
 
 #: ../champs_adherents.php:48 ../includes/members_fields.php:134
-#: ../templates/default/member.tpl:151 ../templates/default/preferences.tpl:40
+#: ../templates/default/member.tpl:152 ../templates/default/preferences.tpl:40
 #: ../templates/default/voir_adherent.tpl:119
 msgid "Zip Code:"
 msgstr ""
@@ -360,7 +360,7 @@ msgstr ""
 
 #: ../champs_adherents.php:62 ../includes/members_fields.php:246
 #: ../install/index.php:630 ../install/index.php:1174
-#: ../templates/default/member.tpl:316 ../templates/default/member.tpl:328
+#: ../templates/default/member.tpl:317 ../templates/default/member.tpl:329
 #: ../templates/default/preferences.tpl:402 ../templates/default/index.tpl:12
 msgid "Password:"
 msgstr ""
@@ -370,7 +370,7 @@ msgstr ""
 msgid "[view]"
 msgstr ""
 
-#: ../templates/default/member.tpl:135 ../templates/default/voir_adherent.tpl:105
+#: ../templates/default/member.tpl:136 ../templates/default/voir_adherent.tpl:105
 msgid "Contact information:"
 msgstr ""
 
@@ -548,7 +548,7 @@ msgstr ""
 msgid "Label generation parameters"
 msgstr ""
 
-#: ../templates/default/member.tpl:435 ../templates/default/editer_intitule.tpl:35
+#: ../templates/default/member.tpl:436 ../templates/default/editer_intitule.tpl:35
 #: ../templates/default/traduire_libelles.tpl:28 ../templates/default/mailing_adherents.tpl:58
 #: ../templates/default/edit_title.tpl:15 ../templates/default/ajouter_transaction.tpl:33
 #: ../templates/default/group.tpl:62 ../templates/default/config_fields.tpl:57
@@ -610,16 +610,16 @@ msgstr ""
 msgid "transactions"
 msgstr ""
 
-#: ../templates/default/member.tpl:332
+#: ../templates/default/member.tpl:333
 msgid "Please repeat in the field the password shown in the image."
 msgstr ""
 
 #: ../champs_adherents.php:71 ../includes/members_fields.php:326
-#: ../templates/default/member.tpl:231 ../templates/default/voir_adherent.tpl:191
+#: ../templates/default/member.tpl:232 ../templates/default/voir_adherent.tpl:191
 msgid "Id GNUpg (GPG):"
 msgstr ""
 
-#: ../templates/default/member.tpl:249 ../templates/default/voir_adherent.tpl:204
+#: ../templates/default/member.tpl:250 ../templates/default/voir_adherent.tpl:204
 msgid "Galette-related data:"
 msgstr ""
 
@@ -643,7 +643,7 @@ msgstr ""
 msgid "Database can't be reached. Please go back to enter the connection parameters again."
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1262 ../templates/default/member.tpl:266
+#: ../lib/Galette/Entity/Adherent.php:1262 ../templates/default/member.tpl:267
 msgid "Active"
 msgstr ""
 
@@ -707,11 +707,11 @@ msgstr ""
 msgid "Visibility:"
 msgstr ""
 
-#: ../templates/default/member.tpl:330
+#: ../templates/default/member.tpl:331
 msgid "Password image"
 msgstr ""
 
-#: ../templates/default/member.tpl:371
+#: ../templates/default/member.tpl:372
 msgid "Manage user's groups"
 msgstr ""
 
@@ -817,7 +817,7 @@ msgid "Membership extension:"
 msgstr ""
 
 #: ../champs_adherents.php:69 ../includes/members_fields.php:310
-#: ../templates/default/member.tpl:121 ../templates/default/gestion_textes.tpl:6
+#: ../templates/default/member.tpl:122 ../templates/default/gestion_textes.tpl:6
 #: ../templates/default/voir_adherent.tpl:98
 msgid "Language:"
 msgstr ""
@@ -826,7 +826,7 @@ msgstr ""
 msgid "Currently loading..."
 msgstr ""
 
-#: ../templates/default/member.tpl:495
+#: ../templates/default/member.tpl:496
 msgid "An error occured displaying groups interface :("
 msgstr ""
 
@@ -862,8 +862,8 @@ msgstr ""
 msgid "Member's Cards"
 msgstr ""
 
-#: ../templates/default/config_fields.tpl:81
-msgid "Expand all"
+#: ../install/index.php:312 ../templates/default/ajax_plugins_initdb.tpl:11
+msgid "Select installation mode to launch"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:283
@@ -890,7 +890,7 @@ msgstr ""
 msgid "all"
 msgstr ""
 
-#: ../templates/default/member.tpl:404 ../templates/default/member.tpl:542
+#: ../templates/default/member.tpl:405 ../templates/default/member.tpl:543
 msgid "Manager for '%groupname'"
 msgstr ""
 
@@ -981,7 +981,7 @@ msgstr ""
 msgid "Select an existing contribution in the database, and attach it to the current transaction"
 msgstr ""
 
-#: ../templates/default/member.tpl:98 ../templates/default/member.tpl:341
+#: ../templates/default/member.tpl:99 ../templates/default/member.tpl:342
 #: ../templates/default/ajax_attendance_sheet_details.tpl:19 ../templates/default/ajouter_transaction.tpl:23
 #: ../templates/default/ajouter_contribution.tpl:98 ../templates/default/ajouter_contribution.tpl:109
 msgid "(yyyy-mm-dd format)"
@@ -995,7 +995,7 @@ msgid "Descendant"
 msgstr ""
 
 #: ../champs_adherents.php:46 ../includes/members_fields.php:117
-#: ../templates/default/member.tpl:139 ../templates/default/member.tpl:142
+#: ../templates/default/member.tpl:140 ../templates/default/member.tpl:143
 #: ../templates/default/preferences.tpl:34 ../templates/default/preferences.tpl:36
 #: ../templates/default/voir_adherent.tpl:108
 msgid "Address:"
@@ -1009,7 +1009,7 @@ msgstr ""
 msgid "INSERT operation allowed"
 msgstr ""
 
-#: ../templates/default/member.tpl:142 ../templates/default/preferences.tpl:36
+#: ../templates/default/member.tpl:143 ../templates/default/preferences.tpl:36
 msgid " (continuation)"
 msgstr ""
 
@@ -1078,7 +1078,7 @@ msgid "Gift"
 msgstr ""
 
 #: ../champs_adherents.php:55 ../includes/members_fields.php:190
-#: ../templates/default/member.tpl:207 ../templates/default/voir_adherent.tpl:169
+#: ../templates/default/member.tpl:208 ../templates/default/voir_adherent.tpl:169
 msgid "ICQ:"
 msgstr ""
 
@@ -1103,11 +1103,15 @@ msgstr ""
 msgid "An error occured :("
 msgstr ""
 
+#: ../templates/default/ajax_members.tpl:53
+msgid "Selected members"
+msgstr ""
+
 #: ../templates/default/editer_intitule.tpl:22 ../templates/default/gestion_intitule_content.tpl:4
 msgid "Note: members with a status priority lower than %priority are staff members."
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1262 ../templates/default/member.tpl:267
+#: ../lib/Galette/Entity/Adherent.php:1262 ../templates/default/member.tpl:268
 msgid "Inactive"
 msgstr ""
 
@@ -1250,7 +1254,7 @@ msgstr ""
 msgid "Woman"
 msgstr ""
 
-#: ../templates/default/member.tpl:504
+#: ../templates/default/member.tpl:505
 msgid "Managed groups selection"
 msgstr ""
 
@@ -1313,7 +1317,7 @@ msgid "Website"
 msgstr ""
 
 #: ../champs_adherents.php:45 ../includes/members_fields.php:101
-#: ../templates/default/member.tpl:97 ../templates/default/voir_adherent.tpl:80
+#: ../templates/default/member.tpl:98 ../templates/default/voir_adherent.tpl:80
 msgid "Birth date:"
 msgstr ""
 
@@ -1668,7 +1672,7 @@ msgid "SMTP server:"
 msgstr ""
 
 #: ../champs_adherents.php:50 ../includes/members_fields.php:150
-#: ../templates/default/member.tpl:167 ../templates/default/preferences.tpl:48
+#: ../templates/default/member.tpl:168 ../templates/default/preferences.tpl:48
 #: ../templates/default/voir_adherent.tpl:131
 msgid "Country:"
 msgstr ""
@@ -1709,8 +1713,8 @@ msgstr ""
 msgid "Configuration file created!"
 msgstr ""
 
-#: ../install/index.php:312 ../templates/default/ajax_plugins_initdb.tpl:11
-msgid "Select installation mode to launch"
+#: ../preferences.php:140 ../lib/Galette/Entity/Adherent.php:912
+msgid "- This username is already in use, please choose another one!"
 msgstr ""
 
 #: ../install/index.php:288
@@ -1814,7 +1818,7 @@ msgid "Member's name"
 msgstr ""
 
 #: ../champs_adherents.php:43 ../includes/members_fields.php:85
-#: ../templates/default/member.tpl:89 ../templates/default/voir_adherent.tpl:74
+#: ../templates/default/member.tpl:90 ../templates/default/voir_adherent.tpl:74
 msgid "Nickname:"
 msgstr ""
 
@@ -1949,7 +1953,7 @@ msgid "DROP operation allowed"
 msgstr ""
 
 #: ../champs_adherents.php:56 ../includes/members_fields.php:198
-#: ../templates/default/member.tpl:223 ../templates/default/voir_adherent.tpl:181
+#: ../templates/default/member.tpl:224 ../templates/default/voir_adherent.tpl:181
 msgid "MSN:"
 msgstr ""
 
@@ -1979,7 +1983,7 @@ msgstr ""
 msgid "My information"
 msgstr ""
 
-#: ../templates/default/member.tpl:350
+#: ../templates/default/member.tpl:351
 msgid "This comment is only displayed for admins and staff members."
 msgstr ""
 
@@ -1991,7 +1995,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: ../templates/default/member.tpl:81
+#: ../templates/default/member.tpl:82
 msgid "Company name:"
 msgstr ""
 
@@ -2067,7 +2071,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: ../templates/default/member.tpl:323
+#: ../templates/default/member.tpl:324
 msgid "(Confirmation)"
 msgstr ""
 
@@ -2191,7 +2195,7 @@ msgid "groups_list"
 msgstr ""
 
 #: ../champs_adherents.php:67 ../includes/members_fields.php:294
-#: ../templates/default/member.tpl:253 ../templates/default/voir_adherent.tpl:207
+#: ../templates/default/member.tpl:254 ../templates/default/voir_adherent.tpl:207
 msgid "Be visible in the members list:"
 msgstr ""
 
@@ -2303,7 +2307,7 @@ msgid "Plugin '%name' has been successfully updated!"
 msgstr ""
 
 #: ../champs_adherents.php:65 ../includes/members_fields.php:278
-#: ../templates/default/member.tpl:286 ../templates/default/voir_adherent.tpl:228
+#: ../templates/default/member.tpl:287 ../templates/default/voir_adherent.tpl:228
 msgid "Galette Admin:"
 msgstr ""
 
@@ -2371,7 +2375,7 @@ msgstr ""
 msgid "This link is no longer valid. You should <a href='lostpasswd.php'>ask to retrieve your password</a> again."
 msgstr ""
 
-#: ../templates/default/member.tpl:502
+#: ../templates/default/member.tpl:503
 msgid "Groups selection"
 msgstr ""
 
@@ -2409,10 +2413,6 @@ msgstr ""
 
 #: ../templates/default/gestion_transactions.tpl:110
 msgid "Do you really want to delete this transaction of the database ?"
-msgstr ""
-
-#: ../lib/Galette/Entity/Adherent.php:912
-msgid "- This username is already used by another member!"
 msgstr ""
 
 #: ../change_passwd.php:73
@@ -2521,15 +2521,15 @@ msgid "Add a contribution"
 msgstr ""
 
 #: ../champs_adherents.php:59 ../includes/members_fields.php:222
-#: ../templates/default/member.tpl:358 ../templates/default/voir_adherent.tpl:267
+#: ../templates/default/member.tpl:359 ../templates/default/voir_adherent.tpl:267
 msgid "Other informations:"
 msgstr ""
 
-#: ../templates/default/member.tpl:418
+#: ../templates/default/member.tpl:419
 msgid "Notify member his account has been modified"
 msgstr ""
 
-#: ../templates/default/member.tpl:369 ../templates/default/voir_adherent.tpl:273
+#: ../templates/default/member.tpl:370 ../templates/default/voir_adherent.tpl:273
 msgid "Groups:"
 msgstr ""
 
@@ -2580,7 +2580,7 @@ msgid "start date filter"
 msgstr ""
 
 #: ../champs_adherents.php:70 ../includes/members_fields.php:318
-#: ../templates/default/member.tpl:105 ../templates/default/voir_adherent.tpl:86
+#: ../templates/default/member.tpl:106 ../templates/default/voir_adherent.tpl:86
 msgid "Birthplace:"
 msgstr ""
 
@@ -2620,12 +2620,16 @@ msgstr ""
 msgid "%name\n%complement\n%adress\n%zip %town - %country"
 msgstr ""
 
-#: ../templates/default/member.tpl:420
+#: ../templates/default/member.tpl:421
 msgid "Notify member his account has been created"
 msgstr ""
 
 #: ../groups_list.php:83 ../groups_list.php:87
 msgid "Members by groups"
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:81
+msgid "Expand all"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:4
@@ -2750,7 +2754,7 @@ msgid "logs are empty"
 msgstr ""
 
 #: ../champs_adherents.php:61 ../includes/members_fields.php:238
-#: ../install/index.php:1170 ../templates/default/member.tpl:305
+#: ../install/index.php:1170 ../templates/default/member.tpl:306
 #: ../templates/default/preferences.tpl:398 ../templates/default/index.tpl:8
 #: ../templates/default/voir_adherent.tpl:241
 msgid "Username:"
@@ -2794,7 +2798,7 @@ msgid "Credit card"
 msgstr ""
 
 #: ../champs_adherents.php:40 ../includes/members_fields.php:53
-#: ../templates/default/member.tpl:275 ../templates/default/voir_adherent.tpl:221
+#: ../templates/default/member.tpl:276 ../templates/default/voir_adherent.tpl:221
 msgid "Status:"
 msgstr ""
 
@@ -3187,7 +3191,7 @@ msgid "Page %i"
 msgstr ""
 
 #: ../champs_adherents.php:52 ../includes/members_fields.php:166
-#: ../templates/default/member.tpl:183 ../templates/default/voir_adherent.tpl:143
+#: ../templates/default/member.tpl:184 ../templates/default/voir_adherent.tpl:143
 msgid "Mobile phone:"
 msgstr ""
 
@@ -3265,11 +3269,7 @@ msgstr ""
 msgid "Contribution added"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:408
-msgid "An error occured displaying attendance sheet details interface :("
-msgstr ""
-
-#: ../templates/default/member.tpl:308 ../templates/default/member.tpl:319
+#: ../templates/default/member.tpl:309 ../templates/default/member.tpl:320
 msgid "(at least %i characters)"
 msgstr ""
 
@@ -3286,7 +3286,7 @@ msgid "unreachable members:"
 msgstr ""
 
 #: ../champs_adherents.php:57 ../includes/members_fields.php:206
-#: ../templates/default/member.tpl:215 ../templates/default/voir_adherent.tpl:175
+#: ../templates/default/member.tpl:216 ../templates/default/voir_adherent.tpl:175
 msgid "Jabber:"
 msgstr ""
 
@@ -3325,7 +3325,7 @@ msgid "[member]"
 msgstr ""
 
 #: ../champs_adherents.php:53 ../includes/members_fields.php:174
-#: ../templates/default/member.tpl:191 ../templates/default/voir_adherent.tpl:149
+#: ../templates/default/member.tpl:192 ../templates/default/voir_adherent.tpl:149
 msgid "E-Mail:"
 msgstr ""
 
@@ -3685,12 +3685,12 @@ msgid "Please make sure to select at least one member from the list to perform t
 msgstr ""
 
 #: ../champs_adherents.php:66 ../includes/members_fields.php:286
-#: ../templates/default/member.tpl:295 ../templates/default/voir_adherent.tpl:234
+#: ../templates/default/member.tpl:296 ../templates/default/voir_adherent.tpl:234
 msgid "Freed of dues:"
 msgstr ""
 
 #: ../champs_adherents.php:63 ../includes/members_fields.php:254
-#: ../templates/default/member.tpl:339 ../templates/default/group.tpl:13
+#: ../templates/default/member.tpl:340 ../templates/default/group.tpl:13
 #: ../templates/default/voir_adherent.tpl:248
 msgid "Creation date:"
 msgstr ""
@@ -3727,8 +3727,8 @@ msgstr ""
 msgid "No inactive plugin."
 msgstr ""
 
-#: ../preferences.php:140
-msgid "- This username is already used by another member !"
+#: ../templates/default/gestion_adherents.tpl:408
+msgid "An error occured displaying attendance sheet details interface :("
 msgstr ""
 
 #: ../templates/default/plugins.tpl:70
@@ -3925,7 +3925,7 @@ msgid "Fail to add new group."
 msgstr ""
 
 #: ../champs_adherents.php:72 ../includes/members_fields.php:334
-#: ../templates/default/member.tpl:239 ../templates/default/voir_adherent.tpl:197
+#: ../templates/default/member.tpl:240 ../templates/default/voir_adherent.tpl:197
 msgid "fingerprint:"
 msgstr ""
 
@@ -3997,7 +3997,7 @@ msgid "Generate labels"
 msgstr ""
 
 #: ../champs_adherents.php:58 ../includes/members_fields.php:214
-#: ../templates/default/member.tpl:348 ../templates/default/voir_adherent.tpl:260
+#: ../templates/default/member.tpl:349 ../templates/default/voir_adherent.tpl:260
 msgid "Other informations (admin):"
 msgstr ""
 
@@ -4005,7 +4005,7 @@ msgstr ""
 msgid "%s on Twitter!"
 msgstr ""
 
-#: ../templates/default/member.tpl:374
+#: ../templates/default/member.tpl:375
 msgid "Manage user's managed groups"
 msgstr ""
 
@@ -4013,7 +4013,7 @@ msgstr ""
 msgid "company fee"
 msgstr ""
 
-#: ../templates/default/member.tpl:428
+#: ../templates/default/member.tpl:429
 msgid "Member will receive his username and password by email, if he has an address."
 msgstr ""
 
@@ -4033,7 +4033,7 @@ msgstr ""
 msgid "Group `%subgroupname` is a child of `%groupname`, cnanot be setted as parent!"
 msgstr ""
 
-#: ../templates/default/member.tpl:426
+#: ../templates/default/member.tpl:427
 msgid "Member will be notified by mail his account has been modified."
 msgstr ""
 
@@ -4056,7 +4056,7 @@ msgid "Address type:"
 msgstr ""
 
 #: ../champs_adherents.php:64 ../includes/members_fields.php:270
-#: ../templates/default/member.tpl:264 ../templates/default/voir_adherent.tpl:214
+#: ../templates/default/member.tpl:265 ../templates/default/voir_adherent.tpl:214
 msgid "Account:"
 msgstr ""
 
@@ -4136,13 +4136,13 @@ msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgstr ""
 
 #: ../champs_adherents.php:49 ../includes/members_fields.php:142
-#: ../templates/default/member.tpl:159 ../templates/default/preferences.tpl:44
+#: ../templates/default/member.tpl:160 ../templates/default/preferences.tpl:44
 #: ../templates/default/voir_adherent.tpl:125
 msgid "City:"
 msgstr ""
 
-#: ../templates/default/ajax_members.tpl:53
-msgid "Selected members"
+#: ../templates/default/member.tpl:78
+msgid "Do you manage a non profit organization, or a company? If you do so, check the box, and then enter its name in the field that will appear."
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:5
@@ -4170,7 +4170,7 @@ msgstr ""
 msgid "Membership in order"
 msgstr ""
 
-#: ../templates/default/member.tpl:361
+#: ../templates/default/member.tpl:362
 msgid "This comment is reserved to the member."
 msgstr ""
 
@@ -4194,7 +4194,7 @@ msgstr ""
 msgid "Back to previous window, if you want to select a contribution type that is not listed here"
 msgstr ""
 
-#: ../templates/default/member.tpl:396 ../templates/default/member.tpl:544
+#: ../templates/default/member.tpl:397 ../templates/default/member.tpl:545
 msgid "Member of '%groupname'"
 msgstr ""
 
@@ -4241,7 +4241,7 @@ msgstr ""
 msgid "Not managed group"
 msgstr ""
 
-#: ../templates/default/member.tpl:254
+#: ../templates/default/member.tpl:255
 msgid "If you check this box (and if you are up to date with your contributions), your full name, website adress ad other informations will be publically visilbe on the members list.<br/>If you've uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case."
 msgstr ""
 
@@ -4567,7 +4567,7 @@ msgid "Not sent"
 msgstr ""
 
 #: ../champs_adherents.php:60 ../includes/members_fields.php:230
-#: ../templates/default/member.tpl:113 ../templates/default/voir_adherent.tpl:92
+#: ../templates/default/member.tpl:114 ../templates/default/voir_adherent.tpl:92
 msgid "Profession:"
 msgstr ""
 

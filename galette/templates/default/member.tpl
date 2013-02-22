@@ -74,7 +74,8 @@
     {/if}
     {if $visibles.societe_adh eq constant('Galette\Entity\FieldsConfig::VISIBLE') or ($visibles.societe_adh eq constant('Galette\Entity\FieldsConfig::ADMIN') and ($login->isStaff() or $login->isAdmin() or $login->isSuperAdmin()))}
                     <p>
-                        <label for="is_company" class="bline">{_T string="Is company?"}</label>
+                        <label for="is_company" class="bline tooltip">{_T string="Is company?"}</label>
+                        <span class="tip">{_T string="Do you manage a non profit organization, or a company? If you do so, check the box, and then enter its name in the field that will appear."}</span>
                         <input type="checkbox" name="is_company" id="is_company" value="1"{if $member->isCompany()} checked="checked"{/if}/>
                     </p>
                     <p id="company_field"{if !$member->isCompany()} class="hidden"{/if}>

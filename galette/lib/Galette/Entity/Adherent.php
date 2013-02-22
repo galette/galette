@@ -909,7 +909,7 @@ class Adherent
                                     if ( count($uniq) !==  0
                                         || $value == $preferences->pref_admin_login
                                     ) {
-                                        $errors[] = _T("- This username is already used by another member!");
+                                        $errors[] = _T("- This username is already in use, please choose another one!");
                                     }
                                 } catch (\Exception $e) {
                                     Analog::log(

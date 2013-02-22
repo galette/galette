@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2013-02-22 22:58+0100\n"
+"PO-Revision-Date: 2013-02-22 23:16+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -47,7 +47,7 @@ msgid "Contributions types repartition"
 msgstr "Répartition par type de contribution"
 
 #: ../champs_adherents.php:51 ../includes/members_fields.php:158
-#: ../templates/default/member.tpl:175
+#: ../templates/default/member.tpl:176
 #: ../templates/default/voir_adherent.tpl:137
 msgid "Phone:"
 msgstr "Tél&nbsp;:"
@@ -365,7 +365,7 @@ msgid "[admin]"
 msgstr "[admin]"
 
 #: ../champs_adherents.php:54 ../includes/members_fields.php:182
-#: ../templates/default/member.tpl:199 ../templates/default/preferences.tpl:67
+#: ../templates/default/member.tpl:200 ../templates/default/preferences.tpl:67
 #: ../templates/default/voir_adherent.tpl:159
 msgid "Website:"
 msgstr "Site Web&nbsp;:"
@@ -391,7 +391,7 @@ msgid "- You must indicate the SMTP server you want to use!"
 msgstr "- Vous devez indiquer le serveur SMTP à utiliser&nbsp;!"
 
 #: ../champs_adherents.php:48 ../includes/members_fields.php:134
-#: ../templates/default/member.tpl:151 ../templates/default/preferences.tpl:40
+#: ../templates/default/member.tpl:152 ../templates/default/preferences.tpl:40
 #: ../templates/default/voir_adherent.tpl:119
 msgid "Zip Code:"
 msgstr "Code Postal&nbsp;:"
@@ -408,7 +408,7 @@ msgstr "Trombinoscope"
 
 #: ../champs_adherents.php:62 ../includes/members_fields.php:246
 #: ../install/index.php:630 ../install/index.php:1174
-#: ../templates/default/member.tpl:316 ../templates/default/member.tpl:328
+#: ../templates/default/member.tpl:317 ../templates/default/member.tpl:329
 #: ../templates/default/preferences.tpl:402 ../templates/default/index.tpl:12
 msgid "Password:"
 msgstr "Mot de passe&nbsp;:"
@@ -419,7 +419,7 @@ msgstr "Mot de passe&nbsp;:"
 msgid "[view]"
 msgstr "[voir]"
 
-#: ../templates/default/member.tpl:135
+#: ../templates/default/member.tpl:136
 #: ../templates/default/voir_adherent.tpl:105
 msgid "Contact information:"
 msgstr "Informations de contact&nbsp;:"
@@ -616,7 +616,7 @@ msgstr "Date de début d'exercice&nbsp;:"
 msgid "Label generation parameters"
 msgstr "Paramètres de génération d'étiquettes"
 
-#: ../templates/default/member.tpl:435
+#: ../templates/default/member.tpl:436
 #: ../templates/default/editer_intitule.tpl:35
 #: ../templates/default/traduire_libelles.tpl:28
 #: ../templates/default/mailing_adherents.tpl:58
@@ -693,17 +693,17 @@ msgstr ""
 msgid "transactions"
 msgstr "transactions"
 
-#: ../templates/default/member.tpl:332
+#: ../templates/default/member.tpl:333
 msgid "Please repeat in the field the password shown in the image."
 msgstr "Recopiez dans le cadre le mot de passe présenté dans l'image."
 
 #: ../champs_adherents.php:71 ../includes/members_fields.php:326
-#: ../templates/default/member.tpl:231
+#: ../templates/default/member.tpl:232
 #: ../templates/default/voir_adherent.tpl:191
 msgid "Id GNUpg (GPG):"
 msgstr "Id GNUpg (GPG)&nbsp;:"
 
-#: ../templates/default/member.tpl:249
+#: ../templates/default/member.tpl:250
 #: ../templates/default/voir_adherent.tpl:204
 msgid "Galette-related data:"
 msgstr "Informations relatives à Galette&nbsp;:"
@@ -733,7 +733,7 @@ msgstr ""
 "La base n'est pas accessible. Veuillez revenir en arrière pour saisir à "
 "nouveau les paramètres de connexion."
 
-#: ../lib/Galette/Entity/Adherent.php:1262 ../templates/default/member.tpl:266
+#: ../lib/Galette/Entity/Adherent.php:1262 ../templates/default/member.tpl:267
 msgid "Active"
 msgstr "Actif"
 
@@ -813,11 +813,11 @@ msgstr ""
 msgid "Visibility:"
 msgstr "Visibilité&nbsp;:"
 
-#: ../templates/default/member.tpl:330
+#: ../templates/default/member.tpl:331
 msgid "Password image"
 msgstr "Image mot de passe"
 
-#: ../templates/default/member.tpl:371
+#: ../templates/default/member.tpl:372
 msgid "Manage user's groups"
 msgstr "Gestion des groupes de l'utilisateur"
 
@@ -932,7 +932,7 @@ msgid "Membership extension:"
 msgstr "Extension d'adhésion&nbsp;:"
 
 #: ../champs_adherents.php:69 ../includes/members_fields.php:310
-#: ../templates/default/member.tpl:121
+#: ../templates/default/member.tpl:122
 #: ../templates/default/gestion_textes.tpl:6
 #: ../templates/default/voir_adherent.tpl:98
 msgid "Language:"
@@ -943,7 +943,7 @@ msgstr "Langue&nbsp;:"
 msgid "Currently loading..."
 msgstr "Chargement en cours..."
 
-#: ../templates/default/member.tpl:495
+#: ../templates/default/member.tpl:496
 msgid "An error occured displaying groups interface :("
 msgstr ""
 "Une erreur est survenue lors de l'affichage de l'interface des groupes :("
@@ -990,9 +990,9 @@ msgstr "Aucun adhérent à afficher"
 msgid "Member's Cards"
 msgstr "Cartes de Membres"
 
-#: ../templates/default/config_fields.tpl:81
-msgid "Expand all"
-msgstr "Tout déplier"
+#: ../install/index.php:312 ../templates/default/ajax_plugins_initdb.tpl:11
+msgid "Select installation mode to launch"
+msgstr "Sélectionnez le type d'installation à lancer"
 
 #: ../templates/default/preferences.tpl:283
 msgid "Number of label columns:"
@@ -1019,7 +1019,7 @@ msgstr "Identifiant de l'adhérent"
 msgid "all"
 msgstr "tous"
 
-#: ../templates/default/member.tpl:404 ../templates/default/member.tpl:542
+#: ../templates/default/member.tpl:405 ../templates/default/member.tpl:543
 msgid "Manager for '%groupname'"
 msgstr "Responsable pour « %groupname »"
 
@@ -1117,7 +1117,7 @@ msgstr ""
 "Sélectionner une contribution existante et l'attacher à la transaction "
 "courante"
 
-#: ../templates/default/member.tpl:98 ../templates/default/member.tpl:341
+#: ../templates/default/member.tpl:99 ../templates/default/member.tpl:342
 #: ../templates/default/ajax_attendance_sheet_details.tpl:19
 #: ../templates/default/ajouter_transaction.tpl:23
 #: ../templates/default/ajouter_contribution.tpl:98
@@ -1135,7 +1135,7 @@ msgid "Descendant"
 msgstr "Décroissant"
 
 #: ../champs_adherents.php:46 ../includes/members_fields.php:117
-#: ../templates/default/member.tpl:139 ../templates/default/member.tpl:142
+#: ../templates/default/member.tpl:140 ../templates/default/member.tpl:143
 #: ../templates/default/preferences.tpl:34
 #: ../templates/default/preferences.tpl:36
 #: ../templates/default/voir_adherent.tpl:108
@@ -1150,7 +1150,7 @@ msgstr "- Adresse courriel non valide&nbsp;!"
 msgid "INSERT operation allowed"
 msgstr "Opération INSERT autorisée"
 
-#: ../templates/default/member.tpl:142 ../templates/default/preferences.tpl:36
+#: ../templates/default/member.tpl:143 ../templates/default/preferences.tpl:36
 msgid " (continuation)"
 msgstr " (suite)"
 
@@ -1227,7 +1227,7 @@ msgid "Gift"
 msgstr "Don"
 
 #: ../champs_adherents.php:55 ../includes/members_fields.php:190
-#: ../templates/default/member.tpl:207
+#: ../templates/default/member.tpl:208
 #: ../templates/default/voir_adherent.tpl:169
 msgid "ICQ:"
 msgstr "ICQ&nbsp;:"
@@ -1255,6 +1255,10 @@ msgstr "Emploi"
 msgid "An error occured :("
 msgstr "Une erreur est survenue :("
 
+#: ../templates/default/ajax_members.tpl:53
+msgid "Selected members"
+msgstr "Membres sélectionnés"
+
 #: ../templates/default/editer_intitule.tpl:22
 #: ../templates/default/gestion_intitule_content.tpl:4
 msgid ""
@@ -1263,7 +1267,7 @@ msgstr ""
 "Note&nbsp;: les membres qui possèdent un statut dont la priorité est "
 "inférieure à %priority sont membres du bureau."
 
-#: ../lib/Galette/Entity/Adherent.php:1262 ../templates/default/member.tpl:267
+#: ../lib/Galette/Entity/Adherent.php:1262 ../templates/default/member.tpl:268
 msgid "Inactive"
 msgstr "Inactif"
 
@@ -1425,7 +1429,7 @@ msgstr "Impossible de supprimer le groupe. Il n'est peut-être pas vide ?"
 msgid "Woman"
 msgstr "Femme"
 
-#: ../templates/default/member.tpl:504
+#: ../templates/default/member.tpl:505
 msgid "Managed groups selection"
 msgstr "Selection des groupes gérés"
 
@@ -1492,7 +1496,7 @@ msgid "Website"
 msgstr "Site Web"
 
 #: ../champs_adherents.php:45 ../includes/members_fields.php:101
-#: ../templates/default/member.tpl:97
+#: ../templates/default/member.tpl:98
 #: ../templates/default/voir_adherent.tpl:80
 msgid "Birth date:"
 msgstr "Date de naissance&nbsp;:"
@@ -1886,7 +1890,7 @@ msgid "SMTP server:"
 msgstr "Serveur SMTP&nbsp;:"
 
 #: ../champs_adherents.php:50 ../includes/members_fields.php:150
-#: ../templates/default/member.tpl:167 ../templates/default/preferences.tpl:48
+#: ../templates/default/member.tpl:168 ../templates/default/preferences.tpl:48
 #: ../templates/default/voir_adherent.tpl:131
 msgid "Country:"
 msgstr "Pays&nbsp;:"
@@ -1928,9 +1932,10 @@ msgstr "Avec courriel&nbsp;:"
 msgid "Configuration file created!"
 msgstr "Fichier de configuration créé&nbsp;!"
 
-#: ../install/index.php:312 ../templates/default/ajax_plugins_initdb.tpl:11
-msgid "Select installation mode to launch"
-msgstr "Sélectionnez le type d'installation à lancer"
+#: ../preferences.php:140 ../lib/Galette/Entity/Adherent.php:912
+msgid "- This username is already in use, please choose another one!"
+msgstr ""
+"- Cet identifiant est déjà utilisé, veuillez en choisir un autre&nbsp;!"
 
 #: ../install/index.php:288
 msgid "Welcome to the Galette Install!"
@@ -2038,7 +2043,7 @@ msgid "Member's name"
 msgstr "Nom de l'adhérent"
 
 #: ../champs_adherents.php:43 ../includes/members_fields.php:85
-#: ../templates/default/member.tpl:89
+#: ../templates/default/member.tpl:90
 #: ../templates/default/voir_adherent.tpl:74
 msgid "Nickname:"
 msgstr "Pseudo&nbsp;:"
@@ -2193,7 +2198,7 @@ msgid "DROP operation allowed"
 msgstr "Opération DROP autorisée"
 
 #: ../champs_adherents.php:56 ../includes/members_fields.php:198
-#: ../templates/default/member.tpl:223
+#: ../templates/default/member.tpl:224
 #: ../templates/default/voir_adherent.tpl:181
 msgid "MSN:"
 msgstr "MSN&nbsp;:"
@@ -2226,7 +2231,7 @@ msgstr "Utilisation de GMAIL comme serveur SMTP (plus lent)"
 msgid "My information"
 msgstr "Mes informations"
 
-#: ../templates/default/member.tpl:350
+#: ../templates/default/member.tpl:351
 msgid "This comment is only displayed for admins and staff members."
 msgstr ""
 "Ce commentaire n'est visible que par les administrateurs et les membres du "
@@ -2240,7 +2245,7 @@ msgstr "Nouveau mot de passe&nbsp;:"
 msgid "Title"
 msgstr "Titre"
 
-#: ../templates/default/member.tpl:81
+#: ../templates/default/member.tpl:82
 msgid "Company name:"
 msgstr "Raison sociale :"
 
@@ -2318,7 +2323,7 @@ msgstr "Connexion à la base impossible"
 msgid "Close"
 msgstr "Fermer"
 
-#: ../templates/default/member.tpl:323
+#: ../templates/default/member.tpl:324
 msgid "(Confirmation)"
 msgstr "(Confirmation)"
 
@@ -2450,7 +2455,7 @@ msgid "groups_list"
 msgstr "liste_groupes"
 
 #: ../champs_adherents.php:67 ../includes/members_fields.php:294
-#: ../templates/default/member.tpl:253
+#: ../templates/default/member.tpl:254
 #: ../templates/default/voir_adherent.tpl:207
 msgid "Be visible in the members list:"
 msgstr "Apparaître dans la liste des membres&nbsp;:"
@@ -2570,7 +2575,7 @@ msgid "Plugin '%name' has been successfully updated!"
 msgstr "Le plugin « %name » a été mis à jour avec succès&nbsp;!"
 
 #: ../champs_adherents.php:65 ../includes/members_fields.php:278
-#: ../templates/default/member.tpl:286
+#: ../templates/default/member.tpl:287
 #: ../templates/default/voir_adherent.tpl:228
 msgid "Galette Admin:"
 msgstr "Administrateur Galette&nbsp;:"
@@ -2650,7 +2655,7 @@ msgstr ""
 "Ce lien n'est plus valide. Vous devriez <a href='lostpasswd.php'>demander la "
 "récupération de votre mot de passe</a> à nouveau"
 
-#: ../templates/default/member.tpl:502
+#: ../templates/default/member.tpl:503
 msgid "Groups selection"
 msgstr "Sélection des groupes"
 
@@ -2693,10 +2698,6 @@ msgstr "Les droits d'accès à la base sont corrects."
 #: ../templates/default/gestion_transactions.tpl:110
 msgid "Do you really want to delete this transaction of the database ?"
 msgstr "Voulez-vous vraiment effacer cette transaction&nbsp;?"
-
-#: ../lib/Galette/Entity/Adherent.php:912
-msgid "- This username is already used by another member!"
-msgstr "- Ce nom d'utilisateur est déjà utilisé par un autre adhérent&nbsp;!"
 
 #: ../change_passwd.php:73
 msgid "An error occured while updating your password."
@@ -2816,16 +2817,16 @@ msgid "Add a contribution"
 msgstr "Ajouter une contribution"
 
 #: ../champs_adherents.php:59 ../includes/members_fields.php:222
-#: ../templates/default/member.tpl:358
+#: ../templates/default/member.tpl:359
 #: ../templates/default/voir_adherent.tpl:267
 msgid "Other informations:"
 msgstr "Autres informations&nbsp;:"
 
-#: ../templates/default/member.tpl:418
+#: ../templates/default/member.tpl:419
 msgid "Notify member his account has been modified"
 msgstr "Informer l'adhérent que son compte a été modifié"
 
-#: ../templates/default/member.tpl:369
+#: ../templates/default/member.tpl:370
 #: ../templates/default/voir_adherent.tpl:273
 msgid "Groups:"
 msgstr "Groupes&nbsp;:"
@@ -2881,7 +2882,7 @@ msgid "start date filter"
 msgstr "filtre date de début"
 
 #: ../champs_adherents.php:70 ../includes/members_fields.php:318
-#: ../templates/default/member.tpl:105
+#: ../templates/default/member.tpl:106
 #: ../templates/default/voir_adherent.tpl:86
 msgid "Birthplace:"
 msgstr "Lieu de naissance&nbsp;:"
@@ -2937,13 +2938,17 @@ msgstr ""
 "%adress\n"
 "%zip %town - %country"
 
-#: ../templates/default/member.tpl:420
+#: ../templates/default/member.tpl:421
 msgid "Notify member his account has been created"
 msgstr "Informer l'adhérent lorsque son compte a été créé"
 
 #: ../groups_list.php:83 ../groups_list.php:87
 msgid "Members by groups"
 msgstr "Membres par groupes"
+
+#: ../templates/default/config_fields.tpl:81
+msgid "Expand all"
+msgstr "Tout déplier"
 
 #: ../templates/default/preferences.tpl:4
 msgid "General"
@@ -3081,7 +3086,7 @@ msgid "logs are empty"
 msgstr "historique vide"
 
 #: ../champs_adherents.php:61 ../includes/members_fields.php:238
-#: ../install/index.php:1170 ../templates/default/member.tpl:305
+#: ../install/index.php:1170 ../templates/default/member.tpl:306
 #: ../templates/default/preferences.tpl:398 ../templates/default/index.tpl:8
 #: ../templates/default/voir_adherent.tpl:241
 msgid "Username:"
@@ -3128,7 +3133,7 @@ msgid "Credit card"
 msgstr "Carte de crédit"
 
 #: ../champs_adherents.php:40 ../includes/members_fields.php:53
-#: ../templates/default/member.tpl:275
+#: ../templates/default/member.tpl:276
 #: ../templates/default/voir_adherent.tpl:221
 msgid "Status:"
 msgstr "Statut&nbsp;:"
@@ -3579,7 +3584,7 @@ msgid "Page %i"
 msgstr "Page %i"
 
 #: ../champs_adherents.php:52 ../includes/members_fields.php:166
-#: ../templates/default/member.tpl:183
+#: ../templates/default/member.tpl:184
 #: ../templates/default/voir_adherent.tpl:143
 msgid "Mobile phone:"
 msgstr "GSM&nbsp;:"
@@ -3677,13 +3682,7 @@ msgstr "Le statut %label a été supprimé avec succès"
 msgid "Contribution added"
 msgstr "Contribution ajoutée"
 
-#: ../templates/default/gestion_adherents.tpl:408
-msgid "An error occured displaying attendance sheet details interface :("
-msgstr ""
-"Une erreur est survenue lors de l'affichage de l'interface des détails de la "
-"liste d'émargement :("
-
-#: ../templates/default/member.tpl:308 ../templates/default/member.tpl:319
+#: ../templates/default/member.tpl:309 ../templates/default/member.tpl:320
 msgid "(at least %i characters)"
 msgstr "(au moins %i caractères)"
 
@@ -3701,7 +3700,7 @@ msgid "unreachable members:"
 msgstr "membres qui n'ont pu être joints&nbsp;:"
 
 #: ../champs_adherents.php:57 ../includes/members_fields.php:206
-#: ../templates/default/member.tpl:215
+#: ../templates/default/member.tpl:216
 #: ../templates/default/voir_adherent.tpl:175
 msgid "Jabber:"
 msgstr "Jabber&nbsp;:"
@@ -3744,7 +3743,7 @@ msgid "[member]"
 msgstr "[membre]"
 
 #: ../champs_adherents.php:53 ../includes/members_fields.php:174
-#: ../templates/default/member.tpl:191
+#: ../templates/default/member.tpl:192
 #: ../templates/default/voir_adherent.tpl:149
 msgid "E-Mail:"
 msgstr "Courriel&nbsp;:"
@@ -4162,13 +4161,13 @@ msgstr ""
 "d'effectuer cette action."
 
 #: ../champs_adherents.php:66 ../includes/members_fields.php:286
-#: ../templates/default/member.tpl:295
+#: ../templates/default/member.tpl:296
 #: ../templates/default/voir_adherent.tpl:234
 msgid "Freed of dues:"
 msgstr "Exempt de cotisation&nbsp;:"
 
 #: ../champs_adherents.php:63 ../includes/members_fields.php:254
-#: ../templates/default/member.tpl:339 ../templates/default/group.tpl:13
+#: ../templates/default/member.tpl:340 ../templates/default/group.tpl:13
 #: ../templates/default/voir_adherent.tpl:248
 msgid "Creation date:"
 msgstr "Date de création&nbsp;:"
@@ -4206,9 +4205,11 @@ msgstr "Réseaux sociaux"
 msgid "No inactive plugin."
 msgstr "Aucun plugin inactif."
 
-#: ../preferences.php:140
-msgid "- This username is already used by another member !"
-msgstr "- Cet identifiant est déjà utilisé par un autre adhérent&nbsp;!"
+#: ../templates/default/gestion_adherents.tpl:408
+msgid "An error occured displaying attendance sheet details interface :("
+msgstr ""
+"Une erreur est survenue lors de l'affichage de l'interface des détails de la "
+"liste d'émargement :("
 
 #: ../templates/default/plugins.tpl:70
 msgid "Plugin database initialization: %name"
@@ -4423,7 +4424,7 @@ msgid "Fail to add new group."
 msgstr "Échec de l'ajout d'un nouveau groupe"
 
 #: ../champs_adherents.php:72 ../includes/members_fields.php:334
-#: ../templates/default/member.tpl:239
+#: ../templates/default/member.tpl:240
 #: ../templates/default/voir_adherent.tpl:197
 msgid "fingerprint:"
 msgstr "fingerprint&nbsp;:"
@@ -4504,7 +4505,7 @@ msgid "Generate labels"
 msgstr "Générer les étiquettes"
 
 #: ../champs_adherents.php:58 ../includes/members_fields.php:214
-#: ../templates/default/member.tpl:348
+#: ../templates/default/member.tpl:349
 #: ../templates/default/voir_adherent.tpl:260
 msgid "Other informations (admin):"
 msgstr "Autres informations (admin)&nbsp;:"
@@ -4513,7 +4514,7 @@ msgstr "Autres informations (admin)&nbsp;:"
 msgid "%s on Twitter!"
 msgstr "%s sur Twitter&nbsp;!"
 
-#: ../templates/default/member.tpl:374
+#: ../templates/default/member.tpl:375
 msgid "Manage user's managed groups"
 msgstr "Gestion des groupes gérés par l'utilisateur"
 
@@ -4521,7 +4522,7 @@ msgstr "Gestion des groupes gérés par l'utilisateur"
 msgid "company fee"
 msgstr "cotisation personne morale"
 
-#: ../templates/default/member.tpl:428
+#: ../templates/default/member.tpl:429
 msgid ""
 "Member will receive his username and password by email, if he has an address."
 msgstr ""
@@ -4548,7 +4549,7 @@ msgstr ""
 "Le groupe `%subgroupname` est un enfant de `%groupname`, il ne peut être "
 "défini comme son parent&nbsp;!"
 
-#: ../templates/default/member.tpl:426
+#: ../templates/default/member.tpl:427
 msgid "Member will be notified by mail his account has been modified."
 msgstr "L'adhérent sera informé par courriel si son compte a été modifié."
 
@@ -4572,7 +4573,7 @@ msgid "Address type:"
 msgstr "Type d'adresse&nbsp;:"
 
 #: ../champs_adherents.php:64 ../includes/members_fields.php:270
-#: ../templates/default/member.tpl:264
+#: ../templates/default/member.tpl:265
 #: ../templates/default/voir_adherent.tpl:214
 msgid "Account:"
 msgstr "Compte&nbsp;:"
@@ -4661,14 +4662,18 @@ msgstr ""
 "administrateur Galette."
 
 #: ../champs_adherents.php:49 ../includes/members_fields.php:142
-#: ../templates/default/member.tpl:159 ../templates/default/preferences.tpl:44
+#: ../templates/default/member.tpl:160 ../templates/default/preferences.tpl:44
 #: ../templates/default/voir_adherent.tpl:125
 msgid "City:"
 msgstr "Ville&nbsp;:"
 
-#: ../templates/default/ajax_members.tpl:53
-msgid "Selected members"
-msgstr "Membres sélectionnés"
+#: ../templates/default/member.tpl:78
+msgid ""
+"Do you manage a non profit organization, or a company? If you do so, check "
+"the box, and then enter its name in the field that will appear."
+msgstr ""
+"Êtes-vous responsable d'une association ou d'une entreprise ? Si oui, cochez "
+"la case, et entrez son nom dans le champ qui va apparaître."
 
 #: ../templates/default/gestion_contributions.tpl:5
 msgid "until"
@@ -4696,7 +4701,7 @@ msgstr "se termine par"
 msgid "Membership in order"
 msgstr "Adhésion en règle"
 
-#: ../templates/default/member.tpl:361
+#: ../templates/default/member.tpl:362
 msgid "This comment is reserved to the member."
 msgstr "Ce commentaire est réservé à l'adhérent."
 
@@ -4728,7 +4733,7 @@ msgstr ""
 "Retour à la fenêtre précédente, si vous souhaitez sélectionnez un type de "
 "contribution qui n'est pas listé ici"
 
-#: ../templates/default/member.tpl:396 ../templates/default/member.tpl:544
+#: ../templates/default/member.tpl:397 ../templates/default/member.tpl:545
 msgid "Member of '%groupname'"
 msgstr "Membre de « %groupname »"
 
@@ -4778,7 +4783,7 @@ msgstr "Secrétaire"
 msgid "Not managed group"
 msgstr "Groupe non géré"
 
-#: ../templates/default/member.tpl:254
+#: ../templates/default/member.tpl:255
 msgid ""
 "If you check this box (and if you are up to date with your contributions), "
 "your full name, website adress ad other informations will be publically "
@@ -5145,7 +5150,7 @@ msgid "Not sent"
 msgstr "Pas envoyé"
 
 #: ../champs_adherents.php:60 ../includes/members_fields.php:230
-#: ../templates/default/member.tpl:113
+#: ../templates/default/member.tpl:114
 #: ../templates/default/voir_adherent.tpl:92
 msgid "Profession:"
 msgstr "Profession&nbsp;:"
@@ -5323,6 +5328,9 @@ msgstr ""
 #: ../lostpasswd.php:164
 msgid "Login %s does not exist"
 msgstr "L'identifiant %s n'existe pas"
+
+#~ msgid "- This username is already used by another member !"
+#~ msgstr "- Cet identifiant est déjà utilisé par un autre adhérent&nbsp;!"
 
 #~ msgid "Company"
 #~ msgstr "Entreprise"
