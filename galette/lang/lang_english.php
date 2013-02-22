@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Fri Feb 22 22:16:45 2013 (GMT)
+// This file was automatically generated on Fri Feb 22 23:57:55 2013 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -396,7 +396,7 @@ $lang['Select installation mode to launch'] = 'Select installation mode to launc
 // ../lib/Galette/Filters/MembersList.php:320 
 $lang['Active accounts'] = 'Active accounts';
 
-// ../gestion_titres.php:73 
+// ../gestion_titres.php:102 
 $lang['Title \'%s\' has not been added!'] = 'Title \'%s\' has not been added!';
 
 // ../templates/default/edit_title.tpl:5 
@@ -918,7 +918,7 @@ $lang['GALETTE hasn\'t got enough permissions on the database to continue the in
 // ../install/index.php:1103 ../templates/default/ajax_plugins_initdb.tpl:50 
 $lang['The tables have not been totally created, it may be a permission problem.'] = 'The tables have not been totally created, it may be a permission problem.';
 
-// ../gestion_titres.php:79 
+// ../gestion_titres.php:108 
 $lang['Title \'%s\' has been successfully added.'] = 'Title \'%s\' has been successfully added.';
 
 // ../ajax_plugins_initdb.php:159 ../install/index.php:834 
@@ -1518,6 +1518,9 @@ $lang['New installation:'] = 'New installation:';
 // ../templates/default/gestion_titres.tpl:38 
 $lang['Delete \'%s\' title'] = 'Delete \'%s\' title';
 
+// ../gestion_titres.php:83 
+$lang['That title is still in use, you cannot delete it!'] = 'That title is still in use, you cannot delete it!';
+
 // ../install/index.php:634 
 $lang['Database:'] = 'Database:';
 
@@ -1787,6 +1790,9 @@ $lang['Modify'] = 'Modify';
 
 // ../templates/default/ajouter_transaction.tpl:67 
 $lang['Dispatched amount:'] = 'Dispatched amount:';
+
+// ../lib/Galette/Entity/Title.php:177 
+$lang['You cannot delete Mr. or Mrs. titles!'] = 'You cannot delete Mr. or Mrs. titles!';
 
 // ../templates/default/preferences.tpl:317 
 $lang['Active Member Color:'] = 'Active Member Color:';
@@ -3105,10 +3111,13 @@ $lang['List of contributions'] = 'List of contributions';
 // ../gestion_transactions.php:94 
 $lang['Transactions managment'] = 'Transactions managment';
 
+// ../gestion_titres.php:76 
+$lang['An error occured removing title \'%name\' :('] = 'An error occured removing title \'%name\' :(';
+
 // ../install/index.php:1257 
 $lang['Default preferences cannot be initialized.'] = 'Default preferences cannot be initialized.';
 
-// ../gestion_titres.php:86 
+// ../gestion_titres.php:115 
 $lang['Titles management'] = 'Titles management';
 
 // ../templates/default/plugins.tpl:8 
@@ -3356,6 +3365,9 @@ $lang['%name\n%complement\n%adress\n%zip %town - %country'] = '%name\n%complemen
 
 // ../templates/default/photo_dnd.tpl:54 
 $lang['An error occured sending photo :('] = 'An error occured sending photo :(';
+
+// ../gestion_titres.php:70 
+$lang['Title \'%name\' has been successfully deleted.'] = 'Title \'%name\' has been successfully deleted.';
 
 // ../templates/default/ajouter_transaction.tpl:5 
 $lang['Transaction details'] = 'Transaction details';

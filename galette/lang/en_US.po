@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2013-02-22 23:16+0100\n"
+"PO-Revision-Date: 2013-02-23 00:57+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -60,7 +60,7 @@ msgstr "Active used modules"
 msgid "Do you really want to delete this contribution of the database ?"
 msgstr "Do you really want to delete this contribution of the database ?"
 
-#: ../gestion_titres.php:86
+#: ../gestion_titres.php:115
 msgid "Titles management"
 msgstr "Titles management"
 
@@ -93,7 +93,7 @@ msgstr "Email"
 msgid "Back to plugins managment page"
 msgstr "Back to plugins managment page"
 
-#: ../gestion_titres.php:79
+#: ../gestion_titres.php:108
 msgid "Title '%s' has been successfully added."
 msgstr "Title '%s' has been successfully added."
 
@@ -243,9 +243,9 @@ msgstr "Mailings"
 msgid "Name"
 msgstr "Name"
 
-#: ../templates/default/preferences.tpl:83
-msgid "Twitter"
-msgstr "Twitter"
+#: ../gestion_titres.php:83
+msgid "That title is still in use, you cannot delete it!"
+msgstr "That title is still in use, you cannot delete it!"
 
 #: ../export.php:121
 msgid "An error occured running parameted export '%export'."
@@ -321,7 +321,7 @@ msgstr "[mod]"
 msgid "text"
 msgstr "text"
 
-#: ../gestion_titres.php:73
+#: ../gestion_titres.php:102
 msgid "Title '%s' has not been added!"
 msgstr "Title '%s' has not been added!"
 
@@ -376,9 +376,9 @@ msgstr "Jabber"
 msgid "contribution"
 msgstr "contribution"
 
-#: ../templates/default/preferences.tpl:343
-msgid "(Members will be able to generate their own member card)"
-msgstr "(Members will be able to generate their own member card)"
+#: ../templates/default/preferences.tpl:83
+msgid "Twitter"
+msgstr "Twitter"
 
 #: ../preferences.php:239
 msgid "- You must indicate the SMTP server you want to use!"
@@ -3626,6 +3626,10 @@ msgstr "Status %label was successfully removed"
 msgid "Contribution added"
 msgstr "Contribution added"
 
+#: ../templates/default/gestion_adherents.tpl:408
+msgid "An error occured displaying attendance sheet details interface :("
+msgstr "An error occured displaying attendance sheet details interface :("
+
 #: ../templates/default/member.tpl:309 ../templates/default/member.tpl:320
 msgid "(at least %i characters)"
 msgstr "(at least %i characters)"
@@ -3806,6 +3810,10 @@ msgstr "Identity"
 #: ../templates/default/mailing_adherents.tpl:38
 msgid "Manage selected members"
 msgstr "Manage selected members"
+
+#: ../templates/default/preferences.tpl:343
+msgid "(Members will be able to generate their own member card)"
+msgstr "(Members will be able to generate their own member card)"
 
 #: ../mailing_adherents.php:73
 msgid "Trying to load mailing while mail is disabled in preferences."
@@ -4142,9 +4150,9 @@ msgstr "Social networks"
 msgid "No inactive plugin."
 msgstr "No inactive plugin."
 
-#: ../templates/default/gestion_adherents.tpl:408
-msgid "An error occured displaying attendance sheet details interface :("
-msgstr "An error occured displaying attendance sheet details interface :("
+#: ../gestion_titres.php:70
+msgid "Title '%name' has been successfully deleted."
+msgstr "Title '%name' has been successfully deleted."
 
 #: ../templates/default/plugins.tpl:70
 msgid "Plugin database initialization: %name"
@@ -4266,6 +4274,10 @@ msgstr "Paypal"
 #: ../templates/default/page.tpl:119
 msgid "Add new member in database"
 msgstr "Add new member in database"
+
+#: ../gestion_titres.php:76
+msgid "An error occured removing title '%name' :("
+msgstr "An error occured removing title '%name' :("
 
 #: ../install/index.php:383
 msgid "Galette requires at least PHP version %ver!"
@@ -4605,6 +4617,10 @@ msgstr ""
 #: ../templates/default/gestion_contributions.tpl:5
 msgid "until"
 msgstr "until"
+
+#: ../lib/Galette/Entity/Title.php:177
+msgid "You cannot delete Mr. or Mrs. titles!"
+msgstr "You cannot delete Mr. or Mrs. titles!"
 
 #: ../templates/default/preferences.tpl:124
 msgid "Normal"

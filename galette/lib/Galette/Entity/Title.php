@@ -164,6 +164,42 @@ class Title
     }
 
     /**
+     * Remove current title
+     *
+     * @param Db $zdb Database instance
+     *
+     * @return boolean
+     */
+    public function remove($zdb)
+    {
+        $id = (int)$this->_id;
+        if ( $id === self::MR || $id === self::MRS ) {
+            throw new \RuntimeException(_T("You cannot delete Mr. or Mrs. titles!"));
+        }
+
+        try {
+            $zdb->db->delete(
+                PREFIX_DB . self::TABLE,
+                self::PK . ' = ' . $id
+            );
+            Analog::log(
+                'Title #' . $id . ' (' . $this->_short
+                . ') deleted successfully.',
+                Analog::INFO
+            );
+            return true;
+        } catch (\RuntimeException $re) {
+            throw $re;
+        } catch (\Exception $e) {
+            Analog::log(
+                'Unable to delete title ' . $id . ' | ' . $e->getMessage(),
+                Analog::ERROR
+            );
+            throw $e;
+        }
+    }
+
+    /**
      * Getter
      *
      * @param string $name Property name

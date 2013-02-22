@@ -43,7 +43,7 @@ msgstr ""
 msgid "Do you really want to delete this contribution of the database ?"
 msgstr ""
 
-#: ../gestion_titres.php:86
+#: ../gestion_titres.php:115
 msgid "Titles management"
 msgstr ""
 
@@ -76,7 +76,7 @@ msgstr ""
 msgid "Back to plugins managment page"
 msgstr ""
 
-#: ../gestion_titres.php:79
+#: ../gestion_titres.php:108
 msgid "Title '%s' has been successfully added."
 msgstr ""
 
@@ -206,8 +206,8 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:83
-msgid "Twitter"
+#: ../gestion_titres.php:83
+msgid "That title is still in use, you cannot delete it!"
 msgstr ""
 
 #: ../export.php:121
@@ -282,7 +282,7 @@ msgstr ""
 msgid "text"
 msgstr ""
 
-#: ../gestion_titres.php:73
+#: ../gestion_titres.php:102
 msgid "Title '%s' has not been added!"
 msgstr ""
 
@@ -334,8 +334,8 @@ msgstr ""
 msgid "contribution"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:343
-msgid "(Members will be able to generate their own member card)"
+#: ../templates/default/preferences.tpl:83
+msgid "Twitter"
 msgstr ""
 
 #: ../preferences.php:239
@@ -3269,6 +3269,10 @@ msgstr ""
 msgid "Contribution added"
 msgstr ""
 
+#: ../templates/default/gestion_adherents.tpl:408
+msgid "An error occured displaying attendance sheet details interface :("
+msgstr ""
+
 #: ../templates/default/member.tpl:309 ../templates/default/member.tpl:320
 msgid "(at least %i characters)"
 msgstr ""
@@ -3433,6 +3437,10 @@ msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:38
 msgid "Manage selected members"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:343
+msgid "(Members will be able to generate their own member card)"
 msgstr ""
 
 #: ../mailing_adherents.php:73
@@ -3727,8 +3735,8 @@ msgstr ""
 msgid "No inactive plugin."
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:408
-msgid "An error occured displaying attendance sheet details interface :("
+#: ../gestion_titres.php:70
+msgid "Title '%name' has been successfully deleted."
 msgstr ""
 
 #: ../templates/default/plugins.tpl:70
@@ -3842,6 +3850,10 @@ msgstr ""
 
 #: ../templates/default/page.tpl:119
 msgid "Add new member in database"
+msgstr ""
+
+#: ../gestion_titres.php:76
+msgid "An error occured removing title '%name' :("
 msgstr ""
 
 #: ../install/index.php:383
@@ -4147,6 +4159,10 @@ msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:5
 msgid "until"
+msgstr ""
+
+#: ../lib/Galette/Entity/Title.php:177
+msgid "You cannot delete Mr. or Mrs. titles!"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:124

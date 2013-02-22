@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Fri Feb 22 22:16:45 2013 (GMT)
+// This file was automatically generated on Fri Feb 22 23:57:55 2013 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -396,7 +396,7 @@ $lang['Select installation mode to launch'] = 'Sélectionnez le type d\'installa
 // ../lib/Galette/Filters/MembersList.php:320 
 $lang['Active accounts'] = 'Comptes actifs';
 
-// ../gestion_titres.php:73 
+// ../gestion_titres.php:102 
 $lang['Title \'%s\' has not been added!'] = 'Le titre « %s » n\'a pas été ajouté&nbsp;!';
 
 // ../templates/default/edit_title.tpl:5 
@@ -918,7 +918,7 @@ $lang['GALETTE hasn\'t got enough permissions on the database to continue the in
 // ../install/index.php:1103 ../templates/default/ajax_plugins_initdb.tpl:50 
 $lang['The tables have not been totally created, it may be a permission problem.'] = 'Les tables n\'ont pas pu être totalement créées, il s\'agit peut-être d\'un problème de droits.';
 
-// ../gestion_titres.php:79 
+// ../gestion_titres.php:108 
 $lang['Title \'%s\' has been successfully added.'] = 'Le titre « %s » a été ajouté avec succès.';
 
 // ../ajax_plugins_initdb.php:159 ../install/index.php:834 
@@ -1518,6 +1518,9 @@ $lang['New installation:'] = 'Nouvelle installation&nbsp;:';
 // ../templates/default/gestion_titres.tpl:38 
 $lang['Delete \'%s\' title'] = 'Supprimer le titre « %s »';
 
+// ../gestion_titres.php:83 
+$lang['That title is still in use, you cannot delete it!'] = 'Ce titre est encore utilisé, vous ne pouvez pas le supprimer&nbsp;!';
+
 // ../install/index.php:634 
 $lang['Database:'] = 'Nom de la base&nbsp;:';
 
@@ -1787,6 +1790,9 @@ $lang['Modify'] = 'Modifier';
 
 // ../templates/default/ajouter_transaction.tpl:67 
 $lang['Dispatched amount:'] = 'Montant ventilé&nbsp;:';
+
+// ../lib/Galette/Entity/Title.php:177 
+$lang['You cannot delete Mr. or Mrs. titles!'] = 'Vous ne pouvez pas supprimer les titres M. ou Mme.&nbsp;!';
 
 // ../templates/default/preferences.tpl:317 
 $lang['Active Member Color:'] = 'Couleur pour les membres actifs&nbsp;:';
@@ -3105,10 +3111,13 @@ $lang['List of contributions'] = 'Liste des contributions';
 // ../gestion_transactions.php:94 
 $lang['Transactions managment'] = 'Gestion des transactions';
 
+// ../gestion_titres.php:76 
+$lang['An error occured removing title \'%name\' :('] = 'Une erreur est survenue lors de la suppression du titre « %name » :(';
+
 // ../install/index.php:1257 
 $lang['Default preferences cannot be initialized.'] = 'Les préférences par défaut n\'ont pas été initialisées.';
 
-// ../gestion_titres.php:86 
+// ../gestion_titres.php:115 
 $lang['Titles management'] = 'Gestion des titres';
 
 // ../templates/default/plugins.tpl:8 
@@ -3356,6 +3365,9 @@ $lang['%name\n%complement\n%adress\n%zip %town - %country'] = '%name\n%complemen
 
 // ../templates/default/photo_dnd.tpl:54 
 $lang['An error occured sending photo :('] = 'Une erreur est survenue lors de l\'envoi de la photo :(';
+
+// ../gestion_titres.php:70 
+$lang['Title \'%name\' has been successfully deleted.'] = 'Le titre « %name » a été supprimé avec succès.';
 
 // ../templates/default/ajouter_transaction.tpl:5 
 $lang['Transaction details'] = 'Détails de la transaction';

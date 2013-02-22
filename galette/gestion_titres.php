@@ -57,8 +57,37 @@ $cur_ref = Texts::DEFAULT_REF;
 
 $texts = new Texts($preferences);*/
 
+//delete members
+if ( isset($_GET['del']) ) {
+    if ( isset($_GET['del']) ) {
+        $title = new Title((int)$_GET['del']);
+        try {
+            $res = $title->remove($zdb);
+            if ( $res === true ) {
+                $success_detected[] = str_replace(
+                    '%name',
+                    $title->short,
+                    _T("Title '%name' has been successfully deleted.")
+                );
+            } else {
+                $error_detected[] = str_replace(
+                    '%name',
+                    $title->short,
+                    _T("An error occured removing title '%name' :(")
+                );
+            }
+        } catch (\RuntimeException $re) {
+            $error_detected[] = $re->getMessage();
+        } catch (\Exception $e) {
+            if ($e->getCode() === 23503) {
+                $error_detected[] = _T("That title is still in use, you cannot delete it!");
+            }
+        }
+    }
+}
+
 if (isset($_POST['new']) && $_POST['new'] == '1') {
-    //ad new title
+    //add new title
     $title = new Title();
 
     $title->short = $_POST['short_label'];
