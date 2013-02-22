@@ -647,7 +647,7 @@ msgstr ""
 msgid "Database can't be reached. Please go back to enter the connection parameters again."
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1253 ../templates/default/member.tpl:266
+#: ../lib/Galette/Entity/Adherent.php:1262 ../templates/default/member.tpl:266
 msgid "Active"
 msgstr ""
 
@@ -1069,7 +1069,7 @@ msgstr ""
 msgid "Export all groups and their members as PDF"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1136
+#: ../lib/Galette/Entity/Adherent.php:1145
 msgid "Member card updated"
 msgstr ""
 
@@ -1107,11 +1107,11 @@ msgstr ""
 msgid "Note: members with a status priority lower than %priority are staff members."
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1253 ../templates/default/member.tpl:267
+#: ../lib/Galette/Entity/Adherent.php:1262 ../templates/default/member.tpl:267
 msgid "Inactive"
 msgstr ""
 
-#: ../gestion_intitules.php:339 ../lib/Galette/Entity/Adherent.php:1250
+#: ../gestion_intitules.php:339 ../lib/Galette/Entity/Adherent.php:1259
 #: ../templates/default/gestion_intitule_content.tpl:29 ../templates/default/config_fields.tpl:36
 #: ../templates/default/config_fields.tpl:42 ../templates/default/editer_champ.tpl:21
 #: ../templates/default/configurer_fiches.tpl:23 ../templates/default/configurer_fiche_content.tpl:21
@@ -1282,7 +1282,7 @@ msgstr ""
 msgid "%membername: edit informations"
 msgstr ""
 
-#: ../lib/Galette/Entity/Transaction.php:312 ../lib/Galette/Entity/Adherent.php:1019
+#: ../lib/Galette/Entity/Transaction.php:312 ../lib/Galette/Entity/Adherent.php:1027
 #: ../lib/Galette/Entity/Contribution.php:422
 msgid "- Mandatory field empty: "
 msgstr ""
@@ -1329,7 +1329,7 @@ msgstr ""
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1107
+#: ../lib/Galette/Entity/Adherent.php:1116
 msgid "Fail to add new member."
 msgstr ""
 
@@ -1769,8 +1769,8 @@ msgstr ""
 msgid "Members that have an email adress:"
 msgstr ""
 
-#: ../install/index.php:611
-msgid "Host:"
+#: ../includes/i18n.inc.php:365
+msgid "Contact information"
 msgstr ""
 
 #: ../lib/Galette/Core/Pagination.php:233
@@ -1932,7 +1932,7 @@ msgstr ""
 msgid "Contribution has been successfyully detached from current transaction"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1102
+#: ../lib/Galette/Entity/Adherent.php:1111
 msgid "Member card added"
 msgstr ""
 
@@ -2162,8 +2162,8 @@ msgstr ""
 msgid "Invert selection"
 msgstr ""
 
-#: ../templates/default/page.tpl:149
-msgid "Translate additionnals fields labels"
+#: ../includes/i18n.inc.php:364
+msgid "Galette-related data"
 msgstr ""
 
 #: ../templates/default/plugins.tpl:48
@@ -2369,6 +2369,10 @@ msgstr ""
 
 #: ../templates/default/member.tpl:502
 msgid "Groups selection"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:261
+msgid "E-mail"
 msgstr ""
 
 #: ../install/index.php:316
@@ -3189,8 +3193,8 @@ msgstr ""
 msgid "Mobile phone:"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:261
-msgid "E-mail"
+#: ../install/index.php:611
+msgid "Host:"
 msgstr ""
 
 #: ../includes/i18n.inc.php:332
@@ -3423,6 +3427,10 @@ msgstr ""
 msgid "annual fee (to be paid)"
 msgstr ""
 
+#: ../includes/i18n.inc.php:363
+msgid "Identity"
+msgstr ""
+
 #: ../templates/default/mailing_adherents.tpl:38
 msgid "Manage selected members"
 msgstr ""
@@ -3485,7 +3493,7 @@ msgstr ""
 msgid "Search:"
 msgstr ""
 
-#: ../gestion_intitules.php:339 ../lib/Galette/Entity/Adherent.php:1250
+#: ../gestion_intitules.php:339 ../lib/Galette/Entity/Adherent.php:1259
 #: ../templates/default/gestion_intitule_content.tpl:28 ../templates/default/config_fields.tpl:38
 #: ../templates/default/config_fields.tpl:44 ../templates/default/editer_champ.tpl:20
 #: ../templates/default/configurer_fiches.tpl:22 ../templates/default/configurer_fiche_content.tpl:21
@@ -3584,7 +3592,7 @@ msgstr ""
 #: ../lib/Galette/Entity/Adherent.php:608 ../lib/Galette/Entity/Adherent.php:622
 #: ../lib/Galette/Entity/Adherent.php:634 ../lib/Galette/Entity/Adherent.php:802
 #: ../lib/Galette/Entity/Adherent.php:811 ../lib/Galette/Entity/Adherent.php:820
-#: ../lib/Galette/Entity/Adherent.php:1209 ../lib/Galette/Entity/Contribution.php:344
+#: ../lib/Galette/Entity/Adherent.php:1218 ../lib/Galette/Entity/Contribution.php:344
 #: ../lib/Galette/Entity/Contribution.php:353 ../lib/Galette/Entity/Contribution.php:362
 #: ../lib/Galette/Entity/Contribution.php:490 ../lib/Galette/Entity/Contribution.php:879
 #: ../lib/Galette/Entity/Contribution.php:982 ../lib/Galette/Entity/Contribution.php:991
@@ -4364,6 +4372,10 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:556
 msgid "Fail to add new contribution."
+msgstr ""
+
+#: ../templates/default/page.tpl:149
+msgid "Translate additionnals fields labels"
 msgstr ""
 
 #: ../templates/default/footer.tpl:11

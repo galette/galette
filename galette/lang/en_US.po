@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2013-02-21 12:36+0100\n"
+"PO-Revision-Date: 2013-02-22 10:07+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -724,7 +724,7 @@ msgstr ""
 "Database can't be reached. Please go back to enter the connection parameters "
 "again."
 
-#: ../lib/Galette/Entity/Adherent.php:1253 ../templates/default/member.tpl:266
+#: ../lib/Galette/Entity/Adherent.php:1262 ../templates/default/member.tpl:266
 msgid "Active"
 msgstr "Active"
 
@@ -1194,7 +1194,7 @@ msgstr "Plugin '%name' has been successfully installed!"
 msgid "Export all groups and their members as PDF"
 msgstr "Export all groups and their members as PDF"
 
-#: ../lib/Galette/Entity/Adherent.php:1136
+#: ../lib/Galette/Entity/Adherent.php:1145
 msgid "Member card updated"
 msgstr "Member card updated"
 
@@ -1238,11 +1238,11 @@ msgid ""
 msgstr ""
 "Note: members with a status priority lower than %priority are staff members."
 
-#: ../lib/Galette/Entity/Adherent.php:1253 ../templates/default/member.tpl:267
+#: ../lib/Galette/Entity/Adherent.php:1262 ../templates/default/member.tpl:267
 msgid "Inactive"
 msgstr "Inactive"
 
-#: ../gestion_intitules.php:339 ../lib/Galette/Entity/Adherent.php:1250
+#: ../gestion_intitules.php:339 ../lib/Galette/Entity/Adherent.php:1259
 #: ../templates/default/gestion_intitule_content.tpl:29
 #: ../templates/default/config_fields.tpl:36
 #: ../templates/default/config_fields.tpl:42
@@ -1433,7 +1433,7 @@ msgid "%membername: edit informations"
 msgstr "%membername: edit informations"
 
 #: ../lib/Galette/Entity/Transaction.php:312
-#: ../lib/Galette/Entity/Adherent.php:1019
+#: ../lib/Galette/Entity/Adherent.php:1027
 #: ../lib/Galette/Entity/Contribution.php:422
 msgid "- Mandatory field empty: "
 msgstr "- Mandatory field empty: "
@@ -1481,7 +1481,7 @@ msgstr "Under UNIX/Linux, you can give the permissions using those commands"
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr "Your database is maybe not usable, try to restore the older version."
 
-#: ../lib/Galette/Entity/Adherent.php:1107
+#: ../lib/Galette/Entity/Adherent.php:1116
 msgid "Fail to add new member."
 msgstr "Fail to add new member."
 
@@ -1955,9 +1955,9 @@ msgstr "Select a field"
 msgid "Members that have an email adress:"
 msgstr "Members that have an email adress:"
 
-#: ../install/index.php:611
-msgid "Host:"
-msgstr "Host:"
+#: ../includes/i18n.inc.php:365
+msgid "Contact information"
+msgstr "Contact information"
 
 #: ../lib/Galette/Core/Pagination.php:233
 msgid "First page"
@@ -2132,7 +2132,7 @@ msgstr "Member Profile"
 msgid "Contribution has been successfyully detached from current transaction"
 msgstr "Contribution has been successfyully detached from current transaction"
 
-#: ../lib/Galette/Entity/Adherent.php:1102
+#: ../lib/Galette/Entity/Adherent.php:1111
 msgid "Member card added"
 msgstr "Member card added"
 
@@ -2374,9 +2374,9 @@ msgstr "To secure the system, please delete the install directory"
 msgid "Invert selection"
 msgstr "Invert selection"
 
-#: ../templates/default/page.tpl:149
-msgid "Translate additionnals fields labels"
-msgstr "Translate additionnals fields labels"
+#: ../includes/i18n.inc.php:364
+msgid "Galette-related data"
+msgstr "Galette-related data"
 
 #: ../templates/default/plugins.tpl:48
 msgid "Enable plugin"
@@ -2602,6 +2602,10 @@ msgstr ""
 #: ../templates/default/member.tpl:502
 msgid "Groups selection"
 msgstr "Groups selection"
+
+#: ../templates/default/gestion_adherents.tpl:261
+msgid "E-mail"
+msgstr "E-mail"
 
 #: ../install/index.php:316
 msgid ""
@@ -3530,9 +3534,9 @@ msgstr "Page %i"
 msgid "Mobile phone:"
 msgstr "Mobile phone:"
 
-#: ../templates/default/gestion_adherents.tpl:261
-msgid "E-mail"
-msgstr "E-mail"
+#: ../install/index.php:611
+msgid "Host:"
+msgstr "Host:"
 
 #: ../includes/i18n.inc.php:332
 msgid "Publisher:"
@@ -3795,6 +3799,10 @@ msgstr "DELETE operation not allowed"
 msgid "annual fee (to be paid)"
 msgstr "annual fee (to be paid)"
 
+#: ../includes/i18n.inc.php:363
+msgid "Identity"
+msgstr "Identity"
+
 #: ../templates/default/mailing_adherents.tpl:38
 msgid "Manage selected members"
 msgstr "Manage selected members"
@@ -3865,7 +3873,7 @@ msgstr "Group %groupname has been successfully deleted."
 msgid "Search:"
 msgstr "Search:"
 
-#: ../gestion_intitules.php:339 ../lib/Galette/Entity/Adherent.php:1250
+#: ../gestion_intitules.php:339 ../lib/Galette/Entity/Adherent.php:1259
 #: ../templates/default/gestion_intitule_content.tpl:28
 #: ../templates/default/config_fields.tpl:38
 #: ../templates/default/config_fields.tpl:44
@@ -3980,7 +3988,7 @@ msgstr "donation in money"
 #: ../lib/Galette/Entity/Adherent.php:802
 #: ../lib/Galette/Entity/Adherent.php:811
 #: ../lib/Galette/Entity/Adherent.php:820
-#: ../lib/Galette/Entity/Adherent.php:1209
+#: ../lib/Galette/Entity/Adherent.php:1218
 #: ../lib/Galette/Entity/Contribution.php:344
 #: ../lib/Galette/Entity/Contribution.php:353
 #: ../lib/Galette/Entity/Contribution.php:362
@@ -4848,6 +4856,10 @@ msgstr "No members has been selected yet."
 #: ../lib/Galette/Entity/Contribution.php:556
 msgid "Fail to add new contribution."
 msgstr "Fail to add new contribution."
+
+#: ../templates/default/page.tpl:149
+msgid "Translate additionnals fields labels"
+msgstr "Translate additionnals fields labels"
 
 #: ../templates/default/footer.tpl:11
 msgid "Project leader"
