@@ -66,7 +66,8 @@ if ( count($filters->selected) == 0 ) {
     die();
 }
 
-$members = Members::getArrayList(
+$m = new Members();
+$members = $m->getArrayList(
     $filters->selected,
     array('nom_adh', 'prenom_adh'),
     true

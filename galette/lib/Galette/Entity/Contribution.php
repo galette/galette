@@ -523,7 +523,9 @@ class Contribution
                 switch ( $field ) {
                 case ContributionsTypes::PK:
                 case Transaction::PK:
-                    $values[$field] = $this->$prop->id;
+                    if ( isset($this->$prop) ) {
+                        $values[$field] = $this->$prop->id;
+                    }
                     break;
                 default:
                     $values[$field] = $this->$prop;
@@ -614,7 +616,7 @@ class Contribution
             if ( $due_date != '' ) {
                 $date_fin_update = $due_date;
             } else {
-                $date_fin_update = 'NULL';
+                $date_fin_update = new \Zend_Db_Expr('NULL');
             }
 
             $edit = $zdb->db->update(

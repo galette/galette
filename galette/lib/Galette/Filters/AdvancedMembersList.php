@@ -39,6 +39,8 @@ namespace Galette\Filters;
 
 use Analog\Analog as Analog;
 use Galette\Entity\Status as Status;
+use Galette\Entity\ContributionsTypes as ContributionsTypes;
+use Galette\Entity\Contribution as Contribution;
 use Galette\Repository\Members as Members;
 
 /**
@@ -75,6 +77,16 @@ class AdvancedMembersList extends MembersList
     private $_due_date_end;
     private $_show_public_infos = Members::FILTER_DC_PUBINFOS;
     private $_status = array();
+    private $_contrib_creation_date_begin;
+    private $_contrib_creation_date_end;
+    private $_contrib_begin_date_begin;
+    private $_contrib_begin_date_end;
+    private $_contrib_end_date_begin;
+    private $_contrib_end_date_end;
+    private $_contributions_types;
+    private $_payments_types;
+    private $_contrib_min_amount;
+    private $_contrib_max_amount;
 
     protected $advancedmemberslist_fields = array(
         'creation_date_begin',
@@ -85,6 +97,17 @@ class AdvancedMembersList extends MembersList
         'due_date_end',
         'show_public_infos',
         'status',
+        'contrib_creation_date_begin',
+        'contrib_creation_date_end',
+        'contrib_begin_date_begin',
+        'contrib_begin_date_end',
+        'contrib_end_date_begin',
+        'contrib_end_date_end',
+        'contributions_types',
+        'payments_types',
+        'contrib_min_amount',
+        'contrib_max_amount',
+        'contrib_dynamic',
         'free_search'
     );
 
@@ -94,11 +117,27 @@ class AdvancedMembersList extends MembersList
         'rmodif_date_begin',
         'rmodif_date_end',
         'rdue_date_begin',
-        'rdue_date_end'
+        'rdue_date_end',
+        'rcontrib_creation_date_begin',
+        'rcontrib_creation_date_end',
+        'rcontrib_begin_date_begin',
+        'rcontrib_begin_date_end',
+        'rcontrib_end_date_begin',
+        'rcontrib_end_date_end'
     );
 
     //an empty free search criteria to begin
     private $_free_search = array(
+        'empty' => array(
+            'field'     => '',
+            'search'    => '',
+            'log_op'    => self::OP_AND,
+            'qry_op'    => self::OP_EQUALS
+        )
+    );
+
+    //an empty contributions dynamic field criteria to begin
+    private $_contrib_dynamic = array(
         'empty' => array(
             'field'     => '',
             'search'    => '',
@@ -126,6 +165,31 @@ class AdvancedMembersList extends MembersList
     }
 
     /**
+     * Do we want to filter within contributions?
+     *
+     * @return boolean
+     */
+    public function withinContributions()
+    {
+        if ( $this->_contrib_creation_date_begin != null
+            || $this->_contrib_creation_date_end != null
+            || $this->_contrib_begin_date_begin != null
+            || $this->_contrib_begin_date_end != null
+            || $this->_contrib_end_date_begin != null
+            || $this->_contrib_begin_date_end != null
+            || $this->_contrib_min_amount != null
+            || $this->_contrib_max_amount != null
+            || count($this->_contrib_dynamic) > 0
+            || count($this->_contributions_types) > 0
+            || count($this->_payments_types) > 0
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Reinit default parameters
      *
      * @return void
@@ -143,6 +207,15 @@ class AdvancedMembersList extends MembersList
         $this->_show_public_infos = Members::FILTER_DC_PUBINFOS;
         $this->_status = array();
 
+        $this->_contrib_creation_date_begin = null;
+        $this->_contrib_creation_date_end = null;
+        $this->_contrib_begin_date_begin = null;
+        $this->_contrib_begin_date_end = null;
+        $this->_contrib_end_date_begin = null;
+        $this->_contrib_begin_date_end = null;
+        $this->_contributions_types = array();
+        $this->_payments_types = array();
+
         $this->_free_search = array(
             'empty' => array(
                 'field'     => '',
@@ -151,6 +224,16 @@ class AdvancedMembersList extends MembersList
                 'qry_op'    => self::OP_EQUALS
             )
         );
+
+        $this->_contrib_dynamic = array(
+            'empty' => array(
+                'field'     => '',
+                'search'    => '',
+                'log_op'    => self::OP_AND,
+                'qry_op'    => self::OP_EQUALS
+            )
+        );
+
     }
 
     /**
@@ -184,6 +267,12 @@ class AdvancedMembersList extends MembersList
                 case 'modif_date_end':
                 case 'due_date_begin':
                 case 'due_date_end':
+                case 'contrib_creation_date_begin':
+                case 'contrib_creation_date_end':
+                case 'contrib_begin_date_begin':
+                case 'contrib_begin_date_end':
+                case 'contrib_end_date_begin':
+                case 'contrib_end_date_end':
                     try {
                         if ( $this->$rname !== null ) {
                             $d = new \DateTime($this->$rname);
@@ -205,6 +294,12 @@ class AdvancedMembersList extends MembersList
                 case 'rmodif_date_end':
                 case 'rdue_date_begin':
                 case 'rdue_date_end':
+                case 'rcontrib_creation_date_begin':
+                case 'rcontrib_creation_date_end':
+                case 'rcontrib_begin_date_begin':
+                case 'rcontrib_begin_date_end':
+                case 'rcontrib_end_date_begin':
+                case 'rcontrib_end_date_end':
                     //same as above, but raw format
                     $rname = '_' . substr($name, 1);
                     return $this->$rname;
@@ -249,6 +344,12 @@ class AdvancedMembersList extends MembersList
             case 'modif_date_end':
             case 'due_date_begin':
             case 'due_date_end':
+            case 'contrib_creation_date_begin':
+            case 'contrib_creation_date_end':
+            case 'contrib_begin_date_begin':
+            case 'contrib_begin_date_end':
+            case 'contrib_end_date_begin':
+            case 'contrib_end_date_end':
                 try {
                     $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
                     if ( $d === false ) {
@@ -260,6 +361,20 @@ class AdvancedMembersList extends MembersList
                         'Incorrect date format! was: ' . $value,
                         Analog::WARNING
                     );
+                }
+                break;
+            case 'contrib_min_amount':
+            case 'contrib_max_amount':
+                if ( is_float($value) ) {
+                    $this->$prop = $value;
+                } else {
+                    if ( $value !== null ) {
+                        Analog::log(
+                            'Incorrect amount for ' . $name  . '! ' .
+                            'Should be a float (' . gettype($value) . ' given)',
+                            Analog::WARNING
+                        );
+                    }
                 }
                 break;
             case 'show_public_infos':
@@ -280,7 +395,7 @@ class AdvancedMembersList extends MembersList
                 $this->_status = array();
                 foreach ( $value as $v ) {
                     if ( is_numeric($v) ) {
-                        //check group existence
+                        //check status existence
                         $s = new Status();
                         $res = $s->get($v);
                         if ( $res !== false ) {
@@ -294,6 +409,64 @@ class AdvancedMembersList extends MembersList
                     } else {
                         Analog::log(
                             '[AdvancedMembersList] Value for status filter should be an '
+                            .'integer (' . gettype($v) . ' given',
+                            Analog::WARNING
+                        );
+                    }
+                }
+                break;
+            case 'contributions_types':
+                if ( !is_array($value) ) {
+                    $value = array($value);
+                }
+                $this->_contributions_types = array();
+                foreach ( $value as $v ) {
+                    if ( is_numeric($v) ) {
+                        //check type existence
+                        $s = new ContributionsTypes();
+                        $res = $s->get($v);
+                        if ( $res !== false ) {
+                            $this->_contributions_types[] = $v;
+                        } else {
+                            Analog::log(
+                                'Contribution type #' . $v . ' does not exists!',
+                                Analog::WARNING
+                            );
+                        }
+                    } else {
+                        Analog::log(
+                            '[AdvancedMembersList] Value for contribution type '
+                            . 'filter should be an integer (' . gettype($v) .
+                            ' given',
+                            Analog::WARNING
+                        );
+                    }
+                }
+                break;
+            case 'payments_types':
+                if ( !is_array($value) ) {
+                    $value = array($value);
+                }
+                $this->_payments_types = array();
+                foreach ( $value as $v ) {
+                    if ( is_numeric($v) ) {
+                        if ( $v === Contribution::PAYMENT_OTHER
+                            || $v === Contribution::PAYMENT_CASH
+                            || $v === Contribution::PAYMENT_CREDITCARD
+                            || $v === Contribution::PAYMENT_CHECK
+                            || $v === Contribution::PAYMENT_TRANSFER
+                            || $v === Contribution::PAYMENT_PAYPAL
+                        ) {
+                            $this->_payments_types[] = $v;
+                        } else {
+                            Analog::log(
+                                'Payment type #' . $v . ' does not exists!',
+                                Analog::WARNING
+                            );
+                        }
+                    } else {
+                        Analog::log(
+                            '[AdvancedMembersList] Value for payment type filter should be an '
                             .'integer (' . gettype($v) . ' given',
                             Analog::WARNING
                         );
@@ -329,10 +502,29 @@ class AdvancedMembersList extends MembersList
                 }
                 break;
             default:
-                Analog::log(
-                    '[AdvancedMembersList] Unable to set proprety `' . $name . '`',
-                    Analog::WARNING
-                );
+                if ( substr($name, 0, 4) === 'cds_'
+                    || substr($name, 0, 5) === 'cdsc_'
+                ) {
+                    if (is_array($value) || trim($value) !== '' ) {
+                        if ( isset($this->_contrib_dynamic['empty']) ) {
+                            unset($this->_contrib_dynamic['empty']);
+                        }
+
+                        $id = null;
+                        if ( substr($name, 0, 5) === 'cdsc_' ) {
+                            $id = substr($name, 5, strlen($name));
+                        } else {
+                            $id = substr($name, 4, strlen($name));
+                        }
+                        $this->_contrib_dynamic[$id] = $value;
+                    }
+                } else {
+                    Analog::log(
+                        '[AdvancedMembersList] Unable to set proprety `' .
+                        $name . '`',
+                        Analog::WARNING
+                    );
+                }
                 break;
             }
         }

@@ -61,15 +61,20 @@ class Adherent
     const TABLE = 'adherents';
     const PK = 'id_adh';
 
+    const NC = 0;
+    const MAN = 1;
+    const WOMAN = 2;
+
     private $_id;
     //Identity
-    private $_politeness;
+    private $_title;
     private $_company_name;
     private $_name;
     private $_surname;
     private $_nickname;
     private $_birthdate;
     private $_birth_place;
+    private $_gender;
     private $_job;
     private $_language;
     private $_active;
@@ -130,6 +135,7 @@ class Adherent
         'titre_adh' => 'disabled',
         'nom_adh' => 'disabled="disabled"',
         'prenom_adh' => 'disabled="disabled"',
+        'sexe_adh' => 'disabled="disabled"'
     );
     private $_staff_edit_disabled_fields = array(
         'bool_admin_adh' => 'disabled="disabled"'
@@ -199,19 +205,21 @@ class Adherent
         }
 
         if ( $args == null || is_int($args) ) {
-            $this->_active = true;
-            $this->_language = $i18n->getID();
-            $this->_creation_date = date("Y-m-d");
-            $this->_status = Status::DEFAULT_STATUS;
-            $this->_politeness = Politeness::MR;
-            $gp = new Password();
-            $this->_password = $gp->makeRandomPassword();
-            $this->_picture = new Picture();
-            $this->_admin = false;
-            $this->_staff = false;
-            $this->_due_free = false;
             if ( is_int($args) && $args > 0 ) {
                 $this->load($args);
+            } else {
+                $this->_active = true;
+                $this->_language = $i18n->getID();
+                $this->_creation_date = date("Y-m-d");
+                $this->_status = Status::DEFAULT_STATUS;
+                $this->_title = null;
+                $this->_gender = self::NC;
+                $gp = new Password();
+                $this->_password = $gp->makeRandomPassword();
+                $this->_picture = new Picture();
+                $this->_admin = false;
+                $this->_staff = false;
+                $this->_due_free = false;
             }
         } elseif ( is_object($args) ) {
             $this->_loadFromRS($args);
@@ -281,7 +289,9 @@ class Adherent
                 $select->where('login_adh = ?', $login);
             }
             $result = $select->query()->fetchObject();
-            $this->_loadFromRS($result);
+            if ( $result ) {
+                $this->_loadFromRS($result);
+            }
         } catch (\Exception $e) {
             /** TODO */
             Analog::log(
@@ -309,7 +319,9 @@ class Adherent
         $this->_self_adh = false;
         $this->_id = $r->id_adh;
         //Identity
-        $this->_politeness = $r->titre_adh;
+        if ( $r->titre_adh !== null ) {
+            $this->_title = new Title((int)$r->titre_adh);
+        }
         $this->_company_name = $r->societe_adh;
         $this->_name = $r->nom_adh;
         $this->_surname = $r->prenom_adh;
@@ -318,6 +330,7 @@ class Adherent
             $this->_birthdate = $r->ddn_adh;
         }
         $this->_birth_place = $r->lieu_naissance;
+        $this->_gender = (int)$r->sexe_adh;
         $this->_job = $r->prof_adh;
         $this->_language = $r->pref_lang;
         $this->_active = $r->activite_adh;
@@ -369,13 +382,23 @@ class Adherent
         }
 
         if ( $this->_deps['groups'] === true ) {
-            $this->_groups = Groups::loadGroups($this->_id);
-            $this->_managed_groups = Groups::loadManagedGroups($this->_id);
+            $this->loadGroups();
         }
 
         if ( $this->_deps['dues'] === true ) {
             $this->_checkDues();
         }
+    }
+
+    /**
+     * Load member groups
+     *
+     * @return void
+     */
+    public function loadGroups()
+    {
+        $this->_groups = Groups::loadGroups($this->_id);
+        $this->_managed_groups = Groups::loadManagedGroups($this->_id);
     }
 
     /**
@@ -499,6 +522,27 @@ class Adherent
     {
         return trim($this->_company_name != '');
     }
+
+    /**
+     * Is current member a man?
+     *
+     * @return boolean
+     */
+    public function isMan()
+    {
+        return (int)$this->_gender === self::MAN;
+    }
+
+    /**
+     * Is current member a woman?
+     *
+     * @return boolean
+     */
+    public function isWoman()
+    {
+        return (int)$this->_gender === self::WOMAN;
+    }
+
 
     /**
     * Can member appears in public members list?
@@ -647,7 +691,7 @@ class Adherent
         try {
             $zdb->db->update(
                 PREFIX_DB . self::TABLE,
-                array('mdp_adh' => md5($pass)),
+                array('mdp_adh' => password_hash($pass, PASSWORD_BCRYPT)),
                 $zdb->db->quoteInto(self::PK . ' = ?', $id_adh)
             );
             Analog::log(
@@ -656,7 +700,6 @@ class Adherent
             );
             return true;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'An error occured while updating password for `' . $id_adh .
                 '` | ' . $e->getMessage(),
@@ -781,6 +824,17 @@ class Adherent
                             );
                         }
                         break;
+                    case 'titre_adh':
+                        if ( $value !== null && $value !== '' ) {
+                            if ( $value == '-1' ) {
+                                $this->$prop = null;
+                            } else {
+                                $this->$prop = new Title((int)$value);
+                            }
+                        } else {
+                            $this->$prop = null;
+                        }
+                        break;
                     case 'email_adh':
                     case 'msn_adh':
                         if ( !GaletteMail::isValidEmail($value) ) {
@@ -855,7 +909,7 @@ class Adherent
                                     if ( count($uniq) !==  0
                                         || $value == $preferences->pref_admin_login
                                     ) {
-                                        $errors[] = _T("- This username is already used by another member!");
+                                        $errors[] = _T("- This username is already in use, please choose another one!");
                                     }
                                 } catch (\Exception $e) {
                                     Analog::log(
@@ -890,7 +944,7 @@ class Adherent
                         ) {
                             $errors[] = _T("Password misrepeated: ");
                         } else {
-                            $this->$prop = md5($value);
+                            $this->$prop = password_hash($value, PASSWORD_BCRYPT);
                         }
                         break;
                     case 'id_statut':
@@ -950,7 +1004,7 @@ class Adherent
                     && !isset($this->_id)
                 ) {
                     $p = new Password();
-                    $this->$key = $p->makeRandomPassword(15);
+                    $this->$prop = $p->makeRandomPassword(15);
                 }
             }
         }
@@ -958,11 +1012,21 @@ class Adherent
         // missing required fields?
         while ( list($key, $val) = each($required) ) {
             $prop = '_' . $this->_fields[$key]['propname'];
-            if ( !isset($disabled[$key])
-                && (!isset($this->$prop) || trim($this->$prop) == '')
-            ) {
-                $errors[] = _T("- Mandatory field empty: ") .
-                ' <a href="#' . $key . '">' . $this->getFieldName($key) .'</a>';
+
+            if ( isset($disabled[$key]) ) {
+                $mandatory_missing = false;
+                if ( !isset($this->$prop) ) {
+                    $mandatory_missing = true;
+                } else if ( $key === 'titre_adh' && $this->$prop == '-1' ) {
+                    $mandatory_missing = true;
+                } else if (is_string($value) && trim($value) !== '') {
+                    $mandatory_missing = true;
+                }
+
+                if ( $mandatory_missing === true ) {
+                    $errors[] = _T("- Mandatory field empty: ") .
+                    ' <a href="#' . $key . '">' . $this->getFieldName($key) .'</a>';
+                }
             }
         }
 
@@ -1021,6 +1085,12 @@ class Adherent
             }
             if ( !$this->_due_date ) {
                 $values['date_echeance'] = new \Zend_Db_Expr('NULL');
+            }
+
+            if ( $this->_title instanceof Title ) {
+                $values['titre_adh'] = $this->_title->id;
+            } else {
+                $values['titre_adh'] = new \Zend_Db_Expr('NULL');
             }
 
             if ( !isset($this->_id) || $this->_id == '') {
@@ -1133,7 +1203,7 @@ class Adherent
         );
         $virtuals = array(
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
-            'spoliteness', 'sstatus', 'sfullname', 'sname', 'rowclass'
+            'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass'
         );
         $rname = '_' . $name;
         if ( !in_array($name, $forbidden) && isset($this->$rname)) {
@@ -1191,8 +1261,12 @@ class Adherent
             case 'sactive':
                 return (($this->$real) ? _T("Active") : _T("Inactive"));
                 break;
-            case 'spoliteness':
-                return Politeness::getPoliteness($this->_politeness);
+            case 'stitle':
+                if ( isset($this->_title) ) {
+                    return $this->_title->tshort;
+                } else {
+                    return null;
+                }
                 break;
             case 'sstatus':
                 $status = new Status();
@@ -1200,9 +1274,10 @@ class Adherent
                 break;
             case 'sfullname':
                 $sfn = mb_strtoupper($this->_name, 'UTF-8') . ' ' .
-                       ucwords(mb_strtolower($this->_surname, 'UTF-8'));
-                    $sfn = Politeness::getPoliteness($this->_politeness) .
-                        ' ' . $sfn;
+                    ucwords(mb_strtolower($this->_surname, 'UTF-8'));
+                if ( isset($this->_title) ) {
+                    $sfn = $this->_title->tshort . ' ' . $sfn;
+                }
                 return $sfn;
                 break;
             case 'sname':

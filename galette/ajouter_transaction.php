@@ -39,6 +39,7 @@
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\DynamicFields as DynamicFields;
 use Galette\Entity\Transaction as Transaction;
+use Galette\Entity\Contribution as Contribution;
 use Galette\Repository\Contributions as Contributions;
 use Galette\Repository\Members as Members;
 
@@ -97,6 +98,7 @@ if ( $trans_id != '' ) {
     if ( $trans->id == '' ) {
         //not possible to load transaction, exit
         header('location: index.php');
+        die();
     }
 }
 
@@ -146,6 +148,7 @@ if ( isset($_POST['valid']) ) {
             $url = 'gestion_transactions.php';
         }
         header('location: '.$url);
+        die();
     }
 } else { //$_POST['valid']
     if ( $trans->id != '' ) {
@@ -186,18 +189,16 @@ $required_fields = array(
     'prenom_adh'
 );
 $members = $m->getList(false, $required_fields);
-if ( count($members) == 0 ) {
-    $adh_options = array('' => _T("You must first register a member"));
-} else {
+if ( count($members) > 0 ) {
     foreach ( $members as $member ) {
         $pk = Adherent::PK;
         $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
             ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8'));
         $adh_options[$member->$pk] = $sname;
     }
+    $tpl->assign('adh_options', $adh_options);
 }
 
-$tpl->assign('adh_options', $adh_options);
 
 // - declare dynamic fields for display
 $dynamic_fields = $dyn_fields->prepareForDisplay(

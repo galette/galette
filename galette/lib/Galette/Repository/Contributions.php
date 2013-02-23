@@ -103,6 +103,16 @@ class Contributions extends Pagination
     }
 
     /**
+     * Return the default direction for ordering
+     *
+     * @return string ASC or DESC
+     */
+    protected function getDefaultDirection()
+    {
+        return self::ORDER_DESC;
+    }
+
+    /**
     * Returns the field we want to default set order to (public method)
     *
     * @return string field name
@@ -392,6 +402,10 @@ class Contributions extends Pagination
                 $select->where('a.trans_id ?', new \Zend_Db_Expr('IS NULL'));
             }
             $qry = $select->__toString();
+            Analog::log(
+                "Query was:\n" . $qry,
+                Analog::DEBUG
+            );
         } catch (\Exception $e) {
             /** TODO */
             Analog::log(
@@ -422,6 +436,12 @@ class Contributions extends Pagination
         $this->_start_date_filter = null;
         $this->_end_date_filter = null;
         $this->_payment_type_filter = null;
+        $this->_filtre_transactions = null;
+        $this->_count = null;
+        $this->_filtre_cotis_adh = null;
+        $this->_from_transaction = false;
+        $this->_max_amount = null;
+        $this->_sum = null;
     }
 
     /**

@@ -124,6 +124,7 @@ if ( $form_name == '' ) {
                             'location: editer_champ.php?form=' . $form_name .
                             '&id=' . $field_id
                         );
+                        die();
                     }
                     if ( $field_name != '' ) {
                         addDynamicTranslation($field_name, $error_detected);
@@ -245,9 +246,9 @@ if ( $form_name == '' ) {
 
     $results = $select->query()->fetchAll();
 
+    $dfields = array();
     if ( $results ) {
         $count = 0;
-        $dfields = array();
         foreach ( $results as $r ) {
             $dfields[$count]['id'] = $r->field_id;
             $dfields[$count]['index'] = $r->field_index;

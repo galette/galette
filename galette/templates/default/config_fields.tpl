@@ -23,7 +23,8 @@
                 </li>
     {assign var='fs' value=$category->id_field_category}
     {foreach key=col item=field from=$categorized_fields[$fs] name=fields_list}
-        {assign var='fid' value=$field.field_id}
+        {if $field.field_id neq 'id_adh'}
+            {assign var='fid' value=$field.field_id}
                 <li class="tbl_line_{if $smarty.foreach.fields_list.iteration % 2 eq 0}even{else}odd{/if}">
                     <span class="label">
                         <input type="hidden" name="fields[]" value="{$fid}"/>
@@ -46,6 +47,7 @@
                         <input type="radio" name="{$fid}_visible" id="{$fid}_visible_admin" value="{php}echo Galette\Entity\FieldsConfig::ADMIN;{/php}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::ADMIN')} checked="checked"{/if}/>
                     </span>
                 </li>
+        {/if}
     {/foreach}
             </ul>
         </fieldset>

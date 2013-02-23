@@ -56,12 +56,12 @@
         </table>
         </form>
         <form action="gestion_adherents.php" method="post" id="listform">
-        <table id="listing">
+        <table class="listing">
             <thead>
                 <tr>
-                    <th class="listing" class="id_row">#</th>
-                    <th class="listing left">
-                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_NAME;{/php}" class="listing">
+                    <th class="id_row">#</th>
+                    <th class="left">
+                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_NAME;{/php}">
                             {_T string="Name"}
                             {if $filters->orderby eq constant('galette\Repository\Members::ORDERBY_NAME')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -72,8 +72,8 @@
                             {/if}
                         </a>
                     </th>
-                    <th class="listing left">
-                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_NICKNAME;{/php}" class="listing">
+                    <th class="left">
+                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_NICKNAME;{/php}">
                             {_T string="Nickname"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NICKNAME')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -84,8 +84,8 @@
                             {/if}
                         </a>
                     </th>
-                    <th class="listing left">
-                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_STATUS;{/php}" class="listing">
+                    <th class="left">
+                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_STATUS;{/php}">
                             {_T string="Status"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_STATUS')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -97,8 +97,8 @@
                         </a>
                     </th>
 {if $login->isAdmin() or $login->isStaff()}
-                    <th class="listing left">
-                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_FEE_STATUS;{/php}" class="listing">
+                    <th class="left">
+                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_FEE_STATUS;{/php}">
                             {_T string="State of dues"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_FEE_STATUS')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -109,8 +109,8 @@
                             {/if}
                         </a>
                     </th>
-                    <th class="listing left">
-                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_MODIFDATE;{/php}" class="listing">
+                    <th class="left">
+                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_MODIFDATE;{/php}">
                             {_T string="Modified"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_MODIFDATE')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -122,7 +122,7 @@
                         </a>
                     </th>
 {/if}
-                    <th class="listing actions_row">{_T string="Actions"}</th>
+                    <th class="actions_row">{_T string="Actions"}</th>
                 </tr>
             </thead>
 {if $nb_members != 0}
@@ -140,6 +140,7 @@
                             </li>
                             <li><input type="submit" name="labels" value="{_T string="Generate labels"}"/></li>
                             <li><input type="submit" name="cards" value="{_T string="Generate Member Cards"}"/></li>
+                            <li><input type="submit" name="csv" value="{_T string="Export as CSV"}"/></li>
                         </ul>
                     </td>
                 </tr>
@@ -159,10 +160,10 @@
                     <td class="{$rclass} nowrap username_row">
                         <input type="checkbox" name="member_sel[]" value="{$member->id}"/>
                     {if $member->isCompany()}
-                        <img src="{$template_subdir}images/icon-company.png" alt="{_T string="[W]"}" width="16" height="16"/>
-                    {elseif $member->politeness eq constant('Galette\Entity\Politeness::MR')}
+                        <img src="{$template_subdir}images/icon-company.png" alt="{_T string="[C]"}" width="16" height="16"/>
+                    {elseif $member->isMan()}
                         <img src="{$template_subdir}images/icon-male.png" alt="{_T string="[M]"}" width="16" height="16"/>
-                    {elseif $member->politeness eq constant('Galette\Entity\Politeness::MRS') || $member->politeness eq constant('Galette\Entity\Politeness::MISS')}
+                    {elseif $member->isWoman()}
                         <img src="{$template_subdir}images/icon-female.png" alt="{_T string="[W]"}" width="16" height="16"/>
                     {else}
                         <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
@@ -219,7 +220,7 @@
                     <td class="back">{_T string="Active account"}</td>
                 </tr>
                 <tr>
-                    <th><img src="{$template_subdir}images/icon-female.png" alt="{_T string="Miss"} / {_T string="Mrs"}" width="16" height="16"/></th>
+                    <th><img src="{$template_subdir}images/icon-female.png" alt="{_T string="Miss"} / {_T string="Mrs."}" width="16" height="16"/></th>
                     <td class="back">{_T string="Woman"}</td>
                     <th class="inactif back">{_T string="Name"}</th>
                     <td class="back">{_T string="Inactive account"}</td>
@@ -266,14 +267,14 @@
         var _is_checked = true;
         var _bind_check = function(){
             $('#checkall').click(function(){
-                $('#listing :checkbox[name=member_sel[]]').each(function(){
+                $('table.listing :checkbox[name=member_sel[]]').each(function(){
                     this.checked = _is_checked;
                 });
                 _is_checked = !_is_checked;
                 return false;
             });
             $('#checkinvert').click(function(){
-                $('#listing :checkbox[name=member_sel[]]').each(function(){
+                $('table.listing :checkbox[name=member_sel[]]').each(function(){
                     this.checked = !$(this).is(':checked');
                 });
                 return false;
@@ -300,7 +301,7 @@
                 return false;
             });
             $('.selection_menu input[type=submit], .selection_menu input[type=button], ').click(function(){
-                var _checkeds = $('#listing').find('input[type=checkbox]:checked').length;
+                var _checkeds = $('table.listing').find('input[type=checkbox]:checked').length;
                 if ( _checkeds == 0 ) {
                     var _el = $('<div id="pleaseselect" title="{_T string="No member selected" escape="js"}">{_T string="Please make sure to select at least one member from the list to perform this action." escape="js"}</div>');
                     _el.appendTo('body').dialog({
@@ -363,7 +364,7 @@
 
         var _attendance_sheet_details = function(){
             var _selecteds = [];
-            $('#listing').find('input[type=checkbox]:checked').each(function(){
+            $('table.listing').find('input[type=checkbox]:checked').each(function(){
                 _selecteds.push($(this).val());
             });
             $.ajax({

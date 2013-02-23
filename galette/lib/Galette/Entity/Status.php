@@ -360,7 +360,6 @@ class Status
 
         $ret = $this->get($id);
         if ( !$ret ) {
-            /* get() already logged and set $this->error. */
             return self::ID_NOT_EXITS;
         }
 
@@ -409,9 +408,12 @@ class Status
     {
         global $zdb;
 
+        if ( (int)$id === self::DEFAULT_STATUS ) {
+            throw new \RuntimeException(_T("You cannot delete default status!"));
+        }
+
         $ret = $this->get($id);
         if ( !$ret ) {
-            /* get() already logged and set $this->error. */
             return self::ID_NOT_EXITS;
         }
 
@@ -421,12 +423,14 @@ class Status
                 self::PK . ' = ' . $id
             );
             Analog::log(
-                'Status ' . $id . ' deleted successfully.',
+                'Status #' . $id . ' (' . $ret->libelle_statut
+                . ') deleted successfully.',
                 Analog::INFO
             );
             return true;
+        } catch (\RuntimeException $re) {
+            throw $re;
         } catch (\Exception $e) {
-            /** FIXME */
             Analog::log(
                 'Unable to delete status ' . $id . ' | ' . $e->getMessage(),
                 Analog::ERROR

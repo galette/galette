@@ -1,3 +1,4 @@
+{if isset($adh_options)}
         <form action="ajouter_transaction.php" method="post">
         <div class="bigtable">
             <fieldset class="cssform">
@@ -36,7 +37,7 @@
         <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
 {if $transaction->id}
         </form>
-        <table class="center_table">
+        <table class="listing">
             <caption>
                 {_T string="Attached contributions"}
                 {if $transaction->getMissingAmount() > 0}
@@ -46,29 +47,29 @@
             </caption>
             <thead>
                 <tr>
-                    <th class="listing id_row">#</th>
-                    <th class="listing left date_row">{_T string="Date"}</th>
-                    <th class="listing left date_row">{_T string="Begin"}</th>
-                    <th class="listing left date_row">{_T string="End"}</th>
-                    <th class="listing left">{_T string="Duration"}</th>
+                    <th class="id_row">#</th>
+                    <th class="left date_row">{_T string="Date"}</th>
+                    <th class="left date_row">{_T string="Begin"}</th>
+                    <th class="left date_row">{_T string="End"}</th>
+                    <th class="left">{_T string="Duration"}</th>
 {if $login->isAdmin() or $login->isStaff()}
-                    <th class="listing left">{_T string="Member"}</th>
+                    <th class="left">{_T string="Member"}</th>
 {/if}
-                    <th class="listing left">{_T string="Type"}</th>
-                    <th class="listing left">{_T string="Amount"}</th>
+                    <th class="left">{_T string="Type"}</th>
+                    <th class="left">{_T string="Amount"}</th>
 {if $login->isAdmin() or $login->isStaff()}
-                    <th class="listing actions_row"></th>
+                    <th class="actions_row"></th>
 {/if}
                 </tr>
             </thead>
             <tfoot>
                 <tr>
-                    <th class="right" colspan="{if $login->isAdmin() or $login->isStaff()}8{else}6{/if}">{_T string="Dispatched amount:"}</th>
-                    <th class="right">{$transaction->getDispatchedAmount()}</th>
+                    <th class="right bgfree" colspan="{if $login->isAdmin() or $login->isStaff()}8{else}6{/if}">{_T string="Dispatched amount:"}</th>
+                    <th class="right bgfree">{$transaction->getDispatchedAmount()}</th>
                 </tr>
                 <tr>
-                    <th class="right" colspan="{if $login->isAdmin() or $login->isStaff()}8{else}6{/if}">{_T string="Not dispatched amount:"}</th>
-                    <th class="right">{$transaction->getMissingAmount()}</th>
+                    <th class="right bgfree" colspan="{if $login->isAdmin() or $login->isStaff()}8{else}6{/if}">{_T string="Not dispatched amount:"}</th>
+                    <th class="right bgfree">{$transaction->getMissingAmount()}</th>
                 </tr>
             </tfoot>
             <tbody>
@@ -205,4 +206,14 @@
                     buttonImageOnly: true
                 });
             });
-        </script> 
+        </script>
+{else} {* No members *}
+    <div class="center" id="warningbox">
+        <h3>{_T string="No member registered!"}</h3>
+        <p>
+            {_T string="Unfortunately, there is no member in your database yet,"}
+            <br/>
+            <a href="ajouter_adherent.php">{_T string="please create a member"}</a>
+        </p>
+    </div>
+{/if}

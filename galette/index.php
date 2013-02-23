@@ -50,8 +50,20 @@ if ( isset($_GET['logout']) ) {
 
 // Authentication procedure
 if (isset($_POST['ident'])) {
+    $pw_superadmin = false;
+    if ( $_POST['login'] == $preferences->pref_admin_login ) {
+        $pw_superadmin = password_verify(
+            $_POST['password'],
+            $preferences->pref_admin_pass
+        );
+        if ( !$pw_superadmin ) {
+            $pw_superadmin = (
+                md5($_POST['password']) === $preferences->pref_admin_pass
+            );
+        }
+    }
     if ( $_POST['login'] == $preferences->pref_admin_login
-        && md5($_POST['password']) == $preferences->pref_admin_pass
+        && $pw_superadmin
     ) {
         $login->logAdmin($_POST['login']);
         $session['login'] = serialize($login);
@@ -66,7 +78,7 @@ if (isset($_POST['ident'])) {
             die();
         }
     } else {
-        $login->logIn($_POST['login'], md5($_POST['password']));
+        $login->logIn($_POST['login'], $_POST['password']);
 
         if ( $login->isLogged() ) {
             $session['login'] = serialize($login);
@@ -107,7 +119,9 @@ if ( !$login->isLogged() ) {
 
     if ( $login->isAdmin() || $login->isStaff() ) {
         header('location: gestion_adherents.php');
+        die();
     } else {
         header('location: voir_adherent.php');
+        die();
     }
 }

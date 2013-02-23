@@ -42,12 +42,14 @@ use Galette\Entity\DynamicFields as DynamicFields;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\FieldsConfig as FieldsConfig;
 use Galette\Entity\Texts as Texts;
+use Galette\Repository\Titles as Titles;
 use Galette\Core\PasswordImage as PasswordImage;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
 if ( !$preferences->pref_bool_selfsubscribe ) {
     header('location:index.php');
+    die();
 }
 
 $dyn_fields = new DynamicFields();
@@ -90,6 +92,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 && $preferences->pref_bool_mailadh
             ) {
                 $texts = new Texts(
+                    $preferences,
                     array(
                         'name_adh'      => custom_html_entity_decode($member->sname),
                         'mail_adh'      => custom_html_entity_decode($member->email),
@@ -136,6 +139,7 @@ if ( isset($_POST["nom_adh"]) ) {
                 //send mail to member
                 // Get email text in database
                 $texts = new Texts(
+                    $preferences,
                     array(
                         'name_adh'      => custom_html_entity_decode($member->sname),
                         'mail_adh'      => custom_html_entity_decode($member->email),
@@ -174,16 +178,20 @@ if ( isset($_POST["nom_adh"]) ) {
                 }
             }
 
+            /** FIXME: query was previously passed as second argument,
+             * but it not no longer available from here :/ */
             $hist->add(
                 _T("Self_subscription as a member: ") .
-                strtoupper($adherent['nom_adh']) . ' ' . $adherent['prenom_adh'],
-                $requete
+                strtoupper($adherent['nom_adh']) . ' ' . $adherent['prenom_adh']
             );
             $head_redirect = array(
                 'timeout'   => 10,
                 'url'       => 'index.php'
             );
             $has_register = true;
+
+            // dynamic fields
+            $dyn_fields->setAllFields('adh', $member->id, $adherent['dyn']);
         } else {
             //something went wrong :'(
             $error_detected[] = _T("An error occured while storing the member.");
@@ -234,7 +242,7 @@ $tpl->assign('require_calendar', true);
 // pseudo random int
 $tpl->assign('time', time());
 // genre
-$tpl->assign('radio_titres', Galette\Entity\Politeness::getList());
+$tpl->assign('titles_list', Titles::getList($zdb));
 
 //self_adh specific
 $tpl->assign('spam_pass', $spam_pass);

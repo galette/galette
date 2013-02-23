@@ -1,24 +1,24 @@
                      <table class="listing">
                         <thead>
                             <tr>
-                                <th class="listing left">
+                                <th class="left">
                                     {_T string="Name"}
                                 </th>
-                                <th class="listing left">
+                                <th class="left">
                                     {_T string="Nickname"}
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-{foreach from=$persons item=person}
-                            <tr>
+{foreach from=$persons item=person name=allpersons}
+                            <tr class="{if $smarty.foreach.allpersons.iteration % 2 eq 0}even{else}odd{/if}">
                                 <td class="nowrap username_row">
                                 <input type="hidden" name="{$person_mode}[]" value="{$person->id}"/>
                                 {if $person->isCompany()}
                                     <img src="{$template_subdir}images/icon-company.png" alt="{_T string="[W]"}" width="16" height="16"/>
-                                {elseif $person->politeness == constant('Galette\Entity\Politeness::MR')}
+                                {elseif $person->isMan()}
                                     <img src="{$template_subdir}images/icon-male.png" alt="{_T string="[M]"}" width="16" height="16"/>
-                                {elseif $person->politeness == constant('Galette\Entity\Politeness::MRS') || $person->politeness == constant('Galette\Entity\Politeness::MISS')}
+                                {elseif $person->isWoman()}
                                     <img src="{$template_subdir}images/icon-female.png" alt="{_T string="[W]"}" width="16" height="16"/>
                                 {else}
                                     <img src="{$template_subdir}images/icon-empty.png" alt="" width="10" height="12"/>

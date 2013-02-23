@@ -11,8 +11,9 @@ CREATE TABLE galette_adherents (
   prenom_adh varchar(50) NOT NULL default '',
   pseudo_adh varchar(20) NOT NULL default '',
   societe_adh varchar(200) default NULL,
-  titre_adh tinyint(3) unsigned NOT NULL default '0',
+  titre_adh int(10) unsigned default NULL,
   ddn_adh date default '1901-01-01',
+  sexe_adh tinyint(1) NOT NULL default '0',
   adresse_adh varchar(150) NOT NULL default '',
   adresse2_adh varchar(150) default NULL,
   cp_adh varchar(10) NOT NULL default '',
@@ -29,7 +30,7 @@ CREATE TABLE galette_adherents (
   info_public_adh text,
   prof_adh varchar(150) default NULL,
   login_adh varchar(20) NOT NULL default '',
-  mdp_adh varchar(40) NOT NULL default '',
+  mdp_adh varchar(60) NOT NULL default '',
   date_crea_adh date NOT NULL default '1901-01-01',
   date_modif_adh date NOT NULL default '1901-01-01',
   activite_adh tinyint(1) NOT NULL default 0,
@@ -43,7 +44,8 @@ CREATE TABLE galette_adherents (
   fingerprint varchar(50) DEFAULT NULL,
   PRIMARY KEY  (id_adh),
   UNIQUE (login_adh),
-  FOREIGN KEY (id_statut) REFERENCES galette_statuts (id_statut)
+  FOREIGN KEY (id_statut) REFERENCES galette_statuts (id_statut),
+  FOREIGN KEY (titre_adh) REFERENCES galette_titles (id_title)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_cotisations;
@@ -80,6 +82,14 @@ CREATE TABLE galette_statuts (
   libelle_statut varchar(20) NOT NULL default '',
   priorite_statut tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (id_statut)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+DROP TABLE IF EXISTS galette_titles;
+CREATE TABLE galette_titles (
+  id_title int(10) unsigned NOT NULL auto_increment,
+  short_label varchar(10) NOT NULL default '',
+  long_label varchar(30) default '',
+  PRIMARY KEY  (id_title)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_types_cotisation;
@@ -171,14 +181,6 @@ CREATE TABLE galette_tmppasswds (
     FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
--- Table for dynamic required fields 2007-07-10;
-DROP TABLE IF EXISTS galette_required;
-CREATE TABLE galette_required (
-	field_id varchar(15) NOT NULL,
-	required tinyint(1) NOT NULL,
-	PRIMARY KEY  (field_id)
-) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
 -- Add new table for automatic mails and their translations;
 DROP TABLE IF EXISTS galette_texts;
 CREATE TABLE galette_texts (
@@ -264,6 +266,6 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-INSERT INTO galette_database(version) VALUES(0.701);
+INSERT INTO galette_database(version) VALUES(0.702);
 
 SET FOREIGN_KEY_CHECKS=1;

@@ -4,7 +4,7 @@
         {include file='common_header.tpl'}
 {if $require_calendar}
         <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
-    {if $lang ne 'en'}
+    {if $galette_lang ne 'en'}
         <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.js"></script>
     {/if}
 {/if}
@@ -15,7 +15,9 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {include file=$header}
     {/foreach}
 {/if}
-        {if $head_redirect}{$head_redirect}{/if}
+{if $head_redirect}
+    <meta http-equiv="refresh" content="{$head_redirect.timeout};url={$head_redirect.url}" />
+{/if}
     </head>
     <body>
         {* IE7 and above are no longer supported *}

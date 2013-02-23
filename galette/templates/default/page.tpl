@@ -33,8 +33,16 @@
 {if $require_cookie}
         <script type="text/javascript" src="{$jquery_dir}jquery.cookie.js"></script>
 {/if}
+{if $require_charts}
+        <link rel="stylesheet" type="text/css" href="{$jquery_dir}jqplot-{$jquery_jqplot_version}/jquery.jqplot.css" />
+        <script type="text/javascript" src="{$jquery_dir}jqplot-{$jquery_jqplot_version}/jquery.jqplot.min.js"></script>
+        <script type="text/javascript" src="{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.pieRenderer.min.js"></script>
+        <script type="text/javascript" src="{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.barRenderer.min.js"></script>
+        <script type="text/javascript" src="{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.pointLabels.min.js"></script>
+        <script type="text/javascript" src="{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+{/if}
 {if $html_editor}
-    {if !$plugged_html_editor}
+    {if !isset($plugged_html_editor)}
         <script type="text/javascript" src="{$jquery_dir}markitup-{$jquery_markitup_version}/jquery.markitup.js"></script>
         <script type="text/javascript" src="{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/set-{$galette_lang}.js"></script>
         <link rel="stylesheet" type="text/css" href="{$jquery_dir}markitup-{$jquery_markitup_version}/skins/galette/style.css" />
@@ -113,7 +121,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $PAGENAME eq "ajouter_transaction.php"} class="selected"{/if}><a href="{$galette_base_path}ajouter_transaction.php" title="{_T string="Add new transaction in database"}">{_T string="Add a transaction"}</a></li>
             <li{if $PAGENAME eq "history.php"} class="selected"{/if}><a href="{$galette_base_path}history.php" title="{_T string="View application's logs"}">{_T string="Logs"}</a></li>
             <li{if $PAGENAME eq "gestion_mailings.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_mailings.php" title="{_T string="Manage mailings that has been sent"}">{_T string="Manage mailings"}</a></li>
-            <li class="mnu_last{if $PAGENAME eq "export.php"} selected{/if}"><a href="{$galette_base_path}export.php" title="{_T string="Export some data in various formats"}">{_T string="Exports"}</a></li>
+            <li{if $PAGENAME eq "export.php"} class="selected"{/if}><a href="{$galette_base_path}export.php" title="{_T string="Export some data in various formats"}">{_T string="Exports"}</a></li>
+            <li class="mnu_last{if $PAGENAME eq "charts.php"} selected{/if}"><a href="{$galette_base_path}charts.php" title="{_T string="Various charts"}">{_T string="Charts"}</a></li>
   {else}
             <li{if $PAGENAME eq "gestion_contributions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_contributions.php" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a></li>
             <li{if $PAGENAME eq "gestion_transactions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_transactions.php" title="{_T string="View and filter all my transactions"}">{_T string="My transactions"}</a></li>
@@ -141,11 +150,12 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $PAGENAME eq "gestion_intitules.php" and $class eq 'Status'} class="selected"{/if}><a href="{$galette_base_path}gestion_intitules.php?class=Status" title="{_T string="Manage statuses"}">{_T string="Manage statuses"}</a></li>
             <li{if $PAGENAME eq "gestion_intitules.php" and $class eq 'ContributionsTypes'} class="selected"{/if}><a href="{$galette_base_path}gestion_intitules.php?class=ContributionsTypes" title="{_T string="Manage contributions types"}">{_T string="Manage contributions types"}</a></li>
             <li{if $PAGENAME eq "gestion_textes.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_textes.php" title="{_T string="Manage emails texts and subjects"}">{_T string="Emails content"}</a></li>
+            <li{if $PAGENAME eq "gestion_titres.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_titres.php" title="{_T string="Manage titles"}">{_T string="Titles"}</a></li>
         </ul>
 {/if}
 
 {* Include plugins menu entries *}
-{$plugins->getMenus()}
+{$plugins->getMenus($tpl, $preferences)}
 
         <ul id="langs">
 {foreach item=langue from=$languages}

@@ -51,10 +51,10 @@ namespace Galette\Core;
  */
 class CheckModules
 {
-    private $_good;
-    private $_may;
-    private $_should;
-    private $_missing;
+    private $_good = array();
+    private $_may = array();
+    private $_should = array();
+    private $_missing = array();
 
     /**
      * Check various modules and dispatch them beetween:
@@ -84,10 +84,10 @@ class CheckModules
         }
 
         //one of mysql or pgsql driver must be present
-        if ( !extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql') ) {
-            $this->_missing[] = _T("either 'mysql' or 'pgsql' PDO driver");
+        if ( !extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql') && !extension_loaded('pdo_sqlite') ) {
+            $this->_missing[] = _T("either 'mysql', 'pgsql' or 'sqlite' PDO driver");
         } else {
-            $this->_good['pdo_driver'] = _T("either 'mysql' or 'pgsql' PDO driver");
+            $this->_good['pdo_driver'] = _T("either 'mysql', 'pgsql' or 'sqlite' PDO driver");
         }
 
         //curl module is optionnal

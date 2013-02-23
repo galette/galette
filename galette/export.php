@@ -49,12 +49,32 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 }
 
 use Galette\IO\Csv;
+use Galette\Entity\Adherent;
+use Galette\Entity\FieldsConfig;
+use Galette\Repository\Members;
 
 $csv = new Csv();
 
 $written = array();
 
 $tables_list = $zdb->getTables();
+
+if ( isset($_GET['sup']) ) {
+    $res = $csv->removeExport($_GET['sup']);
+    if ( $res === true ) {
+        $success_detected[] = str_replace(
+            '%export',
+            $_GET['sup'],
+            _T("'%export' file has been removed from disk.")
+        );
+    } else {
+        $error_detected[] = str_replace(
+            '%export',
+            $_GET['sup'],
+            _T("Cannot remove '%export' from disk :/")
+        );
+    }
+}
 
 if ( isset( $_POST['export_tables'] ) && $_POST['export_tables'] != '' ) {
     foreach ( $_POST['export_tables'] as $table) {
@@ -119,6 +139,71 @@ if ( isset( $_POST['export_parameted'] ) && $_POST['export_parameted'] != '' ) {
     }
 }
 
+if ( isset($_GET['current_filter']) ) {
+
+    if ( isset($session['filters']['members'])
+        && !isset($_POST['mailing'])
+        && !isset($_POST['mailing_new'])
+    ) {
+        //CAUTION: this one may be simple or advanced, display must change
+        $filters = unserialize($session['filters']['members']);
+    } else {
+        $filters = new MembersList();
+    }
+
+    $export_fields = null;
+    if ( file_exists(GALETTE_CONFIG_PATH  . 'local_export_fields.inc.php') ) {
+        include_once GALETTE_CONFIG_PATH  . 'local_export_fields.inc.php';
+        $export_fields = $fields;
+    }
+
+    // fields visibility
+    $fc = new FieldsConfig(Adherent::TABLE, null);
+    $visibles = $fc->getVisibilities();
+    $fields = array();
+    $headers = array();
+    include_once 'galette/includes/members_fields.php';
+    foreach ( $members_fields as $k=>$f ) {
+        if ( $k !== 'mdp_adh'
+            && $export_fields === null
+            || in_array($k, $export_fields)
+        ) {
+            if ( $visibles[$k] === FieldsConfig::VISIBLE ) {
+                $fields[] = $k;
+                $labels[] = $f['label'];
+            } else if ( ($login->isAdmin()
+                || $login->isStaff()
+                || $login->isSuperAdmin())
+                && $visibles[$k] === FieldsConfig::ADMIN
+            ) {
+                $fields[] = $k;
+                $labels[] = $f['label'];
+            }
+        }
+    }
+
+    $members = new Members($filters);
+    $members_list = $members->getMembersList(false, $fields);
+
+    $filename = 'filtered_memberslist.csv';
+    $filepath = Csv::DEFAULT_DIRECTORY . $filename;
+    $fp = fopen($filepath, 'w');
+    if ( $fp ) {
+        $res = $csv->export(
+            $members_list,
+            Csv::DEFAULT_SEPARATOR,
+            Csv::DEFAULT_QUOTE,
+            $labels,
+            $fp
+        );
+        fclose($fp);
+        $written[] = array(
+            'name' => $filename,
+            'file' => $filepath
+        );
+    }
+}
+
 $parameted = $csv->getParametedExports();
 $existing = Csv::getExistingExports();
 
@@ -126,6 +211,7 @@ $tpl->assign('page_title', _T("CVS database Export"));
 $tpl->assign('tables_list', $tables_list);
 $tpl->assign('written', $written);
 $tpl->assign('existing', $existing);
+$tpl->assign('success_detected', $success_detected);
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('parameted', $parameted);
 $content = $tpl->fetch('export.tpl');

@@ -84,6 +84,15 @@ CREATE SEQUENCE galette_mailing_history_id_seq
     MINVALUE 1
     CACHE 1;
 
+-- sequence for title
+DROP SEQUENCE IF EXISTS galette_titles_id_seq;
+CREATE SEQUENCE galette_titles_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
 -- Schema
 -- REMINDER: Create order IS important, dependencies first !!
 DROP TABLE IF EXISTS galette_statuts CASCADE;
@@ -94,6 +103,14 @@ CREATE TABLE galette_statuts (
   PRIMARY KEY (id_statut)
 );
 
+DROP TABLE IF EXISTS galette_titles CASCADE;
+CREATE TABLE galette_titles (
+  id_title integer DEFAULT nextval('galette_titles_id_seq'::text) NOT NULL,
+  short_label character varying(10) DEFAULT '' NOT NULL,
+  long_label character varying(30) DEFAULT '',
+  PRIMARY KEY (id_title)
+);
+
 DROP TABLE IF EXISTS galette_adherents CASCADE;
 CREATE TABLE galette_adherents (
     id_adh integer DEFAULT nextval('galette_adherents_id_seq'::text) NOT NULL,
@@ -102,8 +119,9 @@ CREATE TABLE galette_adherents (
     prenom_adh character varying(50) DEFAULT '' NOT NULL,
     societe_adh character varying(200) DEFAULT NULL,
     pseudo_adh character varying(20) DEFAULT '' NOT NULL,
-    titre_adh smallint DEFAULT '0' NOT NULL,
+    titre_adh integer DEFAULT NULL REFERENCES galette_titles(id_title) ON DELETE RESTRICT ON UPDATE CASCADE,
     ddn_adh date DEFAULT '19010101',
+    sexe_adh smallint DEFAULT '0' NOT NULL,
     adresse_adh character varying(150) DEFAULT '' NOT NULL,
     adresse2_adh character varying(150) DEFAULT NULL,
     cp_adh character varying(10) DEFAULT '' NOT NULL,
@@ -120,7 +138,7 @@ CREATE TABLE galette_adherents (
     info_public_adh text,
     prof_adh character varying(150),
     login_adh character varying(20) DEFAULT '' NOT NULL,
-    mdp_adh character varying(40) DEFAULT '' NOT NULL,
+    mdp_adh character varying(60) DEFAULT '' NOT NULL,
     date_crea_adh date DEFAULT '19010101' NOT NULL,
     date_modif_adh date DEFAULT '19010101' NOT NULL,
     activite_adh boolean DEFAULT FALSE,
@@ -251,14 +269,6 @@ CREATE TABLE galette_tmppasswds (
   PRIMARY KEY (id_adh)
 );
 
--- Table for dynamic required fields 2007-07-10;
-DROP TABLE IF EXISTS galette_required;
-CREATE TABLE galette_required (
-	field_id character varying(20) NOT NULL,
-	required boolean DEFAULT false NOT NULL,
-	PRIMARY KEY (field_id)
-);
-
 -- Table for automatic mails and their translations 2007-10-22;
 DROP TABLE IF EXISTS galette_texts;
 CREATE TABLE galette_texts (
@@ -284,7 +294,7 @@ DROP TABLE IF EXISTS galette_fields_config;
 CREATE TABLE galette_fields_config (
   table_name character varying(30) NOT NULL,
   field_id character varying(30) NOT NULL,
-  required boolean NOT NULL, -- should replace later galette_required(required)
+  required boolean NOT NULL,
   visible integer NOT NULL,
   position integer NOT NULL,
   id_field_category integer REFERENCES galette_fields_categories ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -335,4 +345,4 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(0.701);
+INSERT INTO galette_database (version) VALUES(0.702);

@@ -114,16 +114,13 @@ class I18n
         Analog::log('Trying to set locale to ' . $id, Analog::DEBUG);
 
         $xml = simplexml_load_file($this->_file);
-        $current = $xml->xpath(
-            '/translations/lang[@id=\'' . $id . '\'][not(@inactive)]'
-        );
+        $xpath = '/translations/lang[@id=\'' . $id . '\'][not(@inactive)]';
+        $current = $xml->xpath($xpath);
 
         //if no match, switch to default
         if ( !isset($current[0]) ) {
-            Analog::log(
-                $id . ' does not exist in XML file, switching to default.',
-                Analog::WARNING
-            );
+            $msg = $id . ' does not exist in XML file, switching to default.';
+            Analog::log($msg, Analog::WARNING);
             $id = self::DEFAULT_LANG;
             //do not forget to reload informations from the xml file
             $current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');
@@ -281,36 +278,13 @@ class I18n
     /**
     * Is a string seem to be UTF-8 one ?
     *
-    * @param string $Str string to analyze
+    * @param string $str string to analyze
     *
     * @return  boolean
-    * @author GLPI
     */
-    public static function seemUtf8($Str)
+    public static function seemUtf8($str)
     {
-        for ( $i=0; $i<strlen($Str); $i++ ) {
-            if (ord($Str[$i]) < 0x80) {
-                continue; // 0bbbbbbb
-            } elseif ((ord($Str[$i]) & 0xE0) == 0xC0) {
-                $n=1; // 110bbbbb
-            } elseif ((ord($Str[$i]) & 0xF0) == 0xE0) {
-                $n=2; // 1110bbbb
-            } elseif ((ord($Str[$i]) & 0xF8) == 0xF0) {
-                $n=3; // 11110bbb
-            } elseif ((ord($Str[$i]) & 0xFC) == 0xF8) {
-                $n=4; // 111110bb
-            } elseif ((ord($Str[$i]) & 0xFE) == 0xFC) {
-                $n=5; // 1111110b
-            } else {
-                return false; // Does not match any model
-            }
-            for ( $j=0; $j<$n; $j++ ) { // n bytes matching 10bbbbbb follow ?
-                if ( (++$i == strlen($Str)) || ((ord($Str[$i]) & 0xC0) != 0x80) ) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return mb_check_encoding($str, 'UTF-8');
     }
 
 }

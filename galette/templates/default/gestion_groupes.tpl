@@ -23,6 +23,11 @@
         </div>
     </section>
 </div>
+<form action="gestion_groupes.php" method="POST">
+    <div class="button-container">
+        <input type="submit" name="pdf" value="{_T string="Export as PDF"}" title="{_T string="Export all groups and their members as PDF"}"/>
+    </div>
+</form>
 <script type="text/javascript">
     $(function() {
         var _mode;

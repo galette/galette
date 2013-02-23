@@ -11,10 +11,10 @@
         </thead>
         <tbody>
             <tr>
-                <th colspan="5" class="center"><strong>{_T string="Active plugins"}</strong></th>
+                <th colspan="5" class="bgfree center"><strong>{_T string="Active plugins"}</strong></th>
             </tr>
-{foreach from=$plugins_list key=name item=plugin}
-            <tr>
+{foreach from=$plugins_list key=name item=plugin name=allplugins}
+            <tr class="{if $smarty.foreach.allplugins.iteration % 2 eq 0}even{else}odd{/if}">
                 <td>{$plugin.name} ({$name})</td>
                 <td>{$plugin.desc}</td>
                 <td>{$plugin.author}</td>
@@ -34,11 +34,11 @@
             </tr>
 {foreachelse}
             <tr>
-                <td colspan="4">{_T string="No active plugin."}</td>
+                <td colspan="5">{_T string="No active plugin."}</td>
             </tr>
 {/foreach}
             <tr>
-                <th colspan="5" class="center"><strong>{_T string="Inactive plugins"}</strong></th>
+                <th colspan="5" class="bgfree center"><strong>{_T string="Inactive plugins"}</strong></th>
             </tr>
 {foreach from=$plugins_disabled_list key=name item=plugin}
             <tr>
@@ -52,7 +52,7 @@
             </tr>
 {foreachelse}
             <tr>
-                <td colspan="4">{_T string="No inactive plugin."}</td>
+                <td colspan="5">{_T string="No inactive plugin."}</td>
             </tr>
 {/foreach}
         </tbody>

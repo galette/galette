@@ -35,6 +35,7 @@
  */
 
 use Analog\Analog as Analog;
+use Galette\Repository\Members as Members;
 
 require_once 'includes/galette.inc.php';
 
@@ -56,7 +57,8 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-$persons = Galette\Repository\Members::getArrayList($ids);
+$m = new Members;
+$persons = $m->getArrayList($ids);
 
 $tpl->assign('persons', $persons);
 $tpl->assign('person_mode', $mode);

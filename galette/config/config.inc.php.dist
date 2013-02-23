@@ -7,7 +7,7 @@ You can then copy the file in GALETTE_CONFIG_PATH/config.inc.php
 $Id$
 */
 
-/* choose your database engine, values : pgsql|mysql */
+/* choose your database engine, values : pgsql|mysql|sqlite */
 define("TYPE_DB", "pgsql"); 
 /* hostname for the database */
 define("HOST_DB", "localhost"); 

@@ -83,6 +83,74 @@
                 </div>
             </fieldset>
             <fieldset class="cssform large">
+                <legend class="ui-state-active ui-corner-top">{_T string="Within contributions"}</legend>
+                <div>
+                    <p>
+                        <span class="bline">{_T string="Creation date"}</span>
+                        <label for="contrib_creation_date_begin">{_T string="beetween"}</label>
+                        <input id="contrib_creation_date_begin" name="contrib_creation_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->contrib_creation_date_begin}"/>
+                        <label for="contrib_creation_date_end">{_T string="and"}</label>
+                        <input id="contrib_creation_date_end" name="contrib_creation_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->contrib_creation_date_end}"/>
+                    </p>
+                    <p>
+                        <span class="bline">{_T string="Begin date"}</span>
+                        <label for="contrib_begin_date_begin">{_T string="beetween"}</label>
+                        <input id="contrib_begin_date_begin" name="contrib_begin_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->contrib_begin_date_begin}"/>
+                        <label for="contrib_begin_date_end">{_T string="and"}</label>
+                        <input id="contrib_begin_date_end" name="contrib_begin_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->contrib_begin_date_end}"/>
+                    </p>
+                    <p>
+                        <span class="bline">{_T string="End date"}</span>
+                        <label for="contrib_end_date_begin">{_T string="beetween"}</label>
+                        <input id=contrib_end_date_begin" name="contrib_end_date_begin" type="text" class="due_date" maxlength="10" size="10" value="{$filters->contrib_end_date_begin}"/>
+                        <label for="contrib_end_date_end">{_T string="and"}</label>
+                        <input id=contrib_end_date_end" name="contrib_end_date_end" type="text" class="due_date" maxlength="10" size="10" value="{$filters->contrib_end_date_end}"/>
+                    </p>
+                    <p>
+                        <span class="bline">{_T string="Amount"}</span>
+                        <label for="contrib_min_amount">{_T string="beetween"}</label>
+                        <input id="contrib_min_amount" name="contrib_min_amount" type="text" maxlength="10" size="10" value="{$filters->contrib_min_amount}"/>
+                        <label for="contrib_max_amount">{_T string="and"}</label>
+                        <input id="contrib_max_amount" name="contrib_max_amount" type="text" maxlength="10" size="10" value="{$filters->contrib_max_amount}"/>
+                    </p>
+                    <p>
+                        <label class="bline" for="contributions_types">{_T string="Type"}</label>
+                        <select name="contributions_types[]" id="contributions_types" multiple="multiple">
+                            {html_options options=$contributions_types selected=$filters->contributions_types}
+                        </select>
+                    </p>
+                    <p>
+                        <label class="bline" for="payments_types">{_T string="Payment type"}</label>
+                        <select name="payments_types[]" id="payments_types" multiple="multiple">
+                            {html_options options=$payments_types selected=$filters->payments_types}
+                        </select>
+                    </p>
+{foreach $cdynamic_fields as $field}
+    {assign var=fid value=$field.field_id}
+    {if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}
+        {assign var=rid value="cdsc_$fid"}
+    {else}
+        {assign var=rid value="cds_$fid"}
+    {/if}
+                    <p>
+                        <label class="bline" for="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}">{$field.field_name}</label>
+    {if $field.field_type eq constant('Galette\Entity\DynamicFields::LINE')}
+                        <input type="text" name="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}" id="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}" value="{if isset($filters->contrib_dynamic.$rid)}{$filters->contrib_dynamic.$rid}{/if}" />
+    {elseif $field.field_type eq constant('Galette\Entity\DynamicFields::TEXT')}
+                        <textarea name="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}" id="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}">{if isset($filters->contrib_dynamic.$rid)}{$filters->contrib_dynamic.$rid}{/if}</textarea>
+    {elseif $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}
+                        <select name="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}[]" id="cds{if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}c{/if}_{$field.field_id}" multiple="multiple">
+                            <option value="">{_T string="Select"}</option>
+        {foreach $field.choices item=choice key=k}
+                            <option value="{$k}"{if isset($cds.field) and  $cds.field eq $rid} selected="selected"{/if}>{$choice}</option>
+        {/foreach}
+                        </select>
+    {/if}
+                    </p>
+{/foreach}
+                </div>
+            </fieldset>
+            <fieldset class="cssform large">
                 <legend class="ui-state-active ui-corner-top">{_T string="Free search"}<a class="clearfilter" href="#" title="{_T string="Add new free search criteria"}" id="btnadd_small">{_T string="Add"}</a></legend>
                 <ul id="fs_sortable" class="fields_list connectedSortable">
 {foreach from=$filters->free_search item=fs}
@@ -138,7 +206,7 @@
             <div class="center">
                 <input type="hidden" name="advanced_filtering" value="true" />
                 <input type="submit" class="inline" value="{_T string="Filter"}"/>
-                <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
+                <input type="submit" name="clear_adv_filter" class="inline" value="{_T string="Clear filter"}"/>
             </div>
         </form>
         <script type="text/javascript">

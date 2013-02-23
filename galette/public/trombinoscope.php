@@ -44,14 +44,16 @@ require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';
 if ( !$preferences->showPublicPages() ) {
     //public pages are not actives
     header('location:' . GALETTE_BASE_PATH  . 'index.php');
+    die();
 }
 
-$m = new Galette\Repository\Members('trombinoscope_');
-$members = $m->getPublicList(true, null, null);
+$m = new Galette\Repository\Members();
+$members = $m->getPublicList(true, null);
 
 $tpl->assign('page_title', _T("Trombinoscope"));
 $tpl->assign('additionnal_html_class', 'trombinoscope');
 $tpl->assign('members', $members);
+$tpl->assign('time', time());
 $content = $tpl->fetch('trombinoscope.tpl');
 $tpl->assign('content', $content);
 $tpl->display('public_page.tpl');

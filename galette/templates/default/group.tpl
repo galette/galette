@@ -24,13 +24,13 @@
                     <p>
 {if !$login->isAdmin() && !$login->isStaff()}
                         <span class="bline">{_T string="Parent group:"}</span>
-                        <span>{if $pgroup}{$pgroup->getName()}{/if}</span>
+                        <span>{if isset($pgroup)}{$pgroup->getName()}{/if}</span>
 {else}
                         <label for="parent_group" class="bline">{_T string="Parent group:"}</label>
                         <select name="parent_group" id="parent_group">
                             <option value="">{_T string="None"}</option>
 {foreach item=g from=$groups}
-                            <option value="{$g->getId()}"{if $pgroup and $pgroup->getId() eq $g->getId()} selected="selected"{/if}>{$g->getName()}</option>
+                            <option value="{$g->getId()}"{if isset($pgroup) and $pgroup->getId() eq $g->getId()} selected="selected"{/if}>{$g->getName()}</option>
 {/foreach}
                         </select>
 {/if}

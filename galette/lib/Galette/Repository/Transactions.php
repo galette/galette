@@ -95,6 +95,16 @@ class Transactions extends Pagination
     }
 
     /**
+     * Return the default direction for ordering
+     *
+     * @return string ASC or DESC
+     */
+    protected function getDefaultDirection()
+    {
+        return self::ORDER_DESC;
+    }
+
+    /**
     * Get transactions list
     *
     * @param bool    $as_trans return the results as an array of

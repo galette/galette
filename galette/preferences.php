@@ -137,7 +137,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
                     } else {
                         //check if login is already taken
                         if ( $login->loginExists($value) ) {
-                            $error_detected[] = _T("- This username is already used by another member !");
+                            $error_detected[] = _T("- This username is already in use, please choose another one!");
                         }
                     }
                 }

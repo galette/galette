@@ -36,8 +36,12 @@
  * @since     Available since 0.62
  */
 
+use Galette\Core\GaletteMail as GaletteMail;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\DynamicFields as DynamicFields;
+use Galette\Entity\ContributionsTypes as ContributionsTypes;
+use Galette\Entity\Texts as Texts;
+use Galette\Repository\Members as Members;
 
 require_once 'includes/galette.inc.php';
 
@@ -59,7 +63,7 @@ $id_cotis = get_numeric_form_value('id_cotis', '');
 //first/second step: select member
 $id_adh = get_numeric_form_value('id_adh', '');
 //first/second step: select contribution type
-$selected_type = get_form_value('id_type_cotis', '');
+$selected_type = get_form_value('id_type_cotis', 1);
 //first/second step: transaction id
 $trans_id = get_numeric_form_value('trans_id', '');
 //mark first step has been passed
@@ -87,8 +91,8 @@ if ( $type_selected && !($id_adh || $id_cotis) ) {
         }
     } else {
         $args = array(
-                'type'  => $selected_type,
-                'adh'   => $id_adh
+            'type'  => $selected_type,
+            'adh'   => $id_adh
         );
         if ( $trans_id != '' ) {
             $args['trans'] = $trans_id;
@@ -170,8 +174,9 @@ if ( isset($_POST['valid']) ) {
         $adh = new Adherent();
         $adh->load($contrib->member);
 
-        if ( $preferences->pref_mail_method > Galette\Core\GaletteMail::METHOD_DISABLED ) {
-            $texts = new Galette\Entity\Texts(
+        if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED ) {
+            $texts = new Texts(
+                $preferences,
                 array(
                     'name_adh'      => custom_html_entity_decode($adh->sname),
                     'mail_adh'      => custom_html_entity_decode($adh->email),
@@ -180,11 +185,13 @@ if ( isset($_POST['valid']) ) {
                     'contrib_info'  => custom_html_entity_decode($contrib->info)
                 )
             );
-            if ( $new && isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1' ) {
-                if ( Galette\Core\GaletteMail::isValidEmail($adh->email) ) {
+            if ( $new && isset($_POST['mail_confirm'])
+                && $_POST['mail_confirm'] == '1'
+            ) {
+                if ( GaletteMail::isValidEmail($adh->email) ) {
                     $mtxt = $texts->getTexts('contrib', $adh->language);
 
-                    $mail = new Galette\Core\GaletteMail();
+                    $mail = new GaletteMail();
                     $mail->setSubject($texts->getSubject());
                     $mail->setRecipients(
                         array(
@@ -228,12 +235,19 @@ if ( isset($_POST['valid']) ) {
                 // Get email text in database
                 $mtxt = $texts->getTexts('newcont', $preferences->pref_lang);
 
-                $mail = new Galette\Core\GaletteMail();
+                $mail = new GaletteMail();
                 $mail->setSubject($texts->getSubject());
-                /** TODO: only super-admin is contacted here. We should send a message to all admins, or propose them a chekbox if they don't want to get bored */
+                /** TODO: only super-admin is contacted here. We should send
+                 *  a message to all admins, or propose them a chekbox if
+                 *  they don't want to get bored
+                */
                 $mail->setRecipients(
                     array(
-                        $preferences->pref_email_newadh => str_replace('%asso', $preferences->pref_name, _T("%asso Galette's admin"))
+                        $preferences->pref_email_newadh => str_replace(
+                            '%asso',
+                            $preferences->pref_name,
+                            _T("%asso Galette's admin")
+                        )
                     )
                 );
 
@@ -272,6 +286,7 @@ if ( isset($_POST['valid']) ) {
             }
             if ( count($warning_detected) == 0 ) {
                 header('location: ' . $url);
+                die();
             } else {
                 $head_redirect = array(
                     'timeout'   => 30,
@@ -331,31 +346,29 @@ if ( isset($head_redirect) ) {
 }
 
 // contribution types
-$type_cotis_options = Galette\Entity\ContributionsTypes::getList(
+$type_cotis_options = ContributionsTypes::getList(
     ($type_selected == 1 && $id_adh != '') ? $contrib->isCotis() : null
 );
 $tpl->assign('type_cotis_options', $type_cotis_options);
 
 // members
-$m = new Galette\Repository\Members();
+$m = new Members();
 $required_fields = array(
     'id_adh',
     'nom_adh',
     'prenom_adh'
 );
 $members = $m->getList(false, $required_fields);
-if ( count($members) == 0 ) {
-    $adh_options = array('' => _T("You must first register a member"));
-} else {
+if ( count($members) > 0 ) {
     foreach ( $members as $member ) {
         $pk = Adherent::PK;
         $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
             ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8'));
         $adh_options[$member->$pk] = $sname;
     }
+    $tpl->assign('adh_options', $adh_options);
 }
 
-$tpl->assign('adh_options', $adh_options);
 $tpl->assign('require_calendar', true);
 
 $tpl->assign('pref_membership_ext', $cotis_extension ? $preferences->pref_membership_ext : '');  //TODO: remove and replace with $contrib specific property

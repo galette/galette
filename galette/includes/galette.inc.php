@@ -35,10 +35,15 @@
  * @since     Available since 0.7-dev - 2007-10-07
  */
 
+if ( !defined('GALETTE_PHP_MIN') ) {
+    define('GALETTE_PHP_MIN', '5.3.7');
+}
+
 // check required PHP version...
-if ( version_compare(PHP_VERSION, '5.3.0', '<') ) {
+if ( version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<') ) {
     echo 'Galette is NOT compliant with your current PHP version. ' .
-        'Galette requires PHP 5.3 minimum, current version is ' . phpversion();
+        'Galette requires PHP ' . GALETTE_PHP_MIN  .
+        ' minimum and current version is ' . phpversion();
     die();
 }
 
@@ -66,14 +71,21 @@ if ( !isset($installer) ) {
 $installed = file_exists(GALETTE_CONFIG_PATH . 'config.inc.php');
 if ( !$installed && !$installer ) {
     header('location: install/index.php');
+    die();
 }
 
-if ( file_exists(GALETTE_CONFIG_PATH . 'behavior.inc.php') ) {
+if ( file_exists(GALETTE_CONFIG_PATH . 'behavior.inc.php')
+    && !defined('GALETTE_TESTS')
+) {
     include_once GALETTE_CONFIG_PATH . 'behavior.inc.php';
 }
 
 if ( !$installer || $installed ) { //If we're not working from installer
     require_once GALETTE_CONFIG_PATH . 'config.inc.php';
+}
+
+if ( !function_exists('password_hash') ) {
+    include_once GALETTE_PASSWORD_COMPAT_PATH . '/password.php';
 }
 
 use Galette\Common\ClassLoader;
@@ -104,9 +116,9 @@ if (defined('GALETTE_XHPROF_PATH')
 //we start a php session
 session_start();
 
-define('GALETTE_VERSION', 'v0.7.3.2');
+define('GALETTE_VERSION', 'v0.7.4');
 define('GALETTE_COMPAT_VERSION', '0.7.3');
-define('GALETTE_DB_VERSION', '0.701');
+define('GALETTE_DB_VERSION', '0.702');
 if ( !defined('GALETTE_MODE') ) {
     define('GALETTE_MODE', 'PROD'); //DEV, PROD or DEMO
 }
@@ -152,9 +164,14 @@ if ( !defined('GALETTE_HANDLE_ERRORS')
 $now = new \DateTime();
 $galette_run_log = null;
 $galette_null_log = \Analog\Handler\Null::init();
-$dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
-    $now->format('Y-m-d')  . '.log';
-$galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
+$galette_debug_log = $galette_null_log;
+if ( !$installer ) {
+    $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
+        $now->format('Y-m-d')  . '.log';
+    $galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
+}
+$galette_run_log = null;
+$galette_log_var = null;
 
 if ( GALETTE_MODE === 'DEV'
     || ( defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true )
@@ -162,14 +179,18 @@ if ( GALETTE_MODE === 'DEV'
     //logs everything in PHP logs (per chance /var/log/http/error_log)
     $galette_run_log = \Analog\Handler\Stderr::init();
 } else {
-    //logs everything in galette log file
-    if ( !isset($logfile) ) {
-        //if no filename has been setetd (ie. from install), set default one
-        $logfile = 'galette_run';
+    if ( !$installer || ($installer && defined('GALETTE_LOGGER_CHECKED')) ) {
+        //logs everything in galette log file
+        if ( !isset($logfile) ) {
+            //if no filename has been setetd (ie. from install), set default one
+            $logfile = 'galette_run';
+        }
+        $log_path = GALETTE_LOGS_PATH . $logfile . '_' .
+            $now->format('Y-m-d')  . '.log';
+        $galette_run_log = \Analog\Handler\File::init($log_path);
+    } else {
+        $galette_run_log = \Analog\Handler\Variable::init($galette_log_var);
     }
-    $log_path = GALETTE_LOGS_PATH . $logfile . '_' .
-        $now->format('Y-m-d')  . '.log';
-    $galette_run_log = \Analog\Handler\File::init($log_path);
 }
 
 //Log level cannot be <= 3, would be ignored.
@@ -212,13 +233,10 @@ if ( $installer || !defined('PREFIX_DB') || !defined('NAME_DB') ) {
 }
 $session = &$_SESSION['galette'][$session_name];
 
-
 /**
 * Language instantiation
 */
-if ( isset($session['lang'])
-    && GALETTE_MODE !== 'DEV'
-) {
+if ( isset($session['lang']) ) {
     $i18n = unserialize($session['lang']);
 } else {
     $i18n = new Core\I18n();
@@ -240,9 +258,25 @@ require_once GALETTE_ROOT . 'includes/i18n.inc.php';
 $error_detected = array();
 $warning_detected = array();
 $success_detected = array();
+/**
+ * "Flash" messages management
+ */
+if ( isset($session['error_detected']) ) {
+    $error_detected = unserialize($session['error_detected']);
+    unset($session['error_detected']);
+}
+if ( isset($session['warning_detected']) ) {
+    $warning_detected = unserialize($session['warning_detected']);
+    unset($session['warning_detected']);
+}
+if ( isset($session['success_detected']) ) {
+    $success_detected = unserialize($session['success_detected']);
+    unset($session['success_detected']);
+}
 
-if ( !$installer ) { //If we're not working from installer
-    require_once GALETTE_CONFIG_PATH . 'config.inc.php';
+if ( !$installer and !defined('GALETTE_TESTS') ) {
+    //If we're not working from installer nor from tests
+    include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 
     /**
     * Database instanciation
@@ -267,14 +301,8 @@ if ( !$installer ) { //If we're not working from installer
         );
 
         /**
-        * Plugins
-        */
-        $plugins = new Core\Plugins();
-        $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
-
-        /**
-        * Authentication
-        */
+         * Authentication
+         */
         if ( isset($session['login']) ) {
             $login = unserialize(
                 $session['login']
@@ -284,8 +312,14 @@ if ( !$installer ) { //If we're not working from installer
         }
 
         /**
-        * Instanciate history object
-        */
+         * Plugins
+         */
+        $plugins = new Core\Plugins();
+        $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
+
+        /**
+         * Instanciate history object
+         */
         if ( isset($session['history'])
             && !GALETTE_MODE == 'DEV'
         ) {

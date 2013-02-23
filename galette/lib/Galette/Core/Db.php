@@ -58,34 +58,74 @@ class Db extends \Zend_Db
     private $_options;
     private $_db;
     private $_error;
+    private $_type_db;
+
+    const MYSQL = 'mysql';
+    const PGSQL = 'pgsql';
+    const SQLITE = 'sqlite';
 
     const MYSQL_DEFAULT_PORT = 3306;
     const PGSQL_DEFAULT_PORT = 5432;
 
     /**
-    * Main constructor
-    */
-    function __construct()
+     * Main constructor
+     *
+     * @param array $dsn Connection informations
+     * If not set, database constants will be used.
+     */
+    function __construct($dsn = null)
     {
         $_type = null;
+
+        if ( $dsn !== null && is_array($dsn) ) {
+            $_type_db = $dsn['TYPE_DB'];
+            if ($_type_db != self::SQLITE) {
+                $_host_db = $dsn['HOST_DB'];
+                $_port_db = $dsn['PORT_DB'];
+                $_user_db = $dsn['USER_DB'];
+                $_pwd_db = $dsn['PWD_DB'];
+                $_name_db = $dsn['NAME_DB'];
+            }
+        } else {
+            $_type_db = TYPE_DB;
+            if ($_type_db != self::SQLITE) {
+                $_host_db = HOST_DB;
+                $_port_db = PORT_DB;
+                $_user_db = USER_DB;
+                $_pwd_db = PWD_DB;
+                $_name_db = NAME_DB;
+            }
+        }
+
         try {
-            if ( TYPE_DB === 'mysql' ) {
+            if ( $_type_db === self::MYSQL ) {
                 $_type = 'Pdo_Mysql';
-            } else if ( TYPE_DB === 'pgsql' ) {
+            } else if ( $_type_db === self::PGSQL ) {
                 $_type = 'Pdo_Pgsql';
+            } else if ( $_type_db == self::SQLITE ) {
+                $_type = 'Pdo_Sqlite';
             } else {
                 throw new \Exception;
             }
 
+            $this->_type_db = $_type_db;
+            if ($_type_db != self::SQLITE) {
+                $_options = array(
+                        'host'     => $_host_db,
+                        'port'     => $_port_db,
+                        'username' => $_user_db,
+                        'password' => $_pwd_db,
+                        'dbname'   => $_name_db
+                    );
+            } else {
+                $_options = array(
+                        'dbname'   => GALETTE_SQLITE_PATH,
+                    );
+            }
+
             $this->_db = \Zend_Db::factory(
                 $_type,
-                array(
-                    'host'     => HOST_DB,
-                    'port'     => PORT_DB,
-                    'username' => USER_DB,
-                    'password' => PWD_DB,
-                    'dbname'   => NAME_DB
-                )
+                $_options
             );
             $this->_db->getConnection();
             $this->_db->setFetchMode(\Zend_Db::FETCH_OBJ);
@@ -205,27 +245,37 @@ class Db extends \Zend_Db
     *
     * @return true|array true if connection was successfull, an array with some infos otherwise
     */
-    public static function testConnectivity($type, $user, $pass, $host, $port, $db)
+    public static function testConnectivity($type, $user = null, $pass = null, $host = null, $port = null, $db = null)
     {
         $_type = null;
         try {
-            if ( $type === 'mysql' ) {
+            if ( $type === self::MYSQL ) {
                 $_type = 'Pdo_Mysql';
-            } else if ( $type === 'pgsql' ) {
+            } else if ( $type === self::PGSQL ) {
                 $_type = 'Pdo_Pgsql';
+            } else if ( $type == self::SQLITE ) {
+                $_type = 'Pdo_Sqlite';
             } else {
                 throw new \Exception;
             }
 
+            if ($type != self::SQLITE) {
+                $_options = array(
+                        'host'     => $host,
+                        'port'     => $port,
+                        'username' => $user,
+                        'password' => $pass,
+                        'dbname'   => $db
+                    );
+            } else {
+                $_options = array(
+                        'dbname'   => GALETTE_SQLITE_PATH,
+                    );
+            }
+
             $_db = \Zend_Db::factory(
                 $_type,
-                array(
-                    'host'     => $host,
-                    'port'     => $port,
-                    'username' => $user,
-                    'password' => $pass,
-                    'dbname'   => $db
-                )
+                $_options
             );
             $_db->getConnection();
             $_db->setFetchMode(\Zend_Db::FETCH_OBJ);
@@ -616,6 +666,16 @@ class Db extends \Zend_Db
     }
 
     /**
+     * Is current database using Postgresql?
+     *
+     * @return boolean
+     */
+    public function isPostgres()
+    {
+        return $this->_type_db === self::PGSQL;
+    }
+
+    /**
     * Global getter method
     *
     * @param string $name name of the variable we want to retrieve
@@ -627,6 +687,10 @@ class Db extends \Zend_Db
         switch ( $name ) {
         case 'db':
             return $this->_db;
+            break;
+        case 'type_db':
+            return $this->_type_db;
+            break;
         }
     }
 

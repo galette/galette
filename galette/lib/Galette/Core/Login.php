@@ -61,26 +61,16 @@ class Login extends Authentication
     const PK = 'login_adh';
 
     /**
-    * Default constructor
-    */
-    public function __construct()
-    {
-    }
-
-    /**
     * Logs in user.
     *
     * @param string $user  user's login
-    * @param string $passe md5 hashed password
+    * @param string $passe user's password
     *
-    * @return integer state :
-    *     '-1' if there were a database error
-    *    '-10' if user cannot login (mistake or user doesn't exists)
-    *    '1' if user were logged in successfully
+    * @return boolean
     */
     public function logIn($user, $passe)
     {
-        global $zdb, $i18n;
+        global $zdb, $i18n, $session;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -103,7 +93,6 @@ class Login extends Authentication
                 array('priorite_statut')
             );
             $select->where(self::PK . ' = ?', $user);
-            $select->where('mdp_adh = ?', $passe);
             Analog::log(
                 'Login query: ' . $select->__toString(),
                 Analog::DEBUG
@@ -117,6 +106,22 @@ class Login extends Authentication
                 );
                 return false;
             } else {
+                //check if pawwsord matches
+                $pw_checked = password_verify($passe, $row->mdp_adh);
+                if ( !$pw_checked ) {
+                    //if password did not match, we try old md5 method
+                    $pw_checked = (md5($passe) === $row->mdp_adh);
+                }
+
+                if ( $pw_checked === false ) {
+                    //Passwords mismatch. Log and return.
+                    Analog::log(
+                        'Passwords mismatch for login `' . $user . '`',
+                        Analog::WARNING
+                    );
+                    return false;
+                }
+
                 Analog::log('User `' . $user . '` logged in.', Analog::INFO);
                 $this->id = $row->id_adh;
                 $this->login = $user;
@@ -126,6 +131,7 @@ class Login extends Authentication
                 $this->surname = $row->prenom_adh;
                 $this->lang = $row->pref_lang;
                 $i18n->changeLanguage($this->lang);
+                $session['lang'] = serialize($i18n);
                 $this->active = $row->activite_adh;
                 $this->logged = true;
                 if ( $row->priorite_statut < Members::NON_STAFF_MEMBERS ) {

@@ -39,7 +39,9 @@
  * @since     Available since 0.7dev - 2011-08-28
  */
 
+use Galette\Entity\Group as Group;
 use Galette\Filters\MembersList as MembersList;
+use Galette\Repository\Members as Members;
 use Analog\Analog as Analog;
 
 require_once 'includes/galette.inc.php';
@@ -75,7 +77,7 @@ if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
     $filters->show = $_GET['nbshow'];
 }
 
-$members = new Galette\Repository\Members();
+$members = new Members($filters);
 $members_list = $members->getMembersList(true);
 
 //assign pagination variables to the template and add pagination links
@@ -91,7 +93,8 @@ if ( !isset($_POST['from']) ) {
         $selected_members = $mailing->recipients;
         $unreachables_members = $mailing->unreachables;
     } else {
-        $selected_members = Galette\Repository\Members::getArrayList($_POST['members']);
+        $m = new Members();
+        $selected_members = $m->getArrayList($_POST['members']);
     }
 } else {
     switch ( $_POST['from'] ) {
@@ -105,7 +108,7 @@ if ( !isset($_POST['from']) ) {
             exit(0);
         }
         if ( !isset($_POST['members']) ) {
-            $group = new Galette\Entity\Group((int)$_POST['gid']);
+            $group = new Group((int)$_POST['gid']);
             $selected_members = array();
             if ( !isset($_POST['mode']) || $_POST['mode'] == 'members' ) {
                 $selected_members = $group->getMembers();
@@ -120,7 +123,8 @@ if ( !isset($_POST['from']) ) {
                 exit(0);
             }
         } else {
-            $selected_members = Galette\Repository\Members::getArrayList($_POST['members']);
+            $m = new Members();
+            $selected_members = $m->getArrayList($_POST['members']);
         }
         break;
     }

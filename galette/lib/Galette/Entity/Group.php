@@ -106,8 +106,12 @@ class Group
             $select->from(PREFIX_DB . self::TABLE)
                 ->where(self::PK . '=?', $id);
             $result = $select->query()->fetchObject();
-            $this->_loadFromRS($result);
-            return true;
+            if ( $result ) {
+                $this->_loadFromRS($result);
+                return true;
+            } else {
+                return false;
+            }
         } catch (\Exception $e) {
             Analog::log(
                 'Cannot load group form id `' . $id . '` | ' . $e->getMessage(),

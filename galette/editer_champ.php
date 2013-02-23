@@ -61,11 +61,13 @@ $all_forms = $dyn_fields->getFormsNames();
 $form_name = get_form_value('form', '');
 if ( !isset($all_forms[$form_name]) ) {
     header('location: configurer_fiches.php');
+    die();
 }
 
 $field_id = get_numeric_form_value("id", '');
 if ( $field_id == '' ) {
     header('location: configurer_fiches.php?form=' . $form_name);
+    die();
 }
 
 $df = $dyn_fields->loadFieldType($field_id);
@@ -214,9 +216,11 @@ if ( isset($_POST['valid']) ) {
     }
     if ( count($error_detected) == 0 ) {
         header('location: configurer_fiches.php?form=' . $form_name);
+        die();
     }
 } elseif ( isset($_POST['cancel']) ) {
     header('location: configurer_fiches.php?form=' . $form_name);
+    die();
 }
 
 //We load values here, making sure all changes are stored in database

@@ -1,4 +1,4 @@
-        <table id="listing">
+        <table class="listing">
             <thead>
                 <tr>
                     <td colspan="7" class="right">
@@ -14,9 +14,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="listing small_head">#</th>
-                    <th class="listing left date_row">
-                        <a href="?tri=date_log" class="listing">
+                    <th class="small_head">#</th>
+                    <th class="left date_row">
+                        <a href="?tri=date_log">
                             {_T string="Date"}
                             {if $history->orderby eq "date_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -27,8 +27,8 @@
                             {/if}
                         </a>
                     </th>
-                    <th class="listing left username_row">
-                        <a href="?tri=adh_log" class="listing">
+                    <th class="left username_row">
+                        <a href="?tri=adh_log">
                             {_T string="Sender"}
                             {if $history->orderby eq "adh_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -39,11 +39,11 @@
                             {/if}
                         </a>
                     </th>
-                    <th class="listing left username_row">
+                    <th class="left username_row">
                         {_T string="Recipients"}
                     </th>
-                    <th class="listing left">
-                        <a href="?tri=action_log" class="listing">
+                    <th class="left">
+                        <a href="?tri=action_log">
                             {_T string="Subject"}
                             {if $history->orderby eq "action_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -54,9 +54,8 @@
                             {/if}
                         </a>
                     </th>
-                    {*<th class="listing">{_T string="Synopsis"}</th>*}
-                    <th class="listing left right small_head">{_T string="Sent"}</th>
-                    <th class="listing"></th>
+                    <th class="left right small_head">{_T string="Sent"}</th>
+                    <th></th>
                 </tr>
             </thead>
             <tfoot>
@@ -69,13 +68,12 @@
             </tfoot>
             <tbody>
 {foreach from=$logs item=log name=eachlog}
-                <tr class="tbl_line_{if $smarty.foreach.eachlog.iteration % 2 eq 0}even{else}odd{/if}">
+                <tr class="{if $smarty.foreach.eachlog.iteration % 2 eq 0}even{else}odd{/if}">
                     <td class="center">{$smarty.foreach.eachlog.iteration}</td>
                     <td class="nowrap">{$log.mailing_date|date_format:"%a %d/%m/%Y - %R"}</td>
                     <td>{if $log.mailing_sender eq 0}{_T string="Superadmin"}{else}{$log.mailing_sender_name}{/if}</td>
                     <td>{$log.mailing_recipients|unserialize|@count}</td>
                     <td>{$log.mailing_subject}</td>
-                    {*<td>{$log.mailing_body_resume}</td>*}
                     <td class="center">
                         {if $log.mailing_sent == 1}
                             <img src="{$template_subdir}images/icon-on.png" alt="{_T string="Sent"}" title="{_T string="Mailing has been sent"}"/>

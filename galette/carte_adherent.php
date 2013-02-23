@@ -47,6 +47,7 @@
 
 use Galette\IO\Pdf;
 use Analog\Analog as Analog;
+use Galette\Repository\Members;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -72,8 +73,10 @@ if ( isset($_GET[Galette\Entity\Adherent::PK])
         Analog::log('No member selected to generate members cards', Analog::INFO);
         if ( $login->isAdmin() || $login->isStaff() ) {
             header('location:gestion_adherents.php');
+            die();
         } else {
             header('location:voir_adherent.php');
+            die();
         }
         die();
     }
@@ -87,7 +90,8 @@ if ( isset($unique) && $unique ) {
     $mailing_adh = $filters->selected;
 }
 
-$members = Galette\Repository\Members::getArrayList(
+$m = new Members();
+$members = $m->getArrayList(
     $mailing_adh,
     array('nom_adh', 'prenom_adh'),
     true
@@ -254,7 +258,7 @@ foreach ( $members as $member ) {
 
     $id = '<strong>' . $member->id . '</strong>';
     $nom_adh_ext = '<strong>' .
-        (( $preferences->pref_bool_display_title ) ? $member->spoliteness . ' ' : '') .
+        (( $preferences->pref_bool_display_title ) ? $member->stitle . ' ' : '') .
         $member->sname . '</strong>';
     $photo = $member->picture;
     $photofile = $photo->getPath();
@@ -316,7 +320,7 @@ foreach ( $members as $member ) {
     $pdf->SetTextColor($tcol['R'], $tcol['G'], $tcol['B']);
     $pdf->SetFont(Pdf::FONT, 'B', 6);
     $pdf->SetXY($x0, $y0 + 33);
-    $pdf->Cell(75, 7, $preferences->pref_card_strip, 0, 0, 'C', 1);
+    $pdf->Cell($w, 7, $preferences->pref_card_strip, 0, 0, 'C', 1);
 
     // Draw a gray frame around the card
     $pdf->Rect($x0, $y0, $w, $h);

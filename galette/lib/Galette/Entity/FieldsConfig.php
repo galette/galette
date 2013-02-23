@@ -66,6 +66,7 @@ class FieldsConfig
     private $_table;
     private $_defaults = null;
     private $_all_categories;
+    private $_all_positions;
 
     const TABLE = 'fields_config';
 
@@ -94,21 +95,30 @@ class FieldsConfig
         //Fields we do not want to be set as required
         'societe_adh',
         'id_statut',
-        'titre_adh',
-        'pref_lang'
+        'pref_lang',
+        'sexe_adh'
     );
 
     /**
      * Default constructor
      *
-     * @param string $table    the table for which to get fields configuration
-     * @param array  $defaults default values
+     * @param string  $table    the table for which to get fields configuration
+     * @param array   $defaults default values
+     * @param boolean $install  Are we calling from installer?
      */
-    function __construct($table, $defaults)
+    function __construct($table, $defaults, $install = false)
     {
         $this->_table = $table;
         $this->_defaults = $defaults;
-        $this->_checkUpdate();
+        $this->_all_required = array();
+        $this->_all_visibles = array();
+        $this->_all_labels = array();
+        $this->_all_categories = array();
+        $this->_all_positions = array();
+        //prevent check at install time...
+        if ( !$install ) {
+            $this->_checkUpdate(false);
+        }
     }
 
     /**
@@ -172,7 +182,7 @@ class FieldsConfig
                         = $this->_defaults[$k->field_id]['label'];
                     $this->_all_categories[$k->field_id]
                         = $this->_defaults[$k->field_id]['category'];
-                    $this->all_positions[$k->field_id] = $k->position;
+                    $this->_all_positions[$k->field_id] = $k->position;
                 }
 
             }
@@ -198,10 +208,13 @@ class FieldsConfig
      * current table.
      * This should occurs when table has been updated. For the first
      * initialisation, value should be false. Defaults to false.
+     * @param boolean $raz    true if we must delete all config data for
+     * current table.
+     * This should occurs at install/upgrade time.
      *
      * @return boolean
      */
-    public function init($reinit=false)
+    public function init($reinit=false, $raz = false)
     {
         global $zdb;
         $class = get_class($this);
@@ -212,7 +225,7 @@ class FieldsConfig
             PREFIX_DB . $this->_table . '`',
             Analog::DEBUG
         );
-        if ( $reinit ) {
+        if ( $reinit || $raz ) {
             Analog::log(
                 '[' . $class . '] Reinit mode, we delete config content for ' .
                 'table `' . PREFIX_DB . $this->_table . '`',
@@ -272,7 +285,7 @@ class FieldsConfig
                                       ),
                     ':position'    => (
                                         ($reinit) ?
-                                            $this->all_positions[$key] :
+                                            $this->_all_positions[$key] :
                                             $this->_defaults[$key]['position']
                                       ),
                     ':category'    => (
@@ -333,8 +346,8 @@ class FieldsConfig
 
     /*public function getLabels(){ return $this->_all_labels; }*/
     /*public function getCategories(){ return $this->_all_categories; }*/
-    /*public function getPositions(){ return $this->all_positions; }*/
-    /*public function getPosition($field){ return $this->all_positions[$field]; }*/
+    /*public function getPositions(){ return $this->_all_positions; }*/
+    /*public function getPosition($field){ return $this->_all_positions[$field]; }*/
 
     /**
      * Get visible fields
@@ -378,18 +391,17 @@ class FieldsConfig
         return $this->fields;
     }
 
-    /** FIXME: should return _store result */
     /**
      * Set fields
      *
      * @param array $fields categorized fields array
      *
-     * @return void
+     * @return boolean
      */
     public function setFields($fields)
     {
         $this->_categorized_fields = $fields;
-        $this->_store();
+        return $this->_store();
     }
 
     /**
@@ -444,8 +456,8 @@ class FieldsConfig
 
             $zdb->db->commit();
             return true;
-        } catch (Exception $e) {
-            $zdb->db->rollBacak();
+        } catch (\Exception $e) {
+            $zdb->db->rollBack();
             Analog::log(
                 '[' . $class . '] An error occured while storing fields ' .
                 'configuration for table `' . $this->_table . '`.' .
@@ -454,6 +466,74 @@ class FieldsConfig
             );
             Analog::log(
                 $e->getTraceAsString(),
+                Analog::ERROR
+            );
+            return false;
+        }
+    }
+
+    /**
+     * Migrate old required fields configuration
+     * Only needeed for 0.7.4 upgrade
+     * (should have been 0.7.3 - but I missed that.)
+     *
+     * @param Db $zdb Database instance
+     *
+     * @return boolean
+     */
+    public function migrateRequired($zdb)
+    {
+        $old_required = null;
+
+        try {
+            $select = new \Zend_Db_Select($zdb->db);
+            $select->from(PREFIX_DB . 'required');
+
+            $old_required = $select->query()->fetchAll();
+        } catch ( \Exception $pe ) {
+            Analog::log(
+                'Unable to retrieve required fields_config. Maybe the table does not exists?',
+                Analog::WARNING
+            );
+            //not a blocker
+            return true;
+        }
+
+        $zdb->db->beginTransaction();
+        try {
+            $sql = 'UPDATE ' . PREFIX_DB . self::TABLE .
+                ' SET required=:required WHERE table_name=\'' .
+                $this->_table .'\' AND field_id=:field_id';
+            $stmt = $zdb->db->prepare($sql);
+
+            foreach ( $old_required as $or ) {
+                $params = array(
+                    'field_id'  => $or->field_id,
+                    'required'  => ($or->required === false) ?  'false' : true
+                );
+                $stmt->execute($params);
+            }
+
+            $class = get_class($this);
+            Analog::log(
+                str_replace(
+                    '%s',
+                    $this->_table,
+                    '[' . $class . '] Required fields for table %s upgraded ' .
+                    'successfully.'
+                ),
+                Analog::INFO
+            );
+
+            $zdb->db->query('DROP TABLE ' . PREFIX_DB . 'required;');
+
+            $zdb->db->commit();
+            return true;
+        } catch ( \Exception $e ) {
+            $zdb->db->rollBack();
+            Analog::log(
+                'An error occured migrating old required fields. | ' .
+                $e->getMessage(),
                 Analog::ERROR
             );
             return false;

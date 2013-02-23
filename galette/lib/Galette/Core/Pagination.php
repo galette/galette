@@ -89,6 +89,16 @@ abstract class Pagination
     abstract protected function getDefaultOrder();
 
     /**
+     * Return the default direction for ordering
+     *
+     * @return string ASC or DESC
+     */
+    protected function getDefaultDirection()
+    {
+        return self::ORDER_ASC;
+    }
+
+    /**
     * Reinit default parameters
     *
     * @return void
@@ -99,7 +109,7 @@ abstract class Pagination
 
         $this->_current_page = 1;
         $this->_orderby = $this->getDefaultOrder();
-        $this->_ordered = self::ORDER_ASC;
+        $this->_ordered = $this->getDefaultDirection();
         $this->_show = $preferences->pref_numrows;
     }
 

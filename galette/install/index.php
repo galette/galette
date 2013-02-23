@@ -48,6 +48,10 @@ if ( defined('PREFIX_DB') && defined('NAME_DB') ) {
     unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]);
 }
 
+if ( !defined('GALETTE_TPL_SUBDIR') ) {
+    define('GALETTE_TPL_SUBDIR', 'templates/default/');
+}
+
 $session = array();
 
 $step = '1';
@@ -69,6 +73,7 @@ if ( $error_detected == '' && isset($_POST['install_type']) ) {
 }
 
 if ( $error_detected == '' && isset($_POST['install_permsok']) ) {
+    define('GALETTE_LOGGER_CHECKED', true);
     if ( $_POST['install_type'] == 'install' ) {
         $step = 'i4';
     } elseif ( substr($_POST['install_type'], 0, 7) == 'upgrade' ) {
@@ -80,44 +85,46 @@ if ( $error_detected == '' && isset($_POST['install_permsok']) ) {
 
 if ( $error_detected == ''
     && isset($_POST['install_dbtype'])
-    && isset($_POST['install_dbhost'])
-    && isset($_POST['install_dbport'])
-    && isset($_POST['install_dbuser'])
-    && isset($_POST['install_dbpass'])
-    && isset($_POST['install_dbname'])
-    && isset($_POST['install_dbprefix'])
 ) {
     if ( $_POST['install_dbtype'] != 'mysql'
         && $_POST['install_dbtype'] != 'pgsql'
+        && $_POST['install_dbtype'] != 'sqlite'
     ) {
             $error_detected .= '<li>' . _T("Database type unknown") . '</li>';
     }
-    if ( $_POST['install_dbhost'] == '' ) {
-        $error_detected .= '<li>' . _T("No host") . '</li>';
+
+    if ($_POST['install_dbtype'] != 'sqlite') {
+        if ( empty($_POST['install_dbhost']) ) {
+            $error_detected .= '<li>' . _T("No host") . '</li>';
+        }
+        if ( empty($_POST['install_dbport']) ) {
+            $error_detected .= '<li>' . _T("No port") . '</li>';
+        }
+        if ( empty($_POST['install_dbuser']) ) {
+            $error_detected .= '<li>' . _T("No user name") . '</li>';
+        }
+        if ( empty($_POST['install_dbpass']) ) {
+            $error_detected .= '<li>' . _T("No password") . '</li>';
+        }
+        if ( empty($_POST['install_dbname']) ) {
+                $error_detected .= '<li>' . _T("No database name") . '</li>';
+        }
     }
-    if ( $_POST['install_dbport'] == '' ) {
-        $error_detected .= '<li>' . _T("No port") . '</li>';
-    }
-    if ( $_POST['install_dbuser'] == '' ) {
-        $error_detected .= '<li>' . _T("No user name") . '</li>';
-    }
-    if ( $_POST['install_dbpass'] == '' ) {
-        $error_detected .= '<li>' . _T("No password") . '</li>';
-    }
-    if ( $_POST['install_dbname'] == '' ) {
-            $error_detected .= '<li>' . _T("No database name") . '</li>';
-    }
+
     if ($error_detected == '') {
         if ( isset($_POST['install_dbconn_ok']) ) {
 
-            define('TYPE_DB', $_POST['install_dbtype']);
-            define('USER_DB', $_POST['install_dbuser']);
-            define('PWD_DB', $_POST['install_dbpass']);
-            define('HOST_DB', $_POST['install_dbhost']);
-            define('PORT_DB', $_POST['install_dbport']);
-            define('NAME_DB', $_POST['install_dbname']);
+            $dsn['TYPE_DB'] = $_POST['install_dbtype'];
 
-            $zdb = new Galette\Core\Db();
+            if ($dsn['TYPE_DB'] != 'sqlite') {
+                $dsn['USER_DB'] = $_POST['install_dbuser'];
+                $dsn['PWD_DB'] = $_POST['install_dbpass'];
+                $dsn['HOST_DB'] = $_POST['install_dbhost'];
+                $dsn['PORT_DB'] = $_POST['install_dbport'];
+                $dsn['NAME_DB'] = $_POST['install_dbname'];
+            }
+
+            $zdb = new Galette\Core\Db($dsn);
 
             if ( $_POST['install_type'] == 'install' ) {
                 $step = 'i6';
@@ -356,7 +363,7 @@ case 'u3':
     $files_perms_class = '';
 
     // check required PHP version...
-    if ( version_compare(PHP_VERSION, '5.3.0', '<') ) {
+    if ( version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<') ) {
         $php_ok = false;
         $php_class .= $class . 'bad';
     } else {
@@ -369,7 +376,14 @@ case 'u3':
                 </header>
                 <?php
     if ( $php_ok !== true ) {
-        echo '<p class="error">' . _T("Galette requires at least PHP version 5.3.") . '</p>';
+        $msg = '<p class="error">';
+        $msg .= str_replace(
+            '%ver',
+            GALETTE_PHP_MIN,
+            _T("Galette requires at least PHP version %ver!")
+        );
+        $msg .= '</p>';
+        echo $msg;
     }
     echo str_replace('%version', PHP_VERSION, _T("PHP version %version"));
                 ?>
@@ -437,19 +451,19 @@ case 'u3':
     // check file permissions
     $perms_ok = true;
     $files_need_rw = array (
-        '/templates_c',
-        '/photos',
-        '/cache',
-        '/tempimages',
-        '/config',
-        '/exports',
-        '/logs'
+        GALETTE_COMPILE_DIR,
+        GALETTE_PHOTOS_PATH,
+        GALETTE_CACHE_DIR,
+        GALETTE_TEMPIMAGES_PATH,
+        GALETTE_CONFIG_PATH,
+        GALETTE_EXPORTS_PATH,
+        GALETTE_LOGS_PATH
     );
 
     $files_perms_class = $class . 'ok';
     $files = '';
     foreach ($files_need_rw as $file) {
-        if ( !is_writable(dirname(__FILE__) . '/..' . $file) ) {
+        if ( !is_writable($file) ) {
             $perms_ok = false;
             $files_perms_class = $class . 'bad';
             $files .= '<li class="install-bad">' . $file . '</li>';
@@ -596,39 +610,42 @@ case 'u4':
                         <select name="install_dbtype" id="install_dbtype">
                             <option value="mysql"<?php if ( isset($_POST['install_dbtype']) && $_POST['install_dbtype'] == 'mysql' ) {echo ' selected="selected"';} ?>>Mysql</option>
                             <option value="pgsql"<?php if ( isset($_POST['install_dbtype']) && $_POST['install_dbtype'] == 'pgsql' ) {echo ' selected="selected"';} ?>>Postgresql</option>
+                            <option value="sqlite"<?php if ( isset($_POST['install_dbtype']) && $_POST['install_dbtype'] == 'sqlite' ) {echo ' selected="selected"';} ?>>SQLite</option>
                         </select>
                     </p>
-                    <p>
-                        <label class="bline" for="install_dbhost"><?php echo _T("Host:"); ?></label>
-                        <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo (isset($_POST['install_dbhost']))?$_POST['install_dbhost']:'localhost'; ?>" required/>
-                    </p>
-                    <p>
-                        <label class="bline" for="install_dbport"><?php echo _T("Port:"); ?></label>
-                        <input type="text" name="install_dbport" id="install_dbport" value="<?php echo (isset($_POST['install_dbport']))?$_POST['install_dbport']:$default_dbport; ?>" required/>
-                    </p>
-                    <p>
-                        <label class="bline" for="install_dbuser"><?php echo _T("User:"); ?></label>
-                        <input type="text" name="install_dbuser" id="install_dbuser" value="<?php if(isset($_POST['install_dbuser'])) echo $_POST['install_dbuser']; ?>" required/>
-                    </p>
-                    <p>
-                        <label class="bline" for="install_dbpass"><?php echo _T("Password:"); ?></label>
-                        <input type="password" name="install_dbpass" id="install_dbpass" value="<?php if(isset($_POST['install_dbpass'])) echo $_POST['install_dbpass']; ?>" required/>
-                    </p>
-                    <p>
-                        <label class="bline" for="install_dbname"><?php echo _T("Database:"); ?></label>
-                        <input type="text" name="install_dbname" id="install_dbname" value="<?php if(isset($_POST['install_dbname'])) echo $_POST['install_dbname']; ?>" required/>
-                    </p>
-                    <p>
-    <?php
+                    <div id="install_dbconfig">
+                        <p>
+                            <label class="bline" for="install_dbhost"><?php echo _T("Host:"); ?></label>
+                            <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo (isset($_POST['install_dbhost']))?$_POST['install_dbhost']:'localhost'; ?>" required/>
+                        </p>
+                        <p>
+                            <label class="bline" for="install_dbport"><?php echo _T("Port:"); ?></label>
+                            <input type="text" name="install_dbport" id="install_dbport" value="<?php echo (isset($_POST['install_dbport']))?$_POST['install_dbport']:$default_dbport; ?>" required/>
+                        </p>
+                        <p>
+                            <label class="bline" for="install_dbuser"><?php echo _T("User:"); ?></label>
+                            <input type="text" name="install_dbuser" id="install_dbuser" value="<?php if(isset($_POST['install_dbuser'])) echo $_POST['install_dbuser']; ?>" required/>
+                        </p>
+                        <p>
+                            <label class="bline" for="install_dbpass"><?php echo _T("Password:"); ?></label>
+                            <input type="password" name="install_dbpass" id="install_dbpass" value="<?php if(isset($_POST['install_dbpass'])) echo $_POST['install_dbpass']; ?>" required/>
+                        </p>
+                        <p>
+                            <label class="bline" for="install_dbname"><?php echo _T("Database:"); ?></label>
+                            <input type="text" name="install_dbname" id="install_dbname" value="<?php if(isset($_POST['install_dbname'])) echo $_POST['install_dbname']; ?>" required/>
+                        </p>
+                        <p>
+        <?php
     if ( substr($_POST['install_type'], 0, 8) == 'upgrade-' ) {
         echo '<span class="required">' .
             _T("(Indicate the CURRENT prefix of your Galette tables)") .
             '</span><br/>';
     }
-    ?>
-                        <label class="bline" for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
-                        <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo (isset($_POST['install_dbprefix']))?$_POST['install_dbprefix']:'galette_'; ?>" required/>
-                    </p>
+        ?>
+                            <label class="bline" for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
+                            <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo (isset($_POST['install_dbprefix']))?$_POST['install_dbprefix']:'galette_'; ?>" required/>
+                        </p>
+                    </div>
                 </fieldset>
                 <p id="btn_box">
                     <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
@@ -638,6 +655,21 @@ case 'u4':
             </form>
             <script type="text/javascript">
                 $(function(){
+                    function changeDbType(type)
+                    {
+                        if (type == 'sqlite') {
+                            $('#install_dbconfig').css('display', 'none');
+                            $('#install_dbconfig input').each(function () {
+                                $(this).removeAttr('required');
+                            })
+                        } else {
+                            $('#install_dbconfig').css('display', 'block');
+                            $('#install_dbconfig input').each(function () {
+                                $(this).attr('required', 'required');
+                            })
+                        }
+                    }
+
                     $('#install_dbtype').change(function(){
                         var _db = $(this).val();
                         var _port = null;
@@ -647,7 +679,11 @@ case 'u4':
                             _port = <?php echo Galette\Core\Db::MYSQL_DEFAULT_PORT; ?>;
                         }
                         $('#install_dbport').val(_port);
+                        changeDbType($(this).val());
                     });
+
+                    changeDbType($('#install_dbtype').val());
+
                 });
             </script>
     <?php
@@ -660,14 +696,20 @@ case 'u5':
     <?php
     $permsdb_ok = true;
 
-    $test = Galette\Core\Db::testConnectivity(
-        $_POST['install_dbtype'],
-        $_POST['install_dbuser'],
-        $_POST['install_dbpass'],
-        $_POST['install_dbhost'],
-        $_POST['install_dbport'],
-        $_POST['install_dbname']
-    );
+    if ($_POST['install_dbtype'] == 'sqlite') {
+        $test = Galette\Core\Db::testConnectivity(
+            $_POST['install_dbtype']
+        );
+    } else {
+        $test = Galette\Core\Db::testConnectivity(
+            $_POST['install_dbtype'],
+            $_POST['install_dbuser'],
+            $_POST['install_dbpass'],
+            $_POST['install_dbhost'],
+            $_POST['install_dbport'],
+            $_POST['install_dbname']
+        );
+    }
 
     if ( $test === true ) {
         echo '<p id="infobox">' . _T("Connection to database successfull") . '</p>';
@@ -802,14 +844,16 @@ case 'u6':
             _T("DROP operation allowed") . '</li>';
     }
 
-    if ( $results['alter'] instanceof Exception ) {
-        $result .= '<li class="install-bad debuginfos">' .
-            _T("ALTER Operation not allowed") . '<span>' .
-            $results['alter']->getMessage() . '</span></li>';
-        $error = true;
-    } elseif ( $results['alter'] != '' ) {
-        $result .= '<li class="install-ok">' .
-            _T("ALTER Operation allowed") . '</li>';
+    if ($step == 'u6') {
+        if ( $results['alter'] instanceof Exception ) {
+            $result .= '<li class="install-bad debuginfos">' .
+                _T("ALTER Operation not allowed") . '<span>' .
+                $results['alter']->getMessage() . '</span></li>';
+            $error = true;
+        } elseif ( $results['alter'] != '' ) {
+            $result .= '<li class="install-ok">' .
+                _T("ALTER Operation allowed") . '</li>';
+        }
     }
 
     if ( $error ) {
@@ -887,12 +931,13 @@ case 'u7':
     <?php
     $table_prefix = $_POST['install_dbprefix'];
 
-    //before doing anything else, we'll have to convert data to UTF-8
-    //required since 0.7dev (if we're upgrading, 'f course)
     if ( $step == 'u7' ) {
-        //FIXME: maybe we can do that only on 0.7 upgrades,
-        //to save time? (methods are safe if rerun)
-        $zdb->convertToUTF($table_prefix);
+        //before doing anything else, we'll have to convert data to UTF-8
+        //required since 0.7dev (if we're upgrading, 'f course)
+        $_to_ver = substr($_POST['install_type'], 8);
+        if ( (float)$_to_ver <= 0.70 ) {
+            $zdb->convertToUTF($table_prefix);
+        }
     }
 
     // begin : copyright (2002) the phpbb group (support@phpbb.com)
@@ -919,23 +964,39 @@ case 'u7':
 
     $sql_query = split_sql_file($sql_query, ';');
 
+    $db = $zdb->db->getConnection();
+    $db->beginTransaction();
+
     for ( $i = 0; $i < sizeof($sql_query); $i++ ) {
         $query = trim($sql_query[$i]);
         if ( $query != '' && $query[0] != '-' ) {
             //some output infos
-            @list($w1, $w2, $w3, $extra) = explode(' ', $query, 4);
-            if ($extra != '') {
+            $ws = explode(' ', $query, 4);
+            $w1 = $ws[0];
+            $w2 = '';
+            $w3 = '';
+            $extra = '';
+            if ( isset($ws[1]) ) {
+                $w2 = $ws[1];
+            }
+            if ( isset($ws[2]) ) {
+                $w3 = $ws[2];
+            }
+            if ( isset($ws[3]) ) {
+                $extra = $ws[3];
+            }
+            if ( $extra != '') {
                 $extra = '...';
             }
             try {
-                $result = $zdb->db->getConnection()->exec($query);
+                $result = $db->exec($query);
                 echo '<li class="install-ok">' . $w1 . ' ' . $w2 . ' ' . $w3 .
                     ' ' . $extra . '</li>';
             } catch (Exception $e) {
-                Analog::log(
+                \Analog\Analog::log(
                     'Error executing query | ' . $e->getMessage() .
                     ' | Query was: ' . $query,
-                    Galette\Common\Analog::WARNING
+                    \Analog\Analog::WARNING
                 );
                 echo '<li class="install-bad debuginfos">' . $w1 . ' ' . $w2 .
                     ' ' . $w3 . ' ' . $extra . '<span>' . $e->getMessage() .
@@ -949,6 +1010,12 @@ case 'u7':
                 }
             }
         }
+    }
+
+    if (!empty($error)) {
+        $db->rollBack();
+    } else {
+        $db->commit();
     }
 
     echo "</ul>\n";
@@ -1171,13 +1238,19 @@ define("STOCK_FILES", "tempimages");
         $preferences = new Galette\Core\Preferences(false);
         $ct = new Galette\Entity\ContributionsTypes();
         $status = new Galette\Entity\Status();
-        $fc = new Galette\Entity\FieldsCategories();
+        include_once '../includes/members_fields.php';
+        $fc = new Galette\Entity\FieldsConfig(
+            Galette\Entity\Adherent::TABLE,
+            $members_fields,
+            true
+        );
+        $titles = new Galette\Repository\Titles();
 
         //init default values
         $res = $preferences->installInit(
             $i18n->getID(),
             $_POST['install_adminlogin'],
-            md5($_POST['install_adminpass'])
+            password_hash($_POST['install_adminpass'], PASSWORD_BCRYPT)
         );
         if ( $res !== true ) {
             $errs[] = '<li class="install-bad">' .
@@ -1209,24 +1282,114 @@ define("STOCK_FILES", "tempimages");
                 _T("Default status were successfully stored.") . '</li>';
         }
 
-        $res = $fc->installInit();
+        //proceed fields configuration reinitialization
+        $res = $fc->init(false, true);
         if ( $res !== true ) {
             $errs[] = '<li class="install-bad">' .
-                _T("Default fields categories cannot be initialized.") .
+                _T("Default fields configuration cannot be initialized.") .
+                '</li>';
+        } else {
+            $oks[] = '<li class="install-ok">' .
+                _T("Default fields configuration was successfully stored.") .
+                '</li>';
+        }
+
+        $res = $titles->installInit($zdb);
+        if ( $res !== true ) {
+            $errs[] = '<li class="install-bad">' .
+                _T("Titles cannot be initialized.") .
                 '<span>' . $res->getMessage() . '</span></li>';
         } else {
             $oks[] = '<li class="install-ok">' .
-                _T("Default fields categories were successfully stored.") .
+                _T("Titles were successfully stored.") .
                 '</li>';
         }
     } else if ($step=='u9') {
+        $_to_ver = substr($_POST['install_type'], 8);
+        if ( (float)$_to_ver <= 0.74 ) {
+            include_once '../includes/members_fields.php';
+            $fc = new Galette\Entity\FieldsConfig(
+                Galette\Entity\Adherent::TABLE,
+                $members_fields,
+                true
+            );
+
+            //titles has been initialized by SQL upgrade script
+            //but in english. If install language is not english,
+            //we have to translate those values.
+            $titles = new Galette\Repository\Titles();
+            if ( $i18n->getID() != 'en_US' ) {
+                $titles_list = $titles->getList($zdb);
+                $res = true;
+                $zdb->db->beginTransaction();
+                foreach ( $titles_list as $title ) {
+                    if ( $res == true ) {
+                        switch ( $title->short ) {
+                        case 'Mr.':
+                            $title->short = _T("Mr.");
+                            break;
+                        case 'Mrs.':
+                            $title->short = _T("Mrs.");
+                            break;
+                        case 'Miss':
+                            $title->short = _T("Miss");
+                            break;
+                        }
+                        $res = $title->store($zdb);
+                    }
+                }
+                if ( $res == true ) {
+                    $zdb->db->commit();
+                } else {
+                    $zdb->db->rollBack();
+                }
+            }
+
+            if ( $res !== true ) {
+                $errs[] = '<li class="install-bad">' .
+                    _T("Titles cannot be initialized.") .
+                    '<span>' . $res->getMessage() . '</span></li>';
+            } else {
+                $oks[] = '<li class="install-ok">' .
+                    _T("Titles were successfully stored.") .
+                    '</li>';
+            }
+
+            //proceed fields configuration reinitialization
+            $res = $fc->init(false, true);
+            if ( $res !== true ) {
+                $errs[] = '<li class="install-bad">' .
+                    _T("Default fields configuration cannot be initialized.") .
+                    '</li>';
+            } else {
+                $oks[] = '<li class="install-ok">' .
+                    _T("Default fields configuration was successfully stored.") .
+                    '</li>';
+            }
+
+            if ( (float)$_to_ver >= 0.70 ) {
+                //once fields configuration defaults has been stored, we'll
+                //report galette_required values, and we remove that table
+                $res = $fc->migrateRequired($zdb);
+                if ( $res !== true ) {
+                    $errs[] = '<li class="install-bad">' .
+                        _T("Required fields upgrade has failed :(") .
+                        '<span>' . $res->getMessage() . '</span></li>';
+                } else {
+                    $oks[] = '<li class="install-ok">' .
+                        _T("Required fields have been upgraded successfully.") .
+                        '</li>';
+                }
+            }
+        }
+
         $preferences = new Galette\Core\Preferences();
         $preferences->pref_admin_login = $_POST['install_adminlogin'];
         $preferences->pref_admin_pass = $_POST['install_adminpass'];
         $preferences->store();
     }
 
-    $texts = new Galette\Entity\Texts();
+    $texts = new Galette\Entity\Texts($preferences);
     $res = $texts->installInit();
     if ( $res !== false ) {
         if ( $res !== true ) {

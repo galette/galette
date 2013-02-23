@@ -42,7 +42,10 @@ use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\FieldsConfig as FieldsConfig;
 use Galette\Entity\Texts as Texts;
 use Galette\Entity\DynamicFields as DynamicFields;
+use Galette\Repository\Members as Members;
+use Galette\Repository\Titles as Titles;
 use Galette\Repository\Groups as Groups;
+use Galette\Filters\MembersList as MembersList;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -122,6 +125,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     && $preferences->pref_bool_mailadh
                 ) {
                     $texts = new Texts(
+                        $preferences,
                         array(
                             'name_adh'  => custom_html_entity_decode($member->sname),
                             'mail_adh'  => custom_html_entity_decode($member->email),
@@ -172,6 +176,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                         //send mail to member
                         // Get email text in database
                         $texts = new Texts(
+                            $preferences,
                             array(
                                 'name_adh'      => custom_html_entity_decode($member->sname),
                                 'mail_adh'      => custom_html_entity_decode($member->email),
@@ -233,6 +238,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     $member,
                     $_POST['groups_adh']
                 );
+                $member->loadGroups();
             }
             if ( $add_groups === true ) {
                 if ( isset ($_POST['groups_adh']) ) {
@@ -310,8 +316,10 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
             header(
                 'location: ajouter_contribution.php?id_adh=' . $member->id
             );
+            die();
         } elseif ( count($error_detected) == 0 ) {
             header('location: voir_adherent.php?id_adh=' . $member->id);
+            die();
         }
     }
 } else {
@@ -340,6 +348,37 @@ if ( $member->id != '' ) {
     $title .= ' (' . _T("creation") . ')';
 }
 
+$navigate = array();
+
+if ( isset($session['filters']['members']) ) {
+    $filters =  unserialize($session['filters']['members']);
+} else {
+    $filters = new MembersList();
+}
+
+if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
+    $m = new Members();
+    $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
+    //print_r($ids);
+    foreach ( $ids as $k=>$m ) {
+        if ( $m->id_adh == $member->id ) {
+            $navigate = array(
+                'cur'  => $m->id_adh,
+                'count' => count($ids),
+                'pos' => $k+1
+            );
+            if ( $k > 0 ) {
+                $navigate['prev'] = $ids[$k-1]->id_adh;
+            }
+            if ( $k < count($ids)-1 ) {
+                $navigate['next'] = $ids[$k+1]->id_adh;
+            }
+            break;
+        }
+    }
+}
+
+$tpl->assign('navigate', $navigate);
 $tpl->assign('require_dialog', true);
 $tpl->assign('page_title', $title);
 $tpl->assign('required', $required);
@@ -350,6 +389,7 @@ $tpl->assign('data', $adherent);
 $tpl->assign('self_adh', false);
 $tpl->assign('dynamic_fields', $dynamic_fields);
 $tpl->assign('error_detected', $error_detected);
+$tpl->assign('success_detected', $success_detected);
 if ( isset($session['mail_warning']) ) {
     //warning will be showed here, no need to keep it longer into session
     unset($session['mail_warning']);
@@ -360,7 +400,7 @@ $tpl->assign('require_calendar', true);
 // pseudo random int
 $tpl->assign('time', time());
 // genre
-$tpl->assign('radio_titres', Galette\Entity\Politeness::getList());
+$tpl->assign('titles_list', Titles::getList($zdb));
 
 //Status
 $statuts = new Galette\Entity\Status();

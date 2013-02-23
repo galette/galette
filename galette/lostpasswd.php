@@ -45,6 +45,7 @@ if ( (($login->isAdmin() || $login->isStaff()) && isset($_GET['id_adh'])) ) {
 
 use Galette\Core;
 use Galette\Entity\Adherent;
+use Galette\Entity\Texts;
 
 if ( ($login->isLogged()
     || $preferences->pref_mail_method == Core\GaletteMail::METHOD_DISABLED)
@@ -78,11 +79,16 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
                 $link_validity->add(new DateInterval('PT24H'));
 
                 $df = _T("Y-m-d H:i:s");
-                $texts = new Galette\Entity\Texts(
+                $proto = 'http';
+                if ( isset($_SERVER['HTTPS']) ) {
+                    $proto = 'https';
+                }
+                $texts = new Texts(
+                    $preferences,
                     array(
-                        'change_pass_uri'   => 'http://' . $_SERVER['SERVER_NAME'] .
+                        'change_pass_uri'   => $proto . '://' . $_SERVER['SERVER_NAME'] .
                                               dirname($_SERVER['REQUEST_URI']) .
-                                              '/change_passwd.php?hash=' . $password->getHash(),
+                                              '/change_passwd.php?hash=' . urlencode($password->getHash()),
                         'link_validity'     => $link_validity->format(_T("Y-m-d H:i:s")),
                         'login_adh'         => custom_html_entity_decode($adh->login, ENT_QUOTES)
                     )

@@ -40,6 +40,8 @@
 
 use Galette\IO\Pdf;
 use Analog\Analog as Analog;
+use Galette\Repository\Members;
+use Galette\Filters\MembersList;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -71,7 +73,8 @@ if ( isset($_GET['from']) && $_GET['from'] === 'mailing' ) {
         die();
     }
 
-    $members = Galette\Repository\Members::getArrayList($filters->selected);
+    $m = new Members();
+    $members = $m->getArrayList($filters->selected);
 }
 
 if ( !is_array($members) || count($members) < 1 ) {

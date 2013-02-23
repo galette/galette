@@ -60,6 +60,13 @@ if ( !$login->isLogged() ) {
     die();
 }
 
+if ( isset($_POST['clear_adv_filter']) ) {
+    $session['filters']['members'] = null;
+    unset($session['filters']['members']);
+    header('location: advanced_search.php');
+    die();
+}
+
 if ( isset($session['filters']['members'])
     && !isset($_POST['mailing'])
     && !isset($_POST['mailing_new'])
@@ -77,12 +84,13 @@ if (   isset($_POST['cards'])
     || isset($_POST['labels'])
     || isset($_POST['mailing'])
     || isset($_POST['attendance_sheet'])
+    || isset($_POST['csv'])
     || isset($_GET['adv_criterias'])
 ) {
     if (isset($_POST['member_sel'])) {
         $filters->selected = $_POST['member_sel'];
         //cannot use $session here :/
-        $sessionn['filters']['members'] = serialize($filters);
+        $session['filters']['members'] = serialize($filters);
 
         if (isset($_POST['cards'])) {
             $qstring = 'carte_adherent.php';
@@ -102,9 +110,14 @@ if (   isset($_POST['cards'])
                 $qstring .= '?wimages=1';
             }
         }
+        if ( isset($_POST['csv']) ) {
+            $qstring = 'doandget_export.php';
+        }
         header('location: '.$qstring);
+        die();
     } elseif ($_GET['adv_criterias']) {
         header('location: advanced_search.php');
+        die();
     } else {
         $error_detected[]
             = _T("No member was selected, please check at least one name.");
@@ -147,6 +160,14 @@ if (   isset($_POST['cards'])
                 break;
             case 'filter_account':
                 $k = 'account_status_filter';
+                break;
+            case 'contrib_min_amount':
+            case 'contrib_max_amount':
+                if ( trim($v) !== '' ) {
+                    $v = (float)$v;
+                } else {
+                    $v = null;
+                }
                 break;
             }
             $filters->$k = $v;
@@ -200,7 +221,7 @@ if ( isset($_GET['clear_filter']) ) {
         $filters->email_filter = (int)$_GET['email_filter'];
     }
     //group filter
-    if ( isset($_GET['group_filter']) ) {
+    if ( isset($_GET['group_filter']) && $_GET['group_filter'] > 0 ) {
         $filters->group_filter = (int)$_GET['group_filter'];
     }
 }
@@ -215,7 +236,7 @@ if ( isset($_GET['tri']) ) {
     $filters->orderby = $_GET['tri'];
 }
 
-$members = new Galette\Repository\Members();
+$members = new Members($filters);
 
 //delete members
 if (isset($_GET['sup']) || isset($_POST['delete'])) {
