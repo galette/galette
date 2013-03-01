@@ -206,6 +206,16 @@ class Pdf extends \TCPDF
     }
 
     /**
+     * Draws PDF page Header
+     *
+     * @return void
+     */
+    function Header()
+    {
+        //just ovverride default header to prevent balck line at top
+    }
+
+    /**
      * Draws PDF page footer
      *
      * @return void
