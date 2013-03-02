@@ -119,7 +119,12 @@ class Title
         $pk = self::PK;
         $this->_id = $rs->$pk;
         $this->_short = $rs->short_label;
-        $this->_long = $rs->long_label;
+        if ( $rs->long_label === 'NULL' ) {
+            //mysql's null...
+            $this->_long = null;
+        } else {
+            $this->_long = $rs->long_label;
+        }
     }
 
     /**
