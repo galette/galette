@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS galette_titles;
 CREATE TABLE galette_titles (
   id_title int(10) unsigned NOT NULL auto_increment,
@@ -21,3 +22,4 @@ ALTER TABLE galette_adherents ADD sexe_adh TINYINT(1) DEFAULT 0;
 UPDATE galette_adherents SET sexe_adh = titre_adh;
 
 UPDATE galette_database SET version = 0.702;
+SET FOREIGN_KEY_CHECKS=1;
