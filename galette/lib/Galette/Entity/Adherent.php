@@ -1019,8 +1019,6 @@ class Adherent
                     $mandatory_missing = true;
                 } else if ( $key === 'titre_adh' && $this->$prop == '-1' ) {
                     $mandatory_missing = true;
-                } else if (is_string($value) && trim($value) !== '') {
-                    $mandatory_missing = true;
                 }
 
                 if ( $mandatory_missing === true ) {
