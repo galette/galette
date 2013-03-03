@@ -42,6 +42,7 @@ use Galette\DynamicFieldsTypes\Separator as Separator;
 use Galette\DynamicFieldsTypes\Text as Text;
 use Galette\DynamicFieldsTypes\Line as Line;
 use Galette\DynamicFieldsTypes\Choice as Choice;
+use Galette\DynamicFieldsTypes\Date as Date;
 use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
 
 /**
@@ -69,6 +70,8 @@ class DynamicFields
     const LINE = 2;
     /** Choice field (checkbox) */
     const CHOICE = 3;
+    /** Date field */
+    const DATE = 4;
 
     const PERM_ALL = 0;
     const PERM_STAFF = 2;
@@ -103,7 +106,8 @@ class DynamicFields
             self::SEPARATOR => _T("separator"),
             self::TEXT      => _T("free text"),
             self::LINE      => _T("single line"),
-            self::CHOICE    => _T("choice")
+            self::CHOICE    => _T("choice"),
+            self::DATE      => _T("date")
         );
 
         //Permissions names
@@ -313,6 +317,7 @@ class DynamicFields
                     $df = $this->getFieldType($r['field_type']);
                     if ( (int)$r['field_type'] === self::CHOICE
                         || (int)$r['field_type'] === self::TEXT
+                        || (int)$r['field_type'] === self::DATE
                     ) {
                         $r['field_repeat'] = 1;
                     }
@@ -547,6 +552,9 @@ class DynamicFields
             break;
         case self::CHOICE:
             $df = new \Galette\DynamicFieldsTypes\Choice($id);
+            break;
+        case self::DATE:
+            $df = new \Galette\DynamicFieldsTypes\Date($id);
             break;
         default:
             throw new \Exception('Unknow field type ' . $t . '!');
