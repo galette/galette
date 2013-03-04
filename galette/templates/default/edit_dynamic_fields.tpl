@@ -138,9 +138,7 @@
             changeYear: true,
             showOn: 'button',
             buttonImage: '{$template_subdir}images/calendar.png',
-            buttonImageOnly: true,
-            maxDate: '-0d',
-            yearRange: 'c-10'
+            buttonImageOnly: true
         });
                 {/section}
             {/if}
