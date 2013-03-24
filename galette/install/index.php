@@ -1283,7 +1283,7 @@ define("STOCK_FILES", "tempimages");
         }
 
         //proceed fields configuration reinitialization
-        $res = $fc->init(false, true);
+        $res = $fc->installInit($zdb);
         if ( $res !== true ) {
             $errs[] = '<li class="install-bad">' .
                 _T("Default fields configuration cannot be initialized.") .
@@ -1356,7 +1356,7 @@ define("STOCK_FILES", "tempimages");
             }
 
             //proceed fields configuration reinitialization
-            $res = $fc->init(false, true);
+            $res = $fc->installInit($zdb);
             if ( $res !== true ) {
                 $errs[] = '<li class="install-bad">' .
                     _T("Default fields configuration cannot be initialized.") .
