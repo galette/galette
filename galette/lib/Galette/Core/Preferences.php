@@ -221,7 +221,7 @@ class Preferences
     /**
     * Load current preferences from database.
     *
-    * @return void
+    * @return boolean
     */
     public function load()
     {
@@ -231,7 +231,6 @@ class Preferences
 
         try {
             $result = $zdb->selectAll(PREFIX_DB . self::TABLE);
-            $array = array();
             foreach ( $result as $pref ) {
                 $this->_prefs[$pref->nom_pref] = $pref->val_pref;
             }
