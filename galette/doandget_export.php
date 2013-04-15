@@ -93,14 +93,12 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     }
 
     $members = new Members($filters);
-    $members_list = $members->getMembersList(
+    $members_list = $members->getArrayList(
+        $filters->selected,
+        null,
         false,
-        $fields,
-        true,
         false,
-        false,
-        true,
-        true
+        $fields
     );
 
     $filename = 'filtered_memberslist.csv';

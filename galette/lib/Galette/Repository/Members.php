@@ -451,10 +451,12 @@ class Members
     * @param array   $ids         an array of members id that has been selected
     * @param array   $orderby     SQL order clause (optionnal)
     * @param boolean $with_photos Should photos be loaded?
+    * @param boolean $as_members  Return Adherent[] or simple ResultSet
+    * @param array   $fields      Fields to use
     *
     * @return Adherent[]
     */
-    public function getArrayList($ids, $orderby = null, $with_photos = false)
+    public function getArrayList($ids, $orderby = null, $with_photos = false, $as_members = true, $fields = null)
     {
         global $zdb;
 
@@ -464,7 +466,12 @@ class Members
         }
 
         try {
-            $select = $this->_buildSelect(self::SHOW_ARRAY_LIST, null, false, false);
+            $select = $this->_buildSelect(
+                self::SHOW_ARRAY_LIST,
+                $fields,
+                false,
+                false
+            );
             $select->where(self::PK . ' IN (?)', $ids);
             if ( $orderby != null && count($orderby) > 0 ) {
                 if (is_array($orderby)) {
@@ -491,7 +498,11 @@ class Members
                     'groups'    => false,
                     'dues'      => false
                 );
-                $members[] = new Adherent($o, $deps);
+                if ( $as_members === true ) {
+                    $members[] = new Adherent($o, $deps);
+                } else {
+                    $members[] = $o;
+                }
             }
             return $members;
         } catch (\Exception $e) {
