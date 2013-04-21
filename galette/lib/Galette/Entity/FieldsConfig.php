@@ -207,10 +207,14 @@ class FieldsConfig
                             'Missing field configuration for field `' . $k . '`',
                             Analog::INFO
                         );
+                        $required = $f['required'];
+                        if ( $required === false ) {
+                            $required = 'false';
+                        }
                         $params[] = array(
                             ':field_id'    => $k,
                             ':table_name'  => $this->_table,
-                            ':required'    => $f['required'],
+                            ':required'    => $required,
                             ':visible'     => $f['visible'],
                             ':position'    => $f['position'],
                             ':category'    => $f['category'],
@@ -277,10 +281,14 @@ class FieldsConfig
             $fields = array_keys($this->_defaults);
             foreach ( $fields as $f ) {
                 //build default config for each field
+                $required = $this->_defaults[$f]['required'];
+                if ( $required === false ) {
+                    $required = 'false';
+                }
                 $params = array(
                     ':field_id'    => $f,
                     ':table_name'  => $this->_table,
-                    ':required'    => $this->_defaults[$f]['required'],
+                    ':required'    => $required,
                     ':visible'     => $this->_defaults[$f]['visible'],
                     ':position'    => $this->_defaults[$f]['position'],
                     ':category'    => $this->_defaults[$f]['category'],
