@@ -1255,7 +1255,7 @@ class Members
                         }
 
                         $qry = '';
-                        $prefix = '';
+                        $prefix = 'a.';
                         if ( strpos($fs['field'], 'dync_') === 0 ) {
                             //dynamic choice spotted!
                             $prefix = 'cdf.';
