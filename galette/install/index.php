@@ -356,6 +356,7 @@ case '2':
 case 'i3':
 case 'u3':
     $php_ok = true;
+    $pwd_compat = true;
     $class = 'install-';
     $php_class = '';
     $php_modules_class = '';
@@ -367,7 +368,15 @@ case 'u3':
         $php_ok = false;
         $php_class .= $class . 'bad';
     } else {
-        $php_class .= $class . 'ok';
+        //check for password_compat...
+        $hash = '$2y$04$usesomesillystringfore7hnbRJHxXVLeakoG8K30oukPsA.ztMG';
+        $test = crypt("password", $hash);
+        $pwd_compat = $test == $hash;
+        if ( $pwd_compat ) {
+            $php_class .= $class . 'ok';
+        } else {
+            $php_class .= $class . 'bad';
+        }
     }
     ?>
             <article id="php_version" class="<?php echo $php_class; ?>">
@@ -382,6 +391,15 @@ case 'u3':
             GALETTE_PHP_MIN,
             _T("Galette requires at least PHP version %ver!")
         );
+        $msg .= '</p>';
+        echo $msg;
+    }
+
+    if ( !$pwd_compat ) {
+        $msg = '<p class="error">';
+        $msg .= _T("Your PHP version is not compatible with password storage!");
+        $msg .= '<br/>';
+        $msg .= _T("Please consider upgrading your PHP version.");
         $msg .= '</p>';
         echo $msg;
     }
@@ -496,7 +514,7 @@ case 'u3':
             </div>
         </article>
     <?php
-    if ( !$perms_ok || !$modules_ok || !$php_ok || !$date_ok ) {
+    if ( !$perms_ok || !$modules_ok || !$php_ok || !$date_ok || !$pwd_compat ) {
         ?>
                 <form action="index.php" method="post">
                     <p id="btn_box">
