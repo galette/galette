@@ -150,6 +150,7 @@ class CheckModules
      */
     public function toHtml()
     {
+        $html = '';
         if ( count($this->_missing) > 0 ) {
             $html .= '<h3 >' . _T("Missing required modules")  . '</h3>';
             $html .= '<ul class="list">';
@@ -159,7 +160,7 @@ class CheckModules
             $html .= '</ul>';
         }
 
-        $html = '<h3>' . _T("Active used modules")  . '</h3>';
+        $html .= '<h3>' . _T("Active used modules")  . '</h3>';
         if ( count($this->_good) === 0 ) {
             $html .= "<p>" .  _T("Any required module loaded yet!") . "</p>";
         } else {
