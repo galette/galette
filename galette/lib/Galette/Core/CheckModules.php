@@ -83,8 +83,18 @@ class CheckModules
             $this->_good['gd'] = str_replace('%s', 'gd', _T("'%s' module"));
         }
 
+        //mcrypt module is required
+        if (!extension_loaded('mcrypt')) {
+            $this->_missing[] = str_replace('%s', 'mcrypt', _T("'%s' module"));
+        } else {
+            $this->_good['mcrypt'] = str_replace('%s', 'mcrypt', _T("'%s' module"));
+        }
+
         //one of mysql or pgsql driver must be present
-        if ( !extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql') && !extension_loaded('pdo_sqlite') ) {
+        if ( !extension_loaded('pdo_mysql')
+            && !extension_loaded('pdo_pgsql')
+            && !extension_loaded('pdo_sqlite')
+        ) {
             $this->_missing[] = _T("either 'mysql', 'pgsql' or 'sqlite' PDO driver");
         } else {
             $this->_good['pdo_driver'] = _T("either 'mysql', 'pgsql' or 'sqlite' PDO driver");
