@@ -1346,10 +1346,18 @@ class Members
                         || !isset($m->mdp_adh)
                         || $m->mdp_adh == 'NULL'
                     ) {
-                        $m->mdp_adh = password_hash(
-                            $p->makeRandomPassword(15),
-                            PASSWORD_BCRYPT
-                        );
+                        $randomp = $p->makeRandomPassword(15);
+
+                        if ( defined('GALETTE_UNSECURE_PASSWORDS')
+                            && GALETTE_UNSECURE_PASSWORDS === true
+                        ) {
+                            $m->mdp_adh = md5($randomp);
+                        } else {
+                            $m->mdp_adh = password_hash(
+                                $randomp,
+                                PASSWORD_BCRYPT
+                            );
+                        }
                         $dirty = true;
                     }
 

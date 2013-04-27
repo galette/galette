@@ -368,14 +368,21 @@ case 'u3':
         $php_ok = false;
         $php_class .= $class . 'bad';
     } else {
-        //check for password_compat...
-        $hash = '$2y$04$usesomesillystringfore7hnbRJHxXVLeakoG8K30oukPsA.ztMG';
-        $test = crypt("password", $hash);
-        $pwd_compat = $test == $hash;
-        if ( $pwd_compat ) {
+        if ( defined('GALETTE_UNSECURE_PASSWORDS')
+            && GALETTE_UNSECURE_PASSWORDS === true
+        ) {
             $php_class .= $class . 'ok';
+            $pwd_compat = true;
         } else {
-            $php_class .= $class . 'bad';
+            //check for password_compat...
+            $hash = '$2y$04$usesomesillystringfore7hnbRJHxXVLeakoG8K30oukPsA.ztMG';
+            $test = crypt("password", $hash);
+            $pwd_compat = $test == $hash;
+            if ( $pwd_compat ) {
+                $php_class .= $class . 'ok';
+            } else {
+                $php_class .= $class . 'bad';
+            }
         }
     }
     ?>
@@ -1265,10 +1272,20 @@ define("STOCK_FILES", "tempimages");
         $titles = new Galette\Repository\Titles();
 
         //init default values
+        $admpass = null;
+
+        if ( defined('GALETTE_UNSECURE_PASSWORDS')
+            && GALETTE_UNSECURE_PASSWORDS === true
+        ) {
+            $admpass = md5($_POST['install_adminpass']);
+        } else {
+            $admpass = password_hash($_POST['install_adminpass'], PASSWORD_BCRYPT);
+        }
+
         $res = $preferences->installInit(
             $i18n->getID(),
             $_POST['install_adminlogin'],
-            password_hash($_POST['install_adminpass'], PASSWORD_BCRYPT)
+            $admpass
         );
         if ( $res !== true ) {
             $errs[] = '<li class="install-bad">' .
