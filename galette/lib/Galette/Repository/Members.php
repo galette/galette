@@ -453,10 +453,11 @@ class Members
     * @param boolean $with_photos Should photos be loaded?
     * @param boolean $as_members  Return Adherent[] or simple ResultSet
     * @param array   $fields      Fields to use
+    * @param boolean $export      True if we are exporting
     *
     * @return Adherent[]
     */
-    public function getArrayList($ids, $orderby = null, $with_photos = false, $as_members = true, $fields = null)
+    public function getArrayList($ids, $orderby = null, $with_photos = false, $as_members = true, $fields = null, $export = false)
     {
         global $zdb;
 
@@ -466,13 +467,17 @@ class Members
         }
 
         try {
+            $damode = self::SHOW_ARRAY_LIST;
+            if ( $export === true ) {
+                $damode = self::SHOW_EXPORT;
+            }
             $select = $this->_buildSelect(
-                self::SHOW_ARRAY_LIST,
+                $damode,
                 $fields,
                 false,
                 false
             );
-            $select->where(self::PK . ' IN (?)', $ids);
+            $select->where('a.' . self::PK . ' IN (?)', $ids);
             if ( $orderby != null && count($orderby) > 0 ) {
                 if (is_array($orderby)) {
                     foreach ( $orderby as $o ) {
@@ -644,14 +649,16 @@ class Members
             if ( $hasDf === true || $hasCdf === true ) {
                 $select->joinLeft(
                     array('df' => PREFIX_DB . DynamicFields::TABLE),
-                    'df.item_id=a.' . self::PK
+                    'df.item_id=a.' . self::PK,
+                    array()
                 );
             }
 
             if ( $hasDfc === true || $hasCdfc === true ) {
                 $select->joinLeft(
                     array('dfc' => PREFIX_DB . DynamicFields::TABLE),
-                    'dfc.item_id=ct.' . Contribution::PK
+                    'dfc.item_id=ct.' . Contribution::PK,
+                    array()
                 );
             }
 
@@ -663,7 +670,8 @@ class Members
                 foreach ( $cdfs as $cdf ) {
                     $select->joinLeft(
                         array('cdf' => DynamicFields::getFixedValuesTableName($cdf)),
-                        $cdf_field . '=df.field_val'
+                        $cdf_field . '=df.field_val',
+                        array()
                     );
                 }
 
@@ -674,7 +682,8 @@ class Members
                 foreach ( $cdfcs as $cdf ) {
                     $select->joinLeft(
                         array('cdfc' => DynamicFields::getFixedValuesTableName($cdf)),
-                        $cdf_field . '=dfc.field_val'
+                        $cdf_field . '=dfc.field_val',
+                        array()
                     );
                 }
             }
@@ -1183,7 +1192,7 @@ class Members
                 ) {
                     foreach ( $this->_filters->contrib_dynamic as $k=>$cd ) {
                         $qry = '';
-                        $prefix = '';
+                        $prefix = 'a.';
                         $field = null;
                         $qop = ' LIKE ';
 

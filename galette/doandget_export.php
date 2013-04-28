@@ -79,14 +79,14 @@ if ( $login->isAdmin() || $login->isStaff() ) {
             || (is_array($export_fields) && in_array($k, $export_fields))
         ) {
             if ( $visibles[$k] == FieldsConfig::VISIBLE ) {
-                $fields[] = $k;
+                $fields[] = 'a.' . $k;
                 $labels[] = $f['label'];
             } else if ( ($login->isAdmin()
                 || $login->isStaff()
                 || $login->isSuperAdmin())
                 && $visibles[$k] == FieldsConfig::ADMIN
             ) {
-                $fields[] = $k;
+                $fields[] = 'a.' . $k;
                 $labels[] = $f['label'];
             }
         }
@@ -98,7 +98,8 @@ if ( $login->isAdmin() || $login->isStaff() ) {
         null,
         false,
         false,
-        $fields
+        $fields,
+        true
     );
 
     $filename = 'filtered_memberslist.csv';
