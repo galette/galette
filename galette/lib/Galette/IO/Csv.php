@@ -57,7 +57,7 @@ class Csv
     const NEWLINE = "\r\n";
     const BUFLINES = 100;
 
-    const DEFAULT_SEPARATOR = ',';
+    const DEFAULT_SEPARATOR = ';';
     const DEFAULT_QUOTE = '"';
     const DEFAULT_DIRECTORY = GALETTE_EXPORTS_PATH;
 

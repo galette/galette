@@ -85,7 +85,17 @@ class PasswordImage extends Password
         //second, generate a new password and store it in the database
         $password = $this->makeRandomPassword();
         $this->setPassword($password);
-        $this->setHash(password_hash($password, PASSWORD_BCRYPT));
+
+        $hash = null;
+        if ( defined('GALETTE_UNSECURE_PASSWORDS')
+            && GALETTE_UNSECURE_PASSWORDS === true
+        ) {
+            $hash = md5($password);
+        } else {
+            $hash = password_hash($password, PASSWORD_BCRYPT);
+        }
+        $this->setHash($hash);
+
         return true;
     }
 
@@ -160,7 +170,13 @@ class PasswordImage extends Password
      */
     public function check($pass, $crypt)
     {
-        return crypt($pass, $crypt) == $crypt;
+        if ( defined('GALETTE_UNSECURE_PASSWORDS')
+            && GALETTE_UNSECURE_PASSWORDS === true
+        ) {
+            return md5($pass) == $crypt;
+        } else {
+            return crypt($pass, $crypt) == $crypt;
+        }
     }
 
 }

@@ -158,7 +158,8 @@ if ( isset($_GET['current_filter']) ) {
     }
 
     // fields visibility
-    $fc = new FieldsConfig(Adherent::TABLE, null);
+    $a = new Adherent();
+    $fc = new FieldsConfig(Adherent::TABLE, $a->fields);
     $visibles = $fc->getVisibilities();
     $fields = array();
     $headers = array();

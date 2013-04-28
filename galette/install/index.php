@@ -356,6 +356,7 @@ case '2':
 case 'i3':
 case 'u3':
     $php_ok = true;
+    $pwd_compat = true;
     $class = 'install-';
     $php_class = '';
     $php_modules_class = '';
@@ -367,7 +368,22 @@ case 'u3':
         $php_ok = false;
         $php_class .= $class . 'bad';
     } else {
-        $php_class .= $class . 'ok';
+        if ( defined('GALETTE_UNSECURE_PASSWORDS')
+            && GALETTE_UNSECURE_PASSWORDS === true
+        ) {
+            $php_class .= $class . 'ok';
+            $pwd_compat = true;
+        } else {
+            //check for password_compat...
+            $hash = '$2y$04$usesomesillystringfore7hnbRJHxXVLeakoG8K30oukPsA.ztMG';
+            $test = crypt("password", $hash);
+            $pwd_compat = $test == $hash;
+            if ( $pwd_compat ) {
+                $php_class .= $class . 'ok';
+            } else {
+                $php_class .= $class . 'bad';
+            }
+        }
     }
     ?>
             <article id="php_version" class="<?php echo $php_class; ?>">
@@ -382,6 +398,15 @@ case 'u3':
             GALETTE_PHP_MIN,
             _T("Galette requires at least PHP version %ver!")
         );
+        $msg .= '</p>';
+        echo $msg;
+    }
+
+    if ( !$pwd_compat ) {
+        $msg = '<p class="error">';
+        $msg .= _T("Your PHP version is not compatible with password storage!");
+        $msg .= '<br/>';
+        $msg .= _T("Please consider upgrading your PHP version.");
         $msg .= '</p>';
         echo $msg;
     }
@@ -496,7 +521,7 @@ case 'u3':
             </div>
         </article>
     <?php
-    if ( !$perms_ok || !$modules_ok || !$php_ok || !$date_ok ) {
+    if ( !$perms_ok || !$modules_ok || !$php_ok || !$date_ok || !$pwd_compat ) {
         ?>
                 <form action="index.php" method="post">
                     <p id="btn_box">
@@ -1247,10 +1272,20 @@ define("STOCK_FILES", "tempimages");
         $titles = new Galette\Repository\Titles();
 
         //init default values
+        $admpass = null;
+
+        if ( defined('GALETTE_UNSECURE_PASSWORDS')
+            && GALETTE_UNSECURE_PASSWORDS === true
+        ) {
+            $admpass = md5($_POST['install_adminpass']);
+        } else {
+            $admpass = password_hash($_POST['install_adminpass'], PASSWORD_BCRYPT);
+        }
+
         $res = $preferences->installInit(
             $i18n->getID(),
             $_POST['install_adminlogin'],
-            password_hash($_POST['install_adminpass'], PASSWORD_BCRYPT)
+            $admpass
         );
         if ( $res !== true ) {
             $errs[] = '<li class="install-bad">' .
@@ -1283,7 +1318,7 @@ define("STOCK_FILES", "tempimages");
         }
 
         //proceed fields configuration reinitialization
-        $res = $fc->init(false, true);
+        $res = $fc->installInit($zdb);
         if ( $res !== true ) {
             $errs[] = '<li class="install-bad">' .
                 _T("Default fields configuration cannot be initialized.") .
@@ -1356,7 +1391,7 @@ define("STOCK_FILES", "tempimages");
             }
 
             //proceed fields configuration reinitialization
-            $res = $fc->init(false, true);
+            $res = $fc->installInit($zdb);
             if ( $res !== true ) {
                 $errs[] = '<li class="install-bad">' .
                     _T("Default fields configuration cannot be initialized.") .

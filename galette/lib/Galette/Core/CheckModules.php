@@ -83,8 +83,18 @@ class CheckModules
             $this->_good['gd'] = str_replace('%s', 'gd', _T("'%s' module"));
         }
 
+        //mcrypt module is required
+        if (!extension_loaded('mcrypt')) {
+            $this->_missing[] = str_replace('%s', 'mcrypt', _T("'%s' module"));
+        } else {
+            $this->_good['mcrypt'] = str_replace('%s', 'mcrypt', _T("'%s' module"));
+        }
+
         //one of mysql or pgsql driver must be present
-        if ( !extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql') && !extension_loaded('pdo_sqlite') ) {
+        if ( !extension_loaded('pdo_mysql')
+            && !extension_loaded('pdo_pgsql')
+            && !extension_loaded('pdo_sqlite')
+        ) {
             $this->_missing[] = _T("either 'mysql', 'pgsql' or 'sqlite' PDO driver");
         } else {
             $this->_good['pdo_driver'] = _T("either 'mysql', 'pgsql' or 'sqlite' PDO driver");
@@ -140,6 +150,7 @@ class CheckModules
      */
     public function toHtml()
     {
+        $html = '';
         if ( count($this->_missing) > 0 ) {
             $html .= '<h3 >' . _T("Missing required modules")  . '</h3>';
             $html .= '<ul class="list">';
@@ -149,7 +160,7 @@ class CheckModules
             $html .= '</ul>';
         }
 
-        $html = '<h3>' . _T("Active used modules")  . '</h3>';
+        $html .= '<h3>' . _T("Active used modules")  . '</h3>';
         if ( count($this->_good) === 0 ) {
             $html .= "<p>" .  _T("Any required module loaded yet!") . "</p>";
         } else {

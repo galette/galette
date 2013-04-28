@@ -221,7 +221,7 @@ class Preferences
     /**
     * Load current preferences from database.
     *
-    * @return void
+    * @return boolean
     */
     public function load()
     {
@@ -231,7 +231,6 @@ class Preferences
 
         try {
             $result = $zdb->selectAll(PREFIX_DB . self::TABLE);
-            $array = array();
             foreach ( $result as $pref ) {
                 $this->_prefs[$pref->nom_pref] = $pref->val_pref;
             }
@@ -511,7 +510,13 @@ class Preferences
 
         //some values need to be changed (eg. passwords)
         if ($name == 'pref_admin_pass') {
-            $value = password_hash($value, PASSWORD_BCRYPT);
+            if ( defined('GALETTE_UNSECURE_PASSWORDS')
+                && GALETTE_UNSECURE_PASSWORDS === true
+            ) {
+                $value = md5($value);
+            } else {
+                $value = password_hash($value, PASSWORD_BCRYPT);
+            }
         }
 
         //okay, let's update value

@@ -5,7 +5,7 @@
             <p>{_T string="The following files have been written on disk:"}</p>
             <ul>
 {foreach item=ex from=$written}
-                <li><a href="get_export.php?file={$ex.name}">{$ex.name} ({$ex.file})</a></li>
+                <li><a href="get_export.php?file={$ex.file}">{$ex.name} ({$ex.file})</a></li>
 {/foreach}
             </ul>
         </div>

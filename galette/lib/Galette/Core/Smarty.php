@@ -59,8 +59,9 @@ class Smarty extends \SmartyBC
      * @param Preferences $preferences Galette's preferences
      * @param Logo        $logo        Galette's logo
      * @param Login       $login       Galette's login
+     * @param array       $session     Galette's session
      */
-    function __construct($plugins, $i18n, $preferences, $logo, $login)
+    function __construct($plugins, $i18n, $preferences, $logo, $login, $session)
     {
         parent::__construct();
 
@@ -109,9 +110,7 @@ class Smarty extends \SmartyBC
         $this->assign('pref_theme', $preferences->pref_theme);
         $this->assign('pref_editor_enabled', $preferences->pref_editor_enabled);
         $this->assign('pref_mail_method', $preferences->pref_mail_method);
-        if ( isset($session['mailing']) ) {
-            $this->assign('existing_mailing', true);
-        }
+        $this->assign('existing_mailing', isset($session['mailing']));
         $this->assign('require_tabs', null);
         $this->assign('require_cookie', null);
         $this->assign('contentcls', null);
@@ -127,7 +126,6 @@ class Smarty extends \SmartyBC
         $this->assign('require_sorter', null);
         $this->assign('require_dialog', null);
         $this->assign('require_tree', null);
-        $this->assign('existing_mailing', null);
         $this->assign('html_editor', null);
         $this->assign('require_charts', null);
     }

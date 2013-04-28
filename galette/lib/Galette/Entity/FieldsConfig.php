@@ -60,13 +60,10 @@ class FieldsConfig
 
     private $_all_required;
     private $_all_visibles;
-    private $_all_labels;
     //private $error = array();
     private $_categorized_fields = array();
     private $_table;
     private $_defaults = null;
-    private $_all_categories;
-    private $_all_positions;
 
     const TABLE = 'fields_config';
 
@@ -112,28 +109,23 @@ class FieldsConfig
         $this->_defaults = $defaults;
         $this->_all_required = array();
         $this->_all_visibles = array();
-        $this->_all_labels = array();
-        $this->_all_categories = array();
-        $this->_all_positions = array();
         //prevent check at install time...
         if ( !$install ) {
-            $this->_checkUpdate(false);
+            $this->load();
+            $this->_checkUpdate();
         }
     }
 
     /**
-     * Checks if the required table should be updated
-     * since it has not yet happened or the table
-     * has been modified.
+     * Load current preferences from database.
      *
-     * @param boolean $try Just check, when called from $this->init()
-     *
-     * @return void
+     * @return boolean
      */
-    private function _checkUpdate($try = true)
+    public function load()
     {
         global $zdb;
-        $class = get_class($this);
+
+        $this->_prefs = array();
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
@@ -142,49 +134,107 @@ class FieldsConfig
                 ->order(array(FieldsCategories::PK, 'position ASC'));
 
             $result = $select->query()->fetchAll();
-            if ( count($result) == 0 && $try ) {
-                $this->init();
-            } else {
-                $meta = Adherent::getDbFields();
 
-                if ( count($meta) != count($result) ) {
-                    Analog::log(
-                        '[' . $class . '] Count for `' . $this->_table .
-                        '` columns does not match records. Is : ' .
-                        count($result) . ' and should be ' .
-                        count($meta) . '. Reinit.',
-                        Analog::INFO
-                    );
-                    $this->init(true);
+            $this->_categorized_fields = null;
+            foreach ( $result as $k ) {
+                $f = array(
+                    'field_id'  =>  $k->field_id,
+                    'label'     =>  $this->_defaults[$k->field_id]['label'],
+                    'category'  =>  $this->_defaults[$k->field_id]['category'],
+                    'visible'   =>  $k->visible,
+                    'required'  =>  $k->required
+                );
+                $this->_categorized_fields[$k->id_field_category][] = $f;
+
+                //array of all required fields
+                if ( $k->required == 1 ) {
+                    $this->_all_required[$k->field_id] = $k->required;
                 }
 
-                $this->_categorized_fields = null;
-                foreach ( $result as $k ) {
-                    $f = array(
-                        'field_id'  =>  $k->field_id,
-                        'label'     =>  $this->_defaults[$k->field_id]['label'],
-                        'category'  =>  $this->_defaults[$k->field_id]['category'],
-                        'visible'   =>  $k->visible,
-                        'required'  =>  $k->required
-                    );
-                    $this->_categorized_fields[$k->id_field_category][] = $f;
+                //array of all fields visibility
+                $this->_all_visibles[$k->field_id] = $k->visible;
+            }
+            return true;
+        } catch (\Exception $e) {
+            Analog::log(
+                'Fields configuration cannot be loaded!',
+                Analog::URGENT
+            );
+            return false;
+        }
+    }
 
-                    //array of all required fields
-                    if ( $k->required == 1 ) {
-                        $this->_all_required[$k->field_id] = $k->required;
+    /**
+     * Checks if all fields are present in the database.
+     *
+     * For now, this function only checks if count matches.
+     *
+     * @return void
+     */
+    private function _checkUpdate()
+    {
+        global $zdb;
+        $class = get_class($this);
+
+        try {
+            $_all_fields = array();
+            array_walk(
+                $this->_categorized_fields,
+                function ($cat) use (&$_all_fields) {
+                    $field = null;
+                    array_walk(
+                        $cat,
+                        function ($f) use (&$field) {
+                            $field[$f['field_id']] = $f;
+                        }
+                    );
+                    $_all_fields = array_merge($_all_fields, $field);
+                }
+            );
+
+            if ( count($this->_defaults) != count($_all_fields) ) {
+                Analog::log(
+                    'Fields configuration count for `' . $this->_table .
+                    '` columns does not match records. Is : ' .
+                    count($_all_fields) . ' and should be ' . count($this->_defaults),
+                    Analog::WARNING
+                );
+
+                $params = array();
+                foreach ($this->_defaults as $k=>$f) {
+                    if ( !isset($_all_fields[$k]) ) {
+                        Analog::log(
+                            'Missing field configuration for field `' . $k . '`',
+                            Analog::INFO
+                        );
+                        $required = $f['required'];
+                        if ( $required === false ) {
+                            $required = 'false';
+                        }
+                        $params[] = array(
+                            ':field_id'    => $k,
+                            ':table_name'  => $this->_table,
+                            ':required'    => $required,
+                            ':visible'     => $f['visible'],
+                            ':position'    => $f['position'],
+                            ':category'    => $f['category'],
+                        );
                     }
-
-                    //array of all fields visibility
-                    $this->_all_visibles[$k->field_id] = $k->visible;
-
-                    //maybe we can delete these ones in the future
-                    $this->_all_labels[$k->field_id]
-                        = $this->_defaults[$k->field_id]['label'];
-                    $this->_all_categories[$k->field_id]
-                        = $this->_defaults[$k->field_id]['category'];
-                    $this->_all_positions[$k->field_id] = $k->position;
                 }
 
+                if ( count($params) > 0 ) {
+                    $stmt = $zdb->db->prepare(
+                        'INSERT INTO ' . PREFIX_DB . self::TABLE .
+                        ' (table_name, field_id, required, visible, position, ' .
+                        FieldsCategories::PK .
+                        ') VALUES(:table_name, :field_id, :required, :visible, :position, ' .
+                        ':category)'
+                    );
+                    foreach ( $params as $p ) {
+                        $stmt->execute($p);
+                    }
+                    $this->load();
+                }
             }
         } catch (\Exception $e) {
             Analog::log(
@@ -193,64 +243,32 @@ class FieldsConfig
                 $e->getMessage(),
                 Analog::ERROR
             );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
-            );
             throw $e;
         }
     }
 
     /**
-     * Init data into config table.
+     * Set default fields configuration at install time. All previous
+     * existing values will be dropped first, including fields categories.
      *
-     * @param boolean $reinit true if we must first delete all config data for
-     * current table.
-     * This should occurs when table has been updated. For the first
-     * initialisation, value should be false. Defaults to false.
-     * @param boolean $raz    true if we must delete all config data for
-     * current table.
-     * This should occurs at install/upgrade time.
+     * @param Db $zdb Database instance
      *
-     * @return boolean
+     * @return boolean|Exception
      */
-    public function init($reinit=false, $raz = false)
+    public function installInit($zdb)
     {
-        global $zdb;
-        $class = get_class($this);
-        $t = new FieldsCategories();
-
-        Analog::log(
-            '[' . $class . '] Initializing fields configuration for table `' .
-            PREFIX_DB . $this->_table . '`',
-            Analog::DEBUG
-        );
-        if ( $reinit || $raz ) {
-            Analog::log(
-                '[' . $class . '] Reinit mode, we delete config content for ' .
-                'table `' . PREFIX_DB . $this->_table . '`',
-                Analog::DEBUG
-            );
-            //Delete all entries for current table. Existing entries are
-            //already stored, new ones will be added :)
-            try {
-                $zdb->db->delete(
-                    PREFIX_DB . self::TABLE,
-                    $zdb->db->quoteInto('table_name = ?', $this->_table)
-                );
-                $t->installInit();
-            } catch (\Exception $e) {
-                Analog::log(
-                    'Unable to delete fields configuration for reinitialization' .
-                    $e->getMessage(),
-                    Analog::WARNING
-                );
-                return false;
-            }
-        }
-
         try {
             $fields = array_keys($this->_defaults);
+            $class = get_class($this);
+            $categories = new FieldsCategories();
+
+            //first, we drop all values
+            $zdb->db->delete(
+                PREFIX_DB . self::TABLE,
+                $zdb->db->quoteInto('table_name = ?', $this->_table)
+            );
+            //take care of fields categories, for db relations
+            $categories->installInit($zdb);
 
             $stmt = $zdb->db->prepare(
                 'INSERT INTO ' . PREFIX_DB . self::TABLE .
@@ -260,67 +278,36 @@ class FieldsConfig
                 ':category)'
             );
 
-            $params = array();
-            foreach ( $fields as $key ) {
+            $fields = array_keys($this->_defaults);
+            foreach ( $fields as $f ) {
+                //build default config for each field
+                $required = $this->_defaults[$f]['required'];
+                if ( $required === false ) {
+                    $required = 'false';
+                }
                 $params = array(
-                    ':field_id'    => $key,
+                    ':field_id'    => $f,
                     ':table_name'  => $this->_table,
-                    ':required'    => (
-                                        ($reinit) ?
-                                            array_key_exists(
-                                                $key,
-                                                $this->_all_required
-                                            ) :
-                                            $this->_defaults[$key]['required'] ?
-                                                true :
-                                                'false'
-                                      ),
-                    ':visible'     => (
-                                        ($reinit) ?
-                                            array_key_exists(
-                                                $key,
-                                                $this->_all_visibles
-                                            ) :
-                                            $this->_defaults[$key]['visible']
-                                      ),
-                    ':position'    => (
-                                        ($reinit) ?
-                                            $this->_all_positions[$key] :
-                                            $this->_defaults[$key]['position']
-                                      ),
-                    ':category'    => (
-                                        ($reinit) ?
-                                            $this->_all_categories[$key] :
-                                            $this->_defaults[$key]['category']
-                                      ),
+                    ':required'    => $required,
+                    ':visible'     => $this->_defaults[$f]['visible'],
+                    ':position'    => $this->_defaults[$f]['position'],
+                    ':category'    => $this->_defaults[$f]['category'],
                 );
                 $stmt->execute($params);
             }
+
             Analog::log(
-                '[' . $class . '] Initialisation seem successfull, we reload ' .
-                'the object',
-                Analog::DEBUG
-            );
-            Analog::log(
-                str_replace(
-                    '%s',
-                    PREFIX_DB . $this->_table,
-                    '[' . $class . '] Fields configuration for table %s '.
-                    'initialized successfully.'
-                ),
+                'Default fields configuration were successfully stored.',
                 Analog::INFO
             );
-            $this->_checkUpdate(false);
             return true;
         } catch (\Exception $e) {
-            /** FIXME */
             Analog::log(
-                '[' . $class . '] An error occured trying to initialize fields ' .
-                'configuration for table `' . PREFIX_DB . $this->_table . '`.' .
+                'Unable to initialize default fields configuration.' .
                 $e->getMessage(),
-                Analog::ERROR
+                Analog::WARNING
             );
-            return false;
+            return $e;
         }
     }
 
@@ -343,11 +330,6 @@ class FieldsConfig
     {
         return $this->_all_required;
     }
-
-    /*public function getLabels(){ return $this->_all_labels; }*/
-    /*public function getCategories(){ return $this->_all_categories; }*/
-    /*public function getPositions(){ return $this->_all_positions; }*/
-    /*public function getPosition($field){ return $this->_all_positions[$field]; }*/
 
     /**
      * Get visible fields
@@ -492,7 +474,8 @@ class FieldsConfig
             $old_required = $select->query()->fetchAll();
         } catch ( \Exception $pe ) {
             Analog::log(
-                'Unable to retrieve required fields_config. Maybe the table does not exists?',
+                'Unable to retrieve required fields_config. Maybe ' .
+                'the table does not exists?',
                 Analog::WARNING
             );
             //not a blocker

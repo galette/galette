@@ -451,10 +451,13 @@ class Members
     * @param array   $ids         an array of members id that has been selected
     * @param array   $orderby     SQL order clause (optionnal)
     * @param boolean $with_photos Should photos be loaded?
+    * @param boolean $as_members  Return Adherent[] or simple ResultSet
+    * @param array   $fields      Fields to use
+    * @param boolean $export      True if we are exporting
     *
     * @return Adherent[]
     */
-    public function getArrayList($ids, $orderby = null, $with_photos = false)
+    public function getArrayList($ids, $orderby = null, $with_photos = false, $as_members = true, $fields = null, $export = false)
     {
         global $zdb;
 
@@ -464,8 +467,17 @@ class Members
         }
 
         try {
-            $select = $this->_buildSelect(self::SHOW_ARRAY_LIST, null, false, false);
-            $select->where(self::PK . ' IN (?)', $ids);
+            $damode = self::SHOW_ARRAY_LIST;
+            if ( $export === true ) {
+                $damode = self::SHOW_EXPORT;
+            }
+            $select = $this->_buildSelect(
+                $damode,
+                $fields,
+                false,
+                false
+            );
+            $select->where('a.' . self::PK . ' IN (?)', $ids);
             if ( $orderby != null && count($orderby) > 0 ) {
                 if (is_array($orderby)) {
                     foreach ( $orderby as $o ) {
@@ -491,7 +503,11 @@ class Members
                     'groups'    => false,
                     'dues'      => false
                 );
-                $members[] = new Adherent($o, $deps);
+                if ( $as_members === true ) {
+                    $members[] = new Adherent($o, $deps);
+                } else {
+                    $members[] = $o;
+                }
             }
             return $members;
         } catch (\Exception $e) {
@@ -633,14 +649,16 @@ class Members
             if ( $hasDf === true || $hasCdf === true ) {
                 $select->joinLeft(
                     array('df' => PREFIX_DB . DynamicFields::TABLE),
-                    'df.item_id=a.' . self::PK
+                    'df.item_id=a.' . self::PK,
+                    array()
                 );
             }
 
             if ( $hasDfc === true || $hasCdfc === true ) {
                 $select->joinLeft(
                     array('dfc' => PREFIX_DB . DynamicFields::TABLE),
-                    'dfc.item_id=ct.' . Contribution::PK
+                    'dfc.item_id=ct.' . Contribution::PK,
+                    array()
                 );
             }
 
@@ -652,7 +670,8 @@ class Members
                 foreach ( $cdfs as $cdf ) {
                     $select->joinLeft(
                         array('cdf' => DynamicFields::getFixedValuesTableName($cdf)),
-                        $cdf_field . '=df.field_val'
+                        $cdf_field . '=df.field_val',
+                        array()
                     );
                 }
 
@@ -663,7 +682,8 @@ class Members
                 foreach ( $cdfcs as $cdf ) {
                     $select->joinLeft(
                         array('cdfc' => DynamicFields::getFixedValuesTableName($cdf)),
-                        $cdf_field . '=dfc.field_val'
+                        $cdf_field . '=dfc.field_val',
+                        array()
                     );
                 }
             }
@@ -1172,7 +1192,7 @@ class Members
                 ) {
                     foreach ( $this->_filters->contrib_dynamic as $k=>$cd ) {
                         $qry = '';
-                        $prefix = '';
+                        $prefix = 'a.';
                         $field = null;
                         $qop = ' LIKE ';
 
@@ -1244,7 +1264,7 @@ class Members
                         }
 
                         $qry = '';
-                        $prefix = '';
+                        $prefix = 'a.';
                         if ( strpos($fs['field'], 'dync_') === 0 ) {
                             //dynamic choice spotted!
                             $prefix = 'cdf.';
@@ -1335,10 +1355,18 @@ class Members
                         || !isset($m->mdp_adh)
                         || $m->mdp_adh == 'NULL'
                     ) {
-                        $m->mdp_adh = password_hash(
-                            $p->makeRandomPassword(15),
-                            PASSWORD_BCRYPT
-                        );
+                        $randomp = $p->makeRandomPassword(15);
+
+                        if ( defined('GALETTE_UNSECURE_PASSWORDS')
+                            && GALETTE_UNSECURE_PASSWORDS === true
+                        ) {
+                            $m->mdp_adh = md5($randomp);
+                        } else {
+                            $m->mdp_adh = password_hash(
+                                $randomp,
+                                PASSWORD_BCRYPT
+                            );
+                        }
                         $dirty = true;
                     }
 

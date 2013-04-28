@@ -156,7 +156,15 @@ class Password
 
         //second, generate a new password and store it in the database
         $password = $this->makeRandomPassword();
-        $hash = password_hash($password, PASSWORD_BCRYPT);
+        $hash = null;
+
+        if ( defined('GALETTE_UNSECURE_PASSWORDS')
+            && GALETTE_UNSECURE_PASSWORDS === true
+        ) {
+            $hash = md5($password);
+        } else {
+            $hash = password_hash($password, PASSWORD_BCRYPT);
+        }
 
         try {
             $values = array(
