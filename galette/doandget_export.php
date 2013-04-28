@@ -67,7 +67,8 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     }
 
     // fields visibility
-    $fc = new FieldsConfig(Adherent::TABLE, null);
+    $a = new Adherent();
+    $fc = new FieldsConfig(Adherent::TABLE, $a->fields);
     $visibles = $fc->getVisibilities();
     $fields = array();
     $headers = array();
@@ -77,28 +78,27 @@ if ( $login->isAdmin() || $login->isStaff() ) {
             && $export_fields === null
             || (is_array($export_fields) && in_array($k, $export_fields))
         ) {
-            if ( $visibles[$k] === FieldsConfig::VISIBLE ) {
-                $fields[] = $k;
+            if ( $visibles[$k] == FieldsConfig::VISIBLE ) {
+                $fields[] = 'a.' . $k;
                 $labels[] = $f['label'];
             } else if ( ($login->isAdmin()
                 || $login->isStaff()
                 || $login->isSuperAdmin())
-                && $visibles[$k] === FieldsConfig::ADMIN
+                && $visibles[$k] == FieldsConfig::ADMIN
             ) {
-                $fields[] = $k;
+                $fields[] = 'a.' . $k;
                 $labels[] = $f['label'];
             }
         }
     }
 
     $members = new Members($filters);
-    $members_list = $members->getMembersList(
+    $members_list = $members->getArrayList(
+        $filters->selected,
+        null,
+        false,
         false,
         $fields,
-        true,
-        false,
-        false,
-        true,
         true
     );
 

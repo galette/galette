@@ -121,14 +121,14 @@ class FieldsCategories
     }
 
     /**
-    * Set default fields categories at install time
-    *
-    * @return boolean|Exception
-    */
-    public function installInit()
+     * Set default fields categories at install time
+     *
+     * @param Db $zdb Database instance
+     *
+     * @return boolean|Exception
+     */
+    public function installInit($zdb)
     {
-        global $zdb;
-
         try {
             //first, we drop all values
             $zdb->db->delete(PREFIX_DB . self::TABLE);
@@ -148,7 +148,7 @@ class FieldsCategories
             }
 
             Analog::log(
-                'Default fields configurations were successfully stored into database.',
+                'Default fields configurations were successfully stored.',
                 Analog::INFO
             );
             return true;

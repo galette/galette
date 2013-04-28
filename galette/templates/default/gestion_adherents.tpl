@@ -263,7 +263,9 @@
                 </tr>
             </table>
         </div>
+{/if}
         <script type="text/javascript">
+{if $nb_members != 0}
         var _is_checked = true;
         var _bind_check = function(){
             $('#checkall').click(function(){
@@ -280,8 +282,10 @@
                 return false;
             });
         }
+{/if}
         {* Use of Javascript to draw specific elements that are not relevant is JS is inactive *}
         $(function(){
+{if $nb_members != 0}
             $('#table_footer').parent().before('<tr><td id="checkboxes" colspan="4"><span class="fleft"><a href="#" id="checkall">{_T string="(Un)Check all"}</a> | <a href="#" id="checkinvert">{_T string="Invert selection"}</a></span></td></tr>');
             _bind_check();
             $('#nbshow').change(function() {
@@ -317,7 +321,7 @@
                     });
                     return false;
                 } else {
-{if $existing_mailing eq true}
+    {if $existing_mailing eq true}
                     if (this.id == 'sendmail') {
                         var _el = $('<div id="existing_mailing" title="{_T string="Existing mailing"}">{_T string="A mailing already exists. Do you want to create a new one or resume the existing?"}</div>');
                         _el.appendTo('body').dialog({
@@ -345,7 +349,7 @@
                         });
                         return false;
                     }
-{/if}
+    {/if}
                     if (this.id == 'attendance_sheet') {
                         _attendance_sheet_details();
                         return false;
@@ -353,7 +357,7 @@
                     return true;
                 }
             });
-
+{/if}
             if ( _shq = $('#showhideqry') ) {
                 _shq.click(function(){
                     $('#sql_qry').toggleClass('hidden');
@@ -361,7 +365,7 @@
                 });
             }
         });
-
+{if $nb_members != 0}
         var _attendance_sheet_details = function(){
             var _selecteds = [];
             $('table.listing').find('input[type=checkbox]:checked').each(function(){
@@ -409,5 +413,5 @@
                 }
             });
         }
-        </script>
 {/if}
+        </script>
