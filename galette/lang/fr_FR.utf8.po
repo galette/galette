@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2013-02-23 00:57+0100\n"
+"PO-Revision-Date: 2013-04-28 11:09+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -1435,7 +1435,7 @@ msgstr "Selection des groupes gérés"
 
 #: ../includes/i18n.inc.php:348
 msgid "Donation in money"
-msgstr "Donation pécunière"
+msgstr "Donation pécuniaire"
 
 #: ../install/index.php:626
 msgid "User:"
