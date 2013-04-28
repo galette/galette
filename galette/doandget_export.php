@@ -78,13 +78,13 @@ if ( $login->isAdmin() || $login->isStaff() ) {
             && $export_fields === null
             || (is_array($export_fields) && in_array($k, $export_fields))
         ) {
-            if ( $visibles[$k] === FieldsConfig::VISIBLE ) {
+            if ( $visibles[$k] == FieldsConfig::VISIBLE ) {
                 $fields[] = $k;
                 $labels[] = $f['label'];
             } else if ( ($login->isAdmin()
                 || $login->isStaff()
                 || $login->isSuperAdmin())
-                && $visibles[$k] === FieldsConfig::ADMIN
+                && $visibles[$k] == FieldsConfig::ADMIN
             ) {
                 $fields[] = $k;
                 $labels[] = $f['label'];
