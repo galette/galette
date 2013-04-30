@@ -1,6 +1,108 @@
 Changes
 -------
 
+0.7.4 -> 0.7.4.1 (2013-05-01)
+
+- fix HTML issue on contribution end date in advanced search
+- reminders was sent to everyone
+- filtered member list CSV export was not limited to members table fields
+- fix various issues on filtered memberslist CSV export under MySQL
+- reimplement less secure password storage method for old PHP versions (Debian Squeeze)
+- titles in members table must be set as NOT NULL
+- required but missing PHP modules were not displayed
+- check for PHP mcrypt module at install time
+- query for advanced search was not displayed if there were no results
+- SQL issues on some advanced searches
+- fix minor bugs in preferences pages
+- while updating existing database, miss were taking 3rd sex
+- issues regarding false booleans under PostgreSQL
+- mailings in progress were no longer detected
+- change default CSV separator (as Excel does not seems to like commas)
+- filtered list CSV export did not take care of filter
+- download URL after an export was incorrect
+- rewrite fields configuration initialization and check
+- do not show remove button on not removable titles
+- bad column type for fields visibility under PostgreSQL
+- fix required but disabled fields
+- SQL issues at install under MySQL
+- long title were incorrect under MySQL
+
+0.7.3.2 -> 0.7.4 (2013-02-23)
+
+- titles management
+- search members from their contributions
+- export filtered members list as CSV
+- SQLite support
+- improved password storage
+- existing exports removal
+- separate first and last name in mailings texts
+- browse members in edition mode
+- order contributions and transactions list by date descending
+- charts generation
+- PDF list of members by groups
+- display informations on members state of dues
+- do not remove non member status
+- end of membershop date was incorrect if all members contributions has been removed
+- unable to remove a member
+- improve contirubtions interface if non member exist
+- logged users informations are now available for plugins
+- dynamic fields values were not stored from self subscription
+- lost password mail could only use HTTP, not HTTPS
+- retrieve required fields configuration updating from 0.7.3
+
+0.7.3.1 -> 0.7.3.2 (2013-01-19)
+
+- managed but non member groups were not displayed
+- password were reseted on member edition
+- add payment type on contribution initialization
+
+0.7.3 -> 0.7.3.1 (2013-01-05)
+
+- installation freezes
+- captcha image was not displayed
+- improved validation on fields management
+
+0.7.2.9 -> 0.7.3 (2013-01-01)
+
+Changes and additions
+^^^^^^^^^^^^^^^^^^^^^
+
+- fix dynamic fields translations
+- login and password can now be marked as not required
+- fields visibility configuration
+- advanced search
+- non existant dynamic translations are now created
+- public pages pagination
+
+Under the hood
+^^^^^^^^^^^^^^
+
+- replace logger
+
+0.7.2.7 -> 0.7.2.8 (2012-12-19)
+- major improvement on members lists
+
+0.7.2.6 -> 0.7.2.7 (2012-12-14)
+- groups members management was not available for managers
+- various issues regarding member's language
+- minor log issue
+
+0.7.2.5 -> 0.7.2.6
+- members selection from a new mailing
+- clear transactions filters
+- zipcode now does appear on members cards
+- fix various PHP notices
+
+0.7.2.4 -> 0.7.2.5 (2012-12-07)
+- PostgreSQL 8.4 compatibility
+
+0.7.2.3 -> 0.7.2.4 (2012-12-05)
+- plugins database instantiation issue
+
+0.7.2.2 -> 0.7.2.3 (2012-12-04)
+- prevent empty groups loading
+- list groups with PostgreSQL 8.4
+
 0.7.2.1 -> 0.7.2.2 (2012-11-21)
 
 - group filtering now search into first childs

@@ -102,9 +102,9 @@
                     <p>
                         <span class="bline">{_T string="End date"}</span>
                         <label for="contrib_end_date_begin">{_T string="beetween"}</label>
-                        <input id=contrib_end_date_begin" name="contrib_end_date_begin" type="text" class="due_date" maxlength="10" size="10" value="{$filters->contrib_end_date_begin}"/>
+                        <input id="contrib_end_date_begin" name="contrib_end_date_begin" type="text" class="due_date" maxlength="10" size="10" value="{$filters->contrib_end_date_begin}"/>
                         <label for="contrib_end_date_end">{_T string="and"}</label>
-                        <input id=contrib_end_date_end" name="contrib_end_date_end" type="text" class="due_date" maxlength="10" size="10" value="{$filters->contrib_end_date_end}"/>
+                        <input id="contrib_end_date_end" name="contrib_end_date_end" type="text" class="due_date" maxlength="10" size="10" value="{$filters->contrib_end_date_end}"/>
                     </p>
                     <p>
                         <span class="bline">{_T string="Amount"}</span>
