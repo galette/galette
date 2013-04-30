@@ -90,9 +90,9 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
     } else if (isset($_GET['reminder'])) {
         //FIXME: use a constant!
         $filters->reinit();
-        $filters->membership_filter = Galette\Repository\Members::MEMBERSHIP_LATE;
-        $filters->account_status_filter = galette\Repository\Members::ACTIVE_ACCOUNT;
-        $m = new Galette\Repository\Members();
+        $filters->membership_filter = Members::MEMBERSHIP_LATE;
+        $filters->account_status_filter = Members::ACTIVE_ACCOUNT;
+        $m = new Members($filters);
         $members = $m->getList(true);
         $mailing = new Core\Mailing(($members !== false) ? $members : null);
     } else {
