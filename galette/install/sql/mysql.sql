@@ -175,7 +175,7 @@ CREATE TABLE galette_l10n (
 DROP TABLE IF EXISTS galette_tmppasswds;
 CREATE TABLE galette_tmppasswds (
     id_adh int(10) unsigned NOT NULL,
-    tmp_passwd varchar(40) NOT NULL,
+    tmp_passwd varchar(60) NOT NULL,
     date_crea_tmp_passwd datetime NOT NULL,
     PRIMARY KEY (id_adh),
     FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)

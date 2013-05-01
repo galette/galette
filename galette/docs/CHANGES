@@ -3,6 +3,7 @@ Changes
 
 0.7.4 -> 0.7.4.1 (2013-05-01)
 
+- tmp password too short
 - fix HTML issue on contribution end date in advanced search
 - reminders was sent to everyone
 - filtered member list CSV export was not limited to members table fields
