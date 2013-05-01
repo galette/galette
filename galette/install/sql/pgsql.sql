@@ -264,7 +264,7 @@ CREATE TABLE galette_l10n (
 DROP TABLE IF EXISTS galette_tmppasswds;
 CREATE TABLE galette_tmppasswds (
   id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
-  tmp_passwd character varying(40) NOT NULL,
+  tmp_passwd character varying(60) NOT NULL,
   date_crea_tmp_passwd timestamp NOT NULL,
   PRIMARY KEY (id_adh)
 );
