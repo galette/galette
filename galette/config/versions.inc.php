@@ -35,14 +35,14 @@
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-13
  */
-define('SMARTY_VERSION', '3.1.12');
-define('ZEND_VERSION', '1.12.1');
+define('SMARTY_VERSION', '3.1.13');
+define('ZEND_VERSION', '1.12.3');
 define('ANALOG_VERSION', '1.0.0.git876d8a3bb');
-define('TCPDF_VERSION', '5.9.202');
+define('TCPDF_VERSION', '6.0.012');
 define('JQUERY_VERSION', '1.6.2');
 define('JQUERY_UI_VERSION', '1.8.14');
 define('JQUERY_MARKITUP_VERSION', '1.1.12');
 define('JQUERY_JQPLOT_VERSION', '1.0.4r1121');
-define('PHP_MAILER_VERSION', '5.2.2');
+define('PHP_MAILER_VERSION', '5.2.6');
 define('GAPI_VERSION', '0.6.0');
 define('PASSWORD_COMPAT_VERSION', '1.0.0');
