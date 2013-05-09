@@ -74,6 +74,12 @@ if ( !defined('GALETTE_GAPI_PATH') ) {
         GALETTE_ROOT . 'includes/google-api-' . GAPI_VERSION
     );
 }
+if ( !defined('GALETTE_TCPDF_PATH') ) {
+    define(
+        'GALETTE_TCPDF_PATH',
+        GALETTE_ROOT . 'includes/tcpdf_' . TCPDF_VERSION
+    );
+}
 /*if ( !defined('GALETTE_XHPROF_PATH') ) {
     define('GALETTE_XHPROF_PATH', '/usr/share/xhprof/');
 }*/

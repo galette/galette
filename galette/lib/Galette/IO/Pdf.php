@@ -52,8 +52,7 @@ define("K_TCPDF_EXTERNAL_CONFIG", true);
 /**
  *  Require TCPDF class
  */
-require_once GALETTE_ROOT . 'includes/tcpdf_' . TCPDF_VERSION . '/tcpdf.php';
-
+require_once GALETTE_TCPDF_PATH . '/tcpdf.php';
 
 /**
  * PDF class for galette
