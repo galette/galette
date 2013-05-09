@@ -96,7 +96,6 @@ $pdf->setMargins(10, 20);
 $pdf->setHeaderMargin(10);
 
 $pdf->SetAutoPageBreak(true, 20);
-$pdf->AliasNbPages();
 $pdf->Open();
 
 $pdf->AddPage();
