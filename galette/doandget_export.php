@@ -40,6 +40,8 @@ use Galette\IO\Csv;
 use Galette\Filters\MembersList;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Adherent;
+use Galette\Entity\Status;
+use Galette\Repository\Titles;
 use Galette\Repository\Members;
 
 /** @ignore */
@@ -102,6 +104,97 @@ if ( $login->isAdmin() || $login->isStaff() ) {
         true
     );
 
+    $s = new Status();
+    $statuses = $s->getList();
+
+    $t = new Titles();
+    $titles = $t->getList($zdb);
+
+    foreach ($members_list as &$member ) {
+        if ( isset($member->id_statut) ) {
+            //add textual status
+            $member->id_statut = $statuses[$member->id_statut];
+        }
+
+        if ( isset($member->titre_adh) ) {
+            //add textuel title
+            $member->titre_adh = $titles[$member->titre_adh]->short;
+        }
+
+        //handle dates
+        if (isset($member->date_crea_adh) ) {
+            if ( $member->date_crea_adh != ''
+                && $member->date_crea_adh != '1901-01-01'
+            ) {
+                $dcrea = new DateTime($member->date_crea_adh);
+                $member->date_crea_adh = $dcrea->format(_T("Y-m-d"));
+            } else {
+                $member->date_crea_adh = '';
+            }
+        }
+
+        if ( isset($member->date_modif_adh) ) {
+            if ( $member->date_modif_adh != ''
+                && $member->date_modif_adh != '1901-01-01'
+            ) {
+                $dmodif = new DateTime($member->date_modif_adh);
+                $member->date_modif_adh = $dmodif->format(_T("Y-m-d"));
+            } else {
+                $member->date_modif_adh = '';
+            }
+        }
+
+        if ( isset($member->date_echeance) ) {
+            if ( $member->date_echeance != ''
+                && $member->date_echeance != '1901-01-01'
+            ) {
+                $dech = new DateTime($member->date_echeance);
+                $member->date_echeance = $dech->format(_T("Y-m-d"));
+            } else {
+                $member->date_echeance = '';
+            }
+        }
+
+        if ( isset($member->ddn_adh) ) {
+            if ( $member->ddn_adh != ''
+                && $member->ddn_adh != '1901-01-01'
+            ) {
+                $ddn = new DateTime($member->ddn_adh);
+                $member->ddn_adh = $ddn->format(_T("Y-m-d"));
+            } else {
+                $member->ddn_adh = '';
+            }
+        }
+
+        if ( isset($member->sexe_adh) ) {
+            //handle gender
+            switch ( $member->sexe_adh ) {
+            case Adherent::MAN:
+                $member->sexe_adh = _T("Man");
+                break;
+            case Adherent::WOMAN:
+                $member->sexe_adh = _T("Woman");
+                break;
+            case Adherent::NC:
+                $member->sexe_adh = _T("Unspecified");
+                break;
+            }
+        }
+
+        //handle booleans
+        if ( isset($member->activite_adh) ) {
+            $member->activite_adh = ($member->activite_adh) ? _T("Yes") : _T("No");
+        }
+        if ( isset($member->bool_admin_adh) ) {
+            $member->bool_admin_adh = ($member->bool_admin_adh) ? _T("Yes") : _T("No");
+        }
+        if ( isset($member->bool_exempt_adh) ) {
+            $member->bool_exempt_adh = ($member->bool_exempt_adh) ? _T("Yes") : _T("No");
+        }
+        if ( isset($member->bool_display_info) ) {
+            $member->bool_display_info = ($member->bool_display_info) ? _T("Yes") : _T("No");
+        }
+    }
     $filename = 'filtered_memberslist.csv';
     $filepath = Csv::DEFAULT_DIRECTORY . $filename;
     $fp = fopen($filepath, 'w');
