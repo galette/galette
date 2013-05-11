@@ -92,7 +92,7 @@ class Titles
         $pols = array();
         foreach ( $res as $r ) {
             $pk = self::PK;
-            $pols[] = new Title($r);
+            $pols[$r->$pk] = new Title($r);
         }
         return $pols;
     }
