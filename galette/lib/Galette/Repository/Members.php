@@ -1141,7 +1141,7 @@ class Members
                             $d->format('Y-m-d')
                         );
                     }
-                    if ( $this->_filters->rcontrib_begin_date_end ) {
+                    if ( $this->_filters->rcontrib_end_date_end ) {
                         $d = new \DateTime(
                             $this->_filters->rcontrib_end_date_end
                         );
