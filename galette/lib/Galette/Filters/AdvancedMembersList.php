@@ -358,7 +358,7 @@ class AdvancedMembersList extends MembersList
                     $this->$prop = $d->format('Y-m-d');
                 } catch ( \Exception $e ) {
                     Analog::log(
-                        'Incorrect date format! was: ' . $value,
+                        'Incorrect date format for ' . $name . '! was: ' . $value,
                         Analog::WARNING
                     );
                 }
