@@ -357,7 +357,7 @@ CREATE TABLE galette_reminders (
   reminder_dest integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
   reminder_date timestamp NOT NULL,
   reminder_success boolean DEFAULT FALSE,
-  reminder_nomail boolan DEFAULT TRUE,
+  reminder_nomail boolean DEFAULT TRUE,
   reminder_comment text,
   PRIMARY KEY (reminder_id)
 );
