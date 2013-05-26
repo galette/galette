@@ -271,8 +271,8 @@ CREATE TABLE galette_reminders (
   reminder_success tinyint(1) NOT NULL DEFAULT 0,
   reminder_nomail tinyint(1) NOT NULL DEFAULT 1,
   reminder_comment text,
-  PRIMARY KEY (mailing_id),
-  FOREIGN KEY (reminders_dest) REFERENCES galette_adherents (id_adh)
+  PRIMARY KEY (reminder_id),
+  FOREIGN KEY (reminder_dest) REFERENCES galette_adherents (id_adh)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- table for database version
