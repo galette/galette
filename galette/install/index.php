@@ -1424,7 +1424,8 @@ define("STOCK_FILES", "tempimages");
         $preferences->store();
     }
 
-    $texts = new Galette\Entity\Texts($preferences);
+    include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
+    $texts = new Galette\Entity\Texts($texts_fields, $preferences);
     $res = $texts->installInit();
     if ( $res !== false ) {
         if ( $res !== true ) {
