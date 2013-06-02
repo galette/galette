@@ -41,7 +41,7 @@ $pdfmodels_fields = array(
     array(
         'model_id'  => PdfModel::MAIN_MODEL,
         'model_name'    => '_T("Main")',
-        'model_title'   => new \Zend_Db_Expr('NULL'),
+        'model_title'   => null,
         'model_type'    => PdfModel::MAIN_MODEL,
         'model_header'  => '<table>
     <tr>
@@ -53,7 +53,7 @@ $pdfmodels_fields = array(
     _T("Association") {ASSO_NAME} - {ASSO_ADDRESS}<br/>
     {ASSO_WEBSITE}
 </div>',
-        'model_body'    => new \Zend_Db_Expr('NULL'),
+        'model_body'    => null,
         'model_styles'  => 'div#pdf_title {
     font-size: 1.4em;
     font-wieght:bold;
@@ -82,15 +82,15 @@ td#pdf_logo {
     text-align: right;
     width: 25%;
 }',
-        'model_parent'  => new \Zend_Db_Expr('NULL')
+        'model_parent'  => null
     ),
     array(
         'model_id'  => PdfModel::INVOICE_MODEL,
         'model_name'    => '_T("Invoice")',
         'model_title'   => '_T("Invoice") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}',
         'model_type'    => PdfModel::INVOICE_MODEL,
-        'model_header'  => new \Zend_Db_Expr('NULL'),
-        'model_footer'  => new \Zend_Db_Expr('NULL'),
+        'model_header'  => null,
+        'model_footer'  => null,
         'model_body'    => '<table>
     <tr>
         <td width="300"></td>
@@ -126,7 +126,7 @@ td#pdf_logo {
         </td>
     </tr>
 </table>',
-        'model_styles'  => new \Zend_Db_Expr('NULL'),
+        'model_styles'  => null,
         'model_parent'  => PdfModel::MAIN_MODEL
     ),
     array(
@@ -134,8 +134,8 @@ td#pdf_logo {
         'model_name'    => '_T("Receipt")',
         'model_title'   => '_T("Receipt") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}',
         'model_type'    => PdfModel::RECEIPT_MODEL,
-        'model_header'  => new \Zend_Db_Expr('NULL'),
-        'model_footer'  => new \Zend_Db_Expr('NULL'),
+        'model_header'  => null,
+        'model_footer'  => null,
         'model_body'    => '<table>
     <tr>
         <td width="300"></td>
@@ -171,7 +171,7 @@ td#pdf_logo {
         </td>
     </tr>
 </table>',
-        'model_styles'  => new \Zend_Db_Expr('NULL'),
+        'model_styles'  => null,
         'model_parent'  => PdfModel::MAIN_MODEL
     )
 );
