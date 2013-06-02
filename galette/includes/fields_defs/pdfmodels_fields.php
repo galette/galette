@@ -40,7 +40,7 @@ use Galette\Entity\PdfModel;
 $pdfmodels_fields = array(
     array(
         'model_id'  => PdfModel::MAIN_MODEL,
-        'model_name'    => _T("Main"),
+        'model_name'    => '_T("Main")',
         'model_title'   => new \Zend_Db_Expr('NULL'),
         'model_type'    => PdfModel::MAIN_MODEL,
         'model_header'  => '<table>
@@ -86,23 +86,91 @@ td#pdf_logo {
     ),
     array(
         'model_id'  => PdfModel::INVOICE_MODEL,
-        'model_name'    => _T("Invoice"),
-        'model_title'   => _T("Invoice") . ' {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}',
-        'model_type'    => PdfModel::MAIN_MODEL,
+        'model_name'    => '_T("Invoice")',
+        'model_title'   => '_T("Invoice") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}',
+        'model_type'    => PdfModel::INVOICE_MODEL,
         'model_header'  => new \Zend_Db_Expr('NULL'),
         'model_footer'  => new \Zend_Db_Expr('NULL'),
-        'model_body'    => new \Zend_Db_Expr('NULL'),
+        'model_body'    => '<table>
+    <tr>
+        <td width="300"></td>
+        <td><strong>{NAME_ADH}</strong><br/>
+            {ADDRESS_ADH}<br/>
+            <strong>{ZIP_ADH} {TOWN_ADH}</strong>
+        </td>
+    </tr>
+    <tr>
+         <td height="100"></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <table>
+                <thead>
+                    <tr>
+                        <th>_T("Label")</th>
+                        <th>_T("Amount")</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            {CONTRIBUTION_LABEL} (_T("on") {CONTRIBUTION_DATE})<br/>
+                            _T("from") {CONTRIBUTION_BEGIN_DATE} _T("to") {CONTRIBUTION_END_DATE}<br/>
+                           {CONTRIBUTION_PAYMENT_TYPE}
+                           {CONTRIBUTION_COMMENT}<br/>
+                        </td>
+                        <th>{CONTRIBUTION_AMOUNT}</th>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>',
         'model_styles'  => new \Zend_Db_Expr('NULL'),
         'model_parent'  => PdfModel::MAIN_MODEL
     ),
     array(
         'model_id'  => PdfModel::RECEIPT_MODEL,
-        'model_name'    => _T("Receipt"),
-        'model_title'   => _T("Receipt") . ' {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}',
-        'model_type'    => PdfModel::MAIN_MODEL,
+        'model_name'    => '_T("Receipt")',
+        'model_title'   => '_T("Receipt") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}',
+        'model_type'    => PdfModel::RECEIPT_MODEL,
         'model_header'  => new \Zend_Db_Expr('NULL'),
         'model_footer'  => new \Zend_Db_Expr('NULL'),
-        'model_body'    => new \Zend_Db_Expr('NULL'),
+        'model_body'    => '<table>
+    <tr>
+        <td width="300"></td>
+        <td><strong>{NAME_ADH}</strong><br/>
+            {ADDRESS_ADH}<br/>
+            <strong>{ZIP_ADH} {TOWN_ADH}</strong>
+        </td>
+    </tr>
+    <tr>
+         <td height="100"></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <table>
+                <thead>
+                    <tr>
+                        <th>_T("Label")</th>
+                        <th>_T("Amount")</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            {CONTRIBUTION_LABEL} (_T("on") {CONTRIBUTION_DATE})<br/>
+                            _T("from") {CONTRIBUTION_BEGIN_DATE} _T("to") {CONTRIBUTION_END_DATE}<br/>
+                           {CONTRIBUTION_PAYMENT_TYPE}
+                           {CONTRIBUTION_COMMENT}<br/>
+                        </td>
+                        <th>{CONTRIBUTION_AMOUNT}</th>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>',
         'model_styles'  => new \Zend_Db_Expr('NULL'),
         'model_parent'  => PdfModel::MAIN_MODEL
     )
