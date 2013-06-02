@@ -179,7 +179,7 @@ abstract class PdfModel
             $this->_parent = new PdfMain(
                 $this->_zdb,
                 $preferences,
-                $rs->model_parent
+                (int)$rs->model_parent
             );
         }
 
