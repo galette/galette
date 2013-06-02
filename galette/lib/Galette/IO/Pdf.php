@@ -47,7 +47,6 @@ use Analog\Analog;
  * TCPDF configuration file for Galette
  */
 require_once GALETTE_CONFIG_PATH . 'galette_tcpdf_config.php';
-define("K_TCPDF_EXTERNAL_CONFIG", true);
 
 /**
  *  Require TCPDF class
