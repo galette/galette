@@ -162,11 +162,11 @@ if ( !$cron && (!defined('GALETTE_HANDLE_ERRORS')
     );
 }
 
-$now = new \DateTime();
 $galette_run_log = null;
 $galette_null_log = \Analog\Handler\Null::init();
 $galette_debug_log = $galette_null_log;
 if ( !$installer && !$cron ) {
+    $now = new \DateTime();
     $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
         $now->format('Y-m-d')  . '.log';
     $galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
