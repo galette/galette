@@ -1,6 +1,6 @@
 -- Table for reminders;
-DROP TABLE IF EXISTS reminders;
-CREATE TABLE reminders (
+DROP TABLE IF EXISTS galette_reminders;
+CREATE TABLE galette_reminders (
   reminder_id INTEGER NOT NULL PRIMARY KEY,
   reminder_type INTEGER NOT NULL,
   reminder_dest INTEGER,
