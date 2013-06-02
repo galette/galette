@@ -166,7 +166,16 @@ abstract class PdfModel
     {
         $pk = self::PK;
         $this->_id = (int)$rs->$pk;
-        $this->_name = $rs->model_name;
+
+        $callback = function ($matches) {
+            return _T($matches[1]);
+        };
+        $this->_name = preg_replace_callback(
+            '/_T\("([^\"]+)"\)/',
+            $callback,
+            $rs->model_name
+        );
+
         $this->_title = $rs->model_title;
         $this->_subtitle = $rs->model_subtitle;
         $this->_header = $rs->model_header;
