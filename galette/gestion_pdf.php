@@ -129,6 +129,7 @@ if ( $ajax ) {
     $tpl->assign('success_detected', $success_detected);
     $tpl->assign('models', $models);
     $tpl->assign('require_tabs', true);
+    $tpl->assign('require_dialog', true);
     $tpl->assign('model', $model);
     $content = $tpl->fetch('gestion_pdf.tpl');
     $tpl->assign('content', $content);
