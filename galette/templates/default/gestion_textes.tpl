@@ -59,25 +59,31 @@
                 <tr>
                     <th><tt>{ldelim}LOGIN{rdelim}</tt></th>
                     <td class="back">{_T string="Member's login"}<br/><span>{_T string="available with reservations"})</span></td>
-                    <th class="back"><tt>{ldelim}LOGIN_URI{rdelim}</tt></th>
+                    <th><tt>{ldelim}LOGIN_URI{rdelim}</tt></th>
                     <td class="back">{_T string="Galette's login URI"}<br/><span>{_T string="globally available"})</span></td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}PASSWORD{rdelim}</tt></th>
                     <td class="back">{_T string="Member's password"}<br/><span>{_T string="available only from self subscribe page"})</span></td>
-                    <th class="back"><tt>{ldelim}CHG_PWD_URI{rdelim}</tt></th>
+                    <th><tt>{ldelim}CHG_PWD_URI{rdelim}</tt></th>
                     <td class="back">{_T string="Galette's change password URI"}<br/><span>{_T string="globally available"})</span></td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}LINK_VALIDITY{rdelim}</tt></th>
                     <td class="back">{_T string="Link validity"}<br/><span>{_T string="available only for new password request"})</span></td>
-                    <th class="back"><tt>{ldelim}DEADLINE{rdelim}</tt></th>
+                    <th><tt>{ldelim}DEADLINE{rdelim}</tt></th>
                     <td class="back">{_T string="Member's deadline"}<br/><span>{_T string="available only for new contributions"})</span></td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}CONTRIB_INFO{rdelim}</tt></th>
                     <td class="back">{_T string="Contribution informations"}<br/><span>{_T string="available only for new contributions"})</span></td>
-                    <th class="back">&nbsp;</th>
+                    <th><tt>{ldelim}CONTRIB_AMOUNT{rdelim}</tt></th>
+                    <td class="back">{_T string="Contribution amount"}<br/><span>{_T string="available only for new contributions"})</span></td>
+                </tr>
+                <tr>
+                    <th><tt>{ldelim}CONTRIB_TYPE{rdelim}</tt></th>
+                    <td class="back">{_T string="Contribution type"}<br/><span>{_T string="available only for new contributions"})</span></td>
+                    <th>&nbsp;</th>
                     <td class="back">&nbsp;</td>
                 </tr>
         </table>

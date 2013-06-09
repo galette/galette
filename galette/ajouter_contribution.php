@@ -179,11 +179,13 @@ if ( isset($_POST['valid']) ) {
                 $texts_fields,
                 $preferences,
                 array(
-                    'name_adh'      => custom_html_entity_decode($adh->sname),
-                    'mail_adh'      => custom_html_entity_decode($adh->email),
-                    'login_adh'     => custom_html_entity_decode($adh->login),
-                    'deadline'      => custom_html_entity_decode($contrib->end_date),
-                    'contrib_info'  => custom_html_entity_decode($contrib->info)
+                    'name_adh'          => custom_html_entity_decode($adh->sname),
+                    'mail_adh'          => custom_html_entity_decode($adh->email),
+                    'login_adh'         => custom_html_entity_decode($adh->login),
+                    'deadline'          => custom_html_entity_decode($contrib->end_date),
+                    'contrib_info'      => custom_html_entity_decode($contrib->info),
+                    'contrib_amount'    => custom_html_entity_decode($contrib->amount),
+                    'contrib_type'      => custom_html_entity_decode($contrib->type->libelle)
                 )
             );
             if ( $new && isset($_POST['mail_confirm'])

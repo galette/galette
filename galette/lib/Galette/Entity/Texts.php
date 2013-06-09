@@ -89,7 +89,9 @@ class Texts
             'deadline'          => '/{DEADLINE}/',
             'contrib_info'      => '/{CONTRIB_INFO}/',
             'days_remaining'    => '/{DAYS_REMANING}/',
-            'days_expired'      => '/{DAYS_EXPIRED}/'
+            'days_expired'      => '/{DAYS_EXPIRED}/',
+            'contrib_amount'    => '/{CONTRIB_AMOUNT}/',
+            'contrib_type'      => '/{CONTRIB_TYPE}/'
         );
 
         $this->_replaces = array(
@@ -108,7 +110,9 @@ class Texts
             'deadline'          => null,
             'contrib_info'      => null,
             'days_remaining'    => null,
-            'days_expired'      => null
+            'days_expired'      => null,
+            'contrib_amount'    => null,
+            'contrib_type'      => null
         );
 
         if ( $replaces != null && is_array($replaces) ) {
