@@ -37,7 +37,9 @@
 
 namespace Galette\Entity;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
+use Galette\IO\ExternalScript;
+use Galette\IO\PdfContribution;
 
 /**
  * Contribution class for galette
@@ -852,6 +854,121 @@ class Contribution
     }
 
     /**
+     * Execute post contribution script
+     *
+     * @param ExternalScript $es     External script to execute
+     * @param array          $extra  Extra informations on contribution
+     *                                  Defaults to null
+     * @param array          $pextra Extra information on payment
+     *                                  Defaults to null
+     *
+     * @return mixed Script return value on success, values and script output on fail
+     */
+    public function executePostScript(ExternalScript $es,
+        $extra = null, $pextra = null
+    ) {
+        global $zdb, $preferences;
+
+        $payment = array(
+            'type'  => $this->getPaymentType()
+        );
+
+        if ( $pextra !== null && is_array($pextra) ) {
+            $payment = array_merge($payment, $pextra);
+        }
+
+        if ( !file_exists(GALETTE_CACHE_DIR . '/pdf_contribs') ) {
+            @mkdir(GALETTE_CACHE_DIR . '/pdf_contribs');
+        }
+
+        $voucher = new PdfContribution($this, $zdb, $preferences);
+        $voucher->store(GALETTE_CACHE_DIR . '/pdf_contribs');
+
+        $contrib = array(
+            'type'      => $this->getTypeLabel(),
+            'amount'    => $this->amount,
+            'voucher'   => $voucher->getPath(),
+            'category'  => array(
+                'id'    => $this->type->id,
+                'label' => $this->type->libelle
+            ),
+            'payment'   => $payment
+        );
+
+        if ( $extra !== null && is_array($extra) ) {
+            $contrib = array_merge($contrib, $extra);
+        }
+
+        $res = $es->send($contrib);
+
+        if ( $res !== true ) {
+            Analog::log(
+                'An error occured calling post contribution ' .
+                "script:\n" . $es->getOutput(),
+                Analog::ERROR
+            );
+            $res = _T("Contribution informations") . "\n";
+            $res .= print_r($contrib, true);
+            $res .= "\n\n" . _T("Script output") . "\n";
+            $res .= $es->getOutput();
+        }
+
+        return $res;
+    }
+
+    /**
+     * Get contribution type label
+     *
+     * @return string
+     */
+    public function getTypeLabel()
+    {
+        if ( $this->isCotis() ) {
+            return _T("Membership");
+        } else {
+            return _T("Donation");
+        }
+    }
+
+    /**
+     * Get payent type label
+     *
+     * @return string
+     */
+    public function getPaymentType()
+    {
+        switch ( $this->payment_type ) {
+        case Contribution::PAYMENT_CASH:
+            return 'cash';
+            break;
+        case Contribution::PAYMENT_CREDITCARD:
+            return 'credit_card';
+            break;
+        case Contribution::PAYMENT_CHECK:
+            return 'check';
+            break;
+        case Contribution::PAYMENT_TRANSFER:
+            return 'transfer';
+            break;
+        case Contribution::PAYMENT_PAYPAL:
+            return 'paypal';
+            break;
+        case Contribution::PAYMENT_OTHER:
+            return 'other';
+            break;
+        default:
+            Analog::log(
+                __METHOD__ . ' Unknonw payment type ' . $this->payment_type,
+                Analog::ERROR
+            );
+            throw new \RuntimeException(
+                'Unknonw payment type ' . $this->payment_type
+            );
+        }
+
+    }
+
+    /**
     * Global getter method
     *
     * @param string $name name of the property we want to retrive
@@ -862,7 +979,9 @@ class Contribution
     {
 
         $forbidden = array('is_cotis');
-        $virtuals = array('duration', 'spayment_type', 'model', 'raw_date', 'raw_begin_date', 'raw_end_date');
+        $virtuals = array('duration', 'spayment_type', 'model', 'raw_date',
+            'raw_begin_date', 'raw_end_date'
+        );
 
         $rname = '_' . $name;
         if ( !in_array($name, $forbidden)

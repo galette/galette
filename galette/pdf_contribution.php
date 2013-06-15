@@ -37,6 +37,7 @@
  * @link      http://galette.tuxfamily.org
  */
 
+use Galette\IO\PdfContribution;
 use Galette\IO\Pdf;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
@@ -62,61 +63,5 @@ if ( !isset($_GET['id_cotis']) ) {
 }
 
 $contribution = new Contribution((int)$_GET['id_cotis']);
-$class = PdfModel::getTypeClass($contribution->model);
-$model = new $class($zdb, $preferences, $contribution->model);
-
-$member = new Adherent($contribution->member);
-
-$model->setPatterns(
-    array(
-        'adh_name'          => '/{NAME_ADH}/',
-        'adh_address'       => '/{ADDRESS_ADH}/',
-        'adh_zip'           => '/{ZIP_ADH}/',
-        'adh_town'          => '/{TOWN_ADH}/',
-        'contrib_label'     => '/{CONTRIBUTION_LABEL}/',
-        'contrib_amount'    => '/{CONTRIBUTION_AMOUNT}/',
-        'contrib_date'      => '/{CONTRIBUTION_DATE}/',
-        'contrib_year'      => '/{CONTRIBUTION_YEAR}/',
-        'contrib_comment'   => '/{CONTRIBUTION_COMMENT}/',
-        'contrib_bdate'     => '/{CONTRIBUTION_BEGIN_DATE}/',
-        'contrib_edate'     => '/{CONTRIBUTION_END_DATE}/',
-        'contrib_id'        => '/{CONTRIBUTION_ID}/',
-        'contrib_payment'   => '/{CONTRIBUTION_PAYMENT_TYPE}/'
-    )
-);
-
-$address = $member->adress;
-if ( $member->adress_continuation != '' ) {
-    $address .= '<br/>' . $member->adress_continuation;
-}
-
-$model->setReplacements(
-    array(
-        'adh_name'          => $member->sfullname,
-        'adh_address'       => $address,
-        'adh_zip'           => $member->zipcode,
-        'adh_town'          => $member->town,
-        'contrib_label'     => $contribution->type->libelle,
-        'contrib_amount'    => $contribution->amount,
-        'contrib_date'      => $contribution->date,
-        'contrib_year'      => $contribution->raw_date->format('Y'),
-        'contrib_comment'   => $contribution->info,
-        'contrib_bdate'     => $contribution->begin_date,
-        'contrib_edate'     => $contribution->end_date,
-        'contrib_id'        => $contribution->id,
-        'contrib_payment'   => $contribution->spayment_type
-    )
-);
-
-//var_dump($contribution);
-//var_dump($model);
-
-$pdf = new Pdf($model);
-
-$pdf->Open();
-
-$pdf->AddPage();
-$pdf->PageHeader();
-$pdf->PageBody();
-
-$pdf->Output(_T("invoice") . '.pdf', 'D');
+$pdf = new PdfContribution($contribution, $zdb, $preferences);
+$pdf->download();
