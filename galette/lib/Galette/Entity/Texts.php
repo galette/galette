@@ -242,7 +242,26 @@ class Texts
     */
     public function getTexts($ref,$lang)
     {
-        global $zdb;
+        global $zdb, $i18n;
+
+        //check if language is set and exists
+        $langs = $i18n->getList();
+        $is_lang_ok = false;
+        foreach ( $langs as $l ) {
+            if ( $lang === $l->getID() ) {
+                $is_lang_ok = true;
+                break;
+            }
+        }
+
+        if ( $is_lang_ok !== true ) {
+            Analog::log(
+                'Language ' . $lang .
+                ' does not exists. Falling back to default Galette lang.',
+                Analog::ERROR
+            );
+            $lang = $i18n->getID();
+        }
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
