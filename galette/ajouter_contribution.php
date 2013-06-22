@@ -148,15 +148,17 @@ if ( isset($_POST['valid']) ) {
             $new = true;
         }
 
-        $store = $contrib->store();
-        if ( $store === true ) {
-            //contribution has been stored :)
-            if ( $new ) {
-                /** FIXME: do something ! */
+        if ( count($error_detected) == 0 ) {
+            $store = $contrib->store();
+            if ( $store === true ) {
+                //contribution has been stored :)
+                if ( $new ) {
+                    /** FIXME: do something ! */
+                }
+            } else {
+                //something went wrong :'(
+                $error_detected[] = _T("An error occured while storing the contribution.");
             }
-        } else {
-            //something went wrong :'(
-            $error_detected[] = _T("An error occured while storing the contribution.");
         }
     } else {
         //hum... there are errors :'(
