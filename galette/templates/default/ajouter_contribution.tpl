@@ -55,7 +55,7 @@
                     <label for="id_type_cotis" class="bline">{_T string="Contribution type:"}</label>
                     <select name="id_type_cotis" id="id_type_cotis"
                         {if $type_selected eq 0}onchange="form.submit()"{/if}{if $required.id_type_cotis eq 1} required{/if}>
-                        {if isset($contribution->type)}
+                        {if $contribution->type}
                             {assign var="selectedid" value=$contribution->type->id}
                         {else}
                             {assign var="selectedid" value=null}

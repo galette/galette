@@ -622,8 +622,7 @@ class Members
                 }
             }
 
-
-            //check if tehre are dynamic fields for contributions in filter
+            //check if there are dynamic fields for contributions in filter
             $hasDfc = false;
             $hasCdfc = false;
             if ( $this->_filters instanceof AdvancedMembersList
@@ -668,9 +667,14 @@ class Members
                     $cdf_field .= '::text';
                 }
                 foreach ( $cdfs as $cdf ) {
+                    $rcdf_field = str_replace(
+                        'cdf.',
+                        'cdf' . $cdf . '.',
+                        $cdf_field
+                    );
                     $select->joinLeft(
-                        array('cdf' => DynamicFields::getFixedValuesTableName($cdf)),
-                        $cdf_field . '=df.field_val',
+                        array('cdf' . $cdf => DynamicFields::getFixedValuesTableName($cdf)),
+                        $rcdf_field . '=df.field_val',
                         array()
                     );
                 }
@@ -680,9 +684,14 @@ class Members
                     $cdf_field .= '::text';
                 }
                 foreach ( $cdfcs as $cdf ) {
+                    $rcdf_field = str_replace(
+                        'cdfc.',
+                        'cdfc' . $cdf . '.',
+                        $cdf_field
+                    );
                     $select->joinLeft(
-                        array('cdfc' => DynamicFields::getFixedValuesTableName($cdf)),
-                        $cdf_field . '=dfc.field_val',
+                        array('cdfc' . $cdf => DynamicFields::getFixedValuesTableName($cdf)),
+                        $rcdf_field . '=dfc.field_val',
                         array()
                     );
                 }
@@ -1198,7 +1207,7 @@ class Members
 
                         if ( is_array($cd) ) {
                             //dynamic choice spotted!
-                            $prefix = 'cdfc.';
+                            $prefix = 'cdfc' . $k . '.';
                             $qry = 'dfc.field_form = \'contrib\' AND ' .
                                 'dfc.field_id = ' . $k . ' AND ';
                             $field = 'id';
@@ -1267,7 +1276,8 @@ class Members
                         $prefix = 'a.';
                         if ( strpos($fs['field'], 'dync_') === 0 ) {
                             //dynamic choice spotted!
-                            $prefix = 'cdf.';
+                            $index = str_replace('dync_', '', $fs['field']);
+                            $prefix = 'cdf' . $index . '.';
                             $qry = 'df.field_form = \'adh\' AND df.field_id = ' .
                                 str_replace('dync_', '', $fs['field']) . ' AND ';
                             $fs['field'] = 'val';
