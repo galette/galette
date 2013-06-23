@@ -6,7 +6,7 @@ msgstr ""
 msgid "among:"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:152 ../install/index.php:849
+#: ../ajax_plugins_initdb.php:152 ../install/index.php:845
 msgid "SELECT operation allowed"
 msgstr ""
 
@@ -96,10 +96,6 @@ msgstr ""
 msgid "Mail settings"
 msgstr ""
 
-#: ../templates/default/footer.tpl:7
-msgid "The Galette project: "
-msgstr ""
-
 #: ../templates/default/advanced_search.tpl:49 ../templates/default/advanced_search.tpl:56
 #: ../templates/default/advanced_search.tpl:63 ../templates/default/advanced_search.tpl:90
 #: ../templates/default/advanced_search.tpl:97 ../templates/default/advanced_search.tpl:104
@@ -143,7 +139,7 @@ msgstr ""
 msgid "Individuals and Companies"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:116 ../install/index.php:792
+#: ../ajax_plugins_initdb.php:116 ../install/index.php:788
 msgid "Permissions on the base"
 msgstr ""
 
@@ -239,7 +235,7 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:145 ../install/index.php:839
+#: ../ajax_plugins_initdb.php:145 ../install/index.php:835
 msgid "UPDATE operation allowed"
 msgstr ""
 
@@ -247,7 +243,7 @@ msgstr ""
 msgid "to"
 msgstr ""
 
-#: ../install/index.php:1183
+#: ../install/index.php:1179
 msgid "Admin settings"
 msgstr ""
 
@@ -259,7 +255,7 @@ msgstr ""
 msgid "Modules that may be required"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:247 ../install/index.php:1525
+#: ../ajax_plugins_initdb.php:247 ../install/index.php:1521
 msgid "Installation complete !"
 msgstr ""
 
@@ -373,7 +369,7 @@ msgid "Contribution label"
 msgstr ""
 
 #: ../champs_adherents.php:62 ../includes/fields_defs/members_fields.php:244
-#: ../install/index.php:655 ../install/index.php:1199
+#: ../install/index.php:651 ../install/index.php:1195
 #: ../templates/default/member.tpl:317 ../templates/default/member.tpl:329
 #: ../templates/default/preferences.tpl:402 ../templates/default/index.tpl:12
 msgid "Password:"
@@ -424,7 +420,7 @@ msgstr ""
 msgid "(Choose address printed below name)"
 msgstr ""
 
-#: ../install/index.php:1297
+#: ../install/index.php:1293
 msgid "Default preferences were successfully stored."
 msgstr ""
 
@@ -462,7 +458,7 @@ msgstr ""
 msgid "Send email to administrators ?"
 msgstr ""
 
-#: ../install/index.php:469
+#: ../install/index.php:465
 msgid "Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation."
 msgstr ""
 
@@ -514,7 +510,7 @@ msgstr ""
 msgid "Group managers selection"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:128 ../install/index.php:814
+#: ../ajax_plugins_initdb.php:128 ../install/index.php:810
 msgid "CREATE operation not allowed"
 msgstr ""
 
@@ -585,7 +581,7 @@ msgstr ""
 msgid "You are actually logged-in as superadmin. Some functionnalities may not be available since this is *not* a regular member."
 msgstr ""
 
-#: ../install/index.php:1314
+#: ../install/index.php:1310
 msgid "Default status cannot be initialized."
 msgstr ""
 
@@ -662,7 +658,7 @@ msgstr ""
 msgid "PDF models"
 msgstr ""
 
-#: ../install/index.php:751
+#: ../install/index.php:747
 msgid "Database can't be reached. Please go back to enter the connection parameters again."
 msgstr ""
 
@@ -758,7 +754,7 @@ msgstr ""
 msgid "Sender Email:"
 msgstr ""
 
-#: ../install/index.php:1318
+#: ../install/index.php:1314
 msgid "Default status were successfully stored."
 msgstr ""
 
@@ -811,7 +807,7 @@ msgstr ""
 msgid "- Unknown payment type"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:149 ../install/index.php:844
+#: ../ajax_plugins_initdb.php:149 ../install/index.php:840
 msgid "SELECT operation not allowed"
 msgstr ""
 
@@ -831,11 +827,11 @@ msgstr ""
 msgid "My transactions"
 msgstr ""
 
-#: ../install/index.php:1446
+#: ../install/index.php:1442
 msgid "Default texts cannot be initialized."
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:163 ../install/index.php:864
+#: ../ajax_plugins_initdb.php:163 ../install/index.php:860
 msgid "DROP operation not allowed"
 msgstr ""
 
@@ -988,11 +984,11 @@ msgstr ""
 msgid "Your PHP version is not compatible with password storage!"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:142 ../install/index.php:834
+#: ../ajax_plugins_initdb.php:142 ../install/index.php:830
 msgid "UPDATE operation not allowed"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:174 ../install/index.php:880
+#: ../ajax_plugins_initdb.php:174 ../install/index.php:876
 msgid "ALTER Operation allowed"
 msgstr ""
 
@@ -1017,7 +1013,7 @@ msgstr ""
 msgid "Members by state of dues"
 msgstr ""
 
-#: ../install/index.php:1125 ../templates/default/ajax_plugins_initdb.tpl:48
+#: ../install/index.php:1121 ../templates/default/ajax_plugins_initdb.tpl:48
 msgid "The tables are not totally created, it may be a permission problem."
 msgstr ""
 
@@ -1051,7 +1047,7 @@ msgstr ""
 msgid "- Non-valid E-Mail address!"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:138 ../install/index.php:829
+#: ../ajax_plugins_initdb.php:138 ../install/index.php:825
 msgid "INSERT operation allowed"
 msgstr ""
 
@@ -1067,16 +1063,12 @@ msgstr ""
 msgid "Show all members contributions"
 msgstr ""
 
-#: ../install/index.php:889
+#: ../install/index.php:885
 msgid "GALETTE hasn't got enough permissions on the database to continue the installation."
 msgstr ""
 
 #: ../lib/Galette/Repository/Contributions.php:621 ../lib/Galette/Repository/Contributions.php:643
 msgid "Y-m"
-msgstr ""
-
-#: ../templates/default/desktop.tpl:43
-msgid "Read on..."
 msgstr ""
 
 #: ../etiquettes_adherents.php:172
@@ -1110,7 +1102,7 @@ msgstr ""
 msgid "in:"
 msgstr ""
 
-#: ../install/index.php:949
+#: ../install/index.php:945
 msgid "Installation Report"
 msgstr ""
 
@@ -1139,7 +1131,7 @@ msgstr ""
 msgid "- The password must be of at least %i characters!"
 msgstr ""
 
-#: ../install/index.php:634
+#: ../install/index.php:630
 msgid "Database type:"
 msgstr ""
 
@@ -1196,7 +1188,7 @@ msgstr ""
 msgid "Navigation"
 msgstr ""
 
-#: ../install/index.php:508
+#: ../install/index.php:504
 msgid "Files permissions are not OK!"
 msgstr ""
 
@@ -1212,7 +1204,7 @@ msgstr ""
 msgid "No such module."
 msgstr ""
 
-#: ../install/index.php:202 ../install/index.php:1553
+#: ../install/index.php:202 ../install/index.php:1549
 msgid "Language"
 msgstr ""
 
@@ -1277,7 +1269,7 @@ msgid "body should not be empty!"
 msgstr ""
 
 #: ../ajax_plugins_initdb.php:107 ../install/index.php:205
-#: ../install/index.php:311 ../install/index.php:1554
+#: ../install/index.php:311 ../install/index.php:1550
 #: ../templates/default/ajax_plugins_initdb.tpl:96
 msgid "Installation mode"
 msgstr ""
@@ -1336,7 +1328,7 @@ msgstr ""
 msgid "Donation in money"
 msgstr ""
 
-#: ../install/index.php:651
+#: ../install/index.php:647
 msgid "User:"
 msgstr ""
 
@@ -1399,11 +1391,11 @@ msgstr ""
 msgid "Add new transaction in database"
 msgstr ""
 
-#: ../install/index.php:513
+#: ../install/index.php:509
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr ""
 
-#: ../install/index.php:1130 ../templates/default/ajax_plugins_initdb.tpl:52
+#: ../install/index.php:1126 ../templates/default/ajax_plugins_initdb.tpl:52
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr ""
 
@@ -1451,7 +1443,7 @@ msgstr ""
 msgid "Long form:"
 msgstr ""
 
-#: ../install/index.php:514
+#: ../install/index.php:510
 msgid "file_name"
 msgstr ""
 
@@ -1483,7 +1475,7 @@ msgstr ""
 msgid "System informations"
 msgstr ""
 
-#: ../install/index.php:225 ../install/index.php:1559
+#: ../install/index.php:225 ../install/index.php:1555
 #: ../templates/default/ajax_plugins_initdb.tpl:98
 msgid "Tables Creation/Update"
 msgstr ""
@@ -1533,7 +1525,7 @@ msgstr ""
 msgid "Show existing variables"
 msgstr ""
 
-#: ../install/index.php:952
+#: ../install/index.php:948
 msgid "Update Report"
 msgstr ""
 
@@ -1649,7 +1641,7 @@ msgstr ""
 msgid "Admin and staff only"
 msgstr ""
 
-#: ../install/index.php:1542
+#: ../install/index.php:1538
 msgid "Homepage"
 msgstr ""
 
@@ -1701,7 +1693,7 @@ msgstr ""
 msgid "Contribution"
 msgstr ""
 
-#: ../install/index.php:514
+#: ../install/index.php:510
 msgid "apache_user"
 msgstr ""
 
@@ -1786,10 +1778,6 @@ msgstr ""
 msgid "Group members selection"
 msgstr ""
 
-#: ../templates/default/desktop.tpl:30
-msgid "No tweets has been retrieved."
-msgstr ""
-
 #: ../templates/default/config_fields.tpl:35
 msgid "Field '%field' cannot be set as required."
 msgstr ""
@@ -1810,7 +1798,7 @@ msgstr ""
 msgid "Main"
 msgstr ""
 
-#: ../install/index.php:1250
+#: ../install/index.php:1246
 msgid "Configuration file created!"
 msgstr ""
 
@@ -1906,7 +1894,7 @@ msgstr ""
 msgid "Additionnaly, which table(s) do you want to export?"
 msgstr ""
 
-#: ../install/index.php:1536
+#: ../install/index.php:1532
 msgid "Galette has been successfully updated!"
 msgstr ""
 
@@ -1957,7 +1945,7 @@ msgstr ""
 msgid "An error has occured while looking if login already exists."
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:135 ../install/index.php:824
+#: ../ajax_plugins_initdb.php:135 ../install/index.php:820
 msgid "INSERT operation not allowed"
 msgstr ""
 
@@ -1965,7 +1953,7 @@ msgstr ""
 msgid "(Show or not title in front of name)"
 msgstr ""
 
-#: ../install/index.php:1493
+#: ../install/index.php:1489
 msgid "This can come from the permissions on the configuration file or the impossibility to make an INSERT into the database."
 msgstr ""
 
@@ -2013,7 +2001,7 @@ msgstr ""
 msgid "Your organisation website"
 msgstr ""
 
-#: ../install/index.php:1203 ../templates/default/preferences.tpl:406
+#: ../install/index.php:1199 ../templates/default/preferences.tpl:406
 msgid "Retype password:"
 msgstr ""
 
@@ -2061,7 +2049,7 @@ msgstr ""
 msgid "from a staff user"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:166 ../install/index.php:869
+#: ../ajax_plugins_initdb.php:166 ../install/index.php:865
 msgid "DROP operation allowed"
 msgstr ""
 
@@ -2125,7 +2113,7 @@ msgstr ""
 msgid "Parent group:"
 msgstr ""
 
-#: ../install/index.php:1424
+#: ../install/index.php:1420
 msgid "Required fields upgrade has failed :("
 msgstr ""
 
@@ -2166,11 +2154,11 @@ msgstr ""
 msgid "An error occured sending photo :("
 msgstr ""
 
-#: ../install/index.php:1377
+#: ../install/index.php:1373
 msgid "Mr."
 msgstr ""
 
-#: ../templates/default/footer.tpl:18
+#: ../templates/default/footer.tpl:17
 msgid "%s on Google+!"
 msgstr ""
 
@@ -2182,7 +2170,7 @@ msgstr ""
 msgid "Identifiant:"
 msgstr ""
 
-#: ../install/index.php:744
+#: ../install/index.php:740
 msgid "Unable to connect to the database"
 msgstr ""
 
@@ -2218,7 +2206,7 @@ msgstr ""
 msgid "Contribution has been successfyully attached to current transaction"
 msgstr ""
 
-#: ../templates/default/desktop.tpl:51
+#: ../templates/default/desktop.tpl:22
 msgid "Show dashboard on login"
 msgstr ""
 
@@ -2254,7 +2242,7 @@ msgstr ""
 msgid "Flush the logs"
 msgstr ""
 
-#: ../install/index.php:1255
+#: ../install/index.php:1251
 msgid "Unable to create configuration file (%path)"
 msgstr ""
 
@@ -2282,7 +2270,7 @@ msgstr ""
 msgid "New occurence"
 msgstr ""
 
-#: ../install/index.php:1539
+#: ../install/index.php:1535
 msgid "To secure the system, please delete the install directory"
 msgstr ""
 
@@ -2386,11 +2374,11 @@ msgstr ""
 msgid "Visible"
 msgstr ""
 
-#: ../install/index.php:1380 ../templates/default/gestion_adherents.tpl:223
+#: ../install/index.php:1376 ../templates/default/gestion_adherents.tpl:223
 msgid "Mrs."
 msgstr ""
 
-#: ../install/index.php:670
+#: ../install/index.php:666
 msgid "Table prefix:"
 msgstr ""
 
@@ -2432,10 +2420,10 @@ msgid "Galette Admin:"
 msgstr ""
 
 #: ../install/index.php:305 ../install/index.php:351
-#: ../install/index.php:537 ../install/index.php:676
-#: ../install/index.php:773 ../install/index.php:919
-#: ../install/index.php:1162 ../install/index.php:1208
-#: ../install/index.php:1469 ../templates/default/ajax_plugins_initdb.tpl:81
+#: ../install/index.php:533 ../install/index.php:672
+#: ../install/index.php:769 ../install/index.php:915
+#: ../install/index.php:1158 ../install/index.php:1204
+#: ../install/index.php:1465 ../templates/default/ajax_plugins_initdb.tpl:81
 msgid "Next step"
 msgstr ""
 
@@ -2475,7 +2463,7 @@ msgstr ""
 msgid "transaction"
 msgstr ""
 
-#: ../install/index.php:1494
+#: ../install/index.php:1490
 msgid "Check above errors to know what went wrong."
 msgstr ""
 
@@ -2527,7 +2515,7 @@ msgstr ""
 msgid "New"
 msgstr ""
 
-#: ../install/index.php:916
+#: ../install/index.php:912
 msgid "Permissions to database are OK."
 msgstr ""
 
@@ -2598,7 +2586,7 @@ msgstr ""
 msgid "creation"
 msgstr ""
 
-#: ../install/index.php:511
+#: ../install/index.php:507
 msgid "In order to be updated, Galette needs write permission on files listed above."
 msgstr ""
 
@@ -2611,11 +2599,11 @@ msgstr ""
 msgid "Check"
 msgstr ""
 
-#: ../install/index.php:516
+#: ../install/index.php:512
 msgid "Under Windows, check these directories are not in Read-Only mode in their property panel."
 msgstr ""
 
-#: ../install/index.php:564
+#: ../install/index.php:560
 msgid "Enter connection data for the existing database."
 msgstr ""
 
@@ -2631,7 +2619,7 @@ msgstr ""
 msgid "An mail has been sent to the member."
 msgstr ""
 
-#: ../install/index.php:1128 ../templates/default/ajax_plugins_initdb.tpl:50
+#: ../install/index.php:1124 ../templates/default/ajax_plugins_initdb.tpl:50
 msgid "The tables have not been totally created, it may be a permission problem."
 msgstr ""
 
@@ -2666,7 +2654,7 @@ msgstr ""
 msgid "Not supplied"
 msgstr ""
 
-#: ../install/index.php:1533
+#: ../install/index.php:1529
 msgid "Galette has been successfully installed!"
 msgstr ""
 
@@ -2684,13 +2672,13 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: ../install/index.php:213 ../install/index.php:548
-#: ../install/index.php:632 ../install/index.php:1556
+#: ../install/index.php:213 ../install/index.php:544
+#: ../install/index.php:628 ../install/index.php:1552
 msgid "Database"
 msgstr ""
 
-#: ../install/index.php:528 ../install/index.php:899
-#: ../install/index.php:1136 ../install/index.php:1499
+#: ../install/index.php:524 ../install/index.php:895
+#: ../install/index.php:1132 ../install/index.php:1495
 #: ../templates/default/ajax_plugins_initdb.tpl:79
 msgid "Retry"
 msgstr ""
@@ -2770,7 +2758,7 @@ msgstr ""
 msgid "An error occured displaying contributions :("
 msgstr ""
 
-#: ../install/index.php:1325 ../install/index.php:1410
+#: ../install/index.php:1321 ../install/index.php:1406
 msgid "Default fields configuration cannot be initialized."
 msgstr ""
 
@@ -2790,7 +2778,7 @@ msgstr ""
 msgid "You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences."
 msgstr ""
 
-#: ../install/index.php:1352
+#: ../install/index.php:1348
 msgid "PDF models were successfully stored."
 msgstr ""
 
@@ -2806,7 +2794,7 @@ msgstr ""
 msgid "Group informations"
 msgstr ""
 
-#: ../install/index.php:1348
+#: ../install/index.php:1344
 msgid "PDF models cannot be initialized."
 msgstr ""
 
@@ -2847,11 +2835,11 @@ msgstr ""
 msgid "Application runs under demo mode. This functionnality is not enabled, sorry."
 msgstr ""
 
-#: ../install/index.php:1383 ../templates/default/gestion_adherents.tpl:223
+#: ../install/index.php:1379 ../templates/default/gestion_adherents.tpl:223
 msgid "Miss"
 msgstr ""
 
-#: ../install/index.php:892
+#: ../install/index.php:888
 msgid "GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr ""
 
@@ -2871,7 +2859,7 @@ msgstr ""
 msgid "Do you really want to delete this mailing from the base?"
 msgstr ""
 
-#: ../install/index.php:740
+#: ../install/index.php:736
 msgid "Connection to database successfull"
 msgstr ""
 
@@ -2892,7 +2880,7 @@ msgid "logs are empty"
 msgstr ""
 
 #: ../champs_adherents.php:61 ../includes/fields_defs/members_fields.php:236
-#: ../install/index.php:1195 ../templates/default/member.tpl:306
+#: ../install/index.php:1191 ../templates/default/member.tpl:306
 #: ../templates/default/preferences.tpl:398 ../templates/default/index.tpl:8
 #: ../templates/default/voir_adherent.tpl:241
 msgid "Username:"
@@ -2927,7 +2915,7 @@ msgstr ""
 msgid "available only for new password request"
 msgstr ""
 
-#: ../install/index.php:1551 ../templates/default/ajax_plugins_initdb.tpl:94
+#: ../install/index.php:1547 ../templates/default/ajax_plugins_initdb.tpl:94
 msgid "Steps:"
 msgstr ""
 
@@ -2969,7 +2957,7 @@ msgstr ""
 msgid "Group `%groupname` has been successfully saved."
 msgstr ""
 
-#: ../install/index.php:659
+#: ../install/index.php:655
 msgid "Database:"
 msgstr ""
 
@@ -2981,7 +2969,7 @@ msgstr ""
 msgid "No port"
 msgstr ""
 
-#: ../install/index.php:221 ../install/index.php:1558
+#: ../install/index.php:221 ../install/index.php:1554
 #: ../templates/default/ajax_plugins_initdb.tpl:97
 msgid "Access permissions to database"
 msgstr ""
@@ -3022,7 +3010,7 @@ msgstr ""
 msgid "Ascendent"
 msgstr ""
 
-#: ../install/index.php:1329 ../install/index.php:1414
+#: ../install/index.php:1325 ../install/index.php:1410
 msgid "Default fields configuration was successfully stored."
 msgstr ""
 
@@ -3086,7 +3074,7 @@ msgstr ""
 msgid "Contribution end date"
 msgstr ""
 
-#: ../install/index.php:1155
+#: ../install/index.php:1151
 msgid "The tables has been correctly created."
 msgstr ""
 
@@ -3103,7 +3091,7 @@ msgstr ""
 msgid "Enter as many occurences you want."
 msgstr ""
 
-#: ../install/index.php:1428
+#: ../install/index.php:1424
 msgid "Required fields have been upgraded successfully."
 msgstr ""
 
@@ -3127,7 +3115,7 @@ msgstr ""
 msgid "Short form"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:171 ../install/index.php:875
+#: ../ajax_plugins_initdb.php:171 ../install/index.php:871
 msgid "ALTER Operation not allowed"
 msgstr ""
 
@@ -3167,7 +3155,7 @@ msgstr ""
 msgid "Nickname"
 msgstr ""
 
-#: ../install/index.php:666
+#: ../install/index.php:662
 msgid "(Indicate the CURRENT prefix of your Galette tables)"
 msgstr ""
 
@@ -3229,7 +3217,7 @@ msgstr ""
 msgid "Latecomers"
 msgstr ""
 
-#: ../install/index.php:233 ../install/index.php:1561
+#: ../install/index.php:233 ../install/index.php:1557
 msgid "Saving the parameters"
 msgstr ""
 
@@ -3237,7 +3225,7 @@ msgstr ""
 msgid "SMTP (or GMail) user:"
 msgstr ""
 
-#: ../install/index.php:217 ../install/index.php:1557
+#: ../install/index.php:217 ../install/index.php:1553
 msgid "Access to the database"
 msgstr ""
 
@@ -3343,7 +3331,7 @@ msgstr ""
 msgid "Your PHP date settings are not correct. Maybe you've missed the timezone settings that is mandatory since PHP 5.3?"
 msgstr ""
 
-#: ../install/index.php:464
+#: ../install/index.php:460
 msgid "PHP Modules"
 msgstr ""
 
@@ -3356,7 +3344,7 @@ msgstr ""
 msgid "Mobile phone:"
 msgstr ""
 
-#: ../install/index.php:643
+#: ../install/index.php:639
 msgid "Host:"
 msgstr ""
 
@@ -3428,8 +3416,8 @@ msgstr ""
 msgid "Click here to deactivate plugin '%name'"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:327
-msgid "Honor Members Color:"
+#: ../templates/default/footer.tpl:8
+msgid "The project: "
 msgstr ""
 
 #: ../gestion_intitules.php:114
@@ -3448,7 +3436,7 @@ msgstr ""
 msgid "(at least %i characters)"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:183 ../install/index.php:944
+#: ../ajax_plugins_initdb.php:183 ../install/index.php:940
 msgid "Update of the tables"
 msgstr ""
 
@@ -3534,7 +3522,7 @@ msgstr ""
 msgid "Existing variables"
 msgstr ""
 
-#: ../install/index.php:1158
+#: ../install/index.php:1154
 msgid "The tables has been correctly updated."
 msgstr ""
 
@@ -3600,7 +3588,7 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:156 ../install/index.php:854
+#: ../ajax_plugins_initdb.php:156 ../install/index.php:850
 msgid "DELETE operation not allowed"
 msgstr ""
 
@@ -3636,7 +3624,7 @@ msgstr ""
 msgid "Change search criterias"
 msgstr ""
 
-#: ../install/index.php:502
+#: ../install/index.php:498
 msgid "Files permissions"
 msgstr ""
 
@@ -3656,11 +3644,11 @@ msgstr ""
 msgid "SQL query"
 msgstr ""
 
-#: ../install/index.php:629
+#: ../install/index.php:625
 msgid "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 msgstr ""
 
-#: ../install/index.php:209 ../install/index.php:1555
+#: ../install/index.php:209 ../install/index.php:1551
 msgid "Checks"
 msgstr ""
 
@@ -3769,7 +3757,7 @@ msgstr ""
 msgid "Customize fields"
 msgstr ""
 
-#: ../install/index.php:514
+#: ../install/index.php:510
 msgid "directory_name"
 msgstr ""
 
@@ -3780,8 +3768,7 @@ msgstr ""
 #: ../doandget_export.php:129 ../doandget_export.php:140
 #: ../doandget_export.php:151 ../doandget_export.php:162
 #: ../attendance_sheet.php:124 ../attendance_sheet.php:144
-#: ../attendance_sheet.php:186 ../lib/Galette/IO/News.php:241
-#: ../lib/Galette/IO/News.php:288 ../lib/Galette/Filters/AdvancedMembersList.php:279
+#: ../attendance_sheet.php:186 ../lib/Galette/Filters/AdvancedMembersList.php:279
 #: ../lib/Galette/Filters/AdvancedMembersList.php:354 ../lib/Galette/Repository/Contributions.php:547
 #: ../lib/Galette/Repository/Contributions.php:635 ../lib/Galette/Repository/Contributions.php:644
 #: ../lib/Galette/Repository/Contributions.php:673 ../lib/Galette/Entity/Transaction.php:258
@@ -3836,7 +3823,7 @@ msgstr ""
 msgid "Delete mailing '%subject'"
 msgstr ""
 
-#: ../install/index.php:510
+#: ../install/index.php:506
 msgid "To work as excpected, Galette needs write permission on files listed above."
 msgstr ""
 
@@ -3913,7 +3900,7 @@ msgstr ""
 msgid "No user name"
 msgstr ""
 
-#: ../install/index.php:647
+#: ../install/index.php:643
 msgid "Port:"
 msgstr ""
 
@@ -3973,7 +3960,7 @@ msgstr ""
 msgid "A group cannot be set as its own parent!"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:249 ../install/index.php:1528
+#: ../ajax_plugins_initdb.php:249 ../install/index.php:1524
 msgid "Update complete !"
 msgstr ""
 
@@ -3989,7 +3976,7 @@ msgstr ""
 msgid "Generate Member Cards"
 msgstr ""
 
-#: ../install/index.php:719
+#: ../install/index.php:715
 msgid "Check of the database"
 msgstr ""
 
@@ -3997,7 +3984,7 @@ msgstr ""
 msgid "With mail:"
 msgstr ""
 
-#: ../install/index.php:561
+#: ../install/index.php:557
 msgid "If it hadn't been made, create a database and a user for Galette."
 msgstr ""
 
@@ -4060,10 +4047,6 @@ msgstr ""
 
 #: ../gestion_titres.php:71
 msgid "An error occured removing title '%name' :("
-msgstr ""
-
-#: ../templates/default/desktop.tpl:39
-msgid "No Google+ posts has been retrieved."
 msgstr ""
 
 #: ../install/index.php:399
@@ -4163,7 +4146,11 @@ msgstr ""
 msgid "Export file could not be write on disk for '%export'. Make sure web server can write in the exports directory."
 msgstr ""
 
-#: ../desktop.php:53 ../templates/default/page.tpl:111
+#: ../templates/default/preferences.tpl:327
+msgid "Honor Members Color:"
+msgstr ""
+
+#: ../desktop.php:51 ../templates/default/page.tpl:111
 msgid "Dashboard"
 msgstr ""
 
@@ -4186,10 +4173,6 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:311
 msgid "Strip Text Color:"
-msgstr ""
-
-#: ../templates/default/desktop.tpl:43
-msgid "Read complete post"
 msgstr ""
 
 #: ../templates/default/ajax_attendance_sheet_details.tpl:3
@@ -4220,7 +4203,7 @@ msgstr ""
 msgid "Up to date members"
 msgstr ""
 
-#: ../install/index.php:237 ../install/index.php:1562
+#: ../install/index.php:237 ../install/index.php:1558
 #: ../templates/default/ajax_plugins_initdb.tpl:99
 msgid "End!"
 msgstr ""
@@ -4235,7 +4218,7 @@ msgstr ""
 msgid "Other informations (admin):"
 msgstr ""
 
-#: ../templates/default/footer.tpl:15
+#: ../templates/default/footer.tpl:14
 msgid "%s on Twitter!"
 msgstr ""
 
@@ -4280,13 +4263,13 @@ msgstr ""
 msgid "A problem happened while sending password for account '%s'"
 msgstr ""
 
-#: ../install/index.php:553 ../install/index.php:1187
-#: ../install/index.php:1492 ../templates/default/mailing_adherents.tpl:3
+#: ../install/index.php:549 ../install/index.php:1183
+#: ../install/index.php:1488 ../templates/default/mailing_adherents.tpl:3
 #: ../templates/default/global_messages.tpl:4
 msgid "- ERROR -"
 msgstr ""
 
-#: ../install/index.php:1119 ../templates/default/ajax_plugins_initdb.tpl:44
+#: ../install/index.php:1115 ../templates/default/ajax_plugins_initdb.tpl:44
 msgid "(Errors on DROP and RENAME operations can be ignored)"
 msgstr ""
 
@@ -4378,7 +4361,7 @@ msgstr ""
 msgid "(at least 4 characters)"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:131 ../install/index.php:819
+#: ../ajax_plugins_initdb.php:131 ../install/index.php:815
 msgid "CREATE operation allowed"
 msgstr ""
 
@@ -4520,7 +4503,7 @@ msgstr ""
 msgid "File upload stopped by extension"
 msgstr ""
 
-#: ../install/index.php:795 ../templates/default/ajax_plugins_initdb.tpl:36
+#: ../install/index.php:791 ../templates/default/ajax_plugins_initdb.tpl:36
 msgid "To run, Galette needs a number of rights on the database (CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)"
 msgstr ""
 
@@ -4536,7 +4519,7 @@ msgstr ""
 msgid "Manage PDF models"
 msgstr ""
 
-#: ../install/index.php:1303
+#: ../install/index.php:1299
 msgid "Default contributions types cannot be initialized."
 msgstr ""
 
@@ -4548,7 +4531,7 @@ msgstr ""
 msgid "Edit the contribution"
 msgstr ""
 
-#: ../install/index.php:720
+#: ../install/index.php:716
 msgid "Check the parameters and the existence of the database"
 msgstr ""
 
@@ -4569,7 +4552,7 @@ msgstr ""
 msgid "Receipt"
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:181 ../install/index.php:941
+#: ../ajax_plugins_initdb.php:181 ../install/index.php:937
 msgid "Creation of the tables"
 msgstr ""
 
@@ -4591,7 +4574,7 @@ msgstr ""
 msgid "No host"
 msgstr ""
 
-#: ../install/index.php:1193
+#: ../install/index.php:1189
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr ""
 
@@ -4645,7 +4628,7 @@ msgstr ""
 msgid "(Months)"
 msgstr ""
 
-#: ../install/index.php:770
+#: ../install/index.php:766
 msgid "Database exists and connection parameters are OK."
 msgstr ""
 
@@ -4673,11 +4656,7 @@ msgstr ""
 msgid "Translate additionnals fields labels"
 msgstr ""
 
-#: ../templates/default/footer.tpl:11
-msgid "Project leader"
-msgstr ""
-
-#: ../install/index.php:229 ../install/index.php:1560
+#: ../install/index.php:229 ../install/index.php:1556
 msgid "Admin parameters"
 msgstr ""
 
@@ -4757,7 +4736,7 @@ msgstr ""
 msgid "An error occured reordering groups :("
 msgstr ""
 
-#: ../install/index.php:1493
+#: ../install/index.php:1489
 msgid "Parameters couldn't be saved."
 msgstr ""
 
@@ -4766,7 +4745,7 @@ msgstr ""
 msgid "Modification"
 msgstr ""
 
-#: ../install/index.php:754
+#: ../install/index.php:750
 msgid "Go back"
 msgstr ""
 
@@ -4782,7 +4761,7 @@ msgstr ""
 msgid "Related transaction informations"
 msgstr ""
 
-#: ../install/index.php:1340 ../install/index.php:1402
+#: ../install/index.php:1336 ../install/index.php:1398
 msgid "Titles were successfully stored."
 msgstr ""
 
@@ -4806,10 +4785,6 @@ msgstr ""
 msgid "A mail has been sent to your adress.<br/>Please check your inbox and follow the instructions."
 msgstr ""
 
-#: ../templates/default/desktop.tpl:22
-msgid "News"
-msgstr ""
-
 #: ../templates/default/gestion_pdf_content.tpl:24
 msgid "Body"
 msgstr ""
@@ -4826,7 +4801,7 @@ msgstr ""
 msgid "A mailing exists in the current session. Click here if you want to resume or cancel it."
 msgstr ""
 
-#: ../install/index.php:1293
+#: ../install/index.php:1289
 msgid "Default preferences cannot be initialized."
 msgstr ""
 
@@ -4834,7 +4809,7 @@ msgstr ""
 msgid "Unable to convert GIF file "
 msgstr ""
 
-#: ../ajax_plugins_initdb.php:159 ../install/index.php:859
+#: ../ajax_plugins_initdb.php:159 ../install/index.php:855
 msgid "DELETE operation allowed"
 msgstr ""
 
@@ -4846,7 +4821,7 @@ msgstr ""
 msgid "member"
 msgstr ""
 
-#: ../install/index.php:1336 ../install/index.php:1398
+#: ../install/index.php:1332 ../install/index.php:1394
 msgid "Titles cannot be initialized."
 msgstr ""
 
@@ -4879,7 +4854,7 @@ msgstr ""
 msgid "An error occured while storing the contribution."
 msgstr ""
 
-#: ../install/index.php:1232
+#: ../install/index.php:1228
 msgid "Save the parameters"
 msgstr ""
 
@@ -4923,7 +4898,7 @@ msgstr ""
 msgid "Begin"
 msgstr ""
 
-#: ../install/index.php:1450
+#: ../install/index.php:1446
 msgid "Default texts were successfully stored."
 msgstr ""
 
@@ -4988,7 +4963,7 @@ msgstr ""
 msgid "Priority:"
 msgstr ""
 
-#: ../install/index.php:798 ../templates/default/ajax_plugins_initdb.tpl:39
+#: ../install/index.php:794 ../templates/default/ajax_plugins_initdb.tpl:39
 msgid "In order to be updated, Galette needs a number of rights on the database (CREATE, DROP, DELETE, UPDATE, SELECT and INSERT)"
 msgstr ""
 
@@ -5012,7 +4987,7 @@ msgstr ""
 msgid "%A, %B %#d%O %Y"
 msgstr ""
 
-#: ../install/index.php:1307
+#: ../install/index.php:1303
 msgid "Default contributions types were successfully stored."
 msgstr ""
 
