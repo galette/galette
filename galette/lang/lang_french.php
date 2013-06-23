@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sun Jun 23 06:47:59 2013 (GMT)
+// This file was automatically generated on Sun Jun 23 06:57:50 2013 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -82,7 +82,7 @@ $lang['Module does not exists!'] = 'Le module n\'existe pas&nbsp;!';
 $lang['among:'] = 'parmi :';
 
 // ../includes/fields_defs/pdfmodels_fields.php:118 ../includes/fields_defs/pdfmodels_fields.php:163 
-$lang['to'] = 'à';
+$lang['to'] = 'au';
 
 // ../templates/default/gestion_textes.tpl:79 
 $lang['Contribution informations'] = 'Informations sur la contribution';
@@ -2716,7 +2716,7 @@ $lang['Not dispatched amount:'] = 'Montant non ventilé&nbsp;:';
 $lang['Message:'] = 'Message&nbsp;:';
 
 // ../includes/fields_defs/pdfmodels_fields.php:118 ../includes/fields_defs/pdfmodels_fields.php:163 
-$lang['from'] = 'de';
+$lang['from'] = 'du';
 
 // ../templates/default/gestion_contributions.tpl:28 
 $lang['Show all members contributions'] = 'Voir les contributions de tous les membres';
