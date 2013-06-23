@@ -454,10 +454,6 @@ case 'u3':
     } else {
         $php_modules_class = $class . 'ok';
     }
-
-    $news = new Galette\IO\News(true);
-    $twitter = $news->canReadTweets($cm);
-    $gplus = $news->canReadGplus($cm);
     ?>
             <article id="php_modules" class="<?php echo $php_modules_class; ?>">
                 <header>
