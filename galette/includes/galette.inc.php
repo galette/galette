@@ -123,9 +123,6 @@ define('GALETTE_DB_VERSION', '0.703');
 if ( !defined('GALETTE_MODE') ) {
     define('GALETTE_MODE', 'PROD'); //DEV, PROD or DEMO
 }
-define('GALETTE_TWITTER', 'galette_soft');
-define('GALETTE_GPLUS', '116977415489200387309');
-define('GALETTE_GAPI_KEY', 'AIzaSyDT8Xkud_SdSHdvaagjePrpPoji2ySIZ7Q');
 
 if ( !isset($_COOKIE['show_galette_dashboard']) ) {
     setcookie(
