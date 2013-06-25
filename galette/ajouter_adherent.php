@@ -259,7 +259,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                 }
             } else {
                 Analog::log(
-                    'Member .' . $member->sname . ' has been detached of ' .
+                    'Member ' . $member->sname . ' has been detached of ' .
                     'his groups.',
                     Analog::INFO
                 );
