@@ -233,34 +233,35 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
 
             //store requested groups
             $add_groups = null;
+            $groups_adh = null;
+            $managed_groups_adh = null;
+
+            //add/remove user from groups
             if ( isset($_POST['groups_adh']) ) {
-                $add_groups = Groups::addMemberToGroups(
-                    $member,
-                    $_POST['groups_adh']
-                );
-                $member->loadGroups();
+                $groups_adh = $_POST['groups_adh'];
             }
-            if ( $add_groups === true ) {
-                if ( isset ($_POST['groups_adh']) ) {
-                    Analog::log(
-                        'Member .' . $member->sname . ' has been added to groups ' .
-                        print_r($_POST['groups_adh'], true),
-                        Analog::INFO
-                    );
-                } else {
-                    Analog::log(
-                        'Member .' . $member->sname . ' has not been added to groups ' .
-                        print_r($_POST['groups_adh'], true),
-                        Analog::ERROR
-                    );
-                    $error_detected[] = _T("An error occured adding member to its groups.");
-                }
-            } else {
-                Analog::log(
-                    'Member .' . $member->sname . ' has been detached of ' .
-                    'his groups.',
-                    Analog::INFO
-                );
+            $add_groups = Groups::addMemberToGroups(
+                $member,
+                $groups_adh
+            );
+
+            if ( $add_groups === false ) {
+                $error_detected[] = _T("An error occured adding member to its groups.");
+            }
+
+            //add/remove manager from groups
+            if ( isset($_POST['groups_managed_adh']) ) {
+                $managed_groups_adh = $_POST['groups_managed_adh'];
+            }
+            $add_groups = Groups::addMemberToGroups(
+                $member,
+                $managed_groups_adh,
+                true
+            );
+            $member->loadGroups();
+
+            if ( $add_groups === false ) {
+                $error_detected[] = _T("An error occured adding member to its groups as manager.");
             }
         } else {
             //something went wrong :'(
