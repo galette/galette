@@ -1,6 +1,27 @@
 Changes
 -------
 
+0.7.4.3 -> 0.7.4.4 (2013-06-30)
+
+- fix groups management from member record
+- prevent multiple message on delete button
+- do not use translated string when editing contributions labels
+- improve print stylesheet
+- disable member card generation for members that are not up to date
+
+0.7.4.2 -> 0.7.4.3 (2013-06-22)
+
+- contribution type was not correctly selected on second step
+- fix SQL error trying to search on multiple choice dynamic fields
+- check if language exists when loading texts, avoiding empty results
+- do not store overlaping contributions
+
+0.7.4.1 -> 0.7.4.2 (2013-05-11)
+
+- titles, statuses and genders are show as plain text in exports
+- fix public members list pagination
+- fix advanced search issue on contribution end dates
+
 0.7.4 -> 0.7.4.1 (2013-05-01)
 
 - tmp password too short

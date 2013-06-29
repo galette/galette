@@ -15,7 +15,9 @@ footer nav,
 #btnadd,
 #historyform,
 input[type=checkbox],
-.actions_row {
+.actions_row,
+#copyright,
+#sysinfos {
     display: none;
 }
 
@@ -46,4 +48,16 @@ footer {
 /** CSS adaptations for print */
 #content{
         margin: 0em;
+}
+
+.wrmenu {
+    margin-right: 0;
+}
+
+#titre {
+    background: none;
+}
+
+#member_stateofdue, .details {
+    width: 100%;
 }
