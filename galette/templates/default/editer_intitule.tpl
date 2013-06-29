@@ -6,7 +6,7 @@
       {_T string="Name:"}
     </label>
     {assign var='name' value=$fields.$class.name}
-    <input type="text" name="{$fields.$class.name}" id="{$fields.$class.name}" value="{_T string=$entry.$name}" />
+    <input type="text" name="{$fields.$class.name}" id="{$fields.$class.name}" value="{$entry.$name}" />
       </p>
       <p>
     <label for="{$fields.$class.field}" class="bline">

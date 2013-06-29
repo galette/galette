@@ -1,6 +1,14 @@
 Changes
 -------
 
+0.7.4.3 -> 0.7.4.4 (2013-06-30)
+
+- fix groups management from member record
+- prevent multiple message on delete button
+- do not use translated string when editing contributions labels
+- improve print stylesheet
+- disable member card generation for members that are not up to date
+
 0.7.4.2 -> 0.7.4.3 (2013-06-22)
 
 - contribution type was not correctly selected on second step

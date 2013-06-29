@@ -398,7 +398,7 @@
             {/if}
         {/foreach}
                         </span>
-                        <span id="usermanagedgroups">
+                        <span id="managedgroups">
         {foreach from=$groups item=group name=groupsmiterate}
             {if $member->isGroupManager($group->getName())}
                 {if not $smarty.foreach.groupsmiterate.first}, {/if}

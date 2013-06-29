@@ -221,14 +221,17 @@ class Groups
     /**
      * Add a member to specified groups
      *
-     * @param Adherent $adh    Member
-     * @param array    $groups Groups Groups list. Each entry must contain
+     * @param Adherent $adh         Member
+     * @param array    $groups      Groups Groups list. Each entry must contain
      *                                the group id, name each value separated
      *                                by a pipe.
+     * @param boolean  $manager     Add member as manager, defaults to false
+     * @param boolean  $transaction Does a SQL transaction already exists? Defaults
+     *                                 to false.
      *
      * @return boolean
      */
-    public static function addMemberToGroups($adh, $groups, $transaction = false)
+    public static function addMemberToGroups($adh, $groups, $manager = false, $transaction = false)
     {
         global $zdb;
         try {
@@ -236,21 +239,34 @@ class Groups
                 $zdb->db->beginTransaction();
             }
 
+            $table = null;
+            if ( $manager === true ) {
+                $table = Group::GROUPSMANAGERS_TABLE;
+            } else {
+                $table = Group::GROUPSUSERS_TABLE;
+            }
+
             //first, remove current groups members
             $del = $zdb->db->delete(
-                PREFIX_DB . Group::GROUPSUSERS_TABLE,
+                PREFIX_DB . $table,
                 Adherent::PK . ' = ' . $adh->id
             );
+
+            $msg = null;
+            if ( $manager === true ) {
+                $msg = 'Member `' . $adh->sname . '` has been detached from groups he manages';
+            } else {
+                $msg = 'Member `' . $adh->sname . '` has been detached of its groups';
+            }
             Analog::log(
-                'Member `' . $adh->sname . '` has been detached of its groups' .
-                ', we can now store new ones.',
+                $msg . ', we can now store new ones.',
                 Analog::INFO
             );
 
             //we proceed, if groups has been specified
             if ( is_array($groups) ) {
                 $stmt = $zdb->db->prepare(
-                    'INSERT INTO ' . PREFIX_DB . Group::GROUPSUSERS_TABLE .
+                    'INSERT INTO ' . PREFIX_DB . $table .
                     ' (' . $zdb->db->quoteIdentifier(Group::PK) . ', ' .
                     $zdb->db->quoteIdentifier(Adherent::PK) . ')' .
                     ' VALUES(:id, ' . $adh->id . ')'
@@ -261,22 +277,27 @@ class Groups
                     $stmt->bindValue(':id', $gid, \PDO::PARAM_INT);
 
                     if ( $stmt->execute() ) {
+                        $msg = 'Member `' . $adh->sname . '` attached to group `' .
+                            $gname . '` (' . $gid . ')';
+                        if ( $manager === true ) {
+                            $msg .= ' as a manager';
+                        }
                         Analog::log(
-                            'Member `' . $adh->sname . '` attached to group `' .
-                            $gname . '` (' . $gid . ').',
+                            $msg,
                             Analog::DEBUG
                         );
                     } else {
-                        Analog::log(
-                            'An error occured trying to attach member `' .
+                        $msg = 'Unable to attach member `' .
                             $adh->sname . '` (' . $adh->id . ') to group `' .
-                            $gname . '` (' . $gid . ').',
+                            $gname . '` (' . $gid . ').';
+                        if ( $manager === true ) {
+                            $msg .= ' as a manager';
+                        }
+                        Analog::log(
+                            $msg,
                             Analog::ERROR
                         );
-                        throw new \Exception(
-                            'Unable to attach `' . $adh->sname . '` (' . $adh->id .
-                            ') to `' . $gname . '` (' . $gid . ')'
-                        );
+                        throw new \Exception($msg);
                     }
                 }
             }
@@ -289,10 +310,13 @@ class Groups
             if ( $transaction === false) {
                 $zdb->db->rollBack();
             }
+            $msg = 'Unable to add member `' . $adh->sname . '` (' . $adh->id .
+                ') to specified groups ' . print_r($groups, true);
+            if ( $manager === true ) {
+                $msg .= ' as a manager';
+            }
             Analog::log(
-                'Unable to add member `' . $adh->sname . '` (' . $adh->id .
-                ') to specified groups |' .
-                $e->getMessage(),
+                $msg . ' |' . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
