@@ -168,6 +168,13 @@ class Db extends \Zend_Db
      */
     public function checkDbVersion()
     {
+        if ( GALETTE_MODE === 'DEV' ) {
+            Analog::log(
+                'Database version not checked in DEV mode.',
+                Analog::INFO
+            );
+            return true;
+        }
         try {
             $select = new \Zend_Db_Select($this->db);
             $select->from(
