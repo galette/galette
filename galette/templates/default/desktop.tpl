@@ -23,12 +23,6 @@
         </p>
         <script>
             $(function() {
-                $( "#news-tabs" ).tabs();
-                $('#twitter a, #googleplus a').click(function(){
-                    window.open(this.href);
-                    return false;
-                });
-
                 $('#show_dashboard').change(function(){
                     var _checked = $(this).is(':checked');
                     $.cookie(
