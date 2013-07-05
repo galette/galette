@@ -1,6 +1,11 @@
 Changes
 -------
 
+0.7.4.4 -> 0.7.4.5 (2013-07-05)
+
+- fix member removal without confirmation
+- update 3rd party libraries
+
 0.7.4.3 -> 0.7.4.4 (2013-06-30)
 
 - fix groups management from member record
