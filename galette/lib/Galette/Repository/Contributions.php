@@ -485,7 +485,11 @@ class Contributions extends Pagination
                     $zdb->db->commit();
                 }
                 $hist->add(
-                    "Contributions deleted (" . print_r($list, true) . ')'
+                    str_replace(
+                        '%list',
+                        print_r($list, true),
+                        _T("Contributions deleted (%list)")
+                    )
                 );
             } catch (\Exception $e) {
                 /** FIXME */
