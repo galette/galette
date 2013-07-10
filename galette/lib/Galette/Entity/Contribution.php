@@ -895,6 +895,23 @@ class Contribution
             'payment'   => $payment
         );
 
+        if ( $this->_member !== null ) {
+            $m = new Adherent((int)$this->_member);
+            $member = array(
+                'name'          => $m->sfullname,
+                'email'         => $m->email,
+                'organization'  => $m->isCompany(),
+                'status'        => $m->sstatus,
+                'country'       => $m->country
+            );
+
+            if ( $m->isCompany() ) {
+                $member['organization_name'] = $m->company_name;
+            }
+
+            $contrib['member'] = $member;
+        }
+
         if ( $extra !== null && is_array($extra) ) {
             $contrib = array_merge($contrib, $extra);
         }
