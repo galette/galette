@@ -57,7 +57,7 @@ define ('K_PATH_MAIN', GALETTE_TCPDF_PATH);
  * Path for PDF fonts.
  * By default it is automatically set but you can also set it as a fixed string to improve performances.
  */
-define ('K_PATH_FONTS', GALETTE_TCPDF_PATH.'fonts/');
+define ('K_PATH_FONTS', GALETTE_TCPDF_PATH.'/fonts/');
 
 /**
  * Default images directory.
