@@ -202,7 +202,7 @@ class ExternalScript
             curl_close($ch);
             break;
         case 'file':
-        	$this->_output = '';
+            $this->_output = '';
             if ( $this->_as_json === true ) {
                 $params = json_encode($params);
             } else {

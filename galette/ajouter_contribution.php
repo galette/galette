@@ -182,7 +182,7 @@ if ( isset($_POST['valid']) ) {
                                 );
 
                                 $message = _T("The configured post contribution script has failed.");
-                                $message .= "\n" . _T("You can find contribution informations and script output above.");
+                                $message .= "\n" . _T("You can find contribution information and script output below.");
                                 $message .= "\n\n";
                                 $message .= $res;
 
