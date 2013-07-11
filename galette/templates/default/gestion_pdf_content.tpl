@@ -26,7 +26,7 @@
                 </p>
 {/if}
                 <p>
-                    <label class="bline" for="body_{$model->styles}">{_T string="CSS styles"}</label>
+                    <label class="bline" for="styles_{$model->id}">{_T string="CSS styles"}</label>
                     <textarea name="model_styles" id="styles_{$model->id}">{$model->styles}</textarea>
                 </p>
 {if $model->id gt 3}
