@@ -77,7 +77,8 @@ abstract class Repository
         if ( $entity === null ) {
             //no entity class name provided. Take Repository
             //class name and remove trailing 's'
-            $repo = array_slice(explode('\\', get_class($this)), -1)[0];
+            $r = array_slice(explode('\\', get_class($this)), -1);
+            $repo = $r[0];
             $ent = substr($repo, 0, -1);
             if ( $ent != $repo ) {
                 $entity = $ent;
