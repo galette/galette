@@ -260,7 +260,7 @@ class Transaction
                                 throw new \Exception('Incorrect format');
                             }
                             $this->$prop = $d->format('Y-m-d');
-                        } catch (Exception $e) {
+                        } catch (\Exception $e) {
                             Analog::log(
                                 'Wrong date format. field: ' . $key .
                                 ', value: ' . $value . ', expected fmt: ' .
