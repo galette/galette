@@ -453,7 +453,7 @@
                     buttonImage: '{$template_subdir}images/calendar.png',
                     buttonImageOnly: true,
                     maxDate: '-0d',
-                    yearRange: 'c-100'
+                    yearRange: 'c-100:c+0'
                 });
                 $('#date_crea_adh').datepicker({
                     changeMonth: true,
@@ -462,7 +462,7 @@
                     buttonImage: '{$template_subdir}images/calendar.png',
                     buttonImageOnly: true,
                     maxDate: '-0d',
-                    yearRange: 'c-10'
+                    yearRange: 'c-10:c+0'
                 });
 
                 {* Groups popup *}

@@ -128,9 +128,9 @@ $(function() {
             header: 'h1:not(#logo)',
             icons: {
                 header: "ui-icon-circle-arrow-e",
-                headerSelected: "ui-icon-circle-arrow-s"
+                activeHeader: "ui-icon-circle-arrow-s"
             },
-            autoHeight: false,
+            heightStyle: 'content',
             active: $('#menu ul li[class*="selected"]').parent('ul').prevAll('ul').size()
         });
     }

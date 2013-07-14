@@ -91,6 +91,7 @@ class Smarty extends \SmartyBC
         $this->assign('plugin_detailled_actions', $plugins->getTplAdhDetailledActions());
         $this->assign('jquery_dir', GALETTE_BASE_PATH . 'includes/jquery/');
         $this->assign('jquery_version', JQUERY_VERSION);
+        $this->assign('jquery_migrate_version', JQUERY_MIGRATE_VERSION);
         $this->assign('jquery_ui_version', JQUERY_UI_VERSION);
         $this->assign('jquery_markitup_version', JQUERY_MARKITUP_VERSION);
         $this->assign('jquery_jqplot_version', JQUERY_JQPLOT_VERSION);
