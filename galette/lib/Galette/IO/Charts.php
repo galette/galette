@@ -289,7 +289,7 @@ class Charts
 
         $chart = array(
             array(
-                _T('Individuals'),
+                _T("Individuals"),
                 $res[0]->cnt
             ),
             array(
