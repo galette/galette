@@ -336,12 +336,12 @@ class Contribution
                 //$this->$prop = stripslashes($value); //not relevant here!
 
                 // now, check validity
-                if ( $value != '' ) {
-                    switch ( $key ) {
-                    // dates
-                    case 'date_enreg':
-                    case 'date_debut_cotis':
-                    case 'date_fin_cotis':
+                switch ( $key ) {
+                // dates
+                case 'date_enreg':
+                case 'date_debut_cotis':
+                case 'date_fin_cotis':
+                    if ( $value != '' ) {
                         try {
                             $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
                             if ( $d === false ) {
@@ -367,47 +367,55 @@ class Contribution
                                 _T("- Wrong date format (%date_format) for %field!")
                             );
                         }
-                        break;
-                    case Adherent::PK:
+                    }
+                    break;
+                case Adherent::PK:
+                    if ( $value != '' ) {
                         $this->_member = $value;
-                        break;
-                    case ContributionsTypes::PK:
+                    }
+                    break;
+                case ContributionsTypes::PK:
+                    if ( $value != '' ) {
                         $this->_type = new ContributionsTypes((int)$value);
-                        break;
-                    case 'montant_cotis':
-                        $this->_amount = $value;
-                        $us_value = strtr($value, ',', '.');
-                        if ( !is_numeric($value) ) {
-                            $errors[] = _T("- The amount must be an integer!");
-                        }
-                        break;
-                    case 'type_paiement_cotis':
-                        if ( $value == self::PAYMENT_OTHER
-                            || $value == self::PAYMENT_CASH
-                            || $value == self::PAYMENT_CREDITCARD
-                            || $value == self::PAYMENT_CHECK
-                            || $value == self::PAYMENT_TRANSFER
-                            || $value == self::PAYMENT_PAYPAL
-                        ) {
-                            $this->_payment_type = $value;
-                        } else {
-                            $errors[] = _T("- Unknown payment type");
-                        }
-                        break;
-                    case 'info_cotis':
-                        $this->_info = $value;
-                        break;
-                    case Transaction::PK:
+                    }
+                    break;
+                case 'montant_cotis':
+                    $this->_amount = $value;
+                    $us_value = strtr($value, ',', '.');
+                    if ( !is_numeric($value) ) {
+                        $errors[] = _T("- The amount must be an integer!");
+                    }
+                    break;
+                case 'type_paiement_cotis':
+                    if ( $value == self::PAYMENT_OTHER
+                        || $value == self::PAYMENT_CASH
+                        || $value == self::PAYMENT_CREDITCARD
+                        || $value == self::PAYMENT_CHECK
+                        || $value == self::PAYMENT_TRANSFER
+                        || $value == self::PAYMENT_PAYPAL
+                    ) {
+                        $this->_payment_type = $value;
+                    } else {
+                        $errors[] = _T("- Unknown payment type");
+                    }
+                    break;
+                case 'info_cotis':
+                    $this->_info = $value;
+                    break;
+                case Transaction::PK:
+                    if ( $value != '' ) {
                         $this->_transaction = new Transaction((int)$value);
-                        break;
-                    case 'duree_mois_cotis':
+                    }
+                    break;
+                case 'duree_mois_cotis':
+                    if ( $value != '' ) {
                         if ( !is_numeric($value) || $value<=0 ) {
                             $errors[] = _T("- The duration must be a positive integer!");
                         }
                         $this->$prop = $value;
                         $this->_retrieveEndDate();
-                        break;
                     }
+                    break;
                 }
             }
         }
