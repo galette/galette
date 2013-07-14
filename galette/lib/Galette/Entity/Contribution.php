@@ -889,13 +889,17 @@ class Contribution
             @mkdir(GALETTE_CACHE_DIR . '/pdf_contribs');
         }
 
-        $voucher = new PdfContribution($this, $zdb, $preferences);
-        $voucher->store(GALETTE_CACHE_DIR . '/pdf_contribs');
+        $voucher_path = null;
+        if ( $this->_id !== null ) {
+            $voucher = new PdfContribution($this, $zdb, $preferences);
+            $voucher->store(GALETTE_CACHE_DIR . '/pdf_contribs');
+            $voucher_path = $voucher->getPath();
+        }
 
         $contrib = array(
             'type'      => $this->getTypeLabel(),
             'amount'    => $this->amount,
-            'voucher'   => $voucher->getPath(),
+            'voucher'   => $voucher_path,
             'category'  => array(
                 'id'    => $this->type->id,
                 'label' => $this->type->libelle
