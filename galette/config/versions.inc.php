@@ -42,7 +42,7 @@ define('TCPDF_VERSION', '6.0.020');
 define('JQUERY_VERSION', '1.6.2');
 define('JQUERY_UI_VERSION', '1.8.14');
 define('JQUERY_MARKITUP_VERSION', '1.1.14');
-define('JQUERY_JQPLOT_VERSION', '1.0.4r1121');
+define('JQUERY_JQPLOT_VERSION', '1.0.8r1250');
 define('PHP_MAILER_VERSION', '5.2.6');
 define('GAPI_VERSION', '0.6.0');
 define('PASSWORD_COMPAT_VERSION', '1.0.3');
