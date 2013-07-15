@@ -217,7 +217,7 @@ class Reminder
     {
         $type_name = 'late';
         if ( $this->_type === self::IMPENDING ) {
-            $type_name = 'Impending';
+            $type_name = 'impending';
         }
 
         if ( $this->hasMail() ) {
