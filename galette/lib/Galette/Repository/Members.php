@@ -454,10 +454,11 @@ class Members
     * @param boolean $as_members  Return Adherent[] or simple ResultSet
     * @param array   $fields      Fields to use
     * @param boolean $export      True if we are exporting
+    * @param boolean $dues        True if load dues as Adherent dependency
     *
     * @return Adherent[]
     */
-    public function getArrayList($ids, $orderby = null, $with_photos = false, $as_members = true, $fields = null, $export = false)
+    public function getArrayList($ids, $orderby = null, $with_photos = false, $as_members = true, $fields = null, $export = false, $dues = false)
     {
         global $zdb;
 
@@ -501,7 +502,7 @@ class Members
                 $deps = array(
                     'picture'   => $with_photos,
                     'groups'    => false,
-                    'dues'      => false
+                    'dues'      => $dues
                 );
                 if ( $as_members === true ) {
                     $members[] = new Adherent($o, $deps);
@@ -1428,7 +1429,9 @@ class Members
             )
         )
             ->where('date_echeance < ?', $soon_date->format('Y-m-d'))
-            ->where('date_echeance >= ?', new \Zend_Db_Expr('NOW()'));
+            ->where('date_echeance >= ?', new \Zend_Db_Expr('NOW()'))
+            ->where('activite_adh=true')
+            ->where('bool_exempt_adh=false');
 
         $select_wo_mail = clone $select;
 
@@ -1447,7 +1450,9 @@ class Members
             array(
                 'cnt'       => 'count(a.' . Adherent::PK . ')'
             )
-        )->where('date_echeance < ?', new \Zend_Db_Expr('NOW()'));
+        )->where('date_echeance < ?', new \Zend_Db_Expr('NOW()'))
+            ->where('activite_adh=true')
+            ->where('bool_exempt_adh=false');
 
         $select_wo_mail = clone $select;
 

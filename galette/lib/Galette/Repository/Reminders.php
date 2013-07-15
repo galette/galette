@@ -100,13 +100,14 @@ class Reminders
             )
         )->where(
             'a.email_adh != \'\''
-        );
+        )->where('a.activite_adh=true')
+            ->where('bool_exempt_adh=false');
 
         if ( $type === Reminder::LATE ) {
             $select->where(
                 'date_echeance < ?',
                 date('Y-m-d', time())
-            )->where('bool_exempt_adh = false');
+            );
         } else {
             $now = new \DateTime();
             $duedate = new \DateTime();
@@ -196,31 +197,12 @@ class Reminders
 
         $types = array();
         foreach ( $this->_selected as $s ) {
-            /*//set filters...
-            $f = new MembersList();
-
-            if ( $s === Reminder::LATE ) {
-                $f->membership_filter = Members::MEMBERSHIP_LATE;
-            }
-            if ( $s === Reminder::IMPENDING ) {
-                $f->membership_filter = Members::MEMBERSHIP_NEARLY;
-            }
-
-            if ( $nomail === true ) {
-                //loads members without mail address only
-                $f->email_filter = Members::FILTER_WO_EMAIL;
-            } else {
-                //loads members with mail address only
-                $f->email_filter = Members::FILTER_W_EMAIL;
-            }*/
-
             $this->_loadToRemind($zdb, $s);
 
             if ( count($this->_toremind) > 0 ) {
                 //and then get list
                 $m = new Members();
-                //$members = $m->getMembersList(true, null, true, false, false, false);
-                $members = $m->getArrayList($this->_toremind);
+                $members = $m->getArrayList($this->_toremind, null, false, true, null, false, true);
                 $this->_types[$s] = $members;
             }
         }
