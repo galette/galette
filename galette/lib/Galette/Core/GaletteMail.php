@@ -230,7 +230,7 @@ class GaletteMail
             $this->_mail->ClearBCCs();
             $this->_mail->AddAddress(
                 key($this->_recipients),
-                $this->_recipients[0]
+                current($this->_recipients)
             );
         } else {
             //we're sending a mailing. Set main recipient to sender
