@@ -81,7 +81,7 @@
                     autoOpen: false,
                     modal: true,
                     hide: 'fold',
-                    width: '40%'
+                    width: '60em'
                 }).dialog('close');
 
                 $('#btninfo_small').click(function(){
