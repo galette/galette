@@ -745,6 +745,10 @@ class Contribution
                 'MAX(date_fin_cotis)'
             )->where(Adherent::PK . ' = ?', $member_id);
             $due_date = $select->query()->fetchColumn();
+            //avoid bad dates in postgres
+            if ( $due_date == '0001-01-01 BC' ) {
+                $due_date = '';
+            }
             return $due_date;
         } catch (\Exception $e) {
             /** FIXME */
