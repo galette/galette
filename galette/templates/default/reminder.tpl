@@ -18,7 +18,7 @@
                             <a href="gestion_adherents.php?filter_membership=2&email_filter=7">{_T string="%s members without mail" pattern="/%s/" replace=$count_late_nomail}</a>
                         </li>
                         <li{if $count_impending_nomail eq 0 and $count_late_nomail eq 0} class="disabled"{/if}>
-                            <input type="checkbox" name="reminder_wo_mail" id="reminder_wo_mail" value="1"/>
+                            <input type="checkbox" name="reminder_wo_mail" id="reminder_wo_mail" value="1"{if $count_impending_nomail eq 0 and $count_late_nomail eq 0} disabled="disabled"{/if}/>
                             <label for="reminder_wo_mail">{_T string="Generate labels for late members without mail address"}</label>
                         </li>
                     </ul>
