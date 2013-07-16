@@ -12,7 +12,6 @@
 {include file="gestion_pdf_content.tpl"}
             </div>
         </div>
-        <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
         </div>
         <div id="legende" class="texts_legend" title="{_T string="Existing variables"}">
             <h1>{_T string="Existing variables"}</h1>
