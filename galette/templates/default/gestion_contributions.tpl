@@ -18,7 +18,7 @@
             <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
         </div>
 {if isset($member)}
-        <div id="member_stateofdue" class="{$member->getRowClass()}">{$member->getDues()}</div>
+        <div id="member_stateofdue" class="{$member->getRowClass()}{if not $member->isActive()} inactive{/if}">{$member->getDues()}</div>
 {/if}
         <table class="infoline">
             <tr>
@@ -28,6 +28,7 @@
                     <a id="clearfilter" href="?id_adh=all" title="{_T string="Show all members contributions"}">{_T string="Show all members contributions"}</a>
     {/if}
                     <strong>{$member->sname}</strong>
+    {if not $member->isActive() } ({_T string="Inactive"}){/if}
     {if $login->isAdmin() or $login->isStaff()}
                     (<a href="voir_adherent.php?id_adh={$member->id}">{_T string="See member profile"}</a> -
                     <a href="ajouter_contribution.php?id_adh={$member->id}">{_T string="Add a contribution"}</a>)
