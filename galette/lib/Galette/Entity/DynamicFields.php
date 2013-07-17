@@ -102,8 +102,6 @@ class DynamicFields
     */
     public function __construct($args = null)
     {
-        global $i18n;
-
         //Fields types names
         $this->_fields_types_names = array(
             self::SEPARATOR => _T("separator"),
@@ -381,11 +379,14 @@ class DynamicFields
     }
 
     /**
+     * Get fields descriptions
+     *
+     * @param string $form_name Form name
+     *
      * @return array
      */
-    public function getFieldsDescription(
-        $form_name
-    ) {
+    public function getFieldsDescription($form_name)
+    {
         global $zdb;
 
         try {

@@ -121,7 +121,7 @@ class Texts
     }
 
     /**
-     * Set replacemnts values
+     * Set replacements values
      *
      * @param array $replaces Replacements values
      *
@@ -308,6 +308,8 @@ class Texts
 
     /**
      * Retrieve fields from database
+     *
+     * @deprecated Do not seem to be used as of 2013-07-16
      *
      * @return array
      */
