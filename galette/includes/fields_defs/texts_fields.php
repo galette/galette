@@ -157,7 +157,7 @@ $texts_fields = array(
     ),
 
     array(
-        'tid'       => 21,
+        'tid'       => 22,
         'tref'      => 'impendingduedate',
         'tsubject'  => '[{ASSO_NAME}] Your membership is about to expire',
         'tbody'     => "Hello,\r\n\r\nYour {ASSO_NAME} membership is about to expire in {DAYS_REMANING} days.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
@@ -165,7 +165,7 @@ $texts_fields = array(
         'tcomment'  => 'Impending due date'
     ),
     array(
-        'tid'       => 22,
+        'tid'       => 23,
         'tref'      => 'impendingduedate',
         'tsubject'  => '[{ASSO_NAME}] Votre adhésion arrive à terme',
         'tbody'     => "Bonjour,\r\n\r\nVotre adhésion à {ASSO_NAME} arrive à son terme dans {DAYS_REMANING} jours.\r\n\r\nA bientôt!\r\n\r\n(ce courriel est un envoi automatique)",
@@ -174,7 +174,7 @@ $texts_fields = array(
     ),
 
     array(
-        'tid'       => 24,
+        'tid'       => 25,
         'tref'      => 'lateduedate',
         'tsubject'  => '[{ASSO_NAME}] Your membership has expired',
         'tbody'     => "Hello,\r\n\r\nYour {ASSO_NAME} membership has expired for {DAYS_EXPIRED} days.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
@@ -182,7 +182,7 @@ $texts_fields = array(
         'tcomment'  => 'Late due date'
     ),
     array(
-        'tid'       => 25,
+        'tid'       => 26,
         'tref'      => 'lateduedate',
         'tsubject'  => '[{ASSO_NAME}] Votre adhésion a expiré',
         'tbody'     => "Bonjour,\r\n\r\nVotre adhésion à {ASSO_NAME} a expiré depuis {DAYS_EXPIRED} jours.\r\n\r\nA bientôt!\r\n\r\n(ce courriel est un envoi automatique)",

@@ -346,6 +346,9 @@ class Texts
                     //if we got no values in texts table, let's proceed
                     $proceed = true;
                 } else {
+                    if ( $count < count($this->_defaults) ) {
+                        return $this->_checkUpdate();
+                    }
                     return false;
                 }
             } else {
@@ -381,6 +384,72 @@ class Texts
         } catch (\Exception $e) {
             Analog::log(
                 'Unable to initialize default texts.' . $e->getMessage(),
+                Analog::WARNING
+            );
+            return $e;
+        }
+    }
+
+    /**
+     * Checks for missing texts in the database
+     *
+     * @return boolean
+     */
+    private function _checkUpdate()
+    {
+        global $zdb;
+
+        try {
+            $select = new \Zend_Db_Select($zdb->db);
+            $select->from(
+                PREFIX_DB . self::TABLE
+            );
+            $list = $select->query()->fetchAll();
+
+            $missing = array();
+            foreach ( $this->_defaults as $default ) {
+                $exists = false;
+                foreach ( $list as $text ) {
+                    if ( $text->tref == $default['tref']
+                        && $text->tlang == $default['tlang']
+                    ) {
+                        $exists = true;
+                        break;
+                    }
+                }
+
+                if ( $exists === false ) {
+                    //text does not exists in database, insert it.
+                    $missing[] = $default;
+                }
+            }
+
+            if ( count($missing) >0 ) {
+                $stmt = $zdb->db->prepare(
+                    'INSERT INTO ' . PREFIX_DB . self::TABLE .
+                    ' (tid, tref, tsubject, tbody, tlang, tcomment) ' .
+                    'VALUES(:tid, :tref, :tsubject, :tbody, :tlang, :tcomment )'
+                );
+
+                foreach ( $missing as $d ) {
+                    $stmt->bindParam(':tid', $d['tid']);
+                    $stmt->bindParam(':tref', $d['tref']);
+                    $stmt->bindParam(':tsubject', $d['tsubject']);
+                    $stmt->bindParam(':tbody', $d['tbody']);
+                    $stmt->bindParam(':tlang', $d['tlang']);
+                    $stmt->bindParam(':tcomment', $d['tcomment']);
+                    $stmt->execute();
+                }
+
+                Analog::log(
+                    'Missing texts were successfully stored into database.',
+                    Analog::INFO
+                );
+                return true;
+            }
+        } catch (\Exception $e) {
+            Analog::log(
+                'An error occured checking missing texts.' . $e->getMessage(),
                 Analog::WARNING
             );
             return $e;
