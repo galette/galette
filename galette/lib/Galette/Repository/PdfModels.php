@@ -92,35 +92,123 @@ class PdfModels extends Repository
     /**
      * Add default models in database
      *
+     * @param array   $defaults    Fields definition defaults
+     * @param boolean $check_first Check first if it seem initialized
+     *
+     * @return boolean
+     */
+    public function installInit($defaults, $check_first = true)
+    {
+        try {
+            $ent = $this->entity;
+            //first of all, let's check if data seem to have already
+            //been initialized
+            $proceed = false;
+            if ( $check_first === true ) {
+                $select = new \Zend_Db_Select($this->zdb->db);
+                $select->from(
+                    PREFIX_DB . $ent::TABLE,
+                    'COUNT(' . $ent::PK . ') as counter'
+                );
+                $count = $select->query()->fetchObject()->counter;
+                if ( $count == 0 ) {
+                    //if we got no values in texts table, let's proceed
+                    $proceed = true;
+                } else {
+                    if ( $count < count($defaults) ) {
+                        return $this->_checkUpdate($defaults);
+                    }
+                    return false;
+                }
+            } else {
+                $proceed = true;
+            }
+
+            if ( $proceed === true ) {
+                $this->zdb->db->beginTransaction();
+
+                //first, we drop all values
+                $this->zdb->db->delete(PREFIX_DB . $ent::TABLE);
+
+                $stmt = $this->zdb->db->prepare(
+                    'INSERT INTO ' . PREFIX_DB . $ent::TABLE .
+                    ' (model_id, model_name, model_title, model_type, ' .
+                    'model_header, model_footer, model_body, model_styles, ' .
+                    'model_parent) ' .
+                    'VALUES(:model_id, :model_name, :model_title, :model_type, ' .
+                    ':model_header, :model_footer, :model_body, :model_styles, ' .
+                    ':model_parent)'
+                );
+
+                foreach ( $defaults as $d ) {
+                    $stmt->execute($d);
+                }
+
+                $this->zdb->db->commit();
+                return true;
+            }
+        } catch (\Exception $e) {
+            $this->zdb->db->rollBack();
+            throw $e;
+        }
+    }
+
+    /**
+     * Checks for missing texts in the database
+     *
      * @param array $defaults Fields definition defaults
      *
      * @return boolean
      */
-    public function installInit($defaults)
+    private function _checkUpdate($defaults)
     {
         try {
-            $this->zdb->db->beginTransaction();
-
-            //first, we drop all values
+            $select = new \Zend_Db_Select($this->zdb->db);
             $ent = $this->entity;
-            $this->zdb->db->delete(PREFIX_DB . $ent::TABLE);
-
-            $stmt = $this->zdb->db->prepare(
-                'INSERT INTO ' . PREFIX_DB . $ent::TABLE .
-                ' (model_id, model_name, model_title, model_type, ' .
-                'model_header, model_footer, model_body, model_styles, ' .
-                'model_parent) ' .
-                'VALUES(:model_id, :model_name, :model_title, :model_type, ' .
-                ':model_header, :model_footer, :model_body, :model_styles, ' .
-                ':model_parent)'
+            $select->from(
+                PREFIX_DB . $ent::TABLE
             );
+            $list = $select->query()->fetchAll();
 
-            foreach ( $defaults as $d ) {
-                $stmt->execute($d);
+            $missing = array();
+            foreach ( $defaults as $default ) {
+                $exists = false;
+                foreach ( $list as $model ) {
+                    if ( $model->model_id == $default['model_id'] ) {
+                        $exists = true;
+                        break;
+                    }
+                }
+
+                if ( $exists === false ) {
+                    //model does not exists in database, insert it.
+                    $missing[] = $default;
+                }
             }
 
-            $this->zdb->db->commit();
-            return true;
+            if ( count($missing) >0 ) {
+                $this->zdb->db->beginTransaction();
+                $stmt = $this->zdb->db->prepare(
+                    'INSERT INTO ' . PREFIX_DB . $ent::TABLE .
+                    ' (model_id, model_name, model_title, model_type, ' .
+                    'model_header, model_footer, model_body, model_styles, ' .
+                    'model_parent) ' .
+                    'VALUES(:model_id, :model_name, :model_title, :model_type, ' .
+                    ':model_header, :model_footer, :model_body, :model_styles, ' .
+                    ':model_parent)'
+                );
+
+                foreach ( $missing as $d ) {
+                    $stmt->execute($d);
+                }
+
+                $this->zdb->db->commit();
+                Analog::log(
+                    'Missing texts were successfully stored into database.',
+                    Analog::INFO
+                );
+                return true;
+            }
         } catch (\Exception $e) {
             $this->zdb->db->rollBack();
             throw $e;

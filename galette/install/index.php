@@ -1267,7 +1267,6 @@ define("STOCK_FILES", "tempimages");
             true
         );
         $titles = new Galette\Repository\Titles();
-        $models = new Galette\Repository\PdfModels($zdb, $preferences);
 
         //init default values
         $admpass = null;
@@ -1335,18 +1334,6 @@ define("STOCK_FILES", "tempimages");
         } else {
             $oks[] = '<li class="install-ok">' .
                 _T("Titles were successfully stored.") .
-                '</li>';
-        }
-
-        include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
-        $res = $models->installInit($pdfmodels_fields);
-        if ( $res !== true ) {
-            $errs[] = '<li class="install-bad">' .
-                _T("PDF models cannot be initialized.") .
-                '<span>' . $res->getMessage() . '</span></li>';
-        } else {
-            $oks[] = '<li class="install-ok">' .
-                _T("PDF models were successfully stored.") .
                 '</li>';
         }
     } else if ($step=='u9') {
@@ -1448,6 +1435,20 @@ define("STOCK_FILES", "tempimages");
                 '</li>';
         }
     }
+
+    $models = new Galette\Repository\PdfModels($zdb, $preferences);
+    include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
+    $res = $models->installInit($pdfmodels_fields);
+    if ( $res !== true ) {
+        $errs[] = '<li class="install-bad">' .
+            _T("PDF models cannot be initialized.") .
+            '<span>' . $res->getMessage() . '</span></li>';
+    } else {
+        $oks[] = '<li class="install-ok">' .
+            _T("PDF models were successfully stored.") .
+            '</li>';
+    }
+
     ?>
             <div<?php if( count($errs) == 0) echo ' id="infobox"'; ?>>
                 <ul>
