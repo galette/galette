@@ -396,6 +396,16 @@ if ( $contrib->id != '' ) {
     $title .= ' (' . _T("creation") . ')';
 }
 
+if ( $contrib->isCotis() && $id_adh != '' ) {
+    $adh = new Adherent((int)$id_adh);
+    if ( !$adh->isActive() ) {
+        $warning_detected[] = _T("Selected member is inactive!");
+    }
+    if ( $adh->isDueFree() ) {
+        $warning_detected[] = _T("Selected member is due free!");
+    }
+}
+
 $tpl->assign('page_title', $title);
 $tpl->assign('required', $required);
 $tpl->assign('disabled', $disabled);
