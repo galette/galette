@@ -161,10 +161,10 @@ td#pdf_logo {
                         <td>
                             {CONTRIBUTION_LABEL} (_T("on") {CONTRIBUTION_DATE})<br/>
                             _T("from") {CONTRIBUTION_BEGIN_DATE} _T("to") {CONTRIBUTION_END_DATE}<br/>
-                           {CONTRIBUTION_PAYMENT_TYPE}
-                           {CONTRIBUTION_COMMENT}<br/>
+                           {CONTRIBUTION_PAYMENT_TYPE}<br/>
+                           {CONTRIBUTION_COMMENT}
                         </td>
-                        <th>{CONTRIBUTION_AMOUNT}</th>
+                        <td>{CONTRIBUTION_AMOUNT}</td>
                     </tr>
                 </tbody>
             </table>
