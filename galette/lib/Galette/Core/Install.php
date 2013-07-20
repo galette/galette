@@ -656,7 +656,14 @@ class Install
     public function setAdminInfos($login, $pass)
     {
         $this->_admin_login = $login;
-        $this->_admin_pass = password_hash($pass, PASSWORD_BCRYPT);
+
+        if ( defined('GALETTE_UNSECURE_PASSWORDS')
+            && GALETTE_UNSECURE_PASSWORDS === true
+        ) {
+            $this->_admin_pass = md5($pass);
+        } else {
+            $this->_admin_pass = password_hash($pass, PASSWORD_BCRYPT);
+        }
     }
 
     /**
@@ -744,17 +751,29 @@ define("PREFIX_DB", "' . $this->_db_prefix . '");
      * Initialize Galette relevant objects
      *
      * @param I18n $i18n I18n
+     * @param Db   $zdb  Database instance
      *
      * @return boolean
      */
-    public function initObjects($i18n)
+    public function initObjects($i18n, $zdb)
     {
         if ( $this->isInstall() ) {
             $preferences = new Preferences(false);
             $ct = new \Galette\Entity\ContributionsTypes();
             $status = new \Galette\Entity\Status();
-            $fc = new \Galette\Entity\FieldsCategories();
-            $texts = new \Galette\Entity\Texts($preferences);
+            include_once '../includes/fields_defs/members_fields.php';
+            $fc = new \Galette\Entity\FieldsConfig(
+                \Galette\Entity\Adherent::TABLE,
+                $members_fields,
+                true
+            );
+            //$fc = new \Galette\Entity\FieldsCategories();
+            include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
+            $texts = new \Galette\Entity\Texts($texts_fields, $preferences);
+            $titles = new \Galette\Repository\Titles();
+
+            include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
+            $models = new \Galette\Repository\PdfModels($zdb, $preferences);
 
             $error = false;
 
@@ -806,19 +825,20 @@ define("PREFIX_DB", "' . $this->_db_prefix . '");
                 'message'   => _T("Fields categories"),
                 'res'       => false
             );
-            $res = $fc->installInit();
+            $res = $fc->installInit($zdb);
             if ( $res !== true ) {
                 $ret['debug'] = $res->getMessage();
                 $error = true;
             } else {
                 $ret['res'] = true;
             }
+            $this->_report[] = $ret;
 
             $ret = array(
                 'message'   => _T("Mails texts"),
                 'res'       => false
             );
-            $res = $texts->installInit();
+            $res = $texts->installInit(false);
 
             if ( $res !== false ) {
                 if ( $res !== true ) {
@@ -828,6 +848,39 @@ define("PREFIX_DB", "' . $this->_db_prefix . '");
                     $ret['res'] = true;
                 }
             }
+            $this->_report[] = $ret;
+
+            $ret = array(
+                'message'   => _T("Titles"),
+                'res'       => false
+            );
+            $res = $titles->installInit($zdb);
+
+            if ( $res !== false ) {
+                if ( $res !== true ) {
+                    $ret['debug'] = $res->getMessage();
+                    $error = true;
+                } else {
+                    $ret['res'] = true;
+                }
+            }
+            $this->_report[] = $ret;
+
+            $ret = array(
+                'message'   => _T("PDF Models"),
+                'res'       => false
+            );
+            $res = $models->installInit($pdfmodels_fields, false);
+
+            if ( $res !== false ) {
+                if ( $res !== true ) {
+                    $ret['debug'] = $res->getMessage();
+                    $error = true;
+                } else {
+                    $ret['res'] = true;
+                }
+            }
+            $this->_report[] = $ret;
 
             return !$error;
         } else if ( $this->isUpgrade() ) {
