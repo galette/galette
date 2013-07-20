@@ -165,13 +165,6 @@ class Db
      */
     public function getDbVersion()
     {
-        if ( GALETTE_MODE === 'DEV' ) {
-            Analog::log(
-                'Database version not checked in DEV mode.',
-                Analog::INFO
-            );
-            return true;
-        }
         try {
             $select = $this->select('database');
             $select->columns(
@@ -198,6 +191,14 @@ class Db
      */
     public function checkDbVersion()
     {
+        if ( GALETTE_MODE === 'DEV' ) {
+            Analog::log(
+                'Database version not checked in DEV mode.',
+                Analog::INFO
+            );
+            return true;
+        }
+
         try {
             return $this->getDbVersion() === GALETTE_DB_VERSION;
         } catch ( \LogicException $e ) {
