@@ -143,16 +143,17 @@ if ( !isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql' ) {
                             <input type="text" name="install_dbname" id="install_dbname" value="<?php echo $install->getDbName(); ?>" required/>
                         </p>
                         <p>
-<?php
-if ( $install->isUpgrade() ) {
-    echo '<span class="required">' .
-        _T("(Indicate the CURRENT prefix of your Galette tables)") .
-        '</span><br/>';
-}
-?>
                             <label class="bline" for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
                             <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo ($install->getTablesPrefix() !== null)?$install->getTablesPrefix():'galette_'; ?>" required/>
                         </p>
+<?php
+if ( $install->isUpgrade() ) {
+    echo '<div id="warningbox">' .
+        _T("(Indicate the CURRENT prefix of your Galette tables)") .
+        '</div>';
+}
+?>
+
                     </div>
                 </fieldset>
                 <p id="btn_box">
