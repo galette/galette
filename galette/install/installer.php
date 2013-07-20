@@ -186,8 +186,9 @@ header('Content-Type: text/html; charset=UTF-8');
         <link rel="stylesheet" type="text/css" href="<?php echo GALETTE_TPL_SUBDIR; ?>install.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo GALETTE_TPL_SUBDIR; ?>jquery-ui/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>.custom.css"/>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-<?php echo JQUERY_VERSION; ?>.min.js"></script>
-        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
-        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.button.min.js"></script>
+        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-migrate-<?php echo JQUERY_MIGRATE_VERSION; ?>.min.js"></script>
+        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
+        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.button.min.js"></script>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.bgiframe.pack.js"></script>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.bgFade.js"></script>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/chili-1.7.pack.js"></script>
@@ -260,7 +261,6 @@ if ( $install->isCheckStep() ) {
             <footer>
                 <p><?php echo _T("Steps:"); ?></p>
                 <ol>
-                    <?php /*<li<?php if( $step == '1') echo ' class="current"'; ?>><?php echo _T("Language"); ?> - </li>*/ ?>
                     <li<?php if( $install->isCheckStep() ) echo ' class="current"'; ?>><?php echo _T("Checks"); ?> - </li>
                     <li<?php if( $install->isTypeStep() ) echo ' class="current"'; ?>><?php echo _T("Installation mode"); ?> - </li>
                     <li<?php if( $install->isDbStep() ) echo ' class="current"'; ?>><?php echo _T("Database"); ?> - </li>
