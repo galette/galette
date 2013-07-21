@@ -43,7 +43,7 @@ $php_modules_class = '';
 $files_perms_class = '';
 
 // check required PHP version...
-if ( version_compare(PHP_VERSION, '5.3.0', '<') ) {
+if ( version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<') ) {
     $php_ok = false;
 }
 
@@ -93,7 +93,7 @@ if ( !$date_ok ) {
 ?>
                 <ul class="leaders">
                     <li>
-                        <span><?php echo _T("PHP version"); ?> (<?php echo PHP_VERSION . ' >= 5.3.0'; ?>)</span>
+                        <span><?php echo _T("PHP version"); ?> (<?php echo PHP_VERSION . ' >= ' . GALETTE_PHP_MIN; ?>)</span>
                         <span><?php echo $install->getValidationImage($php_ok == true); ?></span>
                     </li>
                     <li>
