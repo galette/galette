@@ -158,7 +158,7 @@ if ( $install->isUpgrade() ) {
                 </fieldset>
                 <p id="btn_box">
                     <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
-                    <input type="submit" id="btnback" name="stepback_btn" value="<?php echo _T("Back"); ?>"/>
+                    <input type="submit" id="btnback" name="stepback_btn" value="<?php echo _T("Back"); ?>" formnovalidate/>
                 </p>
             </form>
             <script type="text/javascript">

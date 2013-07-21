@@ -84,6 +84,8 @@ class Install
     private $_admin_login;
     private $_admin_pass;
 
+    private $_error;
+
     /**
      * Main constructor
      */
@@ -775,114 +777,41 @@ define("PREFIX_DB", "' . $this->_db_prefix . '");
             include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
             $models = new \Galette\Repository\PdfModels($zdb, $preferences);
 
-            $error = false;
+            $this->_error = false;
 
-            $ret = array(
-                'message'   => _T("Preferences"),
-                'res'       => false
-            );
-            //init default values
+            //Install preferences
             $res = $preferences->installInit(
                 $i18n->getID(),
                 $this->getAdminLogin(),
                 $this->getAdminPass()
             );
-            if ( $res !== true ) {
-                $ret['debug'] = $res->getMessage();
-                $error = true;
-            } else {
-                $ret['res'] = true;
-            }
-            $this->_report[] = $ret;
+            $this->_proceedReport(_T("Preferences"), $res);
 
-            $ret = array(
-                'message'   => _T("Contributions types"),
-                'res'       => false
-            );
+            //Install contributions types
             $res = $ct->installInit();
-            if ( $res !== true ) {
-                $ret['debug'] = $res->getMessage();
-                $error = true;
-            } else {
-                $ret['res'] = true;
-            }
-            $this->_report[] = $ret;
+            $this->_proceedReport(_T("Contributions types"), $res);
 
-            $ret = array(
-                'message'   => _T("Status"),
-                'res'       => false
-            );
+            //Install statuses
             $res = $status->installInit();
-            if ( $res !== true ) {
-                $ret['debug'] = $res->getMessage();
-                $error = true;
-            } else {
-                $ret['res'] = true;
-            }
-            $this->_report[] = $ret;
+            $this->_proceedReport(_T("Status"), $res);
 
-            $ret = array(
-                'message'   => _T("Fields categories"),
-                'res'       => false
-            );
+            //Install fields configuration and categories
             $res = $fc->installInit($zdb);
-            if ( $res !== true ) {
-                $ret['debug'] = $res->getMessage();
-                $error = true;
-            } else {
-                $ret['res'] = true;
-            }
-            $this->_report[] = $ret;
+            $this->_proceedReport(_T("Fields config and categories"), $res);
 
-            $ret = array(
-                'message'   => _T("Mails texts"),
-                'res'       => false
-            );
+            //Install texts
             $res = $texts->installInit(false);
+            $this->_proceedReport(_T("Mails texts"), $res);
 
-            if ( $res !== false ) {
-                if ( $res !== true ) {
-                    $ret['debug'] = $res->getMessage();
-                    $error = true;
-                } else {
-                    $ret['res'] = true;
-                }
-            }
-            $this->_report[] = $ret;
-
-            $ret = array(
-                'message'   => _T("Titles"),
-                'res'       => false
-            );
+            //Install titles
             $res = $titles->installInit($zdb);
+            $this->_proceedReport(_T("Titles"), $res);
 
-            if ( $res !== false ) {
-                if ( $res !== true ) {
-                    $ret['debug'] = $res->getMessage();
-                    $error = true;
-                } else {
-                    $ret['res'] = true;
-                }
-            }
-            $this->_report[] = $ret;
-
-            $ret = array(
-                'message'   => _T("PDF Models"),
-                'res'       => false
-            );
+            //Install PDF models
             $res = $models->installInit($pdfmodels_fields, false);
+            $this->_proceedReport(_T("PDF Models"), $res);
 
-            if ( $res !== false ) {
-                if ( $res !== true ) {
-                    $ret['debug'] = $res->getMessage();
-                    $error = true;
-                } else {
-                    $ret['res'] = true;
-                }
-            }
-            $this->_report[] = $ret;
-
-            return !$error;
+            return !$this->_error;
         } else if ( $this->isUpgrade() ) {
             $preferences = new Preferences();
             $preferences->pref_admin_login = $this->_admin_login;
@@ -892,6 +821,29 @@ define("PREFIX_DB", "' . $this->_db_prefix . '");
         }
     }
 
+    /**
+     * Proceed installation report for each Entity/Repository
+     *
+     * @param string $msg Report message title
+     * @param mixed  $res Initialialization result
+     *
+     * @return void
+     */
+    private function _proceedReport($msg, $res)
+    {
+        $ret = array(
+            'message'   => $msg,
+            'res'       => false
+        );
+
+        if ( $res !== true ) {
+            $ret['debug'] = $res->getMessage();
+            $this->_error = true;
+        } else {
+            $ret['res'] = true;
+        }
+        $this->_report[] = $ret;
+    }
     /**
      * Retrieve galette initialization report
      *
