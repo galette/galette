@@ -269,14 +269,14 @@
         var _is_checked = true;
         var _bind_check = function(){
             $('#checkall').click(function(){
-                $('table.listing :checkbox[name=member_sel[]]').each(function(){
+                $('table.listing :checkbox[name="member_sel[]"]').each(function(){
                     this.checked = _is_checked;
                 });
                 _is_checked = !_is_checked;
                 return false;
             });
             $('#checkinvert').click(function(){
-                $('table.listing :checkbox[name=member_sel[]]').each(function(){
+                $('table.listing :checkbox[name="member_sel[]"]').each(function(){
                     this.checked = !$(this).is(':checked');
                 });
                 return false;
