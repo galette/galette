@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2013-07-24 21:24+0200\n"
+"PO-Revision-Date: 2013-07-24 21:35+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -33,6 +33,10 @@ msgstr "View, search into and filter member's list"
 #: ../lib/Galette/Core/Picture.php:815
 msgid "The uploaded file was only partially uploaded"
 msgstr "The uploaded file was only partially uploaded"
+
+#: ../templates/default/preferences.tpl:87
+msgid "LinkedIn"
+msgstr "LinkedIn"
 
 #: ../ajouter_contribution.php:392
 msgid "Contribution card"
@@ -441,7 +445,7 @@ msgstr "[view]"
 msgid "Contact information:"
 msgstr "Contact information:"
 
-#: ../lib/Galette/Entity/Reminder.php:301
+#: ../lib/Galette/Entity/Reminder.php:294
 msgid "%name (#%id - %days days)"
 msgstr "%name (#%id - %days days)"
 
@@ -480,6 +484,10 @@ msgstr ""
 #: ../templates/default/preferences.tpl:54
 msgid "from preferences"
 msgstr "from preferences"
+
+#: ../lib/Galette/Entity/Reminder.php:268
+msgid "A problem happened while sending late membership mail"
+msgstr "A problem happened while sending late membership mail"
 
 #: ../lib/Galette/Core/Picture.php:825
 msgid "Unknown upload error"
@@ -1836,11 +1844,9 @@ msgstr "No database name"
 msgid "Number of label lines:"
 msgstr "Number of label lines:"
 
-#: ../lib/Galette/Entity/DynamicFields.php:125
-#: ../templates/default/gestion_adherents.tpl:254
-#: ../templates/default/desktop.tpl:9
-msgid "Contributions"
-msgstr "Contributions"
+#: ../lib/Galette/Entity/Reminder.php:259
+msgid "Sent reminder mail for late membership"
+msgstr "Sent reminder mail for late membership"
 
 #: ../templates/default/preferences.tpl:147
 msgid "Admin and staff only"
@@ -2138,10 +2144,6 @@ msgstr "Member's name"
 #: ../templates/default/voir_adherent.tpl:74
 msgid "Nickname:"
 msgstr "Nickname:"
-
-#: ../lib/Galette/Entity/Reminder.php:277
-msgid "A problem happened while sending %membership membership mail"
-msgstr "A problem happened while sending %membership membership mail"
 
 #: ../lib/Galette/Entity/Transaction.php:94
 #: ../templates/default/ajouter_transaction.tpl:22
@@ -3997,7 +3999,7 @@ msgstr "Begin date"
 msgid "- Invalid format of beginning of membership."
 msgstr "- Invalid format of beginning of membership."
 
-#: ../lib/Galette/Entity/Reminder.php:288
+#: ../lib/Galette/Entity/Reminder.php:281
 msgid "Unable to send %membership reminder (no mail address)."
 msgstr "Unable to send %membership reminder (no mail address)."
 
@@ -4414,10 +4416,6 @@ msgstr "No inactive plugin."
 msgid "Title '%name' has been successfully deleted."
 msgstr "Title '%name' has been successfully deleted."
 
-#: ../lib/Galette/Entity/Reminder.php:260
-msgid "Sent reminder mail for %membership membership"
-msgstr "Sent reminder mail for %membership membership"
-
 #: ../templates/default/plugins.tpl:70
 msgid "Plugin database initialization: %name"
 msgstr "Plugin database initialization: %name"
@@ -4713,9 +4711,9 @@ msgstr "Description:"
 msgid "Add new contribution in database"
 msgstr "Add new contribution in database"
 
-#: ../templates/default/preferences.tpl:87
-msgid "LinkedIn"
-msgstr "LinkedIn"
+#: ../lib/Galette/Entity/Reminder.php:270
+msgid "A problem happened while sending impending membership mail"
+msgstr "A problem happened while sending impending membership mail"
 
 #: ../templates/default/preferences.tpl:190
 #: ../templates/default/preferences.tpl:191
@@ -5075,6 +5073,10 @@ msgstr ""
 "visilbe on the members list.<br/>If you've uploaded a photo, it will be "
 "displayed on the trombinoscope page.<br/>Note that administrators can "
 "disabled public pages, this setting will have no effect in that case."
+
+#: ../lib/Galette/Entity/Reminder.php:261
+msgid "Sent reminder mail for impending membership"
+msgstr "Sent reminder mail for impending membership"
 
 #: ../includes/i18n.inc.php:336
 msgid "Vice-treasurer"
@@ -5481,6 +5483,12 @@ msgstr "Mark '%field' as (not) required"
 #: ../templates/default/mailing_adherents.tpl:66
 msgid "Preview your mailing"
 msgstr "Preview your mailing"
+
+#: ../lib/Galette/Entity/DynamicFields.php:125
+#: ../templates/default/gestion_adherents.tpl:254
+#: ../templates/default/desktop.tpl:9
+msgid "Contributions"
+msgstr "Contributions"
 
 #: ../templates/default/page.tpl:137
 msgid "Public pages"

@@ -18,6 +18,10 @@ msgstr ""
 msgid "The uploaded file was only partially uploaded"
 msgstr ""
 
+#: ../templates/default/preferences.tpl:87
+msgid "LinkedIn"
+msgstr ""
+
 #: ../ajouter_contribution.php:392
 msgid "Contribution card"
 msgstr ""
@@ -388,7 +392,7 @@ msgstr ""
 msgid "Contact information:"
 msgstr ""
 
-#: ../lib/Galette/Entity/Reminder.php:301
+#: ../lib/Galette/Entity/Reminder.php:294
 msgid "%name (#%id - %days days)"
 msgstr ""
 
@@ -414,6 +418,10 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:54
 msgid "from preferences"
+msgstr ""
+
+#: ../lib/Galette/Entity/Reminder.php:268
+msgid "A problem happened while sending late membership mail"
 msgstr ""
 
 #: ../lib/Galette/Core/Picture.php:825
@@ -1658,9 +1666,8 @@ msgstr ""
 msgid "Number of label lines:"
 msgstr ""
 
-#: ../lib/Galette/Entity/DynamicFields.php:125 ../templates/default/gestion_adherents.tpl:254
-#: ../templates/default/desktop.tpl:9
-msgid "Contributions"
+#: ../lib/Galette/Entity/Reminder.php:259
+msgid "Sent reminder mail for late membership"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:147
@@ -1935,10 +1942,6 @@ msgstr ""
 #: ../champs_adherents.php:43 ../includes/fields_defs/members_fields.php:83
 #: ../templates/default/member.tpl:90 ../templates/default/voir_adherent.tpl:74
 msgid "Nickname:"
-msgstr ""
-
-#: ../lib/Galette/Entity/Reminder.php:277
-msgid "A problem happened while sending %membership membership mail"
 msgstr ""
 
 #: ../lib/Galette/Entity/Transaction.php:94 ../templates/default/ajouter_transaction.tpl:22
@@ -3590,7 +3593,7 @@ msgstr ""
 msgid "- Invalid format of beginning of membership."
 msgstr ""
 
-#: ../lib/Galette/Entity/Reminder.php:288
+#: ../lib/Galette/Entity/Reminder.php:281
 msgid "Unable to send %membership reminder (no mail address)."
 msgstr ""
 
@@ -3958,10 +3961,6 @@ msgstr ""
 msgid "Title '%name' has been successfully deleted."
 msgstr ""
 
-#: ../lib/Galette/Entity/Reminder.php:260
-msgid "Sent reminder mail for %membership membership"
-msgstr ""
-
 #: ../templates/default/plugins.tpl:70
 msgid "Plugin database initialization: %name"
 msgstr ""
@@ -4229,8 +4228,8 @@ msgstr ""
 msgid "Add new contribution in database"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:87
-msgid "LinkedIn"
+#: ../lib/Galette/Entity/Reminder.php:270
+msgid "A problem happened while sending impending membership mail"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:190 ../templates/default/preferences.tpl:191
@@ -4543,6 +4542,10 @@ msgstr ""
 
 #: ../templates/default/member.tpl:255
 msgid "If you check this box (and if you are up to date with your contributions), your full name, website adress ad other informations will be publically visilbe on the members list.<br/>If you've uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case."
+msgstr ""
+
+#: ../lib/Galette/Entity/Reminder.php:261
+msgid "Sent reminder mail for impending membership"
 msgstr ""
 
 #: ../includes/i18n.inc.php:336
@@ -4922,6 +4925,11 @@ msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:66
 msgid "Preview your mailing"
+msgstr ""
+
+#: ../lib/Galette/Entity/DynamicFields.php:125 ../templates/default/gestion_adherents.tpl:254
+#: ../templates/default/desktop.tpl:9
+msgid "Contributions"
 msgstr ""
 
 #: ../templates/default/page.tpl:137

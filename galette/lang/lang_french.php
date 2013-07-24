@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Wed Jul 24 19:24:27 2013 (GMT)
+// This file was automatically generated on Wed Jul 24 19:36:29 2013 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -72,9 +72,6 @@ $lang['Manage PDF models'] = 'Gestion des modèles PDF';
 // ../ajax_plugins_initdb.php:171 ../install/index.php:872 
 $lang['ALTER Operation not allowed'] = 'Opération ALTER non autorisée';
 
-// ../install/index.php:400 
-$lang['Galette requires at least PHP version %ver!'] = 'Galette requiert PHP en version %ver au minimum!';
-
 // ../templates/default/gestion_pdf.tpl:51 
 $lang['Contribution full date'] = 'Date complète de la contribution';
 
@@ -107,6 +104,9 @@ $lang['no transaction'] = 'aucune transaction';
 
 // ../templates/default/gestion_pdf.tpl:53 
 $lang['Contribution year'] = 'Année de la contribution';
+
+// ../lib/Galette/Entity/DynamicFields.php:125 ../templates/default/gestion_adherents.tpl:254 ../templates/default/desktop.tpl:9 
+$lang['Contributions'] = 'Contributions';
 
 // ../includes/i18n.inc.php:337 
 $lang['Secretary'] = 'Secrétaire';
@@ -288,9 +288,6 @@ $lang['Manage mailings'] = 'Gestion des E-Mailings';
 // ../lib/Galette/IO/Charts.php:195 
 $lang['Never contribute'] = 'N\'a jamais cotisé';
 
-// ../lib/Galette/Entity/Group.php:595 
-$lang['Group `%subgroupname` is a child of `%groupname`, cnanot be setted as parent!'] = 'Le groupe `%subgroupname` est un enfant de `%groupname`, il ne peut être défini comme son parent&nbsp;!';
-
 // ../includes/i18n.inc.php:356 
 $lang['donation in kind'] = 'don en nature';
 
@@ -447,6 +444,9 @@ $lang['Currently loading...'] = 'Chargement en cours...';
 // ../templates/default/public_page.tpl:52 
 $lang['Home'] = 'Accueil';
 
+// ../lib/Galette/Entity/Reminder.php:268 
+$lang['A problem happened while sending late membership mail'] = 'Un problème est survenu lors de l\'envoi du courriel d\'adhésion en retard';
+
 // ../templates/default/preferences.tpl:201 
 $lang['PHP mail() function'] = 'Fonction PHP mail()';
 
@@ -504,8 +504,8 @@ $lang['Table name'] = 'Nom de la table';
 // ../templates/default/config_fields.tpl:12 
 $lang['Add new category'] = 'Ajouter une catégorie';
 
-// ../lib/Galette/Entity/Reminder.php:260 
-$lang['Sent reminder mail for %membership membership'] = 'Courriel de rappel envoyé pour l\'adhésion %membership';
+// ../templates/default/member.tpl:427 
+$lang['Member will be notified by mail his account has been modified.'] = 'L\'adhérent sera informé par courriel si son compte a été modifié.';
 
 // ../templates/default/gestion_groupes.tpl:134 
 $lang['The group name you have requested already exits in the database.'] = 'Le nom de groupe que vous avez demandé existe déjà dans la base.';
@@ -521,9 +521,6 @@ $lang['Status'] = 'Statut';
 
 // ../ajax_plugins_initdb.php:163 ../install/index.php:861 
 $lang['DROP operation not allowed'] = 'Opération DROP non autorisée';
-
-// ../templates/default/advanced_search.tpl:160 
-$lang['or'] = 'ou';
 
 // ../lostpasswd.php:146 
 $lang['Your account (%s) do not contain any valid mail adress'] = 'Votre compte (%s) ne contient pas d\'adresse email valide';
@@ -561,8 +558,8 @@ $lang['- You must provide a login for SMTP authentication.'] = '- Vous devez fou
 // ../templates/default/reminder.tpl:9 ../templates/default/reminder.tpl:16 
 $lang['preview'] = 'prévisualiser';
 
-// ../templates/default/gestion_contributions.tpl:5 
-$lang['until'] = 'au';
+// ../lib/Galette/Entity/Reminder.php:270 
+$lang['A problem happened while sending impending membership mail'] = 'Un problème est survenu lors de l\'envoi du courriel d\'adhésion à échéance proche';
 
 // ../lib/Galette/Entity/Transaction.php:371 
 $lang['Transaction added'] = 'Transaction ajoutée';
@@ -786,7 +783,7 @@ $lang['You will be redirected in %timeout seconds. If not, please click on the f
 // ../change_passwd.php:92 
 $lang['This link is no longer valid. You should <a href=\'lostpasswd.php\'>ask to retrieve your password</a> again.'] = 'Ce lien n\'est plus valide. Vous devriez <a href=\'lostpasswd.php\'>demander la récupération de votre mot de passe</a> à nouveau';
 
-// ../lib/Galette/Entity/Reminder.php:288 
+// ../lib/Galette/Entity/Reminder.php:281 
 $lang['Unable to send %membership reminder (no mail address).'] = 'Impossible d\'envoyer le rappel %membership (pas d\'adresse courriel).';
 
 // ../templates/default/preferences.tpl:175 ../templates/default/preferences.tpl:176 
@@ -894,8 +891,8 @@ $lang['Galette installation'] = 'Installation de Galette';
 // ../templates/default/preferences.tpl:283 
 $lang['Label height:'] = 'Hauteur étiquette&nbsp;:';
 
-// ../templates/default/mailing_adherents.tpl:80 
-$lang['Modifiy mailing'] = 'Modification E-Mailing';
+// ../templates/default/advanced_search.tpl:160 
+$lang['or'] = 'ou';
 
 // ../gestion_intitules.php:97 
 $lang['- Cannot delete this label: it\'s still used'] = '- Ne peut supprimer cet intitulé&nbsp;: il est toujours utilisé';
@@ -954,8 +951,8 @@ $lang['please create a member'] = 'veuillez créer un adhérent';
 // ../install/index.php:644 
 $lang['Port:'] = 'Port&nbsp;:';
 
-// ../templates/default/ajax_groups.tpl:41 
-$lang['No groups has been selected yet.'] = 'Aucun groupe n\'a encore été sélectionné.';
+// ../lib/Galette/Entity/Reminder.php:259 
+$lang['Sent reminder mail for late membership'] = 'Courriel de rappel envoyé pour l\'adhésion en retard';
 
 // ../templates/default/gestion_adherents.tpl:248 ../templates/default/gestion_contributions.tpl:247 ../templates/default/voir_adherent.tpl:20 
 $lang['Modification'] = 'Modification';
@@ -987,7 +984,7 @@ $lang['The tables have not been totally created, it may be a permission problem.
 // ../gestion_titres.php:103 
 $lang['Title \'%s\' has been successfully added.'] = 'Le titre « %s » a été ajouté avec succès.';
 
-// ../lib/Galette/Entity/Reminder.php:301 
+// ../lib/Galette/Entity/Reminder.php:294 
 $lang['%name (#%id - %days days)'] = '%name (#%id - %days jours)';
 
 // ../templates/default/export.tpl:85 
@@ -1200,6 +1197,9 @@ $lang['Galette-related data'] = 'Informations relatives à Galette';
 // ../templates/default/member.tpl:30 ../templates/default/voir_adherent.tpl:60 
 $lang['Picture'] = 'Image';
 
+// ../lib/Galette/Core/CheckModules.php:140 ../lib/Galette/Core/CheckModules.php:142 
+$lang['\'openssl\' support'] = 'support « openssl »';
+
 // ../templates/default/preferences.tpl:370 
 $lang['Year:'] = 'Année&nbsp;:';
 
@@ -1248,8 +1248,8 @@ $lang['- Non-valid E-Mail address!'] = '- Adresse courriel non valide&nbsp;!';
 // ../ajouter_transaction.php:165 
 $lang['Transaction'] = 'Transaction';
 
-// ../lib/Galette/Entity/Reminder.php:277 
-$lang['A problem happened while sending %membership membership mail'] = 'Un problème est survenu lors de l\'envoi du courriel d\'adhésion %membership';
+// ../lib/Galette/Entity/Group.php:595 
+$lang['Group `%subgroupname` is a child of `%groupname`, cnanot be setted as parent!'] = 'Le groupe `%subgroupname` est un enfant de `%groupname`, il ne peut être défini comme son parent&nbsp;!';
 
 // ../templates/default/configurer_fiche_content.tpl:46 
 $lang['Send down \'%s\' field'] = 'Faire descendre le champ « %s »';
@@ -1713,6 +1713,9 @@ $lang['Attached contributions'] = 'Contributions attachées';
 // ../attendance_sheet.php:195 ../groups_list.php:142 ../lib/Galette/Filters/MembersList.php:294 ../lib/Galette/Entity/PdfModel.php:471 ../templates/default/gestion_adherents.tpl:65 ../templates/default/gestion_adherents.tpl:219 ../templates/default/gestion_adherents.tpl:225 ../templates/default/ajax_groups.tpl:6 ../templates/default/gestion_intitule_content.tpl:10 ../templates/default/plugins.tpl:5 ../templates/default/group_persons.tpl:5 ../templates/default/export.tpl:21 ../templates/default/export.tpl:57 ../templates/default/ajax_members.tpl:6 ../templates/default/configurer_fiche_content.tpl:5 ../templates/default/liste_membres.tpl:23 
 $lang['Name'] = 'Nom';
 
+// ../install/index.php:1448 
+$lang['PDF models were successfully stored.'] = 'Les modèles PDF ont été enregistrés avec succès.';
+
 // ../templates/default/gestion_transactions.tpl:16 
 $lang['transactions'] = 'transactions';
 
@@ -1971,8 +1974,8 @@ $lang['This comment is only displayed for admins and staff members.'] = 'Ce comm
 // ../templates/default/preferences.tpl:162 
 $lang['Mail settings'] = 'Paramètres courriel';
 
-// ../install/index.php:1448 
-$lang['PDF models were successfully stored.'] = 'Les modèles PDF ont été enregistrés avec succès.';
+// ../templates/default/mailing_adherents.tpl:80 
+$lang['Modifiy mailing'] = 'Modification E-Mailing';
 
 // ../templates/default/plugins.tpl:2 ../templates/default/plugins.tpl:14 
 $lang['Active plugins'] = 'Plugins actifs';
@@ -2033,6 +2036,9 @@ $lang['Selected status (%s) is already in use in <a href=\'voir_adherent.php?id_
 
 // ../templates/default/preferences.tpl:97 
 $lang['Galette\'s parameters'] = 'Paramètres Galette';
+
+// ../templates/default/ajax_groups.tpl:41 
+$lang['No groups has been selected yet.'] = 'Aucun groupe n\'a encore été sélectionné.';
 
 // ../ajouter_adherent.php:251 
 $lang['An error occured adding member to its groups.'] = 'Une erreur est survenue lors de l\'ajout des groupes du membre.';
@@ -2313,9 +2319,6 @@ $lang['Related transaction informations'] = 'Informations sur la transaction li�
 // ../lib/Galette/Core/Picture.php:784 
 $lang['File is too big. Maximum allowed size is %d'] = 'Le fichier est trop gros. La taille maximale autorisée est de %d';
 
-// ../templates/default/preferences.tpl:87 
-$lang['LinkedIn'] = 'LinkedIn';
-
 // ../ajouter_transaction.php:80 
 $lang['Unable to detach contribution from transaction'] = 'Impossible de détacher la contribution de la transaction';
 
@@ -2412,8 +2415,8 @@ $lang['unreachable members:'] = 'membres qui n\'ont pu être joints&nbsp;:';
 // ../editer_champ.php:150 
 $lang['An error occured storing the field.'] = 'Une erreur est survenue lors de l\'enregistrement du champ.';
 
-// ../gestion_intitules.php:90 ../gestion_intitules.php:106 ../gestion_intitules.php:185 ../gestion_intitules.php:221 ../gestion_intitules.php:302 
-$lang['- Label does not exist'] = '- Cet intitulé n\'existe pas';
+// ../templates/default/preferences.tpl:87 
+$lang['LinkedIn'] = 'LinkedIn';
 
 // ../templates/default/history.tpl:59 
 $lang['Action'] = 'Action';
@@ -2475,9 +2478,6 @@ $lang['Invoice'] = 'Facture';
 // ../install/index.php:461 
 $lang['PHP Modules'] = 'Modules PHP';
 
-// ../templates/default/member.tpl:427 
-$lang['Member will be notified by mail his account has been modified.'] = 'L\'adhérent sera informé par courriel si son compte a été modifié.';
-
 // ../lib/Galette/Core/Preferences.php:388 
 $lang['%name association\'s %status'] = '%status de l\'association %name';
 
@@ -2492,6 +2492,9 @@ $lang['Size'] = 'Taille';
 
 // ../ajax_plugins_initdb.php:149 ../install/index.php:841 
 $lang['SELECT operation not allowed'] = 'Opération SELECT non autorisée';
+
+// ../lib/Galette/Entity/Reminder.php:261 
+$lang['Sent reminder mail for impending membership'] = 'Courriel de rappel envoyé pour l\' adhésion à échéance proche';
 
 // ../mailing_adherents.php:126 
 $lang['Please type an object for the message.'] = 'Veuillez indiquer un objet pour le message.';
@@ -2610,8 +2613,8 @@ $lang['Manage statuses'] = 'Gestion des statuts';
 // ../templates/default/traduire_libelles.tpl:6 
 $lang['Choose label to translate'] = 'Choisissez le libellé à traduire';
 
-// ../lib/Galette/Core/CheckModules.php:140 ../lib/Galette/Core/CheckModules.php:142 
-$lang['\'openssl\' support'] = 'support « openssl »';
+// ../gestion_intitules.php:90 ../gestion_intitules.php:106 ../gestion_intitules.php:185 ../gestion_intitules.php:221 ../gestion_intitules.php:302 
+$lang['- Label does not exist'] = '- Cet intitulé n\'existe pas';
 
 // ../templates/default/desktop.tpl:3 
 $lang['Activities'] = 'Activités';
@@ -3396,6 +3399,9 @@ $lang['%s attendees'] = '%s présents';
 // ../templates/default/page.tpl:132 
 $lang['My information'] = 'Mes informations';
 
+// ../templates/default/gestion_contributions.tpl:5 
+$lang['until'] = 'au';
+
 // ../templates/default/member.tpl:32 ../templates/default/preferences.tpl:29 ../templates/default/preferences.tpl:341 
 $lang['Delete image'] = 'Supprimer l\'image';
 
@@ -3585,8 +3591,8 @@ $lang['An error occured sending photo :('] = 'Une erreur est survenue lors de l\
 // ../gestion_titres.php:65 
 $lang['Title \'%name\' has been successfully deleted.'] = 'Le titre « %name » a été supprimé avec succès.';
 
-// ../lib/Galette/Entity/DynamicFields.php:125 ../templates/default/gestion_adherents.tpl:254 ../templates/default/desktop.tpl:9 
-$lang['Contributions'] = 'Contributions';
+// ../install/index.php:400 
+$lang['Galette requires at least PHP version %ver!'] = 'Galette requiert PHP en version %ver au minimum!';
 
 // ../templates/default/gestion_textes.tpl:67 
 $lang['Member\'s password'] = 'Mot de passe de l\'adhérent';
