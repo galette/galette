@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2013-07-24 21:35+0200\n"
+"PO-Revision-Date: 2013-07-24 23:57+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -440,6 +440,10 @@ msgstr "Password:"
 msgid "[view]"
 msgstr "[view]"
 
+#: ../templates/default/gestion_textes.tpl:91
+msgid "Membership expired since"
+msgstr "Membership expired since"
+
 #: ../templates/default/member.tpl:136
 #: ../templates/default/voir_adherent.tpl:105
 msgid "Contact information:"
@@ -480,6 +484,10 @@ msgstr ""
 "internal call. '<em>file://</em>' for a direct file call, '<em>get://</em>' "
 "or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in "
 "those cases)."
+
+#: ../templates/default/gestion_textes.tpl:87
+msgid "Membership remaining days"
+msgstr "Membership remaining days"
 
 #: ../templates/default/preferences.tpl:54
 msgid "from preferences"
@@ -1725,7 +1733,7 @@ msgstr "Label width:"
 msgid "- Empty transaction description!"
 msgstr "- Empty transaction description!"
 
-#: ../templates/default/gestion_textes.tpl:100
+#: ../templates/default/gestion_textes.tpl:106
 #: ../templates/default/gestion_pdf.tpl:76
 msgid "Show existing variables"
 msgstr "Show existing variables"
@@ -1814,9 +1822,9 @@ msgstr "View contributions"
 msgid "Never contributed: Registered %days days ago (since %date)"
 msgstr "Never contributed: Registered %days days ago (since %date)"
 
-#: ../templates/default/gestion_textes.tpl:69
-msgid "Galette's change password URI"
-msgstr "Galette's change password URI"
+#: ../templates/default/gestion_pdf.tpl:33
+msgid "Member's name"
+msgstr "Member's name"
 
 #: ../templates/default/ajax_attendance_sheet_details.tpl:22
 msgid "With photos?"
@@ -2134,10 +2142,9 @@ msgstr "Galette has been successfully updated!"
 msgid "Cannot activate plugin."
 msgstr "Cannot activate plugin."
 
-#: ../templates/default/gestion_textes.tpl:49
-#: ../templates/default/gestion_pdf.tpl:33
-msgid "Member's name"
-msgstr "Member's name"
+#: ../templates/default/gestion_textes.tpl:69
+msgid "Galette's change password URI"
+msgstr "Galette's change password URI"
 
 #: ../champs_adherents.php:43 ../includes/fields_defs/members_fields.php:83
 #: ../templates/default/member.tpl:90
@@ -2875,6 +2882,10 @@ msgid ""
 msgstr ""
 "In order to be updated, Galette needs write permission on files listed above."
 
+#: ../templates/default/gestion_textes.tpl:49
+msgid "Member's name and surname"
+msgstr "Member's name and surname"
+
 #: ../templates/default/preferences.tpl:258
 #: ../templates/default/preferences.tpl:375
 msgid "Vertical margins:"
@@ -3338,6 +3349,11 @@ msgstr "Vice-secretary"
 #: ../groups_list.php:136
 msgid "Managers:"
 msgstr "Managers:"
+
+#: ../templates/default/gestion_textes.tpl:87
+#: ../templates/default/gestion_textes.tpl:91
+msgid "available only for reminders"
+msgstr "available only for reminders"
 
 #: ../templates/default/ajouter_contribution.tpl:135
 #: ../templates/default/export.tpl:110
@@ -5998,9 +6014,6 @@ msgstr "Donation"
 
 #~ msgid "ending on"
 #~ msgstr "ending on"
-
-#~ msgid "remaining days"
-#~ msgstr "remaining days"
 
 #~ msgid "since"
 #~ msgstr "since"

@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Wed Jul 24 19:36:29 2013 (GMT)
+// This file was automatically generated on Wed Jul 24 21:59:03 2013 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -147,8 +147,8 @@ $lang['Mrs.'] = 'Mrs.';
 // ../lib/Galette/Entity/DynamicFields.php:110 ../lib/Galette/DynamicFieldsTypes/Choice.php:76 
 $lang['choice'] = 'choice';
 
-// ../templates/default/member.tpl:143 ../templates/default/preferences.tpl:36 
-$lang[' (continuation)'] = ' (continuation)';
+// ../templates/default/ajax_mailing_preview.tpl:5 
+$lang['Headers'] = 'Headers';
 
 // ../includes/fields_defs/pdfmodels_fields.php:111 ../includes/fields_defs/pdfmodels_fields.php:156 ../templates/default/ajouter_transaction.tpl:59 ../templates/default/gestion_contributions.tpl:117 ../templates/default/ajouter_contribution.tpl:27 ../templates/default/gestion_transactions.tpl:58 ../templates/default/advanced_search.tpl:110 
 $lang['Amount'] = 'Amount';
@@ -261,8 +261,8 @@ $lang['None'] = 'None';
 // ../templates/default/gestion_textes.tpl:73 
 $lang['available only for new password request'] = 'available only for new password request';
 
-// ../templates/default/preferences.tpl:75 
-$lang['Google+'] = 'Google+';
+// ../templates/default/gestion_adherents.tpl:192 
+$lang['%membername: edit informations'] = '%membername: edit informations';
 
 // ../lib/Galette/Entity/Contribution.php:566 
 $lang['Fail to add new contribution.'] = 'Fail to add new contribution.';
@@ -380,6 +380,9 @@ $lang['Lost your password?'] = 'Lost your password?';
 
 // ../templates/default/group.tpl:26 ../templates/default/group.tpl:29 
 $lang['Parent group:'] = 'Parent group:';
+
+// ../templates/default/preferences.tpl:75 
+$lang['Google+'] = 'Google+';
 
 // ../templates/default/preferences.tpl:4 
 $lang['General'] = 'General';
@@ -639,7 +642,7 @@ $lang['Enter here the text that will be automatically set as signature for all o
 // ../templates/default/plugins.tpl:27 
 $lang['Initialize \'%name\' database'] = 'Initialize \'%name\' database';
 
-// ../templates/default/gestion_textes.tpl:49 ../templates/default/gestion_pdf.tpl:33 
+// ../templates/default/gestion_pdf.tpl:33 
 $lang['Member\'s name'] = 'Member\'s name';
 
 // ../preferences.php:199 
@@ -873,8 +876,8 @@ $lang['Click here to deactivate plugin \'%name\''] = 'Click here to deactivate p
 // ../preferences.php:318 
 $lang['Preferences has been saved.'] = 'Preferences has been saved.';
 
-// ../templates/default/ajax_mailing_preview.tpl:5 
-$lang['Headers'] = 'Headers';
+// ../templates/default/member.tpl:143 ../templates/default/preferences.tpl:36 
+$lang[' (continuation)'] = ' (continuation)';
 
 // ../install/index.php:507 
 $lang['To work as excpected, Galette needs write permission on files listed above.'] = 'To work as excpected, Galette needs write permission on files listed above.';
@@ -1536,8 +1539,8 @@ $lang['Show contributions since'] = 'Show contributions since';
 // ../templates/default/editer_champ.tpl:46 
 $lang['Repeat:'] = 'Repeat:';
 
-// ../templates/default/gestion_adherents.tpl:192 
-$lang['%membername: edit informations'] = '%membername: edit informations';
+// ../lib/Galette/Entity/Adherent.php:1285 ../templates/default/member.tpl:268 ../templates/default/gestion_contributions.tpl:31 
+$lang['Inactive'] = 'Inactive';
 
 // ../templates/default/preferences.tpl:313 
 $lang['(65 characters max)'] = '(65 characters max)';
@@ -1599,8 +1602,8 @@ $lang['Send reminders to late members'] = 'Send reminders to late members';
 // ../lib/Galette/IO/Charts.php:242 ../templates/default/reminder.tpl:15 
 $lang['Late'] = 'Late';
 
-// ../templates/default/gestion_transactions.tpl:12 ../templates/default/page.tpl:121 
-$lang['Add a transaction'] = 'Add a transaction';
+// ../templates/default/gestion_textes.tpl:49 
+$lang['Member\'s name and surname'] = 'Member\'s name and surname';
 
 // ../advanced_search.php:118 ../lib/Galette/Entity/Contribution.php:1074 ../templates/default/gestion_contributions.tpl:15 ../templates/default/ajouter_contribution.tpl:86 
 $lang['Other'] = 'Other';
@@ -1968,6 +1971,9 @@ $lang['Galette has been successfully installed!'] = 'Galette has been successful
 // ../reminder.php:101 
 $lang['Reminder has not been sent:'] = 'Reminder has not been sent:';
 
+// ../templates/default/gestion_textes.tpl:91 
+$lang['Membership expired since'] = 'Membership expired since';
+
 // ../templates/default/member.tpl:351 
 $lang['This comment is only displayed for admins and staff members.'] = 'This comment is only displayed for admins and staff members.';
 
@@ -2052,6 +2058,9 @@ $lang['Create'] = 'Create';
 // ../ajax_plugins_initdb.php:247 ../install/index.php:1523 
 $lang['Installation complete !'] = 'Installation complete !';
 
+// ../templates/default/gestion_textes.tpl:87 
+$lang['Membership remaining days'] = 'Membership remaining days';
+
 // ../templates/default/mailing_adherents.tpl:59 ../templates/default/mailing_adherents.tpl:81 ../templates/default/reminder.tpl:28 
 $lang['Send'] = 'Send';
 
@@ -2120,9 +2129,6 @@ $lang['The configured post contribution script has failed.'] = 'The configured p
 
 // ../ajouter_adherent.php:347 ../voir_adherent.php:169 
 $lang['Member Profile'] = 'Member Profile';
-
-// ../lib/Galette/Entity/Adherent.php:1285 ../templates/default/member.tpl:268 ../templates/default/gestion_contributions.tpl:31 
-$lang['Inactive'] = 'Inactive';
 
 // ../install/index.php:751 
 $lang['Go back'] = 'Go back';
@@ -2256,6 +2262,9 @@ $lang['Delete failed'] = 'Delete failed';
 // ../templates/default/preferences.tpl:131 
 $lang['(Months)'] = '(Months)';
 
+// ../templates/default/gestion_textes.tpl:87 ../templates/default/gestion_textes.tpl:91 
+$lang['available only for reminders'] = 'available only for reminders';
+
 // ../templates/default/preferences.tpl:359 
 $lang['MSN'] = 'MSN';
 
@@ -2327,6 +2336,9 @@ $lang['Interpret HTML'] = 'Interpret HTML';
 
 // ../ajax_plugins_initdb.php:131 ../install/index.php:816 
 $lang['CREATE operation allowed'] = 'CREATE operation allowed';
+
+// ../templates/default/gestion_transactions.tpl:12 ../templates/default/page.tpl:121 
+$lang['Add a transaction'] = 'Add a transaction';
 
 // ../lib/Galette/IO/Pdf.php:201 
 $lang['Not a GIF file '] = 'Not a GIF file ';
@@ -3351,7 +3363,7 @@ $lang['Filter'] = 'Filter';
 // ../groups_list.php:162 
 $lang['groups_list'] = 'groups_list';
 
-// ../templates/default/gestion_textes.tpl:100 ../templates/default/gestion_pdf.tpl:76 
+// ../templates/default/gestion_textes.tpl:106 ../templates/default/gestion_pdf.tpl:76 
 $lang['Show existing variables'] = 'Show existing variables';
 
 // ../lib/Galette/IO/Charts.php:292 

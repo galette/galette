@@ -388,6 +388,10 @@ msgstr ""
 msgid "[view]"
 msgstr ""
 
+#: ../templates/default/gestion_textes.tpl:91
+msgid "Membership expired since"
+msgstr ""
+
 #: ../templates/default/member.tpl:136 ../templates/default/voir_adherent.tpl:105
 msgid "Contact information:"
 msgstr ""
@@ -414,6 +418,10 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:156
 msgid "Enter a script URI that would be called after adding a new contribution.<br/>Script URI must be prefixed by one of '<em>galette://</em>' for Galette internal call. '<em>file://</em>' for a direct file call, '<em>get://</em>' or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in those cases)."
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:87
+msgid "Membership remaining days"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:54
@@ -1550,7 +1558,7 @@ msgstr ""
 msgid "- Empty transaction description!"
 msgstr ""
 
-#: ../templates/default/gestion_textes.tpl:100 ../templates/default/gestion_pdf.tpl:76
+#: ../templates/default/gestion_textes.tpl:106 ../templates/default/gestion_pdf.tpl:76
 #: ../templates/default/gestion_pdf.tpl:76
 msgid "Show existing variables"
 msgstr ""
@@ -1636,8 +1644,8 @@ msgstr ""
 msgid "Never contributed: Registered %days days ago (since %date)"
 msgstr ""
 
-#: ../templates/default/gestion_textes.tpl:69
-msgid "Galette's change password URI"
+#: ../templates/default/gestion_pdf.tpl:33
+msgid "Member's name"
 msgstr ""
 
 #: ../templates/default/ajax_attendance_sheet_details.tpl:22
@@ -1935,8 +1943,8 @@ msgstr ""
 msgid "Cannot activate plugin."
 msgstr ""
 
-#: ../templates/default/gestion_textes.tpl:49 ../templates/default/gestion_pdf.tpl:33
-msgid "Member's name"
+#: ../templates/default/gestion_textes.tpl:69
+msgid "Galette's change password URI"
 msgstr ""
 
 #: ../champs_adherents.php:43 ../includes/fields_defs/members_fields.php:83
@@ -2619,6 +2627,10 @@ msgstr ""
 msgid "In order to be updated, Galette needs write permission on files listed above."
 msgstr ""
 
+#: ../templates/default/gestion_textes.tpl:49
+msgid "Member's name and surname"
+msgstr ""
+
 #: ../templates/default/preferences.tpl:258 ../templates/default/preferences.tpl:375
 msgid "Vertical margins:"
 msgstr ""
@@ -3026,6 +3038,10 @@ msgstr ""
 
 #: ../groups_list.php:136
 msgid "Managers:"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:87 ../templates/default/gestion_textes.tpl:91
+msgid "available only for reminders"
 msgstr ""
 
 #: ../templates/default/ajouter_contribution.tpl:135 ../templates/default/export.tpl:110
