@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Galette installation, database initialization
+ * Galette installation, database initialization/upgrade
  *
  * PHP version 5
  *
@@ -44,6 +44,7 @@ use Galette\Core\Db as GaletteDb;
 if ( $install->isUpgrade() ) {
     //FIXME: maybe we can do that only on 0.7 upgrades,
     //to save time? (methods are safe if rerun)
+    //TODO: move that to 0.7 upgrade script
     $zdb->convertToUTF($table_prefix);
 }
 
@@ -53,9 +54,17 @@ $db_installed = $install->executeScripts($zdb);
                 <h2><?php echo $install->getStepTitle(); ?></h2>
 <?php
 if ( $db_installed === false ) {
-    echo '<p id="errorbox">' . _T("Database has not been installed!") . '</p>';
+    $msg = _T("Database has not been installed!");
+    if ( $install->isUpgrade() ) {
+        $msg = _T("Database has not been upgraded!");
+    }
+    echo '<p id="errorbox">' . $msg . '</p>';
 } else {
-    echo '<p id="infobox">' . _T("Database has been installed :)")  . '</p>';
+    $msg = _T("Database has been installed :)");
+    if ( $install->isUpgrade() ) {
+        $msg = _T("Database has been upgraded :)");
+    }
+    echo '<p id="infobox">' . $msg . '</p>';
 }
 ?>
                 <ul class="leaders">

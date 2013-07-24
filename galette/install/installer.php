@@ -130,6 +130,9 @@ if ( isset($_POST['stepback_btn']) ) {
     } elseif ( $install->isUpgrade() ) {
         $install->atVersionSelection();
     }
+} elseif ( isset($_POST['previous_version']) ) {
+    $install->setInstalledVersion($_POST['previous_version']);
+    $install->atDbUpgradeStep();
 } elseif ( isset($_POST['install_dbwrite_ok']) ) {
     $install->atAdminStep();
 } elseif ( isset($_POST['install_adminlogin'])
@@ -246,8 +249,8 @@ if ( $install->isCheckStep() ) {
 } else if ( $install->isDbCheckStep() ) {
     include_once 'steps/db_checks.php';
 } else if ( $install->isVersionSelectionStep() ) {
-    //TODO
-} else if ( $install->isDbinstallStep() ) {
+    include_once 'steps/db_select_version.php';
+} else if ( $install->isDbinstallStep() || $install->isDbUpgradeStep() ) {
     include_once 'steps/db_install.php';
 } else if ( $install->isAdminStep() ) {
     include_once 'steps/admin.php';
@@ -265,7 +268,18 @@ if ( $install->isCheckStep() ) {
                     <li<?php if( $install->isTypeStep() ) echo ' class="current"'; ?>><?php echo _T("Installation mode"); ?> - </li>
                     <li<?php if( $install->isDbStep() ) echo ' class="current"'; ?>><?php echo _T("Database"); ?> - </li>
                     <li<?php if( $install->isDbCheckStep() ) echo ' class="current"'; ?>><?php echo _T("Database access/permissions"); ?> - </li>
+<?php
+if ( $install->isUpgrade() ) {
+    ?>
+                    <li<?php if( $install->isVersionSelectionStep() ) echo ' class="current"'; ?>><?php echo _T("Version selection"); ?> - </li>
+                    <li<?php if( $install->isDbUpgradeStep() ) echo ' class="current"'; ?>><?php echo _T("Database upgrade"); ?> - </li>
+    <?php
+} else {
+    ?>
                     <li<?php if( $install->isDbinstallStep() ) echo ' class="current"'; ?>><?php echo _T("Database installation"); ?> - </li>
+    <?php
+}
+?>
                     <li<?php if( $install->isAdminStep() ) echo ' class="current"'; ?>><?php echo _T("Admin parameters"); ?> - </li>
                     <li<?php if( $install->isGaletteInitStep() ) echo ' class="current"'; ?>><?php echo _T("Galette initialisation"); ?> - </li>
                     <li<?php if( $install->isEndStep() ) echo ' class="current"'; ?>><?php echo _T("End!"); ?></li>

@@ -51,9 +51,9 @@ section ul {
 }
 
 #next_btn {
-    padding-left: 1.8em;;
+    padding-right: 1.8em;;
     background-image: url(images/next.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
-    background-position: .5em 50%, 50% 50%;
+    background-position: 96% 50%, 50% 50%;
     background-repeat: no-repeat, repeat-x;
 }
 
@@ -64,7 +64,7 @@ section ul {
 #retry_btn {
     padding-left: 1.8em;;
     background-image: url(images/icon-refresh.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
-    background-position: .5em 50%, 50% 50%;
+    background-position: .4em 50%, 50% 50%;
     background-repeat: no-repeat, repeat-x;
 }
 
@@ -176,6 +176,7 @@ li.install-bad {
 }
 
 ul.leaders {
+    display: block;
     max-width: 40em;
     padding: 0;
     overflow-x: hidden;
@@ -228,4 +229,5 @@ ul.leaders span + span {
 
 #btnback {
     float: left;
+    background-position: .4em 50%, 50% 50% !important
 }

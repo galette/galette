@@ -229,6 +229,8 @@ class Db
      * @param string $version Current version
      *
      * @return array
+     *
+     * @deprecated As for 0.7.6, sse Installer::getUpdateScripts
      */
     public static function getUpdateScripts(
         $path, $db_type = 'mysql', $version = null

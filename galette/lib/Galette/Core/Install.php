@@ -58,10 +58,11 @@ class Install
     const STEP_DB = 2;
     const STEP_DB_CHECKS = 3;
     const STEP_VERSION = 4; //only for update
-    const STEP_DB_INSTALL = 5;
-    const STEP_ADMIN = 6;
-    const STEP_GALETTE_INIT = 7;
-    const STEP_END = 8;
+    const STEP_DB_UPGRADE = 5;
+    const STEP_DB_INSTALL = 6;
+    const STEP_ADMIN = 7;
+    const STEP_GALETTE_INIT = 8;
+    const STEP_END = 9;
 
     const INSTALL = 'i';
     const UPDATE = 'u';
@@ -120,11 +121,13 @@ class Install
             $step_title = _T("Database access and permissions");
             break;
         case self::STEP_VERSION:
-            //TODO
-            $step_title = 'TODO';
+            $step_title = _T("Previous version selection");
+            break;
+        case self::STEP_DB_UPGRADE:
+            $step_title = _T("Datapase upgrade");
             break;
         case self::STEP_DB_INSTALL:
-            $step_title = _T("Tables Creation/Update");
+            $step_title = _T("Tables Creation");
             break;
         case self::STEP_ADMIN:
             $step_title = _T("Admin parameters");
@@ -502,6 +505,27 @@ class Install
     }
 
     /**
+     * Set step to database upgrade
+     *
+     * @return void
+     */
+    public function atDbUpgradeStep()
+    {
+        $this->_step = self::STEP_DB_UPGRADE;
+    }
+
+    /**
+     * Are we at db upgrade step?
+     *
+     * @return boolean
+     */
+    public function isDbUpgradeStep()
+    {
+        return $this->_step === self::STEP_DB_UPGRADE;
+    }
+
+
+    /**
      * Install/Update SQL scripts
      *
      * @return array
@@ -511,7 +535,7 @@ class Install
         $update_scripts = array();
 
         if ( $this->isUpgrade() ) {
-            $update_scripts = Db::getUpdateScripts(
+            $update_scripts = self::getUpdateScripts(
                 '.',
                 $this->_db_type,
                 $this->_installed_version
@@ -520,6 +544,51 @@ class Install
             $update_scripts['current'] = $this->_db_type . '.sql';
         }
 
+        return $update_scripts;
+    }
+
+    /**
+     * List updates scripts from given path
+     *
+     * @param string $path    Scripts path
+     * @param string $db_type Database type
+     * @param string $version Previous version, defaults to null
+     *
+     * @return array If a previous version is provided, update scripts
+     *               file path from this one to the latest will be returned.
+     *               If no previous version is provided, that will return all
+     *               updates versions known.
+     */
+    public static function getUpdateScripts($path, $db_type = 'mysql', $version = null)
+    {
+        $dh = opendir($path . '/scripts');
+        $php_update_scripts = array();
+        $sql_update_scripts = array();
+        if ( $dh !== false ) {
+            while ( ($file = readdir($dh)) !== false ) {
+                if ( preg_match("/upgrade-to-(.*).php/", $file, $ver) ) {
+                    if ( $version === null ) {
+                        $php_update_scripts[$ver[1]] = $ver[1];
+                    } else {
+                        if ( $version <= $ver[1] ) {
+                            $php_update_scripts[$ver[1]] = $file;
+                        }
+                    }
+                }
+                if ( preg_match("/upgrade-to-(.*)-" . $db_type . ".sql/", $file, $ver) ) {
+                    if ( $version === null ) {
+                        $sql_update_scripts[$ver[1]] = $ver[1];
+                    } else {
+                        if ( $version <= $ver[1] ) {
+                            $sql_update_scripts[$ver[1]] = $file;
+                        }
+                    }
+                }
+            }
+            $update_scripts = array_merge($sql_update_scripts, $php_update_scripts);
+            closedir($dh);
+            ksort($update_scripts);
+        }
         return $update_scripts;
     }
 
@@ -874,4 +943,15 @@ define("PREFIX_DB", "' . $this->_db_prefix . '");
         return $this->_step === self::STEP_END;
     }
 
+    /**
+     * Set instaleld version if we're upgrading
+     *
+     * @param string $version Installed version
+     *
+     * @return void
+     */
+    public function setInstalledVersion($version)
+    {
+        $this->_installed_version = $version;
+    }
 }
