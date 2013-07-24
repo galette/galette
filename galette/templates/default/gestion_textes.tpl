@@ -66,7 +66,7 @@
                     <th><tt>{ldelim}PASSWORD{rdelim}</tt></th>
                     <td class="back">{_T string="Member's password"}<br/><span>({_T string="available only from self subscribe page"})</span></td>
                     <th><tt>{ldelim}CHG_PWD_URI{rdelim}</tt></th>
-                    <td class="back">{_T string="Galette's change password URI"}<br/><span>({_T string="globally available"})</span></td>
+                    <td class="back">{_T string="Galette's change password URI"}<br/><span>({_T string="available only for new password request"})</span></td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}LINK_VALIDITY{rdelim}</tt></th>
