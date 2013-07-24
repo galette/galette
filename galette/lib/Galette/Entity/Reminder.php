@@ -254,28 +254,21 @@ class Reminder
 
             if ( $sent == GaletteMail::MAIL_SENT ) {
                 $this->_success = true;
-                $msg = str_replace(
-                    '%membership',
-                    $type_name,
-                    _T("Sent reminder mail for %membership membership")
-                );
+                $msg = '';
+                if ( $type_name == 'late' ) {
+                    $msg = _T("Sent reminder mail for late membership");
+                } else {
+                    $msg = _T("Sent reminder mail for impending membership");
+                }
                 $this->_msg = $details;
                 $hist->add($msg, $details);
             } else {
                 $this->_success = false;
-                $msg = str_replace(
-                    array(
-                        '%membership',
-                        '%member',
-                        '%mail'
-                    ),
-                    array(
-                        $type_name,
-                        $this->_dest->sname,
-                        $this->_dest->email
-                    ),
-                    _T("A problem happened while sending %membership membership mail")
-                );
+                if ( $type_name == 'late' ) {
+                    $msg = _T("A problem happened while sending late membership mail");
+                } else {
+                    $msg = _T("A problem happened while sending impending membership mail");
+                }
                 $this->_msg = $details;
                 $hist->add($str, $details);
             }
