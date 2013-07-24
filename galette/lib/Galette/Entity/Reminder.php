@@ -249,7 +249,7 @@ class Reminder
                     $this->_dest->email,
                     $this->_dest->days_remaining
                 ),
-                '%name <%mail> (%days days)'
+                _T("%name <%mail> (%days days)")
             );
 
             if ( $sent == GaletteMail::MAIL_SENT ) {
@@ -298,7 +298,7 @@ class Reminder
                     $this->_dest->id,
                     $this->_dest->days_remaining
                 ),
-                '%name (#%id - %days days)'
+                _T("%name (#%id - %days days)")
             );
             $hist->add($str, $details);
             $this->_msg = $this->_dest->sname;
