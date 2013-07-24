@@ -46,7 +46,7 @@
                 </tr>
                 <tr>
                     <th><tt>{ldelim}NAME_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's name"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Member's name and surname"}<br/><span>({_T string="available with reservations"})</span></td>
                     <th class="back"><tt>{ldelim}MAIL_ADH{rdelim}</tt></th>
                     <td class="back">{_T string="Member's email address"}<br/><span>({_T string="available with reservations"})</span></td>
                 </tr>
@@ -83,6 +83,12 @@
                 <tr>
                     <th><tt>{ldelim}CONTRIB_TYPE{rdelim}</tt></th>
                     <td class="back">{_T string="Contribution type"}<br/><span>({_T string="available only for new contributions"})</span></td>
+                    <th><tt>{ldelim}DAYS_REMANING{rdelim}</tt></th>
+                    <td class="back">{_T string="Membership remaining days"}<br/><span>({_T string="available only for reminders"})</span></td>
+                </tr>
+                <tr>
+                    <th><tt>{ldelim}DAYS_EXPIRED{rdelim}</tt></th>
+                    <td class="back">{_T string="Membership expired since"}<br/><span>({_T string="available only for reminders"})</span></td>
                     <th>&nbsp;</th>
                     <td class="back">&nbsp;</td>
                 </tr>
