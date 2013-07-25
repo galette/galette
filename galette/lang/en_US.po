@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2013-07-24 23:57+0200\n"
+"PO-Revision-Date: 2013-07-25 22:21+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -38,7 +38,7 @@ msgstr "The uploaded file was only partially uploaded"
 msgid "LinkedIn"
 msgstr "LinkedIn"
 
-#: ../ajouter_contribution.php:392
+#: ../ajouter_contribution.php:394
 msgid "Contribution card"
 msgstr "Contribution card"
 
@@ -520,7 +520,7 @@ msgstr "Default preferences were successfully stored."
 msgid "- Wrong date format (%date_format) for %field!"
 msgstr "- Wrong date format (%date_format) for %field!"
 
-#: ../self_adherent.php:168 ../ajouter_adherent.php:213
+#: ../self_adherent.php:172 ../ajouter_adherent.php:217
 msgid "New account mail sent to '%s'."
 msgstr "New account mail sent to '%s'."
 
@@ -792,11 +792,11 @@ msgstr ""
 msgid "Active"
 msgstr "Active"
 
-#: ../ajouter_contribution.php:275
+#: ../ajouter_contribution.php:277
 msgid "Mail sent to user %name (%email)"
 msgstr "Mail sent to user %name (%email)"
 
-#: ../ajouter_adherent.php:175
+#: ../ajouter_adherent.php:177
 msgid ""
 "- You can't send a confirmation by email if the member hasn't got an address!"
 msgstr ""
@@ -848,19 +848,15 @@ msgstr "New attached contribution"
 msgid "Edit contribution type"
 msgstr "Edit contribution type"
 
-#: ../templates/default/configurer_fiche_content.tpl:32
-msgid ""
-"Do you really want to delete this field ?\n"
-" All associated data will be deleted as well."
-msgstr ""
-"Do you really want to delete this field ?\n"
-" All associated data will be deleted as well."
+#: ../templates/default/gestion_textes.tpl:57
+msgid "Member's first name"
+msgstr "Member's first name"
 
 #: ../templates/default/voir_adherent.tpl:283
 msgid "[manager]"
 msgstr "[manager]"
 
-#: ../ajouter_contribution.php:282
+#: ../ajouter_contribution.php:284
 msgid ""
 "A problem happened while sending contribution receipt to user %name (%email)"
 msgstr ""
@@ -927,7 +923,7 @@ msgstr "Expert search"
 msgid "Send down '%s' field"
 msgstr "Send down '%s' field"
 
-#: ../ajouter_contribution.php:291
+#: ../ajouter_contribution.php:293
 msgid ""
 "Trying to send a mail to a member (%name) with an invalid adress: %email"
 msgstr ""
@@ -1202,7 +1198,7 @@ msgstr "(mm/dd/yyyy format)"
 msgid "Your organisation address"
 msgstr "Your organisation address"
 
-#: ../ajouter_adherent.php:168
+#: ../ajouter_adherent.php:170
 msgid "Member account has been modified."
 msgstr "Member account has been modified."
 
@@ -1318,7 +1314,6 @@ msgstr "Database type:"
 #: ../templates/default/gestion_textes.tpl:43
 #: ../templates/default/gestion_textes.tpl:45
 #: ../templates/default/gestion_textes.tpl:63
-#: ../templates/default/gestion_textes.tpl:69
 #: ../templates/default/gestion_pdf.tpl:21
 #: ../templates/default/gestion_pdf.tpl:23
 #: ../templates/default/gestion_pdf.tpl:27
@@ -1663,7 +1658,7 @@ msgstr "Long form:"
 msgid "file_name"
 msgstr "file_name"
 
-#: ../ajouter_contribution.php:179 ../ajouter_contribution.php:314
+#: ../ajouter_contribution.php:179 ../ajouter_contribution.php:316
 msgid "%asso Galette's admin"
 msgstr "%asso Galette's admin"
 
@@ -1905,7 +1900,7 @@ msgstr "Pages:"
 msgid "Amount:"
 msgstr "Amount:"
 
-#: ../self_adherent.php:127 ../ajouter_adherent.php:160
+#: ../self_adherent.php:129 ../ajouter_adherent.php:162
 msgid "A problem happened while sending email to admin for account '%s'."
 msgstr "A problem happened while sending email to admin for account '%s'."
 
@@ -2004,7 +1999,7 @@ msgstr "SMTP server:"
 msgid "Country:"
 msgstr "Country:"
 
-#: ../ajouter_adherent.php:251
+#: ../ajouter_adherent.php:255
 msgid "An error occured adding member to its groups."
 msgstr "An error occured adding member to its groups."
 
@@ -2275,7 +2270,7 @@ msgstr "[$]"
 msgid "- The passwords don't match!"
 msgstr "- The passwords don't match!"
 
-#: ../ajouter_adherent.php:347 ../voir_adherent.php:169
+#: ../ajouter_adherent.php:351 ../voir_adherent.php:169
 msgid "Member Profile"
 msgstr "Member Profile"
 
@@ -2499,10 +2494,6 @@ msgstr "- The amount must be an integer!"
 msgid "You can find contribution information and script output below."
 msgstr "You can find contribution information and script output below."
 
-#: ../templates/default/gestion_textes.tpl:55
-msgid "Member's surname"
-msgstr "Member's surname"
-
 #: ../templates/default/history.tpl:5
 msgid "Flush the logs"
 msgstr "Flush the logs"
@@ -2623,7 +2614,7 @@ msgstr ""
 "Enter here a short description for your association, it will be displayed on "
 "the index page and into pages' title."
 
-#: ../self_adherent.php:120 ../ajouter_adherent.php:153
+#: ../self_adherent.php:122 ../ajouter_adherent.php:155
 msgid "New account mail sent to admin for '%s'."
 msgstr "New account mail sent to admin for '%s'."
 
@@ -2822,7 +2813,7 @@ msgstr "An error occured while updating your password."
 msgid "Superadmin"
 msgstr "Superadmin"
 
-#: ../preferences.php:349 ../preferences.php:383 ../ajouter_adherent.php:303
+#: ../preferences.php:349 ../preferences.php:383 ../ajouter_adherent.php:307
 msgid "Delete failed"
 msgstr "Delete failed"
 
@@ -2871,7 +2862,7 @@ msgstr "Please type an object for the message."
 msgid "Error creating temporary png file from "
 msgstr "Error creating temporary png file from "
 
-#: ../ajouter_adherent.php:351 ../ajouter_contribution.php:396
+#: ../ajouter_adherent.php:355 ../ajouter_contribution.php:398
 #: ../ajouter_groupe.php:87 ../ajouter_transaction.php:169
 msgid "creation"
 msgstr "creation"
@@ -2881,10 +2872,6 @@ msgid ""
 "In order to be updated, Galette needs write permission on files listed above."
 msgstr ""
 "In order to be updated, Galette needs write permission on files listed above."
-
-#: ../templates/default/gestion_textes.tpl:49
-msgid "Member's name and surname"
-msgstr "Member's name and surname"
 
 #: ../templates/default/preferences.tpl:258
 #: ../templates/default/preferences.tpl:375
@@ -3016,7 +3003,7 @@ msgstr "start date filter"
 msgid "Birthplace:"
 msgstr "Birthplace:"
 
-#: ../self_adherent.php:185
+#: ../self_adherent.php:189
 msgid "Self_subscription as a member: "
 msgstr "Self_subscription as a member: "
 
@@ -3107,7 +3094,7 @@ msgstr "Contribution types"
 msgid "Model has been successfully stored!"
 msgstr "Model has been successfully stored!"
 
-#: ../ajouter_adherent.php:230
+#: ../ajouter_adherent.php:234
 msgid ""
 "You asked Galette to send a confirmation mail to the member, but mail has "
 "been disabled in the preferences."
@@ -3257,6 +3244,7 @@ msgstr "View and filter transactions"
 msgid "An error occured loading selected group :("
 msgstr "An error occured loading selected group :("
 
+#: ../templates/default/gestion_textes.tpl:69
 #: ../templates/default/gestion_textes.tpl:73
 msgid "available only for new password request"
 msgstr "available only for new password request"
@@ -3442,11 +3430,11 @@ msgstr "Contribution end date"
 msgid "The tables has been correctly created."
 msgstr "The tables has been correctly created."
 
-#: ../self_adherent.php:231
+#: ../self_adherent.php:235
 msgid "Subscription"
 msgstr "Subscription"
 
-#: ../ajouter_adherent.php:349 ../ajouter_contribution.php:394
+#: ../ajouter_adherent.php:353 ../ajouter_contribution.php:396
 #: ../ajouter_groupe.php:85 ../ajouter_transaction.php:167
 msgid "modification"
 msgstr "modification"
@@ -3529,7 +3517,7 @@ msgstr "Nickname"
 msgid "(Indicate the CURRENT prefix of your Galette tables)"
 msgstr "(Indicate the CURRENT prefix of your Galette tables)"
 
-#: ../ajouter_contribution.php:327
+#: ../ajouter_contribution.php:329
 msgid "Mail sent to admin for user %name (%email)"
 msgstr "Mail sent to admin for user %name (%email)"
 
@@ -3892,7 +3880,7 @@ msgstr "unreachable members:"
 msgid "Jabber:"
 msgstr "Jabber:"
 
-#: ../ajouter_adherent.php:214
+#: ../ajouter_adherent.php:218
 msgid "Account modification mail sent to '%s'."
 msgstr "Account modification mail sent to '%s'."
 
@@ -4156,7 +4144,7 @@ msgstr "Search:"
 msgid "No"
 msgstr "No"
 
-#: ../ajouter_adherent.php:266
+#: ../ajouter_adherent.php:270
 msgid "An error occured adding member to its groups as manager."
 msgstr "An error occured adding member to its groups as manager."
 
@@ -4589,7 +4577,7 @@ msgstr "invoice"
 msgid "Contributions selection"
 msgstr "Contributions selection"
 
-#: ../ajouter_contribution.php:334
+#: ../ajouter_contribution.php:336
 msgid ""
 "A problem happened while sending to admin notification for user %name "
 "(%email) contribution"
@@ -4638,7 +4626,7 @@ msgstr ""
 "account to be visible here, edit your profile and check 'Be visible in the "
 "members list'"
 
-#: ../self_adherent.php:198 ../ajouter_adherent.php:270
+#: ../self_adherent.php:202 ../ajouter_adherent.php:274
 msgid "An error occured while storing the member."
 msgstr "An error occured while storing the member."
 
@@ -4877,7 +4865,7 @@ msgstr "You cannot delete default status!"
 msgid "Not dispatched amount:"
 msgstr "Not dispatched amount:"
 
-#: ../self_adherent.php:175
+#: ../self_adherent.php:179
 msgid "A problem happened while sending new account mail to '%s'"
 msgstr "A problem happened while sending new account mail to '%s'"
 
@@ -5126,6 +5114,14 @@ msgstr "Manage PDF models"
 msgid "Default contributions types cannot be initialized."
 msgstr "Default contributions types cannot be initialized."
 
+#: ../templates/default/configurer_fiche_content.tpl:32
+msgid ""
+"Do you really want to delete this field ?\n"
+" All associated data will be deleted as well."
+msgstr ""
+"Do you really want to delete this field ?\n"
+" All associated data will be deleted as well."
+
 #: ../templates/default/charts.tpl:15
 msgid "Members by status"
 msgstr "Members by status"
@@ -5332,7 +5328,7 @@ msgstr "Choose label to translate"
 msgid "Mailing informations"
 msgstr "Mailing informations"
 
-#: ../templates/default/gestion_textes.tpl:57
+#: ../templates/default/gestion_textes.tpl:55
 msgid "Member's last name"
 msgstr "Member's last name"
 
@@ -5522,6 +5518,10 @@ msgstr "View and manage groups"
 msgid "Is company?"
 msgstr "Is company?"
 
+#: ../templates/default/gestion_textes.tpl:49
+msgid "Member's first and last name"
+msgstr "Member's first and last name"
+
 #: ../etiquettes_adherents.php:89 ../templates/default/preferences.tpl:8
 msgid "Labels"
 msgstr "Labels"
@@ -5555,7 +5555,7 @@ msgstr "Change my password"
 msgid "%days days remaining (ending on %date)"
 msgstr "%days days remaining (ending on %date)"
 
-#: ../ajouter_adherent.php:222
+#: ../ajouter_adherent.php:226
 msgid "A problem happened while sending account mail to '%s'"
 msgstr "A problem happened while sending account mail to '%s'"
 
@@ -5654,6 +5654,12 @@ msgstr "Login %s does not exist"
 #: ../lib/Galette/Entity/Contribution.php:962
 msgid "Donation"
 msgstr "Donation"
+
+#~ msgid "Member's surname"
+#~ msgstr "Member's surname"
+
+#~ msgid "Member's name and surname"
+#~ msgstr "Member's name and surname"
 
 #~ msgid "Read on..."
 #~ msgstr "Read on..."
