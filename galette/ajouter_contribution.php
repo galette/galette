@@ -242,8 +242,8 @@ if ( isset($_POST['valid']) ) {
                 $preferences,
                 array(
                     'name_adh'          => custom_html_entity_decode($adh->sname),
-                    'firstname_adh'     => custom_html_entity_decode($member->surname),
-                    'lastname_adh'      => custom_html_entity_decode($member->name),
+                    'firstname_adh'     => custom_html_entity_decode($adh->surname),
+                    'lastname_adh'      => custom_html_entity_decode($adh->name),
                     'mail_adh'          => custom_html_entity_decode($adh->email),
                     'login_adh'         => custom_html_entity_decode($adh->login),
                     'deadline'          => custom_html_entity_decode($contrib->end_date),
