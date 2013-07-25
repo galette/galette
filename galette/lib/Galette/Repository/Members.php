@@ -43,6 +43,7 @@ use Analog\Analog as Analog;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\Contribution as Contribution;
 use Galette\Entity\Transaction as Transaction;
+use Galette\Entity\Reminder;
 use Galette\Filters\MembersList as MembersList;
 use Galette\Filters\AdvancedMembersList as AdvancedMembersList;
 use Galette\Core\Picture as Picture;
@@ -328,6 +329,12 @@ class Members
 
                 //delete groups membership/mamagmentship
                 $del = Groups::removeMemberFromGroups((int)$member->id_adh);
+
+                //delete reminders
+                $del = $zdb->db->delete(
+                    PREFIX_DB . Reminder::TABLE,
+                    'reminder_dest IN (' . implode(',', $list) . ')'
+                );
 
                 //delete members
                 $del = $zdb->db->delete(
