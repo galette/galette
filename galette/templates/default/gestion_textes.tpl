@@ -46,15 +46,15 @@
                 </tr>
                 <tr>
                     <th><tt>{ldelim}NAME_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's name and surname"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Member's first and last name"}<br/><span>({_T string="available with reservations"})</span></td>
                     <th class="back"><tt>{ldelim}MAIL_ADH{rdelim}</tt></th>
                     <td class="back">{_T string="Member's email address"}<br/><span>({_T string="available with reservations"})</span></td>
                 </tr>
                 <tr>
-                    <th><tt>{ldelim}SURNAME_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's surname"}<br/><span>({_T string="available with reservations"})</span></td>
                     <th><tt>{ldelim}LASTNAME_ADH{rdelim}</tt></th>
                     <td class="back">{_T string="Member's last name"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <th><tt>{ldelim}FIRSTNAME_ADH{rdelim}</tt></th>
+                    <td class="back">{_T string="Member's first name"}<br/><span>({_T string="available with reservations"})</span></td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}LOGIN{rdelim}</tt></th>
