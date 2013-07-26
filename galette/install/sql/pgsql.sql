@@ -281,7 +281,7 @@ CREATE TABLE galette_l10n (
 -- new table for temporary passwords  2006-02-18;
 DROP TABLE IF EXISTS galette_tmppasswds;
 CREATE TABLE galette_tmppasswds (
-  id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
+  id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE,
   tmp_passwd character varying(60) NOT NULL,
   date_crea_tmp_passwd timestamp NOT NULL,
   PRIMARY KEY (id_adh)
@@ -363,7 +363,7 @@ DROP TABLE IF EXISTS galette_reminders;
 CREATE TABLE galette_reminders (
   reminder_id integer DEFAULT nextval('galette_reminders_id_seq'::text) NOT NULL,
   reminder_type integer NOT NULL,
-  reminder_dest integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
+  reminder_dest integer REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE,
   reminder_date timestamp NOT NULL,
   reminder_success boolean DEFAULT FALSE,
   reminder_nomail boolean DEFAULT TRUE,

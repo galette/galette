@@ -168,7 +168,7 @@ CREATE TABLE galette_tmppasswds (
     tmp_passwd TEXT NOT NULL,
     date_crea_tmp_passwd TEXT NOT NULL,
     PRIMARY KEY (id_adh),
-    FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)
+    FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE
 );
 
 -- Add new table for automatic mails and their translations;
@@ -258,7 +258,7 @@ CREATE TABLE galette_reminders (
   reminder_success INTEGER NOT NULL default 0,
   reminder_nomail INTEGER NOT NULL default 1,
   reminder_comment TEXT,
-  FOREIGN KEY (reminder_dest) REFERENCES galette_adherents (id_adh)
+  FOREIGN KEY (reminder_dest) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE
 );
 
 -- Table for PDF models

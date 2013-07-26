@@ -8,7 +8,7 @@ CREATE TABLE galette_reminders (
   reminder_success INTEGER NOT NULL default 0,
   reminder_nomail INTEGER NOT NULL default 1,
   reminder_comment TEXT,
-  FOREIGN KEY (reminder_dest) REFERENCES galette_adherents (id_adh)
+  FOREIGN KEY (reminder_dest) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE
 );
 
 -- Table for PDF models

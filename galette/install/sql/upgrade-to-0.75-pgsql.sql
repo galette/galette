@@ -21,7 +21,7 @@ DROP TABLE IF EXISTS galette_reminders;
 CREATE TABLE galette_reminders (
   reminder_id integer DEFAULT nextval('galette_reminders_id_seq'::text) NOT NULL,
   reminder_type integer NOT NULL,
-  reminder_dest integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
+  reminder_dest integer REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE,
   reminder_date timestamp NOT NULL,
   reminder_success boolean DEFAULT FALSE,
   reminder_nomail boolean DEFAULT TRUE,
@@ -43,5 +43,10 @@ CREATE TABLE galette_pdfmodels (
   model_parent integer DEFAULT NULL REFERENCES galette_pdfmodels (model_id) ON DELETE RESTRICT ON UPDATE CASCADE,
   PRIMARY KEY (model_id)
 );
+
+ALTER TABLE galette_tmppasswds
+  DROP CONSTRAINT galette_tmppasswds_id_adh_fkey,
+  ADD CONSTRAINT galette_tmppasswds_id_adh_fkey
+    FOREIGN KEY (id_adh) REFERENCES galette_adherents ON DELETE CASCADE;
 
 UPDATE galette_database SET version = 0.703;

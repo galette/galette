@@ -178,7 +178,7 @@ CREATE TABLE galette_tmppasswds (
     tmp_passwd varchar(60) NOT NULL,
     date_crea_tmp_passwd datetime NOT NULL,
     PRIMARY KEY (id_adh),
-    FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)
+    FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Add new table for automatic mails and their translations;
@@ -272,7 +272,7 @@ CREATE TABLE galette_reminders (
   reminder_nomail tinyint(1) NOT NULL DEFAULT 1,
   reminder_comment text,
   PRIMARY KEY (reminder_id),
-  FOREIGN KEY (reminder_dest) REFERENCES galette_adherents (id_adh)
+  FOREIGN KEY (reminder_dest) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Table for PDF models
