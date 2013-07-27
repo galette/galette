@@ -115,6 +115,9 @@ if ( !defined('GALETTE_PHOTOS_PATH') ) {
 if ( !defined('GALETTE_ATTACHMENTS_PATH') ) {
     define('GALETTE_ATTACHMENTS_PATH', GALETTE_ROOT . 'attachments/');
 }
+if ( !defined('GALETTE_FILES_PATH') ) {
+    define('GALETTE_FILES_PATH', GALETTE_ROOT . 'files/');
+}
 if ( !defined('GALETTE_TEMPIMAGES_PATH') ) {
     define('GALETTE_TEMPIMAGES_PATH', GALETTE_ROOT . 'tempimages/');
 }

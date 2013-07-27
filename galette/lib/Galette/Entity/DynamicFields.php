@@ -46,6 +46,7 @@ use Galette\DynamicFieldsTypes\Line as Line;
 use Galette\DynamicFieldsTypes\Choice as Choice;
 use Galette\DynamicFieldsTypes\Date as Date;
 use Galette\DynamicFieldsTypes\Boolean as Boolean;
+use Galette\DynamicFieldsTypes\File as File;
 use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
 
 /**
@@ -77,10 +78,14 @@ class DynamicFields
     const DATE = 4;
     /** Boolean field (checkbox) */
     const BOOLEAN = 5;
+    /** File field (upload) */
+    const FILE = 6;
 
     const PERM_ALL = 0;
     const PERM_STAFF = 2;
     const PERM_ADM = 1;
+
+    const DEFAULT_MAX_FILE_SIZE = 1024;
 
     private $_id;
     private $_index;
@@ -93,6 +98,8 @@ class DynamicFields
     private $_fields_types_names;
     private $_perms_names;
     private $_forms_names;
+
+    private $_errors = array();
 
     /**
      * Default constructor
@@ -111,7 +118,8 @@ class DynamicFields
             self::LINE      => _T("single line"),
             self::CHOICE    => _T("choice"),
             self::DATE      => _T("date"),
-            self::BOOLEAN   => _T("boolean")
+            self::BOOLEAN   => _T("boolean"),
+            self::FILE      => _T("file")
         );
 
         //Permissions names
@@ -321,6 +329,7 @@ class DynamicFields
                         || (int)$r['field_type'] === self::TEXT
                         || (int)$r['field_type'] === self::DATE
                         || (int)$r['field_type'] === self::BOOLEAN
+                        || (int)$r['field_type'] === self::FILE
                     ) {
                         $r['field_repeat'] = 1;
                     }
@@ -414,11 +423,12 @@ class DynamicFields
      * Extract posted values for dynamic fields
      *
      * @param array $post     Array containing the posted values
+     * @param array $files    Array containing the posted files
      * @param array $disabled Array with fields that are discarded as key
      *
      * @return array
      */
-    public function extractPosted($post, $disabled)
+    public function extractPosted($post, $files, $disabled, $member_id)
     {
         if ( $post != null ) {
             $dfields = array();
@@ -439,11 +449,88 @@ class DynamicFields
                         if ( is_numeric($field_id)
                             && is_numeric($val_index)
                         ) {
-                            $dfields[$field_id][$val_index] = $value;
+                            if ((int) $descriptions[$field_id]['field_type'] == self::FILE) {
+                                # delete checkbox
+                                $filename = sprintf(
+                                    'member_%d_field_%d_value_%d',
+                                    $member_id,
+                                    $field_id,
+                                    $val_index
+                                );
+                                unlink(GALETTE_FILES_PATH . $filename);
+                                $dfields[$field_id][$val_index] = '';
+                            } else {
+                                # actual field value
+                                $dfields[$field_id][$val_index] = $value;
+                            }
                         }
                     }
                 }
             }
+
+            while ( list($key, $value) = each($files) ) {
+                // if the field is disabled, skip it
+                if (isset($disabled[$key]) ) {
+                    continue;
+                }
+
+                if (substr($key, 0, 11) != 'info_field_') {
+                    continue;
+                }
+
+                list($field_id, $val_index) = explode('_', substr($key, 11));
+                if (! is_numeric($field_id) || ! is_numeric($val_index)) {
+                    continue;
+                }
+
+                if ($files[$key]['error'] !== UPLOAD_ERR_OK ) {
+                    Analog::log("file upload error", Analog::ERROR);
+                    continue;
+                }
+
+                $tmp_filename = $files[$key]['tmp_name'];
+                if ( $tmp_filename == '' ) {
+                    Analog::log("empty temporary filename", Analog::ERROR);
+                    continue;
+                }
+
+                if (! is_uploaded_file($tmp_filename) ) {
+                    Analog::log("not an uploaded file", Analog::ERROR);
+                    continue;
+                }
+
+                $max_size =
+                    $descriptions[$field_id]['field_size'] === 'NULL' ?
+                    self::DEFAULT_MAX_FILE_SIZE            * 1024:
+                    $descriptions[$field_id]['field_size'] * 1024;
+                if ($files[$key]['size'] > $max_size ) {
+                    Analog::log(
+                        "file too large: " . $files[$key]['size'] . " Ko, vs $max_size Ko allowed",
+                        Analog::ERROR
+                    );
+                    $this->_errors[] = preg_replace(
+                        '|%d|',
+                        $max_size,
+                        _T("File is too big. Maximum allowed size is %dKo")
+                    );
+                    continue;
+                }
+
+                $new_filename = sprintf(
+                    'member_%d_field_%d_value_%d',
+                    $member_id,
+                    $field_id,
+                    $val_index
+                );
+                Analog::log("new file: $new_filename", Analog::DEBUG);
+
+                move_uploaded_file(
+                    $tmp_filename,
+                    GALETTE_FILES_PATH . $new_filename
+                );
+                $dfields[$field_id][$val_index] = $files[$key]['name'];
+            }
+
             return $dfields;
         }
     }
@@ -620,6 +707,9 @@ class DynamicFields
         case self::BOOLEAN:
             $df = new \Galette\DynamicFieldsTypes\Boolean($id);
             break;
+        case self::FILE:
+            $df = new \Galette\DynamicFieldsTypes\File($id);
+            break;
         default:
             throw new \Exception('Unknow field type ' . $t . '!');
             break;
@@ -711,5 +801,15 @@ class DynamicFields
             );
         }
         return $duplicated;
+    }
+
+    /**
+     * Get errors
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->_errors;
     }
 }

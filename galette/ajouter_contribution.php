@@ -126,10 +126,19 @@ if ( $type_selected && !($id_adh || $id_cotis) ) {
 // Validation
 $contribution['dyn'] = array();
 if ( isset($_POST['valid']) ) {
-    $contribution['dyn'] = $dyn_fields->extractPosted($_POST, array());
-
+    // dynamic fields
+    $contribution['dyn'] = $dyn_fields->extractPosted($_POST, $_FILES, array(), $id_adh);
+    $dyn_fields_errors = $dyn_fields->get_errors();
+    if ( $count($dyn_fields_errors) > 0 ) {
+        $error_detected = array_merge($error_detected, $dyn_fields_errors);
+    }
+    // regular fields
     $valid = $contrib->check($_POST, $required, $disabled);
-    if ( $valid === true ) {
+    if ( $valid !== true ) {
+        $error_detected = array_merge($error_detected, $valid);
+    }
+
+    if ( count($error_detected ) == 0) {
         //all goes well, we can proceed
         if ( $contrib->isCotis() ) {
             // Check that membership fees does not overlap
@@ -220,9 +229,6 @@ if ( isset($_POST['valid']) ) {
                 $error_detected[] = _T("An error occured while storing the contribution.");
             }
         }
-    } else {
-        //hum... there are errors :'(
-        $error_detected = $valid;
     }
 
     if ( count($error_detected) == 0 ) {

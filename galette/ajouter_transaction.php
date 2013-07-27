@@ -106,10 +106,19 @@ if ( $trans_id != '' ) {
 $transaction['dyn'] = array();
 
 if ( isset($_POST['valid']) ) {
-    $transaction['dyn'] = $dyn_fields->extractPosted($_POST, array());
-
+    // dynamic fields
+    $transaction['dyn'] = $dyn_fields->extractPosted($_POST, $_FILES, array(), $id_adh);
+    $dyn_fields_errors = $dyn_fields->get_errors();
+    if ( $count($dyn_fields_errors) > 0 ) {
+        $error_detected = array_merge($error_detected, $dyn_fields_errors);
+    }
+    // regular fields
     $valid = $trans->check($_POST, $required, $disabled);
-    if ( $valid === true ) {
+    if ( $valid !== true ) {
+        $error_detected = array_merge($error_detected, $valid);
+    }
+
+    if ( count($error_detected ) == 0) {
         //all goes well, we can proceed
         $new = false;
         if ( $trans->id == '' ) {

@@ -128,9 +128,18 @@ $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
 // Validation
 if ( isset($_POST[array_shift($real_requireds)]) ) {
-    $adherent['dyn'] = $dyn_fields->extractPosted($_POST, $disabled);
+    $adherent['dyn'] = $dyn_fields->extractPosted($_POST, $_FILES, $disabled, $member->id);
+    $dyn_fields_errors = $dyn_fields->getErrors();
+    if ( count($dyn_fields_errors) > 0 ) {
+        $error_detected = array_merge($error_detected, $dyn_fields_errors);
+    }
+    // regular fields
     $valid = $member->check($_POST, $required, $disabled);
-    if ( $valid === true ) {
+    if ( $valid !== true ) {
+        $error_detected = array_merge($error_detected, $valid);
+    }
+
+    if ( count($error_detected ) == 0) {
         //all goes well, we can proceed
 
         $new = false;
@@ -295,9 +304,6 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
             //something went wrong :'(
             $error_detected[] = _T("An error occured while storing the member.");
         }
-    } else {
-        //hum... there are errors :'(
-        $error_detected = $valid;
     }
 
     if ( count($error_detected) == 0 ) {

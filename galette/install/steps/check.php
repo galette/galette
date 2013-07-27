@@ -73,7 +73,8 @@ $files_need_rw = array (
     _T("Exports")           => GALETTE_EXPORTS_PATH,
     _T("Imports")           => GALETTE_IMPORTS_PATH,
     _T("Logs")              => GALETTE_LOGS_PATH,
-    _T("Attachments")       => GALETTE_ATTACHMENTS_PATH
+    _T("Attachments")       => GALETTE_ATTACHMENTS_PATH,
+    _T("Files")             => GALETTE_FILES_PATH
 );
 
 $files_perms_class = $class . 'ok';
