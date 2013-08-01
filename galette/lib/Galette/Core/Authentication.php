@@ -121,6 +121,8 @@ abstract class Authentication
     /**
      * Authenticate from cron
      *
+     * @param string $name Service name
+     *
      * @return void
      */
     public function logCron($name)
