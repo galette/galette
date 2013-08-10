@@ -151,6 +151,11 @@
                     <label for="pref_bool_selfsubscribe" class="bline">{_T string="Self subscription enabled?"}</label>
                     <input type="checkbox" name="pref_bool_selfsubscribe" id="pref_bool_selfsubscribe" value="1"{if $pref.pref_bool_selfsubscribe} checked="checked"{/if} {if isset($required.pref_bool_selfsubscribe) and $required.pref_bool_selfsubscribe eq 1} required{/if}/>
                 </p>
+                <p>
+                    <label for="pref_new_contrib_script" class="bline tooltip">{_T string="Post new contribution script URI"}</label>
+                    <span class="tip">{_T string="Enter a script URI that would be called after adding a new contribution.<br/>Script URI must be prefixed by one of '<em>galette://</em>' for Galette internal call. '<em>file://</em>' for a direct file call, '<em>get://</em>' or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in those cases)."}</span>
+                    <input type="text" name="pref_new_contrib_script" id="pref_new_contrib_script" value="{$pref.pref_new_contrib_script}"{if isset($required.pref_new_contrib_script) and $required.pref_new_contrib_script eq 1} required{/if}/>
+                </p>
             </fieldset>
 
             <fieldset class="cssform" id="mail">

@@ -50,6 +50,19 @@
                 {/if}
                 {html_options options=$field.choices selected=$selectdata}
             </select>
+        {elseif $field.field_type eq 4}
+            <input type="text" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}" maxlength="10"
+                value="{if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index])}{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|escape}{/if}"
+                {if isset($disabled.dyn[$field.field_id])} {$disabled.dyn[$field.field_id]}{/if}
+                {if $field.field_required eq 1} required{/if}
+            />
+            <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
+        {elseif $field.field_type eq 5}
+            <input type="checkbox" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}" value="1"
+	        {if $data.dyn[$field.field_id][$smarty.section.fieldLoop.index] eq 1} checked="checked"{/if}
+                {if isset($disabled.dyn[$field.field_id])} {$disabled.dyn[$field.field_id]}{/if}
+                {if $field.field_required eq 1} required{/if}
+            />
         {/if}
     {/section}
         </p>
@@ -123,6 +136,19 @@
                 }
             }
         });
+        {foreach from=$dynamic_fields item=field}
+            {if $field.field_type eq 4}
+                {section name="fieldLoop" start=1 loop=$loops}
+        $('#info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showOn: 'button',
+            buttonImage: '{$template_subdir}images/calendar.png',
+            buttonImageOnly: true
+        });
+                {/section}
+            {/if}
+        {/foreach}
     });
 </script>
 {/if}

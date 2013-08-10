@@ -125,11 +125,14 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     && $preferences->pref_bool_mailadh
                 ) {
                     $texts = new Texts(
+                        $texts_fields,
                         $preferences,
                         array(
-                            'name_adh'  => custom_html_entity_decode($member->sname),
-                            'mail_adh'  => custom_html_entity_decode($member->email),
-                            'login_adh' => custom_html_entity_decode($member->login)
+                            'name_adh'      => custom_html_entity_decode($member->sname),
+                            'firstname_adh' => custom_html_entity_decode($member->surname),
+                            'lastname_adh'  => custom_html_entity_decode($member->name),
+                            'mail_adh'      => custom_html_entity_decode($member->email),
+                            'login_adh'     => custom_html_entity_decode($member->login)
                         )
                     );
                     $mtxt = $texts->getTexts('newadh', $preferences->pref_lang);
@@ -176,9 +179,12 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                         //send mail to member
                         // Get email text in database
                         $texts = new Texts(
+                            $texts_fields,
                             $preferences,
                             array(
                                 'name_adh'      => custom_html_entity_decode($member->sname),
+                                'firstname_adh' => custom_html_entity_decode($member->surname),
+                                'lastname_adh'  => custom_html_entity_decode($member->name),
                                 'mail_adh'      => custom_html_entity_decode($member->email),
                                 'login_adh'     => custom_html_entity_decode($member->login),
                                 'password_adh'  => custom_html_entity_decode($_POST['mdp_adh'])

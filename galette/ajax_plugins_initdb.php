@@ -96,9 +96,9 @@ if ( count($error_detected) == 0 && isset($_POST['install_dbwrite_ok']) ) {
     $istep = 4;
 }
 
-if ( $_POST['install_type'] == 'install' && $istep > 1) {
+if ( $istep > 1 && $_POST['install_type'] == 'install' ) {
     $step = 'i' . $istep;
-} elseif ( substr($_POST['install_type'], 0, 7) == 'upgrade'  && $istep > 1) {
+} elseif ( $istep > 1 && substr($_POST['install_type'], 0, 7) == 'upgrade' ) {
     $step = 'u' . $istep;
 }
 

@@ -37,8 +37,6 @@
 
 namespace Galette\Core\test\units;
 
-define('GALETTE_COMPAT_VERSION', '0.7.3');
-
 use \atoum;
 
 /**

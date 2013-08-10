@@ -73,7 +73,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
 } else {
     Analog::log(
         'A non authorized person asked to retrieve exported file named `' .
-        $filename . '`. Access ha not been granted.',
+        $filename . '`. Access has not been granted.',
         Analog::WARNING
     );
     header('HTTP/1.0 403 Forbidden');

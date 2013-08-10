@@ -450,12 +450,12 @@ class AdvancedMembersList extends MembersList
                 $this->_payments_types = array();
                 foreach ( $value as $v ) {
                     if ( is_numeric($v) ) {
-                        if ( $v === Contribution::PAYMENT_OTHER
-                            || $v === Contribution::PAYMENT_CASH
-                            || $v === Contribution::PAYMENT_CREDITCARD
-                            || $v === Contribution::PAYMENT_CHECK
-                            || $v === Contribution::PAYMENT_TRANSFER
-                            || $v === Contribution::PAYMENT_PAYPAL
+                        if ( $v == Contribution::PAYMENT_OTHER
+                            || $v == Contribution::PAYMENT_CASH
+                            || $v == Contribution::PAYMENT_CREDITCARD
+                            || $v == Contribution::PAYMENT_CHECK
+                            || $v == Contribution::PAYMENT_TRANSFER
+                            || $v == Contribution::PAYMENT_PAYPAL
                         ) {
                             $this->_payments_types[] = $v;
                         } else {

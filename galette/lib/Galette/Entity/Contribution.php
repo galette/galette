@@ -37,7 +37,9 @@
 
 namespace Galette\Entity;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
+use Galette\IO\ExternalScript;
+use Galette\IO\PdfContribution;
 
 /**
  * Contribution class for galette
@@ -334,19 +336,19 @@ class Contribution
                 //$this->$prop = stripslashes($value); //not relevant here!
 
                 // now, check validity
-                if ( $value != '' ) {
-                    switch ( $key ) {
-                    // dates
-                    case 'date_enreg':
-                    case 'date_debut_cotis':
-                    case 'date_fin_cotis':
+                switch ( $key ) {
+                // dates
+                case 'date_enreg':
+                case 'date_debut_cotis':
+                case 'date_fin_cotis':
+                    if ( $value != '' ) {
                         try {
                             $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
                             if ( $d === false ) {
-                                throw new Exception('Incorrect format');
+                                throw new \Exception('Incorrect format');
                             }
                             $this->$prop = $d->format('Y-m-d');
-                        } catch (Exception $e) {
+                        } catch (\Exception $e) {
                             Analog::log(
                                 'Wrong date format. field: ' . $key .
                                 ', value: ' . $value . ', expected fmt: ' .
@@ -365,47 +367,55 @@ class Contribution
                                 _T("- Wrong date format (%date_format) for %field!")
                             );
                         }
-                        break;
-                    case Adherent::PK:
+                    }
+                    break;
+                case Adherent::PK:
+                    if ( $value != '' ) {
                         $this->_member = $value;
-                        break;
-                    case ContributionsTypes::PK:
+                    }
+                    break;
+                case ContributionsTypes::PK:
+                    if ( $value != '' ) {
                         $this->_type = new ContributionsTypes((int)$value);
-                        break;
-                    case 'montant_cotis':
-                        $this->_amount = $value;
-                        $us_value = strtr($value, ',', '.');
-                        if ( !is_numeric($value) ) {
-                            $errors[] = _T("- The amount must be an integer!");
-                        }
-                        break;
-                    case 'type_paiement_cotis':
-                        if ( $value == self::PAYMENT_OTHER
-                            || $value == self::PAYMENT_CASH
-                            || $value == self::PAYMENT_CREDITCARD
-                            || $value == self::PAYMENT_CHECK
-                            || $value == self::PAYMENT_TRANSFER
-                            || $value == self::PAYMENT_PAYPAL
-                        ) {
-                            $this->_payment_type = $value;
-                        } else {
-                            $errors[] = _T("- Unknown payment type");
-                        }
-                        break;
-                    case 'info_cotis':
-                        $this->_info = $value;
-                        break;
-                    case Transaction::PK:
+                    }
+                    break;
+                case 'montant_cotis':
+                    $this->_amount = $value;
+                    $us_value = strtr($value, ',', '.');
+                    if ( !is_numeric($value) ) {
+                        $errors[] = _T("- The amount must be an integer!");
+                    }
+                    break;
+                case 'type_paiement_cotis':
+                    if ( $value == self::PAYMENT_OTHER
+                        || $value == self::PAYMENT_CASH
+                        || $value == self::PAYMENT_CREDITCARD
+                        || $value == self::PAYMENT_CHECK
+                        || $value == self::PAYMENT_TRANSFER
+                        || $value == self::PAYMENT_PAYPAL
+                    ) {
+                        $this->_payment_type = $value;
+                    } else {
+                        $errors[] = _T("- Unknown payment type");
+                    }
+                    break;
+                case 'info_cotis':
+                    $this->_info = $value;
+                    break;
+                case Transaction::PK:
+                    if ( $value != '' ) {
                         $this->_transaction = new Transaction((int)$value);
-                        break;
-                    case 'duree_mois_cotis':
+                    }
+                    break;
+                case 'duree_mois_cotis':
+                    if ( $value != '' ) {
                         if ( !is_numeric($value) || $value<=0 ) {
                             $errors[] = _T("- The duration must be a positive integer!");
                         }
                         $this->$prop = $value;
                         $this->_retrieveEndDate();
-                        break;
                     }
+                    break;
                 }
             }
         }
@@ -735,6 +745,10 @@ class Contribution
                 'MAX(date_fin_cotis)'
             )->where(Adherent::PK . ' = ?', $member_id);
             $due_date = $select->query()->fetchColumn();
+            //avoid bad dates in postgres
+            if ( $due_date == '0001-01-01 BC' ) {
+                $due_date = '';
+            }
             return $due_date;
         } catch (\Exception $e) {
             /** FIXME */
@@ -852,6 +866,142 @@ class Contribution
     }
 
     /**
+     * Execute post contribution script
+     *
+     * @param ExternalScript $es     External script to execute
+     * @param array          $extra  Extra informations on contribution
+     *                                  Defaults to null
+     * @param array          $pextra Extra information on payment
+     *                                  Defaults to null
+     *
+     * @return mixed Script return value on success, values and script output on fail
+     */
+    public function executePostScript(ExternalScript $es,
+        $extra = null, $pextra = null
+    ) {
+        global $zdb, $preferences;
+
+        $payment = array(
+            'type'  => $this->getPaymentType()
+        );
+
+        if ( $pextra !== null && is_array($pextra) ) {
+            $payment = array_merge($payment, $pextra);
+        }
+
+        if ( !file_exists(GALETTE_CACHE_DIR . '/pdf_contribs') ) {
+            @mkdir(GALETTE_CACHE_DIR . '/pdf_contribs');
+        }
+
+        $voucher_path = null;
+        if ( $this->_id !== null ) {
+            $voucher = new PdfContribution($this, $zdb, $preferences);
+            $voucher->store(GALETTE_CACHE_DIR . '/pdf_contribs');
+            $voucher_path = $voucher->getPath();
+        }
+
+        $contrib = array(
+            'type'      => $this->getTypeLabel(),
+            'amount'    => $this->amount,
+            'voucher'   => $voucher_path,
+            'category'  => array(
+                'id'    => $this->type->id,
+                'label' => $this->type->libelle
+            ),
+            'payment'   => $payment
+        );
+
+        if ( $this->_member !== null ) {
+            $m = new Adherent((int)$this->_member);
+            $member = array(
+                'name'          => $m->sfullname,
+                'email'         => $m->email,
+                'organization'  => $m->isCompany(),
+                'status'        => $m->sstatus,
+                'country'       => $m->country
+            );
+
+            if ( $m->isCompany() ) {
+                $member['organization_name'] = $m->company_name;
+            }
+
+            $contrib['member'] = $member;
+        }
+
+        if ( $extra !== null && is_array($extra) ) {
+            $contrib = array_merge($contrib, $extra);
+        }
+
+        $res = $es->send($contrib);
+
+        if ( $res !== true ) {
+            Analog::log(
+                'An error occured calling post contribution ' .
+                "script:\n" . $es->getOutput(),
+                Analog::ERROR
+            );
+            $res = _T("Contribution informations") . "\n";
+            $res .= print_r($contrib, true);
+            $res .= "\n\n" . _T("Script output") . "\n";
+            $res .= $es->getOutput();
+        }
+
+        return $res;
+    }
+
+    /**
+     * Get contribution type label
+     *
+     * @return string
+     */
+    public function getTypeLabel()
+    {
+        if ( $this->isCotis() ) {
+            return _T("Membership");
+        } else {
+            return _T("Donation");
+        }
+    }
+
+    /**
+     * Get payent type label
+     *
+     * @return string
+     */
+    public function getPaymentType()
+    {
+        switch ( $this->payment_type ) {
+        case Contribution::PAYMENT_CASH:
+            return 'cash';
+            break;
+        case Contribution::PAYMENT_CREDITCARD:
+            return 'credit_card';
+            break;
+        case Contribution::PAYMENT_CHECK:
+            return 'check';
+            break;
+        case Contribution::PAYMENT_TRANSFER:
+            return 'transfer';
+            break;
+        case Contribution::PAYMENT_PAYPAL:
+            return 'paypal';
+            break;
+        case Contribution::PAYMENT_OTHER:
+            return 'other';
+            break;
+        default:
+            Analog::log(
+                __METHOD__ . ' Unknonw payment type ' . $this->payment_type,
+                Analog::ERROR
+            );
+            throw new \RuntimeException(
+                'Unknonw payment type ' . $this->payment_type
+            );
+        }
+
+    }
+
+    /**
     * Global getter method
     *
     * @param string $name name of the property we want to retrive
@@ -862,7 +1012,9 @@ class Contribution
     {
 
         $forbidden = array('is_cotis');
-        $virtuals = array('duration', 'spayment_type');
+        $virtuals = array('duration', 'spayment_type', 'model', 'raw_date',
+            'raw_begin_date', 'raw_end_date'
+        );
 
         $rname = '_' . $name;
         if ( !in_array($name, $forbidden)
@@ -870,6 +1022,24 @@ class Contribution
             || in_array($name, $virtuals)
         ) {
             switch($name) {
+            case 'raw_date':
+            case 'raw_begin_date':
+            case 'raw_end_date':
+                $rname = '_' . substr($name, 4);
+                if ( $this->$rname != '' ) {
+                    try {
+                        $d = new \DateTime($this->$rname);
+                        return $d;
+                    } catch (\Exception $e) {
+                        //oops, we've got a bad date :/
+                        Analog::log(
+                            'Bad date (' . $his->$rname . ') | ' .
+                            $e->getMessage(),
+                            Analog::INFO
+                        );
+                        throw $e;
+                    }
+                }
             case 'date':
             case 'begin_date':
             case 'end_date':
@@ -926,6 +1096,11 @@ class Contribution
                     return '-';
                     break;
                 }
+            case 'model':
+                return ($this->isCotis()) ?
+                    PdfModel::INVOICE_MODEL :
+                    PdfModel::RECEIPT_MODEL;
+                break;
             default:
                 return $this->$rname;
                 break;
@@ -981,10 +1156,10 @@ class Contribution
                 try {
                     $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
                     if ( $d === false ) {
-                        throw new Exception('Incorrect format');
+                        throw new \Exception('Incorrect format');
                     }
                     $this->_begin_date = $d->format('Y-m-d');
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     Analog::log(
                         'Wrong date format. field: ' . $key .
                         ', value: ' . $value . ', expected fmt: ' .

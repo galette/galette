@@ -8,26 +8,26 @@
 {/if}
 {* JQuery UI related *}
 {if $require_sorter or $require_dialog}
-        <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.mouse.min.js"></script>
+        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.mouse.min.js"></script>
 {/if}
 {if $require_sorter}
-        <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.sortable.min.js"></script>
+        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.sortable.min.js"></script>
 {/if}
 {if $require_calendar}
-        <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
+        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
     {if $galette_lang ne 'en'}
-        <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.js"></script>
+        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.min.js"></script>
     {/if}
 {/if}
 {if $require_tabs}
-        <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.tabs.min.js"></script>
+        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.tabs.min.js"></script>
 {/if}
 {if $require_dialog}
         {* Drag component, only used for Dialog for the moment *}
-        <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.draggable.min.js"></script>
+        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.draggable.min.js"></script>
         {* So the dialog could be aligned in the middle of the screen *}
-        <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.position.min.js"></script>
-        <script type="text/javascript" src="{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.dialog.min.js"></script>
+        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.position.min.js"></script>
+        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.dialog.min.js"></script>
 {/if}
 {* /JQuery UI related *}
 {if $require_cookie}
@@ -119,6 +119,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $PAGENAME eq "ajouter_adherent.php"} class="selected"{/if}><a href="{$galette_base_path}ajouter_adherent.php" title="{_T string="Add new member in database"}">{_T string="Add a member"}</a></li>
             <li{if $PAGENAME eq "ajouter_contribution.php"} class="selected"{/if}><a href="{$galette_base_path}ajouter_contribution.php" title="{_T string="Add new contribution in database"}">{_T string="Add a contribution"}</a></li>
             <li{if $PAGENAME eq "ajouter_transaction.php"} class="selected"{/if}><a href="{$galette_base_path}ajouter_transaction.php" title="{_T string="Add new transaction in database"}">{_T string="Add a transaction"}</a></li>
+            <li{if $PAGENAME eq "reminder.php"} class="selected"{/if}><a href="{$galette_base_path}reminder.php" title="{_T string="Send reminders to late members"}">{_T string="Reminders"}</a></li>
             <li{if $PAGENAME eq "history.php"} class="selected"{/if}><a href="{$galette_base_path}history.php" title="{_T string="View application's logs"}">{_T string="Logs"}</a></li>
             <li{if $PAGENAME eq "gestion_mailings.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_mailings.php" title="{_T string="Manage mailings that has been sent"}">{_T string="Manage mailings"}</a></li>
             <li{if $PAGENAME eq "export.php"} class="selected"{/if}><a href="{$galette_base_path}export.php" title="{_T string="Export some data in various formats"}">{_T string="Exports"}</a></li>
@@ -151,6 +152,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $PAGENAME eq "gestion_intitules.php" and $class eq 'ContributionsTypes'} class="selected"{/if}><a href="{$galette_base_path}gestion_intitules.php?class=ContributionsTypes" title="{_T string="Manage contributions types"}">{_T string="Manage contributions types"}</a></li>
             <li{if $PAGENAME eq "gestion_textes.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_textes.php" title="{_T string="Manage emails texts and subjects"}">{_T string="Emails content"}</a></li>
             <li{if $PAGENAME eq "gestion_titres.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_titres.php" title="{_T string="Manage titles"}">{_T string="Titles"}</a></li>
+            <li{if $PAGENAME eq "gestion_pdf.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_pdf.php" title="{_T string="Manage PDF models"}">{_T string="PDF models"}</a></li>
         </ul>
 {/if}
 

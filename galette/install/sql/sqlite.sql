@@ -168,7 +168,7 @@ CREATE TABLE galette_tmppasswds (
     tmp_passwd TEXT NOT NULL,
     date_crea_tmp_passwd TEXT NOT NULL,
     PRIMARY KEY (id_adh),
-    FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)
+    FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE
 );
 
 -- Add new table for automatic mails and their translations;
@@ -248,11 +248,40 @@ CREATE TABLE galette_groups_members (
   FOREIGN KEY (id_group) REFERENCES galette_groups (id_group)
 );
 
+-- Table for reminders;
+DROP TABLE IF EXISTS galette_reminders;
+CREATE TABLE galette_reminders (
+  reminder_id INTEGER NOT NULL PRIMARY KEY,
+  reminder_type INTEGER NOT NULL,
+  reminder_dest INTEGER,
+  reminder_date TEXT NOT NULL,
+  reminder_success INTEGER NOT NULL default 0,
+  reminder_nomail INTEGER NOT NULL default 1,
+  reminder_comment TEXT,
+  FOREIGN KEY (reminder_dest) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE
+);
+
+-- Table for PDF models
+DROP TABLE IF EXISTS galette_pdfmodels;
+CREATE TABLE galette_pdfmodels (
+  model_id INTEGER NOT NULL PRIMARY KEY,
+  model_name TEXT NOT NULL,
+  model_type INTEGER NOT NULL,
+  model_header TEXT,
+  model_footer TEXT,
+  model_body TEXT,
+  model_styles TEXT,
+  model_title TEXT,
+  model_subtitle TEXT,
+  model_parent INTEGER DEFAULT NULL,
+  FOREIGN KEY (model_parent) REFERENCES galette_pdfmodels (model_id),
+);
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version REAL NOT NULL
 );
-INSERT INTO galette_database(version) VALUES(0.702);
+INSERT INTO galette_database(version) VALUES(0.703);
 
 PRAGMA foreign_keys = ON;

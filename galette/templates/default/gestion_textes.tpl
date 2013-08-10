@@ -40,44 +40,56 @@
             <table>
                 <tr>
                     <th><tt>{ldelim}ASSO_NAME{rdelim}</tt></th>
-                    <td class="back">{_T string="Your organisation name"}<br/><span>{_T string="globally available"})</span></td>
+                    <td class="back">{_T string="Your organisation name"}<br/><span>({_T string="globally available"})</span></td>
                     <th class="back"><tt>{ldelim}ASSO_SLOGAN{rdelim}</tt></th>
-                    <td class="back">{_T string="Your organisation slogan"}<br/><span>{_T string="globally available"})</span></td>
+                    <td class="back">{_T string="Your organisation slogan"}<br/><span>({_T string="globally available"})</span></td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}NAME_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's name"}<br/><span>{_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Member's first and last name"}<br/><span>({_T string="available with reservations"})</span></td>
                     <th class="back"><tt>{ldelim}MAIL_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's email address"}<br/><span>{_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Member's email address"}<br/><span>({_T string="available with reservations"})</span></td>
                 </tr>
                 <tr>
-                    <th><tt>{ldelim}SURNAME_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's surname"}<br/><span>{_T string="available with reservations"})</span></td>
                     <th><tt>{ldelim}LASTNAME_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's last name"}<br/><span>{_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Member's last name"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <th><tt>{ldelim}FIRSTNAME_ADH{rdelim}</tt></th>
+                    <td class="back">{_T string="Member's first name"}<br/><span>({_T string="available with reservations"})</span></td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}LOGIN{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's login"}<br/><span>{_T string="available with reservations"})</span></td>
-                    <th class="back"><tt>{ldelim}LOGIN_URI{rdelim}</tt></th>
-                    <td class="back">{_T string="Galette's login URI"}<br/><span>{_T string="globally available"})</span></td>
+                    <td class="back">{_T string="Member's login"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <th><tt>{ldelim}LOGIN_URI{rdelim}</tt></th>
+                    <td class="back">{_T string="Galette's login URI"}<br/><span>({_T string="globally available"})</span></td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}PASSWORD{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's password"}<br/><span>{_T string="available only from self subscribe page"})</span></td>
-                    <th class="back"><tt>{ldelim}CHG_PWD_URI{rdelim}</tt></th>
-                    <td class="back">{_T string="Galette's change password URI"}<br/><span>{_T string="globally available"})</span></td>
+                    <td class="back">{_T string="Member's password"}<br/><span>({_T string="available only from self subscribe page"})</span></td>
+                    <th><tt>{ldelim}CHG_PWD_URI{rdelim}</tt></th>
+                    <td class="back">{_T string="Galette's change password URI"}<br/><span>({_T string="available only for new password request"})</span></td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}LINK_VALIDITY{rdelim}</tt></th>
-                    <td class="back">{_T string="Link validity"}<br/><span>{_T string="available only for new password request"})</span></td>
-                    <th class="back"><tt>{ldelim}DEADLINE{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's deadline"}<br/><span>{_T string="available only for new contributions"})</span></td>
+                    <td class="back">{_T string="Link validity"}<br/><span>({_T string="available only for new password request"})</span></td>
+                    <th><tt>{ldelim}DEADLINE{rdelim}</tt></th>
+                    <td class="back">{_T string="Member's deadline"}<br/><span>({_T string="available only for new contributions"})</span></td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}CONTRIB_INFO{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution informations"}<br/><span>{_T string="available only for new contributions"})</span></td>
-                    <th class="back">&nbsp;</th>
+                    <td class="back">{_T string="Contribution informations"}<br/><span>({_T string="available only for new contributions"})</span></td>
+                    <th><tt>{ldelim}CONTRIB_AMOUNT{rdelim}</tt></th>
+                    <td class="back">{_T string="Contribution amount"}<br/><span>({_T string="available only for new contributions"})</span></td>
+                </tr>
+                <tr>
+                    <th><tt>{ldelim}CONTRIB_TYPE{rdelim}</tt></th>
+                    <td class="back">{_T string="Contribution type"}<br/><span>({_T string="available only for new contributions"})</span></td>
+                    <th><tt>{ldelim}DAYS_REMANING{rdelim}</tt></th>
+                    <td class="back">{_T string="Membership remaining days"}<br/><span>({_T string="available only for reminders"})</span></td>
+                </tr>
+                <tr>
+                    <th><tt>{ldelim}DAYS_EXPIRED{rdelim}</tt></th>
+                    <td class="back">{_T string="Membership expired since"}<br/><span>({_T string="available only for reminders"})</span></td>
+                    <th>&nbsp;</th>
                     <td class="back">&nbsp;</td>
                 </tr>
         </table>

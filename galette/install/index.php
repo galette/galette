@@ -248,8 +248,9 @@ header('Content-Type: text/html; charset=UTF-8');
         <link rel="stylesheet" type="text/css" href="<?php echo GALETTE_BASE_PATH; ?>templates/default/install.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo GALETTE_BASE_PATH; ?>templates/default/jquery-ui/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>.custom.css"/>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-<?php echo JQUERY_VERSION; ?>.min.js"></script>
-        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
-        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.button.min.js"></script>
+        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-migrate-<?php echo JQUERY_MIGRATE_VERSION; ?>.min.js"></script>
+        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
+        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.button.min.js"></script>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.bgiframe.pack.js"></script>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.bgFade.js"></script>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/chili-1.7.pack.js"></script>
@@ -454,10 +455,6 @@ case 'u3':
     } else {
         $php_modules_class = $class . 'ok';
     }
-
-    $news = new Galette\IO\News(true);
-    $twitter = $news->canReadTweets($cm);
-    $gplus = $news->canReadGplus($cm);
     ?>
             <article id="php_modules" class="<?php echo $php_modules_class; ?>">
                 <header>
@@ -1263,7 +1260,7 @@ define("STOCK_FILES", "tempimages");
         $preferences = new Galette\Core\Preferences(false);
         $ct = new Galette\Entity\ContributionsTypes();
         $status = new Galette\Entity\Status();
-        include_once '../includes/members_fields.php';
+        include_once '../includes/fields_defs/members_fields.php';
         $fc = new Galette\Entity\FieldsConfig(
             Galette\Entity\Adherent::TABLE,
             $members_fields,
@@ -1342,7 +1339,7 @@ define("STOCK_FILES", "tempimages");
     } else if ($step=='u9') {
         $_to_ver = substr($_POST['install_type'], 8);
         if ( (float)$_to_ver <= 0.74 ) {
-            include_once '../includes/members_fields.php';
+            include_once '../includes/fields_defs/members_fields.php';
             $fc = new Galette\Entity\FieldsConfig(
                 Galette\Entity\Adherent::TABLE,
                 $members_fields,
@@ -1424,7 +1421,8 @@ define("STOCK_FILES", "tempimages");
         $preferences->store();
     }
 
-    $texts = new Galette\Entity\Texts($preferences);
+    include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
+    $texts = new Galette\Entity\Texts($texts_fields, $preferences);
     $res = $texts->installInit();
     if ( $res !== false ) {
         if ( $res !== true ) {
@@ -1437,6 +1435,20 @@ define("STOCK_FILES", "tempimages");
                 '</li>';
         }
     }
+
+    $models = new Galette\Repository\PdfModels($zdb, $preferences);
+    include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
+    $res = $models->installInit($pdfmodels_fields);
+    if ( $res !== true ) {
+        $errs[] = '<li class="install-bad">' .
+            _T("PDF models cannot be initialized.") .
+            '<span>' . $res->getMessage() . '</span></li>';
+    } else {
+        $oks[] = '<li class="install-ok">' .
+            _T("PDF models were successfully stored.") .
+            '</li>';
+    }
+
     ?>
             <div<?php if( count($errs) == 0) echo ' id="infobox"'; ?>>
                 <ul>

@@ -36,12 +36,14 @@
  * @since     Available since 0.62
  */
 
-use Galette\Core\GaletteMail as GaletteMail;
-use Galette\Entity\Adherent as Adherent;
-use Galette\Entity\DynamicFields as DynamicFields;
-use Galette\Entity\ContributionsTypes as ContributionsTypes;
-use Galette\Entity\Texts as Texts;
-use Galette\Repository\Members as Members;
+use Analog\Analog;
+use Galette\Core\GaletteMail;
+use Galette\Entity\Adherent;
+use Galette\Entity\DynamicFields;
+use Galette\Entity\Contribution;
+use Galette\Entity\ContributionsTypes;
+use Galette\Entity\Texts;
+use Galette\Repository\Members;
 
 require_once 'includes/galette.inc.php';
 
@@ -54,7 +56,7 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
     die();
 }
 
-$contrib = new Galette\Entity\Contribution();
+$contrib = new Contribution();
 //TODO: dynamic fields should be handled by Contribution object
 $dyn_fields = new DynamicFields();
 
@@ -83,7 +85,7 @@ if ( $type_selected && !($id_adh || $id_cotis) ) {
     $type_selected = false;
 } else if ( $id_cotis != '' || $type_selected || $trans_id || $id_adh) {
     if ( $id_cotis != '' ) {
-        $contrib = new Galette\Entity\Contribution((int)$id_cotis);
+        $contrib = new Contribution((int)$id_cotis);
         if ( $contrib->id == '' ) {
             //not possible to load contribution, exit
             header('location: index.php');
@@ -100,7 +102,7 @@ if ( $type_selected && !($id_adh || $id_cotis) ) {
         if ( $preferences->pref_membership_ext != '' ) {
             $args['ext'] = $preferences->pref_membership_ext;
         }
-        $contrib = new Galette\Entity\Contribution($args);
+        $contrib = new Contribution($args);
         if ( $contrib->isTransactionPart() ) {
             $id_adh = $contrib->member;
             //Should we disable contribution member selection if we're from
@@ -153,7 +155,65 @@ if ( isset($_POST['valid']) ) {
             if ( $store === true ) {
                 //contribution has been stored :)
                 if ( $new ) {
-                    /** FIXME: do something ! */
+                    //if an external script has been configured, we call it
+                    if ( $preferences->pref_new_contrib_script ) {
+                        $es = new Galette\IO\ExternalScript($preferences);
+                        $res = $contrib->executePostScript($es);
+
+                        if ( $res !== true ) {
+                            //send admin a mail with all details
+                            if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED ) {
+                                $mail = new GaletteMail();
+                                $mail->setSubject(
+                                    _T("Post contribution script failed")
+                                );
+                                /** TODO: only super-admin is contacted here. We should send
+                                *  a message to all admins, or propose them a chekbox if
+                                *  they don't want to get bored
+                                */
+                                $mail->setRecipients(
+                                    array(
+                                        $preferences->pref_email_newadh => str_replace(
+                                            '%asso',
+                                            $preferences->pref_name,
+                                            _T("%asso Galette's admin")
+                                        )
+                                    )
+                                );
+
+                                $message = _T("The configured post contribution script has failed.");
+                                $message .= "\n" . _T("You can find contribution information and script output below.");
+                                $message .= "\n\n";
+                                $message .= $res;
+
+                                $mail->setMessage($message);
+                                $sent = $mail->send();
+
+                                if ( !$sent ) {
+                                    $txt = preg_replace(
+                                        array('/%name/', '/%email/'),
+                                        array($adh->sname, $adh->email),
+                                        _T("A problem happened while sending to admin post contribution notification for user %name (%email) contribution")
+                                    );
+                                    $hist->add($txt);
+                                    $error_detected[] = $txt;
+                                    //Mails are disabled... We log (not safe, but)...
+                                    Analog::log(
+                                        'Post contribution script has failed. Here was the data: ' .
+                                        "\n" . print_r($res, true),
+                                        Analog::ERROR
+                                    );
+                                }
+                            } else {
+                                //Mails are disabled... We log (not safe, but)...
+                                Analog::log(
+                                    'Post contribution script has failed. Here was the data: ' .
+                                    "\n" . print_r($res, true),
+                                    Analog::ERROR
+                                );
+                            }
+                        }
+                    }
                 }
             } else {
                 //something went wrong :'(
@@ -178,13 +238,18 @@ if ( isset($_POST['valid']) ) {
 
         if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED ) {
             $texts = new Texts(
+                $texts_fields,
                 $preferences,
                 array(
-                    'name_adh'      => custom_html_entity_decode($adh->sname),
-                    'mail_adh'      => custom_html_entity_decode($adh->email),
-                    'login_adh'     => custom_html_entity_decode($adh->login),
-                    'deadline'      => custom_html_entity_decode($contrib->end_date),
-                    'contrib_info'  => custom_html_entity_decode($contrib->info)
+                    'name_adh'          => custom_html_entity_decode($adh->sname),
+                    'firstname_adh'     => custom_html_entity_decode($adh->surname),
+                    'lastname_adh'      => custom_html_entity_decode($adh->name),
+                    'mail_adh'          => custom_html_entity_decode($adh->email),
+                    'login_adh'         => custom_html_entity_decode($adh->login),
+                    'deadline'          => custom_html_entity_decode($contrib->end_date),
+                    'contrib_info'      => custom_html_entity_decode($contrib->info),
+                    'contrib_amount'    => custom_html_entity_decode($contrib->amount),
+                    'contrib_type'      => custom_html_entity_decode($contrib->type->libelle)
                 )
             );
             if ( $new && isset($_POST['mail_confirm'])

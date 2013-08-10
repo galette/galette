@@ -42,6 +42,8 @@ use Galette\DynamicFieldsTypes\Separator as Separator;
 use Galette\DynamicFieldsTypes\Text as Text;
 use Galette\DynamicFieldsTypes\Line as Line;
 use Galette\DynamicFieldsTypes\Choice as Choice;
+use Galette\DynamicFieldsTypes\Date as Date;
+use Galette\DynamicFieldsTypes\Boolean as Boolean;
 use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
 
 /**
@@ -67,8 +69,12 @@ class DynamicFields
     const TEXT = 1;
     /** Line field */
     const LINE = 2;
-    /** Choice field (checkbox) */
+    /** Choice field (listbox) */
     const CHOICE = 3;
+    /** Date field */
+    const DATE = 4;
+    /** Boolean field (checkbox) */
+    const BOOLEAN = 5;
 
     const PERM_ALL = 0;
     const PERM_STAFF = 2;
@@ -96,14 +102,14 @@ class DynamicFields
     */
     public function __construct($args = null)
     {
-        global $i18n;
-
         //Fields types names
         $this->_fields_types_names = array(
             self::SEPARATOR => _T("separator"),
             self::TEXT      => _T("free text"),
             self::LINE      => _T("single line"),
-            self::CHOICE    => _T("choice")
+            self::CHOICE    => _T("choice"),
+            self::DATE      => _T("date"),
+            self::BOOLEAN   => _T("boolean")
         );
 
         //Permissions names
@@ -313,6 +319,8 @@ class DynamicFields
                     $df = $this->getFieldType($r['field_type']);
                     if ( (int)$r['field_type'] === self::CHOICE
                         || (int)$r['field_type'] === self::TEXT
+                        || (int)$r['field_type'] === self::DATE
+                        || (int)$r['field_type'] === self::BOOLEAN
                     ) {
                         $r['field_repeat'] = 1;
                     }
@@ -371,6 +379,48 @@ class DynamicFields
     }
 
     /**
+     * Get fields descriptions
+     *
+     * @param string $form_name Form name
+     *
+     * @return array
+     */
+    public function getFieldsDescription($form_name)
+    {
+        global $zdb;
+
+        try {
+            $select = new \Zend_Db_Select($zdb->db);
+
+            $select->from(PREFIX_DB . DynamicFieldType::TABLE)
+                ->where('field_form = ?', $form_name)
+                ->order('field_index');
+
+            $result = $select->query(\Zend_DB::FETCH_ASSOC)->fetchAll();
+
+            $dfields = array();
+            if ( $result ) {
+                foreach ( $result as $r ) {
+                    $dfields[$r['field_index']] = $r;
+                }
+                return $dfields;
+            } else {
+                return false;
+            }
+        } catch (\Exception $e) {
+            /** TODO */
+            Analog::log(
+                __METHOD__ . ' | ' . $e->getMessage(),
+                Analog::WARNING
+            );
+            Analog::log(
+                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                Analog::INFO
+            );
+        }
+    }
+
+    /**
      * Extract posted values for dynamic fields
      *
      * @param array $post     Array containing the posted values
@@ -382,6 +432,15 @@ class DynamicFields
     {
         if ( $post != null ) {
             $dfields = array();
+
+            // initialize all boolean fields to 0
+            $descriptions = $this->getFieldsDescription('adh');
+            while (list ($field_id, $description) = each($descriptions)) {
+                if ((int) $description['field_type'] == self::BOOLEAN) {
+                    $dfields[$field_id][1] = 0;
+                }
+            }
+
             while ( list($key, $value) = each($post) ) {
                 // if the field is enabled, check it
                 if ( !isset($disabled[$key]) ) {
@@ -547,6 +606,12 @@ class DynamicFields
             break;
         case self::CHOICE:
             $df = new \Galette\DynamicFieldsTypes\Choice($id);
+            break;
+        case self::DATE:
+            $df = new \Galette\DynamicFieldsTypes\Date($id);
+            break;
+        case self::BOOLEAN:
+            $df = new \Galette\DynamicFieldsTypes\Boolean($id);
             break;
         default:
             throw new \Exception('Unknow field type ' . $t . '!');

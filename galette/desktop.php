@@ -48,14 +48,9 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-$news = new Galette\IO\News();
-
 $tpl->assign('page_title', _T("Dashboard"));
 $tpl->assign('contentcls', 'desktop');
-$tpl->assign('tweets', $news->getTweets());
-$tpl->assign('gplus', $news->getPlusPosts());
 $tpl->assign('show_dashboard', $_COOKIE['show_galette_dashboard']);
-$tpl->assign('require_tabs', true);
 $tpl->assign('require_cookie', true);
 
 $content = $tpl->fetch('desktop.tpl');

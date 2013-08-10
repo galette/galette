@@ -127,7 +127,6 @@ nav a{
     cursor:pointer;
     text-align:left;
     margin:0;
-    padding:0;
 }
 /* .nojs class will be removed at runtime by a js script */
 #menu h1.nojs{
@@ -197,15 +196,19 @@ nav a{
 }
 
 #desktop,
-#news,
 .plugin,
 #groups_list,
 #group_infos {
-    display: table-cell;
     border:1px solid #AAAAAA;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
+}
+
+.plugin,
+#groups_list,
+#group_infos {
+    display: table-cell;
 }
 
 .plugin {
@@ -222,15 +225,7 @@ nav a{
     border-bottom: 1px #DDDDFF solid;
 }
 
-#news-tabs {
-    border: none;
-    -moz-border-radius: 0px 0px 10px 10px;
-    -webkit-border-radius: 0px 0px 10px 10px;
-    border-radius: 0px 0px 10px 10px;
-}
-
 #desktop header,
-#news header,
 .plugin header,
 #groups_list header,
 #group_infos header {
@@ -245,11 +240,12 @@ nav a{
     color: #555555;
     background-position: 50% .5em, 50% 50%;
     background-repeat: no-repeat, repeat-x;
-    display: table-cell;
+    display: inline-block;
     width: 100px;
     text-align: center;
     vertical-align: bottom;
     padding: 60px .2em .2em;
+    margin: 1em;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
@@ -315,40 +311,6 @@ nav a{
 }
 #desktop #plugins:hover {
     background-image: url(images/desktop/plugins.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
-}
-
-#news {
-    width: 20em;
-    margin-left: 1em;
-    vertical-align: top;
-}
-
-#twitter, #googleplus, .plugin ul {
-    list-style-type: none;
-    padding:0;
-    margin: 1em 0.5em 0.5em;
-}
-
-#twitter li,
-#googleplus li {
-    margin-bottom: .2em;
-    border-top: 1px #DDDDFF solid;
-}
-
-#twitter li:first-child,
-#googleplus li:first-child {
-    border: none;
-}
-
-#googleplus li {
-    position: relative;
-    padding-bottom: 1.5em;
-}
-
-.googleplus_plus {
-    position: absolute!important;
-    bottom: 0;
-    right: 0;
 }
 /* =/ Desktop */
 
@@ -608,7 +570,14 @@ h1 #sendmail .ui-button-text {
    background-image:url(images/icon-add.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-#btnadd_small, #btnusers_small, #btnmanagers_small {
+#btninfo_small {
+    background-image:url(images/icon-info.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#btninfo_small.ui-state-hover{
+   background-image:url(images/icon-info.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#btnadd_small, #btnusers_small, #btnmanagers_small, #btninfo_small {
     position: absolute;
     top: .5em;
     right: .5em;
@@ -1148,7 +1117,7 @@ a.listing:hover {
     margin:0;
 }
 
-.exemple {
+.exemple, .disabled, .disabled a {
     color: #999999;
 }
 
@@ -1294,7 +1263,6 @@ table.listing {
 }
 
 #desktop header,
-#news header,
 .plugin header,
 .mailing header,
 #selected_members header,
@@ -1760,6 +1728,7 @@ td.photo img{
 .tabbed fieldset {
     margin: 0;
     padding: 0!important;
+    border: none;
 }
 
 .tabbed legend, .tabbed h3 {
@@ -1767,6 +1736,11 @@ td.photo img{
     margin: 0;
     text-align: center;
     font-size: 1.2em;
+}
+
+#tabs > div {
+    margin: 0;
+    padding: 0;
 }
 /*** /Onglets ***/
 

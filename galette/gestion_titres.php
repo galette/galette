@@ -52,11 +52,6 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-/*$cur_lang = $preferences->pref_lang;
-$cur_ref = Texts::DEFAULT_REF;
-
-$texts = new Texts($preferences);*/
-
 //delete members
 if ( isset($_GET['del']) ) {
     if ( isset($_GET['del']) ) {

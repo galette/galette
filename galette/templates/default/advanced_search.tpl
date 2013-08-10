@@ -241,7 +241,7 @@
                     buttonImage: './templates/default/images/calendar.png',
                     buttonImageOnly: true,
                     maxDate: '-0d',
-                    yearRange: 'c-10'
+                    yearRange: 'c-10:c+0'
                 });
                 $('.due_date').datepicker({
                     changeMonth: true,

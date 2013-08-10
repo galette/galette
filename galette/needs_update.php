@@ -54,8 +54,9 @@ header('Content-Type: text/html; charset=UTF-8');
         <link rel="stylesheet" type="text/css" href="templates/default/galette.css"/>
         <link rel="stylesheet" type="text/css" href="templates/default/jquery-ui/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>.custom.css"/>
         <script type="text/javascript" src="includes/jquery/jquery-<?php echo JQUERY_VERSION; ?>.min.js"></script>
-        <script type="text/javascript" src="includes/jquery/jquery.ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
-        <script type="text/javascript" src="includes/jquery/jquery.ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.button.min.js"></script>
+        <script type="text/javascript" src="includes/jquery/jquery-migrate-<?php echo JQUERY_MIGRATE_VERSION; ?>.min.js"></script>
+        <script type="text/javascript" src="includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
+        <script type="text/javascript" src="includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.button.min.js"></script>
         <script type="text/javascript" src="includes/jquery/jquery.bgiframe.pack.js"></script>
         <script type="text/javascript" src="includes/jquery/jquery.bgFade.js"></script>
         <script type="text/javascript" src="includes/jquery/chili-1.7.pack.js"></script>

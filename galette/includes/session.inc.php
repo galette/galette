@@ -43,6 +43,6 @@ if (!defined('GALETTE_ROOT')) {
 if ( !$login->isLogged() || isset($_POST['logout']) || isset($_GET['logout']) ) {
     if ( isset($_POST['logout']) || isset($_GET['logout']) ) {
         $hist->add(_("Log off"));
-        unset($_SESSION[$session_name]);
+        unset($_SESSION['galette'][$session_name]);
     }
 }

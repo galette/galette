@@ -791,6 +791,10 @@ class Adherent
                 case 'bool_display_info':
                     $value = 0;
                     break;
+                case 'date_crea_adh':
+                    //values that are setted at object instanciation
+                    $value = $this->$prop;
+                    break;
                 default:
                     $value = '';
                 }

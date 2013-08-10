@@ -6,30 +6,35 @@ nbproject
 /galette/build-stamp
 /galette/configure-stamp
 
-/galette/cache/*.php
-/galette/cache/*.cache
+/galette/cache/*
+!/galette/cache/readme.txt
 
 .vimfiles*
 *.vimentry
 quick_gen_project_*
 
 # /galette/config/
-/galette/config/config.inc.php
+/galette/config/config.inc.php*
+!/galette/config/config.inc.php.dist
 /galette/config/local_*
+/galette/config/behavior.inc.php
 
 # /galette/exports/
 /galette/exports/*
+!/galette/exports/readme.txt
+!/galette/exports/.htaccess
 
 # /galette/logs/
 /galette/logs/*.log
 
 # /galette/photos/
-/galette/photos/*.jpg
-/galette/photos/*.png
-/galette/photos/*.gif
+/galette/photos/*
+!/galette/photos/readme.txt
+!/galette/photos/.htaccess
 
 # /galette/plugins/
 /galette/plugins/*
+!/galette/plugins/readme.txt
 
 # /galette/tempimages/
 /galette/tempimages/*.png
@@ -47,5 +52,11 @@ tests/mageekguy.atoum.phar
 galette/includes/tcpdf_*
 galette/includes/Zend*
 galette/includes/Analog*
+galette/password_compat*
 
+#Backup files
 *~
+
+#Working stuff
+dbs/
+dist/

@@ -65,6 +65,7 @@ abstract class Authentication
     private $_staff = false;
     private $_uptodate = false;
     private $_managed_groups;
+    private $_cron = false;
 
     /**
     * Default constructor
@@ -115,6 +116,27 @@ abstract class Authentication
         $this->_lang = $preferences->pref_lang;
         //a flag for super admin only, since it's not a regular user
         $this->_superadmin = true;
+    }
+
+    /**
+     * Authenticate from cron
+     *
+     * @param string $name Service name
+     *
+     * @return void
+     */
+    public function logCron($name)
+    {
+        //known cronable files
+        $ok = array('reminder');
+
+        if ( in_array($name, $ok) ) {
+            $this->_logged = true;
+            $this->_cron = true;
+            $this->login = 'cron';
+        } else {
+            die('Not authorized!');
+        }
     }
 
     /**
@@ -183,6 +205,16 @@ abstract class Authentication
     public function isStaff()
     {
         return $this->_staff;
+    }
+
+    /**
+     * is user a crontab?
+     *
+     * @return bool
+     */
+    public function isCron()
+    {
+        return $this->_cron;
     }
 
     /**

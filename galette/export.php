@@ -82,21 +82,29 @@ if ( isset( $_POST['export_tables'] ) && $_POST['export_tables'] != '' ) {
         $select->from($table);
         $result = $select->query()->fetchAll(Zend_Db::FETCH_ASSOC);
 
-        $filename = $table . '_full.csv';
-        $filepath = Csv::DEFAULT_DIRECTORY . $filename;
-        $fp = fopen($filepath, 'w');
-        if ( $fp ) {
-            $res = $csv->export(
-                $result,
-                Csv::DEFAULT_SEPARATOR,
-                Csv::DEFAULT_QUOTE,
-                true,
-                $fp
-            );
-            fclose($fp);
-            $written[] = array(
-                'name' => $filename,
-                'file' => $filepath
+        if ( count($result) > 0 ) {
+            $filename = $table . '_full.csv';
+            $filepath = Csv::DEFAULT_DIRECTORY . $filename;
+            $fp = fopen($filepath, 'w');
+            if ( $fp ) {
+                $res = $csv->export(
+                    $result,
+                    Csv::DEFAULT_SEPARATOR,
+                    Csv::DEFAULT_QUOTE,
+                    true,
+                    $fp
+                );
+                fclose($fp);
+                $written[] = array(
+                    'name' => $filename,
+                    'file' => $filepath
+                );
+            }
+        } else {
+            $warning_detected[] = str_replace(
+                '%table',
+                $table,
+                _T("Table %table is empty, and has not been exported.")
             );
         }
     }
@@ -163,7 +171,6 @@ if ( isset($_GET['current_filter']) ) {
     $visibles = $fc->getVisibilities();
     $fields = array();
     $headers = array();
-    include_once 'galette/includes/members_fields.php';
     foreach ( $members_fields as $k=>$f ) {
         if ( $k !== 'mdp_adh'
             && $export_fields === null
@@ -214,6 +221,7 @@ $tpl->assign('written', $written);
 $tpl->assign('existing', $existing);
 $tpl->assign('success_detected', $success_detected);
 $tpl->assign('error_detected', $error_detected);
+$tpl->assign('warning_detected', $warning_detected);
 $tpl->assign('parameted', $parameted);
 $content = $tpl->fetch('export.tpl');
 $tpl->assign('content', $content);

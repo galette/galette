@@ -18,6 +18,13 @@
             {else if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index]) and GaletteMail::isUrl($data.dyn[$field.field_id][$smarty.section.fieldLoop.index])}
                 {if $smarty.section.fieldLoop.index_prev > 0}<br />{/if}
                 <a href="{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}" target="_blank" title="{_T string="Open '%s' in a new window" replace=$data.dyn[$field.field_id][$smarty.section.fieldLoop.index] pattern="/%s/"}">{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}</a>
+            {else if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index]) and $field.field_type eq 5}
+		{if $data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}
+		    {_T string="Yes"}
+		{else}
+		    {_T string="No"}
+		{/if}
+		<br/>
             {else}
             {$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|nl2br|default:"&nbsp;"}<br/>
             {/if}

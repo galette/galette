@@ -269,14 +269,14 @@
         var _is_checked = true;
         var _bind_check = function(){
             $('#checkall').click(function(){
-                $('table.listing :checkbox[name=member_sel[]]').each(function(){
+                $('table.listing :checkbox[name="member_sel[]"]').each(function(){
                     this.checked = _is_checked;
                 });
                 _is_checked = !_is_checked;
                 return false;
             });
             $('#checkinvert').click(function(){
-                $('table.listing :checkbox[name=member_sel[]]').each(function(){
+                $('table.listing :checkbox[name="member_sel[]"]').each(function(){
                     this.checked = !$(this).is(':checked');
                 });
                 return false;
@@ -304,7 +304,7 @@
                 $('#legende').dialog('open');
                 return false;
             });
-            $('.selection_menu input[type=submit], .selection_menu input[type=button], ').click(function(){
+            $('.selection_menu input[type="submit"], .selection_menu input[type="button"]').click(function(){
                 var _checkeds = $('table.listing').find('input[type=checkbox]:checked').length;
                 if ( _checkeds == 0 ) {
                     var _el = $('<div id="pleaseselect" title="{_T string="No member selected" escape="js"}">{_T string="Please make sure to select at least one member from the list to perform this action." escape="js"}</div>');

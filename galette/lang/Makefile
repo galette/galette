@@ -6,6 +6,7 @@ MKLANG = ./make_lang_l12n.py
 PHP_SOURCES = $(shell find ../ -maxdepth 1 -name \*.php) \
               $(shell find ../lib/Galette -name \*.php) \
               $(shell find ../includes -maxdepth 1 -name \*.php) \
+              $(shell find ../includes/fields_defs -name \*.php) \
               $(shell find ../install -name \*.php) \
               $(shell find ../public -name \*.php) \
               $(shell find ../templates -name \*.tpl)

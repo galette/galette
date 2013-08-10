@@ -41,19 +41,18 @@
 
 namespace Galette\IO;
 
+use Galette\Entity\PdfModel;
 use Analog\Analog;
 
 /*
  * TCPDF configuration file for Galette
  */
 require_once GALETTE_CONFIG_PATH . 'galette_tcpdf_config.php';
-define("K_TCPDF_EXTERNAL_CONFIG", true);
 
 /**
  *  Require TCPDF class
  */
-require_once GALETTE_ROOT . 'includes/tcpdf_' . TCPDF_VERSION . '/tcpdf.php';
-
+require_once GALETTE_TCPDF_PATH . '/tcpdf.php';
 
 /**
  * PDF class for galette
@@ -76,18 +75,22 @@ class Pdf extends \TCPDF
     const FONT='DejaVuSans';
     const FONT_SIZE=10;
 
+    private $_model;
     private $_paginated = false;
 
     /**
-    * Main constructor, set creator and author
-    */
-    public function __construct()
+     * Main constructor, set creator and author
+     *
+     * @param PdfModel $model Related model
+     */
+    public function __construct($model = null)
     {
         global $preferences;
 
-        parent::__construct();
+        parent::__construct('P', 'mm', 'A4', true, 'UTF-8');
         //set some values
         $this->SetCreator(PDF_CREATOR);
+        $this->SetFont(self::FONT, '', self::FONT_SIZE);
         $name = preg_replace(
             '/%s/',
             $preferences->pref_nom,
@@ -97,6 +100,17 @@ class Pdf extends \TCPDF
             $name . ' (using Galette ' . GALETTE_VERSION .
             'and TCPDF ' . TCPDF_VERSION . ')'
         );
+
+        if ( $model !== null ) {
+            if ( $model instanceof PdfModel ) {
+                $this->_model = $model;
+                $this->SetTitle($this->_model->htitle);
+            } else {
+                throw new \UnexpectedValueException(
+                    'Provided model must be an instance of PdfModel!'
+                );
+            }
+        }
     }
 
     /**
@@ -206,6 +220,16 @@ class Pdf extends \TCPDF
     }
 
     /**
+     * Draws PDF page Header
+     *
+     * @return void
+     */
+    function Header()
+    {
+        //just ovverride default header to prevent black line at top
+    }
+
+    /**
      * Draws PDF page footer
      *
      * @return void
@@ -215,29 +239,38 @@ class Pdf extends \TCPDF
         global $preferences;
 
         $this->SetY(-20);
-        $this->SetFont(self::FONT, '', self::FONT_SIZE);
-        $this->SetTextColor(0, 0, 0);
+        if ( isset($this->_model) ) {
+            $hfooter = '';
+            if ( trim($this->_model->hstyles) !== '' ) {
+                $hfooter .= "<style>\n" . $this->_model->hstyles . "\n</style>\n\n";
+            }
+            $hfooter .= $this->_model->hfooter;
+            $this->writeHtml($hfooter);
+        } else {
+            $this->SetFont(self::FONT, '', self::FONT_SIZE);
+            $this->SetTextColor(0, 0, 0);
 
-        $name = preg_replace(
-            '/%s/',
-            $preferences->pref_nom,
-            _T("Association %s")
-        );
+            $name = preg_replace(
+                '/%s/',
+                $preferences->pref_nom,
+                _T("Association %s")
+            );
 
-        $coordonnees_line1 = $name . ' - ' . $preferences->pref_adresse;
-        /** FIXME: pref_adresse2 should be removed */
-        if ( trim($preferences->pref_adresse2) != '' ) {
-            $coordonnees_line1 .= ', ' . $preferences->pref_adresse2;
-        }
-        $coordonnees_line2 = $preferences->pref_cp . ' ' . $preferences->pref_ville;
+            $coordonnees_line1 = $name . ' - ' . $preferences->pref_adresse;
+            /** FIXME: pref_adresse2 should be removed */
+            if ( trim($preferences->pref_adresse2) != '' ) {
+                $coordonnees_line1 .= ', ' . $preferences->pref_adresse2;
+            }
+            $coordonnees_line2 = $preferences->pref_cp . ' ' . $preferences->pref_ville;
 
-        $this->Cell(0, 4, $coordonnees_line1, 0, 1, 'C', 0, $preferences->pref_website);
-        $this->Cell(0, 4, $coordonnees_line2, 0, 0, 'C', 0, $preferences->pref_website);
+            $this->Cell(0, 4, $coordonnees_line1, 0, 1, 'C', 0, $preferences->pref_website);
+            $this->Cell(0, 4, $coordonnees_line2, 0, 0, 'C', 0, $preferences->pref_website);
 
-        if ( $this->_paginated ) {
-            $this->SetFont(self::FONT, '', self::FONT_SIZE - 3);
-            $this->Ln();
-            $this->Cell(0, 4, $this->getAliasRightShift().$this->PageNo() . '/' . $this->getAliasNbPages(), 0, 1, 'R');
+            if ( $this->_paginated ) {
+                $this->SetFont(self::FONT, '', self::FONT_SIZE - 3);
+                $this->Ln();
+                $this->Cell(0, 4, $this->getAliasRightShift().$this->PageNo() . '/' . $this->getAliasNbPages(), 0, 1, 'R');
+            }
         }
     }
 
@@ -248,65 +281,114 @@ class Pdf extends \TCPDF
      *
      * @return void
      */
-    function PageHeader($title)
+    function PageHeader($title = null)
     {
         global $preferences;
 
-        $print_logo = new \Galette\Core\PrintLogo();
-        if ( $print_logo->hasPicture() ) {
-            $logofile = $print_logo->getPath();
-
-            // Set logo size to max width 30 mm or max height 25 mm
-            $ratio = $print_logo->getWidth()/$print_logo->getHeight();
-            if ( $ratio < 1 ) {
-                if ( $print_logo->getHeight() > 16 ) {
-                    $hlogo = 25;
-                } else {
-                    $hlogo = $print_logo->getHeight();
-                }
-                $wlogo = round($hlogo*$ratio);
-            } else {
-                if ( $print_logo->getWidth() > 16 ) {
-                    $wlogo = 30;
-                } else {
-                    $wlogo = $print_logo->getWidth();
-                }
-                $hlogo = round($wlogo/$ratio);
+        if ( isset($this->_model) ) {
+            $html = null;
+            if ( trim($this->_model->hstyles) !== '' ) {
+                $html .= "<style>\n" . $this->_model->hstyles . "\n</style>\n\n";
             }
-        }
+            $html .= $this->_model->hheader;
+            $this->writeHtml($html, true, false, true, false, '');
+            if ( trim($this->_model->title) !== '' ) {
+                $htitle = '';
+                if ( trim($this->_model->hstyles) !== '' ) {
+                    $htitle .= "<style>\n" . $this->_model->hstyles .
+                        "\n</style>\n\n";
+                }
+                $htitle .= '<div id="pdf_title">' . $this->_model->htitle . '</div>';
+                $this->writeHtml($htitle);
+            }
+            if ( trim($this->_model->subtitle) !== '' ) {
+                $hsubtitle = '';
+                if ( trim($this->_model->hstyles) !== '' ) {
+                    $hsubtitle .= "<style>\n" . $this->_model->hstyles .
+                        "\n</style>\n\n";
+                }
+                $hsubtitle .= '<div id="pdf_subtitle">' . $this->_model->hsubtitle .
+                    '</div>';
+                $this->writeHtml($hsubtitle);
+            }
+            if ( trim($this->_model->title) !== ''
+                || trim($this->_model->subtitle) !== ''
+            ) {
+                $this->Ln(5);
+            }
+        } else {
+            //default header
+            $print_logo = new \Galette\Core\PrintLogo();
+            if ( $print_logo->hasPicture() ) {
+                $logofile = $print_logo->getPath();
 
-        $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 4);
-        $this->SetTextColor(0, 0, 0);
+                // Set logo size to max width 30 mm or max height 25 mm
+                $ratio = $print_logo->getWidth()/$print_logo->getHeight();
+                if ( $ratio < 1 ) {
+                    if ( $print_logo->getHeight() > 16 ) {
+                        $hlogo = 25;
+                    } else {
+                        $hlogo = $print_logo->getHeight();
+                    }
+                    $wlogo = round($hlogo*$ratio);
+                } else {
+                    if ( $print_logo->getWidth() > 16 ) {
+                        $wlogo = 30;
+                    } else {
+                        $wlogo = $print_logo->getWidth();
+                    }
+                    $hlogo = round($wlogo/$ratio);
+                }
+            }
 
-        $y = $this->GetY();
-        $this->Ln(2);
-        $ystart = $this->GetY();
+            $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 4);
+            $this->SetTextColor(0, 0, 0);
 
-        $this->Cell(
-            0,
-            6,
-            $preferences->pref_nom,
-            0,
-            1,
-            'L',
-            0,
-            $preferences->pref_website
-        );
-        $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
+            $y = $this->GetY();
+            $this->Ln(2);
+            $ystart = $this->GetY();
 
-        if ( $title !== null ) {
-            $this->Cell(0, 6, $title, 0, 1, 'L', 0);
-        }
-        $yend = $this->getY();//store position at the end of the text
+            $this->Cell(
+                0,
+                6,
+                $preferences->pref_nom,
+                0,
+                1,
+                'L',
+                0,
+                $preferences->pref_website
+            );
+            $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
 
-        $this->SetY($ystart);
-        $x = 190 - $wlogo; //right align
-        $this->Image($logofile, $x, $this->GetY(), $wlogo, $hlogo);
-        $this->y += $hlogo + 3;
-        //if position after logo is < than position after text, we have to change y
-        if ( $this->getY() < $yend ) {
-            $this->setY($yend);
+            if ( $title !== null ) {
+                $this->Cell(0, 6, $title, 0, 1, 'L', 0);
+            }
+            $yend = $this->getY();//store position at the end of the text
+
+            $this->SetY($ystart);
+            $x = 190 - $wlogo; //right align
+            $this->Image($logofile, $x, $this->GetY(), $wlogo, $hlogo);
+            $this->y += $hlogo + 3;
+            //if position after logo is < than position after text,
+            //we have to change y
+            if ( $this->getY() < $yend ) {
+                $this->setY($yend);
+            }
         }
     }
 
+    /**
+     * Draws body from model
+     *
+     * @return void
+     */
+    public function PageBody()
+    {
+        $hbody = '';
+        if ( trim($this->_model->hstyles) !== '' ) {
+            $hbody .= "<style>\n" . $this->_model->hstyles . "\n</style>\n\n";
+        }
+        $hbody .= $this->_model->hbody;
+        $this->writeHtml($hbody);
+    }
 }

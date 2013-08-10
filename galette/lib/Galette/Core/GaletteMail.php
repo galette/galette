@@ -224,6 +224,22 @@ class GaletteMail
         $this->_mail->Subject = $this->_subject;
         $this->_mail->Body = $this->_message;
 
+        //set at least on real recipient (not bcc)
+        if ( count($this->_recipients) === 1 ) {
+            //there is only one recipient, clean bcc and readd as simple recipient
+            $this->_mail->ClearBCCs();
+            $this->_mail->AddAddress(
+                key($this->_recipients),
+                current($this->_recipients)
+            );
+        } else {
+            //we're sending a mailing. Set main recipient to sender
+            $this->_mail->AddAddress(
+                $preferences->pref_email,
+                $preferences->pref_email_nom
+            );
+        }
+
         if ( trim($preferences->pref_mail_sign) != '' ) {
 
             $patterns = array(

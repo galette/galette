@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  News
+ * @category  IO
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -289,7 +289,7 @@ class Charts
 
         $chart = array(
             array(
-                _T('Individuals'),
+                _T("Individuals"),
                 $res[0]->cnt
             ),
             array(
