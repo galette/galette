@@ -1,6 +1,21 @@
 Changes
 -------
 
+0.7.4.5 -> 0.7.5 (2013-08-08)
+
+- fixed empty export csv files export
+- fixed missing translation in history
+- add reminders text models
+- automate reminders sending
+- send reminders via cron jobs
+- add receipt and invoices for contributions, with customizable models
+- post contribution script call (file, get or post), for accouting storage
+- mailing now always contains a 'To' field to avoid mail blocking
+- amounts and contributions types now available on mail texts
+- new date and boolean dynamic fields
+- CSS printing override is now possible
+- twitter and google+ news has been removed from dashboard
+
 0.7.4.4 -> 0.7.4.5 (2013-07-05)
 
 - fix member removal without confirmation
