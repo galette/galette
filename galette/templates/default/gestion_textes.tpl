@@ -22,7 +22,7 @@
                 </p>
                 <p>
                     <label for="tsubject" class="bline">{_T string="Email Subject"}</label> 
-                    <input type="text" name="text_subject" id="tsubject" value="{$mtxt->tsubject}" maxlength="32" size="32"/> <span class="exemple">{_T string="(Max 32 characters)"}</span>
+                    <input type="text" name="text_subject" id="tsubject" value="{$mtxt->tsubject}" maxlength="255" size="32"/> <span class="exemple">{_T string="(Max 255 characters)"}</span>
                 </p>
                 <p>
                     <label for="text_body" class="bline">{_T string="Email Body:"}</label>
