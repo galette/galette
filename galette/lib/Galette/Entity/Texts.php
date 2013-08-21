@@ -88,7 +88,7 @@ class Texts
             'link_validity'     => '/{LINK_VALIDITY}/',
             'deadline'          => '/{DEADLINE}/',
             'contrib_info'      => '/{CONTRIB_INFO}/',
-            'days_remaining'    => '/{DAYS_REMANING}/',
+            'days_remaining'    => '/{DAYS_REMAINING}/',
             'days_expired'      => '/{DAYS_EXPIRED}/',
             'contrib_amount'    => '/{CONTRIB_AMOUNT}/',
             'contrib_type'      => '/{CONTRIB_TYPE}/'

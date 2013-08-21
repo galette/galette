@@ -83,7 +83,7 @@
                 <tr>
                     <th><tt>{ldelim}CONTRIB_TYPE{rdelim}</tt></th>
                     <td class="back">{_T string="Contribution type"}<br/><span>({_T string="available only for new contributions"})</span></td>
-                    <th><tt>{ldelim}DAYS_REMANING{rdelim}</tt></th>
+                    <th><tt>{ldelim}DAYS_REMAINING{rdelim}</tt></th>
                     <td class="back">{_T string="Membership remaining days"}<br/><span>({_T string="available only for reminders"})</span></td>
                 </tr>
                 <tr>
