@@ -55,7 +55,11 @@ if ( $login->isCron() ) {
 
 $texts = new Texts($texts_fields, $preferences);
 if ( isset($_POST['reminders']) || $login->isCron() ) {
-    $reminders = new Reminders($_POST['reminders']);
+    $selected = null;
+    if ( isset($_POST['reminders']) ) {
+        $selected = $_POST['reminders'];
+    }
+    $reminders = new Reminders($selected);
 
     $labels = false;
     $labels_members = array();
