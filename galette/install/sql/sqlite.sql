@@ -274,7 +274,7 @@ CREATE TABLE galette_pdfmodels (
   model_title TEXT,
   model_subtitle TEXT,
   model_parent INTEGER DEFAULT NULL,
-  FOREIGN KEY (model_parent) REFERENCES galette_pdfmodels (model_id),
+  FOREIGN KEY (model_parent) REFERENCES galette_pdfmodels (model_id)
 );
 
 -- table for database version

@@ -86,7 +86,7 @@ class GroupsPdf extends Pdf
 
 $doc_title = _T("Members by groups");
 
-$pdf=new GroupsPdf('P', 'mm', 'A4');
+$pdf=new GroupsPdf();
 
 // Set document information
 $pdf->SetTitle($doc_title);
