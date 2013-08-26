@@ -1,6 +1,15 @@
 Changes
 -------
 
+0.7.5 -> 0.7.5.1 (2013-08-26)
+- fix groups PDF blank page
+- fis MySQL upgrade script issues
+- fix wrong interpreter path in post contribution test script
+- mails subejcts were too short
+- avoid undefined index when running from cron
+- improve post contribution JSON data
+- fix SQLite install script
+
 0.7.4.5 -> 0.7.5 (2013-08-08)
 
 - fixed empty export csv files export
