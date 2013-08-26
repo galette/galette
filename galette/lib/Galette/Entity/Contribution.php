@@ -901,7 +901,8 @@ class Contribution
         }
 
         $contrib = array(
-            'type'      => $this->getTypeLabel(),
+            'date'      => $this->_date,
+            'type'      => $this->getRawType(),
             'amount'    => $this->amount,
             'voucher'   => $voucher_path,
             'category'  => array(
@@ -916,8 +917,11 @@ class Contribution
             $member = array(
                 'name'          => $m->sfullname,
                 'email'         => $m->email,
-                'organization'  => $m->isCompany(),
-                'status'        => $m->sstatus,
+                'organization'  => ($m->isCompany() ? 1 : 0),
+                'status'        => array(
+                    'id'    => $m->status,
+                    'label' => $m->sstatus
+                ),
                 'country'       => $m->country
             );
 
@@ -947,6 +951,19 @@ class Contribution
         }
 
         return $res;
+    }
+    /**
+     * Get raw contribution type
+     *
+     * @return string
+     */
+    public function getRawType()
+    {
+        if ( $this->isCotis() ) {
+            return 'membership';
+        } else {
+            return 'donation';
+        }
     }
 
     /**

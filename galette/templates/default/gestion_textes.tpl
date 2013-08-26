@@ -22,7 +22,7 @@
                 </p>
                 <p>
                     <label for="tsubject" class="bline">{_T string="Email Subject"}</label> 
-                    <input type="text" name="text_subject" id="tsubject" value="{$mtxt->tsubject}" maxlength="32" size="32"/> <span class="exemple">{_T string="(Max 32 characters)"}</span>
+                    <input type="text" name="text_subject" id="tsubject" value="{$mtxt->tsubject}" maxlength="255" size="32"/> <span class="exemple">{_T string="(Max 255 characters)"}</span>
                 </p>
                 <p>
                     <label for="text_body" class="bline">{_T string="Email Body:"}</label>
@@ -83,7 +83,7 @@
                 <tr>
                     <th><tt>{ldelim}CONTRIB_TYPE{rdelim}</tt></th>
                     <td class="back">{_T string="Contribution type"}<br/><span>({_T string="available only for new contributions"})</span></td>
-                    <th><tt>{ldelim}DAYS_REMANING{rdelim}</tt></th>
+                    <th><tt>{ldelim}DAYS_REMAINING{rdelim}</tt></th>
                     <td class="back">{_T string="Membership remaining days"}<br/><span>({_T string="available only for reminders"})</span></td>
                 </tr>
                 <tr>

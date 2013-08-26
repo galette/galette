@@ -88,12 +88,17 @@ class Texts
             'link_validity'     => '/{LINK_VALIDITY}/',
             'deadline'          => '/{DEADLINE}/',
             'contrib_info'      => '/{CONTRIB_INFO}/',
-            'days_remaining'    => '/{DAYS_REMANING}/',
+            'days_remaining'    => '/{DAYS_REMAINING}/',
             'days_expired'      => '/{DAYS_EXPIRED}/',
             'contrib_amount'    => '/{CONTRIB_AMOUNT}/',
             'contrib_type'      => '/{CONTRIB_TYPE}/'
         );
 
+        $login_uri = null;
+        if ( isset($_SERVER['SERVER_NAME']) && isset($_SERVER['REQUEST_URI']) ) {
+            $login_uri = 'http://' . $_SERVER['SERVER_NAME'] .
+                dirname($_SERVER['REQUEST_URI']);
+        }
         $this->_replaces = array(
             'asso_name'         => $preferences->pref_nom,
             'asso_slogan'       => $preferences->pref_slogan,
@@ -102,8 +107,7 @@ class Texts
             'firstname_adh'     => null,
             'login_adh'         => null,
             'mail_adh'          => null,
-            'login_uri'         => 'http://' . $_SERVER['SERVER_NAME'] .
-                                    dirname($_SERVER['REQUEST_URI']),
+            'login_uri'         => $login_uri,
             'password_adh'      => null,
             'change_pass_uri'   => null,
             'link_validity'     => null,

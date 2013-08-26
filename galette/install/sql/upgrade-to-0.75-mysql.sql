@@ -27,9 +27,9 @@ CREATE TABLE galette_pdfmodels (
   PRIMARY KEY (model_id)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
+ALTER TABLE galette_tmppasswds DROP FOREIGN KEY galette_tmppasswds_ibfk_1;
 ALTER TABLE galette_tmppasswds
-  DROP CONSTRAINT galette_tmppasswds_ibfk_1,
   ADD CONSTRAINT galette_tmppasswds_ibfk_1
-    FOREIGN KEY (id_adh) REFERENCES galette_adherents ON DELETE CASCADE;
+    FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE RESTRICT ;
 
 UPDATE galette_database SET version = 0.703;

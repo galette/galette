@@ -160,7 +160,7 @@ $texts_fields = array(
         'tid'       => 22,
         'tref'      => 'impendingduedate',
         'tsubject'  => '[{ASSO_NAME}] Your membership is about to expire',
-        'tbody'     => "Hello,\r\n\r\nYour {ASSO_NAME} membership is about to expire in {DAYS_REMANING} days.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+        'tbody'     => "Hello,\r\n\r\nYour {ASSO_NAME} membership is about to expire in {DAYS_REMAINING} days.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
         'tlang'     => 'en_US',
         'tcomment'  => 'Impending due date'
     ),
@@ -168,7 +168,7 @@ $texts_fields = array(
         'tid'       => 23,
         'tref'      => 'impendingduedate',
         'tsubject'  => '[{ASSO_NAME}] Votre adhésion arrive à terme',
-        'tbody'     => "Bonjour,\r\n\r\nVotre adhésion à {ASSO_NAME} arrive à son terme dans {DAYS_REMANING} jours.\r\n\r\nA bientôt!\r\n\r\n(ce courriel est un envoi automatique)",
+        'tbody'     => "Bonjour,\r\n\r\nVotre adhésion à {ASSO_NAME} arrive à son terme dans {DAYS_REMAINING} jours.\r\n\r\nA bientôt!\r\n\r\n(ce courriel est un envoi automatique)",
         'tlang'     => 'fr_FR',
         'tcomment'  => 'Échéance proche'
     ),
