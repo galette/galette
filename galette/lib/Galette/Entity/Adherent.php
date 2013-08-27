@@ -210,7 +210,7 @@ class Adherent
             } else {
                 $this->_active = true;
                 $this->_language = $i18n->getID();
-                $this->_creation_date = date("Y-m-d");
+                $this->_creation_date = date(_T("Y-m-d"));
                 $this->_status = Status::DEFAULT_STATUS;
                 $this->_title = null;
                 $this->_gender = self::NC;
@@ -784,7 +784,15 @@ class Adherent
                 case 'bool_display_info':
                     $value = 0;
                     break;
+                case 'activite_adh':
+                    //values that are setted at object instanciation
+                    $value = true;
+                    break;
                 case 'date_crea_adh':
+                case 'sexe_adh':
+                case 'titre_adh':
+                case 'id_statut':
+                case 'pref_lang':
                     //values that are setted at object instanciation
                     $value = $this->$prop;
                     break;

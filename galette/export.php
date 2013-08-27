@@ -5,7 +5,7 @@
 /**
  * Export
  *
- * Permet l'export de données au format CSV
+ * Data export in CSV format
  *
  * PHP version 5
  *
@@ -49,18 +49,19 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 }
 
 use Galette\IO\Csv;
+use Galette\IO\CsvOut;
 use Galette\Entity\Adherent;
 use Galette\Entity\FieldsConfig;
 use Galette\Repository\Members;
 
-$csv = new Csv();
+$csv = new CsvOut();
 
 $written = array();
 
 $tables_list = $zdb->getTables();
 
 if ( isset($_GET['sup']) ) {
-    $res = $csv->removeExport($_GET['sup']);
+    $res = $csv->remove($_GET['sup']);
     if ( $res === true ) {
         $success_detected[] = str_replace(
             '%export',
@@ -84,7 +85,7 @@ if ( isset( $_POST['export_tables'] ) && $_POST['export_tables'] != '' ) {
 
         if ( count($result) > 0 ) {
             $filename = $table . '_full.csv';
-            $filepath = Csv::DEFAULT_DIRECTORY . $filename;
+            $filepath = CsvOut::DEFAULT_DIRECTORY . $filename;
             $fp = fopen($filepath, 'w');
             if ( $fp ) {
                 $res = $csv->export(
@@ -147,73 +148,8 @@ if ( isset( $_POST['export_parameted'] ) && $_POST['export_parameted'] != '' ) {
     }
 }
 
-if ( isset($_GET['current_filter']) ) {
-
-    if ( isset($session['filters']['members'])
-        && !isset($_POST['mailing'])
-        && !isset($_POST['mailing_new'])
-    ) {
-        //CAUTION: this one may be simple or advanced, display must change
-        $filters = unserialize($session['filters']['members']);
-    } else {
-        $filters = new MembersList();
-    }
-
-    $export_fields = null;
-    if ( file_exists(GALETTE_CONFIG_PATH  . 'local_export_fields.inc.php') ) {
-        include_once GALETTE_CONFIG_PATH  . 'local_export_fields.inc.php';
-        $export_fields = $fields;
-    }
-
-    // fields visibility
-    $a = new Adherent();
-    $fc = new FieldsConfig(Adherent::TABLE, $a->fields);
-    $visibles = $fc->getVisibilities();
-    $fields = array();
-    $headers = array();
-    foreach ( $members_fields as $k=>$f ) {
-        if ( $k !== 'mdp_adh'
-            && $export_fields === null
-            || in_array($k, $export_fields)
-        ) {
-            if ( $visibles[$k] === FieldsConfig::VISIBLE ) {
-                $fields[] = $k;
-                $labels[] = $f['label'];
-            } else if ( ($login->isAdmin()
-                || $login->isStaff()
-                || $login->isSuperAdmin())
-                && $visibles[$k] === FieldsConfig::ADMIN
-            ) {
-                $fields[] = $k;
-                $labels[] = $f['label'];
-            }
-        }
-    }
-
-    $members = new Members($filters);
-    $members_list = $members->getMembersList(false, $fields);
-
-    $filename = 'filtered_memberslist.csv';
-    $filepath = Csv::DEFAULT_DIRECTORY . $filename;
-    $fp = fopen($filepath, 'w');
-    if ( $fp ) {
-        $res = $csv->export(
-            $members_list,
-            Csv::DEFAULT_SEPARATOR,
-            Csv::DEFAULT_QUOTE,
-            $labels,
-            $fp
-        );
-        fclose($fp);
-        $written[] = array(
-            'name' => $filename,
-            'file' => $filepath
-        );
-    }
-}
-
 $parameted = $csv->getParametedExports();
-$existing = Csv::getExistingExports();
+$existing = $csv->getExisting();
 
 $tpl->assign('page_title', _T("CVS database Export"));
 $tpl->assign('tables_list', $tables_list);

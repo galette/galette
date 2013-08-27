@@ -781,7 +781,7 @@ class Picture
             $error = preg_replace(
                 '|%d|',
                 self::MAX_FILE_SIZE,
-                _T("File is too big. Maximum allowed size is %d")
+                _T("File is too big. Maximum allowed size is %dKo")
             );
             break;
         case self::MIME_NOT_ALLOWED:
@@ -798,7 +798,7 @@ class Picture
     }
 
     /**
-     * Return textual erro rmessage send by PHP after upload attempt
+     * Return textual error message send by PHP after upload attempt
      *
      * @param int $error_code The error code
      *

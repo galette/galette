@@ -24,6 +24,11 @@ quick_gen_project_*
 !/galette/exports/readme.txt
 !/galette/exports/.htaccess
 
+# /galette/imports/
+/galette/imports/*
+!/galette/imports/readme.txt
+!/galette/imports/.htaccess
+
 # /galette/logs/
 /galette/logs/*.log
 

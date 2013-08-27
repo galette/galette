@@ -3,11 +3,11 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Get an exported file
+ * Get an import file
  *
  * PHP version 5
  *
- * Copyright © 2011-2013 The Galette Team
+ * Copyright © 2013 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,11 +28,10 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2013 The Galette Team
+ * @copyright 2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2011-11-05
+ * @since     Available since 0.7.6dev - 2013-08-27
  */
 
 use Analog\Analog as Analog;
@@ -51,20 +50,20 @@ if ( !isset($_GET['file']) ) {
 
 $filename = $_GET['file'];
 
-use Galette\IO\CsvOut;
+use Galette\IO\CsvIn;
 
 //Exports main contain user confidential data, they're accessible only for
 //admins or staff members
 if ( $login->isAdmin() || $login->isStaff() ) {
 
-    if (file_exists(CsvOut::DEFAULT_DIRECTORY . $filename) ) {
+    if (file_exists(CsvIn::DEFAULT_DIRECTORY . $filename) ) {
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $filename . '";');
         header('Pragma: no-cache');
-        readfile(CsvOut::DEFAULT_DIRECTORY . $filename);
+        readfile(CsvIn::DEFAULT_DIRECTORY . $filename);
     } else {
         Analog::log(
-            'A request has been made to get an exported file named `' .
+            'A request has been made to get an import file named `' .
             $filename .'` that does not exists.',
             Analog::WARNING
         );
@@ -72,7 +71,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     }
 } else {
     Analog::log(
-        'A non authorized person asked to retrieve exported file named `' .
+        'A non authorized person asked to retrieve import file named `' .
         $filename . '`. Access has not been granted.',
         Analog::WARNING
     );

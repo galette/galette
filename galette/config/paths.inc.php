@@ -106,6 +106,9 @@ if ( !defined('GALETTE_PLUGINS_PATH') ) {
 if ( !defined('GALETTE_EXPORTS_PATH') ) {
     define('GALETTE_EXPORTS_PATH', GALETTE_ROOT . 'exports/');
 }
+if ( !defined('GALETTE_IMPORTS_PATH') ) {
+    define('GALETTE_IMPORTS_PATH', GALETTE_ROOT . 'imports/');
+}
 if ( !defined('GALETTE_PHOTOS_PATH') ) {
     define('GALETTE_PHOTOS_PATH', GALETTE_ROOT . 'photos/');
 }
