@@ -109,10 +109,7 @@ abstract class PdfModel
             'asso_website'      => '/{ASSO_WEBSITE}/'
         );
 
-        $address = $preferences->pref_adresse;
-        if ( $preferences->pref_adresse2 != '' ) {
-            $address .= '<br/>' . $preferences->pref_adresse2;
-        }
+        $address = $preferences->getPostalAdress();
 
         $website = '';
         if ( $preferences->pref_website != '' ) {
