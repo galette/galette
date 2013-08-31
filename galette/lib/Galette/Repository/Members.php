@@ -99,6 +99,7 @@ class Members
     const MEMBERSHIP_NEVER = 4;
     const MEMBERSHIP_STAFF = 5;
     const MEMBERSHIP_ADMIN = 6;
+    const MEMBERSHIP_NONE = 7;
 
     const ORDERBY_NAME = 0;
     const ORDERBY_NICKNAME = 1;
@@ -1018,6 +1019,9 @@ class Members
                     break;
                 case self::MEMBERSHIP_ADMIN:
                     $select->where('bool_admin_adh = ?', true);
+                    break;
+                case self::MEMBERSHIP_NONE:
+                    $select->where('a.id_statut = ?', Status::DEFAULT_STATUS);
                     break;
                 }
             }
