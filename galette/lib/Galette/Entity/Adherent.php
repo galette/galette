@@ -689,14 +689,7 @@ class Adherent
         global $zdb;
 
         try {
-            $cpass = null;
-            if ( defined('GALETTE_UNSECURE_PASSWORDS')
-                && GALETTE_UNSECURE_PASSWORDS === true
-            ) {
-                $cpass = md5($pass);
-            } else {
-                $cpass = password_hash($pass, PASSWORD_BCRYPT);
-            }
+            $cpass = password_hash($pass, PASSWORD_BCRYPT);
 
             $zdb->db->update(
                 PREFIX_DB . self::TABLE,
@@ -953,23 +946,14 @@ class Adherent
                         ) {
                             $errors[] = _T("- The passwords don't match!");
                         } else if ( $this->_self_adh === true
-                            && (defined('GALETTE_UNSECURE_PASSWORDS')
-                            && GALETTE_UNSECURE_PASSWORDS === true
-                            &&  !md5($value)==$values['mdp_crypt']
-                            || !crypt($value, $values['mdp_crypt'])==$values['mdp_crypt'])
+                            && !crypt($value, $values['mdp_crypt'])==$values['mdp_crypt']
                         ) {
-                                $errors[] = _T("Password misrepeated: ");
+                            $errors[] = _T("Password misrepeated: ");
                         } else {
-                            if ( defined('GALETTE_UNSECURE_PASSWORDS')
-                                && GALETTE_UNSECURE_PASSWORDS === true
-                            ) {
-                                $this->$prop = md5($value);
-                            } else {
-                                $this->$prop = password_hash(
-                                    $value,
-                                    PASSWORD_BCRYPT
-                                );
-                            }
+                            $this->$prop = password_hash(
+                                $value,
+                                PASSWORD_BCRYPT
+                            );
                         }
                         break;
                     case 'id_statut':

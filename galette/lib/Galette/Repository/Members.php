@@ -1378,17 +1378,10 @@ class Members
                         || $m->mdp_adh == 'NULL'
                     ) {
                         $randomp = $p->makeRandomPassword(15);
-
-                        if ( defined('GALETTE_UNSECURE_PASSWORDS')
-                            && GALETTE_UNSECURE_PASSWORDS === true
-                        ) {
-                            $m->mdp_adh = md5($randomp);
-                        } else {
-                            $m->mdp_adh = password_hash(
-                                $randomp,
-                                PASSWORD_BCRYPT
-                            );
-                        }
+                        $m->mdp_adh = password_hash(
+                            $randomp,
+                            PASSWORD_BCRYPT
+                        );
                         $dirty = true;
                     }
 

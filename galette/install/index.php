@@ -369,22 +369,7 @@ case 'u3':
         $php_ok = false;
         $php_class .= $class . 'bad';
     } else {
-        if ( defined('GALETTE_UNSECURE_PASSWORDS')
-            && GALETTE_UNSECURE_PASSWORDS === true
-        ) {
-            $php_class .= $class . 'ok';
-            $pwd_compat = true;
-        } else {
-            //check for password_compat...
-            $hash = '$2y$04$usesomesillystringfore7hnbRJHxXVLeakoG8K30oukPsA.ztMG';
-            $test = crypt("password", $hash);
-            $pwd_compat = $test == $hash;
-            if ( $pwd_compat ) {
-                $php_class .= $class . 'ok';
-            } else {
-                $php_class .= $class . 'bad';
-            }
-        }
+        $php_class .= $class . 'ok';
     }
     ?>
             <article id="php_version" class="<?php echo $php_class; ?>">
@@ -403,14 +388,6 @@ case 'u3':
         echo $msg;
     }
 
-    if ( !$pwd_compat ) {
-        $msg = '<p class="error">';
-        $msg .= _T("Your PHP version is not compatible with password storage!");
-        $msg .= '<br/>';
-        $msg .= _T("Please consider upgrading your PHP version.");
-        $msg .= '</p>';
-        echo $msg;
-    }
     echo str_replace('%version', PHP_VERSION, _T("PHP version %version"));
                 ?>
             </article>
@@ -1269,15 +1246,7 @@ define("STOCK_FILES", "tempimages");
         $titles = new Galette\Repository\Titles();
 
         //init default values
-        $admpass = null;
-
-        if ( defined('GALETTE_UNSECURE_PASSWORDS')
-            && GALETTE_UNSECURE_PASSWORDS === true
-        ) {
-            $admpass = md5($_POST['install_adminpass']);
-        } else {
-            $admpass = password_hash($_POST['install_adminpass'], PASSWORD_BCRYPT);
-        }
+        $admpass = password_hash($_POST['install_adminpass'], PASSWORD_BCRYPT);
 
         $res = $preferences->installInit(
             $i18n->getID(),

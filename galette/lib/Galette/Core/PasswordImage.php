@@ -87,13 +87,7 @@ class PasswordImage extends Password
         $this->setPassword($password);
 
         $hash = null;
-        if ( defined('GALETTE_UNSECURE_PASSWORDS')
-            && GALETTE_UNSECURE_PASSWORDS === true
-        ) {
-            $hash = md5($password);
-        } else {
-            $hash = password_hash($password, PASSWORD_BCRYPT);
-        }
+        $hash = password_hash($password, PASSWORD_BCRYPT);
         $this->setHash($hash);
 
         return true;
@@ -170,13 +164,7 @@ class PasswordImage extends Password
      */
     public function check($pass, $crypt)
     {
-        if ( defined('GALETTE_UNSECURE_PASSWORDS')
-            && GALETTE_UNSECURE_PASSWORDS === true
-        ) {
-            return md5($pass) == $crypt;
-        } else {
-            return crypt($pass, $crypt) == $crypt;
-        }
+        return crypt($pass, $crypt) == $crypt;
     }
 
 }

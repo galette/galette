@@ -512,13 +512,7 @@ class Preferences
 
         //some values need to be changed (eg. passwords)
         if ($name == 'pref_admin_pass') {
-            if ( defined('GALETTE_UNSECURE_PASSWORDS')
-                && GALETTE_UNSECURE_PASSWORDS === true
-            ) {
-                $value = md5($value);
-            } else {
-                $value = password_hash($value, PASSWORD_BCRYPT);
-            }
+            $value = password_hash($value, PASSWORD_BCRYPT);
         }
 
         //okay, let's update value
