@@ -13,6 +13,11 @@ nbproject
 *.vimentry
 quick_gen_project_*
 
+# /galette/attachments/
+/galette/attachments/*
+!/galette/attachments/readme.txt
+!/galette/attachments/.htaccess
+
 # /galette/config/
 /galette/config/config.inc.php*
 !/galette/config/config.inc.php.dist

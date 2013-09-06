@@ -57,6 +57,11 @@ if ( isset($_POST['mailing_done'])
     || isset($_GET['mailing_new'])
     || isset($_GET['reminder'])
 ) {
+    if ( isset($session['mailing']) ) {
+        // check for temporary attachments to remove
+        $m = unserialize($session['mailing']);
+        $m->removeAttachments(true);
+    }
     $session['mailing'] = null;
     unset($session['mailing']);
     if ( !isset($_GET['mailing_new']) && !isset($_GET['reminder']) ) {
@@ -85,7 +90,7 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
     ) {
         $mailing = unserialize($session['mailing']);
     } else if (isset($_GET['from']) && is_numeric($_GET['from'])) {
-        $mailing = new Core\Mailing(null);
+        $mailing = new Core\Mailing(null, $_GET['from']);
         Core\MailingHistory::loadFrom((int)$_GET['from'], $mailing);
     } else if (isset($_GET['reminder'])) {
         //FIXME: use a constant!
@@ -136,6 +141,35 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
 
         $mailing->html = ( isset($_POST['mailing_html']) ) ? true : false;
 
+        //handle attachments
+        if ( isset($_FILES['files']) ) {
+            for ( $i = 0; $i < count($_FILES['files']['name']); $i++) {
+                if ( $_FILES['files']['error'][$i] === UPLOAD_ERR_OK ) {
+                    if ( $_FILES['files']['tmp_name'][$i] !='' ) {
+                        if ( is_uploaded_file($_FILES['files']['tmp_name'][$i]) ) {
+                            $da_file = array();
+                            foreach ( array_keys($_FILES['files']) as $key ) {
+                                $da_file[$key] = $_FILES['files'][$key][$i];
+                            }
+                            $res = $mailing->store($da_file);
+                            if ( $res < 0 ) {
+                                //what to do if one of attachments fail? should other be removed?
+                                $error_detected[] = $mailing->getAttachmentErrorMessage($res);
+                            }
+                        }
+                    }
+                } else if ($_FILES['files']['error'][$i] !== UPLOAD_ERR_NO_FILE) {
+                    Analog::log(
+                        $mailing->getPhpErrorMessage($_FILES['files']['error'][$i]),
+                        Analog::WARNING
+                    );
+                    $error_detected[] = $mailing->getPhpErrorMessage(
+                        $_FILES['files']['error'][$i]
+                    );
+                }
+            }
+        }
+
         if ( count($error_detected) == 0
             && !isset($_POST['mailing_reset'])
             && !isset($_POST['mailing_save'])
@@ -177,6 +211,10 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
         }
     }
 
+    if ( isset($_GET['remove_attachment']) ) {
+        $mailing->removeAttachment($_GET['remove_attachment']);
+    }
+
     if ( $mailing->current_step !== Core\Mailing::STEP_SENT ) {
         $session['mailing'] = serialize($mailing);
     }
@@ -213,6 +251,7 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
     $tpl->assign('html_editor', true);
     $tpl->assign('html_editor_active', $_POST['html_editor_active']);
 }
+$tpl->assign('attachments', $mailing->attachments);
 $tpl->assign('require_dialog', true);
 $tpl->assign('page_title', _T("Mailing"));
 $content = $tpl->fetch('mailing_adherents.tpl');

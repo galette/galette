@@ -59,12 +59,14 @@ $mailing = null;
 if ( isset($_GET['id']) && is_numeric($_GET['id']) ) {
     $mailing = new Mailing(null);
     MailingHistory::loadFrom((int)$_GET['id'], $mailing);
+    $tpl->assign('attachments_files', $mailing->attachments);
 } else {
     $mailing = unserialize($session['mailing']);
 
     $mailing->subject = $_POST['subject'];
     $mailing->message = $_POST['body'];
     $mailing->html = ($_POST['html'] === 'true');
+    $tpl->assign('attachments', $_POST['attachments']);
 }
 
 $tpl->assign(
@@ -82,6 +84,7 @@ if ( $ajax ) {
     $tpl->assign('mode', 'ajax');
     $tpl->display('ajax_mailing_preview.tpl');
 } else {
+    $tpl->assign('page_title', _T("Mailing preview"));
     $content = $tpl->fetch('ajax_mailing_preview.tpl');
     $tpl->assign('content', $content);
     $tpl->display('page.tpl');

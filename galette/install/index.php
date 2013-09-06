@@ -454,7 +454,8 @@ case 'u3':
         GALETTE_CONFIG_PATH,
         GALETTE_EXPORTS_PATH,
         GALETTE_IMPORTS_PATH,
-        GALETTE_LOGS_PATH
+        GALETTE_LOGS_PATH,
+        GALETTE_ATTACHMENTS_PATH
     );
 
     $files_perms_class = $class . 'ok';

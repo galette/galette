@@ -54,6 +54,9 @@
                             {/if}
                         </a>
                     </th>
+                    <th title="{_T string="Attachments"}" class="small_head">
+                        {_T string="ATT"}
+                    </th>
                     <th class="left right small_head">{_T string="Sent"}</th>
                     <th></th>
                 </tr>
@@ -74,6 +77,7 @@
                     <td>{if $log.mailing_sender eq 0}{_T string="Superadmin"}{else}{$log.mailing_sender_name}{/if}</td>
                     <td>{$log.mailing_recipients|unserialize|@count}</td>
                     <td>{$log.mailing_subject}</td>
+                    <td>{$log.attachments}</td>
                     <td class="center">
                         {if $log.mailing_sent == 1}
                             <img src="{$template_subdir}images/icon-on.png" alt="{_T string="Sent"}" title="{_T string="Mailing has been sent"}"/>
@@ -109,7 +113,7 @@
                     </td>
                 </tr>
 {foreachelse}
-                <tr><td colspan="7" class="emptylist">{_T string="No sent mailing has been stored in the database yet."}</td></tr>
+                <tr><td colspan="8" class="emptylist">{_T string="No sent mailing has been stored in the database yet."}</td></tr>
 {/foreach}
             </tbody>
         </table>
