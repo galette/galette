@@ -38,6 +38,7 @@
 namespace Galette\Core;
 
 use Analog\Analog as Analog;
+use Galette\Common\ClassLoader;
 
 /**
  * Plugins class for galette
@@ -95,15 +96,24 @@ class Plugins
                     && file_exists($full_entry.'/_define.php')
                 ) {
                     if (!file_exists($full_entry.'/_disabled')) {
-                            $this->id = $entry;
-                            $this->mroot = $full_entry;
-                            include $full_entry . '/_define.php';
-                            $this->id = null;
-                            $this->mroot = null;
+                        $this->id = $entry;
+                        $this->mroot = $full_entry;
+                        include $full_entry . '/_define.php';
+                        $this->id = null;
+                        $this->mroot = null;
+                        //set autoloader to PluginName.
+                        if ( file_exists($full_entry . '/lib') ) {
+                            $varname = $entry . 'Loader';
+                            $$varname = new ClassLoader(
+                                str_replace(' ', '', $this->modules[$entry]['name']),
+                                $full_entry . '/lib'
+                            );
+                            $$varname->register();
+                        }
                     } else {
                         $this->disabled[$entry] = array(
-                                'root' => $full_entry,
-                                'root_writable' => is_writable($full_entry)
+                            'root' => $full_entry,
+                            'root_writable' => is_writable($full_entry)
                         );
                     }
                 }
