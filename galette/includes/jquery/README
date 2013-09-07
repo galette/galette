@@ -4,10 +4,11 @@ Our choice has been JQuery (fast, easy, and so on) - http://jquery.com
 
 We use several plugins in addition to the JQuery core. Here is the list of the
 plugins that are used into Galette:
-- tootltip (http://bassistance.de/jquery-plugins/jquery-plugin-tooltip/) to 
-show nice tooltips
 - UI (http://jqueryui.com/) for various things, including:
-	- UI datepicker, for calendar date selection
-	- UI Sorter, to sort lists easyly
+    - UI datepicker, for calendar date selection
+    - UI Sorter, to sort lists easyly
+    - UI Tooltips
+    - UI Dialogs
+    - ...
 - farbtatsic (http://acko.net/dev/farbtastic), a color picker
 - bgFade (no url :/) for gradient background effects
