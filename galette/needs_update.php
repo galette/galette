@@ -57,12 +57,11 @@ header('Content-Type: text/html; charset=UTF-8');
         <script type="text/javascript" src="includes/jquery/jquery-migrate-<?php echo JQUERY_MIGRATE_VERSION; ?>.min.js"></script>
         <script type="text/javascript" src="includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
         <script type="text/javascript" src="includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.button.min.js"></script>
-        <script type="text/javascript" src="includes/jquery/jquery.bgiframe.pack.js"></script>
+        <script type="text/javascript" src="includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.position.min.js"></script>
+        <script type="text/javascript" src="includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.tooltip.min.js"></script>
         <script type="text/javascript" src="includes/jquery/jquery.bgFade.js"></script>
-        <script type="text/javascript" src="includes/jquery/chili-1.7.pack.js"></script>
-        <script type="text/javascript" src="includes/jquery/jquery.tooltip.pack.js"></script>
         <script type="text/javascript" src="includes/common.js"></script>
-        <!--[if lt IE9]>
+        <!--[if lte IE 9]>
             <script type="text/javascript" src="{$scripts_dir}html5-ie.js"></script>
         <!endif]-->
     </head>
