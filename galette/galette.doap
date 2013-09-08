@@ -8,16 +8,16 @@
     <created>2004-02-09</created>
 
     <shortdesc xml:lang="en">
-        Online tool to manage membership and fees
+        Online tool for nonprofit oragnizations to manage membership and fees
     </shortdesc>
 
     <shortdesc xml:lang="fr">
-        Outil de gestion d'adhérents et de cotisations en ligne
+        Outil de gestion d'adhérents et de cotisations en ligne pour les associations
     </shortdesc>
 
     <description xml:lang="en">
-        Galette is an online tool to manage membership and fees dedicated to non
-        profit organizations. It mainly allows executive members to know which
+        Galette is an online tool to manage membership and fees dedicated to
+        nonprofit organizations. It mainly allows executive members to know which
         fees will soon reach their due dates. Beside that, each member can have
         it's own credential to review (or change) it's personal information.
         On the technical side, all you need is a web server supporting
