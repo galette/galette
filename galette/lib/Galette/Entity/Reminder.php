@@ -360,6 +360,10 @@ class Reminder
         case 'dest':
             if ( $this->_type !== null && $value instanceof Adherent ) {
                 $this->_dest = $value;
+                $this->_replaces['login_adh'] = $value->login;
+                $this->_replaces['name_adh'] = custom_html_entity_decode($value->sname);
+                $this->_replaces['firstname_adh'] = custom_html_entity_decode($value->surname);
+                $this->_replaces['lastname_adh'] = custom_html_entity_decode($value->name);
                 if ( $value->email != '' ) {
                     $this->_nomail = false;
                 }
