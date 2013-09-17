@@ -69,8 +69,8 @@
     $(function() {
         {* Tabs *}
         $('#group').tabs({
-            show: function(event, ui) {
-                var _id = ui.panel.id.substring(6);
+            activate: function(event, ui) {
+                var _id = ui.newPanel[0].id.substring(6);
                 var _btnuid = '#btnusers_small';
                 var _btnmid = '#btnmanagers_small';
                 if ( _id == 'managers'  ) {
