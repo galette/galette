@@ -728,6 +728,8 @@ class Members
                 $this->_proceedCount($select);
             }
 
+            $select->group('a.' . Adherent::PK);
+
             return $select;
         } catch (\Exception $e) {
             Analog::log(

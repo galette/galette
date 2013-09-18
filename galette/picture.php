@@ -55,13 +55,32 @@ if (  isset($_GET['logo']) && $_GET['logo'] == 'true' ) {
             'groups'    => false,
             'dues'      => false
         );
+
+        //if loggedin user is a group manager, we have to check
+        //he manages a group requested member belongs to.
+        if ( $login->isGroupManager() ) {
+            $deps['groups'] = true;
+        }
+
         $adh = new Galette\Entity\Adherent($id_adh, $deps);
+
+        $is_manager = false;
+        if ( $login->isGroupManager() ) {
+            $groups = $adh->groups;
+            foreach ( $groups as $group ) {
+                if ( $login->isGroupManager($group->getId()) ) {
+                    $is_manager = true;
+                    break;
+                }
+            }
+        }
 
         $picture = null;
         if ( $login->isAdmin()
             || $login->isStaff()
             || $adh->appearsInMembersList()
             || $login->login == $adh->login
+            || $is_manager
         ) {
             $picture = $adh->picture; //new Picture($id_adh);
         } else {
