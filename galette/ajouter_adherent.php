@@ -61,18 +61,40 @@ $dyn_fields = new DynamicFields();
 
 // new or edit
 $adherent['id_adh'] = '';
-if ( $login->isAdmin() || $login->isStaff() ) {
+if ( $login->isAdmin() || $login->isStaff() || $login->isGroupManager() ) {
     $adherent['id_adh'] = get_numeric_form_value('id_adh', '');
     $id = get_numeric_form_value('id_adh', '');
     if ( $id ) {
         $member->load($adherent['id_adh']);
+        if ( $login->isGroupManager() ) {
+            //check if current logged in user can manage loaded member
+            $groups = $member->groups;
+            $can_manage = false;
+            foreach ( $groups as $group ) {
+                if ( $login->isGroupManager($group->getId()) ) {
+                    $can_manage = true;
+                    break;
+                }
+            }
+            if ( $can_manage !== true ) {
+                Analog::log(
+                    'Logged in member ' . $login->login .
+                    ' has tried to load member #' . $member->id .
+                    ' but do not manage any groups he belongs to.',
+                    Analog::WARNING
+                );
+                $member->load($login->id);
+            }
+        }
     }
 
     // disable some fields
     if ( $login->isAdmin() ) {
         $disabled = $member->adm_edit_disabled_fields;
-    } else {
+    } elseif ( $login->isStaff() ) {
         $disabled = $member->adm_edit_disabled_fields + $member->staff_edit_disabled_fields;
+    } else {
+        $disabled = $member->adm_edit_disabled_fields + $member->staff_edit_disabled_fields + $member->disabled_fields;
     }
 
     if ( $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED ) {
