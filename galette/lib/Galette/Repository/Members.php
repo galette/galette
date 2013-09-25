@@ -235,11 +235,11 @@ class Members
             $members = array();
             if ( $as_members ) {
                 $rows = $select->query()->fetchAll();
+                $deps = array(
+                    'picture'   => false,
+                    'groups'    => false
+                );
                 foreach ( $rows as $row ) {
-                    $deps = array(
-                        'picture'   => false,
-                        'groups'    => false
-                    );
                     $members[] = new Adherent($row, $deps);
                 }
             } else {
