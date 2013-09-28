@@ -727,7 +727,8 @@ class Members
                 $this->_proceedCount($select);
             }
 
-            $select->group('a.' . Adherent::PK);
+            //Fix for #687, but only for MySQL (break on PostgreSQL)
+            //$select->group('a.' . Adherent::PK);
 
             return $select;
         } catch (\Exception $e) {
