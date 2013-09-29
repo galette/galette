@@ -60,13 +60,15 @@ $member = new Adherent();
 $dyn_fields = new DynamicFields();
 
 // new or edit
-$adherent['id_adh'] = '';
-if ( $login->isAdmin() || $login->isStaff() || $login->isGroupManager() ) {
+$adherent['id_adh'] = get_numeric_form_value('id_adh', '');
+
+if ( $adherent['id_adh'] != $login->id
+    && ($login->isAdmin() || $login->isStaff() || $login->isGroupManager())
+) {
     $adherent['id_adh'] = get_numeric_form_value('id_adh', '');
-    $id = get_numeric_form_value('id_adh', '');
-    if ( $id ) {
+    if ( $adherent['id_adh'] ) {
         $member->load($adherent['id_adh']);
-        if ( $login->isGroupManager() ) {
+        if ( !$login->isAdmin() && !$login->isStaff() && $login->isGroupManager() ) {
             //check if current logged in user can manage loaded member
             $groups = $member->groups;
             $can_manage = false;
@@ -437,7 +439,7 @@ $tpl->assign('statuts', $statuts->getList());
 
 //Groups
 $groups = new Groups();
-$groups_list = $groups->getList();
+$groups_list = $groups->getSimpleList(true);
 $tpl->assign('groups', $groups_list);
 
 // page generation

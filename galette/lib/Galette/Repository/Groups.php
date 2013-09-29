@@ -59,24 +59,36 @@ class Groups
     /**
      * Get simple groups list (only id and names)
      *
+     * @param boolean $as_groups Retrieve Group[]
+     *
      * @return array
      */
-    public static function getSimpleList()
+    public static function getSimpleList($as_groups = false)
     {
         global $zdb;
 
         try {
             $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . Group::TABLE,
-                array(Group::PK, 'group_name')
-            );
+            if ( $as_groups === false ) {
+                $select->from(
+                    PREFIX_DB . Group::TABLE,
+                    array(Group::PK, 'group_name')
+                );
+            } else {
+                 $select->from(
+                    PREFIX_DB . Group::TABLE
+                );
+            }
             $groups = array();
             $q = $select->__toString();
             $gpk = Group::PK;
             $res = $select->query()->fetchAll();
             foreach ( $res as $row ) {
-                $groups[$row->$gpk] = $row->group_name;
+                if ( $as_groups === false ) {
+                    $groups[$row->$gpk] = $row->group_name;
+                } else {
+                    $groups[$row->$gpk] = new Group($row);
+                }
             }
             return $groups;
         } catch (\Exception $e) {
