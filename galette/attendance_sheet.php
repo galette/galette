@@ -49,7 +49,7 @@ if ( !$login->isLogged() ) {
     header("location: index.php");
     die();
 }
-if ( !$login->isAdmin() && !$login->isStaff() ) {
+if ( !$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() ) {
     header("location: voir_adherent.php");
     die();
 }

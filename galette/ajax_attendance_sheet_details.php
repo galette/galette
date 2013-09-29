@@ -43,7 +43,7 @@ use Analog\Analog as Analog;
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
-if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
+if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() ) {
     Analog::log(
         'Trying to display ajax_attendance_sheet_details.php without appropriate permissions',
         Analog::INFO
