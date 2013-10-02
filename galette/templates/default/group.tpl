@@ -55,8 +55,10 @@
                     {/if}
                 </div>
             </fieldset>
+{if $login->isAdmin() or $login->isStaff()}
             <a href="#" class="button notext hidden" id="btnusers_small">{_T string="Manage members"}</a>
             <a href="#" class="button notext hidden" id="btnmanagers_small">{_T string="Manage managers"}</a>
+{/if}
       </div>
         <div class="button-container">
             <input type="submit" name="valid" id="btnsave" value="{_T string="Save"}"/>
@@ -70,6 +72,7 @@
         {* Tabs *}
         $('#group').tabs({
             activate: function(event, ui) {
+{if $login->isAdmin() or $login->isStaff()}
                 var _id = ui.newPanel[0].id.substring(6);
                 var _btnuid = '#btnusers_small';
                 var _btnmid = '#btnmanagers_small';
@@ -91,6 +94,7 @@
                         $(_btnmid).addClass('hidden');
                     }
                }
+{/if}
             }
         });
     });
