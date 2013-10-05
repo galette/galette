@@ -10,9 +10,11 @@
 {/foreach}
             </ul>
         </div>
+{if $login->isAdmin() or $login->isStaff()}
         <div class="center">
             <a href="gestion_groupes.php?new" id="btnadd" class="button">{_T string="New group"}</a>
         </div>
+{/if}
     </aside>
     <section id="group_infos">
         <header class="ui-state-default ui-state-active">
