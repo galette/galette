@@ -65,7 +65,7 @@ if (  isset($_GET['logo']) && $_GET['logo'] == 'true' ) {
         $adh = new Galette\Entity\Adherent($id_adh, $deps);
 
         $is_manager = false;
-        if ( $login->isGroupManager() ) {
+        if ( !$login->isAdmin() && !$login->isStaff() && $login->isGroupManager() ) {
             $groups = $adh->groups;
             foreach ( $groups as $group ) {
                 if ( $login->isGroupManager($group->getId()) ) {

@@ -381,7 +381,7 @@
             {/if}
         {/foreach}
                         </span>
-        {if $login->isAdmin() or $login->isStaff()}
+        {if $login->isAdmin() or $login->isStaff() or $login->isGroupManager()}
                         <span id="managedgroups_form">
             {foreach from=$groups item=group}
                 {if $member->isGroupManager($group->getName())}
@@ -390,18 +390,22 @@
             {/foreach}
                         </span>
         {/if}
+        {if $login->isAdmin() or $login->isStaff() or $login->isGroupManager()}<br/>{/if}
                         <span id="usergroups">
         {foreach from=$groups item=group name=groupsiterate}
             {if $member->isGroupMember($group->getName())}
-                {if not $smarty.foreach.groupsiterate.first}, {/if}
+                {if isset($isnotfirst)}, {/if}
+                {assign var=isnotfirst value=true}
                 {_T string="Member of '%groupname'" pattern="/%groupname/" replace=$group->getName()}
             {/if}
         {/foreach}
                         </span>
+        {if isset($isnotfirst)}<br/>{/if}
                         <span id="managedgroups">
         {foreach from=$groups item=group name=groupsmiterate}
             {if $member->isGroupManager($group->getName())}
-                {if not $smarty.foreach.groupsmiterate.first}, {/if}
+                {if isset($isnotfirstm)}, {/if}
+                {assign var=isnotfirstm value=true}
                 {_T string="Manager for '%groupname'" pattern="/%groupname/" replace=$group->getName()}
             {/if}
         {/foreach}

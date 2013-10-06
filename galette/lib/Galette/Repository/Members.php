@@ -578,12 +578,12 @@ class Members
                     array('p' => PREFIX_DB . Status::TABLE, Status::PK),
                     'a.' . Status::PK . '=p.' . Status::PK
                 )->join(
-                    array('g' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
-                    'a.' . Adherent::PK . '=g.' . Adherent::PK,
+                    array('gr' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                    'a.' . Adherent::PK . '=gr.' . Adherent::PK,
                     array()
                 )->join(
                     array('m' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
-                    'g.' . Group::PK . '=m.' . Group::PK,
+                    'gr.' . Group::PK . '=m.' . Group::PK,
                     array()
                 )->where('m.' . Adherent::PK . ' = ?', $login->id);
             case self::SHOW_PUBLIC_LIST:
@@ -727,7 +727,8 @@ class Members
                 $this->_proceedCount($select);
             }
 
-            $select->group('a.' . Adherent::PK);
+            //Fix for #687, but only for MySQL (break on PostgreSQL)
+            //$select->group('a.' . Adherent::PK);
 
             return $select;
         } catch (\Exception $e) {

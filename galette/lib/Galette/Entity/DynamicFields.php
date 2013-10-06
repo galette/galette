@@ -394,14 +394,14 @@ class DynamicFields
 
             $select->from(PREFIX_DB . DynamicFieldType::TABLE)
                 ->where('field_form = ?', $form_name)
-                ->order('field_index');
+                ->order('field_id');
 
             $result = $select->query(\Zend_DB::FETCH_ASSOC)->fetchAll();
 
             $dfields = array();
             if ( $result ) {
                 foreach ( $result as $r ) {
-                    $dfields[$r['field_index']] = $r;
+                    $dfields[$r['field_id']] = $r;
                 }
                 return $dfields;
             } else {

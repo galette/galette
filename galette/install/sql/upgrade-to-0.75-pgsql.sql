@@ -45,7 +45,6 @@ CREATE TABLE galette_pdfmodels (
 );
 
 ALTER TABLE galette_tmppasswds
-  DROP CONSTRAINT galette_tmppasswds_id_adh_fkey,
   ADD CONSTRAINT galette_tmppasswds_id_adh_fkey
     FOREIGN KEY (id_adh) REFERENCES galette_adherents ON DELETE CASCADE;
 
