@@ -1,6 +1,27 @@
 Changes
 -------
 
+0.7.5.3 -> 0.7.5.4 (2013-10-06)
+
+- fix a confusion on dynamic fields
+- member displayed twice when member of multiple groups with the same parent totally breaks members list under postgres. revert.
+- various fixes regarding group management and ACLs
+- remove new group button and add group member/manager for non admins/staff
+- fix a filtering issue on groups on some cases
+- do not try to remove a constraint that does not exists in postgres databases
+- restrict tempimages and tamplates_c directories access from web
+
+0.7.5.2 -> 0.7.5.3 (2013-09-18)
+- add group member or manager had disappear
+- a member part of two groups with same parent was displayed twice filtering on parent group
+- groups managers cannot edit member data
+- groups managers cannot display member photo
+
+0.7.5.1 -> 0.7.5.2 (2013-09-11)
+- fix a javascript issue adding dynamic field on contributions or transactions
+- add login in available reminders replacements
+- fix license in two files used for i18n
+
 0.7.5 -> 0.7.5.1 (2013-08-26)
 - fix groups PDF blank page
 - fis MySQL upgrade script issues
