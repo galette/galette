@@ -38,6 +38,8 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Sql;
 
 /**
  * Fields config class for galette :
@@ -128,12 +130,17 @@ class FieldsConfig
         $this->_prefs = array();
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
             $select->from(PREFIX_DB . self::TABLE)
-                ->where('table_name = ?', $this->_table)
+                ->where(array('table_name = ?' => $this->_table))
                 ->order(array(FieldsCategories::PK, 'position ASC'));
 
-            $result = $select->query()->fetchAll();
+            $query_string = $sql->getSqlStringForSqlObject($select);
+            $result = $zdb->db->query(
+                $query_string,
+                Adapter::QUERY_MODE_EXECUTE
+            );
 
             $this->_categorized_fields = null;
             foreach ( $result as $k ) {

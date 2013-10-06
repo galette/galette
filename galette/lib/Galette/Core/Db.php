@@ -37,6 +37,7 @@
 namespace Galette\Core;
 
 use Analog\Analog as Analog;
+use Zend\Db\Adapter\Adapter;
 
 /**
  * Zend_Db wrapper
@@ -50,7 +51,7 @@ use Analog\Analog as Analog;
  * @link      http://framework.zend.com/apidoc/core/_Db.html#\Zend_Db
  * @since     Available since 0.7dev - 2011-07-27
  */
-class Db extends \Zend_Db
+class Db
 {
     private $_persistent;
     private $_dsn_array;
@@ -111,24 +112,22 @@ class Db extends \Zend_Db
             $this->_type_db = $_type_db;
             if ($_type_db != self::SQLITE) {
                 $_options = array(
-                        'host'     => $_host_db,
+                        'driver'   => $_type,
+                        'hostname' => $_host_db,
                         'port'     => $_port_db,
                         'username' => $_user_db,
                         'password' => $_pwd_db,
-                        'dbname'   => $_name_db
+                        'database' => $_name_db
                     );
             } else {
                 $_options = array(
-                        'dbname'   => GALETTE_SQLITE_PATH,
+                        'driver'   => $_type,
+                        'database' => GALETTE_SQLITE_PATH,
                     );
             }
 
-            $this->_db = \Zend_Db::factory(
-                $_type,
-                $_options
-            );
-            $this->_db->getConnection();
-            $this->_db->setFetchMode(\Zend_Db::FETCH_OBJ);
+            $this->_db = new Adapter($_options);
+
             Analog::log(
                 '[Db] Database connection was successfull!',
                 Analog::DEBUG
@@ -151,14 +150,6 @@ class Db extends \Zend_Db
             );
             throw $e;
         }
-    }
-
-    /**
-     * Default class destructor
-     */
-    function __destruct()
-    {
-        $this->db->closeConnection();
     }
 
     /**
@@ -202,7 +193,7 @@ class Db extends \Zend_Db
      */
     public function selectAll($table)
     {
-        return $this->_db->fetchAll('SELECT * FROM ' . $table);
+        return $this->_db->query('SELECT * FROM ' . $table, Adapter::QUERY_MODE_EXECUTE);
     }
 
     /**

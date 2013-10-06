@@ -41,6 +41,7 @@
 namespace Galette\Core;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Sql;
 use Galette\Entity\Adherent;
 
 /**
@@ -210,11 +211,13 @@ class Password
         $date->sub(new \DateInterval('PT24H'));
 
         try {
-            $del = $zdb->db->delete(
-                PREFIX_DB . self::TABLE,
-                $zdb->db->quoteInto(
-                    'date_crea_tmp_passwd < ?',
-                    $date->format('Y-m-d H:i:s')
+            $sql = new Sql($zdb->db);
+            $del = $sql->delete(
+                PREFIX_DB . self::TABLE
+            );
+            $del->where(
+                array(
+                    'date_crea_tmp_passwd < ?' => $date->format('Y-m-d H:i:s')
                 )
             );
             if ( $del ) {

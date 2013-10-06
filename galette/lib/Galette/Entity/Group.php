@@ -38,6 +38,8 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Sql;
 
 /**
  * Group entity
@@ -101,13 +103,20 @@ class Group
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
 
             $select->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . '=?', $id);
-            $result = $select->query()->fetchObject();
-            if ( $result ) {
-                $this->_loadFromRS($result);
+                ->where(array(self::PK . '=?' => $id));
+
+            $query_string = $sql->getSqlStringForSqlObject($select);
+            $result = $zdb->db->query(
+                $query_string,
+                Adapter::QUERY_MODE_EXECUTE
+            );
+
+            if ( $result->count() > 0 ) {
+                $this->_loadFromRS($result->current());
                 return true;
             } else {
                 return false;
@@ -118,7 +127,7 @@ class Group
                 Analog::WARNING
             );
             Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                'Query was: ' . $query_string . ' ' . $e->__toString(),
                 Analog::ERROR
             );
             return false;

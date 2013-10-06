@@ -38,6 +38,8 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Sql;
 use Galette\Core\Picture as Picture;
 use Galette\Core\GaletteMail as GaletteMail;
 use Galette\Core\Password as Password;
@@ -240,7 +242,8 @@ class Adherent
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
 
             $select->from(
                 array('a' => PREFIX_DB . self::TABLE)
@@ -248,10 +251,15 @@ class Adherent
                 array('b' => PREFIX_DB . Status::TABLE),
                 'a.' . Status::PK . '=b.' . Status::PK,
                 array('priorite_statut')
-            )->where(self::PK . '=?', $id);
+            )->where(array(self::PK . '=?' => $id));
 
-            $result = $select->query()->fetchObject();
-            $this->_loadFromRS($result);
+            $query_string = $sql->getSqlStringForSqlObject($select);
+            $result = $zdb->db->query(
+                $query_string,
+                Adapter::QUERY_MODE_EXECUTE
+            );
+
+            $this->_loadFromRS($result->current());
             return true;
         } catch (\Exception $e) {
             /** TODO */
@@ -260,7 +268,7 @@ class Adherent
                 Analog::WARNING
             );
             Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                'Query was: ' . $query_string . ' ' . $e->__toString(),
                 Analog::ERROR
             );
             return false;

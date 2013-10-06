@@ -37,8 +37,10 @@
 
 namespace Galette\Core;
 
-use Galette\Entity\Adherent;
 use Analog\Analog as Analog;
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Sql;
+use Galette\Entity\Adherent;
 
 /**
  * Picture handling
@@ -245,7 +247,8 @@ class Picture
         global $zdb;
         $class = get_class($this);
 
-        $select = new \Zend_Db_Select($zdb->db);
+        $sql = new Sql($zdb->db);
+        $select = $sql->select();
         $select->from(
             array(PREFIX_DB . $this->tbl_prefix . $class::TABLE),
             array(
@@ -253,7 +256,7 @@ class Picture
                 'format'
             )
         );
-        $select->where($class::PK . ' = ?', $this->db_id);
+        $select->where(array($class::PK . ' = ?' => $this->db_id));
         return $select;
     }
 

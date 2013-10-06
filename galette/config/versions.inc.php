@@ -36,7 +36,7 @@
  * @since     Available since 0.7dev - 2009-03-13
  */
 define('SMARTY_VERSION', '3.1.14');
-define('ZEND_VERSION', '1.12.3');
+define('ZEND_VERSION', '2.2.4');
 define('ANALOG_VERSION', '1.0.0.git876d8a3bb');
 define('TCPDF_VERSION', '6.0.020');
 define('JQUERY_VERSION', '1.10.2');

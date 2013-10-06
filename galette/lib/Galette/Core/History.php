@@ -38,6 +38,7 @@
 namespace Galette\Core;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Sql;
 
 /**
  * History management
@@ -124,7 +125,9 @@ class History extends Pagination
                 'sql_log'    => $query
             );
 
-            $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
+            $sql = new Sql($zdb->db);
+            $insert = $sql->insert(PREFIX_DB . self::TABLE);
+            $insert->values($values);
         } catch (\Zend_Db_Adapter_Exception $e) {
             Analog::log(
                 'Unable to initialize add log entry into database.' .

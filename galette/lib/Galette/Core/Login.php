@@ -37,6 +37,8 @@
 
 namespace Galette\Core;
 
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Sql;
 use Galette\Repository\Groups as Groups;
 use Galette\Repository\Members as Members;
 use Galette\Entity\Adherent as Adherent;
@@ -73,7 +75,8 @@ class Login extends Authentication
         global $zdb, $i18n, $session;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
             $select->from(
                 array('a' => PREFIX_DB . self::TABLE),
                 array(
@@ -92,20 +95,25 @@ class Login extends Authentication
                 'a.' . Status::PK . '=b.' . Status::PK,
                 array('priorite_statut')
             );
-            $select->where(self::PK . ' = ?', $user);
+            $select->where(array(self::PK . ' = ?' => $user));
             Analog::log(
-                'Login query: ' . $select->__toString(),
+                'Login query: ' . $sql->getSqlStringForSqlObject($select),
                 Analog::DEBUG
             );
-            $row = $zdb->db->fetchRow($select);
 
-            if ( $row === false ) {
+            $res = $zdb->db->query(
+                $sql->getSqlStringForSqlObject($select),
+                Adapter::QUERY_MODE_EXECUTE
+            );
+
+            if ( $res->count() == 0 ) {
                 Analog::log(
                     'No entry found for login `' . $user . '`',
                     Analog::WARNING
                 );
                 return false;
             } else {
+                $row = $res->current();
                 //check if pawwsord matches
                 $pw_checked = password_verify($passe, $row->mdp_adh);
                 if ( !$pw_checked ) {

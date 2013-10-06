@@ -38,6 +38,7 @@
 namespace Galette\Core;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Sql;
 
 /**
  * This class stores and serve the logo.
@@ -94,7 +95,8 @@ class Logo extends Picture
     {
         global $zdb;
 
-        $select = new \Zend_Db_Select($zdb->db);
+        $sql = new Sql($zdb->db);
+        $select = $sql->select();
         $select->from(
             array(PREFIX_DB . self::TABLE),
             array(

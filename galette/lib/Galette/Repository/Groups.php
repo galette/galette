@@ -38,6 +38,8 @@
 namespace Galette\Repository;
 
 use Analog\Analog as Analog;
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Sql;
 use Galette\Entity\Group as Group;
 use Galette\Entity\Adherent as Adherent;
 
@@ -68,7 +70,8 @@ class Groups
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
             if ( $as_groups === false ) {
                 $select->from(
                     PREFIX_DB . Group::TABLE,
@@ -80,9 +83,14 @@ class Groups
                 );
             }
             $groups = array();
-            $q = $select->__toString();
             $gpk = Group::PK;
-            $res = $select->query()->fetchAll();
+
+            $query_string = $sql->getSqlStringForSqlObject($select);
+            $res = $zdb->db->query(
+                $query_string,
+                Adapter::QUERY_MODE_EXECUTE
+            );
+
             foreach ( $res as $row ) {
                 if ( $as_groups === false ) {
                     $groups[$row->$gpk] = $row->group_name;
@@ -97,7 +105,7 @@ class Groups
                 Analog::WARNING
             );
             Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
+                'Query was: ' . $query_string . ' ' . $e->getTraceAsString(),
                 Analog::ERROR
             );
 
@@ -189,7 +197,9 @@ class Groups
             $join_table = ($managed) ?
                 Group::GROUPSMANAGERS_TABLE :
                 Group::GROUPSUSERS_TABLE;
-            $select = new \Zend_Db_Select($zdb->db);
+
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
             $select->from(
                 array(
                     'a' => PREFIX_DB . Group::TABLE
@@ -200,10 +210,15 @@ class Groups
                 ),
                 'a.' . Group::PK . '=b.' . Group::PK,
                 array()
-            )->where('b.' . Adherent::PK . ' = ?', $id);
-            $result = $select->query()->fetchAll();
+            )->where(array('b.' . Adherent::PK . ' = ?' => $id));
+
+            $query_string = $sql->getSqlStringForSqlObject($select);
+            $result = $zdb->db->query(
+                $query_string,
+                Adapter::QUERY_MODE_EXECUTE
+            );
             Analog::log(
-                'Exectued query: ' . $select->__toString(),
+                'Exectued query: ' . $query_string,
                 Analog::DEBUG
             );
             $groups = array();
@@ -223,7 +238,7 @@ class Groups
                 Analog::WARNING
             );
             Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                'Query was: ' . $query_string . ' ' . $e->__toString(),
                 Analog::ERROR
             );
             return false;

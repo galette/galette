@@ -38,6 +38,8 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Sql;
 use Galette\DynamicFieldsTypes\Separator as Separator;
 use Galette\DynamicFieldsTypes\Text as Text;
 use Galette\DynamicFieldsTypes\Line as Line;
@@ -236,7 +238,8 @@ class DynamicFields
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
 
             $select->from(
                 array('a' => PREFIX_DB . self::TABLE)
@@ -244,13 +247,20 @@ class DynamicFields
                 array('b' => PREFIX_DB . DynamicFieldType::TABLE),
                 'a.' . DynamicFieldType::PK . '=b.' . DynamicFieldType::PK,
                 array('field_type')
-            )
-                ->where('item_id = ?', $item_id)
-                ->where('a.field_form = ?', $form_name);
+            )->where(
+                array(
+                    'item_id = ?'       => $item_id,
+                    'a.field_form = ?'  => $form_name
+                )
+            );
 
-            $result = $select->query()->fetchAll();
+            $query_string = $sql->getSqlStringForSqlObject($select);
+            $result = $zdb->db->query(
+                $query_string,
+                Adapter::QUERY_MODE_EXECUTE
+            );
 
-            if ( count($result) > 0 ) {
+            if ( $result->count() > 0 ) {
                 $dfields = array();
 
                 foreach ($result as $f) {
@@ -279,7 +289,7 @@ class DynamicFields
                 Analog::WARNING
             );
             Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                'Query was: ' . $query_string . ' ' . $e->__toString(),
                 Analog::INFO
             );
         }
@@ -303,13 +313,18 @@ class DynamicFields
         global $zdb, $login;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
 
             $select->from(PREFIX_DB . DynamicFieldType::TABLE)
-                ->where('field_form = ?', $form_name)
+                ->where(array('field_form = ?' => $form_name))
                 ->order('field_index');
 
-            $result = $select->query(\Zend_DB::FETCH_ASSOC)->fetchAll();
+            $query_string = $sql->getSqlStringForSqlObject($select);
+            $result = $zdb->db->query(
+                $query_string,
+                Adapter::QUERY_MODE_EXECUTE
+            );
 
             $dfields = array();
             if ( $result ) {
@@ -372,7 +387,7 @@ class DynamicFields
                 Analog::WARNING
             );
             Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                'Query was: ' . $query_string . ' ' . $e->__toString(),
                 Analog::INFO
             );
         }

@@ -95,7 +95,6 @@ use Galette\Core;
 require_once GALETTE_ROOT . 'lib/Galette/Common/ClassLoader.php';
 $galetteLoader = new ClassLoader('Galette', GALETTE_ROOT . 'lib');
 $zendLoader = new ClassLoader('Zend', GALETTE_ZEND_PATH);
-$zendLoader->setNamespaceSeparator('_');
 $analogLoader = new ClassLoader('Analog', GALETTE_ANALOG_PATH);
 $smartyLoader = new ClassLoader(null, GALETTE_SMARTY_PATH);
 $smartyLoader->setFileExtension('.class.php');
