@@ -727,14 +727,7 @@ class Install
     public function setAdminInfos($login, $pass)
     {
         $this->_admin_login = $login;
-
-        if ( defined('GALETTE_UNSECURE_PASSWORDS')
-            && GALETTE_UNSECURE_PASSWORDS === true
-        ) {
-            $this->_admin_pass = md5($pass);
-        } else {
-            $this->_admin_pass = password_hash($pass, PASSWORD_BCRYPT);
-        }
+        $this->_admin_pass = password_hash($pass, PASSWORD_BCRYPT);
     }
 
     /**
