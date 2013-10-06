@@ -131,16 +131,20 @@
                     <td colspan="7" id="table_footer">
                         <ul class="selection_menu">
                             <li>{_T string="For the selection:"}</li>
+    {if $login->isAdmin() or $login->isStaff()}
                             <li><input type="submit" id="delete" name="delete" value="{_T string="Delete"}"/></li>
-    {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
+        {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
                             <li><input type="submit" id="sendmail" name="mailing" value="{_T string="Mail"}"/></li>
+        {/if}
     {/if}
                             <li>
                                 <input type="submit" id="attendance_sheet" name="attendance_sheet" value="{_T string="Attendance sheet"}"/>
                             </li>
                             <li><input type="submit" name="labels" value="{_T string="Generate labels"}"/></li>
                             <li><input type="submit" name="cards" value="{_T string="Generate Member Cards"}"/></li>
+    {if $login->isAdmin() or $login->isStaff()}
                             <li><input type="submit" name="csv" value="{_T string="Export as CSV"}"/></li>
+    {/if}
                         </ul>
                     </td>
                 </tr>
