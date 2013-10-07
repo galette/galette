@@ -355,7 +355,6 @@ case '2':
 case 'i3':
 case 'u3':
     $php_ok = true;
-    $pwd_compat = true;
     $class = 'install-';
     $php_class = '';
     $php_modules_class = '';
@@ -493,7 +492,7 @@ case 'u3':
             </div>
         </article>
     <?php
-    if ( !$perms_ok || !$modules_ok || !$php_ok || !$date_ok || !$pwd_compat ) {
+    if ( !$perms_ok || !$modules_ok || !$php_ok || !$date_ok ) {
         ?>
                 <form action="index.php" method="post">
                     <p id="btn_box">
