@@ -82,6 +82,15 @@
                         {/if}
                     </td>
                     <td class="center nowrap actions_row">
+                        <a id ="showdetails" href="ajax_mailing_preview.php?id={$log.mailing_id}">
+                            <img
+                                src="{$template_subdir}images/icon-preview.png"
+                                alt="{_T string="Show mailing %s details" pattern="/%s/" replace=$log.mailing_id}"
+                                width="16"
+                                height="16"
+                                title="{_T string="Display mailing '%subject' details in preview window" pattern="/%subject/" replace=$log.mailing_subject}"
+                                />
+                        </a>
                         <a href="mailing_adherents.php?from={$log.mailing_id}">
                             <img
                                 src="{$template_subdir}images/icon-mail.png"
@@ -111,4 +120,38 @@
             $('#nbshow').change(function() {
                 this.form.submit();
             });
+
+            {* Preview popup *}
+            $('#showdetails').click(function(){
+                $.ajax({
+                    url: $(this).attr('href'),
+                    type: "POST",
+                    data: {
+                        ajax: true,
+                    },
+                    {include file="js_loader.tpl"},
+                    success: function(res){
+                        _preview_dialog(res);
+                    },
+                    error: function() {
+                        alert("{_T string="An error occured displaying preview :(" escape="js"}");
+                    }
+                });
+                return false;
+            });
+
+            var _preview_dialog = function(res){
+                var _el = $('<div id="ajax_preview" title="{_T string="Mailing preview" escape="js"}"> </div>');
+                _el.appendTo('body').dialog({
+                    modal: true,
+                    hide: 'fold',
+                    width: '80%',
+                    height: 500,
+                    close: function(event, ui){
+                        _el.remove();
+                    }
+                });
+                $('#ajax_preview').append( res );
+            }
+
         </script>

@@ -39,6 +39,8 @@
  */
 
 use Analog\Analog as Analog;
+use Galette\Core\Mailing;
+use Galette\Core\MailingHistory;
 
 require_once 'includes/galette.inc.php';
 
@@ -53,13 +55,22 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
 // check for ajax mode
 $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 
-$mailing = unserialize($session['mailing']);
+$mailing = null;
+if ( isset($_GET['id']) && is_numeric($_GET['id']) ) {
+    $mailing = new Mailing(null);
+    MailingHistory::loadFrom((int)$_GET['id'], $mailing);
+} else {
+    $mailing = unserialize($session['mailing']);
 
-$mailing->subject = $_POST['subject'];
-$mailing->message = $_POST['body'];
-$mailing->html = ($_POST['html'] === 'true');
+    $mailing->subject = $_POST['subject'];
+    $mailing->message = $_POST['body'];
+    $mailing->html = ($_POST['html'] === 'true');
+}
 
-$tpl->assign('mailing_sender', $preferences->pref_email_nom . ' &lt;' . $preferences->pref_email . '&gt;');
+$tpl->assign(
+    'mailing_sender',
+    $preferences->pref_email_nom . ' &lt;' . $preferences->pref_email . '&gt;'
+);
 
 //Set the path to the current plugin's templates,
 //but backup main Galette's template path before
@@ -71,7 +82,7 @@ if ( $ajax ) {
     $tpl->assign('mode', 'ajax');
     $tpl->display('ajax_mailing_preview.tpl');
 } else {
-    $content = $tpl->fetch('ajax_members.tpl');
+    $content = $tpl->fetch('ajax_mailing_preview.tpl');
     $tpl->assign('content', $content);
     $tpl->display('page.tpl');
 }

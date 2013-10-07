@@ -84,6 +84,7 @@ $history_list = $mailhist->getHistory();
 $mailhist->setSmartyPagination($tpl);
 
 $tpl->assign('page_title', _T("Mailings"));
+$tpl->assign('require_dialog', true);
 $tpl->assign('logs', $history_list);
 $tpl->assign('nb_lines', count($history_list));
 $tpl->assign('history', $mailhist);
