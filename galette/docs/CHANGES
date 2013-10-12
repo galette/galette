@@ -1,6 +1,9 @@
 Changes
 -------
 
+0.7.5.4 - 0.7.5.5 (2013-10-12)
+- Super admin was not able to change some members fields
+
 0.7.5.3 -> 0.7.5.4 (2013-10-06)
 
 - fix a confusion on dynamic fields

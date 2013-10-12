@@ -62,7 +62,7 @@ $dyn_fields = new DynamicFields();
 // new or edit
 $adherent['id_adh'] = get_numeric_form_value('id_adh', '');
 
-if ( $adherent['id_adh'] != $login->id
+if ( $adherent['id_adh'] !== $login->id
     && ($login->isAdmin() || $login->isStaff() || $login->isGroupManager())
 ) {
     $adherent['id_adh'] = get_numeric_form_value('id_adh', '');
