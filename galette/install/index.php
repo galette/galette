@@ -1406,14 +1406,17 @@ define("STOCK_FILES", "tempimages");
     $models = new Galette\Repository\PdfModels($zdb, $preferences);
     include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
     $res = $models->installInit($pdfmodels_fields);
-    if ( $res !== true ) {
-        $errs[] = '<li class="install-bad">' .
-            _T("PDF models cannot be initialized.") .
-            '<span>' . $res->getMessage() . '</span></li>';
-    } else {
+    if ( $res === true ) {
         $oks[] = '<li class="install-ok">' .
             _T("PDF models were successfully stored.") .
             '</li>';
+    } else {
+        if ( $res !== false ) {
+            //false is returned when table has already been filled
+            $errs[] = '<li class="install-bad">' .
+                _T("PDF models cannot be initialized.") .
+                '<span>' . $res->getMessage() . '</span></li>';
+        }
     }
 
     ?>
