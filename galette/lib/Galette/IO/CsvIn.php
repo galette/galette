@@ -433,7 +433,15 @@ class CsvIn extends Csv
             Analog::log('[' . $class . '] Filesize is OK, proceed', Analog::DEBUG);
         }
 
-        $mime = mime_content_type($tmpfile);
+        //identify MIME type
+        if (function_exists("finfo_open")) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $tmpfile);
+            finfo_close($finfo);
+        } else {
+            // deprecated
+            $mime = mime_content_type($tmpfile);
+        }
 
         if ( !in_array($mime, $this->allowed_mimes) ) {
             Analog::log(
