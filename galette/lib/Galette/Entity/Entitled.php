@@ -166,7 +166,7 @@ abstract class Entitled
 
             $stmt = $zdb->db->prepare(
                 'INSERT INTO ' . PREFIX_DB . $this->_table .
-                ' (' . implode(',', self::$_fields) . ') ' .
+                ' (' . implode(',', self::$fields) . ') ' .
                 'VALUES(:id, :libelle, :third)'
             );
 
