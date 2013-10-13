@@ -326,6 +326,10 @@ class CsvIn extends Csv
                     }
                     //import member itself
                     $member = new Adherent();
+                    //check for empty creation date
+                    if ( isset($values['date_crea_adh']) && trim($values['date_crea_adh']) === '' ) {
+                        unset($values['date_crea_adh']);
+                    }
                     $valid = $member->check($values, $this->_required, null);
                     if ( $valid === true ) {
                         if ( $this->_dryrun === false ) {
