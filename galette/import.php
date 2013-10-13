@@ -93,7 +93,7 @@ if ( isset($_FILES['new_file']) ) {
         $error_detected[] = $csv->getPhpErrorMessage(
             $_FILES['new_file']['error']
         );
-    } else {
+    } else if ( isset($_POST['upload']) ) {
         $error_detected[] = _T("No files has been seleted for upload!");
     }
 }
