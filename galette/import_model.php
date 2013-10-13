@@ -105,6 +105,9 @@ if ( isset($_GET['generate'] ) ) {
     $tpl->assign('fields', $fields);
     $tpl->assign('model', $model);
     $tpl->assign('defaults', $defaults);
+    $import_fields = $members_fields;
+    //we do not want to import id_adh. Never.
+    unset($import_fields['id_adh']);
     $tpl->assign('members_fields', $members_fields);
     $tpl->assign('defaults_loaded', $defaults_loaded);
 
