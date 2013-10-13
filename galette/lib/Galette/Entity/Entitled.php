@@ -160,17 +160,19 @@ abstract class Entitled
     {
         global $zdb;
 
+        $class = get_class($this);
+
         try {
             //first, we drop all values
             $zdb->db->delete(PREFIX_DB . $this->_table);
 
             $stmt = $zdb->db->prepare(
                 'INSERT INTO ' . PREFIX_DB . $this->_table .
-                ' (' . implode(',', self::$fields) . ') ' .
+                ' (' . implode(',', $class::$fields) . ') ' .
                 'VALUES(:id, :libelle, :third)'
             );
 
-            foreach ( self::$defaults as $d ) {
+            foreach ( $class::$defaults as $d ) {
                 $stmt->bindParam(':id', $d['id']);
                 $stmt->bindParam(':libelle', $d['libelle']);
 
