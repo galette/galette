@@ -748,6 +748,35 @@ class Adherent
     }
 
     /**
+     * Is member up to date?
+     *
+     * @return boolean
+     */
+    public function isUp2Date()
+    {
+        if ( $this->_deps['dues'] ) {
+            if ( $this->isDueFree() ) {
+                //member is due free, he's up to date.
+                return true;
+            } else {
+                //let's check from end date, if present
+                if ( $this->_due_date == null ) {
+                    return false;
+                } else {
+                    $ech = new \DateTime($this->_due_date);
+                    $now = new \DateTime();
+                    $now->setTime(0, 0, 0);
+                    return $ech >= $now;
+                }
+            }
+        } else {
+            throw new \RuntimeException(
+                'Cannot check if member is up to date, dues deps is disabled!'
+            );
+        }
+    }
+
+    /**
      * Check posted values validity
      *
      * @param array $values   All values to check, basically the $_POST array
