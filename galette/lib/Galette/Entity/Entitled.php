@@ -615,11 +615,18 @@ abstract class Entitled
     public function __get($name)
     {
         $forbidden = array();
+        $virtuals = array('extension');
         $rname = '_' . $name;
-        if ( !in_array($name, $forbidden) && isset($this->$rname)) {
+        if ( in_array($name, $virtuals)
+            || !in_array($name, $forbidden)
+            && isset($this->$rname)
+        ) {
             switch($name) {
             case 'libelle':
                 return _T($this->_libelle);
+                break;
+            case 'extension':
+                return $this->_third;
                 break;
             default:
                 return $this->$rname;

@@ -115,4 +115,14 @@ class ContributionsTypes extends Entitled
     {
         return _T("contribution type");
     }
+
+    /**
+     * Does current type give membership extension?
+     *
+     * @return Boolean
+     */
+    public function isExtension()
+    {
+        return $this->third;
+    }
 }

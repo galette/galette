@@ -413,7 +413,8 @@ if ( isset($head_redirect) ) {
 }
 
 // contribution types
-$type_cotis_options = ContributionsTypes::getList(
+$ct = new ContributionsTypes();
+$type_cotis_options = $ct->getList(
     ($type_selected == 1 && $id_adh != '') ? $contrib->isCotis() : null
 );
 $tpl->assign('type_cotis_options', $type_cotis_options);
