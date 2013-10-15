@@ -599,7 +599,7 @@ class Adherent
     {
         $ret = '';
         if ( $this->isDueFree() ) {
-                $ret = _T("Freed of dues");
+            $ret = _T("Freed of dues");
         } else if ( $this->_due_date == '') {
             $patterns = array('/%days/', '/%date/');
             $cdate = new \DateTime($this->_creation_date);
@@ -607,11 +607,15 @@ class Adherent
                 $this->_oldness,
                 $cdate->format(_T("Y-m-d"))
             );
-            $ret = preg_replace(
-                $patterns,
-                $replace,
-                _T("Never contributed: Registered %days days ago (since %date)")
-            );
+            if ( $this->_active ) {
+                $ret = preg_replace(
+                    $patterns,
+                    $replace,
+                    _T("Never contributed: Registered %days days ago (since %date)")
+                );
+            } else {
+                $ret = _T("Never contributed");
+            }
         } else if ( $this->_days_remaining == 0 ) {
             $ret = _T("Last day!");
         } else if ( $this->_days_remaining < 0 ) {
@@ -621,11 +625,15 @@ class Adherent
                 $this->_days_remaining *-1,
                 $ddate->format(_T("Y-m-d"))
             );
-            $ret = preg_replace(
-                $patterns,
-                $replace,
-                _T("Late of %days days (since %date)")
-            );
+            if ( $this->_active ) {
+                $ret = preg_replace(
+                    $patterns,
+                    $replace,
+                    _T("Late of %days days (since %date)")
+                );
+            } else {
+                $ret = _T("Late");
+            }
         } else {
             $patterns = array('/%days/', '/%date/');
             $ddate = new \DateTime($this->_due_date);
