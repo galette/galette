@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Dynamic separator tests
+ * Dynamic booleans tests
  *
  * PHP version 5
  *
@@ -32,7 +32,7 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     2013-01-14
+ * @since     2013-10-18
  */
 
 namespace Galette\DynamicFieldsTypes\test\units;
@@ -40,7 +40,7 @@ namespace Galette\DynamicFieldsTypes\test\units;
 use \atoum;
 
 /**
- * Dynamic separator test
+ * Dynamic booleans test
  *
  * @category  DynamicFieldsTypes
  * @name      Separator
@@ -49,11 +49,11 @@ use \atoum;
  * @copyright 2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
- * @since     2013-01-14
+ * @since     2013-10-18
  */
-class Separator extends atoum
+class Boolean extends atoum
 {
-    private $_separator;
+    private $_bool;
 
     /**
      * Set up tests
@@ -64,7 +64,7 @@ class Separator extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        $this->_separator = new \Galette\DynamicFieldsTypes\Separator;
+        $this->_bool = new \Galette\DynamicFieldsTypes\Boolean;
     }
 
     /**
@@ -74,7 +74,7 @@ class Separator extends atoum
      */
     public function testConstructor()
     {
-        $o = new \Galette\DynamicFieldsTypes\Separator(10);
+        $o = new \Galette\DynamicFieldsTypes\Boolean(10);
         $this->variable($o->getId())
             ->isIdenticalTo(10);
     }
@@ -86,8 +86,8 @@ class Separator extends atoum
      */
     public function testGetTypeName()
     {
-        $this->variable($this->_separator->getTypeName())
-            ->isIdenticalTo(_T('separator'));
+        $this->variable($this->_bool->getTypeName())
+            ->isIdenticalTo(_T('boolean'));
     }
 
     /**
@@ -97,47 +97,47 @@ class Separator extends atoum
      */
     public function testBaseProperties()
     {
-        $muliple = $this->_separator->isMultiValued();
+        $muliple = $this->_bool->isMultiValued();
         $this->boolean($muliple)->isFalse();
 
-        $required = $this->_separator->isRequired();
+        $required = $this->_bool->isRequired();
         //should'nt that one be false?
         $this->variable($required)->isNull();
 
-        $name = $this->_separator->getName();
+        $name = $this->_bool->getName();
         $this->variable($name)->isNull();
 
-        $has_fixed_values = $this->_separator->hasFixedValues();
+        $has_fixed_values = $this->_bool->hasFixedValues();
         $this->boolean($has_fixed_values)->isFalse();
 
-        $has_data = $this->_separator->hasData();
-        $this->boolean($has_data)->isFalse();
+        $has_data = $this->_bool->hasData();
+        $this->boolean($has_data)->isTrue();
 
-        $has_w = $this->_separator->hasWidth();
+        $has_w = $this->_bool->hasWidth();
         $this->boolean($has_w)->isFalse();
 
-        $has_h = $this->_separator->hasHeight();
+        $has_h = $this->_bool->hasHeight();
         $this->boolean($has_h)->isFalse();
 
-        $has_s = $this->_separator->hasSize();
+        $has_s = $this->_bool->hasSize();
         $this->boolean($has_s)->isFalse();
 
-        $perms = $this->_separator->getPerm();
+        $perms = $this->_bool->getPerm();
         $this->variable($perms)->isNull();
 
-        $width = $this->_separator->getWidth();
+        $width = $this->_bool->getWidth();
         $this->variable($width)->isNull();
 
-        $height = $this->_separator->getHeight();
+        $height = $this->_bool->getHeight();
         $this->variable($height)->isNull();
 
-        $repeat = $this->_separator->getRepeat();
+        $repeat = $this->_bool->getRepeat();
         $this->variable($repeat)->isNull();
 
-        $size = $this->_separator->getSize();
+        $size = $this->_bool->getSize();
         $this->variable($size)->isNull();
 
-        $values = $this->_separator->getValues();
+        $values = $this->_bool->getValues();
         $this->boolean($values)->isFalse();
     }
 }

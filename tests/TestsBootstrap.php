@@ -26,7 +26,9 @@ if ( file_exists('../galette/index.php') ) {
 
 define('GALETTE_BASE_PATH', $basepath);
 define('GALETTE_TESTS', true);
+define('GALETTE_MODE', 'PROD');
 define('GALETTE_PLUGINS_PATH', __DIR__ . '/plugins/');
+define('GALETTE_SQLITE_PATH', __DIR__ . '/galette.test.sqlite');
 define('GALETTE_TPL_SUBDIR', 'templates/default/');
 $logfile = 'galette_tests';
 
