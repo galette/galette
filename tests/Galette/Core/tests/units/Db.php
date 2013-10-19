@@ -183,12 +183,23 @@ class Db extends atoum
             ->isIdenticalTo($expected);
 
         //in update mode, we need alter
-        $expected['alter'] = true;
         $result = $this->_db->grantCheck('u');
 
-        $this->array($result)
-            ->hasSize(7)
-            ->isIdenticalTo($expected);
+        if ( TYPE_DB !== \Galette\Core\Db::SQLITE ) {
+            $expected['alter'] = true;
+            $this->array($result)
+                ->hasSize(7)
+                ->isIdenticalTo($expected);
+        } else {
+            //for SQLITE, ALTER will not work.
+            $alter = $result['alter'];
+            $this->object($alter)->IsInstanceOf('\PDOException');
+
+            unset($result['alter']);
+            $this->array($result)
+                ->hasSize(6)
+                ->isIdenticalTo($expected);
+        }
     }
 
     /**
