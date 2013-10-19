@@ -170,11 +170,11 @@ class Preferences
     }
 
     /**
-    * Check if all fields referenced in the default array does exists,
-    * create them if not
-    *
-    * @return void
-    */
+     * Check if all fields referenced in the default array does exists,
+     * create them if not
+     *
+     * @return void
+     */
     private function _checkUpdate()
     {
         $proceed = false;
@@ -224,10 +224,10 @@ class Preferences
     }
 
     /**
-    * Load current preferences from database.
-    *
-    * @return boolean
-    */
+     * Load current preferences from database.
+     *
+     * @return boolean
+     */
     public function load()
     {
         $this->_prefs = array();
@@ -249,14 +249,14 @@ class Preferences
     }
 
     /**
-    * Set default preferences at install time
-    *
-    * @param staing $lang      language selected at install screen
-    * @param string $adm_login admin login entered at install time
-    * @param string $adm_pass  admin password entered at install time
-    *
-    * @return boolean|Exception
-    */
+     * Set default preferences at install time
+     *
+     * @param staing $lang      language selected at install screen
+     * @param string $adm_login admin login entered at install time
+     * @param string $adm_pass  admin password entered at install time
+     *
+     * @return boolean|Exception
+     */
     public function installInit($lang, $adm_login, $adm_pass)
     {
         try {
@@ -296,20 +296,20 @@ class Preferences
     }
 
     /**
-    * Returns all preferences keys
-    *
-    * @return array
-    */
+     * Returns all preferences keys
+     *
+     * @return array
+     */
     public function getFieldsNames()
     {
         return array_keys($this->_prefs);
     }
 
     /**
-    * Will store all preferences in the database
-    *
-    * @return boolean
-    */
+     * Will store all preferences in the database
+     *
+     * @return boolean
+     */
     public function store()
     {
         try {
@@ -459,12 +459,12 @@ class Preferences
     }
 
     /**
-    * Global getter method
-    *
-    * @param string $name name of the property we want to retrive
-    *
-    * @return false|object the called property
-    */
+     * Global getter method
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return false|object the called property
+     */
     public function __get($name)
     {
         $forbidden = array('logged', 'admin', 'active', 'defaults');
@@ -487,16 +487,25 @@ class Preferences
     }
 
     /**
-    * Global setter method
-    *
-    * @param string $name  name of the property we want to assign a value to
-    * @param object $value a relevant value for the property
-    *
-    * @return void
-    */
+     * Get default preferences
+     *
+     * @return array
+     */
+    public function getDefaults()
+    {
+        return self::$_defaults;
+    }
+
+    /**
+     * Global setter method
+     *
+     * @param string $name  name of the property we want to assign a value to
+     * @param object $value a relevant value for the property
+     *
+     * @return void
+     */
     public function __set($name, $value)
     {
-
         //does this pref exists ?
         if ( !array_key_exists($name, self::$_defaults) ) {
             Analog::log(
