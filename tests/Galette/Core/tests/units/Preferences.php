@@ -67,8 +67,7 @@ class Preferences extends atoum
     {
         $this->_zdb = new \Galette\Core\Db();
         $this->_preferences = new \Galette\Core\Preferences(
-            $this->_zdb,
-            false
+            $this->_zdb
         );
     }
 
@@ -84,7 +83,6 @@ class Preferences extends atoum
             'da_admin',
             password_hash('da_secret', PASSWORD_BCRYPT)
         );
-
         $this->boolean($result)->isTrue();
 
         //new object with values loaded from database to compare
@@ -160,7 +158,7 @@ class Preferences extends atoum
 
         $this->boolean($result)->isTrue();
 
-        $prefs = new \galette\Core\Preferences($this->_zdb);
+        $prefs = new \Galette\Core\Preferences($this->_zdb);
         $check_slogan = $prefs->pref_slogan;
         $this->variable($check_slogan)->isEqualTo($slogan);
     }
