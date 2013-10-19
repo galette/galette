@@ -111,6 +111,7 @@ class Members
 
     private $_filters = false;
     private $_count = null;
+    private $_errors = array();
 
     /**
      * Default constructor
@@ -355,11 +356,24 @@ class Members
                 return true;
             } catch (\Exception $e) {
                 $zdb->db->rollBack();
-                Analog::log(
-                    'Unable to delete selected member(s) |' .
-                    $e->getMessage(),
-                    Analog::ERROR
-                );
+                if ( $e instanceof \Zend_Db_Statement_Exception
+                    && $e->getCode() == 23000
+                ) {
+                    Analog::log(
+                        'Member still have existing dependencies in the ' .
+                        'database, maybe a mailing or some content from a ' .
+                        'plugin. Please remove dependencies before trying ' .
+                        'to remove him.',
+                        Analog::ERROR
+                    );
+                    $this->_errors[] = _T("Cannot remove a member who still have dependencies (mailings, ...)");
+                } else {
+                    Analog::log(
+                        'Unable to delete selected member(s) |' .
+                        $e->getMessage(),
+                        Analog::ERROR
+                    );
+                }
                 return false;
             }
         } else {
@@ -373,16 +387,16 @@ class Members
     }
 
     /**
-    * Get members list
-    *
-    * @param bool  $as_members return the results as an array of
-    *                          Member object.
-    * @param array $fields     field(s) name(s) to get. Should be a string or
-    *                          an array. If null, all fields will be
-    *                          returned
-    *
-    * @return Adherent[]|ResultSet
-    */
+     * Get members list
+     *
+     * @param bool  $as_members return the results as an array of
+     *                          Member object.
+     * @param array $fields     field(s) name(s) to get. Should be a string or
+     *                          an array. If null, all fields will be
+     *                          returned
+     *
+     * @return Adherent[]|ResultSet
+     */
     public function getList($as_members=false, $fields=null)
     {
         return $this->getMembersList(
@@ -397,14 +411,14 @@ class Members
     }
 
     /**
-    * Get members list with public informations available
-    *
-    * @param boolean $with_photos get only members which have uploaded a
-    *                                photo (for trombinoscope)
-    * @param array   $fields      fields list
-    *
-    * @return Adherent[]
-    */
+     * Get members list with public informations available
+     *
+     * @param boolean $with_photos get only members which have uploaded a
+     *                                photo (for trombinoscope)
+     * @param array   $fields      fields list
+     *
+     * @return Adherent[]
+     */
     public function getPublicList($with_photos, $fields)
     {
         global $zdb;
@@ -454,18 +468,18 @@ class Members
     }
 
     /**
-    * Get list of members that has been selected
-    *
-    * @param array   $ids         an array of members id that has been selected
-    * @param array   $orderby     SQL order clause (optionnal)
-    * @param boolean $with_photos Should photos be loaded?
-    * @param boolean $as_members  Return Adherent[] or simple ResultSet
-    * @param array   $fields      Fields to use
-    * @param boolean $export      True if we are exporting
-    * @param boolean $dues        True if load dues as Adherent dependency
-    *
-    * @return Adherent[]
-    */
+     * Get list of members that has been selected
+     *
+     * @param array   $ids         an array of members id that has been selected
+     * @param array   $orderby     SQL order clause (optionnal)
+     * @param boolean $with_photos Should photos be loaded?
+     * @param boolean $as_members  Return Adherent[] or simple ResultSet
+     * @param array   $fields      Fields to use
+     * @param boolean $export      True if we are exporting
+     * @param boolean $dues        True if load dues as Adherent dependency
+     *
+     * @return Adherent[]
+     */
     public function getArrayList($ids, $orderby = null, $with_photos = false, $as_members = true, $fields = null, $export = false, $dues = false)
     {
         global $zdb;
@@ -532,16 +546,16 @@ class Members
     }
 
     /**
-    * Builds the SELECT statement
-    *
-    * @param int   $mode   the current mode (see self::SHOW_*)
-    * @param array $fields fields list to retrieve
-    * @param bool  $photos true if we want to get only members with photos
-    *                      Default to false, only relevant for SHOW_PUBLIC_LIST
-    * @param bool  $count  true if we want to count members, defaults to false
-    *
-    * @return Zend_Db_Select SELECT statement
-    */
+     * Builds the SELECT statement
+     *
+     * @param int   $mode   the current mode (see self::SHOW_*)
+     * @param array $fields fields list to retrieve
+     * @param bool  $photos true if we want to get only members with photos
+     *                      Default to false, only relevant for SHOW_PUBLIC_LIST
+     * @param bool  $count  true if we want to count members, defaults to false
+     *
+     * @return Zend_Db_Select SELECT statement
+     */
     private function _buildSelect($mode, $fields, $photos, $count = false)
     {
         global $zdb, $login;
@@ -746,12 +760,12 @@ class Members
     }
 
     /**
-    * Count members from the query
-    *
-    * @param Zend_Db_Select $select Original select
-    *
-    * @return void
-    */
+     * Count members from the query
+     *
+     * @param Zend_Db_Select $select Original select
+     *
+     * @return void
+     */
     private function _proceedCount($select)
     {
         global $zdb;
@@ -1477,12 +1491,22 @@ class Members
 
 
     /**
-    * Get count for current query
-    *
-    * @return int
-    */
+     * Get count for current query
+     *
+     * @return int
+     */
     public function getCount()
     {
         return $this->_count;
+    }
+
+    /**
+     * Get registered errors
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->_errors;
     }
 }
