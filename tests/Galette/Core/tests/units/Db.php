@@ -85,7 +85,7 @@ class Db extends atoum
             'PWD_DB'    => '',
             'HOST_DB'   => 'localhost',
             'PORT_DB'   => \Galette\Core\Db::PGSQL_DEFAULT_PORT,
-            'NAME_DB'   => 'galette_test'
+            'NAME_DB'   => 'galette_tests'
         );
         $db = new \Galette\Core\Db($dsn);
 
