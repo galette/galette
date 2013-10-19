@@ -80,25 +80,45 @@ class Db extends atoum
             ->isIdenticalTo(TYPE_DB);
 
         $dsn = array(
-            'TYPE_DB'   => \Galette\Core\Db::PGSQL,
-            'USER_DB'   => 'postgres',
-            'PWD_DB'    => '',
-            'HOST_DB'   => 'localhost',
-            'PORT_DB'   => \Galette\Core\Db::PGSQL_DEFAULT_PORT,
-            'NAME_DB'   => 'galette_tests'
+            'TYPE_DB'   => TYPE_DB,
+            'USER_DB'   => USER_DB,
+            'PWD_DB'    => PWD_DB,
+            'HOST_DB'   => HOST_DB,
+            'PORT_DB'   => PORT_DB,
+            'NAME_DB'   => NAME_DB
         );
         $db = new \Galette\Core\Db($dsn);
 
         $is_pg = $db->isPostgres();
-        $this->boolean($is_pg)
-            ->isTrue();
-
         $zdb = $db->db;
-        $this->object($zdb)
-            ->IsInstanceOf('Zend_Db_Adapter_Pdo_Pgsql');
         $type = $db->type_db;
-        $this->string($type)
-            ->isIdenticalTo(\Galette\Core\Db::PGSQL);
+
+        switch (TYPE_DB) {
+        case 'pgsql':
+            $this->boolean($is_pg)
+                ->isTrue();
+            $this->object($zdb)
+                ->IsInstanceOf('Zend_Db_Adapter_Pdo_Pgsql');
+            $this->string($type)
+                ->isIdenticalTo(\Galette\Core\Db::PGSQL);
+            break;
+        case \Galette\Core\Db::MYSQL:
+            $this->boolean($is_pg)
+                ->isFalse();
+            $this->object($zdb)
+                ->IsInstanceOf('Zend_Db_Adapter_Pdo_Mysql');
+            $this->string($type)
+                ->isIdenticalTo(\Galette\Core\Db::MYSQL);
+            break;
+        case \galette\Core\Db::SQLITE:
+            $this->boolean($is_pg)
+                ->isFalse();
+            $this->object($zdb)
+                ->IsInstanceOf('Zend_Db_Adapter_Pdo_Sqlite');
+            $this->string($type)
+                ->isIdenticalTo(\Galette\Core\Db::SQLITE);
+            break;
+        }
 
         $dsn['TYPE_DB'] = \Galette\Core\Db::SQLITE;
         $db = new \Galette\Core\Db($dsn);
