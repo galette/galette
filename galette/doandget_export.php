@@ -37,6 +37,7 @@
 
 use Analog\Analog as Analog;
 use Galette\IO\Csv;
+use Galette\IO\CsvOut;
 use Galette\Filters\MembersList;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Adherent;
@@ -50,7 +51,7 @@ require_once 'includes/galette.inc.php';
 //Exports main contain user confidential data, they're accessible only for
 //admins or staff members
 if ( $login->isAdmin() || $login->isStaff() ) {
-    $csv = new Csv();
+    $csv = new CsvOut();
 
     if ( isset($session['filters']['members'])
         && !isset($_POST['mailing'])
@@ -195,7 +196,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
         }
     }
     $filename = 'filtered_memberslist.csv';
-    $filepath = Csv::DEFAULT_DIRECTORY . $filename;
+    $filepath = CsvOut::DEFAULT_DIRECTORY . $filename;
     $fp = fopen($filepath, 'w');
     if ( $fp ) {
         $res = $csv->export(
@@ -212,11 +213,11 @@ if ( $login->isAdmin() || $login->isStaff() ) {
         );
     }
 
-    if (file_exists(Csv::DEFAULT_DIRECTORY . $filename) ) {
+    if (file_exists(CsvOut::DEFAULT_DIRECTORY . $filename) ) {
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $filename . '";');
         header('Pragma: no-cache');
-        readfile(Csv::DEFAULT_DIRECTORY . $filename);
+        readfile(CsvOut::DEFAULT_DIRECTORY . $filename);
     } else {
         Analog::log(
             'A request has been made to get an exported file named `' .

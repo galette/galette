@@ -59,7 +59,7 @@
             <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
         {elseif $field.field_type eq 5}
             <input type="checkbox" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}" value="1"
-	        {if $data.dyn[$field.field_id][$smarty.section.fieldLoop.index] eq 1} checked="checked"{/if}
+            {if $data.dyn[$field.field_id][$smarty.section.fieldLoop.index] eq 1} checked="checked"{/if}
                 {if isset($disabled.dyn[$field.field_id])} {$disabled.dyn[$field.field_id]}{/if}
                 {if $field.field_required eq 1} required{/if}
             />
@@ -67,10 +67,12 @@
     {/section}
         </p>
     {/if}
-    {if $field.config_field_repeat == 0}
+    {if $field.field_type neq 0}
+        {if $field.config_field_repeat == 0}
         <p class="exemple">{_T string="Enter as many occurences you want."}</p>
-    {elseif $field.config_field_repeat > 1}
+        {elseif $field.config_field_repeat > 1}
         <p class="exemple">{_T string="Enter up to %count occurences." pattern="/%count/" replace=$field.field_repeat}</p>
+        {/if}
     {/if}
 {/if}
 {/foreach}

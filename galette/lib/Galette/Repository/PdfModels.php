@@ -149,7 +149,7 @@ class PdfModels extends Repository
             }
         } catch (\Exception $e) {
             $this->zdb->db->rollBack();
-            throw $e;
+            return $e;
         }
     }
 

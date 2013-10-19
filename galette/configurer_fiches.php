@@ -85,58 +85,68 @@ if ( $form_name == '' ) {
             $field_type = $_POST['field_type'];
             $field_required = $_POST['field_required'];
 
-            try {
-                $select = new Zend_Db_Select($zdb->db);
-                $select->from(
-                    PREFIX_DB . DynamicFieldType::TABLE,
-                    'COUNT(*) + 1 AS idx'
-                )->where('field_form = ?', $form_name);
-                $str = $select->__toString();
-                $idx = $select->query()->fetchColumn();
-            } catch (Exception $e) {
-                /** FIXME */
-                throw $e;
-            }
+            $duplicated = $dyn_fields->isDuplicate(
+                $zdb,
+                $form_name,
+                $field_name
+            );
 
-            if ($idx !== false) {
+            if ( !$duplicated ) {
                 try {
-                    $values = array(
-                        'field_index'    => $idx,
-                        'field_form'     => $form_name,
-                        'field_name'     => $field_name,
-                        'field_perm'     => $field_perm,
-                        'field_type'     => $field_type,
-                        'field_required' => $field_required
-                    );
-                    $zdb->db->insert(
+                    $select = new Zend_Db_Select($zdb->db);
+                    $select->from(
                         PREFIX_DB . DynamicFieldType::TABLE,
-                        $values
-                    );
-
-                    if ($field_type != DynamicFields::SEPARATOR
-                        && count($error_detected) == 0
-                    ) {
-                        $field_id = $zdb->db->lastInsertId(
-                            PREFIX_DB . DynamicFieldType::TABLE,
-                            'id'
-                        );
-                        header(
-                            'location: editer_champ.php?form=' . $form_name .
-                            '&id=' . $field_id
-                        );
-                        die();
-                    }
-                    if ( $field_name != '' ) {
-                        addDynamicTranslation($field_name, $error_detected);
-                    }
+                        'COUNT(*) + 1 AS idx'
+                    )->where('field_form = ?', $form_name);
+                    $str = $select->__toString();
+                    $idx = $select->query()->fetchColumn();
                 } catch (Exception $e) {
                     /** FIXME */
-                    Analog::log(
-                        'An error occured adding new dynamic field. | ' .
-                        $e->getMessage(),
-                        Analog::ERROR
-                    );
+                    throw $e;
                 }
+
+                if ($idx !== false) {
+                    try {
+                        $values = array(
+                            'field_index'    => $idx,
+                            'field_form'     => $form_name,
+                            'field_name'     => $field_name,
+                            'field_perm'     => $field_perm,
+                            'field_type'     => $field_type,
+                            'field_required' => $field_required
+                        );
+                        $zdb->db->insert(
+                            PREFIX_DB . DynamicFieldType::TABLE,
+                            $values
+                        );
+
+                        if ($field_type != DynamicFields::SEPARATOR
+                            && count($error_detected) == 0
+                        ) {
+                            $field_id = $zdb->db->lastInsertId(
+                                PREFIX_DB . DynamicFieldType::TABLE,
+                                'id'
+                            );
+                            header(
+                                'location: editer_champ.php?form=' . $form_name .
+                                '&id=' . $field_id
+                            );
+                            die();
+                        }
+                        if ( $field_name != '' ) {
+                            addDynamicTranslation($field_name, $error_detected);
+                        }
+                    } catch (Exception $e) {
+                        /** FIXME */
+                        Analog::log(
+                            'An error occured adding new dynamic field. | ' .
+                            $e->getMessage(),
+                            Analog::ERROR
+                        );
+                    }
+                }
+            } else {
+                $error_detected[] = _T("- Field name already used.");
             }
         }
     } else {

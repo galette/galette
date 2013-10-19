@@ -89,12 +89,13 @@ class Db extends atoum
             '0.70' => 'upgrade-to-0.70-pgsql.sql',
             '0.71' => 'upgrade-to-0.71-pgsql.sql',
             '0.74' => 'upgrade-to-0.74-pgsql.sql',
-            '0.75' => 'upgrade-to-0.75-pgsql.sql'
+            '0.75' => 'upgrade-to-0.75-pgsql.sql',
+            '0.76' => 'upgrade-to-0.76-pgsql.sql'
         );
 
-        //as of 0.7.5, we got 8 update scripts total
+        //as of 0.7.6, we got 9 update scripts total
         $this->array($update_scripts)
-            ->hasSize(8)
+            ->hasSize(9)
             ->isIdenticalTo($knowns);
 
         $update_scripts = \Galette\Core\Db::getUpdateScripts(
@@ -103,8 +104,8 @@ class Db extends atoum
             '0.7'
         );
 
-        //if we're from 0.7.0, there are only 4 update scripts left
+        //if we're from 0.7.0, there are only 5 update scripts left
         $this->array($update_scripts)
-            ->hasSize(4);
+            ->hasSize(5);
     }
 }

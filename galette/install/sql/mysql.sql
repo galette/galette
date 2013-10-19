@@ -291,11 +291,20 @@ CREATE TABLE galette_pdfmodels (
   PRIMARY KEY (model_id)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
+-- Table for import models
+DROP TABLE IF EXISTS galette_import_model;
+CREATE TABLE galette_import_model (
+  model_id smallint(6) NOT NULL auto_increment,
+  model_fields text,
+  model_creation_date datetime NOT NULL,
+  PRIMARY KEY (model_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-INSERT INTO galette_database(version) VALUES(0.703);
+INSERT INTO galette_database(version) VALUES(0.704);
 
 SET FOREIGN_KEY_CHECKS=1;

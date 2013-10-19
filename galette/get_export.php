@@ -51,24 +51,24 @@ if ( !isset($_GET['file']) ) {
 
 $filename = $_GET['file'];
 
-use Galette\IO\Csv;
+use Galette\IO\CsvOut;
 
 //Exports main contain user confidential data, they're accessible only for
 //admins or staff members
 if ( $login->isAdmin() || $login->isStaff() ) {
 
-    if (file_exists(Csv::DEFAULT_DIRECTORY . $filename) ) {
+    if (file_exists(CsvOut::DEFAULT_DIRECTORY . $filename) ) {
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $filename . '";');
         header('Pragma: no-cache');
-        readfile(Csv::DEFAULT_DIRECTORY . $filename);
+        readfile(CsvOut::DEFAULT_DIRECTORY . $filename);
     } else {
         Analog::log(
             'A request has been made to get an exported file named `' .
             $filename .'` that does not exists.',
             Analog::WARNING
         );
-        header('HTTP/1.0 404 Not Found');        
+        header('HTTP/1.0 404 Not Found');
     }
 } else {
     Analog::log(

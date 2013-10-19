@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns="http://usefulinc.com/ns/doap#">
+
+    <name>Galette</name>
+    <homepage rdf:resource="http://galette.tuxfamily.org" />
+    <created>2004-02-09</created>
+
+    <shortdesc xml:lang="en">
+        Online tool for nonprofit oragnizations to manage membership and fees
+    </shortdesc>
+
+    <shortdesc xml:lang="fr">
+        Outil de gestion d'adhérents et de cotisations en ligne pour les associations
+    </shortdesc>
+
+    <description xml:lang="en">
+        Galette is an online tool to manage membership and fees dedicated to
+        nonprofit organizations. It mainly allows executive members to know which
+        fees will soon reach their due dates. Beside that, each member can have
+        it's own credential to review (or change) it's personal information.
+        On the technical side, all you need is a web server supporting
+        PHP and a database (MySQL or PostgreSQL)
+    </description>
+
+    <description xml:lang="fr">
+        Galette est un outil de gestion d'adhérents et de cotisations en ligne à
+        destination des associations. Il permet principalement aux membres du bureau
+        de savoir à tout instant quelles adhésions arrivent bientôt à échéance.
+        Chaque adhérent dispose par ailleurs d'identifiants personnels lui permettant
+        d'aller consulter (et modifier) les informations le concernant. Coté
+        technique, il vous faut juste un serveur web supportant PHP et une base de
+        données (MySQL ou PostgreSQL)
+    </description>
+
+    <programming-language>PHP</programming-language>
+
+    <mailing-list rdf:resource="https://mail.gna.org/listinfo/galette-devel/" />
+    <mailing-list rdf:resource="https://mail.gna.org/listinfo/galette-discussion/" />
+
+    <download-page rdf:resource="http://download.tuxfamily.org/galette/" />
+
+    <maintainer>
+        <foaf:Person>
+            <foaf:name>Johan Cwiklinski</foaf:name>
+            <foaf:homepage rdf:resource="http://ulysses.fr" />
+        </foaf:Person>
+    </maintainer>
+
+    <release>
+        <Version>
+            <name>0.7.5.1</name>
+            <created>2013-08-26</created>
+            <revision>0.7.5.1</revision>
+        </Version>
+    </release>
+
+    <license rdf:resource="http://spdx.org/licenses/GPL-3.0+" />
+
+    <bug-database rdf:resource="http://redmine.ulysses.fr/projects/galette/issues" />
+
+    <repository>
+        <GitRepository>
+            <location rdf:resource="git://git.tuxfamily.org/gitroot/galette/galette.git"/>
+            <browse rdf:resource="http://git.tuxfamily.org/galette/galette"/>
+        </GitRepository>
+    </repository>
+
+</Project>
+

@@ -141,6 +141,17 @@ class CheckModules
         } else {
             $this->_good['ssl'] = _T("'openssl' support");
         }
+
+        if ( !extension_loaded('fileinfo') ) {
+            $this->_missing[] = str_replace('%s', 'fileinfo', _T("'%s' module"));
+        } else {
+            $this->_good['fileinfo'] = str_replace(
+                '%s',
+                'fileinfo',
+                _T("'%s' module")
+            );
+        }
+
     }
 
     /**

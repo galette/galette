@@ -251,10 +251,8 @@ header('Content-Type: text/html; charset=UTF-8');
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-migrate-<?php echo JQUERY_MIGRATE_VERSION; ?>.min.js"></script>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.button.min.js"></script>
-        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.bgiframe.pack.js"></script>
+        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.tooltip.min.js"></script>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.bgFade.js"></script>
-        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/chili-1.7.pack.js"></script>
-        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.tooltip.pack.js"></script>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/common.js"></script>
         <link rel="shortcut icon" href="<?php echo GALETTE_BASE_PATH; ?>templates/default/images/favicon.png" />
         <script type="text/javascript">
@@ -357,7 +355,6 @@ case '2':
 case 'i3':
 case 'u3':
     $php_ok = true;
-    $pwd_compat = true;
     $class = 'install-';
     $php_class = '';
     $php_modules_class = '';
@@ -369,22 +366,7 @@ case 'u3':
         $php_ok = false;
         $php_class .= $class . 'bad';
     } else {
-        if ( defined('GALETTE_UNSECURE_PASSWORDS')
-            && GALETTE_UNSECURE_PASSWORDS === true
-        ) {
-            $php_class .= $class . 'ok';
-            $pwd_compat = true;
-        } else {
-            //check for password_compat...
-            $hash = '$2y$04$usesomesillystringfore7hnbRJHxXVLeakoG8K30oukPsA.ztMG';
-            $test = crypt("password", $hash);
-            $pwd_compat = $test == $hash;
-            if ( $pwd_compat ) {
-                $php_class .= $class . 'ok';
-            } else {
-                $php_class .= $class . 'bad';
-            }
-        }
+        $php_class .= $class . 'ok';
     }
     ?>
             <article id="php_version" class="<?php echo $php_class; ?>">
@@ -403,14 +385,6 @@ case 'u3':
         echo $msg;
     }
 
-    if ( !$pwd_compat ) {
-        $msg = '<p class="error">';
-        $msg .= _T("Your PHP version is not compatible with password storage!");
-        $msg .= '<br/>';
-        $msg .= _T("Please consider upgrading your PHP version.");
-        $msg .= '</p>';
-        echo $msg;
-    }
     echo str_replace('%version', PHP_VERSION, _T("PHP version %version"));
                 ?>
             </article>
@@ -479,6 +453,7 @@ case 'u3':
         GALETTE_TEMPIMAGES_PATH,
         GALETTE_CONFIG_PATH,
         GALETTE_EXPORTS_PATH,
+        GALETTE_IMPORTS_PATH,
         GALETTE_LOGS_PATH
     );
 
@@ -518,7 +493,7 @@ case 'u3':
             </div>
         </article>
     <?php
-    if ( !$perms_ok || !$modules_ok || !$php_ok || !$date_ok || !$pwd_compat ) {
+    if ( !$perms_ok || !$modules_ok || !$php_ok || !$date_ok ) {
         ?>
                 <form action="index.php" method="post">
                     <p id="btn_box">
@@ -1269,15 +1244,7 @@ define("STOCK_FILES", "tempimages");
         $titles = new Galette\Repository\Titles();
 
         //init default values
-        $admpass = null;
-
-        if ( defined('GALETTE_UNSECURE_PASSWORDS')
-            && GALETTE_UNSECURE_PASSWORDS === true
-        ) {
-            $admpass = md5($_POST['install_adminpass']);
-        } else {
-            $admpass = password_hash($_POST['install_adminpass'], PASSWORD_BCRYPT);
-        }
+        $admpass = password_hash($_POST['install_adminpass'], PASSWORD_BCRYPT);
 
         $res = $preferences->installInit(
             $i18n->getID(),
@@ -1439,14 +1406,17 @@ define("STOCK_FILES", "tempimages");
     $models = new Galette\Repository\PdfModels($zdb, $preferences);
     include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
     $res = $models->installInit($pdfmodels_fields);
-    if ( $res !== true ) {
-        $errs[] = '<li class="install-bad">' .
-            _T("PDF models cannot be initialized.") .
-            '<span>' . $res->getMessage() . '</span></li>';
-    } else {
+    if ( $res === true ) {
         $oks[] = '<li class="install-ok">' .
             _T("PDF models were successfully stored.") .
             '</li>';
+    } else {
+        if ( $res !== false ) {
+            //false is returned when table has already been filled
+            $errs[] = '<li class="install-bad">' .
+                _T("PDF models cannot be initialized.") .
+                '<span>' . $res->getMessage() . '</span></li>';
+        }
     }
 
     ?>

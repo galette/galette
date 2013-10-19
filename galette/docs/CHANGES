@@ -1,7 +1,17 @@
 Changes
 -------
 
-0.7.5.4 - 0.7.5.5 (2013-10-12)
+0.7.5.5 -> 0.7.5.6
+- configurable CSV imports
+- filter on non members
+- PostgreSQL >= 9.1
+- Remove UNSECURE_PASSWORD stuff
+- no longer show days remaining for disabled accounts
+- staff members cannot change thor own informations
+- no error was shown when removing a member failed
+- pdf memberd card was looking for loggged in user membership
+
+0.7.5.4 -> 0.7.5.5 (2013-10-12)
 - Super admin was not able to change some members fields
 
 0.7.5.3 -> 0.7.5.4 (2013-10-06)

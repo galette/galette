@@ -309,7 +309,8 @@ class MembersList extends Pagination
                 Members::MEMBERSHIP_LATE    => _T("Latecomers"),
                 Members::MEMBERSHIP_NEVER   => _T("Never contributed"),
                 Members::MEMBERSHIP_STAFF   => _T("Staff members"),
-                Members::MEMBERSHIP_ADMIN   => _T("Administrators")
+                Members::MEMBERSHIP_ADMIN   => _T("Administrators"),
+                Members::MEMBERSHIP_NONE    => _T("Non members")
             )
         );
 

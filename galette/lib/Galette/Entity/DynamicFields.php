@@ -652,4 +652,42 @@ class DynamicFields
             return false;
         }
     }
+
+    /**
+     * Is field duplicated?
+     *
+     * @param Db     $zdb        Database instance
+     * @param string $form_name  Form name
+     * @param string $field_name Field name
+     * @param string $field_id   Field ID
+     *
+     * @return boolean
+     */
+    public function isDuplicate($zdb, $form_name, $field_name, $field_id = null)
+    {
+        //let's consider field is duplicated, in case of future errors
+        $duplicated = true;
+        try {
+            $select = new \Zend_Db_Select($zdb->db);
+            $select->from(
+                PREFIX_DB . DynamicFieldType::TABLE,
+                'COUNT(field_id)'
+            )->where('field_form = ?', $form_name)
+                ->where('field_name = ?', $field_name);
+
+            if ( $field_id !== null ) {
+                $select->where('NOT field_id = ?', $field_id);
+            }
+            $dup = $select->query()->fetchColumn();
+            if ( !$dup > 0 ) {
+                $duplicated = false;
+            }
+        } catch (\Exception $e) {
+            Analog::log(
+                'An error occured checking field duplicity' . $e->getMessage(),
+                Analog::ERROR
+            );
+        }
+        return $duplicated;
+    }
 }

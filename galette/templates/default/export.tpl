@@ -5,7 +5,7 @@
             <p>{_T string="The following files have been written on disk:"}</p>
             <ul>
 {foreach item=ex from=$written}
-                <li><a href="get_export.php?file={$ex.file}">{$ex.name} ({$ex.file})</a></li>
+                <li><a href="get_export.php?file={$ex.name}">{$ex.name} ({$ex.file})</a></li>
 {/foreach}
             </ul>
         </div>
@@ -37,7 +37,7 @@
                                     {$export.size}
                                 </td>
                                 <td class="actions_row">
-                                    <a href="export.php?sup={$export.name}" title="{_T string="Remove '%export' from disk" pattern="/%export/" replace=$export.name}"><img src="{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
+                                    <a href="export.php?sup={$export.name}" title="{_T string="Remove '%file' from disk" pattern="/%file/" replace=$export.name}"><img src="{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
                                 </td>
                             </tr>
     {/foreach}

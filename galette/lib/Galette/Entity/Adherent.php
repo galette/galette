@@ -210,7 +210,7 @@ class Adherent
             } else {
                 $this->_active = true;
                 $this->_language = $i18n->getID();
-                $this->_creation_date = date("Y-m-d");
+                $this->_creation_date = date(_T("Y-m-d"));
                 $this->_status = Status::DEFAULT_STATUS;
                 $this->_title = null;
                 $this->_gender = self::NC;
@@ -599,7 +599,7 @@ class Adherent
     {
         $ret = '';
         if ( $this->isDueFree() ) {
-                $ret = _T("Freed of dues");
+            $ret = _T("Freed of dues");
         } else if ( $this->_due_date == '') {
             $patterns = array('/%days/', '/%date/');
             $cdate = new \DateTime($this->_creation_date);
@@ -607,11 +607,15 @@ class Adherent
                 $this->_oldness,
                 $cdate->format(_T("Y-m-d"))
             );
-            $ret = preg_replace(
-                $patterns,
-                $replace,
-                _T("Never contributed: Registered %days days ago (since %date)")
-            );
+            if ( $this->_active ) {
+                $ret = preg_replace(
+                    $patterns,
+                    $replace,
+                    _T("Never contributed: Registered %days days ago (since %date)")
+                );
+            } else {
+                $ret = _T("Never contributed");
+            }
         } else if ( $this->_days_remaining == 0 ) {
             $ret = _T("Last day!");
         } else if ( $this->_days_remaining < 0 ) {
@@ -621,11 +625,15 @@ class Adherent
                 $this->_days_remaining *-1,
                 $ddate->format(_T("Y-m-d"))
             );
-            $ret = preg_replace(
-                $patterns,
-                $replace,
-                _T("Late of %days days (since %date)")
-            );
+            if ( $this->_active ) {
+                $ret = preg_replace(
+                    $patterns,
+                    $replace,
+                    _T("Late of %days days (since %date)")
+                );
+            } else {
+                $ret = _T("Late");
+            }
         } else {
             $patterns = array('/%days/', '/%date/');
             $ddate = new \DateTime($this->_due_date);
@@ -689,14 +697,7 @@ class Adherent
         global $zdb;
 
         try {
-            $cpass = null;
-            if ( defined('GALETTE_UNSECURE_PASSWORDS')
-                && GALETTE_UNSECURE_PASSWORDS === true
-            ) {
-                $cpass = md5($pass);
-            } else {
-                $cpass = password_hash($pass, PASSWORD_BCRYPT);
-            }
+            $cpass = password_hash($pass, PASSWORD_BCRYPT);
 
             $zdb->db->update(
                 PREFIX_DB . self::TABLE,
@@ -755,6 +756,35 @@ class Adherent
     }
 
     /**
+     * Is member up to date?
+     *
+     * @return boolean
+     */
+    public function isUp2Date()
+    {
+        if ( $this->_deps['dues'] ) {
+            if ( $this->isDueFree() ) {
+                //member is due free, he's up to date.
+                return true;
+            } else {
+                //let's check from end date, if present
+                if ( $this->_due_date == null ) {
+                    return false;
+                } else {
+                    $ech = new \DateTime($this->_due_date);
+                    $now = new \DateTime();
+                    $now->setTime(0, 0, 0);
+                    return $ech >= $now;
+                }
+            }
+        } else {
+            throw new \RuntimeException(
+                'Cannot check if member is up to date, dues deps is disabled!'
+            );
+        }
+    }
+
+    /**
      * Check posted values validity
      *
      * @param array $values   All values to check, basically the $_POST array
@@ -791,7 +821,15 @@ class Adherent
                 case 'bool_display_info':
                     $value = 0;
                     break;
+                case 'activite_adh':
+                    //values that are setted at object instanciation
+                    $value = true;
+                    break;
                 case 'date_crea_adh':
+                case 'sexe_adh':
+                case 'titre_adh':
+                case 'id_statut':
+                case 'pref_lang':
                     //values that are setted at object instanciation
                     $value = $this->$prop;
                     break;
@@ -953,23 +991,14 @@ class Adherent
                         ) {
                             $errors[] = _T("- The passwords don't match!");
                         } else if ( $this->_self_adh === true
-                            && (defined('GALETTE_UNSECURE_PASSWORDS')
-                            && GALETTE_UNSECURE_PASSWORDS === true
-                            &&  !md5($value)==$values['mdp_crypt']
-                            || !crypt($value, $values['mdp_crypt'])==$values['mdp_crypt'])
+                            && !crypt($value, $values['mdp_crypt'])==$values['mdp_crypt']
                         ) {
-                                $errors[] = _T("Password misrepeated: ");
+                            $errors[] = _T("Password misrepeated: ");
                         } else {
-                            if ( defined('GALETTE_UNSECURE_PASSWORDS')
-                                && GALETTE_UNSECURE_PASSWORDS === true
-                            ) {
-                                $this->$prop = md5($value);
-                            } else {
-                                $this->$prop = password_hash(
-                                    $value,
-                                    PASSWORD_BCRYPT
-                                );
-                            }
+                            $this->$prop = password_hash(
+                                $value,
+                                PASSWORD_BCRYPT
+                            );
                         }
                         break;
                     case 'id_statut':

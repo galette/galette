@@ -277,11 +277,19 @@ CREATE TABLE galette_pdfmodels (
   FOREIGN KEY (model_parent) REFERENCES galette_pdfmodels (model_id)
 );
 
+-- Table for import models
+DROP TABLE IF EXISTS galette_import_model;
+CREATE TABLE galette_import_model (
+  model_id INTEGER NOT NULL PRIMARY KEY,
+  model_fields TEXT,
+  model_creation_date TEXT NOT NULL
+);
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version REAL NOT NULL
 );
-INSERT INTO galette_database(version) VALUES(0.703);
+INSERT INTO galette_database(version) VALUES(0.704);
 
 PRAGMA foreign_keys = ON;

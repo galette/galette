@@ -108,12 +108,7 @@ $(function() {
     $('.tip').hide();
     //and then, we show them on rollover
     $('.tooltip').tooltip({
-        //track: true,
-        delay: 0,
-        showURL: false,
-        showBody: ' - ',
-        extraClass: 'tt',
-        bodyHandler: function() {
+        content: function(event, ui) {
             return $(this).next().html();
         }
     });

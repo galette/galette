@@ -38,6 +38,8 @@
 
 require_once 'includes/galette.inc.php';
 
+use Galette\Entity\Entitled;
+
 if ( !$login->isLogged() ) {
     header("location: index.php");
     die();
@@ -67,59 +69,6 @@ $forms = array(
     'Status'             => _T("User statuses")
 );
 
-/**
-* Delete an entry
-*
-* @param integer $id    Entry's id
-* @param string  $class current class name
-*
-* @return void
-*/
-function delEntry ($id, $class)
-{
-    global $error_detected, $success_detected;
-
-    if ( !is_numeric($id) ) {
-        $error_detected[] = _T("- ID must be an integer!");
-        return;
-    }
-
-    /* Check if it exists. */
-    $label = $class->getLabel($id);
-    if ( !$label ) {
-        $error_detected[] = _T("- Label does not exist");
-        return;
-    }
-
-    /* Check if it's used. */
-    $ret = $class->isUsed($id);
-    if ( $ret === true ) {
-        $error_detected[] = _T("- Cannot delete this label: it's still used");
-        return;
-    }
-
-    /* Delete. */
-    try {
-        $ret = $class->delete((int)$id);
-
-        if ( $ret !== true ) {
-            $error_detected[] = _T("- Label does not exist");
-            return;
-        }
-
-        deleteDynamicTranslation($label, $error_detected);
-        $success_detected[] = str_replace(
-            '%label',
-            $label,
-            _T("Status %label was successfully removed")
-        );
-    } catch (RuntimeException $re) {
-        $error_detected[] = $re->getMessage();
-    }
-    return;
-}
-
-// Validate an input. Returns true or false.
 /**
 * Validate an input
 *
@@ -173,11 +122,6 @@ function checkFieldValue ($class, $key, $value)
 function modifyEntry ($id, $class)
 {
     global $zdb, $error_detected, $fields, $className;
-
-    if (!is_numeric($id)) {
-        $error_detected[] = _T("- ID must be an integer!");
-        return;
-    }
 
     $label = '';
     $oldlabel = $class->getLabel($id, false);
@@ -280,79 +224,6 @@ function addEntry ($class)
     return;
 }
 
-/**
-* Edit an entry
-*
-* @param integer $id    Entry's id
-* @param string  $class current class name
-*
-* @return void
-*/
-function editEntry ($id, $class)
-{
-    global $fields, $tpl, $error_detected, $className;
-
-    if ( !is_numeric($id) ) {
-        $error_detected[] = _T("- ID must be an integer!");
-        return;
-    }
-    $entry = $class->get($id);
-
-    if ( !$entry ) {
-        $error_detected[] = _T("- Label does not exist");
-        return;
-    }
-
-    $entry->$fields[$className]['name'] = htmlentities(
-        $entry->$fields[$className]['name'],
-        ENT_QUOTES,
-        'UTF-8'
-    );
-
-    $tpl->assign('entry', get_object_vars($entry));
-    if ($className == 'Status') {
-        $tpl->assign('page_title', _T("Edit status"));
-    } elseif ( $className == 'ContributionsTypes' ) {
-        $tpl->assign('page_title', _T("Edit contribution type"));
-    }
-}
-
-/**
-* List entries
-*
-* @param string $class current class name
-*
-* @return void
-*/
-function listEntries ($class)
-{
-    global $fields, $tpl, $className;
-
-    $list = $class->getCompleteList();
-
-    $entries = array();
-    foreach ( $list as $key=>$row ) {
-        $entry['id'] = $key;
-        $entry['name'] = $row[0];
-
-        if ( $className == 'ContributionsTypes' ) {
-            $entry['extends'] = ($row[1] ? _T("Yes") : _T("No"));
-        } elseif ( $className == 'Status' ) {
-            $entry['priority'] = $row[1];
-        }
-        $entries[] = $entry;
-    }
-
-    $tpl->assign('entries', $entries);
-
-    if ( $className == 'Status' ) {
-        $tpl->assign('page_title', _T("User statuses"));
-    } elseif ( $className == 'ContributionsTypes' ) {
-        $tpl->assign('page_title', _T("Contribution types"));
-    }
-}
-
-// MAIN CODE.
 $className = null;
 $class = null;
 
@@ -374,17 +245,52 @@ if ( $className == 'Status' ) {
 // Display a specific form to edit a label.
 // Otherwise, display a list of entries.
 if ( isset($_GET['id']) ) {
-    editEntry(trim($_GET['id']), $class);
+    //editEntry(trim($_GET['id']), $class);
+    $entry = $class->get($_GET['id']);
+    $tpl->assign('entry', $entry);
+    if ($className == 'Status') {
+        $tpl->assign('page_title', _T("Edit status"));
+    } elseif ( $className == 'ContributionsTypes' ) {
+        $tpl->assign('page_title', _T("Edit contribution type"));
+    }
 } else {
+    if ( $className == 'Status' ) {
+        $tpl->assign('page_title', _T("User statuses"));
+    } elseif ( $className == 'ContributionsTypes' ) {
+        $tpl->assign('page_title', _T("Contribution types"));
+    }
+
     if ( isset($_GET['del']) ) {
-        delEntry(trim($_GET['del']), $class);
+        try {
+            $label = $class->getLabel((int)$_GET['del']);
+            if ( $label !== Entitled::ID_NOT_EXITS ) {
+                $ret = $class->delete((int)$_GET['del']);
+
+                if ( $ret === true ) {
+                    deleteDynamicTranslation($label, $error_detected);
+                    $success_detected[] = str_replace(
+                        '%label',
+                        $label,
+                        _T("Entitled %label was successfully removed")
+                    );
+                }
+            }
+        } catch (RuntimeException $re) {
+            $error_detected[] = $re->getMessage();
+        }
     } elseif ( isset($_POST['new']) ) {
         addEntry($class);
     } elseif ( isset($_POST['mod']) ) {
         modifyEntry(trim($_POST['mod']), $class);
     }
     // Show the list.
-    listEntries($class);
+    $list = $class->getCompleteList();
+    $tpl->assign('entries', $list);
+
+}
+
+if ( count($class->errors) > 0 ) {
+    $error_detected = array_merge($error_detected, $class->errors);
 }
 
 /* Set template parameters and print. */
@@ -393,7 +299,10 @@ $tpl->assign('fields', $fields);
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('success_detected', $success_detected);
 if ( $className == 'Status' ) {
-    $tpl->assign('non_staff_priority', Galette\Repository\Members::NON_STAFF_MEMBERS);
+    $tpl->assign(
+        'non_staff_priority',
+        Galette\Repository\Members::NON_STAFF_MEMBERS
+    );
 }
 if ( isset($_GET['ajax']) && $_GET['ajax'] == 'true' ) {
     $tpl->display('gestion_intitule_content.tpl');

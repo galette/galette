@@ -117,9 +117,9 @@ if (defined('GALETTE_XHPROF_PATH')
 //we start a php session
 session_start();
 
-define('GALETTE_VERSION', 'v0.7.5.5');
+define('GALETTE_VERSION', 'v0.7.6');
 define('GALETTE_COMPAT_VERSION', '0.7.5');
-define('GALETTE_DB_VERSION', '0.703');
+define('GALETTE_DB_VERSION', '0.704');
 if ( !defined('GALETTE_MODE') ) {
     define('GALETTE_MODE', 'PROD'); //DEV, PROD or DEMO
 }

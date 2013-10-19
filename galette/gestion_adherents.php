@@ -240,10 +240,20 @@ $members = new Members($filters);
 
 //delete members
 if (isset($_GET['sup']) || isset($_POST['delete'])) {
+    $del = false;
     if ( isset($_GET['sup']) ) {
-        $members->removeMembers($_GET['sup']);
+        $del = $members->removeMembers($_GET['sup']);
     } else if ( isset($_POST['member_sel']) ) {
-        $members->removeMembers($_POST['member_sel']);
+        $del = $members->removeMembers($_POST['member_sel']);
+    }
+    if ( $del === false ) {
+        if ( count($members->getErrors()) > 0 ) {
+            foreach ($members->getErrors() as $error ) {
+                $error_detected[] = $error;
+            }
+        } else {
+            $error_detected[] = _T("Unable to remove selected member(s)");
+        }
     }
 }
 

@@ -160,7 +160,7 @@ class History extends Pagination
                     'An error occured cleaning history. ',
                     Analog::WARNING
                 );
-                $this->add('Arror flushing logs');
+                $this->add('Error flushing logs');
                 return false;
             }
             $this->add('Logs flushed');

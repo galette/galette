@@ -41,7 +41,7 @@ document.createElement("time");
 
 //bad hack for galette's dashboard
 $(function(){
-    $('#desktop > div > a,#subscribe,#lostpassword,#btn_lostpassword,#memberslist,#trombino,#backhome,#logout,a.#btnadd,#btnadd_small,#btncancel,#btnvalid,#btnback,#btnvalid,#btnpreview,#btnsend,#btnusers,#btnusers_small,#btnmanagers, #btnmanagers_small,#btngroups, #btnmanagedgroups,#histreset,#next,#prev,#btnlabels,#btn_membercard,#btn_edit,#btn_contrib,#btn_addcontrib').each(function(){
+    $('#desktop > div > a, #subscribe, #lostpassword, #btn_lostpassword, #memberslist, #trombino, #backhome, #logout, #btnadd, #btnadd_small, #btncancel, #btnvalid, #btnback, #btnvalid, #btnpreview, #btnsend, #btnusers, #btnusers_small, #btnmanagers, #btnmanagers_small, #btngroups, #btnmanagedgroups, #histreset, #next, #prev, #btnlabels, #btn_membercard, #btn_edit, #btn_contrib, #btn_addcontrib').each(function(){
         $(this).append($('<span class="secondimg"></span>'));
     });
 });

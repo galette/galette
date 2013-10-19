@@ -84,31 +84,19 @@ if ( isset($_POST['valid']) ) {
     $field_width = get_numeric_posted_value('field_width', null);
     $field_height = get_numeric_posted_value('field_height', null);
     $field_size = get_numeric_posted_value('field_size', null);
-    $field_repeat = get_numeric_posted_value('field_repeat', new Zend_Db_Expr('NULL'));
+    $field_repeat = get_numeric_posted_value(
+        'field_repeat',
+        new Zend_Db_Expr('NULL')
+    );
     $fixed_values = get_form_value('fixed_values', '');
 
     if ( $field_id != '' && $field_perm != '' ) {
-        //let's consider fielod is duplicated, in case of future errors
-        $duplicated = true;
-        try {
-            $select = new Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . DynamicFieldType::TABLE,
-                'COUNT(field_id)'
-            )->where('NOT field_id = ?', $field_id)
-                ->where('field_form = ?', $form_name)
-                ->where('field_name = ?', $field_name);
-            $dup = $select->query()->fetchColumn();
-            if ( !$dup > 0 ) {
-                $duplicated = false;
-            }
-        } catch (Exception $e) {
-            /** FIXME */
-            Analog::log(
-                'An error occured checking field duplicity' . $e->getMessage(),
-                Analog::ERROR
-            );
-        }
+        $duplicated = $dyn_fields->isDuplicate(
+            $zdb,
+            $form_name,
+            $field_name,
+            $field_id
+        );
 
         if ( $duplicated ) {
             $error_detected[] = _T("- Field name already used.");
