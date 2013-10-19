@@ -43,7 +43,7 @@ use Galette\Filters\MembersList as MembersList;
 
 define('GALETTE_BASE_PATH', '../');
 require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';
-if ( !$preferences->showPublicPages() ) {
+if ( !$preferences->showPublicPages($login) ) {
     //public pages are not actives
     header('location:'. GALETTE_BASE_PATH . 'index.php');
     die();

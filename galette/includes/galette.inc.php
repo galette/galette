@@ -294,7 +294,7 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
         /**
         * Load preferences
         */
-        $preferences = new Core\Preferences();
+        $preferences = new Core\Preferences($zdb);
 
         /**
         * Set the path to the current theme templates

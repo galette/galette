@@ -1233,7 +1233,7 @@ define("STOCK_FILES", "tempimages");
 
     $preferences = null;
     if ( $step=='i9' ) {
-        $preferences = new Galette\Core\Preferences(false);
+        $preferences = new Galette\Core\Preferences($zdb, false);
         $ct = new Galette\Entity\ContributionsTypes();
         $status = new Galette\Entity\Status();
         include_once '../includes/fields_defs/members_fields.php';
@@ -1383,7 +1383,7 @@ define("STOCK_FILES", "tempimages");
             }
         }
 
-        $preferences = new Galette\Core\Preferences();
+        $preferences = new Galette\Core\Preferences($zdb);
         $preferences->pref_admin_login = $_POST['install_adminlogin'];
         $preferences->pref_admin_pass = $_POST['install_adminpass'];
         $preferences->store();
