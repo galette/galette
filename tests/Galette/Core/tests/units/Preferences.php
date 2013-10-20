@@ -106,6 +106,11 @@ class Preferences extends atoum
                 $this->variable($value)->isIdenticalTo(date('Y'));
                 break;
             default:
+                if ( TYPE_DB === \Galette\Core\Db::PGSQL ) {
+                    if ( $value === 'f' ) {
+                        $value = false;
+                    }
+                }
                 $this->variable($value)->isEqualTo($expected);
                 break;
             }
@@ -140,15 +145,7 @@ class Preferences extends atoum
         $address = $this->_preferences->getPostalAdress();
 
         $this->variable($address)->isIdenticalTo($expected);
-    }
 
-    /**
-     * Test storage
-     *
-     * @return void
-     */
-    public function testPrefsStorage()
-    {
         $slogan = $this->_preferences->pref_slogan;
         $this->variable($slogan)->isEqualTo('');
 
@@ -161,6 +158,10 @@ class Preferences extends atoum
         $prefs = new \Galette\Core\Preferences($this->_zdb);
         $check_slogan = $prefs->pref_slogan;
         $this->variable($check_slogan)->isEqualTo($slogan);
+
+        //reset database value...
+        $this->_preferences->pref_slogan = '';
+        $this->_preferences->store();
     }
 
     /**
@@ -187,14 +188,19 @@ class Preferences extends atoum
      */
     public function testUpdate()
     {
-        $remove = array(
-            'pref_facebook',
-            'pref_viadeo'
-        );
-
         $del = $this->_zdb->db->delete(
             PREFIX_DB . \Galette\Core\Preferences::TABLE,
-            \Galette\Core\Preferences::PK . ' IN ("' . implode('", "', $remove) . '")'
+            $this->_zdb->db->quoteInto(
+                \Galette\Core\Preferences::PK . ' = ?',
+                'pref_facebook'
+            )
+        );
+        $del = $this->_zdb->db->delete(
+            PREFIX_DB . \Galette\Core\Preferences::TABLE,
+            $this->_zdb->db->quoteInto(
+                \Galette\Core\Preferences::PK . ' = ?',
+                'pref_viadeo'
+            )
         );
 
         $this->_preferences->load();
