@@ -125,8 +125,8 @@ class File
     public function copyTo($dest)
     {
         $res = copy(
-            $this->_dest_dir . $this->filename,
-            $dest . $this->filename
+            $this->_dest_dir . $this->_name,
+            $dest . $this->_name
         );
         if ( $res === true ) {
             $this->_dest_dir = $dest;
