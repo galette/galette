@@ -71,11 +71,15 @@ class Password
     private $_new_password;
 
     /**
-    * Default constructor
-    */
-    public function __construct()
+     * Default constructor
+     *
+     * @param boolean $clean Whether we should clean expired passwords in database
+     */
+    public function __construct($clean = true)
     {
-        $this->cleanExpired();
+        if ( $clean === true ) {
+            $this->cleanExpired();
+        }
     }
 
     /**
