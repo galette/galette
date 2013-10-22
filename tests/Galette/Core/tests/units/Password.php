@@ -84,6 +84,7 @@ class Password extends atoum
             $this->boolean($exists)->isFalse();
 
             $results[] = $random;
+            $this->array($results)->hasSize($i + 1);
         }
     }
 }
