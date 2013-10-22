@@ -39,7 +39,7 @@
                             {/if}
                         </a>
                     </th>
-                    <th class="left username_row">
+                    <th class="left small_head">
                         {_T string="Recipients"}
                     </th>
                     <th class="left">
@@ -58,7 +58,7 @@
                         {_T string="ATT"}
                     </th>
                     <th class="left right small_head">{_T string="Sent"}</th>
-                    <th></th>
+                    <th class="small_head"></th>
                 </tr>
             </thead>
             <tfoot>
