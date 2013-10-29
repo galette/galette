@@ -128,7 +128,7 @@ class CsvOut extends Csv
         foreach ( $this->_rs as $row ) {
             $elts = array();
 
-            if ( is_array($row) > 0 ) {
+            if ( is_array($row) || is_object($row) ) {
                 foreach ($row as $k => $v) {
                     $elts[] = $this->quote . str_replace(
                         $this->quote, $this->escaped, $v

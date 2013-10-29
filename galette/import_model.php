@@ -53,12 +53,14 @@ if ( !$login->isAdmin() ) {
 }
 
 $model = new ImportModel();
+$model->load();
 
 if ( isset($_POST['fields']) ) {
     $model->setFields($_POST['fields']);
     $res = $model->store($zdb);
     if ( $res === true ) {
         $success_detected[] = _T("Import model has been successfully stored :)");
+        $model->load();
     } else {
         $error_detected[] = _T("Import model has not been stored :(");
     }
@@ -66,6 +68,7 @@ if ( isset($_POST['fields']) ) {
 
 if ( isset($_GET['remove']) ) {
     $model->remove($zdb);
+    $model->load();
 }
 
 $csv = new CsvIn();
@@ -75,7 +78,6 @@ $csv = new CsvIn();
  * - set fields that must be part of import, and visually disable them in the list
  */
 
-$model->load();
 $fields = $model->getFields();
 $defaults = $csv->getDefaultFields();
 $defaults_loaded = false;

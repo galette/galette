@@ -210,7 +210,7 @@ class Adherent
             } else {
                 $this->_active = true;
                 $this->_language = $i18n->getID();
-                $this->_creation_date = date(_T("Y-m-d"));
+                $this->_creation_date = date("Y-m-d");
                 $this->_status = Status::DEFAULT_STATUS;
                 $this->_title = null;
                 $this->_gender = self::NC;
