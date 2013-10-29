@@ -1,7 +1,12 @@
 Changes
 -------
 
-0.7.5.5 -> 0.7.5.6
+0.7.6 -> 0.7.6.1
+- Wrong member creation date
+- Import model cannot be changed
+- Fix memberlist CSV export
+
+0.7.5.5 -> 0.7.6
 - configurable CSV imports
 - filter on non members
 - PostgreSQL >= 9.1

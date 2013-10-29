@@ -156,7 +156,7 @@ class ImportModel
                     );
                 }
             } else {
-                //we're editing an existing group
+                //we're editing an existing model
                 $edit = $zdb->db->update(
                     PREFIX_DB . self::TABLE,
                     $values,
