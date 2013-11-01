@@ -165,6 +165,9 @@
                             <option value="{$field@key}"{if $fs.field eq $field@key} selected="selected"{/if}>{$field.label}</option>
     {/foreach}
     {foreach $dynamic_fields as $field}
+        {if $field.field_type eq constant('Galette\Entity\DynamicFields::SEPARATOR')}
+	    {continue}
+        {/if}
         {assign var=fid value=$field.field_id}
         {if $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}
             {assign var=rid value="dync_$fid"}
