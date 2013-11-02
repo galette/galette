@@ -148,7 +148,7 @@ class Charts
             if ( $r->priority >= Members::NON_STAFF_MEMBERS ) {
                 $chart[] = array(
                     _T($r->status),
-                    $r->cnt
+                    (int)$r->cnt
                 );
             } else {
                 $staff[1] += $r->cnt;
@@ -179,7 +179,7 @@ class Charts
         $res = $select->query()->fetchColumn();
         $chart[] = array(
             _T("Due free"),
-            $res
+            (int)$res
         );
 
         $select = new \Zend_Db_Select($zdb->db);
@@ -193,7 +193,7 @@ class Charts
         $res = $select->query()->fetchColumn();
         $chart[] = array(
             _T("Never contribute"),
-            $res
+            (int)$res
         );
 
         $soon_date = new \DateTime();
@@ -212,7 +212,7 @@ class Charts
         $res = $select->query()->fetchColumn();
         $chart[] = array(
             _T("Impending due dates"),
-            $res
+            (int)$res
         );
 
         $select = new \Zend_Db_Select($zdb->db);
@@ -226,7 +226,7 @@ class Charts
         $res = $select->query()->fetchColumn();
         $chart[] = array(
             _T("Up to date"),
-            $res
+            (int)$res
         );
 
         $select = new \Zend_Db_Select($zdb->db);
@@ -240,7 +240,7 @@ class Charts
         $res = $select->query()->fetchColumn();
         $chart[] = array(
             _T("Late"),
-            $res
+            (int)$res
         );
 
         $this->_charts[self::MEMBERS_STATEDUE_PIE] = json_encode($chart);
@@ -290,11 +290,11 @@ class Charts
         $chart = array(
             array(
                 _T("Individuals"),
-                $res[0]->cnt
+                (int)$res[0]->cnt
             ),
             array(
                 _T("Companies"),
-                $res[1]->cnt
+                (int)$res[1]->cnt
             )
         );
         $this->_charts[self::COMPANIES_OR_NOT] = json_encode($chart);
@@ -335,7 +335,7 @@ class Charts
         foreach ( $res as $r ) {
             $chart[] = array(
                 _T($r->label),
-                $r->cnt
+                (int)$r->cnt
             );
         }
         $this->_charts[self::CONTRIBS_TYPES_PIE] = json_encode($chart);
