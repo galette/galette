@@ -86,7 +86,7 @@
                         {/if}
                     </td>
                     <td class="center nowrap actions_row">
-                        <a id ="showdetails" href="ajax_mailing_preview.php?id={$log.mailing_id}">
+                        <a class="showdetails" href="ajax_mailing_preview.php?id={$log.mailing_id}">
                             <img
                                 src="{$template_subdir}images/icon-preview.png"
                                 alt="{_T string="Show mailing %s details" pattern="/%s/" replace=$log.mailing_id}"
@@ -126,7 +126,7 @@
             });
 
             {* Preview popup *}
-            $('#showdetails').click(function(){
+            $('.showdetails').click(function(){
                 $.ajax({
                     url: $(this).attr('href'),
                     type: "POST",
