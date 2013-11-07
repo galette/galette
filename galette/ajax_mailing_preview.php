@@ -58,7 +58,7 @@ $ajax = ( isset($_POST['ajax']) && $_POST['ajax'] == 'true' ) ? true : false;
 $mailing = null;
 if ( isset($_GET['id']) && is_numeric($_GET['id']) ) {
     $mailing = new Mailing(null);
-    MailingHistory::loadFrom((int)$_GET['id'], $mailing);
+    MailingHistory::loadFrom((int)$_GET['id'], $mailing, false);
     $tpl->assign('attachments_files', $mailing->attachments);
 } else {
     $mailing = unserialize($session['mailing']);

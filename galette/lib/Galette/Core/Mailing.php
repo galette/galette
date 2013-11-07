@@ -137,11 +137,13 @@ class Mailing extends GaletteMail
     /**
      * Loads a mailing from history
      *
-     * @param ResultSet $rs Mailing entry
+     * @param ResultSet $rs  Mailing entry
+     * @param boolean   $new True if we create a 'new' mailing,
+     *                       false otherwise (from preview for example)
      *
      * @return boolean
      */
-    public function loadFromHistory($rs)
+    public function loadFromHistory($rs, $new = true)
     {
         $orig_recipients = unserialize($rs->mailing_recipients);
 
@@ -154,10 +156,12 @@ class Mailing extends GaletteMail
         $this->subject = $rs->mailing_subject;
         $this->message = $rs->mailing_body;
         //if mailing has already been sent, generate a new id and copy attachments
-        if ( $rs->mailing_sent ) {
+        if ( $rs->mailing_sent && $new ) {
             $this->_generateNewId();
             $this->_copyAttachments($rs->mailing_id);
         } else {
+            $this->_id = $rs->mailing_id;
+            $this->_loadAttachments();
             $this->_history_id = $rs->mailing_id;
         }
     }

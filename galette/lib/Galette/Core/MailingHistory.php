@@ -195,10 +195,12 @@ class MailingHistory extends History
      *
      * @param integaer       $id      Model identifier
      * @param GaletteMailing $mailing Mailing object
+     * @param boolean        $new     True if we create a 'new' mailing,
+     *                                false otherwise (from preview for example)
      *
      * @return boolean
      */
-    public static function loadFrom($id, $mailing)
+    public static function loadFrom($id, $mailing, $new = true)
     {
         global $zdb;
 
@@ -208,7 +210,7 @@ class MailingHistory extends History
                 ->where('mailing_id = ?', $id);
             $res = $select->query()->fetch();
 
-            return $mailing->loadFromHistory($res);
+            return $mailing->loadFromHistory($res, $new);
         } catch (\Exception $e) {
             Analog::log(
                 'Unable to load mailing model #' . $id . ' | ' .
