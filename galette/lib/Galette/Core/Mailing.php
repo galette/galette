@@ -108,6 +108,7 @@ class Mailing extends GaletteMail
     {
         $pass = new Password();
         $this->_id = $pass->makeRandomPassword(30);
+        $this->_tmp_path = GALETTE_ATTACHMENTS_PATH . '/' . $this->_id;
     }
 
     /**
@@ -259,8 +260,6 @@ class Mailing extends GaletteMail
      */
     public function store($files)
     {
-        $this->_tmp_path = GALETTE_ATTACHMENTS_PATH . '/' . $this->_id;
-
         if ( !file_exists($this->_tmp_path) ) {
             //directory does not exists, create it
             mkdir($this->_tmp_path);
