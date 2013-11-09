@@ -342,7 +342,7 @@ class File
             $error = preg_replace(
                 '|%d|',
                 $this->_maxlenght,
-                _T("File is too big. Maximum allowed size is %d")
+                _T("File is too big. Maximum allowed size is %dKo")
             );
             break;
         case self::MIME_NOT_ALLOWED:
