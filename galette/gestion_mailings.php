@@ -73,7 +73,7 @@ if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
 }
 
 if ( isset($_GET['tri']) ) {
-    $mailhist->tri = $_GET['tri'];
+    $mailhist->orderby = $_GET['tri'];
 }
 
 $history_list = array();
