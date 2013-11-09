@@ -189,6 +189,8 @@ class Mailing extends GaletteMail
                     )
                 );
             } else {
+                //create directory
+                mkdir($dest_dir);
                 //copy attachments from source mailing and populate attachments
                 $this->attachments = array();
                 $files = glob($source_dir . '*.*');
