@@ -161,6 +161,7 @@ class Mailing extends GaletteMail
             $this->_generateNewId();
             $this->_copyAttachments($rs->mailing_id);
         } else {
+            $this->_tmp_path = null;
             $this->_id = $rs->mailing_id;
             $this->_loadAttachments();
             $this->_history_id = $rs->mailing_id;
