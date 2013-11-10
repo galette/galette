@@ -1532,6 +1532,6 @@ case 'u10':
                 </ol>
             </footer>
         </section>
-        <a id="copyright" href="http://galette.tuxfamily.org/">Galette <?php echo GALETTE_VERSION; ?></a>
+        <a id="copyright" href="http://galette.eu/">Galette <?php echo GALETTE_VERSION; ?></a>
     </body>
 </html>
