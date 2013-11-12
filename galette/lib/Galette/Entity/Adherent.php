@@ -1007,9 +1007,24 @@ class Adherent
                         break;
                     case 'id_statut':
                         try {
+                            //check if status exists
+                            $select = new \Zend_Db_Select($zdb->db);
+                            $select->from(
+                                PREFIX_DB . Status::TABLE
+                            )->where(Status::PK . '= ?', $value);
+
+                            $result = $select->query()->fetchObject();
+                            if ( $result === false ) {
+                                $errors[] = str_replace(
+                                    '%id',
+                                    $value,
+                                    _T("Status #%id does not exists in database.")
+                                );
+                                break;
+                            }
+
                             //check for status unicity
                             $select = new \Zend_Db_Select($zdb->db);
-
                             $select->from(
                                 array('a' => PREFIX_DB . self::TABLE)
                             )->join(
