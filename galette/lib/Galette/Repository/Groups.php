@@ -40,6 +40,7 @@ namespace Galette\Repository;
 use Analog\Analog as Analog;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Expression;
 use Galette\Entity\Group as Group;
 use Galette\Entity\Adherent as Adherent;
 
@@ -123,21 +124,23 @@ class Groups
     {
         global $zdb, $login;
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
             $select->from(
                 array('a' => PREFIX_DB . Group::TABLE)
-            )->joinLeft(
+            )->join(
                 array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
                 'a.' . Group::PK . '=b.' . Group::PK,
-                array('members' => new \Zend_Db_Expr('count(b.' . Group::PK . ')'))
+                array('members' => new Expression('count(b.' . Group::PK . ')')),
+                $select::JOIN_LEFT
             );
 
             if ( !$login->isAdmin() && !$login->isStaff() && $full === true ) {
                 $select->join(
                     array('c' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
                     'a.' . Group::PK . '=c.' . Group::PK,
-                    array()
-                )->where('c.' . Adherent::PK . ' = ?', $login->id);
+                    ''
+                )->where('c.' . Adherent::PK . ' = ' . $login->id);
             }
 
             if ( $full !== true ) {
@@ -151,7 +154,13 @@ class Groups
                 ->order('a.group_name ASC');
 
             $groups = array();
-            $res = $select->query()->fetchAll();
+
+            $query_string = $sql->getSqlStringForSqlObject($select);
+            $res = $zdb->db->query(
+                $query_string,
+                Adapter::QUERY_MODE_EXECUTE
+            );
+
             foreach ( $res as $row ) {
                 $groups[] = new Group($row);
             }
@@ -162,7 +171,7 @@ class Groups
                 Analog::WARNING
             );
             Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
+                'Query was: ' . $query_string . ' ' . $e->getTraceAsString(),
                 Analog::ERROR
             );
         }

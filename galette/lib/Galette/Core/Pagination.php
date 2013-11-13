@@ -169,8 +169,8 @@ abstract class Pagination
      */
     protected function setLimits($select)
     {
-        $select->limit(
-            $this->show,
+        $select->limit($this->show);
+        $select->offset(
             ($this->current_page - 1) * $this->show
         );
     }

@@ -38,6 +38,8 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Adapter\Adapter;
 
 /**
  * Title
@@ -90,18 +92,25 @@ class Title
     {
         global $zdb;
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
             $select->limit(1)->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . ' = ?', $id);
+                ->where(self::PK . ' = ' . $id);
 
-            $res = $select->query()->fetchAll();
+            $query_string = $sql->getSqlStringForSqlObject($select);
+            $results = $zdb->db->query(
+                $query_string,
+                Adapter::QUERY_MODE_EXECUTE
+            );
+            $res = $results->current();
+
             $this->_id = $id;
-            $this->_short = $res[0]->short_label;
-            $this->_long = $res[0]->long_label;
+            $this->_short = $res->short_label;
+            $this->_long = $res->long_label;
         } catch ( \Exception $e ) {
             Analog::log(
                 'An error occured loading title #' . $id . "Message:\n" .
-                $e->getMessage() . "\nQuery was:\n" . $select->__toString(),
+                $e->getMessage() . "\nQuery was:\n" . $query_string,
                 Analog::ERROR
             );
         }

@@ -40,6 +40,10 @@ namespace Galette\Repository;
 use Galette\Entity\DynamicFields;
 
 use Analog\Analog as Analog;
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Expression;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\Contribution as Contribution;
 use Galette\Entity\Transaction as Transaction;
@@ -225,7 +229,11 @@ class Members
             if ( $limit === true ) {
                 $this->_filters->setLimit($select);
             }
-            $this->_filters->query = $select->__toString();
+
+            $sql = new Sql($zdb->db);
+            $query_string = $sql->getSqlStringForSqlObject($select);
+
+            $this->_filters->query = $query_string;
 
             Analog::log(
                 "The following query will be executed: \n" .
@@ -233,9 +241,13 @@ class Members
                 Analog::DEBUG
             );
 
+            $rows = $zdb->db->query(
+                $query_string,
+                Adapter::QUERY_MODE_EXECUTE
+            );
+
             $members = array();
             if ( $as_members ) {
-                $rows = $select->query()->fetchAll();
                 $deps = array(
                     'picture'   => false,
                     'groups'    => false
@@ -244,7 +256,6 @@ class Members
                     $members[] = new Adherent($row, $deps);
                 }
             } else {
-                $rows = $select->query()->fetchAll();
                 $members = $rows;
             }
             return $members;
@@ -288,7 +299,7 @@ class Members
                 $select->from(
                     PREFIX_DB . self::TABLE,
                     array(self::PK, 'nom_adh', 'prenom_adh')
-                )->where(self::PK . ' IN (?)', $list);
+                )->where->in(self::PK, $list);
 
                 $members = $select->query()->fetchAll();
                 $infos = null;
@@ -500,7 +511,7 @@ class Members
                 false,
                 false
             );
-            $select->where('a.' . self::PK . ' IN (?)', $ids);
+            $select->where->in('a.' . self::PK, $ids);
             if ( $orderby != null && count($orderby) > 0 ) {
                 if (is_array($orderby)) {
                     foreach ( $orderby as $o ) {
@@ -511,15 +522,21 @@ class Members
                 }
             }
 
+            $sql = new Sql($zdb->db);
+            $query_string = $sql->getSqlStringForSqlObject($select);
+
             Analog::log(
                 "The following query will be executed: \n" .
-                $select->__toString(),
+                $query_string,
                 Analog::DEBUG
             );
 
-            $result = $select->query();
+            $res = $zdb->db->query(
+                $query_string,
+                Adapter::QUERY_MODE_EXECUTE
+            );
+
             $members = array();
-            $res = $result->fetchAll();
             foreach ( $res as $o ) {
                 $deps = array(
                     'picture'   => $with_photos,
@@ -539,7 +556,7 @@ class Members
                 Analog::WARNING
             );
             Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                'Query was: ' . $query_string . ' ' . $e->__toString(),
                 Analog::ERROR
             );
         }
@@ -565,8 +582,10 @@ class Members
                             ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
                             : $fields) : (array)'*';
 
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->distinct()->from(
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
+            $select->quantifier('DISTINCT');
+            $select->from(
                 array('a' => PREFIX_DB . self::TABLE),
                 $fieldsList
             );
@@ -576,30 +595,30 @@ class Members
             case self::SHOW_LIST:
             case self::SHOW_ARRAY_LIST:
                 $select->join(
-                    array('p' => PREFIX_DB . Status::TABLE, Status::PK),
+                    array('p' => PREFIX_DB . Status::TABLE),
                     'a.' . Status::PK . '=p.' . Status::PK
                 );
                 break;
             case self::SHOW_EXPORT:
                 //basically the same as above, but without any fields
                 $select->join(
-                    array('p' => PREFIX_DB . Status::TABLE, Status::PK),
+                    array('p' => PREFIX_DB . Status::TABLE),
                     'a.' . Status::PK . '=p.' . Status::PK,
-                    array()
+                    ''
                 );
                 break;
             case self::SHOW_MANAGED:
                 $select->join(
-                    array('p' => PREFIX_DB . Status::TABLE, Status::PK),
+                    array('p' => PREFIX_DB . Status::TABLE),
                     'a.' . Status::PK . '=p.' . Status::PK
                 )->join(
                     array('gr' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
                     'a.' . Adherent::PK . '=gr.' . Adherent::PK,
-                    array()
+                    ''
                 )->join(
                     array('m' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
                     'gr.' . Group::PK . '=m.' . Group::PK,
-                    array()
+                    ''
                 )->where('m.' . Adherent::PK . ' = ?', $login->id);
             case self::SHOW_PUBLIC_LIST:
                 if ( $photos ) {
@@ -615,10 +634,11 @@ class Members
             if ( $this->_filters instanceof AdvancedMembersList
                 && $this->_filters->withinContributions()
             ) {
-                $select->joinLeft(
+                $select->join(
                     array('ct' => PREFIX_DB . Contribution::TABLE),
                     'ct.' . self::PK . '=a.' . self::PK,
-                    array()
+                    '',
+                    $select::JOIN_LEFT
                 );
             }
 
@@ -669,18 +689,20 @@ class Members
             }
 
             if ( $hasDf === true || $hasCdf === true ) {
-                $select->joinLeft(
+                $select->join(
                     array('df' => PREFIX_DB . DynamicFields::TABLE),
                     'df.item_id=a.' . self::PK,
-                    array()
+                    '',
+                    $select::JOIN_LEFT
                 );
             }
 
             if ( $hasDfc === true || $hasCdfc === true ) {
-                $select->joinLeft(
+                $select->join(
                     array('dfc' => PREFIX_DB . DynamicFields::TABLE),
                     'dfc.item_id=ct.' . Contribution::PK,
-                    array()
+                    '',
+                    $select::JOIN_LEFT
                 );
             }
 
@@ -695,10 +717,11 @@ class Members
                         'cdf' . $cdf . '.',
                         $cdf_field
                     );
-                    $select->joinLeft(
+                    $select->join(
                         array('cdf' . $cdf => DynamicFields::getFixedValuesTableName($cdf)),
                         $rcdf_field . '=df.field_val',
-                        array()
+                        '',
+                        $select::JOIN_LEFT
                     );
                 }
 
@@ -712,10 +735,11 @@ class Members
                         'cdfc' . $cdf . '.',
                         $cdf_field
                     );
-                    $select->joinLeft(
+                    $select->join(
                         array('cdfc' . $cdf => DynamicFields::getFixedValuesTableName($cdf)),
                         $rcdf_field . '=dfc.field_val',
-                        array()
+                        '',
+                        $select::JOIN_LEFT
                     );
                 }
             }
@@ -772,24 +796,30 @@ class Members
 
         try {
             $countSelect = clone $select;
-            $countSelect->reset(\Zend_Db_Select::COLUMNS);
-            $countSelect->reset(\Zend_Db_Select::ORDER);
-            $countSelect->reset(\Zend_Db_Select::HAVING);
+            $countSelect->reset(Select::COLUMNS);
+            $countSelect->reset(Select::ORDER);
+            $countSelect->reset(Select::HAVING);
             $countSelect->columns(
-                'count(DISTINCT a.' . self::PK . ') AS ' . self::PK
+                array(
+                    'count' => new Expression('count(DISTINCT a.' . self::PK . ')')
+                )
             );
 
-            $have = $select->getPart(\Zend_Db_Select::HAVING);
-            if ( is_array($have) && count($have) > 0 ) {
-                foreach ( $have as $h ) {
+            $have = $select->having;
+            if ( $have->count() > 0 ) {
+                foreach ( $have->getPredicates() as $h ) {
                     $countSelect->where($h);
                 }
             }
 
-            $result = $countSelect->query()->fetch();
+            $sql = new Sql($zdb->db);
+            $query_string = $sql->getSqlStringForSqlObject($countSelect);
+            $result = $zdb->db->query(
+                $query_string,
+                Adapter::QUERY_MODE_EXECUTE
+            );
 
-            $k = self::PK;
-            $this->_count = $result->$k;
+            $this->_count = $result->current()->count;
             if ( isset($this->_filters) && $this->_count > 0 ) {
                 $this->_filters->setCounter($this->_count);
             }
@@ -799,7 +829,7 @@ class Members
                 Analog::WARNING
             );
             Analog::log(
-                'Count members query was: ' . $countSelect->__toString() .
+                'Count members query was: ' . $query_string .
                 ' ' . $e->__toString(),
                 Analog::ERROR
             );
@@ -915,87 +945,70 @@ class Members
                     }
                     //$sep = ( TYPE_DB === 'pgsql' ) ? " || ' ' || " : ', " ", ';
                     $select->where(
-                        '(' . $zdb->db->quoteInto(
-                            $pre . 'LOWER(nom_adh)' . $sep .
-                            'LOWER(prenom_adh)' . $sep .
-                            'LOWER(pseudo_adh)' . $post  . ' LIKE ?',
-                            strtolower($token)
-                        ) . ' OR ' .
-                        $zdb->db->quoteInto(
-                            $pre . 'LOWER(prenom_adh)' . $sep .
-                            'LOWER(nom_adh)' . $sep .
-                            'LOWER(pseudo_adh)' . $post  . ' LIKE ?',
-                            strtolower($token)
-                        ) . ')'
+                        '(' .
+                        $pre . 'LOWER(nom_adh)' . $sep .
+                        'LOWER(prenom_adh)' . $sep .
+                        'LOWER(pseudo_adh)' . $post  . ' LIKE "' .
+                        strtolower($token)
+                        . '" OR ' .
+                        $pre . 'LOWER(prenom_adh)' . $sep .
+                        'LOWER(nom_adh)' . $sep .
+                        'LOWER(pseudo_adh)' . $post  . ' LIKE "' .
+                        strtolower($token)
+                        . '")'
                     );
                     break;
                 case self::FILTER_COMPANY_NAME:
                     $select->where(
-                        $zdb->db->quoteInto(
-                            'LOWER(societe_adh) LIKE ?',
-                            strtolower($token)
-                        )
+                        'LOWER(societe_adh) LIKE "' .
+                        strtolower($token) . '"'
                     );
                     break;
                 case self::FILTER_ADRESS:
                     $select->where(
-                        '(' . $zdb->db->quoteInto(
-                            'LOWER(adresse_adh) LIKE ?',
-                            strtolower($token)
-                        ) . ' OR ' . $zdb->db->quoteInto(
-                            'LOWER(adresse2_adh) LIKE ?',
-                            strtolower($token)
-                        ) . ' OR ' . $zdb->db->quoteInto(
-                            'cp_adh LIKE ?',
-                            $token
-                        ) . ' OR ' . $zdb->db->quoteInto(
-                            'LOWER(ville_adh) LIKE ?',
-                            strtolower($token)
-                        ) . ' OR ' . $zdb->db->quoteInto(
-                            'LOWER(pays_adh) LIKE ?',
-                            strtolower($token)
-                        ) . ')'
+                        '(' .
+                        'LOWER(adresse_adh) LIKE "' . strtolower($token)
+                        . '" OR ' .
+                        'LOWER(adresse2_adh) LIKE "' . strtolower($token)
+                        . '" OR ' .
+                        'cp_adh LIKE "' . $token
+                        . '" OR ' .
+                        'LOWER(ville_adh) LIKE "' . strtolower($token)
+                        . '" OR ' .
+                        'LOWER(pays_adh) LIKE "' . strtolower($token)
+                        . '")'
                     );
                     break;
                 case self::FILTER_MAIL:
                     $select->where(
-                        '(' . $zdb->db->quoteInto(
-                            'LOWER(email_adh) LIKE ?',
-                            strtolower($token)
-                        ) . ' OR ' . $zdb->db->quoteInto(
-                            'LOWER(url_adh) LIKE ?',
-                            strtolower($token)
-                        ) . ' OR ' . $zdb->db->quoteInto(
-                            'LOWER(msn_adh) LIKE ?',
-                            strtolower($token)
-                        ) . ' OR ' . $zdb->db->quoteInto(
-                            'LOWER(icq_adh) LIKE ?',
-                            strtolower($token)
-                        ) . ' OR ' . $zdb->db->quoteInto(
-                            'LOWER(jabber_adh) LIKE ?',
-                            strtolower($token)
-                        ) . ')'
+                        '(' .
+                        'LOWER(email_adh) LIKE "' . strtolower($token)
+                        . '" OR ' .
+                        'LOWER(url_adh) LIKE "' . strtolower($token)
+                        . '" OR ' .
+                        'LOWER(msn_adh) LIKE "' . strtolower($token)
+                        . '" OR ' .
+                        'LOWER(icq_adh) LIKE "' . strtolower($token)
+                        . '" OR ' .
+                        'LOWER(jabber_adh) LIKE "' . strtolower($token)
+                        . '")'
                     );
                     break;
                 case self::FILTER_JOB:
                     $select->where(
-                        'LOWER(prof_adh) LIKE ?',
-                        strtolower($token)
+                        'LOWER(prof_adh) LIKE "' .
+                        strtolower($token) . '"'
                     );
                     break;
                 case self::FILTER_INFOS:
                     $more = '';
                     if ( $login->isAdmin() || $login->isStaff() ) {
-                        $more = ' OR ' . $zdb->db->quoteInto(
-                            'LOWER(info_adh) LIKE ?',
-                            $token
-                        );
+                        $more = ' OR LOWER(info_adh) LIKE "' . $token . '"';
                     }
                     $select->where(
-                        '(' . $zdb->db->quoteInto(
-                            'LOWER(info_public_adh) LIKE ?',
-                            strtolower($token)
-                        ) . $more . ')'
+                        '(LOWER(info_public_adh) LIKE "' .
+                        strtolower($token) . '"'
+                        . $more . ')'
                     );
                     break;
                 }
@@ -1021,10 +1034,8 @@ class Members
                     break;
                 case self::MEMBERSHIP_UP2DATE:
                     $select->where(
-                        '(' . $zdb->db->quoteInto(
-                            'date_echeance > ?',
-                            date('Y-m-d', time())
-                        ) . ' OR bool_exempt_adh=true)'
+                        '(' . 'date_echeance > ' . date('Y-m-d', time())
+                        . ' OR bool_exempt_adh=true)'
                     );
                     break;
                 case self::MEMBERSHIP_NEVER:
@@ -1055,12 +1066,16 @@ class Members
             }
 
             if ( $this->_filters->group_filter ) {
-                $select->joinLeft(
-                    array('g' => PREFIX_DB . Group::GROUPSUSERS_TABLE, Adherent::PK),
-                    'a.' . Adherent::PK . '=g.' . Adherent::PK
-                )->joinLeft(
+                $select->join(
+                    array('g' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                    'a.' . Adherent::PK . '=g.' . Adherent::PK,
+                    array('*'),
+                    $select::JOIN_LEFT
+                )->join(
                     array('gs' => PREFIX_DB . Group::TABLE),
-                    'gs.' . Group::PK . '=g.' . Group::PK
+                    'gs.' . Group::PK . '=g.' . Group::PK,
+                    array('*'),
+                    $select::JOIN_LEFT
                 )->where(
                     'g.' . Group::PK . ' = ' . $this->_filters->group_filter .
                     ' OR gs.parent_group = NULL OR gs.parent_group = ' .
@@ -1119,11 +1134,8 @@ class Members
                 }
 
                 if ( $this->_filters->status ) {
-                    $select->where(
-                        'a.id_statut IN (' . implode(
-                            ',',
-                            $this->_filters->status
-                        ) . ')'
+                    $select->where->in(
+                        'a.id_statut', $this->_filters->status
                     );
                 }
 
@@ -1208,20 +1220,16 @@ class Members
                 }
 
                 if ( $this->_filters->contributions_types ) {
-                    $select->where(
-                        'ct.id_type_cotis IN (' . implode(
-                            ',',
-                            $this->_filters->contributions_types
-                        ) . ')'
+                    $select->where->in(
+                        'ct.id_type_cotis',
+                        $this->_filters->contributions_types
                     );
                 }
 
                 if ( $this->_filters->payments_types ) {
-                    $select->where(
-                        'ct.type_paiement_cotis IN (' . implode(
-                            ',',
-                            $this->_filters->payments_types
-                        ) . ')'
+                    $select->where->in(
+                        'ct.type_paiement_cotis',
+                        $this->_filters->payments_types
                     );
                 }
 
@@ -1249,15 +1257,11 @@ class Members
                         }
 
                         if ( is_array($cd) ) {
-                            $qry .= $prefix . $field . ' IN (\'' . implode(
-                                '\', \'',
-                                $cd
-                            ) . '\')';
-                            $select->where($qry);
+                            $select->where->in($prefix . $field, $cd);
                         } else {
                             $qry .= 'LOWER(' . $prefix . $field . ') ' .
-                                $qop  . ' ?' ;
-                            $select->where($qry, '%' .strtolower($cd) . '%');
+                                $qop  . ' ' ;
+                            $select->where($qry . '%' .strtolower($cd) . '%');
                         }
                     }
                 }

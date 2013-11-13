@@ -38,6 +38,8 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Sql;
 
 /**
  * Entitled handling. Manage:
@@ -112,7 +114,8 @@ abstract class Entitled
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
             $select->from(PREFIX_DB . $this->_table)
                 ->where($this->_fpk . ' = ?', $id);
 
@@ -216,7 +219,8 @@ abstract class Entitled
         $list = array();
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
             $fields = array($this->_fpk, $this->_flabel);
             if ( $this->order_field !== false
                 && $this->order_field !== $this->_fpk
@@ -224,7 +228,8 @@ abstract class Entitled
             ) {
                 $fields[] = $this->order_field;
             }
-            $select->distinct()->from(
+            $select->quantifier('DISTINCT');
+            $select->from(
                 PREFIX_DB . $this->_table,
                 $fields
             );
@@ -243,7 +248,11 @@ abstract class Entitled
                 }
             }
 
-            $result = $select->query()->fetchAll();
+            $query_string = $sql->getSqlStringForSqlObject($select);
+            $result = $zdb->db->query(
+                $query_string,
+                Adapter::QUERY_MODE_EXECUTE
+            );
             foreach ( $result as $r ) {
                 $fpk = $this->_fpk;
                 $flabel = $this->_flabel;
@@ -274,7 +283,8 @@ abstract class Entitled
         $list = array();
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
             $select->from(PREFIX_DB . $this->_table);
             if ( $this->order_field !== false ) {
                 $select->order(array($this->order_field, $this->_fpk));
@@ -332,7 +342,8 @@ abstract class Entitled
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
             $select->from(array(PREFIX_DB . $this->_table));
             $select->where($this->_fpk . '=' . $id);
 
@@ -389,7 +400,8 @@ abstract class Entitled
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
             $select->from(PREFIX_DB . $this->_table, $this->_fpk)
                 ->where($this->_flabel . ' = ?', $label);
             return $result = $select->query()->fetchColumn();
@@ -433,6 +445,9 @@ abstract class Entitled
                 $this->_fthird  => $extra
             );
 
+            /*$sql = new Sql($zdb->db);
+            $insert = $sql->insert(PREFIX_DB . $this->_table);
+            $insert->values($values);*/
             $ret = $zdb->db->insert(
                 PREFIX_DB . $this->_table,
                 $values
@@ -499,11 +514,11 @@ abstract class Entitled
                 $field => $value
             );
 
-            $zdb->db->update(
-                PREFIX_DB . $this->_table,
-                $values,
-                $this->_fpk . ' = ' . $id
-            );
+            $sql = new Sql($zdb->db);
+            $update = $sql->update();
+
+            $update->set($values);
+            $update->where($this->_fpk . ' = ' . $id);
 
             Analog::log(
                 $this->getType() . ' ' . $id . ' updated successfully.',
@@ -544,10 +559,10 @@ abstract class Entitled
         }
 
         try {
-            $zdb->db->delete(
-                PREFIX_DB . $this->_table,
-                $this->_fpk . ' = ' . $id
-            );
+            $sql = new Sql($zdb->db);
+            $del = $sql->delete(PREFIX_DB . $this->_table);
+            $del->where($this->_fpk . ' = ' . $id);
+
             Analog::log(
                 $this->getType() . ' ' . $id . ' deleted successfully.',
                 Analog::INFO
@@ -576,7 +591,8 @@ abstract class Entitled
 
         // Check if it's used.
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
             $select->from(PREFIX_DB . $this->_used)
                 ->where($this->_fpk . ' = ?', $id);
             if ( $select->query()->fetch() !== false ) {
