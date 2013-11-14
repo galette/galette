@@ -131,17 +131,17 @@ if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
     $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
     //print_r($ids);
     foreach ( $ids as $k=>$m ) {
-        if ( $m->id_adh == $member->id ) {
+        if ( $m['id_adh'] == $member->id ) {
             $navigate = array(
-                'cur'  => $m->id_adh,
+                'cur'  => $m['id_adh'],
                 'count' => count($ids),
                 'pos' => $k+1
             );
             if ( $k > 0 ) {
-                $navigate['prev'] = $ids[$k-1]->id_adh;
+                $navigate['prev'] = $ids[$k-1]['id_adh'];
             }
             if ( $k < count($ids)-1 ) {
-                $navigate['next'] = $ids[$k+1]->id_adh;
+                $navigate['next'] = $ids[$k+1]['id_adh'];
             }
             break;
         }
