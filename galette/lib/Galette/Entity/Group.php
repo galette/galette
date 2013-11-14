@@ -38,7 +38,6 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
-use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
 
 /**
@@ -109,14 +108,10 @@ class Group
             $select->from(PREFIX_DB . self::TABLE)
                 ->where(array(self::PK . '=?' => $id));
 
-            $query_string = $sql->getSqlStringForSqlObject($select);
-            $result = $zdb->db->query(
-                $query_string,
-                Adapter::QUERY_MODE_EXECUTE
-            );
+            $results = $zdb->execute($select);
 
-            if ( $result->count() > 0 ) {
-                $this->_loadFromRS($result->current());
+            if ( $results->count() > 0 ) {
+                $this->_loadFromRS($results->current());
                 return true;
             } else {
                 return false;
@@ -125,10 +120,6 @@ class Group
             Analog::log(
                 'Cannot load group form id `' . $id . '` | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $query_string . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }

@@ -38,6 +38,7 @@ namespace Galette\Core;
 
 use Analog\Analog as Analog;
 use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Sql;
 
 /**
  * Zend_Db wrapper
@@ -60,6 +61,7 @@ class Db
     private $_db;
     private $_error;
     private $_type_db;
+    private $_sql;
 
     const MYSQL = 'mysql';
     const PGSQL = 'pgsql';
@@ -127,6 +129,7 @@ class Db
             }
 
             $this->_db = new Adapter($_options);
+            $this->_sql = new Sql($this->_db);
 
             Analog::log(
                 '[Db] Database connection was successfull!',
@@ -674,6 +677,49 @@ class Db
     }
 
     /**
+     * Delete a row
+     *
+     * @param string $table Table name, without prefix
+     *
+     * @return int
+     */
+    public function delete($table)
+    {
+        return $this->_sql->delete(
+            PREFIX_DB . $table
+        );
+    }
+
+    /**
+     * Execture query string
+     *
+     * @param SqlInterface $sql SQL object
+     *
+     * @return Stmt
+     */
+    public function execute($sql)
+    {
+        try {
+            $query_string = $this->_sql->getSqlStringForSqlObject($sql);
+            $this->_last_query = $query_string;
+            Analog::log(
+                'Executing query: ' . $query_string,
+                Analog::DEBUG
+            );
+            return $this->_db->query(
+                $query_string,
+                Adapter::QUERY_MODE_EXECUTE
+            );
+        } catch ( \Exception $e ) {
+            Analog::log(
+                'Query error: ' . $zdb->query_string . ' ' . $e->__toString(),
+                Analog::ERROR
+            );
+            throw $e;
+        }
+    }
+
+    /**
     * Global getter method
     *
     * @param string $name name of the variable we want to retrieve
@@ -685,6 +731,15 @@ class Db
         switch ( $name ) {
         case 'db':
             return $this->_db;
+            break;
+        case 'sql':
+            return $this->_sql;
+            break;
+        case 'connection':
+            return $this->_db->getDriver()->getConnection();
+            break;
+        case 'query_string':
+            return $this->_last_query;
             break;
         case 'type_db':
             return $this->_type_db;

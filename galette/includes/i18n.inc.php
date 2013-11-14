@@ -42,7 +42,6 @@ if (!defined('GALETTE_ROOT')) {
 }
 
 use Analog\Analog as Analog;
-use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
 
 $disable_gettext=true;
@@ -257,11 +256,9 @@ function getDynamicTranslation($text_orig, $text_locale)
             'text_trans'
         )->where('text_orig = ?', $text_orig)
             ->where('text_locale = ?', $text_locale);
-        $res = $zdb->db->query(
-            $sql->getSqlStringForSqlObject($select),
-            Adapter::QUERY_MODE_EXECUTE
-        );
-        if ( $res->count() > 0 ) {
+
+        $results = $zdb->execute($select);
+        if ( $results->count() > 0 ) {
             return $res->text_trans;
         } else {
             return;

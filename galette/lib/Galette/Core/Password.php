@@ -42,6 +42,7 @@ namespace Galette\Core;
 
 use Analog\Analog as Analog;
 use Zend\Db\Sql\Sql;
+use Zend\Db\Adapter\Exception as AdapterException;
 use Galette\Entity\Adherent;
 
 /**
@@ -181,7 +182,7 @@ class Password
             } else {
                 return false;
             }
-        } catch (\Zend_Db_Adapter_Exception $e) {
+        } catch (AdapterException $e) {
             Analog::log(
                 'Unable to add add new password entry into database.' .
                 $e->getMessage(),
@@ -211,15 +212,13 @@ class Password
         $date->sub(new \DateInterval('PT24H'));
 
         try {
-            $sql = new Sql($zdb->db);
-            $del = $sql->delete(
-                PREFIX_DB . self::TABLE
-            );
+            $del = $zdb->delete(self::TABLE);
             $del->where(
                 array(
                     'date_crea_tmp_passwd < ?' => $date->format('Y-m-d H:i:s')
                 )
             );
+            $del = $zdb->execute($del);
             if ( $del ) {
                 Analog::log(
                     'Old Temporary passwords has been deleted.',

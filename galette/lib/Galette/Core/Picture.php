@@ -38,7 +38,6 @@
 namespace Galette\Core;
 
 use Analog\Analog as Analog;
-use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
 use Galette\Entity\Adherent;
 
@@ -207,7 +206,8 @@ class Picture
 
         try {
             $select = $this->getCheckFileQuery();
-            $pic = $zdb->db->fetchRow($select);
+            $results = $zdb->execute($select);
+            $pic = $results->current();
             //what's $pic if no result?
             if ( $pic !== false ) {
                 // we must regenerate the picture file

@@ -38,7 +38,6 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
-use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
 
 /**
@@ -248,12 +247,9 @@ abstract class Entitled
                 }
             }
 
-            $query_string = $sql->getSqlStringForSqlObject($select);
-            $result = $zdb->db->query(
-                $query_string,
-                Adapter::QUERY_MODE_EXECUTE
-            );
-            foreach ( $result as $r ) {
+            $results = $zdb->execute($select);
+
+            foreach ( $results as $r ) {
                 $fpk = $this->_fpk;
                 $flabel = $this->_flabel;
                 $list[$r->$fpk] = _T($r->$flabel);
@@ -263,10 +259,6 @@ abstract class Entitled
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::ERROR
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString(),
-                Analog::DEBUG
             );
             return false;
         }
@@ -344,10 +336,11 @@ abstract class Entitled
         try {
             $sql = new Sql($zdb->db);
             $select = $sql->select();
-            $select->from(array(PREFIX_DB . $this->_table));
+            $select->from(PREFIX_DB . $this->_table);
             $select->where($this->_fpk . '=' . $id);
 
-            $result = $select->query()->fetch();
+            $results = $zdb->execute($select);
+            $result = $results->current();
 
             if ( !$result ) {
                 $this->_errors[] = _T("- Label does not exist");
@@ -359,10 +352,6 @@ abstract class Entitled
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }

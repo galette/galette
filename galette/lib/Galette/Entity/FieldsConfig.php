@@ -38,7 +38,6 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
-use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
 
 /**
@@ -136,14 +135,10 @@ class FieldsConfig
                 ->where(array('table_name = ?' => $this->_table))
                 ->order(array(FieldsCategories::PK, 'position ASC'));
 
-            $query_string = $sql->getSqlStringForSqlObject($select);
-            $result = $zdb->db->query(
-                $query_string,
-                Adapter::QUERY_MODE_EXECUTE
-            );
+            $results = $zdb->execute($select);
 
             $this->_categorized_fields = null;
-            foreach ( $result as $k ) {
+            foreach ( $results as $k ) {
                 $f = array(
                     'field_id'  =>  $k->field_id,
                     'label'     =>  $this->_defaults[$k->field_id]['label'],

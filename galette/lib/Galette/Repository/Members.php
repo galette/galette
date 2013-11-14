@@ -40,9 +40,7 @@ namespace Galette\Repository;
 use Galette\Entity\DynamicFields;
 
 use Analog\Analog as Analog;
-use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
-use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Expression;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\Contribution as Contribution;
@@ -230,21 +228,8 @@ class Members
                 $this->_filters->setLimit($select);
             }
 
-            $sql = new Sql($zdb->db);
-            $query_string = $sql->getSqlStringForSqlObject($select);
-
-            $this->_filters->query = $query_string;
-
-            Analog::log(
-                "The following query will be executed: \n" .
-                $this->_filters->query,
-                Analog::DEBUG
-            );
-
-            $rows = $zdb->db->query(
-                $query_string,
-                Adapter::QUERY_MODE_EXECUTE
-            );
+            $rows = $zdb->execute($select);
+            $this->_filters->query = $zdb->query_string;
 
             $members = array();
             if ( $as_members ) {
@@ -256,17 +241,13 @@ class Members
                     $members[] = new Adherent($row, $deps);
                 }
             } else {
-                $members = $rows;
+                $members = $rows->toArray();
             }
             return $members;
         } catch (\Exception $e) {
             Analog::log(
                 'Cannot list members | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
         }
     }
@@ -292,18 +273,20 @@ class Members
 
         if ( is_array($list) ) {
             try {
-                $zdb->db->beginTransaction();
+                $zdb->connection->beginTransaction();
 
                 //Retrieve some informations
-                $select = new \Zend_Db_Select($zdb->db);
+                $sql = new Sql($zdb->db);
+                $select = $sql->select();
                 $select->from(
                     PREFIX_DB . self::TABLE,
                     array(self::PK, 'nom_adh', 'prenom_adh')
                 )->where->in(self::PK, $list);
 
-                $members = $select->query()->fetchAll();
+                $results = $zdb->execute($select);
+
                 $infos = null;
-                foreach ($members as $member ) {
+                foreach ($results as $member ) {
                     $str_adh = $member->id_adh . ' (' . $member->nom_adh . ' ' .
                         $member->prenom_adh . ')';
                     $infos .=  $str_adh . "\n";
@@ -329,34 +312,36 @@ class Members
                 }
 
                 //delete contributions
-                $del = $zdb->db->delete(
-                    PREFIX_DB . Contribution::TABLE,
-                    self::PK . ' IN (' . implode(',', $list) . ')'
+                $del_qry = $zdb->delete(Contribution::TABLE);
+                $del_qry->where->in(
+                    self::PK, $list
                 );
+                $del = $zdb->execute($del_qry);
 
                 //delete transactions
-                $del = $zdb->db->delete(
-                    PREFIX_DB . Transaction::TABLE,
-                    self::PK . ' IN (' . implode(',', $list) . ')'
-                );
+                $del_qry = $zdb->delete(Transaction::TABLE);
+                $del_qry->where->in(self::PK, $list);
+                $del = $zdb->execute($del_qry);
 
                 //delete groups membership/mamagmentship
                 $del = Groups::removeMemberFromGroups((int)$member->id_adh);
 
                 //delete reminders
-                $del = $zdb->db->delete(
-                    PREFIX_DB . Reminder::TABLE,
-                    'reminder_dest IN (' . implode(',', $list) . ')'
+                $del_qry = $zdb->delete(Reminder::TABLE);
+                $del_qry->where->in(
+                    'reminder_dest', $list
                 );
+                $del = $zdb->execute($del_qry);
 
                 //delete members
-                $del = $zdb->db->delete(
-                    PREFIX_DB . self::TABLE,
-                    self::PK . ' IN (' . implode(',', $list) . ')'
+                $del_qry = $zdb->delete(self::TABLE);
+                $del_qry->where->in(
+                    self::PK, $list
                 );
+                $del = $zdb->execute($del_qry);
 
                 //commit all changes
-                $zdb->db->commit();
+                $zdb->connection->commit();
 
                 //add an history entry
                 $hist->add(
@@ -366,7 +351,7 @@ class Members
 
                 return true;
             } catch (\Exception $e) {
-                $zdb->db->rollBack();
+                $zdb->connection->rollBack();
                 if ( $e instanceof \Zend_Db_Statement_Exception
                     && $e->getCode() == 23000
                 ) {
@@ -522,22 +507,10 @@ class Members
                 }
             }
 
-            $sql = new Sql($zdb->db);
-            $query_string = $sql->getSqlStringForSqlObject($select);
-
-            Analog::log(
-                "The following query will be executed: \n" .
-                $query_string,
-                Analog::DEBUG
-            );
-
-            $res = $zdb->db->query(
-                $query_string,
-                Adapter::QUERY_MODE_EXECUTE
-            );
+            $results = $zdb->execute($select);
 
             $members = array();
-            foreach ( $res as $o ) {
+            foreach ( $results as $o ) {
                 $deps = array(
                     'picture'   => $with_photos,
                     'groups'    => false,
@@ -554,10 +527,6 @@ class Members
             Analog::log(
                 'Cannot load members form ids array | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $query_string . ' ' . $e->__toString(),
-                Analog::ERROR
             );
         }
     }
@@ -796,9 +765,9 @@ class Members
 
         try {
             $countSelect = clone $select;
-            $countSelect->reset(Select::COLUMNS);
-            $countSelect->reset(Select::ORDER);
-            $countSelect->reset(Select::HAVING);
+            $countSelect->reset($countSelect::COLUMNS);
+            $countSelect->reset($countSelect::ORDER);
+            $countSelect->reset($countSelect::HAVING);
             $countSelect->columns(
                 array(
                     'count' => new Expression('count(DISTINCT a.' . self::PK . ')')
@@ -812,14 +781,9 @@ class Members
                 }
             }
 
-            $sql = new Sql($zdb->db);
-            $query_string = $sql->getSqlStringForSqlObject($countSelect);
-            $result = $zdb->db->query(
-                $query_string,
-                Adapter::QUERY_MODE_EXECUTE
-            );
+            $results = $zdb->execute($countSelect);
 
-            $this->_count = $result->current()->count;
+            $this->_count = $results->current()->count;
             if ( isset($this->_filters) && $this->_count > 0 ) {
                 $this->_filters->setCounter($this->_count);
             }
@@ -827,11 +791,6 @@ class Members
             Analog::log(
                 'Cannot count members | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Count members query was: ' . $query_string .
-                ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }

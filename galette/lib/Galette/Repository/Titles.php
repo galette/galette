@@ -37,6 +37,7 @@
 
 namespace Galette\Repository;
 
+use Zend\Db\Sql\Sql;
 use Galette\Entity\Title as Title;
 use Analog\Analog as Analog;
 
@@ -84,13 +85,15 @@ class Titles
      */
     public static function getList($zdb)
     {
-        $select = new \Zend_Db_Select($zdb->db);
+        $sql = new Sql($zdb->db);
+        $select = $sql->select();
         $select->from(PREFIX_DB . self::TABLE)
             ->order(self::PK);
-        $res = $select->query()->fetchAll();
+
+        $results = $zdb->execute($select);
 
         $pols = array();
-        foreach ( $res as $r ) {
+        foreach ( $results as $r ) {
             $pk = self::PK;
             $pols[$r->$pk] = new Title($r);
         }

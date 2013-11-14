@@ -38,7 +38,6 @@
 namespace Galette\Repository;
 
 use Analog\Analog as Analog;
-use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Expression;
 use Galette\Entity\Group as Group;
@@ -79,20 +78,16 @@ class Groups
                     array(Group::PK, 'group_name')
                 );
             } else {
-                 $select->from(
+                $select->from(
                     PREFIX_DB . Group::TABLE
                 );
             }
             $groups = array();
             $gpk = Group::PK;
 
-            $query_string = $sql->getSqlStringForSqlObject($select);
-            $res = $zdb->db->query(
-                $query_string,
-                Adapter::QUERY_MODE_EXECUTE
-            );
+            $results = $zdb->execute($select);
 
-            foreach ( $res as $row ) {
+            foreach ( $results as $row ) {
                 if ( $as_groups === false ) {
                     $groups[$row->$gpk] = $row->group_name;
                 } else {
@@ -105,11 +100,6 @@ class Groups
                 'Cannot list groups (simple) | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            Analog::log(
-                'Query was: ' . $query_string . ' ' . $e->getTraceAsString(),
-                Analog::ERROR
-            );
-
         }
     }
 
@@ -155,13 +145,9 @@ class Groups
 
             $groups = array();
 
-            $query_string = $sql->getSqlStringForSqlObject($select);
-            $res = $zdb->db->query(
-                $query_string,
-                Adapter::QUERY_MODE_EXECUTE
-            );
+            $results = $zdb->execute($select);
 
-            foreach ( $res as $row ) {
+            foreach ( $results as $row ) {
                 $groups[] = new Group($row);
             }
             return $groups;
@@ -169,10 +155,6 @@ class Groups
             Analog::log(
                 'Cannot list groups | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $query_string . ' ' . $e->getTraceAsString(),
-                Analog::ERROR
             );
         }
     }
@@ -221,17 +203,10 @@ class Groups
                 array()
             )->where(array('b.' . Adherent::PK . ' = ?' => $id));
 
-            $query_string = $sql->getSqlStringForSqlObject($select);
-            $result = $zdb->db->query(
-                $query_string,
-                Adapter::QUERY_MODE_EXECUTE
-            );
-            Analog::log(
-                'Exectued query: ' . $query_string,
-                Analog::DEBUG
-            );
+            $results = $zdb->execute($select);
+
             $groups = array();
-            foreach ( $result as $r ) {
+            foreach ( $results as $r ) {
                 if ( $as_group === true ) {
                     $groups[] = new Group($r);
                 } else {
@@ -245,10 +220,6 @@ class Groups
                 'Cannot load member groups for id `' . $id . '` | ' .
                 $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $query_string . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -371,16 +342,18 @@ class Groups
         global $zdb;
         try {
             //first, remove current groups members
-            $del = $zdb->db->delete(
-                PREFIX_DB . Group::GROUPSUSERS_TABLE,
+            $del_qry = $zdb->delete(Group::GROUPSUSERS_TABLE);
+            $del_qry->where(
                 Adherent::PK . ' = ' . $id
             );
+            $zdb->execute($del_qry);
 
             //first, remove current groups members
-            $del = $zdb->db->delete(
-                PREFIX_DB . Group::GROUPSMANAGERS_TABLE,
+            $del_qry = $zdb->delete(Group::GROUPSMANAGERS_TABLE);
+            $del_qry->where(
                 Adherent::PK . ' = ' . $id
             );
+            $zdb->execute($del_qry);
         } catch ( \Exception $e) {
             Analog::log(
                 'Unable to remove member #' . $id . ' from his groups: ' .

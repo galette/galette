@@ -38,7 +38,6 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
-use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
 use Galette\DynamicFieldsTypes\Separator as Separator;
 use Galette\DynamicFieldsTypes\Text as Text;
@@ -153,14 +152,16 @@ class DynamicFields
         global $zdb;
 
         try {
-            $val_select = new \Zend_Db_Select($zdb->db);
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
 
-            $val_select->from(
+            $select->from(
                 self::getFixedValuesTableName($field_id),
                 'val'
             )->order('id');
 
-            $results = $val_select->query()->fetchAll();
+            $results = $zdb->execute($select);
+
             $fixed_values = array();
             if ( $results ) {
                 foreach ( $results as $val ) {
@@ -172,10 +173,6 @@ class DynamicFields
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $val_select->__toString() . ' ' . $e->__toString(),
-                Analog::INFO
             );
         }
     }
@@ -254,16 +251,12 @@ class DynamicFields
                 )
             );
 
-            $query_string = $sql->getSqlStringForSqlObject($select);
-            $result = $zdb->db->query(
-                $query_string,
-                Adapter::QUERY_MODE_EXECUTE
-            );
+            $results = $zdb->execute($select);
 
-            if ( $result->count() > 0 ) {
+            if ( $results->count() > 0 ) {
                 $dfields = array();
 
-                foreach ($result as $f) {
+                foreach ($results as $f) {
                     $df = $this->getFieldType($f->field_type);
 
                     $value = $f->field_val;
@@ -289,7 +282,7 @@ class DynamicFields
                 Analog::WARNING
             );
             Analog::log(
-                'Query was: ' . $query_string . ' ' . $e->__toString(),
+                'Query was: ' . $zdb->query_string . ' ' . $e->__toString(),
                 Analog::INFO
             );
         }
@@ -320,17 +313,13 @@ class DynamicFields
                 ->where(array('field_form = ?' => $form_name))
                 ->order('field_index');
 
-            $query_string = $sql->getSqlStringForSqlObject($select);
-            $result = $zdb->db->query(
-                $query_string,
-                Adapter::QUERY_MODE_EXECUTE
-            );
+            $results = $zdb->execute($select);
 
             $dfields = array();
-            if ( $result ) {
+            if ( $results ) {
                 $extra = $edit ? 1 : 0;
 
-                foreach ( $result as $r ) {
+                foreach ( $results as $r ) {
                     $df = $this->getFieldType($r['field_type']);
                     if ( (int)$r['field_type'] === self::CHOICE
                         || (int)$r['field_type'] === self::TEXT
@@ -387,7 +376,7 @@ class DynamicFields
                 Analog::WARNING
             );
             Analog::log(
-                'Query was: ' . $query_string . ' ' . $e->__toString(),
+                'Query was: ' . $zdb->query_string . ' ' . $e->__toString(),
                 Analog::INFO
             );
         }

@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Zend\Db\Adapter\Adapter;
+use Zend\Db\Adapter\Exception as AdapterException;
 use Zend\Db\Sql\Sql;
 use Galette\Repository\Groups as Groups;
 use Galette\Repository\Members as Members;
@@ -96,24 +96,16 @@ class Login extends Authentication
                 array('priorite_statut')
             );
             $select->where(array(self::PK . ' = ?' => $user));
-            Analog::log(
-                'Login query: ' . $sql->getSqlStringForSqlObject($select),
-                Analog::DEBUG
-            );
 
-            $res = $zdb->db->query(
-                $sql->getSqlStringForSqlObject($select),
-                Adapter::QUERY_MODE_EXECUTE
-            );
-
-            if ( $res->count() == 0 ) {
+            $results = $zdb->execute($select);
+            if ( $results->count() == 0 ) {
                 Analog::log(
                     'No entry found for login `' . $user . '`',
                     Analog::WARNING
                 );
                 return false;
             } else {
-                $row = $res->current();
+                $row = $results->current();
                 //check if pawwsord matches
                 $pw_checked = password_verify($passe, $row->mdp_adh);
                 if ( !$pw_checked ) {
@@ -173,7 +165,7 @@ class Login extends Authentication
                 }
                 return true;
             }
-        } catch (\Zend_Db_Adapter_Exception $e) {
+        } catch (AdapterException $e) {
             Analog::log(
                 'An error occured: ' . $e->getChainedException()->getMessage(),
                 Analog::WARNING
@@ -203,12 +195,13 @@ class Login extends Authentication
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $sql = new Sql($zdb->db);
+            $select = $sql->select();
             $select->from(PREFIX_DB . self::TABLE)
                 ->where(self::PK . ' = ?', $user);
-            $result = $select->query()->fetchAll();
+            $results = $zdb->execute($select);
 
-            if ( count($result) > 0 ) {
+            if ( $results->count() > 0 ) {
                 /* We got results, user already exists */
                 return true;
             } else {
@@ -219,10 +212,6 @@ class Login extends Authentication
             Analog::log(
                 'Cannot check if login exists | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             /* If an error occurs, we consider that username already exists */
             return true;
