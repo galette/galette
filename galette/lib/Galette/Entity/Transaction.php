@@ -130,10 +130,11 @@ class Transaction
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . ' = ?', $id);
-            $result = $select->query()->fetch();
+            $select = $zdb->select(self::TABLE);
+            $select->where(self::PK . ' = ' . $id);
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
             if ( $result ) {
                 $this->_loadFromRS($result);
                 return true;
@@ -141,7 +142,6 @@ class Transaction
                 throw new \Exception;
             }
         } catch (\Exception $e) {
-            /** FIXME */
             Analog::log(
                 'Cannot load transaction form id `' . $id . '` | ' .
                 $e->getMessage(),

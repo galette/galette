@@ -129,7 +129,7 @@ if ( isset($session['filters']['members']) ) {
 if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
     $m = new Members();
     $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
-    //print_r($ids);
+    $ids = $ids->toArray();
     foreach ( $ids as $k=>$m ) {
         if ( $m['id_adh'] == $member->id ) {
             $navigate = array(

@@ -240,7 +240,7 @@ class Members
                     $members[] = new Adherent($row, $deps);
                 }
             } else {
-                $members = $rows->toArray();
+                $members = $rows;
             }
             return $members;
         } catch (\Exception $e) {
