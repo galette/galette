@@ -653,23 +653,18 @@ class Adherent
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . ' = ?', $id);
+            $select = $zdb->select(self::TABLE);
+            $select->where(self::PK . ' = ' . $id);
 
-            $row = $select->query()->fetch();
+            $results = $zdb->execute($select);
+            $row = $results->current();
             return mb_strtoupper($row->nom_adh, 'UTF-8') . ' ' .
                 ucfirst(mb_strtolower($row->prenom_adh, 'UTF-8'));
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot get formatted name for member form id `' . $id . '` | ' .
                 $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
