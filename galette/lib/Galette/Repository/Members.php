@@ -989,7 +989,7 @@ class Members
                 case self::MEMBERSHIP_LATE:
                     $select->where
                         ->lessThan(
-                            'date_echeance < ?',
+                            'date_echeance',
                             date('Y-m-d', time())
                         )->equalTo('bool_exempt_adh', false);
                     break;
@@ -1004,7 +1004,7 @@ class Members
                         ->where('bool_exempt_adh = false');
                     break;
                 case self::MEMBERSHIP_STAFF:
-                    $select->where>lessThan(
+                    $select->where->lessThan(
                         'p.priorite_statut',
                         self::NON_STAFF_MEMBERS
                     );

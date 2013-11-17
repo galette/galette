@@ -38,6 +38,7 @@
 namespace Galette\Repository;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 use Galette\Core\Pagination as Pagination;
 use Galette\Entity\Contribution as Contribution;
 use Galette\Entity\Adherent as Adherent;
@@ -160,24 +161,19 @@ class Contributions extends Pagination
             $this->setLimits($select);
 
             $contributions = array();
+            $results = $zdb->execute($select);
             if ( $as_contrib ) {
-                $res = $select->query()->fetchAll();
-                foreach ( $res as $row ) {
+                foreach ( $results as $row ) {
                     $contributions[] = new Contribution($row);
                 }
             } else {
-                $contributions = $select->query()->fetchAll();
+                $contributions = $results;
             }
             return $contributions;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot list contributions | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -201,15 +197,12 @@ class Contributions extends Pagination
                             ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
                             : implode(', ', $fields)) : (array)'*';
 
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                array('a' => PREFIX_DB . self::TABLE),
-                $fieldsList
-            );
+            $select = $zdb->select(self::TABLE, 'a');
+            $select->columns($fieldsList);
 
             $select->join(
-                array('p' => PREFIX_DB . Adherent::TABLE, Adherent::PK),
-                'a.' . Adherent::PK . '=' . 'p.' . Adherent::PK
+                array('p' => PREFIX_DB . Adherent::TABLE),
+                'a.' . Adherent::PK . '= p.' . Adherent::PK
             );
 
             $this->_buildWhereClause($select);
@@ -228,10 +221,6 @@ class Contributions extends Pagination
                 'Cannot build SELECT clause for contributions | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
-            );
             return false;
         }
     }
@@ -249,11 +238,16 @@ class Contributions extends Pagination
 
         try {
             $countSelect = clone $select;
-            $countSelect->reset(\Zend_Db_Select::COLUMNS);
-            $countSelect->reset(\Zend_Db_Select::ORDER);
-            $countSelect->columns('count(' . self::PK . ') AS ' . self::PK);
+            $countSelect->reset($countSelect::COLUMNS);
+            $countSelect->reset($countSelect::ORDER);
+            $countSelect->columns(
+                array(
+                    self::PK => new Expression('COUNT(' . self::PK . ')')
+                )
+            );
 
-            $result = $countSelect->query()->fetch();
+            $results = $zdb->execute($countSelect);
+            $result = $results->current();
 
             $k = self::PK;
             $this->_count = $result->$k;
@@ -262,14 +256,9 @@ class Contributions extends Pagination
                 $this->countPages();
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot count contributions | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $countSelect->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -288,22 +277,22 @@ class Contributions extends Pagination
 
         try {
             $sumSelect = clone $select;
-            $sumSelect->reset(\Zend_Db_Select::COLUMNS);
-            $sumSelect->reset(\Zend_Db_Select::ORDER);
-            $sumSelect->columns('SUM(montant_cotis) AS contribsum');
+            $sumSelect->reset($sumSelect::COLUMNS);
+            $sumSelect->reset($sumSelect::ORDER);
+            $sumSelect->columns(
+                array(
+                    'contribsum' => new Expression('SUM(montant_cotis)')
+                )
+            );
 
-            $result = $sumSelect->query()->fetch();
+            $results = $zdb->execute($sumSelect);
+            $result = $results->current();
 
             $this->_sum = round($result->contribsum, 2);
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot calculate contributions sum | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $sumSelect->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -365,21 +354,30 @@ class Contributions extends Pagination
         try {
             if ( $this->_start_date_filter != null ) {
                 $d = new \DateTime($this->_start_date_filter);
-                $select->where('date_debut_cotis >= ?', $d->format('Y-m-d'));
+                $select->where->greaterThanOrEqualTo(
+                    'date_debut_cotis',
+                    $d->format('Y-m-d')
+                );
             }
 
             if ( $this->_end_date_filter != null ) {
                 $d = new \DateTime($this->_end_date_filter);
-                $select->where('date_debut_cotis <= ?', $d->format('Y-m-d'));
+                $select->where->lessThanOrEqualTo(
+                    'date_debut_cotis',
+                    $d->format('Y-m-d')
+                );
             }
 
             if ( $this->_payment_type_filter != null ) {
-                $select->where('type_paiement_cotis = ?', $this->_payment_type_filter);
+                $select->where->equalTo(
+                    'type_paiement_cotis',
+                    $this->_payment_type_filter
+                );
             }
 
             if ( $this->_from_transaction !== false ) {
-                $select->where(
-                    Transaction::PK . ' = ?',
+                $select->where->equalTo(
+                    Transaction::PK,
                     $this->_from_transaction
                 );
             }
@@ -390,24 +388,19 @@ class Contributions extends Pagination
                     ' OR montant_cotis IS NULL)'
                 );
             }
-            $sql = $select->__toString();
 
             if ( !$login->isAdmin() && !$login->isStaff() ) {
                 //non staff members can only view their own contributions
-                $select->where('p.' . Adherent::PK . ' = ?', $login->id);
+                $select->where('p.' . Adherent::PK . ' = ?' . $login->id);
             } else if ( $this->_filtre_cotis_adh != null ) {
-                $select->where('p.' . Adherent::PK . ' = ?', $this->_filtre_cotis_adh);
+                $select->where(
+                    'p.' . Adherent::PK . ' = ' . $this->_filtre_cotis_adh
+                );
             }
             if ( $this->_filtre_transactions === true ) {
-                $select->where('a.trans_id ?', new \Zend_Db_Expr('IS NULL'));
+                $select->where('a.trans_id IS NULL');
             }
-            $qry = $select->__toString();
-            Analog::log(
-                "Query was:\n" . $qry,
-                Analog::DEBUG
-            );
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
