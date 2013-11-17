@@ -995,8 +995,8 @@ class Members
                     break;
                 case self::MEMBERSHIP_UP2DATE:
                     $select->where(
-                        '(' . 'date_echeance > ' . date('Y-m-d', time())
-                        . ' OR bool_exempt_adh=true)'
+                        '(' . 'date_echeance > \'' . date('Y-m-d', time())
+                        . '\' OR bool_exempt_adh=true)'
                     );
                     break;
                 case self::MEMBERSHIP_NEVER:
