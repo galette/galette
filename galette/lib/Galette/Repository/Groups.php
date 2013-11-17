@@ -279,7 +279,6 @@ class Groups
                             Adherent::PK    => $adh->id
                         )
                     );
-                    //$stmt->bindValue(':id', $gid, \PDO::PARAM_INT);
 
                     if ( $result ) {
                         $msg = 'Member `' . $adh->sname . '` attached to group `' .
