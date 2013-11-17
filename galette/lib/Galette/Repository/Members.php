@@ -40,7 +40,6 @@ namespace Galette\Repository;
 use Galette\Entity\DynamicFields;
 
 use Analog\Analog as Analog;
-use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Expression;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\Contribution as Contribution;
@@ -276,10 +275,8 @@ class Members
                 $zdb->connection->beginTransaction();
 
                 //Retrieve some informations
-                $sql = new Sql($zdb->db);
-                $select = $sql->select();
-                $select->from(
-                    PREFIX_DB . self::TABLE,
+                $select = $zdb->select(self::TABLE);
+                $select->columns(
                     array(self::PK, 'nom_adh', 'prenom_adh')
                 )->where->in(self::PK, $list);
 
@@ -551,13 +548,10 @@ class Members
                             ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
                             : $fields) : (array)'*';
 
-            $sql = new Sql($zdb->db);
-            $select = $sql->select();
+            $select = $zdb->select(self::TABLE, 'a');
+            $select->columns($fieldsList);
+
             $select->quantifier('DISTINCT');
-            $select->from(
-                array('a' => PREFIX_DB . self::TABLE),
-                $fieldsList
-            );
 
             switch($mode) {
             case self::SHOW_STAFF:
@@ -719,16 +713,20 @@ class Members
                 }
                 $select->order($this->_buildOrderClause($fields));
             } else if ( $mode == self::SHOW_PUBLIC_LIST ) {
-                $select->where('activite_adh=true')
-                    ->where('bool_display_info = ?', true)
-                    ->where(
-                        'date_echeance > ? OR bool_exempt_adh = true',
-                        date('Y-m-d')
-                    );
+                $select
+                    ->where('activite_adh = true')
+                    ->where('bool_display_info = true');
+                $select->where
+                    ->greaterThan('date_echeance', date('Y-m-d'))
+                    ->or
+                    ->equalTo('bool_exempt_adh', true);
             }
 
             if ( $mode === self::SHOW_STAFF ) {
-                $select->where('p.priorite_statut < ' . self::NON_STAFF_MEMBERS);
+                $select->where->lessThan(
+                    'p.priorite_statut',
+                    self::NON_STAFF_MEMBERS
+                );
             }
 
             if ( $count ) {
@@ -979,17 +977,21 @@ class Members
                     $now = new \DateTime();
                     $duedate = new \DateTime();
                     $duedate->modify('+1 month');
-                    $select->where('date_echeance > ?', $now->format('Y-m-d'))
-                        ->where(
-                            'date_echeance < ?',
+                    $select->where
+                        ->greaterThan(
+                            'date_echeance',
+                            $now->format('Y-m-d')
+                        )->lessThan(
+                            'date_echeance',
                             $duedate->format('Y-m-d')
                         );
                     break;
                 case self::MEMBERSHIP_LATE:
-                    $select->where(
-                        'date_echeance < ?',
-                        date('Y-m-d', time())
-                    )->where('bool_exempt_adh = false');
+                    $select->where
+                        ->lessThan(
+                            'date_echeance < ?',
+                            date('Y-m-d', time())
+                        )->equalTo('bool_exempt_adh', false);
                     break;
                 case self::MEMBERSHIP_UP2DATE:
                     $select->where(
@@ -1002,13 +1004,16 @@ class Members
                         ->where('bool_exempt_adh = false');
                     break;
                 case self::MEMBERSHIP_STAFF:
-                    $select->where('p.priorite_statut < ' . self::NON_STAFF_MEMBERS);
+                    $select->where>lessThan(
+                        'p.priorite_statut',
+                        self::NON_STAFF_MEMBERS
+                    );
                     break;
                 case self::MEMBERSHIP_ADMIN:
-                    $select->where('bool_admin_adh = ?', true);
+                    $select->where->equalTo('bool_admin_adh', true);
                     break;
                 case self::MEMBERSHIP_NONE:
-                    $select->where('a.id_statut = ?', Status::DEFAULT_STATUS);
+                    $select->where->equalTo('a.id_statut', Status::DEFAULT_STATUS);
                     break;
                 }
             }
@@ -1048,33 +1053,55 @@ class Members
                 ) {
                     if ( $this->_filters->rcreation_date_begin ) {
                         $d = new \DateTime($this->_filters->rcreation_date_begin);
-                        $select->where('date_crea_adh >= ?', $d->format('Y-m-d'));
+                        $select->where->greaterThanOrEqualTo(
+                            'date_crea_adh',
+                            $d->format('Y-m-d')
+                        );
                     }
                     if ( $this->_filters->rcreation_date_end ) {
                         $d = new \DateTime($this->_filters->rcreation_date_end);
-                        $select->where('date_crea_adh <= ?', $d->format('Y-m-d'));
+                        $select->where->lessThanOrEqualTo(
+                            'date_crea_adh',
+                            $d->format('Y-m-d')
+                        );
                     }
                 }
 
-                if ( $this->_filters->rmodif_date_begin || $this->_filters->rmodif_date_end ) {
+                if ( $this->_filters->rmodif_date_begin
+                    || $this->_filters->rmodif_date_end
+                ) {
                     if ( $this->_filters->rmodif_date_begin ) {
                         $d = new \DateTime($this->_filters->rmodif_date_begin);
-                        $select->where('date_modif_adh >= ?', $d->format('Y-m-d'));
+                        $select->where->greaterThanOrEqualTo(
+                            'date_modif_adh',
+                            $d->format('Y-m-d')
+                        );
                     }
                     if ( $this->_filters->rmodif_date_end ) {
                         $d = new \DateTime($this->_filters->rmodif_date_end);
-                        $select->where('date_modif_adh <= ?', $d->format('Y-m-d'));
+                        $select->where->lessThanOrEqualTo(
+                            'date_modif_adh',
+                            $d->format('Y-m-d')
+                        );
                     }
                 }
 
-                if ( $this->_filters->rdue_date_begin || $this->_filters->rdue_date_end ) {
+                if ( $this->_filters->rdue_date_begin
+                    || $this->_filters->rdue_date_end
+                ) {
                     if ( $this->_filters->rdue_date_begin ) {
                         $d = new \DateTime($this->_filters->rdue_date_begin);
-                        $select->where('date_echeance >= ?', $d->format('Y-m-d'));
+                        $select->where->greaterThanOrEqualTo(
+                            'date_echeance',
+                            $d->format('Y-m-d')
+                        );
                     }
                     if ( $this->_filters->rdue_date_end ) {
                         $d = new \DateTime($this->_filters->rdue_date_end);
-                        $select->where('date_echeance <= ?', $d->format('Y-m-d'));
+                        $select->where->lessThanOrEqualTo(
+                            'date_echeance',
+                            $d->format('Y-m-d')
+                        );
                     }
                 }
 
@@ -1105,13 +1132,19 @@ class Members
                         $d = new \DateTime(
                             $this->_filters->rcontrib_creation_date_begin
                         );
-                        $select->where('ct.date_enreg >= ?', $d->format('Y-m-d'));
+                        $select->where->greaterThanOrEqualTo(
+                            'ct.date_enreg',
+                            $d->format('Y-m-d')
+                        );
                     }
                     if ( $this->_filters->rcontrib_creation_date_end ) {
                         $d = new \DateTime(
                             $this->_filters->rcontrib_creation_date_end
                         );
-                        $select->where('ct.date_enreg <= ?', $d->format('Y-m-d'));
+                        $select->where->lessThanOrEqualTo(
+                            'ct.date_enreg',
+                            $d->format('Y-m-d')
+                        );
                     }
                 }
 
@@ -1122,8 +1155,8 @@ class Members
                         $d = new \DateTime(
                             $this->_filters->rcontrib_begin_date_begin
                         );
-                        $select->where(
-                            'ct.date_debut_cotis >= ?',
+                        $select->where->greaterThanOrEqualTo(
+                            'ct.date_debut_cotis',
                             $d->format('Y-m-d')
                         );
                     }
@@ -1131,8 +1164,8 @@ class Members
                         $d = new \DateTime(
                             $this->_filters->rcontrib_begin_date_end
                         );
-                        $select->where(
-                            'ct.date_debut_cotis <= ?',
+                        $select->where->lessThanOrEqualTo(
+                            'ct.date_debut_cotis',
                             $d->format('Y-m-d')
                         );
                     }
@@ -1145,8 +1178,8 @@ class Members
                         $d = new \DateTime(
                             $this->_filters->rcontrib_end_date_begin
                         );
-                        $select->where(
-                            'ct.date_fin_cotis >= ?',
+                        $select->where->greaterThanOrEqualTo(
+                            'ct.date_fin_cotis',
                             $d->format('Y-m-d')
                         );
                     }
@@ -1154,8 +1187,8 @@ class Members
                         $d = new \DateTime(
                             $this->_filters->rcontrib_end_date_end
                         );
-                        $select->where(
-                            'ct.date_fin_cotis <= ?',
+                        $select->where->lessThanOrEqualTo(
+                            'ct.date_fin_cotis',
                             $d->format('Y-m-d')
                         );
                     }
@@ -1165,14 +1198,14 @@ class Members
                     || $this->_filters->contrib_max_amount
                 ) {
                     if ( $this->_filters->contrib_min_amount ) {
-                        $select->where(
-                            'ct.montant_cotis >= ?',
+                        $select->where->greaterThanOrEqualTo(
+                            'ct.montant_cotis',
                             $this->_filters->contrib_min_amount
                         );
                     }
                     if ( $this->_filters->contrib_max_amount ) {
-                        $select->where(
-                            'ct.montant_cotis <= ?',
+                        $select->where->lessThanOrEqualTo(
+                            'ct.montant_cotis',
                             $this->_filters->contrib_max_amount
                         );
                     }
@@ -1282,16 +1315,17 @@ class Members
                         }
 
                         if ( !strncmp($fs['field'], 'bool_', strlen('bool_')) ) {
-                            $qry .= $prefix . $fs['field'] . $qop  . ' ?' ;
+                            $qry .= $prefix . $fs['field'] . $qop  . ' ' .
+                                $fs['search'] ;
                         } else {
                             $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' .
-                                $qop  . ' ?' ;
+                                $qop  . ' ' . $fs['search'] ;
                         }
 
                         if ( $fs['log_op'] === AdvancedMembersList::OP_AND ) {
-                            $select->where($qry, $fs['search']);
+                            $select->where($qry);
                         } elseif ( $fs['log_op'] === AdvancedMembersList::OP_OR ) {
-                            $select->orWhere($qry, $fs['search']);
+                            $select->orWhere($qry);
                         }
                     }
                 }
@@ -1405,15 +1439,16 @@ class Members
         $soon_date = new \DateTime();
         $soon_date->modify('+30 day');
 
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->from(
-            array('a' => PREFIX_DB . Adherent::TABLE),
+        $select = $zdb->select(Adherent::TABLE, 'a');
+        $select->columns(
             array(
-                'cnt' => 'count(a.' . Adherent::PK . ')'
+                'cnt' => new Expression('count(a.' . Adherent::PK . ')')
             )
-        )
-            ->where('date_echeance < ?', $soon_date->format('Y-m-d'))
-            ->where('date_echeance >= ?', new \Zend_Db_Expr('NOW()'))
+        );
+        $select->where
+            ->lessThan('date_echeance', $soon_date->format('Y-m-d'))
+            ->greaterThanOrEqualTo('date_echeance', new Expression('NOW()'));
+        $select
             ->where('activite_adh=true')
             ->where('bool_exempt_adh=false');
 
@@ -1422,19 +1457,23 @@ class Members
         $select->where('email_adh != \'\'');
         $select_wo_mail->where('email_adh = \'\'');
 
-        $res = $select->query()->fetchColumn();
-        $reminders['impending'] = $res;
+        $results = $zdb->execute($select);
+        $res = $results->current();
+        $reminders['impending'] = $res->cnt;
 
-        $res_wo_mail = $select_wo_mail->query()->fetchColumn();
-        $reminders['nomail']['impending'] = $res_wo_mail;
+        $results_wo_mail = $zdb->execute($select_wo_mail);
+        $res_wo_mail = $results_wo_mail->current();
+        $reminders['nomail']['impending'] = $res_wo_mail->cnt;
 
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->from(
-            array('a' => PREFIX_DB . Adherent::TABLE),
+        $select = $zdb->select(Adherent::TABLE, 'a');
+        $select->columns(
             array(
-                'cnt'       => 'count(a.' . Adherent::PK . ')'
+                'cnt' => new Expression('count(a.' . Adherent::PK . ')')
             )
-        )->where('date_echeance < ?', new \Zend_Db_Expr('NOW()'))
+        );
+        $select->where
+            ->lessThan('date_echeance', new Expression('NOW()'));
+        $select
             ->where('activite_adh=true')
             ->where('bool_exempt_adh=false');
 
@@ -1443,11 +1482,13 @@ class Members
         $select->where('email_adh != \'\'');
         $select_wo_mail->where('email_adh = \'\'');
 
-        $res = $select->query()->fetchColumn();
-        $reminders['late'] = $res;
+        $results = $zdb->execute($select);
+        $res = $results->current();
+        $reminders['late'] = $res->cnt;
 
-        $res_wo_mail = $select_wo_mail->query()->fetchColumn();
-        $reminders['nomail']['late'] = $res_wo_mail;
+        $results_wo_mail = $zdb->execute($select_wo_mail);
+        $res_wo_mail = $results_wo_mail->current();
+        $reminders['nomail']['late'] = $res_wo_mail->cnt;
 
         return $reminders;
     }

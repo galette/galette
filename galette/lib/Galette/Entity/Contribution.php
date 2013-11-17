@@ -38,6 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
+use Zend\Db\Sql\Expression;
 use Galette\IO\ExternalScript;
 use Galette\IO\PdfContribution;
 
@@ -739,19 +740,23 @@ class Contribution
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . self::TABLE,
-                'MAX(date_fin_cotis)'
-            )->where(Adherent::PK . ' = ?', $member_id);
-            $due_date = $select->query()->fetchColumn();
+            $select = $zdb->select(self::TABLE);
+            $select->columns(
+                array(
+                    'max_date' => new Expression('MAX(date_fin_cotis)')
+                )
+            )->where(Adherent::PK . ' = ' . $member_id);
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            $due_date = $result->max_date;
+
             //avoid bad dates in postgres
             if ( $due_date == '0001-01-01 BC' ) {
                 $due_date = '';
             }
             return $due_date;
         } catch (\Exception $e) {
-            /** FIXME */
             Analog::log(
                 'An error occured trying to retrieve member\'s due date',
                 Analog::ERROR

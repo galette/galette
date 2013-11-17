@@ -171,11 +171,15 @@ class Texts
         }
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . self::TABLE)
-                ->where('tref = ?', $ref)
-                ->where('tlang = ?', $lang);
-            $result = $select->query()->fetch();
+            $select = $zdb->select(self::TABLE);
+            $select->where(
+                array(
+                    'tref' => $ref,
+                    'tlang' => $lang
+                )
+            );
+            $results = $zdb->execute($select);
+            $result = $results->current();
             if ( $result ) {
                 $this->_all_texts = $result;
             } else {
@@ -199,7 +203,9 @@ class Texts
                     );
 
                     try {
-                        $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
+                        $insert = $zdb->insert(self::TABLE);
+                        $insert->values($values);
+                        $zdb->execute($insert);
                         return $this->getTexts($ref, $lang);
                     } catch( \Exception $e ) {
                         Analog::log(

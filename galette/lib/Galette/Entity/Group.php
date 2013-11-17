@@ -38,7 +38,6 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
-use Zend\Db\Sql\Sql;
 
 /**
  * Group entity
@@ -102,11 +101,8 @@ class Group
         global $zdb;
 
         try {
-            $sql = new Sql($zdb->db);
-            $select = $sql->select();
-
-            $select->from(PREFIX_DB . self::TABLE)
-                ->where(array(self::PK . '=?' => $id));
+            $select = $zdb->select(self::TABLE);
+            $select->where(array(self::PK => $id));
 
             $results = $zdb->execute($select);
 
@@ -165,8 +161,6 @@ class Group
 
         if ( $this->_id ) {
             try {
-                $select = new \Zend_Db_Select($zdb->db);
-
                 $from = null;
                 switch ( $type ) {
                 case self::MEMBER_TYPE:
@@ -177,12 +171,12 @@ class Group
                     break;
                 }
 
-                $select->from(
-                    PREFIX_DB . $from,
+                $select = $zdb->select($from);
+                $select->columns(
                     array(Adherent::PK)
-                )->where(self::PK . ' = ?', $this->_id);
+                )->where(self::PK . ' = ' . $this->_id);
 
-                $res = $select->query()->fetchAll();
+                $results = $zdb->execute($select);
                 $members = array();
                 $adhpk = Adherent::PK;
 
@@ -192,7 +186,7 @@ class Group
                     'dues'      => false
                 );
 
-                foreach ( $res as $m ) {
+                foreach ( $results as $m ) {
                     $members[] = new Adherent((int)$m->$adhpk, $deps);
                 }
 

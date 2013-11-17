@@ -70,16 +70,10 @@ class Groups
         global $zdb;
 
         try {
-            $sql = new Sql($zdb->db);
-            $select = $sql->select();
+            $select = $zdb->select(Group::TABLE);
             if ( $as_groups === false ) {
-                $select->from(
-                    PREFIX_DB . Group::TABLE,
+                $select->columns(
                     array(Group::PK, 'group_name')
-                );
-            } else {
-                $select->from(
-                    PREFIX_DB . Group::TABLE
                 );
             }
             $groups = array();
@@ -114,11 +108,8 @@ class Groups
     {
         global $zdb, $login;
         try {
-            $sql = new Sql($zdb->db);
-            $select = $sql->select();
-            $select->from(
-                array('a' => PREFIX_DB . Group::TABLE)
-            )->join(
+            $select = $zdb->select(Group::TABLE, 'a');
+            $select->join(
                 array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
                 'a.' . Group::PK . '=b.' . Group::PK,
                 array('members' => new Expression('count(b.' . Group::PK . ')')),
@@ -189,19 +180,14 @@ class Groups
                 Group::GROUPSMANAGERS_TABLE :
                 Group::GROUPSUSERS_TABLE;
 
-            $sql = new Sql($zdb->db);
-            $select = $sql->select();
-            $select->from(
-                array(
-                    'a' => PREFIX_DB . Group::TABLE
-                )
-            )->join(
+            $select = $zdb->select(Group::TABLE, 'a');
+            $select->join(
                 array(
                     'b' => PREFIX_DB . $join_table
                 ),
                 'a.' . Group::PK . '=b.' . Group::PK,
                 array()
-            )->where(array('b.' . Adherent::PK . ' = ?' => $id));
+            )->where(array('b.' . Adherent::PK => $id));
 
             $results = $zdb->execute($select);
 
@@ -243,7 +229,7 @@ class Groups
         global $zdb;
         try {
             if ( $transaction === false) {
-                $zdb->db->beginTransaction();
+                $zdb->connection->beginTransaction();
             }
 
             $table = null;
@@ -254,10 +240,11 @@ class Groups
             }
 
             //first, remove current groups members
-            $del = $zdb->db->delete(
-                PREFIX_DB . $table,
+            $delete = $zdb->delete($table);
+            $delete->where(
                 Adherent::PK . ' = ' . $adh->id
             );
+            $zdb->execute($delete);
 
             $msg = null;
             if ( $manager === true ) {
@@ -272,18 +259,29 @@ class Groups
 
             //we proceed, if groups has been specified
             if ( is_array($groups) ) {
-                $stmt = $zdb->db->prepare(
-                    'INSERT INTO ' . PREFIX_DB . $table .
-                    ' (' . $zdb->db->quoteIdentifier(Group::PK) . ', ' .
-                    $zdb->db->quoteIdentifier(Adherent::PK) . ')' .
-                    ' VALUES(:id, ' . $adh->id . ')'
+                $insert = $zdb->insert($table);
+                $insert->values(
+                    array(
+                        Group::PK       => ':group',
+                        Adherent::PK    => ':adh'
+                    )
                 );
+
+                $sql = new Sql($zdb->db);
+                $stmt = $sql->prepareStatementForSqlObject($insert);
 
                 foreach ( $groups as $group ) {
                     list($gid, $gname) = explode('|', $group);
-                    $stmt->bindValue(':id', $gid, \PDO::PARAM_INT);
 
-                    if ( $stmt->execute() ) {
+                    $result = $stmt->execute(
+                        array(
+                            Group::PK       => $gid,
+                            Adherent::PK    => $adh->id
+                        )
+                    );
+                    //$stmt->bindValue(':id', $gid, \PDO::PARAM_INT);
+
+                    if ( $result ) {
                         $msg = 'Member `' . $adh->sname . '` attached to group `' .
                             $gname . '` (' . $gid . ')';
                         if ( $manager === true ) {
@@ -310,20 +308,23 @@ class Groups
             }
             if ( $transaction === false) {
                 //commit all changes
-                $zdb->db->commit();
+                $zdb->connection->commit();
             }
             return true;
         } catch (\Exception $e) {
             if ( $transaction === false) {
-                $zdb->db->rollBack();
+                $zdb->connection->rollBack();
             }
             $msg = 'Unable to add member `' . $adh->sname . '` (' . $adh->id .
                 ') to specified groups ' . print_r($groups, true);
             if ( $manager === true ) {
                 $msg .= ' as a manager';
             }
+            do {
+                $messages[] = $e->getMessage();
+            } while ($e = $e->getPrevious());
             Analog::log(
-                $msg . ' |' . $e->getMessage(),
+                $msg . ' |' . implode("\n", $messages),
                 Analog::ERROR
             );
             return false;

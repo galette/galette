@@ -38,7 +38,6 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
-use Zend\Db\Sql\Sql;
 
 /**
  * Title
@@ -91,10 +90,8 @@ class Title
     {
         global $zdb;
         try {
-            $sql = new Sql($zdb->db);
-            $select = $sql->select();
-            $select->limit(1)->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . ' = ' . $id);
+            $select = $zdb->select(self::TABLE);
+            $select->limit(1)->where(self::PK . ' = ' . $id);
 
             $results = $zdb->execute($select);
             $res = $results->current();

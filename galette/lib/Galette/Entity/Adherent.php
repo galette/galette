@@ -38,7 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
-use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Expression;
 use Galette\Core\Picture as Picture;
 use Galette\Core\GaletteMail as GaletteMail;
 use Galette\Core\Password as Password;
@@ -241,16 +241,13 @@ class Adherent
         global $zdb;
 
         try {
-            $sql = new Sql($zdb->db);
-            $select = $sql->select();
+            $select = $zdb->select(self::TABLE, 'a');
 
-            $select->from(
-                array('a' => PREFIX_DB . self::TABLE)
-            )->join(
+            $select->join(
                 array('b' => PREFIX_DB . Status::TABLE),
                 'a.' . Status::PK . '=b.' . Status::PK,
                 array('priorite_statut')
-            )->where(array(self::PK . '=?' => $id));
+            )->where(array(self::PK => $id));
 
             $results = $zdb->execute($select);
 
@@ -277,29 +274,25 @@ class Adherent
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . self::TABLE);
+            $select = $zdb->select(self::TABLE);
             if ( GaletteMail::isValidEmail($login) ) {
                 //we got a valid email adress, use it
-                $select->where('email_adh = ?', $login);
+                $select->where(array('email_adh' => $login));
             } else {
                 ///we did not get an email adress, consider using login
-                $select->where('login_adh = ?', $login);
+                $select->where(array('login_adh' => $login));
             }
-            $result = $select->query()->fetchObject();
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
             if ( $result ) {
                 $this->_loadFromRS($result);
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot load member form login `' . $login . '` | ' .
                 $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -740,7 +733,12 @@ class Adherent
     public static function getDbFields()
     {
         global $zdb;
-        return array_keys($zdb->db->describeTable(PREFIX_DB . self::TABLE));
+        $columns = $zdb->getColumns(self::TABLE);
+        $fields = array();
+        foreach ( $columns as $col ) {
+            $fields[] = $col->getName();
+        }
+        return $fields;
     }
 
     /**
@@ -896,29 +894,24 @@ class Adherent
                         }
                         if ( $key == 'email_adh' ) {
                             try {
-                                $select = new \Zend_Db_Select($zdb->db);
-                                $select->from(
-                                    PREFIX_DB . self::TABLE,
-                                    self::PK
-                                )->where('email_adh = ?', $value);
+                                $select = $zdb->select(self::TABLE);
+                                $select->columns(
+                                    array(self::PK)
+                                )->where(array('email_adh' => $value));
                                 if ( $this->_id != '' && $this->_id != null ) {
                                     $select->where(
-                                        self::PK . ' != ?',
-                                        $this->_id
+                                        self::PK . ' != ' . $this->_id
                                     );
                                 }
-                                $uniq = $select->query()->fetchAll();
-                                if ( count($uniq) !==  0 ) {
+
+                                $results = $zdb->execute($select);
+                                if ( $results->count() !==  0 ) {
                                     $errors[] = _T("- This E-Mail address is already used by another member!");
                                 }
                             } catch (\Exception $e) {
                                 Analog::log(
                                     'An error occured checking member email unicity.',
                                     Analog::ERROR
-                                );
-                                Analog::log(
-                                    'Query was: ' . $select->__toString(),
-                                    Analog::INFO
                                 );
                                 $errors[] = _T("An error has occured while looking if login already exists.");
                             }
@@ -947,19 +940,18 @@ class Adherent
                             } else {
                                 //check if login is already taken
                                 try {
-                                    $select = new \Zend_Db_Select($zdb->db);
-                                    $select->from(
-                                        PREFIX_DB . self::TABLE,
-                                        self::PK
-                                    )->where('login_adh = ?', $value);
+                                    $select = $zdb->select(self::TABLE);
+                                    $select->columns(
+                                        array(self::PK)
+                                    )->where(array('login_adh' => $value));
                                     if ( $this->_id != '' && $this->_id != null ) {
                                         $select->where(
-                                            self::PK . ' != ?',
-                                            $this->_id
+                                            self::PK . ' != ' . $this->_id
                                         );
                                     }
-                                    $uniq = $select->query()->fetchAll();
-                                    if ( count($uniq) !==  0
+
+                                    $results = $zdb->execute($select);
+                                    if ( $results->count() !==  0
                                         || $value == $preferences->pref_admin_login
                                     ) {
                                         $errors[] = _T("- This username is already in use, please choose another one!");
@@ -968,10 +960,6 @@ class Adherent
                                     Analog::log(
                                         'An error occured checking member login unicity.',
                                         Analog::ERROR
-                                    );
-                                    Analog::log(
-                                        'Query was: ' . $select->__toString(),
-                                        Analog::INFO
                                     );
                                     $errors[] = _T("An error has occured while looking if login already exists.");
                                 }
@@ -1006,12 +994,11 @@ class Adherent
                     case 'id_statut':
                         try {
                             //check if status exists
-                            $select = new \Zend_Db_Select($zdb->db);
-                            $select->from(
-                                PREFIX_DB . Status::TABLE
-                            )->where(Status::PK . '= ?', $value);
+                            $select = $zdb->select(Status::TABLE);
+                            $select->where(Status::PK . '= ' . $value);
 
-                            $result = $select->query()->fetchObject();
+                            $results = $zdb->execute($select);
+                            $result = $results->current();
                             if ( $result === false ) {
                                 $errors[] = str_replace(
                                     '%id',
@@ -1022,16 +1009,16 @@ class Adherent
                             }
 
                             //check for status unicity
-                            $select = new \Zend_Db_Select($zdb->db);
-                            $select->from(
-                                array('a' => PREFIX_DB . self::TABLE)
-                            )->join(
+                            $select = $zdb->select(self::TABLE, 'a');
+                            $select->limit(1)->join(
                                 array('b' => PREFIX_DB . Status::TABLE),
                                 'a.' . Status::PK . '=b.' . Status::PK,
                                 array('libelle_statut')
-                            )->where('b.' . Status::PK . '=?', $value)
-                                ->where('b.priorite_statut < ' . Members::NON_STAFF_MEMBERS)
-                                ->limit(1);
+                            )->where('b.' . Status::PK . '=?', $value);
+                            $select->where->lessThan(
+                                'b.priorite_statut',
+                                Members::NON_STAFF_MEMBERS
+                            );
 
                             if ( $this->_id != '' && $this->_id != null ) {
                                 $select->where(
@@ -1039,7 +1026,8 @@ class Adherent
                                 );
                             }
 
-                            $result = $select->query()->fetchObject();
+                            $results = $zdb->execute($select);
+                            $result = $results->current();
                             if ( $result !== false ) {
                                 $errors[] = str_replace(
                                     array(
@@ -1061,10 +1049,6 @@ class Adherent
                             Analog::log(
                                 'An error occured checking status unicity: ' . $e->getMessage(),
                                 Analog::ERROR
-                            );
-                            Analog::log(
-                                'Query was: ' . $select->__toString(),
-                                Analog::INFO
                             );
                             $errors[] = _T("An error has occured while looking if status is already in use.");
                         }
@@ -1150,16 +1134,16 @@ class Adherent
             //an empty value will cause date to be set to 1901-01-01, a null
             //will result in 0000-00-00. We want a database NULL value here.
             if ( !$this->_birthdate ) {
-                $values['ddn_adh'] = new \Zend_Db_Expr('NULL');
+                $values['ddn_adh'] = new Expression('NULL');
             }
             if ( !$this->_due_date ) {
-                $values['date_echeance'] = new \Zend_Db_Expr('NULL');
+                $values['date_echeance'] = new Expression('NULL');
             }
 
             if ( $this->_title instanceof Title ) {
                 $values['titre_adh'] = $this->_title->id;
             } else {
-                $values['titre_adh'] = new \Zend_Db_Expr('NULL');
+                $values['titre_adh'] = new Expression('NULL');
             }
 
             if ( !isset($this->_id) || $this->_id == '') {
@@ -1201,14 +1185,17 @@ class Adherent
                     unset($values['mdp_adh']);
                 }
 
-                $edit = $zdb->db->update(
-                    PREFIX_DB . self::TABLE,
-                    $values,
+                $update = $zdb->update(self::TABLE);
+                $update->set($values);
+                $update->where(
                     self::PK . '=' . $this->_id
                 );
+
+                $edit = $zdb->execute($update);
+
                 //edit == 0 does not mean there were an error, but that there
                 //were nothing to change
-                if ( $edit > 0 ) {
+                if ( $edit->count() > 0 ) {
                     $this->_updateModificationDate();
                     $hist->add(
                         _T("Member card updated"),
@@ -1240,12 +1227,14 @@ class Adherent
         global $zdb;
 
         try {
-            $edit = $zdb->db->update(
-                PREFIX_DB . self::TABLE,
-                array('date_modif_adh' => date('Y-m-d')),
-                self::PK . '=' . $this->_id
-            );
-            $this->_modification_date = date('Y-m-d');
+            $modif_date = date('Y-m-d');
+            $update = $zdb->update(self::TABLE);
+            $update->set(
+                array('date_modif_adh' => $modif_date)
+            )->where(self::PK . '=' . $this->_id);
+
+            $edit = $zdb->execute($update);
+            $this->_modification_date = $modif_date;
         } catch (\Exception $e) {
             Analog::log(
                 'Something went wrong updating modif date :\'( | ' .

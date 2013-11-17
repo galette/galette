@@ -519,6 +519,20 @@ class Db
     }
 
     /**
+     * Get columns for a specified table
+     *
+     * @param string $table Table name
+     *
+     * @return array
+     */
+    public function getColumns($table)
+    {
+        $metadata = new \Zend\Db\Metadata\Metadata($this->_db);
+        $table = $metadata->getTable(PREFIX_DB . $table);
+        return $table->getColumns();
+    }
+
+    /**
     * Converts recursively database to UTF-8
     *
     * @param string  $prefix       Specified table prefix
@@ -677,11 +691,62 @@ class Db
     }
 
     /**
-     * Delete a row
+     * Instanciate a select query
+     *
+     * @param string $table Table name, without prefix
+     * @param string $alias Tables alias, optionnal
+     *
+     * @return Select
+     */
+    public function select($table, $alias = null)
+    {
+        if ( $alias === null ) {
+            return $this->_sql->select(
+                PREFIX_DB . $table
+            );
+        } else {
+            return $this->_sql->select(
+                array(
+                    $alias => PREFIX_DB . $table
+                )
+            );
+        }
+    }
+
+    /**
+     * Instanciate an insert query
      *
      * @param string $table Table name, without prefix
      *
-     * @return int
+     * @return Insert
+     */
+    public function insert($table)
+    {
+        return $this->_sql->insert(
+            PREFIX_DB . $table
+        );
+    }
+
+    /**
+     * Instanciate an update query
+     *
+     * @param string $table Table name, without prefix
+     *
+     * @return Insert
+     */
+    public function update($table)
+    {
+        return $this->_sql->update(
+            PREFIX_DB . $table
+        );
+    }
+
+    /**
+     * Instanciate a delete query
+     *
+     * @param string $table Table name, without prefix
+     *
+     * @return Delete
      */
     public function delete($table)
     {
@@ -712,7 +777,7 @@ class Db
             );
         } catch ( \Exception $e ) {
             Analog::log(
-                'Query error: ' . $zdb->query_string . ' ' . $e->__toString(),
+                'Query error: ' . $query_string . ' ' . $e->__toString(),
                 Analog::ERROR
             );
             throw $e;
@@ -734,6 +799,9 @@ class Db
             break;
         case 'sql':
             return $this->_sql;
+            break;
+        case 'driver':
+            return $this->_db->getDriver();
             break;
         case 'connection':
             return $this->_db->getDriver()->getConnection();

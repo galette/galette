@@ -38,7 +38,6 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
-use Zend\Db\Sql\Sql;
 
 /**
  * Fields config class for galette :
@@ -129,10 +128,9 @@ class FieldsConfig
         $this->_prefs = array();
 
         try {
-            $sql = new Sql($zdb->db);
-            $select = $sql->select();
-            $select->from(PREFIX_DB . self::TABLE)
-                ->where(array('table_name = ?' => $this->_table))
+            $select = $zdb->select(self::TABLE);
+            $select
+                ->where(array('table_name' => $this->_table))
                 ->order(array(FieldsCategories::PK, 'position ASC'));
 
             $results = $zdb->execute($select);

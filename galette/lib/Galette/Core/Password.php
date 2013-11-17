@@ -41,7 +41,6 @@
 namespace Galette\Core;
 
 use Analog\Analog as Analog;
-use Zend\Db\Sql\Sql;
 use Zend\Db\Adapter\Exception as AdapterException;
 use Galette\Entity\Adherent;
 
@@ -121,13 +120,10 @@ class Password
         global $zdb;
 
         try {
-            $del = $zdb->db->delete(
-                PREFIX_DB . self::TABLE,
-                $zdb->db->quoteInto(
-                    self::PK . ' = ?',
-                    $id_adh
-                )
-            );
+            $delete = $zdb->delete(self::TABLE);
+            $delete->where(self::PK . ' = ' . $id_adh);
+
+            $del = $zdb->execute($delete);
             if ( $del ) {
                 Analog::log(
                     'Temporary passwords for `' . $id_adh . '` has been removed.',
@@ -135,7 +131,6 @@ class Password
                 );
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'An error has occured removing old tmppasswords ' .
                 $e->getMessage(),
@@ -170,7 +165,10 @@ class Password
                 'date_crea_tmp_passwd' => date('Y-m-d H:i:s')
             );
 
-            $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
+            $insert = $zdb->insert(self::TABLE);
+            $insert->values($values);
+
+            $add = $zdb->execute($insert);
             if ( $add ) {
                 Analog::log(
                     'New passwords temporary set for `' . $id_adh . '`.',
@@ -212,13 +210,12 @@ class Password
         $date->sub(new \DateInterval('PT24H'));
 
         try {
-            $del = $zdb->delete(self::TABLE);
-            $del->where(
-                array(
-                    'date_crea_tmp_passwd < ?' => $date->format('Y-m-d H:i:s')
-                )
+            $delete = $zdb->delete(self::TABLE);
+            $delete->where->lessThan(
+                'date_crea_tmp_passwd',
+                $date->format('Y-m-d H:i:s')
             );
-            $del = $zdb->execute($del);
+            $del = $zdb->execute($delete);
             if ( $del ) {
                 Analog::log(
                     'Old Temporary passwords has been deleted.',
@@ -226,7 +223,6 @@ class Password
                 );
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'An error occured deleting expired temporary passwords. ' .
                 $e->getMessage(),
@@ -248,14 +244,17 @@ class Password
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . self::TABLE,
-                self::PK
-            )->where('tmp_passwd = ?', $hash);
-            return $select->query()->fetchColumn();
+            $select = $zdb->select(self::TABLE);
+            $select->columns(
+                array(self::PK)
+            )->where(array('tmp_passwd' => $hash));
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+
+            $pk = self::PK;
+            return $result->$pk;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'An error occured getting requested hash. ' . $e->getMessage(),
                 Analog::WARNING
@@ -276,13 +275,12 @@ class Password
         global $zdb;
 
         try {
-            $del = $zdb->db->delete(
-                PREFIX_DB . self::TABLE,
-                $zdb->db->quoteInto(
-                    'tmp_passwd = ?',
-                    $hash
-                )
+            $delete = $zdb->delete(self::TABLE);
+            $delete->where(
+                array('tmp_passwd' => $hash)
             );
+
+            $del = $zdb->execute($delete);
             if ( $del ) {
                 Analog::log(
                     'Used hash has been successfully remove',
@@ -291,7 +289,6 @@ class Password
                 return true;
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'An error ocured attempting to delete used hash' .
                 $e->getMessage(),

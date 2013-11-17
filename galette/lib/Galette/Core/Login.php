@@ -38,7 +38,6 @@
 namespace Galette\Core;
 
 use Zend\Db\Adapter\Exception as AdapterException;
-use Zend\Db\Sql\Sql;
 use Galette\Repository\Groups as Groups;
 use Galette\Repository\Members as Members;
 use Galette\Entity\Adherent as Adherent;
@@ -75,10 +74,8 @@ class Login extends Authentication
         global $zdb, $i18n, $session;
 
         try {
-            $sql = new Sql($zdb->db);
-            $select = $sql->select();
-            $select->from(
-                array('a' => PREFIX_DB . self::TABLE),
+            $select = $zdb->select(self::TABLE, 'a');
+            $select->columns(
                 array(
                     'id_adh',
                     'bool_admin_adh',
@@ -95,7 +92,7 @@ class Login extends Authentication
                 'a.' . Status::PK . '=b.' . Status::PK,
                 array('priorite_statut')
             );
-            $select->where(array(self::PK . ' = ?' => $user));
+            $select->where(array(self::PK => $user));
 
             $results = $zdb->execute($select);
             if ( $results->count() == 0 ) {
@@ -195,10 +192,8 @@ class Login extends Authentication
         global $zdb;
 
         try {
-            $sql = new Sql($zdb->db);
-            $select = $sql->select();
-            $select->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . ' = ?', $user);
+            $select = $zdb->select(self::TABLE);
+            $select->where(array(self::PK => $user));
             $results = $zdb->execute($select);
 
             if ( $results->count() > 0 ) {

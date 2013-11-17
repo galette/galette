@@ -249,16 +249,18 @@ function getDynamicTranslation($text_orig, $text_locale)
 {
     global $zdb;
     try {
-        $sql = new Sql($zdb->db);
-        $select = $sql->select();
-        $select->limit(1)->from(
-            PREFIX_DB . Galette\Core\L10n::TABLE,
-            'text_trans'
-        )->where('text_orig = ?', $text_orig)
-            ->where('text_locale = ?', $text_locale);
-
+        $select = $zdb->select(Galette\Core\L10n::TABLE);
+        $select->limit(1)->columns(
+            array('text_trans')
+        )->where(
+            array(
+                'text_orig'     => $text_orig,
+                'text_locale'   => $text_locale
+            )
+        );
         $results = $zdb->execute($select);
         if ( $results->count() > 0 ) {
+            $res = $results->current();
             return $res->text_trans;
         } else {
             return;

@@ -247,16 +247,14 @@ class Picture
         global $zdb;
         $class = get_class($this);
 
-        $sql = new Sql($zdb->db);
-        $select = $sql->select();
-        $select->from(
-            array(PREFIX_DB . $this->tbl_prefix . $class::TABLE),
+        $select = $zdb->select($this->tbl_prefix . $class::TABLE);
+        $select->columns(
             array(
                 'picture',
                 'format'
             )
         );
-        $select->where(array($class::PK . ' = ?' => $this->db_id));
+        $select->where(array($class::PK => $this->db_id));
         return $select;
     }
 
@@ -644,72 +642,71 @@ class Picture
         }
     }
 
-    /* GETTERS */
     /**
-    * Returns current file optimal height (resized)
-    *
-    * @return int optimal height
-    */
+     * Returns current file optimal height (resized)
+     *
+     * @return int optimal height
+     */
     public function getOptimalHeight()
     {
         return round($this->optimal_height);
     }
 
     /**
-    * Returns current file height
-    *
-    * @return int current height
-    */
+     * Returns current file height
+     *
+     * @return int current height
+     */
     public function getHeight()
     {
         return $this->height;
     }
 
     /**
-    * Returns current file optimal width (resized)
-    *
-    * @return int optimal width
-    */
+     * Returns current file optimal width (resized)
+     *
+     * @return int optimal width
+     */
     public function getOptimalWidth()
     {
         return $this->optimal_width;
     }
 
     /**
-    * Returns current file width
-    *
-    * @return int current width
-    */
+     * Returns current file width
+     *
+     * @return int current width
+     */
     public function getWidth()
     {
         return $this->width;
     }
 
     /**
-    * Returns current file format
-    *
-    * @return string
-    */
+     * Returns current file format
+     *
+     * @return string
+     */
     public function getFormat()
     {
         return $this->format;
     }
 
     /**
-    * Have we got a picture ?
-    *
-    * @return bool True if a picture matches adherent's id, false otherwise
-    */
+     * Have we got a picture ?
+     *
+     * @return bool True if a picture matches adherent's id, false otherwise
+     */
     public function hasPicture()
     {
         return $this->has_picture;
     }
 
     /**
-    * Returns unauthorized characters litteral values quoted, comma separated values
-    *
-    * @return string comma separated disallowed characters
-    */
+     * Returns unauthorized characters litteral values quoted, comma separated values
+     *
+     * @return string comma separated disallowed characters
+     */
     public function getBadChars()
     {
         $ret = '';
@@ -720,40 +717,40 @@ class Picture
     }
 
     /**
-    * Returns allowed extensions
-    *
-    * @return string comma separated allowed extensiosn
-    */
+     * Returns allowed extensions
+     *
+     * @return string comma separated allowed extensiosn
+     */
     public function getAllowedExts()
     {
         return implode(', ', $this->_allowed_extensions);
     }
 
     /**
-    * Return the array of allowed mime types
-    *
-    * @return array
-    */
+     * Return the array of allowed mime types
+     *
+     * @return array
+     */
     public function getAllowedMimeTypes()
     {
         return $this->_allowed_mimes;
     }
 
     /**
-    * Returns current file full path
-    *
-    * @return string full file path
-    */
+     * Returns current file full path
+     *
+     * @return string full file path
+     */
     public function getPath()
     {
         return $this->file_path;
     }
 
     /**
-    * Returns current mime type
-    *
-    * @return string
-    */
+     * Returns current mime type
+     *
+     * @return string
+     */
     public function getMime()
     {
         return $this->mime;

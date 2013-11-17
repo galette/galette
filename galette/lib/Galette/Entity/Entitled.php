@@ -38,7 +38,6 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
-use Zend\Db\Sql\Sql;
 
 /**
  * Entitled handling. Manage:
@@ -113,13 +112,12 @@ abstract class Entitled
         global $zdb;
 
         try {
-            $sql = new Sql($zdb->db);
-            $select = $sql->select();
-            $select->from(PREFIX_DB . $this->_table)
-                ->where($this->_fpk . ' = ?', $id);
+            $select = $zdb->select($this->_table);
+            $select->where($this->_fpk . ' = ' . $id);
 
-            $result = $select->query();
-            $this->_loadFromRS($result->fetch());
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            $this->_loadFromRS($result);
 
             return true;
         } catch (\Exception $e) {
@@ -127,10 +125,6 @@ abstract class Entitled
                 'Cannot load ' . $this->getType()  . ' from id `' . $id . '` | ' .
                 $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -218,8 +212,7 @@ abstract class Entitled
         $list = array();
 
         try {
-            $sql = new Sql($zdb->db);
-            $select = $sql->select();
+            $select = $zdb->select($this->_table);
             $fields = array($this->_fpk, $this->_flabel);
             if ( $this->order_field !== false
                 && $this->order_field !== $this->_fpk
@@ -228,16 +221,14 @@ abstract class Entitled
                 $fields[] = $this->order_field;
             }
             $select->quantifier('DISTINCT');
-            $select->from(
-                PREFIX_DB . $this->_table,
-                $fields
-            );
+            $select->columns($fields);
+
             if ( $this->order_field !== false ) {
                 $select->order($this->order_field, $this->_fpk);
             }
             if ( $extent !== null ) {
                 if ( $extent === true ) {
-                    $select->where($this->_fthird . ' = ?', $extent);
+                    $select->where($this->_fthird . ' = ' . $extent);
                 } else if ( $extent === false ) {
                     if ( TYPE_DB === 'sqlite' ) {
                         $select->where($this->_fthird . ' = 0');
@@ -275,16 +266,14 @@ abstract class Entitled
         $list = array();
 
         try {
-            $sql = new Sql($zdb->db);
-            $select = $sql->select();
-            $select->from(PREFIX_DB . $this->_table);
+            $select = $zdb->select($this->_table);
             if ( $this->order_field !== false ) {
                 $select->order(array($this->order_field, $this->_fpk));
             }
 
-            $res = $select->query()->fetchAll();
+            $results = $zdb->execute($select);
 
-            if ( count($res) == 0 ) {
+            if ( $results->count() == 0 ) {
                 Analog::log(
                     'No entries (' . $this->getType()  . ') defined in database.',
                     Analog::INFO
@@ -294,7 +283,7 @@ abstract class Entitled
                 $flabel = $this->_flabel;
                 $fprio = $this->_fthird;
 
-                foreach ( $res as $r ) {
+                foreach ( $results as $r ) {
                     $list[$r->$pk] = array(
                         'name'  => _T($r->$flabel),
                         'extra' => $r->$fprio
@@ -307,10 +296,6 @@ abstract class Entitled
                 'Cannot list entries (' . $this->getType() . 
                 ') | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -334,9 +319,7 @@ abstract class Entitled
         global $zdb;
 
         try {
-            $sql = new Sql($zdb->db);
-            $select = $sql->select();
-            $select->from(PREFIX_DB . $this->_table);
+            $select = $zdb->select($this->_table);
             $select->where($this->_fpk . '=' . $id);
 
             $results = $zdb->execute($select);
@@ -389,11 +372,14 @@ abstract class Entitled
         global $zdb;
 
         try {
-            $sql = new Sql($zdb->db);
-            $select = $sql->select();
-            $select->from(PREFIX_DB . $this->_table, $this->_fpk)
-                ->where($this->_flabel . ' = ?', $label);
-            return $result = $select->query()->fetchColumn();
+            $pk = $this->_fpk;
+            $select = $zdb->select($this->_table);
+            $select->columns(array($pk))
+                ->where(array($this->_flabel => $label));
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            return $result->$pk;
         } catch (\Exception $e) {
             Analog::log(
                 'Unable to retrieve ' . $this->getType()  . ' from label `' .
@@ -418,7 +404,7 @@ abstract class Entitled
         global $zdb;
 
         // Avoid duplicates.
-        $ret = $this->getidByLabel($label);
+        $ret = $this->getIdByLabel($label);
 
         if ( $ret !== false ) {
             Analog::log(
@@ -434,13 +420,10 @@ abstract class Entitled
                 $this->_fthird  => $extra
             );
 
-            /*$sql = new Sql($zdb->db);
-            $insert = $sql->insert(PREFIX_DB . $this->_table);
-            $insert->values($values);*/
-            $ret = $zdb->db->insert(
-                PREFIX_DB . $this->_table,
-                $values
-            );
+            $insetr = $zdb->insert($this->_table);
+            $insert->values($values);
+
+            $ret = $zdb->execute($insert);
 
             if ( $ret >  0) {
                 Analog::log(
@@ -448,10 +431,8 @@ abstract class Entitled
                     '` added successfully.',
                     Analog::INFO
                 );
-                return $zdb->db->lastInsertId(
-                    PREFIX_DB . $this->_table,
-                    'id'
-                );
+
+                return $zdb->driver->getLastGeneratedValue();
             } else {
                 throw new \Exception('New ' . $this->getType() .' not added.');
             }
@@ -503,11 +484,11 @@ abstract class Entitled
                 $field => $value
             );
 
-            $sql = new Sql($zdb->db);
-            $update = $sql->update();
-
+            $update = $zdb->update($this->_table);
             $update->set($values);
             $update->where($this->_fpk . ' = ' . $id);
+
+            $zdb->execute($update);
 
             Analog::log(
                 $this->getType() . ' ' . $id . ' updated successfully.',
@@ -548,9 +529,10 @@ abstract class Entitled
         }
 
         try {
-            $sql = new Sql($zdb->db);
-            $del = $sql->delete(PREFIX_DB . $this->_table);
-            $del->where($this->_fpk . ' = ' . $id);
+            $delete = $zdb->delete($this->_table);
+            $delete->where($this->_fpk . ' = ' . $id);
+
+            $zdb->execute($delete);
 
             Analog::log(
                 $this->getType() . ' ' . $id . ' deleted successfully.',
@@ -580,11 +562,13 @@ abstract class Entitled
 
         // Check if it's used.
         try {
-            $sql = new Sql($zdb->db);
-            $select = $sql->select();
-            $select->from(PREFIX_DB . $this->_used)
-                ->where($this->_fpk . ' = ?', $id);
-            if ( $select->query()->fetch() !== false ) {
+            $select = $zdb->select($this->_used);
+            $select->where($this->_fpk . ' = ' . $id);
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+
+            if ( $result !== false ) {
                 return true;
             } else {
                 return false;
