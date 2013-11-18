@@ -98,7 +98,7 @@
     {/if}
                 </tr>
 {foreachelse}
-                <tr><td colspan="{if $login->isAdmin() or $login->isStaff()}8{else}7{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
+                <tr><td colspan="{if $login->isAdmin() or $login->isStaff()}9{else}7{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
 {/foreach}
             </tbody>
         </table>

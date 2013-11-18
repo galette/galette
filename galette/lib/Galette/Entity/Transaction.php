@@ -38,6 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 use Galette\Repository\Contributions as Contributions;
 
 /**
@@ -67,24 +68,24 @@ class Transaction
     private $_fields;
 
     /**
-    * Default constructor
-    *
-    * @param null|int|ResultSet $args Either a ResultSet row or its id for to load
-    *                                   a specific transaction, or null to just
-    *                                   instanciate object
-    */
+     * Default constructor
+     *
+     * @param null|int|ResultSet $args Either a ResultSet row or its id for to load
+     *                                   a specific transaction, or null to just
+     *                                   instanciate object
+     */
     public function __construct($args = null)
     {
         /*
-        * Fields configuration. Each field is an array and must reflect:
-        * array(
-        *   (string)label,
-        *   (string) propname
-        * )
-        *
-        * I'd prefer a static private variable for this...
-        * But call to the _T function does not seem to be allowed there :/
-        */
+         * Fields configuration. Each field is an array and must reflect:
+         * array(
+         *   (string)label,
+         *   (string) propname
+         * )
+         *
+         * I'd prefer a static private variable for this...
+         * But call to the _T function does not seem to be allowed there :/
+         */
         $this->_fields = array(
             self::PK            => array(
                 'label'    => null, //not a field in the form
@@ -119,12 +120,12 @@ class Transaction
     }
 
     /**
-    * Loads a transaction from its id
-    *
-    * @param int $id the identifier for the transaction to load
-    *
-    * @return bool true if query succeed, false otherwise
-    */
+     * Loads a transaction from its id
+     *
+     * @param int $id the identifier for the transaction to load
+     *
+     * @return bool true if query succeed, false otherwise
+     */
     public function load($id)
     {
         global $zdb;
@@ -203,12 +204,12 @@ class Transaction
     }
 
     /**
-    * Populate object from a resultset row
-    *
-    * @param ResultSet $r the resultset row
-    *
-    * @return void
-    */
+     * Populate object from a resultset row
+     *
+     * @param ResultSet $r the resultset row
+     *
+     * @return void
+     */
     private function _loadFromRS($r)
     {
         $pk = self::PK;
@@ -417,22 +418,22 @@ class Transaction
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . Contribution::TABLE,
-                'SUM(montant_cotis)'
-            )->where(self::PK . ' = ?', $this->_id);
-            $dispatched_amount = $select->query()->fetchColumn();
+            $select = $zdb->select(Contribution::TABLE);
+            $select->columns(
+                array(
+                    'sum' => new Expression('SUM(montant_cotis)')
+                )
+            )->where(self::PK . ' = ' . $this->_id);
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            $dispatched_amount = $result->sum;
             return (double)$dispatched_amount;
         } catch (\Exception $e) {
             Analog::log(
                 'An error occured retrieving dispatched amounts | ' .
                 $e->getMessage(),
                 Analog::ERROR
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString(),
-                Analog::DEBUG
             );
         }
     }
@@ -447,22 +448,22 @@ class Transaction
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . Contribution::TABLE,
-                'SUM(montant_cotis)'
-            )->where(self::PK . ' = ?', $this->_id);
-            $dispatched_amount = $select->query()->fetchColumn();
+            $select = $zdb->select(Contribution::TABLE);
+            $select->columns(
+                array(
+                    'sum' => new Expression('SUM(montant_cotis)')
+                )
+            )->where(self::PK . ' = ' . $this->_id);
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            $dispatched_amount = $result->sum;
             return (double)$this->_amount - (double)$dispatched_amount;
         } catch (\Exception $e) {
             Analog::log(
                 'An error occured retrieving missing amounts | ' .
                 $e->getMessage(),
                 Analog::ERROR
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString(),
-                Analog::DEBUG
             );
         }
     }
@@ -479,10 +480,10 @@ class Transaction
     }
 
     /**
-    * Get the relevant CSS class for current transaction
-    *
-    * @return string current transaction row class
-    */
+     * Get the relevant CSS class for current transaction
+     *
+     * @return string current transaction row class
+     */
     public function getRowClass()
     {
         return ( $this->getMissingAmount() == 0 ) ?
@@ -491,12 +492,12 @@ class Transaction
     }
 
     /**
-    * Global getter method
-    *
-    * @param string $name name of the property we want to retrive
-    *
-    * @return false|object the called property
-    */
+     * Global getter method
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return false|object the called property
+     */
     public function __get($name)
     {
         $forbidden = array();
@@ -517,13 +518,13 @@ class Transaction
     }
 
     /**
-    * Global setter method
-    *
-    * @param string $name  name of the property we want to assign a value to
-    * @param object $value a relevant value for the property
-    *
-    * @return void
-    */
+     * Global setter method
+     *
+     * @param string $name  name of the property we want to assign a value to
+     * @param object $value a relevant value for the property
+     *
+     * @return void
+     */
     public function __set($name, $value)
     {
         /*$forbidden = array('fields');*/

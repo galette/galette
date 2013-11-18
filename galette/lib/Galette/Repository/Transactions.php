@@ -38,6 +38,7 @@
 namespace Galette\Repository;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 use Galette\Core\Pagination as Pagination;
 use Galette\Entity\Transaction as Transaction;
 use Galette\Entity\Adherent as Adherent;
@@ -128,24 +129,19 @@ class Transactions extends Pagination
             $this->setLimits($select);
 
             $transactions = array();
+            $results = $zdb->execute($select);
             if ( $as_trans ) {
-                $res = $select->query()->fetchAll();
-                foreach ( $res as $row ) {
+                foreach ( $results as $row ) {
                     $transactions[] = new Transaction($row);
                 }
             } else {
-                $transactions = $select->query()->fetchAll();
+                $transactions = $results;
             }
             return $transactions;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot list transactions | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -169,21 +165,19 @@ class Transactions extends Pagination
                             ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
                             : implode(', ', $fields)) : (array)'*';
 
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                array('t' => PREFIX_DB . 'transactions'),
+            $select = $zdb->select(self::TABLE, 't');
+            $select->columns(
                 array(
-                    't.trans_date',
-                    't.trans_id',
-                    't.trans_desc',
-                    't.id_adh',
-                    't.trans_amount',
-                    'a.nom_adh',
-                    'a.prenom_adh'
+                    'trans_date',
+                    'trans_id',
+                    'trans_desc',
+                    'id_adh',
+                    'trans_amount'
                 )
             )->join(
-                array('a' => PREFIX_DB . Adherent::TABLE, Adherent::PK),
-                't.' . Adherent::PK . '=' . 'a.' . Adherent::PK
+                array('a' => PREFIX_DB . Adherent::TABLE),
+                't.' . Adherent::PK . '=' . 'a.' . Adherent::PK,
+                array('nom_adh', 'prenom_adh')
             );
 
             $this->_buildWhereClause($select);
@@ -195,14 +189,9 @@ class Transactions extends Pagination
 
             return $select;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot build SELECT clause for transactions | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -211,7 +200,7 @@ class Transactions extends Pagination
     /**
     * Count transactions from the query
     *
-    * @param Zend_Db_Select $select Original select
+    * @param Select $select Original select
     *
     * @return void
     */
@@ -221,11 +210,16 @@ class Transactions extends Pagination
 
         try {
             $countSelect = clone $select;
-            $countSelect->reset(\Zend_Db_Select::COLUMNS);
-            $countSelect->reset(\Zend_Db_Select::ORDER);
-            $countSelect->columns('count(' . self::PK . ') AS ' . self::PK);
-            $str = $select->__toString();
-            $result = $countSelect->query()->fetch();
+            $countSelect->reset($countSelect::COLUMNS);
+            $countSelect->reset($countSelect::ORDER);
+            $countSelect->columns(
+                array(
+                    self::PK => new Expression('COUNT(' . self::PK . ')')
+                )
+            );
+
+            $results = $zdb->execute($countSelect);
+            $result = $results->current();
 
             $k = self::PK;
             $this->_count = $result->$k;
@@ -234,14 +228,9 @@ class Transactions extends Pagination
                 $this->countPages();
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot count transactions | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $countSelect->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -278,7 +267,7 @@ class Transactions extends Pagination
     /**
      * Builds where clause, for filtering on simple list mode
      *
-     * @param Zend_Db_Select $select Original select
+     * @param Select $select Original select
      *
      * @return string SQL WHERE clause
      */
@@ -315,12 +304,13 @@ class Transactions extends Pagination
 
             if ( !$login->isAdmin() && !$login->isStaff() ) {
                 //non staff members can only view their own transactions
-                $select->where('t.' . Adherent::PK . ' = ?', $login->id);
+                $select->where('t.' . Adherent::PK . ' = ' . $login->id);
             } else if ( $this->_filtre_cotis_adh != null ) {
-                $select->where('t.' . Adherent::PK . ' = ?', $this->_filtre_cotis_adh);
+                $select->where(
+                    't.' . Adherent::PK . ' = ' . $this->_filtre_cotis_adh
+                );
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
@@ -372,25 +362,25 @@ class Transactions extends Pagination
         if ( is_array($list) ) {
             $res = true;
             try {
-                $zdb->db->beginTransaction();
-                $select = new \Zend_Db_Select($zdb->db);
-                $select->from(PREFIX_DB . self::TABLE)
-                    ->where(self::PK . ' IN (?)', $list);
-                $transactions = $select->query()->fetchAll();
-                foreach ( $transactions as $transaction ) {
+                $zdb->connection->beginTransaction();
+
+                $select = $zdb->select(self::TABLE);
+                $select->where>in(self::PK, $list);
+
+                $results = $zdb->execute($select);
+                foreach ( $results as $transaction ) {
                     $c = new Transaction($transaction);
                     $res = $c->remove(false);
                     if ( $res === false ) {
                         throw new \Exception;
                     }
                 }
-                $zdb->db->commit();
+                $zdb->connection->commit();
                 $hist->add(
                     "Transactions deleted (" . print_r($list, true) . ')'
                 );
             } catch (\Exception $e) {
-                /** FIXME */
-                $zdb->db->rollBack();
+                $zdb->connection->rollBack();
                 Analog::log(
                     'An error occured trying to remove transactions | ' .
                     $e->getMessage(),
@@ -401,7 +391,8 @@ class Transactions extends Pagination
         } else {
             //not numeric and not an array: incorrect.
             Analog::log(
-                'Asking to remove transaction, but without providing an array or a single numeric value.',
+                'Asking to remove transaction, but without providing ' .
+                'an array or a single numeric value.',
                 Analog::WARNING
             );
             return false;
