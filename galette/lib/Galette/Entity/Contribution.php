@@ -818,11 +818,12 @@ class Contribution
         global $zdb;
 
         try {
-            $zdb->db->update(
-                PREFIX_DB . self::TABLE,
-                array(Transaction::PK => $trans_id),
-                self::PK . ' = ' . $contrib_id
-            );
+            $update = $zdb->update(self::TABLE);
+            $update->set(
+                array(Transaction::PK => $trans_id)
+            )->where(self::PK . ' = ' . $contrib_id);
+
+            $zdb->execute($update);
             return true;
         } catch (\Exception $e) {
             Analog::log(
