@@ -39,6 +39,7 @@ namespace Galette\Core;
 
 use Analog\Analog as Analog;
 use Galette\Entity\Adherent;
+use Zend\Db\Sql\Expression;
 
 /**
  * Mailing features
@@ -120,20 +121,18 @@ class MailingHistory extends History
         }
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                array('a' => $this->getTableName())
-            )->joinLeft(
+            $select = $zdb->select($this->getTableName(), 'a');
+            $select->join(
                 array('b' => PREFIX_DB . Adherent::TABLE),
                 'a.mailing_sender=b.' . Adherent::PK,
-                array('b.nom_adh', 'b.prenom_adh')
+                array('nom_adh', 'prenom_adh'),
+                $select::JOIN_LEFT
             )->order($this->orderby . ' ' . $this->ordered);
             //add limits to retrieve only relavant rows
-            $sql = $select->__toString();
             $this->setLimits($select);
-            $ret = $select->query(\Zend_Db::FETCH_ASSOC)->fetchAll();
-
-            foreach ( $ret as &$r ) {
+            $results = $zdb->execute($select);
+            $ret = array();
+            foreach ( $results as $r ) {
                 if ( $r['mailing_sender'] !== null ) {
                     $r['mailing_sender_name'] = Adherent::getSName($r['mailing_sender']);
                 }
@@ -174,6 +173,7 @@ class MailingHistory extends History
                     }
                 }
                 $r['attachments'] = $attachments;
+                $ret[] = $r;
             }
             return $ret;
         } catch (\Exception $e) {
@@ -205,12 +205,13 @@ class MailingHistory extends History
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . self::TABLE)
-                ->where('mailing_id = ?', $id);
-            $res = $select->query()->fetch();
+            $select = $zdb->select(self::TABLE);
+            $select->where('mailing_id = ' . $id);
 
-            return $mailing->loadFromHistory($res, $new);
+            $results = $zdb->execute($select);
+            $result = $results->current();
+
+            return $mailing->loadFromHistory($result, $new);
         } catch (\Exception $e) {
             Analog::log(
                 'Unable to load mailing model #' . $id . ' | ' .
@@ -274,7 +275,7 @@ class MailingHistory extends History
                 }
             }
             $values = array(
-                'mailing_sender' => ($this->_sender === 0) ? new \Zend_Db_Expr('NULL') : $this->_sender,
+                'mailing_sender' => ($this->_sender === 0) ? new Expression('NULL') : $this->_sender,
                 'mailing_subject' => $this->_subject,
                 'mailing_body' => $this->_message,
                 'mailing_date' => $this->_date,
@@ -282,11 +283,10 @@ class MailingHistory extends History
                 'mailing_sent' => ($this->_sent) ? true : 'false'
             );
 
-            $zdb->db->update(
-                PREFIX_DB . self::TABLE,
-                $values,
-                $zdb->db->quoteInto(self::PK . ' = ?', $this->_mailing->history_id)
-            );
+            $update = $zdb->update(self::TABLE);
+            $update->set($values);
+            $update->where(self::PK . ' = ' . $this->_mailing->history_id);
+            $zdb->execute($update);
             return true;
         } catch (\Exception $e) {
             Analog::log(
@@ -322,11 +322,9 @@ class MailingHistory extends History
                 'mailing_sent' => ($this->_sent) ? true : 'false'
             );
 
-            $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
-            $this->_id = $zdb->db->lastInsertId(
-                PREFIX_DB . self::TABLE,
-                'id'
-            );
+            $insert = $zdb->insert(self::TABLE);
+            $insert->values($values);
+            $this->_id = $zdb->driver->getLastGeneratedValue();
             return true;
         } catch (\Exception $e) {
             Analog::log(
@@ -363,16 +361,15 @@ class MailingHistory extends History
                     $mailing->removeAttachments();
                 }
 
-                $zdb->db->beginTransaction();
+                $zdb->connection->beginTransaction();
 
                 //delete members
-                $del = $zdb->db->delete(
-                    PREFIX_DB . self::TABLE,
-                    self::PK . ' IN (' . implode(',', $list) . ')'
-                );
+                $delete = $zdb->delete(self::TABLE);
+                $delete->where->in(self::PK, $list);
+                $zdb->execute($delete);
 
                 //commit all changes
-                $zdb->db->commit();
+                $zdb->connection->commit();
 
                 //add an history entry
                 $hist->add(
@@ -381,7 +378,7 @@ class MailingHistory extends History
 
                 return true;
             } catch (\Exception $e) {
-                $zdb->db->rollBack();
+                $zdb->connection->rollBack();
                 Analog::log(
                     'Unable to delete selected mailing history entries |' .
                     $e->getMessage(),
@@ -402,11 +399,17 @@ class MailingHistory extends History
     /**
      * Get table's name
      *
+     * @param boolean $prefixed Whether table name should be prefixed
+     *
      * @return string
      */
-    protected function getTableName()
+    protected function getTableName($prefixed = false)
     {
-        return PREFIX_DB . self::TABLE;
+        if ( $prefixed === true ) {
+            return PREFIX_DB . self::TABLE;
+        } else {
+            return self::TABLE;
+        }
     }
 
     /**
