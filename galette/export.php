@@ -79,17 +79,16 @@ if ( isset($_GET['sup']) ) {
 
 if ( isset( $_POST['export_tables'] ) && $_POST['export_tables'] != '' ) {
     foreach ( $_POST['export_tables'] as $table) {
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->from($table);
-        $result = $select->query()->fetchAll(Zend_Db::FETCH_ASSOC);
+        $select = $zdb->sql->select($table);
+        $results = $zdb->execute($select);
 
-        if ( count($result) > 0 ) {
+        if ( $results->count() > 0 ) {
             $filename = $table . '_full.csv';
             $filepath = CsvOut::DEFAULT_DIRECTORY . $filename;
             $fp = fopen($filepath, 'w');
             if ( $fp ) {
                 $res = $csv->export(
-                    $result,
+                    $results,
                     Csv::DEFAULT_SEPARATOR,
                     Csv::DEFAULT_QUOTE,
                     true,

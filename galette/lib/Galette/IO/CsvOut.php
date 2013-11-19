@@ -38,6 +38,7 @@
 namespace Galette\IO;
 
 use Analog\Analog as Analog;
+use Zend\Db\Adapter\Adapter;
 
 /**
  * CSV exports
@@ -228,10 +229,9 @@ class CsvOut extends Csv
         $export = $xpath[0];
 
         try {
-            $result = $zdb->db->query(
-                str_replace('galette_', PREFIX_DB, $export->query)
-            )->fetchAll(
-                \Zend_Db::FETCH_ASSOC
+            $results = $zdb->db->query(
+                str_replace('galette_', PREFIX_DB, $export->query),
+                Adapter::QUERY_MODE_EXECUTE
             );
 
             $filename=self::DEFAULT_DIRECTORY . $export['filename'];
@@ -258,7 +258,7 @@ class CsvOut extends Csv
                     }
                 }
 
-                $this->export($result, $separator, $quote, $title, $fp);
+                $this->export($results, $separator, $quote, $title, $fp);
                 fclose($fp);
             } else {
                 Analog::log(

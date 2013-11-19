@@ -502,7 +502,8 @@ class Db
      */
     public function getTables($prefix = null)
     {
-        $tmp_tables_list = $this->_db->listTables();
+        $metadata = new \Zend\Db\Metadata\Metadata($this->_db);
+        $tmp_tables_list = $metadata->getTableNames();
 
         if ( $prefix === null ) {
             $prefix = PREFIX_DB;
