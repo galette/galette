@@ -134,7 +134,8 @@ class MailingHistory extends History
             $ret = array();
             foreach ( $results as $r ) {
                 if ( $r['mailing_sender'] !== null ) {
-                    $r['mailing_sender_name'] = Adherent::getSName($r['mailing_sender']);
+                    $r['mailing_sender_name'] 
+                        = Adherent::getSName($r['mailing_sender']);
                 }
                 $body_resume = $r['mailing_body'];
                 if ( strlen($body_resume) > 150 ) {
@@ -177,14 +178,9 @@ class MailingHistory extends History
             }
             return $ret;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Unable to get history. | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -389,7 +385,8 @@ class MailingHistory extends History
         } else {
             //not numeric and not an array: incorrect.
             Analog::log(
-                'Asking to remove mailing entries, but without providing an array or a single numeric value.',
+                'Asking to remove mailing entries, but without ' .
+                'providing an array or a single numeric value.',
                 Analog::WARNING
             );
             return false;

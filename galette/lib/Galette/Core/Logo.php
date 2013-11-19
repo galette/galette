@@ -61,20 +61,20 @@ class Logo extends Picture
     protected $custom = true;
 
     /**
-    * Default constructor.
-    */
+     * Default constructor.
+     */
     public function __construct()
     {
         parent::__construct($this->id);
     }
 
     /**
-    * Gets the default picture to show, anyways
-    *
-    * @see Picture::getDefaultPicture()
-    *
-    * @return void
-    */
+     * Gets the default picture to show, anyways
+     *
+     * @see Picture::getDefaultPicture()
+     *
+     * @return void
+     */
     protected function getDefaultPicture()
     {
         $this->file_path = _CURRENT_TEMPLATE_PATH . 'images/galette.png';
@@ -84,12 +84,12 @@ class Logo extends Picture
     }
 
     /**
-    * Returns the relevant query to check if picture exists in database.
-    *
-    * @see picture::getCheckFileQuery()
-    *
-    * @return string SELECT query
-    */
+     * Returns the relevant query to check if picture exists in database.
+     *
+     * @see picture::getCheckFileQuery()
+     *
+     * @return string SELECT query
+     */
     protected function getCheckFileQuery()
     {
         global $zdb;
@@ -106,10 +106,10 @@ class Logo extends Picture
     }
 
     /**
-    * Returns custom state
-    *
-    * @return boolean
-    */
+     * Returns custom state
+     *
+     * @return boolean
+     */
     public function isCustom()
     {
         return $this->custom;
