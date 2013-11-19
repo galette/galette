@@ -194,17 +194,21 @@ class Preferences
             }
         }
         if ( $proceed !== false ) {
-            $sql = 'INSERT INTO ' . PREFIX_DB . self::TABLE .
-                ' (nom_pref, val_pref) VALUES(:nom_pref, :val_pref)';
-
             try {
-                $stmt = $this->_zdb->db->prepare($sql);
+                $insert = $this->_zdb->insert(self::TABLE);
+                $insert->values(
+                    array(
+                        'nom_pref'  => ':nom_pref',
+                        'val_pref'  => ':val_pref'
+                    )
+                );
+                $stmt = $sql->prepareStatementForSqlObject($insert);
 
                 foreach ( $params as $p ) {
                     $stmt->execute(
                         array(
-                            ':nom_pref' => $p['nom_pref'],
-                            ':val_pref' => $p['val_pref']
+                            'nom_pref' => $p['nom_pref'],
+                            'val_pref' => $p['val_pref']
                         )
                     );
                 }
@@ -261,7 +265,8 @@ class Preferences
     {
         try {
             //first, we drop all values
-            $this->_zdb->db->delete(PREFIX_DB . self::TABLE);
+            $delete = $this->_zdb->delete(self::TABLE);
+            $this->_zdb->execute($delete);
 
             //we then replace default values with the ones user has selected
             $values = self::$_defaults;
@@ -270,15 +275,22 @@ class Preferences
             $values['pref_admin_pass'] = $adm_pass;
             $values['pref_card_year'] = date('Y');
 
-            $stmt = $this->_zdb->db->prepare(
-                'INSERT INTO ' . PREFIX_DB . self::TABLE .
-                ' (nom_pref, val_pref) VALUES(:nom_pref, :val_pref)'
+            $insert = $this->_zdb->insert(self::TABLE);
+            $insert->values(
+                array(
+                    'nom_pref'  => ':nom_pref',
+                    'val_pref'  => ':val_pref'
+                )
             );
+            $stmt = $sql->prepareStatementForSqlObject($insert);
 
             foreach ( $values as $k=>$v ) {
-                $stmt->bindParam(':nom_pref', $k);
-                $stmt->bindParam(':val_pref', $v);
-                $stmt->execute();
+                $stmt->execute(
+                    array(
+                        'nom_pref' => $k,
+                        'val_pref' => $v
+                    )
+                );
             }
 
             Analog::log(
