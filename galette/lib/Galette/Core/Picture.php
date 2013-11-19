@@ -327,14 +327,16 @@ class Picture
 
         try {
             if ( $transaction === true ) {
-                $zdb->db->beginTransaction();
+                $zdb->connection->beginTransaction();
             }
-            $del = $zdb->db->delete(
-                PREFIX_DB . $this->tbl_prefix . $class::TABLE,
-                $zdb->db->quoteInto($class::PK . ' = ?', $this->db_id)
-            );
 
-            if ( !$del > 0 ) {
+            $delete = $zdb->delete($class::TABLE);
+            $delete->where(
+                $class::PK . ' = ' . $this->db_id
+            );
+            $del = $zdb->execute($delete);
+
+            if ( !$del->getCount() > 0 ) {
                 Analog::log(
                     'Unable to remove picture database entry for ' . $this->db_id,
                     Analog::ERROR
@@ -369,7 +371,7 @@ class Picture
             if ( $_file !== null && $success !== true ) {
                 //unable to remove file that exists!
                 if ( $transaction === true ) {
-                    $zdb->db->rollBack();
+                    $zdb->connection->rollBack();
                 }
                 Analog::log(
                     'The file ' . $_file .
@@ -379,13 +381,13 @@ class Picture
                 return false;
             } else {
                 if ( $transaction === true ) {
-                    $zdb->db->commit();
+                    $zdb->connection->commit();
                 }
                 return true;
             }
         } catch (\Exception $e) {
             if ( $transaction === true ) {
-                $zdb->db->rollBack();
+                $zdb->connection->rollBack();
             }
             Analog::log(
                 'An error occured attempting to delete picture ' . $this->db_id .
@@ -511,18 +513,24 @@ class Picture
         fclose($f);
 
         try {
-            $stmt = $zdb->db->prepare(
-                'INSERT INTO ' . PREFIX_DB .
-                $this->tbl_prefix . $class::TABLE . ' (' . $class::PK .
-                ', picture, format) VALUES (:id, :picture, :format)'
+            $insert = $zdb->insert($this->tbl_prefix . $class::TABLE);
+            $insert->values(
+                array(
+                    $class::PK  => ':id',
+                    'picture'   => ':picture',
+                    'format'    => ':format'
+                )
             );
+            $stmt = $sql->prepareStatementForSqlObject($insert);
 
-            $stmt->bindParam('id', $this->db_id);
-            $stmt->bindParam('picture', $picture, \PDO::PARAM_LOB);
-            $stmt->bindParam('format', $extension);
-            $stmt->execute();
+            $stmt->execute(
+                array(
+                    $class::PK  => $this->_db_id,
+                    'picture'   => $picture,
+                    'format'    => $extension
+                )
+            );
         } catch (\Exception $e) {
-            /** FIXME */
             Analog::log(
                 'An error occured storing picture in database: ' .
                 $e->getMessage(),
