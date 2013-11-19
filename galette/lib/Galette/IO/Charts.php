@@ -38,6 +38,8 @@
 namespace Galette\IO;
 
 use Analog\Analog;
+use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Predicate\PredicateSet;
 use Galette\Entity\Status;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
@@ -119,14 +121,12 @@ class Charts
     {
         global $zdb;
 
-
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->from(
-            array('a' => PREFIX_DB . Status::TABLE),
+        $select = $zdb->select(Status::TABLE, 'a');
+        $select->columns(
             array(
-                'cnt'       => 'count(a.' . Status::PK . ')',
-                'status'    => 'a.libelle_statut',
-                'priority'  => 'a.priorite_statut'
+                'cnt'       => new Expression('COUNT(a.' . Status::PK . ')'),
+                'status'    => 'libelle_statut',
+                'priority'  => 'priorite_statut'
             )
         )->join(
             array('b' => PREFIX_DB . Adherent::TABLE),
@@ -136,15 +136,11 @@ class Charts
             ->order('a.priorite_statut')
             ->group('a.' . Status::PK);
 
-        Analog::log(
-            $select->__toString(),
-            Analog::DEBUG
-        );
-        $res = $select->query()->fetchAll();
+        $results = $zdb->execute($select);
 
         $chart = array();
         $staff = array(_T("Staff members"), 0);
-        foreach ( $res as $r ) {
+        foreach ( $results as $r ) {
             if ( $r->priority >= Members::NON_STAFF_MEMBERS ) {
                 $chart[] = array(
                     _T($r->status),
@@ -168,79 +164,84 @@ class Charts
         global $zdb;
 
         $chart = array();
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->from(
-            array('a' => PREFIX_DB . Adherent::TABLE),
+        $select = $zdb->select(Adherent::TABLE, 'a');
+        $select->columns(
             array(
-                'cnt' => 'count(a.' . Adherent::PK . ')'
+                'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
             )
-        )->where('bool_exempt_adh = ?', true);
+        )->where('bool_exempt_adh = ' . true);
 
-        $res = $select->query()->fetchColumn();
+        $results = $zdb->execute($select);
+        $result = $results->current();
+
         $chart[] = array(
             _T("Due free"),
-            (int)$res
+            (int)$result->cnt
         );
 
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->from(
-            array('a' => PREFIX_DB . Adherent::TABLE),
+        $select = $zdb->select(Adherent::TABLE, 'a');
+        $select->columns(
             array(
-                'cnt' => 'count(a.' . Adherent::PK . ')'
+                'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
             )
-        )->where('date_echeance ?', new \Zend_Db_Expr('IS NULL'));
+        )->where('date_echeance IS NULL');
 
-        $res = $select->query()->fetchColumn();
+        $results = $zdb->execute($select);
+        $result = $results->current();
+
         $chart[] = array(
             _T("Never contribute"),
-            (int)$res
+            (int)$result->cnt
         );
 
         $soon_date = new \DateTime();
         $soon_date->modify('+30 day');
 
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->from(
-            array('a' => PREFIX_DB . Adherent::TABLE),
+        $select = $zdb->select(Adherent::TABLE, 'a');
+        $select->columns(
             array(
-                'cnt' => 'count(a.' . Adherent::PK . ')'
+                'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
             )
         )
-            ->where('date_echeance < ?', $soon_date->format('Y-m-d'))
-            ->where('date_echeance >= ?', new \Zend_Db_Expr('NOW()'));
+            ->where->lessThanOrEqualTo('date_echeance', $soon_date->format('Y-m-d'))
+            ->where->greaterThanOrEqualTo('date_echeance', new Expression('NOW()'));
 
-        $res = $select->query()->fetchColumn();
+        $results = $zdb->execute($select);
+        $result = $results->current();
+
         $chart[] = array(
             _T("Impending due dates"),
-            (int)$res
+            (int)$result->cnt
         );
 
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->from(
-            array('a' => PREFIX_DB . Adherent::TABLE),
+        $select = $zdb->select(Adherent::TABLE, 'a');
+        $select->columns(
             array(
-                'cnt'       => 'count(a.' . Adherent::PK . ')'
+                'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
             )
-        )->where('date_echeance > ?', new \Zend_Db_Expr('NOW()'));
+        )->where->greaterThan('date_echeance', new Expression('NOW()'));
 
-        $res = $select->query()->fetchColumn();
+        $results = $zdb->execute($select);
+        $result = $results->current();
+
         $chart[] = array(
             _T("Up to date"),
-            (int)$res
+            (int)$result->cnt
         );
 
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->from(
-            array('a' => PREFIX_DB . Adherent::TABLE),
+        $select = $zdb->select(Adherent::TABLE, 'a');
+        $select->columns(
             array(
-                'cnt'       => 'count(a.' . Adherent::PK . ')'
+                'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
             )
-        )->where('date_echeance < ?', new \Zend_Db_Expr('NOW()'));
+        )->where->lessThan('date_echeance', new Expression('NOW()'));
 
-        $res = $select->query()->fetchColumn();
+        $results = $zdb->execute($select);
+        $result = $results->current();
+
         $chart[] = array(
             _T("Late"),
-            (int)$res
+            (int)$result->cnt
         );
 
         $this->_charts[self::MEMBERS_STATEDUE_PIE] = json_encode($chart);
@@ -256,45 +257,45 @@ class Charts
         global $zdb;
 
         //non companies
-        $select1 = new \Zend_Db_Select($zdb->db);
-        $select1->from(
-            PREFIX_DB . Adherent::TABLE,
+        $select1 = $zdb->select(Adherent::TABLE);
+        $select1->columns(
             array(
-                'cnt' => 'count(' . Adherent::PK . ')'
+                'cnt' => new Expression('COUNT(' . Adherent::PK . ')')
             )
-        )
-            ->where('societe_adh ?', new \Zend_Db_Expr('IS NULL'))
-            ->orWhere('societe_adh = ?', '');
-
-        $select2 = new \Zend_Db_Select($zdb->db);
-        $select2->from(
-            PREFIX_DB . Adherent::TABLE,
+        )->where(
             array(
-                'cnt' => 'count(' . Adherent::PK . ')'
-            )
-        )
-            ->where('societe_adh ?', new \Zend_Db_Expr('IS NOT NULL'))
-            ->Where('societe_adh != ?', '');
-
-        //companies
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->union(array($select1, $select2), \Zend_Db_Select::SQL_UNION_ALL);
-
-        Analog::log(
-            $select->__toString(),
-            Analog::DEBUG
+                'societe_adh IS NULL',
+                'societe_adh = \'\''
+            ),
+            PredicateSet::OP_OR
         );
 
-        $res = $select->query()->fetchAll();
+        $select2 = $zdb->select(Adherent::TABLE);
+        $select2->columns(
+            array(
+                'cnt' => new Expression('COUNT(' . Adherent::PK . ')')
+            )
+        )
+            ->where('societe_adh IS NOT NULL')
+            ->Where('societe_adh != \'\'');
+
+        //companies
+        $select1->combine($select2);
+        //$select->union(array($select1, $select2), \Zend_Db_Select::SQL_UNION_ALL);
+
+        $results = $zdb->execute($select1);
+
+        $result = $results->current();
+        $next = $results->current();
 
         $chart = array(
             array(
                 _T("Individuals"),
-                (int)$res[0]->cnt
+                (int)$result->cnt
             ),
             array(
                 _T("Companies"),
-                (int)$res[1]->cnt
+                (int)$next->cnt
             )
         );
         $this->_charts[self::COMPANIES_OR_NOT] = json_encode($chart);
@@ -309,30 +310,25 @@ class Charts
     {
         global $zdb;
 
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->from(
-            array('a' => PREFIX_DB . ContributionsTypes::TABLE),
+        $select = $zdb->select(ContributionsTypes::TABLE, 'a');
+        $select->columns(
             array(
-                'cnt'       => 'count(a.' . ContributionsTypes::PK . ')',
-                'label'     => 'a.libelle_type_cotis',
-                'extends'   => 'a.cotis_extension'
+                'cnt'       => new Expression('COUNT(a.' . ContributionsTypes::PK . ')'),
+                'label'     => 'libelle_type_cotis',
+                'extends'   => 'cotis_extension'
             )
         )->join(
             array('b' => PREFIX_DB . Contribution::TABLE),
             'a.' . ContributionsTypes::PK . '=b.' . ContributionsTypes::PK,
             array()
         )
-            ->order('a.cotis_extension')
+            ->order('cotis_extension')
             ->group('a.' . ContributionsTypes::PK);
 
-        Analog::log(
-            $select->__toString(),
-            Analog::DEBUG
-        );
-        $res = $select->query()->fetchAll();
+        $results = $zdb->execute($select);
 
         $chart = array();
-        foreach ( $res as $r ) {
+        foreach ( $results as $r ) {
             $chart[] = array(
                 _T($r->label),
                 (int)$r->cnt
@@ -350,34 +346,31 @@ class Charts
     {
         global $zdb;
 
-        $select = new \Zend_Db_Select($zdb->db);
+        $select = $zdb->select(Contribution::TABLE);
 
         $cols = array(
             'date'      => null,
-            'amount'    => new \Zend_Db_Expr('SUM(montant_cotis)')
+            'amount'    => new Expression('SUM(montant_cotis)')
         );
         $groupby = null;
 
         if ( TYPE_DB === 'pgsql' ) {
-            $cols['date'] = new \Zend_Db_Expr('date_trunc(\'month\', date_enreg)');
-            $groupby = new \Zend_Db_Expr('date_trunc(\'month\', date_enreg)');
+            $cols['date'] = new Expression('date_trunc(\'month\', date_enreg)');
+            $groupby = new Expression('date_trunc(\'month\', date_enreg)');
         } else if ( TYPE_DB === 'mysql' ) {
-            $cols['date'] = new \Zend_Db_Expr('date_format(date_enreg, \'%Y-%m\')');
-            $groupby = new \Zend_Db_Expr('EXTRACT(YEAR_MONTH FROM date_enreg)');
+            $cols['date'] = new Expression('date_format(date_enreg, \'%Y-%m\')');
+            $groupby = new Expression('EXTRACT(YEAR_MONTH FROM date_enreg)');
         } else if ( TYPE_DB === 'sqlite') {
-            $cols['date'] = new \Zend_Db_Expr('STRFTIME("%Y-%m-%d", date_enreg)');
+            $cols['date'] = new Expression('STRFTIME("%Y-%m-%d", date_enreg)');
             $groupby = 'date';
         }
 
-        $select->from(
-            PREFIX_DB . Contribution::TABLE,
-            $cols
-        )->group($groupby)->order('date ASC');
+        $select->columns($cols)->group($groupby)->order('date ASC');
 
-        $res = $select->query()->fetchAll();
+        $results = $zdb->execute($select);
 
         $chart = array();
-        foreach ( $res as $r ) {
+        foreach ( $results as $r ) {
             $d = new \DateTime($r->date);
             $chart[] = array(
                 $d->format('Y-m'),
