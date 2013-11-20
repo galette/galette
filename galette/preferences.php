@@ -277,7 +277,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
     }
 
     if (GALETTE_MODE !== 'DEMO' ) {
-        // Check passwords. MD5 hash will be done into the Preferences class
+        // Check passwords. Hash will be done into the Preferences class
         if (strcmp($insert_values['pref_admin_pass'], $_POST['pref_admin_pass_check']) != 0) {
             $error_detected[] = _T("Passwords mismatch");
         }

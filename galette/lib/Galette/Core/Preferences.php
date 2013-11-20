@@ -325,33 +325,44 @@ class Preferences
     public function store()
     {
         try {
-            $stmt = $this->_zdb->db->prepare(
-                'UPDATE ' . PREFIX_DB . self::TABLE . ' SET ' .
-                $this->_zdb->db->quoteIdentifier('val_pref') . ' =  :value' .
-                ' WHERE ' . $this->_zdb->db->quoteIdentifier('nom_pref') . ' = :name'
-            );
+            $this->_zdb->connection->beginTransaction();
+            $update = $this->_zdb->update(self::TABLE);
+            $update->set(
+                array(
+                    'val_pref'  => ':val_pref'
+                )
+            )->where->equalTo('nom_pref', ':nom_pref');
+
+            $stmt = $this->_zdb->sql->prepareStatementForSqlObject($update);
 
             foreach ( self::$_defaults as $k=>$v ) {
                 Analog::log('Storing ' . $k, Analog::DEBUG);
-                $stmt->bindValue(':value', $this->_prefs[$k], \PDO::PARAM_STR);
-                $stmt->bindValue(':name', $k, \PDO::PARAM_STR);
 
-                $stmt->execute();
+                /** Why where parameter is named where1 ?? */
+                $stmt->execute(
+                    array(
+                        'val_pref'  => $this->_prefs[$k],
+                        'where1'    => $k
+                    )
+                );
             }
+            $this->_zdb->connection->commit();
             Analog::log(
                 'Preferences were successfully stored into database.',
                 Analog::INFO
             );
             return true;
         } catch (\Exception $e) {
-            /** TODO */
+            $this->_zdb->connection->rollBack();
+
+            $messages = array();
+            do {
+                $messages[] = $e->getMessage();
+            } while ($e = $e->getPrevious());
+
             Analog::log(
-                'Unable to store preferences | ' . $e->getMessage(),
+                'Unable to store preferences | ' . print_r($messages, true),
                 Analog::WARNING
-            );
-            Analog::log(
-                $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
