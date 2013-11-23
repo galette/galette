@@ -170,13 +170,13 @@ class Db
             return true;
         }
         try {
-            $select = new \Zend_Db_Select($this->db);
-            $select->from(
-                PREFIX_DB . 'database',
+            $select = $this->select('database');
+            $select->columns(
                 array('version')
             )->limit(1);
-            $sql = $select->__toString();
-            $res = $select->query()->fetch();
+
+            $results = $this->execute($select);
+            $result = $results->current();
             return $res->version === GALETTE_DB_VERSION;
         } catch ( \Exception $e ) {
             Analog::log(
@@ -443,11 +443,10 @@ class Db
 
                 //can Galette SELECT records ?
                 try {
-                    $select = new \Zend_Db_Select($this->_db);
-                    $select->from('galette_test')
-                        ->where('test_id = ?', 1);
-                    $res = $select->query()->fetchAll();
-                    if ( count($res) === 1 ) {
+                    $select = $this->select('test');
+                    $select->where('test_id = 1');
+                    $results = $zdb->execute($select);
+                    if ( $results->count() === 1 ) {
                         $results['select'] = true;
                     } else {
                         throw new \Exception('Select is empty!');
@@ -608,11 +607,6 @@ class Db
         }
 
         try {
-            $select = new \Zend_Db_Select($this->_db);
-            $select->from($table);
-
-            $result = $select->query();
-
             $descr = $this->_db->describeTable($table);
 
             $pkeys = array();
@@ -650,8 +644,10 @@ class Db
                 }
             }
 
-            $r = $result->fetchAll();
-            foreach ( $r as $row ) {
+            $select = $this->_sql->select($table);
+            $results = $this->execute($select);
+
+            foreach ( $results as $row ) {
                 $data = array();
                 $where = array();
 
@@ -666,11 +662,9 @@ class Db
                 }
 
                 //finally, update data!
-                $this->_db->update(
-                    $table,
-                    $data,
-                    $where
-                );
+                $update = $this->_sql->update($table);
+                $update->set($data)->where($where);
+                $this->execute($update);
             }
         } catch (\Exception $e) {
             Analog::log(
@@ -757,7 +751,7 @@ class Db
     }
 
     /**
-     * Execture query string
+     * Execute query string
      *
      * @param SqlInterface $sql SQL object
      *
@@ -786,12 +780,12 @@ class Db
     }
 
     /**
-    * Global getter method
-    *
-    * @param string $name name of the variable we want to retrieve
-    *
-    * @return mixed
-    */
+     * Global getter method
+     *
+     * @param string $name name of the variable we want to retrieve
+     *
+     * @return mixed
+     */
     public function __get($name)
     {
         switch ( $name ) {

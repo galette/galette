@@ -101,20 +101,14 @@ class FieldsCategories
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . self::TABLE)
-                ->order('position');
-            return $select->query()->fetchAll();
+            $select = $zdb->select(self::TABLE);
+            $select->order('position');
+            return $zdb->execute($select);
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 '[' . get_class($this) . '] Cannot get fields categories list | ' .
                 $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -161,12 +155,4 @@ class FieldsCategories
             return $e;
         }
     }
-
-    /**
-    * GETTERS
-    */
-
-    /**
-    * SETTERS
-    */
 }

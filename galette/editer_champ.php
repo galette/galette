@@ -37,6 +37,7 @@
  */
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 use Galette\Entity\DynamicFields as DynamicFields;
 use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
 
@@ -86,7 +87,7 @@ if ( isset($_POST['valid']) ) {
     $field_size = get_numeric_posted_value('field_size', null);
     $field_repeat = get_numeric_posted_value(
         'field_repeat',
-        new Zend_Db_Expr('NULL')
+        new Expression('NULL')
     );
     $fixed_values = get_form_value('fixed_values', '');
 
@@ -101,12 +102,15 @@ if ( isset($_POST['valid']) ) {
         if ( $duplicated ) {
             $error_detected[] = _T("- Field name already used.");
         } else {
-            $select = new Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . DynamicFieldType::TABLE,
-                'field_name'
-            )->where('field_id = ?', $field_id);
-            $old_field_name = $select->query()->fetchColumn();
+            $select = $zdb->select(DynamicFieldType::TABLE);
+            $select->columns(
+                array('field_name')
+            )->where(array('field_id' => $field_id));
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            $old_field_name = $current->field_name;
+
             if ( $old_field_name && $field_name != $old_field_name ) {
                 addDynamicTranslation($field_name, $error_detected);
                 deleteDynamicTranslation($old_field_name, $error_detected);
@@ -130,7 +134,6 @@ if ( isset($_POST['valid']) ) {
                     'field_id = ' . $field_id
                 );
             } catch (Exception $e) {
-                /** FIXME */
                 Analog::log(
                     'An error occured storing field | ' . $e->getMessage(),
                     Analog::ERROR
@@ -155,17 +158,20 @@ if ( isset($_POST['valid']) ) {
             $contents_table = DynamicFields::getFixedValuesTableName($field_id);
 
             try {
-                $zdb->db->beginTransaction();
-                $zdb->db->getConnection()->exec('DROP TABLE IF EXISTS ' . $contents_table);
+                $zdb->connection->beginTransaction();
+                $zdb->db->query(
+                    'DROP TABLE IF EXISTS ' . $contents_table,
+                    Adapter::QUERY_MODE_EXECUTE
+                );
                 $zdb->db->query(
                     'CREATE TABLE ' . $contents_table .
                     ' (id INTEGER NOT NULL,val varchar(' . $max_length .
-                    ') NOT NULL)'
+                    ') NOT NULL)',
+                    Adapter::QUERY_MODE_EXECUTE
                 );
-                $zdb->db->commit();
+                $zdb->connection->commit();
             } catch (Exception $e) {
-                /** FIXME */
-                $zdb->db->rollBack();
+                $zdb->connection->rollBack();
                 Analog::log(
                     'Unable to manage fields values table ' .
                     $contents_table . ' | ' . $e->getMessage(),
@@ -177,23 +183,30 @@ if ( isset($_POST['valid']) ) {
             if (count($error_detected) == 0) {
 
                 try {
-                    $zdb->db->beginTransaction();
-                    $stmt = $zdb->db->prepare(
-                        'INSERT INTO ' . $contents_table .
-                        ' (' . $zdb->db->quoteIdentifier('id') . ', ' .
-                        $zdb->db->quoteIdentifier('val') . ')' .
-                        ' VALUES(:id, :val)'
+                    $zdb->connection->beginTransaction();
+
+                    $insert = $zdb->insert(
+                        str_replace(PREFIX_DB, '', $contents_table)
                     );
+                    $insert->values(
+                        array(
+                            'id'    => ':id',
+                            'val'   => ':val'
+                        )
+                    );
+                    $stmt = $sql->prepareStatementForSqlObject($insert);
 
                     for ( $i = 0; $i < count($values); $i++ ) {
-                        $stmt->bindValue(':id', $i, PDO::PARAM_INT);
-                        $stmt->bindValue(':val', $values[$i], PDO::PARAM_STR);
-                        $stmt->execute();
+                        $stmt->execute(
+                            array(
+                                'id'    => $i,
+                                'val'   => $values[$i]
+                            )
+                        );
                     }
-                    $zdb->db->commit();
+                    $zdb->connection->commit();
                 }catch (Exception $e) {
-                    /** FIXME */
-                    $zdb->db->rollBack();
+                    $zdb->connection->rollBack();
                     Analog::log(
                         'Unable to store field ' . $field_id . ' values',
                         Analog::ERROR

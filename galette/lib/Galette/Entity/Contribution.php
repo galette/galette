@@ -233,14 +233,15 @@ class Contribution
         global $zdb, $login;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . ' = ?', $id);
+            $select = $zdb->select(self::TABLE);
+            $select->where(self::PK . ' = ' . $id);
             //restrict query on current member id if he's not admin nor staff member
             if ( !$login->isAdmin() && !$login->isStaff() ) {
-                $select->where(Adherent::PK . ' = ?', $login->id);
+                $select->where(Adherent::PK . ' = ' . $login->id);
             }
-            $row = $select->query()->fetch();
+
+            $results = $zdb->execute($select);
+            $row = $results->current();
             if ( $row !== false ) {
                 $this->_loadFromRS($row);
                 return true;
@@ -250,7 +251,6 @@ class Contribution
                 );
             }
         } catch (\Exception $e) {
-            /** FIXME */
             Analog::log(
                 'An error occured attempting to load contribution #' . $id .
                 $e->getMessage(),
@@ -472,28 +472,28 @@ class Contribution
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                array('c' => PREFIX_DB . self::TABLE),
+            $select = $zdb->seelct(self::TABLE, 'c');
+            $select->columns(
                 array('date_debut_cotis', 'date_fin_cotis')
             )->join(
                 array('ct' => PREFIX_DB . ContributionsTypes::TABLE),
                 'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
                 array()
-            )->where(Adherent::PK . ' = ?', $this->_member)
-                ->where('cotis_extension = ?', (string)1)
-                ->where(
-                    '((' . $zdb->db->quoteInto('date_debut_cotis >= ?', $this->_begin_date) .
-                    ' AND '. $zdb->db->quoteInto('date_debut_cotis < ?', $this->_end_date) .
-                    ') OR (' . $zdb->db->quoteInto('date_fin_cotis > ?', $this->_begin_date) .
-                    ' AND ' . $zdb->db->quoteInto('date_fin_cotis <= ?', $this->_end_date) . '))'
-                );
+            )->where(Adherent::PK . ' = ' . $this->_member)
+                ->where(array('cotis_extension' => (string)1))
+                ->where
+                ->greaterThanOrEqualTo('date_debut_cotis', $this->_begin_date)
+                ->lessThan('date_debut_cotis', $this->_end_date)
+                ->or
+                ->greaterThan('date_fin_cotis', $this->_begin_date)
+                ->lessThanOrEqualTo('date_fin_cotis <= ?', $this->_end_date);
 
             if ( $this->id != '' ) {
-                $select->where(self::PK . ' != ?', $this->id);
+                $select->where(self::PK . ' != ' . $this->id);
             }
 
-            $result = $select->query()->fetch();
+            $results = $zdb->execute($query);
+            $result = $results->current();
             if ( $result !== false ) {
                 $d = new \DateTime($result->date_debut_cotis);
 
@@ -502,14 +502,9 @@ class Contribution
             }
             return true;
         } catch (\Exception $e) {
-            /** FIXME */
             Analog::log(
                 'An error occured checking overlaping fee. ' . $e->getMessage(),
                 Analog::ERROR
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString(),
-                Analog::DEBUG
             );
             return false;
         }
@@ -528,7 +523,6 @@ class Contribution
             $zdb->db->beginTransaction();
             $values = array();
             $fields = self::getDbFields();
-            /** FIXME: quote? */
             foreach ( $fields as $field ) {
                 $prop = '_' . $this->_fields[$field]['propname'];
                 switch ( $field ) {
@@ -627,14 +621,16 @@ class Contribution
             if ( $due_date != '' ) {
                 $date_fin_update = $due_date;
             } else {
-                $date_fin_update = new \Zend_Db_Expr('NULL');
+                $date_fin_update = new Expression('NULL');
             }
 
-            $edit = $zdb->db->update(
-                PREFIX_DB . Adherent::TABLE,
-                array('date_echeance' => $date_fin_update),
+            $update = $zdb->update(Adherent::TABLE);
+            $update->set(
+                array('date_echeance' => $date_fin_update)
+            )->where(
                 Adherent::PK . '=' . $this->_member
             );
+            $zdb->execute($update);
             return true;
         } catch (\Exception $e) {
             Analog::log(
@@ -674,7 +670,6 @@ class Contribution
             }
             return true;
         } catch (\Exception $e) {
-            /** FIXME */
             if ( $transaction ) {
                 $zdb->db->rollBack();
             }

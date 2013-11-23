@@ -42,7 +42,8 @@ if (!defined('GALETTE_ROOT')) {
 }
 
 use Analog\Analog as Analog;
-use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Expression;
+use Galette\Core\L10n;
 
 $disable_gettext=true;
 
@@ -83,16 +84,23 @@ function addDynamicTranslation($text_orig, $error_detected)
     try {
         foreach (  $i18n->getList() as $lang ) {
             //check if translation already exists
-            $select = new Zend_Db_Select($zdb->db);
-            $select->from($l10n_table, 'text_nref')
-                ->where('text_orig = ?', $text_orig)
-                ->where('text_locale = ?', $lang->getLongID());
-            $nref = $select->query()->fetch()->text_nref;
+            $select = $zdb->select(L10n::TABLE);
+            $select->columns(array('text_nref'))
+                ->where(
+                    array(
+                        'text_orig', $text_orig,
+                        'text_locale', $lang->getLongID()
+                    )
+                );
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            $nref = $result->text_nref;
 
             if ( is_numeric($nref) && $nref > 0 ) {
                 //already existing, update
                 $values = array(
-                    'text_nref' => new Zend_Db_Expr('text_nref+1')
+                    'text_nref' => new Expression('text_nref+1')
                 );
                 Analog::log(
                     'Entry for `' . $text_orig .
@@ -101,7 +109,7 @@ function addDynamicTranslation($text_orig, $error_detected)
                 );
 
                 $where = array();
-                $owhere = $select->getPart(Zend_Db_Select::WHERE);
+                $owhere = $select->getPart($select::WHERE);
                 foreach ( $owhere as $c ) {
                     $where[] = preg_replace('/^AND /', '', $c);
                 }
@@ -125,7 +133,6 @@ function addDynamicTranslation($text_orig, $error_detected)
             }
         }
     } catch (Exception $e) {
-        /** FIXME */
         Analog::log(
             'An error occured adding dynamic translation for `' .
             $text_orig . '` | ' . $e->getMessage(),
@@ -192,11 +199,17 @@ function updateDynamicTranslation(
 
     try {
         //check if translation already exists
-        $select = new Zend_Db_Select($zdb->db);
-        $select->from($l10n_table, 'text_nref')
-            ->where('text_orig = ?', $text_orig)
-            ->where('text_locale = ?', $text_locale);
-        $nref = $select->query()->fetch()->text_nref;
+        $select = $zdb->select(L10n::TABLE);
+        $select->columns(array('text_nref'))->where(
+            array(
+                'text_orig'     => $text_orig,
+                'text_locale'   => $text_locale
+            )
+        );
+
+        $results = $zdb->execute($select);
+        $result = $results->current();
+        $nref = $result->text_nref;
 
         $exists = (is_numeric($nref) && $nref > 0);
 
@@ -207,7 +220,7 @@ function updateDynamicTranslation(
         $res = false;
         if ( $exists ) {
             $where = array();
-            $owhere = $select->getPart(Zend_Db_Select::WHERE);
+            $owhere = $select->getPart($select::WHERE);
             foreach ( $owhere as $c ) {
                 $where[] = preg_replace('/^AND /', '', $c);
             }
@@ -249,7 +262,7 @@ function getDynamicTranslation($text_orig, $text_locale)
 {
     global $zdb;
     try {
-        $select = $zdb->select(Galette\Core\L10n::TABLE);
+        $select = $zdb->select(L10n::TABLE);
         $select->limit(1)->columns(
             array('text_trans')
         )->where(

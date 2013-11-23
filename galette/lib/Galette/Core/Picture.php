@@ -514,14 +514,22 @@ class Picture
 
         try {
             $insert = $zdb->insert($this->tbl_prefix . $class::TABLE);
-            $insert->values(
-                array(
-                    $class::PK  => ':id',
-                    'picture'   => ':picture',
-                    'format'    => ':format'
-                )
-            );
             $stmt = $sql->prepareStatementForSqlObject($insert);
+            $container = $stmt->getParameterContainer();
+            $container->offsetSet(
+                $class::PK,
+                ':id'
+            );
+            $container->offsetSet(
+                'picture',
+                ':picture',
+                $container::TYPE_LOB
+            );
+            $container->offsetSet(
+                'format',
+                ':format'
+            );
+            $stmt->setParameterContainer($container);
 
             $stmt->execute(
                 array(

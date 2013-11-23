@@ -309,8 +309,16 @@ class MailingHistory extends History
                     $_recipients[$_r->id] = $_r->sname . ' <' . $_r->email . '>';
                 }
             }
+
+            $sender = null;
+            if ( $this->_sender === 0 ) {
+                $sender = new Expression('NULL');
+            } else {
+                $sender = $this->_sender;
+            }
+
             $values = array(
-                'mailing_sender' => ($this->_sender === 0) ? new \Zend_Db_Expr('NULL') : $this->_sender,
+                'mailing_sender' => $sender,
                 'mailing_subject' => $this->_subject,
                 'mailing_body' => $this->_message,
                 'mailing_date' => $this->_date,

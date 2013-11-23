@@ -501,7 +501,7 @@ class DynamicFields
                     }
                 }
 
-                $owhere = $select->getPart(\Zend_Db_Select::WHERE);
+                $owhere = $select->getPart($select::WHERE);
                 foreach ( $owhere as $c ) {
                     $where[] = preg_replace('/^AND /', '', $c);
                 }
@@ -638,12 +638,14 @@ class DynamicFields
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . DynamicFieldType::TABLE,
-                'field_type'
-            )->where('field_id = ?', $id);
-            $field_type = $select->query()->fetchColumn();
+            $select = $zdb->select(DynamicFieldType::TABLE);
+            $select->columns(
+                array('field_type')
+            )->where('field_id = ' . $id);
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            $field_type = $result->field_type;
             if ( $field_type !== false ) {
                 return $this->getFieldType($field_type, $id);
             } else {
@@ -674,17 +676,25 @@ class DynamicFields
         //let's consider field is duplicated, in case of future errors
         $duplicated = true;
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . DynamicFieldType::TABLE,
-                'COUNT(field_id)'
-            )->where('field_form = ?', $form_name)
-                ->where('field_name = ?', $field_name);
+            $select = $zdb->select(DynamicFieldType::TABLE);
+            $select->columns(
+                array(
+                    'cnt' => new Expression('COUNT(field_id)')
+                )
+            )->where(
+                array(
+                    'field_form' => $form_name,
+                    'field_name' => $field_name
+                )
+            );
 
             if ( $field_id !== null ) {
-                $select->where('NOT field_id = ?', $field_id);
+                $select->where->notIn('NOT field_id', $field_id);
             }
-            $dup = $select->query()->fetchColumn();
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            $dup = $result->cnt;
             if ( !$dup > 0 ) {
                 $duplicated = false;
             }

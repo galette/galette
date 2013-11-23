@@ -468,10 +468,10 @@ class FieldsConfig
         $old_required = null;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $select = $zdb->select('required');
             $select->from(PREFIX_DB . 'required');
 
-            $old_required = $select->query()->fetchAll();
+            $old_required = $zdb->execute($select);
         } catch ( \Exception $pe ) {
             Analog::log(
                 'Unable to retrieve required fields_config. Maybe ' .
@@ -482,19 +482,30 @@ class FieldsConfig
             return true;
         }
 
-        $zdb->db->beginTransaction();
+        $zdb->Connection->beginTransaction();
         try {
-            $sql = 'UPDATE ' . PREFIX_DB . self::TABLE .
-                ' SET required=:required WHERE table_name=\'' .
-                $this->_table .'\' AND field_id=:field_id';
-            $stmt = $zdb->db->prepare($sql);
+            $update = $this->_zdb->update(self::TABLE);
+            $update->set(
+                array(
+                    'required'  => ':required'
+                )
+            )->where(
+                array(
+                    'field_id'      => ':field_id',
+                    'table_name'    => $this->_table
+                )
+            );
+
+            $stmt = $this->_zdb->sql->prepareStatementForSqlObject($update);
 
             foreach ( $old_required as $or ) {
-                $params = array(
-                    'field_id'  => $or->field_id,
-                    'required'  => ($or->required === false) ?  'false' : true
+                /** Why where parameter is named where1 ?? */
+                $stmt->execute(
+                    array(
+                        'required'  => ($or->required === false) ?  'false' : true,
+                        'where1'    => $or->field_id
+                    )
                 );
-                $stmt->execute($params);
             }
 
             $class = get_class($this);
@@ -508,12 +519,15 @@ class FieldsConfig
                 Analog::INFO
             );
 
-            $zdb->db->query('DROP TABLE ' . PREFIX_DB . 'required;');
+            $zdb->db->query(
+                'DROP TABLE ' . PREFIX_DB . 'required',
+                Adapter::QUERY_MODE_EXECUTE
+            );
 
-            $zdb->db->commit();
+            $zdb->Connection->commit();
             return true;
         } catch ( \Exception $e ) {
-            $zdb->db->rollBack();
+            $zdb->connection->rollBack();
             Analog::log(
                 'An error occured migrating old required fields. | ' .
                 $e->getMessage(),

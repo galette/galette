@@ -39,6 +39,7 @@ namespace Galette\Repository;
 
 use Galette\Entity\Title as Title;
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 
 /**
  * Titles repository management
@@ -123,7 +124,7 @@ class Titles
                 if ( $d['long_label'] !== null ) {
                     $long = _T($d['long_label']);
                 } else {
-                    $long = new \Zend_Db_Expr('NULL');
+                    $long = new Expression('NULL');
                 }
                 $stmt->bindParam(':id', $d['id_title']);
                 $stmt->bindParam(':short', $short);
@@ -156,11 +157,13 @@ class Titles
     {
         global $zdb;
 
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->limit(1)->from(PREFIX_DB . self::TABLE)
-            ->where(self::PK . ' = ?', $title);
+        $select = $zdb->select(self::TABLE);
+        $select->limit(1)
+            ->where(array(self::PK => $title));
 
-        $res = $select->query()->fetchColumn(1);
+        $results = $zdb->execute($select);
+        $result = $results->current();
+        $res = $result->short_label;
         return _T($res);
     }
 }

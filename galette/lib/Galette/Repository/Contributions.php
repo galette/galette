@@ -228,7 +228,7 @@ class Contributions extends Pagination
     /**
     * Count contributions from the query
     *
-    * @param Zend_Db_Select $select Original select
+    * @param Select $select Original select
     *
     * @return void
     */
@@ -267,7 +267,7 @@ class Contributions extends Pagination
     /**
     * Calculate sum of all selected contributions
     *
-    * @param Zend_Db_Select $select Original select
+    * @param Select $select Original select
     *
     * @return void
     */
@@ -343,7 +343,7 @@ class Contributions extends Pagination
     /**
      * Builds where clause, for filtering on simple list mode
      *
-     * @param Zend_Db_Select $select Original select
+     * @param Select $select Original select
      *
      * @return string SQL WHERE clause
      */
@@ -461,12 +461,12 @@ class Contributions extends Pagination
             $res = true;
             try {
                 if ( $transaction ) {
-                    $zdb->db->beginTransaction();
+                    $zdb->connection->beginTransaction();
                 }
-                $select = new \Zend_Db_Select($zdb->db);
+                $seelct = $zdb->select(self::TABLE);
                 $select->from(PREFIX_DB . self::TABLE)
-                    ->where(self::PK . ' IN (?)', $list);
-                $contributions = $select->query()->fetchAll();
+                    ->where->in(self::PK, $list);
+                $contributions = $zdb->execute($select);
                 foreach ( $contributions as $contribution ) {
                     $c = new Contribution($contribution);
                     $res = $c->remove(false);
@@ -475,7 +475,7 @@ class Contributions extends Pagination
                     }
                 }
                 if ( $transaction ) {
-                    $zdb->db->commit();
+                    $zdb->connection->commit();
                 }
                 $hist->add(
                     str_replace(
@@ -485,9 +485,8 @@ class Contributions extends Pagination
                     )
                 );
             } catch (\Exception $e) {
-                /** FIXME */
                 if ( $transaction ) {
-                    $zdb->db->rollBack();
+                    $zdb->connection->rollBack();
                 }
                 Analog::log(
                     'An error occured trying to remove contributions | ' .

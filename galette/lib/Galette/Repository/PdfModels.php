@@ -38,6 +38,7 @@
 namespace Galette\Repository;
 
 use Analog\Analog;
+use Zend\Db\Sql\Expression;
 use Galette\Entity\PdfModel;
 use Galette\Entity\PdfMain;
 use Galette\Entity\PdfInvoice;
@@ -65,14 +66,12 @@ class PdfModels extends Repository
     public function getList()
     {
         try {
-            $select = new \Zend_Db_Select($this->zdb->db);
-            $select->from(
-                array('a' => PREFIX_DB . PdfModel::TABLE)
-            )->order(PdfModel::PK);
+            $select = $this->zdb->select(PdfModel::TABLE, 'a');
+            $select->order(PdfModel::PK);
 
             $models = array();
-            $res = $select->query()->fetchAll();
-            foreach ( $res as $row ) {
+            $results = $this->zdb->execute($select);
+            foreach ( $results as $row ) {
                 $class = PdfModel::getTypeClass($row->model_type);
                 $models[] = new $class($this->zdb, $this->preferences, $row);
             }
@@ -105,12 +104,16 @@ class PdfModels extends Repository
             //been initialized
             $proceed = false;
             if ( $check_first === true ) {
-                $select = new \Zend_Db_Select($this->zdb->db);
-                $select->from(
-                    PREFIX_DB . $ent::TABLE,
-                    'COUNT(' . $ent::PK . ') as counter'
+                $select = $this->zdb->select(self::TABLE);
+                $select->columns(
+                    array(
+                        'counter' => new Expression('COUNT(' . $ent::PK . ')')
+                    )
                 );
-                $count = $select->query()->fetchObject()->counter;
+
+                $results = $this->zdb->execute($select);
+                $result = $results->current();
+                $count = $result->counter;
                 if ( $count == 0 ) {
                     //if we got no values in texts table, let's proceed
                     $proceed = true;
@@ -163,12 +166,9 @@ class PdfModels extends Repository
     private function _checkUpdate($defaults)
     {
         try {
-            $select = new \Zend_Db_Select($this->zdb->db);
             $ent = $this->entity;
-            $select->from(
-                PREFIX_DB . $ent::TABLE
-            );
-            $list = $select->query()->fetchAll();
+            $select = $this->zdb->select($ent::TABLE);
+            $list = $this->zdb->execute($select);
 
             $missing = array();
             foreach ( $defaults as $default ) {

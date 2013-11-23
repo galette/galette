@@ -39,6 +39,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 
 /**
  * Texts class for galette
@@ -294,23 +295,17 @@ class Texts
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . self::TABLE,
+            $select = $zdb->select(self::TABLE);
+            $select->columns(
                 array('tref', 'tcomment')
-            )->where('tlang = ?', $lang);
+            )->where(array('tlang' => $lang));
 
-            return $select->query(\Zend_Db::FETCH_ASSOC)->fetchAll();
+            return $zdb->execute($select);
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot get refs for lang `' . $lang . '` | ' .
                 $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -346,12 +341,16 @@ class Texts
             //been initialized
             $proceed = false;
             if ( $check_first === true ) {
-                $select = new \Zend_Db_Select($zdb->db);
-                $select->from(
-                    PREFIX_DB . self::TABLE,
-                    'COUNT(' . self::PK . ') as counter'
+                $select = $zdb->select(self::TABLE);
+                $select->columns(
+                    array(
+                        'counter' => new Expression('COUNT(' . self::PK . ')')
+                    )
                 );
-                $count = $select->query()->fetchObject()->counter;
+
+                $results = $zdb->execute($select);
+                $result = $results->current();
+                $count = $result->counter;
                 if ( $count == 0 ) {
                     //if we got no values in texts table, let's proceed
                     $proceed = true;
@@ -410,11 +409,8 @@ class Texts
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . self::TABLE
-            );
-            $list = $select->query()->fetchAll();
+            $select = $zdb->select(self::TABLE);
+            $list = $zdb->execute($select);
 
             $missing = array();
             foreach ( $this->_defaults as $default ) {

@@ -38,6 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
+use Zend\Db\Sql\Expression;
 use \Galette\Core\GaletteMail;
 
 /**
@@ -103,12 +104,12 @@ class Reminder
     {
         global $zdb;
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->limit(1)->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . ' = ?', $id);
+            $select = $zdb->select(self::TABLE);
+            $select->limit(1)
+                ->where(self::PK . ' = ' . $id);
 
-            $res = $select->query()->fetchAll();
-            $this->_loadFromRs($res[0]);
+            $results = $zdb->execute($select);
+            $this->_loadFromRs($results->current());
         } catch ( \Exception $e ) {
             Analog::log(
                 'An error occured loading reminder #' . $id . "Message:\n" .
@@ -160,7 +161,7 @@ class Reminder
         $data = array(
             'reminder_type'     => $this->_type,
             'reminder_dest'     => $this->_dest->id,
-            'reminder_date'     => new \Zend_Db_Expr('NOW()'),
+            'reminder_date'     => new Expression('NOW()'),
             'reminder_success'  => ($this->_success) ? true : 'false',
             'reminder_nomail'   => ($this->_nomail) ? true : 'false'
         );

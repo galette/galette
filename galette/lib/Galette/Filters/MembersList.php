@@ -257,7 +257,7 @@ class MembersList extends Pagination
     /**
      * Add SQL limit
      *
-     * @param Zend_Db_Select $select Original select
+     * @param Select $select Original select
      *
      * @return <type>
      */

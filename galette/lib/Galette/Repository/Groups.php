@@ -376,21 +376,16 @@ class Groups
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . Group::TABLE,
+            $select = $zdb->select(Group::TABLE);
+            $select->columns(
                 array('group_name')
-            )->where('group_name = ?', $name);
-            $res = $select->query()->fetchAll();
-            return !(count($res) > 0);
+            )->where(array('group_name' => $name));
+            $results = $zdb->execute($select);
+            return !($results->count() > 0);
         } catch (\Exception $e) {
             Analog::log(
                 'Cannot list groups (simple) | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
-                Analog::ERROR
             );
         }
     }

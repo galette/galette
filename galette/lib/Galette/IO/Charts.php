@@ -281,7 +281,6 @@ class Charts
 
         //companies
         $select1->combine($select2);
-        //$select->union(array($select1, $select2), \Zend_Db_Select::SQL_UNION_ALL);
 
         $results = $zdb->execute($select1);
 

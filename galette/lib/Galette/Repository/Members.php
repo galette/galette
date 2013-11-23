@@ -41,6 +41,7 @@ use Galette\Entity\DynamicFields;
 
 use Analog\Analog as Analog;
 use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Predicate\PredicateSet;
 use Galette\Entity\Adherent as Adherent;
 use Galette\Entity\Contribution as Contribution;
 use Galette\Entity\Transaction as Transaction;
@@ -429,15 +430,9 @@ class Members
 
             $this->_filters->setLimit($select);
 
-            Analog::log(
-                "The following query will be executed: \n" .
-                $select->__toString(),
-                Analog::DEBUG
-            );
-
-            $result = $select->query()->fetchAll();
+            $results = $zdb->execute($select);
             $members = array();
-            foreach ( $result as $row ) {
+            foreach ( $results as $row ) {
                 $deps = array(
                     'groups'    => false,
                     'dues'      => false,
@@ -537,7 +532,7 @@ class Members
      *                      Default to false, only relevant for SHOW_PUBLIC_LIST
      * @param bool  $count  true if we want to count members, defaults to false
      *
-     * @return Zend_Db_Select SELECT statement
+     * @return Select SELECT statement
      */
     private function _buildSelect($mode, $fields, $photos, $count = false)
     {
@@ -753,7 +748,7 @@ class Members
     /**
      * Count members from the query
      *
-     * @param Zend_Db_Select $select Original select
+     * @param Select $select Original select
      *
      * @return void
      */
@@ -871,7 +866,7 @@ class Members
     /**
      * Builds where clause, for filtering on simple list mode
      *
-     * @param Zend_Db_Select $select Original select
+     * @param Select $select Original select
      *
      * @return string SQL WHERE clause
      */
@@ -1351,33 +1346,37 @@ class Members
         global $zdb;
 
         try {
-            $zdb->db->beginTransaction();
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . Adherent::TABLE,
+            $zdb->connection->beginTransaction();
+            $select = $zdb->select(Adherent::TABLE);
+            $select->columns(
                 array('id_adh', 'login_adh', 'mdp_adh')
             )->where(
-                'login_adh = ?', new \Zend_Db_Expr('NULL')
-            )->orWhere(
-                'login_adh = ?', ''
-            )->orWhere(
-                'mdp_adh = ?', new \Zend_Db_Expr('NULL')
-            )->orWhere(
-                'mdp_adh = ?', ''
+                array(
+                    'login_adh' => new Expression('NULL'),
+                    'login_adh' => '',
+                    'mdp_adh'   => new Expression('NULL'),
+                    'mdp_adh'   => ''
+                ),
+                PredicateSet::OP_OR
             );
 
-            $res = $select->query()->fetchAll();
+            $results = $zdb->execute($select);
 
             $processed = 0;
-            if ( count($res) > 0 ) {
-                $sql = 'UPDATE ' .  PREFIX_DB . Adherent::TABLE .
-                    ' SET login_adh = :login, mdp_adh = :pass WHERE ' .
-                    Adherent::PK . ' = :id';
-                $stmt = $zdb->db->prepare($sql);
+            if ( $results->count() > 0 ) {
+                $update = $this->_zdb->update(Adherent::TABLE);
+                $update->set(
+                    array(
+                        'login_adh' => ':login',
+                        'mdp_adh'   => ':pass'
+                    )
+                )->where->equalTo(Adherent::PK, ':id');
+
+                $stmt = $this->_zdb->sql->prepareStatementForSqlObject($update);
 
                 $p = new \Galette\Core\Password();
 
-                foreach ($res as $m) {
+                foreach ($results as $m) {
                     $dirty = false;
                     if ($m->login_adh == ''
                         || !isset($m->login_adh)
@@ -1400,22 +1399,23 @@ class Members
                     }
 
                     if ( $dirty === true ) {
+                        /** Why where parameter is named where1 ?? */
                         $stmt->execute(
                             array(
-                                'login' => $m->login_adh,
-                                'pass'  => $m->mdp_adh,
-                                'id'    => $m->id_adh
+                                'login'     => $m->login_adh,
+                                'pass'      => $m->mdp_adh,
+                                'where1'    => $m->id_adh
                             )
                         );
                         $processed++;
                     }
                 }
             }
-            $zdb->db->commit();
+            $zdb->connection->commit();
             $this->_count = $processed;
             return true;
         } catch ( \Exception $e ) {
-            $zdb->db->rollBack();
+            $zdb->connection->rollBack();
             Analog::log(
                 'An error occured trying to retrieve members with ' .
                 'empty logins/passwords (' . $e->getMessage(),

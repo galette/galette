@@ -40,6 +40,7 @@ namespace Galette\Repository;
 use Galette\Entity\Reminder;
 use Galette\Filters\MembersList;
 use Analog\Analog;
+use Zend\Db\Sql\Expression;
 
 /**
  * Reminders
@@ -88,42 +89,42 @@ class Reminders
      */
     private function _loadToRemind($zdb, $type)
     {
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->from(
-            array('a' => PREFIX_DB . Members::TABLE)
-        )->joinLeft(
+        $select = $zdb->select(Members::TABLE, 'a');
+        $select->join(
             array('r' => PREFIX_DB . self::TABLE),
             'a.' . Members::PK . '=r.reminder_dest',
             array(
-                'last_reminder' => new \Zend_Db_Expr('MAX(r.reminder_date)'),
+                'last_reminder' => new Expression('MAX(r.reminder_date)'),
                 'r.reminder_type'
-            )
-        )->where(
-            'a.email_adh != \'\''
-        )->where('a.activite_adh=true')
+            ),
+            $select::JOIN_LEFT
+        )->where('a.email_adh != \'\'')
+            ->where('a.activite_adh=true')
             ->where('bool_exempt_adh=false');
 
         if ( $type === Reminder::LATE ) {
-            $select->where(
-                'date_echeance < ?',
+            $select->where->LessThan(
+                'date_echeance',
                 date('Y-m-d', time())
             );
         } else {
             $now = new \DateTime();
             $duedate = new \DateTime();
             $duedate->modify('+1 month');
-            $select->where('date_echeance > ?', $now->format('Y-m-d'))
-                ->where(
-                    'date_echeance < ?',
-                    $duedate->format('Y-m-d')
-                );
+            $select->where->greaterThan(
+                'date_echeance',
+                $now->format('Y-m-d')
+            )->greaterThan(
+                'date_echeance',
+                $duedate->format('Y-m-d')
+            );
         }
 
         $select->group('a.id_adh')->group('r.reminder_type');
 
-        $res = $select->query()->fetchAll();
+        $results = $zdb->execute($select);
 
-        foreach ( $res as $r ) {
+        foreach ( $results as $r ) {
             if ( $r->reminder_type === null || (int)$r->reminder_type === $type ) {
                 $date_checked = false;
 

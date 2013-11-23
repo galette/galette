@@ -38,6 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 
 /**
  * PDF Model
@@ -136,12 +137,12 @@ abstract class PdfModel
     protected function load($id, $preferences)
     {
         try {
-            $select = new \Zend_Db_Select($this->_zdb->db);
-            $select->limit(1)->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . ' = ?', $id);
+            $select = $zdb->select(self::TABLE);
+            $select->limit(1)
+                ->where(self::PK . ' = ' . $id);
 
-            $res = $select->query()->fetchAll();
-            $this->loadFromRs($res[0], $preferences);
+            $results = $zdb->execute($select);
+            $this->loadFromRs($results->current(), $preferences);
         } catch ( \Exception $e ) {
             Analog::log(
                 'An error occured loading model #' . $id . "Message:\n" .
@@ -214,12 +215,12 @@ abstract class PdfModel
     {
         $title = $this->_title;
         if ( trim($title === '') ) {
-            $title = new \Zend_Db_Expr('NULL');
+            $title = new Expression('NULL');
         }
 
         $subtitle = $this->_subtitle;
         if ( trim($subtitle === '') ) {
-            $subtitle = new \Zend_Db_Expr('NULL');
+            $subtitle = new Expression('NULL');
         }
 
         $data = array(
@@ -234,18 +235,17 @@ abstract class PdfModel
 
         try {
             if ( $this->_id !== null ) {
-                $up = $this->_zdb->db->update(
-                    PREFIX_DB . self::TABLE,
-                    $data,
+                $update = $this->_zdb->update(self::TABLE);
+                $update->set($data)->where(
                     self::PK . '=' . $this->_id
                 );
+                $this->_zdb->execute($update);
             } else {
                 $data['model_name'] = $this->_name;
-                $add = $this->_zdb->db->insert(
-                    PREFIX_DB . self::TABLE,
-                    $data
-                );
-                if ( !$add > 0 ) {
+                $insert = $this->_zdb->insert(self::TABLE);
+                $insert->values($data);
+                $add = $this->_zdb->execute($insert);
+                if ( !$add->count() > 0 ) {
                     Analog::log('Not stored!', Analog::ERROR);
                     return false;
                 }

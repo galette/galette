@@ -39,6 +39,7 @@
 use Galette\Entity\DynamicFields as DynamicFields;
 use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 
 
 /** @ignore */
@@ -93,15 +94,17 @@ if ( $form_name == '' ) {
 
             if ( !$duplicated ) {
                 try {
-                    $select = new Zend_Db_Select($zdb->db);
-                    $select->from(
-                        PREFIX_DB . DynamicFieldType::TABLE,
-                        'COUNT(*) + 1 AS idx'
-                    )->where('field_form = ?', $form_name);
-                    $str = $select->__toString();
-                    $idx = $select->query()->fetchColumn();
+                    $select = $zdb->select(DynamicFieldType::TABLE);
+                    $select->columns(
+                        array(
+                            'idx' => new Expression('COUNT(*) + 1')
+                        )
+                    );
+                    $select->where(array('field_form' => $form_name));
+                    $results = $zdb->execute($select);
+                    $result = $results->current();
+                    $idx = $result->idx;
                 } catch (Exception $e) {
-                    /** FIXME */
                     throw $e;
                 }
 
@@ -161,85 +164,100 @@ if ( $form_name == '' ) {
         }
         if ( $action !== '' ) {
             try {
-                $zdb->db->beginTransaction();
-                $select = new Zend_Db_Select($zdb->db);
-                $select->from(
-                    PREFIX_DB . DynamicFieldType::TABLE,
+                $zdb->connection->beginTransaction();
+                $select = $zdb->select(DynamicFieldType::TABLE);
+                $select->columns(
                     array('field_type', 'field_index', 'field_name')
-                )->where(DynamicFieldType::PK . ' = ?', $field_id)
-                    ->where('field_form = ?', $form_name);
-                $res = $select->query()->fetch();
-                if ( $res !== false ) {
-                    $old_rank = $res->field_index;
+                )->where(
+                    array(
+                        DynamicFieldType::PK    => $field_id,
+                        'field_form'            => $form_name
+                    )
+                );
+
+                $results = $zdb->execute($select);
+                $result = $results->current();
+
+                if ( $result !== false ) {
+                    $old_rank = $result->field_index;
                     $query_list = array();
 
                     if ( $action == 'del' ) {
-                        $up = $zdb->db->update(
-                            PREFIX_DB . DynamicFieldType::TABLE,
+                        $update = $zdb->update(DynamicFieldType::TABLE);
+                        $update->set(
                             array(
-                                'field_index' => new Zend_Db_Expr('field_index-1')
-                            ),
+                                'field_index' => new Expression('field_index-1')
+                            )
+                        )->where
+                            ->greaterThan('field_index', $old_rank)
+                            ->equalTo('field_form', $form_name);
+                        $zdb->execute($update);
+
+                        $delete = $zdb->delete(DynamicFields::TABLE);
+                        $delete->where(
                             array(
-                                'field_index > ?' => $old_rank,
-                                'field_form = ?'  => $form_name
+                                'field_id'      => $field_id,
+                                'field_form'    => $form_name
                             )
                         );
+                        $zdb->execute($delete);
 
-                        $del1 = $zdb->db->delete(
-                            PREFIX_DB . DynamicFields::TABLE,
+                        $delete = $zdb->delete(DynamicFieldType::TABLE);
+                        $delete->where(
                             array(
-                                'field_id = ?'   => $field_id,
-                                'field_form = ?' => $form_name
+                                'field_id'      => $field_id,
+                                'field_form'    => $form_name
                             )
                         );
+                        $zdb->execute($delete);
 
-                        $del2 = $zdb->db->delete(
-                            PREFIX_DB . DynamicFieldType::TABLE,
-                            array(
-                                'field_id = ?'   => $field_id,
-                                'field_form = ?' => $form_name
-                            )
-                        );
-
-                        $df = $dyn_fields->getFieldType($res->field_type);
+                        $df = $dyn_fields->getFieldType($result->field_type);
                         if ( $df->hasFixedValues() ) {
-                            $contents_table = DynamicFields::getFixedValuesTableName($field_id);
-                            $zdb->db->getConnection()->exec(
-                                'DROP TABLE IF EXISTS ' . $contents_table
+                            $contents_table = DynamicFields::getFixedValuesTableName(
+                                $field_id
+                            );
+                            $zdb->db->query(
+                                'DROP TABLE IF EXISTS ' . $contents_table,
+                                Adapter::QUERY_MODE_EXECUTE
                             );
                         }
-                        deleteDynamicTranslation($res->field_name, $error_detected);
+                        deleteDynamicTranslation(
+                            $result->field_name,
+                            $error_detected
+                        );
                     } else {
                         $direction = $action == "up" ? -1: 1;
                         $new_rank = $old_rank + $direction;
-                        $zdb->db->update(
-                            PREFIX_DB . DynamicFieldType::TABLE,
+                        $update = $zdb->update(DynamicFieldType::TABLE);
+                        $update->set(
                             array(
                                 'field_index' => $old_rank
-                            ),
+                            )
+                        )->where(
                             array(
-                                'field_index = ?' => $new_rank,
-                                'field_form = ?'  => $form_name
+                                'field_index'   => $new_rank,
+                                'field_form'    => $form_name
                             )
                         );
+                        $zdb->execute($update);
 
-                        $zdb->db->update(
-                            PREFIX_DB . DynamicFieldType::TABLE,
+                        $update = $zdb->update(DynamicFieldType::TABLE);
+                        $update->set(
                             array(
                                 'field_index' => $new_rank
-                            ),
+                            )
+                        )->where(
                             array(
-                                'field_id = ?'   => $field_id,
-                                'field_form = ?' => $form_name
+                                'field_id'      => $field_id,
+                                'field_form'    => $form_name
                             )
                         );
+                        $zdb->execute($update);
                     }
                 }
-                $zdb->db->commit();
+                $zdb->connection->commit();
             } catch(Exception $e) {
-                /** FIXME */
-                //this one does not seem to work :'(
-                $zdb->db->rollBack();
+                $zdb->connection->rollBack();
                 Analog::log(
                     'Unable to change field ' . $field_id . ' rank | ' .
                     $e->getMessage(),
@@ -249,12 +267,12 @@ if ( $form_name == '' ) {
         }
     }
 
-    $select = new Zend_Db_Select($zdb->db);
-    $select->from(PREFIX_DB . DynamicFieldType::TABLE)
-        ->where('field_form = ?', $form_name)
+    $select = $zdb->select(DynamicFieldType::TABLE);
+    $select
+        ->where(array('field_form' => $form_name))
         ->order('field_index');
 
-    $results = $select->query()->fetchAll();
+    $results = $zdb->execute($select);
 
     $dfields = array();
     if ( $results ) {
