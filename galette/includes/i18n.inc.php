@@ -79,7 +79,6 @@ if ( @putenv("LANG=$language")
 function addDynamicTranslation($text_orig, $error_detected)
 {
     global $zdb, $i18n;
-    $l10n_table = PREFIX_DB . 'l10n';
 
     try {
         foreach (  $i18n->getList() as $lang ) {
@@ -113,11 +112,10 @@ function addDynamicTranslation($text_orig, $error_detected)
                 foreach ( $owhere as $c ) {
                     $where[] = preg_replace('/^AND /', '', $c);
                 }
-                $zdb->db->update(
-                    $l10n_table,
-                    $values,
-                    $where
-                );
+
+                $update = $zdb->update(L10::TABLE);
+                $update->set($values)->where($where);
+                $zdb->execute($update);
             } else {
                 //add new entry
                 // User is supposed to use current language as original text.
@@ -129,7 +127,10 @@ function addDynamicTranslation($text_orig, $error_detected)
                     'text_locale' => $lang->getLongID(),
                     'text_trans' => $text_orig
                 );
-                $zdb->db->insert($l10n_table, $values);
+
+                $insert = $zdb->insert(L10n::TABLE);
+                $insert->values($values);
+                $zdb->execute($insert);
             }
         }
     } catch (Exception $e) {
@@ -153,21 +154,26 @@ function addDynamicTranslation($text_orig, $error_detected)
 function deleteDynamicTranslation($text_orig, $error_detected)
 {
     global $zdb, $i18n;
-    $l10n_table = PREFIX_DB . 'l10n';
 
     try {
+        $delete = $zdb->delete(L10n::TABLE);
+        $delete->where(
+            array(
+                'text_orig'     => $text_orig,
+                'text_locale'   => ':lang_id'
+            )
+        );
+        $stmt = $sql->prepareStatementForSqlObject($delete);
+
         foreach ( $i18n->getList() as $lang ) {
-            $zdb->db->delete(
-                $l10n_table,
+            $stmt->execute(
                 array(
-                    $zdb->db->quoteInto('text_orig = ?', $text_orig),
-                    $zdb->db->quoteInto('text_locale = ?', $lang->getLongID())
+                    'where1' => $lang->getLongID()
                 )
             );
         }
         return true;
     } catch (Exception $e) {
-        /** FIXME */
         Analog::log(
             'An error occured deleting dynamic translation for `' .
             $text_orig . '` (lang `' . $lang->getLongID() . '`) | ' .
@@ -195,7 +201,6 @@ function updateDynamicTranslation(
     $error_detected
 ) {
     global $zdb;
-    $l10n_table = PREFIX_DB . 'l10n';
 
     try {
         //check if translation already exists
@@ -224,22 +229,20 @@ function updateDynamicTranslation(
             foreach ( $owhere as $c ) {
                 $where[] = preg_replace('/^AND /', '', $c);
             }
-            $res = $zdb->db->update(
-                $l10n_table,
-                $values,
-                $where
-            );
+
+            $update = $zdb->update(L10n::TABLE);
+            $update->set($values)->where($where);
+            $zdb->execute($update);
         } else {
             $values['text_orig'] = $text_orig;
             $values['text_locale'] = $text_locale;
-            $res = $zdb->db->insert(
-                $l10n_table,
-                $values
-            );
+
+            $insert = $zdb->insert(L10n::TABLE);
+            $insert->values($values);
+            $zdb->execute($insert);
         }
         return true;
     } catch (Exception $e) {
-        /** FIXME */
         Analog::log(
             'An error occured updating dynamic translation for `' .
             $text_orig . '` | ' . $e->getMessage(),
@@ -279,15 +282,10 @@ function getDynamicTranslation($text_orig, $text_locale)
             return;
         }
     } catch (Exception $e) {
-        /** TODO */
         Analog::log(
             'An error occured retrieving l10n entry. text_orig=' . $text_orig .
             ', text_locale=' . $text_locale . ' | ' . $e->getMessage(),
             Analog::WARNING
-        );
-        Analog::log(
-            'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-            Analog::ERROR
         );
         return false;
     }
