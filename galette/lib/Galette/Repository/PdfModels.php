@@ -124,30 +124,18 @@ class PdfModels extends Repository
             }
 
             if ( $proceed === true ) {
-                $this->zdb->db->beginTransaction();
+                $this->zdb->connection->beginTransaction();
 
                 //first, we drop all values
-                $this->zdb->db->delete(PREFIX_DB . $ent::TABLE);
+                $delete = $zdb->delete($ent::TABLE);
+                $zdb->execute($delete);
+                $this->_insert($ent::TABLE, $defaults);
 
-                $stmt = $this->zdb->db->prepare(
-                    'INSERT INTO ' . PREFIX_DB . $ent::TABLE .
-                    ' (model_id, model_name, model_title, model_type, ' .
-                    'model_header, model_footer, model_body, model_styles, ' .
-                    'model_parent) ' .
-                    'VALUES(:model_id, :model_name, :model_title, :model_type, ' .
-                    ':model_header, :model_footer, :model_body, :model_styles, ' .
-                    ':model_parent)'
-                );
-
-                foreach ( $defaults as $d ) {
-                    $stmt->execute($d);
-                }
-
-                $this->zdb->db->commit();
+                $this->zdb->connection->commit();
                 return true;
             }
         } catch (\Exception $e) {
-            $this->zdb->db->rollBack();
+            $this->zdb->connection->rollBack();
             return $e;
         }
     }
@@ -183,31 +171,49 @@ class PdfModels extends Repository
             }
 
             if ( count($missing) >0 ) {
-                $this->zdb->db->beginTransaction();
-                $stmt = $this->zdb->db->prepare(
-                    'INSERT INTO ' . PREFIX_DB . $ent::TABLE .
-                    ' (model_id, model_name, model_title, model_type, ' .
-                    'model_header, model_footer, model_body, model_styles, ' .
-                    'model_parent) ' .
-                    'VALUES(:model_id, :model_name, :model_title, :model_type, ' .
-                    ':model_header, :model_footer, :model_body, :model_styles, ' .
-                    ':model_parent)'
-                );
-
-                foreach ( $missing as $d ) {
-                    $stmt->execute($d);
-                }
-
-                $this->zdb->db->commit();
+                $this->zdb->connection->beginTransaction();
+                $this->_insert($ent::TABLE, $missing);
                 Analog::log(
                     'Missing texts were successfully stored into database.',
                     Analog::INFO
                 );
+                $this->zdb->connection->commit();
                 return true;
             }
         } catch (\Exception $e) {
-            $this->zdb->db->rollBack();
+            $this->zdb->connection->rollBack();
             throw $e;
+        }
+    }
+
+    /**
+     * Insert values in database
+     *
+     * @param string $table  Table name
+     * @param array  $values Values to insert
+     *
+     * @return void
+     */
+    private function _insert($table, $values)
+    {
+        $insert = $zdb->insert($table);
+        $insert->values(
+            array(
+                'model_id'      => ':model_id',
+                'model_name'    => ':model_name',
+                'model_title'   => ':model_title',
+                'model_type'    => ':model_type',
+                'model_header'  => ':model_header',
+                'model_footer'  => ':model_footer',
+                'model_body'    => ':model_body',
+                'model_styles'  => ':model_styles',
+                'model_parent'  => ':model_parent'
+            )
+        );
+        $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
+
+        foreach ( $values as $value ) {
+            $stmt->execute($value);
         }
     }
 }

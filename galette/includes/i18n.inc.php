@@ -163,7 +163,7 @@ function deleteDynamicTranslation($text_orig, $error_detected)
                 'text_locale'   => ':lang_id'
             )
         );
-        $stmt = $sql->prepareStatementForSqlObject($delete);
+        $stmt = $zdb->sql->prepareStatementForSqlObject($delete);
 
         foreach ( $i18n->getList() as $lang ) {
             $stmt->execute(

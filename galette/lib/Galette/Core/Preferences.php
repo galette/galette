@@ -202,7 +202,7 @@ class Preferences
                         'val_pref'  => ':val_pref'
                     )
                 );
-                $stmt = $sql->prepareStatementForSqlObject($insert);
+                $stmt = $this->_zdb->sql->prepareStatementForSqlObject($insert);
 
                 foreach ( $params as $p ) {
                     $stmt->execute(
@@ -282,7 +282,7 @@ class Preferences
                     'val_pref'  => ':val_pref'
                 )
             );
-            $stmt = $sql->prepareStatementForSqlObject($insert);
+            $stmt = $this->_zdb->sql->prepareStatementForSqlObject($insert);
 
             foreach ( $values as $k=>$v ) {
                 $stmt->execute(

@@ -39,6 +39,8 @@ namespace Galette\Core;
 
 use Analog\Analog as Analog;
 use Zend\Db\Sql\Expression;
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Adapter\Exception as AdapterException;
 
 /**
  * History management
@@ -128,7 +130,7 @@ class History extends Pagination
             $insert = $zdb->insert($this->getTableName());
             $insert->values($values);
             $zdb->execute($insert);
-        } catch (\Zend_Db_Adapter_Exception $e) {
+        } catch (AdapterException $e) {
             Analog::log(
                 'Unable to initialize add log entry into database.' .
                 $e->getMessage(),

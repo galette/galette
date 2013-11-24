@@ -40,7 +40,7 @@ use Galette\Entity\DynamicFields as DynamicFields;
 use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
 use Analog\Analog as Analog;
 use Zend\Db\Sql\Expression;
-
+use Zend\Db\Adapter\Adapter;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -118,18 +118,15 @@ if ( $form_name == '' ) {
                             'field_type'     => $field_type,
                             'field_required' => $field_required
                         );
-                        $zdb->db->insert(
-                            PREFIX_DB . DynamicFieldType::TABLE,
-                            $values
-                        );
+
+                        $insert = $zdb->insert(DynamicFieldType::TABLE);
+                        $insert->values($values);
+                        $zdb->execute($insert);
 
                         if ($field_type != DynamicFields::SEPARATOR
                             && count($error_detected) == 0
                         ) {
-                            $field_id = $zdb->db->lastInsertId(
-                                PREFIX_DB . DynamicFieldType::TABLE,
-                                'id'
-                            );
+                            $field_id = $zdb->driver->getLastGeneratedValue();
                             header(
                                 'location: editer_champ.php?form=' . $form_name .
                                 '&id=' . $field_id
@@ -140,7 +137,6 @@ if ( $form_name == '' ) {
                             addDynamicTranslation($field_name, $error_detected);
                         }
                     } catch (Exception $e) {
-                        /** FIXME */
                         Analog::log(
                             'An error occured adding new dynamic field. | ' .
                             $e->getMessage(),

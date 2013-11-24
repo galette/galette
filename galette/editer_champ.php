@@ -37,6 +37,7 @@
  */
 
 use Analog\Analog as Analog;
+use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Expression;
 use Galette\Entity\DynamicFields as DynamicFields;
 use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
@@ -128,11 +129,12 @@ if ( isset($_POST['valid']) ) {
                     'field_size'     => $field_size,
                     'field_repeat'   => $field_repeat
                 );
-                $zdb->db->update(
-                    PREFIX_DB . DynamicFieldType::TABLE,
-                    $values,
+
+                $update = $zdb->update(DynamicFieldType::TABLE);
+                $update->values($values)->where(
                     'field_id = ' . $field_id
                 );
+                $zdb->execute($update);
             } catch (Exception $e) {
                 Analog::log(
                     'An error occured storing field | ' . $e->getMessage(),
@@ -194,7 +196,7 @@ if ( isset($_POST['valid']) ) {
                             'val'   => ':val'
                         )
                     );
-                    $stmt = $sql->prepareStatementForSqlObject($insert);
+                    $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
                     for ( $i = 0; $i < count($values); $i++ ) {
                         $stmt->execute(

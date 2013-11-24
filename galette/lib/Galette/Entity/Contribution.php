@@ -520,7 +520,7 @@ class Contribution
         global $zdb, $hist;
 
         try {
-            $zdb->db->beginTransaction();
+            $zdb->connection->beginTransaction();
             $values = array();
             $fields = self::getDbFields();
             foreach ( $fields as $field ) {
@@ -538,7 +538,7 @@ class Contribution
                 }
             }
 
-            //no end date,, let's take database defaults
+            //no end date, let's take database defaults
             if ( !$this->isCotis() && !$this->_end_date ) {
                 unset($values['date_fin_cotis']);
             }
@@ -546,12 +546,14 @@ class Contribution
             if ( !isset($this->_id) || $this->_id == '') {
                 //we're inserting a new contribution
                 unset($values[self::PK]);
-                $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
-                if ( $add > 0) {
-                    $this->_id = (int)$zdb->db->lastInsertId(
-                        PREFIX_DB . self::TABLE,
-                        'id'
-                    );
+
+                $insert = $zdb->insert(self::TABLE);
+                $insert->values($values);
+                $add = $zdb->execute($insert);
+
+                if ( $add->count() > 0) {
+                    $this->_id = $zdb->driver->getLastGeneratedValue();
+
                     // logging
                     $hist->add(
                         _T("Contribution added"),
@@ -565,14 +567,15 @@ class Contribution
                 }
             } else {
                 //we're editing an existing contribution
-                $edit = $zdb->db->update(
-                    PREFIX_DB . self::TABLE,
-                    $values,
+                $update = $zdb->update(self::TABLE);
+                $update->set($values)->where(
                     self::PK . '=' . $this->_id
                 );
+                $edit = $zdb->execute($update);
+
                 //edit == 0 does not mean there were an error, but that there
                 //were nothing to change
-                if ( $edit > 0 ) {
+                if ( $edit->count() > 0 ) {
                     $hist->add(
                         _T("Contribution updated"),
                         Adherent::getSName($this->_member)
@@ -591,11 +594,11 @@ class Contribution
                     throw new \Exception('An error occured updating member\'s deadline');
                 }
             }
-            $zdb->db->commit();
+            $zdb->connection->commit();
             $this->_orig_amount = $this->_amount;
             return true;
         } catch (\Exception $e) {
-            $zdb->db->rollBack();
+            $zdb->connection->rollBack();
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
@@ -707,7 +710,12 @@ class Contribution
     public static function getDbFields()
     {
         global $zdb;
-        return array_keys($zdb->db->describeTable(PREFIX_DB . self::TABLE));
+        $columns = $zdb->getColumns(self::TABLE);
+        $fields = array();
+        foreach ( $columns as $col ) {
+            $fields[] = $col->getName();
+        }
+        return $fields;
     }
 
     /**
@@ -775,11 +783,13 @@ class Contribution
             //first, we check if contribution is part of transaction
             $c = new Contribution((int)$contrib_id);
             if ( $c->isTransactionPartOf($trans_id)) {
-                $zdb->db->update(
-                    PREFIX_DB . self::TABLE,
-                    array(Transaction::PK => null),
+                $update = $zdb->update(self::TABLE);
+                $update->set(
+                    array(Transaction::PK => null)
+                )->where(
                     self::PK . ' = ' . $contrib_id
                 );
+                $zdb->execute($update);
                 return true;
             } else {
                 Analog::log(

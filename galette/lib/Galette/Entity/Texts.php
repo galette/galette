@@ -314,7 +314,12 @@ class Texts
     public static function getDbFields()
     {
         global $zdb;
-        return array_keys($zdb->db->describeTable(PREFIX_DB . self::TABLE));
+        $columns = $zdb->getColumns(self::TABLE);
+        $fields = array();
+        foreach ( $columns as $col ) {
+            $fields[] = $col->getName();
+        }
+        return $fields;
     }
 
     /**
@@ -359,23 +364,10 @@ class Texts
 
             if ( $proceed === true ) {
                 //first, we drop all values
-                $zdb->db->delete(PREFIX_DB . self::TABLE);
+                $delete = $zdb->delete(self::TABLE);
+                $zdb->execute($delete);
 
-                $stmt = $zdb->db->prepare(
-                    'INSERT INTO ' . PREFIX_DB . self::TABLE .
-                    ' (tid, tref, tsubject, tbody, tlang, tcomment) ' .
-                    'VALUES(:tid, :tref, :tsubject, :tbody, :tlang, :tcomment )'
-                );
-
-                foreach ( $this->_defaults as $d ) {
-                    $stmt->bindParam(':tid', $d['tid']);
-                    $stmt->bindParam(':tref', $d['tref']);
-                    $stmt->bindParam(':tsubject', $d['tsubject']);
-                    $stmt->bindParam(':tbody', $d['tbody']);
-                    $stmt->bindParam(':tlang', $d['tlang']);
-                    $stmt->bindParam(':tcomment', $d['tcomment']);
-                    $stmt->execute();
-                }
+                $this->_insert($this->_defaults);
 
                 Analog::log(
                     'Default texts were successfully stored into database.',
@@ -424,21 +416,7 @@ class Texts
             }
 
             if ( count($missing) >0 ) {
-                $stmt = $zdb->db->prepare(
-                    'INSERT INTO ' . PREFIX_DB . self::TABLE .
-                    ' (tid, tref, tsubject, tbody, tlang, tcomment) ' .
-                    'VALUES(:tid, :tref, :tsubject, :tbody, :tlang, :tcomment )'
-                );
-
-                foreach ( $missing as $d ) {
-                    $stmt->bindParam(':tid', $d['tid']);
-                    $stmt->bindParam(':tref', $d['tref']);
-                    $stmt->bindParam(':tsubject', $d['tsubject']);
-                    $stmt->bindParam(':tbody', $d['tbody']);
-                    $stmt->bindParam(':tlang', $d['tlang']);
-                    $stmt->bindParam(':tcomment', $d['tcomment']);
-                    $stmt->execute();
-                }
+                $this->_insert($missing);
 
                 Analog::log(
                     'Missing texts were successfully stored into database.',
@@ -481,5 +459,32 @@ class Texts
             $this->_replaces,
             $this->_all_texts->tbody
         );
+    }
+
+    /**
+     * Insert values in database
+     *
+     * @param array $values Values to insert
+     *
+     * @return void
+     */
+    private function _insert($values)
+    {
+        $insert = $zdb->insert(self::TABLE);
+        $insert->values(
+            array(
+                'tid'       => ':tid',
+                'tref'      => ':tref',
+                'tsubject'  => ':tsubject',
+                'tbody'     => ':tbody',
+                'tlang'     => ':tlang',
+                'tcomment'  => ':tcomment'
+            )
+        );
+        $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
+
+        foreach ( $values as $value ) {
+            $stmt->execute($value);
+        }
     }
 }

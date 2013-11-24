@@ -163,20 +163,35 @@ abstract class Entitled
             $delete = $zdb->delete($this->_table);
             $zdb->execute($delete);
 
-            /*$insert = $zdb->insert($this->_table);
+            $values = array();
+            $i = 0;
+            foreach ( $class::$fields as $f ) {
+                $v = null;
+                if ( $i === 0 ) {
+                    $v = ':id';
+                } else if ( $v === 1 ) {
+                    $v = ':libelle';
+                } else if ( $i === 2 ) {
+                    $v = ':third';
+                }
+                $values[$f] = $v;
+                $i++;
+            }
+
+            $insert = $zdb->insert($this->_table);
             $insert->values(
                 array()
-            );*/
+            );
 
-            $stmt = $zdb->db->prepare(
+            /*$stmt = $zdb->db->prepare(
                 'INSERT INTO ' . PREFIX_DB . $this->_table .
                 ' (' . implode(',', $class::$fields) . ') ' .
                 'VALUES(:id, :libelle, :third)'
-            );
+            );*/
 
             foreach ( $class::$defaults as $d ) {
-                $stmt->bindParam(':id', $d['id']);
-                $stmt->bindParam(':libelle', $d['libelle']);
+                /*$stmt->bindParam(':id', $d['id']);
+                $stmt->bindParam(':libelle', $d['libelle']);*/
 
                 $val = null;
                 if ( isset($d['priority']) ) {
@@ -184,8 +199,15 @@ abstract class Entitled
                 } else {
                     $val = $d['extension'];
                 }
-                $stmt->bindParam(':third', $val, \PDO::PARAM_INT);
-                $stmt->execute();
+                /*$stmt->bindParam(':third', $val, \PDO::PARAM_INT);*/
+
+                $stmt->execute(
+                    array(
+                        ':id'       => $d['id'],
+                        ':libelle'  => $d['libelle'],
+                        ':third'    => $val
+                    )
+                );
             }
 
             Analog::log(

@@ -196,7 +196,10 @@ class Db
      */
     public function selectAll($table)
     {
-        return $this->_db->query('SELECT * FROM ' . $table, Adapter::QUERY_MODE_EXECUTE);
+        return $this->_db->query(
+            'SELECT * FROM ' . $table,
+            Adapter::QUERY_MODE_EXECUTE
+        );
     }
 
     /**
@@ -208,8 +211,9 @@ class Db
      *
      * @return array
      */
-    public static function getUpdateScripts($path, $db_type = 'mysql', $version = null)
-    {
+    public static function getUpdateScripts(
+        $path, $db_type = 'mysql', $version = null
+    ) {
         $dh = opendir($path . '/sql');
         $update_scripts = array();
         if ( $dh !== false ) {
@@ -235,19 +239,21 @@ class Db
     }
 
     /**
-    * Test if database can be contacted. Mostly used for installation
-    *
-    * @param string $type db type
-    * @param string $user database's user
-    * @param string $pass password for the user
-    * @param string $host which host we want to connect to
-    * @param string $port which tcp port we want to connect to
-    * @param string $db   database name
-    *
-    * @return true|array true if connection was successfull, an array with some infos otherwise
-    */
-    public static function testConnectivity($type, $user = null, $pass = null, $host = null, $port = null, $db = null)
-    {
+     * Test if database can be contacted. Mostly used for installation
+     *
+     * @param string $type db type
+     * @param string $user database's user
+     * @param string $pass password for the user
+     * @param string $host which host we want to connect to
+     * @param string $port which tcp port we want to connect to
+     * @param string $db   database name
+     *
+     * @return true|array true if connection was successfull,
+     *                    an array with some infos otherwise
+     */
+    public static function testConnectivity(
+        $type, $user = null, $pass = null, $host = null, $port = null, $db = null
+    ) {
         $_type = null;
         try {
             if ( $type === self::MYSQL ) {
@@ -314,10 +320,10 @@ class Db
     }
 
     /**
-    * Drop test table if it exists, so we can make all checks.
-    *
-    * @return void
-    */
+     * Drop test table if it exists, so we can make all checks.
+     *
+     * @return void
+     */
     public function dropTestTable()
     {
         try {
@@ -332,14 +338,14 @@ class Db
     }
 
     /**
-    * Checks GRANT access for install time
-    *
-    * @param char $mode are we at install time (i) or update time (u) ?
-    *
-    * @return array containing each test. Each array entry could
-    *           be either true or contains an exception of false if test did not
-    *           ran.
-    */
+     * Checks GRANT access for install time
+     *
+     * @param char $mode are we at install time (i) or update time (u) ?
+     *
+     * @return array containing each test. Each array entry could
+     *           be either true or contains an exception of false if test did not
+     *           ran.
+     */
     public function grantCheck($mode = 'i')
     {
         Analog::log(
@@ -533,13 +539,13 @@ class Db
     }
 
     /**
-    * Converts recursively database to UTF-8
-    *
-    * @param string  $prefix       Specified table prefix
-    * @param boolean $content_only Proceed only content (no table conversion)
-    *
-    * @return void
-    */
+     * Converts recursively database to UTF-8
+     *
+     * @param string  $prefix       Specified table prefix
+     * @param boolean $content_only Proceed only content (no table conversion)
+     *
+     * @return void
+     */
     public function convertToUTF($prefix = null, $content_only = false)
     {
 
@@ -548,7 +554,7 @@ class Db
         }
 
         try {
-            $this->_db->beginTransaction();
+            $this->connection->beginTransaction();
 
             $tables = $this->getTables($prefix);
 
@@ -560,7 +566,11 @@ class Db
                     $query = 'ALTER TABLE ' . $table .
                         ' CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci';
 
-                    $this->_db->getConnection()->exec($query);
+                    $this->_db->query(
+                        $query,
+                        Adapter::QUERY_MODE_EXECUTE
+                    );
+
                     Analog::log(
                         'Charset successfully changed for table `' . $table .'`',
                         Analog::DEBUG
@@ -572,9 +582,9 @@ class Db
                     $this->_convertContentToUTF($prefix, $table);
                 }
             }
-            $this->_db->commit();
+            $this->connection->commit();
         } catch (\Exception $e) {
-            $this->_db->rollBack();
+            $this->connection->rollBack();
             Analog::log(
                 'An error occured while converting to utf table ' .
                 $table . ' (' . $e->getMessage() . ')',
@@ -584,13 +594,13 @@ class Db
     }
 
     /**
-    * Converts dtabase content to UTF-8
-    *
-    * @param string $prefix Specified table prefix
-    * @param string $table  the table we want to convert datas from
-    *
-    * @return void
-    */
+     * Converts dtabase content to UTF-8
+     *
+     * @param string $prefix Specified table prefix
+     * @param string $table  the table we want to convert datas from
+     *
+     * @return void
+     */
     private function _convertContentToUTF($prefix, $table)
     {
 
@@ -607,6 +617,7 @@ class Db
         }
 
         try {
+            /** FIXME: ZF1 method */
             $descr = $this->_db->describeTable($table);
 
             $pkeys = array();

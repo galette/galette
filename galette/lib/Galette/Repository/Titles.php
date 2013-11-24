@@ -110,12 +110,16 @@ class Titles
     {
         try {
             //first, we drop all values
-            $zdb->db->delete(PREFIX_DB . self::TABLE);
+            $delete = $zdb->delete(self::TABLE);
+            $zdb->execute($delete);
 
-            $stmt = $zdb->db->prepare(
-                'INSERT INTO ' . PREFIX_DB . self::TABLE .
-                ' (id_title, short_label, long_label) ' .
-                'VALUES(:id, :short, :long)'
+            $insert = $zdb->insert(self::TABLE);
+            $insert->values(
+                array(
+                    'id_title'      => ':id',
+                    'short_label'   => ':short',
+                    'long_label'    => ':long'
+                )
             );
 
             foreach ( self::$_defaults as $d ) {
@@ -126,10 +130,13 @@ class Titles
                 } else {
                     $long = new Expression('NULL');
                 }
-                $stmt->bindParam(':id', $d['id_title']);
-                $stmt->bindParam(':short', $short);
-                $stmt->bindParam(':long', $long);
-                $stmt->execute();
+                $stmt->execute(
+                    array(
+                        'id_title'      => $d['id_title'],
+                        'short_label'   => $short,
+                        'long_label'    => $long
+                    )
+                );
             }
 
             Analog::log(

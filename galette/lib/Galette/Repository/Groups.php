@@ -38,7 +38,6 @@
 namespace Galette\Repository;
 
 use Analog\Analog as Analog;
-use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Expression;
 use Galette\Entity\Group as Group;
 use Galette\Entity\Adherent as Adherent;
@@ -266,9 +265,7 @@ class Groups
                         Adherent::PK    => ':adh'
                     )
                 );
-
-                $sql = new Sql($zdb->db);
-                $stmt = $sql->prepareStatementForSqlObject($insert);
+                $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
                 foreach ( $groups as $group ) {
                     list($gid, $gname) = explode('|', $group);

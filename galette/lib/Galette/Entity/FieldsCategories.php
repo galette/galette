@@ -125,20 +125,29 @@ class FieldsCategories
     {
         try {
             //first, we drop all values
-            $zdb->db->delete(PREFIX_DB . self::TABLE);
+            $delete = $zdb->delete(self::TABLE);
+            $zdb->execute($delete);
 
-            $stmt = $zdb->db->prepare(
-                'INSERT INTO ' . PREFIX_DB . self::TABLE .
-                ' (' . self::PK . ', table_name, category, position) ' .
-                'VALUES(:id, :table_name, :category, :position)'
+            $insert = $zdb->insert(self::TABLE);
+            $insert->values(
+                array(
+                    self::PK        => ':id',
+                    'table_name'    => ':table_name',
+                    'category'      => ':category',
+                    'position'      => ':position'
+                )
             );
+            $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
             foreach ( self::$_defaults as $d ) {
-                $stmt->bindParam(':id', $d['id']);
-                $stmt->bindParam(':table_name', $d['table_name']);
-                $stmt->bindParam(':category', $d['category']);
-                $stmt->bindParam(':position', $d['position']);
-                $stmt->execute();
+                $stmt->execute(
+                    array(
+                        self::PK        => $d['id'],
+                        'table_name'    => $d['table_name'],
+                        'category'      => $d['category'],
+                        'position'      => $d['position']
+                    )
+                );
             }
 
             Analog::log(

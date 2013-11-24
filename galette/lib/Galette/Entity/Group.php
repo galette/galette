@@ -38,7 +38,6 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
-use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Expression;
 
 /**
@@ -257,34 +256,35 @@ class Group
         global $zdb;
 
         try {
-            $zdb->db->beginTransaction();
+            $zdb->connection->beginTransaction();
 
             if ( $cascade === true ) {
                 //delete members
-                $del = $zdb->db->delete(
-                    PREFIX_DB . self::GROUPSUSERS_TABLE,
+                $delete = $zdb->delete(self::GROUPSUSERS_TABLE);
+                $delete->where(
                     self::PK . ' = ' . $id
                 );
+                $zdb->execute($delete);
 
                 //delete_managers
-                $del = $zdb->db->delete(
-                    PREFIX_DB . self::GROUPSMANAGERS_TABLE,
+                $delete = $zdb->delete(self::GROUPSMANAGERS_TABLE);
+                $delete->where(
                     self::PK . ' = ' . $id
                 );
             }
 
             //delete group itself
-            $del = $zdb->db->delete(
-                PREFIX_DB . self::TABLE,
+            $delete = $zdb->delete(self::TABLE);
+            $delete->where(
                 self::PK . ' = ' . $this->_id
             );
 
             //commit all changes
-            $zdb->db->commit();
+            $zdb->connection->commit();
 
             return true;
         } catch (\Exception $e) {
-            $zdb->db->rollBack();
+            $zdb->connection->rollBack();
             Analog::log(
                 'Unable to delete group ' . $this->_group_name .
                 ' (' . $this->_id  . ') |' . $e->getMessage(),
@@ -360,12 +360,12 @@ class Group
                 unset($values[self::PK]);
                 $this->_creation_date = date("Y-m-d H:i:s");
                 $values['creation_date'] = $this->_creation_date;
-                $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
+
+                $insert = $zdb->insert(self::TABLE);
+                $insert->values($values);
+                $add = $zdb->execute($insert);;
                 if ( $add > 0) {
-                    $this->_id = $zdb->db->lastInsertId(
-                        PREFIX_DB . self::TABLE,
-                        'id'
-                    );
+                    $this->_id = $zdb->driver->getLastGeneratedValue();
                     // logging
                     $hist->add(
                         _T("Group added"),
@@ -624,8 +624,7 @@ class Group
                 )
             );
 
-            $sql = new Sql($zdb->db);
-            $stmt = $sql->prepareStatementForSqlObject($insert);
+            $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
             if ( is_array($members) ) {
                 foreach ( $members as $m ) {
@@ -715,8 +714,7 @@ class Group
                 )
             );
 
-            $sql = new Sql($zdb->db);
-            $stmt = $sql->prepareStatementForSqlObject($insert);
+            $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
             if ( is_array($members) ) {
                 foreach ( $members as $m ) {

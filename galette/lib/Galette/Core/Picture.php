@@ -38,7 +38,6 @@
 namespace Galette\Core;
 
 use Analog\Analog as Analog;
-use Zend\Db\Sql\Sql;
 use Galette\Entity\Adherent;
 
 /**
@@ -514,7 +513,7 @@ class Picture
 
         try {
             $insert = $zdb->insert($this->tbl_prefix . $class::TABLE);
-            $stmt = $sql->prepareStatementForSqlObject($insert);
+            $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
             $container = $stmt->getParameterContainer();
             $container->offsetSet(
                 $class::PK,

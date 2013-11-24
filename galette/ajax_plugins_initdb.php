@@ -39,6 +39,7 @@
  */
 
 use Analog\Analog as Analog;
+use Zend\Db\Adapter\Adapter;
 use Galette\Core\Db as Db;
 
 require_once 'includes/galette.inc.php';
@@ -218,7 +219,10 @@ case 'u3':
                 $extra = '...';
             }
             try {
-                $result = $zdb->db->getConnection()->exec($query);
+                $zdb->db->query(
+                    $query,
+                    Adapter::QUERY_MODE_EXECUTE
+                );
                 $success_detected[] = $w1 . ' ' . $w2 . ' ' . $w3 .
                     ' ' . $extra;
             } catch (Exception $e) {
