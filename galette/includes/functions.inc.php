@@ -59,94 +59,27 @@ function isValidWebUrl($url)
 
 function custom_html_entity_decode( $given_html, $quote_style = ENT_QUOTES )
 {
-    $trans_table = array_flip(get_html_translation_table(
-        HTML_ENTITIES,
-        $quote_style
-    ));
+    $trans_table = array_flip(
+        get_html_translation_table(
+            HTML_ENTITIES,
+            $quote_style
+        )
+    );
     $trans_table['&#39;'] = "'";
-    return (strtr($given_html, $trans_table ));
-}
-
-//TODO better handling (replace bad string not just detect it)
-function sanityze_superglobals_arrays()
-{
-    $errors = 0;
-    foreach ( $_GET as $k => $v ) {
-        if (stripos("'",$v)!==false
-            || stripos(";",$v)!==false
-            || stripos("\"",$v)!==false
-        ) {
-             $errors++;
-        }
-    }
-    foreach ( $_POST as $k => $v ) {
-        if (stripos("'",$v)!==false
-            || stripos(";",$v)!==false
-            || stripos("\"",$v)!==false
-        ) {
-             $errors++;
-        }
-    }
-    return $errors;
-}
-
-function date_db2text($date)
-{
-    if ($date != '')
-    {
-        list($a,$m,$j)=explode("-",$date);
-        $date="$j/$m/$a";
-    }
-    return $date;
-}
-
-function date_text2db($DB, $date)
-{
-    list($j, $m, $a)=explode('/', $date);
-    if ( !checkdate($m, $j, $a) ) {
-        return '';
-    }
-    return $DB->DBDate($a.'-'.$m.'-'.$j);
-}
-
-function distance_months($beg, $end)
-{
-    list($bj, $bm, $ba) = explode('/', $beg);
-    list($ej, $em, $ea) = explode('/', $end);
-    if ( $bm > $em ) {
-        $em += 12;
-        $ea--;
-    }
-    return ($ea -$ba) * 12 + $em - $bm;
-}
-
-function beg_membership_after($date)
-{
-    global $preferences;
-    $beg = "";
-    if ( $preferences->pref_beg_membership != '' ) {
-        list($j, $m) = explode('/', $preferences->pref_beg_membership);
-        $time = mktime(0, 0, 0, $m, $j, $y);
-        while ($time <= $date){
-            $y++;
-            $time = mktime(0, 0, 0, $m, $j, $y);
-        }
-        $beg = date('d/m/Y', strtotime('-1 day', $time)) . "\n";
-    }
-    return $beg;
+    return strtr($given_html, $trans_table);
 }
 
 /**
-* Get a value sent by a form, either in POST and GET arrays
-*
-* @param string $name   property name
-* @param string $defval default rollback value
-*
-* @return string value retrieved from :
-* - GET array if defined and numeric,
-* - POST array if defined and numéric
-* - $defval otherwise
-*/
+ * Get a value sent by a form, either in POST and GET arrays
+ *
+ * @param string $name   property name
+ * @param string $defval default rollback value
+ *
+ * @return string value retrieved from :
+ * - GET array if defined and numeric,
+ * - POST array if defined and numéric
+ * - $defval otherwise
+ */
 function get_form_value($name, $defval)
 {
     $val = $defval;
@@ -159,16 +92,16 @@ function get_form_value($name, $defval)
 }
 
 /**
-* Get a numeric value sent by a form, either in POST and GET arrays
-*
-* @param string $name   property name
-* @param string $defval default rollback value
-*
-* @return numeric value retrieved from :
-* - GET array if defined and numeric,
-* - POST array if defined and numéric
-* - $defval otherwise
-*/
+ * Get a numeric value sent by a form, either in POST and GET arrays
+ *
+ * @param string $name   property name
+ * @param string $defval default rollback value
+ *
+ * @return numeric value retrieved from :
+ * - GET array if defined and numeric,
+ * - POST array if defined and numéric
+ * - $defval otherwise
+ */
 function get_numeric_form_value($name, $defval)
 {
     $val = get_form_value($name, $defval);
@@ -184,15 +117,15 @@ function get_numeric_form_value($name, $defval)
 }
 
 /**
-* Get a post numeric value
-*
-* @param string $name   property name
-* @param string $defval default rollback value
-*
-* @return string value retrieved from :
-* - POST array if defined and numéric
-* - $defval otherwise
-*/
+ * Get a post numeric value
+ *
+ * @param string $name   property name
+ * @param string $defval default rollback value
+ *
+ * @return string value retrieved from :
+ * - POST array if defined and numéric
+ * - $defval otherwise
+ */
 function get_numeric_posted_value($name, $defval)
 {
     if ( isset($_POST[$name]) ) {

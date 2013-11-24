@@ -43,7 +43,6 @@ $hash = '';
 $password_updated = false;
 $password = new Galette\Core\Password();
 
-//TODO need to sanityze superglobals, see sanityze_superglobals_arrays
 // get hash id, $_GET if passed by url, $_POST if passed by this form
 if ( isset($_GET['hash']) && !empty($_GET['hash']) ) {
     $hash = $_GET['hash'];

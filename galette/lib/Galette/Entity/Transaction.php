@@ -506,7 +506,20 @@ class Transaction
         if ( !in_array($name, $forbidden) && isset($this->$rname) ) {
             switch($name) {
             case 'date':
-                return date_db2text($this->$rname);
+                if ( $this->$rname != '' ) {
+                    try {
+                        $d = new \DateTime($this->$rname);
+                        return $d->format(_T("Y-m-d"));
+                    } catch (\Exception $e) {
+                        //oops, we've got a bad date :/
+                        Analog::log(
+                            'Bad date (' . $this->$rname . ') | ' .
+                            $e->getMessage(),
+                            Analog::INFO
+                        );
+                        return $this->$rname;
+                    }
+                }
                 break;
             default:
                 return $this->$rname;
