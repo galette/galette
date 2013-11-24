@@ -119,7 +119,7 @@ class Members
      * Default constructor
      *
      * @param MembersList $filters Filtering
-    */
+     */
     public function __construct($filters = null)
     {
         if ( $filters === null ) {
@@ -130,18 +130,18 @@ class Members
     }
 
     /**
-    * Get staff members list
-    *
-    * @param bool    $as_members return the results as an array of
-    *                               Member object.
-    * @param array   $fields     field(s) name(s) to get. Should be a string or
-    *                               an array. If null, all fields will be
-    *                               returned
-    * @param boolean $count      true if we want to count members
-    * @param boolean $limit      true to LIMIT query
-    *
-    * @return Adherent[]|ResultSet
-    */
+     * Get staff members list
+     *
+     * @param bool    $as_members return the results as an array of
+     *                               Member object.
+     * @param array   $fields     field(s) name(s) to get. Should be a string or
+     *                               an array. If null, all fields will be
+     *                               returned
+     * @param boolean $count      true if we want to count members
+     * @param boolean $limit      true to LIMIT query
+     *
+     * @return Adherent[]|ResultSet
+     */
     public function getStaffMembersList(
         $as_members=false, $fields=null, $count=true, $limit=true
     ) {
@@ -156,18 +156,18 @@ class Members
     }
 
     /**
-    * Get managed members list (for groups managers)
-    *
-    * @param bool    $as_members return the results as an array of
-    *                               Member object.
-    * @param array   $fields     field(s) name(s) to get. Should be a string or
-    *                               an array. If null, all fields will be
-    *                               returned
-    * @param boolean $count      true if we want to count members
-    * @param boolean $limit      true to LIMIT query
-    *
-    * @return Adherent[]|ResultSet
-    */
+     * Get managed members list (for groups managers)
+     *
+     * @param bool    $as_members return the results as an array of
+     *                               Member object.
+     * @param array   $fields     field(s) name(s) to get. Should be a string or
+     *                               an array. If null, all fields will be
+     *                               returned
+     * @param boolean $count      true if we want to count members
+     * @param boolean $limit      true to LIMIT query
+     *
+     * @return Adherent[]|ResultSet
+     */
     public function getManagedMembersList(
         $as_members=false, $fields=null, $count=true, $limit=true
     ) {
@@ -181,21 +181,21 @@ class Members
         );
     }
     /**
-    * Get members list
-    *
-    * @param bool    $as_members return the results as an array of
-    *                               Member object.
-    * @param array   $fields     field(s) name(s) to get. Should be a string or
-    *                               an array. If null, all fields will be
-    *                               returned
-    * @param boolean $count      true if we want to count members
-    * @param boolean $staff      true if we want only staff members
-    * @param boolean $managed    true if we want only managed groups
-    * @param boolean $limit      true if we want records pagination
-    * @param boolean $export     true if we are exporting
-    *
-    * @return Adherent[]|ResultSet
-    */
+     * Get members list
+     *
+     * @param bool    $as_members return the results as an array of
+     *                               Member object.
+     * @param array   $fields     field(s) name(s) to get. Should be a string or
+     *                               an array. If null, all fields will be
+     *                               returned
+     * @param boolean $count      true if we want to count members
+     * @param boolean $staff      true if we want only staff members
+     * @param boolean $managed    true if we want only managed groups
+     * @param boolean $limit      true if we want records pagination
+     * @param boolean $export     true if we are exporting
+     *
+     * @return Adherent[]|ResultSet
+     */
     public function getMembersList(
         $as_members=false,
         $fields=null,

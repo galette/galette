@@ -79,10 +79,10 @@ class ContributionsTypes extends Entitled
     );
 
     /**
-    * Default constructor
-    *
-    * @param ResultSet $args Optionnal existing result set
-    */
+     * Default constructor
+     *
+     * @param ResultSet $args Optionnal existing result set
+     */
     public function __construct($args = null)
     {
         parent::__construct(

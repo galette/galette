@@ -69,13 +69,13 @@ if ( @putenv("LANG=$language")
 }
 
 /**
-* Add a translation stored in the database
-*
-* @param string $text_orig      Text to translate
-* @param array  $error_detected Pointer to errors array
-*
-* @return void
-*/
+ * Add a translation stored in the database
+ *
+ * @param string $text_orig      Text to translate
+ * @param array  $error_detected Pointer to errors array
+ *
+ * @return void
+ */
 function addDynamicTranslation($text_orig, $error_detected)
 {
     global $zdb, $i18n;
@@ -144,13 +144,13 @@ function addDynamicTranslation($text_orig, $error_detected)
 }
 
 /**
-* Delete a translation stored in the database
-*
-* @param string $text_orig      Text to translate
-* @param array  $error_detected Pointer to errors array
-*
-* @return void
-*/
+ * Delete a translation stored in the database
+ *
+ * @param string $text_orig      Text to translate
+ * @param array  $error_detected Pointer to errors array
+ *
+ * @return void
+ */
 function deleteDynamicTranslation($text_orig, $error_detected)
 {
     global $zdb, $i18n;
@@ -185,15 +185,15 @@ function deleteDynamicTranslation($text_orig, $error_detected)
 }
 
 /**
-* Update a translation stored in the database
-*
-* @param string $text_orig      Text to translate
-* @param string $text_locale    The locale
-* @param string $text_trans     Translated text
-* @param array  $error_detected Pointer to errors array
-*
-* @return translated string
-*/
+ * Update a translation stored in the database
+ *
+ * @param string $text_orig      Text to translate
+ * @param string $text_locale    The locale
+ * @param string $text_trans     Translated text
+ * @param array  $error_detected Pointer to errors array
+ *
+ * @return translated string
+ */
 function updateDynamicTranslation(
     $text_orig,
     $text_locale,
@@ -252,15 +252,14 @@ function updateDynamicTranslation(
     }
 }
 
-/** FIXME: should be a method in L10n class */
 /**
-* Get a translation stored in the database
-*
-* @param string $text_orig   Text to translate
-* @param string $text_locale The locale
-*
-* @return translated string
-*/
+ * Get a translation stored in the database
+ *
+ * @param string $text_orig   Text to translate
+ * @param string $text_locale The locale
+ *
+ * @return translated string
+ */
 function getDynamicTranslation($text_orig, $text_locale)
 {
     global $zdb;
@@ -303,12 +302,12 @@ if ( (isset($loc) && $loc!=$language) || $disable_gettext) {
 
 if ( !function_exists('_T') ) {
     /**
-    * Translate a string
-    *
-    * @param string $chaine The string to translate
-    *
-    * @return Translated string (if available) ; $chaine otherwise
-    */
+     * Translate a string
+     *
+     * @param string $chaine The string to translate
+     *
+     * @return Translated string (if available) ; $chaine otherwise
+     */
     function _T($chaine)
     {
         global $language, $disable_gettext, $installer;

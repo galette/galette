@@ -71,13 +71,13 @@ class I18n
     private $_file = 'languages.xml';
 
     /**
-    * Default constructor.
-    * Initialize default language and set environment variables
-    *
-    * @param bool $lang true if there were a language change
-    *
-    * @return void
-    */
+     * Default constructor.
+     * Initialize default language and set environment variables
+     *
+     * @param bool $lang true if there were a language change
+     *
+     * @return void
+     */
     function __construct($lang = false)
     {
         $this->_path = GALETTE_ROOT . $this->_dir;
@@ -103,12 +103,12 @@ class I18n
     }
 
     /**
-    * Load language parameters from the XML file
-    *
-    * @param string $id Identifier forv requested language
-    *
-    * @return void
-    */
+     * Load language parameters from the XML file
+     *
+     * @param string $id Identifier forv requested language
+     *
+     * @return void
+     */
     public function changeLanguage($id)
     {
         Analog::log('Trying to set locale to ' . $id, Analog::DEBUG);
@@ -137,12 +137,12 @@ class I18n
     }
 
     /**
-    * Load a language
-    *
-    * @param string $id identifier for the language to load
-    *
-    * @return void
-    */
+     * Load a language
+     *
+     * @param string $id identifier for the language to load
+     *
+     * @return void
+     */
     private function _load($id)
     {
         $xml = simplexml_load_file($this->_file);
@@ -158,10 +158,10 @@ class I18n
     }
 
     /**
-    * List languages
-    *
-    * @return array list of all active languages
-    */
+     * List languages
+     *
+     * @return array list of all active languages
+     */
     public function getList()
     {
         $result = array();
@@ -176,12 +176,12 @@ class I18n
     }
 
     /**
-    * Gets language full name from its ID
-    *
-    * @param string $id the language identifier
-    *
-    * @return string name for specified identifier
-    */
+     * Gets language full name from its ID
+     *
+     * @param string $id the language identifier
+     *
+     * @return string name for specified identifier
+     */
     public function getNameFromId($id)
     {
         $xml = simplexml_load_file($this->_file);
@@ -191,12 +191,12 @@ class I18n
     }
 
     /**
-    * Gets the language flag from its ID
-    *
-    * @param string $id the language identifier
-    *
-    * @return string path to flag for specified language identifier
-    */
+     * Gets the language flag from its ID
+     *
+     * @param string $id the language identifier
+     *
+     * @return string path to flag for specified language identifier
+     */
     public function getFlagFromId($id)
     {
         $xml = simplexml_load_file($this->_file);
@@ -206,20 +206,20 @@ class I18n
     }
 
     /**
-    * Get current id
-    *
-    * @return string current language identifier
-    */
+     * Get current id
+     *
+     * @return string current language identifier
+     */
     public function getID()
     {
         return $this->_id;
     }
 
     /**
-    * Get long identifier
-    *
-    * @return string current language long identifier
-    */
+     * Get long identifier
+     *
+     * @return string current language long identifier
+     */
     public function getLongID()
     {
         return $this->_longid;
@@ -236,52 +236,52 @@ class I18n
     }
 
     /**
-    * Get current name
-    *
-    * @return string current language name
-    */
+     * Get current name
+     *
+     * @return string current language name
+     */
     public function getName()
     {
         return $this->_name;
     }
 
     /**
-    * Get current abreviation
-    *
-    * @return string current language abreviation
-    */
+     * Get current abreviation
+     *
+     * @return string current language abreviation
+     */
     public function getAbbrev()
     {
         return $this->_abbrev;
     }
 
     /**
-    * Get current flag
-    *
-    * @return string path to the current language flag image
-    */
+     * Get current flag
+     *
+     * @return string path to the current language flag image
+     */
     public function getFlag()
     {
         return GALETTE_BASE_PATH . GALETTE_TPL_SUBDIR . 'images/' . $this->_flag;
     }
 
     /**
-    * Get current filename
-    *
-    * @return string current filename
-    */
+     * Get current filename
+     *
+     * @return string current filename
+     */
     public function getFileName()
     {
         return $this->_filename;
     }
 
     /**
-    * Is a string seem to be UTF-8 one ?
-    *
-    * @param string $str string to analyze
-    *
-    * @return  boolean
-    */
+     * Is a string seem to be UTF-8 one ?
+     *
+     * @param string $str string to analyze
+     *
+     * @return  boolean
+     */
     public static function seemUtf8($str)
     {
         return mb_check_encoding($str, 'UTF-8');

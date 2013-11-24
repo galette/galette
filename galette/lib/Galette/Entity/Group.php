@@ -92,12 +92,12 @@ class Group
     }
 
     /**
-    * Loads a group from its id
-    *
-    * @param int $id the identifiant for the group to load
-    *
-    * @return bool true if query succeed, false otherwise
-    */
+     * Loads a group from its id
+     *
+     * @param int $id the identifiant for the group to load
+     *
+     * @return bool true if query succeed, false otherwise
+     */
     public function load($id)
     {
         global $zdb;

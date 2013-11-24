@@ -94,13 +94,13 @@ class DynamicFields
     private $_forms_names;
 
     /**
-    * Default constructor
-    *
-    * @param null|int|ResultSet $args Either a ResultSet row, its id or its
-    *                                 login or its mail for to load
-    *                                 a specific member, or null to just
-    *                                 instanciate object
-    */
+     * Default constructor
+     *
+     * @param null|int|ResultSet $args Either a ResultSet row, its id or its
+     *                                 login or its mail for to load
+     *                                 a specific member, or null to just
+     *                                 instanciate object
+     */
     public function __construct($args = null)
     {
         //Fields types names
@@ -402,7 +402,6 @@ class DynamicFields
                 return false;
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING

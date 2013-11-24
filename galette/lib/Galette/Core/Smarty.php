@@ -98,8 +98,6 @@ class Smarty extends \SmartyBC
         $this->assign('scripts_dir', GALETTE_BASE_PATH . 'includes/');
         $this->assign('PAGENAME', basename($_SERVER['SCRIPT_NAME']));
         $this->assign('galette_base_path', GALETTE_BASE_PATH);
-        /** FIXME: on certains pages PHP notice that GALETTE_VERSION does not exists
-        although it appears correctly*/
         $this->assign('GALETTE_VERSION', GALETTE_VERSION);
         $this->assign('GALETTE_MODE', GALETTE_MODE);
         /** galette_lang should be removed and languages used instead */

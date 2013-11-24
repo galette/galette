@@ -62,13 +62,13 @@ class Login extends Authentication
     const PK = 'login_adh';
 
     /**
-    * Logs in user.
-    *
-    * @param string $user  user's login
-    * @param string $passe user's password
-    *
-    * @return boolean
-    */
+     * Logs in user.
+     *
+     * @param string $user  user's login
+     * @param string $passe user's password
+     *
+     * @return boolean
+     */
     public function logIn($user, $passe)
     {
         global $zdb, $i18n, $session;
@@ -180,13 +180,13 @@ class Login extends Authentication
     }
 
     /**
-    * Does this login already exists ?
-    * These function should be used for setting admin login into Preferences
-    *
-    * @param string $user the username
-    *
-    * @return true if the username already exists, false otherwise
-    */
+     * Does this login already exists ?
+     * These function should be used for setting admin login into Preferences
+     *
+     * @param string $user the username
+     *
+     * @return true if the username already exists, false otherwise
+     */
     public function loginExists($user)
     {
         global $zdb;

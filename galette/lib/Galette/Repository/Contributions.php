@@ -86,18 +86,18 @@ class Contributions extends Pagination
     private $_sum;
 
     /**
-    * Default constructor
-    */
+     * Default constructor
+     */
     public function __construct()
     {
         parent::__construct();
     }
 
     /**
-    * Returns the field we want to default set order to
-    *
-    * @return string field name
-    */
+     * Returns the field we want to default set order to
+     *
+     * @return string field name
+     */
     protected function getDefaultOrder()
     {
         return 'date_debut_cotis';
@@ -114,10 +114,10 @@ class Contributions extends Pagination
     }
 
     /**
-    * Returns the field we want to default set order to (public method)
-    *
-    * @return string field name
-    */
+     * Returns the field we want to default set order to (public method)
+     *
+     * @return string field name
+     */
     public static function defaultOrder()
     {
         return self::getDefaultOrder();
@@ -137,17 +137,17 @@ class Contributions extends Pagination
     }
 
     /**
-    * Get contributions list
-    *
-    * @param bool    $as_contrib return the results as an array of
-    *                               Contribution object.
-    * @param array   $fields     field(s) name(s) to get. Should be a string or
-    *                               an array. If null, all fields will be
-    *                               returned
-    * @param boolean $count      true if we want to count members
-    *
-    * @return Contribution[]|ResultSet
-    */
+     * Get contributions list
+     *
+     * @param bool    $as_contrib return the results as an array of
+     *                               Contribution object.
+     * @param array   $fields     field(s) name(s) to get. Should be a string or
+     *                               an array. If null, all fields will be
+     *                               returned
+     * @param boolean $count      true if we want to count members
+     *
+     * @return Contribution[]|ResultSet
+     */
     public function getContributionsList(
         $as_contrib=false, $fields=null, $count=true
     ) {
@@ -180,14 +180,14 @@ class Contributions extends Pagination
     }
 
     /**
-    * Builds the SELECT statement
-    *
-    * @param array $fields fields list to retrieve
-    * @param bool  $count  true if we want to count members
-                            (not applicable from static calls), defaults to false
-    *
-    * @return string SELECT statement
-    */
+     * Builds the SELECT statement
+     *
+     * @param array $fields fields list to retrieve
+     * @param bool  $count  true if we want to count members
+     *                      (not applicable from static calls), defaults to false
+     *
+     * @return string SELECT statement
+     */
     private function _buildSelect($fields, $count = false)
     {
         global $zdb;
@@ -216,7 +216,6 @@ class Contributions extends Pagination
 
             return $select;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot build SELECT clause for contributions | ' . $e->getMessage(),
                 Analog::WARNING
@@ -226,12 +225,12 @@ class Contributions extends Pagination
     }
 
     /**
-    * Count contributions from the query
-    *
-    * @param Select $select Original select
-    *
-    * @return void
-    */
+     * Count contributions from the query
+     *
+     * @param Select $select Original select
+     *
+     * @return void
+     */
     private function _proceedCount($select)
     {
         global $zdb;
@@ -265,12 +264,12 @@ class Contributions extends Pagination
     }
 
     /**
-    * Calculate sum of all selected contributions
-    *
-    * @param Select $select Original select
-    *
-    * @return void
-    */
+     * Calculate sum of all selected contributions
+     *
+     * @param Select $select Original select
+     *
+     * @return void
+     */
     private function _calculateSum($select)
     {
         global $zdb;
@@ -299,10 +298,10 @@ class Contributions extends Pagination
     }
 
     /**
-    * Builds the order clause
-    *
-    * @return string SQL ORDER clause
-    */
+     * Builds the order clause
+     *
+     * @return string SQL ORDER clause
+     */
     private function _buildOrderClause()
     {
         $order = array();
@@ -409,20 +408,20 @@ class Contributions extends Pagination
     }
 
     /**
-    * Get count for current query
-    *
-    * @return int
-    */
+     * Get count for current query
+     *
+     * @return int
+     */
     public function getCount()
     {
         return $this->_count;
     }
 
     /**
-    * Reinit default parameters
-    *
-    * @return void
-    */
+     * Reinit default parameters
+     *
+     * @return void
+     */
     public function reinit()
     {
         parent::reinit();
@@ -507,12 +506,12 @@ class Contributions extends Pagination
     }
 
     /**
-    * Global getter method
-    *
-    * @param string $name name of the property we want to retrive
-    *
-    * @return object the called property
-    */
+     * Global getter method
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return object the called property
+     */
     public function __get($name)
     {
 
@@ -559,13 +558,13 @@ class Contributions extends Pagination
     }
 
     /**
-    * Global setter method
-    *
-    * @param string $name  name of the property we want to assign a value to
-    * @param object $value a relevant value for the property
-    *
-    * @return void
-    */
+     * Global setter method
+     *
+     * @param string $name  name of the property we want to assign a value to
+     * @param object $value a relevant value for the property
+     *
+     * @return void
+     */
     public function __set($name, $value)
     {
         if ( in_array($name, $this->pagination_fields) ) {

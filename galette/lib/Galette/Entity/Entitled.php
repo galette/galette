@@ -256,10 +256,10 @@ abstract class Entitled
     }
 
     /**
-    * Complete list
-    *
-    * @return array of all objects if succeed, false otherwise
-    */
+     * Complete list
+     *
+     * @return array of all objects if succeed, false otherwise
+     */
     public function getCompleteList()
     {
         global $zdb;
@@ -302,12 +302,12 @@ abstract class Entitled
     }
 
     /**
-    * Get a entry
-    *
-    * @param integer $id Entry ID
-    *
-    * @return mixed|false Row if succeed ; false: no such id
-    */
+     * Get a entry
+     *
+     * @param integer $id Entry ID
+     *
+     * @return mixed|false Row if succeed ; false: no such id
+     */
     public function get($id)
     {
 
@@ -341,14 +341,14 @@ abstract class Entitled
     }
 
     /**
-      * Get a label
-      *
-      * @param integer $id         Id
-      * @param boolean $translated Do we want translated or original label?
-      *                            Defaults to true.
-      *
-      * @return string
-      */
+     * Get a label
+     *
+     * @param integer $id         Id
+     * @param boolean $translated Do we want translated or original label?
+     *                            Defaults to true.
+     *
+     * @return string
+     */
     public function getLabel($id, $translated = true)
     {
         $res = $this->get($id);

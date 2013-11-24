@@ -44,19 +44,26 @@ if (!defined('GALETTE_ROOT')) {
 if ( !defined('GALETTE_TPL_SUBDIR') ) {
     define('GALETTE_TPL_SUBDIR', 'templates/' . $preferences->pref_theme . '/');
 }
-$tpl = new Galette\Core\Smarty($plugins, $i18n, $preferences, $logo, $login, $session);
+$tpl = new Galette\Core\Smarty(
+    $plugins,
+    $i18n,
+    $preferences,
+    $logo,
+    $login,
+    $session
+);
 $tpl->muteExpectedErrors();
 
 $tpl->registerClass('GaletteMail', '\Galette\Core\GaletteMail');
 
 /**
-* Return member name. Smarty cannot directly use static functions
-*
-* @param array $params Parameters
-*
-* @return Adherent::getSName
-* @see Adherent::getSName
-*/
+ * Return member name. Smarty cannot directly use static functions
+ *
+ * @param array $params Parameters
+ *
+ * @return Adherent::getSName
+ * @see Adherent::getSName
+ */
 function getMemberName($params)
 {
     extract($params);

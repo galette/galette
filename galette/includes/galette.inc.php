@@ -282,8 +282,8 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
     include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 
     /**
-    * Database instanciation
-    */
+     * Database instanciation
+     */
     $zdb = new Core\Db();
 
     if ( $zdb->checkDbVersion()
@@ -291,13 +291,13 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
     ) {
 
         /**
-        * Load preferences
-        */
+         * Load preferences
+         */
         $preferences = new Core\Preferences($zdb);
 
         /**
-        * Set the path to the current theme templates
-        */
+         * Set the path to the current theme templates
+         */
         define(
             '_CURRENT_TEMPLATE_PATH',
             GALETTE_TEMPLATES_PATH . $preferences->pref_theme . '/'
@@ -338,8 +338,8 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
         }
 
         /**
-        * Logo
-        */
+         * Logo
+         */
         if ( isset($session['logo'])
             && !GALETTE_MODE == 'DEV'
         ) {
@@ -351,9 +351,9 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
         }
 
         /**
-        * Now that all objects are correctly setted,
-        * we can include files that need it
-        */
+         * Now that all objects are correctly setted,
+         * we can include files that need it
+         */
         include_once GALETTE_ROOT . 'includes/session.inc.php';
         include_once GALETTE_ROOT . 'includes/smarty.inc.php';
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';

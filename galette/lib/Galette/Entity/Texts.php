@@ -141,13 +141,13 @@ class Texts
     }
 
     /**
-    * Get specific text
-    *
-    * @param string $ref  Reference of text to get
-    * @param string $lang Language texts to get
-    *
-    * @return array of all text fields for one language.
-    */
+     * Get specific text
+     *
+     * @param string $ref  Reference of text to get
+     * @param string $lang Language texts to get
+     *
+     * @return array of all text fields for one language.
+     */
     public function getTexts($ref,$lang)
     {
         global $zdb, $i18n;
@@ -225,7 +225,6 @@ class Texts
             }
             return $this->_all_texts;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot get text `' . $ref . '` for lang `' . $lang . '` | ' .
                 $e->getMessage(),
@@ -256,7 +255,6 @@ class Texts
         //set texts
 
         try {
-            /** FIXME: quote? */
             $values = array(
                 'tsubject' => $subject,
                 'tbody'    => $body,
@@ -273,7 +271,6 @@ class Texts
             );
             return true;
         } catch (\Exception $e) {
-            /** FIXME */
             Analog::log(
                 'An error has occured while storing mail text. | ' .
                 $e->getMessage(),
@@ -284,12 +281,12 @@ class Texts
     }
 
     /**
-    * Ref List
-    *
-    * @param string $lang Requested language
-    *
-    * @return array: list of references used for texts
-    */
+     * Ref List
+     *
+     * @param string $lang Requested language
+     *
+     * @return array: list of references used for texts
+     */
     public function getRefs($lang)
     {
         global $zdb;
@@ -325,13 +322,13 @@ class Texts
     }
 
     /**
-    * Initialize texts at install time
-    *
-    * @param boolean $check_first Check first if it seem initialized
-    *
-    * @return boolean|Exception false if no need to initialize, true if data
-    *                           has been initialized, Exception if error
-    */
+     * Initialize texts at install time
+     *
+     * @param boolean $check_first Check first if it seem initialized
+     *
+     * @return boolean|Exception false if no need to initialize, true if data
+     *                           has been initialized, Exception if error
+     */
     public function installInit($check_first = true)
     {
         global $zdb;

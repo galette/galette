@@ -85,17 +85,17 @@ class FieldsCategories
     );
 
     /**
-    * Default constructor
-    */
+     * Default constructor
+     */
     function __construct()
     {
     }
 
     /**
-    * Get list of categories
-    *
-    * @return array
-    */
+     * Get list of categories
+     *
+     * @return array
+     */
     public static function getList()
     {
         global $zdb;

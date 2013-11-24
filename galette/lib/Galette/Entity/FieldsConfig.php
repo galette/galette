@@ -77,9 +77,9 @@ class FieldsConfig
     );
 
     /*
-    * Fields that are not visible in the
-    * form should not be visible here.
-    */
+     * Fields that are not visible in the
+     * form should not be visible here.
+     */
     private $_non_required = array(
         'id_adh',
         'date_echeance',

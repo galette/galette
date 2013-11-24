@@ -55,8 +55,8 @@ class L10n
     const TABLE = 'l10n';
 
     /**
-    * Default constructor.
-    */
+     * Default constructor.
+     */
     function __construct()
     {
     }

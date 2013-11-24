@@ -59,12 +59,12 @@ class PrintLogo extends Logo
     protected $db_id = 999999;
 
     /**
-    * Gets the default picture to show, anyways
-    *
-    * @see Logo::getDefaultPicture()
-    *
-    * @return void
-    */
+     * Gets the default picture to show, anyways
+     *
+     * @see Logo::getDefaultPicture()
+     *
+     * @return void
+     */
     protected function getDefaultPicture()
     {
         //if we are here, we want to serve default logo

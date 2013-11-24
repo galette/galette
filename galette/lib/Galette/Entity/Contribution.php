@@ -84,24 +84,24 @@ class Contribution
     private $_fields;
 
     /**
-    * Default constructor
-    *
-    * @param null|int|ResultSet $args Either a ResultSet row to load
-    *                                   a specific contribution, or an type id
-    *                                   to just instanciate object
-    */
+     * Default constructor
+     *
+     * @param null|int|ResultSet $args Either a ResultSet row to load
+     *                                   a specific contribution, or an type id
+     *                                   to just instanciate object
+     */
     public function __construct($args = null)
     {
         /*
-        * Fields configuration. Each field is an array and must reflect:
-        * array(
-        *   (string)label,
-        *   (string) propname
-        * )
-        *
-        * I'd prefer a static private variable for this...
-        * But call to the _T function does not seem to be allowed there :/
-        */
+         * Fields configuration. Each field is an array and must reflect:
+         * array(
+         *   (string)label,
+         *   (string) propname
+         * )
+         *
+         * I'd prefer a static private variable for this...
+         * But call to the _T function does not seem to be allowed there :/
+         */
         $this->_fields = array(
             'id_cotis'            => array(
                 'label'    => null, //not a field in the form
@@ -222,12 +222,12 @@ class Contribution
     }
 
     /**
-    * Loads a contribution from its id
-    *
-    * @param int $id the identifiant for the contribution to load
-    *
-    * @return bool true if query succeed, false otherwise
-    */
+     * Loads a contribution from its id
+     *
+     * @param int $id the identifiant for the contribution to load
+     *
+     * @return bool true if query succeed, false otherwise
+     */
     public function load($id)
     {
         global $zdb, $login;
@@ -261,12 +261,12 @@ class Contribution
     }
 
     /**
-    * Populate object from a resultset row
-    *
-    * @param ResultSet $r the resultset row
-    *
-    * @return void
-    */
+     * Populate object from a resultset row
+     *
+     * @param ResultSet $r the resultset row
+     *
+     * @return void
+     */
     private function _loadFromRS($r)
     {
         $pk = self::PK;
@@ -595,7 +595,6 @@ class Contribution
             $this->_orig_amount = $this->_amount;
             return true;
         } catch (\Exception $e) {
-            /** FIXME */
             $zdb->db->rollBack();
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
@@ -712,10 +711,10 @@ class Contribution
     }
 
     /**
-    * Get the relevant CSS class for current contribution
-    *
-    * @return string current contribution row class
-    */
+     * Get the relevant CSS class for current contribution
+     *
+     * @return string current contribution row class
+     */
     public function getRowClass()
     {
         return ( $this->_end_date != $this->_begin_date && $this->_is_cotis) ?
@@ -1020,12 +1019,12 @@ class Contribution
     }
 
     /**
-    * Global getter method
-    *
-    * @param string $name name of the property we want to retrive
-    *
-    * @return false|object the called property
-    */
+     * Global getter method
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return false|object the called property
+     */
     public function __get($name)
     {
 
@@ -1129,13 +1128,13 @@ class Contribution
     }
 
     /**
-    * Global setter method
-    *
-    * @param string $name  name of the property we want to assign a value to
-    * @param object $value a relevant value for the property
-    *
-    * @return void
-    */
+     * Global setter method
+     *
+     * @param string $name  name of the property we want to assign a value to
+     * @param object $value a relevant value for the property
+     *
+     * @return void
+     */
     public function __set($name, $value)
     {
         $forbidden = array('fields', 'is_cotis', 'end_date');

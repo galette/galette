@@ -148,13 +148,13 @@ class Adherent
 
 
     /**
-    * Default constructor
-    *
-    * @param mixed   $args Either a ResultSet row, its id or its
-    *                      login or its mail for to load s specific
-    *                      member, or null to just instanciate object
-    * @param boolean $deps Dependencies configuration, see Adherent::$_deps
-    */
+     * Default constructor
+     *
+     * @param mixed   $args Either a ResultSet row, its id or its
+     *                      login or its mail for to load s specific
+     *                      member, or null to just instanciate object
+     * @param boolean $deps Dependencies configuration, see Adherent::$_deps
+     */
     public function __construct($args = null, $deps = null)
     {
         global $i18n, $members_fields;
@@ -172,16 +172,16 @@ class Adherent
         }
 
         /*
-        * Fields configuration. Each field is an array and must reflect:
-        * array(
-        *   (string)label,
-        *   (string) propname,
-        *   (boolean)required,
-        *   (boolean)visible,
-        *   (int)position,
-        *   (int)category
-        * )
-        */
+         * Fields configuration. Each field is an array and must reflect:
+         * array(
+         *   (string)label,
+         *   (string) propname,
+         *   (boolean)required,
+         *   (boolean)visible,
+         *   (int)position,
+         *   (int)category
+         * )
+         */
         $this->_fields = $members_fields;
 
         //disabled fields override
@@ -230,12 +230,12 @@ class Adherent
     }
 
     /**
-    * Loads a member from its id
-    *
-    * @param int $id the identifiant for the member to load
-    *
-    * @return bool true if query succeed, false otherwise
-    */
+     * Loads a member from its id
+     *
+     * @param int $id the identifiant for the member to load
+     *
+     * @return bool true if query succeed, false otherwise
+     */
     public function load($id)
     {
         global $zdb;
@@ -263,12 +263,12 @@ class Adherent
     }
 
     /**
-    * Loads a member from its login
-    *
-    * @param string $login login for the member to load
-    *
-    * @return bool true if query succeed, false otherwise
-    */
+     * Loads a member from its login
+     *
+     * @param string $login login for the member to load
+     *
+     * @return bool true if query succeed, false otherwise
+     */
     public function loadFromLoginOrMail($login)
     {
         global $zdb;
@@ -299,12 +299,12 @@ class Adherent
     }
 
     /**
-    * Populate object from a resultset row
-    *
-    * @param ResultSet $r the resultset row
-    *
-    * @return void
-    */
+     * Populate object from a resultset row
+     *
+     * @param ResultSet $r the resultset row
+     *
+     * @return void
+     */
     private function _loadFromRS($r)
     {
         $this->_self_adh = false;
@@ -393,10 +393,10 @@ class Adherent
     }
 
     /**
-    * Check for dues status
-    *
-    * @return void
-    */
+     * Check for dues status
+     *
+     * @return void
+     */
     private function _checkDues()
     {
         //how many days since our beloved member has been created
@@ -433,10 +433,10 @@ class Adherent
     }
 
     /**
-    * Is member admin?
-    *
-    * @return bool
-    */
+     * Is member admin?
+     *
+     * @return bool
+     */
     public function isAdmin()
     {
         return $this->_admin;
@@ -453,10 +453,10 @@ class Adherent
     }
 
     /**
-    * Is member freed of dues?
-    *
-    * @return bool
-    */
+     * Is member freed of dues?
+     *
+     * @return bool
+     */
     public function isDueFree()
     {
         return $this->_due_free;
@@ -536,42 +536,42 @@ class Adherent
 
 
     /**
-    * Can member appears in public members list?
-    *
-    * @return bool
-    */
+     * Can member appears in public members list?
+     *
+     * @return bool
+     */
     public function appearsInMembersList()
     {
         return $this->_appears_in_list;
     }
 
     /**
-    * Is member active?
-    *
-    * @return bool
-    */
+     * Is member active?
+     *
+     * @return bool
+     */
     public function isActive()
     {
         return $this->_active;
     }
 
     /**
-    * Does member have uploaded a picture?
-    *
-    * @return bool
-    */
+     * Does member have uploaded a picture?
+     *
+     * @return bool
+     */
     public function hasPicture()
     {
         return $this->_picture->hasPicture();
     }
 
     /**
-    * Get row class related to current fee status
-    *
-    * @param boolean $public we want the class for public pages
-    *
-    * @return string the class to apply
-    */
+     * Get row class related to current fee status
+     *
+     * @param boolean $public we want the class for public pages
+     *
+     * @return string the class to apply
+     */
     public function getRowClass($public = false)
     {
         $strclass = ($this->isActive()) ? 'active' : 'inactive';
@@ -582,10 +582,10 @@ class Adherent
     }
 
     /**
-    * Get current member due status
-    *
-    * @return string i18n string representing state of due
-    */
+     * Get current member due status
+     *
+     * @return string i18n string representing state of due
+     */
     public function getDues()
     {
         $ret = '';
@@ -642,12 +642,12 @@ class Adherent
     }
 
     /**
-    * Retrieve Full name and surname for the specified member id
-    *
-    * @param int $id member id
-    *
-    * @return string formatted Name and Surname
-    */
+     * Retrieve Full name and surname for the specified member id
+     *
+     * @param int $id member id
+     *
+     * @return string formatted Name and Surname
+     */
     public static function getSName($id)
     {
         global $zdb;
@@ -1202,7 +1202,6 @@ class Adherent
             //DEBUG
             return false;
         } catch (\Exception $e) {
-            /** FIXME */
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
@@ -1240,12 +1239,12 @@ class Adherent
     }
 
     /**
-    * Global getter method
-    *
-    * @param string $name name of the property we want to retrive
-    *
-    * @return false|object the called property
-    */
+     * Global getter method
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return false|object the called property
+     */
     public function __get($name)
     {
         global $log, $login;

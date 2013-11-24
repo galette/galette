@@ -69,13 +69,12 @@ class MailingHistory extends History
     private $_no_longer_members;
 
     /**
-    * Default constructor
-    *
-    * @param Mailing $mailing Mailing
-    */
+     * Default constructor
+     *
+     * @param Mailing $mailing Mailing
+     */
     public function __construct($mailing = null)
     {
-
         parent::__construct();
 
         if ( $mailing instanceof Mailing ) {
@@ -90,20 +89,20 @@ class MailingHistory extends History
     }
 
     /**
-    * Get the entire history list
-    *
-    * @return array
-    */
+     * Get the entire history list
+     *
+     * @return array
+     */
     public function getHistory()
     {
         return $this->getMailingHistory();
     }
 
     /**
-    * Get the entire mailings list
-    *
-    * @return array
-    */
+     * Get the entire mailings list
+     *
+     * @return array
+     */
     public function getMailingHistory()
     {
         global $zdb;
@@ -428,10 +427,10 @@ class MailingHistory extends History
     }
 
     /**
-    * Returns the field we want to default set order to
-    *
-    * @return string field name
-    */
+     * Returns the field we want to default set order to
+     *
+     * @return string field name
+     */
     protected function getDefaultOrder()
     {
         return 'mailing_date';
