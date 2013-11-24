@@ -143,17 +143,16 @@ class Title
         );
         try {
             if ( $this->_id !== null && $this->_id > 0 ) {
-                $zdb->db->update(
-                    PREFIX_DB . self::TABLE,
-                    $data,
+                $update = $zdb->update(self::TABLE);
+                $update->set($data)->where(
                     self::PK . '=' . $this->_id
                 );
+                $zdb->execute($update);
             } else {
-                $add = $zdb->db->insert(
-                    PREFIX_DB . self::TABLE,
-                    $data
-                );
-                if ( !$add > 0 ) {
+                $insert = $zdb->insert(self::TABLE);
+                $insert->values($data);
+                $add = $zdb->execute($insert);
+                if ( !$add->count() > 0 ) {
                     Analog::log('Not stored!', Analog::ERROR);
                     return false;
                 }
@@ -184,10 +183,11 @@ class Title
         }
 
         try {
-            $zdb->db->delete(
-                PREFIX_DB . self::TABLE,
+            $delete = $zdb->delete(self::TABLE);
+            $delete->where(
                 self::PK . ' = ' . $id
             );
+            $zdb->execute($delete);
             Analog::log(
                 'Title #' . $id . ' (' . $this->_short
                 . ') deleted successfully.',

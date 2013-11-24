@@ -165,7 +165,7 @@ class Transaction
 
         try {
             if ( $transaction ) {
-                $zdb->db->beginTransaction();
+                $zdb->connection->beginTransaction();
             }
 
             //remove associated contributions if needeed
@@ -180,19 +180,19 @@ class Transaction
             }
 
             //remove transaction itself
-            $del = $zdb->db->delete(
-                PREFIX_DB . self::TABLE,
+            $delete = $zdb->delete(self::TABLE);
+            $delete->where(
                 self::PK . ' = ' . $this->_id
             );
+            $zdb->execute($delete);
 
             if ( $transaction ) {
-                $zdb->db->commit();
+                $zdb->connection->commit();
             }
             return true;
         } catch (\Exception $e) {
-            /** FIXME */
             if ( $transaction ) {
-                $zdb->db->rollBack();
+                $zdb->connection->rollBack();
             }
             Analog::log(
                 'An error occured trying to remove transaction #' .
@@ -361,12 +361,11 @@ class Transaction
             if ( !isset($this->_id) || $this->_id == '') {
                 //we're inserting a new transaction
                 unset($values[self::PK]);
-                $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
-                if ( $add > 0) {
-                    $this->_id = $zdb->db->lastInsertId(
-                        PREFIX_DB . self::TABLE,
-                        'id'
-                    );
+                $insert = $zdb->insert(self::TABLE);
+                $insert->values($values);
+                $add = $zdb->execute($insert);
+                if ( $add->count() > 0) {
+                    $this->_id = $zdb->driver->getLastGeneratedValue();
                     // logging
                     $hist->add(
                         _T("Transaction added"),
@@ -380,25 +379,24 @@ class Transaction
                 }
             } else {
                 //we're editing an existing transaction
-                $edit = $zdb->db->update(
-                    PREFIX_DB . self::TABLE,
-                    $values,
+                $update = $zdb->update(self::TABLE);
+                $update->set($values)->where(
                     self::PK . '=' . $this->_id
                 );
+                $edit = $zdb->execute($update);
                 //edit == 0 does not mean there were an error, but that there
                 //were nothing to change
-                if ( $edit > 0 ) {
+                if ( $edit->count() > 0 ) {
                     $hist->add(
                         _T("Transaction updated"),
                         Adherent::getSName($this->_member)
                     );
                 }
             }
-            $zdb->db->commit();
+            $zdb->connection->commit();
             return true;
         } catch (\Exception $e) {
-            /** FIXME */
-            $zdb->db->rollBack();
+            $zdb->connection->rollBack();
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),

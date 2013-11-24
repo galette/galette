@@ -655,22 +655,22 @@ class Contribution
 
         try {
             if ( $transaction ) {
-                $zdb->db->beginTransaction();
+                $zdb->connection->beginTransaction();
             }
-            $del = $zdb->db->delete(
-                PREFIX_DB . self::TABLE,
-                self::PK . ' = ' . $this->_id
-            );
-            if ( $del > 0 ) {
+
+            $delete = $zd->delete(self::TABLE);
+            $delete->where(self::PK . ' = ' . $this->_id);
+            $del = $zdb->execute($delete);
+            if ( $del->count() > 0 ) {
                 $this->_updateDeadline();
             }
             if ( $transaction ) {
-                $zdb->db->commit();
+                $zdb->connection->commit();
             }
             return true;
         } catch (\Exception $e) {
             if ( $transaction ) {
-                $zdb->db->rollBack();
+                $zdb->connection->rollBack();
             }
             Analog::log(
                 'An error occured trying to remove contribution #' .

@@ -685,11 +685,11 @@ class Adherent
         try {
             $cpass = password_hash($pass, PASSWORD_BCRYPT);
 
-            $zdb->db->update(
-                PREFIX_DB . self::TABLE,
-                array('mdp_adh' => $cpass),
-                $zdb->db->quoteInto(self::PK . ' = ?', $id_adh)
-            );
+            $update = $zdb->update(self::TABLE);
+            $update->set(
+                array('mdp_adh' => $cpass)
+            )->where(self::PK . ' = ' . $id_adh);
+            $zdb->execute($update);
             Analog::log(
                 'Password for `' . $id_adh . '` has been updated.',
                 Analog::DEBUG
@@ -1147,12 +1147,12 @@ class Adherent
                 //set modification date
                 $this->_modification_date = date('Y-m-d');
                 $values['date_modif_adh'] = $this->_modification_date;
-                $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
-                if ( $add > 0) {
-                    $this->_id = $zdb->db->lastInsertId(
-                        PREFIX_DB . self::TABLE,
-                        'id'
-                    );
+
+                $insert = $zdb->insert(self::TABLE);
+                $insert->values($values);
+                $add = $zdb->execute($insert);
+                if ( $add->count() > 0) {
+                    $this->_id = $zdb->driver->getLastGeneratedValue();
                     $this->_picture = new Picture($this->_id);
                     // logging
                     $hist->add(

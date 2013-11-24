@@ -160,7 +160,13 @@ abstract class Entitled
 
         try {
             //first, we drop all values
-            $zdb->db->delete(PREFIX_DB . $this->_table);
+            $delete = $zdb->delete($this->_table);
+            $zdb->execute($delete);
+
+            /*$insert = $zdb->insert($this->_table);
+            $insert->values(
+                array()
+            );*/
 
             $stmt = $zdb->db->prepare(
                 'INSERT INTO ' . PREFIX_DB . $this->_table .
@@ -420,12 +426,12 @@ abstract class Entitled
                 $this->_fthird  => $extra
             );
 
-            $insetr = $zdb->insert($this->_table);
+            $insert = $zdb->insert($this->_table);
             $insert->values($values);
 
             $ret = $zdb->execute($insert);
 
-            if ( $ret >  0) {
+            if ( $ret->count() >  0) {
                 Analog::log(
                     'New ' . $this->getType() .' `' . $label .
                     '` added successfully.',

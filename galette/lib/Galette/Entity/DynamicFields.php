@@ -511,21 +511,22 @@ class DynamicFields
                         $val_index . ')',
                         Analog::DEBUG
                     );
-                    $zdb->db->delete(
-                        PREFIX_DB . self::TABLE,
-                        $where
-                    );
+
+                    $delete = $zdb->delete(self::TABLE);
+                    $delete->where($where);
+                    $zdb->execute($delete);
                 } else {
                     Analog::log(
                         'Field ' . $field_id . ' will be set to value: ' .
                         $field_val . ' (index: ' . $val_index . ')',
                         Analog::DEBUG
                     );
-                    $zdb->db->update(
-                        PREFIX_DB . self::TABLE,
-                        array('field_val' => $field_val),
-                        $where
-                    );
+
+                    $update = $zdb->update(self::TABLE);
+                    $update->set(
+                        array('field_val' => $field_val)
+                    )->where($where);
+                    $zdb->execute($update);
                 }
             } else {
                 if ( $field_val !== '' ) {

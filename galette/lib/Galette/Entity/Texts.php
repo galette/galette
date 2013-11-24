@@ -256,15 +256,15 @@ class Texts
                 'tbody'    => $body,
             );
 
-            $where = array();
-            $where[] = $zdb->db->quoteInto('tref = ?', $ref);
-            $where[] = $zdb->db->quoteInto('tlang = ?', $lang);
-
-            $edit = $zdb->db->update(
-                PREFIX_DB . self::TABLE,
-                $values,
-                $where
+            $update = $zdb->update(self::TABLE);
+            $update->set($values)->where(
+                array(
+                    'tref'  => $tref,
+                    'tlang' => $lang
+                )
             );
+            $zdb->execute($update);
+
             return true;
         } catch (\Exception $e) {
             Analog::log(
