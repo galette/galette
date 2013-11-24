@@ -230,10 +230,6 @@ class Texts
                 $e->getMessage(),
                 Analog::WARNING
             );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
-            );
             return false;
         }
     }

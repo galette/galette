@@ -202,10 +202,6 @@ class Group
                     'Cannot get group persons | ' . $e->getMessage(),
                     Analog::WARNING
                 );
-                Analog::log(
-                    'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                    Analog::ERROR
-                );
             }
         }
     }

@@ -81,10 +81,6 @@ class PdfModels extends Repository
                 'Cannot list pdf models | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
-                Analog::ERROR
-            );
         }
     }
 

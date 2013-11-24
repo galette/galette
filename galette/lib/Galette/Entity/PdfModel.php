@@ -146,7 +146,7 @@ abstract class PdfModel
         } catch ( \Exception $e ) {
             Analog::log(
                 'An error occured loading model #' . $id . "Message:\n" .
-                $e->getMessage() . "\nQuery was:\n" . $select->__toString(),
+                $e->getMessage(),
                 Analog::ERROR
             );
         }
