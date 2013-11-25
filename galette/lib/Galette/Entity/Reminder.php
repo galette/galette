@@ -166,11 +166,11 @@ class Reminder
             'reminder_nomail'   => ($this->_nomail) ? true : 'false'
         );
         try {
-            $add = $zdb->db->insert(
-                PREFIX_DB . self::TABLE,
-                $data
-            );
-            if ( !$add > 0 ) {
+            $insert = $zdb->insert(self::TABLE);
+            $insert->values($data);
+
+            $add = $zdb->execute($insert);
+            if ( !$add->count() > 0 ) {
                 Analog::log('Reminder not stored!', Analog::ERROR);
                 return false;
             }

@@ -255,10 +255,11 @@ class FieldsConfig
             $categories = new FieldsCategories();
 
             //first, we drop all values
-            $zdb->db->delete(
-                PREFIX_DB . self::TABLE,
-                $zdb->db->quoteInto('table_name = ?', $this->_table)
+            $delete = $zdb->delete(self::TABLE);
+            $delete->where(
+                array('table_name' => $this->_table)
             );
+            $zdb->execute($delete);
             //take care of fields categories, for db relations
             $categories->installInit($zdb);
 

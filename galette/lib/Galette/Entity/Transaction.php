@@ -349,7 +349,7 @@ class Transaction
         global $zdb, $hist;
 
         try {
-            $zdb->db->beginTransaction();
+            $zdb->connection->beginTransaction();
             $values = array();
             $fields = self::getDbFields();
             /** FIXME: quote? */
