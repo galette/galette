@@ -213,18 +213,18 @@ class FieldsConfig
                             $required = 'false';
                         }
                         $params[] = array(
-                            ':field_id'    => $k,
-                            ':table_name'  => $this->_table,
-                            ':required'    => $required,
-                            ':visible'     => $f['visible'],
-                            ':position'    => $f['position'],
-                            ':category'    => $f['category'],
+                            'field_id'    => $k,
+                            'table_name'  => $this->_table,
+                            'required'    => $required,
+                            'visible'     => $f['visible'],
+                            'position'    => $f['position'],
+                            'category'    => $f['category'],
                         );
                     }
                 }
 
                 if ( count($params) > 0 ) {
-                    $this->_insert($params);
+                    $this->_insert($zdb, $params);
                     $this->load();
                 }
             }
@@ -270,16 +270,16 @@ class FieldsConfig
                 if ( $required === false ) {
                     $required = 'false';
                 }
-                $params = array(
-                    ':field_id'    => $f,
-                    ':table_name'  => $this->_table,
-                    ':required'    => $required,
-                    ':visible'     => $this->_defaults[$f]['visible'],
-                    ':position'    => $this->_defaults[$f]['position'],
-                    ':category'    => $this->_defaults[$f]['category'],
+                $params[] = array(
+                    'field_id'    => $f,
+                    'table_name'  => $this->_table,
+                    'required'    => $required,
+                    'visible'     => $this->_defaults[$f]['visible'],
+                    'position'    => $this->_defaults[$f]['position'],
+                    'category'    => $this->_defaults[$f]['category'],
                 );
             }
-            $this->_insert($params);
+            $this->_insert($zdb, $params);
 
             Analog::log(
                 'Default fields configuration were successfully stored.',
@@ -287,10 +287,15 @@ class FieldsConfig
             );
             return true;
         } catch (\Exception $e) {
+            $messages = array();
+            do {
+                $messages[] = $e->getMessage();
+            } while ($e = $e->getPrevious());
+
             Analog::log(
                 'Unable to initialize default fields configuration.' .
-                $e->getMessage(),
-                Analog::WARNING
+                implode("\n", $messages),
+                Analog::ERROR
             );
             return $e;
         }
@@ -401,11 +406,6 @@ class FieldsConfig
             );
             $stmt = $zdb->sql->prepareStatementForSqlObject($update);
 
-            /*$sql = 'UPDATE ' . PREFIX_DB . self::TABLE .
-                ' SET required=:required, visible=:visible, position=:position, ' .
-                FieldsCategories::PK . '=:category WHERE table_name=\'' .
-                $this->_table .'\' AND field_id=:field_id';*/
-
             $params = null;
             foreach ( $this->_categorized_fields as $cat ) {
                 foreach ( $cat as $pos=>$field ) {
@@ -416,7 +416,7 @@ class FieldsConfig
                         'required'  => $field['required'],
                         'visible'   => $field['visible'],
                         'position'  => $pos,
-                        'category'  => $field['category'],
+                        FieldsCategories::PK => $field['category'],
                         'where1'    => $field['field_id']
                     );
                     $stmt->execute($params);
@@ -541,18 +541,21 @@ class FieldsConfig
     /**
      * Insert values in database
      *
+     * @param Db    $zdb    Database instance
      * @param array $values Values to insert
      *
      * @return void
      */
-    private function _insert($values)
+    private function _insert($zdb, $values)
     {
         $insert = $zdb->insert(self::TABLE);
         $insert->values(
             array(
-                self::PK        => ':id',
+                'field_id'      => ':field_id',
                 'table_name'    => ':table_name',
-                'category'      => ':category',
+                'required'      => ':required',
+                'visible'       => ':visible',
+                FieldsCategories::PK => ':category',
                 'position'      => ':position'
             )
         );
@@ -561,9 +564,11 @@ class FieldsConfig
         foreach ( $values as $d ) {
             $stmt->execute(
                 array(
-                    self::PK        => $d['id'],
+                    'field_id'      => $d['field_id'],
                     'table_name'    => $d['table_name'],
-                    'category'      => $d['category'],
+                    'required'      => $d['required'],
+                    'visible'       => $d['visible'],
+                    FieldsCategories::PK => $d['category'],
                     'position'      => $d['position']
                 )
             );

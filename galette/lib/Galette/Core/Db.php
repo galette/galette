@@ -39,6 +39,7 @@ namespace Galette\Core;
 use Analog\Analog as Analog;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
+use Zend\Db\Adapter\Exception as AdapterException;
 
 /**
  * Zend_Db wrapper
@@ -135,7 +136,7 @@ class Db
                 '[Db] Database connection was successfull!',
                 Analog::DEBUG
             );
-        } catch (\Zend_Db_Adapter_Exception $e) {
+        } catch (Adapter_Exception $e) {
             // perhaps a failed login credential, or perhaps the RDBMS is not running
             $ce = $e->getChainedException();
             Analog::log(
@@ -276,23 +277,19 @@ class Db
                     );
             } else {
                 $_options = array(
-                        'dbname'   => GALETTE_SQLITE_PATH,
-                    );
+                    'dbname'   => GALETTE_SQLITE_PATH,
+                );
             }
 
-            $_db = \Zend_Db::factory(
-                $_type,
-                $_options
-            );
-            $_db->getConnection();
-            $_db->setFetchMode(\Zend_Db::FETCH_OBJ);
-            $_db->closeConnection();
+            $_options['driver'] = $type;
+            $_db = new Adapter($_options);
+
             Analog::log(
                 '[' . __METHOD__ . '] Database connection was successfull!',
                 Analog::DEBUG
             );
             return true;
-        } catch (\Zend_Db_Adapter_Exception $e) {
+        } catch (AdapterException $e) {
             // perhaps a failed login credential, or perhaps the RDBMS is not running
             $_code = $e->getCode();
             $_msg = $e->getMessage();
@@ -308,7 +305,7 @@ class Db
             );
             return $e;
         } catch (\Exception $e) {
-            // perhaps factory() failed to load the specified Adapter class
+            // perhaps failed to load the specified Adapter class
             Analog::log(
                 '[' . __METHOD__ . '] Error (' . $e->getCode() . '|' .
                 $e->getMessage() . ')',
@@ -371,7 +368,7 @@ class Db
                 test_id INTEGER NOT NULL,
                 test_text VARCHAR(20)
             )';
-            $this->_db->getConnection()->exec($sql);
+            $this->_db->query($sql, Adapter::QUERY_MODE_EXECUTE);
             $results['create'] = true;
         } catch (\Exception $e) {
             Analog::log('Cannot CREATE TABLE', Analog::WARNING);
@@ -386,7 +383,7 @@ class Db
                 //can Galette ALTER tables? (only for update mode)
                 try {
                     $sql = 'ALTER TABLE galette_test ALTER test_text SET DEFAULT \'nothing\'';
-                    $this->_db->getConnection()->exec($sql);
+                    $this->_db->query($sql, Adapter::QUERY_MODE_EXECUTE);
                     $results['alter'] = true;
                 } catch (\Exception $e) {
                     Analog::log(
@@ -403,11 +400,12 @@ class Db
                 'test_text'    => 'a simple text'
             );
             try {
-                $res = $this->_db->insert(
-                    'galette_test',
-                    $values
-                );
-                if ( $res === 1 ) {
+                $insert = $this->_sql->insert('galette_test');
+                $insert->values($values);
+
+                $res = $this->execute($insert);
+
+                if ( $res->count() === 1 ) {
                     $results['insert'] = true;
                 } else {
                     throw new \Exception('No row inserted!');
@@ -429,12 +427,12 @@ class Db
                     'test_text' => 'another simple text'
                 );
                 try {
-                    $res = $this->_db->update(
-                        'galette_test',
-                        $values,
-                        array('test_id = ?' => 1)
+                    $update = $this->_sql->update('galette_test');
+                    $update->set($values)->where(
+                        array('test_id' => 1)
                     );
-                    if ( $res === 1 ) {
+                    $res = $this->execute($update);
+                    if ( $res->count() === 1 ) {
                         $results['update'] = true;
                     } else {
                         throw new \Exception('No row updated!');
@@ -449,10 +447,10 @@ class Db
 
                 //can Galette SELECT records ?
                 try {
-                    $select = $this->select('test');
+                    $select = $this->_sql->select('galette_test');
                     $select->where('test_id = 1');
-                    $results = $zdb->execute($select);
-                    if ( $results->count() === 1 ) {
+                    $res = $this->execute($select);
+                    if ( $res->count() === 1 ) {
                         $results['select'] = true;
                     } else {
                         throw new \Exception('Select is empty!');
@@ -467,10 +465,9 @@ class Db
 
                 //can Galette DELETE records ?
                 try {
-                    $this->_db->delete(
-                        'galette_test',
-                        array('test_id = ?' => 1)
-                    );
+                    $delete = $this->_sql->delete('galette_test');
+                    $delete->where(array('test_id' => 1));
+                    $this->execute($delete);
                     $results['delete'] = true;
                 } catch (\Exception $e) {
                     Analog::log(
@@ -484,7 +481,7 @@ class Db
             //can Galette DROP tables ?
             try {
                 $sql = 'DROP TABLE galette_test';
-                $this->_db->getConnection()->exec($sql);
+                $this->_db->query($sql, Adapter::QUERY_MODE_EXECUTE);
                 $results['drop'] = true;
             } catch (\Exception $e) {
                 Analog::log(

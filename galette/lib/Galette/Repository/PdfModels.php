@@ -100,7 +100,7 @@ class PdfModels extends Repository
             //been initialized
             $proceed = false;
             if ( $check_first === true ) {
-                $select = $this->zdb->select(self::TABLE);
+                $select = $this->zdb->select(PdfModel::TABLE);
                 $select->columns(
                     array(
                         'counter' => new Expression('COUNT(' . $ent::PK . ')')
@@ -127,8 +127,8 @@ class PdfModels extends Repository
                 $this->zdb->connection->beginTransaction();
 
                 //first, we drop all values
-                $delete = $zdb->delete($ent::TABLE);
-                $zdb->execute($delete);
+                $delete = $this->zdb->delete($ent::TABLE);
+                $this->zdb->execute($delete);
                 $this->_insert($ent::TABLE, $defaults);
 
                 $this->zdb->connection->commit();
@@ -196,7 +196,7 @@ class PdfModels extends Repository
      */
     private function _insert($table, $values)
     {
-        $insert = $zdb->insert($table);
+        $insert = $this->zdb->insert($table);
         $insert->values(
             array(
                 'model_id'      => ':model_id',

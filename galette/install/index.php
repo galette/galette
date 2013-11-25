@@ -962,8 +962,7 @@ case 'u7':
 
     $sql_query = split_sql_file($sql_query, ';');
 
-    $db = $zdb->db->getConnection();
-    $db->beginTransaction();
+    $zdb->connection->beginTransaction();
 
     for ( $i = 0; $i < sizeof($sql_query); $i++ ) {
         $query = trim($sql_query[$i]);
@@ -987,7 +986,10 @@ case 'u7':
                 $extra = '...';
             }
             try {
-                $result = $db->exec($query);
+                $result = $zdb->db->query(
+                    $query,
+                    Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+                );
                 echo '<li class="install-ok">' . $w1 . ' ' . $w2 . ' ' . $w3 .
                     ' ' . $extra . '</li>';
             } catch (Exception $e) {
@@ -1011,9 +1013,9 @@ case 'u7':
     }
 
     if (!empty($error)) {
-        $db->rollBack();
+        $zdb->connection->rollBack();
     } else {
-        $db->commit();
+        $zdb->connection->commit();
     }
 
     echo "</ul>\n";

@@ -179,33 +179,23 @@ abstract class Entitled
             }
 
             $insert = $zdb->insert($this->_table);
-            $insert->values(
-                array()
-            );
+            $insert->values($values);
+            $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
-            /*$stmt = $zdb->db->prepare(
-                'INSERT INTO ' . PREFIX_DB . $this->_table .
-                ' (' . implode(',', $class::$fields) . ') ' .
-                'VALUES(:id, :libelle, :third)'
-            );*/
-
+            $fnames = array_keys($values);
             foreach ( $class::$defaults as $d ) {
-                /*$stmt->bindParam(':id', $d['id']);
-                $stmt->bindParam(':libelle', $d['libelle']);*/
-
                 $val = null;
                 if ( isset($d['priority']) ) {
                     $val = $d['priority'];
                 } else {
                     $val = $d['extension'];
                 }
-                /*$stmt->bindParam(':third', $val, \PDO::PARAM_INT);*/
 
                 $stmt->execute(
                     array(
-                        ':id'       => $d['id'],
-                        ':libelle'  => $d['libelle'],
-                        ':third'    => $val
+                        $fnames[0]  => $d['id'],
+                        $fnames[1]  => $d['libelle'],
+                        $fnames[2]  => $val
                     )
                 );
             }

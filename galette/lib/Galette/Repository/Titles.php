@@ -121,6 +121,7 @@ class Titles
                     'long_label'    => ':long'
                 )
             );
+            $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
             foreach ( self::$_defaults as $d ) {
                 $short = _T($d['short_label']);
@@ -128,7 +129,7 @@ class Titles
                 if ( $d['long_label'] !== null ) {
                     $long = _T($d['long_label']);
                 } else {
-                    $long = new Expression('NULL');
+                    $long = 'NULL';
                 }
                 $stmt->execute(
                     array(

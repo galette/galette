@@ -367,7 +367,7 @@ class Texts
                 $delete = $zdb->delete(self::TABLE);
                 $zdb->execute($delete);
 
-                $this->_insert($this->_defaults);
+                $this->_insert($zdb, $this->_defaults);
 
                 Analog::log(
                     'Default texts were successfully stored into database.',
@@ -416,7 +416,7 @@ class Texts
             }
 
             if ( count($missing) >0 ) {
-                $this->_insert($missing);
+                $this->_insert($zdb, $missing);
 
                 Analog::log(
                     'Missing texts were successfully stored into database.',
@@ -464,11 +464,12 @@ class Texts
     /**
      * Insert values in database
      *
+     * @param Db    $zdb    Database instance
      * @param array $values Values to insert
      *
      * @return void
      */
-    private function _insert($values)
+    private function _insert($zdb, $values)
     {
         $insert = $zdb->insert(self::TABLE);
         $insert->values(
@@ -481,7 +482,7 @@ class Texts
                 'tcomment'  => ':tcomment'
             )
         );
-        $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
+        $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
         foreach ( $values as $value ) {
             $stmt->execute($value);
