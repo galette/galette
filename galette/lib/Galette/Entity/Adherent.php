@@ -1009,7 +1009,7 @@ class Adherent
                                 array('b' => PREFIX_DB . Status::TABLE),
                                 'a.' . Status::PK . '=b.' . Status::PK,
                                 array('libelle_statut')
-                            )->where('b.' . Status::PK . '=?', $value);
+                            )->where('b.' . Status::PK . '=' . $value);
                             $select->where->lessThan(
                                 'b.priorite_statut',
                                 Members::NON_STAFF_MEMBERS

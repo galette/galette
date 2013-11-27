@@ -335,7 +335,7 @@ class Picture
             );
             $del = $zdb->execute($delete);
 
-            if ( !$del->getCount() > 0 ) {
+            if ( !$del->count() > 0 ) {
                 Analog::log(
                     'Unable to remove picture database entry for ' . $this->db_id,
                     Analog::ERROR

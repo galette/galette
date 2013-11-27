@@ -550,7 +550,8 @@ class Members
             case self::SHOW_ARRAY_LIST:
                 $select->join(
                     array('p' => PREFIX_DB . Status::TABLE),
-                    'a.' . Status::PK . '=p.' . Status::PK
+                    'a.' . Status::PK . '=p.' . Status::PK,
+                    array()
                 );
                 break;
             case self::SHOW_EXPORT:
@@ -558,7 +559,7 @@ class Members
                 $select->join(
                     array('p' => PREFIX_DB . Status::TABLE),
                     'a.' . Status::PK . '=p.' . Status::PK,
-                    ''
+                    array()
                 );
                 break;
             case self::SHOW_MANAGED:
@@ -591,7 +592,7 @@ class Members
                 $select->join(
                     array('ct' => PREFIX_DB . Contribution::TABLE),
                     'ct.' . self::PK . '=a.' . self::PK,
-                    '',
+                    array(),
                     $select::JOIN_LEFT
                 );
             }
@@ -646,7 +647,7 @@ class Members
                 $select->join(
                     array('df' => PREFIX_DB . DynamicFields::TABLE),
                     'df.item_id=a.' . self::PK,
-                    '',
+                    array(),
                     $select::JOIN_LEFT
                 );
             }
@@ -655,7 +656,7 @@ class Members
                 $select->join(
                     array('dfc' => PREFIX_DB . DynamicFields::TABLE),
                     'dfc.item_id=ct.' . Contribution::PK,
-                    '',
+                    array(),
                     $select::JOIN_LEFT
                 );
             }
@@ -674,7 +675,7 @@ class Members
                     $select->join(
                         array('cdf' . $cdf => DynamicFields::getFixedValuesTableName($cdf)),
                         $rcdf_field . '=df.field_val',
-                        '',
+                        array(),
                         $select::JOIN_LEFT
                     );
                 }
@@ -692,7 +693,7 @@ class Members
                     $select->join(
                         array('cdfc' . $cdf => DynamicFields::getFixedValuesTableName($cdf)),
                         $rcdf_field . '=dfc.field_val',
-                        '',
+                        array(),
                         $select::JOIN_LEFT
                     );
                 }
@@ -978,7 +979,7 @@ class Members
                         ->lessThan(
                             'date_echeance',
                             date('Y-m-d', time())
-                        )->equalTo('bool_exempt_adh', false);
+                        )->equalTo('bool_exempt_adh', new Expression('false'));
                     break;
                 case self::MEMBERSHIP_UP2DATE:
                     $select->where(

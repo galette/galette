@@ -364,7 +364,7 @@ class Group
                 $insert = $zdb->insert(self::TABLE);
                 $insert->values($values);
                 $add = $zdb->execute($insert);;
-                if ( $add > 0) {
+                if ( $add->count() > 0) {
                     $this->_id = $zdb->driver->getLastGeneratedValue();
                     // logging
                     $hist->add(

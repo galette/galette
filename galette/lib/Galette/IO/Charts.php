@@ -169,7 +169,7 @@ class Charts
             array(
                 'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
             )
-        )->where('bool_exempt_adh = ' . true);
+        )->where(array('bool_exempt_adh' => new Expression('true')));
 
         $results = $zdb->execute($select);
         $result = $results->current();
@@ -287,14 +287,20 @@ class Charts
         $result = $results->current();
         $next = $results->current();
 
+        $individuals = $result->cnt;
+        $companies = 0;
+        if ( $next ) {
+            $companies = $next->cnt;
+        }
+
         $chart = array(
             array(
                 _T("Individuals"),
-                (int)$result->cnt
+                (int)$individuals
             ),
             array(
                 _T("Companies"),
-                (int)$next->cnt
+                (int)$companies
             )
         );
         $this->_charts[self::COMPANIES_OR_NOT] = json_encode($chart);
