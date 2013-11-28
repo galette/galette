@@ -126,7 +126,14 @@ if ( $form_name == '' ) {
                         if ($field_type != DynamicFields::SEPARATOR
                             && count($error_detected) == 0
                         ) {
-                            $field_id = $zdb->driver->getLastGeneratedValue();
+                            if ( $zdb->isPostgres() ) {
+                                $field_id = $zdb->driver->getLastGeneratedValue(
+                                    PREFIX_DB . 'field_types_id_seq'
+                                );
+                            } else {
+                                $field_id = $zdb->driver->getLastGeneratedValue();
+                            }
+
                             header(
                                 'location: editer_champ.php?form=' . $form_name .
                                 '&id=' . $field_id

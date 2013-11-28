@@ -1152,7 +1152,13 @@ class Adherent
                 $insert->values($values);
                 $add = $zdb->execute($insert);
                 if ( $add->count() > 0) {
-                    $this->_id = $zdb->driver->getLastGeneratedValue();
+                    if ( $zdb->isPostgres() ) {
+                        $this->_id = $zdb->driver->getLastGeneratedValue(
+                            PREFIX_DB . 'adherents_id_seq'
+                        );
+                    } else {
+                        $this->_id = $zdb->driver->getLastGeneratedValue();
+                    }
                     $this->_picture = new Picture($this->_id);
                     // logging
                     $hist->add(

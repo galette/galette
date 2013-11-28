@@ -450,6 +450,15 @@ abstract class Entitled
                     Analog::INFO
                 );
 
+                if ( $zdb->isPostgres() ) {
+                    return $zdb->driver->getLastGeneratedValue(
+                        PREFIX_DB . $this->_table . '_id_seq'
+                    );
+                } else {
+                    return $zdb->driver->getLastGeneratedValue();
+                }
+
+
                 return $zdb->driver->getLastGeneratedValue();
             } else {
                 throw new \Exception('New ' . $this->getType() .' not added.');

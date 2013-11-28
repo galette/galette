@@ -552,7 +552,13 @@ class Contribution
                 $add = $zdb->execute($insert);
 
                 if ( $add->count() > 0) {
-                    $this->_id = $zdb->driver->getLastGeneratedValue();
+                    if ( $zdb->isPostgres() ) {
+                        $this->_id = $zdb->driver->getLastGeneratedValue(
+                            PREFIX_DB . 'cotisations_id_seq'
+                        );
+                    } else {
+                        $this->_id = $zdb->driver->getLastGeneratedValue();
+                    }
 
                     // logging
                     $hist->add(
