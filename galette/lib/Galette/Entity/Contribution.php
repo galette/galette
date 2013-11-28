@@ -480,7 +480,7 @@ class Contribution
                 'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
                 array()
             )->where(Adherent::PK . ' = ' . $this->_member)
-                ->where(array('cotis_extension' => (string)1))
+                ->where(array('cotis_extension' => new Expression('true')))
                 ->where
                 ->greaterThanOrEqualTo('date_debut_cotis', $this->_begin_date)
                 ->lessThan('date_debut_cotis', $this->_end_date)

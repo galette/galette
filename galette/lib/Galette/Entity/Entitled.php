@@ -38,6 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 
 /**
  * Entitled handling. Manage:
@@ -246,12 +247,13 @@ abstract class Entitled
             }
             if ( $extent !== null ) {
                 if ( $extent === true ) {
-                    $select->where($this->_fthird . ' = ' . $extent);
+                    $select->where(array($this->_fthird => new Expression('true')));
                 } else if ( $extent === false ) {
-                    if ( TYPE_DB === 'sqlite' ) {
-                        $select->where($this->_fthird . ' = 0');
+                    if ( TYPE_DB === 'sqlite' ) {               
+                        //TODO: is that still required with ZF2? 
+                        $select->where(array($this->_fthird => 0));
                     } else {
-                        $select->where($this->_fthird . ' = false');
+                        $select->where(array($this->_fthird => new Expression('false')));
                     }
                 }
             }
