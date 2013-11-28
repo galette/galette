@@ -472,7 +472,7 @@ class Contribution
         global $zdb;
 
         try {
-            $select = $zdb->seelct(self::TABLE, 'c');
+            $select = $zdb->select(self::TABLE, 'c');
             $select->columns(
                 array('date_debut_cotis', 'date_fin_cotis')
             )->join(
@@ -486,13 +486,13 @@ class Contribution
                 ->lessThan('date_debut_cotis', $this->_end_date)
                 ->or
                 ->greaterThan('date_fin_cotis', $this->_begin_date)
-                ->lessThanOrEqualTo('date_fin_cotis <= ?', $this->_end_date);
+                ->lessThanOrEqualTo('date_fin_cotis', $this->_end_date);
 
             if ( $this->id != '' ) {
                 $select->where(self::PK . ' != ' . $this->id);
             }
 
-            $results = $zdb->execute($query);
+            $results = $zdb->execute($select);
             $result = $results->current();
             if ( $result !== false ) {
                 $d = new \DateTime($result->date_debut_cotis);

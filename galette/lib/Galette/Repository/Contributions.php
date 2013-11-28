@@ -462,7 +462,7 @@ class Contributions extends Pagination
                 if ( $transaction ) {
                     $zdb->connection->beginTransaction();
                 }
-                $seelct = $zdb->select(self::TABLE);
+                $select = $zdb->select(self::TABLE);
                 $select->from(PREFIX_DB . self::TABLE)
                     ->where->in(self::PK, $list);
                 $contributions = $zdb->execute($select);
