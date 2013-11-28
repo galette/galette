@@ -169,10 +169,12 @@ abstract class Pagination
      */
     protected function setLimits($select)
     {
-        $select->limit($this->show);
-        $select->offset(
-            ($this->current_page - 1) * $this->show
-        );
+        if ( $this->_show !== 0 ) {
+            $select->limit($this->_show);
+            $select->offset(
+                ($this->current_page - 1) * $this->_show
+            );
+        }
     }
 
     /**
