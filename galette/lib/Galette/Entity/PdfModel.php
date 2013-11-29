@@ -137,11 +137,11 @@ abstract class PdfModel
     protected function load($id, $preferences)
     {
         try {
-            $select = $zdb->select(self::TABLE);
+            $select = $this->_zdb->select(self::TABLE);
             $select->limit(1)
                 ->where(self::PK . ' = ' . $id);
 
-            $results = $zdb->execute($select);
+            $results = $this->_zdb->execute($select);
             $this->loadFromRs($results->current(), $preferences);
         } catch ( \Exception $e ) {
             Analog::log(
