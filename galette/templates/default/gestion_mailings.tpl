@@ -16,7 +16,7 @@
                 <tr>
                     <th class="small_head">#</th>
                     <th class="left date_row">
-                        <a href="?tri=date_log">
+                        <a href="?tri=mailing_date">
                             {_T string="Date"}
                             {if $history->orderby eq "date_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -28,7 +28,7 @@
                         </a>
                     </th>
                     <th class="left username_row">
-                        <a href="?tri=adh_log">
+                        <a href="?tri=mailing_sender">
                             {_T string="Sender"}
                             {if $history->orderby eq "adh_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -39,11 +39,11 @@
                             {/if}
                         </a>
                     </th>
-                    <th class="left username_row">
+                    <th class="left small_head">
                         {_T string="Recipients"}
                     </th>
                     <th class="left">
-                        <a href="?tri=action_log">
+                        <a href="?tri=mailing_subject">
                             {_T string="Subject"}
                             {if $history->orderby eq "action_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -54,8 +54,22 @@
                             {/if}
                         </a>
                     </th>
-                    <th class="left right small_head">{_T string="Sent"}</th>
-                    <th></th>
+                    <th title="{_T string="Attachments"}" class="small_head">
+                        {_T string="Att."}
+                    </th>
+                    <th class="left right small_head">
+                        <a href="?tri=mailing_sent">
+                            {_T string="Sent"}
+                            {if $history->orderby eq "sent"}
+                                {if $history->getDirection() eq "DESC"}
+                            <img src="{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
+                                {else}
+                            <img src="{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
+                                {/if}
+                            {/if}
+                        </a>
+                    </th>
+                    <th class="small_head"></th>
                 </tr>
             </thead>
             <tfoot>
@@ -74,6 +88,7 @@
                     <td>{if $log.mailing_sender eq 0}{_T string="Superadmin"}{else}{$log.mailing_sender_name}{/if}</td>
                     <td>{$log.mailing_recipients|unserialize|@count}</td>
                     <td>{$log.mailing_subject}</td>
+                    <td>{$log.attachments}</td>
                     <td class="center">
                         {if $log.mailing_sent == 1}
                             <img src="{$template_subdir}images/icon-on.png" alt="{_T string="Sent"}" title="{_T string="Mailing has been sent"}"/>
@@ -82,7 +97,7 @@
                         {/if}
                     </td>
                     <td class="center nowrap actions_row">
-                        <a id ="showdetails" href="ajax_mailing_preview.php?id={$log.mailing_id}">
+                        <a class="showdetails" href="ajax_mailing_preview.php?id={$log.mailing_id}">
                             <img
                                 src="{$template_subdir}images/icon-preview.png"
                                 alt="{_T string="Show mailing %s details" pattern="/%s/" replace=$log.mailing_id}"
@@ -109,7 +124,7 @@
                     </td>
                 </tr>
 {foreachelse}
-                <tr><td colspan="7" class="emptylist">{_T string="No sent mailing has been stored in the database yet."}</td></tr>
+                <tr><td colspan="8" class="emptylist">{_T string="No sent mailing has been stored in the database yet."}</td></tr>
 {/foreach}
             </tbody>
         </table>
@@ -122,7 +137,7 @@
             });
 
             {* Preview popup *}
-            $('#showdetails').click(function(){
+            $('.showdetails').click(function(){
                 $.ajax({
                     url: $(this).attr('href'),
                     type: "POST",

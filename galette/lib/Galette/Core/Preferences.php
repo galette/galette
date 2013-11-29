@@ -54,6 +54,8 @@ use Galette\Entity\Adherent as Adherent;
  */
 class Preferences
 {
+    private $_zdb;
+
     private $_prefs;
     private $_error;
 
@@ -153,12 +155,14 @@ class Preferences
     /**
      * Default constructor
      *
+     * @param Db      $zdb  Db instance
      * @param boolean $load Automatically load preferences on load
      *
      * @return void
      */
-    public function __construct($load = true)
+    public function __construct($zdb, $load = true)
     {
+        $this->_zdb = $zdb;
         if ( $load ) {
             $this->load();
             $this->_checkUpdate();
@@ -166,14 +170,13 @@ class Preferences
     }
 
     /**
-    * Check if all fields referenced in the default array does exists,
-    * create them if not
-    *
-    * @return void
-    */
+     * Check if all fields referenced in the default array does exists,
+     * create them if not
+     *
+     * @return void
+     */
     private function _checkUpdate()
     {
-        global $zdb;
         $proceed = false;
         $params = array();
         foreach ( self::$_defaults as $k=>$v ) {
@@ -195,7 +198,7 @@ class Preferences
                 ' (nom_pref, val_pref) VALUES(:nom_pref, :val_pref)';
 
             try {
-                $stmt = $zdb->db->prepare($sql);
+                $stmt = $this->_zdb->db->prepare($sql);
 
                 foreach ( $params as $p ) {
                     $stmt->execute(
@@ -221,18 +224,16 @@ class Preferences
     }
 
     /**
-    * Load current preferences from database.
-    *
-    * @return boolean
-    */
+     * Load current preferences from database.
+     *
+     * @return boolean
+     */
     public function load()
     {
-        global $zdb;
-
         $this->_prefs = array();
 
         try {
-            $result = $zdb->selectAll(PREFIX_DB . self::TABLE);
+            $result = $this->_zdb->selectAll(PREFIX_DB . self::TABLE);
             foreach ( $result as $pref ) {
                 $this->_prefs[$pref->nom_pref] = $pref->val_pref;
             }
@@ -248,21 +249,19 @@ class Preferences
     }
 
     /**
-    * Set default preferences at install time
-    *
-    * @param staing $lang      language selected at install screen
-    * @param string $adm_login admin login entered at install time
-    * @param string $adm_pass  admin password entered at install time
-    *
-    * @return boolean|Exception
-    */
+     * Set default preferences at install time
+     *
+     * @param staing $lang      language selected at install screen
+     * @param string $adm_login admin login entered at install time
+     * @param string $adm_pass  admin password entered at install time
+     *
+     * @return boolean|Exception
+     */
     public function installInit($lang, $adm_login, $adm_pass)
     {
-        global $zdb;
-
         try {
             //first, we drop all values
-            $zdb->db->delete(PREFIX_DB . self::TABLE);
+            $this->_zdb->db->delete(PREFIX_DB . self::TABLE);
 
             //we then replace default values with the ones user has selected
             $values = self::$_defaults;
@@ -271,7 +270,7 @@ class Preferences
             $values['pref_admin_pass'] = $adm_pass;
             $values['pref_card_year'] = date('Y');
 
-            $stmt = $zdb->db->prepare(
+            $stmt = $this->_zdb->db->prepare(
                 'INSERT INTO ' . PREFIX_DB . self::TABLE .
                 ' (nom_pref, val_pref) VALUES(:nom_pref, :val_pref)'
             );
@@ -297,29 +296,27 @@ class Preferences
     }
 
     /**
-    * Returns all preferences keys
-    *
-    * @return array
-    */
+     * Returns all preferences keys
+     *
+     * @return array
+     */
     public function getFieldsNames()
     {
         return array_keys($this->_prefs);
     }
 
     /**
-    * Will store all preferences in the database
-    *
-    * @return boolean
-    */
+     * Will store all preferences in the database
+     *
+     * @return boolean
+     */
     public function store()
     {
-        global $zdb;
-
         try {
-            $stmt = $zdb->db->prepare(
+            $stmt = $this->_zdb->db->prepare(
                 'UPDATE ' . PREFIX_DB . self::TABLE . ' SET ' .
-                $zdb->db->quoteIdentifier('val_pref') . ' =  :value' .
-                ' WHERE ' . $zdb->db->quoteIdentifier('nom_pref') . ' = :name'
+                $this->_zdb->db->quoteIdentifier('val_pref') . ' =  :value' .
+                ' WHERE ' . $this->_zdb->db->quoteIdentifier('nom_pref') . ' = :name'
             );
 
             foreach ( self::$_defaults as $k=>$v ) {
@@ -418,12 +415,12 @@ class Preferences
     /**
      * Are public pages visibles?
      *
+     * @param Authentication $login Authenticaqtion instance
+     *
      * @return boolean
      */
-    public function showPublicPages()
+    public function showPublicPages(Authentication $login)
     {
-        global $login;
-
         if ( $this->_prefs['pref_bool_publicpages'] ) {
             //if public pages are actives, let's check if we
             //display them for curent call
@@ -462,12 +459,12 @@ class Preferences
     }
 
     /**
-    * Global getter method
-    *
-    * @param string $name name of the property we want to retrive
-    *
-    * @return false|object the called property
-    */
+     * Global getter method
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return false|object the called property
+     */
     public function __get($name)
     {
         $forbidden = array('logged', 'admin', 'active', 'defaults');
@@ -490,16 +487,25 @@ class Preferences
     }
 
     /**
-    * Global setter method
-    *
-    * @param string $name  name of the property we want to assign a value to
-    * @param object $value a relevant value for the property
-    *
-    * @return void
-    */
+     * Get default preferences
+     *
+     * @return array
+     */
+    public function getDefaults()
+    {
+        return self::$_defaults;
+    }
+
+    /**
+     * Global setter method
+     *
+     * @param string $name  name of the property we want to assign a value to
+     * @param object $value a relevant value for the property
+     *
+     * @return void
+     */
     public function __set($name, $value)
     {
-
         //does this pref exists ?
         if ( !array_key_exists($name, self::$_defaults) ) {
             Analog::log(

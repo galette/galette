@@ -4,7 +4,7 @@
             <p>{_T string="Email sent is disabled in the preferences. Ask galette admin"}</p>
         </div>
 {elseif !isset($mailing_saved)}
-        <form action="mailing_adherents.php#mail_preview" id="listform" method="post">
+        <form action="mailing_adherents.php#mail_preview" id="listform" method="post" enctype="multipart/form-data">
         <div class="mailing">
             <section class="mailing_infos">
                 <header class="ui-state-default ui-state-active">{_T string="Mailing informations"}</header>
@@ -40,6 +40,30 @@
                 </div>
             </section>
         {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_START')}
+            <section class="mailing_attachments">
+                <header class="ui-state-default ui-state-active">{_T string="Attachments"}</header>
+                <div>
+                    {if $attachments|@count gt 0}
+                    <p class="bline">
+                        {_T string="Existing attachments:"}
+                        <ul id="existing_attachments">
+                            {foreach item=attachment from=$attachments}
+                            <li>
+                                <a href="?remove_attachment={$attachment->getFileName()}" class="rm_attachement">
+                                    <img alt="{_T string="Remove attachment"}" src="./templates/default/images/delete.png">
+                                </a>
+                                {$attachment->getFileName()}
+                            </li>
+                            {/foreach}
+                        </ul>
+                    </p>
+                    {/if}
+                    <label for="attachment" class="bline tooltip" title="{_T string="Select attachments"}">{_T string="Add attachment"}</label>
+                    <span class="tip">{_T string="Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers."}</span>
+                    <input type="file" name="files[]" name="attachment" id="attachment" multiple="multiple">
+                </div>
+            </section>
+
             <section class="mailing_write">
                 <header class="ui-state-default ui-state-active">{_T string="Write your mailing"}</header>
                 <div>
@@ -97,6 +121,10 @@
             var _subject = $('#mailing_objet').val();
             var _body = $('#mailing_corps').val();
             var _html = $('#mailing_html').is(':checked');
+            var _attachments = [];
+            $('#existing_attachments li').each(function(){
+                _attachments[_attachments.length] = $(this).text();
+            });
             $.ajax({
                 url: 'ajax_mailing_preview.php',
                 type: "POST",
@@ -104,7 +132,8 @@
                     ajax: true,
                     subject: _subject,
                     body: _body,
-                    html: _html
+                    html: _html,
+                    attachments: _attachments
                 },
                 {include file="js_loader.tpl"},
                 success: function(res){
@@ -162,7 +191,6 @@
                 }
             });
             _members_ajax_mapper(res);
-
         }
 
         var _members_ajax_mapper = function(res){
@@ -247,6 +275,29 @@
                 return false;
             });
         }
+
+        $('.rm_attachement').click(function(){
+            var _link = $(this);
+            var _el = $('<div title="{_T string="Remove attachment"}"><p>{_T string="Are you sure you want to remove this attachment?"}</p><p>{_T string="This will immediately remove attachment from disk and cannot be undo."}</p></div>');
+            _el.appendTo('body').dialog({
+                modal: true,
+                hide: 'fold',
+                buttons: {
+                    Ok: function() {
+                        var _this = $(this);
+                        _this.dialog( "close" );
+                        window.location.href = 'mailing_adherents.php' + _link.attr('href');
+                    },
+                    {_T string="Cancel"}: function() {
+                         $(this).dialog( "close" );
+                    }
+                },
+                close: function(event, ui){
+                    _el.remove();
+                }
+            });
+            return false;
+        });
     });
 </script>
     {/if}

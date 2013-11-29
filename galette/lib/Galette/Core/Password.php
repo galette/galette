@@ -66,16 +66,20 @@ class Password
 
     /** Default password size */
     private $_size = 8;
-    private $_salt = 'abcdefghjkmnpqrstuvwxyz0123456789';
+    private $_chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
     private $_hash = null;
     private $_new_password;
 
     /**
-    * Default constructor
-    */
-    public function __construct()
+     * Default constructor
+     *
+     * @param boolean $clean Whether we should clean expired passwords in database
+     */
+    public function __construct($clean = true)
     {
-        $this->cleanExpired();
+        if ( $clean === true ) {
+            $this->cleanExpired();
+        }
     }
 
     /**
@@ -94,11 +98,10 @@ class Password
             $size = $this->_size;
         }
         $pass = '';
-        srand((double)microtime()*1000000);
         $i = 0;
         while ( $i <= $size-1 ) {
-            $num = rand() % 33;
-            $pass .= substr($this->_salt, $num, 1);
+            $num = mt_rand(0, 32) % 33;
+            $pass .= substr($this->_chars, $num, 1);
             $i++;
         }
         return $pass;

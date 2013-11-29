@@ -77,6 +77,7 @@ class GaletteMail
     private $_recipients;
 
     private $_mail = null;
+    protected $attachments = array();
 
     /**
      * Initialize PHPMailer
@@ -198,10 +199,10 @@ class GaletteMail
     }
 
     /**
-    * Apply final header to mail and send it :-)
-    *
-    * @return GaletteMail::MAIL_ERROR|GaletteMail::MAIL_SENT
-    */
+     * Apply final header to mail and send it :-)
+     *
+     * @return GaletteMail::MAIL_ERROR|GaletteMail::MAIL_SENT
+     */
     public function send()
     {
         global $preferences;
@@ -280,6 +281,15 @@ class GaletteMail
             } else {
                 $sign = "\r\n-- \r\n" . $sign;
                 $this->_mail->Body .= $sign;
+            }
+        }
+
+        //join attachments
+        if ( count($this->attachments) > 0 ) {
+            foreach ( $this->attachments as $attachment ) {
+                $this->_mail->AddAttachment(
+                    $attachment->getDestDir() . $attachment->getFileName()
+                );
             }
         }
 

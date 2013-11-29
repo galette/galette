@@ -120,7 +120,7 @@ if ( isset($_POST['valid']) ) {
         if ( $store === true ) {
             //transaction has been stored :)
             if ( $new ) {
-                /** FIXME: do something !! */
+                $transaction['trans_id'] = $trans->id;
             }
         } else {
             //something went wrong :'(
@@ -171,6 +171,7 @@ if ( $trans->id != '' ) {
 
 $tpl->assign('page_title', $title);
 $tpl->assign('required', $required);
+$tpl->assign('data', $transaction); //TODO: remove
 $tpl->assign('transaction', $trans);
 $tpl->assign('error_detected', $error_detected);
 $tpl->assign('success_detected', $success_detected);

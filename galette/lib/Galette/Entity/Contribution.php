@@ -1050,7 +1050,7 @@ class Contribution
                     } catch (\Exception $e) {
                         //oops, we've got a bad date :/
                         Analog::log(
-                            'Bad date (' . $his->$rname . ') | ' .
+                            'Bad date (' . $this->$rname . ') | ' .
                             $e->getMessage(),
                             Analog::INFO
                         );
@@ -1067,7 +1067,7 @@ class Contribution
                     } catch (\Exception $e) {
                         //oops, we've got a bad date :/
                         Analog::log(
-                            'Bad date (' . $his->$rname . ') | ' .
+                            'Bad date (' . $this->$rname . ') | ' .
                             $e->getMessage(),
                             Analog::INFO
                         );

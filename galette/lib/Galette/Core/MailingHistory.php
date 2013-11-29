@@ -156,6 +156,24 @@ class MailingHistory extends History
                     //if it is not... Well, let's serve the text as it.
                     $r['mailing_body_resume'] = $body_resume;
                 }
+
+                $attachments = 0;
+                if ( file_exists(GALETTE_ATTACHMENTS_PATH . $r[self::PK]) ) {
+                    $rdi = new \RecursiveDirectoryIterator(
+                        GALETTE_ATTACHMENTS_PATH . $r[self::PK],
+                        \FilesystemIterator::SKIP_DOTS
+                    );
+                    $contents = new \RecursiveIteratorIterator(
+                        $rdi,
+                        \RecursiveIteratorIterator::CHILD_FIRST
+                    );
+                    foreach ( $contents as $path) {
+                        if ( $path->isFile() ) {
+                            $attachments++;
+                        }
+                    }
+                }
+                $r['attachments'] = $attachments;
             }
             return $ret;
         } catch (\Exception $e) {
@@ -177,10 +195,12 @@ class MailingHistory extends History
      *
      * @param integaer       $id      Model identifier
      * @param GaletteMailing $mailing Mailing object
+     * @param boolean        $new     True if we create a 'new' mailing,
+     *                                false otherwise (from preview for example)
      *
      * @return boolean
      */
-    public static function loadFrom($id, $mailing)
+    public static function loadFrom($id, $mailing, $new = true)
     {
         global $zdb;
 
@@ -189,17 +209,8 @@ class MailingHistory extends History
             $select->from(PREFIX_DB . self::TABLE)
                 ->where('mailing_id = ?', $id);
             $res = $select->query()->fetch();
-            $orig_recipients = unserialize($res->mailing_recipients);
 
-            $_recipients = array();
-            foreach ( $orig_recipients as $k=>$v ) {
-                $m = new Adherent($k);
-                $_recipients[] = $m;
-            }
-            $mailing->setRecipients($_recipients);
-            $mailing->subject = $res->mailing_subject;
-            $mailing->message = $res->mailing_body;
-            return true;
+            return $mailing->loadFromHistory($res, $new);
         } catch (\Exception $e) {
             Analog::log(
                 'Unable to load mailing model #' . $id . ' | ' .
@@ -219,7 +230,7 @@ class MailingHistory extends History
      */
     public function storeMailing($sent = false)
     {
-        global $log, $login;
+        global $login;
 
         if ( $this->_mailing instanceof Mailing ) {
             $this->_sender = $login->id;
@@ -228,11 +239,58 @@ class MailingHistory extends History
             $this->_recipients = $this->_mailing->recipients;
             $this->_sent = $sent;
             $this->_date = date('Y-m-d H:i:s');
-            $this->store();
+            if ( !$this->_mailing->existsInHistory() ) {
+                $this->store();
+                $this->_mailing->id = $this->_id;
+                $this->_mailing->moveAttachments($this->_id);
+            } else {
+                //existing stored mailing. Just update row.
+                $this->update();
+            }
         } else {
             Analog::log(
                 '[' . __METHOD__ .
-                '] Mailing should be either null or an instance of Mailing',
+                '] Mailing should be an instance of Mailing',
+                Analog::ERROR
+            );
+            return false;
+        }
+    }
+
+    /**
+     * Update in the database
+     *
+     * @return boolean
+     */
+    public function update()
+    {
+        global $zdb;
+
+        try {
+            $_recipients = array();
+            if ( $this->_recipients != null ) {
+                foreach ( $this->_recipients as $_r ) {
+                    $_recipients[$_r->id] = $_r->sname . ' <' . $_r->email . '>';
+                }
+            }
+            $values = array(
+                'mailing_sender' => ($this->_sender === 0) ? new \Zend_Db_Expr('NULL') : $this->_sender,
+                'mailing_subject' => $this->_subject,
+                'mailing_body' => $this->_message,
+                'mailing_date' => $this->_date,
+                'mailing_recipients' => serialize($_recipients),
+                'mailing_sent' => ($this->_sent) ? true : 'false'
+            );
+
+            $zdb->db->update(
+                PREFIX_DB . self::TABLE,
+                $values,
+                $zdb->db->quoteInto(self::PK . ' = ?', $this->_mailing->history_id)
+            );
+            return true;
+        } catch (\Exception $e) {
+            Analog::log(
+                'An error occurend updating Mailing | ' . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -265,6 +323,10 @@ class MailingHistory extends History
             );
 
             $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
+            $this->_id = $zdb->db->lastInsertId(
+                PREFIX_DB . self::TABLE,
+                'id'
+            );
             return true;
         } catch (\Exception $e) {
             Analog::log(
@@ -296,6 +358,11 @@ class MailingHistory extends History
 
         if ( is_array($list) ) {
             try {
+                foreach ( $list as $id ) {
+                    $mailing = new Mailing(null, $id);
+                    $mailing->removeAttachments();
+                }
+
                 $zdb->db->beginTransaction();
 
                 //delete members
