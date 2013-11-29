@@ -212,6 +212,7 @@ class Transactions extends Pagination
             $countSelect = clone $select;
             $countSelect->reset($countSelect::COLUMNS);
             $countSelect->reset($countSelect::ORDER);
+            $countSelect->reset($countSelect::JOINS);
             $countSelect->columns(
                 array(
                     self::PK => new Expression('COUNT(' . self::PK . ')')
