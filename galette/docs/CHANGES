@@ -1,6 +1,14 @@
 Changes
 -------
 
+0.7.6.1-> 0.7.7
+- Add attachments to mailings
+- Fix login_adh value on import
+- Fix bad creation date value on import
+- Fix charts types issues
+- Fix dynamic transactions fields
+- Add amessage when trying to import a member with an unknown status
+
 0.7.6 -> 0.7.6.1
 - Wrong member creation date
 - Import model cannot be changed
