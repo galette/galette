@@ -63,15 +63,15 @@ class Plugins
     protected $mroot;
 
     /**
-    * Loads modules.
-    *
-    * @param string $path could be a separated list of paths
-    * (path separator depends on your OS).
-    * @param string $lang Indicates if we need to load a lang file on plugin
-    * loading.
-    *
-    * @return void
-    */
+     * Loads modules.
+     *
+     * @param string $path could be a separated list of paths
+     * (path separator depends on your OS).
+     * @param string $lang Indicates if we need to load a lang file on plugin
+     * loading.
+     *
+     * @return void
+     */
     public function loadModules($path, $lang=null)
     {
         $this->path = explode(PATH_SEPARATOR, $path);
@@ -132,26 +132,26 @@ class Plugins
     }
 
     /**
-    * This method registers a module in modules list. You should use this to
-    * register a new module.
-    *
-    * <var>$permissions</var> is a comma separated list of permissions for your
-    * module. If <var>$permissions</var> is null, only super admin has access to
-    * this module.
-    *
-    * <var>$priority</var> is an integer. Modules are sorted by priority and name.
-    * Lowest priority comes first.
-    *
-    * @param string  $name        Module name
-    * @param string  $desc        Module description
-    * @param string  $author      Module author name
-    * @param string  $version     Module version
-    * @param string  $compver     Galette version compatibility
-    * @param string  $permissions Module permissions
-    * @param integer $priority    Module priority
-    *
-    * @return void
-    */
+     * This method registers a module in modules list. You should use this to
+     * register a new module.
+     *
+     * <var>$permissions</var> is a comma separated list of permissions for your
+     * module. If <var>$permissions</var> is null, only super admin has access to
+     * this module.
+     *
+     * <var>$priority</var> is an integer. Modules are sorted by priority and name.
+     * Lowest priority comes first.
+     *
+     * @param string  $name        Module name
+     * @param string  $desc        Module description
+     * @param string  $author      Module author name
+     * @param string  $version     Module version
+     * @param string  $compver     Galette version compatibility
+     * @param string  $permissions Module permissions
+     * @param integer $priority    Module priority
+     *
+     * @return void
+     */
     public function register(
         $name, $desc, $author, $version, $compver = null, $permissions=null,
         $priority=1000
@@ -197,22 +197,22 @@ class Plugins
     }
 
     /**
-    * Reset modules list
-    *
-    * @return void
-    */
+     * Reset modules list
+     *
+     * @return void
+     */
     public function resetModulesList()
     {
         $this->modules = array();
     }
 
     /**
-    * Deactivate specified module
-    *
-    * @param string $id Module's ID
-    *
-    * @return void|exception
-    */
+     * Deactivate specified module
+     *
+     * @param string $id Module's ID
+     *
+     * @return void|exception
+     */
     public function deactivateModule($id)
     {
         if (!isset($this->modules[$id])) {
@@ -229,12 +229,12 @@ class Plugins
     }
 
     /**
-    * Activate specified module
-    *
-    * @param string $id Module's ID
-    *
-    * @return void|exception
-    */
+     * Activate specified module
+     *
+     * @param string $id Module's ID
+     *
+     * @return void|exception
+     */
     public function activateModule($id)
     {
         if (!isset($this->disabled[$id])) {
@@ -251,15 +251,15 @@ class Plugins
     }
 
     /**
-    * This method will search for file <var>$file</var> in language
-    * <var>$lang</var> for module <var>$id</var>.
-    * <var>$file</var> should not have any extension.
-    *
-    * @param string $id       Module ID
-    * @param string $language Language code
-    *
-    * @return void
-    */
+     * This method will search for file <var>$file</var> in language
+     * <var>$lang</var> for module <var>$id</var>.
+     * <var>$file</var> should not have any extension.
+     *
+     * @param string $id       Module ID
+     * @param string $language Language code
+     *
+     * @return void
+     */
     public function loadModuleL10N($id, $language)
     {
         global $lang;
@@ -275,12 +275,12 @@ class Plugins
     }
 
     /**
-    * Loads smarties specific (headers, assigments and so on)
-    *
-    * @param string $id Module ID
-    *
-    * @return void
-    */
+     * Loads smarties specific (headers, assigments and so on)
+     *
+     * @param string $id Module ID
+     *
+     * @return void
+     */
     public function loadSmarties($id)
     {
         $f = $this->modules[$id]['root'] . '/_smarties.php';
@@ -293,13 +293,13 @@ class Plugins
     }
 
     /**
-    * Returns all modules associative array or only one module if <var>$id</var>
-    * is present.
-    *
-    * @param string $id Optionnal module ID
-    *
-    * @return <b>array</b>
-    */
+     * Returns all modules associative array or only one module if <var>$id</var>
+     * is present.
+     *
+     * @param string $id Optionnal module ID
+     *
+     * @return <b>array</b>
+     */
     public function getModules($id=null)
     {
         if ($id && isset($this->modules[$id])) {
@@ -309,68 +309,68 @@ class Plugins
     }
 
     /**
-    * Returns true if the module with ID <var>$id</var> exists.
-    *
-    * @param string $id Module ID
-    *
-    * @return <b>boolean</b>
-    */
+     * Returns true if the module with ID <var>$id</var> exists.
+     *
+     * @param string $id Module ID
+     *
+     * @return <b>boolean</b>
+     */
     public function moduleExists($id)
     {
         return isset($this->modules[$id]);
     }
 
     /**
-    * Returns all disabled modules in an array
-    *
-    * @return <b>array</b>
-    */
+     * Returns all disabled modules in an array
+     *
+     * @return <b>array</b>
+     */
     public function getDisabledModules()
     {
         return $this->disabled;
     }
 
     /**
-    * Returns root path for module with ID <var>$id</var>.
-    *
-    * @param string $id Module ID
-    *
-    * @return <b>string</b>
-    */
+     * Returns root path for module with ID <var>$id</var>.
+     *
+     * @param string $id Module ID
+     *
+     * @return <b>string</b>
+     */
     public function moduleRoot($id)
     {
         return $this->moduleInfo($id, 'root');
     }
 
     /**
-    * Returns a module information that could be:
-    * - root
-    * - name
-    * - desc
-    * - author
-    * - version
-    * - permissions
-    * - priority
-    *
-    * @param string $id   Module ID
-    * @param string $info Information to retrieve
-    *
-    * @return module's informations
-    */
+     * Returns a module information that could be:
+     * - root
+     * - name
+     * - desc
+     * - author
+     * - version
+     * - permissions
+     * - priority
+     *
+     * @param string $id   Module ID
+     * @param string $info Information to retrieve
+     *
+     * @return module's informations
+     */
     public function moduleInfo($id,$info)
     {
         return isset($this->modules[$id][$info]) ? $this->modules[$id][$info] : null;
     }
 
     /**
-    * Search and load menu templates from plugins.
-    * Also sets the web path to the plugin with the var "galette_[plugin-name]_path"
-    *
-    * @param Smarty      $tpl         Smarty template
-    * @param Preferences $preferences Galette's preferences
-    *
-    * @return void
-    */
+     * Search and load menu templates from plugins.
+     * Also sets the web path to the plugin with the var "galette_[plugin-name]_path"
+     *
+     * @param Smarty      $tpl         Smarty template
+     * @param Preferences $preferences Galette's preferences
+     *
+     * @return void
+     */
     public function getMenus($tpl, $preferences)
     {
         $modules = $this->getModules();
@@ -390,13 +390,13 @@ class Plugins
     }
 
     /**
-    * Sort modules
-    *
-    * @param array $a A module
-    * @param array $b Another module
-    *
-    * @return 1 if a has the highest priority, -1 otherwise
-    */
+     * Sort modules
+     *
+     * @param array $a A module
+     * @param array $b Another module
+     *
+     * @return 1 if a has the highest priority, -1 otherwise
+     */
     private function _sortModules($a, $b)
     {
         if ($a['priority'] == $b['priority']) {
@@ -407,12 +407,12 @@ class Plugins
     }
 
     /**
-    * Get the templates path for a specified module
-    *
-    * @param string $id Module's ID
-    *
-    * @return Concatenated templates path for requested module
-    */
+     * Get the templates path for a specified module
+     *
+     * @param string $id Module's ID
+     *
+     * @return Concatenated templates path for requested module
+     */
     public function getTemplatesPath($id)
     {
         global $preferences;
@@ -420,12 +420,12 @@ class Plugins
     }
 
     /**
-    * Get the templates path for a specified module name
-    *
-    * @param string $name Module's name
-    *
-    * @return Concatenated templates path for requested module
-    */
+     * Get the templates path for a specified module name
+     *
+     * @param string $name Module's name
+     *
+     * @return Concatenated templates path for requested module
+     */
     public function getTemplatesPathFromName($name)
     {
         $id = null;
@@ -438,10 +438,10 @@ class Plugins
     }
 
     /**
-    * For each module, returns the headers.tpl full path, if present.
-    *
-    * @return array of headers to include for all modules
-    */
+     * For each module, returns the headers.tpl full path, if present.
+     *
+     * @return array of headers to include for all modules
+     */
     public function getTplHeaders()
     {
         $_headers = array();
@@ -455,10 +455,10 @@ class Plugins
     }
 
     /**
-    * For each module, return the adh_actions.tpl full path, if present.
-    *
-    * @return array of adherent actions to include on member list for all modules
-    */
+     * For each module, return the adh_actions.tpl full path, if present.
+     *
+     * @return array of adherent actions to include on member list for all modules
+     */
     public function getTplAdhActions()
     {
         $_actions = array();
@@ -472,11 +472,11 @@ class Plugins
     }
 
     /**
-    * For each module, return the adh_fiche_action.tpl full path, if present.
-    *
-    * @return array of adherent actions to include on membre detailled view for
-    * all modules
-    */
+     * For each module, return the adh_fiche_action.tpl full path, if present.
+     *
+     * @return array of adherent actions to include on membre detailled view for
+     * all modules
+     */
     public function getTplAdhDetailledActions()
     {
         $_actions = array();
@@ -490,10 +490,10 @@ class Plugins
     }
 
     /**
-    * For each module, gets templates assignements ; and replace some path variables
-    *
-    * @return array of Smarty templates assignement for all modules
-    */
+     * For each module, gets templates assignements ; and replace some path variables
+     *
+     * @return array of Smarty templates assignement for all modules
+     */
     public function getTplAssignments()
     {
         global $preferences;
