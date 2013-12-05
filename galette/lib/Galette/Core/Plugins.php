@@ -147,14 +147,15 @@ class Plugins
      * @param string  $author      Module author name
      * @param string  $version     Module version
      * @param string  $compver     Galette version compatibility
+     * @param string  $date        Module release date
      * @param string  $permissions Module permissions
      * @param integer $priority    Module priority
      *
      * @return void
      */
     public function register(
-        $name, $desc, $author, $version, $compver = null, $permissions=null,
-        $priority=1000
+        $name, $desc, $author, $version, $compver = null, $date = null,
+        $permissions=null, $priority=1000
     ) {
 
         if ( $compver === null ) {
@@ -182,14 +183,31 @@ class Plugins
             );
         } else {
             if ($this->id) {
+                $release_date = $date;
+                if ( $date !== null ) {
+                    //try to localize release date
+                    try {
+                        $release_date = new \DateTime($date);
+                        $release_date = $release_date->format(_T("Y-m-d"));
+                    } catch ( \Exception $e ) {
+                        Analog::log(
+                            'Unable to localize release date for plugin ' . $name,
+                            Analog::WARNING
+                        );
+                    }
+                }
+
                 $this->modules[$this->id] = array(
-                    'root' => $this->mroot,
-                    'name' => $name,
-                    'desc' => $desc,
-                    'author' => $author,
-                    'version' => $version,
-                    'permissions' => $permissions,
-                    'priority' => $priority === null ? 1000 : (integer) $priority,
+                    'root'          => $this->mroot,
+                    'name'          => $name,
+                    'desc'          => $desc,
+                    'author'        => $author,
+                    'version'       => $version,
+                    'permissions'   => $permissions,
+                    'date'          => $release_date,
+                    'priority'      => $priority === null ?
+                                         1000 :
+                                         (integer) $priority,
                     'root_writable' => is_writable($this->mroot)
                 );
             }
@@ -349,6 +367,7 @@ class Plugins
      * - desc
      * - author
      * - version
+     * - date
      * - permissions
      * - priority
      *

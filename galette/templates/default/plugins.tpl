@@ -6,6 +6,7 @@
                 <th class="listing">{_T string="Description"}</th>
                 <th class="listing">{_T string="Author"}</th>
                 <th class="listing">{_T string="Version"}</th>
+                <th class="listing">{_T string="Release date"}</th>
                 <th class="listing actions_row"></th>
             </tr>
         </thead>
@@ -19,6 +20,7 @@
                 <td>{$plugin.desc}</td>
                 <td>{$plugin.author}</td>
                 <td>{$plugin.version}</td>
+                <td>{$plugin.date}</td>
                 <td class="nowrap">
                     <a class="toggleActivation" href="?deactivate={$name}" title="{_T string="Click here to deactivate plugin '%name'" pattern="/%name/" replace=$plugin.name}">
                         <img src="{$template_subdir}images/icon-on.png" alt="{_T string="Disable plugin"}"/>
