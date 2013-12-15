@@ -409,6 +409,38 @@ class Plugins
     }
 
     /**
+     * Search and load public menu templates from plugins.
+     * Also sets the web path to the plugin with the var "galette_[plugin-name]_path"
+     *
+     * @param Smarty      $tpl         Smarty template
+     * @param Preferences $preferences Galette's preferences
+     * @param boolean     $public_page Called from a public page
+     *
+     * @return void
+     */
+    public function getPublicMenus($tpl, $preferences, $public_page = false)
+    {
+        $modules = $this->getModules();
+        foreach ( array_keys($this->getModules()) as $r ) {
+            $menu_path = $this->getTemplatesPath($r) . '/public_menu.tpl';
+            if ( $tpl->template_exists($menu_path) ) {
+                $name2path = strtolower(
+                    str_replace(' ', '_', $modules[$r]['name'])
+                );
+                $tpl->assign(
+                    'galette_' . $name2path . '_path',
+                    'plugins/' . $r . '/'
+                );
+                $tpl->assign(
+                    'public_page',
+                    $public_page
+                );
+                $tpl->display($menu_path);
+            }
+        }
+    }
+
+    /**
      * Sort modules
      *
      * @param array $a A module
