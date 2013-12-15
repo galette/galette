@@ -41,5 +41,6 @@ $this->register(
     'Johan Cwiklinski',         //Author
     '1.0',                      //Version
     '0.7.5',                    //Galette compatible version
+    '2013-12-15',               //Release date
     null                        //Permissions needed - not yet implemented
 );

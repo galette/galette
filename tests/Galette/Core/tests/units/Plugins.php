@@ -62,6 +62,7 @@ class Plugins extends atoum
         'author'        => 'Johan Cwiklinski',
         'version'       => '1.0',
         'permissions'   => null,
+        'date'          => '2013-12-15',
         'priority'      => 1000,
         'root_writable' => true
     );
@@ -96,7 +97,10 @@ class Plugins extends atoum
         $this->array($this->_plugins->getModules())
             ->hasSize(3);
 
-        $this->variable($this->_plugins->getModules('plugin-test2'))
+        $loaded_plugin = $this->_plugins->getModules('plugin-test2');
+        $loaded_plugin['date'] = $this->_plugin2['date'];
+
+        $this->variable($loaded_plugin)
             ->isIdenticalTo($this->_plugin2);
     }
 
