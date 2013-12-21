@@ -1,7 +1,11 @@
 Changes
 -------
 
-0.7.6.1-> 0.7.7
+0.7.7 -> 0.7.8
+- Add release date on plugins
+- Add public pages for plugins
+
+0.7.6.1 -> 0.7.7
 - Add attachments to mailings
 - Fix login_adh value on import
 - Fix bad creation date value on import

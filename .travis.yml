@@ -9,7 +9,7 @@ before_script:
   - sh -c "if [ '$DB' = 'sqlite' ]; then sqlite3 tests/galette.test.sqlite < galette/install/sql/sqlite.sql; fi"
   - sh -c "cp tests/config/$DB-config.inc.php galette/config/config.inc.php"
   - wget http://downloads.atoum.org/nightly/mageekguy.atoum.phar
-script: php mageekguy.atoum.phar -bf tests/TestsBootstrap.php -d tests/Galette/
+script: php mageekguy.atoum.phar -mcn 1 -bf tests/TestsBootstrap.php -d tests/Galette/
 language: php
 php:
   - 5.3

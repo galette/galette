@@ -8,6 +8,14 @@
         <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.min.js"></script>
     {/if}
 {/if}
+{if $require_dialog}
+        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.mouse.min.js"></script>
+        {* Drag component, only used for Dialog for the moment *}
+        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.draggable.min.js"></script>
+        {* So the dialog could be aligned in the middle of the screen *}
+        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.position.min.js"></script>
+        <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.dialog.min.js"></script>
+{/if}
 {* If some additionnals headers should be added from plugins, we load the relevant template file
 We have to use a template file, so Smarty will do its work (like replacing variables). *}
 {if $headers|@count != 0}
@@ -61,6 +69,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     {if $preferences->showPublicPages($login) eq true}
             <a id="memberslist" class="button{if $PAGENAME eq "liste_membres.php"} selected{/if}" href="{$galette_base_path}public/liste_membres.php" title="{_T string="Members list"}">{_T string="Members list"}</a>
             <a id="trombino" class="button{if $PAGENAME eq "trombinoscope.php"} selected{/if}" href="{$galette_base_path}public/trombinoscope.php" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a>
+            {* Include plugins menu entries *}
+            {$plugins->getPublicMenus($tpl, $preferences, true)}
     {/if}
         </nav>
         {include file="global_messages.tpl"}

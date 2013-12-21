@@ -235,7 +235,11 @@ abstract class Entitled
                 if ( $extent === true ) {
                     $select->where($this->_fthird . ' = ?', $extent);
                 } else if ( $extent === false ) {
-                    $select->where($this->_fthird . ' = false');
+                    if ( TYPE_DB === 'sqlite' ) {
+                        $select->where($this->_fthird . ' = 0');
+                    } else {
+                        $select->where($this->_fthird . ' = false');
+                    }
                 }
             }
 

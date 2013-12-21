@@ -117,7 +117,7 @@ if (defined('GALETTE_XHPROF_PATH')
 //we start a php session
 session_start();
 
-define('GALETTE_VERSION', 'v0.7.7');
+define('GALETTE_VERSION', 'v0.7.8');
 define('GALETTE_COMPAT_VERSION', '0.7.5');
 define('GALETTE_DB_VERSION', '0.704');
 if ( !defined('GALETTE_MODE') ) {
@@ -163,6 +163,15 @@ $galette_run_log = null;
 $galette_null_log = \Analog\Handler\Null::init();
 $galette_debug_log = $galette_null_log;
 
+//Log level cannot be <= 3, would be ignored.
+if ( !defined('GALETTE_LOG_LVL') ) {
+    if ( GALETTE_MODE === 'DEV' ) {
+        define('GALETTE_LOG_LVL', 10);
+    } else {
+        define('GALETTE_LOG_LVL', 5);
+    }
+}
+
 if ( defined('GALETTE_TESTS') ) {
     $galette_run_log = \Analog\Handler\Null::init();
 
@@ -193,15 +202,6 @@ if ( defined('GALETTE_TESTS') ) {
             $galette_run_log = \Analog\Handler\File::init($log_path);
         } else {
             $galette_run_log = \Analog\Handler\Variable::init($galette_log_var);
-        }
-    }
-
-    //Log level cannot be <= 3, would be ignored.
-    if ( !defined('GALETTE_LOG_LVL') ) {
-        if ( GALETTE_MODE === 'DEV' ) {
-            define('GALETTE_LOG_LVL', 10);
-        } else {
-            define('GALETTE_LOG_LVL', 5);
         }
     }
 }

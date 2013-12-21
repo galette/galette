@@ -139,6 +139,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <ul>
             <li><a href="{$galette_base_path}public/liste_membres.php" title="{_T string="Members list"}">{_T string="Members list"}</a></li>
             <li><a href="{$galette_base_path}public/trombinoscope.php" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a></li>
+            {* Include plugins menu entries *}
+            {$plugins->getPublicMenus($tpl, $preferences)}
         </ul>
 {/if}
 {if $login->isAdmin()}
