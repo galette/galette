@@ -262,7 +262,11 @@ class I18n
      */
     public function getFlag()
     {
-        return GALETTE_BASE_PATH . GALETTE_TPL_SUBDIR . 'images/' . $this->_flag;
+        if ( defined('GALETTE_THEME_DIR') ) {
+            return GALETTE_THEME_DIR . 'images/' . $this->_flag;
+        } else {
+            return GALETTE_BASE_PATH . GALETTE_TPL_SUBDIR . 'images/' . $this->_flag;
+        }
     }
 
     /**

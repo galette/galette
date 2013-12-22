@@ -44,7 +44,7 @@ $installer = true;
 //specific logfile for installer
 $logfile = 'galette_install';
 define('GALETTE_BASE_PATH', '../');
-define('GALETTE_TPL_SUBDIR', GALETTE_BASE_PATH . 'templates/default/');
+define('GALETTE_THEME_DIR', GALETTE_BASE_PATH . 'templates/default/');
 
 require_once '../includes/galette.inc.php';
 
@@ -185,9 +185,9 @@ header('Content-Type: text/html; charset=UTF-8');
     <head>
         <title><?php echo _T("Galette Installation") . ' - ' . $install->getStepTitle(); ?></title>
         <meta charset="UTF-8"/>
-        <link rel="stylesheet" type="text/css" href="<?php echo GALETTE_TPL_SUBDIR; ?>galette.css"/>
-        <link rel="stylesheet" type="text/css" href="<?php echo GALETTE_TPL_SUBDIR; ?>install.css"/>
-        <link rel="stylesheet" type="text/css" href="<?php echo GALETTE_TPL_SUBDIR; ?>jquery-ui/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>.custom.css"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo GALETTE_THEME_DIR; ?>galette.css"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo GALETTE_THEME_DIR; ?>install.css"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo GALETTE_THEME_DIR; ?>jquery-ui/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>.custom.css"/>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-<?php echo JQUERY_VERSION; ?>.min.js"></script>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-migrate-<?php echo JQUERY_MIGRATE_VERSION; ?>.min.js"></script>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
@@ -195,7 +195,7 @@ header('Content-Type: text/html; charset=UTF-8');
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.tooltip.min.js"></script>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.bgFade.js"></script>
         <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/common.js"></script>
-        <link rel="shortcut icon" href="<?php echo GALETTE_TPL_SUBDIR; ?>images/favicon.png" />
+        <link rel="shortcut icon" href="<?php echo GALETTE_THEME_DIR; ?>images/favicon.png" />
         <!--[if lt IE9]>
             <script type="text/javascript" src="{$scripts_dir}html5-ie.js"></script>
         <!endif]-->
@@ -204,7 +204,7 @@ header('Content-Type: text/html; charset=UTF-8');
         <section>
             <header>
                 <h1 id="titre">
-                    <img src="<?php echo GALETTE_TPL_SUBDIR; ?>images/galette.png" alt="[ Galette ]" />
+                    <img src="<?php echo GALETTE_THEME_DIR; ?>images/galette.png" alt="[ Galette ]" />
                     <?php echo _T("Galette installation") . ' - ' . $install->getStepTitle(); ?>
                 </h1>
                 <ul id="langs">
