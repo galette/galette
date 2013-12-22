@@ -115,17 +115,17 @@ class Db
             $this->_type_db = $_type_db;
             if ($_type_db != self::SQLITE) {
                 $_options = array(
-                        'driver'   => $_type,
-                        'hostname' => $_host_db,
-                        'port'     => $_port_db,
-                        'username' => $_user_db,
-                        'password' => $_pwd_db,
-                        'database' => $_name_db
+                    'driver'   => $_type,
+                    'hostname' => $_host_db,
+                    'port'     => $_port_db,
+                    'username' => $_user_db,
+                    'password' => $_pwd_db,
+                    'database' => $_name_db
                 );
             } else {
                 $_options = array(
-                        'driver'   => $_type,
-                        'database' => GALETTE_SQLITE_PATH,
+                    'driver'   => $_type,
+                    'database' => GALETTE_SQLITE_PATH,
                 );
             }
 

@@ -37,7 +37,8 @@
 
 namespace Galette\Core;
 
-use \Analog\Analog as Analog;
+use \Analog\Analog;
+use Zend\Db\Adapter\Adapter;
 
 /**
  * Galette installation
@@ -621,8 +622,7 @@ class Install
 
         $sql_query = split_sql_file($sql_query, ';');
 
-        $db = $zdb->db->getConnection();
-        $db->beginTransaction();
+        $zdb->connection->beginTransaction();
 
         for ( $i = 0; $i < sizeof($sql_query); $i++ ) {
             $query = trim($sql_query[$i]);
@@ -639,9 +639,12 @@ class Install
                 );
 
                 try {
-                    $result = $db->exec($query);
+                    $zdb->db->query(
+                        $query,
+                        Adapter::QUERY_MODE_EXECUTE
+                    );
                     $ret['res'] = true;
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $log_lvl = Analog::WARNING;
                     //if error are on drop, DROP, rename or RENAME we can continue
                     if ( (strcasecmp(trim($w1), 'drop') != 0)
@@ -656,8 +659,7 @@ class Install
                         $ret['res'] = true;
                     }
                     Analog::log(
-                        'Error executing query | ' . $e->getMessage() .
-                        ' | Query was: ' . $query,
+                        'Error executing query | ' . $e->getMessage(),
                         $log_lvl
                     );
                 }
@@ -667,9 +669,9 @@ class Install
         }
 
         if ( $fatal_error ) {
-            $db->rollBack();
+            $zdb->connection->rollBack();
         } else {
-            $db->commit();
+            $zdb->connection->commit();
         }
 
         $this->_report = $queries_results;
@@ -822,7 +824,7 @@ define("PREFIX_DB", "' . $this->_db_prefix . '");
     public function initObjects($i18n, $zdb)
     {
         if ( $this->isInstall() ) {
-            $preferences = new Preferences(false);
+            $preferences = new Preferences($zdb, false);
             $ct = new \Galette\Entity\ContributionsTypes();
             $status = new \Galette\Entity\Status();
             include_once '../includes/fields_defs/members_fields.php';
