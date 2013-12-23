@@ -39,6 +39,7 @@ namespace Galette\Entity;
 
 use Analog\Analog as Analog;
 use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
 use Galette\DynamicFieldsTypes\Separator as Separator;
 use Galette\DynamicFieldsTypes\Text as Text;
 use Galette\DynamicFieldsTypes\Line as Line;
@@ -689,7 +690,12 @@ class DynamicFields
             );
 
             if ( $field_id !== null ) {
-                $select->where->notIn('NOT field_id', $field_id);
+                $select->where->addPredicate(
+                    new PredicateExpression(
+                        'field_id NOT IN (?)',
+                        array($field_id)
+                    )
+                );
             }
 
             $results = $zdb->execute($select);

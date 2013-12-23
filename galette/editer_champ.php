@@ -110,7 +110,7 @@ if ( isset($_POST['valid']) ) {
 
             $results = $zdb->execute($select);
             $result = $results->current();
-            $old_field_name = $current->field_name;
+            $old_field_name = $result->field_name;
 
             if ( $old_field_name && $field_name != $old_field_name ) {
                 addDynamicTranslation($field_name, $error_detected);
@@ -131,7 +131,7 @@ if ( isset($_POST['valid']) ) {
                 );
 
                 $update = $zdb->update(DynamicFieldType::TABLE);
-                $update->values($values)->where(
+                $update->set($values)->where(
                     'field_id = ' . $field_id
                 );
                 $zdb->execute($update);
