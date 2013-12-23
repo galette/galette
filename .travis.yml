@@ -12,7 +12,6 @@ before_script:
 script: php mageekguy.atoum.phar -mcn 1 -bf tests/TestsBootstrap.php -d tests/Galette/
 language: php
 php:
-  - 5.3
   - 5.4
   - 5.5
 env:
