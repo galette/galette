@@ -274,7 +274,7 @@ class Db
                     'hostname' => $host,
                     'port'     => $port,
                     'username' => $user,
-                    'password' => $piass,
+                    'password' => $pass,
                     'database' => $db
                 );
             } else {
