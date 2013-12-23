@@ -90,31 +90,24 @@ class Db extends atoum
         $db = new \Galette\Core\Db($dsn);
 
         $is_pg = $db->isPostgres();
-        $zdb = $db->db;
         $type = $db->type_db;
 
         switch (TYPE_DB) {
         case 'pgsql':
             $this->boolean($is_pg)
                 ->isTrue();
-            $this->object($zdb)
-                ->IsInstanceOf('Zend_Db_Adapter_Pdo_Pgsql');
             $this->string($type)
                 ->isIdenticalTo(\Galette\Core\Db::PGSQL);
             break;
         case \Galette\Core\Db::MYSQL:
             $this->boolean($is_pg)
                 ->isFalse();
-            $this->object($zdb)
-                ->IsInstanceOf('Zend_Db_Adapter_Pdo_Mysql');
             $this->string($type)
                 ->isIdenticalTo(\Galette\Core\Db::MYSQL);
             break;
         case \galette\Core\Db::SQLITE:
             $this->boolean($is_pg)
                 ->isFalse();
-            $this->object($zdb)
-                ->IsInstanceOf('Zend_Db_Adapter_Pdo_Sqlite');
             $this->string($type)
                 ->isIdenticalTo(\Galette\Core\Db::SQLITE);
             break;
@@ -230,26 +223,18 @@ class Db extends atoum
      */
     public function testGetters()
     {
-        $db = $this->_db->db;
-
         switch(TYPE_DB) {
         case 'pgsql':
-            $this->object($db)
-                ->IsInstanceOf('Zend_Db_Adapter_Pdo_Pgsql');
             $type = $this->_db->type_db;
             $this->string($type)
                 ->isIdenticalTo('pgsql');
             break;
         case 'mysql':
-            $this->object($db)
-                ->IsInstanceOf('Zend_Db_Adapter_Pdo_Mysql');
             $type = $this->_db->type_db;
             $this->string($type)
                 ->isIdenticalTo('mysql');
             break;
         case 'sqlite':
-            $this->object($db)
-                ->IsInstanceOf('Zend_Db_Adapter_Pdo_Sqlite');
             $type = $this->_db->type_db;
             $this->string($type)
                 ->isIdenticalTo('sqlite');

@@ -605,8 +605,10 @@ class Db
 
         try {
             $query = 'SET NAMES latin1';
-            $this->_db->getConnection()->exec($query);
-
+            $this->_db->query(
+                $query,
+                Adapter::QUERY_MODE_EXECUTE
+            );
         }catch (\Exception $e) {
             Analog::log(
                 'Cannot SET NAMES on table `' . $table . '`. ' .
@@ -663,7 +665,7 @@ class Db
 
                 //build where
                 foreach ( $pkeys as $k ) {
-                    $where[] = $k . ' = ' . $this->_db->quote($row->$k);
+                    $where[] = $k . ' = ' . $row->$k;
                 }
 
                 //build data
