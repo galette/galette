@@ -178,7 +178,7 @@ class Db
 
             $results = $this->execute($select);
             $result = $results->current();
-            return $res->version === GALETTE_DB_VERSION;
+            return $result->version === GALETTE_DB_VERSION;
         } catch ( \Exception $e ) {
             Analog::log(
                 'Cannot check database version: ' . $e->getMessage(),
