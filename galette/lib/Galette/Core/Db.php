@@ -267,21 +267,23 @@ class Db
                 throw new \Exception;
             }
 
-            if ($type != self::SQLITE) {
+
+            if ($_type != self::SQLITE) {
                 $_options = array(
-                        'host'     => $host,
-                        'port'     => $port,
-                        'username' => $user,
-                        'password' => $pass,
-                        'dbname'   => $db
-                    );
+                    'driver'   => $_type,
+                    'hostname' => $host,
+                    'port'     => $port,
+                    'username' => $user,
+                    'password' => $piass,
+                    'database' => $db
+                );
             } else {
                 $_options = array(
-                    'dbname'   => GALETTE_SQLITE_PATH,
+                    'driver'   => $_type,
+                    'databse'   => GALETTE_SQLITE_PATH,
                 );
             }
 
-            $_options['driver'] = $type;
             $_db = new Adapter($_options);
 
             Analog::log(
