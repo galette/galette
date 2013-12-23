@@ -711,7 +711,7 @@ class DynamicFields
             $df = new \Galette\DynamicFieldsTypes\File($id);
             break;
         default:
-            throw new \Exception('Unknow field type ' . $t . '!');
+            throw new \Exception('Unknown field type ' . $t . '!');
             break;
         }
         return $df;
