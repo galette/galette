@@ -188,20 +188,21 @@ class Preferences extends atoum
      */
     public function testUpdate()
     {
-        $del = $this->_zdb->db->delete(
-            PREFIX_DB . \Galette\Core\Preferences::TABLE,
-            $this->_zdb->db->quoteInto(
-                \Galette\Core\Preferences::PK . ' = ?',
-                'pref_facebook'
+        $delete = $this->_zdb->delete(\Galette\Core\Preferences::TABLE);
+        $delete->where(
+            array(
+                \Galette\Core\Preferences::PK => 'pref_facebook'
             )
         );
-        $del = $this->_zdb->db->delete(
-            PREFIX_DB . \Galette\Core\Preferences::TABLE,
-            $this->_zdb->db->quoteInto(
-                \Galette\Core\Preferences::PK . ' = ?',
-                'pref_viadeo'
+        $this->_zdb->execute($delete);
+
+        $delete = $this->_zdb->delete(\Galette\Core\Preferences::TABLE);
+        $delete->where(
+            array(
+                \Galette\Core\Preferences::PK => 'pref_viadeo'
             )
         );
+        $this->_zdb->execute($delete);
 
         $this->_preferences->load();
         $fb = $this->_preferences->pref_facebook;
