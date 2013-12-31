@@ -618,14 +618,15 @@ class Db
         }
 
         try {
-            /** FIXME: ZF1 method */
-            $descr = $this->_db->describeTable($table);
-
+            $metadata = new \Zend\Db\Metadata\Metadata($this->_db);
+            $tbl = $metadata->getTable($table);
+            $columns = $tbl->getColumns();
+            $constraints = $tbl->getConstraints();
             $pkeys = array();
-            foreach ( $descr as $field ) {
-                if ( $field['PRIMARY'] == 1 ) {
-                    $pos = $field['PRIMARY_POSITION'];
-                    $pkeys[$pos] = $field['COLUMN_NAME'];
+
+            foreach ( $constraints as $constraint ) {
+                if ( $constraint->getType() === 'PRIMARY KEY' ) {
+                    $pkeys = $constraint->getColumns();
                 }
             }
 
