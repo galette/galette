@@ -900,7 +900,7 @@ define("PREFIX_DB", "' . $this->_db_prefix . '");
             'res'       => false
         );
 
-        if ( $res !== true ) {
+        if ( $res instanceof \Exception ) {
             $ret['debug'] = $res->getMessage();
             $this->_error = true;
         } else {
