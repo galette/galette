@@ -9,7 +9,7 @@
  *
  * Copyright © 2013 The Galette Team
  *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (http://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -284,7 +284,7 @@ if ( $install->isUpgrade() ) {
                 </ol>
             </footer>
         </section>
-        <a id="copyright" href="http://galette.tuxfamily.org/">Galette <?php echo GALETTE_VERSION; ?></a>
+        <a id="copyright" href="http://galette.eu/">Galette <?php echo GALETTE_VERSION; ?></a>
     </body>
 </html>
 <?php
