@@ -167,7 +167,9 @@ if ( isset($_POST['stepback_btn']) ) {
     $install->atEndStep();
 }
 
-if ( !$install->isEndStep() && ($install->postCheckDb() || $install->isDbCheckStep()) ) {
+if ( !$install->isEndStep()
+    && ($install->postCheckDb() || $install->isDbCheckStep())
+) {
     //if we have passed database configuration, define required constants
     initDbConstants($install);
 
