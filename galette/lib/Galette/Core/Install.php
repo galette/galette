@@ -877,7 +877,7 @@ define("PREFIX_DB", "' . $this->_db_prefix . '");
 
             return !$this->_error;
         } else if ( $this->isUpgrade() ) {
-            $preferences = new Preferences();
+            $preferences = new Preferences($zdb);
             $preferences->pref_admin_login = $this->_admin_login;
             $preferences->pref_admin_pass = $this->_admin_pass;
             $preferences->store();
