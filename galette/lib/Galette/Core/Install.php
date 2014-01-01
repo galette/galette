@@ -32,7 +32,7 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.4dev - 2013-01-09
+ * @since     Available since 0.8 - 2013-01-09
  */
 
 namespace Galette\Core;
@@ -50,7 +50,7 @@ use Zend\Db\Adapter\Adapter;
  * @copyright 2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.4dev - 2013-01-09
+ * @since     Available since 0.8 - 2013-01-09
  */
 class Install
 {
