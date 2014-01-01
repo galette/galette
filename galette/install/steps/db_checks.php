@@ -55,15 +55,9 @@ if ( $db_connected === true ) {
     $result = array();
     $error = false;
 
-    $ares = array(
-        'message'   => null,
-        'debug'     => null,
-        'res'       => false
-    );
-
     //test returned values
     if ( $results['create'] instanceof Exception ) {
-        $result = array(
+        $result[] = array(
             'message'   => _T("CREATE operation not allowed"),
             'debug'     => $results['create']->getMessage(),
             'res'       => false
@@ -77,7 +71,7 @@ if ( $db_connected === true ) {
     }
 
     if ( $results['insert'] instanceof Exception ) {
-        $result = array(
+        $result[] = array(
             'message'   => _T("INSERT operation not allowed"),
             'debug'     => $results['insert']->getMessage(),
             'res'       => false
@@ -91,7 +85,7 @@ if ( $db_connected === true ) {
     }
 
     if ( $results['update'] instanceof Exception ) {
-        $result = array(
+        $result[] = array(
             'message'   => _T("UPDATE operation not allowed"),
             'debug'     => $results['update']->getMessage(),
             'res'       => false
@@ -105,7 +99,7 @@ if ( $db_connected === true ) {
     }
 
     if ( $results['select'] instanceof Exception ) {
-        $result = array(
+        $result[] = array(
             'message'   => _T("SELECT operation not allowed"),
             'debug'     => $results['select']->getMessage(),
             'res'       => false
@@ -119,7 +113,7 @@ if ( $db_connected === true ) {
     }
 
     if ( $results['delete'] instanceof Exception ) {
-        $result = array(
+        $result[] = array(
             'message'   => _T("DELETE operation not allowed"),
             'debug'     => $results['delete']->getMessage(),
             'res'       => false
@@ -133,7 +127,7 @@ if ( $db_connected === true ) {
     }
 
     if ( $results['drop'] instanceof Exception ) {
-        $result = array(
+        $result[] = array(
             'message'   => _T("DROP operation not allowed"),
             'debug'     => $results['drop']->getMessage(),
             'res'       => false
@@ -148,7 +142,7 @@ if ( $db_connected === true ) {
 
     if ( $install->isUpgrade() ) {
         if ( $results['alter'] instanceof Exception ) {
-            $result = array(
+            $result[] = array(
                 'message'   => _T("ALTER operation not allowed"),
                 'debug'     => $results['alter']->getMessage(),
                 'res'       => false
@@ -205,22 +199,21 @@ if ( !$conndb_ok ) {
         echo '</h1>';
         echo '</div>';
 
-    } else {
-        ?>
+    }
+    ?>
             <ul class="leaders">
         <?php
-        foreach ( $result as $r ) {
-            ?>
+    foreach ( $result as $r ) {
+        ?>
                 <li>
                     <span><?php echo $r['message'] ?></span>
                     <span><?php echo $install->getValidationImage($r['res']); ?></span>
                 </li>
-            <?php
-        }
+        <?php
+    }
         ?>
             </ul>
         <?php
-    }
 }
 ?>
             <form action="installer.php" method="POST">

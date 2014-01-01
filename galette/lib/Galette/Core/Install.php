@@ -153,7 +153,7 @@ class Install
     public function getValidationImage($arg)
     {
         $img_name = ($arg === true) ? 'valid' : 'invalid';
-        $src = GALETTE_TPL_SUBDIR . 'images/icon-' . $img_name . '.png';
+        $src = GALETTE_THEME_DIR . 'images/icon-' . $img_name . '.png';
         $alt = ($arg === true) ? _T("Ok") : _T("Ko");
         $img = '<img src="' . $src  . '" alt="' . $alt  . '"/>';
         return $img;
