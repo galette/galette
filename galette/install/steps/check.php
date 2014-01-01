@@ -71,7 +71,9 @@ $files_need_rw = array (
     _("Temporary images")   => GALETTE_TEMPIMAGES_PATH,
     _T("Configuration")     => GALETTE_CONFIG_PATH,
     _T("Exports")           => GALETTE_EXPORTS_PATH,
-    _T("Logs")              => GALETTE_LOGS_PATH
+    _T("Imports")           => GALETTE_IMPORTS_PATH,
+    _T("Logs")              => GALETTE_LOGS_PATH,
+    _T("Attachments")       => GALETTE_ATTACHMENTS_PATH
 );
 
 $files_perms_class = $class . 'ok';
