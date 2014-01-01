@@ -162,10 +162,17 @@ class CheckModules
     public function toHtml()
     {
         $html = null;
+        $img_dir = null;
+        if ( defined('GALETTE_THEME_DIR') ) {
+            $img_dir = GALETTE_THEME_DIR . 'images/';
+        } else {
+            $img_dir = GALETTE_TPL_SUBDIR . 'images/';
+        }
+
         if ( count($this->_missing) > 0 ) {
             foreach ( $this->_missing as $m ) {
                 $html .= '<li><span>' . $m  . '</span><span><img src="' .
-                    GALETTE_TPL_SUBDIR  . 'images/icon-invalid.png" alt="' .
+                    $img_dir  . 'icon-invalid.png" alt="' .
                     _T("Ko") . '"/></span></li>';
             }
         }
@@ -173,7 +180,7 @@ class CheckModules
         if ( count($this->_good) > 0 ) {
             foreach ( $this->_good as $m ) {
                 $html .= '<li><span>' . $m  . '</span><span><img src="' .
-                    GALETTE_TPL_SUBDIR  . 'images/icon-valid.png" alt="' .
+                    $img_dir  . 'icon-valid.png" alt="' .
                     _T("Ok") . '"/></span></li>';
             }
         }
@@ -181,7 +188,7 @@ class CheckModules
         if ( count($this->_should) > 0 ) {
             foreach ( $this->_should as $m ) {
                 $html .= '<li><span>' . $m  . '</span><span><img src="' .
-                    GALETTE_TPL_SUBDIR  . 'images/icon-warning.png" alt=""' .
+                    $img_dir  . 'icon-warning.png" alt=""' .
                     '/></span></li>';
             }
         }
