@@ -214,7 +214,7 @@ class Install
     {
         if ( $this->_step > 0 ) {
             if ( $this->_step -1 !== self::STEP_DB_INSTALL
-                && $this->_step !== STEP_END
+                && $this->_step !== self::STEP_END
             ) {
                 $this->_step = $this->_step -1;
             } else {
