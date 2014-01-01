@@ -173,7 +173,7 @@ class Db
 
             $results = $this->execute($select);
             $result = $results->current();
-            return $result;
+            return $result->version;
         } catch ( \Exception $e ) {
             Analog::log(
                 'Cannot check database version: ' . $e->getMessage(),
