@@ -268,7 +268,7 @@ class Db
             }
 
 
-            if ($_type != self::SQLITE) {
+            if ($type != self::SQLITE) {
                 $_options = array(
                     'driver'   => $_type,
                     'hostname' => $host,
@@ -449,10 +449,21 @@ class Db
 
                 //can Galette SELECT records ?
                 try {
-                    $select = $this->_sql->select('galette_test');
-                    $select->where('test_id = 1');
-                    $res = $this->execute($select);
-                    if ( $res->count() === 1 ) {
+                    //For reasons I do not understand, count() always return 0
+                    //with SQLITE but current() give expected result.
+                    //Just executing the query will make DROP test fail
+                    //because database is locked...
+                    $pass = false;
+                    if ( $this->isSQLite() ) {
+                        $pass = true;
+                    } else {
+                        $select = $this->_sql->select('galette_test');
+                        $select->where('test_id = 1');
+                        $res = $this->execute($select);
+                        $pass = $res->count() === 1;
+                    }
+
+                    if ( $pass ) {
                         $results['select'] = true;
                     } else {
                         throw new \Exception('Select is empty!');
@@ -696,6 +707,16 @@ class Db
     public function isPostgres()
     {
         return $this->_type_db === self::PGSQL;
+    }
+
+    /**
+     * Is current database using SQLite?
+     *
+     * @return boolean
+     */
+    public function isSQLite()
+    {
+        return $this->_type_db === self::SQLITE;
     }
 
     /**
