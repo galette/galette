@@ -72,6 +72,7 @@ $error_detected = array();
 function initDbConstants($install)
 {
     define('TYPE_DB', $install->getDbType());
+    define('PREFIX_DB', $install->getTablesPrefix());
 
     if (TYPE_DB != 'sqlite') {
         define('USER_DB', $install->getDbUser());
@@ -79,7 +80,6 @@ function initDbConstants($install)
         define('HOST_DB', $install->getDbHost());
         define('PORT_DB', $install->getDbPort());
         define('NAME_DB', $install->getDbName());
-        define('PREFIX_DB', $install->getTablesPrefix());
     }
 }
 
