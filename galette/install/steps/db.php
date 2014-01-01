@@ -49,6 +49,12 @@ if ( $install->isUpgrade() ) {
     if ( file_exists(GALETTE_CONFIG_PATH . 'config.inc.php') ) {
         $conf = file_get_contents(GALETTE_CONFIG_PATH . 'config.inc.php');
         if ( $conf !== false ) {
+            $existing_db_type = null;
+            $existing_db_host = null;
+            $existing_db_port = null;
+            $existing_db_user = null;
+            $existing_db_name = null;
+
             if ( !isset($_POST['install_dbtype']) ) {
                 $res = preg_match(
                     '/TYPE_DB", "(.*)"\);/',
@@ -56,7 +62,7 @@ if ( $install->isUpgrade() ) {
                     $matches
                 );
                 if ( $matches[1] ) {
-                    $_POST['install_dbtype'] = $matches[1];
+                    $install->setDbType($matches[1], $error_detected);
                 }
             }
             if ( !isset($_POST['install_dbhost']) ) {
@@ -66,7 +72,17 @@ if ( $install->isUpgrade() ) {
                     $matches
                 );
                 if ( $matches[1] ) {
-                    $_POST['install_dbhost'] = $matches[1];
+                    $existing_db_host = $matches[1];
+                }
+            }
+            if ( !isset($_POST['install_dbport']) ) {
+                $res = preg_match(
+                    '/PORT_DB", "(.*)"\);/',
+                    $conf,
+                    $matches
+                );
+                if ( $matches[1] ) {
+                    $existing_db_port = $matches[1];
                 }
             }
             if ( !isset($_POST['install_dbuser']) ) {
@@ -75,7 +91,9 @@ if ( $install->isUpgrade() ) {
                     $conf,
                     $matches
                 );
-                $_POST['install_dbuser'] = $matches[1];
+                if ( $matches[1] ) {
+                    $existing_db_user = $matches[1];
+                }
             }
             if ( !isset($_POST['install_dbname']) ) {
                 $res = preg_match(
@@ -84,9 +102,20 @@ if ( $install->isUpgrade() ) {
                     $matches
                 );
                 if ( $matches[1] ) {
-                    $_POST['install_dbname'] = $matches[1];
+                    $existing_db_name = $matches[1];
                 }
             }
+
+            if ( $existing_db_type !== null || $existing_db_host !== null || $existing_db_user !== null || $existing_db_name !== null ) {
+                $install->setDsn(
+                    $existing_db_host,
+                    $existing_db_port,
+                    $existing_db_name,
+                    $existing_db_user,
+                    null
+                );
+            }
+
             if ( !isset($_POST['install_dbprefix']) ) {
                 $res = preg_match(
                     '/PREFIX_DB", "(.*)"\);/',
@@ -94,7 +123,9 @@ if ( $install->isUpgrade() ) {
                     $matches
                 );
                 if ( $matches[1] ) {
-                    $_POST['install_dbprefix'] = $matches[1];
+                    $install->setTablesPrefix(
+                        $matches[1]
+                    );
                 }
             }
         }
