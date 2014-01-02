@@ -608,8 +608,8 @@ class Install
         $sql_query = '';
         while (list($key, $val) = each($update_scripts) ) {
             $sql_query .= @fread(
-                @fopen('sql/' . $val, 'r'),
-                @filesize('sql/' . $val)
+                @fopen('scripts/' . $val, 'r'),
+                @filesize('scripts/' . $val)
             ) . "\n";
         }
 

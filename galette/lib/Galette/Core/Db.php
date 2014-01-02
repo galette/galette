@@ -235,7 +235,7 @@ class Db
     public static function getUpdateScripts(
         $path, $db_type = 'mysql', $version = null
     ) {
-        $dh = opendir($path . '/sql');
+        $dh = opendir($path . '/scripts');
         $update_scripts = array();
         if ( $dh !== false ) {
             while ( ($file = readdir($dh)) !== false ) {
