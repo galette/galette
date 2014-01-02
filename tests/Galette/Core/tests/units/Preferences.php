@@ -218,4 +218,59 @@ class Preferences extends atoum
         $this->variable($fb)->isIdenticalTo('');
         $this->variable($viadeo)->isIdenticalTo('');
     }
+
+    /**
+     * Test public pages visibility
+     *
+     * @return void
+     */
+    public function testPublicPagesVisibility()
+    {
+        $this->_preferences->load();
+
+        $visibility = $this->_preferences->pref_publicpages_visibility;
+        $this->variable($visibility)->isEqualTo(
+            \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED
+        );
+
+        $anon_login = new \Galette\Core\Login();
+        $admin_login = new \Galette\Core\Login();
+        $admin_login->logAdmin('da_admin');
+
+        $user_login = new \mock\Galette\Core\Login();
+        $this->calling($user_login)->isUp2Date = true;
+
+        $visible = $this->_preferences->showPublicPages($anon_login);
+        $this->boolean($visible)->isFalse();
+
+        $visible = $this->_preferences->showPublicPages($admin_login);
+        $this->boolean($visible)->isTrue();
+
+        $visible = $this->_preferences->showPublicPages($user_login);
+        $this->boolean($visible)->isTrue();
+
+        $this->_preferences->pref_publicpages_visibility
+            = \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC;
+
+        $visible = $this->_preferences->showPublicPages($anon_login);
+        $this->boolean($visible)->isTrue();
+
+        $visible = $this->_preferences->showPublicPages($admin_login);
+        $this->boolean($visible)->isTrue();
+
+        $visible = $this->_preferences->showPublicPages($user_login);
+        $this->boolean($visible)->isTrue();
+
+        $this->_preferences->pref_publicpages_visibility
+            = \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE;
+
+        $visible = $this->_preferences->showPublicPages($anon_login);
+        $this->boolean($visible)->isFalse();
+
+        $visible = $this->_preferences->showPublicPages($admin_login);
+        $this->boolean($visible)->isTrue();
+
+        $visible = $this->_preferences->showPublicPages($user_login);
+        $this->boolean($visible)->isFalse();
+    }
 }
