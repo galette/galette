@@ -42,7 +42,7 @@ $versions = $install->getScripts();
 $last = '0.00';
 ?>
             <h2><?php echo _T("Previous version selection"); ?></h2>
-            <p><?php echo _T("Select yor previous Galette version below, and then click next."); ?></p>
+            <p><?php echo _T("Select your previous Galette version below, and then click next."); ?></p>
 <?php
 if ( count($versions) == 0 ) {
     ?>
