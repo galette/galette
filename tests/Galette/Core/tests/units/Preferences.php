@@ -234,8 +234,9 @@ class Preferences extends atoum
         );
 
         $anon_login = new \Galette\Core\Login();
-        $admin_login = new \Galette\Core\Login();
-        $admin_login->logAdmin('da_admin');
+
+        $admin_login = new \mock\Galette\Core\Login();
+        $this->calling($admin_login)->isAdmin = true;
 
         $user_login = new \mock\Galette\Core\Login();
         $this->calling($user_login)->isUp2Date = true;
