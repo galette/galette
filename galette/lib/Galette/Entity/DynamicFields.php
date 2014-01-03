@@ -573,25 +573,7 @@ class DynamicFields
             $count = $result->cnt;
 
             if ( $count > 0 ) {
-                //cleanup WHERE array so it can be sent back to update
-                //and delete methods
-                $where = array();
-
-                $owhere = $select->where;
-                if ( $owhere->count() > 0 ) {
-                    foreach ( $owhere->getPredicates() as $c ) {
-                        $where[] = $c;
-                        /*foreach ( $owhere as $c ) {
-                            $where[] = preg_replace('/^AND /', '', $c);
-                        }*/
-
-                    }
-                }
-
-                $owhere = $select->getPart($select::WHERE);
-                foreach ( $owhere as $c ) {
-                    $where[] = preg_replace('/^AND /', '', $c);
-                }
+                $where = $select->where;
 
                 if ( trim($field_val) == '' ) {
                     Analog::log(
