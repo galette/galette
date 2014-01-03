@@ -230,7 +230,7 @@ class Db
      *
      * @return array
      *
-     * @deprecated As for 0.7.6, sse Installer::getUpdateScripts
+     * @deprecated As for 0.8, see Install::getUpdateScripts
      */
     public static function getUpdateScripts(
         $path, $db_type = 'mysql', $version = null

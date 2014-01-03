@@ -94,7 +94,7 @@ class Install
     public function __construct()
     {
         $this->_step = self::STEP_CHECK;
-        $this->mode = null;
+        $this->_mode = null;
         $this->_version = str_replace('v', '', GALETTE_VERSION);
         $this->_db_connected = false;
         $this->_db_prefix = null;
