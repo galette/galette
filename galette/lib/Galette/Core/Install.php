@@ -216,7 +216,11 @@ class Install
             if ( $this->_step -1 !== self::STEP_DB_INSTALL
                 && $this->_step !== self::STEP_END
             ) {
-                $this->_step = $this->_step -1;
+                if ( $this->_step === self::STEP_DB_INSTALL ) {
+                    $this->_step = self::STEP_DB_CHECKS;
+                } else {
+                    $this->_step = $this->_step -1;
+                }
             } else {
                 $msg = null;
                 if ( $this->_step === self::STEP_END ) {
