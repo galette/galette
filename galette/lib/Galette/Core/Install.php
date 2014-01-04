@@ -533,15 +533,17 @@ class Install
     /**
      * Install/Update SQL scripts
      *
+     * @param string $path Path to scripts (defaults to '.')
+     *
      * @return array
      */
-    public function getScripts()
+    public function getScripts($path = '.')
     {
         $update_scripts = array();
 
         if ( $this->isUpgrade() ) {
             $update_scripts = self::getUpdateScripts(
-                '.',
+                $path,
                 $this->_db_type,
                 $this->_installed_version
             );
