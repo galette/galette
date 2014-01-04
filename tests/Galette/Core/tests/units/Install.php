@@ -134,7 +134,7 @@ class Install extends atoum
 
         //if we're from 0.7.0, there are only 6 update scripts left
         $this->array($update_scripts)
-            ->hasSize(6);
+            ->hasSize(count($knowns) - 4);
 
         $update_scripts = \Galette\Core\Install::getUpdateScripts(
             GALETTE_BASE_PATH . '/install'
