@@ -143,16 +143,30 @@ class Install extends atoum
 
         //without specifying database nor version, we got 10 update scripts total
         $this->array(array_values($update_scripts))
-            ->hasSize(10)
+            ->hasSize(count($knowns))
             ->isEqualTo(array_keys($knowns));
 
-        /*$this->_install->setMode(\Galette\Core\Install::UPDATE);
-        $update_scripts = $this->_install->getScripts();
+        $this->_install->setMode(\Galette\Core\Install::UPDATE);
+        $errors = array();
+        $this->_install->setDbType(\Galette\Core\Db::PGSQL, $errors);
+        $this->_install->setInstalledVersion('0.6');
+        $update_scripts = $this->_install->getScripts(
+            GALETTE_BASE_PATH . '/install'
+        );
 
-        //as of 0.8, we got 10 update scripts total
         $this->array($update_scripts)
-            ->hasSize(10)
-            ->isIdenticalTo($knowns);*/
+            ->hasSize(count($knowns))
+            ->isIdenticalTo($knowns);
+
+        $this->_install->setMode(\Galette\Core\Install::INSTALL);
+        $update_scripts = $this->_install->getScripts(
+            GALETTE_BASE_PATH . '/install'
+        );
+
+        $this->array($update_scripts)
+            ->hasSize(1)
+            ->hasKey('current')
+            ->strictlyContains(\Galette\Core\Db::PGSQL . '.sql');
     }
 
     /**
@@ -176,7 +190,7 @@ class Install extends atoum
      *
      * @return void
      */
-    public function testDbInstallStep()
+    public function testInstallDbStep()
     {
         $this->_install->setMode(\Galette\Core\Install::INSTALL);
         $this->_install->atDbStep();
@@ -200,7 +214,7 @@ class Install extends atoum
      *
      * @return void
      */
-    public function testDbUpgradeStep()
+    public function testUpgradeDbStep()
     {
         $this->_install->setMode(\Galette\Core\Install::UPDATE);
         $this->_install->atDbStep();
@@ -262,6 +276,9 @@ class Install extends atoum
 
         $this->array($errors)->hasSize(1)
             ->strictlyContains('Database type unknown');
+
+        $post_check = $this->_install->postCheckDb();
+        $this->boolean($post_check)->isFalse();
     }
 
     /**
@@ -313,8 +330,89 @@ class Install extends atoum
         $pass = $this->_install->getDbPass();
         $this->variable($pass)->isIdenticalTo(PWD_DB);
 
+        $post_check = $this->_install->postCheckDb();
+        $this->boolean($post_check)->isFalse();
+
         $this->_install->atPreviousStep();
         $step = $this->_install->isDbStep();
         $this->boolean($step)->isTrue();
+    }
+
+    /**
+     * Test db install step
+     *
+     * @return void
+     */
+    public function testDbInstallStep()
+    {
+        $this->_install->setDbType(TYPE_DB, $errors);
+        $this->_install->setDsn(
+            HOST_DB,
+            PORT_DB,
+            NAME_DB,
+            USER_DB,
+            PWD_DB
+        );
+        $this->_install->setTablesPrefix(
+            PREFIX_DB
+        );
+
+        $this->_install->atDbInstallStep();
+
+        $step = $this->_install->isDbinstallStep();
+        $this->boolean($step)->isTrue();
+
+        $title = $this->_install->getStepTitle();
+        $this->string($title)->isIdenticalTo('Tables Creation');
+
+        $post_check = $this->_install->postCheckDb();
+        $this->boolean($post_check)->isTrue();
+
+        $this->_install->atPreviousStep();
+        $step = $this->_install->isDbCheckStep();
+        $this->boolean($step)->isTrue();
+    }
+
+    /**
+     * Test admin step
+     *
+     * @return void
+     */
+    public function testAdminStep()
+    {
+        $this->_install->atAdminStep();
+
+        $step = $this->_install->isAdminStep();
+        $this->boolean($step)->isTrue();
+
+        $title = $this->_install->getStepTitle();
+        $this->string($title)->isIdenticalTo('Admin parameters');
+
+        $post_check = $this->_install->postCheckDb();
+        $this->boolean($post_check)->isTrue();
+
+        $this->_install->atPreviousStep();
+        //db install cannot be run twice, step is still Admin
+        $step = $this->_install->isAdminStep();
+        $this->boolean($step)->isTrue();
+    }
+
+    /**
+     * Test galette initialization
+     *
+     * @return void
+     */
+    public function testInitStep()
+    {
+        $this->_install->atGaletteInitStep();
+
+        $step = $this->_install->isGaletteInitStep();
+        $this->boolean($step)->isTrue();
+
+        $title = $this->_install->getStepTitle();
+        $this->string($title)->isIdenticalTo('Galette initialization');
+
+        $post_check = $this->_install->postCheckDb();
+        $this->boolean($post_check)->isTrue();
     }
 }
