@@ -123,7 +123,7 @@ class Install extends atoum
 
         //as of 0.8, we got 10 update scripts total
         $this->array($update_scripts)
-            ->hasSize(10)
+            ->hasSize(count($knowns))
             ->isIdenticalTo($knowns);
 
         $update_scripts = \Galette\Core\Install::getUpdateScripts(
