@@ -133,10 +133,13 @@ if ( isset($_POST['stepback_btn']) ) {
 } elseif ( isset($_POST['previous_version']) ) {
     $install->setInstalledVersion($_POST['previous_version']);
     $install->atDbUpgradeStep();
-} elseif ( isset($_POST['install_dbwrite_ok']) ) {
+} elseif ( isset($_POST['install_dbwrite_ok']) && $install->isInstall() ) {
     $install->atAdminStep();
+} else if ( isset($_POST['install_dbwrite_ok']) && $install->isUpgrade() ) {
+    $install->atGaletteInitStep();
 } elseif ( isset($_POST['install_adminlogin'])
     && isset($_POST['install_adminpass'])
+    && $install->isInstall()
 ) {
 
     if ( $_POST['install_adminlogin'] == '' ) {
@@ -279,8 +282,13 @@ if ( $install->isUpgrade() ) {
                     <li<?php if( $install->isDbinstallStep() ) echo ' class="current"'; ?>><?php echo _T("Database installation"); ?> - </li>
     <?php
 }
-?>
+
+if ( !$install->isUpgrade() ) {
+    ?>
                     <li<?php if( $install->isAdminStep() ) echo ' class="current"'; ?>><?php echo _T("Admin parameters"); ?> - </li>
+    <?php
+}
+?>
                     <li<?php if( $install->isGaletteInitStep() ) echo ' class="current"'; ?>><?php echo _T("Galette initialisation"); ?> - </li>
                     <li<?php if( $install->isEndStep() ) echo ' class="current"'; ?>><?php echo _T("End!"); ?></li>
                 </ol>

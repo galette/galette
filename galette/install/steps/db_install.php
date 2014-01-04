@@ -38,16 +38,6 @@
 use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
 
-
-//before doing anything else, we'll have to convert data to UTF-8
-//required since 0.7dev (if we're upgrading, 'f course)
-if ( $install->isUpgrade() ) {
-    //FIXME: maybe we can do that only on 0.7 upgrades,
-    //to save time? (methods are safe if rerun)
-    //TODO: move that to 0.7 upgrade script
-    $zdb->convertToUTF($table_prefix);
-}
-
 //ok, let's run the scripts!
 $db_installed = $install->executeScripts($zdb);
 ?>

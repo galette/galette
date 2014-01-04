@@ -39,97 +39,14 @@ use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
 ?>
                 <h2><?php echo _T("Database"); ?></h2>
-                <p><?php
+                <p>
+<?php
 if ( $install->getMode() === GaletteInstall::INSTALL ) {
     echo _T("If it hadn't been made, create a database and a user for Galette.");
 }
 if ( $install->isUpgrade() ) {
     echo _T("Enter connection data for the existing database.");
-
-    if ( file_exists(GALETTE_CONFIG_PATH . 'config.inc.php') ) {
-        $conf = file_get_contents(GALETTE_CONFIG_PATH . 'config.inc.php');
-        if ( $conf !== false ) {
-            $existing_db_type = null;
-            $existing_db_host = null;
-            $existing_db_port = null;
-            $existing_db_user = null;
-            $existing_db_name = null;
-
-            if ( !isset($_POST['install_dbtype']) ) {
-                $res = preg_match(
-                    '/TYPE_DB", "(.*)"\);/',
-                    $conf,
-                    $matches
-                );
-                if ( $matches[1] ) {
-                    $install->setDbType($matches[1], $error_detected);
-                }
-            }
-            if ( !isset($_POST['install_dbhost']) ) {
-                $res = preg_match(
-                    '/HOST_DB", "(.*)"\);/',
-                    $conf,
-                    $matches
-                );
-                if ( $matches[1] ) {
-                    $existing_db_host = $matches[1];
-                }
-            }
-            if ( !isset($_POST['install_dbport']) ) {
-                $res = preg_match(
-                    '/PORT_DB", "(.*)"\);/',
-                    $conf,
-                    $matches
-                );
-                if ( $matches[1] ) {
-                    $existing_db_port = $matches[1];
-                }
-            }
-            if ( !isset($_POST['install_dbuser']) ) {
-                $res = preg_match(
-                    '/USER_DB", "(.*)"\);/',
-                    $conf,
-                    $matches
-                );
-                if ( $matches[1] ) {
-                    $existing_db_user = $matches[1];
-                }
-            }
-            if ( !isset($_POST['install_dbname']) ) {
-                $res = preg_match(
-                    '/NAME_DB", "(.*)"\);/',
-                    $conf,
-                    $matches
-                );
-                if ( $matches[1] ) {
-                    $existing_db_name = $matches[1];
-                }
-            }
-
-            if ( $existing_db_type !== null || $existing_db_host !== null || $existing_db_user !== null || $existing_db_name !== null ) {
-                $install->setDsn(
-                    $existing_db_host,
-                    $existing_db_port,
-                    $existing_db_name,
-                    $existing_db_user,
-                    null
-                );
-            }
-
-            if ( !isset($_POST['install_dbprefix']) ) {
-                $res = preg_match(
-                    '/PREFIX_DB", "(.*)"\);/',
-                    $conf,
-                    $matches
-                );
-                if ( $matches[1] ) {
-                    $install->setTablesPrefix(
-                        $matches[1]
-                    );
-                }
-            }
-        }
-    }
+    $install->loadExistingConfig($_POST, $error_detected);
 }
 
 //define default database port

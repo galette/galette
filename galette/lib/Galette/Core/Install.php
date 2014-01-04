@@ -626,12 +626,78 @@ class Install
         $fatal_error = false;
         $update_scripts = $this->getScripts();
         $sql_query = '';
+        $this->_report = array();
+
         while (list($key, $val) = each($update_scripts) ) {
-            $sql_query .= @fread(
-                @fopen('scripts/' . $val, 'r'),
-                @filesize('scripts/' . $val)
-            ) . "\n";
+            if ( substr($val, -strlen('.sql')) === '.sql' ) {
+                //just a SQL script, run it
+                $sql_query .= @fread(
+                    @fopen('scripts/' . $val, 'r'),
+                    @filesize('scripts/' . $val)
+                ) . "\n";
+            } else {
+                //we got an update class
+                include_once 'scripts/' . $val;
+                $className = '\Galette\Updates\UpgradeTo' .
+                    str_replace('.', '', $key);
+                $ret = array(
+                    'message'   => null,
+                    'res'       => false
+                );
+                try {
+                    $updater = new $className();
+                    if ( $updater instanceof \Galette\Updater\AbstractUpdater ) {
+                        $updater->run($zdb, $this);
+                        $ret = $updater->getReport();
+                        $this->_report = array_merge($this->_report, $ret);
+                    } else {
+                        $fatal_error = true;
+                        Analog::log(
+                            'Update class does not extends AbstractUpdater!',
+                            Analog::ERROR
+                        );
+                    }
+
+                    $ret['message'] = str_replace(
+                        '%version',
+                        $key,
+                        _T("%version script has been successfully executed :)")
+                    );
+                    $ret['res'] = true;
+                    $this->_report[] = $ret;
+                } catch ( \RuntimeException $e ) {
+                    Analog::log(
+                        $e->getMessage(),
+                        Analog::ERROR
+                    );
+                    $ret['message'] = str_replace(
+                        '%version',
+                        $key,
+                        _T("Unable to run %version update script :(")
+                    );
+                    $fatal_error = true;
+                    $this->_report[] = $ret;
+                }
+            }
         }
+
+        if ( $sql_query !== '' ) {
+            $this->executeSql($zdb, $sql_query);
+        }
+        return !$fatal_error;
+    }
+
+    /**
+     * Executes SQL queries
+     *
+     * @param Db     $zdb       Database instance
+     * @param string $sql_query SQL instructions
+     *
+     * @return boolean;
+     */
+    public function executeSql($zdb, $sql_query)
+    {
+        $fatal_error = false;
 
         // begin : copyright (2002) the phpbb group (support@phpbb.com)
         // load in the sql parser
@@ -694,8 +760,8 @@ class Install
             $zdb->connection->commit();
         }
 
-        $this->_report = $queries_results;
-        return !$fatal_error;
+        $this->_report = array_merge($this->_report, $queries_results);
+        return $fatal_error;
     }
 
     /**
@@ -793,6 +859,145 @@ class Install
     }
 
     /**
+     * Load existing config
+     *
+     * @param array $post_data       Data posted
+     * @param array &$error_detected Errors array
+     *
+     * @return void
+     */
+    public function loadExistingConfig($post_data, &$error_detected)
+    {
+        if ( file_exists(GALETTE_CONFIG_PATH . 'config.inc.php') ) {
+            $existing = $this->_loadExistingConfigFile($post_data);
+
+            if ( $existing['db_type'] !== null ) {
+                $this->setDbType($existing['db_type'], $error_detected);
+            }
+
+            if ( $existing['db_host'] !== null
+                || $existing['db_user'] !== null
+                || $existing['db_name'] !== null
+            ) {
+                $this->setDsn(
+                    $existing['db_host'],
+                    $existing['db_port'],
+                    $existing['db_name'],
+                    $existing['db_user'],
+                    null
+                );
+            }
+
+            if ( $existing['prefix'] !== null ) {
+                $this->setTablesPrefix(
+                    $existing['prefix']
+                );
+            }
+        }
+    }
+
+    /**
+     * Load contents from existing config file
+     *
+     * @param array   $post_data Data posted
+     * @param boolean $pass      Retrieve password
+     *
+     * @return array
+     */
+    private function _loadExistingConfigFile($post_data = array(), $pass = false)
+    {
+        $existing = array(
+            'db_type'   => null,
+            'db_host'   => null,
+            'db_port'   => null,
+            'db_user'   => null,
+            'db_name'   => null,
+            'prefix'    => null
+        );
+
+        if ( file_exists(GALETTE_CONFIG_PATH . 'config.inc.php') ) {
+            $conf = file_get_contents(GALETTE_CONFIG_PATH . 'config.inc.php');
+            if ( $conf !== false ) {
+                if ( !isset($post_data['install_dbtype']) ) {
+                    $res = preg_match(
+                        '/TYPE_DB", "(.*)"\);/',
+                        $conf,
+                        $matches
+                    );
+                    if ( $matches[1] ) {
+                        $existing['db_type'] = $matches[1];
+                    }
+                }
+                if ( !isset($post_data['install_dbhost']) ) {
+                    $res = preg_match(
+                        '/HOST_DB", "(.*)"\);/',
+                        $conf,
+                        $matches
+                    );
+                    if ( $matches[1] ) {
+                        $existing['db_host'] = $matches[1];
+                    }
+                }
+                if ( !isset($post_data['install_dbport']) ) {
+                    $res = preg_match(
+                        '/PORT_DB", "(.*)"\);/',
+                        $conf,
+                        $matches
+                    );
+                    if ( $matches[1] ) {
+                        $existing['db_port'] = $matches[1];
+                    }
+                }
+                if ( !isset($post_data['install_dbuser']) ) {
+                    $res = preg_match(
+                        '/USER_DB", "(.*)"\);/',
+                        $conf,
+                        $matches
+                    );
+                    if ( $matches[1] ) {
+                        $existing['db_user'] = $matches[1];
+                    }
+                }
+                if ( !isset($post_data['install_dbname']) ) {
+                    $res = preg_match(
+                        '/NAME_DB", "(.*)"\);/',
+                        $conf,
+                        $matches
+                    );
+                    if ( $matches[1] ) {
+                        $existing['db_name'] = $matches[1];
+                    }
+                }
+
+
+                if ( !isset($post_data['install_dbprefix']) ) {
+                    $res = preg_match(
+                        '/PREFIX_DB", "(.*)"\);/',
+                        $conf,
+                        $matches
+                    );
+                    if ( $matches[1] ) {
+                        $existing['prefix'] = $matches[1];
+                    }
+                }
+
+                if ( $pass === true ) {
+                    $res = preg_match(
+                        '/PWD_DB", "(.*)"\);/',
+                        $conf,
+                        $matches
+                    );
+                    if ( isset($matches[1]) ) {
+                        $existing['pwd_db'] = $matches[1];
+                    }
+                }
+            }
+        }
+
+        return $existing;
+    }
+
+    /**
      * Write configuration file to disk
      *
      * @return boolean
@@ -804,6 +1009,36 @@ class Install
             'message'   => _T("Write configuration file"),
             'res'       => false
         );
+
+        //if config file is already up-to-date, nothing to write
+        $existing = $this->_loadExistingConfigFile(array(), true);
+
+        if ( isset($existing['db_type'])
+            && $existing['db_type'] == $this->_db_type
+            && isset($existing['db_host'])
+            && $existing['db_host'] == $this->_db_host
+            && isset($existing['db_port'])
+            && $existing['db_port'] == $this->_db_port
+            && isset($existing['db_user'])
+            && $existing['db_user'] == $this->_db_user
+            && isset($existing['pwd_db'])
+            && $existing['pwd_db']  == $this->_db_pass
+            && isset($existing['db_name'])
+            && $existing['db_name'] == $this->_db_name
+            && isset($existing['prefix'])
+            && $existing['prefix']  == $this->_db_prefix
+        ) {
+            Analog::log(
+                'Config file is already up-to-date, nothing to do.',
+                Analog::INFO
+            );
+
+            $this->_report[] = array(
+                'message'   => _T("Config file already exists and is up to date"),
+                'res'       => true
+            );
+            return true;
+        }
 
         if ( $fd = @fopen(GALETTE_CONFIG_PATH . 'config.inc.php', 'w') ) {
                 $data = '<?php
@@ -818,7 +1053,7 @@ define("PREFIX_DB", "' . $this->_db_prefix . '");
             fwrite($fd, $data);
             fclose($fd);
             $ret['res'] = true;
-            Analog::log('Configuration file written on disk', Analog::DEBUG);
+            Analog::log('Configuration file written on disk', Analog::INFO);
         } else {
             $str = str_replace(
                 '%path',
@@ -898,9 +1133,8 @@ define("PREFIX_DB", "' . $this->_db_prefix . '");
             return !$this->_error;
         } else if ( $this->isUpgrade() ) {
             $preferences = new Preferences($zdb);
-            $preferences->pref_admin_login = $this->_admin_login;
-            $preferences->pref_admin_pass = $this->_admin_pass;
             $preferences->store();
+            $this->_proceedReport(_T("Update preferences"), true);
             return true;
         }
     }
