@@ -42,7 +42,7 @@
 {/if}
 {if $step == 'i3' || $step == 'u3'}
         <p>{_T string="(Errors on DROP and RENAME operations can be ignored)"}</p>
-    {if $eror_detected|@count > 0}
+    {if $error_detected|@count > 0}
         <p id="errorbox">
         {if $step == 'i3'}
             {_T string="The tables are not totally created, it may be a permission problem."}
