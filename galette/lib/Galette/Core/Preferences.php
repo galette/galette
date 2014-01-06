@@ -237,7 +237,7 @@ class Preferences
         $this->_prefs = array();
 
         try {
-            $result = $this->_zdb->selectAll(PREFIX_DB . self::TABLE);
+            $result = $this->_zdb->selectAll(self::TABLE);
             foreach ( $result as $pref ) {
                 $this->_prefs[$pref->nom_pref] = $pref->val_pref;
             }

@@ -216,7 +216,7 @@ class Db
     public function selectAll($table)
     {
         return $this->_db->query(
-            'SELECT * FROM ' . $table,
+            'SELECT * FROM ' . PREFIX_DB . $table,
             Adapter::QUERY_MODE_EXECUTE
         );
     }
