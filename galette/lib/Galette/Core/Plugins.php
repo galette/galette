@@ -585,7 +585,7 @@ class Plugins
     public function needsDatabase($id)
     {
         if ( isset($this->modules[$id]) ) {
-            $d = $this->modules[$id]['root'] . '/sql/';
+            $d = $this->modules[$id]['root'] . '/scripts/';
             if ( file_exists($d) ) {
                 return true;
             } else {

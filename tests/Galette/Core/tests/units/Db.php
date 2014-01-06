@@ -307,56 +307,6 @@ class Db extends atoum
     }
 
     /**
-     * Tests plugins load
-     *
-     * @return void
-     */
-    public function testGetUpgradeScripts()
-    {
-        $update_scripts = \Galette\Core\Db::getUpdateScripts(
-            GALETTE_BASE_PATH . '/install',
-            'pgsql',
-            '0.6'
-        );
-
-        $knowns = array(
-            '0.60' => 'upgrade-to-0.60-pgsql.sql',
-            '0.61' => 'upgrade-to-0.61-pgsql.sql',
-            '0.62' => 'upgrade-to-0.62-pgsql.sql',
-            '0.63' => 'upgrade-to-0.63-pgsql.sql',
-            '0.70' => 'upgrade-to-0.70-pgsql.sql',
-            '0.71' => 'upgrade-to-0.71-pgsql.sql',
-            '0.74' => 'upgrade-to-0.74-pgsql.sql',
-            '0.75' => 'upgrade-to-0.75-pgsql.sql',
-            '0.76' => 'upgrade-to-0.76-pgsql.sql'
-        );
-
-        //as of 0.7.6, we got 9 update scripts total
-        $this->array($update_scripts)
-            ->hasSize(9)
-            ->isIdenticalTo($knowns);
-
-        $update_scripts = \Galette\Core\Db::getUpdateScripts(
-            GALETTE_BASE_PATH . '/install',
-            'pgsql',
-            '0.7'
-        );
-
-        //if we're from 0.7.0, there are only 5 update scripts left
-        $this->array($update_scripts)
-            ->hasSize(5);
-
-        $update_scripts = \Galette\Core\Db::getUpdateScripts(
-            GALETTE_BASE_PATH . '/install'
-        );
-
-        //without specifying database nor version, we got 9 update scripts total
-        $this->array(array_values($update_scripts))
-            ->hasSize(9)
-            ->isEqualTo(array_keys($knowns));
-    }
-
-    /**
      * Test UTF conversion, for MySQL only
      *
      * @return void

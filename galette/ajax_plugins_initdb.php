@@ -40,7 +40,7 @@
 
 use Analog\Analog as Analog;
 use Zend\Db\Adapter\Adapter;
-use Galette\Core\Db as Db;
+use Galette\Core\Install;
 
 require_once 'includes/galette.inc.php';
 
@@ -107,7 +107,7 @@ switch ( $step ){
 case '1':
     $title = _T("Installation mode");
     //let's look for updates scripts
-    $update_scripts = Db::getUpdateScripts($plugin['root'], TYPE_DB);
+    $update_scripts = Install::getUpdateScripts($plugin['root'], TYPE_DB);
     if ( count($update_scripts) > 0 ) {
         $tpl->assign('update_scripts', $update_scripts);
     }
@@ -187,7 +187,7 @@ case 'u3':
     // load in the sql parser
     include GALETTE_ROOT . 'includes/sql_parse.php';
     if ( $step == 'u3' ) {
-        $update_scripts = Db::getUpdateScripts(
+        $update_scripts = Install::getUpdateScripts(
             $plugin['root'],
             TYPE_DB,
             substr($_POST['install_type'], 8)
