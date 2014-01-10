@@ -101,7 +101,7 @@ class Groups
      *
      * @param boolean $full Return full list or root only
      *
-     * @return Zend_Db_RowSet
+     * @return Group[]
      */
     public function getList($full = true)
     {
