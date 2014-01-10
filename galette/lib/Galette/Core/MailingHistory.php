@@ -327,6 +327,7 @@ class MailingHistory extends History
 
             $insert = $zdb->insert(self::TABLE);
             $insert->values($values);
+            $zdb->execute($insert);
 
             if ( $zdb->isPostgres() ) {
                 $this->_id = $zdb->driver->getLastGeneratedValue(
