@@ -188,5 +188,39 @@ $texts_fields = array(
         'tbody'     => "Bonjour,\r\n\r\nVotre adhésion à {ASSO_NAME} a expiré depuis {DAYS_EXPIRED} jours.\r\n\r\nA bientôt!\r\n\r\n(ce courriel est un envoi automatique)",
         'tlang'     => 'fr_FR',
         'tcomment'  => 'Échéance dépassée'
+    ),
+
+    array(
+        'tid'       => 28,
+        'tref'      => 'donation',
+        'tsubject'  => '[{ASSO_NAME}] Your donation',
+        'tbody'     => "Hello,\r\n\r\nYour donation to {ASSO_NAME} has successfully been stored.\r\n\r\n{CONTRIB_INFO}\r\n\r\nThank you!\r\n\r\n(this mail was sent automatically)",
+        'tlang'     => 'en_US',
+        'tcomment'  => 'Receipt send for new donations'
+    ),
+    array(
+        'tid'       => 29,
+        'tref'      => 'donation',
+        'tsubject'  => '[{ASSO_NAME}] Votre don',
+        'tbody'     => "Bonjour,\r\n\r\nVotre don à {ASSO_NAME} a été enregistré.\r\n\r\n{CONTRIB_INFO}\r\n\r\nMerci !\r\n\r\n(Ce courriel est un envoi automatique)",
+        'tlang'     => 'fr_FR',
+        'tcomment'  => 'Accusé de réception de don'
+    ),
+
+    array(
+        'tid'       => 31,
+        'tref'      => 'newdonation',
+        'tsubject'  => '[{ASSO_NAME}] New donation for {NAME_ADH}',
+        'tbody'     => "Hello dear Administrator,\r\n\r\nA donation from {NAME_ADH} has been registered\r\n{CONTRIB_INFO}\r\n\r\nYours sincerly,\r\nGalette",
+        'tlang'     => 'en_US',
+        'tcomment'  => 'New donation (sent to admin)'
+    ),
+    array(
+        'tid'       => 32,
+        'tref'      => 'newdonation',
+        'tsubject'  => '[{ASSO_NAME}] Nouveau don de {NAME_ADH}',
+        'tbody'     => "Bonjour cher Administrateur,\r\n\r\nUn don de {NAME_ADH} a été enregistré\r\n{CONTRIB_INFO}\r\n\r\nBien sincèrement,\r\nGalette",
+        'tlang'     => 'fr_FR',
+        'tcomment'  => 'Nouveau don (envoyé a l\'admin)'
     )
 );

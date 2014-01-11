@@ -256,7 +256,11 @@ if ( isset($_POST['valid']) ) {
                 && $_POST['mail_confirm'] == '1'
             ) {
                 if ( GaletteMail::isValidEmail($adh->email) ) {
-                    $mtxt = $texts->getTexts('contrib', $adh->language);
+                    $text = 'contrib';
+                    if ( !$contrib->isCotis() ) {
+                        $text = 'donation';
+                    }
+                    $mtxt = $texts->getTexts($text, $adh->language);
 
                     $mail = new GaletteMail();
                     $mail->setSubject($texts->getSubject());
@@ -300,7 +304,11 @@ if ( isset($_POST['valid']) ) {
             // Sent email to admin if pref checked
             if ( $new && $preferences->pref_bool_mailadh ) {
                 // Get email text in database
-                $mtxt = $texts->getTexts('newcont', $preferences->pref_lang);
+                $text = 'newcont';
+                if ( !$contrib->isCotis() ) {
+                    $text = 'newdonation';
+                }
+                $mtxt = $texts->getTexts($text, $preferences->pref_lang);
 
                 $mail = new GaletteMail();
                 $mail->setSubject($texts->getSubject());
