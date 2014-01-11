@@ -667,7 +667,7 @@ class Contribution
                 $zdb->connection->beginTransaction();
             }
 
-            $delete = $zd->delete(self::TABLE);
+            $delete = $zdb->delete(self::TABLE);
             $delete->where(self::PK . ' = ' . $this->_id);
             $del = $zdb->execute($delete);
             if ( $del->count() > 0 ) {
