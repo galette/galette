@@ -46,7 +46,7 @@ use Galette\Core\Install as GaletteInstall;
                                 <label for="install"><?php echo _T("New installation"); ?></label>
                             </h3>
                             <ul>
-                                <li><?php echo _T("you're installaing galette for the first time"); ?>,</li>
+                                <li><?php echo _T("you're installing galette for the first time"); ?>,</li>
                                 <li><?php echo _T("you wish to erase an older version of Galette without keeping your data"); ?>.</li>
                             </ul>
                         </article>

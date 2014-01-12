@@ -144,12 +144,12 @@ class Install
     }
 
     /**
-    * HTML validation image
-    *
-    * @param boolean $arg Argument
-    *
-    * @return html string
-    */
+     * HTML validation image
+     *
+     * @param boolean $arg Argument
+     *
+     * @return html string
+     */
     public function getValidationImage($arg)
     {
         $img_name = ($arg === true) ? 'valid' : 'invalid';
