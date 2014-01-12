@@ -399,7 +399,11 @@ abstract class Entitled
 
             $results = $zdb->execute($select);
             $result = $results->current();
-            return $result->$pk;
+            if ( $result ) {
+                return $result->$pk;
+            } else {
+                return false;
+            }
         } catch (\Exception $e) {
             Analog::log(
                 'Unable to retrieve ' . $this->getType()  . ' from label `' .

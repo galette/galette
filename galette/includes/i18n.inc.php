@@ -87,14 +87,17 @@ function addDynamicTranslation($text_orig, $error_detected)
             $select->columns(array('text_nref'))
                 ->where(
                     array(
-                        'text_orig', $text_orig,
-                        'text_locale', $lang->getLongID()
+                        'text_orig'     => $text_orig,
+                        'text_locale'   => $lang->getLongID()
                     )
                 );
 
             $results = $zdb->execute($select);
             $result = $results->current();
-            $nref = $result->text_nref;
+            $nref = 0;
+            if ( $result ) {
+                $nref = $result->text_nref;
+            }
 
             if ( is_numeric($nref) && $nref > 0 ) {
                 //already existing, update
@@ -108,24 +111,22 @@ function addDynamicTranslation($text_orig, $error_detected)
                 );
 
                 $where = array();
-                $owhere = $select->getPart($select::WHERE);
-                foreach ( $owhere as $c ) {
-                    $where[] = preg_replace('/^AND /', '', $c);
-                }
+                $owhere = $select->where;
 
-                $update = $zdb->update(L10::TABLE);
-                $update->set($values)->where($where);
+                $update = $zdb->update(L10n::TABLE);
+                $update->set($values)->where($owhere);
                 $zdb->execute($update);
             } else {
                 //add new entry
                 // User is supposed to use current language as original text.
+                $text_trans = $text_orig;
                 if ( $lang->getLongID() != $i18n->getLongID() ) {
-                    $text_orig = '';
+                    $text_trans = '';
                 }
                 $values = array(
                     'text_orig' => $text_orig,
                     'text_locale' => $lang->getLongID(),
-                    'text_trans' => $text_orig
+                    'text_trans' => $text_trans
                 );
 
                 $insert = $zdb->insert(L10n::TABLE);
@@ -168,7 +169,7 @@ function deleteDynamicTranslation($text_orig, $error_detected)
         foreach ( $i18n->getList() as $lang ) {
             $stmt->execute(
                 array(
-                    'where1' => $lang->getLongID()
+                    'where2' => $lang->getLongID()
                 )
             );
         }
@@ -214,9 +215,12 @@ function updateDynamicTranslation(
 
         $results = $zdb->execute($select);
         $result = $results->current();
-        $nref = $result->text_nref;
 
-        $exists = (is_numeric($nref) && $nref > 0);
+        $exists = false;
+        if ( $result ) {
+            $nref = $result->text_nref;
+            $exists = (is_numeric($nref) && $nref > 0);
+        }
 
         $values = array(
             'text_trans' => $text_trans
@@ -225,13 +229,10 @@ function updateDynamicTranslation(
         $res = false;
         if ( $exists ) {
             $where = array();
-            $owhere = $select->getPart($select::WHERE);
-            foreach ( $owhere as $c ) {
-                $where[] = preg_replace('/^AND /', '', $c);
-            }
+            $owhere = $select->where;
 
             $update = $zdb->update(L10n::TABLE);
-            $update->set($values)->where($where);
+            $update->set($values)->where($owhere);
             $zdb->execute($update);
         } else {
             $values['text_orig'] = $text_orig;
