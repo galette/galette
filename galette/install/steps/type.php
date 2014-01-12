@@ -42,7 +42,7 @@ use Galette\Core\Install as GaletteInstall;
                     <div id="installation_mode">
                         <article id="mode_new" class="installation_mode">
                             <h3>
-                                <input type="radio" name="install_type" value="<?php echo GaletteInstall::INSTALL; ?>"<?php if ( $install->isInstall() ) { echo ' checked="checked"'; } ?> id="install"/>
+                                <input type="radio" name="install_type" value="<?php echo GaletteInstall::INSTALL; ?>"<?php if ( $install->isInstall() || !$install->isUpgrade() ) { echo ' checked="checked"'; } ?> id="install"/>
                                 <label for="install"><?php echo _T("New installation"); ?></label>
                             </h3>
                             <ul>
