@@ -53,7 +53,7 @@ if ( GALETTE_MODE === 'DEMO' ) {
 }
 if ( !$login->isLogged() || !$login->isAdmin() ) {
     Analog::log(
-        'Trying to display ajax_members.php without appropriate permissions',
+        'Trying to display plugins installation without appropriate permissions',
         Analog::INFO
     );
     die();
@@ -199,8 +199,8 @@ case 'u3':
     $sql_query = '';
     while (list($key, $val) = each($update_scripts) ) {
         $sql_query .= @fread(
-            @fopen($plugin['root'] . '/sql/' . $val, 'r'),
-            @filesize($plugin['root'] . '/sql/' . $val)
+            @fopen($plugin['root'] . '/scripts/' . $val, 'r'),
+            @filesize($plugin['root'] . '/scripts/' . $val)
         );
         $sql_query .= "\n";
     }
