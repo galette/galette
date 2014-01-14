@@ -48,7 +48,7 @@ define('GALETTE_THEME_DIR', GALETTE_BASE_PATH . 'templates/default/');
 
 require_once '../includes/galette.inc.php';
 
-//when upgrading, make sure that old objects in current session are destoryed
+//when upgrading, make sure that old objects in current session are destroyed
 if ( defined('PREFIX_DB') && defined('NAME_DB') ) {
     unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]);
 }
