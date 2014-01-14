@@ -2,7 +2,7 @@
 <table class="details">
     <caption class="ui-state-active ui-corner-top">{_T string="Additionnal fields:"}</caption>
     {foreach from=$dynamic_fields item=field}
-        {if $field.field_perm ne 1 || $login->isAdmin() || $login->isStaff()}
+        {if $field.field_perm eq 0 || $login->isAdmin() || $login->isStaff() && $field.field_perm eq 2}
             {if $field.field_type eq 0}
     <tr>
         <th class="separator" colspan="2">{$field.field_name|escape}</th>
