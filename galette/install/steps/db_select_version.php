@@ -39,16 +39,29 @@ use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
 
 $versions = $install->getScripts();
+$current = $install->getCurrentVersion($zdb);
 $last = '0.00';
 ?>
             <h2><?php echo _T("Previous version selection"); ?></h2>
             <p><?php echo _T("Select your previous Galette version below, and then click next."); ?></p>
+<?php
+    if ( $current !== false ) {
+    ?>
+            <p id="successbox"><?php echo _T("You previous version should be selected and <strong>displayed in bold</strong>."); ?></p>
+    <?php
+    }
+?>
 <?php
 if ( count($versions) == 0 ) {
     ?>
             <p id="errorbox"><?php echo _T("No update script found!"); ?></p>
     <?php
 } else {
+    if ( $zdb->getDbVersion() === GALETTE_DB_VERSION ) {
+        ?>
+            <p id="warningbox"><?php echo _T("It seems you already use latest Galette version!<br/>Are you sure you want to upgrade?"); ?></p>
+        <?php
+    }
     ?>
             <form action="installer.php" method="post">
                 <fieldset class="cssform">
@@ -56,13 +69,25 @@ if ( count($versions) == 0 ) {
  
                     <ul class="leaders">
     <?php
+    $is_current = false;
     foreach ( $versions as $version ) {
         ?>
                     <li>
+        <?php
+        if ($is_current) {
+            echo '<strong>';
+        }
+        ?>
                         <span>
                             <label for="upgrade-<?php echo $version; ?>">
         <?php
-        if ( $last != number_format($version - 0.01, 2) ) {
+        if ( $last === '0.00') {
+            echo str_replace(
+                '%version',
+                number_format($version, 2),
+                _T("older than %version")
+            );
+        } else if ( $last != number_format($version - 0.01, 2) ) {
             echo _T("comprised between") . " " .
                 $last . " " . _T("and") . " " . number_format($version - 0.01, 2);
         } else {
@@ -73,8 +98,15 @@ if ( count($versions) == 0 ) {
                             </label>
                         </span>
                         <span>
-                            <input type="radio" name="previous_version" value="<?php echo $version; ?>" id="upgrade-<?php echo $version; ?>" required/>
+                        <input type="radio" name="previous_version" value="<?php echo $version; ?>" id="upgrade-<?php echo $version; ?>"<?php if ($is_current) { echo ' checked="checked"'; }; ?> required/>
                         </span>
+        <?php
+        if ($is_current) {
+            echo '</strong>';
+        }
+        $is_current = $current === $version;
+        ?>
+
                     </li>
     <?php
     }

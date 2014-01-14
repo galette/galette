@@ -68,6 +68,15 @@ class Install
     const INSTALL = 'i';
     const UPDATE = 'u';
 
+    //db version/galette version mapper
+    private $_versions_mapper = array(
+        '0.700' => '0.70',
+        '0.701' => '0.71',
+        '0.702' => '0.74',
+        '0.703' => '0.75',
+        '0.704' => '0.76'
+    );
+
     private $_step;
     private $_mode;
     private $_version;
@@ -954,5 +963,26 @@ define("PREFIX_DB", "' . $this->_db_prefix . '");
     public function setInstalledVersion($version)
     {
         $this->_installed_version = $version;
+    }
+
+    /**
+     * Current Galette installed version, according to database
+     *
+     * @param Db $zdb Database instance
+     *
+     * @return string
+     */
+    public function getCurrentVersion($zdb)
+    {
+        try {
+            $db_ver = $zdb->getDbVersion();
+            if ( isset($this->_versions_mapper[$db_ver]) ) {
+                return $this->_versions_mapper[$db_ver];
+            } else {
+                return $db_ver;
+            }
+        } catch ( \LogicException $e ) {
+            return false;
+        }
     }
 }
