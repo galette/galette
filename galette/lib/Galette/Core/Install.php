@@ -448,7 +448,8 @@ class Install
     /**
      * Test database connection
      *
-     * @return true|array true if connection was successfull, an array with some infos otherwise
+     * @return true|array true if connection was successfull,
+     * an array with some infos otherwise
      */
     public function testDbConnexion()
     {
@@ -575,8 +576,9 @@ class Install
      *               If no previous version is provided, that will return all
      *               updates versions known.
      */
-    public static function getUpdateScripts($path, $db_type = 'mysql', $version = null)
-    {
+    public static function getUpdateScripts($path, $db_type = 'mysql',
+        $version = null
+    ) {
         $dh = opendir($path . '/scripts');
         $php_update_scripts = array();
         $sql_update_scripts = array();
@@ -591,7 +593,10 @@ class Install
                         }
                     }
                 }
-                if ( preg_match("/upgrade-to-(.*)-" . $db_type . ".sql/", $file, $ver) ) {
+                if ( preg_match(
+                    "/upgrade-to-(.*)-" . $db_type . ".sql/", $file,
+                    $ver
+                ) ) {
                     if ( $version === null ) {
                         $sql_update_scripts[$ver[1]] = $ver[1];
                     } else {
