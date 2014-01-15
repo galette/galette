@@ -47,7 +47,7 @@ $last = '0.00';
 <?php
     if ( $current !== false ) {
     ?>
-            <p id="successbox"><?php echo _T("You previous version should be selected and <strong>displayed in bold</strong>."); ?></p>
+            <p id="successbox"><?php echo _T("Your previous version should be selected and <strong>displayed in bold</strong>."); ?></p>
     <?php
     }
 ?>
@@ -65,7 +65,7 @@ if ( count($versions) == 0 ) {
     ?>
             <form action="installer.php" method="post">
                 <fieldset class="cssform">
-                    <legend class="ui-state-active ui-corner-top"><?php echo _T("You current Galette version is..."); ?></legend>
+                    <legend class="ui-state-active ui-corner-top"><?php echo _T("Your current Galette version is..."); ?></legend>
  
                     <ul class="leaders">
     <?php
