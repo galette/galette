@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Wed Jan 15 21:41:07 2014 (GMT)
+// This file was automatically generated on Thu Jan 16 06:46:43 2014 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -787,7 +787,7 @@ $lang['Please select your administration language'] = 'Veuillez sélectionner la
 $lang['Do you really want to delete all selected accounts (and related contributions)?'] = 'Voulez vous réellement effacer tous les comptes sélectionnés (ainsi que toutes les contributions associées)&nbsp;?';
 
 // ../lib/Galette/Core/Install.php:1137 
-$lang['Update preferences'] = 'Mise à jour des préférences préférences';
+$lang['Update preferences'] = 'Mise à jour des préférences';
 
 // ../templates/default/editer_intitule.tpl:22 ../templates/default/gestion_intitule_content.tpl:4 
 $lang['Note: members with a status priority lower than %priority are staff members.'] = 'Note&nbsp;: les membres qui possèdent un statut dont la priorité est inférieure à %priority sont membres du bureau.';
@@ -3859,7 +3859,7 @@ $lang['in:'] = 'dans&nbsp;:';
 $lang['Use SMTP authentication?'] = 'Utiliser l\'authentification SMTP&nbsp;?';
 
 // ../install/steps/db_install.php:55 
-$lang['Database has been upgraded :)'] = 'La base de données à été mise à jour :)';
+$lang['Database has been upgraded :)'] = 'La base de données a été mise à jour :)';
 
 // ../import_model.php:62 
 $lang['Import model has been successfully stored :)'] = 'Le modèle d\'import a été enregistré avec succès !';

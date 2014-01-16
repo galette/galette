@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2014-01-15 22:41+0100\n"
+"PO-Revision-Date: 2014-01-16 07:46+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -2408,7 +2408,7 @@ msgstr "Aditionnellement, quelle(s) table(s) souhaitez vous exporter ?"
 
 #: ../lib/Galette/Core/Install.php:1137
 msgid "Update preferences"
-msgstr "Mise à jour des préférences préférences"
+msgstr "Mise à jour des préférences"
 
 #: ../install/old.index.php:1507 ../install/steps/end.php:49
 msgid "Galette has been successfully updated!"
@@ -5264,7 +5264,7 @@ msgstr "Couleur du texte sur le bandeau&nbsp;:"
 
 #: ../install/steps/db_install.php:55
 msgid "Database has been upgraded :)"
-msgstr "La base de données à été mise à jour :)"
+msgstr "La base de données a été mise à jour :)"
 
 #: ../templates/default/ajax_attendance_sheet_details.tpl:3
 msgid "%s attendees"
