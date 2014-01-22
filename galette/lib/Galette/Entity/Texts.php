@@ -259,7 +259,7 @@ class Texts
             $update = $zdb->update(self::TABLE);
             $update->set($values)->where(
                 array(
-                    'tref'  => $tref,
+                    'tref'  => $ref,
                     'tlang' => $lang
                 )
             );
