@@ -55,6 +55,8 @@ if ( ($login->isLogged()
     die();
 }
 
+$done = false;
+
 // Validation
 if ( isset($_POST['valid']) && $_POST['valid'] == '1'
     || $from_admin
@@ -118,6 +120,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
                     if ( $from_admin === false ) {
                         $success_detected[] = _T("A mail has been sent to your adress.<br/>Please check your inbox and follow the instructions.");
                         $tpl->assign('success_detected', $success_detected);
+                        $done = true;
                     } else {
                         $success_detected[] = _T("An mail has been sent to the member.");
                     }
@@ -169,6 +172,8 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
         }
     }
 }
+
+$tpl->assign('done', $done);
 
 if ( $from_admin ) {
     if ( count($error_detected) > 0 ) {
