@@ -87,6 +87,107 @@ class File
     private $_allowed_mimes = array();
     private $_maxlenght;
 
+    public static $mime_types = array(
+        'txt'       => 'text/plain',
+        'htm'       => 'text/html',
+        'html'      => 'text/html',
+        'xhtml'     => 'application/xhtml+xml',
+        'xht'       => 'application/xhtml+xml',
+        'php'       => 'text/html',
+        'css'       => 'text/css',
+        'js'        => 'application/javascript',
+        'json'      => 'application/json',
+        'xml'       => 'application/xml',
+        'xslt'      => 'application/xslt+xml',
+        'xsl'       => 'application/xml',
+        'dtd'       => 'application/xml-dtd',
+        'atom'      =>'application/atom+xml',
+        'mathml'    =>'application/mathml+xml',
+        'rdf'       =>'application/rdf+xml',
+        'smi'       =>'application/smil',
+        'smil'      =>'application/smil',
+        'vxml'      =>'application/voicexml+xml',
+        'latex'     =>'application/x-latex',
+        'tcl'       =>'application/x-tcl',
+        'tex'       =>'application/x-tex',
+        'texinfo'   =>'application/x-texinfo',
+        'wrl'       =>'model/vrml',
+        'wrml'      =>'model/vrml',
+        'ics'       =>'text/calendar',
+        'ifb'       =>'text/calendar',
+        'sgml'      =>'text/sgml',
+        'htc'       =>'text/x-component',
+        'pgp'       => 'application/pgp-signature',
+        'rtf'       => 'application/rtf',
+        // images
+        'png'       => 'image/png',
+        'jpeg'      => 'image/jpeg',
+        'jpg'       => 'image/jpeg',
+        'gif'       => 'image/gif',
+        'bmp'       => 'image/bmp',
+        'ico'       => 'image/x-icon',
+        'tiff'      => 'image/tiff',
+        'tif'       => 'image/tiff',
+        'svg'       => 'image/svg+xml',
+        'svgz'      => 'image/svg+xml',
+        'djvu'      => 'image/vnd.djvu',
+        'djv'       => 'image/vnd.djvu',
+        // archives
+        'zip'       => 'application/zip',
+        'rar'       => 'application/x-rar-compressed',
+        'tar'       => 'application/x-tar',
+        'gz'        => 'application/x-gzip',
+        'tgz'       => 'application/x-gzip',
+        'bz2'       => 'application/x-bzip2',
+        // audio/video
+        'mp2'       => 'audio/mpeg',
+        'mp3'       => 'audio/mpeg',
+        'qt'        => 'video/quicktime',
+        'mov'       => 'video/quicktime',
+        'mpeg'      => 'video/mpeg',
+        'mpg'       => 'video/mpeg',
+        'mpe'       => 'video/mpeg',
+        'wav'       => 'audio/wav',
+        'aiff'      => 'audio/aiff',
+        'aif'       => 'audio/aiff',
+        'avi'       => 'video/msvideo',
+        'wmv'       => 'video/x-ms-wmv',
+        'ogg'       => 'application/ogg',
+        'flv'       => 'video/x-flv',
+        'dvi'       => 'application/x-dvi',
+        'au'        => 'audio/basic',
+        'snd'       => 'audio/basic',
+        'mid'       => 'audio/midi',
+        'midi'      => 'audio/midi',
+        'm3u'       => 'audio/x-mpegurl',
+        'm4u'       => 'video/vnd.mpegurl',
+        'ram'       => 'audio/x-pn-realaudio',
+        'ra'        => 'audio/x-pn-realaudio',
+        'rm'        => 'application/vnd.rn-realmedia',
+        // adobe
+        'pdf'       => 'application/pdf',
+        'psd'       => 'image/vnd.adobe.photoshop',
+        'ai'        => 'application/postscript',
+        'eps'       => 'application/postscript',
+        'ps'        => 'application/postscript',
+        'swf'       => 'application/x-shockwave-flash',
+        // ms office
+        'doc'       => 'application/msword',
+        'docx'      => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'xls'       => 'application/vnd.ms-excel',
+        'xlsx'      => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'ppt'       => 'application/vnd.ms-powerpoint',
+        'pptx'      => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        'pps'       => 'application/vnd.ms-powerpoint',
+        // open office
+        'odt'       => 'application/vnd.oasis.opendocument.text',
+        'ods'       => 'application/vnd.oasis.opendocument.spreadsheet',
+        'odc'       => 'application/vnd.oasis.opendocument.chart',
+        'odb'       => 'application/vnd.oasis.opendocument.database',
+        'odg'       => 'application/vnd.oasis.opendocument.graphics',
+        'odp'       => 'application/vnd.oasis.opendocument.presentation',
+    );
+
     /**
      * Default constructor
      *
@@ -202,7 +303,7 @@ class File
             Analog::log('[' . $class . '] Filesize is OK, proceed', Analog::DEBUG);
         }
 
-        $mime = mime_content_type($tmpfile);
+        $mime = $this->getMimeType($this->_name);
 
         if ( count($this->_allowed_mimes) > 0
             && !in_array($mime, $this->_allowed_mimes)
@@ -315,6 +416,54 @@ class File
     public function getAllowedMimeTypes()
     {
         return $this->_allowed_mimes;
+    }
+
+    /**
+     * Get file mime type
+     *
+     * @param string $file File
+     *
+     * @return string
+     */
+    public static function getMimeType($file)
+    {
+        $mime = null;
+        if (function_exists('finfo_open')) {
+            Analog::log(
+                '[' . $class . '] Function File Info exist ',
+                Analog::DEBUG
+            );
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $file);
+            finfo_close($finfo);
+        } else if (function_exists('mime_content_type')) {
+            Analog::log(
+                '[' . $class . '] Function mime_content_type exist ',
+                Analog::DEBUG
+            );
+            $mime = mime_content_type($file);
+        } else {
+            Analog::log(
+                '[' . $class . '] Search from extension ',
+                Analog::DEBUG
+            );
+            $ext = strtolower(array_pop(explode('.', $file)));
+            Analog::log(
+                '[' . $class . '] Extension : ' . $ext,
+                Analog::DEBUG
+            );
+            if (array_key_exists($ext, self::$mime_types)) {
+                $mime = self::$mime_types[$ext];
+            } else {
+                $mime = 'application/octet-stream';
+            }
+        }
+
+        Analog::log(
+            '[' . $class . '] Found mimetype : ' . $mime . ' for file ' .  $file,
+            Analog::INFO
+        );
+        return $mime;
     }
 
     /**

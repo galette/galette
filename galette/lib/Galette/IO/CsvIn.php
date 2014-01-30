@@ -438,14 +438,7 @@ class CsvIn extends Csv
         }
 
         //identify MIME type
-        if (function_exists("finfo_open")) {
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mime = finfo_file($finfo, $tmpfile);
-            finfo_close($finfo);
-        } else {
-            // deprecated
-            $mime = mime_content_type($tmpfile);
-        }
+        $mime = File::getMimeType($tmpfile);
 
         if ( !in_array($mime, $this->allowed_mimes) ) {
             Analog::log(

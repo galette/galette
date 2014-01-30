@@ -55,17 +55,8 @@ $name = $_GET['name'];
 //Exports main contain user confidential data, they're accessible only for
 //admins or staff members
 if ( $login->isAdmin() || $login->isStaff() ) {
-
     if (file_exists(GALETTE_FILES_PATH . $file) ) {
-        // try to identify MIME type
-        if (function_exists("finfo_open")) {
-            // require PECL fileinfo
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $type = finfo_file($finfo, $file);
-        } else {
-            // deprecated
-            $type = mime_content_type($file);
-        }
+        $type = File::getMimeType($file);
         header('Content-Type: ' . $type);
         header('Content-Disposition: attachment; filename="' . $name . '";');
         header('Pragma: no-cache');
@@ -76,7 +67,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
             $file .'` that does not exists.',
             Analog::WARNING
         );
-        header('HTTP/1.0 404 Not Found');        
+        header('HTTP/1.0 404 Not Found');
     }
 } else {
     Analog::log(
