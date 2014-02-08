@@ -267,10 +267,16 @@ class Db extends atoum
         $select->where(array('p.nom_pref' => 'pref_nom'));
         $results = $this->_db->execute($select);
         $query = $this->_db->query_string;
-        $this->string($query)->isIdenticalTo(
-            'SELECT "p".* FROM "galette_preferences" AS "p" ' .
-            'WHERE "p"."nom_pref" = \'pref_nom\''
-        );
+
+        $expected = 'SELECT "p".* FROM "galette_preferences" AS "p" ' .
+            'WHERE "p"."nom_pref" = \'pref_nom\'';
+
+        if ( TYPE_DB === 'mysql' ) {
+            $expected = 'SELECT `p`.* FROM `galette_preferences` AS `p` ' .
+                'WHERE `p`.`nom_pref` = \'pref_nom\'';
+        }
+
+        $this->string($query)->isIdenticalTo($expected);
     }
 
     /**
