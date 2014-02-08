@@ -240,6 +240,40 @@ class Db extends atoum
                 ->isIdenticalTo('sqlite');
             break;
         }
+
+        $db = $this->_db->db;
+        $this->object($db)->IsInstanceOf('Zend\Db\Adapter\Adapter');
+
+        $sql = $this->_db->sql;
+        $this->object($sql)->IsInstanceOf('Zend\Db\Sql\Sql');
+
+        $connection = $this->_db->connection;
+        $this->object($connection)
+            ->IsInstanceOf('Zend\Db\Adapter\Driver\Pdo\Connection');
+
+        $driver = $this->_db->driver;
+        $this->object($driver)
+            ->IsInstanceOf('Zend\Db\Adapter\Driver\Pdo\Pdo');
+    }
+
+    /**
+     * Test select
+     *
+     * @return void
+     */
+    public function testSelect()
+    {
+        $select = $this->_db->select('preferences', 'p');
+        $select->where(array('p.nom_pref' => 'pref_nom'));
+        $results = $this->_db->execute($select);
+        $pref = $results->current();
+        $this->string($pref->val_pref)->isIdenticalTo('Galette');
+        $this->string($pref->nom_pref)->isIdenticalTo('pref_nom');
+        $query = $this->_db->query_string;
+        $this->string($query)->isIdenticalTo(
+            'SELECT "p".* FROM "galette_preferences" AS "p" ' .
+            'WHERE "p"."nom_pref" = \'pref_nom\''
+        );
     }
 
     /**
