@@ -266,9 +266,20 @@ class Db extends atoum
         $cols = $this->_db->getColumns('preferences');
 
         $this->array($cols)->hasSize(3);
-        $this->string($cols[0]->getName())->isIdenticalTo('id_pref');
-        $this->string($cols[1]->getName())->isIdenticalTo('nom_pref');
-        $this->string($cols[2]->getName())->isIdenticalTo('val_pref');
+
+        $columns = array();
+        foreach ( $cols as $c ) {
+            $columns[] = $c->getName();
+        }
+
+        $this->array($columns)
+            ->containsValues(
+                array(
+                    'id_pref',
+                    'nom_pref',
+                    'val_pref'
+                )
+            );
     }
 
     /**
