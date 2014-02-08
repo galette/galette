@@ -266,9 +266,6 @@ class Db extends atoum
         $select = $this->_db->select('preferences', 'p');
         $select->where(array('p.nom_pref' => 'pref_nom'));
         $results = $this->_db->execute($select);
-        $pref = $results->current();
-        $this->string($pref->val_pref)->isIdenticalTo('Galette');
-        $this->string($pref->nom_pref)->isIdenticalTo('pref_nom');
         $query = $this->_db->query_string;
         $this->string($query)->isIdenticalTo(
             'SELECT "p".* FROM "galette_preferences" AS "p" ' .
