@@ -249,9 +249,26 @@ class Db extends atoum
      */
     public function testDbVersion()
     {
-        $res = $this->_db->checkDbVersion();
+        $db_version = $this->_db->getDbVersion();
+        $this->variable($db_version)->isIdenticalTo(GALETTE_DB_VERSION);
 
+        $res = $this->_db->checkDbVersion();
         $this->boolean($res)->isTrue();
+    }
+
+    /**
+     * Test get columns method
+     *
+     * @return void
+     */
+    public function testGetColumns()
+    {
+        $cols = $this->_db->getColumns('preferences');
+
+        $this->array($cols)->hasSize(3);
+        $this->string($cols[0]->getName())->isIdenticalTo('id_pref');
+        $this->string($cols[1]->getName())->isIdenticalTo('nom_pref');
+        $this->string($cols[2]->getName())->isIdenticalTo('val_pref');
     }
 
     /**
