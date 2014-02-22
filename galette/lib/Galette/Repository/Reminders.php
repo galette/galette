@@ -94,8 +94,8 @@ class Reminders
             array('r' => PREFIX_DB . self::TABLE),
             'a.' . Members::PK . '=r.reminder_dest',
             array(
-                'last_reminder' => new Expression('MAX(r.reminder_date)'),
-                'r.reminder_type'
+                'last_reminder' => new Expression('MAX(reminder_date)'),
+                'reminder_type'
             ),
             $select::JOIN_LEFT
         )->where('a.email_adh != \'\'')
@@ -114,7 +114,7 @@ class Reminders
             $select->where->greaterThan(
                 'date_echeance',
                 $now->format('Y-m-d')
-            )->greaterThan(
+            )->lessThan(
                 'date_echeance',
                 $duedate->format('Y-m-d')
             );
@@ -195,7 +195,6 @@ class Reminders
         $this->_types = array();
         $this->_reminders = array();
 
-
         $types = array();
         foreach ( $this->_selected as $s ) {
             $this->_loadToRemind($zdb, $s);
@@ -203,7 +202,15 @@ class Reminders
             if ( count($this->_toremind) > 0 ) {
                 //and then get list
                 $m = new Members();
-                $members = $m->getArrayList($this->_toremind, null, false, true, null, false, true);
+                $members = $m->getArrayList(
+                    $this->_toremind,
+                    null,
+                    false,
+                    true,
+                    null,
+                    false,
+                    true
+                );
                 $this->_types[$s] = $members;
             }
         }
