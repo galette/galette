@@ -228,6 +228,9 @@ class Install
                 if ( $this->_step === self::STEP_DB_INSTALL ) {
                     $this->_step = self::STEP_DB_CHECKS;
                 } else {
+                    if ( $this->_step === self::STEP_DB_UPGRADE ) {
+                        $this->setInstalledVersion(null);
+                    }
                     $this->_step = $this->_step -1;
                 }
             } else {
