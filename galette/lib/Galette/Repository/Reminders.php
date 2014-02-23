@@ -89,6 +89,7 @@ class Reminders
      */
     private function _loadToRemind($zdb, $type)
     {
+        $this->_toremind = array();
         $select = $zdb->select(Members::TABLE, 'a');
         $select->join(
             array('r' => PREFIX_DB . self::TABLE),
