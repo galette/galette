@@ -88,41 +88,41 @@ if ( !defined('GALETTE_TCPDF_PATH') ) {
 if ( !defined('GALETTE_CONFIG_PATH') ) {
     define('GALETTE_CONFIG_PATH', GALETTE_ROOT . 'config/');
 }
+if ( !defined('GALETTE_PLUGINS_PATH') ) {
+    define('GALETTE_PLUGINS_PATH', GALETTE_ROOT . 'plugins/');
+}
+if ( !defined('GALETTE_DATA_PATH') ) {
+    define('GALETTE_DATA_PATH', GALETTE_ROOT . 'data/');
+}
 if ( !defined('GALETTE_TEMPLATES_PATH') ) {
     define('GALETTE_TEMPLATES_PATH', GALETTE_ROOT . 'templates/');
 }
 if ( !defined('GALETTE_LOGS_PATH') ) {
-    define('GALETTE_LOGS_PATH', GALETTE_ROOT . 'logs/');
+    define('GALETTE_LOGS_PATH', GALETTE_DATA_PATH . 'logs/');
 }
 if ( !defined('GALETTE_COMPILE_DIR') ) {
-    define('GALETTE_COMPILE_DIR', GALETTE_ROOT . 'templates_c/');
+    define('GALETTE_COMPILE_DIR', GALETTE_DATA_PATH . 'templates_c/');
 }
 if ( !defined('GALETTE_CACHE_DIR') ) {
-    define('GALETTE_CACHE_DIR', GALETTE_ROOT . 'cache/');
-}
-if ( !defined('GALETTE_PLUGINS_PATH') ) {
-    define('GALETTE_PLUGINS_PATH', GALETTE_ROOT . 'plugins/');
+    define('GALETTE_CACHE_DIR', GALETTE_DATA_PATH . 'cache/');
 }
 if ( !defined('GALETTE_EXPORTS_PATH') ) {
-    define('GALETTE_EXPORTS_PATH', GALETTE_ROOT . 'exports/');
+    define('GALETTE_EXPORTS_PATH', GALETTE_DATA_PATH . 'exports/');
 }
 if ( !defined('GALETTE_IMPORTS_PATH') ) {
-    define('GALETTE_IMPORTS_PATH', GALETTE_ROOT . 'imports/');
+    define('GALETTE_IMPORTS_PATH', GALETTE_DATA_PATH . 'imports/');
 }
 if ( !defined('GALETTE_PHOTOS_PATH') ) {
-    define('GALETTE_PHOTOS_PATH', GALETTE_ROOT . 'photos/');
+    define('GALETTE_PHOTOS_PATH', GALETTE_DATA_PATH . 'photos/');
 }
 if ( !defined('GALETTE_ATTACHMENTS_PATH') ) {
-    define('GALETTE_ATTACHMENTS_PATH', GALETTE_ROOT . 'attachments/');
+    define('GALETTE_ATTACHMENTS_PATH', GALETTE_DATA_PATH . 'attachments/');
 }
 if ( !defined('GALETTE_FILES_PATH') ) {
-    define('GALETTE_FILES_PATH', GALETTE_ROOT . 'files/');
+    define('GALETTE_FILES_PATH', GALETTE_DATA_PATH . 'files/');
 }
 if ( !defined('GALETTE_TEMPIMAGES_PATH') ) {
-    define('GALETTE_TEMPIMAGES_PATH', GALETTE_ROOT . 'tempimages/');
-}
-if ( !defined('GALETTE_DATA_PATH') ) {
-    define('GALETTE_DATA_PATH', GALETTE_ROOT . 'data/');
+    define('GALETTE_TEMPIMAGES_PATH', GALETTE_DATA_PATH . 'tempimages/');
 }
 if ( !defined('GALETTE_SQLITE_PATH') ) {
     define('GALETTE_SQLITE_PATH', GALETTE_DATA_PATH . 'database.sqlite');

@@ -71,7 +71,8 @@ class UpgradeTo08 extends AbstractUpdater
             'imports',
             'photos',
             'attachments',
-            'tempimages'
+            'tempimages',
+            'files'
         );
 
         if ( !file_exists(GALETTE_ROOT . 'data') ) {
@@ -101,8 +102,8 @@ class UpgradeTo08 extends AbstractUpdater
                         )
                     );
                 }
-                $this->_moveDataDir($dir);
             }
+            $this->_moveDataDir($dir);
         }
 
         return !$this->hasErrors();
@@ -125,10 +126,96 @@ class UpgradeTo08 extends AbstractUpdater
         );
 
         if ( !in_array($dirname, $nomove) ) {
-            //move directory contents
-        }
+            $origdir = GALETTE_ROOT . $dirname . '/';
+            $destdir = GALETTE_DATA_PATH . $dirname . '/';
 
-        //remove old directory?
-        //maybe it would be done by the user
+            $go = false;
+            //move directory contents
+            switch ( $dirname ) {
+            case 'logs':
+                if ( GALETTE_LOGS_PATH === $destdir ) {
+                    $go = true;
+                }
+                break;
+            case 'exports':
+                if ( GALETTE_EXPORTS_PATH === $destdir ) {
+                    $go = true;
+                }
+                break;
+            case 'imports':
+                if ( GALETTE_IMPORTS_PATH === $destdir ) {
+                    $go = true;
+                }
+                break;
+            case 'photos':
+                if ( GALETTE_PHOTOS_PATH === $destdir ) {
+                    $go = true;
+                }
+                break;
+            case 'attachments':
+                if ( GALETTE_ATTACHMENTS_PATH === $destdir ) {
+                    $go = true;
+                }
+                break;
+            case 'files':
+                if ( GALETTE_FILES_PATH === $destdir ) {
+                    $go = true;
+                }
+                break;
+            }
+
+            if ( $go ) {
+                $moved = true;
+                $d = dir($origdir);
+                while (($entry = $d->read()) !== false) {
+                    if ( $entry != '.' && $entry != '..' ) {
+                        echo $entry;
+                        $moved = @rename($origdir . $entry, $destdir . $entry);
+                        if ( !$moved ) {
+                            $moved = false;
+                            $this->addError(
+                                str_replace(
+                                    '%file',
+                                    $entry,
+                                    _T("File %file has not been moved :-/")
+                                )
+                            );
+                        }
+                    }
+                }
+                $d->close();
+
+                if ( $moved ) {
+                    $this->addReportEntry(
+                        str_replace(
+                            '%dir',
+                            $dirname,
+                            _T("Directory %dir has been moved!")
+                        ),
+                        self::REPORT_SUCCESS
+                    );
+
+                    //remove old directory?
+                    //maybe it would be done by the user
+                } else {
+                    $this->addError(
+                        str_replace(
+                            '%dir',
+                            $dirname,
+                            _T("Directory %dir has not been moved :(")
+                        )
+                    );
+                }
+            } else {
+                $this->addReportEntry(
+                    str_replace(
+                        '%dir',
+                        $dirname,
+                        _T("Directory %dir is not in its original path and will not be moved.")
+                    ),
+                    self::REPORT_WARNING
+                );
+            }
+        }
     }
 }

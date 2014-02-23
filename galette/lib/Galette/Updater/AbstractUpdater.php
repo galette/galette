@@ -277,9 +277,14 @@ abstract class AbstractUpdater
      */
     public function addReportEntry($msg, $type)
     {
+        $res = true;
+        if ( $type === self::REPORT_ERROR ) {
+            $res = false;
+        }
         $this->_report[] = array(
             'message'   => $msg,
-            'type'      => $type
+            'type'      => $type,
+            'res'       => $res
         );
     }
 
