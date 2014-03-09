@@ -35,7 +35,7 @@
             {if $mailing->html}
                     {$mailing->message}
             {else}
-                        <pre>{$mailing->message|escape}</pre>
+                    <pre>{$mailing->wrapped_message|escape}</pre>
             {/if}
             </div>
         </section>

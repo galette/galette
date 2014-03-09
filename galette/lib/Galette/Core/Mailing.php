@@ -458,6 +458,9 @@ class Mailing extends GaletteMail
             case 'message':
                 return $this->getMessage();
                 break;
+            case 'wrapped_message':
+                return $this->getWrappedMessage();
+                break;
             case 'html':
                 return $this->isHTML();
                 break;

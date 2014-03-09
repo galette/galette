@@ -71,6 +71,7 @@ class GaletteMail
     private $_message;
     private $_alt_message;
     private $_html;
+    private $_word_wrap = 70;
 
     private $_result;
     private $_errors = array();
@@ -155,7 +156,11 @@ class GaletteMail
         $this->_mail->CharSet = 'UTF-8';
         $this->_mail->SetLanguage($i18n->getAbbrev());
 
-        $this->_mail->WordWrap = 70;
+        if ( $preferences->pref_bool_wrap_mails ) {
+            $this->_mail->WordWrap = $this->_word_wrap;
+        } else {
+            $this->_word_wrap = 0;
+        }
     }
 
     /**
@@ -437,6 +442,23 @@ class GaletteMail
     public function getMessage()
     {
         return $this->_message;
+    }
+
+    /**
+     * Get the message, wrapped
+     *
+     * @return string Wrapped message
+     */
+    public function getWrappedMessage()
+    {
+        if ( $this->_word_wrap > 0 ) {
+            return $this->_mail->wrapText(
+                $this->_message,
+                $this->_word_wrap
+            );
+        } else {
+            return $this->_message;
+        }
     }
 
     /**
