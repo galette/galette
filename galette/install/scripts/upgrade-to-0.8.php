@@ -133,32 +133,34 @@ class UpgradeTo08 extends AbstractUpdater
             //move directory contents
             switch ( $dirname ) {
             case 'logs':
-                if ( GALETTE_LOGS_PATH === $destdir ) {
+                if ( GALETTE_LOGS_PATH === $destdir && file_exists($origdir) ) {
                     $go = true;
                 }
                 break;
             case 'exports':
-                if ( GALETTE_EXPORTS_PATH === $destdir ) {
+                if ( GALETTE_EXPORTS_PATH === $destdir && file_exists($origdir) ) {
                     $go = true;
                 }
                 break;
             case 'imports':
-                if ( GALETTE_IMPORTS_PATH === $destdir ) {
+                if ( GALETTE_IMPORTS_PATH === $destdir && file_exists($origdir) ) {
                     $go = true;
                 }
                 break;
             case 'photos':
-                if ( GALETTE_PHOTOS_PATH === $destdir ) {
+                if ( GALETTE_PHOTOS_PATH === $destdir && file_exists($origdir) ) {
                     $go = true;
                 }
                 break;
             case 'attachments':
-                if ( GALETTE_ATTACHMENTS_PATH === $destdir ) {
+                if ( GALETTE_ATTACHMENTS_PATH === $destdir
+                    && file_exists($origdir)
+                ) {
                     $go = true;
                 }
                 break;
             case 'files':
-                if ( GALETTE_FILES_PATH === $destdir ) {
+                if ( GALETTE_FILES_PATH === $destdir && file_exists($origdir) ) {
                     $go = true;
                 }
                 break;
