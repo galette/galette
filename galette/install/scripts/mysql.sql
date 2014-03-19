@@ -113,7 +113,7 @@ DROP TABLE IF EXISTS galette_logs;
 CREATE TABLE galette_logs (
   id_log int(10) unsigned NOT NULL auto_increment,
   date_log datetime NOT NULL,
-  ip_log varchar(30) NOT NULL default '',
+  ip_log varchar(46) NOT NULL default '',
   adh_log varchar(41) NOT NULL default '',
   text_log text,
   action_log text,

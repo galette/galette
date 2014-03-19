@@ -229,7 +229,7 @@ DROP TABLE IF EXISTS galette_logs;
 CREATE TABLE galette_logs (
   id_log integer DEFAULT nextval('galette_logs_id_seq'::text) NOT NULL,
   date_log timestamp NOT NULL,
-  ip_log character varying(30) DEFAULT '' NOT NULL,
+  ip_log character varying(46) DEFAULT '' NOT NULL,
   adh_log character varying(41) DEFAULT '' NOT NULL,
   text_log text,
   action_log text,

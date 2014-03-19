@@ -57,6 +57,15 @@ class UpgradeTo08 extends AbstractUpdater
     protected $db_version = '0.80';
 
     /**
+     * Main constructor
+     */
+    public function __construct()
+    {
+        parent::__construct(false);
+        $this->setSqlScripts('0.80');
+    }
+
+    /**
      * Update instructions
      *
      * @return boolean
