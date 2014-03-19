@@ -61,9 +61,9 @@ abstract class AbstractUpdater
     protected $sql_scripts = null;
     protected $db_version = null;
     private $_engines = array(
-        Db::MYSQL,
-        Db::PGSQL,
-        Db::SQLITE
+        Db::MYSQL   => Db::MYSQL,
+        Db::PGSQL   => Db::PGSQL,
+        Db::SQLITE  => Db::SQLITE
     );
     protected $zdb;
     protected $installer;
@@ -95,7 +95,7 @@ abstract class AbstractUpdater
      */
     private function _hasSql()
     {
-        return !$this->sql_scripts === null;
+        return !($this->sql_scripts === null);
     }
 
     /**
@@ -134,7 +134,7 @@ abstract class AbstractUpdater
         }
 
         if ( $this->_hasSql() ) {
-            $res = $this->sql($zdb, $installer);
+            $res = $this->_sql($zdb, $installer);
             if ( $res !== true ) {
                 throw new \RuntimeException(
                     'Fail executing SQL instructions'
@@ -180,15 +180,15 @@ abstract class AbstractUpdater
      */
     private function _sql($zdb, $installer)
     {
-        $script = $this->_sql_scripts[TYPE_DB];
+        $script = $this->sql_scripts[TYPE_DB];
 
-        $sql_query .= @fread(
+        $sql_query = @fread(
             @fopen($script, 'r'),
             @filesize($script)
         ) . "\n";
 
         if ( $sql_query !== '' ) {
-            $installer->executeSql($zdb, $script);
+            $installer->executeSql($zdb, $sql_query);
         }
     }
 
@@ -212,7 +212,7 @@ abstract class AbstractUpdater
      */
     protected function setSqlScripts($version)
     {
-        $scripts = $this->_getSqlScripts();
+        $scripts = $this->_getSqlScripts($version);
         if ( is_array($scripts)
             && count($scripts) === count($this->_engines)
             && count(array_diff(array_keys($scripts), $this->_engines)) == 0
@@ -228,12 +228,12 @@ abstract class AbstractUpdater
             }
 
             if ( $checked === true ) {
-                $this->_sql_scripts = $scripts;
+                $this->sql_scripts = $scripts;
             }
             return $checked;
         } else {
             Analog::log(
-                'Unable to se SQL scripts. Please check that scripts exists ' .
+                'Unable to see SQL scripts. Please check that scripts exists ' .
                 'in scripts/sql directory, for all supported SQL engines.',
                 Analog::ERROR
             );
@@ -250,14 +250,14 @@ abstract class AbstractUpdater
      */
     private function _getSqlScripts($version)
     {
-        $dh = opendir('./sql');
+        $dh = opendir('./scripts/sql');
         $scripts = array();
 
         if ( $dh !== false ) {
             while ( ($file = readdir($dh)) !== false ) {
-                if ( preg_match('/upgrade-to-(.*)-(.+)\.sql/', $file, $ver, $type) ) {
-                    if ( $ver === $version ) {
-                        $scripts[$type] = realpath('./sql/' . $file);
+                if ( preg_match('/upgrade-to-(.*)-(.+)\.sql/', $file, $ver) ) {
+                    if ( $ver[1] === $version ) {
+                        $scripts[$ver[2]] = realpath('./scripts/sql/' . $file);
                     }
                 }
             }
