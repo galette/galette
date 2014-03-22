@@ -158,10 +158,11 @@ class Reminder
      */
     private function _store($zdb)
     {
+        $now = new \DateTime();
         $data = array(
             'reminder_type'     => $this->_type,
             'reminder_dest'     => $this->_dest->id,
-            'reminder_date'     => new Expression('NOW()'),
+            'reminder_date'     => $now->format('Y-m-d'),
             'reminder_success'  => ($this->_success) ? true : 'false',
             'reminder_nomail'   => ($this->_nomail) ? true : 'false'
         );

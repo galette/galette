@@ -197,6 +197,8 @@ class Charts
         $soon_date = new \DateTime();
         $soon_date->modify('+30 day');
 
+        $now = new \DateTime();
+
         $select = $zdb->select(Adherent::TABLE, 'a');
         $select->columns(
             array(
@@ -204,7 +206,7 @@ class Charts
             )
         )
             ->where->lessThanOrEqualTo('date_echeance', $soon_date->format('Y-m-d'))
-            ->where->greaterThanOrEqualTo('date_echeance', new Expression('NOW()'));
+            ->where->greaterThanOrEqualTo('date_echeance', $now->format('Y-m-d'));
 
         $results = $zdb->execute($select);
         $result = $results->current();
@@ -219,7 +221,7 @@ class Charts
             array(
                 'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
             )
-        )->where->greaterThan('date_echeance', new Expression('NOW()'));
+        )->where->greaterThan('date_echeance', $now->format('Y-m-d'));
 
         $results = $zdb->execute($select);
         $result = $results->current();
@@ -234,7 +236,7 @@ class Charts
             array(
                 'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
             )
-        )->where->lessThan('date_echeance', new Expression('NOW()'));
+        )->where->lessThan('date_echeance', $now->format('Y-m-d'));
 
         $results = $zdb->execute($select);
         $result = $results->current();

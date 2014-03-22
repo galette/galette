@@ -1432,6 +1432,8 @@ class Members
         $soon_date = new \DateTime();
         $soon_date->modify('+30 day');
 
+        $now = new \DateTime();
+
         $select = $zdb->select(Adherent::TABLE, 'a');
         $select->columns(
             array(
@@ -1440,7 +1442,7 @@ class Members
         );
         $select->where
             ->lessThan('date_echeance', $soon_date->format('Y-m-d'))
-            ->greaterThanOrEqualTo('date_echeance', new Expression('NOW()'));
+            ->greaterThanOrEqualTo('date_echeance', $now->format('Y-m-d'));
         $select
             ->where('activite_adh=true')
             ->where('bool_exempt_adh=false');
@@ -1465,7 +1467,7 @@ class Members
             )
         );
         $select->where
-            ->lessThan('date_echeance', new Expression('NOW()'));
+            ->lessThan('date_echeance', $now->format('Y-m-d'));
         $select
             ->where('activite_adh=true')
             ->where('bool_exempt_adh=false');
