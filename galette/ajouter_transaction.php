@@ -107,9 +107,14 @@ $transaction['dyn'] = array();
 
 if ( isset($_POST['valid']) ) {
     // dynamic fields
-    $transaction['dyn'] = $dyn_fields->extractPosted($_POST, $_FILES, array(), $id_adh);
-    $dyn_fields_errors = $dyn_fields->get_errors();
-    if ( $count($dyn_fields_errors) > 0 ) {
+    $transaction['dyn'] = $dyn_fields->extractPosted(
+        $_POST,
+        $_FILES,
+        array(),
+        $transaction['id_adh']
+    );
+    $dyn_fields_errors = $dyn_fields->getErrors();
+    if ( count($dyn_fields_errors) > 0 ) {
         $error_detected = array_merge($error_detected, $dyn_fields_errors);
     }
     // regular fields
@@ -118,7 +123,7 @@ if ( isset($_POST['valid']) ) {
         $error_detected = array_merge($error_detected, $valid);
     }
 
-    if ( count($error_detected ) == 0) {
+    if ( count($error_detected) == 0) {
         //all goes well, we can proceed
         $new = false;
         if ( $trans->id == '' ) {

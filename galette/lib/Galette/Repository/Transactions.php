@@ -366,7 +366,7 @@ class Transactions extends Pagination
                 $zdb->connection->beginTransaction();
 
                 $select = $zdb->select(self::TABLE);
-                $select->where>in(self::PK, $list);
+                $select->where->in(self::PK, $list);
 
                 $results = $zdb->execute($select);
                 foreach ( $results as $transaction ) {

@@ -158,12 +158,19 @@ class Contribution
             if ( isset($args['adh']) && $args['adh'] != '' ) {
                 $this->_member = (int)$args['adh'];
             }
+            if ( isset($args['trans']) ) {
+                $this->_transaction = new Transaction((int)$args['trans']);
+                if ( !isset($this->_member) ) {
+                    $this->_member = (int)$this->_transaction->member;
+                }
+                $this->_amount = $this->_transaction->getMissingAmount();
+            }
             $this->_type = new ContributionsTypes((int)$args['type']);
             $this->_is_cotis = (bool)$this->_type->extension;
             //calculate begin date for cotisation
             $this->_begin_date = $this->_date;
             if ( $this->_is_cotis ) {
-                $curend = self::getDueDate($args['adh']);
+                $curend = self::getDueDate($this->_member);
                 if ($curend != '') {
                     $dend = new \DateTime($curend);
                     $now = date('Y-m-d');
@@ -179,13 +186,6 @@ class Contribution
                     $this->_extension = $args['ext'];
                 }
                 $this->_retrieveEndDate();
-            }
-            if ( isset($args['trans']) ) {
-                $this->_transaction = new Transaction((int)$args['trans']);
-                if ( !isset($this->_member) ) {
-                    $this->_member = (int)$this->_transaction->member;
-                }
-                $this->_amount = $this->_transaction->getMissingAmount();
             }
             if ( isset($args['payment_type']) ) {
                 $this->_payment_type = $args['payment_type'];
