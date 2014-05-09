@@ -77,7 +77,10 @@ if ( isset($_GET['from']) && $_GET['from'] === 'mailing' ) {
     }
 
     $m = new Members();
-    $members = $m->getArrayList($filters->selected);
+    $members = $m->getArrayList(
+        $filters->selected,
+        array('nom_adh', 'prenom_adh')
+    );
 }
 
 if ( !is_array($members) || count($members) < 1 ) {
