@@ -350,17 +350,20 @@ class AdvancedMembersList extends MembersList
             case 'contrib_begin_date_end':
             case 'contrib_end_date_begin':
             case 'contrib_end_date_end':
-                try {
-                    $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
-                    if ( $d === false ) {
-                        throw new \Exception('Incorrect format');
+                if ( $value !== null && trim($value) !== '' ) {
+                    try {
+                        $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
+                        if ( $d === false ) {
+                            throw new \Exception('Incorrect format');
+                        }
+                        $this->$prop = $d->format('Y-m-d');
+                    } catch ( \Exception $e ) {
+                        Analog::log(
+                            'Incorrect date format for ' . $name .
+                            '! was: ' . $value,
+                            Analog::WARNING
+                        );
                     }
-                    $this->$prop = $d->format('Y-m-d');
-                } catch ( \Exception $e ) {
-                    Analog::log(
-                        'Incorrect date format for ' . $name . '! was: ' . $value,
-                        Analog::WARNING
-                    );
                 }
                 break;
             case 'contrib_min_amount':

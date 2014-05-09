@@ -176,7 +176,7 @@ class MembersList extends Pagination
                 if (is_array($value)) {
                     $name = '_' . $name;
                     $this->$name = $value;
-                } else {
+                } else if ( $value !== null ) {
                     Analog::log(
                         '[MembersList] Value for property `' . $name .
                         '` should be an array (' . gettype($value) . ' given)',
@@ -194,7 +194,7 @@ class MembersList extends Pagination
                 if ( is_numeric($value) ) {
                     $name = '_' . $name;
                     $this->$name = $value;
-                } else {
+                } else if ($value !== null) {
                     Analog::log(
                         '[MembersList] Value for property `' . $name .
                         '` should be an integer (' . gettype($value) . ' given)',
@@ -221,7 +221,7 @@ class MembersList extends Pagination
                 }
                 break;
             case 'group_filter':
-                if ( is_numeric($value) ) {
+                if ( is_numeric($value) && $value > 0 ) {
                     //check group existence
                     $g = new Group();
                     $res = $g->load($value);
@@ -233,10 +233,10 @@ class MembersList extends Pagination
                             Analog::WARNING
                         );
                     }
-                } else {
+                } else if ( $value !== null && $value !== '0' ) {
                     Analog::log(
                         '[MembersList] Value for group filter should be an '
-                        .'integer (' . gettype($value) . ' given',
+                        .'integer (' . gettype($value) . ' given)',
                         Analog::WARNING
                     );
                 }
