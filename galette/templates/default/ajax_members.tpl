@@ -6,7 +6,7 @@
                         {_T string="Name"}
                     </th>
                     <th class="listing left">
-                        {_T string="Nickname"}
+                        {_T string="Zip - Town"}
                     </th>
                 </tr>
             </thead>
@@ -20,9 +20,10 @@
             </tfoot>
             <tbody>
 {foreach from=$members_list item=member}
+    {assign var=rclass value=$member->getRowClass() }
                 <tr>
-                    <td class="right">{$member->id}</td>
-                    <td class="nowrap username_row">
+                    <td class="{$rclass} right">{$member->id}</td>
+                    <td class="{$rclass} nowrap username_row">
                     {if $member->isCompany()}
                         <img src="{$template_subdir}images/icon-company.png" alt="{_T string="[W]"}" width="16" height="16"/>
                     {elseif $member->isMan()}
@@ -41,7 +42,7 @@
                     {/if}
                     <a href="voir_adherent.php?id_adh={$member->id}">{$member->sfullname}</a>
                     </td>
-                    <td class="nowrap">{$member->nickname|htmlspecialchars}</td>
+                    <td class="{$rclass} nowrap">{$member->zipcode} {$member->town}</td>
                 </tr>
 {foreachelse}
                 <tr><td colspan="3" class="emptylist">{_T string="no member"}</td></tr>
