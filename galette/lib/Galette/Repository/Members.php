@@ -1036,6 +1036,25 @@ class Members
             }
 
             if ( $this->_filters instanceof AdvancedMembersList ) {
+                if ( $this->_filters->rbirth_date_begin
+                    || $this->_filters->rbirth_date_end
+                ) {
+                    if ( $this->_filters->rbirth_date_begin ) {
+                        $d = new \DateTime($this->_filters->rbirth_date_begin);
+                        $select->where->greaterThanOrEqualTo(
+                            'ddn_adh',
+                            $d->format('Y-m-d')
+                        );
+                    }
+                    if ( $this->_filters->rbirth_date_end ) {
+                        $d = new \DateTime($this->_filters->rbirth_date_end);
+                        $select->where->lessThanOrEqualTo(
+                            'ddn_adh',
+                            $d->format('Y-m-d')
+                        );
+                    }
+                }
+
                 if ( $this->_filters->rcreation_date_begin
                     || $this->_filters->rcreation_date_end
                 ) {

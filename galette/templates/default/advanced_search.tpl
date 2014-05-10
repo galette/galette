@@ -44,6 +44,13 @@
             <fieldset class="cssform large">
                 <legend class="ui-state-active ui-corner-top">{_T string="Advanced search"}</legend>
                 <div>
+                     <p>
+                        <span class="bline">{_T string="Birth date"}</span>
+                        <label for="birth_date_begin">{_T string="beetween"}</label>
+                        <input id="birth_date_begin" name="birth_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->birth_date_begin}"/>
+                        <label for="birth_date_end">{_T string="and"}</label>
+                        <input id="birth_date_end" name="birth_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->birth_date_end}"/>
+                    </p>
                     <p>
                         <span class="bline">{_T string="Creation date"}</span>
                         <label for="creation_date_begin">{_T string="beetween"}</label>

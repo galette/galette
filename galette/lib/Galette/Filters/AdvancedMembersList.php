@@ -75,6 +75,8 @@ class AdvancedMembersList extends MembersList
     private $_modif_date_end;
     private $_due_date_begin;
     private $_due_date_end;
+    private $_birth_date_begin;
+    private $_birth_date_end;
     private $_show_public_infos = Members::FILTER_DC_PUBINFOS;
     private $_status = array();
     private $_contrib_creation_date_begin;
@@ -95,6 +97,8 @@ class AdvancedMembersList extends MembersList
         'modif_date_end',
         'due_date_begin',
         'due_date_end',
+        'birth_date_begin',
+        'birth_date_end',
         'show_public_infos',
         'status',
         'contrib_creation_date_begin',
@@ -118,6 +122,8 @@ class AdvancedMembersList extends MembersList
         'rmodif_date_end',
         'rdue_date_begin',
         'rdue_date_end',
+        'rbirth_date_begin',
+        'rbirth_date_end',
         'rcontrib_creation_date_begin',
         'rcontrib_creation_date_end',
         'rcontrib_begin_date_begin',
@@ -204,6 +210,8 @@ class AdvancedMembersList extends MembersList
         $this->_modif_date_end = null;
         $this->_due_date_begin = null;
         $this->_due_date_end = null;
+        $this->_birth_date_begin = null;
+        $this->_birth_date_end = null;
         $this->_show_public_infos = Members::FILTER_DC_PUBINFOS;
         $this->_status = array();
 
@@ -267,6 +275,8 @@ class AdvancedMembersList extends MembersList
                 case 'modif_date_end':
                 case 'due_date_begin':
                 case 'due_date_end':
+                case 'birth_date_begin':
+                case 'birth_date_end':
                 case 'contrib_creation_date_begin':
                 case 'contrib_creation_date_end':
                 case 'contrib_begin_date_begin':
@@ -294,6 +304,8 @@ class AdvancedMembersList extends MembersList
                 case 'rmodif_date_end':
                 case 'rdue_date_begin':
                 case 'rdue_date_end':
+                case 'rbirth_date_begin':
+                case 'rbirth_date_end':
                 case 'rcontrib_creation_date_begin':
                 case 'rcontrib_creation_date_end':
                 case 'rcontrib_begin_date_begin':
@@ -344,6 +356,8 @@ class AdvancedMembersList extends MembersList
             case 'modif_date_end':
             case 'due_date_begin':
             case 'due_date_end':
+            case 'birth_date_begin':
+            case 'birth_date_end':
             case 'contrib_creation_date_begin':
             case 'contrib_creation_date_end':
             case 'contrib_begin_date_begin':
