@@ -65,6 +65,8 @@ class Transactions extends Pagination
     const ORDERBY_AMOUNT = 2;
 
     private $_count = null;
+    private $_start_date_filter = null;
+    private $_end_date_filter = null;
     private $_filtre_cotis_adh = null;
 
     /**
@@ -277,31 +279,21 @@ class Transactions extends Pagination
         global $zdb, $login;
 
         try {
-            /*if ( $this->_start_date_filter != null ) {*/
-                /** TODO: initial date format should be i18n
-                $d = \DateTime::createFromFormat(
-                    _T("d/m/Y"),
-                    $this->_start_date_filter
-                );*/
-                /*$d = \DateTime::createFromFormat(
-                    'd/m/Y',
-                    $this->_start_date_filter
+            if ( $this->_start_date_filter != null ) {
+                $d = new \DateTime($this->_start_date_filter);
+                $select->where->greaterThanOrEqualTo(
+                    'trans_date',
+                    $d->format('Y-m-d')
                 );
-                $select->where('date_debut_cotis >= ?', $d->format('Y-m-d'));
             }
 
-            if ( $this->_end_date_filter != null ) {*/
-                /** TODO: initial date format should be i18n
-                $d = \DateTime::createFromFormat(
-                    _T("d/m/Y"),
-                    $this->_end_date_filter
-                );*/
-                /*$d = \DateTime::createFromFormat(
-                    'd/m/Y',
-                    $this->_end_date_filter
+            if ( $this->_end_date_filter != null ) {
+                $d = new \DateTime($this->_end_date_filter);
+                $select->where->lessThanOrEqualTo(
+                    'trans_date',
+                    $d->format('Y-m-d')
                 );
-                $select->where('date_fin_cotis <= ?', $d->format('Y-m-d'));
-            }*/
+            }
 
             if ( !$login->isAdmin() && !$login->isStaff() ) {
                 //non staff members can only view their own transactions
@@ -337,8 +329,8 @@ class Transactions extends Pagination
     public function reinit()
     {
         parent::reinit();
-        /*$this->_start_date_filter = null;
-        $this->_end_date_filter = null;*/
+        $this->_start_date_filter = null;
+        $this->_end_date_filter = null;
     }
 
     /**
@@ -469,6 +461,84 @@ class Transactions extends Pagination
                     );
                     if ( in_array($value, $allowed_orders) ) {
                         $this->orderby = $value;
+                    }
+                    break;
+                case 'start_date_filter':
+                case 'end_date_filter':
+                    try {
+                        if ( $value !== '' ) {
+                            $y = \DateTime::createFromFormat(_T("Y"), $value);
+                            if ( $y !== false ) {
+                                $month = 1;
+                                $day = 1;
+                                if ( $name === 'end_date_filter' ) {
+                                    $month = 12;
+                                    $day = 31;
+                                }
+                                $y->setDate(
+                                    $y->format('Y'),
+                                    $month,
+                                    $day
+                                );
+                                $this->$rname = $y->format('Y-m-d');
+                            }
+
+                            $ym = \DateTime::createFromFormat(_T("Y-m"), $value);
+                            if ( $y === false && $ym  !== false ) {
+                                $day = 1;
+                                if ( $name === 'end_date_filter' ) {
+                                    $day = $ym->format('t');
+                                }
+                                $ym->setDate(
+                                    $ym->format('Y'),
+                                    $ym->format('m'),
+                                    $day
+                                );
+                                $this->$rname = $ym->format('Y-m-d');
+                            }
+
+                            $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
+                            if ( $y === false && $ym  === false && $d !== false ) {
+                                $this->$rname = $d->format('Y-m-d');
+                            }
+
+                            if ( $y === false && $ym === false && $d === false ) {
+                                $formats = array(
+                                    _T("Y"),
+                                    _T("Y-m"),
+                                    _T("Y-m-d"),
+                                );
+
+                                $field = null;
+                                if ($name === 'start_date_filter' ) {
+                                    $field = _T("start date filter");
+                                }
+                                if ($name === 'end_date_filter' ) {
+                                    $field = _T("end date filter");
+                                }
+
+                                throw new \Exception(
+                                    str_replace(
+                                        array('%field', '%format'),
+                                        array(
+                                            $field,
+                                            implode(', ', $formats)
+                                        ),
+                                        _T("Unknown date format for %field.<br/>Know formats are: %formats")
+                                    )
+                                );
+                            }
+                        } else {
+                            $this->$rname = null;
+                        }
+                    } catch (\Exception $e) {
+                        Analog::log(
+                            'Wrong date format. field: ' . $key .
+                            ', value: ' . $value . ', expected fmt: ' .
+                            _T("Y-m-d") . ' | ' . $e->getMessage(),
+                            Analog::INFO
+                        );
+                        throw $e;
                     }
                     break;
                 default:

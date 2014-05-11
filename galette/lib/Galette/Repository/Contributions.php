@@ -62,9 +62,6 @@ class Contributions extends Pagination
     const TABLE = Contribution::TABLE;
     const PK = Contribution::PK;
 
-    const FILTER_DATE_BEGIN = 0;
-    const FILTER_DATE_END = 1;
-
     const ORDERBY_DATE = 0;
     const ORDERBY_BEGIN_DATE = 1;
     const ORDERBY_END_DATE = 2;

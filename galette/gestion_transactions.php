@@ -70,6 +70,24 @@ if ( isset($_GET['tri']) ) {
     $trans->orderby = $_GET['tri'];
 }
 
+if ( isset($_GET['clear_filter']) ) {
+    $trans->reinit();
+} else {
+    if ( isset($_GET['end_date_filter']) || isset($_GET['start_date_filter']) ) {
+        try {
+            if ( isset($_GET['start_date_filter']) ) {
+                $field = _T("start date filter");
+                $trans->start_date_filter = $_GET['start_date_filter'];
+            }
+            if ( isset($_GET['end_date_filter']) ) {
+                $field = _T("end date filter");
+                $trans->end_date_filter = $_GET['end_date_filter'];
+            }
+        } catch (Exception $e) {
+            $error_detected[] = $e->getMessage();
+        }
+    }
+}
 if ( ($login->isAdmin() || $login->isStaff()) && isset($_GET['id_adh']) && $_GET['id_adh'] != '' ) {
     if ( $_GET['id_adh'] == 'all' ) {
         $trans->filtre_cotis_adh = null;
@@ -93,6 +111,7 @@ $trans->setSmartyPagination($tpl);
 
 $tpl->assign('page_title', _T("Transactions managment"));
 $tpl->assign('require_dialog', true);
+$tpl->assign('require_calendar', true);
 $tpl->assign('list_trans', $list_trans);
 $tpl->assign('transactions', $trans);
 $tpl->assign('nb_transactions', $trans->getCount());
