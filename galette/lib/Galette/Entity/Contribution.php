@@ -481,10 +481,11 @@ class Contribution
                 array()
             )->where(Adherent::PK . ' = ' . $this->_member)
                 ->where(array('cotis_extension' => new Expression('true')))
-                ->where
+                ->where->nest->nest
                 ->greaterThanOrEqualTo('date_debut_cotis', $this->_begin_date)
                 ->lessThan('date_debut_cotis', $this->_end_date)
-                ->or
+                ->unnest
+                ->or->nest
                 ->greaterThan('date_fin_cotis', $this->_begin_date)
                 ->lessThanOrEqualTo('date_fin_cotis', $this->_end_date);
 
