@@ -136,15 +136,7 @@
                         </a>
                     </th>
                     <th class="listing left">
-                        <a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_DURATION;{/php}" class="listing">{_T string="Duration"}
-                        {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_DURATION')}
-                            {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
-                        <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-                            {else}
-                        <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-                            {/if}
-                        {/if}
-                        </a>
+                        {_T string="Duration"}
                     </th>
 {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
                     <th class="listing nowrap actions_row">{_T string="Actions"}</th>
