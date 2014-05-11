@@ -87,6 +87,14 @@
                     </select>
                 </p>
                 <p>
+                    <label class="bline" for="date_enreg">
+                        {_T string="Record date:"}
+                    </label>
+                    <input class="past-date-pick" type="text" name="date_enreg" id="date_enreg" value="{$contribution->date}" maxlength="10"{if $required.date_enreg eq 1} required{/if}/>
+                    <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
+                </p>
+
+                <p>
                     <label class="bline" for="date_debut_cotis">
                         {if $contribution->isCotis()}
                             {_T string="Start date of membership:"}
@@ -144,7 +152,7 @@
     <script type="text/javascript">
         $(function(){
             $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
-            $('#date_debut_cotis, #date_fin_cotis').datepicker({
+            $('#date_debut_cotis, #date_fin_cotis, #date_enreg').datepicker({
                 changeMonth: true,
                 changeYear: true,
                 showOn: 'button',

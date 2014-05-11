@@ -74,7 +74,8 @@ $type_selected = $id_cotis != null || get_form_value('type_selected', 0);
 // flagging required fields for first step only
 $required = array(
     'id_type_cotis'     => 1,
-    'id_adh'            => 1
+    'id_adh'            => 1,
+    'date_enreg'        => 1
 );
 
 $cotis_extension = 0; // TODO: remove and remplace with $contrib->isCotis()
