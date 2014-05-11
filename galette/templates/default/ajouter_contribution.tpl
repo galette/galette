@@ -89,9 +89,9 @@
                 <p>
                     <label class="bline" for="date_debut_cotis">
                         {if $contribution->isCotis()}
-                            {_T string="Date of contribution:"}
-                        {else}
                             {_T string="Start date of membership:"}
+                        {else}
+                            {_T string="Date of contribution:"}
                         {/if}
                     </label>
                     <input class="past-date-pick" type="text" name="date_debut_cotis" id="date_debut_cotis" value="{$contribution->begin_date}" maxlength="10"{if $required.date_debut_cotis eq 1} required{/if}/>
