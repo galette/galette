@@ -1,6 +1,12 @@
         <form action="gestion_contributions.php" method="get" id="filtre">
         <div id="listfilter">
-            <label for="start_date_filter">{_T string="Show contributions since"}</label>&nbsp;
+            <label for="date_field_filter">{_T string="Show contributions by"}</label>&nbsp;
+            <select name="date_field_filter" id="date_field_filter">
+                <option value="{php}echo Galette\Repository\Contributions::DATE_BEGIN;{/php}"{if $contributions->date_field eq constant('Galette\Repository\Contributions::DATE_BEGIN')} selected="selected"{/if}>{_T string="Begin"}</option>
+                <option value="{php}echo Galette\Repository\Contributions::DATE_END;{/php}"{if $contributions->date_field eq constant('Galette\Repository\Contributions::DATE_END')} selected="selected"{/if}>{_T string="End"}</option>
+                <option value="{php}echo Galette\Repository\Contributions::DATE_RECORD;{/php}"{if $contributions->date_field eq constant('Galette\Repository\Contributions::DATE_RECORD')} selected="selected"{/if}>{_T string="Record"}</option>
+            </select>
+            <label for="start_date_filter">{_T string="since"}</label>&nbsp;
             <input type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$contributions->start_date_filter}"/>
             <label for="end_date_filter">{_T string="until"}</label>&nbsp;
             <input type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$contributions->end_date_filter}"/>

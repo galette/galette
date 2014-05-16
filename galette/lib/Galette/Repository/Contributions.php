@@ -71,7 +71,12 @@ class Contributions extends Pagination
     const ORDERBY_DURATION = 6;
     const ORDERBY_PAYMENT_TYPE = 7;
 
+    const DATE_BEGIN = 0;
+    const DATE_END = 1;
+    const DATE_RECORD = 2;
+
     private $_count = null;
+    private $_date_field = null;
     private $_start_date_filter = null;
     private $_end_date_filter = null;
     private $_payment_type_filter = null;
@@ -88,6 +93,7 @@ class Contributions extends Pagination
     public function __construct()
     {
         parent::__construct();
+        $this->_date_field = self::DATE_BEGIN;
     }
 
     /**
@@ -350,11 +356,26 @@ class Contributions extends Pagination
     {
         global $zdb, $login;
 
+        $field = 'date_debut_cotis';
+
+        switch ( $this->_date_field ) {
+        case self::DATE_RECORD:
+            $field = 'date_enreg';
+            break;
+        case self::DATE_END:
+            $field = 'date_fin_cotis';
+            break;
+        case self::DATE_BEGIN:
+        default:
+            $field = 'date_debut_cotis';
+            break;
+        }
+
         try {
             if ( $this->_start_date_filter != null ) {
                 $d = new \DateTime($this->_start_date_filter);
                 $select->where->greaterThanOrEqualTo(
-                    'date_debut_cotis',
+                    $field,
                     $d->format('Y-m-d')
                 );
             }
@@ -362,7 +383,7 @@ class Contributions extends Pagination
             if ( $this->_end_date_filter != null ) {
                 $d = new \DateTime($this->_end_date_filter);
                 $select->where->lessThanOrEqualTo(
-                    'date_debut_cotis',
+                    $field,
                     $d->format('Y-m-d')
                 );
             }
@@ -425,6 +446,7 @@ class Contributions extends Pagination
     public function reinit()
     {
         parent::reinit();
+        $this->_date_field = self::DATE_BEGIN;
         $this->_start_date_filter = null;
         $this->_end_date_filter = null;
         $this->_payment_type_filter = null;
@@ -524,6 +546,7 @@ class Contributions extends Pagination
         } else {
             $return_ok = array(
                 'filtre_cotis_adh',
+                'date_field',
                 'start_date_filter',
                 'end_date_filter',
                 'payment_type_filter',

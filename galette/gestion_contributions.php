@@ -92,6 +92,7 @@ if ( isset($_GET['clear_filter']) ) {
     $contribs->reinit();
 } else {
     if ( isset($_GET['end_date_filter']) || isset($_GET['start_date_filter']) ) {
+        $contribs->date_field = (int)$_GET['date_field_filter'];
         try {
             if ( isset($_GET['start_date_filter']) ) {
                 $field = _T("start date filter");
