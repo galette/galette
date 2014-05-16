@@ -180,7 +180,6 @@ class UpgradeTo08 extends AbstractUpdater
                 $d = dir($origdir);
                 while (($entry = $d->read()) !== false) {
                     if ( $entry != '.' && $entry != '..' ) {
-                        echo $entry;
                         $moved = @rename($origdir . $entry, $destdir . $entry);
                         if ( !$moved ) {
                             $moved = false;
