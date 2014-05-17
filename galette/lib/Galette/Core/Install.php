@@ -685,7 +685,8 @@ class Install
         }
 
         if ( $sql_query !== '' ) {
-            $this->executeSql($zdb, $sql_query);
+            $sql_res = $this->executeSql($zdb, $sql_query);
+            $fatal_error = !$sql_res;
         }
         return !$fatal_error;
     }
@@ -764,7 +765,7 @@ class Install
         }
 
         $this->_report = array_merge($this->_report, $queries_results);
-        return $fatal_error;
+        return !$fatal_error;
     }
 
     /**

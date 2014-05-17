@@ -188,7 +188,7 @@ abstract class AbstractUpdater
         ) . "\n";
 
         if ( $sql_query !== '' ) {
-            $installer->executeSql($zdb, $sql_query);
+            return $installer->executeSql($zdb, $sql_query);
         }
     }
 
