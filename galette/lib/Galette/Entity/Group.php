@@ -278,6 +278,7 @@ class Group
             $delete->where(
                 self::PK . ' = ' . $this->_id
             );
+            $zdb->execute($delete);
 
             //commit all changes
             $zdb->connection->commit();
