@@ -71,11 +71,11 @@ if ( isset($_GET['del']) ) {
                     _T("An error occured removing title '%name' :(")
                 );
             }
-        } catch (\RuntimeException $re) {
-            $error_detected[] = $re->getMessage();
         } catch (\Exception $e) {
-            if ($e->getCode() === 23503) {
+            if ($e->getCode() == 23000) {
                 $error_detected[] = _T("That title is still in use, you cannot delete it!");
+            } else {
+                $error_detected[] = $e->getMessage();
             }
         }
     }
