@@ -462,7 +462,7 @@ footer li {
 }
 
 /* == Buttons */
-#delete, #sendmail, #btnsave, #btnvalid, #btnadd, #btncancel, #btnsend, #btnpreview, #btnusers, #btnback, .button {
+#delete, #delete_cascade, #sendmail, #btnsave, #btnvalid, #btnadd, #btncancel, #btnsend, #btnpreview, #btnusers, #btnback, .button {
     padding-left: 2em!important;
     background-position: 10px 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;
@@ -514,10 +514,10 @@ h1 #sendmail .ui-button-text {
     display: none;
 }
 
-#delete{
+#delete, #delete_cascade{
     background-image: url(images/icon-trash.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
-#delete.ui-state-hover {
+#delete.ui-state-hover, #delete_cascade.ui-state-hover {
     background-image:url(images/icon-trash.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 

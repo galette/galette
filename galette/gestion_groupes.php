@@ -79,11 +79,16 @@ if ( isset($_POST['pdf']) ) {
     die();
 }
 
-if ( isset($_POST['delete']) ) {
+if ( isset($_POST['delete']) || isset($_POST['delete_cascade']) ) {
     //delete groups
-    $del = $group->remove();
+    $cascade = isset($_POST['delete_cascade']);
+    $del = $group->remove($cascade);
     if ( $del !== true ) {
-        $error_detected[] = _T("Unable to remove group. Maybe it's not empty?");
+        if ( $group->isEmpty() === false ) {
+            $error_detected[] = _T("Group is not empty, it cannot be deleted. Use cascade delete instead.");
+        } else {
+            $error_detected[] = _T("An error occured trying to remove group :/");
+        }
     } else {
         $success_detected[] = str_replace(
             '%groupname',

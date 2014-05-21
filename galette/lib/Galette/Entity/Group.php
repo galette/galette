@@ -71,6 +71,7 @@ class Group
     private $_groups;
     private $_creation_date;
     private $_count_members;
+    private $_empty;
 
     /**
      * Default constructor
@@ -259,18 +260,25 @@ class Group
             $zdb->connection->beginTransaction();
 
             if ( $cascade === true ) {
+                Analog::log(
+                    'Cascading remove ' . $this->_group_name .
+                    '. Members and managers will be detached.',
+                    Analog::INFO
+                );
+
                 //delete members
                 $delete = $zdb->delete(self::GROUPSUSERS_TABLE);
                 $delete->where(
-                    self::PK . ' = ' . $id
+                    self::PK . ' = ' . $this->_id
                 );
                 $zdb->execute($delete);
 
                 //delete_managers
                 $delete = $zdb->delete(self::GROUPSMANAGERS_TABLE);
                 $delete->where(
-                    self::PK . ' = ' . $id
+                    self::PK . ' = ' . $this->_id
                 );
+                $zdb->execute($delete);
             }
 
             //delete group itself
@@ -286,13 +294,35 @@ class Group
             return true;
         } catch (\Exception $e) {
             $zdb->connection->rollBack();
-            Analog::log(
-                'Unable to delete group ' . $this->_group_name .
-                ' (' . $this->_id  . ') |' . $e->getMessage(),
-                Analog::ERROR
-            );
+            if ($e->getCode() == 23000) {
+                Analog::log(
+                    str_replace(
+                        '%group',
+                        $this->_group_name,
+                        'Group "%group" still have members!'
+                    ),
+                    Analog::WARNING
+                );
+                $this->_empty = false;
+            } else {
+                Analog::log(
+                    'Unable to delete group ' . $this->_group_name .
+                    ' (' . $this->_id  . ') |' . $e->getMessage(),
+                    Analog::ERROR
+                );
+            }
             return false;
         }
+    }
+
+    /**
+     * Is group empty? (after first deletion try)
+     *
+     * @return boolean
+     */
+    public function isEmpty()
+    {
+        return $this->_empty;
     }
 
     /**
