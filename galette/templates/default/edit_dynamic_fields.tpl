@@ -72,7 +72,7 @@
                 value="{if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index])}{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|escape}{/if}"
             />
             {_T string="delete"}: <input type="checkbox" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}_delete"
-                {if !$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}disabled{/if}
+                {if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index]) && !$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}disabled{/if}
                 onclick="this.form.info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}_new.disabled = this.checked;"
             />
         {/if}
