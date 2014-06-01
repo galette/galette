@@ -29,6 +29,12 @@
                     <td class="back">{_T string="Your organisation website"}<br/><span>({_T string="globally available"})</span></td>
                 </tr>
                 <tr>
+                    <th><tt>{ldelim}ASSO_LOGO{rdelim}</tt></th>
+                    <td class="back">{_T string="Your organisation logo"}<br/><span>({_T string="globally available"})</span></td>
+                    <th></th>
+                    <td></td>
+                </tr>
+                <tr>
                     <th><tt>{ldelim}NAME_ADH{rdelim}</tt></th>
                     <td class="back">{_T string="Member's name"}<br/><span>({_T string="available with reservations"})</span></td>
                     <th><tt>{ldelim}ADDRESS_ADH{rdelim}</tt></th>

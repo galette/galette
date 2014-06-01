@@ -46,7 +46,7 @@ $pdfmodels_fields = array(
         'model_header'  => '<table>
     <tr>
         <td id="pdf_assoname"><strong id="asso_name">{ASSO_NAME}</strong><br/>{ASSO_SLOGAN}</td>
-        <td id="pdf_logo"><img src="http://galette.tuxfamily.org/dc/themes/galette/img/galette.png" alt=""/></td>
+        <td id="pdf_logo">{ASSO_LOGO}</td>
     </tr>
 </table>',
         'model_footer'  => '<div id="pdf_footer">

@@ -37,6 +37,7 @@
 
 namespace Galette\Entity;
 
+use Galette\Core;
 use Analog\Analog as Analog;
 use Zend\Db\Sql\Expression;
 
@@ -107,7 +108,8 @@ abstract class PdfModel
             'asso_name'         => '/{ASSO_NAME}/',
             'asso_slogan'       => '/{ASSO_SLOGAN}/',
             'asso_address'      => '/{ASSO_ADDRESS}/',
-            'asso_website'      => '/{ASSO_WEBSITE}/'
+            'asso_website'      => '/{ASSO_WEBSITE}/',
+            'asso_logo'         => '/{ASSO_LOGO}/'
         );
 
         $address = $preferences->getPostalAdress();
@@ -118,11 +120,26 @@ abstract class PdfModel
                 $preferences->pref_website . '</a>';
         }
 
+        $logo = new Core\Logo();
+        if ( isset($_SERVER['SERVER_NAME']) && isset($_SERVER['REQUEST_URI']) ) {
+            $logo_uri =
+                'http://' .
+                $_SERVER['SERVER_NAME'] .
+                dirname($_SERVER['REQUEST_URI']) .
+                '/picture.php?logo=true';
+        }
+        $logo_elt = '<img' .
+            ' src="'    . $logo_uri                 . '"' .
+            ' width="'  . $logo->getOptimalWidth()  . '"' .
+            ' height="' . $logo->getOptimalHeight() . '"' .
+            '/>';
+
         $this->_replaces = array(
             'asso_name'         => $preferences->pref_nom,
             'asso_slogan'       => $preferences->pref_slogan,
             'asso_address'      => $address,
-            'asso_website'      => $website
+            'asso_website'      => $website,
+            'asso_logo'         => $logo_elt
         );
     }
 
