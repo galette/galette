@@ -1,4 +1,4 @@
-{if $trans|@count > 0}
+{if isset($count) && $trans|@count > 0}
         <form action="traduire_libelles.php" method="post" enctype="multipart/form-data">
             <div clasis="bigtable">
                 <p class="right">
