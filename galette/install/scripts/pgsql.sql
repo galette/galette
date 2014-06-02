@@ -185,7 +185,7 @@ CREATE UNIQUE INDEX galette_adherents_login_adh_idx ON galette_adherents (login_
 DROP TABLE IF EXISTS galette_types_cotisation CASCADE;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis integer DEFAULT nextval('galette_types_cotisation_id_seq'::text) NOT NULL,
-  libelle_type_cotis character varying(30) DEFAULT '' NOT NULL,
+  libelle_type_cotis character varying(100) DEFAULT '' NOT NULL,
   cotis_extension boolean DEFAULT FALSE,
   PRIMARY KEY (id_type_cotis)
 );
@@ -280,10 +280,10 @@ CREATE TABLE galette_pictures (
 -- Table for dynamic translation of strings;
 DROP TABLE IF EXISTS galette_l10n;
 CREATE TABLE galette_l10n (
-  text_orig character varying(40) NOT NULL,
+  text_orig character varying(100) NOT NULL,
   text_locale character varying(15) NOT NULL,
   text_nref integer DEFAULT '1' NOT NULL,
-  text_trans character varying(40) DEFAULT '' NOT NULL,
+  text_trans character varying(100) DEFAULT '' NOT NULL,
   PRIMARY KEY (text_orig, text_locale)
 );
 

@@ -95,7 +95,7 @@ CREATE TABLE galette_titles (
 DROP TABLE IF EXISTS galette_types_cotisation;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis int(10) unsigned NOT NULL auto_increment,
-  libelle_type_cotis varchar(30) NOT NULL default '',
+  libelle_type_cotis varchar(100) NOT NULL default '',
   cotis_extension tinyint(1) NOT NULL default 0,
   PRIMARY KEY  (id_type_cotis)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -164,11 +164,11 @@ CREATE TABLE galette_pictures (
 -- Table for dynamic translation of strings;
 DROP TABLE IF EXISTS galette_l10n;
 CREATE TABLE galette_l10n (
-    text_orig varchar(40) NOT NULL,
+    text_orig varchar(100) NOT NULL,
     text_locale varchar(15) NOT NULL,
     text_nref int(10) NOT NULL default '1',
     text_trans varchar(100) NOT NULL default '',
-    PRIMARY KEY (text_orig(30), text_locale(5))
+    PRIMARY KEY (text_orig, text_locale)
 ) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- new table for temporary passwords  2006-02-18;
