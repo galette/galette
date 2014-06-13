@@ -303,7 +303,7 @@ class File
             Analog::log('[' . $class . '] Filesize is OK, proceed', Analog::DEBUG);
         }
 
-        $mime = $this->getMimeType($this->_name);
+        $mime = $this->getMimeType($tmpfile);
 
         if ( count($this->_allowed_mimes) > 0
             && !in_array($mime, $this->_allowed_mimes)
@@ -428,6 +428,8 @@ class File
     public static function getMimeType($file)
     {
         $mime = null;
+        $class = 'Galette\IO\File';
+
         if (function_exists('finfo_open')) {
             Analog::log(
                 '[' . $class . '] Function File Info exist ',
