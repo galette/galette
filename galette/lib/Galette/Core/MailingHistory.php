@@ -240,6 +240,10 @@ class MailingHistory extends History
                 $this->_mailing->id = $this->_id;
                 $this->_mailing->moveAttachments($this->_id);
             } else {
+                if ( $this->_mailing->tmp_path !== false ) {
+                    //attachments are still in a temporary path, move them
+                    $this->_mailing->moveAttachments($this->_id);
+                }
                 //existing stored mailing. Just update row.
                 $this->update();
             }
@@ -269,8 +273,13 @@ class MailingHistory extends History
                     $_recipients[$_r->id] = $_r->sname . ' <' . $_r->email . '>';
                 }
             }
+
+            $sender = ($this->_sender === 0) ?
+                new Expression('NULL') :
+                $this->_sender;
+
             $values = array(
-                'mailing_sender' => ($this->_sender === 0) ? new Expression('NULL') : $this->_sender,
+                'mailing_sender' => $sender,
                 'mailing_subject' => $this->_subject,
                 'mailing_body' => $this->_message,
                 'mailing_date' => $this->_date,

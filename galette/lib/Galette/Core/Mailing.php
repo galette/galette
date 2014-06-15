@@ -100,7 +100,7 @@ class Mailing extends GaletteMail
     }
 
     /**
-     * Generate new mailing id
+     * Generate new mailing id and temporary path
      *
      * @return void
      */
@@ -108,7 +108,23 @@ class Mailing extends GaletteMail
     {
         $pass = new Password();
         $this->_id = $pass->makeRandomPassword(30);
-        $this->_tmp_path = GALETTE_ATTACHMENTS_PATH . '/' . $this->_id;
+        $this->_generateTmpPath($this->_id);
+    }
+
+    /**
+     * Generate temporary path
+     *
+     * @param string $id Random id, defautls to null
+     *
+     * @return void
+     */
+    private function _generateTmpPath($id = null)
+    {
+        if ( $id === null ) {
+            $pass = new Password();
+            $id = $pass->makeRandomPassword(30);
+        }
+        $this->_tmp_path = GALETTE_ATTACHMENTS_PATH . '/' . $id;
     }
 
     /**
@@ -265,6 +281,10 @@ class Mailing extends GaletteMail
      */
     public function store($files)
     {
+        if ( $this->_tmp_path === null ) {
+            $this->_generateTmpPath();
+        }
+
         if ( !file_exists($this->_tmp_path) ) {
             //directory does not exists, create it
             mkdir($this->_tmp_path);
@@ -299,10 +319,12 @@ class Mailing extends GaletteMail
     {
         if ( isset($this->_tmp_path)
             && trim($this->_tmp_path) !== ''
+            && count($this->attachments) > 0
         ) {
             foreach ( $this->attachments as &$attachment ) {
                 $old_path = $attachment->getDestDir() . $attachment->getFileName();
-                $new_path = GALETTE_ATTACHMENTS_PATH . $this->_id .'/' . $attachment->getFileName();
+                $new_path = GALETTE_ATTACHMENTS_PATH . $this->_id .'/' .
+                    $attachment->getFileName();
                 if ( !file_exists(GALETTE_ATTACHMENTS_PATH . $this->_id) ) {
                     mkdir(GALETTE_ATTACHMENTS_PATH . $this->_id);
                 }
@@ -372,7 +394,8 @@ class Mailing extends GaletteMail
     /**
      * Remove mailing attachments
      *
-     * @param boolean $temp Remove only tmporary attachments, to avoid history breaking
+     * @param boolean $temp Remove only tmporary attachments,
+     *                      to avoid history breaking
      *
      * @return void
      */
