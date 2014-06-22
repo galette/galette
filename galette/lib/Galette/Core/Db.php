@@ -39,7 +39,6 @@ namespace Galette\Core;
 use Analog\Analog as Analog;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
-use Zend\Db\Adapter\Exception as AdapterException;
 
 /**
  * Zend Db wrapper
@@ -131,21 +130,13 @@ class Db
             }
 
             $this->_db = new Adapter($_options);
+            $this->_db->getDriver()->getConnection()->connect();
             $this->_sql = new Sql($this->_db);
 
             Analog::log(
                 '[Db] Database connection was successfull!',
                 Analog::DEBUG
             );
-        } catch (Adapter_Exception $e) {
-            // perhaps a failed login credential, or perhaps the RDBMS is not running
-            $ce = $e->getChainedException();
-            Analog::log(
-                '[Db] No connexion (' . $ce->getCode() . '|' .
-                $ce->getMessage() . ')',
-                Analog::ALERT
-            );
-            throw $e;
         } catch (\Exception $e) {
             // perhaps factory() failed to load the specified Adapter class
             Analog::log(
@@ -273,31 +264,17 @@ class Db
             }
 
             $_db = new Adapter($_options);
+            $_db->getDriver()->getConnection()->connect();
 
             Analog::log(
                 '[' . __METHOD__ . '] Database connection was successfull!',
                 Analog::DEBUG
             );
             return true;
-        } catch (AdapterException $e) {
-            // perhaps a failed login credential, or perhaps the RDBMS is not running
-            $_code = $e->getCode();
-            $_msg = $e->getMessage();
-            $ce = $e->getChainedException();
-            if ( $ce ) {
-                $_code = $ce->getCode();
-                $_msg = $ce->getMessage();
-            }
-            Analog::log(
-                '[' . __METHOD__ . '] No connexion (' . $_code . '|' .
-                $_msg . ')',
-                Analog::ALERT
-            );
-            return $e;
         } catch (\Exception $e) {
             // perhaps failed to load the specified Adapter class
             Analog::log(
-                '[' . __METHOD__ . '] Error (' . $e->getCode() . '|' .
+                '[' . __METHOD__ . '] Connection error (' . $e->getCode() . '|' .
                 $e->getMessage() . ')',
                 Analog::ALERT
             );
