@@ -329,7 +329,7 @@ class Picture
                 $zdb->connection->beginTransaction();
             }
 
-            $delete = $zdb->delete($class::TABLE);
+            $delete = $zdb->delete($this->tbl_prefix . $class::TABLE);
             $delete->where(
                 $class::PK . ' = ' . $this->db_id
             );
@@ -513,6 +513,13 @@ class Picture
 
         try {
             $insert = $zdb->insert($this->tbl_prefix . $class::TABLE);
+            $insert->values(
+                array(
+                    $class::PK  => ':id',
+                    'picture'   => ':picture',
+                    'format'    => ':format'
+                )
+            );
             $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
             $container = $stmt->getParameterContainer();
             $container->offsetSet(
@@ -532,7 +539,7 @@ class Picture
 
             $stmt->execute(
                 array(
-                    $class::PK  => $this->_db_id,
+                    $class::PK  => $this->db_id,
                     'picture'   => $picture,
                     'format'    => $extension
                 )
