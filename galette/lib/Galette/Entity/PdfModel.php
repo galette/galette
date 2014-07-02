@@ -356,7 +356,7 @@ abstract class PdfModel
 
             $matches = array();
             preg_match_all(
-                '/{(DYNFIELD_[0-9]+_ADH)}/',
+                '/{((LABEL|INPUT)?_DYNFIELD_[0-9]+_ADH)}/',
                 $content,
                 $matches
             );
