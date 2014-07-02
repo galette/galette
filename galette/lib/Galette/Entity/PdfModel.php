@@ -62,6 +62,7 @@ abstract class PdfModel
     const MAIN_MODEL = 1;
     const INVOICE_MODEL = 2;
     const RECEIPT_MODEL = 3;
+    const ADHESION_FORM_MODEL = 4;
 
     private $_zdb;
 
@@ -291,6 +292,9 @@ abstract class PdfModel
         case self::RECEIPT_MODEL:
             $class = 'PdfReceipt';
             break;
+        case self::ADHESION_FORM_MODEL:
+            $class = 'PdfAdhesionFormModel';
+            break;
         default:
             $class = 'PdfMain';
             break;
@@ -464,6 +468,7 @@ abstract class PdfModel
             if ( $value === self::MAIN_MODEL
                 || $value === self::INVOICE_MODEL
                 || $value === self::RECEIPT_MODEL
+                || $value === self::ADHESION_FORM_MODEL
             ) {
                 $this->$rname = $value;
             } else {

@@ -773,6 +773,12 @@ legend #btnadd_small {
 #btn_membercard.ui-state-hover {
     background-image: url(images/member_card.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
+#btn_adhesionform {
+    background-image:url(images/adhesion_form.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#btn_adhesionform.ui-state-hover {
+    background-image: url(images/adhesion_form.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
 
 #btn_edit {
     background-image:url(images/edit.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");

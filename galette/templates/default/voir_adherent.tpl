@@ -16,6 +16,9 @@
             </li>
     {/if}
 {/if}
+{if ($pref_form_self eq 1) or ($login->isAdmin() or $login->isStaff())}
+            <a class="button" href="pdf_adhesion_form.php?id_adh={$member->id}" id="btn_adhesionform">{_T string="Generate Adhesion Form"}</a>
+{/if}
             <li>
                 <a class="button" href="ajouter_adherent.php?id_adh={$member->id}" id="btn_edit">{_T string="Modification"}</a>
             </li>
