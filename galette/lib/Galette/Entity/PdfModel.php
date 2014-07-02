@@ -338,10 +338,38 @@ abstract class PdfModel
         }
     }
 
-    /**
-     * Set patterns
+     /**
+     * Extract patterns
      *
      * @param array $patterns Patterns to add
+     *
+     * @return array
+     */
+    public function extractDynamicPatterns()
+    {
+
+        $patterns = array();
+        $parts    = array('header', 'footer', 'title', 'subtitle', 'body');
+        foreach ($parts as $part) {
+            $rpart = '_' . $part;
+            $content = $this->$rpart;
+
+            $matches = array();
+            preg_match_all(
+                '/{(DYNFIELD_[0-9]+_ADH)}/',
+                $content,
+                $matches
+            );
+            $patterns = array_merge($patterns, $matches[1]);
+
+           Analog::log("dynamic patterns found in $part: " . join(",", $matches[1]), Analog::DEBUG);
+        }
+
+        return $patterns;
+    }
+
+    /**
+     * Set patterns
      *
      * @return void
      */

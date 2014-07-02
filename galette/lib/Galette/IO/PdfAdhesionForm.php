@@ -79,12 +79,14 @@ class PdfAdhesionForm
 
         if ($adh !== null ) {
             $dyn_fields = new DynamicFields();
-            $this->_values = $dyn_fields->getFields('adh', $adh->id, true);
+            $dyn_values = $dyn_fields->getFields('adh', $adh->id, true);
         }
 
         $this->_model = new PdfAdhesionFormModel($zdb, $prefs, PdfModel::ADHESION_FORM_MODEL);
         Analog::log("model id: " . $this->_model->id, Analog::DEBUG);
         Analog::log("model title: " . $this->_model->title, Analog::DEBUG);
+
+        $dynamic_patterns = $this->_model->extractDynamicPatterns();
 
         $this->_model->setPatterns(
             array(
@@ -108,6 +110,12 @@ class PdfAdhesionForm
                 'adh_login'         => '/{LOGIN_ADH}/'
             )
         );
+
+        foreach ($dynamic_patterns as $pattern) {
+            $key = strtolower($pattern);
+            $this->_model->setPatterns(array($key => "/\{$pattern\}/"));
+            Analog::log("adding dynamic pattern $key => {" . $pattern . "}", Analog::DEBUG);
+        }
 
         $address = $adh->adress;
         if ( $adh->adress_continuation != '' ) {
@@ -146,6 +154,15 @@ class PdfAdhesionForm
                 'adh_login'         => $adh->login
             )
         );
+
+        foreach ($dynamic_patterns as $pattern) {
+            $key      = strtolower($pattern);
+            preg_match('/DYNFIELD_([0-9]+)_ADH/', $pattern, $match);
+            $field_id = $match[1];
+            $value    = $dyn_values[$field_id][1];
+            $this->_model->setReplacements(array($key => $value));
+            Analog::log("adding dynamic replacement $key => $value", Analog::DEBUG);
+        }
 
         $this->_filename = $adh ?
             _T("adherent_form") . '.' . $adh->id . '.pdf' :
