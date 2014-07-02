@@ -121,15 +121,8 @@ abstract class PdfModel
         }
 
         $logo = new Core\Logo();
-        if ( isset($_SERVER['SERVER_NAME']) && isset($_SERVER['REQUEST_URI']) ) {
-            $logo_uri =
-                'http://' .
-                $_SERVER['SERVER_NAME'] .
-                dirname($_SERVER['REQUEST_URI']) .
-                '/picture.php?logo=true';
-        }
         $logo_elt = '<img' .
-            ' src="'    . $logo_uri                 . '"' .
+            ' src="'    . $logo->getPath()          . '"' .
             ' width="'  . $logo->getOptimalWidth()  . '"' .
             ' height="' . $logo->getOptimalHeight() . '"' .
             '/>';
