@@ -79,7 +79,7 @@ CREATE TABLE galette_transactions (
 DROP TABLE IF EXISTS galette_statuts;
 CREATE TABLE galette_statuts (
   id_statut int(10) unsigned NOT NULL auto_increment,
-  libelle_statut varchar(20) NOT NULL default '',
+  libelle_statut varchar(100) NOT NULL default '',
   priorite_statut tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (id_statut)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;

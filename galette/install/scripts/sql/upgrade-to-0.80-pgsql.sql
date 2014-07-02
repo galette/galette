@@ -4,4 +4,5 @@ ALTER TABLE galette_logs ALTER ip_log TYPE varchar(46);
 ALTER TABLE galette_l10n ALTER text_orig TYPE varchar(100);
 ALTER TABLE galette_l10n ALTER text_trans TYPE varchar(100);
 ALTER TABLE galette_types_cotisation ALTER libelle_type_cotis TYPE varchar(100);
+ALTER TABLE galette_statuts ALTER libelle_statut TYPE varchar(100);
 

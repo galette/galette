@@ -125,7 +125,7 @@ CREATE SEQUENCE galette_import_model_id_seq
 DROP TABLE IF EXISTS galette_statuts CASCADE;
 CREATE TABLE galette_statuts (
   id_statut integer DEFAULT nextval('galette_statuts_id_seq'::text) NOT NULL,
-  libelle_statut  character varying(20) DEFAULT '' NOT NULL,
+  libelle_statut  character varying(100) DEFAULT '' NOT NULL,
   priorite_statut smallint DEFAULT '0' NOT NULL,
   PRIMARY KEY (id_statut)
 );
