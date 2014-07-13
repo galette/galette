@@ -642,7 +642,7 @@ class Db
 
                 //build where
                 foreach ( $pkeys as $k ) {
-                    $where[] = $k . ' = ' . $row->$k;
+                    $where[] = $k . ' = "' . $row->$k .'"';
                 }
 
                 //build data
