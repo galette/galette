@@ -145,6 +145,11 @@
     {if $login->isAdmin() or $login->isStaff()}
                             <li><input type="submit" name="csv" value="{_T string="Export as CSV"}"/></li>
     {/if}
+    {if $plugin_batch_actions|@count != 0}
+        {foreach from=$plugin_batch_actions item=action}
+            {include file=$action}
+        {/foreach}
+    {/if}
                         </ul>
                     </td>
                 </tr>

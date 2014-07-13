@@ -523,9 +523,27 @@ class Plugins
     }
 
     /**
+     * For each module, return the adh_batch_action.tpl full path, if present.
+     *
+     * @return array of adherents batch actions to include on members list
+     * all modules
+     */
+    public function getTplAdhBatchActions()
+    {
+        $_actions = array();
+        foreach ( $this->modules as $key=>$module ) {
+            $actions_path = $this->getTemplatesPath($key) . '/adh_batch_action.tpl';
+            if ( file_exists($actions_path) ) {
+                $_actions[] = $actions_path;
+            }
+        }
+        return $_actions;
+    }
+
+    /**
      * For each module, return the adh_fiche_action.tpl full path, if present.
      *
-     * @return array of adherent actions to include on membre detailled view for
+     * @return array of adherent actions to include on member detailled view for
      * all modules
      */
     public function getTplAdhDetailledActions()
