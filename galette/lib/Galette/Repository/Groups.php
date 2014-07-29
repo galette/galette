@@ -119,7 +119,7 @@ class Groups
                 $select->join(
                     array('c' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
                     'a.' . Group::PK . '=c.' . Group::PK,
-                    ''
+                    array()
                 )->where('c.' . Adherent::PK . ' = ' . $login->id);
             }
 
