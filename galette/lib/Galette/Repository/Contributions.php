@@ -411,7 +411,11 @@ class Contributions extends Pagination
 
             if ( !$login->isAdmin() && !$login->isStaff() ) {
                 //non staff members can only view their own contributions
-                $select->where('p.' . Adherent::PK . ' = ?' . $login->id);
+                $select->where(
+                    array(
+                        'p.' . Adherent::PK => $login->id
+                    )
+                );
             } else if ( $this->_filtre_cotis_adh != null ) {
                 $select->where(
                     'p.' . Adherent::PK . ' = ' . $this->_filtre_cotis_adh
