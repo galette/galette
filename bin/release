@@ -78,7 +78,7 @@ def propose_version():
 
     if len(last_minor) == 5:
         #if the latest is a major version
-        new_minor = last_minor.join('.1')
+        new_minor = last_minor + ('.1')
     else:
         new_minor = '.'.join(incr_version(last_minor))
 
