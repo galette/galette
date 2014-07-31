@@ -45,5 +45,4 @@ define('JQUERY_UI_VERSION', '1.10.3');
 define('JQUERY_MARKITUP_VERSION', '1.1.14');
 define('JQUERY_JQPLOT_VERSION', '1.0.8r1250');
 define('PHP_MAILER_VERSION', '5.2.6');
-define('GAPI_VERSION', '0.6.0');
 define('PASSWORD_COMPAT_VERSION', '1.0.3');

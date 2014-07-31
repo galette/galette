@@ -68,12 +68,6 @@ if ( !defined('GALETTE_SMARTY_PATH') ) {
         GALETTE_ROOT . 'includes/Smarty-' . SMARTY_VERSION
     );
 }
-if ( !defined('GALETTE_GAPI_PATH') ) {
-    define(
-        'GALETTE_GAPI_PATH',
-        GALETTE_ROOT . 'includes/google-api-' . GAPI_VERSION
-    );
-}
 if ( !defined('GALETTE_TCPDF_PATH') ) {
     define(
         'GALETTE_TCPDF_PATH',
