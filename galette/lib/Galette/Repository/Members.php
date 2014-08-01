@@ -569,12 +569,12 @@ class Members
                 )->join(
                     array('gr' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
                     'a.' . Adherent::PK . '=gr.' . Adherent::PK,
-                    ''
+                    array()
                 )->join(
                     array('m' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
                     'gr.' . Group::PK . '=m.' . Group::PK,
-                    ''
-                )->where('m.' . Adherent::PK . ' = ?', $login->id);
+                    array()
+                )->where('m.' . Adherent::PK . ' = ' . $login->id);
             case self::SHOW_PUBLIC_LIST:
                 if ( $photos ) {
                     $select->join(
