@@ -241,6 +241,7 @@ class Contributions extends Pagination
         try {
             $countSelect = clone $select;
             $countSelect->reset($countSelect::COLUMNS);
+            $countSelect->reset($countSelect::JOINS);
             $countSelect->reset($countSelect::ORDER);
             $countSelect->columns(
                 array(
@@ -280,6 +281,7 @@ class Contributions extends Pagination
         try {
             $sumSelect = clone $select;
             $sumSelect->reset($sumSelect::COLUMNS);
+            $sumSelect->reset($sumSelect::JOINS);
             $sumSelect->reset($sumSelect::ORDER);
             $sumSelect->columns(
                 array(
