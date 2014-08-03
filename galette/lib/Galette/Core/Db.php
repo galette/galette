@@ -119,9 +119,11 @@ class Db
                     'port'     => $_port_db,
                     'username' => $_user_db,
                     'password' => $_pwd_db,
-                    'database' => $_name_db,
-                    'charset'  => 'utf8'
+                    'database' => $_name_db
                 );
+                if ($_type_db === self::MYSQL) {
+                    $_options['charset'] = 'utf8';
+                }
             } else {
                 $_options = array(
                     'driver'   => $_type,
