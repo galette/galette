@@ -105,14 +105,16 @@ abstract class PdfModel
         }
 
         $this->_patterns = array(
-            'asso_name'         => '/{ASSO_NAME}/',
-            'asso_slogan'       => '/{ASSO_SLOGAN}/',
-            'asso_address'      => '/{ASSO_ADDRESS}/',
-            'asso_website'      => '/{ASSO_WEBSITE}/',
-            'asso_logo'         => '/{ASSO_LOGO}/'
+            'asso_name'          => '/{ASSO_NAME}/',
+            'asso_slogan'        => '/{ASSO_SLOGAN}/',
+            'asso_address'       => '/{ASSO_ADDRESS}/',
+            'asso_address_multi' => '/{ASSO_ADDRESS_MULTI}/',
+            'asso_website'       => '/{ASSO_WEBSITE}/',
+            'asso_logo'          => '/{ASSO_LOGO}/'
         );
 
         $address = $preferences->getPostalAddress();
+        $address_multi = preg_replace("/\n/", "<br>", $address);
 
         $website = '';
         if ( $preferences->pref_website != '' ) {
@@ -128,11 +130,12 @@ abstract class PdfModel
             '/>';
 
         $this->_replaces = array(
-            'asso_name'         => $preferences->pref_nom,
-            'asso_slogan'       => $preferences->pref_slogan,
-            'asso_address'      => $address,
-            'asso_website'      => $website,
-            'asso_logo'         => $logo_elt
+            'asso_name'          => $preferences->pref_nom,
+            'asso_slogan'        => $preferences->pref_slogan,
+            'asso_address'       => $address,
+            'asso_address_multi' => $address_multi,
+            'asso_website'       => $website,
+            'asso_logo'          => $logo_elt
         );
     }
 
