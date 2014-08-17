@@ -1134,6 +1134,11 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $preferences = new Preferences($zdb);
             $preferences->store();
             $this->_proceedReport(_T("Update preferences"), true);
+
+            include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
+            $models = new \Galette\Repository\PdfModels($zdb, $preferences);
+            $res = $models->installInit($pdfmodels_fields, true);
+            $this->_proceedReport(_T("Update models"), true);
             return true;
         }
     }
