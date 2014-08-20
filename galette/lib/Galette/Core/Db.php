@@ -802,6 +802,9 @@ class Db
         case 'connection':
             return $this->_db->getDriver()->getConnection();
             break;
+        case 'platform':
+            return $this->_db->getPlatform();
+            break;
         case 'query_string':
             return $this->_last_query;
             break;

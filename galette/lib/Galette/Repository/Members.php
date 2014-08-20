@@ -1326,7 +1326,9 @@ class Members
                                 $fs['search'] ;
                         } else {
                             $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' .
-                                $qop  . ' ' . $fs['search'] ;
+                                $qop  . ' ' . $zdb->platform->quoteValue(
+                                    $fs['search']
+                                );
                         }
 
                         if ( $fs['log_op'] === AdvancedMembersList::OP_AND ) {
