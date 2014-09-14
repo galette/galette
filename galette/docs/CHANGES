@@ -1,6 +1,49 @@
 Changes
 -------
 
+0.7.8 -> 0.8
+
+Bugfixes
+^^^^^^^^
+
+- Gender field cannot be disabled
+- Remove SQL NOW() function SQLite does not know
+- Display fixes
+- Permissions on dynamic fields
+- Multiple mails for reminders
+- Encoding issues upgrading from 0.6x
+- Notices from advanced search
+
+News
+^^^^
+
+- Rewrite install and update system
+- Relocate data in a common directory
+- Combined actions on memberlist from plugins
+- Use Logo in PDF models (thanks to Guillaume R.)
+- Maximize satus and contributions types labels size
+- Choose date when filtering contributions
+- Filter transactions per date
+- IPV6 compatible
+- Change error message image (thanks to Daniela D.)
+- Order members labels by name and surname
+- Configurable 80 chars text mail splitting
+- Preview splitted mails
+- Display mail adresses in public list for logged in members
+- Mail text for donations
+- Detect file type if relevant functions are disabled
+- Birthdate in advanced search
+- Change contribution creation date
+- New attached file dynamic fields
+- Improved member selection window from groups and others
+- Not empty groups removal
+
+Under the hood
+^^^^^^^^^^^^^^
+
+- Use Zend_Db 2 instead of version 1
+- PHP 5.4 and more recent support
+
 0.7.7 -> 0.7.8
 - Add release date on plugins
 - Add public pages for plugins
